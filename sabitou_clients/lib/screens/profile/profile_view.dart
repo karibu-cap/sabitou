@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sabitou_dart/proto/user/v1/user.pb.dart';
 
 import '../../routes/pages_routes.dart';
 import '../../services/internationalization/internationalization.dart';
 import '../../themes/app_colors.dart';
 import '../../utils/app_layout.dart';
+import '../../utils/user_preference.dart';
 import '../../widgets/base_page.dart';
 import '../../widgets/components/sb_container.dart';
 
@@ -27,9 +29,16 @@ class _ProfileBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final User user = adminUser;
-    final bool isAdmin = user.role == UserType.admin;
+    /*final User user = adminUser;*/
+    const bool isAdmin = true;
     final AppLayout appLayout = AppLayout(context);
+    final user = UserPreferences.instance.user;
+
+    if (user == null) {
+      return const Center(
+        child: Text('User not found'),
+      );
+    }
 
     return Padding(
       padding: EdgeInsets.all(appLayout.isMobile ? 20.0 : 50.0),
@@ -92,7 +101,7 @@ class _ProfileSection extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             _UserAvatar(
-              imageUrl: user.imageUrl,
+              imageUrl: const Icon(Icons.person),
               fullName: '${user.firstName} ${user.lastName}',
               isOnline: true,
             ),
@@ -151,9 +160,9 @@ class _BusinessStoreSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _BusinessSection(business: user.business, isAdmin: isAdmin),
+        _BusinessSection(business: 'Santa Lucia', isAdmin: isAdmin),
         const SizedBox(height: 10.0),
-        _StoreSection(store: user.store, isAdmin: isAdmin),
+        _StoreSection(store: 'Santa Lucia', isAdmin: isAdmin),
         const SizedBox(height: 16.0),
         Text(
           AppInternationalizationService.to.accountSecurity,
@@ -169,7 +178,7 @@ class _BusinessStoreSection extends StatelessWidget {
 
 class _UserAvatar extends StatelessWidget {
   final String fullName;
-  final String imageUrl;
+  final Icon imageUrl;
   final bool isOnline;
 
   const _UserAvatar({
@@ -199,14 +208,11 @@ class _UserAvatar extends StatelessWidget {
             smallSize: 50,
             backgroundColor:
                 isOnline ? AppColors.success500 : AppColors.error500,
-            child: ClipOval(
+            child: const ClipOval(
               child: SizedBox(
                 width: double.infinity,
                 height: double.infinity,
-                child: Image.asset(
-                  imageUrl,
-                  fit: BoxFit.cover,
-                ),
+                child: Icon(Icons.person),
               ),
             ),
           ),
@@ -297,6 +303,7 @@ class _NameFields extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(AppInternationalizationService.to.firstName),
+                  const SizedBox(height: 5.0),
                   TextField(
                     controller: TextEditingController(text: firstName),
                     readOnly: true,
@@ -342,6 +349,7 @@ class _NameFields extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(AppInternationalizationService.to.lastName),
+                  const SizedBox(height: 5.0),
                   TextField(
                     controller: TextEditingController(text: lastName),
                     readOnly: true,
@@ -418,6 +426,7 @@ class _EmailPasswordFields extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(AppInternationalizationService.to.email),
+                  const SizedBox(height: 5.0),
                   TextField(
                     controller: TextEditingController(text: email),
                     readOnly: true,
@@ -464,6 +473,7 @@ class _EmailPasswordFields extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(AppInternationalizationService.to.password),
+                  const SizedBox(height: 5.0),
                   Obx(
                     () => TextField(
                       controller: TextEditingController(text: password),
@@ -669,6 +679,7 @@ class _StoreSection extends StatelessWidget {
   }
 }
 
+/*
 /// Temporal mock user data.
 
 class User {
@@ -752,4 +763,4 @@ enum UserType {
 
   /// Temporal mock user data.
   manager,
-}
+}*/

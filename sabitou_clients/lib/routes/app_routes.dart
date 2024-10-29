@@ -7,7 +7,6 @@ import '../providers/sing_in/sign_in.dart';
 import '../screens/dashboard/dashboard_view.dart';
 import '../screens/middleware_page.dart';
 import '../screens/profile/profile_view.dart';
-/*import '../screens/registration/registration_view.dart';  */
 import '../screens/sign_in/sign_view.dart';
 import '../screens/sign_up/sign_up_view.dart';
 import '../screens/stores/stores_view.dart';

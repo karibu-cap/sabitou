@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+/*import 'package:flutter_web_plugins/flutter_web_plugins.dart';*/
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
 }
 
 Future<void> _initServices() async {
-  setUrlStrategy(PathUrlStrategy());
+  /*setUrlStrategy(PathUrlStrategy());*/
 
   /// Initialize the get storage service.
   await GetStorage.init();
