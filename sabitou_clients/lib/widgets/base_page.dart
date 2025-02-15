@@ -193,7 +193,6 @@ class _UserAvatar extends StatelessWidget {
 
   const _UserAvatar({
     required this.name,
-    this.userType,
     required this.isOnline,
   });
 

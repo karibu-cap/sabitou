@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package karibu.sabitou.media;
+
+option go_package = "rpc/media";
+
+
+enum MediaType {
+  MEDIA_TYPE_UNSPECIFIED = 0;
+  MEDIA_TYPE_IMAGE = 1;
+  MEDIA_TYPE_VIDEO = 2;
+}
+
+// TODO: Auto delete media not linked to any other resource.
+message Media {
+  // The unique identifier of the media.
+  string uid = 1;
+
+  // The type of the media.
+  MediaType type = 2;
+
+  // The link of the media.
+  string link = 3;
+
+  // The meta data of the media.
+  string meta = 4;
+
+  // The date and time the media was created.
+  string created_at = 5;
+
+  // The date and time the media was last accessed.
+  string last_accessed_at = 6;
+}
+
+message GetMediasRequest {
+  // A list of unique identifiers of the media to retrieve.
+  repeated string uids = 1;
+}
+
+message GetMediasResponse {
+  // The retrieved media data list.
+  repeated Media media = 1;
+}
+
+service MediaService {
+  // Gets a media by id.
+  rpc GetMedias(GetMediasRequest) returns (GetMediasResponse);
+}

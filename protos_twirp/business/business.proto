@@ -1,0 +1,174 @@
+syntax = "proto3";
+
+package karibu.sabitou.business;
+
+option go_package = "rpc/business";
+
+enum BusinessStatusType {
+  BUSINESS_STATUS_TYPE_UNSPECIFIED = 0;
+  BUSINESS_STATUS_TYPE_ACTIVE = 1;
+  BUSINESS_STATUS_TYPE_DELETED = 2;
+}
+
+message Business {
+  // The unique identifier of the business.
+  string uid = 1;
+
+  // The name of the business.
+  string name = 2;
+
+  // The description of the business.
+  optional string description = 3;
+
+  // The status of the business.
+  BusinessStatusType status = 4;
+
+  // The uid of the owner of the business.
+  string owner_uid = 5;
+
+  // The uid of the media of the logo of the business.
+  optional string logo_media_uid = 6;
+
+  // The ISO 3166-1 alpha-2 country code of the business.
+  // e.g. CM, US, GB, etc.
+  string country_code = 7;
+
+  // The ISO 4217 currency code of the business.
+  // For example: XAF, USD, EUR, etc.
+  string currency_code = 8;
+
+  // The date and time the business was created.
+  string created_at = 9;
+
+  // The date and time the business was last updated.
+  string updated_at = 10;
+}
+
+message CreateBusinessRequest {
+  // The business information to create.
+  // Note:Only the fields that are set will be created.
+  Business business = 1;
+
+  // The raw image of the logo of the business.
+  optional bytes logo_raw_image = 2;
+}
+
+message CreateBusinessResponse {
+  // The unique identifier of the created business.
+  string uid = 1;
+}
+
+message GetBusinessRequest {
+  // The unique identifier of the business to retrieve.
+  string uid = 1;
+}
+
+message GetBusinessResponse {
+  // The retrieved business data.
+  Business business = 1;
+}
+
+message UpdateBusinessRequest {
+  // The business information to update.
+  // Note:Only the fields that are set will be updated.
+  Business business = 1;
+
+  // The raw image of the logo of the business.
+  optional bytes logo_raw_image = 2;
+}
+
+message UpdateBusinessResponse {
+  // Whether the business was successfully updated.
+  bool success = 1;
+}
+
+message RequestDeleteBusinessRequest {
+  // The unique identifier of the business to delete.
+  string uid = 1;
+  // The password of the user who is trying to delete the business.
+  string password = 2;
+}
+
+message RequestDeleteBusinessResponse {
+  // The token to use to process the deletion of the business
+  // after verification (email or phone number).
+  string request_token = 1;
+}
+
+message DeleteBusinessRequest {
+  // The token to use to process the deletion of the business.
+  string request_token = 1;
+
+  // The verification code sent to the user's email or phone number.
+  string verification_code = 2;
+}
+
+message DeleteBusinessResponse {
+  // Whether the business was successfully deleted.
+  bool success = 1;
+}
+
+message AddUserToBusinessRequest {
+  // The unique identifier of the user.
+  // For example, the email address or phone number or @username.
+  string u_ref = 1;
+}
+
+message AddUserToBusinessResponse {
+  // The unique identifier of the user.
+  string u_ref = 1;
+}
+
+message RemoveUserFromBusinessRequest {
+  // The unique identifier of the user.
+  // For example, the email address or phone number or @username.
+  string u_ref = 1;
+}
+
+message RemoveUserFromBusinessResponse {
+  // Whether the user was successfully removed from the business.
+  bool success = 1;
+}
+
+message GetBusinessUsersRequest {
+  // The unique identifier of the business to retrieve.
+  string uid = 1;
+}
+
+message GetBusinessUsersResponse {
+  // The unique identifiers of the users of the business.
+  repeated string uids = 1;
+}
+
+service BusinessService {
+  // Create a new business.
+  rpc CreateBusiness(CreateBusinessRequest) returns (CreateBusinessResponse);
+
+  // Get a business by id.
+  rpc GetBusiness(GetBusinessRequest) returns (GetBusinessResponse);
+
+  // Update a business.
+  rpc UpdateBusiness(UpdateBusinessRequest) returns (UpdateBusinessResponse);
+
+  // Request the deletion of the business.
+  rpc RequestDeleteBusiness(RequestDeleteBusinessRequest)
+      returns (RequestDeleteBusinessResponse);
+
+  // Processes the deletion of the business requested by the owner.
+  rpc DeleteBusiness(DeleteBusinessRequest) returns (DeleteBusinessResponse);
+
+  // Add user to business or invite user to business.
+  rpc AddUserToBusiness(AddUserToBusinessRequest)
+      returns (AddUserToBusinessResponse);
+
+  // Remove user from business.
+  // If the user has been created by the business, the user will be deleted.
+  // NOTE: The authenticated user need to have the permission to remove the
+  // user.
+  rpc RemoveUserFromBusiness(RemoveUserFromBusinessRequest)
+      returns (RemoveUserFromBusinessResponse);
+
+  // Get the users of the business.
+  rpc GetBusinessUsers(GetBusinessUsersRequest)
+      returns (GetBusinessUsersResponse);
+}

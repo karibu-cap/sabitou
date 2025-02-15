@@ -1,0 +1,168 @@
+syntax = "proto3";
+
+package karibu.sabitou.inventory;
+
+option go_package = "rpc/inventory";
+
+message ProductCategory {
+  // The unique identifier of the product category.
+  string uid = 1;
+
+  // The name of the product category.
+  string name = 2;
+}
+
+message Product {
+  // The unique identifier of the product.
+  string uid = 1;
+
+  // The name of the product.
+  string name = 2;
+
+  // The description of the product.
+  optional string description = 3;
+
+  // The bar code value of the product.
+  optional string bar_code_value = 4;
+
+  // The product categories of the product.
+  repeated ProductCategory categories = 6;
+
+  // The date and time the product was created.
+  string created_at = 7;
+
+  // The date and time the product was updated.
+  string updated_at = 8;
+}
+
+message BusinessProduct {
+  // The unique identifier of the business product.
+  string uid = 1;
+
+  // The unique identifier of the business.
+  string business_id = 2;
+
+  // The unique identifier of the product.
+  string product_id = 3;
+
+  // The price in cents of the product.
+  // The currency is determined by the business.
+  int32 price_in_cents = 4;
+
+  // The media uids of the images of the product.
+  repeated string images_media_uids = 5;
+
+  // Whether the product is deleted.
+  bool is_deleted = 6;
+
+  // The date and time the product was created.
+  string created_at = 7;
+
+  // The date and time the product was updated.
+  string updated_at = 8;
+}
+
+message FindProductsRequest {
+  // The query to search for products.
+  string query = 1;
+}
+
+message FindProductsResponse {
+  // The unique identifiers of the products.
+  // WARN: all returned products will only have their uid and name.
+  repeated Product products = 1;
+}
+
+message FindCategoryRequest {
+  // The query to search for product categories.
+  string query = 1;
+}
+
+message FindCategoryResponse {
+  // The unique identifiers of the product categories.
+  // WARN: all returned product categories will only have their uid and name.
+  repeated ProductCategory categories = 1;
+}
+
+message AddBusinessProductRequest {
+  // The product to add.
+  // If the product does not exist, it will be created.
+  Product product = 1;
+
+  // The unique identifier of the business.
+  string business_id = 2;
+
+  // The price in cents of the product.
+  // The currency is determined by the business.
+  int32 price_in_cents = 3;
+
+  // The media uids of the images of the product.
+  repeated bytes images_raw_images = 4;
+}
+
+message AddBusinessProductResponse {
+  // Whether the product was successfully added.
+  bool success = 1;
+}
+
+message GetBusinessProductRequest {
+  // The unique identifier of the business product.
+  string uid = 1;
+}
+
+message GetBusinessProductResponse {
+  // The retrieved business product data.
+  BusinessProduct business_product = 1;
+}
+
+message UpdateBusinessProductRequest {
+  // The business product information to update.
+  // Note:Only the fields that are set will be updated.
+  // Some fields cannot be updated like the product id, business id, and all
+  // product fields.
+  BusinessProduct business_product = 1;
+
+  // The media uids of the images of the product.
+  repeated bytes images_raw_images = 4;
+}
+
+message UpdateBusinessProductResponse {
+  // Whether the business product was successfully updated.
+  bool success = 1;
+}
+
+message DeleteBusinessProductRequest {
+  // The unique identifier of the business product.
+  string uid = 1;
+}
+
+message DeleteBusinessProductResponse {
+  // Whether the business product was successfully deleted.
+  bool success = 1;
+}
+
+service ProductService {
+  // Finds products by name.
+  rpc FindProducts(FindProductsRequest) returns (FindProductsResponse);
+
+  // Finds categories by name.
+  rpc FindCategory(FindCategoryRequest) returns (FindCategoryResponse);
+
+  // Adds a product to a business.
+  rpc AddBusinessProduct(AddBusinessProductRequest)
+      returns (AddBusinessProductResponse);
+
+  // Gets a business product by id.
+  rpc GetBusinessProduct(GetBusinessProductRequest)
+      returns (GetBusinessProductResponse);
+
+  // Updates a business product.
+  rpc UpdateBusinessProduct(UpdateBusinessProductRequest)
+      returns (UpdateBusinessProductResponse);
+
+  // Deletes a business product.
+  // Only business products that are not in any store and orders can be
+  // deleted.
+  rpc DeleteBusinessProduct(DeleteBusinessProductRequest)
+      returns (DeleteBusinessProductResponse);
+}

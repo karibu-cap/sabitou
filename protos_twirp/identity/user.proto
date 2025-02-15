@@ -1,0 +1,171 @@
+syntax = "proto3";
+
+package karibu.sabitou.identity;
+
+option go_package = "rpc/identity";
+
+enum AccountStatusType {
+  ACCOUNT_STATUS_TYPE_UNSPECIFIED = 0;
+  ACCOUNT_STATUS_TYPE_ACTIVE = 1;
+  ACCOUNT_STATUS_TYPE_DELETED = 2;
+}
+
+enum AuthActionType {
+  AUTH_ACTION_TYPE_UNSPECIFIED = 0;
+  AUTH_ACTION_TYPE_VERIFY_EMAIL = 1;
+  AUTH_ACTION_TYPE_VERIFY_PHONE_NUMBER = 2;
+  AUTH_ACTION_TYPE_INITIALIZE_PASSWORD = 3;
+  AUTH_ACTION_TYPE_RESET_PASSWORD = 4;
+}
+
+enum ProviderType {
+  // Generally used for testing.
+  PROVIDER_TYPE_UNSPECIFIED = 0;
+
+  // The user connected their email address to their account.
+  PROVIDER_TYPE_FIREBASE_EMAIL = 1;
+
+  // The user connected their google account to their account.
+  PROVIDER_TYPE_GOOGLE = 2;
+
+  // Generally used when business creates a user.
+  PROVIDER_TYPE_INTERNAL_BUSINESS_AUTH = 3;
+}
+
+message ConnectedAccount {
+  // The provider of the connected account.
+  // For example, "google.com" or "email".
+  ProviderType provider = 1;
+
+  // The raw information returned by the provider.
+  string raw_data = 3;
+}
+
+message User {
+  // The unique identifier of the user.
+  string uid = 1;
+
+  // The user name of the user.
+  string user_name = 2;
+
+  // The connected accounts used by the user for authentication.
+  ConnectedAccount connected_accounts = 3;
+
+  // The email address of the user.
+  optional string email = 4;
+
+  // The phone number of the user.
+  optional string phone_number = 5;
+
+  // The first name of the user.
+  optional string first_name = 6;
+
+  // The last name of the user.
+  optional string last_name = 7;
+
+  // The password hash of the user.
+  optional string password_hash = 8;
+
+  // The status of the user's account.
+  optional AccountStatusType account_status = 9;
+
+  // The actions that the user must complete to authenticate.
+  repeated AuthActionType required_actions = 10;
+
+  // The date and time the user was created.
+  string updated_at = 11;
+
+  // The date and time the user was last updated.
+  string created_at = 12;
+}
+
+message GetUserRequest {
+  // The id of the user to retrieve.
+  string uid = 1;
+}
+
+message GetUserResponse {
+  // The retrieved user data.
+  User user = 1;
+}
+
+message UpdateUserRequest {
+  // The user information to update.
+  // Note:Only the fields that are set will be updated.
+  // WARNING:
+  //  - The uid field is required and cannot be changed.
+  //  - The password field will be ignored. Use the ChangePassword RPC instead.
+  User user = 1;
+}
+
+message UpdateUserResponse {
+  // The updated user data.
+  User user = 1;
+}
+
+message RequestDeleteUserRequest {
+  // The id of the user to delete.
+  string uid = 1;
+
+  // The password of the user to delete.
+  string password = 2;
+}
+
+message RequestDeleteUserResponse {
+  // The token to use to process the deletion of the user
+  // after verification (email or phone number).
+  string request_token = 1;
+}
+
+message DeleteUserRequest {
+  // The token to use to process the deletion of the user.
+  string request_token = 1;
+
+  // The verification code sent to the user's email or phone number.
+  string verification_code = 2;
+}
+
+message DeleteUserResponse {
+  // Whether the user was successfully deleted.
+  bool success = 1;
+}
+
+message ChangePasswordRequest {
+  // The previous password of the user.
+  string old_password = 1;
+
+  // The new password of the user.
+  string new_password = 2;
+}
+
+message ChangePasswordResponse {
+  // Whether the password was successfully changed.
+  bool success = 1;
+}
+
+message Empty {
+  // Empty message.
+}
+
+service UserService {
+  // Get the user information for the currently authenticated user.
+  rpc GetMe(Empty) returns (User) {}
+
+  // Get the public information for the given user id.
+  rpc GetUser(GetUserRequest) returns (GetUserResponse) {}
+
+  // Update the user information for the currently authenticated user.
+  rpc UpdateMe(UpdateUserRequest) returns (UpdateUserResponse) {}
+
+  // Request the deletion of the user account.
+  // This will send a verification code to the user's email address
+  // or phone number.
+  rpc RequestDeleteUser(RequestDeleteUserRequest)
+      returns (RequestDeleteUserResponse) {}
+
+  // Processes the deletion of the user account requested by the user.
+  rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse) {}
+
+  // Change the password for the currently authenticated user.
+  rpc ChangePassword(ChangePasswordRequest) returns (ChangePasswordResponse) {}
+}
