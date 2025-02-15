@@ -1,0 +1,117 @@
+syntax = "proto3";
+
+package karibu.sabitou.business;
+
+option go_package = "rpc/business";
+
+message Link {
+  // The label of the link.
+  string label = 1;
+
+  // The url of the link.
+  // Todo: We must automatically retrieve the icon of the link.
+  string url = 2;
+}
+
+message Supplier {
+  // The unique identifier of the supplier.
+  string uid = 1;
+
+  // The name of the supplier.
+  string name = 2;
+
+  // The description of the supplier.
+  optional string description = 3;
+
+  // The uid of the media of the logo of the supplier.
+  optional string logo_media_uid = 4;
+
+  // The links of the supplier.
+  repeated Link links = 5;
+
+  // The uid of the business of the supplier.
+  string business_id = 6;
+
+  // The date and time the supplier was created.
+  string created_at = 7;
+
+  // The date and time the supplier was last updated.
+  string updated_at = 8;
+}
+
+message CreateSupplierRequest {
+  // The supplier information to create.
+  Supplier supplier = 1;
+
+  // The raw image of the logo of the supplier.
+  optional bytes logo_raw_image = 2;
+}
+
+message CreateSupplierResponse {
+  // The unique identifier of the created supplier.
+  string uid = 1;
+}
+
+message GetSupplierRequest {
+  // The unique identifier of the supplier to retrieve.
+  string uid = 1;
+}
+
+message GetSupplierResponse {
+  // The retrieved supplier data.
+  Supplier supplier = 1;
+}
+
+message GetBusinessSuppliersRequest {
+  // The unique identifier of the business to retrieve.
+  string uid = 1;
+}
+
+message GetBusinessSuppliersResponse {
+  // The list of suppliers of the business.
+  // Note: Only the uids and names of the suppliers are returned.
+  repeated Supplier suppliers = 1;
+}
+
+message UpdateSupplierRequest {
+  // The supplier information to update.
+  // Note:Only the fields that are set will be updated.
+  Supplier supplier = 1;
+
+  // The raw image of the logo of the supplier.
+  optional bytes logo_raw_image = 2;
+}
+
+message UpdateSupplierResponse {
+  // The updated supplier data.
+  Supplier supplier = 1;
+}
+
+message DeleteSupplierRequest {
+  // The unique identifier of the supplier to delete.
+  string uid = 1;
+}
+
+message DeleteSupplierResponse {
+  // Whether the supplier was successfully deleted.
+  bool success = 1;
+}
+
+service SupplierService {
+  // Creates a new supplier.
+  rpc CreateSupplier(CreateSupplierRequest) returns (CreateSupplierResponse);
+
+  // Gets a supplier by id.
+  rpc GetSupplier(GetSupplierRequest) returns (GetSupplierResponse);
+
+  // Gets all suppliers of a business.
+  rpc GetBusinessSuppliers(GetBusinessSuppliersRequest)
+      returns (GetBusinessSuppliersResponse);
+
+  // Updates a supplier.
+  // Note:Only the fields that are set will be updated.
+  rpc UpdateSupplier(UpdateSupplierRequest) returns (UpdateSupplierResponse);
+
+  // Deletes a supplier.
+  rpc DeleteSupplier(DeleteSupplierRequest) returns (DeleteSupplierResponse);
+}

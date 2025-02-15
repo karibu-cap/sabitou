@@ -12,7 +12,7 @@ message ProductCategory {
   string name = 2;
 }
 
-message Product {
+message GlobalProduct {
   // The unique identifier of the product.
   string uid = 1;
 
@@ -26,24 +26,21 @@ message Product {
   optional string bar_code_value = 4;
 
   // The product categories of the product.
-  repeated ProductCategory categories = 6;
+  repeated ProductCategory categories = 5;
 
   // The date and time the product was created.
-  string created_at = 7;
-
-  // The date and time the product was updated.
-  string updated_at = 8;
+  string created_at = 6;
 }
 
-message BusinessProduct {
+message Product {
   // The unique identifier of the business product.
   string uid = 1;
 
   // The unique identifier of the business.
   string business_id = 2;
 
-  // The unique identifier of the product.
-  string product_id = 3;
+  // The unique identifier of the global product.
+  string global_product_id = 3;
 
   // The price in cents of the product.
   // The currency is determined by the business.
@@ -62,15 +59,15 @@ message BusinessProduct {
   string updated_at = 8;
 }
 
-message FindProductsRequest {
+message FindGlobalProductsRequest {
   // The query to search for products.
   string query = 1;
 }
 
-message FindProductsResponse {
+message FindGlobalProductsResponse {
   // The unique identifiers of the products.
   // WARN: all returned products will only have their uid and name.
-  repeated Product products = 1;
+  repeated GlobalProduct products = 1;
 }
 
 message FindCategoryRequest {
@@ -84,10 +81,10 @@ message FindCategoryResponse {
   repeated ProductCategory categories = 1;
 }
 
-message AddBusinessProductRequest {
+message AddProductRequest {
   // The product to add.
   // If the product does not exist, it will be created.
-  Product product = 1;
+  GlobalProduct global_product = 1;
 
   // The unique identifier of the business.
   string business_id = 2;
@@ -100,69 +97,66 @@ message AddBusinessProductRequest {
   repeated bytes images_raw_images = 4;
 }
 
-message AddBusinessProductResponse {
+message AddProductResponse {
   // Whether the product was successfully added.
   bool success = 1;
 }
 
-message GetBusinessProductRequest {
+message GetProductRequest {
   // The unique identifier of the business product.
   string uid = 1;
 }
 
-message GetBusinessProductResponse {
+message GetProductResponse {
   // The retrieved business product data.
-  BusinessProduct business_product = 1;
+  Product product = 1;
 }
 
-message UpdateBusinessProductRequest {
+message UpdateProductRequest {
   // The business product information to update.
   // Note:Only the fields that are set will be updated.
   // Some fields cannot be updated like the product id, business id, and all
   // product fields.
-  BusinessProduct business_product = 1;
+  Product product = 1;
 
   // The media uids of the images of the product.
   repeated bytes images_raw_images = 4;
 }
 
-message UpdateBusinessProductResponse {
+message UpdateProductResponse {
   // Whether the business product was successfully updated.
   bool success = 1;
 }
 
-message DeleteBusinessProductRequest {
+message DeleteProductRequest {
   // The unique identifier of the business product.
   string uid = 1;
 }
 
-message DeleteBusinessProductResponse {
+message DeleteProductResponse {
   // Whether the business product was successfully deleted.
   bool success = 1;
 }
 
 service ProductService {
   // Finds products by name.
-  rpc FindProducts(FindProductsRequest) returns (FindProductsResponse);
+  rpc FindProducts(FindGlobalProductsRequest)
+      returns (FindGlobalProductsResponse);
 
   // Finds categories by name.
   rpc FindCategory(FindCategoryRequest) returns (FindCategoryResponse);
 
   // Adds a product to a business.
-  rpc AddBusinessProduct(AddBusinessProductRequest)
-      returns (AddBusinessProductResponse);
+  rpc AddProduct(AddProductRequest) returns (AddProductResponse);
 
   // Gets a business product by id.
-  rpc GetBusinessProduct(GetBusinessProductRequest)
-      returns (GetBusinessProductResponse);
+  rpc GetProduct(GetProductRequest) returns (GetProductResponse);
 
   // Updates a business product.
-  rpc UpdateBusinessProduct(UpdateBusinessProductRequest)
-      returns (UpdateBusinessProductResponse);
+  rpc UpdateProduct(UpdateProductRequest) returns (UpdateProductResponse);
 
   // Deletes a business product.
   // Only business products that are not in any store and orders can be
   // deleted.
-  rpc DeleteBusinessProduct(DeleteBusinessProductRequest)
-      returns (DeleteBusinessProductResponse);
+  rpc DeleteProduct(DeleteProductRequest) returns (DeleteProductResponse);
 }

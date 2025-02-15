@@ -72,9 +72,6 @@ message User {
   // The actions that the user must complete to authenticate.
   repeated AuthActionType required_actions = 10;
 
-  // The date and time the user was created.
-  string updated_at = 11;
-
   // The date and time the user was last updated.
   string created_at = 12;
 }

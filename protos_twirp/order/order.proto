@@ -1,79 +1,110 @@
 syntax = "proto3";
 
-package order;
+package karibu.sabitou.order;
 
-import "payment/payment.proto";
-import "store/store.proto";
-import "user/user.proto";
-
-option go_package = "sabitou/proto/order;order";
-
-service OrderService {
-  rpc CreateOrder(CreateOrderRequest) returns (CreateOrderResponse);
-  rpc GetOrder(GetOrderRequest) returns (GetOrderResponse);
-  rpc UpdateOrder(UpdateOrderRequest) returns (UpdateOrderResponse);
-  rpc DeleteOrder(DeleteOrderRequest) returns (DeleteOrderResponse);
-}
+option go_package = "rpc/order";
 
 enum Status {
   STATUS_UNSPECIFIED = 0;
-  STATUS_PENDING = 5;
-  STATUS_PROCESSING = 1;
-  STATUS_COMPLETED = 2;
-  STATUS_CANCELLED = 3;
+  STATUS_PENDING = 1;
+  STATUS_PROCESSING = 2;
+  STATUS_COMPLETED = 3;
+  STATUS_CANCELLED = 4;
+}
+
+enum ResourceType {
+  RESOURCE_TYPE_UNSPECIFIED = 0;
+  RESOURCE_TYPE_INTERNAL_STORE = 1;
+  RESOURCE_TYPE_SUPPLIER_STORE = 2;
 }
 
 message OrderItem {
-  string product_id = 1;
-  double quantity = 2;
+  // The unique identifier of the business product.
+  string product_uid = 1;
+
+  // The quantity of the product.
+  int32 quantity = 2;
+
+  // The unit price in cents of the product.
+  // WARN: This value is stored because the unit price can change over time.
+  int32 unit_price_in_cents = 3;
 }
 
 message Order {
-  string id = 1;
-  string store_id = 2;
-  repeated string payment_id = 4;
-  string initiated_by_uid = 5;
-  string status = 9;
-  repeated OrderItem order_items = 6;
+  // The unique identifier of the order.
+  string uid = 1;
+
+  // The type of the resource.
+  string resource_type = 2;
+
+  // The unique identifier of the resource owner.
+  string resource_uid = 3;
+
+  // The list of items in the order.
+  repeated OrderItem order_items = 4;
+
+  // The total price of the order in cents.
+  int32 total_price_in_cents = 5;
+
+  // The status of the order.
+  Status status = 6;
+
+  // The date and time the order was created.
   string created_at = 7;
-  string updated_at = 8;
+
+  // The uid of the user who created the order.
+  string created_by_uid = 8;
+
+  // The date and time the order was last updated.
+  string updated_at = 9;
+
+  // The uid of the user who last updated the order.
+  string updated_by_uid = 10;
 }
 
 message CreateOrderRequest {
+  // The order to create.
   Order order = 1;
+
+  // The name of the supplier.
+  optional string supplier_name = 2;
+
+  // The unique identifier of the business.
+  string business_uid = 3;
 }
 
 message CreateOrderResponse {
-  string id = 1;
+  // The unique identifier of the created order.
+  string uid = 1;
 }
 
 message GetOrderRequest {
-  string id = 1;
+  // The unique identifier of the order to retrieve.
+  string uid = 1;
 }
 
 message GetOrderResponse {
-  string id = 1;
-  store.Store store = 2;
-  repeated payment.Payment payment = 4;
-  user.User initiator = 5;
-  repeated OrderItem order_items = 6;
-  string status = 9;
-  string created_at = 7;
-  string updated_at = 8;
-}
-
-message UpdateOrderRequest {
-  Order order = 1;
-}
-
-message UpdateOrderResponse {
+  // The retrieved order data.
   Order order = 1;
 }
 
 message DeleteOrderRequest {
-  int32 id = 1;
+  // The unique identifier of the order to delete.
+  string uid = 1;
 }
 
 message DeleteOrderResponse {
+  // Whether the order was successfully deleted.
   bool success = 1;
+}
+
+service OrderService {
+  // Creates a new order.
+  rpc CreateOrder(CreateOrderRequest) returns (CreateOrderResponse) {};
+
+  // Gets an order by id.
+  rpc GetOrder(GetOrderRequest) returns (GetOrderResponse) {};
+
+  // Deletes an order.
+  rpc DeleteOrder(DeleteOrderRequest) returns (DeleteOrderResponse) {};
 }
