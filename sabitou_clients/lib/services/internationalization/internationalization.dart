@@ -174,6 +174,66 @@ class AppInternationalizationService extends GetxService {
       'en': 'Store for your business',
       'fr': 'Magasin pour votre entreprise',
     },
+    'adminManager': {
+      'en': 'Admin manager',
+      'fr': 'Gestionnaire admin',
+    },
+    'inventoryManager': {
+      'en': 'Inventory manager',
+      'fr': 'Gestionnaire des stocks',
+    },
+    'account': {
+      'en': 'Account',
+      'fr': 'Compte',
+    },
+    'uploadNewPicture': {
+      'en': 'New picture',
+      'fr': 'Nouvelle image',
+    },
+    'deletePicture': {
+      'en': 'Delete picture',
+      'fr': 'Supprimer l\'image',
+    },
+    'contactEmail': {
+      'en': 'Contact email',
+      'fr': 'Email de contact',
+    },
+    'manageYourAccountEmailAddress': {
+      'en': 'Manage your account email address',
+      'fr': 'Gérer l\'adresse email de votre compte',
+    },
+    'business': {
+      'en': 'Business',
+      'fr': 'Entreprise',
+    },
+    'manageYourBusiness': {
+      'en': 'Manage your business',
+      'fr': 'Gérer votre entreprise',
+    },
+    'store': {
+      'en': 'Store',
+      'fr': 'Magasin',
+    },
+    'manageTheStore': {
+      'en': 'Manage the store',
+      'fr': 'Gérer le magasin',
+    },
+    'changeTheBusiness': {
+      'en': 'Change the business',
+      'fr': 'Changer d\'entreprise',
+    },
+    'changeTheStore': {
+      'en': 'Change the store',
+      'fr': 'Changer de magasin',
+    },
+    'accountSecurity': {
+      'en': 'Account security',
+      'fr': 'Sécurité du compte',
+    },
+    'manageYourAccountSecurity': {
+      'en': 'Manage your account security',
+      'fr': 'Gérer la sécurité de votre compte',
+    },
   };
 
   /// Direct access to the internationalization service.
@@ -448,6 +508,111 @@ class AppInternationalizationService extends GetxService {
   String get cancel {
     return _stringOfLocalizedValue(
       'cancel',
+    );
+  }
+
+  /// Returns the localized value of account.
+  String get account {
+    return _stringOfLocalizedValue(
+      'account',
+    );
+  }
+
+  /// Returns the localized value of uploadNewPicture.
+  String get uploadNewPicture {
+    return _stringOfLocalizedValue(
+      'uploadNewPicture',
+    );
+  }
+
+  /// Returns the localized value of deletePicture.
+  String get deletePicture {
+    return _stringOfLocalizedValue(
+      'deletePicture',
+    );
+  }
+
+  /// Returns the localized value of contactEmail.
+  String get contactEmail {
+    return _stringOfLocalizedValue(
+      'contactEmail',
+    );
+  }
+
+  /// Returns the localized value of manageYourAccountEmailAddress.
+  String get manageYourAccountEmailAddress {
+    return _stringOfLocalizedValue(
+      'manageYourAccountEmailAddress',
+    );
+  }
+
+  /// Returns the localized value of business.
+  String get business {
+    return _stringOfLocalizedValue(
+      'business',
+    );
+  }
+
+  /// Returns the localized value of manageYourBusiness.
+  String get manageYourBusiness {
+    return _stringOfLocalizedValue(
+      'manageYourBusiness',
+    );
+  }
+
+  /// Returns the localized value of store.
+  String get store {
+    return _stringOfLocalizedValue(
+      'store',
+    );
+  }
+
+  /// Returns the localized value of manageTheStore.
+  String get manageTheStore {
+    return _stringOfLocalizedValue(
+      'manageTheStore',
+    );
+  }
+
+  /// Returns the localized value of changeTheBusiness.
+  String get changeTheBusiness {
+    return _stringOfLocalizedValue(
+      'changeTheBusiness',
+    );
+  }
+
+  /// Returns the localized value of changeTheStore.
+  String get changeTheStore {
+    return _stringOfLocalizedValue(
+      'changeTheStore',
+    );
+  }
+
+  /// Returns the localized value of accountSecurity.
+  String get accountSecurity {
+    return _stringOfLocalizedValue(
+      'accountSecurity',
+    );
+  }
+
+  /// Returns the localized value of manageYourAccountSecurity.
+  String get manageYourAccountSecurity {
+    return _stringOfLocalizedValue(
+      'manageYourAccountSecurity',
+    );
+  }
+
+  /// Returns the localized value of adminManager.
+  String get adminManager {
+    return _stringOfLocalizedValue(
+      'adminManager',
+    );
+  }
+
+  /// Returns the localized value of inventoryManager.
+  String get inventoryManager {
+    return _stringOfLocalizedValue(
+      'inventoryManager',
     );
   }
 
