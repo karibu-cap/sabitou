@@ -8,23 +8,29 @@ managed:
   override:
     # Prefix all GO packages imported from the proto files with the specified value.
     - file_option: go_package_prefix
-      value: github.com/karibu-cap/sabitou-backends/rpc
+      value: github.com/karibu-cap/sabitou/protos/gen/go
 
 plugins:
   # Generate Go code for Protobufs
   - remote: buf.build/protocolbuffers/go
-    out: ../server/rpc
+    out: gen/go
     opt: paths=source_relative
   # Generates Go code to validate Protobuf messages using protoc-gen-validate constraints.
   - remote: buf.build/bufbuild/validate-go:v1.2.1
-    out: ../server/rpc
+    out: gen/go
     opt:
       - paths=source_relative
-  # Generate Go client and server stubs for Twirp framework. 
-  # WARN: you must install protoc-gen-twirp locally using `go install github.com/twitchtv/twirp/protoc-gen-twirp@latest`
-  - local: protoc-gen-twirp
-    out: ../server/rpc
+  # Generate Go client and server stubs for Connect framework. 
+  - remote: buf.build/connectrpc/go
+    out: gen/go
     opt:
       - paths=source_relative
+  # Generate Dart code for Protobufs
+  - remote: buf.build/connectrpc/dart
+    out: gen/dart
+  - remote: buf.build/protocolbuffers/dart
+    out: gen/dart
+    include_wkt: true
+    include_imports: true
 inputs:
-  - directory: .
+  - directory: src
