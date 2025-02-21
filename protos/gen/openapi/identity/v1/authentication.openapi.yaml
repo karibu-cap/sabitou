@@ -1,0 +1,322 @@
+openapi: 3.1.0
+info:
+  title: identity.v1
+paths:
+  /identity.v1.AuthService/Login:
+    post:
+      tags:
+        - identity.v1.AuthService
+      summary: Login
+      description: Authenticate the user with the given credentials.
+      operationId: identity.v1.AuthService.Login
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/identity.v1.LoginRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identity.v1.LoginResponse'
+  /identity.v1.AuthService/Register:
+    post:
+      tags:
+        - identity.v1.AuthService
+      summary: Register
+      description: Create a user without a password.
+      operationId: identity.v1.AuthService.Register
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/identity.v1.RegisterRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identity.v1.RegisterResponse'
+  /identity.v1.AuthService/RequestPasswordReset:
+    post:
+      tags:
+        - identity.v1.AuthService
+      summary: RequestPasswordReset
+      description: Request the password reset of the user.
+      operationId: identity.v1.AuthService.RequestPasswordReset
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/identity.v1.RequestPasswordResetRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identity.v1.RequestPasswordResetResponse'
+  /identity.v1.AuthService/ResetPassword:
+    post:
+      tags:
+        - identity.v1.AuthService
+      summary: ResetPassword
+      description: Process the password reset request.
+      operationId: identity.v1.AuthService.ResetPassword
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/identity.v1.ResetPasswordRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identity.v1.ResetPasswordResponse'
+components:
+  schemas:
+    identity.v1.LoginRequest:
+      type: object
+      properties:
+        uRef:
+          type: string
+          title: u_ref
+          description: |-
+            The unique identifier of the user.
+             For example, the email address or phone number or @username.
+        password:
+          type: string
+          title: password
+          description: The password of the user.
+      title: LoginRequest
+      additionalProperties: false
+    identity.v1.LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          title: token
+          description: The token to use to authenticate the user in subsequent requests.
+        refreshToken:
+          type: string
+          title: refresh_token
+          description: The refresh token to use to refresh the token.
+      title: LoginResponse
+      additionalProperties: false
+    identity.v1.RegisterRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          title: username
+          description: The unique identifier of the user.
+          nullable: true
+        email:
+          type: string
+          title: email
+          description: The email address of the user.
+          nullable: true
+      title: RegisterRequest
+      additionalProperties: false
+      description: |-
+        Register a new user with the minimum required information.
+         The user will have to set a password later.
+    identity.v1.RegisterResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          title: token
+          description: The token to use to authenticate the user in subsequent requests.
+        refreshToken:
+          type: string
+          title: refresh_token
+          description: The refresh token to use to refresh the token.
+      title: RegisterResponse
+      additionalProperties: false
+    identity.v1.RequestPasswordResetRequest:
+      type: object
+      properties:
+        uRef:
+          type: string
+          title: u_ref
+          description: |-
+            The unique identifier of the user.
+             For example, the email address or phone number or @username.
+      title: RequestPasswordResetRequest
+      additionalProperties: false
+    identity.v1.RequestPasswordResetResponse:
+      type: object
+      properties:
+        requestToken:
+          type: string
+          title: request_token
+          description: The token to use to process the password reset request.
+        verificationCode:
+          type: string
+          title: verification_code
+          description: |-
+            The verification code to use to process the password reset request.
+             WARN: This field is only set if the user has not yet been verified.
+          nullable: true
+      title: RequestPasswordResetResponse
+      additionalProperties: false
+    identity.v1.ResetPasswordRequest:
+      type: object
+      properties:
+        requestToken:
+          type: string
+          title: request_token
+          description: The token to use to process the password reset request.
+        password:
+          type: string
+          title: password
+          description: The new password of the user.
+        verificationCode:
+          type: string
+          title: verification_code
+          description: The verification code sent to the user's email or phone number.
+      title: ResetPasswordRequest
+      additionalProperties: false
+    identity.v1.ResetPasswordResponse:
+      type: object
+      properties:
+        success:
+          type: string
+          title: success
+          description: Whether the password was successfully reset.
+      title: ResetPasswordResponse
+      additionalProperties: false
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+        - 1
+      description: Define the version of the Connect protocol
+      const: 1
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+            - not_found
+          enum:
+            - canceled
+            - unknown
+            - invalid_argument
+            - deadline_exceeded
+            - not_found
+            - already_exists
+            - permission_denied
+            - resource_exhausted
+            - failed_precondition
+            - aborted
+            - out_of_range
+            - unimplemented
+            - internal
+            - unavailable
+            - data_loss
+            - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        detail:
+          $ref: '#/components/schemas/google.protobuf.Any'
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+    google.protobuf.Any:
+      type: object
+      properties:
+        type:
+          type: string
+        value:
+          type: string
+          format: binary
+        debug:
+          type: object
+          additionalProperties: true
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+security: []
+tags:
+  - name: identity.v1.AuthService

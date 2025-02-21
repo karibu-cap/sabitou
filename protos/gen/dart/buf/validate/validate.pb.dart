@@ -4517,7 +4517,7 @@ class StringRules extends $pb.GeneratedMessage {
   $core.List<$core.String> get notIn => $_getList(10);
 
   ///  `email` specifies that the field value must be a valid email address
-  ///  (addr-spec only) as defined by [RFC 5322](https://tools.ietf.org/html/rfc5322#section-3.4.1).
+  ///  (addr-spec only) as defined by [RFC 5322](https://datatracker.ietf.org/doc/html/rfc5322#section-3.4.1).
   ///  If the field value isn't a valid email address, an error message will be generated.
   ///
   ///  ```proto
@@ -4536,7 +4536,7 @@ class StringRules extends $pb.GeneratedMessage {
   void clearEmail() => clearField(12);
 
   ///  `hostname` specifies that the field value must be a valid
-  ///  hostname as defined by [RFC 1034](https://tools.ietf.org/html/rfc1034#section-3.5). This constraint doesn't support
+  ///  hostname as defined by [RFC 1034](https://datatracker.ietf.org/doc/html/rfc1034#section-3.5). This constraint doesn't support
   ///  internationalized domain names (IDNs). If the field value isn't a
   ///  valid hostname, an error message will be generated.
   ///
@@ -4613,9 +4613,10 @@ class StringRules extends $pb.GeneratedMessage {
   @$pb.TagNumber(16)
   void clearIpv6() => clearField(16);
 
-  ///  `uri` specifies that the field value must be a valid,
-  ///  absolute URI as defined by [RFC 3986](https://tools.ietf.org/html/rfc3986#section-3). If the field value isn't a valid,
-  ///  absolute URI, an error message will be generated.
+  ///  `uri` specifies that the field value must be a valid URI as defined by
+  ///  [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986#section-3).
+  ///
+  ///  If the field value isn't a valid URI, an error message will be generated.
   ///
   ///  ```proto
   ///  message MyString {
@@ -4632,13 +4633,18 @@ class StringRules extends $pb.GeneratedMessage {
   @$pb.TagNumber(17)
   void clearUri() => clearField(17);
 
-  ///  `uri_ref` specifies that the field value must be a valid URI
-  ///  as defined by [RFC 3986](https://tools.ietf.org/html/rfc3986#section-3) and may be either relative or absolute. If the
-  ///  field value isn't a valid URI, an error message will be generated.
+  ///  `uri_ref` specifies that the field value must be a valid URI Reference as
+  ///  defined by [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986#section-4.1).
+  ///
+  ///  A URI Reference is either a [URI](https://datatracker.ietf.org/doc/html/rfc3986#section-3),
+  ///  or a [Relative Reference](https://datatracker.ietf.org/doc/html/rfc3986#section-4.2).
+  ///
+  ///  If the field value isn't a valid URI Reference, an error message will be
+  ///  generated.
   ///
   ///  ```proto
   ///  message MyString {
-  ///    // value must be a valid URI
+  ///    // value must be a valid URI Reference
   ///    string value = 1 [(buf.validate.field).string.uri_ref = true];
   ///  }
   ///  ```
@@ -4691,7 +4697,7 @@ class StringRules extends $pb.GeneratedMessage {
   void clearLenBytes() => clearField(20);
 
   ///  `address` specifies that the field value must be either a valid hostname
-  ///  as defined by [RFC 1034](https://tools.ietf.org/html/rfc1034#section-3.5)
+  ///  as defined by [RFC 1034](https://datatracker.ietf.org/doc/html/rfc1034#section-3.5)
   ///  (which doesn't support internationalized domain names or IDNs) or a valid
   ///  IP (v4 or v6). If the field value isn't a valid hostname or IP, an error
   ///  message will be generated.
@@ -4712,7 +4718,7 @@ class StringRules extends $pb.GeneratedMessage {
   void clearAddress() => clearField(21);
 
   ///  `uuid` specifies that the field value must be a valid UUID as defined by
-  ///  [RFC 4122](https://tools.ietf.org/html/rfc4122#section-4.1.2). If the
+  ///  [RFC 4122](https://datatracker.ietf.org/doc/html/rfc4122#section-4.1.2). If the
   ///  field value isn't a valid UUID, an error message will be generated.
   ///
   ///  ```proto
@@ -4767,8 +4773,8 @@ class StringRules extends $pb.GeneratedMessage {
   ///  | Name                          | Number | Description                               |
   ///  |-------------------------------|--------|-------------------------------------------|
   ///  | KNOWN_REGEX_UNSPECIFIED       | 0      |                                           |
-  ///  | KNOWN_REGEX_HTTP_HEADER_NAME  | 1      | HTTP header name as defined by [RFC 7230](https://tools.ietf.org/html/rfc7230#section-3.2)  |
-  ///  | KNOWN_REGEX_HTTP_HEADER_VALUE | 2      | HTTP header value as defined by [RFC 7230](https://tools.ietf.org/html/rfc7230#section-3.2.4) |
+  ///  | KNOWN_REGEX_HTTP_HEADER_NAME  | 1      | HTTP header name as defined by [RFC 7230](https://datatracker.ietf.org/doc/html/rfc7230#section-3.2)  |
+  ///  | KNOWN_REGEX_HTTP_HEADER_VALUE | 2      | HTTP header value as defined by [RFC 7230](https://datatracker.ietf.org/doc/html/rfc7230#section-3.2.4) |
   @$pb.TagNumber(24)
   KnownRegex get wellKnownRegex => $_getN(23);
   @$pb.TagNumber(24)
@@ -4780,7 +4786,7 @@ class StringRules extends $pb.GeneratedMessage {
 
   ///  This applies to regexes `HTTP_HEADER_NAME` and `HTTP_HEADER_VALUE` to
   ///  enable strict header validation. By default, this is true, and HTTP header
-  ///  validations are [RFC-compliant](https://tools.ietf.org/html/rfc7230#section-3). Setting to false will enable looser
+  ///  validations are [RFC-compliant](https://datatracker.ietf.org/doc/html/rfc7230#section-3). Setting to false will enable looser
   ///  validations that only disallow `\r\n\0` characters, which can be used to
   ///  bypass header matching rules.
   ///
@@ -4933,7 +4939,7 @@ class StringRules extends $pb.GeneratedMessage {
   void clearHostAndPort() => clearField(32);
 
   ///  `tuuid` (trimmed UUID) specifies that the field value must be a valid UUID as
-  ///  defined by [RFC 4122](https://tools.ietf.org/html/rfc4122#section-4.1.2) with all dashes
+  ///  defined by [RFC 4122](https://datatracker.ietf.org/doc/html/rfc4122#section-4.1.2) with all dashes
   ///  omitted. If the field value isn't a valid UUID without dashes, an error message
   ///  will be generated.
   ///
