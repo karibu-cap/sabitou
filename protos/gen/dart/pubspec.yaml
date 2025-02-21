@@ -1,0 +1,13 @@
+name: sabitou_rpc
+description: The sabitou dart rpc client.
+repository: https://github.com/karibu-cap/sabitou
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.3
+
+dependencies:
+  connectrpc: ^0.3.0
+
+dev_dependencies:

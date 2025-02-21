@@ -30,11 +30,12 @@ plugins:
   - local: ["go", "run", "github.com/sudorandom/protoc-gen-connect-openapi@main"]
     out: gen/openapi
 
-  # Generate Dart code for Protobufs
+  # Generate Dart client stubs for Connect framework.
   - remote: buf.build/connectrpc/dart
-    out: gen/dart
+    out: gen/dart/lib
+  # Generate Dart code for Protobufs
   - remote: buf.build/protocolbuffers/dart
-    out: gen/dart
+    out: gen/dart/lib
     include_wkt: true
     include_imports: true
 inputs:
