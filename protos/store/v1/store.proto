@@ -1,9 +1,6 @@
 syntax = "proto3";
 
-package karibu.sabitou.store;
-
-option go_package = "rpc/store";
-
+package store.v1;
 
 // Stores are used to store products.
 // Note: A store is not always a shop.
@@ -82,15 +79,15 @@ message DeleteStoreResponse {
 
 service StoreService {
   // Creates a new store.
-  rpc CreateStore(CreateStoreRequest) returns (CreateStoreResponse) {};
+  rpc CreateStore(CreateStoreRequest) returns (CreateStoreResponse) {}
 
   // Gets a store by id.
-  rpc GetStore(GetStoreRequest) returns (GetStoreResponse) {};
+  rpc GetStore(GetStoreRequest) returns (GetStoreResponse) {}
 
   // Updates a store.
   // Note:Only the fields that are set will be updated.
-  rpc UpdateStore(UpdateStoreRequest) returns (UpdateStoreResponse) {};
+  rpc UpdateStore(UpdateStoreRequest) returns (UpdateStoreResponse) {}
 
   // Deletes a store.
-  rpc DeleteStore(DeleteStoreRequest) returns (DeleteStoreResponse) {};
+  rpc DeleteStore(DeleteStoreRequest) returns (DeleteStoreResponse) {}
 }

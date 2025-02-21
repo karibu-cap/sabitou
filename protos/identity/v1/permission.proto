@@ -1,8 +1,6 @@
 syntax = "proto3";
 
-package karibu.sabitou.identity;
-
-option go_package = "rpc/identity";
+package identity.v1;
 
 enum PermissionActionType {
   PERMISSION_ACTION_TYPE_UNSPECIFIED = 0;
@@ -186,38 +184,29 @@ message CheckPermissionResponse {
 
 service PermissionService {
   // Creates a new permission group.
-  rpc CreatePermissionGroup(CreatePermissionGroupRequest)
-      returns (CreatePermissionGroupResponse) {};
+  rpc CreatePermissionGroup(CreatePermissionGroupRequest) returns (CreatePermissionGroupResponse) {}
 
   // Gets a permission group by id.
-  rpc GetPermissionGroup(GetPermissionGroupRequest)
-      returns (GetPermissionGroupResponse) {};
+  rpc GetPermissionGroup(GetPermissionGroupRequest) returns (GetPermissionGroupResponse) {}
 
   // Updates a permission group.
-  rpc UpdatePermissionGroup(UpdatePermissionGroupRequest)
-      returns (UpdatePermissionGroupResponse) {};
+  rpc UpdatePermissionGroup(UpdatePermissionGroupRequest) returns (UpdatePermissionGroupResponse) {}
 
   // Deletes a permission group.
-  rpc DeletePermissionGroup(DeletePermissionGroupRequest)
-      returns (DeletePermissionGroupResponse) {};
+  rpc DeletePermissionGroup(DeletePermissionGroupRequest) returns (DeletePermissionGroupResponse) {}
 
   // Gets the permissions of the user.
-  rpc GetUserPermissions(GetUserPermissionsRequest)
-      returns (GetUserPermissionsResponse) {};
+  rpc GetUserPermissions(GetUserPermissionsRequest) returns (GetUserPermissionsResponse) {}
 
   // Removes a permission from the user.
-  rpc RemoveUserPermission(RemoveUserPermissionRequest)
-      returns (RemoveUserPermissionResponse) {};
+  rpc RemoveUserPermission(RemoveUserPermissionRequest) returns (RemoveUserPermissionResponse) {}
 
   // Adds a permission to the user.
-  rpc AddUserPermission(AddUserPermissionRequest)
-      returns (AddUserPermissionResponse) {};
+  rpc AddUserPermission(AddUserPermissionRequest) returns (AddUserPermissionResponse) {}
 
   // Gets the permission groups of the business.
-  rpc GetBusinessPermissionGroups(GetBusinessPermissionGroupsRequest)
-      returns (GetBusinessPermissionGroupsResponse) {};
+  rpc GetBusinessPermissionGroups(GetBusinessPermissionGroupsRequest) returns (GetBusinessPermissionGroupsResponse) {}
 
   // Checks if the user has the provided permission for the provided resource.
-  rpc CheckPermission(CheckPermissionRequest)
-      returns (CheckPermissionResponse) {};
+  rpc CheckPermission(CheckPermissionRequest) returns (CheckPermissionResponse) {}
 }

@@ -1,11 +1,9 @@
 syntax = "proto3";
 
-package karibu.sabitou.identity;
-
-option go_package = "rpc/identity";
+package identity.v1;
 
 message LoginRequest {
-  // The unique identifier of the user. 
+  // The unique identifier of the user.
   // For example, the email address or phone number or @username.
   string u_ref = 1;
 
@@ -78,9 +76,8 @@ service AuthService {
   rpc Register(RegisterRequest) returns (RegisterResponse) {}
 
   // Request the password reset of the user.
-  rpc RequestPasswordReset(RequestPasswordResetRequest)
-      returns (RequestPasswordResetResponse) {}
-  
+  rpc RequestPasswordReset(RequestPasswordResetRequest) returns (RequestPasswordResetResponse) {}
+
   // Process the password reset request.
   rpc ResetPassword(ResetPasswordRequest) returns (ResetPasswordResponse) {}
 }

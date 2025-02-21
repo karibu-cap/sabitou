@@ -1,8 +1,6 @@
 syntax = "proto3";
 
-package karibu.sabitou.business;
-
-option go_package = "rpc/business";
+package business.v1;
 
 enum BusinessStatusType {
   BUSINESS_STATUS_TYPE_UNSPECIFIED = 0;
@@ -151,24 +149,20 @@ service BusinessService {
   rpc UpdateBusiness(UpdateBusinessRequest) returns (UpdateBusinessResponse);
 
   // Request the deletion of the business.
-  rpc RequestDeleteBusiness(RequestDeleteBusinessRequest)
-      returns (RequestDeleteBusinessResponse);
+  rpc RequestDeleteBusiness(RequestDeleteBusinessRequest) returns (RequestDeleteBusinessResponse);
 
   // Processes the deletion of the business requested by the owner.
   rpc DeleteBusiness(DeleteBusinessRequest) returns (DeleteBusinessResponse);
 
   // Add user to business or invite user to business.
-  rpc AddUserToBusiness(AddUserToBusinessRequest)
-      returns (AddUserToBusinessResponse);
+  rpc AddUserToBusiness(AddUserToBusinessRequest) returns (AddUserToBusinessResponse);
 
   // Remove user from business.
   // If the user has been created by the business, the user will be deleted.
   // NOTE: The authenticated user need to have the permission to remove the
   // user.
-  rpc RemoveUserFromBusiness(RemoveUserFromBusinessRequest)
-      returns (RemoveUserFromBusinessResponse);
+  rpc RemoveUserFromBusiness(RemoveUserFromBusinessRequest) returns (RemoveUserFromBusinessResponse);
 
   // Get the users of the business.
-  rpc GetBusinessUsers(GetBusinessUsersRequest)
-      returns (GetBusinessUsersResponse);
+  rpc GetBusinessUsers(GetBusinessUsersRequest) returns (GetBusinessUsersResponse);
 }

@@ -1,8 +1,6 @@
 syntax = "proto3";
 
-package karibu.sabitou.order;
-
-option go_package = "rpc/order";
+package order.v1;
 
 enum Status {
   STATUS_UNSPECIFIED = 0;
@@ -100,11 +98,11 @@ message DeleteOrderResponse {
 
 service OrderService {
   // Creates a new order.
-  rpc CreateOrder(CreateOrderRequest) returns (CreateOrderResponse) {};
+  rpc CreateOrder(CreateOrderRequest) returns (CreateOrderResponse) {}
 
   // Gets an order by id.
-  rpc GetOrder(GetOrderRequest) returns (GetOrderResponse) {};
+  rpc GetOrder(GetOrderRequest) returns (GetOrderResponse) {}
 
   // Deletes an order.
-  rpc DeleteOrder(DeleteOrderRequest) returns (DeleteOrderResponse) {};
+  rpc DeleteOrder(DeleteOrderRequest) returns (DeleteOrderResponse) {}
 }

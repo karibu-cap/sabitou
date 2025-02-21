@@ -1,8 +1,6 @@
 syntax = "proto3";
 
-package karibu.sabitou.inventory;
-
-option go_package = "rpc/inventory";
+package inventory.v1;
 
 message ProductCategory {
   // The unique identifier of the product category.
@@ -140,8 +138,7 @@ message DeleteProductResponse {
 
 service ProductService {
   // Finds products by name.
-  rpc FindProducts(FindGlobalProductsRequest)
-      returns (FindGlobalProductsResponse);
+  rpc FindGlobalProducts(FindGlobalProductsRequest) returns (FindGlobalProductsResponse);
 
   // Finds categories by name.
   rpc FindCategory(FindCategoryRequest) returns (FindCategoryResponse);

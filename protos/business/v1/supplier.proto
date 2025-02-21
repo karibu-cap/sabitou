@@ -1,8 +1,6 @@
 syntax = "proto3";
 
-package karibu.sabitou.business;
-
-option go_package = "rpc/business";
+package business.v1;
 
 message Link {
   // The label of the link.
@@ -105,8 +103,7 @@ service SupplierService {
   rpc GetSupplier(GetSupplierRequest) returns (GetSupplierResponse);
 
   // Gets all suppliers of a business.
-  rpc GetBusinessSuppliers(GetBusinessSuppliersRequest)
-      returns (GetBusinessSuppliersResponse);
+  rpc GetBusinessSuppliers(GetBusinessSuppliersRequest) returns (GetBusinessSuppliersResponse);
 
   // Updates a supplier.
   // Note:Only the fields that are set will be updated.

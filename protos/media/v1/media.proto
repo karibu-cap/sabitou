@@ -1,9 +1,6 @@
 syntax = "proto3";
 
-package karibu.sabitou.media;
-
-option go_package = "rpc/media";
-
+package media.v1;
 
 enum MediaType {
   MEDIA_TYPE_UNSPECIFIED = 0;

@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package karibu.sabitou.identity;
+package identity.v1;
 
-option go_package = "rpc/identity";
+import "buf/validate/validate.proto";
 
 enum AccountStatusType {
   ACCOUNT_STATUS_TYPE_UNSPECIFIED = 0;
@@ -52,7 +52,10 @@ message User {
   ConnectedAccount connected_accounts = 3;
 
   // The email address of the user.
-  optional string email = 4;
+  optional string email = 4 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string.email = true
+  ];
 
   // The phone number of the user.
   optional string phone_number = 5;
@@ -86,7 +89,7 @@ message GetUserResponse {
   User user = 1;
 }
 
-message UpdateUserRequest {
+message UpdateMeRequest {
   // The user information to update.
   // Note:Only the fields that are set will be updated.
   // WARNING:
@@ -95,7 +98,7 @@ message UpdateUserRequest {
   User user = 1;
 }
 
-message UpdateUserResponse {
+message UpdateMeResponse {
   // The updated user data.
   User user = 1;
 }
@@ -140,25 +143,29 @@ message ChangePasswordResponse {
   bool success = 1;
 }
 
-message Empty {
+message GetMeRequest {
   // Empty message.
+}
+
+message GetMeResponse {
+  // The user information for the currently authenticated user.
+  User me = 1;
 }
 
 service UserService {
   // Get the user information for the currently authenticated user.
-  rpc GetMe(Empty) returns (User) {}
+  rpc GetMe(GetMeRequest) returns (GetMeResponse) {}
 
   // Get the public information for the given user id.
   rpc GetUser(GetUserRequest) returns (GetUserResponse) {}
 
   // Update the user information for the currently authenticated user.
-  rpc UpdateMe(UpdateUserRequest) returns (UpdateUserResponse) {}
+  rpc UpdateMe(UpdateMeRequest) returns (UpdateMeResponse) {}
 
   // Request the deletion of the user account.
   // This will send a verification code to the user's email address
   // or phone number.
-  rpc RequestDeleteUser(RequestDeleteUserRequest)
-      returns (RequestDeleteUserResponse) {}
+  rpc RequestDeleteUser(RequestDeleteUserRequest) returns (RequestDeleteUserResponse) {}
 
   // Processes the deletion of the user account requested by the user.
   rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse) {}

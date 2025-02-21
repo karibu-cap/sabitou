@@ -1,8 +1,6 @@
 syntax = "proto3";
 
-package karibu.sabitou.order;
-
-option go_package = "rpc/order";
+package order.v1;
 
 message OrderReceiptItem {
   string product_uid = 1;

@@ -1,0 +1,24 @@
+version: v2
+managed:
+  enabled: true
+  override:
+    - file_option: go_package_prefix
+      value: github.com/bufbuild/buf-tour/gen
+
+plugins:
+  # Generate Go code for Protobufs
+  - remote: buf.build/protocolbuffers/go
+    out: ../server/rpc
+    opt: paths=source_relative
+  # Generates Go code to validate Protobuf messages using protoc-gen-validate constraints.
+  - remote: buf.build/bufbuild/validate-go:v1.2.1
+    out: ../server/rpc
+    opt:
+      - paths=source_relative
+  # Generate Go client and server stubs for Twirp framework.
+  - local: protoc-gen-twirp
+    out: ../server/rpc
+    opt:
+      - paths=source_relative
+inputs:
+  - directory: .
