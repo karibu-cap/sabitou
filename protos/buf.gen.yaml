@@ -1,9 +1,14 @@
 version: v2
 managed:
   enabled: true
-  override:
+  disable:
+    # Disable prefixing GO package import for protovalidate package.
     - file_option: go_package_prefix
-      value: github.com/bufbuild/buf-tour/gen
+      module: buf.build/bufbuild/protovalidate
+  override:
+    # Prefix all GO packages imported from the proto files with the specified value.
+    - file_option: go_package_prefix
+      value: github.com/karibu-cap/sabitou-backends/rpc
 
 plugins:
   # Generate Go code for Protobufs
