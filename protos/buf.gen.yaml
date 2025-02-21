@@ -15,7 +15,8 @@ plugins:
     out: ../server/rpc
     opt:
       - paths=source_relative
-  # Generate Go client and server stubs for Twirp framework.
+  # Generate Go client and server stubs for Twirp framework. 
+  # WARN: you must install protoc-gen-twirp locally using `go install github.com/twitchtv/twirp/protoc-gen-twirp@latest`
   - local: protoc-gen-twirp
     out: ../server/rpc
     opt:
