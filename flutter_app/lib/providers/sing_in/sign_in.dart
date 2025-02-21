@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sabitou_dart/proto/user/v1/user.pbgrpc.dart';
+import 'package:sabitou_rpc/proto/user/v1/user.pbgrpc.dart';
 
 import '../../routes/app_routes.dart';
 import '../../routes/pages_routes.dart';

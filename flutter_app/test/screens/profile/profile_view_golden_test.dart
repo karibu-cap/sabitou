@@ -5,7 +5,7 @@ import 'package:sabitou_clients/screens/profile/profile_view.dart';
 import 'package:sabitou_clients/services/storage/app_storate.dart';
 import 'package:sabitou_clients/utils/user_preference.dart';
 
-import '../../goldens.dart';
+import '../../../test/goldens.dart';
 
 void main() {
   group('Goldens', () {

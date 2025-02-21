@@ -55,7 +55,7 @@ dependencies:
   # The grpc package.
   grpc: ^4.0.1
 
-  sabitou_dart:
+  sabitou_rpc:
     path: ../protos/gen/dart
 
 dev_dependencies:

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sabitou_dart/proto/user/v1/user.pb.dart';
+import 'package:sabitou_rpc/identity/v1/user.pb.dart';
 
-import '../../routes/pages_routes.dart';
-import '../../services/internationalization/internationalization.dart';
-import '../../themes/app_colors.dart';
-import '../../utils/app_layout.dart';
-import '../../utils/user_preference.dart';
-import '../../widgets/base_page.dart';
-import '../../widgets/components/sb_container.dart';
+import '../../../routes/pages_routes.dart';
+import '../../../services/internationalization/internationalization.dart';
+import '../../../themes/app_colors.dart';
+import '../../../utils/app_layout.dart';
+import '../../../utils/user_preference.dart';
+import '../../../widgets/base_page.dart';
+import '../../../widgets/components/sb_container.dart';
 
 /// User profile screen.
 class ProfileView extends StatelessWidget {

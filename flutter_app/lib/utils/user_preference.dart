@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:sabitou_dart/models.dart';
+import 'package:sabitou_rpc/models.dart';
 
 import '../services/storage/app_storate.dart';
 
