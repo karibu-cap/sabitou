@@ -1,0 +1,520 @@
+openapi: 3.1.0
+info:
+  title: inventory.v1
+paths:
+  /inventory.v1.ProductService/FindGlobalProducts:
+    post:
+      tags:
+        - inventory.v1.ProductService
+      summary: FindGlobalProducts
+      description: Finds products by name.
+      operationId: inventory.v1.ProductService.FindGlobalProducts
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inventory.v1.FindGlobalProductsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inventory.v1.FindGlobalProductsResponse'
+  /inventory.v1.ProductService/FindCategory:
+    post:
+      tags:
+        - inventory.v1.ProductService
+      summary: FindCategory
+      description: Finds categories by name.
+      operationId: inventory.v1.ProductService.FindCategory
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inventory.v1.FindCategoryRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inventory.v1.FindCategoryResponse'
+  /inventory.v1.ProductService/AddProduct:
+    post:
+      tags:
+        - inventory.v1.ProductService
+      summary: AddProduct
+      description: Adds a product to a business.
+      operationId: inventory.v1.ProductService.AddProduct
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inventory.v1.AddProductRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inventory.v1.AddProductResponse'
+  /inventory.v1.ProductService/GetProduct:
+    post:
+      tags:
+        - inventory.v1.ProductService
+      summary: GetProduct
+      description: Gets a business product by id.
+      operationId: inventory.v1.ProductService.GetProduct
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inventory.v1.GetProductRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inventory.v1.GetProductResponse'
+  /inventory.v1.ProductService/UpdateProduct:
+    post:
+      tags:
+        - inventory.v1.ProductService
+      summary: UpdateProduct
+      description: Updates a business product.
+      operationId: inventory.v1.ProductService.UpdateProduct
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inventory.v1.UpdateProductRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inventory.v1.UpdateProductResponse'
+  /inventory.v1.ProductService/DeleteProduct:
+    post:
+      tags:
+        - inventory.v1.ProductService
+      summary: DeleteProduct
+      description: |-
+        Deletes a business product.
+         Only business products that are not in any store and orders can be
+         deleted.
+      operationId: inventory.v1.ProductService.DeleteProduct
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inventory.v1.DeleteProductRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inventory.v1.DeleteProductResponse'
+components:
+  schemas:
+    inventory.v1.AddProductRequest:
+      type: object
+      properties:
+        globalProduct:
+          title: global_product
+          description: |-
+            The product to add.
+             If the product does not exist, it will be created.
+          $ref: '#/components/schemas/inventory.v1.GlobalProduct'
+        businessId:
+          type: string
+          title: business_id
+          description: The unique identifier of the business.
+        priceInCents:
+          type: integer
+          title: price_in_cents
+          format: int32
+          description: |-
+            The price in cents of the product.
+             The currency is determined by the business.
+        imagesRawImages:
+          type: array
+          items:
+            type: string
+            format: byte
+          title: images_raw_images
+          description: The media uids of the images of the product.
+      title: AddProductRequest
+      additionalProperties: false
+    inventory.v1.AddProductResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the product was successfully added.
+      title: AddProductResponse
+      additionalProperties: false
+    inventory.v1.DeleteProductRequest:
+      type: object
+      properties:
+        uid:
+          type: string
+          title: uid
+          description: The unique identifier of the business product.
+      title: DeleteProductRequest
+      additionalProperties: false
+    inventory.v1.DeleteProductResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the business product was successfully deleted.
+      title: DeleteProductResponse
+      additionalProperties: false
+    inventory.v1.FindCategoryRequest:
+      type: object
+      properties:
+        query:
+          type: string
+          title: query
+          description: The query to search for product categories.
+      title: FindCategoryRequest
+      additionalProperties: false
+    inventory.v1.FindCategoryResponse:
+      type: object
+      properties:
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/inventory.v1.ProductCategory'
+          title: categories
+          description: |-
+            The unique identifiers of the product categories.
+             WARN: all returned product categories will only have their uid and name.
+      title: FindCategoryResponse
+      additionalProperties: false
+    inventory.v1.FindGlobalProductsRequest:
+      type: object
+      properties:
+        query:
+          type: string
+          title: query
+          description: The query to search for products.
+      title: FindGlobalProductsRequest
+      additionalProperties: false
+    inventory.v1.FindGlobalProductsResponse:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/inventory.v1.GlobalProduct'
+          title: products
+          description: |-
+            The unique identifiers of the products.
+             WARN: all returned products will only have their uid and name.
+      title: FindGlobalProductsResponse
+      additionalProperties: false
+    inventory.v1.GetProductRequest:
+      type: object
+      properties:
+        uid:
+          type: string
+          title: uid
+          description: The unique identifier of the business product.
+      title: GetProductRequest
+      additionalProperties: false
+    inventory.v1.GetProductResponse:
+      type: object
+      properties:
+        product:
+          title: product
+          description: The retrieved business product data.
+          $ref: '#/components/schemas/inventory.v1.Product'
+      title: GetProductResponse
+      additionalProperties: false
+    inventory.v1.GlobalProduct:
+      type: object
+      properties:
+        uid:
+          type: string
+          title: uid
+          description: The unique identifier of the product.
+        name:
+          type: string
+          title: name
+          description: The name of the product.
+        description:
+          type: string
+          title: description
+          description: The description of the product.
+          nullable: true
+        barCodeValue:
+          type: string
+          title: bar_code_value
+          description: The bar code value of the product.
+          nullable: true
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/inventory.v1.ProductCategory'
+          title: categories
+          description: The product categories of the product.
+        createdAt:
+          type: string
+          title: created_at
+          description: The date and time the product was created.
+      title: GlobalProduct
+      additionalProperties: false
+    inventory.v1.Product:
+      type: object
+      properties:
+        uid:
+          type: string
+          title: uid
+          description: The unique identifier of the business product.
+        businessId:
+          type: string
+          title: business_id
+          description: The unique identifier of the business.
+        globalProductId:
+          type: string
+          title: global_product_id
+          description: The unique identifier of the global product.
+        priceInCents:
+          type: integer
+          title: price_in_cents
+          format: int32
+          description: |-
+            The price in cents of the product.
+             The currency is determined by the business.
+        imagesMediaUids:
+          type: array
+          items:
+            type: string
+          title: images_media_uids
+          description: The media uids of the images of the product.
+        isDeleted:
+          type: boolean
+          title: is_deleted
+          description: Whether the product is deleted.
+        createdAt:
+          type: string
+          title: created_at
+          description: The date and time the product was created.
+        updatedAt:
+          type: string
+          title: updated_at
+          description: The date and time the product was updated.
+      title: Product
+      additionalProperties: false
+    inventory.v1.ProductCategory:
+      type: object
+      properties:
+        uid:
+          type: string
+          title: uid
+          description: The unique identifier of the product category.
+        name:
+          type: string
+          title: name
+          description: The name of the product category.
+      title: ProductCategory
+      additionalProperties: false
+    inventory.v1.UpdateProductRequest:
+      type: object
+      properties:
+        product:
+          title: product
+          description: |-
+            The business product information to update.
+             Note:Only the fields that are set will be updated.
+             Some fields cannot be updated like the product id, business id, and all
+             product fields.
+          $ref: '#/components/schemas/inventory.v1.Product'
+        imagesRawImages:
+          type: array
+          items:
+            type: string
+            format: byte
+          title: images_raw_images
+          description: The media uids of the images of the product.
+      title: UpdateProductRequest
+      additionalProperties: false
+    inventory.v1.UpdateProductResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the business product was successfully updated.
+      title: UpdateProductResponse
+      additionalProperties: false
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+        - 1
+      description: Define the version of the Connect protocol
+      const: 1
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+            - not_found
+          enum:
+            - canceled
+            - unknown
+            - invalid_argument
+            - deadline_exceeded
+            - not_found
+            - already_exists
+            - permission_denied
+            - resource_exhausted
+            - failed_precondition
+            - aborted
+            - out_of_range
+            - unimplemented
+            - internal
+            - unavailable
+            - data_loss
+            - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        detail:
+          $ref: '#/components/schemas/google.protobuf.Any'
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+    google.protobuf.Any:
+      type: object
+      properties:
+        type:
+          type: string
+        value:
+          type: string
+          format: binary
+        debug:
+          type: object
+          additionalProperties: true
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+security: []
+tags:
+  - name: inventory.v1.ProductService

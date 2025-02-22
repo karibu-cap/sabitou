@@ -1,0 +1,689 @@
+openapi: 3.1.0
+info:
+  title: identity.v1
+paths:
+  /identity.v1.PermissionService/CreatePermissionGroup:
+    post:
+      tags:
+        - identity.v1.PermissionService
+      summary: CreatePermissionGroup
+      description: Creates a new permission group.
+      operationId: identity.v1.PermissionService.CreatePermissionGroup
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/identity.v1.CreatePermissionGroupRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identity.v1.CreatePermissionGroupResponse'
+  /identity.v1.PermissionService/GetPermissionGroup:
+    post:
+      tags:
+        - identity.v1.PermissionService
+      summary: GetPermissionGroup
+      description: Gets a permission group by id.
+      operationId: identity.v1.PermissionService.GetPermissionGroup
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/identity.v1.GetPermissionGroupRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identity.v1.GetPermissionGroupResponse'
+  /identity.v1.PermissionService/UpdatePermissionGroup:
+    post:
+      tags:
+        - identity.v1.PermissionService
+      summary: UpdatePermissionGroup
+      description: Updates a permission group.
+      operationId: identity.v1.PermissionService.UpdatePermissionGroup
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/identity.v1.UpdatePermissionGroupRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identity.v1.UpdatePermissionGroupResponse'
+  /identity.v1.PermissionService/DeletePermissionGroup:
+    post:
+      tags:
+        - identity.v1.PermissionService
+      summary: DeletePermissionGroup
+      description: Deletes a permission group.
+      operationId: identity.v1.PermissionService.DeletePermissionGroup
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/identity.v1.DeletePermissionGroupRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identity.v1.DeletePermissionGroupResponse'
+  /identity.v1.PermissionService/GetUserPermissions:
+    post:
+      tags:
+        - identity.v1.PermissionService
+      summary: GetUserPermissions
+      description: Gets the permissions of the user.
+      operationId: identity.v1.PermissionService.GetUserPermissions
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/identity.v1.GetUserPermissionsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identity.v1.GetUserPermissionsResponse'
+  /identity.v1.PermissionService/RemoveUserPermission:
+    post:
+      tags:
+        - identity.v1.PermissionService
+      summary: RemoveUserPermission
+      description: Removes a permission from the user.
+      operationId: identity.v1.PermissionService.RemoveUserPermission
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/identity.v1.RemoveUserPermissionRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identity.v1.RemoveUserPermissionResponse'
+  /identity.v1.PermissionService/AddUserPermission:
+    post:
+      tags:
+        - identity.v1.PermissionService
+      summary: AddUserPermission
+      description: Adds a permission to the user.
+      operationId: identity.v1.PermissionService.AddUserPermission
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/identity.v1.AddUserPermissionRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identity.v1.AddUserPermissionResponse'
+  /identity.v1.PermissionService/GetBusinessPermissionGroups:
+    post:
+      tags:
+        - identity.v1.PermissionService
+      summary: GetBusinessPermissionGroups
+      description: Gets the permission groups of the business.
+      operationId: identity.v1.PermissionService.GetBusinessPermissionGroups
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/identity.v1.GetBusinessPermissionGroupsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identity.v1.GetBusinessPermissionGroupsResponse'
+  /identity.v1.PermissionService/CheckPermission:
+    post:
+      tags:
+        - identity.v1.PermissionService
+      summary: CheckPermission
+      description: Checks if the user has the provided permission for the provided resource.
+      operationId: identity.v1.PermissionService.CheckPermission
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/identity.v1.CheckPermissionRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identity.v1.CheckPermissionResponse'
+components:
+  schemas:
+    identity.v1.PermissionActionType:
+      type: string
+      title: PermissionActionType
+      enum:
+        - PERMISSION_ACTION_TYPE_UNSPECIFIED
+        - PERMISSION_ACTION_TYPE_READ
+        - PERMISSION_ACTION_TYPE_ADD
+        - PERMISSION_ACTION_TYPE_UPDATE
+        - PERMISSION_ACTION_TYPE_REMOVE
+    identity.v1.PermissionEntityType:
+      type: string
+      title: PermissionEntityType
+      enum:
+        - PERMISSION_ENTITY_TYPE_UNSPECIFIED
+        - PERMISSION_ENTITY_TYPE_BUSINESS
+        - PERMISSION_ENTITY_TYPE_STORE
+        - PERMISSION_ENTITY_TYPE_USER
+        - PERMISSION_ENTITY_TYPE_ARTICLE
+        - PERMISSION_ENTITY_TYPE_INVOICE
+        - PERMISSION_ENTITY_TYPE_PAYMENT
+        - PERMISSION_ENTITY_TYPE_ORDER
+        - PERMISSION_ENTITY_TYPE_PERMISSION_GROUP
+    identity.v1.PermissionResourceType:
+      type: string
+      title: PermissionResourceType
+      enum:
+        - PERMISSION_RESOURCE_TYPE_UNSPECIFIED
+        - PERMISSION_RESOURCE_TYPE_BUSINESS
+        - PERMISSION_RESOURCE_TYPE_STORE
+    identity.v1.AddUserPermissionRequest:
+      type: object
+      properties:
+        userUid:
+          type: string
+          title: user_uid
+          description: The unique identifier of the user.
+        permissionGroupUid:
+          type: string
+          title: permission_group_uid
+          description: The unique identifier of the permission group.
+        resourceUid:
+          type: string
+          title: resource_uid
+          description: The unique identifier of the resource.
+      title: AddUserPermissionRequest
+      additionalProperties: false
+    identity.v1.AddUserPermissionResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the user was successfully added to the permission group.
+      title: AddUserPermissionResponse
+      additionalProperties: false
+    identity.v1.CheckPermissionRequest:
+      type: object
+      properties:
+        userUid:
+          type: string
+          title: user_uid
+          description: The unique identifier of the user.
+        resourceUid:
+          type: string
+          title: resource_uid
+          description: The unique identifier of the resource.
+        permission:
+          title: permission
+          description: The permission to check.
+          $ref: '#/components/schemas/identity.v1.Permission'
+      title: CheckPermissionRequest
+      additionalProperties: false
+    identity.v1.CheckPermissionResponse:
+      type: object
+      properties:
+        hasPermission:
+          type: boolean
+          title: has_permission
+          description: Whether the user has the permission.
+      title: CheckPermissionResponse
+      additionalProperties: false
+    identity.v1.CreatePermissionGroupRequest:
+      type: object
+      properties:
+        permissionGroup:
+          title: permission_group
+          description: |-
+            The permission group information to create.
+             Note:Only the fields that are set will be created.
+          $ref: '#/components/schemas/identity.v1.PermissionGroup'
+      title: CreatePermissionGroupRequest
+      additionalProperties: false
+    identity.v1.CreatePermissionGroupResponse:
+      type: object
+      properties:
+        uid:
+          type: string
+          title: uid
+          description: The unique identifier of the created permission group.
+      title: CreatePermissionGroupResponse
+      additionalProperties: false
+    identity.v1.DeletePermissionGroupRequest:
+      type: object
+      properties:
+        uid:
+          type: string
+          title: uid
+          description: The unique identifier of the permission group to delete.
+        businessUid:
+          type: string
+          title: business_uid
+          description: The unique identifier of the business.
+      title: DeletePermissionGroupRequest
+      additionalProperties: false
+    identity.v1.DeletePermissionGroupResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the permission group was successfully deleted.
+      title: DeletePermissionGroupResponse
+      additionalProperties: false
+    identity.v1.GetBusinessPermissionGroupsRequest:
+      type: object
+      properties:
+        businessUid:
+          type: string
+          title: business_uid
+          description: The unique identifier of the business to retrieve.
+      title: GetBusinessPermissionGroupsRequest
+      additionalProperties: false
+    identity.v1.GetBusinessPermissionGroupsResponse:
+      type: object
+      properties:
+        permissionGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/identity.v1.PermissionGroup'
+          title: permission_groups
+          description: The permission groups that the business has.
+      title: GetBusinessPermissionGroupsResponse
+      additionalProperties: false
+    identity.v1.GetPermissionGroupRequest:
+      type: object
+      properties:
+        uid:
+          type: string
+          title: uid
+          description: The unique identifier of the permission group to retrieve.
+      title: GetPermissionGroupRequest
+      additionalProperties: false
+    identity.v1.GetPermissionGroupResponse:
+      type: object
+      properties:
+        permissionGroup:
+          title: permission_group
+          description: The retrieved permission group data.
+          $ref: '#/components/schemas/identity.v1.PermissionGroup'
+      title: GetPermissionGroupResponse
+      additionalProperties: false
+    identity.v1.GetUserPermissionsRequest:
+      type: object
+      properties:
+        userUid:
+          type: string
+          title: user_uid
+          description: The unique identifier of the user to retrieve.
+      title: GetUserPermissionsRequest
+      additionalProperties: false
+    identity.v1.GetUserPermissionsResponse:
+      type: object
+      properties:
+        userPermissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/identity.v1.UserPermission'
+          title: user_permissions
+          description: The permissions that the user has.
+      title: GetUserPermissionsResponse
+      additionalProperties: false
+    identity.v1.Permission:
+      type: object
+      properties:
+        action:
+          title: action
+          description: The action that the user can perform on the resource.
+          $ref: '#/components/schemas/identity.v1.PermissionActionType'
+        entity:
+          title: entity
+          description: The entity on which the action is performed.
+          $ref: '#/components/schemas/identity.v1.PermissionEntityType'
+        resourceType:
+          title: resource_type
+          description: The type of resource that the user can perform the action on.
+          $ref: '#/components/schemas/identity.v1.PermissionResourceType'
+      title: Permission
+      additionalProperties: false
+    identity.v1.PermissionGroup:
+      type: object
+      properties:
+        uid:
+          type: string
+          title: uid
+          description: The unique identifier of the permission group.
+        name:
+          type: string
+          title: name
+          description: The name of the permission group. Generally the role of the group.
+        description:
+          type: string
+          title: description
+          description: The description of the permission group.
+          nullable: true
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/identity.v1.Permission'
+          title: permissions
+          description: The permissions that the permission group has.
+        businessUid:
+          type: string
+          title: business_uid
+          description: |-
+            The unique identifier of the business.
+             must be set if the permission group is for a business.
+          nullable: true
+      title: PermissionGroup
+      additionalProperties: false
+    identity.v1.RemoveUserPermissionRequest:
+      type: object
+      properties:
+        userUid:
+          type: string
+          title: user_uid
+          description: The unique identifier of the user.
+        permissionGroupUid:
+          type: string
+          title: permission_group_uid
+          description: The unique identifier of the permission group.
+        resourceUid:
+          type: string
+          title: resource_uid
+          description: The unique identifier of the resource.
+      title: RemoveUserPermissionRequest
+      additionalProperties: false
+    identity.v1.RemoveUserPermissionResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the user was successfully removed from the permission group.
+      title: RemoveUserPermissionResponse
+      additionalProperties: false
+    identity.v1.UpdatePermissionGroupRequest:
+      type: object
+      properties:
+        permissionGroup:
+          title: permission_group
+          description: |-
+            The permission group information to update.
+             Note:Only the fields that are set will be updated.
+          $ref: '#/components/schemas/identity.v1.PermissionGroup'
+      title: UpdatePermissionGroupRequest
+      additionalProperties: false
+    identity.v1.UpdatePermissionGroupResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the permission group was successfully updated.
+      title: UpdatePermissionGroupResponse
+      additionalProperties: false
+    identity.v1.UserPermission:
+      type: object
+      properties:
+        userUid:
+          type: string
+          title: user_uid
+          description: The unique identifier of the user.
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/identity.v1.Permission'
+          title: permissions
+          description: The permissions that the user has.
+        permissionGroupUid:
+          type: string
+          title: permission_group_uid
+          description: The unique identifier of the permission group.
+          nullable: true
+        resourceUid:
+          type: string
+          title: resource_uid
+          description: The unique identifier of the resource.
+      title: UserPermission
+      additionalProperties: false
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+        - 1
+      description: Define the version of the Connect protocol
+      const: 1
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+            - not_found
+          enum:
+            - canceled
+            - unknown
+            - invalid_argument
+            - deadline_exceeded
+            - not_found
+            - already_exists
+            - permission_denied
+            - resource_exhausted
+            - failed_precondition
+            - aborted
+            - out_of_range
+            - unimplemented
+            - internal
+            - unavailable
+            - data_loss
+            - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        detail:
+          $ref: '#/components/schemas/google.protobuf.Any'
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+    google.protobuf.Any:
+      type: object
+      properties:
+        type:
+          type: string
+        value:
+          type: string
+          format: binary
+        debug:
+          type: object
+          additionalProperties: true
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+security: []
+tags:
+  - name: identity.v1.PermissionService

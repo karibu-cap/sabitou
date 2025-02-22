@@ -1,0 +1,341 @@
+openapi: 3.1.0
+info:
+  title: store.v1
+paths:
+  /store.v1.StoreService/CreateStore:
+    post:
+      tags:
+        - store.v1.StoreService
+      summary: CreateStore
+      description: Creates a new store.
+      operationId: store.v1.StoreService.CreateStore
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/store.v1.CreateStoreRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/store.v1.CreateStoreResponse'
+  /store.v1.StoreService/GetStore:
+    post:
+      tags:
+        - store.v1.StoreService
+      summary: GetStore
+      description: Gets a store by id.
+      operationId: store.v1.StoreService.GetStore
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/store.v1.GetStoreRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/store.v1.GetStoreResponse'
+  /store.v1.StoreService/UpdateStore:
+    post:
+      tags:
+        - store.v1.StoreService
+      summary: UpdateStore
+      description: |-
+        Updates a store.
+         Note:Only the fields that are set will be updated.
+      operationId: store.v1.StoreService.UpdateStore
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/store.v1.UpdateStoreRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/store.v1.UpdateStoreResponse'
+  /store.v1.StoreService/DeleteStore:
+    post:
+      tags:
+        - store.v1.StoreService
+      summary: DeleteStore
+      description: Deletes a store.
+      operationId: store.v1.StoreService.DeleteStore
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/store.v1.DeleteStoreRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/store.v1.DeleteStoreResponse'
+components:
+  schemas:
+    store.v1.CreateStoreRequest:
+      type: object
+      properties:
+        store:
+          title: store
+          description: The store information to create.
+          $ref: '#/components/schemas/store.v1.Store'
+        logoRawImage:
+          type: string
+          title: logo_raw_image
+          format: byte
+          description: The raw image of the logo of the store.
+          nullable: true
+      title: CreateStoreRequest
+      additionalProperties: false
+    store.v1.CreateStoreResponse:
+      type: object
+      properties:
+        uid:
+          type: string
+          title: uid
+          description: The unique identifier of the created store.
+      title: CreateStoreResponse
+      additionalProperties: false
+    store.v1.DeleteStoreRequest:
+      type: object
+      properties:
+        uid:
+          type: string
+          title: uid
+          description: The unique identifier of the store to delete.
+      title: DeleteStoreRequest
+      additionalProperties: false
+    store.v1.DeleteStoreResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the store was successfully deleted.
+      title: DeleteStoreResponse
+      additionalProperties: false
+    store.v1.GetStoreRequest:
+      type: object
+      properties:
+        uid:
+          type: string
+          title: uid
+          description: The unique identifier of the store to retrieve.
+      title: GetStoreRequest
+      additionalProperties: false
+    store.v1.GetStoreResponse:
+      type: object
+      properties:
+        store:
+          title: store
+          description: The retrieved store data.
+          $ref: '#/components/schemas/store.v1.Store'
+      title: GetStoreResponse
+      additionalProperties: false
+    store.v1.Store:
+      type: object
+      properties:
+        uid:
+          type: string
+          title: uid
+          description: The unique identifier of the store.
+        address:
+          type: string
+          title: address
+          description: The address of the store.
+          nullable: true
+        name:
+          type: string
+          title: name
+          description: The name of the store.
+        description:
+          type: string
+          title: description
+          description: The description of the store.
+          nullable: true
+        logoMediaUid:
+          type: string
+          title: logo_media_uid
+          description: The uid of the media of the logo of the store.
+          nullable: true
+        businessId:
+          type: string
+          title: business_id
+          description: The uid of the business of the store.
+        createdAt:
+          type: string
+          title: created_at
+          description: The date and time the store was created.
+        updatedAt:
+          type: string
+          title: updated_at
+          description: The date and time the store was last updated.
+      title: Store
+      additionalProperties: false
+      description: |-
+        Stores are used to store products.
+         Note: A store is not always a shop.
+    store.v1.UpdateStoreRequest:
+      type: object
+      properties:
+        store:
+          title: store
+          description: |-
+            The store information to update.
+             Note:Only the fields that are set will be updated.
+          $ref: '#/components/schemas/store.v1.Store'
+        logoRawImage:
+          type: string
+          title: logo_raw_image
+          format: byte
+          description: The raw image of the logo of the store.
+          nullable: true
+      title: UpdateStoreRequest
+      additionalProperties: false
+    store.v1.UpdateStoreResponse:
+      type: object
+      properties:
+        store:
+          title: store
+          description: The updated store data.
+          $ref: '#/components/schemas/store.v1.Store'
+      title: UpdateStoreResponse
+      additionalProperties: false
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+        - 1
+      description: Define the version of the Connect protocol
+      const: 1
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+            - not_found
+          enum:
+            - canceled
+            - unknown
+            - invalid_argument
+            - deadline_exceeded
+            - not_found
+            - already_exists
+            - permission_denied
+            - resource_exhausted
+            - failed_precondition
+            - aborted
+            - out_of_range
+            - unimplemented
+            - internal
+            - unavailable
+            - data_loss
+            - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        detail:
+          $ref: '#/components/schemas/google.protobuf.Any'
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+    google.protobuf.Any:
+      type: object
+      properties:
+        type:
+          type: string
+        value:
+          type: string
+          format: binary
+        debug:
+          type: object
+          additionalProperties: true
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+security: []
+tags:
+  - name: store.v1.StoreService

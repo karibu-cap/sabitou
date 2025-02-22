@@ -1,0 +1,592 @@
+openapi: 3.1.0
+info:
+  title: business.v1
+paths:
+  /business.v1.BusinessService/CreateBusiness:
+    post:
+      tags:
+        - business.v1.BusinessService
+      summary: CreateBusiness
+      description: Create a new business.
+      operationId: business.v1.BusinessService.CreateBusiness
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/business.v1.CreateBusinessRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/business.v1.CreateBusinessResponse'
+  /business.v1.BusinessService/GetBusiness:
+    post:
+      tags:
+        - business.v1.BusinessService
+      summary: GetBusiness
+      description: Get a business by id.
+      operationId: business.v1.BusinessService.GetBusiness
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/business.v1.GetBusinessRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/business.v1.GetBusinessResponse'
+  /business.v1.BusinessService/UpdateBusiness:
+    post:
+      tags:
+        - business.v1.BusinessService
+      summary: UpdateBusiness
+      description: Update a business.
+      operationId: business.v1.BusinessService.UpdateBusiness
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/business.v1.UpdateBusinessRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/business.v1.UpdateBusinessResponse'
+  /business.v1.BusinessService/RequestDeleteBusiness:
+    post:
+      tags:
+        - business.v1.BusinessService
+      summary: RequestDeleteBusiness
+      description: Request the deletion of the business.
+      operationId: business.v1.BusinessService.RequestDeleteBusiness
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/business.v1.RequestDeleteBusinessRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/business.v1.RequestDeleteBusinessResponse'
+  /business.v1.BusinessService/DeleteBusiness:
+    post:
+      tags:
+        - business.v1.BusinessService
+      summary: DeleteBusiness
+      description: Processes the deletion of the business requested by the owner.
+      operationId: business.v1.BusinessService.DeleteBusiness
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/business.v1.DeleteBusinessRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/business.v1.DeleteBusinessResponse'
+  /business.v1.BusinessService/AddUserToBusiness:
+    post:
+      tags:
+        - business.v1.BusinessService
+      summary: AddUserToBusiness
+      description: Add user to business or invite user to business.
+      operationId: business.v1.BusinessService.AddUserToBusiness
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/business.v1.AddUserToBusinessRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/business.v1.AddUserToBusinessResponse'
+  /business.v1.BusinessService/RemoveUserFromBusiness:
+    post:
+      tags:
+        - business.v1.BusinessService
+      summary: RemoveUserFromBusiness
+      description: |-
+        Remove user from business.
+         If the user has been created by the business, the user will be deleted.
+         NOTE: The authenticated user need to have the permission to remove the
+         user.
+      operationId: business.v1.BusinessService.RemoveUserFromBusiness
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/business.v1.RemoveUserFromBusinessRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/business.v1.RemoveUserFromBusinessResponse'
+  /business.v1.BusinessService/GetBusinessUsers:
+    post:
+      tags:
+        - business.v1.BusinessService
+      summary: GetBusinessUsers
+      description: Get the users of the business.
+      operationId: business.v1.BusinessService.GetBusinessUsers
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/business.v1.GetBusinessUsersRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/business.v1.GetBusinessUsersResponse'
+components:
+  schemas:
+    business.v1.BusinessStatusType:
+      type: string
+      title: BusinessStatusType
+      enum:
+        - BUSINESS_STATUS_TYPE_UNSPECIFIED
+        - BUSINESS_STATUS_TYPE_ACTIVE
+        - BUSINESS_STATUS_TYPE_DELETED
+    business.v1.AddUserToBusinessRequest:
+      type: object
+      properties:
+        uRef:
+          type: string
+          title: u_ref
+          description: |-
+            The unique identifier of the user.
+             For example, the email address or phone number or @username.
+      title: AddUserToBusinessRequest
+      additionalProperties: false
+    business.v1.AddUserToBusinessResponse:
+      type: object
+      properties:
+        uRef:
+          type: string
+          title: u_ref
+          description: The unique identifier of the user.
+      title: AddUserToBusinessResponse
+      additionalProperties: false
+    business.v1.Business:
+      type: object
+      properties:
+        uid:
+          type: string
+          title: uid
+          description: The unique identifier of the business.
+        name:
+          type: string
+          title: name
+          description: The name of the business.
+        description:
+          type: string
+          title: description
+          description: The description of the business.
+          nullable: true
+        status:
+          title: status
+          description: The status of the business.
+          $ref: '#/components/schemas/business.v1.BusinessStatusType'
+        ownerUid:
+          type: string
+          title: owner_uid
+          description: The uid of the owner of the business.
+        logoMediaUid:
+          type: string
+          title: logo_media_uid
+          description: The uid of the media of the logo of the business.
+          nullable: true
+        countryCode:
+          type: string
+          title: country_code
+          description: |-
+            The ISO 3166-1 alpha-2 country code of the business.
+             e.g. CM, US, GB, etc.
+        currencyCode:
+          type: string
+          title: currency_code
+          description: |-
+            The ISO 4217 currency code of the business.
+             For example: XAF, USD, EUR, etc.
+        createdAt:
+          type: string
+          title: created_at
+          description: The date and time the business was created.
+        updatedAt:
+          type: string
+          title: updated_at
+          description: The date and time the business was last updated.
+      title: Business
+      additionalProperties: false
+    business.v1.CreateBusinessRequest:
+      type: object
+      properties:
+        business:
+          title: business
+          description: |-
+            The business information to create.
+             Note:Only the fields that are set will be created.
+          $ref: '#/components/schemas/business.v1.Business'
+        logoRawImage:
+          type: string
+          title: logo_raw_image
+          format: byte
+          description: The raw image of the logo of the business.
+          nullable: true
+      title: CreateBusinessRequest
+      additionalProperties: false
+    business.v1.CreateBusinessResponse:
+      type: object
+      properties:
+        uid:
+          type: string
+          title: uid
+          description: The unique identifier of the created business.
+      title: CreateBusinessResponse
+      additionalProperties: false
+    business.v1.DeleteBusinessRequest:
+      type: object
+      properties:
+        requestToken:
+          type: string
+          title: request_token
+          description: The token to use to process the deletion of the business.
+        verificationCode:
+          type: string
+          title: verification_code
+          description: The verification code sent to the user's email or phone number.
+      title: DeleteBusinessRequest
+      additionalProperties: false
+    business.v1.DeleteBusinessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the business was successfully deleted.
+      title: DeleteBusinessResponse
+      additionalProperties: false
+    business.v1.GetBusinessRequest:
+      type: object
+      properties:
+        uid:
+          type: string
+          title: uid
+          description: The unique identifier of the business to retrieve.
+      title: GetBusinessRequest
+      additionalProperties: false
+    business.v1.GetBusinessResponse:
+      type: object
+      properties:
+        business:
+          title: business
+          description: The retrieved business data.
+          $ref: '#/components/schemas/business.v1.Business'
+      title: GetBusinessResponse
+      additionalProperties: false
+    business.v1.GetBusinessUsersRequest:
+      type: object
+      properties:
+        uid:
+          type: string
+          title: uid
+          description: The unique identifier of the business to retrieve.
+      title: GetBusinessUsersRequest
+      additionalProperties: false
+    business.v1.GetBusinessUsersResponse:
+      type: object
+      properties:
+        uids:
+          type: array
+          items:
+            type: string
+          title: uids
+          description: The unique identifiers of the users of the business.
+      title: GetBusinessUsersResponse
+      additionalProperties: false
+    business.v1.RemoveUserFromBusinessRequest:
+      type: object
+      properties:
+        uRef:
+          type: string
+          title: u_ref
+          description: |-
+            The unique identifier of the user.
+             For example, the email address or phone number or @username.
+      title: RemoveUserFromBusinessRequest
+      additionalProperties: false
+    business.v1.RemoveUserFromBusinessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the user was successfully removed from the business.
+      title: RemoveUserFromBusinessResponse
+      additionalProperties: false
+    business.v1.RequestDeleteBusinessRequest:
+      type: object
+      properties:
+        uid:
+          type: string
+          title: uid
+          description: The unique identifier of the business to delete.
+        password:
+          type: string
+          title: password
+          description: The password of the user who is trying to delete the business.
+      title: RequestDeleteBusinessRequest
+      additionalProperties: false
+    business.v1.RequestDeleteBusinessResponse:
+      type: object
+      properties:
+        requestToken:
+          type: string
+          title: request_token
+          description: |-
+            The token to use to process the deletion of the business
+             after verification (email or phone number).
+      title: RequestDeleteBusinessResponse
+      additionalProperties: false
+    business.v1.UpdateBusinessRequest:
+      type: object
+      properties:
+        business:
+          title: business
+          description: |-
+            The business information to update.
+             Note:Only the fields that are set will be updated.
+          $ref: '#/components/schemas/business.v1.Business'
+        logoRawImage:
+          type: string
+          title: logo_raw_image
+          format: byte
+          description: The raw image of the logo of the business.
+          nullable: true
+      title: UpdateBusinessRequest
+      additionalProperties: false
+    business.v1.UpdateBusinessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the business was successfully updated.
+      title: UpdateBusinessResponse
+      additionalProperties: false
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+        - 1
+      description: Define the version of the Connect protocol
+      const: 1
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+            - not_found
+          enum:
+            - canceled
+            - unknown
+            - invalid_argument
+            - deadline_exceeded
+            - not_found
+            - already_exists
+            - permission_denied
+            - resource_exhausted
+            - failed_precondition
+            - aborted
+            - out_of_range
+            - unimplemented
+            - internal
+            - unavailable
+            - data_loss
+            - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        detail:
+          $ref: '#/components/schemas/google.protobuf.Any'
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+    google.protobuf.Any:
+      type: object
+      properties:
+        type:
+          type: string
+        value:
+          type: string
+          format: binary
+        debug:
+          type: object
+          additionalProperties: true
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+security: []
+tags:
+  - name: business.v1.BusinessService

@@ -1,0 +1,412 @@
+openapi: 3.1.0
+info:
+  title: business.v1
+paths:
+  /business.v1.SupplierService/CreateSupplier:
+    post:
+      tags:
+        - business.v1.SupplierService
+      summary: CreateSupplier
+      description: Creates a new supplier.
+      operationId: business.v1.SupplierService.CreateSupplier
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/business.v1.CreateSupplierRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/business.v1.CreateSupplierResponse'
+  /business.v1.SupplierService/GetSupplier:
+    post:
+      tags:
+        - business.v1.SupplierService
+      summary: GetSupplier
+      description: Gets a supplier by id.
+      operationId: business.v1.SupplierService.GetSupplier
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/business.v1.GetSupplierRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/business.v1.GetSupplierResponse'
+  /business.v1.SupplierService/GetBusinessSuppliers:
+    post:
+      tags:
+        - business.v1.SupplierService
+      summary: GetBusinessSuppliers
+      description: Gets all suppliers of a business.
+      operationId: business.v1.SupplierService.GetBusinessSuppliers
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/business.v1.GetBusinessSuppliersRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/business.v1.GetBusinessSuppliersResponse'
+  /business.v1.SupplierService/UpdateSupplier:
+    post:
+      tags:
+        - business.v1.SupplierService
+      summary: UpdateSupplier
+      description: |-
+        Updates a supplier.
+         Note:Only the fields that are set will be updated.
+      operationId: business.v1.SupplierService.UpdateSupplier
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/business.v1.UpdateSupplierRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/business.v1.UpdateSupplierResponse'
+  /business.v1.SupplierService/DeleteSupplier:
+    post:
+      tags:
+        - business.v1.SupplierService
+      summary: DeleteSupplier
+      description: Deletes a supplier.
+      operationId: business.v1.SupplierService.DeleteSupplier
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/business.v1.DeleteSupplierRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/business.v1.DeleteSupplierResponse'
+components:
+  schemas:
+    business.v1.CreateSupplierRequest:
+      type: object
+      properties:
+        supplier:
+          title: supplier
+          description: The supplier information to create.
+          $ref: '#/components/schemas/business.v1.Supplier'
+        logoRawImage:
+          type: string
+          title: logo_raw_image
+          format: byte
+          description: The raw image of the logo of the supplier.
+          nullable: true
+      title: CreateSupplierRequest
+      additionalProperties: false
+    business.v1.CreateSupplierResponse:
+      type: object
+      properties:
+        uid:
+          type: string
+          title: uid
+          description: The unique identifier of the created supplier.
+      title: CreateSupplierResponse
+      additionalProperties: false
+    business.v1.DeleteSupplierRequest:
+      type: object
+      properties:
+        uid:
+          type: string
+          title: uid
+          description: The unique identifier of the supplier to delete.
+      title: DeleteSupplierRequest
+      additionalProperties: false
+    business.v1.DeleteSupplierResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the supplier was successfully deleted.
+      title: DeleteSupplierResponse
+      additionalProperties: false
+    business.v1.GetBusinessSuppliersRequest:
+      type: object
+      properties:
+        uid:
+          type: string
+          title: uid
+          description: The unique identifier of the business to retrieve.
+      title: GetBusinessSuppliersRequest
+      additionalProperties: false
+    business.v1.GetBusinessSuppliersResponse:
+      type: object
+      properties:
+        suppliers:
+          type: array
+          items:
+            $ref: '#/components/schemas/business.v1.Supplier'
+          title: suppliers
+          description: |-
+            The list of suppliers of the business.
+             Note: Only the uids and names of the suppliers are returned.
+      title: GetBusinessSuppliersResponse
+      additionalProperties: false
+    business.v1.GetSupplierRequest:
+      type: object
+      properties:
+        uid:
+          type: string
+          title: uid
+          description: The unique identifier of the supplier to retrieve.
+      title: GetSupplierRequest
+      additionalProperties: false
+    business.v1.GetSupplierResponse:
+      type: object
+      properties:
+        supplier:
+          title: supplier
+          description: The retrieved supplier data.
+          $ref: '#/components/schemas/business.v1.Supplier'
+      title: GetSupplierResponse
+      additionalProperties: false
+    business.v1.Link:
+      type: object
+      properties:
+        label:
+          type: string
+          title: label
+          description: The label of the link.
+        url:
+          type: string
+          title: url
+          description: |-
+            The url of the link.
+             Todo: We must automatically retrieve the icon of the link.
+      title: Link
+      additionalProperties: false
+    business.v1.Supplier:
+      type: object
+      properties:
+        uid:
+          type: string
+          title: uid
+          description: The unique identifier of the supplier.
+        name:
+          type: string
+          title: name
+          description: The name of the supplier.
+        description:
+          type: string
+          title: description
+          description: The description of the supplier.
+          nullable: true
+        logoMediaUid:
+          type: string
+          title: logo_media_uid
+          description: The uid of the media of the logo of the supplier.
+          nullable: true
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/business.v1.Link'
+          title: links
+          description: The links of the supplier.
+        businessId:
+          type: string
+          title: business_id
+          description: The uid of the business of the supplier.
+        createdAt:
+          type: string
+          title: created_at
+          description: The date and time the supplier was created.
+        updatedAt:
+          type: string
+          title: updated_at
+          description: The date and time the supplier was last updated.
+      title: Supplier
+      additionalProperties: false
+    business.v1.UpdateSupplierRequest:
+      type: object
+      properties:
+        supplier:
+          title: supplier
+          description: |-
+            The supplier information to update.
+             Note:Only the fields that are set will be updated.
+          $ref: '#/components/schemas/business.v1.Supplier'
+        logoRawImage:
+          type: string
+          title: logo_raw_image
+          format: byte
+          description: The raw image of the logo of the supplier.
+          nullable: true
+      title: UpdateSupplierRequest
+      additionalProperties: false
+    business.v1.UpdateSupplierResponse:
+      type: object
+      properties:
+        supplier:
+          title: supplier
+          description: The updated supplier data.
+          $ref: '#/components/schemas/business.v1.Supplier'
+      title: UpdateSupplierResponse
+      additionalProperties: false
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+        - 1
+      description: Define the version of the Connect protocol
+      const: 1
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+            - not_found
+          enum:
+            - canceled
+            - unknown
+            - invalid_argument
+            - deadline_exceeded
+            - not_found
+            - already_exists
+            - permission_denied
+            - resource_exhausted
+            - failed_precondition
+            - aborted
+            - out_of_range
+            - unimplemented
+            - internal
+            - unavailable
+            - data_loss
+            - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        detail:
+          $ref: '#/components/schemas/google.protobuf.Any'
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+    google.protobuf.Any:
+      type: object
+      properties:
+        type:
+          type: string
+        value:
+          type: string
+          format: binary
+        debug:
+          type: object
+          additionalProperties: true
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+security: []
+tags:
+  - name: business.v1.SupplierService
