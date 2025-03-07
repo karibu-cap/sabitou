@@ -18,6 +18,14 @@ abstract final class BusinessService {
     businessv1business.CreateBusinessResponse.new,
   );
 
+  /// Get all businesses of the current user.
+  static const getMyBusinesses = connect.Spec(
+    '/$name/GetMyBusinesses',
+    connect.StreamType.unary,
+    businessv1business.GetMyBusinessesRequest.new,
+    businessv1business.GetMyBusinessesResponse.new,
+  );
+
   /// Get a business by id.
   static const getBusiness = connect.Spec(
     '/$name/GetBusiness',

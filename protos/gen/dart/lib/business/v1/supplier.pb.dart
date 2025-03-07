@@ -14,6 +14,8 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
+import '../../link/v1/link.pb.dart' as $5;
+
 class Link extends $pb.GeneratedMessage {
   factory Link({
     $core.String? label,
@@ -83,18 +85,16 @@ class Link extends $pb.GeneratedMessage {
 
 class Supplier extends $pb.GeneratedMessage {
   factory Supplier({
-    $core.String? uid,
+    $core.String? refId,
     $core.String? name,
     $core.String? description,
-    $core.String? logoMediaUid,
-    $core.Iterable<Link>? links,
+    $core.String? logoMediaId,
+    $core.Iterable<$core.String>? externalLinksIds,
     $core.String? businessId,
-    $core.String? createdAt,
-    $core.String? updatedAt,
   }) {
     final $result = create();
-    if (uid != null) {
-      $result.uid = uid;
+    if (refId != null) {
+      $result.refId = refId;
     }
     if (name != null) {
       $result.name = name;
@@ -102,20 +102,14 @@ class Supplier extends $pb.GeneratedMessage {
     if (description != null) {
       $result.description = description;
     }
-    if (logoMediaUid != null) {
-      $result.logoMediaUid = logoMediaUid;
+    if (logoMediaId != null) {
+      $result.logoMediaId = logoMediaId;
     }
-    if (links != null) {
-      $result.links.addAll(links);
+    if (externalLinksIds != null) {
+      $result.externalLinksIds.addAll(externalLinksIds);
     }
     if (businessId != null) {
       $result.businessId = businessId;
-    }
-    if (createdAt != null) {
-      $result.createdAt = createdAt;
-    }
-    if (updatedAt != null) {
-      $result.updatedAt = updatedAt;
     }
     return $result;
   }
@@ -124,14 +118,12 @@ class Supplier extends $pb.GeneratedMessage {
   factory Supplier.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Supplier', package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'uid')
+    ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..aOS(2, _omitFieldNames ? '' : 'name')
     ..aOS(3, _omitFieldNames ? '' : 'description')
-    ..aOS(4, _omitFieldNames ? '' : 'logoMediaUid')
-    ..pc<Link>(5, _omitFieldNames ? '' : 'links', $pb.PbFieldType.PM, subBuilder: Link.create)
+    ..aOS(4, _omitFieldNames ? '' : 'logoMediaId')
+    ..pPS(5, _omitFieldNames ? '' : 'externalLinksIds')
     ..aOS(6, _omitFieldNames ? '' : 'businessId')
-    ..aOS(7, _omitFieldNames ? '' : 'createdAt')
-    ..aOS(8, _omitFieldNames ? '' : 'updatedAt')
     ..hasRequiredFields = false
   ;
 
@@ -156,15 +148,15 @@ class Supplier extends $pb.GeneratedMessage {
   static Supplier getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Supplier>(create);
   static Supplier? _defaultInstance;
 
-  /// The unique identifier of the supplier.
+  /// The reference id to the supplier identifier.
   @$pb.TagNumber(1)
-  $core.String get uid => $_getSZ(0);
+  $core.String get refId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set uid($core.String v) { $_setString(0, v); }
+  set refId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasUid() => $_has(0);
+  $core.bool hasRefId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearUid() => clearField(1);
+  void clearRefId() => clearField(1);
 
   /// The name of the supplier.
   @$pb.TagNumber(2)
@@ -186,21 +178,21 @@ class Supplier extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   void clearDescription() => clearField(3);
 
-  /// The uid of the media of the logo of the supplier.
+  /// The id of the media of the logo of the supplier.
   @$pb.TagNumber(4)
-  $core.String get logoMediaUid => $_getSZ(3);
+  $core.String get logoMediaId => $_getSZ(3);
   @$pb.TagNumber(4)
-  set logoMediaUid($core.String v) { $_setString(3, v); }
+  set logoMediaId($core.String v) { $_setString(3, v); }
   @$pb.TagNumber(4)
-  $core.bool hasLogoMediaUid() => $_has(3);
+  $core.bool hasLogoMediaId() => $_has(3);
   @$pb.TagNumber(4)
-  void clearLogoMediaUid() => clearField(4);
+  void clearLogoMediaId() => clearField(4);
 
   /// The links of the supplier.
   @$pb.TagNumber(5)
-  $core.List<Link> get links => $_getList(4);
+  $core.List<$core.String> get externalLinksIds => $_getList(4);
 
-  /// The uid of the business of the supplier.
+  /// The id of the business of the supplier.
   @$pb.TagNumber(6)
   $core.String get businessId => $_getSZ(5);
   @$pb.TagNumber(6)
@@ -209,32 +201,13 @@ class Supplier extends $pb.GeneratedMessage {
   $core.bool hasBusinessId() => $_has(5);
   @$pb.TagNumber(6)
   void clearBusinessId() => clearField(6);
-
-  /// The date and time the supplier was created.
-  @$pb.TagNumber(7)
-  $core.String get createdAt => $_getSZ(6);
-  @$pb.TagNumber(7)
-  set createdAt($core.String v) { $_setString(6, v); }
-  @$pb.TagNumber(7)
-  $core.bool hasCreatedAt() => $_has(6);
-  @$pb.TagNumber(7)
-  void clearCreatedAt() => clearField(7);
-
-  /// The date and time the supplier was last updated.
-  @$pb.TagNumber(8)
-  $core.String get updatedAt => $_getSZ(7);
-  @$pb.TagNumber(8)
-  set updatedAt($core.String v) { $_setString(7, v); }
-  @$pb.TagNumber(8)
-  $core.bool hasUpdatedAt() => $_has(7);
-  @$pb.TagNumber(8)
-  void clearUpdatedAt() => clearField(8);
 }
 
 class CreateSupplierRequest extends $pb.GeneratedMessage {
   factory CreateSupplierRequest({
     Supplier? supplier,
     $core.List<$core.int>? logoRawImage,
+    $core.Iterable<$5.ResourceLink>? externalLinks,
   }) {
     final $result = create();
     if (supplier != null) {
@@ -242,6 +215,9 @@ class CreateSupplierRequest extends $pb.GeneratedMessage {
     }
     if (logoRawImage != null) {
       $result.logoRawImage = logoRawImage;
+    }
+    if (externalLinks != null) {
+      $result.externalLinks.addAll(externalLinks);
     }
     return $result;
   }
@@ -252,6 +228,7 @@ class CreateSupplierRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CreateSupplierRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'), createEmptyInstance: create)
     ..aOM<Supplier>(1, _omitFieldNames ? '' : 'supplier', subBuilder: Supplier.create)
     ..a<$core.List<$core.int>>(2, _omitFieldNames ? '' : 'logoRawImage', $pb.PbFieldType.OY)
+    ..pc<$5.ResourceLink>(5, _omitFieldNames ? '' : 'externalLinks', $pb.PbFieldType.PM, subBuilder: $5.ResourceLink.create)
     ..hasRequiredFields = false
   ;
 
@@ -297,15 +274,19 @@ class CreateSupplierRequest extends $pb.GeneratedMessage {
   $core.bool hasLogoRawImage() => $_has(1);
   @$pb.TagNumber(2)
   void clearLogoRawImage() => clearField(2);
+
+  /// The links of the supplier.
+  @$pb.TagNumber(5)
+  $core.List<$5.ResourceLink> get externalLinks => $_getList(2);
 }
 
 class CreateSupplierResponse extends $pb.GeneratedMessage {
   factory CreateSupplierResponse({
-    $core.String? uid,
+    $core.String? refId,
   }) {
     final $result = create();
-    if (uid != null) {
-      $result.uid = uid;
+    if (refId != null) {
+      $result.refId = refId;
     }
     return $result;
   }
@@ -314,7 +295,7 @@ class CreateSupplierResponse extends $pb.GeneratedMessage {
   factory CreateSupplierResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CreateSupplierResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'uid')
+    ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..hasRequiredFields = false
   ;
 
@@ -339,24 +320,24 @@ class CreateSupplierResponse extends $pb.GeneratedMessage {
   static CreateSupplierResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CreateSupplierResponse>(create);
   static CreateSupplierResponse? _defaultInstance;
 
-  /// The unique identifier of the created supplier.
+  /// The reference id to the supplier identifier.
   @$pb.TagNumber(1)
-  $core.String get uid => $_getSZ(0);
+  $core.String get refId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set uid($core.String v) { $_setString(0, v); }
+  set refId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasUid() => $_has(0);
+  $core.bool hasRefId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearUid() => clearField(1);
+  void clearRefId() => clearField(1);
 }
 
 class GetSupplierRequest extends $pb.GeneratedMessage {
   factory GetSupplierRequest({
-    $core.String? uid,
+    $core.String? refId,
   }) {
     final $result = create();
-    if (uid != null) {
-      $result.uid = uid;
+    if (refId != null) {
+      $result.refId = refId;
     }
     return $result;
   }
@@ -365,7 +346,7 @@ class GetSupplierRequest extends $pb.GeneratedMessage {
   factory GetSupplierRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'GetSupplierRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'uid')
+    ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..hasRequiredFields = false
   ;
 
@@ -390,15 +371,15 @@ class GetSupplierRequest extends $pb.GeneratedMessage {
   static GetSupplierRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetSupplierRequest>(create);
   static GetSupplierRequest? _defaultInstance;
 
-  /// The unique identifier of the supplier to retrieve.
+  /// The reference id to the supplier identifier.
   @$pb.TagNumber(1)
-  $core.String get uid => $_getSZ(0);
+  $core.String get refId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set uid($core.String v) { $_setString(0, v); }
+  set refId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasUid() => $_has(0);
+  $core.bool hasRefId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearUid() => clearField(1);
+  void clearRefId() => clearField(1);
 }
 
 class GetSupplierResponse extends $pb.GeneratedMessage {
@@ -456,11 +437,11 @@ class GetSupplierResponse extends $pb.GeneratedMessage {
 
 class GetBusinessSuppliersRequest extends $pb.GeneratedMessage {
   factory GetBusinessSuppliersRequest({
-    $core.String? uid,
+    $core.String? refId,
   }) {
     final $result = create();
-    if (uid != null) {
-      $result.uid = uid;
+    if (refId != null) {
+      $result.refId = refId;
     }
     return $result;
   }
@@ -469,7 +450,7 @@ class GetBusinessSuppliersRequest extends $pb.GeneratedMessage {
   factory GetBusinessSuppliersRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'GetBusinessSuppliersRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'uid')
+    ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..hasRequiredFields = false
   ;
 
@@ -494,15 +475,15 @@ class GetBusinessSuppliersRequest extends $pb.GeneratedMessage {
   static GetBusinessSuppliersRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetBusinessSuppliersRequest>(create);
   static GetBusinessSuppliersRequest? _defaultInstance;
 
-  /// The unique identifier of the business to retrieve.
+  /// The reference id to the supplier identifier.
   @$pb.TagNumber(1)
-  $core.String get uid => $_getSZ(0);
+  $core.String get refId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set uid($core.String v) { $_setString(0, v); }
+  set refId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasUid() => $_has(0);
+  $core.bool hasRefId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearUid() => clearField(1);
+  void clearRefId() => clearField(1);
 }
 
 class GetBusinessSuppliersResponse extends $pb.GeneratedMessage {
@@ -546,7 +527,7 @@ class GetBusinessSuppliersResponse extends $pb.GeneratedMessage {
   static GetBusinessSuppliersResponse? _defaultInstance;
 
   /// The list of suppliers of the business.
-  /// Note: Only the uids and names of the suppliers are returned.
+  /// Note: Only the ids and names of the suppliers are returned.
   @$pb.TagNumber(1)
   $core.List<Supplier> get suppliers => $_getList(0);
 }
@@ -675,11 +656,11 @@ class UpdateSupplierResponse extends $pb.GeneratedMessage {
 
 class DeleteSupplierRequest extends $pb.GeneratedMessage {
   factory DeleteSupplierRequest({
-    $core.String? uid,
+    $core.String? refId,
   }) {
     final $result = create();
-    if (uid != null) {
-      $result.uid = uid;
+    if (refId != null) {
+      $result.refId = refId;
     }
     return $result;
   }
@@ -688,7 +669,7 @@ class DeleteSupplierRequest extends $pb.GeneratedMessage {
   factory DeleteSupplierRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'DeleteSupplierRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'uid')
+    ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..hasRequiredFields = false
   ;
 
@@ -713,15 +694,15 @@ class DeleteSupplierRequest extends $pb.GeneratedMessage {
   static DeleteSupplierRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<DeleteSupplierRequest>(create);
   static DeleteSupplierRequest? _defaultInstance;
 
-  /// The unique identifier of the supplier to delete.
+  /// The reference id to the supplier identifier.
   @$pb.TagNumber(1)
-  $core.String get uid => $_getSZ(0);
+  $core.String get refId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set uid($core.String v) { $_setString(0, v); }
+  set refId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasUid() => $_has(0);
+  $core.bool hasRefId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearUid() => clearField(1);
+  void clearRefId() => clearField(1);
 }
 
 class DeleteSupplierResponse extends $pb.GeneratedMessage {

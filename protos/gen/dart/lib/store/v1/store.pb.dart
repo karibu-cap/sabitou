@@ -18,18 +18,17 @@ import 'package:protobuf/protobuf.dart' as $pb;
 /// Note: A store is not always a shop.
 class Store extends $pb.GeneratedMessage {
   factory Store({
-    $core.String? uid,
+    $core.String? refId,
     $core.String? address,
     $core.String? name,
     $core.String? description,
-    $core.String? logoMediaUid,
+    $core.String? logoMediaId,
     $core.String? businessId,
-    $core.String? createdAt,
-    $core.String? updatedAt,
+    $core.String? linksMediaIds,
   }) {
     final $result = create();
-    if (uid != null) {
-      $result.uid = uid;
+    if (refId != null) {
+      $result.refId = refId;
     }
     if (address != null) {
       $result.address = address;
@@ -40,17 +39,14 @@ class Store extends $pb.GeneratedMessage {
     if (description != null) {
       $result.description = description;
     }
-    if (logoMediaUid != null) {
-      $result.logoMediaUid = logoMediaUid;
+    if (logoMediaId != null) {
+      $result.logoMediaId = logoMediaId;
     }
     if (businessId != null) {
       $result.businessId = businessId;
     }
-    if (createdAt != null) {
-      $result.createdAt = createdAt;
-    }
-    if (updatedAt != null) {
-      $result.updatedAt = updatedAt;
+    if (linksMediaIds != null) {
+      $result.linksMediaIds = linksMediaIds;
     }
     return $result;
   }
@@ -59,14 +55,13 @@ class Store extends $pb.GeneratedMessage {
   factory Store.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Store', package: const $pb.PackageName(_omitMessageNames ? '' : 'store.v1'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'uid')
+    ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..aOS(2, _omitFieldNames ? '' : 'address')
     ..aOS(3, _omitFieldNames ? '' : 'name')
     ..aOS(5, _omitFieldNames ? '' : 'description')
-    ..aOS(6, _omitFieldNames ? '' : 'logoMediaUid')
+    ..aOS(6, _omitFieldNames ? '' : 'logoMediaId')
     ..aOS(7, _omitFieldNames ? '' : 'businessId')
-    ..aOS(8, _omitFieldNames ? '' : 'createdAt')
-    ..aOS(9, _omitFieldNames ? '' : 'updatedAt')
+    ..aOS(8, _omitFieldNames ? '' : 'linksMediaIds')
     ..hasRequiredFields = false
   ;
 
@@ -93,13 +88,13 @@ class Store extends $pb.GeneratedMessage {
 
   /// The unique identifier of the store.
   @$pb.TagNumber(1)
-  $core.String get uid => $_getSZ(0);
+  $core.String get refId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set uid($core.String v) { $_setString(0, v); }
+  set refId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasUid() => $_has(0);
+  $core.bool hasRefId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearUid() => clearField(1);
+  void clearRefId() => clearField(1);
 
   /// The address of the store.
   @$pb.TagNumber(2)
@@ -131,17 +126,17 @@ class Store extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   void clearDescription() => clearField(5);
 
-  /// The uid of the media of the logo of the store.
+  /// The id of the media of the logo of the store.
   @$pb.TagNumber(6)
-  $core.String get logoMediaUid => $_getSZ(4);
+  $core.String get logoMediaId => $_getSZ(4);
   @$pb.TagNumber(6)
-  set logoMediaUid($core.String v) { $_setString(4, v); }
+  set logoMediaId($core.String v) { $_setString(4, v); }
   @$pb.TagNumber(6)
-  $core.bool hasLogoMediaUid() => $_has(4);
+  $core.bool hasLogoMediaId() => $_has(4);
   @$pb.TagNumber(6)
-  void clearLogoMediaUid() => clearField(6);
+  void clearLogoMediaId() => clearField(6);
 
-  /// The uid of the business of the store.
+  /// The id of the business of the store.
   @$pb.TagNumber(7)
   $core.String get businessId => $_getSZ(5);
   @$pb.TagNumber(7)
@@ -151,25 +146,15 @@ class Store extends $pb.GeneratedMessage {
   @$pb.TagNumber(7)
   void clearBusinessId() => clearField(7);
 
-  /// The date and time the store was created.
+  /// The ids of the media of the links of the store.
   @$pb.TagNumber(8)
-  $core.String get createdAt => $_getSZ(6);
+  $core.String get linksMediaIds => $_getSZ(6);
   @$pb.TagNumber(8)
-  set createdAt($core.String v) { $_setString(6, v); }
+  set linksMediaIds($core.String v) { $_setString(6, v); }
   @$pb.TagNumber(8)
-  $core.bool hasCreatedAt() => $_has(6);
+  $core.bool hasLinksMediaIds() => $_has(6);
   @$pb.TagNumber(8)
-  void clearCreatedAt() => clearField(8);
-
-  /// The date and time the store was last updated.
-  @$pb.TagNumber(9)
-  $core.String get updatedAt => $_getSZ(7);
-  @$pb.TagNumber(9)
-  set updatedAt($core.String v) { $_setString(7, v); }
-  @$pb.TagNumber(9)
-  $core.bool hasUpdatedAt() => $_has(7);
-  @$pb.TagNumber(9)
-  void clearUpdatedAt() => clearField(9);
+  void clearLinksMediaIds() => clearField(8);
 }
 
 class CreateStoreRequest extends $pb.GeneratedMessage {
@@ -242,11 +227,11 @@ class CreateStoreRequest extends $pb.GeneratedMessage {
 
 class CreateStoreResponse extends $pb.GeneratedMessage {
   factory CreateStoreResponse({
-    $core.String? uid,
+    $core.String? refId,
   }) {
     final $result = create();
-    if (uid != null) {
-      $result.uid = uid;
+    if (refId != null) {
+      $result.refId = refId;
     }
     return $result;
   }
@@ -255,7 +240,7 @@ class CreateStoreResponse extends $pb.GeneratedMessage {
   factory CreateStoreResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CreateStoreResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'store.v1'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'uid')
+    ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..hasRequiredFields = false
   ;
 
@@ -282,22 +267,22 @@ class CreateStoreResponse extends $pb.GeneratedMessage {
 
   /// The unique identifier of the created store.
   @$pb.TagNumber(1)
-  $core.String get uid => $_getSZ(0);
+  $core.String get refId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set uid($core.String v) { $_setString(0, v); }
+  set refId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasUid() => $_has(0);
+  $core.bool hasRefId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearUid() => clearField(1);
+  void clearRefId() => clearField(1);
 }
 
 class GetStoreRequest extends $pb.GeneratedMessage {
   factory GetStoreRequest({
-    $core.String? uid,
+    $core.String? refId,
   }) {
     final $result = create();
-    if (uid != null) {
-      $result.uid = uid;
+    if (refId != null) {
+      $result.refId = refId;
     }
     return $result;
   }
@@ -306,7 +291,7 @@ class GetStoreRequest extends $pb.GeneratedMessage {
   factory GetStoreRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'GetStoreRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'store.v1'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'uid')
+    ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..hasRequiredFields = false
   ;
 
@@ -333,13 +318,13 @@ class GetStoreRequest extends $pb.GeneratedMessage {
 
   /// The unique identifier of the store to retrieve.
   @$pb.TagNumber(1)
-  $core.String get uid => $_getSZ(0);
+  $core.String get refId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set uid($core.String v) { $_setString(0, v); }
+  set refId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasUid() => $_has(0);
+  $core.bool hasRefId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearUid() => clearField(1);
+  void clearRefId() => clearField(1);
 }
 
 class GetStoreResponse extends $pb.GeneratedMessage {
@@ -519,11 +504,11 @@ class UpdateStoreResponse extends $pb.GeneratedMessage {
 
 class DeleteStoreRequest extends $pb.GeneratedMessage {
   factory DeleteStoreRequest({
-    $core.String? uid,
+    $core.String? refId,
   }) {
     final $result = create();
-    if (uid != null) {
-      $result.uid = uid;
+    if (refId != null) {
+      $result.refId = refId;
     }
     return $result;
   }
@@ -532,7 +517,7 @@ class DeleteStoreRequest extends $pb.GeneratedMessage {
   factory DeleteStoreRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'DeleteStoreRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'store.v1'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'uid')
+    ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..hasRequiredFields = false
   ;
 
@@ -559,13 +544,13 @@ class DeleteStoreRequest extends $pb.GeneratedMessage {
 
   /// The unique identifier of the store to delete.
   @$pb.TagNumber(1)
-  $core.String get uid => $_getSZ(0);
+  $core.String get refId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set uid($core.String v) { $_setString(0, v); }
+  set refId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasUid() => $_has(0);
+  $core.bool hasRefId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearUid() => clearField(1);
+  void clearRefId() => clearField(1);
 }
 
 class DeleteStoreResponse extends $pb.GeneratedMessage {

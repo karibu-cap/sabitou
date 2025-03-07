@@ -199,25 +199,37 @@ components:
           format: byte
           description: The raw image of the logo of the supplier.
           nullable: true
+        externalLinks:
+          type: array
+          items:
+            $ref: '#/components/schemas/link.v1.ResourceLink'
+          title: external_links
+          description: The links of the supplier.
       title: CreateSupplierRequest
       additionalProperties: false
     business.v1.CreateSupplierResponse:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
-          description: The unique identifier of the created supplier.
+          title: ref_id
+          minLength: 3
+          description: The reference id to the supplier identifier.
       title: CreateSupplierResponse
+      required:
+        - refId
       additionalProperties: false
     business.v1.DeleteSupplierRequest:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
-          description: The unique identifier of the supplier to delete.
+          title: ref_id
+          minLength: 3
+          description: The reference id to the supplier identifier.
       title: DeleteSupplierRequest
+      required:
+        - refId
       additionalProperties: false
     business.v1.DeleteSupplierResponse:
       type: object
@@ -231,11 +243,14 @@ components:
     business.v1.GetBusinessSuppliersRequest:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
-          description: The unique identifier of the business to retrieve.
+          title: ref_id
+          minLength: 3
+          description: The reference id to the supplier identifier.
       title: GetBusinessSuppliersRequest
+      required:
+        - refId
       additionalProperties: false
     business.v1.GetBusinessSuppliersResponse:
       type: object
@@ -247,17 +262,20 @@ components:
           title: suppliers
           description: |-
             The list of suppliers of the business.
-             Note: Only the uids and names of the suppliers are returned.
+             Note: Only the ids and names of the suppliers are returned.
       title: GetBusinessSuppliersResponse
       additionalProperties: false
     business.v1.GetSupplierRequest:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
-          description: The unique identifier of the supplier to retrieve.
+          title: ref_id
+          minLength: 3
+          description: The reference id to the supplier identifier.
       title: GetSupplierRequest
+      required:
+        - refId
       additionalProperties: false
     business.v1.GetSupplierResponse:
       type: object
@@ -286,10 +304,11 @@ components:
     business.v1.Supplier:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
-          description: The unique identifier of the supplier.
+          title: ref_id
+          description: The reference id to the supplier identifier.
+          nullable: true
         name:
           type: string
           title: name
@@ -299,29 +318,21 @@ components:
           title: description
           description: The description of the supplier.
           nullable: true
-        logoMediaUid:
+        logoMediaId:
           type: string
-          title: logo_media_uid
-          description: The uid of the media of the logo of the supplier.
+          title: logo_media_id
+          description: The id of the media of the logo of the supplier.
           nullable: true
-        links:
+        externalLinksIds:
           type: array
           items:
-            $ref: '#/components/schemas/business.v1.Link'
-          title: links
+            type: string
+          title: external_links_ids
           description: The links of the supplier.
         businessId:
           type: string
           title: business_id
-          description: The uid of the business of the supplier.
-        createdAt:
-          type: string
-          title: created_at
-          description: The date and time the supplier was created.
-        updatedAt:
-          type: string
-          title: updated_at
-          description: The date and time the supplier was last updated.
+          description: The id of the business of the supplier.
       title: Supplier
       additionalProperties: false
     business.v1.UpdateSupplierRequest:
@@ -350,6 +361,38 @@ components:
           $ref: '#/components/schemas/business.v1.Supplier'
       title: UpdateSupplierResponse
       additionalProperties: false
+    link.v1.ResourceLink:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+          description: The unique identifier of the resource link.
+          nullable: true
+        targetUri:
+          type: string
+          title: target_uri
+          description: The link of the resource link.
+        iconUri:
+          type: string
+          title: icon_uri
+          description: The icon of the resource type or owner.
+          nullable: true
+        info:
+          type: string
+          title: info
+          description: |-
+            The meta data of the resource link.
+             It can be the title of the target resource.
+          nullable: true
+        label:
+          type: string
+          title: label
+          description: The label use to identify the resource type.
+          nullable: true
+      title: ResourceLink
+      additionalProperties: false
+      description: 'TODO: Auto delete resource link not linked to any other resource.'
     connect-protocol-version:
       type: number
       title: Connect-Protocol-Version

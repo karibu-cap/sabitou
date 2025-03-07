@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package order.v1;
+import "buf/validate/validate.proto";
+
+message OrderReceiptItem {
+  string product_id = 1;
+  string product_name = 2;
+  string product_price_in_cents = 3;
+  int32 quantity = 4;
+  int32 receipt_item_total_price_in_cents = 5;
+}
+
+// The receipt of an order.
+// The receipt is a PDF file that can be downloaded by the customer.
+// It contains the order details, the customer details, the payment details.
+message OrderReceipt {
+  /// ...order details...
+  string order_id = 1;
+  string order_status = 2;
+  string order_total_price_in_cents = 3;
+  string order_created_at = 4;
+  string order_updated_at = 5;
+  string order_resource_name = 6;
+  string order_resource_address = 7;
+  string order_resource_phone_number = 8;
+  string order_resource_email = 9;
+  string order_resource_logo_media_id = 10;
+  repeated OrderReceiptItem order_items = 11;
+}
+
+message GenerateBillingRequest {
+  // The unique identifier of the order.
+  string order_id = 1;
+}
+
+message GenerateBillingResponse {
+  // The receipt of the order.
+  OrderReceipt order_receipt = 1;
+}
+
+service BillingService {
+  // Generates a billing for the order.
+  rpc GenerateBilling(GenerateBillingRequest) returns (GenerateBillingResponse);
+}

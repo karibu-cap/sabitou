@@ -14,9 +14,9 @@ import 'dart:core' as $core;
 import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import '../../google/protobuf/descriptor.pbenum.dart' as $6;
-import '../../google/protobuf/duration.pb.dart' as $4;
-import '../../google/protobuf/timestamp.pb.dart' as $5;
+import '../../google/protobuf/descriptor.pbenum.dart' as $2;
+import '../../google/protobuf/duration.pb.dart' as $0;
+import '../../google/protobuf/timestamp.pb.dart' as $1;
 import 'validate.pbenum.dart';
 
 export 'validate.pbenum.dart';
@@ -5884,14 +5884,14 @@ enum DurationRules_GreaterThan {
 /// DurationRules describe the constraints applied exclusively to the `google.protobuf.Duration` well-known type.
 class DurationRules extends $pb.GeneratedMessage {
   factory DurationRules({
-    $4.Duration? const_2,
-    $4.Duration? lt,
-    $4.Duration? lte,
-    $4.Duration? gt,
-    $4.Duration? gte,
-    $core.Iterable<$4.Duration>? in_7,
-    $core.Iterable<$4.Duration>? notIn,
-    $core.Iterable<$4.Duration>? example,
+    $0.Duration? const_2,
+    $0.Duration? lt,
+    $0.Duration? lte,
+    $0.Duration? gt,
+    $0.Duration? gte,
+    $core.Iterable<$0.Duration>? in_7,
+    $core.Iterable<$0.Duration>? notIn,
+    $core.Iterable<$0.Duration>? example,
   }) {
     final $result = create();
     if (const_2 != null) {
@@ -5937,14 +5937,14 @@ class DurationRules extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'DurationRules', package: const $pb.PackageName(_omitMessageNames ? '' : 'buf.validate'), createEmptyInstance: create)
     ..oo(0, [3, 4])
     ..oo(1, [5, 6])
-    ..aOM<$4.Duration>(2, _omitFieldNames ? '' : 'const', subBuilder: $4.Duration.create)
-    ..aOM<$4.Duration>(3, _omitFieldNames ? '' : 'lt', subBuilder: $4.Duration.create)
-    ..aOM<$4.Duration>(4, _omitFieldNames ? '' : 'lte', subBuilder: $4.Duration.create)
-    ..aOM<$4.Duration>(5, _omitFieldNames ? '' : 'gt', subBuilder: $4.Duration.create)
-    ..aOM<$4.Duration>(6, _omitFieldNames ? '' : 'gte', subBuilder: $4.Duration.create)
-    ..pc<$4.Duration>(7, _omitFieldNames ? '' : 'in', $pb.PbFieldType.PM, subBuilder: $4.Duration.create)
-    ..pc<$4.Duration>(8, _omitFieldNames ? '' : 'notIn', $pb.PbFieldType.PM, subBuilder: $4.Duration.create)
-    ..pc<$4.Duration>(9, _omitFieldNames ? '' : 'example', $pb.PbFieldType.PM, subBuilder: $4.Duration.create)
+    ..aOM<$0.Duration>(2, _omitFieldNames ? '' : 'const', subBuilder: $0.Duration.create)
+    ..aOM<$0.Duration>(3, _omitFieldNames ? '' : 'lt', subBuilder: $0.Duration.create)
+    ..aOM<$0.Duration>(4, _omitFieldNames ? '' : 'lte', subBuilder: $0.Duration.create)
+    ..aOM<$0.Duration>(5, _omitFieldNames ? '' : 'gt', subBuilder: $0.Duration.create)
+    ..aOM<$0.Duration>(6, _omitFieldNames ? '' : 'gte', subBuilder: $0.Duration.create)
+    ..pc<$0.Duration>(7, _omitFieldNames ? '' : 'in', $pb.PbFieldType.PM, subBuilder: $0.Duration.create)
+    ..pc<$0.Duration>(8, _omitFieldNames ? '' : 'notIn', $pb.PbFieldType.PM, subBuilder: $0.Duration.create)
+    ..pc<$0.Duration>(9, _omitFieldNames ? '' : 'example', $pb.PbFieldType.PM, subBuilder: $0.Duration.create)
     ..hasExtensions = true
   ;
 
@@ -5986,15 +5986,15 @@ class DurationRules extends $pb.GeneratedMessage {
   ///  }
   ///  ```
   @$pb.TagNumber(2)
-  $4.Duration get const_2 => $_getN(0);
+  $0.Duration get const_2 => $_getN(0);
   @$pb.TagNumber(2)
-  set const_2($4.Duration v) { setField(2, v); }
+  set const_2($0.Duration v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasConst_2() => $_has(0);
   @$pb.TagNumber(2)
   void clearConst_2() => clearField(2);
   @$pb.TagNumber(2)
-  $4.Duration ensureConst_2() => $_ensure(0);
+  $0.Duration ensureConst_2() => $_ensure(0);
 
   ///  `lt` stipulates that the field must be less than the specified value of the `google.protobuf.Duration` type,
   ///  exclusive. If the field's value is greater than or equal to the specified
@@ -6007,15 +6007,15 @@ class DurationRules extends $pb.GeneratedMessage {
   ///  }
   ///  ```
   @$pb.TagNumber(3)
-  $4.Duration get lt => $_getN(1);
+  $0.Duration get lt => $_getN(1);
   @$pb.TagNumber(3)
-  set lt($4.Duration v) { setField(3, v); }
+  set lt($0.Duration v) { setField(3, v); }
   @$pb.TagNumber(3)
   $core.bool hasLt() => $_has(1);
   @$pb.TagNumber(3)
   void clearLt() => clearField(3);
   @$pb.TagNumber(3)
-  $4.Duration ensureLt() => $_ensure(1);
+  $0.Duration ensureLt() => $_ensure(1);
 
   ///  `lte` indicates that the field must be less than or equal to the specified
   ///  value of the `google.protobuf.Duration` type, inclusive. If the field's value is greater than the specified value,
@@ -6028,15 +6028,15 @@ class DurationRules extends $pb.GeneratedMessage {
   ///  }
   ///  ```
   @$pb.TagNumber(4)
-  $4.Duration get lte => $_getN(2);
+  $0.Duration get lte => $_getN(2);
   @$pb.TagNumber(4)
-  set lte($4.Duration v) { setField(4, v); }
+  set lte($0.Duration v) { setField(4, v); }
   @$pb.TagNumber(4)
   $core.bool hasLte() => $_has(2);
   @$pb.TagNumber(4)
   void clearLte() => clearField(4);
   @$pb.TagNumber(4)
-  $4.Duration ensureLte() => $_ensure(2);
+  $0.Duration ensureLte() => $_ensure(2);
 
   ///  `gt` requires the duration field value to be greater than the specified
   ///  value (exclusive). If the value of `gt` is larger than a specified `lt`
@@ -6057,15 +6057,15 @@ class DurationRules extends $pb.GeneratedMessage {
   ///  }
   ///  ```
   @$pb.TagNumber(5)
-  $4.Duration get gt => $_getN(3);
+  $0.Duration get gt => $_getN(3);
   @$pb.TagNumber(5)
-  set gt($4.Duration v) { setField(5, v); }
+  set gt($0.Duration v) { setField(5, v); }
   @$pb.TagNumber(5)
   $core.bool hasGt() => $_has(3);
   @$pb.TagNumber(5)
   void clearGt() => clearField(5);
   @$pb.TagNumber(5)
-  $4.Duration ensureGt() => $_ensure(3);
+  $0.Duration ensureGt() => $_ensure(3);
 
   ///  `gte` requires the duration field value to be greater than or equal to the
   ///  specified value (exclusive). If the value of `gte` is larger than a
@@ -6086,15 +6086,15 @@ class DurationRules extends $pb.GeneratedMessage {
   ///  }
   ///  ```
   @$pb.TagNumber(6)
-  $4.Duration get gte => $_getN(4);
+  $0.Duration get gte => $_getN(4);
   @$pb.TagNumber(6)
-  set gte($4.Duration v) { setField(6, v); }
+  set gte($0.Duration v) { setField(6, v); }
   @$pb.TagNumber(6)
   $core.bool hasGte() => $_has(4);
   @$pb.TagNumber(6)
   void clearGte() => clearField(6);
   @$pb.TagNumber(6)
-  $4.Duration ensureGte() => $_ensure(4);
+  $0.Duration ensureGte() => $_ensure(4);
 
   ///  `in` asserts that the field must be equal to one of the specified values of the `google.protobuf.Duration` type.
   ///  If the field's value doesn't correspond to any of the specified values,
@@ -6107,7 +6107,7 @@ class DurationRules extends $pb.GeneratedMessage {
   ///  }
   ///  ```
   @$pb.TagNumber(7)
-  $core.List<$4.Duration> get in_7 => $_getList(5);
+  $core.List<$0.Duration> get in_7 => $_getList(5);
 
   ///  `not_in` denotes that the field must not be equal to
   ///  any of the specified values of the `google.protobuf.Duration` type.
@@ -6121,7 +6121,7 @@ class DurationRules extends $pb.GeneratedMessage {
   ///  }
   ///  ```
   @$pb.TagNumber(8)
-  $core.List<$4.Duration> get notIn => $_getList(6);
+  $core.List<$0.Duration> get notIn => $_getList(6);
 
   ///  `example` specifies values that the field may have. These values SHOULD
   ///  conform to other constraints. `example` values will not impact validation
@@ -6136,7 +6136,7 @@ class DurationRules extends $pb.GeneratedMessage {
   ///  }
   ///  ```
   @$pb.TagNumber(9)
-  $core.List<$4.Duration> get example => $_getList(7);
+  $core.List<$0.Duration> get example => $_getList(7);
 }
 
 enum TimestampRules_LessThan {
@@ -6156,15 +6156,15 @@ enum TimestampRules_GreaterThan {
 /// TimestampRules describe the constraints applied exclusively to the `google.protobuf.Timestamp` well-known type.
 class TimestampRules extends $pb.GeneratedMessage {
   factory TimestampRules({
-    $5.Timestamp? const_2,
-    $5.Timestamp? lt,
-    $5.Timestamp? lte,
-    $5.Timestamp? gt,
-    $5.Timestamp? gte,
+    $1.Timestamp? const_2,
+    $1.Timestamp? lt,
+    $1.Timestamp? lte,
+    $1.Timestamp? gt,
+    $1.Timestamp? gte,
     $core.bool? ltNow,
     $core.bool? gtNow,
-    $4.Duration? within,
-    $core.Iterable<$5.Timestamp>? example,
+    $0.Duration? within,
+    $core.Iterable<$1.Timestamp>? example,
   }) {
     final $result = create();
     if (const_2 != null) {
@@ -6215,15 +6215,15 @@ class TimestampRules extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'TimestampRules', package: const $pb.PackageName(_omitMessageNames ? '' : 'buf.validate'), createEmptyInstance: create)
     ..oo(0, [3, 4, 7])
     ..oo(1, [5, 6, 8])
-    ..aOM<$5.Timestamp>(2, _omitFieldNames ? '' : 'const', subBuilder: $5.Timestamp.create)
-    ..aOM<$5.Timestamp>(3, _omitFieldNames ? '' : 'lt', subBuilder: $5.Timestamp.create)
-    ..aOM<$5.Timestamp>(4, _omitFieldNames ? '' : 'lte', subBuilder: $5.Timestamp.create)
-    ..aOM<$5.Timestamp>(5, _omitFieldNames ? '' : 'gt', subBuilder: $5.Timestamp.create)
-    ..aOM<$5.Timestamp>(6, _omitFieldNames ? '' : 'gte', subBuilder: $5.Timestamp.create)
+    ..aOM<$1.Timestamp>(2, _omitFieldNames ? '' : 'const', subBuilder: $1.Timestamp.create)
+    ..aOM<$1.Timestamp>(3, _omitFieldNames ? '' : 'lt', subBuilder: $1.Timestamp.create)
+    ..aOM<$1.Timestamp>(4, _omitFieldNames ? '' : 'lte', subBuilder: $1.Timestamp.create)
+    ..aOM<$1.Timestamp>(5, _omitFieldNames ? '' : 'gt', subBuilder: $1.Timestamp.create)
+    ..aOM<$1.Timestamp>(6, _omitFieldNames ? '' : 'gte', subBuilder: $1.Timestamp.create)
     ..aOB(7, _omitFieldNames ? '' : 'ltNow')
     ..aOB(8, _omitFieldNames ? '' : 'gtNow')
-    ..aOM<$4.Duration>(9, _omitFieldNames ? '' : 'within', subBuilder: $4.Duration.create)
-    ..pc<$5.Timestamp>(10, _omitFieldNames ? '' : 'example', $pb.PbFieldType.PM, subBuilder: $5.Timestamp.create)
+    ..aOM<$0.Duration>(9, _omitFieldNames ? '' : 'within', subBuilder: $0.Duration.create)
+    ..pc<$1.Timestamp>(10, _omitFieldNames ? '' : 'example', $pb.PbFieldType.PM, subBuilder: $1.Timestamp.create)
     ..hasExtensions = true
   ;
 
@@ -6263,15 +6263,15 @@ class TimestampRules extends $pb.GeneratedMessage {
   ///  }
   ///  ```
   @$pb.TagNumber(2)
-  $5.Timestamp get const_2 => $_getN(0);
+  $1.Timestamp get const_2 => $_getN(0);
   @$pb.TagNumber(2)
-  set const_2($5.Timestamp v) { setField(2, v); }
+  set const_2($1.Timestamp v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasConst_2() => $_has(0);
   @$pb.TagNumber(2)
   void clearConst_2() => clearField(2);
   @$pb.TagNumber(2)
-  $5.Timestamp ensureConst_2() => $_ensure(0);
+  $1.Timestamp ensureConst_2() => $_ensure(0);
 
   ///  requires the duration field value to be less than the specified value (field < value). If the field value doesn't meet the required conditions, an error message is generated.
   ///
@@ -6282,15 +6282,15 @@ class TimestampRules extends $pb.GeneratedMessage {
   ///  }
   ///  ```
   @$pb.TagNumber(3)
-  $5.Timestamp get lt => $_getN(1);
+  $1.Timestamp get lt => $_getN(1);
   @$pb.TagNumber(3)
-  set lt($5.Timestamp v) { setField(3, v); }
+  set lt($1.Timestamp v) { setField(3, v); }
   @$pb.TagNumber(3)
   $core.bool hasLt() => $_has(1);
   @$pb.TagNumber(3)
   void clearLt() => clearField(3);
   @$pb.TagNumber(3)
-  $5.Timestamp ensureLt() => $_ensure(1);
+  $1.Timestamp ensureLt() => $_ensure(1);
 
   ///  requires the timestamp field value to be less than or equal to the specified value (field <= value). If the field value doesn't meet the required conditions, an error message is generated.
   ///
@@ -6301,15 +6301,15 @@ class TimestampRules extends $pb.GeneratedMessage {
   ///  }
   ///  ```
   @$pb.TagNumber(4)
-  $5.Timestamp get lte => $_getN(2);
+  $1.Timestamp get lte => $_getN(2);
   @$pb.TagNumber(4)
-  set lte($5.Timestamp v) { setField(4, v); }
+  set lte($1.Timestamp v) { setField(4, v); }
   @$pb.TagNumber(4)
   $core.bool hasLte() => $_has(2);
   @$pb.TagNumber(4)
   void clearLte() => clearField(4);
   @$pb.TagNumber(4)
-  $5.Timestamp ensureLte() => $_ensure(2);
+  $1.Timestamp ensureLte() => $_ensure(2);
 
   ///  `gt` requires the timestamp field value to be greater than the specified
   ///  value (exclusive). If the value of `gt` is larger than a specified `lt`
@@ -6330,15 +6330,15 @@ class TimestampRules extends $pb.GeneratedMessage {
   ///  }
   ///  ```
   @$pb.TagNumber(5)
-  $5.Timestamp get gt => $_getN(3);
+  $1.Timestamp get gt => $_getN(3);
   @$pb.TagNumber(5)
-  set gt($5.Timestamp v) { setField(5, v); }
+  set gt($1.Timestamp v) { setField(5, v); }
   @$pb.TagNumber(5)
   $core.bool hasGt() => $_has(3);
   @$pb.TagNumber(5)
   void clearGt() => clearField(5);
   @$pb.TagNumber(5)
-  $5.Timestamp ensureGt() => $_ensure(3);
+  $1.Timestamp ensureGt() => $_ensure(3);
 
   ///  `gte` requires the timestamp field value to be greater than or equal to the
   ///  specified value (exclusive). If the value of `gte` is larger than a
@@ -6359,15 +6359,15 @@ class TimestampRules extends $pb.GeneratedMessage {
   ///  }
   ///  ```
   @$pb.TagNumber(6)
-  $5.Timestamp get gte => $_getN(4);
+  $1.Timestamp get gte => $_getN(4);
   @$pb.TagNumber(6)
-  set gte($5.Timestamp v) { setField(6, v); }
+  set gte($1.Timestamp v) { setField(6, v); }
   @$pb.TagNumber(6)
   $core.bool hasGte() => $_has(4);
   @$pb.TagNumber(6)
   void clearGte() => clearField(6);
   @$pb.TagNumber(6)
-  $5.Timestamp ensureGte() => $_ensure(4);
+  $1.Timestamp ensureGte() => $_ensure(4);
 
   ///  `lt_now` specifies that this field, of the `google.protobuf.Timestamp` type, must be less than the current time. `lt_now` can only be used with the `within` rule.
   ///
@@ -6412,18 +6412,18 @@ class TimestampRules extends $pb.GeneratedMessage {
   ///  }
   ///  ```
   @$pb.TagNumber(9)
-  $4.Duration get within => $_getN(7);
+  $0.Duration get within => $_getN(7);
   @$pb.TagNumber(9)
-  set within($4.Duration v) { setField(9, v); }
+  set within($0.Duration v) { setField(9, v); }
   @$pb.TagNumber(9)
   $core.bool hasWithin() => $_has(7);
   @$pb.TagNumber(9)
   void clearWithin() => clearField(9);
   @$pb.TagNumber(9)
-  $4.Duration ensureWithin() => $_ensure(7);
+  $0.Duration ensureWithin() => $_ensure(7);
 
   @$pb.TagNumber(10)
-  $core.List<$5.Timestamp> get example => $_getList(8);
+  $core.List<$1.Timestamp> get example => $_getList(8);
 }
 
 /// `Violations` is a collection of `Violation` messages. This message type is returned by
@@ -6715,9 +6715,9 @@ class FieldPathElement extends $pb.GeneratedMessage {
   factory FieldPathElement({
     $core.int? fieldNumber,
     $core.String? fieldName,
-    $6.FieldDescriptorProto_Type? fieldType,
-    $6.FieldDescriptorProto_Type? keyType,
-    $6.FieldDescriptorProto_Type? valueType,
+    $2.FieldDescriptorProto_Type? fieldType,
+    $2.FieldDescriptorProto_Type? keyType,
+    $2.FieldDescriptorProto_Type? valueType,
     $fixnum.Int64? index,
     $core.bool? boolKey,
     $fixnum.Int64? intKey,
@@ -6773,9 +6773,9 @@ class FieldPathElement extends $pb.GeneratedMessage {
     ..oo(0, [6, 7, 8, 9, 10])
     ..a<$core.int>(1, _omitFieldNames ? '' : 'fieldNumber', $pb.PbFieldType.O3)
     ..aOS(2, _omitFieldNames ? '' : 'fieldName')
-    ..e<$6.FieldDescriptorProto_Type>(3, _omitFieldNames ? '' : 'fieldType', $pb.PbFieldType.OE, defaultOrMaker: $6.FieldDescriptorProto_Type.TYPE_DOUBLE, valueOf: $6.FieldDescriptorProto_Type.valueOf, enumValues: $6.FieldDescriptorProto_Type.values)
-    ..e<$6.FieldDescriptorProto_Type>(4, _omitFieldNames ? '' : 'keyType', $pb.PbFieldType.OE, defaultOrMaker: $6.FieldDescriptorProto_Type.TYPE_DOUBLE, valueOf: $6.FieldDescriptorProto_Type.valueOf, enumValues: $6.FieldDescriptorProto_Type.values)
-    ..e<$6.FieldDescriptorProto_Type>(5, _omitFieldNames ? '' : 'valueType', $pb.PbFieldType.OE, defaultOrMaker: $6.FieldDescriptorProto_Type.TYPE_DOUBLE, valueOf: $6.FieldDescriptorProto_Type.valueOf, enumValues: $6.FieldDescriptorProto_Type.values)
+    ..e<$2.FieldDescriptorProto_Type>(3, _omitFieldNames ? '' : 'fieldType', $pb.PbFieldType.OE, defaultOrMaker: $2.FieldDescriptorProto_Type.TYPE_DOUBLE, valueOf: $2.FieldDescriptorProto_Type.valueOf, enumValues: $2.FieldDescriptorProto_Type.values)
+    ..e<$2.FieldDescriptorProto_Type>(4, _omitFieldNames ? '' : 'keyType', $pb.PbFieldType.OE, defaultOrMaker: $2.FieldDescriptorProto_Type.TYPE_DOUBLE, valueOf: $2.FieldDescriptorProto_Type.valueOf, enumValues: $2.FieldDescriptorProto_Type.values)
+    ..e<$2.FieldDescriptorProto_Type>(5, _omitFieldNames ? '' : 'valueType', $pb.PbFieldType.OE, defaultOrMaker: $2.FieldDescriptorProto_Type.TYPE_DOUBLE, valueOf: $2.FieldDescriptorProto_Type.valueOf, enumValues: $2.FieldDescriptorProto_Type.values)
     ..a<$fixnum.Int64>(6, _omitFieldNames ? '' : 'index', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
     ..aOB(7, _omitFieldNames ? '' : 'boolKey')
     ..aInt64(8, _omitFieldNames ? '' : 'intKey')
@@ -6840,9 +6840,9 @@ class FieldPathElement extends $pb.GeneratedMessage {
   ///  N.B.: Although groups are deprecated, the corresponding delimited encoding scheme is not, and
   ///  can be explicitly used in Protocol Buffers 2023 Edition.
   @$pb.TagNumber(3)
-  $6.FieldDescriptorProto_Type get fieldType => $_getN(2);
+  $2.FieldDescriptorProto_Type get fieldType => $_getN(2);
   @$pb.TagNumber(3)
-  set fieldType($6.FieldDescriptorProto_Type v) { setField(3, v); }
+  set fieldType($2.FieldDescriptorProto_Type v) { setField(3, v); }
   @$pb.TagNumber(3)
   $core.bool hasFieldType() => $_has(2);
   @$pb.TagNumber(3)
@@ -6852,9 +6852,9 @@ class FieldPathElement extends $pb.GeneratedMessage {
   /// unknown fields through wire data: specifically, it allows handling the differences between
   /// different integer encodings.
   @$pb.TagNumber(4)
-  $6.FieldDescriptorProto_Type get keyType => $_getN(3);
+  $2.FieldDescriptorProto_Type get keyType => $_getN(3);
   @$pb.TagNumber(4)
-  set keyType($6.FieldDescriptorProto_Type v) { setField(4, v); }
+  set keyType($2.FieldDescriptorProto_Type v) { setField(4, v); }
   @$pb.TagNumber(4)
   $core.bool hasKeyType() => $_has(3);
   @$pb.TagNumber(4)
@@ -6863,9 +6863,9 @@ class FieldPathElement extends $pb.GeneratedMessage {
   /// `value_type` specifies map value type of this field. This is useful if you want to display a
   /// value inside unknown fields through wire data.
   @$pb.TagNumber(5)
-  $6.FieldDescriptorProto_Type get valueType => $_getN(4);
+  $2.FieldDescriptorProto_Type get valueType => $_getN(4);
   @$pb.TagNumber(5)
-  set valueType($6.FieldDescriptorProto_Type v) { setField(5, v); }
+  set valueType($2.FieldDescriptorProto_Type v) { setField(5, v); }
   @$pb.TagNumber(5)
   $core.bool hasValueType() => $_has(4);
   @$pb.TagNumber(5)

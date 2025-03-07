@@ -1,0 +1,187 @@
+openapi: 3.1.0
+info:
+  title: order.v1
+paths:
+  /order.v1.BillingService/GenerateBilling:
+    post:
+      tags:
+        - order.v1.BillingService
+      summary: GenerateBilling
+      description: Generates a billing for the order.
+      operationId: order.v1.BillingService.GenerateBilling
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/order.v1.GenerateBillingRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/order.v1.GenerateBillingResponse'
+components:
+  schemas:
+    order.v1.GenerateBillingRequest:
+      type: object
+      properties:
+        orderId:
+          type: string
+          title: order_id
+          description: The unique identifier of the order.
+      title: GenerateBillingRequest
+      additionalProperties: false
+    order.v1.GenerateBillingResponse:
+      type: object
+      properties:
+        orderReceipt:
+          title: order_receipt
+          description: The receipt of the order.
+          $ref: '#/components/schemas/order.v1.OrderReceipt'
+      title: GenerateBillingResponse
+      additionalProperties: false
+    order.v1.OrderReceipt:
+      type: object
+      properties:
+        orderId:
+          type: string
+          title: order_id
+          description: / ...order details...
+        orderStatus:
+          type: string
+          title: order_status
+        orderTotalPriceInCents:
+          type: string
+          title: order_total_price_in_cents
+        orderCreatedAt:
+          type: string
+          title: order_created_at
+        orderUpdatedAt:
+          type: string
+          title: order_updated_at
+        orderResourceName:
+          type: string
+          title: order_resource_name
+        orderResourceAddress:
+          type: string
+          title: order_resource_address
+        orderResourcePhoneNumber:
+          type: string
+          title: order_resource_phone_number
+        orderResourceEmail:
+          type: string
+          title: order_resource_email
+        orderResourceLogoMediaId:
+          type: string
+          title: order_resource_logo_media_id
+        orderItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/order.v1.OrderReceiptItem'
+          title: order_items
+      title: OrderReceipt
+      additionalProperties: false
+      description: |-
+        The receipt of an order.
+         The receipt is a PDF file that can be downloaded by the customer.
+         It contains the order details, the customer details, the payment details.
+    order.v1.OrderReceiptItem:
+      type: object
+      properties:
+        productId:
+          type: string
+          title: product_id
+        productName:
+          type: string
+          title: product_name
+        productPriceInCents:
+          type: string
+          title: product_price_in_cents
+        quantity:
+          type: integer
+          title: quantity
+          format: int32
+        receiptItemTotalPriceInCents:
+          type: integer
+          title: receipt_item_total_price_in_cents
+          format: int32
+      title: OrderReceiptItem
+      additionalProperties: false
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+        - 1
+      description: Define the version of the Connect protocol
+      const: 1
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+            - not_found
+          enum:
+            - canceled
+            - unknown
+            - invalid_argument
+            - deadline_exceeded
+            - not_found
+            - already_exists
+            - permission_denied
+            - resource_exhausted
+            - failed_precondition
+            - aborted
+            - out_of_range
+            - unimplemented
+            - internal
+            - unavailable
+            - data_loss
+            - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        detail:
+          $ref: '#/components/schemas/google.protobuf.Any'
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+    google.protobuf.Any:
+      type: object
+      properties:
+        type:
+          type: string
+        value:
+          type: string
+          format: binary
+        debug:
+          type: object
+          additionalProperties: true
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+security: []
+tags:
+  - name: order.v1.BillingService

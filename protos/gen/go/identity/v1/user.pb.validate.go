@@ -160,40 +160,45 @@ func (m *User) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Uid
-
 	// no validation rules for UserName
 
-	if all {
-		switch v := interface{}(m.GetConnectedAccounts()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, UserValidationError{
-					field:  "ConnectedAccounts",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
+	for idx, item := range m.GetConnectedAccounts() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, UserValidationError{
+						field:  fmt.Sprintf("ConnectedAccounts[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, UserValidationError{
+						field:  fmt.Sprintf("ConnectedAccounts[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
 			}
-		case interface{ Validate() error }:
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				errors = append(errors, UserValidationError{
-					field:  "ConnectedAccounts",
+				return UserValidationError{
+					field:  fmt.Sprintf("ConnectedAccounts[%v]", idx),
 					reason: "embedded message failed validation",
 					cause:  err,
-				})
+				}
 			}
 		}
-	} else if v, ok := interface{}(m.GetConnectedAccounts()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return UserValidationError{
-				field:  "ConnectedAccounts",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
+
 	}
 
-	// no validation rules for CreatedAt
+	if m.RefId != nil {
+		// no validation rules for RefId
+	}
 
 	if m.Email != nil {
 		// no validation rules for Email
@@ -209,10 +214,6 @@ func (m *User) validate(all bool) error {
 
 	if m.LastName != nil {
 		// no validation rules for LastName
-	}
-
-	if m.PasswordHash != nil {
-		// no validation rules for PasswordHash
 	}
 
 	if m.AccountStatus != nil {
@@ -318,7 +319,7 @@ func (m *GetUserRequest) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Uid
+	// no validation rules for RefId
 
 	if len(errors) > 0 {
 		return GetUserRequestMultiError(errors)
@@ -807,7 +808,7 @@ func (m *RequestDeleteUserRequest) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Uid
+	// no validation rules for RefId
 
 	// no validation rules for Password
 

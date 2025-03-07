@@ -1,0 +1,333 @@
+openapi: 3.1.0
+info:
+  title: business.v1
+paths:
+  /business.v1.BusinessClientService/CreateBusinessClient:
+    post:
+      tags:
+        - business.v1.BusinessClientService
+      summary: CreateBusinessClient
+      description: Creates a new client.
+      operationId: business.v1.BusinessClientService.CreateBusinessClient
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/business.v1.CreateBusinessClientRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/business.v1.CreateBusinessClientResponse'
+  /business.v1.BusinessClientService/GetBusinessClient:
+    post:
+      tags:
+        - business.v1.BusinessClientService
+      summary: GetBusinessClient
+      description: Gets a client by id.
+      operationId: business.v1.BusinessClientService.GetBusinessClient
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/business.v1.GetBusinessClientRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/business.v1.GetBusinessClientResponse'
+  /business.v1.BusinessClientService/UpdateBusinessClient:
+    post:
+      tags:
+        - business.v1.BusinessClientService
+      summary: UpdateBusinessClient
+      description: |-
+        Updates a client.
+         Note:Only the fields that are set will be updated.
+      operationId: business.v1.BusinessClientService.UpdateBusinessClient
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/business.v1.UpdateBusinessClientRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/business.v1.UpdateBusinessClientResponse'
+  /business.v1.BusinessClientService/DeleteBusinessClient:
+    post:
+      tags:
+        - business.v1.BusinessClientService
+      summary: DeleteBusinessClient
+      description: Deletes a client.
+      operationId: business.v1.BusinessClientService.DeleteBusinessClient
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/business.v1.DeleteBusinessClientRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/business.v1.DeleteBusinessClientResponse'
+components:
+  schemas:
+    business.v1.BusinessClient:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+          description: The reference id to the client identifier.
+          nullable: true
+        name:
+          type: string
+          title: name
+          description: The name of the client.
+        phoneNumber:
+          type: string
+          title: phone_number
+        logoMediaId:
+          type: string
+          title: logo_media_id
+          description: The id of the media of the logo of the client.
+          nullable: true
+        businessId:
+          type: string
+          title: business_id
+          description: The id of the business of the client.
+      title: BusinessClient
+      additionalProperties: false
+    business.v1.CreateBusinessClientRequest:
+      type: object
+      properties:
+        client:
+          title: client
+          description: The client information to create.
+          $ref: '#/components/schemas/business.v1.BusinessClient'
+        logoRawImage:
+          type: string
+          title: logo_raw_image
+          format: byte
+          description: The raw image of the logo of the client.
+          nullable: true
+      title: CreateBusinessClientRequest
+      additionalProperties: false
+    business.v1.CreateBusinessClientResponse:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+          minLength: 3
+          description: The reference id to the client identifier.
+      title: CreateBusinessClientResponse
+      required:
+        - refId
+      additionalProperties: false
+    business.v1.DeleteBusinessClientRequest:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+          minLength: 3
+          description: The reference id to the client identifier.
+      title: DeleteBusinessClientRequest
+      required:
+        - refId
+      additionalProperties: false
+    business.v1.DeleteBusinessClientResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the client was successfully deleted.
+      title: DeleteBusinessClientResponse
+      additionalProperties: false
+    business.v1.GetBusinessClientRequest:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+          minLength: 3
+          description: The reference id to the client identifier.
+      title: GetBusinessClientRequest
+      required:
+        - refId
+      additionalProperties: false
+    business.v1.GetBusinessClientResponse:
+      type: object
+      properties:
+        client:
+          title: client
+          description: The retrieved client data.
+          $ref: '#/components/schemas/business.v1.BusinessClient'
+      title: GetBusinessClientResponse
+      additionalProperties: false
+    business.v1.UpdateBusinessClientRequest:
+      type: object
+      properties:
+        client:
+          title: client
+          description: |-
+            The client information to update.
+             Note:Only the fields that are set will be updated.
+          $ref: '#/components/schemas/business.v1.BusinessClient'
+        logoRawImage:
+          type: string
+          title: logo_raw_image
+          format: byte
+          description: The raw image of the logo of the client.
+          nullable: true
+      title: UpdateBusinessClientRequest
+      additionalProperties: false
+    business.v1.UpdateBusinessClientResponse:
+      type: object
+      properties:
+        client:
+          title: client
+          description: The updated client data.
+          $ref: '#/components/schemas/business.v1.BusinessClient'
+      title: UpdateBusinessClientResponse
+      additionalProperties: false
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+        - 1
+      description: Define the version of the Connect protocol
+      const: 1
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+            - not_found
+          enum:
+            - canceled
+            - unknown
+            - invalid_argument
+            - deadline_exceeded
+            - not_found
+            - already_exists
+            - permission_denied
+            - resource_exhausted
+            - failed_precondition
+            - aborted
+            - out_of_range
+            - unimplemented
+            - internal
+            - unavailable
+            - data_loss
+            - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        detail:
+          $ref: '#/components/schemas/google.protobuf.Any'
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+    google.protobuf.Any:
+      type: object
+      properties:
+        type:
+          type: string
+        value:
+          type: string
+          format: binary
+        debug:
+          type: object
+          additionalProperties: true
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+security: []
+tags:
+  - name: business.v1.BusinessClientService

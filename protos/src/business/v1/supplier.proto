@@ -1,6 +1,8 @@
 syntax = "proto3";
 
 package business.v1;
+import "buf/validate/validate.proto";
+import "link/v1/link.proto";
 
 message Link {
   // The label of the link.
@@ -12,8 +14,8 @@ message Link {
 }
 
 message Supplier {
-  // The unique identifier of the supplier.
-  string uid = 1;
+  // The reference id to the supplier identifier.
+  optional string ref_id = 1;
 
   // The name of the supplier.
   string name = 2;
@@ -21,20 +23,14 @@ message Supplier {
   // The description of the supplier.
   optional string description = 3;
 
-  // The uid of the media of the logo of the supplier.
-  optional string logo_media_uid = 4;
+  // The id of the media of the logo of the supplier.
+  optional string logo_media_id = 4;
 
   // The links of the supplier.
-  repeated Link links = 5;
+  repeated string external_links_ids = 5;
 
-  // The uid of the business of the supplier.
+  // The id of the business of the supplier.
   string business_id = 6;
-
-  // The date and time the supplier was created.
-  string created_at = 7;
-
-  // The date and time the supplier was last updated.
-  string updated_at = 8;
 }
 
 message CreateSupplierRequest {
@@ -43,16 +39,25 @@ message CreateSupplierRequest {
 
   // The raw image of the logo of the supplier.
   optional bytes logo_raw_image = 2;
+
+  // The links of the supplier.
+  repeated link.v1.ResourceLink external_links = 5;
 }
 
 message CreateSupplierResponse {
-  // The unique identifier of the created supplier.
-  string uid = 1;
+  // The reference id to the supplier identifier.
+  string ref_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
 }
 
 message GetSupplierRequest {
-  // The unique identifier of the supplier to retrieve.
-  string uid = 1;
+  // The reference id to the supplier identifier.
+  string ref_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
 }
 
 message GetSupplierResponse {
@@ -61,13 +66,16 @@ message GetSupplierResponse {
 }
 
 message GetBusinessSuppliersRequest {
-  // The unique identifier of the business to retrieve.
-  string uid = 1;
+  // The reference id to the supplier identifier.
+  string ref_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
 }
 
 message GetBusinessSuppliersResponse {
   // The list of suppliers of the business.
-  // Note: Only the uids and names of the suppliers are returned.
+  // Note: Only the ids and names of the suppliers are returned.
   repeated Supplier suppliers = 1;
 }
 
@@ -86,8 +94,11 @@ message UpdateSupplierResponse {
 }
 
 message DeleteSupplierRequest {
-  // The unique identifier of the supplier to delete.
-  string uid = 1;
+  // The reference id to the supplier identifier.
+  string ref_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
 }
 
 message DeleteSupplierResponse {

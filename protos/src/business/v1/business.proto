@@ -1,16 +1,17 @@
 syntax = "proto3";
 
 package business.v1;
+import "buf/validate/validate.proto";
 
 enum BusinessStatusType {
   BUSINESS_STATUS_TYPE_UNSPECIFIED = 0;
   BUSINESS_STATUS_TYPE_ACTIVE = 1;
-  BUSINESS_STATUS_TYPE_DELETED = 2;
+  BUSINESS_STATUS_TYPE_INACTIVE = 2;
 }
 
 message Business {
-  // The unique identifier of the business.
-  string uid = 1;
+  // The reference id to the business identifier.
+  optional string ref_id = 1;
 
   // The name of the business.
   string name = 2;
@@ -21,11 +22,11 @@ message Business {
   // The status of the business.
   BusinessStatusType status = 4;
 
-  // The uid of the owner of the business.
-  string owner_uid = 5;
+  // The id of the owner of the business.
+  string owner_id = 5;
 
-  // The uid of the media of the logo of the business.
-  optional string logo_media_uid = 6;
+  // The id of the media of the logo of the business.
+  optional string logo_media_id = 6;
 
   // The ISO 3166-1 alpha-2 country code of the business.
   // e.g. CM, US, GB, etc.
@@ -35,12 +36,27 @@ message Business {
   // For example: XAF, USD, EUR, etc.
   string currency_code = 8;
 
-  // The date and time the business was created.
-  string created_at = 9;
-
-  // The date and time the business was last updated.
-  string updated_at = 10;
+  // The media ids of different links of the business.
+  // It can be social media links, website links, etc.
+  repeated string links_media_ids = 9;
 }
+
+// message BusinessMember {
+//   // The unique identifier of the user.
+//   string user_id = 1;
+
+//   // The unique identifier of the business.
+//   string business_id = 2;
+
+//   // The permissions that the user has.
+//   repeated Permission permissions = 3;
+
+//   // The unique identifier of the permission group.
+//   optional string permissions_group_id = 4;
+
+//   // The date since when the
+//   string member_since = 5;
+// }
 
 message CreateBusinessRequest {
   // The business information to create.
@@ -52,13 +68,25 @@ message CreateBusinessRequest {
 }
 
 message CreateBusinessResponse {
-  // The unique identifier of the created business.
-  string uid = 1;
+  // The reference id to the business identifier.
+  string ref_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+}
+
+message GetMyBusinessesRequest {
+}
+message GetMyBusinessesResponse {
+  repeated Business businesses = 1;
 }
 
 message GetBusinessRequest {
-  // The unique identifier of the business to retrieve.
-  string uid = 1;
+  // The reference id to the business identifier.
+  string ref_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
 }
 
 message GetBusinessResponse {
@@ -81,8 +109,11 @@ message UpdateBusinessResponse {
 }
 
 message RequestDeleteBusinessRequest {
-  // The unique identifier of the business to delete.
-  string uid = 1;
+  // The reference id to the business identifier.
+  string ref_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
   // The password of the user who is trying to delete the business.
   string password = 2;
 }
@@ -129,18 +160,24 @@ message RemoveUserFromBusinessResponse {
 }
 
 message GetBusinessUsersRequest {
-  // The unique identifier of the business to retrieve.
-  string uid = 1;
+  // The reference id to the business identifier.
+  string ref_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
 }
 
 message GetBusinessUsersResponse {
   // The unique identifiers of the users of the business.
-  repeated string uids = 1;
+  repeated string ids = 1;
 }
 
 service BusinessService {
   // Create a new business.
   rpc CreateBusiness(CreateBusinessRequest) returns (CreateBusinessResponse);
+
+  // Get all businesses of the current user.
+  rpc GetMyBusinesses(GetMyBusinessesRequest) returns (GetMyBusinessesResponse);
 
   // Get a business by id.
   rpc GetBusiness(GetBusinessRequest) returns (GetBusinessResponse);

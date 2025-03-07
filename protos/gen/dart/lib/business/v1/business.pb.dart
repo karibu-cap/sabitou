@@ -20,20 +20,19 @@ export 'business.pbenum.dart';
 
 class Business extends $pb.GeneratedMessage {
   factory Business({
-    $core.String? uid,
+    $core.String? refId,
     $core.String? name,
     $core.String? description,
     BusinessStatusType? status,
-    $core.String? ownerUid,
-    $core.String? logoMediaUid,
+    $core.String? ownerId,
+    $core.String? logoMediaId,
     $core.String? countryCode,
     $core.String? currencyCode,
-    $core.String? createdAt,
-    $core.String? updatedAt,
+    $core.Iterable<$core.String>? linksMediaIds,
   }) {
     final $result = create();
-    if (uid != null) {
-      $result.uid = uid;
+    if (refId != null) {
+      $result.refId = refId;
     }
     if (name != null) {
       $result.name = name;
@@ -44,11 +43,11 @@ class Business extends $pb.GeneratedMessage {
     if (status != null) {
       $result.status = status;
     }
-    if (ownerUid != null) {
-      $result.ownerUid = ownerUid;
+    if (ownerId != null) {
+      $result.ownerId = ownerId;
     }
-    if (logoMediaUid != null) {
-      $result.logoMediaUid = logoMediaUid;
+    if (logoMediaId != null) {
+      $result.logoMediaId = logoMediaId;
     }
     if (countryCode != null) {
       $result.countryCode = countryCode;
@@ -56,11 +55,8 @@ class Business extends $pb.GeneratedMessage {
     if (currencyCode != null) {
       $result.currencyCode = currencyCode;
     }
-    if (createdAt != null) {
-      $result.createdAt = createdAt;
-    }
-    if (updatedAt != null) {
-      $result.updatedAt = updatedAt;
+    if (linksMediaIds != null) {
+      $result.linksMediaIds.addAll(linksMediaIds);
     }
     return $result;
   }
@@ -69,16 +65,15 @@ class Business extends $pb.GeneratedMessage {
   factory Business.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Business', package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'uid')
+    ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..aOS(2, _omitFieldNames ? '' : 'name')
     ..aOS(3, _omitFieldNames ? '' : 'description')
     ..e<BusinessStatusType>(4, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE, defaultOrMaker: BusinessStatusType.BUSINESS_STATUS_TYPE_UNSPECIFIED, valueOf: BusinessStatusType.valueOf, enumValues: BusinessStatusType.values)
-    ..aOS(5, _omitFieldNames ? '' : 'ownerUid')
-    ..aOS(6, _omitFieldNames ? '' : 'logoMediaUid')
+    ..aOS(5, _omitFieldNames ? '' : 'ownerId')
+    ..aOS(6, _omitFieldNames ? '' : 'logoMediaId')
     ..aOS(7, _omitFieldNames ? '' : 'countryCode')
     ..aOS(8, _omitFieldNames ? '' : 'currencyCode')
-    ..aOS(9, _omitFieldNames ? '' : 'createdAt')
-    ..aOS(10, _omitFieldNames ? '' : 'updatedAt')
+    ..pPS(9, _omitFieldNames ? '' : 'linksMediaIds')
     ..hasRequiredFields = false
   ;
 
@@ -103,15 +98,15 @@ class Business extends $pb.GeneratedMessage {
   static Business getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Business>(create);
   static Business? _defaultInstance;
 
-  /// The unique identifier of the business.
+  /// The reference id to the business identifier.
   @$pb.TagNumber(1)
-  $core.String get uid => $_getSZ(0);
+  $core.String get refId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set uid($core.String v) { $_setString(0, v); }
+  set refId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasUid() => $_has(0);
+  $core.bool hasRefId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearUid() => clearField(1);
+  void clearRefId() => clearField(1);
 
   /// The name of the business.
   @$pb.TagNumber(2)
@@ -143,25 +138,25 @@ class Business extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   void clearStatus() => clearField(4);
 
-  /// The uid of the owner of the business.
+  /// The id of the owner of the business.
   @$pb.TagNumber(5)
-  $core.String get ownerUid => $_getSZ(4);
+  $core.String get ownerId => $_getSZ(4);
   @$pb.TagNumber(5)
-  set ownerUid($core.String v) { $_setString(4, v); }
+  set ownerId($core.String v) { $_setString(4, v); }
   @$pb.TagNumber(5)
-  $core.bool hasOwnerUid() => $_has(4);
+  $core.bool hasOwnerId() => $_has(4);
   @$pb.TagNumber(5)
-  void clearOwnerUid() => clearField(5);
+  void clearOwnerId() => clearField(5);
 
-  /// The uid of the media of the logo of the business.
+  /// The id of the media of the logo of the business.
   @$pb.TagNumber(6)
-  $core.String get logoMediaUid => $_getSZ(5);
+  $core.String get logoMediaId => $_getSZ(5);
   @$pb.TagNumber(6)
-  set logoMediaUid($core.String v) { $_setString(5, v); }
+  set logoMediaId($core.String v) { $_setString(5, v); }
   @$pb.TagNumber(6)
-  $core.bool hasLogoMediaUid() => $_has(5);
+  $core.bool hasLogoMediaId() => $_has(5);
   @$pb.TagNumber(6)
-  void clearLogoMediaUid() => clearField(6);
+  void clearLogoMediaId() => clearField(6);
 
   /// The ISO 3166-1 alpha-2 country code of the business.
   /// e.g. CM, US, GB, etc.
@@ -185,25 +180,10 @@ class Business extends $pb.GeneratedMessage {
   @$pb.TagNumber(8)
   void clearCurrencyCode() => clearField(8);
 
-  /// The date and time the business was created.
+  /// The media ids of different links of the business.
+  /// It can be social media links, website links, etc.
   @$pb.TagNumber(9)
-  $core.String get createdAt => $_getSZ(8);
-  @$pb.TagNumber(9)
-  set createdAt($core.String v) { $_setString(8, v); }
-  @$pb.TagNumber(9)
-  $core.bool hasCreatedAt() => $_has(8);
-  @$pb.TagNumber(9)
-  void clearCreatedAt() => clearField(9);
-
-  /// The date and time the business was last updated.
-  @$pb.TagNumber(10)
-  $core.String get updatedAt => $_getSZ(9);
-  @$pb.TagNumber(10)
-  set updatedAt($core.String v) { $_setString(9, v); }
-  @$pb.TagNumber(10)
-  $core.bool hasUpdatedAt() => $_has(9);
-  @$pb.TagNumber(10)
-  void clearUpdatedAt() => clearField(10);
+  $core.List<$core.String> get linksMediaIds => $_getList(8);
 }
 
 class CreateBusinessRequest extends $pb.GeneratedMessage {
@@ -277,11 +257,11 @@ class CreateBusinessRequest extends $pb.GeneratedMessage {
 
 class CreateBusinessResponse extends $pb.GeneratedMessage {
   factory CreateBusinessResponse({
-    $core.String? uid,
+    $core.String? refId,
   }) {
     final $result = create();
-    if (uid != null) {
-      $result.uid = uid;
+    if (refId != null) {
+      $result.refId = refId;
     }
     return $result;
   }
@@ -290,7 +270,7 @@ class CreateBusinessResponse extends $pb.GeneratedMessage {
   factory CreateBusinessResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CreateBusinessResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'uid')
+    ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..hasRequiredFields = false
   ;
 
@@ -315,24 +295,100 @@ class CreateBusinessResponse extends $pb.GeneratedMessage {
   static CreateBusinessResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CreateBusinessResponse>(create);
   static CreateBusinessResponse? _defaultInstance;
 
-  /// The unique identifier of the created business.
+  /// The reference id to the business identifier.
   @$pb.TagNumber(1)
-  $core.String get uid => $_getSZ(0);
+  $core.String get refId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set uid($core.String v) { $_setString(0, v); }
+  set refId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasUid() => $_has(0);
+  $core.bool hasRefId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearUid() => clearField(1);
+  void clearRefId() => clearField(1);
+}
+
+class GetMyBusinessesRequest extends $pb.GeneratedMessage {
+  factory GetMyBusinessesRequest() => create();
+  GetMyBusinessesRequest._() : super();
+  factory GetMyBusinessesRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetMyBusinessesRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'GetMyBusinessesRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'), createEmptyInstance: create)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  GetMyBusinessesRequest clone() => GetMyBusinessesRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  GetMyBusinessesRequest copyWith(void Function(GetMyBusinessesRequest) updates) => super.copyWith((message) => updates(message as GetMyBusinessesRequest)) as GetMyBusinessesRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static GetMyBusinessesRequest create() => GetMyBusinessesRequest._();
+  GetMyBusinessesRequest createEmptyInstance() => create();
+  static $pb.PbList<GetMyBusinessesRequest> createRepeated() => $pb.PbList<GetMyBusinessesRequest>();
+  @$core.pragma('dart2js:noInline')
+  static GetMyBusinessesRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetMyBusinessesRequest>(create);
+  static GetMyBusinessesRequest? _defaultInstance;
+}
+
+class GetMyBusinessesResponse extends $pb.GeneratedMessage {
+  factory GetMyBusinessesResponse({
+    $core.Iterable<Business>? businesses,
+  }) {
+    final $result = create();
+    if (businesses != null) {
+      $result.businesses.addAll(businesses);
+    }
+    return $result;
+  }
+  GetMyBusinessesResponse._() : super();
+  factory GetMyBusinessesResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetMyBusinessesResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'GetMyBusinessesResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'), createEmptyInstance: create)
+    ..pc<Business>(1, _omitFieldNames ? '' : 'businesses', $pb.PbFieldType.PM, subBuilder: Business.create)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  GetMyBusinessesResponse clone() => GetMyBusinessesResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  GetMyBusinessesResponse copyWith(void Function(GetMyBusinessesResponse) updates) => super.copyWith((message) => updates(message as GetMyBusinessesResponse)) as GetMyBusinessesResponse;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static GetMyBusinessesResponse create() => GetMyBusinessesResponse._();
+  GetMyBusinessesResponse createEmptyInstance() => create();
+  static $pb.PbList<GetMyBusinessesResponse> createRepeated() => $pb.PbList<GetMyBusinessesResponse>();
+  @$core.pragma('dart2js:noInline')
+  static GetMyBusinessesResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetMyBusinessesResponse>(create);
+  static GetMyBusinessesResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.List<Business> get businesses => $_getList(0);
 }
 
 class GetBusinessRequest extends $pb.GeneratedMessage {
   factory GetBusinessRequest({
-    $core.String? uid,
+    $core.String? refId,
   }) {
     final $result = create();
-    if (uid != null) {
-      $result.uid = uid;
+    if (refId != null) {
+      $result.refId = refId;
     }
     return $result;
   }
@@ -341,7 +397,7 @@ class GetBusinessRequest extends $pb.GeneratedMessage {
   factory GetBusinessRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'GetBusinessRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'uid')
+    ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..hasRequiredFields = false
   ;
 
@@ -366,15 +422,15 @@ class GetBusinessRequest extends $pb.GeneratedMessage {
   static GetBusinessRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetBusinessRequest>(create);
   static GetBusinessRequest? _defaultInstance;
 
-  /// The unique identifier of the business to retrieve.
+  /// The reference id to the business identifier.
   @$pb.TagNumber(1)
-  $core.String get uid => $_getSZ(0);
+  $core.String get refId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set uid($core.String v) { $_setString(0, v); }
+  set refId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasUid() => $_has(0);
+  $core.bool hasRefId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearUid() => clearField(1);
+  void clearRefId() => clearField(1);
 }
 
 class GetBusinessResponse extends $pb.GeneratedMessage {
@@ -552,12 +608,12 @@ class UpdateBusinessResponse extends $pb.GeneratedMessage {
 
 class RequestDeleteBusinessRequest extends $pb.GeneratedMessage {
   factory RequestDeleteBusinessRequest({
-    $core.String? uid,
+    $core.String? refId,
     $core.String? password,
   }) {
     final $result = create();
-    if (uid != null) {
-      $result.uid = uid;
+    if (refId != null) {
+      $result.refId = refId;
     }
     if (password != null) {
       $result.password = password;
@@ -569,7 +625,7 @@ class RequestDeleteBusinessRequest extends $pb.GeneratedMessage {
   factory RequestDeleteBusinessRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'RequestDeleteBusinessRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'uid')
+    ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..aOS(2, _omitFieldNames ? '' : 'password')
     ..hasRequiredFields = false
   ;
@@ -595,15 +651,15 @@ class RequestDeleteBusinessRequest extends $pb.GeneratedMessage {
   static RequestDeleteBusinessRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<RequestDeleteBusinessRequest>(create);
   static RequestDeleteBusinessRequest? _defaultInstance;
 
-  /// The unique identifier of the business to delete.
+  /// The reference id to the business identifier.
   @$pb.TagNumber(1)
-  $core.String get uid => $_getSZ(0);
+  $core.String get refId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set uid($core.String v) { $_setString(0, v); }
+  set refId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasUid() => $_has(0);
+  $core.bool hasRefId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearUid() => clearField(1);
+  void clearRefId() => clearField(1);
 
   /// The password of the user who is trying to delete the business.
   @$pb.TagNumber(2)
@@ -993,11 +1049,11 @@ class RemoveUserFromBusinessResponse extends $pb.GeneratedMessage {
 
 class GetBusinessUsersRequest extends $pb.GeneratedMessage {
   factory GetBusinessUsersRequest({
-    $core.String? uid,
+    $core.String? refId,
   }) {
     final $result = create();
-    if (uid != null) {
-      $result.uid = uid;
+    if (refId != null) {
+      $result.refId = refId;
     }
     return $result;
   }
@@ -1006,7 +1062,7 @@ class GetBusinessUsersRequest extends $pb.GeneratedMessage {
   factory GetBusinessUsersRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'GetBusinessUsersRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'uid')
+    ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..hasRequiredFields = false
   ;
 
@@ -1031,24 +1087,24 @@ class GetBusinessUsersRequest extends $pb.GeneratedMessage {
   static GetBusinessUsersRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetBusinessUsersRequest>(create);
   static GetBusinessUsersRequest? _defaultInstance;
 
-  /// The unique identifier of the business to retrieve.
+  /// The reference id to the business identifier.
   @$pb.TagNumber(1)
-  $core.String get uid => $_getSZ(0);
+  $core.String get refId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set uid($core.String v) { $_setString(0, v); }
+  set refId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasUid() => $_has(0);
+  $core.bool hasRefId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearUid() => clearField(1);
+  void clearRefId() => clearField(1);
 }
 
 class GetBusinessUsersResponse extends $pb.GeneratedMessage {
   factory GetBusinessUsersResponse({
-    $core.Iterable<$core.String>? uids,
+    $core.Iterable<$core.String>? ids,
   }) {
     final $result = create();
-    if (uids != null) {
-      $result.uids.addAll(uids);
+    if (ids != null) {
+      $result.ids.addAll(ids);
     }
     return $result;
   }
@@ -1057,7 +1113,7 @@ class GetBusinessUsersResponse extends $pb.GeneratedMessage {
   factory GetBusinessUsersResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'GetBusinessUsersResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'), createEmptyInstance: create)
-    ..pPS(1, _omitFieldNames ? '' : 'uids')
+    ..pPS(1, _omitFieldNames ? '' : 'ids')
     ..hasRequiredFields = false
   ;
 
@@ -1084,7 +1140,7 @@ class GetBusinessUsersResponse extends $pb.GeneratedMessage {
 
   /// The unique identifiers of the users of the business.
   @$pb.TagNumber(1)
-  $core.List<$core.String> get uids => $_getList(0);
+  $core.List<$core.String> get ids => $_getList(0);
 }
 
 class BusinessServiceApi {
@@ -1093,6 +1149,9 @@ class BusinessServiceApi {
 
   $async.Future<CreateBusinessResponse> createBusiness($pb.ClientContext? ctx, CreateBusinessRequest request) =>
     _client.invoke<CreateBusinessResponse>(ctx, 'BusinessService', 'CreateBusiness', request, CreateBusinessResponse())
+  ;
+  $async.Future<GetMyBusinessesResponse> getMyBusinesses($pb.ClientContext? ctx, GetMyBusinessesRequest request) =>
+    _client.invoke<GetMyBusinessesResponse>(ctx, 'BusinessService', 'GetMyBusinesses', request, GetMyBusinessesResponse())
   ;
   $async.Future<GetBusinessResponse> getBusiness($pb.ClientContext? ctx, GetBusinessRequest request) =>
     _client.invoke<GetBusinessResponse>(ctx, 'BusinessService', 'GetBusiness', request, GetBusinessResponse())

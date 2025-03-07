@@ -56,15 +56,13 @@ func (m *Store) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Uid
-
 	// no validation rules for Name
 
 	// no validation rules for BusinessId
 
-	// no validation rules for CreatedAt
-
-	// no validation rules for UpdatedAt
+	if m.RefId != nil {
+		// no validation rules for RefId
+	}
 
 	if m.Address != nil {
 		// no validation rules for Address
@@ -74,8 +72,12 @@ func (m *Store) validate(all bool) error {
 		// no validation rules for Description
 	}
 
-	if m.LogoMediaUid != nil {
-		// no validation rules for LogoMediaUid
+	if m.LogoMediaId != nil {
+		// no validation rules for LogoMediaId
+	}
+
+	if m.LinksMediaIds != nil {
+		// no validation rules for LinksMediaIds
 	}
 
 	if len(errors) > 0 {
@@ -312,7 +314,7 @@ func (m *CreateStoreResponse) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Uid
+	// no validation rules for RefId
 
 	if len(errors) > 0 {
 		return CreateStoreResponseMultiError(errors)
@@ -416,7 +418,7 @@ func (m *GetStoreRequest) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Uid
+	// no validation rules for RefId
 
 	if len(errors) > 0 {
 		return GetStoreRequestMultiError(errors)
@@ -913,7 +915,7 @@ func (m *DeleteStoreRequest) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Uid
+	// no validation rules for RefId
 
 	if len(errors) > 0 {
 		return DeleteStoreRequestMultiError(errors)

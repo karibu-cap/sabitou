@@ -11,43 +11,35 @@ abstract final class PermissionService {
   static const name = 'identity.v1.PermissionService';
 
   /// Creates a new permission group.
-  static const createPermissionGroup = connect.Spec(
-    '/$name/CreatePermissionGroup',
+  static const createPermissionsGroup = connect.Spec(
+    '/$name/CreatePermissionsGroup',
     connect.StreamType.unary,
-    identityv1permission.CreatePermissionGroupRequest.new,
-    identityv1permission.CreatePermissionGroupResponse.new,
+    identityv1permission.CreatePermissionsGroupRequest.new,
+    identityv1permission.CreatePermissionsGroupResponse.new,
   );
 
   /// Gets a permission group by id.
-  static const getPermissionGroup = connect.Spec(
-    '/$name/GetPermissionGroup',
+  static const getPermissionsGroup = connect.Spec(
+    '/$name/GetPermissionsGroup',
     connect.StreamType.unary,
-    identityv1permission.GetPermissionGroupRequest.new,
-    identityv1permission.GetPermissionGroupResponse.new,
+    identityv1permission.GetPermissionsGroupRequest.new,
+    identityv1permission.GetPermissionsGroupResponse.new,
   );
 
   /// Updates a permission group.
-  static const updatePermissionGroup = connect.Spec(
-    '/$name/UpdatePermissionGroup',
+  static const updatePermissionsGroup = connect.Spec(
+    '/$name/UpdatePermissionsGroup',
     connect.StreamType.unary,
-    identityv1permission.UpdatePermissionGroupRequest.new,
-    identityv1permission.UpdatePermissionGroupResponse.new,
+    identityv1permission.UpdatePermissionsGroupRequest.new,
+    identityv1permission.UpdatePermissionsGroupResponse.new,
   );
 
   /// Deletes a permission group.
-  static const deletePermissionGroup = connect.Spec(
-    '/$name/DeletePermissionGroup',
+  static const deletePermissionsGroup = connect.Spec(
+    '/$name/DeletePermissionsGroup',
     connect.StreamType.unary,
-    identityv1permission.DeletePermissionGroupRequest.new,
-    identityv1permission.DeletePermissionGroupResponse.new,
-  );
-
-  /// Gets the permissions of the user.
-  static const getUserPermissions = connect.Spec(
-    '/$name/GetUserPermissions',
-    connect.StreamType.unary,
-    identityv1permission.GetUserPermissionsRequest.new,
-    identityv1permission.GetUserPermissionsResponse.new,
+    identityv1permission.DeletePermissionsGroupRequest.new,
+    identityv1permission.DeletePermissionsGroupResponse.new,
   );
 
   /// Removes a permission from the user.
@@ -67,11 +59,11 @@ abstract final class PermissionService {
   );
 
   /// Gets the permission groups of the business.
-  static const getBusinessPermissionGroups = connect.Spec(
-    '/$name/GetBusinessPermissionGroups',
+  static const getBusinessPermissionsGroups = connect.Spec(
+    '/$name/GetBusinessPermissionsGroups',
     connect.StreamType.unary,
-    identityv1permission.GetBusinessPermissionGroupsRequest.new,
-    identityv1permission.GetBusinessPermissionGroupsResponse.new,
+    identityv1permission.GetBusinessPermissionsGroupsRequest.new,
+    identityv1permission.GetBusinessPermissionsGroupsResponse.new,
   );
 
   /// Checks if the user has the provided permission for the provided resource.

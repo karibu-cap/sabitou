@@ -38,42 +38,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/identity.v1.LoginResponse'
-  /identity.v1.AuthService/Register:
-    post:
-      tags:
-        - identity.v1.AuthService
-      summary: Register
-      description: Create a user without a password.
-      operationId: identity.v1.AuthService.Register
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/identity.v1.RegisterRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/identity.v1.RegisterResponse'
   /identity.v1.AuthService/RequestPasswordReset:
     post:
       tags:
@@ -154,9 +118,14 @@ components:
         uRef:
           type: string
           title: u_ref
-          description: |-
+          description: |+
             The unique identifier of the user.
              For example, the email address or phone number or @username.
+            user_ref must be a valid email address or user id or @username:
+            ```
+            this.isEmail() || this.matches('^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')
+            ```
+
         password:
           type: string
           title: password
@@ -176,46 +145,20 @@ components:
           description: The refresh token to use to refresh the token.
       title: LoginResponse
       additionalProperties: false
-    identity.v1.RegisterRequest:
-      type: object
-      properties:
-        username:
-          type: string
-          title: username
-          description: The unique identifier of the user.
-          nullable: true
-        email:
-          type: string
-          title: email
-          description: The email address of the user.
-          nullable: true
-      title: RegisterRequest
-      additionalProperties: false
-      description: |-
-        Register a new user with the minimum required information.
-         The user will have to set a password later.
-    identity.v1.RegisterResponse:
-      type: object
-      properties:
-        token:
-          type: string
-          title: token
-          description: The token to use to authenticate the user in subsequent requests.
-        refreshToken:
-          type: string
-          title: refresh_token
-          description: The refresh token to use to refresh the token.
-      title: RegisterResponse
-      additionalProperties: false
     identity.v1.RequestPasswordResetRequest:
       type: object
       properties:
         uRef:
           type: string
           title: u_ref
-          description: |-
+          description: |+
             The unique identifier of the user.
-             For example, the email address or phone number or @username.
+             For example, the email address or userId, later it will include the user name as well.
+            user_ref must be a valid email address or user id or @username:
+            ```
+            this.isEmail() || this.matches('^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')
+            ```
+
       title: RequestPasswordResetRequest
       additionalProperties: false
     identity.v1.RequestPasswordResetResponse:

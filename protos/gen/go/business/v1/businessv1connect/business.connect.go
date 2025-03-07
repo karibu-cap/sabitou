@@ -36,6 +36,9 @@ const (
 	// BusinessServiceCreateBusinessProcedure is the fully-qualified name of the BusinessService's
 	// CreateBusiness RPC.
 	BusinessServiceCreateBusinessProcedure = "/business.v1.BusinessService/CreateBusiness"
+	// BusinessServiceGetMyBusinessesProcedure is the fully-qualified name of the BusinessService's
+	// GetMyBusinesses RPC.
+	BusinessServiceGetMyBusinessesProcedure = "/business.v1.BusinessService/GetMyBusinesses"
 	// BusinessServiceGetBusinessProcedure is the fully-qualified name of the BusinessService's
 	// GetBusiness RPC.
 	BusinessServiceGetBusinessProcedure = "/business.v1.BusinessService/GetBusiness"
@@ -63,6 +66,8 @@ const (
 type BusinessServiceClient interface {
 	// Create a new business.
 	CreateBusiness(context.Context, *connect.Request[v1.CreateBusinessRequest]) (*connect.Response[v1.CreateBusinessResponse], error)
+	// Get all businesses of the current user.
+	GetMyBusinesses(context.Context, *connect.Request[v1.GetMyBusinessesRequest]) (*connect.Response[v1.GetMyBusinessesResponse], error)
 	// Get a business by id.
 	GetBusiness(context.Context, *connect.Request[v1.GetBusinessRequest]) (*connect.Response[v1.GetBusinessResponse], error)
 	// Update a business.
@@ -97,6 +102,12 @@ func NewBusinessServiceClient(httpClient connect.HTTPClient, baseURL string, opt
 			httpClient,
 			baseURL+BusinessServiceCreateBusinessProcedure,
 			connect.WithSchema(businessServiceMethods.ByName("CreateBusiness")),
+			connect.WithClientOptions(opts...),
+		),
+		getMyBusinesses: connect.NewClient[v1.GetMyBusinessesRequest, v1.GetMyBusinessesResponse](
+			httpClient,
+			baseURL+BusinessServiceGetMyBusinessesProcedure,
+			connect.WithSchema(businessServiceMethods.ByName("GetMyBusinesses")),
 			connect.WithClientOptions(opts...),
 		),
 		getBusiness: connect.NewClient[v1.GetBusinessRequest, v1.GetBusinessResponse](
@@ -147,6 +158,7 @@ func NewBusinessServiceClient(httpClient connect.HTTPClient, baseURL string, opt
 // businessServiceClient implements BusinessServiceClient.
 type businessServiceClient struct {
 	createBusiness         *connect.Client[v1.CreateBusinessRequest, v1.CreateBusinessResponse]
+	getMyBusinesses        *connect.Client[v1.GetMyBusinessesRequest, v1.GetMyBusinessesResponse]
 	getBusiness            *connect.Client[v1.GetBusinessRequest, v1.GetBusinessResponse]
 	updateBusiness         *connect.Client[v1.UpdateBusinessRequest, v1.UpdateBusinessResponse]
 	requestDeleteBusiness  *connect.Client[v1.RequestDeleteBusinessRequest, v1.RequestDeleteBusinessResponse]
@@ -159,6 +171,11 @@ type businessServiceClient struct {
 // CreateBusiness calls business.v1.BusinessService.CreateBusiness.
 func (c *businessServiceClient) CreateBusiness(ctx context.Context, req *connect.Request[v1.CreateBusinessRequest]) (*connect.Response[v1.CreateBusinessResponse], error) {
 	return c.createBusiness.CallUnary(ctx, req)
+}
+
+// GetMyBusinesses calls business.v1.BusinessService.GetMyBusinesses.
+func (c *businessServiceClient) GetMyBusinesses(ctx context.Context, req *connect.Request[v1.GetMyBusinessesRequest]) (*connect.Response[v1.GetMyBusinessesResponse], error) {
+	return c.getMyBusinesses.CallUnary(ctx, req)
 }
 
 // GetBusiness calls business.v1.BusinessService.GetBusiness.
@@ -200,6 +217,8 @@ func (c *businessServiceClient) GetBusinessUsers(ctx context.Context, req *conne
 type BusinessServiceHandler interface {
 	// Create a new business.
 	CreateBusiness(context.Context, *connect.Request[v1.CreateBusinessRequest]) (*connect.Response[v1.CreateBusinessResponse], error)
+	// Get all businesses of the current user.
+	GetMyBusinesses(context.Context, *connect.Request[v1.GetMyBusinessesRequest]) (*connect.Response[v1.GetMyBusinessesResponse], error)
 	// Get a business by id.
 	GetBusiness(context.Context, *connect.Request[v1.GetBusinessRequest]) (*connect.Response[v1.GetBusinessResponse], error)
 	// Update a business.
@@ -230,6 +249,12 @@ func NewBusinessServiceHandler(svc BusinessServiceHandler, opts ...connect.Handl
 		BusinessServiceCreateBusinessProcedure,
 		svc.CreateBusiness,
 		connect.WithSchema(businessServiceMethods.ByName("CreateBusiness")),
+		connect.WithHandlerOptions(opts...),
+	)
+	businessServiceGetMyBusinessesHandler := connect.NewUnaryHandler(
+		BusinessServiceGetMyBusinessesProcedure,
+		svc.GetMyBusinesses,
+		connect.WithSchema(businessServiceMethods.ByName("GetMyBusinesses")),
 		connect.WithHandlerOptions(opts...),
 	)
 	businessServiceGetBusinessHandler := connect.NewUnaryHandler(
@@ -278,6 +303,8 @@ func NewBusinessServiceHandler(svc BusinessServiceHandler, opts ...connect.Handl
 		switch r.URL.Path {
 		case BusinessServiceCreateBusinessProcedure:
 			businessServiceCreateBusinessHandler.ServeHTTP(w, r)
+		case BusinessServiceGetMyBusinessesProcedure:
+			businessServiceGetMyBusinessesHandler.ServeHTTP(w, r)
 		case BusinessServiceGetBusinessProcedure:
 			businessServiceGetBusinessHandler.ServeHTTP(w, r)
 		case BusinessServiceUpdateBusinessProcedure:
@@ -303,6 +330,10 @@ type UnimplementedBusinessServiceHandler struct{}
 
 func (UnimplementedBusinessServiceHandler) CreateBusiness(context.Context, *connect.Request[v1.CreateBusinessRequest]) (*connect.Response[v1.CreateBusinessResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("business.v1.BusinessService.CreateBusiness is not implemented"))
+}
+
+func (UnimplementedBusinessServiceHandler) GetMyBusinesses(context.Context, *connect.Request[v1.GetMyBusinessesRequest]) (*connect.Response[v1.GetMyBusinessesResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("business.v1.BusinessService.GetMyBusinesses is not implemented"))
 }
 
 func (UnimplementedBusinessServiceHandler) GetBusiness(context.Context, *connect.Request[v1.GetBusinessRequest]) (*connect.Response[v1.GetBusinessResponse], error) {

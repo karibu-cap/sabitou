@@ -16,12 +16,12 @@ import 'package:protobuf/protobuf.dart' as $pb;
 
 class ProductCategory extends $pb.GeneratedMessage {
   factory ProductCategory({
-    $core.String? uid,
+    $core.String? refId,
     $core.String? name,
   }) {
     final $result = create();
-    if (uid != null) {
-      $result.uid = uid;
+    if (refId != null) {
+      $result.refId = refId;
     }
     if (name != null) {
       $result.name = name;
@@ -33,7 +33,7 @@ class ProductCategory extends $pb.GeneratedMessage {
   factory ProductCategory.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ProductCategory', package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'uid')
+    ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..aOS(2, _omitFieldNames ? '' : 'name')
     ..hasRequiredFields = false
   ;
@@ -61,13 +61,13 @@ class ProductCategory extends $pb.GeneratedMessage {
 
   /// The unique identifier of the product category.
   @$pb.TagNumber(1)
-  $core.String get uid => $_getSZ(0);
+  $core.String get refId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set uid($core.String v) { $_setString(0, v); }
+  set refId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasUid() => $_has(0);
+  $core.bool hasRefId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearUid() => clearField(1);
+  void clearRefId() => clearField(1);
 
   /// The name of the product category.
   @$pb.TagNumber(2)
@@ -82,16 +82,15 @@ class ProductCategory extends $pb.GeneratedMessage {
 
 class GlobalProduct extends $pb.GeneratedMessage {
   factory GlobalProduct({
-    $core.String? uid,
+    $core.String? refId,
     $core.String? name,
     $core.String? description,
     $core.String? barCodeValue,
     $core.Iterable<ProductCategory>? categories,
-    $core.String? createdAt,
   }) {
     final $result = create();
-    if (uid != null) {
-      $result.uid = uid;
+    if (refId != null) {
+      $result.refId = refId;
     }
     if (name != null) {
       $result.name = name;
@@ -105,9 +104,6 @@ class GlobalProduct extends $pb.GeneratedMessage {
     if (categories != null) {
       $result.categories.addAll(categories);
     }
-    if (createdAt != null) {
-      $result.createdAt = createdAt;
-    }
     return $result;
   }
   GlobalProduct._() : super();
@@ -115,12 +111,11 @@ class GlobalProduct extends $pb.GeneratedMessage {
   factory GlobalProduct.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'GlobalProduct', package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'uid')
+    ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..aOS(2, _omitFieldNames ? '' : 'name')
     ..aOS(3, _omitFieldNames ? '' : 'description')
     ..aOS(4, _omitFieldNames ? '' : 'barCodeValue')
     ..pc<ProductCategory>(5, _omitFieldNames ? '' : 'categories', $pb.PbFieldType.PM, subBuilder: ProductCategory.create)
-    ..aOS(6, _omitFieldNames ? '' : 'createdAt')
     ..hasRequiredFields = false
   ;
 
@@ -147,13 +142,13 @@ class GlobalProduct extends $pb.GeneratedMessage {
 
   /// The unique identifier of the product.
   @$pb.TagNumber(1)
-  $core.String get uid => $_getSZ(0);
+  $core.String get refId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set uid($core.String v) { $_setString(0, v); }
+  set refId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasUid() => $_has(0);
+  $core.bool hasRefId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearUid() => clearField(1);
+  void clearRefId() => clearField(1);
 
   /// The name of the product.
   @$pb.TagNumber(2)
@@ -188,32 +183,19 @@ class GlobalProduct extends $pb.GeneratedMessage {
   /// The product categories of the product.
   @$pb.TagNumber(5)
   $core.List<ProductCategory> get categories => $_getList(4);
-
-  /// The date and time the product was created.
-  @$pb.TagNumber(6)
-  $core.String get createdAt => $_getSZ(5);
-  @$pb.TagNumber(6)
-  set createdAt($core.String v) { $_setString(5, v); }
-  @$pb.TagNumber(6)
-  $core.bool hasCreatedAt() => $_has(5);
-  @$pb.TagNumber(6)
-  void clearCreatedAt() => clearField(6);
 }
 
-class Product extends $pb.GeneratedMessage {
-  factory Product({
-    $core.String? uid,
+class BusinessProduct extends $pb.GeneratedMessage {
+  factory BusinessProduct({
+    $core.String? refId,
     $core.String? businessId,
     $core.String? globalProductId,
     $core.int? priceInCents,
-    $core.Iterable<$core.String>? imagesMediaUids,
-    $core.bool? isDeleted,
-    $core.String? createdAt,
-    $core.String? updatedAt,
+    $core.Iterable<$core.String>? imagesMediaIds,
   }) {
     final $result = create();
-    if (uid != null) {
-      $result.uid = uid;
+    if (refId != null) {
+      $result.refId = refId;
     }
     if (businessId != null) {
       $result.businessId = businessId;
@@ -224,33 +206,21 @@ class Product extends $pb.GeneratedMessage {
     if (priceInCents != null) {
       $result.priceInCents = priceInCents;
     }
-    if (imagesMediaUids != null) {
-      $result.imagesMediaUids.addAll(imagesMediaUids);
-    }
-    if (isDeleted != null) {
-      $result.isDeleted = isDeleted;
-    }
-    if (createdAt != null) {
-      $result.createdAt = createdAt;
-    }
-    if (updatedAt != null) {
-      $result.updatedAt = updatedAt;
+    if (imagesMediaIds != null) {
+      $result.imagesMediaIds.addAll(imagesMediaIds);
     }
     return $result;
   }
-  Product._() : super();
-  factory Product.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory Product.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  BusinessProduct._() : super();
+  factory BusinessProduct.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory BusinessProduct.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Product', package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'uid')
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'BusinessProduct', package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..aOS(2, _omitFieldNames ? '' : 'businessId')
     ..aOS(3, _omitFieldNames ? '' : 'globalProductId')
     ..a<$core.int>(4, _omitFieldNames ? '' : 'priceInCents', $pb.PbFieldType.O3)
-    ..pPS(5, _omitFieldNames ? '' : 'imagesMediaUids')
-    ..aOB(6, _omitFieldNames ? '' : 'isDeleted')
-    ..aOS(7, _omitFieldNames ? '' : 'createdAt')
-    ..aOS(8, _omitFieldNames ? '' : 'updatedAt')
+    ..pPS(5, _omitFieldNames ? '' : 'imagesMediaIds')
     ..hasRequiredFields = false
   ;
 
@@ -258,32 +228,32 @@ class Product extends $pb.GeneratedMessage {
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
   'Will be removed in next major version')
-  Product clone() => Product()..mergeFromMessage(this);
+  BusinessProduct clone() => BusinessProduct()..mergeFromMessage(this);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  Product copyWith(void Function(Product) updates) => super.copyWith((message) => updates(message as Product)) as Product;
+  BusinessProduct copyWith(void Function(BusinessProduct) updates) => super.copyWith((message) => updates(message as BusinessProduct)) as BusinessProduct;
 
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static Product create() => Product._();
-  Product createEmptyInstance() => create();
-  static $pb.PbList<Product> createRepeated() => $pb.PbList<Product>();
+  static BusinessProduct create() => BusinessProduct._();
+  BusinessProduct createEmptyInstance() => create();
+  static $pb.PbList<BusinessProduct> createRepeated() => $pb.PbList<BusinessProduct>();
   @$core.pragma('dart2js:noInline')
-  static Product getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Product>(create);
-  static Product? _defaultInstance;
+  static BusinessProduct getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<BusinessProduct>(create);
+  static BusinessProduct? _defaultInstance;
 
   /// The unique identifier of the business product.
   @$pb.TagNumber(1)
-  $core.String get uid => $_getSZ(0);
+  $core.String get refId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set uid($core.String v) { $_setString(0, v); }
+  set refId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasUid() => $_has(0);
+  $core.bool hasRefId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearUid() => clearField(1);
+  void clearRefId() => clearField(1);
 
   /// The unique identifier of the business.
   @$pb.TagNumber(2)
@@ -316,39 +286,9 @@ class Product extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   void clearPriceInCents() => clearField(4);
 
-  /// The media uids of the images of the product.
+  /// The media ids of the images of the product.
   @$pb.TagNumber(5)
-  $core.List<$core.String> get imagesMediaUids => $_getList(4);
-
-  /// Whether the product is deleted.
-  @$pb.TagNumber(6)
-  $core.bool get isDeleted => $_getBF(5);
-  @$pb.TagNumber(6)
-  set isDeleted($core.bool v) { $_setBool(5, v); }
-  @$pb.TagNumber(6)
-  $core.bool hasIsDeleted() => $_has(5);
-  @$pb.TagNumber(6)
-  void clearIsDeleted() => clearField(6);
-
-  /// The date and time the product was created.
-  @$pb.TagNumber(7)
-  $core.String get createdAt => $_getSZ(6);
-  @$pb.TagNumber(7)
-  set createdAt($core.String v) { $_setString(6, v); }
-  @$pb.TagNumber(7)
-  $core.bool hasCreatedAt() => $_has(6);
-  @$pb.TagNumber(7)
-  void clearCreatedAt() => clearField(7);
-
-  /// The date and time the product was updated.
-  @$pb.TagNumber(8)
-  $core.String get updatedAt => $_getSZ(7);
-  @$pb.TagNumber(8)
-  set updatedAt($core.String v) { $_setString(7, v); }
-  @$pb.TagNumber(8)
-  $core.bool hasUpdatedAt() => $_has(7);
-  @$pb.TagNumber(8)
-  void clearUpdatedAt() => clearField(8);
+  $core.List<$core.String> get imagesMediaIds => $_getList(4);
 }
 
 class FindGlobalProductsRequest extends $pb.GeneratedMessage {
@@ -443,7 +383,7 @@ class FindGlobalProductsResponse extends $pb.GeneratedMessage {
   static FindGlobalProductsResponse? _defaultInstance;
 
   /// The unique identifiers of the products.
-  /// WARN: all returned products will only have their uid and name.
+  /// WARN: all returned products will only have their id and name.
   @$pb.TagNumber(1)
   $core.List<GlobalProduct> get products => $_getList(0);
 }
@@ -540,7 +480,7 @@ class FindCategoryResponse extends $pb.GeneratedMessage {
   static FindCategoryResponse? _defaultInstance;
 
   /// The unique identifiers of the product categories.
-  /// WARN: all returned product categories will only have their uid and name.
+  /// WARN: all returned product categories will only have their id and name.
   @$pb.TagNumber(1)
   $core.List<ProductCategory> get categories => $_getList(0);
 }
@@ -634,7 +574,7 @@ class AddProductRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   void clearPriceInCents() => clearField(3);
 
-  /// The media uids of the images of the product.
+  /// The media ids of the images of the product.
   @$pb.TagNumber(4)
   $core.List<$core.List<$core.int>> get imagesRawImages => $_getList(3);
 }
@@ -692,11 +632,11 @@ class AddProductResponse extends $pb.GeneratedMessage {
 
 class GetProductRequest extends $pb.GeneratedMessage {
   factory GetProductRequest({
-    $core.String? uid,
+    $core.String? refId,
   }) {
     final $result = create();
-    if (uid != null) {
-      $result.uid = uid;
+    if (refId != null) {
+      $result.refId = refId;
     }
     return $result;
   }
@@ -705,7 +645,7 @@ class GetProductRequest extends $pb.GeneratedMessage {
   factory GetProductRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'GetProductRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'uid')
+    ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..hasRequiredFields = false
   ;
 
@@ -732,18 +672,18 @@ class GetProductRequest extends $pb.GeneratedMessage {
 
   /// The unique identifier of the business product.
   @$pb.TagNumber(1)
-  $core.String get uid => $_getSZ(0);
+  $core.String get refId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set uid($core.String v) { $_setString(0, v); }
+  set refId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasUid() => $_has(0);
+  $core.bool hasRefId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearUid() => clearField(1);
+  void clearRefId() => clearField(1);
 }
 
 class GetProductResponse extends $pb.GeneratedMessage {
   factory GetProductResponse({
-    Product? product,
+    BusinessProduct? product,
   }) {
     final $result = create();
     if (product != null) {
@@ -756,7 +696,7 @@ class GetProductResponse extends $pb.GeneratedMessage {
   factory GetProductResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'GetProductResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'), createEmptyInstance: create)
-    ..aOM<Product>(1, _omitFieldNames ? '' : 'product', subBuilder: Product.create)
+    ..aOM<BusinessProduct>(1, _omitFieldNames ? '' : 'product', subBuilder: BusinessProduct.create)
     ..hasRequiredFields = false
   ;
 
@@ -783,20 +723,20 @@ class GetProductResponse extends $pb.GeneratedMessage {
 
   /// The retrieved business product data.
   @$pb.TagNumber(1)
-  Product get product => $_getN(0);
+  BusinessProduct get product => $_getN(0);
   @$pb.TagNumber(1)
-  set product(Product v) { setField(1, v); }
+  set product(BusinessProduct v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasProduct() => $_has(0);
   @$pb.TagNumber(1)
   void clearProduct() => clearField(1);
   @$pb.TagNumber(1)
-  Product ensureProduct() => $_ensure(0);
+  BusinessProduct ensureProduct() => $_ensure(0);
 }
 
 class UpdateProductRequest extends $pb.GeneratedMessage {
   factory UpdateProductRequest({
-    Product? product,
+    BusinessProduct? product,
     $core.Iterable<$core.List<$core.int>>? imagesRawImages,
   }) {
     final $result = create();
@@ -813,7 +753,7 @@ class UpdateProductRequest extends $pb.GeneratedMessage {
   factory UpdateProductRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'UpdateProductRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'), createEmptyInstance: create)
-    ..aOM<Product>(1, _omitFieldNames ? '' : 'product', subBuilder: Product.create)
+    ..aOM<BusinessProduct>(1, _omitFieldNames ? '' : 'product', subBuilder: BusinessProduct.create)
     ..p<$core.List<$core.int>>(4, _omitFieldNames ? '' : 'imagesRawImages', $pb.PbFieldType.PY)
     ..hasRequiredFields = false
   ;
@@ -844,17 +784,17 @@ class UpdateProductRequest extends $pb.GeneratedMessage {
   /// Some fields cannot be updated like the product id, business id, and all
   /// product fields.
   @$pb.TagNumber(1)
-  Product get product => $_getN(0);
+  BusinessProduct get product => $_getN(0);
   @$pb.TagNumber(1)
-  set product(Product v) { setField(1, v); }
+  set product(BusinessProduct v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasProduct() => $_has(0);
   @$pb.TagNumber(1)
   void clearProduct() => clearField(1);
   @$pb.TagNumber(1)
-  Product ensureProduct() => $_ensure(0);
+  BusinessProduct ensureProduct() => $_ensure(0);
 
-  /// The media uids of the images of the product.
+  /// The media ids of the images of the product.
   @$pb.TagNumber(4)
   $core.List<$core.List<$core.int>> get imagesRawImages => $_getList(1);
 }
@@ -912,11 +852,11 @@ class UpdateProductResponse extends $pb.GeneratedMessage {
 
 class DeleteProductRequest extends $pb.GeneratedMessage {
   factory DeleteProductRequest({
-    $core.String? uid,
+    $core.String? refId,
   }) {
     final $result = create();
-    if (uid != null) {
-      $result.uid = uid;
+    if (refId != null) {
+      $result.refId = refId;
     }
     return $result;
   }
@@ -925,7 +865,7 @@ class DeleteProductRequest extends $pb.GeneratedMessage {
   factory DeleteProductRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'DeleteProductRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'uid')
+    ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..hasRequiredFields = false
   ;
 
@@ -952,13 +892,13 @@ class DeleteProductRequest extends $pb.GeneratedMessage {
 
   /// The unique identifier of the business product.
   @$pb.TagNumber(1)
-  $core.String get uid => $_getSZ(0);
+  $core.String get refId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set uid($core.String v) { $_setString(0, v); }
+  set refId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasUid() => $_has(0);
+  $core.bool hasRefId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearUid() => clearField(1);
+  void clearRefId() => clearField(1);
 }
 
 class DeleteProductResponse extends $pb.GeneratedMessage {

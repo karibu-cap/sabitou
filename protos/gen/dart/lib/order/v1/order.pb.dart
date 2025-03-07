@@ -20,19 +20,19 @@ export 'order.pbenum.dart';
 
 class OrderItem extends $pb.GeneratedMessage {
   factory OrderItem({
-    $core.String? productUid,
+    $core.String? productId,
     $core.int? quantity,
-    $core.int? unitPriceInCents,
+    $core.int? unitPriceInXafCents,
   }) {
     final $result = create();
-    if (productUid != null) {
-      $result.productUid = productUid;
+    if (productId != null) {
+      $result.productId = productId;
     }
     if (quantity != null) {
       $result.quantity = quantity;
     }
-    if (unitPriceInCents != null) {
-      $result.unitPriceInCents = unitPriceInCents;
+    if (unitPriceInXafCents != null) {
+      $result.unitPriceInXafCents = unitPriceInXafCents;
     }
     return $result;
   }
@@ -41,9 +41,9 @@ class OrderItem extends $pb.GeneratedMessage {
   factory OrderItem.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'OrderItem', package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'productUid')
+    ..aOS(1, _omitFieldNames ? '' : 'productId')
     ..a<$core.int>(2, _omitFieldNames ? '' : 'quantity', $pb.PbFieldType.O3)
-    ..a<$core.int>(3, _omitFieldNames ? '' : 'unitPriceInCents', $pb.PbFieldType.O3)
+    ..a<$core.int>(3, _omitFieldNames ? '' : 'unitPriceInXafCents', $pb.PbFieldType.O3)
     ..hasRequiredFields = false
   ;
 
@@ -70,13 +70,13 @@ class OrderItem extends $pb.GeneratedMessage {
 
   /// The unique identifier of the business product.
   @$pb.TagNumber(1)
-  $core.String get productUid => $_getSZ(0);
+  $core.String get productId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set productUid($core.String v) { $_setString(0, v); }
+  set productId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasProductUid() => $_has(0);
+  $core.bool hasProductId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearProductUid() => clearField(1);
+  void clearProductId() => clearField(1);
 
   /// The quantity of the product.
   @$pb.TagNumber(2)
@@ -91,37 +91,33 @@ class OrderItem extends $pb.GeneratedMessage {
   /// The unit price in cents of the product.
   /// WARN: This value is stored because the unit price can change over time.
   @$pb.TagNumber(3)
-  $core.int get unitPriceInCents => $_getIZ(2);
+  $core.int get unitPriceInXafCents => $_getIZ(2);
   @$pb.TagNumber(3)
-  set unitPriceInCents($core.int v) { $_setSignedInt32(2, v); }
+  set unitPriceInXafCents($core.int v) { $_setSignedInt32(2, v); }
   @$pb.TagNumber(3)
-  $core.bool hasUnitPriceInCents() => $_has(2);
+  $core.bool hasUnitPriceInXafCents() => $_has(2);
   @$pb.TagNumber(3)
-  void clearUnitPriceInCents() => clearField(3);
+  void clearUnitPriceInXafCents() => clearField(3);
 }
 
 class Order extends $pb.GeneratedMessage {
   factory Order({
-    $core.String? uid,
-    $core.String? resourceType,
-    $core.String? resourceUid,
+    $core.String? refId,
+    $core.String? fromId,
+    $core.String? isClientOrder,
     $core.Iterable<OrderItem>? orderItems,
     $core.int? totalPriceInCents,
     Status? status,
-    $core.String? createdAt,
-    $core.String? createdByUid,
-    $core.String? updatedAt,
-    $core.String? updatedByUid,
   }) {
     final $result = create();
-    if (uid != null) {
-      $result.uid = uid;
+    if (refId != null) {
+      $result.refId = refId;
     }
-    if (resourceType != null) {
-      $result.resourceType = resourceType;
+    if (fromId != null) {
+      $result.fromId = fromId;
     }
-    if (resourceUid != null) {
-      $result.resourceUid = resourceUid;
+    if (isClientOrder != null) {
+      $result.isClientOrder = isClientOrder;
     }
     if (orderItems != null) {
       $result.orderItems.addAll(orderItems);
@@ -132,18 +128,6 @@ class Order extends $pb.GeneratedMessage {
     if (status != null) {
       $result.status = status;
     }
-    if (createdAt != null) {
-      $result.createdAt = createdAt;
-    }
-    if (createdByUid != null) {
-      $result.createdByUid = createdByUid;
-    }
-    if (updatedAt != null) {
-      $result.updatedAt = updatedAt;
-    }
-    if (updatedByUid != null) {
-      $result.updatedByUid = updatedByUid;
-    }
     return $result;
   }
   Order._() : super();
@@ -151,16 +135,12 @@ class Order extends $pb.GeneratedMessage {
   factory Order.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Order', package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'uid')
-    ..aOS(2, _omitFieldNames ? '' : 'resourceType')
-    ..aOS(3, _omitFieldNames ? '' : 'resourceUid')
+    ..aOS(1, _omitFieldNames ? '' : 'refId')
+    ..aOS(2, _omitFieldNames ? '' : 'fromId')
+    ..aOS(3, _omitFieldNames ? '' : 'isClientOrder')
     ..pc<OrderItem>(4, _omitFieldNames ? '' : 'orderItems', $pb.PbFieldType.PM, subBuilder: OrderItem.create)
     ..a<$core.int>(5, _omitFieldNames ? '' : 'totalPriceInCents', $pb.PbFieldType.O3)
     ..e<Status>(6, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE, defaultOrMaker: Status.STATUS_UNSPECIFIED, valueOf: Status.valueOf, enumValues: Status.values)
-    ..aOS(7, _omitFieldNames ? '' : 'createdAt')
-    ..aOS(8, _omitFieldNames ? '' : 'createdByUid')
-    ..aOS(9, _omitFieldNames ? '' : 'updatedAt')
-    ..aOS(10, _omitFieldNames ? '' : 'updatedByUid')
     ..hasRequiredFields = false
   ;
 
@@ -187,33 +167,33 @@ class Order extends $pb.GeneratedMessage {
 
   /// The unique identifier of the order.
   @$pb.TagNumber(1)
-  $core.String get uid => $_getSZ(0);
+  $core.String get refId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set uid($core.String v) { $_setString(0, v); }
+  set refId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasUid() => $_has(0);
+  $core.bool hasRefId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearUid() => clearField(1);
+  void clearRefId() => clearField(1);
 
-  /// The type of the resource.
+  /// The id of the client or the supplier if available.
   @$pb.TagNumber(2)
-  $core.String get resourceType => $_getSZ(1);
+  $core.String get fromId => $_getSZ(1);
   @$pb.TagNumber(2)
-  set resourceType($core.String v) { $_setString(1, v); }
+  set fromId($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasResourceType() => $_has(1);
+  $core.bool hasFromId() => $_has(1);
   @$pb.TagNumber(2)
-  void clearResourceType() => clearField(2);
+  void clearFromId() => clearField(2);
 
-  /// The unique identifier of the resource owner.
+  /// Whether the order is from the client or the supplier.
   @$pb.TagNumber(3)
-  $core.String get resourceUid => $_getSZ(2);
+  $core.String get isClientOrder => $_getSZ(2);
   @$pb.TagNumber(3)
-  set resourceUid($core.String v) { $_setString(2, v); }
+  set isClientOrder($core.String v) { $_setString(2, v); }
   @$pb.TagNumber(3)
-  $core.bool hasResourceUid() => $_has(2);
+  $core.bool hasIsClientOrder() => $_has(2);
   @$pb.TagNumber(3)
-  void clearResourceUid() => clearField(3);
+  void clearIsClientOrder() => clearField(3);
 
   /// The list of items in the order.
   @$pb.TagNumber(4)
@@ -238,53 +218,13 @@ class Order extends $pb.GeneratedMessage {
   $core.bool hasStatus() => $_has(5);
   @$pb.TagNumber(6)
   void clearStatus() => clearField(6);
-
-  /// The date and time the order was created.
-  @$pb.TagNumber(7)
-  $core.String get createdAt => $_getSZ(6);
-  @$pb.TagNumber(7)
-  set createdAt($core.String v) { $_setString(6, v); }
-  @$pb.TagNumber(7)
-  $core.bool hasCreatedAt() => $_has(6);
-  @$pb.TagNumber(7)
-  void clearCreatedAt() => clearField(7);
-
-  /// The uid of the user who created the order.
-  @$pb.TagNumber(8)
-  $core.String get createdByUid => $_getSZ(7);
-  @$pb.TagNumber(8)
-  set createdByUid($core.String v) { $_setString(7, v); }
-  @$pb.TagNumber(8)
-  $core.bool hasCreatedByUid() => $_has(7);
-  @$pb.TagNumber(8)
-  void clearCreatedByUid() => clearField(8);
-
-  /// The date and time the order was last updated.
-  @$pb.TagNumber(9)
-  $core.String get updatedAt => $_getSZ(8);
-  @$pb.TagNumber(9)
-  set updatedAt($core.String v) { $_setString(8, v); }
-  @$pb.TagNumber(9)
-  $core.bool hasUpdatedAt() => $_has(8);
-  @$pb.TagNumber(9)
-  void clearUpdatedAt() => clearField(9);
-
-  /// The uid of the user who last updated the order.
-  @$pb.TagNumber(10)
-  $core.String get updatedByUid => $_getSZ(9);
-  @$pb.TagNumber(10)
-  set updatedByUid($core.String v) { $_setString(9, v); }
-  @$pb.TagNumber(10)
-  $core.bool hasUpdatedByUid() => $_has(9);
-  @$pb.TagNumber(10)
-  void clearUpdatedByUid() => clearField(10);
 }
 
 class CreateOrderRequest extends $pb.GeneratedMessage {
   factory CreateOrderRequest({
     Order? order,
     $core.String? supplierName,
-    $core.String? businessUid,
+    $core.String? businessId,
   }) {
     final $result = create();
     if (order != null) {
@@ -293,8 +233,8 @@ class CreateOrderRequest extends $pb.GeneratedMessage {
     if (supplierName != null) {
       $result.supplierName = supplierName;
     }
-    if (businessUid != null) {
-      $result.businessUid = businessUid;
+    if (businessId != null) {
+      $result.businessId = businessId;
     }
     return $result;
   }
@@ -305,7 +245,7 @@ class CreateOrderRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CreateOrderRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'), createEmptyInstance: create)
     ..aOM<Order>(1, _omitFieldNames ? '' : 'order', subBuilder: Order.create)
     ..aOS(2, _omitFieldNames ? '' : 'supplierName')
-    ..aOS(3, _omitFieldNames ? '' : 'businessUid')
+    ..aOS(3, _omitFieldNames ? '' : 'businessId')
     ..hasRequiredFields = false
   ;
 
@@ -354,22 +294,22 @@ class CreateOrderRequest extends $pb.GeneratedMessage {
 
   /// The unique identifier of the business.
   @$pb.TagNumber(3)
-  $core.String get businessUid => $_getSZ(2);
+  $core.String get businessId => $_getSZ(2);
   @$pb.TagNumber(3)
-  set businessUid($core.String v) { $_setString(2, v); }
+  set businessId($core.String v) { $_setString(2, v); }
   @$pb.TagNumber(3)
-  $core.bool hasBusinessUid() => $_has(2);
+  $core.bool hasBusinessId() => $_has(2);
   @$pb.TagNumber(3)
-  void clearBusinessUid() => clearField(3);
+  void clearBusinessId() => clearField(3);
 }
 
 class CreateOrderResponse extends $pb.GeneratedMessage {
   factory CreateOrderResponse({
-    $core.String? uid,
+    $core.String? refId,
   }) {
     final $result = create();
-    if (uid != null) {
-      $result.uid = uid;
+    if (refId != null) {
+      $result.refId = refId;
     }
     return $result;
   }
@@ -378,7 +318,7 @@ class CreateOrderResponse extends $pb.GeneratedMessage {
   factory CreateOrderResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CreateOrderResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'uid')
+    ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..hasRequiredFields = false
   ;
 
@@ -405,22 +345,22 @@ class CreateOrderResponse extends $pb.GeneratedMessage {
 
   /// The unique identifier of the created order.
   @$pb.TagNumber(1)
-  $core.String get uid => $_getSZ(0);
+  $core.String get refId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set uid($core.String v) { $_setString(0, v); }
+  set refId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasUid() => $_has(0);
+  $core.bool hasRefId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearUid() => clearField(1);
+  void clearRefId() => clearField(1);
 }
 
 class GetOrderRequest extends $pb.GeneratedMessage {
   factory GetOrderRequest({
-    $core.String? uid,
+    $core.String? refId,
   }) {
     final $result = create();
-    if (uid != null) {
-      $result.uid = uid;
+    if (refId != null) {
+      $result.refId = refId;
     }
     return $result;
   }
@@ -429,7 +369,7 @@ class GetOrderRequest extends $pb.GeneratedMessage {
   factory GetOrderRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'GetOrderRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'uid')
+    ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..hasRequiredFields = false
   ;
 
@@ -456,22 +396,30 @@ class GetOrderRequest extends $pb.GeneratedMessage {
 
   /// The unique identifier of the order to retrieve.
   @$pb.TagNumber(1)
-  $core.String get uid => $_getSZ(0);
+  $core.String get refId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set uid($core.String v) { $_setString(0, v); }
+  set refId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasUid() => $_has(0);
+  $core.bool hasRefId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearUid() => clearField(1);
+  void clearRefId() => clearField(1);
 }
 
 class GetOrderResponse extends $pb.GeneratedMessage {
   factory GetOrderResponse({
     Order? order,
+    $core.String? createdAt,
+    $core.String? updatedAt,
   }) {
     final $result = create();
     if (order != null) {
       $result.order = order;
+    }
+    if (createdAt != null) {
+      $result.createdAt = createdAt;
+    }
+    if (updatedAt != null) {
+      $result.updatedAt = updatedAt;
     }
     return $result;
   }
@@ -481,6 +429,8 @@ class GetOrderResponse extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'GetOrderResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'), createEmptyInstance: create)
     ..aOM<Order>(1, _omitFieldNames ? '' : 'order', subBuilder: Order.create)
+    ..aOS(2, _omitFieldNames ? '' : 'createdAt')
+    ..aOS(3, _omitFieldNames ? '' : 'updatedAt')
     ..hasRequiredFields = false
   ;
 
@@ -516,15 +466,35 @@ class GetOrderResponse extends $pb.GeneratedMessage {
   void clearOrder() => clearField(1);
   @$pb.TagNumber(1)
   Order ensureOrder() => $_ensure(0);
+
+  /// The date and time the order was created.
+  @$pb.TagNumber(2)
+  $core.String get createdAt => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set createdAt($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasCreatedAt() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearCreatedAt() => clearField(2);
+
+  /// The date and time the order was last updated.
+  @$pb.TagNumber(3)
+  $core.String get updatedAt => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set updatedAt($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasUpdatedAt() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearUpdatedAt() => clearField(3);
 }
 
 class DeleteOrderRequest extends $pb.GeneratedMessage {
   factory DeleteOrderRequest({
-    $core.String? uid,
+    $core.String? refId,
   }) {
     final $result = create();
-    if (uid != null) {
-      $result.uid = uid;
+    if (refId != null) {
+      $result.refId = refId;
     }
     return $result;
   }
@@ -533,7 +503,7 @@ class DeleteOrderRequest extends $pb.GeneratedMessage {
   factory DeleteOrderRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'DeleteOrderRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'uid')
+    ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..hasRequiredFields = false
   ;
 
@@ -560,13 +530,13 @@ class DeleteOrderRequest extends $pb.GeneratedMessage {
 
   /// The unique identifier of the order to delete.
   @$pb.TagNumber(1)
-  $core.String get uid => $_getSZ(0);
+  $core.String get refId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set uid($core.String v) { $_setString(0, v); }
+  set refId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasUid() => $_has(0);
+  $core.bool hasRefId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearUid() => clearField(1);
+  void clearRefId() => clearField(1);
 }
 
 class DeleteOrderResponse extends $pb.GeneratedMessage {

@@ -57,9 +57,11 @@ func (m *ProductCategory) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Uid
-
 	// no validation rules for Name
+
+	if m.RefId != nil {
+		// no validation rules for RefId
+	}
 
 	if len(errors) > 0 {
 		return ProductCategoryMultiError(errors)
@@ -161,8 +163,6 @@ func (m *GlobalProduct) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Uid
-
 	// no validation rules for Name
 
 	for idx, item := range m.GetCategories() {
@@ -199,7 +199,9 @@ func (m *GlobalProduct) validate(all bool) error {
 
 	}
 
-	// no validation rules for CreatedAt
+	if m.RefId != nil {
+		// no validation rules for RefId
+	}
 
 	if m.Description != nil {
 		// no validation rules for Description
@@ -287,28 +289,27 @@ var _ interface {
 	ErrorName() string
 } = GlobalProductValidationError{}
 
-// Validate checks the field values on Product with the rules defined in the
-// proto definition for this message. If any rules are violated, the first
-// error encountered is returned, or nil if there are no violations.
-func (m *Product) Validate() error {
+// Validate checks the field values on BusinessProduct with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *BusinessProduct) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on Product with the rules defined in the
-// proto definition for this message. If any rules are violated, the result is
-// a list of violation errors wrapped in ProductMultiError, or nil if none found.
-func (m *Product) ValidateAll() error {
+// ValidateAll checks the field values on BusinessProduct with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// BusinessProductMultiError, or nil if none found.
+func (m *BusinessProduct) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *Product) validate(all bool) error {
+func (m *BusinessProduct) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
 
 	var errors []error
-
-	// no validation rules for Uid
 
 	// no validation rules for BusinessId
 
@@ -316,25 +317,24 @@ func (m *Product) validate(all bool) error {
 
 	// no validation rules for PriceInCents
 
-	// no validation rules for IsDeleted
-
-	// no validation rules for CreatedAt
-
-	// no validation rules for UpdatedAt
+	if m.RefId != nil {
+		// no validation rules for RefId
+	}
 
 	if len(errors) > 0 {
-		return ProductMultiError(errors)
+		return BusinessProductMultiError(errors)
 	}
 
 	return nil
 }
 
-// ProductMultiError is an error wrapping multiple validation errors returned
-// by Product.ValidateAll() if the designated constraints aren't met.
-type ProductMultiError []error
+// BusinessProductMultiError is an error wrapping multiple validation errors
+// returned by BusinessProduct.ValidateAll() if the designated constraints
+// aren't met.
+type BusinessProductMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m ProductMultiError) Error() string {
+func (m BusinessProductMultiError) Error() string {
 	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -343,11 +343,11 @@ func (m ProductMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m ProductMultiError) AllErrors() []error { return m }
+func (m BusinessProductMultiError) AllErrors() []error { return m }
 
-// ProductValidationError is the validation error returned by Product.Validate
-// if the designated constraints aren't met.
-type ProductValidationError struct {
+// BusinessProductValidationError is the validation error returned by
+// BusinessProduct.Validate if the designated constraints aren't met.
+type BusinessProductValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -355,22 +355,22 @@ type ProductValidationError struct {
 }
 
 // Field function returns field value.
-func (e ProductValidationError) Field() string { return e.field }
+func (e BusinessProductValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e ProductValidationError) Reason() string { return e.reason }
+func (e BusinessProductValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e ProductValidationError) Cause() error { return e.cause }
+func (e BusinessProductValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e ProductValidationError) Key() bool { return e.key }
+func (e BusinessProductValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e ProductValidationError) ErrorName() string { return "ProductValidationError" }
+func (e BusinessProductValidationError) ErrorName() string { return "BusinessProductValidationError" }
 
 // Error satisfies the builtin error interface
-func (e ProductValidationError) Error() string {
+func (e BusinessProductValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -382,14 +382,14 @@ func (e ProductValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sProduct.%s: %s%s",
+		"invalid %sBusinessProduct.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = ProductValidationError{}
+var _ error = BusinessProductValidationError{}
 
 var _ interface {
 	Field() string
@@ -397,7 +397,7 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = ProductValidationError{}
+} = BusinessProductValidationError{}
 
 // Validate checks the field values on FindGlobalProductsRequest with the rules
 // defined in the proto definition for this message. If any rules are
@@ -1140,7 +1140,7 @@ func (m *GetProductRequest) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Uid
+	// no validation rules for RefId
 
 	if len(errors) > 0 {
 		return GetProductRequestMultiError(errors)
@@ -1610,7 +1610,7 @@ func (m *DeleteProductRequest) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Uid
+	// no validation rules for RefId
 
 	if len(errors) > 0 {
 		return DeleteProductRequestMultiError(errors)

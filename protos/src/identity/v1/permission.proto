@@ -1,64 +1,44 @@
 syntax = "proto3";
 
 package identity.v1;
+import "buf/validate/validate.proto";
 
-enum PermissionActionType {
-  PERMISSION_ACTION_TYPE_UNSPECIFIED = 0;
+enum ResourceActionType {
+  RESOURCE_ACTION_TYPE_UNSPECIFIED = 0;
   // Can read the resource.
-  PERMISSION_ACTION_TYPE_READ = 1;
+  RESOURCE_ACTION_TYPE_READ = 1;
   // Can read and (create or add) the resource.
-  PERMISSION_ACTION_TYPE_ADD = 2;
+  RESOURCE_ACTION_TYPE_ADD = 2;
   // Can read, create, update the resource.
-  PERMISSION_ACTION_TYPE_UPDATE = 3;
+  RESOURCE_ACTION_TYPE_UPDATE = 3;
   // Can read, create, update, delete the resource.
-  PERMISSION_ACTION_TYPE_REMOVE = 4;
+  RESOURCE_ACTION_TYPE_REMOVE = 4;
 }
 
-enum PermissionResourceType {
-  PERMISSION_RESOURCE_TYPE_UNSPECIFIED = 0;
-  PERMISSION_RESOURCE_TYPE_BUSINESS = 1;
-  PERMISSION_RESOURCE_TYPE_STORE = 2;
-}
-
-enum PermissionEntityType {
-  PERMISSION_ENTITY_TYPE_UNSPECIFIED = 0;
-  PERMISSION_ENTITY_TYPE_BUSINESS = 1;
-  PERMISSION_ENTITY_TYPE_STORE = 2;
-  PERMISSION_ENTITY_TYPE_USER = 3;
-  PERMISSION_ENTITY_TYPE_ARTICLE = 4;
-  PERMISSION_ENTITY_TYPE_INVOICE = 5;
-  PERMISSION_ENTITY_TYPE_PAYMENT = 6;
-  PERMISSION_ENTITY_TYPE_ORDER = 7;
-  PERMISSION_ENTITY_TYPE_PERMISSION_GROUP = 8;
+enum ResourceType {
+  RESOURCE_TYPE_UNSPECIFIED = 0;
+  RESOURCE_TYPE_BUSINESS = 1;
+  RESOURCE_TYPE_BUSINESS_MEMBER = 2;
+  RESOURCE_TYPE_BUSINESS_CLIENT = 3;
+  RESOURCE_TYPE_BUSINESS_SUPPLIER = 4;
+  RESOURCE_TYPE_STORE = 5;
+  RESOURCE_TYPE_INVOICE = 6;
+  RESOURCE_TYPE_STORE_ORDER = 7;
+  RESOURCE_TYPE_SUPPLIER_ORDER = 8;
+  RESOURCE_TYPE_PRODUCT = 9;
 }
 
 message Permission {
+  ResourceType resource_type = 1;
+  // The resource_id is only specified when we want to restrict action on a specific resource.
+  optional string resource_id = 2;
   // The action that the user can perform on the resource.
-  PermissionActionType action = 1;
-
-  // The entity on which the action is performed.
-  PermissionEntityType entity = 2;
-
-  // The type of resource that the user can perform the action on.
-  PermissionResourceType resource_type = 3;
+  ResourceActionType action_type = 3;
 }
 
-message UserPermission {
-  // The unique identifier of the user.
-  string user_uid = 1;
-  // The permissions that the user has.
-  repeated Permission permissions = 2;
-
-  // The unique identifier of the permission group.
-  optional string permission_group_uid = 3;
-
-  // The unique identifier of the resource.
-  string resource_uid = 4;
-}
-
-message PermissionGroup {
-  // The unique identifier of the permission group.
-  string uid = 1;
+message PermissionsGroup {
+  // The reference id to the permission group identifier.
+  optional string ref_id = 1;
 
   // The name of the permission group. Generally the role of the group.
   string name = 2;
@@ -70,71 +50,72 @@ message PermissionGroup {
   repeated Permission permissions = 4;
 
   // The unique identifier of the business.
-  // must be set if the permission group is for a business.
-  optional string business_uid = 5;
+  // must be set if the permission group is create by a business.
+  optional string business_id = 6;
 }
 
-message CreatePermissionGroupRequest {
+message CreatePermissionsGroupRequest {
   // The permission group information to create.
   // Note:Only the fields that are set will be created.
-  PermissionGroup permission_group = 1;
+  PermissionsGroup permissions_group = 1;
+  // The unique identifier of the business on which the permission group is created.
+  string business_id = 2;
 }
 
-message CreatePermissionGroupResponse {
+message CreatePermissionsGroupResponse {
   // The unique identifier of the created permission group.
-  string uid = 1;
+  string ref_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
 }
 
-message GetPermissionGroupRequest {
+message GetPermissionsGroupRequest {
   // The unique identifier of the permission group to retrieve.
-  string uid = 1;
+  string ref_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
 }
 
-message GetPermissionGroupResponse {
+message GetPermissionsGroupResponse {
   // The retrieved permission group data.
-  PermissionGroup permission_group = 1;
+  PermissionsGroup permissions_group = 1;
 }
 
-message UpdatePermissionGroupRequest {
+message UpdatePermissionsGroupRequest {
   // The permission group information to update.
   // Note:Only the fields that are set will be updated.
-  PermissionGroup permission_group = 1;
+  PermissionsGroup permissions_group = 1;
 }
 
-message UpdatePermissionGroupResponse {
+message UpdatePermissionsGroupResponse {
   // Whether the permission group was successfully updated.
   bool success = 1;
 }
 
-message DeletePermissionGroupRequest {
+message DeletePermissionsGroupRequest {
   // The unique identifier of the permission group to delete.
-  string uid = 1;
+  string ref_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
   // The unique identifier of the business.
-  string business_uid = 2;
+  string business_id = 2;
 }
 
-message DeletePermissionGroupResponse {
+message DeletePermissionsGroupResponse {
   // Whether the permission group was successfully deleted.
   bool success = 1;
 }
 
-message GetUserPermissionsRequest {
-  // The unique identifier of the user to retrieve.
-  string user_uid = 1;
-}
-
-message GetUserPermissionsResponse {
-  // The permissions that the user has.
-  repeated UserPermission user_permissions = 1;
-}
-
 message RemoveUserPermissionRequest {
   // The unique identifier of the user.
-  string user_uid = 1;
+  string user_id = 1;
   // The unique identifier of the permission group.
-  string permission_group_uid = 2;
+  string permissions_group_id = 2;
   // The unique identifier of the resource.
-  string resource_uid = 3;
+  string resource_id = 3;
 }
 
 message RemoveUserPermissionResponse {
@@ -144,11 +125,11 @@ message RemoveUserPermissionResponse {
 
 message AddUserPermissionRequest {
   // The unique identifier of the user.
-  string user_uid = 1;
+  string user_id = 1;
   // The unique identifier of the permission group.
-  string permission_group_uid = 2;
+  string permissions_group_id = 2;
   // The unique identifier of the resource.
-  string resource_uid = 3;
+  string resource_id = 3;
 }
 
 message AddUserPermissionResponse {
@@ -156,22 +137,22 @@ message AddUserPermissionResponse {
   bool success = 1;
 }
 
-message GetBusinessPermissionGroupsRequest {
+message GetBusinessPermissionsGroupsRequest {
   // The unique identifier of the business to retrieve.
-  string business_uid = 1;
+  string business_id = 1;
 }
 
-message GetBusinessPermissionGroupsResponse {
+message GetBusinessPermissionsGroupsResponse {
   // The permission groups that the business has.
-  repeated PermissionGroup permission_groups = 1;
+  repeated PermissionsGroup permissions_groups = 1;
 }
 
 message CheckPermissionRequest {
   // The unique identifier of the user.
-  string user_uid = 1;
+  string user_id = 1;
 
   // The unique identifier of the resource.
-  string resource_uid = 3;
+  string resource_id = 3;
 
   // The permission to check.
   Permission permission = 4;
@@ -184,19 +165,16 @@ message CheckPermissionResponse {
 
 service PermissionService {
   // Creates a new permission group.
-  rpc CreatePermissionGroup(CreatePermissionGroupRequest) returns (CreatePermissionGroupResponse) {}
+  rpc CreatePermissionsGroup(CreatePermissionsGroupRequest) returns (CreatePermissionsGroupResponse) {}
 
   // Gets a permission group by id.
-  rpc GetPermissionGroup(GetPermissionGroupRequest) returns (GetPermissionGroupResponse) {}
+  rpc GetPermissionsGroup(GetPermissionsGroupRequest) returns (GetPermissionsGroupResponse) {}
 
   // Updates a permission group.
-  rpc UpdatePermissionGroup(UpdatePermissionGroupRequest) returns (UpdatePermissionGroupResponse) {}
+  rpc UpdatePermissionsGroup(UpdatePermissionsGroupRequest) returns (UpdatePermissionsGroupResponse) {}
 
   // Deletes a permission group.
-  rpc DeletePermissionGroup(DeletePermissionGroupRequest) returns (DeletePermissionGroupResponse) {}
-
-  // Gets the permissions of the user.
-  rpc GetUserPermissions(GetUserPermissionsRequest) returns (GetUserPermissionsResponse) {}
+  rpc DeletePermissionsGroup(DeletePermissionsGroupRequest) returns (DeletePermissionsGroupResponse) {}
 
   // Removes a permission from the user.
   rpc RemoveUserPermission(RemoveUserPermissionRequest) returns (RemoveUserPermissionResponse) {}
@@ -205,7 +183,7 @@ service PermissionService {
   rpc AddUserPermission(AddUserPermissionRequest) returns (AddUserPermissionResponse) {}
 
   // Gets the permission groups of the business.
-  rpc GetBusinessPermissionGroups(GetBusinessPermissionGroupsRequest) returns (GetBusinessPermissionGroupsResponse) {}
+  rpc GetBusinessPermissionsGroups(GetBusinessPermissionsGroupsRequest) returns (GetBusinessPermissionsGroupsResponse) {}
 
   // Checks if the user has the provided permission for the provided resource.
   rpc CheckPermission(CheckPermissionRequest) returns (CheckPermissionResponse) {}

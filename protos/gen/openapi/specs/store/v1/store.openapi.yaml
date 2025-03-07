@@ -168,20 +168,26 @@ components:
     store.v1.CreateStoreResponse:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
+          title: ref_id
+          minLength: 3
           description: The unique identifier of the created store.
       title: CreateStoreResponse
+      required:
+        - refId
       additionalProperties: false
     store.v1.DeleteStoreRequest:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
+          title: ref_id
+          minLength: 3
           description: The unique identifier of the store to delete.
       title: DeleteStoreRequest
+      required:
+        - refId
       additionalProperties: false
     store.v1.DeleteStoreResponse:
       type: object
@@ -195,11 +201,14 @@ components:
     store.v1.GetStoreRequest:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
+          title: ref_id
+          minLength: 3
           description: The unique identifier of the store to retrieve.
       title: GetStoreRequest
+      required:
+        - refId
       additionalProperties: false
     store.v1.GetStoreResponse:
       type: object
@@ -213,10 +222,11 @@ components:
     store.v1.Store:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
+          title: ref_id
           description: The unique identifier of the store.
+          nullable: true
         address:
           type: string
           title: address
@@ -231,23 +241,20 @@ components:
           title: description
           description: The description of the store.
           nullable: true
-        logoMediaUid:
+        logoMediaId:
           type: string
-          title: logo_media_uid
-          description: The uid of the media of the logo of the store.
+          title: logo_media_id
+          description: The id of the media of the logo of the store.
+          nullable: true
+        linksMediaIds:
+          type: string
+          title: links_media_ids
+          description: The ids of the media of the links of the store.
           nullable: true
         businessId:
           type: string
           title: business_id
-          description: The uid of the business of the store.
-        createdAt:
-          type: string
-          title: created_at
-          description: The date and time the store was created.
-        updatedAt:
-          type: string
-          title: updated_at
-          description: The date and time the store was last updated.
+          description: The id of the business of the store.
       title: Store
       additionalProperties: false
       description: |-

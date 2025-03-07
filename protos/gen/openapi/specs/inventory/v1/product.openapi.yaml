@@ -249,7 +249,7 @@ components:
             type: string
             format: byte
           title: images_raw_images
-          description: The media uids of the images of the product.
+          description: The media ids of the images of the product.
       title: AddProductRequest
       additionalProperties: false
     inventory.v1.AddProductResponse:
@@ -261,14 +261,48 @@ components:
           description: Whether the product was successfully added.
       title: AddProductResponse
       additionalProperties: false
+    inventory.v1.BusinessProduct:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+          description: The unique identifier of the business product.
+          nullable: true
+        businessId:
+          type: string
+          title: business_id
+          description: The unique identifier of the business.
+        globalProductId:
+          type: string
+          title: global_product_id
+          description: The unique identifier of the global product.
+        priceInCents:
+          type: integer
+          title: price_in_cents
+          format: int32
+          description: |-
+            The price in cents of the product.
+             The currency is determined by the business.
+        imagesMediaIds:
+          type: array
+          items:
+            type: string
+          title: images_media_ids
+          description: The media ids of the images of the product.
+      title: BusinessProduct
+      additionalProperties: false
     inventory.v1.DeleteProductRequest:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
+          title: ref_id
+          minLength: 3
           description: The unique identifier of the business product.
       title: DeleteProductRequest
+      required:
+        - refId
       additionalProperties: false
     inventory.v1.DeleteProductResponse:
       type: object
@@ -298,7 +332,7 @@ components:
           title: categories
           description: |-
             The unique identifiers of the product categories.
-             WARN: all returned product categories will only have their uid and name.
+             WARN: all returned product categories will only have their id and name.
       title: FindCategoryResponse
       additionalProperties: false
     inventory.v1.FindGlobalProductsRequest:
@@ -320,17 +354,20 @@ components:
           title: products
           description: |-
             The unique identifiers of the products.
-             WARN: all returned products will only have their uid and name.
+             WARN: all returned products will only have their id and name.
       title: FindGlobalProductsResponse
       additionalProperties: false
     inventory.v1.GetProductRequest:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
+          title: ref_id
+          minLength: 3
           description: The unique identifier of the business product.
       title: GetProductRequest
+      required:
+        - refId
       additionalProperties: false
     inventory.v1.GetProductResponse:
       type: object
@@ -338,16 +375,17 @@ components:
         product:
           title: product
           description: The retrieved business product data.
-          $ref: '#/components/schemas/inventory.v1.Product'
+          $ref: '#/components/schemas/inventory.v1.BusinessProduct'
       title: GetProductResponse
       additionalProperties: false
     inventory.v1.GlobalProduct:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
+          title: ref_id
           description: The unique identifier of the product.
+          nullable: true
         name:
           type: string
           title: name
@@ -368,61 +406,16 @@ components:
             $ref: '#/components/schemas/inventory.v1.ProductCategory'
           title: categories
           description: The product categories of the product.
-        createdAt:
-          type: string
-          title: created_at
-          description: The date and time the product was created.
       title: GlobalProduct
-      additionalProperties: false
-    inventory.v1.Product:
-      type: object
-      properties:
-        uid:
-          type: string
-          title: uid
-          description: The unique identifier of the business product.
-        businessId:
-          type: string
-          title: business_id
-          description: The unique identifier of the business.
-        globalProductId:
-          type: string
-          title: global_product_id
-          description: The unique identifier of the global product.
-        priceInCents:
-          type: integer
-          title: price_in_cents
-          format: int32
-          description: |-
-            The price in cents of the product.
-             The currency is determined by the business.
-        imagesMediaUids:
-          type: array
-          items:
-            type: string
-          title: images_media_uids
-          description: The media uids of the images of the product.
-        isDeleted:
-          type: boolean
-          title: is_deleted
-          description: Whether the product is deleted.
-        createdAt:
-          type: string
-          title: created_at
-          description: The date and time the product was created.
-        updatedAt:
-          type: string
-          title: updated_at
-          description: The date and time the product was updated.
-      title: Product
       additionalProperties: false
     inventory.v1.ProductCategory:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
+          title: ref_id
           description: The unique identifier of the product category.
+          nullable: true
         name:
           type: string
           title: name
@@ -439,14 +432,14 @@ components:
              Note:Only the fields that are set will be updated.
              Some fields cannot be updated like the product id, business id, and all
              product fields.
-          $ref: '#/components/schemas/inventory.v1.Product'
+          $ref: '#/components/schemas/inventory.v1.BusinessProduct'
         imagesRawImages:
           type: array
           items:
             type: string
             format: byte
           title: images_raw_images
-          description: The media uids of the images of the product.
+          description: The media ids of the images of the product.
       title: UpdateProductRequest
       additionalProperties: false
     inventory.v1.UpdateProductResponse:

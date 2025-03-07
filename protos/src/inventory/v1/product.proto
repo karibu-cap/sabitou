@@ -1,10 +1,11 @@
 syntax = "proto3";
 
 package inventory.v1;
+import "buf/validate/validate.proto";
 
 message ProductCategory {
   // The unique identifier of the product category.
-  string uid = 1;
+  optional string ref_id = 1;
 
   // The name of the product category.
   string name = 2;
@@ -12,7 +13,7 @@ message ProductCategory {
 
 message GlobalProduct {
   // The unique identifier of the product.
-  string uid = 1;
+  optional string ref_id = 1;
 
   // The name of the product.
   string name = 2;
@@ -25,14 +26,11 @@ message GlobalProduct {
 
   // The product categories of the product.
   repeated ProductCategory categories = 5;
-
-  // The date and time the product was created.
-  string created_at = 6;
 }
 
-message Product {
+message BusinessProduct {
   // The unique identifier of the business product.
-  string uid = 1;
+  optional string ref_id = 1;
 
   // The unique identifier of the business.
   string business_id = 2;
@@ -44,17 +42,8 @@ message Product {
   // The currency is determined by the business.
   int32 price_in_cents = 4;
 
-  // The media uids of the images of the product.
-  repeated string images_media_uids = 5;
-
-  // Whether the product is deleted.
-  bool is_deleted = 6;
-
-  // The date and time the product was created.
-  string created_at = 7;
-
-  // The date and time the product was updated.
-  string updated_at = 8;
+  // The media ids of the images of the product.
+  repeated string images_media_ids = 5;
 }
 
 message FindGlobalProductsRequest {
@@ -64,7 +53,7 @@ message FindGlobalProductsRequest {
 
 message FindGlobalProductsResponse {
   // The unique identifiers of the products.
-  // WARN: all returned products will only have their uid and name.
+  // WARN: all returned products will only have their id and name.
   repeated GlobalProduct products = 1;
 }
 
@@ -75,7 +64,7 @@ message FindCategoryRequest {
 
 message FindCategoryResponse {
   // The unique identifiers of the product categories.
-  // WARN: all returned product categories will only have their uid and name.
+  // WARN: all returned product categories will only have their id and name.
   repeated ProductCategory categories = 1;
 }
 
@@ -91,7 +80,7 @@ message AddProductRequest {
   // The currency is determined by the business.
   int32 price_in_cents = 3;
 
-  // The media uids of the images of the product.
+  // The media ids of the images of the product.
   repeated bytes images_raw_images = 4;
 }
 
@@ -102,12 +91,15 @@ message AddProductResponse {
 
 message GetProductRequest {
   // The unique identifier of the business product.
-  string uid = 1;
+  string ref_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
 }
 
 message GetProductResponse {
   // The retrieved business product data.
-  Product product = 1;
+  BusinessProduct product = 1;
 }
 
 message UpdateProductRequest {
@@ -115,9 +107,9 @@ message UpdateProductRequest {
   // Note:Only the fields that are set will be updated.
   // Some fields cannot be updated like the product id, business id, and all
   // product fields.
-  Product product = 1;
+  BusinessProduct product = 1;
 
-  // The media uids of the images of the product.
+  // The media ids of the images of the product.
   repeated bytes images_raw_images = 4;
 }
 
@@ -128,7 +120,10 @@ message UpdateProductResponse {
 
 message DeleteProductRequest {
   // The unique identifier of the business product.
-  string uid = 1;
+  string ref_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
 }
 
 message DeleteProductResponse {

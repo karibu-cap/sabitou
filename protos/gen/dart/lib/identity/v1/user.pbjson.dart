@@ -83,53 +83,50 @@ final $typed_data.Uint8List connectedAccountDescriptor = $convert.base64Decode(
 const User$json = {
   '1': 'User',
   '2': [
-    {'1': 'uid', '3': 1, '4': 1, '5': 9, '10': 'uid'},
+    {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'refId', '17': true},
     {'1': 'user_name', '3': 2, '4': 1, '5': 9, '10': 'userName'},
-    {'1': 'connected_accounts', '3': 3, '4': 1, '5': 11, '6': '.identity.v1.ConnectedAccount', '10': 'connectedAccounts'},
-    {'1': 'email', '3': 4, '4': 1, '5': 9, '8': {}, '9': 0, '10': 'email', '17': true},
-    {'1': 'phone_number', '3': 5, '4': 1, '5': 9, '9': 1, '10': 'phoneNumber', '17': true},
-    {'1': 'first_name', '3': 6, '4': 1, '5': 9, '9': 2, '10': 'firstName', '17': true},
-    {'1': 'last_name', '3': 7, '4': 1, '5': 9, '9': 3, '10': 'lastName', '17': true},
-    {'1': 'password_hash', '3': 8, '4': 1, '5': 9, '9': 4, '10': 'passwordHash', '17': true},
+    {'1': 'connected_accounts', '3': 3, '4': 3, '5': 11, '6': '.identity.v1.ConnectedAccount', '10': 'connectedAccounts'},
+    {'1': 'email', '3': 4, '4': 1, '5': 9, '8': {}, '9': 1, '10': 'email', '17': true},
+    {'1': 'phone_number', '3': 5, '4': 1, '5': 9, '9': 2, '10': 'phoneNumber', '17': true},
+    {'1': 'first_name', '3': 6, '4': 1, '5': 9, '9': 3, '10': 'firstName', '17': true},
+    {'1': 'last_name', '3': 7, '4': 1, '5': 9, '9': 4, '10': 'lastName', '17': true},
     {'1': 'account_status', '3': 9, '4': 1, '5': 14, '6': '.identity.v1.AccountStatusType', '9': 5, '10': 'accountStatus', '17': true},
     {'1': 'required_actions', '3': 10, '4': 3, '5': 14, '6': '.identity.v1.AuthActionType', '10': 'requiredActions'},
-    {'1': 'created_at', '3': 12, '4': 1, '5': 9, '10': 'createdAt'},
   ],
   '8': [
+    {'1': '_ref_id'},
     {'1': '_email'},
     {'1': '_phone_number'},
     {'1': '_first_name'},
     {'1': '_last_name'},
-    {'1': '_password_hash'},
     {'1': '_account_status'},
   ],
 };
 
 /// Descriptor for `User`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List userDescriptor = $convert.base64Decode(
-    'CgRVc2VyEhAKA3VpZBgBIAEoCVIDdWlkEhsKCXVzZXJfbmFtZRgCIAEoCVIIdXNlck5hbWUSTA'
-    'oSY29ubmVjdGVkX2FjY291bnRzGAMgASgLMh0uaWRlbnRpdHkudjEuQ29ubmVjdGVkQWNjb3Vu'
-    'dFIRY29ubmVjdGVkQWNjb3VudHMSJQoFZW1haWwYBCABKAlCCrpIB9gBAXICYAFIAFIFZW1haW'
-    'yIAQESJgoMcGhvbmVfbnVtYmVyGAUgASgJSAFSC3Bob25lTnVtYmVyiAEBEiIKCmZpcnN0X25h'
-    'bWUYBiABKAlIAlIJZmlyc3ROYW1liAEBEiAKCWxhc3RfbmFtZRgHIAEoCUgDUghsYXN0TmFtZY'
-    'gBARIoCg1wYXNzd29yZF9oYXNoGAggASgJSARSDHBhc3N3b3JkSGFzaIgBARJKCg5hY2NvdW50'
-    'X3N0YXR1cxgJIAEoDjIeLmlkZW50aXR5LnYxLkFjY291bnRTdGF0dXNUeXBlSAVSDWFjY291bn'
-    'RTdGF0dXOIAQESRgoQcmVxdWlyZWRfYWN0aW9ucxgKIAMoDjIbLmlkZW50aXR5LnYxLkF1dGhB'
-    'Y3Rpb25UeXBlUg9yZXF1aXJlZEFjdGlvbnMSHQoKY3JlYXRlZF9hdBgMIAEoCVIJY3JlYXRlZE'
-    'F0QggKBl9lbWFpbEIPCg1fcGhvbmVfbnVtYmVyQg0KC19maXJzdF9uYW1lQgwKCl9sYXN0X25h'
-    'bWVCEAoOX3Bhc3N3b3JkX2hhc2hCEQoPX2FjY291bnRfc3RhdHVz');
+    'CgRVc2VyEhoKBnJlZl9pZBgBIAEoCUgAUgVyZWZJZIgBARIbCgl1c2VyX25hbWUYAiABKAlSCH'
+    'VzZXJOYW1lEkwKEmNvbm5lY3RlZF9hY2NvdW50cxgDIAMoCzIdLmlkZW50aXR5LnYxLkNvbm5l'
+    'Y3RlZEFjY291bnRSEWNvbm5lY3RlZEFjY291bnRzEiUKBWVtYWlsGAQgASgJQgq6SAfYAQFyAm'
+    'ABSAFSBWVtYWlsiAEBEiYKDHBob25lX251bWJlchgFIAEoCUgCUgtwaG9uZU51bWJlcogBARIi'
+    'CgpmaXJzdF9uYW1lGAYgASgJSANSCWZpcnN0TmFtZYgBARIgCglsYXN0X25hbWUYByABKAlIBF'
+    'IIbGFzdE5hbWWIAQESSgoOYWNjb3VudF9zdGF0dXMYCSABKA4yHi5pZGVudGl0eS52MS5BY2Nv'
+    'dW50U3RhdHVzVHlwZUgFUg1hY2NvdW50U3RhdHVziAEBEkYKEHJlcXVpcmVkX2FjdGlvbnMYCi'
+    'ADKA4yGy5pZGVudGl0eS52MS5BdXRoQWN0aW9uVHlwZVIPcmVxdWlyZWRBY3Rpb25zQgkKB19y'
+    'ZWZfaWRCCAoGX2VtYWlsQg8KDV9waG9uZV9udW1iZXJCDQoLX2ZpcnN0X25hbWVCDAoKX2xhc3'
+    'RfbmFtZUIRCg9fYWNjb3VudF9zdGF0dXM=');
 
 @$core.Deprecated('Use getUserRequestDescriptor instead')
 const GetUserRequest$json = {
   '1': 'GetUserRequest',
   '2': [
-    {'1': 'uid', '3': 1, '4': 1, '5': 9, '10': 'uid'},
+    {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'refId'},
   ],
 };
 
 /// Descriptor for `GetUserRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List getUserRequestDescriptor = $convert.base64Decode(
-    'Cg5HZXRVc2VyUmVxdWVzdBIQCgN1aWQYASABKAlSA3VpZA==');
+    'Cg5HZXRVc2VyUmVxdWVzdBIhCgZyZWZfaWQYASABKAlCCrpIB8gBAXICEANSBXJlZklk');
 
 @$core.Deprecated('Use getUserResponseDescriptor instead')
 const GetUserResponse$json = {
@@ -174,15 +171,15 @@ final $typed_data.Uint8List updateMeResponseDescriptor = $convert.base64Decode(
 const RequestDeleteUserRequest$json = {
   '1': 'RequestDeleteUserRequest',
   '2': [
-    {'1': 'uid', '3': 1, '4': 1, '5': 9, '10': 'uid'},
+    {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'refId'},
     {'1': 'password', '3': 2, '4': 1, '5': 9, '10': 'password'},
   ],
 };
 
 /// Descriptor for `RequestDeleteUserRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List requestDeleteUserRequestDescriptor = $convert.base64Decode(
-    'ChhSZXF1ZXN0RGVsZXRlVXNlclJlcXVlc3QSEAoDdWlkGAEgASgJUgN1aWQSGgoIcGFzc3dvcm'
-    'QYAiABKAlSCHBhc3N3b3Jk');
+    'ChhSZXF1ZXN0RGVsZXRlVXNlclJlcXVlc3QSIQoGcmVmX2lkGAEgASgJQgq6SAfIAQFyAhADUg'
+    'VyZWZJZBIaCghwYXNzd29yZBgCIAEoCVIIcGFzc3dvcmQ=');
 
 @$core.Deprecated('Use requestDeleteUserResponseDescriptor instead')
 const RequestDeleteUserResponse$json = {
@@ -227,15 +224,16 @@ final $typed_data.Uint8List deleteUserResponseDescriptor = $convert.base64Decode
 const ChangePasswordRequest$json = {
   '1': 'ChangePasswordRequest',
   '2': [
-    {'1': 'old_password', '3': 1, '4': 1, '5': 9, '10': 'oldPassword'},
-    {'1': 'new_password', '3': 2, '4': 1, '5': 9, '10': 'newPassword'},
+    {'1': 'old_password', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'oldPassword'},
+    {'1': 'new_password', '3': 2, '4': 1, '5': 9, '8': {}, '10': 'newPassword'},
   ],
 };
 
 /// Descriptor for `ChangePasswordRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List changePasswordRequestDescriptor = $convert.base64Decode(
-    'ChVDaGFuZ2VQYXNzd29yZFJlcXVlc3QSIQoMb2xkX3Bhc3N3b3JkGAEgASgJUgtvbGRQYXNzd2'
-    '9yZBIhCgxuZXdfcGFzc3dvcmQYAiABKAlSC25ld1Bhc3N3b3Jk');
+    'ChVDaGFuZ2VQYXNzd29yZFJlcXVlc3QSLAoMb2xkX3Bhc3N3b3JkGAEgASgJQgm6SAZyBBAIGC'
+    'BSC29sZFBhc3N3b3JkEiwKDG5ld19wYXNzd29yZBgCIAEoCUIJukgGcgQQCBggUgtuZXdQYXNz'
+    'd29yZA==');
 
 @$core.Deprecated('Use changePasswordResponseDescriptor instead')
 const ChangePasswordResponse$json = {

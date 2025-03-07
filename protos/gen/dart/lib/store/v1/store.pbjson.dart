@@ -17,30 +17,31 @@ import 'dart:typed_data' as $typed_data;
 const Store$json = {
   '1': 'Store',
   '2': [
-    {'1': 'uid', '3': 1, '4': 1, '5': 9, '10': 'uid'},
-    {'1': 'address', '3': 2, '4': 1, '5': 9, '9': 0, '10': 'address', '17': true},
+    {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'refId', '17': true},
+    {'1': 'address', '3': 2, '4': 1, '5': 9, '9': 1, '10': 'address', '17': true},
     {'1': 'name', '3': 3, '4': 1, '5': 9, '10': 'name'},
-    {'1': 'description', '3': 5, '4': 1, '5': 9, '9': 1, '10': 'description', '17': true},
-    {'1': 'logo_media_uid', '3': 6, '4': 1, '5': 9, '9': 2, '10': 'logoMediaUid', '17': true},
+    {'1': 'description', '3': 5, '4': 1, '5': 9, '9': 2, '10': 'description', '17': true},
+    {'1': 'logo_media_id', '3': 6, '4': 1, '5': 9, '9': 3, '10': 'logoMediaId', '17': true},
+    {'1': 'links_media_ids', '3': 8, '4': 1, '5': 9, '9': 4, '10': 'linksMediaIds', '17': true},
     {'1': 'business_id', '3': 7, '4': 1, '5': 9, '10': 'businessId'},
-    {'1': 'created_at', '3': 8, '4': 1, '5': 9, '10': 'createdAt'},
-    {'1': 'updated_at', '3': 9, '4': 1, '5': 9, '10': 'updatedAt'},
   ],
   '8': [
+    {'1': '_ref_id'},
     {'1': '_address'},
     {'1': '_description'},
-    {'1': '_logo_media_uid'},
+    {'1': '_logo_media_id'},
+    {'1': '_links_media_ids'},
   ],
 };
 
 /// Descriptor for `Store`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List storeDescriptor = $convert.base64Decode(
-    'CgVTdG9yZRIQCgN1aWQYASABKAlSA3VpZBIdCgdhZGRyZXNzGAIgASgJSABSB2FkZHJlc3OIAQ'
-    'ESEgoEbmFtZRgDIAEoCVIEbmFtZRIlCgtkZXNjcmlwdGlvbhgFIAEoCUgBUgtkZXNjcmlwdGlv'
-    'bogBARIpCg5sb2dvX21lZGlhX3VpZBgGIAEoCUgCUgxsb2dvTWVkaWFVaWSIAQESHwoLYnVzaW'
-    '5lc3NfaWQYByABKAlSCmJ1c2luZXNzSWQSHQoKY3JlYXRlZF9hdBgIIAEoCVIJY3JlYXRlZEF0'
-    'Eh0KCnVwZGF0ZWRfYXQYCSABKAlSCXVwZGF0ZWRBdEIKCghfYWRkcmVzc0IOCgxfZGVzY3JpcH'
-    'Rpb25CEQoPX2xvZ29fbWVkaWFfdWlk');
+    'CgVTdG9yZRIaCgZyZWZfaWQYASABKAlIAFIFcmVmSWSIAQESHQoHYWRkcmVzcxgCIAEoCUgBUg'
+    'dhZGRyZXNziAEBEhIKBG5hbWUYAyABKAlSBG5hbWUSJQoLZGVzY3JpcHRpb24YBSABKAlIAlIL'
+    'ZGVzY3JpcHRpb26IAQESJwoNbG9nb19tZWRpYV9pZBgGIAEoCUgDUgtsb2dvTWVkaWFJZIgBAR'
+    'IrCg9saW5rc19tZWRpYV9pZHMYCCABKAlIBFINbGlua3NNZWRpYUlkc4gBARIfCgtidXNpbmVz'
+    'c19pZBgHIAEoCVIKYnVzaW5lc3NJZEIJCgdfcmVmX2lkQgoKCF9hZGRyZXNzQg4KDF9kZXNjcm'
+    'lwdGlvbkIQCg5fbG9nb19tZWRpYV9pZEISChBfbGlua3NfbWVkaWFfaWRz');
 
 @$core.Deprecated('Use createStoreRequestDescriptor instead')
 const CreateStoreRequest$json = {
@@ -64,25 +65,26 @@ final $typed_data.Uint8List createStoreRequestDescriptor = $convert.base64Decode
 const CreateStoreResponse$json = {
   '1': 'CreateStoreResponse',
   '2': [
-    {'1': 'uid', '3': 1, '4': 1, '5': 9, '10': 'uid'},
+    {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'refId'},
   ],
 };
 
 /// Descriptor for `CreateStoreResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List createStoreResponseDescriptor = $convert.base64Decode(
-    'ChNDcmVhdGVTdG9yZVJlc3BvbnNlEhAKA3VpZBgBIAEoCVIDdWlk');
+    'ChNDcmVhdGVTdG9yZVJlc3BvbnNlEiEKBnJlZl9pZBgBIAEoCUIKukgHyAEBcgIQA1IFcmVmSW'
+    'Q=');
 
 @$core.Deprecated('Use getStoreRequestDescriptor instead')
 const GetStoreRequest$json = {
   '1': 'GetStoreRequest',
   '2': [
-    {'1': 'uid', '3': 1, '4': 1, '5': 9, '10': 'uid'},
+    {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'refId'},
   ],
 };
 
 /// Descriptor for `GetStoreRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List getStoreRequestDescriptor = $convert.base64Decode(
-    'Cg9HZXRTdG9yZVJlcXVlc3QSEAoDdWlkGAEgASgJUgN1aWQ=');
+    'Cg9HZXRTdG9yZVJlcXVlc3QSIQoGcmVmX2lkGAEgASgJQgq6SAfIAQFyAhADUgVyZWZJZA==');
 
 @$core.Deprecated('Use getStoreResponseDescriptor instead')
 const GetStoreResponse$json = {
@@ -132,13 +134,14 @@ final $typed_data.Uint8List updateStoreResponseDescriptor = $convert.base64Decod
 const DeleteStoreRequest$json = {
   '1': 'DeleteStoreRequest',
   '2': [
-    {'1': 'uid', '3': 1, '4': 1, '5': 9, '10': 'uid'},
+    {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'refId'},
   ],
 };
 
 /// Descriptor for `DeleteStoreRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List deleteStoreRequestDescriptor = $convert.base64Decode(
-    'ChJEZWxldGVTdG9yZVJlcXVlc3QSEAoDdWlkGAEgASgJUgN1aWQ=');
+    'ChJEZWxldGVTdG9yZVJlcXVlc3QSIQoGcmVmX2lkGAEgASgJQgq6SAfIAQFyAhADUgVyZWZJZA'
+    '==');
 
 @$core.Deprecated('Use deleteStoreResponseDescriptor instead')
 const DeleteStoreResponse$json = {

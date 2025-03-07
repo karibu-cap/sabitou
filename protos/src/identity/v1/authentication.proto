@@ -1,11 +1,16 @@
 syntax = "proto3";
 
 package identity.v1;
+import "buf/validate/validate.proto";
 
 message LoginRequest {
   // The unique identifier of the user.
   // For example, the email address or phone number or @username.
-  string u_ref = 1;
+  string u_ref = 1 [ (buf.validate.field).cel = {
+    id: "string.is_user_ref"
+    message: "user_ref must be a valid email address or user id or @username"
+    expression: "this.isEmail() || this.matches('^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')"
+  } ];
 
   // The password of the user.
   string password = 2;
@@ -21,26 +26,32 @@ message LoginResponse {
 
 // Register a new user with the minimum required information.
 // The user will have to set a password later.
-message RegisterRequest {
-  // The unique identifier of the user.
-  optional string username = 1;
+// For Business user registration, the business id is required.
+// message RegisterRequest {
+//   // The unique identifier of the user.
+//   string user_name = 1;
 
-  // The email address of the user.
-  optional string email = 2;
-}
+//   // The email address of the user.
+//   string email = 2;
+// }
 
-message RegisterResponse {
-  // The token to use to authenticate the user in subsequent requests.
-  string token = 1;
+// message RegisterResponse {
+//   // The token to use to authenticate the user in subsequent requests.
+//   string token = 1;
 
-  // The refresh token to use to refresh the token.
-  string refresh_token = 2;
-}
+//   // The refresh token to use to refresh the token.
+//   string refresh_token = 2;
+// }
 
 message RequestPasswordResetRequest {
   // The unique identifier of the user.
-  // For example, the email address or phone number or @username.
-  string u_ref = 1;
+  // For example, the email address or userId, later it will include the user name as well.
+  string u_ref = 1 [ (buf.validate.field).cel = {
+    id: "string.is_user_ref"
+    message: "user_ref must be a valid email address or user id or @username"
+    expression: "this.isEmail() || this.matches('^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')"
+
+  } ];
 }
 
 message RequestPasswordResetResponse {
@@ -73,10 +84,11 @@ service AuthService {
   rpc Login(LoginRequest) returns (LoginResponse) {}
 
   // Create a user without a password.
-  rpc Register(RegisterRequest) returns (RegisterResponse) {}
+  // rpc Register(RegisterRequest) returns (RegisterResponse) {}
 
   // Request the password reset of the user.
-  rpc RequestPasswordReset(RequestPasswordResetRequest) returns (RequestPasswordResetResponse) {}
+  rpc RequestPasswordReset(RequestPasswordResetRequest)
+      returns (RequestPasswordResetResponse) {}
 
   // Process the password reset request.
   rpc ResetPassword(ResetPasswordRequest) returns (ResetPasswordResponse) {}

@@ -9,15 +9,15 @@ import "permission.connect.spec.dart" as specs;
 
 extension type PermissionServiceClient (connect.Transport _transport) {
   /// Creates a new permission group.
-  Future<identityv1permission.CreatePermissionGroupResponse> createPermissionGroup(
-    identityv1permission.CreatePermissionGroupRequest input, {
+  Future<identityv1permission.CreatePermissionsGroupResponse> createPermissionsGroup(
+    identityv1permission.CreatePermissionsGroupRequest input, {
     connect.Headers? headers,
     connect.AbortSignal? signal,
     Function(connect.Headers)? onHeader,
     Function(connect.Headers)? onTrailer,
   }) {
     return connect.Client(_transport).unary(
-      specs.PermissionService.createPermissionGroup,
+      specs.PermissionService.createPermissionsGroup,
       input,
       signal: signal,
       headers: headers,
@@ -27,15 +27,15 @@ extension type PermissionServiceClient (connect.Transport _transport) {
   }
 
   /// Gets a permission group by id.
-  Future<identityv1permission.GetPermissionGroupResponse> getPermissionGroup(
-    identityv1permission.GetPermissionGroupRequest input, {
+  Future<identityv1permission.GetPermissionsGroupResponse> getPermissionsGroup(
+    identityv1permission.GetPermissionsGroupRequest input, {
     connect.Headers? headers,
     connect.AbortSignal? signal,
     Function(connect.Headers)? onHeader,
     Function(connect.Headers)? onTrailer,
   }) {
     return connect.Client(_transport).unary(
-      specs.PermissionService.getPermissionGroup,
+      specs.PermissionService.getPermissionsGroup,
       input,
       signal: signal,
       headers: headers,
@@ -45,15 +45,15 @@ extension type PermissionServiceClient (connect.Transport _transport) {
   }
 
   /// Updates a permission group.
-  Future<identityv1permission.UpdatePermissionGroupResponse> updatePermissionGroup(
-    identityv1permission.UpdatePermissionGroupRequest input, {
+  Future<identityv1permission.UpdatePermissionsGroupResponse> updatePermissionsGroup(
+    identityv1permission.UpdatePermissionsGroupRequest input, {
     connect.Headers? headers,
     connect.AbortSignal? signal,
     Function(connect.Headers)? onHeader,
     Function(connect.Headers)? onTrailer,
   }) {
     return connect.Client(_transport).unary(
-      specs.PermissionService.updatePermissionGroup,
+      specs.PermissionService.updatePermissionsGroup,
       input,
       signal: signal,
       headers: headers,
@@ -63,33 +63,15 @@ extension type PermissionServiceClient (connect.Transport _transport) {
   }
 
   /// Deletes a permission group.
-  Future<identityv1permission.DeletePermissionGroupResponse> deletePermissionGroup(
-    identityv1permission.DeletePermissionGroupRequest input, {
+  Future<identityv1permission.DeletePermissionsGroupResponse> deletePermissionsGroup(
+    identityv1permission.DeletePermissionsGroupRequest input, {
     connect.Headers? headers,
     connect.AbortSignal? signal,
     Function(connect.Headers)? onHeader,
     Function(connect.Headers)? onTrailer,
   }) {
     return connect.Client(_transport).unary(
-      specs.PermissionService.deletePermissionGroup,
-      input,
-      signal: signal,
-      headers: headers,
-      onHeader: onHeader,
-      onTrailer: onTrailer,
-    );
-  }
-
-  /// Gets the permissions of the user.
-  Future<identityv1permission.GetUserPermissionsResponse> getUserPermissions(
-    identityv1permission.GetUserPermissionsRequest input, {
-    connect.Headers? headers,
-    connect.AbortSignal? signal,
-    Function(connect.Headers)? onHeader,
-    Function(connect.Headers)? onTrailer,
-  }) {
-    return connect.Client(_transport).unary(
-      specs.PermissionService.getUserPermissions,
+      specs.PermissionService.deletePermissionsGroup,
       input,
       signal: signal,
       headers: headers,
@@ -135,15 +117,15 @@ extension type PermissionServiceClient (connect.Transport _transport) {
   }
 
   /// Gets the permission groups of the business.
-  Future<identityv1permission.GetBusinessPermissionGroupsResponse> getBusinessPermissionGroups(
-    identityv1permission.GetBusinessPermissionGroupsRequest input, {
+  Future<identityv1permission.GetBusinessPermissionsGroupsResponse> getBusinessPermissionsGroups(
+    identityv1permission.GetBusinessPermissionsGroupsRequest input, {
     connect.Headers? headers,
     connect.AbortSignal? signal,
     Function(connect.Headers)? onHeader,
     Function(connect.Headers)? onTrailer,
   }) {
     return connect.Client(_transport).unary(
-      specs.PermissionService.getBusinessPermissionGroups,
+      specs.PermissionService.getBusinessPermissionsGroups,
       input,
       signal: signal,
       headers: headers,

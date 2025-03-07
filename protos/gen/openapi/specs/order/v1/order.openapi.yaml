@@ -140,29 +140,35 @@ components:
           title: supplier_name
           description: The name of the supplier.
           nullable: true
-        businessUid:
+        businessId:
           type: string
-          title: business_uid
+          title: business_id
           description: The unique identifier of the business.
       title: CreateOrderRequest
       additionalProperties: false
     order.v1.CreateOrderResponse:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
+          title: ref_id
+          minLength: 3
           description: The unique identifier of the created order.
       title: CreateOrderResponse
+      required:
+        - refId
       additionalProperties: false
     order.v1.DeleteOrderRequest:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
+          title: ref_id
+          minLength: 3
           description: The unique identifier of the order to delete.
       title: DeleteOrderRequest
+      required:
+        - refId
       additionalProperties: false
     order.v1.DeleteOrderResponse:
       type: object
@@ -176,11 +182,14 @@ components:
     order.v1.GetOrderRequest:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
+          title: ref_id
+          minLength: 3
           description: The unique identifier of the order to retrieve.
       title: GetOrderRequest
+      required:
+        - refId
       additionalProperties: false
     order.v1.GetOrderResponse:
       type: object
@@ -189,23 +198,34 @@ components:
           title: order
           description: The retrieved order data.
           $ref: '#/components/schemas/order.v1.Order'
+        createdAt:
+          type: string
+          title: created_at
+          description: The date and time the order was created.
+        updatedAt:
+          type: string
+          title: updated_at
+          description: The date and time the order was last updated.
+          nullable: true
       title: GetOrderResponse
       additionalProperties: false
     order.v1.Order:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
+          title: ref_id
           description: The unique identifier of the order.
-        resourceType:
+          nullable: true
+        fromId:
           type: string
-          title: resource_type
-          description: The type of the resource.
-        resourceUid:
+          title: from_id
+          description: The id of the client or the supplier if available.
+          nullable: true
+        isClientOrder:
           type: string
-          title: resource_uid
-          description: The unique identifier of the resource owner.
+          title: is_client_order
+          description: Whether the order is from the client or the supplier.
         orderItems:
           type: array
           items:
@@ -221,39 +241,23 @@ components:
           title: status
           description: The status of the order.
           $ref: '#/components/schemas/order.v1.Status'
-        createdAt:
-          type: string
-          title: created_at
-          description: The date and time the order was created.
-        createdByUid:
-          type: string
-          title: created_by_uid
-          description: The uid of the user who created the order.
-        updatedAt:
-          type: string
-          title: updated_at
-          description: The date and time the order was last updated.
-        updatedByUid:
-          type: string
-          title: updated_by_uid
-          description: The uid of the user who last updated the order.
       title: Order
       additionalProperties: false
     order.v1.OrderItem:
       type: object
       properties:
-        productUid:
+        productId:
           type: string
-          title: product_uid
+          title: product_id
           description: The unique identifier of the business product.
         quantity:
           type: integer
           title: quantity
           format: int32
           description: The quantity of the product.
-        unitPriceInCents:
+        unitPriceInXafCents:
           type: integer
-          title: unit_price_in_cents
+          title: unit_price_in_xaf_cents
           format: int32
           description: |-
             The unit price in cents of the product.

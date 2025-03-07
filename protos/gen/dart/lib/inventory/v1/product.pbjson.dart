@@ -17,28 +17,31 @@ import 'dart:typed_data' as $typed_data;
 const ProductCategory$json = {
   '1': 'ProductCategory',
   '2': [
-    {'1': 'uid', '3': 1, '4': 1, '5': 9, '10': 'uid'},
+    {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'refId', '17': true},
     {'1': 'name', '3': 2, '4': 1, '5': 9, '10': 'name'},
+  ],
+  '8': [
+    {'1': '_ref_id'},
   ],
 };
 
 /// Descriptor for `ProductCategory`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List productCategoryDescriptor = $convert.base64Decode(
-    'Cg9Qcm9kdWN0Q2F0ZWdvcnkSEAoDdWlkGAEgASgJUgN1aWQSEgoEbmFtZRgCIAEoCVIEbmFtZQ'
-    '==');
+    'Cg9Qcm9kdWN0Q2F0ZWdvcnkSGgoGcmVmX2lkGAEgASgJSABSBXJlZklkiAEBEhIKBG5hbWUYAi'
+    'ABKAlSBG5hbWVCCQoHX3JlZl9pZA==');
 
 @$core.Deprecated('Use globalProductDescriptor instead')
 const GlobalProduct$json = {
   '1': 'GlobalProduct',
   '2': [
-    {'1': 'uid', '3': 1, '4': 1, '5': 9, '10': 'uid'},
+    {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'refId', '17': true},
     {'1': 'name', '3': 2, '4': 1, '5': 9, '10': 'name'},
-    {'1': 'description', '3': 3, '4': 1, '5': 9, '9': 0, '10': 'description', '17': true},
-    {'1': 'bar_code_value', '3': 4, '4': 1, '5': 9, '9': 1, '10': 'barCodeValue', '17': true},
+    {'1': 'description', '3': 3, '4': 1, '5': 9, '9': 1, '10': 'description', '17': true},
+    {'1': 'bar_code_value', '3': 4, '4': 1, '5': 9, '9': 2, '10': 'barCodeValue', '17': true},
     {'1': 'categories', '3': 5, '4': 3, '5': 11, '6': '.inventory.v1.ProductCategory', '10': 'categories'},
-    {'1': 'created_at', '3': 6, '4': 1, '5': 9, '10': 'createdAt'},
   ],
   '8': [
+    {'1': '_ref_id'},
     {'1': '_description'},
     {'1': '_bar_code_value'},
   ],
@@ -46,35 +49,33 @@ const GlobalProduct$json = {
 
 /// Descriptor for `GlobalProduct`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List globalProductDescriptor = $convert.base64Decode(
-    'Cg1HbG9iYWxQcm9kdWN0EhAKA3VpZBgBIAEoCVIDdWlkEhIKBG5hbWUYAiABKAlSBG5hbWUSJQ'
-    'oLZGVzY3JpcHRpb24YAyABKAlIAFILZGVzY3JpcHRpb26IAQESKQoOYmFyX2NvZGVfdmFsdWUY'
-    'BCABKAlIAVIMYmFyQ29kZVZhbHVliAEBEj0KCmNhdGVnb3JpZXMYBSADKAsyHS5pbnZlbnRvcn'
-    'kudjEuUHJvZHVjdENhdGVnb3J5UgpjYXRlZ29yaWVzEh0KCmNyZWF0ZWRfYXQYBiABKAlSCWNy'
-    'ZWF0ZWRBdEIOCgxfZGVzY3JpcHRpb25CEQoPX2Jhcl9jb2RlX3ZhbHVl');
+    'Cg1HbG9iYWxQcm9kdWN0EhoKBnJlZl9pZBgBIAEoCUgAUgVyZWZJZIgBARISCgRuYW1lGAIgAS'
+    'gJUgRuYW1lEiUKC2Rlc2NyaXB0aW9uGAMgASgJSAFSC2Rlc2NyaXB0aW9uiAEBEikKDmJhcl9j'
+    'b2RlX3ZhbHVlGAQgASgJSAJSDGJhckNvZGVWYWx1ZYgBARI9CgpjYXRlZ29yaWVzGAUgAygLMh'
+    '0uaW52ZW50b3J5LnYxLlByb2R1Y3RDYXRlZ29yeVIKY2F0ZWdvcmllc0IJCgdfcmVmX2lkQg4K'
+    'DF9kZXNjcmlwdGlvbkIRCg9fYmFyX2NvZGVfdmFsdWU=');
 
-@$core.Deprecated('Use productDescriptor instead')
-const Product$json = {
-  '1': 'Product',
+@$core.Deprecated('Use businessProductDescriptor instead')
+const BusinessProduct$json = {
+  '1': 'BusinessProduct',
   '2': [
-    {'1': 'uid', '3': 1, '4': 1, '5': 9, '10': 'uid'},
+    {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'refId', '17': true},
     {'1': 'business_id', '3': 2, '4': 1, '5': 9, '10': 'businessId'},
     {'1': 'global_product_id', '3': 3, '4': 1, '5': 9, '10': 'globalProductId'},
     {'1': 'price_in_cents', '3': 4, '4': 1, '5': 5, '10': 'priceInCents'},
-    {'1': 'images_media_uids', '3': 5, '4': 3, '5': 9, '10': 'imagesMediaUids'},
-    {'1': 'is_deleted', '3': 6, '4': 1, '5': 8, '10': 'isDeleted'},
-    {'1': 'created_at', '3': 7, '4': 1, '5': 9, '10': 'createdAt'},
-    {'1': 'updated_at', '3': 8, '4': 1, '5': 9, '10': 'updatedAt'},
+    {'1': 'images_media_ids', '3': 5, '4': 3, '5': 9, '10': 'imagesMediaIds'},
+  ],
+  '8': [
+    {'1': '_ref_id'},
   ],
 };
 
-/// Descriptor for `Product`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List productDescriptor = $convert.base64Decode(
-    'CgdQcm9kdWN0EhAKA3VpZBgBIAEoCVIDdWlkEh8KC2J1c2luZXNzX2lkGAIgASgJUgpidXNpbm'
-    'Vzc0lkEioKEWdsb2JhbF9wcm9kdWN0X2lkGAMgASgJUg9nbG9iYWxQcm9kdWN0SWQSJAoOcHJp'
-    'Y2VfaW5fY2VudHMYBCABKAVSDHByaWNlSW5DZW50cxIqChFpbWFnZXNfbWVkaWFfdWlkcxgFIA'
-    'MoCVIPaW1hZ2VzTWVkaWFVaWRzEh0KCmlzX2RlbGV0ZWQYBiABKAhSCWlzRGVsZXRlZBIdCgpj'
-    'cmVhdGVkX2F0GAcgASgJUgljcmVhdGVkQXQSHQoKdXBkYXRlZF9hdBgIIAEoCVIJdXBkYXRlZE'
-    'F0');
+/// Descriptor for `BusinessProduct`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List businessProductDescriptor = $convert.base64Decode(
+    'Cg9CdXNpbmVzc1Byb2R1Y3QSGgoGcmVmX2lkGAEgASgJSABSBXJlZklkiAEBEh8KC2J1c2luZX'
+    'NzX2lkGAIgASgJUgpidXNpbmVzc0lkEioKEWdsb2JhbF9wcm9kdWN0X2lkGAMgASgJUg9nbG9i'
+    'YWxQcm9kdWN0SWQSJAoOcHJpY2VfaW5fY2VudHMYBCABKAVSDHByaWNlSW5DZW50cxIoChBpbW'
+    'FnZXNfbWVkaWFfaWRzGAUgAygJUg5pbWFnZXNNZWRpYUlkc0IJCgdfcmVmX2lk');
 
 @$core.Deprecated('Use findGlobalProductsRequestDescriptor instead')
 const FindGlobalProductsRequest$json = {
@@ -160,41 +161,41 @@ final $typed_data.Uint8List addProductResponseDescriptor = $convert.base64Decode
 const GetProductRequest$json = {
   '1': 'GetProductRequest',
   '2': [
-    {'1': 'uid', '3': 1, '4': 1, '5': 9, '10': 'uid'},
+    {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'refId'},
   ],
 };
 
 /// Descriptor for `GetProductRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List getProductRequestDescriptor = $convert.base64Decode(
-    'ChFHZXRQcm9kdWN0UmVxdWVzdBIQCgN1aWQYASABKAlSA3VpZA==');
+    'ChFHZXRQcm9kdWN0UmVxdWVzdBIhCgZyZWZfaWQYASABKAlCCrpIB8gBAXICEANSBXJlZklk');
 
 @$core.Deprecated('Use getProductResponseDescriptor instead')
 const GetProductResponse$json = {
   '1': 'GetProductResponse',
   '2': [
-    {'1': 'product', '3': 1, '4': 1, '5': 11, '6': '.inventory.v1.Product', '10': 'product'},
+    {'1': 'product', '3': 1, '4': 1, '5': 11, '6': '.inventory.v1.BusinessProduct', '10': 'product'},
   ],
 };
 
 /// Descriptor for `GetProductResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List getProductResponseDescriptor = $convert.base64Decode(
-    'ChJHZXRQcm9kdWN0UmVzcG9uc2USLwoHcHJvZHVjdBgBIAEoCzIVLmludmVudG9yeS52MS5Qcm'
-    '9kdWN0Ugdwcm9kdWN0');
+    'ChJHZXRQcm9kdWN0UmVzcG9uc2USNwoHcHJvZHVjdBgBIAEoCzIdLmludmVudG9yeS52MS5CdX'
+    'NpbmVzc1Byb2R1Y3RSB3Byb2R1Y3Q=');
 
 @$core.Deprecated('Use updateProductRequestDescriptor instead')
 const UpdateProductRequest$json = {
   '1': 'UpdateProductRequest',
   '2': [
-    {'1': 'product', '3': 1, '4': 1, '5': 11, '6': '.inventory.v1.Product', '10': 'product'},
+    {'1': 'product', '3': 1, '4': 1, '5': 11, '6': '.inventory.v1.BusinessProduct', '10': 'product'},
     {'1': 'images_raw_images', '3': 4, '4': 3, '5': 12, '10': 'imagesRawImages'},
   ],
 };
 
 /// Descriptor for `UpdateProductRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List updateProductRequestDescriptor = $convert.base64Decode(
-    'ChRVcGRhdGVQcm9kdWN0UmVxdWVzdBIvCgdwcm9kdWN0GAEgASgLMhUuaW52ZW50b3J5LnYxLl'
-    'Byb2R1Y3RSB3Byb2R1Y3QSKgoRaW1hZ2VzX3Jhd19pbWFnZXMYBCADKAxSD2ltYWdlc1Jhd0lt'
-    'YWdlcw==');
+    'ChRVcGRhdGVQcm9kdWN0UmVxdWVzdBI3Cgdwcm9kdWN0GAEgASgLMh0uaW52ZW50b3J5LnYxLk'
+    'J1c2luZXNzUHJvZHVjdFIHcHJvZHVjdBIqChFpbWFnZXNfcmF3X2ltYWdlcxgEIAMoDFIPaW1h'
+    'Z2VzUmF3SW1hZ2Vz');
 
 @$core.Deprecated('Use updateProductResponseDescriptor instead')
 const UpdateProductResponse$json = {
@@ -212,13 +213,14 @@ final $typed_data.Uint8List updateProductResponseDescriptor = $convert.base64Dec
 const DeleteProductRequest$json = {
   '1': 'DeleteProductRequest',
   '2': [
-    {'1': 'uid', '3': 1, '4': 1, '5': 9, '10': 'uid'},
+    {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'refId'},
   ],
 };
 
 /// Descriptor for `DeleteProductRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List deleteProductRequestDescriptor = $convert.base64Decode(
-    'ChREZWxldGVQcm9kdWN0UmVxdWVzdBIQCgN1aWQYASABKAlSA3VpZA==');
+    'ChREZWxldGVQcm9kdWN0UmVxdWVzdBIhCgZyZWZfaWQYASABKAlCCrpIB8gBAXICEANSBXJlZk'
+    'lk');
 
 @$core.Deprecated('Use deleteProductResponseDescriptor instead')
 const DeleteProductResponse$json = {
@@ -256,7 +258,7 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>> ProductSer
   '.inventory.v1.AddProductResponse': AddProductResponse$json,
   '.inventory.v1.GetProductRequest': GetProductRequest$json,
   '.inventory.v1.GetProductResponse': GetProductResponse$json,
-  '.inventory.v1.Product': Product$json,
+  '.inventory.v1.BusinessProduct': BusinessProduct$json,
   '.inventory.v1.UpdateProductRequest': UpdateProductRequest$json,
   '.inventory.v1.UpdateProductResponse': UpdateProductResponse$json,
   '.inventory.v1.DeleteProductRequest': DeleteProductRequest$json,

@@ -38,6 +38,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/business.v1.CreateBusinessResponse'
+  /business.v1.BusinessService/GetMyBusinesses:
+    post:
+      tags:
+        - business.v1.BusinessService
+      summary: GetMyBusinesses
+      description: Get all businesses of the current user.
+      operationId: business.v1.BusinessService.GetMyBusinesses
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/business.v1.GetMyBusinessesRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/business.v1.GetMyBusinessesResponse'
   /business.v1.BusinessService/GetBusiness:
     post:
       tags:
@@ -302,7 +338,7 @@ components:
       enum:
         - BUSINESS_STATUS_TYPE_UNSPECIFIED
         - BUSINESS_STATUS_TYPE_ACTIVE
-        - BUSINESS_STATUS_TYPE_DELETED
+        - BUSINESS_STATUS_TYPE_INACTIVE
     business.v1.AddUserToBusinessRequest:
       type: object
       properties:
@@ -326,10 +362,11 @@ components:
     business.v1.Business:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
-          description: The unique identifier of the business.
+          title: ref_id
+          description: The reference id to the business identifier.
+          nullable: true
         name:
           type: string
           title: name
@@ -343,14 +380,14 @@ components:
           title: status
           description: The status of the business.
           $ref: '#/components/schemas/business.v1.BusinessStatusType'
-        ownerUid:
+        ownerId:
           type: string
-          title: owner_uid
-          description: The uid of the owner of the business.
-        logoMediaUid:
+          title: owner_id
+          description: The id of the owner of the business.
+        logoMediaId:
           type: string
-          title: logo_media_uid
-          description: The uid of the media of the logo of the business.
+          title: logo_media_id
+          description: The id of the media of the logo of the business.
           nullable: true
         countryCode:
           type: string
@@ -364,14 +401,14 @@ components:
           description: |-
             The ISO 4217 currency code of the business.
              For example: XAF, USD, EUR, etc.
-        createdAt:
-          type: string
-          title: created_at
-          description: The date and time the business was created.
-        updatedAt:
-          type: string
-          title: updated_at
-          description: The date and time the business was last updated.
+        linksMediaIds:
+          type: array
+          items:
+            type: string
+          title: links_media_ids
+          description: |-
+            The media ids of different links of the business.
+             It can be social media links, website links, etc.
       title: Business
       additionalProperties: false
     business.v1.CreateBusinessRequest:
@@ -394,11 +431,14 @@ components:
     business.v1.CreateBusinessResponse:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
-          description: The unique identifier of the created business.
+          title: ref_id
+          minLength: 3
+          description: The reference id to the business identifier.
       title: CreateBusinessResponse
+      required:
+        - refId
       additionalProperties: false
     business.v1.DeleteBusinessRequest:
       type: object
@@ -425,11 +465,14 @@ components:
     business.v1.GetBusinessRequest:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
-          description: The unique identifier of the business to retrieve.
+          title: ref_id
+          minLength: 3
+          description: The reference id to the business identifier.
       title: GetBusinessRequest
+      required:
+        - refId
       additionalProperties: false
     business.v1.GetBusinessResponse:
       type: object
@@ -443,22 +486,39 @@ components:
     business.v1.GetBusinessUsersRequest:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
-          description: The unique identifier of the business to retrieve.
+          title: ref_id
+          minLength: 3
+          description: The reference id to the business identifier.
       title: GetBusinessUsersRequest
+      required:
+        - refId
       additionalProperties: false
     business.v1.GetBusinessUsersResponse:
       type: object
       properties:
-        uids:
+        ids:
           type: array
           items:
             type: string
-          title: uids
+          title: ids
           description: The unique identifiers of the users of the business.
       title: GetBusinessUsersResponse
+      additionalProperties: false
+    business.v1.GetMyBusinessesRequest:
+      type: object
+      title: GetMyBusinessesRequest
+      additionalProperties: false
+    business.v1.GetMyBusinessesResponse:
+      type: object
+      properties:
+        businesses:
+          type: array
+          items:
+            $ref: '#/components/schemas/business.v1.Business'
+          title: businesses
+      title: GetMyBusinessesResponse
       additionalProperties: false
     business.v1.RemoveUserFromBusinessRequest:
       type: object
@@ -483,15 +543,18 @@ components:
     business.v1.RequestDeleteBusinessRequest:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
-          description: The unique identifier of the business to delete.
+          title: ref_id
+          minLength: 3
+          description: The reference id to the business identifier.
         password:
           type: string
           title: password
           description: The password of the user who is trying to delete the business.
       title: RequestDeleteBusinessRequest
+      required:
+        - refId
       additionalProperties: false
     business.v1.RequestDeleteBusinessResponse:
       type: object

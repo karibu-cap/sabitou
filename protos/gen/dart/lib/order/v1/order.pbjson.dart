@@ -51,44 +51,42 @@ final $typed_data.Uint8List resourceTypeDescriptor = $convert.base64Decode(
 const OrderItem$json = {
   '1': 'OrderItem',
   '2': [
-    {'1': 'product_uid', '3': 1, '4': 1, '5': 9, '10': 'productUid'},
+    {'1': 'product_id', '3': 1, '4': 1, '5': 9, '10': 'productId'},
     {'1': 'quantity', '3': 2, '4': 1, '5': 5, '10': 'quantity'},
-    {'1': 'unit_price_in_cents', '3': 3, '4': 1, '5': 5, '10': 'unitPriceInCents'},
+    {'1': 'unit_price_in_xaf_cents', '3': 3, '4': 1, '5': 5, '10': 'unitPriceInXafCents'},
   ],
 };
 
 /// Descriptor for `OrderItem`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List orderItemDescriptor = $convert.base64Decode(
-    'CglPcmRlckl0ZW0SHwoLcHJvZHVjdF91aWQYASABKAlSCnByb2R1Y3RVaWQSGgoIcXVhbnRpdH'
-    'kYAiABKAVSCHF1YW50aXR5Ei0KE3VuaXRfcHJpY2VfaW5fY2VudHMYAyABKAVSEHVuaXRQcmlj'
-    'ZUluQ2VudHM=');
+    'CglPcmRlckl0ZW0SHQoKcHJvZHVjdF9pZBgBIAEoCVIJcHJvZHVjdElkEhoKCHF1YW50aXR5GA'
+    'IgASgFUghxdWFudGl0eRI0Chd1bml0X3ByaWNlX2luX3hhZl9jZW50cxgDIAEoBVITdW5pdFBy'
+    'aWNlSW5YYWZDZW50cw==');
 
 @$core.Deprecated('Use orderDescriptor instead')
 const Order$json = {
   '1': 'Order',
   '2': [
-    {'1': 'uid', '3': 1, '4': 1, '5': 9, '10': 'uid'},
-    {'1': 'resource_type', '3': 2, '4': 1, '5': 9, '10': 'resourceType'},
-    {'1': 'resource_uid', '3': 3, '4': 1, '5': 9, '10': 'resourceUid'},
+    {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'refId', '17': true},
+    {'1': 'from_id', '3': 2, '4': 1, '5': 9, '9': 1, '10': 'fromId', '17': true},
+    {'1': 'is_client_order', '3': 3, '4': 1, '5': 9, '10': 'isClientOrder'},
     {'1': 'order_items', '3': 4, '4': 3, '5': 11, '6': '.order.v1.OrderItem', '10': 'orderItems'},
     {'1': 'total_price_in_cents', '3': 5, '4': 1, '5': 5, '10': 'totalPriceInCents'},
     {'1': 'status', '3': 6, '4': 1, '5': 14, '6': '.order.v1.Status', '10': 'status'},
-    {'1': 'created_at', '3': 7, '4': 1, '5': 9, '10': 'createdAt'},
-    {'1': 'created_by_uid', '3': 8, '4': 1, '5': 9, '10': 'createdByUid'},
-    {'1': 'updated_at', '3': 9, '4': 1, '5': 9, '10': 'updatedAt'},
-    {'1': 'updated_by_uid', '3': 10, '4': 1, '5': 9, '10': 'updatedByUid'},
+  ],
+  '8': [
+    {'1': '_ref_id'},
+    {'1': '_from_id'},
   ],
 };
 
 /// Descriptor for `Order`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List orderDescriptor = $convert.base64Decode(
-    'CgVPcmRlchIQCgN1aWQYASABKAlSA3VpZBIjCg1yZXNvdXJjZV90eXBlGAIgASgJUgxyZXNvdX'
-    'JjZVR5cGUSIQoMcmVzb3VyY2VfdWlkGAMgASgJUgtyZXNvdXJjZVVpZBI0CgtvcmRlcl9pdGVt'
-    'cxgEIAMoCzITLm9yZGVyLnYxLk9yZGVySXRlbVIKb3JkZXJJdGVtcxIvChR0b3RhbF9wcmljZV'
-    '9pbl9jZW50cxgFIAEoBVIRdG90YWxQcmljZUluQ2VudHMSKAoGc3RhdHVzGAYgASgOMhAub3Jk'
-    'ZXIudjEuU3RhdHVzUgZzdGF0dXMSHQoKY3JlYXRlZF9hdBgHIAEoCVIJY3JlYXRlZEF0EiQKDm'
-    'NyZWF0ZWRfYnlfdWlkGAggASgJUgxjcmVhdGVkQnlVaWQSHQoKdXBkYXRlZF9hdBgJIAEoCVIJ'
-    'dXBkYXRlZEF0EiQKDnVwZGF0ZWRfYnlfdWlkGAogASgJUgx1cGRhdGVkQnlVaWQ=');
+    'CgVPcmRlchIaCgZyZWZfaWQYASABKAlIAFIFcmVmSWSIAQESHAoHZnJvbV9pZBgCIAEoCUgBUg'
+    'Zmcm9tSWSIAQESJgoPaXNfY2xpZW50X29yZGVyGAMgASgJUg1pc0NsaWVudE9yZGVyEjQKC29y'
+    'ZGVyX2l0ZW1zGAQgAygLMhMub3JkZXIudjEuT3JkZXJJdGVtUgpvcmRlckl0ZW1zEi8KFHRvdG'
+    'FsX3ByaWNlX2luX2NlbnRzGAUgASgFUhF0b3RhbFByaWNlSW5DZW50cxIoCgZzdGF0dXMYBiAB'
+    'KA4yEC5vcmRlci52MS5TdGF0dXNSBnN0YXR1c0IJCgdfcmVmX2lkQgoKCF9mcm9tX2lk');
 
 @$core.Deprecated('Use createOrderRequestDescriptor instead')
 const CreateOrderRequest$json = {
@@ -96,7 +94,7 @@ const CreateOrderRequest$json = {
   '2': [
     {'1': 'order', '3': 1, '4': 1, '5': 11, '6': '.order.v1.Order', '10': 'order'},
     {'1': 'supplier_name', '3': 2, '4': 1, '5': 9, '9': 0, '10': 'supplierName', '17': true},
-    {'1': 'business_uid', '3': 3, '4': 1, '5': 9, '10': 'businessUid'},
+    {'1': 'business_id', '3': 3, '4': 1, '5': 9, '10': 'businessId'},
   ],
   '8': [
     {'1': '_supplier_name'},
@@ -106,57 +104,65 @@ const CreateOrderRequest$json = {
 /// Descriptor for `CreateOrderRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List createOrderRequestDescriptor = $convert.base64Decode(
     'ChJDcmVhdGVPcmRlclJlcXVlc3QSJQoFb3JkZXIYASABKAsyDy5vcmRlci52MS5PcmRlclIFb3'
-    'JkZXISKAoNc3VwcGxpZXJfbmFtZRgCIAEoCUgAUgxzdXBwbGllck5hbWWIAQESIQoMYnVzaW5l'
-    'c3NfdWlkGAMgASgJUgtidXNpbmVzc1VpZEIQCg5fc3VwcGxpZXJfbmFtZQ==');
+    'JkZXISKAoNc3VwcGxpZXJfbmFtZRgCIAEoCUgAUgxzdXBwbGllck5hbWWIAQESHwoLYnVzaW5l'
+    'c3NfaWQYAyABKAlSCmJ1c2luZXNzSWRCEAoOX3N1cHBsaWVyX25hbWU=');
 
 @$core.Deprecated('Use createOrderResponseDescriptor instead')
 const CreateOrderResponse$json = {
   '1': 'CreateOrderResponse',
   '2': [
-    {'1': 'uid', '3': 1, '4': 1, '5': 9, '10': 'uid'},
+    {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'refId'},
   ],
 };
 
 /// Descriptor for `CreateOrderResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List createOrderResponseDescriptor = $convert.base64Decode(
-    'ChNDcmVhdGVPcmRlclJlc3BvbnNlEhAKA3VpZBgBIAEoCVIDdWlk');
+    'ChNDcmVhdGVPcmRlclJlc3BvbnNlEiEKBnJlZl9pZBgBIAEoCUIKukgHyAEBcgIQA1IFcmVmSW'
+    'Q=');
 
 @$core.Deprecated('Use getOrderRequestDescriptor instead')
 const GetOrderRequest$json = {
   '1': 'GetOrderRequest',
   '2': [
-    {'1': 'uid', '3': 1, '4': 1, '5': 9, '10': 'uid'},
+    {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'refId'},
   ],
 };
 
 /// Descriptor for `GetOrderRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List getOrderRequestDescriptor = $convert.base64Decode(
-    'Cg9HZXRPcmRlclJlcXVlc3QSEAoDdWlkGAEgASgJUgN1aWQ=');
+    'Cg9HZXRPcmRlclJlcXVlc3QSIQoGcmVmX2lkGAEgASgJQgq6SAfIAQFyAhADUgVyZWZJZA==');
 
 @$core.Deprecated('Use getOrderResponseDescriptor instead')
 const GetOrderResponse$json = {
   '1': 'GetOrderResponse',
   '2': [
     {'1': 'order', '3': 1, '4': 1, '5': 11, '6': '.order.v1.Order', '10': 'order'},
+    {'1': 'created_at', '3': 2, '4': 1, '5': 9, '10': 'createdAt'},
+    {'1': 'updated_at', '3': 3, '4': 1, '5': 9, '9': 0, '10': 'updatedAt', '17': true},
+  ],
+  '8': [
+    {'1': '_updated_at'},
   ],
 };
 
 /// Descriptor for `GetOrderResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List getOrderResponseDescriptor = $convert.base64Decode(
     'ChBHZXRPcmRlclJlc3BvbnNlEiUKBW9yZGVyGAEgASgLMg8ub3JkZXIudjEuT3JkZXJSBW9yZG'
-    'Vy');
+    'VyEh0KCmNyZWF0ZWRfYXQYAiABKAlSCWNyZWF0ZWRBdBIiCgp1cGRhdGVkX2F0GAMgASgJSABS'
+    'CXVwZGF0ZWRBdIgBAUINCgtfdXBkYXRlZF9hdA==');
 
 @$core.Deprecated('Use deleteOrderRequestDescriptor instead')
 const DeleteOrderRequest$json = {
   '1': 'DeleteOrderRequest',
   '2': [
-    {'1': 'uid', '3': 1, '4': 1, '5': 9, '10': 'uid'},
+    {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'refId'},
   ],
 };
 
 /// Descriptor for `DeleteOrderRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List deleteOrderRequestDescriptor = $convert.base64Decode(
-    'ChJEZWxldGVPcmRlclJlcXVlc3QSEAoDdWlkGAEgASgJUgN1aWQ=');
+    'ChJEZWxldGVPcmRlclJlcXVlc3QSIQoGcmVmX2lkGAEgASgJQgq6SAfIAQFyAhADUgVyZWZJZA'
+    '==');
 
 @$core.Deprecated('Use deleteOrderResponseDescriptor instead')
 const DeleteOrderResponse$json = {

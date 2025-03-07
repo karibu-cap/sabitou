@@ -13,6 +13,8 @@ import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
+import '../../link/v1/link.pbjson.dart' as $5;
+
 @$core.Deprecated('Use linkDescriptor instead')
 const Link$json = {
   '1': 'Link',
@@ -30,29 +32,27 @@ final $typed_data.Uint8List linkDescriptor = $convert.base64Decode(
 const Supplier$json = {
   '1': 'Supplier',
   '2': [
-    {'1': 'uid', '3': 1, '4': 1, '5': 9, '10': 'uid'},
+    {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'refId', '17': true},
     {'1': 'name', '3': 2, '4': 1, '5': 9, '10': 'name'},
-    {'1': 'description', '3': 3, '4': 1, '5': 9, '9': 0, '10': 'description', '17': true},
-    {'1': 'logo_media_uid', '3': 4, '4': 1, '5': 9, '9': 1, '10': 'logoMediaUid', '17': true},
-    {'1': 'links', '3': 5, '4': 3, '5': 11, '6': '.business.v1.Link', '10': 'links'},
+    {'1': 'description', '3': 3, '4': 1, '5': 9, '9': 1, '10': 'description', '17': true},
+    {'1': 'logo_media_id', '3': 4, '4': 1, '5': 9, '9': 2, '10': 'logoMediaId', '17': true},
+    {'1': 'external_links_ids', '3': 5, '4': 3, '5': 9, '10': 'externalLinksIds'},
     {'1': 'business_id', '3': 6, '4': 1, '5': 9, '10': 'businessId'},
-    {'1': 'created_at', '3': 7, '4': 1, '5': 9, '10': 'createdAt'},
-    {'1': 'updated_at', '3': 8, '4': 1, '5': 9, '10': 'updatedAt'},
   ],
   '8': [
+    {'1': '_ref_id'},
     {'1': '_description'},
-    {'1': '_logo_media_uid'},
+    {'1': '_logo_media_id'},
   ],
 };
 
 /// Descriptor for `Supplier`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List supplierDescriptor = $convert.base64Decode(
-    'CghTdXBwbGllchIQCgN1aWQYASABKAlSA3VpZBISCgRuYW1lGAIgASgJUgRuYW1lEiUKC2Rlc2'
-    'NyaXB0aW9uGAMgASgJSABSC2Rlc2NyaXB0aW9uiAEBEikKDmxvZ29fbWVkaWFfdWlkGAQgASgJ'
-    'SAFSDGxvZ29NZWRpYVVpZIgBARInCgVsaW5rcxgFIAMoCzIRLmJ1c2luZXNzLnYxLkxpbmtSBW'
-    'xpbmtzEh8KC2J1c2luZXNzX2lkGAYgASgJUgpidXNpbmVzc0lkEh0KCmNyZWF0ZWRfYXQYByAB'
-    'KAlSCWNyZWF0ZWRBdBIdCgp1cGRhdGVkX2F0GAggASgJUgl1cGRhdGVkQXRCDgoMX2Rlc2NyaX'
-    'B0aW9uQhEKD19sb2dvX21lZGlhX3VpZA==');
+    'CghTdXBwbGllchIaCgZyZWZfaWQYASABKAlIAFIFcmVmSWSIAQESEgoEbmFtZRgCIAEoCVIEbm'
+    'FtZRIlCgtkZXNjcmlwdGlvbhgDIAEoCUgBUgtkZXNjcmlwdGlvbogBARInCg1sb2dvX21lZGlh'
+    'X2lkGAQgASgJSAJSC2xvZ29NZWRpYUlkiAEBEiwKEmV4dGVybmFsX2xpbmtzX2lkcxgFIAMoCV'
+    'IQZXh0ZXJuYWxMaW5rc0lkcxIfCgtidXNpbmVzc19pZBgGIAEoCVIKYnVzaW5lc3NJZEIJCgdf'
+    'cmVmX2lkQg4KDF9kZXNjcmlwdGlvbkIQCg5fbG9nb19tZWRpYV9pZA==');
 
 @$core.Deprecated('Use createSupplierRequestDescriptor instead')
 const CreateSupplierRequest$json = {
@@ -60,6 +60,7 @@ const CreateSupplierRequest$json = {
   '2': [
     {'1': 'supplier', '3': 1, '4': 1, '5': 11, '6': '.business.v1.Supplier', '10': 'supplier'},
     {'1': 'logo_raw_image', '3': 2, '4': 1, '5': 12, '9': 0, '10': 'logoRawImage', '17': true},
+    {'1': 'external_links', '3': 5, '4': 3, '5': 11, '6': '.link.v1.ResourceLink', '10': 'externalLinks'},
   ],
   '8': [
     {'1': '_logo_raw_image'},
@@ -70,31 +71,34 @@ const CreateSupplierRequest$json = {
 final $typed_data.Uint8List createSupplierRequestDescriptor = $convert.base64Decode(
     'ChVDcmVhdGVTdXBwbGllclJlcXVlc3QSMQoIc3VwcGxpZXIYASABKAsyFS5idXNpbmVzcy52MS'
     '5TdXBwbGllclIIc3VwcGxpZXISKQoObG9nb19yYXdfaW1hZ2UYAiABKAxIAFIMbG9nb1Jhd0lt'
-    'YWdliAEBQhEKD19sb2dvX3Jhd19pbWFnZQ==');
+    'YWdliAEBEjwKDmV4dGVybmFsX2xpbmtzGAUgAygLMhUubGluay52MS5SZXNvdXJjZUxpbmtSDW'
+    'V4dGVybmFsTGlua3NCEQoPX2xvZ29fcmF3X2ltYWdl');
 
 @$core.Deprecated('Use createSupplierResponseDescriptor instead')
 const CreateSupplierResponse$json = {
   '1': 'CreateSupplierResponse',
   '2': [
-    {'1': 'uid', '3': 1, '4': 1, '5': 9, '10': 'uid'},
+    {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'refId'},
   ],
 };
 
 /// Descriptor for `CreateSupplierResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List createSupplierResponseDescriptor = $convert.base64Decode(
-    'ChZDcmVhdGVTdXBwbGllclJlc3BvbnNlEhAKA3VpZBgBIAEoCVIDdWlk');
+    'ChZDcmVhdGVTdXBwbGllclJlc3BvbnNlEiEKBnJlZl9pZBgBIAEoCUIKukgHyAEBcgIQA1IFcm'
+    'VmSWQ=');
 
 @$core.Deprecated('Use getSupplierRequestDescriptor instead')
 const GetSupplierRequest$json = {
   '1': 'GetSupplierRequest',
   '2': [
-    {'1': 'uid', '3': 1, '4': 1, '5': 9, '10': 'uid'},
+    {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'refId'},
   ],
 };
 
 /// Descriptor for `GetSupplierRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List getSupplierRequestDescriptor = $convert.base64Decode(
-    'ChJHZXRTdXBwbGllclJlcXVlc3QSEAoDdWlkGAEgASgJUgN1aWQ=');
+    'ChJHZXRTdXBwbGllclJlcXVlc3QSIQoGcmVmX2lkGAEgASgJQgq6SAfIAQFyAhADUgVyZWZJZA'
+    '==');
 
 @$core.Deprecated('Use getSupplierResponseDescriptor instead')
 const GetSupplierResponse$json = {
@@ -113,13 +117,14 @@ final $typed_data.Uint8List getSupplierResponseDescriptor = $convert.base64Decod
 const GetBusinessSuppliersRequest$json = {
   '1': 'GetBusinessSuppliersRequest',
   '2': [
-    {'1': 'uid', '3': 1, '4': 1, '5': 9, '10': 'uid'},
+    {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'refId'},
   ],
 };
 
 /// Descriptor for `GetBusinessSuppliersRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List getBusinessSuppliersRequestDescriptor = $convert.base64Decode(
-    'ChtHZXRCdXNpbmVzc1N1cHBsaWVyc1JlcXVlc3QSEAoDdWlkGAEgASgJUgN1aWQ=');
+    'ChtHZXRCdXNpbmVzc1N1cHBsaWVyc1JlcXVlc3QSIQoGcmVmX2lkGAEgASgJQgq6SAfIAQFyAh'
+    'ADUgVyZWZJZA==');
 
 @$core.Deprecated('Use getBusinessSuppliersResponseDescriptor instead')
 const GetBusinessSuppliersResponse$json = {
@@ -169,13 +174,14 @@ final $typed_data.Uint8List updateSupplierResponseDescriptor = $convert.base64De
 const DeleteSupplierRequest$json = {
   '1': 'DeleteSupplierRequest',
   '2': [
-    {'1': 'uid', '3': 1, '4': 1, '5': 9, '10': 'uid'},
+    {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'refId'},
   ],
 };
 
 /// Descriptor for `DeleteSupplierRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List deleteSupplierRequestDescriptor = $convert.base64Decode(
-    'ChVEZWxldGVTdXBwbGllclJlcXVlc3QSEAoDdWlkGAEgASgJUgN1aWQ=');
+    'ChVEZWxldGVTdXBwbGllclJlcXVlc3QSIQoGcmVmX2lkGAEgASgJQgq6SAfIAQFyAhADUgVyZW'
+    'ZJZA==');
 
 @$core.Deprecated('Use deleteSupplierResponseDescriptor instead')
 const DeleteSupplierResponse$json = {
@@ -204,7 +210,7 @@ const $core.Map<$core.String, $core.dynamic> SupplierServiceBase$json = {
 const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>> SupplierServiceBase$messageJson = {
   '.business.v1.CreateSupplierRequest': CreateSupplierRequest$json,
   '.business.v1.Supplier': Supplier$json,
-  '.business.v1.Link': Link$json,
+  '.link.v1.ResourceLink': $5.ResourceLink$json,
   '.business.v1.CreateSupplierResponse': CreateSupplierResponse$json,
   '.business.v1.GetSupplierRequest': GetSupplierRequest$json,
   '.business.v1.GetSupplierResponse': GetSupplierResponse$json,

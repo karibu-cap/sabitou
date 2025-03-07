@@ -159,56 +159,20 @@ func (m *Supplier) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Uid
-
 	// no validation rules for Name
-
-	for idx, item := range m.GetLinks() {
-		_, _ = idx, item
-
-		if all {
-			switch v := interface{}(item).(type) {
-			case interface{ ValidateAll() error }:
-				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, SupplierValidationError{
-						field:  fmt.Sprintf("Links[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			case interface{ Validate() error }:
-				if err := v.Validate(); err != nil {
-					errors = append(errors, SupplierValidationError{
-						field:  fmt.Sprintf("Links[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			}
-		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return SupplierValidationError{
-					field:  fmt.Sprintf("Links[%v]", idx),
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
-
-	}
 
 	// no validation rules for BusinessId
 
-	// no validation rules for CreatedAt
-
-	// no validation rules for UpdatedAt
+	if m.RefId != nil {
+		// no validation rules for RefId
+	}
 
 	if m.Description != nil {
 		// no validation rules for Description
 	}
 
-	if m.LogoMediaUid != nil {
-		// no validation rules for LogoMediaUid
+	if m.LogoMediaId != nil {
+		// no validation rules for LogoMediaId
 	}
 
 	if len(errors) > 0 {
@@ -339,6 +303,40 @@ func (m *CreateSupplierRequest) validate(all bool) error {
 		}
 	}
 
+	for idx, item := range m.GetExternalLinks() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, CreateSupplierRequestValidationError{
+						field:  fmt.Sprintf("ExternalLinks[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, CreateSupplierRequestValidationError{
+						field:  fmt.Sprintf("ExternalLinks[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return CreateSupplierRequestValidationError{
+					field:  fmt.Sprintf("ExternalLinks[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
 	if m.LogoRawImage != nil {
 		// no validation rules for LogoRawImage
 	}
@@ -445,7 +443,7 @@ func (m *CreateSupplierResponse) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Uid
+	// no validation rules for RefId
 
 	if len(errors) > 0 {
 		return CreateSupplierResponseMultiError(errors)
@@ -549,7 +547,7 @@ func (m *GetSupplierRequest) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Uid
+	// no validation rules for RefId
 
 	if len(errors) > 0 {
 		return GetSupplierRequestMultiError(errors)
@@ -784,7 +782,7 @@ func (m *GetBusinessSuppliersRequest) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Uid
+	// no validation rules for RefId
 
 	if len(errors) > 0 {
 		return GetBusinessSuppliersRequestMultiError(errors)
@@ -1292,7 +1290,7 @@ func (m *DeleteSupplierRequest) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Uid
+	// no validation rules for RefId
 
 	if len(errors) > 0 {
 		return DeleteSupplierRequestMultiError(errors)

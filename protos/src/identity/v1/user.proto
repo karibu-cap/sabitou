@@ -41,15 +41,17 @@ message ConnectedAccount {
   string raw_data = 3;
 }
 
+// The user record.
+// The id of the user is the same as the uid of the Firebase user.
 message User {
   // The unique identifier of the user.
-  string uid = 1;
+  optional string ref_id = 1;
 
-  // The user name of the user.
+  // [public] The user name of the user.
   string user_name = 2;
 
   // The connected accounts used by the user for authentication.
-  ConnectedAccount connected_accounts = 3;
+  repeated ConnectedAccount connected_accounts = 3;
 
   // The email address of the user.
   optional string email = 4 [
@@ -60,28 +62,25 @@ message User {
   // The phone number of the user.
   optional string phone_number = 5;
 
-  // The first name of the user.
+  // [public] The first name of the user.
   optional string first_name = 6;
 
-  // The last name of the user.
+  // [public] The last name of the user.
   optional string last_name = 7;
-
-  // The password hash of the user.
-  optional string password_hash = 8;
 
   // The status of the user's account.
   optional AccountStatusType account_status = 9;
 
   // The actions that the user must complete to authenticate.
   repeated AuthActionType required_actions = 10;
-
-  // The date and time the user was last updated.
-  string created_at = 12;
 }
 
 message GetUserRequest {
   // The id of the user to retrieve.
-  string uid = 1;
+  string ref_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
 }
 
 message GetUserResponse {
@@ -93,7 +92,7 @@ message UpdateMeRequest {
   // The user information to update.
   // Note:Only the fields that are set will be updated.
   // WARNING:
-  //  - The uid field is required and cannot be changed.
+  //  - The id field is required and cannot be changed.
   //  - The password field will be ignored. Use the ChangePassword RPC instead.
   User user = 1;
 }
@@ -105,7 +104,10 @@ message UpdateMeResponse {
 
 message RequestDeleteUserRequest {
   // The id of the user to delete.
-  string uid = 1;
+  string ref_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
 
   // The password of the user to delete.
   string password = 2;
@@ -132,10 +134,18 @@ message DeleteUserResponse {
 
 message ChangePasswordRequest {
   // The previous password of the user.
-  string old_password = 1;
+  // TODO: Add more validation like capital letters, numbers, etc.
+  string old_password = 1 [
+    (buf.validate.field).string.min_len = 8,
+    (buf.validate.field).string.max_len = 32
+  ];
 
   // The new password of the user.
-  string new_password = 2;
+  // TODO: Add more validation like capital letters, numbers, etc.
+  string new_password = 2 [
+    (buf.validate.field).string.min_len = 8,
+    (buf.validate.field).string.max_len = 32
+  ];
 }
 
 message ChangePasswordResponse {

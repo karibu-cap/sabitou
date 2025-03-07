@@ -85,29 +85,29 @@ class ConnectedAccount extends $pb.GeneratedMessage {
   void clearRawData() => clearField(3);
 }
 
+/// The user record.
+/// The id of the user is the same as the uid of the Firebase user.
 class User extends $pb.GeneratedMessage {
   factory User({
-    $core.String? uid,
+    $core.String? refId,
     $core.String? userName,
-    ConnectedAccount? connectedAccounts,
+    $core.Iterable<ConnectedAccount>? connectedAccounts,
     $core.String? email,
     $core.String? phoneNumber,
     $core.String? firstName,
     $core.String? lastName,
-    $core.String? passwordHash,
     AccountStatusType? accountStatus,
     $core.Iterable<AuthActionType>? requiredActions,
-    $core.String? createdAt,
   }) {
     final $result = create();
-    if (uid != null) {
-      $result.uid = uid;
+    if (refId != null) {
+      $result.refId = refId;
     }
     if (userName != null) {
       $result.userName = userName;
     }
     if (connectedAccounts != null) {
-      $result.connectedAccounts = connectedAccounts;
+      $result.connectedAccounts.addAll(connectedAccounts);
     }
     if (email != null) {
       $result.email = email;
@@ -121,17 +121,11 @@ class User extends $pb.GeneratedMessage {
     if (lastName != null) {
       $result.lastName = lastName;
     }
-    if (passwordHash != null) {
-      $result.passwordHash = passwordHash;
-    }
     if (accountStatus != null) {
       $result.accountStatus = accountStatus;
     }
     if (requiredActions != null) {
       $result.requiredActions.addAll(requiredActions);
-    }
-    if (createdAt != null) {
-      $result.createdAt = createdAt;
     }
     return $result;
   }
@@ -140,17 +134,15 @@ class User extends $pb.GeneratedMessage {
   factory User.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'User', package: const $pb.PackageName(_omitMessageNames ? '' : 'identity.v1'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'uid')
+    ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..aOS(2, _omitFieldNames ? '' : 'userName')
-    ..aOM<ConnectedAccount>(3, _omitFieldNames ? '' : 'connectedAccounts', subBuilder: ConnectedAccount.create)
+    ..pc<ConnectedAccount>(3, _omitFieldNames ? '' : 'connectedAccounts', $pb.PbFieldType.PM, subBuilder: ConnectedAccount.create)
     ..aOS(4, _omitFieldNames ? '' : 'email')
     ..aOS(5, _omitFieldNames ? '' : 'phoneNumber')
     ..aOS(6, _omitFieldNames ? '' : 'firstName')
     ..aOS(7, _omitFieldNames ? '' : 'lastName')
-    ..aOS(8, _omitFieldNames ? '' : 'passwordHash')
     ..e<AccountStatusType>(9, _omitFieldNames ? '' : 'accountStatus', $pb.PbFieldType.OE, defaultOrMaker: AccountStatusType.ACCOUNT_STATUS_TYPE_UNSPECIFIED, valueOf: AccountStatusType.valueOf, enumValues: AccountStatusType.values)
     ..pc<AuthActionType>(10, _omitFieldNames ? '' : 'requiredActions', $pb.PbFieldType.KE, valueOf: AuthActionType.valueOf, enumValues: AuthActionType.values, defaultEnumValue: AuthActionType.AUTH_ACTION_TYPE_UNSPECIFIED)
-    ..aOS(12, _omitFieldNames ? '' : 'createdAt')
     ..hasRequiredFields = false
   ;
 
@@ -177,15 +169,15 @@ class User extends $pb.GeneratedMessage {
 
   /// The unique identifier of the user.
   @$pb.TagNumber(1)
-  $core.String get uid => $_getSZ(0);
+  $core.String get refId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set uid($core.String v) { $_setString(0, v); }
+  set refId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasUid() => $_has(0);
+  $core.bool hasRefId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearUid() => clearField(1);
+  void clearRefId() => clearField(1);
 
-  /// The user name of the user.
+  /// [public] The user name of the user.
   @$pb.TagNumber(2)
   $core.String get userName => $_getSZ(1);
   @$pb.TagNumber(2)
@@ -197,15 +189,7 @@ class User extends $pb.GeneratedMessage {
 
   /// The connected accounts used by the user for authentication.
   @$pb.TagNumber(3)
-  ConnectedAccount get connectedAccounts => $_getN(2);
-  @$pb.TagNumber(3)
-  set connectedAccounts(ConnectedAccount v) { setField(3, v); }
-  @$pb.TagNumber(3)
-  $core.bool hasConnectedAccounts() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearConnectedAccounts() => clearField(3);
-  @$pb.TagNumber(3)
-  ConnectedAccount ensureConnectedAccounts() => $_ensure(2);
+  $core.List<ConnectedAccount> get connectedAccounts => $_getList(2);
 
   /// The email address of the user.
   @$pb.TagNumber(4)
@@ -227,7 +211,7 @@ class User extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   void clearPhoneNumber() => clearField(5);
 
-  /// The first name of the user.
+  /// [public] The first name of the user.
   @$pb.TagNumber(6)
   $core.String get firstName => $_getSZ(5);
   @$pb.TagNumber(6)
@@ -237,7 +221,7 @@ class User extends $pb.GeneratedMessage {
   @$pb.TagNumber(6)
   void clearFirstName() => clearField(6);
 
-  /// The last name of the user.
+  /// [public] The last name of the user.
   @$pb.TagNumber(7)
   $core.String get lastName => $_getSZ(6);
   @$pb.TagNumber(7)
@@ -247,48 +231,28 @@ class User extends $pb.GeneratedMessage {
   @$pb.TagNumber(7)
   void clearLastName() => clearField(7);
 
-  /// The password hash of the user.
-  @$pb.TagNumber(8)
-  $core.String get passwordHash => $_getSZ(7);
-  @$pb.TagNumber(8)
-  set passwordHash($core.String v) { $_setString(7, v); }
-  @$pb.TagNumber(8)
-  $core.bool hasPasswordHash() => $_has(7);
-  @$pb.TagNumber(8)
-  void clearPasswordHash() => clearField(8);
-
   /// The status of the user's account.
   @$pb.TagNumber(9)
-  AccountStatusType get accountStatus => $_getN(8);
+  AccountStatusType get accountStatus => $_getN(7);
   @$pb.TagNumber(9)
   set accountStatus(AccountStatusType v) { setField(9, v); }
   @$pb.TagNumber(9)
-  $core.bool hasAccountStatus() => $_has(8);
+  $core.bool hasAccountStatus() => $_has(7);
   @$pb.TagNumber(9)
   void clearAccountStatus() => clearField(9);
 
   /// The actions that the user must complete to authenticate.
   @$pb.TagNumber(10)
-  $core.List<AuthActionType> get requiredActions => $_getList(9);
-
-  /// The date and time the user was last updated.
-  @$pb.TagNumber(12)
-  $core.String get createdAt => $_getSZ(10);
-  @$pb.TagNumber(12)
-  set createdAt($core.String v) { $_setString(10, v); }
-  @$pb.TagNumber(12)
-  $core.bool hasCreatedAt() => $_has(10);
-  @$pb.TagNumber(12)
-  void clearCreatedAt() => clearField(12);
+  $core.List<AuthActionType> get requiredActions => $_getList(8);
 }
 
 class GetUserRequest extends $pb.GeneratedMessage {
   factory GetUserRequest({
-    $core.String? uid,
+    $core.String? refId,
   }) {
     final $result = create();
-    if (uid != null) {
-      $result.uid = uid;
+    if (refId != null) {
+      $result.refId = refId;
     }
     return $result;
   }
@@ -297,7 +261,7 @@ class GetUserRequest extends $pb.GeneratedMessage {
   factory GetUserRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'GetUserRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'identity.v1'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'uid')
+    ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..hasRequiredFields = false
   ;
 
@@ -324,13 +288,13 @@ class GetUserRequest extends $pb.GeneratedMessage {
 
   /// The id of the user to retrieve.
   @$pb.TagNumber(1)
-  $core.String get uid => $_getSZ(0);
+  $core.String get refId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set uid($core.String v) { $_setString(0, v); }
+  set refId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasUid() => $_has(0);
+  $core.bool hasRefId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearUid() => clearField(1);
+  void clearRefId() => clearField(1);
 }
 
 class GetUserResponse extends $pb.GeneratedMessage {
@@ -429,7 +393,7 @@ class UpdateMeRequest extends $pb.GeneratedMessage {
   /// The user information to update.
   /// Note:Only the fields that are set will be updated.
   /// WARNING:
-  ///  - The uid field is required and cannot be changed.
+  ///  - The id field is required and cannot be changed.
   ///  - The password field will be ignored. Use the ChangePassword RPC instead.
   @$pb.TagNumber(1)
   User get user => $_getN(0);
@@ -498,12 +462,12 @@ class UpdateMeResponse extends $pb.GeneratedMessage {
 
 class RequestDeleteUserRequest extends $pb.GeneratedMessage {
   factory RequestDeleteUserRequest({
-    $core.String? uid,
+    $core.String? refId,
     $core.String? password,
   }) {
     final $result = create();
-    if (uid != null) {
-      $result.uid = uid;
+    if (refId != null) {
+      $result.refId = refId;
     }
     if (password != null) {
       $result.password = password;
@@ -515,7 +479,7 @@ class RequestDeleteUserRequest extends $pb.GeneratedMessage {
   factory RequestDeleteUserRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'RequestDeleteUserRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'identity.v1'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'uid')
+    ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..aOS(2, _omitFieldNames ? '' : 'password')
     ..hasRequiredFields = false
   ;
@@ -543,13 +507,13 @@ class RequestDeleteUserRequest extends $pb.GeneratedMessage {
 
   /// The id of the user to delete.
   @$pb.TagNumber(1)
-  $core.String get uid => $_getSZ(0);
+  $core.String get refId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set uid($core.String v) { $_setString(0, v); }
+  set refId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasUid() => $_has(0);
+  $core.bool hasRefId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearUid() => clearField(1);
+  void clearRefId() => clearField(1);
 
   /// The password of the user to delete.
   @$pb.TagNumber(2)
@@ -777,6 +741,7 @@ class ChangePasswordRequest extends $pb.GeneratedMessage {
   static ChangePasswordRequest? _defaultInstance;
 
   /// The previous password of the user.
+  /// TODO: Add more validation like capital letters, numbers, etc.
   @$pb.TagNumber(1)
   $core.String get oldPassword => $_getSZ(0);
   @$pb.TagNumber(1)
@@ -787,6 +752,7 @@ class ChangePasswordRequest extends $pb.GeneratedMessage {
   void clearOldPassword() => clearField(1);
 
   /// The new password of the user.
+  /// TODO: Add more validation like capital letters, numbers, etc.
   @$pb.TagNumber(2)
   $core.String get newPassword => $_getSZ(1);
   @$pb.TagNumber(2)

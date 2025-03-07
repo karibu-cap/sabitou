@@ -57,11 +57,11 @@ func (m *OrderItem) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for ProductUid
+	// no validation rules for ProductId
 
 	// no validation rules for Quantity
 
-	// no validation rules for UnitPriceInCents
+	// no validation rules for UnitPriceInXafCents
 
 	if len(errors) > 0 {
 		return OrderItemMultiError(errors)
@@ -161,11 +161,7 @@ func (m *Order) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Uid
-
-	// no validation rules for ResourceType
-
-	// no validation rules for ResourceUid
+	// no validation rules for IsClientOrder
 
 	for idx, item := range m.GetOrderItems() {
 		_, _ = idx, item
@@ -205,13 +201,13 @@ func (m *Order) validate(all bool) error {
 
 	// no validation rules for Status
 
-	// no validation rules for CreatedAt
+	if m.RefId != nil {
+		// no validation rules for RefId
+	}
 
-	// no validation rules for CreatedByUid
-
-	// no validation rules for UpdatedAt
-
-	// no validation rules for UpdatedByUid
+	if m.FromId != nil {
+		// no validation rules for FromId
+	}
 
 	if len(errors) > 0 {
 		return OrderMultiError(errors)
@@ -341,7 +337,7 @@ func (m *CreateOrderRequest) validate(all bool) error {
 		}
 	}
 
-	// no validation rules for BusinessUid
+	// no validation rules for BusinessId
 
 	if m.SupplierName != nil {
 		// no validation rules for SupplierName
@@ -449,7 +445,7 @@ func (m *CreateOrderResponse) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Uid
+	// no validation rules for RefId
 
 	if len(errors) > 0 {
 		return CreateOrderResponseMultiError(errors)
@@ -553,7 +549,7 @@ func (m *GetOrderRequest) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Uid
+	// no validation rules for RefId
 
 	if len(errors) > 0 {
 		return GetOrderRequestMultiError(errors)
@@ -684,6 +680,12 @@ func (m *GetOrderResponse) validate(all bool) error {
 		}
 	}
 
+	// no validation rules for CreatedAt
+
+	if m.UpdatedAt != nil {
+		// no validation rules for UpdatedAt
+	}
+
 	if len(errors) > 0 {
 		return GetOrderResponseMultiError(errors)
 	}
@@ -784,7 +786,7 @@ func (m *DeleteOrderRequest) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Uid
+	// no validation rules for RefId
 
 	if len(errors) > 0 {
 		return DeleteOrderRequestMultiError(errors)

@@ -16,12 +16,12 @@ import 'package:protobuf/protobuf.dart' as $pb;
 class BusinessStatusType extends $pb.ProtobufEnum {
   static const BusinessStatusType BUSINESS_STATUS_TYPE_UNSPECIFIED = BusinessStatusType._(0, _omitEnumNames ? '' : 'BUSINESS_STATUS_TYPE_UNSPECIFIED');
   static const BusinessStatusType BUSINESS_STATUS_TYPE_ACTIVE = BusinessStatusType._(1, _omitEnumNames ? '' : 'BUSINESS_STATUS_TYPE_ACTIVE');
-  static const BusinessStatusType BUSINESS_STATUS_TYPE_DELETED = BusinessStatusType._(2, _omitEnumNames ? '' : 'BUSINESS_STATUS_TYPE_DELETED');
+  static const BusinessStatusType BUSINESS_STATUS_TYPE_INACTIVE = BusinessStatusType._(2, _omitEnumNames ? '' : 'BUSINESS_STATUS_TYPE_INACTIVE');
 
   static const $core.List<BusinessStatusType> values = <BusinessStatusType> [
     BUSINESS_STATUS_TYPE_UNSPECIFIED,
     BUSINESS_STATUS_TYPE_ACTIVE,
-    BUSINESS_STATUS_TYPE_DELETED,
+    BUSINESS_STATUS_TYPE_INACTIVE,
   ];
 
   static final $core.Map<$core.int, BusinessStatusType> _byValue = $pb.ProtobufEnum.initByValue(values);

@@ -26,6 +26,24 @@ extension type BusinessServiceClient (connect.Transport _transport) {
     );
   }
 
+  /// Get all businesses of the current user.
+  Future<businessv1business.GetMyBusinessesResponse> getMyBusinesses(
+    businessv1business.GetMyBusinessesRequest input, {
+    connect.Headers? headers,
+    connect.AbortSignal? signal,
+    Function(connect.Headers)? onHeader,
+    Function(connect.Headers)? onTrailer,
+  }) {
+    return connect.Client(_transport).unary(
+      specs.BusinessService.getMyBusinesses,
+      input,
+      signal: signal,
+      headers: headers,
+      onHeader: onHeader,
+      onTrailer: onTrailer,
+    );
+  }
+
   /// Get a business by id.
   Future<businessv1business.GetBusinessResponse> getBusiness(
     businessv1business.GetBusinessRequest input, {

@@ -294,6 +294,152 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/business.v1.GetBusinessUsersResponse'
+  /business.v1.BusinessClientService/CreateBusinessClient:
+    post:
+      tags:
+        - business.v1.BusinessClientService
+      summary: CreateBusinessClient
+      description: Creates a new client.
+      operationId: business.v1.BusinessClientService.CreateBusinessClient
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/business.v1.CreateBusinessClientRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/business.v1.CreateBusinessClientResponse'
+  /business.v1.BusinessClientService/GetBusinessClient:
+    post:
+      tags:
+        - business.v1.BusinessClientService
+      summary: GetBusinessClient
+      description: Gets a client by id.
+      operationId: business.v1.BusinessClientService.GetBusinessClient
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/business.v1.GetBusinessClientRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/business.v1.GetBusinessClientResponse'
+  /business.v1.BusinessClientService/UpdateBusinessClient:
+    post:
+      tags:
+        - business.v1.BusinessClientService
+      summary: UpdateBusinessClient
+      description: |-
+        Updates a client.
+         Note:Only the fields that are set will be updated.
+      operationId: business.v1.BusinessClientService.UpdateBusinessClient
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/business.v1.UpdateBusinessClientRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/business.v1.UpdateBusinessClientResponse'
+  /business.v1.BusinessClientService/DeleteBusinessClient:
+    post:
+      tags:
+        - business.v1.BusinessClientService
+      summary: DeleteBusinessClient
+      description: Deletes a client.
+      operationId: business.v1.BusinessClientService.DeleteBusinessClient
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/business.v1.DeleteBusinessClientRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/business.v1.DeleteBusinessClientResponse'
   /business.v1.SupplierService/CreateSupplier:
     post:
       tags:
@@ -512,42 +658,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/identity.v1.LoginResponse'
-  /identity.v1.AuthService/Register:
-    post:
-      tags:
-        - identity.v1.AuthService
-      summary: Register
-      description: Create a user without a password.
-      operationId: identity.v1.AuthService.Register
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/identity.v1.RegisterRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/identity.v1.RegisterResponse'
   /identity.v1.AuthService/RequestPasswordReset:
     post:
       tags:
@@ -1382,13 +1492,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inventory.v1.DeleteProductResponse'
-  /media.v1.MediaService/GetMedias:
+  /link.v1.ResourceLinkService/GetResourceLinks:
     post:
       tags:
-        - media.v1.MediaService
-      summary: GetMedias
-      description: Gets a media by id.
-      operationId: media.v1.MediaService.GetMedias
+        - link.v1.ResourceLinkService
+      summary: GetResourceLinks
+      description: "Gets a resource link by id. \n Returns the resources in the same order as the ids."
+      operationId: link.v1.ResourceLinkService.GetResourceLinks
       parameters:
         - name: Connect-Protocol-Version
           in: header
@@ -1403,7 +1513,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/media.v1.GetMediasRequest'
+              $ref: '#/components/schemas/link.v1.GetResourceLinksRequest'
         required: true
       responses:
         default:
@@ -1417,43 +1527,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/media.v1.GetMediasResponse'
-  /order.v1.BillingService/GenerateBilling:
-    post:
-      tags:
-        - order.v1.BillingService
-      summary: GenerateBilling
-      description: Generates a billing for the order.
-      operationId: order.v1.BillingService.GenerateBilling
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/order.v1.GenerateBillingRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/order.v1.GenerateBillingResponse'
+                $ref: '#/components/schemas/link.v1.GetResourceLinksResponse'
   /order.v1.OrderService/CreateOrder:
     post:
       tags:
@@ -1562,6 +1636,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/order.v1.DeleteOrderResponse'
+  /order.v1.BillingService/GenerateBilling:
+    post:
+      tags:
+        - order.v1.BillingService
+      summary: GenerateBilling
+      description: Generates a billing for the order.
+      operationId: order.v1.BillingService.GenerateBilling
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/order.v1.GenerateBillingRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/order.v1.GenerateBillingResponse'
   /store.v1.StoreService/CreateStore:
     post:
       tags:
@@ -1716,7 +1826,7 @@ components:
       enum:
         - BUSINESS_STATUS_TYPE_UNSPECIFIED
         - BUSINESS_STATUS_TYPE_ACTIVE
-        - BUSINESS_STATUS_TYPE_DELETED
+        - BUSINESS_STATUS_TYPE_INACTIVE
     business.v1.AddUserToBusinessRequest:
       type: object
       properties:
@@ -1740,10 +1850,11 @@ components:
     business.v1.Business:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
-          description: The unique identifier of the business.
+          title: ref_id
+          description: The reference id to the business identifier.
+          nullable: true
         name:
           type: string
           title: name
@@ -1757,14 +1868,14 @@ components:
           title: status
           description: The status of the business.
           $ref: '#/components/schemas/business.v1.BusinessStatusType'
-        ownerUid:
+        ownerId:
           type: string
-          title: owner_uid
-          description: The uid of the owner of the business.
-        logoMediaUid:
+          title: owner_id
+          description: The id of the owner of the business.
+        logoMediaId:
           type: string
-          title: logo_media_uid
-          description: The uid of the media of the logo of the business.
+          title: logo_media_id
+          description: The id of the media of the logo of the business.
           nullable: true
         countryCode:
           type: string
@@ -1778,14 +1889,14 @@ components:
           description: |-
             The ISO 4217 currency code of the business.
              For example: XAF, USD, EUR, etc.
-        createdAt:
-          type: string
-          title: created_at
-          description: The date and time the business was created.
-        updatedAt:
-          type: string
-          title: updated_at
-          description: The date and time the business was last updated.
+        linksMediaIds:
+          type: array
+          items:
+            type: string
+          title: links_media_ids
+          description: |-
+            The media ids of different links of the business.
+             It can be social media links, website links, etc.
       title: Business
       additionalProperties: false
     business.v1.CreateBusinessRequest:
@@ -1808,10 +1919,10 @@ components:
     business.v1.CreateBusinessResponse:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
-          description: The unique identifier of the created business.
+          title: ref_id
+          description: The reference id to the business identifier.
       title: CreateBusinessResponse
       additionalProperties: false
     business.v1.DeleteBusinessRequest:
@@ -1839,10 +1950,10 @@ components:
     business.v1.GetBusinessRequest:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
-          description: The unique identifier of the business to retrieve.
+          title: ref_id
+          description: The reference id to the business identifier.
       title: GetBusinessRequest
       additionalProperties: false
     business.v1.GetBusinessResponse:
@@ -1857,20 +1968,20 @@ components:
     business.v1.GetBusinessUsersRequest:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
-          description: The unique identifier of the business to retrieve.
+          title: ref_id
+          description: The reference id to the business identifier.
       title: GetBusinessUsersRequest
       additionalProperties: false
     business.v1.GetBusinessUsersResponse:
       type: object
       properties:
-        uids:
+        ids:
           type: array
           items:
             type: string
-          title: uids
+          title: ids
           description: The unique identifiers of the users of the business.
       title: GetBusinessUsersResponse
       additionalProperties: false
@@ -1897,10 +2008,10 @@ components:
     business.v1.RequestDeleteBusinessRequest:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
-          description: The unique identifier of the business to delete.
+          title: ref_id
+          description: The reference id to the business identifier.
         password:
           type: string
           title: password
@@ -2001,6 +2112,118 @@ components:
           additionalProperties: true
       additionalProperties: true
       description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+    business.v1.BusinessClient:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+          description: The reference id to the client identifier.
+          nullable: true
+        name:
+          type: string
+          title: name
+          description: The name of the client.
+        phoneNumber:
+          type: string
+          title: phone_number
+        logoMediaId:
+          type: string
+          title: logo_media_id
+          description: The id of the media of the logo of the client.
+          nullable: true
+        businessId:
+          type: string
+          title: business_id
+          description: The id of the business of the client.
+      title: BusinessClient
+      additionalProperties: false
+    business.v1.CreateBusinessClientRequest:
+      type: object
+      properties:
+        client:
+          title: client
+          description: The client information to create.
+          $ref: '#/components/schemas/business.v1.BusinessClient'
+        logoRawImage:
+          type: string
+          title: logo_raw_image
+          format: byte
+          description: The raw image of the logo of the client.
+          nullable: true
+      title: CreateBusinessClientRequest
+      additionalProperties: false
+    business.v1.CreateBusinessClientResponse:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+          description: The reference id to the client identifier.
+      title: CreateBusinessClientResponse
+      additionalProperties: false
+    business.v1.DeleteBusinessClientRequest:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+          description: The reference id to the client identifier.
+      title: DeleteBusinessClientRequest
+      additionalProperties: false
+    business.v1.DeleteBusinessClientResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the client was successfully deleted.
+      title: DeleteBusinessClientResponse
+      additionalProperties: false
+    business.v1.GetBusinessClientRequest:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+          description: The reference id to the client identifier.
+      title: GetBusinessClientRequest
+      additionalProperties: false
+    business.v1.GetBusinessClientResponse:
+      type: object
+      properties:
+        client:
+          title: client
+          description: The retrieved client data.
+          $ref: '#/components/schemas/business.v1.BusinessClient'
+      title: GetBusinessClientResponse
+      additionalProperties: false
+    business.v1.UpdateBusinessClientRequest:
+      type: object
+      properties:
+        client:
+          title: client
+          description: |-
+            The client information to update.
+             Note:Only the fields that are set will be updated.
+          $ref: '#/components/schemas/business.v1.BusinessClient'
+        logoRawImage:
+          type: string
+          title: logo_raw_image
+          format: byte
+          description: The raw image of the logo of the client.
+          nullable: true
+      title: UpdateBusinessClientRequest
+      additionalProperties: false
+    business.v1.UpdateBusinessClientResponse:
+      type: object
+      properties:
+        client:
+          title: client
+          description: The updated client data.
+          $ref: '#/components/schemas/business.v1.BusinessClient'
+      title: UpdateBusinessClientResponse
+      additionalProperties: false
     business.v1.CreateSupplierRequest:
       type: object
       properties:
@@ -2019,19 +2242,19 @@ components:
     business.v1.CreateSupplierResponse:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
-          description: The unique identifier of the created supplier.
+          title: ref_id
+          description: The reference id to the supplier identifier.
       title: CreateSupplierResponse
       additionalProperties: false
     business.v1.DeleteSupplierRequest:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
-          description: The unique identifier of the supplier to delete.
+          title: ref_id
+          description: The reference id to the supplier identifier.
       title: DeleteSupplierRequest
       additionalProperties: false
     business.v1.DeleteSupplierResponse:
@@ -2046,10 +2269,10 @@ components:
     business.v1.GetBusinessSuppliersRequest:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
-          description: The unique identifier of the business to retrieve.
+          title: ref_id
+          description: The reference id to the supplier identifier.
       title: GetBusinessSuppliersRequest
       additionalProperties: false
     business.v1.GetBusinessSuppliersResponse:
@@ -2062,16 +2285,16 @@ components:
           title: suppliers
           description: |-
             The list of suppliers of the business.
-             Note: Only the uids and names of the suppliers are returned.
+             Note: Only the ids and names of the suppliers are returned.
       title: GetBusinessSuppliersResponse
       additionalProperties: false
     business.v1.GetSupplierRequest:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
-          description: The unique identifier of the supplier to retrieve.
+          title: ref_id
+          description: The reference id to the supplier identifier.
       title: GetSupplierRequest
       additionalProperties: false
     business.v1.GetSupplierResponse:
@@ -2101,10 +2324,11 @@ components:
     business.v1.Supplier:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
-          description: The unique identifier of the supplier.
+          title: ref_id
+          description: The reference id to the supplier identifier.
+          nullable: true
         name:
           type: string
           title: name
@@ -2114,10 +2338,10 @@ components:
           title: description
           description: The description of the supplier.
           nullable: true
-        logoMediaUid:
+        logoMediaId:
           type: string
-          title: logo_media_uid
-          description: The uid of the media of the logo of the supplier.
+          title: logo_media_id
+          description: The id of the media of the logo of the supplier.
           nullable: true
         links:
           type: array
@@ -2128,15 +2352,7 @@ components:
         businessId:
           type: string
           title: business_id
-          description: The uid of the business of the supplier.
-        createdAt:
-          type: string
-          title: created_at
-          description: The date and time the supplier was created.
-        updatedAt:
-          type: string
-          title: updated_at
-          description: The date and time the supplier was last updated.
+          description: The id of the business of the supplier.
       title: Supplier
       additionalProperties: false
     business.v1.UpdateSupplierRequest:
@@ -2171,9 +2387,14 @@ components:
         uRef:
           type: string
           title: u_ref
-          description: |-
+          description: |+
             The unique identifier of the user.
              For example, the email address or phone number or @username.
+            user_ref must be a valid email address or user id or @username:
+            ```
+            this.isEmail() || this.matches('^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')
+            ```
+
         password:
           type: string
           title: password
@@ -2193,46 +2414,20 @@ components:
           description: The refresh token to use to refresh the token.
       title: LoginResponse
       additionalProperties: false
-    identity.v1.RegisterRequest:
-      type: object
-      properties:
-        username:
-          type: string
-          title: username
-          description: The unique identifier of the user.
-          nullable: true
-        email:
-          type: string
-          title: email
-          description: The email address of the user.
-          nullable: true
-      title: RegisterRequest
-      additionalProperties: false
-      description: |-
-        Register a new user with the minimum required information.
-         The user will have to set a password later.
-    identity.v1.RegisterResponse:
-      type: object
-      properties:
-        token:
-          type: string
-          title: token
-          description: The token to use to authenticate the user in subsequent requests.
-        refreshToken:
-          type: string
-          title: refresh_token
-          description: The refresh token to use to refresh the token.
-      title: RegisterResponse
-      additionalProperties: false
     identity.v1.RequestPasswordResetRequest:
       type: object
       properties:
         uRef:
           type: string
           title: u_ref
-          description: |-
+          description: |+
             The unique identifier of the user.
              For example, the email address or phone number or @username.
+            user_ref must be a valid email address or user id or @username:
+            ```
+            this.isEmail() || this.matches('^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')
+            ```
+
       title: RequestPasswordResetRequest
       additionalProperties: false
     identity.v1.RequestPasswordResetResponse:
@@ -2277,49 +2472,42 @@ components:
           description: Whether the password was successfully reset.
       title: ResetPasswordResponse
       additionalProperties: false
-    identity.v1.PermissionActionType:
+    identity.v1.AccessLevelType:
       type: string
-      title: PermissionActionType
+      title: AccessLevelType
       enum:
-        - PERMISSION_ACTION_TYPE_UNSPECIFIED
-        - PERMISSION_ACTION_TYPE_READ
-        - PERMISSION_ACTION_TYPE_ADD
-        - PERMISSION_ACTION_TYPE_UPDATE
-        - PERMISSION_ACTION_TYPE_REMOVE
-    identity.v1.PermissionEntityType:
+        - ACCESS_LEVEL_TYPE_UNSPECIFIED
+        - ACCESS_LEVEL_TYPE_READ
+        - ACCESS_LEVEL_TYPE_ADD
+        - ACCESS_LEVEL_TYPE_UPDATE
+        - ACCESS_LEVEL_TYPE_REMOVE
+    identity.v1.ResourceNameType:
       type: string
-      title: PermissionEntityType
+      title: ResourceNameType
       enum:
-        - PERMISSION_ENTITY_TYPE_UNSPECIFIED
-        - PERMISSION_ENTITY_TYPE_BUSINESS
-        - PERMISSION_ENTITY_TYPE_STORE
-        - PERMISSION_ENTITY_TYPE_USER
-        - PERMISSION_ENTITY_TYPE_ARTICLE
-        - PERMISSION_ENTITY_TYPE_INVOICE
-        - PERMISSION_ENTITY_TYPE_PAYMENT
-        - PERMISSION_ENTITY_TYPE_ORDER
-        - PERMISSION_ENTITY_TYPE_PERMISSION_GROUP
-    identity.v1.PermissionResourceType:
-      type: string
-      title: PermissionResourceType
-      enum:
-        - PERMISSION_RESOURCE_TYPE_UNSPECIFIED
-        - PERMISSION_RESOURCE_TYPE_BUSINESS
-        - PERMISSION_RESOURCE_TYPE_STORE
+        - RESOURCE_NAME_TYPE_UNSPECIFIED
+        - RESOURCE_NAME_TYPE_BUSINESS
+        - RESOURCE_NAME_TYPE_STORE
+        - RESOURCE_NAME_TYPE_USER
+        - RESOURCE_NAME_TYPE_ARTICLE
+        - RESOURCE_NAME_TYPE_INVOICE
+        - RESOURCE_NAME_TYPE_PAYMENT
+        - RESOURCE_NAME_TYPE_ORDER
+        - RESOURCE_NAME_TYPE_PERMISSIONS_GROUP
     identity.v1.AddUserPermissionRequest:
       type: object
       properties:
-        userUid:
+        userId:
           type: string
-          title: user_uid
+          title: user_id
           description: The unique identifier of the user.
-        permissionGroupUid:
+        permissionGroupId:
           type: string
-          title: permission_group_uid
+          title: permission_group_id
           description: The unique identifier of the permission group.
-        resourceUid:
+        resourceId:
           type: string
-          title: resource_uid
+          title: resource_id
           description: The unique identifier of the resource.
       title: AddUserPermissionRequest
       additionalProperties: false
@@ -2335,13 +2523,13 @@ components:
     identity.v1.CheckPermissionRequest:
       type: object
       properties:
-        userUid:
+        userId:
           type: string
-          title: user_uid
+          title: user_id
           description: The unique identifier of the user.
-        resourceUid:
+        resourceId:
           type: string
-          title: resource_uid
+          title: resource_id
           description: The unique identifier of the resource.
         permission:
           title: permission
@@ -2372,22 +2560,22 @@ components:
     identity.v1.CreatePermissionGroupResponse:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
+          title: ref_id
           description: The unique identifier of the created permission group.
       title: CreatePermissionGroupResponse
       additionalProperties: false
     identity.v1.DeletePermissionGroupRequest:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
+          title: ref_id
           description: The unique identifier of the permission group to delete.
-        businessUid:
+        businessId:
           type: string
-          title: business_uid
+          title: business_id
           description: The unique identifier of the business.
       title: DeletePermissionGroupRequest
       additionalProperties: false
@@ -2403,9 +2591,9 @@ components:
     identity.v1.GetBusinessPermissionGroupsRequest:
       type: object
       properties:
-        businessUid:
+        businessId:
           type: string
-          title: business_uid
+          title: business_id
           description: The unique identifier of the business to retrieve.
       title: GetBusinessPermissionGroupsRequest
       additionalProperties: false
@@ -2423,9 +2611,9 @@ components:
     identity.v1.GetPermissionGroupRequest:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
+          title: ref_id
           description: The unique identifier of the permission group to retrieve.
       title: GetPermissionGroupRequest
       additionalProperties: false
@@ -2441,9 +2629,9 @@ components:
     identity.v1.GetUserPermissionsRequest:
       type: object
       properties:
-        userUid:
+        userId:
           type: string
-          title: user_uid
+          title: user_id
           description: The unique identifier of the user to retrieve.
       title: GetUserPermissionsRequest
       additionalProperties: false
@@ -2461,27 +2649,24 @@ components:
     identity.v1.Permission:
       type: object
       properties:
-        action:
-          title: action
+        accessLevel:
+          title: access_level
           description: The action that the user can perform on the resource.
-          $ref: '#/components/schemas/identity.v1.PermissionActionType'
+          $ref: '#/components/schemas/identity.v1.AccessLevelType'
         entity:
           title: entity
           description: The entity on which the action is performed.
-          $ref: '#/components/schemas/identity.v1.PermissionEntityType'
-        resourceType:
-          title: resource_type
-          description: The type of resource that the user can perform the action on.
-          $ref: '#/components/schemas/identity.v1.PermissionResourceType'
+          $ref: '#/components/schemas/identity.v1.ResourceNameType'
       title: Permission
       additionalProperties: false
     identity.v1.PermissionGroup:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
-          description: The unique identifier of the permission group.
+          title: ref_id
+          description: The reference id to the permission group identifier.
+          nullable: true
         name:
           type: string
           title: name
@@ -2491,15 +2676,19 @@ components:
           title: description
           description: The description of the permission group.
           nullable: true
-        permissions:
+        permission:
+          title: permission
+          description: The permissions that the permission group has.
+          $ref: '#/components/schemas/identity.v1.Permission'
+        permissionOverrides:
           type: array
           items:
             $ref: '#/components/schemas/identity.v1.Permission'
-          title: permissions
-          description: The permissions that the permission group has.
-        businessUid:
+          title: permission_overrides
+          description: Override the inherited permissions.
+        businessId:
           type: string
-          title: business_uid
+          title: business_id
           description: |-
             The unique identifier of the business.
              must be set if the permission group is for a business.
@@ -2509,17 +2698,17 @@ components:
     identity.v1.RemoveUserPermissionRequest:
       type: object
       properties:
-        userUid:
+        userId:
           type: string
-          title: user_uid
+          title: user_id
           description: The unique identifier of the user.
-        permissionGroupUid:
+        permissionGroupId:
           type: string
-          title: permission_group_uid
+          title: permission_group_id
           description: The unique identifier of the permission group.
-        resourceUid:
+        resourceId:
           type: string
-          title: resource_uid
+          title: resource_id
           description: The unique identifier of the resource.
       title: RemoveUserPermissionRequest
       additionalProperties: false
@@ -2555,9 +2744,9 @@ components:
     identity.v1.UserPermission:
       type: object
       properties:
-        userUid:
+        userId:
           type: string
-          title: user_uid
+          title: user_id
           description: The unique identifier of the user.
         permissions:
           type: array
@@ -2565,14 +2754,14 @@ components:
             $ref: '#/components/schemas/identity.v1.Permission'
           title: permissions
           description: The permissions that the user has.
-        permissionGroupUid:
+        permissionGroupId:
           type: string
-          title: permission_group_uid
+          title: permission_group_id
           description: The unique identifier of the permission group.
           nullable: true
-        resourceUid:
+        resourceId:
           type: string
-          title: resource_uid
+          title: resource_id
           description: The unique identifier of the resource.
       title: UserPermission
       additionalProperties: false
@@ -2676,9 +2865,9 @@ components:
     identity.v1.GetUserRequest:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
+          title: ref_id
           description: The id of the user to retrieve.
       title: GetUserRequest
       additionalProperties: false
@@ -2694,9 +2883,9 @@ components:
     identity.v1.RequestDeleteUserRequest:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
+          title: ref_id
           description: The id of the user to delete.
         password:
           type: string
@@ -2724,7 +2913,7 @@ components:
             The user information to update.
              Note:Only the fields that are set will be updated.
              WARNING:
-              - The uid field is required and cannot be changed.
+              - The id field is required and cannot be changed.
               - The password field will be ignored. Use the ChangePassword RPC instead.
           $ref: '#/components/schemas/identity.v1.User'
       title: UpdateMeRequest
@@ -2741,18 +2930,21 @@ components:
     identity.v1.User:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
+          title: ref_id
           description: The unique identifier of the user.
+          nullable: true
         userName:
           type: string
           title: user_name
-          description: The user name of the user.
+          description: '[public] The user name of the user.'
         connectedAccounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/identity.v1.ConnectedAccount'
           title: connected_accounts
           description: The connected accounts used by the user for authentication.
-          $ref: '#/components/schemas/identity.v1.ConnectedAccount'
         email:
           type: string
           title: email
@@ -2767,17 +2959,12 @@ components:
         firstName:
           type: string
           title: first_name
-          description: The first name of the user.
+          description: '[public] The first name of the user.'
           nullable: true
         lastName:
           type: string
           title: last_name
-          description: The last name of the user.
-          nullable: true
-        passwordHash:
-          type: string
-          title: password_hash
-          description: The password hash of the user.
+          description: '[public] The last name of the user.'
           nullable: true
         accountStatus:
           title: account_status
@@ -2790,12 +2977,11 @@ components:
             $ref: '#/components/schemas/identity.v1.AuthActionType'
           title: required_actions
           description: The actions that the user must complete to authenticate.
-        createdAt:
-          type: string
-          title: created_at
-          description: The date and time the user was last updated.
       title: User
       additionalProperties: false
+      description: |-
+        The user record.
+         The id of the user is the same as the uid of the Firebase user.
     inventory.v1.AddProductRequest:
       type: object
       properties:
@@ -2822,7 +3008,7 @@ components:
             type: string
             format: byte
           title: images_raw_images
-          description: The media uids of the images of the product.
+          description: The media ids of the images of the product.
       title: AddProductRequest
       additionalProperties: false
     inventory.v1.AddProductResponse:
@@ -2834,12 +3020,43 @@ components:
           description: Whether the product was successfully added.
       title: AddProductResponse
       additionalProperties: false
+    inventory.v1.BusinessProduct:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+          description: The unique identifier of the business product.
+          nullable: true
+        businessId:
+          type: string
+          title: business_id
+          description: The unique identifier of the business.
+        globalProductId:
+          type: string
+          title: global_product_id
+          description: The unique identifier of the global product.
+        priceInCents:
+          type: integer
+          title: price_in_cents
+          format: int32
+          description: |-
+            The price in cents of the product.
+             The currency is determined by the business.
+        imagesMediaIds:
+          type: array
+          items:
+            type: string
+          title: images_media_ids
+          description: The media ids of the images of the product.
+      title: BusinessProduct
+      additionalProperties: false
     inventory.v1.DeleteProductRequest:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
+          title: ref_id
           description: The unique identifier of the business product.
       title: DeleteProductRequest
       additionalProperties: false
@@ -2871,7 +3088,7 @@ components:
           title: categories
           description: |-
             The unique identifiers of the product categories.
-             WARN: all returned product categories will only have their uid and name.
+             WARN: all returned product categories will only have their id and name.
       title: FindCategoryResponse
       additionalProperties: false
     inventory.v1.FindGlobalProductsRequest:
@@ -2893,15 +3110,15 @@ components:
           title: products
           description: |-
             The unique identifiers of the products.
-             WARN: all returned products will only have their uid and name.
+             WARN: all returned products will only have their id and name.
       title: FindGlobalProductsResponse
       additionalProperties: false
     inventory.v1.GetProductRequest:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
+          title: ref_id
           description: The unique identifier of the business product.
       title: GetProductRequest
       additionalProperties: false
@@ -2911,16 +3128,17 @@ components:
         product:
           title: product
           description: The retrieved business product data.
-          $ref: '#/components/schemas/inventory.v1.Product'
+          $ref: '#/components/schemas/inventory.v1.BusinessProduct'
       title: GetProductResponse
       additionalProperties: false
     inventory.v1.GlobalProduct:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
+          title: ref_id
           description: The unique identifier of the product.
+          nullable: true
         name:
           type: string
           title: name
@@ -2941,61 +3159,16 @@ components:
             $ref: '#/components/schemas/inventory.v1.ProductCategory'
           title: categories
           description: The product categories of the product.
-        createdAt:
-          type: string
-          title: created_at
-          description: The date and time the product was created.
       title: GlobalProduct
-      additionalProperties: false
-    inventory.v1.Product:
-      type: object
-      properties:
-        uid:
-          type: string
-          title: uid
-          description: The unique identifier of the business product.
-        businessId:
-          type: string
-          title: business_id
-          description: The unique identifier of the business.
-        globalProductId:
-          type: string
-          title: global_product_id
-          description: The unique identifier of the global product.
-        priceInCents:
-          type: integer
-          title: price_in_cents
-          format: int32
-          description: |-
-            The price in cents of the product.
-             The currency is determined by the business.
-        imagesMediaUids:
-          type: array
-          items:
-            type: string
-          title: images_media_uids
-          description: The media uids of the images of the product.
-        isDeleted:
-          type: boolean
-          title: is_deleted
-          description: Whether the product is deleted.
-        createdAt:
-          type: string
-          title: created_at
-          description: The date and time the product was created.
-        updatedAt:
-          type: string
-          title: updated_at
-          description: The date and time the product was updated.
-      title: Product
       additionalProperties: false
     inventory.v1.ProductCategory:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
+          title: ref_id
           description: The unique identifier of the product category.
+          nullable: true
         name:
           type: string
           title: name
@@ -3012,14 +3185,14 @@ components:
              Note:Only the fields that are set will be updated.
              Some fields cannot be updated like the product id, business id, and all
              product fields.
-          $ref: '#/components/schemas/inventory.v1.Product'
+          $ref: '#/components/schemas/inventory.v1.BusinessProduct'
         imagesRawImages:
           type: array
           items:
             type: string
             format: byte
           title: images_raw_images
-          description: The media uids of the images of the product.
+          description: The media ids of the images of the product.
       title: UpdateProductRequest
       additionalProperties: false
     inventory.v1.UpdateProductResponse:
@@ -3031,150 +3204,59 @@ components:
           description: Whether the business product was successfully updated.
       title: UpdateProductResponse
       additionalProperties: false
-    media.v1.MediaType:
-      type: string
-      title: MediaType
-      enum:
-        - MEDIA_TYPE_UNSPECIFIED
-        - MEDIA_TYPE_IMAGE
-        - MEDIA_TYPE_VIDEO
-    media.v1.GetMediasRequest:
+    link.v1.GetResourceLinksRequest:
       type: object
       properties:
-        uids:
+        ids:
           type: array
           items:
             type: string
-          title: uids
-          description: A list of unique identifiers of the media to retrieve.
-      title: GetMediasRequest
+          title: ids
+          description: A list of unique identifiers of the resource link to retrieve.
+      title: GetResourceLinksRequest
       additionalProperties: false
-    media.v1.GetMediasResponse:
+    link.v1.GetResourceLinksResponse:
       type: object
       properties:
-        media:
-          type: array
-          items:
-            $ref: '#/components/schemas/media.v1.Media'
-          title: media
-          description: The retrieved media data list.
-      title: GetMediasResponse
-      additionalProperties: false
-    media.v1.Media:
-      type: object
-      properties:
-        uid:
-          type: string
-          title: uid
-          description: The unique identifier of the media.
-        type:
-          title: type
-          description: The type of the media.
-          $ref: '#/components/schemas/media.v1.MediaType'
         link:
-          type: string
-          title: link
-          description: The link of the media.
-        meta:
-          type: string
-          title: meta
-          description: The meta data of the media.
-        createdAt:
-          type: string
-          title: created_at
-          description: The date and time the media was created.
-        lastAccessedAt:
-          type: string
-          title: last_accessed_at
-          description: The date and time the media was last accessed.
-      title: Media
-      additionalProperties: false
-      description: 'TODO: Auto delete media not linked to any other resource.'
-    order.v1.GenerateBillingRequest:
-      type: object
-      properties:
-        orderUid:
-          type: string
-          title: order_uid
-          description: The unique identifier of the order.
-      title: GenerateBillingRequest
-      additionalProperties: false
-    order.v1.GenerateBillingResponse:
-      type: object
-      properties:
-        orderReceipt:
-          title: order_receipt
-          description: The receipt of the order.
-          $ref: '#/components/schemas/order.v1.OrderReceipt'
-      title: GenerateBillingResponse
-      additionalProperties: false
-    order.v1.OrderReceipt:
-      type: object
-      properties:
-        orderUid:
-          type: string
-          title: order_uid
-          description: / ...order details...
-        orderStatus:
-          type: string
-          title: order_status
-        orderTotalPriceInCents:
-          type: string
-          title: order_total_price_in_cents
-        orderCreatedAt:
-          type: string
-          title: order_created_at
-        orderUpdatedAt:
-          type: string
-          title: order_updated_at
-        orderResourceName:
-          type: string
-          title: order_resource_name
-        orderResourceAddress:
-          type: string
-          title: order_resource_address
-        orderResourcePhoneNumber:
-          type: string
-          title: order_resource_phone_number
-        orderResourceEmail:
-          type: string
-          title: order_resource_email
-        orderResourceLogoMediaUid:
-          type: string
-          title: order_resource_logo_media_uid
-        orderItems:
           type: array
           items:
-            $ref: '#/components/schemas/order.v1.OrderReceiptItem'
-          title: order_items
-      title: OrderReceipt
+            $ref: '#/components/schemas/link.v1.ResourceLink'
+          title: link
+          description: The retrieved resource link data list.
+      title: GetResourceLinksResponse
       additionalProperties: false
-      description: |-
-        The receipt of an order.
-         The receipt is a PDF file that can be downloaded by the customer.
-         It contains the order details, the customer details, the payment details.
-    order.v1.OrderReceiptItem:
+    link.v1.ResourceLink:
       type: object
       properties:
-        productUid:
+        refId:
           type: string
-          title: product_uid
-        productName:
+          title: ref_id
+          description: The unique identifier of the resource link.
+        targetUri:
           type: string
-          title: product_name
-        productPriceInCents:
+          title: target_uri
+          description: The link of the resource link.
+        iconUri:
           type: string
-          title: product_price_in_cents
-        quantity:
-          type: integer
-          title: quantity
-          format: int32
-        receiptItemTotalPriceInCents:
-          type: integer
-          title: receipt_item_total_price_in_cents
-          format: int32
-      title: OrderReceiptItem
+          title: icon_uri
+          description: The icon of the resource type.
+          nullable: true
+        info:
+          type: string
+          title: info
+          description: |-
+            The meta data of the resource link.
+             It can be the title of the target resource.
+          nullable: true
+        label:
+          type: string
+          title: label
+          description: The label use to identify the resource type.
+          nullable: true
+      title: ResourceLink
       additionalProperties: false
+      description: 'TODO: Auto delete resource link not linked to any other resource.'
     order.v1.ResourceType:
       type: string
       title: ResourceType
@@ -3203,27 +3285,27 @@ components:
           title: supplier_name
           description: The name of the supplier.
           nullable: true
-        businessUid:
+        businessId:
           type: string
-          title: business_uid
+          title: business_id
           description: The unique identifier of the business.
       title: CreateOrderRequest
       additionalProperties: false
     order.v1.CreateOrderResponse:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
+          title: ref_id
           description: The unique identifier of the created order.
       title: CreateOrderResponse
       additionalProperties: false
     order.v1.DeleteOrderRequest:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
+          title: ref_id
           description: The unique identifier of the order to delete.
       title: DeleteOrderRequest
       additionalProperties: false
@@ -3239,9 +3321,9 @@ components:
     order.v1.GetOrderRequest:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
+          title: ref_id
           description: The unique identifier of the order to retrieve.
       title: GetOrderRequest
       additionalProperties: false
@@ -3252,23 +3334,34 @@ components:
           title: order
           description: The retrieved order data.
           $ref: '#/components/schemas/order.v1.Order'
+        createdAt:
+          type: string
+          title: created_at
+          description: The date and time the order was created.
+        updatedAt:
+          type: string
+          title: updated_at
+          description: The date and time the order was last updated.
+          nullable: true
       title: GetOrderResponse
       additionalProperties: false
     order.v1.Order:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
+          title: ref_id
           description: The unique identifier of the order.
-        resourceType:
+          nullable: true
+        fromId:
           type: string
-          title: resource_type
-          description: The type of the resource.
-        resourceUid:
+          title: from_id
+          description: The id of the client or the supplier if available.
+          nullable: true
+        isClientOrder:
           type: string
-          title: resource_uid
-          description: The unique identifier of the resource owner.
+          title: is_client_order
+          description: Whether the order is from the client or the supplier.
         orderItems:
           type: array
           items:
@@ -3284,44 +3377,113 @@ components:
           title: status
           description: The status of the order.
           $ref: '#/components/schemas/order.v1.Status'
-        createdAt:
-          type: string
-          title: created_at
-          description: The date and time the order was created.
-        createdByUid:
-          type: string
-          title: created_by_uid
-          description: The uid of the user who created the order.
-        updatedAt:
-          type: string
-          title: updated_at
-          description: The date and time the order was last updated.
-        updatedByUid:
-          type: string
-          title: updated_by_uid
-          description: The uid of the user who last updated the order.
       title: Order
       additionalProperties: false
     order.v1.OrderItem:
       type: object
       properties:
-        productUid:
+        productId:
           type: string
-          title: product_uid
+          title: product_id
           description: The unique identifier of the business product.
         quantity:
           type: integer
           title: quantity
           format: int32
           description: The quantity of the product.
-        unitPriceInCents:
+        unitPriceInXafCents:
           type: integer
-          title: unit_price_in_cents
+          title: unit_price_in_xaf_cents
           format: int32
           description: |-
             The unit price in cents of the product.
              WARN: This value is stored because the unit price can change over time.
       title: OrderItem
+      additionalProperties: false
+    order.v1.GenerateBillingRequest:
+      type: object
+      properties:
+        orderId:
+          type: string
+          title: order_id
+          description: The unique identifier of the order.
+      title: GenerateBillingRequest
+      additionalProperties: false
+    order.v1.GenerateBillingResponse:
+      type: object
+      properties:
+        orderReceipt:
+          title: order_receipt
+          description: The receipt of the order.
+          $ref: '#/components/schemas/order.v1.OrderReceipt'
+      title: GenerateBillingResponse
+      additionalProperties: false
+    order.v1.OrderReceipt:
+      type: object
+      properties:
+        orderId:
+          type: string
+          title: order_id
+          description: / ...order details...
+        orderStatus:
+          type: string
+          title: order_status
+        orderTotalPriceInCents:
+          type: string
+          title: order_total_price_in_cents
+        orderCreatedAt:
+          type: string
+          title: order_created_at
+        orderUpdatedAt:
+          type: string
+          title: order_updated_at
+        orderResourceName:
+          type: string
+          title: order_resource_name
+        orderResourceAddress:
+          type: string
+          title: order_resource_address
+        orderResourcePhoneNumber:
+          type: string
+          title: order_resource_phone_number
+        orderResourceEmail:
+          type: string
+          title: order_resource_email
+        orderResourceLogoMediaId:
+          type: string
+          title: order_resource_logo_media_id
+        orderItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/order.v1.OrderReceiptItem'
+          title: order_items
+      title: OrderReceipt
+      additionalProperties: false
+      description: |-
+        The receipt of an order.
+         The receipt is a PDF file that can be downloaded by the customer.
+         It contains the order details, the customer details, the payment details.
+    order.v1.OrderReceiptItem:
+      type: object
+      properties:
+        productId:
+          type: string
+          title: product_id
+        productName:
+          type: string
+          title: product_name
+        productPriceInCents:
+          type: string
+          title: product_price_in_cents
+        quantity:
+          type: integer
+          title: quantity
+          format: int32
+        receiptItemTotalPriceInCents:
+          type: integer
+          title: receipt_item_total_price_in_cents
+          format: int32
+      title: OrderReceiptItem
       additionalProperties: false
     store.v1.CreateStoreRequest:
       type: object
@@ -3341,18 +3503,18 @@ components:
     store.v1.CreateStoreResponse:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
+          title: ref_id
           description: The unique identifier of the created store.
       title: CreateStoreResponse
       additionalProperties: false
     store.v1.DeleteStoreRequest:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
+          title: ref_id
           description: The unique identifier of the store to delete.
       title: DeleteStoreRequest
       additionalProperties: false
@@ -3368,9 +3530,9 @@ components:
     store.v1.GetStoreRequest:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
+          title: ref_id
           description: The unique identifier of the store to retrieve.
       title: GetStoreRequest
       additionalProperties: false
@@ -3386,10 +3548,11 @@ components:
     store.v1.Store:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
+          title: ref_id
           description: The unique identifier of the store.
+          nullable: true
         address:
           type: string
           title: address
@@ -3404,23 +3567,20 @@ components:
           title: description
           description: The description of the store.
           nullable: true
-        logoMediaUid:
+        logoMediaId:
           type: string
-          title: logo_media_uid
-          description: The uid of the media of the logo of the store.
+          title: logo_media_id
+          description: The id of the media of the logo of the store.
+          nullable: true
+        linksMediaIds:
+          type: string
+          title: links_media_ids
+          description: The ids of the media of the links of the store.
           nullable: true
         businessId:
           type: string
           title: business_id
-          description: The uid of the business of the store.
-        createdAt:
-          type: string
-          title: created_at
-          description: The date and time the store was created.
-        updatedAt:
-          type: string
-          title: updated_at
-          description: The date and time the store was last updated.
+          description: The id of the business of the store.
       title: Store
       additionalProperties: false
       description: |-

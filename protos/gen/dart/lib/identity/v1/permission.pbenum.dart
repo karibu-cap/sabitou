@@ -13,71 +13,56 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-class PermissionActionType extends $pb.ProtobufEnum {
-  static const PermissionActionType PERMISSION_ACTION_TYPE_UNSPECIFIED = PermissionActionType._(0, _omitEnumNames ? '' : 'PERMISSION_ACTION_TYPE_UNSPECIFIED');
-  static const PermissionActionType PERMISSION_ACTION_TYPE_READ = PermissionActionType._(1, _omitEnumNames ? '' : 'PERMISSION_ACTION_TYPE_READ');
-  static const PermissionActionType PERMISSION_ACTION_TYPE_ADD = PermissionActionType._(2, _omitEnumNames ? '' : 'PERMISSION_ACTION_TYPE_ADD');
-  static const PermissionActionType PERMISSION_ACTION_TYPE_UPDATE = PermissionActionType._(3, _omitEnumNames ? '' : 'PERMISSION_ACTION_TYPE_UPDATE');
-  static const PermissionActionType PERMISSION_ACTION_TYPE_REMOVE = PermissionActionType._(4, _omitEnumNames ? '' : 'PERMISSION_ACTION_TYPE_REMOVE');
+class ResourceActionType extends $pb.ProtobufEnum {
+  static const ResourceActionType RESOURCE_ACTION_TYPE_UNSPECIFIED = ResourceActionType._(0, _omitEnumNames ? '' : 'RESOURCE_ACTION_TYPE_UNSPECIFIED');
+  static const ResourceActionType RESOURCE_ACTION_TYPE_READ = ResourceActionType._(1, _omitEnumNames ? '' : 'RESOURCE_ACTION_TYPE_READ');
+  static const ResourceActionType RESOURCE_ACTION_TYPE_ADD = ResourceActionType._(2, _omitEnumNames ? '' : 'RESOURCE_ACTION_TYPE_ADD');
+  static const ResourceActionType RESOURCE_ACTION_TYPE_UPDATE = ResourceActionType._(3, _omitEnumNames ? '' : 'RESOURCE_ACTION_TYPE_UPDATE');
+  static const ResourceActionType RESOURCE_ACTION_TYPE_REMOVE = ResourceActionType._(4, _omitEnumNames ? '' : 'RESOURCE_ACTION_TYPE_REMOVE');
 
-  static const $core.List<PermissionActionType> values = <PermissionActionType> [
-    PERMISSION_ACTION_TYPE_UNSPECIFIED,
-    PERMISSION_ACTION_TYPE_READ,
-    PERMISSION_ACTION_TYPE_ADD,
-    PERMISSION_ACTION_TYPE_UPDATE,
-    PERMISSION_ACTION_TYPE_REMOVE,
+  static const $core.List<ResourceActionType> values = <ResourceActionType> [
+    RESOURCE_ACTION_TYPE_UNSPECIFIED,
+    RESOURCE_ACTION_TYPE_READ,
+    RESOURCE_ACTION_TYPE_ADD,
+    RESOURCE_ACTION_TYPE_UPDATE,
+    RESOURCE_ACTION_TYPE_REMOVE,
   ];
 
-  static final $core.Map<$core.int, PermissionActionType> _byValue = $pb.ProtobufEnum.initByValue(values);
-  static PermissionActionType? valueOf($core.int value) => _byValue[value];
+  static final $core.Map<$core.int, ResourceActionType> _byValue = $pb.ProtobufEnum.initByValue(values);
+  static ResourceActionType? valueOf($core.int value) => _byValue[value];
 
-  const PermissionActionType._($core.int v, $core.String n) : super(v, n);
+  const ResourceActionType._($core.int v, $core.String n) : super(v, n);
 }
 
-class PermissionResourceType extends $pb.ProtobufEnum {
-  static const PermissionResourceType PERMISSION_RESOURCE_TYPE_UNSPECIFIED = PermissionResourceType._(0, _omitEnumNames ? '' : 'PERMISSION_RESOURCE_TYPE_UNSPECIFIED');
-  static const PermissionResourceType PERMISSION_RESOURCE_TYPE_BUSINESS = PermissionResourceType._(1, _omitEnumNames ? '' : 'PERMISSION_RESOURCE_TYPE_BUSINESS');
-  static const PermissionResourceType PERMISSION_RESOURCE_TYPE_STORE = PermissionResourceType._(2, _omitEnumNames ? '' : 'PERMISSION_RESOURCE_TYPE_STORE');
+class ResourceType extends $pb.ProtobufEnum {
+  static const ResourceType RESOURCE_TYPE_UNSPECIFIED = ResourceType._(0, _omitEnumNames ? '' : 'RESOURCE_TYPE_UNSPECIFIED');
+  static const ResourceType RESOURCE_TYPE_BUSINESS = ResourceType._(1, _omitEnumNames ? '' : 'RESOURCE_TYPE_BUSINESS');
+  static const ResourceType RESOURCE_TYPE_BUSINESS_MEMBER = ResourceType._(2, _omitEnumNames ? '' : 'RESOURCE_TYPE_BUSINESS_MEMBER');
+  static const ResourceType RESOURCE_TYPE_BUSINESS_CLIENT = ResourceType._(3, _omitEnumNames ? '' : 'RESOURCE_TYPE_BUSINESS_CLIENT');
+  static const ResourceType RESOURCE_TYPE_BUSINESS_SUPPLIER = ResourceType._(4, _omitEnumNames ? '' : 'RESOURCE_TYPE_BUSINESS_SUPPLIER');
+  static const ResourceType RESOURCE_TYPE_STORE = ResourceType._(5, _omitEnumNames ? '' : 'RESOURCE_TYPE_STORE');
+  static const ResourceType RESOURCE_TYPE_INVOICE = ResourceType._(6, _omitEnumNames ? '' : 'RESOURCE_TYPE_INVOICE');
+  static const ResourceType RESOURCE_TYPE_STORE_ORDER = ResourceType._(7, _omitEnumNames ? '' : 'RESOURCE_TYPE_STORE_ORDER');
+  static const ResourceType RESOURCE_TYPE_SUPPLIER_ORDER = ResourceType._(8, _omitEnumNames ? '' : 'RESOURCE_TYPE_SUPPLIER_ORDER');
+  static const ResourceType RESOURCE_TYPE_PRODUCT = ResourceType._(9, _omitEnumNames ? '' : 'RESOURCE_TYPE_PRODUCT');
 
-  static const $core.List<PermissionResourceType> values = <PermissionResourceType> [
-    PERMISSION_RESOURCE_TYPE_UNSPECIFIED,
-    PERMISSION_RESOURCE_TYPE_BUSINESS,
-    PERMISSION_RESOURCE_TYPE_STORE,
+  static const $core.List<ResourceType> values = <ResourceType> [
+    RESOURCE_TYPE_UNSPECIFIED,
+    RESOURCE_TYPE_BUSINESS,
+    RESOURCE_TYPE_BUSINESS_MEMBER,
+    RESOURCE_TYPE_BUSINESS_CLIENT,
+    RESOURCE_TYPE_BUSINESS_SUPPLIER,
+    RESOURCE_TYPE_STORE,
+    RESOURCE_TYPE_INVOICE,
+    RESOURCE_TYPE_STORE_ORDER,
+    RESOURCE_TYPE_SUPPLIER_ORDER,
+    RESOURCE_TYPE_PRODUCT,
   ];
 
-  static final $core.Map<$core.int, PermissionResourceType> _byValue = $pb.ProtobufEnum.initByValue(values);
-  static PermissionResourceType? valueOf($core.int value) => _byValue[value];
+  static final $core.Map<$core.int, ResourceType> _byValue = $pb.ProtobufEnum.initByValue(values);
+  static ResourceType? valueOf($core.int value) => _byValue[value];
 
-  const PermissionResourceType._($core.int v, $core.String n) : super(v, n);
-}
-
-class PermissionEntityType extends $pb.ProtobufEnum {
-  static const PermissionEntityType PERMISSION_ENTITY_TYPE_UNSPECIFIED = PermissionEntityType._(0, _omitEnumNames ? '' : 'PERMISSION_ENTITY_TYPE_UNSPECIFIED');
-  static const PermissionEntityType PERMISSION_ENTITY_TYPE_BUSINESS = PermissionEntityType._(1, _omitEnumNames ? '' : 'PERMISSION_ENTITY_TYPE_BUSINESS');
-  static const PermissionEntityType PERMISSION_ENTITY_TYPE_STORE = PermissionEntityType._(2, _omitEnumNames ? '' : 'PERMISSION_ENTITY_TYPE_STORE');
-  static const PermissionEntityType PERMISSION_ENTITY_TYPE_USER = PermissionEntityType._(3, _omitEnumNames ? '' : 'PERMISSION_ENTITY_TYPE_USER');
-  static const PermissionEntityType PERMISSION_ENTITY_TYPE_ARTICLE = PermissionEntityType._(4, _omitEnumNames ? '' : 'PERMISSION_ENTITY_TYPE_ARTICLE');
-  static const PermissionEntityType PERMISSION_ENTITY_TYPE_INVOICE = PermissionEntityType._(5, _omitEnumNames ? '' : 'PERMISSION_ENTITY_TYPE_INVOICE');
-  static const PermissionEntityType PERMISSION_ENTITY_TYPE_PAYMENT = PermissionEntityType._(6, _omitEnumNames ? '' : 'PERMISSION_ENTITY_TYPE_PAYMENT');
-  static const PermissionEntityType PERMISSION_ENTITY_TYPE_ORDER = PermissionEntityType._(7, _omitEnumNames ? '' : 'PERMISSION_ENTITY_TYPE_ORDER');
-  static const PermissionEntityType PERMISSION_ENTITY_TYPE_PERMISSION_GROUP = PermissionEntityType._(8, _omitEnumNames ? '' : 'PERMISSION_ENTITY_TYPE_PERMISSION_GROUP');
-
-  static const $core.List<PermissionEntityType> values = <PermissionEntityType> [
-    PERMISSION_ENTITY_TYPE_UNSPECIFIED,
-    PERMISSION_ENTITY_TYPE_BUSINESS,
-    PERMISSION_ENTITY_TYPE_STORE,
-    PERMISSION_ENTITY_TYPE_USER,
-    PERMISSION_ENTITY_TYPE_ARTICLE,
-    PERMISSION_ENTITY_TYPE_INVOICE,
-    PERMISSION_ENTITY_TYPE_PAYMENT,
-    PERMISSION_ENTITY_TYPE_ORDER,
-    PERMISSION_ENTITY_TYPE_PERMISSION_GROUP,
-  ];
-
-  static final $core.Map<$core.int, PermissionEntityType> _byValue = $pb.ProtobufEnum.initByValue(values);
-  static PermissionEntityType? valueOf($core.int value) => _byValue[value];
-
-  const PermissionEntityType._($core.int v, $core.String n) : super(v, n);
+  const ResourceType._($core.int v, $core.String n) : super(v, n);
 }
 
 

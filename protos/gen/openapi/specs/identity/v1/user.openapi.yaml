@@ -253,11 +253,19 @@ components:
         oldPassword:
           type: string
           title: old_password
-          description: The previous password of the user.
+          maxLength: 32
+          minLength: 8
+          description: |-
+            The previous password of the user.
+             TODO: Add more validation like capital letters, numbers, etc.
         newPassword:
           type: string
           title: new_password
-          description: The new password of the user.
+          maxLength: 32
+          minLength: 8
+          description: |-
+            The new password of the user.
+             TODO: Add more validation like capital letters, numbers, etc.
       title: ChangePasswordRequest
       additionalProperties: false
     identity.v1.ChangePasswordResponse:
@@ -323,11 +331,14 @@ components:
     identity.v1.GetUserRequest:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
+          title: ref_id
+          minLength: 3
           description: The id of the user to retrieve.
       title: GetUserRequest
+      required:
+        - refId
       additionalProperties: false
     identity.v1.GetUserResponse:
       type: object
@@ -341,15 +352,18 @@ components:
     identity.v1.RequestDeleteUserRequest:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
+          title: ref_id
+          minLength: 3
           description: The id of the user to delete.
         password:
           type: string
           title: password
           description: The password of the user to delete.
       title: RequestDeleteUserRequest
+      required:
+        - refId
       additionalProperties: false
     identity.v1.RequestDeleteUserResponse:
       type: object
@@ -371,7 +385,7 @@ components:
             The user information to update.
              Note:Only the fields that are set will be updated.
              WARNING:
-              - The uid field is required and cannot be changed.
+              - The id field is required and cannot be changed.
               - The password field will be ignored. Use the ChangePassword RPC instead.
           $ref: '#/components/schemas/identity.v1.User'
       title: UpdateMeRequest
@@ -388,18 +402,21 @@ components:
     identity.v1.User:
       type: object
       properties:
-        uid:
+        refId:
           type: string
-          title: uid
+          title: ref_id
           description: The unique identifier of the user.
+          nullable: true
         userName:
           type: string
           title: user_name
-          description: The user name of the user.
+          description: '[public] The user name of the user.'
         connectedAccounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/identity.v1.ConnectedAccount'
           title: connected_accounts
           description: The connected accounts used by the user for authentication.
-          $ref: '#/components/schemas/identity.v1.ConnectedAccount'
         email:
           type: string
           title: email
@@ -414,17 +431,12 @@ components:
         firstName:
           type: string
           title: first_name
-          description: The first name of the user.
+          description: '[public] The first name of the user.'
           nullable: true
         lastName:
           type: string
           title: last_name
-          description: The last name of the user.
-          nullable: true
-        passwordHash:
-          type: string
-          title: password_hash
-          description: The password hash of the user.
+          description: '[public] The last name of the user.'
           nullable: true
         accountStatus:
           title: account_status
@@ -437,12 +449,11 @@ components:
             $ref: '#/components/schemas/identity.v1.AuthActionType'
           title: required_actions
           description: The actions that the user must complete to authenticate.
-        createdAt:
-          type: string
-          title: created_at
-          description: The date and time the user was last updated.
       title: User
       additionalProperties: false
+      description: |-
+        The user record.
+         The id of the user is the same as the uid of the Firebase user.
     connect-protocol-version:
       type: number
       title: Connect-Protocol-Version

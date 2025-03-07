@@ -1,12 +1,13 @@
 syntax = "proto3";
 
 package store.v1;
+import "buf/validate/validate.proto";
 
 // Stores are used to store products.
 // Note: A store is not always a shop.
 message Store {
   // The unique identifier of the store.
-  string uid = 1;
+  optional string ref_id = 1;
 
   // The address of the store.
   optional string address = 2;
@@ -17,17 +18,14 @@ message Store {
   // The description of the store.
   optional string description = 5;
 
-  // The uid of the media of the logo of the store.
-  optional string logo_media_uid = 6;
+  // The id of the media of the logo of the store.
+  optional string logo_media_id = 6;
 
-  // The uid of the business of the store.
+  // The ids of the media of the links of the store.
+  optional string links_media_ids = 8;
+
+  // The id of the business of the store.
   string business_id = 7;
-
-  // The date and time the store was created.
-  string created_at = 8;
-
-  // The date and time the store was last updated.
-  string updated_at = 9;
 }
 
 message CreateStoreRequest {
@@ -40,12 +38,18 @@ message CreateStoreRequest {
 
 message CreateStoreResponse {
   // The unique identifier of the created store.
-  string uid = 1;
+  string ref_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
 }
 
 message GetStoreRequest {
   // The unique identifier of the store to retrieve.
-  string uid = 1;
+  string ref_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
 }
 
 message GetStoreResponse {
@@ -69,7 +73,10 @@ message UpdateStoreResponse {
 
 message DeleteStoreRequest {
   // The unique identifier of the store to delete.
-  string uid = 1;
+  string ref_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
 }
 
 message DeleteStoreResponse {
