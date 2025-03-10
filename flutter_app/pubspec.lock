@@ -161,6 +161,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.19.0"
+  connectrpc:
+    dependency: transitive
+    description:
+      name: connectrpc
+      sha256: bebaa7f46c7a2c9dee72bae551767bc76ca1b8138ea832a21fab5c0c54e95c29
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.0"
   convert:
     dependency: transitive
     description:
@@ -237,10 +245,10 @@ packages:
     dependency: transitive
     description:
       name: fixnum
-      sha256: "25517a4deb0c03aa0f32fd12db525856438902d9c16536311e76cdc57b31d7d1"
+      sha256: b6dc7065e46c974bc7c5f143080a6764ec7a4be6da1285ececdc37be96de53be
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.0"
+    version: "1.1.1"
   flex_color_scheme:
     dependency: "direct main"
     description:
@@ -659,7 +667,7 @@ packages:
       path: "../protos/gen/dart"
       relative: true
     source: path
-    version: "1.1.1+1"
+    version: "1.0.0+1"
   shelf:
     dependency: transitive
     description:

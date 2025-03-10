@@ -112,22 +112,15 @@ paths:
                 $ref: '#/components/schemas/order.v1.DeleteOrderResponse'
 components:
   schemas:
-    order.v1.ResourceType:
+    order.v1.OrderStatus:
       type: string
-      title: ResourceType
+      title: OrderStatus
       enum:
-        - RESOURCE_TYPE_UNSPECIFIED
-        - RESOURCE_TYPE_INTERNAL_STORE
-        - RESOURCE_TYPE_SUPPLIER_STORE
-    order.v1.Status:
-      type: string
-      title: Status
-      enum:
-        - STATUS_UNSPECIFIED
-        - STATUS_PENDING
-        - STATUS_PROCESSING
-        - STATUS_COMPLETED
-        - STATUS_CANCELLED
+        - ORDER_STATUS_UNSPECIFIED
+        - ORDER_STATUS_PENDING
+        - ORDER_STATUS_PROCESSING
+        - ORDER_STATUS_COMPLETED
+        - ORDER_STATUS_CANCELLED
     order.v1.CreateOrderRequest:
       type: object
       properties:
@@ -149,26 +142,26 @@ components:
     order.v1.CreateOrderResponse:
       type: object
       properties:
-        refId:
+        orderId:
           type: string
-          title: ref_id
+          title: order_id
           minLength: 3
           description: The unique identifier of the created order.
       title: CreateOrderResponse
       required:
-        - refId
+        - orderId
       additionalProperties: false
     order.v1.DeleteOrderRequest:
       type: object
       properties:
-        refId:
+        orderId:
           type: string
-          title: ref_id
+          title: order_id
           minLength: 3
           description: The unique identifier of the order to delete.
       title: DeleteOrderRequest
       required:
-        - refId
+        - orderId
       additionalProperties: false
     order.v1.DeleteOrderResponse:
       type: object
@@ -182,14 +175,14 @@ components:
     order.v1.GetOrderRequest:
       type: object
       properties:
-        refId:
+        orderId:
           type: string
-          title: ref_id
+          title: order_id
           minLength: 3
           description: The unique identifier of the order to retrieve.
       title: GetOrderRequest
       required:
-        - refId
+        - orderId
       additionalProperties: false
     order.v1.GetOrderResponse:
       type: object
@@ -240,24 +233,24 @@ components:
         status:
           title: status
           description: The status of the order.
-          $ref: '#/components/schemas/order.v1.Status'
+          $ref: '#/components/schemas/order.v1.OrderStatus'
       title: Order
       additionalProperties: false
     order.v1.OrderItem:
       type: object
       properties:
-        productId:
+        businessProductId:
           type: string
-          title: product_id
+          title: business_product_id
           description: The unique identifier of the business product.
         quantity:
           type: integer
           title: quantity
           format: int32
           description: The quantity of the product.
-        unitPriceInXafCents:
+        unitPriceInCents:
           type: integer
-          title: unit_price_in_xaf_cents
+          title: unit_price_in_cents
           format: int32
           description: |-
             The unit price in cents of the product.

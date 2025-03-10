@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sabitou_rpc/models.dart';
+import 'package:sabitou_rpc/business/v1/business.pb.dart';
 
 import '../../providers/dashboard/dasboard.dart';
 import '../../routes/pages_routes.dart';

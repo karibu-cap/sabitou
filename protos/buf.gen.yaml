@@ -8,21 +8,21 @@ managed:
   override:
     # Prefix all GO packages imported from the proto files with the specified value.
     - file_option: go_package_prefix
-      value: github.com/karibu-cap/sabitou/protos/gen/go
+      value: github.com/karibu-cap/sabitou/protos/gen/go/rpc
 
 plugins:
   # Generate Go code for Protobufs
   - remote: buf.build/protocolbuffers/go
-    out: gen/go
+    out: gen/go/rpc
     opt: paths=source_relative
   # Generates Go code to validate Protobuf messages using protoc-gen-validate constraints.
-  - remote: buf.build/bufbuild/validate-go:v1.2.1
-    out: gen/go
-    opt:
-      - paths=source_relative
+  # - remote: buf.build/bufbuild/validate-go:v1.2.1
+  #   out: gen/go/rpc
+  #   opt:
+  #     - paths=source_relative
   # Generate Go client and server stubs for Connect framework. 
   - remote: buf.build/connectrpc/go
-    out: gen/go
+    out: gen/go/rpc
     opt:
       - paths=source_relative
 
@@ -32,10 +32,10 @@ plugins:
 
   # Generate Dart client stubs for Connect framework.
   - remote: buf.build/connectrpc/dart
-    out: gen/dart/lib
+    out: gen/dart/lib/rpc
   # Generate Dart code for Protobufs
   - remote: buf.build/protocolbuffers/dart
-    out: gen/dart/lib
+    out: gen/dart/lib/rpc
     include_wkt: true
     include_imports: true
 inputs:

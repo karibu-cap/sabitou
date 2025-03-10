@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:grpc/grpc_or_grpcweb.dart';
-import 'package:sabitou_rpc/models.dart';
+import 'package:sabitou_rpc/business/v1/business.connect.client.dart';
+import 'package:sabitou_rpc/business/v1/business.pb.dart';
 
 import '../utils/logger.dart';
 

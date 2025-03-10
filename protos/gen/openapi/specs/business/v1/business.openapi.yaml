@@ -74,13 +74,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/business.v1.GetMyBusinessesResponse'
-  /business.v1.BusinessService/GetBusiness:
+  /business.v1.BusinessService/GetBusinessDetails:
     post:
       tags:
         - business.v1.BusinessService
-      summary: GetBusiness
+      summary: GetBusinessDetails
       description: Get a business by id.
-      operationId: business.v1.BusinessService.GetBusiness
+      operationId: business.v1.BusinessService.GetBusinessDetails
       parameters:
         - name: Connect-Protocol-Version
           in: header
@@ -95,7 +95,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/business.v1.GetBusinessRequest'
+              $ref: '#/components/schemas/business.v1.GetBusinessDetailsRequest'
         required: true
       responses:
         default:
@@ -109,7 +109,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/business.v1.GetBusinessResponse'
+                $ref: '#/components/schemas/business.v1.GetBusinessDetailsResponse'
   /business.v1.BusinessService/UpdateBusiness:
     post:
       tags:
@@ -151,7 +151,7 @@ paths:
       tags:
         - business.v1.BusinessService
       summary: RequestDeleteBusiness
-      description: Request the deletion of the business.
+      description: Request the deletion of the business. This request doesn't delete the business direcly instead it put the business in inactive state and remove all business members.
       operationId: business.v1.BusinessService.RequestDeleteBusiness
       parameters:
         - name: Connect-Protocol-Version
@@ -182,42 +182,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/business.v1.RequestDeleteBusinessResponse'
-  /business.v1.BusinessService/DeleteBusiness:
-    post:
-      tags:
-        - business.v1.BusinessService
-      summary: DeleteBusiness
-      description: Processes the deletion of the business requested by the owner.
-      operationId: business.v1.BusinessService.DeleteBusiness
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/business.v1.DeleteBusinessRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/business.v1.DeleteBusinessResponse'
   /business.v1.BusinessService/AddUserToBusiness:
     post:
       tags:
@@ -294,13 +258,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/business.v1.RemoveUserFromBusinessResponse'
-  /business.v1.BusinessService/GetBusinessUsers:
+  /business.v1.BusinessService/ChangeBusinessCurrency:
     post:
       tags:
         - business.v1.BusinessService
-      summary: GetBusinessUsers
-      description: Get the users of the business.
-      operationId: business.v1.BusinessService.GetBusinessUsers
+      summary: ChangeBusinessCurrency
+      description: Changes the business currency
+      operationId: business.v1.BusinessService.ChangeBusinessCurrency
       parameters:
         - name: Connect-Protocol-Version
           in: header
@@ -315,7 +279,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/business.v1.GetBusinessUsersRequest'
+              $ref: '#/components/schemas/business.v1.ChangeBusinessCurrencyRequest'
         required: true
       responses:
         default:
@@ -329,7 +293,43 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/business.v1.GetBusinessUsersResponse'
+                $ref: '#/components/schemas/business.v1.ChangeBusinessCurrencyResponse'
+  /business.v1.BusinessService/GetBusinessMembers:
+    post:
+      tags:
+        - business.v1.BusinessService
+      summary: GetBusinessMembers
+      description: Get the users of the business.
+      operationId: business.v1.BusinessService.GetBusinessMembers
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/business.v1.GetBusinessMembersRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/business.v1.GetBusinessMembersResponse'
 components:
   schemas:
     business.v1.BusinessStatusType:
@@ -339,24 +339,60 @@ components:
         - BUSINESS_STATUS_TYPE_UNSPECIFIED
         - BUSINESS_STATUS_TYPE_ACTIVE
         - BUSINESS_STATUS_TYPE_INACTIVE
+    business.v1.CurrencyChangePolicyType:
+      type: string
+      title: CurrencyChangePolicyType
+      enum:
+        - CURRENCY_CHANGE_POLICY_TYPE_UNSPECIFIED
+        - CURRENCY_CHANGE_POLICY_TYPE_KEEP_PREVIOUS_CURRENCY_VALUE
+        - CURRENCY_CHANGE_POLICY_TYPE_CONVERT_BASED_ON_CURRENT_EXCHANGE_RATE
+    identity.v1.ResourceActionType:
+      type: string
+      title: ResourceActionType
+      enum:
+        - RESOURCE_ACTION_TYPE_UNSPECIFIED
+        - RESOURCE_ACTION_TYPE_READ
+        - RESOURCE_ACTION_TYPE_ADD
+        - RESOURCE_ACTION_TYPE_UPDATE
+        - RESOURCE_ACTION_TYPE_REMOVE
+    identity.v1.ResourceType:
+      type: string
+      title: ResourceType
+      enum:
+        - RESOURCE_TYPE_UNSPECIFIED
+        - RESOURCE_TYPE_BUSINESS
+        - RESOURCE_TYPE_BUSINESS_MEMBER
+        - RESOURCE_TYPE_BUSINESS_SUPPLIER
+        - RESOURCE_TYPE_STORE
+        - RESOURCE_TYPE_INVOICE
+        - RESOURCE_TYPE_STORE_ORDER
+        - RESOURCE_TYPE_SUPPLIER_ORDER
+        - RESOURCE_TYPE_PRODUCT
     business.v1.AddUserToBusinessRequest:
       type: object
       properties:
-        uRef:
+        userName:
           type: string
-          title: u_ref
-          description: |-
-            The unique identifier of the user.
-             For example, the email address or phone number or @username.
+          title: user_name
+        password:
+          type: string
+          title: password
+        businessId:
+          type: string
+          title: business_id
       title: AddUserToBusinessRequest
       additionalProperties: false
+      description: |-
+        The unique identifier of the user.
+         For example, the email address or @username.
+         string u_ref = 1;
     business.v1.AddUserToBusinessResponse:
       type: object
       properties:
-        uRef:
-          type: string
-          title: u_ref
-          description: The unique identifier of the user.
+        businessMember:
+          title: business_member
+          description: The business member to return
+          $ref: '#/components/schemas/business.v1.BusinessMember'
       title: AddUserToBusinessResponse
       additionalProperties: false
     business.v1.Business:
@@ -384,9 +420,9 @@ components:
           type: string
           title: owner_id
           description: The id of the owner of the business.
-        logoMediaId:
+        logoLinkId:
           type: string
-          title: logo_media_id
+          title: logo_link_id
           description: The id of the media of the logo of the business.
           nullable: true
         countryCode:
@@ -401,15 +437,74 @@ components:
           description: |-
             The ISO 4217 currency code of the business.
              For example: XAF, USD, EUR, etc.
-        linksMediaIds:
+             Note: All price in the business will be in this currency.
+        externalLinksIds:
           type: array
           items:
             type: string
-          title: links_media_ids
+          title: external_links_ids
           description: |-
             The media ids of different links of the business.
              It can be social media links, website links, etc.
       title: Business
+      additionalProperties: false
+    business.v1.BusinessMember:
+      type: object
+      properties:
+        userId:
+          type: string
+          title: user_id
+          description: The unique identifier of the user.
+        businessId:
+          type: string
+          title: business_id
+          description: The unique identifier of the business.
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/identity.v1.Permission'
+          title: permissions
+          description: The permissions that the user has.
+        permissionsGroupsIds:
+          type: array
+          items:
+            type: string
+          title: permissions_groups_ids
+          description: The unique identifier of the permission group.
+        memberSince:
+          type: string
+          title: member_since
+          description: The date since when the
+      title: BusinessMember
+      additionalProperties: false
+    business.v1.ChangeBusinessCurrencyRequest:
+      type: object
+      properties:
+        currencyChangePolicy:
+          title: currency_change_policy
+          description: |-
+            The policy to apply when changing the currency
+             This field is required on currency change.
+          $ref: '#/components/schemas/business.v1.CurrencyChangePolicyType'
+        businessId:
+          type: string
+          title: business_id
+          description: The unique ref id of the business.
+        countryCode:
+          type: string
+          title: country_code
+          description: |-
+            The ISO 3166-1 alpha-2 country code of the business.
+             e.g. CM, US, GB, etc.
+      title: ChangeBusinessCurrencyRequest
+      additionalProperties: false
+    business.v1.ChangeBusinessCurrencyResponse:
+      type: object
+      properties:
+        sucess:
+          type: boolean
+          title: sucess
+      title: ChangeBusinessCurrencyResponse
       additionalProperties: false
     business.v1.CreateBusinessRequest:
       type: object
@@ -426,85 +521,69 @@ components:
           format: byte
           description: The raw image of the logo of the business.
           nullable: true
+        externalLinks:
+          type: array
+          items:
+            $ref: '#/components/schemas/link.v1.ResourceLink'
+          title: external_links
+          description: The links of the business.
       title: CreateBusinessRequest
       additionalProperties: false
     business.v1.CreateBusinessResponse:
       type: object
       properties:
-        refId:
+        businessId:
           type: string
-          title: ref_id
+          title: business_id
           minLength: 3
           description: The reference id to the business identifier.
       title: CreateBusinessResponse
       required:
-        - refId
+        - businessId
       additionalProperties: false
-    business.v1.DeleteBusinessRequest:
+    business.v1.GetBusinessDetailsRequest:
       type: object
       properties:
-        requestToken:
+        businessId:
           type: string
-          title: request_token
-          description: The token to use to process the deletion of the business.
-        verificationCode:
-          type: string
-          title: verification_code
-          description: The verification code sent to the user's email or phone number.
-      title: DeleteBusinessRequest
-      additionalProperties: false
-    business.v1.DeleteBusinessResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          title: success
-          description: Whether the business was successfully deleted.
-      title: DeleteBusinessResponse
-      additionalProperties: false
-    business.v1.GetBusinessRequest:
-      type: object
-      properties:
-        refId:
-          type: string
-          title: ref_id
+          title: business_id
           minLength: 3
           description: The reference id to the business identifier.
-      title: GetBusinessRequest
+      title: GetBusinessDetailsRequest
       required:
-        - refId
+        - businessId
       additionalProperties: false
-    business.v1.GetBusinessResponse:
+    business.v1.GetBusinessDetailsResponse:
       type: object
       properties:
         business:
           title: business
           description: The retrieved business data.
           $ref: '#/components/schemas/business.v1.Business'
-      title: GetBusinessResponse
+      title: GetBusinessDetailsResponse
       additionalProperties: false
-    business.v1.GetBusinessUsersRequest:
+    business.v1.GetBusinessMembersRequest:
       type: object
       properties:
-        refId:
+        businessId:
           type: string
-          title: ref_id
+          title: business_id
           minLength: 3
           description: The reference id to the business identifier.
-      title: GetBusinessUsersRequest
+      title: GetBusinessMembersRequest
       required:
-        - refId
+        - businessId
       additionalProperties: false
-    business.v1.GetBusinessUsersResponse:
+    business.v1.GetBusinessMembersResponse:
       type: object
       properties:
-        ids:
+        businessMembers:
           type: array
           items:
-            type: string
-          title: ids
-          description: The unique identifiers of the users of the business.
-      title: GetBusinessUsersResponse
+            $ref: '#/components/schemas/business.v1.BusinessMember'
+          title: business_members
+          description: The set of business member
+      title: GetBusinessMembersResponse
       additionalProperties: false
     business.v1.GetMyBusinessesRequest:
       type: object
@@ -523,13 +602,19 @@ components:
     business.v1.RemoveUserFromBusinessRequest:
       type: object
       properties:
-        uRef:
+        userId:
           type: string
-          title: u_ref
-          description: |-
-            The unique identifier of the user.
-             For example, the email address or phone number or @username.
+          title: user_id
+          minLength: 3
+          description: The unique identifier of the user.
+        businessId:
+          type: string
+          title: business_id
+          minLength: 3
       title: RemoveUserFromBusinessRequest
+      required:
+        - userId
+        - businessId
       additionalProperties: false
     business.v1.RemoveUserFromBusinessResponse:
       type: object
@@ -543,28 +628,32 @@ components:
     business.v1.RequestDeleteBusinessRequest:
       type: object
       properties:
-        refId:
+        businessId:
           type: string
-          title: ref_id
+          title: business_id
           minLength: 3
           description: The reference id to the business identifier.
         password:
           type: string
           title: password
-          description: The password of the user who is trying to delete the business.
+          description: |-
+            The password of the user who is trying to delete the business.
+             If the user doesn't have a password, he must set it before handling any deletion.
       title: RequestDeleteBusinessRequest
       required:
-        - refId
+        - businessId
       additionalProperties: false
     business.v1.RequestDeleteBusinessResponse:
       type: object
       properties:
-        requestToken:
+        success:
+          type: boolean
+          title: success
+          description: Whether the business will be deleted or not.
+        noticePeriod:
           type: string
-          title: request_token
-          description: |-
-            The token to use to process the deletion of the business
-             after verification (email or phone number).
+          title: notice_period
+          description: The notice period before the business will be deleted.
       title: RequestDeleteBusinessResponse
       additionalProperties: false
     business.v1.UpdateBusinessRequest:
@@ -582,6 +671,12 @@ components:
           format: byte
           description: The raw image of the logo of the business.
           nullable: true
+        externalLinks:
+          type: array
+          items:
+            $ref: '#/components/schemas/link.v1.ResourceLink'
+          title: external_links
+          description: The links of the business.
       title: UpdateBusinessRequest
       additionalProperties: false
     business.v1.UpdateBusinessResponse:
@@ -593,6 +688,55 @@ components:
           description: Whether the business was successfully updated.
       title: UpdateBusinessResponse
       additionalProperties: false
+    identity.v1.Permission:
+      type: object
+      properties:
+        resourceType:
+          title: resource_type
+          $ref: '#/components/schemas/identity.v1.ResourceType'
+        resourceId:
+          type: string
+          title: resource_id
+          description: The resource_id is only specified when we want to restrict action on a specific resource.
+          nullable: true
+        actionType:
+          title: action_type
+          description: The action that the member can perform on the resource.
+          $ref: '#/components/schemas/identity.v1.ResourceActionType'
+      title: Permission
+      additionalProperties: false
+    link.v1.ResourceLink:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+          description: The unique identifier of the resource link.
+          nullable: true
+        targetUri:
+          type: string
+          title: target_uri
+          description: The link of the resource link.
+        iconUri:
+          type: string
+          title: icon_uri
+          description: The icon of the resource type or owner.
+          nullable: true
+        info:
+          type: string
+          title: info
+          description: |-
+            The meta data of the resource link.
+             It can be the title of the target resource.
+          nullable: true
+        label:
+          type: string
+          title: label
+          description: The label use to identify the resource type.
+          nullable: true
+      title: ResourceLink
+      additionalProperties: false
+      description: 'TODO: Auto delete resource link not linked to any other resource.'
     connect-protocol-version:
       type: number
       title: Connect-Protocol-Version

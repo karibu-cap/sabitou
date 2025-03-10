@@ -3,6 +3,7 @@ syntax = "proto3";
 package identity.v1;
 
 import "buf/validate/validate.proto";
+import "link/v1/link.proto";
 
 enum AccountStatusType {
   ACCOUNT_STATUS_TYPE_UNSPECIFIED = 0;
@@ -67,6 +68,9 @@ message User {
 
   // [public] The last name of the user.
   optional string last_name = 7;
+  
+  // [public] The profile link of the user.
+  optional link.v1.ResourceLink profile_link = 8;
 
   // The status of the user's account.
   optional AccountStatusType account_status = 9;
@@ -77,7 +81,7 @@ message User {
 
 message GetUserRequest {
   // The id of the user to retrieve.
-  string ref_id = 1 [
+  string user_id = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
@@ -104,7 +108,7 @@ message UpdateMeResponse {
 
 message RequestDeleteUserRequest {
   // The id of the user to delete.
-  string ref_id = 1 [
+  string user_id = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];

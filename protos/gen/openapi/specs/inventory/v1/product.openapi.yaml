@@ -284,25 +284,25 @@ components:
           description: |-
             The price in cents of the product.
              The currency is determined by the business.
-        imagesMediaIds:
+        imagesLinkIds:
           type: array
           items:
             type: string
-          title: images_media_ids
+          title: images_link_ids
           description: The media ids of the images of the product.
       title: BusinessProduct
       additionalProperties: false
     inventory.v1.DeleteProductRequest:
       type: object
       properties:
-        refId:
+        productId:
           type: string
-          title: ref_id
+          title: product_id
           minLength: 3
           description: The unique identifier of the business product.
       title: DeleteProductRequest
       required:
-        - refId
+        - productId
       additionalProperties: false
     inventory.v1.DeleteProductResponse:
       type: object
@@ -360,14 +360,14 @@ components:
     inventory.v1.GetProductRequest:
       type: object
       properties:
-        refId:
+        productId:
           type: string
-          title: ref_id
+          title: product_id
           minLength: 3
           description: The unique identifier of the business product.
       title: GetProductRequest
       required:
-        - refId
+        - productId
       additionalProperties: false
     inventory.v1.GetProductResponse:
       type: object
@@ -406,6 +406,12 @@ components:
             $ref: '#/components/schemas/inventory.v1.ProductCategory'
           title: categories
           description: The product categories of the product.
+        imagesLinksIds:
+          type: array
+          items:
+            type: string
+          title: images_links_ids
+          description: The list of image related to the product.
       title: GlobalProduct
       additionalProperties: false
     inventory.v1.ProductCategory:

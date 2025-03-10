@@ -2,13 +2,19 @@ syntax = "proto3";
 
 package business.v1;
 import "buf/validate/validate.proto";
+import "identity/v1/permission.proto";
+import "link/v1/link.proto";
 
 enum BusinessStatusType {
   BUSINESS_STATUS_TYPE_UNSPECIFIED = 0;
   BUSINESS_STATUS_TYPE_ACTIVE = 1;
   BUSINESS_STATUS_TYPE_INACTIVE = 2;
 }
-
+enum CurrencyChangePolicyType {
+  CURRENCY_CHANGE_POLICY_TYPE_UNSPECIFIED = 0;
+  CURRENCY_CHANGE_POLICY_TYPE_KEEP_PREVIOUS_CURRENCY_VALUE = 1; 
+  CURRENCY_CHANGE_POLICY_TYPE_CONVERT_BASED_ON_CURRENT_EXCHANGE_RATE = 2;
+}
 message Business {
   // The reference id to the business identifier.
   optional string ref_id = 1;
@@ -26,7 +32,7 @@ message Business {
   string owner_id = 5;
 
   // The id of the media of the logo of the business.
-  optional string logo_media_id = 6;
+  optional string logo_link_id = 6;
 
   // The ISO 3166-1 alpha-2 country code of the business.
   // e.g. CM, US, GB, etc.
@@ -34,29 +40,30 @@ message Business {
 
   // The ISO 4217 currency code of the business.
   // For example: XAF, USD, EUR, etc.
+  // Note: All price in the business will be in this currency.
   string currency_code = 8;
 
   // The media ids of different links of the business.
   // It can be social media links, website links, etc.
-  repeated string links_media_ids = 9;
+  repeated string external_links_ids = 9;
 }
 
-// message BusinessMember {
-//   // The unique identifier of the user.
-//   string user_id = 1;
+message BusinessMember {
+  // The unique identifier of the user.
+  string user_id = 1;
 
-//   // The unique identifier of the business.
-//   string business_id = 2;
+  // The unique identifier of the business.
+  string business_id = 2;
 
-//   // The permissions that the user has.
-//   repeated Permission permissions = 3;
+  // The permissions that the user has.
+  repeated identity.v1.Permission permissions = 3;
 
-//   // The unique identifier of the permission group.
-//   optional string permissions_group_id = 4;
+  // The unique identifier of the permission group.
+  repeated string permissions_groups_ids = 4;
 
-//   // The date since when the
-//   string member_since = 5;
-// }
+  // The date since when the
+  string member_since = 5;
+}
 
 message CreateBusinessRequest {
   // The business information to create.
@@ -65,31 +72,54 @@ message CreateBusinessRequest {
 
   // The raw image of the logo of the business.
   optional bytes logo_raw_image = 2;
+
+  // The links of the business.
+  repeated link.v1.ResourceLink external_links = 3;
 }
 
 message CreateBusinessResponse {
   // The reference id to the business identifier.
-  string ref_id = 1 [
+  string business_id = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
+}
+
+message ChangeBusinessCurrencyRequest {
+  // The policy to apply when changing the currency
+  // This field is required on currency change.
+  CurrencyChangePolicyType currency_change_policy = 1;
+
+  // The unique ref id of the business.
+  string business_id = 2;
+
+  // The ISO 3166-1 alpha-2 country code of the business.
+  // e.g. CM, US, GB, etc.
+  string country_code = 3;
+
+
+}
+
+message ChangeBusinessCurrencyResponse {
+  bool sucess = 1;
 }
 
 message GetMyBusinessesRequest {
 }
+
 message GetMyBusinessesResponse {
   repeated Business businesses = 1;
 }
 
-message GetBusinessRequest {
+message GetBusinessDetailsRequest {
   // The reference id to the business identifier.
-  string ref_id = 1 [
+  string business_id = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
 }
 
-message GetBusinessResponse {
+message GetBusinessDetailsResponse {
   // The retrieved business data.
   Business business = 1;
 }
@@ -101,6 +131,9 @@ message UpdateBusinessRequest {
 
   // The raw image of the logo of the business.
   optional bytes logo_raw_image = 2;
+
+  // The links of the business.
+  repeated link.v1.ResourceLink external_links = 3;
 }
 
 message UpdateBusinessResponse {
@@ -110,48 +143,47 @@ message UpdateBusinessResponse {
 
 message RequestDeleteBusinessRequest {
   // The reference id to the business identifier.
-  string ref_id = 1 [
+  string business_id = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
   // The password of the user who is trying to delete the business.
+  // If the user doesn't have a password, he must set it before handling any deletion.
   string password = 2;
 }
 
 message RequestDeleteBusinessResponse {
-  // The token to use to process the deletion of the business
-  // after verification (email or phone number).
-  string request_token = 1;
-}
-
-message DeleteBusinessRequest {
-  // The token to use to process the deletion of the business.
-  string request_token = 1;
-
-  // The verification code sent to the user's email or phone number.
-  string verification_code = 2;
-}
-
-message DeleteBusinessResponse {
-  // Whether the business was successfully deleted.
+  // Whether the business will be deleted or not.
   bool success = 1;
+  // The notice period before the business will be deleted.
+  string notice_period = 2;
 }
 
 message AddUserToBusinessRequest {
   // The unique identifier of the user.
-  // For example, the email address or phone number or @username.
-  string u_ref = 1;
+  // For example, the email address or @username.
+  // string u_ref = 1;
+  
+  string user_name = 1;
+  string password = 2;
+  string business_id = 3;
 }
 
 message AddUserToBusinessResponse {
-  // The unique identifier of the user.
-  string u_ref = 1;
+  // The business member to return
+  BusinessMember business_member = 1;
 }
 
 message RemoveUserFromBusinessRequest {
   // The unique identifier of the user.
-  // For example, the email address or phone number or @username.
-  string u_ref = 1;
+  string user_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+  string business_id = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
 }
 
 message RemoveUserFromBusinessResponse {
@@ -159,17 +191,17 @@ message RemoveUserFromBusinessResponse {
   bool success = 1;
 }
 
-message GetBusinessUsersRequest {
+message GetBusinessMembersRequest {
   // The reference id to the business identifier.
-  string ref_id = 1 [
+  string business_id = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
 }
 
-message GetBusinessUsersResponse {
-  // The unique identifiers of the users of the business.
-  repeated string ids = 1;
+message GetBusinessMembersResponse {
+  // The set of business member
+  repeated BusinessMember business_members = 1;
 }
 
 service BusinessService {
@@ -180,16 +212,13 @@ service BusinessService {
   rpc GetMyBusinesses(GetMyBusinessesRequest) returns (GetMyBusinessesResponse);
 
   // Get a business by id.
-  rpc GetBusiness(GetBusinessRequest) returns (GetBusinessResponse);
+  rpc GetBusinessDetails(GetBusinessDetailsRequest) returns (GetBusinessDetailsResponse);
 
   // Update a business.
   rpc UpdateBusiness(UpdateBusinessRequest) returns (UpdateBusinessResponse);
 
-  // Request the deletion of the business.
+  // Request the deletion of the business. This request doesn't delete the business direcly instead it put the business in inactive state and remove all business members.
   rpc RequestDeleteBusiness(RequestDeleteBusinessRequest) returns (RequestDeleteBusinessResponse);
-
-  // Processes the deletion of the business requested by the owner.
-  rpc DeleteBusiness(DeleteBusinessRequest) returns (DeleteBusinessResponse);
 
   // Add user to business or invite user to business.
   rpc AddUserToBusiness(AddUserToBusinessRequest) returns (AddUserToBusinessResponse);
@@ -200,6 +229,9 @@ service BusinessService {
   // user.
   rpc RemoveUserFromBusiness(RemoveUserFromBusinessRequest) returns (RemoveUserFromBusinessResponse);
 
+  // Changes the business currency
+  rpc ChangeBusinessCurrency(ChangeBusinessCurrencyRequest) returns (ChangeBusinessCurrencyResponse);
+
   // Get the users of the business.
-  rpc GetBusinessUsers(GetBusinessUsersRequest) returns (GetBusinessUsersResponse);
+  rpc GetBusinessMembers(GetBusinessMembersRequest) returns (GetBusinessMembersResponse);
 }

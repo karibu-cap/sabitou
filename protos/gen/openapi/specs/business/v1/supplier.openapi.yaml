@@ -117,7 +117,7 @@ paths:
       summary: UpdateSupplier
       description: |-
         Updates a supplier.
-         Note:Only the fields that are set will be updated.
+         Note:Only the fields that are set will be updated. array fiels like external_links will be replaced.
       operationId: business.v1.SupplierService.UpdateSupplier
       parameters:
         - name: Connect-Protocol-Version
@@ -210,26 +210,26 @@ components:
     business.v1.CreateSupplierResponse:
       type: object
       properties:
-        refId:
+        suplierId:
           type: string
-          title: ref_id
+          title: suplier_id
           minLength: 3
           description: The reference id to the supplier identifier.
       title: CreateSupplierResponse
       required:
-        - refId
+        - suplierId
       additionalProperties: false
     business.v1.DeleteSupplierRequest:
       type: object
       properties:
-        refId:
+        supplierId:
           type: string
-          title: ref_id
+          title: supplier_id
           minLength: 3
           description: The reference id to the supplier identifier.
       title: DeleteSupplierRequest
       required:
-        - refId
+        - supplierId
       additionalProperties: false
     business.v1.DeleteSupplierResponse:
       type: object
@@ -243,14 +243,14 @@ components:
     business.v1.GetBusinessSuppliersRequest:
       type: object
       properties:
-        refId:
+        supplierId:
           type: string
-          title: ref_id
+          title: supplier_id
           minLength: 3
           description: The reference id to the supplier identifier.
       title: GetBusinessSuppliersRequest
       required:
-        - refId
+        - supplierId
       additionalProperties: false
     business.v1.GetBusinessSuppliersResponse:
       type: object
@@ -268,14 +268,14 @@ components:
     business.v1.GetSupplierRequest:
       type: object
       properties:
-        refId:
+        supplierId:
           type: string
-          title: ref_id
+          title: supplier_id
           minLength: 3
           description: The reference id to the supplier identifier.
       title: GetSupplierRequest
       required:
-        - refId
+        - supplierId
       additionalProperties: false
     business.v1.GetSupplierResponse:
       type: object
@@ -318,9 +318,9 @@ components:
           title: description
           description: The description of the supplier.
           nullable: true
-        logoMediaId:
+        logoLinkId:
           type: string
-          title: logo_media_id
+          title: logo_link_id
           description: The id of the media of the logo of the supplier.
           nullable: true
         externalLinksIds:
@@ -332,8 +332,11 @@ components:
         businessId:
           type: string
           title: business_id
+          minLength: 3
           description: The id of the business of the supplier.
       title: Supplier
+      required:
+        - businessId
       additionalProperties: false
     business.v1.UpdateSupplierRequest:
       type: object
@@ -350,6 +353,12 @@ components:
           format: byte
           description: The raw image of the logo of the supplier.
           nullable: true
+        externalLinks:
+          type: array
+          items:
+            $ref: '#/components/schemas/link.v1.ResourceLink'
+          title: external_links
+          description: The links of the supplier.
       title: UpdateSupplierRequest
       additionalProperties: false
     business.v1.UpdateSupplierResponse:

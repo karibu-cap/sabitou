@@ -158,23 +158,29 @@ components:
           title: ref_id
           description: The reference id to the client identifier.
           nullable: true
-        name:
+        fullName:
           type: string
-          title: name
+          title: full_name
           description: The name of the client.
-        phoneNumber:
+        externalLinksIds:
+          type: array
+          items:
+            type: string
+          title: external_links_ids
+          description: The links of the client it can contain client mail, phone number, website etc.
+        logoLinkId:
           type: string
-          title: phone_number
-        logoMediaId:
-          type: string
-          title: logo_media_id
+          title: logo_link_id
           description: The id of the media of the logo of the client.
           nullable: true
         businessId:
           type: string
           title: business_id
+          minLength: 3
           description: The id of the business of the client.
       title: BusinessClient
+      required:
+        - businessId
       additionalProperties: false
     business.v1.CreateBusinessClientRequest:
       type: object
@@ -194,26 +200,26 @@ components:
     business.v1.CreateBusinessClientResponse:
       type: object
       properties:
-        refId:
+        clientId:
           type: string
-          title: ref_id
+          title: client_id
           minLength: 3
           description: The reference id to the client identifier.
       title: CreateBusinessClientResponse
       required:
-        - refId
+        - clientId
       additionalProperties: false
     business.v1.DeleteBusinessClientRequest:
       type: object
       properties:
-        refId:
+        clientId:
           type: string
-          title: ref_id
+          title: client_id
           minLength: 3
           description: The reference id to the client identifier.
       title: DeleteBusinessClientRequest
       required:
-        - refId
+        - clientId
       additionalProperties: false
     business.v1.DeleteBusinessClientResponse:
       type: object
@@ -227,14 +233,14 @@ components:
     business.v1.GetBusinessClientRequest:
       type: object
       properties:
-        refId:
+        clientId:
           type: string
-          title: ref_id
+          title: client_id
           minLength: 3
           description: The reference id to the client identifier.
       title: GetBusinessClientRequest
       required:
-        - refId
+        - clientId
       additionalProperties: false
     business.v1.GetBusinessClientResponse:
       type: object

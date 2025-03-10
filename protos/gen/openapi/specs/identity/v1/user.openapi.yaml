@@ -331,14 +331,14 @@ components:
     identity.v1.GetUserRequest:
       type: object
       properties:
-        refId:
+        userId:
           type: string
-          title: ref_id
+          title: user_id
           minLength: 3
           description: The id of the user to retrieve.
       title: GetUserRequest
       required:
-        - refId
+        - userId
       additionalProperties: false
     identity.v1.GetUserResponse:
       type: object
@@ -352,9 +352,9 @@ components:
     identity.v1.RequestDeleteUserRequest:
       type: object
       properties:
-        refId:
+        userId:
           type: string
-          title: ref_id
+          title: user_id
           minLength: 3
           description: The id of the user to delete.
         password:
@@ -363,7 +363,7 @@ components:
           description: The password of the user to delete.
       title: RequestDeleteUserRequest
       required:
-        - refId
+        - userId
       additionalProperties: false
     identity.v1.RequestDeleteUserResponse:
       type: object
@@ -438,6 +438,11 @@ components:
           title: last_name
           description: '[public] The last name of the user.'
           nullable: true
+        profileLink:
+          title: profile_link
+          description: '[public] The profile link of the user.'
+          nullable: true
+          $ref: '#/components/schemas/link.v1.ResourceLink'
         accountStatus:
           title: account_status
           description: The status of the user's account.
@@ -454,6 +459,38 @@ components:
       description: |-
         The user record.
          The id of the user is the same as the uid of the Firebase user.
+    link.v1.ResourceLink:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+          description: The unique identifier of the resource link.
+          nullable: true
+        targetUri:
+          type: string
+          title: target_uri
+          description: The link of the resource link.
+        iconUri:
+          type: string
+          title: icon_uri
+          description: The icon of the resource type or owner.
+          nullable: true
+        info:
+          type: string
+          title: info
+          description: |-
+            The meta data of the resource link.
+             It can be the title of the target resource.
+          nullable: true
+        label:
+          type: string
+          title: label
+          description: The label use to identify the resource type.
+          nullable: true
+      title: ResourceLink
+      additionalProperties: false
+      description: 'TODO: Auto delete resource link not linked to any other resource.'
     connect-protocol-version:
       type: number
       title: Connect-Protocol-Version

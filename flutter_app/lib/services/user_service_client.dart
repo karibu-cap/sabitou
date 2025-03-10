@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:grpc/grpc_or_grpcweb.dart';
-import 'package:sabitou_rpc/proto/user/v1/user.pbgrpc.dart';
+import 'package:sabitou_rpc/identity/v1/user.connect.client.dart';
+import 'package:sabitou_rpc/identity/v1/user.pb.dart';
 
 import '../utils/logger.dart';
 

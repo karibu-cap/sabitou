@@ -4,14 +4,9 @@ set -e
 # Clean temporary files.
 rm -f /tmp/buf-gen-*
 
-# save previous lock files to tmp dir only if they exist
-[ -f "gen/go/go.sum" ] && mv gen/go/go.sum /tmp/buf-gen-go.sum
-[ -f "gen/go/go.mod" ] && mv gen/go/go.mod /tmp/buf-gen-go.mod
-[ -f "gen/dart/pubspec.lock" ] && mv gen/dart/pubspec.lock /tmp/buf-gen-dart.pubspec.lock
-[ -f "gen/dart/pubspec.yaml" ] && mv gen/dart/pubspec.yaml /tmp/buf-gen-dart.pubspec.yaml
-
 # Remove old generated files.
-rm -rf gen
+rm -rf gen/dart/lib/rpc
+rm -rf gen/go/rpc
 
 # Generate the protos
 buf generate
@@ -41,10 +36,6 @@ dev_dependencies:
 
 EOF
 
-# Restore previous lock files.
-[ -f "/tmp/buf-gen-dart.pubspec.lock" ] && mv /tmp/buf-gen-dart.pubspec.lock ./pubspec.lock
-[ -f "/tmp/buf-gen-dart.pubspec.yaml" ] && mv /tmp/buf-gen-dart.pubspec.yaml ./pubspec.yaml
-
 dart pub get
 cd -
 
@@ -55,11 +46,13 @@ module github.com/karibu-cap/sabitou/protos/gen/go
 
 go 1.24.0
 
-EOF
+require (
+	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.5-20250219170025-d39267d9df8f.1
+	connectrpc.com/connect v1.18.1
+	google.golang.org/protobuf v1.36.5
+)
 
-# Restore previous lock files.
-[ -f "/tmp/buf-gen-go.sum" ] && mv /tmp/buf-gen-go.sum ./go.sum
-[ -f "/tmp/buf-gen-go.mod" ] && mv /tmp/buf-gen-go.mod ./go.mod
+EOF
 
 go mod tidy
 cd -

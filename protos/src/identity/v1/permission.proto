@@ -19,7 +19,6 @@ enum ResourceType {
   RESOURCE_TYPE_UNSPECIFIED = 0;
   RESOURCE_TYPE_BUSINESS = 1;
   RESOURCE_TYPE_BUSINESS_MEMBER = 2;
-  RESOURCE_TYPE_BUSINESS_CLIENT = 3;
   RESOURCE_TYPE_BUSINESS_SUPPLIER = 4;
   RESOURCE_TYPE_STORE = 5;
   RESOURCE_TYPE_INVOICE = 6;
@@ -32,7 +31,7 @@ message Permission {
   ResourceType resource_type = 1;
   // The resource_id is only specified when we want to restrict action on a specific resource.
   optional string resource_id = 2;
-  // The action that the user can perform on the resource.
+  // The action that the member can perform on the resource.
   ResourceActionType action_type = 3;
 }
 
@@ -59,12 +58,15 @@ message CreatePermissionsGroupRequest {
   // Note:Only the fields that are set will be created.
   PermissionsGroup permissions_group = 1;
   // The unique identifier of the business on which the permission group is created.
-  string business_id = 2;
+  string business_id = 2[
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
 }
 
 message CreatePermissionsGroupResponse {
   // The unique identifier of the created permission group.
-  string ref_id = 1 [
+  string permission_group_id = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
@@ -72,7 +74,7 @@ message CreatePermissionsGroupResponse {
 
 message GetPermissionsGroupRequest {
   // The unique identifier of the permission group to retrieve.
-  string ref_id = 1 [
+  string permission_group_id = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
@@ -84,9 +86,23 @@ message GetPermissionsGroupResponse {
 }
 
 message UpdatePermissionsGroupRequest {
-  // The permission group information to update.
-  // Note:Only the fields that are set will be updated.
-  PermissionsGroup permissions_group = 1;
+  // The permission group id;
+  string permissions_group_id = 1 [ (buf.validate.field).required = true, (buf.validate.field).string.min_len = 3 ];
+
+  // The unique identifier of the business.
+  string business_id = 6 [ (buf.validate.field).required = true, (buf.validate.field).string.min_len = 3 ];
+
+  // The name of the permission group. Generally the role of the group.
+  optional string name = 2;
+
+  // The description of the permission group.
+  optional string description = 3;
+
+  // The permissions set to add.
+  repeated Permission add_permissions = 4;
+  
+  // The permissions set to remove.
+  repeated Permission remove_permissions = 5;
 }
 
 message UpdatePermissionsGroupResponse {
@@ -96,12 +112,15 @@ message UpdatePermissionsGroupResponse {
 
 message DeletePermissionsGroupRequest {
   // The unique identifier of the permission group to delete.
-  string ref_id = 1 [
+  string permission_group_id = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
   // The unique identifier of the business.
-  string business_id = 2;
+  string business_id = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
 }
 
 message DeletePermissionsGroupResponse {
@@ -109,37 +128,42 @@ message DeletePermissionsGroupResponse {
   bool success = 1;
 }
 
-message RemoveUserPermissionRequest {
-  // The unique identifier of the user.
-  string user_id = 1;
-  // The unique identifier of the permission group.
-  string permissions_group_id = 2;
-  // The unique identifier of the resource.
-  string resource_id = 3;
+message UpdateMemberPermissionsRequest {
+  // The unique identifier of the member.
+  string user_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+  // The id of the business on which we want to update the permissions.
+  string business_id = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+
+  // The set of permissions to remove from the member.
+  repeated Permission remove_permissions = 3;
+
+  // The set of permissions to add on the member
+  repeated Permission add_permissions = 4;
+
+  // The set of permissions groups to remove the member from.
+  repeated string remove_permissions_groups_ids = 5;
+
+  // The set of permissions groups to add the member on.
+  repeated string add_permissions_groups_ids = 6;
 }
 
-message RemoveUserPermissionResponse {
-  // Whether the user was successfully removed from the permission group.
-  bool success = 1;
-}
-
-message AddUserPermissionRequest {
-  // The unique identifier of the user.
-  string user_id = 1;
-  // The unique identifier of the permission group.
-  string permissions_group_id = 2;
-  // The unique identifier of the resource.
-  string resource_id = 3;
-}
-
-message AddUserPermissionResponse {
-  // Whether the user was successfully added to the permission group.
+message UpdateMemberPermissionsResponse {
+  // Whether the member was successfully removed from the permission group.
   bool success = 1;
 }
 
 message GetBusinessPermissionsGroupsRequest {
   // The unique identifier of the business to retrieve.
-  string business_id = 1;
+  string business_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
 }
 
 message GetBusinessPermissionsGroupsResponse {
@@ -148,18 +172,24 @@ message GetBusinessPermissionsGroupsResponse {
 }
 
 message CheckPermissionRequest {
-  // The unique identifier of the user.
-  string user_id = 1;
+  // The unique identifier of the member.
+  string user_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
 
-  // The unique identifier of the resource.
-  string resource_id = 3;
+  // The unique identifier of the business on which we want to check the permission.
+  string business_id = 3 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
 
   // The permission to check.
   Permission permission = 4;
 }
 
 message CheckPermissionResponse {
-  // Whether the user has the permission.
+  // Whether the member has the permission.
   bool has_permission = 1;
 }
 
@@ -176,15 +206,12 @@ service PermissionService {
   // Deletes a permission group.
   rpc DeletePermissionsGroup(DeletePermissionsGroupRequest) returns (DeletePermissionsGroupResponse) {}
 
-  // Removes a permission from the user.
-  rpc RemoveUserPermission(RemoveUserPermissionRequest) returns (RemoveUserPermissionResponse) {}
-
-  // Adds a permission to the user.
-  rpc AddUserPermission(AddUserPermissionRequest) returns (AddUserPermissionResponse) {}
+  // Update the member permissions on the provided business.
+  rpc UpdateMemberPermissions(UpdateMemberPermissionsRequest) returns (UpdateMemberPermissionsResponse) {}
 
   // Gets the permission groups of the business.
   rpc GetBusinessPermissionsGroups(GetBusinessPermissionsGroupsRequest) returns (GetBusinessPermissionsGroupsResponse) {}
 
-  // Checks if the user has the provided permission for the provided resource.
+  // Checks if the member has the provided permission for the provided resource.
   rpc CheckPermission(CheckPermissionRequest) returns (CheckPermissionResponse) {}
 }

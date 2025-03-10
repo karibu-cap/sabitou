@@ -9,15 +9,20 @@ message BusinessClient {
   optional string ref_id = 1;
 
   // The name of the client.
-  string name = 2;
+  string full_name = 2;
 
-  string phone_number = 3;
+  // The links of the client it can contain client mail, phone number, website etc.
+  repeated string external_links_ids = 3;
 
   // The id of the media of the logo of the client.
-  optional string logo_media_id = 4;
+  optional string logo_link_id = 4;
 
   // The id of the business of the client.
-  string business_id = 5;
+  string business_id = 5 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+
 }
 
 
@@ -31,7 +36,7 @@ message CreateBusinessClientRequest {
 
 message CreateBusinessClientResponse {
   // The reference id to the client identifier.
-  string ref_id = 1 [
+  string client_id = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
@@ -39,7 +44,7 @@ message CreateBusinessClientResponse {
 
 message GetBusinessClientRequest {
   // The reference id to the client identifier.
-  string ref_id = 1 [
+  string client_id = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
@@ -66,7 +71,7 @@ message UpdateBusinessClientResponse {
 
 message DeleteBusinessClientRequest {
   // The reference id to the client identifier.
-  string ref_id = 1 [
+  string client_id = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];

@@ -24,13 +24,16 @@ message Supplier {
   optional string description = 3;
 
   // The id of the media of the logo of the supplier.
-  optional string logo_media_id = 4;
+  optional string logo_link_id = 4;
 
   // The links of the supplier.
   repeated string external_links_ids = 5;
 
   // The id of the business of the supplier.
-  string business_id = 6;
+  string business_id = 6 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
 }
 
 message CreateSupplierRequest {
@@ -41,12 +44,12 @@ message CreateSupplierRequest {
   optional bytes logo_raw_image = 2;
 
   // The links of the supplier.
-  repeated link.v1.ResourceLink external_links = 5;
+  repeated link.v1.ResourceLink external_links = 3;
 }
 
 message CreateSupplierResponse {
   // The reference id to the supplier identifier.
-  string ref_id = 1 [
+  string suplier_id = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
@@ -54,7 +57,7 @@ message CreateSupplierResponse {
 
 message GetSupplierRequest {
   // The reference id to the supplier identifier.
-  string ref_id = 1 [
+  string supplier_id = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
@@ -67,7 +70,7 @@ message GetSupplierResponse {
 
 message GetBusinessSuppliersRequest {
   // The reference id to the supplier identifier.
-  string ref_id = 1 [
+  string supplier_id = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
@@ -83,9 +86,10 @@ message UpdateSupplierRequest {
   // The supplier information to update.
   // Note:Only the fields that are set will be updated.
   Supplier supplier = 1;
-
   // The raw image of the logo of the supplier.
   optional bytes logo_raw_image = 2;
+  // The links of the supplier.
+  repeated link.v1.ResourceLink external_links = 3;
 }
 
 message UpdateSupplierResponse {
@@ -95,7 +99,7 @@ message UpdateSupplierResponse {
 
 message DeleteSupplierRequest {
   // The reference id to the supplier identifier.
-  string ref_id = 1 [
+  string supplier_id = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
@@ -117,7 +121,7 @@ service SupplierService {
   rpc GetBusinessSuppliers(GetBusinessSuppliersRequest) returns (GetBusinessSuppliersResponse);
 
   // Updates a supplier.
-  // Note:Only the fields that are set will be updated.
+  // Note:Only the fields that are set will be updated. array fiels like external_links will be replaced.
   rpc UpdateSupplier(UpdateSupplierRequest) returns (UpdateSupplierResponse);
 
   // Deletes a supplier.

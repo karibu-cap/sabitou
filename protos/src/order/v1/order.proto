@@ -3,30 +3,24 @@ syntax = "proto3";
 package order.v1;
 import "buf/validate/validate.proto";
 
-enum Status {
-  STATUS_UNSPECIFIED = 0;
-  STATUS_PENDING = 1;
-  STATUS_PROCESSING = 2;
-  STATUS_COMPLETED = 3;
-  STATUS_CANCELLED = 4;
-}
-
-enum ResourceType {
-  RESOURCE_TYPE_UNSPECIFIED = 0;
-  RESOURCE_TYPE_INTERNAL_STORE = 1;
-  RESOURCE_TYPE_SUPPLIER_STORE = 2;
+enum OrderStatus {
+  ORDER_STATUS_UNSPECIFIED = 0;
+  ORDER_STATUS_PENDING = 1;
+  ORDER_STATUS_PROCESSING = 2;
+  ORDER_STATUS_COMPLETED = 3;
+  ORDER_STATUS_CANCELLED = 4;
 }
 
 message OrderItem {
   // The unique identifier of the business product.
-  string product_id = 1;
+  string business_product_id = 1;
 
   // The quantity of the product.
   int32 quantity = 2;
 
   // The unit price in cents of the product.
   // WARN: This value is stored because the unit price can change over time.
-  int32 unit_price_in_xaf_cents = 3;
+  int32 unit_price_in_cents = 3;
 }
 
 message Order {
@@ -46,7 +40,7 @@ message Order {
   int32 total_price_in_cents = 5;
 
   // The status of the order.
-  Status status = 6;
+  OrderStatus status = 6;
 }
 
 message CreateOrderRequest {
@@ -62,7 +56,7 @@ message CreateOrderRequest {
 
 message CreateOrderResponse {
   // The unique identifier of the created order.
-  string ref_id = 1 [
+  string order_id = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
@@ -70,7 +64,7 @@ message CreateOrderResponse {
 
 message GetOrderRequest {
   // The unique identifier of the order to retrieve.
-  string ref_id = 1 [
+  string order_id = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
@@ -90,7 +84,7 @@ message GetOrderResponse {
 
 message DeleteOrderRequest {
   // The unique identifier of the order to delete.
-  string ref_id = 1 [
+  string order_id = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];

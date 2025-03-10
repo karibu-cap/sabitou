@@ -9,9 +9,6 @@ message Store {
   // The unique identifier of the store.
   optional string ref_id = 1;
 
-  // The address of the store.
-  optional string address = 2;
-
   // The name of the store.
   string name = 3;
 
@@ -19,13 +16,13 @@ message Store {
   optional string description = 5;
 
   // The id of the media of the logo of the store.
-  optional string logo_media_id = 6;
+  optional string logo_link_id = 6;
 
-  // The ids of the media of the links of the store.
-  optional string links_media_ids = 8;
+  // The list of external links of the store it can be an address link, a phone number, an email, a website etc.
+  optional string external_links_ids = 7;
 
   // The id of the business of the store.
-  string business_id = 7;
+  string business_id = 8;
 }
 
 message CreateStoreRequest {
@@ -38,7 +35,7 @@ message CreateStoreRequest {
 
 message CreateStoreResponse {
   // The unique identifier of the created store.
-  string ref_id = 1 [
+  string store_id = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
@@ -46,7 +43,7 @@ message CreateStoreResponse {
 
 message GetStoreRequest {
   // The unique identifier of the store to retrieve.
-  string ref_id = 1 [
+  string store_id = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
@@ -73,7 +70,7 @@ message UpdateStoreResponse {
 
 message DeleteStoreRequest {
   // The unique identifier of the store to delete.
-  string ref_id = 1 [
+  string store_id = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
