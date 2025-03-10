@@ -1,24 +1,24 @@
+import 'package:connectrpc/connect.dart' as connect;
 import 'package:get/get.dart';
-import 'package:grpc/grpc_or_grpcweb.dart';
-import 'package:sabitou_rpc/business/v1/business.connect.client.dart';
-import 'package:sabitou_rpc/business/v1/business.pb.dart';
+import 'package:sabitou_rpc/connect_servers.dart';
+import 'package:sabitou_rpc/models.dart';
 
 import '../utils/logger.dart';
 
 /// The business service client.
 final class BusinessService extends GetxService {
+  /// Access the singleton instance.
+  static BusinessService get to => Get.find();
+
   final _logger = LoggerApp('BusinessService');
 
   /// The user service client.
   final BusinessServiceClient businessService;
 
   /// The client channel.
-  final GrpcOrGrpcWebClientChannel clientChannel;
+  final connect.Transport clientChannel;
 
-  /// Access the singleton instance.
-  static BusinessService get to => Get.find();
-
-  /// Constructs a new [UserServiceClient].
+  /// Constructs a new [AuthServiceClient].
   BusinessService({required this.clientChannel})
       : businessService = BusinessServiceClient(
           clientChannel,
@@ -39,13 +39,11 @@ final class BusinessService extends GetxService {
         'Created business: ${request.writeToJson()}.',
       );
 
-      return result.id;
+      return result.businessId;
     } on Exception catch (e) {
       _logger.severe('Caught error: $e');
 
       return null;
-    } finally {
-      await clientChannel.shutdown();
     }
   }
 }

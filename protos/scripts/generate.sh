@@ -5,7 +5,7 @@ set -e
 rm -f /tmp/buf-gen-*
 
 # Remove old generated files.
-rm -rf gen/dart/lib/rpc
+rm -rf gen/dart/lib/src
 rm -rf gen/go/rpc
 
 # Generate the protos

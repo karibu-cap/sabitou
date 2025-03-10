@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-// import 'package:sabitou_rpc/';
+import 'package:sabitou_rpc/models.dart';
 
 import '../../routes/app_routes.dart';
 import '../../routes/pages_routes.dart';
@@ -50,15 +50,16 @@ final class SignUpProvider extends GetxController {
 
       return false;
     }
-
-    final String? id = await UserClientService.to.createUser(
+/*
+    final String? id = await UserClientService.to.getMe(
       request: CreateUserRequest()
         ..firstName = firstName
         ..lastName = lastName
         ..email = email
         ..password = password
         ..connectionType = ConnectionType.EMAIL.name,
-    );
+    );*/
+    String? id;
     await Future.delayed(const Duration(seconds: 4));
 
     if (id != null) {
@@ -70,10 +71,8 @@ final class SignUpProvider extends GetxController {
         user: User(
           firstName: firstName,
           lastName: lastName,
-          id: id,
+          refId: id,
           email: email,
-          password: password,
-          connectionType: ConnectionType.EMAIL.name,
         ),
       );
 
