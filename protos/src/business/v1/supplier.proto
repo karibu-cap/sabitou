@@ -1,0 +1,129 @@
+syntax = "proto3";
+
+package business.v1;
+import "buf/validate/validate.proto";
+import "link/v1/link.proto";
+
+message Link {
+  // The label of the link.
+  string label = 1;
+
+  // The url of the link.
+  // Todo: We must automatically retrieve the icon of the link.
+  string url = 2;
+}
+
+message Supplier {
+  // The reference id to the supplier identifier.
+  optional string ref_id = 1;
+
+  // The name of the supplier.
+  string name = 2;
+
+  // The description of the supplier.
+  optional string description = 3;
+
+  // The id of the media of the logo of the supplier.
+  optional string logo_link_id = 4;
+
+  // The links of the supplier.
+  repeated string external_links_ids = 5;
+
+  // The id of the business of the supplier.
+  string business_id = 6 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+}
+
+message CreateSupplierRequest {
+  // The supplier information to create.
+  Supplier supplier = 1;
+
+  // The raw image of the logo of the supplier.
+  optional bytes logo_raw_image = 2;
+
+  // The links of the supplier.
+  repeated link.v1.ResourceLink external_links = 3;
+}
+
+message CreateSupplierResponse {
+  // The reference id to the supplier identifier.
+  string suplier_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+}
+
+message GetSupplierRequest {
+  // The reference id to the supplier identifier.
+  string supplier_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+}
+
+message GetSupplierResponse {
+  // The retrieved supplier data.
+  Supplier supplier = 1;
+}
+
+message GetBusinessSuppliersRequest {
+  // The reference id to the supplier identifier.
+  string supplier_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+}
+
+message GetBusinessSuppliersResponse {
+  // The list of suppliers of the business.
+  // Note: Only the ids and names of the suppliers are returned.
+  repeated Supplier suppliers = 1;
+}
+
+message UpdateSupplierRequest {
+  // The supplier information to update.
+  // Note:Only the fields that are set will be updated.
+  Supplier supplier = 1;
+  // The raw image of the logo of the supplier.
+  optional bytes logo_raw_image = 2;
+  // The links of the supplier.
+  repeated link.v1.ResourceLink external_links = 3;
+}
+
+message UpdateSupplierResponse {
+  // The updated supplier data.
+  Supplier supplier = 1;
+}
+
+message DeleteSupplierRequest {
+  // The reference id to the supplier identifier.
+  string supplier_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+}
+
+message DeleteSupplierResponse {
+  // Whether the supplier was successfully deleted.
+  bool success = 1;
+}
+
+service SupplierService {
+  // Creates a new supplier.
+  rpc CreateSupplier(CreateSupplierRequest) returns (CreateSupplierResponse);
+
+  // Gets a supplier by id.
+  rpc GetSupplier(GetSupplierRequest) returns (GetSupplierResponse);
+
+  // Gets all suppliers of a business.
+  rpc GetBusinessSuppliers(GetBusinessSuppliersRequest) returns (GetBusinessSuppliersResponse);
+
+  // Updates a supplier.
+  // Note:Only the fields that are set will be updated. array fiels like external_links will be replaced.
+  rpc UpdateSupplier(UpdateSupplierRequest) returns (UpdateSupplierResponse);
+
+  // Deletes a supplier.
+  rpc DeleteSupplier(DeleteSupplierRequest) returns (DeleteSupplierResponse);
+}

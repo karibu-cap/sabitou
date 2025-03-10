@@ -1,22 +1,42 @@
-# A File controls how the **buf generate** command executes protoc plugins on a given module.
 version: v2
-clean: true
 managed:
   enabled: true
+  disable:
+    # Disable prefixing GO package import for protovalidate package.
+    - file_option: go_package_prefix
+      module: buf.build/bufbuild/protovalidate
+  override:
+    # Prefix all GO packages imported from the proto files with the specified value.
+    - file_option: go_package_prefix
+      value: github.com/karibu-cap/sabitou/protos/gen/go/rpc
+
 plugins:
-  # Generated a DART specific code and place the output to gen/dart/models/lib/src directory.
-  - remote: buf.build/protocolbuffers/dart:v21.1.2
-    out: gen/dart/lib/proto
-    opt:
-      - grpc
-  - remote: buf.build/grpc/go:v1.5.1
-    out: gen/go/proto
+  # Generate Go code for Protobufs
+  - remote: buf.build/protocolbuffers/go
+    out: gen/go/rpc
+    opt: paths=source_relative
+  # Generates Go code to validate Protobuf messages using protoc-gen-validate constraints.
+  # - remote: buf.build/bufbuild/validate-go:v1.2.1
+  #   out: gen/go/rpc
+  #   opt:
+  #     - paths=source_relative
+  # Generate Go client and server stubs for Connect framework. 
+  - remote: buf.build/connectrpc/go
+    out: gen/go/rpc
     opt:
       - paths=source_relative
-  # dependencies
-  - remote: buf.build/protocolbuffers/go:v1.35.1
-    out: gen/go/proto
-    opt:
-      - paths=source_relative
+
+  # Generate OpenAPI spec for Connect endpoints
+  - local: ["go", "run", "github.com/sudorandom/protoc-gen-connect-openapi@main"]
+    out: gen/openapi/specs
+
+  # Generate Dart client stubs for Connect framework.
+  - remote: buf.build/connectrpc/dart
+    out: gen/dart/lib/rpc
+  # Generate Dart code for Protobufs
+  - remote: buf.build/protocolbuffers/dart
+    out: gen/dart/lib/rpc
+    include_wkt: true
+    include_imports: true
 inputs:
-  - directory: src/sabitou
+  - directory: src

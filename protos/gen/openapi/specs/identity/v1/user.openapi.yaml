@@ -1,0 +1,553 @@
+openapi: 3.1.0
+info:
+  title: identity.v1
+paths:
+  /identity.v1.UserService/GetMe:
+    post:
+      tags:
+        - identity.v1.UserService
+      summary: GetMe
+      description: Get the user information for the currently authenticated user.
+      operationId: identity.v1.UserService.GetMe
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/identity.v1.GetMeRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identity.v1.GetMeResponse'
+  /identity.v1.UserService/GetUser:
+    post:
+      tags:
+        - identity.v1.UserService
+      summary: GetUser
+      description: Get the public information for the given user id.
+      operationId: identity.v1.UserService.GetUser
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/identity.v1.GetUserRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identity.v1.GetUserResponse'
+  /identity.v1.UserService/UpdateMe:
+    post:
+      tags:
+        - identity.v1.UserService
+      summary: UpdateMe
+      description: Update the user information for the currently authenticated user.
+      operationId: identity.v1.UserService.UpdateMe
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/identity.v1.UpdateMeRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identity.v1.UpdateMeResponse'
+  /identity.v1.UserService/RequestDeleteUser:
+    post:
+      tags:
+        - identity.v1.UserService
+      summary: RequestDeleteUser
+      description: |-
+        Request the deletion of the user account.
+         This will send a verification code to the user's email address
+         or phone number.
+      operationId: identity.v1.UserService.RequestDeleteUser
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/identity.v1.RequestDeleteUserRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identity.v1.RequestDeleteUserResponse'
+  /identity.v1.UserService/DeleteUser:
+    post:
+      tags:
+        - identity.v1.UserService
+      summary: DeleteUser
+      description: Processes the deletion of the user account requested by the user.
+      operationId: identity.v1.UserService.DeleteUser
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/identity.v1.DeleteUserRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identity.v1.DeleteUserResponse'
+  /identity.v1.UserService/ChangePassword:
+    post:
+      tags:
+        - identity.v1.UserService
+      summary: ChangePassword
+      description: Change the password for the currently authenticated user.
+      operationId: identity.v1.UserService.ChangePassword
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/identity.v1.ChangePasswordRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identity.v1.ChangePasswordResponse'
+components:
+  schemas:
+    identity.v1.AccountStatusType:
+      type: string
+      title: AccountStatusType
+      enum:
+        - ACCOUNT_STATUS_TYPE_UNSPECIFIED
+        - ACCOUNT_STATUS_TYPE_ACTIVE
+        - ACCOUNT_STATUS_TYPE_DELETED
+    identity.v1.AuthActionType:
+      type: string
+      title: AuthActionType
+      enum:
+        - AUTH_ACTION_TYPE_UNSPECIFIED
+        - AUTH_ACTION_TYPE_VERIFY_EMAIL
+        - AUTH_ACTION_TYPE_VERIFY_PHONE_NUMBER
+        - AUTH_ACTION_TYPE_INITIALIZE_PASSWORD
+        - AUTH_ACTION_TYPE_RESET_PASSWORD
+    identity.v1.ProviderType:
+      type: string
+      title: ProviderType
+      enum:
+        - PROVIDER_TYPE_UNSPECIFIED
+        - PROVIDER_TYPE_FIREBASE_EMAIL
+        - PROVIDER_TYPE_GOOGLE
+        - PROVIDER_TYPE_INTERNAL_BUSINESS_AUTH
+    identity.v1.ChangePasswordRequest:
+      type: object
+      properties:
+        oldPassword:
+          type: string
+          title: old_password
+          maxLength: 32
+          minLength: 8
+          description: |-
+            The previous password of the user.
+             TODO: Add more validation like capital letters, numbers, etc.
+        newPassword:
+          type: string
+          title: new_password
+          maxLength: 32
+          minLength: 8
+          description: |-
+            The new password of the user.
+             TODO: Add more validation like capital letters, numbers, etc.
+      title: ChangePasswordRequest
+      additionalProperties: false
+    identity.v1.ChangePasswordResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the password was successfully changed.
+      title: ChangePasswordResponse
+      additionalProperties: false
+    identity.v1.ConnectedAccount:
+      type: object
+      properties:
+        provider:
+          title: provider
+          description: |-
+            The provider of the connected account.
+             For example, "google.com" or "email".
+          $ref: '#/components/schemas/identity.v1.ProviderType'
+        rawData:
+          type: string
+          title: raw_data
+          description: The raw information returned by the provider.
+      title: ConnectedAccount
+      additionalProperties: false
+    identity.v1.DeleteUserRequest:
+      type: object
+      properties:
+        requestToken:
+          type: string
+          title: request_token
+          description: The token to use to process the deletion of the user.
+        verificationCode:
+          type: string
+          title: verification_code
+          description: The verification code sent to the user's email or phone number.
+      title: DeleteUserRequest
+      additionalProperties: false
+    identity.v1.DeleteUserResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the user was successfully deleted.
+      title: DeleteUserResponse
+      additionalProperties: false
+    identity.v1.GetMeRequest:
+      type: object
+      title: GetMeRequest
+      additionalProperties: false
+      description: Empty message.
+    identity.v1.GetMeResponse:
+      type: object
+      properties:
+        me:
+          title: me
+          description: The user information for the currently authenticated user.
+          $ref: '#/components/schemas/identity.v1.User'
+      title: GetMeResponse
+      additionalProperties: false
+    identity.v1.GetUserRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+          title: user_id
+          minLength: 3
+          description: The id of the user to retrieve.
+      title: GetUserRequest
+      required:
+        - userId
+      additionalProperties: false
+    identity.v1.GetUserResponse:
+      type: object
+      properties:
+        user:
+          title: user
+          description: The retrieved user data.
+          $ref: '#/components/schemas/identity.v1.User'
+      title: GetUserResponse
+      additionalProperties: false
+    identity.v1.RequestDeleteUserRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+          title: user_id
+          minLength: 3
+          description: The id of the user to delete.
+        password:
+          type: string
+          title: password
+          description: The password of the user to delete.
+      title: RequestDeleteUserRequest
+      required:
+        - userId
+      additionalProperties: false
+    identity.v1.RequestDeleteUserResponse:
+      type: object
+      properties:
+        requestToken:
+          type: string
+          title: request_token
+          description: |-
+            The token to use to process the deletion of the user
+             after verification (email or phone number).
+      title: RequestDeleteUserResponse
+      additionalProperties: false
+    identity.v1.UpdateMeRequest:
+      type: object
+      properties:
+        user:
+          title: user
+          description: |-
+            The user information to update.
+             Note:Only the fields that are set will be updated.
+             WARNING:
+              - The id field is required and cannot be changed.
+              - The password field will be ignored. Use the ChangePassword RPC instead.
+          $ref: '#/components/schemas/identity.v1.User'
+      title: UpdateMeRequest
+      additionalProperties: false
+    identity.v1.UpdateMeResponse:
+      type: object
+      properties:
+        user:
+          title: user
+          description: The updated user data.
+          $ref: '#/components/schemas/identity.v1.User'
+      title: UpdateMeResponse
+      additionalProperties: false
+    identity.v1.User:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+          description: The unique identifier of the user.
+          nullable: true
+        userName:
+          type: string
+          title: user_name
+          description: '[public] The user name of the user.'
+        connectedAccounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/identity.v1.ConnectedAccount'
+          title: connected_accounts
+          description: The connected accounts used by the user for authentication.
+        email:
+          type: string
+          title: email
+          format: email
+          description: The email address of the user.
+          nullable: true
+        phoneNumber:
+          type: string
+          title: phone_number
+          description: The phone number of the user.
+          nullable: true
+        firstName:
+          type: string
+          title: first_name
+          description: '[public] The first name of the user.'
+          nullable: true
+        lastName:
+          type: string
+          title: last_name
+          description: '[public] The last name of the user.'
+          nullable: true
+        profileLink:
+          title: profile_link
+          description: '[public] The profile link of the user.'
+          nullable: true
+          $ref: '#/components/schemas/link.v1.ResourceLink'
+        accountStatus:
+          title: account_status
+          description: The status of the user's account.
+          nullable: true
+          $ref: '#/components/schemas/identity.v1.AccountStatusType'
+        requiredActions:
+          type: array
+          items:
+            $ref: '#/components/schemas/identity.v1.AuthActionType'
+          title: required_actions
+          description: The actions that the user must complete to authenticate.
+      title: User
+      additionalProperties: false
+      description: |-
+        The user record.
+         The id of the user is the same as the uid of the Firebase user.
+    link.v1.ResourceLink:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+          description: The unique identifier of the resource link.
+          nullable: true
+        targetUri:
+          type: string
+          title: target_uri
+          description: The link of the resource link.
+        iconUri:
+          type: string
+          title: icon_uri
+          description: The icon of the resource type or owner.
+          nullable: true
+        info:
+          type: string
+          title: info
+          description: |-
+            The meta data of the resource link.
+             It can be the title of the target resource.
+          nullable: true
+        label:
+          type: string
+          title: label
+          description: The label use to identify the resource type.
+          nullable: true
+      title: ResourceLink
+      additionalProperties: false
+      description: 'TODO: Auto delete resource link not linked to any other resource.'
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+        - 1
+      description: Define the version of the Connect protocol
+      const: 1
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+            - not_found
+          enum:
+            - canceled
+            - unknown
+            - invalid_argument
+            - deadline_exceeded
+            - not_found
+            - already_exists
+            - permission_denied
+            - resource_exhausted
+            - failed_precondition
+            - aborted
+            - out_of_range
+            - unimplemented
+            - internal
+            - unavailable
+            - data_loss
+            - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        detail:
+          $ref: '#/components/schemas/google.protobuf.Any'
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+    google.protobuf.Any:
+      type: object
+      properties:
+        type:
+          type: string
+        value:
+          type: string
+          format: binary
+        debug:
+          type: object
+          additionalProperties: true
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+security: []
+tags:
+  - name: identity.v1.UserService

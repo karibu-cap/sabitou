@@ -1,0 +1,98 @@
+syntax = "proto3";
+
+package business.v1;
+import "buf/validate/validate.proto";
+
+
+message BusinessClient {
+  // The reference id to the client identifier.
+  optional string ref_id = 1;
+
+  // The name of the client.
+  string full_name = 2;
+
+  // The links of the client it can contain client mail, phone number, website etc.
+  repeated string external_links_ids = 3;
+
+  // The id of the media of the logo of the client.
+  optional string logo_link_id = 4;
+
+  // The id of the business of the client.
+  string business_id = 5 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+
+}
+
+
+message CreateBusinessClientRequest {
+  // The client information to create.
+  BusinessClient client = 1;
+
+  // The raw image of the logo of the client.
+  optional bytes logo_raw_image = 2;
+}
+
+message CreateBusinessClientResponse {
+  // The reference id to the client identifier.
+  string client_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+}
+
+message GetBusinessClientRequest {
+  // The reference id to the client identifier.
+  string client_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+}
+
+message GetBusinessClientResponse {
+  // The retrieved client data.
+  BusinessClient client = 1;
+}
+
+message UpdateBusinessClientRequest {
+  // The client information to update.
+  // Note:Only the fields that are set will be updated.
+  BusinessClient client = 1;
+
+  // The raw image of the logo of the client.
+  optional bytes logo_raw_image = 2;
+}
+
+message UpdateBusinessClientResponse {
+  // The updated client data.
+  BusinessClient client = 1;
+}
+
+message DeleteBusinessClientRequest {
+  // The reference id to the client identifier.
+  string client_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+}
+
+message DeleteBusinessClientResponse {
+  // Whether the client was successfully deleted.
+  bool success = 1;
+}
+
+service BusinessClientService {
+  // Creates a new client.
+  rpc CreateBusinessClient(CreateBusinessClientRequest) returns (CreateBusinessClientResponse) {}
+
+  // Gets a client by id.
+  rpc GetBusinessClient(GetBusinessClientRequest) returns (GetBusinessClientResponse) {}
+
+  // Updates a client.
+  // Note:Only the fields that are set will be updated.
+  rpc UpdateBusinessClient(UpdateBusinessClientRequest) returns (UpdateBusinessClientResponse) {}
+
+  // Deletes a client.
+  rpc DeleteBusinessClient(DeleteBusinessClientRequest) returns (DeleteBusinessClientResponse) {}
+}

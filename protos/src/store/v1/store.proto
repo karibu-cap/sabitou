@@ -1,0 +1,97 @@
+syntax = "proto3";
+
+package store.v1;
+import "buf/validate/validate.proto";
+
+// Stores are used to store products.
+// Note: A store is not always a shop.
+message Store {
+  // The unique identifier of the store.
+  optional string ref_id = 1;
+
+  // The name of the store.
+  string name = 3;
+
+  // The description of the store.
+  optional string description = 5;
+
+  // The id of the media of the logo of the store.
+  optional string logo_link_id = 6;
+
+  // The list of external links of the store it can be an address link, a phone number, an email, a website etc.
+  optional string external_links_ids = 7;
+
+  // The id of the business of the store.
+  string business_id = 8;
+}
+
+message CreateStoreRequest {
+  // The store information to create.
+  Store store = 1;
+
+  // The raw image of the logo of the store.
+  optional bytes logo_raw_image = 2;
+}
+
+message CreateStoreResponse {
+  // The unique identifier of the created store.
+  string store_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+}
+
+message GetStoreRequest {
+  // The unique identifier of the store to retrieve.
+  string store_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+}
+
+message GetStoreResponse {
+  // The retrieved store data.
+  Store store = 1;
+}
+
+message UpdateStoreRequest {
+  // The store information to update.
+  // Note:Only the fields that are set will be updated.
+  Store store = 1;
+
+  // The raw image of the logo of the store.
+  optional bytes logo_raw_image = 2;
+}
+
+message UpdateStoreResponse {
+  // The updated store data.
+  Store store = 1;
+}
+
+message DeleteStoreRequest {
+  // The unique identifier of the store to delete.
+  string store_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+}
+
+message DeleteStoreResponse {
+  // Whether the store was successfully deleted.
+  bool success = 1;
+}
+
+service StoreService {
+  // Creates a new store.
+  rpc CreateStore(CreateStoreRequest) returns (CreateStoreResponse) {}
+
+  // Gets a store by id.
+  rpc GetStore(GetStoreRequest) returns (GetStoreResponse) {}
+
+  // Updates a store.
+  // Note:Only the fields that are set will be updated.
+  rpc UpdateStore(UpdateStoreRequest) returns (UpdateStoreResponse) {}
+
+  // Deletes a store.
+  rpc DeleteStore(DeleteStoreRequest) returns (DeleteStoreResponse) {}
+}

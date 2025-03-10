@@ -1,0 +1,189 @@
+syntax = "proto3";
+
+package identity.v1;
+
+import "buf/validate/validate.proto";
+import "link/v1/link.proto";
+
+enum AccountStatusType {
+  ACCOUNT_STATUS_TYPE_UNSPECIFIED = 0;
+  ACCOUNT_STATUS_TYPE_ACTIVE = 1;
+  ACCOUNT_STATUS_TYPE_DELETED = 2;
+}
+
+enum AuthActionType {
+  AUTH_ACTION_TYPE_UNSPECIFIED = 0;
+  AUTH_ACTION_TYPE_VERIFY_EMAIL = 1;
+  AUTH_ACTION_TYPE_VERIFY_PHONE_NUMBER = 2;
+  AUTH_ACTION_TYPE_INITIALIZE_PASSWORD = 3;
+  AUTH_ACTION_TYPE_RESET_PASSWORD = 4;
+}
+
+enum ProviderType {
+  // Generally used for testing.
+  PROVIDER_TYPE_UNSPECIFIED = 0;
+
+  // The user connected their email address to their account.
+  PROVIDER_TYPE_FIREBASE_EMAIL = 1;
+
+  // The user connected their google account to their account.
+  PROVIDER_TYPE_GOOGLE = 2;
+
+  // Generally used when business creates a user.
+  PROVIDER_TYPE_INTERNAL_BUSINESS_AUTH = 3;
+}
+
+message ConnectedAccount {
+  // The provider of the connected account.
+  // For example, "google.com" or "email".
+  ProviderType provider = 1;
+
+  // The raw information returned by the provider.
+  string raw_data = 3;
+}
+
+// The user record.
+// The id of the user is the same as the uid of the Firebase user.
+message User {
+  // The unique identifier of the user.
+  optional string ref_id = 1;
+
+  // [public] The user name of the user.
+  string user_name = 2;
+
+  // The connected accounts used by the user for authentication.
+  repeated ConnectedAccount connected_accounts = 3;
+
+  // The email address of the user.
+  optional string email = 4 [
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED,
+    (buf.validate.field).string.email = true
+  ];
+
+  // The phone number of the user.
+  optional string phone_number = 5;
+
+  // [public] The first name of the user.
+  optional string first_name = 6;
+
+  // [public] The last name of the user.
+  optional string last_name = 7;
+  
+  // [public] The profile link of the user.
+  optional link.v1.ResourceLink profile_link = 8;
+
+  // The status of the user's account.
+  optional AccountStatusType account_status = 9;
+
+  // The actions that the user must complete to authenticate.
+  repeated AuthActionType required_actions = 10;
+}
+
+message GetUserRequest {
+  // The id of the user to retrieve.
+  string user_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+}
+
+message GetUserResponse {
+  // The retrieved user data.
+  User user = 1;
+}
+
+message UpdateMeRequest {
+  // The user information to update.
+  // Note:Only the fields that are set will be updated.
+  // WARNING:
+  //  - The id field is required and cannot be changed.
+  //  - The password field will be ignored. Use the ChangePassword RPC instead.
+  User user = 1;
+}
+
+message UpdateMeResponse {
+  // The updated user data.
+  User user = 1;
+}
+
+message RequestDeleteUserRequest {
+  // The id of the user to delete.
+  string user_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+
+  // The password of the user to delete.
+  string password = 2;
+}
+
+message RequestDeleteUserResponse {
+  // The token to use to process the deletion of the user
+  // after verification (email or phone number).
+  string request_token = 1;
+}
+
+message DeleteUserRequest {
+  // The token to use to process the deletion of the user.
+  string request_token = 1;
+
+  // The verification code sent to the user's email or phone number.
+  string verification_code = 2;
+}
+
+message DeleteUserResponse {
+  // Whether the user was successfully deleted.
+  bool success = 1;
+}
+
+message ChangePasswordRequest {
+  // The previous password of the user.
+  // TODO: Add more validation like capital letters, numbers, etc.
+  string old_password = 1 [
+    (buf.validate.field).string.min_len = 8,
+    (buf.validate.field).string.max_len = 32
+  ];
+
+  // The new password of the user.
+  // TODO: Add more validation like capital letters, numbers, etc.
+  string new_password = 2 [
+    (buf.validate.field).string.min_len = 8,
+    (buf.validate.field).string.max_len = 32
+  ];
+}
+
+message ChangePasswordResponse {
+  // Whether the password was successfully changed.
+  bool success = 1;
+}
+
+message GetMeRequest {
+  // Empty message.
+}
+
+message GetMeResponse {
+  // The user information for the currently authenticated user.
+  User me = 1;
+}
+
+service UserService {
+  // Get the user information for the currently authenticated user.
+  rpc GetMe(GetMeRequest) returns (GetMeResponse) {}
+
+  // Get the public information for the given user id.
+  rpc GetUser(GetUserRequest) returns (GetUserResponse) {}
+
+  // Update the user information for the currently authenticated user.
+  rpc UpdateMe(UpdateMeRequest) returns (UpdateMeResponse) {}
+
+  // Request the deletion of the user account.
+  // This will send a verification code to the user's email address
+  // or phone number.
+  rpc RequestDeleteUser(RequestDeleteUserRequest) returns (RequestDeleteUserResponse) {}
+
+  // Processes the deletion of the user account requested by the user.
+  rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse) {}
+
+  // Change the password for the currently authenticated user.
+  rpc ChangePassword(ChangePasswordRequest) returns (ChangePasswordResponse) {}
+}

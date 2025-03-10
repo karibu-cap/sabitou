@@ -1,13 +1,4 @@
-# Compiled JavaScript files
-lib/**/*.js
-lib/**/*.js.map
-**/dist/
+.vscode/
 
-**/pubspec.lock
-
-
-# TypeScript v1 declaration files
-typings/
-
-# Node.js dependency directory
-node_modules/
+# Ignore unecessary generated files
+*.pbserver.dart

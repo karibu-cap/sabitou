@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package link.v1;
+
+import "buf/validate/validate.proto";
+
+// TODO: Auto delete resource link not linked to any other resource.
+message ResourceLink {
+  // The unique identifier of the resource link.
+  optional string ref_id = 1;
+
+  // The link of the resource link.
+  string target_uri = 2;
+
+  // The icon of the resource type or owner.
+  optional string icon_uri = 3;
+
+  // The meta data of the resource link.
+  // It can be the title of the target resource.
+  optional string info = 4;
+
+  // The label use to identify the resource type.
+  optional string label = 5;
+}
+
+message GetResourceLinksRequest {
+  // A list of unique identifiers of the resource link to retrieve.
+  repeated string ids = 1;
+}
+
+message GetResourceLinksResponse {
+  // The retrieved resource link data list.
+  map<string, ResourceLink> link = 1;
+}
+
+service ResourceLinkService {
+  // Gets a resource link by id. 
+  // Returns the resources in the same order as the ids.
+  rpc GetResourceLinks(GetResourceLinksRequest) returns (GetResourceLinksResponse);
+}

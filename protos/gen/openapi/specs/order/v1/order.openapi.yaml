@@ -1,0 +1,319 @@
+openapi: 3.1.0
+info:
+  title: order.v1
+paths:
+  /order.v1.OrderService/CreateOrder:
+    post:
+      tags:
+        - order.v1.OrderService
+      summary: CreateOrder
+      description: Creates a new order.
+      operationId: order.v1.OrderService.CreateOrder
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/order.v1.CreateOrderRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/order.v1.CreateOrderResponse'
+  /order.v1.OrderService/GetOrder:
+    post:
+      tags:
+        - order.v1.OrderService
+      summary: GetOrder
+      description: Gets an order by id.
+      operationId: order.v1.OrderService.GetOrder
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/order.v1.GetOrderRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/order.v1.GetOrderResponse'
+  /order.v1.OrderService/DeleteOrder:
+    post:
+      tags:
+        - order.v1.OrderService
+      summary: DeleteOrder
+      description: Deletes an order.
+      operationId: order.v1.OrderService.DeleteOrder
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/order.v1.DeleteOrderRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/order.v1.DeleteOrderResponse'
+components:
+  schemas:
+    order.v1.OrderStatus:
+      type: string
+      title: OrderStatus
+      enum:
+        - ORDER_STATUS_UNSPECIFIED
+        - ORDER_STATUS_PENDING
+        - ORDER_STATUS_PROCESSING
+        - ORDER_STATUS_COMPLETED
+        - ORDER_STATUS_CANCELLED
+    order.v1.CreateOrderRequest:
+      type: object
+      properties:
+        order:
+          title: order
+          description: The order to create.
+          $ref: '#/components/schemas/order.v1.Order'
+        supplierName:
+          type: string
+          title: supplier_name
+          description: The name of the supplier.
+          nullable: true
+        businessId:
+          type: string
+          title: business_id
+          description: The unique identifier of the business.
+      title: CreateOrderRequest
+      additionalProperties: false
+    order.v1.CreateOrderResponse:
+      type: object
+      properties:
+        orderId:
+          type: string
+          title: order_id
+          minLength: 3
+          description: The unique identifier of the created order.
+      title: CreateOrderResponse
+      required:
+        - orderId
+      additionalProperties: false
+    order.v1.DeleteOrderRequest:
+      type: object
+      properties:
+        orderId:
+          type: string
+          title: order_id
+          minLength: 3
+          description: The unique identifier of the order to delete.
+      title: DeleteOrderRequest
+      required:
+        - orderId
+      additionalProperties: false
+    order.v1.DeleteOrderResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the order was successfully deleted.
+      title: DeleteOrderResponse
+      additionalProperties: false
+    order.v1.GetOrderRequest:
+      type: object
+      properties:
+        orderId:
+          type: string
+          title: order_id
+          minLength: 3
+          description: The unique identifier of the order to retrieve.
+      title: GetOrderRequest
+      required:
+        - orderId
+      additionalProperties: false
+    order.v1.GetOrderResponse:
+      type: object
+      properties:
+        order:
+          title: order
+          description: The retrieved order data.
+          $ref: '#/components/schemas/order.v1.Order'
+        createdAt:
+          type: string
+          title: created_at
+          description: The date and time the order was created.
+        updatedAt:
+          type: string
+          title: updated_at
+          description: The date and time the order was last updated.
+          nullable: true
+      title: GetOrderResponse
+      additionalProperties: false
+    order.v1.Order:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+          description: The unique identifier of the order.
+          nullable: true
+        fromId:
+          type: string
+          title: from_id
+          description: The id of the client or the supplier if available.
+          nullable: true
+        isClientOrder:
+          type: string
+          title: is_client_order
+          description: Whether the order is from the client or the supplier.
+        orderItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/order.v1.OrderItem'
+          title: order_items
+          description: The list of items in the order.
+        totalPriceInCents:
+          type: integer
+          title: total_price_in_cents
+          format: int32
+          description: The total price of the order in cents.
+        status:
+          title: status
+          description: The status of the order.
+          $ref: '#/components/schemas/order.v1.OrderStatus'
+      title: Order
+      additionalProperties: false
+    order.v1.OrderItem:
+      type: object
+      properties:
+        businessProductId:
+          type: string
+          title: business_product_id
+          description: The unique identifier of the business product.
+        quantity:
+          type: integer
+          title: quantity
+          format: int32
+          description: The quantity of the product.
+        unitPriceInCents:
+          type: integer
+          title: unit_price_in_cents
+          format: int32
+          description: |-
+            The unit price in cents of the product.
+             WARN: This value is stored because the unit price can change over time.
+      title: OrderItem
+      additionalProperties: false
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+        - 1
+      description: Define the version of the Connect protocol
+      const: 1
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+            - not_found
+          enum:
+            - canceled
+            - unknown
+            - invalid_argument
+            - deadline_exceeded
+            - not_found
+            - already_exists
+            - permission_denied
+            - resource_exhausted
+            - failed_precondition
+            - aborted
+            - out_of_range
+            - unimplemented
+            - internal
+            - unavailable
+            - data_loss
+            - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        detail:
+          $ref: '#/components/schemas/google.protobuf.Any'
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+    google.protobuf.Any:
+      type: object
+      properties:
+        type:
+          type: string
+        value:
+          type: string
+          format: binary
+        debug:
+          type: object
+          additionalProperties: true
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+security: []
+tags:
+  - name: order.v1.OrderService
