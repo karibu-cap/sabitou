@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sabitou_rpc/proto/user/v1/user.pbgrpc.dart';
+import 'package:sabitou_rpc/models.dart';
 
 import '../../routes/app_routes.dart';
 import '../../routes/pages_routes.dart';
@@ -42,11 +42,8 @@ final class SignInProvider extends GetxController {
       return false;
     }
 
-    final User? user = await UserClientService.to.getUser(
-      request: GetUserRequest()
-        ..email = email
-        ..password = password,
-    );
+    final User? user =
+        await UserClientService.to.getMe(request: GetMeRequest());
 
     await Future.delayed(const Duration(seconds: 4));
 

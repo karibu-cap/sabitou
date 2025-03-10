@@ -32,10 +32,10 @@ plugins:
 
   # Generate Dart client stubs for Connect framework.
   - remote: buf.build/connectrpc/dart
-    out: gen/dart/lib/rpc
+    out: gen/dart/lib/src
   # Generate Dart code for Protobufs
   - remote: buf.build/protocolbuffers/dart
-    out: gen/dart/lib/rpc
+    out: gen/dart/lib/src
     include_wkt: true
     include_imports: true
 inputs:

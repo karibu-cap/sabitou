@@ -188,7 +188,6 @@ final class _NotificationIcon extends StatelessWidget {
 
 class _UserAvatar extends StatelessWidget {
   final String name;
-  final String? userType;
   final bool isOnline;
 
   const _UserAvatar({
@@ -241,13 +240,6 @@ class _UserAvatar extends StatelessWidget {
                   name,
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
-                switch (userType) {
-                  final String type => Text(
-                      type,
-                      style: TextStyle(color: Theme.of(context).hintColor),
-                    ),
-                  _ => const SizedBox.shrink(),
-                },
               ],
             ),
         ],

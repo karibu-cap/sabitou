@@ -6,9 +6,9 @@ import 'package:get_storage/get_storage.dart';
 
 import 'routes/app_routes.dart';
 import 'routes/pages_routes.dart';
-import 'services/grpc/grpc.dart';
 import 'services/internationalization/app_translations.dart';
 import 'services/internationalization/internationalization.dart';
+import 'services/rpc/connect_rpc.dart';
 import 'services/storage/app_storate.dart';
 import 'services/themes/app_themes.dart';
 import 'services/user_service_client.dart';
@@ -21,32 +21,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await _initServices();
   runApp(const MyApp());
-}
-
-/// The main application widget.
-class MyApp extends StatelessWidget {
-  /// The main application constructor.
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return GetMaterialApp(
-      translations: AppTranslations(),
-      supportedLocales: AppInternationalizationService.supportedLocales,
-      locale: Get.deviceLocale,
-      fallbackLocale: const Locale('en'),
-      initialRoute: PagesRoutes.dashboard.pattern,
-      getPages: AppRouter.pageRoutes,
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      darkTheme: Themes.darkTheme.toTheme,
-      theme: Themes.lightTheme.toTheme,
-      themeMode: AppThemeService.to.themeMode,
-    );
-  }
 }
 
 Future<void> _initServices() async {
@@ -84,11 +58,12 @@ Future<void> _initServices() async {
   await themeService.init();
 
   /// Register the grpc service.
-  final grpc = Get.put<GrpcService>(GrpcService(), permanent: true);
+  final connectRPC =
+      Get.put<ConnectRPCService>(ConnectRPCService(), permanent: true);
 
   /// Register of userService.
   final userServiceClient =
-      UserClientService(clientChannel: grpc.clientChannel);
+      UserClientService(clientChannel: connectRPC.clientChannel);
   Get.lazyPut<UserClientService>(
     () => userServiceClient,
   );
@@ -97,4 +72,30 @@ Future<void> _initServices() async {
     () async => UserPreferences(),
     permanent: true,
   );
+}
+
+/// The main application widget.
+class MyApp extends StatelessWidget {
+  /// The main application constructor.
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      translations: AppTranslations(),
+      supportedLocales: AppInternationalizationService.supportedLocales,
+      locale: Get.deviceLocale,
+      fallbackLocale: const Locale('en'),
+      initialRoute: PagesRoutes.dashboard.pattern,
+      getPages: AppRouter.pageRoutes,
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      darkTheme: Themes.darkTheme.toTheme,
+      theme: Themes.lightTheme.toTheme,
+      themeMode: AppThemeService.to.themeMode,
+    );
+  }
 }

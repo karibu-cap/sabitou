@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
-import 'package:grpc/grpc_or_grpcweb.dart';
-import 'package:sabitou_rpc/identity/v1/user.connect.client.dart';
-import 'package:sabitou_rpc/identity/v1/user.pb.dart';
+
+import 'package:sabitou_rpc/connect_servers.dart';
+import 'package:sabitou_rpc/models.dart';
 
 import '../utils/logger.dart';
 
@@ -13,18 +13,19 @@ final class UserClientService extends GetxService {
   final UserServiceClient userClientService;
 
   /// The client channel.
-  final GrpcOrGrpcWebClientChannel clientChannel;
+  final Transport clientChannel;
 
   /// Access the singleton instance.
   static UserClientService get to => Get.find();
 
-  /// Constructs a new [UserServiceClient].
+  /// Constructs a new [AuthServiceClient].
   UserClientService({required this.clientChannel})
       : userClientService = UserServiceClient(
           clientChannel,
         );
 
   /// Creates a new user.
+  /*
   Future<String?> createUser({required CreateUserRequest request}) async {
     try {
       final result = await userClientService.createUser(
@@ -49,28 +50,22 @@ final class UserClientService extends GetxService {
       await clientChannel.shutdown();
     }
   }
+  */
 
   /// Retrieves a user by ID or email and password.
-  Future<User?> getUser({required GetUserRequest request}) async {
+  Future<User?> getMe({required GetMeRequest request}) async {
     try {
-      final result = await userClientService.getUser(
-        GetUserRequest()
-          ..id = request.id
-          ..email = request.email
-          ..password = request.password,
-      );
+      final result = await userClientService.getMe(request);
 
       _logger.log(
-        'Retrieved user: ${result.user.writeToJson()}.',
+        'Retrieved user: ${result.me.writeToJson()}.',
       );
 
-      return result.user;
+      return result.me;
     } on Exception catch (e) {
       _logger.severe('Caught error: $e');
 
       return null;
-    } finally {
-      await clientChannel.shutdown();
     }
   }
 }
