@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../routes/pages_routes.dart';
-import '../../widgets/base_page.dart';
+import '../../widgets/layouts/base_page.dart';
 
 /// The store view screen.
 final class StoresView extends StatelessWidget {
@@ -12,9 +11,9 @@ final class StoresView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BasePageView(
-      itemPage: DashboardLabelPage.stores.name,
-      child: const Center(
+    return const BasePageView(
+      itemPage: 'Store',
+      child: Center(
         child: Text('Stores'),
       ),
     );

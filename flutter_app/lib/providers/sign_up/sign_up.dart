@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sabitou_rpc/models.dart';
 
-import '../../routes/app_routes.dart';
-import '../../routes/pages_routes.dart';
+import '../../router/app_router.dart' as app_router;
+
 import '../../services/user_service_client.dart';
 import '../../utils/user_preference.dart';
-import '../../widgets/components/loading_button.dart';
+import '../../widgets/atoms/loading_button.dart';
 
 /// The sign up provider.
 final class SignUpProvider extends GetxController {
@@ -29,7 +29,10 @@ final class SignUpProvider extends GetxController {
   final formKey = GlobalKey<FormState>();
 
   /// Signs up the user.
-  Future<bool> signUp(LoadingButtonController controller) async {
+  Future<bool> signUp(
+    LoadingButtonController controller,
+    BuildContext context,
+  ) async {
     if (controller.state.value == LoadingButtonState.loading) {
       return false;
     }
@@ -76,7 +79,7 @@ final class SignUpProvider extends GetxController {
         ),
       );
 
-      AppRouter.go(PagesRoutes.dashboard.pattern);
+      app_router.pushReplacement(context, app_router.defaultRoutePath);
 
       return true;
     }

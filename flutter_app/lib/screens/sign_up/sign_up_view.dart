@@ -3,14 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../providers/sign_up/sign_up.dart';
-import '../../routes/app_routes.dart';
-import '../../routes/pages_routes.dart';
+import '../../router/app_router.dart' as app_router;
 import '../../services/internationalization/internationalization.dart';
 import '../../themes/app_colors.dart';
 import '../../utils/app_layout.dart';
 import '../../utils/constants.dart';
-import '../../widgets/components/input_textfield.dart';
-import '../../widgets/components/loading_button.dart';
+import '../../widgets/atoms/input_textfield.dart';
+import '../../widgets/atoms/loading_button.dart';
 
 /// The registration screen.
 final class SignUpView extends GetView<SignUpProvider> {
@@ -110,28 +109,28 @@ final class _SignUpForm extends GetView<SignUpProvider> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SbInput(
+          InputWAtom(
             labelText: AppInternationalizationService.to.firstName,
             validator: (value) => value?.isEmpty == true
                 ? AppInternationalizationService.to.enterYourFirstName
                 : null,
             onChanged: (value) => controller.firstName = value ?? '',
           ),
-          SbInput(
+          InputWAtom(
             labelText: AppInternationalizationService.to.lastName,
             validator: (value) => value?.isEmpty == true
                 ? AppInternationalizationService.to.enterYourLastName
                 : null,
             onChanged: (value) => controller.lastName = value ?? '',
           ),
-          SbInput(
+          InputWAtom(
             labelText: AppInternationalizationService.to.email,
             validator: (value) => !GetUtils.isEmail(value ?? '')
                 ? AppInternationalizationService.to.enterValidEmail
                 : null,
             onChanged: (value) => controller.email = value ?? '',
           ),
-          SbInput(
+          InputWAtom(
             labelText: AppInternationalizationService.to.password,
             obscureText: true,
             validator: (value) => (value ?? '').length < 6
@@ -140,7 +139,7 @@ final class _SignUpForm extends GetView<SignUpProvider> {
                 : null,
             onChanged: (value) => controller.password = value ?? '',
           ),
-          SbInput(
+          InputWAtom(
             labelText: AppInternationalizationService.to.confirmPassword,
             obscureText: true,
             validator: (value) => (value ?? '') != controller.password
@@ -149,9 +148,12 @@ final class _SignUpForm extends GetView<SignUpProvider> {
             onChanged: (value) => controller.confirmPassword = value ?? '',
           ),
           const SizedBox(height: 20),
-          LoadingButton(
+          LoadingButtonWAtom(
             label: AppInternationalizationService.to.signUp,
-            onSubmit: (buttonController) => controller.signUp(buttonController),
+            onSubmit: (buttonController) => controller.signUp(
+              buttonController,
+              context,
+            ),
             failedText: AppInternationalizationService.to.failed,
             successText: AppInternationalizationService.to.success,
             successColor: AppColors.success600,
@@ -185,7 +187,10 @@ final class _SignUpFooter extends StatelessWidget {
                 .bodyLarge
                 ?.copyWith(color: AppColors.lightPrimary),
             recognizer: TapGestureRecognizer()
-              ..onTap = () => AppRouter.go(PagesRoutes.signIn.pattern),
+              ..onTap = () => app_router.pushReplacement(
+                    context,
+                    app_router.registerRoutePath,
+                  ),
           ),
         ],
       ),

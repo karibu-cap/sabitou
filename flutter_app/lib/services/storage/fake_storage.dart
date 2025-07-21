@@ -43,14 +43,4 @@ class FakeStorageService implements AppStorageService {
   bool hasData(String key) {
     return _storage.containsKey(key);
   }
-
-  @override
-  Future<void> writeIfNull<T>(String key, T value) {
-    return Future.value();
-  }
-
-  @override
-  void writeInMemory<T>(String key, T value) {
-    _storage[key] = value;
-  }
 }
