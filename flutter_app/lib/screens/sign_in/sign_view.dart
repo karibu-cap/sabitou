@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../providers/sing_in/sign_in.dart';
-import '../../routes/app_routes.dart';
-import '../../routes/pages_routes.dart';
+import '../../router/app_router.dart' as app_router;
+
 import '../../services/internationalization/internationalization.dart';
 import '../../themes/app_colors.dart';
 import '../../utils/app_layout.dart';
 import '../../utils/constants.dart';
-import '../../widgets/components/input_textfield.dart';
-import '../../widgets/components/loading_button.dart';
+import '../../widgets/atoms/input_textfield.dart';
+import '../../widgets/atoms/loading_button.dart';
 
 /// The sign in screen.
 final class SignInView extends GetView<SignInProvider> {
@@ -111,14 +111,14 @@ final class _SignInForm extends GetView<SignInProvider> {
       key: controller.formKey,
       child: Column(
         children: [
-          SbInput(
+          InputWAtom(
             labelText: AppInternationalizationService.to.email,
             validator: (value) => !GetUtils.isEmail(value ?? '')
                 ? AppInternationalizationService.to.enterValidEmail
                 : null,
             onChanged: (value) => controller.email = value ?? '',
           ),
-          SbInput(
+          InputWAtom(
             labelText: AppInternationalizationService.to.password,
             obscureText: true,
             validator: (value) => (value ?? '').length < 6
@@ -128,9 +128,12 @@ final class _SignInForm extends GetView<SignInProvider> {
             onChanged: (value) => controller.password = value ?? '',
           ),
           const SizedBox(height: 20),
-          LoadingButton(
+          LoadingButtonWAtom(
             label: AppInternationalizationService.to.signIn,
-            onSubmit: (buttonController) => controller.signIn(buttonController),
+            onSubmit: (buttonController) => controller.signIn(
+              buttonController,
+              context,
+            ),
             failedText: AppInternationalizationService.to.failed,
             successText: AppInternationalizationService.to.success,
             successColor: AppColors.success600,
@@ -164,7 +167,10 @@ final class _SignInFooter extends StatelessWidget {
                 .bodyLarge
                 ?.copyWith(color: AppColors.lightPrimary),
             recognizer: TapGestureRecognizer()
-              ..onTap = () => AppRouter.go(PagesRoutes.signUp.pattern),
+              ..onTap = () => app_router.pushReplacement(
+                    context,
+                    app_router.registerRoutePath,
+                  ),
           ),
         ],
       ),

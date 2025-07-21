@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sabitou_rpc/models.dart';
 
-import '../../providers/dashboard/dasboard.dart';
-import '../../routes/pages_routes.dart';
+import '../../providers/dashboard/dashboard.dart';
 import '../../services/internationalization/internationalization.dart';
 import '../../themes/app_colors.dart';
 import '../../utils/user_preference.dart';
-import '../../widgets/base_page.dart';
-import '../../widgets/components/input_textfield.dart';
-import '../../widgets/components/loading_button.dart';
-import '../../widgets/components/sb_container.dart';
+import '../../widgets/atoms/input_textfield.dart';
+import '../../widgets/atoms/loading_button.dart';
+import '../../widgets/atoms/sb_container.dart';
+import '../../widgets/layouts/base_page.dart';
 
 /// The home screen.
 final class DashboardView extends StatelessWidget {
@@ -24,7 +23,7 @@ final class DashboardView extends StatelessWidget {
     final userPreference = UserPreferences.instance;
 
     return BasePageView(
-      itemPage: DashboardLabelPage.dashboard.name,
+      itemPage: 'Dashboard',
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -43,7 +42,7 @@ final class DashboardView extends StatelessWidget {
 final class _AddNewBusinessForm extends GetView<DashboardProvider> {
   @override
   Widget build(BuildContext context) {
-    return SbContainer(
+    return ContainerWAtom(
       level: 5,
       endBlurOffset: -const Offset(
         2,
@@ -59,7 +58,7 @@ final class _AddNewBusinessForm extends GetView<DashboardProvider> {
       width: (MediaQuery.sizeOf(context).width * 0.7).clamp(450, 800),
       child: Column(
         children: [
-          SbInput(
+          InputWAtom(
             labelText: AppInternationalizationService.to.businessName,
             validator: (value) => switch (value) {
               final String value => value.length < 2
@@ -69,7 +68,7 @@ final class _AddNewBusinessForm extends GetView<DashboardProvider> {
             },
             onChanged: (value) => controller.formBusinessName = value ?? '',
           ),
-          SbInput(
+          InputWAtom(
             labelText: AppInternationalizationService.to.businessDescription,
             validator: (value) => switch (value) {
               final String value => value.length < 2
@@ -86,7 +85,7 @@ final class _AddNewBusinessForm extends GetView<DashboardProvider> {
             style: Theme.of(context).textTheme.bodyLarge,
           ),
           const SizedBox(height: 10),
-          SbInput(
+          InputWAtom(
             labelText: AppInternationalizationService.to.storeName,
             validator: (value) => switch (value) {
               final String value => value.length < 2
@@ -97,7 +96,7 @@ final class _AddNewBusinessForm extends GetView<DashboardProvider> {
             onChanged: (value) =>
                 controller.formBusinessDescription = value ?? '',
           ),
-          SbInput(
+          InputWAtom(
             labelText: AppInternationalizationService.to.storeDescription,
             validator: (value) => switch (value) {
               final String value => value.length < 2
@@ -108,7 +107,7 @@ final class _AddNewBusinessForm extends GetView<DashboardProvider> {
             onChanged: (value) =>
                 controller.formBusinessDescription = value ?? '',
           ),
-          SbInput(
+          InputWAtom(
             labelText: AppInternationalizationService.to.storeAddress,
             validator: (value) => switch (value) {
               final String value => value.length < 2
@@ -120,7 +119,7 @@ final class _AddNewBusinessForm extends GetView<DashboardProvider> {
                 controller.formBusinessDescription = value ?? '',
           ),
           const SizedBox(height: 20),
-          LoadingButton(
+          LoadingButtonWAtom(
             label: AppInternationalizationService.to.save,
             onSubmit: (buttonController) {},
             failedText: AppInternationalizationService.to.failed,

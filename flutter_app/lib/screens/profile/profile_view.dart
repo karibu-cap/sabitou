@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sabitou_rpc/models.dart';
 
-import '../../../routes/pages_routes.dart';
 import '../../../services/internationalization/internationalization.dart';
 import '../../../themes/app_colors.dart';
 import '../../../utils/app_layout.dart';
 import '../../../utils/user_preference.dart';
-import '../../../widgets/base_page.dart';
-import '../../../widgets/components/sb_container.dart';
+import '../../widgets/atoms/sb_container.dart';
+import '../../widgets/layouts/base_page.dart';
 
 /// User profile screen.
 class ProfileView extends StatelessWidget {
@@ -17,9 +16,9 @@ class ProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BasePageView(
-      itemPage: DashboardLabelPage.profile.name,
-      child: const _ProfileBody(),
+    return const BasePageView(
+      itemPage: 'Dashboard',
+      child: _ProfileBody(),
     );
   }
 }
@@ -620,7 +619,7 @@ class _UserAvatar extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        SbContainer(
+        ContainerWAtom(
           height: height,
           width: width,
           borderRadius: const BorderRadius.all(Radius.circular(100)),

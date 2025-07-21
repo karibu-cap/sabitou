@@ -32,18 +32,6 @@ abstract class AppStorageService {
   /// Whether there is data in your container with the given key.
   bool hasData(String key);
 
-  /// Retrieves all values from your container.
-  T getValues<T>();
-
-  /// Retrieves all keys from your container.
-  T getKeys<T>();
-
-  /// Writes data only if data is null.
-  Future<void> writeIfNull<T>(String key, T value);
-
-  /// Writes data in memory.
-  void writeInMemory<T>(String key, T value);
-
   /// Creates a new instance of the app storage service.
   factory AppStorageService(
     AppStorageType type, [

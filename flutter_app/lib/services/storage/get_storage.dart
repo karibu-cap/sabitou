@@ -40,14 +40,4 @@ class GetStorageService implements AppStorageService {
   T getKeys<T>() {
     return _box.getKeys<T>();
   }
-
-  @override
-  Future<void> writeIfNull<T>(String key, T value) async {
-    await _box.writeIfNull(key, value);
-  }
-
-  @override
-  void writeInMemory<T>(String key, T value) async {
-    _box.writeInMemory(key, value);
-  }
 }

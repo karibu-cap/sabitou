@@ -44,7 +44,17 @@ dependencies:
   logger: ^2.4.0
 
   # The state management package.
-  get: ^4.6.6
+  get: 4.7.2
+
+  # Package to manage the navigation between screens.
+  # SDK: Flutter
+  # Platform: Android, iOS, Linux, macOS, web, Windows
+  beamer: 1.7.0
+
+  # Package to manage storage.
+  # SDK: Dart, Flutter
+  # Platform: Android, iOS, Linux, macOS, web, Windows
+  objectbox: ^4.1.0
 
   # Flutter color scheme dependency to create a custom theme.
   flex_color_scheme: ^7.3.1
@@ -54,6 +64,10 @@ dependencies:
 
   sabitou_rpc:
     path: ../protos/gen/dart
+
+  # Hive Community Edition - A spiritual continuation of Hive v2
+  hive_ce: 2.10.1
+  hive_ce_flutter: 2.2.0
 
 dev_dependencies:
   flutter_test:
@@ -78,8 +92,11 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^4.0.0
 
+  # Extension for Hive. Automatically generates TypeAdapters to store any class.
+  hive_ce_generator: 1.8.1
+
   # Dart code linter.
-  dart_code_linter: ^1.1.5
+  dart_code_linter: any
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

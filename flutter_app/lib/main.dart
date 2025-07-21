@@ -1,11 +1,11 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 /*import 'package:flutter_web_plugins/flutter_web_plugins.dart';*/
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
-import 'routes/app_routes.dart';
-import 'routes/pages_routes.dart';
+import 'router/app_router.dart' as app_router;
 import 'services/internationalization/app_translations.dart';
 import 'services/internationalization/internationalization.dart';
 import 'services/rpc/connect_rpc.dart';
@@ -81,13 +81,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    return GetMaterialApp.router(
       translations: AppTranslations(),
       supportedLocales: AppInternationalizationService.supportedLocales,
       locale: Get.deviceLocale,
       fallbackLocale: const Locale('en'),
-      initialRoute: PagesRoutes.dashboard.pattern,
-      getPages: AppRouter.pageRoutes,
+      routeInformationParser: BeamerParser(),
+      routerDelegate: BeamerDelegate(
+        initialPath: app_router.defaultRoutePath,
+        locationBuilder: RoutesLocationBuilder(
+          routes: app_router.routes,
+        ).call,
+        guards: app_router.routeGuards,
+      ),
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,

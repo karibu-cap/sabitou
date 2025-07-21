@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:sabitou_clients/themes/app_colors.dart';
-import 'package:sabitou_clients/widgets/components/table.dart';
+import 'package:sabitou_clients/widgets/atoms/table.dart';
 
 import '../../goldens.dart';
 
