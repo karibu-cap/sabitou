@@ -6,8 +6,8 @@ import '../../providers/sign_up/sign_up.dart';
 import '../../router/app_router.dart' as app_router;
 import '../../services/internationalization/internationalization.dart';
 import '../../themes/app_colors.dart';
+import '../../utils/app_constants.dart';
 import '../../utils/app_layout.dart';
-import '../../utils/constants.dart';
 import '../../widgets/atoms/input_textfield.dart';
 import '../../widgets/atoms/loading_button.dart';
 

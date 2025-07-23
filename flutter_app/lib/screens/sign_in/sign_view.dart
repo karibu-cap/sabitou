@@ -4,11 +4,10 @@ import 'package:get/get.dart';
 
 import '../../providers/sing_in/sign_in.dart';
 import '../../router/app_router.dart' as app_router;
-
 import '../../services/internationalization/internationalization.dart';
 import '../../themes/app_colors.dart';
+import '../../utils/app_constants.dart';
 import '../../utils/app_layout.dart';
-import '../../utils/constants.dart';
 import '../../widgets/atoms/input_textfield.dart';
 import '../../widgets/atoms/loading_button.dart';
 

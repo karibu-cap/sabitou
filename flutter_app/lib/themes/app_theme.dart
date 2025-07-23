@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 /// App theme.
-class AppThemeProvider {
+class AppTheme {
   /// Convert OKLCH colors to Flutter Colors.
   static const Color _backgroundLight = Color(0xFFFEFEFE);
   static const Color _foregroundLight = Color(0xFF000000);

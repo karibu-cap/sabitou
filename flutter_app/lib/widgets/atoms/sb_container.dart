@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../services/themes/app_themes.dart';
+import '../../services/app_theme_service.dart';
 import '../../themes/app_colors.dart';
 
 /// The custom container.

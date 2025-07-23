@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../../services/app_theme_service.dart';
 import '../../services/internationalization/internationalization.dart';
-import '../../services/themes/app_themes.dart';
 import '../../themes/app_colors.dart';
 
 /// A beautiful language selection component.

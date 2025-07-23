@@ -3,9 +3,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
+import 'package:sabitou_clients/services/app_theme_service.dart';
 import 'package:sabitou_clients/services/internationalization/internationalization.dart';
 import 'package:sabitou_clients/services/storage/app_storate.dart';
-import 'package:sabitou_clients/services/themes/app_themes.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 Future<void> multiScreenMultiLocaleGolden(
