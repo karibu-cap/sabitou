@@ -100,6 +100,13 @@ class MyApp extends StatelessWidget {
             GlobalCupertinoLocalizations.delegate,
           ],
           themeMode: AppThemeService.to.themeMode,
+          builder: (context, child) {
+            if (child == null) {
+              return const SizedBox.shrink();
+            }
+
+            return ShadAppBuilder(child: child);
+          },
         );
       },
     );
