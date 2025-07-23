@@ -3,10 +3,10 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
-import 'package:sabitou_clients/services/internationalization/app_translations.dart';
 import 'package:sabitou_clients/services/internationalization/internationalization.dart';
 import 'package:sabitou_clients/services/storage/app_storate.dart';
 import 'package:sabitou_clients/services/themes/app_themes.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 Future<void> multiScreenMultiLocaleGolden(
   WidgetTester tester,
@@ -25,19 +25,17 @@ Future<void> multiScreenMultiLocaleGolden(
   await tester.pumpAndSettle();
 
   await tester.pumpWidgetBuilder(
-    GetMaterialApp(
-      supportedLocales: AppInternationalizationService.supportedLocales,
-      locale: Get.deviceLocale,
-      fallbackLocale: const Locale('en'),
+    ShadApp(
+      title: AppInternationalizationService.to.sabitu.toUpperCase(),
+      themeMode: AppThemeService.to.themeMode,
+      theme: AppThemeService.lightTheme,
+      darkTheme: AppThemeService.darkTheme,
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      translations: AppTranslations(),
-      darkTheme: AppThemeService.darkTheme,
-      theme: AppThemeService.lightTheme,
-      themeMode: Get.isDarkMode ? ThemeMode.dark : ThemeMode.light,
+      supportedLocales: AppInternationalizationService.supportedLocales,
       home: widget,
     ),
   );
@@ -51,15 +49,9 @@ Future<void> multiScreenMultiLocaleGolden(
       tester,
       '$name.${locale.languageCode}.${AppThemeService.to.themeMode.name}',
       devices: [
-        const Device(
-          name: '1080p',
-          size: Size(1920, 1080),
-        ),
+        const Device(name: '1080p', size: Size(1920, 1080)),
         const Device(name: '480p', size: Size(720, 480)),
-        const Device(
-          name: 'standard',
-          size: Size(375, 740),
-        ),
+        const Device(name: 'standard', size: Size(375, 740)),
       ],
     );
   }
