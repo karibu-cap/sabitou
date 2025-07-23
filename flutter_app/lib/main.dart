@@ -124,13 +124,6 @@ class MyApp extends StatelessWidget {
           routeInformationParser: BeamerParser(),
           title: AppInternationalizationService.to.sabitu.toUpperCase(),
           theme: Theme.of(context),
-          builder: (context, child) {
-            if (child == null) {
-              return const SizedBox.shrink();
-            }
-
-            return ShadAppBuilder(child: child);
-          },
         );
       },
     );
