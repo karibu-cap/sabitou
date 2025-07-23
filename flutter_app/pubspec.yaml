@@ -132,9 +132,23 @@ flutter:
   fonts:
     # Default font used across the Place apps.
     # Link to poppins font: https://fonts.google.com/specimen/Poppins.
-    - family: Roboto
+    - family: Geist
       fonts:
-        - asset: assets/fonts/RobotoSlab-Regular.ttf
-        - asset: assets/fonts/RobotoSlab-Bold.ttf
-        - asset: assets/fonts/RobotoSlab-Medium.ttf
-        - asset: assets/fonts/RobotoSlab-SemiBold.ttf
+        - asset: assets/fonts/Geist-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Geist-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Geist-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Geist-Bold.ttf
+          weight: 700
+    - family: GeistMono
+      fonts:
+        - asset: assets/fonts/GeistMono-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/GeistMono-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/GeistMono-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/GeistMono-Bold.ttf
+          weight: 700
