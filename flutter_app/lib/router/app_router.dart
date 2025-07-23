@@ -5,21 +5,21 @@ import '../utils/user_preference.dart';
 import 'routes/auth/login.dart';
 import 'routes/auth/register.dart';
 import 'routes/auth/user.dart';
-import 'routes/business/:id/details.dart';
-import 'routes/business/:id/iam.dart';
-import 'routes/business/:id/summary.dart';
+import 'routes/business/id/details.dart';
+import 'routes/business/id/iam.dart';
+import 'routes/business/id/summary.dart';
 import 'routes/business/list.dart';
-import 'routes/store/:id/details.dart';
+import 'routes/store/id/details.dart';
 import 'routes/store/list.dart';
 
 export 'routes/auth/login.dart';
 export 'routes/auth/register.dart';
 export 'routes/auth/user.dart';
-export 'routes/business/:id/details.dart';
-export 'routes/business/:id/iam.dart';
+export 'routes/business/id/details.dart';
+export 'routes/business/id/iam.dart';
+export 'routes/business/id/summary.dart';
 export 'routes/business/list.dart';
-export 'routes/business/:id/summary.dart';
-export 'routes/store/:id/details.dart';
+export 'routes/store/id/details.dart';
 export 'routes/store/list.dart';
 
 /// The default fallback route.
