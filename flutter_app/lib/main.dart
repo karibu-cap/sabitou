@@ -7,6 +7,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import 'router/app_router.dart' as app_router;
 import 'services/app_theme_service.dart';
+import 'services/internationalization/app_translations.dart';
 import 'services/internationalization/internationalization.dart';
 import 'services/rpc/connect_rpc.dart';
 import 'services/storage/app_storate.dart';
@@ -73,31 +74,6 @@ class MyApp extends StatelessWidget {
   /// The main application constructor.
   const MyApp({super.key});
 
-  Locale _localeListResolutionCallback(
-    Iterable<Locale> supportedLocales,
-    List<Locale>? systemLocales,
-  ) {
-    Locale result = supportedLocales.first;
-    if (systemLocales == null || supportedLocales.length < 2) {
-      return result;
-    }
-    final appLocales = supportedLocales.toList(growable: false);
-    for (final systemLocale in systemLocales) {
-      final localIndex = appLocales.indexWhere(
-        (appLocale) => systemLocale.languageCode == appLocale.languageCode,
-      );
-      if (localIndex >= 0) {
-        result = appLocales[localIndex];
-        break;
-      }
-    }
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      AppInternationalizationService.to.changeLocale(result);
-    });
-
-    return result;
-  }
-
   @override
   Widget build(BuildContext context) {
     return ShadApp.custom(
@@ -105,15 +81,12 @@ class MyApp extends StatelessWidget {
       theme: AppThemeService.lightTheme,
       darkTheme: AppThemeService.darkTheme,
       appBuilder: (context) {
-        return MaterialApp.router(
-          localizationsDelegates: const [
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
+        return GetMaterialApp.router(
+          translations: AppTranslations(),
           supportedLocales: AppInternationalizationService.supportedLocales,
-          localeListResolutionCallback: (systemLocales, supportedLocales) =>
-              _localeListResolutionCallback(supportedLocales, systemLocales),
+          locale: Get.deviceLocale,
+          fallbackLocale: const Locale('en'),
+          routeInformationParser: BeamerParser(),
           routerDelegate: BeamerDelegate(
             initialPath: app_router.defaultRoutePath,
             locationBuilder: RoutesLocationBuilder(
@@ -121,9 +94,12 @@ class MyApp extends StatelessWidget {
             ).call,
             guards: app_router.routeGuards,
           ),
-          routeInformationParser: BeamerParser(),
-          title: AppInternationalizationService.to.sabitu.toUpperCase(),
-          theme: Theme.of(context),
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          themeMode: AppThemeService.to.themeMode,
         );
       },
     );
