@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-import '../../themes/themes.dart';
-import '../../utils/constants.dart';
-import '../storage/app_storate.dart';
+import '../themes/app_theme.dart';
+import '../utils/app_constants.dart';
+import 'storage/app_storate.dart';
 
 /// The theme service.
 class AppThemeService extends GetxService {
@@ -14,8 +14,12 @@ class AppThemeService extends GetxService {
 
   /// The current theme.
   ShadThemeData? currentTheme;
-  static final ShadThemeData _lightTheme = AppThemeProvider.lightTheme;
-  static final ShadThemeData _darkTheme = AppThemeProvider.darkTheme;
+
+  /// The light theme.
+  static final ShadThemeData _lightTheme = AppTheme.lightTheme;
+
+  /// The dark theme.
+  static final ShadThemeData _darkTheme = AppTheme.darkTheme;
 
   /// Whether the app is in dark mode.
   bool get isDarkMode => _isDarkMode.value;

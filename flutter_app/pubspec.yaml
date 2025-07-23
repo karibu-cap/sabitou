@@ -68,9 +68,11 @@ dependencies:
   # Hive Community Edition - A spiritual continuation of Hive v2
   hive_ce: ^2.10.1
   hive_ce_flutter: ^2.2.0
-
   shadcn_flutter: ^0.0.18
   shadcn_ui: ^0.27.4
+
+  # Package of internationalization.
+  intl: ^0.20.2
 
 dev_dependencies:
   flutter_test:

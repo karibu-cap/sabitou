@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:get/get.dart';
 
-import '../../utils/constants.dart';
+import '../../utils/app_constants.dart';
 import '../storage/app_storate.dart';
 
 /// Extension method for easy access to translations.
