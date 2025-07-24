@@ -153,7 +153,29 @@ class AppInternationalizationService extends GetxService {
       'fr': 'Changer d\'entreprise',
     },
     'changeTheStore': {'en': 'Change the store', 'fr': 'Changer de magasin'},
+    'registrationSuccess': {
+      'en': 'Registration successful!',
+      'fr': 'Inscription réussie !',
+    },
+    'registrationFailed': {
+      'en': 'Registration failed. Please try again.',
+      'fr': 'Échec de l\'inscription. Veuillez réessayer.',
+    },
+    'loginSuccess': {'en': 'Login successful!', 'fr': 'Connexion réussie !'},
+    'loginFailed': {
+      'en': 'Login failed. Please try again.',
+      'fr': 'Échec de la connexion. Veuillez réessayer.',
+    },
+    'forgotPasswordSuccess': {
+      'en': 'Password reset email sent!',
+      'fr': 'E-mail de réinitialisation envoyé !',
+    },
+    'forgotPasswordFailed': {
+      'en': 'Password reset failed. Please try again.',
+      'fr': 'Échec de la réinitialisation du mot de passe. Veuillez réessayer.',
+    },
     'accountSecurity': {'en': 'Account security', 'fr': 'Sécurité du compte'},
+    'ok': {'en': 'OK', 'fr': 'OK'},
     'manageYourAccountSecurity': {
       'en': 'Manage your account security',
       'fr': 'Gérer la sécurité de votre compte',
@@ -619,6 +641,31 @@ class AppInternationalizationService extends GetxService {
   /// Returns the localized value of forgotPasswordSignIn.
   String get forgotPasswordSignIn =>
       _stringOfLocalizedValue('forgotPasswordSignIn');
+
+  /// Returns the localized value of registrationSuccess.
+  String get registrationSuccess =>
+      _stringOfLocalizedValue('registrationSuccess');
+
+  /// Returns the localized value of registrationFailed.
+  String get registrationFailed =>
+      _stringOfLocalizedValue('registrationFailed');
+
+  /// Returns the localized value of ok.
+  String get ok => _stringOfLocalizedValue('ok');
+
+  /// Returns the localized value of loginSuccess.
+  String get loginSuccess => _stringOfLocalizedValue('loginSuccess');
+
+  /// Returns the localized value of loginFailed.
+  String get loginFailed => _stringOfLocalizedValue('loginFailed');
+
+  /// Returns the localized value of forgotPasswordSuccess.
+  String get forgotPasswordSuccess =>
+      _stringOfLocalizedValue('forgotPasswordSuccess');
+
+  /// Returns the localized value of forgotPasswordFailed.
+  String get forgotPasswordFailed =>
+      _stringOfLocalizedValue('forgotPasswordFailed');
 
   /// Returns the localized value of loginEmailRequired.
   String get loginEmailRequired {
