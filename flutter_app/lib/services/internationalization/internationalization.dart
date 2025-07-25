@@ -220,7 +220,11 @@ class AppInternationalizationService extends GetxService {
       'en': 'Passwords do not match',
       'fr': 'Les mots de passe ne correspondent pas',
     },
-    'registrationTitle': {'en': 'Register', 'fr': 'Inscription'},
+    'registrationTitle': {'en': 'Create Account', 'fr': 'Créer un compte'},
+    'registrationSubtitle': {
+      'en': 'Join us today',
+      'fr': "Rejoignez-nous aujourd'hui",
+    },
     'registrationUserName': {'en': 'User name', 'fr': 'Nom d’utilisateur'},
     'registrationEmail': {'en': 'Email', 'fr': 'Email'},
     'registrationPhoneNumber': {
@@ -238,6 +242,10 @@ class AppInternationalizationService extends GetxService {
     'forgotPasswordTitle': {
       'en': 'Forgot Password',
       'fr': 'Mot de passe oublié',
+    },
+    'forgotPasswordSubtitle': {
+      'en': 'Enter your email to reset your password',
+      'fr': 'Entrez votre email pour réinitialiser votre mot de passe',
     },
     'forgotPasswordEmail': {'en': 'Email', 'fr': 'Email'},
     'forgotPasswordEmailRequired': {
@@ -581,7 +589,14 @@ class AppInternationalizationService extends GetxService {
       _stringOfLocalizedValue('registrationPasswordsDoNotMatch');
 
   /// Returns the localized value of registrationTitle.
-  String get registrationTitle => _stringOfLocalizedValue('registrationTitle');
+  String get registrationTitle {
+    return _stringOfLocalizedValue('registrationTitle');
+  }
+
+  /// Returns the localized value of registrationSubtitle.
+  String get registrationSubtitle {
+    return _stringOfLocalizedValue('registrationSubtitle');
+  }
 
   /// Returns the localized value of registrationUserName.
   String get registrationUserName =>
@@ -617,6 +632,10 @@ class AppInternationalizationService extends GetxService {
   /// Returns the localized value of forgotPasswordTitle.
   String get forgotPasswordTitle =>
       _stringOfLocalizedValue('forgotPasswordTitle');
+
+  /// Returns the localized value of forgotPasswordSubtitle.
+  String get forgotPasswordSubtitle =>
+      _stringOfLocalizedValue('forgotPasswordSubtitle');
 
   /// Returns the localized value of forgotPasswordEmail.
   String get forgotPasswordEmail =>
