@@ -4,7 +4,7 @@ import 'package:sabitou_rpc/models.dart';
 
 import '../../router/app_router.dart' as app_router;
 
-import '../../services/user_service_client.dart';
+import '../../repositories/user_repository.dart';
 import '../../utils/user_preference.dart';
 import '../../widgets/atoms/loading_button.dart';
 
@@ -45,8 +45,7 @@ final class SignInProvider extends GetxController {
       return false;
     }
 
-    final User? user =
-        await UserClientService.to.getMe(request: GetMeRequest());
+    final User? user = await UserRepository.to.getMe(request: GetMeRequest());
 
     await Future.delayed(const Duration(seconds: 4));
 
@@ -55,9 +54,7 @@ final class SignInProvider extends GetxController {
       await Future.delayed(const Duration(seconds: 3), () {
         controller.state.value = LoadingButtonState.initialStatus;
       });
-      await UserPreferences.instance.saveUserPreferences(
-        user: user,
-      );
+      await UserPreferences.instance.saveUserPreferences(user: user);
       app_router.pushReplacement(context, app_router.defaultRoutePath);
 
       return true;

@@ -1,19 +1,20 @@
+// This is a generated file - do not edit.
 //
-//  Generated code. Do not modify.
-//  source: identity/v1/user.proto
-//
-// @dart = 2.12
+// Generated from identity/v1/user.proto.
+
+// @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
-// ignore_for_file: constant_identifier_names, library_prefixes
-// ignore_for_file: non_constant_identifier_names, prefer_final_fields
-// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
+// ignore_for_file: constant_identifier_names
+// ignore_for_file: curly_braces_in_flow_control_structures
+// ignore_for_file: deprecated_member_use_from_same_package, library_prefixes
+// ignore_for_file: non_constant_identifier_names, unused_import
 
 import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
-import '../../link/v1/link.pbjson.dart' as $4;
+import '../../link/v1/link.pbjson.dart' as $0;
 
 @$core.Deprecated('Use accountStatusTypeDescriptor instead')
 const AccountStatusType$json = {
@@ -30,6 +31,19 @@ final $typed_data.Uint8List accountStatusTypeDescriptor = $convert.base64Decode(
     'ChFBY2NvdW50U3RhdHVzVHlwZRIjCh9BQ0NPVU5UX1NUQVRVU19UWVBFX1VOU1BFQ0lGSUVEEA'
     'ASHgoaQUNDT1VOVF9TVEFUVVNfVFlQRV9BQ1RJVkUQARIfChtBQ0NPVU5UX1NUQVRVU19UWVBF'
     'X0RFTEVURUQQAg==');
+
+@$core.Deprecated('Use accountTypeDescriptor instead')
+const AccountType$json = {
+  '1': 'AccountType',
+  '2': [
+    {'1': 'ADMIN', '2': 0},
+    {'1': 'USER', '2': 1},
+  ],
+};
+
+/// Descriptor for `AccountType`. Decode as a `google.protobuf.EnumDescriptorProto`.
+final $typed_data.Uint8List accountTypeDescriptor =
+    $convert.base64Decode('CgtBY2NvdW50VHlwZRIJCgVBRE1JThAAEggKBFVTRVIQAQ==');
 
 @$core.Deprecated('Use authActionTypeDescriptor instead')
 const AuthActionType$json = {
@@ -71,7 +85,14 @@ final $typed_data.Uint8List providerTypeDescriptor = $convert.base64Decode(
 const ConnectedAccount$json = {
   '1': 'ConnectedAccount',
   '2': [
-    {'1': 'provider', '3': 1, '4': 1, '5': 14, '6': '.identity.v1.ProviderType', '10': 'provider'},
+    {
+      '1': 'provider',
+      '3': 1,
+      '4': 1,
+      '5': 14,
+      '6': '.identity.v1.ProviderType',
+      '10': 'provider'
+    },
     {'1': 'raw_data', '3': 3, '4': 1, '5': 9, '10': 'rawData'},
   ],
 };
@@ -87,14 +108,87 @@ const User$json = {
   '2': [
     {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'refId', '17': true},
     {'1': 'user_name', '3': 2, '4': 1, '5': 9, '10': 'userName'},
-    {'1': 'connected_accounts', '3': 3, '4': 3, '5': 11, '6': '.identity.v1.ConnectedAccount', '10': 'connectedAccounts'},
-    {'1': 'email', '3': 4, '4': 1, '5': 9, '8': {}, '9': 1, '10': 'email', '17': true},
-    {'1': 'phone_number', '3': 5, '4': 1, '5': 9, '9': 2, '10': 'phoneNumber', '17': true},
-    {'1': 'first_name', '3': 6, '4': 1, '5': 9, '9': 3, '10': 'firstName', '17': true},
-    {'1': 'last_name', '3': 7, '4': 1, '5': 9, '9': 4, '10': 'lastName', '17': true},
-    {'1': 'profile_link', '3': 8, '4': 1, '5': 11, '6': '.link.v1.ResourceLink', '9': 5, '10': 'profileLink', '17': true},
-    {'1': 'account_status', '3': 9, '4': 1, '5': 14, '6': '.identity.v1.AccountStatusType', '9': 6, '10': 'accountStatus', '17': true},
-    {'1': 'required_actions', '3': 10, '4': 3, '5': 14, '6': '.identity.v1.AuthActionType', '10': 'requiredActions'},
+    {
+      '1': 'connected_accounts',
+      '3': 3,
+      '4': 3,
+      '5': 11,
+      '6': '.identity.v1.ConnectedAccount',
+      '10': 'connectedAccounts'
+    },
+    {
+      '1': 'email',
+      '3': 4,
+      '4': 1,
+      '5': 9,
+      '8': {},
+      '9': 1,
+      '10': 'email',
+      '17': true
+    },
+    {
+      '1': 'phone_number',
+      '3': 5,
+      '4': 1,
+      '5': 9,
+      '9': 2,
+      '10': 'phoneNumber',
+      '17': true
+    },
+    {
+      '1': 'first_name',
+      '3': 6,
+      '4': 1,
+      '5': 9,
+      '9': 3,
+      '10': 'firstName',
+      '17': true
+    },
+    {
+      '1': 'last_name',
+      '3': 7,
+      '4': 1,
+      '5': 9,
+      '9': 4,
+      '10': 'lastName',
+      '17': true
+    },
+    {
+      '1': 'profile_link',
+      '3': 8,
+      '4': 1,
+      '5': 11,
+      '6': '.link.v1.ResourceLink',
+      '9': 5,
+      '10': 'profileLink',
+      '17': true
+    },
+    {
+      '1': 'account_status',
+      '3': 9,
+      '4': 1,
+      '5': 14,
+      '6': '.identity.v1.AccountStatusType',
+      '9': 6,
+      '10': 'accountStatus',
+      '17': true
+    },
+    {
+      '1': 'account_type',
+      '3': 10,
+      '4': 1,
+      '5': 14,
+      '6': '.identity.v1.AccountType',
+      '10': 'accountType'
+    },
+    {
+      '1': 'required_actions',
+      '3': 11,
+      '4': 3,
+      '5': 14,
+      '6': '.identity.v1.AuthActionType',
+      '10': 'requiredActions'
+    },
   ],
   '8': [
     {'1': '_ref_id'},
@@ -116,10 +210,11 @@ final $typed_data.Uint8List userDescriptor = $convert.base64Decode(
     'CgpmaXJzdF9uYW1lGAYgASgJSANSCWZpcnN0TmFtZYgBARIgCglsYXN0X25hbWUYByABKAlIBF'
     'IIbGFzdE5hbWWIAQESPQoMcHJvZmlsZV9saW5rGAggASgLMhUubGluay52MS5SZXNvdXJjZUxp'
     'bmtIBVILcHJvZmlsZUxpbmuIAQESSgoOYWNjb3VudF9zdGF0dXMYCSABKA4yHi5pZGVudGl0eS'
-    '52MS5BY2NvdW50U3RhdHVzVHlwZUgGUg1hY2NvdW50U3RhdHVziAEBEkYKEHJlcXVpcmVkX2Fj'
-    'dGlvbnMYCiADKA4yGy5pZGVudGl0eS52MS5BdXRoQWN0aW9uVHlwZVIPcmVxdWlyZWRBY3Rpb2'
-    '5zQgkKB19yZWZfaWRCCAoGX2VtYWlsQg8KDV9waG9uZV9udW1iZXJCDQoLX2ZpcnN0X25hbWVC'
-    'DAoKX2xhc3RfbmFtZUIPCg1fcHJvZmlsZV9saW5rQhEKD19hY2NvdW50X3N0YXR1cw==');
+    '52MS5BY2NvdW50U3RhdHVzVHlwZUgGUg1hY2NvdW50U3RhdHVziAEBEjsKDGFjY291bnRfdHlw'
+    'ZRgKIAEoDjIYLmlkZW50aXR5LnYxLkFjY291bnRUeXBlUgthY2NvdW50VHlwZRJGChByZXF1aX'
+    'JlZF9hY3Rpb25zGAsgAygOMhsuaWRlbnRpdHkudjEuQXV0aEFjdGlvblR5cGVSD3JlcXVpcmVk'
+    'QWN0aW9uc0IJCgdfcmVmX2lkQggKBl9lbWFpbEIPCg1fcGhvbmVfbnVtYmVyQg0KC19maXJzdF'
+    '9uYW1lQgwKCl9sYXN0X25hbWVCDwoNX3Byb2ZpbGVfbGlua0IRCg9fYWNjb3VudF9zdGF0dXM=');
 
 @$core.Deprecated('Use getUserRequestDescriptor instead')
 const GetUserRequest$json = {
@@ -137,7 +232,14 @@ final $typed_data.Uint8List getUserRequestDescriptor = $convert.base64Decode(
 const GetUserResponse$json = {
   '1': 'GetUserResponse',
   '2': [
-    {'1': 'user', '3': 1, '4': 1, '5': 11, '6': '.identity.v1.User', '10': 'user'},
+    {
+      '1': 'user',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.identity.v1.User',
+      '10': 'user'
+    },
   ],
 };
 
@@ -150,7 +252,14 @@ final $typed_data.Uint8List getUserResponseDescriptor = $convert.base64Decode(
 const UpdateMeRequest$json = {
   '1': 'UpdateMeRequest',
   '2': [
-    {'1': 'user', '3': 1, '4': 1, '5': 11, '6': '.identity.v1.User', '10': 'user'},
+    {
+      '1': 'user',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.identity.v1.User',
+      '10': 'user'
+    },
   ],
 };
 
@@ -163,7 +272,14 @@ final $typed_data.Uint8List updateMeRequestDescriptor = $convert.base64Decode(
 const UpdateMeResponse$json = {
   '1': 'UpdateMeResponse',
   '2': [
-    {'1': 'user', '3': 1, '4': 1, '5': 11, '6': '.identity.v1.User', '10': 'user'},
+    {
+      '1': 'user',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.identity.v1.User',
+      '10': 'user'
+    },
   ],
 };
 
@@ -182,9 +298,10 @@ const RequestDeleteUserRequest$json = {
 };
 
 /// Descriptor for `RequestDeleteUserRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List requestDeleteUserRequestDescriptor = $convert.base64Decode(
-    'ChhSZXF1ZXN0RGVsZXRlVXNlclJlcXVlc3QSIwoHdXNlcl9pZBgBIAEoCUIKukgHyAEBcgIQA1'
-    'IGdXNlcklkEhoKCHBhc3N3b3JkGAIgASgJUghwYXNzd29yZA==');
+final $typed_data.Uint8List requestDeleteUserRequestDescriptor =
+    $convert.base64Decode(
+        'ChhSZXF1ZXN0RGVsZXRlVXNlclJlcXVlc3QSIwoHdXNlcl9pZBgBIAEoCUIKukgHyAEBcgIQA1'
+        'IGdXNlcklkEhoKCHBhc3N3b3JkGAIgASgJUghwYXNzd29yZA==');
 
 @$core.Deprecated('Use requestDeleteUserResponseDescriptor instead')
 const RequestDeleteUserResponse$json = {
@@ -195,16 +312,23 @@ const RequestDeleteUserResponse$json = {
 };
 
 /// Descriptor for `RequestDeleteUserResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List requestDeleteUserResponseDescriptor = $convert.base64Decode(
-    'ChlSZXF1ZXN0RGVsZXRlVXNlclJlc3BvbnNlEiMKDXJlcXVlc3RfdG9rZW4YASABKAlSDHJlcX'
-    'Vlc3RUb2tlbg==');
+final $typed_data.Uint8List requestDeleteUserResponseDescriptor =
+    $convert.base64Decode(
+        'ChlSZXF1ZXN0RGVsZXRlVXNlclJlc3BvbnNlEiMKDXJlcXVlc3RfdG9rZW4YASABKAlSDHJlcX'
+        'Vlc3RUb2tlbg==');
 
 @$core.Deprecated('Use deleteUserRequestDescriptor instead')
 const DeleteUserRequest$json = {
   '1': 'DeleteUserRequest',
   '2': [
     {'1': 'request_token', '3': 1, '4': 1, '5': 9, '10': 'requestToken'},
-    {'1': 'verification_code', '3': 2, '4': 1, '5': 9, '10': 'verificationCode'},
+    {
+      '1': 'verification_code',
+      '3': 2,
+      '4': 1,
+      '5': 9,
+      '10': 'verificationCode'
+    },
   ],
 };
 
@@ -222,8 +346,9 @@ const DeleteUserResponse$json = {
 };
 
 /// Descriptor for `DeleteUserResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List deleteUserResponseDescriptor = $convert.base64Decode(
-    'ChJEZWxldGVVc2VyUmVzcG9uc2USGAoHc3VjY2VzcxgBIAEoCFIHc3VjY2Vzcw==');
+final $typed_data.Uint8List deleteUserResponseDescriptor =
+    $convert.base64Decode(
+        'ChJEZWxldGVVc2VyUmVzcG9uc2USGAoHc3VjY2VzcxgBIAEoCFIHc3VjY2Vzcw==');
 
 @$core.Deprecated('Use changePasswordRequestDescriptor instead')
 const ChangePasswordRequest$json = {
@@ -249,8 +374,9 @@ const ChangePasswordResponse$json = {
 };
 
 /// Descriptor for `ChangePasswordResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List changePasswordResponseDescriptor = $convert.base64Decode(
-    'ChZDaGFuZ2VQYXNzd29yZFJlc3BvbnNlEhgKB3N1Y2Nlc3MYASABKAhSB3N1Y2Nlc3M=');
+final $typed_data.Uint8List changePasswordResponseDescriptor =
+    $convert.base64Decode(
+        'ChZDaGFuZ2VQYXNzd29yZFJlc3BvbnNlEhgKB3N1Y2Nlc3MYASABKAhSB3N1Y2Nlc3M=');
 
 @$core.Deprecated('Use getMeRequestDescriptor instead')
 const GetMeRequest$json = {
@@ -258,8 +384,8 @@ const GetMeRequest$json = {
 };
 
 /// Descriptor for `GetMeRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List getMeRequestDescriptor = $convert.base64Decode(
-    'CgxHZXRNZVJlcXVlc3Q=');
+final $typed_data.Uint8List getMeRequestDescriptor =
+    $convert.base64Decode('CgxHZXRNZVJlcXVlc3Q=');
 
 @$core.Deprecated('Use getMeResponseDescriptor instead')
 const GetMeResponse$json = {
@@ -276,22 +402,53 @@ final $typed_data.Uint8List getMeResponseDescriptor = $convert.base64Decode(
 const $core.Map<$core.String, $core.dynamic> UserServiceBase$json = {
   '1': 'UserService',
   '2': [
-    {'1': 'GetMe', '2': '.identity.v1.GetMeRequest', '3': '.identity.v1.GetMeResponse', '4': {}},
-    {'1': 'GetUser', '2': '.identity.v1.GetUserRequest', '3': '.identity.v1.GetUserResponse', '4': {}},
-    {'1': 'UpdateMe', '2': '.identity.v1.UpdateMeRequest', '3': '.identity.v1.UpdateMeResponse', '4': {}},
-    {'1': 'RequestDeleteUser', '2': '.identity.v1.RequestDeleteUserRequest', '3': '.identity.v1.RequestDeleteUserResponse', '4': {}},
-    {'1': 'DeleteUser', '2': '.identity.v1.DeleteUserRequest', '3': '.identity.v1.DeleteUserResponse', '4': {}},
-    {'1': 'ChangePassword', '2': '.identity.v1.ChangePasswordRequest', '3': '.identity.v1.ChangePasswordResponse', '4': {}},
+    {
+      '1': 'GetMe',
+      '2': '.identity.v1.GetMeRequest',
+      '3': '.identity.v1.GetMeResponse',
+      '4': {}
+    },
+    {
+      '1': 'GetUser',
+      '2': '.identity.v1.GetUserRequest',
+      '3': '.identity.v1.GetUserResponse',
+      '4': {}
+    },
+    {
+      '1': 'UpdateMe',
+      '2': '.identity.v1.UpdateMeRequest',
+      '3': '.identity.v1.UpdateMeResponse',
+      '4': {}
+    },
+    {
+      '1': 'RequestDeleteUser',
+      '2': '.identity.v1.RequestDeleteUserRequest',
+      '3': '.identity.v1.RequestDeleteUserResponse',
+      '4': {}
+    },
+    {
+      '1': 'DeleteUser',
+      '2': '.identity.v1.DeleteUserRequest',
+      '3': '.identity.v1.DeleteUserResponse',
+      '4': {}
+    },
+    {
+      '1': 'ChangePassword',
+      '2': '.identity.v1.ChangePasswordRequest',
+      '3': '.identity.v1.ChangePasswordResponse',
+      '4': {}
+    },
   ],
 };
 
 @$core.Deprecated('Use userServiceDescriptor instead')
-const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>> UserServiceBase$messageJson = {
+const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
+    UserServiceBase$messageJson = {
   '.identity.v1.GetMeRequest': GetMeRequest$json,
   '.identity.v1.GetMeResponse': GetMeResponse$json,
   '.identity.v1.User': User$json,
   '.identity.v1.ConnectedAccount': ConnectedAccount$json,
-  '.link.v1.ResourceLink': $4.ResourceLink$json,
+  '.link.v1.ResourceLink': $0.ResourceLink$json,
   '.identity.v1.GetUserRequest': GetUserRequest$json,
   '.identity.v1.GetUserResponse': GetUserResponse$json,
   '.identity.v1.UpdateMeRequest': UpdateMeRequest$json,
@@ -316,4 +473,3 @@ final $typed_data.Uint8List userServiceDescriptor = $convert.base64Decode(
     '5EZWxldGVVc2VyUmVzcG9uc2UiABJbCg5DaGFuZ2VQYXNzd29yZBIiLmlkZW50aXR5LnYxLkNo'
     'YW5nZVBhc3N3b3JkUmVxdWVzdBojLmlkZW50aXR5LnYxLkNoYW5nZVBhc3N3b3JkUmVzcG9uc2'
     'UiAA==');
-

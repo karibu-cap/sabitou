@@ -5,9 +5,9 @@ import 'package:sabitou_rpc/models.dart';
 
 import '../utils/logger.dart';
 
-/// The user service client.
-final class UserClientService extends GetxService {
-  final _logger = LoggerApp('UserClientService');
+/// The user repository.
+final class UserRepository extends GetxService {
+  final _logger = LoggerApp('UserRepository');
 
   /// The user service client.
   final UserServiceClient userClientService;
@@ -16,13 +16,11 @@ final class UserClientService extends GetxService {
   final Transport clientChannel;
 
   /// Access the singleton instance.
-  static UserClientService get to => Get.find();
+  static UserRepository get to => Get.find();
 
   /// Constructs a new [AuthServiceClient].
-  UserClientService({required this.clientChannel})
-      : userClientService = UserServiceClient(
-          clientChannel,
-        );
+  UserRepository({required this.clientChannel})
+    : userClientService = UserServiceClient(clientChannel);
 
   /// Creates a new user.
   /*
@@ -57,9 +55,7 @@ final class UserClientService extends GetxService {
     try {
       final result = await userClientService.getMe(request);
 
-      _logger.log(
-        'Retrieved user: ${result.me.writeToJson()}.',
-      );
+      _logger.log('Retrieved user: ${result.me.writeToJson()}.');
 
       return result.me;
     } on Exception catch (e) {

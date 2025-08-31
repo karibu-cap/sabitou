@@ -7,7 +7,7 @@ import "package:connectrpc/connect.dart" as connect;
 import "authentication.pb.dart" as identityv1authentication;
 import "authentication.connect.spec.dart" as specs;
 
-extension type AuthServiceClient(connect.Transport _transport) {
+extension type AuthServiceClient (connect.Transport _transport) {
   /// Authenticate the user with the given credentials.
   Future<identityv1authentication.LoginResponse> login(
     identityv1authentication.LoginRequest input, {
@@ -27,8 +27,7 @@ extension type AuthServiceClient(connect.Transport _transport) {
   }
 
   /// Request the password reset of the user.
-  Future<identityv1authentication.RequestPasswordResetResponse>
-      requestPasswordReset(
+  Future<identityv1authentication.RequestPasswordResetResponse> requestPasswordReset(
     identityv1authentication.RequestPasswordResetRequest input, {
     connect.Headers? headers,
     connect.AbortSignal? signal,

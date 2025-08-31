@@ -168,7 +168,7 @@ final class _SignInFooter extends StatelessWidget {
             recognizer: TapGestureRecognizer()
               ..onTap = () => app_router.pushReplacement(
                     context,
-                    app_router.registerRoutePath,
+                    app_router.registrationRoutePath,
                   ),
           ),
         ],

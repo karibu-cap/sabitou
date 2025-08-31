@@ -5,13 +5,14 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+import 'providers/auth/auth_provider.dart';
 import 'router/app_router.dart' as app_router;
 import 'services/app_theme_service.dart';
 import 'services/internationalization/app_translations.dart';
 import 'services/internationalization/internationalization.dart';
 import 'services/rpc/connect_rpc.dart';
 import 'services/storage/app_storate.dart';
-import 'services/user_service_client.dart';
+import 'repositories/user_repository.dart';
 import 'utils/app_constants.dart';
 import 'utils/user_preference.dart';
 
@@ -37,11 +38,11 @@ Future<void> _initServices() async {
 
   final AppInternationalizationService appInternationalization =
       AppInternationalizationService(
-    languageCode != null
-        ? Locale(languageCode)
-        : Get.deviceLocale ?? const Locale('en'),
-    appStorage,
-  );
+        languageCode != null
+            ? Locale(languageCode)
+            : Get.deviceLocale ?? const Locale('en'),
+        appStorage,
+      );
 
   // Register internationalization services.
   Get.put<AppInternationalizationService>(
@@ -60,11 +61,14 @@ Future<void> _initServices() async {
     permanent: true,
   );
 
+  /// The auth provider.
+  Get.put<AuthProvider>(AuthProvider(), permanent: true);
+
   /// Register of userService.
-  final userServiceClient = UserClientService(
+  final userServiceClient = UserRepository(
     clientChannel: connectRPC.clientChannel,
   );
-  Get.lazyPut<UserClientService>(() => userServiceClient);
+  Get.lazyPut<UserRepository>(() => userServiceClient);
 
   await Get.putAsync(() async => UserPreferences(), permanent: true);
 }

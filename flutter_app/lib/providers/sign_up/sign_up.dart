@@ -4,7 +4,7 @@ import 'package:sabitou_rpc/models.dart';
 
 import '../../router/app_router.dart' as app_router;
 
-import '../../services/user_service_client.dart';
+import '../../repositories/user_repository.dart';
 import '../../utils/user_preference.dart';
 import '../../widgets/atoms/loading_button.dart';
 

@@ -1,13 +1,14 @@
+// This is a generated file - do not edit.
 //
-//  Generated code. Do not modify.
-//  source: buf/validate/validate.proto
-//
-// @dart = 2.12
+// Generated from buf/validate/validate.proto.
+
+// @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
-// ignore_for_file: constant_identifier_names, library_prefixes
-// ignore_for_file: non_constant_identifier_names, prefer_final_fields
-// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
+// ignore_for_file: constant_identifier_names
+// ignore_for_file: curly_braces_in_flow_control_structures
+// ignore_for_file: deprecated_member_use_from_same_package, library_prefixes
+// ignore_for_file: non_constant_identifier_names, unused_import
 
 import 'dart:convert' as $convert;
 import 'dart:core' as $core;
@@ -66,7 +67,14 @@ const MessageConstraints$json = {
   '1': 'MessageConstraints',
   '2': [
     {'1': 'disabled', '3': 1, '4': 1, '5': 8, '10': 'disabled'},
-    {'1': 'cel', '3': 3, '4': 3, '5': 11, '6': '.buf.validate.Constraint', '10': 'cel'},
+    {
+      '1': 'cel',
+      '3': 3,
+      '4': 3,
+      '5': 11,
+      '6': '.buf.validate.Constraint',
+      '10': 'cel'
+    },
   ],
 };
 
@@ -91,30 +99,212 @@ final $typed_data.Uint8List oneofConstraintsDescriptor = $convert.base64Decode(
 const FieldConstraints$json = {
   '1': 'FieldConstraints',
   '2': [
-    {'1': 'cel', '3': 23, '4': 3, '5': 11, '6': '.buf.validate.Constraint', '10': 'cel'},
+    {
+      '1': 'cel',
+      '3': 23,
+      '4': 3,
+      '5': 11,
+      '6': '.buf.validate.Constraint',
+      '10': 'cel'
+    },
     {'1': 'required', '3': 25, '4': 1, '5': 8, '10': 'required'},
-    {'1': 'ignore', '3': 27, '4': 1, '5': 14, '6': '.buf.validate.Ignore', '10': 'ignore'},
-    {'1': 'float', '3': 1, '4': 1, '5': 11, '6': '.buf.validate.FloatRules', '9': 0, '10': 'float'},
-    {'1': 'double', '3': 2, '4': 1, '5': 11, '6': '.buf.validate.DoubleRules', '9': 0, '10': 'double'},
-    {'1': 'int32', '3': 3, '4': 1, '5': 11, '6': '.buf.validate.Int32Rules', '9': 0, '10': 'int32'},
-    {'1': 'int64', '3': 4, '4': 1, '5': 11, '6': '.buf.validate.Int64Rules', '9': 0, '10': 'int64'},
-    {'1': 'uint32', '3': 5, '4': 1, '5': 11, '6': '.buf.validate.UInt32Rules', '9': 0, '10': 'uint32'},
-    {'1': 'uint64', '3': 6, '4': 1, '5': 11, '6': '.buf.validate.UInt64Rules', '9': 0, '10': 'uint64'},
-    {'1': 'sint32', '3': 7, '4': 1, '5': 11, '6': '.buf.validate.SInt32Rules', '9': 0, '10': 'sint32'},
-    {'1': 'sint64', '3': 8, '4': 1, '5': 11, '6': '.buf.validate.SInt64Rules', '9': 0, '10': 'sint64'},
-    {'1': 'fixed32', '3': 9, '4': 1, '5': 11, '6': '.buf.validate.Fixed32Rules', '9': 0, '10': 'fixed32'},
-    {'1': 'fixed64', '3': 10, '4': 1, '5': 11, '6': '.buf.validate.Fixed64Rules', '9': 0, '10': 'fixed64'},
-    {'1': 'sfixed32', '3': 11, '4': 1, '5': 11, '6': '.buf.validate.SFixed32Rules', '9': 0, '10': 'sfixed32'},
-    {'1': 'sfixed64', '3': 12, '4': 1, '5': 11, '6': '.buf.validate.SFixed64Rules', '9': 0, '10': 'sfixed64'},
-    {'1': 'bool', '3': 13, '4': 1, '5': 11, '6': '.buf.validate.BoolRules', '9': 0, '10': 'bool'},
-    {'1': 'string', '3': 14, '4': 1, '5': 11, '6': '.buf.validate.StringRules', '9': 0, '10': 'string'},
-    {'1': 'bytes', '3': 15, '4': 1, '5': 11, '6': '.buf.validate.BytesRules', '9': 0, '10': 'bytes'},
-    {'1': 'enum', '3': 16, '4': 1, '5': 11, '6': '.buf.validate.EnumRules', '9': 0, '10': 'enum'},
-    {'1': 'repeated', '3': 18, '4': 1, '5': 11, '6': '.buf.validate.RepeatedRules', '9': 0, '10': 'repeated'},
-    {'1': 'map', '3': 19, '4': 1, '5': 11, '6': '.buf.validate.MapRules', '9': 0, '10': 'map'},
-    {'1': 'any', '3': 20, '4': 1, '5': 11, '6': '.buf.validate.AnyRules', '9': 0, '10': 'any'},
-    {'1': 'duration', '3': 21, '4': 1, '5': 11, '6': '.buf.validate.DurationRules', '9': 0, '10': 'duration'},
-    {'1': 'timestamp', '3': 22, '4': 1, '5': 11, '6': '.buf.validate.TimestampRules', '9': 0, '10': 'timestamp'},
+    {
+      '1': 'ignore',
+      '3': 27,
+      '4': 1,
+      '5': 14,
+      '6': '.buf.validate.Ignore',
+      '10': 'ignore'
+    },
+    {
+      '1': 'float',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.buf.validate.FloatRules',
+      '9': 0,
+      '10': 'float'
+    },
+    {
+      '1': 'double',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.buf.validate.DoubleRules',
+      '9': 0,
+      '10': 'double'
+    },
+    {
+      '1': 'int32',
+      '3': 3,
+      '4': 1,
+      '5': 11,
+      '6': '.buf.validate.Int32Rules',
+      '9': 0,
+      '10': 'int32'
+    },
+    {
+      '1': 'int64',
+      '3': 4,
+      '4': 1,
+      '5': 11,
+      '6': '.buf.validate.Int64Rules',
+      '9': 0,
+      '10': 'int64'
+    },
+    {
+      '1': 'uint32',
+      '3': 5,
+      '4': 1,
+      '5': 11,
+      '6': '.buf.validate.UInt32Rules',
+      '9': 0,
+      '10': 'uint32'
+    },
+    {
+      '1': 'uint64',
+      '3': 6,
+      '4': 1,
+      '5': 11,
+      '6': '.buf.validate.UInt64Rules',
+      '9': 0,
+      '10': 'uint64'
+    },
+    {
+      '1': 'sint32',
+      '3': 7,
+      '4': 1,
+      '5': 11,
+      '6': '.buf.validate.SInt32Rules',
+      '9': 0,
+      '10': 'sint32'
+    },
+    {
+      '1': 'sint64',
+      '3': 8,
+      '4': 1,
+      '5': 11,
+      '6': '.buf.validate.SInt64Rules',
+      '9': 0,
+      '10': 'sint64'
+    },
+    {
+      '1': 'fixed32',
+      '3': 9,
+      '4': 1,
+      '5': 11,
+      '6': '.buf.validate.Fixed32Rules',
+      '9': 0,
+      '10': 'fixed32'
+    },
+    {
+      '1': 'fixed64',
+      '3': 10,
+      '4': 1,
+      '5': 11,
+      '6': '.buf.validate.Fixed64Rules',
+      '9': 0,
+      '10': 'fixed64'
+    },
+    {
+      '1': 'sfixed32',
+      '3': 11,
+      '4': 1,
+      '5': 11,
+      '6': '.buf.validate.SFixed32Rules',
+      '9': 0,
+      '10': 'sfixed32'
+    },
+    {
+      '1': 'sfixed64',
+      '3': 12,
+      '4': 1,
+      '5': 11,
+      '6': '.buf.validate.SFixed64Rules',
+      '9': 0,
+      '10': 'sfixed64'
+    },
+    {
+      '1': 'bool',
+      '3': 13,
+      '4': 1,
+      '5': 11,
+      '6': '.buf.validate.BoolRules',
+      '9': 0,
+      '10': 'bool'
+    },
+    {
+      '1': 'string',
+      '3': 14,
+      '4': 1,
+      '5': 11,
+      '6': '.buf.validate.StringRules',
+      '9': 0,
+      '10': 'string'
+    },
+    {
+      '1': 'bytes',
+      '3': 15,
+      '4': 1,
+      '5': 11,
+      '6': '.buf.validate.BytesRules',
+      '9': 0,
+      '10': 'bytes'
+    },
+    {
+      '1': 'enum',
+      '3': 16,
+      '4': 1,
+      '5': 11,
+      '6': '.buf.validate.EnumRules',
+      '9': 0,
+      '10': 'enum'
+    },
+    {
+      '1': 'repeated',
+      '3': 18,
+      '4': 1,
+      '5': 11,
+      '6': '.buf.validate.RepeatedRules',
+      '9': 0,
+      '10': 'repeated'
+    },
+    {
+      '1': 'map',
+      '3': 19,
+      '4': 1,
+      '5': 11,
+      '6': '.buf.validate.MapRules',
+      '9': 0,
+      '10': 'map'
+    },
+    {
+      '1': 'any',
+      '3': 20,
+      '4': 1,
+      '5': 11,
+      '6': '.buf.validate.AnyRules',
+      '9': 0,
+      '10': 'any'
+    },
+    {
+      '1': 'duration',
+      '3': 21,
+      '4': 1,
+      '5': 11,
+      '6': '.buf.validate.DurationRules',
+      '9': 0,
+      '10': 'duration'
+    },
+    {
+      '1': 'timestamp',
+      '3': 22,
+      '4': 1,
+      '5': 11,
+      '6': '.buf.validate.TimestampRules',
+      '9': 0,
+      '10': 'timestamp'
+    },
   ],
   '8': [
     {'1': 'type'},
@@ -157,7 +347,14 @@ final $typed_data.Uint8List fieldConstraintsDescriptor = $convert.base64Decode(
 const PredefinedConstraints$json = {
   '1': 'PredefinedConstraints',
   '2': [
-    {'1': 'cel', '3': 1, '4': 3, '5': 11, '6': '.buf.validate.Constraint', '10': 'cel'},
+    {
+      '1': 'cel',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.buf.validate.Constraint',
+      '10': 'cel'
+    },
   ],
   '9': [
     {'1': 24, '2': 25},
@@ -1116,11 +1313,26 @@ const StringRules$json = {
     {'1': 'prefix', '3': 7, '4': 1, '5': 9, '8': {}, '10': 'prefix'},
     {'1': 'suffix', '3': 8, '4': 1, '5': 9, '8': {}, '10': 'suffix'},
     {'1': 'contains', '3': 9, '4': 1, '5': 9, '8': {}, '10': 'contains'},
-    {'1': 'not_contains', '3': 23, '4': 1, '5': 9, '8': {}, '10': 'notContains'},
+    {
+      '1': 'not_contains',
+      '3': 23,
+      '4': 1,
+      '5': 9,
+      '8': {},
+      '10': 'notContains'
+    },
     {'1': 'in', '3': 10, '4': 3, '5': 9, '8': {}, '10': 'in'},
     {'1': 'not_in', '3': 11, '4': 3, '5': 9, '8': {}, '10': 'notIn'},
     {'1': 'email', '3': 12, '4': 1, '5': 8, '8': {}, '9': 0, '10': 'email'},
-    {'1': 'hostname', '3': 13, '4': 1, '5': 8, '8': {}, '9': 0, '10': 'hostname'},
+    {
+      '1': 'hostname',
+      '3': 13,
+      '4': 1,
+      '5': 8,
+      '8': {},
+      '9': 0,
+      '10': 'hostname'
+    },
     {'1': 'ip', '3': 14, '4': 1, '5': 8, '8': {}, '9': 0, '10': 'ip'},
     {'1': 'ipv4', '3': 15, '4': 1, '5': 8, '8': {}, '9': 0, '10': 'ipv4'},
     {'1': 'ipv6', '3': 16, '4': 1, '5': 8, '8': {}, '9': 0, '10': 'ipv6'},
@@ -1129,14 +1341,79 @@ const StringRules$json = {
     {'1': 'address', '3': 21, '4': 1, '5': 8, '8': {}, '9': 0, '10': 'address'},
     {'1': 'uuid', '3': 22, '4': 1, '5': 8, '8': {}, '9': 0, '10': 'uuid'},
     {'1': 'tuuid', '3': 33, '4': 1, '5': 8, '8': {}, '9': 0, '10': 'tuuid'},
-    {'1': 'ip_with_prefixlen', '3': 26, '4': 1, '5': 8, '8': {}, '9': 0, '10': 'ipWithPrefixlen'},
-    {'1': 'ipv4_with_prefixlen', '3': 27, '4': 1, '5': 8, '8': {}, '9': 0, '10': 'ipv4WithPrefixlen'},
-    {'1': 'ipv6_with_prefixlen', '3': 28, '4': 1, '5': 8, '8': {}, '9': 0, '10': 'ipv6WithPrefixlen'},
-    {'1': 'ip_prefix', '3': 29, '4': 1, '5': 8, '8': {}, '9': 0, '10': 'ipPrefix'},
-    {'1': 'ipv4_prefix', '3': 30, '4': 1, '5': 8, '8': {}, '9': 0, '10': 'ipv4Prefix'},
-    {'1': 'ipv6_prefix', '3': 31, '4': 1, '5': 8, '8': {}, '9': 0, '10': 'ipv6Prefix'},
-    {'1': 'host_and_port', '3': 32, '4': 1, '5': 8, '8': {}, '9': 0, '10': 'hostAndPort'},
-    {'1': 'well_known_regex', '3': 24, '4': 1, '5': 14, '6': '.buf.validate.KnownRegex', '8': {}, '9': 0, '10': 'wellKnownRegex'},
+    {
+      '1': 'ip_with_prefixlen',
+      '3': 26,
+      '4': 1,
+      '5': 8,
+      '8': {},
+      '9': 0,
+      '10': 'ipWithPrefixlen'
+    },
+    {
+      '1': 'ipv4_with_prefixlen',
+      '3': 27,
+      '4': 1,
+      '5': 8,
+      '8': {},
+      '9': 0,
+      '10': 'ipv4WithPrefixlen'
+    },
+    {
+      '1': 'ipv6_with_prefixlen',
+      '3': 28,
+      '4': 1,
+      '5': 8,
+      '8': {},
+      '9': 0,
+      '10': 'ipv6WithPrefixlen'
+    },
+    {
+      '1': 'ip_prefix',
+      '3': 29,
+      '4': 1,
+      '5': 8,
+      '8': {},
+      '9': 0,
+      '10': 'ipPrefix'
+    },
+    {
+      '1': 'ipv4_prefix',
+      '3': 30,
+      '4': 1,
+      '5': 8,
+      '8': {},
+      '9': 0,
+      '10': 'ipv4Prefix'
+    },
+    {
+      '1': 'ipv6_prefix',
+      '3': 31,
+      '4': 1,
+      '5': 8,
+      '8': {},
+      '9': 0,
+      '10': 'ipv6Prefix'
+    },
+    {
+      '1': 'host_and_port',
+      '3': 32,
+      '4': 1,
+      '5': 8,
+      '8': {},
+      '9': 0,
+      '10': 'hostAndPort'
+    },
+    {
+      '1': 'well_known_regex',
+      '3': 24,
+      '4': 1,
+      '5': 14,
+      '6': '.buf.validate.KnownRegex',
+      '8': {},
+      '9': 0,
+      '10': 'wellKnownRegex'
+    },
     {'1': 'strict', '3': 25, '4': 1, '5': 8, '10': 'strict'},
     {'1': 'example', '3': 34, '4': 3, '5': 9, '8': {}, '10': 'example'},
   ],
@@ -1388,7 +1665,14 @@ const RepeatedRules$json = {
     {'1': 'min_items', '3': 1, '4': 1, '5': 4, '8': {}, '10': 'minItems'},
     {'1': 'max_items', '3': 2, '4': 1, '5': 4, '8': {}, '10': 'maxItems'},
     {'1': 'unique', '3': 3, '4': 1, '5': 8, '8': {}, '10': 'unique'},
-    {'1': 'items', '3': 4, '4': 1, '5': 11, '6': '.buf.validate.FieldConstraints', '10': 'items'},
+    {
+      '1': 'items',
+      '3': 4,
+      '4': 1,
+      '5': 11,
+      '6': '.buf.validate.FieldConstraints',
+      '10': 'items'
+    },
   ],
   '5': [
     {'1': 1000, '2': 536870912},
@@ -1414,8 +1698,22 @@ const MapRules$json = {
   '2': [
     {'1': 'min_pairs', '3': 1, '4': 1, '5': 4, '8': {}, '10': 'minPairs'},
     {'1': 'max_pairs', '3': 2, '4': 1, '5': 4, '8': {}, '10': 'maxPairs'},
-    {'1': 'keys', '3': 4, '4': 1, '5': 11, '6': '.buf.validate.FieldConstraints', '10': 'keys'},
-    {'1': 'values', '3': 5, '4': 1, '5': 11, '6': '.buf.validate.FieldConstraints', '10': 'values'},
+    {
+      '1': 'keys',
+      '3': 4,
+      '4': 1,
+      '5': 11,
+      '6': '.buf.validate.FieldConstraints',
+      '10': 'keys'
+    },
+    {
+      '1': 'values',
+      '3': 5,
+      '4': 1,
+      '5': 11,
+      '6': '.buf.validate.FieldConstraints',
+      '10': 'values'
+    },
   ],
   '5': [
     {'1': 1000, '2': 536870912},
@@ -1450,14 +1748,82 @@ final $typed_data.Uint8List anyRulesDescriptor = $convert.base64Decode(
 const DurationRules$json = {
   '1': 'DurationRules',
   '2': [
-    {'1': 'const', '3': 2, '4': 1, '5': 11, '6': '.google.protobuf.Duration', '8': {}, '10': 'const'},
-    {'1': 'lt', '3': 3, '4': 1, '5': 11, '6': '.google.protobuf.Duration', '8': {}, '9': 0, '10': 'lt'},
-    {'1': 'lte', '3': 4, '4': 1, '5': 11, '6': '.google.protobuf.Duration', '8': {}, '9': 0, '10': 'lte'},
-    {'1': 'gt', '3': 5, '4': 1, '5': 11, '6': '.google.protobuf.Duration', '8': {}, '9': 1, '10': 'gt'},
-    {'1': 'gte', '3': 6, '4': 1, '5': 11, '6': '.google.protobuf.Duration', '8': {}, '9': 1, '10': 'gte'},
-    {'1': 'in', '3': 7, '4': 3, '5': 11, '6': '.google.protobuf.Duration', '8': {}, '10': 'in'},
-    {'1': 'not_in', '3': 8, '4': 3, '5': 11, '6': '.google.protobuf.Duration', '8': {}, '10': 'notIn'},
-    {'1': 'example', '3': 9, '4': 3, '5': 11, '6': '.google.protobuf.Duration', '8': {}, '10': 'example'},
+    {
+      '1': 'const',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Duration',
+      '8': {},
+      '10': 'const'
+    },
+    {
+      '1': 'lt',
+      '3': 3,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Duration',
+      '8': {},
+      '9': 0,
+      '10': 'lt'
+    },
+    {
+      '1': 'lte',
+      '3': 4,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Duration',
+      '8': {},
+      '9': 0,
+      '10': 'lte'
+    },
+    {
+      '1': 'gt',
+      '3': 5,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Duration',
+      '8': {},
+      '9': 1,
+      '10': 'gt'
+    },
+    {
+      '1': 'gte',
+      '3': 6,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Duration',
+      '8': {},
+      '9': 1,
+      '10': 'gte'
+    },
+    {
+      '1': 'in',
+      '3': 7,
+      '4': 3,
+      '5': 11,
+      '6': '.google.protobuf.Duration',
+      '8': {},
+      '10': 'in'
+    },
+    {
+      '1': 'not_in',
+      '3': 8,
+      '4': 3,
+      '5': 11,
+      '6': '.google.protobuf.Duration',
+      '8': {},
+      '10': 'notIn'
+    },
+    {
+      '1': 'example',
+      '3': 9,
+      '4': 3,
+      '5': 11,
+      '6': '.google.protobuf.Duration',
+      '8': {},
+      '10': 'example'
+    },
   ],
   '5': [
     {'1': 1000, '2': 536870912},
@@ -1529,15 +1895,75 @@ final $typed_data.Uint8List durationRulesDescriptor = $convert.base64Decode(
 const TimestampRules$json = {
   '1': 'TimestampRules',
   '2': [
-    {'1': 'const', '3': 2, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '8': {}, '10': 'const'},
-    {'1': 'lt', '3': 3, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '8': {}, '9': 0, '10': 'lt'},
-    {'1': 'lte', '3': 4, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '8': {}, '9': 0, '10': 'lte'},
+    {
+      '1': 'const',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '8': {},
+      '10': 'const'
+    },
+    {
+      '1': 'lt',
+      '3': 3,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '8': {},
+      '9': 0,
+      '10': 'lt'
+    },
+    {
+      '1': 'lte',
+      '3': 4,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '8': {},
+      '9': 0,
+      '10': 'lte'
+    },
     {'1': 'lt_now', '3': 7, '4': 1, '5': 8, '8': {}, '9': 0, '10': 'ltNow'},
-    {'1': 'gt', '3': 5, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '8': {}, '9': 1, '10': 'gt'},
-    {'1': 'gte', '3': 6, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '8': {}, '9': 1, '10': 'gte'},
+    {
+      '1': 'gt',
+      '3': 5,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '8': {},
+      '9': 1,
+      '10': 'gt'
+    },
+    {
+      '1': 'gte',
+      '3': 6,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '8': {},
+      '9': 1,
+      '10': 'gte'
+    },
     {'1': 'gt_now', '3': 8, '4': 1, '5': 8, '8': {}, '9': 1, '10': 'gtNow'},
-    {'1': 'within', '3': 9, '4': 1, '5': 11, '6': '.google.protobuf.Duration', '8': {}, '10': 'within'},
-    {'1': 'example', '3': 10, '4': 3, '5': 11, '6': '.google.protobuf.Timestamp', '8': {}, '10': 'example'},
+    {
+      '1': 'within',
+      '3': 9,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Duration',
+      '8': {},
+      '10': 'within'
+    },
+    {
+      '1': 'example',
+      '3': 10,
+      '4': 3,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '8': {},
+      '10': 'example'
+    },
   ],
   '5': [
     {'1': 1000, '2': 536870912},
@@ -1612,7 +2038,14 @@ final $typed_data.Uint8List timestampRulesDescriptor = $convert.base64Decode(
 const Violations$json = {
   '1': 'Violations',
   '2': [
-    {'1': 'violations', '3': 1, '4': 3, '5': 11, '6': '.buf.validate.Violation', '10': 'violations'},
+    {
+      '1': 'violations',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.buf.validate.Violation',
+      '10': 'violations'
+    },
   ],
 };
 
@@ -1625,8 +2058,22 @@ final $typed_data.Uint8List violationsDescriptor = $convert.base64Decode(
 const Violation$json = {
   '1': 'Violation',
   '2': [
-    {'1': 'field', '3': 5, '4': 1, '5': 11, '6': '.buf.validate.FieldPath', '10': 'field'},
-    {'1': 'rule', '3': 6, '4': 1, '5': 11, '6': '.buf.validate.FieldPath', '10': 'rule'},
+    {
+      '1': 'field',
+      '3': 5,
+      '4': 1,
+      '5': 11,
+      '6': '.buf.validate.FieldPath',
+      '10': 'field'
+    },
+    {
+      '1': 'rule',
+      '3': 6,
+      '4': 1,
+      '5': 11,
+      '6': '.buf.validate.FieldPath',
+      '10': 'rule'
+    },
     {'1': 'constraint_id', '3': 2, '4': 1, '5': 9, '10': 'constraintId'},
     {'1': 'message', '3': 3, '4': 1, '5': 9, '10': 'message'},
     {'1': 'for_key', '3': 4, '4': 1, '5': 8, '10': 'forKey'},
@@ -1648,7 +2095,14 @@ final $typed_data.Uint8List violationDescriptor = $convert.base64Decode(
 const FieldPath$json = {
   '1': 'FieldPath',
   '2': [
-    {'1': 'elements', '3': 1, '4': 3, '5': 11, '6': '.buf.validate.FieldPathElement', '10': 'elements'},
+    {
+      '1': 'elements',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.buf.validate.FieldPathElement',
+      '10': 'elements'
+    },
   ],
 };
 
@@ -1663,9 +2117,30 @@ const FieldPathElement$json = {
   '2': [
     {'1': 'field_number', '3': 1, '4': 1, '5': 5, '10': 'fieldNumber'},
     {'1': 'field_name', '3': 2, '4': 1, '5': 9, '10': 'fieldName'},
-    {'1': 'field_type', '3': 3, '4': 1, '5': 14, '6': '.google.protobuf.FieldDescriptorProto.Type', '10': 'fieldType'},
-    {'1': 'key_type', '3': 4, '4': 1, '5': 14, '6': '.google.protobuf.FieldDescriptorProto.Type', '10': 'keyType'},
-    {'1': 'value_type', '3': 5, '4': 1, '5': 14, '6': '.google.protobuf.FieldDescriptorProto.Type', '10': 'valueType'},
+    {
+      '1': 'field_type',
+      '3': 3,
+      '4': 1,
+      '5': 14,
+      '6': '.google.protobuf.FieldDescriptorProto.Type',
+      '10': 'fieldType'
+    },
+    {
+      '1': 'key_type',
+      '3': 4,
+      '4': 1,
+      '5': 14,
+      '6': '.google.protobuf.FieldDescriptorProto.Type',
+      '10': 'keyType'
+    },
+    {
+      '1': 'value_type',
+      '3': 5,
+      '4': 1,
+      '5': 14,
+      '6': '.google.protobuf.FieldDescriptorProto.Type',
+      '10': 'valueType'
+    },
     {'1': 'index', '3': 6, '4': 1, '5': 4, '9': 0, '10': 'index'},
     {'1': 'bool_key', '3': 7, '4': 1, '5': 8, '9': 0, '10': 'boolKey'},
     {'1': 'int_key', '3': 8, '4': 1, '5': 3, '9': 0, '10': 'intKey'},
@@ -1688,4 +2163,3 @@ final $typed_data.Uint8List fieldPathElementDescriptor = $convert.base64Decode(
     'Ym9vbF9rZXkYByABKAhIAFIHYm9vbEtleRIZCgdpbnRfa2V5GAggASgDSABSBmludEtleRIbCg'
     'h1aW50X2tleRgJIAEoBEgAUgd1aW50S2V5Eh8KCnN0cmluZ19rZXkYCiABKAlIAFIJc3RyaW5n'
     'S2V5QgsKCXN1YnNjcmlwdA==');
-

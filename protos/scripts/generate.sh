@@ -11,6 +11,15 @@ rm -rf gen/go/rpc
 # Generate the protos
 buf generate
 
+# Verify that yq is installed with right source Mike Farah’s yq (the Go version).
+if ! yq --version | grep -q 'mikefarah'; then
+  echo "Error: The installed 'yq' is NOT Mike Farah's version."
+  echo "Please install it using: 
+    sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/local/bin/yq
+    sudo chmod +x /usr/local/bin/yq"
+  exit 1
+fi
+
 # Merge generated OpenAPI specs.
 find gen/openapi/specs -type f -name "*.yaml" -print0 \
 | sort -z \
@@ -30,9 +39,8 @@ environment:
   sdk: ^3.5.3
 
 dependencies:
-  connectrpc: ^0.3.0
-
-dev_dependencies:
+  connectrpc: ^1.0.0
+  protobuf: ^4.1.1
 
 EOF
 

@@ -1,86 +1,91 @@
+// This is a generated file - do not edit.
 //
-//  Generated code. Do not modify.
-//  source: business/v1/supplier.proto
-//
-// @dart = 2.12
+// Generated from business/v1/supplier.proto.
+
+// @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
-// ignore_for_file: constant_identifier_names, library_prefixes
-// ignore_for_file: non_constant_identifier_names, prefer_final_fields
-// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
+// ignore_for_file: constant_identifier_names
+// ignore_for_file: curly_braces_in_flow_control_structures
+// ignore_for_file: deprecated_member_use_from_same_package, library_prefixes
+// ignore_for_file: non_constant_identifier_names
 
 import 'dart:async' as $async;
 import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import '../../link/v1/link.pb.dart' as $4;
+import '../../link/v1/link.pb.dart' as $0;
+
+export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 
 class Link extends $pb.GeneratedMessage {
   factory Link({
     $core.String? label,
     $core.String? url,
   }) {
-    final $result = create();
-    if (label != null) {
-      $result.label = label;
-    }
-    if (url != null) {
-      $result.url = url;
-    }
-    return $result;
+    final result = create();
+    if (label != null) result.label = label;
+    if (url != null) result.url = url;
+    return result;
   }
-  Link._() : super();
-  factory Link.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory Link.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Link', package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'), createEmptyInstance: create)
+  Link._();
+
+  factory Link.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory Link.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'Link',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'label')
     ..aOS(2, _omitFieldNames ? '' : 'url')
-    ..hasRequiredFields = false
-  ;
+    ..hasRequiredFields = false;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Link clone() => Link()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  Link copyWith(void Function(Link) updates) => super.copyWith((message) => updates(message as Link)) as Link;
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  Link copyWith(void Function(Link) updates) =>
+      super.copyWith((message) => updates(message as Link)) as Link;
 
+  @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
   static Link create() => Link._();
+  @$core.override
   Link createEmptyInstance() => create();
   static $pb.PbList<Link> createRepeated() => $pb.PbList<Link>();
   @$core.pragma('dart2js:noInline')
-  static Link getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Link>(create);
+  static Link getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Link>(create);
   static Link? _defaultInstance;
 
   /// The label of the link.
   @$pb.TagNumber(1)
   $core.String get label => $_getSZ(0);
   @$pb.TagNumber(1)
-  set label($core.String v) { $_setString(0, v); }
+  set label($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
   $core.bool hasLabel() => $_has(0);
   @$pb.TagNumber(1)
-  void clearLabel() => clearField(1);
+  void clearLabel() => $_clearField(1);
 
   /// The url of the link.
   /// Todo: We must automatically retrieve the icon of the link.
   @$pb.TagNumber(2)
   $core.String get url => $_getSZ(1);
   @$pb.TagNumber(2)
-  set url($core.String v) { $_setString(1, v); }
+  set url($core.String value) => $_setString(1, value);
   @$pb.TagNumber(2)
   $core.bool hasUrl() => $_has(1);
   @$pb.TagNumber(2)
-  void clearUrl() => clearField(2);
+  void clearUrl() => $_clearField(2);
 }
 
 class Supplier extends $pb.GeneratedMessage {
@@ -92,176 +97,179 @@ class Supplier extends $pb.GeneratedMessage {
     $core.Iterable<$core.String>? externalLinksIds,
     $core.String? businessId,
   }) {
-    final $result = create();
-    if (refId != null) {
-      $result.refId = refId;
-    }
-    if (name != null) {
-      $result.name = name;
-    }
-    if (description != null) {
-      $result.description = description;
-    }
-    if (logoLinkId != null) {
-      $result.logoLinkId = logoLinkId;
-    }
-    if (externalLinksIds != null) {
-      $result.externalLinksIds.addAll(externalLinksIds);
-    }
-    if (businessId != null) {
-      $result.businessId = businessId;
-    }
-    return $result;
+    final result = create();
+    if (refId != null) result.refId = refId;
+    if (name != null) result.name = name;
+    if (description != null) result.description = description;
+    if (logoLinkId != null) result.logoLinkId = logoLinkId;
+    if (externalLinksIds != null)
+      result.externalLinksIds.addAll(externalLinksIds);
+    if (businessId != null) result.businessId = businessId;
+    return result;
   }
-  Supplier._() : super();
-  factory Supplier.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory Supplier.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Supplier', package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'), createEmptyInstance: create)
+  Supplier._();
+
+  factory Supplier.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory Supplier.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'Supplier',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..aOS(2, _omitFieldNames ? '' : 'name')
     ..aOS(3, _omitFieldNames ? '' : 'description')
     ..aOS(4, _omitFieldNames ? '' : 'logoLinkId')
     ..pPS(5, _omitFieldNames ? '' : 'externalLinksIds')
     ..aOS(6, _omitFieldNames ? '' : 'businessId')
-    ..hasRequiredFields = false
-  ;
+    ..hasRequiredFields = false;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Supplier clone() => Supplier()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  Supplier copyWith(void Function(Supplier) updates) => super.copyWith((message) => updates(message as Supplier)) as Supplier;
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  Supplier copyWith(void Function(Supplier) updates) =>
+      super.copyWith((message) => updates(message as Supplier)) as Supplier;
 
+  @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
   static Supplier create() => Supplier._();
+  @$core.override
   Supplier createEmptyInstance() => create();
   static $pb.PbList<Supplier> createRepeated() => $pb.PbList<Supplier>();
   @$core.pragma('dart2js:noInline')
-  static Supplier getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Supplier>(create);
+  static Supplier getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Supplier>(create);
   static Supplier? _defaultInstance;
 
   /// The reference id to the supplier identifier.
   @$pb.TagNumber(1)
   $core.String get refId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set refId($core.String v) { $_setString(0, v); }
+  set refId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
   $core.bool hasRefId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearRefId() => clearField(1);
+  void clearRefId() => $_clearField(1);
 
   /// The name of the supplier.
   @$pb.TagNumber(2)
   $core.String get name => $_getSZ(1);
   @$pb.TagNumber(2)
-  set name($core.String v) { $_setString(1, v); }
+  set name($core.String value) => $_setString(1, value);
   @$pb.TagNumber(2)
   $core.bool hasName() => $_has(1);
   @$pb.TagNumber(2)
-  void clearName() => clearField(2);
+  void clearName() => $_clearField(2);
 
   /// The description of the supplier.
   @$pb.TagNumber(3)
   $core.String get description => $_getSZ(2);
   @$pb.TagNumber(3)
-  set description($core.String v) { $_setString(2, v); }
+  set description($core.String value) => $_setString(2, value);
   @$pb.TagNumber(3)
   $core.bool hasDescription() => $_has(2);
   @$pb.TagNumber(3)
-  void clearDescription() => clearField(3);
+  void clearDescription() => $_clearField(3);
 
   /// The id of the media of the logo of the supplier.
   @$pb.TagNumber(4)
   $core.String get logoLinkId => $_getSZ(3);
   @$pb.TagNumber(4)
-  set logoLinkId($core.String v) { $_setString(3, v); }
+  set logoLinkId($core.String value) => $_setString(3, value);
   @$pb.TagNumber(4)
   $core.bool hasLogoLinkId() => $_has(3);
   @$pb.TagNumber(4)
-  void clearLogoLinkId() => clearField(4);
+  void clearLogoLinkId() => $_clearField(4);
 
   /// The links of the supplier.
   @$pb.TagNumber(5)
-  $core.List<$core.String> get externalLinksIds => $_getList(4);
+  $pb.PbList<$core.String> get externalLinksIds => $_getList(4);
 
   /// The id of the business of the supplier.
   @$pb.TagNumber(6)
   $core.String get businessId => $_getSZ(5);
   @$pb.TagNumber(6)
-  set businessId($core.String v) { $_setString(5, v); }
+  set businessId($core.String value) => $_setString(5, value);
   @$pb.TagNumber(6)
   $core.bool hasBusinessId() => $_has(5);
   @$pb.TagNumber(6)
-  void clearBusinessId() => clearField(6);
+  void clearBusinessId() => $_clearField(6);
 }
 
 class CreateSupplierRequest extends $pb.GeneratedMessage {
   factory CreateSupplierRequest({
     Supplier? supplier,
     $core.List<$core.int>? logoRawImage,
-    $core.Iterable<$4.ResourceLink>? externalLinks,
+    $core.Iterable<$0.ResourceLink>? externalLinks,
   }) {
-    final $result = create();
-    if (supplier != null) {
-      $result.supplier = supplier;
-    }
-    if (logoRawImage != null) {
-      $result.logoRawImage = logoRawImage;
-    }
-    if (externalLinks != null) {
-      $result.externalLinks.addAll(externalLinks);
-    }
-    return $result;
+    final result = create();
+    if (supplier != null) result.supplier = supplier;
+    if (logoRawImage != null) result.logoRawImage = logoRawImage;
+    if (externalLinks != null) result.externalLinks.addAll(externalLinks);
+    return result;
   }
-  CreateSupplierRequest._() : super();
-  factory CreateSupplierRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory CreateSupplierRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CreateSupplierRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'), createEmptyInstance: create)
-    ..aOM<Supplier>(1, _omitFieldNames ? '' : 'supplier', subBuilder: Supplier.create)
-    ..a<$core.List<$core.int>>(2, _omitFieldNames ? '' : 'logoRawImage', $pb.PbFieldType.OY)
-    ..pc<$4.ResourceLink>(3, _omitFieldNames ? '' : 'externalLinks', $pb.PbFieldType.PM, subBuilder: $4.ResourceLink.create)
-    ..hasRequiredFields = false
-  ;
+  CreateSupplierRequest._();
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
-  CreateSupplierRequest clone() => CreateSupplierRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  CreateSupplierRequest copyWith(void Function(CreateSupplierRequest) updates) => super.copyWith((message) => updates(message as CreateSupplierRequest)) as CreateSupplierRequest;
+  factory CreateSupplierRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory CreateSupplierRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'CreateSupplierRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'),
+      createEmptyInstance: create)
+    ..aOM<Supplier>(1, _omitFieldNames ? '' : 'supplier',
+        subBuilder: Supplier.create)
+    ..a<$core.List<$core.int>>(
+        2, _omitFieldNames ? '' : 'logoRawImage', $pb.PbFieldType.OY)
+    ..pc<$0.ResourceLink>(
+        3, _omitFieldNames ? '' : 'externalLinks', $pb.PbFieldType.PM,
+        subBuilder: $0.ResourceLink.create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  CreateSupplierRequest clone() =>
+      CreateSupplierRequest()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  CreateSupplierRequest copyWith(
+          void Function(CreateSupplierRequest) updates) =>
+      super.copyWith((message) => updates(message as CreateSupplierRequest))
+          as CreateSupplierRequest;
+
+  @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
   static CreateSupplierRequest create() => CreateSupplierRequest._();
+  @$core.override
   CreateSupplierRequest createEmptyInstance() => create();
-  static $pb.PbList<CreateSupplierRequest> createRepeated() => $pb.PbList<CreateSupplierRequest>();
+  static $pb.PbList<CreateSupplierRequest> createRepeated() =>
+      $pb.PbList<CreateSupplierRequest>();
   @$core.pragma('dart2js:noInline')
-  static CreateSupplierRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CreateSupplierRequest>(create);
+  static CreateSupplierRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<CreateSupplierRequest>(create);
   static CreateSupplierRequest? _defaultInstance;
 
   /// The supplier information to create.
   @$pb.TagNumber(1)
   Supplier get supplier => $_getN(0);
   @$pb.TagNumber(1)
-  set supplier(Supplier v) { setField(1, v); }
+  set supplier(Supplier value) => $_setField(1, value);
   @$pb.TagNumber(1)
   $core.bool hasSupplier() => $_has(0);
   @$pb.TagNumber(1)
-  void clearSupplier() => clearField(1);
+  void clearSupplier() => $_clearField(1);
   @$pb.TagNumber(1)
   Supplier ensureSupplier() => $_ensure(0);
 
@@ -269,168 +277,189 @@ class CreateSupplierRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.List<$core.int> get logoRawImage => $_getN(1);
   @$pb.TagNumber(2)
-  set logoRawImage($core.List<$core.int> v) { $_setBytes(1, v); }
+  set logoRawImage($core.List<$core.int> value) => $_setBytes(1, value);
   @$pb.TagNumber(2)
   $core.bool hasLogoRawImage() => $_has(1);
   @$pb.TagNumber(2)
-  void clearLogoRawImage() => clearField(2);
+  void clearLogoRawImage() => $_clearField(2);
 
   /// The links of the supplier.
   @$pb.TagNumber(3)
-  $core.List<$4.ResourceLink> get externalLinks => $_getList(2);
+  $pb.PbList<$0.ResourceLink> get externalLinks => $_getList(2);
 }
 
 class CreateSupplierResponse extends $pb.GeneratedMessage {
   factory CreateSupplierResponse({
     $core.String? suplierId,
   }) {
-    final $result = create();
-    if (suplierId != null) {
-      $result.suplierId = suplierId;
-    }
-    return $result;
+    final result = create();
+    if (suplierId != null) result.suplierId = suplierId;
+    return result;
   }
-  CreateSupplierResponse._() : super();
-  factory CreateSupplierResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory CreateSupplierResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CreateSupplierResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'), createEmptyInstance: create)
+  CreateSupplierResponse._();
+
+  factory CreateSupplierResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory CreateSupplierResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'CreateSupplierResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'suplierId')
-    ..hasRequiredFields = false
-  ;
+    ..hasRequiredFields = false;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
-  CreateSupplierResponse clone() => CreateSupplierResponse()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  CreateSupplierResponse copyWith(void Function(CreateSupplierResponse) updates) => super.copyWith((message) => updates(message as CreateSupplierResponse)) as CreateSupplierResponse;
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  CreateSupplierResponse clone() =>
+      CreateSupplierResponse()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  CreateSupplierResponse copyWith(
+          void Function(CreateSupplierResponse) updates) =>
+      super.copyWith((message) => updates(message as CreateSupplierResponse))
+          as CreateSupplierResponse;
 
+  @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
   static CreateSupplierResponse create() => CreateSupplierResponse._();
+  @$core.override
   CreateSupplierResponse createEmptyInstance() => create();
-  static $pb.PbList<CreateSupplierResponse> createRepeated() => $pb.PbList<CreateSupplierResponse>();
+  static $pb.PbList<CreateSupplierResponse> createRepeated() =>
+      $pb.PbList<CreateSupplierResponse>();
   @$core.pragma('dart2js:noInline')
-  static CreateSupplierResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CreateSupplierResponse>(create);
+  static CreateSupplierResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<CreateSupplierResponse>(create);
   static CreateSupplierResponse? _defaultInstance;
 
   /// The reference id to the supplier identifier.
   @$pb.TagNumber(1)
   $core.String get suplierId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set suplierId($core.String v) { $_setString(0, v); }
+  set suplierId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
   $core.bool hasSuplierId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearSuplierId() => clearField(1);
+  void clearSuplierId() => $_clearField(1);
 }
 
 class GetSupplierRequest extends $pb.GeneratedMessage {
   factory GetSupplierRequest({
     $core.String? supplierId,
   }) {
-    final $result = create();
-    if (supplierId != null) {
-      $result.supplierId = supplierId;
-    }
-    return $result;
+    final result = create();
+    if (supplierId != null) result.supplierId = supplierId;
+    return result;
   }
-  GetSupplierRequest._() : super();
-  factory GetSupplierRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory GetSupplierRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'GetSupplierRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'), createEmptyInstance: create)
+  GetSupplierRequest._();
+
+  factory GetSupplierRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory GetSupplierRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetSupplierRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'supplierId')
-    ..hasRequiredFields = false
-  ;
+    ..hasRequiredFields = false;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetSupplierRequest clone() => GetSupplierRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  GetSupplierRequest copyWith(void Function(GetSupplierRequest) updates) => super.copyWith((message) => updates(message as GetSupplierRequest)) as GetSupplierRequest;
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetSupplierRequest copyWith(void Function(GetSupplierRequest) updates) =>
+      super.copyWith((message) => updates(message as GetSupplierRequest))
+          as GetSupplierRequest;
 
+  @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
   static GetSupplierRequest create() => GetSupplierRequest._();
+  @$core.override
   GetSupplierRequest createEmptyInstance() => create();
-  static $pb.PbList<GetSupplierRequest> createRepeated() => $pb.PbList<GetSupplierRequest>();
+  static $pb.PbList<GetSupplierRequest> createRepeated() =>
+      $pb.PbList<GetSupplierRequest>();
   @$core.pragma('dart2js:noInline')
-  static GetSupplierRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetSupplierRequest>(create);
+  static GetSupplierRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetSupplierRequest>(create);
   static GetSupplierRequest? _defaultInstance;
 
   /// The reference id to the supplier identifier.
   @$pb.TagNumber(1)
   $core.String get supplierId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set supplierId($core.String v) { $_setString(0, v); }
+  set supplierId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
   $core.bool hasSupplierId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearSupplierId() => clearField(1);
+  void clearSupplierId() => $_clearField(1);
 }
 
 class GetSupplierResponse extends $pb.GeneratedMessage {
   factory GetSupplierResponse({
     Supplier? supplier,
   }) {
-    final $result = create();
-    if (supplier != null) {
-      $result.supplier = supplier;
-    }
-    return $result;
+    final result = create();
+    if (supplier != null) result.supplier = supplier;
+    return result;
   }
-  GetSupplierResponse._() : super();
-  factory GetSupplierResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory GetSupplierResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'GetSupplierResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'), createEmptyInstance: create)
-    ..aOM<Supplier>(1, _omitFieldNames ? '' : 'supplier', subBuilder: Supplier.create)
-    ..hasRequiredFields = false
-  ;
+  GetSupplierResponse._();
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  factory GetSupplierResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory GetSupplierResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetSupplierResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'),
+      createEmptyInstance: create)
+    ..aOM<Supplier>(1, _omitFieldNames ? '' : 'supplier',
+        subBuilder: Supplier.create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetSupplierResponse clone() => GetSupplierResponse()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  GetSupplierResponse copyWith(void Function(GetSupplierResponse) updates) => super.copyWith((message) => updates(message as GetSupplierResponse)) as GetSupplierResponse;
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetSupplierResponse copyWith(void Function(GetSupplierResponse) updates) =>
+      super.copyWith((message) => updates(message as GetSupplierResponse))
+          as GetSupplierResponse;
 
+  @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
   static GetSupplierResponse create() => GetSupplierResponse._();
+  @$core.override
   GetSupplierResponse createEmptyInstance() => create();
-  static $pb.PbList<GetSupplierResponse> createRepeated() => $pb.PbList<GetSupplierResponse>();
+  static $pb.PbList<GetSupplierResponse> createRepeated() =>
+      $pb.PbList<GetSupplierResponse>();
   @$core.pragma('dart2js:noInline')
-  static GetSupplierResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetSupplierResponse>(create);
+  static GetSupplierResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetSupplierResponse>(create);
   static GetSupplierResponse? _defaultInstance;
 
   /// The retrieved supplier data.
   @$pb.TagNumber(1)
   Supplier get supplier => $_getN(0);
   @$pb.TagNumber(1)
-  set supplier(Supplier v) { setField(1, v); }
+  set supplier(Supplier value) => $_setField(1, value);
   @$pb.TagNumber(1)
   $core.bool hasSupplier() => $_has(0);
   @$pb.TagNumber(1)
-  void clearSupplier() => clearField(1);
+  void clearSupplier() => $_clearField(1);
   @$pb.TagNumber(1)
   Supplier ensureSupplier() => $_ensure(0);
 }
@@ -439,147 +468,176 @@ class GetBusinessSuppliersRequest extends $pb.GeneratedMessage {
   factory GetBusinessSuppliersRequest({
     $core.String? supplierId,
   }) {
-    final $result = create();
-    if (supplierId != null) {
-      $result.supplierId = supplierId;
-    }
-    return $result;
+    final result = create();
+    if (supplierId != null) result.supplierId = supplierId;
+    return result;
   }
-  GetBusinessSuppliersRequest._() : super();
-  factory GetBusinessSuppliersRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory GetBusinessSuppliersRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'GetBusinessSuppliersRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'), createEmptyInstance: create)
+  GetBusinessSuppliersRequest._();
+
+  factory GetBusinessSuppliersRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory GetBusinessSuppliersRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetBusinessSuppliersRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'supplierId')
-    ..hasRequiredFields = false
-  ;
+    ..hasRequiredFields = false;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
-  GetBusinessSuppliersRequest clone() => GetBusinessSuppliersRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  GetBusinessSuppliersRequest copyWith(void Function(GetBusinessSuppliersRequest) updates) => super.copyWith((message) => updates(message as GetBusinessSuppliersRequest)) as GetBusinessSuppliersRequest;
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetBusinessSuppliersRequest clone() =>
+      GetBusinessSuppliersRequest()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetBusinessSuppliersRequest copyWith(
+          void Function(GetBusinessSuppliersRequest) updates) =>
+      super.copyWith(
+              (message) => updates(message as GetBusinessSuppliersRequest))
+          as GetBusinessSuppliersRequest;
 
+  @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static GetBusinessSuppliersRequest create() => GetBusinessSuppliersRequest._();
+  static GetBusinessSuppliersRequest create() =>
+      GetBusinessSuppliersRequest._();
+  @$core.override
   GetBusinessSuppliersRequest createEmptyInstance() => create();
-  static $pb.PbList<GetBusinessSuppliersRequest> createRepeated() => $pb.PbList<GetBusinessSuppliersRequest>();
+  static $pb.PbList<GetBusinessSuppliersRequest> createRepeated() =>
+      $pb.PbList<GetBusinessSuppliersRequest>();
   @$core.pragma('dart2js:noInline')
-  static GetBusinessSuppliersRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetBusinessSuppliersRequest>(create);
+  static GetBusinessSuppliersRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetBusinessSuppliersRequest>(create);
   static GetBusinessSuppliersRequest? _defaultInstance;
 
   /// The reference id to the supplier identifier.
   @$pb.TagNumber(1)
   $core.String get supplierId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set supplierId($core.String v) { $_setString(0, v); }
+  set supplierId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
   $core.bool hasSupplierId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearSupplierId() => clearField(1);
+  void clearSupplierId() => $_clearField(1);
 }
 
 class GetBusinessSuppliersResponse extends $pb.GeneratedMessage {
   factory GetBusinessSuppliersResponse({
     $core.Iterable<Supplier>? suppliers,
   }) {
-    final $result = create();
-    if (suppliers != null) {
-      $result.suppliers.addAll(suppliers);
-    }
-    return $result;
+    final result = create();
+    if (suppliers != null) result.suppliers.addAll(suppliers);
+    return result;
   }
-  GetBusinessSuppliersResponse._() : super();
-  factory GetBusinessSuppliersResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory GetBusinessSuppliersResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'GetBusinessSuppliersResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'), createEmptyInstance: create)
-    ..pc<Supplier>(1, _omitFieldNames ? '' : 'suppliers', $pb.PbFieldType.PM, subBuilder: Supplier.create)
-    ..hasRequiredFields = false
-  ;
+  GetBusinessSuppliersResponse._();
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
-  GetBusinessSuppliersResponse clone() => GetBusinessSuppliersResponse()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  GetBusinessSuppliersResponse copyWith(void Function(GetBusinessSuppliersResponse) updates) => super.copyWith((message) => updates(message as GetBusinessSuppliersResponse)) as GetBusinessSuppliersResponse;
+  factory GetBusinessSuppliersResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory GetBusinessSuppliersResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetBusinessSuppliersResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'),
+      createEmptyInstance: create)
+    ..pc<Supplier>(1, _omitFieldNames ? '' : 'suppliers', $pb.PbFieldType.PM,
+        subBuilder: Supplier.create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetBusinessSuppliersResponse clone() =>
+      GetBusinessSuppliersResponse()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetBusinessSuppliersResponse copyWith(
+          void Function(GetBusinessSuppliersResponse) updates) =>
+      super.copyWith(
+              (message) => updates(message as GetBusinessSuppliersResponse))
+          as GetBusinessSuppliersResponse;
+
+  @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static GetBusinessSuppliersResponse create() => GetBusinessSuppliersResponse._();
+  static GetBusinessSuppliersResponse create() =>
+      GetBusinessSuppliersResponse._();
+  @$core.override
   GetBusinessSuppliersResponse createEmptyInstance() => create();
-  static $pb.PbList<GetBusinessSuppliersResponse> createRepeated() => $pb.PbList<GetBusinessSuppliersResponse>();
+  static $pb.PbList<GetBusinessSuppliersResponse> createRepeated() =>
+      $pb.PbList<GetBusinessSuppliersResponse>();
   @$core.pragma('dart2js:noInline')
-  static GetBusinessSuppliersResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetBusinessSuppliersResponse>(create);
+  static GetBusinessSuppliersResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetBusinessSuppliersResponse>(create);
   static GetBusinessSuppliersResponse? _defaultInstance;
 
   /// The list of suppliers of the business.
   /// Note: Only the ids and names of the suppliers are returned.
   @$pb.TagNumber(1)
-  $core.List<Supplier> get suppliers => $_getList(0);
+  $pb.PbList<Supplier> get suppliers => $_getList(0);
 }
 
 class UpdateSupplierRequest extends $pb.GeneratedMessage {
   factory UpdateSupplierRequest({
     Supplier? supplier,
     $core.List<$core.int>? logoRawImage,
-    $core.Iterable<$4.ResourceLink>? externalLinks,
+    $core.Iterable<$0.ResourceLink>? externalLinks,
   }) {
-    final $result = create();
-    if (supplier != null) {
-      $result.supplier = supplier;
-    }
-    if (logoRawImage != null) {
-      $result.logoRawImage = logoRawImage;
-    }
-    if (externalLinks != null) {
-      $result.externalLinks.addAll(externalLinks);
-    }
-    return $result;
+    final result = create();
+    if (supplier != null) result.supplier = supplier;
+    if (logoRawImage != null) result.logoRawImage = logoRawImage;
+    if (externalLinks != null) result.externalLinks.addAll(externalLinks);
+    return result;
   }
-  UpdateSupplierRequest._() : super();
-  factory UpdateSupplierRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory UpdateSupplierRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'UpdateSupplierRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'), createEmptyInstance: create)
-    ..aOM<Supplier>(1, _omitFieldNames ? '' : 'supplier', subBuilder: Supplier.create)
-    ..a<$core.List<$core.int>>(2, _omitFieldNames ? '' : 'logoRawImage', $pb.PbFieldType.OY)
-    ..pc<$4.ResourceLink>(3, _omitFieldNames ? '' : 'externalLinks', $pb.PbFieldType.PM, subBuilder: $4.ResourceLink.create)
-    ..hasRequiredFields = false
-  ;
+  UpdateSupplierRequest._();
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
-  UpdateSupplierRequest clone() => UpdateSupplierRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  UpdateSupplierRequest copyWith(void Function(UpdateSupplierRequest) updates) => super.copyWith((message) => updates(message as UpdateSupplierRequest)) as UpdateSupplierRequest;
+  factory UpdateSupplierRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory UpdateSupplierRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'UpdateSupplierRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'),
+      createEmptyInstance: create)
+    ..aOM<Supplier>(1, _omitFieldNames ? '' : 'supplier',
+        subBuilder: Supplier.create)
+    ..a<$core.List<$core.int>>(
+        2, _omitFieldNames ? '' : 'logoRawImage', $pb.PbFieldType.OY)
+    ..pc<$0.ResourceLink>(
+        3, _omitFieldNames ? '' : 'externalLinks', $pb.PbFieldType.PM,
+        subBuilder: $0.ResourceLink.create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  UpdateSupplierRequest clone() =>
+      UpdateSupplierRequest()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  UpdateSupplierRequest copyWith(
+          void Function(UpdateSupplierRequest) updates) =>
+      super.copyWith((message) => updates(message as UpdateSupplierRequest))
+          as UpdateSupplierRequest;
+
+  @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
   static UpdateSupplierRequest create() => UpdateSupplierRequest._();
+  @$core.override
   UpdateSupplierRequest createEmptyInstance() => create();
-  static $pb.PbList<UpdateSupplierRequest> createRepeated() => $pb.PbList<UpdateSupplierRequest>();
+  static $pb.PbList<UpdateSupplierRequest> createRepeated() =>
+      $pb.PbList<UpdateSupplierRequest>();
   @$core.pragma('dart2js:noInline')
-  static UpdateSupplierRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<UpdateSupplierRequest>(create);
+  static UpdateSupplierRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<UpdateSupplierRequest>(create);
   static UpdateSupplierRequest? _defaultInstance;
 
   /// The supplier information to update.
@@ -587,11 +645,11 @@ class UpdateSupplierRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   Supplier get supplier => $_getN(0);
   @$pb.TagNumber(1)
-  set supplier(Supplier v) { setField(1, v); }
+  set supplier(Supplier value) => $_setField(1, value);
   @$pb.TagNumber(1)
   $core.bool hasSupplier() => $_has(0);
   @$pb.TagNumber(1)
-  void clearSupplier() => clearField(1);
+  void clearSupplier() => $_clearField(1);
   @$pb.TagNumber(1)
   Supplier ensureSupplier() => $_ensure(0);
 
@@ -599,66 +657,75 @@ class UpdateSupplierRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.List<$core.int> get logoRawImage => $_getN(1);
   @$pb.TagNumber(2)
-  set logoRawImage($core.List<$core.int> v) { $_setBytes(1, v); }
+  set logoRawImage($core.List<$core.int> value) => $_setBytes(1, value);
   @$pb.TagNumber(2)
   $core.bool hasLogoRawImage() => $_has(1);
   @$pb.TagNumber(2)
-  void clearLogoRawImage() => clearField(2);
+  void clearLogoRawImage() => $_clearField(2);
 
   /// The links of the supplier.
   @$pb.TagNumber(3)
-  $core.List<$4.ResourceLink> get externalLinks => $_getList(2);
+  $pb.PbList<$0.ResourceLink> get externalLinks => $_getList(2);
 }
 
 class UpdateSupplierResponse extends $pb.GeneratedMessage {
   factory UpdateSupplierResponse({
     Supplier? supplier,
   }) {
-    final $result = create();
-    if (supplier != null) {
-      $result.supplier = supplier;
-    }
-    return $result;
+    final result = create();
+    if (supplier != null) result.supplier = supplier;
+    return result;
   }
-  UpdateSupplierResponse._() : super();
-  factory UpdateSupplierResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory UpdateSupplierResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'UpdateSupplierResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'), createEmptyInstance: create)
-    ..aOM<Supplier>(1, _omitFieldNames ? '' : 'supplier', subBuilder: Supplier.create)
-    ..hasRequiredFields = false
-  ;
+  UpdateSupplierResponse._();
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
-  UpdateSupplierResponse clone() => UpdateSupplierResponse()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  UpdateSupplierResponse copyWith(void Function(UpdateSupplierResponse) updates) => super.copyWith((message) => updates(message as UpdateSupplierResponse)) as UpdateSupplierResponse;
+  factory UpdateSupplierResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory UpdateSupplierResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'UpdateSupplierResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'),
+      createEmptyInstance: create)
+    ..aOM<Supplier>(1, _omitFieldNames ? '' : 'supplier',
+        subBuilder: Supplier.create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  UpdateSupplierResponse clone() =>
+      UpdateSupplierResponse()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  UpdateSupplierResponse copyWith(
+          void Function(UpdateSupplierResponse) updates) =>
+      super.copyWith((message) => updates(message as UpdateSupplierResponse))
+          as UpdateSupplierResponse;
+
+  @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
   static UpdateSupplierResponse create() => UpdateSupplierResponse._();
+  @$core.override
   UpdateSupplierResponse createEmptyInstance() => create();
-  static $pb.PbList<UpdateSupplierResponse> createRepeated() => $pb.PbList<UpdateSupplierResponse>();
+  static $pb.PbList<UpdateSupplierResponse> createRepeated() =>
+      $pb.PbList<UpdateSupplierResponse>();
   @$core.pragma('dart2js:noInline')
-  static UpdateSupplierResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<UpdateSupplierResponse>(create);
+  static UpdateSupplierResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<UpdateSupplierResponse>(create);
   static UpdateSupplierResponse? _defaultInstance;
 
   /// The updated supplier data.
   @$pb.TagNumber(1)
   Supplier get supplier => $_getN(0);
   @$pb.TagNumber(1)
-  set supplier(Supplier v) { setField(1, v); }
+  set supplier(Supplier value) => $_setField(1, value);
   @$pb.TagNumber(1)
   $core.bool hasSupplier() => $_has(0);
   @$pb.TagNumber(1)
-  void clearSupplier() => clearField(1);
+  void clearSupplier() => $_clearField(1);
   @$pb.TagNumber(1)
   Supplier ensureSupplier() => $_ensure(0);
 }
@@ -667,125 +734,158 @@ class DeleteSupplierRequest extends $pb.GeneratedMessage {
   factory DeleteSupplierRequest({
     $core.String? supplierId,
   }) {
-    final $result = create();
-    if (supplierId != null) {
-      $result.supplierId = supplierId;
-    }
-    return $result;
+    final result = create();
+    if (supplierId != null) result.supplierId = supplierId;
+    return result;
   }
-  DeleteSupplierRequest._() : super();
-  factory DeleteSupplierRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory DeleteSupplierRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'DeleteSupplierRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'), createEmptyInstance: create)
+  DeleteSupplierRequest._();
+
+  factory DeleteSupplierRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory DeleteSupplierRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'DeleteSupplierRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'supplierId')
-    ..hasRequiredFields = false
-  ;
+    ..hasRequiredFields = false;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
-  DeleteSupplierRequest clone() => DeleteSupplierRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  DeleteSupplierRequest copyWith(void Function(DeleteSupplierRequest) updates) => super.copyWith((message) => updates(message as DeleteSupplierRequest)) as DeleteSupplierRequest;
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  DeleteSupplierRequest clone() =>
+      DeleteSupplierRequest()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  DeleteSupplierRequest copyWith(
+          void Function(DeleteSupplierRequest) updates) =>
+      super.copyWith((message) => updates(message as DeleteSupplierRequest))
+          as DeleteSupplierRequest;
 
+  @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
   static DeleteSupplierRequest create() => DeleteSupplierRequest._();
+  @$core.override
   DeleteSupplierRequest createEmptyInstance() => create();
-  static $pb.PbList<DeleteSupplierRequest> createRepeated() => $pb.PbList<DeleteSupplierRequest>();
+  static $pb.PbList<DeleteSupplierRequest> createRepeated() =>
+      $pb.PbList<DeleteSupplierRequest>();
   @$core.pragma('dart2js:noInline')
-  static DeleteSupplierRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<DeleteSupplierRequest>(create);
+  static DeleteSupplierRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<DeleteSupplierRequest>(create);
   static DeleteSupplierRequest? _defaultInstance;
 
   /// The reference id to the supplier identifier.
   @$pb.TagNumber(1)
   $core.String get supplierId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set supplierId($core.String v) { $_setString(0, v); }
+  set supplierId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
   $core.bool hasSupplierId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearSupplierId() => clearField(1);
+  void clearSupplierId() => $_clearField(1);
 }
 
 class DeleteSupplierResponse extends $pb.GeneratedMessage {
   factory DeleteSupplierResponse({
     $core.bool? success,
   }) {
-    final $result = create();
-    if (success != null) {
-      $result.success = success;
-    }
-    return $result;
+    final result = create();
+    if (success != null) result.success = success;
+    return result;
   }
-  DeleteSupplierResponse._() : super();
-  factory DeleteSupplierResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory DeleteSupplierResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'DeleteSupplierResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'), createEmptyInstance: create)
+  DeleteSupplierResponse._();
+
+  factory DeleteSupplierResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory DeleteSupplierResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'DeleteSupplierResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'),
+      createEmptyInstance: create)
     ..aOB(1, _omitFieldNames ? '' : 'success')
-    ..hasRequiredFields = false
-  ;
+    ..hasRequiredFields = false;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
-  DeleteSupplierResponse clone() => DeleteSupplierResponse()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  DeleteSupplierResponse copyWith(void Function(DeleteSupplierResponse) updates) => super.copyWith((message) => updates(message as DeleteSupplierResponse)) as DeleteSupplierResponse;
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  DeleteSupplierResponse clone() =>
+      DeleteSupplierResponse()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  DeleteSupplierResponse copyWith(
+          void Function(DeleteSupplierResponse) updates) =>
+      super.copyWith((message) => updates(message as DeleteSupplierResponse))
+          as DeleteSupplierResponse;
 
+  @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
   static DeleteSupplierResponse create() => DeleteSupplierResponse._();
+  @$core.override
   DeleteSupplierResponse createEmptyInstance() => create();
-  static $pb.PbList<DeleteSupplierResponse> createRepeated() => $pb.PbList<DeleteSupplierResponse>();
+  static $pb.PbList<DeleteSupplierResponse> createRepeated() =>
+      $pb.PbList<DeleteSupplierResponse>();
   @$core.pragma('dart2js:noInline')
-  static DeleteSupplierResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<DeleteSupplierResponse>(create);
+  static DeleteSupplierResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<DeleteSupplierResponse>(create);
   static DeleteSupplierResponse? _defaultInstance;
 
   /// Whether the supplier was successfully deleted.
   @$pb.TagNumber(1)
   $core.bool get success => $_getBF(0);
   @$pb.TagNumber(1)
-  set success($core.bool v) { $_setBool(0, v); }
+  set success($core.bool value) => $_setBool(0, value);
   @$pb.TagNumber(1)
   $core.bool hasSuccess() => $_has(0);
   @$pb.TagNumber(1)
-  void clearSuccess() => clearField(1);
+  void clearSuccess() => $_clearField(1);
 }
 
 class SupplierServiceApi {
-  $pb.RpcClient _client;
+  final $pb.RpcClient _client;
+
   SupplierServiceApi(this._client);
 
-  $async.Future<CreateSupplierResponse> createSupplier($pb.ClientContext? ctx, CreateSupplierRequest request) =>
-    _client.invoke<CreateSupplierResponse>(ctx, 'SupplierService', 'CreateSupplier', request, CreateSupplierResponse())
-  ;
-  $async.Future<GetSupplierResponse> getSupplier($pb.ClientContext? ctx, GetSupplierRequest request) =>
-    _client.invoke<GetSupplierResponse>(ctx, 'SupplierService', 'GetSupplier', request, GetSupplierResponse())
-  ;
-  $async.Future<GetBusinessSuppliersResponse> getBusinessSuppliers($pb.ClientContext? ctx, GetBusinessSuppliersRequest request) =>
-    _client.invoke<GetBusinessSuppliersResponse>(ctx, 'SupplierService', 'GetBusinessSuppliers', request, GetBusinessSuppliersResponse())
-  ;
-  $async.Future<UpdateSupplierResponse> updateSupplier($pb.ClientContext? ctx, UpdateSupplierRequest request) =>
-    _client.invoke<UpdateSupplierResponse>(ctx, 'SupplierService', 'UpdateSupplier', request, UpdateSupplierResponse())
-  ;
-  $async.Future<DeleteSupplierResponse> deleteSupplier($pb.ClientContext? ctx, DeleteSupplierRequest request) =>
-    _client.invoke<DeleteSupplierResponse>(ctx, 'SupplierService', 'DeleteSupplier', request, DeleteSupplierResponse())
-  ;
+  /// Creates a new supplier.
+  $async.Future<CreateSupplierResponse> createSupplier(
+          $pb.ClientContext? ctx, CreateSupplierRequest request) =>
+      _client.invoke<CreateSupplierResponse>(ctx, 'SupplierService',
+          'CreateSupplier', request, CreateSupplierResponse());
+
+  /// Gets a supplier by id.
+  $async.Future<GetSupplierResponse> getSupplier(
+          $pb.ClientContext? ctx, GetSupplierRequest request) =>
+      _client.invoke<GetSupplierResponse>(ctx, 'SupplierService', 'GetSupplier',
+          request, GetSupplierResponse());
+
+  /// Gets all suppliers of a business.
+  $async.Future<GetBusinessSuppliersResponse> getBusinessSuppliers(
+          $pb.ClientContext? ctx, GetBusinessSuppliersRequest request) =>
+      _client.invoke<GetBusinessSuppliersResponse>(ctx, 'SupplierService',
+          'GetBusinessSuppliers', request, GetBusinessSuppliersResponse());
+
+  /// Updates a supplier.
+  /// Note:Only the fields that are set will be updated. array fiels like external_links will be replaced.
+  $async.Future<UpdateSupplierResponse> updateSupplier(
+          $pb.ClientContext? ctx, UpdateSupplierRequest request) =>
+      _client.invoke<UpdateSupplierResponse>(ctx, 'SupplierService',
+          'UpdateSupplier', request, UpdateSupplierResponse());
+
+  /// Deletes a supplier.
+  $async.Future<DeleteSupplierResponse> deleteSupplier(
+          $pb.ClientContext? ctx, DeleteSupplierRequest request) =>
+      _client.invoke<DeleteSupplierResponse>(ctx, 'SupplierService',
+          'DeleteSupplier', request, DeleteSupplierResponse());
 }
 
-
-const _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
-const _omitMessageNames = $core.bool.fromEnvironment('protobuf.omit_message_names');
+const $core.bool _omitFieldNames =
+    $core.bool.fromEnvironment('protobuf.omit_field_names');
+const $core.bool _omitMessageNames =
+    $core.bool.fromEnvironment('protobuf.omit_message_names');

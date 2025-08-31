@@ -11,6 +11,11 @@ enum AccountStatusType {
   ACCOUNT_STATUS_TYPE_DELETED = 2;
 }
 
+enum AccountType {
+  ADMIN = 0;
+  USER = 1;
+}
+
 enum AuthActionType {
   AUTH_ACTION_TYPE_UNSPECIFIED = 0;
   AUTH_ACTION_TYPE_VERIFY_EMAIL = 1;
@@ -68,15 +73,18 @@ message User {
 
   // [public] The last name of the user.
   optional string last_name = 7;
-  
+
   // [public] The profile link of the user.
   optional link.v1.ResourceLink profile_link = 8;
 
   // The status of the user's account.
   optional AccountStatusType account_status = 9;
 
+  // The type of the user's account.
+  AccountType account_type = 10;
+
   // The actions that the user must complete to authenticate.
-  repeated AuthActionType required_actions = 10;
+  repeated AuthActionType required_actions = 11;
 }
 
 message GetUserRequest {

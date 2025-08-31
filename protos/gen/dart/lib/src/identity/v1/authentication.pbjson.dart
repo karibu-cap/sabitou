@@ -1,13 +1,14 @@
+// This is a generated file - do not edit.
 //
-//  Generated code. Do not modify.
-//  source: identity/v1/authentication.proto
-//
-// @dart = 2.12
+// Generated from identity/v1/authentication.proto.
+
+// @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
-// ignore_for_file: constant_identifier_names, library_prefixes
-// ignore_for_file: non_constant_identifier_names, prefer_final_fields
-// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
+// ignore_for_file: constant_identifier_names
+// ignore_for_file: curly_braces_in_flow_control_structures
+// ignore_for_file: deprecated_member_use_from_same_package, library_prefixes
+// ignore_for_file: non_constant_identifier_names, unused_import
 
 import 'dart:convert' as $convert;
 import 'dart:core' as $core;
@@ -65,7 +66,15 @@ const RequestPasswordResetResponse$json = {
   '1': 'RequestPasswordResetResponse',
   '2': [
     {'1': 'request_token', '3': 1, '4': 1, '5': 9, '10': 'requestToken'},
-    {'1': 'verification_code', '3': 2, '4': 1, '5': 9, '9': 0, '10': 'verificationCode', '17': true},
+    {
+      '1': 'verification_code',
+      '3': 2,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'verificationCode',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_verification_code'},
@@ -73,10 +82,11 @@ const RequestPasswordResetResponse$json = {
 };
 
 /// Descriptor for `RequestPasswordResetResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List requestPasswordResetResponseDescriptor = $convert.base64Decode(
-    'ChxSZXF1ZXN0UGFzc3dvcmRSZXNldFJlc3BvbnNlEiMKDXJlcXVlc3RfdG9rZW4YASABKAlSDH'
-    'JlcXVlc3RUb2tlbhIwChF2ZXJpZmljYXRpb25fY29kZRgCIAEoCUgAUhB2ZXJpZmljYXRpb25D'
-    'b2RliAEBQhQKEl92ZXJpZmljYXRpb25fY29kZQ==');
+final $typed_data.Uint8List requestPasswordResetResponseDescriptor =
+    $convert.base64Decode(
+        'ChxSZXF1ZXN0UGFzc3dvcmRSZXNldFJlc3BvbnNlEiMKDXJlcXVlc3RfdG9rZW4YASABKAlSDH'
+        'JlcXVlc3RUb2tlbhIwChF2ZXJpZmljYXRpb25fY29kZRgCIAEoCUgAUhB2ZXJpZmljYXRpb25D'
+        'b2RliAEBQhQKEl92ZXJpZmljYXRpb25fY29kZQ==');
 
 @$core.Deprecated('Use resetPasswordRequestDescriptor instead')
 const ResetPasswordRequest$json = {
@@ -84,7 +94,13 @@ const ResetPasswordRequest$json = {
   '2': [
     {'1': 'request_token', '3': 1, '4': 1, '5': 9, '10': 'requestToken'},
     {'1': 'password', '3': 2, '4': 1, '5': 9, '10': 'password'},
-    {'1': 'verification_code', '3': 3, '4': 1, '5': 9, '10': 'verificationCode'},
+    {
+      '1': 'verification_code',
+      '3': 3,
+      '4': 1,
+      '5': 9,
+      '10': 'verificationCode'
+    },
   ],
 };
 
@@ -103,24 +119,42 @@ const ResetPasswordResponse$json = {
 };
 
 /// Descriptor for `ResetPasswordResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List resetPasswordResponseDescriptor = $convert.base64Decode(
-    'ChVSZXNldFBhc3N3b3JkUmVzcG9uc2USGAoHc3VjY2VzcxgBIAEoCVIHc3VjY2Vzcw==');
+final $typed_data.Uint8List resetPasswordResponseDescriptor =
+    $convert.base64Decode(
+        'ChVSZXNldFBhc3N3b3JkUmVzcG9uc2USGAoHc3VjY2VzcxgBIAEoCVIHc3VjY2Vzcw==');
 
 const $core.Map<$core.String, $core.dynamic> AuthServiceBase$json = {
   '1': 'AuthService',
   '2': [
-    {'1': 'Login', '2': '.identity.v1.LoginRequest', '3': '.identity.v1.LoginResponse', '4': {}},
-    {'1': 'RequestPasswordReset', '2': '.identity.v1.RequestPasswordResetRequest', '3': '.identity.v1.RequestPasswordResetResponse', '4': {}},
-    {'1': 'ResetPassword', '2': '.identity.v1.ResetPasswordRequest', '3': '.identity.v1.ResetPasswordResponse', '4': {}},
+    {
+      '1': 'Login',
+      '2': '.identity.v1.LoginRequest',
+      '3': '.identity.v1.LoginResponse',
+      '4': {}
+    },
+    {
+      '1': 'RequestPasswordReset',
+      '2': '.identity.v1.RequestPasswordResetRequest',
+      '3': '.identity.v1.RequestPasswordResetResponse',
+      '4': {}
+    },
+    {
+      '1': 'ResetPassword',
+      '2': '.identity.v1.ResetPasswordRequest',
+      '3': '.identity.v1.ResetPasswordResponse',
+      '4': {}
+    },
   ],
 };
 
 @$core.Deprecated('Use authServiceDescriptor instead')
-const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>> AuthServiceBase$messageJson = {
+const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
+    AuthServiceBase$messageJson = {
   '.identity.v1.LoginRequest': LoginRequest$json,
   '.identity.v1.LoginResponse': LoginResponse$json,
   '.identity.v1.RequestPasswordResetRequest': RequestPasswordResetRequest$json,
-  '.identity.v1.RequestPasswordResetResponse': RequestPasswordResetResponse$json,
+  '.identity.v1.RequestPasswordResetResponse':
+      RequestPasswordResetResponse$json,
   '.identity.v1.ResetPasswordRequest': ResetPasswordRequest$json,
   '.identity.v1.ResetPasswordResponse': ResetPasswordResponse$json,
 };
@@ -133,4 +167,3 @@ final $typed_data.Uint8List authServiceDescriptor = $convert.base64Decode(
     'RQYXNzd29yZFJlc2V0UmVzcG9uc2UiABJYCg1SZXNldFBhc3N3b3JkEiEuaWRlbnRpdHkudjEu'
     'UmVzZXRQYXNzd29yZFJlcXVlc3QaIi5pZGVudGl0eS52MS5SZXNldFBhc3N3b3JkUmVzcG9uc2'
     'UiAA==');
-
