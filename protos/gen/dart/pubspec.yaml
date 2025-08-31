@@ -8,7 +8,6 @@ environment:
   sdk: ^3.5.3
 
 dependencies:
-  connectrpc: ^0.3.0
-
-dev_dependencies:
+  connectrpc: ^1.0.0
+  protobuf: ^4.1.1
 

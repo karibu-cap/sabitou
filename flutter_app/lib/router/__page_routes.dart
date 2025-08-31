@@ -27,24 +27,32 @@ abstract class PagesRoutes {
   /// The dashboard route, for example, http:localhost:8080/dashboard.
   static final dashboard = _DashboardRoute();
 
-  /// The sign in route, for example, http:localhost:8080/signin.
-  static final signIn = _SignInRoute();
+  /// The login route, for example, http:localhost:8080/auth/login.
+  static final login = _LoginRoute();
 
-  /// The sign up route, for example, http:localhost:8080/signup.
-  static final signUp = _SignUpRoute();
+  /// The registration route, for example, http:localhost:8080/auth/registration.
+  static final registration = _RegistrationRoute();
+
+  /// The forgot password route, for example, http:localhost:8080/auth/forgot-password.
+  static final forgotPassword = _ForgotPasswordRoute();
 
   /// The profile route, for example, http:localhost:8080/profile.
   static final profile = _ProfileRoute();
 }
 
-class _SignInRoute extends PagesRoutesWithNoParams {
+class _LoginRoute extends PagesRoutesWithNoParams {
   @override
-  String get pattern => '/signin';
+  String get pattern => '/auth/login';
 }
 
-class _SignUpRoute extends PagesRoutesWithNoParams {
+class _RegistrationRoute extends PagesRoutesWithNoParams {
   @override
-  String get pattern => '/signup';
+  String get pattern => '/auth/registration';
+}
+
+class _ForgotPasswordRoute extends PagesRoutesWithNoParams {
+  @override
+  String get pattern => '/auth/forgot-password';
 }
 
 class _HomeRoute extends PagesRoutesWithNoParams {

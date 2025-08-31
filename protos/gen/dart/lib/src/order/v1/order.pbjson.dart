@@ -1,13 +1,14 @@
+// This is a generated file - do not edit.
 //
-//  Generated code. Do not modify.
-//  source: order/v1/order.proto
-//
-// @dart = 2.12
+// Generated from order/v1/order.proto.
+
+// @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
-// ignore_for_file: constant_identifier_names, library_prefixes
-// ignore_for_file: non_constant_identifier_names, prefer_final_fields
-// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
+// ignore_for_file: constant_identifier_names
+// ignore_for_file: curly_braces_in_flow_control_structures
+// ignore_for_file: deprecated_member_use_from_same_package, library_prefixes
+// ignore_for_file: non_constant_identifier_names, unused_import
 
 import 'dart:convert' as $convert;
 import 'dart:core' as $core;
@@ -35,9 +36,21 @@ final $typed_data.Uint8List orderStatusDescriptor = $convert.base64Decode(
 const OrderItem$json = {
   '1': 'OrderItem',
   '2': [
-    {'1': 'business_product_id', '3': 1, '4': 1, '5': 9, '10': 'businessProductId'},
+    {
+      '1': 'business_product_id',
+      '3': 1,
+      '4': 1,
+      '5': 9,
+      '10': 'businessProductId'
+    },
     {'1': 'quantity', '3': 2, '4': 1, '5': 5, '10': 'quantity'},
-    {'1': 'unit_price_in_cents', '3': 3, '4': 1, '5': 5, '10': 'unitPriceInCents'},
+    {
+      '1': 'unit_price_in_cents',
+      '3': 3,
+      '4': 1,
+      '5': 5,
+      '10': 'unitPriceInCents'
+    },
   ],
 };
 
@@ -52,11 +65,39 @@ const Order$json = {
   '1': 'Order',
   '2': [
     {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'refId', '17': true},
-    {'1': 'from_id', '3': 2, '4': 1, '5': 9, '9': 1, '10': 'fromId', '17': true},
+    {
+      '1': 'from_id',
+      '3': 2,
+      '4': 1,
+      '5': 9,
+      '9': 1,
+      '10': 'fromId',
+      '17': true
+    },
     {'1': 'is_client_order', '3': 3, '4': 1, '5': 9, '10': 'isClientOrder'},
-    {'1': 'order_items', '3': 4, '4': 3, '5': 11, '6': '.order.v1.OrderItem', '10': 'orderItems'},
-    {'1': 'total_price_in_cents', '3': 5, '4': 1, '5': 5, '10': 'totalPriceInCents'},
-    {'1': 'status', '3': 6, '4': 1, '5': 14, '6': '.order.v1.OrderStatus', '10': 'status'},
+    {
+      '1': 'order_items',
+      '3': 4,
+      '4': 3,
+      '5': 11,
+      '6': '.order.v1.OrderItem',
+      '10': 'orderItems'
+    },
+    {
+      '1': 'total_price_in_cents',
+      '3': 5,
+      '4': 1,
+      '5': 5,
+      '10': 'totalPriceInCents'
+    },
+    {
+      '1': 'status',
+      '3': 6,
+      '4': 1,
+      '5': 14,
+      '6': '.order.v1.OrderStatus',
+      '10': 'status'
+    },
   ],
   '8': [
     {'1': '_ref_id'},
@@ -77,8 +118,23 @@ final $typed_data.Uint8List orderDescriptor = $convert.base64Decode(
 const CreateOrderRequest$json = {
   '1': 'CreateOrderRequest',
   '2': [
-    {'1': 'order', '3': 1, '4': 1, '5': 11, '6': '.order.v1.Order', '10': 'order'},
-    {'1': 'supplier_name', '3': 2, '4': 1, '5': 9, '9': 0, '10': 'supplierName', '17': true},
+    {
+      '1': 'order',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.order.v1.Order',
+      '10': 'order'
+    },
+    {
+      '1': 'supplier_name',
+      '3': 2,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'supplierName',
+      '17': true
+    },
     {'1': 'business_id', '3': 3, '4': 1, '5': 9, '10': 'businessId'},
   ],
   '8': [
@@ -122,9 +178,24 @@ final $typed_data.Uint8List getOrderRequestDescriptor = $convert.base64Decode(
 const GetOrderResponse$json = {
   '1': 'GetOrderResponse',
   '2': [
-    {'1': 'order', '3': 1, '4': 1, '5': 11, '6': '.order.v1.Order', '10': 'order'},
+    {
+      '1': 'order',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.order.v1.Order',
+      '10': 'order'
+    },
     {'1': 'created_at', '3': 2, '4': 1, '5': 9, '10': 'createdAt'},
-    {'1': 'updated_at', '3': 3, '4': 1, '5': 9, '9': 0, '10': 'updatedAt', '17': true},
+    {
+      '1': 'updated_at',
+      '3': 3,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'updatedAt',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_updated_at'},
@@ -159,20 +230,37 @@ const DeleteOrderResponse$json = {
 };
 
 /// Descriptor for `DeleteOrderResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List deleteOrderResponseDescriptor = $convert.base64Decode(
-    'ChNEZWxldGVPcmRlclJlc3BvbnNlEhgKB3N1Y2Nlc3MYASABKAhSB3N1Y2Nlc3M=');
+final $typed_data.Uint8List deleteOrderResponseDescriptor =
+    $convert.base64Decode(
+        'ChNEZWxldGVPcmRlclJlc3BvbnNlEhgKB3N1Y2Nlc3MYASABKAhSB3N1Y2Nlc3M=');
 
 const $core.Map<$core.String, $core.dynamic> OrderServiceBase$json = {
   '1': 'OrderService',
   '2': [
-    {'1': 'CreateOrder', '2': '.order.v1.CreateOrderRequest', '3': '.order.v1.CreateOrderResponse', '4': {}},
-    {'1': 'GetOrder', '2': '.order.v1.GetOrderRequest', '3': '.order.v1.GetOrderResponse', '4': {}},
-    {'1': 'DeleteOrder', '2': '.order.v1.DeleteOrderRequest', '3': '.order.v1.DeleteOrderResponse', '4': {}},
+    {
+      '1': 'CreateOrder',
+      '2': '.order.v1.CreateOrderRequest',
+      '3': '.order.v1.CreateOrderResponse',
+      '4': {}
+    },
+    {
+      '1': 'GetOrder',
+      '2': '.order.v1.GetOrderRequest',
+      '3': '.order.v1.GetOrderResponse',
+      '4': {}
+    },
+    {
+      '1': 'DeleteOrder',
+      '2': '.order.v1.DeleteOrderRequest',
+      '3': '.order.v1.DeleteOrderResponse',
+      '4': {}
+    },
   ],
 };
 
 @$core.Deprecated('Use orderServiceDescriptor instead')
-const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>> OrderServiceBase$messageJson = {
+const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
+    OrderServiceBase$messageJson = {
   '.order.v1.CreateOrderRequest': CreateOrderRequest$json,
   '.order.v1.Order': Order$json,
   '.order.v1.OrderItem': OrderItem$json,
@@ -190,4 +278,3 @@ final $typed_data.Uint8List orderServiceDescriptor = $convert.base64Decode(
     'ci52MS5HZXRPcmRlclJlcXVlc3QaGi5vcmRlci52MS5HZXRPcmRlclJlc3BvbnNlIgASTAoLRG'
     'VsZXRlT3JkZXISHC5vcmRlci52MS5EZWxldGVPcmRlclJlcXVlc3QaHS5vcmRlci52MS5EZWxl'
     'dGVPcmRlclJlc3BvbnNlIgA=');
-

@@ -6,9 +6,9 @@ import 'package:sabitou_rpc/models.dart';
 import '../utils/logger.dart';
 
 /// The business service client.
-final class BusinessService extends GetxService {
+final class BusinessRepository extends GetxService {
   /// Access the singleton instance.
-  static BusinessService get to => Get.find();
+  static BusinessRepository get to => Get.find();
 
   final _logger = LoggerApp('BusinessService');
 
@@ -19,7 +19,7 @@ final class BusinessService extends GetxService {
   final connect.Transport clientChannel;
 
   /// Constructs a new [AuthServiceClient].
-  BusinessService({required this.clientChannel})
+  BusinessRepository({required this.clientChannel})
       : businessService = BusinessServiceClient(
           clientChannel,
         );

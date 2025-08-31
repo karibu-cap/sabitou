@@ -1,20 +1,21 @@
+// This is a generated file - do not edit.
 //
-//  Generated code. Do not modify.
-//  source: business/v1/business.proto
-//
-// @dart = 2.12
+// Generated from business/v1/business.proto.
+
+// @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
-// ignore_for_file: constant_identifier_names, library_prefixes
-// ignore_for_file: non_constant_identifier_names, prefer_final_fields
-// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
+// ignore_for_file: constant_identifier_names
+// ignore_for_file: curly_braces_in_flow_control_structures
+// ignore_for_file: deprecated_member_use_from_same_package, library_prefixes
+// ignore_for_file: non_constant_identifier_names, unused_import
 
 import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
-import '../../identity/v1/permission.pbjson.dart' as $3;
-import '../../link/v1/link.pbjson.dart' as $4;
+import '../../identity/v1/permission.pbjson.dart' as $0;
+import '../../link/v1/link.pbjson.dart' as $1;
 
 @$core.Deprecated('Use businessStatusTypeDescriptor instead')
 const BusinessStatusType$json = {
@@ -38,7 +39,10 @@ const CurrencyChangePolicyType$json = {
   '2': [
     {'1': 'CURRENCY_CHANGE_POLICY_TYPE_UNSPECIFIED', '2': 0},
     {'1': 'CURRENCY_CHANGE_POLICY_TYPE_KEEP_PREVIOUS_CURRENCY_VALUE', '2': 1},
-    {'1': 'CURRENCY_CHANGE_POLICY_TYPE_CONVERT_BASED_ON_CURRENT_EXCHANGE_RATE', '2': 2},
+    {
+      '1': 'CURRENCY_CHANGE_POLICY_TYPE_CONVERT_BASED_ON_CURRENT_EXCHANGE_RATE',
+      '2': 2
+    },
   ],
 };
 
@@ -55,13 +59,42 @@ const Business$json = {
   '2': [
     {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'refId', '17': true},
     {'1': 'name', '3': 2, '4': 1, '5': 9, '10': 'name'},
-    {'1': 'description', '3': 3, '4': 1, '5': 9, '9': 1, '10': 'description', '17': true},
-    {'1': 'status', '3': 4, '4': 1, '5': 14, '6': '.business.v1.BusinessStatusType', '10': 'status'},
+    {
+      '1': 'description',
+      '3': 3,
+      '4': 1,
+      '5': 9,
+      '9': 1,
+      '10': 'description',
+      '17': true
+    },
+    {
+      '1': 'status',
+      '3': 4,
+      '4': 1,
+      '5': 14,
+      '6': '.business.v1.BusinessStatusType',
+      '10': 'status'
+    },
     {'1': 'owner_id', '3': 5, '4': 1, '5': 9, '10': 'ownerId'},
-    {'1': 'logo_link_id', '3': 6, '4': 1, '5': 9, '9': 2, '10': 'logoLinkId', '17': true},
+    {
+      '1': 'logo_link_id',
+      '3': 6,
+      '4': 1,
+      '5': 9,
+      '9': 2,
+      '10': 'logoLinkId',
+      '17': true
+    },
     {'1': 'country_code', '3': 7, '4': 1, '5': 9, '10': 'countryCode'},
     {'1': 'currency_code', '3': 8, '4': 1, '5': 9, '10': 'currencyCode'},
-    {'1': 'external_links_ids', '3': 9, '4': 3, '5': 9, '10': 'externalLinksIds'},
+    {
+      '1': 'external_links_ids',
+      '3': 9,
+      '4': 3,
+      '5': 9,
+      '10': 'externalLinksIds'
+    },
   ],
   '8': [
     {'1': '_ref_id'},
@@ -86,8 +119,21 @@ const BusinessMember$json = {
   '2': [
     {'1': 'user_id', '3': 1, '4': 1, '5': 9, '10': 'userId'},
     {'1': 'business_id', '3': 2, '4': 1, '5': 9, '10': 'businessId'},
-    {'1': 'permissions', '3': 3, '4': 3, '5': 11, '6': '.identity.v1.Permission', '10': 'permissions'},
-    {'1': 'permissions_groups_ids', '3': 4, '4': 3, '5': 9, '10': 'permissionsGroupsIds'},
+    {
+      '1': 'permissions',
+      '3': 3,
+      '4': 3,
+      '5': 11,
+      '6': '.identity.v1.Permission',
+      '10': 'permissions'
+    },
+    {
+      '1': 'permissions_groups_ids',
+      '3': 4,
+      '4': 3,
+      '5': 9,
+      '10': 'permissionsGroupsIds'
+    },
     {'1': 'member_since', '3': 5, '4': 1, '5': 9, '10': 'memberSince'},
   ],
 };
@@ -103,9 +149,31 @@ final $typed_data.Uint8List businessMemberDescriptor = $convert.base64Decode(
 const CreateBusinessRequest$json = {
   '1': 'CreateBusinessRequest',
   '2': [
-    {'1': 'business', '3': 1, '4': 1, '5': 11, '6': '.business.v1.Business', '10': 'business'},
-    {'1': 'logo_raw_image', '3': 2, '4': 1, '5': 12, '9': 0, '10': 'logoRawImage', '17': true},
-    {'1': 'external_links', '3': 3, '4': 3, '5': 11, '6': '.link.v1.ResourceLink', '10': 'externalLinks'},
+    {
+      '1': 'business',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.business.v1.Business',
+      '10': 'business'
+    },
+    {
+      '1': 'logo_raw_image',
+      '3': 2,
+      '4': 1,
+      '5': 12,
+      '9': 0,
+      '10': 'logoRawImage',
+      '17': true
+    },
+    {
+      '1': 'external_links',
+      '3': 3,
+      '4': 3,
+      '5': 11,
+      '6': '.link.v1.ResourceLink',
+      '10': 'externalLinks'
+    },
   ],
   '8': [
     {'1': '_logo_raw_image'},
@@ -128,15 +196,23 @@ const CreateBusinessResponse$json = {
 };
 
 /// Descriptor for `CreateBusinessResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List createBusinessResponseDescriptor = $convert.base64Decode(
-    'ChZDcmVhdGVCdXNpbmVzc1Jlc3BvbnNlEisKC2J1c2luZXNzX2lkGAEgASgJQgq6SAfIAQFyAh'
-    'ADUgpidXNpbmVzc0lk');
+final $typed_data.Uint8List createBusinessResponseDescriptor =
+    $convert.base64Decode(
+        'ChZDcmVhdGVCdXNpbmVzc1Jlc3BvbnNlEisKC2J1c2luZXNzX2lkGAEgASgJQgq6SAfIAQFyAh'
+        'ADUgpidXNpbmVzc0lk');
 
 @$core.Deprecated('Use changeBusinessCurrencyRequestDescriptor instead')
 const ChangeBusinessCurrencyRequest$json = {
   '1': 'ChangeBusinessCurrencyRequest',
   '2': [
-    {'1': 'currency_change_policy', '3': 1, '4': 1, '5': 14, '6': '.business.v1.CurrencyChangePolicyType', '10': 'currencyChangePolicy'},
+    {
+      '1': 'currency_change_policy',
+      '3': 1,
+      '4': 1,
+      '5': 14,
+      '6': '.business.v1.CurrencyChangePolicyType',
+      '10': 'currencyChangePolicy'
+    },
     {'1': 'business_id', '3': 2, '4': 1, '5': 9, '10': 'businessId'},
     {'1': 'country_code', '3': 3, '4': 1, '5': 9, '10': 'countryCode'},
   ],
@@ -158,9 +234,10 @@ const ChangeBusinessCurrencyResponse$json = {
 };
 
 /// Descriptor for `ChangeBusinessCurrencyResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List changeBusinessCurrencyResponseDescriptor = $convert.base64Decode(
-    'Ch5DaGFuZ2VCdXNpbmVzc0N1cnJlbmN5UmVzcG9uc2USFgoGc3VjZXNzGAEgASgIUgZzdWNlc3'
-    'M=');
+final $typed_data.Uint8List changeBusinessCurrencyResponseDescriptor =
+    $convert.base64Decode(
+        'Ch5DaGFuZ2VCdXNpbmVzc0N1cnJlbmN5UmVzcG9uc2USFgoGc3VjZXNzGAEgASgIUgZzdWNlc3'
+        'M=');
 
 @$core.Deprecated('Use getMyBusinessesRequestDescriptor instead')
 const GetMyBusinessesRequest$json = {
@@ -168,21 +245,29 @@ const GetMyBusinessesRequest$json = {
 };
 
 /// Descriptor for `GetMyBusinessesRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List getMyBusinessesRequestDescriptor = $convert.base64Decode(
-    'ChZHZXRNeUJ1c2luZXNzZXNSZXF1ZXN0');
+final $typed_data.Uint8List getMyBusinessesRequestDescriptor =
+    $convert.base64Decode('ChZHZXRNeUJ1c2luZXNzZXNSZXF1ZXN0');
 
 @$core.Deprecated('Use getMyBusinessesResponseDescriptor instead')
 const GetMyBusinessesResponse$json = {
   '1': 'GetMyBusinessesResponse',
   '2': [
-    {'1': 'businesses', '3': 1, '4': 3, '5': 11, '6': '.business.v1.Business', '10': 'businesses'},
+    {
+      '1': 'businesses',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.business.v1.Business',
+      '10': 'businesses'
+    },
   ],
 };
 
 /// Descriptor for `GetMyBusinessesResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List getMyBusinessesResponseDescriptor = $convert.base64Decode(
-    'ChdHZXRNeUJ1c2luZXNzZXNSZXNwb25zZRI1CgpidXNpbmVzc2VzGAEgAygLMhUuYnVzaW5lc3'
-    'MudjEuQnVzaW5lc3NSCmJ1c2luZXNzZXM=');
+final $typed_data.Uint8List getMyBusinessesResponseDescriptor =
+    $convert.base64Decode(
+        'ChdHZXRNeUJ1c2luZXNzZXNSZXNwb25zZRI1CgpidXNpbmVzc2VzGAEgAygLMhUuYnVzaW5lc3'
+        'MudjEuQnVzaW5lc3NSCmJ1c2luZXNzZXM=');
 
 @$core.Deprecated('Use getBusinessDetailsRequestDescriptor instead')
 const GetBusinessDetailsRequest$json = {
@@ -193,30 +278,61 @@ const GetBusinessDetailsRequest$json = {
 };
 
 /// Descriptor for `GetBusinessDetailsRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List getBusinessDetailsRequestDescriptor = $convert.base64Decode(
-    'ChlHZXRCdXNpbmVzc0RldGFpbHNSZXF1ZXN0EisKC2J1c2luZXNzX2lkGAEgASgJQgq6SAfIAQ'
-    'FyAhADUgpidXNpbmVzc0lk');
+final $typed_data.Uint8List getBusinessDetailsRequestDescriptor =
+    $convert.base64Decode(
+        'ChlHZXRCdXNpbmVzc0RldGFpbHNSZXF1ZXN0EisKC2J1c2luZXNzX2lkGAEgASgJQgq6SAfIAQ'
+        'FyAhADUgpidXNpbmVzc0lk');
 
 @$core.Deprecated('Use getBusinessDetailsResponseDescriptor instead')
 const GetBusinessDetailsResponse$json = {
   '1': 'GetBusinessDetailsResponse',
   '2': [
-    {'1': 'business', '3': 1, '4': 1, '5': 11, '6': '.business.v1.Business', '10': 'business'},
+    {
+      '1': 'business',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.business.v1.Business',
+      '10': 'business'
+    },
   ],
 };
 
 /// Descriptor for `GetBusinessDetailsResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List getBusinessDetailsResponseDescriptor = $convert.base64Decode(
-    'ChpHZXRCdXNpbmVzc0RldGFpbHNSZXNwb25zZRIxCghidXNpbmVzcxgBIAEoCzIVLmJ1c2luZX'
-    'NzLnYxLkJ1c2luZXNzUghidXNpbmVzcw==');
+final $typed_data.Uint8List getBusinessDetailsResponseDescriptor =
+    $convert.base64Decode(
+        'ChpHZXRCdXNpbmVzc0RldGFpbHNSZXNwb25zZRIxCghidXNpbmVzcxgBIAEoCzIVLmJ1c2luZX'
+        'NzLnYxLkJ1c2luZXNzUghidXNpbmVzcw==');
 
 @$core.Deprecated('Use updateBusinessRequestDescriptor instead')
 const UpdateBusinessRequest$json = {
   '1': 'UpdateBusinessRequest',
   '2': [
-    {'1': 'business', '3': 1, '4': 1, '5': 11, '6': '.business.v1.Business', '10': 'business'},
-    {'1': 'logo_raw_image', '3': 2, '4': 1, '5': 12, '9': 0, '10': 'logoRawImage', '17': true},
-    {'1': 'external_links', '3': 3, '4': 3, '5': 11, '6': '.link.v1.ResourceLink', '10': 'externalLinks'},
+    {
+      '1': 'business',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.business.v1.Business',
+      '10': 'business'
+    },
+    {
+      '1': 'logo_raw_image',
+      '3': 2,
+      '4': 1,
+      '5': 12,
+      '9': 0,
+      '10': 'logoRawImage',
+      '17': true
+    },
+    {
+      '1': 'external_links',
+      '3': 3,
+      '4': 3,
+      '5': 11,
+      '6': '.link.v1.ResourceLink',
+      '10': 'externalLinks'
+    },
   ],
   '8': [
     {'1': '_logo_raw_image'},
@@ -239,8 +355,9 @@ const UpdateBusinessResponse$json = {
 };
 
 /// Descriptor for `UpdateBusinessResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List updateBusinessResponseDescriptor = $convert.base64Decode(
-    'ChZVcGRhdGVCdXNpbmVzc1Jlc3BvbnNlEhgKB3N1Y2Nlc3MYASABKAhSB3N1Y2Nlc3M=');
+final $typed_data.Uint8List updateBusinessResponseDescriptor =
+    $convert.base64Decode(
+        'ChZVcGRhdGVCdXNpbmVzc1Jlc3BvbnNlEhgKB3N1Y2Nlc3MYASABKAhSB3N1Y2Nlc3M=');
 
 @$core.Deprecated('Use requestDeleteBusinessRequestDescriptor instead')
 const RequestDeleteBusinessRequest$json = {
@@ -252,9 +369,10 @@ const RequestDeleteBusinessRequest$json = {
 };
 
 /// Descriptor for `RequestDeleteBusinessRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List requestDeleteBusinessRequestDescriptor = $convert.base64Decode(
-    'ChxSZXF1ZXN0RGVsZXRlQnVzaW5lc3NSZXF1ZXN0EisKC2J1c2luZXNzX2lkGAEgASgJQgq6SA'
-    'fIAQFyAhADUgpidXNpbmVzc0lkEhoKCHBhc3N3b3JkGAIgASgJUghwYXNzd29yZA==');
+final $typed_data.Uint8List requestDeleteBusinessRequestDescriptor =
+    $convert.base64Decode(
+        'ChxSZXF1ZXN0RGVsZXRlQnVzaW5lc3NSZXF1ZXN0EisKC2J1c2luZXNzX2lkGAEgASgJQgq6SA'
+        'fIAQFyAhADUgpidXNpbmVzc0lkEhoKCHBhc3N3b3JkGAIgASgJUghwYXNzd29yZA==');
 
 @$core.Deprecated('Use requestDeleteBusinessResponseDescriptor instead')
 const RequestDeleteBusinessResponse$json = {
@@ -266,9 +384,10 @@ const RequestDeleteBusinessResponse$json = {
 };
 
 /// Descriptor for `RequestDeleteBusinessResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List requestDeleteBusinessResponseDescriptor = $convert.base64Decode(
-    'Ch1SZXF1ZXN0RGVsZXRlQnVzaW5lc3NSZXNwb25zZRIYCgdzdWNjZXNzGAEgASgIUgdzdWNjZX'
-    'NzEiMKDW5vdGljZV9wZXJpb2QYAiABKAlSDG5vdGljZVBlcmlvZA==');
+final $typed_data.Uint8List requestDeleteBusinessResponseDescriptor =
+    $convert.base64Decode(
+        'Ch1SZXF1ZXN0RGVsZXRlQnVzaW5lc3NSZXNwb25zZRIYCgdzdWNjZXNzGAEgASgIUgdzdWNjZX'
+        'NzEiMKDW5vdGljZV9wZXJpb2QYAiABKAlSDG5vdGljZVBlcmlvZA==');
 
 @$core.Deprecated('Use addUserToBusinessRequestDescriptor instead')
 const AddUserToBusinessRequest$json = {
@@ -290,14 +409,22 @@ final $typed_data.Uint8List addUserToBusinessRequestDescriptor = $convert.base64
 const AddUserToBusinessResponse$json = {
   '1': 'AddUserToBusinessResponse',
   '2': [
-    {'1': 'business_member', '3': 1, '4': 1, '5': 11, '6': '.business.v1.BusinessMember', '10': 'businessMember'},
+    {
+      '1': 'business_member',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.business.v1.BusinessMember',
+      '10': 'businessMember'
+    },
   ],
 };
 
 /// Descriptor for `AddUserToBusinessResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List addUserToBusinessResponseDescriptor = $convert.base64Decode(
-    'ChlBZGRVc2VyVG9CdXNpbmVzc1Jlc3BvbnNlEkQKD2J1c2luZXNzX21lbWJlchgBIAEoCzIbLm'
-    'J1c2luZXNzLnYxLkJ1c2luZXNzTWVtYmVyUg5idXNpbmVzc01lbWJlcg==');
+final $typed_data.Uint8List addUserToBusinessResponseDescriptor =
+    $convert.base64Decode(
+        'ChlBZGRVc2VyVG9CdXNpbmVzc1Jlc3BvbnNlEkQKD2J1c2luZXNzX21lbWJlchgBIAEoCzIbLm'
+        'J1c2luZXNzLnYxLkJ1c2luZXNzTWVtYmVyUg5idXNpbmVzc01lbWJlcg==');
 
 @$core.Deprecated('Use removeUserFromBusinessRequestDescriptor instead')
 const RemoveUserFromBusinessRequest$json = {
@@ -309,10 +436,11 @@ const RemoveUserFromBusinessRequest$json = {
 };
 
 /// Descriptor for `RemoveUserFromBusinessRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List removeUserFromBusinessRequestDescriptor = $convert.base64Decode(
-    'Ch1SZW1vdmVVc2VyRnJvbUJ1c2luZXNzUmVxdWVzdBIjCgd1c2VyX2lkGAEgASgJQgq6SAfIAQ'
-    'FyAhADUgZ1c2VySWQSKwoLYnVzaW5lc3NfaWQYAiABKAlCCrpIB8gBAXICEANSCmJ1c2luZXNz'
-    'SWQ=');
+final $typed_data.Uint8List removeUserFromBusinessRequestDescriptor =
+    $convert.base64Decode(
+        'Ch1SZW1vdmVVc2VyRnJvbUJ1c2luZXNzUmVxdWVzdBIjCgd1c2VyX2lkGAEgASgJQgq6SAfIAQ'
+        'FyAhADUgZ1c2VySWQSKwoLYnVzaW5lc3NfaWQYAiABKAlCCrpIB8gBAXICEANSCmJ1c2luZXNz'
+        'SWQ=');
 
 @$core.Deprecated('Use removeUserFromBusinessResponseDescriptor instead')
 const RemoveUserFromBusinessResponse$json = {
@@ -323,9 +451,10 @@ const RemoveUserFromBusinessResponse$json = {
 };
 
 /// Descriptor for `RemoveUserFromBusinessResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List removeUserFromBusinessResponseDescriptor = $convert.base64Decode(
-    'Ch5SZW1vdmVVc2VyRnJvbUJ1c2luZXNzUmVzcG9uc2USGAoHc3VjY2VzcxgBIAEoCFIHc3VjY2'
-    'Vzcw==');
+final $typed_data.Uint8List removeUserFromBusinessResponseDescriptor =
+    $convert.base64Decode(
+        'Ch5SZW1vdmVVc2VyRnJvbUJ1c2luZXNzUmVzcG9uc2USGAoHc3VjY2VzcxgBIAEoCFIHc3VjY2'
+        'Vzcw==');
 
 @$core.Deprecated('Use getBusinessMembersRequestDescriptor instead')
 const GetBusinessMembersRequest$json = {
@@ -336,43 +465,89 @@ const GetBusinessMembersRequest$json = {
 };
 
 /// Descriptor for `GetBusinessMembersRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List getBusinessMembersRequestDescriptor = $convert.base64Decode(
-    'ChlHZXRCdXNpbmVzc01lbWJlcnNSZXF1ZXN0EisKC2J1c2luZXNzX2lkGAEgASgJQgq6SAfIAQ'
-    'FyAhADUgpidXNpbmVzc0lk');
+final $typed_data.Uint8List getBusinessMembersRequestDescriptor =
+    $convert.base64Decode(
+        'ChlHZXRCdXNpbmVzc01lbWJlcnNSZXF1ZXN0EisKC2J1c2luZXNzX2lkGAEgASgJQgq6SAfIAQ'
+        'FyAhADUgpidXNpbmVzc0lk');
 
 @$core.Deprecated('Use getBusinessMembersResponseDescriptor instead')
 const GetBusinessMembersResponse$json = {
   '1': 'GetBusinessMembersResponse',
   '2': [
-    {'1': 'business_members', '3': 1, '4': 3, '5': 11, '6': '.business.v1.BusinessMember', '10': 'businessMembers'},
+    {
+      '1': 'business_members',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.business.v1.BusinessMember',
+      '10': 'businessMembers'
+    },
   ],
 };
 
 /// Descriptor for `GetBusinessMembersResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List getBusinessMembersResponseDescriptor = $convert.base64Decode(
-    'ChpHZXRCdXNpbmVzc01lbWJlcnNSZXNwb25zZRJGChBidXNpbmVzc19tZW1iZXJzGAEgAygLMh'
-    'suYnVzaW5lc3MudjEuQnVzaW5lc3NNZW1iZXJSD2J1c2luZXNzTWVtYmVycw==');
+final $typed_data.Uint8List getBusinessMembersResponseDescriptor =
+    $convert.base64Decode(
+        'ChpHZXRCdXNpbmVzc01lbWJlcnNSZXNwb25zZRJGChBidXNpbmVzc19tZW1iZXJzGAEgAygLMh'
+        'suYnVzaW5lc3MudjEuQnVzaW5lc3NNZW1iZXJSD2J1c2luZXNzTWVtYmVycw==');
 
 const $core.Map<$core.String, $core.dynamic> BusinessServiceBase$json = {
   '1': 'BusinessService',
   '2': [
-    {'1': 'CreateBusiness', '2': '.business.v1.CreateBusinessRequest', '3': '.business.v1.CreateBusinessResponse'},
-    {'1': 'GetMyBusinesses', '2': '.business.v1.GetMyBusinessesRequest', '3': '.business.v1.GetMyBusinessesResponse'},
-    {'1': 'GetBusinessDetails', '2': '.business.v1.GetBusinessDetailsRequest', '3': '.business.v1.GetBusinessDetailsResponse'},
-    {'1': 'UpdateBusiness', '2': '.business.v1.UpdateBusinessRequest', '3': '.business.v1.UpdateBusinessResponse'},
-    {'1': 'RequestDeleteBusiness', '2': '.business.v1.RequestDeleteBusinessRequest', '3': '.business.v1.RequestDeleteBusinessResponse'},
-    {'1': 'AddUserToBusiness', '2': '.business.v1.AddUserToBusinessRequest', '3': '.business.v1.AddUserToBusinessResponse'},
-    {'1': 'RemoveUserFromBusiness', '2': '.business.v1.RemoveUserFromBusinessRequest', '3': '.business.v1.RemoveUserFromBusinessResponse'},
-    {'1': 'ChangeBusinessCurrency', '2': '.business.v1.ChangeBusinessCurrencyRequest', '3': '.business.v1.ChangeBusinessCurrencyResponse'},
-    {'1': 'GetBusinessMembers', '2': '.business.v1.GetBusinessMembersRequest', '3': '.business.v1.GetBusinessMembersResponse'},
+    {
+      '1': 'CreateBusiness',
+      '2': '.business.v1.CreateBusinessRequest',
+      '3': '.business.v1.CreateBusinessResponse'
+    },
+    {
+      '1': 'GetMyBusinesses',
+      '2': '.business.v1.GetMyBusinessesRequest',
+      '3': '.business.v1.GetMyBusinessesResponse'
+    },
+    {
+      '1': 'GetBusinessDetails',
+      '2': '.business.v1.GetBusinessDetailsRequest',
+      '3': '.business.v1.GetBusinessDetailsResponse'
+    },
+    {
+      '1': 'UpdateBusiness',
+      '2': '.business.v1.UpdateBusinessRequest',
+      '3': '.business.v1.UpdateBusinessResponse'
+    },
+    {
+      '1': 'RequestDeleteBusiness',
+      '2': '.business.v1.RequestDeleteBusinessRequest',
+      '3': '.business.v1.RequestDeleteBusinessResponse'
+    },
+    {
+      '1': 'AddUserToBusiness',
+      '2': '.business.v1.AddUserToBusinessRequest',
+      '3': '.business.v1.AddUserToBusinessResponse'
+    },
+    {
+      '1': 'RemoveUserFromBusiness',
+      '2': '.business.v1.RemoveUserFromBusinessRequest',
+      '3': '.business.v1.RemoveUserFromBusinessResponse'
+    },
+    {
+      '1': 'ChangeBusinessCurrency',
+      '2': '.business.v1.ChangeBusinessCurrencyRequest',
+      '3': '.business.v1.ChangeBusinessCurrencyResponse'
+    },
+    {
+      '1': 'GetBusinessMembers',
+      '2': '.business.v1.GetBusinessMembersRequest',
+      '3': '.business.v1.GetBusinessMembersResponse'
+    },
   ],
 };
 
 @$core.Deprecated('Use businessServiceDescriptor instead')
-const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>> BusinessServiceBase$messageJson = {
+const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
+    BusinessServiceBase$messageJson = {
   '.business.v1.CreateBusinessRequest': CreateBusinessRequest$json,
   '.business.v1.Business': Business$json,
-  '.link.v1.ResourceLink': $4.ResourceLink$json,
+  '.link.v1.ResourceLink': $1.ResourceLink$json,
   '.business.v1.CreateBusinessResponse': CreateBusinessResponse$json,
   '.business.v1.GetMyBusinessesRequest': GetMyBusinessesRequest$json,
   '.business.v1.GetMyBusinessesResponse': GetMyBusinessesResponse$json,
@@ -380,16 +555,22 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>> BusinessSe
   '.business.v1.GetBusinessDetailsResponse': GetBusinessDetailsResponse$json,
   '.business.v1.UpdateBusinessRequest': UpdateBusinessRequest$json,
   '.business.v1.UpdateBusinessResponse': UpdateBusinessResponse$json,
-  '.business.v1.RequestDeleteBusinessRequest': RequestDeleteBusinessRequest$json,
-  '.business.v1.RequestDeleteBusinessResponse': RequestDeleteBusinessResponse$json,
+  '.business.v1.RequestDeleteBusinessRequest':
+      RequestDeleteBusinessRequest$json,
+  '.business.v1.RequestDeleteBusinessResponse':
+      RequestDeleteBusinessResponse$json,
   '.business.v1.AddUserToBusinessRequest': AddUserToBusinessRequest$json,
   '.business.v1.AddUserToBusinessResponse': AddUserToBusinessResponse$json,
   '.business.v1.BusinessMember': BusinessMember$json,
-  '.identity.v1.Permission': $3.Permission$json,
-  '.business.v1.RemoveUserFromBusinessRequest': RemoveUserFromBusinessRequest$json,
-  '.business.v1.RemoveUserFromBusinessResponse': RemoveUserFromBusinessResponse$json,
-  '.business.v1.ChangeBusinessCurrencyRequest': ChangeBusinessCurrencyRequest$json,
-  '.business.v1.ChangeBusinessCurrencyResponse': ChangeBusinessCurrencyResponse$json,
+  '.identity.v1.Permission': $0.Permission$json,
+  '.business.v1.RemoveUserFromBusinessRequest':
+      RemoveUserFromBusinessRequest$json,
+  '.business.v1.RemoveUserFromBusinessResponse':
+      RemoveUserFromBusinessResponse$json,
+  '.business.v1.ChangeBusinessCurrencyRequest':
+      ChangeBusinessCurrencyRequest$json,
+  '.business.v1.ChangeBusinessCurrencyResponse':
+      ChangeBusinessCurrencyResponse$json,
   '.business.v1.GetBusinessMembersRequest': GetBusinessMembersRequest$json,
   '.business.v1.GetBusinessMembersResponse': GetBusinessMembersResponse$json,
 };
@@ -413,4 +594,3 @@ final $typed_data.Uint8List businessServiceDescriptor = $convert.base64Decode(
     'c0N1cnJlbmN5UmVxdWVzdBorLmJ1c2luZXNzLnYxLkNoYW5nZUJ1c2luZXNzQ3VycmVuY3lSZX'
     'Nwb25zZRJlChJHZXRCdXNpbmVzc01lbWJlcnMSJi5idXNpbmVzcy52MS5HZXRCdXNpbmVzc01l'
     'bWJlcnNSZXF1ZXN0GicuYnVzaW5lc3MudjEuR2V0QnVzaW5lc3NNZW1iZXJzUmVzcG9uc2U=');
-

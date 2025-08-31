@@ -1,13 +1,14 @@
+// This is a generated file - do not edit.
 //
-//  Generated code. Do not modify.
-//  source: order/v1/receipt.proto
-//
-// @dart = 2.12
+// Generated from order/v1/receipt.proto.
+
+// @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
-// ignore_for_file: constant_identifier_names, library_prefixes
-// ignore_for_file: non_constant_identifier_names, prefer_final_fields
-// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
+// ignore_for_file: constant_identifier_names
+// ignore_for_file: curly_braces_in_flow_control_structures
+// ignore_for_file: deprecated_member_use_from_same_package, library_prefixes
+// ignore_for_file: non_constant_identifier_names, unused_import
 
 import 'dart:convert' as $convert;
 import 'dart:core' as $core;
@@ -19,9 +20,21 @@ const OrderReceiptItem$json = {
   '2': [
     {'1': 'product_id', '3': 1, '4': 1, '5': 9, '10': 'productId'},
     {'1': 'product_name', '3': 2, '4': 1, '5': 9, '10': 'productName'},
-    {'1': 'product_price_in_cents', '3': 3, '4': 1, '5': 9, '10': 'productPriceInCents'},
+    {
+      '1': 'product_price_in_cents',
+      '3': 3,
+      '4': 1,
+      '5': 9,
+      '10': 'productPriceInCents'
+    },
     {'1': 'quantity', '3': 4, '4': 1, '5': 5, '10': 'quantity'},
-    {'1': 'receipt_item_total_price_in_cents', '3': 5, '4': 1, '5': 5, '10': 'receiptItemTotalPriceInCents'},
+    {
+      '1': 'receipt_item_total_price_in_cents',
+      '3': 5,
+      '4': 1,
+      '5': 5,
+      '10': 'receiptItemTotalPriceInCents'
+    },
   ],
 };
 
@@ -39,15 +52,58 @@ const OrderReceipt$json = {
   '2': [
     {'1': 'order_id', '3': 1, '4': 1, '5': 9, '10': 'orderId'},
     {'1': 'order_status', '3': 2, '4': 1, '5': 9, '10': 'orderStatus'},
-    {'1': 'order_total_price_in_cents', '3': 3, '4': 1, '5': 9, '10': 'orderTotalPriceInCents'},
+    {
+      '1': 'order_total_price_in_cents',
+      '3': 3,
+      '4': 1,
+      '5': 9,
+      '10': 'orderTotalPriceInCents'
+    },
     {'1': 'order_created_at', '3': 4, '4': 1, '5': 9, '10': 'orderCreatedAt'},
     {'1': 'order_updated_at', '3': 5, '4': 1, '5': 9, '10': 'orderUpdatedAt'},
-    {'1': 'order_resource_name', '3': 6, '4': 1, '5': 9, '10': 'orderResourceName'},
-    {'1': 'order_resource_address', '3': 7, '4': 1, '5': 9, '10': 'orderResourceAddress'},
-    {'1': 'order_resource_phone_number', '3': 8, '4': 1, '5': 9, '10': 'orderResourcePhoneNumber'},
-    {'1': 'order_resource_email', '3': 9, '4': 1, '5': 9, '10': 'orderResourceEmail'},
-    {'1': 'order_resource_logo_media_id', '3': 10, '4': 1, '5': 9, '10': 'orderResourceLogoMediaId'},
-    {'1': 'order_items', '3': 11, '4': 3, '5': 11, '6': '.order.v1.OrderReceiptItem', '10': 'orderItems'},
+    {
+      '1': 'order_resource_name',
+      '3': 6,
+      '4': 1,
+      '5': 9,
+      '10': 'orderResourceName'
+    },
+    {
+      '1': 'order_resource_address',
+      '3': 7,
+      '4': 1,
+      '5': 9,
+      '10': 'orderResourceAddress'
+    },
+    {
+      '1': 'order_resource_phone_number',
+      '3': 8,
+      '4': 1,
+      '5': 9,
+      '10': 'orderResourcePhoneNumber'
+    },
+    {
+      '1': 'order_resource_email',
+      '3': 9,
+      '4': 1,
+      '5': 9,
+      '10': 'orderResourceEmail'
+    },
+    {
+      '1': 'order_resource_logo_media_id',
+      '3': 10,
+      '4': 1,
+      '5': 9,
+      '10': 'orderResourceLogoMediaId'
+    },
+    {
+      '1': 'order_items',
+      '3': 11,
+      '4': 3,
+      '5': 11,
+      '6': '.order.v1.OrderReceiptItem',
+      '10': 'orderItems'
+    },
   ],
 };
 
@@ -74,31 +130,45 @@ const GenerateBillingRequest$json = {
 };
 
 /// Descriptor for `GenerateBillingRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List generateBillingRequestDescriptor = $convert.base64Decode(
-    'ChZHZW5lcmF0ZUJpbGxpbmdSZXF1ZXN0EhkKCG9yZGVyX2lkGAEgASgJUgdvcmRlcklk');
+final $typed_data.Uint8List generateBillingRequestDescriptor =
+    $convert.base64Decode(
+        'ChZHZW5lcmF0ZUJpbGxpbmdSZXF1ZXN0EhkKCG9yZGVyX2lkGAEgASgJUgdvcmRlcklk');
 
 @$core.Deprecated('Use generateBillingResponseDescriptor instead')
 const GenerateBillingResponse$json = {
   '1': 'GenerateBillingResponse',
   '2': [
-    {'1': 'order_receipt', '3': 1, '4': 1, '5': 11, '6': '.order.v1.OrderReceipt', '10': 'orderReceipt'},
+    {
+      '1': 'order_receipt',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.order.v1.OrderReceipt',
+      '10': 'orderReceipt'
+    },
   ],
 };
 
 /// Descriptor for `GenerateBillingResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List generateBillingResponseDescriptor = $convert.base64Decode(
-    'ChdHZW5lcmF0ZUJpbGxpbmdSZXNwb25zZRI7Cg1vcmRlcl9yZWNlaXB0GAEgASgLMhYub3JkZX'
-    'IudjEuT3JkZXJSZWNlaXB0UgxvcmRlclJlY2VpcHQ=');
+final $typed_data.Uint8List generateBillingResponseDescriptor =
+    $convert.base64Decode(
+        'ChdHZW5lcmF0ZUJpbGxpbmdSZXNwb25zZRI7Cg1vcmRlcl9yZWNlaXB0GAEgASgLMhYub3JkZX'
+        'IudjEuT3JkZXJSZWNlaXB0UgxvcmRlclJlY2VpcHQ=');
 
 const $core.Map<$core.String, $core.dynamic> BillingServiceBase$json = {
   '1': 'BillingService',
   '2': [
-    {'1': 'GenerateBilling', '2': '.order.v1.GenerateBillingRequest', '3': '.order.v1.GenerateBillingResponse'},
+    {
+      '1': 'GenerateBilling',
+      '2': '.order.v1.GenerateBillingRequest',
+      '3': '.order.v1.GenerateBillingResponse'
+    },
   ],
 };
 
 @$core.Deprecated('Use billingServiceDescriptor instead')
-const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>> BillingServiceBase$messageJson = {
+const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
+    BillingServiceBase$messageJson = {
   '.order.v1.GenerateBillingRequest': GenerateBillingRequest$json,
   '.order.v1.GenerateBillingResponse': GenerateBillingResponse$json,
   '.order.v1.OrderReceipt': OrderReceipt$json,
@@ -109,4 +179,3 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>> BillingSer
 final $typed_data.Uint8List billingServiceDescriptor = $convert.base64Decode(
     'Cg5CaWxsaW5nU2VydmljZRJWCg9HZW5lcmF0ZUJpbGxpbmcSIC5vcmRlci52MS5HZW5lcmF0ZU'
     'JpbGxpbmdSZXF1ZXN0GiEub3JkZXIudjEuR2VuZXJhdGVCaWxsaW5nUmVzcG9uc2U=');
-

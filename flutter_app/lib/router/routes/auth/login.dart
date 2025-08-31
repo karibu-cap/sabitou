@@ -1,6 +1,8 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 
+import '../../../screens/auth/login/login_view.dart';
+
 /// The title of the current route.
 const loginRouteTitle = 'Login';
 
@@ -8,11 +10,7 @@ const loginRouteTitle = 'Login';
 const loginPage = BeamPage(
   key: ValueKey('login'),
   title: loginRouteTitle,
-  child: Scaffold(
-    body: Center(
-      child: Text('Login Route'),
-    ),
-  ),
+  child: LoginView(),
 );
 
 /// The name of the current route.

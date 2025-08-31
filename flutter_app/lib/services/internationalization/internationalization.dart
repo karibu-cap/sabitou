@@ -180,43 +180,48 @@ class AppInternationalizationService extends GetxService {
       'en': 'Manage your account security',
       'fr': 'Gérer la sécurité de votre compte',
     },
-    'registrationUserNameRequired': {
+    'userNameRequired': {
       'en': 'User name is required',
       'fr': 'Le nom d’utilisateur est requis',
     },
-    'registrationEmailRequired': {
-      'en': 'Email is required',
-      'fr': 'L’email est requis',
-    },
-    'registrationEmailInvalid': {
+    'emailRequired': {'en': 'Email is required', 'fr': 'L’email est requis'},
+    'emailInvalid': {
       'en': 'Please enter a valid email address',
       'fr': 'Veuillez entrer une adresse email valide',
     },
-    'registrationPhoneNumberRequired': {
+    'phoneNumberRequired': {
       'en': 'Phone number is required',
       'fr': 'Le numéro de téléphone est requis',
     },
-    'registrationFirstNameRequired': {
+    'phoneNumberInvalidFormat': {
+      'en': 'Invalid phone number format',
+      'fr': 'Format de numéro de téléphone invalide',
+    },
+    'phoneNumberInvalidCameroon': {
+      'en': 'Invalid Cameroon phone number (format: 6XXXXXXXX)',
+      'fr': 'Numéro de téléphone camerounais invalide (format: 6XXXXXXXX)',
+    },
+    'firstNameRequired': {
       'en': 'First name is required',
       'fr': 'Le prénom est requis',
     },
-    'registrationLastNameRequired': {
+    'lastNameRequired': {
       'en': 'Last name is required',
       'fr': 'Le nom est requis',
     },
-    'registrationPasswordRequired': {
+    'passwordRequired': {
       'en': 'Password is required',
       'fr': 'Le mot de passe est requis',
     },
-    'registrationPasswordLength': {
+    'passwordLength': {
       'en': 'Password must be at least 6 characters',
       'fr': 'Le mot de passe doit comporter au moins 6 caractères',
     },
-    'registrationConfirmPasswordRequired': {
+    'confirmPasswordRequired': {
       'en': 'Please confirm your password',
       'fr': 'Veuillez confirmer votre mot de passe',
     },
-    'registrationPasswordsDoNotMatch': {
+    'passwordsDoNotMatch': {
       'en': 'Passwords do not match',
       'fr': 'Les mots de passe ne correspondent pas',
     },
@@ -225,18 +230,10 @@ class AppInternationalizationService extends GetxService {
       'en': 'Join us today',
       'fr': "Rejoignez-nous aujourd'hui",
     },
-    'registrationUserName': {'en': 'User name', 'fr': 'Nom d’utilisateur'},
-    'registrationEmail': {'en': 'Email', 'fr': 'Email'},
-    'registrationPhoneNumber': {
+    'userName': {'en': 'User name', 'fr': 'Nom d’utilisateur'},
+    'phoneNumber': {
       'en': 'Phone number',
       'fr': 'Numéro de téléphone',
-    },
-    'registrationFirstName': {'en': 'First name', 'fr': 'Prénom'},
-    'registrationLastName': {'en': 'Last name', 'fr': 'Nom'},
-    'registrationPassword': {'en': 'Password', 'fr': 'Mot de passe'},
-    'registrationConfirmPassword': {
-      'en': 'Confirm password',
-      'fr': 'Confirmer le mot de passe',
     },
     'registrationSubmit': {'en': 'Register', 'fr': 'S’inscrire'},
     'forgotPasswordTitle': {
@@ -548,45 +545,39 @@ class AppInternationalizationService extends GetxService {
     return _stringOfLocalizedValue('adminManager');
   }
 
-  /// Returns the localized value of registrationUserNameRequired.
-  String get registrationUserNameRequired =>
-      _stringOfLocalizedValue('registrationUserNameRequired');
+  /// Returns the localized value of userNameRequired.
+  String get userNameRequired =>
+      _stringOfLocalizedValue('userNameRequired');
 
-  /// Returns the localized value of registrationEmailRequired.
-  String get registrationEmailRequired =>
-      _stringOfLocalizedValue('registrationEmailRequired');
+  /// Returns the localized value of emailRequired.
+  String get emailRequired => _stringOfLocalizedValue('emailRequired');
 
-  /// Returns the localized value of registrationEmailInvalid.
-  String get registrationEmailInvalid =>
-      _stringOfLocalizedValue('registrationEmailInvalid');
+  /// Returns the localized value of emailInvalid.
+  String get emailInvalid => _stringOfLocalizedValue('emailInvalid');
 
-  /// Returns the localized value of registrationPhoneNumberRequired.
-  String get registrationPhoneNumberRequired =>
-      _stringOfLocalizedValue('registrationPhoneNumberRequired');
+  /// Returns the localized value of phoneNumberRequired.
+  String get phoneNumberRequired =>
+      _stringOfLocalizedValue('phoneNumberRequired');
 
-  /// Returns the localized value of registrationFirstNameRequired.
-  String get registrationFirstNameRequired =>
-      _stringOfLocalizedValue('registrationFirstNameRequired');
+  /// Returns the localized value of firstNameRequired.
+  String get firstNameRequired => _stringOfLocalizedValue('firstNameRequired');
 
-  /// Returns the localized value of registrationLastNameRequired.
-  String get registrationLastNameRequired =>
-      _stringOfLocalizedValue('registrationLastNameRequired');
+  /// Returns the localized value of lastNameRequired.
+  String get lastNameRequired => _stringOfLocalizedValue('lastNameRequired');
 
-  /// Returns the localized value of registrationPasswordRequired.
-  String get registrationPasswordRequired =>
-      _stringOfLocalizedValue('registrationPasswordRequired');
+  /// Returns the localized value of passwordRequired.
+  String get passwordRequired => _stringOfLocalizedValue('passwordRequired');
 
-  /// Returns the localized value of registrationPasswordLength.
-  String get registrationPasswordLength =>
-      _stringOfLocalizedValue('registrationPasswordLength');
+  /// Returns the localized value of passwordLength.
+  String get passwordLength => _stringOfLocalizedValue('passwordLength');
 
-  /// Returns the localized value of registrationConfirmPasswordRequired.
-  String get registrationConfirmPasswordRequired =>
-      _stringOfLocalizedValue('registrationConfirmPasswordRequired');
+  /// Returns the localized value of confirmPasswordRequired.
+  String get confirmPasswordRequired =>
+      _stringOfLocalizedValue('confirmPasswordRequired');
 
-  /// Returns the localized value of registrationPasswordsDoNotMatch.
-  String get registrationPasswordsDoNotMatch =>
-      _stringOfLocalizedValue('registrationPasswordsDoNotMatch');
+  /// Returns the localized value of passwordsDoNotMatch.
+  String get passwordsDoNotMatch =>
+      _stringOfLocalizedValue('passwordsDoNotMatch');
 
   /// Returns the localized value of registrationTitle.
   String get registrationTitle {
@@ -598,32 +589,13 @@ class AppInternationalizationService extends GetxService {
     return _stringOfLocalizedValue('registrationSubtitle');
   }
 
-  /// Returns the localized value of registrationUserName.
-  String get registrationUserName =>
-      _stringOfLocalizedValue('registrationUserName');
+  /// Returns the localized value of userName.
+  String get userName =>
+      _stringOfLocalizedValue('userName');
 
-  /// Returns the localized value of registrationEmail.
-  String get registrationEmail => _stringOfLocalizedValue('registrationEmail');
-
-  /// Returns the localized value of registrationPhoneNumber.
-  String get registrationPhoneNumber =>
-      _stringOfLocalizedValue('registrationPhoneNumber');
-
-  /// Returns the localized value of registrationFirstName.
-  String get registrationFirstName =>
-      _stringOfLocalizedValue('registrationFirstName');
-
-  /// Returns the localized value of registrationLastName.
-  String get registrationLastName =>
-      _stringOfLocalizedValue('registrationLastName');
-
-  /// Returns the localized value of registrationPassword.
-  String get registrationPassword =>
-      _stringOfLocalizedValue('registrationPassword');
-
-  /// Returns the localized value of registrationConfirmPassword.
-  String get registrationConfirmPassword =>
-      _stringOfLocalizedValue('registrationConfirmPassword');
+  /// Returns the localized value of phoneNumber.
+  String get phoneNumber =>
+      _stringOfLocalizedValue('phoneNumber');
 
   /// Returns the localized value of registrationSubmit.
   String get registrationSubmit =>
@@ -704,6 +676,16 @@ class AppInternationalizationService extends GetxService {
   /// Returns the localized value of loginPasswordLength.
   String get loginPasswordLength {
     return _stringOfLocalizedValue('loginPasswordLength');
+  }
+
+  /// Returns the localized value of phoneNumberInvalidFormat.
+  String get phoneNumberInvalidFormat {
+    return _stringOfLocalizedValue('phoneNumberInvalidFormat');
+  }
+
+  /// Returns the localized value of phoneNumberInvalidCameroon.
+  String get phoneNumberInvalidCameroon {
+    return _stringOfLocalizedValue('phoneNumberInvalidCameroon');
   }
 
   /// Returns the localized value of inventoryManager.
