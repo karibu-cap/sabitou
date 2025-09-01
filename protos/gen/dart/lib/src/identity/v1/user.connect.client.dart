@@ -9,6 +9,7 @@ import "user.connect.spec.dart" as specs;
 
 extension type UserServiceClient (connect.Transport _transport) {
   /// Get the user information for the currently authenticated user.
+  /// @deprecated use GetCurrentUser instead.
   Future<identityv1user.GetMeResponse> getMe(
     identityv1user.GetMeRequest input, {
     connect.Headers? headers,
@@ -18,6 +19,24 @@ extension type UserServiceClient (connect.Transport _transport) {
   }) {
     return connect.Client(_transport).unary(
       specs.UserService.getMe,
+      input,
+      signal: signal,
+      headers: headers,
+      onHeader: onHeader,
+      onTrailer: onTrailer,
+    );
+  }
+
+  /// Get the user information for the currently authenticated user.
+  Future<identityv1user.GetCurrentUserResponse> getCurrentUser(
+    identityv1user.GetCurrentUserRequest input, {
+    connect.Headers? headers,
+    connect.AbortSignal? signal,
+    Function(connect.Headers)? onHeader,
+    Function(connect.Headers)? onTrailer,
+  }) {
+    return connect.Client(_transport).unary(
+      specs.UserService.getCurrentUser,
       input,
       signal: signal,
       headers: headers,

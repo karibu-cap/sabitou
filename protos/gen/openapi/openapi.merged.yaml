@@ -6,7 +6,7 @@ paths:
     post:
       tags:
         - business.v1.BusinessService
-      summary: CreateBusiness
+      summary: Create a new business.
       description: Create a new business.
       operationId: business.v1.BusinessService.CreateBusiness
       parameters:
@@ -42,7 +42,7 @@ paths:
     post:
       tags:
         - business.v1.BusinessService
-      summary: GetMyBusinesses
+      summary: Get all businesses of the current user.
       description: Get all businesses of the current user.
       operationId: business.v1.BusinessService.GetMyBusinesses
       parameters:
@@ -78,7 +78,7 @@ paths:
     post:
       tags:
         - business.v1.BusinessService
-      summary: GetBusinessDetails
+      summary: Get a business by id.
       description: Get a business by id.
       operationId: business.v1.BusinessService.GetBusinessDetails
       parameters:
@@ -114,7 +114,7 @@ paths:
     post:
       tags:
         - business.v1.BusinessService
-      summary: UpdateBusiness
+      summary: Update a business.
       description: Update a business.
       operationId: business.v1.BusinessService.UpdateBusiness
       parameters:
@@ -150,7 +150,7 @@ paths:
     post:
       tags:
         - business.v1.BusinessService
-      summary: RequestDeleteBusiness
+      summary: Request the deletion of the business. This request doesn't delete the business direcly instead it put the business in inactive state and remove all business members.
       description: Request the deletion of the business. This request doesn't delete the business direcly instead it put the business in inactive state and remove all business members.
       operationId: business.v1.BusinessService.RequestDeleteBusiness
       parameters:
@@ -186,7 +186,7 @@ paths:
     post:
       tags:
         - business.v1.BusinessService
-      summary: AddUserToBusiness
+      summary: Add user to business or invite user to business.
       description: Add user to business or invite user to business.
       operationId: business.v1.BusinessService.AddUserToBusiness
       parameters:
@@ -222,7 +222,7 @@ paths:
     post:
       tags:
         - business.v1.BusinessService
-      summary: RemoveUserFromBusiness
+      summary: 'Remove user from business.  If the user has been created by the business, the user will be deleted.  NOTE: The authenticated user need to have the permission to remove the  user.'
       description: |-
         Remove user from business.
          If the user has been created by the business, the user will be deleted.
@@ -262,7 +262,7 @@ paths:
     post:
       tags:
         - business.v1.BusinessService
-      summary: ChangeBusinessCurrency
+      summary: Changes the business currency
       description: Changes the business currency
       operationId: business.v1.BusinessService.ChangeBusinessCurrency
       parameters:
@@ -298,7 +298,7 @@ paths:
     post:
       tags:
         - business.v1.BusinessService
-      summary: GetBusinessMembers
+      summary: Get the users of the business.
       description: Get the users of the business.
       operationId: business.v1.BusinessService.GetBusinessMembers
       parameters:
@@ -334,7 +334,7 @@ paths:
     post:
       tags:
         - business.v1.BusinessClientService
-      summary: CreateBusinessClient
+      summary: Creates a new client.
       description: Creates a new client.
       operationId: business.v1.BusinessClientService.CreateBusinessClient
       parameters:
@@ -370,7 +370,7 @@ paths:
     post:
       tags:
         - business.v1.BusinessClientService
-      summary: GetBusinessClient
+      summary: Gets a client by id.
       description: Gets a client by id.
       operationId: business.v1.BusinessClientService.GetBusinessClient
       parameters:
@@ -406,7 +406,7 @@ paths:
     post:
       tags:
         - business.v1.BusinessClientService
-      summary: UpdateBusinessClient
+      summary: Updates a client.  Note:Only the fields that are set will be updated.
       description: |-
         Updates a client.
          Note:Only the fields that are set will be updated.
@@ -444,7 +444,7 @@ paths:
     post:
       tags:
         - business.v1.BusinessClientService
-      summary: DeleteBusinessClient
+      summary: Deletes a client.
       description: Deletes a client.
       operationId: business.v1.BusinessClientService.DeleteBusinessClient
       parameters:
@@ -480,7 +480,7 @@ paths:
     post:
       tags:
         - business.v1.SupplierService
-      summary: CreateSupplier
+      summary: Creates a new supplier.
       description: Creates a new supplier.
       operationId: business.v1.SupplierService.CreateSupplier
       parameters:
@@ -516,7 +516,7 @@ paths:
     post:
       tags:
         - business.v1.SupplierService
-      summary: GetSupplier
+      summary: Gets a supplier by id.
       description: Gets a supplier by id.
       operationId: business.v1.SupplierService.GetSupplier
       parameters:
@@ -552,7 +552,7 @@ paths:
     post:
       tags:
         - business.v1.SupplierService
-      summary: GetBusinessSuppliers
+      summary: Gets all suppliers of a business.
       description: Gets all suppliers of a business.
       operationId: business.v1.SupplierService.GetBusinessSuppliers
       parameters:
@@ -588,7 +588,7 @@ paths:
     post:
       tags:
         - business.v1.SupplierService
-      summary: UpdateSupplier
+      summary: Updates a supplier.  Note:Only the fields that are set will be updated. array fiels like external_links will be replaced.
       description: |-
         Updates a supplier.
          Note:Only the fields that are set will be updated. array fiels like external_links will be replaced.
@@ -626,7 +626,7 @@ paths:
     post:
       tags:
         - business.v1.SupplierService
-      summary: DeleteSupplier
+      summary: Deletes a supplier.
       description: Deletes a supplier.
       operationId: business.v1.SupplierService.DeleteSupplier
       parameters:
@@ -662,7 +662,7 @@ paths:
     post:
       tags:
         - identity.v1.AuthService
-      summary: Login
+      summary: Authenticate the user with the given credentials.
       description: Authenticate the user with the given credentials.
       operationId: identity.v1.AuthService.Login
       parameters:
@@ -694,11 +694,47 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/identity.v1.LoginResponse'
+  /identity.v1.AuthService/Register:
+    post:
+      tags:
+        - identity.v1.AuthService
+      summary: Create a user without a password.
+      description: Create a user without a password.
+      operationId: identity.v1.AuthService.Register
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/identity.v1.RegisterRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identity.v1.RegisterResponse'
   /identity.v1.AuthService/RequestPasswordReset:
     post:
       tags:
         - identity.v1.AuthService
-      summary: RequestPasswordReset
+      summary: Request the password reset of the user.
       description: Request the password reset of the user.
       operationId: identity.v1.AuthService.RequestPasswordReset
       parameters:
@@ -734,7 +770,7 @@ paths:
     post:
       tags:
         - identity.v1.AuthService
-      summary: ResetPassword
+      summary: Process the password reset request.
       description: Process the password reset request.
       operationId: identity.v1.AuthService.ResetPassword
       parameters:
@@ -770,7 +806,7 @@ paths:
     post:
       tags:
         - identity.v1.PermissionService
-      summary: CreatePermissionsGroup
+      summary: Creates a new permission group.
       description: Creates a new permission group.
       operationId: identity.v1.PermissionService.CreatePermissionsGroup
       parameters:
@@ -806,7 +842,7 @@ paths:
     post:
       tags:
         - identity.v1.PermissionService
-      summary: GetPermissionsGroup
+      summary: Gets a permission group by id.
       description: Gets a permission group by id.
       operationId: identity.v1.PermissionService.GetPermissionsGroup
       parameters:
@@ -842,7 +878,7 @@ paths:
     post:
       tags:
         - identity.v1.PermissionService
-      summary: UpdatePermissionsGroup
+      summary: Updates a permission group.
       description: Updates a permission group.
       operationId: identity.v1.PermissionService.UpdatePermissionsGroup
       parameters:
@@ -878,7 +914,7 @@ paths:
     post:
       tags:
         - identity.v1.PermissionService
-      summary: DeletePermissionsGroup
+      summary: Deletes a permission group.
       description: Deletes a permission group.
       operationId: identity.v1.PermissionService.DeletePermissionsGroup
       parameters:
@@ -914,7 +950,7 @@ paths:
     post:
       tags:
         - identity.v1.PermissionService
-      summary: UpdateMemberPermissions
+      summary: Update the member permissions on the provided business.
       description: Update the member permissions on the provided business.
       operationId: identity.v1.PermissionService.UpdateMemberPermissions
       parameters:
@@ -950,7 +986,7 @@ paths:
     post:
       tags:
         - identity.v1.PermissionService
-      summary: GetBusinessPermissionsGroups
+      summary: Gets the permission groups of the business.
       description: Gets the permission groups of the business.
       operationId: identity.v1.PermissionService.GetBusinessPermissionsGroups
       parameters:
@@ -986,7 +1022,7 @@ paths:
     post:
       tags:
         - identity.v1.PermissionService
-      summary: CheckPermission
+      summary: Checks if the member has the provided permission for the provided resource.
       description: Checks if the member has the provided permission for the provided resource.
       operationId: identity.v1.PermissionService.CheckPermission
       parameters:
@@ -1022,8 +1058,10 @@ paths:
     post:
       tags:
         - identity.v1.UserService
-      summary: GetMe
-      description: Get the user information for the currently authenticated user.
+      summary: Get the user information for the currently authenticated user.  @deprecated use GetCurrentUser instead.
+      description: |-
+        Get the user information for the currently authenticated user.
+         @deprecated use GetCurrentUser instead.
       operationId: identity.v1.UserService.GetMe
       parameters:
         - name: Connect-Protocol-Version
@@ -1054,11 +1092,47 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/identity.v1.GetMeResponse'
+  /identity.v1.UserService/GetCurrentUser:
+    post:
+      tags:
+        - identity.v1.UserService
+      summary: Get the user information for the currently authenticated user.
+      description: Get the user information for the currently authenticated user.
+      operationId: identity.v1.UserService.GetCurrentUser
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/identity.v1.GetCurrentUserRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identity.v1.GetCurrentUserResponse'
   /identity.v1.UserService/GetUser:
     post:
       tags:
         - identity.v1.UserService
-      summary: GetUser
+      summary: Get the public information for the given user id.
       description: Get the public information for the given user id.
       operationId: identity.v1.UserService.GetUser
       parameters:
@@ -1094,7 +1168,7 @@ paths:
     post:
       tags:
         - identity.v1.UserService
-      summary: UpdateMe
+      summary: Update the user information for the currently authenticated user.
       description: Update the user information for the currently authenticated user.
       operationId: identity.v1.UserService.UpdateMe
       parameters:
@@ -1130,7 +1204,7 @@ paths:
     post:
       tags:
         - identity.v1.UserService
-      summary: RequestDeleteUser
+      summary: Request the deletion of the user account.  This will send a verification code to the user's email address  or phone number.
       description: |-
         Request the deletion of the user account.
          This will send a verification code to the user's email address
@@ -1169,7 +1243,7 @@ paths:
     post:
       tags:
         - identity.v1.UserService
-      summary: DeleteUser
+      summary: Processes the deletion of the user account requested by the user.
       description: Processes the deletion of the user account requested by the user.
       operationId: identity.v1.UserService.DeleteUser
       parameters:
@@ -1205,7 +1279,7 @@ paths:
     post:
       tags:
         - identity.v1.UserService
-      summary: ChangePassword
+      summary: Change the password for the currently authenticated user.
       description: Change the password for the currently authenticated user.
       operationId: identity.v1.UserService.ChangePassword
       parameters:
@@ -1241,7 +1315,7 @@ paths:
     post:
       tags:
         - inventory.v1.ProductService
-      summary: FindGlobalProducts
+      summary: Finds products by name.
       description: Finds products by name.
       operationId: inventory.v1.ProductService.FindGlobalProducts
       parameters:
@@ -1277,7 +1351,7 @@ paths:
     post:
       tags:
         - inventory.v1.ProductService
-      summary: FindCategory
+      summary: Finds categories by name.
       description: Finds categories by name.
       operationId: inventory.v1.ProductService.FindCategory
       parameters:
@@ -1313,7 +1387,7 @@ paths:
     post:
       tags:
         - inventory.v1.ProductService
-      summary: AddProduct
+      summary: Adds a product to a business.
       description: Adds a product to a business.
       operationId: inventory.v1.ProductService.AddProduct
       parameters:
@@ -1349,7 +1423,7 @@ paths:
     post:
       tags:
         - inventory.v1.ProductService
-      summary: GetProduct
+      summary: Gets a business product by id.
       description: Gets a business product by id.
       operationId: inventory.v1.ProductService.GetProduct
       parameters:
@@ -1385,7 +1459,7 @@ paths:
     post:
       tags:
         - inventory.v1.ProductService
-      summary: UpdateProduct
+      summary: Updates a business product.
       description: Updates a business product.
       operationId: inventory.v1.ProductService.UpdateProduct
       parameters:
@@ -1421,7 +1495,7 @@ paths:
     post:
       tags:
         - inventory.v1.ProductService
-      summary: DeleteProduct
+      summary: Deletes a business product.  Only business products that are not in any store and orders can be  deleted.
       description: |-
         Deletes a business product.
          Only business products that are not in any store and orders can be
@@ -1460,7 +1534,7 @@ paths:
     post:
       tags:
         - link.v1.ResourceLinkService
-      summary: GetResourceLinks
+      summary: Gets a resource link by id.   Returns the resources in the same order as the ids.
       description: "Gets a resource link by id. \n Returns the resources in the same order as the ids."
       operationId: link.v1.ResourceLinkService.GetResourceLinks
       parameters:
@@ -1496,7 +1570,7 @@ paths:
     post:
       tags:
         - order.v1.OrderService
-      summary: CreateOrder
+      summary: Creates a new order.
       description: Creates a new order.
       operationId: order.v1.OrderService.CreateOrder
       parameters:
@@ -1532,7 +1606,7 @@ paths:
     post:
       tags:
         - order.v1.OrderService
-      summary: GetOrder
+      summary: Gets an order by id.
       description: Gets an order by id.
       operationId: order.v1.OrderService.GetOrder
       parameters:
@@ -1568,7 +1642,7 @@ paths:
     post:
       tags:
         - order.v1.OrderService
-      summary: DeleteOrder
+      summary: Deletes an order.
       description: Deletes an order.
       operationId: order.v1.OrderService.DeleteOrder
       parameters:
@@ -1604,7 +1678,7 @@ paths:
     post:
       tags:
         - order.v1.BillingService
-      summary: GenerateBilling
+      summary: Generates a billing for the order.
       description: Generates a billing for the order.
       operationId: order.v1.BillingService.GenerateBilling
       parameters:
@@ -1640,7 +1714,7 @@ paths:
     post:
       tags:
         - store.v1.StoreService
-      summary: CreateStore
+      summary: Creates a new store.
       description: Creates a new store.
       operationId: store.v1.StoreService.CreateStore
       parameters:
@@ -1676,7 +1750,7 @@ paths:
     post:
       tags:
         - store.v1.StoreService
-      summary: GetStore
+      summary: Gets a store by id.
       description: Gets a store by id.
       operationId: store.v1.StoreService.GetStore
       parameters:
@@ -1712,7 +1786,7 @@ paths:
     post:
       tags:
         - store.v1.StoreService
-      summary: UpdateStore
+      summary: Updates a store.  Note:Only the fields that are set will be updated.
       description: |-
         Updates a store.
          Note:Only the fields that are set will be updated.
@@ -1750,7 +1824,7 @@ paths:
     post:
       tags:
         - store.v1.StoreService
-      summary: DeleteStore
+      summary: Deletes a store.
       description: Deletes a store.
       operationId: store.v1.StoreService.DeleteStore
       parameters:
@@ -1988,7 +2062,9 @@ components:
           type: string
           title: business_id
           minLength: 3
-          description: The reference id to the business identifier.
+          description: |
+            The reference id to the business identifier.
+            string.min_len = 3
       title: CreateBusinessResponse
       required:
         - businessId
@@ -2000,7 +2076,9 @@ components:
           type: string
           title: business_id
           minLength: 3
-          description: The reference id to the business identifier.
+          description: |
+            The reference id to the business identifier.
+            string.min_len = 3
       title: GetBusinessDetailsRequest
       required:
         - businessId
@@ -2021,7 +2099,9 @@ components:
           type: string
           title: business_id
           minLength: 3
-          description: The reference id to the business identifier.
+          description: |
+            The reference id to the business identifier.
+            string.min_len = 3
       title: GetBusinessMembersRequest
       required:
         - businessId
@@ -2058,11 +2138,15 @@ components:
           type: string
           title: user_id
           minLength: 3
-          description: The unique identifier of the user.
+          description: |
+            The unique identifier of the user.
+            string.min_len = 3
         businessId:
           type: string
           title: business_id
           minLength: 3
+          description: |
+            string.min_len = 3
       title: RemoveUserFromBusinessRequest
       required:
         - userId
@@ -2084,7 +2168,9 @@ components:
           type: string
           title: business_id
           minLength: 3
-          description: The reference id to the business identifier.
+          description: |
+            The reference id to the business identifier.
+            string.min_len = 3
         password:
           type: string
           title: password
@@ -2228,24 +2314,36 @@ components:
         message:
           type: string
           description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
-        detail:
-          $ref: '#/components/schemas/google.protobuf.Any'
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/connect.error_details.Any'
+          description: A list of messages that carry the error details. There is no limit on the number of messages.
       title: Connect Error
       additionalProperties: true
       description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
-    google.protobuf.Any:
+    connect.error_details.Any:
       type: object
       properties:
         type:
           type: string
+          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
         value:
           type: string
           format: binary
+          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
         debug:
-          type: object
-          additionalProperties: true
+          oneOf:
+            - type: object
+              title: Any
+              additionalProperties: true
+              description: Detailed error information.
+          discriminator:
+            propertyName: type
+          title: Debug
+          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
       additionalProperties: true
-      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
     business.v1.BusinessClient:
       type: object
       properties:
@@ -2273,7 +2371,9 @@ components:
           type: string
           title: business_id
           minLength: 3
-          description: The id of the business of the client.
+          description: |
+            The id of the business of the client.
+            string.min_len = 3
       title: BusinessClient
       required:
         - businessId
@@ -2300,7 +2400,9 @@ components:
           type: string
           title: client_id
           minLength: 3
-          description: The reference id to the client identifier.
+          description: |
+            The reference id to the client identifier.
+            string.min_len = 3
       title: CreateBusinessClientResponse
       required:
         - clientId
@@ -2312,7 +2414,9 @@ components:
           type: string
           title: client_id
           minLength: 3
-          description: The reference id to the client identifier.
+          description: |
+            The reference id to the client identifier.
+            string.min_len = 3
       title: DeleteBusinessClientRequest
       required:
         - clientId
@@ -2333,7 +2437,9 @@ components:
           type: string
           title: client_id
           minLength: 3
-          description: The reference id to the client identifier.
+          description: |
+            The reference id to the client identifier.
+            string.min_len = 3
       title: GetBusinessClientRequest
       required:
         - clientId
@@ -2401,7 +2507,9 @@ components:
           type: string
           title: suplier_id
           minLength: 3
-          description: The reference id to the supplier identifier.
+          description: |
+            The reference id to the supplier identifier.
+            string.min_len = 3
       title: CreateSupplierResponse
       required:
         - suplierId
@@ -2413,7 +2521,9 @@ components:
           type: string
           title: supplier_id
           minLength: 3
-          description: The reference id to the supplier identifier.
+          description: |
+            The reference id to the supplier identifier.
+            string.min_len = 3
       title: DeleteSupplierRequest
       required:
         - supplierId
@@ -2434,7 +2544,9 @@ components:
           type: string
           title: supplier_id
           minLength: 3
-          description: The reference id to the supplier identifier.
+          description: |
+            The reference id to the supplier identifier.
+            string.min_len = 3
       title: GetBusinessSuppliersRequest
       required:
         - supplierId
@@ -2459,7 +2571,9 @@ components:
           type: string
           title: supplier_id
           minLength: 3
-          description: The reference id to the supplier identifier.
+          description: |
+            The reference id to the supplier identifier.
+            string.min_len = 3
       title: GetSupplierRequest
       required:
         - supplierId
@@ -2520,7 +2634,9 @@ components:
           type: string
           title: business_id
           minLength: 3
-          description: The id of the business of the supplier.
+          description: |
+            The id of the business of the supplier.
+            string.min_len = 3
       title: Supplier
       required:
         - businessId
@@ -2563,14 +2679,10 @@ components:
         uRef:
           type: string
           title: u_ref
-          description: |+
+          description: |
             The unique identifier of the user.
              For example, the email address or phone number or @username.
-            user_ref must be a valid email address or user id or @username:
-            ```
-            this.isEmail() || this.matches('^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')
-            ```
-
+            string.is_user_ref // user_ref must be a valid email address or user id or @username
         password:
           type: string
           title: password
@@ -2590,20 +2702,46 @@ components:
           description: The refresh token to use to refresh the token.
       title: LoginResponse
       additionalProperties: false
+    identity.v1.RegisterRequest:
+      type: object
+      properties:
+        userName:
+          type: string
+          title: user_name
+          description: The unique identifier of the user.
+        email:
+          type: string
+          title: email
+          description: The email address of the user.
+      title: RegisterRequest
+      additionalProperties: false
+      description: |-
+        Register a new user with the minimum required information.
+         The user will have to set a password later.
+         For Business user registration, the business id is required.
+    identity.v1.RegisterResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          title: token
+          description: The token to use to authenticate the user in subsequent requests.
+        refreshToken:
+          type: string
+          title: refresh_token
+          description: The refresh token to use to refresh the token.
+      title: RegisterResponse
+      additionalProperties: false
     identity.v1.RequestPasswordResetRequest:
       type: object
       properties:
         uRef:
           type: string
           title: u_ref
-          description: |+
+          description: |
             The unique identifier of the user.
              For example, the email address or userId, later it will include the user name as well.
-            user_ref must be a valid email address or user id or @username:
-            ```
-            this.isEmail() || this.matches('^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')
-            ```
-
+            string.is_user_ref // user_ref must be a valid email address or user id or @username
       title: RequestPasswordResetRequest
       additionalProperties: false
     identity.v1.RequestPasswordResetResponse:
@@ -2655,12 +2793,16 @@ components:
           type: string
           title: user_id
           minLength: 3
-          description: The unique identifier of the member.
+          description: |
+            The unique identifier of the member.
+            string.min_len = 3
         businessId:
           type: string
           title: business_id
           minLength: 3
-          description: The unique identifier of the business on which we want to check the permission.
+          description: |
+            The unique identifier of the business on which we want to check the permission.
+            string.min_len = 3
         permission:
           title: permission
           description: The permission to check.
@@ -2692,7 +2834,9 @@ components:
           type: string
           title: business_id
           minLength: 3
-          description: The unique identifier of the business on which the permission group is created.
+          description: |
+            The unique identifier of the business on which the permission group is created.
+            string.min_len = 3
       title: CreatePermissionsGroupRequest
       required:
         - businessId
@@ -2704,7 +2848,9 @@ components:
           type: string
           title: permission_group_id
           minLength: 3
-          description: The unique identifier of the created permission group.
+          description: |
+            The unique identifier of the created permission group.
+            string.min_len = 3
       title: CreatePermissionsGroupResponse
       required:
         - permissionGroupId
@@ -2716,12 +2862,16 @@ components:
           type: string
           title: permission_group_id
           minLength: 3
-          description: The unique identifier of the permission group to delete.
+          description: |
+            The unique identifier of the permission group to delete.
+            string.min_len = 3
         businessId:
           type: string
           title: business_id
           minLength: 3
-          description: The unique identifier of the business.
+          description: |
+            The unique identifier of the business.
+            string.min_len = 3
       title: DeletePermissionsGroupRequest
       required:
         - permissionGroupId
@@ -2743,7 +2893,9 @@ components:
           type: string
           title: business_id
           minLength: 3
-          description: The unique identifier of the business to retrieve.
+          description: |
+            The unique identifier of the business to retrieve.
+            string.min_len = 3
       title: GetBusinessPermissionsGroupsRequest
       required:
         - businessId
@@ -2766,7 +2918,9 @@ components:
           type: string
           title: permission_group_id
           minLength: 3
-          description: The unique identifier of the permission group to retrieve.
+          description: |
+            The unique identifier of the permission group to retrieve.
+            string.min_len = 3
       title: GetPermissionsGroupRequest
       required:
         - permissionGroupId
@@ -2819,12 +2973,16 @@ components:
           type: string
           title: user_id
           minLength: 3
-          description: The unique identifier of the member.
+          description: |
+            The unique identifier of the member.
+            string.min_len = 3
         businessId:
           type: string
           title: business_id
           minLength: 3
-          description: The id of the business on which we want to update the permissions.
+          description: |
+            The id of the business on which we want to update the permissions.
+            string.min_len = 3
         removePermissions:
           type: array
           items:
@@ -2870,12 +3028,16 @@ components:
           type: string
           title: permissions_group_id
           minLength: 3
-          description: The permission group id;
+          description: |
+            The permission group id;
+            string.min_len = 3
         businessId:
           type: string
           title: business_id
           minLength: 3
-          description: The unique identifier of the business.
+          description: |
+            The unique identifier of the business.
+            string.min_len = 3
         name:
           type: string
           title: name
@@ -2919,12 +3081,6 @@ components:
         - ACCOUNT_STATUS_TYPE_UNSPECIFIED
         - ACCOUNT_STATUS_TYPE_ACTIVE
         - ACCOUNT_STATUS_TYPE_DELETED
-    identity.v1.AccountType:
-      type: string
-      title: AccountType
-      enum:
-        - ADMIN
-        - USER
     identity.v1.AuthActionType:
       type: string
       title: AuthActionType
@@ -2950,17 +3106,21 @@ components:
           title: old_password
           maxLength: 32
           minLength: 8
-          description: |-
+          description: |
             The previous password of the user.
              TODO: Add more validation like capital letters, numbers, etc.
+            string.max_len = 32
+            string.min_len = 8
         newPassword:
           type: string
           title: new_password
           maxLength: 32
           minLength: 8
-          description: |-
+          description: |
             The new password of the user.
              TODO: Add more validation like capital letters, numbers, etc.
+            string.max_len = 32
+            string.min_len = 8
       title: ChangePasswordRequest
       additionalProperties: false
     identity.v1.ChangePasswordResponse:
@@ -3009,6 +3169,20 @@ components:
           description: Whether the user was successfully deleted.
       title: DeleteUserResponse
       additionalProperties: false
+    identity.v1.GetCurrentUserRequest:
+      type: object
+      title: GetCurrentUserRequest
+      additionalProperties: false
+      description: Empty message.
+    identity.v1.GetCurrentUserResponse:
+      type: object
+      properties:
+        me:
+          title: me
+          description: The user information for the currently authenticated user.
+          $ref: '#/components/schemas/identity.v1.User'
+      title: GetCurrentUserResponse
+      additionalProperties: false
     identity.v1.GetMeRequest:
       type: object
       title: GetMeRequest
@@ -3030,7 +3204,9 @@ components:
           type: string
           title: user_id
           minLength: 3
-          description: The id of the user to retrieve.
+          description: |
+            The id of the user to retrieve.
+            string.min_len = 3
       title: GetUserRequest
       required:
         - userId
@@ -3051,7 +3227,9 @@ components:
           type: string
           title: user_id
           minLength: 3
-          description: The id of the user to delete.
+          description: |
+            The id of the user to delete.
+            string.min_len = 3
         password:
           type: string
           title: password
@@ -3116,7 +3294,10 @@ components:
           type: string
           title: email
           format: email
-          description: The email address of the user.
+          description: |
+            The email address of the user.
+            string.email = true // value must be a valid email address
+            string.email_empty = true // value is empty, which is not a valid email address
           nullable: true
         phoneNumber:
           type: string
@@ -3143,10 +3324,6 @@ components:
           description: The status of the user's account.
           nullable: true
           $ref: '#/components/schemas/identity.v1.AccountStatusType'
-        accountType:
-          title: account_type
-          description: The type of the user's account.
-          $ref: '#/components/schemas/identity.v1.AccountType'
         requiredActions:
           type: array
           items:
@@ -3234,7 +3411,9 @@ components:
           type: string
           title: product_id
           minLength: 3
-          description: The unique identifier of the business product.
+          description: |
+            The unique identifier of the business product.
+            string.min_len = 3
       title: DeleteProductRequest
       required:
         - productId
@@ -3299,7 +3478,9 @@ components:
           type: string
           title: product_id
           minLength: 3
-          description: The unique identifier of the business product.
+          description: |
+            The unique identifier of the business product.
+            string.min_len = 3
       title: GetProductRequest
       required:
         - productId
@@ -3460,7 +3641,9 @@ components:
           type: string
           title: order_id
           minLength: 3
-          description: The unique identifier of the created order.
+          description: |
+            The unique identifier of the created order.
+            string.min_len = 3
       title: CreateOrderResponse
       required:
         - orderId
@@ -3472,7 +3655,9 @@ components:
           type: string
           title: order_id
           minLength: 3
-          description: The unique identifier of the order to delete.
+          description: |
+            The unique identifier of the order to delete.
+            string.min_len = 3
       title: DeleteOrderRequest
       required:
         - orderId
@@ -3493,7 +3678,9 @@ components:
           type: string
           title: order_id
           minLength: 3
-          description: The unique identifier of the order to retrieve.
+          description: |
+            The unique identifier of the order to retrieve.
+            string.min_len = 3
       title: GetOrderRequest
       required:
         - orderId
@@ -3678,7 +3865,9 @@ components:
           type: string
           title: store_id
           minLength: 3
-          description: The unique identifier of the created store.
+          description: |
+            The unique identifier of the created store.
+            string.min_len = 3
       title: CreateStoreResponse
       required:
         - storeId
@@ -3690,7 +3879,9 @@ components:
           type: string
           title: store_id
           minLength: 3
-          description: The unique identifier of the store to delete.
+          description: |
+            The unique identifier of the store to delete.
+            string.min_len = 3
       title: DeleteStoreRequest
       required:
         - storeId
@@ -3711,7 +3902,9 @@ components:
           type: string
           title: store_id
           minLength: 3
-          description: The unique identifier of the store to retrieve.
+          description: |
+            The unique identifier of the store to retrieve.
+            string.min_len = 3
       title: GetStoreRequest
       required:
         - storeId

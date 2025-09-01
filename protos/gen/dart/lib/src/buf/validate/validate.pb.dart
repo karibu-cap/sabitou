@@ -24,10 +24,10 @@ export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 
 export 'validate.pbenum.dart';
 
-/// `Constraint` represents a validation rule written in the Common Expression
-/// Language (CEL) syntax. Each Constraint includes a unique identifier, an
+/// `Rule` represents a validation rule written in the Common Expression
+/// Language (CEL) syntax. Each Rule includes a unique identifier, an
 /// optional error message, and the CEL expression to evaluate. For more
-/// information on CEL, [see our documentation](https://github.com/bufbuild/protovalidate/blob/main/docs/cel.md).
+/// information, [see our documentation](https://buf.build/docs/protovalidate/schemas/custom-rules/).
 ///
 /// ```proto
 /// message Foo {
@@ -39,8 +39,8 @@ export 'validate.pbenum.dart';
 ///   int32 bar = 1;
 /// }
 /// ```
-class Constraint extends $pb.GeneratedMessage {
-  factory Constraint({
+class Rule extends $pb.GeneratedMessage {
+  factory Rule({
     $core.String? id,
     $core.String? message,
     $core.String? expression,
@@ -52,17 +52,17 @@ class Constraint extends $pb.GeneratedMessage {
     return result;
   }
 
-  Constraint._();
+  Rule._();
 
-  factory Constraint.fromBuffer($core.List<$core.int> data,
+  factory Rule.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(data, registry);
-  factory Constraint.fromJson($core.String json,
+  factory Rule.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'Constraint',
+      _omitMessageNames ? '' : 'Rule',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'buf.validate'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'id')
@@ -71,25 +71,25 @@ class Constraint extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  Constraint clone() => Constraint()..mergeFromMessage(this);
+  Rule clone() => Rule()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  Constraint copyWith(void Function(Constraint) updates) =>
-      super.copyWith((message) => updates(message as Constraint)) as Constraint;
+  Rule copyWith(void Function(Rule) updates) =>
+      super.copyWith((message) => updates(message as Rule)) as Rule;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static Constraint create() => Constraint._();
+  static Rule create() => Rule._();
   @$core.override
-  Constraint createEmptyInstance() => create();
-  static $pb.PbList<Constraint> createRepeated() => $pb.PbList<Constraint>();
+  Rule createEmptyInstance() => create();
+  static $pb.PbList<Rule> createRepeated() => $pb.PbList<Rule>();
   @$core.pragma('dart2js:noInline')
-  static Constraint getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<Constraint>(create);
-  static Constraint? _defaultInstance;
+  static Rule getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Rule>(create);
+  static Rule? _defaultInstance;
 
-  /// `id` is a string that serves as a machine-readable name for this Constraint.
+  /// `id` is a string that serves as a machine-readable name for this Rule.
   /// It should be unique within its scope, which could be either a message or a field.
   @$pb.TagNumber(1)
   $core.String get id => $_getSZ(0);
@@ -101,7 +101,7 @@ class Constraint extends $pb.GeneratedMessage {
   void clearId() => $_clearField(1);
 
   /// `message` is an optional field that provides a human-readable error message
-  /// for this Constraint when the CEL expression evaluates to false. If a
+  /// for this Rule when the CEL expression evaluates to false. If a
   /// non-empty message is provided, any strings resulting from the CEL
   /// expression evaluation are ignored.
   @$pb.TagNumber(2)
@@ -127,79 +127,63 @@ class Constraint extends $pb.GeneratedMessage {
   void clearExpression() => $_clearField(3);
 }
 
-/// MessageConstraints represents validation rules that are applied to the entire message.
-/// It includes disabling options and a list of Constraint messages representing Common Expression Language (CEL) validation rules.
-class MessageConstraints extends $pb.GeneratedMessage {
-  factory MessageConstraints({
-    $core.bool? disabled,
-    $core.Iterable<Constraint>? cel,
+/// MessageRules represents validation rules that are applied to the entire message.
+/// It includes disabling options and a list of Rule messages representing Common Expression Language (CEL) validation rules.
+class MessageRules extends $pb.GeneratedMessage {
+  factory MessageRules({
+    $core.Iterable<Rule>? cel,
+    $core.Iterable<MessageOneofRule>? oneof,
   }) {
     final result = create();
-    if (disabled != null) result.disabled = disabled;
     if (cel != null) result.cel.addAll(cel);
+    if (oneof != null) result.oneof.addAll(oneof);
     return result;
   }
 
-  MessageConstraints._();
+  MessageRules._();
 
-  factory MessageConstraints.fromBuffer($core.List<$core.int> data,
+  factory MessageRules.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(data, registry);
-  factory MessageConstraints.fromJson($core.String json,
+  factory MessageRules.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'MessageConstraints',
+      _omitMessageNames ? '' : 'MessageRules',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'buf.validate'),
       createEmptyInstance: create)
-    ..aOB(1, _omitFieldNames ? '' : 'disabled')
-    ..pc<Constraint>(3, _omitFieldNames ? '' : 'cel', $pb.PbFieldType.PM,
-        subBuilder: Constraint.create)
+    ..pc<Rule>(3, _omitFieldNames ? '' : 'cel', $pb.PbFieldType.PM,
+        subBuilder: Rule.create)
+    ..pc<MessageOneofRule>(
+        4, _omitFieldNames ? '' : 'oneof', $pb.PbFieldType.PM,
+        subBuilder: MessageOneofRule.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  MessageConstraints clone() => MessageConstraints()..mergeFromMessage(this);
+  MessageRules clone() => MessageRules()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  MessageConstraints copyWith(void Function(MessageConstraints) updates) =>
-      super.copyWith((message) => updates(message as MessageConstraints))
-          as MessageConstraints;
+  MessageRules copyWith(void Function(MessageRules) updates) =>
+      super.copyWith((message) => updates(message as MessageRules))
+          as MessageRules;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static MessageConstraints create() => MessageConstraints._();
+  static MessageRules create() => MessageRules._();
   @$core.override
-  MessageConstraints createEmptyInstance() => create();
-  static $pb.PbList<MessageConstraints> createRepeated() =>
-      $pb.PbList<MessageConstraints>();
+  MessageRules createEmptyInstance() => create();
+  static $pb.PbList<MessageRules> createRepeated() =>
+      $pb.PbList<MessageRules>();
   @$core.pragma('dart2js:noInline')
-  static MessageConstraints getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<MessageConstraints>(create);
-  static MessageConstraints? _defaultInstance;
+  static MessageRules getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<MessageRules>(create);
+  static MessageRules? _defaultInstance;
 
-  /// `disabled` is a boolean flag that, when set to true, nullifies any validation rules for this message.
-  /// This includes any fields within the message that would otherwise support validation.
-  ///
-  /// ```proto
-  /// message MyMessage {
-  ///   // validation will be bypassed for this message
-  ///   option (buf.validate.message).disabled = true;
-  /// }
-  /// ```
-  @$pb.TagNumber(1)
-  $core.bool get disabled => $_getBF(0);
-  @$pb.TagNumber(1)
-  set disabled($core.bool value) => $_setBool(0, value);
-  @$pb.TagNumber(1)
-  $core.bool hasDisabled() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearDisabled() => $_clearField(1);
-
-  /// `cel` is a repeated field of type Constraint. Each Constraint specifies a validation rule to be applied to this message.
-  /// These constraints are written in Common Expression Language (CEL) syntax. For more information on
-  /// CEL, [see our documentation](https://github.com/bufbuild/protovalidate/blob/main/docs/cel.md).
+  /// `cel` is a repeated field of type Rule. Each Rule specifies a validation rule to be applied to this message.
+  /// These rules are written in Common Expression Language (CEL) syntax. For more information,
+  /// [see our documentation](https://buf.build/docs/protovalidate/schemas/custom-rules/).
   ///
   ///
   /// ```proto
@@ -214,13 +198,116 @@ class MessageConstraints extends $pb.GeneratedMessage {
   /// }
   /// ```
   @$pb.TagNumber(3)
-  $pb.PbList<Constraint> get cel => $_getList(1);
+  $pb.PbList<Rule> get cel => $_getList(0);
+
+  /// `oneof` is a repeated field of type MessageOneofRule that specifies a list of fields
+  /// of which at most one can be present. If `required` is also specified, then exactly one
+  /// of the specified fields _must_ be present.
+  ///
+  /// This will enforce oneof-like constraints with a few features not provided by
+  /// actual Protobuf oneof declarations:
+  ///   1. Repeated and map fields are allowed in this validation. In a Protobuf oneof,
+  ///      only scalar fields are allowed.
+  ///   2. Fields with implicit presence are allowed. In a Protobuf oneof, all member
+  ///      fields have explicit presence. This means that, for the purpose of determining
+  ///      how many fields are set, explicitly setting such a field to its zero value is
+  ///      effectively the same as not setting it at all.
+  ///   3. This will always generate validation errors for a message unmarshalled from
+  ///      serialized data that sets more than one field. With a Protobuf oneof, when
+  ///      multiple fields are present in the serialized form, earlier values are usually
+  ///      silently ignored when unmarshalling, with only the last field being set when
+  ///      unmarshalling completes.
+  ///
+  /// Note that adding a field to a `oneof` will also set the IGNORE_IF_ZERO_VALUE on the fields. This means
+  /// only the field that is set will be validated and the unset fields are not validated according to the field rules.
+  /// This behavior can be overridden by setting `ignore` against a field.
+  ///
+  /// ```proto
+  /// message MyMessage {
+  ///   // Only one of `field1` or `field2` _can_ be present in this message.
+  ///   option (buf.validate.message).oneof = { fields: ["field1", "field2"] };
+  ///   // Exactly one of `field3` or `field4` _must_ be present in this message.
+  ///   option (buf.validate.message).oneof = { fields: ["field3", "field4"], required: true };
+  ///   string field1 = 1;
+  ///   bytes field2 = 2;
+  ///   bool field3 = 3;
+  ///   int32 field4 = 4;
+  /// }
+  /// ```
+  @$pb.TagNumber(4)
+  $pb.PbList<MessageOneofRule> get oneof => $_getList(1);
 }
 
-/// The `OneofConstraints` message type enables you to manage constraints for
+class MessageOneofRule extends $pb.GeneratedMessage {
+  factory MessageOneofRule({
+    $core.Iterable<$core.String>? fields,
+    $core.bool? required,
+  }) {
+    final result = create();
+    if (fields != null) result.fields.addAll(fields);
+    if (required != null) result.required = required;
+    return result;
+  }
+
+  MessageOneofRule._();
+
+  factory MessageOneofRule.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory MessageOneofRule.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'MessageOneofRule',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'buf.validate'),
+      createEmptyInstance: create)
+    ..pPS(1, _omitFieldNames ? '' : 'fields')
+    ..aOB(2, _omitFieldNames ? '' : 'required')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  MessageOneofRule clone() => MessageOneofRule()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  MessageOneofRule copyWith(void Function(MessageOneofRule) updates) =>
+      super.copyWith((message) => updates(message as MessageOneofRule))
+          as MessageOneofRule;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static MessageOneofRule create() => MessageOneofRule._();
+  @$core.override
+  MessageOneofRule createEmptyInstance() => create();
+  static $pb.PbList<MessageOneofRule> createRepeated() =>
+      $pb.PbList<MessageOneofRule>();
+  @$core.pragma('dart2js:noInline')
+  static MessageOneofRule getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<MessageOneofRule>(create);
+  static MessageOneofRule? _defaultInstance;
+
+  /// A list of field names to include in the oneof. All field names must be
+  /// defined in the message. At least one field must be specified, and
+  /// duplicates are not permitted.
+  @$pb.TagNumber(1)
+  $pb.PbList<$core.String> get fields => $_getList(0);
+
+  /// If true, one of the fields specified _must_ be set.
+  @$pb.TagNumber(2)
+  $core.bool get required => $_getBF(1);
+  @$pb.TagNumber(2)
+  set required($core.bool value) => $_setBool(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasRequired() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearRequired() => $_clearField(2);
+}
+
+/// The `OneofRules` message type enables you to manage rules for
 /// oneof fields in your protobuf messages.
-class OneofConstraints extends $pb.GeneratedMessage {
-  factory OneofConstraints({
+class OneofRules extends $pb.GeneratedMessage {
+  factory OneofRules({
     $core.bool? required,
   }) {
     final result = create();
@@ -228,46 +315,43 @@ class OneofConstraints extends $pb.GeneratedMessage {
     return result;
   }
 
-  OneofConstraints._();
+  OneofRules._();
 
-  factory OneofConstraints.fromBuffer($core.List<$core.int> data,
+  factory OneofRules.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(data, registry);
-  factory OneofConstraints.fromJson($core.String json,
+  factory OneofRules.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'OneofConstraints',
+      _omitMessageNames ? '' : 'OneofRules',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'buf.validate'),
       createEmptyInstance: create)
     ..aOB(1, _omitFieldNames ? '' : 'required')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  OneofConstraints clone() => OneofConstraints()..mergeFromMessage(this);
+  OneofRules clone() => OneofRules()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  OneofConstraints copyWith(void Function(OneofConstraints) updates) =>
-      super.copyWith((message) => updates(message as OneofConstraints))
-          as OneofConstraints;
+  OneofRules copyWith(void Function(OneofRules) updates) =>
+      super.copyWith((message) => updates(message as OneofRules)) as OneofRules;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static OneofConstraints create() => OneofConstraints._();
+  static OneofRules create() => OneofRules._();
   @$core.override
-  OneofConstraints createEmptyInstance() => create();
-  static $pb.PbList<OneofConstraints> createRepeated() =>
-      $pb.PbList<OneofConstraints>();
+  OneofRules createEmptyInstance() => create();
+  static $pb.PbList<OneofRules> createRepeated() => $pb.PbList<OneofRules>();
   @$core.pragma('dart2js:noInline')
-  static OneofConstraints getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<OneofConstraints>(create);
-  static OneofConstraints? _defaultInstance;
+  static OneofRules getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<OneofRules>(create);
+  static OneofRules? _defaultInstance;
 
-  /// If `required` is true, exactly one field of the oneof must be present. A
-  /// validation error is returned if no fields in the oneof are present. The
-  /// field itself may still be a default value; further constraints
+  /// If `required` is true, exactly one field of the oneof must be set. A
+  /// validation error is returned if no fields in the oneof are set. Further rules
   /// should be placed on the fields themselves to ensure they are valid values,
   /// such as `min_len` or `gt`.
   ///
@@ -292,7 +376,7 @@ class OneofConstraints extends $pb.GeneratedMessage {
   void clearRequired() => $_clearField(1);
 }
 
-enum FieldConstraints_Type {
+enum FieldRules_Type {
   float,
   double_2,
   int32,
@@ -317,10 +401,10 @@ enum FieldConstraints_Type {
   notSet
 }
 
-/// FieldConstraints encapsulates the rules for each type of field. Depending on
+/// FieldRules encapsulates the rules for each type of field. Depending on
 /// the field, the correct set should be used to ensure proper validations.
-class FieldConstraints extends $pb.GeneratedMessage {
-  factory FieldConstraints({
+class FieldRules extends $pb.GeneratedMessage {
+  factory FieldRules({
     FloatRules? float,
     DoubleRules? double_2,
     Int32Rules? int32,
@@ -342,7 +426,7 @@ class FieldConstraints extends $pb.GeneratedMessage {
     AnyRules? any,
     DurationRules? duration,
     TimestampRules? timestamp,
-    $core.Iterable<Constraint>? cel,
+    $core.Iterable<Rule>? cel,
     $core.bool? required,
     Ignore? ignore,
   }) {
@@ -374,42 +458,41 @@ class FieldConstraints extends $pb.GeneratedMessage {
     return result;
   }
 
-  FieldConstraints._();
+  FieldRules._();
 
-  factory FieldConstraints.fromBuffer($core.List<$core.int> data,
+  factory FieldRules.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(data, registry);
-  factory FieldConstraints.fromJson($core.String json,
+  factory FieldRules.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
-  static const $core.Map<$core.int, FieldConstraints_Type>
-      _FieldConstraints_TypeByTag = {
-    1: FieldConstraints_Type.float,
-    2: FieldConstraints_Type.double_2,
-    3: FieldConstraints_Type.int32,
-    4: FieldConstraints_Type.int64,
-    5: FieldConstraints_Type.uint32,
-    6: FieldConstraints_Type.uint64,
-    7: FieldConstraints_Type.sint32,
-    8: FieldConstraints_Type.sint64,
-    9: FieldConstraints_Type.fixed32,
-    10: FieldConstraints_Type.fixed64,
-    11: FieldConstraints_Type.sfixed32,
-    12: FieldConstraints_Type.sfixed64,
-    13: FieldConstraints_Type.bool_13,
-    14: FieldConstraints_Type.string,
-    15: FieldConstraints_Type.bytes,
-    16: FieldConstraints_Type.enum_16,
-    18: FieldConstraints_Type.repeated,
-    19: FieldConstraints_Type.map,
-    20: FieldConstraints_Type.any,
-    21: FieldConstraints_Type.duration,
-    22: FieldConstraints_Type.timestamp,
-    0: FieldConstraints_Type.notSet
+  static const $core.Map<$core.int, FieldRules_Type> _FieldRules_TypeByTag = {
+    1: FieldRules_Type.float,
+    2: FieldRules_Type.double_2,
+    3: FieldRules_Type.int32,
+    4: FieldRules_Type.int64,
+    5: FieldRules_Type.uint32,
+    6: FieldRules_Type.uint64,
+    7: FieldRules_Type.sint32,
+    8: FieldRules_Type.sint64,
+    9: FieldRules_Type.fixed32,
+    10: FieldRules_Type.fixed64,
+    11: FieldRules_Type.sfixed32,
+    12: FieldRules_Type.sfixed64,
+    13: FieldRules_Type.bool_13,
+    14: FieldRules_Type.string,
+    15: FieldRules_Type.bytes,
+    16: FieldRules_Type.enum_16,
+    18: FieldRules_Type.repeated,
+    19: FieldRules_Type.map,
+    20: FieldRules_Type.any,
+    21: FieldRules_Type.duration,
+    22: FieldRules_Type.timestamp,
+    0: FieldRules_Type.notSet
   };
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'FieldConstraints',
+      _omitMessageNames ? '' : 'FieldRules',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'buf.validate'),
       createEmptyInstance: create)
     ..oo(0, [
@@ -477,8 +560,8 @@ class FieldConstraints extends $pb.GeneratedMessage {
         subBuilder: DurationRules.create)
     ..aOM<TimestampRules>(22, _omitFieldNames ? '' : 'timestamp',
         subBuilder: TimestampRules.create)
-    ..pc<Constraint>(23, _omitFieldNames ? '' : 'cel', $pb.PbFieldType.PM,
-        subBuilder: Constraint.create)
+    ..pc<Rule>(23, _omitFieldNames ? '' : 'cel', $pb.PbFieldType.PM,
+        subBuilder: Rule.create)
     ..aOB(25, _omitFieldNames ? '' : 'required')
     ..e<Ignore>(27, _omitFieldNames ? '' : 'ignore', $pb.PbFieldType.OE,
         defaultOrMaker: Ignore.IGNORE_UNSPECIFIED,
@@ -486,28 +569,25 @@ class FieldConstraints extends $pb.GeneratedMessage {
         enumValues: Ignore.values);
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  FieldConstraints clone() => FieldConstraints()..mergeFromMessage(this);
+  FieldRules clone() => FieldRules()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  FieldConstraints copyWith(void Function(FieldConstraints) updates) =>
-      super.copyWith((message) => updates(message as FieldConstraints))
-          as FieldConstraints;
+  FieldRules copyWith(void Function(FieldRules) updates) =>
+      super.copyWith((message) => updates(message as FieldRules)) as FieldRules;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static FieldConstraints create() => FieldConstraints._();
+  static FieldRules create() => FieldRules._();
   @$core.override
-  FieldConstraints createEmptyInstance() => create();
-  static $pb.PbList<FieldConstraints> createRepeated() =>
-      $pb.PbList<FieldConstraints>();
+  FieldRules createEmptyInstance() => create();
+  static $pb.PbList<FieldRules> createRepeated() => $pb.PbList<FieldRules>();
   @$core.pragma('dart2js:noInline')
-  static FieldConstraints getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<FieldConstraints>(create);
-  static FieldConstraints? _defaultInstance;
+  static FieldRules getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FieldRules>(create);
+  static FieldRules? _defaultInstance;
 
-  FieldConstraints_Type whichType() =>
-      _FieldConstraints_TypeByTag[$_whichOneof(0)]!;
+  FieldRules_Type whichType() => _FieldRules_TypeByTag[$_whichOneof(0)]!;
   void clearType() => $_clearField($_whichOneof(0));
 
   /// Scalar Field Types
@@ -745,8 +825,8 @@ class FieldConstraints extends $pb.GeneratedMessage {
   TimestampRules ensureTimestamp() => $_ensure(20);
 
   /// `cel` is a repeated field used to represent a textual expression
-  /// in the Common Expression Language (CEL) syntax. For more information on
-  /// CEL, [see our documentation](https://github.com/bufbuild/protovalidate/blob/main/docs/cel.md).
+  /// in the Common Expression Language (CEL) syntax. For more information,
+  /// [see our documentation](https://buf.build/docs/protovalidate/schemas/custom-rules/).
   ///
   /// ```proto
   /// message MyMessage {
@@ -759,25 +839,58 @@ class FieldConstraints extends $pb.GeneratedMessage {
   /// }
   /// ```
   @$pb.TagNumber(23)
-  $pb.PbList<Constraint> get cel => $_getList(21);
+  $pb.PbList<Rule> get cel => $_getList(21);
 
-  /// If `required` is true, the field must be populated. A populated field can be
-  /// described as "serialized in the wire format," which includes:
-  ///
-  /// - the following "nullable" fields must be explicitly set to be considered populated:
-  ///   - singular message fields (whose fields may be unpopulated/default values)
-  ///   - member fields of a oneof (may be their default value)
-  ///   - proto3 optional fields (may be their default value)
-  ///   - proto2 scalar fields (both optional and required)
-  /// - proto3 scalar fields must be non-zero to be considered populated
-  /// - repeated and map fields must be non-empty to be considered populated
+  /// If `required` is true, the field must be set. A validation error is returned
+  /// if the field is not set.
   ///
   /// ```proto
-  /// message MyMessage {
-  ///   // The field `value` must be set to a non-null value.
-  ///   optional MyOtherMessage value = 1 [(buf.validate.field).required = true];
+  /// syntax="proto3";
+  ///
+  /// message FieldsWithPresence {
+  ///   // Requires any string to be set, including the empty string.
+  ///   optional string link = 1 [
+  ///     (buf.validate.field).required = true
+  ///   ];
+  ///   // Requires true or false to be set.
+  ///   optional bool disabled = 2 [
+  ///     (buf.validate.field).required = true
+  ///   ];
+  ///   // Requires a message to be set, including the empty message.
+  ///   SomeMessage msg = 4 [
+  ///     (buf.validate.field).required = true
+  ///   ];
   /// }
   /// ```
+  ///
+  /// All fields in the example above track presence. By default, Protovalidate
+  /// ignores rules on those fields if no value is set. `required` ensures that
+  /// the fields are set and valid.
+  ///
+  /// Fields that don't track presence are always validated by Protovalidate,
+  /// whether they are set or not. It is not necessary to add `required`:
+  ///
+  /// ```proto
+  /// syntax="proto3";
+  ///
+  /// message FieldsWithoutPresence {
+  ///   // `string.email` always applies, even to an empty string.
+  ///   string link = 1 [
+  ///     (buf.validate.field).string.email = true
+  ///   ];
+  ///   // `repeated.min_items` always applies, even to an empty list.
+  ///   repeated string labels = 4 [
+  ///     (buf.validate.field).repeated.min_items = 1
+  ///   ];
+  /// }
+  /// ```
+  ///
+  /// To learn which fields track presence, see the
+  /// [Field Presence cheat sheet](https://protobuf.dev/programming-guides/field_presence/#cheat).
+  ///
+  /// Note: While field rules can be applied to repeated items, map keys, and map
+  /// values, the elements are always considered to be set. Consequently,
+  /// specifying `repeated.items.required` is redundant.
   @$pb.TagNumber(25)
   $core.bool get required => $_getBF(22);
   @$pb.TagNumber(25)
@@ -787,16 +900,15 @@ class FieldConstraints extends $pb.GeneratedMessage {
   @$pb.TagNumber(25)
   void clearRequired() => $_clearField(25);
 
-  /// Skip validation on the field if its value matches the specified criteria.
-  /// See Ignore enum for details.
+  /// Ignore validation rules on the field if its value matches the specified
+  /// criteria. See the `Ignore` enum for details.
   ///
   /// ```proto
   /// message UpdateRequest {
-  ///   // The uri rule only applies if the field is populated and not an empty
-  ///   // string.
-  ///   optional string url = 1 [
-  ///     (buf.validate.field).ignore = IGNORE_IF_DEFAULT_VALUE,
-  ///     (buf.validate.field).string.uri = true,
+  ///   // The uri rule only applies if the field is not an empty string.
+  ///   string url = 1 [
+  ///     (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
+  ///     (buf.validate.field).string.uri = true
   ///   ];
   /// }
   /// ```
@@ -810,60 +922,58 @@ class FieldConstraints extends $pb.GeneratedMessage {
   void clearIgnore() => $_clearField(27);
 }
 
-/// PredefinedConstraints are custom constraints that can be re-used with
+/// PredefinedRules are custom rules that can be re-used with
 /// multiple fields.
-class PredefinedConstraints extends $pb.GeneratedMessage {
-  factory PredefinedConstraints({
-    $core.Iterable<Constraint>? cel,
+class PredefinedRules extends $pb.GeneratedMessage {
+  factory PredefinedRules({
+    $core.Iterable<Rule>? cel,
   }) {
     final result = create();
     if (cel != null) result.cel.addAll(cel);
     return result;
   }
 
-  PredefinedConstraints._();
+  PredefinedRules._();
 
-  factory PredefinedConstraints.fromBuffer($core.List<$core.int> data,
+  factory PredefinedRules.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(data, registry);
-  factory PredefinedConstraints.fromJson($core.String json,
+  factory PredefinedRules.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'PredefinedConstraints',
+      _omitMessageNames ? '' : 'PredefinedRules',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'buf.validate'),
       createEmptyInstance: create)
-    ..pc<Constraint>(1, _omitFieldNames ? '' : 'cel', $pb.PbFieldType.PM,
-        subBuilder: Constraint.create)
+    ..pc<Rule>(1, _omitFieldNames ? '' : 'cel', $pb.PbFieldType.PM,
+        subBuilder: Rule.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  PredefinedConstraints clone() =>
-      PredefinedConstraints()..mergeFromMessage(this);
+  PredefinedRules clone() => PredefinedRules()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  PredefinedConstraints copyWith(
-          void Function(PredefinedConstraints) updates) =>
-      super.copyWith((message) => updates(message as PredefinedConstraints))
-          as PredefinedConstraints;
+  PredefinedRules copyWith(void Function(PredefinedRules) updates) =>
+      super.copyWith((message) => updates(message as PredefinedRules))
+          as PredefinedRules;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static PredefinedConstraints create() => PredefinedConstraints._();
+  static PredefinedRules create() => PredefinedRules._();
   @$core.override
-  PredefinedConstraints createEmptyInstance() => create();
-  static $pb.PbList<PredefinedConstraints> createRepeated() =>
-      $pb.PbList<PredefinedConstraints>();
+  PredefinedRules createEmptyInstance() => create();
+  static $pb.PbList<PredefinedRules> createRepeated() =>
+      $pb.PbList<PredefinedRules>();
   @$core.pragma('dart2js:noInline')
-  static PredefinedConstraints getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<PredefinedConstraints>(create);
-  static PredefinedConstraints? _defaultInstance;
+  static PredefinedRules getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<PredefinedRules>(create);
+  static PredefinedRules? _defaultInstance;
 
   /// `cel` is a repeated field used to represent a textual expression
-  /// in the Common Expression Language (CEL) syntax. For more information on
-  /// CEL, [see our documentation](https://github.com/bufbuild/protovalidate/blob/main/docs/cel.md).
+  /// in the Common Expression Language (CEL) syntax. For more information,
+  /// [see our documentation](https://buf.build/docs/protovalidate/schemas/predefined-rules/).
   ///
   /// ```proto
   /// message MyMessage {
@@ -876,14 +986,14 @@ class PredefinedConstraints extends $pb.GeneratedMessage {
   /// }
   /// ```
   @$pb.TagNumber(1)
-  $pb.PbList<Constraint> get cel => $_getList(0);
+  $pb.PbList<Rule> get cel => $_getList(0);
 }
 
 enum FloatRules_LessThan { lt, lte, notSet }
 
 enum FloatRules_GreaterThan { gt, gte, notSet }
 
-/// FloatRules describes the constraints applied to `float` values. These
+/// FloatRules describes the rules applied to `float` values. These
 /// rules may also be applied to the `google.protobuf.FloatValue` Well-Known-Type.
 class FloatRules extends $pb.GeneratedMessage {
   factory FloatRules({
@@ -1092,7 +1202,7 @@ class FloatRules extends $pb.GeneratedMessage {
   /// ```proto
   /// message MyFloat {
   ///   // value must be in list [1.0, 2.0, 3.0]
-  ///   repeated float value = 1 (buf.validate.field).float = { in: [1.0, 2.0, 3.0] };
+  ///   float value = 1 [(buf.validate.field).float = { in: [1.0, 2.0, 3.0] }];
   /// }
   /// ```
   @$pb.TagNumber(6)
@@ -1105,7 +1215,7 @@ class FloatRules extends $pb.GeneratedMessage {
   /// ```proto
   /// message MyFloat {
   ///   // value must not be in list [1.0, 2.0, 3.0]
-  ///   repeated float value = 1 (buf.validate.field).float = { not_in: [1.0, 2.0, 3.0] };
+  ///   float value = 1 [(buf.validate.field).float = { not_in: [1.0, 2.0, 3.0] }];
   /// }
   /// ```
   @$pb.TagNumber(7)
@@ -1123,14 +1233,14 @@ class FloatRules extends $pb.GeneratedMessage {
   void clearFinite() => $_clearField(8);
 
   /// `example` specifies values that the field may have. These values SHOULD
-  /// conform to other constraints. `example` values will not impact validation
+  /// conform to other rules. `example` values will not impact validation
   /// but may be used as helpful guidance on how to populate the given field.
   ///
   /// ```proto
   /// message MyFloat {
   ///   float value = 1 [
   ///     (buf.validate.field).float.example = 1.0,
-  ///     (buf.validate.field).float.example = "Infinity"
+  ///     (buf.validate.field).float.example = inf
   ///   ];
   /// }
   /// ```
@@ -1142,7 +1252,7 @@ enum DoubleRules_LessThan { lt, lte, notSet }
 
 enum DoubleRules_GreaterThan { gt, gte, notSet }
 
-/// DoubleRules describes the constraints applied to `double` values. These
+/// DoubleRules describes the rules applied to `double` values. These
 /// rules may also be applied to the `google.protobuf.DoubleValue` Well-Known-Type.
 class DoubleRules extends $pb.GeneratedMessage {
   factory DoubleRules({
@@ -1352,7 +1462,7 @@ class DoubleRules extends $pb.GeneratedMessage {
   /// ```proto
   /// message MyDouble {
   ///   // value must be in list [1.0, 2.0, 3.0]
-  ///   repeated double value = 1 (buf.validate.field).double = { in: [1.0, 2.0, 3.0] };
+  ///   double value = 1 [(buf.validate.field).double = { in: [1.0, 2.0, 3.0] }];
   /// }
   /// ```
   @$pb.TagNumber(6)
@@ -1365,7 +1475,7 @@ class DoubleRules extends $pb.GeneratedMessage {
   /// ```proto
   /// message MyDouble {
   ///   // value must not be in list [1.0, 2.0, 3.0]
-  ///   repeated double value = 1 (buf.validate.field).double = { not_in: [1.0, 2.0, 3.0] };
+  ///   double value = 1 [(buf.validate.field).double = { not_in: [1.0, 2.0, 3.0] }];
   /// }
   /// ```
   @$pb.TagNumber(7)
@@ -1383,14 +1493,14 @@ class DoubleRules extends $pb.GeneratedMessage {
   void clearFinite() => $_clearField(8);
 
   /// `example` specifies values that the field may have. These values SHOULD
-  /// conform to other constraints. `example` values will not impact validation
+  /// conform to other rules. `example` values will not impact validation
   /// but may be used as helpful guidance on how to populate the given field.
   ///
   /// ```proto
   /// message MyDouble {
   ///   double value = 1 [
   ///     (buf.validate.field).double.example = 1.0,
-  ///     (buf.validate.field).double.example = "Infinity"
+  ///     (buf.validate.field).double.example = inf
   ///   ];
   /// }
   /// ```
@@ -1402,7 +1512,7 @@ enum Int32Rules_LessThan { lt, lte, notSet }
 
 enum Int32Rules_GreaterThan { gt, gte, notSet }
 
-/// Int32Rules describes the constraints applied to `int32` values. These
+/// Int32Rules describes the rules applied to `int32` values. These
 /// rules may also be applied to the `google.protobuf.Int32Value` Well-Known-Type.
 class Int32Rules extends $pb.GeneratedMessage {
   factory Int32Rules({
@@ -1608,7 +1718,7 @@ class Int32Rules extends $pb.GeneratedMessage {
   /// ```proto
   /// message MyInt32 {
   ///   // value must be in list [1, 2, 3]
-  ///   repeated int32 value = 1 (buf.validate.field).int32 = { in: [1, 2, 3] };
+  ///   int32 value = 1 [(buf.validate.field).int32 = { in: [1, 2, 3] }];
   /// }
   /// ```
   @$pb.TagNumber(6)
@@ -1621,14 +1731,14 @@ class Int32Rules extends $pb.GeneratedMessage {
   /// ```proto
   /// message MyInt32 {
   ///   // value must not be in list [1, 2, 3]
-  ///   repeated int32 value = 1 (buf.validate.field).int32 = { not_in: [1, 2, 3] };
+  ///   int32 value = 1 [(buf.validate.field).int32 = { not_in: [1, 2, 3] }];
   /// }
   /// ```
   @$pb.TagNumber(7)
   $pb.PbList<$core.int> get notIn => $_getList(6);
 
   /// `example` specifies values that the field may have. These values SHOULD
-  /// conform to other constraints. `example` values will not impact validation
+  /// conform to other rules. `example` values will not impact validation
   /// but may be used as helpful guidance on how to populate the given field.
   ///
   /// ```proto
@@ -1647,7 +1757,7 @@ enum Int64Rules_LessThan { lt, lte, notSet }
 
 enum Int64Rules_GreaterThan { gt, gte, notSet }
 
-/// Int64Rules describes the constraints applied to `int64` values. These
+/// Int64Rules describes the rules applied to `int64` values. These
 /// rules may also be applied to the `google.protobuf.Int64Value` Well-Known-Type.
 class Int64Rules extends $pb.GeneratedMessage {
   factory Int64Rules({
@@ -1853,7 +1963,7 @@ class Int64Rules extends $pb.GeneratedMessage {
   /// ```proto
   /// message MyInt64 {
   ///   // value must be in list [1, 2, 3]
-  ///   repeated int64 value = 1 (buf.validate.field).int64 = { in: [1, 2, 3] };
+  ///   int64 value = 1 [(buf.validate.field).int64 = { in: [1, 2, 3] }];
   /// }
   /// ```
   @$pb.TagNumber(6)
@@ -1866,14 +1976,14 @@ class Int64Rules extends $pb.GeneratedMessage {
   /// ```proto
   /// message MyInt64 {
   ///   // value must not be in list [1, 2, 3]
-  ///   repeated int64 value = 1 (buf.validate.field).int64 = { not_in: [1, 2, 3] };
+  ///   int64 value = 1 [(buf.validate.field).int64 = { not_in: [1, 2, 3] }];
   /// }
   /// ```
   @$pb.TagNumber(7)
   $pb.PbList<$fixnum.Int64> get notIn => $_getList(6);
 
   /// `example` specifies values that the field may have. These values SHOULD
-  /// conform to other constraints. `example` values will not impact validation
+  /// conform to other rules. `example` values will not impact validation
   /// but may be used as helpful guidance on how to populate the given field.
   ///
   /// ```proto
@@ -1892,7 +2002,7 @@ enum UInt32Rules_LessThan { lt, lte, notSet }
 
 enum UInt32Rules_GreaterThan { gt, gte, notSet }
 
-/// UInt32Rules describes the constraints applied to `uint32` values. These
+/// UInt32Rules describes the rules applied to `uint32` values. These
 /// rules may also be applied to the `google.protobuf.UInt32Value` Well-Known-Type.
 class UInt32Rules extends $pb.GeneratedMessage {
   factory UInt32Rules({
@@ -2099,7 +2209,7 @@ class UInt32Rules extends $pb.GeneratedMessage {
   /// ```proto
   /// message MyUInt32 {
   ///   // value must be in list [1, 2, 3]
-  ///   repeated uint32 value = 1 (buf.validate.field).uint32 = { in: [1, 2, 3] };
+  ///   uint32 value = 1 [(buf.validate.field).uint32 = { in: [1, 2, 3] }];
   /// }
   /// ```
   @$pb.TagNumber(6)
@@ -2112,14 +2222,14 @@ class UInt32Rules extends $pb.GeneratedMessage {
   /// ```proto
   /// message MyUInt32 {
   ///   // value must not be in list [1, 2, 3]
-  ///   repeated uint32 value = 1 (buf.validate.field).uint32 = { not_in: [1, 2, 3] };
+  ///   uint32 value = 1 [(buf.validate.field).uint32 = { not_in: [1, 2, 3] }];
   /// }
   /// ```
   @$pb.TagNumber(7)
   $pb.PbList<$core.int> get notIn => $_getList(6);
 
   /// `example` specifies values that the field may have. These values SHOULD
-  /// conform to other constraints. `example` values will not impact validation
+  /// conform to other rules. `example` values will not impact validation
   /// but may be used as helpful guidance on how to populate the given field.
   ///
   /// ```proto
@@ -2138,7 +2248,7 @@ enum UInt64Rules_LessThan { lt, lte, notSet }
 
 enum UInt64Rules_GreaterThan { gt, gte, notSet }
 
-/// UInt64Rules describes the constraints applied to `uint64` values. These
+/// UInt64Rules describes the rules applied to `uint64` values. These
 /// rules may also be applied to the `google.protobuf.UInt64Value` Well-Known-Type.
 class UInt64Rules extends $pb.GeneratedMessage {
   factory UInt64Rules({
@@ -2350,7 +2460,7 @@ class UInt64Rules extends $pb.GeneratedMessage {
   /// ```proto
   /// message MyUInt64 {
   ///   // value must be in list [1, 2, 3]
-  ///   repeated uint64 value = 1 (buf.validate.field).uint64 = { in: [1, 2, 3] };
+  ///   uint64 value = 1 [(buf.validate.field).uint64 = { in: [1, 2, 3] }];
   /// }
   /// ```
   @$pb.TagNumber(6)
@@ -2363,14 +2473,14 @@ class UInt64Rules extends $pb.GeneratedMessage {
   /// ```proto
   /// message MyUInt64 {
   ///   // value must not be in list [1, 2, 3]
-  ///   repeated uint64 value = 1 (buf.validate.field).uint64 = { not_in: [1, 2, 3] };
+  ///   uint64 value = 1 [(buf.validate.field).uint64 = { not_in: [1, 2, 3] }];
   /// }
   /// ```
   @$pb.TagNumber(7)
   $pb.PbList<$fixnum.Int64> get notIn => $_getList(6);
 
   /// `example` specifies values that the field may have. These values SHOULD
-  /// conform to other constraints. `example` values will not impact validation
+  /// conform to other rules. `example` values will not impact validation
   /// but may be used as helpful guidance on how to populate the given field.
   ///
   /// ```proto
@@ -2389,7 +2499,7 @@ enum SInt32Rules_LessThan { lt, lte, notSet }
 
 enum SInt32Rules_GreaterThan { gt, gte, notSet }
 
-/// SInt32Rules describes the constraints applied to `sint32` values.
+/// SInt32Rules describes the rules applied to `sint32` values.
 class SInt32Rules extends $pb.GeneratedMessage {
   factory SInt32Rules({
     $core.int? const_1,
@@ -2595,7 +2705,7 @@ class SInt32Rules extends $pb.GeneratedMessage {
   /// ```proto
   /// message MySInt32 {
   ///   // value must be in list [1, 2, 3]
-  ///   repeated sint32 value = 1 (buf.validate.field).sint32 = { in: [1, 2, 3] };
+  ///   sint32 value = 1 [(buf.validate.field).sint32 = { in: [1, 2, 3] }];
   /// }
   /// ```
   @$pb.TagNumber(6)
@@ -2608,14 +2718,14 @@ class SInt32Rules extends $pb.GeneratedMessage {
   /// ```proto
   /// message MySInt32 {
   ///   // value must not be in list [1, 2, 3]
-  ///   repeated sint32 value = 1 (buf.validate.field).sint32 = { not_in: [1, 2, 3] };
+  ///   sint32 value = 1 [(buf.validate.field).sint32 = { not_in: [1, 2, 3] }];
   /// }
   /// ```
   @$pb.TagNumber(7)
   $pb.PbList<$core.int> get notIn => $_getList(6);
 
   /// `example` specifies values that the field may have. These values SHOULD
-  /// conform to other constraints. `example` values will not impact validation
+  /// conform to other rules. `example` values will not impact validation
   /// but may be used as helpful guidance on how to populate the given field.
   ///
   /// ```proto
@@ -2634,7 +2744,7 @@ enum SInt64Rules_LessThan { lt, lte, notSet }
 
 enum SInt64Rules_GreaterThan { gt, gte, notSet }
 
-/// SInt64Rules describes the constraints applied to `sint64` values.
+/// SInt64Rules describes the rules applied to `sint64` values.
 class SInt64Rules extends $pb.GeneratedMessage {
   factory SInt64Rules({
     $fixnum.Int64? const_1,
@@ -2845,7 +2955,7 @@ class SInt64Rules extends $pb.GeneratedMessage {
   /// ```proto
   /// message MySInt64 {
   ///   // value must be in list [1, 2, 3]
-  ///   repeated sint64 value = 1 (buf.validate.field).sint64 = { in: [1, 2, 3] };
+  ///   sint64 value = 1 [(buf.validate.field).sint64 = { in: [1, 2, 3] }];
   /// }
   /// ```
   @$pb.TagNumber(6)
@@ -2858,14 +2968,14 @@ class SInt64Rules extends $pb.GeneratedMessage {
   /// ```proto
   /// message MySInt64 {
   ///   // value must not be in list [1, 2, 3]
-  ///   repeated sint64 value = 1 (buf.validate.field).sint64 = { not_in: [1, 2, 3] };
+  ///   sint64 value = 1 [(buf.validate.field).sint64 = { not_in: [1, 2, 3] }];
   /// }
   /// ```
   @$pb.TagNumber(7)
   $pb.PbList<$fixnum.Int64> get notIn => $_getList(6);
 
   /// `example` specifies values that the field may have. These values SHOULD
-  /// conform to other constraints. `example` values will not impact validation
+  /// conform to other rules. `example` values will not impact validation
   /// but may be used as helpful guidance on how to populate the given field.
   ///
   /// ```proto
@@ -2884,7 +2994,7 @@ enum Fixed32Rules_LessThan { lt, lte, notSet }
 
 enum Fixed32Rules_GreaterThan { gt, gte, notSet }
 
-/// Fixed32Rules describes the constraints applied to `fixed32` values.
+/// Fixed32Rules describes the rules applied to `fixed32` values.
 class Fixed32Rules extends $pb.GeneratedMessage {
   factory Fixed32Rules({
     $core.int? const_1,
@@ -3091,7 +3201,7 @@ class Fixed32Rules extends $pb.GeneratedMessage {
   /// ```proto
   /// message MyFixed32 {
   ///   // value must be in list [1, 2, 3]
-  ///   repeated fixed32 value = 1 (buf.validate.field).fixed32 = { in: [1, 2, 3] };
+  ///   fixed32 value = 1 [(buf.validate.field).fixed32 = { in: [1, 2, 3] }];
   /// }
   /// ```
   @$pb.TagNumber(6)
@@ -3104,14 +3214,14 @@ class Fixed32Rules extends $pb.GeneratedMessage {
   /// ```proto
   /// message MyFixed32 {
   ///   // value must not be in list [1, 2, 3]
-  ///   repeated fixed32 value = 1 (buf.validate.field).fixed32 = { not_in: [1, 2, 3] };
+  ///   fixed32 value = 1 [(buf.validate.field).fixed32 = { not_in: [1, 2, 3] }];
   /// }
   /// ```
   @$pb.TagNumber(7)
   $pb.PbList<$core.int> get notIn => $_getList(6);
 
   /// `example` specifies values that the field may have. These values SHOULD
-  /// conform to other constraints. `example` values will not impact validation
+  /// conform to other rules. `example` values will not impact validation
   /// but may be used as helpful guidance on how to populate the given field.
   ///
   /// ```proto
@@ -3130,7 +3240,7 @@ enum Fixed64Rules_LessThan { lt, lte, notSet }
 
 enum Fixed64Rules_GreaterThan { gt, gte, notSet }
 
-/// Fixed64Rules describes the constraints applied to `fixed64` values.
+/// Fixed64Rules describes the rules applied to `fixed64` values.
 class Fixed64Rules extends $pb.GeneratedMessage {
   factory Fixed64Rules({
     $fixnum.Int64? const_1,
@@ -3342,7 +3452,7 @@ class Fixed64Rules extends $pb.GeneratedMessage {
   /// ```proto
   /// message MyFixed64 {
   ///   // value must be in list [1, 2, 3]
-  ///   repeated fixed64 value = 1 (buf.validate.field).fixed64 = { in: [1, 2, 3] };
+  ///   fixed64 value = 1 [(buf.validate.field).fixed64 = { in: [1, 2, 3] }];
   /// }
   /// ```
   @$pb.TagNumber(6)
@@ -3355,14 +3465,14 @@ class Fixed64Rules extends $pb.GeneratedMessage {
   /// ```proto
   /// message MyFixed64 {
   ///   // value must not be in list [1, 2, 3]
-  ///   repeated fixed64 value = 1 (buf.validate.field).fixed64 = { not_in: [1, 2, 3] };
+  ///   fixed64 value = 1 [(buf.validate.field).fixed64 = { not_in: [1, 2, 3] }];
   /// }
   /// ```
   @$pb.TagNumber(7)
   $pb.PbList<$fixnum.Int64> get notIn => $_getList(6);
 
   /// `example` specifies values that the field may have. These values SHOULD
-  /// conform to other constraints. `example` values will not impact validation
+  /// conform to other rules. `example` values will not impact validation
   /// but may be used as helpful guidance on how to populate the given field.
   ///
   /// ```proto
@@ -3381,7 +3491,7 @@ enum SFixed32Rules_LessThan { lt, lte, notSet }
 
 enum SFixed32Rules_GreaterThan { gt, gte, notSet }
 
-/// SFixed32Rules describes the constraints applied to `fixed32` values.
+/// SFixed32Rules describes the rules applied to `fixed32` values.
 class SFixed32Rules extends $pb.GeneratedMessage {
   factory SFixed32Rules({
     $core.int? const_1,
@@ -3588,7 +3698,7 @@ class SFixed32Rules extends $pb.GeneratedMessage {
   /// ```proto
   /// message MySFixed32 {
   ///   // value must be in list [1, 2, 3]
-  ///   repeated sfixed32 value = 1 (buf.validate.field).sfixed32 = { in: [1, 2, 3] };
+  ///   sfixed32 value = 1 [(buf.validate.field).sfixed32 = { in: [1, 2, 3] }];
   /// }
   /// ```
   @$pb.TagNumber(6)
@@ -3601,14 +3711,14 @@ class SFixed32Rules extends $pb.GeneratedMessage {
   /// ```proto
   /// message MySFixed32 {
   ///   // value must not be in list [1, 2, 3]
-  ///   repeated sfixed32 value = 1 (buf.validate.field).sfixed32 = { not_in: [1, 2, 3] };
+  ///   sfixed32 value = 1 [(buf.validate.field).sfixed32 = { not_in: [1, 2, 3] }];
   /// }
   /// ```
   @$pb.TagNumber(7)
   $pb.PbList<$core.int> get notIn => $_getList(6);
 
   /// `example` specifies values that the field may have. These values SHOULD
-  /// conform to other constraints. `example` values will not impact validation
+  /// conform to other rules. `example` values will not impact validation
   /// but may be used as helpful guidance on how to populate the given field.
   ///
   /// ```proto
@@ -3627,7 +3737,7 @@ enum SFixed64Rules_LessThan { lt, lte, notSet }
 
 enum SFixed64Rules_GreaterThan { gt, gte, notSet }
 
-/// SFixed64Rules describes the constraints applied to `fixed64` values.
+/// SFixed64Rules describes the rules applied to `fixed64` values.
 class SFixed64Rules extends $pb.GeneratedMessage {
   factory SFixed64Rules({
     $fixnum.Int64? const_1,
@@ -3840,7 +3950,7 @@ class SFixed64Rules extends $pb.GeneratedMessage {
   /// ```proto
   /// message MySFixed64 {
   ///   // value must be in list [1, 2, 3]
-  ///   repeated sfixed64 value = 1 (buf.validate.field).sfixed64 = { in: [1, 2, 3] };
+  ///   sfixed64 value = 1 [(buf.validate.field).sfixed64 = { in: [1, 2, 3] }];
   /// }
   /// ```
   @$pb.TagNumber(6)
@@ -3853,14 +3963,14 @@ class SFixed64Rules extends $pb.GeneratedMessage {
   /// ```proto
   /// message MySFixed64 {
   ///   // value must not be in list [1, 2, 3]
-  ///   repeated sfixed64 value = 1 (buf.validate.field).sfixed64 = { not_in: [1, 2, 3] };
+  ///   sfixed64 value = 1 [(buf.validate.field).sfixed64 = { not_in: [1, 2, 3] }];
   /// }
   /// ```
   @$pb.TagNumber(7)
   $pb.PbList<$fixnum.Int64> get notIn => $_getList(6);
 
   /// `example` specifies values that the field may have. These values SHOULD
-  /// conform to other constraints. `example` values will not impact validation
+  /// conform to other rules. `example` values will not impact validation
   /// but may be used as helpful guidance on how to populate the given field.
   ///
   /// ```proto
@@ -3875,7 +3985,7 @@ class SFixed64Rules extends $pb.GeneratedMessage {
   $pb.PbList<$fixnum.Int64> get example => $_getList(7);
 }
 
-/// BoolRules describes the constraints applied to `bool` values. These rules
+/// BoolRules describes the rules applied to `bool` values. These rules
 /// may also be applied to the `google.protobuf.BoolValue` Well-Known-Type.
 class BoolRules extends $pb.GeneratedMessage {
   factory BoolRules({
@@ -3943,7 +4053,7 @@ class BoolRules extends $pb.GeneratedMessage {
   void clearConst_1() => $_clearField(1);
 
   /// `example` specifies values that the field may have. These values SHOULD
-  /// conform to other constraints. `example` values will not impact validation
+  /// conform to other rules. `example` values will not impact validation
   /// but may be used as helpful guidance on how to populate the given field.
   ///
   /// ```proto
@@ -3980,7 +4090,7 @@ enum StringRules_WellKnown {
   notSet
 }
 
-/// StringRules describes the constraints applied to `string` values These
+/// StringRules describes the rules applied to `string` values These
 /// rules may also be applied to the `google.protobuf.StringValue` Well-Known-Type.
 class StringRules extends $pb.GeneratedMessage {
   factory StringRules({
@@ -4367,7 +4477,7 @@ class StringRules extends $pb.GeneratedMessage {
   /// ```proto
   /// message MyString {
   ///   // value must be in list ["apple", "banana"]
-  ///   repeated string value = 1 [(buf.validate.field).string.in = "apple", (buf.validate.field).string.in = "banana"];
+  ///   string value = 1 [(buf.validate.field).string.in = "apple", (buf.validate.field).string.in = "banana"];
   /// }
   /// ```
   @$pb.TagNumber(10)
@@ -4379,14 +4489,20 @@ class StringRules extends $pb.GeneratedMessage {
   /// ```proto
   /// message MyString {
   ///   // value must not be in list ["orange", "grape"]
-  ///   repeated string value = 1 [(buf.validate.field).string.not_in = "orange", (buf.validate.field).string.not_in = "grape"];
+  ///   string value = 1 [(buf.validate.field).string.not_in = "orange", (buf.validate.field).string.not_in = "grape"];
   /// }
   /// ```
   @$pb.TagNumber(11)
   $pb.PbList<$core.String> get notIn => $_getList(10);
 
-  /// `email` specifies that the field value must be a valid email address
-  /// (addr-spec only) as defined by [RFC 5322](https://datatracker.ietf.org/doc/html/rfc5322#section-3.4.1).
+  /// `email` specifies that the field value must be a valid email address, for
+  /// example "foo@example.com".
+  ///
+  /// Conforms to the definition for a valid email address from the [HTML standard](https://html.spec.whatwg.org/multipage/input.html#valid-e-mail-address).
+  /// Note that this standard willfully deviates from [RFC 5322](https://datatracker.ietf.org/doc/html/rfc5322),
+  /// which allows many unexpected forms of email addresses and will easily match
+  /// a typographical error.
+  ///
   /// If the field value isn't a valid email address, an error message will be generated.
   ///
   /// ```proto
@@ -4404,10 +4520,18 @@ class StringRules extends $pb.GeneratedMessage {
   @$pb.TagNumber(12)
   void clearEmail() => $_clearField(12);
 
-  /// `hostname` specifies that the field value must be a valid
-  /// hostname as defined by [RFC 1034](https://datatracker.ietf.org/doc/html/rfc1034#section-3.5). This constraint doesn't support
-  /// internationalized domain names (IDNs). If the field value isn't a
-  /// valid hostname, an error message will be generated.
+  /// `hostname` specifies that the field value must be a valid hostname, for
+  /// example "foo.example.com".
+  ///
+  /// A valid hostname follows the rules below:
+  /// - The name consists of one or more labels, separated by a dot (".").
+  /// - Each label can be 1 to 63 alphanumeric characters.
+  /// - A label can contain hyphens ("-"), but must not start or end with a hyphen.
+  /// - The right-most label must not be digits only.
+  /// - The name can have a trailing dot—for example, "foo.example.com.".
+  /// - The name can be 253 characters at most, excluding the optional trailing dot.
+  ///
+  /// If the field value isn't a valid hostname, an error message will be generated.
   ///
   /// ```proto
   /// message MyString {
@@ -4424,8 +4548,15 @@ class StringRules extends $pb.GeneratedMessage {
   @$pb.TagNumber(13)
   void clearHostname() => $_clearField(13);
 
-  /// `ip` specifies that the field value must be a valid IP
-  /// (v4 or v6) address, without surrounding square brackets for IPv6 addresses.
+  /// `ip` specifies that the field value must be a valid IP (v4 or v6) address.
+  ///
+  /// IPv4 addresses are expected in the dotted decimal format—for example, "192.168.5.21".
+  /// IPv6 addresses are expected in their text representation—for example, "::1",
+  /// or "2001:0DB8:ABCD:0012::0".
+  ///
+  /// Both formats are well-defined in the internet standard [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986).
+  /// Zone identifiers for IPv6 addresses (for example, "fe80::a%en1") are supported.
+  ///
   /// If the field value isn't a valid IP address, an error message will be
   /// generated.
   ///
@@ -4444,9 +4575,9 @@ class StringRules extends $pb.GeneratedMessage {
   @$pb.TagNumber(14)
   void clearIp() => $_clearField(14);
 
-  /// `ipv4` specifies that the field value must be a valid IPv4
-  /// address. If the field value isn't a valid IPv4 address, an error message
-  /// will be generated.
+  /// `ipv4` specifies that the field value must be a valid IPv4 address—for
+  /// example "192.168.5.21". If the field value isn't a valid IPv4 address, an
+  /// error message will be generated.
   ///
   /// ```proto
   /// message MyString {
@@ -4463,9 +4594,9 @@ class StringRules extends $pb.GeneratedMessage {
   @$pb.TagNumber(15)
   void clearIpv4() => $_clearField(15);
 
-  /// `ipv6` specifies that the field value must be a valid
-  /// IPv6 address, without surrounding square brackets. If the field value is
-  /// not a valid IPv6 address, an error message will be generated.
+  /// `ipv6` specifies that the field value must be a valid IPv6 address—for
+  /// example "::1", or "d7a:115c:a1e0:ab12:4843:cd96:626b:430b". If the field
+  /// value is not a valid IPv6 address, an error message will be generated.
   ///
   /// ```proto
   /// message MyString {
@@ -4482,8 +4613,11 @@ class StringRules extends $pb.GeneratedMessage {
   @$pb.TagNumber(16)
   void clearIpv6() => $_clearField(16);
 
-  /// `uri` specifies that the field value must be a valid URI as defined by
-  /// [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986#section-3).
+  /// `uri` specifies that the field value must be a valid URI, for example
+  /// "https://example.com/foo/bar?baz=quux#frag".
+  ///
+  /// URI is defined in the internet standard [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986).
+  /// Zone Identifiers in IPv6 address literals are supported ([RFC 6874](https://datatracker.ietf.org/doc/html/rfc6874)).
   ///
   /// If the field value isn't a valid URI, an error message will be generated.
   ///
@@ -4502,11 +4636,13 @@ class StringRules extends $pb.GeneratedMessage {
   @$pb.TagNumber(17)
   void clearUri() => $_clearField(17);
 
-  /// `uri_ref` specifies that the field value must be a valid URI Reference as
-  /// defined by [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986#section-4.1).
+  /// `uri_ref` specifies that the field value must be a valid URI Reference—either
+  /// a URI such as "https://example.com/foo/bar?baz=quux#frag", or a Relative
+  /// Reference such as "./foo/bar?query".
   ///
-  /// A URI Reference is either a [URI](https://datatracker.ietf.org/doc/html/rfc3986#section-3),
-  /// or a [Relative Reference](https://datatracker.ietf.org/doc/html/rfc3986#section-4.2).
+  /// URI, URI Reference, and Relative Reference are defined in the internet
+  /// standard [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986). Zone
+  /// Identifiers in IPv6 address literals are supported ([RFC 6874](https://datatracker.ietf.org/doc/html/rfc6874)).
   ///
   /// If the field value isn't a valid URI Reference, an error message will be
   /// generated.
@@ -4566,10 +4702,9 @@ class StringRules extends $pb.GeneratedMessage {
   void clearLenBytes() => $_clearField(20);
 
   /// `address` specifies that the field value must be either a valid hostname
-  /// as defined by [RFC 1034](https://datatracker.ietf.org/doc/html/rfc1034#section-3.5)
-  /// (which doesn't support internationalized domain names or IDNs) or a valid
-  /// IP (v4 or v6). If the field value isn't a valid hostname or IP, an error
-  /// message will be generated.
+  /// (for example, "example.com"), or a valid IP (v4 or v6) address (for example,
+  /// "192.168.0.1", or "::1"). If the field value isn't a valid hostname or IP,
+  /// an error message will be generated.
   ///
   /// ```proto
   /// message MyString {
@@ -4674,10 +4809,10 @@ class StringRules extends $pb.GeneratedMessage {
   @$pb.TagNumber(25)
   void clearStrict() => $_clearField(25);
 
-  /// `ip_with_prefixlen` specifies that the field value must be a valid IP (v4 or v6)
-  /// address with prefix length. If the field value isn't a valid IP with prefix
-  /// length, an error message will be generated.
-  ///
+  /// `ip_with_prefixlen` specifies that the field value must be a valid IP
+  /// (v4 or v6) address with prefix length—for example, "192.168.5.21/16" or
+  /// "2001:0DB8:ABCD:0012::F1/64". If the field value isn't a valid IP with
+  /// prefix length, an error message will be generated.
   ///
   /// ```proto
   /// message MyString {
@@ -4695,9 +4830,9 @@ class StringRules extends $pb.GeneratedMessage {
   void clearIpWithPrefixlen() => $_clearField(26);
 
   /// `ipv4_with_prefixlen` specifies that the field value must be a valid
-  /// IPv4 address with prefix.
-  /// If the field value isn't a valid IPv4 address with prefix length,
-  /// an error message will be generated.
+  /// IPv4 address with prefix length—for example, "192.168.5.21/16". If the
+  /// field value isn't a valid IPv4 address with prefix length, an error
+  /// message will be generated.
   ///
   /// ```proto
   /// message MyString {
@@ -4715,7 +4850,7 @@ class StringRules extends $pb.GeneratedMessage {
   void clearIpv4WithPrefixlen() => $_clearField(27);
 
   /// `ipv6_with_prefixlen` specifies that the field value must be a valid
-  /// IPv6 address with prefix length.
+  /// IPv6 address with prefix length—for example, "2001:0DB8:ABCD:0012::F1/64".
   /// If the field value is not a valid IPv6 address with prefix length,
   /// an error message will be generated.
   ///
@@ -4734,10 +4869,15 @@ class StringRules extends $pb.GeneratedMessage {
   @$pb.TagNumber(28)
   void clearIpv6WithPrefixlen() => $_clearField(28);
 
-  /// `ip_prefix` specifies that the field value must be a valid IP (v4 or v6) prefix.
+  /// `ip_prefix` specifies that the field value must be a valid IP (v4 or v6)
+  /// prefix—for example, "192.168.0.0/16" or "2001:0DB8:ABCD:0012::0/64".
+  ///
+  /// The prefix must have all zeros for the unmasked bits. For example,
+  /// "2001:0DB8:ABCD:0012::0/64" designates the left-most 64 bits for the
+  /// prefix, and the remaining 64 bits must be zero.
+  ///
   /// If the field value isn't a valid IP prefix, an error message will be
-  /// generated. The prefix must have all zeros for the masked bits of the prefix (e.g.,
-  /// `127.0.0.0/16`, not `127.0.0.1/16`).
+  /// generated.
   ///
   /// ```proto
   /// message MyString {
@@ -4755,9 +4895,14 @@ class StringRules extends $pb.GeneratedMessage {
   void clearIpPrefix() => $_clearField(29);
 
   /// `ipv4_prefix` specifies that the field value must be a valid IPv4
-  /// prefix. If the field value isn't a valid IPv4 prefix, an error message
-  /// will be generated. The prefix must have all zeros for the masked bits of
-  /// the prefix (e.g., `127.0.0.0/16`, not `127.0.0.1/16`).
+  /// prefix, for example "192.168.0.0/16".
+  ///
+  /// The prefix must have all zeros for the unmasked bits. For example,
+  /// "192.168.0.0/16" designates the left-most 16 bits for the prefix,
+  /// and the remaining 16 bits must be zero.
+  ///
+  /// If the field value isn't a valid IPv4 prefix, an error message
+  /// will be generated.
   ///
   /// ```proto
   /// message MyString {
@@ -4774,10 +4919,15 @@ class StringRules extends $pb.GeneratedMessage {
   @$pb.TagNumber(30)
   void clearIpv4Prefix() => $_clearField(30);
 
-  /// `ipv6_prefix` specifies that the field value must be a valid IPv6 prefix.
+  /// `ipv6_prefix` specifies that the field value must be a valid IPv6 prefix—for
+  /// example, "2001:0DB8:ABCD:0012::0/64".
+  ///
+  /// The prefix must have all zeros for the unmasked bits. For example,
+  /// "2001:0DB8:ABCD:0012::0/64" designates the left-most 64 bits for the
+  /// prefix, and the remaining 64 bits must be zero.
+  ///
   /// If the field value is not a valid IPv6 prefix, an error message will be
-  /// generated. The prefix must have all zeros for the masked bits of the prefix
-  /// (e.g., `2001:db8::/48`, not `2001:db8::1/48`).
+  /// generated.
   ///
   /// ```proto
   /// message MyString {
@@ -4794,10 +4944,16 @@ class StringRules extends $pb.GeneratedMessage {
   @$pb.TagNumber(31)
   void clearIpv6Prefix() => $_clearField(31);
 
-  /// `host_and_port` specifies the field value must be a valid host and port
-  /// pair. The host must be a valid hostname or IP address while the port
-  /// must be in the range of 0-65535, inclusive. IPv6 addresses must be delimited
-  /// with square brackets (e.g., `[::1]:1234`).
+  ///  `host_and_port` specifies that the field value must be valid host/port
+  ///  pair—for example, "example.com:8080".
+  ///
+  ///  The host can be one of:
+  /// - An IPv4 address in dotted decimal format—for example, "192.168.5.21".
+  /// - An IPv6 address enclosed in square brackets—for example, "[2001:0DB8:ABCD:0012::F1]".
+  /// - A hostname—for example, "example.com".
+  ///
+  ///  The port is separated by a colon. It must be non-empty, with a decimal number
+  ///  in the range of 0-65535, inclusive.
   @$pb.TagNumber(32)
   $core.bool get hostAndPort => $_getBF(31);
   @$pb.TagNumber(32)
@@ -4828,7 +4984,7 @@ class StringRules extends $pb.GeneratedMessage {
   void clearTuuid() => $_clearField(33);
 
   /// `example` specifies values that the field may have. These values SHOULD
-  /// conform to other constraints. `example` values will not impact validation
+  /// conform to other rules. `example` values will not impact validation
   /// but may be used as helpful guidance on how to populate the given field.
   ///
   /// ```proto
@@ -4845,7 +5001,7 @@ class StringRules extends $pb.GeneratedMessage {
 
 enum BytesRules_WellKnown { ip, ipv4, ipv6, notSet }
 
-/// BytesRules describe the constraints applied to `bytes` values. These rules
+/// BytesRules describe the rules applied to `bytes` values. These rules
 /// may also be applied to the `google.protobuf.BytesValue` Well-Known-Type.
 class BytesRules extends $pb.GeneratedMessage {
   factory BytesRules({
@@ -5114,7 +5270,7 @@ class BytesRules extends $pb.GeneratedMessage {
   $pb.PbList<$core.List<$core.int>> get notIn => $_getList(8);
 
   /// `ip` ensures that the field `value` is a valid IP address (v4 or v6) in byte format.
-  /// If the field value doesn't meet this constraint, an error message is generated.
+  /// If the field value doesn't meet this rule, an error message is generated.
   ///
   /// ```proto
   /// message MyBytes {
@@ -5132,7 +5288,7 @@ class BytesRules extends $pb.GeneratedMessage {
   void clearIp() => $_clearField(10);
 
   /// `ipv4` ensures that the field `value` is a valid IPv4 address in byte format.
-  /// If the field value doesn't meet this constraint, an error message is generated.
+  /// If the field value doesn't meet this rule, an error message is generated.
   ///
   /// ```proto
   /// message MyBytes {
@@ -5150,7 +5306,7 @@ class BytesRules extends $pb.GeneratedMessage {
   void clearIpv4() => $_clearField(11);
 
   /// `ipv6` ensures that the field `value` is a valid IPv6 address in byte format.
-  /// If the field value doesn't meet this constraint, an error message is generated.
+  /// If the field value doesn't meet this rule, an error message is generated.
   /// ```proto
   /// message MyBytes {
   ///   // value must be a valid IPv6 address
@@ -5185,7 +5341,7 @@ class BytesRules extends $pb.GeneratedMessage {
   void clearLen() => $_clearField(13);
 
   /// `example` specifies values that the field may have. These values SHOULD
-  /// conform to other constraints. `example` values will not impact validation
+  /// conform to other rules. `example` values will not impact validation
   /// but may be used as helpful guidance on how to populate the given field.
   ///
   /// ```proto
@@ -5200,7 +5356,7 @@ class BytesRules extends $pb.GeneratedMessage {
   $pb.PbList<$core.List<$core.int>> get example => $_getList(13);
 }
 
-/// EnumRules describe the constraints applied to `enum` values.
+/// EnumRules describe the rules applied to `enum` values.
 class EnumRules extends $pb.GeneratedMessage {
   factory EnumRules({
     $core.int? const_1,
@@ -5344,7 +5500,7 @@ class EnumRules extends $pb.GeneratedMessage {
   $pb.PbList<$core.int> get notIn => $_getList(3);
 
   /// `example` specifies values that the field may have. These values SHOULD
-  /// conform to other constraints. `example` values will not impact validation
+  /// conform to other rules. `example` values will not impact validation
   /// but may be used as helpful guidance on how to populate the given field.
   ///
   /// ```proto
@@ -5363,13 +5519,13 @@ class EnumRules extends $pb.GeneratedMessage {
   $pb.PbList<$core.int> get example => $_getList(4);
 }
 
-/// RepeatedRules describe the constraints applied to `repeated` values.
+/// RepeatedRules describe the rules applied to `repeated` values.
 class RepeatedRules extends $pb.GeneratedMessage {
   factory RepeatedRules({
     $fixnum.Int64? minItems,
     $fixnum.Int64? maxItems,
     $core.bool? unique,
-    FieldConstraints? items,
+    FieldRules? items,
   }) {
     final result = create();
     if (minItems != null) result.minItems = minItems;
@@ -5399,8 +5555,8 @@ class RepeatedRules extends $pb.GeneratedMessage {
         2, _omitFieldNames ? '' : 'maxItems', $pb.PbFieldType.OU6,
         defaultOrMaker: $fixnum.Int64.ZERO)
     ..aOB(3, _omitFieldNames ? '' : 'unique')
-    ..aOM<FieldConstraints>(4, _omitFieldNames ? '' : 'items',
-        subBuilder: FieldConstraints.create)
+    ..aOM<FieldRules>(4, _omitFieldNames ? '' : 'items',
+        subBuilder: FieldRules.create)
     ..hasExtensions = true;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -5465,7 +5621,7 @@ class RepeatedRules extends $pb.GeneratedMessage {
   void clearMaxItems() => $_clearField(2);
 
   /// `unique` indicates that all elements in this field must
-  /// be unique. This constraint is strictly applicable to scalar and enum
+  /// be unique. This rule is strictly applicable to scalar and enum
   /// types, with message types not being supported.
   ///
   /// ```proto
@@ -5483,13 +5639,13 @@ class RepeatedRules extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   void clearUnique() => $_clearField(3);
 
-  /// `items` details the constraints to be applied to each item
+  /// `items` details the rules to be applied to each item
   /// in the field. Even for repeated message fields, validation is executed
-  /// against each item unless skip is explicitly specified.
+  /// against each item unless `ignore` is specified.
   ///
   /// ```proto
   /// message MyRepeated {
-  ///   // The items in the field `value` must follow the specified constraints.
+  ///   // The items in the field `value` must follow the specified rules.
   ///   repeated string value = 1 [(buf.validate.field).repeated.items = {
   ///     string: {
   ///       min_len: 3
@@ -5498,25 +5654,28 @@ class RepeatedRules extends $pb.GeneratedMessage {
   ///   }];
   /// }
   /// ```
+  ///
+  /// Note that the `required` rule does not apply. Repeated items
+  /// cannot be unset.
   @$pb.TagNumber(4)
-  FieldConstraints get items => $_getN(3);
+  FieldRules get items => $_getN(3);
   @$pb.TagNumber(4)
-  set items(FieldConstraints value) => $_setField(4, value);
+  set items(FieldRules value) => $_setField(4, value);
   @$pb.TagNumber(4)
   $core.bool hasItems() => $_has(3);
   @$pb.TagNumber(4)
   void clearItems() => $_clearField(4);
   @$pb.TagNumber(4)
-  FieldConstraints ensureItems() => $_ensure(3);
+  FieldRules ensureItems() => $_ensure(3);
 }
 
-/// MapRules describe the constraints applied to `map` values.
+/// MapRules describe the rules applied to `map` values.
 class MapRules extends $pb.GeneratedMessage {
   factory MapRules({
     $fixnum.Int64? minPairs,
     $fixnum.Int64? maxPairs,
-    FieldConstraints? keys,
-    FieldConstraints? values,
+    FieldRules? keys,
+    FieldRules? values,
   }) {
     final result = create();
     if (minPairs != null) result.minPairs = minPairs;
@@ -5545,10 +5704,10 @@ class MapRules extends $pb.GeneratedMessage {
     ..a<$fixnum.Int64>(
         2, _omitFieldNames ? '' : 'maxPairs', $pb.PbFieldType.OU6,
         defaultOrMaker: $fixnum.Int64.ZERO)
-    ..aOM<FieldConstraints>(4, _omitFieldNames ? '' : 'keys',
-        subBuilder: FieldConstraints.create)
-    ..aOM<FieldConstraints>(5, _omitFieldNames ? '' : 'values',
-        subBuilder: FieldConstraints.create)
+    ..aOM<FieldRules>(4, _omitFieldNames ? '' : 'keys',
+        subBuilder: FieldRules.create)
+    ..aOM<FieldRules>(5, _omitFieldNames ? '' : 'values',
+        subBuilder: FieldRules.create)
     ..hasExtensions = true;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -5571,14 +5730,14 @@ class MapRules extends $pb.GeneratedMessage {
   static MapRules? _defaultInstance;
 
   /// Specifies the minimum number of key-value pairs allowed. If the field has
-  ///  fewer key-value pairs than specified, an error message is generated.
+  /// fewer key-value pairs than specified, an error message is generated.
   ///
-  ///  ```proto
-  ///  message MyMap {
-  ///    // The field `value` must have at least 2 key-value pairs.
-  ///    map<string, string> value = 1 [(buf.validate.field).map.min_pairs = 2];
-  ///  }
-  ///  ```
+  /// ```proto
+  /// message MyMap {
+  ///   // The field `value` must have at least 2 key-value pairs.
+  ///   map<string, string> value = 1 [(buf.validate.field).map.min_pairs = 2];
+  /// }
+  /// ```
   @$pb.TagNumber(1)
   $fixnum.Int64 get minPairs => $_getI64(0);
   @$pb.TagNumber(1)
@@ -5589,14 +5748,14 @@ class MapRules extends $pb.GeneratedMessage {
   void clearMinPairs() => $_clearField(1);
 
   /// Specifies the maximum number of key-value pairs allowed. If the field has
-  ///  more key-value pairs than specified, an error message is generated.
+  /// more key-value pairs than specified, an error message is generated.
   ///
-  ///  ```proto
-  ///  message MyMap {
-  ///    // The field `value` must have at most 3 key-value pairs.
-  ///    map<string, string> value = 1 [(buf.validate.field).map.max_pairs = 3];
-  ///  }
-  ///  ```
+  /// ```proto
+  /// message MyMap {
+  ///   // The field `value` must have at most 3 key-value pairs.
+  ///   map<string, string> value = 1 [(buf.validate.field).map.max_pairs = 3];
+  /// }
+  /// ```
   @$pb.TagNumber(2)
   $fixnum.Int64 get maxPairs => $_getI64(1);
   @$pb.TagNumber(2)
@@ -5606,58 +5765,61 @@ class MapRules extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   void clearMaxPairs() => $_clearField(2);
 
-  /// Specifies the constraints to be applied to each key in the field.
+  /// Specifies the rules to be applied to each key in the field.
   ///
-  ///  ```proto
-  ///  message MyMap {
-  ///    // The keys in the field `value` must follow the specified constraints.
-  ///    map<string, string> value = 1 [(buf.validate.field).map.keys = {
-  ///      string: {
-  ///        min_len: 3
-  ///        max_len: 10
-  ///      }
-  ///    }];
-  ///  }
-  ///  ```
+  /// ```proto
+  /// message MyMap {
+  ///   // The keys in the field `value` must follow the specified rules.
+  ///   map<string, string> value = 1 [(buf.validate.field).map.keys = {
+  ///     string: {
+  ///       min_len: 3
+  ///       max_len: 10
+  ///     }
+  ///   }];
+  /// }
+  /// ```
+  ///
+  /// Note that the `required` rule does not apply. Map keys cannot be unset.
   @$pb.TagNumber(4)
-  FieldConstraints get keys => $_getN(2);
+  FieldRules get keys => $_getN(2);
   @$pb.TagNumber(4)
-  set keys(FieldConstraints value) => $_setField(4, value);
+  set keys(FieldRules value) => $_setField(4, value);
   @$pb.TagNumber(4)
   $core.bool hasKeys() => $_has(2);
   @$pb.TagNumber(4)
   void clearKeys() => $_clearField(4);
   @$pb.TagNumber(4)
-  FieldConstraints ensureKeys() => $_ensure(2);
+  FieldRules ensureKeys() => $_ensure(2);
 
-  /// Specifies the constraints to be applied to the value of each key in the
-  ///  field. Message values will still have their validations evaluated unless
-  /// skip is specified here.
+  /// Specifies the rules to be applied to the value of each key in the
+  /// field. Message values will still have their validations evaluated unless
+  /// `ignore` is specified.
   ///
-  ///  ```proto
-  ///  message MyMap {
-  ///    // The values in the field `value` must follow the specified constraints.
-  ///    map<string, string> value = 1 [(buf.validate.field).map.values = {
-  ///      string: {
-  ///        min_len: 5
-  ///        max_len: 20
-  ///      }
-  ///    }];
-  ///  }
-  ///  ```
+  /// ```proto
+  /// message MyMap {
+  ///   // The values in the field `value` must follow the specified rules.
+  ///   map<string, string> value = 1 [(buf.validate.field).map.values = {
+  ///     string: {
+  ///       min_len: 5
+  ///       max_len: 20
+  ///     }
+  ///   }];
+  /// }
+  /// ```
+  /// Note that the `required` rule does not apply. Map values cannot be unset.
   @$pb.TagNumber(5)
-  FieldConstraints get values => $_getN(3);
+  FieldRules get values => $_getN(3);
   @$pb.TagNumber(5)
-  set values(FieldConstraints value) => $_setField(5, value);
+  set values(FieldRules value) => $_setField(5, value);
   @$pb.TagNumber(5)
   $core.bool hasValues() => $_has(3);
   @$pb.TagNumber(5)
   void clearValues() => $_clearField(5);
   @$pb.TagNumber(5)
-  FieldConstraints ensureValues() => $_ensure(3);
+  FieldRules ensureValues() => $_ensure(3);
 }
 
-/// AnyRules describe constraints applied exclusively to the `google.protobuf.Any` well-known type.
+/// AnyRules describe rules applied exclusively to the `google.protobuf.Any` well-known type.
 class AnyRules extends $pb.GeneratedMessage {
   factory AnyRules({
     $core.Iterable<$core.String>? in_2,
@@ -5712,7 +5874,9 @@ class AnyRules extends $pb.GeneratedMessage {
   ///  ```proto
   ///  message MyAny {
   ///    //  The `value` field must have a `type_url` equal to one of the specified values.
-  ///    google.protobuf.Any value = 1 [(buf.validate.field).any.in = ["type.googleapis.com/MyType1", "type.googleapis.com/MyType2"]];
+  ///    google.protobuf.Any value = 1 [(buf.validate.field).any = {
+  ///        in: ["type.googleapis.com/MyType1", "type.googleapis.com/MyType2"]
+  ///    }];
   ///  }
   ///  ```
   @$pb.TagNumber(2)
@@ -5722,8 +5886,10 @@ class AnyRules extends $pb.GeneratedMessage {
   ///
   /// ```proto
   /// message MyAny {
-  ///   // The field `value` must not have a `type_url` equal to any of the specified values.
-  ///   google.protobuf.Any value = 1 [(buf.validate.field).any.not_in = ["type.googleapis.com/ForbiddenType1", "type.googleapis.com/ForbiddenType2"]];
+  ///   //  The `value` field must not have a `type_url` equal to any of the specified values.
+  ///   google.protobuf.Any value = 1 [(buf.validate.field).any = {
+  ///       not_in: ["type.googleapis.com/ForbiddenType1", "type.googleapis.com/ForbiddenType2"]
+  ///   }];
   /// }
   /// ```
   @$pb.TagNumber(3)
@@ -5734,7 +5900,7 @@ enum DurationRules_LessThan { lt, lte, notSet }
 
 enum DurationRules_GreaterThan { gt, gte, notSet }
 
-/// DurationRules describe the constraints applied exclusively to the `google.protobuf.Duration` well-known type.
+/// DurationRules describe the rules applied exclusively to the `google.protobuf.Duration` well-known type.
 class DurationRules extends $pb.GeneratedMessage {
   factory DurationRules({
     $0.Duration? const_2,
@@ -5981,7 +6147,7 @@ class DurationRules extends $pb.GeneratedMessage {
   $pb.PbList<$0.Duration> get notIn => $_getList(6);
 
   /// `example` specifies values that the field may have. These values SHOULD
-  /// conform to other constraints. `example` values will not impact validation
+  /// conform to other rules. `example` values will not impact validation
   /// but may be used as helpful guidance on how to populate the given field.
   ///
   /// ```proto
@@ -6000,7 +6166,7 @@ enum TimestampRules_LessThan { lt, lte, ltNow, notSet }
 
 enum TimestampRules_GreaterThan { gt, gte, gtNow, notSet }
 
-/// TimestampRules describe the constraints applied exclusively to the `google.protobuf.Timestamp` well-known type.
+/// TimestampRules describe the rules applied exclusively to the `google.protobuf.Timestamp` well-known type.
 class TimestampRules extends $pb.GeneratedMessage {
   factory TimestampRules({
     $1.Timestamp? const_2,
@@ -6270,12 +6436,24 @@ class TimestampRules extends $pb.GeneratedMessage {
   @$pb.TagNumber(9)
   $0.Duration ensureWithin() => $_ensure(7);
 
+  /// `example` specifies values that the field may have. These values SHOULD
+  /// conform to other rules. `example` values will not impact validation
+  /// but may be used as helpful guidance on how to populate the given field.
+  ///
+  /// ```proto
+  /// message MyTimestamp {
+  ///   google.protobuf.Timestamp value = 1 [
+  ///     (buf.validate.field).timestamp.example = { seconds: 1672444800 },
+  ///     (buf.validate.field).timestamp.example = { seconds: 1672531200 },
+  ///   ];
+  /// }
+  /// ```
   @$pb.TagNumber(10)
   $pb.PbList<$1.Timestamp> get example => $_getList(8);
 }
 
 /// `Violations` is a collection of `Violation` messages. This message type is returned by
-/// protovalidate when a proto message fails to meet the requirements set by the `Constraint` validation rules.
+/// Protovalidate when a proto message fails to meet the requirements set by the `Rule` validation rules.
 /// Each individual violation is represented by a `Violation` message.
 class Violations extends $pb.GeneratedMessage {
   factory Violations({
@@ -6328,27 +6506,58 @@ class Violations extends $pb.GeneratedMessage {
 }
 
 /// `Violation` represents a single instance where a validation rule, expressed
-/// as a `Constraint`, was not met. It provides information about the field that
-/// caused the violation, the specific constraint that wasn't fulfilled, and a
+/// as a `Rule`, was not met. It provides information about the field that
+/// caused the violation, the specific rule that wasn't fulfilled, and a
 /// human-readable error message.
+///
+/// For example, consider the following message:
+///
+/// ```proto
+/// message User {
+///     int32 age = 1 [(buf.validate.field).cel = {
+///         id: "user.age",
+///         expression: "this < 18 ? 'User must be at least 18 years old' : ''",
+///     }];
+/// }
+/// ```
+///
+/// It could produce the following violation:
 ///
 /// ```json
 /// {
-///   "fieldPath": "bar",
-///   "constraintId": "foo.bar",
-///   "message": "bar must be greater than 0"
+///   "ruleId": "user.age",
+///   "message": "User must be at least 18 years old",
+///   "field": {
+///     "elements": [
+///       {
+///         "fieldNumber": 1,
+///         "fieldName": "age",
+///         "fieldType": "TYPE_INT32"
+///       }
+///     ]
+///   },
+///   "rule": {
+///     "elements": [
+///       {
+///         "fieldNumber": 23,
+///         "fieldName": "cel",
+///         "fieldType": "TYPE_MESSAGE",
+///         "index": "0"
+///       }
+///     ]
+///   }
 /// }
 /// ```
 class Violation extends $pb.GeneratedMessage {
   factory Violation({
-    $core.String? constraintId,
+    $core.String? ruleId,
     $core.String? message,
     $core.bool? forKey,
     FieldPath? field_5,
     FieldPath? rule,
   }) {
     final result = create();
-    if (constraintId != null) result.constraintId = constraintId;
+    if (ruleId != null) result.ruleId = ruleId;
     if (message != null) result.message = message;
     if (forKey != null) result.forKey = forKey;
     if (field_5 != null) result.field_5 = field_5;
@@ -6369,7 +6578,7 @@ class Violation extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'Violation',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'buf.validate'),
       createEmptyInstance: create)
-    ..aOS(2, _omitFieldNames ? '' : 'constraintId')
+    ..aOS(2, _omitFieldNames ? '' : 'ruleId')
     ..aOS(3, _omitFieldNames ? '' : 'message')
     ..aOB(4, _omitFieldNames ? '' : 'forKey')
     ..aOM<FieldPath>(5, _omitFieldNames ? '' : 'field',
@@ -6397,19 +6606,19 @@ class Violation extends $pb.GeneratedMessage {
       _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Violation>(create);
   static Violation? _defaultInstance;
 
-  /// `constraint_id` is the unique identifier of the `Constraint` that was not fulfilled.
-  /// This is the same `id` that was specified in the `Constraint` message, allowing easy tracing of which rule was violated.
+  /// `rule_id` is the unique identifier of the `Rule` that was not fulfilled.
+  /// This is the same `id` that was specified in the `Rule` message, allowing easy tracing of which rule was violated.
   @$pb.TagNumber(2)
-  $core.String get constraintId => $_getSZ(0);
+  $core.String get ruleId => $_getSZ(0);
   @$pb.TagNumber(2)
-  set constraintId($core.String value) => $_setString(0, value);
+  set ruleId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(2)
-  $core.bool hasConstraintId() => $_has(0);
+  $core.bool hasRuleId() => $_has(0);
   @$pb.TagNumber(2)
-  void clearConstraintId() => $_clearField(2);
+  void clearRuleId() => $_clearField(2);
 
   /// `message` is a human-readable error message that describes the nature of the violation.
-  /// This can be the default error message from the violated `Constraint`, or it can be a custom message that gives more context about the violation.
+  /// This can be the default error message from the violated `Rule`, or it can be a custom message that gives more context about the violation.
   @$pb.TagNumber(3)
   $core.String get message => $_getSZ(1);
   @$pb.TagNumber(3)
@@ -6459,9 +6668,9 @@ class Violation extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   FieldPath ensureField_5() => $_ensure(3);
 
-  /// `rule` is a machine-readable path that points to the specific constraint rule that failed validation.
-  /// This will be a nested field starting from the FieldConstraints of the field that failed validation.
-  /// For custom constraints, this will provide the path of the constraint, e.g. `cel[0]`.
+  /// `rule` is a machine-readable path that points to the specific rule that failed validation.
+  /// This will be a nested field starting from the FieldRules of the field that failed validation.
+  /// For custom rules, this will provide the path of the rule, e.g. `cel[0]`.
   ///
   /// For example, consider the following message:
   ///
@@ -6469,7 +6678,7 @@ class Violation extends $pb.GeneratedMessage {
   /// message Message {
   ///   bool a = 1 [(buf.validate.field).required = true];
   ///   bool b = 2 [(buf.validate.field).cel = {
-  ///     id: "custom_constraint",
+  ///     id: "custom_rule",
   ///     expression: "!this ? 'b must be true': ''"
   ///   }]
   /// }
@@ -6784,34 +6993,34 @@ class FieldPathElement extends $pb.GeneratedMessage {
 }
 
 class Validate {
-  static final message = $pb.Extension<MessageConstraints>(
+  static final message = $pb.Extension<MessageRules>(
       _omitMessageNames ? '' : 'google.protobuf.MessageOptions',
       _omitFieldNames ? '' : 'message',
       1159,
       $pb.PbFieldType.OM,
-      defaultOrMaker: MessageConstraints.getDefault,
-      subBuilder: MessageConstraints.create);
-  static final oneof = $pb.Extension<OneofConstraints>(
+      defaultOrMaker: MessageRules.getDefault,
+      subBuilder: MessageRules.create);
+  static final oneof = $pb.Extension<OneofRules>(
       _omitMessageNames ? '' : 'google.protobuf.OneofOptions',
       _omitFieldNames ? '' : 'oneof',
       1159,
       $pb.PbFieldType.OM,
-      defaultOrMaker: OneofConstraints.getDefault,
-      subBuilder: OneofConstraints.create);
-  static final field_1159 = $pb.Extension<FieldConstraints>(
+      defaultOrMaker: OneofRules.getDefault,
+      subBuilder: OneofRules.create);
+  static final field_1159 = $pb.Extension<FieldRules>(
       _omitMessageNames ? '' : 'google.protobuf.FieldOptions',
       _omitFieldNames ? '' : 'field_1159',
       1159,
       $pb.PbFieldType.OM,
-      defaultOrMaker: FieldConstraints.getDefault,
-      subBuilder: FieldConstraints.create);
-  static final predefined = $pb.Extension<PredefinedConstraints>(
+      defaultOrMaker: FieldRules.getDefault,
+      subBuilder: FieldRules.create);
+  static final predefined = $pb.Extension<PredefinedRules>(
       _omitMessageNames ? '' : 'google.protobuf.FieldOptions',
       _omitFieldNames ? '' : 'predefined',
       1160,
       $pb.PbFieldType.OM,
-      defaultOrMaker: PredefinedConstraints.getDefault,
-      subBuilder: PredefinedConstraints.create);
+      defaultOrMaker: PredefinedRules.getDefault,
+      subBuilder: PredefinedRules.create);
   static void registerAllExtensions($pb.ExtensionRegistry registry) {
     registry.add(message);
     registry.add(oneof);

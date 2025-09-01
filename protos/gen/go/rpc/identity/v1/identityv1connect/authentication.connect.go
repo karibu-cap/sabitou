@@ -35,6 +35,8 @@ const (
 const (
 	// AuthServiceLoginProcedure is the fully-qualified name of the AuthService's Login RPC.
 	AuthServiceLoginProcedure = "/identity.v1.AuthService/Login"
+	// AuthServiceRegisterProcedure is the fully-qualified name of the AuthService's Register RPC.
+	AuthServiceRegisterProcedure = "/identity.v1.AuthService/Register"
 	// AuthServiceRequestPasswordResetProcedure is the fully-qualified name of the AuthService's
 	// RequestPasswordReset RPC.
 	AuthServiceRequestPasswordResetProcedure = "/identity.v1.AuthService/RequestPasswordReset"
@@ -47,6 +49,8 @@ const (
 type AuthServiceClient interface {
 	// Authenticate the user with the given credentials.
 	Login(context.Context, *connect.Request[v1.LoginRequest]) (*connect.Response[v1.LoginResponse], error)
+	// Create a user without a password.
+	Register(context.Context, *connect.Request[v1.RegisterRequest]) (*connect.Response[v1.RegisterResponse], error)
 	// Request the password reset of the user.
 	RequestPasswordReset(context.Context, *connect.Request[v1.RequestPasswordResetRequest]) (*connect.Response[v1.RequestPasswordResetResponse], error)
 	// Process the password reset request.
@@ -70,6 +74,12 @@ func NewAuthServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(authServiceMethods.ByName("Login")),
 			connect.WithClientOptions(opts...),
 		),
+		register: connect.NewClient[v1.RegisterRequest, v1.RegisterResponse](
+			httpClient,
+			baseURL+AuthServiceRegisterProcedure,
+			connect.WithSchema(authServiceMethods.ByName("Register")),
+			connect.WithClientOptions(opts...),
+		),
 		requestPasswordReset: connect.NewClient[v1.RequestPasswordResetRequest, v1.RequestPasswordResetResponse](
 			httpClient,
 			baseURL+AuthServiceRequestPasswordResetProcedure,
@@ -88,6 +98,7 @@ func NewAuthServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 // authServiceClient implements AuthServiceClient.
 type authServiceClient struct {
 	login                *connect.Client[v1.LoginRequest, v1.LoginResponse]
+	register             *connect.Client[v1.RegisterRequest, v1.RegisterResponse]
 	requestPasswordReset *connect.Client[v1.RequestPasswordResetRequest, v1.RequestPasswordResetResponse]
 	resetPassword        *connect.Client[v1.ResetPasswordRequest, v1.ResetPasswordResponse]
 }
@@ -95,6 +106,11 @@ type authServiceClient struct {
 // Login calls identity.v1.AuthService.Login.
 func (c *authServiceClient) Login(ctx context.Context, req *connect.Request[v1.LoginRequest]) (*connect.Response[v1.LoginResponse], error) {
 	return c.login.CallUnary(ctx, req)
+}
+
+// Register calls identity.v1.AuthService.Register.
+func (c *authServiceClient) Register(ctx context.Context, req *connect.Request[v1.RegisterRequest]) (*connect.Response[v1.RegisterResponse], error) {
+	return c.register.CallUnary(ctx, req)
 }
 
 // RequestPasswordReset calls identity.v1.AuthService.RequestPasswordReset.
@@ -111,6 +127,8 @@ func (c *authServiceClient) ResetPassword(ctx context.Context, req *connect.Requ
 type AuthServiceHandler interface {
 	// Authenticate the user with the given credentials.
 	Login(context.Context, *connect.Request[v1.LoginRequest]) (*connect.Response[v1.LoginResponse], error)
+	// Create a user without a password.
+	Register(context.Context, *connect.Request[v1.RegisterRequest]) (*connect.Response[v1.RegisterResponse], error)
 	// Request the password reset of the user.
 	RequestPasswordReset(context.Context, *connect.Request[v1.RequestPasswordResetRequest]) (*connect.Response[v1.RequestPasswordResetResponse], error)
 	// Process the password reset request.
@@ -130,6 +148,12 @@ func NewAuthServiceHandler(svc AuthServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(authServiceMethods.ByName("Login")),
 		connect.WithHandlerOptions(opts...),
 	)
+	authServiceRegisterHandler := connect.NewUnaryHandler(
+		AuthServiceRegisterProcedure,
+		svc.Register,
+		connect.WithSchema(authServiceMethods.ByName("Register")),
+		connect.WithHandlerOptions(opts...),
+	)
 	authServiceRequestPasswordResetHandler := connect.NewUnaryHandler(
 		AuthServiceRequestPasswordResetProcedure,
 		svc.RequestPasswordReset,
@@ -146,6 +170,8 @@ func NewAuthServiceHandler(svc AuthServiceHandler, opts ...connect.HandlerOption
 		switch r.URL.Path {
 		case AuthServiceLoginProcedure:
 			authServiceLoginHandler.ServeHTTP(w, r)
+		case AuthServiceRegisterProcedure:
+			authServiceRegisterHandler.ServeHTTP(w, r)
 		case AuthServiceRequestPasswordResetProcedure:
 			authServiceRequestPasswordResetHandler.ServeHTTP(w, r)
 		case AuthServiceResetPasswordProcedure:
@@ -161,6 +187,10 @@ type UnimplementedAuthServiceHandler struct{}
 
 func (UnimplementedAuthServiceHandler) Login(context.Context, *connect.Request[v1.LoginRequest]) (*connect.Response[v1.LoginResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("identity.v1.AuthService.Login is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) Register(context.Context, *connect.Request[v1.RegisterRequest]) (*connect.Response[v1.RegisterResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("identity.v1.AuthService.Register is not implemented"))
 }
 
 func (UnimplementedAuthServiceHandler) RequestPasswordReset(context.Context, *connect.Request[v1.RequestPasswordResetRequest]) (*connect.Response[v1.RequestPasswordResetResponse], error) {

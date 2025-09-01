@@ -18,6 +18,14 @@ abstract final class AuthService {
     identityv1authentication.LoginResponse.new,
   );
 
+  /// Create a user without a password.
+  static const register = connect.Spec(
+    '/$name/Register',
+    connect.StreamType.unary,
+    identityv1authentication.RegisterRequest.new,
+    identityv1authentication.RegisterResponse.new,
+  );
+
   /// Request the password reset of the user.
   static const requestPasswordReset = connect.Spec(
     '/$name/RequestPasswordReset',

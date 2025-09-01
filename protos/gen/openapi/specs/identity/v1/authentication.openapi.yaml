@@ -6,7 +6,7 @@ paths:
     post:
       tags:
         - identity.v1.AuthService
-      summary: Login
+      summary: Authenticate the user with the given credentials.
       description: Authenticate the user with the given credentials.
       operationId: identity.v1.AuthService.Login
       parameters:
@@ -38,11 +38,47 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/identity.v1.LoginResponse'
+  /identity.v1.AuthService/Register:
+    post:
+      tags:
+        - identity.v1.AuthService
+      summary: Create a user without a password.
+      description: Create a user without a password.
+      operationId: identity.v1.AuthService.Register
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/identity.v1.RegisterRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identity.v1.RegisterResponse'
   /identity.v1.AuthService/RequestPasswordReset:
     post:
       tags:
         - identity.v1.AuthService
-      summary: RequestPasswordReset
+      summary: Request the password reset of the user.
       description: Request the password reset of the user.
       operationId: identity.v1.AuthService.RequestPasswordReset
       parameters:
@@ -78,7 +114,7 @@ paths:
     post:
       tags:
         - identity.v1.AuthService
-      summary: ResetPassword
+      summary: Process the password reset request.
       description: Process the password reset request.
       operationId: identity.v1.AuthService.ResetPassword
       parameters:
@@ -118,14 +154,10 @@ components:
         uRef:
           type: string
           title: u_ref
-          description: |+
+          description: |
             The unique identifier of the user.
              For example, the email address or phone number or @username.
-            user_ref must be a valid email address or user id or @username:
-            ```
-            this.isEmail() || this.matches('^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')
-            ```
-
+            string.is_user_ref // user_ref must be a valid email address or user id or @username
         password:
           type: string
           title: password
@@ -145,20 +177,46 @@ components:
           description: The refresh token to use to refresh the token.
       title: LoginResponse
       additionalProperties: false
+    identity.v1.RegisterRequest:
+      type: object
+      properties:
+        userName:
+          type: string
+          title: user_name
+          description: The unique identifier of the user.
+        email:
+          type: string
+          title: email
+          description: The email address of the user.
+      title: RegisterRequest
+      additionalProperties: false
+      description: |-
+        Register a new user with the minimum required information.
+         The user will have to set a password later.
+         For Business user registration, the business id is required.
+    identity.v1.RegisterResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          title: token
+          description: The token to use to authenticate the user in subsequent requests.
+        refreshToken:
+          type: string
+          title: refresh_token
+          description: The refresh token to use to refresh the token.
+      title: RegisterResponse
+      additionalProperties: false
     identity.v1.RequestPasswordResetRequest:
       type: object
       properties:
         uRef:
           type: string
           title: u_ref
-          description: |+
+          description: |
             The unique identifier of the user.
              For example, the email address or userId, later it will include the user name as well.
-            user_ref must be a valid email address or user id or @username:
-            ```
-            this.isEmail() || this.matches('^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')
-            ```
-
+            string.is_user_ref // user_ref must be a valid email address or user id or @username
       title: RequestPasswordResetRequest
       additionalProperties: false
     identity.v1.RequestPasswordResetResponse:
@@ -242,24 +300,36 @@ components:
         message:
           type: string
           description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
-        detail:
-          $ref: '#/components/schemas/google.protobuf.Any'
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/connect.error_details.Any'
+          description: A list of messages that carry the error details. There is no limit on the number of messages.
       title: Connect Error
       additionalProperties: true
       description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
-    google.protobuf.Any:
+    connect.error_details.Any:
       type: object
       properties:
         type:
           type: string
+          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
         value:
           type: string
           format: binary
+          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
         debug:
-          type: object
-          additionalProperties: true
+          oneOf:
+            - type: object
+              title: Any
+              additionalProperties: true
+              description: Detailed error information.
+          discriminator:
+            propertyName: type
+          title: Debug
+          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
       additionalProperties: true
-      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
 security: []
 tags:
   - name: identity.v1.AuthService

@@ -158,6 +158,149 @@ class LoginResponse extends $pb.GeneratedMessage {
   void clearRefreshToken() => $_clearField(2);
 }
 
+/// Register a new user with the minimum required information.
+/// The user will have to set a password later.
+/// For Business user registration, the business id is required.
+class RegisterRequest extends $pb.GeneratedMessage {
+  factory RegisterRequest({
+    $core.String? userName,
+    $core.String? email,
+  }) {
+    final result = create();
+    if (userName != null) result.userName = userName;
+    if (email != null) result.email = email;
+    return result;
+  }
+
+  RegisterRequest._();
+
+  factory RegisterRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory RegisterRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'RegisterRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'identity.v1'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'userName')
+    ..aOS(2, _omitFieldNames ? '' : 'email')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  RegisterRequest clone() => RegisterRequest()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  RegisterRequest copyWith(void Function(RegisterRequest) updates) =>
+      super.copyWith((message) => updates(message as RegisterRequest))
+          as RegisterRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static RegisterRequest create() => RegisterRequest._();
+  @$core.override
+  RegisterRequest createEmptyInstance() => create();
+  static $pb.PbList<RegisterRequest> createRepeated() =>
+      $pb.PbList<RegisterRequest>();
+  @$core.pragma('dart2js:noInline')
+  static RegisterRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<RegisterRequest>(create);
+  static RegisterRequest? _defaultInstance;
+
+  /// The unique identifier of the user.
+  @$pb.TagNumber(1)
+  $core.String get userName => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set userName($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasUserName() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearUserName() => $_clearField(1);
+
+  /// The email address of the user.
+  @$pb.TagNumber(2)
+  $core.String get email => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set email($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasEmail() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearEmail() => $_clearField(2);
+}
+
+class RegisterResponse extends $pb.GeneratedMessage {
+  factory RegisterResponse({
+    $core.String? token,
+    $core.String? refreshToken,
+  }) {
+    final result = create();
+    if (token != null) result.token = token;
+    if (refreshToken != null) result.refreshToken = refreshToken;
+    return result;
+  }
+
+  RegisterResponse._();
+
+  factory RegisterResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory RegisterResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'RegisterResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'identity.v1'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'token')
+    ..aOS(2, _omitFieldNames ? '' : 'refreshToken')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  RegisterResponse clone() => RegisterResponse()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  RegisterResponse copyWith(void Function(RegisterResponse) updates) =>
+      super.copyWith((message) => updates(message as RegisterResponse))
+          as RegisterResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static RegisterResponse create() => RegisterResponse._();
+  @$core.override
+  RegisterResponse createEmptyInstance() => create();
+  static $pb.PbList<RegisterResponse> createRepeated() =>
+      $pb.PbList<RegisterResponse>();
+  @$core.pragma('dart2js:noInline')
+  static RegisterResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<RegisterResponse>(create);
+  static RegisterResponse? _defaultInstance;
+
+  /// The token to use to authenticate the user in subsequent requests.
+  @$pb.TagNumber(1)
+  $core.String get token => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set token($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasToken() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearToken() => $_clearField(1);
+
+  /// The refresh token to use to refresh the token.
+  @$pb.TagNumber(2)
+  $core.String get refreshToken => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set refreshToken($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasRefreshToken() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearRefreshToken() => $_clearField(2);
+}
+
 class RequestPasswordResetRequest extends $pb.GeneratedMessage {
   factory RequestPasswordResetRequest({
     $core.String? uRef,
@@ -448,6 +591,12 @@ class AuthServiceApi {
           $pb.ClientContext? ctx, LoginRequest request) =>
       _client.invoke<LoginResponse>(
           ctx, 'AuthService', 'Login', request, LoginResponse());
+
+  /// Create a user without a password.
+  $async.Future<RegisterResponse> register(
+          $pb.ClientContext? ctx, RegisterRequest request) =>
+      _client.invoke<RegisterResponse>(
+          ctx, 'AuthService', 'Register', request, RegisterResponse());
 
   /// Request the password reset of the user.
   $async.Future<RequestPasswordResetResponse> requestPasswordReset(

@@ -6,7 +6,7 @@ paths:
     post:
       tags:
         - business.v1.BusinessService
-      summary: CreateBusiness
+      summary: Create a new business.
       description: Create a new business.
       operationId: business.v1.BusinessService.CreateBusiness
       parameters:
@@ -42,7 +42,7 @@ paths:
     post:
       tags:
         - business.v1.BusinessService
-      summary: GetMyBusinesses
+      summary: Get all businesses of the current user.
       description: Get all businesses of the current user.
       operationId: business.v1.BusinessService.GetMyBusinesses
       parameters:
@@ -78,7 +78,7 @@ paths:
     post:
       tags:
         - business.v1.BusinessService
-      summary: GetBusinessDetails
+      summary: Get a business by id.
       description: Get a business by id.
       operationId: business.v1.BusinessService.GetBusinessDetails
       parameters:
@@ -114,7 +114,7 @@ paths:
     post:
       tags:
         - business.v1.BusinessService
-      summary: UpdateBusiness
+      summary: Update a business.
       description: Update a business.
       operationId: business.v1.BusinessService.UpdateBusiness
       parameters:
@@ -150,7 +150,7 @@ paths:
     post:
       tags:
         - business.v1.BusinessService
-      summary: RequestDeleteBusiness
+      summary: Request the deletion of the business. This request doesn't delete the business direcly instead it put the business in inactive state and remove all business members.
       description: Request the deletion of the business. This request doesn't delete the business direcly instead it put the business in inactive state and remove all business members.
       operationId: business.v1.BusinessService.RequestDeleteBusiness
       parameters:
@@ -186,7 +186,7 @@ paths:
     post:
       tags:
         - business.v1.BusinessService
-      summary: AddUserToBusiness
+      summary: Add user to business or invite user to business.
       description: Add user to business or invite user to business.
       operationId: business.v1.BusinessService.AddUserToBusiness
       parameters:
@@ -222,7 +222,7 @@ paths:
     post:
       tags:
         - business.v1.BusinessService
-      summary: RemoveUserFromBusiness
+      summary: 'Remove user from business.  If the user has been created by the business, the user will be deleted.  NOTE: The authenticated user need to have the permission to remove the  user.'
       description: |-
         Remove user from business.
          If the user has been created by the business, the user will be deleted.
@@ -262,7 +262,7 @@ paths:
     post:
       tags:
         - business.v1.BusinessService
-      summary: ChangeBusinessCurrency
+      summary: Changes the business currency
       description: Changes the business currency
       operationId: business.v1.BusinessService.ChangeBusinessCurrency
       parameters:
@@ -298,7 +298,7 @@ paths:
     post:
       tags:
         - business.v1.BusinessService
-      summary: GetBusinessMembers
+      summary: Get the users of the business.
       description: Get the users of the business.
       operationId: business.v1.BusinessService.GetBusinessMembers
       parameters:
@@ -536,7 +536,9 @@ components:
           type: string
           title: business_id
           minLength: 3
-          description: The reference id to the business identifier.
+          description: |
+            The reference id to the business identifier.
+            string.min_len = 3
       title: CreateBusinessResponse
       required:
         - businessId
@@ -548,7 +550,9 @@ components:
           type: string
           title: business_id
           minLength: 3
-          description: The reference id to the business identifier.
+          description: |
+            The reference id to the business identifier.
+            string.min_len = 3
       title: GetBusinessDetailsRequest
       required:
         - businessId
@@ -569,7 +573,9 @@ components:
           type: string
           title: business_id
           minLength: 3
-          description: The reference id to the business identifier.
+          description: |
+            The reference id to the business identifier.
+            string.min_len = 3
       title: GetBusinessMembersRequest
       required:
         - businessId
@@ -606,11 +612,15 @@ components:
           type: string
           title: user_id
           minLength: 3
-          description: The unique identifier of the user.
+          description: |
+            The unique identifier of the user.
+            string.min_len = 3
         businessId:
           type: string
           title: business_id
           minLength: 3
+          description: |
+            string.min_len = 3
       title: RemoveUserFromBusinessRequest
       required:
         - userId
@@ -632,7 +642,9 @@ components:
           type: string
           title: business_id
           minLength: 3
-          description: The reference id to the business identifier.
+          description: |
+            The reference id to the business identifier.
+            string.min_len = 3
         password:
           type: string
           title: password
@@ -776,24 +788,36 @@ components:
         message:
           type: string
           description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
-        detail:
-          $ref: '#/components/schemas/google.protobuf.Any'
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/connect.error_details.Any'
+          description: A list of messages that carry the error details. There is no limit on the number of messages.
       title: Connect Error
       additionalProperties: true
       description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
-    google.protobuf.Any:
+    connect.error_details.Any:
       type: object
       properties:
         type:
           type: string
+          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
         value:
           type: string
           format: binary
+          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
         debug:
-          type: object
-          additionalProperties: true
+          oneOf:
+            - type: object
+              title: Any
+              additionalProperties: true
+              description: Detailed error information.
+          discriminator:
+            propertyName: type
+          title: Debug
+          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
       additionalProperties: true
-      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
 security: []
 tags:
   - name: business.v1.BusinessService
