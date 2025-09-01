@@ -5,22 +5,16 @@ import '../utils/app_layout.dart';
 /// The responsive layout.
 final class ResponsiveLayout extends StatelessWidget {
   /// The mobile layout.
-  final Widget Function(
-    BuildContext context,
-    BoxConstraints constraints,
-  ) mobile;
+  final Widget Function(BuildContext context, BoxConstraints constraints)
+  mobile;
 
   /// The tablet layout.
-  final Widget Function(
-    BuildContext context,
-    BoxConstraints constraints,
-  ) tablet;
+  final Widget Function(BuildContext context, BoxConstraints constraints)
+  tablet;
 
   /// The desktop layout.
-  final Widget Function(
-    BuildContext context,
-    BoxConstraints constraints,
-  ) desktop;
+  final Widget Function(BuildContext context, BoxConstraints constraints)
+  desktop;
 
   /// Constructs a [ResponsiveLayout].
   const ResponsiveLayout({

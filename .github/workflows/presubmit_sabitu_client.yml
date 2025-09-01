@@ -8,30 +8,50 @@ on:
         description: "The GitHub token for create new workflow runs"
 
 env:
-  FLUTTER_SDK_VERSION: 3.24.3
+  FLUTTER_SDK_VERSION: 3.32.5
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      src: ${{ steps.filter.outputs.src }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            src:
+              - 'flutter_app/**'
+              - '.github/workflows/presubmit_sabitu_client.yml'
+
   build-web:
+    needs: changes
+    if: ${{ needs.changes.outputs.src == 'true' }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
       # Install pre-requisites.
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2.12.0
+        id: flutter-action
         with:
           flutter-version: ${{ env.FLUTTER_SDK_VERSION }}
           cache: true
 
       # Build the customers web app.
-      - run: ./scripts/build_web_app.sh sabitou_clients
+      - run: ./scripts/build_web_app.sh flutter_app
 
   unit-tests:
+    needs: changes
+    if: ${{ needs.changes.outputs.src == 'true' }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
       # Install pre-requisites.
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2.12.0
+        id: flutter-action
         with:
           flutter-version: ${{ env.FLUTTER_SDK_VERSION }}
           cache: true
@@ -40,27 +60,28 @@ jobs:
       - run: find . -name \*lcov.info -type f -delete
 
       # Run unit tests on all packages that contain tests.
-      - run: ./scripts/run_dart_tests.sh sabitou_clients
+      - run: ./scripts/run_dart_tests.sh flutter_app
 
       # Upload Coverage to coveralls.io.
       - name: Upload Coverage to Coveralls
         uses: coverallsapp/github-action@v2
         with:
-          flag-name: sabitou_clients
-          base-path: sabitou_clients
-          path-to-lcov: sabitou_clients/coverage/lcov.info
+          flag-name: ${{ inputs.codecov_flag }}
+          base-path: flutter_app
+          path-to-lcov: flutter_app/coverage/lcov.info
           parallel: true
           debug: true
 
       # Store the failures images as artifacts.
       # This allows us to easily debug failures in pipelines.
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: goldens-failures
-          path: "sabitou_clients/**/failures/*.png"
+          path: "flutter_app/**/failures/*.png"
           if-no-files-found: ignore
 
   generate-goldens:
+    # Generate the goldens only if unit tests failed.
     needs: unit-tests
     if: ${{ always() && (needs.unit-tests.result=='failure') }}
     runs-on: ubuntu-latest
@@ -69,20 +90,21 @@ jobs:
       # Install pre-requisites.
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2.12.0
+        id: flutter-action
         with:
           flutter-version: ${{ env.FLUTTER_SDK_VERSION }}
           cache: true
 
       # Generate golden screenshots.
-      - run: ./scripts/generate_goldens.sh sabitou_clients
+      - run: ./scripts/generate_goldens.sh flutter_app
 
       # Store the golden images as artifacts.
       # This allows us to update the goldens with the ones
       # generated on the pipeline.
       - uses: actions/upload-artifact@v4
         with:
-          name: goldens-sabitou_clients
-          path: "sabitou_clients/**/goldens/*.png"
+          name: goldens-flutter_app
+          path: "flutter_app/**/goldens/*.png"
           if-no-files-found: ignore
 
   update-goldens:
@@ -98,6 +120,7 @@ jobs:
           token: ${{ secrets.SABITOU_CLIENT_TOKEN_WRITE_CONTENTS }}
 
       - uses: subosito/flutter-action@v2.12.0
+        id: flutter-action
         with:
           flutter-version: ${{ env.FLUTTER_SDK_VERSION }}
           cache: true
@@ -105,8 +128,8 @@ jobs:
       # Download golden screenshots.
       - uses: actions/download-artifact@v4
         with:
-          name: goldens-sabitou_clients
-          path: new-goldens-sabitou_clients
+          name: goldens-flutter_app
+          path: new-goldens-flutter_app
           merge-multiple: true
 
       # Update golden screenshots.
@@ -115,7 +138,7 @@ jobs:
         run: |
           set -x
           chmod +x ./scripts/update_goldens.sh
-          ./scripts/update_goldens.sh sabitou_clients new-goldens-sabitou_clients
+          ./scripts/update_goldens.sh flutter_app new-goldens-flutter_app
 
       - name: commit and push the change file
         uses: stefanzweifel/git-auto-commit-action@v5
@@ -123,7 +146,7 @@ jobs:
         with:
           commit_message: Update the goldens
           commit_user_name: GitHub Actions
-          commit_user_email: sabitu-client-update-golens-bot@users.noreply.github.com
+          commit_user_email: sabitou-update-golens-bot@users.noreply.github.com
           file_pattern: "."
 
       - name: "Run if changes have been detected"
@@ -134,29 +157,36 @@ jobs:
         if: steps.auto-commit-action.outputs.changes_detected == 'false'
         run: echo "No Changes!"
 
-  dart-format:
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      # Install pre-requisites.
-      - uses: actions/checkout@v4
-      - uses: subosito/flutter-action@v2.12.0
-        with:
-          flutter-version: ${{ env.FLUTTER_SDK_VERSION }}
-          cache: true
-
-      # Validate that our code has a consistent format.
-      - run: ./scripts/run_dart_format.sh sabitou_clients
   static-analysis:
+    needs: changes
+    if: ${{ needs.changes.outputs.src == 'true' }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
       # Install pre-requisites.
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2.12.0
+        id: flutter-action
         with:
           flutter-version: ${{ env.FLUTTER_SDK_VERSION }}
           cache: true
 
       # Run static analysis on all packages.
-      - run: ./scripts/run_static_analysis.sh sabitou_clients
+      - run: ./scripts/run_static_analysis.sh flutter_app
+
+  dart-format:
+    needs: changes
+    if: ${{ needs.changes.outputs.src == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      # Install pre-requisites.
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2.12.0
+        id: flutter-action
+        with:
+          flutter-version: ${{ env.FLUTTER_SDK_VERSION }}
+          cache: true
+
+      # Validate that our code has a consistent format.
+      - run: ./scripts/run_dart_format.sh flutter_app

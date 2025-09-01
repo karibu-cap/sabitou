@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../services/internationalization/internationalization.dart';
 
 /// Forgot password view model.
 import '../../../providers/auth/auth_provider.dart';
+import '../../../services/internationalization/internationalization.dart';
 
+/// Forgot password view model.
 class ForgotPasswordViewModel {
   final _appIntl = AppInternationalizationService.to;
 
@@ -75,7 +76,6 @@ class ForgotPasswordViewModel {
 
       return result;
     } catch (e) {
-
       return false;
     }
   }

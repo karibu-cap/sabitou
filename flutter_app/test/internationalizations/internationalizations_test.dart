@@ -23,8 +23,10 @@ void main() {
     test('Translate should return correct translation for existing key', () {
       expect(appInt.translate('cancel'), equals('Cancel'));
       expect(
-        AppInternationalizationService(const Locale('fr'), AppStorageService.to)
-            .translate('cancel'),
+        AppInternationalizationService(
+          const Locale('fr'),
+          AppStorageService.to,
+        ).translate('cancel'),
         equals('Annuler'),
       );
     });
@@ -32,10 +34,7 @@ void main() {
     test(
       'Translate should return key for _placeholder_ for non existing translation',
       () {
-        expect(
-          appInt.translate('non_existent_key'),
-          equals('_placeholder_'),
-        );
+        expect(appInt.translate('non_existent_key'), equals('_placeholder_'));
       },
     );
     test('Translate should handle parameter substitution', () {
@@ -44,8 +43,10 @@ void main() {
         'fr': 'Bonjour, @name!',
       };
       expect(
-        AppInternationalizationService.to
-            .translate('greeting', args: {'name': 'Alice'}),
+        AppInternationalizationService.to.translate(
+          'greeting',
+          args: {'name': 'Alice'},
+        ),
         equals('Hello, Alice!'),
       );
 

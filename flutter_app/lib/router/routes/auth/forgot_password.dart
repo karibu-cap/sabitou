@@ -8,11 +8,7 @@ const forgotPasswordRouteTitle = 'Forgot Password';
 const forgotPasswordPage = BeamPage(
   key: ValueKey('forgotPassword'),
   title: forgotPasswordRouteTitle,
-  child: Scaffold(
-    body: Center(
-      child: Text('Forgot Password Route'),
-    ),
-  ),
+  child: Scaffold(body: Center(child: Text('Forgot Password Route'))),
 );
 
 /// The name of the current route.

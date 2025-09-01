@@ -74,7 +74,7 @@ class ForgotPasswordView extends StatelessWidget {
                               children: [
                                 IconButton(
                                   onPressed: () => Navigator.pop(context),
-                                  icon: const Icon(Icons.arrow_back),
+                                  icon: const Icon(LucideIcons.arrowLeft400),
                                 ),
                               ],
                             ),
@@ -94,7 +94,7 @@ class ForgotPasswordView extends StatelessWidget {
                                 ),
                               ),
                               child: const Icon(
-                                Icons.mail_outline,
+                                LucideIcons.mail400,
                                 size: 40,
                                 color: Colors.white,
                               ),
@@ -104,7 +104,7 @@ class ForgotPasswordView extends StatelessWidget {
                             Builder(
                               builder: (context) {
                                 final theme = ShadTheme.of(context);
-                                
+
                                 return Text(
                                   appIntl.forgotPasswordTitle,
                                   style: theme.textTheme.h4,
@@ -115,7 +115,7 @@ class ForgotPasswordView extends StatelessWidget {
                             Builder(
                               builder: (context) {
                                 final theme = ShadTheme.of(context);
-                                
+
                                 return Text(
                                   appIntl.forgotPasswordSubtitle,
                                   style: theme.textTheme.p,
@@ -129,7 +129,7 @@ class ForgotPasswordView extends StatelessWidget {
                               controller: controller.emailController,
                               placeholder: Text(appIntl.forgotPasswordEmail),
                               keyboardType: TextInputType.emailAddress,
-                              trailing: const Icon(Icons.email_outlined),
+                              trailing: const Icon(LucideIcons.mail400),
                             ),
                             const SizedBox(height: 24),
                             // Error Message.
@@ -188,7 +188,7 @@ class _BuildErrorMessage extends StatelessWidget {
         child: Row(
           children: [
             Icon(
-              Icons.error_outline,
+              LucideIcons.circleAlert400,
               color: theme.colorScheme.destructive,
               size: 20,
             ),

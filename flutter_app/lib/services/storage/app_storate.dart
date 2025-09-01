@@ -9,7 +9,7 @@ enum AppStorageType {
   fake,
 
   /// The get storage service.
-  getStorage
+  getStorage,
 }
 
 /// The app storage service.
