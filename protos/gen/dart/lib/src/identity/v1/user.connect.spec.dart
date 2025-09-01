@@ -11,11 +11,20 @@ abstract final class UserService {
   static const name = 'identity.v1.UserService';
 
   /// Get the user information for the currently authenticated user.
+  /// @deprecated use GetCurrentUser instead.
   static const getMe = connect.Spec(
     '/$name/GetMe',
     connect.StreamType.unary,
     identityv1user.GetMeRequest.new,
     identityv1user.GetMeResponse.new,
+  );
+
+  /// Get the user information for the currently authenticated user.
+  static const getCurrentUser = connect.Spec(
+    '/$name/GetCurrentUser',
+    connect.StreamType.unary,
+    identityv1user.GetCurrentUserRequest.new,
+    identityv1user.GetCurrentUserResponse.new,
   );
 
   /// Get the public information for the given user id.

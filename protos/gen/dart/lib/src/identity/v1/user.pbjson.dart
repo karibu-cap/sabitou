@@ -174,16 +174,8 @@ const User$json = {
       '17': true
     },
     {
-      '1': 'account_type',
-      '3': 10,
-      '4': 1,
-      '5': 14,
-      '6': '.identity.v1.AccountType',
-      '10': 'accountType'
-    },
-    {
       '1': 'required_actions',
-      '3': 11,
+      '3': 10,
       '4': 3,
       '5': 14,
       '6': '.identity.v1.AuthActionType',
@@ -205,16 +197,59 @@ const User$json = {
 final $typed_data.Uint8List userDescriptor = $convert.base64Decode(
     'CgRVc2VyEhoKBnJlZl9pZBgBIAEoCUgAUgVyZWZJZIgBARIbCgl1c2VyX25hbWUYAiABKAlSCH'
     'VzZXJOYW1lEkwKEmNvbm5lY3RlZF9hY2NvdW50cxgDIAMoCzIdLmlkZW50aXR5LnYxLkNvbm5l'
-    'Y3RlZEFjY291bnRSEWNvbm5lY3RlZEFjY291bnRzEiUKBWVtYWlsGAQgASgJQgq6SAfYAQFyAm'
+    'Y3RlZEFjY291bnRSEWNvbm5lY3RlZEFjY291bnRzEiUKBWVtYWlsGAQgASgJQgq6SAfIAQByAm'
     'ABSAFSBWVtYWlsiAEBEiYKDHBob25lX251bWJlchgFIAEoCUgCUgtwaG9uZU51bWJlcogBARIi'
     'CgpmaXJzdF9uYW1lGAYgASgJSANSCWZpcnN0TmFtZYgBARIgCglsYXN0X25hbWUYByABKAlIBF'
     'IIbGFzdE5hbWWIAQESPQoMcHJvZmlsZV9saW5rGAggASgLMhUubGluay52MS5SZXNvdXJjZUxp'
     'bmtIBVILcHJvZmlsZUxpbmuIAQESSgoOYWNjb3VudF9zdGF0dXMYCSABKA4yHi5pZGVudGl0eS'
-    '52MS5BY2NvdW50U3RhdHVzVHlwZUgGUg1hY2NvdW50U3RhdHVziAEBEjsKDGFjY291bnRfdHlw'
-    'ZRgKIAEoDjIYLmlkZW50aXR5LnYxLkFjY291bnRUeXBlUgthY2NvdW50VHlwZRJGChByZXF1aX'
-    'JlZF9hY3Rpb25zGAsgAygOMhsuaWRlbnRpdHkudjEuQXV0aEFjdGlvblR5cGVSD3JlcXVpcmVk'
-    'QWN0aW9uc0IJCgdfcmVmX2lkQggKBl9lbWFpbEIPCg1fcGhvbmVfbnVtYmVyQg0KC19maXJzdF'
-    '9uYW1lQgwKCl9sYXN0X25hbWVCDwoNX3Byb2ZpbGVfbGlua0IRCg9fYWNjb3VudF9zdGF0dXM=');
+    '52MS5BY2NvdW50U3RhdHVzVHlwZUgGUg1hY2NvdW50U3RhdHVziAEBEkYKEHJlcXVpcmVkX2Fj'
+    'dGlvbnMYCiADKA4yGy5pZGVudGl0eS52MS5BdXRoQWN0aW9uVHlwZVIPcmVxdWlyZWRBY3Rpb2'
+    '5zQgkKB19yZWZfaWRCCAoGX2VtYWlsQg8KDV9waG9uZV9udW1iZXJCDQoLX2ZpcnN0X25hbWVC'
+    'DAoKX2xhc3RfbmFtZUIPCg1fcHJvZmlsZV9saW5rQhEKD19hY2NvdW50X3N0YXR1cw==');
+
+@$core.Deprecated('Use getCurrentUserRequestDescriptor instead')
+const GetCurrentUserRequest$json = {
+  '1': 'GetCurrentUserRequest',
+};
+
+/// Descriptor for `GetCurrentUserRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getCurrentUserRequestDescriptor =
+    $convert.base64Decode('ChVHZXRDdXJyZW50VXNlclJlcXVlc3Q=');
+
+@$core.Deprecated('Use getCurrentUserResponseDescriptor instead')
+const GetCurrentUserResponse$json = {
+  '1': 'GetCurrentUserResponse',
+  '2': [
+    {'1': 'me', '3': 1, '4': 1, '5': 11, '6': '.identity.v1.User', '10': 'me'},
+  ],
+};
+
+/// Descriptor for `GetCurrentUserResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getCurrentUserResponseDescriptor =
+    $convert.base64Decode(
+        'ChZHZXRDdXJyZW50VXNlclJlc3BvbnNlEiEKAm1lGAEgASgLMhEuaWRlbnRpdHkudjEuVXNlcl'
+        'ICbWU=');
+
+@$core.Deprecated('Use getMeRequestDescriptor instead')
+const GetMeRequest$json = {
+  '1': 'GetMeRequest',
+};
+
+/// Descriptor for `GetMeRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getMeRequestDescriptor =
+    $convert.base64Decode('CgxHZXRNZVJlcXVlc3Q=');
+
+@$core.Deprecated('Use getMeResponseDescriptor instead')
+const GetMeResponse$json = {
+  '1': 'GetMeResponse',
+  '2': [
+    {'1': 'me', '3': 1, '4': 1, '5': 11, '6': '.identity.v1.User', '10': 'me'},
+  ],
+};
+
+/// Descriptor for `GetMeResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getMeResponseDescriptor = $convert.base64Decode(
+    'Cg1HZXRNZVJlc3BvbnNlEiEKAm1lGAEgASgLMhEuaWRlbnRpdHkudjEuVXNlclICbWU=');
 
 @$core.Deprecated('Use getUserRequestDescriptor instead')
 const GetUserRequest$json = {
@@ -378,27 +413,6 @@ final $typed_data.Uint8List changePasswordResponseDescriptor =
     $convert.base64Decode(
         'ChZDaGFuZ2VQYXNzd29yZFJlc3BvbnNlEhgKB3N1Y2Nlc3MYASABKAhSB3N1Y2Nlc3M=');
 
-@$core.Deprecated('Use getMeRequestDescriptor instead')
-const GetMeRequest$json = {
-  '1': 'GetMeRequest',
-};
-
-/// Descriptor for `GetMeRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List getMeRequestDescriptor =
-    $convert.base64Decode('CgxHZXRNZVJlcXVlc3Q=');
-
-@$core.Deprecated('Use getMeResponseDescriptor instead')
-const GetMeResponse$json = {
-  '1': 'GetMeResponse',
-  '2': [
-    {'1': 'me', '3': 1, '4': 1, '5': 11, '6': '.identity.v1.User', '10': 'me'},
-  ],
-};
-
-/// Descriptor for `GetMeResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List getMeResponseDescriptor = $convert.base64Decode(
-    'Cg1HZXRNZVJlc3BvbnNlEiEKAm1lGAEgASgLMhEuaWRlbnRpdHkudjEuVXNlclICbWU=');
-
 const $core.Map<$core.String, $core.dynamic> UserServiceBase$json = {
   '1': 'UserService',
   '2': [
@@ -406,6 +420,12 @@ const $core.Map<$core.String, $core.dynamic> UserServiceBase$json = {
       '1': 'GetMe',
       '2': '.identity.v1.GetMeRequest',
       '3': '.identity.v1.GetMeResponse',
+      '4': {}
+    },
+    {
+      '1': 'GetCurrentUser',
+      '2': '.identity.v1.GetCurrentUserRequest',
+      '3': '.identity.v1.GetCurrentUserResponse',
       '4': {}
     },
     {
@@ -449,6 +469,8 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
   '.identity.v1.User': User$json,
   '.identity.v1.ConnectedAccount': ConnectedAccount$json,
   '.link.v1.ResourceLink': $0.ResourceLink$json,
+  '.identity.v1.GetCurrentUserRequest': GetCurrentUserRequest$json,
+  '.identity.v1.GetCurrentUserResponse': GetCurrentUserResponse$json,
   '.identity.v1.GetUserRequest': GetUserRequest$json,
   '.identity.v1.GetUserResponse': GetUserResponse$json,
   '.identity.v1.UpdateMeRequest': UpdateMeRequest$json,
@@ -464,12 +486,13 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
 /// Descriptor for `UserService`. Decode as a `google.protobuf.ServiceDescriptorProto`.
 final $typed_data.Uint8List userServiceDescriptor = $convert.base64Decode(
     'CgtVc2VyU2VydmljZRJACgVHZXRNZRIZLmlkZW50aXR5LnYxLkdldE1lUmVxdWVzdBoaLmlkZW'
-    '50aXR5LnYxLkdldE1lUmVzcG9uc2UiABJGCgdHZXRVc2VyEhsuaWRlbnRpdHkudjEuR2V0VXNl'
-    'clJlcXVlc3QaHC5pZGVudGl0eS52MS5HZXRVc2VyUmVzcG9uc2UiABJJCghVcGRhdGVNZRIcLm'
-    'lkZW50aXR5LnYxLlVwZGF0ZU1lUmVxdWVzdBodLmlkZW50aXR5LnYxLlVwZGF0ZU1lUmVzcG9u'
-    'c2UiABJkChFSZXF1ZXN0RGVsZXRlVXNlchIlLmlkZW50aXR5LnYxLlJlcXVlc3REZWxldGVVc2'
-    'VyUmVxdWVzdBomLmlkZW50aXR5LnYxLlJlcXVlc3REZWxldGVVc2VyUmVzcG9uc2UiABJPCgpE'
-    'ZWxldGVVc2VyEh4uaWRlbnRpdHkudjEuRGVsZXRlVXNlclJlcXVlc3QaHy5pZGVudGl0eS52MS'
-    '5EZWxldGVVc2VyUmVzcG9uc2UiABJbCg5DaGFuZ2VQYXNzd29yZBIiLmlkZW50aXR5LnYxLkNo'
-    'YW5nZVBhc3N3b3JkUmVxdWVzdBojLmlkZW50aXR5LnYxLkNoYW5nZVBhc3N3b3JkUmVzcG9uc2'
-    'UiAA==');
+    '50aXR5LnYxLkdldE1lUmVzcG9uc2UiABJbCg5HZXRDdXJyZW50VXNlchIiLmlkZW50aXR5LnYx'
+    'LkdldEN1cnJlbnRVc2VyUmVxdWVzdBojLmlkZW50aXR5LnYxLkdldEN1cnJlbnRVc2VyUmVzcG'
+    '9uc2UiABJGCgdHZXRVc2VyEhsuaWRlbnRpdHkudjEuR2V0VXNlclJlcXVlc3QaHC5pZGVudGl0'
+    'eS52MS5HZXRVc2VyUmVzcG9uc2UiABJJCghVcGRhdGVNZRIcLmlkZW50aXR5LnYxLlVwZGF0ZU'
+    '1lUmVxdWVzdBodLmlkZW50aXR5LnYxLlVwZGF0ZU1lUmVzcG9uc2UiABJkChFSZXF1ZXN0RGVs'
+    'ZXRlVXNlchIlLmlkZW50aXR5LnYxLlJlcXVlc3REZWxldGVVc2VyUmVxdWVzdBomLmlkZW50aX'
+    'R5LnYxLlJlcXVlc3REZWxldGVVc2VyUmVzcG9uc2UiABJPCgpEZWxldGVVc2VyEh4uaWRlbnRp'
+    'dHkudjEuRGVsZXRlVXNlclJlcXVlc3QaHy5pZGVudGl0eS52MS5EZWxldGVVc2VyUmVzcG9uc2'
+    'UiABJbCg5DaGFuZ2VQYXNzd29yZBIiLmlkZW50aXR5LnYxLkNoYW5nZVBhc3N3b3JkUmVxdWVz'
+    'dBojLmlkZW50aXR5LnYxLkNoYW5nZVBhc3N3b3JkUmVzcG9uc2UiAA==');

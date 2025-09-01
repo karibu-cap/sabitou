@@ -6,7 +6,7 @@ paths:
     post:
       tags:
         - business.v1.SupplierService
-      summary: CreateSupplier
+      summary: Creates a new supplier.
       description: Creates a new supplier.
       operationId: business.v1.SupplierService.CreateSupplier
       parameters:
@@ -42,7 +42,7 @@ paths:
     post:
       tags:
         - business.v1.SupplierService
-      summary: GetSupplier
+      summary: Gets a supplier by id.
       description: Gets a supplier by id.
       operationId: business.v1.SupplierService.GetSupplier
       parameters:
@@ -78,7 +78,7 @@ paths:
     post:
       tags:
         - business.v1.SupplierService
-      summary: GetBusinessSuppliers
+      summary: Gets all suppliers of a business.
       description: Gets all suppliers of a business.
       operationId: business.v1.SupplierService.GetBusinessSuppliers
       parameters:
@@ -114,7 +114,7 @@ paths:
     post:
       tags:
         - business.v1.SupplierService
-      summary: UpdateSupplier
+      summary: Updates a supplier.  Note:Only the fields that are set will be updated. array fiels like external_links will be replaced.
       description: |-
         Updates a supplier.
          Note:Only the fields that are set will be updated. array fiels like external_links will be replaced.
@@ -152,7 +152,7 @@ paths:
     post:
       tags:
         - business.v1.SupplierService
-      summary: DeleteSupplier
+      summary: Deletes a supplier.
       description: Deletes a supplier.
       operationId: business.v1.SupplierService.DeleteSupplier
       parameters:
@@ -214,7 +214,9 @@ components:
           type: string
           title: suplier_id
           minLength: 3
-          description: The reference id to the supplier identifier.
+          description: |
+            The reference id to the supplier identifier.
+            string.min_len = 3
       title: CreateSupplierResponse
       required:
         - suplierId
@@ -226,7 +228,9 @@ components:
           type: string
           title: supplier_id
           minLength: 3
-          description: The reference id to the supplier identifier.
+          description: |
+            The reference id to the supplier identifier.
+            string.min_len = 3
       title: DeleteSupplierRequest
       required:
         - supplierId
@@ -247,7 +251,9 @@ components:
           type: string
           title: supplier_id
           minLength: 3
-          description: The reference id to the supplier identifier.
+          description: |
+            The reference id to the supplier identifier.
+            string.min_len = 3
       title: GetBusinessSuppliersRequest
       required:
         - supplierId
@@ -272,7 +278,9 @@ components:
           type: string
           title: supplier_id
           minLength: 3
-          description: The reference id to the supplier identifier.
+          description: |
+            The reference id to the supplier identifier.
+            string.min_len = 3
       title: GetSupplierRequest
       required:
         - supplierId
@@ -333,7 +341,9 @@ components:
           type: string
           title: business_id
           minLength: 3
-          description: The id of the business of the supplier.
+          description: |
+            The id of the business of the supplier.
+            string.min_len = 3
       title: Supplier
       required:
         - businessId
@@ -441,24 +451,36 @@ components:
         message:
           type: string
           description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
-        detail:
-          $ref: '#/components/schemas/google.protobuf.Any'
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/connect.error_details.Any'
+          description: A list of messages that carry the error details. There is no limit on the number of messages.
       title: Connect Error
       additionalProperties: true
       description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
-    google.protobuf.Any:
+    connect.error_details.Any:
       type: object
       properties:
         type:
           type: string
+          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
         value:
           type: string
           format: binary
+          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
         debug:
-          type: object
-          additionalProperties: true
+          oneOf:
+            - type: object
+              title: Any
+              additionalProperties: true
+              description: Detailed error information.
+          discriminator:
+            propertyName: type
+          title: Debug
+          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
       additionalProperties: true
-      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
 security: []
 tags:
   - name: business.v1.SupplierService

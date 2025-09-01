@@ -6,7 +6,7 @@ paths:
     post:
       tags:
         - identity.v1.PermissionService
-      summary: CreatePermissionsGroup
+      summary: Creates a new permission group.
       description: Creates a new permission group.
       operationId: identity.v1.PermissionService.CreatePermissionsGroup
       parameters:
@@ -42,7 +42,7 @@ paths:
     post:
       tags:
         - identity.v1.PermissionService
-      summary: GetPermissionsGroup
+      summary: Gets a permission group by id.
       description: Gets a permission group by id.
       operationId: identity.v1.PermissionService.GetPermissionsGroup
       parameters:
@@ -78,7 +78,7 @@ paths:
     post:
       tags:
         - identity.v1.PermissionService
-      summary: UpdatePermissionsGroup
+      summary: Updates a permission group.
       description: Updates a permission group.
       operationId: identity.v1.PermissionService.UpdatePermissionsGroup
       parameters:
@@ -114,7 +114,7 @@ paths:
     post:
       tags:
         - identity.v1.PermissionService
-      summary: DeletePermissionsGroup
+      summary: Deletes a permission group.
       description: Deletes a permission group.
       operationId: identity.v1.PermissionService.DeletePermissionsGroup
       parameters:
@@ -150,7 +150,7 @@ paths:
     post:
       tags:
         - identity.v1.PermissionService
-      summary: UpdateMemberPermissions
+      summary: Update the member permissions on the provided business.
       description: Update the member permissions on the provided business.
       operationId: identity.v1.PermissionService.UpdateMemberPermissions
       parameters:
@@ -186,7 +186,7 @@ paths:
     post:
       tags:
         - identity.v1.PermissionService
-      summary: GetBusinessPermissionsGroups
+      summary: Gets the permission groups of the business.
       description: Gets the permission groups of the business.
       operationId: identity.v1.PermissionService.GetBusinessPermissionsGroups
       parameters:
@@ -222,7 +222,7 @@ paths:
     post:
       tags:
         - identity.v1.PermissionService
-      summary: CheckPermission
+      summary: Checks if the member has the provided permission for the provided resource.
       description: Checks if the member has the provided permission for the provided resource.
       operationId: identity.v1.PermissionService.CheckPermission
       parameters:
@@ -285,12 +285,16 @@ components:
           type: string
           title: user_id
           minLength: 3
-          description: The unique identifier of the member.
+          description: |
+            The unique identifier of the member.
+            string.min_len = 3
         businessId:
           type: string
           title: business_id
           minLength: 3
-          description: The unique identifier of the business on which we want to check the permission.
+          description: |
+            The unique identifier of the business on which we want to check the permission.
+            string.min_len = 3
         permission:
           title: permission
           description: The permission to check.
@@ -322,7 +326,9 @@ components:
           type: string
           title: business_id
           minLength: 3
-          description: The unique identifier of the business on which the permission group is created.
+          description: |
+            The unique identifier of the business on which the permission group is created.
+            string.min_len = 3
       title: CreatePermissionsGroupRequest
       required:
         - businessId
@@ -334,7 +340,9 @@ components:
           type: string
           title: permission_group_id
           minLength: 3
-          description: The unique identifier of the created permission group.
+          description: |
+            The unique identifier of the created permission group.
+            string.min_len = 3
       title: CreatePermissionsGroupResponse
       required:
         - permissionGroupId
@@ -346,12 +354,16 @@ components:
           type: string
           title: permission_group_id
           minLength: 3
-          description: The unique identifier of the permission group to delete.
+          description: |
+            The unique identifier of the permission group to delete.
+            string.min_len = 3
         businessId:
           type: string
           title: business_id
           minLength: 3
-          description: The unique identifier of the business.
+          description: |
+            The unique identifier of the business.
+            string.min_len = 3
       title: DeletePermissionsGroupRequest
       required:
         - permissionGroupId
@@ -373,7 +385,9 @@ components:
           type: string
           title: business_id
           minLength: 3
-          description: The unique identifier of the business to retrieve.
+          description: |
+            The unique identifier of the business to retrieve.
+            string.min_len = 3
       title: GetBusinessPermissionsGroupsRequest
       required:
         - businessId
@@ -396,7 +410,9 @@ components:
           type: string
           title: permission_group_id
           minLength: 3
-          description: The unique identifier of the permission group to retrieve.
+          description: |
+            The unique identifier of the permission group to retrieve.
+            string.min_len = 3
       title: GetPermissionsGroupRequest
       required:
         - permissionGroupId
@@ -466,12 +482,16 @@ components:
           type: string
           title: user_id
           minLength: 3
-          description: The unique identifier of the member.
+          description: |
+            The unique identifier of the member.
+            string.min_len = 3
         businessId:
           type: string
           title: business_id
           minLength: 3
-          description: The id of the business on which we want to update the permissions.
+          description: |
+            The id of the business on which we want to update the permissions.
+            string.min_len = 3
         removePermissions:
           type: array
           items:
@@ -517,12 +537,16 @@ components:
           type: string
           title: permissions_group_id
           minLength: 3
-          description: The permission group id;
+          description: |
+            The permission group id;
+            string.min_len = 3
         businessId:
           type: string
           title: business_id
           minLength: 3
-          description: The unique identifier of the business.
+          description: |
+            The unique identifier of the business.
+            string.min_len = 3
         name:
           type: string
           title: name
@@ -598,24 +622,36 @@ components:
         message:
           type: string
           description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
-        detail:
-          $ref: '#/components/schemas/google.protobuf.Any'
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/connect.error_details.Any'
+          description: A list of messages that carry the error details. There is no limit on the number of messages.
       title: Connect Error
       additionalProperties: true
       description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
-    google.protobuf.Any:
+    connect.error_details.Any:
       type: object
       properties:
         type:
           type: string
+          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
         value:
           type: string
           format: binary
+          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
         debug:
-          type: object
-          additionalProperties: true
+          oneOf:
+            - type: object
+              title: Any
+              additionalProperties: true
+              description: Detailed error information.
+          discriminator:
+            propertyName: type
+          title: Debug
+          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
       additionalProperties: true
-      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
 security: []
 tags:
   - name: identity.v1.PermissionService

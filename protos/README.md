@@ -75,7 +75,8 @@ Buf is highly extensible and customizable, allowing developers to create custom 
 - Linux
 
 ```bash
-  curl -sSL https://github.com/bufbuild/buf/releases/latest/download/buf-Linux-x86_64 -o ~/.local/bin/buf
+  mkdir -p ~/.local/bin
+  curl -L --progress-bar https://github.com/bufbuild/buf/releases/latest/download/buf-Linux-x86_64 -o ~/.local/bin/buf
   chmod +x ~/.local/bin/buf
 ```
 
@@ -91,13 +92,16 @@ Let's check the version of buf you'll be using is up-to-date.
 ```bash
 $ buf --version
 Output
-1.30.0
+1.57.0
 ```
 
 ## Generates schema model
-
+1. prerequise:
+- run `buf dep update` to get buf deps like proto validate.
+- install `yq` v4+ used to merge openapi generated model:
 ```bash
-cd protos
-buf generate src/sabitou
+curl -L --progress-bar https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -o ~/.local/bin/yq 
+chmod +x ~/.local/bin/yq
 ```
 
+2. generate models `./scripts/generate.sh`

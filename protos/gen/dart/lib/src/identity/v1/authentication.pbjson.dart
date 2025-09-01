@@ -45,6 +45,34 @@ final $typed_data.Uint8List loginResponseDescriptor = $convert.base64Decode(
     'Cg1Mb2dpblJlc3BvbnNlEhQKBXRva2VuGAEgASgJUgV0b2tlbhIjCg1yZWZyZXNoX3Rva2VuGA'
     'IgASgJUgxyZWZyZXNoVG9rZW4=');
 
+@$core.Deprecated('Use registerRequestDescriptor instead')
+const RegisterRequest$json = {
+  '1': 'RegisterRequest',
+  '2': [
+    {'1': 'user_name', '3': 1, '4': 1, '5': 9, '10': 'userName'},
+    {'1': 'email', '3': 2, '4': 1, '5': 9, '10': 'email'},
+  ],
+};
+
+/// Descriptor for `RegisterRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List registerRequestDescriptor = $convert.base64Decode(
+    'Cg9SZWdpc3RlclJlcXVlc3QSGwoJdXNlcl9uYW1lGAEgASgJUgh1c2VyTmFtZRIUCgVlbWFpbB'
+    'gCIAEoCVIFZW1haWw=');
+
+@$core.Deprecated('Use registerResponseDescriptor instead')
+const RegisterResponse$json = {
+  '1': 'RegisterResponse',
+  '2': [
+    {'1': 'token', '3': 1, '4': 1, '5': 9, '10': 'token'},
+    {'1': 'refresh_token', '3': 2, '4': 1, '5': 9, '10': 'refreshToken'},
+  ],
+};
+
+/// Descriptor for `RegisterResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List registerResponseDescriptor = $convert.base64Decode(
+    'ChBSZWdpc3RlclJlc3BvbnNlEhQKBXRva2VuGAEgASgJUgV0b2tlbhIjCg1yZWZyZXNoX3Rva2'
+    'VuGAIgASgJUgxyZWZyZXNoVG9rZW4=');
+
 @$core.Deprecated('Use requestPasswordResetRequestDescriptor instead')
 const RequestPasswordResetRequest$json = {
   '1': 'RequestPasswordResetRequest',
@@ -133,6 +161,12 @@ const $core.Map<$core.String, $core.dynamic> AuthServiceBase$json = {
       '4': {}
     },
     {
+      '1': 'Register',
+      '2': '.identity.v1.RegisterRequest',
+      '3': '.identity.v1.RegisterResponse',
+      '4': {}
+    },
+    {
       '1': 'RequestPasswordReset',
       '2': '.identity.v1.RequestPasswordResetRequest',
       '3': '.identity.v1.RequestPasswordResetResponse',
@@ -152,6 +186,8 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
     AuthServiceBase$messageJson = {
   '.identity.v1.LoginRequest': LoginRequest$json,
   '.identity.v1.LoginResponse': LoginResponse$json,
+  '.identity.v1.RegisterRequest': RegisterRequest$json,
+  '.identity.v1.RegisterResponse': RegisterResponse$json,
   '.identity.v1.RequestPasswordResetRequest': RequestPasswordResetRequest$json,
   '.identity.v1.RequestPasswordResetResponse':
       RequestPasswordResetResponse$json,
@@ -162,8 +198,9 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
 /// Descriptor for `AuthService`. Decode as a `google.protobuf.ServiceDescriptorProto`.
 final $typed_data.Uint8List authServiceDescriptor = $convert.base64Decode(
     'CgtBdXRoU2VydmljZRJACgVMb2dpbhIZLmlkZW50aXR5LnYxLkxvZ2luUmVxdWVzdBoaLmlkZW'
-    '50aXR5LnYxLkxvZ2luUmVzcG9uc2UiABJtChRSZXF1ZXN0UGFzc3dvcmRSZXNldBIoLmlkZW50'
-    'aXR5LnYxLlJlcXVlc3RQYXNzd29yZFJlc2V0UmVxdWVzdBopLmlkZW50aXR5LnYxLlJlcXVlc3'
-    'RQYXNzd29yZFJlc2V0UmVzcG9uc2UiABJYCg1SZXNldFBhc3N3b3JkEiEuaWRlbnRpdHkudjEu'
-    'UmVzZXRQYXNzd29yZFJlcXVlc3QaIi5pZGVudGl0eS52MS5SZXNldFBhc3N3b3JkUmVzcG9uc2'
-    'UiAA==');
+    '50aXR5LnYxLkxvZ2luUmVzcG9uc2UiABJJCghSZWdpc3RlchIcLmlkZW50aXR5LnYxLlJlZ2lz'
+    'dGVyUmVxdWVzdBodLmlkZW50aXR5LnYxLlJlZ2lzdGVyUmVzcG9uc2UiABJtChRSZXF1ZXN0UG'
+    'Fzc3dvcmRSZXNldBIoLmlkZW50aXR5LnYxLlJlcXVlc3RQYXNzd29yZFJlc2V0UmVxdWVzdBop'
+    'LmlkZW50aXR5LnYxLlJlcXVlc3RQYXNzd29yZFJlc2V0UmVzcG9uc2UiABJYCg1SZXNldFBhc3'
+    'N3b3JkEiEuaWRlbnRpdHkudjEuUmVzZXRQYXNzd29yZFJlcXVlc3QaIi5pZGVudGl0eS52MS5S'
+    'ZXNldFBhc3N3b3JkUmVzcG9uc2UiAA==');

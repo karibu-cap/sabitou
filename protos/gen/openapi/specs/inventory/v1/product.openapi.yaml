@@ -6,7 +6,7 @@ paths:
     post:
       tags:
         - inventory.v1.ProductService
-      summary: FindGlobalProducts
+      summary: Finds products by name.
       description: Finds products by name.
       operationId: inventory.v1.ProductService.FindGlobalProducts
       parameters:
@@ -42,7 +42,7 @@ paths:
     post:
       tags:
         - inventory.v1.ProductService
-      summary: FindCategory
+      summary: Finds categories by name.
       description: Finds categories by name.
       operationId: inventory.v1.ProductService.FindCategory
       parameters:
@@ -78,7 +78,7 @@ paths:
     post:
       tags:
         - inventory.v1.ProductService
-      summary: AddProduct
+      summary: Adds a product to a business.
       description: Adds a product to a business.
       operationId: inventory.v1.ProductService.AddProduct
       parameters:
@@ -114,7 +114,7 @@ paths:
     post:
       tags:
         - inventory.v1.ProductService
-      summary: GetProduct
+      summary: Gets a business product by id.
       description: Gets a business product by id.
       operationId: inventory.v1.ProductService.GetProduct
       parameters:
@@ -150,7 +150,7 @@ paths:
     post:
       tags:
         - inventory.v1.ProductService
-      summary: UpdateProduct
+      summary: Updates a business product.
       description: Updates a business product.
       operationId: inventory.v1.ProductService.UpdateProduct
       parameters:
@@ -186,7 +186,7 @@ paths:
     post:
       tags:
         - inventory.v1.ProductService
-      summary: DeleteProduct
+      summary: Deletes a business product.  Only business products that are not in any store and orders can be  deleted.
       description: |-
         Deletes a business product.
          Only business products that are not in any store and orders can be
@@ -299,7 +299,9 @@ components:
           type: string
           title: product_id
           minLength: 3
-          description: The unique identifier of the business product.
+          description: |
+            The unique identifier of the business product.
+            string.min_len = 3
       title: DeleteProductRequest
       required:
         - productId
@@ -364,7 +366,9 @@ components:
           type: string
           title: product_id
           minLength: 3
-          description: The unique identifier of the business product.
+          description: |
+            The unique identifier of the business product.
+            string.min_len = 3
       title: GetProductRequest
       required:
         - productId
@@ -496,24 +500,36 @@ components:
         message:
           type: string
           description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
-        detail:
-          $ref: '#/components/schemas/google.protobuf.Any'
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/connect.error_details.Any'
+          description: A list of messages that carry the error details. There is no limit on the number of messages.
       title: Connect Error
       additionalProperties: true
       description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
-    google.protobuf.Any:
+    connect.error_details.Any:
       type: object
       properties:
         type:
           type: string
+          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
         value:
           type: string
           format: binary
+          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
         debug:
-          type: object
-          additionalProperties: true
+          oneOf:
+            - type: object
+              title: Any
+              additionalProperties: true
+              description: Detailed error information.
+          discriminator:
+            propertyName: type
+          title: Debug
+          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
       additionalProperties: true
-      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
 security: []
 tags:
   - name: inventory.v1.ProductService

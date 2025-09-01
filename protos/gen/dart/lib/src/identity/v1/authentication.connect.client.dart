@@ -26,6 +26,24 @@ extension type AuthServiceClient (connect.Transport _transport) {
     );
   }
 
+  /// Create a user without a password.
+  Future<identityv1authentication.RegisterResponse> register(
+    identityv1authentication.RegisterRequest input, {
+    connect.Headers? headers,
+    connect.AbortSignal? signal,
+    Function(connect.Headers)? onHeader,
+    Function(connect.Headers)? onTrailer,
+  }) {
+    return connect.Client(_transport).unary(
+      specs.AuthService.register,
+      input,
+      signal: signal,
+      headers: headers,
+      onHeader: onHeader,
+      onTrailer: onTrailer,
+    );
+  }
+
   /// Request the password reset of the user.
   Future<identityv1authentication.RequestPasswordResetResponse> requestPasswordReset(
     identityv1authentication.RequestPasswordResetRequest input, {
