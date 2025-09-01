@@ -250,6 +250,20 @@ components:
             format: byte
           title: images_raw_images
           description: The media ids of the images of the product.
+        stockQuantity:
+          type: integer
+          title: stock_quantity
+          format: int32
+          description: The stock quantity of the product.
+        minStockThreshold:
+          type: integer
+          title: min_stock_threshold
+          format: int32
+          description: The minimum stock threshold of the product.
+        expirationDate:
+          type: string
+          title: expiration_date
+          description: The expiration date of the product.
       title: AddProductRequest
       additionalProperties: false
     inventory.v1.AddProductResponse:
@@ -290,6 +304,21 @@ components:
             type: string
           title: images_link_ids
           description: The media ids of the images of the product.
+        stockQuantity:
+          type: integer
+          title: stock_quantity
+          format: int32
+          description: The stock quantity of the product.
+        minStockThreshold:
+          type: integer
+          title: min_stock_threshold
+          format: int32
+          description: The minimum stock threshold of the product.
+        expirationDate:
+          type: string
+          title: expiration_date
+          description: The expiration date of the product.
+          nullable: true
       title: BusinessProduct
       additionalProperties: false
     inventory.v1.DeleteProductRequest:

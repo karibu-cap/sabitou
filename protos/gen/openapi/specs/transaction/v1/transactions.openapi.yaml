@@ -1,0 +1,405 @@
+openapi: 3.1.0
+info:
+  title: transaction.v1
+paths:
+  /transaction.v1.TransactionService/AddTransaction:
+    post:
+      tags:
+        - transaction.v1.TransactionService
+      summary: Adds a transaction.
+      description: Adds a transaction.
+      operationId: transaction.v1.TransactionService.AddTransaction
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/transaction.v1.AddTransactionRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/transaction.v1.AddTransactionResponse'
+  /transaction.v1.TransactionService/GetTransaction:
+    post:
+      tags:
+        - transaction.v1.TransactionService
+      summary: Gets a transaction by id.
+      description: Gets a transaction by id.
+      operationId: transaction.v1.TransactionService.GetTransaction
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/transaction.v1.GetTransactionRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/transaction.v1.GetTransactionResponse'
+  /transaction.v1.TransactionService/UpdateTransaction:
+    post:
+      tags:
+        - transaction.v1.TransactionService
+      summary: Updates a transaction.
+      description: Updates a transaction.
+      operationId: transaction.v1.TransactionService.UpdateTransaction
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/transaction.v1.UpdateTransactionRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/transaction.v1.UpdateTransactionResponse'
+  /transaction.v1.TransactionService/DeleteTransaction:
+    post:
+      tags:
+        - transaction.v1.TransactionService
+      summary: Deletes a transaction.
+      description: Deletes a transaction.
+      operationId: transaction.v1.TransactionService.DeleteTransaction
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/transaction.v1.DeleteTransactionRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/transaction.v1.DeleteTransactionResponse'
+components:
+  schemas:
+    transaction.v1.TransactionStatus:
+      type: string
+      title: TransactionStatus
+      enum:
+        - TRANSACTION_STATUS_UNSPECIFIED
+        - TRANSACTION_STATUS_PENDING
+        - TRANSACTION_STATUS_COMPLETED
+        - TRANSACTION_STATUS_FAILED
+        - TRANSACTION_STATUS_CANCELLED
+    transaction.v1.TransactionType:
+      type: string
+      title: TransactionType
+      enum:
+        - TRANSACTION_TYPE_UNSPECIFIED
+        - TRANSACTION_TYPE_SALE
+        - TRANSACTION_TYPE_PURCHASE
+        - TRANSACTION_TYPE_REFUND
+        - TRANSACTION_TYPE_ADJUSTMENT
+        - TRANSACTION_TYPE_TRANSFER
+        - TRANSACTION_TYPE_FEE
+    transaction.v1.AddTransactionRequest:
+      type: object
+      properties:
+        transaction:
+          title: transaction
+          description: The transaction to add.
+          $ref: '#/components/schemas/transaction.v1.Transaction'
+      title: AddTransactionRequest
+      additionalProperties: false
+    transaction.v1.AddTransactionResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the transaction was successfully added.
+      title: AddTransactionResponse
+      additionalProperties: false
+    transaction.v1.DeleteTransactionRequest:
+      type: object
+      properties:
+        transactionId:
+          type: string
+          title: transaction_id
+          description: The unique identifier of the transaction.
+      title: DeleteTransactionRequest
+      additionalProperties: false
+    transaction.v1.DeleteTransactionResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the transaction was successfully deleted.
+      title: DeleteTransactionResponse
+      additionalProperties: false
+    transaction.v1.GetTransactionRequest:
+      type: object
+      properties:
+        transactionId:
+          type: string
+          title: transaction_id
+          description: The unique identifier of the transaction.
+      title: GetTransactionRequest
+      additionalProperties: false
+    transaction.v1.GetTransactionResponse:
+      type: object
+      properties:
+        transaction:
+          title: transaction
+          description: The retrieved transaction.
+          $ref: '#/components/schemas/transaction.v1.Transaction'
+      title: GetTransactionResponse
+      additionalProperties: false
+    transaction.v1.Transaction:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+          description: The unique identifier of the transaction.
+          nullable: true
+        type:
+          title: type
+          description: The type of the transaction (sale, purchase, refund, etc.).
+          $ref: '#/components/schemas/transaction.v1.TransactionType'
+        status:
+          title: status
+          description: The status of the transaction (pending, completed, failed, cancelled).
+          $ref: '#/components/schemas/transaction.v1.TransactionStatus'
+        businessId:
+          type: string
+          title: business_id
+          minLength: 3
+          description: |
+            The unique identifier of the business associated with the transaction.
+            string.min_len = 3
+        storeId:
+          type: string
+          title: store_id
+          description: The unique identifier of the store associated with the transaction.
+          nullable: true
+        orderId:
+          type: string
+          title: order_id
+          description: The unique identifier of the order associated with the transaction.
+          nullable: true
+        fromId:
+          type: string
+          title: from_id
+          description: The unique identifier of the client or supplier associated with the transaction.
+          nullable: true
+        amountInCents:
+          type:
+            - integer
+            - string
+          title: amount_in_cents
+          format: int64
+          description: The amount of the transaction in cents.
+        currencyCode:
+          type: string
+          title: currency_code
+          description: The currency code of the transaction (ISO 4217).
+        createdAt:
+          type: string
+          title: created_at
+          description: The creation date of the transaction (ISO 8601).
+        updatedAt:
+          type: string
+          title: updated_at
+          description: The update date of the transaction (ISO 8601).
+          nullable: true
+        description:
+          type: string
+          title: description
+          description: 'The description or note of the transaction (ex. : "Refund for order cancellation").'
+          nullable: true
+        businessProductId:
+          type: string
+          title: business_product_id
+          description: The unique identifier of the business product associated with the transaction.
+          nullable: true
+        quantity:
+          type: integer
+          title: quantity
+          format: int32
+          description: The quantity associated with the transaction (optional, for stock adjustments or stock transfers).
+          nullable: true
+        initiatedBy:
+          type: string
+          title: initiated_by
+          description: The unique identifier of the user who initiated the transaction.
+          nullable: true
+        externalLinksIds:
+          type: array
+          items:
+            type: string
+          title: external_links_ids
+          description: 'The external links of the transaction (ex. : payment receipt, invoice).'
+      title: Transaction
+      required:
+        - businessId
+        - currencyCode
+      additionalProperties: false
+      description: "The Transaction represents an entry of actions impacting the stock or finances, \n such as sales, purchases, refunds, stock adjustments, or stock transfers. \n It ensures traceability of operations by capturing the user, date, product, \n associated order, amount or quantity, for audit and reports."
+    transaction.v1.UpdateTransactionRequest:
+      type: object
+      properties:
+        transaction:
+          title: transaction
+          description: The transaction to update.
+          $ref: '#/components/schemas/transaction.v1.Transaction'
+      title: UpdateTransactionRequest
+      additionalProperties: false
+    transaction.v1.UpdateTransactionResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the transaction was successfully updated.
+      title: UpdateTransactionResponse
+      additionalProperties: false
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+        - 1
+      description: Define the version of the Connect protocol
+      const: 1
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+            - not_found
+          enum:
+            - canceled
+            - unknown
+            - invalid_argument
+            - deadline_exceeded
+            - not_found
+            - already_exists
+            - permission_denied
+            - resource_exhausted
+            - failed_precondition
+            - aborted
+            - out_of_range
+            - unimplemented
+            - internal
+            - unavailable
+            - data_loss
+            - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/connect.error_details.Any'
+          description: A list of messages that carry the error details. There is no limit on the number of messages.
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+    connect.error_details.Any:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
+        value:
+          type: string
+          format: binary
+          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
+        debug:
+          oneOf:
+            - type: object
+              title: Any
+              additionalProperties: true
+              description: Detailed error information.
+          discriminator:
+            propertyName: type
+          title: Debug
+          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
+security: []
+tags:
+  - name: transaction.v1.TransactionService

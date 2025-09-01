@@ -41,6 +41,12 @@ message Order {
 
   // The status of the order.
   OrderStatus status = 6;
+
+  // The date and time the order was created.
+  string created_at = 7;
+
+  // The date and time the order was last updated.
+  optional string updated_at = 8;
 }
 
 message CreateOrderRequest {

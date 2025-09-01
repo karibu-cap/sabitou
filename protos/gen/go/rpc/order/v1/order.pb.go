@@ -154,7 +154,11 @@ type Order struct {
 	// The total price of the order in cents.
 	TotalPriceInCents int32 `protobuf:"varint,5,opt,name=total_price_in_cents,json=totalPriceInCents,proto3" json:"total_price_in_cents,omitempty"`
 	// The status of the order.
-	Status        OrderStatus `protobuf:"varint,6,opt,name=status,proto3,enum=order.v1.OrderStatus" json:"status,omitempty"`
+	Status OrderStatus `protobuf:"varint,6,opt,name=status,proto3,enum=order.v1.OrderStatus" json:"status,omitempty"`
+	// The date and time the order was created.
+	CreatedAt string `protobuf:"bytes,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	// The date and time the order was last updated.
+	UpdatedAt     *string `protobuf:"bytes,8,opt,name=updated_at,json=updatedAt,proto3,oneof" json:"updated_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -229,6 +233,20 @@ func (x *Order) GetStatus() OrderStatus {
 		return x.Status
 	}
 	return OrderStatus_ORDER_STATUS_UNSPECIFIED
+}
+
+func (x *Order) GetCreatedAt() string {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return ""
+}
+
+func (x *Order) GetUpdatedAt() string {
+	if x != nil && x.UpdatedAt != nil {
+		return *x.UpdatedAt
+	}
+	return ""
 }
 
 type CreateOrderRequest struct {
@@ -545,7 +563,7 @@ const file_order_v1_order_proto_rawDesc = "" +
 	"\tOrderItem\x12.\n" +
 	"\x13business_product_id\x18\x01 \x01(\tR\x11businessProductId\x12\x1a\n" +
 	"\bquantity\x18\x02 \x01(\x05R\bquantity\x12-\n" +
-	"\x13unit_price_in_cents\x18\x03 \x01(\x05R\x10unitPriceInCents\"\x96\x02\n" +
+	"\x13unit_price_in_cents\x18\x03 \x01(\x05R\x10unitPriceInCents\"\xe8\x02\n" +
 	"\x05Order\x12\x1a\n" +
 	"\x06ref_id\x18\x01 \x01(\tH\x00R\x05refId\x88\x01\x01\x12\x1c\n" +
 	"\afrom_id\x18\x02 \x01(\tH\x01R\x06fromId\x88\x01\x01\x12&\n" +
@@ -553,10 +571,15 @@ const file_order_v1_order_proto_rawDesc = "" +
 	"\vorder_items\x18\x04 \x03(\v2\x13.order.v1.OrderItemR\n" +
 	"orderItems\x12/\n" +
 	"\x14total_price_in_cents\x18\x05 \x01(\x05R\x11totalPriceInCents\x12-\n" +
-	"\x06status\x18\x06 \x01(\x0e2\x15.order.v1.OrderStatusR\x06statusB\t\n" +
+	"\x06status\x18\x06 \x01(\x0e2\x15.order.v1.OrderStatusR\x06status\x12\x1d\n" +
+	"\n" +
+	"created_at\x18\a \x01(\tR\tcreatedAt\x12\"\n" +
+	"\n" +
+	"updated_at\x18\b \x01(\tH\x02R\tupdatedAt\x88\x01\x01B\t\n" +
 	"\a_ref_idB\n" +
 	"\n" +
-	"\b_from_id\"\x98\x01\n" +
+	"\b_from_idB\r\n" +
+	"\v_updated_at\"\x98\x01\n" +
 	"\x12CreateOrderRequest\x12%\n" +
 	"\x05order\x18\x01 \x01(\v2\x0f.order.v1.OrderR\x05order\x12(\n" +
 	"\rsupplier_name\x18\x02 \x01(\tH\x00R\fsupplierName\x88\x01\x01\x12\x1f\n" +

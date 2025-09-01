@@ -112,6 +112,8 @@ class Order extends $pb.GeneratedMessage {
     $core.Iterable<OrderItem>? orderItems,
     $core.int? totalPriceInCents,
     OrderStatus? status,
+    $core.String? createdAt,
+    $core.String? updatedAt,
   }) {
     final result = create();
     if (refId != null) result.refId = refId;
@@ -120,6 +122,8 @@ class Order extends $pb.GeneratedMessage {
     if (orderItems != null) result.orderItems.addAll(orderItems);
     if (totalPriceInCents != null) result.totalPriceInCents = totalPriceInCents;
     if (status != null) result.status = status;
+    if (createdAt != null) result.createdAt = createdAt;
+    if (updatedAt != null) result.updatedAt = updatedAt;
     return result;
   }
 
@@ -147,6 +151,8 @@ class Order extends $pb.GeneratedMessage {
         defaultOrMaker: OrderStatus.ORDER_STATUS_UNSPECIFIED,
         valueOf: OrderStatus.valueOf,
         enumValues: OrderStatus.values)
+    ..aOS(7, _omitFieldNames ? '' : 'createdAt')
+    ..aOS(8, _omitFieldNames ? '' : 'updatedAt')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -221,6 +227,26 @@ class Order extends $pb.GeneratedMessage {
   $core.bool hasStatus() => $_has(5);
   @$pb.TagNumber(6)
   void clearStatus() => $_clearField(6);
+
+  /// The date and time the order was created.
+  @$pb.TagNumber(7)
+  $core.String get createdAt => $_getSZ(6);
+  @$pb.TagNumber(7)
+  set createdAt($core.String value) => $_setString(6, value);
+  @$pb.TagNumber(7)
+  $core.bool hasCreatedAt() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearCreatedAt() => $_clearField(7);
+
+  /// The date and time the order was last updated.
+  @$pb.TagNumber(8)
+  $core.String get updatedAt => $_getSZ(7);
+  @$pb.TagNumber(8)
+  set updatedAt($core.String value) => $_setString(7, value);
+  @$pb.TagNumber(8)
+  $core.bool hasUpdatedAt() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearUpdatedAt() => $_clearField(8);
 }
 
 class CreateOrderRequest extends $pb.GeneratedMessage {

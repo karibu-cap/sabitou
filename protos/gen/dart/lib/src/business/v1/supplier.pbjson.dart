@@ -60,12 +60,43 @@ const Supplier$json = {
       '5': 9,
       '10': 'externalLinksIds'
     },
-    {'1': 'business_id', '3': 6, '4': 1, '5': 9, '8': {}, '10': 'businessId'},
+    {
+      '1': 'contact_phone',
+      '3': 6,
+      '4': 1,
+      '5': 9,
+      '9': 3,
+      '10': 'contactPhone',
+      '17': true
+    },
+    {
+      '1': 'contact_email',
+      '3': 7,
+      '4': 1,
+      '5': 9,
+      '9': 4,
+      '10': 'contactEmail',
+      '17': true
+    },
+    {
+      '1': 'contact_address',
+      '3': 8,
+      '4': 1,
+      '5': 9,
+      '9': 5,
+      '10': 'contactAddress',
+      '17': true
+    },
+    {'1': 'is_active', '3': 9, '4': 1, '5': 8, '10': 'isActive'},
+    {'1': 'business_id', '3': 10, '4': 1, '5': 9, '8': {}, '10': 'businessId'},
   ],
   '8': [
     {'1': '_ref_id'},
     {'1': '_description'},
     {'1': '_logo_link_id'},
+    {'1': '_contact_phone'},
+    {'1': '_contact_email'},
+    {'1': '_contact_address'},
   ],
 };
 
@@ -74,8 +105,12 @@ final $typed_data.Uint8List supplierDescriptor = $convert.base64Decode(
     'CghTdXBwbGllchIaCgZyZWZfaWQYASABKAlIAFIFcmVmSWSIAQESEgoEbmFtZRgCIAEoCVIEbm'
     'FtZRIlCgtkZXNjcmlwdGlvbhgDIAEoCUgBUgtkZXNjcmlwdGlvbogBARIlCgxsb2dvX2xpbmtf'
     'aWQYBCABKAlIAlIKbG9nb0xpbmtJZIgBARIsChJleHRlcm5hbF9saW5rc19pZHMYBSADKAlSEG'
-    'V4dGVybmFsTGlua3NJZHMSKwoLYnVzaW5lc3NfaWQYBiABKAlCCrpIB8gBAXICEANSCmJ1c2lu'
-    'ZXNzSWRCCQoHX3JlZl9pZEIOCgxfZGVzY3JpcHRpb25CDwoNX2xvZ29fbGlua19pZA==');
+    'V4dGVybmFsTGlua3NJZHMSKAoNY29udGFjdF9waG9uZRgGIAEoCUgDUgxjb250YWN0UGhvbmWI'
+    'AQESKAoNY29udGFjdF9lbWFpbBgHIAEoCUgEUgxjb250YWN0RW1haWyIAQESLAoPY29udGFjdF'
+    '9hZGRyZXNzGAggASgJSAVSDmNvbnRhY3RBZGRyZXNziAEBEhsKCWlzX2FjdGl2ZRgJIAEoCFII'
+    'aXNBY3RpdmUSKwoLYnVzaW5lc3NfaWQYCiABKAlCCrpIB8gBAXICEANSCmJ1c2luZXNzSWRCCQ'
+    'oHX3JlZl9pZEIOCgxfZGVzY3JpcHRpb25CDwoNX2xvZ29fbGlua19pZEIQCg5fY29udGFjdF9w'
+    'aG9uZUIQCg5fY29udGFjdF9lbWFpbEISChBfY29udGFjdF9hZGRyZXNz');
 
 @$core.Deprecated('Use createSupplierRequestDescriptor instead')
 const CreateSupplierRequest$json = {

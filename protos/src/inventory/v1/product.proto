@@ -47,6 +47,15 @@ message BusinessProduct {
 
   // The media ids of the images of the product.
   repeated string images_link_ids = 5;
+
+  // The stock quantity of the product.
+  int32 stock_quantity = 6;
+
+  // The minimum stock threshold of the product.
+  int32 min_stock_threshold = 7;
+
+  // The expiration date of the product.
+  optional string expiration_date = 8;
 }
 
 message FindGlobalProductsRequest {
@@ -85,6 +94,15 @@ message AddProductRequest {
 
   // The media ids of the images of the product.
   repeated bytes images_raw_images = 4;
+
+  // The stock quantity of the product.
+  int32 stock_quantity = 5;
+
+  // The minimum stock threshold of the product.
+  int32 min_stock_threshold = 6;
+
+  // The expiration date of the product.
+  string expiration_date = 7;
 }
 
 message AddProductResponse {
