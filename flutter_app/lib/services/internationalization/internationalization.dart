@@ -20,6 +20,9 @@ extension TranslationExtension on String {
   }
 }
 
+/// The short version of [AppInternationalizationService].
+typedef Intls = AppInternationalizationService;
+
 /// AppInternalization defines all the 'local' strings displayed to.
 class AppInternationalizationService extends GetxService {
   final _key = PreferencesKey.language;
@@ -221,6 +224,45 @@ class AppInternationalizationService extends GetxService {
       'en': 'Please confirm your password',
       'fr': 'Veuillez confirmer votre mot de passe',
     },
+    'products': {'en': 'Products', 'fr': 'Produits'},
+    'inventory': {'en': 'Inventory', 'fr': 'Inventaire'},
+    'categories': {'en': 'Categories', 'fr': 'Catégories'},
+    'addProduct': {'en': 'Add Product', 'fr': 'Ajouter un produit'},
+    'sales': {'en': 'Sales', 'fr': 'Ventes'},
+    'reports': {'en': 'Reports', 'fr': 'Rapports'},
+    'suppliers': {'en': 'Suppliers', 'fr': 'Fournisseurs'},
+    'users': {'en': 'Users', 'fr': 'Utilisateurs'},
+    'settings': {'en': 'Settings', 'fr': 'Paramètres'},
+    'logout': {'en': 'Logout', 'fr': 'Déconnexion'},
+    'login': {'en': 'Login', 'fr': 'Connexion'},
+    'submit': {'en': 'Submit', 'fr': 'Soumettre'},
+    'edit': {'en': 'Edit', 'fr': 'Modifier'},
+    'delete': {'en': 'Delete', 'fr': 'Supprimer'},
+    'search': {'en': 'Search', 'fr': 'Rechercher'},
+    'name': {'en': 'Name', 'fr': 'Nom'},
+    'role': {'en': 'Role', 'fr': 'Rôle'},
+    'admin': {'en': 'Admin', 'fr': 'Administrateur'},
+    'pharmacist': {'en': 'Pharmacist', 'fr': 'Pharmacien'},
+    'assistant': {'en': 'Assistant', 'fr': 'Assistant'},
+    'welcome': {'en': 'Welcome', 'fr': 'Bienvenue'},
+    'add': {'en': 'Add', 'fr': 'Ajouter'},
+    'update': {'en': 'Update', 'fr': 'Mettre à jour'},
+    'close': {'en': 'Close', 'fr': 'Fermer'},
+    'description': {'en': 'Description', 'fr': 'Description'},
+    'quantity': {'en': 'Quantity', 'fr': 'Quantité'},
+    'price': {'en': 'Price', 'fr': 'Prix'},
+    'supplier': {'en': 'Supplier', 'fr': 'Fournisseur'},
+    'date': {'en': 'Date', 'fr': 'Date'},
+    'actions': {'en': 'Actions', 'fr': 'Actions'},
+    'noData': {'en': 'No data available', 'fr': 'Aucune donnée disponible'},
+    'requiredField': {
+      'en': 'This field is required',
+      'fr': 'Ce champ est requis',
+    },
+    'invalidEmail': {
+      'en': 'Invalid email address',
+      'fr': 'Adresse e-mail invalide',
+    },
     'passwordsDoNotMatch': {
       'en': 'Passwords do not match',
       'fr': 'Les mots de passe ne correspondent pas',
@@ -231,10 +273,7 @@ class AppInternationalizationService extends GetxService {
       'fr': "Rejoignez-nous aujourd'hui",
     },
     'userName': {'en': 'User name', 'fr': 'Nom d’utilisateur'},
-    'phoneNumber': {
-      'en': 'Phone number',
-      'fr': 'Numéro de téléphone',
-    },
+    'phoneNumber': {'en': 'Phone number', 'fr': 'Numéro de téléphone'},
     'registrationSubmit': {'en': 'Register', 'fr': 'S’inscrire'},
     'forgotPasswordTitle': {
       'en': 'Forgot Password',
@@ -262,6 +301,92 @@ class AppInternationalizationService extends GetxService {
       'fr': 'Vous souvenez-vous de votre mot de passe ?',
     },
     'forgotPasswordSignIn': {'en': 'Sign in', 'fr': 'Se connecter'},
+    'loading': {'en': 'Loading...', 'fr': 'Chargement...'},
+    'success': {'en': 'Success', 'fr': 'Succès'},
+    'error': {'en': 'Error', 'fr': 'Erreur'},
+    'confirmDelete': {
+      'en': 'Are you sure you want to delete?',
+      'fr': 'Êtes-vous sûr de vouloir supprimer ?',
+    },
+    'yes': {'en': 'Yes', 'fr': 'Oui'},
+    'no': {'en': 'No', 'fr': 'Non'},
+    'logoutMessage': {
+      'en': 'You have been logged out.',
+      'fr': 'Vous avez été déconnecté.',
+    },
+    'profile': {'en': 'Profile', 'fr': 'Profil'},
+    'language': {'en': 'Language', 'fr': 'Langue'},
+    'english': {'en': 'English', 'fr': 'Anglais'},
+    'french': {'en': 'French', 'fr': 'Français'},
+    'home': {'en': 'Home', 'fr': 'Accueil'},
+    'addCategory': {'en': 'Add Category', 'fr': 'Ajouter une catégorie'},
+    'addSupplier': {'en': 'Add Supplier', 'fr': 'Ajouter un fournisseur'},
+    'addUser': {'en': 'Add User', 'fr': 'Ajouter un utilisateur'},
+    'productName': {'en': 'Product Name', 'fr': 'Nom du produit'},
+    'category': {'en': 'Category', 'fr': 'Catégorie'},
+    'stock': {'en': 'Stock', 'fr': 'Stock'},
+    'lowStock': {'en': 'Low Stock', 'fr': 'Stock faible'},
+    'expired': {'en': 'Expired', 'fr': 'Expiré'},
+    'expirationDate': {'en': 'Expiration Date', 'fr': 'Date d\'expiration'},
+    'active': {'en': 'Active', 'fr': 'Actif'},
+    'inactive': {'en': 'Inactive', 'fr': 'Inactif'},
+    'lastUpdated': {'en': 'Last updated', 'fr': 'Dernière mise à jour'},
+    'lowStockAlert': {'en': 'Low Stock Alert', 'fr': 'Alerte Stock Faible'},
+    'expiryAlert': {'en': 'Expiry Alert', 'fr': 'Alerte Expiration'},
+    'recentActivity': {'en': 'Recent Activity', 'fr': 'Activité récente'},
+    'allProductsAreWellStocked': {
+      'en': 'All products are well stocked',
+      'fr': 'Tous les produits sont bien stockés',
+    },
+    'noProductsExpiringSoon': {
+      'en': 'No products expiring soon',
+      'fr': 'Aucun produit expirant bientôt',
+    },
+    'oneDay': {'en': '1 day', 'fr': '1 jour'},
+    'days': {'en': 'days', 'fr': 'jours'},
+    'expires': {'en': 'Expires', 'fr': 'Expire'},
+    'totalProducts': {'en': 'Total Products', 'fr': 'Total des produits'},
+    'lowStockItems': {
+      'en': 'Low Stock Items',
+      'fr': 'Articles en stock faible',
+    },
+    'expiringSoon': {'en': 'Expiring Soon', 'fr': 'Expirant bientôt'},
+    'todaySales': {'en': 'Today\'s Sales', 'fr': 'Ventes du jour'},
+    'todayTransactions': {
+      'en': 'Today\'s Transactions',
+      'fr': 'Transactions du jour',
+    },
+    'totalSuppliers': {'en': 'Total Suppliers', 'fr': 'Total des fournisseurs'},
+    'activeSuppliers': {'en': 'Active Suppliers', 'fr': 'Fournisseurs actifs'},
+    'requiresAttention': {
+      'en': 'Requires Attention',
+      'fr': 'Besoin d\'attention',
+    },
+    'allGood': {'en': 'All Good', 'fr': 'Tout est bien'},
+    'noRecentActivity': {
+      'en': 'No recent activity',
+      'fr': 'Aucune activité récente',
+    },
+    'ago': {'en': '@when @next ago', 'fr': 'il y a @when @next'},
+    'hours': {'en': 'hours', 'fr': 'heures'},
+    'minutes': {'en': 'minutes', 'fr': 'minutes'},
+    'now': {'en': 'right now', 'fr': 'à l\'instant'},
+    'purchase': {'en': 'Purchase', 'fr': 'Achat'},
+    'sale': {'en': 'Sale', 'fr': 'Vente'},
+    'adjustment': {'en': 'Adjustment', 'fr': 'Ajustement'},
+    'refund': {'en': 'Refund', 'fr': 'Remboursement'},
+    'transfer': {'en': 'Transfer', 'fr': 'Transfert'},
+    'transaction': {'en': 'Transaction', 'fr': 'Transaction'},
+    'months': {'en': 'months', 'fr': 'mois'},
+    'inStock': {'en': '@quantity In Stock', 'fr': '@quantity En Stock'},
+    'next2months': {'en': 'Next 2 months', 'fr': 'Prochaines 2 mois'},
+    'fromYesterday': {'en': 'from yesterday', 'fr': 'de hier'},
+    'high': {'en': 'High', 'fr': 'Haute'},
+    'medium': {'en': 'Medium', 'fr': 'Moyenne'},
+    'low': {'en': 'Low', 'fr': 'Basse'},
+    'markAsRead': {'en': 'Mark as read', 'fr': 'Marquer comme lu'},
+    'noNotifications': {'en': 'No notifications', 'fr': 'Aucune notification'},
+    'notifications': {'en': 'Notifications', 'fr': 'Notification'},
   };
 
   /// Direct access to the internationalization service.
@@ -279,6 +404,321 @@ class AppInternationalizationService extends GetxService {
     const Locale('en'),
     const Locale('fr'),
   ];
+
+  /// Returns the localized value of text 'notifications'.
+  String get notifications => _stringOfLocalizedValue('notifications');
+
+  /// Returns the localized value of text 'noNotifications'.
+  String get noNotifications => _stringOfLocalizedValue('noNotifications');
+
+  /// Returns the localized value of text 'markAsRead'.
+  String get markAsRead => _stringOfLocalizedValue('markAsRead');
+
+  /// Returns the localized value of text 'markAllRead'.
+  String get markAllRead => _stringOfLocalizedValue('markAllRead');
+
+  /// Returns the localized value of text 'high'.
+  String get high => _stringOfLocalizedValue('high');
+
+  /// Returns the localized value of text 'medium'.
+  String get medium => _stringOfLocalizedValue('medium');
+
+  /// Returns the localized value of text 'low'.
+  String get low => _stringOfLocalizedValue('low');
+
+  /// Returns the localized value of text 'fromYesterday'.
+  String get fromYesterday => _stringOfLocalizedValue('fromYesterday');
+
+  /// Returns the localized value of text 'next2months'.
+  String get next2months => _stringOfLocalizedValue('next2months');
+
+  /// Returns the localized value of text 'inStock'.
+  String get inStock => _stringOfLocalizedValue('inStock');
+
+  /// Returns the localized value of text 'months'.
+  String get months => _stringOfLocalizedValue('months');
+
+  /// Returns the localized value of text 'purchase'.
+  String get purchase => _stringOfLocalizedValue('purchase');
+
+  /// Returns the localized value of text 'sale'.
+  String get sale => _stringOfLocalizedValue('sale');
+
+  /// Returns the localized value of text 'adjustment'.
+  String get adjustment => _stringOfLocalizedValue('adjustment');
+
+  /// Returns the localized value of text 'refund'.
+  String get refund => _stringOfLocalizedValue('refund');
+
+  /// Returns the localized value of text 'transaction'.
+  String get transaction => _stringOfLocalizedValue('transaction');
+
+  /// Returns the localized value of text 'transfer'.
+  String get transfer => _stringOfLocalizedValue('transfer');
+
+  /// Returns the localized value of text 'now'.
+  String get now => _stringOfLocalizedValue('now');
+
+  /// Returns the localized value of text 'hours'.
+  String get hours => _stringOfLocalizedValue('hours');
+
+  /// Returns the localized value of text 'minutes'.
+  String get minutes => _stringOfLocalizedValue('minutes');
+
+  /// Returns the localized value of text 'ago'.
+  String get ago => _stringOfLocalizedValue('ago');
+
+  /// Returns the localized value of text 'noRecentActivity'.
+  String get noRecentActivity => _stringOfLocalizedValue('noRecentActivity');
+
+  /// Returns the localized value of text 'activeSuppliers'.
+  String get activeSuppliers => _stringOfLocalizedValue('activeSuppliers');
+
+  /// Returns the localized value of text 'requiresAttention'.
+  String get requiresAttention => _stringOfLocalizedValue('requiresAttention');
+
+  /// Returns the localized value of text 'allGood'.
+  String get allGood => _stringOfLocalizedValue('allGood');
+
+  /// Returns the localized value of text 'totalProducts'.
+  String get totalProducts => _stringOfLocalizedValue('totalProducts');
+
+  /// Returns the localized value of text 'lowStockItems'.
+  String get lowStockItems => _stringOfLocalizedValue('lowStockItems');
+
+  /// Returns the localized value of text 'expiringSoon'.
+  String get expiringSoon => _stringOfLocalizedValue('expiringSoon');
+
+  /// Returns the localized value of text 'todaySales'.
+  String get todaySales => _stringOfLocalizedValue('todaySales');
+
+  /// Returns the localized value of text 'todayTransactions'.
+  String get todayTransactions => _stringOfLocalizedValue('todayTransactions');
+
+  /// Returns the localized value of text 'totalSuppliers'.
+  String get totalSuppliers => _stringOfLocalizedValue('totalSuppliers');
+
+  /// Returns the localized value of text 'expires'.
+  String get expires => _stringOfLocalizedValue('expires');
+
+  /// Returns the localized value of text 'oneDay'.
+  String get oneDay => _stringOfLocalizedValue('oneDay');
+
+  /// Returns the localized value of text 'days'.
+  String get days => _stringOfLocalizedValue('days');
+
+  /// Returns the localized value of text 'noProductsExpiringSoon'.
+  String get noProductsExpiringSoon =>
+      _stringOfLocalizedValue('noProductsExpiringSoon');
+
+  /// Returns the localized value of text 'allProductsAreWellStocked'.
+  String get allProductsAreWellStocked =>
+      _stringOfLocalizedValue('allProductsAreWellStocked');
+
+  /// Returns the localized value of text 'lastUpdated'.
+  String get lastUpdated => _stringOfLocalizedValue('lastUpdated');
+
+  /// Returns the localized value of text 'lowStockAlert'.
+  String get lowStockAlert => _stringOfLocalizedValue('lowStockAlert');
+
+  /// Returns the localized value of text 'expiryAlert'.
+  String get expiryAlert => _stringOfLocalizedValue('expiryAlert');
+
+  /// Returns the localized value of text 'recentActivity'.
+  String get recentActivity => _stringOfLocalizedValue('recentActivity');
+
+  /// Returns the localized value of text 'dashboard'.
+  String get active => _stringOfLocalizedValue('active');
+
+  /// Returns the localized value of text 'dashboard'.
+  String get inactive => _stringOfLocalizedValue('inactive');
+
+  /// Returns the localized value of text 'dashboard'.
+  String get dashboard => _stringOfLocalizedValue('dashboard');
+
+  /// Returns the localized value of text 'products'.
+  String get products => _stringOfLocalizedValue('products');
+
+  /// Returns the localized value of text 'inventory'.
+  String get inventory => _stringOfLocalizedValue('inventory');
+
+  /// Returns the localized value of text 'categories'.
+  String get categories => _stringOfLocalizedValue('categories');
+
+  /// Returns the localized value of text 'addProduct'.
+  String get addProduct => _stringOfLocalizedValue('addProduct');
+
+  /// Returns the localized value of text 'sales'.
+  String get sales => _stringOfLocalizedValue('sales');
+
+  /// Returns the localized value of text 'reports'.
+  String get reports => _stringOfLocalizedValue('reports');
+
+  /// Returns the localized value of text 'suppliers'.
+  String get suppliers => _stringOfLocalizedValue('suppliers');
+
+  /// Returns the localized value of text 'users'.
+  String get users => _stringOfLocalizedValue('users');
+
+  /// Returns the localized value of text 'settings'.
+  String get settings => _stringOfLocalizedValue('settings');
+
+  /// Returns the localized value of text 'logout'.
+  String get logout => _stringOfLocalizedValue('logout');
+
+  /// Returns the localized value of text 'login'.
+  String get login => _stringOfLocalizedValue('login');
+
+  /// Returns the localized value of text 'email'.
+  String get email => _stringOfLocalizedValue('email');
+
+  /// Returns the localized value of text 'password'.
+  String get password => _stringOfLocalizedValue('password');
+
+  /// Returns the localized value of text 'confirmPassword'.
+  String get confirmPassword => _stringOfLocalizedValue('confirmPassword');
+
+  /// Returns the localized value of text 'forgotPassword'.
+  String get forgotPassword => _stringOfLocalizedValue('forgotPassword');
+
+  /// Returns the localized value of text 'submit'.
+  String get submit => _stringOfLocalizedValue('submit');
+
+  /// Returns the localized value of text 'cancel'.
+  String get cancel => _stringOfLocalizedValue('cancel');
+
+  /// Returns the localized value of text 'save'.
+  String get save => _stringOfLocalizedValue('save');
+
+  /// Returns the localized value of text 'edit'.
+  String get edit => _stringOfLocalizedValue('edit');
+
+  /// Returns the localized value of text 'delete'.
+  String get delete => _stringOfLocalizedValue('delete');
+
+  /// Returns the localized value of text 'search'.
+  String get search => _stringOfLocalizedValue('search');
+
+  /// Returns the localized value of text 'name'.
+  String get name => _stringOfLocalizedValue('name');
+
+  /// Returns the localized value of text 'role'.
+  String get role => _stringOfLocalizedValue('role');
+
+  /// Returns the localized value of text 'admin'.
+  String get admin => _stringOfLocalizedValue('admin');
+
+  /// Returns the localized value of text 'pharmacist'.
+  String get pharmacist => _stringOfLocalizedValue('pharmacist');
+
+  /// Returns the localized value of text 'assistant'.
+  String get assistant => _stringOfLocalizedValue('assistant');
+
+  /// Returns the localized value of text 'welcome'.
+  String get welcome => _stringOfLocalizedValue('welcome');
+
+  /// Returns the localized value of text 'add'.
+  String get add => _stringOfLocalizedValue('add');
+
+  /// Returns the localized value of text 'update'.
+  String get update => _stringOfLocalizedValue('update');
+
+  /// Returns the localized value of text 'close'.
+  String get close => _stringOfLocalizedValue('close');
+
+  /// Returns the localized value of text 'description'.
+  String get description => _stringOfLocalizedValue('description');
+
+  /// Returns the localized value of text 'quantity'.
+  String get quantity => _stringOfLocalizedValue('quantity');
+
+  /// Returns the localized value of text 'price'.
+  String get price => _stringOfLocalizedValue('price');
+
+  /// Returns the localized value of text 'supplier'.
+  String get supplier => _stringOfLocalizedValue('supplier');
+
+  /// Returns the localized value of text 'date'.
+  String get date => _stringOfLocalizedValue('date');
+
+  /// Returns the localized value of text 'actions'.
+  String get actions => _stringOfLocalizedValue('actions');
+
+  /// Returns the localized value of text 'noData'.
+  String get noData => _stringOfLocalizedValue('noData');
+
+  /// Returns the localized value of text 'requiredField'.
+  String get requiredField => _stringOfLocalizedValue('requiredField');
+
+  /// Returns the localized value of text 'invalidEmail'.
+  String get invalidEmail => _stringOfLocalizedValue('invalidEmail');
+
+  /// Returns the localized value of text 'passwordsDoNotMatch'.
+  String get passwordsDoNotMatch =>
+      _stringOfLocalizedValue('passwordsDoNotMatch');
+
+  /// Returns the localized value of text 'loading'.
+  String get loading => _stringOfLocalizedValue('loading');
+
+  /// Returns the localized value of text 'success'.
+  String get success => _stringOfLocalizedValue('success');
+
+  /// Returns the localized value of text 'error'.
+  String get error => _stringOfLocalizedValue('error');
+
+  /// Returns the localized value of text 'confirmDelete'.
+  String get confirmDelete => _stringOfLocalizedValue('confirmDelete');
+
+  /// Returns the localized value of text 'yes'.
+  String get yes => _stringOfLocalizedValue('yes');
+
+  /// Returns the localized value of text 'no'.
+  String get no => _stringOfLocalizedValue('no');
+
+  /// Returns the localized value of text 'logoutMessage'.
+  String get logoutMessage => _stringOfLocalizedValue('logoutMessage');
+
+  /// Returns the localized value of text 'profile'.
+  String get profile => _stringOfLocalizedValue('profile');
+
+  /// Returns the localized value of text 'language'.
+  String get language => _stringOfLocalizedValue('language');
+
+  /// Returns the localized value of text 'english'.
+  String get english => _stringOfLocalizedValue('english');
+
+  /// Returns the localized value of text 'french'.
+  String get french => _stringOfLocalizedValue('french');
+
+  /// Returns the localized value of text 'home'.
+  String get home => _stringOfLocalizedValue('home');
+
+  /// Returns the localized value of text 'addCategory'.
+  String get addCategory => _stringOfLocalizedValue('addCategory');
+
+  /// Returns the localized value of text 'addSupplier'.
+  String get addSupplier => _stringOfLocalizedValue('addSupplier');
+
+  /// Returns the localized value of text 'addUser'.
+  String get addUser => _stringOfLocalizedValue('addUser');
+
+  /// Returns the localized value of text 'productName'.
+  String get productName => _stringOfLocalizedValue('productName');
+
+  /// Returns the localized value of text 'category'.
+  String get category => _stringOfLocalizedValue('category');
+
+  /// Returns the localized value of text 'stock'.
+  String get stock => _stringOfLocalizedValue('stock');
+
+  /// Returns the localized value of text 'lowStock'.
+  String get lowStock => _stringOfLocalizedValue('lowStock');
+
+  /// Returns the localized value of text 'expired'.
+  String get expired => _stringOfLocalizedValue('expired');
+
+  /// Returns the localized value of text 'expirationDate'.
+  String get expirationDate => _stringOfLocalizedValue('expirationDate');
 
   /// Returns the localized value of minimum3Characters.
   String get minimum3Characters {
@@ -303,11 +743,6 @@ class AppInternationalizationService extends GetxService {
   /// Returns the localized value of inputRequired.
   String get inputRequired {
     return _stringOfLocalizedValue('inputRequired');
-  }
-
-  /// Returns the localized value of save.
-  String get save {
-    return _stringOfLocalizedValue('save');
   }
 
   /// Returns the localized value of businessDescription.
@@ -335,11 +770,6 @@ class AppInternationalizationService extends GetxService {
     return _stringOfLocalizedValue('storeAddress');
   }
 
-  /// Returns the localized value of Success.
-  String get success {
-    return _stringOfLocalizedValue('Success');
-  }
-
   /// Returns the localized value of enterYourFirstName.
   String get enterYourFirstName {
     return _stringOfLocalizedValue('enterYourFirstName');
@@ -355,11 +785,6 @@ class AppInternationalizationService extends GetxService {
     return _stringOfLocalizedValue('enterValidEmail');
   }
 
-  /// Returns the localized value of confirmPassword.
-  String get confirmPassword {
-    return _stringOfLocalizedValue('confirmPassword');
-  }
-
   /// Returns the localized value of passwordDoesNotMatch.
   String get passwordDoesNotMatch {
     return _stringOfLocalizedValue('passwordDoesNotMatch');
@@ -368,16 +793,6 @@ class AppInternationalizationService extends GetxService {
   /// Returns the localized value of passwordMustBeAtLeast6Characters.
   String get passwordMustBeAtLeast6Characters {
     return _stringOfLocalizedValue('passwordMustBeAtLeast6Characters');
-  }
-
-  /// Returns the localized value of email.
-  String get email {
-    return _stringOfLocalizedValue('email');
-  }
-
-  /// Returns the localized value of password.
-  String get password {
-    return _stringOfLocalizedValue('password');
   }
 
   /// Returns the localized value of firstName.
@@ -415,11 +830,6 @@ class AppInternationalizationService extends GetxService {
     return _stringOfLocalizedValue('dontHaveAnAccount');
   }
 
-  /// Returns the localized value of forgotPassword.
-  String get forgotPassword {
-    return _stringOfLocalizedValue('forgotPassword');
-  }
-
   /// Returns the localized value of signInToYourAccount.
   String get signInToYourAccount {
     return _stringOfLocalizedValue('signInToYourAccount');
@@ -455,11 +865,6 @@ class AppInternationalizationService extends GetxService {
     return _stringOfLocalizedValue('signOut');
   }
 
-  /// Returns the localized value of dashboard.
-  String get dashboard {
-    return _stringOfLocalizedValue('dashboard');
-  }
-
   /// Returns the localized value of [stores].
   String get stores {
     return _stringOfLocalizedValue('stores');
@@ -468,11 +873,6 @@ class AppInternationalizationService extends GetxService {
   /// Returns the localized value of sabitu.
   String get sabitu {
     return _stringOfLocalizedValue('sabitu');
-  }
-
-  /// Returns the localized value of cancel.
-  String get cancel {
-    return _stringOfLocalizedValue('cancel');
   }
 
   /// Returns the localized value of account.
@@ -546,8 +946,7 @@ class AppInternationalizationService extends GetxService {
   }
 
   /// Returns the localized value of userNameRequired.
-  String get userNameRequired =>
-      _stringOfLocalizedValue('userNameRequired');
+  String get userNameRequired => _stringOfLocalizedValue('userNameRequired');
 
   /// Returns the localized value of emailRequired.
   String get emailRequired => _stringOfLocalizedValue('emailRequired');
@@ -575,10 +974,6 @@ class AppInternationalizationService extends GetxService {
   String get confirmPasswordRequired =>
       _stringOfLocalizedValue('confirmPasswordRequired');
 
-  /// Returns the localized value of passwordsDoNotMatch.
-  String get passwordsDoNotMatch =>
-      _stringOfLocalizedValue('passwordsDoNotMatch');
-
   /// Returns the localized value of registrationTitle.
   String get registrationTitle {
     return _stringOfLocalizedValue('registrationTitle');
@@ -590,12 +985,10 @@ class AppInternationalizationService extends GetxService {
   }
 
   /// Returns the localized value of userName.
-  String get userName =>
-      _stringOfLocalizedValue('userName');
+  String get userName => _stringOfLocalizedValue('userName');
 
   /// Returns the localized value of phoneNumber.
-  String get phoneNumber =>
-      _stringOfLocalizedValue('phoneNumber');
+  String get phoneNumber => _stringOfLocalizedValue('phoneNumber');
 
   /// Returns the localized value of registrationSubmit.
   String get registrationSubmit =>

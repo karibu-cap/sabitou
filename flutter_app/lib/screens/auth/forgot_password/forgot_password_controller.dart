@@ -1,11 +1,11 @@
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:shadcn_flutter/shadcn_flutter.dart';
+
 import 'forgot_password_view_model.dart';
 
 /// Forgot password controller.
 class ForgotPasswordController extends GetxController
     with GetTickerProviderStateMixin {
-
   late ForgotPasswordViewModel _viewModel;
 
   /// Provides singleton access to the forgot password controller.
@@ -43,7 +43,7 @@ class ForgotPasswordController extends GetxController
   /// Clears all error messages in the forgot password form.
   void clearErrors() => _viewModel.clearErrors();
 
-    /// Sends a password reset link and returns true if successful.
+  /// Sends a password reset link and returns true if successful.
   Future<bool> sendResetLink() async {
     return await _viewModel.sendResetLink();
   }

@@ -10,6 +10,60 @@ final class PreferencesKey {
   static const String language = 'language';
 }
 
+/// The app collection names.
+final class CollectionName {
+  /// The store collection.
+  static const String stores = 'stores';
+
+  /// The business collection.
+  static const String businesses = 'businesses';
+
+  /// The business member collection.
+  static const String businessMembers = 'business_members';
+
+  /// The business client collection.
+  static const String businessClients = 'business_clients';
+
+  /// The link collection.
+  static const String links = 'links';
+
+  /// The supplier collection.
+  static const String suppliers = 'suppliers';
+
+  /// The permission collection.
+  static const String permissions = 'permissions';
+
+  /// The permission group collection.
+  static const String permissionsGroups = 'permissions_groups';
+
+  /// The user collection.
+  static const String users = 'users';
+
+  /// The product category collection.
+  static const String productCategories = 'product_categories';
+
+  /// The global product collection.
+  static const String globalProducts = 'global_products';
+
+  /// The business product collection.
+  static const String businessProducts = 'business_products';
+
+  /// The resource link collection.
+  static const String resourceLinks = 'resource_links';
+
+  /// The order collection.
+  static const String orders = 'orders';
+
+  /// The order receipt item collection.
+  static const String orderReceiptItems = 'order_receipt_items';
+
+  /// The order receipt collection.
+  static const String orderReceipts = 'order_receipts';
+
+  /// The transaction collection.
+  static const String transactions = 'transactions';
+}
+
 /// The static images.
 final class StaticImages {
   /// The logo image.
@@ -56,4 +110,31 @@ class AppConstants {
 
   static const double sidebarWidth = 256.0;
   static const double headerHeight = 64.0;
+}
+
+/// The dashboard items.
+enum DashboardItem {
+  /// The dashboard item.
+  dashboard,
+
+  /// The inventory item.
+  inventory,
+
+  /// The products item.
+  products,
+
+  /// The sales item.
+  sales,
+
+  /// The reports item.
+  reports,
+
+  /// The suppliers item.
+  suppliers,
+
+  /// The users item.
+  users,
+
+  /// The settings item.
+  settings,
 }

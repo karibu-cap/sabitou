@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
@@ -12,9 +11,6 @@ class AppThemeService extends GetxService {
   final _key = PreferencesKey.isDartMode;
   final _isDarkMode = false.obs;
 
-  /// The current theme.
-  ShadThemeData? currentTheme;
-
   /// The light theme.
   static final ShadThemeData _lightTheme = AppTheme.lightTheme;
 
@@ -22,7 +18,7 @@ class AppThemeService extends GetxService {
   static final ShadThemeData _darkTheme = AppTheme.darkTheme;
 
   /// Whether the app is in dark mode.
-  bool get isDarkMode => _isDarkMode.value;
+  RxBool get isDarkMode => _isDarkMode;
 
   /// Direct access to the theme service.
   static AppThemeService get to => Get.find();
@@ -33,10 +29,6 @@ class AppThemeService extends GetxService {
   /// The dark theme.
   static ShadThemeData get darkTheme => _darkTheme;
 
-  /// Gets the current theme mode.
-  ThemeMode get themeMode =>
-      _isDarkMode.value ? ThemeMode.dark : ThemeMode.light;
-
   /// Constructor of new theme service.
   AppThemeService(this._box);
 
@@ -45,7 +37,6 @@ class AppThemeService extends GetxService {
   /// Initializes the theme service.
   Future<AppThemeService> init() async {
     _isDarkMode.value = _box.read(_key) ?? false;
-    currentTheme = _isDarkMode.value ? darkTheme : lightTheme;
 
     return this;
   }
@@ -53,7 +44,6 @@ class AppThemeService extends GetxService {
   /// Switches the theme mode between light and dark, and saves it to the storage.
   void switchTheme() {
     _isDarkMode.value = !_isDarkMode.value;
-    Get.changeThemeMode(_isDarkMode.value ? ThemeMode.dark : ThemeMode.light);
     _saveThemeToBox(_isDarkMode.value);
   }
 }

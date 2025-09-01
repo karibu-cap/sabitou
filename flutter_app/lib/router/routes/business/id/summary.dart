@@ -8,11 +8,7 @@ const businessSummaryRouteTitle = 'Business Summary';
 const businessSummaryPage = BeamPage(
   key: ValueKey('businessSummary'),
   title: businessSummaryRouteTitle,
-  child: Scaffold(
-    body: Center(
-      child: Text('Business Summary Route'),
-    ),
-  ),
+  child: Scaffold(body: Center(child: Text('Business Summary Route'))),
 );
 
 /// The name of the current route.

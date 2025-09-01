@@ -25,19 +25,23 @@ Future<void> multiScreenMultiLocaleGolden(
   await tester.pumpAndSettle();
 
   await tester.pumpWidgetBuilder(
-    ShadApp(
-      title: AppInternationalizationService.to.sabitu.toUpperCase(),
-      themeMode: AppThemeService.to.themeMode,
-      theme: AppThemeService.lightTheme,
-      darkTheme: AppThemeService.darkTheme,
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: AppInternationalizationService.supportedLocales,
-      home: widget,
-    ),
+    Obx(() {
+      return ShadApp(
+        title: AppInternationalizationService.to.sabitu.toUpperCase(),
+        themeMode: AppThemeService.to.isDarkMode.value
+            ? ThemeMode.dark
+            : ThemeMode.light,
+        theme: AppThemeService.lightTheme,
+        darkTheme: AppThemeService.darkTheme,
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: AppInternationalizationService.supportedLocales,
+        home: widget,
+      );
+    }),
   );
   // Screenshot the widget in each supported locale.
   for (final locale in AppInternationalizationService.supportedLocales) {
@@ -47,7 +51,7 @@ Future<void> multiScreenMultiLocaleGolden(
     await tester.pumpAndSettle();
     await multiScreenGolden(
       tester,
-      '$name.${locale.languageCode}.${AppThemeService.to.themeMode.name}',
+      '$name.${locale.languageCode}.${AppThemeService.to.isDarkMode.value ? 'dark' : 'light'}',
       devices: [
         const Device(name: '1080p', size: Size(1920, 1080)),
         const Device(name: '480p', size: Size(720, 480)),

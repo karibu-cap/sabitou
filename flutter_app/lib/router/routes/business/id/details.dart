@@ -8,11 +8,7 @@ const businessDetailsRouteTitle = 'Business Details';
 const businessDetailsPage = BeamPage(
   key: ValueKey('businessDetails'),
   title: businessDetailsRouteTitle,
-  child: Scaffold(
-    body: Center(
-      child: Text('Business Details Route'),
-    ),
-  ),
+  child: Scaffold(body: Center(child: Text('Business Details Route'))),
 );
 
 /// The name of the current route.

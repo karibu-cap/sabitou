@@ -8,11 +8,7 @@ const userRouteTitle = 'User';
 const userPage = BeamPage(
   key: ValueKey('user'),
   title: userRouteTitle,
-  child: Scaffold(
-    body: Center(
-      child: Text('User Route'),
-    ),
-  ),
+  child: Scaffold(body: Center(child: Text('User Route'))),
 );
 
 /// The name of the current route.

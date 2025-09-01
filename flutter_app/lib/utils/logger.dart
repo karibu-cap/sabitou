@@ -23,21 +23,13 @@ final class LoggerApp {
 
   /// Log a message at level [Level.info].
   void info(String message) => Logger(
-        printer: SimplePrinter(
-          printTime: true,
-        ),
-      ).i(
-        className == null ? message : '$className: $message',
-      );
+    printer: SimplePrinter(printTime: true),
+  ).i(className == null ? message : '$className: $message');
 
   /// Log a message at level [Level.log].
   void log(String message) => Logger(
-        printer: SimplePrinter(
-          printTime: true,
-        ),
-      ).d(
-        className == null ? message : '$className: $message',
-      );
+    printer: SimplePrinter(printTime: true),
+  ).d(className == null ? message : '$className: $message');
 
   /// Log a message at level [Level.e].
   void severe(String message, {Object? error, StackTrace? stackTrace}) =>

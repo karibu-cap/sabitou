@@ -7,7 +7,6 @@ import 'user_repository.dart';
 
 /// The auth service client.
 final class AuthRepository extends GetxService {
-
   /// The user repository.
   final UserRepository userRepository = UserRepository.to;
 

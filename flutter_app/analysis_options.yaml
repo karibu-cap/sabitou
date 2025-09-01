@@ -7,7 +7,6 @@
 
 # The following line activates a set of recommended lints for Flutter apps,
 # packages, and plugins designed to encourage good coding practices.
-include: package:flutter_lints/flutter.yaml
 
 analyzer:
   plugins:
@@ -196,8 +195,6 @@ dart_code_linter:
         severity: style
     - double-literal-format:
         severity: style
-    - format-comment:
-        severity: error
     - member-ordering:
         severity: style
         order:
@@ -240,8 +237,6 @@ dart_code_linter:
         severity: error
     - prefer-const-border-radius:
         severity: error
-    - prefer-extracting-callbacks:
-        severity: style
     - avoid-shrink-wrap-in-lists:
         severity: error
     - avoid-wrapping-in-padding:

@@ -8,8 +8,7 @@ class LoginController extends GetxController with GetTickerProviderStateMixin {
   final LoginViewModel _viewModel;
 
   /// Constructs login controller.
-  LoginController({required LoginViewModel viewModel})
-    : _viewModel = viewModel;
+  LoginController({required LoginViewModel viewModel}) : _viewModel = viewModel;
 
   /// Singleton access.
   static LoginController get instance => Get.find();
@@ -54,5 +53,4 @@ class LoginController extends GetxController with GetTickerProviderStateMixin {
 
   /// Validates all fields and calls AuthProvider.login.
   Future<bool> loginUser() => _viewModel.loginUser();
-
 }

@@ -1,47 +1,57 @@
-import 'package:connectrpc/connect.dart' as connect;
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:sabitou_rpc/connect_servers.dart';
 import 'package:sabitou_rpc/models.dart';
 
-import '../utils/logger.dart';
+import '../tmp/fake_data.dart';
+import '../utils/app_constants.dart';
 
-/// The business service client.
+/// The business repository.
 final class BusinessRepository extends GetxService {
-  /// Access the singleton instance.
-  static BusinessRepository get to => Get.find();
+  /// The instance of [BusinessRepository].
+  static final instance = Get.find<BusinessRepository>();
 
-  final _logger = LoggerApp('BusinessService');
-
-  /// The user service client.
-  final BusinessServiceClient businessService;
-
-  /// The client channel.
-  final connect.Transport clientChannel;
-
-  /// Constructs a new [AuthServiceClient].
-  BusinessRepository({required this.clientChannel})
-      : businessService = BusinessServiceClient(
-          clientChannel,
-        );
-
-  /// Creates a new user.
-  Future<String?> createNewBusiness({required Business request}) async {
+  /// Gets the business by ref.
+  Future<Business?> getBusinessByRefId(String refId) async {
     try {
-      final result = await businessService.createBusiness(
-        CreateBusinessRequest(
-          business: Business()
-            ..name = request.name
-            ..description = request.description,
-        ),
-      );
+      final businessdata =
+          fakeData[CollectionName.businesses]
+              ?.map(
+                (e) =>
+                    Business()
+                      ..mergeFromProto3Json(e, ignoreUnknownFields: true),
+              )
+              .toList() ??
+          [];
 
-      _logger.log(
-        'Created business: ${request.writeToJson()}.',
-      );
+      return businessdata.firstWhereOrNull((b) => b.refId == refId);
+    } catch (e) {
+      debugPrint(e.toString());
 
-      return result.businessId;
-    } on Exception catch (e) {
-      _logger.severe('Caught error: $e');
+      return null;
+    }
+  }
+
+  /// Gets the business menbers by business ref.
+  Future<BusinessMember?> getBusinessMembersByBusinessRefId(
+    String businessId,
+    String userId,
+  ) async {
+    try {
+      final businessdata =
+          fakeData[CollectionName.businessMembers]
+              ?.map(
+                (e) =>
+                    BusinessMember()
+                      ..mergeFromProto3Json(e, ignoreUnknownFields: true),
+              )
+              .toList() ??
+          [];
+
+      return businessdata.firstWhereOrNull(
+        (bm) => bm.businessId == businessId && bm.userId == userId,
+      );
+    } catch (e) {
+      debugPrint(e.toString());
 
       return null;
     }

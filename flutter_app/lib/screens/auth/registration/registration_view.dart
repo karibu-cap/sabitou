@@ -136,12 +136,15 @@ class RegistrationView extends StatelessWidget {
                             ShadInputFormField(
                               controller: controller.userNameController,
                               placeholder: Text(appIntl.userName),
-                              trailing: const Icon(Icons.person),
+                              trailing: const Icon(LucideIcons.user400),
                             ),
                             Obx(
                               () => controller.userNameError.value.isNotEmpty
                                   ? Padding(
-                                      padding: const EdgeInsets.only(top: 4, left: 4),
+                                      padding: const EdgeInsets.only(
+                                        top: 4,
+                                        left: 4,
+                                      ),
                                       child: Align(
                                         alignment: Alignment.centerLeft,
                                         child: Builder(
@@ -151,7 +154,9 @@ class RegistrationView extends StatelessWidget {
                                             return Text(
                                               controller.userNameError.value,
                                               style: theme.textTheme.p.copyWith(
-                                                color: theme.colorScheme.destructive,
+                                                color: theme
+                                                    .colorScheme
+                                                    .destructive,
                                                 fontSize: 12,
                                               ),
                                             );
@@ -167,12 +172,15 @@ class RegistrationView extends StatelessWidget {
                               controller: controller.emailController,
                               placeholder: Text(appIntl.email),
                               keyboardType: TextInputType.emailAddress,
-                              trailing: const Icon(Icons.email),
+                              trailing: const Icon(LucideIcons.mail400),
                             ),
                             Obx(
                               () => controller.emailError.value.isNotEmpty
                                   ? Padding(
-                                      padding: const EdgeInsets.only(top: 4, left: 4),
+                                      padding: const EdgeInsets.only(
+                                        top: 4,
+                                        left: 4,
+                                      ),
                                       child: Align(
                                         alignment: Alignment.centerLeft,
                                         child: Builder(
@@ -182,7 +190,9 @@ class RegistrationView extends StatelessWidget {
                                             return Text(
                                               controller.emailError.value,
                                               style: theme.textTheme.p.copyWith(
-                                                color: theme.colorScheme.destructive,
+                                                color: theme
+                                                    .colorScheme
+                                                    .destructive,
                                                 fontSize: 12,
                                               ),
                                             );
@@ -196,19 +206,20 @@ class RegistrationView extends StatelessWidget {
                             // Phone Number.
                             ShadInputFormField(
                               controller: controller.phoneNumberController,
-                              placeholder: Text(
-                                appIntl.phoneNumber,
-                              ),
+                              placeholder: Text(appIntl.phoneNumber),
                               keyboardType: TextInputType.phone,
                               inputFormatters: [
                                 FilteringTextInputFormatter.digitsOnly,
                               ],
-                              trailing: const Icon(Icons.phone),
+                              trailing: const Icon(LucideIcons.phone400),
                             ),
                             Obx(
                               () => controller.phoneNumberError.value.isNotEmpty
                                   ? Padding(
-                                      padding: const EdgeInsets.only(top: 4, left: 4),
+                                      padding: const EdgeInsets.only(
+                                        top: 4,
+                                        left: 4,
+                                      ),
                                       child: Align(
                                         alignment: Alignment.centerLeft,
                                         child: Builder(
@@ -218,7 +229,9 @@ class RegistrationView extends StatelessWidget {
                                             return Text(
                                               controller.phoneNumberError.value,
                                               style: theme.textTheme.p.copyWith(
-                                                color: theme.colorScheme.destructive,
+                                                color: theme
+                                                    .colorScheme
+                                                    .destructive,
                                                 fontSize: 12,
                                               ),
                                             );
@@ -233,12 +246,15 @@ class RegistrationView extends StatelessWidget {
                             ShadInputFormField(
                               controller: controller.firstNameController,
                               placeholder: Text(appIntl.firstName),
-                              trailing: const Icon(Icons.badge),
+                              trailing: const Icon(LucideIcons.contact400),
                             ),
                             Obx(
                               () => controller.firstNameError.value.isNotEmpty
                                   ? Padding(
-                                      padding: const EdgeInsets.only(top: 4, left: 4),
+                                      padding: const EdgeInsets.only(
+                                        top: 4,
+                                        left: 4,
+                                      ),
                                       child: Align(
                                         alignment: Alignment.centerLeft,
                                         child: Builder(
@@ -248,7 +264,9 @@ class RegistrationView extends StatelessWidget {
                                             return Text(
                                               controller.firstNameError.value,
                                               style: theme.textTheme.p.copyWith(
-                                                color: theme.colorScheme.destructive,
+                                                color: theme
+                                                    .colorScheme
+                                                    .destructive,
                                                 fontSize: 12,
                                               ),
                                             );
@@ -263,12 +281,15 @@ class RegistrationView extends StatelessWidget {
                             ShadInputFormField(
                               controller: controller.lastNameController,
                               placeholder: Text(appIntl.lastName),
-                              trailing: const Icon(Icons.badge_outlined),
+                              trailing: const Icon(LucideIcons.contact400),
                             ),
                             Obx(
                               () => controller.lastNameError.value.isNotEmpty
                                   ? Padding(
-                                      padding: const EdgeInsets.only(top: 4, left: 4),
+                                      padding: const EdgeInsets.only(
+                                        top: 4,
+                                        left: 4,
+                                      ),
                                       child: Align(
                                         alignment: Alignment.centerLeft,
                                         child: Builder(
@@ -278,7 +299,9 @@ class RegistrationView extends StatelessWidget {
                                             return Text(
                                               controller.lastNameError.value,
                                               style: theme.textTheme.p.copyWith(
-                                                color: theme.colorScheme.destructive,
+                                                color: theme
+                                                    .colorScheme
+                                                    .destructive,
                                                 fontSize: 12,
                                               ),
                                             );
@@ -294,13 +317,14 @@ class RegistrationView extends StatelessWidget {
                               () => ShadInputFormField(
                                 controller: controller.passwordController,
                                 placeholder: Text(appIntl.password),
-                                obscureText: !controller.isPasswordVisible.value,
+                                obscureText:
+                                    !controller.isPasswordVisible.value,
                                 trailing: GestureDetector(
                                   onTap: controller.togglePasswordVisibility,
                                   child: Icon(
                                     controller.isPasswordVisible.value
-                                        ? Icons.visibility
-                                        : Icons.visibility_off,
+                                        ? LucideIcons.eye400
+                                        : LucideIcons.eyeOff400,
                                   ),
                                 ),
                               ),
@@ -308,7 +332,10 @@ class RegistrationView extends StatelessWidget {
                             Obx(
                               () => controller.passwordError.value.isNotEmpty
                                   ? Padding(
-                                      padding: const EdgeInsets.only(top: 4, left: 4),
+                                      padding: const EdgeInsets.only(
+                                        top: 4,
+                                        left: 4,
+                                      ),
                                       child: Align(
                                         alignment: Alignment.centerLeft,
                                         child: Builder(
@@ -318,7 +345,9 @@ class RegistrationView extends StatelessWidget {
                                             return Text(
                                               controller.passwordError.value,
                                               style: theme.textTheme.p.copyWith(
-                                                color: theme.colorScheme.destructive,
+                                                color: theme
+                                                    .colorScheme
+                                                    .destructive,
                                                 fontSize: 12,
                                               ),
                                             );
@@ -332,25 +361,33 @@ class RegistrationView extends StatelessWidget {
                             // Confirm Password.
                             Obx(
                               () => ShadInputFormField(
-                                controller: controller.confirmPasswordController,
-                                placeholder: Text(
-                                  appIntl.confirmPassword,
-                                ),
-                                obscureText: !controller.isConfirmPasswordVisible.value,
+                                controller:
+                                    controller.confirmPasswordController,
+                                placeholder: Text(appIntl.confirmPassword),
+                                obscureText:
+                                    !controller.isConfirmPasswordVisible.value,
                                 trailing: GestureDetector(
-                                  onTap: controller.toggleConfirmPasswordVisibility,
+                                  onTap: controller
+                                      .toggleConfirmPasswordVisibility,
                                   child: Icon(
                                     controller.isConfirmPasswordVisible.value
-                                        ? Icons.visibility
-                                        : Icons.visibility_off,
+                                        ? LucideIcons.eye400
+                                        : LucideIcons.eyeOff400,
                                   ),
                                 ),
                               ),
                             ),
                             Obx(
-                              () => controller.confirmPasswordError.value.isNotEmpty
+                              () =>
+                                  controller
+                                      .confirmPasswordError
+                                      .value
+                                      .isNotEmpty
                                   ? Padding(
-                                      padding: const EdgeInsets.only(top: 4, left: 4),
+                                      padding: const EdgeInsets.only(
+                                        top: 4,
+                                        left: 4,
+                                      ),
                                       child: Align(
                                         alignment: Alignment.centerLeft,
                                         child: Builder(
@@ -358,9 +395,13 @@ class RegistrationView extends StatelessWidget {
                                             final theme = ShadTheme.of(context);
 
                                             return Text(
-                                              controller.confirmPasswordError.value,
+                                              controller
+                                                  .confirmPasswordError
+                                                  .value,
                                               style: theme.textTheme.p.copyWith(
-                                                color: theme.colorScheme.destructive,
+                                                color: theme
+                                                    .colorScheme
+                                                    .destructive,
                                                 fontSize: 12,
                                               ),
                                             );
