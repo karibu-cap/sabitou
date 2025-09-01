@@ -8,11 +8,7 @@ const storeDetailsRouteTitle = 'Store Details';
 const storeDetailsPage = BeamPage(
   key: ValueKey('storeDetails'),
   title: storeDetailsRouteTitle,
-  child: Scaffold(
-    body: Center(
-      child: Text('Store Details Route'),
-    ),
-  ),
+  child: Scaffold(body: Center(child: Text('Store Details Route'))),
 );
 
 /// The name of the current route.

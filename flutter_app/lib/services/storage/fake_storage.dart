@@ -5,9 +5,8 @@ class FakeStorageService implements AppStorageService {
   final Map<String, dynamic> _storage;
 
   /// The fake storage service.
-  FakeStorageService({
-    Map<String, dynamic>? storage,
-  }) : _storage = storage ?? {};
+  FakeStorageService({Map<String, dynamic>? storage})
+    : _storage = storage ?? {};
 
   @override
   Future<void> write(String key, dynamic value) async {

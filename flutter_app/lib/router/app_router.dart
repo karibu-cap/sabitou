@@ -2,10 +2,10 @@ import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 
 import '../utils/user_preference.dart';
+import 'routes/auth/forgot_password.dart';
 import 'routes/auth/login.dart';
 import 'routes/auth/registration.dart';
 import 'routes/auth/user.dart';
-import 'routes/auth/forgot_password.dart';
 import 'routes/business/id/details.dart';
 import 'routes/business/id/iam.dart';
 import 'routes/business/id/summary.dart';
@@ -13,10 +13,10 @@ import 'routes/business/list.dart';
 import 'routes/store/id/details.dart';
 import 'routes/store/list.dart';
 
+export 'routes/auth/forgot_password.dart';
 export 'routes/auth/login.dart';
 export 'routes/auth/registration.dart';
 export 'routes/auth/user.dart';
-export 'routes/auth/forgot_password.dart';
 export 'routes/business/id/details.dart';
 export 'routes/business/id/iam.dart';
 export 'routes/business/id/summary.dart';
@@ -48,17 +48,17 @@ const List<String> unauthenticatedRoutes = [
 /// The list of app routes.
 final Map<Pattern, dynamic Function(BuildContext, BeamState, Object?)> routes =
     {
-  loginRoutePath: (context, state, extra) => loginPage,
-  registrationRoutePath: (context, state, extra) => registrationPage,
-  forgotPasswordRoutePath: (context, state, extra) => forgotPasswordPage,
-  businessListRoutePath: (context, state, extra) => businessListPage,
-  businessDetailsRoutePath: (context, state, extra) => businessDetailsPage,
-  businessIamRoutePath: (context, state, extra) => businessIamPage,
-  storeListRoutePath: (context, state, extra) => storeListPage,
-  storeDetailsRoutePath: (context, state, extra) => storeDetailsPage,
-  userRoutePath: (context, state, extra) => userPage,
-  businessSummaryRoutePath: (context, state, extra) => businessSummaryPage,
-};
+      loginRoutePath: (context, state, extra) => loginPage,
+      registrationRoutePath: (context, state, extra) => registrationPage,
+      forgotPasswordRoutePath: (context, state, extra) => forgotPasswordPage,
+      businessListRoutePath: (context, state, extra) => businessListPage,
+      businessDetailsRoutePath: (context, state, extra) => businessDetailsPage,
+      businessIamRoutePath: (context, state, extra) => businessIamPage,
+      storeListRoutePath: (context, state, extra) => storeListPage,
+      storeDetailsRoutePath: (context, state, extra) => storeDetailsPage,
+      userRoutePath: (context, state, extra) => userPage,
+      businessSummaryRoutePath: (context, state, extra) => businessSummaryPage,
+    };
 
 final routeGuards = [
   BeamGuard(
@@ -103,20 +103,10 @@ void push(
   Map<String, String>? parameters,
 }) {
   final uri = Uri(path: path, queryParameters: parameters);
-  Beamer.of(context).beamToNamed(
-    uri.toString(),
-    data: extra,
-  );
+  Beamer.of(context).beamToNamed(uri.toString(), data: extra);
 }
 
 /// Navigates to next page and replace the previous page.
-void pushReplacement(
-  BuildContext context,
-  String uri, {
-  Object? extra,
-}) {
-  Beamer.of(context).beamToReplacementNamed(
-    uri,
-    data: extra,
-  );
+void pushReplacement(BuildContext context, String uri, {Object? extra}) {
+  Beamer.of(context).beamToReplacementNamed(uri, data: extra);
 }

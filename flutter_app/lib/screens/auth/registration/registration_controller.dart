@@ -74,7 +74,8 @@ class RegistrationController extends GetxController {
 
   /// Toggle confirm password visibility.
   void toggleConfirmPasswordVisibility() {
-    _viewModel.isConfirmPasswordVisible.value = !_viewModel.isConfirmPasswordVisible.value;
+    _viewModel.isConfirmPasswordVisible.value =
+        !_viewModel.isConfirmPasswordVisible.value;
   }
 
   /// Initializes the registration view model and starts the animation.

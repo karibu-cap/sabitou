@@ -7,6 +7,7 @@ import '../../../services/internationalization/internationalization.dart';
 /// Login view model.
 class LoginViewModel {
   final _appIntl = AppInternationalizationService.to;
+
   /// The email controller.
   final emailController = TextEditingController();
 
@@ -25,7 +26,7 @@ class LoginViewModel {
   /// Constructs login view model.
   LoginViewModel();
 
-   /// Disposes all controllers and animation resources used by the view model.
+  /// Disposes all controllers and animation resources used by the view model.
   void dispose() {
     emailController.dispose();
     passwordController.dispose();

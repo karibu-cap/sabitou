@@ -119,23 +119,14 @@ class AppColors {
   static const darkRing = Color(0xFF6d28d9);
 
   static const darkBackgroundGradient = LinearGradient(
-    colors: [
-      Color(0xFF030712),
-      darkSecondary,
-    ],
+    colors: [Color(0xFF030712), darkSecondary],
   );
   static const lightBackgroundGradient = LinearGradient(
-    colors: [
-      Color(0xFF7928CA),
-      Color(0xFFFF0080),
-    ],
+    colors: [Color(0xFF7928CA), Color(0xFFFF0080)],
   );
 
   /// The gradient button.
   static const gradientButton = LinearGradient(
-    colors: [
-      Color(0xFF7928CA),
-      Color(0xFFFF0080),
-    ],
+    colors: [Color(0xFF7928CA), Color(0xFFFF0080)],
   );
 }

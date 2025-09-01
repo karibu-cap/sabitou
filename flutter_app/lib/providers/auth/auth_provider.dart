@@ -49,7 +49,9 @@ class AuthProvider extends GetxController {
       final loginRequest = LoginRequest()
         ..uRef = email
         ..password = password;
-      final response = await AuthRepository.instance.login(request: loginRequest);
+      final response = await AuthRepository.instance.login(
+        request: loginRequest,
+      );
       _currentUser.value = response;
       if (response != null) {
         _setStatus(AuthStatus.authenticated);
@@ -102,7 +104,7 @@ class AuthProvider extends GetxController {
 
       return true;
     } catch (e) {
-      _setError("Forgot password failed: $e");
+      _setError('Forgot password failed: $e');
 
       return false;
     }
@@ -111,11 +113,11 @@ class AuthProvider extends GetxController {
   /// Change password.
   Future<bool> changePassword(String oldPassword, String newPassword) async {
     try {
-      await Future.delayed(Duration(seconds: 1));
+      await Future.delayed(const Duration(seconds: 1));
 
       return true;
     } catch (e) {
-      _setError("Password change failed: $e");
+      _setError('Password change failed: $e');
 
       return false;
     }

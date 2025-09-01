@@ -8,11 +8,7 @@ const notFoundRouteTitle = 'Not Found';
 const notFoundPage = BeamPage(
   key: ValueKey('notFound'),
   title: notFoundRouteTitle,
-  child: Scaffold(
-    body: Center(
-      child: Text('Not Found Route'),
-    ),
-  ),
+  child: Scaffold(body: Center(child: Text('Not Found Route'))),
 );
 
 /// The name of the current route.
