@@ -308,8 +308,10 @@ type User struct {
 	AccountStatus *AccountStatusType `protobuf:"varint,9,opt,name=account_status,json=accountStatus,proto3,enum=identity.v1.AccountStatusType,oneof" json:"account_status,omitempty"`
 	// The actions that the user must complete to authenticate.
 	RequiredActions []AuthActionType `protobuf:"varint,10,rep,packed,name=required_actions,json=requiredActions,proto3,enum=identity.v1.AuthActionType" json:"required_actions,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	// The type of the user's account.
+	AccountType   AccountType `protobuf:"varint,11,opt,name=account_type,json=accountType,proto3,enum=identity.v1.AccountType" json:"account_type,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *User) Reset() {
@@ -410,6 +412,13 @@ func (x *User) GetRequiredActions() []AuthActionType {
 		return x.RequiredActions
 	}
 	return nil
+}
+
+func (x *User) GetAccountType() AccountType {
+	if x != nil {
+		return x.AccountType
+	}
+	return AccountType_ADMIN
 }
 
 type GetCurrentUserRequest struct {
@@ -1065,7 +1074,7 @@ const file_identity_v1_user_proto_rawDesc = "" +
 	"\x16identity/v1/user.proto\x12\videntity.v1\x1a\x1bbuf/validate/validate.proto\x1a\x12link/v1/link.proto\"d\n" +
 	"\x10ConnectedAccount\x125\n" +
 	"\bprovider\x18\x01 \x01(\x0e2\x19.identity.v1.ProviderTypeR\bprovider\x12\x19\n" +
-	"\braw_data\x18\x03 \x01(\tR\arawData\"\xdc\x04\n" +
+	"\braw_data\x18\x03 \x01(\tR\arawData\"\x99\x05\n" +
 	"\x04User\x12\x1a\n" +
 	"\x06ref_id\x18\x01 \x01(\tH\x00R\x05refId\x88\x01\x01\x12\x1b\n" +
 	"\tuser_name\x18\x02 \x01(\tR\buserName\x12L\n" +
@@ -1079,7 +1088,8 @@ const file_identity_v1_user_proto_rawDesc = "" +
 	"\fprofile_link\x18\b \x01(\v2\x15.link.v1.ResourceLinkH\x05R\vprofileLink\x88\x01\x01\x12J\n" +
 	"\x0eaccount_status\x18\t \x01(\x0e2\x1e.identity.v1.AccountStatusTypeH\x06R\raccountStatus\x88\x01\x01\x12F\n" +
 	"\x10required_actions\x18\n" +
-	" \x03(\x0e2\x1b.identity.v1.AuthActionTypeR\x0frequiredActionsB\t\n" +
+	" \x03(\x0e2\x1b.identity.v1.AuthActionTypeR\x0frequiredActions\x12;\n" +
+	"\faccount_type\x18\v \x01(\x0e2\x18.identity.v1.AccountTypeR\vaccountTypeB\t\n" +
 	"\a_ref_idB\b\n" +
 	"\x06_emailB\x0f\n" +
 	"\r_phone_numberB\r\n" +
@@ -1191,30 +1201,31 @@ var file_identity_v1_user_proto_depIdxs = []int32{
 	20, // 2: identity.v1.User.profile_link:type_name -> link.v1.ResourceLink
 	0,  // 3: identity.v1.User.account_status:type_name -> identity.v1.AccountStatusType
 	2,  // 4: identity.v1.User.required_actions:type_name -> identity.v1.AuthActionType
-	5,  // 5: identity.v1.GetCurrentUserResponse.me:type_name -> identity.v1.User
-	5,  // 6: identity.v1.GetMeResponse.me:type_name -> identity.v1.User
-	5,  // 7: identity.v1.GetUserResponse.user:type_name -> identity.v1.User
-	5,  // 8: identity.v1.UpdateMeRequest.user:type_name -> identity.v1.User
-	5,  // 9: identity.v1.UpdateMeResponse.user:type_name -> identity.v1.User
-	8,  // 10: identity.v1.UserService.GetMe:input_type -> identity.v1.GetMeRequest
-	6,  // 11: identity.v1.UserService.GetCurrentUser:input_type -> identity.v1.GetCurrentUserRequest
-	10, // 12: identity.v1.UserService.GetUser:input_type -> identity.v1.GetUserRequest
-	12, // 13: identity.v1.UserService.UpdateMe:input_type -> identity.v1.UpdateMeRequest
-	14, // 14: identity.v1.UserService.RequestDeleteUser:input_type -> identity.v1.RequestDeleteUserRequest
-	16, // 15: identity.v1.UserService.DeleteUser:input_type -> identity.v1.DeleteUserRequest
-	18, // 16: identity.v1.UserService.ChangePassword:input_type -> identity.v1.ChangePasswordRequest
-	9,  // 17: identity.v1.UserService.GetMe:output_type -> identity.v1.GetMeResponse
-	7,  // 18: identity.v1.UserService.GetCurrentUser:output_type -> identity.v1.GetCurrentUserResponse
-	11, // 19: identity.v1.UserService.GetUser:output_type -> identity.v1.GetUserResponse
-	13, // 20: identity.v1.UserService.UpdateMe:output_type -> identity.v1.UpdateMeResponse
-	15, // 21: identity.v1.UserService.RequestDeleteUser:output_type -> identity.v1.RequestDeleteUserResponse
-	17, // 22: identity.v1.UserService.DeleteUser:output_type -> identity.v1.DeleteUserResponse
-	19, // 23: identity.v1.UserService.ChangePassword:output_type -> identity.v1.ChangePasswordResponse
-	17, // [17:24] is the sub-list for method output_type
-	10, // [10:17] is the sub-list for method input_type
-	10, // [10:10] is the sub-list for extension type_name
-	10, // [10:10] is the sub-list for extension extendee
-	0,  // [0:10] is the sub-list for field type_name
+	1,  // 5: identity.v1.User.account_type:type_name -> identity.v1.AccountType
+	5,  // 6: identity.v1.GetCurrentUserResponse.me:type_name -> identity.v1.User
+	5,  // 7: identity.v1.GetMeResponse.me:type_name -> identity.v1.User
+	5,  // 8: identity.v1.GetUserResponse.user:type_name -> identity.v1.User
+	5,  // 9: identity.v1.UpdateMeRequest.user:type_name -> identity.v1.User
+	5,  // 10: identity.v1.UpdateMeResponse.user:type_name -> identity.v1.User
+	8,  // 11: identity.v1.UserService.GetMe:input_type -> identity.v1.GetMeRequest
+	6,  // 12: identity.v1.UserService.GetCurrentUser:input_type -> identity.v1.GetCurrentUserRequest
+	10, // 13: identity.v1.UserService.GetUser:input_type -> identity.v1.GetUserRequest
+	12, // 14: identity.v1.UserService.UpdateMe:input_type -> identity.v1.UpdateMeRequest
+	14, // 15: identity.v1.UserService.RequestDeleteUser:input_type -> identity.v1.RequestDeleteUserRequest
+	16, // 16: identity.v1.UserService.DeleteUser:input_type -> identity.v1.DeleteUserRequest
+	18, // 17: identity.v1.UserService.ChangePassword:input_type -> identity.v1.ChangePasswordRequest
+	9,  // 18: identity.v1.UserService.GetMe:output_type -> identity.v1.GetMeResponse
+	7,  // 19: identity.v1.UserService.GetCurrentUser:output_type -> identity.v1.GetCurrentUserResponse
+	11, // 20: identity.v1.UserService.GetUser:output_type -> identity.v1.GetUserResponse
+	13, // 21: identity.v1.UserService.UpdateMe:output_type -> identity.v1.UpdateMeResponse
+	15, // 22: identity.v1.UserService.RequestDeleteUser:output_type -> identity.v1.RequestDeleteUserResponse
+	17, // 23: identity.v1.UserService.DeleteUser:output_type -> identity.v1.DeleteUserResponse
+	19, // 24: identity.v1.UserService.ChangePassword:output_type -> identity.v1.ChangePasswordResponse
+	18, // [18:25] is the sub-list for method output_type
+	11, // [11:18] is the sub-list for method input_type
+	11, // [11:11] is the sub-list for extension type_name
+	11, // [11:11] is the sub-list for extension extendee
+	0,  // [0:11] is the sub-list for field type_name
 }
 
 func init() { file_identity_v1_user_proto_init() }

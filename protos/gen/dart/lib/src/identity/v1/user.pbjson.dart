@@ -181,6 +181,14 @@ const User$json = {
       '6': '.identity.v1.AuthActionType',
       '10': 'requiredActions'
     },
+    {
+      '1': 'account_type',
+      '3': 11,
+      '4': 1,
+      '5': 14,
+      '6': '.identity.v1.AccountType',
+      '10': 'accountType'
+    },
   ],
   '8': [
     {'1': '_ref_id'},
@@ -204,8 +212,9 @@ final $typed_data.Uint8List userDescriptor = $convert.base64Decode(
     'bmtIBVILcHJvZmlsZUxpbmuIAQESSgoOYWNjb3VudF9zdGF0dXMYCSABKA4yHi5pZGVudGl0eS'
     '52MS5BY2NvdW50U3RhdHVzVHlwZUgGUg1hY2NvdW50U3RhdHVziAEBEkYKEHJlcXVpcmVkX2Fj'
     'dGlvbnMYCiADKA4yGy5pZGVudGl0eS52MS5BdXRoQWN0aW9uVHlwZVIPcmVxdWlyZWRBY3Rpb2'
-    '5zQgkKB19yZWZfaWRCCAoGX2VtYWlsQg8KDV9waG9uZV9udW1iZXJCDQoLX2ZpcnN0X25hbWVC'
-    'DAoKX2xhc3RfbmFtZUIPCg1fcHJvZmlsZV9saW5rQhEKD19hY2NvdW50X3N0YXR1cw==');
+    '5zEjsKDGFjY291bnRfdHlwZRgLIAEoDjIYLmlkZW50aXR5LnYxLkFjY291bnRUeXBlUgthY2Nv'
+    'dW50VHlwZUIJCgdfcmVmX2lkQggKBl9lbWFpbEIPCg1fcGhvbmVfbnVtYmVyQg0KC19maXJzdF'
+    '9uYW1lQgwKCl9sYXN0X25hbWVCDwoNX3Byb2ZpbGVfbGlua0IRCg9fYWNjb3VudF9zdGF0dXM=');
 
 @$core.Deprecated('Use getCurrentUserRequestDescriptor instead')
 const GetCurrentUserRequest$json = {
