@@ -82,6 +82,9 @@ message User {
 
   // The actions that the user must complete to authenticate.
   repeated AuthActionType required_actions = 10;
+
+  // The type of the user's account.
+  AccountType account_type = 11;
 }
 
 message GetCurrentUserRequest {

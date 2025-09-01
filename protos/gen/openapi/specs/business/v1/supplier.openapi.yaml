@@ -337,6 +337,25 @@ components:
             type: string
           title: external_links_ids
           description: The links of the supplier.
+        contactPhone:
+          type: string
+          title: contact_phone
+          description: The contact phone number.
+          nullable: true
+        contactEmail:
+          type: string
+          title: contact_email
+          description: The contact email.
+          nullable: true
+        contactAddress:
+          type: string
+          title: contact_address
+          description: The contact address.
+          nullable: true
+        isActive:
+          type: boolean
+          title: is_active
+          description: Whether the supplier is active.
         businessId:
           type: string
           title: business_id

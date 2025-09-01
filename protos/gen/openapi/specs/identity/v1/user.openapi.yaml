@@ -523,6 +523,10 @@ components:
             $ref: '#/components/schemas/identity.v1.AuthActionType'
           title: required_actions
           description: The actions that the user must complete to authenticate.
+        accountType:
+          title: account_type
+          description: The type of the user's account.
+          $ref: '#/components/schemas/identity.v1.AccountType'
       title: User
       additionalProperties: false
       description: |-

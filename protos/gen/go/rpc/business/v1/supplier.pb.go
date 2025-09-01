@@ -90,8 +90,16 @@ type Supplier struct {
 	LogoLinkId *string `protobuf:"bytes,4,opt,name=logo_link_id,json=logoLinkId,proto3,oneof" json:"logo_link_id,omitempty"`
 	// The links of the supplier.
 	ExternalLinksIds []string `protobuf:"bytes,5,rep,name=external_links_ids,json=externalLinksIds,proto3" json:"external_links_ids,omitempty"`
+	// The contact phone number.
+	ContactPhone *string `protobuf:"bytes,6,opt,name=contact_phone,json=contactPhone,proto3,oneof" json:"contact_phone,omitempty"`
+	// The contact email.
+	ContactEmail *string `protobuf:"bytes,7,opt,name=contact_email,json=contactEmail,proto3,oneof" json:"contact_email,omitempty"`
+	// The contact address.
+	ContactAddress *string `protobuf:"bytes,8,opt,name=contact_address,json=contactAddress,proto3,oneof" json:"contact_address,omitempty"`
+	// Whether the supplier is active.
+	IsActive bool `protobuf:"varint,9,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`
 	// The id of the business of the supplier.
-	BusinessId    string `protobuf:"bytes,6,opt,name=business_id,json=businessId,proto3" json:"business_id,omitempty"`
+	BusinessId    string `protobuf:"bytes,10,opt,name=business_id,json=businessId,proto3" json:"business_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -159,6 +167,34 @@ func (x *Supplier) GetExternalLinksIds() []string {
 		return x.ExternalLinksIds
 	}
 	return nil
+}
+
+func (x *Supplier) GetContactPhone() string {
+	if x != nil && x.ContactPhone != nil {
+		return *x.ContactPhone
+	}
+	return ""
+}
+
+func (x *Supplier) GetContactEmail() string {
+	if x != nil && x.ContactEmail != nil {
+		return *x.ContactEmail
+	}
+	return ""
+}
+
+func (x *Supplier) GetContactAddress() string {
+	if x != nil && x.ContactAddress != nil {
+		return *x.ContactAddress
+	}
+	return ""
+}
+
+func (x *Supplier) GetIsActive() bool {
+	if x != nil {
+		return x.IsActive
+	}
+	return false
 }
 
 func (x *Supplier) GetBusinessId() string {
@@ -663,20 +699,28 @@ const file_business_v1_supplier_proto_rawDesc = "" +
 	"\x1abusiness/v1/supplier.proto\x12\vbusiness.v1\x1a\x1bbuf/validate/validate.proto\x1a\x12link/v1/link.proto\".\n" +
 	"\x04Link\x12\x14\n" +
 	"\x05label\x18\x01 \x01(\tR\x05label\x12\x10\n" +
-	"\x03url\x18\x02 \x01(\tR\x03url\"\x8f\x02\n" +
+	"\x03url\x18\x02 \x01(\tR\x03url\"\xe6\x03\n" +
 	"\bSupplier\x12\x1a\n" +
 	"\x06ref_id\x18\x01 \x01(\tH\x00R\x05refId\x88\x01\x01\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12%\n" +
 	"\vdescription\x18\x03 \x01(\tH\x01R\vdescription\x88\x01\x01\x12%\n" +
 	"\flogo_link_id\x18\x04 \x01(\tH\x02R\n" +
 	"logoLinkId\x88\x01\x01\x12,\n" +
-	"\x12external_links_ids\x18\x05 \x03(\tR\x10externalLinksIds\x12+\n" +
-	"\vbusiness_id\x18\x06 \x01(\tB\n" +
+	"\x12external_links_ids\x18\x05 \x03(\tR\x10externalLinksIds\x12(\n" +
+	"\rcontact_phone\x18\x06 \x01(\tH\x03R\fcontactPhone\x88\x01\x01\x12(\n" +
+	"\rcontact_email\x18\a \x01(\tH\x04R\fcontactEmail\x88\x01\x01\x12,\n" +
+	"\x0fcontact_address\x18\b \x01(\tH\x05R\x0econtactAddress\x88\x01\x01\x12\x1b\n" +
+	"\tis_active\x18\t \x01(\bR\bisActive\x12+\n" +
+	"\vbusiness_id\x18\n" +
+	" \x01(\tB\n" +
 	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\n" +
 	"businessIdB\t\n" +
 	"\a_ref_idB\x0e\n" +
 	"\f_descriptionB\x0f\n" +
-	"\r_logo_link_id\"\xc6\x01\n" +
+	"\r_logo_link_idB\x10\n" +
+	"\x0e_contact_phoneB\x10\n" +
+	"\x0e_contact_emailB\x12\n" +
+	"\x10_contact_address\"\xc6\x01\n" +
 	"\x15CreateSupplierRequest\x121\n" +
 	"\bsupplier\x18\x01 \x01(\v2\x15.business.v1.SupplierR\bsupplier\x12)\n" +
 	"\x0elogo_raw_image\x18\x02 \x01(\fH\x00R\flogoRawImage\x88\x01\x01\x12<\n" +

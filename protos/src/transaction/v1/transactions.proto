@@ -1,0 +1,146 @@
+syntax = "proto3";
+
+package transaction.v1;
+import "buf/validate/validate.proto";
+
+enum TransactionType {
+  TRANSACTION_TYPE_UNSPECIFIED = 0;
+  // Transaction link to a sale (client).
+  TRANSACTION_TYPE_SALE = 1;
+  // Transaction link to a purchase (supplier).
+  TRANSACTION_TYPE_PURCHASE = 2;
+  // Transaction link to a refund (order).
+  TRANSACTION_TYPE_REFUND = 3;
+  // Stock adjustment (ex. : loss, damage).
+  TRANSACTION_TYPE_ADJUSTMENT = 4;
+  // Stock transfer between stores.
+  TRANSACTION_TYPE_TRANSFER = 5;
+  // Fees associated (ex. : transport, taxes).
+  TRANSACTION_TYPE_FEE = 6;
+}
+
+enum TransactionStatus {
+  TRANSACTION_STATUS_UNSPECIFIED = 0;
+  // Transaction is pending (ex. : payment not confirmed).
+  TRANSACTION_STATUS_PENDING = 1;
+  // Transaction is completed.
+  TRANSACTION_STATUS_COMPLETED = 2;
+  // Transaction failed (ex. : payment refused).
+  TRANSACTION_STATUS_FAILED = 3;
+  // Transaction is cancelled.
+  TRANSACTION_STATUS_CANCELLED = 4;
+}
+
+
+// The Transaction represents an entry of actions impacting the stock or finances, 
+// such as sales, purchases, refunds, stock adjustments, or stock transfers. 
+// It ensures traceability of operations by capturing the user, date, product, 
+// associated order, amount or quantity, for audit and reports.
+message Transaction {
+  // The unique identifier of the transaction.
+  optional string ref_id = 1;
+
+  // The type of the transaction (sale, purchase, refund, etc.).
+  TransactionType type = 2;
+
+  // The status of the transaction (pending, completed, failed, cancelled).
+  TransactionStatus status = 3;
+
+  // The unique identifier of the business associated with the transaction.
+  string business_id = 4 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+
+  // The unique identifier of the store associated with the transaction.
+  optional string store_id = 5;
+
+  // The unique identifier of the order associated with the transaction.
+  optional string order_id = 6;
+
+  // The unique identifier of the client or supplier associated with the transaction.
+  optional string from_id = 7;
+
+  // The amount of the transaction in cents.
+  int64 amount_in_cents = 8;
+
+  // The currency code of the transaction (ISO 4217).
+  string currency_code = 9 [
+    (buf.validate.field).required = true
+  ];
+
+  // The creation date of the transaction (ISO 8601).
+  string created_at = 10;
+
+  // The update date of the transaction (ISO 8601).
+  optional string updated_at = 11;
+
+  // The description or note of the transaction (ex. : "Refund for order cancellation").
+  optional string description = 12;
+
+  // The unique identifier of the business product associated with the transaction.
+  optional string business_product_id = 13;
+
+  // The quantity associated with the transaction (optional, for stock adjustments or stock transfers).
+  optional int32 quantity = 14;
+
+  // The unique identifier of the user who initiated the transaction.
+  optional string initiated_by = 15;
+
+  // The external links of the transaction (ex. : payment receipt, invoice).
+  repeated string external_links_ids = 16;
+}
+
+message AddTransactionRequest {
+  // The transaction to add.
+  Transaction transaction = 1;
+}
+
+message AddTransactionResponse {
+  // Whether the transaction was successfully added.
+  bool success = 1;
+}
+
+message GetTransactionRequest {
+  // The unique identifier of the transaction.
+  string transaction_id = 1;
+}
+
+message GetTransactionResponse {
+  // The retrieved transaction.
+  Transaction transaction = 1;
+}
+
+message UpdateTransactionRequest {
+  // The transaction to update.
+  Transaction transaction = 1;
+}
+
+message UpdateTransactionResponse {
+  // Whether the transaction was successfully updated.
+  bool success = 1;
+}
+
+message DeleteTransactionRequest {
+  // The unique identifier of the transaction.
+  string transaction_id = 1;
+}
+
+message DeleteTransactionResponse {
+  // Whether the transaction was successfully deleted.
+  bool success = 1;
+}
+
+service TransactionService {
+  // Adds a transaction.
+  rpc AddTransaction(AddTransactionRequest) returns (AddTransactionResponse);
+
+  // Gets a transaction by id.
+  rpc GetTransaction(GetTransactionRequest) returns (GetTransactionResponse);
+
+  // Updates a transaction.
+  rpc UpdateTransaction(UpdateTransactionRequest) returns (UpdateTransactionResponse);
+
+  // Deletes a transaction.
+  rpc DeleteTransaction(DeleteTransactionRequest) returns (DeleteTransactionResponse);
+}

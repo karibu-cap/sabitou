@@ -240,6 +240,15 @@ components:
           title: status
           description: The status of the order.
           $ref: '#/components/schemas/order.v1.OrderStatus'
+        createdAt:
+          type: string
+          title: created_at
+          description: The date and time the order was created.
+        updatedAt:
+          type: string
+          title: updated_at
+          description: The date and time the order was last updated.
+          nullable: true
       title: Order
       additionalProperties: false
     order.v1.OrderItem:

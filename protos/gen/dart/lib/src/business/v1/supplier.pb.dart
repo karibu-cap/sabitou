@@ -95,6 +95,10 @@ class Supplier extends $pb.GeneratedMessage {
     $core.String? description,
     $core.String? logoLinkId,
     $core.Iterable<$core.String>? externalLinksIds,
+    $core.String? contactPhone,
+    $core.String? contactEmail,
+    $core.String? contactAddress,
+    $core.bool? isActive,
     $core.String? businessId,
   }) {
     final result = create();
@@ -104,6 +108,10 @@ class Supplier extends $pb.GeneratedMessage {
     if (logoLinkId != null) result.logoLinkId = logoLinkId;
     if (externalLinksIds != null)
       result.externalLinksIds.addAll(externalLinksIds);
+    if (contactPhone != null) result.contactPhone = contactPhone;
+    if (contactEmail != null) result.contactEmail = contactEmail;
+    if (contactAddress != null) result.contactAddress = contactAddress;
+    if (isActive != null) result.isActive = isActive;
     if (businessId != null) result.businessId = businessId;
     return result;
   }
@@ -126,7 +134,11 @@ class Supplier extends $pb.GeneratedMessage {
     ..aOS(3, _omitFieldNames ? '' : 'description')
     ..aOS(4, _omitFieldNames ? '' : 'logoLinkId')
     ..pPS(5, _omitFieldNames ? '' : 'externalLinksIds')
-    ..aOS(6, _omitFieldNames ? '' : 'businessId')
+    ..aOS(6, _omitFieldNames ? '' : 'contactPhone')
+    ..aOS(7, _omitFieldNames ? '' : 'contactEmail')
+    ..aOS(8, _omitFieldNames ? '' : 'contactAddress')
+    ..aOB(9, _omitFieldNames ? '' : 'isActive')
+    ..aOS(10, _omitFieldNames ? '' : 'businessId')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -192,15 +204,55 @@ class Supplier extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   $pb.PbList<$core.String> get externalLinksIds => $_getList(4);
 
+  /// The contact phone number.
+  @$pb.TagNumber(6)
+  $core.String get contactPhone => $_getSZ(5);
+  @$pb.TagNumber(6)
+  set contactPhone($core.String value) => $_setString(5, value);
+  @$pb.TagNumber(6)
+  $core.bool hasContactPhone() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearContactPhone() => $_clearField(6);
+
+  /// The contact email.
+  @$pb.TagNumber(7)
+  $core.String get contactEmail => $_getSZ(6);
+  @$pb.TagNumber(7)
+  set contactEmail($core.String value) => $_setString(6, value);
+  @$pb.TagNumber(7)
+  $core.bool hasContactEmail() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearContactEmail() => $_clearField(7);
+
+  /// The contact address.
+  @$pb.TagNumber(8)
+  $core.String get contactAddress => $_getSZ(7);
+  @$pb.TagNumber(8)
+  set contactAddress($core.String value) => $_setString(7, value);
+  @$pb.TagNumber(8)
+  $core.bool hasContactAddress() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearContactAddress() => $_clearField(8);
+
+  /// Whether the supplier is active.
+  @$pb.TagNumber(9)
+  $core.bool get isActive => $_getBF(8);
+  @$pb.TagNumber(9)
+  set isActive($core.bool value) => $_setBool(8, value);
+  @$pb.TagNumber(9)
+  $core.bool hasIsActive() => $_has(8);
+  @$pb.TagNumber(9)
+  void clearIsActive() => $_clearField(9);
+
   /// The id of the business of the supplier.
-  @$pb.TagNumber(6)
-  $core.String get businessId => $_getSZ(5);
-  @$pb.TagNumber(6)
-  set businessId($core.String value) => $_setString(5, value);
-  @$pb.TagNumber(6)
-  $core.bool hasBusinessId() => $_has(5);
-  @$pb.TagNumber(6)
-  void clearBusinessId() => $_clearField(6);
+  @$pb.TagNumber(10)
+  $core.String get businessId => $_getSZ(9);
+  @$pb.TagNumber(10)
+  set businessId($core.String value) => $_setString(9, value);
+  @$pb.TagNumber(10)
+  $core.bool hasBusinessId() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearBusinessId() => $_clearField(10);
 }
 
 class CreateSupplierRequest extends $pb.GeneratedMessage {

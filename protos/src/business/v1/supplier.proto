@@ -29,8 +29,20 @@ message Supplier {
   // The links of the supplier.
   repeated string external_links_ids = 5;
 
+  // The contact phone number.
+  optional string contact_phone = 6;
+
+  // The contact email.
+  optional string contact_email = 7;
+
+  // The contact address.
+  optional string contact_address = 8;
+
+  // Whether the supplier is active.
+  bool is_active = 9;
+
   // The id of the business of the supplier.
-  string business_id = 6 [
+  string business_id = 10 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];

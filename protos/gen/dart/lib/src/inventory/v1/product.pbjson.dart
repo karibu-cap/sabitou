@@ -90,9 +90,27 @@ const BusinessProduct$json = {
     {'1': 'global_product_id', '3': 3, '4': 1, '5': 9, '10': 'globalProductId'},
     {'1': 'price_in_cents', '3': 4, '4': 1, '5': 5, '10': 'priceInCents'},
     {'1': 'images_link_ids', '3': 5, '4': 3, '5': 9, '10': 'imagesLinkIds'},
+    {'1': 'stock_quantity', '3': 6, '4': 1, '5': 5, '10': 'stockQuantity'},
+    {
+      '1': 'min_stock_threshold',
+      '3': 7,
+      '4': 1,
+      '5': 5,
+      '10': 'minStockThreshold'
+    },
+    {
+      '1': 'expiration_date',
+      '3': 8,
+      '4': 1,
+      '5': 9,
+      '9': 1,
+      '10': 'expirationDate',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_ref_id'},
+    {'1': '_expiration_date'},
   ],
 };
 
@@ -101,7 +119,10 @@ final $typed_data.Uint8List businessProductDescriptor = $convert.base64Decode(
     'Cg9CdXNpbmVzc1Byb2R1Y3QSGgoGcmVmX2lkGAEgASgJSABSBXJlZklkiAEBEh8KC2J1c2luZX'
     'NzX2lkGAIgASgJUgpidXNpbmVzc0lkEioKEWdsb2JhbF9wcm9kdWN0X2lkGAMgASgJUg9nbG9i'
     'YWxQcm9kdWN0SWQSJAoOcHJpY2VfaW5fY2VudHMYBCABKAVSDHByaWNlSW5DZW50cxImCg9pbW'
-    'FnZXNfbGlua19pZHMYBSADKAlSDWltYWdlc0xpbmtJZHNCCQoHX3JlZl9pZA==');
+    'FnZXNfbGlua19pZHMYBSADKAlSDWltYWdlc0xpbmtJZHMSJQoOc3RvY2tfcXVhbnRpdHkYBiAB'
+    'KAVSDXN0b2NrUXVhbnRpdHkSLgoTbWluX3N0b2NrX3RocmVzaG9sZBgHIAEoBVIRbWluU3RvY2'
+    'tUaHJlc2hvbGQSLAoPZXhwaXJhdGlvbl9kYXRlGAggASgJSAFSDmV4cGlyYXRpb25EYXRliAEB'
+    'QgkKB19yZWZfaWRCEgoQX2V4cGlyYXRpb25fZGF0ZQ==');
 
 @$core.Deprecated('Use findGlobalProductsRequestDescriptor instead')
 const FindGlobalProductsRequest$json = {
@@ -191,6 +212,15 @@ const AddProductRequest$json = {
       '5': 12,
       '10': 'imagesRawImages'
     },
+    {'1': 'stock_quantity', '3': 5, '4': 1, '5': 5, '10': 'stockQuantity'},
+    {
+      '1': 'min_stock_threshold',
+      '3': 6,
+      '4': 1,
+      '5': 5,
+      '10': 'minStockThreshold'
+    },
+    {'1': 'expiration_date', '3': 7, '4': 1, '5': 9, '10': 'expirationDate'},
   ],
 };
 
@@ -199,7 +229,9 @@ final $typed_data.Uint8List addProductRequestDescriptor = $convert.base64Decode(
     'ChFBZGRQcm9kdWN0UmVxdWVzdBJCCg5nbG9iYWxfcHJvZHVjdBgBIAEoCzIbLmludmVudG9yeS'
     '52MS5HbG9iYWxQcm9kdWN0Ug1nbG9iYWxQcm9kdWN0Eh8KC2J1c2luZXNzX2lkGAIgASgJUgpi'
     'dXNpbmVzc0lkEiQKDnByaWNlX2luX2NlbnRzGAMgASgFUgxwcmljZUluQ2VudHMSKgoRaW1hZ2'
-    'VzX3Jhd19pbWFnZXMYBCADKAxSD2ltYWdlc1Jhd0ltYWdlcw==');
+    'VzX3Jhd19pbWFnZXMYBCADKAxSD2ltYWdlc1Jhd0ltYWdlcxIlCg5zdG9ja19xdWFudGl0eRgF'
+    'IAEoBVINc3RvY2tRdWFudGl0eRIuChNtaW5fc3RvY2tfdGhyZXNob2xkGAYgASgFUhFtaW5TdG'
+    '9ja1RocmVzaG9sZBInCg9leHBpcmF0aW9uX2RhdGUYByABKAlSDmV4cGlyYXRpb25EYXRl');
 
 @$core.Deprecated('Use addProductResponseDescriptor instead')
 const AddProductResponse$json = {

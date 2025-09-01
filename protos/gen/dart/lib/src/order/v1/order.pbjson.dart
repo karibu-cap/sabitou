@@ -98,10 +98,21 @@ const Order$json = {
       '6': '.order.v1.OrderStatus',
       '10': 'status'
     },
+    {'1': 'created_at', '3': 7, '4': 1, '5': 9, '10': 'createdAt'},
+    {
+      '1': 'updated_at',
+      '3': 8,
+      '4': 1,
+      '5': 9,
+      '9': 2,
+      '10': 'updatedAt',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_ref_id'},
     {'1': '_from_id'},
+    {'1': '_updated_at'},
   ],
 };
 
@@ -111,8 +122,9 @@ final $typed_data.Uint8List orderDescriptor = $convert.base64Decode(
     'Zmcm9tSWSIAQESJgoPaXNfY2xpZW50X29yZGVyGAMgASgJUg1pc0NsaWVudE9yZGVyEjQKC29y'
     'ZGVyX2l0ZW1zGAQgAygLMhMub3JkZXIudjEuT3JkZXJJdGVtUgpvcmRlckl0ZW1zEi8KFHRvdG'
     'FsX3ByaWNlX2luX2NlbnRzGAUgASgFUhF0b3RhbFByaWNlSW5DZW50cxItCgZzdGF0dXMYBiAB'
-    'KA4yFS5vcmRlci52MS5PcmRlclN0YXR1c1IGc3RhdHVzQgkKB19yZWZfaWRCCgoIX2Zyb21faW'
-    'Q=');
+    'KA4yFS5vcmRlci52MS5PcmRlclN0YXR1c1IGc3RhdHVzEh0KCmNyZWF0ZWRfYXQYByABKAlSCW'
+    'NyZWF0ZWRBdBIiCgp1cGRhdGVkX2F0GAggASgJSAJSCXVwZGF0ZWRBdIgBAUIJCgdfcmVmX2lk'
+    'QgoKCF9mcm9tX2lkQg0KC191cGRhdGVkX2F0');
 
 @$core.Deprecated('Use createOrderRequestDescriptor instead')
 const CreateOrderRequest$json = {

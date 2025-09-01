@@ -206,6 +206,9 @@ class BusinessProduct extends $pb.GeneratedMessage {
     $core.String? globalProductId,
     $core.int? priceInCents,
     $core.Iterable<$core.String>? imagesLinkIds,
+    $core.int? stockQuantity,
+    $core.int? minStockThreshold,
+    $core.String? expirationDate,
   }) {
     final result = create();
     if (refId != null) result.refId = refId;
@@ -213,6 +216,9 @@ class BusinessProduct extends $pb.GeneratedMessage {
     if (globalProductId != null) result.globalProductId = globalProductId;
     if (priceInCents != null) result.priceInCents = priceInCents;
     if (imagesLinkIds != null) result.imagesLinkIds.addAll(imagesLinkIds);
+    if (stockQuantity != null) result.stockQuantity = stockQuantity;
+    if (minStockThreshold != null) result.minStockThreshold = minStockThreshold;
+    if (expirationDate != null) result.expirationDate = expirationDate;
     return result;
   }
 
@@ -234,6 +240,11 @@ class BusinessProduct extends $pb.GeneratedMessage {
     ..aOS(3, _omitFieldNames ? '' : 'globalProductId')
     ..a<$core.int>(4, _omitFieldNames ? '' : 'priceInCents', $pb.PbFieldType.O3)
     ..pPS(5, _omitFieldNames ? '' : 'imagesLinkIds')
+    ..a<$core.int>(
+        6, _omitFieldNames ? '' : 'stockQuantity', $pb.PbFieldType.O3)
+    ..a<$core.int>(
+        7, _omitFieldNames ? '' : 'minStockThreshold', $pb.PbFieldType.O3)
+    ..aOS(8, _omitFieldNames ? '' : 'expirationDate')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -301,6 +312,36 @@ class BusinessProduct extends $pb.GeneratedMessage {
   /// The media ids of the images of the product.
   @$pb.TagNumber(5)
   $pb.PbList<$core.String> get imagesLinkIds => $_getList(4);
+
+  /// The stock quantity of the product.
+  @$pb.TagNumber(6)
+  $core.int get stockQuantity => $_getIZ(5);
+  @$pb.TagNumber(6)
+  set stockQuantity($core.int value) => $_setSignedInt32(5, value);
+  @$pb.TagNumber(6)
+  $core.bool hasStockQuantity() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearStockQuantity() => $_clearField(6);
+
+  /// The minimum stock threshold of the product.
+  @$pb.TagNumber(7)
+  $core.int get minStockThreshold => $_getIZ(6);
+  @$pb.TagNumber(7)
+  set minStockThreshold($core.int value) => $_setSignedInt32(6, value);
+  @$pb.TagNumber(7)
+  $core.bool hasMinStockThreshold() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearMinStockThreshold() => $_clearField(7);
+
+  /// The expiration date of the product.
+  @$pb.TagNumber(8)
+  $core.String get expirationDate => $_getSZ(7);
+  @$pb.TagNumber(8)
+  set expirationDate($core.String value) => $_setString(7, value);
+  @$pb.TagNumber(8)
+  $core.bool hasExpirationDate() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearExpirationDate() => $_clearField(8);
 }
 
 class FindGlobalProductsRequest extends $pb.GeneratedMessage {
@@ -537,12 +578,18 @@ class AddProductRequest extends $pb.GeneratedMessage {
     $core.String? businessId,
     $core.int? priceInCents,
     $core.Iterable<$core.List<$core.int>>? imagesRawImages,
+    $core.int? stockQuantity,
+    $core.int? minStockThreshold,
+    $core.String? expirationDate,
   }) {
     final result = create();
     if (globalProduct != null) result.globalProduct = globalProduct;
     if (businessId != null) result.businessId = businessId;
     if (priceInCents != null) result.priceInCents = priceInCents;
     if (imagesRawImages != null) result.imagesRawImages.addAll(imagesRawImages);
+    if (stockQuantity != null) result.stockQuantity = stockQuantity;
+    if (minStockThreshold != null) result.minStockThreshold = minStockThreshold;
+    if (expirationDate != null) result.expirationDate = expirationDate;
     return result;
   }
 
@@ -565,6 +612,11 @@ class AddProductRequest extends $pb.GeneratedMessage {
     ..a<$core.int>(3, _omitFieldNames ? '' : 'priceInCents', $pb.PbFieldType.O3)
     ..p<$core.List<$core.int>>(
         4, _omitFieldNames ? '' : 'imagesRawImages', $pb.PbFieldType.PY)
+    ..a<$core.int>(
+        5, _omitFieldNames ? '' : 'stockQuantity', $pb.PbFieldType.O3)
+    ..a<$core.int>(
+        6, _omitFieldNames ? '' : 'minStockThreshold', $pb.PbFieldType.O3)
+    ..aOS(7, _omitFieldNames ? '' : 'expirationDate')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -625,6 +677,36 @@ class AddProductRequest extends $pb.GeneratedMessage {
   /// The media ids of the images of the product.
   @$pb.TagNumber(4)
   $pb.PbList<$core.List<$core.int>> get imagesRawImages => $_getList(3);
+
+  /// The stock quantity of the product.
+  @$pb.TagNumber(5)
+  $core.int get stockQuantity => $_getIZ(4);
+  @$pb.TagNumber(5)
+  set stockQuantity($core.int value) => $_setSignedInt32(4, value);
+  @$pb.TagNumber(5)
+  $core.bool hasStockQuantity() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearStockQuantity() => $_clearField(5);
+
+  /// The minimum stock threshold of the product.
+  @$pb.TagNumber(6)
+  $core.int get minStockThreshold => $_getIZ(5);
+  @$pb.TagNumber(6)
+  set minStockThreshold($core.int value) => $_setSignedInt32(5, value);
+  @$pb.TagNumber(6)
+  $core.bool hasMinStockThreshold() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearMinStockThreshold() => $_clearField(6);
+
+  /// The expiration date of the product.
+  @$pb.TagNumber(7)
+  $core.String get expirationDate => $_getSZ(6);
+  @$pb.TagNumber(7)
+  set expirationDate($core.String value) => $_setString(6, value);
+  @$pb.TagNumber(7)
+  $core.bool hasExpirationDate() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearExpirationDate() => $_clearField(7);
 }
 
 class AddProductResponse extends $pb.GeneratedMessage {

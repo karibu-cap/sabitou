@@ -179,8 +179,14 @@ type BusinessProduct struct {
 	PriceInCents int32 `protobuf:"varint,4,opt,name=price_in_cents,json=priceInCents,proto3" json:"price_in_cents,omitempty"`
 	// The media ids of the images of the product.
 	ImagesLinkIds []string `protobuf:"bytes,5,rep,name=images_link_ids,json=imagesLinkIds,proto3" json:"images_link_ids,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	// The stock quantity of the product.
+	StockQuantity int32 `protobuf:"varint,6,opt,name=stock_quantity,json=stockQuantity,proto3" json:"stock_quantity,omitempty"`
+	// The minimum stock threshold of the product.
+	MinStockThreshold int32 `protobuf:"varint,7,opt,name=min_stock_threshold,json=minStockThreshold,proto3" json:"min_stock_threshold,omitempty"`
+	// The expiration date of the product.
+	ExpirationDate *string `protobuf:"bytes,8,opt,name=expiration_date,json=expirationDate,proto3,oneof" json:"expiration_date,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *BusinessProduct) Reset() {
@@ -246,6 +252,27 @@ func (x *BusinessProduct) GetImagesLinkIds() []string {
 		return x.ImagesLinkIds
 	}
 	return nil
+}
+
+func (x *BusinessProduct) GetStockQuantity() int32 {
+	if x != nil {
+		return x.StockQuantity
+	}
+	return 0
+}
+
+func (x *BusinessProduct) GetMinStockThreshold() int32 {
+	if x != nil {
+		return x.MinStockThreshold
+	}
+	return 0
+}
+
+func (x *BusinessProduct) GetExpirationDate() string {
+	if x != nil && x.ExpirationDate != nil {
+		return *x.ExpirationDate
+	}
+	return ""
 }
 
 type FindGlobalProductsRequest struct {
@@ -442,8 +469,14 @@ type AddProductRequest struct {
 	PriceInCents int32 `protobuf:"varint,3,opt,name=price_in_cents,json=priceInCents,proto3" json:"price_in_cents,omitempty"`
 	// The media ids of the images of the product.
 	ImagesRawImages [][]byte `protobuf:"bytes,4,rep,name=images_raw_images,json=imagesRawImages,proto3" json:"images_raw_images,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	// The stock quantity of the product.
+	StockQuantity int32 `protobuf:"varint,5,opt,name=stock_quantity,json=stockQuantity,proto3" json:"stock_quantity,omitempty"`
+	// The minimum stock threshold of the product.
+	MinStockThreshold int32 `protobuf:"varint,6,opt,name=min_stock_threshold,json=minStockThreshold,proto3" json:"min_stock_threshold,omitempty"`
+	// The expiration date of the product.
+	ExpirationDate string `protobuf:"bytes,7,opt,name=expiration_date,json=expirationDate,proto3" json:"expiration_date,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *AddProductRequest) Reset() {
@@ -502,6 +535,27 @@ func (x *AddProductRequest) GetImagesRawImages() [][]byte {
 		return x.ImagesRawImages
 	}
 	return nil
+}
+
+func (x *AddProductRequest) GetStockQuantity() int32 {
+	if x != nil {
+		return x.StockQuantity
+	}
+	return 0
+}
+
+func (x *AddProductRequest) GetMinStockThreshold() int32 {
+	if x != nil {
+		return x.MinStockThreshold
+	}
+	return 0
+}
+
+func (x *AddProductRequest) GetExpirationDate() string {
+	if x != nil {
+		return x.ExpirationDate
+	}
+	return ""
 }
 
 type AddProductResponse struct {
@@ -851,15 +905,19 @@ const file_inventory_v1_product_proto_rawDesc = "" +
 	"\x10images_links_ids\x18\x06 \x03(\tR\x0eimagesLinksIdsB\t\n" +
 	"\a_ref_idB\x0e\n" +
 	"\f_descriptionB\x11\n" +
-	"\x0f_bar_code_value\"\xd3\x01\n" +
+	"\x0f_bar_code_value\"\xec\x02\n" +
 	"\x0fBusinessProduct\x12\x1a\n" +
 	"\x06ref_id\x18\x01 \x01(\tH\x00R\x05refId\x88\x01\x01\x12\x1f\n" +
 	"\vbusiness_id\x18\x02 \x01(\tR\n" +
 	"businessId\x12*\n" +
 	"\x11global_product_id\x18\x03 \x01(\tR\x0fglobalProductId\x12$\n" +
 	"\x0eprice_in_cents\x18\x04 \x01(\x05R\fpriceInCents\x12&\n" +
-	"\x0fimages_link_ids\x18\x05 \x03(\tR\rimagesLinkIdsB\t\n" +
-	"\a_ref_id\"1\n" +
+	"\x0fimages_link_ids\x18\x05 \x03(\tR\rimagesLinkIds\x12%\n" +
+	"\x0estock_quantity\x18\x06 \x01(\x05R\rstockQuantity\x12.\n" +
+	"\x13min_stock_threshold\x18\a \x01(\x05R\x11minStockThreshold\x12,\n" +
+	"\x0fexpiration_date\x18\b \x01(\tH\x01R\x0eexpirationDate\x88\x01\x01B\t\n" +
+	"\a_ref_idB\x12\n" +
+	"\x10_expiration_date\"1\n" +
 	"\x19FindGlobalProductsRequest\x12\x14\n" +
 	"\x05query\x18\x01 \x01(\tR\x05query\"U\n" +
 	"\x1aFindGlobalProductsResponse\x127\n" +
@@ -869,13 +927,16 @@ const file_inventory_v1_product_proto_rawDesc = "" +
 	"\x14FindCategoryResponse\x12=\n" +
 	"\n" +
 	"categories\x18\x01 \x03(\v2\x1d.inventory.v1.ProductCategoryR\n" +
-	"categories\"\xca\x01\n" +
+	"categories\"\xca\x02\n" +
 	"\x11AddProductRequest\x12B\n" +
 	"\x0eglobal_product\x18\x01 \x01(\v2\x1b.inventory.v1.GlobalProductR\rglobalProduct\x12\x1f\n" +
 	"\vbusiness_id\x18\x02 \x01(\tR\n" +
 	"businessId\x12$\n" +
 	"\x0eprice_in_cents\x18\x03 \x01(\x05R\fpriceInCents\x12*\n" +
-	"\x11images_raw_images\x18\x04 \x03(\fR\x0fimagesRawImages\".\n" +
+	"\x11images_raw_images\x18\x04 \x03(\fR\x0fimagesRawImages\x12%\n" +
+	"\x0estock_quantity\x18\x05 \x01(\x05R\rstockQuantity\x12.\n" +
+	"\x13min_stock_threshold\x18\x06 \x01(\x05R\x11minStockThreshold\x12'\n" +
+	"\x0fexpiration_date\x18\a \x01(\tR\x0eexpirationDate\".\n" +
 	"\x12AddProductResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\">\n" +
 	"\x11GetProductRequest\x12)\n" +

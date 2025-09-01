@@ -1,6 +1,6 @@
 openapi: 3.1.0
 info:
-  title: store.v1
+  title: transaction.v1
 paths:
   /business.v1.BusinessService/CreateBusiness:
     post:
@@ -1856,6 +1856,150 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/store.v1.DeleteStoreResponse'
+  /transaction.v1.TransactionService/AddTransaction:
+    post:
+      tags:
+        - transaction.v1.TransactionService
+      summary: Adds a transaction.
+      description: Adds a transaction.
+      operationId: transaction.v1.TransactionService.AddTransaction
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/transaction.v1.AddTransactionRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/transaction.v1.AddTransactionResponse'
+  /transaction.v1.TransactionService/GetTransaction:
+    post:
+      tags:
+        - transaction.v1.TransactionService
+      summary: Gets a transaction by id.
+      description: Gets a transaction by id.
+      operationId: transaction.v1.TransactionService.GetTransaction
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/transaction.v1.GetTransactionRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/transaction.v1.GetTransactionResponse'
+  /transaction.v1.TransactionService/UpdateTransaction:
+    post:
+      tags:
+        - transaction.v1.TransactionService
+      summary: Updates a transaction.
+      description: Updates a transaction.
+      operationId: transaction.v1.TransactionService.UpdateTransaction
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/transaction.v1.UpdateTransactionRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/transaction.v1.UpdateTransactionResponse'
+  /transaction.v1.TransactionService/DeleteTransaction:
+    post:
+      tags:
+        - transaction.v1.TransactionService
+      summary: Deletes a transaction.
+      description: Deletes a transaction.
+      operationId: transaction.v1.TransactionService.DeleteTransaction
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/transaction.v1.DeleteTransactionRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/transaction.v1.DeleteTransactionResponse'
 components:
   schemas:
     business.v1.BusinessStatusType:
@@ -2630,6 +2774,25 @@ components:
             type: string
           title: external_links_ids
           description: The links of the supplier.
+        contactPhone:
+          type: string
+          title: contact_phone
+          description: The contact phone number.
+          nullable: true
+        contactEmail:
+          type: string
+          title: contact_email
+          description: The contact email.
+          nullable: true
+        contactAddress:
+          type: string
+          title: contact_address
+          description: The contact address.
+          nullable: true
+        isActive:
+          type: boolean
+          title: is_active
+          description: Whether the supplier is active.
         businessId:
           type: string
           title: business_id
@@ -3336,6 +3499,10 @@ components:
             $ref: '#/components/schemas/identity.v1.AuthActionType'
           title: required_actions
           description: The actions that the user must complete to authenticate.
+        accountType:
+          title: account_type
+          description: The type of the user's account.
+          $ref: '#/components/schemas/identity.v1.AccountType'
       title: User
       additionalProperties: false
       description: |-
@@ -3368,6 +3535,20 @@ components:
             format: byte
           title: images_raw_images
           description: The media ids of the images of the product.
+        stockQuantity:
+          type: integer
+          title: stock_quantity
+          format: int32
+          description: The stock quantity of the product.
+        minStockThreshold:
+          type: integer
+          title: min_stock_threshold
+          format: int32
+          description: The minimum stock threshold of the product.
+        expirationDate:
+          type: string
+          title: expiration_date
+          description: The expiration date of the product.
       title: AddProductRequest
       additionalProperties: false
     inventory.v1.AddProductResponse:
@@ -3408,6 +3589,21 @@ components:
             type: string
           title: images_link_ids
           description: The media ids of the images of the product.
+        stockQuantity:
+          type: integer
+          title: stock_quantity
+          format: int32
+          description: The stock quantity of the product.
+        minStockThreshold:
+          type: integer
+          title: min_stock_threshold
+          format: int32
+          description: The minimum stock threshold of the product.
+        expirationDate:
+          type: string
+          title: expiration_date
+          description: The expiration date of the product.
+          nullable: true
       title: BusinessProduct
       additionalProperties: false
     inventory.v1.DeleteProductRequest:
@@ -3741,6 +3937,15 @@ components:
           title: status
           description: The status of the order.
           $ref: '#/components/schemas/order.v1.OrderStatus'
+        createdAt:
+          type: string
+          title: created_at
+          description: The date and time the order was created.
+        updatedAt:
+          type: string
+          title: updated_at
+          description: The date and time the order was last updated.
+          nullable: true
       title: Order
       additionalProperties: false
     order.v1.OrderItem:
@@ -3986,6 +4191,189 @@ components:
           $ref: '#/components/schemas/store.v1.Store'
       title: UpdateStoreResponse
       additionalProperties: false
+    transaction.v1.TransactionStatus:
+      type: string
+      title: TransactionStatus
+      enum:
+        - TRANSACTION_STATUS_UNSPECIFIED
+        - TRANSACTION_STATUS_PENDING
+        - TRANSACTION_STATUS_COMPLETED
+        - TRANSACTION_STATUS_FAILED
+        - TRANSACTION_STATUS_CANCELLED
+    transaction.v1.TransactionType:
+      type: string
+      title: TransactionType
+      enum:
+        - TRANSACTION_TYPE_UNSPECIFIED
+        - TRANSACTION_TYPE_SALE
+        - TRANSACTION_TYPE_PURCHASE
+        - TRANSACTION_TYPE_REFUND
+        - TRANSACTION_TYPE_ADJUSTMENT
+        - TRANSACTION_TYPE_TRANSFER
+        - TRANSACTION_TYPE_FEE
+    transaction.v1.AddTransactionRequest:
+      type: object
+      properties:
+        transaction:
+          title: transaction
+          description: The transaction to add.
+          $ref: '#/components/schemas/transaction.v1.Transaction'
+      title: AddTransactionRequest
+      additionalProperties: false
+    transaction.v1.AddTransactionResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the transaction was successfully added.
+      title: AddTransactionResponse
+      additionalProperties: false
+    transaction.v1.DeleteTransactionRequest:
+      type: object
+      properties:
+        transactionId:
+          type: string
+          title: transaction_id
+          description: The unique identifier of the transaction.
+      title: DeleteTransactionRequest
+      additionalProperties: false
+    transaction.v1.DeleteTransactionResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the transaction was successfully deleted.
+      title: DeleteTransactionResponse
+      additionalProperties: false
+    transaction.v1.GetTransactionRequest:
+      type: object
+      properties:
+        transactionId:
+          type: string
+          title: transaction_id
+          description: The unique identifier of the transaction.
+      title: GetTransactionRequest
+      additionalProperties: false
+    transaction.v1.GetTransactionResponse:
+      type: object
+      properties:
+        transaction:
+          title: transaction
+          description: The retrieved transaction.
+          $ref: '#/components/schemas/transaction.v1.Transaction'
+      title: GetTransactionResponse
+      additionalProperties: false
+    transaction.v1.Transaction:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+          description: The unique identifier of the transaction.
+          nullable: true
+        type:
+          title: type
+          description: The type of the transaction (sale, purchase, refund, etc.).
+          $ref: '#/components/schemas/transaction.v1.TransactionType'
+        status:
+          title: status
+          description: The status of the transaction (pending, completed, failed, cancelled).
+          $ref: '#/components/schemas/transaction.v1.TransactionStatus'
+        businessId:
+          type: string
+          title: business_id
+          minLength: 3
+          description: |
+            The unique identifier of the business associated with the transaction.
+            string.min_len = 3
+        storeId:
+          type: string
+          title: store_id
+          description: The unique identifier of the store associated with the transaction.
+          nullable: true
+        orderId:
+          type: string
+          title: order_id
+          description: The unique identifier of the order associated with the transaction.
+          nullable: true
+        fromId:
+          type: string
+          title: from_id
+          description: The unique identifier of the client or supplier associated with the transaction.
+          nullable: true
+        amountInCents:
+          type:
+            - integer
+            - string
+          title: amount_in_cents
+          format: int64
+          description: The amount of the transaction in cents.
+        currencyCode:
+          type: string
+          title: currency_code
+          description: The currency code of the transaction (ISO 4217).
+        createdAt:
+          type: string
+          title: created_at
+          description: The creation date of the transaction (ISO 8601).
+        updatedAt:
+          type: string
+          title: updated_at
+          description: The update date of the transaction (ISO 8601).
+          nullable: true
+        description:
+          type: string
+          title: description
+          description: 'The description or note of the transaction (ex. : "Refund for order cancellation").'
+          nullable: true
+        businessProductId:
+          type: string
+          title: business_product_id
+          description: The unique identifier of the business product associated with the transaction.
+          nullable: true
+        quantity:
+          type: integer
+          title: quantity
+          format: int32
+          description: The quantity associated with the transaction (optional, for stock adjustments or stock transfers).
+          nullable: true
+        initiatedBy:
+          type: string
+          title: initiated_by
+          description: The unique identifier of the user who initiated the transaction.
+          nullable: true
+        externalLinksIds:
+          type: array
+          items:
+            type: string
+          title: external_links_ids
+          description: 'The external links of the transaction (ex. : payment receipt, invoice).'
+      title: Transaction
+      required:
+        - businessId
+        - currencyCode
+      additionalProperties: false
+      description: "The Transaction represents an entry of actions impacting the stock or finances, \n such as sales, purchases, refunds, stock adjustments, or stock transfers. \n It ensures traceability of operations by capturing the user, date, product, \n associated order, amount or quantity, for audit and reports."
+    transaction.v1.UpdateTransactionRequest:
+      type: object
+      properties:
+        transaction:
+          title: transaction
+          description: The transaction to update.
+          $ref: '#/components/schemas/transaction.v1.Transaction'
+      title: UpdateTransactionRequest
+      additionalProperties: false
+    transaction.v1.UpdateTransactionResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the transaction was successfully updated.
+      title: UpdateTransactionResponse
+      additionalProperties: false
 security: []
 tags:
-  - name: store.v1.StoreService
+  - name: transaction.v1.TransactionService
