@@ -19,12 +19,16 @@ export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 
 class LoginRequest extends $pb.GeneratedMessage {
   factory LoginRequest({
-    $core.String? uRef,
     $core.String? password,
+    $core.String? email,
+    $core.String? phoneNumber,
+    $core.String? userName,
   }) {
     final result = create();
-    if (uRef != null) result.uRef = uRef;
     if (password != null) result.password = password;
+    if (email != null) result.email = email;
+    if (phoneNumber != null) result.phoneNumber = phoneNumber;
+    if (userName != null) result.userName = userName;
     return result;
   }
 
@@ -41,8 +45,10 @@ class LoginRequest extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'LoginRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'identity.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'uRef')
-    ..aOS(2, _omitFieldNames ? '' : 'password')
+    ..aOS(1, _omitFieldNames ? '' : 'password')
+    ..aOS(2, _omitFieldNames ? '' : 'email')
+    ..aOS(3, _omitFieldNames ? '' : 'phoneNumber')
+    ..aOS(4, _omitFieldNames ? '' : 'userName')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -66,26 +72,48 @@ class LoginRequest extends $pb.GeneratedMessage {
       $pb.GeneratedMessage.$_defaultFor<LoginRequest>(create);
   static LoginRequest? _defaultInstance;
 
-  /// The unique identifier of the user.
-  /// For example, the email address or phone number or @username.
-  @$pb.TagNumber(1)
-  $core.String get uRef => $_getSZ(0);
-  @$pb.TagNumber(1)
-  set uRef($core.String value) => $_setString(0, value);
-  @$pb.TagNumber(1)
-  $core.bool hasURef() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearURef() => $_clearField(1);
-
   /// The password of the user.
+  @$pb.TagNumber(1)
+  $core.String get password => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set password($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasPassword() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearPassword() => $_clearField(1);
+
+  /// The email of the user.
+  /// Note: required when phone_number and username are not set.
   @$pb.TagNumber(2)
-  $core.String get password => $_getSZ(1);
+  $core.String get email => $_getSZ(1);
   @$pb.TagNumber(2)
-  set password($core.String value) => $_setString(1, value);
+  set email($core.String value) => $_setString(1, value);
   @$pb.TagNumber(2)
-  $core.bool hasPassword() => $_has(1);
+  $core.bool hasEmail() => $_has(1);
   @$pb.TagNumber(2)
-  void clearPassword() => $_clearField(2);
+  void clearEmail() => $_clearField(2);
+
+  /// The phone number of the user.
+  /// Note: required when email and username are not set.
+  @$pb.TagNumber(3)
+  $core.String get phoneNumber => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set phoneNumber($core.String value) => $_setString(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasPhoneNumber() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearPhoneNumber() => $_clearField(3);
+
+  /// The username of the user.
+  /// Note: required when email and phone_number are not set.
+  @$pb.TagNumber(4)
+  $core.String get userName => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set userName($core.String value) => $_setString(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasUserName() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearUserName() => $_clearField(4);
 }
 
 class LoginResponse extends $pb.GeneratedMessage {
@@ -165,10 +193,12 @@ class RegisterRequest extends $pb.GeneratedMessage {
   factory RegisterRequest({
     $core.String? userName,
     $core.String? email,
+    $core.String? password,
   }) {
     final result = create();
     if (userName != null) result.userName = userName;
     if (email != null) result.email = email;
+    if (password != null) result.password = password;
     return result;
   }
 
@@ -187,6 +217,7 @@ class RegisterRequest extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'userName')
     ..aOS(2, _omitFieldNames ? '' : 'email')
+    ..aOS(3, _omitFieldNames ? '' : 'password')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -229,6 +260,16 @@ class RegisterRequest extends $pb.GeneratedMessage {
   $core.bool hasEmail() => $_has(1);
   @$pb.TagNumber(2)
   void clearEmail() => $_clearField(2);
+
+  /// The password of the user.
+  @$pb.TagNumber(3)
+  $core.String get password => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set password($core.String value) => $_setString(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasPassword() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearPassword() => $_clearField(3);
 }
 
 class RegisterResponse extends $pb.GeneratedMessage {

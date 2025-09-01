@@ -24,11 +24,17 @@ const (
 
 type LoginRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The unique identifier of the user.
-	// For example, the email address or phone number or @username.
-	URef string `protobuf:"bytes,1,opt,name=u_ref,json=uRef,proto3" json:"u_ref,omitempty"`
 	// The password of the user.
-	Password      string `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
+	Password string `protobuf:"bytes,1,opt,name=password,proto3" json:"password,omitempty"`
+	// The email of the user.
+	// Note: required when phone_number and username are not set.
+	Email *string `protobuf:"bytes,2,opt,name=email,proto3,oneof" json:"email,omitempty"`
+	// The phone number of the user.
+	// Note: required when email and username are not set.
+	PhoneNumber *string `protobuf:"bytes,3,opt,name=phone_number,json=phoneNumber,proto3,oneof" json:"phone_number,omitempty"`
+	// The username of the user.
+	// Note: required when email and phone_number are not set.
+	UserName      *string `protobuf:"bytes,4,opt,name=user_name,json=userName,proto3,oneof" json:"user_name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -63,16 +69,30 @@ func (*LoginRequest) Descriptor() ([]byte, []int) {
 	return file_identity_v1_authentication_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *LoginRequest) GetURef() string {
+func (x *LoginRequest) GetPassword() string {
 	if x != nil {
-		return x.URef
+		return x.Password
 	}
 	return ""
 }
 
-func (x *LoginRequest) GetPassword() string {
-	if x != nil {
-		return x.Password
+func (x *LoginRequest) GetEmail() string {
+	if x != nil && x.Email != nil {
+		return *x.Email
+	}
+	return ""
+}
+
+func (x *LoginRequest) GetPhoneNumber() string {
+	if x != nil && x.PhoneNumber != nil {
+		return *x.PhoneNumber
+	}
+	return ""
+}
+
+func (x *LoginRequest) GetUserName() string {
+	if x != nil && x.UserName != nil {
+		return *x.UserName
 	}
 	return ""
 }
@@ -139,7 +159,9 @@ type RegisterRequest struct {
 	// The unique identifier of the user.
 	UserName string `protobuf:"bytes,1,opt,name=user_name,json=userName,proto3" json:"user_name,omitempty"`
 	// The email address of the user.
-	Email         string `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
+	Email string `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
+	// The password of the user.
+	Password      string `protobuf:"bytes,3,opt,name=password,proto3" json:"password,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -184,6 +206,13 @@ func (x *RegisterRequest) GetUserName() string {
 func (x *RegisterRequest) GetEmail() string {
 	if x != nil {
 		return x.Email
+	}
+	return ""
+}
+
+func (x *RegisterRequest) GetPassword() string {
+	if x != nil {
+		return x.Password
 	}
 	return ""
 }
@@ -455,17 +484,23 @@ var File_identity_v1_authentication_proto protoreflect.FileDescriptor
 
 const file_identity_v1_authentication_proto_rawDesc = "" +
 	"\n" +
-	" identity/v1/authentication.proto\x12\videntity.v1\x1a\x1bbuf/validate/validate.proto\"\x90\x02\n" +
-	"\fLoginRequest\x12\xe3\x01\n" +
-	"\x05u_ref\x18\x01 \x01(\tB\xcd\x01\xbaH\xc9\x01\xba\x01\xc5\x01\n" +
-	"\x12string.is_user_ref\x12>user_ref must be a valid email address or user id or @username\x1aothis.isEmail() || this.matches('^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')R\x04uRef\x12\x1a\n" +
-	"\bpassword\x18\x02 \x01(\tR\bpassword\"J\n" +
+	" identity/v1/authentication.proto\x12\videntity.v1\x1a\x1bbuf/validate/validate.proto\"\xf5\x01\n" +
+	"\fLoginRequest\x12\x1a\n" +
+	"\bpassword\x18\x01 \x01(\tR\bpassword\x12\"\n" +
+	"\x05email\x18\x02 \x01(\tB\a\xbaH\x04r\x02`\x01H\x00R\x05email\x88\x01\x01\x12A\n" +
+	"\fphone_number\x18\x03 \x01(\tB\x19\xbaH\x16r\x142\x12^[0-9\\+\\-\\(\\)\\s]+$H\x01R\vphoneNumber\x88\x01\x01\x129\n" +
+	"\tuser_name\x18\x04 \x01(\tB\x17\xbaH\x14r\x122\x10^@[a-zA-Z0-9_]+$H\x02R\buserName\x88\x01\x01B\b\n" +
+	"\x06_emailB\x0f\n" +
+	"\r_phone_numberB\f\n" +
+	"\n" +
+	"_user_name\"J\n" +
 	"\rLoginResponse\x12\x14\n" +
 	"\x05token\x18\x01 \x01(\tR\x05token\x12#\n" +
-	"\rrefresh_token\x18\x02 \x01(\tR\frefreshToken\"D\n" +
+	"\rrefresh_token\x18\x02 \x01(\tR\frefreshToken\"w\n" +
 	"\x0fRegisterRequest\x12\x1b\n" +
-	"\tuser_name\x18\x01 \x01(\tR\buserName\x12\x14\n" +
-	"\x05email\x18\x02 \x01(\tR\x05email\"M\n" +
+	"\tuser_name\x18\x01 \x01(\tR\buserName\x12\x1d\n" +
+	"\x05email\x18\x02 \x01(\tB\a\xbaH\x04r\x02`\x01R\x05email\x12(\n" +
+	"\bpassword\x18\x03 \x01(\tB\f\xbaH\t\xc8\x01\x01r\x04\x10\x05\x18HR\bpassword\"M\n" +
 	"\x10RegisterResponse\x12\x14\n" +
 	"\x05token\x18\x01 \x01(\tR\x05token\x12#\n" +
 	"\rrefresh_token\x18\x02 \x01(\tR\frefreshToken\"\x83\x02\n" +
@@ -533,6 +568,7 @@ func file_identity_v1_authentication_proto_init() {
 	if File_identity_v1_authentication_proto != nil {
 		return
 	}
+	file_identity_v1_authentication_proto_msgTypes[0].OneofWrappers = []any{}
 	file_identity_v1_authentication_proto_msgTypes[5].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
