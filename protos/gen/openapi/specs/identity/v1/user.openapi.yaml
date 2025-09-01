@@ -268,6 +268,12 @@ components:
         - ACCOUNT_STATUS_TYPE_UNSPECIFIED
         - ACCOUNT_STATUS_TYPE_ACTIVE
         - ACCOUNT_STATUS_TYPE_DELETED
+    identity.v1.AccountType:
+      type: string
+      title: AccountType
+      enum:
+        - ADMIN
+        - USER
     identity.v1.AuthActionType:
       type: string
       title: AuthActionType

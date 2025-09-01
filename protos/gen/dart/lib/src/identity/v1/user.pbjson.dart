@@ -32,6 +32,19 @@ final $typed_data.Uint8List accountStatusTypeDescriptor = $convert.base64Decode(
     'ASHgoaQUNDT1VOVF9TVEFUVVNfVFlQRV9BQ1RJVkUQARIfChtBQ0NPVU5UX1NUQVRVU19UWVBF'
     'X0RFTEVURUQQAg==');
 
+@$core.Deprecated('Use accountTypeDescriptor instead')
+const AccountType$json = {
+  '1': 'AccountType',
+  '2': [
+    {'1': 'ADMIN', '2': 0},
+    {'1': 'USER', '2': 1},
+  ],
+};
+
+/// Descriptor for `AccountType`. Decode as a `google.protobuf.EnumDescriptorProto`.
+final $typed_data.Uint8List accountTypeDescriptor =
+    $convert.base64Decode('CgtBY2NvdW50VHlwZRIJCgVBRE1JThAAEggKBFVTRVIQAQ==');
+
 @$core.Deprecated('Use authActionTypeDescriptor instead')
 const AuthActionType$json = {
   '1': 'AuthActionType',

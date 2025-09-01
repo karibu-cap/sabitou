@@ -72,6 +72,52 @@ func (AccountStatusType) EnumDescriptor() ([]byte, []int) {
 	return file_identity_v1_user_proto_rawDescGZIP(), []int{0}
 }
 
+type AccountType int32
+
+const (
+	AccountType_ADMIN AccountType = 0
+	AccountType_USER  AccountType = 1
+)
+
+// Enum value maps for AccountType.
+var (
+	AccountType_name = map[int32]string{
+		0: "ADMIN",
+		1: "USER",
+	}
+	AccountType_value = map[string]int32{
+		"ADMIN": 0,
+		"USER":  1,
+	}
+)
+
+func (x AccountType) Enum() *AccountType {
+	p := new(AccountType)
+	*p = x
+	return p
+}
+
+func (x AccountType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (AccountType) Descriptor() protoreflect.EnumDescriptor {
+	return file_identity_v1_user_proto_enumTypes[1].Descriptor()
+}
+
+func (AccountType) Type() protoreflect.EnumType {
+	return &file_identity_v1_user_proto_enumTypes[1]
+}
+
+func (x AccountType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use AccountType.Descriptor instead.
+func (AccountType) EnumDescriptor() ([]byte, []int) {
+	return file_identity_v1_user_proto_rawDescGZIP(), []int{1}
+}
+
 type AuthActionType int32
 
 const (
@@ -111,11 +157,11 @@ func (x AuthActionType) String() string {
 }
 
 func (AuthActionType) Descriptor() protoreflect.EnumDescriptor {
-	return file_identity_v1_user_proto_enumTypes[1].Descriptor()
+	return file_identity_v1_user_proto_enumTypes[2].Descriptor()
 }
 
 func (AuthActionType) Type() protoreflect.EnumType {
-	return &file_identity_v1_user_proto_enumTypes[1]
+	return &file_identity_v1_user_proto_enumTypes[2]
 }
 
 func (x AuthActionType) Number() protoreflect.EnumNumber {
@@ -124,7 +170,7 @@ func (x AuthActionType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use AuthActionType.Descriptor instead.
 func (AuthActionType) EnumDescriptor() ([]byte, []int) {
-	return file_identity_v1_user_proto_rawDescGZIP(), []int{1}
+	return file_identity_v1_user_proto_rawDescGZIP(), []int{2}
 }
 
 type ProviderType int32
@@ -167,11 +213,11 @@ func (x ProviderType) String() string {
 }
 
 func (ProviderType) Descriptor() protoreflect.EnumDescriptor {
-	return file_identity_v1_user_proto_enumTypes[2].Descriptor()
+	return file_identity_v1_user_proto_enumTypes[3].Descriptor()
 }
 
 func (ProviderType) Type() protoreflect.EnumType {
-	return &file_identity_v1_user_proto_enumTypes[2]
+	return &file_identity_v1_user_proto_enumTypes[3]
 }
 
 func (x ProviderType) Number() protoreflect.EnumNumber {
@@ -180,7 +226,7 @@ func (x ProviderType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use ProviderType.Descriptor instead.
 func (ProviderType) EnumDescriptor() ([]byte, []int) {
-	return file_identity_v1_user_proto_rawDescGZIP(), []int{2}
+	return file_identity_v1_user_proto_rawDescGZIP(), []int{3}
 }
 
 type ConnectedAccount struct {
@@ -1076,7 +1122,10 @@ const file_identity_v1_user_proto_rawDesc = "" +
 	"\x11AccountStatusType\x12#\n" +
 	"\x1fACCOUNT_STATUS_TYPE_UNSPECIFIED\x10\x00\x12\x1e\n" +
 	"\x1aACCOUNT_STATUS_TYPE_ACTIVE\x10\x01\x12\x1f\n" +
-	"\x1bACCOUNT_STATUS_TYPE_DELETED\x10\x02*\xce\x01\n" +
+	"\x1bACCOUNT_STATUS_TYPE_DELETED\x10\x02*\"\n" +
+	"\vAccountType\x12\t\n" +
+	"\x05ADMIN\x10\x00\x12\b\n" +
+	"\x04USER\x10\x01*\xce\x01\n" +
 	"\x0eAuthActionType\x12 \n" +
 	"\x1cAUTH_ACTION_TYPE_UNSPECIFIED\x10\x00\x12!\n" +
 	"\x1dAUTH_ACTION_TYPE_VERIFY_EMAIL\x10\x01\x12(\n" +
@@ -1111,55 +1160,56 @@ func file_identity_v1_user_proto_rawDescGZIP() []byte {
 	return file_identity_v1_user_proto_rawDescData
 }
 
-var file_identity_v1_user_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
+var file_identity_v1_user_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
 var file_identity_v1_user_proto_msgTypes = make([]protoimpl.MessageInfo, 16)
 var file_identity_v1_user_proto_goTypes = []any{
 	(AccountStatusType)(0),            // 0: identity.v1.AccountStatusType
-	(AuthActionType)(0),               // 1: identity.v1.AuthActionType
-	(ProviderType)(0),                 // 2: identity.v1.ProviderType
-	(*ConnectedAccount)(nil),          // 3: identity.v1.ConnectedAccount
-	(*User)(nil),                      // 4: identity.v1.User
-	(*GetCurrentUserRequest)(nil),     // 5: identity.v1.GetCurrentUserRequest
-	(*GetCurrentUserResponse)(nil),    // 6: identity.v1.GetCurrentUserResponse
-	(*GetMeRequest)(nil),              // 7: identity.v1.GetMeRequest
-	(*GetMeResponse)(nil),             // 8: identity.v1.GetMeResponse
-	(*GetUserRequest)(nil),            // 9: identity.v1.GetUserRequest
-	(*GetUserResponse)(nil),           // 10: identity.v1.GetUserResponse
-	(*UpdateMeRequest)(nil),           // 11: identity.v1.UpdateMeRequest
-	(*UpdateMeResponse)(nil),          // 12: identity.v1.UpdateMeResponse
-	(*RequestDeleteUserRequest)(nil),  // 13: identity.v1.RequestDeleteUserRequest
-	(*RequestDeleteUserResponse)(nil), // 14: identity.v1.RequestDeleteUserResponse
-	(*DeleteUserRequest)(nil),         // 15: identity.v1.DeleteUserRequest
-	(*DeleteUserResponse)(nil),        // 16: identity.v1.DeleteUserResponse
-	(*ChangePasswordRequest)(nil),     // 17: identity.v1.ChangePasswordRequest
-	(*ChangePasswordResponse)(nil),    // 18: identity.v1.ChangePasswordResponse
-	(*v1.ResourceLink)(nil),           // 19: link.v1.ResourceLink
+	(AccountType)(0),                  // 1: identity.v1.AccountType
+	(AuthActionType)(0),               // 2: identity.v1.AuthActionType
+	(ProviderType)(0),                 // 3: identity.v1.ProviderType
+	(*ConnectedAccount)(nil),          // 4: identity.v1.ConnectedAccount
+	(*User)(nil),                      // 5: identity.v1.User
+	(*GetCurrentUserRequest)(nil),     // 6: identity.v1.GetCurrentUserRequest
+	(*GetCurrentUserResponse)(nil),    // 7: identity.v1.GetCurrentUserResponse
+	(*GetMeRequest)(nil),              // 8: identity.v1.GetMeRequest
+	(*GetMeResponse)(nil),             // 9: identity.v1.GetMeResponse
+	(*GetUserRequest)(nil),            // 10: identity.v1.GetUserRequest
+	(*GetUserResponse)(nil),           // 11: identity.v1.GetUserResponse
+	(*UpdateMeRequest)(nil),           // 12: identity.v1.UpdateMeRequest
+	(*UpdateMeResponse)(nil),          // 13: identity.v1.UpdateMeResponse
+	(*RequestDeleteUserRequest)(nil),  // 14: identity.v1.RequestDeleteUserRequest
+	(*RequestDeleteUserResponse)(nil), // 15: identity.v1.RequestDeleteUserResponse
+	(*DeleteUserRequest)(nil),         // 16: identity.v1.DeleteUserRequest
+	(*DeleteUserResponse)(nil),        // 17: identity.v1.DeleteUserResponse
+	(*ChangePasswordRequest)(nil),     // 18: identity.v1.ChangePasswordRequest
+	(*ChangePasswordResponse)(nil),    // 19: identity.v1.ChangePasswordResponse
+	(*v1.ResourceLink)(nil),           // 20: link.v1.ResourceLink
 }
 var file_identity_v1_user_proto_depIdxs = []int32{
-	2,  // 0: identity.v1.ConnectedAccount.provider:type_name -> identity.v1.ProviderType
-	3,  // 1: identity.v1.User.connected_accounts:type_name -> identity.v1.ConnectedAccount
-	19, // 2: identity.v1.User.profile_link:type_name -> link.v1.ResourceLink
+	3,  // 0: identity.v1.ConnectedAccount.provider:type_name -> identity.v1.ProviderType
+	4,  // 1: identity.v1.User.connected_accounts:type_name -> identity.v1.ConnectedAccount
+	20, // 2: identity.v1.User.profile_link:type_name -> link.v1.ResourceLink
 	0,  // 3: identity.v1.User.account_status:type_name -> identity.v1.AccountStatusType
-	1,  // 4: identity.v1.User.required_actions:type_name -> identity.v1.AuthActionType
-	4,  // 5: identity.v1.GetCurrentUserResponse.me:type_name -> identity.v1.User
-	4,  // 6: identity.v1.GetMeResponse.me:type_name -> identity.v1.User
-	4,  // 7: identity.v1.GetUserResponse.user:type_name -> identity.v1.User
-	4,  // 8: identity.v1.UpdateMeRequest.user:type_name -> identity.v1.User
-	4,  // 9: identity.v1.UpdateMeResponse.user:type_name -> identity.v1.User
-	7,  // 10: identity.v1.UserService.GetMe:input_type -> identity.v1.GetMeRequest
-	5,  // 11: identity.v1.UserService.GetCurrentUser:input_type -> identity.v1.GetCurrentUserRequest
-	9,  // 12: identity.v1.UserService.GetUser:input_type -> identity.v1.GetUserRequest
-	11, // 13: identity.v1.UserService.UpdateMe:input_type -> identity.v1.UpdateMeRequest
-	13, // 14: identity.v1.UserService.RequestDeleteUser:input_type -> identity.v1.RequestDeleteUserRequest
-	15, // 15: identity.v1.UserService.DeleteUser:input_type -> identity.v1.DeleteUserRequest
-	17, // 16: identity.v1.UserService.ChangePassword:input_type -> identity.v1.ChangePasswordRequest
-	8,  // 17: identity.v1.UserService.GetMe:output_type -> identity.v1.GetMeResponse
-	6,  // 18: identity.v1.UserService.GetCurrentUser:output_type -> identity.v1.GetCurrentUserResponse
-	10, // 19: identity.v1.UserService.GetUser:output_type -> identity.v1.GetUserResponse
-	12, // 20: identity.v1.UserService.UpdateMe:output_type -> identity.v1.UpdateMeResponse
-	14, // 21: identity.v1.UserService.RequestDeleteUser:output_type -> identity.v1.RequestDeleteUserResponse
-	16, // 22: identity.v1.UserService.DeleteUser:output_type -> identity.v1.DeleteUserResponse
-	18, // 23: identity.v1.UserService.ChangePassword:output_type -> identity.v1.ChangePasswordResponse
+	2,  // 4: identity.v1.User.required_actions:type_name -> identity.v1.AuthActionType
+	5,  // 5: identity.v1.GetCurrentUserResponse.me:type_name -> identity.v1.User
+	5,  // 6: identity.v1.GetMeResponse.me:type_name -> identity.v1.User
+	5,  // 7: identity.v1.GetUserResponse.user:type_name -> identity.v1.User
+	5,  // 8: identity.v1.UpdateMeRequest.user:type_name -> identity.v1.User
+	5,  // 9: identity.v1.UpdateMeResponse.user:type_name -> identity.v1.User
+	8,  // 10: identity.v1.UserService.GetMe:input_type -> identity.v1.GetMeRequest
+	6,  // 11: identity.v1.UserService.GetCurrentUser:input_type -> identity.v1.GetCurrentUserRequest
+	10, // 12: identity.v1.UserService.GetUser:input_type -> identity.v1.GetUserRequest
+	12, // 13: identity.v1.UserService.UpdateMe:input_type -> identity.v1.UpdateMeRequest
+	14, // 14: identity.v1.UserService.RequestDeleteUser:input_type -> identity.v1.RequestDeleteUserRequest
+	16, // 15: identity.v1.UserService.DeleteUser:input_type -> identity.v1.DeleteUserRequest
+	18, // 16: identity.v1.UserService.ChangePassword:input_type -> identity.v1.ChangePasswordRequest
+	9,  // 17: identity.v1.UserService.GetMe:output_type -> identity.v1.GetMeResponse
+	7,  // 18: identity.v1.UserService.GetCurrentUser:output_type -> identity.v1.GetCurrentUserResponse
+	11, // 19: identity.v1.UserService.GetUser:output_type -> identity.v1.GetUserResponse
+	13, // 20: identity.v1.UserService.UpdateMe:output_type -> identity.v1.UpdateMeResponse
+	15, // 21: identity.v1.UserService.RequestDeleteUser:output_type -> identity.v1.RequestDeleteUserResponse
+	17, // 22: identity.v1.UserService.DeleteUser:output_type -> identity.v1.DeleteUserResponse
+	19, // 23: identity.v1.UserService.ChangePassword:output_type -> identity.v1.ChangePasswordResponse
 	17, // [17:24] is the sub-list for method output_type
 	10, // [10:17] is the sub-list for method input_type
 	10, // [10:10] is the sub-list for extension type_name
@@ -1178,7 +1228,7 @@ func file_identity_v1_user_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_identity_v1_user_proto_rawDesc), len(file_identity_v1_user_proto_rawDesc)),
-			NumEnums:      3,
+			NumEnums:      4,
 			NumMessages:   16,
 			NumExtensions: 0,
 			NumServices:   1,

@@ -11,6 +11,11 @@ enum AccountStatusType {
   ACCOUNT_STATUS_TYPE_DELETED = 2;
 }
 
+enum AccountType {
+  ADMIN = 0;
+  USER = 1;
+}
+
 enum AuthActionType {
   AUTH_ACTION_TYPE_UNSPECIFIED = 0;
   AUTH_ACTION_TYPE_VERIFY_EMAIL = 1;

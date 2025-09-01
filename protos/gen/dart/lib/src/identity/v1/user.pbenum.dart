@@ -39,6 +39,25 @@ class AccountStatusType extends $pb.ProtobufEnum {
   const AccountStatusType._(super.value, super.name);
 }
 
+class AccountType extends $pb.ProtobufEnum {
+  static const AccountType ADMIN =
+      AccountType._(0, _omitEnumNames ? '' : 'ADMIN');
+  static const AccountType USER =
+      AccountType._(1, _omitEnumNames ? '' : 'USER');
+
+  static const $core.List<AccountType> values = <AccountType>[
+    ADMIN,
+    USER,
+  ];
+
+  static final $core.List<AccountType?> _byValue =
+      $pb.ProtobufEnum.$_initByValueList(values, 1);
+  static AccountType? valueOf($core.int value) =>
+      value < 0 || value >= _byValue.length ? null : _byValue[value];
+
+  const AccountType._(super.value, super.name);
+}
+
 class AuthActionType extends $pb.ProtobufEnum {
   static const AuthActionType AUTH_ACTION_TYPE_UNSPECIFIED =
       AuthActionType._(0, _omitEnumNames ? '' : 'AUTH_ACTION_TYPE_UNSPECIFIED');
