@@ -117,4 +117,22 @@ extension type ProductServiceClient (connect.Transport _transport) {
       onTrailer: onTrailer,
     );
   }
+
+  /// Finds products by name.
+  Future<inventoryv1product.FindBusinessProductsResponse> findBusinessProducts(
+    inventoryv1product.FindBusinessProductsRequest input, {
+    connect.Headers? headers,
+    connect.AbortSignal? signal,
+    Function(connect.Headers)? onHeader,
+    Function(connect.Headers)? onTrailer,
+  }) {
+    return connect.Client(_transport).unary(
+      specs.ProductService.findBusinessProducts,
+      input,
+      signal: signal,
+      headers: headers,
+      onHeader: onHeader,
+      onTrailer: onTrailer,
+    );
+  }
 }

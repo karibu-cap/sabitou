@@ -10,6 +10,7 @@ import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -37,7 +38,11 @@ type Store struct {
 	// The list of external links of the store it can be an address link, a phone number, an email, a website etc.
 	ExternalLinksIds *string `protobuf:"bytes,7,opt,name=external_links_ids,json=externalLinksIds,proto3,oneof" json:"external_links_ids,omitempty"`
 	// The id of the business of the store.
-	BusinessId    string `protobuf:"bytes,8,opt,name=business_id,json=businessId,proto3" json:"business_id,omitempty"`
+	BusinessId string `protobuf:"bytes,8,opt,name=business_id,json=businessId,proto3" json:"business_id,omitempty"`
+	// The date and time the store was created.
+	CreatedAt *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	// The date and time the store was last updated.
+	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=updated_at,json=updatedAt,proto3,oneof" json:"updated_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -112,6 +117,20 @@ func (x *Store) GetBusinessId() string {
 		return x.BusinessId
 	}
 	return ""
+}
+
+func (x *Store) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
+}
+
+func (x *Store) GetUpdatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.UpdatedAt
+	}
+	return nil
 }
 
 type CreateStoreRequest struct {
@@ -448,6 +467,97 @@ func (x *DeleteStoreRequest) GetStoreId() string {
 	return ""
 }
 
+type GetBusinessStoresRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The reference id to the supplier identifier.
+	BusinessId    string `protobuf:"bytes,1,opt,name=business_id,json=businessId,proto3" json:"business_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetBusinessStoresRequest) Reset() {
+	*x = GetBusinessStoresRequest{}
+	mi := &file_store_v1_store_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetBusinessStoresRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetBusinessStoresRequest) ProtoMessage() {}
+
+func (x *GetBusinessStoresRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_store_v1_store_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetBusinessStoresRequest.ProtoReflect.Descriptor instead.
+func (*GetBusinessStoresRequest) Descriptor() ([]byte, []int) {
+	return file_store_v1_store_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *GetBusinessStoresRequest) GetBusinessId() string {
+	if x != nil {
+		return x.BusinessId
+	}
+	return ""
+}
+
+type GetBusinessStoresResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The list of stores of the business.
+	// Note: Only the ids and names of the stores are returned.
+	Stores        []*Store `protobuf:"bytes,1,rep,name=stores,proto3" json:"stores,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetBusinessStoresResponse) Reset() {
+	*x = GetBusinessStoresResponse{}
+	mi := &file_store_v1_store_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetBusinessStoresResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetBusinessStoresResponse) ProtoMessage() {}
+
+func (x *GetBusinessStoresResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_store_v1_store_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetBusinessStoresResponse.ProtoReflect.Descriptor instead.
+func (*GetBusinessStoresResponse) Descriptor() ([]byte, []int) {
+	return file_store_v1_store_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *GetBusinessStoresResponse) GetStores() []*Store {
+	if x != nil {
+		return x.Stores
+	}
+	return nil
+}
+
 type DeleteStoreResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Whether the store was successfully deleted.
@@ -458,7 +568,7 @@ type DeleteStoreResponse struct {
 
 func (x *DeleteStoreResponse) Reset() {
 	*x = DeleteStoreResponse{}
-	mi := &file_store_v1_store_proto_msgTypes[8]
+	mi := &file_store_v1_store_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -470,7 +580,7 @@ func (x *DeleteStoreResponse) String() string {
 func (*DeleteStoreResponse) ProtoMessage() {}
 
 func (x *DeleteStoreResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_v1_store_proto_msgTypes[8]
+	mi := &file_store_v1_store_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -483,7 +593,7 @@ func (x *DeleteStoreResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteStoreResponse.ProtoReflect.Descriptor instead.
 func (*DeleteStoreResponse) Descriptor() ([]byte, []int) {
-	return file_store_v1_store_proto_rawDescGZIP(), []int{8}
+	return file_store_v1_store_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *DeleteStoreResponse) GetSuccess() bool {
@@ -497,7 +607,7 @@ var File_store_v1_store_proto protoreflect.FileDescriptor
 
 const file_store_v1_store_proto_rawDesc = "" +
 	"\n" +
-	"\x14store/v1/store.proto\x12\bstore.v1\x1a\x1bbuf/validate/validate.proto\"\x9c\x02\n" +
+	"\x14store/v1/store.proto\x12\bstore.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xa6\x03\n" +
 	"\x05Store\x12\x1a\n" +
 	"\x06ref_id\x18\x01 \x01(\tH\x00R\x05refId\x88\x01\x01\x12\x12\n" +
 	"\x04name\x18\x03 \x01(\tR\x04name\x12%\n" +
@@ -506,11 +616,17 @@ const file_store_v1_store_proto_rawDesc = "" +
 	"logoLinkId\x88\x01\x01\x121\n" +
 	"\x12external_links_ids\x18\a \x01(\tH\x03R\x10externalLinksIds\x88\x01\x01\x12\x1f\n" +
 	"\vbusiness_id\x18\b \x01(\tR\n" +
-	"businessIdB\t\n" +
+	"businessId\x129\n" +
+	"\n" +
+	"created_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12>\n" +
+	"\n" +
+	"updated_at\x18\n" +
+	" \x01(\v2\x1a.google.protobuf.TimestampH\x04R\tupdatedAt\x88\x01\x01B\t\n" +
 	"\a_ref_idB\x0e\n" +
 	"\f_descriptionB\x0f\n" +
 	"\r_logo_link_idB\x15\n" +
-	"\x13_external_links_ids\"y\n" +
+	"\x13_external_links_idsB\r\n" +
+	"\v_updated_at\"y\n" +
 	"\x12CreateStoreRequest\x12%\n" +
 	"\x05store\x18\x01 \x01(\v2\x0f.store.v1.StoreR\x05store\x12)\n" +
 	"\x0elogo_raw_image\x18\x02 \x01(\fH\x00R\flogoRawImage\x88\x01\x01B\x11\n" +
@@ -531,14 +647,21 @@ const file_store_v1_store_proto_rawDesc = "" +
 	"\x05store\x18\x01 \x01(\v2\x0f.store.v1.StoreR\x05store\";\n" +
 	"\x12DeleteStoreRequest\x12%\n" +
 	"\bstore_id\x18\x01 \x01(\tB\n" +
-	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\astoreId\"/\n" +
+	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\astoreId\"G\n" +
+	"\x18GetBusinessStoresRequest\x12+\n" +
+	"\vbusiness_id\x18\x01 \x01(\tB\n" +
+	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\n" +
+	"businessId\"D\n" +
+	"\x19GetBusinessStoresResponse\x12'\n" +
+	"\x06stores\x18\x01 \x03(\v2\x0f.store.v1.StoreR\x06stores\"/\n" +
 	"\x13DeleteStoreResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess2\xbd\x02\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess2\x9d\x03\n" +
 	"\fStoreService\x12L\n" +
 	"\vCreateStore\x12\x1c.store.v1.CreateStoreRequest\x1a\x1d.store.v1.CreateStoreResponse\"\x00\x12C\n" +
 	"\bGetStore\x12\x19.store.v1.GetStoreRequest\x1a\x1a.store.v1.GetStoreResponse\"\x00\x12L\n" +
 	"\vUpdateStore\x12\x1c.store.v1.UpdateStoreRequest\x1a\x1d.store.v1.UpdateStoreResponse\"\x00\x12L\n" +
-	"\vDeleteStore\x12\x1c.store.v1.DeleteStoreRequest\x1a\x1d.store.v1.DeleteStoreResponse\"\x00B\x9d\x01\n" +
+	"\vDeleteStore\x12\x1c.store.v1.DeleteStoreRequest\x1a\x1d.store.v1.DeleteStoreResponse\"\x00\x12^\n" +
+	"\x11GetBusinessStores\x12\".store.v1.GetBusinessStoresRequest\x1a#.store.v1.GetBusinessStoresResponse\"\x00B\x9d\x01\n" +
 	"\fcom.store.v1B\n" +
 	"StoreProtoP\x01Z@github.com/karibu-cap/sabitou/protos/gen/go/rpc/store/v1;storev1\xa2\x02\x03SXX\xaa\x02\bStore.V1\xca\x02\bStore\\V1\xe2\x02\x14Store\\V1\\GPBMetadata\xea\x02\tStore::V1b\x06proto3"
 
@@ -554,36 +677,44 @@ func file_store_v1_store_proto_rawDescGZIP() []byte {
 	return file_store_v1_store_proto_rawDescData
 }
 
-var file_store_v1_store_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_store_v1_store_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_store_v1_store_proto_goTypes = []any{
-	(*Store)(nil),               // 0: store.v1.Store
-	(*CreateStoreRequest)(nil),  // 1: store.v1.CreateStoreRequest
-	(*CreateStoreResponse)(nil), // 2: store.v1.CreateStoreResponse
-	(*GetStoreRequest)(nil),     // 3: store.v1.GetStoreRequest
-	(*GetStoreResponse)(nil),    // 4: store.v1.GetStoreResponse
-	(*UpdateStoreRequest)(nil),  // 5: store.v1.UpdateStoreRequest
-	(*UpdateStoreResponse)(nil), // 6: store.v1.UpdateStoreResponse
-	(*DeleteStoreRequest)(nil),  // 7: store.v1.DeleteStoreRequest
-	(*DeleteStoreResponse)(nil), // 8: store.v1.DeleteStoreResponse
+	(*Store)(nil),                     // 0: store.v1.Store
+	(*CreateStoreRequest)(nil),        // 1: store.v1.CreateStoreRequest
+	(*CreateStoreResponse)(nil),       // 2: store.v1.CreateStoreResponse
+	(*GetStoreRequest)(nil),           // 3: store.v1.GetStoreRequest
+	(*GetStoreResponse)(nil),          // 4: store.v1.GetStoreResponse
+	(*UpdateStoreRequest)(nil),        // 5: store.v1.UpdateStoreRequest
+	(*UpdateStoreResponse)(nil),       // 6: store.v1.UpdateStoreResponse
+	(*DeleteStoreRequest)(nil),        // 7: store.v1.DeleteStoreRequest
+	(*GetBusinessStoresRequest)(nil),  // 8: store.v1.GetBusinessStoresRequest
+	(*GetBusinessStoresResponse)(nil), // 9: store.v1.GetBusinessStoresResponse
+	(*DeleteStoreResponse)(nil),       // 10: store.v1.DeleteStoreResponse
+	(*timestamppb.Timestamp)(nil),     // 11: google.protobuf.Timestamp
 }
 var file_store_v1_store_proto_depIdxs = []int32{
-	0, // 0: store.v1.CreateStoreRequest.store:type_name -> store.v1.Store
-	0, // 1: store.v1.GetStoreResponse.store:type_name -> store.v1.Store
-	0, // 2: store.v1.UpdateStoreRequest.store:type_name -> store.v1.Store
-	0, // 3: store.v1.UpdateStoreResponse.store:type_name -> store.v1.Store
-	1, // 4: store.v1.StoreService.CreateStore:input_type -> store.v1.CreateStoreRequest
-	3, // 5: store.v1.StoreService.GetStore:input_type -> store.v1.GetStoreRequest
-	5, // 6: store.v1.StoreService.UpdateStore:input_type -> store.v1.UpdateStoreRequest
-	7, // 7: store.v1.StoreService.DeleteStore:input_type -> store.v1.DeleteStoreRequest
-	2, // 8: store.v1.StoreService.CreateStore:output_type -> store.v1.CreateStoreResponse
-	4, // 9: store.v1.StoreService.GetStore:output_type -> store.v1.GetStoreResponse
-	6, // 10: store.v1.StoreService.UpdateStore:output_type -> store.v1.UpdateStoreResponse
-	8, // 11: store.v1.StoreService.DeleteStore:output_type -> store.v1.DeleteStoreResponse
-	8, // [8:12] is the sub-list for method output_type
-	4, // [4:8] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	11, // 0: store.v1.Store.created_at:type_name -> google.protobuf.Timestamp
+	11, // 1: store.v1.Store.updated_at:type_name -> google.protobuf.Timestamp
+	0,  // 2: store.v1.CreateStoreRequest.store:type_name -> store.v1.Store
+	0,  // 3: store.v1.GetStoreResponse.store:type_name -> store.v1.Store
+	0,  // 4: store.v1.UpdateStoreRequest.store:type_name -> store.v1.Store
+	0,  // 5: store.v1.UpdateStoreResponse.store:type_name -> store.v1.Store
+	0,  // 6: store.v1.GetBusinessStoresResponse.stores:type_name -> store.v1.Store
+	1,  // 7: store.v1.StoreService.CreateStore:input_type -> store.v1.CreateStoreRequest
+	3,  // 8: store.v1.StoreService.GetStore:input_type -> store.v1.GetStoreRequest
+	5,  // 9: store.v1.StoreService.UpdateStore:input_type -> store.v1.UpdateStoreRequest
+	7,  // 10: store.v1.StoreService.DeleteStore:input_type -> store.v1.DeleteStoreRequest
+	8,  // 11: store.v1.StoreService.GetBusinessStores:input_type -> store.v1.GetBusinessStoresRequest
+	2,  // 12: store.v1.StoreService.CreateStore:output_type -> store.v1.CreateStoreResponse
+	4,  // 13: store.v1.StoreService.GetStore:output_type -> store.v1.GetStoreResponse
+	6,  // 14: store.v1.StoreService.UpdateStore:output_type -> store.v1.UpdateStoreResponse
+	10, // 15: store.v1.StoreService.DeleteStore:output_type -> store.v1.DeleteStoreResponse
+	9,  // 16: store.v1.StoreService.GetBusinessStores:output_type -> store.v1.GetBusinessStoresResponse
+	12, // [12:17] is the sub-list for method output_type
+	7,  // [7:12] is the sub-list for method input_type
+	7,  // [7:7] is the sub-list for extension type_name
+	7,  // [7:7] is the sub-list for extension extendee
+	0,  // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_store_v1_store_proto_init() }
@@ -600,7 +731,7 @@ func file_store_v1_store_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_store_v1_store_proto_rawDesc), len(file_store_v1_store_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   9,
+			NumMessages:   11,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

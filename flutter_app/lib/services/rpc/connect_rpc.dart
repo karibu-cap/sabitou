@@ -1,21 +1,24 @@
+import 'package:connectrpc/connect.dart' as connect;
+import 'package:connectrpc/http2.dart';
+import 'package:connectrpc/protobuf.dart';
+import 'package:connectrpc/protocol/connect.dart';
 import 'package:get/get.dart';
-import 'package:sabitou_rpc/connect_servers.dart';
 
 /// The gRPC service.
 final class ConnectRPCService extends GetxService {
   /// The client channel.
-  final Transport clientChannel;
+  connect.Transport clientChannel;
 
-  /// Constructs new [ConnectRPCService].
-  ConnectRPCService() : clientChannel = _createChannel();
+  /// The instance of [ConnectRPCService].
+  static final to = Get.find<ConnectRPCService>();
 
-  static Transport _createChannel() {
-    const host = 'http://localhost:3000';
-
-    return Transport(
-      baseUrl: host,
-      codec: const ProtoCodec(),
-      httpClient: createHttpClient(),
-    );
-  }
+  /// The constructs of new [ConnectRPCService].
+  ConnectRPCService({connect.Transport? clientChannel})
+    : clientChannel =
+          clientChannel ??
+          Transport(
+            baseUrl: 'http://localhost:3000',
+            codec: const ProtoCodec(),
+            httpClient: createHttpClient(),
+          );
 }

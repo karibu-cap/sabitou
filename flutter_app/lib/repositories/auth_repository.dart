@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:sabitou_rpc/connect_servers.dart';
 import 'package:sabitou_rpc/models.dart';
 
+import '../services/rpc/connect_rpc.dart';
 import 'users_repository.dart';
 
 /// The auth service client.
@@ -13,15 +14,12 @@ final class AuthRepository extends GetxService {
   /// The auth service client.
   final AuthServiceClient authClientService;
 
-  /// The client channel.
-  final Transport clientChannel;
-
   /// Access the singleton instance.
   static AuthRepository get instance => Get.find();
 
   /// Constructs a new [AuthRepository].
-  AuthRepository({required this.clientChannel})
-    : authClientService = AuthServiceClient(clientChannel);
+  AuthRepository()
+    : authClientService = AuthServiceClient(ConnectRPCService.to.clientChannel);
 
   /// Retrieves a auth by ID or email and password.
   Future<User?> getCurrentUser({required GetCurrentUserRequest request}) async {
@@ -45,18 +43,12 @@ final class AuthRepository extends GetxService {
 
   /// Logins by ID or email and password.
   Future<User?> register({required RegisterRequest request}) async {
-    print('333333333333333333333');
     try {
       await authClientService.register(request);
-
-      print('User registered: ${request.writeToJson()}.');
-      print(
-        'User registered: ${await getCurrentUser(request: GetCurrentUserRequest())}.',
-      );
-
+      
       return getCurrentUser(request: GetCurrentUserRequest());
     } on Exception catch (e) {
-      print('User registered: ${e.toString()}.');
+      print(' Error during user registration: ${e.toString()}.');
 
       return null;
     }

@@ -74,7 +74,6 @@ class AuthProvider extends GetxController {
     required String lastName,
   }) async {
     _setStatus(AuthStatus.authenticating);
-    print('1111111111111111111');
     final registerRequest = RegisterRequest()
       ..userName = userName
       ..password = password
@@ -83,7 +82,6 @@ class AuthProvider extends GetxController {
       request: registerRequest,
     );
 
-    print('2222222222222222222');
     _currentUser.value = response;
     if (response != null) {
       _setStatus(AuthStatus.authenticated);

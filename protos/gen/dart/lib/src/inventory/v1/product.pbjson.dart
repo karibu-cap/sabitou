@@ -14,6 +14,8 @@ import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
+import '../../google/protobuf/timestamp.pbjson.dart' as $0;
+
 @$core.Deprecated('Use productCategoryDescriptor instead')
 const ProductCategory$json = {
   '1': 'ProductCategory',
@@ -102,7 +104,8 @@ const BusinessProduct$json = {
       '1': 'expiration_date',
       '3': 8,
       '4': 1,
-      '5': 9,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
       '9': 1,
       '10': 'expirationDate',
       '17': true
@@ -121,21 +124,96 @@ final $typed_data.Uint8List businessProductDescriptor = $convert.base64Decode(
     'YWxQcm9kdWN0SWQSJAoOcHJpY2VfaW5fY2VudHMYBCABKAVSDHByaWNlSW5DZW50cxImCg9pbW'
     'FnZXNfbGlua19pZHMYBSADKAlSDWltYWdlc0xpbmtJZHMSJQoOc3RvY2tfcXVhbnRpdHkYBiAB'
     'KAVSDXN0b2NrUXVhbnRpdHkSLgoTbWluX3N0b2NrX3RocmVzaG9sZBgHIAEoBVIRbWluU3RvY2'
-    'tUaHJlc2hvbGQSLAoPZXhwaXJhdGlvbl9kYXRlGAggASgJSAFSDmV4cGlyYXRpb25EYXRliAEB'
-    'QgkKB19yZWZfaWRCEgoQX2V4cGlyYXRpb25fZGF0ZQ==');
+    'tUaHJlc2hvbGQSSAoPZXhwaXJhdGlvbl9kYXRlGAggASgLMhouZ29vZ2xlLnByb3RvYnVmLlRp'
+    'bWVzdGFtcEgBUg5leHBpcmF0aW9uRGF0ZYgBAUIJCgdfcmVmX2lkQhIKEF9leHBpcmF0aW9uX2'
+    'RhdGU=');
+
+@$core.Deprecated('Use findBusinessProductsRequestDescriptor instead')
+const FindBusinessProductsRequest$json = {
+  '1': 'FindBusinessProductsRequest',
+  '2': [
+    {'1': 'business_id', '3': 1, '4': 1, '5': 9, '10': 'businessId'},
+    {'1': 'ref_id', '3': 2, '4': 1, '5': 9, '9': 0, '10': 'refId', '17': true},
+    {
+      '1': 'global_product_id',
+      '3': 3,
+      '4': 1,
+      '5': 9,
+      '9': 1,
+      '10': 'globalProductId',
+      '17': true
+    },
+    {
+      '1': 'expiration_date',
+      '3': 4,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '9': 2,
+      '10': 'expirationDate',
+      '17': true
+    },
+  ],
+  '8': [
+    {'1': '_ref_id'},
+    {'1': '_global_product_id'},
+    {'1': '_expiration_date'},
+  ],
+};
+
+/// Descriptor for `FindBusinessProductsRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List findBusinessProductsRequestDescriptor = $convert.base64Decode(
+    'ChtGaW5kQnVzaW5lc3NQcm9kdWN0c1JlcXVlc3QSHwoLYnVzaW5lc3NfaWQYASABKAlSCmJ1c2'
+    'luZXNzSWQSGgoGcmVmX2lkGAIgASgJSABSBXJlZklkiAEBEi8KEWdsb2JhbF9wcm9kdWN0X2lk'
+    'GAMgASgJSAFSD2dsb2JhbFByb2R1Y3RJZIgBARJICg9leHBpcmF0aW9uX2RhdGUYBCABKAsyGi'
+    '5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wSAJSDmV4cGlyYXRpb25EYXRliAEBQgkKB19yZWZf'
+    'aWRCFAoSX2dsb2JhbF9wcm9kdWN0X2lkQhIKEF9leHBpcmF0aW9uX2RhdGU=');
+
+@$core.Deprecated('Use findBusinessProductsResponseDescriptor instead')
+const FindBusinessProductsResponse$json = {
+  '1': 'FindBusinessProductsResponse',
+  '2': [
+    {
+      '1': 'products',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.inventory.v1.BusinessProduct',
+      '10': 'products'
+    },
+  ],
+};
+
+/// Descriptor for `FindBusinessProductsResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List findBusinessProductsResponseDescriptor =
+    $convert.base64Decode(
+        'ChxGaW5kQnVzaW5lc3NQcm9kdWN0c1Jlc3BvbnNlEjkKCHByb2R1Y3RzGAEgAygLMh0uaW52ZW'
+        '50b3J5LnYxLkJ1c2luZXNzUHJvZHVjdFIIcHJvZHVjdHM=');
 
 @$core.Deprecated('Use findGlobalProductsRequestDescriptor instead')
 const FindGlobalProductsRequest$json = {
   '1': 'FindGlobalProductsRequest',
   '2': [
-    {'1': 'query', '3': 1, '4': 1, '5': 9, '10': 'query'},
+    {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'refId', '17': true},
+    {
+      '1': 'categories',
+      '3': 2,
+      '4': 3,
+      '5': 11,
+      '6': '.inventory.v1.ProductCategory',
+      '10': 'categories'
+    },
+  ],
+  '8': [
+    {'1': '_ref_id'},
   ],
 };
 
 /// Descriptor for `FindGlobalProductsRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List findGlobalProductsRequestDescriptor =
-    $convert.base64Decode(
-        'ChlGaW5kR2xvYmFsUHJvZHVjdHNSZXF1ZXN0EhQKBXF1ZXJ5GAEgASgJUgVxdWVyeQ==');
+final $typed_data.Uint8List findGlobalProductsRequestDescriptor = $convert.base64Decode(
+    'ChlGaW5kR2xvYmFsUHJvZHVjdHNSZXF1ZXN0EhoKBnJlZl9pZBgBIAEoCUgAUgVyZWZJZIgBAR'
+    'I9CgpjYXRlZ29yaWVzGAIgAygLMh0uaW52ZW50b3J5LnYxLlByb2R1Y3RDYXRlZ29yeVIKY2F0'
+    'ZWdvcmllc0IJCgdfcmVmX2lk');
 
 @$core.Deprecated('Use findGlobalProductsResponseDescriptor instead')
 const FindGlobalProductsResponse$json = {
@@ -220,7 +298,19 @@ const AddProductRequest$json = {
       '5': 5,
       '10': 'minStockThreshold'
     },
-    {'1': 'expiration_date', '3': 7, '4': 1, '5': 9, '10': 'expirationDate'},
+    {
+      '1': 'expiration_date',
+      '3': 7,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '9': 0,
+      '10': 'expirationDate',
+      '17': true
+    },
+  ],
+  '8': [
+    {'1': '_expiration_date'},
   ],
 };
 
@@ -231,7 +321,8 @@ final $typed_data.Uint8List addProductRequestDescriptor = $convert.base64Decode(
     'dXNpbmVzc0lkEiQKDnByaWNlX2luX2NlbnRzGAMgASgFUgxwcmljZUluQ2VudHMSKgoRaW1hZ2'
     'VzX3Jhd19pbWFnZXMYBCADKAxSD2ltYWdlc1Jhd0ltYWdlcxIlCg5zdG9ja19xdWFudGl0eRgF'
     'IAEoBVINc3RvY2tRdWFudGl0eRIuChNtaW5fc3RvY2tfdGhyZXNob2xkGAYgASgFUhFtaW5TdG'
-    '9ja1RocmVzaG9sZBInCg9leHBpcmF0aW9uX2RhdGUYByABKAlSDmV4cGlyYXRpb25EYXRl');
+    '9ja1RocmVzaG9sZBJICg9leHBpcmF0aW9uX2RhdGUYByABKAsyGi5nb29nbGUucHJvdG9idWYu'
+    'VGltZXN0YW1wSABSDmV4cGlyYXRpb25EYXRliAEBQhIKEF9leHBpcmF0aW9uX2RhdGU=');
 
 @$core.Deprecated('Use addProductResponseDescriptor instead')
 const AddProductResponse$json = {
@@ -379,6 +470,11 @@ const $core.Map<$core.String, $core.dynamic> ProductServiceBase$json = {
       '2': '.inventory.v1.DeleteProductRequest',
       '3': '.inventory.v1.DeleteProductResponse'
     },
+    {
+      '1': 'FindBusinessProducts',
+      '2': '.inventory.v1.FindBusinessProductsRequest',
+      '3': '.inventory.v1.FindBusinessProductsResponse'
+    },
   ],
 };
 
@@ -386,12 +482,13 @@ const $core.Map<$core.String, $core.dynamic> ProductServiceBase$json = {
 const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
     ProductServiceBase$messageJson = {
   '.inventory.v1.FindGlobalProductsRequest': FindGlobalProductsRequest$json,
+  '.inventory.v1.ProductCategory': ProductCategory$json,
   '.inventory.v1.FindGlobalProductsResponse': FindGlobalProductsResponse$json,
   '.inventory.v1.GlobalProduct': GlobalProduct$json,
-  '.inventory.v1.ProductCategory': ProductCategory$json,
   '.inventory.v1.FindCategoryRequest': FindCategoryRequest$json,
   '.inventory.v1.FindCategoryResponse': FindCategoryResponse$json,
   '.inventory.v1.AddProductRequest': AddProductRequest$json,
+  '.google.protobuf.Timestamp': $0.Timestamp$json,
   '.inventory.v1.AddProductResponse': AddProductResponse$json,
   '.inventory.v1.GetProductRequest': GetProductRequest$json,
   '.inventory.v1.GetProductResponse': GetProductResponse$json,
@@ -400,6 +497,9 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
   '.inventory.v1.UpdateProductResponse': UpdateProductResponse$json,
   '.inventory.v1.DeleteProductRequest': DeleteProductRequest$json,
   '.inventory.v1.DeleteProductResponse': DeleteProductResponse$json,
+  '.inventory.v1.FindBusinessProductsRequest': FindBusinessProductsRequest$json,
+  '.inventory.v1.FindBusinessProductsResponse':
+      FindBusinessProductsResponse$json,
 };
 
 /// Descriptor for `ProductService`. Decode as a `google.protobuf.ServiceDescriptorProto`.
@@ -413,4 +513,6 @@ final $typed_data.Uint8List productServiceDescriptor = $convert.base64Decode(
     'ZXN0GiAuaW52ZW50b3J5LnYxLkdldFByb2R1Y3RSZXNwb25zZRJYCg1VcGRhdGVQcm9kdWN0Ei'
     'IuaW52ZW50b3J5LnYxLlVwZGF0ZVByb2R1Y3RSZXF1ZXN0GiMuaW52ZW50b3J5LnYxLlVwZGF0'
     'ZVByb2R1Y3RSZXNwb25zZRJYCg1EZWxldGVQcm9kdWN0EiIuaW52ZW50b3J5LnYxLkRlbGV0ZV'
-    'Byb2R1Y3RSZXF1ZXN0GiMuaW52ZW50b3J5LnYxLkRlbGV0ZVByb2R1Y3RSZXNwb25zZQ==');
+    'Byb2R1Y3RSZXF1ZXN0GiMuaW52ZW50b3J5LnYxLkRlbGV0ZVByb2R1Y3RSZXNwb25zZRJtChRG'
+    'aW5kQnVzaW5lc3NQcm9kdWN0cxIpLmludmVudG9yeS52MS5GaW5kQnVzaW5lc3NQcm9kdWN0c1'
+    'JlcXVlc3QaKi5pbnZlbnRvcnkudjEuRmluZEJ1c2luZXNzUHJvZHVjdHNSZXNwb25zZQ==');

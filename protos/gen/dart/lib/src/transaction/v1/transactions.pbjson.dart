@@ -14,6 +14,8 @@ import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
+import '../../google/protobuf/timestamp.pbjson.dart' as $0;
+
 @$core.Deprecated('Use transactionTypeDescriptor instead')
 const TransactionType$json = {
   '1': 'TransactionType',
@@ -113,12 +115,20 @@ const Transaction$json = {
       '8': {},
       '10': 'currencyCode'
     },
-    {'1': 'created_at', '3': 10, '4': 1, '5': 9, '10': 'createdAt'},
+    {
+      '1': 'created_at',
+      '3': 10,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '10': 'createdAt'
+    },
     {
       '1': 'updated_at',
       '3': 11,
       '4': 1,
-      '5': 9,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
       '9': 4,
       '10': 'updatedAt',
       '17': true
@@ -188,15 +198,16 @@ final $typed_data.Uint8List transactionDescriptor = $convert.base64Decode(
     'lkGAQgASgJQgq6SAfIAQFyAhADUgpidXNpbmVzc0lkEh4KCHN0b3JlX2lkGAUgASgJSAFSB3N0'
     'b3JlSWSIAQESHgoIb3JkZXJfaWQYBiABKAlIAlIHb3JkZXJJZIgBARIcCgdmcm9tX2lkGAcgAS'
     'gJSANSBmZyb21JZIgBARImCg9hbW91bnRfaW5fY2VudHMYCCABKANSDWFtb3VudEluQ2VudHMS'
-    'KwoNY3VycmVuY3lfY29kZRgJIAEoCUIGukgDyAEBUgxjdXJyZW5jeUNvZGUSHQoKY3JlYXRlZF'
-    '9hdBgKIAEoCVIJY3JlYXRlZEF0EiIKCnVwZGF0ZWRfYXQYCyABKAlIBFIJdXBkYXRlZEF0iAEB'
-    'EiUKC2Rlc2NyaXB0aW9uGAwgASgJSAVSC2Rlc2NyaXB0aW9uiAEBEjMKE2J1c2luZXNzX3Byb2'
-    'R1Y3RfaWQYDSABKAlIBlIRYnVzaW5lc3NQcm9kdWN0SWSIAQESHwoIcXVhbnRpdHkYDiABKAVI'
-    'B1IIcXVhbnRpdHmIAQESJgoMaW5pdGlhdGVkX2J5GA8gASgJSAhSC2luaXRpYXRlZEJ5iAEBEi'
-    'wKEmV4dGVybmFsX2xpbmtzX2lkcxgQIAMoCVIQZXh0ZXJuYWxMaW5rc0lkc0IJCgdfcmVmX2lk'
-    'QgsKCV9zdG9yZV9pZEILCglfb3JkZXJfaWRCCgoIX2Zyb21faWRCDQoLX3VwZGF0ZWRfYXRCDg'
-    'oMX2Rlc2NyaXB0aW9uQhYKFF9idXNpbmVzc19wcm9kdWN0X2lkQgsKCV9xdWFudGl0eUIPCg1f'
-    'aW5pdGlhdGVkX2J5');
+    'KwoNY3VycmVuY3lfY29kZRgJIAEoCUIGukgDyAEBUgxjdXJyZW5jeUNvZGUSOQoKY3JlYXRlZF'
+    '9hdBgKIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSCWNyZWF0ZWRBdBI+Cgp1cGRh'
+    'dGVkX2F0GAsgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEgEUgl1cGRhdGVkQXSIAQ'
+    'ESJQoLZGVzY3JpcHRpb24YDCABKAlIBVILZGVzY3JpcHRpb26IAQESMwoTYnVzaW5lc3NfcHJv'
+    'ZHVjdF9pZBgNIAEoCUgGUhFidXNpbmVzc1Byb2R1Y3RJZIgBARIfCghxdWFudGl0eRgOIAEoBU'
+    'gHUghxdWFudGl0eYgBARImCgxpbml0aWF0ZWRfYnkYDyABKAlICFILaW5pdGlhdGVkQnmIAQES'
+    'LAoSZXh0ZXJuYWxfbGlua3NfaWRzGBAgAygJUhBleHRlcm5hbExpbmtzSWRzQgkKB19yZWZfaW'
+    'RCCwoJX3N0b3JlX2lkQgsKCV9vcmRlcl9pZEIKCghfZnJvbV9pZEINCgtfdXBkYXRlZF9hdEIO'
+    'CgxfZGVzY3JpcHRpb25CFgoUX2J1c2luZXNzX3Byb2R1Y3RfaWRCCwoJX3F1YW50aXR5Qg8KDV'
+    '9pbml0aWF0ZWRfYnk=');
 
 @$core.Deprecated('Use addTransactionRequestDescriptor instead')
 const AddTransactionRequest$json = {
@@ -326,6 +337,106 @@ final $typed_data.Uint8List deleteTransactionResponseDescriptor =
     $convert.base64Decode(
         'ChlEZWxldGVUcmFuc2FjdGlvblJlc3BvbnNlEhgKB3N1Y2Nlc3MYASABKAhSB3N1Y2Nlc3M=');
 
+@$core.Deprecated('Use findTransactionsRequestDescriptor instead')
+const FindTransactionsRequest$json = {
+  '1': 'FindTransactionsRequest',
+  '2': [
+    {'1': 'business_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'businessId'},
+    {
+      '1': 'store_id',
+      '3': 2,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'storeId',
+      '17': true
+    },
+    {
+      '1': 'order_id',
+      '3': 3,
+      '4': 1,
+      '5': 9,
+      '9': 1,
+      '10': 'orderId',
+      '17': true
+    },
+    {
+      '1': 'start_date',
+      '3': 4,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '9': 2,
+      '10': 'startDate',
+      '17': true
+    },
+    {
+      '1': 'end_date',
+      '3': 5,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '9': 3,
+      '10': 'endDate',
+      '17': true
+    },
+    {
+      '1': 'type',
+      '3': 6,
+      '4': 3,
+      '5': 14,
+      '6': '.transaction.v1.TransactionType',
+      '10': 'type'
+    },
+    {
+      '1': 'status',
+      '3': 7,
+      '4': 3,
+      '5': 14,
+      '6': '.transaction.v1.TransactionStatus',
+      '10': 'status'
+    },
+  ],
+  '8': [
+    {'1': '_store_id'},
+    {'1': '_order_id'},
+    {'1': '_start_date'},
+    {'1': '_end_date'},
+  ],
+};
+
+/// Descriptor for `FindTransactionsRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List findTransactionsRequestDescriptor = $convert.base64Decode(
+    'ChdGaW5kVHJhbnNhY3Rpb25zUmVxdWVzdBIrCgtidXNpbmVzc19pZBgBIAEoCUIKukgHyAEBcg'
+    'IQA1IKYnVzaW5lc3NJZBIeCghzdG9yZV9pZBgCIAEoCUgAUgdzdG9yZUlkiAEBEh4KCG9yZGVy'
+    'X2lkGAMgASgJSAFSB29yZGVySWSIAQESPgoKc3RhcnRfZGF0ZRgEIAEoCzIaLmdvb2dsZS5wcm'
+    '90b2J1Zi5UaW1lc3RhbXBIAlIJc3RhcnREYXRliAEBEjoKCGVuZF9kYXRlGAUgASgLMhouZ29v'
+    'Z2xlLnByb3RvYnVmLlRpbWVzdGFtcEgDUgdlbmREYXRliAEBEjMKBHR5cGUYBiADKA4yHy50cm'
+    'Fuc2FjdGlvbi52MS5UcmFuc2FjdGlvblR5cGVSBHR5cGUSOQoGc3RhdHVzGAcgAygOMiEudHJh'
+    'bnNhY3Rpb24udjEuVHJhbnNhY3Rpb25TdGF0dXNSBnN0YXR1c0ILCglfc3RvcmVfaWRCCwoJX2'
+    '9yZGVyX2lkQg0KC19zdGFydF9kYXRlQgsKCV9lbmRfZGF0ZQ==');
+
+@$core.Deprecated('Use findTransactionsResponseDescriptor instead')
+const FindTransactionsResponse$json = {
+  '1': 'FindTransactionsResponse',
+  '2': [
+    {
+      '1': 'transactions',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.transaction.v1.Transaction',
+      '10': 'transactions'
+    },
+  ],
+};
+
+/// Descriptor for `FindTransactionsResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List findTransactionsResponseDescriptor =
+    $convert.base64Decode(
+        'ChhGaW5kVHJhbnNhY3Rpb25zUmVzcG9uc2USPwoMdHJhbnNhY3Rpb25zGAEgAygLMhsudHJhbn'
+        'NhY3Rpb24udjEuVHJhbnNhY3Rpb25SDHRyYW5zYWN0aW9ucw==');
+
 const $core.Map<$core.String, $core.dynamic> TransactionServiceBase$json = {
   '1': 'TransactionService',
   '2': [
@@ -349,6 +460,11 @@ const $core.Map<$core.String, $core.dynamic> TransactionServiceBase$json = {
       '2': '.transaction.v1.DeleteTransactionRequest',
       '3': '.transaction.v1.DeleteTransactionResponse'
     },
+    {
+      '1': 'FindTransactions',
+      '2': '.transaction.v1.FindTransactionsRequest',
+      '3': '.transaction.v1.FindTransactionsResponse'
+    },
   ],
 };
 
@@ -357,6 +473,7 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
     TransactionServiceBase$messageJson = {
   '.transaction.v1.AddTransactionRequest': AddTransactionRequest$json,
   '.transaction.v1.Transaction': Transaction$json,
+  '.google.protobuf.Timestamp': $0.Timestamp$json,
   '.transaction.v1.AddTransactionResponse': AddTransactionResponse$json,
   '.transaction.v1.GetTransactionRequest': GetTransactionRequest$json,
   '.transaction.v1.GetTransactionResponse': GetTransactionResponse$json,
@@ -364,6 +481,8 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
   '.transaction.v1.UpdateTransactionResponse': UpdateTransactionResponse$json,
   '.transaction.v1.DeleteTransactionRequest': DeleteTransactionRequest$json,
   '.transaction.v1.DeleteTransactionResponse': DeleteTransactionResponse$json,
+  '.transaction.v1.FindTransactionsRequest': FindTransactionsRequest$json,
+  '.transaction.v1.FindTransactionsResponse': FindTransactionsResponse$json,
 };
 
 /// Descriptor for `TransactionService`. Decode as a `google.protobuf.ServiceDescriptorProto`.
@@ -375,4 +494,6 @@ final $typed_data.Uint8List transactionServiceDescriptor = $convert.base64Decode
     'dGVUcmFuc2FjdGlvbhIoLnRyYW5zYWN0aW9uLnYxLlVwZGF0ZVRyYW5zYWN0aW9uUmVxdWVzdB'
     'opLnRyYW5zYWN0aW9uLnYxLlVwZGF0ZVRyYW5zYWN0aW9uUmVzcG9uc2USaAoRRGVsZXRlVHJh'
     'bnNhY3Rpb24SKC50cmFuc2FjdGlvbi52MS5EZWxldGVUcmFuc2FjdGlvblJlcXVlc3QaKS50cm'
-    'Fuc2FjdGlvbi52MS5EZWxldGVUcmFuc2FjdGlvblJlc3BvbnNl');
+    'Fuc2FjdGlvbi52MS5EZWxldGVUcmFuc2FjdGlvblJlc3BvbnNlEmUKEEZpbmRUcmFuc2FjdGlv'
+    'bnMSJy50cmFuc2FjdGlvbi52MS5GaW5kVHJhbnNhY3Rpb25zUmVxdWVzdBooLnRyYW5zYWN0aW'
+    '9uLnYxLkZpbmRUcmFuc2FjdGlvbnNSZXNwb25zZQ==');

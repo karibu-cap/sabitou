@@ -42,4 +42,12 @@ abstract final class StoreService {
     storev1store.DeleteStoreRequest.new,
     storev1store.DeleteStoreResponse.new,
   );
+
+  /// Gets all stores base on business Id.
+  static const getBusinessStores = connect.Spec(
+    '/$name/GetBusinessStores',
+    connect.StreamType.unary,
+    storev1store.GetBusinessStoresRequest.new,
+    storev1store.GetBusinessStoresResponse.new,
+  );
 }

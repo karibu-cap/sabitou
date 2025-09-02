@@ -14,6 +14,8 @@ import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
+import '../../google/protobuf/timestamp.pbjson.dart' as $0;
+
 @$core.Deprecated('Use orderStatusDescriptor instead')
 const OrderStatus$json = {
   '1': 'OrderStatus',
@@ -98,12 +100,20 @@ const Order$json = {
       '6': '.order.v1.OrderStatus',
       '10': 'status'
     },
-    {'1': 'created_at', '3': 7, '4': 1, '5': 9, '10': 'createdAt'},
+    {
+      '1': 'created_at',
+      '3': 7,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '10': 'createdAt'
+    },
     {
       '1': 'updated_at',
       '3': 8,
       '4': 1,
-      '5': 9,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
       '9': 2,
       '10': 'updatedAt',
       '17': true
@@ -122,9 +132,10 @@ final $typed_data.Uint8List orderDescriptor = $convert.base64Decode(
     'Zmcm9tSWSIAQESJgoPaXNfY2xpZW50X29yZGVyGAMgASgJUg1pc0NsaWVudE9yZGVyEjQKC29y'
     'ZGVyX2l0ZW1zGAQgAygLMhMub3JkZXIudjEuT3JkZXJJdGVtUgpvcmRlckl0ZW1zEi8KFHRvdG'
     'FsX3ByaWNlX2luX2NlbnRzGAUgASgFUhF0b3RhbFByaWNlSW5DZW50cxItCgZzdGF0dXMYBiAB'
-    'KA4yFS5vcmRlci52MS5PcmRlclN0YXR1c1IGc3RhdHVzEh0KCmNyZWF0ZWRfYXQYByABKAlSCW'
-    'NyZWF0ZWRBdBIiCgp1cGRhdGVkX2F0GAggASgJSAJSCXVwZGF0ZWRBdIgBAUIJCgdfcmVmX2lk'
-    'QgoKCF9mcm9tX2lkQg0KC191cGRhdGVkX2F0');
+    'KA4yFS5vcmRlci52MS5PcmRlclN0YXR1c1IGc3RhdHVzEjkKCmNyZWF0ZWRfYXQYByABKAsyGi'
+    '5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUgljcmVhdGVkQXQSPgoKdXBkYXRlZF9hdBgIIAEo'
+    'CzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBIAlIJdXBkYXRlZEF0iAEBQgkKB19yZWZfaW'
+    'RCCgoIX2Zyb21faWRCDQoLX3VwZGF0ZWRfYXQ=');
 
 @$core.Deprecated('Use createOrderRequestDescriptor instead')
 const CreateOrderRequest$json = {
@@ -198,12 +209,20 @@ const GetOrderResponse$json = {
       '6': '.order.v1.Order',
       '10': 'order'
     },
-    {'1': 'created_at', '3': 2, '4': 1, '5': 9, '10': 'createdAt'},
+    {
+      '1': 'created_at',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '10': 'createdAt'
+    },
     {
       '1': 'updated_at',
       '3': 3,
       '4': 1,
-      '5': 9,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
       '9': 0,
       '10': 'updatedAt',
       '17': true
@@ -217,8 +236,9 @@ const GetOrderResponse$json = {
 /// Descriptor for `GetOrderResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List getOrderResponseDescriptor = $convert.base64Decode(
     'ChBHZXRPcmRlclJlc3BvbnNlEiUKBW9yZGVyGAEgASgLMg8ub3JkZXIudjEuT3JkZXJSBW9yZG'
-    'VyEh0KCmNyZWF0ZWRfYXQYAiABKAlSCWNyZWF0ZWRBdBIiCgp1cGRhdGVkX2F0GAMgASgJSABS'
-    'CXVwZGF0ZWRBdIgBAUINCgtfdXBkYXRlZF9hdA==');
+    'VyEjkKCmNyZWF0ZWRfYXQYAiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUgljcmVh'
+    'dGVkQXQSPgoKdXBkYXRlZF9hdBgDIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBIAF'
+    'IJdXBkYXRlZEF0iAEBQg0KC191cGRhdGVkX2F0');
 
 @$core.Deprecated('Use deleteOrderRequestDescriptor instead')
 const DeleteOrderRequest$json = {
@@ -246,6 +266,72 @@ final $typed_data.Uint8List deleteOrderResponseDescriptor =
     $convert.base64Decode(
         'ChNEZWxldGVPcmRlclJlc3BvbnNlEhgKB3N1Y2Nlc3MYASABKAhSB3N1Y2Nlc3M=');
 
+@$core.Deprecated('Use findOrdersRequestDescriptor instead')
+const FindOrdersRequest$json = {
+  '1': 'FindOrdersRequest',
+  '2': [
+    {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'refId', '17': true},
+    {
+      '1': 'from_id',
+      '3': 2,
+      '4': 1,
+      '5': 9,
+      '9': 1,
+      '10': 'fromId',
+      '17': true
+    },
+    {
+      '1': 'is_client_order',
+      '3': 3,
+      '4': 1,
+      '5': 9,
+      '9': 2,
+      '10': 'isClientOrder',
+      '17': true
+    },
+    {
+      '1': 'status',
+      '3': 4,
+      '4': 3,
+      '5': 14,
+      '6': '.order.v1.OrderStatus',
+      '10': 'status'
+    },
+  ],
+  '8': [
+    {'1': '_ref_id'},
+    {'1': '_from_id'},
+    {'1': '_is_client_order'},
+  ],
+};
+
+/// Descriptor for `FindOrdersRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List findOrdersRequestDescriptor = $convert.base64Decode(
+    'ChFGaW5kT3JkZXJzUmVxdWVzdBIaCgZyZWZfaWQYASABKAlIAFIFcmVmSWSIAQESHAoHZnJvbV'
+    '9pZBgCIAEoCUgBUgZmcm9tSWSIAQESKwoPaXNfY2xpZW50X29yZGVyGAMgASgJSAJSDWlzQ2xp'
+    'ZW50T3JkZXKIAQESLQoGc3RhdHVzGAQgAygOMhUub3JkZXIudjEuT3JkZXJTdGF0dXNSBnN0YX'
+    'R1c0IJCgdfcmVmX2lkQgoKCF9mcm9tX2lkQhIKEF9pc19jbGllbnRfb3JkZXI=');
+
+@$core.Deprecated('Use findOrdersResponseDescriptor instead')
+const FindOrdersResponse$json = {
+  '1': 'FindOrdersResponse',
+  '2': [
+    {
+      '1': 'orders',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.order.v1.Order',
+      '10': 'orders'
+    },
+  ],
+};
+
+/// Descriptor for `FindOrdersResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List findOrdersResponseDescriptor = $convert.base64Decode(
+    'ChJGaW5kT3JkZXJzUmVzcG9uc2USJwoGb3JkZXJzGAEgAygLMg8ub3JkZXIudjEuT3JkZXJSBm'
+    '9yZGVycw==');
+
 const $core.Map<$core.String, $core.dynamic> OrderServiceBase$json = {
   '1': 'OrderService',
   '2': [
@@ -267,6 +353,12 @@ const $core.Map<$core.String, $core.dynamic> OrderServiceBase$json = {
       '3': '.order.v1.DeleteOrderResponse',
       '4': {}
     },
+    {
+      '1': 'FindOrders',
+      '2': '.order.v1.FindOrdersRequest',
+      '3': '.order.v1.FindOrdersResponse',
+      '4': {}
+    },
   ],
 };
 
@@ -276,11 +368,14 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
   '.order.v1.CreateOrderRequest': CreateOrderRequest$json,
   '.order.v1.Order': Order$json,
   '.order.v1.OrderItem': OrderItem$json,
+  '.google.protobuf.Timestamp': $0.Timestamp$json,
   '.order.v1.CreateOrderResponse': CreateOrderResponse$json,
   '.order.v1.GetOrderRequest': GetOrderRequest$json,
   '.order.v1.GetOrderResponse': GetOrderResponse$json,
   '.order.v1.DeleteOrderRequest': DeleteOrderRequest$json,
   '.order.v1.DeleteOrderResponse': DeleteOrderResponse$json,
+  '.order.v1.FindOrdersRequest': FindOrdersRequest$json,
+  '.order.v1.FindOrdersResponse': FindOrdersResponse$json,
 };
 
 /// Descriptor for `OrderService`. Decode as a `google.protobuf.ServiceDescriptorProto`.
@@ -289,4 +384,5 @@ final $typed_data.Uint8List orderServiceDescriptor = $convert.base64Decode(
     'Vlc3QaHS5vcmRlci52MS5DcmVhdGVPcmRlclJlc3BvbnNlIgASQwoIR2V0T3JkZXISGS5vcmRl'
     'ci52MS5HZXRPcmRlclJlcXVlc3QaGi5vcmRlci52MS5HZXRPcmRlclJlc3BvbnNlIgASTAoLRG'
     'VsZXRlT3JkZXISHC5vcmRlci52MS5EZWxldGVPcmRlclJlcXVlc3QaHS5vcmRlci52MS5EZWxl'
-    'dGVPcmRlclJlc3BvbnNlIgA=');
+    'dGVPcmRlclJlc3BvbnNlIgASSQoKRmluZE9yZGVycxIbLm9yZGVyLnYxLkZpbmRPcmRlcnNSZX'
+    'F1ZXN0Ghwub3JkZXIudjEuRmluZE9yZGVyc1Jlc3BvbnNlIgA=');

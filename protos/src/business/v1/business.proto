@@ -4,6 +4,7 @@ package business.v1;
 import "buf/validate/validate.proto";
 import "identity/v1/permission.proto";
 import "link/v1/link.proto";
+import "google/protobuf/timestamp.proto";
 
 enum BusinessStatusType {
   BUSINESS_STATUS_TYPE_UNSPECIFIED = 0;
@@ -62,7 +63,7 @@ message BusinessMember {
   repeated string permissions_groups_ids = 4;
 
   // The date since when the
-  string member_since = 5;
+  google.protobuf.Timestamp member_since = 5;
 }
 
 message CreateBusinessRequest {

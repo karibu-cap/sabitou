@@ -1,6 +1,7 @@
 export 'src/business/v1/business.pb.dart';
 export 'src/business/v1/client.pb.dart';
 export 'src/business/v1/supplier.pb.dart';
+export 'src/google/protobuf/timestamp.pb.dart';
 export 'src/identity/v1/authentication.pb.dart';
 export 'src/identity/v1/permission.pb.dart';
 export 'src/identity/v1/user.pb.dart';

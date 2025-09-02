@@ -1,5 +1,4 @@
 export 'package:connectrpc/http2.dart';
-
 export 'package:connectrpc/protobuf.dart';
 export 'package:connectrpc/protocol/connect.dart';
 
@@ -14,3 +13,4 @@ export 'src/link/v1/link.connect.client.dart';
 export 'src/order/v1/order.connect.client.dart';
 export 'src/order/v1/receipt.connect.client.dart';
 export 'src/store/v1/store.connect.client.dart';
+export 'src/transaction/v1/transactions.connect.client.dart';

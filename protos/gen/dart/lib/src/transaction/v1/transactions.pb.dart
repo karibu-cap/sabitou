@@ -16,6 +16,7 @@ import 'dart:core' as $core;
 import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
+import '../../google/protobuf/timestamp.pb.dart' as $0;
 import 'transactions.pbenum.dart';
 
 export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
@@ -37,8 +38,8 @@ class Transaction extends $pb.GeneratedMessage {
     $core.String? fromId,
     $fixnum.Int64? amountInCents,
     $core.String? currencyCode,
-    $core.String? createdAt,
-    $core.String? updatedAt,
+    $0.Timestamp? createdAt,
+    $0.Timestamp? updatedAt,
     $core.String? description,
     $core.String? businessProductId,
     $core.int? quantity,
@@ -95,8 +96,10 @@ class Transaction extends $pb.GeneratedMessage {
     ..aOS(7, _omitFieldNames ? '' : 'fromId')
     ..aInt64(8, _omitFieldNames ? '' : 'amountInCents')
     ..aOS(9, _omitFieldNames ? '' : 'currencyCode')
-    ..aOS(10, _omitFieldNames ? '' : 'createdAt')
-    ..aOS(11, _omitFieldNames ? '' : 'updatedAt')
+    ..aOM<$0.Timestamp>(10, _omitFieldNames ? '' : 'createdAt',
+        subBuilder: $0.Timestamp.create)
+    ..aOM<$0.Timestamp>(11, _omitFieldNames ? '' : 'updatedAt',
+        subBuilder: $0.Timestamp.create)
     ..aOS(12, _omitFieldNames ? '' : 'description')
     ..aOS(13, _omitFieldNames ? '' : 'businessProductId')
     ..a<$core.int>(14, _omitFieldNames ? '' : 'quantity', $pb.PbFieldType.O3)
@@ -216,23 +219,27 @@ class Transaction extends $pb.GeneratedMessage {
 
   /// The creation date of the transaction (ISO 8601).
   @$pb.TagNumber(10)
-  $core.String get createdAt => $_getSZ(9);
+  $0.Timestamp get createdAt => $_getN(9);
   @$pb.TagNumber(10)
-  set createdAt($core.String value) => $_setString(9, value);
+  set createdAt($0.Timestamp value) => $_setField(10, value);
   @$pb.TagNumber(10)
   $core.bool hasCreatedAt() => $_has(9);
   @$pb.TagNumber(10)
   void clearCreatedAt() => $_clearField(10);
+  @$pb.TagNumber(10)
+  $0.Timestamp ensureCreatedAt() => $_ensure(9);
 
   /// The update date of the transaction (ISO 8601).
   @$pb.TagNumber(11)
-  $core.String get updatedAt => $_getSZ(10);
+  $0.Timestamp get updatedAt => $_getN(10);
   @$pb.TagNumber(11)
-  set updatedAt($core.String value) => $_setString(10, value);
+  set updatedAt($0.Timestamp value) => $_setField(11, value);
   @$pb.TagNumber(11)
   $core.bool hasUpdatedAt() => $_has(10);
   @$pb.TagNumber(11)
   void clearUpdatedAt() => $_clearField(11);
+  @$pb.TagNumber(11)
+  $0.Timestamp ensureUpdatedAt() => $_ensure(10);
 
   /// The description or note of the transaction (ex. : "Refund for order cancellation").
   @$pb.TagNumber(12)
@@ -760,6 +767,192 @@ class DeleteTransactionResponse extends $pb.GeneratedMessage {
   void clearSuccess() => $_clearField(1);
 }
 
+class FindTransactionsRequest extends $pb.GeneratedMessage {
+  factory FindTransactionsRequest({
+    $core.String? businessId,
+    $core.String? storeId,
+    $core.String? orderId,
+    $0.Timestamp? startDate,
+    $0.Timestamp? endDate,
+    $core.Iterable<TransactionType>? type,
+    $core.Iterable<TransactionStatus>? status,
+  }) {
+    final result = create();
+    if (businessId != null) result.businessId = businessId;
+    if (storeId != null) result.storeId = storeId;
+    if (orderId != null) result.orderId = orderId;
+    if (startDate != null) result.startDate = startDate;
+    if (endDate != null) result.endDate = endDate;
+    if (type != null) result.type.addAll(type);
+    if (status != null) result.status.addAll(status);
+    return result;
+  }
+
+  FindTransactionsRequest._();
+
+  factory FindTransactionsRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory FindTransactionsRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FindTransactionsRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'transaction.v1'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'businessId')
+    ..aOS(2, _omitFieldNames ? '' : 'storeId')
+    ..aOS(3, _omitFieldNames ? '' : 'orderId')
+    ..aOM<$0.Timestamp>(4, _omitFieldNames ? '' : 'startDate',
+        subBuilder: $0.Timestamp.create)
+    ..aOM<$0.Timestamp>(5, _omitFieldNames ? '' : 'endDate',
+        subBuilder: $0.Timestamp.create)
+    ..pc<TransactionType>(6, _omitFieldNames ? '' : 'type', $pb.PbFieldType.KE,
+        valueOf: TransactionType.valueOf,
+        enumValues: TransactionType.values,
+        defaultEnumValue: TransactionType.TRANSACTION_TYPE_UNSPECIFIED)
+    ..pc<TransactionStatus>(
+        7, _omitFieldNames ? '' : 'status', $pb.PbFieldType.KE,
+        valueOf: TransactionStatus.valueOf,
+        enumValues: TransactionStatus.values,
+        defaultEnumValue: TransactionStatus.TRANSACTION_STATUS_UNSPECIFIED)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FindTransactionsRequest clone() =>
+      FindTransactionsRequest()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FindTransactionsRequest copyWith(
+          void Function(FindTransactionsRequest) updates) =>
+      super.copyWith((message) => updates(message as FindTransactionsRequest))
+          as FindTransactionsRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static FindTransactionsRequest create() => FindTransactionsRequest._();
+  @$core.override
+  FindTransactionsRequest createEmptyInstance() => create();
+  static $pb.PbList<FindTransactionsRequest> createRepeated() =>
+      $pb.PbList<FindTransactionsRequest>();
+  @$core.pragma('dart2js:noInline')
+  static FindTransactionsRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FindTransactionsRequest>(create);
+  static FindTransactionsRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get businessId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set businessId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasBusinessId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearBusinessId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get storeId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set storeId($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasStoreId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearStoreId() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get orderId => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set orderId($core.String value) => $_setString(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasOrderId() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearOrderId() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  $0.Timestamp get startDate => $_getN(3);
+  @$pb.TagNumber(4)
+  set startDate($0.Timestamp value) => $_setField(4, value);
+  @$pb.TagNumber(4)
+  $core.bool hasStartDate() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearStartDate() => $_clearField(4);
+  @$pb.TagNumber(4)
+  $0.Timestamp ensureStartDate() => $_ensure(3);
+
+  @$pb.TagNumber(5)
+  $0.Timestamp get endDate => $_getN(4);
+  @$pb.TagNumber(5)
+  set endDate($0.Timestamp value) => $_setField(5, value);
+  @$pb.TagNumber(5)
+  $core.bool hasEndDate() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearEndDate() => $_clearField(5);
+  @$pb.TagNumber(5)
+  $0.Timestamp ensureEndDate() => $_ensure(4);
+
+  @$pb.TagNumber(6)
+  $pb.PbList<TransactionType> get type => $_getList(5);
+
+  @$pb.TagNumber(7)
+  $pb.PbList<TransactionStatus> get status => $_getList(6);
+}
+
+class FindTransactionsResponse extends $pb.GeneratedMessage {
+  factory FindTransactionsResponse({
+    $core.Iterable<Transaction>? transactions,
+  }) {
+    final result = create();
+    if (transactions != null) result.transactions.addAll(transactions);
+    return result;
+  }
+
+  FindTransactionsResponse._();
+
+  factory FindTransactionsResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory FindTransactionsResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FindTransactionsResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'transaction.v1'),
+      createEmptyInstance: create)
+    ..pc<Transaction>(
+        1, _omitFieldNames ? '' : 'transactions', $pb.PbFieldType.PM,
+        subBuilder: Transaction.create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FindTransactionsResponse clone() =>
+      FindTransactionsResponse()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FindTransactionsResponse copyWith(
+          void Function(FindTransactionsResponse) updates) =>
+      super.copyWith((message) => updates(message as FindTransactionsResponse))
+          as FindTransactionsResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static FindTransactionsResponse create() => FindTransactionsResponse._();
+  @$core.override
+  FindTransactionsResponse createEmptyInstance() => create();
+  static $pb.PbList<FindTransactionsResponse> createRepeated() =>
+      $pb.PbList<FindTransactionsResponse>();
+  @$core.pragma('dart2js:noInline')
+  static FindTransactionsResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FindTransactionsResponse>(create);
+  static FindTransactionsResponse? _defaultInstance;
+
+  /// The list of transactions found.
+  @$pb.TagNumber(1)
+  $pb.PbList<Transaction> get transactions => $_getList(0);
+}
+
 class TransactionServiceApi {
   final $pb.RpcClient _client;
 
@@ -788,6 +981,12 @@ class TransactionServiceApi {
           $pb.ClientContext? ctx, DeleteTransactionRequest request) =>
       _client.invoke<DeleteTransactionResponse>(ctx, 'TransactionService',
           'DeleteTransaction', request, DeleteTransactionResponse());
+
+  /// Find transactions by query.
+  $async.Future<FindTransactionsResponse> findTransactions(
+          $pb.ClientContext? ctx, FindTransactionsRequest request) =>
+      _client.invoke<FindTransactionsResponse>(ctx, 'TransactionService',
+          'FindTransactions', request, FindTransactionsResponse());
 }
 
 const $core.bool _omitFieldNames =

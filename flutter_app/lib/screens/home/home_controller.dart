@@ -2,8 +2,8 @@ import 'package:get/get.dart';
 
 import '../../utils/app_constants.dart';
 
-/// The home provider.
-class HomeProvider extends GetxController {
+/// The home controller.
+class HomeController extends GetxController {
   DashboardItem _activeTab = DashboardItem.dashboard;
   bool _isSidebarOpen = false;
 

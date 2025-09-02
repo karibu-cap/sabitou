@@ -205,15 +205,15 @@ final $typed_data.Uint8List getSupplierResponseDescriptor = $convert.base64Decod
 const GetBusinessSuppliersRequest$json = {
   '1': 'GetBusinessSuppliersRequest',
   '2': [
-    {'1': 'supplier_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'supplierId'},
+    {'1': 'business_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'businessId'},
   ],
 };
 
 /// Descriptor for `GetBusinessSuppliersRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List getBusinessSuppliersRequestDescriptor =
     $convert.base64Decode(
-        'ChtHZXRCdXNpbmVzc1N1cHBsaWVyc1JlcXVlc3QSKwoLc3VwcGxpZXJfaWQYASABKAlCCrpIB8'
-        'gBAXICEANSCnN1cHBsaWVySWQ=');
+        'ChtHZXRCdXNpbmVzc1N1cHBsaWVyc1JlcXVlc3QSKwoLYnVzaW5lc3NfaWQYASABKAlCCrpIB8'
+        'gBAXICEANSCmJ1c2luZXNzSWQ=');
 
 @$core.Deprecated('Use getBusinessSuppliersResponseDescriptor instead')
 const GetBusinessSuppliersResponse$json = {

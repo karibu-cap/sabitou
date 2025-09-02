@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
-
 import 'package:sabitou_rpc/connect_servers.dart';
 import 'package:sabitou_rpc/models.dart';
 
+import '../services/rpc/connect_rpc.dart';
 import '../utils/logger.dart';
 
 /// The user repository.
@@ -12,15 +12,12 @@ final class UserRepository extends GetxService {
   /// The user service client.
   final UserServiceClient userClientService;
 
-  /// The client channel.
-  final Transport clientChannel;
-
   /// Access the singleton instance.
   static UserRepository get instance => Get.find();
 
   /// Constructs a new [AuthServiceClient].
-  UserRepository({required this.clientChannel})
-    : userClientService = UserServiceClient(clientChannel);
+  UserRepository()
+    : userClientService = UserServiceClient(ConnectRPCService.to.clientChannel);
 
   /// Creates a new user.
   /*

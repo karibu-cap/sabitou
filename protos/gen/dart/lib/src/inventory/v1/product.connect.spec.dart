@@ -59,4 +59,12 @@ abstract final class ProductService {
     inventoryv1product.DeleteProductRequest.new,
     inventoryv1product.DeleteProductResponse.new,
   );
+
+  /// Finds products by name.
+  static const findBusinessProducts = connect.Spec(
+    '/$name/FindBusinessProducts',
+    connect.StreamType.unary,
+    inventoryv1product.FindBusinessProductsRequest.new,
+    inventoryv1product.FindBusinessProductsResponse.new,
+  );
 }

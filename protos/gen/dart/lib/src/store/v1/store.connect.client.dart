@@ -80,4 +80,22 @@ extension type StoreServiceClient (connect.Transport _transport) {
       onTrailer: onTrailer,
     );
   }
+
+  /// Gets all stores base on business Id.
+  Future<storev1store.GetBusinessStoresResponse> getBusinessStores(
+    storev1store.GetBusinessStoresRequest input, {
+    connect.Headers? headers,
+    connect.AbortSignal? signal,
+    Function(connect.Headers)? onHeader,
+    Function(connect.Headers)? onTrailer,
+  }) {
+    return connect.Client(_transport).unary(
+      specs.StoreService.getBusinessStores,
+      input,
+      signal: signal,
+      headers: headers,
+      onHeader: onHeader,
+      onTrailer: onTrailer,
+    );
+  }
 }

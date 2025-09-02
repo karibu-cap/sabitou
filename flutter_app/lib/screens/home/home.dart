@@ -7,7 +7,7 @@ import '../../../utils/responsive_utils.dart';
 import '../../widgets/app_header/app_header.dart';
 import '../../widgets/sidebar/sidebar.dart';
 import '../dashboard/dashboard_screen.dart';
-import 'home_provider.dart';
+import 'home_controller.dart';
 
 /// The home screen.
 class HomeScreen extends StatelessWidget {
@@ -17,19 +17,19 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tabletBreakpoint = ResponsiveUtils.isTablet(context);
-    Get.put(HomeProvider());
+    Get.put(HomeController());
 
     return Scaffold(
       backgroundColor: ShadTheme.of(context).colorScheme.secondary,
-      body: GetBuilder<HomeProvider>(
-        builder: (homeProvider) => Stack(
+      body: GetBuilder<HomeController>(
+        builder: (homeController) => Stack(
           children: [
             Row(
               children: [
                 if (!tabletBreakpoint)
                   SidebarWidget(
-                    activeTab: homeProvider.activeTab,
-                    onTabChange: homeProvider.changeTab,
+                    activeTab: homeController.activeTab,
+                    onTabChange: homeController.changeTab,
                     isOpen: true,
                   ),
                 Expanded(
@@ -49,8 +49,8 @@ class HomeScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         HeaderWidget(
-                          onMenuClick: homeProvider.toggleSidebar,
-                          isSidebarOpen: homeProvider.isSidebarOpen,
+                          onMenuClick: homeController.toggleSidebar,
+                          isSidebarOpen: homeController.isSidebarOpen,
                         ),
                         Expanded(
                           child: Container(
@@ -63,10 +63,10 @@ class HomeScreen extends StatelessWidget {
                               child: GestureDetector(
                                 onTap: !tabletBreakpoint
                                     ? null
-                                    : () => homeProvider.toggleSidebar(
+                                    : () => homeController.toggleSidebar(
                                         value: false,
                                       ),
-                                child: switch (homeProvider.activeTab) {
+                                child: switch (homeController.activeTab) {
                                   DashboardItem.dashboard => const Dashboard(),
                                   DashboardItem.inventory => const SizedBox(),
                                   DashboardItem.sales => const SizedBox(),
@@ -91,19 +91,19 @@ class HomeScreen extends StatelessWidget {
             if (tabletBreakpoint)
               AnimatedPositioned(
                 duration: const Duration(milliseconds: 300),
-                left: homeProvider.isSidebarOpen ? 0 : -280,
+                left: homeController.isSidebarOpen ? 0 : -280,
                 top: 0,
                 bottom: 0,
                 child: SidebarWidget(
-                  activeTab: homeProvider.activeTab,
-                  onTabChange: homeProvider.changeTab,
-                  isOpen: homeProvider.isSidebarOpen,
+                  activeTab: homeController.activeTab,
+                  onTabChange: homeController.changeTab,
+                  isOpen: homeController.isSidebarOpen,
                 ),
               ),
 
-            if (homeProvider.isSidebarOpen && tabletBreakpoint)
+            if (homeController.isSidebarOpen && tabletBreakpoint)
               GestureDetector(
-                onTap: homeProvider.toggleSidebar,
+                onTap: homeController.toggleSidebar,
                 child: const SizedBox(
                   width: double.infinity,
                   height: double.infinity,

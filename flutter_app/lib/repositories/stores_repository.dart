@@ -1,28 +1,31 @@
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:sabitou_rpc/models.dart';
+import 'package:sabitou_rpc/sabitou_rpc.dart';
 
-import '../tmp/fake_data.dart';
-import '../utils/app_constants.dart';
+import '../services/rpc/connect_rpc.dart';
 
 /// The stores repository.
 final class StoresRepository extends GetxService {
+  /// The store service client.
+  final StoreServiceClient storeServiceClient;
+
   /// The instance of [StoresRepository].
   static final instance = Get.find<StoresRepository>();
+
+  /// Constructs a new [StoresRepository].
+  StoresRepository()
+    : storeServiceClient = StoreServiceClient(
+        ConnectRPCService.to.clientChannel,
+      );
 
   /// Gets all stores base on business Id.
   Future<List<Store>> getStoresByBusinessId(String businessId) async {
     try {
-      final storedata =
-          fakeData[CollectionName.stores]
-              ?.map(
-                (e) =>
-                    Store()..mergeFromProto3Json(e, ignoreUnknownFields: true),
-              )
-              .toList() ??
-          [];
+      final response = await storeServiceClient.getBusinessStores(
+        GetBusinessStoresRequest(businessId: businessId),
+      );
 
-      return storedata.where((s) => s.businessId == businessId).toList();
+      return response.stores;
     } catch (e) {
       debugPrint(e.toString());
 
@@ -33,16 +36,11 @@ final class StoresRepository extends GetxService {
   /// Get the store by ref.
   Future<Store?> getStoreByRefId(String refId) async {
     try {
-      final storedata =
-          fakeData[CollectionName.stores]
-              ?.map(
-                (e) =>
-                    Store()..mergeFromProto3Json(e, ignoreUnknownFields: true),
-              )
-              .toList() ??
-          [];
+      final response = await storeServiceClient.getStore(
+        GetStoreRequest(storeId: refId),
+      );
 
-      return storedata.firstWhereOrNull((s) => s.refId == refId);
+      return response.store;
     } catch (e) {
       debugPrint(e.toString());
 

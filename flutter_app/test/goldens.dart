@@ -3,9 +3,16 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
+import 'package:sabitou_clients/repositories/business_repository.dart';
+import 'package:sabitou_clients/repositories/orders_repository.dart';
+import 'package:sabitou_clients/repositories/products_repository.dart';
+import 'package:sabitou_clients/repositories/stores_repository.dart';
+import 'package:sabitou_clients/repositories/suppliers_repository.dart';
+import 'package:sabitou_clients/repositories/transactions_repository.dart';
 import 'package:sabitou_clients/services/app_theme_service.dart';
 import 'package:sabitou_clients/services/internationalization/internationalization.dart';
 import 'package:sabitou_clients/services/storage/app_storate.dart';
+import 'package:sabitou_clients/utils/user_preference.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 Future<void> multiScreenMultiLocaleGolden(
@@ -23,6 +30,14 @@ Future<void> multiScreenMultiLocaleGolden(
   final themeService = AppThemeService(storage);
   Get.put<AppThemeService>(themeService, permanent: true);
   await tester.pumpAndSettle();
+  Get
+    ..put<UserPreferences>(UserPreferences())
+    ..lazyPut<OrdersRepository>(OrdersRepository.new)
+    ..lazyPut<ProductsRepository>(ProductsRepository.new)
+    ..lazyPut<SuppliersRepository>(SuppliersRepository.new)
+    ..lazyPut<TransactionsRepository>(TransactionsRepository.new)
+    ..lazyPut<BusinessRepository>(BusinessRepository.new)
+    ..lazyPut<StoresRepository>(StoresRepository.new);
 
   await tester.pumpWidgetBuilder(
     Obx(() {
