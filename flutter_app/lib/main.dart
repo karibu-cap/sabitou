@@ -58,24 +58,15 @@ Future<void> _initServices() async {
 
   /// Register theme service.
   final themeService = AppThemeService(appStorage);
-  Get.put<AppThemeService>(themeService, permanent: true);
   await themeService.init();
-
-  /// Register the grpc service.
-  final connectRPC = Get.put<ConnectRPCService>(
-    ConnectRPCService(),
-    permanent: true,
-  );
 
   /// Register of userService.
 
-  await Get.putAsync(() async => UserPreferences(), permanent: true);
-  Get.put<AppThemeService>(themeService, permanent: true);
-
-  /// init repositories.
-  final client = UserRepository(clientChannel: connectRPC.clientChannel);
   Get
-    ..lazyPut<UserRepository>(() => client)
+    ..putAsync(() async => UserPreferences(), permanent: true)
+    ..put<AppThemeService>(themeService, permanent: true)
+    ..put<ConnectRPCService>(ConnectRPCService.new(), permanent: true)
+    ..lazyPut<UserRepository>(UserRepository.new)
     ..put<AuthProvider>(AuthProvider())
     ..lazyPut<OrdersRepository>(OrdersRepository.new)
     ..lazyPut<ProductsRepository>(ProductsRepository.new)

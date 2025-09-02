@@ -39,10 +39,9 @@ class ExpiryAlert extends GetView<DashboardController> {
               )
             : Column(
                 children: expiring.map((businessProduct) {
-                  final expiredDate = DateTime.tryParse(
-                    businessProduct.expirationDate,
-                  );
-                  if (expiredDate == null) {
+                  final expiredDate = businessProduct.expirationDate
+                      .toDateTime();
+                  if (!businessProduct.hasExpirationDate()) {
                     return const SizedBox.shrink();
                   }
 

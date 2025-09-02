@@ -23,69 +23,65 @@ class Dashboard extends StatelessWidget {
     final theme = ShadTheme.of(context);
     Get.put(DashboardController());
 
-    return Builder(
-      builder: (context) {
-        return SingleChildScrollView(
-          padding: const EdgeInsets.all(AppConstants.contentPadding),
-          child: Column(
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(AppConstants.contentPadding),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Flex(
+            direction: !ResponsiveUtils.isDesktop(context)
+                ? Axis.vertical
+                : Axis.horizontal,
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Flex(
-                direction: !ResponsiveUtils.isDesktop(context)
-                    ? Axis.vertical
-                    : Axis.horizontal,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(Intls.to.dashboard, style: theme.textTheme.h4),
-                  Obx(
-                    () => Text(
-                      '${Intls.to.lastUpdated}: ${Formatters.formatDate(clock.now())} ${Formatters.formatTime(clock.now())}',
-                      style: theme.textTheme.muted,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: AppConstants.largePadding),
-              const DashboardStats(),
-              const SizedBox(height: AppConstants.largePadding),
-              LayoutBuilder(
-                builder: (context, constraints) {
-                  if (!ResponsiveUtils.isTablet(context) &&
-                      constraints.maxWidth > 800) {
-                    return const Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(child: RecentActivity()),
-                        SizedBox(width: AppConstants.largePadding),
-                        Expanded(
-                          child: Column(
-                            children: [
-                              LowStockAlert(),
-                              SizedBox(height: AppConstants.largePadding),
-                              ExpiryAlert(),
-                            ],
-                          ),
-                        ),
-                      ],
-                    );
-                  }
-
-                  return const Column(
-                    children: [
-                      RecentActivity(),
-                      SizedBox(height: AppConstants.largePadding),
-                      LowStockAlert(),
-                      SizedBox(height: AppConstants.largePadding),
-                      ExpiryAlert(),
-                    ],
-                  );
-                },
+              Text(Intls.to.dashboard, style: theme.textTheme.h4),
+              Obx(
+                () => Text(
+                  '${Intls.to.lastUpdated}: ${Formatters.formatDate(clock.now())} ${Formatters.formatTime(clock.now())}',
+                  style: theme.textTheme.muted,
+                ),
               ),
             ],
           ),
-        );
-      },
+          const SizedBox(height: AppConstants.largePadding),
+          const DashboardStats(),
+          const SizedBox(height: AppConstants.largePadding),
+          LayoutBuilder(
+            builder: (context, constraints) {
+              if (!ResponsiveUtils.isTablet(context) &&
+                  constraints.maxWidth > 800) {
+                return const Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(child: RecentActivity()),
+                    SizedBox(width: AppConstants.largePadding),
+                    Expanded(
+                      child: Column(
+                        children: [
+                          LowStockAlert(),
+                          SizedBox(height: AppConstants.largePadding),
+                          ExpiryAlert(),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              }
+
+              return const Column(
+                children: [
+                  RecentActivity(),
+                  SizedBox(height: AppConstants.largePadding),
+                  LowStockAlert(),
+                  SizedBox(height: AppConstants.largePadding),
+                  ExpiryAlert(),
+                ],
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 }
