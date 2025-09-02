@@ -3,6 +3,8 @@ syntax = "proto3";
 package inventory.v1;
 import "buf/validate/validate.proto";
 
+import "google/protobuf/timestamp.proto";
+
 message ProductCategory {
   // The unique identifier of the product category.
   optional string ref_id = 1;
@@ -55,12 +57,35 @@ message BusinessProduct {
   int32 min_stock_threshold = 7;
 
   // The expiration date of the product.
-  optional string expiration_date = 8;
+  optional google.protobuf.Timestamp expiration_date = 8;
+}
+
+message FindBusinessProductsRequest {
+  // The query to search for business products.
+  string business_id = 1;
+
+  // The unique identifier of the product.
+  optional string ref_id = 2;
+
+  // The unique identifier of the global product.
+  optional string global_product_id = 3;
+
+  // Identify the products that are expired.
+  optional google.protobuf.Timestamp expiration_date = 4;
+}
+
+message FindBusinessProductsResponse {
+  // The unique identifiers of the products.
+  // WARN: all returned products will only have their id and name.
+  repeated BusinessProduct products = 1;
 }
 
 message FindGlobalProductsRequest {
-  // The query to search for products.
-  string query = 1;
+  // The reference id to the global product identifier.
+  optional string ref_id = 1;
+
+  // The query to search for products by category.
+  repeated ProductCategory categories = 2;
 }
 
 message FindGlobalProductsResponse {
@@ -102,7 +127,7 @@ message AddProductRequest {
   int32 min_stock_threshold = 6;
 
   // The expiration date of the product.
-  string expiration_date = 7;
+  optional google.protobuf.Timestamp expiration_date = 7;
 }
 
 message AddProductResponse {
@@ -172,4 +197,7 @@ service ProductService {
   // Only business products that are not in any store and orders can be
   // deleted.
   rpc DeleteProduct(DeleteProductRequest) returns (DeleteProductResponse);
+
+  // Finds products by name.
+  rpc FindBusinessProducts(FindBusinessProductsRequest) returns (FindBusinessProductsResponse);
 }

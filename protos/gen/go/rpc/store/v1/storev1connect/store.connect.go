@@ -44,6 +44,9 @@ const (
 	// StoreServiceDeleteStoreProcedure is the fully-qualified name of the StoreService's DeleteStore
 	// RPC.
 	StoreServiceDeleteStoreProcedure = "/store.v1.StoreService/DeleteStore"
+	// StoreServiceGetBusinessStoresProcedure is the fully-qualified name of the StoreService's
+	// GetBusinessStores RPC.
+	StoreServiceGetBusinessStoresProcedure = "/store.v1.StoreService/GetBusinessStores"
 )
 
 // StoreServiceClient is a client for the store.v1.StoreService service.
@@ -57,6 +60,8 @@ type StoreServiceClient interface {
 	UpdateStore(context.Context, *connect.Request[v1.UpdateStoreRequest]) (*connect.Response[v1.UpdateStoreResponse], error)
 	// Deletes a store.
 	DeleteStore(context.Context, *connect.Request[v1.DeleteStoreRequest]) (*connect.Response[v1.DeleteStoreResponse], error)
+	// Gets all stores base on business Id.
+	GetBusinessStores(context.Context, *connect.Request[v1.GetBusinessStoresRequest]) (*connect.Response[v1.GetBusinessStoresResponse], error)
 }
 
 // NewStoreServiceClient constructs a client for the store.v1.StoreService service. By default, it
@@ -94,15 +99,22 @@ func NewStoreServiceClient(httpClient connect.HTTPClient, baseURL string, opts .
 			connect.WithSchema(storeServiceMethods.ByName("DeleteStore")),
 			connect.WithClientOptions(opts...),
 		),
+		getBusinessStores: connect.NewClient[v1.GetBusinessStoresRequest, v1.GetBusinessStoresResponse](
+			httpClient,
+			baseURL+StoreServiceGetBusinessStoresProcedure,
+			connect.WithSchema(storeServiceMethods.ByName("GetBusinessStores")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // storeServiceClient implements StoreServiceClient.
 type storeServiceClient struct {
-	createStore *connect.Client[v1.CreateStoreRequest, v1.CreateStoreResponse]
-	getStore    *connect.Client[v1.GetStoreRequest, v1.GetStoreResponse]
-	updateStore *connect.Client[v1.UpdateStoreRequest, v1.UpdateStoreResponse]
-	deleteStore *connect.Client[v1.DeleteStoreRequest, v1.DeleteStoreResponse]
+	createStore       *connect.Client[v1.CreateStoreRequest, v1.CreateStoreResponse]
+	getStore          *connect.Client[v1.GetStoreRequest, v1.GetStoreResponse]
+	updateStore       *connect.Client[v1.UpdateStoreRequest, v1.UpdateStoreResponse]
+	deleteStore       *connect.Client[v1.DeleteStoreRequest, v1.DeleteStoreResponse]
+	getBusinessStores *connect.Client[v1.GetBusinessStoresRequest, v1.GetBusinessStoresResponse]
 }
 
 // CreateStore calls store.v1.StoreService.CreateStore.
@@ -125,6 +137,11 @@ func (c *storeServiceClient) DeleteStore(ctx context.Context, req *connect.Reque
 	return c.deleteStore.CallUnary(ctx, req)
 }
 
+// GetBusinessStores calls store.v1.StoreService.GetBusinessStores.
+func (c *storeServiceClient) GetBusinessStores(ctx context.Context, req *connect.Request[v1.GetBusinessStoresRequest]) (*connect.Response[v1.GetBusinessStoresResponse], error) {
+	return c.getBusinessStores.CallUnary(ctx, req)
+}
+
 // StoreServiceHandler is an implementation of the store.v1.StoreService service.
 type StoreServiceHandler interface {
 	// Creates a new store.
@@ -136,6 +153,8 @@ type StoreServiceHandler interface {
 	UpdateStore(context.Context, *connect.Request[v1.UpdateStoreRequest]) (*connect.Response[v1.UpdateStoreResponse], error)
 	// Deletes a store.
 	DeleteStore(context.Context, *connect.Request[v1.DeleteStoreRequest]) (*connect.Response[v1.DeleteStoreResponse], error)
+	// Gets all stores base on business Id.
+	GetBusinessStores(context.Context, *connect.Request[v1.GetBusinessStoresRequest]) (*connect.Response[v1.GetBusinessStoresResponse], error)
 }
 
 // NewStoreServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -169,6 +188,12 @@ func NewStoreServiceHandler(svc StoreServiceHandler, opts ...connect.HandlerOpti
 		connect.WithSchema(storeServiceMethods.ByName("DeleteStore")),
 		connect.WithHandlerOptions(opts...),
 	)
+	storeServiceGetBusinessStoresHandler := connect.NewUnaryHandler(
+		StoreServiceGetBusinessStoresProcedure,
+		svc.GetBusinessStores,
+		connect.WithSchema(storeServiceMethods.ByName("GetBusinessStores")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/store.v1.StoreService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case StoreServiceCreateStoreProcedure:
@@ -179,6 +204,8 @@ func NewStoreServiceHandler(svc StoreServiceHandler, opts ...connect.HandlerOpti
 			storeServiceUpdateStoreHandler.ServeHTTP(w, r)
 		case StoreServiceDeleteStoreProcedure:
 			storeServiceDeleteStoreHandler.ServeHTTP(w, r)
+		case StoreServiceGetBusinessStoresProcedure:
+			storeServiceGetBusinessStoresHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -202,4 +229,8 @@ func (UnimplementedStoreServiceHandler) UpdateStore(context.Context, *connect.Re
 
 func (UnimplementedStoreServiceHandler) DeleteStore(context.Context, *connect.Request[v1.DeleteStoreRequest]) (*connect.Response[v1.DeleteStoreResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("store.v1.StoreService.DeleteStore is not implemented"))
+}
+
+func (UnimplementedStoreServiceHandler) GetBusinessStores(context.Context, *connect.Request[v1.GetBusinessStoresRequest]) (*connect.Response[v1.GetBusinessStoresResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("store.v1.StoreService.GetBusinessStores is not implemented"))
 }

@@ -518,10 +518,10 @@ class GetSupplierResponse extends $pb.GeneratedMessage {
 
 class GetBusinessSuppliersRequest extends $pb.GeneratedMessage {
   factory GetBusinessSuppliersRequest({
-    $core.String? supplierId,
+    $core.String? businessId,
   }) {
     final result = create();
-    if (supplierId != null) result.supplierId = supplierId;
+    if (businessId != null) result.businessId = businessId;
     return result;
   }
 
@@ -538,7 +538,7 @@ class GetBusinessSuppliersRequest extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'GetBusinessSuppliersRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'supplierId')
+    ..aOS(1, _omitFieldNames ? '' : 'businessId')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -566,15 +566,15 @@ class GetBusinessSuppliersRequest extends $pb.GeneratedMessage {
       $pb.GeneratedMessage.$_defaultFor<GetBusinessSuppliersRequest>(create);
   static GetBusinessSuppliersRequest? _defaultInstance;
 
-  /// The reference id to the supplier identifier.
+  /// The reference id to the business identifier.
   @$pb.TagNumber(1)
-  $core.String get supplierId => $_getSZ(0);
+  $core.String get businessId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set supplierId($core.String value) => $_setString(0, value);
+  set businessId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasSupplierId() => $_has(0);
+  $core.bool hasBusinessId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearSupplierId() => $_clearField(1);
+  void clearBusinessId() => $_clearField(1);
 }
 
 class GetBusinessSuppliersResponse extends $pb.GeneratedMessage {

@@ -41,6 +41,8 @@ const (
 	// OrderServiceDeleteOrderProcedure is the fully-qualified name of the OrderService's DeleteOrder
 	// RPC.
 	OrderServiceDeleteOrderProcedure = "/order.v1.OrderService/DeleteOrder"
+	// OrderServiceFindOrdersProcedure is the fully-qualified name of the OrderService's FindOrders RPC.
+	OrderServiceFindOrdersProcedure = "/order.v1.OrderService/FindOrders"
 )
 
 // OrderServiceClient is a client for the order.v1.OrderService service.
@@ -51,6 +53,8 @@ type OrderServiceClient interface {
 	GetOrder(context.Context, *connect.Request[v1.GetOrderRequest]) (*connect.Response[v1.GetOrderResponse], error)
 	// Deletes an order.
 	DeleteOrder(context.Context, *connect.Request[v1.DeleteOrderRequest]) (*connect.Response[v1.DeleteOrderResponse], error)
+	// Finds orders by query.
+	FindOrders(context.Context, *connect.Request[v1.FindOrdersRequest]) (*connect.Response[v1.FindOrdersResponse], error)
 }
 
 // NewOrderServiceClient constructs a client for the order.v1.OrderService service. By default, it
@@ -82,6 +86,12 @@ func NewOrderServiceClient(httpClient connect.HTTPClient, baseURL string, opts .
 			connect.WithSchema(orderServiceMethods.ByName("DeleteOrder")),
 			connect.WithClientOptions(opts...),
 		),
+		findOrders: connect.NewClient[v1.FindOrdersRequest, v1.FindOrdersResponse](
+			httpClient,
+			baseURL+OrderServiceFindOrdersProcedure,
+			connect.WithSchema(orderServiceMethods.ByName("FindOrders")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -90,6 +100,7 @@ type orderServiceClient struct {
 	createOrder *connect.Client[v1.CreateOrderRequest, v1.CreateOrderResponse]
 	getOrder    *connect.Client[v1.GetOrderRequest, v1.GetOrderResponse]
 	deleteOrder *connect.Client[v1.DeleteOrderRequest, v1.DeleteOrderResponse]
+	findOrders  *connect.Client[v1.FindOrdersRequest, v1.FindOrdersResponse]
 }
 
 // CreateOrder calls order.v1.OrderService.CreateOrder.
@@ -107,6 +118,11 @@ func (c *orderServiceClient) DeleteOrder(ctx context.Context, req *connect.Reque
 	return c.deleteOrder.CallUnary(ctx, req)
 }
 
+// FindOrders calls order.v1.OrderService.FindOrders.
+func (c *orderServiceClient) FindOrders(ctx context.Context, req *connect.Request[v1.FindOrdersRequest]) (*connect.Response[v1.FindOrdersResponse], error) {
+	return c.findOrders.CallUnary(ctx, req)
+}
+
 // OrderServiceHandler is an implementation of the order.v1.OrderService service.
 type OrderServiceHandler interface {
 	// Creates a new order.
@@ -115,6 +131,8 @@ type OrderServiceHandler interface {
 	GetOrder(context.Context, *connect.Request[v1.GetOrderRequest]) (*connect.Response[v1.GetOrderResponse], error)
 	// Deletes an order.
 	DeleteOrder(context.Context, *connect.Request[v1.DeleteOrderRequest]) (*connect.Response[v1.DeleteOrderResponse], error)
+	// Finds orders by query.
+	FindOrders(context.Context, *connect.Request[v1.FindOrdersRequest]) (*connect.Response[v1.FindOrdersResponse], error)
 }
 
 // NewOrderServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -142,6 +160,12 @@ func NewOrderServiceHandler(svc OrderServiceHandler, opts ...connect.HandlerOpti
 		connect.WithSchema(orderServiceMethods.ByName("DeleteOrder")),
 		connect.WithHandlerOptions(opts...),
 	)
+	orderServiceFindOrdersHandler := connect.NewUnaryHandler(
+		OrderServiceFindOrdersProcedure,
+		svc.FindOrders,
+		connect.WithSchema(orderServiceMethods.ByName("FindOrders")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/order.v1.OrderService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case OrderServiceCreateOrderProcedure:
@@ -150,6 +174,8 @@ func NewOrderServiceHandler(svc OrderServiceHandler, opts ...connect.HandlerOpti
 			orderServiceGetOrderHandler.ServeHTTP(w, r)
 		case OrderServiceDeleteOrderProcedure:
 			orderServiceDeleteOrderHandler.ServeHTTP(w, r)
+		case OrderServiceFindOrdersProcedure:
+			orderServiceFindOrdersHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -169,4 +195,8 @@ func (UnimplementedOrderServiceHandler) GetOrder(context.Context, *connect.Reque
 
 func (UnimplementedOrderServiceHandler) DeleteOrder(context.Context, *connect.Request[v1.DeleteOrderRequest]) (*connect.Response[v1.DeleteOrderResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("order.v1.OrderService.DeleteOrder is not implemented"))
+}
+
+func (UnimplementedOrderServiceHandler) FindOrders(context.Context, *connect.Request[v1.FindOrdersRequest]) (*connect.Response[v1.FindOrdersResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("order.v1.OrderService.FindOrders is not implemented"))
 }

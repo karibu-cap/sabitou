@@ -33,4 +33,12 @@ abstract final class OrderService {
     orderv1order.DeleteOrderRequest.new,
     orderv1order.DeleteOrderResponse.new,
   );
+
+  /// Finds orders by query.
+  static const findOrders = connect.Spec(
+    '/$name/FindOrders',
+    connect.StreamType.unary,
+    orderv1order.FindOrdersRequest.new,
+    orderv1order.FindOrdersResponse.new,
+  );
 }

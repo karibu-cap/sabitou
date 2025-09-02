@@ -404,8 +404,8 @@ func (x *GetSupplierResponse) GetSupplier() *Supplier {
 
 type GetBusinessSuppliersRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The reference id to the supplier identifier.
-	SupplierId    string `protobuf:"bytes,1,opt,name=supplier_id,json=supplierId,proto3" json:"supplier_id,omitempty"`
+	// The reference id to the business identifier.
+	BusinessId    string `protobuf:"bytes,1,opt,name=business_id,json=businessId,proto3" json:"business_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -440,9 +440,9 @@ func (*GetBusinessSuppliersRequest) Descriptor() ([]byte, []int) {
 	return file_business_v1_supplier_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *GetBusinessSuppliersRequest) GetSupplierId() string {
+func (x *GetBusinessSuppliersRequest) GetBusinessId() string {
 	if x != nil {
-		return x.SupplierId
+		return x.BusinessId
 	}
 	return ""
 }
@@ -737,9 +737,9 @@ const file_business_v1_supplier_proto_rawDesc = "" +
 	"\x13GetSupplierResponse\x121\n" +
 	"\bsupplier\x18\x01 \x01(\v2\x15.business.v1.SupplierR\bsupplier\"J\n" +
 	"\x1bGetBusinessSuppliersRequest\x12+\n" +
-	"\vsupplier_id\x18\x01 \x01(\tB\n" +
+	"\vbusiness_id\x18\x01 \x01(\tB\n" +
 	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\n" +
-	"supplierId\"S\n" +
+	"businessId\"S\n" +
 	"\x1cGetBusinessSuppliersResponse\x123\n" +
 	"\tsuppliers\x18\x01 \x03(\v2\x15.business.v1.SupplierR\tsuppliers\"\xc6\x01\n" +
 	"\x15UpdateSupplierRequest\x121\n" +

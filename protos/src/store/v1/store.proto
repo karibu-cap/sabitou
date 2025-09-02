@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package store.v1;
 import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
 
 // Stores are used to store products.
 // Note: A store is not always a shop.
@@ -23,6 +24,12 @@ message Store {
 
   // The id of the business of the store.
   string business_id = 8;
+
+  // The date and time the store was created.
+  google.protobuf.Timestamp created_at = 9;
+
+  // The date and time the store was last updated.
+  optional google.protobuf.Timestamp updated_at = 10;
 }
 
 message CreateStoreRequest {
@@ -76,6 +83,20 @@ message DeleteStoreRequest {
   ];
 }
 
+message GetBusinessStoresRequest {
+  // The reference id to the supplier identifier.
+  string business_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+}
+
+message GetBusinessStoresResponse {
+  // The list of stores of the business.
+  // Note: Only the ids and names of the stores are returned.
+  repeated Store stores = 1;
+}
+
 message DeleteStoreResponse {
   // Whether the store was successfully deleted.
   bool success = 1;
@@ -94,4 +115,7 @@ service StoreService {
 
   // Deletes a store.
   rpc DeleteStore(DeleteStoreRequest) returns (DeleteStoreResponse) {}
+
+  // Gets all stores base on business Id.
+  rpc GetBusinessStores(GetBusinessStoresRequest) returns (GetBusinessStoresResponse) {}
 }
