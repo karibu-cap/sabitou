@@ -51,6 +51,9 @@ const (
 	// ProductServiceDeleteProductProcedure is the fully-qualified name of the ProductService's
 	// DeleteProduct RPC.
 	ProductServiceDeleteProductProcedure = "/inventory.v1.ProductService/DeleteProduct"
+	// ProductServiceFindBusinessProductsProcedure is the fully-qualified name of the ProductService's
+	// FindBusinessProducts RPC.
+	ProductServiceFindBusinessProductsProcedure = "/inventory.v1.ProductService/FindBusinessProducts"
 )
 
 // ProductServiceClient is a client for the inventory.v1.ProductService service.
@@ -69,6 +72,8 @@ type ProductServiceClient interface {
 	// Only business products that are not in any store and orders can be
 	// deleted.
 	DeleteProduct(context.Context, *connect.Request[v1.DeleteProductRequest]) (*connect.Response[v1.DeleteProductResponse], error)
+	// Finds products by name.
+	FindBusinessProducts(context.Context, *connect.Request[v1.FindBusinessProductsRequest]) (*connect.Response[v1.FindBusinessProductsResponse], error)
 }
 
 // NewProductServiceClient constructs a client for the inventory.v1.ProductService service. By
@@ -118,17 +123,24 @@ func NewProductServiceClient(httpClient connect.HTTPClient, baseURL string, opts
 			connect.WithSchema(productServiceMethods.ByName("DeleteProduct")),
 			connect.WithClientOptions(opts...),
 		),
+		findBusinessProducts: connect.NewClient[v1.FindBusinessProductsRequest, v1.FindBusinessProductsResponse](
+			httpClient,
+			baseURL+ProductServiceFindBusinessProductsProcedure,
+			connect.WithSchema(productServiceMethods.ByName("FindBusinessProducts")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // productServiceClient implements ProductServiceClient.
 type productServiceClient struct {
-	findGlobalProducts *connect.Client[v1.FindGlobalProductsRequest, v1.FindGlobalProductsResponse]
-	findCategory       *connect.Client[v1.FindCategoryRequest, v1.FindCategoryResponse]
-	addProduct         *connect.Client[v1.AddProductRequest, v1.AddProductResponse]
-	getProduct         *connect.Client[v1.GetProductRequest, v1.GetProductResponse]
-	updateProduct      *connect.Client[v1.UpdateProductRequest, v1.UpdateProductResponse]
-	deleteProduct      *connect.Client[v1.DeleteProductRequest, v1.DeleteProductResponse]
+	findGlobalProducts   *connect.Client[v1.FindGlobalProductsRequest, v1.FindGlobalProductsResponse]
+	findCategory         *connect.Client[v1.FindCategoryRequest, v1.FindCategoryResponse]
+	addProduct           *connect.Client[v1.AddProductRequest, v1.AddProductResponse]
+	getProduct           *connect.Client[v1.GetProductRequest, v1.GetProductResponse]
+	updateProduct        *connect.Client[v1.UpdateProductRequest, v1.UpdateProductResponse]
+	deleteProduct        *connect.Client[v1.DeleteProductRequest, v1.DeleteProductResponse]
+	findBusinessProducts *connect.Client[v1.FindBusinessProductsRequest, v1.FindBusinessProductsResponse]
 }
 
 // FindGlobalProducts calls inventory.v1.ProductService.FindGlobalProducts.
@@ -161,6 +173,11 @@ func (c *productServiceClient) DeleteProduct(ctx context.Context, req *connect.R
 	return c.deleteProduct.CallUnary(ctx, req)
 }
 
+// FindBusinessProducts calls inventory.v1.ProductService.FindBusinessProducts.
+func (c *productServiceClient) FindBusinessProducts(ctx context.Context, req *connect.Request[v1.FindBusinessProductsRequest]) (*connect.Response[v1.FindBusinessProductsResponse], error) {
+	return c.findBusinessProducts.CallUnary(ctx, req)
+}
+
 // ProductServiceHandler is an implementation of the inventory.v1.ProductService service.
 type ProductServiceHandler interface {
 	// Finds products by name.
@@ -177,6 +194,8 @@ type ProductServiceHandler interface {
 	// Only business products that are not in any store and orders can be
 	// deleted.
 	DeleteProduct(context.Context, *connect.Request[v1.DeleteProductRequest]) (*connect.Response[v1.DeleteProductResponse], error)
+	// Finds products by name.
+	FindBusinessProducts(context.Context, *connect.Request[v1.FindBusinessProductsRequest]) (*connect.Response[v1.FindBusinessProductsResponse], error)
 }
 
 // NewProductServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -222,6 +241,12 @@ func NewProductServiceHandler(svc ProductServiceHandler, opts ...connect.Handler
 		connect.WithSchema(productServiceMethods.ByName("DeleteProduct")),
 		connect.WithHandlerOptions(opts...),
 	)
+	productServiceFindBusinessProductsHandler := connect.NewUnaryHandler(
+		ProductServiceFindBusinessProductsProcedure,
+		svc.FindBusinessProducts,
+		connect.WithSchema(productServiceMethods.ByName("FindBusinessProducts")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/inventory.v1.ProductService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case ProductServiceFindGlobalProductsProcedure:
@@ -236,6 +261,8 @@ func NewProductServiceHandler(svc ProductServiceHandler, opts ...connect.Handler
 			productServiceUpdateProductHandler.ServeHTTP(w, r)
 		case ProductServiceDeleteProductProcedure:
 			productServiceDeleteProductHandler.ServeHTTP(w, r)
+		case ProductServiceFindBusinessProductsProcedure:
+			productServiceFindBusinessProductsHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -267,4 +294,8 @@ func (UnimplementedProductServiceHandler) UpdateProduct(context.Context, *connec
 
 func (UnimplementedProductServiceHandler) DeleteProduct(context.Context, *connect.Request[v1.DeleteProductRequest]) (*connect.Response[v1.DeleteProductResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("inventory.v1.ProductService.DeleteProduct is not implemented"))
+}
+
+func (UnimplementedProductServiceHandler) FindBusinessProducts(context.Context, *connect.Request[v1.FindBusinessProductsRequest]) (*connect.Response[v1.FindBusinessProductsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("inventory.v1.ProductService.FindBusinessProducts is not implemented"))
 }

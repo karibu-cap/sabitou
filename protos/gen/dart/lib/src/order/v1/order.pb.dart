@@ -15,6 +15,7 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
+import '../../google/protobuf/timestamp.pb.dart' as $0;
 import 'order.pbenum.dart';
 
 export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
@@ -112,8 +113,8 @@ class Order extends $pb.GeneratedMessage {
     $core.Iterable<OrderItem>? orderItems,
     $core.int? totalPriceInCents,
     OrderStatus? status,
-    $core.String? createdAt,
-    $core.String? updatedAt,
+    $0.Timestamp? createdAt,
+    $0.Timestamp? updatedAt,
   }) {
     final result = create();
     if (refId != null) result.refId = refId;
@@ -151,8 +152,10 @@ class Order extends $pb.GeneratedMessage {
         defaultOrMaker: OrderStatus.ORDER_STATUS_UNSPECIFIED,
         valueOf: OrderStatus.valueOf,
         enumValues: OrderStatus.values)
-    ..aOS(7, _omitFieldNames ? '' : 'createdAt')
-    ..aOS(8, _omitFieldNames ? '' : 'updatedAt')
+    ..aOM<$0.Timestamp>(7, _omitFieldNames ? '' : 'createdAt',
+        subBuilder: $0.Timestamp.create)
+    ..aOM<$0.Timestamp>(8, _omitFieldNames ? '' : 'updatedAt',
+        subBuilder: $0.Timestamp.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -230,23 +233,27 @@ class Order extends $pb.GeneratedMessage {
 
   /// The date and time the order was created.
   @$pb.TagNumber(7)
-  $core.String get createdAt => $_getSZ(6);
+  $0.Timestamp get createdAt => $_getN(6);
   @$pb.TagNumber(7)
-  set createdAt($core.String value) => $_setString(6, value);
+  set createdAt($0.Timestamp value) => $_setField(7, value);
   @$pb.TagNumber(7)
   $core.bool hasCreatedAt() => $_has(6);
   @$pb.TagNumber(7)
   void clearCreatedAt() => $_clearField(7);
+  @$pb.TagNumber(7)
+  $0.Timestamp ensureCreatedAt() => $_ensure(6);
 
   /// The date and time the order was last updated.
   @$pb.TagNumber(8)
-  $core.String get updatedAt => $_getSZ(7);
+  $0.Timestamp get updatedAt => $_getN(7);
   @$pb.TagNumber(8)
-  set updatedAt($core.String value) => $_setString(7, value);
+  set updatedAt($0.Timestamp value) => $_setField(8, value);
   @$pb.TagNumber(8)
   $core.bool hasUpdatedAt() => $_has(7);
   @$pb.TagNumber(8)
   void clearUpdatedAt() => $_clearField(8);
+  @$pb.TagNumber(8)
+  $0.Timestamp ensureUpdatedAt() => $_ensure(7);
 }
 
 class CreateOrderRequest extends $pb.GeneratedMessage {
@@ -451,8 +458,8 @@ class GetOrderRequest extends $pb.GeneratedMessage {
 class GetOrderResponse extends $pb.GeneratedMessage {
   factory GetOrderResponse({
     Order? order,
-    $core.String? createdAt,
-    $core.String? updatedAt,
+    $0.Timestamp? createdAt,
+    $0.Timestamp? updatedAt,
   }) {
     final result = create();
     if (order != null) result.order = order;
@@ -475,8 +482,10 @@ class GetOrderResponse extends $pb.GeneratedMessage {
       package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'),
       createEmptyInstance: create)
     ..aOM<Order>(1, _omitFieldNames ? '' : 'order', subBuilder: Order.create)
-    ..aOS(2, _omitFieldNames ? '' : 'createdAt')
-    ..aOS(3, _omitFieldNames ? '' : 'updatedAt')
+    ..aOM<$0.Timestamp>(2, _omitFieldNames ? '' : 'createdAt',
+        subBuilder: $0.Timestamp.create)
+    ..aOM<$0.Timestamp>(3, _omitFieldNames ? '' : 'updatedAt',
+        subBuilder: $0.Timestamp.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -514,23 +523,27 @@ class GetOrderResponse extends $pb.GeneratedMessage {
 
   /// The date and time the order was created.
   @$pb.TagNumber(2)
-  $core.String get createdAt => $_getSZ(1);
+  $0.Timestamp get createdAt => $_getN(1);
   @$pb.TagNumber(2)
-  set createdAt($core.String value) => $_setString(1, value);
+  set createdAt($0.Timestamp value) => $_setField(2, value);
   @$pb.TagNumber(2)
   $core.bool hasCreatedAt() => $_has(1);
   @$pb.TagNumber(2)
   void clearCreatedAt() => $_clearField(2);
+  @$pb.TagNumber(2)
+  $0.Timestamp ensureCreatedAt() => $_ensure(1);
 
   /// The date and time the order was last updated.
   @$pb.TagNumber(3)
-  $core.String get updatedAt => $_getSZ(2);
+  $0.Timestamp get updatedAt => $_getN(2);
   @$pb.TagNumber(3)
-  set updatedAt($core.String value) => $_setString(2, value);
+  set updatedAt($0.Timestamp value) => $_setField(3, value);
   @$pb.TagNumber(3)
   $core.bool hasUpdatedAt() => $_has(2);
   @$pb.TagNumber(3)
   void clearUpdatedAt() => $_clearField(3);
+  @$pb.TagNumber(3)
+  $0.Timestamp ensureUpdatedAt() => $_ensure(2);
 }
 
 class DeleteOrderRequest extends $pb.GeneratedMessage {
@@ -647,6 +660,151 @@ class DeleteOrderResponse extends $pb.GeneratedMessage {
   void clearSuccess() => $_clearField(1);
 }
 
+class FindOrdersRequest extends $pb.GeneratedMessage {
+  factory FindOrdersRequest({
+    $core.String? refId,
+    $core.String? fromId,
+    $core.String? isClientOrder,
+    $core.Iterable<OrderStatus>? status,
+  }) {
+    final result = create();
+    if (refId != null) result.refId = refId;
+    if (fromId != null) result.fromId = fromId;
+    if (isClientOrder != null) result.isClientOrder = isClientOrder;
+    if (status != null) result.status.addAll(status);
+    return result;
+  }
+
+  FindOrdersRequest._();
+
+  factory FindOrdersRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory FindOrdersRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FindOrdersRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'refId')
+    ..aOS(2, _omitFieldNames ? '' : 'fromId')
+    ..aOS(3, _omitFieldNames ? '' : 'isClientOrder')
+    ..pc<OrderStatus>(4, _omitFieldNames ? '' : 'status', $pb.PbFieldType.KE,
+        valueOf: OrderStatus.valueOf,
+        enumValues: OrderStatus.values,
+        defaultEnumValue: OrderStatus.ORDER_STATUS_UNSPECIFIED)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FindOrdersRequest clone() => FindOrdersRequest()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FindOrdersRequest copyWith(void Function(FindOrdersRequest) updates) =>
+      super.copyWith((message) => updates(message as FindOrdersRequest))
+          as FindOrdersRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static FindOrdersRequest create() => FindOrdersRequest._();
+  @$core.override
+  FindOrdersRequest createEmptyInstance() => create();
+  static $pb.PbList<FindOrdersRequest> createRepeated() =>
+      $pb.PbList<FindOrdersRequest>();
+  @$core.pragma('dart2js:noInline')
+  static FindOrdersRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FindOrdersRequest>(create);
+  static FindOrdersRequest? _defaultInstance;
+
+  /// The unique identifier of the order to retrieve.
+  @$pb.TagNumber(1)
+  $core.String get refId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set refId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasRefId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearRefId() => $_clearField(1);
+
+  /// The id of the client or the supplier if available.
+  @$pb.TagNumber(2)
+  $core.String get fromId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set fromId($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasFromId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearFromId() => $_clearField(2);
+
+  /// Whether the order is from the client or the supplier.
+  @$pb.TagNumber(3)
+  $core.String get isClientOrder => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set isClientOrder($core.String value) => $_setString(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasIsClientOrder() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearIsClientOrder() => $_clearField(3);
+
+  /// The status of the order.
+  @$pb.TagNumber(4)
+  $pb.PbList<OrderStatus> get status => $_getList(3);
+}
+
+class FindOrdersResponse extends $pb.GeneratedMessage {
+  factory FindOrdersResponse({
+    $core.Iterable<Order>? orders,
+  }) {
+    final result = create();
+    if (orders != null) result.orders.addAll(orders);
+    return result;
+  }
+
+  FindOrdersResponse._();
+
+  factory FindOrdersResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory FindOrdersResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FindOrdersResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'),
+      createEmptyInstance: create)
+    ..pc<Order>(1, _omitFieldNames ? '' : 'orders', $pb.PbFieldType.PM,
+        subBuilder: Order.create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FindOrdersResponse clone() => FindOrdersResponse()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FindOrdersResponse copyWith(void Function(FindOrdersResponse) updates) =>
+      super.copyWith((message) => updates(message as FindOrdersResponse))
+          as FindOrdersResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static FindOrdersResponse create() => FindOrdersResponse._();
+  @$core.override
+  FindOrdersResponse createEmptyInstance() => create();
+  static $pb.PbList<FindOrdersResponse> createRepeated() =>
+      $pb.PbList<FindOrdersResponse>();
+  @$core.pragma('dart2js:noInline')
+  static FindOrdersResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FindOrdersResponse>(create);
+  static FindOrdersResponse? _defaultInstance;
+
+  /// The unique identifiers of the orders.
+  @$pb.TagNumber(1)
+  $pb.PbList<Order> get orders => $_getList(0);
+}
+
 class OrderServiceApi {
   final $pb.RpcClient _client;
 
@@ -669,6 +827,12 @@ class OrderServiceApi {
           $pb.ClientContext? ctx, DeleteOrderRequest request) =>
       _client.invoke<DeleteOrderResponse>(
           ctx, 'OrderService', 'DeleteOrder', request, DeleteOrderResponse());
+
+  /// Finds orders by query.
+  $async.Future<FindOrdersResponse> findOrders(
+          $pb.ClientContext? ctx, FindOrdersRequest request) =>
+      _client.invoke<FindOrdersResponse>(
+          ctx, 'OrderService', 'FindOrders', request, FindOrdersResponse());
 }
 
 const $core.bool _omitFieldNames =

@@ -45,6 +45,9 @@ const (
 	// TransactionServiceDeleteTransactionProcedure is the fully-qualified name of the
 	// TransactionService's DeleteTransaction RPC.
 	TransactionServiceDeleteTransactionProcedure = "/transaction.v1.TransactionService/DeleteTransaction"
+	// TransactionServiceFindTransactionsProcedure is the fully-qualified name of the
+	// TransactionService's FindTransactions RPC.
+	TransactionServiceFindTransactionsProcedure = "/transaction.v1.TransactionService/FindTransactions"
 )
 
 // TransactionServiceClient is a client for the transaction.v1.TransactionService service.
@@ -57,6 +60,8 @@ type TransactionServiceClient interface {
 	UpdateTransaction(context.Context, *connect.Request[v1.UpdateTransactionRequest]) (*connect.Response[v1.UpdateTransactionResponse], error)
 	// Deletes a transaction.
 	DeleteTransaction(context.Context, *connect.Request[v1.DeleteTransactionRequest]) (*connect.Response[v1.DeleteTransactionResponse], error)
+	// Find transactions by query.
+	FindTransactions(context.Context, *connect.Request[v1.FindTransactionsRequest]) (*connect.Response[v1.FindTransactionsResponse], error)
 }
 
 // NewTransactionServiceClient constructs a client for the transaction.v1.TransactionService
@@ -94,6 +99,12 @@ func NewTransactionServiceClient(httpClient connect.HTTPClient, baseURL string, 
 			connect.WithSchema(transactionServiceMethods.ByName("DeleteTransaction")),
 			connect.WithClientOptions(opts...),
 		),
+		findTransactions: connect.NewClient[v1.FindTransactionsRequest, v1.FindTransactionsResponse](
+			httpClient,
+			baseURL+TransactionServiceFindTransactionsProcedure,
+			connect.WithSchema(transactionServiceMethods.ByName("FindTransactions")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -103,6 +114,7 @@ type transactionServiceClient struct {
 	getTransaction    *connect.Client[v1.GetTransactionRequest, v1.GetTransactionResponse]
 	updateTransaction *connect.Client[v1.UpdateTransactionRequest, v1.UpdateTransactionResponse]
 	deleteTransaction *connect.Client[v1.DeleteTransactionRequest, v1.DeleteTransactionResponse]
+	findTransactions  *connect.Client[v1.FindTransactionsRequest, v1.FindTransactionsResponse]
 }
 
 // AddTransaction calls transaction.v1.TransactionService.AddTransaction.
@@ -125,6 +137,11 @@ func (c *transactionServiceClient) DeleteTransaction(ctx context.Context, req *c
 	return c.deleteTransaction.CallUnary(ctx, req)
 }
 
+// FindTransactions calls transaction.v1.TransactionService.FindTransactions.
+func (c *transactionServiceClient) FindTransactions(ctx context.Context, req *connect.Request[v1.FindTransactionsRequest]) (*connect.Response[v1.FindTransactionsResponse], error) {
+	return c.findTransactions.CallUnary(ctx, req)
+}
+
 // TransactionServiceHandler is an implementation of the transaction.v1.TransactionService service.
 type TransactionServiceHandler interface {
 	// Adds a transaction.
@@ -135,6 +152,8 @@ type TransactionServiceHandler interface {
 	UpdateTransaction(context.Context, *connect.Request[v1.UpdateTransactionRequest]) (*connect.Response[v1.UpdateTransactionResponse], error)
 	// Deletes a transaction.
 	DeleteTransaction(context.Context, *connect.Request[v1.DeleteTransactionRequest]) (*connect.Response[v1.DeleteTransactionResponse], error)
+	// Find transactions by query.
+	FindTransactions(context.Context, *connect.Request[v1.FindTransactionsRequest]) (*connect.Response[v1.FindTransactionsResponse], error)
 }
 
 // NewTransactionServiceHandler builds an HTTP handler from the service implementation. It returns
@@ -168,6 +187,12 @@ func NewTransactionServiceHandler(svc TransactionServiceHandler, opts ...connect
 		connect.WithSchema(transactionServiceMethods.ByName("DeleteTransaction")),
 		connect.WithHandlerOptions(opts...),
 	)
+	transactionServiceFindTransactionsHandler := connect.NewUnaryHandler(
+		TransactionServiceFindTransactionsProcedure,
+		svc.FindTransactions,
+		connect.WithSchema(transactionServiceMethods.ByName("FindTransactions")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/transaction.v1.TransactionService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case TransactionServiceAddTransactionProcedure:
@@ -178,6 +203,8 @@ func NewTransactionServiceHandler(svc TransactionServiceHandler, opts ...connect
 			transactionServiceUpdateTransactionHandler.ServeHTTP(w, r)
 		case TransactionServiceDeleteTransactionProcedure:
 			transactionServiceDeleteTransactionHandler.ServeHTTP(w, r)
+		case TransactionServiceFindTransactionsProcedure:
+			transactionServiceFindTransactionsHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -201,4 +228,8 @@ func (UnimplementedTransactionServiceHandler) UpdateTransaction(context.Context,
 
 func (UnimplementedTransactionServiceHandler) DeleteTransaction(context.Context, *connect.Request[v1.DeleteTransactionRequest]) (*connect.Response[v1.DeleteTransactionResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("transaction.v1.TransactionService.DeleteTransaction is not implemented"))
+}
+
+func (UnimplementedTransactionServiceHandler) FindTransactions(context.Context, *connect.Request[v1.FindTransactionsRequest]) (*connect.Response[v1.FindTransactionsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("transaction.v1.TransactionService.FindTransactions is not implemented"))
 }

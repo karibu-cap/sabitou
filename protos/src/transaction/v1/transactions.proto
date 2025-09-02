@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package transaction.v1;
 import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
 
 enum TransactionType {
   TRANSACTION_TYPE_UNSPECIFIED = 0;
@@ -70,10 +71,10 @@ message Transaction {
   ];
 
   // The creation date of the transaction (ISO 8601).
-  string created_at = 10;
+  google.protobuf.Timestamp created_at = 10;
 
   // The update date of the transaction (ISO 8601).
-  optional string updated_at = 11;
+  optional google.protobuf.Timestamp updated_at = 11;
 
   // The description or note of the transaction (ex. : "Refund for order cancellation").
   optional string description = 12;
@@ -131,6 +132,24 @@ message DeleteTransactionResponse {
   bool success = 1;
 }
 
+message FindTransactionsRequest {
+  string business_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+  optional string store_id = 2;
+  optional string order_id = 3;
+  optional google.protobuf.Timestamp start_date = 4;
+  optional google.protobuf.Timestamp end_date = 5;
+  repeated TransactionType type = 6;
+  repeated TransactionStatus status = 7;
+}
+
+message FindTransactionsResponse {
+  // The list of transactions found.
+  repeated Transaction transactions = 1;
+}
+
 service TransactionService {
   // Adds a transaction.
   rpc AddTransaction(AddTransactionRequest) returns (AddTransactionResponse);
@@ -143,4 +162,7 @@ service TransactionService {
 
   // Deletes a transaction.
   rpc DeleteTransaction(DeleteTransactionRequest) returns (DeleteTransactionResponse);
+
+  // Find transactions by query.
+  rpc FindTransactions(FindTransactionsRequest) returns (FindTransactionsResponse);
 }

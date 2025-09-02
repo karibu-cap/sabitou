@@ -41,4 +41,12 @@ abstract final class TransactionService {
     transactionv1transactions.DeleteTransactionRequest.new,
     transactionv1transactions.DeleteTransactionResponse.new,
   );
+
+  /// Find transactions by query.
+  static const findTransactions = connect.Spec(
+    '/$name/FindTransactions',
+    connect.StreamType.unary,
+    transactionv1transactions.FindTransactionsRequest.new,
+    transactionv1transactions.FindTransactionsResponse.new,
+  );
 }

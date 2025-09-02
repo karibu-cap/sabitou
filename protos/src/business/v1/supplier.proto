@@ -81,8 +81,8 @@ message GetSupplierResponse {
 }
 
 message GetBusinessSuppliersRequest {
-  // The reference id to the supplier identifier.
-  string supplier_id = 1 [
+  // The reference id to the business identifier.
+  string business_id = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];

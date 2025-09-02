@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package order.v1;
 import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
 
 enum OrderStatus {
   ORDER_STATUS_UNSPECIFIED = 0;
@@ -43,10 +44,10 @@ message Order {
   OrderStatus status = 6;
 
   // The date and time the order was created.
-  string created_at = 7;
+  google.protobuf.Timestamp created_at = 7;
 
   // The date and time the order was last updated.
-  optional string updated_at = 8;
+  optional google.protobuf.Timestamp updated_at = 8;
 }
 
 message CreateOrderRequest {
@@ -81,10 +82,10 @@ message GetOrderResponse {
   Order order = 1;
 
   // The date and time the order was created.
-  string created_at = 2;
+  google.protobuf.Timestamp created_at = 2;
 
   // The date and time the order was last updated.
-  optional string updated_at = 3;
+  optional google.protobuf.Timestamp updated_at = 3;
 
 }
 
@@ -101,6 +102,25 @@ message DeleteOrderResponse {
   bool success = 1;
 }
 
+message FindOrdersRequest {
+  // The unique identifier of the order to retrieve.
+  optional string ref_id = 1;
+
+  // The id of the client or the supplier if available.
+  optional string from_id = 2;
+
+  // Whether the order is from the client or the supplier.
+  optional string is_client_order = 3;
+
+  // The status of the order.
+  repeated OrderStatus status = 4;
+}
+
+message FindOrdersResponse {
+  // The unique identifiers of the orders.
+  repeated Order orders = 1;
+}
+
 service OrderService {
   // Creates a new order.
   rpc CreateOrder(CreateOrderRequest) returns (CreateOrderResponse) {}
@@ -110,5 +130,8 @@ service OrderService {
 
   // Deletes an order.
   rpc DeleteOrder(DeleteOrderRequest) returns (DeleteOrderResponse) {}
+
+  // Finds orders by query.
+  rpc FindOrders(FindOrdersRequest) returns (FindOrdersResponse) {}
 }
 

@@ -15,6 +15,8 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
+import '../../google/protobuf/timestamp.pb.dart' as $0;
+
 export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 
 /// Stores are used to store products.
@@ -27,6 +29,8 @@ class Store extends $pb.GeneratedMessage {
     $core.String? logoLinkId,
     $core.String? externalLinksIds,
     $core.String? businessId,
+    $0.Timestamp? createdAt,
+    $0.Timestamp? updatedAt,
   }) {
     final result = create();
     if (refId != null) result.refId = refId;
@@ -35,6 +39,8 @@ class Store extends $pb.GeneratedMessage {
     if (logoLinkId != null) result.logoLinkId = logoLinkId;
     if (externalLinksIds != null) result.externalLinksIds = externalLinksIds;
     if (businessId != null) result.businessId = businessId;
+    if (createdAt != null) result.createdAt = createdAt;
+    if (updatedAt != null) result.updatedAt = updatedAt;
     return result;
   }
 
@@ -57,6 +63,10 @@ class Store extends $pb.GeneratedMessage {
     ..aOS(6, _omitFieldNames ? '' : 'logoLinkId')
     ..aOS(7, _omitFieldNames ? '' : 'externalLinksIds')
     ..aOS(8, _omitFieldNames ? '' : 'businessId')
+    ..aOM<$0.Timestamp>(9, _omitFieldNames ? '' : 'createdAt',
+        subBuilder: $0.Timestamp.create)
+    ..aOM<$0.Timestamp>(10, _omitFieldNames ? '' : 'updatedAt',
+        subBuilder: $0.Timestamp.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -137,6 +147,30 @@ class Store extends $pb.GeneratedMessage {
   $core.bool hasBusinessId() => $_has(5);
   @$pb.TagNumber(8)
   void clearBusinessId() => $_clearField(8);
+
+  /// The date and time the store was created.
+  @$pb.TagNumber(9)
+  $0.Timestamp get createdAt => $_getN(6);
+  @$pb.TagNumber(9)
+  set createdAt($0.Timestamp value) => $_setField(9, value);
+  @$pb.TagNumber(9)
+  $core.bool hasCreatedAt() => $_has(6);
+  @$pb.TagNumber(9)
+  void clearCreatedAt() => $_clearField(9);
+  @$pb.TagNumber(9)
+  $0.Timestamp ensureCreatedAt() => $_ensure(6);
+
+  /// The date and time the store was last updated.
+  @$pb.TagNumber(10)
+  $0.Timestamp get updatedAt => $_getN(7);
+  @$pb.TagNumber(10)
+  set updatedAt($0.Timestamp value) => $_setField(10, value);
+  @$pb.TagNumber(10)
+  $core.bool hasUpdatedAt() => $_has(7);
+  @$pb.TagNumber(10)
+  void clearUpdatedAt() => $_clearField(10);
+  @$pb.TagNumber(10)
+  $0.Timestamp ensureUpdatedAt() => $_ensure(7);
 }
 
 class CreateStoreRequest extends $pb.GeneratedMessage {
@@ -575,6 +609,120 @@ class DeleteStoreRequest extends $pb.GeneratedMessage {
   void clearStoreId() => $_clearField(1);
 }
 
+class GetBusinessStoresRequest extends $pb.GeneratedMessage {
+  factory GetBusinessStoresRequest({
+    $core.String? businessId,
+  }) {
+    final result = create();
+    if (businessId != null) result.businessId = businessId;
+    return result;
+  }
+
+  GetBusinessStoresRequest._();
+
+  factory GetBusinessStoresRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory GetBusinessStoresRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetBusinessStoresRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'store.v1'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'businessId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetBusinessStoresRequest clone() =>
+      GetBusinessStoresRequest()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetBusinessStoresRequest copyWith(
+          void Function(GetBusinessStoresRequest) updates) =>
+      super.copyWith((message) => updates(message as GetBusinessStoresRequest))
+          as GetBusinessStoresRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static GetBusinessStoresRequest create() => GetBusinessStoresRequest._();
+  @$core.override
+  GetBusinessStoresRequest createEmptyInstance() => create();
+  static $pb.PbList<GetBusinessStoresRequest> createRepeated() =>
+      $pb.PbList<GetBusinessStoresRequest>();
+  @$core.pragma('dart2js:noInline')
+  static GetBusinessStoresRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetBusinessStoresRequest>(create);
+  static GetBusinessStoresRequest? _defaultInstance;
+
+  /// The reference id to the supplier identifier.
+  @$pb.TagNumber(1)
+  $core.String get businessId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set businessId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasBusinessId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearBusinessId() => $_clearField(1);
+}
+
+class GetBusinessStoresResponse extends $pb.GeneratedMessage {
+  factory GetBusinessStoresResponse({
+    $core.Iterable<Store>? stores,
+  }) {
+    final result = create();
+    if (stores != null) result.stores.addAll(stores);
+    return result;
+  }
+
+  GetBusinessStoresResponse._();
+
+  factory GetBusinessStoresResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory GetBusinessStoresResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetBusinessStoresResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'store.v1'),
+      createEmptyInstance: create)
+    ..pc<Store>(1, _omitFieldNames ? '' : 'stores', $pb.PbFieldType.PM,
+        subBuilder: Store.create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetBusinessStoresResponse clone() =>
+      GetBusinessStoresResponse()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetBusinessStoresResponse copyWith(
+          void Function(GetBusinessStoresResponse) updates) =>
+      super.copyWith((message) => updates(message as GetBusinessStoresResponse))
+          as GetBusinessStoresResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static GetBusinessStoresResponse create() => GetBusinessStoresResponse._();
+  @$core.override
+  GetBusinessStoresResponse createEmptyInstance() => create();
+  static $pb.PbList<GetBusinessStoresResponse> createRepeated() =>
+      $pb.PbList<GetBusinessStoresResponse>();
+  @$core.pragma('dart2js:noInline')
+  static GetBusinessStoresResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetBusinessStoresResponse>(create);
+  static GetBusinessStoresResponse? _defaultInstance;
+
+  /// The list of stores of the business.
+  /// Note: Only the ids and names of the stores are returned.
+  @$pb.TagNumber(1)
+  $pb.PbList<Store> get stores => $_getList(0);
+}
+
 class DeleteStoreResponse extends $pb.GeneratedMessage {
   factory DeleteStoreResponse({
     $core.bool? success,
@@ -661,6 +809,12 @@ class StoreServiceApi {
           $pb.ClientContext? ctx, DeleteStoreRequest request) =>
       _client.invoke<DeleteStoreResponse>(
           ctx, 'StoreService', 'DeleteStore', request, DeleteStoreResponse());
+
+  /// Gets all stores base on business Id.
+  $async.Future<GetBusinessStoresResponse> getBusinessStores(
+          $pb.ClientContext? ctx, GetBusinessStoresRequest request) =>
+      _client.invoke<GetBusinessStoresResponse>(ctx, 'StoreService',
+          'GetBusinessStores', request, GetBusinessStoresResponse());
 }
 
 const $core.bool _omitFieldNames =

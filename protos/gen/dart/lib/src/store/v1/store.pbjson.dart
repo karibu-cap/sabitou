@@ -14,6 +14,8 @@ import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
+import '../../google/protobuf/timestamp.pbjson.dart' as $0;
+
 @$core.Deprecated('Use storeDescriptor instead')
 const Store$json = {
   '1': 'Store',
@@ -48,12 +50,31 @@ const Store$json = {
       '17': true
     },
     {'1': 'business_id', '3': 8, '4': 1, '5': 9, '10': 'businessId'},
+    {
+      '1': 'created_at',
+      '3': 9,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '10': 'createdAt'
+    },
+    {
+      '1': 'updated_at',
+      '3': 10,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '9': 4,
+      '10': 'updatedAt',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_ref_id'},
     {'1': '_description'},
     {'1': '_logo_link_id'},
     {'1': '_external_links_ids'},
+    {'1': '_updated_at'},
   ],
 };
 
@@ -62,9 +83,11 @@ final $typed_data.Uint8List storeDescriptor = $convert.base64Decode(
     'CgVTdG9yZRIaCgZyZWZfaWQYASABKAlIAFIFcmVmSWSIAQESEgoEbmFtZRgDIAEoCVIEbmFtZR'
     'IlCgtkZXNjcmlwdGlvbhgFIAEoCUgBUgtkZXNjcmlwdGlvbogBARIlCgxsb2dvX2xpbmtfaWQY'
     'BiABKAlIAlIKbG9nb0xpbmtJZIgBARIxChJleHRlcm5hbF9saW5rc19pZHMYByABKAlIA1IQZX'
-    'h0ZXJuYWxMaW5rc0lkc4gBARIfCgtidXNpbmVzc19pZBgIIAEoCVIKYnVzaW5lc3NJZEIJCgdf'
-    'cmVmX2lkQg4KDF9kZXNjcmlwdGlvbkIPCg1fbG9nb19saW5rX2lkQhUKE19leHRlcm5hbF9saW'
-    '5rc19pZHM=');
+    'h0ZXJuYWxMaW5rc0lkc4gBARIfCgtidXNpbmVzc19pZBgIIAEoCVIKYnVzaW5lc3NJZBI5Cgpj'
+    'cmVhdGVkX2F0GAkgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIJY3JlYXRlZEF0Ej'
+    '4KCnVwZGF0ZWRfYXQYCiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wSARSCXVwZGF0'
+    'ZWRBdIgBAUIJCgdfcmVmX2lkQg4KDF9kZXNjcmlwdGlvbkIPCg1fbG9nb19saW5rX2lkQhUKE1'
+    '9leHRlcm5hbF9saW5rc19pZHNCDQoLX3VwZGF0ZWRfYXQ=');
 
 @$core.Deprecated('Use createStoreRequestDescriptor instead')
 const CreateStoreRequest$json = {
@@ -211,6 +234,41 @@ final $typed_data.Uint8List deleteStoreRequestDescriptor = $convert.base64Decode
     'ChJEZWxldGVTdG9yZVJlcXVlc3QSJQoIc3RvcmVfaWQYASABKAlCCrpIB8gBAXICEANSB3N0b3'
     'JlSWQ=');
 
+@$core.Deprecated('Use getBusinessStoresRequestDescriptor instead')
+const GetBusinessStoresRequest$json = {
+  '1': 'GetBusinessStoresRequest',
+  '2': [
+    {'1': 'business_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'businessId'},
+  ],
+};
+
+/// Descriptor for `GetBusinessStoresRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getBusinessStoresRequestDescriptor =
+    $convert.base64Decode(
+        'ChhHZXRCdXNpbmVzc1N0b3Jlc1JlcXVlc3QSKwoLYnVzaW5lc3NfaWQYASABKAlCCrpIB8gBAX'
+        'ICEANSCmJ1c2luZXNzSWQ=');
+
+@$core.Deprecated('Use getBusinessStoresResponseDescriptor instead')
+const GetBusinessStoresResponse$json = {
+  '1': 'GetBusinessStoresResponse',
+  '2': [
+    {
+      '1': 'stores',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.store.v1.Store',
+      '10': 'stores'
+    },
+  ],
+};
+
+/// Descriptor for `GetBusinessStoresResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getBusinessStoresResponseDescriptor =
+    $convert.base64Decode(
+        'ChlHZXRCdXNpbmVzc1N0b3Jlc1Jlc3BvbnNlEicKBnN0b3JlcxgBIAMoCzIPLnN0b3JlLnYxLl'
+        'N0b3JlUgZzdG9yZXM=');
+
 @$core.Deprecated('Use deleteStoreResponseDescriptor instead')
 const DeleteStoreResponse$json = {
   '1': 'DeleteStoreResponse',
@@ -251,6 +309,12 @@ const $core.Map<$core.String, $core.dynamic> StoreServiceBase$json = {
       '3': '.store.v1.DeleteStoreResponse',
       '4': {}
     },
+    {
+      '1': 'GetBusinessStores',
+      '2': '.store.v1.GetBusinessStoresRequest',
+      '3': '.store.v1.GetBusinessStoresResponse',
+      '4': {}
+    },
   ],
 };
 
@@ -259,6 +323,7 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
     StoreServiceBase$messageJson = {
   '.store.v1.CreateStoreRequest': CreateStoreRequest$json,
   '.store.v1.Store': Store$json,
+  '.google.protobuf.Timestamp': $0.Timestamp$json,
   '.store.v1.CreateStoreResponse': CreateStoreResponse$json,
   '.store.v1.GetStoreRequest': GetStoreRequest$json,
   '.store.v1.GetStoreResponse': GetStoreResponse$json,
@@ -266,6 +331,8 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
   '.store.v1.UpdateStoreResponse': UpdateStoreResponse$json,
   '.store.v1.DeleteStoreRequest': DeleteStoreRequest$json,
   '.store.v1.DeleteStoreResponse': DeleteStoreResponse$json,
+  '.store.v1.GetBusinessStoresRequest': GetBusinessStoresRequest$json,
+  '.store.v1.GetBusinessStoresResponse': GetBusinessStoresResponse$json,
 };
 
 /// Descriptor for `StoreService`. Decode as a `google.protobuf.ServiceDescriptorProto`.
@@ -275,4 +342,6 @@ final $typed_data.Uint8List storeServiceDescriptor = $convert.base64Decode(
     'ZS52MS5HZXRTdG9yZVJlcXVlc3QaGi5zdG9yZS52MS5HZXRTdG9yZVJlc3BvbnNlIgASTAoLVX'
     'BkYXRlU3RvcmUSHC5zdG9yZS52MS5VcGRhdGVTdG9yZVJlcXVlc3QaHS5zdG9yZS52MS5VcGRh'
     'dGVTdG9yZVJlc3BvbnNlIgASTAoLRGVsZXRlU3RvcmUSHC5zdG9yZS52MS5EZWxldGVTdG9yZV'
-    'JlcXVlc3QaHS5zdG9yZS52MS5EZWxldGVTdG9yZVJlc3BvbnNlIgA=');
+    'JlcXVlc3QaHS5zdG9yZS52MS5EZWxldGVTdG9yZVJlc3BvbnNlIgASXgoRR2V0QnVzaW5lc3NT'
+    'dG9yZXMSIi5zdG9yZS52MS5HZXRCdXNpbmVzc1N0b3Jlc1JlcXVlc3QaIy5zdG9yZS52MS5HZX'
+    'RCdXNpbmVzc1N0b3Jlc1Jlc3BvbnNlIgA=');

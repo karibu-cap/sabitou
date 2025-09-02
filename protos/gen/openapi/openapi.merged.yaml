@@ -1530,6 +1530,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inventory.v1.DeleteProductResponse'
+  /inventory.v1.ProductService/FindBusinessProducts:
+    post:
+      tags:
+        - inventory.v1.ProductService
+      summary: Finds products by name.
+      description: Finds products by name.
+      operationId: inventory.v1.ProductService.FindBusinessProducts
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inventory.v1.FindBusinessProductsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inventory.v1.FindBusinessProductsResponse'
   /link.v1.ResourceLinkService/GetResourceLinks:
     post:
       tags:
@@ -1674,6 +1710,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/order.v1.DeleteOrderResponse'
+  /order.v1.OrderService/FindOrders:
+    post:
+      tags:
+        - order.v1.OrderService
+      summary: Finds orders by query.
+      description: Finds orders by query.
+      operationId: order.v1.OrderService.FindOrders
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/order.v1.FindOrdersRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/order.v1.FindOrdersResponse'
   /order.v1.BillingService/GenerateBilling:
     post:
       tags:
@@ -1856,6 +1928,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/store.v1.DeleteStoreResponse'
+  /store.v1.StoreService/GetBusinessStores:
+    post:
+      tags:
+        - store.v1.StoreService
+      summary: Gets all stores base on business Id.
+      description: Gets all stores base on business Id.
+      operationId: store.v1.StoreService.GetBusinessStores
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/store.v1.GetBusinessStoresRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/store.v1.GetBusinessStoresResponse'
   /transaction.v1.TransactionService/AddTransaction:
     post:
       tags:
@@ -2000,6 +2108,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/transaction.v1.DeleteTransactionResponse'
+  /transaction.v1.TransactionService/FindTransactions:
+    post:
+      tags:
+        - transaction.v1.TransactionService
+      summary: Find transactions by query.
+      description: Find transactions by query.
+      operationId: transaction.v1.TransactionService.FindTransactions
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/transaction.v1.FindTransactionsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/transaction.v1.FindTransactionsResponse'
 components:
   schemas:
     business.v1.BusinessStatusType:
@@ -2142,9 +2286,9 @@ components:
           title: permissions_groups_ids
           description: The unique identifier of the permission group.
         memberSince:
-          type: string
           title: member_since
           description: The date since when the
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
       title: BusinessMember
       additionalProperties: false
     business.v1.ChangeBusinessCurrencyRequest:
@@ -2370,6 +2514,102 @@ components:
           description: Whether the business was successfully updated.
       title: UpdateBusinessResponse
       additionalProperties: false
+    google.protobuf.Timestamp:
+      type: string
+      examples:
+        - "2023-01-15T01:30:15.01Z"
+        - "2024-12-25T12:00:00Z"
+      format: date-time
+      description: |-
+        A Timestamp represents a point in time independent of any time zone or local
+         calendar, encoded as a count of seconds and fractions of seconds at
+         nanosecond resolution. The count is relative to an epoch at UTC midnight on
+         January 1, 1970, in the proleptic Gregorian calendar which extends the
+         Gregorian calendar backwards to year one.
+
+         All minutes are 60 seconds long. Leap seconds are "smeared" so that no leap
+         second table is needed for interpretation, using a [24-hour linear
+         smear](https://developers.google.com/time/smear).
+
+         The range is from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z. By
+         restricting to that range, we ensure that we can convert to and from [RFC
+         3339](https://www.ietf.org/rfc/rfc3339.txt) date strings.
+
+         # Examples
+
+         Example 1: Compute Timestamp from POSIX `time()`.
+
+             Timestamp timestamp;
+             timestamp.set_seconds(time(NULL));
+             timestamp.set_nanos(0);
+
+         Example 2: Compute Timestamp from POSIX `gettimeofday()`.
+
+             struct timeval tv;
+             gettimeofday(&tv, NULL);
+
+             Timestamp timestamp;
+             timestamp.set_seconds(tv.tv_sec);
+             timestamp.set_nanos(tv.tv_usec * 1000);
+
+         Example 3: Compute Timestamp from Win32 `GetSystemTimeAsFileTime()`.
+
+             FILETIME ft;
+             GetSystemTimeAsFileTime(&ft);
+             UINT64 ticks = (((UINT64)ft.dwHighDateTime) << 32) | ft.dwLowDateTime;
+
+             // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z
+             // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z.
+             Timestamp timestamp;
+             timestamp.set_seconds((INT64) ((ticks / 10000000) - 11644473600LL));
+             timestamp.set_nanos((INT32) ((ticks % 10000000) * 100));
+
+         Example 4: Compute Timestamp from Java `System.currentTimeMillis()`.
+
+             long millis = System.currentTimeMillis();
+
+             Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)
+                 .setNanos((int) ((millis % 1000) * 1000000)).build();
+
+         Example 5: Compute Timestamp from Java `Instant.now()`.
+
+             Instant now = Instant.now();
+
+             Timestamp timestamp =
+                 Timestamp.newBuilder().setSeconds(now.getEpochSecond())
+                     .setNanos(now.getNano()).build();
+
+         Example 6: Compute Timestamp from current time in Python.
+
+             timestamp = Timestamp()
+             timestamp.GetCurrentTime()
+
+         # JSON Mapping
+
+         In JSON format, the Timestamp type is encoded as a string in the
+         [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the
+         format is "{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z"
+         where {year} is always expressed using four digits while {month}, {day},
+         {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional
+         seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),
+         are optional. The "Z" suffix indicates the timezone ("UTC"); the timezone
+         is required. A proto3 JSON serializer should always use UTC (as indicated by
+         "Z") when printing the Timestamp type and a proto3 JSON parser should be
+         able to accept both UTC and other timezones (as indicated by an offset).
+
+         For example, "2017-01-15T01:30:15.01Z" encodes 15.01 seconds past
+         01:30 UTC on January 15, 2017.
+
+         In JavaScript, one can convert a Date object to this format using the
+         standard
+         [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)
+         method. In Python, a standard `datetime.datetime` object can be converted
+         to this format using
+         [`strftime`](https://docs.python.org/2/library/time.html#time.strftime) with
+         the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use
+         the Joda Time's [`ISODateTimeFormat.dateTime()`](
+         http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()
+         ) to obtain a formatter capable of generating timestamps in this format.
     identity.v1.Permission:
       type: object
       properties:
@@ -2684,16 +2924,16 @@ components:
     business.v1.GetBusinessSuppliersRequest:
       type: object
       properties:
-        supplierId:
+        businessId:
           type: string
-          title: supplier_id
+          title: business_id
           minLength: 3
           description: |
-            The reference id to the supplier identifier.
+            The reference id to the business identifier.
             string.min_len = 3
       title: GetBusinessSuppliersRequest
       required:
-        - supplierId
+        - businessId
       additionalProperties: false
     business.v1.GetBusinessSuppliersResponse:
       type: object
@@ -3546,9 +3786,10 @@ components:
           format: int32
           description: The minimum stock threshold of the product.
         expirationDate:
-          type: string
           title: expiration_date
           description: The expiration date of the product.
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
       title: AddProductRequest
       additionalProperties: false
     inventory.v1.AddProductResponse:
@@ -3600,10 +3841,10 @@ components:
           format: int32
           description: The minimum stock threshold of the product.
         expirationDate:
-          type: string
           title: expiration_date
           description: The expiration date of the product.
           nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
       title: BusinessProduct
       additionalProperties: false
     inventory.v1.DeleteProductRequest:
@@ -3628,6 +3869,43 @@ components:
           title: success
           description: Whether the business product was successfully deleted.
       title: DeleteProductResponse
+      additionalProperties: false
+    inventory.v1.FindBusinessProductsRequest:
+      type: object
+      properties:
+        businessId:
+          type: string
+          title: business_id
+          description: The query to search for business products.
+        refId:
+          type: string
+          title: ref_id
+          description: The unique identifier of the product.
+          nullable: true
+        globalProductId:
+          type: string
+          title: global_product_id
+          description: The unique identifier of the global product.
+          nullable: true
+        expirationDate:
+          title: expiration_date
+          description: Identify the products that are expired.
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: FindBusinessProductsRequest
+      additionalProperties: false
+    inventory.v1.FindBusinessProductsResponse:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/inventory.v1.BusinessProduct'
+          title: products
+          description: |-
+            The unique identifiers of the products.
+             WARN: all returned products will only have their id and name.
+      title: FindBusinessProductsResponse
       additionalProperties: false
     inventory.v1.FindCategoryRequest:
       type: object
@@ -3654,10 +3932,17 @@ components:
     inventory.v1.FindGlobalProductsRequest:
       type: object
       properties:
-        query:
+        refId:
           type: string
-          title: query
-          description: The query to search for products.
+          title: ref_id
+          description: The reference id to the global product identifier.
+          nullable: true
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/inventory.v1.ProductCategory'
+          title: categories
+          description: The query to search for products by category.
       title: FindGlobalProductsRequest
       additionalProperties: false
     inventory.v1.FindGlobalProductsResponse:
@@ -3873,6 +4158,43 @@ components:
           description: Whether the order was successfully deleted.
       title: DeleteOrderResponse
       additionalProperties: false
+    order.v1.FindOrdersRequest:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+          description: The unique identifier of the order to retrieve.
+          nullable: true
+        fromId:
+          type: string
+          title: from_id
+          description: The id of the client or the supplier if available.
+          nullable: true
+        isClientOrder:
+          type: string
+          title: is_client_order
+          description: Whether the order is from the client or the supplier.
+          nullable: true
+        status:
+          type: array
+          items:
+            $ref: '#/components/schemas/order.v1.OrderStatus'
+          title: status
+          description: The status of the order.
+      title: FindOrdersRequest
+      additionalProperties: false
+    order.v1.FindOrdersResponse:
+      type: object
+      properties:
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/order.v1.Order'
+          title: orders
+          description: The unique identifiers of the orders.
+      title: FindOrdersResponse
+      additionalProperties: false
     order.v1.GetOrderRequest:
       type: object
       properties:
@@ -3895,14 +4217,14 @@ components:
           description: The retrieved order data.
           $ref: '#/components/schemas/order.v1.Order'
         createdAt:
-          type: string
           title: created_at
           description: The date and time the order was created.
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
         updatedAt:
-          type: string
           title: updated_at
           description: The date and time the order was last updated.
           nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
       title: GetOrderResponse
       additionalProperties: false
     order.v1.Order:
@@ -3938,14 +4260,14 @@ components:
           description: The status of the order.
           $ref: '#/components/schemas/order.v1.OrderStatus'
         createdAt:
-          type: string
           title: created_at
           description: The date and time the order was created.
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
         updatedAt:
-          type: string
           title: updated_at
           description: The date and time the order was last updated.
           nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
       title: Order
       additionalProperties: false
     order.v1.OrderItem:
@@ -4106,6 +4428,33 @@ components:
           description: Whether the store was successfully deleted.
       title: DeleteStoreResponse
       additionalProperties: false
+    store.v1.GetBusinessStoresRequest:
+      type: object
+      properties:
+        businessId:
+          type: string
+          title: business_id
+          minLength: 3
+          description: |
+            The reference id to the supplier identifier.
+            string.min_len = 3
+      title: GetBusinessStoresRequest
+      required:
+        - businessId
+      additionalProperties: false
+    store.v1.GetBusinessStoresResponse:
+      type: object
+      properties:
+        stores:
+          type: array
+          items:
+            $ref: '#/components/schemas/store.v1.Store'
+          title: stores
+          description: |-
+            The list of stores of the business.
+             Note: Only the ids and names of the stores are returned.
+      title: GetBusinessStoresResponse
+      additionalProperties: false
     store.v1.GetStoreRequest:
       type: object
       properties:
@@ -4160,6 +4509,15 @@ components:
           type: string
           title: business_id
           description: The id of the business of the store.
+        createdAt:
+          title: created_at
+          description: The date and time the store was created.
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        updatedAt:
+          title: updated_at
+          description: The date and time the store was last updated.
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
       title: Store
       additionalProperties: false
       description: |-
@@ -4247,6 +4605,56 @@ components:
           description: Whether the transaction was successfully deleted.
       title: DeleteTransactionResponse
       additionalProperties: false
+    transaction.v1.FindTransactionsRequest:
+      type: object
+      properties:
+        businessId:
+          type: string
+          title: business_id
+          minLength: 3
+          description: |
+            string.min_len = 3
+        storeId:
+          type: string
+          title: store_id
+          nullable: true
+        orderId:
+          type: string
+          title: order_id
+          nullable: true
+        startDate:
+          title: start_date
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        endDate:
+          title: end_date
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        type:
+          type: array
+          items:
+            $ref: '#/components/schemas/transaction.v1.TransactionType'
+          title: type
+        status:
+          type: array
+          items:
+            $ref: '#/components/schemas/transaction.v1.TransactionStatus'
+          title: status
+      title: FindTransactionsRequest
+      required:
+        - businessId
+      additionalProperties: false
+    transaction.v1.FindTransactionsResponse:
+      type: object
+      properties:
+        transactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/transaction.v1.Transaction'
+          title: transactions
+          description: The list of transactions found.
+      title: FindTransactionsResponse
+      additionalProperties: false
     transaction.v1.GetTransactionRequest:
       type: object
       properties:
@@ -4315,14 +4723,14 @@ components:
           title: currency_code
           description: The currency code of the transaction (ISO 4217).
         createdAt:
-          type: string
           title: created_at
           description: The creation date of the transaction (ISO 8601).
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
         updatedAt:
-          type: string
           title: updated_at
           description: The update date of the transaction (ISO 8601).
           nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
         description:
           type: string
           title: description
