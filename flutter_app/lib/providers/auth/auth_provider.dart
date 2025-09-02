@@ -47,7 +47,7 @@ class AuthProvider extends GetxController {
     try {
       _setStatus(AuthStatus.authenticating);
       final loginRequest = LoginRequest()
-        ..uRef = email
+        ..email = email
         ..password = password;
       final response = await AuthRepository.instance.login(
         request: loginRequest,

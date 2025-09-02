@@ -1,53 +1,50 @@
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:sabitou_rpc/models.dart';
+import 'package:sabitou_rpc/sabitou_rpc.dart';
 
-import '../tmp/fake_data.dart';
-import '../utils/app_constants.dart';
+import '../services/rpc/connect_rpc.dart';
 
 /// The transactions repository.
 class TransactionsRepository {
+  /// The transaction service client.
+  final TransactionServiceClient transactionServiceClient;
+
   /// The instance of [TransactionsRepository].
   static final instance = Get.find<TransactionsRepository>();
 
+  /// Constructs a new [TransactionsRepository].
+  TransactionsRepository()
+    : transactionServiceClient = TransactionServiceClient(
+        ConnectRPCService.to.clientChannel,
+      );
+
   /// Gets the business transaction by business id.
-  Future<List<Transaction>> getConpleteTransactionsByBusinessId({
+  Future<List<Transaction>> getCompleteTransactionsByBusinessId({
     required String businessId,
     String? storeId,
     String? orderId,
     DateTime? startOfDay,
     DateTime? endOfDay,
   }) async {
-    List<Transaction> response =
-        fakeData[CollectionName.transactions]
-            ?.map(
-              (e) =>
-                  Transaction()
-                    ..mergeFromProto3Json(e, ignoreUnknownFields: true),
-            )
-            .where(
-              (t) => t.status == TransactionStatus.TRANSACTION_STATUS_COMPLETED,
-            )
-            .toList() ??
-        [];
+    try {
+      final response = await transactionServiceClient.findTransactions(
+        FindTransactionsRequest(
+          businessId: businessId,
+          storeId: storeId,
+          orderId: orderId,
+          startDate: startOfDay != null
+              ? Timestamp.fromDateTime(startOfDay)
+              : null,
+          endDate: endOfDay != null ? Timestamp.fromDateTime(endOfDay) : null,
+        ),
+      );
 
-    if (storeId != null) {
-      response = response.where((t) => t.storeId == storeId).toList();
+      return response.transactions;
+    } catch (e) {
+      debugPrint(e.toString());
+      print(e);
+
+      return [];
     }
-
-    if (orderId != null) {
-      response = response.where((t) => t.orderId == orderId).toList();
-    }
-
-    if (startOfDay != null && endOfDay != null) {
-      response = response
-          .where(
-            (t) =>
-                DateTime.parse(t.createdAt).isAfter(startOfDay) &&
-                DateTime.parse(t.createdAt).isBefore(endOfDay),
-          )
-          .toList();
-    }
-
-    return response.where((t) => t.businessId == businessId).toList();
   }
 }

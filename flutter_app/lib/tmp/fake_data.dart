@@ -134,7 +134,7 @@ const fakeData = {
         },
       ],
       'permissions_groups_ids': ['group-001'],
-      'member_since': '2023-01-01',
+      'member_since': '2023-01-01T00:00:00Z',
     },
     {
       'user_id': 'user-002',
@@ -150,7 +150,7 @@ const fakeData = {
         },
       ],
       'permissions_groups_ids': ['group-002'],
-      'member_since': '2024-05-15',
+      'member_since': '2024-05-15T00:00:00Z',
     },
     {
       'user_id': 'user-003',
@@ -162,14 +162,14 @@ const fakeData = {
         },
       ],
       'permissions_groups_ids': [],
-      'member_since': '2022-06-30',
+      'member_since': '2022-06-30T00:00:00Z',
     },
     {
       'user_id': 'user-004',
       'business_id': 'business-003',
       'permissions': [],
       'permissions_groups_ids': ['group-003'],
-      'member_since': '2023-10-01',
+      'member_since': '2023-10-01T00:00:00Z',
     },
     {
       'user_id': 'user-005',
@@ -180,7 +180,7 @@ const fakeData = {
           'action_type': 'RESOURCE_ACTION_TYPE_REMOVE',
         },
       ],
-      'member_since': '2024-01-15',
+      'member_since': '2024-01-15T00:00:00Z',
     },
     {
       'user_id': 'user-006',

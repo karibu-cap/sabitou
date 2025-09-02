@@ -89,6 +89,9 @@ dependencies:
   # Package to show a loading animation.
   flutter_spinkit: ^5.2.2
 
+  # Package to connect to the gRPC server.
+  connectrpc: ^1.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

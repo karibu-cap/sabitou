@@ -129,7 +129,7 @@ class _TransactionItem extends StatelessWidget {
                     Flexible(
                       child: AutoSizeText(
                         Formatters.formatDistanceToNow(
-                          DateTime.parse(transaction.createdAt),
+                          transaction.createdAt.toDateTime(),
                         ),
                         style: ShadTheme.of(context).textTheme.muted,
                         maxLines: 1,

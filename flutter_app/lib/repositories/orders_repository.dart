@@ -1,52 +1,47 @@
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:sabitou_rpc/models.dart';
+import 'package:sabitou_rpc/sabitou_rpc.dart';
 
-import '../tmp/fake_data.dart';
-import '../utils/app_constants.dart';
+import '../services/rpc/connect_rpc.dart';
 
 /// The orders repository.
 final class OrdersRepository extends GetxService {
+  /// The order service client.
+  final OrderServiceClient orderServiceClient;
+
   /// The instance of [OrdersRepository].
   static final instance = Get.find<OrdersRepository>();
 
-  /// Gets list of order with filter by suplier id.
+  /// Constructs a new [OrdersRepository].
+  OrdersRepository()
+    : orderServiceClient = OrderServiceClient(
+        ConnectRPCService.to.clientChannel,
+      );
+
+  /// Gets list of order with filter by supplier id.
   Future<List<Order>> getOrdersByQuery({String? supplierId}) async {
     try {
-      final orderdata =
-          fakeData[CollectionName.orders]
-              ?.map(
-                (e) =>
-                    Order()..mergeFromProto3Json(e, ignoreUnknownFields: true),
-              )
-              .toList() ??
-          [];
+      final result = await orderServiceClient.findOrders(
+        FindOrdersRequest(fromId: supplierId),
+      );
 
-      if (supplierId != null) {
-        return orderdata.where((o) => o.fromId == supplierId).toList();
-      }
-
-      return orderdata;
+      return result.orders;
     } catch (e) {
       debugPrint(e.toString());
+      print(e);
 
       return [];
     }
   }
 
-  /// Gets the order by refid.
+  /// Gets the order by ref-id.
   Future<Order> getOrderByRefId(String refId) async {
     try {
-      final orderdata =
-          fakeData[CollectionName.orders]
-              ?.map(
-                (e) =>
-                    Order()..mergeFromProto3Json(e, ignoreUnknownFields: true),
-              )
-              .toList() ??
-          [];
+      final result = await orderServiceClient.getOrder(
+        GetOrderRequest(orderId: refId),
+      );
 
-      return orderdata.firstWhere((o) => o.refId == refId);
+      return result.order;
     } catch (e) {
       debugPrint(e.toString());
 
