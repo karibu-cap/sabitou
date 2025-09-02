@@ -16,7 +16,7 @@ final class UserRepository extends GetxService {
   final Transport clientChannel;
 
   /// Access the singleton instance.
-  static UserRepository get to => Get.find();
+  static UserRepository get instance => Get.find();
 
   /// Constructs a new [AuthServiceClient].
   UserRepository({required this.clientChannel})
@@ -51,13 +51,13 @@ final class UserRepository extends GetxService {
   */
 
   /// Retrieves a user by ID or email and password.
-  Future<User?> getMe({required GetMeRequest request}) async {
+  Future<User?> getCurrentUser({required GetCurrentUserRequest request}) async {
     try {
-      final result = await userClientService.getMe(request);
+      final result = await userClientService.getCurrentUser(request);
 
       _logger.log('Retrieved user: ${result.me.writeToJson()}.');
 
-      return result.me;
+      return result.me;         
     } on Exception catch (e) {
       _logger.severe('Caught error: $e');
 

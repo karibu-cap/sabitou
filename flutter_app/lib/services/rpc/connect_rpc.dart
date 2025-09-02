@@ -10,7 +10,7 @@ final class ConnectRPCService extends GetxService {
   ConnectRPCService() : clientChannel = _createChannel();
 
   static Transport _createChannel() {
-    const host = 'localhost';
+    const host = 'http://localhost:3000';
 
     return Transport(
       baseUrl: host,

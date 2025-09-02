@@ -6,13 +6,14 @@ import 'package:get_storage/get_storage.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import 'providers/auth/auth_provider.dart';
+import 'repositories/auth_repository.dart';
 import 'repositories/business_repository.dart';
 import 'repositories/orders_repository.dart';
 import 'repositories/products_repository.dart';
 import 'repositories/stores_repository.dart';
 import 'repositories/suppliers_repository.dart';
 import 'repositories/transactions_repository.dart';
-import 'repositories/user_repository.dart';
+import 'repositories/users_repository.dart';
 import 'router/app_router.dart' as app_router;
 import 'services/app_theme_service.dart';
 import 'services/internationalization/app_translations.dart';
@@ -70,13 +71,10 @@ Future<void> _initServices() async {
   /// Register of userService.
 
   await Get.putAsync(() async => UserPreferences(), permanent: true);
-  Get.put<AppThemeService>(themeService, permanent: true);
-
-  /// init repositories.
-  final client = UserRepository(clientChannel: connectRPC.clientChannel);
-  Get
-    ..lazyPut<UserRepository>(() => client)
-    ..put<AuthProvider>(AuthProvider())
+  Get..put<AppThemeService>(themeService, permanent: true)
+    ..lazyPut<UserRepository>(() => UserRepository(clientChannel: connectRPC.clientChannel))
+    ..lazyPut<AuthRepository>(() => AuthRepository(clientChannel: connectRPC.clientChannel))
+    ..lazyPut<AuthProvider>(AuthProvider.new)
     ..lazyPut<OrdersRepository>(OrdersRepository.new)
     ..lazyPut<ProductsRepository>(ProductsRepository.new)
     ..lazyPut<SuppliersRepository>(SuppliersRepository.new)
