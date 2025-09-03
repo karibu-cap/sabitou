@@ -1,98 +1,255 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../../../services/internationalization/internationalization.dart';
 import 'registration_view_model.dart';
 
 /// Registration controller.
 class RegistrationController extends GetxController {
   final RegistrationViewModel _viewModel;
+  final _appIntl = AppInternationalizationService.to;
 
   /// Construct a new RegistrationController.
   RegistrationController({required RegistrationViewModel viewModel})
     : _viewModel = viewModel;
 
-  /// The instance.
-  static RegistrationController get instance => Get.find();
-
-  /// Provides access to the registration view model.
-  RegistrationViewModel get viewModel => _viewModel;
-
   /// Controller for the user name input field.
-  TextEditingController get userNameController => _viewModel.userNameController;
+  final TextEditingController userNameController = TextEditingController();
 
   /// Controller for the email input field.
-  TextEditingController get emailController => _viewModel.emailController;
+  final TextEditingController emailController = TextEditingController();
 
   /// Controller for the phone number input field.
-  TextEditingController get phoneNumberController =>
-      _viewModel.phoneNumberController;
+  final TextEditingController phoneNumberController = TextEditingController();
 
   /// Controller for the first name input field.
-  TextEditingController get firstNameController =>
-      _viewModel.firstNameController;
+  final TextEditingController firstNameController = TextEditingController();
 
   /// Controller for the last name input field.
-  TextEditingController get lastNameController => _viewModel.lastNameController;
+  final TextEditingController lastNameController = TextEditingController();
 
   /// Controller for the password input field.
-  TextEditingController get passwordController => _viewModel.passwordController;
+  final TextEditingController passwordController = TextEditingController();
 
   /// Controller for the confirm password input field.
-  TextEditingController get confirmPasswordController =>
-      _viewModel.confirmPasswordController;
+  final TextEditingController confirmPasswordController = TextEditingController();
 
   /// Error message for the user name field.
-  RxString get userNameError => _viewModel.userNameError;
+  final RxString userNameError = ''.obs;
 
   /// Error message for the email field.
-  RxString get emailError => _viewModel.emailError;
+  final RxString emailError = ''.obs;
 
   /// Error message for the phone number field.
-  RxString get phoneNumberError => _viewModel.phoneNumberError;
+  final RxString phoneNumberError = ''.obs;
 
   /// Error message for the first name field.
-  RxString get firstNameError => _viewModel.firstNameError;
+  final RxString firstNameError = ''.obs;
 
   /// Error message for the last name field.
-  RxString get lastNameError => _viewModel.lastNameError;
+  final RxString lastNameError = ''.obs;
 
   /// Error message for the password field.
-  RxString get passwordError => _viewModel.passwordError;
+  final RxString passwordError = ''.obs;
 
   /// Error message for the confirm password field.
-  RxString get confirmPasswordError => _viewModel.confirmPasswordError;
+  final RxString confirmPasswordError = ''.obs;
 
   /// Observable for password visibility toggle.
-  RxBool get isPasswordVisible => _viewModel.isPasswordVisible;
+  final RxBool isPasswordVisible = false.obs;
 
   /// Observable for confirm password visibility toggle.
-  RxBool get isConfirmPasswordVisible => _viewModel.isConfirmPasswordVisible;
+  final RxBool isConfirmPasswordVisible = false.obs;
+
+  /// Singleton access.
+  static RegistrationController get instance => Get.find();
+
+  @override
+  void onClose() {
+    userNameController.dispose();
+    emailController.dispose();
+    phoneNumberController.dispose();
+    firstNameController.dispose();
+    lastNameController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    super.onClose();
+  }
 
   /// Toggle password visibility.
   void togglePasswordVisibility() {
-    _viewModel.isPasswordVisible.value = !_viewModel.isPasswordVisible.value;
+    isPasswordVisible.value = !isPasswordVisible.value;
   }
 
   /// Toggle confirm password visibility.
   void toggleConfirmPasswordVisibility() {
-    _viewModel.isConfirmPasswordVisible.value =
-        !_viewModel.isConfirmPasswordVisible.value;
+    isConfirmPasswordVisible.value = !isConfirmPasswordVisible.value;
   }
 
-  /// Initializes the registration view model and starts the animation.
-  @override
-  void onInit() {
-    super.onInit();
+  /// Validates the user name field.
+  bool validateUserName() {
+    final value = userNameController.text.trim();
+    if (value.isEmpty) {
+      userNameError.value = _appIntl.userNameRequired;
+      
+      return false;
+    }
+    userNameError.value = '';
+    
+    return true;
+  }
+
+  /// Validates the email field.
+  bool validateEmail() {
+    final value = emailController.text.trim();
+    if (value.isEmpty) {
+      emailError.value = _appIntl.emailRequired;
+      
+      return false;
+    }
+    if (!GetUtils.isEmail(value)) {
+      emailError.value = _appIntl.emailInvalid;
+      
+      return false;
+    }
+    emailError.value = '';
+    
+    return true;
+  }
+
+  /// Validates the phone number field.
+  bool validatePhoneNumber() {
+    final value = phoneNumberController.text.trim();
+    if (value.isEmpty) {
+      phoneNumberError.value = _appIntl.phoneNumberRequired;
+      
+      return false;
+    }
+
+    // Validate using GetUtils for phone number format.
+    if (!GetUtils.isPhoneNumber(value)) {
+      phoneNumberError.value = _appIntl.phoneNumberInvalidFormat;
+      
+      return false;
+    }
+
+    // Additional validation for Cameroon phone numbers (9 digits starting with 6).
+    if (value.length != 9 || !value.startsWith('6')) {
+      phoneNumberError.value = _appIntl.phoneNumberInvalidCameroon;
+      
+      return false;
+    }
+
+    phoneNumberError.value = '';
+    
+    return true;
+  }
+
+  /// Validates the first name field.
+  bool validateFirstName() {
+    final value = firstNameController.text.trim();
+    if (value.isEmpty) {
+      firstNameError.value = _appIntl.firstNameRequired;
+      
+      return false;
+    }
+    firstNameError.value = '';
+    
+    return true;
+  }
+
+  /// Validates the last name field.
+  bool validateLastName() {
+    final value = lastNameController.text.trim();
+    if (value.isEmpty) {
+      lastNameError.value = _appIntl.lastNameRequired;
+      
+      return false;
+    }
+    lastNameError.value = '';
+    
+    return true;
+  }
+
+  /// Validates the password field.
+  bool validatePassword() {
+    final value = passwordController.text;
+    if (value.isEmpty) {
+      passwordError.value = _appIntl.passwordRequired;
+      
+      return false;
+    }
+    if (value.length < 6) {
+      passwordError.value = _appIntl.passwordLength;
+      
+      return false;
+    }
+    passwordError.value = '';
+    
+    return true;
+  }
+
+  /// Validates the confirm password field.
+  bool validateConfirmPassword() {
+    final value = confirmPasswordController.text;
+    if (value.isEmpty) {
+      confirmPasswordError.value = _appIntl.confirmPasswordRequired;
+      
+      return false;
+    }
+    if (value != passwordController.text) {
+      confirmPasswordError.value = _appIntl.passwordsDoNotMatch;
+      
+      return false;
+    }
+    confirmPasswordError.value = '';
+    
+    return true;
   }
 
   /// Validates all registration form fields.
-  bool validateAll() => _viewModel.validateAll();
+  bool validateAll() {
+    final userNameValid = validateUserName();
+    final emailValid = validateEmail();
+    final phoneValid = validatePhoneNumber();
+    final firstNameValid = validateFirstName();
+    final lastNameValid = validateLastName();
+    final passwordValid = validatePassword();
+    final confirmPasswordValid = validateConfirmPassword();
+
+    return userNameValid &&
+        emailValid &&
+        phoneValid &&
+        firstNameValid &&
+        lastNameValid &&
+        passwordValid &&
+        confirmPasswordValid;
+  }
 
   /// Clears all error messages in the registration form.
-  void clearErrors() => _viewModel.clearErrors();
+  void clearErrors() {
+    userNameError.value = '';
+    emailError.value = '';
+    phoneNumberError.value = '';
+    firstNameError.value = '';
+    lastNameError.value = '';
+    passwordError.value = '';
+    confirmPasswordError.value = '';
+  }
 
-  /// Disposes all controllers and resources used by the registration view model.
-  void disposeFields() => _viewModel.dispose();
+  /// Handles user registration by delegating to ViewModel after validation.
+  Future<bool> registerUser() async {
+    if (!validateAll()) {
+      return false;
+    }
 
-  /// Handles user registration, validation.
-  Future<bool> registerUser() => _viewModel.registerUser();
+    return await _viewModel.registerUser(
+        userName: userNameController.text.trim(),
+        email: emailController.text.trim(),
+        phoneNumber: phoneNumberController.text.trim(),
+        firstName: firstNameController.text.trim(),
+        lastName: lastNameController.text.trim(),
+        password: passwordController.text,
+    );
+  }
 }
