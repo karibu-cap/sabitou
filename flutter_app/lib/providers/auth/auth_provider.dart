@@ -36,35 +36,25 @@ class AuthProvider extends GetxController {
   /// Whether user is authenticated.
   bool get isAuthenticated => _status.value == AuthStatus.authenticated;
 
-  /// Whether user is admin.
-  bool get isAdmin => _currentUser.value?.accountType == AccountType.ADMIN;
-
   /// Login logic.
   Future<bool> login(String email, String password) async {
     _setStatus(AuthStatus.authenticating);
     _errorMessage.value = null;
 
-    try {
-      _setStatus(AuthStatus.authenticating);
-      final loginRequest = LoginRequest()
-        ..email = email
-        ..password = password;
-      final response = await AuthRepository.instance.login(
-        request: loginRequest,
-      );
-      _currentUser.value = response;
-      if (response != null) {
-        _setStatus(AuthStatus.authenticated);
+    _setStatus(AuthStatus.authenticating);
+    final loginRequest = LoginRequest()
+      ..email = email
+      ..password = password;
+    final response = await AuthRepository.instance.login(request: loginRequest);
+    _currentUser.value = response;
+    if (response != null) {
+      _setStatus(AuthStatus.authenticated);
 
-        return true;
-      }
-
-      return false;
-    } on Exception catch (e) {
-      _setError('Login failed: $e');
-
-      return false;
+      return true;
     }
+    _setStatus(AuthStatus.authenticationFailed);
+
+    return false;
   }
 
   /// Logout logic.
@@ -83,17 +73,24 @@ class AuthProvider extends GetxController {
     required String firstName,
     required String lastName,
   }) async {
-    try {
-      await Future.delayed(const Duration(seconds: 1));
-      _currentUser.value = User(email: email, accountType: AccountType.USER);
+    _setStatus(AuthStatus.authenticating);
+    final registerRequest = RegisterRequest()
+      ..userName = userName
+      ..password = password
+      ..email = email;
+    final response = await AuthRepository.instance.register(
+      request: registerRequest,
+    );
+
+    _currentUser.value = response;
+    if (response != null) {
       _setStatus(AuthStatus.authenticated);
 
       return true;
-    } on Exception catch (e) {
-      _setError('Registration failed: $e');
-
-      return false;
     }
+    _setStatus(AuthStatus.authenticationFailed);
+
+    return false;
   }
 
   /// Forgot password logic.

@@ -3,11 +3,13 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+import '../../../providers/auth/auth_provider.dart';
 import '../../../services/internationalization/internationalization.dart';
 import '../../../utils/common_scaffold.dart';
 import '../../../utils/responsive_utils.dart';
 import 'registration_controller.dart';
 import 'registration_view_model.dart';
+
 
 /// Registration view.
 class RegistrationView extends StatelessWidget {
@@ -53,6 +55,30 @@ class RegistrationView extends StatelessWidget {
       permanent: true,
     );
     final appIntl = AppInternationalizationService.to;
+
+    /// Login button.
+    Widget buildRegistrationButton(BuildContext context) {
+      final auth = AuthProvider.instance;
+      final appIntl = AppInternationalizationService.to;
+      final controller = RegistrationController.instance;
+
+      return ShadButton(
+        onPressed: auth.status == AuthStatus.authenticating
+            ? null
+            : () => onRegisterPressed(context, controller),
+        width: double.infinity,
+        child: auth.status == AuthStatus.authenticating
+            ? const SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                ),
+              )
+            : Text(appIntl.registrationSubmit),
+      );
+    }
 
     return CommonScaffold(
       displayAppBar: false,
@@ -412,12 +438,8 @@ class RegistrationView extends StatelessWidget {
                                   : const SizedBox.shrink(),
                             ),
                             const SizedBox(height: 24),
-                            ShadButton(
-                              onPressed: () =>
-                                  onRegisterPressed(context, controller),
-                              width: double.infinity,
-                              child: Text(appIntl.registrationSubmit),
-                            ),
+                            // Login Button.
+                            Obx(() => buildRegistrationButton(context)),
                             const SizedBox(height: 24),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,

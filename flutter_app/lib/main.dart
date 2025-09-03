@@ -6,13 +6,14 @@ import 'package:get_storage/get_storage.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import 'providers/auth/auth_provider.dart';
+import 'repositories/auth_repository.dart';
 import 'repositories/business_repository.dart';
 import 'repositories/orders_repository.dart';
 import 'repositories/products_repository.dart';
 import 'repositories/stores_repository.dart';
 import 'repositories/suppliers_repository.dart';
 import 'repositories/transactions_repository.dart';
-import 'repositories/user_repository.dart';
+import 'repositories/users_repository.dart';
 import 'router/app_router.dart' as app_router;
 import 'services/app_theme_service.dart';
 import 'services/internationalization/app_translations.dart';
@@ -64,6 +65,9 @@ Future<void> _initServices() async {
 
   Get
     ..putAsync(() async => UserPreferences(), permanent: true)
+    ..lazyPut<UserRepository>(UserRepository.new)
+    ..lazyPut<AuthRepository>(AuthRepository.new)
+    ..lazyPut<AuthProvider>(AuthProvider.new)
     ..put<AppThemeService>(themeService, permanent: true)
     ..put<ConnectRPCService>(ConnectRPCService.new(), permanent: true)
     ..lazyPut<UserRepository>(UserRepository.new)

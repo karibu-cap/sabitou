@@ -17,7 +17,7 @@ final class ConnectRPCService extends GetxService {
     : clientChannel =
           clientChannel ??
           Transport(
-            baseUrl: 'localhost',
+            baseUrl: 'http://localhost:3000',
             codec: const ProtoCodec(),
             httpClient: createHttpClient(),
           );
