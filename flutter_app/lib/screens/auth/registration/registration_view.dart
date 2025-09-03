@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../providers/auth/auth_provider.dart';
+import '../../../router/app_router.dart' as app_router;
 import '../../../services/internationalization/internationalization.dart';
 import '../../../utils/common_scaffold.dart';
 import '../../../utils/responsive_utils.dart';
@@ -27,25 +28,31 @@ class RegistrationView extends StatelessWidget {
         return;
       }
 
-      final result = await controller.registerUser();
+      final registrationResult = await controller.registerUser();
       final appIntl = AppInternationalizationService.to;
 
       if (context.mounted) {
-        await showDialog(
-          context: context,
-          builder: (ctx) => AlertDialog(
-            title: Text(result ? appIntl.success : appIntl.failed),
-            content: Text(
-              result ? appIntl.registrationSuccess : appIntl.registrationFailed,
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(ctx).pop(),
-                child: Text(appIntl.ok),
-              ),
-            ],
+        final theme = ShadTheme.of(context);
+        final toast = ShadToast(
+          title: Text(registrationResult ? appIntl.success : appIntl.failed),
+          description: Text(
+            registrationResult
+                ? appIntl.registrationSuccess
+                : appIntl.registrationFailed,
           ),
+          border: Border.all(
+            color: registrationResult
+                ? theme.colorScheme.primary
+                : theme.colorScheme.destructive,
+            width: 2,
+          ),
+          backgroundColor: theme.colorScheme.background,
         );
+
+        ShadToaster.of(context).show(toast);
+        if (registrationResult) {
+          app_router.pushReplacement(context, app_router.businessListRoutePath);
+        }
       }
     }
 
@@ -58,7 +65,6 @@ class RegistrationView extends StatelessWidget {
     /// Login button.
     Widget buildRegistrationButton(BuildContext context) {
       final auth = AuthProvider.instance;
-      final appIntl = AppInternationalizationService.to;
       final controller = RegistrationController.instance;
 
       return ShadButton(
