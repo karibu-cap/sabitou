@@ -10,7 +10,6 @@ import '../../../utils/responsive_utils.dart';
 import 'registration_controller.dart';
 import 'registration_view_model.dart';
 
-
 /// Registration view.
 class RegistrationView extends StatelessWidget {
   /// Constructs the registration view.
