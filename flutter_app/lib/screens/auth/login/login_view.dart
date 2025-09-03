@@ -40,22 +40,27 @@ class LoginContent extends StatelessWidget {
     }
     final loginResult = await controller.loginUser();
     final appIntl = AppInternationalizationService.to;
+
     if (context.mounted) {
-      await showDialog(
-        context: context,
-        builder: (ctx) => AlertDialog(
-          title: Text(loginResult ? appIntl.success : appIntl.failed),
-          content: Text(
-            loginResult ? appIntl.loginSuccess : appIntl.loginFailed,
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(ctx).pop(),
-              child: Text(appIntl.ok),
-            ),
-          ],
+      final theme = ShadTheme.of(context);
+      final toast = ShadToast(
+        title: Text(loginResult ? appIntl.success : appIntl.failed),
+        description: Text(
+          loginResult ? appIntl.loginSuccess : appIntl.loginFailed,
         ),
+        border: Border.all(
+          color: loginResult
+              ? theme.colorScheme.primary
+              : theme.colorScheme.destructive,
+          width: 2,
+        ),
+        backgroundColor: theme.colorScheme.background,
       );
+
+      ShadToaster.of(context).show(toast);
+      if (loginResult) {
+        app_router.pushReplacement(context, app_router.businessListRoutePath);
+      }
     }
   }
 
