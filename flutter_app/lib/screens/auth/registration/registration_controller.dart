@@ -32,7 +32,8 @@ class RegistrationController extends GetxController {
   final TextEditingController passwordController = TextEditingController();
 
   /// Controller for the confirm password input field.
-  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
 
   /// Error message for the user name field.
   final RxString userNameError = ''.obs;
@@ -91,11 +92,11 @@ class RegistrationController extends GetxController {
     final value = userNameController.text.trim();
     if (value.isEmpty) {
       userNameError.value = _appIntl.userNameRequired;
-      
+
       return false;
     }
     userNameError.value = '';
-    
+
     return true;
   }
 
@@ -104,16 +105,16 @@ class RegistrationController extends GetxController {
     final value = emailController.text.trim();
     if (value.isEmpty) {
       emailError.value = _appIntl.emailRequired;
-      
+
       return false;
     }
     if (!GetUtils.isEmail(value)) {
       emailError.value = _appIntl.emailInvalid;
-      
+
       return false;
     }
     emailError.value = '';
-    
+
     return true;
   }
 
@@ -122,26 +123,26 @@ class RegistrationController extends GetxController {
     final value = phoneNumberController.text.trim();
     if (value.isEmpty) {
       phoneNumberError.value = _appIntl.phoneNumberRequired;
-      
+
       return false;
     }
 
     // Validate using GetUtils for phone number format.
     if (!GetUtils.isPhoneNumber(value)) {
       phoneNumberError.value = _appIntl.phoneNumberInvalidFormat;
-      
+
       return false;
     }
 
     // Additional validation for Cameroon phone numbers (9 digits starting with 6).
     if (value.length != 9 || !value.startsWith('6')) {
       phoneNumberError.value = _appIntl.phoneNumberInvalidCameroon;
-      
+
       return false;
     }
 
     phoneNumberError.value = '';
-    
+
     return true;
   }
 
@@ -150,11 +151,11 @@ class RegistrationController extends GetxController {
     final value = firstNameController.text.trim();
     if (value.isEmpty) {
       firstNameError.value = _appIntl.firstNameRequired;
-      
+
       return false;
     }
     firstNameError.value = '';
-    
+
     return true;
   }
 
@@ -163,11 +164,11 @@ class RegistrationController extends GetxController {
     final value = lastNameController.text.trim();
     if (value.isEmpty) {
       lastNameError.value = _appIntl.lastNameRequired;
-      
+
       return false;
     }
     lastNameError.value = '';
-    
+
     return true;
   }
 
@@ -176,16 +177,16 @@ class RegistrationController extends GetxController {
     final value = passwordController.text;
     if (value.isEmpty) {
       passwordError.value = _appIntl.passwordRequired;
-      
+
       return false;
     }
     if (value.length < 6) {
       passwordError.value = _appIntl.passwordLength;
-      
+
       return false;
     }
     passwordError.value = '';
-    
+
     return true;
   }
 
@@ -194,16 +195,16 @@ class RegistrationController extends GetxController {
     final value = confirmPasswordController.text;
     if (value.isEmpty) {
       confirmPasswordError.value = _appIntl.confirmPasswordRequired;
-      
+
       return false;
     }
     if (value != passwordController.text) {
       confirmPasswordError.value = _appIntl.passwordsDoNotMatch;
-      
+
       return false;
     }
     confirmPasswordError.value = '';
-    
+
     return true;
   }
 
@@ -244,12 +245,12 @@ class RegistrationController extends GetxController {
     }
 
     return await _viewModel.registerUser(
-        userName: userNameController.text.trim(),
-        email: emailController.text.trim(),
-        phoneNumber: phoneNumberController.text.trim(),
-        firstName: firstNameController.text.trim(),
-        lastName: lastNameController.text.trim(),
-        password: passwordController.text,
+      userName: userNameController.text.trim(),
+      email: emailController.text.trim(),
+      phoneNumber: phoneNumberController.text.trim(),
+      firstName: firstNameController.text.trim(),
+      lastName: lastNameController.text.trim(),
+      password: passwordController.text,
     );
   }
 }
