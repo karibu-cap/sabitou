@@ -10,6 +10,7 @@ import '../../../utils/responsive_utils.dart';
 import 'registration_controller.dart';
 import 'registration_view_model.dart';
 
+
 /// Registration view.
 class RegistrationView extends StatelessWidget {
   /// Constructs the registration view.
@@ -55,9 +56,7 @@ class RegistrationView extends StatelessWidget {
     );
     final appIntl = AppInternationalizationService.to;
 
-
-
-  /// Login button.
+    /// Login button.
     Widget buildRegistrationButton(BuildContext context) {
       final auth = AuthProvider.instance;
       final appIntl = AppInternationalizationService.to;
@@ -464,5 +463,5 @@ class RegistrationView extends StatelessWidget {
         ),
       ),
     );
-  } 
+  }
 }

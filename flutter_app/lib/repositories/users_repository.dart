@@ -54,7 +54,7 @@ final class UserRepository extends GetxService {
 
       _logger.log('Retrieved user: ${result.me.writeToJson()}.');
 
-      return result.me;         
+      return result.me;
     } on Exception catch (e) {
       _logger.severe('Caught error: $e');
 

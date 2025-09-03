@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 
-import 'package:sabitou_rpc/connect_servers.dart';
-import 'package:sabitou_rpc/models.dart';
+import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../services/rpc/connect_rpc.dart';
 import 'users_repository.dart';
@@ -45,7 +44,7 @@ final class AuthRepository extends GetxService {
   Future<User?> register({required RegisterRequest request}) async {
     try {
       await authClientService.register(request);
-      
+
       return getCurrentUser(request: GetCurrentUserRequest());
     } on Exception catch (e) {
       print(' Error during user registration: ${e.toString()}.');
@@ -53,4 +52,6 @@ final class AuthRepository extends GetxService {
       return null;
     }
   }
+
+  
 }
