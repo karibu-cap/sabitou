@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../../services/internationalization/internationalization.dart';
+import '../../../../widgets/input/form_fields.dart';
 import '../registration_controller.dart';
 
 /// Registration form component that handles user registration inputs.
@@ -25,7 +26,7 @@ class RegistrationForm extends StatelessWidget {
     return Column(
       children: [
         Obx(
-          () => _InputField(
+          () => InputField(
             controller: controller.userNameController,
             placeholder: appIntl.userName,
             icon: LucideIcons.user400,
@@ -34,7 +35,7 @@ class RegistrationForm extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         Obx(
-          () => _InputField(
+          () => InputField(
             controller: controller.firstNameController,
             placeholder: appIntl.firstName,
             icon: LucideIcons.user400,
@@ -44,7 +45,7 @@ class RegistrationForm extends StatelessWidget {
         const SizedBox(height: 16),
 
         Obx(
-          () => _InputField(
+          () => InputField(
             controller: controller.lastNameController,
             placeholder: appIntl.lastName,
             icon: LucideIcons.user400,
@@ -54,7 +55,7 @@ class RegistrationForm extends StatelessWidget {
         const SizedBox(height: 16),
 
         Obx(
-          () => _InputField(
+          () => InputField(
             controller: controller.emailController,
             placeholder: appIntl.email,
             icon: LucideIcons.mail400,
@@ -65,7 +66,7 @@ class RegistrationForm extends StatelessWidget {
         const SizedBox(height: 16),
 
         Obx(
-          () => _InputField(
+          () => InputField(
             controller: controller.phoneNumberController,
             placeholder: appIntl.phoneNumber,
             icon: LucideIcons.phone400,
@@ -77,7 +78,7 @@ class RegistrationForm extends StatelessWidget {
         const SizedBox(height: 16),
 
         Obx(
-          () => _PasswordField(
+          () => PasswordField(
             controller: controller.passwordController,
             placeholder: appIntl.password,
             isVisible: controller.isPasswordVisible.value,
@@ -88,7 +89,7 @@ class RegistrationForm extends StatelessWidget {
         const SizedBox(height: 16),
 
         Obx(
-          () => _PasswordField(
+          () => PasswordField(
             controller: controller.confirmPasswordController,
             placeholder: appIntl.confirmPassword,
             isVisible: controller.isConfirmPasswordVisible.value,
@@ -97,104 +98,6 @@ class RegistrationForm extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class _InputField extends StatelessWidget {
-  final TextEditingController controller;
-  final String placeholder;
-  final IconData icon;
-  final String? error;
-  final TextInputType? keyboardType;
-  final List<TextInputFormatter>? inputFormatters;
-
-  const _InputField({
-    required this.controller,
-    required this.placeholder,
-    required this.icon,
-    this.error,
-    this.keyboardType,
-    this.inputFormatters,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ShadInputFormField(
-          controller: controller,
-          placeholder: Text(placeholder),
-          trailing: Icon(icon),
-          keyboardType: keyboardType,
-          inputFormatters: inputFormatters,
-        ),
-        if (error?.isNotEmpty ?? false) _ErrorText(error: error),
-      ],
-    );
-  }
-}
-
-class _PasswordField extends StatelessWidget {
-  final TextEditingController controller;
-  final String placeholder;
-  final bool isVisible;
-  final VoidCallback onToggle;
-  final String? error;
-
-  const _PasswordField({
-    required this.controller,
-    required this.placeholder,
-    required this.isVisible,
-    required this.onToggle,
-    required this.error,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ShadInputFormField(
-          controller: controller,
-          placeholder: Text(placeholder),
-          obscureText: !isVisible,
-          trailing: GestureDetector(
-            onTap: onToggle,
-            child: Icon(isVisible ? LucideIcons.eye400 : LucideIcons.eyeOff400),
-          ),
-        ),
-        if (error?.isNotEmpty ?? false) _ErrorText(error: error),
-      ],
-    );
-  }
-}
-
-class _ErrorText extends StatelessWidget {
-  /// Constructs a [_ErrorText] widget
-  const _ErrorText({required this.error});
-
-  final String? error;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 4, left: 4),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Builder(
-          builder: (context) {
-            final theme = ShadTheme.of(context);
-
-            return Text(
-              error ?? '',
-              style: theme.textTheme.p.copyWith(
-                color: theme.colorScheme.destructive,
-                fontSize: 12,
-              ),
-            );
-          },
-        ),
-      ),
     );
   }
 }

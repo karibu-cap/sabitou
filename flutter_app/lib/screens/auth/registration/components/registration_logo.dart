@@ -12,20 +12,11 @@ class RegistrationLogo extends StatelessWidget {
       height: 80,
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          colors: [
-            Color(0xFF10B981),
-            Color(0xFF059669),
-          ],
+          colors: [Color(0xFF10B981), Color(0xFF059669)],
         ),
-        borderRadius: BorderRadius.all(
-          Radius.circular(20),
-        ),
+        borderRadius: BorderRadius.all(Radius.circular(20)),
       ),
-      child: const Icon(
-        Icons.person_add_alt_1,
-        size: 40,
-        color: Colors.white,
-      ),
+      child: const Icon(Icons.person_add_alt_1, size: 40, color: Colors.white),
     );
   }
 }

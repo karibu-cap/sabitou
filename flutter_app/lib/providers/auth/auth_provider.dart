@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:sabitou_rpc/models.dart';
 
 import '../../repositories/auth_repository.dart';
+import '../../utils/user_preference.dart';
 
 /// Auth status.
 enum AuthStatus {
@@ -48,6 +49,7 @@ class AuthProvider extends GetxController {
     final response = await AuthRepository.instance.login(request: loginRequest);
     _currentUser.value = response;
     if (response != null) {
+      await UserPreferences.instance.saveUserPreferences(user: response);
       _setStatus(AuthStatus.authenticated);
 
       return true;
@@ -84,6 +86,7 @@ class AuthProvider extends GetxController {
 
     _currentUser.value = response;
     if (response != null) {
+      await UserPreferences.instance.saveUserPreferences(user: response);
       _setStatus(AuthStatus.authenticated);
 
       return true;

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-import '../../../router/app_router.dart' as app_router;
 import '../../../services/internationalization/internationalization.dart';
 import '../../../utils/common_scaffold.dart';
 import '../../../utils/responsive_utils.dart';
@@ -36,36 +35,8 @@ class LoginContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<LoginController>();
     final appIntl = AppInternationalizationService.to;
     final theme = ShadTheme.of(context);
-
-    Future<void> onLoginPressed() async {
-      final validateResult = controller.validateAll();
-      if (!validateResult) return;
-
-      final loginResult = await controller.loginUser();
-      if (!context.mounted) return;
-
-      final toast = ShadToast(
-        title: Text(loginResult ? appIntl.success : appIntl.failed),
-        description: Text(
-          loginResult ? appIntl.loginSuccess : appIntl.loginFailed,
-        ),
-        border: Border.all(
-          color: loginResult
-              ? theme.colorScheme.primary
-              : theme.colorScheme.destructive,
-          width: 2,
-        ),
-        backgroundColor: theme.colorScheme.background,
-      );
-
-      ShadToaster.of(context).show(toast);
-      if (loginResult) {
-        app_router.pushReplacement(context, app_router.businessListRoutePath);
-      }
-    }
 
     return Container(
       decoration: const BoxDecoration(
@@ -126,7 +97,7 @@ class LoginContent extends StatelessWidget {
                           const SizedBox(height: 24),
 
                           // Login Button
-                          LoginButton(onPressed: onLoginPressed),
+                          const LoginButton(),
 
                           // Auth Links
                           const AuthLinks(),

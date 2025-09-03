@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
-
 import '../../../services/internationalization/internationalization.dart';
 import '../../../utils/common_scaffold.dart';
 import '../../../utils/responsive_utils.dart';
@@ -19,13 +18,13 @@ class RegistrationView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(
+    Get.put(
       RegistrationController(viewModel: RegistrationViewModel()),
       permanent: true,
     );
 
     final appIntl = AppInternationalizationService.to;
-    
+
     return CommonScaffold(
       displayAppBar: false,
       child: Container(
@@ -83,9 +82,7 @@ class RegistrationView extends StatelessWidget {
                             const SizedBox(height: 32),
                             const RegistrationForm(),
                             const SizedBox(height: 24),
-                            RegistrationButton(
-                              onPressed: () => _onRegisterPressed(context, controller),
-                            ),
+                            const RegistrationButton(),
                             const SizedBox(height: 24),
                             const RegistrationLinks(),
                           ],
@@ -100,34 +97,5 @@ class RegistrationView extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Future<void> _onRegisterPressed(
-    BuildContext context,
-    RegistrationController controller,
-  ) async {
-    final validateResult = controller.validateAll();
-    if (!validateResult) return;
-
-    final result = await controller.registerUser();
-    final appIntl = AppInternationalizationService.to;
-
-    if (context.mounted) {
-      await showDialog(
-        context: context,
-        builder: (ctx) => AlertDialog(
-          title: Text(result ? appIntl.success : appIntl.failed),
-          content: Text(
-            result ? appIntl.registrationSuccess : appIntl.registrationFailed,
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(ctx).pop(),
-              child: Text(appIntl.ok),
-            ),
-          ],
-        ),
-      );
-    }
   }
 }

@@ -19,6 +19,7 @@ import 'services/app_theme_service.dart';
 import 'services/internationalization/app_translations.dart';
 import 'services/internationalization/internationalization.dart';
 import 'services/rpc/connect_rpc.dart';
+import 'services/rpc/fake_transport.dart';
 import 'services/storage/app_storate.dart';
 import 'utils/app_constants.dart';
 import 'utils/user_preference.dart';
@@ -69,7 +70,10 @@ Future<void> _initServices() async {
     ..lazyPut<AuthRepository>(AuthRepository.new)
     ..lazyPut<AuthProvider>(AuthProvider.new)
     ..put<AppThemeService>(themeService, permanent: true)
-    ..put<ConnectRPCService>(ConnectRPCService.new(), permanent: true)
+    ..put<ConnectRPCService>(
+      ConnectRPCService(clientChannel: fakeTransport),
+      permanent: true,
+    )
     ..lazyPut<UserRepository>(UserRepository.new)
     ..put<AuthProvider>(AuthProvider())
     ..lazyPut<OrdersRepository>(OrdersRepository.new)
