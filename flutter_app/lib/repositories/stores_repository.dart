@@ -1,11 +1,13 @@
-import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../services/rpc/connect_rpc.dart';
+import '../utils/logger.dart';
 
 /// The stores repository.
 final class StoresRepository extends GetxService {
+  final _logger = LoggerApp('StoresRepository');
+
   /// The store service client.
   final StoreServiceClient storeServiceClient;
 
@@ -26,8 +28,8 @@ final class StoresRepository extends GetxService {
       );
 
       return response.stores;
-    } catch (e) {
-      debugPrint(e.toString());
+    } on Exception catch (e) {
+      _logger.severe('getStoresByBusinessId Error: $e');
 
       return [];
     }
@@ -41,8 +43,8 @@ final class StoresRepository extends GetxService {
       );
 
       return response.store;
-    } catch (e) {
-      debugPrint(e.toString());
+    } on Exception catch (e) {
+      _logger.severe('getStoreByRefId Error: $e');
 
       return null;
     }

@@ -1,11 +1,13 @@
-import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../services/rpc/connect_rpc.dart';
+import '../utils/logger.dart';
 
 /// The suppliers repository.
 final class SuppliersRepository extends GetxService {
+  final _logger = LoggerApp('SuppliersRepository');
+
   /// The supplier service client.
   final SupplierServiceClient supplierServiceClient;
 
@@ -26,10 +28,25 @@ final class SuppliersRepository extends GetxService {
       );
 
       return response.suppliers;
-    } catch (e) {
-      debugPrint(e.toString());
+    } on Exception catch (e) {
+      _logger.severe('getSuppliersByBusinessId Error: $e');
 
       return [];
+    }
+  }
+
+  /// Gets a supplier by ref.
+  Future<Supplier?> getSupplierBySupplierId(String supplierId) async {
+    try {
+      final response = await supplierServiceClient.getSupplier(
+        GetSupplierRequest(supplierId: supplierId),
+      );
+
+      return response.supplier;
+    } on Exception catch (e) {
+      _logger.severe('getSupplierBySupplierId Error: $e');
+
+      return null;
     }
   }
 }

@@ -17,8 +17,6 @@ extension TransactionTypeExtension on TransactionType {
       case TransactionType.TRANSACTION_TYPE_ADJUSTMENT:
         return Intls.to.adjustment;
       case TransactionType.TRANSACTION_TYPE_REFUND:
-        return Intls.to.refund;
-      case TransactionType.TRANSACTION_TYPE_TRANSFER:
         return Intls.to.transfer;
       default:
         return Intls.to.transaction;
@@ -35,8 +33,6 @@ extension TransactionTypeExtension on TransactionType {
       case TransactionType.TRANSACTION_TYPE_ADJUSTMENT:
         return AppColors.orange500;
       case TransactionType.TRANSACTION_TYPE_REFUND:
-        return AppColors.red;
-      case TransactionType.TRANSACTION_TYPE_TRANSFER:
         return AppColors.purple;
       default:
         return AppColors.grey500;
@@ -54,8 +50,6 @@ extension TransactionTypeExtension on TransactionType {
         return LucideIcons.refreshCw;
       case TransactionType.TRANSACTION_TYPE_REFUND:
         return LucideIcons.undo2;
-      case TransactionType.TRANSACTION_TYPE_TRANSFER:
-        return LucideIcons.arrowRightLeft;
       default:
         return LucideIcons.package;
     }

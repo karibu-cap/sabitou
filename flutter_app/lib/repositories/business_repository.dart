@@ -1,11 +1,13 @@
-import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../services/rpc/connect_rpc.dart';
+import '../utils/logger.dart';
 
 /// The business repository.
 final class BusinessRepository extends GetxService {
+  final _logger = LoggerApp('BusinessRepository');
+
   /// The business service client.
   final BusinessServiceClient businessServiceClient;
 
@@ -26,8 +28,8 @@ final class BusinessRepository extends GetxService {
       );
 
       return response.business;
-    } catch (e) {
-      debugPrint(e.toString());
+    } on Exception catch (e) {
+      _logger.severe('getBusinessByRefId Error: $e');
 
       return null;
     }
@@ -46,9 +48,8 @@ final class BusinessRepository extends GetxService {
       return response.businessMembers.firstWhereOrNull(
         (bm) => bm.businessId == businessId && bm.userId == userId,
       );
-    } catch (e) {
-      debugPrint(e.toString());
-      print(e);
+    } on Exception catch (e) {
+      _logger.severe('getBusinessMembersByBusinessRefId Error: $e');
 
       return null;
     }

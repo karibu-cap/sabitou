@@ -1,12 +1,14 @@
 import 'package:get/get.dart';
-
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../services/rpc/connect_rpc.dart';
+import '../utils/logger.dart';
 import 'users_repository.dart';
 
 /// The auth service client.
 final class AuthRepository extends GetxService {
+  final _logger = LoggerApp('AuthRepository');
+
   /// The user repository.
   final UserRepository userRepository = UserRepository.instance;
 
@@ -34,7 +36,7 @@ final class AuthRepository extends GetxService {
 
       return getCurrentUser(request: GetCurrentUserRequest());
     } on Exception catch (e) {
-      print('User registered: ${e.toString()}.');
+      _logger.severe('login Error: $e');
 
       return null;
     }

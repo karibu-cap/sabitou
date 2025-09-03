@@ -65,7 +65,7 @@ final fakeTransportBuilder = FakeTransportBuilder()
             (e) =>
                 Supplier()..mergeFromProto3Json(e, ignoreUnknownFields: true),
           )
-          .where((gp) => gp.businessId == req.businessId)
+          .where((gp) => gp.businessIds.contains(req.businessId))
           .toList(),
     );
   })

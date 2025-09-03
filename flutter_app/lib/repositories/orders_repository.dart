@@ -1,11 +1,13 @@
-import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../services/rpc/connect_rpc.dart';
+import '../utils/logger.dart';
 
 /// The orders repository.
 final class OrdersRepository extends GetxService {
+  final _logger = LoggerApp('OrdersRepository');
+
   /// The order service client.
   final OrderServiceClient orderServiceClient;
 
@@ -26,9 +28,8 @@ final class OrdersRepository extends GetxService {
       );
 
       return result.orders;
-    } catch (e) {
-      debugPrint(e.toString());
-      print(e);
+    } on Exception catch (e) {
+      _logger.severe('getOrdersByQuery Error: $e');
 
       return [];
     }
@@ -42,8 +43,8 @@ final class OrdersRepository extends GetxService {
       );
 
       return result.order;
-    } catch (e) {
-      debugPrint(e.toString());
+    } on Exception catch (e) {
+      _logger.severe('getOrderByRefId Error: $e');
 
       return Order();
     }
