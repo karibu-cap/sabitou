@@ -52,6 +52,4 @@ final class AuthRepository extends GetxService {
       return null;
     }
   }
-
-  
 }
