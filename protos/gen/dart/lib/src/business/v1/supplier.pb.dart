@@ -99,7 +99,7 @@ class Supplier extends $pb.GeneratedMessage {
     $core.String? contactEmail,
     $core.String? contactAddress,
     $core.bool? isActive,
-    $core.String? businessId,
+    $core.Iterable<$core.String>? businessIds,
   }) {
     final result = create();
     if (refId != null) result.refId = refId;
@@ -112,7 +112,7 @@ class Supplier extends $pb.GeneratedMessage {
     if (contactEmail != null) result.contactEmail = contactEmail;
     if (contactAddress != null) result.contactAddress = contactAddress;
     if (isActive != null) result.isActive = isActive;
-    if (businessId != null) result.businessId = businessId;
+    if (businessIds != null) result.businessIds.addAll(businessIds);
     return result;
   }
 
@@ -138,7 +138,7 @@ class Supplier extends $pb.GeneratedMessage {
     ..aOS(7, _omitFieldNames ? '' : 'contactEmail')
     ..aOS(8, _omitFieldNames ? '' : 'contactAddress')
     ..aOB(9, _omitFieldNames ? '' : 'isActive')
-    ..aOS(10, _omitFieldNames ? '' : 'businessId')
+    ..pPS(10, _omitFieldNames ? '' : 'businessIds')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -244,15 +244,9 @@ class Supplier extends $pb.GeneratedMessage {
   @$pb.TagNumber(9)
   void clearIsActive() => $_clearField(9);
 
-  /// The id of the business of the supplier.
+  /// The ids of the business of the supplier.
   @$pb.TagNumber(10)
-  $core.String get businessId => $_getSZ(9);
-  @$pb.TagNumber(10)
-  set businessId($core.String value) => $_setString(9, value);
-  @$pb.TagNumber(10)
-  $core.bool hasBusinessId() => $_has(9);
-  @$pb.TagNumber(10)
-  void clearBusinessId() => $_clearField(10);
+  $pb.PbList<$core.String> get businessIds => $_getList(9);
 }
 
 class CreateSupplierRequest extends $pb.GeneratedMessage {

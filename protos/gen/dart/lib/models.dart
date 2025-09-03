@@ -11,3 +11,5 @@ export 'src/order/v1/order.pb.dart';
 export 'src/order/v1/receipt.pb.dart';
 export 'src/store/v1/store.pb.dart';
 export 'src/transaction/v1/transactions.pb.dart';
+export 'src/inventory/v1/category.pb.dart';
+

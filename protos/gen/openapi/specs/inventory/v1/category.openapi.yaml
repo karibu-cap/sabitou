@@ -1,14 +1,14 @@
 openapi: 3.1.0
 info:
-  title: transaction.v1
+  title: inventory.v1
 paths:
-  /transaction.v1.TransactionService/AddTransaction:
+  /inventory.v1.CategoryService/CreateCategory:
     post:
       tags:
-        - transaction.v1.TransactionService
-      summary: Adds a transaction.
-      description: Adds a transaction.
-      operationId: transaction.v1.TransactionService.AddTransaction
+        - inventory.v1.CategoryService
+      summary: Creates a new category.
+      description: Creates a new category.
+      operationId: inventory.v1.CategoryService.CreateCategory
       parameters:
         - name: Connect-Protocol-Version
           in: header
@@ -23,7 +23,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/transaction.v1.AddTransactionRequest'
+              $ref: '#/components/schemas/inventory.v1.CreateCategoryRequest'
         required: true
       responses:
         default:
@@ -37,14 +37,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/transaction.v1.AddTransactionResponse'
-  /transaction.v1.TransactionService/GetTransaction:
+                $ref: '#/components/schemas/inventory.v1.CreateCategoryResponse'
+  /inventory.v1.CategoryService/UpdateCategory:
     post:
       tags:
-        - transaction.v1.TransactionService
-      summary: Gets a transaction by id.
-      description: Gets a transaction by id.
-      operationId: transaction.v1.TransactionService.GetTransaction
+        - inventory.v1.CategoryService
+      summary: Updates a category.
+      description: Updates a category.
+      operationId: inventory.v1.CategoryService.UpdateCategory
       parameters:
         - name: Connect-Protocol-Version
           in: header
@@ -59,7 +59,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/transaction.v1.GetTransactionRequest'
+              $ref: '#/components/schemas/inventory.v1.UpdateCategoryRequest'
         required: true
       responses:
         default:
@@ -73,14 +73,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/transaction.v1.GetTransactionResponse'
-  /transaction.v1.TransactionService/UpdateTransaction:
+                $ref: '#/components/schemas/inventory.v1.UpdateCategoryResponse'
+  /inventory.v1.CategoryService/DeleteCategory:
     post:
       tags:
-        - transaction.v1.TransactionService
-      summary: Updates a transaction.
-      description: Updates a transaction.
-      operationId: transaction.v1.TransactionService.UpdateTransaction
+        - inventory.v1.CategoryService
+      summary: Deletes a category.
+      description: Deletes a category.
+      operationId: inventory.v1.CategoryService.DeleteCategory
       parameters:
         - name: Connect-Protocol-Version
           in: header
@@ -95,7 +95,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/transaction.v1.UpdateTransactionRequest'
+              $ref: '#/components/schemas/inventory.v1.DeleteCategoryRequest'
         required: true
       responses:
         default:
@@ -109,14 +109,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/transaction.v1.UpdateTransactionResponse'
-  /transaction.v1.TransactionService/DeleteTransaction:
+                $ref: '#/components/schemas/inventory.v1.DeleteCategoryResponse'
+  /inventory.v1.CategoryService/FindCategories:
     post:
       tags:
-        - transaction.v1.TransactionService
-      summary: Deletes a transaction.
-      description: Deletes a transaction.
-      operationId: transaction.v1.TransactionService.DeleteTransaction
+        - inventory.v1.CategoryService
+      summary: Finds categories by name.
+      description: Finds categories by name.
+      operationId: inventory.v1.CategoryService.FindCategories
       parameters:
         - name: Connect-Protocol-Version
           in: header
@@ -131,7 +131,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/transaction.v1.DeleteTransactionRequest'
+              $ref: '#/components/schemas/inventory.v1.FindCategoriesRequest'
         required: true
       responses:
         default:
@@ -145,14 +145,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/transaction.v1.DeleteTransactionResponse'
-  /transaction.v1.TransactionService/FindTransactions:
+                $ref: '#/components/schemas/inventory.v1.FindCategoriesResponse'
+  /inventory.v1.CategoryService/GetCategory:
     post:
       tags:
-        - transaction.v1.TransactionService
-      summary: Find transactions by query.
-      description: Find transactions by query.
-      operationId: transaction.v1.TransactionService.FindTransactions
+        - inventory.v1.CategoryService
+      summary: Gets a category by id.
+      description: Gets a category by id.
+      operationId: inventory.v1.CategoryService.GetCategory
       parameters:
         - name: Connect-Protocol-Version
           in: header
@@ -167,7 +167,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/transaction.v1.FindTransactionsRequest'
+              $ref: '#/components/schemas/inventory.v1.GetCategoryRequest'
         required: true
       responses:
         default:
@@ -181,27 +181,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/transaction.v1.FindTransactionsResponse'
+                $ref: '#/components/schemas/inventory.v1.GetCategoryResponse'
 components:
   schemas:
-    transaction.v1.TransactionStatus:
-      type: string
-      title: TransactionStatus
-      enum:
-        - TRANSACTION_STATUS_UNSPECIFIED
-        - TRANSACTION_STATUS_PENDING
-        - TRANSACTION_STATUS_COMPLETED
-        - TRANSACTION_STATUS_FAILED
-        - TRANSACTION_STATUS_CANCELLED
-    transaction.v1.TransactionType:
-      type: string
-      title: TransactionType
-      enum:
-        - TRANSACTION_TYPE_UNSPECIFIED
-        - TRANSACTION_TYPE_SALE
-        - TRANSACTION_TYPE_PURCHASE
-        - TRANSACTION_TYPE_REFUND
-        - TRANSACTION_TYPE_ADJUSTMENT
     google.protobuf.Timestamp:
       type: string
       examples:
@@ -298,218 +280,177 @@ components:
          the Joda Time's [`ISODateTimeFormat.dateTime()`](
          http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()
          ) to obtain a formatter capable of generating timestamps in this format.
-    transaction.v1.AddTransactionRequest:
-      type: object
-      properties:
-        transaction:
-          title: transaction
-          description: The transaction to add.
-          $ref: '#/components/schemas/transaction.v1.Transaction'
-      title: AddTransactionRequest
-      additionalProperties: false
-    transaction.v1.AddTransactionResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          title: success
-          description: Whether the transaction was successfully added.
-      title: AddTransactionResponse
-      additionalProperties: false
-    transaction.v1.DeleteTransactionRequest:
-      type: object
-      properties:
-        transactionId:
-          type: string
-          title: transaction_id
-          description: The unique identifier of the transaction.
-      title: DeleteTransactionRequest
-      additionalProperties: false
-    transaction.v1.DeleteTransactionResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          title: success
-          description: Whether the transaction was successfully deleted.
-      title: DeleteTransactionResponse
-      additionalProperties: false
-    transaction.v1.FindTransactionsRequest:
-      type: object
-      properties:
-        businessId:
-          type: string
-          title: business_id
-          minLength: 3
-          description: |
-            string.min_len = 3
-        storeId:
-          type: string
-          title: store_id
-          nullable: true
-        orderId:
-          type: string
-          title: order_id
-          nullable: true
-        startDate:
-          title: start_date
-          nullable: true
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-        endDate:
-          title: end_date
-          nullable: true
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-        type:
-          type: array
-          items:
-            $ref: '#/components/schemas/transaction.v1.TransactionType'
-          title: type
-        status:
-          type: array
-          items:
-            $ref: '#/components/schemas/transaction.v1.TransactionStatus'
-          title: status
-      title: FindTransactionsRequest
-      required:
-        - businessId
-      additionalProperties: false
-    transaction.v1.FindTransactionsResponse:
-      type: object
-      properties:
-        transactions:
-          type: array
-          items:
-            $ref: '#/components/schemas/transaction.v1.Transaction'
-          title: transactions
-          description: The list of transactions found.
-      title: FindTransactionsResponse
-      additionalProperties: false
-    transaction.v1.GetTransactionRequest:
-      type: object
-      properties:
-        transactionId:
-          type: string
-          title: transaction_id
-          description: The unique identifier of the transaction.
-      title: GetTransactionRequest
-      additionalProperties: false
-    transaction.v1.GetTransactionResponse:
-      type: object
-      properties:
-        transaction:
-          title: transaction
-          description: The retrieved transaction.
-          $ref: '#/components/schemas/transaction.v1.Transaction'
-      title: GetTransactionResponse
-      additionalProperties: false
-    transaction.v1.Transaction:
+    inventory.v1.Category:
       type: object
       properties:
         refId:
           type: string
           title: ref_id
-          description: The unique identifier of the transaction.
+          description: Unique identifier for the category
           nullable: true
-        type:
-          title: type
-          description: The type of the transaction (sale, purchase, refund, etc.).
-          $ref: '#/components/schemas/transaction.v1.TransactionType'
-        status:
-          title: status
-          description: The status of the transaction (pending, completed, failed, cancelled).
-          $ref: '#/components/schemas/transaction.v1.TransactionStatus'
+        name:
+          type: string
+          title: name
+          minLength: 3
+          description: |
+            Name of the category (e.g., "Electronics", "Smart TVs")
+            string.min_len = 3
+        parentCategoryId:
+          type: string
+          title: parent_category_id
+          description: Reference to parent category (empty for root categories)
+          nullable: true
         businessId:
           type: string
           title: business_id
           minLength: 3
           description: |
-            The unique identifier of the business associated with the transaction.
+            Business ID associated with the category
             string.min_len = 3
-        storeId:
-          type: string
-          title: store_id
-          description: The unique identifier of the store associated with the transaction.
-          nullable: true
-        orderId:
-          type: string
-          title: order_id
-          description: The unique identifier of the order associated with the transaction.
-          nullable: true
-        fromId:
-          type: string
-          title: from_id
-          description: The unique identifier of the client or supplier associated with the transaction.
-          nullable: true
-        amountInCents:
-          type:
-            - integer
-            - string
-          title: amount_in_cents
-          format: int64
-          description: The amount of the transaction in cents.
-        currencyCode:
-          type: string
-          title: currency_code
-          description: The currency code of the transaction (ISO 4217).
         createdAt:
           title: created_at
-          description: The creation date of the transaction (ISO 8601).
+          description: Timestamp when the category was created
           $ref: '#/components/schemas/google.protobuf.Timestamp'
         updatedAt:
           title: updated_at
-          description: The update date of the transaction (ISO 8601).
+          description: Timestamp when the category was last updated
           nullable: true
           $ref: '#/components/schemas/google.protobuf.Timestamp'
-        description:
-          type: string
-          title: description
-          description: 'The description or note of the transaction (ex. : "Refund for order cancellation").'
-          nullable: true
-        businessProductId:
-          type: string
-          title: business_product_id
-          description: The unique identifier of the business product associated with the transaction.
-          nullable: true
-        quantity:
-          type: integer
-          title: quantity
-          format: int32
-          description: The quantity associated with the transaction (optional, for stock adjustments or stock transfers).
-          nullable: true
-        initiatedBy:
-          type: string
-          title: initiated_by
-          description: The unique identifier of the user who initiated the transaction.
-          nullable: true
-        externalLinksIds:
-          type: array
-          items:
-            type: string
-          title: external_links_ids
-          description: 'The external links of the transaction (ex. : payment receipt, invoice).'
-      title: Transaction
+      title: Category
       required:
+        - name
         - businessId
-        - currencyCode
       additionalProperties: false
-      description: "The Transaction represents an entry of actions impacting the stock or finances, \n such as sales, purchases, refunds, stock adjustments, or stock transfers. \n It ensures traceability of operations by capturing the user, date, product, \n associated order, amount or quantity, for audit and reports."
-    transaction.v1.UpdateTransactionRequest:
+    inventory.v1.CreateCategoryRequest:
       type: object
       properties:
-        transaction:
-          title: transaction
-          description: The transaction to update.
-          $ref: '#/components/schemas/transaction.v1.Transaction'
-      title: UpdateTransactionRequest
+        category:
+          title: category
+          description: The category information to create.
+          $ref: '#/components/schemas/inventory.v1.Category'
+      title: CreateCategoryRequest
       additionalProperties: false
-    transaction.v1.UpdateTransactionResponse:
+    inventory.v1.CreateCategoryResponse:
       type: object
       properties:
         success:
           type: boolean
           title: success
-          description: Whether the transaction was successfully updated.
-      title: UpdateTransactionResponse
+          description: Whether the category was successfully created.
+      title: CreateCategoryResponse
+      additionalProperties: false
+    inventory.v1.DeleteCategoryRequest:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+          minLength: 3
+          description: |
+            The unique identifier of the category.
+            string.min_len = 3
+      title: DeleteCategoryRequest
+      required:
+        - refId
+      additionalProperties: false
+    inventory.v1.DeleteCategoryResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the category was successfully deleted.
+      title: DeleteCategoryResponse
+      additionalProperties: false
+    inventory.v1.FindCategoriesRequest:
+      type: object
+      properties:
+        businessId:
+          type: string
+          title: business_id
+          minLength: 3
+          description: |
+            Find the category by business_id
+            string.min_len = 3
+        refId:
+          type: string
+          title: ref_id
+          description: Find the category by ref_id
+          nullable: true
+        name:
+          type: string
+          title: name
+          description: Find the category by name
+          nullable: true
+        parentCategoryId:
+          type: string
+          title: parent_category_id
+          description: Find the category by parent_category_id
+          nullable: true
+      title: FindCategoriesRequest
+      required:
+        - businessId
+      additionalProperties: false
+    inventory.v1.FindCategoriesResponse:
+      type: object
+      properties:
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/inventory.v1.Category'
+          title: categories
+      title: FindCategoriesResponse
+      additionalProperties: false
+    inventory.v1.GetCategoryRequest:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+          minLength: 3
+          description: |
+            The unique identifier of the category.
+            string.min_len = 3
+      title: GetCategoryRequest
+      required:
+        - refId
+      additionalProperties: false
+    inventory.v1.GetCategoryResponse:
+      type: object
+      properties:
+        category:
+          title: category
+          description: The retrieved category data.
+          $ref: '#/components/schemas/inventory.v1.Category'
+      title: GetCategoryResponse
+      additionalProperties: false
+    inventory.v1.UpdateCategoryRequest:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+          minLength: 3
+          description: |
+            The category information to update.
+            string.min_len = 3
+        name:
+          type: string
+          title: name
+          description: The name of the category.
+      title: UpdateCategoryRequest
+      required:
+        - refId
+        - name
+      additionalProperties: false
+    inventory.v1.UpdateCategoryResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the category was successfully updated.
+      title: UpdateCategoryResponse
       additionalProperties: false
     connect-protocol-version:
       type: number
@@ -582,4 +523,4 @@ components:
       description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
 security: []
 tags:
-  - name: transaction.v1.TransactionService
+  - name: inventory.v1.CategoryService

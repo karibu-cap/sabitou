@@ -34,26 +34,16 @@ class TransactionType extends $pb.ProtobufEnum {
   static const TransactionType TRANSACTION_TYPE_ADJUSTMENT =
       TransactionType._(4, _omitEnumNames ? '' : 'TRANSACTION_TYPE_ADJUSTMENT');
 
-  /// Stock transfer between stores.
-  static const TransactionType TRANSACTION_TYPE_TRANSFER =
-      TransactionType._(5, _omitEnumNames ? '' : 'TRANSACTION_TYPE_TRANSFER');
-
-  /// Fees associated (ex. : transport, taxes).
-  static const TransactionType TRANSACTION_TYPE_FEE =
-      TransactionType._(6, _omitEnumNames ? '' : 'TRANSACTION_TYPE_FEE');
-
   static const $core.List<TransactionType> values = <TransactionType>[
     TRANSACTION_TYPE_UNSPECIFIED,
     TRANSACTION_TYPE_SALE,
     TRANSACTION_TYPE_PURCHASE,
     TRANSACTION_TYPE_REFUND,
     TRANSACTION_TYPE_ADJUSTMENT,
-    TRANSACTION_TYPE_TRANSFER,
-    TRANSACTION_TYPE_FEE,
   ];
 
   static final $core.List<TransactionType?> _byValue =
-      $pb.ProtobufEnum.$_initByValueList(values, 6);
+      $pb.ProtobufEnum.$_initByValueList(values, 4);
   static TransactionType? valueOf($core.int value) =>
       value < 0 || value >= _byValue.length ? null : _byValue[value];
 

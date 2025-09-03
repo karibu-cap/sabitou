@@ -14,10 +14,6 @@ enum TransactionType {
   TRANSACTION_TYPE_REFUND = 3;
   // Stock adjustment (ex. : loss, damage).
   TRANSACTION_TYPE_ADJUSTMENT = 4;
-  // Stock transfer between stores.
-  TRANSACTION_TYPE_TRANSFER = 5;
-  // Fees associated (ex. : transport, taxes).
-  TRANSACTION_TYPE_FEE = 6;
 }
 
 enum TransactionStatus {

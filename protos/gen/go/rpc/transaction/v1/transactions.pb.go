@@ -35,10 +35,6 @@ const (
 	TransactionType_TRANSACTION_TYPE_REFUND TransactionType = 3
 	// Stock adjustment (ex. : loss, damage).
 	TransactionType_TRANSACTION_TYPE_ADJUSTMENT TransactionType = 4
-	// Stock transfer between stores.
-	TransactionType_TRANSACTION_TYPE_TRANSFER TransactionType = 5
-	// Fees associated (ex. : transport, taxes).
-	TransactionType_TRANSACTION_TYPE_FEE TransactionType = 6
 )
 
 // Enum value maps for TransactionType.
@@ -49,8 +45,6 @@ var (
 		2: "TRANSACTION_TYPE_PURCHASE",
 		3: "TRANSACTION_TYPE_REFUND",
 		4: "TRANSACTION_TYPE_ADJUSTMENT",
-		5: "TRANSACTION_TYPE_TRANSFER",
-		6: "TRANSACTION_TYPE_FEE",
 	}
 	TransactionType_value = map[string]int32{
 		"TRANSACTION_TYPE_UNSPECIFIED": 0,
@@ -58,8 +52,6 @@ var (
 		"TRANSACTION_TYPE_PURCHASE":    2,
 		"TRANSACTION_TYPE_REFUND":      3,
 		"TRANSACTION_TYPE_ADJUSTMENT":  4,
-		"TRANSACTION_TYPE_TRANSFER":    5,
-		"TRANSACTION_TYPE_FEE":         6,
 	}
 )
 
@@ -899,15 +891,13 @@ const file_transaction_v1_transactions_proto_rawDesc = "" +
 	"\v_start_dateB\v\n" +
 	"\t_end_date\"[\n" +
 	"\x18FindTransactionsResponse\x12?\n" +
-	"\ftransactions\x18\x01 \x03(\v2\x1b.transaction.v1.TransactionR\ftransactions*\xe4\x01\n" +
+	"\ftransactions\x18\x01 \x03(\v2\x1b.transaction.v1.TransactionR\ftransactions*\xab\x01\n" +
 	"\x0fTransactionType\x12 \n" +
 	"\x1cTRANSACTION_TYPE_UNSPECIFIED\x10\x00\x12\x19\n" +
 	"\x15TRANSACTION_TYPE_SALE\x10\x01\x12\x1d\n" +
 	"\x19TRANSACTION_TYPE_PURCHASE\x10\x02\x12\x1b\n" +
 	"\x17TRANSACTION_TYPE_REFUND\x10\x03\x12\x1f\n" +
-	"\x1bTRANSACTION_TYPE_ADJUSTMENT\x10\x04\x12\x1d\n" +
-	"\x19TRANSACTION_TYPE_TRANSFER\x10\x05\x12\x18\n" +
-	"\x14TRANSACTION_TYPE_FEE\x10\x06*\xba\x01\n" +
+	"\x1bTRANSACTION_TYPE_ADJUSTMENT\x10\x04*\xba\x01\n" +
 	"\x11TransactionStatus\x12\"\n" +
 	"\x1eTRANSACTION_STATUS_UNSPECIFIED\x10\x00\x12\x1e\n" +
 	"\x1aTRANSACTION_STATUS_PENDING\x10\x01\x12 \n" +
