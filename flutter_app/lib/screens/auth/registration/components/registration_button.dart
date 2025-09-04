@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-import '../../../../providers/auth/auth_provider.dart';
 import '../../../../router/app_router.dart' as app_router;
 import '../../../../services/internationalization/internationalization.dart';
+import '../../../../utils/button_state.dart';
 import '../registration_controller.dart';
 
 /// Custom registration button widget with loading state
@@ -11,20 +12,24 @@ class RegistrationButton extends StatelessWidget {
   /// Constructs a [RegistrationButton] widget
   const RegistrationButton({super.key});
 
-  /// Helper method extracted for registration button callback.
-  Future<void> onRegisterPressed(
-    BuildContext context,
-    RegistrationController controller,
-  ) async {
-    final validateResult = controller.validateAll();
-    if (!validateResult) {
-      return;
-    }
-
-    final registrationResult = await controller.registerUser();
+  @override
+  Widget build(BuildContext context) {
     final appIntl = AppInternationalizationService.to;
 
-    if (context.mounted) {
+    final controller = RegistrationController.instance;
+
+    /// Helper method extracted for registration button callback.
+    Future<void> onRegisterPressed(RegistrationController controller) async {
+      if (!context.mounted) {
+        return;
+      }
+      controller.buttonState.value = ButtonState.loading;
+      final registrationResult = await controller.registerUser();
+      if (!registrationResult) {
+        controller.buttonState.value = ButtonState.initial;
+
+        return;
+      }
       final theme = ShadTheme.of(context);
       final toast = ShadToast(
         title: Text(registrationResult ? appIntl.success : appIntl.failed),
@@ -41,34 +46,31 @@ class RegistrationButton extends StatelessWidget {
         ),
         backgroundColor: theme.colorScheme.background,
       );
-
       ShadToaster.of(context).show(toast);
       if (registrationResult) {
+        controller.buttonState.value = ButtonState.initial;
         app_router.pushReplacement(context, app_router.businessListRoutePath);
       }
+
+      controller.buttonState.value = ButtonState.initial;
     }
-  }
 
-  @override
-  Widget build(BuildContext context) {
-    final auth = AuthProvider.instance;
-    final appIntl = AppInternationalizationService.to;
-
-    return ShadButton(
-      onPressed: auth.status == AuthStatus.authenticating
-          ? null
-          : () => onRegisterPressed(context, RegistrationController.instance),
-      width: double.infinity,
-      child: auth.status == AuthStatus.authenticating
-          ? const SizedBox(
-              width: 20,
-              height: 20,
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-              ),
-            )
-          : Text(appIntl.registrationSubmit),
+    return Obx(
+      () => ShadButton(
+        onPressed: () => onRegisterPressed(controller),
+        width: double.infinity,
+        trailing: controller.buttonState.value == ButtonState.loading
+            ? SizedBox.square(
+                dimension: 16,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: ShadTheme.of(context).colorScheme.primaryForeground,
+                ),
+              )
+            : null,
+        enabled: controller.buttonState.value != ButtonState.loading,
+        child: Text(appIntl.registrationSubmit),
+      ),
     );
   }
 }

@@ -18,80 +18,90 @@ class RegistrationView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(
+    Get.put<RegistrationController>(
       RegistrationController(viewModel: RegistrationViewModel()),
-      permanent: true,
     );
 
+    return const CommonScaffold(
+      displayAppBar: false,
+      child: RegistrationContent(),
+    );
+  }
+}
+
+/// Registration content.
+class RegistrationContent extends StatelessWidget {
+  /// Constructs the registration content.
+  const RegistrationContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     final appIntl = AppInternationalizationService.to;
 
-    return CommonScaffold(
-      displayAppBar: false,
-      child: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: [Color(0xFF10B981), Color(0xFF059669), Color(0xFF047857)],
-          ),
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topRight,
+          end: Alignment.bottomLeft,
+          colors: [Color(0xFF10B981), Color(0xFF059669), Color(0xFF047857)],
         ),
-        child: SafeArea(
-          child: Center(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(24),
-              child: Flex(
-                direction: ResponsiveUtils.isDesktop(context)
-                    ? Axis.horizontal
-                    : Axis.vertical,
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (ResponsiveUtils.isDesktop(context))
-                    Flexible(
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 32),
-                        child: Image.asset(
-                          'assets/images/signup.png',
-                          fit: BoxFit.contain,
-                          height: 400,
-                        ),
-                      ),
-                    ),
+      ),
+      child: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(24),
+            child: Flex(
+              direction: ResponsiveUtils.isDesktop(context)
+                  ? Axis.horizontal
+                  : Axis.vertical,
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (ResponsiveUtils.isDesktop(context))
                   Flexible(
-                    child: ShadCard(
-                      width: double.infinity,
-                      child: Padding(
-                        padding: const EdgeInsets.all(32),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const RegistrationLogo(),
-                            const SizedBox(height: 24),
-                            Text(
-                              appIntl.registrationTitle,
-                              style: Theme.of(context).textTheme.headlineSmall,
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              appIntl.registrationSubtitle,
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.grey[600],
-                              ),
-                            ),
-                            const SizedBox(height: 32),
-                            const RegistrationForm(),
-                            const SizedBox(height: 24),
-                            const RegistrationButton(),
-                            const SizedBox(height: 24),
-                            const RegistrationLinks(),
-                          ],
-                        ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 32),
+                      child: Image.asset(
+                        'assets/images/signup.png',
+                        fit: BoxFit.contain,
+                        height: 400,
                       ),
                     ),
                   ),
-                ],
-              ),
+                Flexible(
+                  child: ShadCard(
+                    width: double.infinity,
+                    child: Padding(
+                      padding: const EdgeInsets.all(32),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const RegistrationLogo(),
+                          const SizedBox(height: 24),
+                          Text(
+                            appIntl.registrationTitle,
+                            style: Theme.of(context).textTheme.headlineSmall,
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            appIntl.registrationSubtitle,
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                          const SizedBox(height: 32),
+                          const RegistrationForm(),
+                          const SizedBox(height: 24),
+                          const RegistrationButton(),
+                          const SizedBox(height: 24),
+                          const RegistrationLinks(),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../services/internationalization/internationalization.dart';
+import '../../../utils/button_state.dart';
 import 'login_view_model.dart';
 
 /// Login controller.
@@ -12,17 +14,17 @@ class LoginController extends GetxController {
   /// Constructs login controller.
   LoginController({required LoginViewModel viewModel}) : _viewModel = viewModel;
 
+  /// The form key.
+  final GlobalKey<ShadFormState> formKey = GlobalKey<ShadFormState>();
+
+  /// The button state.
+  final Rx<ButtonState> buttonState = ButtonState.initial.obs;
+
   /// The email controller.
   final emailController = TextEditingController();
 
   /// The password controller.
   final passwordController = TextEditingController();
-
-  /// Email validation error message.
-  final RxString emailError = ''.obs;
-
-  /// Password validation error message.
-  final RxString passwordError = ''.obs;
 
   /// Observable for password visibility toggle.
   final RxBool isPasswordVisible = false.obs;
@@ -30,7 +32,7 @@ class LoginController extends GetxController {
   /// Singleton access.
   static LoginController get instance => Get.find();
 
-  /// Disposes all controllers and animation resources used by the controller.
+  /// Disposes all controllers resources used by the controller.
   @override
   void onClose() {
     emailController.dispose();
@@ -39,67 +41,36 @@ class LoginController extends GetxController {
   }
 
   /// Validates email field.
-  bool validateEmail() {
-    final email = emailController.text.trim();
+  String? validateEmail([String? value]) {
+    final email = value ?? emailController.text.trim();
     if (email.isEmpty) {
-      emailError.value = _appIntl.loginEmailRequired;
-
-      return false;
+      return _appIntl.emailRequired;
     }
     if (!GetUtils.isEmail(email)) {
-      emailError.value = _appIntl.loginEmailInvalid;
-
-      return false;
+      return _appIntl.emailInvalid;
     }
-    emailError.value = '';
 
-    return true;
+    return null;
   }
 
   /// Validates password field.
-  bool validatePassword() {
-    final password = passwordController.text.trim();
+  String? validatePassword([String? value]) {
+    final password = value ?? passwordController.text.trim();
     if (password.isEmpty) {
-      passwordError.value = _appIntl.loginPasswordRequired;
-
-      return false;
+      return _appIntl.passwordRequired;
     }
     if (password.length < 6) {
-      passwordError.value = _appIntl.loginPasswordLength;
-
-      return false;
+      return _appIntl.passwordLength;
     }
-    passwordError.value = '';
 
-    return true;
+    return null;
   }
 
-  /// Validates all fields.
-  bool validateAll() {
-    final emailValid = validateEmail();
-    final passwordValid = validatePassword();
+  /// Validates all fields on form.
+  bool _validateForm() {
+    final formValidator = formKey.currentState?.validate();
 
-    return emailValid && passwordValid;
-  }
-
-  /// Clears all validation errors.
-  void clearEmailForm() {
-    if (emailError.value.isNotEmpty) {
-      emailError.value = '';
-    }
-  }
-
-  /// Clears all validation errors.
-  void clearPasswordForm() {
-    if (passwordError.value.isNotEmpty) {
-      passwordError.value = '';
-    }
-  }
-
-  /// Clears all validation errors.
-  void clearErrors() {
-    emailError.value = '';
-    passwordError.value = '';
+    return formValidator == true;
   }
 
   /// Toggle password visibility.
@@ -109,7 +80,7 @@ class LoginController extends GetxController {
 
   /// Validates all fields and calls AuthProvider.login.
   Future<bool> loginUser() async {
-    if (!validateAll()) {
+    if (!_validateForm()) {
       return false;
     }
 

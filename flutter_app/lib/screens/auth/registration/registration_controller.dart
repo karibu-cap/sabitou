@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../services/internationalization/internationalization.dart';
+import '../../../utils/button_state.dart';
 import 'registration_view_model.dart';
 
 /// Registration controller.
@@ -12,6 +14,12 @@ class RegistrationController extends GetxController {
   /// Construct a new RegistrationController.
   RegistrationController({required RegistrationViewModel viewModel})
     : _viewModel = viewModel;
+
+  /// The form key.
+  final formKey = GlobalKey<ShadFormState>();
+
+  /// The button state.
+  final Rx<ButtonState> buttonState = ButtonState.initial.obs;
 
   /// Controller for the user name input field.
   final TextEditingController userNameController = TextEditingController();
@@ -88,143 +96,99 @@ class RegistrationController extends GetxController {
   }
 
   /// Validates the user name field.
-  bool validateUserName() {
-    final value = userNameController.text.trim();
-    if (value.isEmpty) {
-      userNameError.value = _appIntl.userNameRequired;
-
-      return false;
+  String? validateUserName([String? value]) {
+    final userName = value ?? userNameController.text.trim();
+    if (userName.isEmpty) {
+      return _appIntl.userNameRequired;
     }
-    userNameError.value = '';
 
-    return true;
+    return null;
   }
 
   /// Validates the email field.
-  bool validateEmail() {
-    final value = emailController.text.trim();
-    if (value.isEmpty) {
-      emailError.value = _appIntl.emailRequired;
-
-      return false;
+  String? validateEmail([String? value]) {
+    final email = value ?? emailController.text.trim();
+    if (email.isEmpty) {
+      return _appIntl.emailRequired;
     }
-    if (!GetUtils.isEmail(value)) {
-      emailError.value = _appIntl.emailInvalid;
-
-      return false;
+    if (!GetUtils.isEmail(email)) {
+      return _appIntl.emailInvalid;
     }
-    emailError.value = '';
 
-    return true;
+    return null;
   }
 
   /// Validates the phone number field.
-  bool validatePhoneNumber() {
-    final value = phoneNumberController.text.trim();
-    if (value.isEmpty) {
-      phoneNumberError.value = _appIntl.phoneNumberRequired;
-
-      return false;
+  String? validatePhoneNumber([String? value]) {
+    final phoneNumber = value ?? phoneNumberController.text.trim();
+    if (phoneNumber.isEmpty) {
+      return _appIntl.phoneNumberRequired;
     }
 
     // Validate using GetUtils for phone number format.
-    if (!GetUtils.isPhoneNumber(value)) {
-      phoneNumberError.value = _appIntl.phoneNumberInvalidFormat;
-
-      return false;
+    if (!GetUtils.isPhoneNumber(phoneNumber)) {
+      return _appIntl.phoneNumberInvalidFormat;
     }
 
     // Additional validation for Cameroon phone numbers (9 digits starting with 6).
-    if (value.length != 9 || !value.startsWith('6')) {
-      phoneNumberError.value = _appIntl.phoneNumberInvalidCameroon;
-
-      return false;
+    if (phoneNumber.length != 9 || !phoneNumber.startsWith('6')) {
+      return _appIntl.phoneNumberInvalidCameroon;
     }
 
-    phoneNumberError.value = '';
-
-    return true;
+    return null;
   }
 
   /// Validates the first name field.
-  bool validateFirstName() {
-    final value = firstNameController.text.trim();
-    if (value.isEmpty) {
-      firstNameError.value = _appIntl.firstNameRequired;
-
-      return false;
+  String? validateFirstName([String? value]) {
+    final firstName = value ?? firstNameController.text.trim();
+    if (firstName.isEmpty) {
+      return _appIntl.firstNameRequired;
     }
-    firstNameError.value = '';
 
-    return true;
+    return null;
   }
 
   /// Validates the last name field.
-  bool validateLastName() {
-    final value = lastNameController.text.trim();
-    if (value.isEmpty) {
-      lastNameError.value = _appIntl.lastNameRequired;
-
-      return false;
+  String? validateLastName([String? value]) {
+    final lastName = value ?? lastNameController.text.trim();
+    if (lastName.isEmpty) {
+      return _appIntl.lastNameRequired;
     }
-    lastNameError.value = '';
 
-    return true;
+    return null;
   }
 
   /// Validates the password field.
-  bool validatePassword() {
-    final value = passwordController.text;
-    if (value.isEmpty) {
-      passwordError.value = _appIntl.passwordRequired;
-
-      return false;
+  String? validatePassword([String? value]) {
+    final password = value ?? passwordController.text;
+    if (password.isEmpty) {
+      return _appIntl.passwordRequired;
     }
-    if (value.length < 6) {
-      passwordError.value = _appIntl.passwordLength;
-
-      return false;
+    if (password.length < 6) {
+      return _appIntl.passwordLength;
     }
-    passwordError.value = '';
 
-    return true;
+    return null;
   }
 
   /// Validates the confirm password field.
-  bool validateConfirmPassword() {
-    final value = confirmPasswordController.text;
-    if (value.isEmpty) {
-      confirmPasswordError.value = _appIntl.confirmPasswordRequired;
-
-      return false;
+  String? validateConfirmPassword([String? value]) {
+    final confirmPassword = value ?? confirmPasswordController.text;
+    if (confirmPassword.isEmpty) {
+      return _appIntl.confirmPasswordRequired;
     }
-    if (value != passwordController.text) {
-      confirmPasswordError.value = _appIntl.passwordsDoNotMatch;
-
-      return false;
+    if (confirmPassword != passwordController.text) {
+      return _appIntl.passwordsDoNotMatch;
     }
-    confirmPasswordError.value = '';
 
-    return true;
+    return null;
   }
 
   /// Validates all registration form fields.
   bool validateAll() {
-    final userNameValid = validateUserName();
-    final emailValid = validateEmail();
-    final phoneValid = validatePhoneNumber();
-    final firstNameValid = validateFirstName();
-    final lastNameValid = validateLastName();
-    final passwordValid = validatePassword();
-    final confirmPasswordValid = validateConfirmPassword();
+    final validate = formKey.currentState?.validate();
 
-    return userNameValid &&
-        emailValid &&
-        phoneValid &&
-        firstNameValid &&
-        lastNameValid &&
-        passwordValid &&
-        confirmPasswordValid;
+    return validate == true;
   }
 
   /// Clears all error messages in the registration form.

@@ -16,27 +16,31 @@ class LoginForm extends StatelessWidget {
     final controller = Get.find<LoginController>();
     final appIntl = AppInternationalizationService.to;
 
-    return Column(
-      children: [
-        Obx(
-          () => InputField(
+    return ShadForm(
+      key: controller.formKey,
+      child: Column(
+        spacing: 16,
+        children: [
+          InputField(
+            id: appIntl.email,
+            label: appIntl.email,
             controller: controller.emailController,
-            placeholder: appIntl.email,
+            placeholder: appIntl.enterValidEmail,
+            keyboardType: TextInputType.emailAddress,
             icon: LucideIcons.mail400,
-            error: controller.emailError.value,
+            validator: controller.validateEmail,
           ),
-        ),
-        const SizedBox(height: 16),
-        Obx(
-          () => PasswordField(
+          PasswordField(
+            id: appIntl.password,
+            label: appIntl.password,
             controller: controller.passwordController,
             placeholder: appIntl.password,
-            isVisible: controller.isPasswordVisible.value,
+            isVisible: controller.isPasswordVisible,
             onToggle: controller.togglePasswordVisibility,
-            error: controller.passwordError.value,
+            validator: controller.validatePassword,
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

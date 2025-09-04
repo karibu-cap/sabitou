@@ -19,10 +19,7 @@ class LoginView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.put<LoginController>(
-      LoginController(viewModel: LoginViewModel()),
-      permanent: true,
-    );
+    Get.put<LoginController>(LoginController(viewModel: LoginViewModel()));
 
     return const CommonScaffold(displayAppBar: false, child: LoginContent());
   }
