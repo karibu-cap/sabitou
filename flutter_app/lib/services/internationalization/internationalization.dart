@@ -42,22 +42,6 @@ class AppInternationalizationService extends GetxService {
       'fr': 'Rechercher un produit',
     },
     'createAccount': {'en': 'Create account', 'fr': 'Creer un compte'},
-    'loginEmailRequired': {
-      'en': 'Email is required',
-      'fr': 'L\'email est requis',
-    },
-    'loginEmailInvalid': {
-      'en': 'Please enter a valid email address',
-      'fr': 'Veuillez entrer une adresse email valide',
-    },
-    'loginPasswordRequired': {
-      'en': 'Password is required',
-      'fr': 'Le mot de passe est requis',
-    },
-    'loginPasswordLength': {
-      'en': 'Password must be at least 6 characters',
-      'fr': 'Le mot de passe doit comporter au moins 6 caractères',
-    },
     'email': {'en': 'Email', 'fr': 'Email'},
     'password': {'en': 'Password', 'fr': 'Mot de passe'},
     'firstName': {'en': 'First name', 'fr': 'Prenom'},
@@ -1050,26 +1034,6 @@ class AppInternationalizationService extends GetxService {
   /// Returns the localized value of forgotPasswordFailed.
   String get forgotPasswordFailed =>
       _stringOfLocalizedValue('forgotPasswordFailed');
-
-  /// Returns the localized value of loginEmailRequired.
-  String get loginEmailRequired {
-    return _stringOfLocalizedValue('loginEmailRequired');
-  }
-
-  /// Returns the localized value of loginEmailInvalid.
-  String get loginEmailInvalid {
-    return _stringOfLocalizedValue('loginEmailInvalid');
-  }
-
-  /// Returns the localized value of loginPasswordRequired.
-  String get loginPasswordRequired {
-    return _stringOfLocalizedValue('loginPasswordRequired');
-  }
-
-  /// Returns the localized value of loginPasswordLength.
-  String get loginPasswordLength {
-    return _stringOfLocalizedValue('loginPasswordLength');
-  }
 
   /// Returns the localized value of phoneNumberInvalidFormat.
   String get phoneNumberInvalidFormat {

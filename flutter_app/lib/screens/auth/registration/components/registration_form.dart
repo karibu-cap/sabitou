@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../../services/internationalization/internationalization.dart';
+import '../../../../widgets/grid/responsitive_grid.dart';
 import '../../../../widgets/input/form_fields.dart';
 import '../registration_controller.dart';
 
@@ -23,81 +24,81 @@ class RegistrationForm extends StatelessWidget {
     final controller = Get.find<RegistrationController>();
     final appIntl = AppInternationalizationService.to;
 
-    return Column(
-      children: [
-        Obx(
-          () => InputField(
+    return ShadForm(
+      key: controller.formKey,
+      child: Column(
+        spacing: 16,
+        children: [
+          InputField(
+            id: appIntl.userName,
+            label: appIntl.userName,
             controller: controller.userNameController,
             placeholder: appIntl.userName,
             icon: LucideIcons.user400,
-            error: controller.userNameError.value,
+            validator: controller.validateUserName,
           ),
-        ),
-        const SizedBox(height: 16),
-        Obx(
-          () => InputField(
-            controller: controller.firstNameController,
-            placeholder: appIntl.firstName,
-            icon: LucideIcons.user400,
-            error: controller.firstNameError.value,
+          ResponsiveGrid(
+            minItemWidth: 200,
+            spacing: 16,
+            mainAxisExtent: 80,
+            children: [
+              InputField(
+                id: appIntl.firstName,
+                label: appIntl.firstName,
+                controller: controller.firstNameController,
+                placeholder: appIntl.firstName,
+                icon: LucideIcons.user400,
+                validator: controller.validateFirstName,
+              ),
+              InputField(
+                id: appIntl.lastName,
+                label: appIntl.lastName,
+                controller: controller.lastNameController,
+                placeholder: appIntl.lastName,
+                icon: LucideIcons.user400,
+                validator: controller.validateLastName,
+              ),
+              InputField(
+                id: appIntl.email,
+                label: appIntl.email,
+                controller: controller.emailController,
+                placeholder: appIntl.email,
+                icon: LucideIcons.mail400,
+                validator: controller.validateEmail,
+                keyboardType: TextInputType.emailAddress,
+              ),
+              InputField(
+                id: appIntl.phoneNumber,
+                label: appIntl.phoneNumber,
+                controller: controller.phoneNumberController,
+                placeholder: appIntl.phoneNumber,
+                icon: LucideIcons.phone400,
+                validator: controller.validatePhoneNumber,
+                keyboardType: TextInputType.phone,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              ),
+              PasswordField(
+                id: appIntl.password,
+                label: appIntl.password,
+                controller: controller.passwordController,
+                placeholder: appIntl.password,
+                isVisible: controller.isPasswordVisible,
+                onToggle: controller.togglePasswordVisibility,
+                validator: controller.validatePassword,
+              ),
+              PasswordField(
+                id: appIntl.confirmPassword,
+                label: appIntl.confirmPassword,
+                controller: controller.confirmPasswordController,
+                placeholder: appIntl.confirmPassword,
+                isVisible: controller.isConfirmPasswordVisible,
+                onToggle: controller.toggleConfirmPasswordVisibility,
+                validator: controller.validateConfirmPassword,
+              ),
+            ],
           ),
-        ),
-        const SizedBox(height: 16),
-
-        Obx(
-          () => InputField(
-            controller: controller.lastNameController,
-            placeholder: appIntl.lastName,
-            icon: LucideIcons.user400,
-            error: controller.lastNameError.value,
-          ),
-        ),
-        const SizedBox(height: 16),
-
-        Obx(
-          () => InputField(
-            controller: controller.emailController,
-            placeholder: appIntl.email,
-            icon: LucideIcons.mail400,
-            error: controller.emailError.value,
-            keyboardType: TextInputType.emailAddress,
-          ),
-        ),
-        const SizedBox(height: 16),
-
-        Obx(
-          () => InputField(
-            controller: controller.phoneNumberController,
-            placeholder: appIntl.phoneNumber,
-            icon: LucideIcons.phone400,
-            error: controller.phoneNumberError.value,
-            keyboardType: TextInputType.phone,
-            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-          ),
-        ),
-        const SizedBox(height: 16),
-
-        Obx(
-          () => PasswordField(
-            controller: controller.passwordController,
-            placeholder: appIntl.password,
-            isVisible: controller.isPasswordVisible.value,
-            onToggle: controller.togglePasswordVisibility,
-            error: controller.passwordError.value,
-          ),
-        ),
-        const SizedBox(height: 16),
-
-        Obx(
-          () => PasswordField(
-            controller: controller.confirmPasswordController,
-            placeholder: appIntl.confirmPassword,
-            isVisible: controller.isConfirmPasswordVisible.value,
-            onToggle: controller.toggleConfirmPasswordVisibility,
-            error: controller.confirmPasswordError.value,
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

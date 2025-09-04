@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 /// A reusable input field component with icon and error handling
@@ -10,9 +11,12 @@ class InputField extends StatelessWidget {
     required this.controller,
     required this.placeholder,
     required this.icon,
-    this.error,
+    this.label,
+    this.description,
     this.keyboardType,
     this.inputFormatters,
+    this.id,
+    this.validator,
   });
 
   /// Controller for the input field text editing
@@ -21,11 +25,14 @@ class InputField extends StatelessWidget {
   /// Placeholder text to display when field is empty
   final String placeholder;
 
+  /// Label text to display above the field
+  final String? label;
+
+  /// Description text to display below the field
+  final String? description;
+
   /// Icon to display in the trailing position
   final IconData icon;
-
-  /// Optional error message to display below the field
-  final String? error;
 
   /// Keyboard type for text input (defaults to TextInputType.text)
   final TextInputType? keyboardType;
@@ -33,19 +40,31 @@ class InputField extends StatelessWidget {
   /// Input formatters to apply to the text input
   final List<TextInputFormatter>? inputFormatters;
 
+  /// Optional ID for the input field (used for accessibility/testing)
+  final String? id;
+
+  /// Optional validator function for the input field
+  final FormFieldValidator<String>? validator;
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ShadInputFormField(
-          controller: controller,
-          placeholder: Text(placeholder),
-          trailing: Icon(icon),
-          keyboardType: keyboardType,
-          inputFormatters: inputFormatters,
-        ),
-        if (error?.isNotEmpty ?? false) ErrorText(error: error),
-      ],
+    return ShadInputFormField(
+      controller: controller,
+      placeholder: Text(placeholder),
+      trailing: Icon(icon),
+      keyboardType: keyboardType,
+      inputFormatters: inputFormatters,
+      id: id,
+      validator: validator,
+      description: description != null
+          ? Text(
+              description ?? '',
+              style: Theme.of(context).textTheme.bodySmall,
+            )
+          : null,
+      label: label != null
+          ? Text(label ?? '', style: Theme.of(context).textTheme.bodyLarge)
+          : null,
     );
   }
 }
@@ -59,7 +78,10 @@ class PasswordField extends StatelessWidget {
     required this.placeholder,
     required this.isVisible,
     required this.onToggle,
-    required this.error,
+    this.id,
+    this.validator,
+    this.label,
+    this.description,
   });
 
   /// Controller for the password field text editing
@@ -69,60 +91,48 @@ class PasswordField extends StatelessWidget {
   final String placeholder;
 
   /// Whether the password text is currently visible
-  final bool isVisible;
+  final RxBool isVisible;
 
   /// Callback function to toggle password visibility
   final VoidCallback onToggle;
 
-  /// Optional error message to display below the field
-  final String? error;
+  /// Optional ID for the input field (used for accessibility/testing)
+  final String? id;
+
+  /// Optional validator function for the input field
+  final FormFieldValidator<String>? validator;
+
+  /// Label text to display above the field
+  final String? label;
+
+  /// Description text to display below the field
+  final String? description;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ShadInputFormField(
-          controller: controller,
-          placeholder: Text(placeholder),
-          obscureText: !isVisible,
-          trailing: GestureDetector(
-            onTap: onToggle,
-            child: Icon(isVisible ? LucideIcons.eye400 : LucideIcons.eyeOff400),
+    return Obx(
+      () => ShadInputFormField(
+        controller: controller,
+        placeholder: Text(placeholder),
+        obscureText: !isVisible.value,
+        leading: const Icon(LucideIcons.lock),
+        trailing: GestureDetector(
+          onTap: onToggle,
+          child: Icon(
+            isVisible.value ? LucideIcons.eye400 : LucideIcons.eyeOff400,
           ),
         ),
-        if (error?.isNotEmpty ?? false) ErrorText(error: error),
-      ],
-    );
-  }
-}
-
-/// A reusable error text widget that follows the app theme
-class ErrorText extends StatelessWidget {
-  /// Creates an error text widget
-  const ErrorText({super.key, required this.error});
-
-  /// The error to display.
-  final String? error;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 4, left: 4),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Builder(
-          builder: (context) {
-            final theme = ShadTheme.of(context);
-
-            return Text(
-              error ?? '',
-              style: theme.textTheme.p.copyWith(
-                color: theme.colorScheme.destructive,
-                fontSize: 12,
-              ),
-            );
-          },
-        ),
+        id: id,
+        validator: validator,
+        description: description != null
+            ? Text(
+                description ?? '',
+                style: Theme.of(context).textTheme.bodySmall,
+              )
+            : null,
+        label: label != null
+            ? Text(label ?? '', style: Theme.of(context).textTheme.bodyLarge)
+            : null,
       ),
     );
   }
