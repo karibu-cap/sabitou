@@ -41,11 +41,8 @@ message Supplier {
   // Whether the supplier is active.
   bool is_active = 9;
 
-  // The id of the business of the supplier.
-  string business_id = 10 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).string.min_len = 3
-  ];
+  // The ids of the business of the supplier.
+  repeated string business_ids = 10;
 }
 
 message CreateSupplierRequest {

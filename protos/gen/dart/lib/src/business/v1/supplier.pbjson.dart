@@ -88,7 +88,7 @@ const Supplier$json = {
       '17': true
     },
     {'1': 'is_active', '3': 9, '4': 1, '5': 8, '10': 'isActive'},
-    {'1': 'business_id', '3': 10, '4': 1, '5': 9, '8': {}, '10': 'businessId'},
+    {'1': 'business_ids', '3': 10, '4': 3, '5': 9, '10': 'businessIds'},
   ],
   '8': [
     {'1': '_ref_id'},
@@ -108,9 +108,9 @@ final $typed_data.Uint8List supplierDescriptor = $convert.base64Decode(
     'V4dGVybmFsTGlua3NJZHMSKAoNY29udGFjdF9waG9uZRgGIAEoCUgDUgxjb250YWN0UGhvbmWI'
     'AQESKAoNY29udGFjdF9lbWFpbBgHIAEoCUgEUgxjb250YWN0RW1haWyIAQESLAoPY29udGFjdF'
     '9hZGRyZXNzGAggASgJSAVSDmNvbnRhY3RBZGRyZXNziAEBEhsKCWlzX2FjdGl2ZRgJIAEoCFII'
-    'aXNBY3RpdmUSKwoLYnVzaW5lc3NfaWQYCiABKAlCCrpIB8gBAXICEANSCmJ1c2luZXNzSWRCCQ'
-    'oHX3JlZl9pZEIOCgxfZGVzY3JpcHRpb25CDwoNX2xvZ29fbGlua19pZEIQCg5fY29udGFjdF9w'
-    'aG9uZUIQCg5fY29udGFjdF9lbWFpbEISChBfY29udGFjdF9hZGRyZXNz');
+    'aXNBY3RpdmUSIQoMYnVzaW5lc3NfaWRzGAogAygJUgtidXNpbmVzc0lkc0IJCgdfcmVmX2lkQg'
+    '4KDF9kZXNjcmlwdGlvbkIPCg1fbG9nb19saW5rX2lkQhAKDl9jb250YWN0X3Bob25lQhAKDl9j'
+    'b250YWN0X2VtYWlsQhIKEF9jb250YWN0X2FkZHJlc3M=');
 
 @$core.Deprecated('Use createSupplierRequestDescriptor instead')
 const CreateSupplierRequest$json = {

@@ -98,8 +98,8 @@ type Supplier struct {
 	ContactAddress *string `protobuf:"bytes,8,opt,name=contact_address,json=contactAddress,proto3,oneof" json:"contact_address,omitempty"`
 	// Whether the supplier is active.
 	IsActive bool `protobuf:"varint,9,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`
-	// The id of the business of the supplier.
-	BusinessId    string `protobuf:"bytes,10,opt,name=business_id,json=businessId,proto3" json:"business_id,omitempty"`
+	// The ids of the business of the supplier.
+	BusinessIds   []string `protobuf:"bytes,10,rep,name=business_ids,json=businessIds,proto3" json:"business_ids,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -197,11 +197,11 @@ func (x *Supplier) GetIsActive() bool {
 	return false
 }
 
-func (x *Supplier) GetBusinessId() string {
+func (x *Supplier) GetBusinessIds() []string {
 	if x != nil {
-		return x.BusinessId
+		return x.BusinessIds
 	}
-	return ""
+	return nil
 }
 
 type CreateSupplierRequest struct {
@@ -699,7 +699,7 @@ const file_business_v1_supplier_proto_rawDesc = "" +
 	"\x1abusiness/v1/supplier.proto\x12\vbusiness.v1\x1a\x1bbuf/validate/validate.proto\x1a\x12link/v1/link.proto\".\n" +
 	"\x04Link\x12\x14\n" +
 	"\x05label\x18\x01 \x01(\tR\x05label\x12\x10\n" +
-	"\x03url\x18\x02 \x01(\tR\x03url\"\xe6\x03\n" +
+	"\x03url\x18\x02 \x01(\tR\x03url\"\xdc\x03\n" +
 	"\bSupplier\x12\x1a\n" +
 	"\x06ref_id\x18\x01 \x01(\tH\x00R\x05refId\x88\x01\x01\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12%\n" +
@@ -710,11 +710,9 @@ const file_business_v1_supplier_proto_rawDesc = "" +
 	"\rcontact_phone\x18\x06 \x01(\tH\x03R\fcontactPhone\x88\x01\x01\x12(\n" +
 	"\rcontact_email\x18\a \x01(\tH\x04R\fcontactEmail\x88\x01\x01\x12,\n" +
 	"\x0fcontact_address\x18\b \x01(\tH\x05R\x0econtactAddress\x88\x01\x01\x12\x1b\n" +
-	"\tis_active\x18\t \x01(\bR\bisActive\x12+\n" +
-	"\vbusiness_id\x18\n" +
-	" \x01(\tB\n" +
-	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\n" +
-	"businessIdB\t\n" +
+	"\tis_active\x18\t \x01(\bR\bisActive\x12!\n" +
+	"\fbusiness_ids\x18\n" +
+	" \x03(\tR\vbusinessIdsB\t\n" +
 	"\a_ref_idB\x0e\n" +
 	"\f_descriptionB\x0f\n" +
 	"\r_logo_link_idB\x10\n" +

@@ -25,8 +25,6 @@ const TransactionType$json = {
     {'1': 'TRANSACTION_TYPE_PURCHASE', '2': 2},
     {'1': 'TRANSACTION_TYPE_REFUND', '2': 3},
     {'1': 'TRANSACTION_TYPE_ADJUSTMENT', '2': 4},
-    {'1': 'TRANSACTION_TYPE_TRANSFER', '2': 5},
-    {'1': 'TRANSACTION_TYPE_FEE', '2': 6},
   ],
 };
 
@@ -35,8 +33,7 @@ final $typed_data.Uint8List transactionTypeDescriptor = $convert.base64Decode(
     'Cg9UcmFuc2FjdGlvblR5cGUSIAocVFJBTlNBQ1RJT05fVFlQRV9VTlNQRUNJRklFRBAAEhkKFV'
     'RSQU5TQUNUSU9OX1RZUEVfU0FMRRABEh0KGVRSQU5TQUNUSU9OX1RZUEVfUFVSQ0hBU0UQAhIb'
     'ChdUUkFOU0FDVElPTl9UWVBFX1JFRlVORBADEh8KG1RSQU5TQUNUSU9OX1RZUEVfQURKVVNUTU'
-    'VOVBAEEh0KGVRSQU5TQUNUSU9OX1RZUEVfVFJBTlNGRVIQBRIYChRUUkFOU0FDVElPTl9UWVBF'
-    'X0ZFRRAG');
+    'VOVBAE');
 
 @$core.Deprecated('Use transactionStatusDescriptor instead')
 const TransactionStatus$json = {

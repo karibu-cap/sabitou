@@ -1,0 +1,125 @@
+syntax = "proto3";
+
+package inventory.v1;
+import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+
+message Category {
+// Unique identifier for the category
+  optional string ref_id = 1;
+
+  // Name of the category (e.g., "Electronics", "Smart TVs")
+  string name = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+
+  // Reference to parent category (empty for root categories)
+  optional string parent_category_id = 3;
+
+  // Business ID associated with the category
+  string business_id = 4 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+
+  // Timestamp when the category was created
+  google.protobuf.Timestamp created_at = 6;
+
+  // Timestamp when the category was last updated
+  optional google.protobuf.Timestamp updated_at = 7;
+}
+
+message FindCategoriesRequest {
+  // Find the category by business_id
+  string business_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+
+  // Find the category by ref_id
+  optional string ref_id = 2;
+
+  // Find the category by name
+  optional string name = 3;
+
+  // Find the category by parent_category_id
+  optional string parent_category_id = 4;
+}
+
+message FindCategoriesResponse {
+  repeated Category categories = 1;
+}
+
+message CreateCategoryRequest {
+  // The category information to create.
+  Category category = 1;
+}
+
+message CreateCategoryResponse {
+  // Whether the category was successfully created.
+  bool success = 1;
+}
+
+message UpdateCategoryRequest {
+  // The category information to update.
+  string ref_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+
+  // The name of the category.
+  string name = 2 [
+    (buf.validate.field).required = true
+  ];
+}
+
+message UpdateCategoryResponse {
+  // Whether the category was successfully updated.
+  bool success = 1;
+}
+
+message DeleteCategoryRequest {
+  // The unique identifier of the category.
+  string ref_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+}
+
+message DeleteCategoryResponse {
+  // Whether the category was successfully deleted.
+  bool success = 1;
+}
+
+message GetCategoryRequest {
+  // The unique identifier of the category.
+  string ref_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+}
+
+message GetCategoryResponse {
+  // The retrieved category data.
+  Category category = 1;
+}
+
+service CategoryService {
+  // Creates a new category.
+  rpc CreateCategory(CreateCategoryRequest) returns (CreateCategoryResponse);
+
+  // Updates a category.
+  rpc UpdateCategory(UpdateCategoryRequest) returns (UpdateCategoryResponse);
+
+  // Deletes a category.
+  rpc DeleteCategory(DeleteCategoryRequest) returns (DeleteCategoryResponse);
+
+  // Finds categories by name.
+  rpc FindCategories(FindCategoriesRequest) returns (FindCategoriesResponse);
+
+  // Gets a category by id.
+  rpc GetCategory(GetCategoryRequest) returns (GetCategoryResponse);
+}
+
+  

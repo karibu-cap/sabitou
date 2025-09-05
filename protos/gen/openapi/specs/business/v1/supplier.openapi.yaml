@@ -356,16 +356,13 @@ components:
           type: boolean
           title: is_active
           description: Whether the supplier is active.
-        businessId:
-          type: string
-          title: business_id
-          minLength: 3
-          description: |
-            The id of the business of the supplier.
-            string.min_len = 3
+        businessIds:
+          type: array
+          items:
+            type: string
+          title: business_ids
+          description: The ids of the business of the supplier.
       title: Supplier
-      required:
-        - businessId
       additionalProperties: false
     business.v1.UpdateSupplierRequest:
       type: object
