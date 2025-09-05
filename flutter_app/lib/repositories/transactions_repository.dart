@@ -1,11 +1,13 @@
-import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../services/rpc/connect_rpc.dart';
+import '../utils/logger.dart';
 
 /// The transactions repository.
-class TransactionsRepository {
+class TransactionsRepository extends GetxService {
+  final _logger = LoggerApp('TransactionsRepository');
+
   /// The transaction service client.
   final TransactionServiceClient transactionServiceClient;
 
@@ -40,9 +42,8 @@ class TransactionsRepository {
       );
 
       return response.transactions;
-    } catch (e) {
-      debugPrint(e.toString());
-      print(e);
+    } on Exception catch (e) {
+      _logger.severe('getCompleteTransactionsByBusinessId Error: $e');
 
       return [];
     }

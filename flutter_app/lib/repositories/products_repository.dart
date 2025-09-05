@@ -1,12 +1,14 @@
-import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:sabitou_rpc/connect_servers.dart';
 import 'package:sabitou_rpc/models.dart';
 
 import '../services/rpc/connect_rpc.dart';
+import '../utils/logger.dart';
 
 /// The products repository.
 final class ProductsRepository extends GetxService {
+  final _logger = LoggerApp('ProductsRepository');
+
   /// The product service client.
   final ProductServiceClient productServiceClient;
 
@@ -29,9 +31,8 @@ final class ProductsRepository extends GetxService {
       );
 
       return response.products;
-    } catch (e) {
-      debugPrint(e.toString());
-      print(e);
+    } on Exception catch (e) {
+      _logger.severe('getProductsByBusinessId Error: $e');
 
       return [];
     }
@@ -45,9 +46,8 @@ final class ProductsRepository extends GetxService {
       );
 
       return response.products.firstWhereOrNull((gp) => gp.refId == refId);
-    } catch (e) {
-      debugPrint(e.toString());
-      print(e);
+    } on Exception catch (e) {
+      _logger.severe('getGlobalProductByRefId Error: $e');
 
       return null;
     }
