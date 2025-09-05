@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:clock/clock.dart';
-import 'package:get/get.dart';
 import 'package:sabitou_rpc/models.dart';
 
 import '../../repositories/orders_repository.dart';
@@ -29,20 +28,20 @@ final class DashboardViewModel {
   /// The user preferences.
   final UserPreferences userPreferences = UserPreferences.instance;
 
-  /// Completer for loading state.
-  RxBool isLoading = false.obs;
-
   /// Error message if any.
-  RxString error = ''.obs;
+  String error = '';
 
   /// List of low stock products.
-  RxList<BusinessProduct> lowStockProducts = <BusinessProduct>[].obs;
+  List<BusinessProduct> lowStockProducts = <BusinessProduct>[];
 
   /// List of expiring products (improved to include soon-to-expire, not just expired).
-  RxList<BusinessProduct> expiringProducts = <BusinessProduct>[].obs;
+  List<BusinessProduct> expiringProducts = <BusinessProduct>[];
 
   /// Map of global products for quick lookup (only for low stock and expiring).
-  RxMap<String, GlobalProduct> globalProducts = <String, GlobalProduct>{}.obs;
+  Map<String, GlobalProduct> globalProducts = <String, GlobalProduct>{};
+
+  /// Completer for loading state.
+  final Completer<bool> completer = Completer<bool>();
 
   /// Constructs of new [DashboardViewModel].
   DashboardViewModel() {
@@ -50,7 +49,7 @@ final class DashboardViewModel {
   }
 
   /// Dashboard stats.
-  Rx<DashboardStatsData> stats = (
+  DashboardStatsData stats = (
     totalProducts: 0,
     lowStockItems: 0,
     expiringItems: 0,
@@ -60,12 +59,11 @@ final class DashboardViewModel {
     transactions: <Transaction>[],
     yesterdayTransactions: <Transaction>[],
     yesterdaySales: 0.0,
-  ).obs;
+  );
 
   /// Fetches all dashboard data in one go to avoid duplicate fetches.
   Future<void> fetchDashboardData() async {
-    isLoading.value = true;
-    error.value = '';
+    error = '';
     try {
       // Check permissions once (assuming hasPermission is async, combine if needed).
       if (!await hasPermission(
@@ -126,10 +124,10 @@ final class DashboardViewModel {
           .toList();
 
       // Compute low stock.
-      lowStockProducts.value = filteredProducts.where(_isLowStock).toList();
+      lowStockProducts = filteredProducts.where(_isLowStock).toList();
 
       // Compute expiring products (improved: expiring in next 30 days, including already expired).
-      expiringProducts.value = _computeExpiringProducts(filteredProducts);
+      expiringProducts = _computeExpiringProducts(filteredProducts);
 
       // Compute total products.
       final totalProductsCount = filteredProducts.length;
@@ -138,7 +136,7 @@ final class DashboardViewModel {
       final totalSuppliersCount = suppliers.length;
 
       // Update stats.
-      stats.value = (
+      stats = (
         totalProducts: totalProductsCount,
         lowStockItems: lowStockProducts.length,
         expiringItems: expiringProducts.length,
@@ -163,12 +161,12 @@ final class DashboardViewModel {
         uniqueGlobalIds.toList(),
         globals.whereType<GlobalProduct>(),
       );
-      globalProducts.value = globalMap;
+      globalProducts = globalMap;
     } catch (e) {
-      error.value = e.toString();
+      error = e.toString();
       print(e);
     } finally {
-      isLoading.value = false;
+      completer.complete(true);
     }
   }
 

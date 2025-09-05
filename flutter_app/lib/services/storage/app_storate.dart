@@ -1,4 +1,4 @@
-import 'package:get/get.dart';
+import 'package:get_it/get_it.dart';
 
 import 'fake_storage.dart';
 import 'get_storage.dart';
@@ -15,7 +15,7 @@ enum AppStorageType {
 /// The app storage service.
 abstract class AppStorageService {
   /// Direct access to the app storage service.
-  static AppStorageService get to => Get.find();
+  static AppStorageService get to => GetIt.I.get<AppStorageService>();
 
   /// Writes data on your container.
   Future<void> write(String key, dynamic value);

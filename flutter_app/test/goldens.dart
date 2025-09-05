@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get/get.dart';
+import 'package:get_it/get_it.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
+import 'package:provider/provider.dart';
 import 'package:sabitou_clients/repositories/business_repository.dart';
 import 'package:sabitou_clients/repositories/orders_repository.dart';
 import 'package:sabitou_clients/repositories/products_repository.dart';
@@ -22,41 +23,66 @@ Future<void> multiScreenMultiLocaleGolden(
 ) async {
   TestWidgetsFlutterBinding.ensureInitialized();
   final storage = AppStorageService(AppStorageType.fake);
-  Get.put(storage);
 
   final AppInternationalizationService appInternationalization =
       AppInternationalizationService(const Locale('en'), storage);
-  Get.put<AppInternationalizationService>(appInternationalization);
   final themeService = AppThemeService(storage);
-  Get.put<AppThemeService>(themeService, permanent: true);
   await tester.pumpAndSettle();
-  Get
-    ..put<UserPreferences>(UserPreferences())
-    ..lazyPut<OrdersRepository>(OrdersRepository.new)
-    ..lazyPut<ProductsRepository>(ProductsRepository.new)
-    ..lazyPut<SuppliersRepository>(SuppliersRepository.new)
-    ..lazyPut<TransactionsRepository>(TransactionsRepository.new)
-    ..lazyPut<BusinessRepository>(BusinessRepository.new)
-    ..lazyPut<StoresRepository>(StoresRepository.new);
+  GetIt.I
+    ..registerSingletonIfAbsent<AppStorageService>(() => storage)
+    ..registerSingletonIfAbsent<AppInternationalizationService>(
+      () => appInternationalization,
+    )
+    ..registerSingletonIfAbsent<AppThemeService>(() => themeService)
+    ..registerSingletonIfAbsent<UserPreferences>(UserPreferences.new)
+    ..registerSingletonIfAbsent<OrdersRepository>(OrdersRepository.new)
+    ..registerSingletonIfAbsent<ProductsRepository>(ProductsRepository.new)
+    ..registerSingletonIfAbsent<SuppliersRepository>(SuppliersRepository.new)
+    ..registerSingletonIfAbsent<TransactionsRepository>(
+      TransactionsRepository.new,
+    )
+    ..registerSingletonIfAbsent<BusinessRepository>(BusinessRepository.new)
+    ..registerSingletonIfAbsent<StoresRepository>(StoresRepository.new);
 
   await tester.pumpWidgetBuilder(
-    Obx(() {
-      return ShadApp(
-        title: AppInternationalizationService.to.sabitu.toUpperCase(),
-        themeMode: AppThemeService.to.isDarkMode.value
-            ? ThemeMode.dark
-            : ThemeMode.light,
-        theme: AppThemeService.lightTheme,
-        darkTheme: AppThemeService.darkTheme,
-        localizationsDelegates: const [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: AppInternationalizationService.supportedLocales,
-        home: widget,
-      );
-    }),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => GetIt.I.get<AppInternationalizationService>(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => GetIt.I.get<AppThemeService>(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => GetIt.I.get<UserPreferences>(),
+        ),
+      ],
+      child:
+          Consumer3<
+            AppInternationalizationService,
+            AppThemeService,
+            UserPreferences
+          >(
+            builder: (context, intls, themeService, userPreferences, child) {
+              return ShadApp(
+                title: intls.locale.languageCode.toUpperCase(),
+                themeMode: themeService.isDarkMode
+                    ? ThemeMode.dark
+                    : ThemeMode.light,
+                theme: AppThemeService.lightTheme,
+                darkTheme: AppThemeService.darkTheme,
+                localizationsDelegates: const [
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                supportedLocales:
+                    AppInternationalizationService.supportedLocales,
+                home: widget,
+              );
+            },
+          ),
+    ),
   );
   // Screenshot the widget in each supported locale.
   for (final locale in AppInternationalizationService.supportedLocales) {
@@ -66,7 +92,7 @@ Future<void> multiScreenMultiLocaleGolden(
     await tester.pumpAndSettle();
     await multiScreenGolden(
       tester,
-      '$name.${locale.languageCode}.${AppThemeService.to.isDarkMode.value ? 'dark' : 'light'}',
+      '$name.${locale.languageCode}.${themeService.isDarkMode ? 'dark' : 'light'}',
       devices: [
         const Device(name: '1080p', size: Size(1920, 1080)),
         const Device(name: '480p', size: Size(720, 480)),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../../services/internationalization/internationalization.dart';
@@ -21,7 +21,7 @@ class RegistrationForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<RegistrationController>();
+    final controller = context.read<RegistrationController>();
     final appIntl = AppInternationalizationService.to;
 
     return ShadForm(

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../services/internationalization/internationalization.dart';
@@ -19,9 +19,10 @@ class LoginView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.put<LoginController>(LoginController(viewModel: LoginViewModel()));
-
-    return const CommonScaffold(displayAppBar: false, child: LoginContent());
+    return Provider<LoginController>(
+      create: (context) => LoginController(viewModel: LoginViewModel()),
+      child: const CommonScaffold(displayAppBar: false, child: LoginContent()),
+    );
   }
 }
 

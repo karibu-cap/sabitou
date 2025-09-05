@@ -1,6 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:sabitou_rpc/models.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
@@ -9,53 +9,51 @@ import '../../../themes/app_colors.dart';
 import '../../../utils/app_constants.dart';
 import '../../../utils/extensions.dart';
 import '../../../utils/formatters.dart';
-import '../../../widgets/loading.dart';
 import '../dashboard_controller.dart';
 import 'alert_card.dart';
 
 /// Widget that displays recent transaction activities.
-class RecentActivity extends GetView<DashboardController> {
+class RecentActivity extends StatelessWidget {
   /// Constructors of new [RecentActivity].
   const RecentActivity({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      if (controller.isLoading.value) {
-        return const Loading();
-      }
-      if (controller.error.value.isNotEmpty) {
-        return const SizedBox.shrink();
-      }
+    return Consumer<DashboardController>(
+      builder: (context, controller, child) {
+        if (controller.error.isNotEmpty) {
+          return const SizedBox.shrink();
+        }
 
-      final limitedTransactions = controller.stats.value.transactions
-          .take(10)
-          .toList();
+        final limitedTransactions = controller.stats.transactions
+            .take(10)
+            .toList();
 
-      return AlertCard(
-        title: Intls.to.recentActivity,
-        icon: LucideIcons.activity400,
-        iconColor: AppColors.cobalt,
-        child: limitedTransactions.isEmpty
-            ? Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(32),
-                  child: Text(
-                    Intls.to.noRecentActivity,
-                    style: ShadTheme.of(context).textTheme.muted,
+        return AlertCard(
+          title: Intls.to.recentActivity,
+          icon: LucideIcons.activity400,
+          iconColor: AppColors.cobalt,
+          child: limitedTransactions.isEmpty
+              ? Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(32),
+                    child: Text(
+                      Intls.to.noRecentActivity,
+                      style: ShadTheme.of(context).textTheme.muted,
+                    ),
                   ),
+                )
+              : Column(
+                  children: limitedTransactions.map((transaction) {
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 16),
+                      child: _TransactionItem(transaction: transaction),
+                    );
+                  }).toList(),
                 ),
-              )
-            : Column(
-                children: limitedTransactions.map((transaction) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 16),
-                    child: _TransactionItem(transaction: transaction),
-                  );
-                }).toList(),
-              ),
-      );
-    });
+        );
+      },
+    );
   }
 }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
+
 import '../../../services/internationalization/internationalization.dart';
 import '../../../utils/common_scaffold.dart';
 import '../../../utils/responsive_utils.dart';
@@ -18,13 +19,13 @@ class RegistrationView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.put<RegistrationController>(
-      RegistrationController(viewModel: RegistrationViewModel()),
-    );
-
-    return const CommonScaffold(
-      displayAppBar: false,
-      child: RegistrationContent(),
+    return Provider<RegistrationController>(
+      create: (context) =>
+          RegistrationController(viewModel: RegistrationViewModel()),
+      child: const CommonScaffold(
+        displayAppBar: false,
+        child: RegistrationContent(),
+      ),
     );
   }
 }

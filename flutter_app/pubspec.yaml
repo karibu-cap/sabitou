@@ -43,9 +43,6 @@ dependencies:
   # Package to print a debug log.
   logger: ^2.4.0
 
-  # The state management package.
-  get: 4.7.2
-
   # Package to manage the navigation between screens.
   # SDK: Flutter
   # Platform: Android, iOS, Linux, macOS, web, Windows
@@ -91,6 +88,12 @@ dependencies:
 
   # Package to connect to the gRPC server.
   connectrpc: ^1.0.0
+
+  # Package to inject dependencies.
+  get_it: ^8.2.0
+
+  # Package to manage the state of the application.
+  provider: ^6.1.5+1
 
 dev_dependencies:
   flutter_test:

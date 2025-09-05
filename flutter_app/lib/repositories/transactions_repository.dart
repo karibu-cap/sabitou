@@ -1,18 +1,18 @@
-import 'package:get/get.dart';
+import 'package:get_it/get_it.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../services/rpc/connect_rpc.dart';
 import '../utils/logger.dart';
 
 /// The transactions repository.
-class TransactionsRepository extends GetxService {
+class TransactionsRepository {
   final _logger = LoggerApp('TransactionsRepository');
 
   /// The transaction service client.
   final TransactionServiceClient transactionServiceClient;
 
   /// The instance of [TransactionsRepository].
-  static final instance = Get.find<TransactionsRepository>();
+  static final instance = GetIt.I.get<TransactionsRepository>();
 
   /// Constructs a new [TransactionsRepository].
   TransactionsRepository()

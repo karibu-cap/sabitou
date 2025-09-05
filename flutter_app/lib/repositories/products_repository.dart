@@ -1,4 +1,5 @@
-import 'package:get/get.dart';
+import 'package:collection/collection.dart';
+import 'package:get_it/get_it.dart';
 import 'package:sabitou_rpc/connect_servers.dart';
 import 'package:sabitou_rpc/models.dart';
 
@@ -6,14 +7,14 @@ import '../services/rpc/connect_rpc.dart';
 import '../utils/logger.dart';
 
 /// The products repository.
-final class ProductsRepository extends GetxService {
+class ProductsRepository {
   final _logger = LoggerApp('ProductsRepository');
 
   /// The product service client.
   final ProductServiceClient productServiceClient;
 
   /// The instance of [ProductsRepository].
-  static final instance = Get.find<ProductsRepository>();
+  static final instance = GetIt.I.get<ProductsRepository>();
 
   /// Constructs a new [ProductsRepository].
   ProductsRepository()
