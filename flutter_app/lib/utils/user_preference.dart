@@ -1,11 +1,12 @@
-import 'package:get/get.dart';
+import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:sabitou_rpc/models.dart';
 
 import '../services/storage/app_storate.dart';
 import 'app_constants.dart';
 
 /// The user preferences.
-class UserPreferences extends GetxService {
+class UserPreferences extends ChangeNotifier {
   /// The current user.
   User? _user;
 
@@ -16,14 +17,13 @@ class UserPreferences extends GetxService {
   Store? store;
 
   /// The singleton instance.
-  static UserPreferences get instance => Get.find();
+  static UserPreferences get instance => GetIt.I.get<UserPreferences>();
 
   /// The current user.
   User? get user => _user;
 
-  @override
-  void onInit() {
-    super.onInit();
+  /// Currents user business.
+  UserPreferences() {
     loadUserPreferences();
   }
 

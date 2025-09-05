@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../services/internationalization/internationalization.dart';
 import '../../../utils/button_state.dart';
+import '../../../utils/utils.dart';
 import 'registration_view_model.dart';
 
 /// Registration controller.
-class RegistrationController extends GetxController {
+class RegistrationController {
   final RegistrationViewModel _viewModel;
   final _appIntl = AppInternationalizationService.to;
 
@@ -19,7 +19,9 @@ class RegistrationController extends GetxController {
   final formKey = GlobalKey<ShadFormState>();
 
   /// The button state.
-  final Rx<ButtonState> buttonState = ButtonState.initial.obs;
+  final ValueNotifier<ButtonState> buttonState = ValueNotifier(
+    ButtonState.initial,
+  );
 
   /// Controller for the user name input field.
   final TextEditingController userNameController = TextEditingController();
@@ -43,47 +45,23 @@ class RegistrationController extends GetxController {
   final TextEditingController confirmPasswordController =
       TextEditingController();
 
-  /// Error message for the user name field.
-  final RxString userNameError = ''.obs;
-
-  /// Error message for the email field.
-  final RxString emailError = ''.obs;
-
-  /// Error message for the phone number field.
-  final RxString phoneNumberError = ''.obs;
-
-  /// Error message for the first name field.
-  final RxString firstNameError = ''.obs;
-
-  /// Error message for the last name field.
-  final RxString lastNameError = ''.obs;
-
-  /// Error message for the password field.
-  final RxString passwordError = ''.obs;
-
-  /// Error message for the confirm password field.
-  final RxString confirmPasswordError = ''.obs;
-
   /// Observable for password visibility toggle.
-  final RxBool isPasswordVisible = false.obs;
+  final ValueNotifier<bool> isPasswordVisible = ValueNotifier(false);
 
   /// Observable for confirm password visibility toggle.
-  final RxBool isConfirmPasswordVisible = false.obs;
+  final ValueNotifier<bool> isConfirmPasswordVisible = ValueNotifier(false);
 
-  /// Singleton access.
-  static RegistrationController get instance => Get.find();
-
-  @override
-  void onClose() {
-    userNameController.dispose();
-    emailController.dispose();
-    phoneNumberController.dispose();
-    firstNameController.dispose();
-    lastNameController.dispose();
-    passwordController.dispose();
-    confirmPasswordController.dispose();
-    super.onClose();
-  }
+  // @override
+  // void onClose() {
+  //   userNameController.dispose();
+  //   emailController.dispose();
+  //   phoneNumberController.dispose();
+  //   firstNameController.dispose();
+  //   lastNameController.dispose();
+  //   passwordController.dispose();
+  //   confirmPasswordController.dispose();
+  //   super.onClose();
+  // }
 
   /// Toggle password visibility.
   void togglePasswordVisibility() {
@@ -111,7 +89,7 @@ class RegistrationController extends GetxController {
     if (email.isEmpty) {
       return _appIntl.emailRequired;
     }
-    if (!GetUtils.isEmail(email)) {
+    if (!AppUtils.isEmail(email)) {
       return _appIntl.emailInvalid;
     }
 
@@ -126,7 +104,7 @@ class RegistrationController extends GetxController {
     }
 
     // Validate using GetUtils for phone number format.
-    if (!GetUtils.isPhoneNumber(phoneNumber)) {
+    if (!AppUtils.isPhoneNumber(phoneNumber)) {
       return _appIntl.phoneNumberInvalidFormat;
     }
 
@@ -189,17 +167,6 @@ class RegistrationController extends GetxController {
     final validate = formKey.currentState?.validate();
 
     return validate == true;
-  }
-
-  /// Clears all error messages in the registration form.
-  void clearErrors() {
-    userNameError.value = '';
-    emailError.value = '';
-    phoneNumberError.value = '';
-    firstNameError.value = '';
-    lastNameError.value = '';
-    passwordError.value = '';
-    confirmPasswordError.value = '';
   }
 
   /// Handles user registration by delegating to ViewModel after validation.

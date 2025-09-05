@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get/get.dart';
-
+import 'package:get_it/get_it.dart';
 import 'package:sabitou_clients/services/internationalization/internationalization.dart';
 import 'package:sabitou_clients/services/storage/app_storate.dart';
 
@@ -10,10 +9,12 @@ void main() {
     late AppInternationalizationService appInt;
     setUp(() {
       final storage = AppStorageService(AppStorageType.fake);
-      Get.put(storage);
+      GetIt.I.registerSingletonIfAbsent<AppStorageService>(() => storage);
 
       appInt = AppInternationalizationService(const Locale('en'), storage);
-      Get.put<AppInternationalizationService>(appInt);
+      GetIt.I.registerSingletonIfAbsent<AppInternationalizationService>(
+        () => appInt,
+      );
     });
 
     test('Initial locale should be English', () {

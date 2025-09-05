@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 /// A reusable input field component with icon and error handling
@@ -91,7 +90,7 @@ class PasswordField extends StatelessWidget {
   final String placeholder;
 
   /// Whether the password text is currently visible
-  final RxBool isVisible;
+  final ValueNotifier<bool> isVisible;
 
   /// Callback function to toggle password visibility
   final VoidCallback onToggle;
@@ -110,8 +109,9 @@ class PasswordField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => ShadInputFormField(
+    return ListenableBuilder(
+      listenable: isVisible,
+      builder: (context, child) => ShadInputFormField(
         controller: controller,
         placeholder: Text(placeholder),
         obscureText: !isVisible.value,

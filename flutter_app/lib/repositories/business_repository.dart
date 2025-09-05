@@ -1,11 +1,12 @@
-import 'package:get/get.dart';
+import 'package:collection/collection.dart';
+import 'package:get_it/get_it.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../services/rpc/connect_rpc.dart';
 import '../utils/logger.dart';
 
 /// The business repository.
-final class BusinessRepository extends GetxService {
+class BusinessRepository {
   final _logger = LoggerApp('BusinessRepository');
 
   /// The business service client.
@@ -18,7 +19,7 @@ final class BusinessRepository extends GetxService {
       );
 
   /// The instance of [BusinessRepository].
-  static final instance = Get.find<BusinessRepository>();
+  static final instance = GetIt.I.get<BusinessRepository>();
 
   /// Gets the business by ref.
   Future<Business?> getBusinessByRefId(String refId) async {

@@ -1,4 +1,4 @@
-import 'package:get/get.dart';
+import 'package:get_it/get_it.dart';
 import 'package:sabitou_rpc/connect_servers.dart';
 import 'package:sabitou_rpc/models.dart';
 
@@ -6,14 +6,14 @@ import '../services/rpc/connect_rpc.dart';
 import '../utils/logger.dart';
 
 /// The user repository.
-final class UserRepository extends GetxService {
+final class UserRepository {
   final _logger = LoggerApp('UserRepository');
 
   /// The user service client.
   final UserServiceClient userClientService;
 
   /// Access the singleton instance.
-  static UserRepository get instance => Get.find();
+  static UserRepository get instance => GetIt.I.get<UserRepository>();
 
   /// Constructs a new [AuthServiceClient].
   UserRepository()

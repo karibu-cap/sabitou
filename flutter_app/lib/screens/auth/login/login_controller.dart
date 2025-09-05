@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../services/internationalization/internationalization.dart';
 import '../../../utils/button_state.dart';
+import '../../../utils/utils.dart';
 import 'login_view_model.dart';
 
 /// Login controller.
-class LoginController extends GetxController {
+class LoginController {
   final LoginViewModel _viewModel;
   final _appIntl = AppInternationalizationService.to;
 
@@ -18,7 +18,9 @@ class LoginController extends GetxController {
   final GlobalKey<ShadFormState> formKey = GlobalKey<ShadFormState>();
 
   /// The button state.
-  final Rx<ButtonState> buttonState = ButtonState.initial.obs;
+  final ValueNotifier<ButtonState> buttonState = ValueNotifier(
+    ButtonState.initial,
+  );
 
   /// The email controller.
   final emailController = TextEditingController();
@@ -27,18 +29,15 @@ class LoginController extends GetxController {
   final passwordController = TextEditingController();
 
   /// Observable for password visibility toggle.
-  final RxBool isPasswordVisible = false.obs;
-
-  /// Singleton access.
-  static LoginController get instance => Get.find();
+  final ValueNotifier<bool> isPasswordVisible = ValueNotifier(false);
 
   /// Disposes all controllers resources used by the controller.
-  @override
-  void onClose() {
-    emailController.dispose();
-    passwordController.dispose();
-    super.onClose();
-  }
+  // @override
+  // void dispose() {
+  //   emailController.dispose();
+  //   passwordController.dispose();
+  //   super.dispose();
+  // }
 
   /// Validates email field.
   String? validateEmail([String? value]) {
@@ -46,7 +45,7 @@ class LoginController extends GetxController {
     if (email.isEmpty) {
       return _appIntl.emailRequired;
     }
-    if (!GetUtils.isEmail(email)) {
+    if (!AppUtils.isEmail(email)) {
       return _appIntl.emailInvalid;
     }
 

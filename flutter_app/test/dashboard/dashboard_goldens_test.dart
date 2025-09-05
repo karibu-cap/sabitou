@@ -1,6 +1,6 @@
 import 'package:clock/clock.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get/get.dart';
+import 'package:get_it/get_it.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:sabitou_clients/screens/home/home.dart';
 import 'package:sabitou_clients/services/rpc/connect_rpc.dart';
@@ -134,12 +134,12 @@ void main() {
             .toList()
             .first,
       });
-      Get.put(storage);
+      GetIt.I.registerSingletonIfAbsent<AppStorageService>(() => storage);
     });
 
     setUp(() {
-      Get..put<ConnectRPCService>(
-        ConnectRPCService.new(clientChannel: fakeTransport),
+      GetIt.I.registerSingletonIfAbsent<ConnectRPCService>(
+        () => ConnectRPCService.new(clientChannel: fakeTransport),
       );
     });
     testGoldens('Dashboard view', (tester) async {

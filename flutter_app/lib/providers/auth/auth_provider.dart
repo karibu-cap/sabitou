@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_it/get_it.dart';
 import 'package:sabitou_rpc/models.dart';
 
 import '../../repositories/auth_repository.dart';
@@ -13,14 +15,14 @@ enum AuthStatus {
 }
 
 /// Auth provider.
-class AuthProvider extends GetxController {
+class AuthProvider extends ChangeNotifier {
   /// Reactive state.
   final Rxn<User> _currentUser = Rxn<User>();
   final Rx<AuthStatus> _status = AuthStatus.unauthenticated.obs;
   final RxnString _errorMessage = RxnString();
 
   /// Singleton access.
-  static AuthProvider get instance => Get.find();
+  static AuthProvider get instance => GetIt.I.get<AuthProvider>();
 
   /// Current user.
   User? get currentUser => _currentUser.value;

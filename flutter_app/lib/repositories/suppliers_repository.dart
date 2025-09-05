@@ -1,18 +1,18 @@
-import 'package:get/get.dart';
+import 'package:get_it/get_it.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../services/rpc/connect_rpc.dart';
 import '../utils/logger.dart';
 
 /// The suppliers repository.
-final class SuppliersRepository extends GetxService {
+final class SuppliersRepository {
   final _logger = LoggerApp('SuppliersRepository');
 
   /// The supplier service client.
   final SupplierServiceClient supplierServiceClient;
 
   /// The instance of [SuppliersRepository].
-  static final instance = Get.find<SuppliersRepository>();
+  static final instance = GetIt.I.get<SuppliersRepository>();
 
   /// Constructs a new [SuppliersRepository].
   SuppliersRepository()

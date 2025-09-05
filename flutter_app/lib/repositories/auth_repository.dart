@@ -1,4 +1,4 @@
-import 'package:get/get.dart';
+import 'package:get_it/get_it.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../services/rpc/connect_rpc.dart';
@@ -6,7 +6,7 @@ import '../utils/logger.dart';
 import 'users_repository.dart';
 
 /// The auth service client.
-final class AuthRepository extends GetxService {
+class AuthRepository {
   final _logger = LoggerApp('AuthRepository');
 
   /// The user repository.
@@ -16,7 +16,7 @@ final class AuthRepository extends GetxService {
   final AuthServiceClient authClientService;
 
   /// Access the singleton instance.
-  static AuthRepository get instance => Get.find();
+  static AuthRepository get instance => GetIt.I.get<AuthRepository>();
 
   /// Constructs a new [AuthRepository].
   AuthRepository()
@@ -49,7 +49,7 @@ final class AuthRepository extends GetxService {
 
       return getCurrentUser(request: GetCurrentUserRequest());
     } on Exception catch (e) {
-      print(' Error during user registration: ${e.toString()}.');
+      _logger.severe(' Error during user registration: ${e.toString()}.');
 
       return null;
     }

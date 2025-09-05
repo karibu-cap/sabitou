@@ -1,53 +1,42 @@
 import 'package:flutter/widgets.dart';
-import 'package:get/get.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
-import 'forgot_password_view_model.dart';
+import '../../../providers/auth/auth_provider.dart';
+import '../../../services/internationalization/internationalization.dart';
+import '../../../utils/utils.dart';
 
 /// Forgot password controller.
-class ForgotPasswordController extends GetxController
-    with GetTickerProviderStateMixin {
-  late ForgotPasswordViewModel _viewModel;
+class ForgotPasswordController {
+  final _appIntl = AppInternationalizationService.to;
 
-  /// Provides singleton access to the forgot password controller.
-  static ForgotPasswordController get instance => Get.find();
-
-  /// Provides access to the forgot password view model.
-  ForgotPasswordViewModel get viewModel => _viewModel;
+  /// The form key.
+  final GlobalKey<ShadFormState> formKey = GlobalKey<ShadFormState>();
 
   /// Controller for the email input field.
-  TextEditingController get emailController => _viewModel.emailController;
-
-  /// Error message for the email field.
-  RxString get emailError => _viewModel.emailError;
-
-  /// Animation controller for forgot password screen transitions.
-  AnimationController get animationController => _viewModel.animationController;
-
-  /// Fade animation for forgot password transitions.
-  Animation<double> get fadeAnimation => _viewModel.fadeAnimation;
-
-  /// Slide animation for forgot password transitions.
-  Animation<Offset> get slideAnimation => _viewModel.slideAnimation;
-
-  /// Initializes the forgot password view model and starts the animation.
-  @override
-  void onInit() {
-    super.onInit();
-    _viewModel = ForgotPasswordViewModel(vsync: this);
-    _viewModel.animationController.forward();
-  }
+  final TextEditingController emailController = TextEditingController();
 
   /// Validates the email field.
-  bool validateEmail() => _viewModel.validateEmail();
+  String? validateEmail([String? value]) {
+    final email = value ?? emailController.text.trim();
+    if (email.isEmpty) {
+      return _appIntl.emailRequired;
+    }
+    if (!AppUtils.isEmail(email)) {
+      return _appIntl.emailInvalid;
+    }
 
-  /// Clears all error messages in the forgot password form.
-  void clearErrors() => _viewModel.clearErrors();
-
-  /// Sends a password reset link and returns true if successful.
-  Future<bool> sendResetLink() async {
-    return await _viewModel.sendResetLink();
+    return null;
   }
 
-  /// Disposes all controllers and resources used by the forgot password view model.
-  void disposeFields() => _viewModel.dispose();
+  /// Sends a password reset link and returns true if successful.
+  Future<bool> sendResetLink(String email) async {
+    final auth = AuthProvider.instance;
+    try {
+      final result = await auth.forgetPassword(email);
+
+      return result;
+    } catch (e) {
+      return false;
+    }
+  }
 }

@@ -1,6 +1,5 @@
-import 'dart:ui';
-
-import 'package:get/get.dart';
+import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 import '../../utils/app_constants.dart';
 import '../storage/app_storate.dart';
@@ -12,8 +11,8 @@ extension TranslationExtension on String {
   /// If [args] is specified, named string substitution is performed on the
   /// translation string. For example, if the translation string is "Hello, {name}!"
   /// and [args] is {"name": "John"}, the result will be "Hello, John!".
-  String trs([Map<String, String>? args]) {
-    return Get.find<AppInternationalizationService>().translate(
+  String trParams([Map<String, String>? args]) {
+    return GetIt.I<AppInternationalizationService>().translate(
       this,
       args: args,
     );
@@ -24,10 +23,10 @@ extension TranslationExtension on String {
 typedef Intls = AppInternationalizationService;
 
 /// AppInternalization defines all the 'local' strings displayed to.
-class AppInternationalizationService extends GetxService {
+class AppInternationalizationService extends ChangeNotifier {
   final _key = PreferencesKey.language;
   final AppStorageService _box;
-  final Rx<Locale> _locale;
+  Locale _locale;
 
   /// The translations map key.
   Map<String, Map<String, String>> translations = {
@@ -374,14 +373,15 @@ class AppInternationalizationService extends GetxService {
   };
 
   /// Direct access to the internationalization service.
-  static AppInternationalizationService get to => Get.find();
+  static AppInternationalizationService get to =>
+      GetIt.I<AppInternationalizationService>();
 
   /// Constructors for internationalization.
   AppInternationalizationService(Locale initialLocale, this._box)
-    : _locale = Rx<Locale>(initialLocale);
+    : _locale = initialLocale;
 
   /// The current locale.
-  Locale get locale => _locale.value;
+  Locale get locale => _locale;
 
   /// The supported locales.
   static List<Locale> get supportedLocales => [
@@ -1052,18 +1052,19 @@ class AppInternationalizationService extends GetxService {
 
   /// Changes the locale.
   void changeLocale([Locale? newLocale]) {
-    final local = switch ((newLocale, _locale.value.languageCode)) {
+    final local = switch ((newLocale, _locale.languageCode)) {
       (final Locale newLocale, _) => newLocale,
       (null, 'en') => const Locale('fr'),
       (_, _) => const Locale('en'),
     };
 
-    if (_locale.value == local) {
+    if (_locale == local) {
       return;
     }
-    _locale.value = local;
-    Get.updateLocale(local);
+    _locale = local;
+
     _box.write(_key, local.languageCode);
+    notifyListeners();
   }
 
   /// Gets the translation for the given key.
@@ -1090,6 +1091,6 @@ class AppInternationalizationService extends GetxService {
   }
 
   String _stringOfLocalizedValue(String value, [Map<String, String>? args]) {
-    return value.trs(args);
+    return value.trParams(args);
   }
 }

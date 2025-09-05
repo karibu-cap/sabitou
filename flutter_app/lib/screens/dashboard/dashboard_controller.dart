@@ -1,30 +1,32 @@
-import 'package:get/get.dart';
+import 'dart:async';
+
+import 'package:flutter/material.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import 'dashboard_view_model.dart';
 
 /// The dashboard controller.
-class DashboardController extends GetxController {
+class DashboardController extends ChangeNotifier {
   /// The dashboard view model.
   final DashboardViewModel viewModel = DashboardViewModel();
 
-  /// Loading state.
-  RxBool get isLoading => viewModel.isLoading;
-
   /// Error message if any.
-  RxString get error => viewModel.error;
+  String get error => viewModel.error;
 
   /// Dashboard stats.
-  Rx<DashboardStatsData> get stats => viewModel.stats;
+  DashboardStatsData get stats => viewModel.stats;
 
   /// List of low stock products.
-  RxList<BusinessProduct> get lowStockProducts => viewModel.lowStockProducts;
+  List<BusinessProduct> get lowStockProducts => viewModel.lowStockProducts;
 
   /// List of expiring products.
-  RxList<BusinessProduct> get expiringProducts => viewModel.expiringProducts;
+  List<BusinessProduct> get expiringProducts => viewModel.expiringProducts;
 
   /// Map of global products for quick lookup (only for low stock and expiring).
-  RxMap<String, GlobalProduct> get globalProducts => viewModel.globalProducts;
+  Map<String, GlobalProduct> get globalProducts => viewModel.globalProducts;
+
+  /// Completer for loading state.
+  Completer<bool> get completer => viewModel.completer;
 
   /// Calculates the percentage change.
   double calculatePercentChange(num current, num? previous) {

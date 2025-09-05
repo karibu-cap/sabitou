@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../../router/app_router.dart' as app_router;
@@ -14,7 +14,7 @@ class LoginButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = LoginController.instance;
+    final controller = context.read<LoginController>();
     final appIntl = AppInternationalizationService.to;
     final theme = ShadTheme.of(context);
 
@@ -51,8 +51,9 @@ class LoginButton extends StatelessWidget {
       controller.buttonState.value = ButtonState.initial;
     }
 
-    return Obx(
-      () => ShadButton(
+    return ListenableBuilder(
+      listenable: controller.buttonState,
+      builder: (context, child) => ShadButton(
         onPressed: () => onLoginPressed(controller),
         width: double.infinity,
         trailing: controller.buttonState.value == ButtonState.loading
