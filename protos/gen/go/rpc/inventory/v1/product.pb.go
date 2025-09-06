@@ -399,7 +399,11 @@ type FindGlobalProductsRequest struct {
 	// The reference id to the global product identifier.
 	RefId *string `protobuf:"bytes,1,opt,name=ref_id,json=refId,proto3,oneof" json:"ref_id,omitempty"`
 	// The query to search for products by category.
-	Categories    []*ProductCategory `protobuf:"bytes,2,rep,name=categories,proto3" json:"categories,omitempty"`
+	Categories []*ProductCategory `protobuf:"bytes,2,rep,name=categories,proto3" json:"categories,omitempty"`
+	// Query the product name.
+	Name *string `protobuf:"bytes,3,opt,name=name,proto3,oneof" json:"name,omitempty"`
+	// Identify the products by bar code.
+	BarCodeValue  *string `protobuf:"bytes,4,opt,name=bar_code_value,json=barCodeValue,proto3,oneof" json:"bar_code_value,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -446,6 +450,20 @@ func (x *FindGlobalProductsRequest) GetCategories() []*ProductCategory {
 		return x.Categories
 	}
 	return nil
+}
+
+func (x *FindGlobalProductsRequest) GetName() string {
+	if x != nil && x.Name != nil {
+		return *x.Name
+	}
+	return ""
+}
+
+func (x *FindGlobalProductsRequest) GetBarCodeValue() string {
+	if x != nil && x.BarCodeValue != nil {
+		return *x.BarCodeValue
+	}
+	return ""
 }
 
 type FindGlobalProductsResponse struct {
@@ -828,8 +846,12 @@ type UpdateProductRequest struct {
 	// Some fields cannot be updated like the product id, business id, and all
 	// product fields.
 	Product *BusinessProduct `protobuf:"bytes,1,opt,name=product,proto3" json:"product,omitempty"`
+	// The global product information to update.
+	// Note:Only the fields that are set will be updated if there is no
+	// ref_id set for the global product or will be created in other case.
+	GlobalProduct *GlobalProduct `protobuf:"bytes,2,opt,name=global_product,json=globalProduct,proto3,oneof" json:"global_product,omitempty"`
 	// The media ids of the images of the product.
-	ImagesRawImages [][]byte `protobuf:"bytes,4,rep,name=images_raw_images,json=imagesRawImages,proto3" json:"images_raw_images,omitempty"`
+	ImagesRawImages [][]byte `protobuf:"bytes,3,rep,name=images_raw_images,json=imagesRawImages,proto3" json:"images_raw_images,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -867,6 +889,13 @@ func (*UpdateProductRequest) Descriptor() ([]byte, []int) {
 func (x *UpdateProductRequest) GetProduct() *BusinessProduct {
 	if x != nil {
 		return x.Product
+	}
+	return nil
+}
+
+func (x *UpdateProductRequest) GetGlobalProduct() *GlobalProduct {
+	if x != nil {
+		return x.GlobalProduct
 	}
 	return nil
 }
@@ -926,9 +955,9 @@ func (x *UpdateProductResponse) GetSuccess() bool {
 type DeleteProductRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The unique identifier of the business product.
-	ProductId     string `protobuf:"bytes,1,opt,name=product_id,json=productId,proto3" json:"product_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	BusinessProductId string `protobuf:"bytes,1,opt,name=business_product_id,json=businessProductId,proto3" json:"business_product_id,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
 }
 
 func (x *DeleteProductRequest) Reset() {
@@ -961,9 +990,9 @@ func (*DeleteProductRequest) Descriptor() ([]byte, []int) {
 	return file_inventory_v1_product_proto_rawDescGZIP(), []int{15}
 }
 
-func (x *DeleteProductRequest) GetProductId() string {
+func (x *DeleteProductRequest) GetBusinessProductId() string {
 	if x != nil {
-		return x.ProductId
+		return x.BusinessProductId
 	}
 	return ""
 }
@@ -1056,13 +1085,17 @@ const file_inventory_v1_product_proto_rawDesc = "" +
 	"\x12_global_product_idB\x12\n" +
 	"\x10_expiration_date\"Y\n" +
 	"\x1cFindBusinessProductsResponse\x129\n" +
-	"\bproducts\x18\x01 \x03(\v2\x1d.inventory.v1.BusinessProductR\bproducts\"\x81\x01\n" +
+	"\bproducts\x18\x01 \x03(\v2\x1d.inventory.v1.BusinessProductR\bproducts\"\xe1\x01\n" +
 	"\x19FindGlobalProductsRequest\x12\x1a\n" +
 	"\x06ref_id\x18\x01 \x01(\tH\x00R\x05refId\x88\x01\x01\x12=\n" +
 	"\n" +
 	"categories\x18\x02 \x03(\v2\x1d.inventory.v1.ProductCategoryR\n" +
-	"categoriesB\t\n" +
-	"\a_ref_id\"U\n" +
+	"categories\x12\x17\n" +
+	"\x04name\x18\x03 \x01(\tH\x01R\x04name\x88\x01\x01\x12)\n" +
+	"\x0ebar_code_value\x18\x04 \x01(\tH\x02R\fbarCodeValue\x88\x01\x01B\t\n" +
+	"\a_ref_idB\a\n" +
+	"\x05_nameB\x11\n" +
+	"\x0f_bar_code_value\"U\n" +
 	"\x1aFindGlobalProductsResponse\x127\n" +
 	"\bproducts\x18\x01 \x03(\v2\x1b.inventory.v1.GlobalProductR\bproducts\"+\n" +
 	"\x13FindCategoryRequest\x12\x14\n" +
@@ -1088,16 +1121,17 @@ const file_inventory_v1_product_proto_rawDesc = "" +
 	"product_id\x18\x01 \x01(\tB\n" +
 	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\tproductId\"M\n" +
 	"\x12GetProductResponse\x127\n" +
-	"\aproduct\x18\x01 \x01(\v2\x1d.inventory.v1.BusinessProductR\aproduct\"{\n" +
+	"\aproduct\x18\x01 \x01(\v2\x1d.inventory.v1.BusinessProductR\aproduct\"\xd7\x01\n" +
 	"\x14UpdateProductRequest\x127\n" +
-	"\aproduct\x18\x01 \x01(\v2\x1d.inventory.v1.BusinessProductR\aproduct\x12*\n" +
-	"\x11images_raw_images\x18\x04 \x03(\fR\x0fimagesRawImages\"1\n" +
+	"\aproduct\x18\x01 \x01(\v2\x1d.inventory.v1.BusinessProductR\aproduct\x12G\n" +
+	"\x0eglobal_product\x18\x02 \x01(\v2\x1b.inventory.v1.GlobalProductH\x00R\rglobalProduct\x88\x01\x01\x12*\n" +
+	"\x11images_raw_images\x18\x03 \x03(\fR\x0fimagesRawImagesB\x11\n" +
+	"\x0f_global_product\"1\n" +
 	"\x15UpdateProductResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess\"A\n" +
-	"\x14DeleteProductRequest\x12)\n" +
-	"\n" +
-	"product_id\x18\x01 \x01(\tB\n" +
-	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\tproductId\"1\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"R\n" +
+	"\x14DeleteProductRequest\x12:\n" +
+	"\x13business_product_id\x18\x01 \x01(\tB\n" +
+	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\x11businessProductId\"1\n" +
 	"\x15DeleteProductResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess2\x95\x05\n" +
 	"\x0eProductService\x12g\n" +
@@ -1157,25 +1191,26 @@ var file_inventory_v1_product_proto_depIdxs = []int32{
 	17, // 8: inventory.v1.AddProductRequest.expiration_date:type_name -> google.protobuf.Timestamp
 	2,  // 9: inventory.v1.GetProductResponse.product:type_name -> inventory.v1.BusinessProduct
 	2,  // 10: inventory.v1.UpdateProductRequest.product:type_name -> inventory.v1.BusinessProduct
-	5,  // 11: inventory.v1.ProductService.FindGlobalProducts:input_type -> inventory.v1.FindGlobalProductsRequest
-	7,  // 12: inventory.v1.ProductService.FindCategory:input_type -> inventory.v1.FindCategoryRequest
-	9,  // 13: inventory.v1.ProductService.AddProduct:input_type -> inventory.v1.AddProductRequest
-	11, // 14: inventory.v1.ProductService.GetProduct:input_type -> inventory.v1.GetProductRequest
-	13, // 15: inventory.v1.ProductService.UpdateProduct:input_type -> inventory.v1.UpdateProductRequest
-	15, // 16: inventory.v1.ProductService.DeleteProduct:input_type -> inventory.v1.DeleteProductRequest
-	3,  // 17: inventory.v1.ProductService.FindBusinessProducts:input_type -> inventory.v1.FindBusinessProductsRequest
-	6,  // 18: inventory.v1.ProductService.FindGlobalProducts:output_type -> inventory.v1.FindGlobalProductsResponse
-	8,  // 19: inventory.v1.ProductService.FindCategory:output_type -> inventory.v1.FindCategoryResponse
-	10, // 20: inventory.v1.ProductService.AddProduct:output_type -> inventory.v1.AddProductResponse
-	12, // 21: inventory.v1.ProductService.GetProduct:output_type -> inventory.v1.GetProductResponse
-	14, // 22: inventory.v1.ProductService.UpdateProduct:output_type -> inventory.v1.UpdateProductResponse
-	16, // 23: inventory.v1.ProductService.DeleteProduct:output_type -> inventory.v1.DeleteProductResponse
-	4,  // 24: inventory.v1.ProductService.FindBusinessProducts:output_type -> inventory.v1.FindBusinessProductsResponse
-	18, // [18:25] is the sub-list for method output_type
-	11, // [11:18] is the sub-list for method input_type
-	11, // [11:11] is the sub-list for extension type_name
-	11, // [11:11] is the sub-list for extension extendee
-	0,  // [0:11] is the sub-list for field type_name
+	1,  // 11: inventory.v1.UpdateProductRequest.global_product:type_name -> inventory.v1.GlobalProduct
+	5,  // 12: inventory.v1.ProductService.FindGlobalProducts:input_type -> inventory.v1.FindGlobalProductsRequest
+	7,  // 13: inventory.v1.ProductService.FindCategory:input_type -> inventory.v1.FindCategoryRequest
+	9,  // 14: inventory.v1.ProductService.AddProduct:input_type -> inventory.v1.AddProductRequest
+	11, // 15: inventory.v1.ProductService.GetProduct:input_type -> inventory.v1.GetProductRequest
+	13, // 16: inventory.v1.ProductService.UpdateProduct:input_type -> inventory.v1.UpdateProductRequest
+	15, // 17: inventory.v1.ProductService.DeleteProduct:input_type -> inventory.v1.DeleteProductRequest
+	3,  // 18: inventory.v1.ProductService.FindBusinessProducts:input_type -> inventory.v1.FindBusinessProductsRequest
+	6,  // 19: inventory.v1.ProductService.FindGlobalProducts:output_type -> inventory.v1.FindGlobalProductsResponse
+	8,  // 20: inventory.v1.ProductService.FindCategory:output_type -> inventory.v1.FindCategoryResponse
+	10, // 21: inventory.v1.ProductService.AddProduct:output_type -> inventory.v1.AddProductResponse
+	12, // 22: inventory.v1.ProductService.GetProduct:output_type -> inventory.v1.GetProductResponse
+	14, // 23: inventory.v1.ProductService.UpdateProduct:output_type -> inventory.v1.UpdateProductResponse
+	16, // 24: inventory.v1.ProductService.DeleteProduct:output_type -> inventory.v1.DeleteProductResponse
+	4,  // 25: inventory.v1.ProductService.FindBusinessProducts:output_type -> inventory.v1.FindBusinessProductsResponse
+	19, // [19:26] is the sub-list for method output_type
+	12, // [12:19] is the sub-list for method input_type
+	12, // [12:12] is the sub-list for extension type_name
+	12, // [12:12] is the sub-list for extension extendee
+	0,  // [0:12] is the sub-list for field type_name
 }
 
 func init() { file_inventory_v1_product_proto_init() }
@@ -1189,6 +1224,7 @@ func file_inventory_v1_product_proto_init() {
 	file_inventory_v1_product_proto_msgTypes[3].OneofWrappers = []any{}
 	file_inventory_v1_product_proto_msgTypes[5].OneofWrappers = []any{}
 	file_inventory_v1_product_proto_msgTypes[9].OneofWrappers = []any{}
+	file_inventory_v1_product_proto_msgTypes[13].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
