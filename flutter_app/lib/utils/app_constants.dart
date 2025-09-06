@@ -62,6 +62,9 @@ final class CollectionName {
 
   /// The transaction collection.
   static const String transactions = 'transactions';
+
+  /// The category collection.
+  static const String categories = 'categories';
 }
 
 /// The static images.

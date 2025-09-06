@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sabitou_rpc/models.dart';
 
-import '../services/storage/app_storate.dart';
+import '../services/storage/app_storage.dart';
 import 'app_constants.dart';
 
 /// The user preferences.

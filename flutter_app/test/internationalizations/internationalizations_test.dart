@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sabitou_clients/services/internationalization/internationalization.dart';
-import 'package:sabitou_clients/services/storage/app_storate.dart';
+import 'package:sabitou_clients/services/storage/app_storage.dart';
 
 void main() {
   group('AppInternationalization', () {

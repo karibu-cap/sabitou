@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sabitou_rpc/models.dart';
 
@@ -17,39 +16,39 @@ enum AuthStatus {
 /// Auth provider.
 class AuthProvider extends ChangeNotifier {
   /// Reactive state.
-  final Rxn<User> _currentUser = Rxn<User>();
-  final Rx<AuthStatus> _status = AuthStatus.unauthenticated.obs;
-  final RxnString _errorMessage = RxnString();
+  User? _currentUser;
+  AuthStatus _status = AuthStatus.unauthenticated;
+  String? _errorMessage;
 
   /// Singleton access.
   static AuthProvider get instance => GetIt.I.get<AuthProvider>();
 
   /// Current user.
-  User? get currentUser => _currentUser.value;
+  User? get currentUser => _currentUser;
 
   /// The status.
-  AuthStatus get status => _status.value;
+  AuthStatus get status => _status;
 
   /// The error message (for direct value access).
-  String? get errorMessage => _errorMessage.value;
+  String? get errorMessage => _errorMessage;
 
   /// The error message as an observable (for Obx).
-  RxnString get errorMessageRx => _errorMessage;
+  String? get errorMessageRx => _errorMessage;
 
   /// Whether user is authenticated.
-  bool get isAuthenticated => _status.value == AuthStatus.authenticated;
+  bool get isAuthenticated => _status == AuthStatus.authenticated;
 
   /// Login logic.
   Future<bool> login(String email, String password) async {
     _setStatus(AuthStatus.authenticating);
-    _errorMessage.value = null;
+    _errorMessage = null;
 
     _setStatus(AuthStatus.authenticating);
     final loginRequest = LoginRequest()
       ..email = email
       ..password = password;
     final response = await AuthRepository.instance.login(request: loginRequest);
-    _currentUser.value = response;
+    _currentUser = response;
     if (response != null) {
       await UserPreferences.instance.saveUserPreferences(user: response);
       _setStatus(AuthStatus.authenticated);
@@ -63,9 +62,10 @@ class AuthProvider extends ChangeNotifier {
 
   /// Logout logic.
   Future<void> logout() async {
-    _currentUser.value = null;
+    _currentUser = null;
+    _errorMessage = null;
+
     _setStatus(AuthStatus.unauthenticated);
-    _errorMessage.value = null;
   }
 
   /// Register logic.
@@ -86,7 +86,7 @@ class AuthProvider extends ChangeNotifier {
       request: registerRequest,
     );
 
-    _currentUser.value = response;
+    _currentUser = response;
     if (response != null) {
       await UserPreferences.instance.saveUserPreferences(user: response);
       _setStatus(AuthStatus.authenticated);
@@ -127,11 +127,13 @@ class AuthProvider extends ChangeNotifier {
 
   /// Internal helpers.
   void _setStatus(AuthStatus status) {
-    _status.value = status;
+    _status = status;
+    notifyListeners();
   }
 
   void _setError(String message) {
-    _errorMessage.value = message;
-    _status.value = AuthStatus.authenticationFailed;
+    _errorMessage = message;
+    _status = AuthStatus.authenticationFailed;
+    notifyListeners();
   }
 }

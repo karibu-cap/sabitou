@@ -65,17 +65,6 @@ final class DashboardViewModel {
   Future<void> fetchDashboardData() async {
     error = '';
     try {
-      // Check permissions once (assuming hasPermission is async, combine if needed).
-      if (!await hasPermission(
-            ResourceType.RESOURCE_TYPE_STORE_ORDER,
-            ResourceActionType.RESOURCE_ACTION_TYPE_READ,
-          ) ||
-          !await hasPermission(
-            ResourceType.RESOURCE_TYPE_PRODUCT,
-            ResourceActionType.RESOURCE_ACTION_TYPE_READ,
-          )) {
-        throw Exception('User lacks permission to view dashboard data');
-      }
       final businessId = userPreferences.business?.refId;
       final store = userPreferences.store;
       if (businessId == null || store == null) {
@@ -124,10 +113,10 @@ final class DashboardViewModel {
           .toList();
 
       // Compute low stock.
-      lowStockProducts = filteredProducts.where(_isLowStock).toList();
+      lowStockProducts = filteredProducts.where(isLowStock).toList();
 
       // Compute expiring products (improved: expiring in next 30 days, including already expired).
-      expiringProducts = _computeExpiringProducts(filteredProducts);
+      expiringProducts = computeExpiringProducts(filteredProducts);
 
       // Compute total products.
       final totalProductsCount = filteredProducts.length;
@@ -154,12 +143,15 @@ final class DashboardViewModel {
         ...expiringProducts.map((p) => p.globalProductId),
       };
       final globalFutures = uniqueGlobalIds.map(
-        ProductsRepository.instance.getGlobalProductByRefId,
+        (id) => ProductsRepository.instance.findGlobalProduct(
+          FindGlobalProductsRequest(refId: id),
+        ),
       );
       final globals = await Future.wait(globalFutures);
+
       final globalMap = Map<String, GlobalProduct>.fromIterables(
         uniqueGlobalIds.toList(),
-        globals.whereType<GlobalProduct>(),
+        globals.expand((g) => g),
       );
       globalProducts = globalMap;
     } catch (e) {
@@ -188,29 +180,5 @@ final class DashboardViewModel {
 
           return sum;
         });
-  }
-
-  /// Checks if a product is low in stock.
-  bool _isLowStock(BusinessProduct businessProduct) {
-    return businessProduct.stockQuantity <= businessProduct.minStockThreshold;
-  }
-
-  /// Computes expiring products (improved to next 30 days).
-  List<BusinessProduct> _computeExpiringProducts(
-    List<BusinessProduct> businessProducts,
-  ) {
-    final now = clock.now();
-    final threshold = now.add(const Duration(days: 60));
-
-    return businessProducts.where((p) {
-      if (!p.hasExpirationDate()) return false;
-      final expiry = p.expirationDate.toDateTime();
-
-      return expiry.isBefore(threshold);
-    }).toList()..sort(
-      (a, b) => a.expirationDate.toDateTime().compareTo(
-        b.expirationDate.toDateTime(),
-      ),
-    );
   }
 }

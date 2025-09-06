@@ -7,6 +7,7 @@ import '../../../utils/responsive_utils.dart';
 import '../../widgets/app_header/app_header.dart';
 import '../../widgets/sidebar/sidebar.dart';
 import '../dashboard/dashboard_screen.dart';
+import '../inventory/inventory_screen.dart';
 import 'home_controller.dart';
 
 /// The home screen.
@@ -74,7 +75,8 @@ class HomeScreen extends StatelessWidget {
                                   child: switch (homeController.activeTab) {
                                     DashboardItem.dashboard =>
                                       const Dashboard(),
-                                    DashboardItem.inventory => const SizedBox(),
+                                    DashboardItem.inventory =>
+                                      const InventoryView(),
                                     DashboardItem.sales => const SizedBox(),
                                     DashboardItem.reports => const SizedBox(),
                                     DashboardItem.users => const SizedBox(),

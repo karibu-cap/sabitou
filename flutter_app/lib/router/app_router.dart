@@ -10,6 +10,7 @@ import 'routes/business/id/details.dart';
 import 'routes/business/id/iam.dart';
 import 'routes/business/id/summary.dart';
 import 'routes/business/list.dart';
+import 'routes/inventory/inventory.dart';
 import 'routes/store/id/details.dart';
 import 'routes/store/list.dart';
 
@@ -36,6 +37,7 @@ const List<String> authenticatedRoutes = [
   storeListRoutePath,
   storeDetailsRoutePath,
   userRoutePath,
+  inventoryRoutePath,
 ];
 
 /// The list of unauthenticated routes.
@@ -58,6 +60,7 @@ final Map<Pattern, dynamic Function(BuildContext, BeamState, Object?)> routes =
       storeDetailsRoutePath: (context, state, extra) => storeDetailsPage,
       userRoutePath: (context, state, extra) => userPage,
       businessSummaryRoutePath: (context, state, extra) => businessSummaryPage,
+      inventoryRoutePath: (context, state, extra) => inventoryPage,
     };
 
 final routeGuards = [

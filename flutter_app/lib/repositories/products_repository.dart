@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sabitou_rpc/connect_servers.dart';
 import 'package:sabitou_rpc/models.dart';
@@ -39,18 +38,18 @@ class ProductsRepository {
     }
   }
 
-  /// Gets the global product by ref.
-  Future<GlobalProduct?> getGlobalProductByRefId(String refId) async {
+  /// Finds global products.
+  Future<List<GlobalProduct>> findGlobalProduct(
+    FindGlobalProductsRequest request,
+  ) async {
     try {
-      final response = await productServiceClient.findGlobalProducts(
-        FindGlobalProductsRequest(refId: refId),
-      );
+      final response = await productServiceClient.findGlobalProducts(request);
 
-      return response.products.firstWhereOrNull((gp) => gp.refId == refId);
+      return response.products;
     } on Exception catch (e) {
-      _logger.severe('getGlobalProductByRefId Error: $e');
+      _logger.severe('findGlobalProduct Error: $e');
 
-      return null;
+      return [];
     }
   }
 }

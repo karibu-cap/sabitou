@@ -1,4 +1,4 @@
-import 'app_storate.dart';
+import 'app_storage.dart';
 
 /// The fake storage service.
 class FakeStorageService implements AppStorageService {

@@ -6,5 +6,6 @@ Future<void> testExecutable(FutureOr<void> Function() testMain) async {
   return GoldenToolkit.runWithConfiguration(() async {
     await loadAppFonts();
     await testMain();
+    // ignore: prefer-trailing-comma
   }, config: GoldenToolkitConfiguration());
 }

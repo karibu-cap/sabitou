@@ -27,40 +27,39 @@ class Dashboard extends StatelessWidget {
       create: (context) => DashboardController(),
       child: Consumer<DashboardController>(
         builder: (context, controller, child) {
-          return SingleChildScrollView(
-            padding: const EdgeInsets.all(AppConstants.contentPadding),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Flex(
-                  direction: !ResponsiveUtils.isDesktop(context)
-                      ? Axis.vertical
-                      : Axis.horizontal,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(Intls.to.dashboard, style: theme.textTheme.h4),
-                    Text(
-                      '${Intls.to.lastUpdated}: ${Formatters.formatDate(clock.now())} ${Formatters.formatTime(clock.now())}',
-                      style: theme.textTheme.muted,
-                    ),
-                  ],
-                ),
-                const SizedBox(height: AppConstants.largePadding),
-                const DashboardStats(),
-                const SizedBox(height: AppConstants.largePadding),
-                FutureBuilder(
-                  future: controller.completer.future,
-                  builder: (context, asyncSnapshot) {
-                    if (asyncSnapshot.connectionState ==
-                        ConnectionState.waiting) {
-                      return const Loading();
-                    }
-                    if (asyncSnapshot.hasError) {
-                      return const SizedBox.shrink();
-                    }
+          return FutureBuilder(
+            future: controller.completer.future,
+            builder: (context, asyncSnapshot) {
+              if (asyncSnapshot.connectionState == ConnectionState.waiting) {
+                return const Loading();
+              }
+              if (asyncSnapshot.hasError) {
+                return const SizedBox.shrink();
+              }
 
-                    return LayoutBuilder(
+              return SingleChildScrollView(
+                padding: const EdgeInsets.all(AppConstants.contentPadding),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Flex(
+                      direction: !ResponsiveUtils.isDesktop(context)
+                          ? Axis.vertical
+                          : Axis.horizontal,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(Intls.to.dashboard, style: theme.textTheme.h4),
+                        Text(
+                          '${Intls.to.lastUpdated}: ${Formatters.formatDate(clock.now())} ${Formatters.formatTime(clock.now())}',
+                          style: theme.textTheme.muted,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: AppConstants.largePadding),
+                    const DashboardStats(),
+                    const SizedBox(height: AppConstants.largePadding),
+                    LayoutBuilder(
                       builder: (context, constraints) {
                         if (!ResponsiveUtils.isTablet(context) &&
                             constraints.maxWidth > 800) {
@@ -92,11 +91,11 @@ class Dashboard extends StatelessWidget {
                           ],
                         );
                       },
-                    );
-                  },
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              );
+            },
           );
         },
       ),
