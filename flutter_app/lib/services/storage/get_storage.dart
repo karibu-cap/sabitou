@@ -1,6 +1,6 @@
 import 'package:get_storage/get_storage.dart';
 
-import 'app_storate.dart';
+import 'app_storage.dart';
 
 /// The get storage service.
 class GetStorageService implements AppStorageService {

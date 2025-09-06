@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:hive_ce/hive.dart';
 
-import 'app_storate.dart';
+import 'app_storage.dart';
 
 /// The get storage service.
 class HiveCeService<T> implements AppStorageService {

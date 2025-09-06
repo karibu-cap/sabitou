@@ -9,6 +9,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import 'providers/auth/auth_provider.dart';
 import 'repositories/auth_repository.dart';
 import 'repositories/business_repository.dart';
+import 'repositories/categories_repository.dart';
 import 'repositories/orders_repository.dart';
 import 'repositories/products_repository.dart';
 import 'repositories/stores_repository.dart';
@@ -20,7 +21,7 @@ import 'services/app_theme_service.dart';
 import 'services/internationalization/internationalization.dart';
 import 'services/rpc/connect_rpc.dart';
 import 'services/rpc/fake_transport.dart';
-import 'services/storage/app_storate.dart';
+import 'services/storage/app_storage.dart';
 import 'utils/app_constants.dart';
 import 'utils/user_preference.dart';
 
@@ -33,7 +34,7 @@ Future<void> main() async {
 
 Future<void> _initServices() async {
   await GetStorage.init();
-  final appStorage = AppStorageService(AppStorageType.getStorage);
+  final appStorage = AppStorageService(AppStorageType.fake, fakeStorage);
   final languageCode = appStorage.read<String>(PreferencesKey.language);
   GetIt.I
     ..registerLazySingleton<AppStorageService>(() => appStorage)
@@ -55,7 +56,8 @@ Future<void> _initServices() async {
     ..registerLazySingleton<TransactionsRepository>(TransactionsRepository.new)
     ..registerLazySingleton<BusinessRepository>(BusinessRepository.new)
     ..registerLazySingleton<StoresRepository>(StoresRepository.new)
-    ..registerLazySingleton<UserRepository>(UserRepository.new);
+    ..registerLazySingleton<UserRepository>(UserRepository.new)
+    ..registerLazySingleton<CategoriesRepository>(CategoriesRepository.new);
   /*setUrlStrategy(PathUrlStrategy());*/
 
   /// Initialize the get storage service.
