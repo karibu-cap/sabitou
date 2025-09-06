@@ -5,6 +5,7 @@ import 'package:get_it/get_it.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:provider/provider.dart';
 import 'package:sabitou_clients/repositories/business_repository.dart';
+import 'package:sabitou_clients/repositories/categories_repository.dart';
 import 'package:sabitou_clients/repositories/orders_repository.dart';
 import 'package:sabitou_clients/repositories/products_repository.dart';
 import 'package:sabitou_clients/repositories/stores_repository.dart';
@@ -38,6 +39,7 @@ Future<void> multiScreenMultiLocaleGolden(
     ..registerSingletonIfAbsent<OrdersRepository>(OrdersRepository.new)
     ..registerSingletonIfAbsent<ProductsRepository>(ProductsRepository.new)
     ..registerSingletonIfAbsent<SuppliersRepository>(SuppliersRepository.new)
+    ..registerSingletonIfAbsent<CategoriesRepository>(CategoriesRepository.new)
     ..registerSingletonIfAbsent<TransactionsRepository>(
       TransactionsRepository.new,
     )
