@@ -1,3 +1,5 @@
+import 'package:sabitou_rpc/sabitou_rpc.dart';
+
 /// Alert model.
 class Alert {
   /// Constructs a new [Alert].
@@ -55,4 +57,16 @@ enum SeverityType {
 
   /// High severity.
   high,
+}
+
+/// Product model.
+final class Product {
+  /// The business product.
+  BusinessProduct businessProduct;
+
+  /// The global product.
+  GlobalProduct globalProduct;
+
+  /// Constructs a new [Product].
+  Product({required this.businessProduct, required this.globalProduct});
 }

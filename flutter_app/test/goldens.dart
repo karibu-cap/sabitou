@@ -12,7 +12,7 @@ import 'package:sabitou_clients/repositories/suppliers_repository.dart';
 import 'package:sabitou_clients/repositories/transactions_repository.dart';
 import 'package:sabitou_clients/services/app_theme_service.dart';
 import 'package:sabitou_clients/services/internationalization/internationalization.dart';
-import 'package:sabitou_clients/services/storage/app_storate.dart';
+import 'package:sabitou_clients/services/storage/app_storage.dart';
 import 'package:sabitou_clients/utils/user_preference.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
