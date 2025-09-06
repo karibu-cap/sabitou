@@ -110,7 +110,6 @@ class User extends $pb.GeneratedMessage {
     $0.ResourceLink? profileLink,
     AccountStatusType? accountStatus,
     $core.Iterable<AuthActionType>? requiredActions,
-    AccountType? accountType,
   }) {
     final result = create();
     if (refId != null) result.refId = refId;
@@ -124,7 +123,6 @@ class User extends $pb.GeneratedMessage {
     if (profileLink != null) result.profileLink = profileLink;
     if (accountStatus != null) result.accountStatus = accountStatus;
     if (requiredActions != null) result.requiredActions.addAll(requiredActions);
-    if (accountType != null) result.accountType = accountType;
     return result;
   }
 
@@ -162,11 +160,6 @@ class User extends $pb.GeneratedMessage {
         valueOf: AuthActionType.valueOf,
         enumValues: AuthActionType.values,
         defaultEnumValue: AuthActionType.AUTH_ACTION_TYPE_UNSPECIFIED)
-    ..e<AccountType>(
-        11, _omitFieldNames ? '' : 'accountType', $pb.PbFieldType.OE,
-        defaultOrMaker: AccountType.ADMIN,
-        valueOf: AccountType.valueOf,
-        enumValues: AccountType.values)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -277,16 +270,6 @@ class User extends $pb.GeneratedMessage {
   /// The actions that the user must complete to authenticate.
   @$pb.TagNumber(10)
   $pb.PbList<AuthActionType> get requiredActions => $_getList(9);
-
-  /// The type of the user's account.
-  @$pb.TagNumber(11)
-  AccountType get accountType => $_getN(10);
-  @$pb.TagNumber(11)
-  set accountType(AccountType value) => $_setField(11, value);
-  @$pb.TagNumber(11)
-  $core.bool hasAccountType() => $_has(10);
-  @$pb.TagNumber(11)
-  void clearAccountType() => $_clearField(11);
 }
 
 class GetCurrentUserRequest extends $pb.GeneratedMessage {

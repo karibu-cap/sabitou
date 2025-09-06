@@ -32,19 +32,6 @@ final $typed_data.Uint8List accountStatusTypeDescriptor = $convert.base64Decode(
     'ASHgoaQUNDT1VOVF9TVEFUVVNfVFlQRV9BQ1RJVkUQARIfChtBQ0NPVU5UX1NUQVRVU19UWVBF'
     'X0RFTEVURUQQAg==');
 
-@$core.Deprecated('Use accountTypeDescriptor instead')
-const AccountType$json = {
-  '1': 'AccountType',
-  '2': [
-    {'1': 'ADMIN', '2': 0},
-    {'1': 'USER', '2': 1},
-  ],
-};
-
-/// Descriptor for `AccountType`. Decode as a `google.protobuf.EnumDescriptorProto`.
-final $typed_data.Uint8List accountTypeDescriptor =
-    $convert.base64Decode('CgtBY2NvdW50VHlwZRIJCgVBRE1JThAAEggKBFVTRVIQAQ==');
-
 @$core.Deprecated('Use authActionTypeDescriptor instead')
 const AuthActionType$json = {
   '1': 'AuthActionType',
@@ -181,14 +168,6 @@ const User$json = {
       '6': '.identity.v1.AuthActionType',
       '10': 'requiredActions'
     },
-    {
-      '1': 'account_type',
-      '3': 11,
-      '4': 1,
-      '5': 14,
-      '6': '.identity.v1.AccountType',
-      '10': 'accountType'
-    },
   ],
   '8': [
     {'1': '_ref_id'},
@@ -212,9 +191,8 @@ final $typed_data.Uint8List userDescriptor = $convert.base64Decode(
     'bmtIBVILcHJvZmlsZUxpbmuIAQESSgoOYWNjb3VudF9zdGF0dXMYCSABKA4yHi5pZGVudGl0eS'
     '52MS5BY2NvdW50U3RhdHVzVHlwZUgGUg1hY2NvdW50U3RhdHVziAEBEkYKEHJlcXVpcmVkX2Fj'
     'dGlvbnMYCiADKA4yGy5pZGVudGl0eS52MS5BdXRoQWN0aW9uVHlwZVIPcmVxdWlyZWRBY3Rpb2'
-    '5zEjsKDGFjY291bnRfdHlwZRgLIAEoDjIYLmlkZW50aXR5LnYxLkFjY291bnRUeXBlUgthY2Nv'
-    'dW50VHlwZUIJCgdfcmVmX2lkQggKBl9lbWFpbEIPCg1fcGhvbmVfbnVtYmVyQg0KC19maXJzdF'
-    '9uYW1lQgwKCl9sYXN0X25hbWVCDwoNX3Byb2ZpbGVfbGlua0IRCg9fYWNjb3VudF9zdGF0dXM=');
+    '5zQgkKB19yZWZfaWRCCAoGX2VtYWlsQg8KDV9waG9uZV9udW1iZXJCDQoLX2ZpcnN0X25hbWVC'
+    'DAoKX2xhc3RfbmFtZUIPCg1fcHJvZmlsZV9saW5rQhEKD19hY2NvdW50X3N0YXR1cw==');
 
 @$core.Deprecated('Use getCurrentUserRequestDescriptor instead')
 const GetCurrentUserRequest$json = {
