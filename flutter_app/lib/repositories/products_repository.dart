@@ -52,4 +52,45 @@ class ProductsRepository {
       return [];
     }
   }
+
+  /// Adds a new product.
+  Future<bool> addProduct(AddProductRequest request) async {
+    try {
+      final response = await productServiceClient.addProduct(request);
+
+      return response.success;
+    } on Exception catch (e) {
+      _logger.severe('addProduct Error: $e');
+
+      return false;
+    }
+  }
+
+  /// Updates a product.
+  Future<bool> updateProduct(UpdateProductRequest request) async {
+    try {
+      final response = await productServiceClient.updateProduct(request);
+
+      return response.success;
+    } on Exception catch (e) {
+      _logger.severe('updateProduct Error: $e');
+
+      return false;
+    }
+  }
+
+  /// Deletes a product.
+  Future<bool> deleteProduct(String refId) async {
+    try {
+      final response = await productServiceClient.deleteProduct(
+        DeleteProductRequest(businessProductId: refId),
+      );
+
+      return response.success;
+    } on Exception catch (e) {
+      _logger.severe('deleteProduct Error: $e');
+
+      return false;
+    }
+  }
 }

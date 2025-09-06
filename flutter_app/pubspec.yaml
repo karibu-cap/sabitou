@@ -98,6 +98,9 @@ dependencies:
   # Package to scan barcode.
   mobile_scanner: ^7.0.1
 
+  # Package to manage the state of the application.
+  rxdart: ^0.28.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
