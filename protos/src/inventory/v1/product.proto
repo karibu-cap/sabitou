@@ -86,6 +86,12 @@ message FindGlobalProductsRequest {
 
   // The query to search for products by category.
   repeated ProductCategory categories = 2;
+
+  // Query the product name.
+  optional string name = 3;
+
+  // Identify the products by bar code.
+  optional string bar_code_value = 4;
 }
 
 message FindGlobalProductsResponse {

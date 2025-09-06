@@ -399,7 +399,11 @@ type FindGlobalProductsRequest struct {
 	// The reference id to the global product identifier.
 	RefId *string `protobuf:"bytes,1,opt,name=ref_id,json=refId,proto3,oneof" json:"ref_id,omitempty"`
 	// The query to search for products by category.
-	Categories    []*ProductCategory `protobuf:"bytes,2,rep,name=categories,proto3" json:"categories,omitempty"`
+	Categories []*ProductCategory `protobuf:"bytes,2,rep,name=categories,proto3" json:"categories,omitempty"`
+	// Query the product name.
+	Name *string `protobuf:"bytes,3,opt,name=name,proto3,oneof" json:"name,omitempty"`
+	// Identify the products by bar code.
+	BarCodeValue  *string `protobuf:"bytes,4,opt,name=bar_code_value,json=barCodeValue,proto3,oneof" json:"bar_code_value,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -446,6 +450,20 @@ func (x *FindGlobalProductsRequest) GetCategories() []*ProductCategory {
 		return x.Categories
 	}
 	return nil
+}
+
+func (x *FindGlobalProductsRequest) GetName() string {
+	if x != nil && x.Name != nil {
+		return *x.Name
+	}
+	return ""
+}
+
+func (x *FindGlobalProductsRequest) GetBarCodeValue() string {
+	if x != nil && x.BarCodeValue != nil {
+		return *x.BarCodeValue
+	}
+	return ""
 }
 
 type FindGlobalProductsResponse struct {
@@ -1056,13 +1074,17 @@ const file_inventory_v1_product_proto_rawDesc = "" +
 	"\x12_global_product_idB\x12\n" +
 	"\x10_expiration_date\"Y\n" +
 	"\x1cFindBusinessProductsResponse\x129\n" +
-	"\bproducts\x18\x01 \x03(\v2\x1d.inventory.v1.BusinessProductR\bproducts\"\x81\x01\n" +
+	"\bproducts\x18\x01 \x03(\v2\x1d.inventory.v1.BusinessProductR\bproducts\"\xe1\x01\n" +
 	"\x19FindGlobalProductsRequest\x12\x1a\n" +
 	"\x06ref_id\x18\x01 \x01(\tH\x00R\x05refId\x88\x01\x01\x12=\n" +
 	"\n" +
 	"categories\x18\x02 \x03(\v2\x1d.inventory.v1.ProductCategoryR\n" +
-	"categoriesB\t\n" +
-	"\a_ref_id\"U\n" +
+	"categories\x12\x17\n" +
+	"\x04name\x18\x03 \x01(\tH\x01R\x04name\x88\x01\x01\x12)\n" +
+	"\x0ebar_code_value\x18\x04 \x01(\tH\x02R\fbarCodeValue\x88\x01\x01B\t\n" +
+	"\a_ref_idB\a\n" +
+	"\x05_nameB\x11\n" +
+	"\x0f_bar_code_value\"U\n" +
 	"\x1aFindGlobalProductsResponse\x127\n" +
 	"\bproducts\x18\x01 \x03(\v2\x1b.inventory.v1.GlobalProductR\bproducts\"+\n" +
 	"\x13FindCategoryRequest\x12\x14\n" +

@@ -203,9 +203,21 @@ const FindGlobalProductsRequest$json = {
       '6': '.inventory.v1.ProductCategory',
       '10': 'categories'
     },
+    {'1': 'name', '3': 3, '4': 1, '5': 9, '9': 1, '10': 'name', '17': true},
+    {
+      '1': 'bar_code_value',
+      '3': 4,
+      '4': 1,
+      '5': 9,
+      '9': 2,
+      '10': 'barCodeValue',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_ref_id'},
+    {'1': '_name'},
+    {'1': '_bar_code_value'},
   ],
 };
 
@@ -213,7 +225,9 @@ const FindGlobalProductsRequest$json = {
 final $typed_data.Uint8List findGlobalProductsRequestDescriptor = $convert.base64Decode(
     'ChlGaW5kR2xvYmFsUHJvZHVjdHNSZXF1ZXN0EhoKBnJlZl9pZBgBIAEoCUgAUgVyZWZJZIgBAR'
     'I9CgpjYXRlZ29yaWVzGAIgAygLMh0uaW52ZW50b3J5LnYxLlByb2R1Y3RDYXRlZ29yeVIKY2F0'
-    'ZWdvcmllc0IJCgdfcmVmX2lk');
+    'ZWdvcmllcxIXCgRuYW1lGAMgASgJSAFSBG5hbWWIAQESKQoOYmFyX2NvZGVfdmFsdWUYBCABKA'
+    'lIAlIMYmFyQ29kZVZhbHVliAEBQgkKB19yZWZfaWRCBwoFX25hbWVCEQoPX2Jhcl9jb2RlX3Zh'
+    'bHVl');
 
 @$core.Deprecated('Use findGlobalProductsResponseDescriptor instead')
 const FindGlobalProductsResponse$json = {
