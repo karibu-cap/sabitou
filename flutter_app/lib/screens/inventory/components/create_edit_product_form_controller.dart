@@ -72,7 +72,7 @@ class CreateEditProductFormController extends ChangeNotifier {
         text: product?.globalProduct.barCodeValue,
       ),
       priceController = TextEditingController(
-        text: product?.businessProduct.priceInCents.toString(),
+        text: product?.businessProduct.priceInXaf.toString(),
       ),
       quantityController = TextEditingController(
         text: product?.businessProduct.stockQuantity.toString(),

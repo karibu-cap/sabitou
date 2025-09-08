@@ -9,23 +9,15 @@ class SupplierFormHeader extends StatelessWidget {
   final Supplier? supplier;
 
   /// Creates a new [SupplierFormHeader] widget.
-  const SupplierFormHeader({
-    super.key,
-    required this.supplier,
-  });
+  const SupplierFormHeader({super.key, required this.supplier});
 
   @override
   Widget build(BuildContext context) {
     final intl = AppInternationalizationService.to;
 
     return Text(
-      supplier == null 
-          ? intl.enterDetailsNewSupplier 
-          : intl.updateSupplierInfo,
-      style: const TextStyle(
-        color: Colors.grey,
-        fontSize: 14,
-      ),
+      supplier == null ? intl.enterDetailsNewSupplier : intl.updateSupplierInfo,
+      style: const TextStyle(color: Colors.grey, fontSize: 14),
     );
   }
 }

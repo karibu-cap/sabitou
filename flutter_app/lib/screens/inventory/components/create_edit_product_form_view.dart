@@ -315,7 +315,7 @@ class _PriceQuantityFields extends StatelessWidget {
               return null;
             },
             onChanged: (value) =>
-                controller.product.businessProduct.priceInCents =
+                controller.product.businessProduct.priceInXaf =
                     int.tryParse(value) ?? 0,
           ),
         ),

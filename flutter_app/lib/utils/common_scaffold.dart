@@ -43,8 +43,7 @@ class CommonScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-      final theme = ShadTheme.of(context);
+    final theme = ShadTheme.of(context);
     final appBarTitle = title;
 
     final appBarTitleWidget = appBarTitle == null

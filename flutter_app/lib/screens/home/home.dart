@@ -81,7 +81,8 @@ class HomeScreen extends StatelessWidget {
                                     DashboardItem.sales => const SizedBox(),
                                     DashboardItem.reports => const SizedBox(),
                                     DashboardItem.users => const SizedBox(),
-                                    DashboardItem.suppliers => const SuppliersView(),
+                                    DashboardItem.suppliers =>
+                                      const SuppliersView(),
                                     DashboardItem.settings => const SizedBox(),
                                     _ => const SizedBox(),
                                   },

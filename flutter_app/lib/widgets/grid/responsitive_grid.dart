@@ -59,7 +59,8 @@ class ResponsiveGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final int calculatedCrossAxisCount = crossAxisCount ??
+        final int calculatedCrossAxisCount =
+            crossAxisCount ??
             (constraints.maxWidth / minItemWidth).floor().clamp(
               1,
               children.length,

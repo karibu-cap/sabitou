@@ -4,7 +4,11 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 /// Toast widget for displaying messages.
 class Toast {
   /// Shows a success toast.
-  static void showSuccessToast(BuildContext context, String title, String message) {
+  static void showSuccessToast(
+    BuildContext context,
+    String title,
+    String message,
+  ) {
     ShadToaster.of(context).show(
       ShadToast(
         title: Text(title),
@@ -15,7 +19,11 @@ class Toast {
   }
 
   /// Shows error toast notification.
-  static void showErrorToast(BuildContext context, String title, String message) {
+  static void showErrorToast(
+    BuildContext context,
+    String title,
+    String message,
+  ) {
     ShadToaster.of(context).show(
       ShadToast(
         title: Text(title),

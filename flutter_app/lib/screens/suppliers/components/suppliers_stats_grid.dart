@@ -31,8 +31,14 @@ class SuppliersStatsGrid extends StatelessWidget {
             // Calculate stats from both streams data
             final products = productsSnapshot.data ?? [];
             final totalProducts = controller.calculateTotalProducts(products);
-            final avgProductsPerSupplier = controller.calculateAverageProductsPerSupplier(totalProducts, totalSuppliers);
-            final totalInventoryValue = controller.calculateTotalInventoryValue(products);
+            final avgProductsPerSupplier = controller
+                .calculateAverageProductsPerSupplier(
+                  totalProducts,
+                  totalSuppliers,
+                );
+            final totalInventoryValue = controller.calculateTotalInventoryValue(
+              products,
+            );
 
             final statsCards = [
               StatCard(

@@ -14,10 +14,7 @@ class SupplierContactFields extends StatelessWidget {
   final Supplier? supplier;
 
   /// Creates a new [SupplierContactFields] widget.
-  const SupplierContactFields({
-    super.key,
-    required this.supplier,
-  });
+  const SupplierContactFields({super.key, required this.supplier});
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +29,7 @@ class SupplierContactFields extends StatelessWidget {
             label: '${intl.phoneNumber} *',
             controller: controller.phoneController,
             placeholder: intl.enterPhoneNumber,
-            inputFormatters: [
-              FilteringTextInputFormatter.digitsOnly,
-            ],
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             keyboardType: TextInputType.phone,
             validator: ValidationFormUtils.validatePhoneNumber,
           ),

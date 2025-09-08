@@ -456,20 +456,21 @@ class AppInternationalizationService extends ChangeNotifier {
     },
     'serverErrorMessage': {
       'en': 'Our servers are temporarily unavailable. Please try again later.',
-      'fr': 'Nos serveurs sont temporairement indisponibles. Veuillez réessayer plus tard.',
+      'fr':
+          'Nos serveurs sont temporairement indisponibles. Veuillez réessayer plus tard.',
     },
     'dataFormatErrorMessage': {
       'en': 'There was an issue with the data format. Please contact support.',
-      'fr': 'Il y a eu un problème avec le format des données. Veuillez contacter le support.',
+      'fr':
+          'Il y a eu un problème avec le format des données. Veuillez contacter le support.',
     },
     'genericErrorMessage': {
-      'en': 'An unexpected error occurred. Please try again or contact support.',
-      'fr': 'Une erreur inattendue s\'est produite. Veuillez réessayer ou contacter le support.',
+      'en':
+          'An unexpected error occurred. Please try again or contact support.',
+      'fr':
+          'Une erreur inattendue s\'est produite. Veuillez réessayer ou contacter le support.',
     },
-    'suggestionsText': {
-      'en': 'Suggestions',
-      'fr': 'Suggestions',
-    },
+    'suggestionsText': {'en': 'Suggestions', 'fr': 'Suggestions'},
     'checkInternetConnection': {
       'en': 'Check your internet connection',
       'fr': 'Vérifiez votre connexion internet',
@@ -482,26 +483,22 @@ class AppInternationalizationService extends ChangeNotifier {
       'en': 'Contact your system administrator if the problem persists',
       'fr': 'Contactez votre administrateur système si le problème persiste',
     },
-    'retryText': {
-      'en': 'Retry',
-      'fr': 'Réessayer',
-    },
+    'retryText': {'en': 'Retry', 'fr': 'Réessayer'},
     'contactSupportText': {
       'en': 'Contact Support',
       'fr': 'Contacter le Support',
     },
     'contactSupportMessage': {
-      'en': 'If you continue to experience issues, please contact our support team with the error details below.',
-      'fr': 'Si vous continuez à rencontrer des problèmes, veuillez contacter notre équipe de support avec les détails de l\'erreur ci-dessous.',
+      'en':
+          'If you continue to experience issues, please contact our support team with the error details below.',
+      'fr':
+          'Si vous continuez à rencontrer des problèmes, veuillez contacter notre équipe de support avec les détails de l\'erreur ci-dessous.',
     },
     'errorDetailsText': {
       'en': 'Error Details:',
       'fr': 'Détails de l\'erreur :',
     },
-    'closeText': {
-      'en': 'Close',
-      'fr': 'Fermer',
-    },
+    'closeText': {'en': 'Close', 'fr': 'Fermer'},
     'isActive': {'en': 'Is Active', 'fr': 'Est Actif'},
     'enterPhoneNumber': {
       'en': 'Enter phone number',
@@ -1519,8 +1516,7 @@ class AppInternationalizationService extends ChangeNotifier {
       _stringOfLocalizedValue('networkErrorMessage');
 
   /// Returns the localized value of authErrorMessage.
-  String get authErrorMessage =>
-      _stringOfLocalizedValue('authErrorMessage');
+  String get authErrorMessage => _stringOfLocalizedValue('authErrorMessage');
 
   /// Returns the localized value of serverErrorMessage.
   String get serverErrorMessage =>
@@ -1535,8 +1531,7 @@ class AppInternationalizationService extends ChangeNotifier {
       _stringOfLocalizedValue('genericErrorMessage');
 
   /// Returns the localized value of suggestionsText.
-  String get suggestionsText =>
-      _stringOfLocalizedValue('suggestionsText');
+  String get suggestionsText => _stringOfLocalizedValue('suggestionsText');
 
   /// Returns the localized value of checkInternetConnection.
   String get checkInternetConnection =>
@@ -1551,8 +1546,7 @@ class AppInternationalizationService extends ChangeNotifier {
       _stringOfLocalizedValue('contactAdminSuggestion');
 
   /// Returns the localized value of retryText.
-  String get retryText =>
-      _stringOfLocalizedValue('retryText');
+  String get retryText => _stringOfLocalizedValue('retryText');
 
   /// Returns the localized value of contactSupportText.
   String get contactSupportText =>
@@ -1563,12 +1557,10 @@ class AppInternationalizationService extends ChangeNotifier {
       _stringOfLocalizedValue('contactSupportMessage');
 
   /// Returns the localized value of errorDetailsText.
-  String get errorDetailsText =>
-      _stringOfLocalizedValue('errorDetailsText');
+  String get errorDetailsText => _stringOfLocalizedValue('errorDetailsText');
 
   /// Returns the localized value of closeText.
-  String get closeText =>
-      _stringOfLocalizedValue('closeText');
+  String get closeText => _stringOfLocalizedValue('closeText');
 
   /// Returns the localized value of isActive.
   String get isActive => _stringOfLocalizedValue('isActive');

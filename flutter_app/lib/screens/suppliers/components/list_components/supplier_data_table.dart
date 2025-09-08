@@ -45,7 +45,7 @@ class SupplierDataTable extends StatelessWidget {
   ) {
     // Get the controller from the current context before showing the dialog
     final controller = Provider.of<SuppliersController>(context, listen: false);
-    
+
     showDialog(
       context: context,
       builder: (dialogContext) => ChangeNotifierProvider.value(

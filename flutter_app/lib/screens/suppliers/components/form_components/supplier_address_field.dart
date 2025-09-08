@@ -13,10 +13,7 @@ class SupplierAddressField extends StatelessWidget {
   final Supplier? supplier;
 
   /// Creates a new [SupplierAddressField] widget.
-  const SupplierAddressField({
-    super.key,
-    required this.supplier,
-  });
+  const SupplierAddressField({super.key, required this.supplier});
 
   @override
   Widget build(BuildContext context) {

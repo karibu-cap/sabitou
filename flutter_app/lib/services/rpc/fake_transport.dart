@@ -289,25 +289,6 @@ final fakeTransport =
               ],
             );
           })
-          .unary(ProductService.findProductsBySupplier, (req, _) async {
-            final request = req;
-
-            return FindProductsBySupplierResponse()
-              ..products.addAll([
-                BusinessProduct(
-                  refId: 'product_1',
-                  globalProductId: 'global_product_1',
-                  supplierId: request.supplierId,
-                  businessId: request.businessId,
-                ),
-                BusinessProduct(
-                  refId: 'product_2',
-                  globalProductId: 'global_product_2',
-                  supplierId: request.supplierId,
-                  businessId: request.businessId,
-                ),
-              ]);
-          })
           .server(ProductService.streamBusinessProducts, (req, _) async* {
             final request = req;
 
@@ -361,20 +342,6 @@ final fakeTransport =
                   refId: 'product_4',
                   globalProductId: 'global_product_4',
                   supplierId: 'supplier_3',
-                  businessId: request.businessId,
-                ),
-              ]);
-          })
-          .server(ProductService.streamProductsBySupplier, (req, _) async* {
-            final request = req;
-
-            // Simulate products for specific supplier
-            yield StreamProductsBySupplierResponse()
-              ..products.addAll([
-                BusinessProduct(
-                  refId: 'product_1',
-                  globalProductId: 'global_product_1',
-                  supplierId: request.supplierId,
                   businessId: request.businessId,
                 ),
               ]);

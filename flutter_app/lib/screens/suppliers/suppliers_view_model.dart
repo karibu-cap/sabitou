@@ -7,7 +7,6 @@ import '../../../repositories/suppliers_repository.dart';
 
 /// ViewModel for suppliers management.
 class SuppliersViewModel {
-
   /// The business id.
   final String businessId;
 

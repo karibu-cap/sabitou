@@ -22,11 +22,7 @@ class SupplierEmptyState extends StatelessWidget {
       ),
       child: Column(
         children: [
-          const Icon(
-            LucideIcons.box, 
-            size: 48, 
-            color: Colors.grey,
-          ),
+          const Icon(LucideIcons.box, size: 48, color: Colors.grey),
           const SizedBox(height: 16),
           Text(
             intl.noSuppliersYet,

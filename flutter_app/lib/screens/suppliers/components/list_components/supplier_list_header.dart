@@ -16,10 +16,7 @@ class SupplierListHeader extends StatelessWidget {
       children: [
         Text(
           intl.suppliersTitle,
-          style: const TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
       ],
     );

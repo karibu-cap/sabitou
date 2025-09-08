@@ -115,7 +115,7 @@ class _ProductsDataTable extends StatelessWidget {
                 DataCell(
                   Text(
                     Formatters.formatCurrency(
-                      product.businessProduct.priceInCents.toDouble(),
+                      product.businessProduct.priceInXaf.toDouble(),
                     ),
                     style: ShadTheme.of(context).textTheme.p,
                   ),
@@ -228,7 +228,7 @@ class _ProductCard extends StatelessWidget {
                 Flexible(
                   child: Text(
                     Formatters.formatCurrency(
-                      product.businessProduct.priceInCents.toDouble(),
+                      product.businessProduct.priceInXaf.toDouble(),
                     ),
                     style: theme.textTheme.muted,
                   ),

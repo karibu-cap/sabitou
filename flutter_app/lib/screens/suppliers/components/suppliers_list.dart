@@ -33,7 +33,7 @@ class SuppliersList extends StatelessWidget {
               // Header with title
               const SupplierListHeader(),
               const SizedBox(height: 16),
-          
+
               // Suppliers content
               StreamBuilder<List<Supplier>>(
                 stream: controller.suppliersStream,
@@ -43,15 +43,13 @@ class SuppliersList extends StatelessWidget {
                   }
                   final error = snapshot.error;
                   if (snapshot.hasError && error != null) {
-                    return SupplierErrorWidget(
-                      error: error,
-                    );
+                    return SupplierErrorWidget(error: error);
                   }
                   final suppliers = snapshot.data ?? [];
                   if (suppliers.isEmpty) {
                     return const SupplierEmptyState();
                   }
-          
+
                   return SupplierDataTable(
                     suppliers: suppliers,
                     products: products,

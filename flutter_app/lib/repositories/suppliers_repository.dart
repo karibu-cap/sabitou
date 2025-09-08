@@ -127,12 +127,12 @@ final class SuppliersRepository {
     try {
       // Use the native gRPC streaming service
       final grpcStream = supplierServiceClient.streamBusinessSuppliers(request);
-      
+
       // Transform the gRPC stream to return List<Supplier>
       return grpcStream.map((response) => response.suppliers);
     } catch (e) {
       _logger.severe('streamSuppliersByBusinessId Error: $e');
-      
+
       // Return empty stream on error
       return Stream.value([]);
     }
