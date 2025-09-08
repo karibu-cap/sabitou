@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 package order.v1;
+
 import "buf/validate/validate.proto";
 import "google/protobuf/timestamp.proto";
 
@@ -86,7 +87,6 @@ message GetOrderResponse {
 
   // The date and time the order was last updated.
   optional google.protobuf.Timestamp updated_at = 3;
-
 }
 
 message DeleteOrderRequest {
@@ -134,4 +134,3 @@ service OrderService {
   // Finds orders by query.
   rpc FindOrders(FindOrdersRequest) returns (FindOrdersResponse) {}
 }
-

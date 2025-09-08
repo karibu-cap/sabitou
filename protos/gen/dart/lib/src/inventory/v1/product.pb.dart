@@ -527,10 +527,14 @@ class FindGlobalProductsRequest extends $pb.GeneratedMessage {
   factory FindGlobalProductsRequest({
     $core.String? refId,
     $core.Iterable<ProductCategory>? categories,
+    $core.String? name,
+    $core.String? barCodeValue,
   }) {
     final result = create();
     if (refId != null) result.refId = refId;
     if (categories != null) result.categories.addAll(categories);
+    if (name != null) result.name = name;
+    if (barCodeValue != null) result.barCodeValue = barCodeValue;
     return result;
   }
 
@@ -551,6 +555,8 @@ class FindGlobalProductsRequest extends $pb.GeneratedMessage {
     ..pc<ProductCategory>(
         2, _omitFieldNames ? '' : 'categories', $pb.PbFieldType.PM,
         subBuilder: ProductCategory.create)
+    ..aOS(3, _omitFieldNames ? '' : 'name')
+    ..aOS(4, _omitFieldNames ? '' : 'barCodeValue')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -589,6 +595,26 @@ class FindGlobalProductsRequest extends $pb.GeneratedMessage {
   /// The query to search for products by category.
   @$pb.TagNumber(2)
   $pb.PbList<ProductCategory> get categories => $_getList(1);
+
+  /// Query the product name.
+  @$pb.TagNumber(3)
+  $core.String get name => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set name($core.String value) => $_setString(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasName() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearName() => $_clearField(3);
+
+  /// Identify the products by bar code.
+  @$pb.TagNumber(4)
+  $core.String get barCodeValue => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set barCodeValue($core.String value) => $_setString(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasBarCodeValue() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearBarCodeValue() => $_clearField(4);
 }
 
 class FindGlobalProductsResponse extends $pb.GeneratedMessage {
@@ -1077,10 +1103,12 @@ class GetProductResponse extends $pb.GeneratedMessage {
 class UpdateProductRequest extends $pb.GeneratedMessage {
   factory UpdateProductRequest({
     BusinessProduct? product,
+    GlobalProduct? globalProduct,
     $core.Iterable<$core.List<$core.int>>? imagesRawImages,
   }) {
     final result = create();
     if (product != null) result.product = product;
+    if (globalProduct != null) result.globalProduct = globalProduct;
     if (imagesRawImages != null) result.imagesRawImages.addAll(imagesRawImages);
     return result;
   }
@@ -1100,8 +1128,10 @@ class UpdateProductRequest extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOM<BusinessProduct>(1, _omitFieldNames ? '' : 'product',
         subBuilder: BusinessProduct.create)
+    ..aOM<GlobalProduct>(2, _omitFieldNames ? '' : 'globalProduct',
+        subBuilder: GlobalProduct.create)
     ..p<$core.List<$core.int>>(
-        4, _omitFieldNames ? '' : 'imagesRawImages', $pb.PbFieldType.PY)
+        3, _omitFieldNames ? '' : 'imagesRawImages', $pb.PbFieldType.PY)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -1141,9 +1171,23 @@ class UpdateProductRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   BusinessProduct ensureProduct() => $_ensure(0);
 
+  /// The global product information to update.
+  /// Note:Only the fields that are set will be updated if there is no
+  /// ref_id set for the global product or will be created in other case.
+  @$pb.TagNumber(2)
+  GlobalProduct get globalProduct => $_getN(1);
+  @$pb.TagNumber(2)
+  set globalProduct(GlobalProduct value) => $_setField(2, value);
+  @$pb.TagNumber(2)
+  $core.bool hasGlobalProduct() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearGlobalProduct() => $_clearField(2);
+  @$pb.TagNumber(2)
+  GlobalProduct ensureGlobalProduct() => $_ensure(1);
+
   /// The media ids of the images of the product.
-  @$pb.TagNumber(4)
-  $pb.PbList<$core.List<$core.int>> get imagesRawImages => $_getList(1);
+  @$pb.TagNumber(3)
+  $pb.PbList<$core.List<$core.int>> get imagesRawImages => $_getList(2);
 }
 
 class UpdateProductResponse extends $pb.GeneratedMessage {
@@ -1207,10 +1251,10 @@ class UpdateProductResponse extends $pb.GeneratedMessage {
 
 class DeleteProductRequest extends $pb.GeneratedMessage {
   factory DeleteProductRequest({
-    $core.String? productId,
+    $core.String? businessProductId,
   }) {
     final result = create();
-    if (productId != null) result.productId = productId;
+    if (businessProductId != null) result.businessProductId = businessProductId;
     return result;
   }
 
@@ -1227,7 +1271,7 @@ class DeleteProductRequest extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'DeleteProductRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'productId')
+    ..aOS(1, _omitFieldNames ? '' : 'businessProductId')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -1254,13 +1298,13 @@ class DeleteProductRequest extends $pb.GeneratedMessage {
 
   /// The unique identifier of the business product.
   @$pb.TagNumber(1)
-  $core.String get productId => $_getSZ(0);
+  $core.String get businessProductId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set productId($core.String value) => $_setString(0, value);
+  set businessProductId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasProductId() => $_has(0);
+  $core.bool hasBusinessProductId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearProductId() => $_clearField(1);
+  void clearBusinessProductId() => $_clearField(1);
 }
 
 class DeleteProductResponse extends $pb.GeneratedMessage {

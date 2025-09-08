@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sabitou_rpc/connect_servers.dart';
 import 'package:sabitou_rpc/models.dart';
@@ -39,18 +38,59 @@ class ProductsRepository {
     }
   }
 
-  /// Gets the global product by ref.
-  Future<GlobalProduct?> getGlobalProductByRefId(String refId) async {
+  /// Finds global products.
+  Future<List<GlobalProduct>> findGlobalProduct(
+    FindGlobalProductsRequest request,
+  ) async {
     try {
-      final response = await productServiceClient.findGlobalProducts(
-        FindGlobalProductsRequest(refId: refId),
+      final response = await productServiceClient.findGlobalProducts(request);
+
+      return response.products;
+    } on Exception catch (e) {
+      _logger.severe('findGlobalProduct Error: $e');
+
+      return [];
+    }
+  }
+
+  /// Adds a new product.
+  Future<bool> addProduct(AddProductRequest request) async {
+    try {
+      final response = await productServiceClient.addProduct(request);
+
+      return response.success;
+    } on Exception catch (e) {
+      _logger.severe('addProduct Error: $e');
+
+      return false;
+    }
+  }
+
+  /// Updates a product.
+  Future<bool> updateProduct(UpdateProductRequest request) async {
+    try {
+      final response = await productServiceClient.updateProduct(request);
+
+      return response.success;
+    } on Exception catch (e) {
+      _logger.severe('updateProduct Error: $e');
+
+      return false;
+    }
+  }
+
+  /// Deletes a product.
+  Future<bool> deleteProduct(String refId) async {
+    try {
+      final response = await productServiceClient.deleteProduct(
+        DeleteProductRequest(businessProductId: refId),
       );
 
-      return response.products.firstWhereOrNull((gp) => gp.refId == refId);
+      return response.success;
     } on Exception catch (e) {
-      _logger.severe('getGlobalProductByRefId Error: $e');
+      _logger.severe('deleteProduct Error: $e');
 
-      return null;
+      return false;
     }
   }
 

@@ -408,7 +408,11 @@ type FindGlobalProductsRequest struct {
 	// The reference id to the global product identifier.
 	RefId *string `protobuf:"bytes,1,opt,name=ref_id,json=refId,proto3,oneof" json:"ref_id,omitempty"`
 	// The query to search for products by category.
-	Categories    []*ProductCategory `protobuf:"bytes,2,rep,name=categories,proto3" json:"categories,omitempty"`
+	Categories []*ProductCategory `protobuf:"bytes,2,rep,name=categories,proto3" json:"categories,omitempty"`
+	// Query the product name.
+	Name *string `protobuf:"bytes,3,opt,name=name,proto3,oneof" json:"name,omitempty"`
+	// Identify the products by bar code.
+	BarCodeValue  *string `protobuf:"bytes,4,opt,name=bar_code_value,json=barCodeValue,proto3,oneof" json:"bar_code_value,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -455,6 +459,20 @@ func (x *FindGlobalProductsRequest) GetCategories() []*ProductCategory {
 		return x.Categories
 	}
 	return nil
+}
+
+func (x *FindGlobalProductsRequest) GetName() string {
+	if x != nil && x.Name != nil {
+		return *x.Name
+	}
+	return ""
+}
+
+func (x *FindGlobalProductsRequest) GetBarCodeValue() string {
+	if x != nil && x.BarCodeValue != nil {
+		return *x.BarCodeValue
+	}
+	return ""
 }
 
 type FindGlobalProductsResponse struct {
@@ -837,8 +855,12 @@ type UpdateProductRequest struct {
 	// Some fields cannot be updated like the product id, business id, and all
 	// product fields.
 	Product *BusinessProduct `protobuf:"bytes,1,opt,name=product,proto3" json:"product,omitempty"`
+	// The global product information to update.
+	// Note:Only the fields that are set will be updated if there is no
+	// ref_id set for the global product or will be created in other case.
+	GlobalProduct *GlobalProduct `protobuf:"bytes,2,opt,name=global_product,json=globalProduct,proto3,oneof" json:"global_product,omitempty"`
 	// The media ids of the images of the product.
-	ImagesRawImages [][]byte `protobuf:"bytes,4,rep,name=images_raw_images,json=imagesRawImages,proto3" json:"images_raw_images,omitempty"`
+	ImagesRawImages [][]byte `protobuf:"bytes,3,rep,name=images_raw_images,json=imagesRawImages,proto3" json:"images_raw_images,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -876,6 +898,13 @@ func (*UpdateProductRequest) Descriptor() ([]byte, []int) {
 func (x *UpdateProductRequest) GetProduct() *BusinessProduct {
 	if x != nil {
 		return x.Product
+	}
+	return nil
+}
+
+func (x *UpdateProductRequest) GetGlobalProduct() *GlobalProduct {
+	if x != nil {
+		return x.GlobalProduct
 	}
 	return nil
 }
@@ -935,9 +964,9 @@ func (x *UpdateProductResponse) GetSuccess() bool {
 type DeleteProductRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The unique identifier of the business product.
-	ProductId     string `protobuf:"bytes,1,opt,name=product_id,json=productId,proto3" json:"product_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	BusinessProductId string `protobuf:"bytes,1,opt,name=business_product_id,json=businessProductId,proto3" json:"business_product_id,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
 }
 
 func (x *DeleteProductRequest) Reset() {
@@ -970,9 +999,9 @@ func (*DeleteProductRequest) Descriptor() ([]byte, []int) {
 	return file_inventory_v1_product_proto_rawDescGZIP(), []int{15}
 }
 
-func (x *DeleteProductRequest) GetProductId() string {
+func (x *DeleteProductRequest) GetBusinessProductId() string {
 	if x != nil {
-		return x.ProductId
+		return x.BusinessProductId
 	}
 	return ""
 }
@@ -1022,204 +1051,6 @@ func (x *DeleteProductResponse) GetSuccess() bool {
 	return false
 }
 
-type FindProductsBySupplierRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The unique identifier of the supplier.
-	SupplierId string `protobuf:"bytes,1,opt,name=supplier_id,json=supplierId,proto3" json:"supplier_id,omitempty"`
-	// The unique identifier of the business (optional filter).
-	BusinessId    *string `protobuf:"bytes,2,opt,name=business_id,json=businessId,proto3,oneof" json:"business_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *FindProductsBySupplierRequest) Reset() {
-	*x = FindProductsBySupplierRequest{}
-	mi := &file_inventory_v1_product_proto_msgTypes[17]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *FindProductsBySupplierRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*FindProductsBySupplierRequest) ProtoMessage() {}
-
-func (x *FindProductsBySupplierRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_v1_product_proto_msgTypes[17]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use FindProductsBySupplierRequest.ProtoReflect.Descriptor instead.
-func (*FindProductsBySupplierRequest) Descriptor() ([]byte, []int) {
-	return file_inventory_v1_product_proto_rawDescGZIP(), []int{17}
-}
-
-func (x *FindProductsBySupplierRequest) GetSupplierId() string {
-	if x != nil {
-		return x.SupplierId
-	}
-	return ""
-}
-
-func (x *FindProductsBySupplierRequest) GetBusinessId() string {
-	if x != nil && x.BusinessId != nil {
-		return *x.BusinessId
-	}
-	return ""
-}
-
-type FindProductsBySupplierResponse struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The business products associated with the supplier.
-	Products      []*BusinessProduct `protobuf:"bytes,1,rep,name=products,proto3" json:"products,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *FindProductsBySupplierResponse) Reset() {
-	*x = FindProductsBySupplierResponse{}
-	mi := &file_inventory_v1_product_proto_msgTypes[18]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *FindProductsBySupplierResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*FindProductsBySupplierResponse) ProtoMessage() {}
-
-func (x *FindProductsBySupplierResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_v1_product_proto_msgTypes[18]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use FindProductsBySupplierResponse.ProtoReflect.Descriptor instead.
-func (*FindProductsBySupplierResponse) Descriptor() ([]byte, []int) {
-	return file_inventory_v1_product_proto_rawDescGZIP(), []int{18}
-}
-
-func (x *FindProductsBySupplierResponse) GetProducts() []*BusinessProduct {
-	if x != nil {
-		return x.Products
-	}
-	return nil
-}
-
-type StreamProductsBySupplierRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The unique identifier of the supplier.
-	SupplierId string `protobuf:"bytes,1,opt,name=supplier_id,json=supplierId,proto3" json:"supplier_id,omitempty"`
-	// The unique identifier of the business (optional filter).
-	BusinessId    *string `protobuf:"bytes,2,opt,name=business_id,json=businessId,proto3,oneof" json:"business_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *StreamProductsBySupplierRequest) Reset() {
-	*x = StreamProductsBySupplierRequest{}
-	mi := &file_inventory_v1_product_proto_msgTypes[19]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *StreamProductsBySupplierRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*StreamProductsBySupplierRequest) ProtoMessage() {}
-
-func (x *StreamProductsBySupplierRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_v1_product_proto_msgTypes[19]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use StreamProductsBySupplierRequest.ProtoReflect.Descriptor instead.
-func (*StreamProductsBySupplierRequest) Descriptor() ([]byte, []int) {
-	return file_inventory_v1_product_proto_rawDescGZIP(), []int{19}
-}
-
-func (x *StreamProductsBySupplierRequest) GetSupplierId() string {
-	if x != nil {
-		return x.SupplierId
-	}
-	return ""
-}
-
-func (x *StreamProductsBySupplierRequest) GetBusinessId() string {
-	if x != nil && x.BusinessId != nil {
-		return *x.BusinessId
-	}
-	return ""
-}
-
-type StreamProductsBySupplierResponse struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The business products associated with the supplier.
-	Products      []*BusinessProduct `protobuf:"bytes,1,rep,name=products,proto3" json:"products,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *StreamProductsBySupplierResponse) Reset() {
-	*x = StreamProductsBySupplierResponse{}
-	mi := &file_inventory_v1_product_proto_msgTypes[20]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *StreamProductsBySupplierResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*StreamProductsBySupplierResponse) ProtoMessage() {}
-
-func (x *StreamProductsBySupplierResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_v1_product_proto_msgTypes[20]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use StreamProductsBySupplierResponse.ProtoReflect.Descriptor instead.
-func (*StreamProductsBySupplierResponse) Descriptor() ([]byte, []int) {
-	return file_inventory_v1_product_proto_rawDescGZIP(), []int{20}
-}
-
-func (x *StreamProductsBySupplierResponse) GetProducts() []*BusinessProduct {
-	if x != nil {
-		return x.Products
-	}
-	return nil
-}
-
 type StreamBusinessProductsRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The unique identifier of the business.
@@ -1234,7 +1065,7 @@ type StreamBusinessProductsRequest struct {
 
 func (x *StreamBusinessProductsRequest) Reset() {
 	*x = StreamBusinessProductsRequest{}
-	mi := &file_inventory_v1_product_proto_msgTypes[21]
+	mi := &file_inventory_v1_product_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1246,7 +1077,7 @@ func (x *StreamBusinessProductsRequest) String() string {
 func (*StreamBusinessProductsRequest) ProtoMessage() {}
 
 func (x *StreamBusinessProductsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_v1_product_proto_msgTypes[21]
+	mi := &file_inventory_v1_product_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1259,7 +1090,7 @@ func (x *StreamBusinessProductsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StreamBusinessProductsRequest.ProtoReflect.Descriptor instead.
 func (*StreamBusinessProductsRequest) Descriptor() ([]byte, []int) {
-	return file_inventory_v1_product_proto_rawDescGZIP(), []int{21}
+	return file_inventory_v1_product_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *StreamBusinessProductsRequest) GetBusinessId() string {
@@ -1293,7 +1124,7 @@ type StreamBusinessProductsResponse struct {
 
 func (x *StreamBusinessProductsResponse) Reset() {
 	*x = StreamBusinessProductsResponse{}
-	mi := &file_inventory_v1_product_proto_msgTypes[22]
+	mi := &file_inventory_v1_product_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1305,7 +1136,7 @@ func (x *StreamBusinessProductsResponse) String() string {
 func (*StreamBusinessProductsResponse) ProtoMessage() {}
 
 func (x *StreamBusinessProductsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_v1_product_proto_msgTypes[22]
+	mi := &file_inventory_v1_product_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1318,7 +1149,7 @@ func (x *StreamBusinessProductsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StreamBusinessProductsResponse.ProtoReflect.Descriptor instead.
 func (*StreamBusinessProductsResponse) Descriptor() ([]byte, []int) {
-	return file_inventory_v1_product_proto_rawDescGZIP(), []int{22}
+	return file_inventory_v1_product_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *StreamBusinessProductsResponse) GetProducts() []*BusinessProduct {
@@ -1375,13 +1206,17 @@ const file_inventory_v1_product_proto_rawDesc = "" +
 	"\x12_global_product_idB\x12\n" +
 	"\x10_expiration_date\"Y\n" +
 	"\x1cFindBusinessProductsResponse\x129\n" +
-	"\bproducts\x18\x01 \x03(\v2\x1d.inventory.v1.BusinessProductR\bproducts\"\x81\x01\n" +
+	"\bproducts\x18\x01 \x03(\v2\x1d.inventory.v1.BusinessProductR\bproducts\"\xe1\x01\n" +
 	"\x19FindGlobalProductsRequest\x12\x1a\n" +
 	"\x06ref_id\x18\x01 \x01(\tH\x00R\x05refId\x88\x01\x01\x12=\n" +
 	"\n" +
 	"categories\x18\x02 \x03(\v2\x1d.inventory.v1.ProductCategoryR\n" +
-	"categoriesB\t\n" +
-	"\a_ref_id\"U\n" +
+	"categories\x12\x17\n" +
+	"\x04name\x18\x03 \x01(\tH\x01R\x04name\x88\x01\x01\x12)\n" +
+	"\x0ebar_code_value\x18\x04 \x01(\tH\x02R\fbarCodeValue\x88\x01\x01B\t\n" +
+	"\a_ref_idB\a\n" +
+	"\x05_nameB\x11\n" +
+	"\x0f_bar_code_value\"U\n" +
 	"\x1aFindGlobalProductsResponse\x127\n" +
 	"\bproducts\x18\x01 \x03(\v2\x1b.inventory.v1.GlobalProductR\bproducts\"+\n" +
 	"\x13FindCategoryRequest\x12\x14\n" +
@@ -1407,36 +1242,19 @@ const file_inventory_v1_product_proto_rawDesc = "" +
 	"product_id\x18\x01 \x01(\tB\n" +
 	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\tproductId\"M\n" +
 	"\x12GetProductResponse\x127\n" +
-	"\aproduct\x18\x01 \x01(\v2\x1d.inventory.v1.BusinessProductR\aproduct\"{\n" +
+	"\aproduct\x18\x01 \x01(\v2\x1d.inventory.v1.BusinessProductR\aproduct\"\xd7\x01\n" +
 	"\x14UpdateProductRequest\x127\n" +
-	"\aproduct\x18\x01 \x01(\v2\x1d.inventory.v1.BusinessProductR\aproduct\x12*\n" +
-	"\x11images_raw_images\x18\x04 \x03(\fR\x0fimagesRawImages\"1\n" +
+	"\aproduct\x18\x01 \x01(\v2\x1d.inventory.v1.BusinessProductR\aproduct\x12G\n" +
+	"\x0eglobal_product\x18\x02 \x01(\v2\x1b.inventory.v1.GlobalProductH\x00R\rglobalProduct\x88\x01\x01\x12*\n" +
+	"\x11images_raw_images\x18\x03 \x03(\fR\x0fimagesRawImagesB\x11\n" +
+	"\x0f_global_product\"1\n" +
 	"\x15UpdateProductResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess\"A\n" +
-	"\x14DeleteProductRequest\x12)\n" +
-	"\n" +
-	"product_id\x18\x01 \x01(\tB\n" +
-	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\tproductId\"1\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"R\n" +
+	"\x14DeleteProductRequest\x12:\n" +
+	"\x13business_product_id\x18\x01 \x01(\tB\n" +
+	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\x11businessProductId\"1\n" +
 	"\x15DeleteProductResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess\"\x82\x01\n" +
-	"\x1dFindProductsBySupplierRequest\x12+\n" +
-	"\vsupplier_id\x18\x01 \x01(\tB\n" +
-	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\n" +
-	"supplierId\x12$\n" +
-	"\vbusiness_id\x18\x02 \x01(\tH\x00R\n" +
-	"businessId\x88\x01\x01B\x0e\n" +
-	"\f_business_id\"[\n" +
-	"\x1eFindProductsBySupplierResponse\x129\n" +
-	"\bproducts\x18\x01 \x03(\v2\x1d.inventory.v1.BusinessProductR\bproducts\"\x84\x01\n" +
-	"\x1fStreamProductsBySupplierRequest\x12+\n" +
-	"\vsupplier_id\x18\x01 \x01(\tB\n" +
-	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\n" +
-	"supplierId\x12$\n" +
-	"\vbusiness_id\x18\x02 \x01(\tH\x00R\n" +
-	"businessId\x88\x01\x01B\x0e\n" +
-	"\f_business_id\"]\n" +
-	" StreamProductsBySupplierResponse\x129\n" +
-	"\bproducts\x18\x01 \x03(\v2\x1d.inventory.v1.BusinessProductR\bproducts\"\xc9\x01\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"\xc9\x01\n" +
 	"\x1dStreamBusinessProductsRequest\x12+\n" +
 	"\vbusiness_id\x18\x01 \x01(\tB\n" +
 	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\n" +
@@ -1447,7 +1265,7 @@ const file_inventory_v1_product_proto_rawDesc = "" +
 	"\f_supplier_idB\x14\n" +
 	"\x12_global_product_id\"[\n" +
 	"\x1eStreamBusinessProductsResponse\x129\n" +
-	"\bproducts\x18\x01 \x03(\v2\x1d.inventory.v1.BusinessProductR\bproducts2\xfe\a\n" +
+	"\bproducts\x18\x01 \x03(\v2\x1d.inventory.v1.BusinessProductR\bproducts2\x8c\x06\n" +
 	"\x0eProductService\x12g\n" +
 	"\x12FindGlobalProducts\x12'.inventory.v1.FindGlobalProductsRequest\x1a(.inventory.v1.FindGlobalProductsResponse\x12U\n" +
 	"\fFindCategory\x12!.inventory.v1.FindCategoryRequest\x1a\".inventory.v1.FindCategoryResponse\x12O\n" +
@@ -1457,9 +1275,7 @@ const file_inventory_v1_product_proto_rawDesc = "" +
 	"GetProduct\x12\x1f.inventory.v1.GetProductRequest\x1a .inventory.v1.GetProductResponse\x12X\n" +
 	"\rUpdateProduct\x12\".inventory.v1.UpdateProductRequest\x1a#.inventory.v1.UpdateProductResponse\x12X\n" +
 	"\rDeleteProduct\x12\".inventory.v1.DeleteProductRequest\x1a#.inventory.v1.DeleteProductResponse\x12m\n" +
-	"\x14FindBusinessProducts\x12).inventory.v1.FindBusinessProductsRequest\x1a*.inventory.v1.FindBusinessProductsResponse\x12s\n" +
-	"\x16FindProductsBySupplier\x12+.inventory.v1.FindProductsBySupplierRequest\x1a,.inventory.v1.FindProductsBySupplierResponse\x12{\n" +
-	"\x18StreamProductsBySupplier\x12-.inventory.v1.StreamProductsBySupplierRequest\x1a..inventory.v1.StreamProductsBySupplierResponse0\x01\x12u\n" +
+	"\x14FindBusinessProducts\x12).inventory.v1.FindBusinessProductsRequest\x1a*.inventory.v1.FindBusinessProductsResponse\x12u\n" +
 	"\x16StreamBusinessProducts\x12+.inventory.v1.StreamBusinessProductsRequest\x1a,.inventory.v1.StreamBusinessProductsResponse0\x01B\xbb\x01\n" +
 	"\x10com.inventory.v1B\fProductProtoP\x01ZHgithub.com/karibu-cap/sabitou/protos/gen/go/rpc/inventory/v1;inventoryv1\xa2\x02\x03IXX\xaa\x02\fInventory.V1\xca\x02\fInventory\\V1\xe2\x02\x18Inventory\\V1\\GPBMetadata\xea\x02\rInventory::V1b\x06proto3"
 
@@ -1475,73 +1291,64 @@ func file_inventory_v1_product_proto_rawDescGZIP() []byte {
 	return file_inventory_v1_product_proto_rawDescData
 }
 
-var file_inventory_v1_product_proto_msgTypes = make([]protoimpl.MessageInfo, 23)
+var file_inventory_v1_product_proto_msgTypes = make([]protoimpl.MessageInfo, 19)
 var file_inventory_v1_product_proto_goTypes = []any{
-	(*ProductCategory)(nil),                  // 0: inventory.v1.ProductCategory
-	(*GlobalProduct)(nil),                    // 1: inventory.v1.GlobalProduct
-	(*BusinessProduct)(nil),                  // 2: inventory.v1.BusinessProduct
-	(*FindBusinessProductsRequest)(nil),      // 3: inventory.v1.FindBusinessProductsRequest
-	(*FindBusinessProductsResponse)(nil),     // 4: inventory.v1.FindBusinessProductsResponse
-	(*FindGlobalProductsRequest)(nil),        // 5: inventory.v1.FindGlobalProductsRequest
-	(*FindGlobalProductsResponse)(nil),       // 6: inventory.v1.FindGlobalProductsResponse
-	(*FindCategoryRequest)(nil),              // 7: inventory.v1.FindCategoryRequest
-	(*FindCategoryResponse)(nil),             // 8: inventory.v1.FindCategoryResponse
-	(*AddProductRequest)(nil),                // 9: inventory.v1.AddProductRequest
-	(*AddProductResponse)(nil),               // 10: inventory.v1.AddProductResponse
-	(*GetProductRequest)(nil),                // 11: inventory.v1.GetProductRequest
-	(*GetProductResponse)(nil),               // 12: inventory.v1.GetProductResponse
-	(*UpdateProductRequest)(nil),             // 13: inventory.v1.UpdateProductRequest
-	(*UpdateProductResponse)(nil),            // 14: inventory.v1.UpdateProductResponse
-	(*DeleteProductRequest)(nil),             // 15: inventory.v1.DeleteProductRequest
-	(*DeleteProductResponse)(nil),            // 16: inventory.v1.DeleteProductResponse
-	(*FindProductsBySupplierRequest)(nil),    // 17: inventory.v1.FindProductsBySupplierRequest
-	(*FindProductsBySupplierResponse)(nil),   // 18: inventory.v1.FindProductsBySupplierResponse
-	(*StreamProductsBySupplierRequest)(nil),  // 19: inventory.v1.StreamProductsBySupplierRequest
-	(*StreamProductsBySupplierResponse)(nil), // 20: inventory.v1.StreamProductsBySupplierResponse
-	(*StreamBusinessProductsRequest)(nil),    // 21: inventory.v1.StreamBusinessProductsRequest
-	(*StreamBusinessProductsResponse)(nil),   // 22: inventory.v1.StreamBusinessProductsResponse
-	(*timestamppb.Timestamp)(nil),            // 23: google.protobuf.Timestamp
+	(*ProductCategory)(nil),                // 0: inventory.v1.ProductCategory
+	(*GlobalProduct)(nil),                  // 1: inventory.v1.GlobalProduct
+	(*BusinessProduct)(nil),                // 2: inventory.v1.BusinessProduct
+	(*FindBusinessProductsRequest)(nil),    // 3: inventory.v1.FindBusinessProductsRequest
+	(*FindBusinessProductsResponse)(nil),   // 4: inventory.v1.FindBusinessProductsResponse
+	(*FindGlobalProductsRequest)(nil),      // 5: inventory.v1.FindGlobalProductsRequest
+	(*FindGlobalProductsResponse)(nil),     // 6: inventory.v1.FindGlobalProductsResponse
+	(*FindCategoryRequest)(nil),            // 7: inventory.v1.FindCategoryRequest
+	(*FindCategoryResponse)(nil),           // 8: inventory.v1.FindCategoryResponse
+	(*AddProductRequest)(nil),              // 9: inventory.v1.AddProductRequest
+	(*AddProductResponse)(nil),             // 10: inventory.v1.AddProductResponse
+	(*GetProductRequest)(nil),              // 11: inventory.v1.GetProductRequest
+	(*GetProductResponse)(nil),             // 12: inventory.v1.GetProductResponse
+	(*UpdateProductRequest)(nil),           // 13: inventory.v1.UpdateProductRequest
+	(*UpdateProductResponse)(nil),          // 14: inventory.v1.UpdateProductResponse
+	(*DeleteProductRequest)(nil),           // 15: inventory.v1.DeleteProductRequest
+	(*DeleteProductResponse)(nil),          // 16: inventory.v1.DeleteProductResponse
+	(*StreamBusinessProductsRequest)(nil),  // 17: inventory.v1.StreamBusinessProductsRequest
+	(*StreamBusinessProductsResponse)(nil), // 18: inventory.v1.StreamBusinessProductsResponse
+	(*timestamppb.Timestamp)(nil),          // 19: google.protobuf.Timestamp
 }
 var file_inventory_v1_product_proto_depIdxs = []int32{
 	0,  // 0: inventory.v1.GlobalProduct.categories:type_name -> inventory.v1.ProductCategory
-	23, // 1: inventory.v1.BusinessProduct.expiration_date:type_name -> google.protobuf.Timestamp
-	23, // 2: inventory.v1.FindBusinessProductsRequest.expiration_date:type_name -> google.protobuf.Timestamp
+	19, // 1: inventory.v1.BusinessProduct.expiration_date:type_name -> google.protobuf.Timestamp
+	19, // 2: inventory.v1.FindBusinessProductsRequest.expiration_date:type_name -> google.protobuf.Timestamp
 	2,  // 3: inventory.v1.FindBusinessProductsResponse.products:type_name -> inventory.v1.BusinessProduct
 	0,  // 4: inventory.v1.FindGlobalProductsRequest.categories:type_name -> inventory.v1.ProductCategory
 	1,  // 5: inventory.v1.FindGlobalProductsResponse.products:type_name -> inventory.v1.GlobalProduct
 	0,  // 6: inventory.v1.FindCategoryResponse.categories:type_name -> inventory.v1.ProductCategory
 	1,  // 7: inventory.v1.AddProductRequest.global_product:type_name -> inventory.v1.GlobalProduct
-	23, // 8: inventory.v1.AddProductRequest.expiration_date:type_name -> google.protobuf.Timestamp
+	19, // 8: inventory.v1.AddProductRequest.expiration_date:type_name -> google.protobuf.Timestamp
 	2,  // 9: inventory.v1.GetProductResponse.product:type_name -> inventory.v1.BusinessProduct
 	2,  // 10: inventory.v1.UpdateProductRequest.product:type_name -> inventory.v1.BusinessProduct
-	2,  // 11: inventory.v1.FindProductsBySupplierResponse.products:type_name -> inventory.v1.BusinessProduct
-	2,  // 12: inventory.v1.StreamProductsBySupplierResponse.products:type_name -> inventory.v1.BusinessProduct
-	2,  // 13: inventory.v1.StreamBusinessProductsResponse.products:type_name -> inventory.v1.BusinessProduct
-	5,  // 14: inventory.v1.ProductService.FindGlobalProducts:input_type -> inventory.v1.FindGlobalProductsRequest
-	7,  // 15: inventory.v1.ProductService.FindCategory:input_type -> inventory.v1.FindCategoryRequest
-	9,  // 16: inventory.v1.ProductService.AddProduct:input_type -> inventory.v1.AddProductRequest
-	11, // 17: inventory.v1.ProductService.GetProduct:input_type -> inventory.v1.GetProductRequest
-	13, // 18: inventory.v1.ProductService.UpdateProduct:input_type -> inventory.v1.UpdateProductRequest
-	15, // 19: inventory.v1.ProductService.DeleteProduct:input_type -> inventory.v1.DeleteProductRequest
-	3,  // 20: inventory.v1.ProductService.FindBusinessProducts:input_type -> inventory.v1.FindBusinessProductsRequest
-	17, // 21: inventory.v1.ProductService.FindProductsBySupplier:input_type -> inventory.v1.FindProductsBySupplierRequest
-	19, // 22: inventory.v1.ProductService.StreamProductsBySupplier:input_type -> inventory.v1.StreamProductsBySupplierRequest
-	21, // 23: inventory.v1.ProductService.StreamBusinessProducts:input_type -> inventory.v1.StreamBusinessProductsRequest
-	6,  // 24: inventory.v1.ProductService.FindGlobalProducts:output_type -> inventory.v1.FindGlobalProductsResponse
-	8,  // 25: inventory.v1.ProductService.FindCategory:output_type -> inventory.v1.FindCategoryResponse
-	10, // 26: inventory.v1.ProductService.AddProduct:output_type -> inventory.v1.AddProductResponse
-	12, // 27: inventory.v1.ProductService.GetProduct:output_type -> inventory.v1.GetProductResponse
-	14, // 28: inventory.v1.ProductService.UpdateProduct:output_type -> inventory.v1.UpdateProductResponse
-	16, // 29: inventory.v1.ProductService.DeleteProduct:output_type -> inventory.v1.DeleteProductResponse
-	4,  // 30: inventory.v1.ProductService.FindBusinessProducts:output_type -> inventory.v1.FindBusinessProductsResponse
-	18, // 31: inventory.v1.ProductService.FindProductsBySupplier:output_type -> inventory.v1.FindProductsBySupplierResponse
-	20, // 32: inventory.v1.ProductService.StreamProductsBySupplier:output_type -> inventory.v1.StreamProductsBySupplierResponse
-	22, // 33: inventory.v1.ProductService.StreamBusinessProducts:output_type -> inventory.v1.StreamBusinessProductsResponse
-	24, // [24:34] is the sub-list for method output_type
-	14, // [14:24] is the sub-list for method input_type
-	14, // [14:14] is the sub-list for extension type_name
-	14, // [14:14] is the sub-list for extension extendee
-	0,  // [0:14] is the sub-list for field type_name
+	1,  // 11: inventory.v1.UpdateProductRequest.global_product:type_name -> inventory.v1.GlobalProduct
+	2,  // 12: inventory.v1.StreamBusinessProductsResponse.products:type_name -> inventory.v1.BusinessProduct
+	5,  // 13: inventory.v1.ProductService.FindGlobalProducts:input_type -> inventory.v1.FindGlobalProductsRequest
+	7,  // 14: inventory.v1.ProductService.FindCategory:input_type -> inventory.v1.FindCategoryRequest
+	9,  // 15: inventory.v1.ProductService.AddProduct:input_type -> inventory.v1.AddProductRequest
+	11, // 16: inventory.v1.ProductService.GetProduct:input_type -> inventory.v1.GetProductRequest
+	13, // 17: inventory.v1.ProductService.UpdateProduct:input_type -> inventory.v1.UpdateProductRequest
+	15, // 18: inventory.v1.ProductService.DeleteProduct:input_type -> inventory.v1.DeleteProductRequest
+	3,  // 19: inventory.v1.ProductService.FindBusinessProducts:input_type -> inventory.v1.FindBusinessProductsRequest
+	17, // 20: inventory.v1.ProductService.StreamBusinessProducts:input_type -> inventory.v1.StreamBusinessProductsRequest
+	6,  // 21: inventory.v1.ProductService.FindGlobalProducts:output_type -> inventory.v1.FindGlobalProductsResponse
+	8,  // 22: inventory.v1.ProductService.FindCategory:output_type -> inventory.v1.FindCategoryResponse
+	10, // 23: inventory.v1.ProductService.AddProduct:output_type -> inventory.v1.AddProductResponse
+	12, // 24: inventory.v1.ProductService.GetProduct:output_type -> inventory.v1.GetProductResponse
+	14, // 25: inventory.v1.ProductService.UpdateProduct:output_type -> inventory.v1.UpdateProductResponse
+	16, // 26: inventory.v1.ProductService.DeleteProduct:output_type -> inventory.v1.DeleteProductResponse
+	4,  // 27: inventory.v1.ProductService.FindBusinessProducts:output_type -> inventory.v1.FindBusinessProductsResponse
+	18, // 28: inventory.v1.ProductService.StreamBusinessProducts:output_type -> inventory.v1.StreamBusinessProductsResponse
+	21, // [21:29] is the sub-list for method output_type
+	13, // [13:21] is the sub-list for method input_type
+	13, // [13:13] is the sub-list for extension type_name
+	13, // [13:13] is the sub-list for extension extendee
+	0,  // [0:13] is the sub-list for field type_name
 }
 
 func init() { file_inventory_v1_product_proto_init() }
@@ -1555,16 +1362,15 @@ func file_inventory_v1_product_proto_init() {
 	file_inventory_v1_product_proto_msgTypes[3].OneofWrappers = []any{}
 	file_inventory_v1_product_proto_msgTypes[5].OneofWrappers = []any{}
 	file_inventory_v1_product_proto_msgTypes[9].OneofWrappers = []any{}
+	file_inventory_v1_product_proto_msgTypes[13].OneofWrappers = []any{}
 	file_inventory_v1_product_proto_msgTypes[17].OneofWrappers = []any{}
-	file_inventory_v1_product_proto_msgTypes[19].OneofWrappers = []any{}
-	file_inventory_v1_product_proto_msgTypes[21].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_inventory_v1_product_proto_rawDesc), len(file_inventory_v1_product_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   23,
+			NumMessages:   19,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

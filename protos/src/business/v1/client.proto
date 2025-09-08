@@ -1,8 +1,8 @@
 syntax = "proto3";
 
 package business.v1;
-import "buf/validate/validate.proto";
 
+import "buf/validate/validate.proto";
 
 message BusinessClient {
   // The reference id to the client identifier.
@@ -22,9 +22,7 @@ message BusinessClient {
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
-
 }
-
 
 message CreateBusinessClientRequest {
   // The client information to create.

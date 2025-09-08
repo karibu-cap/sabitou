@@ -2,22 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../utils/app_constants.dart';
-import '../storage/app_storate.dart';
-
-/// Extension method for easy access to translations.
-extension TranslationExtension on String {
-  /// Get the translation for the given key.
-  ///
-  /// If [args] is specified, named string substitution is performed on the
-  /// translation string. For example, if the translation string is "Hello, {name}!"
-  /// and [args] is {"name": "John"}, the result will be "Hello, John!".
-  String trParams([Map<String, String>? args]) {
-    return GetIt.I<AppInternationalizationService>().translate(
-      this,
-      args: args,
-    );
-  }
-}
+import '../storage/app_storage.dart';
 
 /// The short version of [AppInternationalizationService].
 typedef Intls = AppInternationalizationService;
@@ -36,10 +21,6 @@ class AppInternationalizationService extends ChangeNotifier {
     'dashboard': {'en': 'Dashboard', 'fr': 'Tableau de bord'},
     'signOut': {'en': 'Sign out', 'fr': 'Se deconnecter'},
     'setting': {'en': 'Setting', 'fr': 'Paramètres'},
-    'searchForProduct': {
-      'en': 'Search for product',
-      'fr': 'Rechercher un produit',
-    },
     'createAccount': {'en': 'Create account', 'fr': 'Creer un compte'},
     'email': {'en': 'Email', 'fr': 'Email'},
     'password': {'en': 'Password', 'fr': 'Mot de passe'},
@@ -585,6 +566,79 @@ class AppInternationalizationService extends ChangeNotifier {
     },
     'successText': {'en': 'Success', 'fr': 'Succès'},
     'errorText': {'en': 'Error', 'fr': 'Erreur'},
+    'anErrorOccurredPleaseTryAgain': {
+      'en':
+          'An error occurred. Please try again. If the problem persists, please contact support.',
+      'fr':
+          'Une erreur est survenue. Veuillez réessayer. Si le problème persiste, veuillez contacter le support.',
+    },
+    'productManagement': {
+      'en': 'Product Management',
+      'fr': 'Gestion des produits',
+    },
+    'manageYourProducts': {
+      'en': 'Manage your products',
+      'fr': 'Gestion de vos produits',
+    },
+    'searchAndFilter': {'en': 'Search & Filter', 'fr': 'Rechercher & Filtre'},
+    'allCategories': {'en': 'All Categories', 'fr': 'Toutes les catégories'},
+    'searchForProduct': {
+      'en': 'Search by name or barcode...',
+      'fr': 'Rechercher par nom ou code-barre...',
+    },
+    'product': {'en': 'Product', 'fr': 'Produit'},
+    'status': {'en': 'Status', 'fr': 'Statut'},
+    'expiry': {'en': 'Expiry', 'fr': 'Expiration'},
+    'deleteProduct': {'en': 'Delete Product', 'fr': 'Supprimer le produit'},
+    'areYouSureYouWantToDelete': {
+      'en':
+          'Are you sure you want to delete "@name"? This action cannot be undone.',
+      'fr':
+          'Êtes-vous sûr de vouloir supprimer "@name"? Cette action ne peut pas être annulée.',
+    },
+    'productDeletedSuccessfully': {
+      'en': 'Product deleted successfully',
+      'fr': 'Produit supprimé avec succès',
+    },
+    'failedToDeleteProduct': {
+      'en': 'Failed to delete product',
+      'fr': 'Échec de la suppression du produit',
+    },
+    'outOfStock': {'en': 'Out of Stock', 'fr': 'En rupture de stock'},
+    'editProduct': {'en': 'Edit Product', 'fr': 'Modifier le produit'},
+    'selectCategory': {
+      'en': 'Select Category',
+      'fr': 'Sélectionner une catégorie',
+    },
+    'selectSupplier': {
+      'en': 'Select Supplier',
+      'fr': 'Sélectionner un fournisseur',
+    },
+    'isRequiredField': {
+      'en': '@field is required',
+      'fr': '@field est obligatoire',
+    },
+    'enterProductName': {
+      'en': 'Enter product name',
+      'fr': 'Entrez le nom du produit',
+    },
+    'scanOrEnterBarcode': {
+      'en': 'Scan or enter barcode',
+      'fr': 'Scanner ou entrez le code-barre',
+    },
+    'barcode': {'en': 'Barcode', 'fr': 'Code-barre'},
+    'scanBarcode': {'en': 'Scan Barcode', 'fr': 'Scanner le code-barre'},
+    'minStockThreshold': {
+      'en': 'Min Stock Threshold',
+      'fr': 'Seuil de stock minimum',
+    },
+    'stockQuantity': {'en': 'Stock Quantity', 'fr': 'Quantité en stock'},
+    'noProductsFoundAddNewProduct': {
+      'en':
+          'No products found. Add a new product if you have permissions or contact the administrator.',
+      'fr':
+          'Aucun produit trouvé. Ajoutez un nouveau produit si vous avez des permissions ou contactez l\'administrateur.',
+    },
   };
 
   /// Direct access to the internationalization service.
@@ -603,6 +657,85 @@ class AppInternationalizationService extends ChangeNotifier {
     const Locale('en'),
     const Locale('fr'),
   ];
+
+  /// Returns the localized value of text 'noProductsFoundAddNewProduct'.
+  String get noProductsFoundAddNewProduct =>
+      _stringOfLocalizedValue('noProductsFoundAddNewProduct');
+
+  /// Returns the localized value of text 'stockQuantity'.
+  String get stockQuantity => _stringOfLocalizedValue('stockQuantity');
+
+  /// Returns the localized value of text 'minStockThreshold'.
+  String get minStockThreshold => _stringOfLocalizedValue('minStockThreshold');
+
+  /// Returns the localized value of text 'scanBarcode'.
+  String get scanBarcode => _stringOfLocalizedValue('scanBarcode');
+
+  /// Returns the localized value of text 'scanOrEnterBarcode'.
+  String get scanOrEnterBarcode =>
+      _stringOfLocalizedValue('scanOrEnterBarcode');
+
+  /// Returns the localized value of text 'barcode'.
+  String get barcode => _stringOfLocalizedValue('barcode');
+
+  /// Returns the localized value of text 'enterProductName'.
+  String get enterProductName => _stringOfLocalizedValue('enterProductName');
+
+  /// Returns the localized value of text 'isRequiredField'.
+  String get isRequiredField => _stringOfLocalizedValue('isRequiredField');
+
+  /// Returns the localized value of text 'selectSupplier'.
+  String get selectSupplier => _stringOfLocalizedValue('selectSupplier');
+
+  /// Returns the localized value of text 'selectCategory'.
+  String get selectCategory => _stringOfLocalizedValue('selectCategory');
+
+  /// Returns the localized value of text 'editProduct'.
+  String get editProduct => _stringOfLocalizedValue('editProduct');
+
+  /// Returns the localized value of text 'outOfStock'.
+  String get outOfStock => _stringOfLocalizedValue('outOfStock');
+
+  /// Returns the localized value of text 'productDeletedSuccessfully'.
+  String get productDeletedSuccessfully =>
+      _stringOfLocalizedValue('productDeletedSuccessfully');
+
+  /// Returns the localized value of text 'failedToDeleteProduct'.
+  String get failedToDeleteProduct =>
+      _stringOfLocalizedValue('failedToDeleteProduct');
+
+  /// Returns the localized value of text 'deleteProduct'.
+  String get deleteProduct => _stringOfLocalizedValue('deleteProduct');
+
+  /// Returns the localized value of text 'areYouSureYouWantToDelete'.
+  String get areYouSureYouWantToDelete =>
+      _stringOfLocalizedValue('areYouSureYouWantToDelete');
+
+  /// Returns the localized value of text 'product'.
+  String get product => _stringOfLocalizedValue('product');
+
+  /// Returns the localized value of text 'status'.
+  String get status => _stringOfLocalizedValue('status');
+
+  /// Returns the localized value of text 'expiry'.
+  String get expiry => _stringOfLocalizedValue('expiry');
+
+  /// Returns the localized value of text 'allCategories'.
+  String get allCategories => _stringOfLocalizedValue('allCategories');
+
+  /// Returns the localized value of text 'searchAndFilter'.
+  String get searchAndFilter => _stringOfLocalizedValue('searchAndFilter');
+
+  /// Returns the localized value of text 'productManagement'.
+  String get productManagement => _stringOfLocalizedValue('productManagement');
+
+  /// Returns the localized value of text 'manageYourProducts'.
+  String get manageYourProducts =>
+      _stringOfLocalizedValue('manageYourProducts');
+
+  /// Returns the localized value of text 'anErrorOccurredPleaseTryAgain'.
+  String get anErrorOccurredPleaseTryAgain =>
+      _stringOfLocalizedValue('anErrorOccurredPleaseTryAgain');
 
   /// Returns the localized value of text 'notifications'.
   String get notifications => _stringOfLocalizedValue('notifications');
@@ -1545,7 +1678,24 @@ class AppInternationalizationService extends ChangeNotifier {
     return result;
   }
 
-  String _stringOfLocalizedValue(String value, [Map<String, String>? args]) {
-    return value.trParams(args);
+  String _stringOfLocalizedValue(String value) {
+    return GetIt.I<AppInternationalizationService>().translate(value);
+  }
+}
+
+/// Extension method for easy access to translations.
+extension TranslationExtension on String {
+  /// Get the translation for the given key.
+  ///
+  /// If [args] is specified, named string substitution is performed on the
+  /// translation string. For example, if the translation string is "Hello, {name}!"
+  /// and [args] is {"name": "John"}, the result will be "Hello, John!".
+  String trParams([Map<String, String>? args]) {
+    String result = this;
+    args?.forEach((key, value) {
+      result = result.replaceAll('@$key', value);
+    });
+
+    return result;
   }
 }

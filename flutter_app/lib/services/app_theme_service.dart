@@ -3,7 +3,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../themes/app_theme.dart';
 import '../utils/app_constants.dart';
-import 'storage/app_storate.dart';
+import 'storage/app_storage.dart';
 
 /// The theme service.
 class AppThemeService extends ChangeNotifier {

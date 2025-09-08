@@ -1,10 +1,11 @@
 syntax = "proto3";
 
 package business.v1;
+
 import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
 import "identity/v1/permission.proto";
 import "link/v1/link.proto";
-import "google/protobuf/timestamp.proto";
 
 enum BusinessStatusType {
   BUSINESS_STATUS_TYPE_UNSPECIFIED = 0;
@@ -13,7 +14,7 @@ enum BusinessStatusType {
 }
 enum CurrencyChangePolicyType {
   CURRENCY_CHANGE_POLICY_TYPE_UNSPECIFIED = 0;
-  CURRENCY_CHANGE_POLICY_TYPE_KEEP_PREVIOUS_CURRENCY_VALUE = 1; 
+  CURRENCY_CHANGE_POLICY_TYPE_KEEP_PREVIOUS_CURRENCY_VALUE = 1;
   CURRENCY_CHANGE_POLICY_TYPE_CONVERT_BASED_ON_CURRENT_EXCHANGE_RATE = 2;
 }
 message Business {
@@ -97,16 +98,13 @@ message ChangeBusinessCurrencyRequest {
   // The ISO 3166-1 alpha-2 country code of the business.
   // e.g. CM, US, GB, etc.
   string country_code = 3;
-
-
 }
 
 message ChangeBusinessCurrencyResponse {
   bool sucess = 1;
 }
 
-message GetMyBusinessesRequest {
-}
+message GetMyBusinessesRequest {}
 
 message GetMyBusinessesResponse {
   repeated Business businesses = 1;
@@ -164,7 +162,7 @@ message AddUserToBusinessRequest {
   // The unique identifier of the user.
   // For example, the email address or @username.
   // string u_ref = 1;
-  
+
   string user_name = 1;
   string password = 2;
   string business_id = 3;
