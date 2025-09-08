@@ -5,6 +5,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../services/internationalization/internationalization.dart';
 import '../../utils/common_scaffold.dart';
+import 'components/list_components/supplier_shimmer_widgets.dart';
 import 'components/suppliers_form_dialogue.dart';
 import 'components/suppliers_list.dart';
 import 'components/suppliers_stats_grid.dart';
@@ -84,35 +85,49 @@ class SuppliersHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    final controller = Provider.of<SuppliersController>(context);
+
+    return StreamBuilder<List<Supplier>>(
+      stream: controller.suppliersStream,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return SupplierShimmerWidgets.buildHeaderShimmer();
+        }
+
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              AppInternationalizationService.to.supplierManagement,
-              style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  AppInternationalizationService.to.supplierManagement,
+                  style: const TextStyle(
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  AppInternationalizationService.to.manageSupplierRelationships,
+                  style: const TextStyle(fontSize: 16, color: Colors.grey),
+                ),
+              ],
             ),
-            const SizedBox(height: 4),
-            Text(
-              AppInternationalizationService.to.manageSupplierRelationships,
-              style: const TextStyle(fontSize: 16, color: Colors.grey),
+            ShadButton(
+              onPressed: onAddSupplier,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(Icons.add, size: 16),
+                  const SizedBox(width: 8),
+                  Text(AppInternationalizationService.to.addSupplierBtn),
+                ],
+              ),
             ),
           ],
-        ),
-        ShadButton(
-          onPressed: onAddSupplier,
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Icon(Icons.add, size: 16),
-              const SizedBox(width: 8),
-              Text(AppInternationalizationService.to.addSupplierBtn),
-            ],
-          ),
-        ),
-      ],
+        );
+      },
     );
   }
 }
