@@ -4,7 +4,7 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../services/internationalization/internationalization.dart';
-import '../../../widgets/toast/toast.dart';
+import '../../../utils/common_functions.dart';
 import '../suppliers_controller.dart';
 import 'form_components/supplier_action_buttons.dart';
 import 'form_components/supplier_address_field.dart';
@@ -40,22 +40,26 @@ class SupplierFormDialog extends StatelessWidget {
     if (saveSuccess && context.mounted) {
       Navigator.of(context).pop(true);
       if (supplier == null) {
-        Toast.showSuccessToast(
-          context,
-          _intl.successText,
-          _intl.supplierAddedSuccessfully,
+        showSuccessToast(
+          context: context,
+          title: _intl.successText,
+          message: _intl.supplierAddedSuccessfully,
         );
       } else {
-        Toast.showSuccessToast(
-          context,
-          _intl.successText,
-          _intl.supplierUpdatedSuccessfully,
+        showSuccessToast(
+          context: context,
+          title: _intl.successText,
+          message: _intl.supplierUpdatedSuccessfully,
         );
       }
     }
     // Handle failed save operation
     else if (!saveSuccess && context.mounted) {
-      Toast.showErrorToast(context, _intl.errorText, controller.errorMessage);
+      showErrorToast(
+        context: context,
+        title: _intl.errorText,
+        message: controller.errorMessage,
+      );
     }
   }
 

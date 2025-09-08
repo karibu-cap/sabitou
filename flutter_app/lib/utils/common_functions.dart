@@ -65,6 +65,7 @@ void showErrorToast({
     ShadToast.destructive(
       title: title != null ? Text(title) : null,
       description: Text(message),
+      backgroundColor: Colors.red.withValues(alpha: 0.5),
     ),
   );
 }
@@ -79,6 +80,7 @@ void showSuccessToast({
     ShadToast(
       title: title != null ? Text(title) : null,
       description: Text(message),
+      backgroundColor: Colors.green.withValues(alpha: 0.5),
     ),
   );
 }

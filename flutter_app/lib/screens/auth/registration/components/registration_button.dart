@@ -5,7 +5,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import '../../../../router/app_router.dart' as app_router;
 import '../../../../services/internationalization/internationalization.dart';
 import '../../../../utils/button_state.dart';
-import '../../../../widgets/toast/toast.dart';
+import '../../../../utils/common_functions.dart';
 import '../registration_controller.dart';
 
 /// Custom registration button widget with loading state
@@ -38,18 +38,18 @@ class RegistrationButton extends StatelessWidget {
         return;
       }
       if (registrationResult) {
-        Toast.showSuccessToast(
-          context,
-          appIntl.success,
-          appIntl.registrationSuccess,
+        showSuccessToast(
+          context: context,
+          title: appIntl.success,
+          message: appIntl.registrationSuccess,
         );
         controller.buttonState.value = ButtonState.initial;
         app_router.pushReplacement(context, app_router.businessListRoutePath);
       } else {
-        Toast.showErrorToast(
-          context,
-          appIntl.registrationFailed,
-          appIntl.loginFailed,
+        showErrorToast(
+          context: context,
+          title: appIntl.registrationFailed,
+          message: appIntl.loginFailed,
         );
       }
       controller.buttonState.value = ButtonState.initial;

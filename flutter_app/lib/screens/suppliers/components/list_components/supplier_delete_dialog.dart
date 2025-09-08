@@ -4,7 +4,7 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../../services/internationalization/internationalization.dart';
-import '../../../../widgets/toast/toast.dart';
+import '../../../../utils/common_functions.dart';
 import '../../suppliers_controller.dart';
 
 /// Delete confirmation dialog for suppliers.
@@ -122,13 +122,17 @@ class _DialogActions extends StatelessWidget {
       Navigator.of(context).pop();
 
       if (success) {
-        Toast.showSuccessToast(
-          context,
-          intl.successText,
-          intl.supplierDeletedSuccessfully,
+        showSuccessToast(
+          context: context,
+          title: intl.successText,
+          message: intl.supplierDeletedSuccessfully,
         );
       } else {
-        Toast.showErrorToast(context, intl.errorText, controller.errorMessage);
+        showErrorToast(
+          context: context,
+          title: intl.errorText,
+          message: controller.errorMessage,
+        );
       }
     }
   }

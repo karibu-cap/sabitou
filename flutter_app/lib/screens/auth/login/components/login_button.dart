@@ -5,7 +5,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import '../../../../router/app_router.dart' as app_router;
 import '../../../../services/internationalization/internationalization.dart';
 import '../../../../utils/button_state.dart';
-import '../../../../widgets/toast/toast.dart';
+import '../../../../utils/common_functions.dart';
 import '../login_controller.dart';
 
 /// Custom login button widget with loading state
@@ -37,11 +37,19 @@ class LoginButton extends StatelessWidget {
         return;
       }
       if (loginResult) {
-        Toast.showSuccessToast(context, appIntl.success, appIntl.loginSuccess);
+        showSuccessToast(
+          context: context,
+          title: appIntl.success,
+          message: appIntl.loginSuccess,
+        );
         controller.buttonState.value = ButtonState.initial;
         app_router.pushReplacement(context, app_router.businessListRoutePath);
       } else {
-        Toast.showErrorToast(context, appIntl.failed, appIntl.loginFailed);
+        showErrorToast(
+          context: context,
+          title: appIntl.failed,
+          message: appIntl.loginFailed,
+        );
       }
       controller.buttonState.value = ButtonState.initial;
     }
