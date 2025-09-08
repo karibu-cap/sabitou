@@ -7,6 +7,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import '../../../services/internationalization/internationalization.dart';
 import '../../../widgets/grid/responsitive_grid.dart';
 import '../suppliers_controller.dart';
+import 'list_components/supplier_shimmer_widgets.dart';
 
 /// Grid component for displaying supplier statistics.
 class SuppliersStatsGrid extends StatelessWidget {
@@ -21,6 +22,10 @@ class SuppliersStatsGrid extends StatelessWidget {
     return StreamBuilder<List<Supplier>>(
       stream: controller.suppliersStream,
       builder: (context, suppliersSnapshot) {
+        if (suppliersSnapshot.connectionState == ConnectionState.waiting) {
+          return SupplierShimmerWidgets.buildStatsShimmer();
+        }
+
         final suppliers = suppliersSnapshot.data ?? [];
         final totalSuppliers = suppliers.length;
         final activeSuppliers = suppliers.where((s) => s.isActive).length;
@@ -28,7 +33,9 @@ class SuppliersStatsGrid extends StatelessWidget {
         return StreamBuilder<List<BusinessProduct>>(
           stream: controller.productsStream,
           builder: (context, productsSnapshot) {
-            // Calculate stats from both streams data
+            if (productsSnapshot.connectionState == ConnectionState.waiting) {
+              return SupplierShimmerWidgets.buildStatsShimmer();
+            }
             final products = productsSnapshot.data ?? [];
             final totalProducts = controller.calculateTotalProducts(products);
             final avgProductsPerSupplier = controller
