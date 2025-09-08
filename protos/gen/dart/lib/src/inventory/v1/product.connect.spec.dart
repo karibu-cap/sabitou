@@ -67,4 +67,28 @@ abstract final class ProductService {
     inventoryv1product.FindBusinessProductsRequest.new,
     inventoryv1product.FindBusinessProductsResponse.new,
   );
+
+  /// Finds all products associated with a specific supplier.
+  static const findProductsBySupplier = connect.Spec(
+    '/$name/FindProductsBySupplier',
+    connect.StreamType.unary,
+    inventoryv1product.FindProductsBySupplierRequest.new,
+    inventoryv1product.FindProductsBySupplierResponse.new,
+  );
+
+  /// Streams all products associated with a specific supplier for real-time updates.
+  static const streamProductsBySupplier = connect.Spec(
+    '/$name/StreamProductsBySupplier',
+    connect.StreamType.server,
+    inventoryv1product.StreamProductsBySupplierRequest.new,
+    inventoryv1product.StreamProductsBySupplierResponse.new,
+  );
+
+  /// Streams all products for a business for real-time updates.
+  static const streamBusinessProducts = connect.Spec(
+    '/$name/StreamBusinessProducts',
+    connect.StreamType.server,
+    inventoryv1product.StreamBusinessProductsRequest.new,
+    inventoryv1product.StreamBusinessProductsResponse.new,
+  );
 }

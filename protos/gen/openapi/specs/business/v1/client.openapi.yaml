@@ -38,6 +38,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/business.v1.CreateBusinessClientResponse'
+  /business.v1.BusinessClientService/DeleteBusinessClient:
+    post:
+      tags:
+        - business.v1.BusinessClientService
+      summary: Deletes a client.
+      description: Deletes a client.
+      operationId: business.v1.BusinessClientService.DeleteBusinessClient
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/business.v1.DeleteBusinessClientRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/business.v1.DeleteBusinessClientResponse'
   /business.v1.BusinessClientService/GetBusinessClient:
     post:
       tags:
@@ -112,42 +148,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/business.v1.UpdateBusinessClientResponse'
-  /business.v1.BusinessClientService/DeleteBusinessClient:
-    post:
-      tags:
-        - business.v1.BusinessClientService
-      summary: Deletes a client.
-      description: Deletes a client.
-      operationId: business.v1.BusinessClientService.DeleteBusinessClient
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/business.v1.DeleteBusinessClientRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/business.v1.DeleteBusinessClientResponse'
 components:
   schemas:
     business.v1.BusinessClient:
@@ -177,9 +177,7 @@ components:
           type: string
           title: business_id
           minLength: 3
-          description: |
-            The id of the business of the client.
-            string.min_len = 3
+          description: The id of the business of the client.
       title: BusinessClient
       required:
         - businessId
@@ -206,9 +204,7 @@ components:
           type: string
           title: client_id
           minLength: 3
-          description: |
-            The reference id to the client identifier.
-            string.min_len = 3
+          description: The reference id to the client identifier.
       title: CreateBusinessClientResponse
       required:
         - clientId
@@ -220,9 +216,7 @@ components:
           type: string
           title: client_id
           minLength: 3
-          description: |
-            The reference id to the client identifier.
-            string.min_len = 3
+          description: The reference id to the client identifier.
       title: DeleteBusinessClientRequest
       required:
         - clientId
@@ -243,9 +237,7 @@ components:
           type: string
           title: client_id
           minLength: 3
-          description: |
-            The reference id to the client identifier.
-            string.min_len = 3
+          description: The reference id to the client identifier.
       title: GetBusinessClientRequest
       required:
         - clientId

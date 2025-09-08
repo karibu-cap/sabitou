@@ -62,6 +62,25 @@ extension type SupplierServiceClient (connect.Transport _transport) {
     );
   }
 
+  /// Streams all suppliers of a business with real-time updates.
+  /// This is a server streaming RPC that will send updates whenever suppliers change.
+  Stream<businessv1supplier.GetBusinessSuppliersResponse> streamBusinessSuppliers(
+    businessv1supplier.GetBusinessSuppliersRequest input, {
+    connect.Headers? headers,
+    connect.AbortSignal? signal,
+    Function(connect.Headers)? onHeader,
+    Function(connect.Headers)? onTrailer,
+  }) {
+    return connect.Client(_transport).server(
+      specs.SupplierService.streamBusinessSuppliers,
+      input,
+      signal: signal,
+      headers: headers,
+      onHeader: onHeader,
+      onTrailer: onTrailer,
+    );
+  }
+
   /// Updates a supplier.
   /// Note:Only the fields that are set will be updated. array fiels like external_links will be replaced.
   Future<businessv1supplier.UpdateSupplierResponse> updateSupplier(

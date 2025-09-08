@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-import '../../../services/internationalization/internationalization.dart';
 import '../../../utils/button_state.dart';
-import '../../../utils/utils.dart';
 import 'login_view_model.dart';
 
 /// Login controller.
 class LoginController {
   final LoginViewModel _viewModel;
-  final _appIntl = AppInternationalizationService.to;
 
   /// Constructs login controller.
   LoginController({required LoginViewModel viewModel}) : _viewModel = viewModel;
@@ -31,42 +28,8 @@ class LoginController {
   /// Observable for password visibility toggle.
   final ValueNotifier<bool> isPasswordVisible = ValueNotifier(false);
 
-  /// Disposes all controllers resources used by the controller.
-  // @override
-  // void dispose() {
-  //   emailController.dispose();
-  //   passwordController.dispose();
-  //   super.dispose();
-  // }
-
-  /// Validates email field.
-  String? validateEmail([String? value]) {
-    final email = value ?? emailController.text.trim();
-    if (email.isEmpty) {
-      return _appIntl.emailRequired;
-    }
-    if (!AppUtils.isEmail(email)) {
-      return _appIntl.emailInvalid;
-    }
-
-    return null;
-  }
-
-  /// Validates password field.
-  String? validatePassword([String? value]) {
-    final password = value ?? passwordController.text.trim();
-    if (password.isEmpty) {
-      return _appIntl.passwordRequired;
-    }
-    if (password.length < 6) {
-      return _appIntl.passwordLength;
-    }
-
-    return null;
-  }
-
   /// Validates all fields on form.
-  bool _validateForm() {
+  bool validateForm() {
     final formValidator = formKey.currentState?.validate();
 
     return formValidator == true;
@@ -79,7 +42,7 @@ class LoginController {
 
   /// Validates all fields and calls AuthProvider.login.
   Future<bool> loginUser() async {
-    if (!_validateForm()) {
+    if (!validateForm()) {
       return false;
     }
 

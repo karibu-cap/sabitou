@@ -5,6 +5,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import '../../../../router/app_router.dart' as app_router;
 import '../../../../services/internationalization/internationalization.dart';
 import '../../../../utils/button_state.dart';
+import '../../../../widgets/toast/toast.dart';
 import '../registration_controller.dart';
 
 /// Custom registration button widget with loading state
@@ -20,38 +21,37 @@ class RegistrationButton extends StatelessWidget {
 
     /// Helper method extracted for registration button callback.
     Future<void> onRegisterPressed(RegistrationController controller) async {
-      if (!context.mounted) {
+      controller.buttonState.value = ButtonState.loading;
+      final validation = controller.validateForm();
+      if (!validation) {
+        controller.buttonState.value = ButtonState.initial;
+
         return;
       }
-      controller.buttonState.value = ButtonState.loading;
       final registrationResult = await controller.registerUser();
       if (!registrationResult) {
         controller.buttonState.value = ButtonState.initial;
 
         return;
       }
-      final theme = ShadTheme.of(context);
-      final toast = ShadToast(
-        title: Text(registrationResult ? appIntl.success : appIntl.failed),
-        description: Text(
-          registrationResult
-              ? appIntl.registrationSuccess
-              : appIntl.registrationFailed,
-        ),
-        border: Border.all(
-          color: registrationResult
-              ? theme.colorScheme.primary
-              : theme.colorScheme.destructive,
-          width: 2,
-        ),
-        backgroundColor: theme.colorScheme.background,
-      );
-      ShadToaster.of(context).show(toast);
+      if (!context.mounted) {
+        return;
+      }
       if (registrationResult) {
+        Toast.showSuccessToast(
+          context,
+          appIntl.success,
+          appIntl.registrationSuccess,
+        );
         controller.buttonState.value = ButtonState.initial;
         app_router.pushReplacement(context, app_router.businessListRoutePath);
+      } else {
+        Toast.showErrorToast(
+          context,
+          appIntl.registrationFailed,
+          appIntl.loginFailed,
+        );
       }
-
       controller.buttonState.value = ButtonState.initial;
     }
 

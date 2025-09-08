@@ -34,6 +34,15 @@ abstract final class SupplierService {
     businessv1supplier.GetBusinessSuppliersResponse.new,
   );
 
+  /// Streams all suppliers of a business with real-time updates.
+  /// This is a server streaming RPC that will send updates whenever suppliers change.
+  static const streamBusinessSuppliers = connect.Spec(
+    '/$name/StreamBusinessSuppliers',
+    connect.StreamType.server,
+    businessv1supplier.GetBusinessSuppliersRequest.new,
+    businessv1supplier.GetBusinessSuppliersResponse.new,
+  );
+
   /// Updates a supplier.
   /// Note:Only the fields that are set will be updated. array fiels like external_links will be replaced.
   static const updateSupplier = connect.Spec(

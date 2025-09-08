@@ -9,7 +9,7 @@ class CartProvider with ChangeNotifier {
   double get cartTotal {
     return _cart.fold(
       0.0,
-      (sum, item) => sum + (item.product.priceInCents * item.quantity),
+      (sum, item) => sum + (item.product.priceInXaf * item.quantity),
     );
   }
 
@@ -67,5 +67,5 @@ class CartItem {
     );
   }
 
-  double get total => (product.priceInCents * quantity).toDouble();
+  double get total => (product.priceInXaf * quantity).toDouble();
 }

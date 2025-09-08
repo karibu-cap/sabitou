@@ -2,6 +2,114 @@ openapi: 3.1.0
 info:
   title: identity.v1
 paths:
+  /identity.v1.UserService/ChangePassword:
+    post:
+      tags:
+        - identity.v1.UserService
+      summary: Change the password for the currently authenticated user.
+      description: Change the password for the currently authenticated user.
+      operationId: identity.v1.UserService.ChangePassword
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/identity.v1.ChangePasswordRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identity.v1.ChangePasswordResponse'
+  /identity.v1.UserService/DeleteUser:
+    post:
+      tags:
+        - identity.v1.UserService
+      summary: Processes the deletion of the user account requested by the user.
+      description: Processes the deletion of the user account requested by the user.
+      operationId: identity.v1.UserService.DeleteUser
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/identity.v1.DeleteUserRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identity.v1.DeleteUserResponse'
+  /identity.v1.UserService/GetCurrentUser:
+    post:
+      tags:
+        - identity.v1.UserService
+      summary: Get the user information for the currently authenticated user.
+      description: Get the user information for the currently authenticated user.
+      operationId: identity.v1.UserService.GetCurrentUser
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/identity.v1.GetCurrentUserRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identity.v1.GetCurrentUserResponse'
   /identity.v1.UserService/GetMe:
     post:
       tags:
@@ -40,42 +148,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/identity.v1.GetMeResponse'
-  /identity.v1.UserService/GetCurrentUser:
-    post:
-      tags:
-        - identity.v1.UserService
-      summary: Get the user information for the currently authenticated user.
-      description: Get the user information for the currently authenticated user.
-      operationId: identity.v1.UserService.GetCurrentUser
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/identity.v1.GetCurrentUserRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/identity.v1.GetCurrentUserResponse'
   /identity.v1.UserService/GetUser:
     post:
       tags:
@@ -112,42 +184,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/identity.v1.GetUserResponse'
-  /identity.v1.UserService/UpdateMe:
-    post:
-      tags:
-        - identity.v1.UserService
-      summary: Update the user information for the currently authenticated user.
-      description: Update the user information for the currently authenticated user.
-      operationId: identity.v1.UserService.UpdateMe
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/identity.v1.UpdateMeRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/identity.v1.UpdateMeResponse'
   /identity.v1.UserService/RequestDeleteUser:
     post:
       tags:
@@ -187,13 +223,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/identity.v1.RequestDeleteUserResponse'
-  /identity.v1.UserService/DeleteUser:
+  /identity.v1.UserService/UpdateMe:
     post:
       tags:
         - identity.v1.UserService
-      summary: Processes the deletion of the user account requested by the user.
-      description: Processes the deletion of the user account requested by the user.
-      operationId: identity.v1.UserService.DeleteUser
+      summary: Update the user information for the currently authenticated user.
+      description: Update the user information for the currently authenticated user.
+      operationId: identity.v1.UserService.UpdateMe
       parameters:
         - name: Connect-Protocol-Version
           in: header
@@ -208,7 +244,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/identity.v1.DeleteUserRequest'
+              $ref: '#/components/schemas/identity.v1.UpdateMeRequest'
         required: true
       responses:
         default:
@@ -222,45 +258,78 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/identity.v1.DeleteUserResponse'
-  /identity.v1.UserService/ChangePassword:
-    post:
-      tags:
-        - identity.v1.UserService
-      summary: Change the password for the currently authenticated user.
-      description: Change the password for the currently authenticated user.
-      operationId: identity.v1.UserService.ChangePassword
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/identity.v1.ChangePasswordRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/identity.v1.ChangePasswordResponse'
+                $ref: '#/components/schemas/identity.v1.UpdateMeResponse'
 components:
   schemas:
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+        - 1
+      description: Define the version of the Connect protocol
+      const: 1
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+            - not_found
+          enum:
+            - canceled
+            - unknown
+            - invalid_argument
+            - deadline_exceeded
+            - not_found
+            - already_exists
+            - permission_denied
+            - resource_exhausted
+            - failed_precondition
+            - aborted
+            - out_of_range
+            - unimplemented
+            - internal
+            - unavailable
+            - data_loss
+            - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/connect.error_details.Any'
+          description: A list of messages that carry the error details. There is no limit on the number of messages.
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+    connect.error_details.Any:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
+        value:
+          type: string
+          format: binary
+          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
+        debug:
+          oneOf:
+            - type: object
+              title: Any
+              additionalProperties: true
+              description: Detailed error information.
+          discriminator:
+            propertyName: type
+          title: Debug
+          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
     identity.v1.AccountStatusType:
       type: string
       title: AccountStatusType
@@ -268,12 +337,6 @@ components:
         - ACCOUNT_STATUS_TYPE_UNSPECIFIED
         - ACCOUNT_STATUS_TYPE_ACTIVE
         - ACCOUNT_STATUS_TYPE_DELETED
-    identity.v1.AccountType:
-      type: string
-      title: AccountType
-      enum:
-        - ADMIN
-        - USER
     identity.v1.AuthActionType:
       type: string
       title: AuthActionType
@@ -283,14 +346,6 @@ components:
         - AUTH_ACTION_TYPE_VERIFY_PHONE_NUMBER
         - AUTH_ACTION_TYPE_INITIALIZE_PASSWORD
         - AUTH_ACTION_TYPE_RESET_PASSWORD
-    identity.v1.ProviderType:
-      type: string
-      title: ProviderType
-      enum:
-        - PROVIDER_TYPE_UNSPECIFIED
-        - PROVIDER_TYPE_FIREBASE_EMAIL
-        - PROVIDER_TYPE_GOOGLE
-        - PROVIDER_TYPE_INTERNAL_BUSINESS_AUTH
     identity.v1.ChangePasswordRequest:
       type: object
       properties:
@@ -299,21 +354,17 @@ components:
           title: old_password
           maxLength: 32
           minLength: 8
-          description: |
+          description: |-
             The previous password of the user.
              TODO: Add more validation like capital letters, numbers, etc.
-            string.max_len = 32
-            string.min_len = 8
         newPassword:
           type: string
           title: new_password
           maxLength: 32
           minLength: 8
-          description: |
+          description: |-
             The new password of the user.
              TODO: Add more validation like capital letters, numbers, etc.
-            string.max_len = 32
-            string.min_len = 8
       title: ChangePasswordRequest
       additionalProperties: false
     identity.v1.ChangePasswordResponse:
@@ -397,9 +448,7 @@ components:
           type: string
           title: user_id
           minLength: 3
-          description: |
-            The id of the user to retrieve.
-            string.min_len = 3
+          description: The id of the user to retrieve.
       title: GetUserRequest
       required:
         - userId
@@ -413,6 +462,14 @@ components:
           $ref: '#/components/schemas/identity.v1.User'
       title: GetUserResponse
       additionalProperties: false
+    identity.v1.ProviderType:
+      type: string
+      title: ProviderType
+      enum:
+        - PROVIDER_TYPE_UNSPECIFIED
+        - PROVIDER_TYPE_FIREBASE_EMAIL
+        - PROVIDER_TYPE_GOOGLE
+        - PROVIDER_TYPE_INTERNAL_BUSINESS_AUTH
     identity.v1.RequestDeleteUserRequest:
       type: object
       properties:
@@ -420,9 +477,7 @@ components:
           type: string
           title: user_id
           minLength: 3
-          description: |
-            The id of the user to delete.
-            string.min_len = 3
+          description: The id of the user to delete.
         password:
           type: string
           title: password
@@ -487,10 +542,7 @@ components:
           type: string
           title: email
           format: email
-          description: |
-            The email address of the user.
-            string.email = true // value must be a valid email address
-            string.email_empty = true // value is empty, which is not a valid email address
+          description: The email address of the user.
           nullable: true
         phoneNumber:
           type: string
@@ -523,10 +575,6 @@ components:
             $ref: '#/components/schemas/identity.v1.AuthActionType'
           title: required_actions
           description: The actions that the user must complete to authenticate.
-        accountType:
-          title: account_type
-          description: The type of the user's account.
-          $ref: '#/components/schemas/identity.v1.AccountType'
       title: User
       additionalProperties: false
       description: |-
@@ -564,75 +612,6 @@ components:
       title: ResourceLink
       additionalProperties: false
       description: 'TODO: Auto delete resource link not linked to any other resource.'
-    connect-protocol-version:
-      type: number
-      title: Connect-Protocol-Version
-      enum:
-        - 1
-      description: Define the version of the Connect protocol
-      const: 1
-    connect-timeout-header:
-      type: number
-      title: Connect-Timeout-Ms
-      description: Define the timeout, in ms
-    connect.error:
-      type: object
-      properties:
-        code:
-          type: string
-          examples:
-            - not_found
-          enum:
-            - canceled
-            - unknown
-            - invalid_argument
-            - deadline_exceeded
-            - not_found
-            - already_exists
-            - permission_denied
-            - resource_exhausted
-            - failed_precondition
-            - aborted
-            - out_of_range
-            - unimplemented
-            - internal
-            - unavailable
-            - data_loss
-            - unauthenticated
-          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
-        message:
-          type: string
-          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/connect.error_details.Any'
-          description: A list of messages that carry the error details. There is no limit on the number of messages.
-      title: Connect Error
-      additionalProperties: true
-      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
-    connect.error_details.Any:
-      type: object
-      properties:
-        type:
-          type: string
-          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
-        value:
-          type: string
-          format: binary
-          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
-        debug:
-          oneOf:
-            - type: object
-              title: Any
-              additionalProperties: true
-              description: Detailed error information.
-          discriminator:
-            propertyName: type
-          title: Debug
-          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
-      additionalProperties: true
-      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
 security: []
 tags:
   - name: identity.v1.UserService

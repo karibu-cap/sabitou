@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-import '../../../services/internationalization/internationalization.dart';
 import '../../../utils/button_state.dart';
-import '../../../utils/utils.dart';
 import 'registration_view_model.dart';
 
 /// Registration controller.
-class RegistrationController {
+class RegistrationController extends ChangeNotifier {
   final RegistrationViewModel _viewModel;
-  final _appIntl = AppInternationalizationService.to;
 
   /// Construct a new RegistrationController.
   RegistrationController({required RegistrationViewModel viewModel})
@@ -73,97 +70,8 @@ class RegistrationController {
     isConfirmPasswordVisible.value = !isConfirmPasswordVisible.value;
   }
 
-  /// Validates the user name field.
-  String? validateUserName([String? value]) {
-    final userName = value ?? userNameController.text.trim();
-    if (userName.isEmpty) {
-      return _appIntl.userNameRequired;
-    }
-
-    return null;
-  }
-
-  /// Validates the email field.
-  String? validateEmail([String? value]) {
-    final email = value ?? emailController.text.trim();
-    if (email.isEmpty) {
-      return _appIntl.emailRequired;
-    }
-    if (!AppUtils.isEmail(email)) {
-      return _appIntl.emailInvalid;
-    }
-
-    return null;
-  }
-
-  /// Validates the phone number field.
-  String? validatePhoneNumber([String? value]) {
-    final phoneNumber = value ?? phoneNumberController.text.trim();
-    if (phoneNumber.isEmpty) {
-      return _appIntl.phoneNumberRequired;
-    }
-
-    // Validate using GetUtils for phone number format.
-    if (!AppUtils.isPhoneNumber(phoneNumber)) {
-      return _appIntl.phoneNumberInvalidFormat;
-    }
-
-    // Additional validation for Cameroon phone numbers (9 digits starting with 6).
-    if (phoneNumber.length != 9 || !phoneNumber.startsWith('6')) {
-      return _appIntl.phoneNumberInvalidCameroon;
-    }
-
-    return null;
-  }
-
-  /// Validates the first name field.
-  String? validateFirstName([String? value]) {
-    final firstName = value ?? firstNameController.text.trim();
-    if (firstName.isEmpty) {
-      return _appIntl.firstNameRequired;
-    }
-
-    return null;
-  }
-
-  /// Validates the last name field.
-  String? validateLastName([String? value]) {
-    final lastName = value ?? lastNameController.text.trim();
-    if (lastName.isEmpty) {
-      return _appIntl.lastNameRequired;
-    }
-
-    return null;
-  }
-
-  /// Validates the password field.
-  String? validatePassword([String? value]) {
-    final password = value ?? passwordController.text;
-    if (password.isEmpty) {
-      return _appIntl.passwordRequired;
-    }
-    if (password.length < 6) {
-      return _appIntl.passwordLength;
-    }
-
-    return null;
-  }
-
-  /// Validates the confirm password field.
-  String? validateConfirmPassword([String? value]) {
-    final confirmPassword = value ?? confirmPasswordController.text;
-    if (confirmPassword.isEmpty) {
-      return _appIntl.confirmPasswordRequired;
-    }
-    if (confirmPassword != passwordController.text) {
-      return _appIntl.passwordsDoNotMatch;
-    }
-
-    return null;
-  }
-
   /// Validates all registration form fields.
-  bool validateAll() {
+  bool validateForm() {
     final validate = formKey.currentState?.validate();
 
     return validate == true;
@@ -171,7 +79,7 @@ class RegistrationController {
 
   /// Handles user registration by delegating to ViewModel after validation.
   Future<bool> registerUser() async {
-    if (!validateAll()) {
+    if (!validateForm()) {
       return false;
     }
 

@@ -135,4 +135,58 @@ extension type ProductServiceClient (connect.Transport _transport) {
       onTrailer: onTrailer,
     );
   }
+
+  /// Finds all products associated with a specific supplier.
+  Future<inventoryv1product.FindProductsBySupplierResponse> findProductsBySupplier(
+    inventoryv1product.FindProductsBySupplierRequest input, {
+    connect.Headers? headers,
+    connect.AbortSignal? signal,
+    Function(connect.Headers)? onHeader,
+    Function(connect.Headers)? onTrailer,
+  }) {
+    return connect.Client(_transport).unary(
+      specs.ProductService.findProductsBySupplier,
+      input,
+      signal: signal,
+      headers: headers,
+      onHeader: onHeader,
+      onTrailer: onTrailer,
+    );
+  }
+
+  /// Streams all products associated with a specific supplier for real-time updates.
+  Stream<inventoryv1product.StreamProductsBySupplierResponse> streamProductsBySupplier(
+    inventoryv1product.StreamProductsBySupplierRequest input, {
+    connect.Headers? headers,
+    connect.AbortSignal? signal,
+    Function(connect.Headers)? onHeader,
+    Function(connect.Headers)? onTrailer,
+  }) {
+    return connect.Client(_transport).server(
+      specs.ProductService.streamProductsBySupplier,
+      input,
+      signal: signal,
+      headers: headers,
+      onHeader: onHeader,
+      onTrailer: onTrailer,
+    );
+  }
+
+  /// Streams all products for a business for real-time updates.
+  Stream<inventoryv1product.StreamBusinessProductsResponse> streamBusinessProducts(
+    inventoryv1product.StreamBusinessProductsRequest input, {
+    connect.Headers? headers,
+    connect.AbortSignal? signal,
+    Function(connect.Headers)? onHeader,
+    Function(connect.Headers)? onTrailer,
+  }) {
+    return connect.Client(_transport).server(
+      specs.ProductService.streamBusinessProducts,
+      input,
+      signal: signal,
+      headers: headers,
+      onHeader: onHeader,
+      onTrailer: onTrailer,
+    );
+  }
 }

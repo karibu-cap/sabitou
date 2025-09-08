@@ -370,6 +370,221 @@ class AppInternationalizationService extends ChangeNotifier {
     'markAsRead': {'en': 'Mark as read', 'fr': 'Marquer comme lu'},
     'noNotifications': {'en': 'No notifications', 'fr': 'Aucune notification'},
     'notifications': {'en': 'Notifications', 'fr': 'Notification'},
+    'supplierManagement': {
+      'en': 'Supplier Management',
+      'fr': 'Gestion des Fournisseurs',
+    },
+    'manageSupplierRelationships': {
+      'en': 'Manage your supplier relationships',
+      'fr': 'Gérez vos relations avec les fournisseurs',
+    },
+    'addSupplierBtn': {'en': 'Add Supplier', 'fr': 'Ajouter un Fournisseur'},
+    'editSupplierBtn': {'en': 'Edit Supplier', 'fr': 'Modifier le Fournisseur'},
+    'deleteSupplierBtn': {
+      'en': 'Delete Supplier',
+      'fr': 'Supprimer le Fournisseur',
+    },
+    'totalSuppliersCount': {
+      'en': 'Total Suppliers',
+      'fr': 'Total Fournisseurs',
+    },
+    'activeSuppliersText': {
+      'en': 'Active suppliers',
+      'fr': 'Fournisseurs actifs',
+    },
+    'totalProductsCount': {'en': 'Total Products', 'fr': 'Total Produits'},
+    'fromAllSuppliersText': {
+      'en': 'From all suppliers',
+      'fr': 'De tous les fournisseurs',
+    },
+    'avgProductsText': {'en': 'Avg Products', 'fr': 'Produits Moy.'},
+    'perSupplierText': {'en': 'Per supplier', 'fr': 'Par fournisseur'},
+    'totalValueText': {'en': 'Total Value', 'fr': 'Valeur Totale'},
+    'allInventoryText': {'en': 'All inventory', 'fr': 'Tout l\'inventaire'},
+    'suppliersTitle': {'en': 'Suppliers', 'fr': 'Fournisseurs'},
+    'contactInfoText': {'en': 'Contact Info', 'fr': 'Info Contact'},
+    'productsText': {'en': 'Products', 'fr': 'Produits'},
+    'statusText': {'en': 'Status', 'fr': 'Statut'},
+    'activeText': {'en': 'Active', 'fr': 'Actif'},
+    'inactiveText': {'en': 'Inactive', 'fr': 'Inactif'},
+    'noSuppliersYet': {
+      'en': 'No suppliers yet',
+      'fr': 'Aucun fournisseur encore',
+    },
+    'addFirstSupplier': {
+      'en': 'Add your first supplier to get started',
+      'fr': 'Ajoutez votre premier fournisseur pour commencer',
+    },
+    'deleteSupplierConfirm': {
+      'en':
+          'Are you sure you want to delete this supplier? This action cannot be undone.',
+      'fr':
+          'Êtes-vous sûr de vouloir supprimer ce fournisseur ? Cette action ne peut pas être annulée.',
+    },
+    'cantDeleteSupplierWithProducts': {
+      'en': 'You can\'t delete a supplier who contains a product',
+      'fr':
+          'Vous ne pouvez pas supprimer un fournisseur qui contient un produit',
+    },
+    'supplierDeletedSuccessfully': {
+      'en': 'Supplier deleted successfully',
+      'fr': 'Fournisseur supprimé avec succès',
+    },
+    'warningSupplierHasProducts': {
+      'en':
+          'Warning: This supplier has @count products. Please reassign or remove products first.',
+      'fr':
+          'Attention : Ce fournisseur a @count produits. Veuillez réassigner ou supprimer les produits d\'abord.',
+    },
+    'addNewSupplier': {
+      'en': 'Add New Supplier',
+      'fr': 'Ajouter un Nouveau Fournisseur',
+    },
+    'enterDetailsNewSupplier': {
+      'en': 'Enter the details for the new supplier',
+      'fr': 'Entrez les détails du nouveau fournisseur',
+    },
+    'updateSupplierInfo': {
+      'en': 'Update supplier information',
+      'fr': 'Mettre à jour les informations du fournisseur',
+    },
+    'companyName': {'en': 'Company Name', 'fr': 'Nom de l\'Entreprise'},
+    'enterCompanyName': {
+      'en': 'Enter company name',
+      'fr': 'Entrez le nom de l\'entreprise',
+    },
+    'companyNameRequired': {
+      'en': 'Company name is required',
+      'fr': 'Le nom de l\'entreprise est requis',
+    },
+    'companyNameTooShort': {
+      'en': 'Company name is too short',
+      'fr': 'Le nom de l\'entreprise est trop court',
+    },
+    'errorLoadingSuppliers': {
+      'en': 'Unable to Load Suppliers',
+      'fr': 'Impossible de charger les fournisseurs',
+    },
+    'networkErrorMessage': {
+      'en': 'Please check your internet connection and try again.',
+      'fr': 'Veuillez vérifier votre connexion internet et réessayer.',
+    },
+    'authErrorMessage': {
+      'en': 'Your session has expired. Please log in again.',
+      'fr': 'Votre session a expiré. Veuillez vous reconnecter.',
+    },
+    'serverErrorMessage': {
+      'en': 'Our servers are temporarily unavailable. Please try again later.',
+      'fr': 'Nos serveurs sont temporairement indisponibles. Veuillez réessayer plus tard.',
+    },
+    'dataFormatErrorMessage': {
+      'en': 'There was an issue with the data format. Please contact support.',
+      'fr': 'Il y a eu un problème avec le format des données. Veuillez contacter le support.',
+    },
+    'genericErrorMessage': {
+      'en': 'An unexpected error occurred. Please try again or contact support.',
+      'fr': 'Une erreur inattendue s\'est produite. Veuillez réessayer ou contacter le support.',
+    },
+    'suggestionsText': {
+      'en': 'Suggestions',
+      'fr': 'Suggestions',
+    },
+    'checkInternetConnection': {
+      'en': 'Check your internet connection',
+      'fr': 'Vérifiez votre connexion internet',
+    },
+    'refreshPageSuggestion': {
+      'en': 'Refresh the page or restart the app',
+      'fr': 'Actualisez la page ou redémarrez l\'application',
+    },
+    'contactAdminSuggestion': {
+      'en': 'Contact your system administrator if the problem persists',
+      'fr': 'Contactez votre administrateur système si le problème persiste',
+    },
+    'retryText': {
+      'en': 'Retry',
+      'fr': 'Réessayer',
+    },
+    'contactSupportText': {
+      'en': 'Contact Support',
+      'fr': 'Contacter le Support',
+    },
+    'contactSupportMessage': {
+      'en': 'If you continue to experience issues, please contact our support team with the error details below.',
+      'fr': 'Si vous continuez à rencontrer des problèmes, veuillez contacter notre équipe de support avec les détails de l\'erreur ci-dessous.',
+    },
+    'errorDetailsText': {
+      'en': 'Error Details:',
+      'fr': 'Détails de l\'erreur :',
+    },
+    'closeText': {
+      'en': 'Close',
+      'fr': 'Fermer',
+    },
+    'isActive': {'en': 'Is Active', 'fr': 'Est Actif'},
+    'enterPhoneNumber': {
+      'en': 'Enter phone number',
+      'fr': 'Entrez le numéro de téléphone',
+    },
+    'emailAddress': {'en': 'Email Address', 'fr': 'Adresse E-mail'},
+    'enterEmailAddress': {
+      'en': 'Enter email address',
+      'fr': 'Entrez l\'adresse e-mail',
+    },
+    'validEmailRequired': {
+      'en': 'Please enter a valid email address',
+      'fr': 'Veuillez entrer une adresse e-mail valide',
+    },
+    'enterCompleteAddress': {
+      'en': 'Enter complete address',
+      'fr': 'Entrez l\'adresse complète',
+    },
+    'address': {'en': 'Address', 'fr': 'adresse'},
+    'addressRequired': {
+      'en': 'Address is required',
+      'fr': 'L\'adresse est requise',
+    },
+    'addressTooShort': {
+      'en': 'Address is too short',
+      'fr': 'L\'adresse est trop courte',
+    },
+    'additionalNotes': {
+      'en': 'Additional notes about the supplier (optional)',
+      'fr': 'Notes supplémentaires sur le fournisseur (optionnel)',
+    },
+    'notes': {'en': 'Notes', 'fr': 'Notes'},
+    'supplierInformation': {
+      'en': 'Supplier Information',
+      'fr': 'Informations du Fournisseur',
+    },
+    'supplierInfoDescription': {
+      'en':
+          'Make sure all contact information is accurate. This will be used for purchase orders and communications.',
+      'fr':
+          'Assurez-vous que toutes les informations de contact sont exactes. Elles seront utilisées pour les commandes et communications.',
+    },
+    'updateSupplier': {
+      'en': 'Update Supplier',
+      'fr': 'Mettre à Jour le Fournisseur',
+    },
+    'supplierAddedSuccessfully': {
+      'en': 'Supplier added successfully',
+      'fr': 'Fournisseur ajouté avec succès',
+    },
+    'supplierUpdatedSuccessfully': {
+      'en': 'Supplier updated successfully',
+      'fr': 'Fournisseur mis à jour avec succès',
+    },
+    'failedToSaveSupplier': {
+      'en': 'Failed to save supplier',
+      'fr': 'Échec de la sauvegarde du fournisseur',
+    },
+    'failedToDeleteSupplier': {
+      'en': 'Failed to delete supplier',
+      'fr': 'Échec de la suppression du fournisseur',
+    },
+    'successText': {'en': 'Success', 'fr': 'Succès'},
+    'errorText': {'en': 'Error', 'fr': 'Erreur'},
   };
 
   /// Direct access to the internationalization service.
@@ -1049,6 +1264,246 @@ class AppInternationalizationService extends ChangeNotifier {
   String get inventoryManager {
     return _stringOfLocalizedValue('inventoryManager');
   }
+
+  // Suppliers module getters
+  /// Returns the localized value of supplierManagement.
+  String get supplierManagement =>
+      _stringOfLocalizedValue('supplierManagement');
+
+  /// Returns the localized value of manageSupplierRelationships.
+  String get manageSupplierRelationships =>
+      _stringOfLocalizedValue('manageSupplierRelationships');
+
+  /// Returns the localized value of addSupplierBtn.
+  String get addSupplierBtn => _stringOfLocalizedValue('addSupplierBtn');
+
+  /// Returns the localized value of editSupplierBtn.
+  String get editSupplierBtn => _stringOfLocalizedValue('editSupplierBtn');
+
+  /// Returns the localized value of deleteSupplierBtn.
+  String get deleteSupplierBtn => _stringOfLocalizedValue('deleteSupplierBtn');
+
+  /// Returns the localized value of totalSuppliersCount.
+  String get totalSuppliersCount =>
+      _stringOfLocalizedValue('totalSuppliersCount');
+
+  /// Returns the localized value of activeSuppliersText.
+  String get activeSuppliersText =>
+      _stringOfLocalizedValue('activeSuppliersText');
+
+  /// Returns the localized value of totalProductsCount.
+  String get totalProductsCount =>
+      _stringOfLocalizedValue('totalProductsCount');
+
+  /// Returns the localized value of fromAllSuppliersText.
+  String get fromAllSuppliersText =>
+      _stringOfLocalizedValue('fromAllSuppliersText');
+
+  /// Returns the localized value of avgProductsText.
+  String get avgProductsText => _stringOfLocalizedValue('avgProductsText');
+
+  /// Returns the localized value of perSupplierText.
+  String get perSupplierText => _stringOfLocalizedValue('perSupplierText');
+
+  /// Returns the localized value of totalValueText.
+  String get totalValueText => _stringOfLocalizedValue('totalValueText');
+
+  /// Returns the localized value of allInventoryText.
+  String get allInventoryText => _stringOfLocalizedValue('allInventoryText');
+
+  /// Returns the localized value of suppliersTitle.
+  String get suppliersTitle => _stringOfLocalizedValue('suppliersTitle');
+
+  /// Returns the localized value of contactInfoText.
+  String get contactInfoText => _stringOfLocalizedValue('contactInfoText');
+
+  /// Returns the localized value of productsText.
+  String get productsText => _stringOfLocalizedValue('productsText');
+
+  /// Returns the localized value of statusText.
+  String get statusText => _stringOfLocalizedValue('statusText');
+
+  /// Returns the localized value of activeText.
+  String get activeText => _stringOfLocalizedValue('activeText');
+
+  /// Returns the localized value of inactiveText.
+  String get inactiveText => _stringOfLocalizedValue('inactiveText');
+
+  /// Returns the localized value of noSuppliersYet.
+  String get noSuppliersYet => _stringOfLocalizedValue('noSuppliersYet');
+
+  /// Returns the localized value of addFirstSupplier.
+  String get addFirstSupplier => _stringOfLocalizedValue('addFirstSupplier');
+
+  /// Returns the localized value of deleteSupplierConfirm.
+  String get deleteSupplierConfirm =>
+      _stringOfLocalizedValue('deleteSupplierConfirm');
+
+  /// Returns the localized value of cantDeleteSupplierWithProducts.
+  String get cantDeleteSupplierWithProducts =>
+      _stringOfLocalizedValue('cantDeleteSupplierWithProducts');
+
+  /// Returns the localized value of supplierDeletedSuccessfully.
+  String get supplierDeletedSuccessfully =>
+      _stringOfLocalizedValue('supplierDeletedSuccessfully');
+
+  /// Returns the localized value of warningSupplierHasProducts.
+  String get warningSupplierHasProducts =>
+      _stringOfLocalizedValue('warningSupplierHasProducts');
+
+  /// Returns the localized value of addNewSupplier.
+  String get addNewSupplier => _stringOfLocalizedValue('addNewSupplier');
+
+  /// Returns the localized value of enterDetailsNewSupplier.
+  String get enterDetailsNewSupplier =>
+      _stringOfLocalizedValue('enterDetailsNewSupplier');
+
+  /// Returns the localized value of updateSupplierInfo.
+  String get updateSupplierInfo =>
+      _stringOfLocalizedValue('updateSupplierInfo');
+
+  /// Returns the localized value of companyName.
+  String get companyName => _stringOfLocalizedValue('companyName');
+
+  /// Returns the localized value of enterCompanyName.
+  String get enterCompanyName => _stringOfLocalizedValue('enterCompanyName');
+
+  /// Returns the localized value of companyNameRequired.
+  String get companyNameRequired =>
+      _stringOfLocalizedValue('companyNameRequired');
+
+  /// Returns the localized value of companyNameTooShort.
+  String get companyNameTooShort =>
+      _stringOfLocalizedValue('companyNameTooShort');
+
+  // Error widget getters
+  /// Returns the localized value of errorLoadingSuppliers.
+  String get errorLoadingSuppliers =>
+      _stringOfLocalizedValue('errorLoadingSuppliers');
+
+  /// Returns the localized value of networkErrorMessage.
+  String get networkErrorMessage =>
+      _stringOfLocalizedValue('networkErrorMessage');
+
+  /// Returns the localized value of authErrorMessage.
+  String get authErrorMessage =>
+      _stringOfLocalizedValue('authErrorMessage');
+
+  /// Returns the localized value of serverErrorMessage.
+  String get serverErrorMessage =>
+      _stringOfLocalizedValue('serverErrorMessage');
+
+  /// Returns the localized value of dataFormatErrorMessage.
+  String get dataFormatErrorMessage =>
+      _stringOfLocalizedValue('dataFormatErrorMessage');
+
+  /// Returns the localized value of genericErrorMessage.
+  String get genericErrorMessage =>
+      _stringOfLocalizedValue('genericErrorMessage');
+
+  /// Returns the localized value of suggestionsText.
+  String get suggestionsText =>
+      _stringOfLocalizedValue('suggestionsText');
+
+  /// Returns the localized value of checkInternetConnection.
+  String get checkInternetConnection =>
+      _stringOfLocalizedValue('checkInternetConnection');
+
+  /// Returns the localized value of refreshPageSuggestion.
+  String get refreshPageSuggestion =>
+      _stringOfLocalizedValue('refreshPageSuggestion');
+
+  /// Returns the localized value of contactAdminSuggestion.
+  String get contactAdminSuggestion =>
+      _stringOfLocalizedValue('contactAdminSuggestion');
+
+  /// Returns the localized value of retryText.
+  String get retryText =>
+      _stringOfLocalizedValue('retryText');
+
+  /// Returns the localized value of contactSupportText.
+  String get contactSupportText =>
+      _stringOfLocalizedValue('contactSupportText');
+
+  /// Returns the localized value of contactSupportMessage.
+  String get contactSupportMessage =>
+      _stringOfLocalizedValue('contactSupportMessage');
+
+  /// Returns the localized value of errorDetailsText.
+  String get errorDetailsText =>
+      _stringOfLocalizedValue('errorDetailsText');
+
+  /// Returns the localized value of closeText.
+  String get closeText =>
+      _stringOfLocalizedValue('closeText');
+
+  /// Returns the localized value of isActive.
+  String get isActive => _stringOfLocalizedValue('isActive');
+
+  /// Returns the localized value of enterPhoneNumber.
+  String get enterPhoneNumber => _stringOfLocalizedValue('enterPhoneNumber');
+
+  /// Returns the localized value of emailAddress.
+  String get emailAddress => _stringOfLocalizedValue('emailAddress');
+
+  /// Returns the localized value of enterEmailAddress.
+  String get enterEmailAddress => _stringOfLocalizedValue('enterEmailAddress');
+
+  /// Returns the localized value of validEmailRequired.
+  String get validEmailRequired =>
+      _stringOfLocalizedValue('validEmailRequired');
+
+  /// Returns the localized value of enterCompleteAddress.
+  String get enterCompleteAddress =>
+      _stringOfLocalizedValue('enterCompleteAddress');
+
+  /// Returns the localized value of addressRequired.
+  String get addressRequired => _stringOfLocalizedValue('addressRequired');
+
+  /// Returns the localized value of addressTooShort.
+  String get addressTooShort => _stringOfLocalizedValue('addressTooShort');
+
+  /// Returns the localized value of address.
+  String get address => _stringOfLocalizedValue('address');
+
+  /// Returns the localized value of notes.
+  String get notes => _stringOfLocalizedValue('notes');
+
+  /// Returns the localized value of additionalNotes.
+  String get additionalNotes => _stringOfLocalizedValue('additionalNotes');
+
+  /// Returns the localized value of supplierInformation.
+  String get supplierInformation =>
+      _stringOfLocalizedValue('supplierInformation');
+
+  /// Returns the localized value of supplierInfoDescription.
+  String get supplierInfoDescription =>
+      _stringOfLocalizedValue('supplierInfoDescription');
+
+  /// Returns the localized value of updateSupplier.
+  String get updateSupplier => _stringOfLocalizedValue('updateSupplier');
+
+  /// Returns the localized value of supplierAddedSuccessfully.
+  String get supplierAddedSuccessfully =>
+      _stringOfLocalizedValue('supplierAddedSuccessfully');
+
+  /// Returns the localized value of supplierUpdatedSuccessfully.
+  String get supplierUpdatedSuccessfully =>
+      _stringOfLocalizedValue('supplierUpdatedSuccessfully');
+
+  /// Returns the localized value of failedToSaveSupplier.
+  String get failedToSaveSupplier =>
+      _stringOfLocalizedValue('failedToSaveSupplier');
+
+  /// Returns the localized value of failedToDeleteSupplier.
+  String get failedToDeleteSupplier =>
+      _stringOfLocalizedValue('failedToDeleteSupplier');
+
+  /// Returns the localized value of successText.
+  String get successText => _stringOfLocalizedValue('successText');
+
+  /// Returns the localized value of errorText.
+  String get errorText => _stringOfLocalizedValue('errorText');
 
   /// Changes the locale.
   void changeLocale([Locale? newLocale]) {

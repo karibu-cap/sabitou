@@ -40,72 +40,6 @@ paths:
                 $ref: '#/components/schemas/link.v1.GetResourceLinksResponse'
 components:
   schemas:
-    link.v1.GetResourceLinksRequest:
-      type: object
-      properties:
-        ids:
-          type: array
-          items:
-            type: string
-          title: ids
-          description: A list of unique identifiers of the resource link to retrieve.
-      title: GetResourceLinksRequest
-      additionalProperties: false
-    link.v1.GetResourceLinksResponse:
-      type: object
-      properties:
-        link:
-          type: object
-          title: link
-          additionalProperties:
-            title: value
-            $ref: '#/components/schemas/link.v1.ResourceLink'
-          description: The retrieved resource link data list.
-      title: GetResourceLinksResponse
-      additionalProperties: false
-    link.v1.GetResourceLinksResponse.LinkEntry:
-      type: object
-      properties:
-        key:
-          type: string
-          title: key
-        value:
-          title: value
-          $ref: '#/components/schemas/link.v1.ResourceLink'
-      title: LinkEntry
-      additionalProperties: false
-    link.v1.ResourceLink:
-      type: object
-      properties:
-        refId:
-          type: string
-          title: ref_id
-          description: The unique identifier of the resource link.
-          nullable: true
-        targetUri:
-          type: string
-          title: target_uri
-          description: The link of the resource link.
-        iconUri:
-          type: string
-          title: icon_uri
-          description: The icon of the resource type or owner.
-          nullable: true
-        info:
-          type: string
-          title: info
-          description: |-
-            The meta data of the resource link.
-             It can be the title of the target resource.
-          nullable: true
-        label:
-          type: string
-          title: label
-          description: The label use to identify the resource type.
-          nullable: true
-      title: ResourceLink
-      additionalProperties: false
-      description: 'TODO: Auto delete resource link not linked to any other resource.'
     connect-protocol-version:
       type: number
       title: Connect-Protocol-Version
@@ -175,6 +109,72 @@ components:
           description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
       additionalProperties: true
       description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
+    link.v1.GetResourceLinksRequest:
+      type: object
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+          title: ids
+          description: A list of unique identifiers of the resource link to retrieve.
+      title: GetResourceLinksRequest
+      additionalProperties: false
+    link.v1.GetResourceLinksResponse:
+      type: object
+      properties:
+        link:
+          type: object
+          title: link
+          additionalProperties:
+            title: value
+            $ref: '#/components/schemas/link.v1.ResourceLink'
+          description: The retrieved resource link data list.
+      title: GetResourceLinksResponse
+      additionalProperties: false
+    link.v1.GetResourceLinksResponse.LinkEntry:
+      type: object
+      properties:
+        key:
+          type: string
+          title: key
+        value:
+          title: value
+          $ref: '#/components/schemas/link.v1.ResourceLink'
+      title: LinkEntry
+      additionalProperties: false
+    link.v1.ResourceLink:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+          description: The unique identifier of the resource link.
+          nullable: true
+        targetUri:
+          type: string
+          title: target_uri
+          description: The link of the resource link.
+        iconUri:
+          type: string
+          title: icon_uri
+          description: The icon of the resource type or owner.
+          nullable: true
+        info:
+          type: string
+          title: info
+          description: |-
+            The meta data of the resource link.
+             It can be the title of the target resource.
+          nullable: true
+        label:
+          type: string
+          title: label
+          description: The label use to identify the resource type.
+          nullable: true
+      title: ResourceLink
+      additionalProperties: false
+      description: 'TODO: Auto delete resource link not linked to any other resource.'
 security: []
 tags:
   - name: link.v1.ResourceLinkService

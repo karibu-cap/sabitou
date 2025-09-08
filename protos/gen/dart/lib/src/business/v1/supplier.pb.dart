@@ -336,10 +336,10 @@ class CreateSupplierRequest extends $pb.GeneratedMessage {
 
 class CreateSupplierResponse extends $pb.GeneratedMessage {
   factory CreateSupplierResponse({
-    $core.String? suplierId,
+    $core.String? supplierId,
   }) {
     final result = create();
-    if (suplierId != null) result.suplierId = suplierId;
+    if (supplierId != null) result.supplierId = supplierId;
     return result;
   }
 
@@ -356,7 +356,7 @@ class CreateSupplierResponse extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'CreateSupplierResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'suplierId')
+    ..aOS(1, _omitFieldNames ? '' : 'supplierId')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -384,13 +384,13 @@ class CreateSupplierResponse extends $pb.GeneratedMessage {
 
   /// The reference id to the supplier identifier.
   @$pb.TagNumber(1)
-  $core.String get suplierId => $_getSZ(0);
+  $core.String get supplierId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set suplierId($core.String value) => $_setString(0, value);
+  set supplierId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasSuplierId() => $_has(0);
+  $core.bool hasSupplierId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearSuplierId() => $_clearField(1);
+  void clearSupplierId() => $_clearField(1);
 }
 
 class GetSupplierRequest extends $pb.GeneratedMessage {
@@ -916,6 +916,13 @@ class SupplierServiceApi {
           $pb.ClientContext? ctx, GetBusinessSuppliersRequest request) =>
       _client.invoke<GetBusinessSuppliersResponse>(ctx, 'SupplierService',
           'GetBusinessSuppliers', request, GetBusinessSuppliersResponse());
+
+  /// Streams all suppliers of a business with real-time updates.
+  /// This is a server streaming RPC that will send updates whenever suppliers change.
+  $async.Future<GetBusinessSuppliersResponse> streamBusinessSuppliers(
+          $pb.ClientContext? ctx, GetBusinessSuppliersRequest request) =>
+      _client.invoke<GetBusinessSuppliersResponse>(ctx, 'SupplierService',
+          'StreamBusinessSuppliers', request, GetBusinessSuppliersResponse());
 
   /// Updates a supplier.
   /// Note:Only the fields that are set will be updated. array fiels like external_links will be replaced.
