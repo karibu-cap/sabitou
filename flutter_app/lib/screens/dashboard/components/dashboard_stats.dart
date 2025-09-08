@@ -5,8 +5,9 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import '../../../services/internationalization/internationalization.dart';
 import '../../../themes/app_colors.dart';
 import '../../../utils/formatters.dart';
+import '../../../widgets/custom_grid.dart';
+import '../../../widgets/stat_card.dart';
 import '../dashboard_controller.dart';
-import 'stat_card.dart';
 
 /// Dashboard statistics widget that displays key metrics in a grid layout.
 class DashboardStats extends StatelessWidget {
@@ -104,26 +105,7 @@ class DashboardStats extends StatelessWidget {
           ),
         ];
 
-        return LayoutBuilder(
-          builder: (context, constraints) {
-            final int columns = (constraints.maxWidth / 300).floor();
-
-            return GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: columns,
-                crossAxisSpacing: 12,
-                mainAxisSpacing: 12,
-                mainAxisExtent: 140,
-              ),
-              itemCount: statsCard.length,
-              itemBuilder: (context, index) {
-                return statsCard[index];
-              },
-            );
-          },
-        );
+        return CustomGrid(children: statsCard, minItemWidth: 300);
       },
     );
   }

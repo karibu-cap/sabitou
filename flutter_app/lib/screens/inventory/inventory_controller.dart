@@ -2,94 +2,62 @@ import 'dart:async';
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:rxdart/subjects.dart';
 import 'package:sabitou_rpc/models.dart';
 
 import '../../utils/extends_models.dart';
 import 'inventory_view_model.dart';
 
 /// Controller for inventory screen
-final class InventoryController extends ChangeNotifier {
+class InventoryController extends ChangeNotifier {
   final InventoryViewModel _viewModel;
 
-  final TextEditingController _searchController = TextEditingController();
-  final ValueNotifier<String> _selectedCategory = ValueNotifier('');
+  /// Gets the filtered products stream.
+  Stream<List<Product>> get filteredProductsStream =>
+      _viewModel.filteredProductsStream;
 
-  /// Gets error message.
-  String get error => _viewModel.error;
+  /// Gets the products stream.
+  BehaviorSubject<UnmodifiableListView<Product>> get productsStream =>
+      _viewModel.productsStream;
 
-  /// Gets filtered products.
-  List<Product> get filteredProducts => _viewModel.filteredProducts;
+  /// Gets the error stream.
+  Stream<String> get errorStream => _viewModel.errorStream;
 
-  /// Controller for search input.
-  TextEditingController get searchController => _searchController;
+  /// Gets the search query.
+  BehaviorSubject<String> get searchQuery => _viewModel.searchQuery;
 
-  /// Currently selected category ID.
-  ValueNotifier<String> get selectedCategory => _selectedCategory;
+  /// Gets the selected category.
+  BehaviorSubject<String> get selectedCategory => _viewModel.selectedCategory;
 
-  /// Gets List of business categories.
+  /// Gets the business categories.
   UnmodifiableListView<Category> get businessCategories =>
-      UnmodifiableListView(_viewModel.businessCategories);
+      _viewModel.businessCategories;
 
-  /// Gets List of products.
-  UnmodifiableListView<Product> get products =>
-      UnmodifiableListView(_viewModel.products);
+  /// Gets the selected status.
+  BehaviorSubject<ProductStatus?> get selectedStatus =>
+      _viewModel.selectedStatus;
 
-  /// Completer for loading state.
+  /// Gets the completer.
   Completer<bool> get completer => _viewModel.completer;
 
-  /// Constructors of new [InventoryController].
-  InventoryController(this._viewModel) {
-    _searchController.addListener(updateSearchQuery);
+  /// Constructor of [InventoryController].
+  InventoryController(this._viewModel);
+
+  /// Refreshes products.
+  Future<void> refreshProducts() async {
+    await _viewModel.refreshProducts();
+  }
+
+  /// Deletes product.
+  Future<bool> deleteProduct(String businessId) async {
+    final result = await _viewModel.deleteProduct(businessId);
+
+    return result;
   }
 
   @override
   void dispose() {
-    _searchController.removeListener(updateSearchQuery);
+    _viewModel.dispose();
     super.dispose();
   }
-
-  /// Updates the search query
-  void updateSearchQuery() {
-    final searchByName = _searchController.text;
-    UnmodifiableListView<Product> filterResult = UnmodifiableListView([
-      ..._viewModel.products,
-    ]);
-    if (searchByName.isNotEmpty) {
-      filterResult = UnmodifiableListView<Product>(
-        filterResult
-            .where(
-              (p) =>
-                  p.globalProduct.name.toLowerCase().contains(
-                    searchByName.toLowerCase(),
-                  ) ||
-                  p.globalProduct.barCodeValue.toLowerCase().contains(
-                    searchByName.toLowerCase(),
-                  ),
-            )
-            .toList(),
-      );
-    }
-    if (_selectedCategory.value.isNotEmpty) {
-      filterResult = UnmodifiableListView<Product>(
-        filterResult
-            .where(
-              (p) => p.globalProduct.categories.any(
-                (c) =>
-                    c.name.toLowerCase() ==
-                    _selectedCategory.value.toLowerCase(),
-              ),
-            )
-            .toList(),
-      );
-    }
-    filteredProducts
-      ..clear()
-      ..addAll(filterResult);
-
-    notifyListeners();
-  }
-
-  /// Deletes product.
-  Future<bool> deleteProduct(String businessId) async =>
-      await _viewModel.deleteProduct(businessId);
 }

@@ -74,6 +74,9 @@ final class StaticImages {
 
   /// The large logo image.
   static const String largeLogo = 'assets/images/large-logo.png';
+
+  /// The placeholder image.
+  static const String placeholder = 'assets/images/placeholder.png';
 }
 
 /// The app constants.
