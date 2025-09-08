@@ -5,15 +5,15 @@ import 'package:provider/provider.dart';
 import '../../utils/responsive_utils.dart';
 import '../../widgets/loading.dart';
 import 'components/header.dart';
+import 'components/inentory_stats.dart';
 import 'components/product_table.dart';
-import 'components/search_and_filter.dart';
 import 'inventory_controller.dart';
 import 'inventory_view_model.dart';
 
-/// Inventory view.
-class InventoryView extends StatelessWidget {
-  /// Constructs of new [InventoryView].
-  const InventoryView({super.key});
+/// Inventory screen.
+class InventoryScreen extends StatelessWidget {
+  /// Constructs of new [InventoryScreen].
+  const InventoryScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -43,8 +43,8 @@ class InventoryView extends StatelessWidget {
                       children: [
                         const InventoryHeader(),
                         SizedBox(height: isDesktop ? 32 : 24),
-                        const SearchAndFilterCard(),
-                        SizedBox(height: isDesktop ? 24 : 16),
+                        const InventoryStats(),
+                        SizedBox(height: isDesktop ? 32 : 24),
                         const ProductsTable(),
                       ],
                     ),

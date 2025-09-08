@@ -5,12 +5,15 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../services/internationalization/internationalization.dart';
 import '../../../themes/app_colors.dart';
+import '../../../utils/app_constants.dart';
 import '../../../utils/common_functions.dart';
 import '../../../utils/extends_models.dart';
 import '../../../utils/formatters.dart';
 import '../../../utils/responsive_utils.dart';
+import '../../../widgets/loading.dart';
 import '../inventory_controller.dart';
 import 'create_edit_product_form_view.dart';
+import 'search_and_filter.dart';
 
 /// The products table view.
 class ProductsTable extends StatelessWidget {
@@ -20,57 +23,39 @@ class ProductsTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isMobile = ResponsiveUtils.isMobile(context);
-    final controller = context.watch<InventoryController>();
+    final controller = context.read<InventoryController>();
 
     return ShadCard(
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: controller.products.isEmpty
-            ? Center(child: Text(Intls.to.noProductsFoundAddNewProduct))
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _ProductsTableHeader(
-                    productCount: controller.products.length,
-                  ),
-                  const SizedBox(height: 20),
-                  if (!isMobile)
-                    _ProductsDataTable(products: controller.filteredProducts)
-                  else
-                    _ProductsCardList(products: controller.filteredProducts),
-                ],
-              ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SearchAndFilterCard(),
+          StreamBuilder<List<Product>>(
+            stream: controller.filteredProductsStream,
+            builder: (context, snapshot) {
+              final products = snapshot.data;
+              if (!snapshot.hasData || products == null) {
+                return const Loading();
+              }
+
+              return Padding(
+                padding: const EdgeInsets.all(20),
+                child: products.isEmpty
+                    ? Center(child: Text(Intls.to.noProductsFoundAddNewProduct))
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (!isMobile)
+                            _ProductsDataTable(products: products)
+                          else
+                            _ProductsCardList(products: products),
+                        ],
+                      ),
+              );
+            },
+          ),
+        ],
       ),
-    );
-  }
-}
-
-class _ProductsTableHeader extends StatelessWidget {
-  const _ProductsTableHeader({required this.productCount});
-
-  final int productCount;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            const Icon(LucideIcons.package, size: 20),
-            const SizedBox(width: 8),
-            Text(
-              '${Intls.to.products} ($productCount)',
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-          ],
-        ),
-        const SizedBox(height: 4),
-        Text(
-          Intls.to.manageYourProducts,
-          style: ShadTheme.of(context).textTheme.muted,
-        ),
-      ],
     );
   }
 }
@@ -84,51 +69,55 @@ class _ProductsDataTable extends StatelessWidget {
   Widget build(BuildContext context) {
     final ScrollController scrollController = ScrollController();
 
-    return Scrollbar(
-      controller: scrollController,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        controller: scrollController,
-        child: DataTable(
-          horizontalMargin: 12,
-          dataRowMaxHeight: 80,
-          columns: [
-            DataColumn(label: Text(Intls.to.product)),
-            DataColumn(label: Text(Intls.to.category)),
-            DataColumn(label: Text(Intls.to.price)),
-            DataColumn(label: Text(Intls.to.stock)),
-            DataColumn(label: Text(Intls.to.status)),
-            DataColumn(label: Text(Intls.to.expiry)),
-            DataColumn(label: Text(Intls.to.actions)),
-          ],
-          rows: products.map((product) {
-            return DataRow(
-              cells: [
-                DataCell(_ProductNameCell(product: product)),
-                DataCell(
-                  _CategoryCell(
-                    categories: product.globalProduct.categories
-                        .map((c) => c.name)
-                        .toList(),
-                  ),
-                ),
-                DataCell(
-                  Text(
-                    Formatters.formatCurrency(
-                      product.businessProduct.priceInXaf.toDouble(),
-                    ),
-                    style: ShadTheme.of(context).textTheme.p,
-                  ),
-                ),
-                DataCell(_StockCell(product: product)),
-                DataCell(_StatusCell(product: product)),
-                DataCell(_ExpiryCell(product: product)),
-                DataCell(_ActionsCell(product: product)),
-              ],
-            );
-          }).toList(),
-        ),
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return ConstrainedBox(
+          constraints: BoxConstraints(minWidth: constraints.maxWidth),
+          child: Scrollbar(
+            controller: scrollController,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              controller: scrollController,
+              child: DataTable(
+                horizontalMargin: 12,
+                dataRowMaxHeight: 80,
+                headingTextStyle: ShadTheme.of(
+                  context,
+                ).textTheme.p.copyWith(fontWeight: FontWeight.w600),
+                columns: [
+                  DataColumn(label: Text(Intls.to.product)),
+                  DataColumn(label: Text(Intls.to.barcode)),
+                  DataColumn(label: Text(Intls.to.price)),
+                  DataColumn(label: Text(Intls.to.stock)),
+                  DataColumn(label: Text(Intls.to.status)),
+                  DataColumn(label: Text(Intls.to.expiry)),
+                  DataColumn(label: Text(Intls.to.actions)),
+                ],
+                rows: products.map((product) {
+                  return DataRow(
+                    cells: [
+                      DataCell(_ProductNameCell(product: product)),
+                      DataCell(Text(product.globalProduct.barCodeValue)),
+                      DataCell(
+                        Text(
+                          Formatters.formatCurrency(
+                            product.businessProduct.priceInXaf.toDouble(),
+                          ),
+                          style: ShadTheme.of(context).textTheme.p,
+                        ),
+                      ),
+                      DataCell(_StockCell(product: product)),
+                      DataCell(_StatusCell(product: product)),
+                      DataCell(_ExpiryCell(product: product)),
+                      DataCell(_ActionsCell(product: product)),
+                    ],
+                  );
+                }).toList(),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
@@ -250,7 +239,9 @@ class _ProductCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(Intls.to.expiry, style: theme.textTheme.p),
+                Expanded(
+                  child: Text(Intls.to.expiry, style: theme.textTheme.p),
+                ),
                 _ExpiryCell(product: product),
               ],
             ),
@@ -288,44 +279,70 @@ class _ProductNameCell extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
+    return Row(
+      spacing: 5,
       children: [
-        Text(product.globalProduct.name, style: theme.textTheme.large),
-        Text(
-          switch (product.globalProduct.barCodeValue.length) {
-            > 0 && > 5 =>
-              '#${product.globalProduct.barCodeValue.substring(0, 5)}',
-            > 0 && < 5 => '#${product.globalProduct.barCodeValue}',
-            _ => '',
-          },
-          style: theme.textTheme.muted.copyWith(
-            fontSize: 12,
-            fontWeight: FontWeight.w400,
+        Container(
+          height: 50,
+          width: 50,
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(Radius.circular(8)),
+            border: const Border.fromBorderSide(
+              BorderSide(color: AppColors.grey200),
+            ),
+            color: ShadTheme.of(context).colorScheme.muted,
+          ),
+          child: product.globalProduct.imagesLinksIds.isNotEmpty
+              ? FutureBuilder(
+                  future: precacheImage(
+                    NetworkImage(product.globalProduct.imagesLinksIds.first),
+                    context,
+                    onError: (error, stackTrace) {
+                      return null;
+                    },
+                  ),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done &&
+                        snapshot.error == null) {
+                      return FadeInImage.assetNetwork(
+                        placeholder: StaticImages.placeholder,
+                        image: product.globalProduct.imagesLinksIds.first,
+                        fit: BoxFit.contain,
+                        imageErrorBuilder: (context, error, stackTrace) {
+                          return const Icon(LucideIcons.package, size: 20);
+                        },
+                        placeholderErrorBuilder: (context, error, stackTrace) {
+                          return const Icon(LucideIcons.package, size: 20);
+                        },
+                      );
+                    }
+
+                    return const Icon(LucideIcons.package, size: 20);
+                  },
+                )
+              : const Icon(LucideIcons.package, size: 20),
+        ),
+        const SizedBox(width: 8),
+        Flexible(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(product.globalProduct.name, style: theme.textTheme.large),
+              Text(
+                product.globalProduct.categories
+                    .map((c) => c.name)
+                    .take(2)
+                    .join(' > ')
+                    .toString(),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.muted,
+              ),
+            ],
           ),
         ),
       ],
-    );
-  }
-}
-
-class _CategoryCell extends StatelessWidget {
-  const _CategoryCell({required this.categories});
-
-  final List<String> categories;
-
-  @override
-  Widget build(BuildContext context) {
-    return Wrap(
-      spacing: 4,
-      runSpacing: 4,
-      children: categories.map((category) {
-        return ShadBadge(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-          child: Text(category),
-        );
-      }).toList(),
     );
   }
 }
@@ -407,7 +424,7 @@ class _ExpiryCell extends StatelessWidget {
     final theme = ShadTheme.of(context);
 
     if (!product.businessProduct.hasExpirationDate()) {
-      return const SizedBox.shrink();
+      return const Text('/');
     }
 
     return Text(
@@ -433,21 +450,26 @@ class _ActionsCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void _showProductDialog(BuildContext context, Product product) {
+    void _showProductDialog(BuildContext context, Product product) async {
       final controller = context.read<InventoryController>();
-      showShadDialog(
+      final result = await showShadDialog<bool?>(
         context: context,
         builder: (context) => CreateEditProductFormView(
           product: product,
           inventoryController: controller,
         ),
       );
+      if (result == true) {
+        await controller.refreshProducts();
+      }
     }
 
     void _showDeleteDialog(BuildContext context, Product product) {
+      final controller = context.read<InventoryController>();
       showShadDialog(
         context: context,
-        builder: (context) => _DeleteProductDialog(product: product),
+        builder: (context) =>
+            _DeleteProductDialog(product: product, controller: controller),
       );
     }
 
@@ -467,7 +489,10 @@ class _ActionsCell extends StatelessWidget {
             }
 
             return IconButton(
-              icon: const Icon(LucideIcons.squarePen400),
+              icon: Icon(
+                LucideIcons.squarePen400,
+                color: ShadTheme.of(context).colorScheme.primary,
+              ),
               onPressed: () => _showProductDialog(context, product),
             );
           },
@@ -480,11 +505,14 @@ class _ActionsCell extends StatelessWidget {
           builder: (context, snapshot) {
             final canDelete = snapshot.data ?? false;
             if (!canDelete) {
-              return const Text('N/A');
+              return const SizedBox.shrink();
             }
 
             return IconButton(
-              icon: const Icon(LucideIcons.trash2400),
+              icon: Icon(
+                LucideIcons.trash2400,
+                color: ShadTheme.of(context).colorScheme.destructive,
+              ),
               onPressed: () => _showDeleteDialog(context, product),
             );
           },
@@ -495,64 +523,75 @@ class _ActionsCell extends StatelessWidget {
 }
 
 class _DeleteProductDialog extends StatelessWidget {
-  const _DeleteProductDialog({required this.product});
+  _DeleteProductDialog({required this.product, required this.controller});
 
   final Product product;
+  final InventoryController controller;
+  final ValueNotifier<bool> isLoading = ValueNotifier(false);
 
   @override
   Widget build(BuildContext context) {
-    Future<void> _deleteProduct(BuildContext context) async {
-      final result = await context.read<InventoryController>().deleteProduct(
-        product.businessProduct.businessId,
+    Future<void> _deleteProduct() async {
+      if (!context.mounted) {
+        return;
+      }
+      isLoading.value = true;
+      final result = await controller.deleteProduct(
+        product.businessProduct.refId,
       );
       if (result) {
-        Navigator.of(context).pop();
-        ShadToaster.of(context).show(
-          ShadToast(
-            title: Text(Intls.to.success),
-            description: Text(Intls.to.productDeletedSuccessfully),
-          ),
+        showSuccessToast(
+          context: context,
+          message: Intls.to.productDeletedSuccessfully,
         );
       } else {
-        ShadToaster.of(context).show(
-          ShadToast.destructive(
-            description: Text(
-              Intls.to.failedToDeleteProduct.trParams({
-                'name': product.globalProduct.name,
-              }),
-            ),
-          ),
+        showErrorToast(
+          context: context,
+          message: Intls.to.failedToDeleteProduct.trParams({
+            'name': product.globalProduct.name,
+          }),
         );
       }
+      isLoading.value = false;
+
+      Navigator.of(context).pop();
     }
 
     return ShadDialog(
       title: Text(Intls.to.deleteProduct),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            Intls.to.areYouSureYouWantToDelete.trParams({
-              'name': product.globalProduct.name,
-            }),
-          ),
-          const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+      child: ValueListenableBuilder(
+        valueListenable: isLoading,
+        builder: (context, value, child) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              ShadButton.raw(
-                variant: ShadButtonVariant.outline,
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text(Intls.to.cancel),
+              Text(
+                Intls.to.areYouSureYouWantToDelete.trParams({
+                  'name': product.globalProduct.name,
+                }),
               ),
-              const SizedBox(width: 12),
-              ShadButton(
-                onPressed: () => _deleteProduct(context),
-                child: Text(Intls.to.delete),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  ShadButton.raw(
+                    variant: ShadButtonVariant.outline,
+                    enabled: !value,
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: Text(Intls.to.cancel),
+                  ),
+                  const SizedBox(width: 12),
+                  ShadButton.destructive(
+                    enabled: !value,
+                    trailing: value ? const Loading.button() : null,
+                    onPressed: _deleteProduct,
+                    child: Text(Intls.to.delete),
+                  ),
+                ],
               ),
             ],
-          ),
-        ],
+          );
+        },
       ),
     );
   }

@@ -1,42 +1,127 @@
 import 'dart:async';
 import 'dart:collection';
 
+import 'package:rxdart/rxdart.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../../repositories/categories_repository.dart';
 import '../../repositories/products_repository.dart';
+import '../../utils/common_functions.dart';
 import '../../utils/extends_models.dart';
 import '../../utils/logger.dart';
 import '../../utils/user_preference.dart';
 
-/// Provider for managing inventory UI state
+/// Enum for product status.
+enum ProductStatus {
+  /// In stock.
+  inStock,
+
+  /// Out of stock.
+  outOfStock,
+
+  /// Low stock.
+  lowStock,
+}
+
+/// View model for inventory screen
 class InventoryViewModel {
   final LoggerApp _logger = LoggerApp('InventoryViewModel');
 
-  /// The user preferences.
+  /// Gets the user preferences.
   final UserPreferences userPreferences = UserPreferences.instance;
 
-  /// Error message if any.
-  String error = '';
+  /// Gets the products subject.
+  final _productsSubject =
+      BehaviorSubject<UnmodifiableListView<Product>>.seeded(
+        UnmodifiableListView([]),
+      );
 
-  /// The filtered products.
-  List<Product> filteredProducts = [];
+  /// Gets the error subject.
+  final _errorSubject = BehaviorSubject<String>.seeded('');
 
-  /// The list of products.
-  UnmodifiableListView<Product> products = UnmodifiableListView<Product>([]);
+  /// Gets the search query subject.
+  final _searchQuerySubject = BehaviorSubject<String>.seeded('');
 
-  /// The app global product.
-  UnmodifiableListView<GlobalProduct> globalProducts =
-      UnmodifiableListView<GlobalProduct>([]);
+  /// Gets the selected category subject.
+  final _selectedCategorySubject = BehaviorSubject<String>.seeded('');
 
-  /// The list of business categories.
+  /// Gets the selected status subject.
+  final _selectedStatusSubject = BehaviorSubject<ProductStatus?>.seeded(null);
+
+  /// Gets the business categories.
   UnmodifiableListView<Category> businessCategories =
       UnmodifiableListView<Category>([]);
 
-  /// Completer for loading state.
+  /// Gets the completer.
   final Completer<bool> completer = Completer<bool>();
 
-  /// Constructs of new [InventoryViewModel].
+  /// Gets the search query.
+  BehaviorSubject<String> get searchQuery => _searchQuerySubject;
+
+  /// Gets the selected category.
+  BehaviorSubject<String> get selectedCategory => _selectedCategorySubject;
+
+  /// Gets the products stream.
+  BehaviorSubject<UnmodifiableListView<Product>> get productsStream =>
+      _productsSubject;
+
+  /// Gets the selected status.
+  BehaviorSubject<ProductStatus?> get selectedStatus => _selectedStatusSubject;
+
+  /// Gets the error stream.
+  Stream<String> get errorStream => _errorSubject.stream;
+
+  /// Gets the filtered products stream.
+  Stream<List<Product>> get filteredProductsStream => Rx.combineLatest4(
+    _productsSubject.stream,
+    _searchQuerySubject.stream,
+    _selectedCategorySubject.stream,
+    _selectedStatusSubject.stream,
+    (products, searchQuery, category, status) {
+      var filtered = products.toList();
+      if (searchQuery.isNotEmpty) {
+        filtered = filtered
+            .where(
+              (p) =>
+                  p.globalProduct.name.toLowerCase().contains(
+                    searchQuery.toLowerCase(),
+                  ) ||
+                  p.globalProduct.barCodeValue.toLowerCase().contains(
+                    searchQuery.toLowerCase(),
+                  ),
+            )
+            .toList();
+      }
+      if (category.isNotEmpty) {
+        filtered = filtered
+            .where(
+              (p) => p.globalProduct.categories.any(
+                (c) => c.name.toLowerCase() == category.toLowerCase(),
+              ),
+            )
+            .toList();
+      }
+
+      if (status != null) {
+        filtered = filtered
+            .where(
+              (p) => switch (status) {
+                ProductStatus.inStock =>
+                  p.businessProduct.stockQuantity > 0 &&
+                      !isLowStock(p.businessProduct),
+                ProductStatus.outOfStock =>
+                  p.businessProduct.stockQuantity <= 0,
+                ProductStatus.lowStock => isLowStock(p.businessProduct),
+              },
+            )
+            .toList();
+      }
+
+      return filtered;
+    },
+  );
+
+  /// Constructor of [InventoryViewModel].
   InventoryViewModel() {
     initTheData();
     initPartialData();
@@ -45,17 +130,13 @@ class InventoryViewModel {
   /// Initiates the partial data.
   Future<void> initPartialData() async {
     _logger.info('initPartialData is called');
-
     final businessId = userPreferences.business?.refId;
-    if (businessId == null) {
-      return;
-    }
+    if (businessId == null) return;
 
-    final _businessCategories = await CategoriesRepository.to
-        .getCategoriesByBusinessId(businessId);
-
-    businessCategories = UnmodifiableListView(_businessCategories);
-
+    final categories = await CategoriesRepository.to.getCategoriesByBusinessId(
+      businessId,
+    );
+    businessCategories = UnmodifiableListView(categories);
     _logger.info('initPartialData is done');
   }
 
@@ -69,55 +150,75 @@ class InventoryViewModel {
         throw Exception('Business or store not found');
       }
 
-      final _businessProducts = await ProductsRepository.instance
+      final businessProducts = await ProductsRepository.instance
           .getProductsByBusinessId(businessId);
       final uniqueGlobalIds = <String>{
-        ..._businessProducts.map((p) => p.globalProductId),
+        ...businessProducts.map((p) => p.globalProductId),
       };
       final globalFutures = uniqueGlobalIds.map(
         (id) => ProductsRepository.instance.findGlobalProduct(
           FindGlobalProductsRequest(refId: id),
         ),
       );
-
       final globals = await Future.wait(globalFutures);
-
       final globalMap = Map<String, GlobalProduct>.fromIterables(
         uniqueGlobalIds.toList(),
         globals.expand((g) => g),
       );
 
-      final _products = _businessProducts
+      final products = businessProducts
           .map((e) {
             final globalProduct = globalMap[e.globalProductId];
 
-            if (globalProduct != null) {
-              return Product(businessProduct: e, globalProduct: globalProduct);
-            }
-
-            return null;
+            return globalProduct != null
+                ? Product(businessProduct: e, globalProduct: globalProduct)
+                : null;
           })
           .whereType<Product>()
           .toList();
-      filteredProducts = [..._products];
-      products = UnmodifiableListView([..._products]);
+      _productsSubject.add(UnmodifiableListView(products));
+      _errorSubject.add('');
     } on Exception catch (e) {
-      _logger.severe(e.toString());
-      error = e.toString();
+      _logger.severe('initTheData failed: $e');
+      _errorSubject.add(e.toString());
     } finally {
       _logger.info('initTheData is done');
-      completer.complete(true);
+      if (!completer.isCompleted) completer.complete(true);
     }
   }
 
-  /// Deletes product.
-  Future<bool> deleteProduct(String businessId) async {
-    try {
-      // await ProductsRepository.instance.deleteProduct(businessId);
-
-      return true;
-    } catch (e) {
-      return false;
+  /// Deletes a product.
+  Future<bool> deleteProduct(String businessProductId) async {
+    final result = await ProductsRepository.instance.deleteProduct(
+      DeleteProductRequest(businessProductId: businessProductId),
+    );
+    if (result) {
+      unawaited(initTheData());
     }
+
+    return result;
+  }
+
+  /// Updates the search query.
+  void updateSearchQuery(String query) {
+    _searchQuerySubject.add(query);
+  }
+
+  /// Updates the selected category.
+  void updateSelectedCategory(String category) {
+    _selectedCategorySubject.add(category);
+  }
+
+  /// Refreshes the products.
+  Future<void> refreshProducts() async {
+    await initTheData();
+  }
+
+  /// Disposes the view model.
+  void dispose() {
+    _productsSubject.close();
+    _errorSubject.close();
+    _searchQuerySubject.close();
+    _selectedCategorySubject.close();
   }
 }

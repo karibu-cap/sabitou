@@ -77,7 +77,7 @@ class HomeScreen extends StatelessWidget {
                                     DashboardItem.dashboard =>
                                       const Dashboard(),
                                     DashboardItem.inventory =>
-                                      const InventoryView(),
+                                      const InventoryScreen(),
                                     DashboardItem.sales => const SizedBox(),
                                     DashboardItem.reports => const SizedBox(),
                                     DashboardItem.users => const SizedBox(),

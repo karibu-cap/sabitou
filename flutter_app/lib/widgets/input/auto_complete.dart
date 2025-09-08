@@ -25,6 +25,9 @@ class CustomAutoComplete<T> extends StatefulWidget {
   /// Converts an option to its display string for the input field.
   final String Function(T) displayStringForOption;
 
+  /// Whether the input field is enabled.
+  final bool enabled;
+
   /// Builds the dropdown widget for the selectable options.
   final Widget Function({
     required BuildContext context,
@@ -46,6 +49,7 @@ class CustomAutoComplete<T> extends StatefulWidget {
     required this.displayStringForOption,
     this.inputValidator,
     this.initialValue,
+    this.enabled = true,
   });
 
   @override
@@ -221,6 +225,7 @@ class _CustomAutoCompleteState<T> extends State<CustomAutoComplete<T>> {
             controller: _inputController,
             focusNode: _focusNode,
             validator: widget.inputValidator,
+            enabled: widget.enabled,
             trailing: isLoading
                 ? Loading.button(
                     color: ShadTheme.of(context).colorScheme.primary,

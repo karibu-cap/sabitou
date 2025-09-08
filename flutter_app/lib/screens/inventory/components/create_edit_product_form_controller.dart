@@ -3,7 +3,10 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../repositories/products_repository.dart';
+import '../../../services/internationalization/internationalization.dart';
+import '../../../utils/common_functions.dart';
 import '../../../utils/extends_models.dart';
+import '../../../utils/user_preference.dart';
 
 /// The type of the product form.
 enum ProductFormType {
@@ -14,14 +17,19 @@ enum ProductFormType {
   edit,
 }
 
+/// The error type.
+enum ErrorType {
+  /// The category error type.
+  category,
+}
+
 /// Product form provider.
 class CreateEditProductFormController extends ChangeNotifier {
   final Product _product;
-  final bool _isLoading = false;
-  List<String>? _selectedCategoryId;
+  bool _onSaveProduct = false;
 
-  /// Whether the form is saving.
-  final ValueNotifier<bool> isSaving = ValueNotifier(false);
+  /// Gets the error type.
+  ValueNotifier<Map<ErrorType, String?>?> errors = ValueNotifier(null);
 
   /// Gets the product form type.
   final ProductFormType productFormType;
@@ -31,6 +39,9 @@ class CreateEditProductFormController extends ChangeNotifier {
 
   /// The name controller.
   final TextEditingController nameController;
+
+  /// The category controller.
+  ShadSelectController<Category>? categoryController;
 
   /// The barcode controller.
   final TextEditingController barcodeController;
@@ -47,11 +58,8 @@ class CreateEditProductFormController extends ChangeNotifier {
   /// The expiry controller.
   final TextEditingController expiryController;
 
-  /// Gets the selected category id.
-  List<String>? get selectedCategoryId => _selectedCategoryId;
-
   /// Gets the loading state.
-  bool get isLoading => _isLoading;
+  bool get onSaveProduct => _onSaveProduct;
 
   /// Gets the product.
   Product get product => _product;
@@ -83,22 +91,28 @@ class CreateEditProductFormController extends ChangeNotifier {
       expiryController = TextEditingController(
         text: product?.businessProduct.expirationDate
             .toDateTime()
-            .toIso8601String()
-            .split('T')
-            .first,
+            .toIso8601String(),
       ),
-      _selectedCategoryId = product?.globalProduct.categories
-          .map((e) => e.refId)
-          .toList();
+      categoryController = ShadSelectController<Category>(
+        initialValue: product?.globalProduct.categories
+            .map((e) => Category(refId: e.refId, name: e.name))
+            .toSet(),
+      );
 
   /// Validates the form.
   bool validateForm() {
-    return formKey.currentState?.saveAndValidate() ?? false;
-  }
+    final isValid = formKey.currentState?.saveAndValidate() == true;
+    final isNotEmptyCategory = categoryController?.value.isNotEmpty == true;
+    if (!isNotEmptyCategory) {
+      errors.value = {
+        ErrorType.category: Intls.to.isRequiredField.replaceFirst(
+          '@field',
+          Intls.to.category,
+        ),
+      };
+    }
 
-  /// Validates the selections.
-  bool validateSelections() {
-    return _selectedCategoryId != null;
+    return isValid && isNotEmptyCategory;
   }
 
   /// Filters global products.
@@ -112,9 +126,65 @@ class CreateEditProductFormController extends ChangeNotifier {
   void setNewProduct(GlobalProduct globalProduct) {
     nameController.text = globalProduct.name;
     barcodeController.text = globalProduct.barCodeValue;
-    _selectedCategoryId = globalProduct.categories.map((e) => e.refId).toList();
+    categoryController?.value = globalProduct.categories
+        .map((e) => Category(refId: e.refId, name: e.name))
+        .toSet();
     _product.globalProduct = globalProduct;
-    print("[[[[[]]]]]");
     notifyListeners();
+  }
+
+  /// Saves the product.
+  Future<void> saveProduct(BuildContext context) async {
+    if (!validateForm()) {
+      return;
+    }
+    _onSaveProduct = true;
+    notifyListeners();
+
+    try {
+      final businessId = UserPreferences.instance.business?.refId;
+      if (businessId == null) {
+        throw Exception(Intls.to.error);
+      }
+
+      final result = productFormType == ProductFormType.create
+          ? await ProductsRepository.instance.addProduct(
+              AddProductRequest(
+                globalProduct: product.globalProduct,
+                businessId: businessId,
+                minStockThreshold: product.businessProduct.minStockThreshold,
+                priceInCents: product.businessProduct.priceInXaf,
+                stockQuantity: product.businessProduct.stockQuantity,
+                expirationDate: product.businessProduct.hasExpirationDate()
+                    ? product.businessProduct.expirationDate
+                    : null,
+              ),
+            )
+          : await ProductsRepository.instance.updateProduct(
+              UpdateProductRequest(
+                globalProduct: product.globalProduct,
+                product: product.businessProduct,
+              ),
+            );
+
+      if (result) {
+        if (!context.mounted) {
+          return;
+        }
+        Navigator.of(context).pop(true);
+        showSuccessToast(
+          context: context,
+          message: Intls.to.productSavedSuccessfully,
+        );
+      }
+    } on Exception catch (e) {
+      if (!context.mounted) {
+        return;
+      }
+      showErrorToast(context: context, message: e.toString());
+    } finally {
+      _onSaveProduct = false;
+      notifyListeners();
+    }
   }
 }

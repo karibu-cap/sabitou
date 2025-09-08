@@ -5,6 +5,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import '../../../services/internationalization/internationalization.dart';
 import '../../../utils/responsive_utils.dart';
 import '../inventory_controller.dart';
+import '../inventory_view_model.dart';
 
 /// The search and filter view.
 class SearchAndFilterCard extends StatelessWidget {
@@ -15,39 +16,46 @@ class SearchAndFilterCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isMobile = ResponsiveUtils.isMobile(context);
     final controller = context.read<InventoryController>();
-    final categories = controller.products
-        .map((p) => p.globalProduct.categories)
-        .expand((c) => c)
-        .map((c) => c.name)
-        .toSet()
-        .toList();
+    final categories =
+        controller.productsStream.valueOrNull
+            ?.map((p) => p.globalProduct.categories)
+            .expand((c) => c)
+            .map((c) => c.name)
+            .toSet()
+            .toList() ??
+        [];
 
-    return ShadCard(
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              Intls.to.searchAndFilter,
-              style: ShadTheme.of(context).textTheme.h4,
-            ),
-            const SizedBox(height: 16),
-            Flex(
-              direction: isMobile ? Axis.vertical : Axis.horizontal,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              spacing: 12,
-              children: [
-                Flexible(flex: isMobile ? 0 : 3, child: const _SearchInput()),
-                if (categories.isNotEmpty)
-                  Flexible(
-                    flex: isMobile ? 0 : 1,
-                    child: _CategoryFilter(categories: categories),
-                  ),
-              ],
-            ),
-          ],
-        ),
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(Intls.to.product, style: ShadTheme.of(context).textTheme.h4),
+          Text(
+            Intls.to.productManagementDescription,
+            style: ShadTheme.of(context).textTheme.muted,
+          ),
+          const SizedBox(height: 16),
+          Flex(
+            direction: isMobile ? Axis.vertical : Axis.horizontal,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 12,
+            children: [
+              Expanded(flex: isMobile ? 0 : 2, child: const _SearchInput()),
+              Expanded(
+                flex: isMobile ? 0 : 1,
+                child: Row(
+                  spacing: 12,
+                  children: [
+                    if (categories.isNotEmpty)
+                      Expanded(child: _CategoryFilter(categories: categories)),
+                    const Expanded(child: _StatusFilter()),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -61,10 +69,9 @@ class _SearchInput extends StatelessWidget {
     final controller = context.read<InventoryController>();
 
     return ShadInput(
-      controller: controller.searchController,
       placeholder: Text(Intls.to.searchForProduct),
       leading: const Icon(LucideIcons.search, size: 16),
-      onChanged: (value) => controller.updateSearchQuery(),
+      onChanged: (value) => controller.searchQuery.add(value),
     );
   }
 }
@@ -88,8 +95,44 @@ class _CategoryFilter extends StatelessWidget {
       selectedOptionBuilder: (context, value) => Text(value),
       allowDeselection: true,
       onChanged: (value) {
-        controller.selectedCategory.value = value ?? '';
-        controller.updateSearchQuery();
+        controller.selectedCategory.add(value ?? '');
+      },
+    );
+  }
+}
+
+class _StatusFilter extends StatelessWidget {
+  const _StatusFilter();
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = context.read<InventoryController>();
+
+    return ShadSelect<ProductStatus?>(
+      placeholder: Text(Intls.to.status),
+      options: [
+        ...ProductStatus.values.map(
+          (status) => ShadOption<ProductStatus?>(
+            value: status,
+            child: Text(switch (status) {
+              ProductStatus.inStock => Intls.to.inStock.trParams({
+                'quantity': '',
+              }),
+              ProductStatus.outOfStock => Intls.to.outOfStock,
+              ProductStatus.lowStock => Intls.to.lowStock,
+            }),
+          ),
+        ),
+      ],
+      selectedOptionBuilder: (context, value) => Text(switch (value) {
+        ProductStatus.inStock => Intls.to.inStock.trParams({'quantity': ''}),
+        ProductStatus.outOfStock => Intls.to.outOfStock,
+        ProductStatus.lowStock => Intls.to.lowStock,
+        _ => Intls.to.status,
+      }),
+      allowDeselection: true,
+      onChanged: (value) {
+        controller.selectedStatus.add(value);
       },
     );
   }

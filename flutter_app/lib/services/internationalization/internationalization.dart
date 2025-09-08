@@ -636,6 +636,44 @@ class AppInternationalizationService extends ChangeNotifier {
       'fr':
           'Aucun produit trouvé. Ajoutez un nouveau produit si vous avez des permissions ou contactez l\'administrateur.',
     },
+    'searchCategory': {
+      'en': 'Search Category',
+      'fr': 'Rechercher une catégorie',
+    },
+    'noCategoryFound': {
+      'en': 'No category found',
+      'fr': 'Aucune catégorie trouvée',
+    },
+    'minStockThresholdShouldBeLessThanStockQuantity': {
+      'en': 'Min stock threshold should be less than stock quantity',
+      'fr':
+          'Le seuil de stock minimum doit être inférieur à la quantité en stock',
+    },
+    'quantityShouldBeGreaterThanMinStockThreshold': {
+      'en': 'Quantity should be greater than min stock threshold',
+      'fr': 'La quantité doit être supérieure au seuil de stock minimum',
+    },
+    'expirationDateShouldBeAfterToday': {
+      'en': 'Expiration date should be after today',
+      'fr': 'La date d\'expiration doit être après aujourd\'hui',
+    },
+    'productSavedSuccessfully': {
+      'en': 'Product saved successfully',
+      'fr': 'Produit enregistré avec succès',
+    },
+    'inventoryManagement': {
+      'en': 'Inventory Management',
+      'fr': 'Gestion des inventaires',
+    },
+    'inventoryManagementDescription': {
+      'en': 'Manage your products, stock levels, and inventory',
+      'fr': 'Gestion de vos produits, niveaux de stock et inventaire',
+    },
+    'productManagementDescription': {
+      'en': 'Manage your product inventory',
+      'fr': 'Gestion de votre inventaire de produits',
+    },
+    'totalValue': {'en': 'Total Value', 'fr': 'Valeur totale'},
   };
 
   /// Direct access to the internationalization service.
@@ -654,6 +692,43 @@ class AppInternationalizationService extends ChangeNotifier {
     const Locale('en'),
     const Locale('fr'),
   ];
+
+  /// Returns the localized value of text 'totalValue'.
+  String get totalValue => _stringOfLocalizedValue('totalValue');
+
+  /// Returns the localized value of text 'productManagementDescription'.
+  String get productManagementDescription =>
+      _stringOfLocalizedValue('productManagementDescription');
+
+  /// Returns the localized value of text 'inventoryManagement'.
+  String get inventoryManagement =>
+      _stringOfLocalizedValue('inventoryManagement');
+
+  /// Returns the localized value of text 'inventoryManagementDescription'.
+  String get inventoryManagementDescription =>
+      _stringOfLocalizedValue('inventoryManagementDescription');
+
+  /// Returns the localized value of text 'productSavedSuccessfully'.
+  String get productSavedSuccessfully =>
+      _stringOfLocalizedValue('productSavedSuccessfully');
+
+  /// Returns the localized value of text 'expirationDateShouldBeAfterToday'.
+  String get expirationDateShouldBeAfterToday =>
+      _stringOfLocalizedValue('expirationDateShouldBeAfterToday');
+
+  /// Returns the localized value of text 'quantityShouldBeGreaterThanMinStockThreshold'.
+  String get quantityShouldBeGreaterThanMinStockThreshold =>
+      _stringOfLocalizedValue('quantityShouldBeGreaterThanMinStockThreshold');
+
+  /// Returns the localized value of text 'minStockThresholdShouldBeLessThanStockQuantity'.
+  String get minStockThresholdShouldBeLessThanStockQuantity =>
+      _stringOfLocalizedValue('minStockThresholdShouldBeLessThanStockQuantity');
+
+  /// Returns the localized value of text 'noCategoryFound'.
+  String get noCategoryFound => _stringOfLocalizedValue('noCategoryFound');
+
+  /// Returns the localized value of text 'searchCategory'.
+  String get searchCategory => _stringOfLocalizedValue('searchCategory');
 
   /// Returns the localized value of text 'noProductsFoundAddNewProduct'.
   String get noProductsFoundAddNewProduct =>

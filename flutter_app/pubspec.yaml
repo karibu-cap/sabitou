@@ -101,6 +101,10 @@ dependencies:
   # Package to manage the state of the application.
   rxdart: ^0.28.0
 
+  # Package to show a loading animation.
+  shimmer_animation: ^2.2.2
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

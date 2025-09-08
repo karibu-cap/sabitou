@@ -20,16 +20,19 @@ class InventoryHeader extends StatelessWidget {
     final isDesktop = ResponsiveUtils.isDesktop(context);
     final theme = ShadTheme.of(context);
 
-    void _showProductDialog(BuildContext context, Product? product) {
+    void _showProductDialog(BuildContext context, Product? product) async {
       final controller = context.read<InventoryController>();
 
-      showShadDialog(
+      final result = await showShadDialog<bool?>(
         context: context,
         builder: (context) => CreateEditProductFormView(
           product: product,
           inventoryController: controller,
         ),
       );
+      if (result == true) {
+        await controller.refreshProducts();
+      }
     }
 
     return Flex(
@@ -42,9 +45,12 @@ class InventoryHeader extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(Intls.to.productManagement, style: theme.textTheme.h4),
+            Text(Intls.to.inventoryManagement, style: theme.textTheme.h4),
             const SizedBox(height: 4),
-            Text(Intls.to.manageYourProducts, style: theme.textTheme.muted),
+            Text(
+              Intls.to.inventoryManagementDescription,
+              style: theme.textTheme.muted,
+            ),
           ],
         ),
         if (!isDesktop) const SizedBox(height: 16),

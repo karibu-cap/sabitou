@@ -10,7 +10,7 @@ const inventoryRouteTitle = 'Inventory';
 final inventoryPage = BeamPage(
   key: const ValueKey('inventory'),
   title: inventoryRouteTitle,
-  child: InventoryView(),
+  child: InventoryScreen(),
   type: BeamPageType.fadeTransition,
 );
 

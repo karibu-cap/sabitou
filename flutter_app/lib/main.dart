@@ -39,7 +39,7 @@ Future<void> _initServices() async {
   GetIt.I
     ..registerLazySingleton<AppStorageService>(() => appStorage)
     ..registerLazySingleton<ConnectRPCService>(
-      () => ConnectRPCService(clientChannel: fakeTransport.build()),
+      () => ConnectRPCService(clientChannel: fakeTransport),
     )
     ..registerLazySingleton<AppInternationalizationService>(
       () => AppInternationalizationService(

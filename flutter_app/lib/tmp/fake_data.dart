@@ -1,5 +1,6 @@
-const fakeData = {
-  'stores': [
+/// Fake data for testing
+final fakeData = <String, List<Map<String, dynamic>>>{
+  'stores': <Map<String, dynamic>>[
     {
       'ref_id': 'store-001',
       'name': 'Main Store',
@@ -52,7 +53,7 @@ const fakeData = {
       'business_id': 'business-002',
     },
   ],
-  'businesses': [
+  'businesses': <Map<String, dynamic>>[
     {
       'ref_id': 'business-001',
       'name': 'Tech Corp',
@@ -135,6 +136,14 @@ const fakeData = {
         {
           'resource_type': 'RESOURCE_TYPE_PRODUCT',
           'action_type': 'RESOURCE_ACTION_TYPE_ADD',
+        },
+        {
+          'resource_type': 'RESOURCE_TYPE_PRODUCT',
+          'action_type': 'RESOURCE_ACTION_TYPE_UPDATE',
+        },
+        {
+          'resource_type': 'RESOURCE_TYPE_PRODUCT',
+          'action_type': 'RESOURCE_ACTION_TYPE_REMOVE',
         },
       ],
       'permissions_groups_ids': ['group-001'],
@@ -550,7 +559,7 @@ const fakeData = {
     {'ref_id': 'category-006', 'name': 'Dairy'},
     {'ref_id': 'category-007', 'name': 'Entertainment'},
   ],
-  'global_products': [
+  'global_products': <Map<String, dynamic>>[
     {
       'ref_id': 'global-product-001',
       'name': 'Smartphone',
@@ -678,7 +687,7 @@ const fakeData = {
       'images_links_ids': [],
     },
   ],
-  'business_products': [
+  'business_products': <Map<String, dynamic>>[
     {
       'ref_id': 'product-001',
       'business_id': 'business-001',
