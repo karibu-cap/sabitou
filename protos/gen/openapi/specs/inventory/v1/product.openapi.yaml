@@ -457,16 +457,16 @@ components:
     inventory.v1.DeleteProductRequest:
       type: object
       properties:
-        productId:
+        businessProductId:
           type: string
-          title: product_id
+          title: business_product_id
           minLength: 3
           description: |
             The unique identifier of the business product.
             string.min_len = 3
       title: DeleteProductRequest
       required:
-        - productId
+        - businessProductId
       additionalProperties: false
     inventory.v1.DeleteProductResponse:
       type: object
@@ -550,6 +550,16 @@ components:
             $ref: '#/components/schemas/inventory.v1.ProductCategory'
           title: categories
           description: The query to search for products by category.
+        name:
+          type: string
+          title: name
+          description: Query the product name.
+          nullable: true
+        barCodeValue:
+          type: string
+          title: bar_code_value
+          description: Identify the products by bar code.
+          nullable: true
       title: FindGlobalProductsRequest
       additionalProperties: false
     inventory.v1.FindGlobalProductsResponse:
@@ -649,6 +659,14 @@ components:
              Some fields cannot be updated like the product id, business id, and all
              product fields.
           $ref: '#/components/schemas/inventory.v1.BusinessProduct'
+        globalProduct:
+          title: global_product
+          description: |-
+            The global product information to update.
+             Note:Only the fields that are set will be updated if there is no
+             ref_id set for the global product or will be created in other case.
+          nullable: true
+          $ref: '#/components/schemas/inventory.v1.GlobalProduct'
         imagesRawImages:
           type: array
           items:

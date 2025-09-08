@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 package transaction.v1;
+
 import "buf/validate/validate.proto";
 import "google/protobuf/timestamp.proto";
 
@@ -28,10 +29,9 @@ enum TransactionStatus {
   TRANSACTION_STATUS_CANCELLED = 4;
 }
 
-
-// The Transaction represents an entry of actions impacting the stock or finances, 
-// such as sales, purchases, refunds, stock adjustments, or stock transfers. 
-// It ensures traceability of operations by capturing the user, date, product, 
+// The Transaction represents an entry of actions impacting the stock or finances,
+// such as sales, purchases, refunds, stock adjustments, or stock transfers.
+// It ensures traceability of operations by capturing the user, date, product,
 // associated order, amount or quantity, for audit and reports.
 message Transaction {
   // The unique identifier of the transaction.
@@ -62,9 +62,7 @@ message Transaction {
   int64 amount_in_cents = 8;
 
   // The currency code of the transaction (ISO 4217).
-  string currency_code = 9 [
-    (buf.validate.field).required = true
-  ];
+  string currency_code = 9 [(buf.validate.field).required = true];
 
   // The creation date of the transaction (ISO 8601).
   google.protobuf.Timestamp created_at = 10;

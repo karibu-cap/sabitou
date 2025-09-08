@@ -34,7 +34,7 @@ message GetResourceLinksResponse {
 }
 
 service ResourceLinkService {
-  // Gets a resource link by id. 
+  // Gets a resource link by id.
   // Returns the resources in the same order as the ids.
   rpc GetResourceLinks(GetResourceLinksRequest) returns (GetResourceLinksResponse);
 }

@@ -1,8 +1,8 @@
 syntax = "proto3";
 
 package inventory.v1;
-import "buf/validate/validate.proto";
 
+import "buf/validate/validate.proto";
 import "google/protobuf/timestamp.proto";
 
 message ProductCategory {
@@ -28,7 +28,7 @@ message GlobalProduct {
 
   // The product categories of the product.
   repeated ProductCategory categories = 5;
-  
+
   // The list of image related to the product.
   repeated string images_links_ids = 6;
 }
@@ -86,6 +86,12 @@ message FindGlobalProductsRequest {
 
   // The query to search for products by category.
   repeated ProductCategory categories = 2;
+
+  // Query the product name.
+  optional string name = 3;
+
+  // Identify the products by bar code.
+  optional string bar_code_value = 4;
 }
 
 message FindGlobalProductsResponse {
@@ -155,8 +161,13 @@ message UpdateProductRequest {
   // product fields.
   BusinessProduct product = 1;
 
+  // The global product information to update.
+  // Note:Only the fields that are set will be updated if there is no
+  // ref_id set for the global product or will be created in other case.
+  optional GlobalProduct global_product = 2;
+
   // The media ids of the images of the product.
-  repeated bytes images_raw_images = 4;
+  repeated bytes images_raw_images = 3;
 }
 
 message UpdateProductResponse {
@@ -166,7 +177,7 @@ message UpdateProductResponse {
 
 message DeleteProductRequest {
   // The unique identifier of the business product.
-  string product_id = 1 [
+  string business_product_id = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];

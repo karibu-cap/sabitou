@@ -268,12 +268,6 @@ components:
         - ACCOUNT_STATUS_TYPE_UNSPECIFIED
         - ACCOUNT_STATUS_TYPE_ACTIVE
         - ACCOUNT_STATUS_TYPE_DELETED
-    identity.v1.AccountType:
-      type: string
-      title: AccountType
-      enum:
-        - ADMIN
-        - USER
     identity.v1.AuthActionType:
       type: string
       title: AuthActionType
@@ -523,10 +517,6 @@ components:
             $ref: '#/components/schemas/identity.v1.AuthActionType'
           title: required_actions
           description: The actions that the user must complete to authenticate.
-        accountType:
-          title: account_type
-          description: The type of the user's account.
-          $ref: '#/components/schemas/identity.v1.AccountType'
       title: User
       additionalProperties: false
       description: |-

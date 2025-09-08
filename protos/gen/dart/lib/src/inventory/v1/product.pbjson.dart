@@ -203,9 +203,21 @@ const FindGlobalProductsRequest$json = {
       '6': '.inventory.v1.ProductCategory',
       '10': 'categories'
     },
+    {'1': 'name', '3': 3, '4': 1, '5': 9, '9': 1, '10': 'name', '17': true},
+    {
+      '1': 'bar_code_value',
+      '3': 4,
+      '4': 1,
+      '5': 9,
+      '9': 2,
+      '10': 'barCodeValue',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_ref_id'},
+    {'1': '_name'},
+    {'1': '_bar_code_value'},
   ],
 };
 
@@ -213,7 +225,9 @@ const FindGlobalProductsRequest$json = {
 final $typed_data.Uint8List findGlobalProductsRequestDescriptor = $convert.base64Decode(
     'ChlGaW5kR2xvYmFsUHJvZHVjdHNSZXF1ZXN0EhoKBnJlZl9pZBgBIAEoCUgAUgVyZWZJZIgBAR'
     'I9CgpjYXRlZ29yaWVzGAIgAygLMh0uaW52ZW50b3J5LnYxLlByb2R1Y3RDYXRlZ29yeVIKY2F0'
-    'ZWdvcmllc0IJCgdfcmVmX2lk');
+    'ZWdvcmllcxIXCgRuYW1lGAMgASgJSAFSBG5hbWWIAQESKQoOYmFyX2NvZGVfdmFsdWUYBCABKA'
+    'lIAlIMYmFyQ29kZVZhbHVliAEBQgkKB19yZWZfaWRCBwoFX25hbWVCEQoPX2Jhcl9jb2RlX3Zh'
+    'bHVl');
 
 @$core.Deprecated('Use findGlobalProductsResponseDescriptor instead')
 const FindGlobalProductsResponse$json = {
@@ -383,20 +397,34 @@ const UpdateProductRequest$json = {
       '10': 'product'
     },
     {
+      '1': 'global_product',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.inventory.v1.GlobalProduct',
+      '9': 0,
+      '10': 'globalProduct',
+      '17': true
+    },
+    {
       '1': 'images_raw_images',
-      '3': 4,
+      '3': 3,
       '4': 3,
       '5': 12,
       '10': 'imagesRawImages'
     },
+  ],
+  '8': [
+    {'1': '_global_product'},
   ],
 };
 
 /// Descriptor for `UpdateProductRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List updateProductRequestDescriptor = $convert.base64Decode(
     'ChRVcGRhdGVQcm9kdWN0UmVxdWVzdBI3Cgdwcm9kdWN0GAEgASgLMh0uaW52ZW50b3J5LnYxLk'
-    'J1c2luZXNzUHJvZHVjdFIHcHJvZHVjdBIqChFpbWFnZXNfcmF3X2ltYWdlcxgEIAMoDFIPaW1h'
-    'Z2VzUmF3SW1hZ2Vz');
+    'J1c2luZXNzUHJvZHVjdFIHcHJvZHVjdBJHCg5nbG9iYWxfcHJvZHVjdBgCIAEoCzIbLmludmVu'
+    'dG9yeS52MS5HbG9iYWxQcm9kdWN0SABSDWdsb2JhbFByb2R1Y3SIAQESKgoRaW1hZ2VzX3Jhd1'
+    '9pbWFnZXMYAyADKAxSD2ltYWdlc1Jhd0ltYWdlc0IRCg9fZ2xvYmFsX3Byb2R1Y3Q=');
 
 @$core.Deprecated('Use updateProductResponseDescriptor instead')
 const UpdateProductResponse$json = {
@@ -415,14 +443,21 @@ final $typed_data.Uint8List updateProductResponseDescriptor =
 const DeleteProductRequest$json = {
   '1': 'DeleteProductRequest',
   '2': [
-    {'1': 'product_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'productId'},
+    {
+      '1': 'business_product_id',
+      '3': 1,
+      '4': 1,
+      '5': 9,
+      '8': {},
+      '10': 'businessProductId'
+    },
   ],
 };
 
 /// Descriptor for `DeleteProductRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List deleteProductRequestDescriptor = $convert.base64Decode(
-    'ChREZWxldGVQcm9kdWN0UmVxdWVzdBIpCgpwcm9kdWN0X2lkGAEgASgJQgq6SAfIAQFyAhADUg'
-    'lwcm9kdWN0SWQ=');
+    'ChREZWxldGVQcm9kdWN0UmVxdWVzdBI6ChNidXNpbmVzc19wcm9kdWN0X2lkGAEgASgJQgq6SA'
+    'fIAQFyAhADUhFidXNpbmVzc1Byb2R1Y3RJZA==');
 
 @$core.Deprecated('Use deleteProductResponseDescriptor instead')
 const DeleteProductResponse$json = {

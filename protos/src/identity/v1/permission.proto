@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 package identity.v1;
+
 import "buf/validate/validate.proto";
 
 enum ResourceActionType {
@@ -58,7 +59,7 @@ message CreatePermissionsGroupRequest {
   // Note:Only the fields that are set will be created.
   PermissionsGroup permissions_group = 1;
   // The unique identifier of the business on which the permission group is created.
-  string business_id = 2[
+  string business_id = 2 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
@@ -87,10 +88,16 @@ message GetPermissionsGroupResponse {
 
 message UpdatePermissionsGroupRequest {
   // The permission group id;
-  string permissions_group_id = 1 [ (buf.validate.field).required = true, (buf.validate.field).string.min_len = 3 ];
+  string permissions_group_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
 
   // The unique identifier of the business.
-  string business_id = 6 [ (buf.validate.field).required = true, (buf.validate.field).string.min_len = 3 ];
+  string business_id = 6 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
 
   // The name of the permission group. Generally the role of the group.
   optional string name = 2;
@@ -100,7 +107,7 @@ message UpdatePermissionsGroupRequest {
 
   // The permissions set to add.
   repeated Permission add_permissions = 4;
-  
+
   // The permissions set to remove.
   repeated Permission remove_permissions = 5;
 }

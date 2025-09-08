@@ -1,11 +1,12 @@
 syntax = "proto3";
 
 package inventory.v1;
+
 import "buf/validate/validate.proto";
 import "google/protobuf/timestamp.proto";
 
 message Category {
-// Unique identifier for the category
+  // Unique identifier for the category
   optional string ref_id = 1;
 
   // Name of the category (e.g., "Electronics", "Smart TVs")
@@ -69,9 +70,7 @@ message UpdateCategoryRequest {
   ];
 
   // The name of the category.
-  string name = 2 [
-    (buf.validate.field).required = true
-  ];
+  string name = 2 [(buf.validate.field).required = true];
 }
 
 message UpdateCategoryResponse {
@@ -121,5 +120,3 @@ service CategoryService {
   // Gets a category by id.
   rpc GetCategory(GetCategoryRequest) returns (GetCategoryResponse);
 }
-
-  
