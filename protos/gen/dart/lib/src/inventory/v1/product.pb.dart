@@ -790,7 +790,7 @@ class AddProductRequest extends $pb.GeneratedMessage {
   factory AddProductRequest({
     GlobalProduct? globalProduct,
     $core.String? businessId,
-    $core.int? priceInCents,
+    $core.int? priceInXaf,
     $core.Iterable<$core.List<$core.int>>? imagesRawImages,
     $core.int? stockQuantity,
     $core.int? minStockThreshold,
@@ -799,7 +799,7 @@ class AddProductRequest extends $pb.GeneratedMessage {
     final result = create();
     if (globalProduct != null) result.globalProduct = globalProduct;
     if (businessId != null) result.businessId = businessId;
-    if (priceInCents != null) result.priceInCents = priceInCents;
+    if (priceInXaf != null) result.priceInXaf = priceInXaf;
     if (imagesRawImages != null) result.imagesRawImages.addAll(imagesRawImages);
     if (stockQuantity != null) result.stockQuantity = stockQuantity;
     if (minStockThreshold != null) result.minStockThreshold = minStockThreshold;
@@ -823,7 +823,7 @@ class AddProductRequest extends $pb.GeneratedMessage {
     ..aOM<GlobalProduct>(1, _omitFieldNames ? '' : 'globalProduct',
         subBuilder: GlobalProduct.create)
     ..aOS(2, _omitFieldNames ? '' : 'businessId')
-    ..a<$core.int>(3, _omitFieldNames ? '' : 'priceInCents', $pb.PbFieldType.O3)
+    ..a<$core.int>(3, _omitFieldNames ? '' : 'priceInXaf', $pb.PbFieldType.O3)
     ..p<$core.List<$core.int>>(
         4, _omitFieldNames ? '' : 'imagesRawImages', $pb.PbFieldType.PY)
     ..a<$core.int>(
@@ -878,16 +878,16 @@ class AddProductRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   void clearBusinessId() => $_clearField(2);
 
-  /// The price in cents of the product.
+  /// The price in XAF of the product.
   /// The currency is determined by the business.
   @$pb.TagNumber(3)
-  $core.int get priceInCents => $_getIZ(2);
+  $core.int get priceInXaf => $_getIZ(2);
   @$pb.TagNumber(3)
-  set priceInCents($core.int value) => $_setSignedInt32(2, value);
+  set priceInXaf($core.int value) => $_setSignedInt32(2, value);
   @$pb.TagNumber(3)
-  $core.bool hasPriceInCents() => $_has(2);
+  $core.bool hasPriceInXaf() => $_has(2);
   @$pb.TagNumber(3)
-  void clearPriceInCents() => $_clearField(3);
+  void clearPriceInXaf() => $_clearField(3);
 
   /// The media ids of the images of the product.
   @$pb.TagNumber(4)

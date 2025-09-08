@@ -122,9 +122,9 @@ message AddProductRequest {
   // The unique identifier of the business.
   string business_id = 2;
 
-  // The price in cents of the product.
+  // The price in XAF of the product.
   // The currency is determined by the business.
-  int32 price_in_cents = 3;
+  int32 price_in_xaf = 3;
 
   // The media ids of the images of the product.
   repeated bytes images_raw_images = 4;

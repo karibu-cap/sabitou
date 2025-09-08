@@ -389,6 +389,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.0"
+  geo_currencies:
+    dependency: "direct main"
+    description:
+      name: geo_currencies
+      sha256: e57f43082239dbdd37bc5c5e61cd7b2cca35e9d12a740d63a347d6ccd462c50a
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.6"
   get:
     dependency: transitive
     description:

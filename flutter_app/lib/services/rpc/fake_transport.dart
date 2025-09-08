@@ -200,7 +200,7 @@ final _fakeTransport =
           'business_id': req.businessId,
           'global_product_id': globalProductRefId,
           'min_stock_threshold': req.minStockThreshold,
-          'price_in_cents': req.priceInCents,
+          'price_in_xaf': req.priceInXaf,
           'stock_quantity': req.stockQuantity,
           'expiration_date': req.hasExpirationDate()
               ? req.expirationDate.toDateTime().toIso8601String()
@@ -277,7 +277,7 @@ final _fakeTransport =
           'business_id': businessProduct.businessId,
           'global_product_id': globalProductId,
           'min_stock_threshold': businessProduct.minStockThreshold,
-          'price_in_cents': businessProduct.priceInXaf,
+          'price_in_xaf': businessProduct.priceInXaf,
           'stock_quantity': businessProduct.stockQuantity,
           'expiration_date': businessProduct.hasExpirationDate()
               ? businessProduct.expirationDate.toDateTime().toIso8601String()

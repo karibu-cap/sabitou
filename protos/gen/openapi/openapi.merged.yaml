@@ -4055,12 +4055,12 @@ components:
           type: string
           title: business_id
           description: The unique identifier of the business.
-        priceInCents:
+        priceInXaf:
           type: integer
-          title: price_in_cents
+          title: price_in_xaf
           format: int32
           description: |-
-            The price in cents of the product.
+            The price in XAF of the product.
              The currency is determined by the business.
         imagesRawImages:
           type: array

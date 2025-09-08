@@ -104,6 +104,9 @@ dependencies:
   # Package to show a loading animation.
   shimmer_animation: ^2.2.2
 
+  #Flutter Package that provides methods for fetching currencies information, All information about conversion currency are updated once a day.
+  geo_currencies: ^0.0.6
+
 
 dev_dependencies:
   flutter_test:

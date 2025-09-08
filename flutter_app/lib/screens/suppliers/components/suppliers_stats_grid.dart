@@ -36,7 +36,7 @@ class SuppliersStatsGrid extends StatelessWidget {
                   totalProducts,
                   totalSuppliers,
                 );
-            final totalInventoryValue = controller.calculateTotalInventoryValue(
+            final totalInventoryValue = controller.calculateTotalValue(
               products,
             );
 

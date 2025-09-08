@@ -619,9 +619,9 @@ type AddProductRequest struct {
 	GlobalProduct *GlobalProduct `protobuf:"bytes,1,opt,name=global_product,json=globalProduct,proto3" json:"global_product,omitempty"`
 	// The unique identifier of the business.
 	BusinessId string `protobuf:"bytes,2,opt,name=business_id,json=businessId,proto3" json:"business_id,omitempty"`
-	// The price in cents of the product.
+	// The price in XAF of the product.
 	// The currency is determined by the business.
-	PriceInCents int32 `protobuf:"varint,3,opt,name=price_in_cents,json=priceInCents,proto3" json:"price_in_cents,omitempty"`
+	PriceInXaf int32 `protobuf:"varint,3,opt,name=price_in_xaf,json=priceInXaf,proto3" json:"price_in_xaf,omitempty"`
 	// The media ids of the images of the product.
 	ImagesRawImages [][]byte `protobuf:"bytes,4,rep,name=images_raw_images,json=imagesRawImages,proto3" json:"images_raw_images,omitempty"`
 	// The stock quantity of the product.
@@ -678,9 +678,9 @@ func (x *AddProductRequest) GetBusinessId() string {
 	return ""
 }
 
-func (x *AddProductRequest) GetPriceInCents() int32 {
+func (x *AddProductRequest) GetPriceInXaf() int32 {
 	if x != nil {
-		return x.PriceInCents
+		return x.PriceInXaf
 	}
 	return 0
 }
@@ -1224,12 +1224,13 @@ const file_inventory_v1_product_proto_rawDesc = "" +
 	"\x14FindCategoryResponse\x12=\n" +
 	"\n" +
 	"categories\x18\x01 \x03(\v2\x1d.inventory.v1.ProductCategoryR\n" +
-	"categories\"\xff\x02\n" +
+	"categories\"\xfb\x02\n" +
 	"\x11AddProductRequest\x12B\n" +
 	"\x0eglobal_product\x18\x01 \x01(\v2\x1b.inventory.v1.GlobalProductR\rglobalProduct\x12\x1f\n" +
 	"\vbusiness_id\x18\x02 \x01(\tR\n" +
-	"businessId\x12$\n" +
-	"\x0eprice_in_cents\x18\x03 \x01(\x05R\fpriceInCents\x12*\n" +
+	"businessId\x12 \n" +
+	"\fprice_in_xaf\x18\x03 \x01(\x05R\n" +
+	"priceInXaf\x12*\n" +
 	"\x11images_raw_images\x18\x04 \x03(\fR\x0fimagesRawImages\x12%\n" +
 	"\x0estock_quantity\x18\x05 \x01(\x05R\rstockQuantity\x12.\n" +
 	"\x13min_stock_threshold\x18\x06 \x01(\x05R\x11minStockThreshold\x12H\n" +

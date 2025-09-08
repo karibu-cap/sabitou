@@ -98,7 +98,7 @@ class SupplierCellBuilders {
     List<BusinessProduct> supplierProducts,
     SuppliersController controller,
   ) {
-    final totalValue = controller.calculateSupplierTotalValue(supplierProducts);
+    final totalValue = controller.calculateTotalValue(supplierProducts);
 
     return Text(
       Formatters.formatCurrency(totalValue),

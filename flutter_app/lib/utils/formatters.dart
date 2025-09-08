@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:clock/clock.dart';
+import 'package:geo_currencies/geo_currencies.dart';
 import 'package:intl/intl.dart';
 
 import '../services/internationalization/internationalization.dart';
@@ -7,18 +10,22 @@ import '../services/internationalization/internationalization.dart';
 class Formatters {
   /// Format the currency.
   static String formatCurrency(double amount) {
-    const String frenchLocale = 'fr';
-    const String englishLocale = 'en';
+    final GeoCurrencies geoCurrencies = GeoCurrencies(
+      config: GeoCurrenciesConfig(
+        geoCurrenciesType: GeoCurrenciesType.live,
+        decimalDigits: 2,
+        decimalSeparator: '.',
+        includeSymbol: true,
+        symbolSeparator: ' ',
+        locale: AppInternationalizationService.to.locale,
+        thousandSeparator: ',',
+      ),
+    );
 
-    return NumberFormat.currency(
-      name: 'XAF',
-      symbol: '${NumberFormat.simpleCurrency(name: 'XAF').currencySymbol} ',
-      locale:
-          AppInternationalizationService.to.locale.languageCode.toLowerCase() ==
-              frenchLocale
-          ? frenchLocale
-          : englishLocale,
-    ).format(amount);
+    return geoCurrencies.formatAmountWithCurrencyCode(
+      amount: amount,
+      currencyCodeIso4217: 'XAF',
+    );
   }
 
   /// Format date in French locale.

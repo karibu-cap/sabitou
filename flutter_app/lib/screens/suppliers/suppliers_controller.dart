@@ -192,14 +192,6 @@ class SuppliersController extends ChangeNotifier {
     return allProducts.where((p) => p.supplierId == supplierRefId).toList();
   }
 
-  /// Calculates total value for supplier products
-  double calculateSupplierTotalValue(List<BusinessProduct> supplierProducts) {
-    return supplierProducts.fold(
-      0.0,
-      (sum, p) => sum + (p.priceInXaf * p.stockQuantity),
-    );
-  }
-
   /// Calculates total products count
   int calculateTotalProducts(List<BusinessProduct> products) {
     return products.length;
@@ -216,11 +208,10 @@ class SuppliersController extends ChangeNotifier {
   }
 
   /// Calculates total inventory value from all products
-  double calculateTotalInventoryValue(List<BusinessProduct> products) {
+  double calculateTotalValue(List<BusinessProduct> products) {
     return products.fold<double>(
       0.0,
-      (sum, product) =>
-          sum + (product.priceInXaf / 100.0) * product.stockQuantity,
+      (sum, product) => sum + (product.priceInXaf * product.stockQuantity),
     );
   }
 

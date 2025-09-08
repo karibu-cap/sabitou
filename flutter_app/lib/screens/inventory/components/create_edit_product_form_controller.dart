@@ -153,7 +153,7 @@ class CreateEditProductFormController extends ChangeNotifier {
                 globalProduct: product.globalProduct,
                 businessId: businessId,
                 minStockThreshold: product.businessProduct.minStockThreshold,
-                priceInCents: product.businessProduct.priceInXaf,
+                priceInXaf: product.businessProduct.priceInXaf,
                 stockQuantity: product.businessProduct.stockQuantity,
                 expirationDate: product.businessProduct.hasExpirationDate()
                     ? product.businessProduct.expirationDate

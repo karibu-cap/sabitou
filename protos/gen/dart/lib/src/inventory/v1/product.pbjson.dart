@@ -306,7 +306,7 @@ const AddProductRequest$json = {
       '10': 'globalProduct'
     },
     {'1': 'business_id', '3': 2, '4': 1, '5': 9, '10': 'businessId'},
-    {'1': 'price_in_cents', '3': 3, '4': 1, '5': 5, '10': 'priceInCents'},
+    {'1': 'price_in_xaf', '3': 3, '4': 1, '5': 5, '10': 'priceInXaf'},
     {
       '1': 'images_raw_images',
       '3': 4,
@@ -342,11 +342,11 @@ const AddProductRequest$json = {
 final $typed_data.Uint8List addProductRequestDescriptor = $convert.base64Decode(
     'ChFBZGRQcm9kdWN0UmVxdWVzdBJCCg5nbG9iYWxfcHJvZHVjdBgBIAEoCzIbLmludmVudG9yeS'
     '52MS5HbG9iYWxQcm9kdWN0Ug1nbG9iYWxQcm9kdWN0Eh8KC2J1c2luZXNzX2lkGAIgASgJUgpi'
-    'dXNpbmVzc0lkEiQKDnByaWNlX2luX2NlbnRzGAMgASgFUgxwcmljZUluQ2VudHMSKgoRaW1hZ2'
-    'VzX3Jhd19pbWFnZXMYBCADKAxSD2ltYWdlc1Jhd0ltYWdlcxIlCg5zdG9ja19xdWFudGl0eRgF'
-    'IAEoBVINc3RvY2tRdWFudGl0eRIuChNtaW5fc3RvY2tfdGhyZXNob2xkGAYgASgFUhFtaW5TdG'
-    '9ja1RocmVzaG9sZBJICg9leHBpcmF0aW9uX2RhdGUYByABKAsyGi5nb29nbGUucHJvdG9idWYu'
-    'VGltZXN0YW1wSABSDmV4cGlyYXRpb25EYXRliAEBQhIKEF9leHBpcmF0aW9uX2RhdGU=');
+    'dXNpbmVzc0lkEiAKDHByaWNlX2luX3hhZhgDIAEoBVIKcHJpY2VJblhhZhIqChFpbWFnZXNfcm'
+    'F3X2ltYWdlcxgEIAMoDFIPaW1hZ2VzUmF3SW1hZ2VzEiUKDnN0b2NrX3F1YW50aXR5GAUgASgF'
+    'Ug1zdG9ja1F1YW50aXR5Ei4KE21pbl9zdG9ja190aHJlc2hvbGQYBiABKAVSEW1pblN0b2NrVG'
+    'hyZXNob2xkEkgKD2V4cGlyYXRpb25fZGF0ZRgHIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1l'
+    'c3RhbXBIAFIOZXhwaXJhdGlvbkRhdGWIAQFCEgoQX2V4cGlyYXRpb25fZGF0ZQ==');
 
 @$core.Deprecated('Use addProductResponseDescriptor instead')
 const AddProductResponse$json = {
