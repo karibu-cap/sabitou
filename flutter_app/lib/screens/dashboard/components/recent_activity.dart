@@ -73,121 +73,131 @@ class _TransactionItem extends StatelessWidget {
           Radius.circular(AppConstants.borderRadius),
         ),
       ),
-      child: Row(
+      child: Column(
         children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: transaction.type.color,
-              borderRadius: const BorderRadius.all(Radius.circular(20)),
-            ),
-            child: Icon(
-              transaction.type.icon,
-              size: 20,
-              color: AppColors.grey0,
-            ),
-          ),
-          const SizedBox(width: 16),
-
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Wrap(
-                  children: [
-                    ShadBadge(child: Text(transaction.type.label)),
-                    const SizedBox(width: 8),
-                    Text(
-                      '#${transaction.refId}',
-                      style: ShadTheme.of(context).textTheme.muted,
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 4),
-
-                AutoSizeText(
-                  transaction.description,
-                  style: ShadTheme.of(context).textTheme.small,
-                  maxLines: 2,
+          Row(
+            children: [
+              const SizedBox(width: 42),
+              ShadBadge(child: Text(transaction.type.label)),
+              const SizedBox(width: 8),
+              Flexible(
+                child: AutoSizeText(
+                  '#${transaction.refId}',
+                  style: ShadTheme.of(context).textTheme.muted,
+                  maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  minFontSize: 8,
+                  minFontSize: 6,
                 ),
-                const SizedBox(height: 4),
-
-                Row(
-                  children: [
-                    Icon(
-                      LucideIcons.calendar,
-                      size: 12,
-                      color: ShadTheme.of(
-                        context,
-                      ).colorScheme.primary.withValues(alpha: 0.6),
-                    ),
-                    const SizedBox(width: 4),
-                    Flexible(
-                      child: AutoSizeText(
-                        Formatters.formatDistanceToNow(
-                          transaction.createdAt.toDateTime(),
-                        ),
-                        style: ShadTheme.of(context).textTheme.muted,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        minFontSize: 8,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: transaction.type.color,
+                  borderRadius: const BorderRadius.all(Radius.circular(20)),
+                ),
+                child: Icon(
+                  transaction.type.icon,
+                  size: 20,
+                  color: AppColors.grey0,
+                ),
+              ),
+              const SizedBox(width: 16),
 
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                if (transaction.amountInCents > 0)
-                  AutoSizeText(
-                    Formatters.formatCurrency(
-                      transaction.amountInCents.toDouble(),
-                    ),
-                    style: ShadTheme.of(
-                      context,
-                    ).textTheme.small.copyWith(fontWeight: FontWeight.bold),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    minFontSize: 8,
-                  ),
-                const SizedBox(height: 4),
-
-                Row(
-                  mainAxisSize: MainAxisSize.min,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(
-                      LucideIcons.package,
-                      size: 12,
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.onSurface.withValues(alpha: 0.6),
+                    const SizedBox(height: 4),
+
+                    AutoSizeText(
+                      transaction.description,
+                      style: ShadTheme.of(context).textTheme.small,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      minFontSize: 8,
                     ),
-                    const SizedBox(width: 4),
-                    Flexible(
-                      child: AutoSizeText(
-                        '${transaction.quantity >= 0 ? '+' : ''}${transaction.quantity} unités',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        minFontSize: 8,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: transaction.quantity >= 0
-                              ? AppColors.dartGreen
-                              : AppColors.red,
+                    const SizedBox(height: 4),
+
+                    Row(
+                      children: [
+                        Icon(
+                          LucideIcons.calendar,
+                          size: 12,
+                          color: ShadTheme.of(
+                            context,
+                          ).colorScheme.primary.withValues(alpha: 0.6),
                         ),
-                      ),
+                        const SizedBox(width: 4),
+                        Flexible(
+                          child: AutoSizeText(
+                            Formatters.formatDistanceToNow(
+                              transaction.createdAt.toDateTime(),
+                            ),
+                            style: ShadTheme.of(context).textTheme.muted,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            minFontSize: 8,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
-            ),
+              ),
+
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    if (transaction.amountInCents > 0)
+                      AutoSizeText(
+                        Formatters.formatCurrency(
+                          transaction.amountInCents.toDouble(),
+                        ),
+                        style: ShadTheme.of(
+                          context,
+                        ).textTheme.small.copyWith(fontWeight: FontWeight.bold),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        minFontSize: 8,
+                      ),
+                    const SizedBox(height: 4),
+
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          LucideIcons.package,
+                          size: 12,
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.onSurface.withValues(alpha: 0.6),
+                        ),
+                        const SizedBox(width: 4),
+                        Flexible(
+                          child: AutoSizeText(
+                            '${transaction.quantity >= 0 ? '+' : ''}${transaction.quantity} unités',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            minFontSize: 8,
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: transaction.quantity >= 0
+                                  ? AppColors.dartGreen
+                                  : AppColors.red,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ],
       ),
