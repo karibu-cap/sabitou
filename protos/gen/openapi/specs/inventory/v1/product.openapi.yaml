@@ -185,42 +185,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inventory.v1.FindGlobalProductsResponse'
-  /inventory.v1.ProductService/FindProductsBySupplier:
-    post:
-      tags:
-        - inventory.v1.ProductService
-      summary: Finds all products associated with a specific supplier.
-      description: Finds all products associated with a specific supplier.
-      operationId: inventory.v1.ProductService.FindProductsBySupplier
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/inventory.v1.FindProductsBySupplierRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inventory.v1.FindProductsBySupplierResponse'
   /inventory.v1.ProductService/GetProduct:
     post:
       tags:
@@ -258,7 +222,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/inventory.v1.GetProductResponse'
   /inventory.v1.ProductService/StreamBusinessProducts: {}
-  /inventory.v1.ProductService/StreamProductsBySupplier: {}
   /inventory.v1.ProductService/UpdateProduct:
     post:
       tags:
@@ -685,34 +648,6 @@ components:
              WARN: all returned products will only have their id and name.
       title: FindGlobalProductsResponse
       additionalProperties: false
-    inventory.v1.FindProductsBySupplierRequest:
-      type: object
-      properties:
-        supplierId:
-          type: string
-          title: supplier_id
-          minLength: 3
-          description: The unique identifier of the supplier.
-        businessId:
-          type: string
-          title: business_id
-          description: The unique identifier of the business (optional filter).
-          nullable: true
-      title: FindProductsBySupplierRequest
-      required:
-        - supplierId
-      additionalProperties: false
-    inventory.v1.FindProductsBySupplierResponse:
-      type: object
-      properties:
-        products:
-          type: array
-          items:
-            $ref: '#/components/schemas/inventory.v1.BusinessProduct'
-          title: products
-          description: The business products associated with the supplier.
-      title: FindProductsBySupplierResponse
-      additionalProperties: false
     inventory.v1.GetProductRequest:
       type: object
       properties:
@@ -816,34 +751,6 @@ components:
           title: products
           description: The business products for the specified business.
       title: StreamBusinessProductsResponse
-      additionalProperties: false
-    inventory.v1.StreamProductsBySupplierRequest:
-      type: object
-      properties:
-        supplierId:
-          type: string
-          title: supplier_id
-          minLength: 3
-          description: The unique identifier of the supplier.
-        businessId:
-          type: string
-          title: business_id
-          description: The unique identifier of the business (optional filter).
-          nullable: true
-      title: StreamProductsBySupplierRequest
-      required:
-        - supplierId
-      additionalProperties: false
-    inventory.v1.StreamProductsBySupplierResponse:
-      type: object
-      properties:
-        products:
-          type: array
-          items:
-            $ref: '#/components/schemas/inventory.v1.BusinessProduct'
-          title: products
-          description: The business products associated with the supplier.
-      title: StreamProductsBySupplierResponse
       additionalProperties: false
     inventory.v1.UpdateProductRequest:
       type: object

@@ -6,8 +6,10 @@ paths:
     post:
       tags:
         - link.v1.ResourceLinkService
-      summary: Gets a resource link by id.   Returns the resources in the same order as the ids.
-      description: "Gets a resource link by id. \n Returns the resources in the same order as the ids."
+      summary: Gets a resource link by id.  Returns the resources in the same order as the ids.
+      description: |-
+        Gets a resource link by id.
+         Returns the resources in the same order as the ids.
       operationId: link.v1.ResourceLinkService.GetResourceLinks
       parameters:
         - name: Connect-Protocol-Version

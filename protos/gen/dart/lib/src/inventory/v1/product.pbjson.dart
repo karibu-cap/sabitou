@@ -482,102 +482,6 @@ final $typed_data.Uint8List deleteProductResponseDescriptor =
     $convert.base64Decode(
         'ChVEZWxldGVQcm9kdWN0UmVzcG9uc2USGAoHc3VjY2VzcxgBIAEoCFIHc3VjY2Vzcw==');
 
-@$core.Deprecated('Use findProductsBySupplierRequestDescriptor instead')
-const FindProductsBySupplierRequest$json = {
-  '1': 'FindProductsBySupplierRequest',
-  '2': [
-    {'1': 'supplier_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'supplierId'},
-    {
-      '1': 'business_id',
-      '3': 2,
-      '4': 1,
-      '5': 9,
-      '9': 0,
-      '10': 'businessId',
-      '17': true
-    },
-  ],
-  '8': [
-    {'1': '_business_id'},
-  ],
-};
-
-/// Descriptor for `FindProductsBySupplierRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List findProductsBySupplierRequestDescriptor =
-    $convert.base64Decode(
-        'Ch1GaW5kUHJvZHVjdHNCeVN1cHBsaWVyUmVxdWVzdBIrCgtzdXBwbGllcl9pZBgBIAEoCUIKuk'
-        'gHyAEBcgIQA1IKc3VwcGxpZXJJZBIkCgtidXNpbmVzc19pZBgCIAEoCUgAUgpidXNpbmVzc0lk'
-        'iAEBQg4KDF9idXNpbmVzc19pZA==');
-
-@$core.Deprecated('Use findProductsBySupplierResponseDescriptor instead')
-const FindProductsBySupplierResponse$json = {
-  '1': 'FindProductsBySupplierResponse',
-  '2': [
-    {
-      '1': 'products',
-      '3': 1,
-      '4': 3,
-      '5': 11,
-      '6': '.inventory.v1.BusinessProduct',
-      '10': 'products'
-    },
-  ],
-};
-
-/// Descriptor for `FindProductsBySupplierResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List findProductsBySupplierResponseDescriptor =
-    $convert.base64Decode(
-        'Ch5GaW5kUHJvZHVjdHNCeVN1cHBsaWVyUmVzcG9uc2USOQoIcHJvZHVjdHMYASADKAsyHS5pbn'
-        'ZlbnRvcnkudjEuQnVzaW5lc3NQcm9kdWN0Ughwcm9kdWN0cw==');
-
-@$core.Deprecated('Use streamProductsBySupplierRequestDescriptor instead')
-const StreamProductsBySupplierRequest$json = {
-  '1': 'StreamProductsBySupplierRequest',
-  '2': [
-    {'1': 'supplier_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'supplierId'},
-    {
-      '1': 'business_id',
-      '3': 2,
-      '4': 1,
-      '5': 9,
-      '9': 0,
-      '10': 'businessId',
-      '17': true
-    },
-  ],
-  '8': [
-    {'1': '_business_id'},
-  ],
-};
-
-/// Descriptor for `StreamProductsBySupplierRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List streamProductsBySupplierRequestDescriptor =
-    $convert.base64Decode(
-        'Ch9TdHJlYW1Qcm9kdWN0c0J5U3VwcGxpZXJSZXF1ZXN0EisKC3N1cHBsaWVyX2lkGAEgASgJQg'
-        'q6SAfIAQFyAhADUgpzdXBwbGllcklkEiQKC2J1c2luZXNzX2lkGAIgASgJSABSCmJ1c2luZXNz'
-        'SWSIAQFCDgoMX2J1c2luZXNzX2lk');
-
-@$core.Deprecated('Use streamProductsBySupplierResponseDescriptor instead')
-const StreamProductsBySupplierResponse$json = {
-  '1': 'StreamProductsBySupplierResponse',
-  '2': [
-    {
-      '1': 'products',
-      '3': 1,
-      '4': 3,
-      '5': 11,
-      '6': '.inventory.v1.BusinessProduct',
-      '10': 'products'
-    },
-  ],
-};
-
-/// Descriptor for `StreamProductsBySupplierResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List streamProductsBySupplierResponseDescriptor =
-    $convert.base64Decode(
-        'CiBTdHJlYW1Qcm9kdWN0c0J5U3VwcGxpZXJSZXNwb25zZRI5Cghwcm9kdWN0cxgBIAMoCzIdLm'
-        'ludmVudG9yeS52MS5CdXNpbmVzc1Byb2R1Y3RSCHByb2R1Y3Rz');
-
 @$core.Deprecated('Use streamBusinessProductsRequestDescriptor instead')
 const StreamBusinessProductsRequest$json = {
   '1': 'StreamBusinessProductsRequest',
@@ -675,17 +579,6 @@ const $core.Map<$core.String, $core.dynamic> ProductServiceBase$json = {
       '3': '.inventory.v1.FindBusinessProductsResponse'
     },
     {
-      '1': 'FindProductsBySupplier',
-      '2': '.inventory.v1.FindProductsBySupplierRequest',
-      '3': '.inventory.v1.FindProductsBySupplierResponse'
-    },
-    {
-      '1': 'StreamProductsBySupplier',
-      '2': '.inventory.v1.StreamProductsBySupplierRequest',
-      '3': '.inventory.v1.StreamProductsBySupplierResponse',
-      '6': true
-    },
-    {
       '1': 'StreamBusinessProducts',
       '2': '.inventory.v1.StreamBusinessProductsRequest',
       '3': '.inventory.v1.StreamBusinessProductsResponse',
@@ -716,14 +609,6 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
   '.inventory.v1.FindBusinessProductsRequest': FindBusinessProductsRequest$json,
   '.inventory.v1.FindBusinessProductsResponse':
       FindBusinessProductsResponse$json,
-  '.inventory.v1.FindProductsBySupplierRequest':
-      FindProductsBySupplierRequest$json,
-  '.inventory.v1.FindProductsBySupplierResponse':
-      FindProductsBySupplierResponse$json,
-  '.inventory.v1.StreamProductsBySupplierRequest':
-      StreamProductsBySupplierRequest$json,
-  '.inventory.v1.StreamProductsBySupplierResponse':
-      StreamProductsBySupplierResponse$json,
   '.inventory.v1.StreamBusinessProductsRequest':
       StreamBusinessProductsRequest$json,
   '.inventory.v1.StreamBusinessProductsResponse':
@@ -743,11 +628,7 @@ final $typed_data.Uint8List productServiceDescriptor = $convert.base64Decode(
     'ZVByb2R1Y3RSZXNwb25zZRJYCg1EZWxldGVQcm9kdWN0EiIuaW52ZW50b3J5LnYxLkRlbGV0ZV'
     'Byb2R1Y3RSZXF1ZXN0GiMuaW52ZW50b3J5LnYxLkRlbGV0ZVByb2R1Y3RSZXNwb25zZRJtChRG'
     'aW5kQnVzaW5lc3NQcm9kdWN0cxIpLmludmVudG9yeS52MS5GaW5kQnVzaW5lc3NQcm9kdWN0c1'
-    'JlcXVlc3QaKi5pbnZlbnRvcnkudjEuRmluZEJ1c2luZXNzUHJvZHVjdHNSZXNwb25zZRJzChZG'
-    'aW5kUHJvZHVjdHNCeVN1cHBsaWVyEisuaW52ZW50b3J5LnYxLkZpbmRQcm9kdWN0c0J5U3VwcG'
-    'xpZXJSZXF1ZXN0GiwuaW52ZW50b3J5LnYxLkZpbmRQcm9kdWN0c0J5U3VwcGxpZXJSZXNwb25z'
-    'ZRJ7ChhTdHJlYW1Qcm9kdWN0c0J5U3VwcGxpZXISLS5pbnZlbnRvcnkudjEuU3RyZWFtUHJvZH'
-    'VjdHNCeVN1cHBsaWVyUmVxdWVzdBouLmludmVudG9yeS52MS5TdHJlYW1Qcm9kdWN0c0J5U3Vw'
-    'cGxpZXJSZXNwb25zZTABEnUKFlN0cmVhbUJ1c2luZXNzUHJvZHVjdHMSKy5pbnZlbnRvcnkudj'
-    'EuU3RyZWFtQnVzaW5lc3NQcm9kdWN0c1JlcXVlc3QaLC5pbnZlbnRvcnkudjEuU3RyZWFtQnVz'
-    'aW5lc3NQcm9kdWN0c1Jlc3BvbnNlMAE=');
+    'JlcXVlc3QaKi5pbnZlbnRvcnkudjEuRmluZEJ1c2luZXNzUHJvZHVjdHNSZXNwb25zZRJ1ChZT'
+    'dHJlYW1CdXNpbmVzc1Byb2R1Y3RzEisuaW52ZW50b3J5LnYxLlN0cmVhbUJ1c2luZXNzUHJvZH'
+    'VjdHNSZXF1ZXN0GiwuaW52ZW50b3J5LnYxLlN0cmVhbUJ1c2luZXNzUHJvZHVjdHNSZXNwb25z'
+    'ZTAB');
