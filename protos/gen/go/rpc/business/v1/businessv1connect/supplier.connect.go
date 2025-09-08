@@ -42,6 +42,9 @@ const (
 	// SupplierServiceGetBusinessSuppliersProcedure is the fully-qualified name of the SupplierService's
 	// GetBusinessSuppliers RPC.
 	SupplierServiceGetBusinessSuppliersProcedure = "/business.v1.SupplierService/GetBusinessSuppliers"
+	// SupplierServiceStreamBusinessSuppliersProcedure is the fully-qualified name of the
+	// SupplierService's StreamBusinessSuppliers RPC.
+	SupplierServiceStreamBusinessSuppliersProcedure = "/business.v1.SupplierService/StreamBusinessSuppliers"
 	// SupplierServiceUpdateSupplierProcedure is the fully-qualified name of the SupplierService's
 	// UpdateSupplier RPC.
 	SupplierServiceUpdateSupplierProcedure = "/business.v1.SupplierService/UpdateSupplier"
@@ -58,6 +61,9 @@ type SupplierServiceClient interface {
 	GetSupplier(context.Context, *connect.Request[v1.GetSupplierRequest]) (*connect.Response[v1.GetSupplierResponse], error)
 	// Gets all suppliers of a business.
 	GetBusinessSuppliers(context.Context, *connect.Request[v1.GetBusinessSuppliersRequest]) (*connect.Response[v1.GetBusinessSuppliersResponse], error)
+	// Streams all suppliers of a business with real-time updates.
+	// This is a server streaming RPC that will send updates whenever suppliers change.
+	StreamBusinessSuppliers(context.Context, *connect.Request[v1.GetBusinessSuppliersRequest]) (*connect.ServerStreamForClient[v1.GetBusinessSuppliersResponse], error)
 	// Updates a supplier.
 	// Note:Only the fields that are set will be updated. array fiels like external_links will be replaced.
 	UpdateSupplier(context.Context, *connect.Request[v1.UpdateSupplierRequest]) (*connect.Response[v1.UpdateSupplierResponse], error)
@@ -94,6 +100,12 @@ func NewSupplierServiceClient(httpClient connect.HTTPClient, baseURL string, opt
 			connect.WithSchema(supplierServiceMethods.ByName("GetBusinessSuppliers")),
 			connect.WithClientOptions(opts...),
 		),
+		streamBusinessSuppliers: connect.NewClient[v1.GetBusinessSuppliersRequest, v1.GetBusinessSuppliersResponse](
+			httpClient,
+			baseURL+SupplierServiceStreamBusinessSuppliersProcedure,
+			connect.WithSchema(supplierServiceMethods.ByName("StreamBusinessSuppliers")),
+			connect.WithClientOptions(opts...),
+		),
 		updateSupplier: connect.NewClient[v1.UpdateSupplierRequest, v1.UpdateSupplierResponse](
 			httpClient,
 			baseURL+SupplierServiceUpdateSupplierProcedure,
@@ -111,11 +123,12 @@ func NewSupplierServiceClient(httpClient connect.HTTPClient, baseURL string, opt
 
 // supplierServiceClient implements SupplierServiceClient.
 type supplierServiceClient struct {
-	createSupplier       *connect.Client[v1.CreateSupplierRequest, v1.CreateSupplierResponse]
-	getSupplier          *connect.Client[v1.GetSupplierRequest, v1.GetSupplierResponse]
-	getBusinessSuppliers *connect.Client[v1.GetBusinessSuppliersRequest, v1.GetBusinessSuppliersResponse]
-	updateSupplier       *connect.Client[v1.UpdateSupplierRequest, v1.UpdateSupplierResponse]
-	deleteSupplier       *connect.Client[v1.DeleteSupplierRequest, v1.DeleteSupplierResponse]
+	createSupplier          *connect.Client[v1.CreateSupplierRequest, v1.CreateSupplierResponse]
+	getSupplier             *connect.Client[v1.GetSupplierRequest, v1.GetSupplierResponse]
+	getBusinessSuppliers    *connect.Client[v1.GetBusinessSuppliersRequest, v1.GetBusinessSuppliersResponse]
+	streamBusinessSuppliers *connect.Client[v1.GetBusinessSuppliersRequest, v1.GetBusinessSuppliersResponse]
+	updateSupplier          *connect.Client[v1.UpdateSupplierRequest, v1.UpdateSupplierResponse]
+	deleteSupplier          *connect.Client[v1.DeleteSupplierRequest, v1.DeleteSupplierResponse]
 }
 
 // CreateSupplier calls business.v1.SupplierService.CreateSupplier.
@@ -131,6 +144,11 @@ func (c *supplierServiceClient) GetSupplier(ctx context.Context, req *connect.Re
 // GetBusinessSuppliers calls business.v1.SupplierService.GetBusinessSuppliers.
 func (c *supplierServiceClient) GetBusinessSuppliers(ctx context.Context, req *connect.Request[v1.GetBusinessSuppliersRequest]) (*connect.Response[v1.GetBusinessSuppliersResponse], error) {
 	return c.getBusinessSuppliers.CallUnary(ctx, req)
+}
+
+// StreamBusinessSuppliers calls business.v1.SupplierService.StreamBusinessSuppliers.
+func (c *supplierServiceClient) StreamBusinessSuppliers(ctx context.Context, req *connect.Request[v1.GetBusinessSuppliersRequest]) (*connect.ServerStreamForClient[v1.GetBusinessSuppliersResponse], error) {
+	return c.streamBusinessSuppliers.CallServerStream(ctx, req)
 }
 
 // UpdateSupplier calls business.v1.SupplierService.UpdateSupplier.
@@ -151,6 +169,9 @@ type SupplierServiceHandler interface {
 	GetSupplier(context.Context, *connect.Request[v1.GetSupplierRequest]) (*connect.Response[v1.GetSupplierResponse], error)
 	// Gets all suppliers of a business.
 	GetBusinessSuppliers(context.Context, *connect.Request[v1.GetBusinessSuppliersRequest]) (*connect.Response[v1.GetBusinessSuppliersResponse], error)
+	// Streams all suppliers of a business with real-time updates.
+	// This is a server streaming RPC that will send updates whenever suppliers change.
+	StreamBusinessSuppliers(context.Context, *connect.Request[v1.GetBusinessSuppliersRequest], *connect.ServerStream[v1.GetBusinessSuppliersResponse]) error
 	// Updates a supplier.
 	// Note:Only the fields that are set will be updated. array fiels like external_links will be replaced.
 	UpdateSupplier(context.Context, *connect.Request[v1.UpdateSupplierRequest]) (*connect.Response[v1.UpdateSupplierResponse], error)
@@ -183,6 +204,12 @@ func NewSupplierServiceHandler(svc SupplierServiceHandler, opts ...connect.Handl
 		connect.WithSchema(supplierServiceMethods.ByName("GetBusinessSuppliers")),
 		connect.WithHandlerOptions(opts...),
 	)
+	supplierServiceStreamBusinessSuppliersHandler := connect.NewServerStreamHandler(
+		SupplierServiceStreamBusinessSuppliersProcedure,
+		svc.StreamBusinessSuppliers,
+		connect.WithSchema(supplierServiceMethods.ByName("StreamBusinessSuppliers")),
+		connect.WithHandlerOptions(opts...),
+	)
 	supplierServiceUpdateSupplierHandler := connect.NewUnaryHandler(
 		SupplierServiceUpdateSupplierProcedure,
 		svc.UpdateSupplier,
@@ -203,6 +230,8 @@ func NewSupplierServiceHandler(svc SupplierServiceHandler, opts ...connect.Handl
 			supplierServiceGetSupplierHandler.ServeHTTP(w, r)
 		case SupplierServiceGetBusinessSuppliersProcedure:
 			supplierServiceGetBusinessSuppliersHandler.ServeHTTP(w, r)
+		case SupplierServiceStreamBusinessSuppliersProcedure:
+			supplierServiceStreamBusinessSuppliersHandler.ServeHTTP(w, r)
 		case SupplierServiceUpdateSupplierProcedure:
 			supplierServiceUpdateSupplierHandler.ServeHTTP(w, r)
 		case SupplierServiceDeleteSupplierProcedure:
@@ -226,6 +255,10 @@ func (UnimplementedSupplierServiceHandler) GetSupplier(context.Context, *connect
 
 func (UnimplementedSupplierServiceHandler) GetBusinessSuppliers(context.Context, *connect.Request[v1.GetBusinessSuppliersRequest]) (*connect.Response[v1.GetBusinessSuppliersResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("business.v1.SupplierService.GetBusinessSuppliers is not implemented"))
+}
+
+func (UnimplementedSupplierServiceHandler) StreamBusinessSuppliers(context.Context, *connect.Request[v1.GetBusinessSuppliersRequest], *connect.ServerStream[v1.GetBusinessSuppliersResponse]) error {
+	return connect.NewError(connect.CodeUnimplemented, errors.New("business.v1.SupplierService.StreamBusinessSuppliers is not implemented"))
 }
 
 func (UnimplementedSupplierServiceHandler) UpdateSupplier(context.Context, *connect.Request[v1.UpdateSupplierRequest]) (*connect.Response[v1.UpdateSupplierResponse], error) {

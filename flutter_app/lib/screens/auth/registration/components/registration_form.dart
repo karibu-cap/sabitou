@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../../services/internationalization/internationalization.dart';
+import '../../../../utils/form/validation.dart';
 import '../../../../widgets/grid/responsitive_grid.dart';
 import '../../../../widgets/input/form_fields.dart';
 import '../registration_controller.dart';
@@ -35,11 +36,12 @@ class RegistrationForm extends StatelessWidget {
             controller: controller.userNameController,
             placeholder: appIntl.userName,
             icon: LucideIcons.user400,
-            validator: controller.validateUserName,
+            validator: ValidationFormUtils.validateUserName,
           ),
           ResponsiveGrid(
             minItemWidth: 200,
-            spacing: 16,
+            crossAxisSpacing: 16,
+            mainAxisSpacing: 16,
             mainAxisExtent: 80,
             children: [
               InputField(
@@ -48,7 +50,7 @@ class RegistrationForm extends StatelessWidget {
                 controller: controller.firstNameController,
                 placeholder: appIntl.firstName,
                 icon: LucideIcons.user400,
-                validator: controller.validateFirstName,
+                validator: ValidationFormUtils.validateFirstName,
               ),
               InputField(
                 id: appIntl.lastName,
@@ -56,7 +58,7 @@ class RegistrationForm extends StatelessWidget {
                 controller: controller.lastNameController,
                 placeholder: appIntl.lastName,
                 icon: LucideIcons.user400,
-                validator: controller.validateLastName,
+                validator: ValidationFormUtils.validateLastName,
               ),
               InputField(
                 id: appIntl.email,
@@ -64,7 +66,7 @@ class RegistrationForm extends StatelessWidget {
                 controller: controller.emailController,
                 placeholder: appIntl.email,
                 icon: LucideIcons.mail400,
-                validator: controller.validateEmail,
+                validator: ValidationFormUtils.validateEmail,
                 keyboardType: TextInputType.emailAddress,
               ),
               InputField(
@@ -73,7 +75,7 @@ class RegistrationForm extends StatelessWidget {
                 controller: controller.phoneNumberController,
                 placeholder: appIntl.phoneNumber,
                 icon: LucideIcons.phone400,
-                validator: controller.validatePhoneNumber,
+                validator: ValidationFormUtils.validatePhoneNumber,
                 keyboardType: TextInputType.phone,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               ),
@@ -84,7 +86,7 @@ class RegistrationForm extends StatelessWidget {
                 placeholder: appIntl.password,
                 isVisible: controller.isPasswordVisible,
                 onToggle: controller.togglePasswordVisibility,
-                validator: controller.validatePassword,
+                validator: ValidationFormUtils.validatePassword,
               ),
               PasswordField(
                 id: appIntl.confirmPassword,
@@ -93,7 +95,11 @@ class RegistrationForm extends StatelessWidget {
                 placeholder: appIntl.confirmPassword,
                 isVisible: controller.isConfirmPasswordVisible,
                 onToggle: controller.toggleConfirmPasswordVisibility,
-                validator: controller.validateConfirmPassword,
+                validator: (value) =>
+                    ValidationFormUtils.validateConfirmPassword(
+                      value,
+                      controller.passwordController.text,
+                    ),
               ),
             ],
           ),

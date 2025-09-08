@@ -158,15 +158,15 @@ final $typed_data.Uint8List createSupplierRequestDescriptor = $convert.base64Dec
 const CreateSupplierResponse$json = {
   '1': 'CreateSupplierResponse',
   '2': [
-    {'1': 'suplier_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'suplierId'},
+    {'1': 'supplier_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'supplierId'},
   ],
 };
 
 /// Descriptor for `CreateSupplierResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List createSupplierResponseDescriptor =
     $convert.base64Decode(
-        'ChZDcmVhdGVTdXBwbGllclJlc3BvbnNlEikKCnN1cGxpZXJfaWQYASABKAlCCrpIB8gBAXICEA'
-        'NSCXN1cGxpZXJJZA==');
+        'ChZDcmVhdGVTdXBwbGllclJlc3BvbnNlEisKC3N1cHBsaWVyX2lkGAEgASgJQgq6SAfIAQFyAh'
+        'ADUgpzdXBwbGllcklk');
 
 @$core.Deprecated('Use getSupplierRequestDescriptor instead')
 const GetSupplierRequest$json = {
@@ -344,6 +344,12 @@ const $core.Map<$core.String, $core.dynamic> SupplierServiceBase$json = {
       '3': '.business.v1.GetBusinessSuppliersResponse'
     },
     {
+      '1': 'StreamBusinessSuppliers',
+      '2': '.business.v1.GetBusinessSuppliersRequest',
+      '3': '.business.v1.GetBusinessSuppliersResponse',
+      '6': true
+    },
+    {
       '1': 'UpdateSupplier',
       '2': '.business.v1.UpdateSupplierRequest',
       '3': '.business.v1.UpdateSupplierResponse'
@@ -381,7 +387,9 @@ final $typed_data.Uint8List supplierServiceDescriptor = $convert.base64Decode(
     'C0dldFN1cHBsaWVyEh8uYnVzaW5lc3MudjEuR2V0U3VwcGxpZXJSZXF1ZXN0GiAuYnVzaW5lc3'
     'MudjEuR2V0U3VwcGxpZXJSZXNwb25zZRJrChRHZXRCdXNpbmVzc1N1cHBsaWVycxIoLmJ1c2lu'
     'ZXNzLnYxLkdldEJ1c2luZXNzU3VwcGxpZXJzUmVxdWVzdBopLmJ1c2luZXNzLnYxLkdldEJ1c2'
-    'luZXNzU3VwcGxpZXJzUmVzcG9uc2USWQoOVXBkYXRlU3VwcGxpZXISIi5idXNpbmVzcy52MS5V'
-    'cGRhdGVTdXBwbGllclJlcXVlc3QaIy5idXNpbmVzcy52MS5VcGRhdGVTdXBwbGllclJlc3Bvbn'
-    'NlElkKDkRlbGV0ZVN1cHBsaWVyEiIuYnVzaW5lc3MudjEuRGVsZXRlU3VwcGxpZXJSZXF1ZXN0'
-    'GiMuYnVzaW5lc3MudjEuRGVsZXRlU3VwcGxpZXJSZXNwb25zZQ==');
+    'luZXNzU3VwcGxpZXJzUmVzcG9uc2UScAoXU3RyZWFtQnVzaW5lc3NTdXBwbGllcnMSKC5idXNp'
+    'bmVzcy52MS5HZXRCdXNpbmVzc1N1cHBsaWVyc1JlcXVlc3QaKS5idXNpbmVzcy52MS5HZXRCdX'
+    'NpbmVzc1N1cHBsaWVyc1Jlc3BvbnNlMAESWQoOVXBkYXRlU3VwcGxpZXISIi5idXNpbmVzcy52'
+    'MS5VcGRhdGVTdXBwbGllclJlcXVlc3QaIy5idXNpbmVzcy52MS5VcGRhdGVTdXBwbGllclJlc3'
+    'BvbnNlElkKDkRlbGV0ZVN1cHBsaWVyEiIuYnVzaW5lc3MudjEuRGVsZXRlU3VwcGxpZXJSZXF1'
+    'ZXN0GiMuYnVzaW5lc3MudjEuRGVsZXRlU3VwcGxpZXJSZXNwb25zZQ==');

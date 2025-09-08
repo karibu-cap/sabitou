@@ -53,7 +53,52 @@ class ProductsRepository {
     }
   }
 
-  /// Adds a new product.
+  /// Gets all products base on business Id.
+  Future<List<BusinessProduct>> findBusinessProducts(
+    FindBusinessProductsRequest request,
+  ) async {
+    try {
+      final response = await productServiceClient.findBusinessProducts(request);
+
+      return response.products;
+    } on Exception catch (e) {
+      _logger.severe('getProductsByBusinessId Error: $e');
+
+      return [];
+    }
+  }
+
+  /// Finds global products by categories.
+  Future<List<GlobalProduct>> findGlobalProducts(
+    FindGlobalProductsRequest request,
+  ) async {
+    try {
+      final response = await productServiceClient.findGlobalProducts(request);
+
+      return response.products;
+    } on Exception catch (e) {
+      _logger.severe('findGlobalProducts Error: $e');
+
+      return [];
+    }
+  }
+
+  /// Finds product categories by query.
+  Future<List<ProductCategory>> findCategories(
+    FindCategoryRequest request,
+  ) async {
+    try {
+      final response = await productServiceClient.findCategory(request);
+
+      return response.categories;
+    } on Exception catch (e) {
+      _logger.severe('findCategories Error: $e');
+
+      return [];
+    }
+  }
+
+  /// Adds a new product to a business.
   Future<bool> addProduct(AddProductRequest request) async {
     try {
       final response = await productServiceClient.addProduct(request);
@@ -66,7 +111,20 @@ class ProductsRepository {
     }
   }
 
-  /// Updates a product.
+  /// Gets a business product by its ID.
+  Future<BusinessProduct?> getProduct(GetProductRequest request) async {
+    try {
+      final response = await productServiceClient.getProduct(request);
+
+      return response.product;
+    } on Exception catch (e) {
+      _logger.severe('getProduct Error: $e');
+
+      return null;
+    }
+  }
+
+  /// Updates a business product.
   Future<bool> updateProduct(UpdateProductRequest request) async {
     try {
       final response = await productServiceClient.updateProduct(request);
@@ -79,18 +137,35 @@ class ProductsRepository {
     }
   }
 
-  /// Deletes a product.
-  Future<bool> deleteProduct(String refId) async {
+  /// Deletes a business product.
+  Future<bool> deleteProduct(DeleteProductRequest request) async {
     try {
-      final response = await productServiceClient.deleteProduct(
-        DeleteProductRequest(businessProductId: refId),
-      );
+      final response = await productServiceClient.deleteProduct(request);
 
       return response.success;
     } on Exception catch (e) {
       _logger.severe('deleteProduct Error: $e');
 
       return false;
+    }
+  }
+
+  /// Streams all products for a business for real-time updates.
+  Stream<List<BusinessProduct>> streamBusinessProducts(
+    StreamBusinessProductsRequest request,
+  ) {
+    try {
+      return productServiceClient
+          .streamBusinessProducts(request)
+          .map((response) => response.products)
+          .handleError((error) {
+            _logger.severe('streamBusinessProducts Error: $error');
+          });
+    } on Exception catch (e) {
+      _logger.severe('streamBusinessProducts Error: $e');
+      // Return empty stream on error
+
+      return const Stream.empty();
     }
   }
 }

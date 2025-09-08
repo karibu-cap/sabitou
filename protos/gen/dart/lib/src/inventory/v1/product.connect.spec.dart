@@ -67,4 +67,12 @@ abstract final class ProductService {
     inventoryv1product.FindBusinessProductsRequest.new,
     inventoryv1product.FindBusinessProductsResponse.new,
   );
+
+  /// Streams all products for a business for real-time updates.
+  static const streamBusinessProducts = connect.Spec(
+    '/$name/StreamBusinessProducts',
+    connect.StreamType.server,
+    inventoryv1product.StreamBusinessProductsRequest.new,
+    inventoryv1product.StreamBusinessProductsResponse.new,
+  );
 }

@@ -59,7 +59,7 @@ message CreateSupplierRequest {
 
 message CreateSupplierResponse {
   // The reference id to the supplier identifier.
-  string suplier_id = 1 [
+  string supplier_id = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
@@ -129,6 +129,10 @@ service SupplierService {
 
   // Gets all suppliers of a business.
   rpc GetBusinessSuppliers(GetBusinessSuppliersRequest) returns (GetBusinessSuppliersResponse);
+
+  // Streams all suppliers of a business with real-time updates.
+  // This is a server streaming RPC that will send updates whenever suppliers change.
+  rpc StreamBusinessSuppliers(GetBusinessSuppliersRequest) returns (stream GetBusinessSuppliersResponse);
 
   // Updates a supplier.
   // Note:Only the fields that are set will be updated. array fiels like external_links will be replaced.

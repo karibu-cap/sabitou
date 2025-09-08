@@ -2,78 +2,6 @@ openapi: 3.1.0
 info:
   title: inventory.v1
 paths:
-  /inventory.v1.ProductService/FindGlobalProducts:
-    post:
-      tags:
-        - inventory.v1.ProductService
-      summary: Finds products by name.
-      description: Finds products by name.
-      operationId: inventory.v1.ProductService.FindGlobalProducts
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/inventory.v1.FindGlobalProductsRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inventory.v1.FindGlobalProductsResponse'
-  /inventory.v1.ProductService/FindCategory:
-    post:
-      tags:
-        - inventory.v1.ProductService
-      summary: Finds categories by name.
-      description: Finds categories by name.
-      operationId: inventory.v1.ProductService.FindCategory
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/inventory.v1.FindCategoryRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inventory.v1.FindCategoryResponse'
   /inventory.v1.ProductService/AddProduct:
     post:
       tags:
@@ -110,78 +38,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inventory.v1.AddProductResponse'
-  /inventory.v1.ProductService/GetProduct:
-    post:
-      tags:
-        - inventory.v1.ProductService
-      summary: Gets a business product by id.
-      description: Gets a business product by id.
-      operationId: inventory.v1.ProductService.GetProduct
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/inventory.v1.GetProductRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inventory.v1.GetProductResponse'
-  /inventory.v1.ProductService/UpdateProduct:
-    post:
-      tags:
-        - inventory.v1.ProductService
-      summary: Updates a business product.
-      description: Updates a business product.
-      operationId: inventory.v1.ProductService.UpdateProduct
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/inventory.v1.UpdateProductRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inventory.v1.UpdateProductResponse'
   /inventory.v1.ProductService/DeleteProduct:
     post:
       tags:
@@ -257,8 +113,222 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inventory.v1.FindBusinessProductsResponse'
+  /inventory.v1.ProductService/FindCategory:
+    post:
+      tags:
+        - inventory.v1.ProductService
+      summary: Finds categories by name.
+      description: Finds categories by name.
+      operationId: inventory.v1.ProductService.FindCategory
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inventory.v1.FindCategoryRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inventory.v1.FindCategoryResponse'
+  /inventory.v1.ProductService/FindGlobalProducts:
+    post:
+      tags:
+        - inventory.v1.ProductService
+      summary: Finds products by name.
+      description: Finds products by name.
+      operationId: inventory.v1.ProductService.FindGlobalProducts
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inventory.v1.FindGlobalProductsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inventory.v1.FindGlobalProductsResponse'
+  /inventory.v1.ProductService/GetProduct:
+    post:
+      tags:
+        - inventory.v1.ProductService
+      summary: Gets a business product by id.
+      description: Gets a business product by id.
+      operationId: inventory.v1.ProductService.GetProduct
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inventory.v1.GetProductRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inventory.v1.GetProductResponse'
+  /inventory.v1.ProductService/StreamBusinessProducts: {}
+  /inventory.v1.ProductService/UpdateProduct:
+    post:
+      tags:
+        - inventory.v1.ProductService
+      summary: Updates a business product.
+      description: Updates a business product.
+      operationId: inventory.v1.ProductService.UpdateProduct
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inventory.v1.UpdateProductRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inventory.v1.UpdateProductResponse'
 components:
   schemas:
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+        - 1
+      description: Define the version of the Connect protocol
+      const: 1
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+            - not_found
+          enum:
+            - canceled
+            - unknown
+            - invalid_argument
+            - deadline_exceeded
+            - not_found
+            - already_exists
+            - permission_denied
+            - resource_exhausted
+            - failed_precondition
+            - aborted
+            - out_of_range
+            - unimplemented
+            - internal
+            - unavailable
+            - data_loss
+            - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/connect.error_details.Any'
+          description: A list of messages that carry the error details. There is no limit on the number of messages.
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+    connect.error_details.Any:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
+        value:
+          type: string
+          format: binary
+          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
+        debug:
+          oneOf:
+            - type: object
+              title: Any
+              additionalProperties: true
+              description: Detailed error information.
+          discriminator:
+            propertyName: type
+          title: Debug
+          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
     google.protobuf.Timestamp:
       type: string
       examples:
@@ -368,12 +438,12 @@ components:
           type: string
           title: business_id
           description: The unique identifier of the business.
-        priceInCents:
+        priceInXaf:
           type: integer
-          title: price_in_cents
+          title: price_in_xaf
           format: int32
           description: |-
-            The price in cents of the product.
+            The price in XAF of the product.
              The currency is determined by the business.
         imagesRawImages:
           type: array
@@ -424,12 +494,12 @@ components:
           type: string
           title: global_product_id
           description: The unique identifier of the global product.
-        priceInCents:
+        priceInXaf:
           type: integer
-          title: price_in_cents
+          title: price_in_xaf
           format: int32
           description: |-
-            The price in cents of the product.
+            The price in XAF of the product.
              The currency is determined by the business.
         imagesLinkIds:
           type: array
@@ -452,6 +522,11 @@ components:
           description: The expiration date of the product.
           nullable: true
           $ref: '#/components/schemas/google.protobuf.Timestamp'
+        supplierId:
+          type: string
+          title: supplier_id
+          description: The unique identifier of the supplier.
+          nullable: true
       title: BusinessProduct
       additionalProperties: false
     inventory.v1.DeleteProductRequest:
@@ -461,9 +536,7 @@ components:
           type: string
           title: business_product_id
           minLength: 3
-          description: |
-            The unique identifier of the business product.
-            string.min_len = 3
+          description: The unique identifier of the business product.
       title: DeleteProductRequest
       required:
         - businessProductId
@@ -582,9 +655,7 @@ components:
           type: string
           title: product_id
           minLength: 3
-          description: |
-            The unique identifier of the business product.
-            string.min_len = 3
+          description: The unique identifier of the business product.
       title: GetProductRequest
       required:
         - productId
@@ -648,6 +719,39 @@ components:
           description: The name of the product category.
       title: ProductCategory
       additionalProperties: false
+    inventory.v1.StreamBusinessProductsRequest:
+      type: object
+      properties:
+        businessId:
+          type: string
+          title: business_id
+          minLength: 3
+          description: The unique identifier of the business.
+        supplierId:
+          type: string
+          title: supplier_id
+          description: Optional filter by supplier ID.
+          nullable: true
+        globalProductId:
+          type: string
+          title: global_product_id
+          description: Optional filter by global product ID.
+          nullable: true
+      title: StreamBusinessProductsRequest
+      required:
+        - businessId
+      additionalProperties: false
+    inventory.v1.StreamBusinessProductsResponse:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/inventory.v1.BusinessProduct'
+          title: products
+          description: The business products for the specified business.
+      title: StreamBusinessProductsResponse
+      additionalProperties: false
     inventory.v1.UpdateProductRequest:
       type: object
       properties:
@@ -685,75 +789,6 @@ components:
           description: Whether the business product was successfully updated.
       title: UpdateProductResponse
       additionalProperties: false
-    connect-protocol-version:
-      type: number
-      title: Connect-Protocol-Version
-      enum:
-        - 1
-      description: Define the version of the Connect protocol
-      const: 1
-    connect-timeout-header:
-      type: number
-      title: Connect-Timeout-Ms
-      description: Define the timeout, in ms
-    connect.error:
-      type: object
-      properties:
-        code:
-          type: string
-          examples:
-            - not_found
-          enum:
-            - canceled
-            - unknown
-            - invalid_argument
-            - deadline_exceeded
-            - not_found
-            - already_exists
-            - permission_denied
-            - resource_exhausted
-            - failed_precondition
-            - aborted
-            - out_of_range
-            - unimplemented
-            - internal
-            - unavailable
-            - data_loss
-            - unauthenticated
-          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
-        message:
-          type: string
-          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/connect.error_details.Any'
-          description: A list of messages that carry the error details. There is no limit on the number of messages.
-      title: Connect Error
-      additionalProperties: true
-      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
-    connect.error_details.Any:
-      type: object
-      properties:
-        type:
-          type: string
-          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
-        value:
-          type: string
-          format: binary
-          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
-        debug:
-          oneOf:
-            - type: object
-              title: Any
-              additionalProperties: true
-              description: Detailed error information.
-          discriminator:
-            propertyName: type
-          title: Debug
-          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
-      additionalProperties: true
-      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
 security: []
 tags:
   - name: inventory.v1.ProductService

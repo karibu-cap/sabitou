@@ -2,186 +2,6 @@ openapi: 3.1.0
 info:
   title: transaction.v1
 paths:
-  /business.v1.BusinessService/CreateBusiness:
-    post:
-      tags:
-        - business.v1.BusinessService
-      summary: Create a new business.
-      description: Create a new business.
-      operationId: business.v1.BusinessService.CreateBusiness
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/business.v1.CreateBusinessRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/business.v1.CreateBusinessResponse'
-  /business.v1.BusinessService/GetMyBusinesses:
-    post:
-      tags:
-        - business.v1.BusinessService
-      summary: Get all businesses of the current user.
-      description: Get all businesses of the current user.
-      operationId: business.v1.BusinessService.GetMyBusinesses
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/business.v1.GetMyBusinessesRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/business.v1.GetMyBusinessesResponse'
-  /business.v1.BusinessService/GetBusinessDetails:
-    post:
-      tags:
-        - business.v1.BusinessService
-      summary: Get a business by id.
-      description: Get a business by id.
-      operationId: business.v1.BusinessService.GetBusinessDetails
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/business.v1.GetBusinessDetailsRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/business.v1.GetBusinessDetailsResponse'
-  /business.v1.BusinessService/UpdateBusiness:
-    post:
-      tags:
-        - business.v1.BusinessService
-      summary: Update a business.
-      description: Update a business.
-      operationId: business.v1.BusinessService.UpdateBusiness
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/business.v1.UpdateBusinessRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/business.v1.UpdateBusinessResponse'
-  /business.v1.BusinessService/RequestDeleteBusiness:
-    post:
-      tags:
-        - business.v1.BusinessService
-      summary: Request the deletion of the business. This request doesn't delete the business direcly instead it put the business in inactive state and remove all business members.
-      description: Request the deletion of the business. This request doesn't delete the business direcly instead it put the business in inactive state and remove all business members.
-      operationId: business.v1.BusinessService.RequestDeleteBusiness
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/business.v1.RequestDeleteBusinessRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/business.v1.RequestDeleteBusinessResponse'
   /business.v1.BusinessService/AddUserToBusiness:
     post:
       tags:
@@ -218,6 +38,186 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/business.v1.AddUserToBusinessResponse'
+  /business.v1.BusinessService/ChangeBusinessCurrency:
+    post:
+      tags:
+        - business.v1.BusinessService
+      summary: Changes the business currency
+      description: Changes the business currency
+      operationId: business.v1.BusinessService.ChangeBusinessCurrency
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/business.v1.ChangeBusinessCurrencyRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/business.v1.ChangeBusinessCurrencyResponse'
+  /business.v1.BusinessService/CreateBusiness:
+    post:
+      tags:
+        - business.v1.BusinessService
+      summary: Create a new business.
+      description: Create a new business.
+      operationId: business.v1.BusinessService.CreateBusiness
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/business.v1.CreateBusinessRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/business.v1.CreateBusinessResponse'
+  /business.v1.BusinessService/GetBusinessDetails:
+    post:
+      tags:
+        - business.v1.BusinessService
+      summary: Get a business by id.
+      description: Get a business by id.
+      operationId: business.v1.BusinessService.GetBusinessDetails
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/business.v1.GetBusinessDetailsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/business.v1.GetBusinessDetailsResponse'
+  /business.v1.BusinessService/GetBusinessMembers:
+    post:
+      tags:
+        - business.v1.BusinessService
+      summary: Get the users of the business.
+      description: Get the users of the business.
+      operationId: business.v1.BusinessService.GetBusinessMembers
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/business.v1.GetBusinessMembersRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/business.v1.GetBusinessMembersResponse'
+  /business.v1.BusinessService/GetMyBusinesses:
+    post:
+      tags:
+        - business.v1.BusinessService
+      summary: Get all businesses of the current user.
+      description: Get all businesses of the current user.
+      operationId: business.v1.BusinessService.GetMyBusinesses
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/business.v1.GetMyBusinessesRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/business.v1.GetMyBusinessesResponse'
   /business.v1.BusinessService/RemoveUserFromBusiness:
     post:
       tags:
@@ -258,13 +258,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/business.v1.RemoveUserFromBusinessResponse'
-  /business.v1.BusinessService/ChangeBusinessCurrency:
+  /business.v1.BusinessService/RequestDeleteBusiness:
     post:
       tags:
         - business.v1.BusinessService
-      summary: Changes the business currency
-      description: Changes the business currency
-      operationId: business.v1.BusinessService.ChangeBusinessCurrency
+      summary: Request the deletion of the business. This request doesn't delete the business direcly instead it put the business in inactive state and remove all business members.
+      description: Request the deletion of the business. This request doesn't delete the business direcly instead it put the business in inactive state and remove all business members.
+      operationId: business.v1.BusinessService.RequestDeleteBusiness
       parameters:
         - name: Connect-Protocol-Version
           in: header
@@ -279,7 +279,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/business.v1.ChangeBusinessCurrencyRequest'
+              $ref: '#/components/schemas/business.v1.RequestDeleteBusinessRequest'
         required: true
       responses:
         default:
@@ -293,14 +293,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/business.v1.ChangeBusinessCurrencyResponse'
-  /business.v1.BusinessService/GetBusinessMembers:
+                $ref: '#/components/schemas/business.v1.RequestDeleteBusinessResponse'
+  /business.v1.BusinessService/UpdateBusiness:
     post:
       tags:
         - business.v1.BusinessService
-      summary: Get the users of the business.
-      description: Get the users of the business.
-      operationId: business.v1.BusinessService.GetBusinessMembers
+      summary: Update a business.
+      description: Update a business.
+      operationId: business.v1.BusinessService.UpdateBusiness
       parameters:
         - name: Connect-Protocol-Version
           in: header
@@ -315,7 +315,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/business.v1.GetBusinessMembersRequest'
+              $ref: '#/components/schemas/business.v1.UpdateBusinessRequest'
         required: true
       responses:
         default:
@@ -329,7 +329,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/business.v1.GetBusinessMembersResponse'
+                $ref: '#/components/schemas/business.v1.UpdateBusinessResponse'
   /business.v1.BusinessClientService/CreateBusinessClient:
     post:
       tags:
@@ -366,6 +366,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/business.v1.CreateBusinessClientResponse'
+  /business.v1.BusinessClientService/DeleteBusinessClient:
+    post:
+      tags:
+        - business.v1.BusinessClientService
+      summary: Deletes a client.
+      description: Deletes a client.
+      operationId: business.v1.BusinessClientService.DeleteBusinessClient
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/business.v1.DeleteBusinessClientRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/business.v1.DeleteBusinessClientResponse'
   /business.v1.BusinessClientService/GetBusinessClient:
     post:
       tags:
@@ -440,42 +476,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/business.v1.UpdateBusinessClientResponse'
-  /business.v1.BusinessClientService/DeleteBusinessClient:
-    post:
-      tags:
-        - business.v1.BusinessClientService
-      summary: Deletes a client.
-      description: Deletes a client.
-      operationId: business.v1.BusinessClientService.DeleteBusinessClient
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/business.v1.DeleteBusinessClientRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/business.v1.DeleteBusinessClientResponse'
   /business.v1.SupplierService/CreateSupplier:
     post:
       tags:
@@ -512,13 +512,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/business.v1.CreateSupplierResponse'
-  /business.v1.SupplierService/GetSupplier:
+  /business.v1.SupplierService/DeleteSupplier:
     post:
       tags:
         - business.v1.SupplierService
-      summary: Gets a supplier by id.
-      description: Gets a supplier by id.
-      operationId: business.v1.SupplierService.GetSupplier
+      summary: Deletes a supplier.
+      description: Deletes a supplier.
+      operationId: business.v1.SupplierService.DeleteSupplier
       parameters:
         - name: Connect-Protocol-Version
           in: header
@@ -533,7 +533,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/business.v1.GetSupplierRequest'
+              $ref: '#/components/schemas/business.v1.DeleteSupplierRequest'
         required: true
       responses:
         default:
@@ -547,7 +547,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/business.v1.GetSupplierResponse'
+                $ref: '#/components/schemas/business.v1.DeleteSupplierResponse'
   /business.v1.SupplierService/GetBusinessSuppliers:
     post:
       tags:
@@ -584,6 +584,43 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/business.v1.GetBusinessSuppliersResponse'
+  /business.v1.SupplierService/GetSupplier:
+    post:
+      tags:
+        - business.v1.SupplierService
+      summary: Gets a supplier by id.
+      description: Gets a supplier by id.
+      operationId: business.v1.SupplierService.GetSupplier
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/business.v1.GetSupplierRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/business.v1.GetSupplierResponse'
+  /business.v1.SupplierService/StreamBusinessSuppliers: {}
   /business.v1.SupplierService/UpdateSupplier:
     post:
       tags:
@@ -622,42 +659,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/business.v1.UpdateSupplierResponse'
-  /business.v1.SupplierService/DeleteSupplier:
-    post:
-      tags:
-        - business.v1.SupplierService
-      summary: Deletes a supplier.
-      description: Deletes a supplier.
-      operationId: business.v1.SupplierService.DeleteSupplier
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/business.v1.DeleteSupplierRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/business.v1.DeleteSupplierResponse'
   /identity.v1.AuthService/Login:
     post:
       tags:
@@ -802,222 +803,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/identity.v1.ResetPasswordResponse'
-  /identity.v1.PermissionService/CreatePermissionsGroup:
-    post:
-      tags:
-        - identity.v1.PermissionService
-      summary: Creates a new permission group.
-      description: Creates a new permission group.
-      operationId: identity.v1.PermissionService.CreatePermissionsGroup
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/identity.v1.CreatePermissionsGroupRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/identity.v1.CreatePermissionsGroupResponse'
-  /identity.v1.PermissionService/GetPermissionsGroup:
-    post:
-      tags:
-        - identity.v1.PermissionService
-      summary: Gets a permission group by id.
-      description: Gets a permission group by id.
-      operationId: identity.v1.PermissionService.GetPermissionsGroup
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/identity.v1.GetPermissionsGroupRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/identity.v1.GetPermissionsGroupResponse'
-  /identity.v1.PermissionService/UpdatePermissionsGroup:
-    post:
-      tags:
-        - identity.v1.PermissionService
-      summary: Updates a permission group.
-      description: Updates a permission group.
-      operationId: identity.v1.PermissionService.UpdatePermissionsGroup
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/identity.v1.UpdatePermissionsGroupRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/identity.v1.UpdatePermissionsGroupResponse'
-  /identity.v1.PermissionService/DeletePermissionsGroup:
-    post:
-      tags:
-        - identity.v1.PermissionService
-      summary: Deletes a permission group.
-      description: Deletes a permission group.
-      operationId: identity.v1.PermissionService.DeletePermissionsGroup
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/identity.v1.DeletePermissionsGroupRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/identity.v1.DeletePermissionsGroupResponse'
-  /identity.v1.PermissionService/UpdateMemberPermissions:
-    post:
-      tags:
-        - identity.v1.PermissionService
-      summary: Update the member permissions on the provided business.
-      description: Update the member permissions on the provided business.
-      operationId: identity.v1.PermissionService.UpdateMemberPermissions
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/identity.v1.UpdateMemberPermissionsRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/identity.v1.UpdateMemberPermissionsResponse'
-  /identity.v1.PermissionService/GetBusinessPermissionsGroups:
-    post:
-      tags:
-        - identity.v1.PermissionService
-      summary: Gets the permission groups of the business.
-      description: Gets the permission groups of the business.
-      operationId: identity.v1.PermissionService.GetBusinessPermissionsGroups
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/identity.v1.GetBusinessPermissionsGroupsRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/identity.v1.GetBusinessPermissionsGroupsResponse'
   /identity.v1.PermissionService/CheckPermission:
     post:
       tags:
@@ -1054,6 +839,330 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/identity.v1.CheckPermissionResponse'
+  /identity.v1.PermissionService/CreatePermissionsGroup:
+    post:
+      tags:
+        - identity.v1.PermissionService
+      summary: Creates a new permission group.
+      description: Creates a new permission group.
+      operationId: identity.v1.PermissionService.CreatePermissionsGroup
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/identity.v1.CreatePermissionsGroupRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identity.v1.CreatePermissionsGroupResponse'
+  /identity.v1.PermissionService/DeletePermissionsGroup:
+    post:
+      tags:
+        - identity.v1.PermissionService
+      summary: Deletes a permission group.
+      description: Deletes a permission group.
+      operationId: identity.v1.PermissionService.DeletePermissionsGroup
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/identity.v1.DeletePermissionsGroupRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identity.v1.DeletePermissionsGroupResponse'
+  /identity.v1.PermissionService/GetBusinessPermissionsGroups:
+    post:
+      tags:
+        - identity.v1.PermissionService
+      summary: Gets the permission groups of the business.
+      description: Gets the permission groups of the business.
+      operationId: identity.v1.PermissionService.GetBusinessPermissionsGroups
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/identity.v1.GetBusinessPermissionsGroupsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identity.v1.GetBusinessPermissionsGroupsResponse'
+  /identity.v1.PermissionService/GetPermissionsGroup:
+    post:
+      tags:
+        - identity.v1.PermissionService
+      summary: Gets a permission group by id.
+      description: Gets a permission group by id.
+      operationId: identity.v1.PermissionService.GetPermissionsGroup
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/identity.v1.GetPermissionsGroupRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identity.v1.GetPermissionsGroupResponse'
+  /identity.v1.PermissionService/UpdateMemberPermissions:
+    post:
+      tags:
+        - identity.v1.PermissionService
+      summary: Update the member permissions on the provided business.
+      description: Update the member permissions on the provided business.
+      operationId: identity.v1.PermissionService.UpdateMemberPermissions
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/identity.v1.UpdateMemberPermissionsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identity.v1.UpdateMemberPermissionsResponse'
+  /identity.v1.PermissionService/UpdatePermissionsGroup:
+    post:
+      tags:
+        - identity.v1.PermissionService
+      summary: Updates a permission group.
+      description: Updates a permission group.
+      operationId: identity.v1.PermissionService.UpdatePermissionsGroup
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/identity.v1.UpdatePermissionsGroupRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identity.v1.UpdatePermissionsGroupResponse'
+  /identity.v1.UserService/ChangePassword:
+    post:
+      tags:
+        - identity.v1.UserService
+      summary: Change the password for the currently authenticated user.
+      description: Change the password for the currently authenticated user.
+      operationId: identity.v1.UserService.ChangePassword
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/identity.v1.ChangePasswordRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identity.v1.ChangePasswordResponse'
+  /identity.v1.UserService/DeleteUser:
+    post:
+      tags:
+        - identity.v1.UserService
+      summary: Processes the deletion of the user account requested by the user.
+      description: Processes the deletion of the user account requested by the user.
+      operationId: identity.v1.UserService.DeleteUser
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/identity.v1.DeleteUserRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identity.v1.DeleteUserResponse'
+  /identity.v1.UserService/GetCurrentUser:
+    post:
+      tags:
+        - identity.v1.UserService
+      summary: Get the user information for the currently authenticated user.
+      description: Get the user information for the currently authenticated user.
+      operationId: identity.v1.UserService.GetCurrentUser
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/identity.v1.GetCurrentUserRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identity.v1.GetCurrentUserResponse'
   /identity.v1.UserService/GetMe:
     post:
       tags:
@@ -1092,42 +1201,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/identity.v1.GetMeResponse'
-  /identity.v1.UserService/GetCurrentUser:
-    post:
-      tags:
-        - identity.v1.UserService
-      summary: Get the user information for the currently authenticated user.
-      description: Get the user information for the currently authenticated user.
-      operationId: identity.v1.UserService.GetCurrentUser
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/identity.v1.GetCurrentUserRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/identity.v1.GetCurrentUserResponse'
   /identity.v1.UserService/GetUser:
     post:
       tags:
@@ -1164,42 +1237,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/identity.v1.GetUserResponse'
-  /identity.v1.UserService/UpdateMe:
-    post:
-      tags:
-        - identity.v1.UserService
-      summary: Update the user information for the currently authenticated user.
-      description: Update the user information for the currently authenticated user.
-      operationId: identity.v1.UserService.UpdateMe
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/identity.v1.UpdateMeRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/identity.v1.UpdateMeResponse'
   /identity.v1.UserService/RequestDeleteUser:
     post:
       tags:
@@ -1239,13 +1276,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/identity.v1.RequestDeleteUserResponse'
-  /identity.v1.UserService/DeleteUser:
+  /identity.v1.UserService/UpdateMe:
     post:
       tags:
         - identity.v1.UserService
-      summary: Processes the deletion of the user account requested by the user.
-      description: Processes the deletion of the user account requested by the user.
-      operationId: identity.v1.UserService.DeleteUser
+      summary: Update the user information for the currently authenticated user.
+      description: Update the user information for the currently authenticated user.
+      operationId: identity.v1.UserService.UpdateMe
       parameters:
         - name: Connect-Protocol-Version
           in: header
@@ -1260,7 +1297,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/identity.v1.DeleteUserRequest'
+              $ref: '#/components/schemas/identity.v1.UpdateMeRequest'
         required: true
       responses:
         default:
@@ -1274,43 +1311,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/identity.v1.DeleteUserResponse'
-  /identity.v1.UserService/ChangePassword:
-    post:
-      tags:
-        - identity.v1.UserService
-      summary: Change the password for the currently authenticated user.
-      description: Change the password for the currently authenticated user.
-      operationId: identity.v1.UserService.ChangePassword
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/identity.v1.ChangePasswordRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/identity.v1.ChangePasswordResponse'
+                $ref: '#/components/schemas/identity.v1.UpdateMeResponse'
   /inventory.v1.CategoryService/CreateCategory:
     post:
       tags:
@@ -1347,42 +1348,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inventory.v1.CreateCategoryResponse'
-  /inventory.v1.CategoryService/UpdateCategory:
-    post:
-      tags:
-        - inventory.v1.CategoryService
-      summary: Updates a category.
-      description: Updates a category.
-      operationId: inventory.v1.CategoryService.UpdateCategory
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/inventory.v1.UpdateCategoryRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inventory.v1.UpdateCategoryResponse'
   /inventory.v1.CategoryService/DeleteCategory:
     post:
       tags:
@@ -1491,13 +1456,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inventory.v1.GetCategoryResponse'
-  /inventory.v1.ProductService/FindGlobalProducts:
+  /inventory.v1.CategoryService/UpdateCategory:
     post:
       tags:
-        - inventory.v1.ProductService
-      summary: Finds products by name.
-      description: Finds products by name.
-      operationId: inventory.v1.ProductService.FindGlobalProducts
+        - inventory.v1.CategoryService
+      summary: Updates a category.
+      description: Updates a category.
+      operationId: inventory.v1.CategoryService.UpdateCategory
       parameters:
         - name: Connect-Protocol-Version
           in: header
@@ -1512,7 +1477,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/inventory.v1.FindGlobalProductsRequest'
+              $ref: '#/components/schemas/inventory.v1.UpdateCategoryRequest'
         required: true
       responses:
         default:
@@ -1526,43 +1491,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inventory.v1.FindGlobalProductsResponse'
-  /inventory.v1.ProductService/FindCategory:
-    post:
-      tags:
-        - inventory.v1.ProductService
-      summary: Finds categories by name.
-      description: Finds categories by name.
-      operationId: inventory.v1.ProductService.FindCategory
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/inventory.v1.FindCategoryRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inventory.v1.FindCategoryResponse'
+                $ref: '#/components/schemas/inventory.v1.UpdateCategoryResponse'
   /inventory.v1.ProductService/AddProduct:
     post:
       tags:
@@ -1599,78 +1528,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inventory.v1.AddProductResponse'
-  /inventory.v1.ProductService/GetProduct:
-    post:
-      tags:
-        - inventory.v1.ProductService
-      summary: Gets a business product by id.
-      description: Gets a business product by id.
-      operationId: inventory.v1.ProductService.GetProduct
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/inventory.v1.GetProductRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inventory.v1.GetProductResponse'
-  /inventory.v1.ProductService/UpdateProduct:
-    post:
-      tags:
-        - inventory.v1.ProductService
-      summary: Updates a business product.
-      description: Updates a business product.
-      operationId: inventory.v1.ProductService.UpdateProduct
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/inventory.v1.UpdateProductRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inventory.v1.UpdateProductResponse'
   /inventory.v1.ProductService/DeleteProduct:
     post:
       tags:
@@ -1746,12 +1603,159 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inventory.v1.FindBusinessProductsResponse'
+  /inventory.v1.ProductService/FindCategory:
+    post:
+      tags:
+        - inventory.v1.ProductService
+      summary: Finds categories by name.
+      description: Finds categories by name.
+      operationId: inventory.v1.ProductService.FindCategory
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inventory.v1.FindCategoryRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inventory.v1.FindCategoryResponse'
+  /inventory.v1.ProductService/FindGlobalProducts:
+    post:
+      tags:
+        - inventory.v1.ProductService
+      summary: Finds products by name.
+      description: Finds products by name.
+      operationId: inventory.v1.ProductService.FindGlobalProducts
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inventory.v1.FindGlobalProductsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inventory.v1.FindGlobalProductsResponse'
+  /inventory.v1.ProductService/GetProduct:
+    post:
+      tags:
+        - inventory.v1.ProductService
+      summary: Gets a business product by id.
+      description: Gets a business product by id.
+      operationId: inventory.v1.ProductService.GetProduct
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inventory.v1.GetProductRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inventory.v1.GetProductResponse'
+  /inventory.v1.ProductService/StreamBusinessProducts: {}
+  /inventory.v1.ProductService/UpdateProduct:
+    post:
+      tags:
+        - inventory.v1.ProductService
+      summary: Updates a business product.
+      description: Updates a business product.
+      operationId: inventory.v1.ProductService.UpdateProduct
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inventory.v1.UpdateProductRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inventory.v1.UpdateProductResponse'
   /link.v1.ResourceLinkService/GetResourceLinks:
     post:
       tags:
         - link.v1.ResourceLinkService
-      summary: Gets a resource link by id.   Returns the resources in the same order as the ids.
-      description: "Gets a resource link by id. \n Returns the resources in the same order as the ids."
+      summary: Gets a resource link by id.  Returns the resources in the same order as the ids.
+      description: |-
+        Gets a resource link by id.
+         Returns the resources in the same order as the ids.
       operationId: link.v1.ResourceLinkService.GetResourceLinks
       parameters:
         - name: Connect-Protocol-Version
@@ -1818,42 +1822,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/order.v1.CreateOrderResponse'
-  /order.v1.OrderService/GetOrder:
-    post:
-      tags:
-        - order.v1.OrderService
-      summary: Gets an order by id.
-      description: Gets an order by id.
-      operationId: order.v1.OrderService.GetOrder
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/order.v1.GetOrderRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/order.v1.GetOrderResponse'
   /order.v1.OrderService/DeleteOrder:
     post:
       tags:
@@ -1926,6 +1894,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/order.v1.FindOrdersResponse'
+  /order.v1.OrderService/GetOrder:
+    post:
+      tags:
+        - order.v1.OrderService
+      summary: Gets an order by id.
+      description: Gets an order by id.
+      operationId: order.v1.OrderService.GetOrder
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/order.v1.GetOrderRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/order.v1.GetOrderResponse'
   /order.v1.BillingService/GenerateBilling:
     post:
       tags:
@@ -1998,6 +2002,78 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/store.v1.CreateStoreResponse'
+  /store.v1.StoreService/DeleteStore:
+    post:
+      tags:
+        - store.v1.StoreService
+      summary: Deletes a store.
+      description: Deletes a store.
+      operationId: store.v1.StoreService.DeleteStore
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/store.v1.DeleteStoreRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/store.v1.DeleteStoreResponse'
+  /store.v1.StoreService/GetBusinessStores:
+    post:
+      tags:
+        - store.v1.StoreService
+      summary: Gets all stores base on business Id.
+      description: Gets all stores base on business Id.
+      operationId: store.v1.StoreService.GetBusinessStores
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/store.v1.GetBusinessStoresRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/store.v1.GetBusinessStoresResponse'
   /store.v1.StoreService/GetStore:
     post:
       tags:
@@ -2072,78 +2148,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/store.v1.UpdateStoreResponse'
-  /store.v1.StoreService/DeleteStore:
-    post:
-      tags:
-        - store.v1.StoreService
-      summary: Deletes a store.
-      description: Deletes a store.
-      operationId: store.v1.StoreService.DeleteStore
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/store.v1.DeleteStoreRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/store.v1.DeleteStoreResponse'
-  /store.v1.StoreService/GetBusinessStores:
-    post:
-      tags:
-        - store.v1.StoreService
-      summary: Gets all stores base on business Id.
-      description: Gets all stores base on business Id.
-      operationId: store.v1.StoreService.GetBusinessStores
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/store.v1.GetBusinessStoresRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/store.v1.GetBusinessStoresResponse'
   /transaction.v1.TransactionService/AddTransaction:
     post:
       tags:
@@ -2180,78 +2184,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/transaction.v1.AddTransactionResponse'
-  /transaction.v1.TransactionService/GetTransaction:
-    post:
-      tags:
-        - transaction.v1.TransactionService
-      summary: Gets a transaction by id.
-      description: Gets a transaction by id.
-      operationId: transaction.v1.TransactionService.GetTransaction
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/transaction.v1.GetTransactionRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/transaction.v1.GetTransactionResponse'
-  /transaction.v1.TransactionService/UpdateTransaction:
-    post:
-      tags:
-        - transaction.v1.TransactionService
-      summary: Updates a transaction.
-      description: Updates a transaction.
-      operationId: transaction.v1.TransactionService.UpdateTransaction
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/transaction.v1.UpdateTransactionRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/transaction.v1.UpdateTransactionResponse'
   /transaction.v1.TransactionService/DeleteTransaction:
     post:
       tags:
@@ -2324,44 +2256,80 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/transaction.v1.FindTransactionsResponse'
+  /transaction.v1.TransactionService/GetTransaction:
+    post:
+      tags:
+        - transaction.v1.TransactionService
+      summary: Gets a transaction by id.
+      description: Gets a transaction by id.
+      operationId: transaction.v1.TransactionService.GetTransaction
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/transaction.v1.GetTransactionRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/transaction.v1.GetTransactionResponse'
+  /transaction.v1.TransactionService/UpdateTransaction:
+    post:
+      tags:
+        - transaction.v1.TransactionService
+      summary: Updates a transaction.
+      description: Updates a transaction.
+      operationId: transaction.v1.TransactionService.UpdateTransaction
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/transaction.v1.UpdateTransactionRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/transaction.v1.UpdateTransactionResponse'
 components:
   schemas:
-    business.v1.BusinessStatusType:
-      type: string
-      title: BusinessStatusType
-      enum:
-        - BUSINESS_STATUS_TYPE_UNSPECIFIED
-        - BUSINESS_STATUS_TYPE_ACTIVE
-        - BUSINESS_STATUS_TYPE_INACTIVE
-    business.v1.CurrencyChangePolicyType:
-      type: string
-      title: CurrencyChangePolicyType
-      enum:
-        - CURRENCY_CHANGE_POLICY_TYPE_UNSPECIFIED
-        - CURRENCY_CHANGE_POLICY_TYPE_KEEP_PREVIOUS_CURRENCY_VALUE
-        - CURRENCY_CHANGE_POLICY_TYPE_CONVERT_BASED_ON_CURRENT_EXCHANGE_RATE
-    identity.v1.ResourceActionType:
-      type: string
-      title: ResourceActionType
-      enum:
-        - RESOURCE_ACTION_TYPE_UNSPECIFIED
-        - RESOURCE_ACTION_TYPE_READ
-        - RESOURCE_ACTION_TYPE_ADD
-        - RESOURCE_ACTION_TYPE_UPDATE
-        - RESOURCE_ACTION_TYPE_REMOVE
-    identity.v1.ResourceType:
-      type: string
-      title: ResourceType
-      enum:
-        - RESOURCE_TYPE_UNSPECIFIED
-        - RESOURCE_TYPE_BUSINESS
-        - RESOURCE_TYPE_BUSINESS_MEMBER
-        - RESOURCE_TYPE_BUSINESS_SUPPLIER
-        - RESOURCE_TYPE_STORE
-        - RESOURCE_TYPE_INVOICE
-        - RESOURCE_TYPE_STORE_ORDER
-        - RESOURCE_TYPE_SUPPLIER_ORDER
-        - RESOURCE_TYPE_PRODUCT
     business.v1.AddUserToBusinessRequest:
       type: object
       properties:
@@ -2471,6 +2439,13 @@ components:
           $ref: '#/components/schemas/google.protobuf.Timestamp'
       title: BusinessMember
       additionalProperties: false
+    business.v1.BusinessStatusType:
+      type: string
+      title: BusinessStatusType
+      enum:
+        - BUSINESS_STATUS_TYPE_UNSPECIFIED
+        - BUSINESS_STATUS_TYPE_ACTIVE
+        - BUSINESS_STATUS_TYPE_INACTIVE
     business.v1.ChangeBusinessCurrencyRequest:
       type: object
       properties:
@@ -2530,13 +2505,18 @@ components:
           type: string
           title: business_id
           minLength: 3
-          description: |
-            The reference id to the business identifier.
-            string.min_len = 3
+          description: The reference id to the business identifier.
       title: CreateBusinessResponse
       required:
         - businessId
       additionalProperties: false
+    business.v1.CurrencyChangePolicyType:
+      type: string
+      title: CurrencyChangePolicyType
+      enum:
+        - CURRENCY_CHANGE_POLICY_TYPE_UNSPECIFIED
+        - CURRENCY_CHANGE_POLICY_TYPE_KEEP_PREVIOUS_CURRENCY_VALUE
+        - CURRENCY_CHANGE_POLICY_TYPE_CONVERT_BASED_ON_CURRENT_EXCHANGE_RATE
     business.v1.GetBusinessDetailsRequest:
       type: object
       properties:
@@ -2544,9 +2524,7 @@ components:
           type: string
           title: business_id
           minLength: 3
-          description: |
-            The reference id to the business identifier.
-            string.min_len = 3
+          description: The reference id to the business identifier.
       title: GetBusinessDetailsRequest
       required:
         - businessId
@@ -2567,9 +2545,7 @@ components:
           type: string
           title: business_id
           minLength: 3
-          description: |
-            The reference id to the business identifier.
-            string.min_len = 3
+          description: The reference id to the business identifier.
       title: GetBusinessMembersRequest
       required:
         - businessId
@@ -2606,15 +2582,11 @@ components:
           type: string
           title: user_id
           minLength: 3
-          description: |
-            The unique identifier of the user.
-            string.min_len = 3
+          description: The unique identifier of the user.
         businessId:
           type: string
           title: business_id
           minLength: 3
-          description: |
-            string.min_len = 3
       title: RemoveUserFromBusinessRequest
       required:
         - userId
@@ -2636,9 +2608,7 @@ components:
           type: string
           title: business_id
           minLength: 3
-          description: |
-            The reference id to the business identifier.
-            string.min_len = 3
+          description: The reference id to the business identifier.
         password:
           type: string
           title: password
@@ -2694,6 +2664,75 @@ components:
           description: Whether the business was successfully updated.
       title: UpdateBusinessResponse
       additionalProperties: false
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+        - 1
+      description: Define the version of the Connect protocol
+      const: 1
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+            - not_found
+          enum:
+            - canceled
+            - unknown
+            - invalid_argument
+            - deadline_exceeded
+            - not_found
+            - already_exists
+            - permission_denied
+            - resource_exhausted
+            - failed_precondition
+            - aborted
+            - out_of_range
+            - unimplemented
+            - internal
+            - unavailable
+            - data_loss
+            - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/connect.error_details.Any'
+          description: A list of messages that carry the error details. There is no limit on the number of messages.
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+    connect.error_details.Any:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
+        value:
+          type: string
+          format: binary
+          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
+        debug:
+          oneOf:
+            - type: object
+              title: Any
+              additionalProperties: true
+              description: Detailed error information.
+          discriminator:
+            propertyName: type
+          title: Debug
+          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
     google.protobuf.Timestamp:
       type: string
       examples:
@@ -2807,6 +2846,28 @@ components:
           $ref: '#/components/schemas/identity.v1.ResourceActionType'
       title: Permission
       additionalProperties: false
+    identity.v1.ResourceActionType:
+      type: string
+      title: ResourceActionType
+      enum:
+        - RESOURCE_ACTION_TYPE_UNSPECIFIED
+        - RESOURCE_ACTION_TYPE_READ
+        - RESOURCE_ACTION_TYPE_ADD
+        - RESOURCE_ACTION_TYPE_UPDATE
+        - RESOURCE_ACTION_TYPE_REMOVE
+    identity.v1.ResourceType:
+      type: string
+      title: ResourceType
+      enum:
+        - RESOURCE_TYPE_UNSPECIFIED
+        - RESOURCE_TYPE_BUSINESS
+        - RESOURCE_TYPE_BUSINESS_MEMBER
+        - RESOURCE_TYPE_BUSINESS_SUPPLIER
+        - RESOURCE_TYPE_STORE
+        - RESOURCE_TYPE_INVOICE
+        - RESOURCE_TYPE_STORE_ORDER
+        - RESOURCE_TYPE_SUPPLIER_ORDER
+        - RESOURCE_TYPE_PRODUCT
     link.v1.ResourceLink:
       type: object
       properties:
@@ -2839,75 +2900,6 @@ components:
       title: ResourceLink
       additionalProperties: false
       description: 'TODO: Auto delete resource link not linked to any other resource.'
-    connect-protocol-version:
-      type: number
-      title: Connect-Protocol-Version
-      enum:
-        - 1
-      description: Define the version of the Connect protocol
-      const: 1
-    connect-timeout-header:
-      type: number
-      title: Connect-Timeout-Ms
-      description: Define the timeout, in ms
-    connect.error:
-      type: object
-      properties:
-        code:
-          type: string
-          examples:
-            - not_found
-          enum:
-            - canceled
-            - unknown
-            - invalid_argument
-            - deadline_exceeded
-            - not_found
-            - already_exists
-            - permission_denied
-            - resource_exhausted
-            - failed_precondition
-            - aborted
-            - out_of_range
-            - unimplemented
-            - internal
-            - unavailable
-            - data_loss
-            - unauthenticated
-          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
-        message:
-          type: string
-          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/connect.error_details.Any'
-          description: A list of messages that carry the error details. There is no limit on the number of messages.
-      title: Connect Error
-      additionalProperties: true
-      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
-    connect.error_details.Any:
-      type: object
-      properties:
-        type:
-          type: string
-          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
-        value:
-          type: string
-          format: binary
-          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
-        debug:
-          oneOf:
-            - type: object
-              title: Any
-              additionalProperties: true
-              description: Detailed error information.
-          discriminator:
-            propertyName: type
-          title: Debug
-          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
-      additionalProperties: true
-      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
     business.v1.BusinessClient:
       type: object
       properties:
@@ -2935,9 +2927,7 @@ components:
           type: string
           title: business_id
           minLength: 3
-          description: |
-            The id of the business of the client.
-            string.min_len = 3
+          description: The id of the business of the client.
       title: BusinessClient
       required:
         - businessId
@@ -2964,9 +2954,7 @@ components:
           type: string
           title: client_id
           minLength: 3
-          description: |
-            The reference id to the client identifier.
-            string.min_len = 3
+          description: The reference id to the client identifier.
       title: CreateBusinessClientResponse
       required:
         - clientId
@@ -2978,9 +2966,7 @@ components:
           type: string
           title: client_id
           minLength: 3
-          description: |
-            The reference id to the client identifier.
-            string.min_len = 3
+          description: The reference id to the client identifier.
       title: DeleteBusinessClientRequest
       required:
         - clientId
@@ -3001,9 +2987,7 @@ components:
           type: string
           title: client_id
           minLength: 3
-          description: |
-            The reference id to the client identifier.
-            string.min_len = 3
+          description: The reference id to the client identifier.
       title: GetBusinessClientRequest
       required:
         - clientId
@@ -3067,16 +3051,14 @@ components:
     business.v1.CreateSupplierResponse:
       type: object
       properties:
-        suplierId:
+        supplierId:
           type: string
-          title: suplier_id
+          title: supplier_id
           minLength: 3
-          description: |
-            The reference id to the supplier identifier.
-            string.min_len = 3
+          description: The reference id to the supplier identifier.
       title: CreateSupplierResponse
       required:
-        - suplierId
+        - supplierId
       additionalProperties: false
     business.v1.DeleteSupplierRequest:
       type: object
@@ -3085,9 +3067,7 @@ components:
           type: string
           title: supplier_id
           minLength: 3
-          description: |
-            The reference id to the supplier identifier.
-            string.min_len = 3
+          description: The reference id to the supplier identifier.
       title: DeleteSupplierRequest
       required:
         - supplierId
@@ -3108,9 +3088,7 @@ components:
           type: string
           title: business_id
           minLength: 3
-          description: |
-            The reference id to the business identifier.
-            string.min_len = 3
+          description: The reference id to the business identifier.
       title: GetBusinessSuppliersRequest
       required:
         - businessId
@@ -3135,9 +3113,7 @@ components:
           type: string
           title: supplier_id
           minLength: 3
-          description: |
-            The reference id to the supplier identifier.
-            string.min_len = 3
+          description: The reference id to the supplier identifier.
       title: GetSupplierRequest
       required:
         - supplierId
@@ -3264,29 +3240,25 @@ components:
           type: string
           title: email
           format: email
-          description: |
+          description: |-
             The email of the user.
              Note: required when phone_number and username are not set.
-            string.email = true // value must be a valid email address
-            string.email_empty = true // value is empty, which is not a valid email address
           nullable: true
         phoneNumber:
           type: string
           title: phone_number
           pattern: ^[0-9\+\-\(\)\s]+$
-          description: |
+          description: |-
             The phone number of the user.
              Note: required when email and username are not set.
-            string.pattern = "^[0-9\\+\\-\\(\\)\\s]+$"
           nullable: true
         userName:
           type: string
           title: user_name
           pattern: ^@[a-zA-Z0-9_]+$
-          description: |
+          description: |-
             The username of the user.
              Note: required when email and phone_number are not set.
-            string.pattern = "^@[a-zA-Z0-9_]+$"
           nullable: true
       title: LoginRequest
       additionalProperties: false
@@ -3314,19 +3286,13 @@ components:
           type: string
           title: email
           format: email
-          description: |
-            The email address of the user.
-            string.email = true // value must be a valid email address
-            string.email_empty = true // value is empty, which is not a valid email address
+          description: The email address of the user.
         password:
           type: string
           title: password
           maxLength: 72
           minLength: 5
-          description: |
-            The password of the user.
-            string.max_len = 72
-            string.min_len = 5
+          description: The password of the user.
       title: RegisterRequest
       required:
         - password
@@ -3409,16 +3375,12 @@ components:
           type: string
           title: user_id
           minLength: 3
-          description: |
-            The unique identifier of the member.
-            string.min_len = 3
+          description: The unique identifier of the member.
         businessId:
           type: string
           title: business_id
           minLength: 3
-          description: |
-            The unique identifier of the business on which we want to check the permission.
-            string.min_len = 3
+          description: The unique identifier of the business on which we want to check the permission.
         permission:
           title: permission
           description: The permission to check.
@@ -3450,9 +3412,7 @@ components:
           type: string
           title: business_id
           minLength: 3
-          description: |
-            The unique identifier of the business on which the permission group is created.
-            string.min_len = 3
+          description: The unique identifier of the business on which the permission group is created.
       title: CreatePermissionsGroupRequest
       required:
         - businessId
@@ -3464,9 +3424,7 @@ components:
           type: string
           title: permission_group_id
           minLength: 3
-          description: |
-            The unique identifier of the created permission group.
-            string.min_len = 3
+          description: The unique identifier of the created permission group.
       title: CreatePermissionsGroupResponse
       required:
         - permissionGroupId
@@ -3478,16 +3436,12 @@ components:
           type: string
           title: permission_group_id
           minLength: 3
-          description: |
-            The unique identifier of the permission group to delete.
-            string.min_len = 3
+          description: The unique identifier of the permission group to delete.
         businessId:
           type: string
           title: business_id
           minLength: 3
-          description: |
-            The unique identifier of the business.
-            string.min_len = 3
+          description: The unique identifier of the business.
       title: DeletePermissionsGroupRequest
       required:
         - permissionGroupId
@@ -3509,9 +3463,7 @@ components:
           type: string
           title: business_id
           minLength: 3
-          description: |
-            The unique identifier of the business to retrieve.
-            string.min_len = 3
+          description: The unique identifier of the business to retrieve.
       title: GetBusinessPermissionsGroupsRequest
       required:
         - businessId
@@ -3534,9 +3486,7 @@ components:
           type: string
           title: permission_group_id
           minLength: 3
-          description: |
-            The unique identifier of the permission group to retrieve.
-            string.min_len = 3
+          description: The unique identifier of the permission group to retrieve.
       title: GetPermissionsGroupRequest
       required:
         - permissionGroupId
@@ -3589,16 +3539,12 @@ components:
           type: string
           title: user_id
           minLength: 3
-          description: |
-            The unique identifier of the member.
-            string.min_len = 3
+          description: The unique identifier of the member.
         businessId:
           type: string
           title: business_id
           minLength: 3
-          description: |
-            The id of the business on which we want to update the permissions.
-            string.min_len = 3
+          description: The id of the business on which we want to update the permissions.
         removePermissions:
           type: array
           items:
@@ -3644,16 +3590,12 @@ components:
           type: string
           title: permissions_group_id
           minLength: 3
-          description: |
-            The permission group id;
-            string.min_len = 3
+          description: The permission group id;
         businessId:
           type: string
           title: business_id
           minLength: 3
-          description: |
-            The unique identifier of the business.
-            string.min_len = 3
+          description: The unique identifier of the business.
         name:
           type: string
           title: name
@@ -3706,14 +3648,6 @@ components:
         - AUTH_ACTION_TYPE_VERIFY_PHONE_NUMBER
         - AUTH_ACTION_TYPE_INITIALIZE_PASSWORD
         - AUTH_ACTION_TYPE_RESET_PASSWORD
-    identity.v1.ProviderType:
-      type: string
-      title: ProviderType
-      enum:
-        - PROVIDER_TYPE_UNSPECIFIED
-        - PROVIDER_TYPE_FIREBASE_EMAIL
-        - PROVIDER_TYPE_GOOGLE
-        - PROVIDER_TYPE_INTERNAL_BUSINESS_AUTH
     identity.v1.ChangePasswordRequest:
       type: object
       properties:
@@ -3722,21 +3656,17 @@ components:
           title: old_password
           maxLength: 32
           minLength: 8
-          description: |
+          description: |-
             The previous password of the user.
              TODO: Add more validation like capital letters, numbers, etc.
-            string.max_len = 32
-            string.min_len = 8
         newPassword:
           type: string
           title: new_password
           maxLength: 32
           minLength: 8
-          description: |
+          description: |-
             The new password of the user.
              TODO: Add more validation like capital letters, numbers, etc.
-            string.max_len = 32
-            string.min_len = 8
       title: ChangePasswordRequest
       additionalProperties: false
     identity.v1.ChangePasswordResponse:
@@ -3820,9 +3750,7 @@ components:
           type: string
           title: user_id
           minLength: 3
-          description: |
-            The id of the user to retrieve.
-            string.min_len = 3
+          description: The id of the user to retrieve.
       title: GetUserRequest
       required:
         - userId
@@ -3836,6 +3764,14 @@ components:
           $ref: '#/components/schemas/identity.v1.User'
       title: GetUserResponse
       additionalProperties: false
+    identity.v1.ProviderType:
+      type: string
+      title: ProviderType
+      enum:
+        - PROVIDER_TYPE_UNSPECIFIED
+        - PROVIDER_TYPE_FIREBASE_EMAIL
+        - PROVIDER_TYPE_GOOGLE
+        - PROVIDER_TYPE_INTERNAL_BUSINESS_AUTH
     identity.v1.RequestDeleteUserRequest:
       type: object
       properties:
@@ -3843,9 +3779,7 @@ components:
           type: string
           title: user_id
           minLength: 3
-          description: |
-            The id of the user to delete.
-            string.min_len = 3
+          description: The id of the user to delete.
         password:
           type: string
           title: password
@@ -3910,10 +3844,7 @@ components:
           type: string
           title: email
           format: email
-          description: |
-            The email address of the user.
-            string.email = true // value must be a valid email address
-            string.email_empty = true // value is empty, which is not a valid email address
+          description: The email address of the user.
           nullable: true
         phoneNumber:
           type: string
@@ -3963,9 +3894,7 @@ components:
           type: string
           title: name
           minLength: 3
-          description: |
-            Name of the category (e.g., "Electronics", "Smart TVs")
-            string.min_len = 3
+          description: Name of the category (e.g., "Electronics", "Smart TVs")
         parentCategoryId:
           type: string
           title: parent_category_id
@@ -3975,9 +3904,7 @@ components:
           type: string
           title: business_id
           minLength: 3
-          description: |
-            Business ID associated with the category
-            string.min_len = 3
+          description: Business ID associated with the category
         createdAt:
           title: created_at
           description: Timestamp when the category was created
@@ -4017,9 +3944,7 @@ components:
           type: string
           title: ref_id
           minLength: 3
-          description: |
-            The unique identifier of the category.
-            string.min_len = 3
+          description: The unique identifier of the category.
       title: DeleteCategoryRequest
       required:
         - refId
@@ -4040,9 +3965,7 @@ components:
           type: string
           title: business_id
           minLength: 3
-          description: |
-            Find the category by business_id
-            string.min_len = 3
+          description: Find the category by business_id
         refId:
           type: string
           title: ref_id
@@ -4079,9 +4002,7 @@ components:
           type: string
           title: ref_id
           minLength: 3
-          description: |
-            The unique identifier of the category.
-            string.min_len = 3
+          description: The unique identifier of the category.
       title: GetCategoryRequest
       required:
         - refId
@@ -4102,9 +4023,7 @@ components:
           type: string
           title: ref_id
           minLength: 3
-          description: |
-            The category information to update.
-            string.min_len = 3
+          description: The category information to update.
         name:
           type: string
           title: name
@@ -4136,12 +4055,12 @@ components:
           type: string
           title: business_id
           description: The unique identifier of the business.
-        priceInCents:
+        priceInXaf:
           type: integer
-          title: price_in_cents
+          title: price_in_xaf
           format: int32
           description: |-
-            The price in cents of the product.
+            The price in XAF of the product.
              The currency is determined by the business.
         imagesRawImages:
           type: array
@@ -4192,12 +4111,12 @@ components:
           type: string
           title: global_product_id
           description: The unique identifier of the global product.
-        priceInCents:
+        priceInXaf:
           type: integer
-          title: price_in_cents
+          title: price_in_xaf
           format: int32
           description: |-
-            The price in cents of the product.
+            The price in XAF of the product.
              The currency is determined by the business.
         imagesLinkIds:
           type: array
@@ -4220,6 +4139,11 @@ components:
           description: The expiration date of the product.
           nullable: true
           $ref: '#/components/schemas/google.protobuf.Timestamp'
+        supplierId:
+          type: string
+          title: supplier_id
+          description: The unique identifier of the supplier.
+          nullable: true
       title: BusinessProduct
       additionalProperties: false
     inventory.v1.DeleteProductRequest:
@@ -4229,9 +4153,7 @@ components:
           type: string
           title: business_product_id
           minLength: 3
-          description: |
-            The unique identifier of the business product.
-            string.min_len = 3
+          description: The unique identifier of the business product.
       title: DeleteProductRequest
       required:
         - businessProductId
@@ -4350,9 +4272,7 @@ components:
           type: string
           title: product_id
           minLength: 3
-          description: |
-            The unique identifier of the business product.
-            string.min_len = 3
+          description: The unique identifier of the business product.
       title: GetProductRequest
       required:
         - productId
@@ -4415,6 +4335,39 @@ components:
           title: name
           description: The name of the product category.
       title: ProductCategory
+      additionalProperties: false
+    inventory.v1.StreamBusinessProductsRequest:
+      type: object
+      properties:
+        businessId:
+          type: string
+          title: business_id
+          minLength: 3
+          description: The unique identifier of the business.
+        supplierId:
+          type: string
+          title: supplier_id
+          description: Optional filter by supplier ID.
+          nullable: true
+        globalProductId:
+          type: string
+          title: global_product_id
+          description: Optional filter by global product ID.
+          nullable: true
+      title: StreamBusinessProductsRequest
+      required:
+        - businessId
+      additionalProperties: false
+    inventory.v1.StreamBusinessProductsResponse:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/inventory.v1.BusinessProduct'
+          title: products
+          description: The business products for the specified business.
+      title: StreamBusinessProductsResponse
       additionalProperties: false
     inventory.v1.UpdateProductRequest:
       type: object
@@ -4487,15 +4440,6 @@ components:
           $ref: '#/components/schemas/link.v1.ResourceLink'
       title: LinkEntry
       additionalProperties: false
-    order.v1.OrderStatus:
-      type: string
-      title: OrderStatus
-      enum:
-        - ORDER_STATUS_UNSPECIFIED
-        - ORDER_STATUS_PENDING
-        - ORDER_STATUS_PROCESSING
-        - ORDER_STATUS_COMPLETED
-        - ORDER_STATUS_CANCELLED
     order.v1.CreateOrderRequest:
       type: object
       properties:
@@ -4521,9 +4465,7 @@ components:
           type: string
           title: order_id
           minLength: 3
-          description: |
-            The unique identifier of the created order.
-            string.min_len = 3
+          description: The unique identifier of the created order.
       title: CreateOrderResponse
       required:
         - orderId
@@ -4535,9 +4477,7 @@ components:
           type: string
           title: order_id
           minLength: 3
-          description: |
-            The unique identifier of the order to delete.
-            string.min_len = 3
+          description: The unique identifier of the order to delete.
       title: DeleteOrderRequest
       required:
         - orderId
@@ -4595,9 +4535,7 @@ components:
           type: string
           title: order_id
           minLength: 3
-          description: |
-            The unique identifier of the order to retrieve.
-            string.min_len = 3
+          description: The unique identifier of the order to retrieve.
       title: GetOrderRequest
       required:
         - orderId
@@ -4684,6 +4622,15 @@ components:
              WARN: This value is stored because the unit price can change over time.
       title: OrderItem
       additionalProperties: false
+    order.v1.OrderStatus:
+      type: string
+      title: OrderStatus
+      enum:
+        - ORDER_STATUS_UNSPECIFIED
+        - ORDER_STATUS_PENDING
+        - ORDER_STATUS_PROCESSING
+        - ORDER_STATUS_COMPLETED
+        - ORDER_STATUS_CANCELLED
     order.v1.GenerateBillingRequest:
       type: object
       properties:
@@ -4791,9 +4738,7 @@ components:
           type: string
           title: store_id
           minLength: 3
-          description: |
-            The unique identifier of the created store.
-            string.min_len = 3
+          description: The unique identifier of the created store.
       title: CreateStoreResponse
       required:
         - storeId
@@ -4805,9 +4750,7 @@ components:
           type: string
           title: store_id
           minLength: 3
-          description: |
-            The unique identifier of the store to delete.
-            string.min_len = 3
+          description: The unique identifier of the store to delete.
       title: DeleteStoreRequest
       required:
         - storeId
@@ -4828,9 +4771,7 @@ components:
           type: string
           title: business_id
           minLength: 3
-          description: |
-            The reference id to the supplier identifier.
-            string.min_len = 3
+          description: The reference id to the supplier identifier.
       title: GetBusinessStoresRequest
       required:
         - businessId
@@ -4855,9 +4796,7 @@ components:
           type: string
           title: store_id
           minLength: 3
-          description: |
-            The unique identifier of the store to retrieve.
-            string.min_len = 3
+          description: The unique identifier of the store to retrieve.
       title: GetStoreRequest
       required:
         - storeId
@@ -4942,24 +4881,6 @@ components:
           $ref: '#/components/schemas/store.v1.Store'
       title: UpdateStoreResponse
       additionalProperties: false
-    transaction.v1.TransactionStatus:
-      type: string
-      title: TransactionStatus
-      enum:
-        - TRANSACTION_STATUS_UNSPECIFIED
-        - TRANSACTION_STATUS_PENDING
-        - TRANSACTION_STATUS_COMPLETED
-        - TRANSACTION_STATUS_FAILED
-        - TRANSACTION_STATUS_CANCELLED
-    transaction.v1.TransactionType:
-      type: string
-      title: TransactionType
-      enum:
-        - TRANSACTION_TYPE_UNSPECIFIED
-        - TRANSACTION_TYPE_SALE
-        - TRANSACTION_TYPE_PURCHASE
-        - TRANSACTION_TYPE_REFUND
-        - TRANSACTION_TYPE_ADJUSTMENT
     transaction.v1.AddTransactionRequest:
       type: object
       properties:
@@ -5003,8 +4924,6 @@ components:
           type: string
           title: business_id
           minLength: 3
-          description: |
-            string.min_len = 3
         storeId:
           type: string
           title: store_id
@@ -5084,9 +5003,7 @@ components:
           type: string
           title: business_id
           minLength: 3
-          description: |
-            The unique identifier of the business associated with the transaction.
-            string.min_len = 3
+          description: The unique identifier of the business associated with the transaction.
         storeId:
           type: string
           title: store_id
@@ -5154,7 +5071,29 @@ components:
         - businessId
         - currencyCode
       additionalProperties: false
-      description: "The Transaction represents an entry of actions impacting the stock or finances, \n such as sales, purchases, refunds, stock adjustments, or stock transfers. \n It ensures traceability of operations by capturing the user, date, product, \n associated order, amount or quantity, for audit and reports."
+      description: |-
+        The Transaction represents an entry of actions impacting the stock or finances,
+         such as sales, purchases, refunds, stock adjustments, or stock transfers.
+         It ensures traceability of operations by capturing the user, date, product,
+         associated order, amount or quantity, for audit and reports.
+    transaction.v1.TransactionStatus:
+      type: string
+      title: TransactionStatus
+      enum:
+        - TRANSACTION_STATUS_UNSPECIFIED
+        - TRANSACTION_STATUS_PENDING
+        - TRANSACTION_STATUS_COMPLETED
+        - TRANSACTION_STATUS_FAILED
+        - TRANSACTION_STATUS_CANCELLED
+    transaction.v1.TransactionType:
+      type: string
+      title: TransactionType
+      enum:
+        - TRANSACTION_TYPE_UNSPECIFIED
+        - TRANSACTION_TYPE_SALE
+        - TRANSACTION_TYPE_PURCHASE
+        - TRANSACTION_TYPE_REFUND
+        - TRANSACTION_TYPE_ADJUSTMENT
     transaction.v1.UpdateTransactionRequest:
       type: object
       properties:

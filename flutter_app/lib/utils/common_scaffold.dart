@@ -1,5 +1,6 @@
 import 'package:animation_wrappers/animations/faded_slide_animation.dart';
 import 'package:flutter/material.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 /// Common scaffold used throughout th app.
 class CommonScaffold extends StatelessWidget {
@@ -42,6 +43,7 @@ class CommonScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
     final appBarTitle = title;
 
     final appBarTitleWidget = appBarTitle == null
@@ -59,6 +61,7 @@ class CommonScaffold extends StatelessWidget {
     return SelectionArea(
       child: Scaffold(
         appBar: displayAppBar ? appBarWidget : null,
+        backgroundColor: backgroundColor ?? theme.colorScheme.background,
         body: FadedSlideAnimation(
           beginOffset: const Offset(0, -0.3),
           endOffset: Offset.zero,

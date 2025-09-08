@@ -5,6 +5,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import '../../../../router/app_router.dart' as app_router;
 import '../../../../services/internationalization/internationalization.dart';
 import '../../../../utils/button_state.dart';
+import '../../../../utils/common_functions.dart';
 import '../login_controller.dart';
 
 /// Custom login button widget with loading state
@@ -16,10 +17,16 @@ class LoginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = context.read<LoginController>();
     final appIntl = AppInternationalizationService.to;
-    final theme = ShadTheme.of(context);
 
     Future<void> onLoginPressed(LoginController controller) async {
       controller.buttonState.value = ButtonState.loading;
+      final validation = controller.validateForm();
+      if (!validation) {
+        controller.buttonState.value = ButtonState.initial;
+
+        return;
+      }
+
       final loginResult = await controller.loginUser();
       if (!loginResult) {
         controller.buttonState.value = ButtonState.initial;
@@ -29,24 +36,20 @@ class LoginButton extends StatelessWidget {
       if (!context.mounted) {
         return;
       }
-      final toast = ShadToast(
-        title: Text(loginResult ? appIntl.success : appIntl.failed),
-        description: Text(
-          loginResult ? appIntl.loginSuccess : appIntl.loginFailed,
-        ),
-        border: Border.all(
-          color: loginResult
-              ? theme.colorScheme.primary
-              : theme.colorScheme.destructive,
-          width: 2,
-        ),
-        backgroundColor: theme.colorScheme.background,
-      );
-
-      ShadToaster.of(context).show(toast);
       if (loginResult) {
+        showSuccessToast(
+          context: context,
+          title: appIntl.success,
+          message: appIntl.loginSuccess,
+        );
         controller.buttonState.value = ButtonState.initial;
         app_router.pushReplacement(context, app_router.businessListRoutePath);
+      } else {
+        showErrorToast(
+          context: context,
+          title: appIntl.failed,
+          message: appIntl.loginFailed,
+        );
       }
       controller.buttonState.value = ButtonState.initial;
     }

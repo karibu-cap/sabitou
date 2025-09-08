@@ -9,40 +9,44 @@ class InputField extends StatelessWidget {
     super.key,
     required this.controller,
     required this.placeholder,
-    required this.icon,
+    this.icon,
     this.label,
     this.description,
     this.keyboardType,
     this.inputFormatters,
     this.id,
     this.validator,
+    this.maxLines,
   });
 
-  /// Controller for the input field text editing
+  /// Controller for the input field text editing.
   final TextEditingController controller;
 
-  /// Placeholder text to display when field is empty
+  /// Placeholder text to display when field is empty.
   final String placeholder;
 
-  /// Label text to display above the field
+  /// Label text to display above the field.
   final String? label;
 
-  /// Description text to display below the field
+  /// The max lines.
+  final int? maxLines;
+
+  /// Description text to display below the field.
   final String? description;
 
-  /// Icon to display in the trailing position
-  final IconData icon;
+  /// Icon to display in the trailing position.
+  final IconData? icon;
 
-  /// Keyboard type for text input (defaults to TextInputType.text)
+  /// Keyboard type for text input (defaults to TextInputType.text).
   final TextInputType? keyboardType;
 
-  /// Input formatters to apply to the text input
+  /// Input formatters to apply to the text input.
   final List<TextInputFormatter>? inputFormatters;
 
-  /// Optional ID for the input field (used for accessibility/testing)
+  /// Optional ID for the input field (used for accessibility/testing).
   final String? id;
 
-  /// Optional validator function for the input field
+  /// Optional validator function for the input field.
   final FormFieldValidator<String>? validator;
 
   @override

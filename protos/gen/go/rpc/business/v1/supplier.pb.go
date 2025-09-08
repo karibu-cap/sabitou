@@ -270,7 +270,7 @@ func (x *CreateSupplierRequest) GetExternalLinks() []*v1.ResourceLink {
 type CreateSupplierResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The reference id to the supplier identifier.
-	SuplierId     string `protobuf:"bytes,1,opt,name=suplier_id,json=suplierId,proto3" json:"suplier_id,omitempty"`
+	SupplierId    string `protobuf:"bytes,1,opt,name=supplier_id,json=supplierId,proto3" json:"supplier_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -305,9 +305,9 @@ func (*CreateSupplierResponse) Descriptor() ([]byte, []int) {
 	return file_business_v1_supplier_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *CreateSupplierResponse) GetSuplierId() string {
+func (x *CreateSupplierResponse) GetSupplierId() string {
 	if x != nil {
-		return x.SuplierId
+		return x.SupplierId
 	}
 	return ""
 }
@@ -723,11 +723,11 @@ const file_business_v1_supplier_proto_rawDesc = "" +
 	"\bsupplier\x18\x01 \x01(\v2\x15.business.v1.SupplierR\bsupplier\x12)\n" +
 	"\x0elogo_raw_image\x18\x02 \x01(\fH\x00R\flogoRawImage\x88\x01\x01\x12<\n" +
 	"\x0eexternal_links\x18\x03 \x03(\v2\x15.link.v1.ResourceLinkR\rexternalLinksB\x11\n" +
-	"\x0f_logo_raw_image\"C\n" +
-	"\x16CreateSupplierResponse\x12)\n" +
-	"\n" +
-	"suplier_id\x18\x01 \x01(\tB\n" +
-	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\tsuplierId\"A\n" +
+	"\x0f_logo_raw_image\"E\n" +
+	"\x16CreateSupplierResponse\x12+\n" +
+	"\vsupplier_id\x18\x01 \x01(\tB\n" +
+	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\n" +
+	"supplierId\"A\n" +
 	"\x12GetSupplierRequest\x12+\n" +
 	"\vsupplier_id\x18\x01 \x01(\tB\n" +
 	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\n" +
@@ -752,11 +752,12 @@ const file_business_v1_supplier_proto_rawDesc = "" +
 	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\n" +
 	"supplierId\"2\n" +
 	"\x16DeleteSupplierResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess2\xe1\x03\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess2\xd3\x04\n" +
 	"\x0fSupplierService\x12Y\n" +
 	"\x0eCreateSupplier\x12\".business.v1.CreateSupplierRequest\x1a#.business.v1.CreateSupplierResponse\x12P\n" +
 	"\vGetSupplier\x12\x1f.business.v1.GetSupplierRequest\x1a .business.v1.GetSupplierResponse\x12k\n" +
-	"\x14GetBusinessSuppliers\x12(.business.v1.GetBusinessSuppliersRequest\x1a).business.v1.GetBusinessSuppliersResponse\x12Y\n" +
+	"\x14GetBusinessSuppliers\x12(.business.v1.GetBusinessSuppliersRequest\x1a).business.v1.GetBusinessSuppliersResponse\x12p\n" +
+	"\x17StreamBusinessSuppliers\x12(.business.v1.GetBusinessSuppliersRequest\x1a).business.v1.GetBusinessSuppliersResponse0\x01\x12Y\n" +
 	"\x0eUpdateSupplier\x12\".business.v1.UpdateSupplierRequest\x1a#.business.v1.UpdateSupplierResponse\x12Y\n" +
 	"\x0eDeleteSupplier\x12\".business.v1.DeleteSupplierRequest\x1a#.business.v1.DeleteSupplierResponseB\xb5\x01\n" +
 	"\x0fcom.business.v1B\rSupplierProtoP\x01ZFgithub.com/karibu-cap/sabitou/protos/gen/go/rpc/business/v1;businessv1\xa2\x02\x03BXX\xaa\x02\vBusiness.V1\xca\x02\vBusiness\\V1\xe2\x02\x17Business\\V1\\GPBMetadata\xea\x02\fBusiness::V1b\x06proto3"
@@ -800,15 +801,17 @@ var file_business_v1_supplier_proto_depIdxs = []int32{
 	2,  // 7: business.v1.SupplierService.CreateSupplier:input_type -> business.v1.CreateSupplierRequest
 	4,  // 8: business.v1.SupplierService.GetSupplier:input_type -> business.v1.GetSupplierRequest
 	6,  // 9: business.v1.SupplierService.GetBusinessSuppliers:input_type -> business.v1.GetBusinessSuppliersRequest
-	8,  // 10: business.v1.SupplierService.UpdateSupplier:input_type -> business.v1.UpdateSupplierRequest
-	10, // 11: business.v1.SupplierService.DeleteSupplier:input_type -> business.v1.DeleteSupplierRequest
-	3,  // 12: business.v1.SupplierService.CreateSupplier:output_type -> business.v1.CreateSupplierResponse
-	5,  // 13: business.v1.SupplierService.GetSupplier:output_type -> business.v1.GetSupplierResponse
-	7,  // 14: business.v1.SupplierService.GetBusinessSuppliers:output_type -> business.v1.GetBusinessSuppliersResponse
-	9,  // 15: business.v1.SupplierService.UpdateSupplier:output_type -> business.v1.UpdateSupplierResponse
-	11, // 16: business.v1.SupplierService.DeleteSupplier:output_type -> business.v1.DeleteSupplierResponse
-	12, // [12:17] is the sub-list for method output_type
-	7,  // [7:12] is the sub-list for method input_type
+	6,  // 10: business.v1.SupplierService.StreamBusinessSuppliers:input_type -> business.v1.GetBusinessSuppliersRequest
+	8,  // 11: business.v1.SupplierService.UpdateSupplier:input_type -> business.v1.UpdateSupplierRequest
+	10, // 12: business.v1.SupplierService.DeleteSupplier:input_type -> business.v1.DeleteSupplierRequest
+	3,  // 13: business.v1.SupplierService.CreateSupplier:output_type -> business.v1.CreateSupplierResponse
+	5,  // 14: business.v1.SupplierService.GetSupplier:output_type -> business.v1.GetSupplierResponse
+	7,  // 15: business.v1.SupplierService.GetBusinessSuppliers:output_type -> business.v1.GetBusinessSuppliersResponse
+	7,  // 16: business.v1.SupplierService.StreamBusinessSuppliers:output_type -> business.v1.GetBusinessSuppliersResponse
+	9,  // 17: business.v1.SupplierService.UpdateSupplier:output_type -> business.v1.UpdateSupplierResponse
+	11, // 18: business.v1.SupplierService.DeleteSupplier:output_type -> business.v1.DeleteSupplierResponse
+	13, // [13:19] is the sub-list for method output_type
+	7,  // [7:13] is the sub-list for method input_type
 	7,  // [7:7] is the sub-list for extension type_name
 	7,  // [7:7] is the sub-list for extension extendee
 	0,  // [0:7] is the sub-list for field type_name

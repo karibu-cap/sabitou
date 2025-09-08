@@ -39,7 +39,7 @@ final class InventoryStats extends StatelessWidget {
             value: Formatters.formatCurrency(
               products?.fold(
                     0,
-                    (sum, p) => (sum ?? 0) + p.businessProduct.priceInCents,
+                    (sum, p) => (sum ?? 0) + p.businessProduct.priceInXaf,
                   ) ??
                   0,
             ),

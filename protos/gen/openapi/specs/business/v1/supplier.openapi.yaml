@@ -38,13 +38,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/business.v1.CreateSupplierResponse'
-  /business.v1.SupplierService/GetSupplier:
+  /business.v1.SupplierService/DeleteSupplier:
     post:
       tags:
         - business.v1.SupplierService
-      summary: Gets a supplier by id.
-      description: Gets a supplier by id.
-      operationId: business.v1.SupplierService.GetSupplier
+      summary: Deletes a supplier.
+      description: Deletes a supplier.
+      operationId: business.v1.SupplierService.DeleteSupplier
       parameters:
         - name: Connect-Protocol-Version
           in: header
@@ -59,7 +59,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/business.v1.GetSupplierRequest'
+              $ref: '#/components/schemas/business.v1.DeleteSupplierRequest'
         required: true
       responses:
         default:
@@ -73,7 +73,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/business.v1.GetSupplierResponse'
+                $ref: '#/components/schemas/business.v1.DeleteSupplierResponse'
   /business.v1.SupplierService/GetBusinessSuppliers:
     post:
       tags:
@@ -110,6 +110,43 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/business.v1.GetBusinessSuppliersResponse'
+  /business.v1.SupplierService/GetSupplier:
+    post:
+      tags:
+        - business.v1.SupplierService
+      summary: Gets a supplier by id.
+      description: Gets a supplier by id.
+      operationId: business.v1.SupplierService.GetSupplier
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/business.v1.GetSupplierRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/business.v1.GetSupplierResponse'
+  /business.v1.SupplierService/StreamBusinessSuppliers: {}
   /business.v1.SupplierService/UpdateSupplier:
     post:
       tags:
@@ -148,42 +185,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/business.v1.UpdateSupplierResponse'
-  /business.v1.SupplierService/DeleteSupplier:
-    post:
-      tags:
-        - business.v1.SupplierService
-      summary: Deletes a supplier.
-      description: Deletes a supplier.
-      operationId: business.v1.SupplierService.DeleteSupplier
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/business.v1.DeleteSupplierRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/business.v1.DeleteSupplierResponse'
 components:
   schemas:
     business.v1.CreateSupplierRequest:
@@ -210,16 +211,14 @@ components:
     business.v1.CreateSupplierResponse:
       type: object
       properties:
-        suplierId:
+        supplierId:
           type: string
-          title: suplier_id
+          title: supplier_id
           minLength: 3
-          description: |
-            The reference id to the supplier identifier.
-            string.min_len = 3
+          description: The reference id to the supplier identifier.
       title: CreateSupplierResponse
       required:
-        - suplierId
+        - supplierId
       additionalProperties: false
     business.v1.DeleteSupplierRequest:
       type: object
@@ -228,9 +227,7 @@ components:
           type: string
           title: supplier_id
           minLength: 3
-          description: |
-            The reference id to the supplier identifier.
-            string.min_len = 3
+          description: The reference id to the supplier identifier.
       title: DeleteSupplierRequest
       required:
         - supplierId
@@ -251,9 +248,7 @@ components:
           type: string
           title: business_id
           minLength: 3
-          description: |
-            The reference id to the business identifier.
-            string.min_len = 3
+          description: The reference id to the business identifier.
       title: GetBusinessSuppliersRequest
       required:
         - businessId
@@ -278,9 +273,7 @@ components:
           type: string
           title: supplier_id
           minLength: 3
-          description: |
-            The reference id to the supplier identifier.
-            string.min_len = 3
+          description: The reference id to the supplier identifier.
       title: GetSupplierRequest
       required:
         - supplierId
@@ -396,38 +389,6 @@ components:
           $ref: '#/components/schemas/business.v1.Supplier'
       title: UpdateSupplierResponse
       additionalProperties: false
-    link.v1.ResourceLink:
-      type: object
-      properties:
-        refId:
-          type: string
-          title: ref_id
-          description: The unique identifier of the resource link.
-          nullable: true
-        targetUri:
-          type: string
-          title: target_uri
-          description: The link of the resource link.
-        iconUri:
-          type: string
-          title: icon_uri
-          description: The icon of the resource type or owner.
-          nullable: true
-        info:
-          type: string
-          title: info
-          description: |-
-            The meta data of the resource link.
-             It can be the title of the target resource.
-          nullable: true
-        label:
-          type: string
-          title: label
-          description: The label use to identify the resource type.
-          nullable: true
-      title: ResourceLink
-      additionalProperties: false
-      description: 'TODO: Auto delete resource link not linked to any other resource.'
     connect-protocol-version:
       type: number
       title: Connect-Protocol-Version
@@ -497,6 +458,38 @@ components:
           description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
       additionalProperties: true
       description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
+    link.v1.ResourceLink:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+          description: The unique identifier of the resource link.
+          nullable: true
+        targetUri:
+          type: string
+          title: target_uri
+          description: The link of the resource link.
+        iconUri:
+          type: string
+          title: icon_uri
+          description: The icon of the resource type or owner.
+          nullable: true
+        info:
+          type: string
+          title: info
+          description: |-
+            The meta data of the resource link.
+             It can be the title of the target resource.
+          nullable: true
+        label:
+          type: string
+          title: label
+          description: The label use to identify the resource type.
+          nullable: true
+      title: ResourceLink
+      additionalProperties: false
+      description: 'TODO: Auto delete resource link not linked to any other resource.'
 security: []
 tags:
   - name: business.v1.SupplierService

@@ -80,7 +80,7 @@ class CreateEditProductFormController extends ChangeNotifier {
         text: product?.globalProduct.barCodeValue,
       ),
       priceController = TextEditingController(
-        text: product?.businessProduct.priceInCents.toString(),
+        text: product?.businessProduct.priceInXaf.toString(),
       ),
       quantityController = TextEditingController(
         text: product?.businessProduct.stockQuantity.toString(),
@@ -153,7 +153,7 @@ class CreateEditProductFormController extends ChangeNotifier {
                 globalProduct: product.globalProduct,
                 businessId: businessId,
                 minStockThreshold: product.businessProduct.minStockThreshold,
-                priceInCents: product.businessProduct.priceInCents,
+                priceInXaf: product.businessProduct.priceInXaf,
                 stockQuantity: product.businessProduct.stockQuantity,
                 expirationDate: product.businessProduct.hasExpirationDate()
                     ? product.businessProduct.expirationDate

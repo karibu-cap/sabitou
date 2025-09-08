@@ -206,21 +206,23 @@ class BusinessProduct extends $pb.GeneratedMessage {
     $core.String? refId,
     $core.String? businessId,
     $core.String? globalProductId,
-    $core.int? priceInCents,
+    $core.int? priceInXaf,
     $core.Iterable<$core.String>? imagesLinkIds,
     $core.int? stockQuantity,
     $core.int? minStockThreshold,
     $0.Timestamp? expirationDate,
+    $core.String? supplierId,
   }) {
     final result = create();
     if (refId != null) result.refId = refId;
     if (businessId != null) result.businessId = businessId;
     if (globalProductId != null) result.globalProductId = globalProductId;
-    if (priceInCents != null) result.priceInCents = priceInCents;
+    if (priceInXaf != null) result.priceInXaf = priceInXaf;
     if (imagesLinkIds != null) result.imagesLinkIds.addAll(imagesLinkIds);
     if (stockQuantity != null) result.stockQuantity = stockQuantity;
     if (minStockThreshold != null) result.minStockThreshold = minStockThreshold;
     if (expirationDate != null) result.expirationDate = expirationDate;
+    if (supplierId != null) result.supplierId = supplierId;
     return result;
   }
 
@@ -240,7 +242,7 @@ class BusinessProduct extends $pb.GeneratedMessage {
     ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..aOS(2, _omitFieldNames ? '' : 'businessId')
     ..aOS(3, _omitFieldNames ? '' : 'globalProductId')
-    ..a<$core.int>(4, _omitFieldNames ? '' : 'priceInCents', $pb.PbFieldType.O3)
+    ..a<$core.int>(4, _omitFieldNames ? '' : 'priceInXaf', $pb.PbFieldType.O3)
     ..pPS(5, _omitFieldNames ? '' : 'imagesLinkIds')
     ..a<$core.int>(
         6, _omitFieldNames ? '' : 'stockQuantity', $pb.PbFieldType.O3)
@@ -248,6 +250,7 @@ class BusinessProduct extends $pb.GeneratedMessage {
         7, _omitFieldNames ? '' : 'minStockThreshold', $pb.PbFieldType.O3)
     ..aOM<$0.Timestamp>(8, _omitFieldNames ? '' : 'expirationDate',
         subBuilder: $0.Timestamp.create)
+    ..aOS(9, _omitFieldNames ? '' : 'supplierId')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -301,16 +304,16 @@ class BusinessProduct extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   void clearGlobalProductId() => $_clearField(3);
 
-  /// The price in cents of the product.
+  /// The price in XAF of the product.
   /// The currency is determined by the business.
   @$pb.TagNumber(4)
-  $core.int get priceInCents => $_getIZ(3);
+  $core.int get priceInXaf => $_getIZ(3);
   @$pb.TagNumber(4)
-  set priceInCents($core.int value) => $_setSignedInt32(3, value);
+  set priceInXaf($core.int value) => $_setSignedInt32(3, value);
   @$pb.TagNumber(4)
-  $core.bool hasPriceInCents() => $_has(3);
+  $core.bool hasPriceInXaf() => $_has(3);
   @$pb.TagNumber(4)
-  void clearPriceInCents() => $_clearField(4);
+  void clearPriceInXaf() => $_clearField(4);
 
   /// The media ids of the images of the product.
   @$pb.TagNumber(5)
@@ -347,6 +350,16 @@ class BusinessProduct extends $pb.GeneratedMessage {
   void clearExpirationDate() => $_clearField(8);
   @$pb.TagNumber(8)
   $0.Timestamp ensureExpirationDate() => $_ensure(7);
+
+  /// The unique identifier of the supplier.
+  @$pb.TagNumber(9)
+  $core.String get supplierId => $_getSZ(8);
+  @$pb.TagNumber(9)
+  set supplierId($core.String value) => $_setString(8, value);
+  @$pb.TagNumber(9)
+  $core.bool hasSupplierId() => $_has(8);
+  @$pb.TagNumber(9)
+  void clearSupplierId() => $_clearField(9);
 }
 
 class FindBusinessProductsRequest extends $pb.GeneratedMessage {
@@ -777,7 +790,7 @@ class AddProductRequest extends $pb.GeneratedMessage {
   factory AddProductRequest({
     GlobalProduct? globalProduct,
     $core.String? businessId,
-    $core.int? priceInCents,
+    $core.int? priceInXaf,
     $core.Iterable<$core.List<$core.int>>? imagesRawImages,
     $core.int? stockQuantity,
     $core.int? minStockThreshold,
@@ -786,7 +799,7 @@ class AddProductRequest extends $pb.GeneratedMessage {
     final result = create();
     if (globalProduct != null) result.globalProduct = globalProduct;
     if (businessId != null) result.businessId = businessId;
-    if (priceInCents != null) result.priceInCents = priceInCents;
+    if (priceInXaf != null) result.priceInXaf = priceInXaf;
     if (imagesRawImages != null) result.imagesRawImages.addAll(imagesRawImages);
     if (stockQuantity != null) result.stockQuantity = stockQuantity;
     if (minStockThreshold != null) result.minStockThreshold = minStockThreshold;
@@ -810,7 +823,7 @@ class AddProductRequest extends $pb.GeneratedMessage {
     ..aOM<GlobalProduct>(1, _omitFieldNames ? '' : 'globalProduct',
         subBuilder: GlobalProduct.create)
     ..aOS(2, _omitFieldNames ? '' : 'businessId')
-    ..a<$core.int>(3, _omitFieldNames ? '' : 'priceInCents', $pb.PbFieldType.O3)
+    ..a<$core.int>(3, _omitFieldNames ? '' : 'priceInXaf', $pb.PbFieldType.O3)
     ..p<$core.List<$core.int>>(
         4, _omitFieldNames ? '' : 'imagesRawImages', $pb.PbFieldType.PY)
     ..a<$core.int>(
@@ -865,16 +878,16 @@ class AddProductRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   void clearBusinessId() => $_clearField(2);
 
-  /// The price in cents of the product.
+  /// The price in XAF of the product.
   /// The currency is determined by the business.
   @$pb.TagNumber(3)
-  $core.int get priceInCents => $_getIZ(2);
+  $core.int get priceInXaf => $_getIZ(2);
   @$pb.TagNumber(3)
-  set priceInCents($core.int value) => $_setSignedInt32(2, value);
+  set priceInXaf($core.int value) => $_setSignedInt32(2, value);
   @$pb.TagNumber(3)
-  $core.bool hasPriceInCents() => $_has(2);
+  $core.bool hasPriceInXaf() => $_has(2);
   @$pb.TagNumber(3)
-  void clearPriceInCents() => $_clearField(3);
+  void clearPriceInXaf() => $_clearField(3);
 
   /// The media ids of the images of the product.
   @$pb.TagNumber(4)
@@ -1353,6 +1366,150 @@ class DeleteProductResponse extends $pb.GeneratedMessage {
   void clearSuccess() => $_clearField(1);
 }
 
+class StreamBusinessProductsRequest extends $pb.GeneratedMessage {
+  factory StreamBusinessProductsRequest({
+    $core.String? businessId,
+    $core.String? supplierId,
+    $core.String? globalProductId,
+  }) {
+    final result = create();
+    if (businessId != null) result.businessId = businessId;
+    if (supplierId != null) result.supplierId = supplierId;
+    if (globalProductId != null) result.globalProductId = globalProductId;
+    return result;
+  }
+
+  StreamBusinessProductsRequest._();
+
+  factory StreamBusinessProductsRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory StreamBusinessProductsRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'StreamBusinessProductsRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'businessId')
+    ..aOS(2, _omitFieldNames ? '' : 'supplierId')
+    ..aOS(3, _omitFieldNames ? '' : 'globalProductId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  StreamBusinessProductsRequest clone() =>
+      StreamBusinessProductsRequest()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  StreamBusinessProductsRequest copyWith(
+          void Function(StreamBusinessProductsRequest) updates) =>
+      super.copyWith(
+              (message) => updates(message as StreamBusinessProductsRequest))
+          as StreamBusinessProductsRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static StreamBusinessProductsRequest create() =>
+      StreamBusinessProductsRequest._();
+  @$core.override
+  StreamBusinessProductsRequest createEmptyInstance() => create();
+  static $pb.PbList<StreamBusinessProductsRequest> createRepeated() =>
+      $pb.PbList<StreamBusinessProductsRequest>();
+  @$core.pragma('dart2js:noInline')
+  static StreamBusinessProductsRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<StreamBusinessProductsRequest>(create);
+  static StreamBusinessProductsRequest? _defaultInstance;
+
+  /// The unique identifier of the business.
+  @$pb.TagNumber(1)
+  $core.String get businessId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set businessId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasBusinessId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearBusinessId() => $_clearField(1);
+
+  /// Optional filter by supplier ID.
+  @$pb.TagNumber(2)
+  $core.String get supplierId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set supplierId($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasSupplierId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearSupplierId() => $_clearField(2);
+
+  /// Optional filter by global product ID.
+  @$pb.TagNumber(3)
+  $core.String get globalProductId => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set globalProductId($core.String value) => $_setString(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasGlobalProductId() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearGlobalProductId() => $_clearField(3);
+}
+
+class StreamBusinessProductsResponse extends $pb.GeneratedMessage {
+  factory StreamBusinessProductsResponse({
+    $core.Iterable<BusinessProduct>? products,
+  }) {
+    final result = create();
+    if (products != null) result.products.addAll(products);
+    return result;
+  }
+
+  StreamBusinessProductsResponse._();
+
+  factory StreamBusinessProductsResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory StreamBusinessProductsResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'StreamBusinessProductsResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'),
+      createEmptyInstance: create)
+    ..pc<BusinessProduct>(
+        1, _omitFieldNames ? '' : 'products', $pb.PbFieldType.PM,
+        subBuilder: BusinessProduct.create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  StreamBusinessProductsResponse clone() =>
+      StreamBusinessProductsResponse()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  StreamBusinessProductsResponse copyWith(
+          void Function(StreamBusinessProductsResponse) updates) =>
+      super.copyWith(
+              (message) => updates(message as StreamBusinessProductsResponse))
+          as StreamBusinessProductsResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static StreamBusinessProductsResponse create() =>
+      StreamBusinessProductsResponse._();
+  @$core.override
+  StreamBusinessProductsResponse createEmptyInstance() => create();
+  static $pb.PbList<StreamBusinessProductsResponse> createRepeated() =>
+      $pb.PbList<StreamBusinessProductsResponse>();
+  @$core.pragma('dart2js:noInline')
+  static StreamBusinessProductsResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<StreamBusinessProductsResponse>(create);
+  static StreamBusinessProductsResponse? _defaultInstance;
+
+  /// The business products for the specified business.
+  @$pb.TagNumber(1)
+  $pb.PbList<BusinessProduct> get products => $_getList(0);
+}
+
 class ProductServiceApi {
   final $pb.RpcClient _client;
 
@@ -1401,6 +1558,12 @@ class ProductServiceApi {
           $pb.ClientContext? ctx, FindBusinessProductsRequest request) =>
       _client.invoke<FindBusinessProductsResponse>(ctx, 'ProductService',
           'FindBusinessProducts', request, FindBusinessProductsResponse());
+
+  /// Streams all products for a business for real-time updates.
+  $async.Future<StreamBusinessProductsResponse> streamBusinessProducts(
+          $pb.ClientContext? ctx, StreamBusinessProductsRequest request) =>
+      _client.invoke<StreamBusinessProductsResponse>(ctx, 'ProductService',
+          'StreamBusinessProducts', request, StreamBusinessProductsResponse());
 }
 
 const $core.bool _omitFieldNames =

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 /// A responsive grid widget that automatically adjusts the number of columns
-/// based on the available width and specified minimum item width.
+/// based on the available width and minimum item width.
 ///
 /// This widget is particularly useful for creating layouts that need to adapt
 /// to different screen sizes while maintaining a consistent item width.
@@ -10,11 +10,12 @@ import 'package:flutter/material.dart';
 /// ```dart
 /// ResponsiveGrid(
 ///   minItemWidth: 250,
-///   spacing: 16,
+///   crossAxisSpacing: 16,
+///   mainAxisSpacing: 16,
 ///   children: [
-///     Card(child: ...),
-///     Card(child: ...),
-///     Card(child: ...),
+///     Container(height: 100, color: Colors.red),
+///     Container(height: 100, color: Colors.blue),
+///     Container(height: 100, color: Colors.green),
 ///   ],
 /// )
 /// ```
@@ -22,16 +23,25 @@ class ResponsiveGrid extends StatelessWidget {
   /// The list of widgets to display in the grid.
   final List<Widget> children;
 
-  /// The minimum width each grid item should have.
+  /// The minimum width for each grid item.
+  /// Used to calculate the number of columns when [crossAxisCount] is not provided.
   /// Defaults to 300 logical pixels.
   final double minItemWidth;
 
-  /// The spacing between grid items, both horizontally and vertically.
+  /// The number of columns in the grid.
+  /// If not provided, it will be calculated based on [minItemWidth].
+  final int? crossAxisCount;
+
+  /// The spacing between grid items horizontally.
   /// Defaults to 12 logical pixels.
-  final double spacing;
+  final double crossAxisSpacing;
+
+  /// The spacing between grid items vertically.
+  /// Defaults to 12 logical pixels.
+  final double mainAxisSpacing;
 
   /// The height of each grid item.
-  /// Defaults to 140 logical pixels.
+  /// If not provided, items will have their natural height.
   final double? mainAxisExtent;
 
   /// Creates a responsive grid layout.
@@ -39,7 +49,9 @@ class ResponsiveGrid extends StatelessWidget {
     super.key,
     required this.children,
     this.minItemWidth = 300,
-    this.spacing = 12,
+    this.crossAxisCount,
+    this.crossAxisSpacing = 12,
+    this.mainAxisSpacing = 12,
     this.mainAxisExtent,
   });
 
@@ -47,18 +59,20 @@ class ResponsiveGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final int columns = (constraints.maxWidth / minItemWidth).floor().clamp(
-          1,
-          children.length,
-        );
+        final int calculatedCrossAxisCount =
+            crossAxisCount ??
+            (constraints.maxWidth / minItemWidth).floor().clamp(
+              1,
+              children.length,
+            );
 
         return GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: columns,
-            crossAxisSpacing: spacing,
-            mainAxisSpacing: spacing,
+            crossAxisCount: calculatedCrossAxisCount,
+            crossAxisSpacing: crossAxisSpacing,
+            mainAxisSpacing: mainAxisSpacing,
             mainAxisExtent: mainAxisExtent,
             childAspectRatio: 2,
           ),

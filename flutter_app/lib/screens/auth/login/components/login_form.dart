@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../../services/internationalization/internationalization.dart';
+import '../../../../utils/form/validation.dart';
 import '../../../../widgets/input/form_fields.dart';
 import '../login_controller.dart';
 
@@ -28,7 +29,7 @@ class LoginForm extends StatelessWidget {
             placeholder: appIntl.enterValidEmail,
             keyboardType: TextInputType.emailAddress,
             icon: LucideIcons.mail400,
-            validator: controller.validateEmail,
+            validator: ValidationFormUtils.validateEmail,
           ),
           PasswordField(
             id: appIntl.password,
@@ -37,7 +38,7 @@ class LoginForm extends StatelessWidget {
             placeholder: appIntl.password,
             isVisible: controller.isPasswordVisible,
             onToggle: controller.togglePasswordVisibility,
-            validator: controller.validatePassword,
+            validator: ValidationFormUtils.validatePassword,
           ),
         ],
       ),

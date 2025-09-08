@@ -135,4 +135,22 @@ extension type ProductServiceClient (connect.Transport _transport) {
       onTrailer: onTrailer,
     );
   }
+
+  /// Streams all products for a business for real-time updates.
+  Stream<inventoryv1product.StreamBusinessProductsResponse> streamBusinessProducts(
+    inventoryv1product.StreamBusinessProductsRequest input, {
+    connect.Headers? headers,
+    connect.AbortSignal? signal,
+    Function(connect.Headers)? onHeader,
+    Function(connect.Headers)? onTrailer,
+  }) {
+    return connect.Client(_transport).server(
+      specs.ProductService.streamBusinessProducts,
+      input,
+      signal: signal,
+      headers: headers,
+      onHeader: onHeader,
+      onTrailer: onTrailer,
+    );
+  }
 }

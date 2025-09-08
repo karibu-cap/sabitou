@@ -43,9 +43,9 @@ message BusinessProduct {
   // The unique identifier of the global product.
   string global_product_id = 3;
 
-  // The price in cents of the product.
+  // The price in XAF of the product.
   // The currency is determined by the business.
-  int32 price_in_cents = 4;
+  int32 price_in_xaf = 4;
 
   // The media ids of the images of the product.
   repeated string images_link_ids = 5;
@@ -58,6 +58,9 @@ message BusinessProduct {
 
   // The expiration date of the product.
   optional google.protobuf.Timestamp expiration_date = 8;
+
+  // The unique identifier of the supplier.
+  optional string supplier_id = 9;
 }
 
 message FindBusinessProductsRequest {
@@ -119,9 +122,9 @@ message AddProductRequest {
   // The unique identifier of the business.
   string business_id = 2;
 
-  // The price in cents of the product.
+  // The price in XAF of the product.
   // The currency is determined by the business.
-  int32 price_in_cents = 3;
+  int32 price_in_xaf = 3;
 
   // The media ids of the images of the product.
   repeated bytes images_raw_images = 4;
@@ -188,6 +191,25 @@ message DeleteProductResponse {
   bool success = 1;
 }
 
+message StreamBusinessProductsRequest {
+  // The unique identifier of the business.
+  string business_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+
+  // Optional filter by supplier ID.
+  optional string supplier_id = 2;
+
+  // Optional filter by global product ID.
+  optional string global_product_id = 3;
+}
+
+message StreamBusinessProductsResponse {
+  // The business products for the specified business.
+  repeated BusinessProduct products = 1;
+}
+
 service ProductService {
   // Finds products by name.
   rpc FindGlobalProducts(FindGlobalProductsRequest) returns (FindGlobalProductsResponse);
@@ -211,4 +233,7 @@ service ProductService {
 
   // Finds products by name.
   rpc FindBusinessProducts(FindBusinessProductsRequest) returns (FindBusinessProductsResponse);
+
+  // Streams all products for a business for real-time updates.
+  rpc StreamBusinessProducts(StreamBusinessProductsRequest) returns (stream StreamBusinessProductsResponse);
 }
