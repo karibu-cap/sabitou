@@ -345,8 +345,7 @@ final fakeTransport =
                   businessId: request.businessId,
                 ),
               ]);
-          })
-          .build();
+          });
 
 final fakeStorage = {
   CollectionName.users: fakeData[CollectionName.users]
