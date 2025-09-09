@@ -4,6 +4,7 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../../../repositories/products_repository.dart';
 import '../../../repositories/suppliers_repository.dart';
+import '../../services/rpc/fake_transport/supplier.dart';
 
 /// ViewModel for suppliers management.
 class SuppliersViewModel {
@@ -11,10 +12,14 @@ class SuppliersViewModel {
   final String businessId;
 
   /// The suppliers repository instance.
-  final SuppliersRepository _suppliersRepository = SuppliersRepository.instance;
+  final SuppliersRepository _suppliersRepository = SuppliersRepository(
+    supplierFakeTransport,
+  );
 
   /// The products repository instance.
-  final ProductsRepository _productsRepository = ProductsRepository.instance;
+  final ProductsRepository _productsRepository = ProductsRepository(
+    supplierFakeTransport,
+  );
 
   /// Stream of suppliers for reactive UI updates.
   Stream<List<Supplier>> get suppliersStream =>
