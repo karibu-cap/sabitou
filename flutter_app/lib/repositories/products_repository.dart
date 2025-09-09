@@ -1,3 +1,4 @@
+import 'package:connectrpc/connect.dart' as connect;
 import 'package:get_it/get_it.dart';
 import 'package:sabitou_rpc/connect_servers.dart';
 import 'package:sabitou_rpc/models.dart';
@@ -16,9 +17,9 @@ class ProductsRepository {
   static final instance = GetIt.I.get<ProductsRepository>();
 
   /// Constructs a new [ProductsRepository].
-  ProductsRepository()
+  ProductsRepository([connect.Transport? transport])
     : productServiceClient = ProductServiceClient(
-        ConnectRPCService.to.clientChannel,
+        transport ?? ConnectRPCService.to.clientChannel,
       );
 
   /// Gets all products base on business Id.

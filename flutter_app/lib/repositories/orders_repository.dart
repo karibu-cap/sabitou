@@ -1,3 +1,4 @@
+import 'package:connectrpc/connect.dart' as connect;
 import 'package:get_it/get_it.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
@@ -15,9 +16,9 @@ class OrdersRepository {
   static final instance = GetIt.I.get<OrdersRepository>();
 
   /// Constructs a new [OrdersRepository].
-  OrdersRepository()
+  OrdersRepository([connect.Transport? transport])
     : orderServiceClient = OrderServiceClient(
-        ConnectRPCService.to.clientChannel,
+        transport ?? ConnectRPCService.to.clientChannel,
       );
 
   /// Gets list of order with filter by supplier id.
