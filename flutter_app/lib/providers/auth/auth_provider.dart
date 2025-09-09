@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:sabitou_rpc/models.dart';
 
 import '../../repositories/auth_repository.dart';
+import '../../services/rpc/fake_transport/auth.dart';
 import '../../utils/user_preference.dart';
 
 /// Auth status.
@@ -19,6 +20,7 @@ class AuthProvider extends ChangeNotifier {
   User? _currentUser;
   AuthStatus _status = AuthStatus.unauthenticated;
   String? _errorMessage;
+  final AuthRepository _authRepository = AuthRepository(authFakeTransport);
 
   /// Singleton access.
   static AuthProvider get instance => GetIt.I.get<AuthProvider>();
@@ -47,7 +49,7 @@ class AuthProvider extends ChangeNotifier {
     final loginRequest = LoginRequest()
       ..email = email
       ..password = password;
-    final response = await AuthRepository.instance.login(request: loginRequest);
+    final response = await _authRepository.login(request: loginRequest);
     _currentUser = response;
     if (response != null) {
       await UserPreferences.instance.saveUserPreferences(user: response);
@@ -82,9 +84,7 @@ class AuthProvider extends ChangeNotifier {
       ..userName = userName
       ..password = password
       ..email = email;
-    final response = await AuthRepository.instance.register(
-      request: registerRequest,
-    );
+    final response = await _authRepository.register(request: registerRequest);
 
     _currentUser = response;
     if (response != null) {
