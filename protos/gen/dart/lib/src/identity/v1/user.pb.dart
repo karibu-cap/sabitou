@@ -712,6 +712,128 @@ class UpdateMeResponse extends $pb.GeneratedMessage {
   User ensureUser() => $_ensure(0);
 }
 
+class UpdateRequest extends $pb.GeneratedMessage {
+  factory UpdateRequest({
+    User? user,
+  }) {
+    final result = create();
+    if (user != null) result.user = user;
+    return result;
+  }
+
+  UpdateRequest._();
+
+  factory UpdateRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory UpdateRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'UpdateRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'identity.v1'),
+      createEmptyInstance: create)
+    ..aOM<User>(1, _omitFieldNames ? '' : 'user', subBuilder: User.create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  UpdateRequest clone() => UpdateRequest()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  UpdateRequest copyWith(void Function(UpdateRequest) updates) =>
+      super.copyWith((message) => updates(message as UpdateRequest))
+          as UpdateRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static UpdateRequest create() => UpdateRequest._();
+  @$core.override
+  UpdateRequest createEmptyInstance() => create();
+  static $pb.PbList<UpdateRequest> createRepeated() =>
+      $pb.PbList<UpdateRequest>();
+  @$core.pragma('dart2js:noInline')
+  static UpdateRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<UpdateRequest>(create);
+  static UpdateRequest? _defaultInstance;
+
+  /// The user information to update.
+  /// Note:Only the fields that are set will be updated.
+  /// WARNING:
+  ///  - The id field is required and cannot be changed.
+  ///  - The password field will be ignored. Use the ChangePassword RPC instead.
+  @$pb.TagNumber(1)
+  User get user => $_getN(0);
+  @$pb.TagNumber(1)
+  set user(User value) => $_setField(1, value);
+  @$pb.TagNumber(1)
+  $core.bool hasUser() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearUser() => $_clearField(1);
+  @$pb.TagNumber(1)
+  User ensureUser() => $_ensure(0);
+}
+
+class UpdateResponse extends $pb.GeneratedMessage {
+  factory UpdateResponse({
+    User? user,
+  }) {
+    final result = create();
+    if (user != null) result.user = user;
+    return result;
+  }
+
+  UpdateResponse._();
+
+  factory UpdateResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory UpdateResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'UpdateResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'identity.v1'),
+      createEmptyInstance: create)
+    ..aOM<User>(1, _omitFieldNames ? '' : 'user', subBuilder: User.create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  UpdateResponse clone() => UpdateResponse()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  UpdateResponse copyWith(void Function(UpdateResponse) updates) =>
+      super.copyWith((message) => updates(message as UpdateResponse))
+          as UpdateResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static UpdateResponse create() => UpdateResponse._();
+  @$core.override
+  UpdateResponse createEmptyInstance() => create();
+  static $pb.PbList<UpdateResponse> createRepeated() =>
+      $pb.PbList<UpdateResponse>();
+  @$core.pragma('dart2js:noInline')
+  static UpdateResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<UpdateResponse>(create);
+  static UpdateResponse? _defaultInstance;
+
+  /// The updated user data.
+  @$pb.TagNumber(1)
+  User get user => $_getN(0);
+  @$pb.TagNumber(1)
+  set user(User value) => $_setField(1, value);
+  @$pb.TagNumber(1)
+  $core.bool hasUser() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearUser() => $_clearField(1);
+  @$pb.TagNumber(1)
+  User ensureUser() => $_ensure(0);
+}
+
 class RequestDeleteUserRequest extends $pb.GeneratedMessage {
   factory RequestDeleteUserRequest({
     $core.String? userId,
@@ -1104,6 +1226,239 @@ class ChangePasswordResponse extends $pb.GeneratedMessage {
   void clearSuccess() => $_clearField(1);
 }
 
+/// Request to get business users
+class GetBusinessUsersRequest extends $pb.GeneratedMessage {
+  factory GetBusinessUsersRequest({
+    $core.String? businessId,
+  }) {
+    final result = create();
+    if (businessId != null) result.businessId = businessId;
+    return result;
+  }
+
+  GetBusinessUsersRequest._();
+
+  factory GetBusinessUsersRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory GetBusinessUsersRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetBusinessUsersRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'identity.v1'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'businessId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetBusinessUsersRequest clone() =>
+      GetBusinessUsersRequest()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetBusinessUsersRequest copyWith(
+          void Function(GetBusinessUsersRequest) updates) =>
+      super.copyWith((message) => updates(message as GetBusinessUsersRequest))
+          as GetBusinessUsersRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static GetBusinessUsersRequest create() => GetBusinessUsersRequest._();
+  @$core.override
+  GetBusinessUsersRequest createEmptyInstance() => create();
+  static $pb.PbList<GetBusinessUsersRequest> createRepeated() =>
+      $pb.PbList<GetBusinessUsersRequest>();
+  @$core.pragma('dart2js:noInline')
+  static GetBusinessUsersRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetBusinessUsersRequest>(create);
+  static GetBusinessUsersRequest? _defaultInstance;
+
+  /// The unique identifier of the business.
+  @$pb.TagNumber(1)
+  $core.String get businessId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set businessId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasBusinessId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearBusinessId() => $_clearField(1);
+}
+
+/// Response containing business users
+class GetBusinessUsersResponse extends $pb.GeneratedMessage {
+  factory GetBusinessUsersResponse({
+    $core.Iterable<User>? users,
+  }) {
+    final result = create();
+    if (users != null) result.users.addAll(users);
+    return result;
+  }
+
+  GetBusinessUsersResponse._();
+
+  factory GetBusinessUsersResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory GetBusinessUsersResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetBusinessUsersResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'identity.v1'),
+      createEmptyInstance: create)
+    ..pc<User>(1, _omitFieldNames ? '' : 'users', $pb.PbFieldType.PM,
+        subBuilder: User.create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetBusinessUsersResponse clone() =>
+      GetBusinessUsersResponse()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetBusinessUsersResponse copyWith(
+          void Function(GetBusinessUsersResponse) updates) =>
+      super.copyWith((message) => updates(message as GetBusinessUsersResponse))
+          as GetBusinessUsersResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static GetBusinessUsersResponse create() => GetBusinessUsersResponse._();
+  @$core.override
+  GetBusinessUsersResponse createEmptyInstance() => create();
+  static $pb.PbList<GetBusinessUsersResponse> createRepeated() =>
+      $pb.PbList<GetBusinessUsersResponse>();
+  @$core.pragma('dart2js:noInline')
+  static GetBusinessUsersResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetBusinessUsersResponse>(create);
+  static GetBusinessUsersResponse? _defaultInstance;
+
+  /// The list of users in the business.
+  @$pb.TagNumber(1)
+  $pb.PbList<User> get users => $_getList(0);
+}
+
+/// Request to stream business users
+class StreamBusinessUsersRequest extends $pb.GeneratedMessage {
+  factory StreamBusinessUsersRequest({
+    $core.String? businessId,
+  }) {
+    final result = create();
+    if (businessId != null) result.businessId = businessId;
+    return result;
+  }
+
+  StreamBusinessUsersRequest._();
+
+  factory StreamBusinessUsersRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory StreamBusinessUsersRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'StreamBusinessUsersRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'identity.v1'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'businessId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  StreamBusinessUsersRequest clone() =>
+      StreamBusinessUsersRequest()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  StreamBusinessUsersRequest copyWith(
+          void Function(StreamBusinessUsersRequest) updates) =>
+      super.copyWith(
+              (message) => updates(message as StreamBusinessUsersRequest))
+          as StreamBusinessUsersRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static StreamBusinessUsersRequest create() => StreamBusinessUsersRequest._();
+  @$core.override
+  StreamBusinessUsersRequest createEmptyInstance() => create();
+  static $pb.PbList<StreamBusinessUsersRequest> createRepeated() =>
+      $pb.PbList<StreamBusinessUsersRequest>();
+  @$core.pragma('dart2js:noInline')
+  static StreamBusinessUsersRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<StreamBusinessUsersRequest>(create);
+  static StreamBusinessUsersRequest? _defaultInstance;
+
+  /// The unique identifier of the business.
+  @$pb.TagNumber(1)
+  $core.String get businessId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set businessId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasBusinessId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearBusinessId() => $_clearField(1);
+}
+
+/// Response for streaming business users
+class StreamBusinessUsersResponse extends $pb.GeneratedMessage {
+  factory StreamBusinessUsersResponse({
+    $core.Iterable<User>? users,
+  }) {
+    final result = create();
+    if (users != null) result.users.addAll(users);
+    return result;
+  }
+
+  StreamBusinessUsersResponse._();
+
+  factory StreamBusinessUsersResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory StreamBusinessUsersResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'StreamBusinessUsersResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'identity.v1'),
+      createEmptyInstance: create)
+    ..pc<User>(1, _omitFieldNames ? '' : 'users', $pb.PbFieldType.PM,
+        subBuilder: User.create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  StreamBusinessUsersResponse clone() =>
+      StreamBusinessUsersResponse()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  StreamBusinessUsersResponse copyWith(
+          void Function(StreamBusinessUsersResponse) updates) =>
+      super.copyWith(
+              (message) => updates(message as StreamBusinessUsersResponse))
+          as StreamBusinessUsersResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static StreamBusinessUsersResponse create() =>
+      StreamBusinessUsersResponse._();
+  @$core.override
+  StreamBusinessUsersResponse createEmptyInstance() => create();
+  static $pb.PbList<StreamBusinessUsersResponse> createRepeated() =>
+      $pb.PbList<StreamBusinessUsersResponse>();
+  @$core.pragma('dart2js:noInline')
+  static StreamBusinessUsersResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<StreamBusinessUsersResponse>(create);
+  static StreamBusinessUsersResponse? _defaultInstance;
+
+  /// The list of users in the business.
+  @$pb.TagNumber(1)
+  $pb.PbList<User> get users => $_getList(0);
+}
+
 class UserServiceApi {
   final $pb.RpcClient _client;
 
@@ -1134,6 +1489,12 @@ class UserServiceApi {
       _client.invoke<UpdateMeResponse>(
           ctx, 'UserService', 'UpdateMe', request, UpdateMeResponse());
 
+  /// Update the user information for the user.
+  $async.Future<UpdateResponse> update(
+          $pb.ClientContext? ctx, UpdateRequest request) =>
+      _client.invoke<UpdateResponse>(
+          ctx, 'UserService', 'Update', request, UpdateResponse());
+
   /// Request the deletion of the user account.
   /// This will send a verification code to the user's email address
   /// or phone number.
@@ -1153,6 +1514,18 @@ class UserServiceApi {
           $pb.ClientContext? ctx, ChangePasswordRequest request) =>
       _client.invoke<ChangePasswordResponse>(ctx, 'UserService',
           'ChangePassword', request, ChangePasswordResponse());
+
+  /// Get all users for a business.
+  $async.Future<GetBusinessUsersResponse> getBusinessUsers(
+          $pb.ClientContext? ctx, GetBusinessUsersRequest request) =>
+      _client.invoke<GetBusinessUsersResponse>(ctx, 'UserService',
+          'GetBusinessUsers', request, GetBusinessUsersResponse());
+
+  /// Stream all users for a business with real-time updates.
+  $async.Future<StreamBusinessUsersResponse> streamBusinessUsers(
+          $pb.ClientContext? ctx, StreamBusinessUsersRequest request) =>
+      _client.invoke<StreamBusinessUsersResponse>(ctx, 'UserService',
+          'StreamBusinessUsers', request, StreamBusinessUsersResponse());
 }
 
 const $core.bool _omitFieldNames =

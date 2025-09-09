@@ -74,6 +74,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/identity.v1.DeleteUserResponse'
+  /identity.v1.UserService/GetBusinessUsers:
+    post:
+      tags:
+        - identity.v1.UserService
+      summary: Get all users for a business.
+      description: Get all users for a business.
+      operationId: identity.v1.UserService.GetBusinessUsers
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/identity.v1.GetBusinessUsersRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identity.v1.GetBusinessUsersResponse'
   /identity.v1.UserService/GetCurrentUser:
     post:
       tags:
@@ -223,6 +259,43 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/identity.v1.RequestDeleteUserResponse'
+  /identity.v1.UserService/StreamBusinessUsers: {}
+  /identity.v1.UserService/Update:
+    post:
+      tags:
+        - identity.v1.UserService
+      summary: Update the user information for the user.
+      description: Update the user information for the user.
+      operationId: identity.v1.UserService.Update
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/identity.v1.UpdateRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identity.v1.UpdateResponse'
   /identity.v1.UserService/UpdateMe:
     post:
       tags:
@@ -413,6 +486,31 @@ components:
           description: Whether the user was successfully deleted.
       title: DeleteUserResponse
       additionalProperties: false
+    identity.v1.GetBusinessUsersRequest:
+      type: object
+      properties:
+        businessId:
+          type: string
+          title: business_id
+          minLength: 3
+          description: The unique identifier of the business.
+      title: GetBusinessUsersRequest
+      required:
+        - businessId
+      additionalProperties: false
+      description: Request to get business users
+    identity.v1.GetBusinessUsersResponse:
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/identity.v1.User'
+          title: users
+          description: The list of users in the business.
+      title: GetBusinessUsersResponse
+      additionalProperties: false
+      description: Response containing business users
     identity.v1.GetCurrentUserRequest:
       type: object
       title: GetCurrentUserRequest
@@ -497,6 +595,31 @@ components:
              after verification (email or phone number).
       title: RequestDeleteUserResponse
       additionalProperties: false
+    identity.v1.StreamBusinessUsersRequest:
+      type: object
+      properties:
+        businessId:
+          type: string
+          title: business_id
+          minLength: 3
+          description: The unique identifier of the business.
+      title: StreamBusinessUsersRequest
+      required:
+        - businessId
+      additionalProperties: false
+      description: Request to stream business users
+    identity.v1.StreamBusinessUsersResponse:
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/identity.v1.User'
+          title: users
+          description: The list of users in the business.
+      title: StreamBusinessUsersResponse
+      additionalProperties: false
+      description: Response for streaming business users
     identity.v1.UpdateMeRequest:
       type: object
       properties:
@@ -519,6 +642,29 @@ components:
           description: The updated user data.
           $ref: '#/components/schemas/identity.v1.User'
       title: UpdateMeResponse
+      additionalProperties: false
+    identity.v1.UpdateRequest:
+      type: object
+      properties:
+        user:
+          title: user
+          description: |-
+            The user information to update.
+             Note:Only the fields that are set will be updated.
+             WARNING:
+              - The id field is required and cannot be changed.
+              - The password field will be ignored. Use the ChangePassword RPC instead.
+          $ref: '#/components/schemas/identity.v1.User'
+      title: UpdateRequest
+      additionalProperties: false
+    identity.v1.UpdateResponse:
+      type: object
+      properties:
+        user:
+          title: user
+          description: The updated user data.
+          $ref: '#/components/schemas/identity.v1.User'
+      title: UpdateResponse
       additionalProperties: false
     identity.v1.User:
       type: object

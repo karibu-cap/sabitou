@@ -54,6 +54,9 @@ const (
 	// PermissionServiceCheckPermissionProcedure is the fully-qualified name of the PermissionService's
 	// CheckPermission RPC.
 	PermissionServiceCheckPermissionProcedure = "/identity.v1.PermissionService/CheckPermission"
+	// PermissionServiceStreamBusinessPermissionsGroupsProcedure is the fully-qualified name of the
+	// PermissionService's StreamBusinessPermissionsGroups RPC.
+	PermissionServiceStreamBusinessPermissionsGroupsProcedure = "/identity.v1.PermissionService/StreamBusinessPermissionsGroups"
 )
 
 // PermissionServiceClient is a client for the identity.v1.PermissionService service.
@@ -72,6 +75,8 @@ type PermissionServiceClient interface {
 	GetBusinessPermissionsGroups(context.Context, *connect.Request[v1.GetBusinessPermissionsGroupsRequest]) (*connect.Response[v1.GetBusinessPermissionsGroupsResponse], error)
 	// Checks if the member has the provided permission for the provided resource.
 	CheckPermission(context.Context, *connect.Request[v1.CheckPermissionRequest]) (*connect.Response[v1.CheckPermissionResponse], error)
+	// Stream the permission groups of the business with real-time updates.
+	StreamBusinessPermissionsGroups(context.Context, *connect.Request[v1.StreamBusinessPermissionsGroupsRequest]) (*connect.ServerStreamForClient[v1.StreamBusinessPermissionsGroupsResponse], error)
 }
 
 // NewPermissionServiceClient constructs a client for the identity.v1.PermissionService service. By
@@ -127,18 +132,25 @@ func NewPermissionServiceClient(httpClient connect.HTTPClient, baseURL string, o
 			connect.WithSchema(permissionServiceMethods.ByName("CheckPermission")),
 			connect.WithClientOptions(opts...),
 		),
+		streamBusinessPermissionsGroups: connect.NewClient[v1.StreamBusinessPermissionsGroupsRequest, v1.StreamBusinessPermissionsGroupsResponse](
+			httpClient,
+			baseURL+PermissionServiceStreamBusinessPermissionsGroupsProcedure,
+			connect.WithSchema(permissionServiceMethods.ByName("StreamBusinessPermissionsGroups")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // permissionServiceClient implements PermissionServiceClient.
 type permissionServiceClient struct {
-	createPermissionsGroup       *connect.Client[v1.CreatePermissionsGroupRequest, v1.CreatePermissionsGroupResponse]
-	getPermissionsGroup          *connect.Client[v1.GetPermissionsGroupRequest, v1.GetPermissionsGroupResponse]
-	updatePermissionsGroup       *connect.Client[v1.UpdatePermissionsGroupRequest, v1.UpdatePermissionsGroupResponse]
-	deletePermissionsGroup       *connect.Client[v1.DeletePermissionsGroupRequest, v1.DeletePermissionsGroupResponse]
-	updateMemberPermissions      *connect.Client[v1.UpdateMemberPermissionsRequest, v1.UpdateMemberPermissionsResponse]
-	getBusinessPermissionsGroups *connect.Client[v1.GetBusinessPermissionsGroupsRequest, v1.GetBusinessPermissionsGroupsResponse]
-	checkPermission              *connect.Client[v1.CheckPermissionRequest, v1.CheckPermissionResponse]
+	createPermissionsGroup          *connect.Client[v1.CreatePermissionsGroupRequest, v1.CreatePermissionsGroupResponse]
+	getPermissionsGroup             *connect.Client[v1.GetPermissionsGroupRequest, v1.GetPermissionsGroupResponse]
+	updatePermissionsGroup          *connect.Client[v1.UpdatePermissionsGroupRequest, v1.UpdatePermissionsGroupResponse]
+	deletePermissionsGroup          *connect.Client[v1.DeletePermissionsGroupRequest, v1.DeletePermissionsGroupResponse]
+	updateMemberPermissions         *connect.Client[v1.UpdateMemberPermissionsRequest, v1.UpdateMemberPermissionsResponse]
+	getBusinessPermissionsGroups    *connect.Client[v1.GetBusinessPermissionsGroupsRequest, v1.GetBusinessPermissionsGroupsResponse]
+	checkPermission                 *connect.Client[v1.CheckPermissionRequest, v1.CheckPermissionResponse]
+	streamBusinessPermissionsGroups *connect.Client[v1.StreamBusinessPermissionsGroupsRequest, v1.StreamBusinessPermissionsGroupsResponse]
 }
 
 // CreatePermissionsGroup calls identity.v1.PermissionService.CreatePermissionsGroup.
@@ -176,6 +188,12 @@ func (c *permissionServiceClient) CheckPermission(ctx context.Context, req *conn
 	return c.checkPermission.CallUnary(ctx, req)
 }
 
+// StreamBusinessPermissionsGroups calls
+// identity.v1.PermissionService.StreamBusinessPermissionsGroups.
+func (c *permissionServiceClient) StreamBusinessPermissionsGroups(ctx context.Context, req *connect.Request[v1.StreamBusinessPermissionsGroupsRequest]) (*connect.ServerStreamForClient[v1.StreamBusinessPermissionsGroupsResponse], error) {
+	return c.streamBusinessPermissionsGroups.CallServerStream(ctx, req)
+}
+
 // PermissionServiceHandler is an implementation of the identity.v1.PermissionService service.
 type PermissionServiceHandler interface {
 	// Creates a new permission group.
@@ -192,6 +210,8 @@ type PermissionServiceHandler interface {
 	GetBusinessPermissionsGroups(context.Context, *connect.Request[v1.GetBusinessPermissionsGroupsRequest]) (*connect.Response[v1.GetBusinessPermissionsGroupsResponse], error)
 	// Checks if the member has the provided permission for the provided resource.
 	CheckPermission(context.Context, *connect.Request[v1.CheckPermissionRequest]) (*connect.Response[v1.CheckPermissionResponse], error)
+	// Stream the permission groups of the business with real-time updates.
+	StreamBusinessPermissionsGroups(context.Context, *connect.Request[v1.StreamBusinessPermissionsGroupsRequest], *connect.ServerStream[v1.StreamBusinessPermissionsGroupsResponse]) error
 }
 
 // NewPermissionServiceHandler builds an HTTP handler from the service implementation. It returns
@@ -243,6 +263,12 @@ func NewPermissionServiceHandler(svc PermissionServiceHandler, opts ...connect.H
 		connect.WithSchema(permissionServiceMethods.ByName("CheckPermission")),
 		connect.WithHandlerOptions(opts...),
 	)
+	permissionServiceStreamBusinessPermissionsGroupsHandler := connect.NewServerStreamHandler(
+		PermissionServiceStreamBusinessPermissionsGroupsProcedure,
+		svc.StreamBusinessPermissionsGroups,
+		connect.WithSchema(permissionServiceMethods.ByName("StreamBusinessPermissionsGroups")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/identity.v1.PermissionService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case PermissionServiceCreatePermissionsGroupProcedure:
@@ -259,6 +285,8 @@ func NewPermissionServiceHandler(svc PermissionServiceHandler, opts ...connect.H
 			permissionServiceGetBusinessPermissionsGroupsHandler.ServeHTTP(w, r)
 		case PermissionServiceCheckPermissionProcedure:
 			permissionServiceCheckPermissionHandler.ServeHTTP(w, r)
+		case PermissionServiceStreamBusinessPermissionsGroupsProcedure:
+			permissionServiceStreamBusinessPermissionsGroupsHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -294,4 +322,8 @@ func (UnimplementedPermissionServiceHandler) GetBusinessPermissionsGroups(contex
 
 func (UnimplementedPermissionServiceHandler) CheckPermission(context.Context, *connect.Request[v1.CheckPermissionRequest]) (*connect.Response[v1.CheckPermissionResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("identity.v1.PermissionService.CheckPermission is not implemented"))
+}
+
+func (UnimplementedPermissionServiceHandler) StreamBusinessPermissionsGroups(context.Context, *connect.Request[v1.StreamBusinessPermissionsGroupsRequest], *connect.ServerStream[v1.StreamBusinessPermissionsGroupsResponse]) error {
+	return connect.NewError(connect.CodeUnimplemented, errors.New("identity.v1.PermissionService.StreamBusinessPermissionsGroups is not implemented"))
 }

@@ -310,6 +310,45 @@ final $typed_data.Uint8List updateMeResponseDescriptor = $convert.base64Decode(
     'ChBVcGRhdGVNZVJlc3BvbnNlEiUKBHVzZXIYASABKAsyES5pZGVudGl0eS52MS5Vc2VyUgR1c2'
     'Vy');
 
+@$core.Deprecated('Use updateRequestDescriptor instead')
+const UpdateRequest$json = {
+  '1': 'UpdateRequest',
+  '2': [
+    {
+      '1': 'user',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.identity.v1.User',
+      '10': 'user'
+    },
+  ],
+};
+
+/// Descriptor for `UpdateRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List updateRequestDescriptor = $convert.base64Decode(
+    'Cg1VcGRhdGVSZXF1ZXN0EiUKBHVzZXIYASABKAsyES5pZGVudGl0eS52MS5Vc2VyUgR1c2Vy');
+
+@$core.Deprecated('Use updateResponseDescriptor instead')
+const UpdateResponse$json = {
+  '1': 'UpdateResponse',
+  '2': [
+    {
+      '1': 'user',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.identity.v1.User',
+      '10': 'user'
+    },
+  ],
+};
+
+/// Descriptor for `UpdateResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List updateResponseDescriptor = $convert.base64Decode(
+    'Cg5VcGRhdGVSZXNwb25zZRIlCgR1c2VyGAEgASgLMhEuaWRlbnRpdHkudjEuVXNlclIEdXNlcg'
+    '==');
+
 @$core.Deprecated('Use requestDeleteUserRequestDescriptor instead')
 const RequestDeleteUserRequest$json = {
   '1': 'RequestDeleteUserRequest',
@@ -400,6 +439,76 @@ final $typed_data.Uint8List changePasswordResponseDescriptor =
     $convert.base64Decode(
         'ChZDaGFuZ2VQYXNzd29yZFJlc3BvbnNlEhgKB3N1Y2Nlc3MYASABKAhSB3N1Y2Nlc3M=');
 
+@$core.Deprecated('Use getBusinessUsersRequestDescriptor instead')
+const GetBusinessUsersRequest$json = {
+  '1': 'GetBusinessUsersRequest',
+  '2': [
+    {'1': 'business_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'businessId'},
+  ],
+};
+
+/// Descriptor for `GetBusinessUsersRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getBusinessUsersRequestDescriptor =
+    $convert.base64Decode(
+        'ChdHZXRCdXNpbmVzc1VzZXJzUmVxdWVzdBIrCgtidXNpbmVzc19pZBgBIAEoCUIKukgHyAEBcg'
+        'IQA1IKYnVzaW5lc3NJZA==');
+
+@$core.Deprecated('Use getBusinessUsersResponseDescriptor instead')
+const GetBusinessUsersResponse$json = {
+  '1': 'GetBusinessUsersResponse',
+  '2': [
+    {
+      '1': 'users',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.identity.v1.User',
+      '10': 'users'
+    },
+  ],
+};
+
+/// Descriptor for `GetBusinessUsersResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getBusinessUsersResponseDescriptor =
+    $convert.base64Decode(
+        'ChhHZXRCdXNpbmVzc1VzZXJzUmVzcG9uc2USJwoFdXNlcnMYASADKAsyES5pZGVudGl0eS52MS'
+        '5Vc2VyUgV1c2Vycw==');
+
+@$core.Deprecated('Use streamBusinessUsersRequestDescriptor instead')
+const StreamBusinessUsersRequest$json = {
+  '1': 'StreamBusinessUsersRequest',
+  '2': [
+    {'1': 'business_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'businessId'},
+  ],
+};
+
+/// Descriptor for `StreamBusinessUsersRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List streamBusinessUsersRequestDescriptor =
+    $convert.base64Decode(
+        'ChpTdHJlYW1CdXNpbmVzc1VzZXJzUmVxdWVzdBIrCgtidXNpbmVzc19pZBgBIAEoCUIKukgHyA'
+        'EBcgIQA1IKYnVzaW5lc3NJZA==');
+
+@$core.Deprecated('Use streamBusinessUsersResponseDescriptor instead')
+const StreamBusinessUsersResponse$json = {
+  '1': 'StreamBusinessUsersResponse',
+  '2': [
+    {
+      '1': 'users',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.identity.v1.User',
+      '10': 'users'
+    },
+  ],
+};
+
+/// Descriptor for `StreamBusinessUsersResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List streamBusinessUsersResponseDescriptor =
+    $convert.base64Decode(
+        'ChtTdHJlYW1CdXNpbmVzc1VzZXJzUmVzcG9uc2USJwoFdXNlcnMYASADKAsyES5pZGVudGl0eS'
+        '52MS5Vc2VyUgV1c2Vycw==');
+
 const $core.Map<$core.String, $core.dynamic> UserServiceBase$json = {
   '1': 'UserService',
   '2': [
@@ -428,6 +537,12 @@ const $core.Map<$core.String, $core.dynamic> UserServiceBase$json = {
       '4': {}
     },
     {
+      '1': 'Update',
+      '2': '.identity.v1.UpdateRequest',
+      '3': '.identity.v1.UpdateResponse',
+      '4': {}
+    },
+    {
       '1': 'RequestDeleteUser',
       '2': '.identity.v1.RequestDeleteUserRequest',
       '3': '.identity.v1.RequestDeleteUserResponse',
@@ -444,6 +559,19 @@ const $core.Map<$core.String, $core.dynamic> UserServiceBase$json = {
       '2': '.identity.v1.ChangePasswordRequest',
       '3': '.identity.v1.ChangePasswordResponse',
       '4': {}
+    },
+    {
+      '1': 'GetBusinessUsers',
+      '2': '.identity.v1.GetBusinessUsersRequest',
+      '3': '.identity.v1.GetBusinessUsersResponse',
+      '4': {}
+    },
+    {
+      '1': 'StreamBusinessUsers',
+      '2': '.identity.v1.StreamBusinessUsersRequest',
+      '3': '.identity.v1.StreamBusinessUsersResponse',
+      '4': {},
+      '6': true
     },
   ],
 };
@@ -462,12 +590,18 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
   '.identity.v1.GetUserResponse': GetUserResponse$json,
   '.identity.v1.UpdateMeRequest': UpdateMeRequest$json,
   '.identity.v1.UpdateMeResponse': UpdateMeResponse$json,
+  '.identity.v1.UpdateRequest': UpdateRequest$json,
+  '.identity.v1.UpdateResponse': UpdateResponse$json,
   '.identity.v1.RequestDeleteUserRequest': RequestDeleteUserRequest$json,
   '.identity.v1.RequestDeleteUserResponse': RequestDeleteUserResponse$json,
   '.identity.v1.DeleteUserRequest': DeleteUserRequest$json,
   '.identity.v1.DeleteUserResponse': DeleteUserResponse$json,
   '.identity.v1.ChangePasswordRequest': ChangePasswordRequest$json,
   '.identity.v1.ChangePasswordResponse': ChangePasswordResponse$json,
+  '.identity.v1.GetBusinessUsersRequest': GetBusinessUsersRequest$json,
+  '.identity.v1.GetBusinessUsersResponse': GetBusinessUsersResponse$json,
+  '.identity.v1.StreamBusinessUsersRequest': StreamBusinessUsersRequest$json,
+  '.identity.v1.StreamBusinessUsersResponse': StreamBusinessUsersResponse$json,
 };
 
 /// Descriptor for `UserService`. Decode as a `google.protobuf.ServiceDescriptorProto`.
@@ -477,9 +611,14 @@ final $typed_data.Uint8List userServiceDescriptor = $convert.base64Decode(
     'LkdldEN1cnJlbnRVc2VyUmVxdWVzdBojLmlkZW50aXR5LnYxLkdldEN1cnJlbnRVc2VyUmVzcG'
     '9uc2UiABJGCgdHZXRVc2VyEhsuaWRlbnRpdHkudjEuR2V0VXNlclJlcXVlc3QaHC5pZGVudGl0'
     'eS52MS5HZXRVc2VyUmVzcG9uc2UiABJJCghVcGRhdGVNZRIcLmlkZW50aXR5LnYxLlVwZGF0ZU'
-    '1lUmVxdWVzdBodLmlkZW50aXR5LnYxLlVwZGF0ZU1lUmVzcG9uc2UiABJkChFSZXF1ZXN0RGVs'
-    'ZXRlVXNlchIlLmlkZW50aXR5LnYxLlJlcXVlc3REZWxldGVVc2VyUmVxdWVzdBomLmlkZW50aX'
-    'R5LnYxLlJlcXVlc3REZWxldGVVc2VyUmVzcG9uc2UiABJPCgpEZWxldGVVc2VyEh4uaWRlbnRp'
-    'dHkudjEuRGVsZXRlVXNlclJlcXVlc3QaHy5pZGVudGl0eS52MS5EZWxldGVVc2VyUmVzcG9uc2'
-    'UiABJbCg5DaGFuZ2VQYXNzd29yZBIiLmlkZW50aXR5LnYxLkNoYW5nZVBhc3N3b3JkUmVxdWVz'
-    'dBojLmlkZW50aXR5LnYxLkNoYW5nZVBhc3N3b3JkUmVzcG9uc2UiAA==');
+    '1lUmVxdWVzdBodLmlkZW50aXR5LnYxLlVwZGF0ZU1lUmVzcG9uc2UiABJDCgZVcGRhdGUSGi5p'
+    'ZGVudGl0eS52MS5VcGRhdGVSZXF1ZXN0GhsuaWRlbnRpdHkudjEuVXBkYXRlUmVzcG9uc2UiAB'
+    'JkChFSZXF1ZXN0RGVsZXRlVXNlchIlLmlkZW50aXR5LnYxLlJlcXVlc3REZWxldGVVc2VyUmVx'
+    'dWVzdBomLmlkZW50aXR5LnYxLlJlcXVlc3REZWxldGVVc2VyUmVzcG9uc2UiABJPCgpEZWxldG'
+    'VVc2VyEh4uaWRlbnRpdHkudjEuRGVsZXRlVXNlclJlcXVlc3QaHy5pZGVudGl0eS52MS5EZWxl'
+    'dGVVc2VyUmVzcG9uc2UiABJbCg5DaGFuZ2VQYXNzd29yZBIiLmlkZW50aXR5LnYxLkNoYW5nZV'
+    'Bhc3N3b3JkUmVxdWVzdBojLmlkZW50aXR5LnYxLkNoYW5nZVBhc3N3b3JkUmVzcG9uc2UiABJh'
+    'ChBHZXRCdXNpbmVzc1VzZXJzEiQuaWRlbnRpdHkudjEuR2V0QnVzaW5lc3NVc2Vyc1JlcXVlc3'
+    'QaJS5pZGVudGl0eS52MS5HZXRCdXNpbmVzc1VzZXJzUmVzcG9uc2UiABJsChNTdHJlYW1CdXNp'
+    'bmVzc1VzZXJzEicuaWRlbnRpdHkudjEuU3RyZWFtQnVzaW5lc3NVc2Vyc1JlcXVlc3QaKC5pZG'
+    'VudGl0eS52MS5TdHJlYW1CdXNpbmVzc1VzZXJzUmVzcG9uc2UiADAB');

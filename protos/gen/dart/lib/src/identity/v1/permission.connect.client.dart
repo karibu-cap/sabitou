@@ -133,4 +133,22 @@ extension type PermissionServiceClient (connect.Transport _transport) {
       onTrailer: onTrailer,
     );
   }
+
+  /// Stream the permission groups of the business with real-time updates.
+  Stream<identityv1permission.StreamBusinessPermissionsGroupsResponse> streamBusinessPermissionsGroups(
+    identityv1permission.StreamBusinessPermissionsGroupsRequest input, {
+    connect.Headers? headers,
+    connect.AbortSignal? signal,
+    Function(connect.Headers)? onHeader,
+    Function(connect.Headers)? onTrailer,
+  }) {
+    return connect.Client(_transport).server(
+      specs.PermissionService.streamBusinessPermissionsGroups,
+      input,
+      signal: signal,
+      headers: headers,
+      onHeader: onHeader,
+      onTrailer: onTrailer,
+    );
+  }
 }

@@ -200,6 +200,21 @@ message CheckPermissionResponse {
   bool has_permission = 1;
 }
 
+// Request to stream business permissions groups
+message StreamBusinessPermissionsGroupsRequest {
+  // The unique identifier of the business to stream.
+  string business_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+}
+
+// Response for streaming business permissions groups
+message StreamBusinessPermissionsGroupsResponse {
+  // The permission groups that the business has.
+  repeated PermissionsGroup permissions_groups = 1;
+}
+
 service PermissionService {
   // Creates a new permission group.
   rpc CreatePermissionsGroup(CreatePermissionsGroupRequest) returns (CreatePermissionsGroupResponse) {}
@@ -221,4 +236,7 @@ service PermissionService {
 
   // Checks if the member has the provided permission for the provided resource.
   rpc CheckPermission(CheckPermissionRequest) returns (CheckPermissionResponse) {}
+
+  // Stream the permission groups of the business with real-time updates.
+  rpc StreamBusinessPermissionsGroups(StreamBusinessPermissionsGroupsRequest) returns (stream StreamBusinessPermissionsGroupsResponse) {}
 }
