@@ -1235,6 +1235,131 @@ class CheckPermissionResponse extends $pb.GeneratedMessage {
   void clearHasPermission() => $_clearField(1);
 }
 
+/// Request to stream business permissions groups
+class StreamBusinessPermissionsGroupsRequest extends $pb.GeneratedMessage {
+  factory StreamBusinessPermissionsGroupsRequest({
+    $core.String? businessId,
+  }) {
+    final result = create();
+    if (businessId != null) result.businessId = businessId;
+    return result;
+  }
+
+  StreamBusinessPermissionsGroupsRequest._();
+
+  factory StreamBusinessPermissionsGroupsRequest.fromBuffer(
+          $core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory StreamBusinessPermissionsGroupsRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'StreamBusinessPermissionsGroupsRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'identity.v1'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'businessId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  StreamBusinessPermissionsGroupsRequest clone() =>
+      StreamBusinessPermissionsGroupsRequest()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  StreamBusinessPermissionsGroupsRequest copyWith(
+          void Function(StreamBusinessPermissionsGroupsRequest) updates) =>
+      super.copyWith((message) =>
+              updates(message as StreamBusinessPermissionsGroupsRequest))
+          as StreamBusinessPermissionsGroupsRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static StreamBusinessPermissionsGroupsRequest create() =>
+      StreamBusinessPermissionsGroupsRequest._();
+  @$core.override
+  StreamBusinessPermissionsGroupsRequest createEmptyInstance() => create();
+  static $pb.PbList<StreamBusinessPermissionsGroupsRequest> createRepeated() =>
+      $pb.PbList<StreamBusinessPermissionsGroupsRequest>();
+  @$core.pragma('dart2js:noInline')
+  static StreamBusinessPermissionsGroupsRequest getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<
+          StreamBusinessPermissionsGroupsRequest>(create);
+  static StreamBusinessPermissionsGroupsRequest? _defaultInstance;
+
+  /// The unique identifier of the business to stream.
+  @$pb.TagNumber(1)
+  $core.String get businessId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set businessId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasBusinessId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearBusinessId() => $_clearField(1);
+}
+
+/// Response for streaming business permissions groups
+class StreamBusinessPermissionsGroupsResponse extends $pb.GeneratedMessage {
+  factory StreamBusinessPermissionsGroupsResponse({
+    $core.Iterable<PermissionsGroup>? permissionsGroups,
+  }) {
+    final result = create();
+    if (permissionsGroups != null)
+      result.permissionsGroups.addAll(permissionsGroups);
+    return result;
+  }
+
+  StreamBusinessPermissionsGroupsResponse._();
+
+  factory StreamBusinessPermissionsGroupsResponse.fromBuffer(
+          $core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory StreamBusinessPermissionsGroupsResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'StreamBusinessPermissionsGroupsResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'identity.v1'),
+      createEmptyInstance: create)
+    ..pc<PermissionsGroup>(
+        1, _omitFieldNames ? '' : 'permissionsGroups', $pb.PbFieldType.PM,
+        subBuilder: PermissionsGroup.create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  StreamBusinessPermissionsGroupsResponse clone() =>
+      StreamBusinessPermissionsGroupsResponse()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  StreamBusinessPermissionsGroupsResponse copyWith(
+          void Function(StreamBusinessPermissionsGroupsResponse) updates) =>
+      super.copyWith((message) =>
+              updates(message as StreamBusinessPermissionsGroupsResponse))
+          as StreamBusinessPermissionsGroupsResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static StreamBusinessPermissionsGroupsResponse create() =>
+      StreamBusinessPermissionsGroupsResponse._();
+  @$core.override
+  StreamBusinessPermissionsGroupsResponse createEmptyInstance() => create();
+  static $pb.PbList<StreamBusinessPermissionsGroupsResponse> createRepeated() =>
+      $pb.PbList<StreamBusinessPermissionsGroupsResponse>();
+  @$core.pragma('dart2js:noInline')
+  static StreamBusinessPermissionsGroupsResponse getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<
+          StreamBusinessPermissionsGroupsResponse>(create);
+  static StreamBusinessPermissionsGroupsResponse? _defaultInstance;
+
+  /// The permission groups that the business has.
+  @$pb.TagNumber(1)
+  $pb.PbList<PermissionsGroup> get permissionsGroups => $_getList(0);
+}
+
 class PermissionServiceApi {
   final $pb.RpcClient _client;
 
@@ -1290,6 +1415,17 @@ class PermissionServiceApi {
           $pb.ClientContext? ctx, CheckPermissionRequest request) =>
       _client.invoke<CheckPermissionResponse>(ctx, 'PermissionService',
           'CheckPermission', request, CheckPermissionResponse());
+
+  /// Stream the permission groups of the business with real-time updates.
+  $async.Future<StreamBusinessPermissionsGroupsResponse>
+      streamBusinessPermissionsGroups($pb.ClientContext? ctx,
+              StreamBusinessPermissionsGroupsRequest request) =>
+          _client.invoke<StreamBusinessPermissionsGroupsResponse>(
+              ctx,
+              'PermissionService',
+              'StreamBusinessPermissionsGroups',
+              request,
+              StreamBusinessPermissionsGroupsResponse());
 }
 
 const $core.bool _omitFieldNames =

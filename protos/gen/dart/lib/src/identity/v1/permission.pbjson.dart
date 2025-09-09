@@ -477,6 +477,44 @@ final $typed_data.Uint8List checkPermissionResponseDescriptor =
         'ChdDaGVja1Blcm1pc3Npb25SZXNwb25zZRIlCg5oYXNfcGVybWlzc2lvbhgBIAEoCFINaGFzUG'
         'VybWlzc2lvbg==');
 
+@$core
+    .Deprecated('Use streamBusinessPermissionsGroupsRequestDescriptor instead')
+const StreamBusinessPermissionsGroupsRequest$json = {
+  '1': 'StreamBusinessPermissionsGroupsRequest',
+  '2': [
+    {'1': 'business_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'businessId'},
+  ],
+};
+
+/// Descriptor for `StreamBusinessPermissionsGroupsRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List streamBusinessPermissionsGroupsRequestDescriptor =
+    $convert.base64Decode(
+        'CiZTdHJlYW1CdXNpbmVzc1Blcm1pc3Npb25zR3JvdXBzUmVxdWVzdBIrCgtidXNpbmVzc19pZB'
+        'gBIAEoCUIKukgHyAEBcgIQA1IKYnVzaW5lc3NJZA==');
+
+@$core
+    .Deprecated('Use streamBusinessPermissionsGroupsResponseDescriptor instead')
+const StreamBusinessPermissionsGroupsResponse$json = {
+  '1': 'StreamBusinessPermissionsGroupsResponse',
+  '2': [
+    {
+      '1': 'permissions_groups',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.identity.v1.PermissionsGroup',
+      '10': 'permissionsGroups'
+    },
+  ],
+};
+
+/// Descriptor for `StreamBusinessPermissionsGroupsResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List streamBusinessPermissionsGroupsResponseDescriptor =
+    $convert.base64Decode(
+        'CidTdHJlYW1CdXNpbmVzc1Blcm1pc3Npb25zR3JvdXBzUmVzcG9uc2USTAoScGVybWlzc2lvbn'
+        'NfZ3JvdXBzGAEgAygLMh0uaWRlbnRpdHkudjEuUGVybWlzc2lvbnNHcm91cFIRcGVybWlzc2lv'
+        'bnNHcm91cHM=');
+
 const $core.Map<$core.String, $core.dynamic> PermissionServiceBase$json = {
   '1': 'PermissionService',
   '2': [
@@ -522,6 +560,13 @@ const $core.Map<$core.String, $core.dynamic> PermissionServiceBase$json = {
       '3': '.identity.v1.CheckPermissionResponse',
       '4': {}
     },
+    {
+      '1': 'StreamBusinessPermissionsGroups',
+      '2': '.identity.v1.StreamBusinessPermissionsGroupsRequest',
+      '3': '.identity.v1.StreamBusinessPermissionsGroupsResponse',
+      '4': {},
+      '6': true
+    },
   ],
 };
 
@@ -554,6 +599,10 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
       GetBusinessPermissionsGroupsResponse$json,
   '.identity.v1.CheckPermissionRequest': CheckPermissionRequest$json,
   '.identity.v1.CheckPermissionResponse': CheckPermissionResponse$json,
+  '.identity.v1.StreamBusinessPermissionsGroupsRequest':
+      StreamBusinessPermissionsGroupsRequest$json,
+  '.identity.v1.StreamBusinessPermissionsGroupsResponse':
+      StreamBusinessPermissionsGroupsResponse$json,
 };
 
 /// Descriptor for `PermissionService`. Decode as a `google.protobuf.ServiceDescriptorProto`.
@@ -572,4 +621,7 @@ final $typed_data.Uint8List permissionServiceDescriptor = $convert.base64Decode(
     '5lc3NQZXJtaXNzaW9uc0dyb3VwcxIwLmlkZW50aXR5LnYxLkdldEJ1c2luZXNzUGVybWlzc2lv'
     'bnNHcm91cHNSZXF1ZXN0GjEuaWRlbnRpdHkudjEuR2V0QnVzaW5lc3NQZXJtaXNzaW9uc0dyb3'
     'Vwc1Jlc3BvbnNlIgASXgoPQ2hlY2tQZXJtaXNzaW9uEiMuaWRlbnRpdHkudjEuQ2hlY2tQZXJt'
-    'aXNzaW9uUmVxdWVzdBokLmlkZW50aXR5LnYxLkNoZWNrUGVybWlzc2lvblJlc3BvbnNlIgA=');
+    'aXNzaW9uUmVxdWVzdBokLmlkZW50aXR5LnYxLkNoZWNrUGVybWlzc2lvblJlc3BvbnNlIgASkA'
+    'EKH1N0cmVhbUJ1c2luZXNzUGVybWlzc2lvbnNHcm91cHMSMy5pZGVudGl0eS52MS5TdHJlYW1C'
+    'dXNpbmVzc1Blcm1pc3Npb25zR3JvdXBzUmVxdWVzdBo0LmlkZW50aXR5LnYxLlN0cmVhbUJ1c2'
+    'luZXNzUGVybWlzc2lvbnNHcm91cHNSZXNwb25zZSIAMAE=');

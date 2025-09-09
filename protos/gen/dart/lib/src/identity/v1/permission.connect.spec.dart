@@ -65,4 +65,12 @@ abstract final class PermissionService {
     identityv1permission.CheckPermissionRequest.new,
     identityv1permission.CheckPermissionResponse.new,
   );
+
+  /// Stream the permission groups of the business with real-time updates.
+  static const streamBusinessPermissionsGroups = connect.Spec(
+    '/$name/StreamBusinessPermissionsGroups',
+    connect.StreamType.server,
+    identityv1permission.StreamBusinessPermissionsGroupsRequest.new,
+    identityv1permission.StreamBusinessPermissionsGroupsResponse.new,
+  );
 }

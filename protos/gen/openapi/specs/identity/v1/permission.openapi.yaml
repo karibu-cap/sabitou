@@ -182,6 +182,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/identity.v1.GetPermissionsGroupResponse'
+  /identity.v1.PermissionService/StreamBusinessPermissionsGroups: {}
   /identity.v1.PermissionService/UpdateMemberPermissions:
     post:
       tags:
@@ -528,6 +529,31 @@ components:
         - RESOURCE_TYPE_STORE_ORDER
         - RESOURCE_TYPE_SUPPLIER_ORDER
         - RESOURCE_TYPE_PRODUCT
+    identity.v1.StreamBusinessPermissionsGroupsRequest:
+      type: object
+      properties:
+        businessId:
+          type: string
+          title: business_id
+          minLength: 3
+          description: The unique identifier of the business to stream.
+      title: StreamBusinessPermissionsGroupsRequest
+      required:
+        - businessId
+      additionalProperties: false
+      description: Request to stream business permissions groups
+    identity.v1.StreamBusinessPermissionsGroupsResponse:
+      type: object
+      properties:
+        permissionsGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/identity.v1.PermissionsGroup'
+          title: permissions_groups
+          description: The permission groups that the business has.
+      title: StreamBusinessPermissionsGroupsResponse
+      additionalProperties: false
+      description: Response for streaming business permissions groups
     identity.v1.UpdateMemberPermissionsRequest:
       type: object
       properties:

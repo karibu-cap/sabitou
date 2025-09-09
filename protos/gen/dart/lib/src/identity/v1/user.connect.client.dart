@@ -81,6 +81,24 @@ extension type UserServiceClient (connect.Transport _transport) {
     );
   }
 
+  /// Update the user information for the user.
+  Future<identityv1user.UpdateResponse> update(
+    identityv1user.UpdateRequest input, {
+    connect.Headers? headers,
+    connect.AbortSignal? signal,
+    Function(connect.Headers)? onHeader,
+    Function(connect.Headers)? onTrailer,
+  }) {
+    return connect.Client(_transport).unary(
+      specs.UserService.update,
+      input,
+      signal: signal,
+      headers: headers,
+      onHeader: onHeader,
+      onTrailer: onTrailer,
+    );
+  }
+
   /// Request the deletion of the user account.
   /// This will send a verification code to the user's email address
   /// or phone number.
@@ -129,6 +147,42 @@ extension type UserServiceClient (connect.Transport _transport) {
   }) {
     return connect.Client(_transport).unary(
       specs.UserService.changePassword,
+      input,
+      signal: signal,
+      headers: headers,
+      onHeader: onHeader,
+      onTrailer: onTrailer,
+    );
+  }
+
+  /// Get all users for a business.
+  Future<identityv1user.GetBusinessUsersResponse> getBusinessUsers(
+    identityv1user.GetBusinessUsersRequest input, {
+    connect.Headers? headers,
+    connect.AbortSignal? signal,
+    Function(connect.Headers)? onHeader,
+    Function(connect.Headers)? onTrailer,
+  }) {
+    return connect.Client(_transport).unary(
+      specs.UserService.getBusinessUsers,
+      input,
+      signal: signal,
+      headers: headers,
+      onHeader: onHeader,
+      onTrailer: onTrailer,
+    );
+  }
+
+  /// Stream all users for a business with real-time updates.
+  Stream<identityv1user.StreamBusinessUsersResponse> streamBusinessUsers(
+    identityv1user.StreamBusinessUsersRequest input, {
+    connect.Headers? headers,
+    connect.AbortSignal? signal,
+    Function(connect.Headers)? onHeader,
+    Function(connect.Headers)? onTrailer,
+  }) {
+    return connect.Client(_transport).server(
+      specs.UserService.streamBusinessUsers,
       input,
       signal: signal,
       headers: headers,
