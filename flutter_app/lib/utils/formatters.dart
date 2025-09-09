@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:clock/clock.dart';
 import 'package:geo_currencies/geo_currencies.dart';
 import 'package:intl/intl.dart';
@@ -22,7 +20,7 @@ class Formatters {
       ),
     );
 
-    return geoCurrencies.formatAmountWithCurrencyCode(
+    return geoCurrencies.formatAmountWithCurrencySymbol(
       amount: amount,
       currencyCodeIso4217: 'XAF',
     );
