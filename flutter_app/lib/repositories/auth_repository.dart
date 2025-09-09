@@ -1,3 +1,4 @@
+import 'package:connectrpc/connect.dart' as connect;
 import 'package:get_it/get_it.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
@@ -19,12 +20,14 @@ class AuthRepository {
   static AuthRepository get instance => GetIt.I.get<AuthRepository>();
 
   /// Constructs a new [AuthRepository].
-  AuthRepository()
-    : authClientService = AuthServiceClient(ConnectRPCService.to.clientChannel);
+  AuthRepository([connect.Transport? transport])
+    : authClientService = AuthServiceClient(
+        transport ?? ConnectRPCService.to.clientChannel,
+      );
 
   /// Retrieves a auth by ID or email and password.
   Future<User?> getCurrentUser({required GetCurrentUserRequest request}) async {
-    final result = await userRepository.getCurrentUser(request: request);
+    final result = await userRepository.getCurrentUser(request);
 
     return result;
   }

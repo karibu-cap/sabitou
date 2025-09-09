@@ -1,3 +1,4 @@
+import 'package:connectrpc/connect.dart' as connect;
 import 'dart:async';
 import 'package:get_it/get_it.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
@@ -16,9 +17,9 @@ final class SuppliersRepository {
   static final instance = GetIt.I.get<SuppliersRepository>();
 
   /// Constructs a new [SuppliersRepository].
-  SuppliersRepository()
+  SuppliersRepository([connect.Transport? transport])
     : supplierServiceClient = SupplierServiceClient(
-        ConnectRPCService.to.clientChannel,
+        transport ?? ConnectRPCService.to.clientChannel,
       );
 
   /// Gets all suppliers base on business Id.

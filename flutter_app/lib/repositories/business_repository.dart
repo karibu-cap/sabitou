@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:connectrpc/connect.dart' as connect;
 import 'package:get_it/get_it.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
@@ -13,9 +14,9 @@ class BusinessRepository {
   final BusinessServiceClient businessServiceClient;
 
   /// Constructs a new [BusinessRepository].
-  BusinessRepository()
+  BusinessRepository([connect.Transport? transport])
     : businessServiceClient = BusinessServiceClient(
-        ConnectRPCService.to.clientChannel,
+        transport ?? ConnectRPCService.to.clientChannel,
       );
 
   /// The instance of [BusinessRepository].

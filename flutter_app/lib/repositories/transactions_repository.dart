@@ -1,3 +1,4 @@
+import 'package:connectrpc/connect.dart' as connect;
 import 'package:get_it/get_it.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
@@ -15,9 +16,9 @@ class TransactionsRepository {
   static final instance = GetIt.I.get<TransactionsRepository>();
 
   /// Constructs a new [TransactionsRepository].
-  TransactionsRepository()
+  TransactionsRepository([connect.Transport? transport])
     : transactionServiceClient = TransactionServiceClient(
-        ConnectRPCService.to.clientChannel,
+        transport ?? ConnectRPCService.to.clientChannel,
       );
 
   /// Gets the business transaction by business id.
