@@ -325,10 +325,10 @@ components:
           title: supplier_name
           description: The name of the supplier.
           nullable: true
-        businessId:
+        storeId:
           type: string
-          title: business_id
-          description: The unique identifier of the business.
+          title: store_id
+          description: The unique identifier of the store.
       title: CreateOrderRequest
       additionalProperties: false
     order.v1.CreateOrderResponse:
@@ -388,6 +388,11 @@ components:
             $ref: '#/components/schemas/order.v1.OrderStatus'
           title: status
           description: The status of the order.
+        storeId:
+          type: string
+          title: store_id
+          description: The unique identifier of the store associated with the order.
+          nullable: true
       title: FindOrdersRequest
       additionalProperties: false
     order.v1.FindOrdersResponse:
@@ -454,15 +459,21 @@ components:
             $ref: '#/components/schemas/order.v1.OrderItem'
           title: order_items
           description: The list of items in the order.
-        totalPriceInCents:
+        totalPriceInXaf:
           type: integer
-          title: total_price_in_cents
+          title: total_price_in_xaf
           format: int32
-          description: The total price of the order in cents.
+          description: The total price of the order in XAF.
         status:
           title: status
           description: The status of the order.
           $ref: '#/components/schemas/order.v1.OrderStatus'
+        statusHistory:
+          type: array
+          items:
+            $ref: '#/components/schemas/order.v1.StatusHistory'
+          title: status_history
+          description: The status history.
         createdAt:
           title: created_at
           description: The date and time the order was created.
@@ -472,27 +483,44 @@ components:
           description: The date and time the order was last updated.
           nullable: true
           $ref: '#/components/schemas/google.protobuf.Timestamp'
+        storeId:
+          type: string
+          title: store_id
+          format: uuid
+          description: The unique identifier of the store associated with the order.
+        initiatedBy:
+          type: string
+          title: initiated_by
+          minLength: 3
+          description: The unique identifier of the user who initiated the order.
       title: Order
+      required:
+        - storeId
+        - initiatedBy
       additionalProperties: false
     order.v1.OrderItem:
       type: object
       properties:
-        businessProductId:
+        storeProductId:
           type: string
-          title: business_product_id
-          description: The unique identifier of the business product.
+          title: store_product_id
+          description: The unique identifier of the store product.
         quantity:
           type: integer
           title: quantity
           format: int32
           description: The quantity of the product.
-        unitPriceInCents:
+        unitPriceInXaf:
           type: integer
-          title: unit_price_in_cents
+          title: unit_price_in_xaf
           format: int32
           description: |-
-            The unit price in cents of the product.
+            The unit price in XAF of the product.
              WARN: This value is stored because the unit price can change over time.
+        itemName:
+          type: string
+          title: item_name
+          description: The name of the product.
       title: OrderItem
       additionalProperties: false
     order.v1.OrderStatus:
@@ -504,6 +532,20 @@ components:
         - ORDER_STATUS_PROCESSING
         - ORDER_STATUS_COMPLETED
         - ORDER_STATUS_CANCELLED
+    order.v1.StatusHistory:
+      type: object
+      properties:
+        status:
+          title: status
+          $ref: '#/components/schemas/order.v1.OrderStatus'
+        updatedBy:
+          type: string
+          title: updated_by
+        updatedAt:
+          title: updated_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: StatusHistory
+      additionalProperties: false
 security: []
 tags:
   - name: order.v1.OrderService

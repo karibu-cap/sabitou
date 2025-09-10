@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package business.v1;
+package store.v1;
 
 import "buf/validate/validate.proto";
 import "link/v1/link.proto";
@@ -42,8 +42,8 @@ message Supplier {
   // Whether the supplier is active.
   bool is_active = 9;
 
-  // The ids of the business of the supplier.
-  repeated string business_ids = 10;
+  // The ids of the store of the supplier.
+  repeated string store_ids = 10;
 }
 
 message CreateSupplierRequest {
@@ -78,16 +78,16 @@ message GetSupplierResponse {
   Supplier supplier = 1;
 }
 
-message GetBusinessSuppliersRequest {
-  // The reference id to the business identifier.
-  string business_id = 1 [
+message GetStoreSuppliersRequest {
+  // The reference id to the store identifier.
+  string store_id = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
 }
 
-message GetBusinessSuppliersResponse {
-  // The list of suppliers of the business.
+message GetStoreSuppliersResponse {
+  // The list of suppliers of the store.
   // Note: Only the ids and names of the suppliers are returned.
   repeated Supplier suppliers = 1;
 }
@@ -127,15 +127,15 @@ service SupplierService {
   // Gets a supplier by id.
   rpc GetSupplier(GetSupplierRequest) returns (GetSupplierResponse);
 
-  // Gets all suppliers of a business.
-  rpc GetBusinessSuppliers(GetBusinessSuppliersRequest) returns (GetBusinessSuppliersResponse);
+  // Gets all suppliers of a store.
+  rpc GetStoreSuppliers(GetStoreSuppliersRequest) returns (GetStoreSuppliersResponse);
 
-  // Streams all suppliers of a business with real-time updates.
+  // Streams all suppliers of a store with real-time updates.
   // This is a server streaming RPC that will send updates whenever suppliers change.
-  rpc StreamBusinessSuppliers(GetBusinessSuppliersRequest) returns (stream GetBusinessSuppliersResponse);
+  rpc StreamStoreSuppliers(GetStoreSuppliersRequest) returns (stream GetStoreSuppliersResponse);
 
   // Updates a supplier.
-  // Note:Only the fields that are set will be updated. array fiels like external_links will be replaced.
+  // Note:Only the fields that are set will be updated. array fields like external_links will be replaced.
   rpc UpdateSupplier(UpdateSupplierRequest) returns (UpdateSupplierResponse);
 
   // Deletes a supplier.

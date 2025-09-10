@@ -39,7 +39,7 @@ final class InventoryStats extends StatelessWidget {
             value: Formatters.formatCurrency(
               products?.fold(
                     0,
-                    (sum, p) => (sum ?? 0) + p.businessProduct.priceInXaf,
+                    (sum, p) => (sum ?? 0) + p.storeProduct.priceInXaf,
                   ) ??
                   0,
             ),
@@ -51,7 +51,7 @@ final class InventoryStats extends StatelessWidget {
             title: Intls.to.lowStock,
             value:
                 products
-                    ?.where((p) => isLowStock(p.businessProduct))
+                    ?.where((p) => isLowStock(p.storeProduct))
                     .length
                     .toString() ??
                 '0',
@@ -63,7 +63,7 @@ final class InventoryStats extends StatelessWidget {
             title: Intls.to.outOfStock,
             value:
                 products
-                    ?.where((p) => p.businessProduct.stockQuantity <= 0)
+                    ?.where((p) => p.storeProduct.stockQuantity <= 0)
                     .length
                     .toString() ??
                 '0',

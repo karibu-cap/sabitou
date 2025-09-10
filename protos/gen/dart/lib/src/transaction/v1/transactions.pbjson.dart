@@ -75,38 +75,29 @@ const Transaction$json = {
       '6': '.transaction.v1.TransactionStatus',
       '10': 'status'
     },
-    {'1': 'business_id', '3': 4, '4': 1, '5': 9, '8': {}, '10': 'businessId'},
+    {'1': 'store_id', '3': 4, '4': 1, '5': 9, '8': {}, '10': 'storeId'},
     {
-      '1': 'store_id',
+      '1': 'order_id',
       '3': 5,
       '4': 1,
       '5': 9,
       '9': 1,
-      '10': 'storeId',
-      '17': true
-    },
-    {
-      '1': 'order_id',
-      '3': 6,
-      '4': 1,
-      '5': 9,
-      '9': 2,
       '10': 'orderId',
       '17': true
     },
     {
       '1': 'from_id',
-      '3': 7,
+      '3': 6,
       '4': 1,
       '5': 9,
-      '9': 3,
+      '9': 2,
       '10': 'fromId',
       '17': true
     },
-    {'1': 'amount_in_cents', '3': 8, '4': 1, '5': 3, '10': 'amountInCents'},
+    {'1': 'amount_in_xaf', '3': 7, '4': 1, '5': 3, '10': 'amountInXaf'},
     {
       '1': 'currency_code',
-      '3': 9,
+      '3': 8,
       '4': 1,
       '5': 9,
       '8': {},
@@ -114,7 +105,7 @@ const Transaction$json = {
     },
     {
       '1': 'created_at',
-      '3': 10,
+      '3': 9,
       '4': 1,
       '5': 11,
       '6': '.google.protobuf.Timestamp',
@@ -122,53 +113,53 @@ const Transaction$json = {
     },
     {
       '1': 'updated_at',
-      '3': 11,
+      '3': 10,
       '4': 1,
       '5': 11,
       '6': '.google.protobuf.Timestamp',
-      '9': 4,
+      '9': 3,
       '10': 'updatedAt',
       '17': true
     },
     {
       '1': 'description',
-      '3': 12,
+      '3': 11,
       '4': 1,
       '5': 9,
-      '9': 5,
+      '9': 4,
       '10': 'description',
       '17': true
     },
     {
-      '1': 'business_product_id',
-      '3': 13,
+      '1': 'store_product_id',
+      '3': 12,
       '4': 1,
       '5': 9,
-      '9': 6,
-      '10': 'businessProductId',
+      '9': 5,
+      '10': 'storeProductId',
       '17': true
     },
     {
       '1': 'quantity',
-      '3': 14,
+      '3': 13,
       '4': 1,
       '5': 5,
-      '9': 7,
+      '9': 6,
       '10': 'quantity',
       '17': true
     },
     {
       '1': 'initiated_by',
-      '3': 15,
+      '3': 14,
       '4': 1,
       '5': 9,
-      '9': 8,
+      '9': 7,
       '10': 'initiatedBy',
       '17': true
     },
     {
       '1': 'external_links_ids',
-      '3': 16,
+      '3': 15,
       '4': 3,
       '5': 9,
       '10': 'externalLinksIds'
@@ -176,12 +167,11 @@ const Transaction$json = {
   ],
   '8': [
     {'1': '_ref_id'},
-    {'1': '_store_id'},
     {'1': '_order_id'},
     {'1': '_from_id'},
     {'1': '_updated_at'},
     {'1': '_description'},
-    {'1': '_business_product_id'},
+    {'1': '_store_product_id'},
     {'1': '_quantity'},
     {'1': '_initiated_by'},
   ],
@@ -191,20 +181,19 @@ const Transaction$json = {
 final $typed_data.Uint8List transactionDescriptor = $convert.base64Decode(
     'CgtUcmFuc2FjdGlvbhIaCgZyZWZfaWQYASABKAlIAFIFcmVmSWSIAQESMwoEdHlwZRgCIAEoDj'
     'IfLnRyYW5zYWN0aW9uLnYxLlRyYW5zYWN0aW9uVHlwZVIEdHlwZRI5CgZzdGF0dXMYAyABKA4y'
-    'IS50cmFuc2FjdGlvbi52MS5UcmFuc2FjdGlvblN0YXR1c1IGc3RhdHVzEisKC2J1c2luZXNzX2'
-    'lkGAQgASgJQgq6SAfIAQFyAhADUgpidXNpbmVzc0lkEh4KCHN0b3JlX2lkGAUgASgJSAFSB3N0'
-    'b3JlSWSIAQESHgoIb3JkZXJfaWQYBiABKAlIAlIHb3JkZXJJZIgBARIcCgdmcm9tX2lkGAcgAS'
-    'gJSANSBmZyb21JZIgBARImCg9hbW91bnRfaW5fY2VudHMYCCABKANSDWFtb3VudEluQ2VudHMS'
-    'KwoNY3VycmVuY3lfY29kZRgJIAEoCUIGukgDyAEBUgxjdXJyZW5jeUNvZGUSOQoKY3JlYXRlZF'
-    '9hdBgKIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSCWNyZWF0ZWRBdBI+Cgp1cGRh'
-    'dGVkX2F0GAsgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEgEUgl1cGRhdGVkQXSIAQ'
-    'ESJQoLZGVzY3JpcHRpb24YDCABKAlIBVILZGVzY3JpcHRpb26IAQESMwoTYnVzaW5lc3NfcHJv'
-    'ZHVjdF9pZBgNIAEoCUgGUhFidXNpbmVzc1Byb2R1Y3RJZIgBARIfCghxdWFudGl0eRgOIAEoBU'
-    'gHUghxdWFudGl0eYgBARImCgxpbml0aWF0ZWRfYnkYDyABKAlICFILaW5pdGlhdGVkQnmIAQES'
-    'LAoSZXh0ZXJuYWxfbGlua3NfaWRzGBAgAygJUhBleHRlcm5hbExpbmtzSWRzQgkKB19yZWZfaW'
-    'RCCwoJX3N0b3JlX2lkQgsKCV9vcmRlcl9pZEIKCghfZnJvbV9pZEINCgtfdXBkYXRlZF9hdEIO'
-    'CgxfZGVzY3JpcHRpb25CFgoUX2J1c2luZXNzX3Byb2R1Y3RfaWRCCwoJX3F1YW50aXR5Qg8KDV'
-    '9pbml0aWF0ZWRfYnk=');
+    'IS50cmFuc2FjdGlvbi52MS5UcmFuc2FjdGlvblN0YXR1c1IGc3RhdHVzEiUKCHN0b3JlX2lkGA'
+    'QgASgJQgq6SAfIAQFyAhADUgdzdG9yZUlkEh4KCG9yZGVyX2lkGAUgASgJSAFSB29yZGVySWSI'
+    'AQESHAoHZnJvbV9pZBgGIAEoCUgCUgZmcm9tSWSIAQESIgoNYW1vdW50X2luX3hhZhgHIAEoA1'
+    'ILYW1vdW50SW5YYWYSKwoNY3VycmVuY3lfY29kZRgIIAEoCUIGukgDyAEBUgxjdXJyZW5jeUNv'
+    'ZGUSOQoKY3JlYXRlZF9hdBgJIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSCWNyZW'
+    'F0ZWRBdBI+Cgp1cGRhdGVkX2F0GAogASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEgD'
+    'Ugl1cGRhdGVkQXSIAQESJQoLZGVzY3JpcHRpb24YCyABKAlIBFILZGVzY3JpcHRpb26IAQESLQ'
+    'oQc3RvcmVfcHJvZHVjdF9pZBgMIAEoCUgFUg5zdG9yZVByb2R1Y3RJZIgBARIfCghxdWFudGl0'
+    'eRgNIAEoBUgGUghxdWFudGl0eYgBARImCgxpbml0aWF0ZWRfYnkYDiABKAlIB1ILaW5pdGlhdG'
+    'VkQnmIAQESLAoSZXh0ZXJuYWxfbGlua3NfaWRzGA8gAygJUhBleHRlcm5hbExpbmtzSWRzQgkK'
+    'B19yZWZfaWRCCwoJX29yZGVyX2lkQgoKCF9mcm9tX2lkQg0KC191cGRhdGVkX2F0Qg4KDF9kZX'
+    'NjcmlwdGlvbkITChFfc3RvcmVfcHJvZHVjdF9pZEILCglfcXVhbnRpdHlCDwoNX2luaXRpYXRl'
+    'ZF9ieQ==');
 
 @$core.Deprecated('Use addTransactionRequestDescriptor instead')
 const AddTransactionRequest$json = {
@@ -338,22 +327,13 @@ final $typed_data.Uint8List deleteTransactionResponseDescriptor =
 const FindTransactionsRequest$json = {
   '1': 'FindTransactionsRequest',
   '2': [
-    {'1': 'business_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'businessId'},
-    {
-      '1': 'store_id',
-      '3': 2,
-      '4': 1,
-      '5': 9,
-      '9': 0,
-      '10': 'storeId',
-      '17': true
-    },
+    {'1': 'store_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'storeId'},
     {
       '1': 'order_id',
       '3': 3,
       '4': 1,
       '5': 9,
-      '9': 1,
+      '9': 0,
       '10': 'orderId',
       '17': true
     },
@@ -363,7 +343,7 @@ const FindTransactionsRequest$json = {
       '4': 1,
       '5': 11,
       '6': '.google.protobuf.Timestamp',
-      '9': 2,
+      '9': 1,
       '10': 'startDate',
       '17': true
     },
@@ -373,7 +353,7 @@ const FindTransactionsRequest$json = {
       '4': 1,
       '5': 11,
       '6': '.google.protobuf.Timestamp',
-      '9': 3,
+      '9': 2,
       '10': 'endDate',
       '17': true
     },
@@ -395,7 +375,6 @@ const FindTransactionsRequest$json = {
     },
   ],
   '8': [
-    {'1': '_store_id'},
     {'1': '_order_id'},
     {'1': '_start_date'},
     {'1': '_end_date'},
@@ -404,14 +383,13 @@ const FindTransactionsRequest$json = {
 
 /// Descriptor for `FindTransactionsRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List findTransactionsRequestDescriptor = $convert.base64Decode(
-    'ChdGaW5kVHJhbnNhY3Rpb25zUmVxdWVzdBIrCgtidXNpbmVzc19pZBgBIAEoCUIKukgHyAEBcg'
-    'IQA1IKYnVzaW5lc3NJZBIeCghzdG9yZV9pZBgCIAEoCUgAUgdzdG9yZUlkiAEBEh4KCG9yZGVy'
-    'X2lkGAMgASgJSAFSB29yZGVySWSIAQESPgoKc3RhcnRfZGF0ZRgEIAEoCzIaLmdvb2dsZS5wcm'
-    '90b2J1Zi5UaW1lc3RhbXBIAlIJc3RhcnREYXRliAEBEjoKCGVuZF9kYXRlGAUgASgLMhouZ29v'
-    'Z2xlLnByb3RvYnVmLlRpbWVzdGFtcEgDUgdlbmREYXRliAEBEjMKBHR5cGUYBiADKA4yHy50cm'
-    'Fuc2FjdGlvbi52MS5UcmFuc2FjdGlvblR5cGVSBHR5cGUSOQoGc3RhdHVzGAcgAygOMiEudHJh'
-    'bnNhY3Rpb24udjEuVHJhbnNhY3Rpb25TdGF0dXNSBnN0YXR1c0ILCglfc3RvcmVfaWRCCwoJX2'
-    '9yZGVyX2lkQg0KC19zdGFydF9kYXRlQgsKCV9lbmRfZGF0ZQ==');
+    'ChdGaW5kVHJhbnNhY3Rpb25zUmVxdWVzdBIlCghzdG9yZV9pZBgBIAEoCUIKukgHyAEBcgIQA1'
+    'IHc3RvcmVJZBIeCghvcmRlcl9pZBgDIAEoCUgAUgdvcmRlcklkiAEBEj4KCnN0YXJ0X2RhdGUY'
+    'BCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wSAFSCXN0YXJ0RGF0ZYgBARI6Cghlbm'
+    'RfZGF0ZRgFIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBIAlIHZW5kRGF0ZYgBARIz'
+    'CgR0eXBlGAYgAygOMh8udHJhbnNhY3Rpb24udjEuVHJhbnNhY3Rpb25UeXBlUgR0eXBlEjkKBn'
+    'N0YXR1cxgHIAMoDjIhLnRyYW5zYWN0aW9uLnYxLlRyYW5zYWN0aW9uU3RhdHVzUgZzdGF0dXNC'
+    'CwoJX29yZGVyX2lkQg0KC19zdGFydF9kYXRlQgsKCV9lbmRfZGF0ZQ==');
 
 @$core.Deprecated('Use findTransactionsResponseDescriptor instead')
 const FindTransactionsResponse$json = {

@@ -72,7 +72,7 @@ type BusinessServiceClient interface {
 	GetBusinessDetails(context.Context, *connect.Request[v1.GetBusinessDetailsRequest]) (*connect.Response[v1.GetBusinessDetailsResponse], error)
 	// Update a business.
 	UpdateBusiness(context.Context, *connect.Request[v1.UpdateBusinessRequest]) (*connect.Response[v1.UpdateBusinessResponse], error)
-	// Request the deletion of the business. This request doesn't delete the business direcly instead it put the business in inactive state and remove all business members.
+	// Request the deletion of the business. This request doesn't delete the business directly instead it put the business in inactive state and remove all business members.
 	RequestDeleteBusiness(context.Context, *connect.Request[v1.RequestDeleteBusinessRequest]) (*connect.Response[v1.RequestDeleteBusinessResponse], error)
 	// Add user to business or invite user to business.
 	AddUserToBusiness(context.Context, *connect.Request[v1.AddUserToBusinessRequest]) (*connect.Response[v1.AddUserToBusinessResponse], error)
@@ -223,7 +223,7 @@ type BusinessServiceHandler interface {
 	GetBusinessDetails(context.Context, *connect.Request[v1.GetBusinessDetailsRequest]) (*connect.Response[v1.GetBusinessDetailsResponse], error)
 	// Update a business.
 	UpdateBusiness(context.Context, *connect.Request[v1.UpdateBusinessRequest]) (*connect.Response[v1.UpdateBusinessResponse], error)
-	// Request the deletion of the business. This request doesn't delete the business direcly instead it put the business in inactive state and remove all business members.
+	// Request the deletion of the business. This request doesn't delete the business directly instead it put the business in inactive state and remove all business members.
 	RequestDeleteBusiness(context.Context, *connect.Request[v1.RequestDeleteBusinessRequest]) (*connect.Response[v1.RequestDeleteBusinessResponse], error)
 	// Add user to business or invite user to business.
 	AddUserToBusiness(context.Context, *connect.Request[v1.AddUserToBusinessRequest]) (*connect.Response[v1.AddUserToBusinessResponse], error)

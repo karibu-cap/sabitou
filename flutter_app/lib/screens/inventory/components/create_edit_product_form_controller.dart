@@ -68,10 +68,7 @@ class CreateEditProductFormController extends ChangeNotifier {
   CreateEditProductFormController({Product? product})
     : _product =
           product ??
-          Product(
-            businessProduct: BusinessProduct(),
-            globalProduct: GlobalProduct(),
-          ),
+          Product(storeProduct: StoreProduct(), globalProduct: GlobalProduct()),
       productFormType = product == null
           ? ProductFormType.create
           : ProductFormType.edit,
@@ -80,16 +77,16 @@ class CreateEditProductFormController extends ChangeNotifier {
         text: product?.globalProduct.barCodeValue,
       ),
       priceController = TextEditingController(
-        text: product?.businessProduct.priceInXaf.toString(),
+        text: product?.storeProduct.priceInXaf.toString(),
       ),
       quantityController = TextEditingController(
-        text: product?.businessProduct.stockQuantity.toString(),
+        text: product?.storeProduct.stockQuantity.toString(),
       ),
       minStockThresholdController = TextEditingController(
-        text: product?.businessProduct.minStockThreshold.toString(),
+        text: product?.storeProduct.minStockThreshold.toString(),
       ),
       expiryController = TextEditingController(
-        text: product?.businessProduct.expirationDate
+        text: product?.storeProduct.expirationDate
             .toDateTime()
             .toIso8601String(),
       ),
@@ -142,8 +139,8 @@ class CreateEditProductFormController extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final businessId = UserPreferences.instance.business?.refId;
-      if (businessId == null) {
+      final storeId = UserPreferences.instance.store?.refId;
+      if (storeId == null) {
         throw Exception(Intls.to.error);
       }
 
@@ -151,19 +148,19 @@ class CreateEditProductFormController extends ChangeNotifier {
           ? await ProductsRepository.instance.addProduct(
               AddProductRequest(
                 globalProduct: product.globalProduct,
-                businessId: businessId,
-                minStockThreshold: product.businessProduct.minStockThreshold,
-                priceInXaf: product.businessProduct.priceInXaf,
-                stockQuantity: product.businessProduct.stockQuantity,
-                expirationDate: product.businessProduct.hasExpirationDate()
-                    ? product.businessProduct.expirationDate
+                storeId: storeId,
+                minStockThreshold: product.storeProduct.minStockThreshold,
+                priceInXaf: product.storeProduct.priceInXaf,
+                stockQuantity: product.storeProduct.stockQuantity,
+                expirationDate: product.storeProduct.hasExpirationDate()
+                    ? product.storeProduct.expirationDate
                     : null,
               ),
             )
           : await ProductsRepository.instance.updateProduct(
               UpdateProductRequest(
                 globalProduct: product.globalProduct,
-                product: product.businessProduct,
+                product: product.storeProduct,
               ),
             );
 

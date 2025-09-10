@@ -262,8 +262,8 @@ paths:
     post:
       tags:
         - business.v1.BusinessService
-      summary: Request the deletion of the business. This request doesn't delete the business direcly instead it put the business in inactive state and remove all business members.
-      description: Request the deletion of the business. This request doesn't delete the business direcly instead it put the business in inactive state and remove all business members.
+      summary: Request the deletion of the business. This request doesn't delete the business directly instead it put the business in inactive state and remove all business members.
+      description: Request the deletion of the business. This request doesn't delete the business directly instead it put the business in inactive state and remove all business members.
       operationId: business.v1.BusinessService.RequestDeleteBusiness
       parameters:
         - name: Connect-Protocol-Version
@@ -472,9 +472,9 @@ components:
     business.v1.ChangeBusinessCurrencyResponse:
       type: object
       properties:
-        sucess:
+        success:
           type: boolean
-          title: sucess
+          title: success
       title: ChangeBusinessCurrencyResponse
       additionalProperties: false
     business.v1.CreateBusinessRequest:

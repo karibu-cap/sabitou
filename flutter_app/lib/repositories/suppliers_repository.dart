@@ -1,5 +1,6 @@
-import 'package:connectrpc/connect.dart' as connect;
 import 'dart:async';
+
+import 'package:connectrpc/connect.dart' as connect;
 import 'package:get_it/get_it.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
@@ -22,16 +23,16 @@ final class SuppliersRepository {
         transport ?? ConnectRPCService.to.clientChannel,
       );
 
-  /// Gets all suppliers base on business Id.
-  Future<List<Supplier>> getSuppliersByBusinessId(String businessId) async {
+  /// Gets all suppliers base on store Id.
+  Future<List<Supplier>> getSuppliersByStore(String storeId) async {
     try {
-      final response = await supplierServiceClient.getBusinessSuppliers(
-        GetBusinessSuppliersRequest(businessId: businessId),
+      final response = await supplierServiceClient.getStoreSuppliers(
+        GetStoreSuppliersRequest(storeId: storeId),
       );
 
       return response.suppliers;
     } on Exception catch (e) {
-      _logger.severe('getSuppliersByBusinessId Error: $e');
+      _logger.severe('getSuppliersByStoreId Error: $e');
 
       return [];
     }
@@ -52,18 +53,16 @@ final class SuppliersRepository {
     }
   }
 
-  /// Gets all suppliers base on busines.
-  Future<List<Supplier>> getBusinessSuppliers(
-    GetBusinessSuppliersRequest request,
+  /// Gets all suppliers base on store.
+  Future<List<Supplier>> getStoreSuppliers(
+    GetStoreSuppliersRequest request,
   ) async {
     try {
-      final response = await supplierServiceClient.getBusinessSuppliers(
-        request,
-      );
+      final response = await supplierServiceClient.getStoreSuppliers(request);
 
       return response.suppliers;
     } on Exception catch (e) {
-      _logger.severe('getBusinessSuppliers Error: $e');
+      _logger.severe('getStoreSuppliers Error: $e');
 
       return [];
     }
@@ -121,18 +120,18 @@ final class SuppliersRepository {
     }
   }
 
-  /// Stream suppliers for a specific business.
-  Stream<List<Supplier>> streamBusinessSuppliers(
-    GetBusinessSuppliersRequest request,
+  /// Stream suppliers for a specific store.
+  Stream<List<Supplier>> streamStoreSuppliers(
+    GetStoreSuppliersRequest request,
   ) {
     try {
       // Use the native gRPC streaming service
-      final grpcStream = supplierServiceClient.streamBusinessSuppliers(request);
+      final grpcStream = supplierServiceClient.streamStoreSuppliers(request);
 
       // Transform the gRPC stream to return List<Supplier>
       return grpcStream.map((response) => response.suppliers);
-    } catch (e) {
-      _logger.severe('streamSuppliersByBusinessId Error: $e');
+    } on Exception catch (e) {
+      _logger.severe('streamStoreSuppliers Error: $e');
 
       // Return empty stream on error
       return Stream.value([]);

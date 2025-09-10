@@ -1,6 +1,8 @@
+import '../utils/app_constants.dart';
+
 /// Fake data for testing
 final fakeData = <String, List<Map<String, dynamic>>>{
-  'stores': <Map<String, dynamic>>[
+  CollectionName.stores: <Map<String, dynamic>>[
     {
       'ref_id': 'store-001',
       'name': 'Main Store',
@@ -53,7 +55,7 @@ final fakeData = <String, List<Map<String, dynamic>>>{
       'business_id': 'business-002',
     },
   ],
-  'businesses': <Map<String, dynamic>>[
+  CollectionName.businesses: <Map<String, dynamic>>[
     {
       'ref_id': 'business-001',
       'name': 'Tech Corp',
@@ -116,7 +118,7 @@ final fakeData = <String, List<Map<String, dynamic>>>{
       'external_links_ids': ['link-015'],
     },
   ],
-  'business_members': [
+  CollectionName.businessMembers: [
     {
       'user_id': 'user-001',
       'business_id': 'business-001',
@@ -218,7 +220,7 @@ final fakeData = <String, List<Map<String, dynamic>>>{
       'member_since': '2025-08-01',
     },
   ],
-  'business_clients': [
+  CollectionName.businessClients: [
     {
       'ref_id': 'client-001',
       'full_name': 'John Doe',
@@ -253,7 +255,7 @@ final fakeData = <String, List<Map<String, dynamic>>>{
       'business_id': 'business-005',
     },
   ],
-  'links': [
+  CollectionName.links: [
     {'label': 'Website', 'url': 'https://techcorp.com'},
     {'label': 'Email', 'url': 'mailto:info@techcorp.com'},
     {'label': 'Phone', 'url': 'tel:+1234567890'},
@@ -265,7 +267,7 @@ final fakeData = <String, List<Map<String, dynamic>>>{
     {'label': 'FAQ', 'url': 'https://faq.electronicsworld.com'},
     {'label': 'Privacy Policy', 'url': 'https://privacy.techcorp.com'},
   ],
-  'suppliers': [
+  CollectionName.suppliers: [
     {
       'ref_id': 'supplier-001',
       'name': 'Supply Co',
@@ -314,7 +316,7 @@ final fakeData = <String, List<Map<String, dynamic>>>{
       'business_ids': ['business-001'],
     },
   ],
-  'permissions': [
+  CollectionName.permissions: [
     {
       'resource_type': 'RESOURCE_TYPE_STORE',
       'resource_id': 'store-001',
@@ -347,7 +349,7 @@ final fakeData = <String, List<Map<String, dynamic>>>{
       'action_type': 'RESOURCE_ACTION_TYPE_READ',
     },
   ],
-  'permissions_groups': [
+  CollectionName.permissionsGroups: [
     {
       'ref_id': 'group-001',
       'name': 'Admin',
@@ -426,7 +428,7 @@ final fakeData = <String, List<Map<String, dynamic>>>{
       ],
     },
   ],
-  'users': [
+  CollectionName.users: [
     {
       'ref_id': 'user-001',
       'user_name': 'admin_user',
@@ -549,7 +551,7 @@ final fakeData = <String, List<Map<String, dynamic>>>{
       ],
     },
   ],
-  'product_categories': [
+  CollectionName.productCategories: [
     {'ref_id': 'category-001', 'name': 'Electronics'},
     {'ref_id': 'category-002', 'name': 'Food'},
     {'ref_id': 'category-003', 'name': 'Clothing'},
@@ -559,7 +561,7 @@ final fakeData = <String, List<Map<String, dynamic>>>{
     {'ref_id': 'category-006', 'name': 'Dairy'},
     {'ref_id': 'category-007', 'name': 'Entertainment'},
   ],
-  'global_products': <Map<String, dynamic>>[
+  CollectionName.globalProducts: <Map<String, dynamic>>[
     {
       'ref_id': 'global-product-001',
       'name': 'Smartphone',
@@ -687,75 +689,82 @@ final fakeData = <String, List<Map<String, dynamic>>>{
       'images_links_ids': [],
     },
   ],
-  'business_products': <Map<String, dynamic>>[
+  CollectionName.storeProducts: <Map<String, dynamic>>[
     {
       'ref_id': 'product-001',
-      'business_id': 'business-001',
+      'store_id': 'store-001',
       'global_product_id': 'global-product-001',
-      'price_in_cents': 10000,
+      'price_in_xaf': 10000,
       'stock_quantity': 100,
       'min_stock_threshold': 10,
+      'inbound_date': '2024-09-01T08:00:00Z',
       'expiration_date': '2024-09-01T08:00:00Z',
       'images_link_ids': ['media-image-012'],
       'supplier_id': 'supplier-001',
     },
     {
       'ref_id': 'product-002',
-      'business_id': 'business-002',
+      'store_id': 'store-002',
       'global_product_id': 'global-product-002',
-      'price_in_cents': 100,
+      'price_in_xaf': 100,
       'stock_quantity': 4,
       'min_stock_threshold': 8,
+      'inbound_date': '2024-09-01T08:00:00Z',
       'expiration_date': '2026-09-01T08:00:00Z',
       'images_link_ids': ['media-image-013'],
       'supplier_id': 'supplier-002',
     },
     {
       'ref_id': 'product-003',
-      'business_id': 'business-001',
+      'store_id': 'store-001',
       'global_product_id': 'global-product-003',
-      'price_in_cents': 1500,
+      'price_in_xaf': 1500,
       'stock_quantity': 8,
       'min_stock_threshold': 10,
+      'inbound_date': '2024-09-01T08:00:00Z',
       'expiration_date': '2025-08-01T08:00:00Z',
       'images_link_ids': [],
       'supplier_id': 'supplier-003',
     },
     {
       'ref_id': 'product-004',
-      'business_id': 'business-001',
+      'store_id': 'store-001',
       'global_product_id': 'global-product-004',
-      'price_in_cents': 49999,
+      'price_in_xaf': 49999,
       'stock_quantity': 20,
       'min_stock_threshold': 30,
+      'inbound_date': '2024-09-01T08:00:00Z',
       'expiration_date': '2025-10-11T08:00:00Z',
       'images_link_ids': ['media-image-014', 'media-image-015'],
     },
     {
       'ref_id': 'product-005',
-      'business_id': 'business-004',
+      'store_id': 'store-004',
       'global_product_id': 'global-product-005',
-      'price_in_cents': 29999,
+      'price_in_xaf': 29999,
       'stock_quantity': 15,
       'min_stock_threshold': 10,
+      'inbound_date': '2024-09-01T08:00:00Z',
       'expiration_date': '2025-09-30T08:00:00Z',
       'images_link_ids': ['media-image-016'],
     },
     {
       'ref_id': 'product-006',
-      'business_id': 'business-001',
+      'store_id': 'store-001',
       'global_product_id': 'global-product-006',
-      'price_in_cents': 19999,
+      'price_in_xaf': 19999,
       'stock_quantity': 40,
       'min_stock_threshold': 10,
+      'inbound_date': '2024-09-01T08:00:00Z',
       'expiration_date': '2026-09-01T08:00:00Z',
       'images_link_ids': ['media-image-017'],
+      'supplier_id': 'supplier-004',
     },
     {
       'ref_id': 'product-007',
-      'business_id': 'business-002',
+      'store_id': 'store-002',
       'global_product_id': 'global-product-007',
-      'price_in_cents': 299,
+      'price_in_xaf': 299,
       'stock_quantity': 10,
       'min_stock_threshold': 8,
       'expiration_date': '2026-09-01T08:00:00Z',
@@ -763,9 +772,9 @@ final fakeData = <String, List<Map<String, dynamic>>>{
     },
     {
       'ref_id': 'product-008',
-      'business_id': 'business-003',
+      'store_id': 'store-003',
       'global_product_id': 'global-product-008',
-      'price_in_cents': 199,
+      'price_in_xaf': 199,
       'stock_quantity': 10,
       'min_stock_threshold': 8,
       'expiration_date': '2026-09-01T08:00:00Z',
@@ -773,9 +782,9 @@ final fakeData = <String, List<Map<String, dynamic>>>{
     },
     {
       'ref_id': 'product-009',
-      'business_id': 'business-005',
+      'store_id': 'store-005',
       'global_product_id': 'global-product-009',
-      'price_in_cents': 129999,
+      'price_in_xaf': 129999,
       'stock_quantity': 100,
       'min_stock_threshold': 10,
       'expiration_date': '2024-09-01T08:00:00Z',
@@ -783,42 +792,43 @@ final fakeData = <String, List<Map<String, dynamic>>>{
     },
     {
       'ref_id': 'product-010',
-      'business_id': 'business-004',
+      'store_id': 'store-004',
       'global_product_id': 'global-product-010',
-      'price_in_cents': 39999,
+      'price_in_xaf': 39999,
       'stock_quantity': 100,
       'min_stock_threshold': 10,
       'expiration_date': '2027-09-01T08:00:00Z',
     },
     {
-      'business_id': 'business-004',
+      'ref_id': 'product-011',
+      'store_id': 'store-004',
       'global_product_id': 'global-product-011',
-      'price_in_cents': 9999,
+      'price_in_xaf': 9999,
       'stock_quantity': 100,
       'min_stock_threshold': 10,
       'expiration_date': '2025-09-30T08:00:00Z',
       'images_link_ids': ['media-image-020'],
     },
     {
-      'ref_id': 'product-011',
-      'business_id': 'business-002',
+      'ref_id': 'product-012',
+      'store_id': 'store-002',
       'global_product_id': 'global-product-011',
-      'price_in_cents': 399,
+      'price_in_xaf': 399,
       'stock_quantity': 10,
       'min_stock_threshold': 8,
       'expiration_date': '2026-09-01T08:00:00Z',
     },
     {
-      'ref_id': 'product-012',
-      'business_id': 'business-003',
+      'ref_id': 'product-013',
+      'store_id': 'store-003',
       'global_product_id': 'global-product-012',
-      'price_in_cents': 150,
+      'price_in_xaf': 150,
       'stock_quantity': 10,
       'min_stock_threshold': 8,
       'expiration_date': '2026-09-01T08:00:00Z',
     },
   ],
-  'resource_links': [
+  CollectionName.resourceLinks: [
     {
       'ref_id': 'link-028',
       'target_uri': 'https://example.com/resource1',
@@ -839,7 +849,7 @@ final fakeData = <String, List<Map<String, dynamic>>>{
       'label': 'Profile',
     },
   ],
-  'orders': [
+  CollectionName.orders: [
     {
       'ref_id': 'order-001',
       'from_id': 'client-001',
@@ -848,15 +858,24 @@ final fakeData = <String, List<Map<String, dynamic>>>{
         {
           'business_product_id': 'product-001',
           'quantity': 2,
-          'unit_price_in_cents': 99999,
+          'unit_price_in_xaf': 99999,
         },
         {
           'business_product_id': 'product-004',
           'quantity': 1,
-          'unit_price_in_cents': 49999,
+          'unit_price_in_xaf': 49999,
         },
       ],
-      'total_price_in_cents': 249997,
+      'total_price_in_xaf': 249997,
+      'store_id': 'store-001',
+      'initiated_by': 'user-001',
+      'status_history': [
+        {
+          'status': 'ORDER_STATUS_PENDING',
+          'updated_by': 'user-001',
+          'updated_at': '2025-09-01T08:00:00Z',
+        },
+      ],
       'status': 'ORDER_STATUS_PENDING',
       'created_at': '2025-09-01T08:00:00Z',
       'updated_at': '2025-09-01T08:00:00Z',
@@ -869,15 +888,24 @@ final fakeData = <String, List<Map<String, dynamic>>>{
         {
           'business_product_id': 'product-002',
           'quantity': 10,
-          'unit_price_in_cents': 100,
+          'unit_price_in_xaf': 100,
         },
         {
           'business_product_id': 'product-007',
           'quantity': 5,
-          'unit_price_in_cents': 299,
+          'unit_price_in_xaf': 299,
         },
       ],
-      'total_price_in_cents': 2495,
+      'total_price_in_xaf': 2495,
+      'store_id': 'store-001',
+      'initiated_by': 'user-002',
+      'status_history': [
+        {
+          'status': 'ORDER_STATUS_PENDING',
+          'updated_by': 'user-002',
+          'updated_at': '2024-09-01T08:00:00Z',
+        },
+      ],
       'status': 'ORDER_STATUS_PROCESSING',
       'created_at': '2024-09-01T08:00:00Z',
       'updated_at': '2024-09-01T08:00:00Z',
@@ -890,10 +918,24 @@ final fakeData = <String, List<Map<String, dynamic>>>{
         {
           'business_product_id': 'product-005',
           'quantity': 1,
-          'unit_price_in_cents': 29999,
+          'unit_price_in_xaf': 29999,
         },
       ],
-      'total_price_in_cents': 29999,
+      'total_price_in_xaf': 29999,
+      'store_id': 'store-001',
+      'initiated_by': 'user-003',
+      'status_history': [
+        {
+          'status': 'ORDER_STATUS_PENDING',
+          'updated_by': 'user-003',
+          'updated_at': '2026-09-01T08:00:00Z',
+        },
+        {
+          'status': 'ORDER_STATUS_COMPLETED',
+          'updated_by': 'user-003',
+          'updated_at': '2026-09-01T08:00:00Z',
+        },
+      ],
       'status': 'ORDER_STATUS_COMPLETED',
       'created_at': '2026-09-01T08:00:00Z',
       'updated_at': '2026-09-01T08:00:00Z',
@@ -903,7 +945,21 @@ final fakeData = <String, List<Map<String, dynamic>>>{
       'from_id': 'supplier-002',
       'is_client_order': 'false',
       'order_items': [],
-      'total_price_in_cents': 0,
+      'total_price_in_xaf': 0,
+      'store_id': 'store-001',
+      'initiated_by': 'user-004',
+      'status_history': [
+        {
+          'status': 'ORDER_STATUS_PENDING',
+          'updated_by': 'user-004',
+          'updated_at': '2025-08-01T08:00:00Z',
+        },
+        {
+          'status': 'ORDER_STATUS_CANCELLED',
+          'updated_by': 'user-004',
+          'updated_at': '2025-08-11T08:00:00Z',
+        },
+      ],
       'status': 'ORDER_STATUS_CANCELLED',
       'created_at': '2025-08-01T08:00:00Z',
       'updated_at': '2025-08-11T08:00:00Z',
@@ -916,15 +972,24 @@ final fakeData = <String, List<Map<String, dynamic>>>{
         {
           'business_product_id': 'product-006',
           'quantity': 1,
-          'unit_price_in_cents': 19999,
+          'unit_price_in_xaf': 19999,
         },
         {
           'business_product_id': 'product-008',
           'quantity': 3,
-          'unit_price_in_cents': 199,
+          'unit_price_in_xaf': 199,
         },
       ],
-      'total_price_in_cents': 20596,
+      'total_price_in_xaf': 20596,
+      'store_id': 'store-005',
+      'initiated_by': 'user-005',
+      'status_history': [
+        {
+          'status': 'ORDER_STATUS_PENDING',
+          'updated_by': 'user-005',
+          'updated_at': '2025-07-01T08:00:00Z',
+        },
+      ],
       'status': 'ORDER_STATUS_PENDING',
       'created_at': '2025-07-01T08:00:00Z',
       'updated_at': '2025-07-11T08:00:00Z',
@@ -937,11 +1002,27 @@ final fakeData = <String, List<Map<String, dynamic>>>{
         {
           'business_product_id': 'product-009',
           'quantity': 1,
-          'unit_price_in_cents': 129999,
+          'unit_price_in_xaf': 129999,
         },
       ],
-      'total_price_in_cents': 129999,
+      'total_price_in_xaf': 129999,
+      'store_id': 'store-001',
+      'initiated_by': 'user-006',
+      'status_history': [
+        {
+          'status': 'ORDER_STATUS_PENDING',
+          'updated_by': 'user-006',
+          'updated_at': '2025-06-01T08:00:00Z',
+        },
+        {
+          'status': 'ORDER_STATUS_PROCESSING',
+          'updated_by': 'user-006',
+          'updated_at': '2025-06-11T08:00:00Z',
+        },
+      ],
       'status': 'ORDER_STATUS_PROCESSING',
+      'created_at': '2025-06-01T08:00:00Z',
+      'updated_at': '2025-06-11T08:00:00Z',
     },
     {
       'ref_id': 'order-006',
@@ -951,13 +1032,27 @@ final fakeData = <String, List<Map<String, dynamic>>>{
         {
           'business_product_id': 'product-010',
           'quantity': 2,
-          'unit_price_in_cents': 39999,
+          'unit_price_in_xaf': 39999,
         },
       ],
-      'total_price_in_cents': 79998,
+      'total_price_in_xaf': 79998,
+      'store_id': 'store-001',
+      'initiated_by': 'user-007',
+      'status_history': [
+        {
+          'status': 'ORDER_STATUS_PENDING',
+          'updated_by': 'user-007',
+          'updated_at': '2025-05-01T08:00:00Z',
+        },
+        {
+          'status': 'ORDER_STATUS_COMPLETED',
+          'updated_by': 'user-007',
+          'updated_at': '2025-05-11T08:00:00Z',
+        },
+      ],
       'status': 'ORDER_STATUS_COMPLETED',
-      'created_at': '2025-06-01T08:00:00Z',
-      'updated_at': '2025-06-11T08:00:00Z',
+      'created_at': '2025-05-01T08:00:00Z',
+      'updated_at': '2025-05-11T08:00:00Z',
     },
     {
       'ref_id': 'order-007',
@@ -967,25 +1062,39 @@ final fakeData = <String, List<Map<String, dynamic>>>{
         {
           'business_product_id': 'product-011',
           'quantity': 4,
-          'unit_price_in_cents': 399,
+          'unit_price_in_xaf': 399,
         },
         {
           'business_product_id': 'product-012',
           'quantity': 6,
-          'unit_price_in_cents': 150,
+          'unit_price_in_xaf': 150,
         },
       ],
-      'total_price_in_cents': 2496,
+      'total_price_in_xaf': 2496,
+      'store_id': 'store-008',
+      'initiated_by': 'user-008',
+      'status_history': [
+        {
+          'status': 'ORDER_STATUS_PENDING',
+          'updated_by': 'user-008',
+          'updated_at': '2025-05-01T08:00:00Z',
+        },
+        {
+          'status': 'ORDER_STATUS_CANCELLED',
+          'updated_by': 'user-008',
+          'updated_at': '2025-05-11T08:00:00Z',
+        },
+      ],
       'status': 'ORDER_STATUS_CANCELLED',
       'created_at': '2025-05-01T08:00:00Z',
       'updated_at': '2025-05-11T08:00:00Z',
     },
   ],
-  'order_receipts': [
+  CollectionName.orderReceipts: [
     {
       'order_id': 'order-001',
       'order_status': 'ORDER_STATUS_PENDING',
-      'order_total_price_in_cents': '249997',
+      'order_total_price_in_xaf': '249997',
       'order_created_at': '2025-08-01T10:00:00Z',
       'order_updated_at': '2025-08-01T10:05:00Z',
       'order_resource_name': 'Tech Corp',
@@ -997,23 +1106,23 @@ final fakeData = <String, List<Map<String, dynamic>>>{
         {
           'product_id': 'product-001',
           'product_name': 'Smartphone',
-          'product_price_in_cents': '99999',
+          'product_price_in_xaf': '99999',
           'quantity': 2,
-          'receipt_item_total_price_in_cents': 199998,
+          'receipt_item_total_price_in_xaf': 199998,
         },
         {
           'product_id': 'product-004',
           'product_name': 'TV',
-          'product_price_in_cents': '49999',
+          'product_price_in_xaf': '49999',
           'quantity': 1,
-          'receipt_item_total_price_in_cents': 49999,
+          'receipt_item_total_price_in_xaf': 49999,
         },
       ],
     },
     {
       'order_id': 'order-002',
       'order_status': 'ORDER_STATUS_PROCESSING',
-      'order_total_price_in_cents': '2495',
+      'order_total_price_in_xaf': '2495',
       'order_created_at': '2025-07-15T14:30:00Z',
       'order_updated_at': '2025-07-16T09:00:00Z',
       'order_resource_name': 'Food Inc',
@@ -1025,23 +1134,23 @@ final fakeData = <String, List<Map<String, dynamic>>>{
         {
           'product_id': 'product-002',
           'product_name': 'Apple',
-          'product_price_in_cents': '100',
+          'product_price_in_xaf': '100',
           'quantity': 10,
-          'receipt_item_total_price_in_cents': 1000,
+          'receipt_item_total_price_in_xaf': 1000,
         },
         {
           'product_id': 'product-007',
           'product_name': 'Milk',
-          'product_price_in_cents': '299',
+          'product_price_in_xaf': '299',
           'quantity': 5,
-          'receipt_item_total_price_in_cents': 1495,
+          'receipt_item_total_price_in_xaf': 1495,
         },
       ],
     },
     {
       'order_id': 'order-003',
       'order_status': 'ORDER_STATUS_COMPLETED',
-      'order_total_price_in_cents': '29999',
+      'order_total_price_in_xaf': '29999',
       'order_created_at': '2025-06-20T12:00:00Z',
       'order_updated_at': '2025-06-21T15:00:00Z',
       'order_resource_name': 'Home Essentials',
@@ -1053,16 +1162,16 @@ final fakeData = <String, List<Map<String, dynamic>>>{
         {
           'product_id': 'product-005',
           'product_name': 'Sofa',
-          'product_price_in_cents': '29999',
+          'product_price_in_xaf': '29999',
           'quantity': 1,
-          'receipt_item_total_price_in_cents': 29999,
+          'receipt_item_total_price_in_xaf': 29999,
         },
       ],
     },
     {
       'order_id': 'order-005',
       'order_status': 'ORDER_STATUS_PENDING',
-      'order_total_price_in_cents': '20596',
+      'order_total_price_in_xaf': '20596',
       'order_created_at': '2025-08-25T09:30:00Z',
       'order_updated_at': '2025-08-25T10:00:00Z',
       'order_resource_name': 'Tech Corp',
@@ -1074,23 +1183,23 @@ final fakeData = <String, List<Map<String, dynamic>>>{
         {
           'product_id': 'product-006',
           'product_name': 'Home Cinema',
-          'product_price_in_cents': '19999',
+          'product_price_in_xaf': '19999',
           'quantity': 1,
-          'receipt_item_total_price_in_cents': 19999,
+          'receipt_item_total_price_in_xaf': 19999,
         },
         {
           'product_id': 'product-008',
           'product_name': 'Chips',
-          'product_price_in_cents': '199',
+          'product_price_in_xaf': '199',
           'quantity': 3,
-          'receipt_item_total_price_in_cents': 597,
+          'receipt_item_total_price_in_xaf': 597,
         },
       ],
     },
     {
       'order_id': 'order-006',
       'order_status': 'ORDER_STATUS_COMPLETED',
-      'order_total_price_in_cents': '79998',
+      'order_total_price_in_xaf': '79998',
       'order_created_at': '2025-07-10T11:00:00Z',
       'order_updated_at': '2025-07-12T13:00:00Z',
       'order_resource_name': 'Home Essentials',
@@ -1102,23 +1211,22 @@ final fakeData = <String, List<Map<String, dynamic>>>{
         {
           'product_id': 'product-010',
           'product_name': 'Refrigerator',
-          'product_price_in_cents': '39999',
+          'product_price_in_xaf': '39999',
           'quantity': 2,
-          'receipt_item_total_price_in_cents': 79998,
+          'receipt_item_total_price_in_xaf': 79998,
         },
       ],
     },
   ],
-  'transactions': [
+  CollectionName.transactions: [
     {
       'ref_id': 'txn-001',
       'type': 'TRANSACTION_TYPE_PURCHASE',
       'status': 'TRANSACTION_STATUS_COMPLETED',
-      'business_id': 'business-001',
       'store_id': 'store-001',
       'order_id': 'order-001',
       'from_id': 'supplier-001',
-      'amount_in_cents': 15000000,
+      'amount_in_xaf': 15000000,
       'currency_code': 'XAF',
       'created_at': '2025-09-01T08:00:00Z',
       'updated_at': '2025-09-01T08:30:00Z',
@@ -1131,11 +1239,10 @@ final fakeData = <String, List<Map<String, dynamic>>>{
       'ref_id': 'txn-002',
       'type': 'TRANSACTION_TYPE_SALE',
       'status': 'TRANSACTION_STATUS_COMPLETED',
-      'business_id': 'business-001',
       'store_id': 'store-001',
       'order_id': 'order-002',
       'from_id': 'client-001',
-      'amount_in_cents': 250000,
+      'amount_in_xaf': 250000,
       'currency_code': 'XAF',
       'created_at': '2025-09-01T09:00:00Z',
       'updated_at': '2025-09-01T09:30:00Z',
@@ -1148,9 +1255,8 @@ final fakeData = <String, List<Map<String, dynamic>>>{
       'ref_id': 'txn-003',
       'type': 'TRANSACTION_TYPE_ADJUSTMENT',
       'status': 'TRANSACTION_STATUS_COMPLETED',
-      'business_id': 'business-001',
       'store_id': 'store-001',
-      'amount_in_cents': 0,
+      'amount_in_xaf': 0,
       'currency_code': 'XAF',
       'created_at': '2025-09-01T10:00:00Z',
       'description': 'Ajustement pour 5 unités de lait endommagées',
@@ -1162,9 +1268,8 @@ final fakeData = <String, List<Map<String, dynamic>>>{
       'ref_id': 'txn-004',
       'type': 'TRANSACTION_TYPE_REFUND',
       'status': 'TRANSACTION_STATUS_COMPLETED',
-      'business_id': 'business-001',
       'store_id': 'store-001',
-      'amount_in_cents': 50000,
+      'amount_in_xaf': 50000,
       'currency_code': 'XAF',
       'created_at': '2025-09-01T11:00:00Z',
       'description': 'Remboursement partiel pour retour d’un téléviseur',
@@ -1176,9 +1281,8 @@ final fakeData = <String, List<Map<String, dynamic>>>{
       'ref_id': 'txn-005',
       'type': 'TRANSACTION_TYPE_TRANSFER',
       'status': 'TRANSACTION_STATUS_COMPLETED',
-      'business_id': 'business-001',
       'store_id': 'store-001',
-      'amount_in_cents': 0,
+      'amount_in_xaf': 0,
       'currency_code': 'XAF',
       'created_at': '2025-09-01T12:00:00Z',
       'description': 'Transfert de 20 unités de lait vers store-002',
@@ -1187,7 +1291,7 @@ final fakeData = <String, List<Map<String, dynamic>>>{
       'initiated_by': 'user-001',
     },
   ],
-  'categories': [
+  CollectionName.categories: [
     {
       'ref_id': 'category-001',
       'name': 'Electronics',

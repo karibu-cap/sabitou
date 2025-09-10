@@ -7,7 +7,7 @@ import 'suppliers_view_model.dart';
 
 /// The suppliers controller.
 ///
-/// Manages the state and business logic for the suppliers module.
+/// Manages the state and store logic for the suppliers module.
 /// Uses ChangeNotifier for state management with Provider pattern.
 class SuppliersController extends ChangeNotifier {
   /// The view model that handles data operations for suppliers
@@ -67,7 +67,7 @@ class SuppliersController extends ChangeNotifier {
   Stream<List<Supplier>> get suppliersStream => _viewModel.suppliersStream;
 
   /// Gets products stream for reactive UI updates
-  Stream<List<BusinessProduct>> get productsStream => _viewModel.productsStream;
+  Stream<List<StoreProduct>> get productsStream => _viewModel.productsStream;
 
   /// Gets loading state specifically for form save operations.
   bool get isFormLoading => _isFormLoading;
@@ -185,15 +185,15 @@ class SuppliersController extends ChangeNotifier {
   }
 
   /// Gets products for a specific supplier
-  List<BusinessProduct> getProductsForSupplier(
+  List<StoreProduct> getProductsForSupplier(
     String supplierRefId,
-    List<BusinessProduct> allProducts,
+    List<StoreProduct> allProducts,
   ) {
     return allProducts.where((p) => p.supplierId == supplierRefId).toList();
   }
 
   /// Calculates total products count
-  int calculateTotalProducts(List<BusinessProduct> products) {
+  int calculateTotalProducts(List<StoreProduct> products) {
     return products.length;
   }
 
@@ -208,7 +208,7 @@ class SuppliersController extends ChangeNotifier {
   }
 
   /// Calculates total inventory value from all products
-  double calculateTotalValue(List<BusinessProduct> products) {
+  double calculateTotalValue(List<StoreProduct> products) {
     return products.fold<double>(
       0.0,
       (sum, product) => sum + (product.priceInXaf * product.stockQuantity),

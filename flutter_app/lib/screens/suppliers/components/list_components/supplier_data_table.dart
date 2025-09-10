@@ -14,7 +14,7 @@ class SupplierDataTable extends StatelessWidget {
   final List<Supplier> suppliers;
 
   /// List of all products for calculations.
-  final List<BusinessProduct> products;
+  final List<StoreProduct> products;
 
   /// Creates a new [SupplierDataTable].
   const SupplierDataTable({

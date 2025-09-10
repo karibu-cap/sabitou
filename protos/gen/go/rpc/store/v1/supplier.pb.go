@@ -2,9 +2,9 @@
 // versions:
 // 	protoc-gen-go v1.36.9
 // 	protoc        (unknown)
-// source: business/v1/supplier.proto
+// source: store/v1/supplier.proto
 
-package businessv1
+package storev1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
@@ -36,7 +36,7 @@ type Link struct {
 
 func (x *Link) Reset() {
 	*x = Link{}
-	mi := &file_business_v1_supplier_proto_msgTypes[0]
+	mi := &file_store_v1_supplier_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -48,7 +48,7 @@ func (x *Link) String() string {
 func (*Link) ProtoMessage() {}
 
 func (x *Link) ProtoReflect() protoreflect.Message {
-	mi := &file_business_v1_supplier_proto_msgTypes[0]
+	mi := &file_store_v1_supplier_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -61,7 +61,7 @@ func (x *Link) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Link.ProtoReflect.Descriptor instead.
 func (*Link) Descriptor() ([]byte, []int) {
-	return file_business_v1_supplier_proto_rawDescGZIP(), []int{0}
+	return file_store_v1_supplier_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *Link) GetLabel() string {
@@ -98,15 +98,15 @@ type Supplier struct {
 	ContactAddress *string `protobuf:"bytes,8,opt,name=contact_address,json=contactAddress,proto3,oneof" json:"contact_address,omitempty"`
 	// Whether the supplier is active.
 	IsActive bool `protobuf:"varint,9,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`
-	// The ids of the business of the supplier.
-	BusinessIds   []string `protobuf:"bytes,10,rep,name=business_ids,json=businessIds,proto3" json:"business_ids,omitempty"`
+	// The ids of the store of the supplier.
+	StoreIds      []string `protobuf:"bytes,10,rep,name=store_ids,json=storeIds,proto3" json:"store_ids,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Supplier) Reset() {
 	*x = Supplier{}
-	mi := &file_business_v1_supplier_proto_msgTypes[1]
+	mi := &file_store_v1_supplier_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -118,7 +118,7 @@ func (x *Supplier) String() string {
 func (*Supplier) ProtoMessage() {}
 
 func (x *Supplier) ProtoReflect() protoreflect.Message {
-	mi := &file_business_v1_supplier_proto_msgTypes[1]
+	mi := &file_store_v1_supplier_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -131,7 +131,7 @@ func (x *Supplier) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Supplier.ProtoReflect.Descriptor instead.
 func (*Supplier) Descriptor() ([]byte, []int) {
-	return file_business_v1_supplier_proto_rawDescGZIP(), []int{1}
+	return file_store_v1_supplier_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *Supplier) GetRefId() string {
@@ -197,9 +197,9 @@ func (x *Supplier) GetIsActive() bool {
 	return false
 }
 
-func (x *Supplier) GetBusinessIds() []string {
+func (x *Supplier) GetStoreIds() []string {
 	if x != nil {
-		return x.BusinessIds
+		return x.StoreIds
 	}
 	return nil
 }
@@ -218,7 +218,7 @@ type CreateSupplierRequest struct {
 
 func (x *CreateSupplierRequest) Reset() {
 	*x = CreateSupplierRequest{}
-	mi := &file_business_v1_supplier_proto_msgTypes[2]
+	mi := &file_store_v1_supplier_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -230,7 +230,7 @@ func (x *CreateSupplierRequest) String() string {
 func (*CreateSupplierRequest) ProtoMessage() {}
 
 func (x *CreateSupplierRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_business_v1_supplier_proto_msgTypes[2]
+	mi := &file_store_v1_supplier_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -243,7 +243,7 @@ func (x *CreateSupplierRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateSupplierRequest.ProtoReflect.Descriptor instead.
 func (*CreateSupplierRequest) Descriptor() ([]byte, []int) {
-	return file_business_v1_supplier_proto_rawDescGZIP(), []int{2}
+	return file_store_v1_supplier_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *CreateSupplierRequest) GetSupplier() *Supplier {
@@ -277,7 +277,7 @@ type CreateSupplierResponse struct {
 
 func (x *CreateSupplierResponse) Reset() {
 	*x = CreateSupplierResponse{}
-	mi := &file_business_v1_supplier_proto_msgTypes[3]
+	mi := &file_store_v1_supplier_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -289,7 +289,7 @@ func (x *CreateSupplierResponse) String() string {
 func (*CreateSupplierResponse) ProtoMessage() {}
 
 func (x *CreateSupplierResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_business_v1_supplier_proto_msgTypes[3]
+	mi := &file_store_v1_supplier_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -302,7 +302,7 @@ func (x *CreateSupplierResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateSupplierResponse.ProtoReflect.Descriptor instead.
 func (*CreateSupplierResponse) Descriptor() ([]byte, []int) {
-	return file_business_v1_supplier_proto_rawDescGZIP(), []int{3}
+	return file_store_v1_supplier_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *CreateSupplierResponse) GetSupplierId() string {
@@ -322,7 +322,7 @@ type GetSupplierRequest struct {
 
 func (x *GetSupplierRequest) Reset() {
 	*x = GetSupplierRequest{}
-	mi := &file_business_v1_supplier_proto_msgTypes[4]
+	mi := &file_store_v1_supplier_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -334,7 +334,7 @@ func (x *GetSupplierRequest) String() string {
 func (*GetSupplierRequest) ProtoMessage() {}
 
 func (x *GetSupplierRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_business_v1_supplier_proto_msgTypes[4]
+	mi := &file_store_v1_supplier_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -347,7 +347,7 @@ func (x *GetSupplierRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetSupplierRequest.ProtoReflect.Descriptor instead.
 func (*GetSupplierRequest) Descriptor() ([]byte, []int) {
-	return file_business_v1_supplier_proto_rawDescGZIP(), []int{4}
+	return file_store_v1_supplier_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *GetSupplierRequest) GetSupplierId() string {
@@ -367,7 +367,7 @@ type GetSupplierResponse struct {
 
 func (x *GetSupplierResponse) Reset() {
 	*x = GetSupplierResponse{}
-	mi := &file_business_v1_supplier_proto_msgTypes[5]
+	mi := &file_store_v1_supplier_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -379,7 +379,7 @@ func (x *GetSupplierResponse) String() string {
 func (*GetSupplierResponse) ProtoMessage() {}
 
 func (x *GetSupplierResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_business_v1_supplier_proto_msgTypes[5]
+	mi := &file_store_v1_supplier_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -392,7 +392,7 @@ func (x *GetSupplierResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetSupplierResponse.ProtoReflect.Descriptor instead.
 func (*GetSupplierResponse) Descriptor() ([]byte, []int) {
-	return file_business_v1_supplier_proto_rawDescGZIP(), []int{5}
+	return file_store_v1_supplier_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *GetSupplierResponse) GetSupplier() *Supplier {
@@ -402,29 +402,29 @@ func (x *GetSupplierResponse) GetSupplier() *Supplier {
 	return nil
 }
 
-type GetBusinessSuppliersRequest struct {
+type GetStoreSuppliersRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The reference id to the business identifier.
-	BusinessId    string `protobuf:"bytes,1,opt,name=business_id,json=businessId,proto3" json:"business_id,omitempty"`
+	// The reference id to the store identifier.
+	StoreId       string `protobuf:"bytes,1,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetBusinessSuppliersRequest) Reset() {
-	*x = GetBusinessSuppliersRequest{}
-	mi := &file_business_v1_supplier_proto_msgTypes[6]
+func (x *GetStoreSuppliersRequest) Reset() {
+	*x = GetStoreSuppliersRequest{}
+	mi := &file_store_v1_supplier_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetBusinessSuppliersRequest) String() string {
+func (x *GetStoreSuppliersRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetBusinessSuppliersRequest) ProtoMessage() {}
+func (*GetStoreSuppliersRequest) ProtoMessage() {}
 
-func (x *GetBusinessSuppliersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_business_v1_supplier_proto_msgTypes[6]
+func (x *GetStoreSuppliersRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_store_v1_supplier_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -435,42 +435,42 @@ func (x *GetBusinessSuppliersRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetBusinessSuppliersRequest.ProtoReflect.Descriptor instead.
-func (*GetBusinessSuppliersRequest) Descriptor() ([]byte, []int) {
-	return file_business_v1_supplier_proto_rawDescGZIP(), []int{6}
+// Deprecated: Use GetStoreSuppliersRequest.ProtoReflect.Descriptor instead.
+func (*GetStoreSuppliersRequest) Descriptor() ([]byte, []int) {
+	return file_store_v1_supplier_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *GetBusinessSuppliersRequest) GetBusinessId() string {
+func (x *GetStoreSuppliersRequest) GetStoreId() string {
 	if x != nil {
-		return x.BusinessId
+		return x.StoreId
 	}
 	return ""
 }
 
-type GetBusinessSuppliersResponse struct {
+type GetStoreSuppliersResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The list of suppliers of the business.
+	// The list of suppliers of the store.
 	// Note: Only the ids and names of the suppliers are returned.
 	Suppliers     []*Supplier `protobuf:"bytes,1,rep,name=suppliers,proto3" json:"suppliers,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetBusinessSuppliersResponse) Reset() {
-	*x = GetBusinessSuppliersResponse{}
-	mi := &file_business_v1_supplier_proto_msgTypes[7]
+func (x *GetStoreSuppliersResponse) Reset() {
+	*x = GetStoreSuppliersResponse{}
+	mi := &file_store_v1_supplier_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetBusinessSuppliersResponse) String() string {
+func (x *GetStoreSuppliersResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetBusinessSuppliersResponse) ProtoMessage() {}
+func (*GetStoreSuppliersResponse) ProtoMessage() {}
 
-func (x *GetBusinessSuppliersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_business_v1_supplier_proto_msgTypes[7]
+func (x *GetStoreSuppliersResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_store_v1_supplier_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -481,12 +481,12 @@ func (x *GetBusinessSuppliersResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetBusinessSuppliersResponse.ProtoReflect.Descriptor instead.
-func (*GetBusinessSuppliersResponse) Descriptor() ([]byte, []int) {
-	return file_business_v1_supplier_proto_rawDescGZIP(), []int{7}
+// Deprecated: Use GetStoreSuppliersResponse.ProtoReflect.Descriptor instead.
+func (*GetStoreSuppliersResponse) Descriptor() ([]byte, []int) {
+	return file_store_v1_supplier_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *GetBusinessSuppliersResponse) GetSuppliers() []*Supplier {
+func (x *GetStoreSuppliersResponse) GetSuppliers() []*Supplier {
 	if x != nil {
 		return x.Suppliers
 	}
@@ -508,7 +508,7 @@ type UpdateSupplierRequest struct {
 
 func (x *UpdateSupplierRequest) Reset() {
 	*x = UpdateSupplierRequest{}
-	mi := &file_business_v1_supplier_proto_msgTypes[8]
+	mi := &file_store_v1_supplier_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -520,7 +520,7 @@ func (x *UpdateSupplierRequest) String() string {
 func (*UpdateSupplierRequest) ProtoMessage() {}
 
 func (x *UpdateSupplierRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_business_v1_supplier_proto_msgTypes[8]
+	mi := &file_store_v1_supplier_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -533,7 +533,7 @@ func (x *UpdateSupplierRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateSupplierRequest.ProtoReflect.Descriptor instead.
 func (*UpdateSupplierRequest) Descriptor() ([]byte, []int) {
-	return file_business_v1_supplier_proto_rawDescGZIP(), []int{8}
+	return file_store_v1_supplier_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *UpdateSupplierRequest) GetSupplier() *Supplier {
@@ -567,7 +567,7 @@ type UpdateSupplierResponse struct {
 
 func (x *UpdateSupplierResponse) Reset() {
 	*x = UpdateSupplierResponse{}
-	mi := &file_business_v1_supplier_proto_msgTypes[9]
+	mi := &file_store_v1_supplier_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -579,7 +579,7 @@ func (x *UpdateSupplierResponse) String() string {
 func (*UpdateSupplierResponse) ProtoMessage() {}
 
 func (x *UpdateSupplierResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_business_v1_supplier_proto_msgTypes[9]
+	mi := &file_store_v1_supplier_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -592,7 +592,7 @@ func (x *UpdateSupplierResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateSupplierResponse.ProtoReflect.Descriptor instead.
 func (*UpdateSupplierResponse) Descriptor() ([]byte, []int) {
-	return file_business_v1_supplier_proto_rawDescGZIP(), []int{9}
+	return file_store_v1_supplier_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *UpdateSupplierResponse) GetSupplier() *Supplier {
@@ -612,7 +612,7 @@ type DeleteSupplierRequest struct {
 
 func (x *DeleteSupplierRequest) Reset() {
 	*x = DeleteSupplierRequest{}
-	mi := &file_business_v1_supplier_proto_msgTypes[10]
+	mi := &file_store_v1_supplier_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -624,7 +624,7 @@ func (x *DeleteSupplierRequest) String() string {
 func (*DeleteSupplierRequest) ProtoMessage() {}
 
 func (x *DeleteSupplierRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_business_v1_supplier_proto_msgTypes[10]
+	mi := &file_store_v1_supplier_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -637,7 +637,7 @@ func (x *DeleteSupplierRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteSupplierRequest.ProtoReflect.Descriptor instead.
 func (*DeleteSupplierRequest) Descriptor() ([]byte, []int) {
-	return file_business_v1_supplier_proto_rawDescGZIP(), []int{10}
+	return file_store_v1_supplier_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *DeleteSupplierRequest) GetSupplierId() string {
@@ -657,7 +657,7 @@ type DeleteSupplierResponse struct {
 
 func (x *DeleteSupplierResponse) Reset() {
 	*x = DeleteSupplierResponse{}
-	mi := &file_business_v1_supplier_proto_msgTypes[11]
+	mi := &file_store_v1_supplier_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -669,7 +669,7 @@ func (x *DeleteSupplierResponse) String() string {
 func (*DeleteSupplierResponse) ProtoMessage() {}
 
 func (x *DeleteSupplierResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_business_v1_supplier_proto_msgTypes[11]
+	mi := &file_store_v1_supplier_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -682,7 +682,7 @@ func (x *DeleteSupplierResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteSupplierResponse.ProtoReflect.Descriptor instead.
 func (*DeleteSupplierResponse) Descriptor() ([]byte, []int) {
-	return file_business_v1_supplier_proto_rawDescGZIP(), []int{11}
+	return file_store_v1_supplier_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *DeleteSupplierResponse) GetSuccess() bool {
@@ -692,14 +692,14 @@ func (x *DeleteSupplierResponse) GetSuccess() bool {
 	return false
 }
 
-var File_business_v1_supplier_proto protoreflect.FileDescriptor
+var File_store_v1_supplier_proto protoreflect.FileDescriptor
 
-const file_business_v1_supplier_proto_rawDesc = "" +
+const file_store_v1_supplier_proto_rawDesc = "" +
 	"\n" +
-	"\x1abusiness/v1/supplier.proto\x12\vbusiness.v1\x1a\x1bbuf/validate/validate.proto\x1a\x12link/v1/link.proto\".\n" +
+	"\x17store/v1/supplier.proto\x12\bstore.v1\x1a\x1bbuf/validate/validate.proto\x1a\x12link/v1/link.proto\".\n" +
 	"\x04Link\x12\x14\n" +
 	"\x05label\x18\x01 \x01(\tR\x05label\x12\x10\n" +
-	"\x03url\x18\x02 \x01(\tR\x03url\"\xdc\x03\n" +
+	"\x03url\x18\x02 \x01(\tR\x03url\"\xd6\x03\n" +
 	"\bSupplier\x12\x1a\n" +
 	"\x06ref_id\x18\x01 \x01(\tH\x00R\x05refId\x88\x01\x01\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12%\n" +
@@ -710,17 +710,17 @@ const file_business_v1_supplier_proto_rawDesc = "" +
 	"\rcontact_phone\x18\x06 \x01(\tH\x03R\fcontactPhone\x88\x01\x01\x12(\n" +
 	"\rcontact_email\x18\a \x01(\tH\x04R\fcontactEmail\x88\x01\x01\x12,\n" +
 	"\x0fcontact_address\x18\b \x01(\tH\x05R\x0econtactAddress\x88\x01\x01\x12\x1b\n" +
-	"\tis_active\x18\t \x01(\bR\bisActive\x12!\n" +
-	"\fbusiness_ids\x18\n" +
-	" \x03(\tR\vbusinessIdsB\t\n" +
+	"\tis_active\x18\t \x01(\bR\bisActive\x12\x1b\n" +
+	"\tstore_ids\x18\n" +
+	" \x03(\tR\bstoreIdsB\t\n" +
 	"\a_ref_idB\x0e\n" +
 	"\f_descriptionB\x0f\n" +
 	"\r_logo_link_idB\x10\n" +
 	"\x0e_contact_phoneB\x10\n" +
 	"\x0e_contact_emailB\x12\n" +
-	"\x10_contact_address\"\xc6\x01\n" +
-	"\x15CreateSupplierRequest\x121\n" +
-	"\bsupplier\x18\x01 \x01(\v2\x15.business.v1.SupplierR\bsupplier\x12)\n" +
+	"\x10_contact_address\"\xc3\x01\n" +
+	"\x15CreateSupplierRequest\x12.\n" +
+	"\bsupplier\x18\x01 \x01(\v2\x12.store.v1.SupplierR\bsupplier\x12)\n" +
 	"\x0elogo_raw_image\x18\x02 \x01(\fH\x00R\flogoRawImage\x88\x01\x01\x12<\n" +
 	"\x0eexternal_links\x18\x03 \x03(\v2\x15.link.v1.ResourceLinkR\rexternalLinksB\x11\n" +
 	"\x0f_logo_raw_image\"E\n" +
@@ -731,85 +731,84 @@ const file_business_v1_supplier_proto_rawDesc = "" +
 	"\x12GetSupplierRequest\x12+\n" +
 	"\vsupplier_id\x18\x01 \x01(\tB\n" +
 	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\n" +
-	"supplierId\"H\n" +
-	"\x13GetSupplierResponse\x121\n" +
-	"\bsupplier\x18\x01 \x01(\v2\x15.business.v1.SupplierR\bsupplier\"J\n" +
-	"\x1bGetBusinessSuppliersRequest\x12+\n" +
-	"\vbusiness_id\x18\x01 \x01(\tB\n" +
-	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\n" +
-	"businessId\"S\n" +
-	"\x1cGetBusinessSuppliersResponse\x123\n" +
-	"\tsuppliers\x18\x01 \x03(\v2\x15.business.v1.SupplierR\tsuppliers\"\xc6\x01\n" +
-	"\x15UpdateSupplierRequest\x121\n" +
-	"\bsupplier\x18\x01 \x01(\v2\x15.business.v1.SupplierR\bsupplier\x12)\n" +
+	"supplierId\"E\n" +
+	"\x13GetSupplierResponse\x12.\n" +
+	"\bsupplier\x18\x01 \x01(\v2\x12.store.v1.SupplierR\bsupplier\"A\n" +
+	"\x18GetStoreSuppliersRequest\x12%\n" +
+	"\bstore_id\x18\x01 \x01(\tB\n" +
+	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\astoreId\"M\n" +
+	"\x19GetStoreSuppliersResponse\x120\n" +
+	"\tsuppliers\x18\x01 \x03(\v2\x12.store.v1.SupplierR\tsuppliers\"\xc3\x01\n" +
+	"\x15UpdateSupplierRequest\x12.\n" +
+	"\bsupplier\x18\x01 \x01(\v2\x12.store.v1.SupplierR\bsupplier\x12)\n" +
 	"\x0elogo_raw_image\x18\x02 \x01(\fH\x00R\flogoRawImage\x88\x01\x01\x12<\n" +
 	"\x0eexternal_links\x18\x03 \x03(\v2\x15.link.v1.ResourceLinkR\rexternalLinksB\x11\n" +
-	"\x0f_logo_raw_image\"K\n" +
-	"\x16UpdateSupplierResponse\x121\n" +
-	"\bsupplier\x18\x01 \x01(\v2\x15.business.v1.SupplierR\bsupplier\"D\n" +
+	"\x0f_logo_raw_image\"H\n" +
+	"\x16UpdateSupplierResponse\x12.\n" +
+	"\bsupplier\x18\x01 \x01(\v2\x12.store.v1.SupplierR\bsupplier\"D\n" +
 	"\x15DeleteSupplierRequest\x12+\n" +
 	"\vsupplier_id\x18\x01 \x01(\tB\n" +
 	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\n" +
 	"supplierId\"2\n" +
 	"\x16DeleteSupplierResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess2\xd3\x04\n" +
-	"\x0fSupplierService\x12Y\n" +
-	"\x0eCreateSupplier\x12\".business.v1.CreateSupplierRequest\x1a#.business.v1.CreateSupplierResponse\x12P\n" +
-	"\vGetSupplier\x12\x1f.business.v1.GetSupplierRequest\x1a .business.v1.GetSupplierResponse\x12k\n" +
-	"\x14GetBusinessSuppliers\x12(.business.v1.GetBusinessSuppliersRequest\x1a).business.v1.GetBusinessSuppliersResponse\x12p\n" +
-	"\x17StreamBusinessSuppliers\x12(.business.v1.GetBusinessSuppliersRequest\x1a).business.v1.GetBusinessSuppliersResponse0\x01\x12Y\n" +
-	"\x0eUpdateSupplier\x12\".business.v1.UpdateSupplierRequest\x1a#.business.v1.UpdateSupplierResponse\x12Y\n" +
-	"\x0eDeleteSupplier\x12\".business.v1.DeleteSupplierRequest\x1a#.business.v1.DeleteSupplierResponseB\xb5\x01\n" +
-	"\x0fcom.business.v1B\rSupplierProtoP\x01ZFgithub.com/karibu-cap/sabitou/protos/gen/go/rpc/business/v1;businessv1\xa2\x02\x03BXX\xaa\x02\vBusiness.V1\xca\x02\vBusiness\\V1\xe2\x02\x17Business\\V1\\GPBMetadata\xea\x02\fBusiness::V1b\x06proto3"
+	"\asuccess\x18\x01 \x01(\bR\asuccess2\x9d\x04\n" +
+	"\x0fSupplierService\x12S\n" +
+	"\x0eCreateSupplier\x12\x1f.store.v1.CreateSupplierRequest\x1a .store.v1.CreateSupplierResponse\x12J\n" +
+	"\vGetSupplier\x12\x1c.store.v1.GetSupplierRequest\x1a\x1d.store.v1.GetSupplierResponse\x12\\\n" +
+	"\x11GetStoreSuppliers\x12\".store.v1.GetStoreSuppliersRequest\x1a#.store.v1.GetStoreSuppliersResponse\x12a\n" +
+	"\x14StreamStoreSuppliers\x12\".store.v1.GetStoreSuppliersRequest\x1a#.store.v1.GetStoreSuppliersResponse0\x01\x12S\n" +
+	"\x0eUpdateSupplier\x12\x1f.store.v1.UpdateSupplierRequest\x1a .store.v1.UpdateSupplierResponse\x12S\n" +
+	"\x0eDeleteSupplier\x12\x1f.store.v1.DeleteSupplierRequest\x1a .store.v1.DeleteSupplierResponseB\xa0\x01\n" +
+	"\fcom.store.v1B\rSupplierProtoP\x01Z@github.com/karibu-cap/sabitou/protos/gen/go/rpc/store/v1;storev1\xa2\x02\x03SXX\xaa\x02\bStore.V1\xca\x02\bStore\\V1\xe2\x02\x14Store\\V1\\GPBMetadata\xea\x02\tStore::V1b\x06proto3"
 
 var (
-	file_business_v1_supplier_proto_rawDescOnce sync.Once
-	file_business_v1_supplier_proto_rawDescData []byte
+	file_store_v1_supplier_proto_rawDescOnce sync.Once
+	file_store_v1_supplier_proto_rawDescData []byte
 )
 
-func file_business_v1_supplier_proto_rawDescGZIP() []byte {
-	file_business_v1_supplier_proto_rawDescOnce.Do(func() {
-		file_business_v1_supplier_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_business_v1_supplier_proto_rawDesc), len(file_business_v1_supplier_proto_rawDesc)))
+func file_store_v1_supplier_proto_rawDescGZIP() []byte {
+	file_store_v1_supplier_proto_rawDescOnce.Do(func() {
+		file_store_v1_supplier_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_store_v1_supplier_proto_rawDesc), len(file_store_v1_supplier_proto_rawDesc)))
 	})
-	return file_business_v1_supplier_proto_rawDescData
+	return file_store_v1_supplier_proto_rawDescData
 }
 
-var file_business_v1_supplier_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
-var file_business_v1_supplier_proto_goTypes = []any{
-	(*Link)(nil),                         // 0: business.v1.Link
-	(*Supplier)(nil),                     // 1: business.v1.Supplier
-	(*CreateSupplierRequest)(nil),        // 2: business.v1.CreateSupplierRequest
-	(*CreateSupplierResponse)(nil),       // 3: business.v1.CreateSupplierResponse
-	(*GetSupplierRequest)(nil),           // 4: business.v1.GetSupplierRequest
-	(*GetSupplierResponse)(nil),          // 5: business.v1.GetSupplierResponse
-	(*GetBusinessSuppliersRequest)(nil),  // 6: business.v1.GetBusinessSuppliersRequest
-	(*GetBusinessSuppliersResponse)(nil), // 7: business.v1.GetBusinessSuppliersResponse
-	(*UpdateSupplierRequest)(nil),        // 8: business.v1.UpdateSupplierRequest
-	(*UpdateSupplierResponse)(nil),       // 9: business.v1.UpdateSupplierResponse
-	(*DeleteSupplierRequest)(nil),        // 10: business.v1.DeleteSupplierRequest
-	(*DeleteSupplierResponse)(nil),       // 11: business.v1.DeleteSupplierResponse
-	(*v1.ResourceLink)(nil),              // 12: link.v1.ResourceLink
+var file_store_v1_supplier_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
+var file_store_v1_supplier_proto_goTypes = []any{
+	(*Link)(nil),                      // 0: store.v1.Link
+	(*Supplier)(nil),                  // 1: store.v1.Supplier
+	(*CreateSupplierRequest)(nil),     // 2: store.v1.CreateSupplierRequest
+	(*CreateSupplierResponse)(nil),    // 3: store.v1.CreateSupplierResponse
+	(*GetSupplierRequest)(nil),        // 4: store.v1.GetSupplierRequest
+	(*GetSupplierResponse)(nil),       // 5: store.v1.GetSupplierResponse
+	(*GetStoreSuppliersRequest)(nil),  // 6: store.v1.GetStoreSuppliersRequest
+	(*GetStoreSuppliersResponse)(nil), // 7: store.v1.GetStoreSuppliersResponse
+	(*UpdateSupplierRequest)(nil),     // 8: store.v1.UpdateSupplierRequest
+	(*UpdateSupplierResponse)(nil),    // 9: store.v1.UpdateSupplierResponse
+	(*DeleteSupplierRequest)(nil),     // 10: store.v1.DeleteSupplierRequest
+	(*DeleteSupplierResponse)(nil),    // 11: store.v1.DeleteSupplierResponse
+	(*v1.ResourceLink)(nil),           // 12: link.v1.ResourceLink
 }
-var file_business_v1_supplier_proto_depIdxs = []int32{
-	1,  // 0: business.v1.CreateSupplierRequest.supplier:type_name -> business.v1.Supplier
-	12, // 1: business.v1.CreateSupplierRequest.external_links:type_name -> link.v1.ResourceLink
-	1,  // 2: business.v1.GetSupplierResponse.supplier:type_name -> business.v1.Supplier
-	1,  // 3: business.v1.GetBusinessSuppliersResponse.suppliers:type_name -> business.v1.Supplier
-	1,  // 4: business.v1.UpdateSupplierRequest.supplier:type_name -> business.v1.Supplier
-	12, // 5: business.v1.UpdateSupplierRequest.external_links:type_name -> link.v1.ResourceLink
-	1,  // 6: business.v1.UpdateSupplierResponse.supplier:type_name -> business.v1.Supplier
-	2,  // 7: business.v1.SupplierService.CreateSupplier:input_type -> business.v1.CreateSupplierRequest
-	4,  // 8: business.v1.SupplierService.GetSupplier:input_type -> business.v1.GetSupplierRequest
-	6,  // 9: business.v1.SupplierService.GetBusinessSuppliers:input_type -> business.v1.GetBusinessSuppliersRequest
-	6,  // 10: business.v1.SupplierService.StreamBusinessSuppliers:input_type -> business.v1.GetBusinessSuppliersRequest
-	8,  // 11: business.v1.SupplierService.UpdateSupplier:input_type -> business.v1.UpdateSupplierRequest
-	10, // 12: business.v1.SupplierService.DeleteSupplier:input_type -> business.v1.DeleteSupplierRequest
-	3,  // 13: business.v1.SupplierService.CreateSupplier:output_type -> business.v1.CreateSupplierResponse
-	5,  // 14: business.v1.SupplierService.GetSupplier:output_type -> business.v1.GetSupplierResponse
-	7,  // 15: business.v1.SupplierService.GetBusinessSuppliers:output_type -> business.v1.GetBusinessSuppliersResponse
-	7,  // 16: business.v1.SupplierService.StreamBusinessSuppliers:output_type -> business.v1.GetBusinessSuppliersResponse
-	9,  // 17: business.v1.SupplierService.UpdateSupplier:output_type -> business.v1.UpdateSupplierResponse
-	11, // 18: business.v1.SupplierService.DeleteSupplier:output_type -> business.v1.DeleteSupplierResponse
+var file_store_v1_supplier_proto_depIdxs = []int32{
+	1,  // 0: store.v1.CreateSupplierRequest.supplier:type_name -> store.v1.Supplier
+	12, // 1: store.v1.CreateSupplierRequest.external_links:type_name -> link.v1.ResourceLink
+	1,  // 2: store.v1.GetSupplierResponse.supplier:type_name -> store.v1.Supplier
+	1,  // 3: store.v1.GetStoreSuppliersResponse.suppliers:type_name -> store.v1.Supplier
+	1,  // 4: store.v1.UpdateSupplierRequest.supplier:type_name -> store.v1.Supplier
+	12, // 5: store.v1.UpdateSupplierRequest.external_links:type_name -> link.v1.ResourceLink
+	1,  // 6: store.v1.UpdateSupplierResponse.supplier:type_name -> store.v1.Supplier
+	2,  // 7: store.v1.SupplierService.CreateSupplier:input_type -> store.v1.CreateSupplierRequest
+	4,  // 8: store.v1.SupplierService.GetSupplier:input_type -> store.v1.GetSupplierRequest
+	6,  // 9: store.v1.SupplierService.GetStoreSuppliers:input_type -> store.v1.GetStoreSuppliersRequest
+	6,  // 10: store.v1.SupplierService.StreamStoreSuppliers:input_type -> store.v1.GetStoreSuppliersRequest
+	8,  // 11: store.v1.SupplierService.UpdateSupplier:input_type -> store.v1.UpdateSupplierRequest
+	10, // 12: store.v1.SupplierService.DeleteSupplier:input_type -> store.v1.DeleteSupplierRequest
+	3,  // 13: store.v1.SupplierService.CreateSupplier:output_type -> store.v1.CreateSupplierResponse
+	5,  // 14: store.v1.SupplierService.GetSupplier:output_type -> store.v1.GetSupplierResponse
+	7,  // 15: store.v1.SupplierService.GetStoreSuppliers:output_type -> store.v1.GetStoreSuppliersResponse
+	7,  // 16: store.v1.SupplierService.StreamStoreSuppliers:output_type -> store.v1.GetStoreSuppliersResponse
+	9,  // 17: store.v1.SupplierService.UpdateSupplier:output_type -> store.v1.UpdateSupplierResponse
+	11, // 18: store.v1.SupplierService.DeleteSupplier:output_type -> store.v1.DeleteSupplierResponse
 	13, // [13:19] is the sub-list for method output_type
 	7,  // [7:13] is the sub-list for method input_type
 	7,  // [7:7] is the sub-list for extension type_name
@@ -817,29 +816,29 @@ var file_business_v1_supplier_proto_depIdxs = []int32{
 	0,  // [0:7] is the sub-list for field type_name
 }
 
-func init() { file_business_v1_supplier_proto_init() }
-func file_business_v1_supplier_proto_init() {
-	if File_business_v1_supplier_proto != nil {
+func init() { file_store_v1_supplier_proto_init() }
+func file_store_v1_supplier_proto_init() {
+	if File_store_v1_supplier_proto != nil {
 		return
 	}
-	file_business_v1_supplier_proto_msgTypes[1].OneofWrappers = []any{}
-	file_business_v1_supplier_proto_msgTypes[2].OneofWrappers = []any{}
-	file_business_v1_supplier_proto_msgTypes[8].OneofWrappers = []any{}
+	file_store_v1_supplier_proto_msgTypes[1].OneofWrappers = []any{}
+	file_store_v1_supplier_proto_msgTypes[2].OneofWrappers = []any{}
+	file_store_v1_supplier_proto_msgTypes[8].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_business_v1_supplier_proto_rawDesc), len(file_business_v1_supplier_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_store_v1_supplier_proto_rawDesc), len(file_store_v1_supplier_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   12,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_business_v1_supplier_proto_goTypes,
-		DependencyIndexes: file_business_v1_supplier_proto_depIdxs,
-		MessageInfos:      file_business_v1_supplier_proto_msgTypes,
+		GoTypes:           file_store_v1_supplier_proto_goTypes,
+		DependencyIndexes: file_store_v1_supplier_proto_depIdxs,
+		MessageInfos:      file_store_v1_supplier_proto_msgTypes,
 	}.Build()
-	File_business_v1_supplier_proto = out.File
-	file_business_v1_supplier_proto_goTypes = nil
-	file_business_v1_supplier_proto_depIdxs = nil
+	File_store_v1_supplier_proto = out.File
+	file_store_v1_supplier_proto_goTypes = nil
+	file_store_v1_supplier_proto_depIdxs = nil
 }

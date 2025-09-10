@@ -13,16 +13,25 @@ enum OrderStatus {
   ORDER_STATUS_CANCELLED = 4;
 }
 
+message StatusHistory {
+  OrderStatus status = 1;
+  string updated_by = 2;
+  google.protobuf.Timestamp updated_at = 3;
+}
+
 message OrderItem {
-  // The unique identifier of the business product.
-  string business_product_id = 1;
+  // The unique identifier of the store product.
+  string store_product_id = 1;
 
   // The quantity of the product.
   int32 quantity = 2;
 
-  // The unit price in cents of the product.
+  // The unit price in XAF of the product.
   // WARN: This value is stored because the unit price can change over time.
-  int32 unit_price_in_cents = 3;
+  int32 unit_price_in_xaf = 3;
+
+  // The name of the product.
+  string item_name = 4;
 }
 
 message Order {
@@ -38,17 +47,32 @@ message Order {
   // The list of items in the order.
   repeated OrderItem order_items = 4;
 
-  // The total price of the order in cents.
-  int32 total_price_in_cents = 5;
+  // The total price of the order in XAF.
+  int32 total_price_in_xaf = 5;
 
   // The status of the order.
   OrderStatus status = 6;
 
+  // The status history.
+  repeated StatusHistory status_history = 7;
+
   // The date and time the order was created.
-  google.protobuf.Timestamp created_at = 7;
+  google.protobuf.Timestamp created_at = 8;
 
   // The date and time the order was last updated.
-  optional google.protobuf.Timestamp updated_at = 8;
+  optional google.protobuf.Timestamp updated_at = 9;
+
+  // The unique identifier of the store associated with the order.
+  string store_id = 10 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true
+  ];
+
+  // The unique identifier of the user who initiated the order.
+  string initiated_by = 11 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
 }
 
 message CreateOrderRequest {
@@ -58,8 +82,8 @@ message CreateOrderRequest {
   // The name of the supplier.
   optional string supplier_name = 2;
 
-  // The unique identifier of the business.
-  string business_id = 3;
+  // The unique identifier of the store.
+  string store_id = 3;
 }
 
 message CreateOrderResponse {
@@ -114,6 +138,9 @@ message FindOrdersRequest {
 
   // The status of the order.
   repeated OrderStatus status = 4;
+
+  // The unique identifier of the store associated with the order.
+  optional string store_id = 5;
 }
 
 message FindOrdersResponse {

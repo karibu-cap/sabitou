@@ -26,7 +26,7 @@ abstract final class ProductService {
     inventoryv1product.FindCategoryResponse.new,
   );
 
-  /// Adds a product to a business.
+  /// Adds a product to a store.
   static const addProduct = connect.Spec(
     '/$name/AddProduct',
     connect.StreamType.unary,
@@ -34,7 +34,7 @@ abstract final class ProductService {
     inventoryv1product.AddProductResponse.new,
   );
 
-  /// Gets a business product by id.
+  /// Gets a store product by id.
   static const getProduct = connect.Spec(
     '/$name/GetProduct',
     connect.StreamType.unary,
@@ -42,7 +42,7 @@ abstract final class ProductService {
     inventoryv1product.GetProductResponse.new,
   );
 
-  /// Updates a business product.
+  /// Updates a store product.
   static const updateProduct = connect.Spec(
     '/$name/UpdateProduct',
     connect.StreamType.unary,
@@ -50,9 +50,8 @@ abstract final class ProductService {
     inventoryv1product.UpdateProductResponse.new,
   );
 
-  /// Deletes a business product.
-  /// Only business products that are not in any store and orders can be
-  /// deleted.
+  /// Deletes a store product.
+  /// Only store products that are not in any orders can be deleted.
   static const deleteProduct = connect.Spec(
     '/$name/DeleteProduct',
     connect.StreamType.unary,
@@ -61,18 +60,18 @@ abstract final class ProductService {
   );
 
   /// Finds products by name.
-  static const findBusinessProducts = connect.Spec(
-    '/$name/FindBusinessProducts',
+  static const findStoreProducts = connect.Spec(
+    '/$name/FindStoreProducts',
     connect.StreamType.unary,
-    inventoryv1product.FindBusinessProductsRequest.new,
-    inventoryv1product.FindBusinessProductsResponse.new,
+    inventoryv1product.FindStoreProductsRequest.new,
+    inventoryv1product.FindStoreProductsResponse.new,
   );
 
-  /// Streams all products for a business for real-time updates.
-  static const streamBusinessProducts = connect.Spec(
-    '/$name/StreamBusinessProducts',
+  /// Streams all products for a store for real-time updates.
+  static const streamStoreProducts = connect.Spec(
+    '/$name/StreamStoreProducts',
     connect.StreamType.server,
-    inventoryv1product.StreamBusinessProductsRequest.new,
-    inventoryv1product.StreamBusinessProductsResponse.new,
+    inventoryv1product.StreamStoreProductsRequest.new,
+    inventoryv1product.StreamStoreProductsResponse.new,
   );
 }

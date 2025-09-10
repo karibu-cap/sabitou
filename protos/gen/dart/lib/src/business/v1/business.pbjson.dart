@@ -238,15 +238,15 @@ final $typed_data.Uint8List changeBusinessCurrencyRequestDescriptor = $convert.b
 const ChangeBusinessCurrencyResponse$json = {
   '1': 'ChangeBusinessCurrencyResponse',
   '2': [
-    {'1': 'sucess', '3': 1, '4': 1, '5': 8, '10': 'sucess'},
+    {'1': 'success', '3': 1, '4': 1, '5': 8, '10': 'success'},
   ],
 };
 
 /// Descriptor for `ChangeBusinessCurrencyResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List changeBusinessCurrencyResponseDescriptor =
     $convert.base64Decode(
-        'Ch5DaGFuZ2VCdXNpbmVzc0N1cnJlbmN5UmVzcG9uc2USFgoGc3VjZXNzGAEgASgIUgZzdWNlc3'
-        'M=');
+        'Ch5DaGFuZ2VCdXNpbmVzc0N1cnJlbmN5UmVzcG9uc2USGAoHc3VjY2VzcxgBIAEoCFIHc3VjY2'
+        'Vzcw==');
 
 @$core.Deprecated('Use getMyBusinessesRequestDescriptor instead')
 const GetMyBusinessesRequest$json = {

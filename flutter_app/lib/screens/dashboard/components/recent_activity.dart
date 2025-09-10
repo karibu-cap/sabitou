@@ -153,10 +153,10 @@ class _TransactionItem extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    if (transaction.amountInCents > 0)
+                    if (transaction.amountInXaf > 0)
                       AutoSizeText(
                         Formatters.formatCurrency(
-                          transaction.amountInCents.toDouble(),
+                          transaction.amountInXaf.toDouble(),
                         ),
                         style: ShadTheme.of(
                           context,
