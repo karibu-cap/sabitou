@@ -241,7 +241,7 @@ final _fakeTransport =
                 (e) =>
                     Order()..mergeFromProto3Json(e, ignoreUnknownFields: true),
               )
-              .where((o) => o.fromId == req.fromId)
+              .where((o) => o.storeId == req.storeId)
               .toList(),
         );
       })

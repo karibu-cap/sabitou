@@ -75,7 +75,9 @@ final class DashboardViewModel {
         recentTransactions as List<Transaction>,
         yesterdayTransactions as List<Transaction>,
       ] = await Future.wait([
-        OrdersRepository.instance.getOrdersByQuery(supplierId: store.refId),
+        OrdersRepository.instance.getOrdersByQuery(
+          FindOrdersRequest(storeId: store.refId),
+        ),
         ProductsRepository.instance.getProductsByStoreId(store.refId),
         TransactionsRepository.instance.getCompleteTransactionsByStoreId(
           storeId: store.refId,
