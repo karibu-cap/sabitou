@@ -674,6 +674,7 @@ class AppInternationalizationService extends ChangeNotifier {
       'fr': 'Gestion de votre inventaire de produits',
     },
     'totalValue': {'en': 'Total Value', 'fr': 'Valeur totale'},
+    'inboundDate': {'en': 'Inbound Date', 'fr': 'Date d\'entrée'},
   };
 
   /// Direct access to the internationalization service.
@@ -692,6 +693,9 @@ class AppInternationalizationService extends ChangeNotifier {
     const Locale('en'),
     const Locale('fr'),
   ];
+
+  /// Returns the localized value of text 'inboundDate'.
+  String get inboundDate => _stringOfLocalizedValue('inboundDate');
 
   /// Returns the localized value of text 'totalValue'.
   String get totalValue => _stringOfLocalizedValue('totalValue');
