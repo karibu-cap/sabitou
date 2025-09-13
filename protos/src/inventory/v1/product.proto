@@ -142,8 +142,8 @@ message AddStoreProductRequest {
   // If the product does not exist, it will be created.
   GlobalProduct global_product = 1;
 
- // The store product to add.
- StoreProduct store_product = 2;
+  // The store product to add.
+  StoreProduct store_product = 2;
 }
 
 message AddStoreProductResponse {
