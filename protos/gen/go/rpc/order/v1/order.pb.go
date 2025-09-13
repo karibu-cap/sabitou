@@ -146,7 +146,7 @@ type OrderItem struct {
 	Quantity int32 `protobuf:"varint,2,opt,name=quantity,proto3" json:"quantity,omitempty"`
 	// The unit price in XAF of the product.
 	// WARN: This value is stored because the unit price can change over time.
-	UnitPriceInXaf int32 `protobuf:"varint,3,opt,name=unit_price_in_xaf,json=unitPriceInXaf,proto3" json:"unit_price_in_xaf,omitempty"`
+	UnitPrice int32 `protobuf:"varint,3,opt,name=unit_price,json=unitPrice,proto3" json:"unit_price,omitempty"`
 	// The name of the product.
 	ItemName      string `protobuf:"bytes,4,opt,name=item_name,json=itemName,proto3" json:"item_name,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -197,9 +197,9 @@ func (x *OrderItem) GetQuantity() int32 {
 	return 0
 }
 
-func (x *OrderItem) GetUnitPriceInXaf() int32 {
+func (x *OrderItem) GetUnitPrice() int32 {
 	if x != nil {
-		return x.UnitPriceInXaf
+		return x.UnitPrice
 	}
 	return 0
 }
@@ -222,7 +222,7 @@ type Order struct {
 	// The list of items in the order.
 	OrderItems []*OrderItem `protobuf:"bytes,4,rep,name=order_items,json=orderItems,proto3" json:"order_items,omitempty"`
 	// The total price of the order in XAF.
-	TotalPriceInXaf int32 `protobuf:"varint,5,opt,name=total_price_in_xaf,json=totalPriceInXaf,proto3" json:"total_price_in_xaf,omitempty"`
+	TotalPrice int32 `protobuf:"varint,5,opt,name=total_price,json=totalPrice,proto3" json:"total_price,omitempty"`
 	// The status of the order.
 	Status OrderStatus `protobuf:"varint,6,opt,name=status,proto3,enum=order.v1.OrderStatus" json:"status,omitempty"`
 	// The status history.
@@ -297,9 +297,9 @@ func (x *Order) GetOrderItems() []*OrderItem {
 	return nil
 }
 
-func (x *Order) GetTotalPriceInXaf() int32 {
+func (x *Order) GetTotalPrice() int32 {
 	if x != nil {
-		return x.TotalPriceInXaf
+		return x.TotalPrice
 	}
 	return 0
 }
@@ -788,19 +788,21 @@ const file_order_v1_order_proto_rawDesc = "" +
 	"\n" +
 	"updated_by\x18\x02 \x01(\tR\tupdatedBy\x129\n" +
 	"\n" +
-	"updated_at\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"\x99\x01\n" +
+	"updated_at\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"\x8d\x01\n" +
 	"\tOrderItem\x12(\n" +
 	"\x10store_product_id\x18\x01 \x01(\tR\x0estoreProductId\x12\x1a\n" +
-	"\bquantity\x18\x02 \x01(\x05R\bquantity\x12)\n" +
-	"\x11unit_price_in_xaf\x18\x03 \x01(\x05R\x0eunitPriceInXaf\x12\x1b\n" +
-	"\titem_name\x18\x04 \x01(\tR\bitemName\"\xb3\x04\n" +
+	"\bquantity\x18\x02 \x01(\x05R\bquantity\x12\x1d\n" +
+	"\n" +
+	"unit_price\x18\x03 \x01(\x05R\tunitPrice\x12\x1b\n" +
+	"\titem_name\x18\x04 \x01(\tR\bitemName\"\xa7\x04\n" +
 	"\x05Order\x12\x1a\n" +
 	"\x06ref_id\x18\x01 \x01(\tH\x00R\x05refId\x88\x01\x01\x12\x1c\n" +
 	"\afrom_id\x18\x02 \x01(\tH\x01R\x06fromId\x88\x01\x01\x12&\n" +
 	"\x0fis_client_order\x18\x03 \x01(\tR\risClientOrder\x124\n" +
 	"\vorder_items\x18\x04 \x03(\v2\x13.order.v1.OrderItemR\n" +
-	"orderItems\x12+\n" +
-	"\x12total_price_in_xaf\x18\x05 \x01(\x05R\x0ftotalPriceInXaf\x12-\n" +
+	"orderItems\x12\x1f\n" +
+	"\vtotal_price\x18\x05 \x01(\x05R\n" +
+	"totalPrice\x12-\n" +
 	"\x06status\x18\x06 \x01(\x0e2\x15.order.v1.OrderStatusR\x06status\x12>\n" +
 	"\x0estatus_history\x18\a \x03(\v2\x17.order.v1.StatusHistoryR\rstatusHistory\x129\n" +
 	"\n" +

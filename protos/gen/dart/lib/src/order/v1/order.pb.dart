@@ -112,13 +112,13 @@ class OrderItem extends $pb.GeneratedMessage {
   factory OrderItem({
     $core.String? storeProductId,
     $core.int? quantity,
-    $core.int? unitPriceInXaf,
+    $core.int? unitPrice,
     $core.String? itemName,
   }) {
     final result = create();
     if (storeProductId != null) result.storeProductId = storeProductId;
     if (quantity != null) result.quantity = quantity;
-    if (unitPriceInXaf != null) result.unitPriceInXaf = unitPriceInXaf;
+    if (unitPrice != null) result.unitPrice = unitPrice;
     if (itemName != null) result.itemName = itemName;
     return result;
   }
@@ -138,8 +138,7 @@ class OrderItem extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'storeProductId')
     ..a<$core.int>(2, _omitFieldNames ? '' : 'quantity', $pb.PbFieldType.O3)
-    ..a<$core.int>(
-        3, _omitFieldNames ? '' : 'unitPriceInXaf', $pb.PbFieldType.O3)
+    ..a<$core.int>(3, _omitFieldNames ? '' : 'unitPrice', $pb.PbFieldType.O3)
     ..aOS(4, _omitFieldNames ? '' : 'itemName')
     ..hasRequiredFields = false;
 
@@ -185,13 +184,13 @@ class OrderItem extends $pb.GeneratedMessage {
   /// The unit price in XAF of the product.
   /// WARN: This value is stored because the unit price can change over time.
   @$pb.TagNumber(3)
-  $core.int get unitPriceInXaf => $_getIZ(2);
+  $core.int get unitPrice => $_getIZ(2);
   @$pb.TagNumber(3)
-  set unitPriceInXaf($core.int value) => $_setSignedInt32(2, value);
+  set unitPrice($core.int value) => $_setSignedInt32(2, value);
   @$pb.TagNumber(3)
-  $core.bool hasUnitPriceInXaf() => $_has(2);
+  $core.bool hasUnitPrice() => $_has(2);
   @$pb.TagNumber(3)
-  void clearUnitPriceInXaf() => $_clearField(3);
+  void clearUnitPrice() => $_clearField(3);
 
   /// The name of the product.
   @$pb.TagNumber(4)
@@ -210,7 +209,7 @@ class Order extends $pb.GeneratedMessage {
     $core.String? fromId,
     $core.String? isClientOrder,
     $core.Iterable<OrderItem>? orderItems,
-    $core.int? totalPriceInXaf,
+    $core.int? totalPrice,
     OrderStatus? status,
     $core.Iterable<StatusHistory>? statusHistory,
     $0.Timestamp? createdAt,
@@ -223,7 +222,7 @@ class Order extends $pb.GeneratedMessage {
     if (fromId != null) result.fromId = fromId;
     if (isClientOrder != null) result.isClientOrder = isClientOrder;
     if (orderItems != null) result.orderItems.addAll(orderItems);
-    if (totalPriceInXaf != null) result.totalPriceInXaf = totalPriceInXaf;
+    if (totalPrice != null) result.totalPrice = totalPrice;
     if (status != null) result.status = status;
     if (statusHistory != null) result.statusHistory.addAll(statusHistory);
     if (createdAt != null) result.createdAt = createdAt;
@@ -251,8 +250,7 @@ class Order extends $pb.GeneratedMessage {
     ..aOS(3, _omitFieldNames ? '' : 'isClientOrder')
     ..pc<OrderItem>(4, _omitFieldNames ? '' : 'orderItems', $pb.PbFieldType.PM,
         subBuilder: OrderItem.create)
-    ..a<$core.int>(
-        5, _omitFieldNames ? '' : 'totalPriceInXaf', $pb.PbFieldType.O3)
+    ..a<$core.int>(5, _omitFieldNames ? '' : 'totalPrice', $pb.PbFieldType.O3)
     ..e<OrderStatus>(6, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
         defaultOrMaker: OrderStatus.ORDER_STATUS_UNSPECIFIED,
         valueOf: OrderStatus.valueOf,
@@ -323,13 +321,13 @@ class Order extends $pb.GeneratedMessage {
 
   /// The total price of the order in XAF.
   @$pb.TagNumber(5)
-  $core.int get totalPriceInXaf => $_getIZ(4);
+  $core.int get totalPrice => $_getIZ(4);
   @$pb.TagNumber(5)
-  set totalPriceInXaf($core.int value) => $_setSignedInt32(4, value);
+  set totalPrice($core.int value) => $_setSignedInt32(4, value);
   @$pb.TagNumber(5)
-  $core.bool hasTotalPriceInXaf() => $_has(4);
+  $core.bool hasTotalPrice() => $_has(4);
   @$pb.TagNumber(5)
-  void clearTotalPriceInXaf() => $_clearField(5);
+  void clearTotalPrice() => $_clearField(5);
 
   /// The status of the order.
   @$pb.TagNumber(6)

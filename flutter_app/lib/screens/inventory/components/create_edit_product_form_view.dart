@@ -356,9 +356,8 @@ class _CategoryDropdown extends StatelessWidget {
 
                   return null;
                 },
-                onChanged: (value) =>
-                    controller.product.storeProduct.priceInXaf =
-                        int.tryParse(value) ?? 0,
+                onChanged: (value) => controller.product.storeProduct.price =
+                    int.tryParse(value) ?? 0,
               ),
             ),
           ],

@@ -94,7 +94,7 @@ const Transaction$json = {
       '10': 'fromId',
       '17': true
     },
-    {'1': 'amount_in_xaf', '3': 7, '4': 1, '5': 3, '10': 'amountInXaf'},
+    {'1': 'amount', '3': 7, '4': 1, '5': 3, '10': 'amount'},
     {
       '1': 'currency_code',
       '3': 8,
@@ -183,17 +183,16 @@ final $typed_data.Uint8List transactionDescriptor = $convert.base64Decode(
     'IfLnRyYW5zYWN0aW9uLnYxLlRyYW5zYWN0aW9uVHlwZVIEdHlwZRI5CgZzdGF0dXMYAyABKA4y'
     'IS50cmFuc2FjdGlvbi52MS5UcmFuc2FjdGlvblN0YXR1c1IGc3RhdHVzEiUKCHN0b3JlX2lkGA'
     'QgASgJQgq6SAfIAQFyAhADUgdzdG9yZUlkEh4KCG9yZGVyX2lkGAUgASgJSAFSB29yZGVySWSI'
-    'AQESHAoHZnJvbV9pZBgGIAEoCUgCUgZmcm9tSWSIAQESIgoNYW1vdW50X2luX3hhZhgHIAEoA1'
-    'ILYW1vdW50SW5YYWYSKwoNY3VycmVuY3lfY29kZRgIIAEoCUIGukgDyAEBUgxjdXJyZW5jeUNv'
-    'ZGUSOQoKY3JlYXRlZF9hdBgJIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSCWNyZW'
-    'F0ZWRBdBI+Cgp1cGRhdGVkX2F0GAogASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEgD'
-    'Ugl1cGRhdGVkQXSIAQESJQoLZGVzY3JpcHRpb24YCyABKAlIBFILZGVzY3JpcHRpb26IAQESLQ'
-    'oQc3RvcmVfcHJvZHVjdF9pZBgMIAEoCUgFUg5zdG9yZVByb2R1Y3RJZIgBARIfCghxdWFudGl0'
-    'eRgNIAEoBUgGUghxdWFudGl0eYgBARImCgxpbml0aWF0ZWRfYnkYDiABKAlIB1ILaW5pdGlhdG'
-    'VkQnmIAQESLAoSZXh0ZXJuYWxfbGlua3NfaWRzGA8gAygJUhBleHRlcm5hbExpbmtzSWRzQgkK'
-    'B19yZWZfaWRCCwoJX29yZGVyX2lkQgoKCF9mcm9tX2lkQg0KC191cGRhdGVkX2F0Qg4KDF9kZX'
-    'NjcmlwdGlvbkITChFfc3RvcmVfcHJvZHVjdF9pZEILCglfcXVhbnRpdHlCDwoNX2luaXRpYXRl'
-    'ZF9ieQ==');
+    'AQESHAoHZnJvbV9pZBgGIAEoCUgCUgZmcm9tSWSIAQESFgoGYW1vdW50GAcgASgDUgZhbW91bn'
+    'QSKwoNY3VycmVuY3lfY29kZRgIIAEoCUIGukgDyAEBUgxjdXJyZW5jeUNvZGUSOQoKY3JlYXRl'
+    'ZF9hdBgJIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSCWNyZWF0ZWRBdBI+Cgp1cG'
+    'RhdGVkX2F0GAogASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEgDUgl1cGRhdGVkQXSI'
+    'AQESJQoLZGVzY3JpcHRpb24YCyABKAlIBFILZGVzY3JpcHRpb26IAQESLQoQc3RvcmVfcHJvZH'
+    'VjdF9pZBgMIAEoCUgFUg5zdG9yZVByb2R1Y3RJZIgBARIfCghxdWFudGl0eRgNIAEoBUgGUghx'
+    'dWFudGl0eYgBARImCgxpbml0aWF0ZWRfYnkYDiABKAlIB1ILaW5pdGlhdGVkQnmIAQESLAoSZX'
+    'h0ZXJuYWxfbGlua3NfaWRzGA8gAygJUhBleHRlcm5hbExpbmtzSWRzQgkKB19yZWZfaWRCCwoJ'
+    'X29yZGVyX2lkQgoKCF9mcm9tX2lkQg0KC191cGRhdGVkX2F0Qg4KDF9kZXNjcmlwdGlvbkITCh'
+    'Ffc3RvcmVfcHJvZHVjdF9pZEILCglfcXVhbnRpdHlCDwoNX2luaXRpYXRlZF9ieQ==');
 
 @$core.Deprecated('Use addTransactionRequestDescriptor instead')
 const AddTransactionRequest$json = {

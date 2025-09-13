@@ -478,11 +478,11 @@ components:
           title: from_id
           description: The unique identifier of the client or supplier associated with the transaction.
           nullable: true
-        amountInXaf:
+        amount:
           type:
             - integer
             - string
-          title: amount_in_xaf
+          title: amount
           format: int64
           description: The amount of the transaction in XAF.
         currencyCode:

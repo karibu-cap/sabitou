@@ -191,7 +191,7 @@ class InventoryViewModel {
   /// Deletes a product.
   Future<bool> deleteProduct(String storeProductId) async {
     final result = await ProductsRepository.instance.deleteProduct(
-      DeleteProductRequest(storeProductId: storeProductId),
+      DeleteStoreProductRequest(storeProductId: storeProductId),
     );
     if (result) {
       unawaited(initTheData());

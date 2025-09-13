@@ -167,7 +167,7 @@ final _fakeTransport =
                 globalProductId: 'global_product_1',
                 storeId: request.storeId,
                 minStockThreshold: 10,
-                priceInXaf: 10000,
+                price: 10000,
                 stockQuantity: 20,
                 imagesLinkIds: ['image_1', 'image_2'],
               ),
@@ -176,7 +176,7 @@ final _fakeTransport =
                 globalProductId: 'global_product_2',
                 storeId: request.storeId,
                 minStockThreshold: 10,
-                priceInXaf: 20000,
+                price: 20000,
                 stockQuantity: 50,
                 imagesLinkIds: ['image_1', 'image_2'],
               ),
@@ -185,7 +185,7 @@ final _fakeTransport =
                 globalProductId: 'global_product_3',
                 storeId: request.storeId,
                 minStockThreshold: 5,
-                priceInXaf: 5000,
+                price: 5000,
                 stockQuantity: 5,
                 imagesLinkIds: ['image_1', 'image_2'],
               ),
@@ -201,7 +201,7 @@ final _fakeTransport =
                 globalProductId: 'global_product_1',
                 storeId: request.storeId,
                 minStockThreshold: 10,
-                priceInXaf: 10000,
+                price: 10000,
                 stockQuantity: 20,
                 imagesLinkIds: ['image_1', 'image_2'],
               ),
@@ -210,7 +210,7 @@ final _fakeTransport =
                 globalProductId: 'global_product_2',
                 storeId: request.storeId,
                 minStockThreshold: 10,
-                priceInXaf: 15000,
+                price: 15000,
                 stockQuantity: 10,
                 imagesLinkIds: ['image_1', 'image_2'],
               ),
@@ -219,7 +219,7 @@ final _fakeTransport =
                 globalProductId: 'global_product_3',
                 storeId: request.storeId,
                 minStockThreshold: 10,
-                priceInXaf: 2000,
+                price: 2000,
                 stockQuantity: 200,
                 imagesLinkIds: ['image_1', 'image_2'],
               ),
@@ -228,7 +228,7 @@ final _fakeTransport =
                 globalProductId: 'global_product_4',
                 storeId: request.storeId,
                 minStockThreshold: 10,
-                priceInXaf: 400,
+                price: 400,
                 stockQuantity: 500,
                 imagesLinkIds: ['image_1', 'image_2'],
               ),
@@ -393,22 +393,22 @@ final _fakeTransport =
 
         _fakeData[CollectionName.storeProducts]?.add({
           'ref_id': 'business-product-${Random().nextInt(1000000)}',
-          'store_id': req.storeId,
+          'store_id': req.storeProduct.storeId,
           'global_product_id': globalProductRefId,
-          'min_stock_threshold': req.minStockThreshold,
-          'price_in_xaf': req.priceInXaf,
-          'stock_quantity': req.stockQuantity,
-          'expiration_date': req.hasExpirationDate()
-              ? req.expirationDate.toDateTime().toIso8601String()
+          'min_stock_threshold': req.storeProduct.minStockThreshold,
+          'price': req.storeProduct.price,
+          'stock_quantity': req.storeProduct.stockQuantity,
+          'expiration_date': req.storeProduct.hasExpirationDate()
+              ? req.storeProduct.expirationDate.toDateTime().toIso8601String()
               : null,
           'images_link_ids': [],
         });
 
-        return AddProductResponse()..success = true;
+        return AddStoreProductResponse()..success = true;
       })
       ..unary(ProductService.updateProduct, (req, __) async {
         final newGlobalProduct = req.globalProduct;
-        final businessProduct = req.product;
+        final businessProduct = req.storeProduct;
         String? globalProductId = newGlobalProduct.refId;
 
         final GlobalProduct? globalProduct = GlobalProduct()
@@ -473,7 +473,7 @@ final _fakeTransport =
           'store_id': businessProduct.storeId,
           'global_product_id': globalProductId,
           'min_stock_threshold': businessProduct.minStockThreshold,
-          'price_in_xaf': businessProduct.priceInXaf,
+          'price': businessProduct.price,
           'stock_quantity': businessProduct.stockQuantity,
           'expiration_date': businessProduct.hasExpirationDate()
               ? businessProduct.expirationDate.toDateTime().toIso8601String()
@@ -481,14 +481,14 @@ final _fakeTransport =
           'images_link_ids': businessProduct.imagesLinkIds,
         });
 
-        return UpdateProductResponse()..success = true;
+        return UpdateStoreProductResponse()..success = true;
       })
       ..unary(ProductService.deleteProduct, (req, _) async {
         _fakeData[CollectionName.storeProducts]?.removeWhere(
           (gp) => gp['ref_id'] == req.storeProductId,
         );
 
-        return DeleteProductResponse()..success = true;
+        return DeleteStoreProductResponse()..success = true;
       });
 
 final fakeTransport = _fakeTransport.build();

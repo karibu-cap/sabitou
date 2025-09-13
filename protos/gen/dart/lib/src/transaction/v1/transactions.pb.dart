@@ -35,7 +35,7 @@ class Transaction extends $pb.GeneratedMessage {
     $core.String? storeId,
     $core.String? orderId,
     $core.String? fromId,
-    $fixnum.Int64? amountInXaf,
+    $fixnum.Int64? amount,
     $core.String? currencyCode,
     $0.Timestamp? createdAt,
     $0.Timestamp? updatedAt,
@@ -52,7 +52,7 @@ class Transaction extends $pb.GeneratedMessage {
     if (storeId != null) result.storeId = storeId;
     if (orderId != null) result.orderId = orderId;
     if (fromId != null) result.fromId = fromId;
-    if (amountInXaf != null) result.amountInXaf = amountInXaf;
+    if (amount != null) result.amount = amount;
     if (currencyCode != null) result.currencyCode = currencyCode;
     if (createdAt != null) result.createdAt = createdAt;
     if (updatedAt != null) result.updatedAt = updatedAt;
@@ -91,7 +91,7 @@ class Transaction extends $pb.GeneratedMessage {
     ..aOS(4, _omitFieldNames ? '' : 'storeId')
     ..aOS(5, _omitFieldNames ? '' : 'orderId')
     ..aOS(6, _omitFieldNames ? '' : 'fromId')
-    ..aInt64(7, _omitFieldNames ? '' : 'amountInXaf')
+    ..aInt64(7, _omitFieldNames ? '' : 'amount')
     ..aOS(8, _omitFieldNames ? '' : 'currencyCode')
     ..aOM<$0.Timestamp>(9, _omitFieldNames ? '' : 'createdAt',
         subBuilder: $0.Timestamp.create)
@@ -186,13 +186,13 @@ class Transaction extends $pb.GeneratedMessage {
 
   /// The amount of the transaction in XAF.
   @$pb.TagNumber(7)
-  $fixnum.Int64 get amountInXaf => $_getI64(6);
+  $fixnum.Int64 get amount => $_getI64(6);
   @$pb.TagNumber(7)
-  set amountInXaf($fixnum.Int64 value) => $_setInt64(6, value);
+  set amount($fixnum.Int64 value) => $_setInt64(6, value);
   @$pb.TagNumber(7)
-  $core.bool hasAmountInXaf() => $_has(6);
+  $core.bool hasAmount() => $_has(6);
   @$pb.TagNumber(7)
-  void clearAmountInXaf() => $_clearField(7);
+  void clearAmount() => $_clearField(7);
 
   /// The currency code of the transaction (ISO 4217).
   @$pb.TagNumber(8)

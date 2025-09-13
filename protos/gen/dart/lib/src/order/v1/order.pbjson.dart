@@ -70,7 +70,7 @@ const OrderItem$json = {
   '2': [
     {'1': 'store_product_id', '3': 1, '4': 1, '5': 9, '10': 'storeProductId'},
     {'1': 'quantity', '3': 2, '4': 1, '5': 5, '10': 'quantity'},
-    {'1': 'unit_price_in_xaf', '3': 3, '4': 1, '5': 5, '10': 'unitPriceInXaf'},
+    {'1': 'unit_price', '3': 3, '4': 1, '5': 5, '10': 'unitPrice'},
     {'1': 'item_name', '3': 4, '4': 1, '5': 9, '10': 'itemName'},
   ],
 };
@@ -78,8 +78,8 @@ const OrderItem$json = {
 /// Descriptor for `OrderItem`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List orderItemDescriptor = $convert.base64Decode(
     'CglPcmRlckl0ZW0SKAoQc3RvcmVfcHJvZHVjdF9pZBgBIAEoCVIOc3RvcmVQcm9kdWN0SWQSGg'
-    'oIcXVhbnRpdHkYAiABKAVSCHF1YW50aXR5EikKEXVuaXRfcHJpY2VfaW5feGFmGAMgASgFUg51'
-    'bml0UHJpY2VJblhhZhIbCglpdGVtX25hbWUYBCABKAlSCGl0ZW1OYW1l');
+    'oIcXVhbnRpdHkYAiABKAVSCHF1YW50aXR5Eh0KCnVuaXRfcHJpY2UYAyABKAVSCXVuaXRQcmlj'
+    'ZRIbCglpdGVtX25hbWUYBCABKAlSCGl0ZW1OYW1l');
 
 @$core.Deprecated('Use orderDescriptor instead')
 const Order$json = {
@@ -104,13 +104,7 @@ const Order$json = {
       '6': '.order.v1.OrderItem',
       '10': 'orderItems'
     },
-    {
-      '1': 'total_price_in_xaf',
-      '3': 5,
-      '4': 1,
-      '5': 5,
-      '10': 'totalPriceInXaf'
-    },
+    {'1': 'total_price', '3': 5, '4': 1, '5': 5, '10': 'totalPrice'},
     {
       '1': 'status',
       '3': 6,
@@ -166,15 +160,14 @@ const Order$json = {
 final $typed_data.Uint8List orderDescriptor = $convert.base64Decode(
     'CgVPcmRlchIaCgZyZWZfaWQYASABKAlIAFIFcmVmSWSIAQESHAoHZnJvbV9pZBgCIAEoCUgBUg'
     'Zmcm9tSWSIAQESJgoPaXNfY2xpZW50X29yZGVyGAMgASgJUg1pc0NsaWVudE9yZGVyEjQKC29y'
-    'ZGVyX2l0ZW1zGAQgAygLMhMub3JkZXIudjEuT3JkZXJJdGVtUgpvcmRlckl0ZW1zEisKEnRvdG'
-    'FsX3ByaWNlX2luX3hhZhgFIAEoBVIPdG90YWxQcmljZUluWGFmEi0KBnN0YXR1cxgGIAEoDjIV'
-    'Lm9yZGVyLnYxLk9yZGVyU3RhdHVzUgZzdGF0dXMSPgoOc3RhdHVzX2hpc3RvcnkYByADKAsyFy'
-    '5vcmRlci52MS5TdGF0dXNIaXN0b3J5Ug1zdGF0dXNIaXN0b3J5EjkKCmNyZWF0ZWRfYXQYCCAB'
-    'KAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUgljcmVhdGVkQXQSPgoKdXBkYXRlZF9hdB'
-    'gJIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBIAlIJdXBkYXRlZEF0iAEBEiYKCHN0'
-    'b3JlX2lkGAogASgJQgu6SAjIAQFyA7ABAVIHc3RvcmVJZBItCgxpbml0aWF0ZWRfYnkYCyABKA'
-    'lCCrpIB8gBAXICEANSC2luaXRpYXRlZEJ5QgkKB19yZWZfaWRCCgoIX2Zyb21faWRCDQoLX3Vw'
-    'ZGF0ZWRfYXQ=');
+    'ZGVyX2l0ZW1zGAQgAygLMhMub3JkZXIudjEuT3JkZXJJdGVtUgpvcmRlckl0ZW1zEh8KC3RvdG'
+    'FsX3ByaWNlGAUgASgFUgp0b3RhbFByaWNlEi0KBnN0YXR1cxgGIAEoDjIVLm9yZGVyLnYxLk9y'
+    'ZGVyU3RhdHVzUgZzdGF0dXMSPgoOc3RhdHVzX2hpc3RvcnkYByADKAsyFy5vcmRlci52MS5TdG'
+    'F0dXNIaXN0b3J5Ug1zdGF0dXNIaXN0b3J5EjkKCmNyZWF0ZWRfYXQYCCABKAsyGi5nb29nbGUu'
+    'cHJvdG9idWYuVGltZXN0YW1wUgljcmVhdGVkQXQSPgoKdXBkYXRlZF9hdBgJIAEoCzIaLmdvb2'
+    'dsZS5wcm90b2J1Zi5UaW1lc3RhbXBIAlIJdXBkYXRlZEF0iAEBEiYKCHN0b3JlX2lkGAogASgJ'
+    'Qgu6SAjIAQFyA7ABAVIHc3RvcmVJZBItCgxpbml0aWF0ZWRfYnkYCyABKAlCCrpIB8gBAXICEA'
+    'NSC2luaXRpYXRlZEJ5QgkKB19yZWZfaWRCCgoIX2Zyb21faWRCDQoLX3VwZGF0ZWRfYXQ=');
 
 @$core.Deprecated('Use createOrderRequestDescriptor instead')
 const CreateOrderRequest$json = {

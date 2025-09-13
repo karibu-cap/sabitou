@@ -98,7 +98,7 @@ class ProductsRepository {
   }
 
   /// Adds a new product to a business.
-  Future<bool> addProduct(AddProductRequest request) async {
+  Future<bool> addProduct(AddStoreProductRequest request) async {
     try {
       final response = await productServiceClient.addProduct(request);
 
@@ -111,11 +111,11 @@ class ProductsRepository {
   }
 
   /// Gets a business product by its ID.
-  Future<StoreProduct?> getProduct(GetProductRequest request) async {
+  Future<StoreProduct?> getProduct(GetStoreProductRequest request) async {
     try {
       final response = await productServiceClient.getProduct(request);
 
-      return response.product;
+      return response.storeProduct;
     } on Exception catch (e) {
       _logger.severe('getProduct Error: $e');
 
@@ -124,7 +124,7 @@ class ProductsRepository {
   }
 
   /// Updates a business product.
-  Future<bool> updateProduct(UpdateProductRequest request) async {
+  Future<bool> updateProduct(UpdateStoreProductRequest request) async {
     try {
       final response = await productServiceClient.updateProduct(request);
 
@@ -137,7 +137,7 @@ class ProductsRepository {
   }
 
   /// Deletes a business product.
-  Future<bool> deleteProduct(DeleteProductRequest request) async {
+  Future<bool> deleteProduct(DeleteStoreProductRequest request) async {
     try {
       final response = await productServiceClient.deleteProduct(request);
 

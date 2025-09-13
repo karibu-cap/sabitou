@@ -28,7 +28,7 @@ message OrderItem {
 
   // The unit price in XAF of the product.
   // WARN: This value is stored because the unit price can change over time.
-  int32 unit_price_in_xaf = 3;
+  int32 unit_price = 3;
 
   // The name of the product.
   string item_name = 4;
@@ -48,7 +48,7 @@ message Order {
   repeated OrderItem order_items = 4;
 
   // The total price of the order in XAF.
-  int32 total_price_in_xaf = 5;
+  int32 total_price = 5;
 
   // The status of the order.
   OrderStatus status = 6;

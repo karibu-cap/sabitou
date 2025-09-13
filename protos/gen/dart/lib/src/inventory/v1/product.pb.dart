@@ -204,12 +204,12 @@ class GlobalProduct extends $pb.GeneratedMessage {
 class SupplyEntry extends $pb.GeneratedMessage {
   factory SupplyEntry({
     $core.int? quantity,
-    $core.int? priceInXaf,
+    $core.int? price,
     $core.String? supplierId,
   }) {
     final result = create();
     if (quantity != null) result.quantity = quantity;
-    if (priceInXaf != null) result.priceInXaf = priceInXaf;
+    if (price != null) result.price = price;
     if (supplierId != null) result.supplierId = supplierId;
     return result;
   }
@@ -228,7 +228,7 @@ class SupplyEntry extends $pb.GeneratedMessage {
       package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'),
       createEmptyInstance: create)
     ..a<$core.int>(1, _omitFieldNames ? '' : 'quantity', $pb.PbFieldType.O3)
-    ..a<$core.int>(2, _omitFieldNames ? '' : 'priceInXaf', $pb.PbFieldType.O3)
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'price', $pb.PbFieldType.O3)
     ..aOS(3, _omitFieldNames ? '' : 'supplierId')
     ..hasRequiredFields = false;
 
@@ -264,13 +264,13 @@ class SupplyEntry extends $pb.GeneratedMessage {
 
   /// The price in XAF of the product.
   @$pb.TagNumber(2)
-  $core.int get priceInXaf => $_getIZ(1);
+  $core.int get price => $_getIZ(1);
   @$pb.TagNumber(2)
-  set priceInXaf($core.int value) => $_setSignedInt32(1, value);
+  set price($core.int value) => $_setSignedInt32(1, value);
   @$pb.TagNumber(2)
-  $core.bool hasPriceInXaf() => $_has(1);
+  $core.bool hasPrice() => $_has(1);
   @$pb.TagNumber(2)
-  void clearPriceInXaf() => $_clearField(2);
+  void clearPrice() => $_clearField(2);
 
   /// The unique identifier of the supplier.
   @$pb.TagNumber(3)
@@ -288,7 +288,7 @@ class StoreProduct extends $pb.GeneratedMessage {
     $core.String? refId,
     $core.String? storeId,
     $core.String? globalProductId,
-    $core.int? priceInXaf,
+    $core.int? price,
     $core.Iterable<$core.String>? imagesLinkIds,
     $core.int? stockQuantity,
     $core.int? minStockThreshold,
@@ -302,7 +302,7 @@ class StoreProduct extends $pb.GeneratedMessage {
     if (refId != null) result.refId = refId;
     if (storeId != null) result.storeId = storeId;
     if (globalProductId != null) result.globalProductId = globalProductId;
-    if (priceInXaf != null) result.priceInXaf = priceInXaf;
+    if (price != null) result.price = price;
     if (imagesLinkIds != null) result.imagesLinkIds.addAll(imagesLinkIds);
     if (stockQuantity != null) result.stockQuantity = stockQuantity;
     if (minStockThreshold != null) result.minStockThreshold = minStockThreshold;
@@ -330,7 +330,7 @@ class StoreProduct extends $pb.GeneratedMessage {
     ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..aOS(2, _omitFieldNames ? '' : 'storeId')
     ..aOS(3, _omitFieldNames ? '' : 'globalProductId')
-    ..a<$core.int>(4, _omitFieldNames ? '' : 'priceInXaf', $pb.PbFieldType.O3)
+    ..a<$core.int>(4, _omitFieldNames ? '' : 'price', $pb.PbFieldType.O3)
     ..pPS(5, _omitFieldNames ? '' : 'imagesLinkIds')
     ..a<$core.int>(
         6, _omitFieldNames ? '' : 'stockQuantity', $pb.PbFieldType.O3)
@@ -401,13 +401,13 @@ class StoreProduct extends $pb.GeneratedMessage {
   /// The price in XAF of the product.
   /// The currency is determined by the business.
   @$pb.TagNumber(4)
-  $core.int get priceInXaf => $_getIZ(3);
+  $core.int get price => $_getIZ(3);
   @$pb.TagNumber(4)
-  set priceInXaf($core.int value) => $_setSignedInt32(3, value);
+  set price($core.int value) => $_setSignedInt32(3, value);
   @$pb.TagNumber(4)
-  $core.bool hasPriceInXaf() => $_has(3);
+  $core.bool hasPrice() => $_has(3);
   @$pb.TagNumber(4)
-  void clearPriceInXaf() => $_clearField(4);
+  void clearPrice() => $_clearField(4);
 
   /// The media ids of the images of the product.
   @$pb.TagNumber(5)
@@ -924,74 +924,58 @@ class FindCategoryResponse extends $pb.GeneratedMessage {
   $pb.PbList<ProductCategory> get categories => $_getList(0);
 }
 
-class AddProductRequest extends $pb.GeneratedMessage {
-  factory AddProductRequest({
+class AddStoreProductRequest extends $pb.GeneratedMessage {
+  factory AddStoreProductRequest({
     GlobalProduct? globalProduct,
-    $core.String? storeId,
-    $core.int? priceInXaf,
-    $core.Iterable<$core.List<$core.int>>? imagesRawImages,
-    $core.int? stockQuantity,
-    $core.int? minStockThreshold,
-    $0.Timestamp? expirationDate,
+    StoreProduct? storeProduct,
   }) {
     final result = create();
     if (globalProduct != null) result.globalProduct = globalProduct;
-    if (storeId != null) result.storeId = storeId;
-    if (priceInXaf != null) result.priceInXaf = priceInXaf;
-    if (imagesRawImages != null) result.imagesRawImages.addAll(imagesRawImages);
-    if (stockQuantity != null) result.stockQuantity = stockQuantity;
-    if (minStockThreshold != null) result.minStockThreshold = minStockThreshold;
-    if (expirationDate != null) result.expirationDate = expirationDate;
+    if (storeProduct != null) result.storeProduct = storeProduct;
     return result;
   }
 
-  AddProductRequest._();
+  AddStoreProductRequest._();
 
-  factory AddProductRequest.fromBuffer($core.List<$core.int> data,
+  factory AddStoreProductRequest.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(data, registry);
-  factory AddProductRequest.fromJson($core.String json,
+  factory AddStoreProductRequest.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'AddProductRequest',
+      _omitMessageNames ? '' : 'AddStoreProductRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'),
       createEmptyInstance: create)
     ..aOM<GlobalProduct>(1, _omitFieldNames ? '' : 'globalProduct',
         subBuilder: GlobalProduct.create)
-    ..aOS(2, _omitFieldNames ? '' : 'storeId')
-    ..a<$core.int>(3, _omitFieldNames ? '' : 'priceInXaf', $pb.PbFieldType.O3)
-    ..p<$core.List<$core.int>>(
-        4, _omitFieldNames ? '' : 'imagesRawImages', $pb.PbFieldType.PY)
-    ..a<$core.int>(
-        5, _omitFieldNames ? '' : 'stockQuantity', $pb.PbFieldType.O3)
-    ..a<$core.int>(
-        6, _omitFieldNames ? '' : 'minStockThreshold', $pb.PbFieldType.O3)
-    ..aOM<$0.Timestamp>(7, _omitFieldNames ? '' : 'expirationDate',
-        subBuilder: $0.Timestamp.create)
+    ..aOM<StoreProduct>(2, _omitFieldNames ? '' : 'storeProduct',
+        subBuilder: StoreProduct.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  AddProductRequest clone() => AddProductRequest()..mergeFromMessage(this);
+  AddStoreProductRequest clone() =>
+      AddStoreProductRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  AddProductRequest copyWith(void Function(AddProductRequest) updates) =>
-      super.copyWith((message) => updates(message as AddProductRequest))
-          as AddProductRequest;
+  AddStoreProductRequest copyWith(
+          void Function(AddStoreProductRequest) updates) =>
+      super.copyWith((message) => updates(message as AddStoreProductRequest))
+          as AddStoreProductRequest;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static AddProductRequest create() => AddProductRequest._();
+  static AddStoreProductRequest create() => AddStoreProductRequest._();
   @$core.override
-  AddProductRequest createEmptyInstance() => create();
-  static $pb.PbList<AddProductRequest> createRepeated() =>
-      $pb.PbList<AddProductRequest>();
+  AddStoreProductRequest createEmptyInstance() => create();
+  static $pb.PbList<AddStoreProductRequest> createRepeated() =>
+      $pb.PbList<AddStoreProductRequest>();
   @$core.pragma('dart2js:noInline')
-  static AddProductRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<AddProductRequest>(create);
-  static AddProductRequest? _defaultInstance;
+  static AddStoreProductRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<AddStoreProductRequest>(create);
+  static AddStoreProductRequest? _defaultInstance;
 
   /// The product to add.
   /// If the product does not exist, it will be created.
@@ -1006,66 +990,21 @@ class AddProductRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   GlobalProduct ensureGlobalProduct() => $_ensure(0);
 
-  /// The unique identifier of the store.
+  /// The store product to add.
   @$pb.TagNumber(2)
-  $core.String get storeId => $_getSZ(1);
+  StoreProduct get storeProduct => $_getN(1);
   @$pb.TagNumber(2)
-  set storeId($core.String value) => $_setString(1, value);
+  set storeProduct(StoreProduct value) => $_setField(2, value);
   @$pb.TagNumber(2)
-  $core.bool hasStoreId() => $_has(1);
+  $core.bool hasStoreProduct() => $_has(1);
   @$pb.TagNumber(2)
-  void clearStoreId() => $_clearField(2);
-
-  /// The price in XAF of the product.
-  /// The currency is determined by the store.
-  @$pb.TagNumber(3)
-  $core.int get priceInXaf => $_getIZ(2);
-  @$pb.TagNumber(3)
-  set priceInXaf($core.int value) => $_setSignedInt32(2, value);
-  @$pb.TagNumber(3)
-  $core.bool hasPriceInXaf() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearPriceInXaf() => $_clearField(3);
-
-  /// The media ids of the images of the product.
-  @$pb.TagNumber(4)
-  $pb.PbList<$core.List<$core.int>> get imagesRawImages => $_getList(3);
-
-  /// The stock quantity of the product.
-  @$pb.TagNumber(5)
-  $core.int get stockQuantity => $_getIZ(4);
-  @$pb.TagNumber(5)
-  set stockQuantity($core.int value) => $_setSignedInt32(4, value);
-  @$pb.TagNumber(5)
-  $core.bool hasStockQuantity() => $_has(4);
-  @$pb.TagNumber(5)
-  void clearStockQuantity() => $_clearField(5);
-
-  /// The minimum stock threshold of the product.
-  @$pb.TagNumber(6)
-  $core.int get minStockThreshold => $_getIZ(5);
-  @$pb.TagNumber(6)
-  set minStockThreshold($core.int value) => $_setSignedInt32(5, value);
-  @$pb.TagNumber(6)
-  $core.bool hasMinStockThreshold() => $_has(5);
-  @$pb.TagNumber(6)
-  void clearMinStockThreshold() => $_clearField(6);
-
-  /// The expiration date of the product.
-  @$pb.TagNumber(7)
-  $0.Timestamp get expirationDate => $_getN(6);
-  @$pb.TagNumber(7)
-  set expirationDate($0.Timestamp value) => $_setField(7, value);
-  @$pb.TagNumber(7)
-  $core.bool hasExpirationDate() => $_has(6);
-  @$pb.TagNumber(7)
-  void clearExpirationDate() => $_clearField(7);
-  @$pb.TagNumber(7)
-  $0.Timestamp ensureExpirationDate() => $_ensure(6);
+  void clearStoreProduct() => $_clearField(2);
+  @$pb.TagNumber(2)
+  StoreProduct ensureStoreProduct() => $_ensure(1);
 }
 
-class AddProductResponse extends $pb.GeneratedMessage {
-  factory AddProductResponse({
+class AddStoreProductResponse extends $pb.GeneratedMessage {
+  factory AddStoreProductResponse({
     $core.bool? success,
   }) {
     final result = create();
@@ -1073,42 +1012,44 @@ class AddProductResponse extends $pb.GeneratedMessage {
     return result;
   }
 
-  AddProductResponse._();
+  AddStoreProductResponse._();
 
-  factory AddProductResponse.fromBuffer($core.List<$core.int> data,
+  factory AddStoreProductResponse.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(data, registry);
-  factory AddProductResponse.fromJson($core.String json,
+  factory AddStoreProductResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'AddProductResponse',
+      _omitMessageNames ? '' : 'AddStoreProductResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'),
       createEmptyInstance: create)
     ..aOB(1, _omitFieldNames ? '' : 'success')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  AddProductResponse clone() => AddProductResponse()..mergeFromMessage(this);
+  AddStoreProductResponse clone() =>
+      AddStoreProductResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  AddProductResponse copyWith(void Function(AddProductResponse) updates) =>
-      super.copyWith((message) => updates(message as AddProductResponse))
-          as AddProductResponse;
+  AddStoreProductResponse copyWith(
+          void Function(AddStoreProductResponse) updates) =>
+      super.copyWith((message) => updates(message as AddStoreProductResponse))
+          as AddStoreProductResponse;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static AddProductResponse create() => AddProductResponse._();
+  static AddStoreProductResponse create() => AddStoreProductResponse._();
   @$core.override
-  AddProductResponse createEmptyInstance() => create();
-  static $pb.PbList<AddProductResponse> createRepeated() =>
-      $pb.PbList<AddProductResponse>();
+  AddStoreProductResponse createEmptyInstance() => create();
+  static $pb.PbList<AddStoreProductResponse> createRepeated() =>
+      $pb.PbList<AddStoreProductResponse>();
   @$core.pragma('dart2js:noInline')
-  static AddProductResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<AddProductResponse>(create);
-  static AddProductResponse? _defaultInstance;
+  static AddStoreProductResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<AddStoreProductResponse>(create);
+  static AddStoreProductResponse? _defaultInstance;
 
   /// Whether the product was successfully added.
   @$pb.TagNumber(1)
@@ -1121,150 +1062,154 @@ class AddProductResponse extends $pb.GeneratedMessage {
   void clearSuccess() => $_clearField(1);
 }
 
-class GetProductRequest extends $pb.GeneratedMessage {
-  factory GetProductRequest({
-    $core.String? productId,
+class GetStoreProductRequest extends $pb.GeneratedMessage {
+  factory GetStoreProductRequest({
+    $core.String? storeProductId,
   }) {
     final result = create();
-    if (productId != null) result.productId = productId;
+    if (storeProductId != null) result.storeProductId = storeProductId;
     return result;
   }
 
-  GetProductRequest._();
+  GetStoreProductRequest._();
 
-  factory GetProductRequest.fromBuffer($core.List<$core.int> data,
+  factory GetStoreProductRequest.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(data, registry);
-  factory GetProductRequest.fromJson($core.String json,
+  factory GetStoreProductRequest.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'GetProductRequest',
+      _omitMessageNames ? '' : 'GetStoreProductRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'productId')
+    ..aOS(1, _omitFieldNames ? '' : 'storeProductId')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetProductRequest clone() => GetProductRequest()..mergeFromMessage(this);
+  GetStoreProductRequest clone() =>
+      GetStoreProductRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetProductRequest copyWith(void Function(GetProductRequest) updates) =>
-      super.copyWith((message) => updates(message as GetProductRequest))
-          as GetProductRequest;
+  GetStoreProductRequest copyWith(
+          void Function(GetStoreProductRequest) updates) =>
+      super.copyWith((message) => updates(message as GetStoreProductRequest))
+          as GetStoreProductRequest;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static GetProductRequest create() => GetProductRequest._();
+  static GetStoreProductRequest create() => GetStoreProductRequest._();
   @$core.override
-  GetProductRequest createEmptyInstance() => create();
-  static $pb.PbList<GetProductRequest> createRepeated() =>
-      $pb.PbList<GetProductRequest>();
+  GetStoreProductRequest createEmptyInstance() => create();
+  static $pb.PbList<GetStoreProductRequest> createRepeated() =>
+      $pb.PbList<GetStoreProductRequest>();
   @$core.pragma('dart2js:noInline')
-  static GetProductRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<GetProductRequest>(create);
-  static GetProductRequest? _defaultInstance;
+  static GetStoreProductRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetStoreProductRequest>(create);
+  static GetStoreProductRequest? _defaultInstance;
 
   /// The unique identifier of the store product.
   @$pb.TagNumber(1)
-  $core.String get productId => $_getSZ(0);
+  $core.String get storeProductId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set productId($core.String value) => $_setString(0, value);
+  set storeProductId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasProductId() => $_has(0);
+  $core.bool hasStoreProductId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearProductId() => $_clearField(1);
+  void clearStoreProductId() => $_clearField(1);
 }
 
-class GetProductResponse extends $pb.GeneratedMessage {
-  factory GetProductResponse({
-    StoreProduct? product,
+class GetStoreProductResponse extends $pb.GeneratedMessage {
+  factory GetStoreProductResponse({
+    StoreProduct? storeProduct,
   }) {
     final result = create();
-    if (product != null) result.product = product;
+    if (storeProduct != null) result.storeProduct = storeProduct;
     return result;
   }
 
-  GetProductResponse._();
+  GetStoreProductResponse._();
 
-  factory GetProductResponse.fromBuffer($core.List<$core.int> data,
+  factory GetStoreProductResponse.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(data, registry);
-  factory GetProductResponse.fromJson($core.String json,
+  factory GetStoreProductResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'GetProductResponse',
+      _omitMessageNames ? '' : 'GetStoreProductResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'),
       createEmptyInstance: create)
-    ..aOM<StoreProduct>(1, _omitFieldNames ? '' : 'product',
+    ..aOM<StoreProduct>(1, _omitFieldNames ? '' : 'storeProduct',
         subBuilder: StoreProduct.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetProductResponse clone() => GetProductResponse()..mergeFromMessage(this);
+  GetStoreProductResponse clone() =>
+      GetStoreProductResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetProductResponse copyWith(void Function(GetProductResponse) updates) =>
-      super.copyWith((message) => updates(message as GetProductResponse))
-          as GetProductResponse;
+  GetStoreProductResponse copyWith(
+          void Function(GetStoreProductResponse) updates) =>
+      super.copyWith((message) => updates(message as GetStoreProductResponse))
+          as GetStoreProductResponse;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static GetProductResponse create() => GetProductResponse._();
+  static GetStoreProductResponse create() => GetStoreProductResponse._();
   @$core.override
-  GetProductResponse createEmptyInstance() => create();
-  static $pb.PbList<GetProductResponse> createRepeated() =>
-      $pb.PbList<GetProductResponse>();
+  GetStoreProductResponse createEmptyInstance() => create();
+  static $pb.PbList<GetStoreProductResponse> createRepeated() =>
+      $pb.PbList<GetStoreProductResponse>();
   @$core.pragma('dart2js:noInline')
-  static GetProductResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<GetProductResponse>(create);
-  static GetProductResponse? _defaultInstance;
+  static GetStoreProductResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetStoreProductResponse>(create);
+  static GetStoreProductResponse? _defaultInstance;
 
   /// The retrieved store product data.
   @$pb.TagNumber(1)
-  StoreProduct get product => $_getN(0);
+  StoreProduct get storeProduct => $_getN(0);
   @$pb.TagNumber(1)
-  set product(StoreProduct value) => $_setField(1, value);
+  set storeProduct(StoreProduct value) => $_setField(1, value);
   @$pb.TagNumber(1)
-  $core.bool hasProduct() => $_has(0);
+  $core.bool hasStoreProduct() => $_has(0);
   @$pb.TagNumber(1)
-  void clearProduct() => $_clearField(1);
+  void clearStoreProduct() => $_clearField(1);
   @$pb.TagNumber(1)
-  StoreProduct ensureProduct() => $_ensure(0);
+  StoreProduct ensureStoreProduct() => $_ensure(0);
 }
 
-class UpdateProductRequest extends $pb.GeneratedMessage {
-  factory UpdateProductRequest({
-    StoreProduct? product,
+class UpdateStoreProductRequest extends $pb.GeneratedMessage {
+  factory UpdateStoreProductRequest({
+    StoreProduct? storeProduct,
     GlobalProduct? globalProduct,
     $core.Iterable<$core.List<$core.int>>? imagesRawImages,
   }) {
     final result = create();
-    if (product != null) result.product = product;
+    if (storeProduct != null) result.storeProduct = storeProduct;
     if (globalProduct != null) result.globalProduct = globalProduct;
     if (imagesRawImages != null) result.imagesRawImages.addAll(imagesRawImages);
     return result;
   }
 
-  UpdateProductRequest._();
+  UpdateStoreProductRequest._();
 
-  factory UpdateProductRequest.fromBuffer($core.List<$core.int> data,
+  factory UpdateStoreProductRequest.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(data, registry);
-  factory UpdateProductRequest.fromJson($core.String json,
+  factory UpdateStoreProductRequest.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'UpdateProductRequest',
+      _omitMessageNames ? '' : 'UpdateStoreProductRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'),
       createEmptyInstance: create)
-    ..aOM<StoreProduct>(1, _omitFieldNames ? '' : 'product',
+    ..aOM<StoreProduct>(1, _omitFieldNames ? '' : 'storeProduct',
         subBuilder: StoreProduct.create)
     ..aOM<GlobalProduct>(2, _omitFieldNames ? '' : 'globalProduct',
         subBuilder: GlobalProduct.create)
@@ -1273,41 +1218,42 @@ class UpdateProductRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  UpdateProductRequest clone() =>
-      UpdateProductRequest()..mergeFromMessage(this);
+  UpdateStoreProductRequest clone() =>
+      UpdateStoreProductRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  UpdateProductRequest copyWith(void Function(UpdateProductRequest) updates) =>
-      super.copyWith((message) => updates(message as UpdateProductRequest))
-          as UpdateProductRequest;
+  UpdateStoreProductRequest copyWith(
+          void Function(UpdateStoreProductRequest) updates) =>
+      super.copyWith((message) => updates(message as UpdateStoreProductRequest))
+          as UpdateStoreProductRequest;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static UpdateProductRequest create() => UpdateProductRequest._();
+  static UpdateStoreProductRequest create() => UpdateStoreProductRequest._();
   @$core.override
-  UpdateProductRequest createEmptyInstance() => create();
-  static $pb.PbList<UpdateProductRequest> createRepeated() =>
-      $pb.PbList<UpdateProductRequest>();
+  UpdateStoreProductRequest createEmptyInstance() => create();
+  static $pb.PbList<UpdateStoreProductRequest> createRepeated() =>
+      $pb.PbList<UpdateStoreProductRequest>();
   @$core.pragma('dart2js:noInline')
-  static UpdateProductRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<UpdateProductRequest>(create);
-  static UpdateProductRequest? _defaultInstance;
+  static UpdateStoreProductRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<UpdateStoreProductRequest>(create);
+  static UpdateStoreProductRequest? _defaultInstance;
 
   /// The store product information to update.
   /// Note:Only the fields that are set will be updated.
   /// Some fields cannot be updated like the product id, store id, and all
   /// product fields.
   @$pb.TagNumber(1)
-  StoreProduct get product => $_getN(0);
+  StoreProduct get storeProduct => $_getN(0);
   @$pb.TagNumber(1)
-  set product(StoreProduct value) => $_setField(1, value);
+  set storeProduct(StoreProduct value) => $_setField(1, value);
   @$pb.TagNumber(1)
-  $core.bool hasProduct() => $_has(0);
+  $core.bool hasStoreProduct() => $_has(0);
   @$pb.TagNumber(1)
-  void clearProduct() => $_clearField(1);
+  void clearStoreProduct() => $_clearField(1);
   @$pb.TagNumber(1)
-  StoreProduct ensureProduct() => $_ensure(0);
+  StoreProduct ensureStoreProduct() => $_ensure(0);
 
   /// The global product information to update.
   /// Note:Only the fields that are set will be updated if there is no
@@ -1328,8 +1274,8 @@ class UpdateProductRequest extends $pb.GeneratedMessage {
   $pb.PbList<$core.List<$core.int>> get imagesRawImages => $_getList(2);
 }
 
-class UpdateProductResponse extends $pb.GeneratedMessage {
-  factory UpdateProductResponse({
+class UpdateStoreProductResponse extends $pb.GeneratedMessage {
+  factory UpdateStoreProductResponse({
     $core.bool? success,
   }) {
     final result = create();
@@ -1337,44 +1283,45 @@ class UpdateProductResponse extends $pb.GeneratedMessage {
     return result;
   }
 
-  UpdateProductResponse._();
+  UpdateStoreProductResponse._();
 
-  factory UpdateProductResponse.fromBuffer($core.List<$core.int> data,
+  factory UpdateStoreProductResponse.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(data, registry);
-  factory UpdateProductResponse.fromJson($core.String json,
+  factory UpdateStoreProductResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'UpdateProductResponse',
+      _omitMessageNames ? '' : 'UpdateStoreProductResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'),
       createEmptyInstance: create)
     ..aOB(1, _omitFieldNames ? '' : 'success')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  UpdateProductResponse clone() =>
-      UpdateProductResponse()..mergeFromMessage(this);
+  UpdateStoreProductResponse clone() =>
+      UpdateStoreProductResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  UpdateProductResponse copyWith(
-          void Function(UpdateProductResponse) updates) =>
-      super.copyWith((message) => updates(message as UpdateProductResponse))
-          as UpdateProductResponse;
+  UpdateStoreProductResponse copyWith(
+          void Function(UpdateStoreProductResponse) updates) =>
+      super.copyWith(
+              (message) => updates(message as UpdateStoreProductResponse))
+          as UpdateStoreProductResponse;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static UpdateProductResponse create() => UpdateProductResponse._();
+  static UpdateStoreProductResponse create() => UpdateStoreProductResponse._();
   @$core.override
-  UpdateProductResponse createEmptyInstance() => create();
-  static $pb.PbList<UpdateProductResponse> createRepeated() =>
-      $pb.PbList<UpdateProductResponse>();
+  UpdateStoreProductResponse createEmptyInstance() => create();
+  static $pb.PbList<UpdateStoreProductResponse> createRepeated() =>
+      $pb.PbList<UpdateStoreProductResponse>();
   @$core.pragma('dart2js:noInline')
-  static UpdateProductResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<UpdateProductResponse>(create);
-  static UpdateProductResponse? _defaultInstance;
+  static UpdateStoreProductResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<UpdateStoreProductResponse>(create);
+  static UpdateStoreProductResponse? _defaultInstance;
 
   /// Whether the store product was successfully updated.
   @$pb.TagNumber(1)
@@ -1387,8 +1334,8 @@ class UpdateProductResponse extends $pb.GeneratedMessage {
   void clearSuccess() => $_clearField(1);
 }
 
-class DeleteProductRequest extends $pb.GeneratedMessage {
-  factory DeleteProductRequest({
+class DeleteStoreProductRequest extends $pb.GeneratedMessage {
+  factory DeleteStoreProductRequest({
     $core.String? storeProductId,
   }) {
     final result = create();
@@ -1396,43 +1343,44 @@ class DeleteProductRequest extends $pb.GeneratedMessage {
     return result;
   }
 
-  DeleteProductRequest._();
+  DeleteStoreProductRequest._();
 
-  factory DeleteProductRequest.fromBuffer($core.List<$core.int> data,
+  factory DeleteStoreProductRequest.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(data, registry);
-  factory DeleteProductRequest.fromJson($core.String json,
+  factory DeleteStoreProductRequest.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'DeleteProductRequest',
+      _omitMessageNames ? '' : 'DeleteStoreProductRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'storeProductId')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  DeleteProductRequest clone() =>
-      DeleteProductRequest()..mergeFromMessage(this);
+  DeleteStoreProductRequest clone() =>
+      DeleteStoreProductRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  DeleteProductRequest copyWith(void Function(DeleteProductRequest) updates) =>
-      super.copyWith((message) => updates(message as DeleteProductRequest))
-          as DeleteProductRequest;
+  DeleteStoreProductRequest copyWith(
+          void Function(DeleteStoreProductRequest) updates) =>
+      super.copyWith((message) => updates(message as DeleteStoreProductRequest))
+          as DeleteStoreProductRequest;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static DeleteProductRequest create() => DeleteProductRequest._();
+  static DeleteStoreProductRequest create() => DeleteStoreProductRequest._();
   @$core.override
-  DeleteProductRequest createEmptyInstance() => create();
-  static $pb.PbList<DeleteProductRequest> createRepeated() =>
-      $pb.PbList<DeleteProductRequest>();
+  DeleteStoreProductRequest createEmptyInstance() => create();
+  static $pb.PbList<DeleteStoreProductRequest> createRepeated() =>
+      $pb.PbList<DeleteStoreProductRequest>();
   @$core.pragma('dart2js:noInline')
-  static DeleteProductRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<DeleteProductRequest>(create);
-  static DeleteProductRequest? _defaultInstance;
+  static DeleteStoreProductRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<DeleteStoreProductRequest>(create);
+  static DeleteStoreProductRequest? _defaultInstance;
 
   /// The unique identifier of the store product.
   @$pb.TagNumber(1)
@@ -1445,8 +1393,8 @@ class DeleteProductRequest extends $pb.GeneratedMessage {
   void clearStoreProductId() => $_clearField(1);
 }
 
-class DeleteProductResponse extends $pb.GeneratedMessage {
-  factory DeleteProductResponse({
+class DeleteStoreProductResponse extends $pb.GeneratedMessage {
+  factory DeleteStoreProductResponse({
     $core.bool? success,
   }) {
     final result = create();
@@ -1454,44 +1402,45 @@ class DeleteProductResponse extends $pb.GeneratedMessage {
     return result;
   }
 
-  DeleteProductResponse._();
+  DeleteStoreProductResponse._();
 
-  factory DeleteProductResponse.fromBuffer($core.List<$core.int> data,
+  factory DeleteStoreProductResponse.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(data, registry);
-  factory DeleteProductResponse.fromJson($core.String json,
+  factory DeleteStoreProductResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'DeleteProductResponse',
+      _omitMessageNames ? '' : 'DeleteStoreProductResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'),
       createEmptyInstance: create)
     ..aOB(1, _omitFieldNames ? '' : 'success')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  DeleteProductResponse clone() =>
-      DeleteProductResponse()..mergeFromMessage(this);
+  DeleteStoreProductResponse clone() =>
+      DeleteStoreProductResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  DeleteProductResponse copyWith(
-          void Function(DeleteProductResponse) updates) =>
-      super.copyWith((message) => updates(message as DeleteProductResponse))
-          as DeleteProductResponse;
+  DeleteStoreProductResponse copyWith(
+          void Function(DeleteStoreProductResponse) updates) =>
+      super.copyWith(
+              (message) => updates(message as DeleteStoreProductResponse))
+          as DeleteStoreProductResponse;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static DeleteProductResponse create() => DeleteProductResponse._();
+  static DeleteStoreProductResponse create() => DeleteStoreProductResponse._();
   @$core.override
-  DeleteProductResponse createEmptyInstance() => create();
-  static $pb.PbList<DeleteProductResponse> createRepeated() =>
-      $pb.PbList<DeleteProductResponse>();
+  DeleteStoreProductResponse createEmptyInstance() => create();
+  static $pb.PbList<DeleteStoreProductResponse> createRepeated() =>
+      $pb.PbList<DeleteStoreProductResponse>();
   @$core.pragma('dart2js:noInline')
-  static DeleteProductResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<DeleteProductResponse>(create);
-  static DeleteProductResponse? _defaultInstance;
+  static DeleteStoreProductResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<DeleteStoreProductResponse>(create);
+  static DeleteStoreProductResponse? _defaultInstance;
 
   /// Whether the store product was successfully deleted.
   @$pb.TagNumber(1)
@@ -1664,29 +1613,29 @@ class ProductServiceApi {
           'FindCategory', request, FindCategoryResponse());
 
   /// Adds a product to a store.
-  $async.Future<AddProductResponse> addProduct(
-          $pb.ClientContext? ctx, AddProductRequest request) =>
-      _client.invoke<AddProductResponse>(
-          ctx, 'ProductService', 'AddProduct', request, AddProductResponse());
+  $async.Future<AddStoreProductResponse> addProduct(
+          $pb.ClientContext? ctx, AddStoreProductRequest request) =>
+      _client.invoke<AddStoreProductResponse>(ctx, 'ProductService',
+          'AddProduct', request, AddStoreProductResponse());
 
   /// Gets a store product by id.
-  $async.Future<GetProductResponse> getProduct(
-          $pb.ClientContext? ctx, GetProductRequest request) =>
-      _client.invoke<GetProductResponse>(
-          ctx, 'ProductService', 'GetProduct', request, GetProductResponse());
+  $async.Future<GetStoreProductResponse> getProduct(
+          $pb.ClientContext? ctx, GetStoreProductRequest request) =>
+      _client.invoke<GetStoreProductResponse>(ctx, 'ProductService',
+          'GetProduct', request, GetStoreProductResponse());
 
   /// Updates a store product.
-  $async.Future<UpdateProductResponse> updateProduct(
-          $pb.ClientContext? ctx, UpdateProductRequest request) =>
-      _client.invoke<UpdateProductResponse>(ctx, 'ProductService',
-          'UpdateProduct', request, UpdateProductResponse());
+  $async.Future<UpdateStoreProductResponse> updateProduct(
+          $pb.ClientContext? ctx, UpdateStoreProductRequest request) =>
+      _client.invoke<UpdateStoreProductResponse>(ctx, 'ProductService',
+          'UpdateProduct', request, UpdateStoreProductResponse());
 
   /// Deletes a store product.
   /// Only store products that are not in any orders can be deleted.
-  $async.Future<DeleteProductResponse> deleteProduct(
-          $pb.ClientContext? ctx, DeleteProductRequest request) =>
-      _client.invoke<DeleteProductResponse>(ctx, 'ProductService',
-          'DeleteProduct', request, DeleteProductResponse());
+  $async.Future<DeleteStoreProductResponse> deleteProduct(
+          $pb.ClientContext? ctx, DeleteStoreProductRequest request) =>
+      _client.invoke<DeleteStoreProductResponse>(ctx, 'ProductService',
+          'DeleteProduct', request, DeleteStoreProductResponse());
 
   /// Finds products by name.
   $async.Future<FindStoreProductsResponse> findStoreProducts(

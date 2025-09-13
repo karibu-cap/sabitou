@@ -30,24 +30,24 @@ abstract final class ProductService {
   static const addProduct = connect.Spec(
     '/$name/AddProduct',
     connect.StreamType.unary,
-    inventoryv1product.AddProductRequest.new,
-    inventoryv1product.AddProductResponse.new,
+    inventoryv1product.AddStoreProductRequest.new,
+    inventoryv1product.AddStoreProductResponse.new,
   );
 
   /// Gets a store product by id.
   static const getProduct = connect.Spec(
     '/$name/GetProduct',
     connect.StreamType.unary,
-    inventoryv1product.GetProductRequest.new,
-    inventoryv1product.GetProductResponse.new,
+    inventoryv1product.GetStoreProductRequest.new,
+    inventoryv1product.GetStoreProductResponse.new,
   );
 
   /// Updates a store product.
   static const updateProduct = connect.Spec(
     '/$name/UpdateProduct',
     connect.StreamType.unary,
-    inventoryv1product.UpdateProductRequest.new,
-    inventoryv1product.UpdateProductResponse.new,
+    inventoryv1product.UpdateStoreProductRequest.new,
+    inventoryv1product.UpdateStoreProductResponse.new,
   );
 
   /// Deletes a store product.
@@ -55,8 +55,8 @@ abstract final class ProductService {
   static const deleteProduct = connect.Spec(
     '/$name/DeleteProduct',
     connect.StreamType.unary,
-    inventoryv1product.DeleteProductRequest.new,
-    inventoryv1product.DeleteProductResponse.new,
+    inventoryv1product.DeleteStoreProductRequest.new,
+    inventoryv1product.DeleteStoreProductResponse.new,
   );
 
   /// Finds products by name.

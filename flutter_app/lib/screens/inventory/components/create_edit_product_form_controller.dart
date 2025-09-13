@@ -77,7 +77,7 @@ class CreateEditProductFormController extends ChangeNotifier {
         text: product?.globalProduct.barCodeValue,
       ),
       priceController = TextEditingController(
-        text: product?.storeProduct.priceInXaf.toString(),
+        text: product?.storeProduct.price.toString(),
       ),
       quantityController = TextEditingController(
         text: product?.storeProduct.stockQuantity.toString(),
@@ -146,21 +146,15 @@ class CreateEditProductFormController extends ChangeNotifier {
 
       final result = productFormType == ProductFormType.create
           ? await ProductsRepository.instance.addProduct(
-              AddProductRequest(
+              AddStoreProductRequest(
                 globalProduct: product.globalProduct,
-                storeId: storeId,
-                minStockThreshold: product.storeProduct.minStockThreshold,
-                priceInXaf: product.storeProduct.priceInXaf,
-                stockQuantity: product.storeProduct.stockQuantity,
-                expirationDate: product.storeProduct.hasExpirationDate()
-                    ? product.storeProduct.expirationDate
-                    : null,
+                storeProduct: product.storeProduct,
               ),
             )
           : await ProductsRepository.instance.updateProduct(
-              UpdateProductRequest(
+              UpdateStoreProductRequest(
                 globalProduct: product.globalProduct,
-                product: product.storeProduct,
+                storeProduct: product.storeProduct,
               ),
             );
 

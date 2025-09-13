@@ -56,7 +56,7 @@ message Transaction {
   optional string from_id = 6;
 
   // The amount of the transaction in XAF.
-  int64 amount_in_xaf = 7;
+  int64 amount = 7;
 
   // The currency code of the transaction (ISO 4217).
   string currency_code = 8 [(buf.validate.field).required = true];

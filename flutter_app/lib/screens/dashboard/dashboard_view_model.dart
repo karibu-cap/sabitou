@@ -164,9 +164,9 @@ final class DashboardViewModel {
         )
         .fold(0.0, (sum, t) {
           if (t.type == TransactionType.TRANSACTION_TYPE_SALE) {
-            return sum + t.amountInXaf.toDouble();
+            return sum + t.amount.toDouble();
           } else if (t.type == TransactionType.TRANSACTION_TYPE_REFUND) {
-            return sum - t.amountInXaf.abs().toDouble();
+            return sum - t.amount.abs().toDouble();
           }
 
           return sum;

@@ -38,7 +38,7 @@ message SupplyEntry {
   int32 quantity = 1;
 
   // The price in XAF of the product.
-  int32 price_in_xaf = 2;
+  int32 price = 2;
 
   // The unique identifier of the supplier.
   string supplier_id = 3;
@@ -56,7 +56,7 @@ message StoreProduct {
 
   // The price in XAF of the product.
   // The currency is determined by the business.
-  optional int32 price_in_xaf = 4;
+  optional int32 price = 4;
 
   // The media ids of the images of the product.
   repeated string images_link_ids = 5;
@@ -137,55 +137,39 @@ message FindCategoryResponse {
   repeated ProductCategory categories = 1;
 }
 
-message AddProductRequest {
+message AddStoreProductRequest {
   // The product to add.
   // If the product does not exist, it will be created.
   GlobalProduct global_product = 1;
 
-  // The unique identifier of the store.
-  string store_id = 2;
-
-  // The price in XAF of the product.
-  // The currency is determined by the store.
-  int32 price_in_xaf = 3;
-
-  // The media ids of the images of the product.
-  repeated bytes images_raw_images = 4;
-
-  // The stock quantity of the product.
-  int32 stock_quantity = 5;
-
-  // The minimum stock threshold of the product.
-  int32 min_stock_threshold = 6;
-
-  // The expiration date of the product.
-  optional google.protobuf.Timestamp expiration_date = 7;
+ // The store product to add.
+ StoreProduct store_product = 2;
 }
 
-message AddProductResponse {
+message AddStoreProductResponse {
   // Whether the product was successfully added.
   bool success = 1;
 }
 
-message GetProductRequest {
+message GetStoreProductRequest {
   // The unique identifier of the store product.
-  string product_id = 1 [
+  string store_product_id = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
 }
 
-message GetProductResponse {
+message GetStoreProductResponse {
   // The retrieved store product data.
-  StoreProduct product = 1;
+  StoreProduct store_product = 1;
 }
 
-message UpdateProductRequest {
+message UpdateStoreProductRequest {
   // The store product information to update.
   // Note:Only the fields that are set will be updated.
   // Some fields cannot be updated like the product id, store id, and all
   // product fields.
-  StoreProduct product = 1;
+  StoreProduct store_product = 1;
 
   // The global product information to update.
   // Note:Only the fields that are set will be updated if there is no
@@ -196,12 +180,12 @@ message UpdateProductRequest {
   repeated bytes images_raw_images = 3;
 }
 
-message UpdateProductResponse {
+message UpdateStoreProductResponse {
   // Whether the store product was successfully updated.
   bool success = 1;
 }
 
-message DeleteProductRequest {
+message DeleteStoreProductRequest {
   // The unique identifier of the store product.
   string store_product_id = 1 [
     (buf.validate.field).required = true,
@@ -209,7 +193,7 @@ message DeleteProductRequest {
   ];
 }
 
-message DeleteProductResponse {
+message DeleteStoreProductResponse {
   // Whether the store product was successfully deleted.
   bool success = 1;
 }
@@ -241,17 +225,17 @@ service ProductService {
   rpc FindCategory(FindCategoryRequest) returns (FindCategoryResponse);
 
   // Adds a product to a store.
-  rpc AddProduct(AddProductRequest) returns (AddProductResponse);
+  rpc AddProduct(AddStoreProductRequest) returns (AddStoreProductResponse);
 
   // Gets a store product by id.
-  rpc GetProduct(GetProductRequest) returns (GetProductResponse);
+  rpc GetProduct(GetStoreProductRequest) returns (GetStoreProductResponse);
 
   // Updates a store product.
-  rpc UpdateProduct(UpdateProductRequest) returns (UpdateProductResponse);
+  rpc UpdateProduct(UpdateStoreProductRequest) returns (UpdateStoreProductResponse);
 
   // Deletes a store product.
   // Only store products that are not in any orders can be deleted.
-  rpc DeleteProduct(DeleteProductRequest) returns (DeleteProductResponse);
+  rpc DeleteProduct(DeleteStoreProductRequest) returns (DeleteStoreProductResponse);
 
   // Finds products by name.
   rpc FindStoreProducts(FindStoreProductsRequest) returns (FindStoreProductsResponse);

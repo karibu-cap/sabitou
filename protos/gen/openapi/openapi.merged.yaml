@@ -1587,7 +1587,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/inventory.v1.AddProductRequest'
+              $ref: '#/components/schemas/inventory.v1.AddStoreProductRequest'
         required: true
       responses:
         default:
@@ -1601,7 +1601,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inventory.v1.AddProductResponse'
+                $ref: '#/components/schemas/inventory.v1.AddStoreProductResponse'
   /inventory.v1.ProductService/DeleteProduct:
     post:
       tags:
@@ -1625,7 +1625,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/inventory.v1.DeleteProductRequest'
+              $ref: '#/components/schemas/inventory.v1.DeleteStoreProductRequest'
         required: true
       responses:
         default:
@@ -1639,7 +1639,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inventory.v1.DeleteProductResponse'
+                $ref: '#/components/schemas/inventory.v1.DeleteStoreProductResponse'
   /inventory.v1.ProductService/FindCategory:
     post:
       tags:
@@ -1769,7 +1769,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/inventory.v1.GetProductRequest'
+              $ref: '#/components/schemas/inventory.v1.GetStoreProductRequest'
         required: true
       responses:
         default:
@@ -1783,7 +1783,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inventory.v1.GetProductResponse'
+                $ref: '#/components/schemas/inventory.v1.GetStoreProductResponse'
   /inventory.v1.ProductService/StreamStoreProducts: {}
   /inventory.v1.ProductService/UpdateProduct:
     post:
@@ -1806,7 +1806,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/inventory.v1.UpdateProductRequest'
+              $ref: '#/components/schemas/inventory.v1.UpdateStoreProductRequest'
         required: true
       responses:
         default:
@@ -1820,7 +1820,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inventory.v1.UpdateProductResponse'
+                $ref: '#/components/schemas/inventory.v1.UpdateStoreProductResponse'
   /link.v1.ResourceLinkService/GetResourceLinks:
     post:
       tags:
@@ -4396,7 +4396,7 @@ components:
           description: Whether the category was successfully updated.
       title: UpdateCategoryResponse
       additionalProperties: false
-    inventory.v1.AddProductRequest:
+    inventory.v1.AddStoreProductRequest:
       type: object
       properties:
         globalProduct:
@@ -4405,51 +4405,22 @@ components:
             The product to add.
              If the product does not exist, it will be created.
           $ref: '#/components/schemas/inventory.v1.GlobalProduct'
-        storeId:
-          type: string
-          title: store_id
-          description: The unique identifier of the store.
-        priceInXaf:
-          type: integer
-          title: price_in_xaf
-          format: int32
-          description: |-
-            The price in XAF of the product.
-             The currency is determined by the store.
-        imagesRawImages:
-          type: array
-          items:
-            type: string
-            format: byte
-          title: images_raw_images
-          description: The media ids of the images of the product.
-        stockQuantity:
-          type: integer
-          title: stock_quantity
-          format: int32
-          description: The stock quantity of the product.
-        minStockThreshold:
-          type: integer
-          title: min_stock_threshold
-          format: int32
-          description: The minimum stock threshold of the product.
-        expirationDate:
-          title: expiration_date
-          description: The expiration date of the product.
-          nullable: true
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-      title: AddProductRequest
+        storeProduct:
+          title: store_product
+          description: The store product to add.
+          $ref: '#/components/schemas/inventory.v1.StoreProduct'
+      title: AddStoreProductRequest
       additionalProperties: false
-    inventory.v1.AddProductResponse:
+    inventory.v1.AddStoreProductResponse:
       type: object
       properties:
         success:
           type: boolean
           title: success
           description: Whether the product was successfully added.
-      title: AddProductResponse
+      title: AddStoreProductResponse
       additionalProperties: false
-    inventory.v1.DeleteProductRequest:
+    inventory.v1.DeleteStoreProductRequest:
       type: object
       properties:
         storeProductId:
@@ -4457,18 +4428,18 @@ components:
           title: store_product_id
           minLength: 3
           description: The unique identifier of the store product.
-      title: DeleteProductRequest
+      title: DeleteStoreProductRequest
       required:
         - storeProductId
       additionalProperties: false
-    inventory.v1.DeleteProductResponse:
+    inventory.v1.DeleteStoreProductResponse:
       type: object
       properties:
         success:
           type: boolean
           title: success
           description: Whether the store product was successfully deleted.
-      title: DeleteProductResponse
+      title: DeleteStoreProductResponse
       additionalProperties: false
     inventory.v1.FindCategoryRequest:
       type: object
@@ -4573,26 +4544,26 @@ components:
              WARN: all returned products will only have their id and name.
       title: FindStoreProductsResponse
       additionalProperties: false
-    inventory.v1.GetProductRequest:
+    inventory.v1.GetStoreProductRequest:
       type: object
       properties:
-        productId:
+        storeProductId:
           type: string
-          title: product_id
+          title: store_product_id
           minLength: 3
           description: The unique identifier of the store product.
-      title: GetProductRequest
+      title: GetStoreProductRequest
       required:
-        - productId
+        - storeProductId
       additionalProperties: false
-    inventory.v1.GetProductResponse:
+    inventory.v1.GetStoreProductResponse:
       type: object
       properties:
-        product:
-          title: product
+        storeProduct:
+          title: store_product
           description: The retrieved store product data.
           $ref: '#/components/schemas/inventory.v1.StoreProduct'
-      title: GetProductResponse
+      title: GetStoreProductResponse
       additionalProperties: false
     inventory.v1.GlobalProduct:
       type: object
@@ -4660,9 +4631,9 @@ components:
           type: string
           title: global_product_id
           description: The unique identifier of the global product.
-        priceInXaf:
+        price:
           type: integer
-          title: price_in_xaf
+          title: price
           format: int32
           description: |-
             The price in XAF of the product.
@@ -4752,9 +4723,9 @@ components:
           title: quantity
           format: int32
           description: The quantity of the product.
-        priceInXaf:
+        price:
           type: integer
-          title: price_in_xaf
+          title: price
           format: int32
           description: The price in XAF of the product.
         supplierId:
@@ -4763,11 +4734,11 @@ components:
           description: The unique identifier of the supplier.
       title: SupplyEntry
       additionalProperties: false
-    inventory.v1.UpdateProductRequest:
+    inventory.v1.UpdateStoreProductRequest:
       type: object
       properties:
-        product:
-          title: product
+        storeProduct:
+          title: store_product
           description: |-
             The store product information to update.
              Note:Only the fields that are set will be updated.
@@ -4789,16 +4760,16 @@ components:
             format: byte
           title: images_raw_images
           description: The media ids of the images of the product.
-      title: UpdateProductRequest
+      title: UpdateStoreProductRequest
       additionalProperties: false
-    inventory.v1.UpdateProductResponse:
+    inventory.v1.UpdateStoreProductResponse:
       type: object
       properties:
         success:
           type: boolean
           title: success
           description: Whether the store product was successfully updated.
-      title: UpdateProductResponse
+      title: UpdateStoreProductResponse
       additionalProperties: false
     link.v1.GetResourceLinksRequest:
       type: object
@@ -4980,9 +4951,9 @@ components:
             $ref: '#/components/schemas/order.v1.OrderItem'
           title: order_items
           description: The list of items in the order.
-        totalPriceInXaf:
+        totalPrice:
           type: integer
-          title: total_price_in_xaf
+          title: total_price
           format: int32
           description: The total price of the order in XAF.
         status:
@@ -5031,9 +5002,9 @@ components:
           title: quantity
           format: int32
           description: The quantity of the product.
-        unitPriceInXaf:
+        unitPrice:
           type: integer
-          title: unit_price_in_xaf
+          title: unit_price
           format: int32
           description: |-
             The unit price in XAF of the product.
@@ -5095,9 +5066,9 @@ components:
         orderStatus:
           type: string
           title: order_status
-        orderTotalPriceInCents:
+        orderTotalPrice:
           type: string
-          title: order_total_price_in_cents
+          title: order_total_price
         orderCreatedAt:
           type: string
           title: order_created_at
@@ -5139,16 +5110,16 @@ components:
         productName:
           type: string
           title: product_name
-        productPriceInCents:
+        productPrice:
           type: string
-          title: product_price_in_cents
+          title: product_price
         quantity:
           type: integer
           title: quantity
           format: int32
-        receiptItemTotalPriceInCents:
+        receiptItemTotalPrice:
           type: integer
-          title: receipt_item_total_price_in_cents
+          title: receipt_item_total_price
           format: int32
       title: OrderReceiptItem
       additionalProperties: false
@@ -5648,11 +5619,11 @@ components:
           title: from_id
           description: The unique identifier of the client or supplier associated with the transaction.
           nullable: true
-        amountInXaf:
+        amount:
           type:
             - integer
             - string
-          title: amount_in_xaf
+          title: amount
           format: int64
           description: The amount of the transaction in XAF.
         currencyCode:

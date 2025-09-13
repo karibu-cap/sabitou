@@ -459,9 +459,9 @@ components:
             $ref: '#/components/schemas/order.v1.OrderItem'
           title: order_items
           description: The list of items in the order.
-        totalPriceInXaf:
+        totalPrice:
           type: integer
-          title: total_price_in_xaf
+          title: total_price
           format: int32
           description: The total price of the order in XAF.
         status:
@@ -510,9 +510,9 @@ components:
           title: quantity
           format: int32
           description: The quantity of the product.
-        unitPriceInXaf:
+        unitPrice:
           type: integer
-          title: unit_price_in_xaf
+          title: unit_price
           format: int32
           description: |-
             The unit price in XAF of the product.
