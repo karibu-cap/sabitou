@@ -328,7 +328,12 @@ class _ProductNameCell extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(product.globalProduct.name, style: theme.textTheme.large),
+              Text(
+                product.globalProduct.name,
+                style: theme.textTheme.large.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
               Text(
                 product.globalProduct.categories
                     .map((c) => c.name)
@@ -356,19 +361,9 @@ class _StockCell extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          '${product.storeProduct.stockQuantity} units',
-          style: theme.textTheme.p,
-        ),
-        Text(
-          'Min: ${product.storeProduct.minStockThreshold}',
-          style: theme.textTheme.muted,
-        ),
-      ],
+    return Text(
+      '${product.storeProduct.stockQuantity} units',
+      style: theme.textTheme.p,
     );
   }
 }
@@ -400,13 +395,13 @@ class _StatusCell extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: status.color.withValues(alpha: 0.1),
+        color: status.color,
         borderRadius: const BorderRadius.all(Radius.circular(12)),
       ),
       child: Text(
         status.text,
         style: theme.textTheme.muted.copyWith(
-          color: status.color,
+          color: AppColors.grey0,
           fontWeight: FontWeight.w600,
         ),
       ),
@@ -486,10 +481,11 @@ class _ActionsCell extends StatelessWidget {
               return const Text('N/A');
             }
 
-            return IconButton(
-              icon: Icon(
+            return ShadButton.ghost(
+              child: Icon(
                 LucideIcons.squarePen400,
                 color: ShadTheme.of(context).colorScheme.primary,
+                size: 15,
               ),
               onPressed: () => _showProductDialog(context, product),
             );
@@ -506,10 +502,11 @@ class _ActionsCell extends StatelessWidget {
               return const SizedBox.shrink();
             }
 
-            return IconButton(
-              icon: Icon(
+            return ShadButton.ghost(
+              child: Icon(
                 LucideIcons.trash2400,
                 color: ShadTheme.of(context).colorScheme.destructive,
+                size: 15,
               ),
               onPressed: () => _showDeleteDialog(context, product),
             );
