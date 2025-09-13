@@ -44,9 +44,9 @@ extension type ProductServiceClient (connect.Transport _transport) {
     );
   }
 
-  /// Adds a product to a business.
-  Future<inventoryv1product.AddProductResponse> addProduct(
-    inventoryv1product.AddProductRequest input, {
+  /// Adds a product to a store.
+  Future<inventoryv1product.AddStoreProductResponse> addProduct(
+    inventoryv1product.AddStoreProductRequest input, {
     connect.Headers? headers,
     connect.AbortSignal? signal,
     Function(connect.Headers)? onHeader,
@@ -62,9 +62,9 @@ extension type ProductServiceClient (connect.Transport _transport) {
     );
   }
 
-  /// Gets a business product by id.
-  Future<inventoryv1product.GetProductResponse> getProduct(
-    inventoryv1product.GetProductRequest input, {
+  /// Gets a store product by id.
+  Future<inventoryv1product.GetStoreProductResponse> getProduct(
+    inventoryv1product.GetStoreProductRequest input, {
     connect.Headers? headers,
     connect.AbortSignal? signal,
     Function(connect.Headers)? onHeader,
@@ -80,9 +80,9 @@ extension type ProductServiceClient (connect.Transport _transport) {
     );
   }
 
-  /// Updates a business product.
-  Future<inventoryv1product.UpdateProductResponse> updateProduct(
-    inventoryv1product.UpdateProductRequest input, {
+  /// Updates a store product.
+  Future<inventoryv1product.UpdateStoreProductResponse> updateProduct(
+    inventoryv1product.UpdateStoreProductRequest input, {
     connect.Headers? headers,
     connect.AbortSignal? signal,
     Function(connect.Headers)? onHeader,
@@ -98,11 +98,10 @@ extension type ProductServiceClient (connect.Transport _transport) {
     );
   }
 
-  /// Deletes a business product.
-  /// Only business products that are not in any store and orders can be
-  /// deleted.
-  Future<inventoryv1product.DeleteProductResponse> deleteProduct(
-    inventoryv1product.DeleteProductRequest input, {
+  /// Deletes a store product.
+  /// Only store products that are not in any orders can be deleted.
+  Future<inventoryv1product.DeleteStoreProductResponse> deleteProduct(
+    inventoryv1product.DeleteStoreProductRequest input, {
     connect.Headers? headers,
     connect.AbortSignal? signal,
     Function(connect.Headers)? onHeader,
@@ -119,15 +118,15 @@ extension type ProductServiceClient (connect.Transport _transport) {
   }
 
   /// Finds products by name.
-  Future<inventoryv1product.FindBusinessProductsResponse> findBusinessProducts(
-    inventoryv1product.FindBusinessProductsRequest input, {
+  Future<inventoryv1product.FindStoreProductsResponse> findStoreProducts(
+    inventoryv1product.FindStoreProductsRequest input, {
     connect.Headers? headers,
     connect.AbortSignal? signal,
     Function(connect.Headers)? onHeader,
     Function(connect.Headers)? onTrailer,
   }) {
     return connect.Client(_transport).unary(
-      specs.ProductService.findBusinessProducts,
+      specs.ProductService.findStoreProducts,
       input,
       signal: signal,
       headers: headers,
@@ -136,16 +135,16 @@ extension type ProductServiceClient (connect.Transport _transport) {
     );
   }
 
-  /// Streams all products for a business for real-time updates.
-  Stream<inventoryv1product.StreamBusinessProductsResponse> streamBusinessProducts(
-    inventoryv1product.StreamBusinessProductsRequest input, {
+  /// Streams all products for a store for real-time updates.
+  Stream<inventoryv1product.StreamStoreProductsResponse> streamStoreProducts(
+    inventoryv1product.StreamStoreProductsRequest input, {
     connect.Headers? headers,
     connect.AbortSignal? signal,
     Function(connect.Headers)? onHeader,
     Function(connect.Headers)? onTrailer,
   }) {
     return connect.Client(_transport).server(
-      specs.ProductService.streamBusinessProducts,
+      specs.ProductService.streamStoreProducts,
       input,
       signal: signal,
       headers: headers,

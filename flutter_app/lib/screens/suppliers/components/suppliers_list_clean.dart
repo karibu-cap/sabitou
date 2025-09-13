@@ -19,7 +19,7 @@ class SuppliersList extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Provider.of<SuppliersController>(context);
 
-    return StreamBuilder<List<BusinessProduct>>(
+    return StreamBuilder<List<StoreProduct>>(
       stream: controller.productsStream,
       builder: (context, productsSnapshot) {
         final products = productsSnapshot.data ?? [];

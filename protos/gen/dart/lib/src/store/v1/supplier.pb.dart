@@ -1,6 +1,6 @@
 // This is a generated file - do not edit.
 //
-// Generated from business/v1/supplier.proto.
+// Generated from store/v1/supplier.proto.
 
 // @dart = 3.3
 
@@ -41,7 +41,7 @@ class Link extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'Link',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'store.v1'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'label')
     ..aOS(2, _omitFieldNames ? '' : 'url')
@@ -99,7 +99,7 @@ class Supplier extends $pb.GeneratedMessage {
     $core.String? contactEmail,
     $core.String? contactAddress,
     $core.bool? isActive,
-    $core.Iterable<$core.String>? businessIds,
+    $core.Iterable<$core.String>? storeIds,
   }) {
     final result = create();
     if (refId != null) result.refId = refId;
@@ -112,7 +112,7 @@ class Supplier extends $pb.GeneratedMessage {
     if (contactEmail != null) result.contactEmail = contactEmail;
     if (contactAddress != null) result.contactAddress = contactAddress;
     if (isActive != null) result.isActive = isActive;
-    if (businessIds != null) result.businessIds.addAll(businessIds);
+    if (storeIds != null) result.storeIds.addAll(storeIds);
     return result;
   }
 
@@ -127,7 +127,7 @@ class Supplier extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'Supplier',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'store.v1'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..aOS(2, _omitFieldNames ? '' : 'name')
@@ -138,7 +138,7 @@ class Supplier extends $pb.GeneratedMessage {
     ..aOS(7, _omitFieldNames ? '' : 'contactEmail')
     ..aOS(8, _omitFieldNames ? '' : 'contactAddress')
     ..aOB(9, _omitFieldNames ? '' : 'isActive')
-    ..pPS(10, _omitFieldNames ? '' : 'businessIds')
+    ..pPS(10, _omitFieldNames ? '' : 'storeIds')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -244,9 +244,9 @@ class Supplier extends $pb.GeneratedMessage {
   @$pb.TagNumber(9)
   void clearIsActive() => $_clearField(9);
 
-  /// The ids of the business of the supplier.
+  /// The ids of the store of the supplier.
   @$pb.TagNumber(10)
-  $pb.PbList<$core.String> get businessIds => $_getList(9);
+  $pb.PbList<$core.String> get storeIds => $_getList(9);
 }
 
 class CreateSupplierRequest extends $pb.GeneratedMessage {
@@ -273,7 +273,7 @@ class CreateSupplierRequest extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'CreateSupplierRequest',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'store.v1'),
       createEmptyInstance: create)
     ..aOM<Supplier>(1, _omitFieldNames ? '' : 'supplier',
         subBuilder: Supplier.create)
@@ -354,7 +354,7 @@ class CreateSupplierResponse extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'CreateSupplierResponse',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'store.v1'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'supplierId')
     ..hasRequiredFields = false;
@@ -413,7 +413,7 @@ class GetSupplierRequest extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'GetSupplierRequest',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'store.v1'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'supplierId')
     ..hasRequiredFields = false;
@@ -470,7 +470,7 @@ class GetSupplierResponse extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'GetSupplierResponse',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'store.v1'),
       createEmptyInstance: create)
     ..aOM<Supplier>(1, _omitFieldNames ? '' : 'supplier',
         subBuilder: Supplier.create)
@@ -510,69 +510,67 @@ class GetSupplierResponse extends $pb.GeneratedMessage {
   Supplier ensureSupplier() => $_ensure(0);
 }
 
-class GetBusinessSuppliersRequest extends $pb.GeneratedMessage {
-  factory GetBusinessSuppliersRequest({
-    $core.String? businessId,
+class GetStoreSuppliersRequest extends $pb.GeneratedMessage {
+  factory GetStoreSuppliersRequest({
+    $core.String? storeId,
   }) {
     final result = create();
-    if (businessId != null) result.businessId = businessId;
+    if (storeId != null) result.storeId = storeId;
     return result;
   }
 
-  GetBusinessSuppliersRequest._();
+  GetStoreSuppliersRequest._();
 
-  factory GetBusinessSuppliersRequest.fromBuffer($core.List<$core.int> data,
+  factory GetStoreSuppliersRequest.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(data, registry);
-  factory GetBusinessSuppliersRequest.fromJson($core.String json,
+  factory GetStoreSuppliersRequest.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'GetBusinessSuppliersRequest',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'),
+      _omitMessageNames ? '' : 'GetStoreSuppliersRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'store.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'businessId')
+    ..aOS(1, _omitFieldNames ? '' : 'storeId')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetBusinessSuppliersRequest clone() =>
-      GetBusinessSuppliersRequest()..mergeFromMessage(this);
+  GetStoreSuppliersRequest clone() =>
+      GetStoreSuppliersRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetBusinessSuppliersRequest copyWith(
-          void Function(GetBusinessSuppliersRequest) updates) =>
-      super.copyWith(
-              (message) => updates(message as GetBusinessSuppliersRequest))
-          as GetBusinessSuppliersRequest;
+  GetStoreSuppliersRequest copyWith(
+          void Function(GetStoreSuppliersRequest) updates) =>
+      super.copyWith((message) => updates(message as GetStoreSuppliersRequest))
+          as GetStoreSuppliersRequest;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static GetBusinessSuppliersRequest create() =>
-      GetBusinessSuppliersRequest._();
+  static GetStoreSuppliersRequest create() => GetStoreSuppliersRequest._();
   @$core.override
-  GetBusinessSuppliersRequest createEmptyInstance() => create();
-  static $pb.PbList<GetBusinessSuppliersRequest> createRepeated() =>
-      $pb.PbList<GetBusinessSuppliersRequest>();
+  GetStoreSuppliersRequest createEmptyInstance() => create();
+  static $pb.PbList<GetStoreSuppliersRequest> createRepeated() =>
+      $pb.PbList<GetStoreSuppliersRequest>();
   @$core.pragma('dart2js:noInline')
-  static GetBusinessSuppliersRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<GetBusinessSuppliersRequest>(create);
-  static GetBusinessSuppliersRequest? _defaultInstance;
+  static GetStoreSuppliersRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetStoreSuppliersRequest>(create);
+  static GetStoreSuppliersRequest? _defaultInstance;
 
-  /// The reference id to the business identifier.
+  /// The reference id to the store identifier.
   @$pb.TagNumber(1)
-  $core.String get businessId => $_getSZ(0);
+  $core.String get storeId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set businessId($core.String value) => $_setString(0, value);
+  set storeId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasBusinessId() => $_has(0);
+  $core.bool hasStoreId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearBusinessId() => $_clearField(1);
+  void clearStoreId() => $_clearField(1);
 }
 
-class GetBusinessSuppliersResponse extends $pb.GeneratedMessage {
-  factory GetBusinessSuppliersResponse({
+class GetStoreSuppliersResponse extends $pb.GeneratedMessage {
+  factory GetStoreSuppliersResponse({
     $core.Iterable<Supplier>? suppliers,
   }) {
     final result = create();
@@ -580,49 +578,47 @@ class GetBusinessSuppliersResponse extends $pb.GeneratedMessage {
     return result;
   }
 
-  GetBusinessSuppliersResponse._();
+  GetStoreSuppliersResponse._();
 
-  factory GetBusinessSuppliersResponse.fromBuffer($core.List<$core.int> data,
+  factory GetStoreSuppliersResponse.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(data, registry);
-  factory GetBusinessSuppliersResponse.fromJson($core.String json,
+  factory GetStoreSuppliersResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'GetBusinessSuppliersResponse',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'),
+      _omitMessageNames ? '' : 'GetStoreSuppliersResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'store.v1'),
       createEmptyInstance: create)
     ..pc<Supplier>(1, _omitFieldNames ? '' : 'suppliers', $pb.PbFieldType.PM,
         subBuilder: Supplier.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetBusinessSuppliersResponse clone() =>
-      GetBusinessSuppliersResponse()..mergeFromMessage(this);
+  GetStoreSuppliersResponse clone() =>
+      GetStoreSuppliersResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetBusinessSuppliersResponse copyWith(
-          void Function(GetBusinessSuppliersResponse) updates) =>
-      super.copyWith(
-              (message) => updates(message as GetBusinessSuppliersResponse))
-          as GetBusinessSuppliersResponse;
+  GetStoreSuppliersResponse copyWith(
+          void Function(GetStoreSuppliersResponse) updates) =>
+      super.copyWith((message) => updates(message as GetStoreSuppliersResponse))
+          as GetStoreSuppliersResponse;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static GetBusinessSuppliersResponse create() =>
-      GetBusinessSuppliersResponse._();
+  static GetStoreSuppliersResponse create() => GetStoreSuppliersResponse._();
   @$core.override
-  GetBusinessSuppliersResponse createEmptyInstance() => create();
-  static $pb.PbList<GetBusinessSuppliersResponse> createRepeated() =>
-      $pb.PbList<GetBusinessSuppliersResponse>();
+  GetStoreSuppliersResponse createEmptyInstance() => create();
+  static $pb.PbList<GetStoreSuppliersResponse> createRepeated() =>
+      $pb.PbList<GetStoreSuppliersResponse>();
   @$core.pragma('dart2js:noInline')
-  static GetBusinessSuppliersResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<GetBusinessSuppliersResponse>(create);
-  static GetBusinessSuppliersResponse? _defaultInstance;
+  static GetStoreSuppliersResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetStoreSuppliersResponse>(create);
+  static GetStoreSuppliersResponse? _defaultInstance;
 
-  /// The list of suppliers of the business.
+  /// The list of suppliers of the store.
   /// Note: Only the ids and names of the suppliers are returned.
   @$pb.TagNumber(1)
   $pb.PbList<Supplier> get suppliers => $_getList(0);
@@ -652,7 +648,7 @@ class UpdateSupplierRequest extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'UpdateSupplierRequest',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'store.v1'),
       createEmptyInstance: create)
     ..aOM<Supplier>(1, _omitFieldNames ? '' : 'supplier',
         subBuilder: Supplier.create)
@@ -734,7 +730,7 @@ class UpdateSupplierResponse extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'UpdateSupplierResponse',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'store.v1'),
       createEmptyInstance: create)
     ..aOM<Supplier>(1, _omitFieldNames ? '' : 'supplier',
         subBuilder: Supplier.create)
@@ -796,7 +792,7 @@ class DeleteSupplierRequest extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'DeleteSupplierRequest',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'store.v1'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'supplierId')
     ..hasRequiredFields = false;
@@ -855,7 +851,7 @@ class DeleteSupplierResponse extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'DeleteSupplierResponse',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'store.v1'),
       createEmptyInstance: create)
     ..aOB(1, _omitFieldNames ? '' : 'success')
     ..hasRequiredFields = false;
@@ -911,21 +907,21 @@ class SupplierServiceApi {
       _client.invoke<GetSupplierResponse>(ctx, 'SupplierService', 'GetSupplier',
           request, GetSupplierResponse());
 
-  /// Gets all suppliers of a business.
-  $async.Future<GetBusinessSuppliersResponse> getBusinessSuppliers(
-          $pb.ClientContext? ctx, GetBusinessSuppliersRequest request) =>
-      _client.invoke<GetBusinessSuppliersResponse>(ctx, 'SupplierService',
-          'GetBusinessSuppliers', request, GetBusinessSuppliersResponse());
+  /// Gets all suppliers of a store.
+  $async.Future<GetStoreSuppliersResponse> getStoreSuppliers(
+          $pb.ClientContext? ctx, GetStoreSuppliersRequest request) =>
+      _client.invoke<GetStoreSuppliersResponse>(ctx, 'SupplierService',
+          'GetStoreSuppliers', request, GetStoreSuppliersResponse());
 
-  /// Streams all suppliers of a business with real-time updates.
+  /// Streams all suppliers of a store with real-time updates.
   /// This is a server streaming RPC that will send updates whenever suppliers change.
-  $async.Future<GetBusinessSuppliersResponse> streamBusinessSuppliers(
-          $pb.ClientContext? ctx, GetBusinessSuppliersRequest request) =>
-      _client.invoke<GetBusinessSuppliersResponse>(ctx, 'SupplierService',
-          'StreamBusinessSuppliers', request, GetBusinessSuppliersResponse());
+  $async.Future<GetStoreSuppliersResponse> streamStoreSuppliers(
+          $pb.ClientContext? ctx, GetStoreSuppliersRequest request) =>
+      _client.invoke<GetStoreSuppliersResponse>(ctx, 'SupplierService',
+          'StreamStoreSuppliers', request, GetStoreSuppliersResponse());
 
   /// Updates a supplier.
-  /// Note:Only the fields that are set will be updated. array fiels like external_links will be replaced.
+  /// Note:Only the fields that are set will be updated. array fields like external_links will be replaced.
   $async.Future<UpdateSupplierResponse> updateSupplier(
           $pb.ClientContext? ctx, UpdateSupplierRequest request) =>
       _client.invoke<UpdateSupplierResponse>(ctx, 'SupplierService',

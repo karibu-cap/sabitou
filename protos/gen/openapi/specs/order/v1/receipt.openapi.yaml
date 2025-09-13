@@ -137,9 +137,9 @@ components:
         orderStatus:
           type: string
           title: order_status
-        orderTotalPriceInCents:
+        orderTotalPrice:
           type: string
-          title: order_total_price_in_cents
+          title: order_total_price
         orderCreatedAt:
           type: string
           title: order_created_at
@@ -181,16 +181,16 @@ components:
         productName:
           type: string
           title: product_name
-        productPriceInCents:
+        productPrice:
           type: string
-          title: product_price_in_cents
+          title: product_price
         quantity:
           type: integer
           title: quantity
           format: int32
-        receiptItemTotalPriceInCents:
+        receiptItemTotalPrice:
           type: integer
-          title: receipt_item_total_price_in_cents
+          title: receipt_item_total_price
           format: int32
       title: OrderReceiptItem
       additionalProperties: false

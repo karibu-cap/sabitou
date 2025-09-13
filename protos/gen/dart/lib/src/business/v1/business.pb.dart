@@ -532,10 +532,10 @@ class ChangeBusinessCurrencyRequest extends $pb.GeneratedMessage {
 
 class ChangeBusinessCurrencyResponse extends $pb.GeneratedMessage {
   factory ChangeBusinessCurrencyResponse({
-    $core.bool? sucess,
+    $core.bool? success,
   }) {
     final result = create();
-    if (sucess != null) result.sucess = sucess;
+    if (success != null) result.success = success;
     return result;
   }
 
@@ -552,7 +552,7 @@ class ChangeBusinessCurrencyResponse extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'ChangeBusinessCurrencyResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'),
       createEmptyInstance: create)
-    ..aOB(1, _omitFieldNames ? '' : 'sucess')
+    ..aOB(1, _omitFieldNames ? '' : 'success')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -581,13 +581,13 @@ class ChangeBusinessCurrencyResponse extends $pb.GeneratedMessage {
   static ChangeBusinessCurrencyResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.bool get sucess => $_getBF(0);
+  $core.bool get success => $_getBF(0);
   @$pb.TagNumber(1)
-  set sucess($core.bool value) => $_setBool(0, value);
+  set success($core.bool value) => $_setBool(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasSucess() => $_has(0);
+  $core.bool hasSuccess() => $_has(0);
   @$pb.TagNumber(1)
-  void clearSucess() => $_clearField(1);
+  void clearSuccess() => $_clearField(1);
 }
 
 class GetMyBusinessesRequest extends $pb.GeneratedMessage {
@@ -1523,7 +1523,7 @@ class BusinessServiceApi {
       _client.invoke<UpdateBusinessResponse>(ctx, 'BusinessService',
           'UpdateBusiness', request, UpdateBusinessResponse());
 
-  /// Request the deletion of the business. This request doesn't delete the business direcly instead it put the business in inactive state and remove all business members.
+  /// Request the deletion of the business. This request doesn't delete the business directly instead it put the business in inactive state and remove all business members.
   $async.Future<RequestDeleteBusinessResponse> requestDeleteBusiness(
           $pb.ClientContext? ctx, RequestDeleteBusinessRequest request) =>
       _client.invoke<RequestDeleteBusinessResponse>(ctx, 'BusinessService',

@@ -45,8 +45,8 @@ final class CollectionName {
   /// The global product collection.
   static const String globalProducts = 'global_products';
 
-  /// The business product collection.
-  static const String businessProducts = 'business_products';
+  /// The store product collection.
+  static const String storeProducts = 'store_products';
 
   /// The resource link collection.
   static const String resourceLinks = 'resource_links';

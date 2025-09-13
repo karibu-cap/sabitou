@@ -153,32 +153,30 @@ type Transaction struct {
 	Type TransactionType `protobuf:"varint,2,opt,name=type,proto3,enum=transaction.v1.TransactionType" json:"type,omitempty"`
 	// The status of the transaction (pending, completed, failed, cancelled).
 	Status TransactionStatus `protobuf:"varint,3,opt,name=status,proto3,enum=transaction.v1.TransactionStatus" json:"status,omitempty"`
-	// The unique identifier of the business associated with the transaction.
-	BusinessId string `protobuf:"bytes,4,opt,name=business_id,json=businessId,proto3" json:"business_id,omitempty"`
 	// The unique identifier of the store associated with the transaction.
-	StoreId *string `protobuf:"bytes,5,opt,name=store_id,json=storeId,proto3,oneof" json:"store_id,omitempty"`
+	StoreId string `protobuf:"bytes,4,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
 	// The unique identifier of the order associated with the transaction.
-	OrderId *string `protobuf:"bytes,6,opt,name=order_id,json=orderId,proto3,oneof" json:"order_id,omitempty"`
+	OrderId *string `protobuf:"bytes,5,opt,name=order_id,json=orderId,proto3,oneof" json:"order_id,omitempty"`
 	// The unique identifier of the client or supplier associated with the transaction.
-	FromId *string `protobuf:"bytes,7,opt,name=from_id,json=fromId,proto3,oneof" json:"from_id,omitempty"`
-	// The amount of the transaction in cents.
-	AmountInCents int64 `protobuf:"varint,8,opt,name=amount_in_cents,json=amountInCents,proto3" json:"amount_in_cents,omitempty"`
+	FromId *string `protobuf:"bytes,6,opt,name=from_id,json=fromId,proto3,oneof" json:"from_id,omitempty"`
+	// The amount of the transaction in XAF.
+	Amount int64 `protobuf:"varint,7,opt,name=amount,proto3" json:"amount,omitempty"`
 	// The currency code of the transaction (ISO 4217).
-	CurrencyCode string `protobuf:"bytes,9,opt,name=currency_code,json=currencyCode,proto3" json:"currency_code,omitempty"`
+	CurrencyCode string `protobuf:"bytes,8,opt,name=currency_code,json=currencyCode,proto3" json:"currency_code,omitempty"`
 	// The creation date of the transaction (ISO 8601).
-	CreatedAt *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	CreatedAt *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	// The update date of the transaction (ISO 8601).
-	UpdatedAt *timestamppb.Timestamp `protobuf:"bytes,11,opt,name=updated_at,json=updatedAt,proto3,oneof" json:"updated_at,omitempty"`
+	UpdatedAt *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=updated_at,json=updatedAt,proto3,oneof" json:"updated_at,omitempty"`
 	// The description or note of the transaction (ex. : "Refund for order cancellation").
-	Description *string `protobuf:"bytes,12,opt,name=description,proto3,oneof" json:"description,omitempty"`
-	// The unique identifier of the business product associated with the transaction.
-	BusinessProductId *string `protobuf:"bytes,13,opt,name=business_product_id,json=businessProductId,proto3,oneof" json:"business_product_id,omitempty"`
+	Description *string `protobuf:"bytes,11,opt,name=description,proto3,oneof" json:"description,omitempty"`
+	// The unique identifier of the store product associated with the transaction.
+	StoreProductId *string `protobuf:"bytes,12,opt,name=store_product_id,json=storeProductId,proto3,oneof" json:"store_product_id,omitempty"`
 	// The quantity associated with the transaction (optional, for stock adjustments or stock transfers).
-	Quantity *int32 `protobuf:"varint,14,opt,name=quantity,proto3,oneof" json:"quantity,omitempty"`
+	Quantity *int32 `protobuf:"varint,13,opt,name=quantity,proto3,oneof" json:"quantity,omitempty"`
 	// The unique identifier of the user who initiated the transaction.
-	InitiatedBy *string `protobuf:"bytes,15,opt,name=initiated_by,json=initiatedBy,proto3,oneof" json:"initiated_by,omitempty"`
+	InitiatedBy *string `protobuf:"bytes,14,opt,name=initiated_by,json=initiatedBy,proto3,oneof" json:"initiated_by,omitempty"`
 	// The external links of the transaction (ex. : payment receipt, invoice).
-	ExternalLinksIds []string `protobuf:"bytes,16,rep,name=external_links_ids,json=externalLinksIds,proto3" json:"external_links_ids,omitempty"`
+	ExternalLinksIds []string `protobuf:"bytes,15,rep,name=external_links_ids,json=externalLinksIds,proto3" json:"external_links_ids,omitempty"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
@@ -234,16 +232,9 @@ func (x *Transaction) GetStatus() TransactionStatus {
 	return TransactionStatus_TRANSACTION_STATUS_UNSPECIFIED
 }
 
-func (x *Transaction) GetBusinessId() string {
-	if x != nil {
-		return x.BusinessId
-	}
-	return ""
-}
-
 func (x *Transaction) GetStoreId() string {
-	if x != nil && x.StoreId != nil {
-		return *x.StoreId
+	if x != nil {
+		return x.StoreId
 	}
 	return ""
 }
@@ -262,9 +253,9 @@ func (x *Transaction) GetFromId() string {
 	return ""
 }
 
-func (x *Transaction) GetAmountInCents() int64 {
+func (x *Transaction) GetAmount() int64 {
 	if x != nil {
-		return x.AmountInCents
+		return x.Amount
 	}
 	return 0
 }
@@ -297,9 +288,9 @@ func (x *Transaction) GetDescription() string {
 	return ""
 }
 
-func (x *Transaction) GetBusinessProductId() string {
-	if x != nil && x.BusinessProductId != nil {
-		return *x.BusinessProductId
+func (x *Transaction) GetStoreProductId() string {
+	if x != nil && x.StoreProductId != nil {
+		return *x.StoreProductId
 	}
 	return ""
 }
@@ -687,8 +678,7 @@ func (x *DeleteTransactionResponse) GetSuccess() bool {
 
 type FindTransactionsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	BusinessId    string                 `protobuf:"bytes,1,opt,name=business_id,json=businessId,proto3" json:"business_id,omitempty"`
-	StoreId       *string                `protobuf:"bytes,2,opt,name=store_id,json=storeId,proto3,oneof" json:"store_id,omitempty"`
+	StoreId       string                 `protobuf:"bytes,1,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
 	OrderId       *string                `protobuf:"bytes,3,opt,name=order_id,json=orderId,proto3,oneof" json:"order_id,omitempty"`
 	StartDate     *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=start_date,json=startDate,proto3,oneof" json:"start_date,omitempty"`
 	EndDate       *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=end_date,json=endDate,proto3,oneof" json:"end_date,omitempty"`
@@ -728,16 +718,9 @@ func (*FindTransactionsRequest) Descriptor() ([]byte, []int) {
 	return file_transaction_v1_transactions_proto_rawDescGZIP(), []int{9}
 }
 
-func (x *FindTransactionsRequest) GetBusinessId() string {
-	if x != nil {
-		return x.BusinessId
-	}
-	return ""
-}
-
 func (x *FindTransactionsRequest) GetStoreId() string {
-	if x != nil && x.StoreId != nil {
-		return *x.StoreId
+	if x != nil {
+		return x.StoreId
 	}
 	return ""
 }
@@ -826,37 +809,34 @@ var File_transaction_v1_transactions_proto protoreflect.FileDescriptor
 
 const file_transaction_v1_transactions_proto_rawDesc = "" +
 	"\n" +
-	"!transaction/v1/transactions.proto\x12\x0etransaction.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xcd\x06\n" +
+	"!transaction/v1/transactions.proto\x12\x0etransaction.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x81\x06\n" +
 	"\vTransaction\x12\x1a\n" +
 	"\x06ref_id\x18\x01 \x01(\tH\x00R\x05refId\x88\x01\x01\x123\n" +
 	"\x04type\x18\x02 \x01(\x0e2\x1f.transaction.v1.TransactionTypeR\x04type\x129\n" +
-	"\x06status\x18\x03 \x01(\x0e2!.transaction.v1.TransactionStatusR\x06status\x12+\n" +
-	"\vbusiness_id\x18\x04 \x01(\tB\n" +
-	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\n" +
-	"businessId\x12\x1e\n" +
-	"\bstore_id\x18\x05 \x01(\tH\x01R\astoreId\x88\x01\x01\x12\x1e\n" +
-	"\border_id\x18\x06 \x01(\tH\x02R\aorderId\x88\x01\x01\x12\x1c\n" +
-	"\afrom_id\x18\a \x01(\tH\x03R\x06fromId\x88\x01\x01\x12&\n" +
-	"\x0famount_in_cents\x18\b \x01(\x03R\ramountInCents\x12+\n" +
-	"\rcurrency_code\x18\t \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\fcurrencyCode\x129\n" +
+	"\x06status\x18\x03 \x01(\x0e2!.transaction.v1.TransactionStatusR\x06status\x12%\n" +
+	"\bstore_id\x18\x04 \x01(\tB\n" +
+	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\astoreId\x12\x1e\n" +
+	"\border_id\x18\x05 \x01(\tH\x01R\aorderId\x88\x01\x01\x12\x1c\n" +
+	"\afrom_id\x18\x06 \x01(\tH\x02R\x06fromId\x88\x01\x01\x12\x16\n" +
+	"\x06amount\x18\a \x01(\x03R\x06amount\x12+\n" +
+	"\rcurrency_code\x18\b \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\fcurrencyCode\x129\n" +
 	"\n" +
-	"created_at\x18\n" +
-	" \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12>\n" +
+	"created_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12>\n" +
 	"\n" +
-	"updated_at\x18\v \x01(\v2\x1a.google.protobuf.TimestampH\x04R\tupdatedAt\x88\x01\x01\x12%\n" +
-	"\vdescription\x18\f \x01(\tH\x05R\vdescription\x88\x01\x01\x123\n" +
-	"\x13business_product_id\x18\r \x01(\tH\x06R\x11businessProductId\x88\x01\x01\x12\x1f\n" +
-	"\bquantity\x18\x0e \x01(\x05H\aR\bquantity\x88\x01\x01\x12&\n" +
-	"\finitiated_by\x18\x0f \x01(\tH\bR\vinitiatedBy\x88\x01\x01\x12,\n" +
-	"\x12external_links_ids\x18\x10 \x03(\tR\x10externalLinksIdsB\t\n" +
+	"updated_at\x18\n" +
+	" \x01(\v2\x1a.google.protobuf.TimestampH\x03R\tupdatedAt\x88\x01\x01\x12%\n" +
+	"\vdescription\x18\v \x01(\tH\x04R\vdescription\x88\x01\x01\x12-\n" +
+	"\x10store_product_id\x18\f \x01(\tH\x05R\x0estoreProductId\x88\x01\x01\x12\x1f\n" +
+	"\bquantity\x18\r \x01(\x05H\x06R\bquantity\x88\x01\x01\x12&\n" +
+	"\finitiated_by\x18\x0e \x01(\tH\aR\vinitiatedBy\x88\x01\x01\x12,\n" +
+	"\x12external_links_ids\x18\x0f \x03(\tR\x10externalLinksIdsB\t\n" +
 	"\a_ref_idB\v\n" +
-	"\t_store_idB\v\n" +
 	"\t_order_idB\n" +
 	"\n" +
 	"\b_from_idB\r\n" +
 	"\v_updated_atB\x0e\n" +
-	"\f_descriptionB\x16\n" +
-	"\x14_business_product_idB\v\n" +
+	"\f_descriptionB\x13\n" +
+	"\x11_store_product_idB\v\n" +
 	"\t_quantityB\x0f\n" +
 	"\r_initiated_by\"V\n" +
 	"\x15AddTransactionRequest\x12=\n" +
@@ -874,19 +854,16 @@ const file_transaction_v1_transactions_proto_rawDesc = "" +
 	"\x18DeleteTransactionRequest\x12%\n" +
 	"\x0etransaction_id\x18\x01 \x01(\tR\rtransactionId\"5\n" +
 	"\x19DeleteTransactionResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess\"\xa8\x03\n" +
-	"\x17FindTransactionsRequest\x12+\n" +
-	"\vbusiness_id\x18\x01 \x01(\tB\n" +
-	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\n" +
-	"businessId\x12\x1e\n" +
-	"\bstore_id\x18\x02 \x01(\tH\x00R\astoreId\x88\x01\x01\x12\x1e\n" +
-	"\border_id\x18\x03 \x01(\tH\x01R\aorderId\x88\x01\x01\x12>\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"\xf5\x02\n" +
+	"\x17FindTransactionsRequest\x12%\n" +
+	"\bstore_id\x18\x01 \x01(\tB\n" +
+	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\astoreId\x12\x1e\n" +
+	"\border_id\x18\x03 \x01(\tH\x00R\aorderId\x88\x01\x01\x12>\n" +
 	"\n" +
-	"start_date\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampH\x02R\tstartDate\x88\x01\x01\x12:\n" +
-	"\bend_date\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampH\x03R\aendDate\x88\x01\x01\x123\n" +
+	"start_date\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampH\x01R\tstartDate\x88\x01\x01\x12:\n" +
+	"\bend_date\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampH\x02R\aendDate\x88\x01\x01\x123\n" +
 	"\x04type\x18\x06 \x03(\x0e2\x1f.transaction.v1.TransactionTypeR\x04type\x129\n" +
 	"\x06status\x18\a \x03(\x0e2!.transaction.v1.TransactionStatusR\x06statusB\v\n" +
-	"\t_store_idB\v\n" +
 	"\t_order_idB\r\n" +
 	"\v_start_dateB\v\n" +
 	"\t_end_date\"[\n" +

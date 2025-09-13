@@ -1,6 +1,6 @@
 // This is a generated file - do not edit.
 //
-// Generated from business/v1/supplier.proto.
+// Generated from store/v1/supplier.proto.
 
 // @dart = 3.3
 

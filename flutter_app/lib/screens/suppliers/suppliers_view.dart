@@ -21,7 +21,7 @@ class SuppliersView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<SuppliersController>(
       create: (_) => SuppliersController(
-        SuppliersViewModel(businessId: 'business-id-placeholder'),
+        SuppliersViewModel(storeId: 'store-id-placeholder'),
         AppInternationalizationService.to,
       ),
       child: const CommonScaffold(

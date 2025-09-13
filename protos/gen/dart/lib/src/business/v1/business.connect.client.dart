@@ -80,7 +80,7 @@ extension type BusinessServiceClient (connect.Transport _transport) {
     );
   }
 
-  /// Request the deletion of the business. This request doesn't delete the business direcly instead it put the business in inactive state and remove all business members.
+  /// Request the deletion of the business. This request doesn't delete the business directly instead it put the business in inactive state and remove all business members.
   Future<businessv1business.RequestDeleteBusinessResponse> requestDeleteBusiness(
     businessv1business.RequestDeleteBusinessRequest input, {
     connect.Headers? headers,

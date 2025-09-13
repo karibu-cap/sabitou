@@ -17,10 +17,10 @@ class DashboardController extends ChangeNotifier {
   DashboardStatsData get stats => viewModel.stats;
 
   /// List of low stock products.
-  List<BusinessProduct> get lowStockProducts => viewModel.lowStockProducts;
+  List<StoreProduct> get lowStockProducts => viewModel.lowStockProducts;
 
   /// List of expiring products.
-  List<BusinessProduct> get expiringProducts => viewModel.expiringProducts;
+  List<StoreProduct> get expiringProducts => viewModel.expiringProducts;
 
   /// Map of global products for quick lookup (only for low stock and expiring).
   Map<String, GlobalProduct> get globalProducts => viewModel.globalProducts;

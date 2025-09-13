@@ -34,15 +34,15 @@ final fakeTransportBuilder = FakeTransportBuilder()
           .toList(),
     );
   })
-  ..unary(ProductService.findBusinessProducts, (req, __) async {
-    return FindBusinessProductsResponse(
-      products: fakeData[CollectionName.businessProducts]
+  ..unary(ProductService.findStoreProducts, (req, __) async {
+    return FindStoreProductsResponse(
+      products: fakeData[CollectionName.storeProducts]
           ?.map(
             (e) =>
-                BusinessProduct()
+                StoreProduct()
                   ..mergeFromProto3Json(e, ignoreUnknownFields: true),
           )
-          .where((bp) => bp.businessId == req.businessId)
+          .where((bp) => bp.storeId == req.storeId)
           .toList(),
     );
   })
@@ -55,17 +55,6 @@ final fakeTransportBuilder = FakeTransportBuilder()
                   ..mergeFromProto3Json(e, ignoreUnknownFields: true),
           )
           .where((gp) => gp.refId == req.refId)
-          .toList(),
-    );
-  })
-  ..unary(SupplierService.getBusinessSuppliers, (req, __) async {
-    return GetBusinessSuppliersResponse(
-      suppliers: fakeData[CollectionName.suppliers]
-          ?.map(
-            (e) =>
-                Supplier()..mergeFromProto3Json(e, ignoreUnknownFields: true),
-          )
-          .where((gp) => gp.businessIds.contains(req.businessId))
           .toList(),
     );
   })

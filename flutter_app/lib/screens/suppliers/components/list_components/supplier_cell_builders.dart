@@ -95,7 +95,7 @@ class SupplierCellBuilders {
 
   /// Builds total value cell with formatted currency.
   static Widget buildTotalValueCell(
-    List<BusinessProduct> supplierProducts,
+    List<StoreProduct> supplierProducts,
     SuppliersController controller,
   ) {
     final totalValue = controller.calculateTotalValue(supplierProducts);

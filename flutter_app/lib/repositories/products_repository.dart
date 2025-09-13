@@ -22,18 +22,16 @@ class ProductsRepository {
         transport ?? ConnectRPCService.to.clientChannel,
       );
 
-  /// Gets all products base on business Id.
-  Future<List<BusinessProduct>> getProductsByBusinessId(
-    String businessId,
-  ) async {
+  /// Gets all products base on store Id.
+  Future<List<StoreProduct>> getProductsByStoreId(String storeId) async {
     try {
-      final response = await productServiceClient.findBusinessProducts(
-        FindBusinessProductsRequest(businessId: businessId),
+      final response = await productServiceClient.findStoreProducts(
+        FindStoreProductsRequest(storeId: storeId),
       );
 
       return response.products;
     } on Exception catch (e) {
-      _logger.severe('getProductsByBusinessId Error: $e');
+      _logger.severe('getProductsByStoreId Error: $e');
 
       return [];
     }
@@ -55,15 +53,15 @@ class ProductsRepository {
   }
 
   /// Gets all products base on business Id.
-  Future<List<BusinessProduct>> findBusinessProducts(
-    FindBusinessProductsRequest request,
+  Future<List<StoreProduct>> findStoreProducts(
+    FindStoreProductsRequest request,
   ) async {
     try {
-      final response = await productServiceClient.findBusinessProducts(request);
+      final response = await productServiceClient.findStoreProducts(request);
 
       return response.products;
     } on Exception catch (e) {
-      _logger.severe('getProductsByBusinessId Error: $e');
+      _logger.severe('findStoreProducts Error: $e');
 
       return [];
     }
@@ -100,7 +98,7 @@ class ProductsRepository {
   }
 
   /// Adds a new product to a business.
-  Future<bool> addProduct(AddProductRequest request) async {
+  Future<bool> addProduct(AddStoreProductRequest request) async {
     try {
       final response = await productServiceClient.addProduct(request);
 
@@ -113,11 +111,11 @@ class ProductsRepository {
   }
 
   /// Gets a business product by its ID.
-  Future<BusinessProduct?> getProduct(GetProductRequest request) async {
+  Future<StoreProduct?> getProduct(GetStoreProductRequest request) async {
     try {
       final response = await productServiceClient.getProduct(request);
 
-      return response.product;
+      return response.storeProduct;
     } on Exception catch (e) {
       _logger.severe('getProduct Error: $e');
 
@@ -126,7 +124,7 @@ class ProductsRepository {
   }
 
   /// Updates a business product.
-  Future<bool> updateProduct(UpdateProductRequest request) async {
+  Future<bool> updateProduct(UpdateStoreProductRequest request) async {
     try {
       final response = await productServiceClient.updateProduct(request);
 
@@ -139,7 +137,7 @@ class ProductsRepository {
   }
 
   /// Deletes a business product.
-  Future<bool> deleteProduct(DeleteProductRequest request) async {
+  Future<bool> deleteProduct(DeleteStoreProductRequest request) async {
     try {
       final response = await productServiceClient.deleteProduct(request);
 
@@ -152,18 +150,18 @@ class ProductsRepository {
   }
 
   /// Streams all products for a business for real-time updates.
-  Stream<List<BusinessProduct>> streamBusinessProducts(
-    StreamBusinessProductsRequest request,
+  Stream<List<StoreProduct>> streamStoreProducts(
+    StreamStoreProductsRequest request,
   ) {
     try {
       return productServiceClient
-          .streamBusinessProducts(request)
+          .streamStoreProducts(request)
           .map((response) => response.products)
           .handleError((error) {
-            _logger.severe('streamBusinessProducts Error: $error');
+            _logger.severe('streamStoreProducts Error: $error');
           });
     } on Exception catch (e) {
-      _logger.severe('streamBusinessProducts Error: $e');
+      _logger.severe('streamStoreProducts Error: $e');
       // Return empty stream on error
 
       return const Stream.empty();

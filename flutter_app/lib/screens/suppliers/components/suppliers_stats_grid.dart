@@ -30,7 +30,7 @@ class SuppliersStatsGrid extends StatelessWidget {
         final totalSuppliers = suppliers.length;
         final activeSuppliers = suppliers.where((s) => s.isActive).length;
 
-        return StreamBuilder<List<BusinessProduct>>(
+        return StreamBuilder<List<StoreProduct>>(
           stream: controller.productsStream,
           builder: (context, productsSnapshot) {
             if (productsSnapshot.connectionState == ConnectionState.waiting) {

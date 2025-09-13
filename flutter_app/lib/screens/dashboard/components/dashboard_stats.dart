@@ -95,14 +95,6 @@ class DashboardStats extends StatelessWidget {
                 percentChangeTransactions > 0 ? TrendType.up : TrendType.down,
             },
           ),
-          StatCard(
-            title: Intls.to.totalSuppliers,
-            value: statsData.totalSuppliers.toString(),
-            icon: LucideIcons.truck400,
-            color: AppColors.orange700,
-            change: Intls.to.activeSuppliers,
-            trend: TrendType.neutral,
-          ),
         ];
 
         return CustomGrid(children: statsCard, minItemWidth: 300);

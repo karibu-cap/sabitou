@@ -61,12 +61,12 @@ enum SeverityType {
 
 /// Product model.
 final class Product {
-  /// The business product.
-  BusinessProduct businessProduct;
+  /// The store product.
+  StoreProduct storeProduct;
 
   /// The global product.
   GlobalProduct globalProduct;
 
   /// Constructs a new [Product].
-  Product({required this.businessProduct, required this.globalProduct});
+  Product({required this.storeProduct, required this.globalProduct});
 }

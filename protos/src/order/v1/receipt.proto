@@ -7,9 +7,9 @@ import "buf/validate/validate.proto";
 message OrderReceiptItem {
   string product_id = 1;
   string product_name = 2;
-  string product_price_in_cents = 3;
+  string product_price = 3;
   int32 quantity = 4;
-  int32 receipt_item_total_price_in_cents = 5;
+  int32 receipt_item_total_price = 5;
 }
 
 // The receipt of an order.
@@ -19,7 +19,7 @@ message OrderReceipt {
   /// ...order details...
   string order_id = 1;
   string order_status = 2;
-  string order_total_price_in_cents = 3;
+  string order_total_price = 3;
   string order_created_at = 4;
   string order_updated_at = 5;
   string order_resource_name = 6;

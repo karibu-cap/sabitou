@@ -5,7 +5,6 @@ import 'package:sabitou_rpc/models.dart';
 
 import '../../repositories/orders_repository.dart';
 import '../../repositories/products_repository.dart';
-import '../../repositories/suppliers_repository.dart';
 import '../../repositories/transactions_repository.dart';
 import '../../utils/common_functions.dart';
 import '../../utils/user_preference.dart';
@@ -17,7 +16,6 @@ typedef DashboardStatsData = ({
   int expiringItems,
   double todaySales,
   int todayTransactions,
-  int totalSuppliers,
   List<Transaction> transactions,
   List<Transaction> yesterdayTransactions,
   double yesterdaySales,
@@ -32,10 +30,10 @@ final class DashboardViewModel {
   String error = '';
 
   /// List of low stock products.
-  List<BusinessProduct> lowStockProducts = <BusinessProduct>[];
+  List<StoreProduct> lowStockProducts = <StoreProduct>[];
 
   /// List of expiring products (improved to include soon-to-expire, not just expired).
-  List<BusinessProduct> expiringProducts = <BusinessProduct>[];
+  List<StoreProduct> expiringProducts = <StoreProduct>[];
 
   /// Map of global products for quick lookup (only for low stock and expiring).
   Map<String, GlobalProduct> globalProducts = <String, GlobalProduct>{};
@@ -55,7 +53,6 @@ final class DashboardViewModel {
     expiringItems: 0,
     todaySales: 0.0,
     todayTransactions: 0,
-    totalSuppliers: 0,
     transactions: <Transaction>[],
     yesterdayTransactions: <Transaction>[],
     yesterdaySales: 0.0,
@@ -74,21 +71,19 @@ final class DashboardViewModel {
       // Fetch all data in parallel.
       final [
         orders as List<Order>,
-        businessProducts as List<BusinessProduct>,
-        suppliers as List<Supplier>,
+        storeProducts as List<StoreProduct>,
         recentTransactions as List<Transaction>,
         yesterdayTransactions as List<Transaction>,
       ] = await Future.wait([
         OrdersRepository.instance.getOrdersByQuery(supplierId: store.refId),
-        ProductsRepository.instance.getProductsByBusinessId(businessId),
-        SuppliersRepository.instance.getSuppliersByBusinessId(businessId),
-        TransactionsRepository.instance.getCompleteTransactionsByBusinessId(
-          businessId: businessId,
+        ProductsRepository.instance.getProductsByStoreId(store.refId),
+        TransactionsRepository.instance.getCompleteTransactionsByStoreId(
+          storeId: store.refId,
           startOfDay: now.subtract(const Duration(days: 30)),
           endOfDay: now,
         ),
-        TransactionsRepository.instance.getCompleteTransactionsByBusinessId(
-          businessId: businessId,
+        TransactionsRepository.instance.getCompleteTransactionsByStoreId(
+          storeId: store.refId,
           startOfDay: DateTime(
             now.year,
             now.month,
@@ -97,9 +92,9 @@ final class DashboardViewModel {
           endOfDay: DateTime(now.year, now.month, now.day),
         ),
       ]);
-      // Filter business products to match businessId (safety).
-      final filteredProducts = businessProducts
-          .where((p) => p.businessId == businessId)
+      // Filter store products to match storeId (safety).
+      final filteredProducts = storeProducts
+          .where((p) => p.storeId == store.refId)
           .toList();
 
       /// Today's transactions.
@@ -121,9 +116,6 @@ final class DashboardViewModel {
       // Compute total products.
       final totalProductsCount = filteredProducts.length;
 
-      // Total suppliers.
-      final totalSuppliersCount = suppliers.length;
-
       // Update stats.
       stats = (
         totalProducts: totalProductsCount,
@@ -131,7 +123,6 @@ final class DashboardViewModel {
         expiringItems: expiringProducts.length,
         todaySales: _computeSales(todayTransactions, store.refId),
         todayTransactions: todayTransactions.length,
-        totalSuppliers: totalSuppliersCount,
         transactions: recentTransactions,
         yesterdayTransactions: yesterdayTransactions,
         yesterdaySales: _computeSales(yesterdayTransactions, store.refId),
@@ -173,9 +164,9 @@ final class DashboardViewModel {
         )
         .fold(0.0, (sum, t) {
           if (t.type == TransactionType.TRANSACTION_TYPE_SALE) {
-            return sum + t.amountInCents.toDouble();
+            return sum + t.amount.toDouble();
           } else if (t.type == TransactionType.TRANSACTION_TYPE_REFUND) {
-            return sum - t.amountInCents.abs().toDouble();
+            return sum - t.amount.abs().toDouble();
           }
 
           return sum;

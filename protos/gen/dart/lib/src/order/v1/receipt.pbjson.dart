@@ -20,20 +20,14 @@ const OrderReceiptItem$json = {
   '2': [
     {'1': 'product_id', '3': 1, '4': 1, '5': 9, '10': 'productId'},
     {'1': 'product_name', '3': 2, '4': 1, '5': 9, '10': 'productName'},
-    {
-      '1': 'product_price_in_cents',
-      '3': 3,
-      '4': 1,
-      '5': 9,
-      '10': 'productPriceInCents'
-    },
+    {'1': 'product_price', '3': 3, '4': 1, '5': 9, '10': 'productPrice'},
     {'1': 'quantity', '3': 4, '4': 1, '5': 5, '10': 'quantity'},
     {
-      '1': 'receipt_item_total_price_in_cents',
+      '1': 'receipt_item_total_price',
       '3': 5,
       '4': 1,
       '5': 5,
-      '10': 'receiptItemTotalPriceInCents'
+      '10': 'receiptItemTotalPrice'
     },
   ],
 };
@@ -41,10 +35,9 @@ const OrderReceiptItem$json = {
 /// Descriptor for `OrderReceiptItem`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List orderReceiptItemDescriptor = $convert.base64Decode(
     'ChBPcmRlclJlY2VpcHRJdGVtEh0KCnByb2R1Y3RfaWQYASABKAlSCXByb2R1Y3RJZBIhCgxwcm'
-    '9kdWN0X25hbWUYAiABKAlSC3Byb2R1Y3ROYW1lEjMKFnByb2R1Y3RfcHJpY2VfaW5fY2VudHMY'
-    'AyABKAlSE3Byb2R1Y3RQcmljZUluQ2VudHMSGgoIcXVhbnRpdHkYBCABKAVSCHF1YW50aXR5Ek'
-    'cKIXJlY2VpcHRfaXRlbV90b3RhbF9wcmljZV9pbl9jZW50cxgFIAEoBVIccmVjZWlwdEl0ZW1U'
-    'b3RhbFByaWNlSW5DZW50cw==');
+    '9kdWN0X25hbWUYAiABKAlSC3Byb2R1Y3ROYW1lEiMKDXByb2R1Y3RfcHJpY2UYAyABKAlSDHBy'
+    'b2R1Y3RQcmljZRIaCghxdWFudGl0eRgEIAEoBVIIcXVhbnRpdHkSNwoYcmVjZWlwdF9pdGVtX3'
+    'RvdGFsX3ByaWNlGAUgASgFUhVyZWNlaXB0SXRlbVRvdGFsUHJpY2U=');
 
 @$core.Deprecated('Use orderReceiptDescriptor instead')
 const OrderReceipt$json = {
@@ -52,13 +45,7 @@ const OrderReceipt$json = {
   '2': [
     {'1': 'order_id', '3': 1, '4': 1, '5': 9, '10': 'orderId'},
     {'1': 'order_status', '3': 2, '4': 1, '5': 9, '10': 'orderStatus'},
-    {
-      '1': 'order_total_price_in_cents',
-      '3': 3,
-      '4': 1,
-      '5': 9,
-      '10': 'orderTotalPriceInCents'
-    },
+    {'1': 'order_total_price', '3': 3, '4': 1, '5': 9, '10': 'orderTotalPrice'},
     {'1': 'order_created_at', '3': 4, '4': 1, '5': 9, '10': 'orderCreatedAt'},
     {'1': 'order_updated_at', '3': 5, '4': 1, '5': 9, '10': 'orderUpdatedAt'},
     {
@@ -110,16 +97,15 @@ const OrderReceipt$json = {
 /// Descriptor for `OrderReceipt`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List orderReceiptDescriptor = $convert.base64Decode(
     'CgxPcmRlclJlY2VpcHQSGQoIb3JkZXJfaWQYASABKAlSB29yZGVySWQSIQoMb3JkZXJfc3RhdH'
-    'VzGAIgASgJUgtvcmRlclN0YXR1cxI6ChpvcmRlcl90b3RhbF9wcmljZV9pbl9jZW50cxgDIAEo'
-    'CVIWb3JkZXJUb3RhbFByaWNlSW5DZW50cxIoChBvcmRlcl9jcmVhdGVkX2F0GAQgASgJUg5vcm'
-    'RlckNyZWF0ZWRBdBIoChBvcmRlcl91cGRhdGVkX2F0GAUgASgJUg5vcmRlclVwZGF0ZWRBdBIu'
-    'ChNvcmRlcl9yZXNvdXJjZV9uYW1lGAYgASgJUhFvcmRlclJlc291cmNlTmFtZRI0ChZvcmRlcl'
-    '9yZXNvdXJjZV9hZGRyZXNzGAcgASgJUhRvcmRlclJlc291cmNlQWRkcmVzcxI9ChtvcmRlcl9y'
-    'ZXNvdXJjZV9waG9uZV9udW1iZXIYCCABKAlSGG9yZGVyUmVzb3VyY2VQaG9uZU51bWJlchIwCh'
-    'RvcmRlcl9yZXNvdXJjZV9lbWFpbBgJIAEoCVISb3JkZXJSZXNvdXJjZUVtYWlsEj4KHG9yZGVy'
-    'X3Jlc291cmNlX2xvZ29fbWVkaWFfaWQYCiABKAlSGG9yZGVyUmVzb3VyY2VMb2dvTWVkaWFJZB'
-    'I7CgtvcmRlcl9pdGVtcxgLIAMoCzIaLm9yZGVyLnYxLk9yZGVyUmVjZWlwdEl0ZW1SCm9yZGVy'
-    'SXRlbXM=');
+    'VzGAIgASgJUgtvcmRlclN0YXR1cxIqChFvcmRlcl90b3RhbF9wcmljZRgDIAEoCVIPb3JkZXJU'
+    'b3RhbFByaWNlEigKEG9yZGVyX2NyZWF0ZWRfYXQYBCABKAlSDm9yZGVyQ3JlYXRlZEF0EigKEG'
+    '9yZGVyX3VwZGF0ZWRfYXQYBSABKAlSDm9yZGVyVXBkYXRlZEF0Ei4KE29yZGVyX3Jlc291cmNl'
+    'X25hbWUYBiABKAlSEW9yZGVyUmVzb3VyY2VOYW1lEjQKFm9yZGVyX3Jlc291cmNlX2FkZHJlc3'
+    'MYByABKAlSFG9yZGVyUmVzb3VyY2VBZGRyZXNzEj0KG29yZGVyX3Jlc291cmNlX3Bob25lX251'
+    'bWJlchgIIAEoCVIYb3JkZXJSZXNvdXJjZVBob25lTnVtYmVyEjAKFG9yZGVyX3Jlc291cmNlX2'
+    'VtYWlsGAkgASgJUhJvcmRlclJlc291cmNlRW1haWwSPgocb3JkZXJfcmVzb3VyY2VfbG9nb19t'
+    'ZWRpYV9pZBgKIAEoCVIYb3JkZXJSZXNvdXJjZUxvZ29NZWRpYUlkEjsKC29yZGVyX2l0ZW1zGA'
+    'sgAygLMhoub3JkZXIudjEuT3JkZXJSZWNlaXB0SXRlbVIKb3JkZXJJdGVtcw==');
 
 @$core.Deprecated('Use generateBillingRequestDescriptor instead')
 const GenerateBillingRequest$json = {
