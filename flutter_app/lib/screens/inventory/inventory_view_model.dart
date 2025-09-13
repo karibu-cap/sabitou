@@ -116,6 +116,12 @@ class InventoryViewModel {
             .toList();
       }
 
+      filtered.sort(
+        (a, b) => b.storeProduct.createdAt.toDateTime().compareTo(
+          a.storeProduct.createdAt.toDateTime(),
+        ),
+      );
+
       return filtered;
     },
   );

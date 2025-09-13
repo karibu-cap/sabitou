@@ -40,29 +40,14 @@ final _fakeTransport =
         })
         .unary(SupplierService.getStoreSuppliers, (req, _) async {
           return GetStoreSuppliersResponse(
-            suppliers: [
-              (Supplier()
-                ..refId = 'supplier_1'
-                ..name = 'Fournisseur Alpha'
-                ..contactEmail = 'alpha@example.com'
-                ..contactPhone = '696123456'
-                ..contactAddress = 'Yaoundé, Cameroun'
-                ..isActive = true),
-              Supplier()
-                ..refId = 'supplier_2'
-                ..name = 'Fournisseur Beta'
-                ..contactEmail = 'beta@example.com'
-                ..contactPhone = '696789012'
-                ..contactAddress = 'Douala, Cameroun'
-                ..isActive = true,
-              Supplier()
-                ..refId = 'supplier_3'
-                ..name = 'Fournisseur Gamma'
-                ..contactEmail = 'gamma@example.com'
-                ..contactPhone = '696345678'
-                ..contactAddress = 'Bafoussam, Cameroun'
-                ..isActive = false,
-            ],
+            suppliers: _fakeData[CollectionName.suppliers]
+                ?.map(
+                  (e) =>
+                      Supplier()
+                        ..mergeFromProto3Json(e, ignoreUnknownFields: true),
+                )
+                .where((gp) => gp.storeIds.contains(req.storeId))
+                .toList(),
           );
         })
         .unary(SupplierService.getSupplier, (req, _) async {
@@ -75,9 +60,13 @@ final _fakeTransport =
             ..supplier.isActive = true;
         })
         .unary(SupplierService.createSupplier, (req, _) async {
-          return CreateSupplierResponse()
-            ..supplierId =
-                'new_supplier_${DateTime.now().millisecondsSinceEpoch}';
+          final refId = 'supplier-${Random().nextInt(1000000)}';
+          _fakeData[CollectionName.suppliers]?.add({
+            'ref_id': refId,
+            ...req.supplier.toProto3Json() as Map<String, dynamic>,
+          });
+
+          return CreateSupplierResponse(supplierId: refId);
         })
         .unary(SupplierService.updateSupplier, (req, _) async {
           final request = req;
@@ -136,26 +125,6 @@ final _fakeTransport =
             ]);
         })
         // Product Service fakes
-        .unary(ProductService.findStoreProducts, (req, _) async {
-          final request = req;
-
-          return FindStoreProductsResponse(
-            products: [
-              StoreProduct()
-                ..refId = 'product_1'
-                ..globalProductId = 'global_product_1'
-                ..storeId = request.storeId,
-              StoreProduct()
-                ..refId = 'product_2'
-                ..globalProductId = 'global_product_2'
-                ..storeId = request.storeId,
-              StoreProduct()
-                ..refId = 'product_3'
-                ..globalProductId = 'global_product_3'
-                ..storeId = request.storeId,
-            ],
-          );
-        })
         .server(ProductService.streamStoreProducts, (req, _) async* {
           final request = req;
 
@@ -384,24 +353,14 @@ final _fakeTransport =
           _fakeData[CollectionName.globalProducts]?.add({
             'ref_id': globalProductRefId,
             'name': req.globalProduct.name,
-            'bar_code_value': req.globalProduct.barCodeValue,
-            'categories': req.globalProduct.categories
-                .map((e) => e.toProto3Json())
-                .toList(),
+            ...req.globalProduct.toProto3Json() as Map<String, dynamic>,
           });
         }
 
         _fakeData[CollectionName.storeProducts]?.add({
-          'ref_id': 'business-product-${Random().nextInt(1000000)}',
-          'store_id': req.storeProduct.storeId,
+          'ref_id': 'store-product-${Random().nextInt(1000000)}',
           'global_product_id': globalProductRefId,
-          'min_stock_threshold': req.storeProduct.minStockThreshold,
-          'price': req.storeProduct.price,
-          'stock_quantity': req.storeProduct.stockQuantity,
-          'expiration_date': req.storeProduct.hasExpirationDate()
-              ? req.storeProduct.expirationDate.toDateTime().toIso8601String()
-              : null,
-          'images_link_ids': [],
+          ...req.storeProduct.toProto3Json() as Map<String, dynamic>,
         });
 
         return AddStoreProductResponse()..success = true;

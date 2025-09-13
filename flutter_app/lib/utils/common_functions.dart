@@ -4,6 +4,7 @@ import 'package:sabitou_rpc/models.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../repositories/business_repository.dart';
+import '../themes/app_colors.dart';
 import 'user_preference.dart';
 
 /// Checks user permissions.
@@ -63,7 +64,6 @@ void showErrorToast({
     ShadToast.destructive(
       title: title != null ? Text(title) : null,
       description: Text(message),
-      backgroundColor: Colors.red.withValues(alpha: 0.5),
     ),
   );
 }
@@ -76,9 +76,43 @@ void showSuccessToast({
 }) {
   ShadToaster.of(context).show(
     ShadToast(
+      title: title != null
+          ? Text(title, style: const TextStyle(color: AppColors.grey0))
+          : null,
+      description: Text(
+        message,
+        style: const TextStyle(color: AppColors.grey0),
+      ),
+      backgroundColor: AppColors.dartGreen,
+    ),
+  );
+}
+
+/// Shows a warning toast.
+void showWarningToast({
+  required BuildContext context,
+  required String message,
+  String? title,
+}) {
+  ShadToaster.of(context).show(
+    ShadToast(
       title: title != null ? Text(title) : null,
       description: Text(message),
-      backgroundColor: Colors.green.withValues(alpha: 0.5),
+      backgroundColor: AppColors.lightOrange,
+    ),
+  );
+}
+
+/// Shows a warning toast.
+void showNeutralToast({
+  required BuildContext context,
+  required String message,
+  String? title,
+}) {
+  ShadToaster.of(context).show(
+    ShadToast(
+      title: title != null ? Text(title) : null,
+      description: Text(message),
     ),
   );
 }
