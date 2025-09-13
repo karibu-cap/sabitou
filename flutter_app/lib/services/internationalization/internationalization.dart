@@ -708,6 +708,7 @@ class AppInternationalizationService extends ChangeNotifier {
     'noDataFound': {'en': 'No data found', 'fr': 'Aucune donnée trouvée'},
     'dateRange': {'en': 'Date Range', 'fr': 'Plage de date'},
     'inboundDate': {'en': 'Inbound Date', 'fr': 'Date d\'entrée'},
+    'newOrders': {'en': 'New Orders', 'fr': 'Nouvelles commandes'},
   };
 
   /// Direct access to the internationalization service.
@@ -720,6 +721,9 @@ class AppInternationalizationService extends ChangeNotifier {
 
   /// The current locale.
   Locale get locale => _locale;
+
+  /// Returns the localized value of text 'newOrders'.
+  String get newOrders => _stringOfLocalizedValue('newOrders');
 
   /// The supported locales.
   static List<Locale> get supportedLocales => [

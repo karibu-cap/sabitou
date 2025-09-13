@@ -130,6 +130,12 @@ enum DashboardItem {
   products,
 
   /// The sales item.
+  salesReports,
+
+  /// Add sales.
+  salesOrders,
+
+  /// The great sale item.
   sales,
 
   /// The reports item.

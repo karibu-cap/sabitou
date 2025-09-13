@@ -204,6 +204,18 @@ class AppTheme {
         ),
       ],
     ),
+    primaryButtonTheme: ShadButtonTheme(
+      gradient: LinearGradient(
+        colors: [_primaryLight, _primaryLight.withValues(alpha: 0.6)],
+        stops: const [0, 1],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      ),
+    ),
+    ghostButtonTheme: const ShadButtonTheme(
+      hoverBackgroundColor: _primaryLight,
+      hoverForegroundColor: _primaryDark,
+    ),
   );
 
   /// Dark theme data.
@@ -265,6 +277,18 @@ class AppTheme {
           spreadRadius: -1,
         ),
       ],
+    ),
+    primaryButtonTheme: ShadButtonTheme(
+      gradient: LinearGradient(
+        colors: [_primaryDark, _primaryDark.withValues(alpha: 0.6)],
+        stops: const [0, 1],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      ),
+    ),
+    ghostButtonTheme: const ShadButtonTheme(
+      hoverBackgroundColor: _primaryDark,
+      hoverForegroundColor: _primaryLight,
     ),
   );
 
