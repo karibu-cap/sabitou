@@ -30,10 +30,10 @@ final class InventoryStats extends StatelessWidget {
       StatCard(
         title: Intls.to.totalSales,
         value: orders.length.toString(),
-        icon: LucideIcons.dollarSign400,
-        color: AppColors.cobalt,
+        icon: LucideIcons.trendingUp400,
+        color: AppColors.lightGreen,
         change: Intls.to.transactionsCompleted,
-        trend: TrendType.neutral,
+        trend: TrendType.up,
       ),
       StatCard(
         title: Intls.to.totalRevenue,
@@ -43,8 +43,8 @@ final class InventoryStats extends StatelessWidget {
                   .fold(0, (sum, p) => (sum ?? 0) + p.totalPrice) ??
               0,
         ),
-        icon: LucideIcons.wallet400,
-        color: AppColors.lightGreen,
+        icon: LucideIcons.dollarSign400,
+        color: AppColors.cobalt,
         trend: TrendType.neutral,
         change: Intls.to.totalEarnings,
       ),

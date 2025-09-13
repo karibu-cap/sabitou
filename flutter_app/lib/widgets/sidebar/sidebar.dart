@@ -55,6 +55,20 @@ class SidebarWidget extends StatelessWidget {
         label: Intls.to.sales,
         icon: LucideIcons.shoppingCart400,
         roles: ResourceType.values,
+        children: [
+          SideBarItem(
+            id: DashboardItem.salesReports,
+            label: Intls.to.reports,
+            icon: LucideIcons.chartColumn400,
+            roles: ResourceType.values,
+          ),
+          SideBarItem(
+            id: DashboardItem.salesOrders,
+            label: Intls.to.newOrders,
+            icon: LucideIcons.plus400,
+            roles: ResourceType.values,
+          ),
+        ],
       ),
       SideBarItem(
         id: DashboardItem.reports,
@@ -108,8 +122,7 @@ class SidebarWidget extends StatelessWidget {
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
-                    color: ShadTheme.of(context).colorScheme.border,
-                    width: 0.5,
+                    color: ShadTheme.of(context).colorScheme.card,
                   ),
                 ),
               ),
@@ -152,8 +165,7 @@ class SidebarWidget extends StatelessWidget {
                 color: ShadTheme.of(context).colorScheme.secondary,
                 border: Border(
                   top: BorderSide(
-                    color: ShadTheme.of(context).colorScheme.border,
-                    width: 0.5,
+                    color: ShadTheme.of(context).colorScheme.card,
                   ),
                 ),
               ),

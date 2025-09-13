@@ -98,7 +98,14 @@ class _OrdersDataTable extends StatelessWidget {
                     ),
 
                     cells: [
-                      DataCell(Text('ID: #${order.refId.substring(0, 5)}')),
+                      DataCell(
+                        Text(
+                          'ID: #${order.refId.substring(0, 5)}',
+                          style: ShadTheme.of(context).textTheme.large.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
                       DataCell(
                         Text(
                           Formatters.formatDate(order.createdAt.toDateTime()),
@@ -129,6 +136,9 @@ class _OrdersDataTable extends StatelessWidget {
                           Formatters.formatCurrency(
                             order.totalPrice.toDouble(),
                           ),
+                          style: ShadTheme.of(context).textTheme.large.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                       DataCell(_StatusCell(status: order.status)),
@@ -157,13 +167,13 @@ class _StatusCell extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: status.color.withValues(alpha: 0.1),
+        color: status.color,
         borderRadius: const BorderRadius.all(Radius.circular(12)),
       ),
       child: Text(
         status.label ?? '',
         style: theme.textTheme.muted.copyWith(
-          color: status.color,
+          color: AppColors.grey0,
           fontWeight: FontWeight.w600,
         ),
       ),
@@ -182,8 +192,8 @@ class _ActionsCell extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       spacing: 8,
       children: [
-        const ShadButton.outline(
-          child: Icon(LucideIcons.eye400),
+        const ShadButton.ghost(
+          child: Icon(LucideIcons.eye400, size: 15),
           // onPressed: () => _showOrderDialog(context, order),
         ),
         FutureBuilder(
@@ -197,8 +207,8 @@ class _ActionsCell extends StatelessWidget {
               return const SizedBox.shrink();
             }
 
-            return const ShadButton.outline(
-              child: Icon(LucideIcons.receipt400),
+            return const ShadButton.ghost(
+              child: Icon(LucideIcons.receipt400, size: 15),
               // onPressed: () => _showInvoiceDialog(context, order),
             );
           },
