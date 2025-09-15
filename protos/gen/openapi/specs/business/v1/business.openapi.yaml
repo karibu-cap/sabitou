@@ -38,6 +38,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/business.v1.AddUserToBusinessResponse'
+  /business.v1.BusinessService/AssociateUserToBusiness:
+    post:
+      tags:
+        - business.v1.BusinessService
+      summary: Associate user to business.
+      description: Associate user to business.
+      operationId: business.v1.BusinessService.AssociateUserToBusiness
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/business.v1.AssociateUserToBusinessRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/business.v1.AssociateUserToBusinessResponse'
   /business.v1.BusinessService/ChangeBusinessCurrency:
     post:
       tags:
@@ -146,6 +182,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/business.v1.GetBusinessDetailsResponse'
+  /business.v1.BusinessService/GetBusinessMember:
+    post:
+      tags:
+        - business.v1.BusinessService
+      summary: Get a specific business member.
+      description: Get a specific business member.
+      operationId: business.v1.BusinessService.GetBusinessMember
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/business.v1.GetBusinessMemberRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/business.v1.GetBusinessMemberResponse'
   /business.v1.BusinessService/GetBusinessMembers:
     post:
       tags:
@@ -294,6 +366,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/business.v1.RequestDeleteBusinessResponse'
+  /business.v1.BusinessService/StreamBusinessMembers: {}
   /business.v1.BusinessService/UpdateBusiness:
     post:
       tags:
@@ -330,6 +403,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/business.v1.UpdateBusinessResponse'
+  /business.v1.BusinessService/UpdateBusinessMember:
+    post:
+      tags:
+        - business.v1.BusinessService
+      summary: Update a business member (role, status, permissions).
+      description: Update a business member (role, status, permissions).
+      operationId: business.v1.BusinessService.UpdateBusinessMember
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/business.v1.UpdateBusinessMemberRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/business.v1.UpdateBusinessMemberResponse'
 components:
   schemas:
     business.v1.AddUserToBusinessRequest:
@@ -358,6 +467,30 @@ components:
           description: The business member to return
           $ref: '#/components/schemas/business.v1.BusinessMember'
       title: AddUserToBusinessResponse
+      additionalProperties: false
+    business.v1.AssociateUserToBusinessRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          title: email
+        businessId:
+          type: string
+          title: business_id
+      title: AssociateUserToBusinessRequest
+      additionalProperties: false
+      description: |-
+        The unique identifier of the user.
+         For example, the email address or @username.
+         string u_ref = 1;
+    business.v1.AssociateUserToBusinessResponse:
+      type: object
+      properties:
+        businessMember:
+          title: business_member
+          description: The business member to return
+          $ref: '#/components/schemas/business.v1.BusinessMember'
+      title: AssociateUserToBusinessResponse
       additionalProperties: false
     business.v1.Business:
       type: object
@@ -437,8 +570,13 @@ components:
           description: The unique identifier of the permission group.
         memberSince:
           title: member_since
-          description: The date since when the
+          description: The date since when the user became a member.
           $ref: '#/components/schemas/google.protobuf.Timestamp'
+        storeId:
+          type: string
+          title: store_id
+          description: The unique identifier of the store.
+          nullable: true
       title: BusinessMember
       additionalProperties: false
     business.v1.BusinessStatusType:
@@ -540,6 +678,33 @@ components:
           $ref: '#/components/schemas/business.v1.Business'
       title: GetBusinessDetailsResponse
       additionalProperties: false
+    business.v1.GetBusinessMemberRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+          title: user_id
+          minLength: 3
+          description: The unique identifier of the user.
+        businessId:
+          type: string
+          title: business_id
+          minLength: 3
+          description: The unique identifier of the business.
+      title: GetBusinessMemberRequest
+      required:
+        - userId
+        - businessId
+      additionalProperties: false
+    business.v1.GetBusinessMemberResponse:
+      type: object
+      properties:
+        businessMember:
+          title: business_member
+          description: The business member.
+          $ref: '#/components/schemas/business.v1.BusinessMember'
+      title: GetBusinessMemberResponse
+      additionalProperties: false
     business.v1.GetBusinessMembersRequest:
       type: object
       properties:
@@ -633,6 +798,94 @@ components:
           title: notice_period
           description: The notice period before the business will be deleted.
       title: RequestDeleteBusinessResponse
+      additionalProperties: false
+    business.v1.StreamBusinessMembersRequest:
+      type: object
+      properties:
+        businessId:
+          type: string
+          title: business_id
+          minLength: 3
+          description: The unique identifier of the business.
+        storeId:
+          type: string
+          title: store_id
+          minLength: 3
+          description: The unique identifier of the store.
+      title: StreamBusinessMembersRequest
+      required:
+        - businessId
+      additionalProperties: false
+    business.v1.StreamBusinessMembersResponse:
+      type: object
+      properties:
+        businessMembers:
+          type: array
+          items:
+            $ref: '#/components/schemas/business.v1.BusinessMember'
+          title: business_members
+          description: The business members.
+      title: StreamBusinessMembersResponse
+      additionalProperties: false
+    business.v1.UpdateBusinessMemberRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+          title: user_id
+          minLength: 3
+          description: The unique identifier of the user.
+        businessId:
+          type: string
+          title: business_id
+          minLength: 3
+          description: The unique identifier of the business.
+        addPermissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/identity.v1.Permission'
+          title: add_permissions
+          description: The permissions to add (optional).
+        removePermissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/identity.v1.Permission'
+          title: remove_permissions
+          description: The permissions to remove (optional).
+        addPermissionsGroupsIds:
+          type: array
+          items:
+            type: string
+          title: add_permissions_groups_ids
+          description: The permission group IDs to add (optional).
+        removePermissionsGroupsIds:
+          type: array
+          items:
+            type: string
+          title: remove_permissions_groups_ids
+          description: The permission group IDs to remove (optional).
+        storeId:
+          type: string
+          title: store_id
+          description: The unique identifier of the store.
+          nullable: true
+      title: UpdateBusinessMemberRequest
+      required:
+        - userId
+        - businessId
+      additionalProperties: false
+    business.v1.UpdateBusinessMemberResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the member was successfully updated.
+        businessMember:
+          title: business_member
+          description: The updated business member.
+          $ref: '#/components/schemas/business.v1.BusinessMember'
+      title: UpdateBusinessMemberResponse
       additionalProperties: false
     business.v1.UpdateBusinessRequest:
       type: object
@@ -866,10 +1119,10 @@ components:
         - RESOURCE_TYPE_BUSINESS_MEMBER
         - RESOURCE_TYPE_BUSINESS_SUPPLIER
         - RESOURCE_TYPE_STORE
-        - RESOURCE_TYPE_INVOICE
+        - RESOURCE_TYPE_STORE_INVOICE
         - RESOURCE_TYPE_STORE_ORDER
         - RESOURCE_TYPE_SUPPLIER_ORDER
-        - RESOURCE_TYPE_PRODUCT
+        - RESOURCE_TYPE_STORE_PRODUCT
     link.v1.ResourceLink:
       type: object
       properties:

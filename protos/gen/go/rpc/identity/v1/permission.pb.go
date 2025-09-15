@@ -28,11 +28,11 @@ const (
 	ResourceActionType_RESOURCE_ACTION_TYPE_UNSPECIFIED ResourceActionType = 0
 	// Can read the resource.
 	ResourceActionType_RESOURCE_ACTION_TYPE_READ ResourceActionType = 1
-	// Can read and (create or add) the resource.
+	// Can read and create the resource.
 	ResourceActionType_RESOURCE_ACTION_TYPE_ADD ResourceActionType = 2
-	// Can read, create, update the resource.
+	// Can read, update the resource.
 	ResourceActionType_RESOURCE_ACTION_TYPE_UPDATE ResourceActionType = 3
-	// Can read, create, update, delete the resource.
+	// Can read, delete the resource.
 	ResourceActionType_RESOURCE_ACTION_TYPE_REMOVE ResourceActionType = 4
 )
 
@@ -84,15 +84,23 @@ func (ResourceActionType) EnumDescriptor() ([]byte, []int) {
 type ResourceType int32
 
 const (
-	ResourceType_RESOURCE_TYPE_UNSPECIFIED       ResourceType = 0
-	ResourceType_RESOURCE_TYPE_BUSINESS          ResourceType = 1
-	ResourceType_RESOURCE_TYPE_BUSINESS_MEMBER   ResourceType = 2
-	ResourceType_RESOURCE_TYPE_BUSINESS_SUPPLIER ResourceType = 4
-	ResourceType_RESOURCE_TYPE_STORE             ResourceType = 5
-	ResourceType_RESOURCE_TYPE_INVOICE           ResourceType = 6
-	ResourceType_RESOURCE_TYPE_STORE_ORDER       ResourceType = 7
-	ResourceType_RESOURCE_TYPE_SUPPLIER_ORDER    ResourceType = 8
-	ResourceType_RESOURCE_TYPE_PRODUCT           ResourceType = 9
+	ResourceType_RESOURCE_TYPE_UNSPECIFIED ResourceType = 0
+	// / Can make all actions about information bussiness.
+	ResourceType_RESOURCE_TYPE_BUSINESS ResourceType = 1
+	// / Can make all actions about business member.
+	ResourceType_RESOURCE_TYPE_BUSINESS_MEMBER ResourceType = 2
+	// / Can make all actions about business supplier.
+	ResourceType_RESOURCE_TYPE_BUSINESS_SUPPLIER ResourceType = 3
+	// / Can make all actions about information store.
+	ResourceType_RESOURCE_TYPE_STORE ResourceType = 4
+	// / Can make all actions about store invoice.
+	ResourceType_RESOURCE_TYPE_STORE_INVOICE ResourceType = 5
+	// / Can make all actions about store order.
+	ResourceType_RESOURCE_TYPE_STORE_ORDER ResourceType = 6
+	// / Can make all actions about supplier order.
+	ResourceType_RESOURCE_TYPE_SUPPLIER_ORDER ResourceType = 7
+	// / Can make all actions about store product.
+	ResourceType_RESOURCE_TYPE_STORE_PRODUCT ResourceType = 8
 )
 
 // Enum value maps for ResourceType.
@@ -101,23 +109,23 @@ var (
 		0: "RESOURCE_TYPE_UNSPECIFIED",
 		1: "RESOURCE_TYPE_BUSINESS",
 		2: "RESOURCE_TYPE_BUSINESS_MEMBER",
-		4: "RESOURCE_TYPE_BUSINESS_SUPPLIER",
-		5: "RESOURCE_TYPE_STORE",
-		6: "RESOURCE_TYPE_INVOICE",
-		7: "RESOURCE_TYPE_STORE_ORDER",
-		8: "RESOURCE_TYPE_SUPPLIER_ORDER",
-		9: "RESOURCE_TYPE_PRODUCT",
+		3: "RESOURCE_TYPE_BUSINESS_SUPPLIER",
+		4: "RESOURCE_TYPE_STORE",
+		5: "RESOURCE_TYPE_STORE_INVOICE",
+		6: "RESOURCE_TYPE_STORE_ORDER",
+		7: "RESOURCE_TYPE_SUPPLIER_ORDER",
+		8: "RESOURCE_TYPE_STORE_PRODUCT",
 	}
 	ResourceType_value = map[string]int32{
 		"RESOURCE_TYPE_UNSPECIFIED":       0,
 		"RESOURCE_TYPE_BUSINESS":          1,
 		"RESOURCE_TYPE_BUSINESS_MEMBER":   2,
-		"RESOURCE_TYPE_BUSINESS_SUPPLIER": 4,
-		"RESOURCE_TYPE_STORE":             5,
-		"RESOURCE_TYPE_INVOICE":           6,
-		"RESOURCE_TYPE_STORE_ORDER":       7,
-		"RESOURCE_TYPE_SUPPLIER_ORDER":    8,
-		"RESOURCE_TYPE_PRODUCT":           9,
+		"RESOURCE_TYPE_BUSINESS_SUPPLIER": 3,
+		"RESOURCE_TYPE_STORE":             4,
+		"RESOURCE_TYPE_STORE_INVOICE":     5,
+		"RESOURCE_TYPE_STORE_ORDER":       6,
+		"RESOURCE_TYPE_SUPPLIER_ORDER":    7,
+		"RESOURCE_TYPE_STORE_PRODUCT":     8,
 	}
 )
 
@@ -1239,17 +1247,17 @@ const file_identity_v1_permission_proto_rawDesc = "" +
 	"\x19RESOURCE_ACTION_TYPE_READ\x10\x01\x12\x1c\n" +
 	"\x18RESOURCE_ACTION_TYPE_ADD\x10\x02\x12\x1f\n" +
 	"\x1bRESOURCE_ACTION_TYPE_UPDATE\x10\x03\x12\x1f\n" +
-	"\x1bRESOURCE_ACTION_TYPE_REMOVE\x10\x04*\xa1\x02\n" +
+	"\x1bRESOURCE_ACTION_TYPE_REMOVE\x10\x04*\xad\x02\n" +
 	"\fResourceType\x12\x1d\n" +
 	"\x19RESOURCE_TYPE_UNSPECIFIED\x10\x00\x12\x1a\n" +
 	"\x16RESOURCE_TYPE_BUSINESS\x10\x01\x12!\n" +
 	"\x1dRESOURCE_TYPE_BUSINESS_MEMBER\x10\x02\x12#\n" +
-	"\x1fRESOURCE_TYPE_BUSINESS_SUPPLIER\x10\x04\x12\x17\n" +
-	"\x13RESOURCE_TYPE_STORE\x10\x05\x12\x19\n" +
-	"\x15RESOURCE_TYPE_INVOICE\x10\x06\x12\x1d\n" +
-	"\x19RESOURCE_TYPE_STORE_ORDER\x10\a\x12 \n" +
-	"\x1cRESOURCE_TYPE_SUPPLIER_ORDER\x10\b\x12\x19\n" +
-	"\x15RESOURCE_TYPE_PRODUCT\x10\t2\xd1\a\n" +
+	"\x1fRESOURCE_TYPE_BUSINESS_SUPPLIER\x10\x03\x12\x17\n" +
+	"\x13RESOURCE_TYPE_STORE\x10\x04\x12\x1f\n" +
+	"\x1bRESOURCE_TYPE_STORE_INVOICE\x10\x05\x12\x1d\n" +
+	"\x19RESOURCE_TYPE_STORE_ORDER\x10\x06\x12 \n" +
+	"\x1cRESOURCE_TYPE_SUPPLIER_ORDER\x10\a\x12\x1f\n" +
+	"\x1bRESOURCE_TYPE_STORE_PRODUCT\x10\b2\xd1\a\n" +
 	"\x11PermissionService\x12s\n" +
 	"\x16CreatePermissionsGroup\x12*.identity.v1.CreatePermissionsGroupRequest\x1a+.identity.v1.CreatePermissionsGroupResponse\"\x00\x12j\n" +
 	"\x13GetPermissionsGroup\x12'.identity.v1.GetPermissionsGroupRequest\x1a(.identity.v1.GetPermissionsGroupResponse\"\x00\x12s\n" +

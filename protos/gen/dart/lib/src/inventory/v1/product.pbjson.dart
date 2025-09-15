@@ -91,7 +91,7 @@ const BusinessProduct$json = {
     {'1': 'business_id', '3': 2, '4': 1, '5': 9, '10': 'businessId'},
     {'1': 'global_product_id', '3': 3, '4': 1, '5': 9, '10': 'globalProductId'},
     {'1': 'price_in_xaf', '3': 4, '4': 1, '5': 5, '10': 'priceInXaf'},
-    {'1': 'images_link_ids', '3': 5, '4': 3, '5': 9, '10': 'imagesLinkIds'},
+    {'1': 'images_links_ids', '3': 5, '4': 3, '5': 9, '10': 'imagesLinksIds'},
     {'1': 'stock_quantity', '3': 6, '4': 1, '5': 5, '10': 'stockQuantity'},
     {
       '1': 'min_stock_threshold',
@@ -131,12 +131,12 @@ const BusinessProduct$json = {
 final $typed_data.Uint8List businessProductDescriptor = $convert.base64Decode(
     'Cg9CdXNpbmVzc1Byb2R1Y3QSGgoGcmVmX2lkGAEgASgJSABSBXJlZklkiAEBEh8KC2J1c2luZX'
     'NzX2lkGAIgASgJUgpidXNpbmVzc0lkEioKEWdsb2JhbF9wcm9kdWN0X2lkGAMgASgJUg9nbG9i'
-    'YWxQcm9kdWN0SWQSIAoMcHJpY2VfaW5feGFmGAQgASgFUgpwcmljZUluWGFmEiYKD2ltYWdlc1'
-    '9saW5rX2lkcxgFIAMoCVINaW1hZ2VzTGlua0lkcxIlCg5zdG9ja19xdWFudGl0eRgGIAEoBVIN'
-    'c3RvY2tRdWFudGl0eRIuChNtaW5fc3RvY2tfdGhyZXNob2xkGAcgASgFUhFtaW5TdG9ja1Rocm'
-    'VzaG9sZBJICg9leHBpcmF0aW9uX2RhdGUYCCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0'
-    'YW1wSAFSDmV4cGlyYXRpb25EYXRliAEBEiQKC3N1cHBsaWVyX2lkGAkgASgJSAJSCnN1cHBsaW'
-    'VySWSIAQFCCQoHX3JlZl9pZEISChBfZXhwaXJhdGlvbl9kYXRlQg4KDF9zdXBwbGllcl9pZA==');
+    'YWxQcm9kdWN0SWQSIAoMcHJpY2VfaW5feGFmGAQgASgFUgpwcmljZUluWGFmEigKEGltYWdlc1'
+    '9saW5rc19pZHMYBSADKAlSDmltYWdlc0xpbmtzSWRzEiUKDnN0b2NrX3F1YW50aXR5GAYgASgF'
+    'Ug1zdG9ja1F1YW50aXR5Ei4KE21pbl9zdG9ja190aHJlc2hvbGQYByABKAVSEW1pblN0b2NrVG'
+    'hyZXNob2xkEkgKD2V4cGlyYXRpb25fZGF0ZRgIIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1l'
+    'c3RhbXBIAVIOZXhwaXJhdGlvbkRhdGWIAQESJAoLc3VwcGxpZXJfaWQYCSABKAlIAlIKc3VwcG'
+    'xpZXJJZIgBAUIJCgdfcmVmX2lkQhIKEF9leHBpcmF0aW9uX2RhdGVCDgoMX3N1cHBsaWVyX2lk');
 
 @$core.Deprecated('Use findBusinessProductsRequestDescriptor instead')
 const FindBusinessProductsRequest$json = {

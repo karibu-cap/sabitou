@@ -8,24 +8,32 @@ enum ResourceActionType {
   RESOURCE_ACTION_TYPE_UNSPECIFIED = 0;
   // Can read the resource.
   RESOURCE_ACTION_TYPE_READ = 1;
-  // Can read and (create or add) the resource.
+  // Can read and create the resource.
   RESOURCE_ACTION_TYPE_ADD = 2;
-  // Can read, create, update the resource.
+  // Can read, update the resource.
   RESOURCE_ACTION_TYPE_UPDATE = 3;
-  // Can read, create, update, delete the resource.
+  // Can read, delete the resource.
   RESOURCE_ACTION_TYPE_REMOVE = 4;
 }
 
 enum ResourceType {
   RESOURCE_TYPE_UNSPECIFIED = 0;
+  /// Can make all actions about information bussiness.
   RESOURCE_TYPE_BUSINESS = 1;
+  /// Can make all actions about business member.
   RESOURCE_TYPE_BUSINESS_MEMBER = 2;
-  RESOURCE_TYPE_BUSINESS_SUPPLIER = 4;
-  RESOURCE_TYPE_STORE = 5;
-  RESOURCE_TYPE_INVOICE = 6;
-  RESOURCE_TYPE_STORE_ORDER = 7;
-  RESOURCE_TYPE_SUPPLIER_ORDER = 8;
-  RESOURCE_TYPE_PRODUCT = 9;
+  /// Can make all actions about business supplier.
+  RESOURCE_TYPE_BUSINESS_SUPPLIER = 3;
+  /// Can make all actions about information store.
+  RESOURCE_TYPE_STORE = 4;
+  /// Can make all actions about store invoice.
+  RESOURCE_TYPE_STORE_INVOICE = 5;
+  /// Can make all actions about store order.
+  RESOURCE_TYPE_STORE_ORDER = 6;
+  /// Can make all actions about supplier order.
+  RESOURCE_TYPE_SUPPLIER_ORDER = 7;
+  /// Can make all actions about store product.
+  RESOURCE_TYPE_STORE_PRODUCT = 8;
 }
 
 message Permission {

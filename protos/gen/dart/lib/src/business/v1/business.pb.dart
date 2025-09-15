@@ -193,6 +193,7 @@ class BusinessMember extends $pb.GeneratedMessage {
     $core.Iterable<$0.Permission>? permissions,
     $core.Iterable<$core.String>? permissionsGroupsIds,
     $1.Timestamp? memberSince,
+    $core.String? storeId,
   }) {
     final result = create();
     if (userId != null) result.userId = userId;
@@ -201,6 +202,7 @@ class BusinessMember extends $pb.GeneratedMessage {
     if (permissionsGroupsIds != null)
       result.permissionsGroupsIds.addAll(permissionsGroupsIds);
     if (memberSince != null) result.memberSince = memberSince;
+    if (storeId != null) result.storeId = storeId;
     return result;
   }
 
@@ -225,6 +227,7 @@ class BusinessMember extends $pb.GeneratedMessage {
     ..pPS(4, _omitFieldNames ? '' : 'permissionsGroupsIds')
     ..aOM<$1.Timestamp>(5, _omitFieldNames ? '' : 'memberSince',
         subBuilder: $1.Timestamp.create)
+    ..aOS(7, _omitFieldNames ? '' : 'storeId')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -276,7 +279,7 @@ class BusinessMember extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   $pb.PbList<$core.String> get permissionsGroupsIds => $_getList(3);
 
-  /// The date since when the
+  /// The date since when the user became a member.
   @$pb.TagNumber(5)
   $1.Timestamp get memberSince => $_getN(4);
   @$pb.TagNumber(5)
@@ -287,6 +290,16 @@ class BusinessMember extends $pb.GeneratedMessage {
   void clearMemberSince() => $_clearField(5);
   @$pb.TagNumber(5)
   $1.Timestamp ensureMemberSince() => $_ensure(4);
+
+  /// The unique identifier of the store.
+  @$pb.TagNumber(7)
+  $core.String get storeId => $_getSZ(5);
+  @$pb.TagNumber(7)
+  set storeId($core.String value) => $_setString(5, value);
+  @$pb.TagNumber(7)
+  $core.bool hasStoreId() => $_has(5);
+  @$pb.TagNumber(7)
+  void clearStoreId() => $_clearField(7);
 }
 
 class CreateBusinessRequest extends $pb.GeneratedMessage {
@@ -1245,6 +1258,143 @@ class AddUserToBusinessResponse extends $pb.GeneratedMessage {
   BusinessMember ensureBusinessMember() => $_ensure(0);
 }
 
+class AssociateUserToBusinessRequest extends $pb.GeneratedMessage {
+  factory AssociateUserToBusinessRequest({
+    $core.String? email,
+    $core.String? businessId,
+  }) {
+    final result = create();
+    if (email != null) result.email = email;
+    if (businessId != null) result.businessId = businessId;
+    return result;
+  }
+
+  AssociateUserToBusinessRequest._();
+
+  factory AssociateUserToBusinessRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory AssociateUserToBusinessRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'AssociateUserToBusinessRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'email')
+    ..aOS(3, _omitFieldNames ? '' : 'businessId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  AssociateUserToBusinessRequest clone() =>
+      AssociateUserToBusinessRequest()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  AssociateUserToBusinessRequest copyWith(
+          void Function(AssociateUserToBusinessRequest) updates) =>
+      super.copyWith(
+              (message) => updates(message as AssociateUserToBusinessRequest))
+          as AssociateUserToBusinessRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static AssociateUserToBusinessRequest create() =>
+      AssociateUserToBusinessRequest._();
+  @$core.override
+  AssociateUserToBusinessRequest createEmptyInstance() => create();
+  static $pb.PbList<AssociateUserToBusinessRequest> createRepeated() =>
+      $pb.PbList<AssociateUserToBusinessRequest>();
+  @$core.pragma('dart2js:noInline')
+  static AssociateUserToBusinessRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<AssociateUserToBusinessRequest>(create);
+  static AssociateUserToBusinessRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get email => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set email($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasEmail() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearEmail() => $_clearField(1);
+
+  @$pb.TagNumber(3)
+  $core.String get businessId => $_getSZ(1);
+  @$pb.TagNumber(3)
+  set businessId($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(3)
+  $core.bool hasBusinessId() => $_has(1);
+  @$pb.TagNumber(3)
+  void clearBusinessId() => $_clearField(3);
+}
+
+class AssociateUserToBusinessResponse extends $pb.GeneratedMessage {
+  factory AssociateUserToBusinessResponse({
+    BusinessMember? businessMember,
+  }) {
+    final result = create();
+    if (businessMember != null) result.businessMember = businessMember;
+    return result;
+  }
+
+  AssociateUserToBusinessResponse._();
+
+  factory AssociateUserToBusinessResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory AssociateUserToBusinessResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'AssociateUserToBusinessResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'),
+      createEmptyInstance: create)
+    ..aOM<BusinessMember>(1, _omitFieldNames ? '' : 'businessMember',
+        subBuilder: BusinessMember.create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  AssociateUserToBusinessResponse clone() =>
+      AssociateUserToBusinessResponse()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  AssociateUserToBusinessResponse copyWith(
+          void Function(AssociateUserToBusinessResponse) updates) =>
+      super.copyWith(
+              (message) => updates(message as AssociateUserToBusinessResponse))
+          as AssociateUserToBusinessResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static AssociateUserToBusinessResponse create() =>
+      AssociateUserToBusinessResponse._();
+  @$core.override
+  AssociateUserToBusinessResponse createEmptyInstance() => create();
+  static $pb.PbList<AssociateUserToBusinessResponse> createRepeated() =>
+      $pb.PbList<AssociateUserToBusinessResponse>();
+  @$core.pragma('dart2js:noInline')
+  static AssociateUserToBusinessResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<AssociateUserToBusinessResponse>(
+          create);
+  static AssociateUserToBusinessResponse? _defaultInstance;
+
+  /// The business member to return
+  @$pb.TagNumber(1)
+  BusinessMember get businessMember => $_getN(0);
+  @$pb.TagNumber(1)
+  set businessMember(BusinessMember value) => $_setField(1, value);
+  @$pb.TagNumber(1)
+  $core.bool hasBusinessMember() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearBusinessMember() => $_clearField(1);
+  @$pb.TagNumber(1)
+  BusinessMember ensureBusinessMember() => $_ensure(0);
+}
+
 class RemoveUserFromBusinessRequest extends $pb.GeneratedMessage {
   factory RemoveUserFromBusinessRequest({
     $core.String? userId,
@@ -1494,6 +1644,470 @@ class GetBusinessMembersResponse extends $pb.GeneratedMessage {
   $pb.PbList<BusinessMember> get businessMembers => $_getList(0);
 }
 
+class UpdateBusinessMemberRequest extends $pb.GeneratedMessage {
+  factory UpdateBusinessMemberRequest({
+    $core.String? userId,
+    $core.String? businessId,
+    $core.Iterable<$0.Permission>? addPermissions,
+    $core.Iterable<$0.Permission>? removePermissions,
+    $core.Iterable<$core.String>? addPermissionsGroupsIds,
+    $core.Iterable<$core.String>? removePermissionsGroupsIds,
+    $core.String? storeId,
+  }) {
+    final result = create();
+    if (userId != null) result.userId = userId;
+    if (businessId != null) result.businessId = businessId;
+    if (addPermissions != null) result.addPermissions.addAll(addPermissions);
+    if (removePermissions != null)
+      result.removePermissions.addAll(removePermissions);
+    if (addPermissionsGroupsIds != null)
+      result.addPermissionsGroupsIds.addAll(addPermissionsGroupsIds);
+    if (removePermissionsGroupsIds != null)
+      result.removePermissionsGroupsIds.addAll(removePermissionsGroupsIds);
+    if (storeId != null) result.storeId = storeId;
+    return result;
+  }
+
+  UpdateBusinessMemberRequest._();
+
+  factory UpdateBusinessMemberRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory UpdateBusinessMemberRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'UpdateBusinessMemberRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'userId')
+    ..aOS(2, _omitFieldNames ? '' : 'businessId')
+    ..pc<$0.Permission>(
+        5, _omitFieldNames ? '' : 'addPermissions', $pb.PbFieldType.PM,
+        subBuilder: $0.Permission.create)
+    ..pc<$0.Permission>(
+        6, _omitFieldNames ? '' : 'removePermissions', $pb.PbFieldType.PM,
+        subBuilder: $0.Permission.create)
+    ..pPS(7, _omitFieldNames ? '' : 'addPermissionsGroupsIds')
+    ..pPS(8, _omitFieldNames ? '' : 'removePermissionsGroupsIds')
+    ..aOS(9, _omitFieldNames ? '' : 'storeId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  UpdateBusinessMemberRequest clone() =>
+      UpdateBusinessMemberRequest()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  UpdateBusinessMemberRequest copyWith(
+          void Function(UpdateBusinessMemberRequest) updates) =>
+      super.copyWith(
+              (message) => updates(message as UpdateBusinessMemberRequest))
+          as UpdateBusinessMemberRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static UpdateBusinessMemberRequest create() =>
+      UpdateBusinessMemberRequest._();
+  @$core.override
+  UpdateBusinessMemberRequest createEmptyInstance() => create();
+  static $pb.PbList<UpdateBusinessMemberRequest> createRepeated() =>
+      $pb.PbList<UpdateBusinessMemberRequest>();
+  @$core.pragma('dart2js:noInline')
+  static UpdateBusinessMemberRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<UpdateBusinessMemberRequest>(create);
+  static UpdateBusinessMemberRequest? _defaultInstance;
+
+  /// The unique identifier of the user.
+  @$pb.TagNumber(1)
+  $core.String get userId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set userId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasUserId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearUserId() => $_clearField(1);
+
+  /// The unique identifier of the business.
+  @$pb.TagNumber(2)
+  $core.String get businessId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set businessId($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasBusinessId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearBusinessId() => $_clearField(2);
+
+  /// The permissions to add (optional).
+  @$pb.TagNumber(5)
+  $pb.PbList<$0.Permission> get addPermissions => $_getList(2);
+
+  /// The permissions to remove (optional).
+  @$pb.TagNumber(6)
+  $pb.PbList<$0.Permission> get removePermissions => $_getList(3);
+
+  /// The permission group IDs to add (optional).
+  @$pb.TagNumber(7)
+  $pb.PbList<$core.String> get addPermissionsGroupsIds => $_getList(4);
+
+  /// The permission group IDs to remove (optional).
+  @$pb.TagNumber(8)
+  $pb.PbList<$core.String> get removePermissionsGroupsIds => $_getList(5);
+
+  /// The unique identifier of the store.
+  @$pb.TagNumber(9)
+  $core.String get storeId => $_getSZ(6);
+  @$pb.TagNumber(9)
+  set storeId($core.String value) => $_setString(6, value);
+  @$pb.TagNumber(9)
+  $core.bool hasStoreId() => $_has(6);
+  @$pb.TagNumber(9)
+  void clearStoreId() => $_clearField(9);
+}
+
+class UpdateBusinessMemberResponse extends $pb.GeneratedMessage {
+  factory UpdateBusinessMemberResponse({
+    $core.bool? success,
+    BusinessMember? businessMember,
+  }) {
+    final result = create();
+    if (success != null) result.success = success;
+    if (businessMember != null) result.businessMember = businessMember;
+    return result;
+  }
+
+  UpdateBusinessMemberResponse._();
+
+  factory UpdateBusinessMemberResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory UpdateBusinessMemberResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'UpdateBusinessMemberResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'),
+      createEmptyInstance: create)
+    ..aOB(1, _omitFieldNames ? '' : 'success')
+    ..aOM<BusinessMember>(2, _omitFieldNames ? '' : 'businessMember',
+        subBuilder: BusinessMember.create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  UpdateBusinessMemberResponse clone() =>
+      UpdateBusinessMemberResponse()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  UpdateBusinessMemberResponse copyWith(
+          void Function(UpdateBusinessMemberResponse) updates) =>
+      super.copyWith(
+              (message) => updates(message as UpdateBusinessMemberResponse))
+          as UpdateBusinessMemberResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static UpdateBusinessMemberResponse create() =>
+      UpdateBusinessMemberResponse._();
+  @$core.override
+  UpdateBusinessMemberResponse createEmptyInstance() => create();
+  static $pb.PbList<UpdateBusinessMemberResponse> createRepeated() =>
+      $pb.PbList<UpdateBusinessMemberResponse>();
+  @$core.pragma('dart2js:noInline')
+  static UpdateBusinessMemberResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<UpdateBusinessMemberResponse>(create);
+  static UpdateBusinessMemberResponse? _defaultInstance;
+
+  /// Whether the member was successfully updated.
+  @$pb.TagNumber(1)
+  $core.bool get success => $_getBF(0);
+  @$pb.TagNumber(1)
+  set success($core.bool value) => $_setBool(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasSuccess() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSuccess() => $_clearField(1);
+
+  /// The updated business member.
+  @$pb.TagNumber(2)
+  BusinessMember get businessMember => $_getN(1);
+  @$pb.TagNumber(2)
+  set businessMember(BusinessMember value) => $_setField(2, value);
+  @$pb.TagNumber(2)
+  $core.bool hasBusinessMember() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearBusinessMember() => $_clearField(2);
+  @$pb.TagNumber(2)
+  BusinessMember ensureBusinessMember() => $_ensure(1);
+}
+
+class GetBusinessMemberRequest extends $pb.GeneratedMessage {
+  factory GetBusinessMemberRequest({
+    $core.String? userId,
+    $core.String? businessId,
+  }) {
+    final result = create();
+    if (userId != null) result.userId = userId;
+    if (businessId != null) result.businessId = businessId;
+    return result;
+  }
+
+  GetBusinessMemberRequest._();
+
+  factory GetBusinessMemberRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory GetBusinessMemberRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetBusinessMemberRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'userId')
+    ..aOS(2, _omitFieldNames ? '' : 'businessId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetBusinessMemberRequest clone() =>
+      GetBusinessMemberRequest()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetBusinessMemberRequest copyWith(
+          void Function(GetBusinessMemberRequest) updates) =>
+      super.copyWith((message) => updates(message as GetBusinessMemberRequest))
+          as GetBusinessMemberRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static GetBusinessMemberRequest create() => GetBusinessMemberRequest._();
+  @$core.override
+  GetBusinessMemberRequest createEmptyInstance() => create();
+  static $pb.PbList<GetBusinessMemberRequest> createRepeated() =>
+      $pb.PbList<GetBusinessMemberRequest>();
+  @$core.pragma('dart2js:noInline')
+  static GetBusinessMemberRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetBusinessMemberRequest>(create);
+  static GetBusinessMemberRequest? _defaultInstance;
+
+  /// The unique identifier of the user.
+  @$pb.TagNumber(1)
+  $core.String get userId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set userId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasUserId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearUserId() => $_clearField(1);
+
+  /// The unique identifier of the business.
+  @$pb.TagNumber(2)
+  $core.String get businessId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set businessId($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasBusinessId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearBusinessId() => $_clearField(2);
+}
+
+class GetBusinessMemberResponse extends $pb.GeneratedMessage {
+  factory GetBusinessMemberResponse({
+    BusinessMember? businessMember,
+  }) {
+    final result = create();
+    if (businessMember != null) result.businessMember = businessMember;
+    return result;
+  }
+
+  GetBusinessMemberResponse._();
+
+  factory GetBusinessMemberResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory GetBusinessMemberResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetBusinessMemberResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'),
+      createEmptyInstance: create)
+    ..aOM<BusinessMember>(1, _omitFieldNames ? '' : 'businessMember',
+        subBuilder: BusinessMember.create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetBusinessMemberResponse clone() =>
+      GetBusinessMemberResponse()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetBusinessMemberResponse copyWith(
+          void Function(GetBusinessMemberResponse) updates) =>
+      super.copyWith((message) => updates(message as GetBusinessMemberResponse))
+          as GetBusinessMemberResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static GetBusinessMemberResponse create() => GetBusinessMemberResponse._();
+  @$core.override
+  GetBusinessMemberResponse createEmptyInstance() => create();
+  static $pb.PbList<GetBusinessMemberResponse> createRepeated() =>
+      $pb.PbList<GetBusinessMemberResponse>();
+  @$core.pragma('dart2js:noInline')
+  static GetBusinessMemberResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetBusinessMemberResponse>(create);
+  static GetBusinessMemberResponse? _defaultInstance;
+
+  /// The business member.
+  @$pb.TagNumber(1)
+  BusinessMember get businessMember => $_getN(0);
+  @$pb.TagNumber(1)
+  set businessMember(BusinessMember value) => $_setField(1, value);
+  @$pb.TagNumber(1)
+  $core.bool hasBusinessMember() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearBusinessMember() => $_clearField(1);
+  @$pb.TagNumber(1)
+  BusinessMember ensureBusinessMember() => $_ensure(0);
+}
+
+class StreamBusinessMembersRequest extends $pb.GeneratedMessage {
+  factory StreamBusinessMembersRequest({
+    $core.String? businessId,
+    $core.String? storeId,
+  }) {
+    final result = create();
+    if (businessId != null) result.businessId = businessId;
+    if (storeId != null) result.storeId = storeId;
+    return result;
+  }
+
+  StreamBusinessMembersRequest._();
+
+  factory StreamBusinessMembersRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory StreamBusinessMembersRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'StreamBusinessMembersRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'businessId')
+    ..aOS(2, _omitFieldNames ? '' : 'storeId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  StreamBusinessMembersRequest clone() =>
+      StreamBusinessMembersRequest()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  StreamBusinessMembersRequest copyWith(
+          void Function(StreamBusinessMembersRequest) updates) =>
+      super.copyWith(
+              (message) => updates(message as StreamBusinessMembersRequest))
+          as StreamBusinessMembersRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static StreamBusinessMembersRequest create() =>
+      StreamBusinessMembersRequest._();
+  @$core.override
+  StreamBusinessMembersRequest createEmptyInstance() => create();
+  static $pb.PbList<StreamBusinessMembersRequest> createRepeated() =>
+      $pb.PbList<StreamBusinessMembersRequest>();
+  @$core.pragma('dart2js:noInline')
+  static StreamBusinessMembersRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<StreamBusinessMembersRequest>(create);
+  static StreamBusinessMembersRequest? _defaultInstance;
+
+  /// The unique identifier of the business.
+  @$pb.TagNumber(1)
+  $core.String get businessId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set businessId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasBusinessId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearBusinessId() => $_clearField(1);
+
+  /// The unique identifier of the store.
+  @$pb.TagNumber(2)
+  $core.String get storeId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set storeId($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasStoreId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearStoreId() => $_clearField(2);
+}
+
+class StreamBusinessMembersResponse extends $pb.GeneratedMessage {
+  factory StreamBusinessMembersResponse({
+    $core.Iterable<BusinessMember>? businessMembers,
+  }) {
+    final result = create();
+    if (businessMembers != null) result.businessMembers.addAll(businessMembers);
+    return result;
+  }
+
+  StreamBusinessMembersResponse._();
+
+  factory StreamBusinessMembersResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory StreamBusinessMembersResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'StreamBusinessMembersResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'),
+      createEmptyInstance: create)
+    ..pc<BusinessMember>(
+        1, _omitFieldNames ? '' : 'businessMembers', $pb.PbFieldType.PM,
+        subBuilder: BusinessMember.create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  StreamBusinessMembersResponse clone() =>
+      StreamBusinessMembersResponse()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  StreamBusinessMembersResponse copyWith(
+          void Function(StreamBusinessMembersResponse) updates) =>
+      super.copyWith(
+              (message) => updates(message as StreamBusinessMembersResponse))
+          as StreamBusinessMembersResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static StreamBusinessMembersResponse create() =>
+      StreamBusinessMembersResponse._();
+  @$core.override
+  StreamBusinessMembersResponse createEmptyInstance() => create();
+  static $pb.PbList<StreamBusinessMembersResponse> createRepeated() =>
+      $pb.PbList<StreamBusinessMembersResponse>();
+  @$core.pragma('dart2js:noInline')
+  static StreamBusinessMembersResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<StreamBusinessMembersResponse>(create);
+  static StreamBusinessMembersResponse? _defaultInstance;
+
+  /// The business members.
+  @$pb.TagNumber(1)
+  $pb.PbList<BusinessMember> get businessMembers => $_getList(0);
+}
+
 class BusinessServiceApi {
   final $pb.RpcClient _client;
 
@@ -1535,6 +2149,16 @@ class BusinessServiceApi {
       _client.invoke<AddUserToBusinessResponse>(ctx, 'BusinessService',
           'AddUserToBusiness', request, AddUserToBusinessResponse());
 
+  /// Associate user to business.
+  $async.Future<AssociateUserToBusinessResponse> associateUserToBusiness(
+          $pb.ClientContext? ctx, AssociateUserToBusinessRequest request) =>
+      _client.invoke<AssociateUserToBusinessResponse>(
+          ctx,
+          'BusinessService',
+          'AssociateUserToBusiness',
+          request,
+          AssociateUserToBusinessResponse());
+
   /// Remove user from business.
   /// If the user has been created by the business, the user will be deleted.
   /// NOTE: The authenticated user need to have the permission to remove the
@@ -1555,6 +2179,24 @@ class BusinessServiceApi {
           $pb.ClientContext? ctx, GetBusinessMembersRequest request) =>
       _client.invoke<GetBusinessMembersResponse>(ctx, 'BusinessService',
           'GetBusinessMembers', request, GetBusinessMembersResponse());
+
+  /// Get a specific business member.
+  $async.Future<GetBusinessMemberResponse> getBusinessMember(
+          $pb.ClientContext? ctx, GetBusinessMemberRequest request) =>
+      _client.invoke<GetBusinessMemberResponse>(ctx, 'BusinessService',
+          'GetBusinessMember', request, GetBusinessMemberResponse());
+
+  /// Update a business member (role, status, permissions).
+  $async.Future<UpdateBusinessMemberResponse> updateBusinessMember(
+          $pb.ClientContext? ctx, UpdateBusinessMemberRequest request) =>
+      _client.invoke<UpdateBusinessMemberResponse>(ctx, 'BusinessService',
+          'UpdateBusinessMember', request, UpdateBusinessMemberResponse());
+
+  /// Stream business members for real-time updates.
+  $async.Future<StreamBusinessMembersResponse> streamBusinessMembers(
+          $pb.ClientContext? ctx, StreamBusinessMembersRequest request) =>
+      _client.invoke<StreamBusinessMembersResponse>(ctx, 'BusinessService',
+          'StreamBusinessMembers', request, StreamBusinessMembersResponse());
 }
 
 const $core.bool _omitFieldNames =

@@ -155,34 +155,16 @@ extension type UserServiceClient (connect.Transport _transport) {
     );
   }
 
-  /// Get all users for a business.
-  Future<identityv1user.GetBusinessUsersResponse> getBusinessUsers(
-    identityv1user.GetBusinessUsersRequest input, {
-    connect.Headers? headers,
-    connect.AbortSignal? signal,
-    Function(connect.Headers)? onHeader,
-    Function(connect.Headers)? onTrailer,
-  }) {
-    return connect.Client(_transport).unary(
-      specs.UserService.getBusinessUsers,
-      input,
-      signal: signal,
-      headers: headers,
-      onHeader: onHeader,
-      onTrailer: onTrailer,
-    );
-  }
-
-  /// Stream all users for a business with real-time updates.
-  Stream<identityv1user.StreamBusinessUsersResponse> streamBusinessUsers(
-    identityv1user.StreamBusinessUsersRequest input, {
+  /// Stream business members for real-time updates.
+  Stream<identityv1user.StreamUserResponse> streamUser(
+    identityv1user.StreamUserRequest input, {
     connect.Headers? headers,
     connect.AbortSignal? signal,
     Function(connect.Headers)? onHeader,
     Function(connect.Headers)? onTrailer,
   }) {
     return connect.Client(_transport).server(
-      specs.UserService.streamBusinessUsers,
+      specs.UserService.streamUser,
       input,
       signal: signal,
       headers: headers,

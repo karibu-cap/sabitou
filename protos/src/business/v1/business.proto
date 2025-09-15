@@ -63,8 +63,11 @@ message BusinessMember {
   // The unique identifier of the permission group.
   repeated string permissions_groups_ids = 4;
 
-  // The date since when the
+  // The date since when the user became a member.
   google.protobuf.Timestamp member_since = 5;
+
+  // The unique identifier of the store.
+  optional string store_id = 7;
 }
 
 message CreateBusinessRequest {
@@ -173,6 +176,20 @@ message AddUserToBusinessResponse {
   BusinessMember business_member = 1;
 }
 
+message AssociateUserToBusinessRequest {
+  // The unique identifier of the user.
+  // For example, the email address or @username.
+  // string u_ref = 1;
+
+  string email = 1;
+  string business_id = 3;
+}
+
+message AssociateUserToBusinessResponse {
+  // The business member to return
+  BusinessMember business_member = 1;
+}
+
 message RemoveUserFromBusinessRequest {
   // The unique identifier of the user.
   string user_id = 1 [
@@ -203,6 +220,80 @@ message GetBusinessMembersResponse {
   repeated BusinessMember business_members = 1;
 }
 
+message UpdateBusinessMemberRequest {
+  // The unique identifier of the user.
+  string user_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+  
+  // The unique identifier of the business.
+  string business_id = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+  
+  // The permissions to add (optional).
+  repeated identity.v1.Permission add_permissions = 5;
+  
+  // The permissions to remove (optional).
+  repeated identity.v1.Permission remove_permissions = 6;
+  
+  // The permission group IDs to add (optional).
+  repeated string add_permissions_groups_ids = 7;
+  
+  // The permission group IDs to remove (optional).
+  repeated string remove_permissions_groups_ids = 8;
+  
+  // The unique identifier of the store.
+  optional string store_id = 9;
+}
+
+message UpdateBusinessMemberResponse {
+  // Whether the member was successfully updated.
+  bool success = 1;
+  
+  // The updated business member.
+  BusinessMember business_member = 2;
+}
+
+message GetBusinessMemberRequest {
+  // The unique identifier of the user.
+  string user_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+  
+  // The unique identifier of the business.
+  string business_id = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+}
+
+message GetBusinessMemberResponse {
+  // The business member.
+  BusinessMember business_member = 1;
+}
+
+message StreamBusinessMembersRequest {
+  // The unique identifier of the business.
+  string business_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+  // The unique identifier of the store.
+  string store_id = 2 [
+    (buf.validate.field).required = false,
+    (buf.validate.field).string.min_len = 3
+  ];
+}
+
+message StreamBusinessMembersResponse {
+  // The business members.
+  repeated BusinessMember business_members = 1;
+}
+
 service BusinessService {
   // Create a new business.
   rpc CreateBusiness(CreateBusinessRequest) returns (CreateBusinessResponse);
@@ -222,6 +313,9 @@ service BusinessService {
   // Add user to business or invite user to business.
   rpc AddUserToBusiness(AddUserToBusinessRequest) returns (AddUserToBusinessResponse);
 
+  // Associate user to business.
+  rpc AssociateUserToBusiness(AssociateUserToBusinessRequest) returns (AssociateUserToBusinessResponse);
+
   // Remove user from business.
   // If the user has been created by the business, the user will be deleted.
   // NOTE: The authenticated user need to have the permission to remove the
@@ -233,4 +327,13 @@ service BusinessService {
 
   // Get the users of the business.
   rpc GetBusinessMembers(GetBusinessMembersRequest) returns (GetBusinessMembersResponse);
+  
+  // Get a specific business member.
+  rpc GetBusinessMember(GetBusinessMemberRequest) returns (GetBusinessMemberResponse);
+  
+  // Update a business member (role, status, permissions).
+  rpc UpdateBusinessMember(UpdateBusinessMemberRequest) returns (UpdateBusinessMemberResponse);
+  
+  // Stream business members for real-time updates.
+  rpc StreamBusinessMembers(StreamBusinessMembersRequest) returns (stream StreamBusinessMembersResponse);
 }

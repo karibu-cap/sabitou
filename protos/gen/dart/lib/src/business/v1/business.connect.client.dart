@@ -116,6 +116,24 @@ extension type BusinessServiceClient (connect.Transport _transport) {
     );
   }
 
+  /// Associate user to business.
+  Future<businessv1business.AssociateUserToBusinessResponse> associateUserToBusiness(
+    businessv1business.AssociateUserToBusinessRequest input, {
+    connect.Headers? headers,
+    connect.AbortSignal? signal,
+    Function(connect.Headers)? onHeader,
+    Function(connect.Headers)? onTrailer,
+  }) {
+    return connect.Client(_transport).unary(
+      specs.BusinessService.associateUserToBusiness,
+      input,
+      signal: signal,
+      headers: headers,
+      onHeader: onHeader,
+      onTrailer: onTrailer,
+    );
+  }
+
   /// Remove user from business.
   /// If the user has been created by the business, the user will be deleted.
   /// NOTE: The authenticated user need to have the permission to remove the
@@ -165,6 +183,60 @@ extension type BusinessServiceClient (connect.Transport _transport) {
   }) {
     return connect.Client(_transport).unary(
       specs.BusinessService.getBusinessMembers,
+      input,
+      signal: signal,
+      headers: headers,
+      onHeader: onHeader,
+      onTrailer: onTrailer,
+    );
+  }
+
+  /// Get a specific business member.
+  Future<businessv1business.GetBusinessMemberResponse> getBusinessMember(
+    businessv1business.GetBusinessMemberRequest input, {
+    connect.Headers? headers,
+    connect.AbortSignal? signal,
+    Function(connect.Headers)? onHeader,
+    Function(connect.Headers)? onTrailer,
+  }) {
+    return connect.Client(_transport).unary(
+      specs.BusinessService.getBusinessMember,
+      input,
+      signal: signal,
+      headers: headers,
+      onHeader: onHeader,
+      onTrailer: onTrailer,
+    );
+  }
+
+  /// Update a business member (role, status, permissions).
+  Future<businessv1business.UpdateBusinessMemberResponse> updateBusinessMember(
+    businessv1business.UpdateBusinessMemberRequest input, {
+    connect.Headers? headers,
+    connect.AbortSignal? signal,
+    Function(connect.Headers)? onHeader,
+    Function(connect.Headers)? onTrailer,
+  }) {
+    return connect.Client(_transport).unary(
+      specs.BusinessService.updateBusinessMember,
+      input,
+      signal: signal,
+      headers: headers,
+      onHeader: onHeader,
+      onTrailer: onTrailer,
+    );
+  }
+
+  /// Stream business members for real-time updates.
+  Stream<businessv1business.StreamBusinessMembersResponse> streamBusinessMembers(
+    businessv1business.StreamBusinessMembersRequest input, {
+    connect.Headers? headers,
+    connect.AbortSignal? signal,
+    Function(connect.Headers)? onHeader,
+    Function(connect.Headers)? onTrailer,
+  }) {
+    return connect.Client(_transport).server(
+      specs.BusinessService.streamBusinessMembers,
       input,
       signal: signal,
       headers: headers,

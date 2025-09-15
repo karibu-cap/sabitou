@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package order.v1;
+
+import "buf/validate/validate.proto";
+
+message OrderInvoiceItem {
+  string product_id = 1;
+  string product_name = 2;
+  string product_price_in_xaf = 3;
+  int32 quantity = 4;
+  int32 invoice_item_total_price_in_xaf = 5;
+}
+
+// The invoice of an order.
+// The invoice is a PDF file that can be downloaded by the customer.
+// It contains the order details, the customer details, the payment details.
+message OrderInvoice {
+  /// ...order details...
+  string order_id = 1;
+  string order_status = 2;
+  string order_total_price_in_xaf = 3;
+  string order_created_at = 4;
+  string order_updated_at = 5;
+  string order_resource_name = 6;
+  string order_resource_address = 7;
+  string order_resource_phone_number = 8;
+  string order_resource_email = 9;
+  string order_resource_logo_media_id = 10;
+  repeated OrderInvoiceItem order_items = 11;
+}
+
+message GenerateInvoiceRequest {
+  // The unique identifier of the order.
+  string order_id = 1;
+}
+
+message GenerateInvoiceResponse {
+  // The invoice of the order.
+  OrderInvoice order_invoice = 1;
+}
+
+service InvoiceService {
+  // Generates an invoice for the order.
+  rpc GenerateInvoice(GenerateInvoiceRequest) returns (GenerateInvoiceResponse);
+}

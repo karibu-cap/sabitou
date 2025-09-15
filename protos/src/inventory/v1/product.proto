@@ -48,7 +48,7 @@ message BusinessProduct {
   int32 price_in_xaf = 4;
 
   // The media ids of the images of the product.
-  repeated string images_link_ids = 5;
+  repeated string images_links_ids = 5;
 
   // The stock quantity of the product.
   int32 stock_quantity = 6;

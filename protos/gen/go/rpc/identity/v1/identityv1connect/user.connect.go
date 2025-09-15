@@ -52,12 +52,8 @@ const (
 	// UserServiceChangePasswordProcedure is the fully-qualified name of the UserService's
 	// ChangePassword RPC.
 	UserServiceChangePasswordProcedure = "/identity.v1.UserService/ChangePassword"
-	// UserServiceGetBusinessUsersProcedure is the fully-qualified name of the UserService's
-	// GetBusinessUsers RPC.
-	UserServiceGetBusinessUsersProcedure = "/identity.v1.UserService/GetBusinessUsers"
-	// UserServiceStreamBusinessUsersProcedure is the fully-qualified name of the UserService's
-	// StreamBusinessUsers RPC.
-	UserServiceStreamBusinessUsersProcedure = "/identity.v1.UserService/StreamBusinessUsers"
+	// UserServiceStreamUserProcedure is the fully-qualified name of the UserService's StreamUser RPC.
+	UserServiceStreamUserProcedure = "/identity.v1.UserService/StreamUser"
 )
 
 // UserServiceClient is a client for the identity.v1.UserService service.
@@ -81,10 +77,8 @@ type UserServiceClient interface {
 	DeleteUser(context.Context, *connect.Request[v1.DeleteUserRequest]) (*connect.Response[v1.DeleteUserResponse], error)
 	// Change the password for the currently authenticated user.
 	ChangePassword(context.Context, *connect.Request[v1.ChangePasswordRequest]) (*connect.Response[v1.ChangePasswordResponse], error)
-	// Get all users for a business.
-	GetBusinessUsers(context.Context, *connect.Request[v1.GetBusinessUsersRequest]) (*connect.Response[v1.GetBusinessUsersResponse], error)
-	// Stream all users for a business with real-time updates.
-	StreamBusinessUsers(context.Context, *connect.Request[v1.StreamBusinessUsersRequest]) (*connect.ServerStreamForClient[v1.StreamBusinessUsersResponse], error)
+	// Stream business members for real-time updates.
+	StreamUser(context.Context, *connect.Request[v1.StreamUserRequest]) (*connect.ServerStreamForClient[v1.StreamUserResponse], error)
 }
 
 // NewUserServiceClient constructs a client for the identity.v1.UserService service. By default, it
@@ -146,16 +140,10 @@ func NewUserServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(userServiceMethods.ByName("ChangePassword")),
 			connect.WithClientOptions(opts...),
 		),
-		getBusinessUsers: connect.NewClient[v1.GetBusinessUsersRequest, v1.GetBusinessUsersResponse](
+		streamUser: connect.NewClient[v1.StreamUserRequest, v1.StreamUserResponse](
 			httpClient,
-			baseURL+UserServiceGetBusinessUsersProcedure,
-			connect.WithSchema(userServiceMethods.ByName("GetBusinessUsers")),
-			connect.WithClientOptions(opts...),
-		),
-		streamBusinessUsers: connect.NewClient[v1.StreamBusinessUsersRequest, v1.StreamBusinessUsersResponse](
-			httpClient,
-			baseURL+UserServiceStreamBusinessUsersProcedure,
-			connect.WithSchema(userServiceMethods.ByName("StreamBusinessUsers")),
+			baseURL+UserServiceStreamUserProcedure,
+			connect.WithSchema(userServiceMethods.ByName("StreamUser")),
 			connect.WithClientOptions(opts...),
 		),
 	}
@@ -163,16 +151,15 @@ func NewUserServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 
 // userServiceClient implements UserServiceClient.
 type userServiceClient struct {
-	getMe               *connect.Client[v1.GetMeRequest, v1.GetMeResponse]
-	getCurrentUser      *connect.Client[v1.GetCurrentUserRequest, v1.GetCurrentUserResponse]
-	getUser             *connect.Client[v1.GetUserRequest, v1.GetUserResponse]
-	updateMe            *connect.Client[v1.UpdateMeRequest, v1.UpdateMeResponse]
-	update              *connect.Client[v1.UpdateRequest, v1.UpdateResponse]
-	requestDeleteUser   *connect.Client[v1.RequestDeleteUserRequest, v1.RequestDeleteUserResponse]
-	deleteUser          *connect.Client[v1.DeleteUserRequest, v1.DeleteUserResponse]
-	changePassword      *connect.Client[v1.ChangePasswordRequest, v1.ChangePasswordResponse]
-	getBusinessUsers    *connect.Client[v1.GetBusinessUsersRequest, v1.GetBusinessUsersResponse]
-	streamBusinessUsers *connect.Client[v1.StreamBusinessUsersRequest, v1.StreamBusinessUsersResponse]
+	getMe             *connect.Client[v1.GetMeRequest, v1.GetMeResponse]
+	getCurrentUser    *connect.Client[v1.GetCurrentUserRequest, v1.GetCurrentUserResponse]
+	getUser           *connect.Client[v1.GetUserRequest, v1.GetUserResponse]
+	updateMe          *connect.Client[v1.UpdateMeRequest, v1.UpdateMeResponse]
+	update            *connect.Client[v1.UpdateRequest, v1.UpdateResponse]
+	requestDeleteUser *connect.Client[v1.RequestDeleteUserRequest, v1.RequestDeleteUserResponse]
+	deleteUser        *connect.Client[v1.DeleteUserRequest, v1.DeleteUserResponse]
+	changePassword    *connect.Client[v1.ChangePasswordRequest, v1.ChangePasswordResponse]
+	streamUser        *connect.Client[v1.StreamUserRequest, v1.StreamUserResponse]
 }
 
 // GetMe calls identity.v1.UserService.GetMe.
@@ -215,14 +202,9 @@ func (c *userServiceClient) ChangePassword(ctx context.Context, req *connect.Req
 	return c.changePassword.CallUnary(ctx, req)
 }
 
-// GetBusinessUsers calls identity.v1.UserService.GetBusinessUsers.
-func (c *userServiceClient) GetBusinessUsers(ctx context.Context, req *connect.Request[v1.GetBusinessUsersRequest]) (*connect.Response[v1.GetBusinessUsersResponse], error) {
-	return c.getBusinessUsers.CallUnary(ctx, req)
-}
-
-// StreamBusinessUsers calls identity.v1.UserService.StreamBusinessUsers.
-func (c *userServiceClient) StreamBusinessUsers(ctx context.Context, req *connect.Request[v1.StreamBusinessUsersRequest]) (*connect.ServerStreamForClient[v1.StreamBusinessUsersResponse], error) {
-	return c.streamBusinessUsers.CallServerStream(ctx, req)
+// StreamUser calls identity.v1.UserService.StreamUser.
+func (c *userServiceClient) StreamUser(ctx context.Context, req *connect.Request[v1.StreamUserRequest]) (*connect.ServerStreamForClient[v1.StreamUserResponse], error) {
+	return c.streamUser.CallServerStream(ctx, req)
 }
 
 // UserServiceHandler is an implementation of the identity.v1.UserService service.
@@ -246,10 +228,8 @@ type UserServiceHandler interface {
 	DeleteUser(context.Context, *connect.Request[v1.DeleteUserRequest]) (*connect.Response[v1.DeleteUserResponse], error)
 	// Change the password for the currently authenticated user.
 	ChangePassword(context.Context, *connect.Request[v1.ChangePasswordRequest]) (*connect.Response[v1.ChangePasswordResponse], error)
-	// Get all users for a business.
-	GetBusinessUsers(context.Context, *connect.Request[v1.GetBusinessUsersRequest]) (*connect.Response[v1.GetBusinessUsersResponse], error)
-	// Stream all users for a business with real-time updates.
-	StreamBusinessUsers(context.Context, *connect.Request[v1.StreamBusinessUsersRequest], *connect.ServerStream[v1.StreamBusinessUsersResponse]) error
+	// Stream business members for real-time updates.
+	StreamUser(context.Context, *connect.Request[v1.StreamUserRequest], *connect.ServerStream[v1.StreamUserResponse]) error
 }
 
 // NewUserServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -307,16 +287,10 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(userServiceMethods.ByName("ChangePassword")),
 		connect.WithHandlerOptions(opts...),
 	)
-	userServiceGetBusinessUsersHandler := connect.NewUnaryHandler(
-		UserServiceGetBusinessUsersProcedure,
-		svc.GetBusinessUsers,
-		connect.WithSchema(userServiceMethods.ByName("GetBusinessUsers")),
-		connect.WithHandlerOptions(opts...),
-	)
-	userServiceStreamBusinessUsersHandler := connect.NewServerStreamHandler(
-		UserServiceStreamBusinessUsersProcedure,
-		svc.StreamBusinessUsers,
-		connect.WithSchema(userServiceMethods.ByName("StreamBusinessUsers")),
+	userServiceStreamUserHandler := connect.NewServerStreamHandler(
+		UserServiceStreamUserProcedure,
+		svc.StreamUser,
+		connect.WithSchema(userServiceMethods.ByName("StreamUser")),
 		connect.WithHandlerOptions(opts...),
 	)
 	return "/identity.v1.UserService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -337,10 +311,8 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption
 			userServiceDeleteUserHandler.ServeHTTP(w, r)
 		case UserServiceChangePasswordProcedure:
 			userServiceChangePasswordHandler.ServeHTTP(w, r)
-		case UserServiceGetBusinessUsersProcedure:
-			userServiceGetBusinessUsersHandler.ServeHTTP(w, r)
-		case UserServiceStreamBusinessUsersProcedure:
-			userServiceStreamBusinessUsersHandler.ServeHTTP(w, r)
+		case UserServiceStreamUserProcedure:
+			userServiceStreamUserHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -382,10 +354,6 @@ func (UnimplementedUserServiceHandler) ChangePassword(context.Context, *connect.
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("identity.v1.UserService.ChangePassword is not implemented"))
 }
 
-func (UnimplementedUserServiceHandler) GetBusinessUsers(context.Context, *connect.Request[v1.GetBusinessUsersRequest]) (*connect.Response[v1.GetBusinessUsersResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("identity.v1.UserService.GetBusinessUsers is not implemented"))
-}
-
-func (UnimplementedUserServiceHandler) StreamBusinessUsers(context.Context, *connect.Request[v1.StreamBusinessUsersRequest], *connect.ServerStream[v1.StreamBusinessUsersResponse]) error {
-	return connect.NewError(connect.CodeUnimplemented, errors.New("identity.v1.UserService.StreamBusinessUsers is not implemented"))
+func (UnimplementedUserServiceHandler) StreamUser(context.Context, *connect.Request[v1.StreamUserRequest], *connect.ServerStream[v1.StreamUserResponse]) error {
+	return connect.NewError(connect.CodeUnimplemented, errors.New("identity.v1.UserService.StreamUser is not implemented"))
 }

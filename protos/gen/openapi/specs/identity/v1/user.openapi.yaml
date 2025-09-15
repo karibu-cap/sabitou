@@ -74,42 +74,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/identity.v1.DeleteUserResponse'
-  /identity.v1.UserService/GetBusinessUsers:
-    post:
-      tags:
-        - identity.v1.UserService
-      summary: Get all users for a business.
-      description: Get all users for a business.
-      operationId: identity.v1.UserService.GetBusinessUsers
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/identity.v1.GetBusinessUsersRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/identity.v1.GetBusinessUsersResponse'
   /identity.v1.UserService/GetCurrentUser:
     post:
       tags:
@@ -259,7 +223,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/identity.v1.RequestDeleteUserResponse'
-  /identity.v1.UserService/StreamBusinessUsers: {}
+  /identity.v1.UserService/StreamUser: {}
   /identity.v1.UserService/Update:
     post:
       tags:
@@ -486,31 +450,6 @@ components:
           description: Whether the user was successfully deleted.
       title: DeleteUserResponse
       additionalProperties: false
-    identity.v1.GetBusinessUsersRequest:
-      type: object
-      properties:
-        businessId:
-          type: string
-          title: business_id
-          minLength: 3
-          description: The unique identifier of the business.
-      title: GetBusinessUsersRequest
-      required:
-        - businessId
-      additionalProperties: false
-      description: Request to get business users
-    identity.v1.GetBusinessUsersResponse:
-      type: object
-      properties:
-        users:
-          type: array
-          items:
-            $ref: '#/components/schemas/identity.v1.User'
-          title: users
-          description: The list of users in the business.
-      title: GetBusinessUsersResponse
-      additionalProperties: false
-      description: Response containing business users
     identity.v1.GetCurrentUserRequest:
       type: object
       title: GetCurrentUserRequest
@@ -595,31 +534,27 @@ components:
              after verification (email or phone number).
       title: RequestDeleteUserResponse
       additionalProperties: false
-    identity.v1.StreamBusinessUsersRequest:
+    identity.v1.StreamUserRequest:
       type: object
       properties:
-        businessId:
+        userId:
           type: string
-          title: business_id
+          title: user_id
           minLength: 3
-          description: The unique identifier of the business.
-      title: StreamBusinessUsersRequest
+          description: The id of the user to retrieve.
+      title: StreamUserRequest
       required:
-        - businessId
+        - userId
       additionalProperties: false
-      description: Request to stream business users
-    identity.v1.StreamBusinessUsersResponse:
+    identity.v1.StreamUserResponse:
       type: object
       properties:
-        users:
-          type: array
-          items:
-            $ref: '#/components/schemas/identity.v1.User'
-          title: users
-          description: The list of users in the business.
-      title: StreamBusinessUsersResponse
+        user:
+          title: user
+          description: The retrieved user data.
+          $ref: '#/components/schemas/identity.v1.User'
+      title: StreamUserResponse
       additionalProperties: false
-      description: Response for streaming business users
     identity.v1.UpdateMeRequest:
       type: object
       properties:
