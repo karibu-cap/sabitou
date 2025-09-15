@@ -32,16 +32,15 @@ class Transaction extends $pb.GeneratedMessage {
     $core.String? refId,
     TransactionType? type,
     TransactionStatus? status,
-    $core.String? businessId,
     $core.String? storeId,
     $core.String? orderId,
     $core.String? fromId,
-    $fixnum.Int64? amountInCents,
+    $fixnum.Int64? amount,
     $core.String? currencyCode,
     $0.Timestamp? createdAt,
     $0.Timestamp? updatedAt,
     $core.String? description,
-    $core.String? businessProductId,
+    $core.String? storeProductId,
     $core.int? quantity,
     $core.String? initiatedBy,
     $core.Iterable<$core.String>? externalLinksIds,
@@ -50,16 +49,15 @@ class Transaction extends $pb.GeneratedMessage {
     if (refId != null) result.refId = refId;
     if (type != null) result.type = type;
     if (status != null) result.status = status;
-    if (businessId != null) result.businessId = businessId;
     if (storeId != null) result.storeId = storeId;
     if (orderId != null) result.orderId = orderId;
     if (fromId != null) result.fromId = fromId;
-    if (amountInCents != null) result.amountInCents = amountInCents;
+    if (amount != null) result.amount = amount;
     if (currencyCode != null) result.currencyCode = currencyCode;
     if (createdAt != null) result.createdAt = createdAt;
     if (updatedAt != null) result.updatedAt = updatedAt;
     if (description != null) result.description = description;
-    if (businessProductId != null) result.businessProductId = businessProductId;
+    if (storeProductId != null) result.storeProductId = storeProductId;
     if (quantity != null) result.quantity = quantity;
     if (initiatedBy != null) result.initiatedBy = initiatedBy;
     if (externalLinksIds != null)
@@ -90,21 +88,20 @@ class Transaction extends $pb.GeneratedMessage {
         defaultOrMaker: TransactionStatus.TRANSACTION_STATUS_UNSPECIFIED,
         valueOf: TransactionStatus.valueOf,
         enumValues: TransactionStatus.values)
-    ..aOS(4, _omitFieldNames ? '' : 'businessId')
-    ..aOS(5, _omitFieldNames ? '' : 'storeId')
-    ..aOS(6, _omitFieldNames ? '' : 'orderId')
-    ..aOS(7, _omitFieldNames ? '' : 'fromId')
-    ..aInt64(8, _omitFieldNames ? '' : 'amountInCents')
-    ..aOS(9, _omitFieldNames ? '' : 'currencyCode')
-    ..aOM<$0.Timestamp>(10, _omitFieldNames ? '' : 'createdAt',
+    ..aOS(4, _omitFieldNames ? '' : 'storeId')
+    ..aOS(5, _omitFieldNames ? '' : 'orderId')
+    ..aOS(6, _omitFieldNames ? '' : 'fromId')
+    ..aInt64(7, _omitFieldNames ? '' : 'amount')
+    ..aOS(8, _omitFieldNames ? '' : 'currencyCode')
+    ..aOM<$0.Timestamp>(9, _omitFieldNames ? '' : 'createdAt',
         subBuilder: $0.Timestamp.create)
-    ..aOM<$0.Timestamp>(11, _omitFieldNames ? '' : 'updatedAt',
+    ..aOM<$0.Timestamp>(10, _omitFieldNames ? '' : 'updatedAt',
         subBuilder: $0.Timestamp.create)
-    ..aOS(12, _omitFieldNames ? '' : 'description')
-    ..aOS(13, _omitFieldNames ? '' : 'businessProductId')
-    ..a<$core.int>(14, _omitFieldNames ? '' : 'quantity', $pb.PbFieldType.O3)
-    ..aOS(15, _omitFieldNames ? '' : 'initiatedBy')
-    ..pPS(16, _omitFieldNames ? '' : 'externalLinksIds')
+    ..aOS(11, _omitFieldNames ? '' : 'description')
+    ..aOS(12, _omitFieldNames ? '' : 'storeProductId')
+    ..a<$core.int>(13, _omitFieldNames ? '' : 'quantity', $pb.PbFieldType.O3)
+    ..aOS(14, _omitFieldNames ? '' : 'initiatedBy')
+    ..pPS(15, _omitFieldNames ? '' : 'externalLinksIds')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -157,133 +154,123 @@ class Transaction extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   void clearStatus() => $_clearField(3);
 
-  /// The unique identifier of the business associated with the transaction.
-  @$pb.TagNumber(4)
-  $core.String get businessId => $_getSZ(3);
-  @$pb.TagNumber(4)
-  set businessId($core.String value) => $_setString(3, value);
-  @$pb.TagNumber(4)
-  $core.bool hasBusinessId() => $_has(3);
-  @$pb.TagNumber(4)
-  void clearBusinessId() => $_clearField(4);
-
   /// The unique identifier of the store associated with the transaction.
-  @$pb.TagNumber(5)
-  $core.String get storeId => $_getSZ(4);
-  @$pb.TagNumber(5)
-  set storeId($core.String value) => $_setString(4, value);
-  @$pb.TagNumber(5)
-  $core.bool hasStoreId() => $_has(4);
-  @$pb.TagNumber(5)
-  void clearStoreId() => $_clearField(5);
+  @$pb.TagNumber(4)
+  $core.String get storeId => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set storeId($core.String value) => $_setString(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasStoreId() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearStoreId() => $_clearField(4);
 
   /// The unique identifier of the order associated with the transaction.
-  @$pb.TagNumber(6)
-  $core.String get orderId => $_getSZ(5);
-  @$pb.TagNumber(6)
-  set orderId($core.String value) => $_setString(5, value);
-  @$pb.TagNumber(6)
-  $core.bool hasOrderId() => $_has(5);
-  @$pb.TagNumber(6)
-  void clearOrderId() => $_clearField(6);
+  @$pb.TagNumber(5)
+  $core.String get orderId => $_getSZ(4);
+  @$pb.TagNumber(5)
+  set orderId($core.String value) => $_setString(4, value);
+  @$pb.TagNumber(5)
+  $core.bool hasOrderId() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearOrderId() => $_clearField(5);
 
   /// The unique identifier of the client or supplier associated with the transaction.
-  @$pb.TagNumber(7)
-  $core.String get fromId => $_getSZ(6);
-  @$pb.TagNumber(7)
-  set fromId($core.String value) => $_setString(6, value);
-  @$pb.TagNumber(7)
-  $core.bool hasFromId() => $_has(6);
-  @$pb.TagNumber(7)
-  void clearFromId() => $_clearField(7);
+  @$pb.TagNumber(6)
+  $core.String get fromId => $_getSZ(5);
+  @$pb.TagNumber(6)
+  set fromId($core.String value) => $_setString(5, value);
+  @$pb.TagNumber(6)
+  $core.bool hasFromId() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearFromId() => $_clearField(6);
 
-  /// The amount of the transaction in cents.
-  @$pb.TagNumber(8)
-  $fixnum.Int64 get amountInCents => $_getI64(7);
-  @$pb.TagNumber(8)
-  set amountInCents($fixnum.Int64 value) => $_setInt64(7, value);
-  @$pb.TagNumber(8)
-  $core.bool hasAmountInCents() => $_has(7);
-  @$pb.TagNumber(8)
-  void clearAmountInCents() => $_clearField(8);
+  /// The amount of the transaction in XAF.
+  @$pb.TagNumber(7)
+  $fixnum.Int64 get amount => $_getI64(6);
+  @$pb.TagNumber(7)
+  set amount($fixnum.Int64 value) => $_setInt64(6, value);
+  @$pb.TagNumber(7)
+  $core.bool hasAmount() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearAmount() => $_clearField(7);
 
   /// The currency code of the transaction (ISO 4217).
-  @$pb.TagNumber(9)
-  $core.String get currencyCode => $_getSZ(8);
-  @$pb.TagNumber(9)
-  set currencyCode($core.String value) => $_setString(8, value);
-  @$pb.TagNumber(9)
-  $core.bool hasCurrencyCode() => $_has(8);
-  @$pb.TagNumber(9)
-  void clearCurrencyCode() => $_clearField(9);
+  @$pb.TagNumber(8)
+  $core.String get currencyCode => $_getSZ(7);
+  @$pb.TagNumber(8)
+  set currencyCode($core.String value) => $_setString(7, value);
+  @$pb.TagNumber(8)
+  $core.bool hasCurrencyCode() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearCurrencyCode() => $_clearField(8);
 
   /// The creation date of the transaction (ISO 8601).
-  @$pb.TagNumber(10)
-  $0.Timestamp get createdAt => $_getN(9);
-  @$pb.TagNumber(10)
-  set createdAt($0.Timestamp value) => $_setField(10, value);
-  @$pb.TagNumber(10)
-  $core.bool hasCreatedAt() => $_has(9);
-  @$pb.TagNumber(10)
-  void clearCreatedAt() => $_clearField(10);
-  @$pb.TagNumber(10)
-  $0.Timestamp ensureCreatedAt() => $_ensure(9);
+  @$pb.TagNumber(9)
+  $0.Timestamp get createdAt => $_getN(8);
+  @$pb.TagNumber(9)
+  set createdAt($0.Timestamp value) => $_setField(9, value);
+  @$pb.TagNumber(9)
+  $core.bool hasCreatedAt() => $_has(8);
+  @$pb.TagNumber(9)
+  void clearCreatedAt() => $_clearField(9);
+  @$pb.TagNumber(9)
+  $0.Timestamp ensureCreatedAt() => $_ensure(8);
 
   /// The update date of the transaction (ISO 8601).
-  @$pb.TagNumber(11)
-  $0.Timestamp get updatedAt => $_getN(10);
-  @$pb.TagNumber(11)
-  set updatedAt($0.Timestamp value) => $_setField(11, value);
-  @$pb.TagNumber(11)
-  $core.bool hasUpdatedAt() => $_has(10);
-  @$pb.TagNumber(11)
-  void clearUpdatedAt() => $_clearField(11);
-  @$pb.TagNumber(11)
-  $0.Timestamp ensureUpdatedAt() => $_ensure(10);
+  @$pb.TagNumber(10)
+  $0.Timestamp get updatedAt => $_getN(9);
+  @$pb.TagNumber(10)
+  set updatedAt($0.Timestamp value) => $_setField(10, value);
+  @$pb.TagNumber(10)
+  $core.bool hasUpdatedAt() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearUpdatedAt() => $_clearField(10);
+  @$pb.TagNumber(10)
+  $0.Timestamp ensureUpdatedAt() => $_ensure(9);
 
   /// The description or note of the transaction (ex. : "Refund for order cancellation").
-  @$pb.TagNumber(12)
-  $core.String get description => $_getSZ(11);
-  @$pb.TagNumber(12)
-  set description($core.String value) => $_setString(11, value);
-  @$pb.TagNumber(12)
-  $core.bool hasDescription() => $_has(11);
-  @$pb.TagNumber(12)
-  void clearDescription() => $_clearField(12);
+  @$pb.TagNumber(11)
+  $core.String get description => $_getSZ(10);
+  @$pb.TagNumber(11)
+  set description($core.String value) => $_setString(10, value);
+  @$pb.TagNumber(11)
+  $core.bool hasDescription() => $_has(10);
+  @$pb.TagNumber(11)
+  void clearDescription() => $_clearField(11);
 
-  /// The unique identifier of the business product associated with the transaction.
-  @$pb.TagNumber(13)
-  $core.String get businessProductId => $_getSZ(12);
-  @$pb.TagNumber(13)
-  set businessProductId($core.String value) => $_setString(12, value);
-  @$pb.TagNumber(13)
-  $core.bool hasBusinessProductId() => $_has(12);
-  @$pb.TagNumber(13)
-  void clearBusinessProductId() => $_clearField(13);
+  /// The unique identifier of the store product associated with the transaction.
+  @$pb.TagNumber(12)
+  $core.String get storeProductId => $_getSZ(11);
+  @$pb.TagNumber(12)
+  set storeProductId($core.String value) => $_setString(11, value);
+  @$pb.TagNumber(12)
+  $core.bool hasStoreProductId() => $_has(11);
+  @$pb.TagNumber(12)
+  void clearStoreProductId() => $_clearField(12);
 
   /// The quantity associated with the transaction (optional, for stock adjustments or stock transfers).
-  @$pb.TagNumber(14)
-  $core.int get quantity => $_getIZ(13);
-  @$pb.TagNumber(14)
-  set quantity($core.int value) => $_setSignedInt32(13, value);
-  @$pb.TagNumber(14)
-  $core.bool hasQuantity() => $_has(13);
-  @$pb.TagNumber(14)
-  void clearQuantity() => $_clearField(14);
+  @$pb.TagNumber(13)
+  $core.int get quantity => $_getIZ(12);
+  @$pb.TagNumber(13)
+  set quantity($core.int value) => $_setSignedInt32(12, value);
+  @$pb.TagNumber(13)
+  $core.bool hasQuantity() => $_has(12);
+  @$pb.TagNumber(13)
+  void clearQuantity() => $_clearField(13);
 
   /// The unique identifier of the user who initiated the transaction.
-  @$pb.TagNumber(15)
-  $core.String get initiatedBy => $_getSZ(14);
-  @$pb.TagNumber(15)
-  set initiatedBy($core.String value) => $_setString(14, value);
-  @$pb.TagNumber(15)
-  $core.bool hasInitiatedBy() => $_has(14);
-  @$pb.TagNumber(15)
-  void clearInitiatedBy() => $_clearField(15);
+  @$pb.TagNumber(14)
+  $core.String get initiatedBy => $_getSZ(13);
+  @$pb.TagNumber(14)
+  set initiatedBy($core.String value) => $_setString(13, value);
+  @$pb.TagNumber(14)
+  $core.bool hasInitiatedBy() => $_has(13);
+  @$pb.TagNumber(14)
+  void clearInitiatedBy() => $_clearField(14);
 
   /// The external links of the transaction (ex. : payment receipt, invoice).
-  @$pb.TagNumber(16)
-  $pb.PbList<$core.String> get externalLinksIds => $_getList(15);
+  @$pb.TagNumber(15)
+  $pb.PbList<$core.String> get externalLinksIds => $_getList(14);
 }
 
 class AddTransactionRequest extends $pb.GeneratedMessage {
@@ -769,7 +756,6 @@ class DeleteTransactionResponse extends $pb.GeneratedMessage {
 
 class FindTransactionsRequest extends $pb.GeneratedMessage {
   factory FindTransactionsRequest({
-    $core.String? businessId,
     $core.String? storeId,
     $core.String? orderId,
     $0.Timestamp? startDate,
@@ -778,7 +764,6 @@ class FindTransactionsRequest extends $pb.GeneratedMessage {
     $core.Iterable<TransactionStatus>? status,
   }) {
     final result = create();
-    if (businessId != null) result.businessId = businessId;
     if (storeId != null) result.storeId = storeId;
     if (orderId != null) result.orderId = orderId;
     if (startDate != null) result.startDate = startDate;
@@ -801,8 +786,7 @@ class FindTransactionsRequest extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'FindTransactionsRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'transaction.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'businessId')
-    ..aOS(2, _omitFieldNames ? '' : 'storeId')
+    ..aOS(1, _omitFieldNames ? '' : 'storeId')
     ..aOS(3, _omitFieldNames ? '' : 'orderId')
     ..aOM<$0.Timestamp>(4, _omitFieldNames ? '' : 'startDate',
         subBuilder: $0.Timestamp.create)
@@ -843,59 +827,50 @@ class FindTransactionsRequest extends $pb.GeneratedMessage {
   static FindTransactionsRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get businessId => $_getSZ(0);
+  $core.String get storeId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set businessId($core.String value) => $_setString(0, value);
+  set storeId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasBusinessId() => $_has(0);
+  $core.bool hasStoreId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearBusinessId() => $_clearField(1);
-
-  @$pb.TagNumber(2)
-  $core.String get storeId => $_getSZ(1);
-  @$pb.TagNumber(2)
-  set storeId($core.String value) => $_setString(1, value);
-  @$pb.TagNumber(2)
-  $core.bool hasStoreId() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearStoreId() => $_clearField(2);
+  void clearStoreId() => $_clearField(1);
 
   @$pb.TagNumber(3)
-  $core.String get orderId => $_getSZ(2);
+  $core.String get orderId => $_getSZ(1);
   @$pb.TagNumber(3)
-  set orderId($core.String value) => $_setString(2, value);
+  set orderId($core.String value) => $_setString(1, value);
   @$pb.TagNumber(3)
-  $core.bool hasOrderId() => $_has(2);
+  $core.bool hasOrderId() => $_has(1);
   @$pb.TagNumber(3)
   void clearOrderId() => $_clearField(3);
 
   @$pb.TagNumber(4)
-  $0.Timestamp get startDate => $_getN(3);
+  $0.Timestamp get startDate => $_getN(2);
   @$pb.TagNumber(4)
   set startDate($0.Timestamp value) => $_setField(4, value);
   @$pb.TagNumber(4)
-  $core.bool hasStartDate() => $_has(3);
+  $core.bool hasStartDate() => $_has(2);
   @$pb.TagNumber(4)
   void clearStartDate() => $_clearField(4);
   @$pb.TagNumber(4)
-  $0.Timestamp ensureStartDate() => $_ensure(3);
+  $0.Timestamp ensureStartDate() => $_ensure(2);
 
   @$pb.TagNumber(5)
-  $0.Timestamp get endDate => $_getN(4);
+  $0.Timestamp get endDate => $_getN(3);
   @$pb.TagNumber(5)
   set endDate($0.Timestamp value) => $_setField(5, value);
   @$pb.TagNumber(5)
-  $core.bool hasEndDate() => $_has(4);
+  $core.bool hasEndDate() => $_has(3);
   @$pb.TagNumber(5)
   void clearEndDate() => $_clearField(5);
   @$pb.TagNumber(5)
-  $0.Timestamp ensureEndDate() => $_ensure(4);
+  $0.Timestamp ensureEndDate() => $_ensure(3);
 
   @$pb.TagNumber(6)
-  $pb.PbList<TransactionType> get type => $_getList(5);
+  $pb.PbList<TransactionType> get type => $_getList(4);
 
   @$pb.TagNumber(7)
-  $pb.PbList<TransactionStatus> get status => $_getList(6);
+  $pb.PbList<TransactionStatus> get status => $_getList(5);
 }
 
 class FindTransactionsResponse extends $pb.GeneratedMessage {

@@ -1,16 +1,16 @@
 //
 //  Generated code. Do not modify.
-//  source: business/v1/supplier.proto
+//  source: store/v1/supplier.proto
 //
 
 import "package:connectrpc/connect.dart" as connect;
-import "supplier.pb.dart" as businessv1supplier;
+import "supplier.pb.dart" as storev1supplier;
 import "supplier.connect.spec.dart" as specs;
 
 extension type SupplierServiceClient (connect.Transport _transport) {
   /// Creates a new supplier.
-  Future<businessv1supplier.CreateSupplierResponse> createSupplier(
-    businessv1supplier.CreateSupplierRequest input, {
+  Future<storev1supplier.CreateSupplierResponse> createSupplier(
+    storev1supplier.CreateSupplierRequest input, {
     connect.Headers? headers,
     connect.AbortSignal? signal,
     Function(connect.Headers)? onHeader,
@@ -27,8 +27,8 @@ extension type SupplierServiceClient (connect.Transport _transport) {
   }
 
   /// Gets a supplier by id.
-  Future<businessv1supplier.GetSupplierResponse> getSupplier(
-    businessv1supplier.GetSupplierRequest input, {
+  Future<storev1supplier.GetSupplierResponse> getSupplier(
+    storev1supplier.GetSupplierRequest input, {
     connect.Headers? headers,
     connect.AbortSignal? signal,
     Function(connect.Headers)? onHeader,
@@ -44,16 +44,16 @@ extension type SupplierServiceClient (connect.Transport _transport) {
     );
   }
 
-  /// Gets all suppliers of a business.
-  Future<businessv1supplier.GetBusinessSuppliersResponse> getBusinessSuppliers(
-    businessv1supplier.GetBusinessSuppliersRequest input, {
+  /// Gets all suppliers of a store.
+  Future<storev1supplier.GetStoreSuppliersResponse> getStoreSuppliers(
+    storev1supplier.GetStoreSuppliersRequest input, {
     connect.Headers? headers,
     connect.AbortSignal? signal,
     Function(connect.Headers)? onHeader,
     Function(connect.Headers)? onTrailer,
   }) {
     return connect.Client(_transport).unary(
-      specs.SupplierService.getBusinessSuppliers,
+      specs.SupplierService.getStoreSuppliers,
       input,
       signal: signal,
       headers: headers,
@@ -62,17 +62,17 @@ extension type SupplierServiceClient (connect.Transport _transport) {
     );
   }
 
-  /// Streams all suppliers of a business with real-time updates.
+  /// Streams all suppliers of a store with real-time updates.
   /// This is a server streaming RPC that will send updates whenever suppliers change.
-  Stream<businessv1supplier.GetBusinessSuppliersResponse> streamBusinessSuppliers(
-    businessv1supplier.GetBusinessSuppliersRequest input, {
+  Stream<storev1supplier.GetStoreSuppliersResponse> streamStoreSuppliers(
+    storev1supplier.GetStoreSuppliersRequest input, {
     connect.Headers? headers,
     connect.AbortSignal? signal,
     Function(connect.Headers)? onHeader,
     Function(connect.Headers)? onTrailer,
   }) {
     return connect.Client(_transport).server(
-      specs.SupplierService.streamBusinessSuppliers,
+      specs.SupplierService.streamStoreSuppliers,
       input,
       signal: signal,
       headers: headers,
@@ -82,9 +82,9 @@ extension type SupplierServiceClient (connect.Transport _transport) {
   }
 
   /// Updates a supplier.
-  /// Note:Only the fields that are set will be updated. array fiels like external_links will be replaced.
-  Future<businessv1supplier.UpdateSupplierResponse> updateSupplier(
-    businessv1supplier.UpdateSupplierRequest input, {
+  /// Note:Only the fields that are set will be updated. array fields like external_links will be replaced.
+  Future<storev1supplier.UpdateSupplierResponse> updateSupplier(
+    storev1supplier.UpdateSupplierRequest input, {
     connect.Headers? headers,
     connect.AbortSignal? signal,
     Function(connect.Headers)? onHeader,
@@ -101,8 +101,8 @@ extension type SupplierServiceClient (connect.Transport _transport) {
   }
 
   /// Deletes a supplier.
-  Future<businessv1supplier.DeleteSupplierResponse> deleteSupplier(
-    businessv1supplier.DeleteSupplierRequest input, {
+  Future<storev1supplier.DeleteSupplierResponse> deleteSupplier(
+    storev1supplier.DeleteSupplierRequest input, {
     connect.Headers? headers,
     connect.AbortSignal? signal,
     Function(connect.Headers)? onHeader,

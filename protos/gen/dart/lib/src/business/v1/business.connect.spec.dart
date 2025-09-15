@@ -42,7 +42,7 @@ abstract final class BusinessService {
     businessv1business.UpdateBusinessResponse.new,
   );
 
-  /// Request the deletion of the business. This request doesn't delete the business direcly instead it put the business in inactive state and remove all business members.
+  /// Request the deletion of the business. This request doesn't delete the business directly instead it put the business in inactive state and remove all business members.
   static const requestDeleteBusiness = connect.Spec(
     '/$name/RequestDeleteBusiness',
     connect.StreamType.unary,

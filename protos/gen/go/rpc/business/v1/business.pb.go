@@ -501,7 +501,7 @@ func (x *ChangeBusinessCurrencyRequest) GetCountryCode() string {
 
 type ChangeBusinessCurrencyResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Sucess        bool                   `protobuf:"varint,1,opt,name=sucess,proto3" json:"sucess,omitempty"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -536,9 +536,9 @@ func (*ChangeBusinessCurrencyResponse) Descriptor() ([]byte, []int) {
 	return file_business_v1_business_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *ChangeBusinessCurrencyResponse) GetSucess() bool {
+func (x *ChangeBusinessCurrencyResponse) GetSuccess() bool {
 	if x != nil {
-		return x.Sucess
+		return x.Success
 	}
 	return false
 }
@@ -1263,9 +1263,9 @@ const file_business_v1_business_proto_rawDesc = "" +
 	"\x16currency_change_policy\x18\x01 \x01(\x0e2%.business.v1.CurrencyChangePolicyTypeR\x14currencyChangePolicy\x12\x1f\n" +
 	"\vbusiness_id\x18\x02 \x01(\tR\n" +
 	"businessId\x12!\n" +
-	"\fcountry_code\x18\x03 \x01(\tR\vcountryCode\"8\n" +
-	"\x1eChangeBusinessCurrencyResponse\x12\x16\n" +
-	"\x06sucess\x18\x01 \x01(\bR\x06sucess\"\x18\n" +
+	"\fcountry_code\x18\x03 \x01(\tR\vcountryCode\":\n" +
+	"\x1eChangeBusinessCurrencyResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"\x18\n" +
 	"\x16GetMyBusinessesRequest\"P\n" +
 	"\x17GetMyBusinessesResponse\x125\n" +
 	"\n" +

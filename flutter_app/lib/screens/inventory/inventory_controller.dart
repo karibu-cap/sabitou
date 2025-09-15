@@ -49,8 +49,8 @@ class InventoryController extends ChangeNotifier {
   }
 
   /// Deletes product.
-  Future<bool> deleteProduct(String businessId) async {
-    final result = await _viewModel.deleteProduct(businessId);
+  Future<bool> deleteProduct(String storeProductId) async {
+    final result = await _viewModel.deleteProduct(storeProductId);
 
     return result;
   }

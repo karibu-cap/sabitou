@@ -356,9 +356,8 @@ class _CategoryDropdown extends StatelessWidget {
 
                   return null;
                 },
-                onChanged: (value) =>
-                    controller.product.businessProduct.priceInXaf =
-                        int.tryParse(value) ?? 0,
+                onChanged: (value) => controller.product.storeProduct.price =
+                    int.tryParse(value) ?? 0,
               ),
             ),
           ],
@@ -404,9 +403,8 @@ class _PriceQuantityFields extends StatelessWidget {
 
               return null;
             },
-            onChanged: (p0) =>
-                controller.product.businessProduct.stockQuantity =
-                    int.tryParse(p0) ?? 0,
+            onChanged: (p0) => controller.product.storeProduct.stockQuantity =
+                int.tryParse(p0) ?? 0,
           ),
         ),
         Flexible(
@@ -435,7 +433,7 @@ class _PriceQuantityFields extends StatelessWidget {
               return null;
             },
             onChanged: (p0) =>
-                controller.product.businessProduct.minStockThreshold =
+                controller.product.storeProduct.minStockThreshold =
                     int.tryParse(p0) ?? 0,
           ),
         ),
@@ -472,7 +470,7 @@ class _ExpiryDateField extends StatelessWidget {
           validator: (value) {
             // In edition mode we potentially not want to update the expiration date. so we must skip the validation.
             if (controller.productFormType == ProductFormType.edit &&
-                controller.product.businessProduct.expirationDate
+                controller.product.storeProduct.expirationDate
                         .toDateTime()
                         .toIso8601String() ==
                     value?.toIso8601String()) {
@@ -486,12 +484,12 @@ class _ExpiryDateField extends StatelessWidget {
           },
           onChanged: (value) {
             if (value != null) {
-              controller.product.businessProduct.expirationDate =
+              controller.product.storeProduct.expirationDate =
                   Timestamp.fromDateTime(value);
 
               return;
             }
-            controller.product.businessProduct.clearExpirationDate();
+            controller.product.storeProduct.clearExpirationDate();
           },
         );
       },

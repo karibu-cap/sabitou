@@ -21,18 +21,17 @@ class OrderReceiptItem extends $pb.GeneratedMessage {
   factory OrderReceiptItem({
     $core.String? productId,
     $core.String? productName,
-    $core.String? productPriceInCents,
+    $core.String? productPrice,
     $core.int? quantity,
-    $core.int? receiptItemTotalPriceInCents,
+    $core.int? receiptItemTotalPrice,
   }) {
     final result = create();
     if (productId != null) result.productId = productId;
     if (productName != null) result.productName = productName;
-    if (productPriceInCents != null)
-      result.productPriceInCents = productPriceInCents;
+    if (productPrice != null) result.productPrice = productPrice;
     if (quantity != null) result.quantity = quantity;
-    if (receiptItemTotalPriceInCents != null)
-      result.receiptItemTotalPriceInCents = receiptItemTotalPriceInCents;
+    if (receiptItemTotalPrice != null)
+      result.receiptItemTotalPrice = receiptItemTotalPrice;
     return result;
   }
 
@@ -51,10 +50,10 @@ class OrderReceiptItem extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'productId')
     ..aOS(2, _omitFieldNames ? '' : 'productName')
-    ..aOS(3, _omitFieldNames ? '' : 'productPriceInCents')
+    ..aOS(3, _omitFieldNames ? '' : 'productPrice')
     ..a<$core.int>(4, _omitFieldNames ? '' : 'quantity', $pb.PbFieldType.O3)
-    ..a<$core.int>(5, _omitFieldNames ? '' : 'receiptItemTotalPriceInCents',
-        $pb.PbFieldType.O3)
+    ..a<$core.int>(
+        5, _omitFieldNames ? '' : 'receiptItemTotalPrice', $pb.PbFieldType.O3)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -97,13 +96,13 @@ class OrderReceiptItem extends $pb.GeneratedMessage {
   void clearProductName() => $_clearField(2);
 
   @$pb.TagNumber(3)
-  $core.String get productPriceInCents => $_getSZ(2);
+  $core.String get productPrice => $_getSZ(2);
   @$pb.TagNumber(3)
-  set productPriceInCents($core.String value) => $_setString(2, value);
+  set productPrice($core.String value) => $_setString(2, value);
   @$pb.TagNumber(3)
-  $core.bool hasProductPriceInCents() => $_has(2);
+  $core.bool hasProductPrice() => $_has(2);
   @$pb.TagNumber(3)
-  void clearProductPriceInCents() => $_clearField(3);
+  void clearProductPrice() => $_clearField(3);
 
   @$pb.TagNumber(4)
   $core.int get quantity => $_getIZ(3);
@@ -115,14 +114,13 @@ class OrderReceiptItem extends $pb.GeneratedMessage {
   void clearQuantity() => $_clearField(4);
 
   @$pb.TagNumber(5)
-  $core.int get receiptItemTotalPriceInCents => $_getIZ(4);
+  $core.int get receiptItemTotalPrice => $_getIZ(4);
   @$pb.TagNumber(5)
-  set receiptItemTotalPriceInCents($core.int value) =>
-      $_setSignedInt32(4, value);
+  set receiptItemTotalPrice($core.int value) => $_setSignedInt32(4, value);
   @$pb.TagNumber(5)
-  $core.bool hasReceiptItemTotalPriceInCents() => $_has(4);
+  $core.bool hasReceiptItemTotalPrice() => $_has(4);
   @$pb.TagNumber(5)
-  void clearReceiptItemTotalPriceInCents() => $_clearField(5);
+  void clearReceiptItemTotalPrice() => $_clearField(5);
 }
 
 /// The receipt of an order.
@@ -132,7 +130,7 @@ class OrderReceipt extends $pb.GeneratedMessage {
   factory OrderReceipt({
     $core.String? orderId,
     $core.String? orderStatus,
-    $core.String? orderTotalPriceInCents,
+    $core.String? orderTotalPrice,
     $core.String? orderCreatedAt,
     $core.String? orderUpdatedAt,
     $core.String? orderResourceName,
@@ -145,8 +143,7 @@ class OrderReceipt extends $pb.GeneratedMessage {
     final result = create();
     if (orderId != null) result.orderId = orderId;
     if (orderStatus != null) result.orderStatus = orderStatus;
-    if (orderTotalPriceInCents != null)
-      result.orderTotalPriceInCents = orderTotalPriceInCents;
+    if (orderTotalPrice != null) result.orderTotalPrice = orderTotalPrice;
     if (orderCreatedAt != null) result.orderCreatedAt = orderCreatedAt;
     if (orderUpdatedAt != null) result.orderUpdatedAt = orderUpdatedAt;
     if (orderResourceName != null) result.orderResourceName = orderResourceName;
@@ -177,7 +174,7 @@ class OrderReceipt extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'orderId')
     ..aOS(2, _omitFieldNames ? '' : 'orderStatus')
-    ..aOS(3, _omitFieldNames ? '' : 'orderTotalPriceInCents')
+    ..aOS(3, _omitFieldNames ? '' : 'orderTotalPrice')
     ..aOS(4, _omitFieldNames ? '' : 'orderCreatedAt')
     ..aOS(5, _omitFieldNames ? '' : 'orderUpdatedAt')
     ..aOS(6, _omitFieldNames ? '' : 'orderResourceName')
@@ -231,13 +228,13 @@ class OrderReceipt extends $pb.GeneratedMessage {
   void clearOrderStatus() => $_clearField(2);
 
   @$pb.TagNumber(3)
-  $core.String get orderTotalPriceInCents => $_getSZ(2);
+  $core.String get orderTotalPrice => $_getSZ(2);
   @$pb.TagNumber(3)
-  set orderTotalPriceInCents($core.String value) => $_setString(2, value);
+  set orderTotalPrice($core.String value) => $_setString(2, value);
   @$pb.TagNumber(3)
-  $core.bool hasOrderTotalPriceInCents() => $_has(2);
+  $core.bool hasOrderTotalPrice() => $_has(2);
   @$pb.TagNumber(3)
-  void clearOrderTotalPriceInCents() => $_clearField(3);
+  void clearOrderTotalPrice() => $_clearField(3);
 
   @$pb.TagNumber(4)
   $core.String get orderCreatedAt => $_getSZ(3);

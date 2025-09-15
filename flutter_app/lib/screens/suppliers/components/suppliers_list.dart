@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
+
 import '../suppliers_controller.dart';
 import 'list_components/supplier_data_table.dart';
 import 'list_components/supplier_empty_state.dart';
@@ -21,7 +22,7 @@ class SuppliersList extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Provider.of<SuppliersController>(context, listen: false);
 
-    return StreamBuilder<List<BusinessProduct>>(
+    return StreamBuilder<List<StoreProduct>>(
       stream: controller.productsStream,
       builder: (context, productsSnapshot) {
         final products = productsSnapshot.data ?? [];

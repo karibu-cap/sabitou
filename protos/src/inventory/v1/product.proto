@@ -33,25 +33,36 @@ message GlobalProduct {
   repeated string images_links_ids = 6;
 }
 
-message BusinessProduct {
+message SupplyEntry {
+  // The quantity of the product.
+  int32 quantity = 1;
+
+  // The price in XAF of the product.
+  int32 price = 2;
+
+  // The unique identifier of the supplier.
+  string supplier_id = 3;
+}
+
+message StoreProduct {
   // The unique identifier of the business product.
   optional string ref_id = 1;
 
-  // The unique identifier of the business.
-  string business_id = 2;
+  // The unique identifier of the store.
+  string store_id = 2;
 
   // The unique identifier of the global product.
   string global_product_id = 3;
 
   // The price in XAF of the product.
   // The currency is determined by the business.
-  int32 price_in_xaf = 4;
+  optional int32 price = 4;
 
   // The media ids of the images of the product.
   repeated string images_link_ids = 5;
 
   // The stock quantity of the product.
-  int32 stock_quantity = 6;
+  optional int32 stock_quantity = 6;
 
   // The minimum stock threshold of the product.
   int32 min_stock_threshold = 7;
@@ -59,13 +70,22 @@ message BusinessProduct {
   // The expiration date of the product.
   optional google.protobuf.Timestamp expiration_date = 8;
 
-  // The unique identifier of the supplier.
-  optional string supplier_id = 9;
+  // The inbound date.
+  optional google.protobuf.Timestamp inbound_date = 9;
+
+  // The creation date of the product.
+  google.protobuf.Timestamp created_at = 10;
+
+  // The last update date of the product.
+  optional google.protobuf.Timestamp updated_at = 11;
+
+  // The supplier.
+  optional string supplier_id = 12;
 }
 
-message FindBusinessProductsRequest {
-  // The query to search for business products.
-  string business_id = 1;
+message FindStoreProductsRequest {
+  // The query to search for store products.
+  string store_id = 1;
 
   // The unique identifier of the product.
   optional string ref_id = 2;
@@ -75,12 +95,15 @@ message FindBusinessProductsRequest {
 
   // Identify the products that are expired.
   optional google.protobuf.Timestamp expiration_date = 4;
+
+  // Identify the products by supplier.
+  optional string supplier_id = 5;
 }
 
-message FindBusinessProductsResponse {
+message FindStoreProductsResponse {
   // The unique identifiers of the products.
   // WARN: all returned products will only have their id and name.
-  repeated BusinessProduct products = 1;
+  repeated StoreProduct products = 1;
 }
 
 message FindGlobalProductsRequest {
@@ -114,55 +137,39 @@ message FindCategoryResponse {
   repeated ProductCategory categories = 1;
 }
 
-message AddProductRequest {
+message AddStoreProductRequest {
   // The product to add.
   // If the product does not exist, it will be created.
   GlobalProduct global_product = 1;
 
-  // The unique identifier of the business.
-  string business_id = 2;
-
-  // The price in XAF of the product.
-  // The currency is determined by the business.
-  int32 price_in_xaf = 3;
-
-  // The media ids of the images of the product.
-  repeated bytes images_raw_images = 4;
-
-  // The stock quantity of the product.
-  int32 stock_quantity = 5;
-
-  // The minimum stock threshold of the product.
-  int32 min_stock_threshold = 6;
-
-  // The expiration date of the product.
-  optional google.protobuf.Timestamp expiration_date = 7;
+  // The store product to add.
+  StoreProduct store_product = 2;
 }
 
-message AddProductResponse {
+message AddStoreProductResponse {
   // Whether the product was successfully added.
   bool success = 1;
 }
 
-message GetProductRequest {
-  // The unique identifier of the business product.
-  string product_id = 1 [
+message GetStoreProductRequest {
+  // The unique identifier of the store product.
+  string store_product_id = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
 }
 
-message GetProductResponse {
-  // The retrieved business product data.
-  BusinessProduct product = 1;
+message GetStoreProductResponse {
+  // The retrieved store product data.
+  StoreProduct store_product = 1;
 }
 
-message UpdateProductRequest {
-  // The business product information to update.
+message UpdateStoreProductRequest {
+  // The store product information to update.
   // Note:Only the fields that are set will be updated.
-  // Some fields cannot be updated like the product id, business id, and all
+  // Some fields cannot be updated like the product id, store id, and all
   // product fields.
-  BusinessProduct product = 1;
+  StoreProduct store_product = 1;
 
   // The global product information to update.
   // Note:Only the fields that are set will be updated if there is no
@@ -173,27 +180,27 @@ message UpdateProductRequest {
   repeated bytes images_raw_images = 3;
 }
 
-message UpdateProductResponse {
-  // Whether the business product was successfully updated.
+message UpdateStoreProductResponse {
+  // Whether the store product was successfully updated.
   bool success = 1;
 }
 
-message DeleteProductRequest {
-  // The unique identifier of the business product.
-  string business_product_id = 1 [
+message DeleteStoreProductRequest {
+  // The unique identifier of the store product.
+  string store_product_id = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
 }
 
-message DeleteProductResponse {
-  // Whether the business product was successfully deleted.
+message DeleteStoreProductResponse {
+  // Whether the store product was successfully deleted.
   bool success = 1;
 }
 
-message StreamBusinessProductsRequest {
-  // The unique identifier of the business.
-  string business_id = 1 [
+message StreamStoreProductsRequest {
+  // The unique identifier of the store.
+  string store_id = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
@@ -205,9 +212,9 @@ message StreamBusinessProductsRequest {
   optional string global_product_id = 3;
 }
 
-message StreamBusinessProductsResponse {
-  // The business products for the specified business.
-  repeated BusinessProduct products = 1;
+message StreamStoreProductsResponse {
+  // The store products for the specified store.
+  repeated StoreProduct products = 1;
 }
 
 service ProductService {
@@ -217,23 +224,22 @@ service ProductService {
   // Finds categories by name.
   rpc FindCategory(FindCategoryRequest) returns (FindCategoryResponse);
 
-  // Adds a product to a business.
-  rpc AddProduct(AddProductRequest) returns (AddProductResponse);
+  // Adds a product to a store.
+  rpc AddProduct(AddStoreProductRequest) returns (AddStoreProductResponse);
 
-  // Gets a business product by id.
-  rpc GetProduct(GetProductRequest) returns (GetProductResponse);
+  // Gets a store product by id.
+  rpc GetProduct(GetStoreProductRequest) returns (GetStoreProductResponse);
 
-  // Updates a business product.
-  rpc UpdateProduct(UpdateProductRequest) returns (UpdateProductResponse);
+  // Updates a store product.
+  rpc UpdateProduct(UpdateStoreProductRequest) returns (UpdateStoreProductResponse);
 
-  // Deletes a business product.
-  // Only business products that are not in any store and orders can be
-  // deleted.
-  rpc DeleteProduct(DeleteProductRequest) returns (DeleteProductResponse);
+  // Deletes a store product.
+  // Only store products that are not in any orders can be deleted.
+  rpc DeleteProduct(DeleteStoreProductRequest) returns (DeleteStoreProductResponse);
 
   // Finds products by name.
-  rpc FindBusinessProducts(FindBusinessProductsRequest) returns (FindBusinessProductsResponse);
+  rpc FindStoreProducts(FindStoreProductsRequest) returns (FindStoreProductsResponse);
 
-  // Streams all products for a business for real-time updates.
-  rpc StreamBusinessProducts(StreamBusinessProductsRequest) returns (stream StreamBusinessProductsResponse);
+  // Streams all products for a store for real-time updates.
+  rpc StreamStoreProducts(StreamStoreProductsRequest) returns (stream StreamStoreProductsResponse);
 }

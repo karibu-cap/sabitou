@@ -101,7 +101,7 @@ class _ProductsDataTable extends StatelessWidget {
                       DataCell(
                         Text(
                           Formatters.formatCurrency(
-                            product.businessProduct.priceInXaf.toDouble(),
+                            product.storeProduct.price.toDouble(),
                           ),
                           style: ShadTheme.of(context).textTheme.p,
                         ),
@@ -217,7 +217,7 @@ class _ProductCard extends StatelessWidget {
                 Flexible(
                   child: Text(
                     Formatters.formatCurrency(
-                      product.businessProduct.priceInXaf.toDouble(),
+                      product.storeProduct.price.toDouble(),
                     ),
                     style: theme.textTheme.muted,
                   ),
@@ -229,8 +229,8 @@ class _ProductCard extends StatelessWidget {
               children: [
                 Text(Intls.to.stock, style: theme.textTheme.p),
                 _InfoChip(
-                  value: '${product.businessProduct.stockQuantity} units',
-                  color: isLowStock(product.businessProduct)
+                  value: '${product.storeProduct.stockQuantity} units',
+                  color: isLowStock(product.storeProduct)
                       ? AppColors.warningColor
                       : AppColors.dartGreen,
                 ),
@@ -361,11 +361,11 @@ class _StockCell extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          '${product.businessProduct.stockQuantity} units',
+          '${product.storeProduct.stockQuantity} units',
           style: theme.textTheme.p,
         ),
         Text(
-          'Min: ${product.businessProduct.minStockThreshold}',
+          'Min: ${product.storeProduct.minStockThreshold}',
           style: theme.textTheme.muted,
         ),
       ],
@@ -383,9 +383,9 @@ class _StatusCell extends StatelessWidget {
     final theme = ShadTheme.of(context);
 
     ({String text, Color color}) getProductStatus(Product product) {
-      if (product.businessProduct.stockQuantity <= 0) {
+      if (product.storeProduct.stockQuantity <= 0) {
         return (text: Intls.to.outOfStock, color: AppColors.red);
-      } else if (isLowStock(product.businessProduct)) {
+      } else if (isLowStock(product.storeProduct)) {
         return (text: Intls.to.lowStock, color: AppColors.warningColor);
       } else {
         return (
@@ -423,19 +423,17 @@ class _ExpiryCell extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
 
-    if (!product.businessProduct.hasExpirationDate()) {
+    if (!product.storeProduct.hasExpirationDate()) {
       return const Text('/');
     }
 
     return Text(
-      Formatters.formatDate(
-        product.businessProduct.expirationDate.toDateTime(),
-      ),
+      Formatters.formatDate(product.storeProduct.expirationDate.toDateTime()),
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
       style: theme.textTheme.muted.copyWith(
         fontSize: 12,
-        color: isExpiringSoon(product.businessProduct, 60)
+        color: isExpiringSoon(product.storeProduct, 60)
             ? AppColors.error600
             : null,
       ),
@@ -536,9 +534,7 @@ class _DeleteProductDialog extends StatelessWidget {
         return;
       }
       isLoading.value = true;
-      final result = await controller.deleteProduct(
-        product.businessProduct.refId,
-      );
+      final result = await controller.deleteProduct(product.storeProduct.refId);
       if (result) {
         showSuccessToast(
           context: context,

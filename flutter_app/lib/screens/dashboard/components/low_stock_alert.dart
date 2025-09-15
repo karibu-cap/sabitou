@@ -64,7 +64,7 @@ class LowStockAlert extends StatelessWidget {
                         badgeText: '${businessProduct.stockQuantity} left',
                         badgeColor: criticalityColor,
                         additionalInfo:
-                            '\$${(businessProduct.priceInXaf / 100).toStringAsFixed(2)}/unit',
+                            '\$${(businessProduct.price / 100).toStringAsFixed(2)}/unit',
                       ),
                     );
                   }).toList(),

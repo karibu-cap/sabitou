@@ -26,15 +26,13 @@ Future<bool> hasPermission(
 }
 
 /// Checks if a product is low in stock.
-bool isLowStock(BusinessProduct businessProduct) {
+bool isLowStock(StoreProduct businessProduct) {
   return businessProduct.stockQuantity <= businessProduct.minStockThreshold;
 }
 
 /// Computes expiring products (improved to next 30 days).
-List<BusinessProduct> computeExpiringProducts(
-  List<BusinessProduct> businessProducts,
-) {
-  return businessProducts.where((p) {
+List<StoreProduct> computeExpiringProducts(List<StoreProduct> storeProducts) {
+  return storeProducts.where((p) {
     return isExpiringSoon(p, 60);
   }).toList()..sort(
     (a, b) =>
@@ -43,7 +41,7 @@ List<BusinessProduct> computeExpiringProducts(
 }
 
 /// Checks if a product is expiring soon.
-bool isExpiringSoon(BusinessProduct businessProduct, int days) {
+bool isExpiringSoon(StoreProduct businessProduct, int days) {
   final now = clock.now();
   final threshold = now.add(Duration(days: days));
 
