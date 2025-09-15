@@ -707,6 +707,7 @@ class AppInternationalizationService extends ChangeNotifier {
     'total': {'en': 'Total', 'fr': 'Total'},
     'noDataFound': {'en': 'No data found', 'fr': 'Aucune donnée trouvée'},
     'dateRange': {'en': 'Date Range', 'fr': 'Plage de date'},
+    'inboundDate': {'en': 'Inbound Date', 'fr': 'Date d\'entrée'},
   };
 
   /// Direct access to the internationalization service.
@@ -791,6 +792,9 @@ class AppInternationalizationService extends ChangeNotifier {
   /// Returns the localized value of text 'salesManagementDescription'.
   String get salesManagementDescription =>
       _stringOfLocalizedValue('salesManagementDescription');
+
+  /// Returns the localized value of text 'inboundDate'.
+  String get inboundDate => _stringOfLocalizedValue('inboundDate');
 
   /// Returns the localized value of text 'totalValue'.
   String get totalValue => _stringOfLocalizedValue('totalValue');

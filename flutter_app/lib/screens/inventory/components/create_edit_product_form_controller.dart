@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
@@ -41,7 +42,10 @@ class CreateEditProductFormController extends ChangeNotifier {
   final TextEditingController nameController;
 
   /// The category controller.
-  ShadSelectController<Category>? categoryController;
+  ShadSelectController<String?> categoryController;
+
+  /// The supplier controller.
+  ShadSelectController<String?> supplierController;
 
   /// The barcode controller.
   final TextEditingController barcodeController;
@@ -57,6 +61,9 @@ class CreateEditProductFormController extends ChangeNotifier {
 
   /// The expiry controller.
   final TextEditingController expiryController;
+
+  /// The inbound date controller.
+  final TextEditingController inboundDateController;
 
   /// Gets the loading state.
   bool get onSaveProduct => _onSaveProduct;
@@ -85,27 +92,34 @@ class CreateEditProductFormController extends ChangeNotifier {
       minStockThresholdController = TextEditingController(
         text: product?.storeProduct.minStockThreshold.toString(),
       ),
+      inboundDateController = TextEditingController(
+        text: product?.storeProduct.inboundDate.toDateTime().toIso8601String(),
+      ),
       expiryController = TextEditingController(
         text: product?.storeProduct.expirationDate
             .toDateTime()
             .toIso8601String(),
       ),
-      categoryController = ShadSelectController<Category>(
+      categoryController = ShadSelectController<String?>(
         initialValue: product?.globalProduct.categories
-            .map((e) => Category(refId: e.refId, name: e.name))
+            .map((e) => e.refId)
             .toSet(),
+      ),
+      supplierController = ShadSelectController<String?>(
+        initialValue: product?.storeProduct.supplierId != null
+            ? {product?.storeProduct.supplierId}
+            : null,
       );
 
   /// Validates the form.
   bool validateForm() {
     final isValid = formKey.currentState?.saveAndValidate() == true;
-    final isNotEmptyCategory = categoryController?.value.isNotEmpty == true;
+    final isNotEmptyCategory = categoryController.value.isNotEmpty;
     if (!isNotEmptyCategory) {
       errors.value = {
-        ErrorType.category: Intls.to.isRequiredField.replaceFirst(
-          '@field',
-          Intls.to.category,
-        ),
+        ErrorType.category: Intls.to.isRequiredField.trParams({
+          'field': Intls.to.category,
+        }),
       };
     }
 
@@ -123,8 +137,8 @@ class CreateEditProductFormController extends ChangeNotifier {
   void setNewProduct(GlobalProduct globalProduct) {
     nameController.text = globalProduct.name;
     barcodeController.text = globalProduct.barCodeValue;
-    categoryController?.value = globalProduct.categories
-        .map((e) => Category(refId: e.refId, name: e.name))
+    categoryController.value = globalProduct.categories
+        .map((e) => e.refId)
         .toSet();
     _product.globalProduct = globalProduct;
     notifyListeners();
@@ -148,13 +162,17 @@ class CreateEditProductFormController extends ChangeNotifier {
           ? await ProductsRepository.instance.addProduct(
               AddStoreProductRequest(
                 globalProduct: product.globalProduct,
-                storeProduct: product.storeProduct,
+                storeProduct: product.storeProduct
+                  ..storeId = storeId
+                  ..createdAt = Timestamp.fromDateTime(clock.now())
+                  ..updatedAt = Timestamp.fromDateTime(clock.now()),
               ),
             )
           : await ProductsRepository.instance.updateProduct(
               UpdateStoreProductRequest(
                 globalProduct: product.globalProduct,
-                storeProduct: product.storeProduct,
+                storeProduct: product.storeProduct
+                  ..updatedAt = Timestamp.fromDateTime(clock.now()),
               ),
             );
 
