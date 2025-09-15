@@ -6,8 +6,8 @@ paths:
     post:
       tags:
         - inventory.v1.ProductService
-      summary: Adds a product to a business.
-      description: Adds a product to a business.
+      summary: Adds a product to a store.
+      description: Adds a product to a store.
       operationId: inventory.v1.ProductService.AddProduct
       parameters:
         - name: Connect-Protocol-Version
@@ -23,7 +23,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/inventory.v1.AddProductRequest'
+              $ref: '#/components/schemas/inventory.v1.AddStoreProductRequest'
         required: true
       responses:
         default:
@@ -37,16 +37,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inventory.v1.AddProductResponse'
+                $ref: '#/components/schemas/inventory.v1.AddStoreProductResponse'
   /inventory.v1.ProductService/DeleteProduct:
     post:
       tags:
         - inventory.v1.ProductService
-      summary: Deletes a business product.  Only business products that are not in any store and orders can be  deleted.
+      summary: Deletes a store product.  Only store products that are not in any orders can be deleted.
       description: |-
-        Deletes a business product.
-         Only business products that are not in any store and orders can be
-         deleted.
+        Deletes a store product.
+         Only store products that are not in any orders can be deleted.
       operationId: inventory.v1.ProductService.DeleteProduct
       parameters:
         - name: Connect-Protocol-Version
@@ -62,7 +61,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/inventory.v1.DeleteProductRequest'
+              $ref: '#/components/schemas/inventory.v1.DeleteStoreProductRequest'
         required: true
       responses:
         default:
@@ -76,43 +75,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inventory.v1.DeleteProductResponse'
-  /inventory.v1.ProductService/FindBusinessProducts:
-    post:
-      tags:
-        - inventory.v1.ProductService
-      summary: Finds products by name.
-      description: Finds products by name.
-      operationId: inventory.v1.ProductService.FindBusinessProducts
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/inventory.v1.FindBusinessProductsRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inventory.v1.FindBusinessProductsResponse'
+                $ref: '#/components/schemas/inventory.v1.DeleteStoreProductResponse'
   /inventory.v1.ProductService/FindCategory:
     post:
       tags:
@@ -185,12 +148,48 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inventory.v1.FindGlobalProductsResponse'
+  /inventory.v1.ProductService/FindStoreProducts:
+    post:
+      tags:
+        - inventory.v1.ProductService
+      summary: Finds products by name.
+      description: Finds products by name.
+      operationId: inventory.v1.ProductService.FindStoreProducts
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inventory.v1.FindStoreProductsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inventory.v1.FindStoreProductsResponse'
   /inventory.v1.ProductService/GetProduct:
     post:
       tags:
         - inventory.v1.ProductService
-      summary: Gets a business product by id.
-      description: Gets a business product by id.
+      summary: Gets a store product by id.
+      description: Gets a store product by id.
       operationId: inventory.v1.ProductService.GetProduct
       parameters:
         - name: Connect-Protocol-Version
@@ -206,7 +205,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/inventory.v1.GetProductRequest'
+              $ref: '#/components/schemas/inventory.v1.GetStoreProductRequest'
         required: true
       responses:
         default:
@@ -220,14 +219,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inventory.v1.GetProductResponse'
-  /inventory.v1.ProductService/StreamBusinessProducts: {}
+                $ref: '#/components/schemas/inventory.v1.GetStoreProductResponse'
+  /inventory.v1.ProductService/StreamStoreProducts: {}
   /inventory.v1.ProductService/UpdateProduct:
     post:
       tags:
         - inventory.v1.ProductService
-      summary: Updates a business product.
-      description: Updates a business product.
+      summary: Updates a store product.
+      description: Updates a store product.
       operationId: inventory.v1.ProductService.UpdateProduct
       parameters:
         - name: Connect-Protocol-Version
@@ -243,7 +242,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/inventory.v1.UpdateProductRequest'
+              $ref: '#/components/schemas/inventory.v1.UpdateStoreProductRequest'
         required: true
       responses:
         default:
@@ -257,7 +256,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inventory.v1.UpdateProductResponse'
+                $ref: '#/components/schemas/inventory.v1.UpdateStoreProductResponse'
 components:
   schemas:
     connect-protocol-version:
@@ -425,7 +424,7 @@ components:
          the Joda Time's [`ISODateTimeFormat.dateTime()`](
          http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()
          ) to obtain a formatter capable of generating timestamps in this format.
-    inventory.v1.AddProductRequest:
+    inventory.v1.AddStoreProductRequest:
       type: object
       properties:
         globalProduct:
@@ -434,158 +433,41 @@ components:
             The product to add.
              If the product does not exist, it will be created.
           $ref: '#/components/schemas/inventory.v1.GlobalProduct'
-        businessId:
-          type: string
-          title: business_id
-          description: The unique identifier of the business.
-        priceInXaf:
-          type: integer
-          title: price_in_xaf
-          format: int32
-          description: |-
-            The price in XAF of the product.
-             The currency is determined by the business.
-        imagesRawImages:
-          type: array
-          items:
-            type: string
-            format: byte
-          title: images_raw_images
-          description: The media ids of the images of the product.
-        stockQuantity:
-          type: integer
-          title: stock_quantity
-          format: int32
-          description: The stock quantity of the product.
-        minStockThreshold:
-          type: integer
-          title: min_stock_threshold
-          format: int32
-          description: The minimum stock threshold of the product.
-        expirationDate:
-          title: expiration_date
-          description: The expiration date of the product.
-          nullable: true
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-      title: AddProductRequest
+        storeProduct:
+          title: store_product
+          description: The store product to add.
+          $ref: '#/components/schemas/inventory.v1.StoreProduct'
+      title: AddStoreProductRequest
       additionalProperties: false
-    inventory.v1.AddProductResponse:
+    inventory.v1.AddStoreProductResponse:
       type: object
       properties:
         success:
           type: boolean
           title: success
           description: Whether the product was successfully added.
-      title: AddProductResponse
+      title: AddStoreProductResponse
       additionalProperties: false
-    inventory.v1.BusinessProduct:
+    inventory.v1.DeleteStoreProductRequest:
       type: object
       properties:
-        refId:
+        storeProductId:
           type: string
-          title: ref_id
-          description: The unique identifier of the business product.
-          nullable: true
-        businessId:
-          type: string
-          title: business_id
-          description: The unique identifier of the business.
-        globalProductId:
-          type: string
-          title: global_product_id
-          description: The unique identifier of the global product.
-        priceInXaf:
-          type: integer
-          title: price_in_xaf
-          format: int32
-          description: |-
-            The price in XAF of the product.
-             The currency is determined by the business.
-        imagesLinksIds:
-          type: array
-          items:
-            type: string
-          title: images_links_ids
-          description: The media ids of the images of the product.
-        stockQuantity:
-          type: integer
-          title: stock_quantity
-          format: int32
-          description: The stock quantity of the product.
-        minStockThreshold:
-          type: integer
-          title: min_stock_threshold
-          format: int32
-          description: The minimum stock threshold of the product.
-        expirationDate:
-          title: expiration_date
-          description: The expiration date of the product.
-          nullable: true
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-        supplierId:
-          type: string
-          title: supplier_id
-          description: The unique identifier of the supplier.
-          nullable: true
-      title: BusinessProduct
-      additionalProperties: false
-    inventory.v1.DeleteProductRequest:
-      type: object
-      properties:
-        businessProductId:
-          type: string
-          title: business_product_id
+          title: store_product_id
           minLength: 3
-          description: The unique identifier of the business product.
-      title: DeleteProductRequest
+          description: The unique identifier of the store product.
+      title: DeleteStoreProductRequest
       required:
-        - businessProductId
+        - storeProductId
       additionalProperties: false
-    inventory.v1.DeleteProductResponse:
+    inventory.v1.DeleteStoreProductResponse:
       type: object
       properties:
         success:
           type: boolean
           title: success
-          description: Whether the business product was successfully deleted.
-      title: DeleteProductResponse
-      additionalProperties: false
-    inventory.v1.FindBusinessProductsRequest:
-      type: object
-      properties:
-        businessId:
-          type: string
-          title: business_id
-          description: The query to search for business products.
-        refId:
-          type: string
-          title: ref_id
-          description: The unique identifier of the product.
-          nullable: true
-        globalProductId:
-          type: string
-          title: global_product_id
-          description: The unique identifier of the global product.
-          nullable: true
-        expirationDate:
-          title: expiration_date
-          description: Identify the products that are expired.
-          nullable: true
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-      title: FindBusinessProductsRequest
-      additionalProperties: false
-    inventory.v1.FindBusinessProductsResponse:
-      type: object
-      properties:
-        products:
-          type: array
-          items:
-            $ref: '#/components/schemas/inventory.v1.BusinessProduct'
-          title: products
-          description: |-
-            The unique identifiers of the products.
-             WARN: all returned products will only have their id and name.
-      title: FindBusinessProductsResponse
+          description: Whether the store product was successfully deleted.
+      title: DeleteStoreProductResponse
       additionalProperties: false
     inventory.v1.FindCategoryRequest:
       type: object
@@ -648,26 +530,68 @@ components:
              WARN: all returned products will only have their id and name.
       title: FindGlobalProductsResponse
       additionalProperties: false
-    inventory.v1.GetProductRequest:
+    inventory.v1.FindStoreProductsRequest:
       type: object
       properties:
-        productId:
+        storeId:
           type: string
-          title: product_id
-          minLength: 3
-          description: The unique identifier of the business product.
-      title: GetProductRequest
-      required:
-        - productId
+          title: store_id
+          description: The query to search for store products.
+        refId:
+          type: string
+          title: ref_id
+          description: The unique identifier of the product.
+          nullable: true
+        globalProductId:
+          type: string
+          title: global_product_id
+          description: The unique identifier of the global product.
+          nullable: true
+        expirationDate:
+          title: expiration_date
+          description: Identify the products that are expired.
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        supplierId:
+          type: string
+          title: supplier_id
+          description: Identify the products by supplier.
+          nullable: true
+      title: FindStoreProductsRequest
       additionalProperties: false
-    inventory.v1.GetProductResponse:
+    inventory.v1.FindStoreProductsResponse:
       type: object
       properties:
-        product:
-          title: product
-          description: The retrieved business product data.
-          $ref: '#/components/schemas/inventory.v1.BusinessProduct'
-      title: GetProductResponse
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/inventory.v1.StoreProduct'
+          title: products
+          description: |-
+            The unique identifiers of the products.
+             WARN: all returned products will only have their id and name.
+      title: FindStoreProductsResponse
+      additionalProperties: false
+    inventory.v1.GetStoreProductRequest:
+      type: object
+      properties:
+        storeProductId:
+          type: string
+          title: store_product_id
+          minLength: 3
+          description: The unique identifier of the store product.
+      title: GetStoreProductRequest
+      required:
+        - storeProductId
+      additionalProperties: false
+    inventory.v1.GetStoreProductResponse:
+      type: object
+      properties:
+        storeProduct:
+          title: store_product
+          description: The retrieved store product data.
+          $ref: '#/components/schemas/inventory.v1.StoreProduct'
+      title: GetStoreProductResponse
       additionalProperties: false
     inventory.v1.GlobalProduct:
       type: object
@@ -719,14 +643,81 @@ components:
           description: The name of the product category.
       title: ProductCategory
       additionalProperties: false
-    inventory.v1.StreamBusinessProductsRequest:
+    inventory.v1.StoreProduct:
       type: object
       properties:
-        businessId:
+        refId:
           type: string
-          title: business_id
+          title: ref_id
+          description: The unique identifier of the business product.
+          nullable: true
+        storeId:
+          type: string
+          title: store_id
+          description: The unique identifier of the store.
+        globalProductId:
+          type: string
+          title: global_product_id
+          description: The unique identifier of the global product.
+        price:
+          type: integer
+          title: price
+          format: int32
+          description: |-
+            The price in XAF of the product.
+             The currency is determined by the business.
+          nullable: true
+        imagesLinksIds:
+          type: array
+          items:
+            type: string
+          title: images_links_ids
+          description: The media ids of the images of the product.
+        stockQuantity:
+          type: integer
+          title: stock_quantity
+          format: int32
+          description: The stock quantity of the product.
+          nullable: true
+        minStockThreshold:
+          type: integer
+          title: min_stock_threshold
+          format: int32
+          description: The minimum stock threshold of the product.
+        expirationDate:
+          title: expiration_date
+          description: The expiration date of the product.
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        inboundDate:
+          title: inbound_date
+          description: The inbound date.
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        createdAt:
+          title: created_at
+          description: The creation date of the product.
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        updatedAt:
+          title: updated_at
+          description: The last update date of the product.
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        supplierId:
+          type: string
+          title: supplier_id
+          description: The supplier.
+          nullable: true
+      title: StoreProduct
+      additionalProperties: false
+    inventory.v1.StreamStoreProductsRequest:
+      type: object
+      properties:
+        storeId:
+          type: string
+          title: store_id
           minLength: 3
-          description: The unique identifier of the business.
+          description: The unique identifier of the store.
         supplierId:
           type: string
           title: supplier_id
@@ -737,32 +728,51 @@ components:
           title: global_product_id
           description: Optional filter by global product ID.
           nullable: true
-      title: StreamBusinessProductsRequest
+      title: StreamStoreProductsRequest
       required:
-        - businessId
+        - storeId
       additionalProperties: false
-    inventory.v1.StreamBusinessProductsResponse:
+    inventory.v1.StreamStoreProductsResponse:
       type: object
       properties:
         products:
           type: array
           items:
-            $ref: '#/components/schemas/inventory.v1.BusinessProduct'
+            $ref: '#/components/schemas/inventory.v1.StoreProduct'
           title: products
-          description: The business products for the specified business.
-      title: StreamBusinessProductsResponse
+          description: The store products for the specified store.
+      title: StreamStoreProductsResponse
       additionalProperties: false
-    inventory.v1.UpdateProductRequest:
+    inventory.v1.SupplyEntry:
       type: object
       properties:
-        product:
-          title: product
+        quantity:
+          type: integer
+          title: quantity
+          format: int32
+          description: The quantity of the product.
+        price:
+          type: integer
+          title: price
+          format: int32
+          description: The price in XAF of the product.
+        supplierId:
+          type: string
+          title: supplier_id
+          description: The unique identifier of the supplier.
+      title: SupplyEntry
+      additionalProperties: false
+    inventory.v1.UpdateStoreProductRequest:
+      type: object
+      properties:
+        storeProduct:
+          title: store_product
           description: |-
-            The business product information to update.
+            The store product information to update.
              Note:Only the fields that are set will be updated.
-             Some fields cannot be updated like the product id, business id, and all
+             Some fields cannot be updated like the product id, store id, and all
              product fields.
-          $ref: '#/components/schemas/inventory.v1.BusinessProduct'
+          $ref: '#/components/schemas/inventory.v1.StoreProduct'
         globalProduct:
           title: global_product
           description: |-
@@ -778,16 +788,16 @@ components:
             format: byte
           title: images_raw_images
           description: The media ids of the images of the product.
-      title: UpdateProductRequest
+      title: UpdateStoreProductRequest
       additionalProperties: false
-    inventory.v1.UpdateProductResponse:
+    inventory.v1.UpdateStoreProductResponse:
       type: object
       properties:
         success:
           type: boolean
           title: success
-          description: Whether the business product was successfully updated.
-      title: UpdateProductResponse
+          description: Whether the store product was successfully updated.
+      title: UpdateStoreProductResponse
       additionalProperties: false
 security: []
 tags:

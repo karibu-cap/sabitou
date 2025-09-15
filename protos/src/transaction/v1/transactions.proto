@@ -43,47 +43,44 @@ message Transaction {
   // The status of the transaction (pending, completed, failed, cancelled).
   TransactionStatus status = 3;
 
-  // The unique identifier of the business associated with the transaction.
-  string business_id = 4 [
+  // The unique identifier of the store associated with the transaction.
+  string store_id = 4 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
 
-  // The unique identifier of the store associated with the transaction.
-  optional string store_id = 5;
-
   // The unique identifier of the order associated with the transaction.
-  optional string order_id = 6;
+  optional string order_id = 5;
 
   // The unique identifier of the client or supplier associated with the transaction.
-  optional string from_id = 7;
+  optional string from_id = 6;
 
-  // The amount of the transaction in cents.
-  int64 amount_in_cents = 8;
+  // The amount of the transaction in XAF.
+  int64 amount = 7;
 
   // The currency code of the transaction (ISO 4217).
-  string currency_code = 9 [(buf.validate.field).required = true];
+  string currency_code = 8 [(buf.validate.field).required = true];
 
   // The creation date of the transaction (ISO 8601).
-  google.protobuf.Timestamp created_at = 10;
+  google.protobuf.Timestamp created_at = 9;
 
   // The update date of the transaction (ISO 8601).
-  optional google.protobuf.Timestamp updated_at = 11;
+  optional google.protobuf.Timestamp updated_at = 10;
 
   // The description or note of the transaction (ex. : "Refund for order cancellation").
-  optional string description = 12;
+  optional string description = 11;
 
-  // The unique identifier of the business product associated with the transaction.
-  optional string business_product_id = 13;
+  // The unique identifier of the store product associated with the transaction.
+  optional string store_product_id = 12;
 
   // The quantity associated with the transaction (optional, for stock adjustments or stock transfers).
-  optional int32 quantity = 14;
+  optional int32 quantity = 13;
 
   // The unique identifier of the user who initiated the transaction.
-  optional string initiated_by = 15;
+  optional string initiated_by = 14;
 
   // The external links of the transaction (ex. : payment receipt, invoice).
-  repeated string external_links_ids = 16;
+  repeated string external_links_ids = 15;
 }
 
 message AddTransactionRequest {
@@ -127,11 +124,10 @@ message DeleteTransactionResponse {
 }
 
 message FindTransactionsRequest {
-  string business_id = 1 [
+  string store_id = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
-  optional string store_id = 2;
   optional string order_id = 3;
   optional google.protobuf.Timestamp start_date = 4;
   optional google.protobuf.Timestamp end_date = 5;

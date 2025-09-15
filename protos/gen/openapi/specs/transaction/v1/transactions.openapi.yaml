@@ -388,14 +388,10 @@ components:
     transaction.v1.FindTransactionsRequest:
       type: object
       properties:
-        businessId:
-          type: string
-          title: business_id
-          minLength: 3
         storeId:
           type: string
           title: store_id
-          nullable: true
+          minLength: 3
         orderId:
           type: string
           title: order_id
@@ -420,7 +416,7 @@ components:
           title: status
       title: FindTransactionsRequest
       required:
-        - businessId
+        - storeId
       additionalProperties: false
     transaction.v1.FindTransactionsResponse:
       type: object
@@ -467,16 +463,11 @@ components:
           title: status
           description: The status of the transaction (pending, completed, failed, cancelled).
           $ref: '#/components/schemas/transaction.v1.TransactionStatus'
-        businessId:
-          type: string
-          title: business_id
-          minLength: 3
-          description: The unique identifier of the business associated with the transaction.
         storeId:
           type: string
           title: store_id
+          minLength: 3
           description: The unique identifier of the store associated with the transaction.
-          nullable: true
         orderId:
           type: string
           title: order_id
@@ -487,13 +478,13 @@ components:
           title: from_id
           description: The unique identifier of the client or supplier associated with the transaction.
           nullable: true
-        amountInCents:
+        amount:
           type:
             - integer
             - string
-          title: amount_in_cents
+          title: amount
           format: int64
-          description: The amount of the transaction in cents.
+          description: The amount of the transaction in XAF.
         currencyCode:
           type: string
           title: currency_code
@@ -512,10 +503,10 @@ components:
           title: description
           description: 'The description or note of the transaction (ex. : "Refund for order cancellation").'
           nullable: true
-        businessProductId:
+        storeProductId:
           type: string
-          title: business_product_id
-          description: The unique identifier of the business product associated with the transaction.
+          title: store_product_id
+          description: The unique identifier of the store product associated with the transaction.
           nullable: true
         quantity:
           type: integer
@@ -536,7 +527,7 @@ components:
           description: 'The external links of the transaction (ex. : payment receipt, invoice).'
       title: Transaction
       required:
-        - businessId
+        - storeId
         - currencyCode
       additionalProperties: false
       description: |-

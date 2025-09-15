@@ -80,7 +80,7 @@ extension type BusinessServiceClient (connect.Transport _transport) {
     );
   }
 
-  /// Request the deletion of the business. This request doesn't delete the business direcly instead it put the business in inactive state and remove all business members.
+  /// Request the deletion of the business. This request doesn't delete the business directly instead it put the business in inactive state and remove all business members.
   Future<businessv1business.RequestDeleteBusinessResponse> requestDeleteBusiness(
     businessv1business.RequestDeleteBusinessRequest input, {
     connect.Headers? headers,
@@ -99,15 +99,15 @@ extension type BusinessServiceClient (connect.Transport _transport) {
   }
 
   /// Add user to business or invite user to business.
-  Future<businessv1business.AddUserToBusinessResponse> addUserToBusiness(
-    businessv1business.AddUserToBusinessRequest input, {
+  Future<businessv1business.CreateUserToBusinessResponse> createUserToBusiness(
+    businessv1business.CreateUserToBusinessRequest input, {
     connect.Headers? headers,
     connect.AbortSignal? signal,
     Function(connect.Headers)? onHeader,
     Function(connect.Headers)? onTrailer,
   }) {
     return connect.Client(_transport).unary(
-      specs.BusinessService.addUserToBusiness,
+      specs.BusinessService.createUserToBusiness,
       input,
       signal: signal,
       headers: headers,

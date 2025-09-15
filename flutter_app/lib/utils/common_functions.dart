@@ -4,11 +4,12 @@ import 'package:sabitou_rpc/models.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../repositories/business_repository.dart';
+import '../themes/app_colors.dart';
 import 'user_preference.dart';
 
-/// Checks user permissions.
-Future<bool> hasPermission(
-  ResourceType resourceType,
+/// Checks user has store permissions.
+Future<bool> hasStorePermission(
+  StoreResourceType resourceType,
   ResourceActionType actionType,
 ) async {
   final userId = UserPreferences.instance.user?.refId;
@@ -16,8 +17,10 @@ Future<bool> hasPermission(
 
   if (userId == null || businessId == null) return false;
   final businessMemberRepository = BusinessRepository.instance;
-  final member = await businessMemberRepository
-      .getBusinessMembersByBusinessRefId(businessId, userId);
+  final member = await businessMemberRepository.getBusinessMember(
+    userId,
+    businessId,
+  );
   if (member == null) return false;
 
   return member.permissions.any(
@@ -26,15 +29,13 @@ Future<bool> hasPermission(
 }
 
 /// Checks if a product is low in stock.
-bool isLowStock(BusinessProduct businessProduct) {
+bool isLowStock(StoreProduct businessProduct) {
   return businessProduct.stockQuantity <= businessProduct.minStockThreshold;
 }
 
 /// Computes expiring products (improved to next 30 days).
-List<BusinessProduct> computeExpiringProducts(
-  List<BusinessProduct> businessProducts,
-) {
-  return businessProducts.where((p) {
+List<StoreProduct> computeExpiringProducts(List<StoreProduct> storeProducts) {
+  return storeProducts.where((p) {
     return isExpiringSoon(p, 60);
   }).toList()..sort(
     (a, b) =>
@@ -43,7 +44,7 @@ List<BusinessProduct> computeExpiringProducts(
 }
 
 /// Checks if a product is expiring soon.
-bool isExpiringSoon(BusinessProduct businessProduct, int days) {
+bool isExpiringSoon(StoreProduct businessProduct, int days) {
   final now = clock.now();
   final threshold = now.add(Duration(days: days));
 
@@ -65,7 +66,6 @@ void showErrorToast({
     ShadToast.destructive(
       title: title != null ? Text(title) : null,
       description: Text(message),
-      backgroundColor: Colors.red.withValues(alpha: 0.5),
     ),
   );
 }
@@ -78,9 +78,43 @@ void showSuccessToast({
 }) {
   ShadToaster.of(context).show(
     ShadToast(
+      title: title != null
+          ? Text(title, style: const TextStyle(color: AppColors.grey0))
+          : null,
+      description: Text(
+        message,
+        style: const TextStyle(color: AppColors.grey0),
+      ),
+      backgroundColor: AppColors.dartGreen,
+    ),
+  );
+}
+
+/// Shows a warning toast.
+void showWarningToast({
+  required BuildContext context,
+  required String message,
+  String? title,
+}) {
+  ShadToaster.of(context).show(
+    ShadToast(
       title: title != null ? Text(title) : null,
       description: Text(message),
-      backgroundColor: Colors.green.withValues(alpha: 0.5),
+      backgroundColor: AppColors.lightOrange,
+    ),
+  );
+}
+
+/// Shows a warning toast.
+void showNeutralToast({
+  required BuildContext context,
+  required String message,
+  String? title,
+}) {
+  ShadToaster.of(context).show(
+    ShadToast(
+      title: title != null ? Text(title) : null,
+      description: Text(message),
     ),
   );
 }

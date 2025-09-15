@@ -2,42 +2,6 @@ openapi: 3.1.0
 info:
   title: transaction.v1
 paths:
-  /business.v1.BusinessService/AddUserToBusiness:
-    post:
-      tags:
-        - business.v1.BusinessService
-      summary: Add user to business or invite user to business.
-      description: Add user to business or invite user to business.
-      operationId: business.v1.BusinessService.AddUserToBusiness
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/business.v1.AddUserToBusinessRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/business.v1.AddUserToBusinessResponse'
   /business.v1.BusinessService/AssociateUserToBusiness:
     post:
       tags:
@@ -146,6 +110,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/business.v1.CreateBusinessResponse'
+  /business.v1.BusinessService/CreateUserToBusiness:
+    post:
+      tags:
+        - business.v1.BusinessService
+      summary: Add user to business or invite user to business.
+      description: Add user to business or invite user to business.
+      operationId: business.v1.BusinessService.CreateUserToBusiness
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/business.v1.CreateUserToBusinessRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/business.v1.CreateUserToBusinessResponse'
   /business.v1.BusinessService/GetBusinessDetails:
     post:
       tags:
@@ -334,8 +334,8 @@ paths:
     post:
       tags:
         - business.v1.BusinessService
-      summary: Request the deletion of the business. This request doesn't delete the business direcly instead it put the business in inactive state and remove all business members.
-      description: Request the deletion of the business. This request doesn't delete the business direcly instead it put the business in inactive state and remove all business members.
+      summary: Request the deletion of the business. This request doesn't delete the business directly instead it put the business in inactive state and remove all business members.
+      description: Request the deletion of the business. This request doesn't delete the business directly instead it put the business in inactive state and remove all business members.
       operationId: business.v1.BusinessService.RequestDeleteBusiness
       parameters:
         - name: Connect-Protocol-Version
@@ -912,13 +912,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/identity.v1.ResetPasswordResponse'
-  /identity.v1.PermissionService/CheckPermission:
+  /identity.v1.PermissionService/CheckBusinessPermission:
     post:
       tags:
         - identity.v1.PermissionService
-      summary: Checks if the member has the provided permission for the provided resource.
-      description: Checks if the member has the provided permission for the provided resource.
-      operationId: identity.v1.PermissionService.CheckPermission
+      summary: Checks if a member has a business permission.
+      description: Checks if a member has a business permission.
+      operationId: identity.v1.PermissionService.CheckBusinessPermission
       parameters:
         - name: Connect-Protocol-Version
           in: header
@@ -933,7 +933,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/identity.v1.CheckPermissionRequest'
+              $ref: '#/components/schemas/identity.v1.CheckBusinessPermissionRequest'
         required: true
       responses:
         default:
@@ -947,14 +947,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/identity.v1.CheckPermissionResponse'
-  /identity.v1.PermissionService/CreatePermissionsGroup:
+                $ref: '#/components/schemas/identity.v1.CheckBusinessPermissionResponse'
+  /identity.v1.PermissionService/CheckStorePermission:
     post:
       tags:
         - identity.v1.PermissionService
-      summary: Creates a new permission group.
-      description: Creates a new permission group.
-      operationId: identity.v1.PermissionService.CreatePermissionsGroup
+      summary: Checks if a member has a store permission.
+      description: Checks if a member has a store permission.
+      operationId: identity.v1.PermissionService.CheckStorePermission
       parameters:
         - name: Connect-Protocol-Version
           in: header
@@ -969,7 +969,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/identity.v1.CreatePermissionsGroupRequest'
+              $ref: '#/components/schemas/identity.v1.CheckStorePermissionRequest'
         required: true
       responses:
         default:
@@ -983,14 +983,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/identity.v1.CreatePermissionsGroupResponse'
-  /identity.v1.PermissionService/DeletePermissionsGroup:
+                $ref: '#/components/schemas/identity.v1.CheckStorePermissionResponse'
+  /identity.v1.PermissionService/CreateBusinessPermission:
     post:
       tags:
         - identity.v1.PermissionService
-      summary: Deletes a permission group.
-      description: Deletes a permission group.
-      operationId: identity.v1.PermissionService.DeletePermissionsGroup
+      summary: Creates a new business permission.
+      description: Creates a new business permission.
+      operationId: identity.v1.PermissionService.CreateBusinessPermission
       parameters:
         - name: Connect-Protocol-Version
           in: header
@@ -1005,7 +1005,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/identity.v1.DeletePermissionsGroupRequest'
+              $ref: '#/components/schemas/identity.v1.CreateBusinessPermissionRequest'
         required: true
       responses:
         default:
@@ -1019,14 +1019,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/identity.v1.DeletePermissionsGroupResponse'
-  /identity.v1.PermissionService/GetBusinessPermissionsGroups:
+                $ref: '#/components/schemas/identity.v1.CreateBusinessPermissionResponse'
+  /identity.v1.PermissionService/CreateStorePermission:
     post:
       tags:
         - identity.v1.PermissionService
-      summary: Gets the permission groups of the business.
-      description: Gets the permission groups of the business.
-      operationId: identity.v1.PermissionService.GetBusinessPermissionsGroups
+      summary: Creates a new store permission.
+      description: Creates a new store permission.
+      operationId: identity.v1.PermissionService.CreateStorePermission
       parameters:
         - name: Connect-Protocol-Version
           in: header
@@ -1041,7 +1041,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/identity.v1.GetBusinessPermissionsGroupsRequest'
+              $ref: '#/components/schemas/identity.v1.CreateStorePermissionRequest'
         required: true
       responses:
         default:
@@ -1055,14 +1055,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/identity.v1.GetBusinessPermissionsGroupsResponse'
-  /identity.v1.PermissionService/GetPermissionsGroup:
+                $ref: '#/components/schemas/identity.v1.CreateStorePermissionResponse'
+  /identity.v1.PermissionService/DeleteBusinessPermission:
     post:
       tags:
         - identity.v1.PermissionService
-      summary: Gets a permission group by id.
-      description: Gets a permission group by id.
-      operationId: identity.v1.PermissionService.GetPermissionsGroup
+      summary: Deletes a business permission.
+      description: Deletes a business permission.
+      operationId: identity.v1.PermissionService.DeleteBusinessPermission
       parameters:
         - name: Connect-Protocol-Version
           in: header
@@ -1077,7 +1077,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/identity.v1.GetPermissionsGroupRequest'
+              $ref: '#/components/schemas/identity.v1.DeleteBusinessPermissionRequest'
         required: true
       responses:
         default:
@@ -1091,15 +1091,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/identity.v1.GetPermissionsGroupResponse'
-  /identity.v1.PermissionService/StreamBusinessPermissionsGroups: {}
-  /identity.v1.PermissionService/UpdateMemberPermissions:
+                $ref: '#/components/schemas/identity.v1.DeleteBusinessPermissionResponse'
+  /identity.v1.PermissionService/DeleteStorePermission:
     post:
       tags:
         - identity.v1.PermissionService
-      summary: Update the member permissions on the provided business.
-      description: Update the member permissions on the provided business.
-      operationId: identity.v1.PermissionService.UpdateMemberPermissions
+      summary: Deletes a store permission.
+      description: Deletes a store permission.
+      operationId: identity.v1.PermissionService.DeleteStorePermission
       parameters:
         - name: Connect-Protocol-Version
           in: header
@@ -1114,7 +1113,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/identity.v1.UpdateMemberPermissionsRequest'
+              $ref: '#/components/schemas/identity.v1.DeleteStorePermissionRequest'
         required: true
       responses:
         default:
@@ -1128,14 +1127,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/identity.v1.UpdateMemberPermissionsResponse'
-  /identity.v1.PermissionService/UpdatePermissionsGroup:
+                $ref: '#/components/schemas/identity.v1.DeleteStorePermissionResponse'
+  /identity.v1.PermissionService/UpdateBusinessPermission:
     post:
       tags:
         - identity.v1.PermissionService
-      summary: Updates a permission group.
-      description: Updates a permission group.
-      operationId: identity.v1.PermissionService.UpdatePermissionsGroup
+      summary: Updates a business permission.
+      description: Updates a business permission.
+      operationId: identity.v1.PermissionService.UpdateBusinessPermission
       parameters:
         - name: Connect-Protocol-Version
           in: header
@@ -1150,7 +1149,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/identity.v1.UpdatePermissionsGroupRequest'
+              $ref: '#/components/schemas/identity.v1.UpdateBusinessPermissionRequest'
         required: true
       responses:
         default:
@@ -1164,7 +1163,43 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/identity.v1.UpdatePermissionsGroupResponse'
+                $ref: '#/components/schemas/identity.v1.UpdateBusinessPermissionResponse'
+  /identity.v1.PermissionService/UpdateStorePermission:
+    post:
+      tags:
+        - identity.v1.PermissionService
+      summary: Updates a store permission.
+      description: Updates a store permission.
+      operationId: identity.v1.PermissionService.UpdateStorePermission
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/identity.v1.UpdateStorePermissionRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identity.v1.UpdateStorePermissionResponse'
   /identity.v1.UserService/ChangePassword:
     post:
       tags:
@@ -1643,8 +1678,8 @@ paths:
     post:
       tags:
         - inventory.v1.ProductService
-      summary: Adds a product to a business.
-      description: Adds a product to a business.
+      summary: Adds a product to a store.
+      description: Adds a product to a store.
       operationId: inventory.v1.ProductService.AddProduct
       parameters:
         - name: Connect-Protocol-Version
@@ -1660,7 +1695,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/inventory.v1.AddProductRequest'
+              $ref: '#/components/schemas/inventory.v1.AddStoreProductRequest'
         required: true
       responses:
         default:
@@ -1674,16 +1709,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inventory.v1.AddProductResponse'
+                $ref: '#/components/schemas/inventory.v1.AddStoreProductResponse'
   /inventory.v1.ProductService/DeleteProduct:
     post:
       tags:
         - inventory.v1.ProductService
-      summary: Deletes a business product.  Only business products that are not in any store and orders can be  deleted.
+      summary: Deletes a store product.  Only store products that are not in any orders can be deleted.
       description: |-
-        Deletes a business product.
-         Only business products that are not in any store and orders can be
-         deleted.
+        Deletes a store product.
+         Only store products that are not in any orders can be deleted.
       operationId: inventory.v1.ProductService.DeleteProduct
       parameters:
         - name: Connect-Protocol-Version
@@ -1699,7 +1733,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/inventory.v1.DeleteProductRequest'
+              $ref: '#/components/schemas/inventory.v1.DeleteStoreProductRequest'
         required: true
       responses:
         default:
@@ -1713,43 +1747,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inventory.v1.DeleteProductResponse'
-  /inventory.v1.ProductService/FindBusinessProducts:
-    post:
-      tags:
-        - inventory.v1.ProductService
-      summary: Finds products by name.
-      description: Finds products by name.
-      operationId: inventory.v1.ProductService.FindBusinessProducts
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/inventory.v1.FindBusinessProductsRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inventory.v1.FindBusinessProductsResponse'
+                $ref: '#/components/schemas/inventory.v1.DeleteStoreProductResponse'
   /inventory.v1.ProductService/FindCategory:
     post:
       tags:
@@ -1822,12 +1820,48 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inventory.v1.FindGlobalProductsResponse'
+  /inventory.v1.ProductService/FindStoreProducts:
+    post:
+      tags:
+        - inventory.v1.ProductService
+      summary: Finds products by name.
+      description: Finds products by name.
+      operationId: inventory.v1.ProductService.FindStoreProducts
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inventory.v1.FindStoreProductsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inventory.v1.FindStoreProductsResponse'
   /inventory.v1.ProductService/GetProduct:
     post:
       tags:
         - inventory.v1.ProductService
-      summary: Gets a business product by id.
-      description: Gets a business product by id.
+      summary: Gets a store product by id.
+      description: Gets a store product by id.
       operationId: inventory.v1.ProductService.GetProduct
       parameters:
         - name: Connect-Protocol-Version
@@ -1843,7 +1877,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/inventory.v1.GetProductRequest'
+              $ref: '#/components/schemas/inventory.v1.GetStoreProductRequest'
         required: true
       responses:
         default:
@@ -1857,14 +1891,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inventory.v1.GetProductResponse'
-  /inventory.v1.ProductService/StreamBusinessProducts: {}
+                $ref: '#/components/schemas/inventory.v1.GetStoreProductResponse'
+  /inventory.v1.ProductService/StreamStoreProducts: {}
   /inventory.v1.ProductService/UpdateProduct:
     post:
       tags:
         - inventory.v1.ProductService
-      summary: Updates a business product.
-      description: Updates a business product.
+      summary: Updates a store product.
+      description: Updates a store product.
       operationId: inventory.v1.ProductService.UpdateProduct
       parameters:
         - name: Connect-Protocol-Version
@@ -1880,7 +1914,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/inventory.v1.UpdateProductRequest'
+              $ref: '#/components/schemas/inventory.v1.UpdateStoreProductRequest'
         required: true
       responses:
         default:
@@ -1894,7 +1928,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inventory.v1.UpdateProductResponse'
+                $ref: '#/components/schemas/inventory.v1.UpdateStoreProductResponse'
   /link.v1.ResourceLinkService/GetResourceLinks:
     post:
       tags:
@@ -2149,6 +2183,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/order.v1.GenerateBillingResponse'
+  /store.v1.StoreService/AssociateUserToStore:
+    post:
+      tags:
+        - store.v1.StoreService
+      summary: Associate user to store.
+      description: Associate user to store.
+      operationId: store.v1.StoreService.AssociateUserToStore
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/store.v1.AssociateUserToStoreRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/store.v1.AssociateUserToStoreResponse'
   /store.v1.StoreService/CreateStore:
     post:
       tags:
@@ -2185,6 +2255,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/store.v1.CreateStoreResponse'
+  /store.v1.StoreService/CreateUserToStore:
+    post:
+      tags:
+        - store.v1.StoreService
+      summary: Add user to store or invite user to store.
+      description: Add user to store or invite user to store.
+      operationId: store.v1.StoreService.CreateUserToStore
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/store.v1.CreateUserToStoreRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/store.v1.CreateUserToStoreResponse'
   /store.v1.StoreService/DeleteStore:
     post:
       tags:
@@ -2293,6 +2399,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/store.v1.GetStoreResponse'
+  /store.v1.StoreService/StreamStoreMembers: {}
   /store.v1.StoreService/UpdateStore:
     post:
       tags:
@@ -2331,6 +2438,225 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/store.v1.UpdateStoreResponse'
+  /store.v1.StoreService/UpdateStoreMember:
+    post:
+      tags:
+        - store.v1.StoreService
+      summary: Update store member.
+      description: Update store member.
+      operationId: store.v1.StoreService.UpdateStoreMember
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/store.v1.UpdateStoreMemberRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/store.v1.UpdateStoreMemberResponse'
+  /store.v1.SupplierService/CreateSupplier:
+    post:
+      tags:
+        - store.v1.SupplierService
+      summary: Creates a new supplier.
+      description: Creates a new supplier.
+      operationId: store.v1.SupplierService.CreateSupplier
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/store.v1.CreateSupplierRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/store.v1.CreateSupplierResponse'
+  /store.v1.SupplierService/DeleteSupplier:
+    post:
+      tags:
+        - store.v1.SupplierService
+      summary: Deletes a supplier.
+      description: Deletes a supplier.
+      operationId: store.v1.SupplierService.DeleteSupplier
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/store.v1.DeleteSupplierRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/store.v1.DeleteSupplierResponse'
+  /store.v1.SupplierService/GetStoreSuppliers:
+    post:
+      tags:
+        - store.v1.SupplierService
+      summary: Gets all suppliers of a store.
+      description: Gets all suppliers of a store.
+      operationId: store.v1.SupplierService.GetStoreSuppliers
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/store.v1.GetStoreSuppliersRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/store.v1.GetStoreSuppliersResponse'
+  /store.v1.SupplierService/GetSupplier:
+    post:
+      tags:
+        - store.v1.SupplierService
+      summary: Gets a supplier by id.
+      description: Gets a supplier by id.
+      operationId: store.v1.SupplierService.GetSupplier
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/store.v1.GetSupplierRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/store.v1.GetSupplierResponse'
+  /store.v1.SupplierService/StreamStoreSuppliers: {}
+  /store.v1.SupplierService/UpdateSupplier:
+    post:
+      tags:
+        - store.v1.SupplierService
+      summary: Updates a supplier.  Note:Only the fields that are set will be updated. array fields like external_links will be replaced.
+      description: |-
+        Updates a supplier.
+         Note:Only the fields that are set will be updated. array fields like external_links will be replaced.
+      operationId: store.v1.SupplierService.UpdateSupplier
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/store.v1.UpdateSupplierRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/store.v1.UpdateSupplierResponse'
   /transaction.v1.TransactionService/AddTransaction:
     post:
       tags:
@@ -2513,42 +2839,23 @@ paths:
                 $ref: '#/components/schemas/transaction.v1.UpdateTransactionResponse'
 components:
   schemas:
-    business.v1.AddUserToBusinessRequest:
-      type: object
-      properties:
-        userName:
-          type: string
-          title: user_name
-        password:
-          type: string
-          title: password
-        businessId:
-          type: string
-          title: business_id
-      title: AddUserToBusinessRequest
-      additionalProperties: false
-      description: |-
-        The unique identifier of the user.
-         For example, the email address or @username.
-         string u_ref = 1;
-    business.v1.AddUserToBusinessResponse:
-      type: object
-      properties:
-        businessMember:
-          title: business_member
-          description: The business member to return
-          $ref: '#/components/schemas/business.v1.BusinessMember'
-      title: AddUserToBusinessResponse
-      additionalProperties: false
     business.v1.AssociateUserToBusinessRequest:
       type: object
       properties:
-        email:
+        userId:
           type: string
-          title: email
+          title: user_id
+          description: The unique identifier of the user.
         businessId:
           type: string
           title: business_id
+          description: The unique identifier of the business.
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/identity.v1.BusinessPermission'
+          title: permissions
+          description: The permissions that the user has.
       title: AssociateUserToBusinessRequest
       additionalProperties: false
       description: |-
@@ -2631,24 +2938,13 @@ components:
         permissions:
           type: array
           items:
-            $ref: '#/components/schemas/identity.v1.Permission'
+            $ref: '#/components/schemas/identity.v1.BusinessPermission'
           title: permissions
           description: The permissions that the user has.
-        permissionsGroupsIds:
-          type: array
-          items:
-            type: string
-          title: permissions_groups_ids
-          description: The unique identifier of the permission group.
         memberSince:
           title: member_since
           description: The date since when the user became a member.
           $ref: '#/components/schemas/google.protobuf.Timestamp'
-        storeId:
-          type: string
-          title: store_id
-          description: The unique identifier of the store.
-          nullable: true
       title: BusinessMember
       additionalProperties: false
     business.v1.BusinessStatusType:
@@ -2682,9 +2978,9 @@ components:
     business.v1.ChangeBusinessCurrencyResponse:
       type: object
       properties:
-        sucess:
+        success:
           type: boolean
-          title: sucess
+          title: success
       title: ChangeBusinessCurrencyResponse
       additionalProperties: false
     business.v1.CreateBusinessRequest:
@@ -2721,6 +3017,58 @@ components:
       title: CreateBusinessResponse
       required:
         - businessId
+      additionalProperties: false
+    business.v1.CreateUserToBusinessRequest:
+      type: object
+      properties:
+        firstName:
+          type: string
+          title: first_name
+          description: The first name of the user.
+        lastName:
+          type: string
+          title: last_name
+          description: The last name of the user.
+        userName:
+          type: string
+          title: user_name
+          description: The username of the user.
+        phoneNumber:
+          type: string
+          title: phone_number
+          description: The phone number of the user.
+        email:
+          type: string
+          title: email
+          description: The email of the user.
+        password:
+          type: string
+          title: password
+          description: The password of the user.
+        businessId:
+          type: string
+          title: business_id
+          description: The unique identifier of the business.
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/identity.v1.BusinessPermission'
+          title: permissions
+          description: The permissions that the user has.
+      title: CreateUserToBusinessRequest
+      additionalProperties: false
+      description: |-
+        The unique identifier of the user.
+         For example, the email address or @username.
+         string u_ref = 1;
+    business.v1.CreateUserToBusinessResponse:
+      type: object
+      properties:
+        businessMember:
+          title: business_member
+          description: The business member to return
+          $ref: '#/components/schemas/business.v1.BusinessMember'
+      title: CreateUserToBusinessResponse
       additionalProperties: false
     business.v1.CurrencyChangePolicyType:
       type: string
@@ -2879,11 +3227,6 @@ components:
           title: business_id
           minLength: 3
           description: The unique identifier of the business.
-        storeId:
-          type: string
-          title: store_id
-          minLength: 3
-          description: The unique identifier of the store.
       title: StreamBusinessMembersRequest
       required:
         - businessId
@@ -2915,32 +3258,15 @@ components:
         addPermissions:
           type: array
           items:
-            $ref: '#/components/schemas/identity.v1.Permission'
+            $ref: '#/components/schemas/identity.v1.BusinessPermission'
           title: add_permissions
           description: The permissions to add (optional).
         removePermissions:
           type: array
           items:
-            $ref: '#/components/schemas/identity.v1.Permission'
+            $ref: '#/components/schemas/identity.v1.BusinessPermission'
           title: remove_permissions
           description: The permissions to remove (optional).
-        addPermissionsGroupsIds:
-          type: array
-          items:
-            type: string
-          title: add_permissions_groups_ids
-          description: The permission group IDs to add (optional).
-        removePermissionsGroupsIds:
-          type: array
-          items:
-            type: string
-          title: remove_permissions_groups_ids
-          description: The permission group IDs to remove (optional).
-        storeId:
-          type: string
-          title: store_id
-          description: The unique identifier of the store.
-          nullable: true
       title: UpdateBusinessMemberRequest
       required:
         - userId
@@ -3156,23 +3482,25 @@ components:
          the Joda Time's [`ISODateTimeFormat.dateTime()`](
          http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()
          ) to obtain a formatter capable of generating timestamps in this format.
-    identity.v1.Permission:
+    identity.v1.BusinessPermission:
       type: object
       properties:
         resourceType:
           title: resource_type
-          $ref: '#/components/schemas/identity.v1.ResourceType'
-        resourceId:
-          type: string
-          title: resource_id
-          description: The resource_id is only specified when we want to restrict action on a specific resource.
-          nullable: true
+          $ref: '#/components/schemas/identity.v1.BusinessResourceType'
         actionType:
           title: action_type
-          description: The action that the member can perform on the resource.
           $ref: '#/components/schemas/identity.v1.ResourceActionType'
-      title: Permission
+      title: BusinessPermission
       additionalProperties: false
+    identity.v1.BusinessResourceType:
+      type: string
+      title: BusinessResourceType
+      enum:
+        - BUSINESS_RESOURCE_TYPE_UNSPECIFIED
+        - BUSINESS_RESOURCE_TYPE_BUSINESS
+        - BUSINESS_RESOURCE_TYPE_MEMBER
+        - BUSINESS_RESOURCE_TYPE_SUPPLIER
     identity.v1.ResourceActionType:
       type: string
       title: ResourceActionType
@@ -3182,19 +3510,6 @@ components:
         - RESOURCE_ACTION_TYPE_ADD
         - RESOURCE_ACTION_TYPE_UPDATE
         - RESOURCE_ACTION_TYPE_REMOVE
-    identity.v1.ResourceType:
-      type: string
-      title: ResourceType
-      enum:
-        - RESOURCE_TYPE_UNSPECIFIED
-        - RESOURCE_TYPE_BUSINESS
-        - RESOURCE_TYPE_BUSINESS_MEMBER
-        - RESOURCE_TYPE_BUSINESS_SUPPLIER
-        - RESOURCE_TYPE_STORE
-        - RESOURCE_TYPE_STORE_INVOICE
-        - RESOURCE_TYPE_STORE_ORDER
-        - RESOURCE_TYPE_SUPPLIER_ORDER
-        - RESOURCE_TYPE_STORE_PRODUCT
     link.v1.ResourceLink:
       type: object
       properties:
@@ -3695,7 +4010,7 @@ components:
           description: Whether the password was successfully reset.
       title: ResetPasswordResponse
       additionalProperties: false
-    identity.v1.CheckPermissionRequest:
+    identity.v1.CheckBusinessPermissionRequest:
       type: object
       properties:
         userId:
@@ -3711,180 +4026,22 @@ components:
         permission:
           title: permission
           description: The permission to check.
-          $ref: '#/components/schemas/identity.v1.Permission'
-      title: CheckPermissionRequest
+          $ref: '#/components/schemas/identity.v1.BusinessPermission'
+      title: CheckBusinessPermissionRequest
       required:
         - userId
         - businessId
       additionalProperties: false
-    identity.v1.CheckPermissionResponse:
+    identity.v1.CheckBusinessPermissionResponse:
       type: object
       properties:
         hasPermission:
           type: boolean
           title: has_permission
           description: Whether the member has the permission.
-      title: CheckPermissionResponse
+      title: CheckBusinessPermissionResponse
       additionalProperties: false
-    identity.v1.CreatePermissionsGroupRequest:
-      type: object
-      properties:
-        permissionsGroup:
-          title: permissions_group
-          description: |-
-            The permission group information to create.
-             Note:Only the fields that are set will be created.
-          $ref: '#/components/schemas/identity.v1.PermissionsGroup'
-        businessId:
-          type: string
-          title: business_id
-          minLength: 3
-          description: The unique identifier of the business on which the permission group is created.
-      title: CreatePermissionsGroupRequest
-      required:
-        - businessId
-      additionalProperties: false
-    identity.v1.CreatePermissionsGroupResponse:
-      type: object
-      properties:
-        permissionGroupId:
-          type: string
-          title: permission_group_id
-          minLength: 3
-          description: The unique identifier of the created permission group.
-      title: CreatePermissionsGroupResponse
-      required:
-        - permissionGroupId
-      additionalProperties: false
-    identity.v1.DeletePermissionsGroupRequest:
-      type: object
-      properties:
-        permissionGroupId:
-          type: string
-          title: permission_group_id
-          minLength: 3
-          description: The unique identifier of the permission group to delete.
-        businessId:
-          type: string
-          title: business_id
-          minLength: 3
-          description: The unique identifier of the business.
-      title: DeletePermissionsGroupRequest
-      required:
-        - permissionGroupId
-        - businessId
-      additionalProperties: false
-    identity.v1.DeletePermissionsGroupResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          title: success
-          description: Whether the permission group was successfully deleted.
-      title: DeletePermissionsGroupResponse
-      additionalProperties: false
-    identity.v1.GetBusinessPermissionsGroupsRequest:
-      type: object
-      properties:
-        businessId:
-          type: string
-          title: business_id
-          minLength: 3
-          description: The unique identifier of the business to retrieve.
-      title: GetBusinessPermissionsGroupsRequest
-      required:
-        - businessId
-      additionalProperties: false
-    identity.v1.GetBusinessPermissionsGroupsResponse:
-      type: object
-      properties:
-        permissionsGroups:
-          type: array
-          items:
-            $ref: '#/components/schemas/identity.v1.PermissionsGroup'
-          title: permissions_groups
-          description: The permission groups that the business has.
-      title: GetBusinessPermissionsGroupsResponse
-      additionalProperties: false
-    identity.v1.GetPermissionsGroupRequest:
-      type: object
-      properties:
-        permissionGroupId:
-          type: string
-          title: permission_group_id
-          minLength: 3
-          description: The unique identifier of the permission group to retrieve.
-      title: GetPermissionsGroupRequest
-      required:
-        - permissionGroupId
-      additionalProperties: false
-    identity.v1.GetPermissionsGroupResponse:
-      type: object
-      properties:
-        permissionsGroup:
-          title: permissions_group
-          description: The retrieved permission group data.
-          $ref: '#/components/schemas/identity.v1.PermissionsGroup'
-      title: GetPermissionsGroupResponse
-      additionalProperties: false
-    identity.v1.PermissionsGroup:
-      type: object
-      properties:
-        refId:
-          type: string
-          title: ref_id
-          description: The reference id to the permission group identifier.
-          nullable: true
-        name:
-          type: string
-          title: name
-          description: The name of the permission group. Generally the role of the group.
-        description:
-          type: string
-          title: description
-          description: The description of the permission group.
-          nullable: true
-        permissions:
-          type: array
-          items:
-            $ref: '#/components/schemas/identity.v1.Permission'
-          title: permissions
-          description: The permissions that the permission group has.
-        businessId:
-          type: string
-          title: business_id
-          description: |-
-            The unique identifier of the business.
-             must be set if the permission group is create by a business.
-          nullable: true
-      title: PermissionsGroup
-      additionalProperties: false
-    identity.v1.StreamBusinessPermissionsGroupsRequest:
-      type: object
-      properties:
-        businessId:
-          type: string
-          title: business_id
-          minLength: 3
-          description: The unique identifier of the business to stream.
-      title: StreamBusinessPermissionsGroupsRequest
-      required:
-        - businessId
-      additionalProperties: false
-      description: Request to stream business permissions groups
-    identity.v1.StreamBusinessPermissionsGroupsResponse:
-      type: object
-      properties:
-        permissionsGroups:
-          type: array
-          items:
-            $ref: '#/components/schemas/identity.v1.PermissionsGroup'
-          title: permissions_groups
-          description: The permission groups that the business has.
-      title: StreamBusinessPermissionsGroupsResponse
-      additionalProperties: false
-      description: Response for streaming business permissions groups
-    identity.v1.UpdateMemberPermissionsRequest:
+    identity.v1.CheckStorePermissionRequest:
       type: object
       properties:
         userId:
@@ -3892,97 +4049,208 @@ components:
           title: user_id
           minLength: 3
           description: The unique identifier of the member.
+        storeId:
+          type: string
+          title: store_id
+          minLength: 3
+          description: The unique identifier of the store on which we want to check the permission.
+        permission:
+          title: permission
+          description: The permission to check.
+          $ref: '#/components/schemas/identity.v1.StorePermission'
+      title: CheckStorePermissionRequest
+      required:
+        - userId
+        - storeId
+      additionalProperties: false
+    identity.v1.CheckStorePermissionResponse:
+      type: object
+      properties:
+        hasPermission:
+          type: boolean
+          title: has_permission
+          description: Whether the member has the permission.
+      title: CheckStorePermissionResponse
+      additionalProperties: false
+    identity.v1.CreateBusinessPermissionRequest:
+      type: object
+      properties:
+        businessPermission:
+          title: business_permission
+          $ref: '#/components/schemas/identity.v1.BusinessPermission'
+        actionType:
+          title: action_type
+          $ref: '#/components/schemas/identity.v1.ResourceActionType'
         businessId:
           type: string
           title: business_id
           minLength: 3
-          description: The id of the business on which we want to update the permissions.
-        removePermissions:
-          type: array
-          items:
-            $ref: '#/components/schemas/identity.v1.Permission'
-          title: remove_permissions
-          description: The set of permissions to remove from the member.
-        addPermissions:
-          type: array
-          items:
-            $ref: '#/components/schemas/identity.v1.Permission'
-          title: add_permissions
-          description: The set of permissions to add on the member
-        removePermissionsGroupsIds:
-          type: array
-          items:
-            type: string
-          title: remove_permissions_groups_ids
-          description: The set of permissions groups to remove the member from.
-        addPermissionsGroupsIds:
-          type: array
-          items:
-            type: string
-          title: add_permissions_groups_ids
-          description: The set of permissions groups to add the member on.
-      title: UpdateMemberPermissionsRequest
+      title: CreateBusinessPermissionRequest
       required:
-        - userId
         - businessId
       additionalProperties: false
-    identity.v1.UpdateMemberPermissionsResponse:
+    identity.v1.CreateBusinessPermissionResponse:
       type: object
       properties:
         success:
           type: boolean
           title: success
-          description: Whether the member was successfully removed from the permission group.
-      title: UpdateMemberPermissionsResponse
+          description: Whether the permission group was successfully created.
+      title: CreateBusinessPermissionResponse
       additionalProperties: false
-    identity.v1.UpdatePermissionsGroupRequest:
+    identity.v1.CreateStorePermissionRequest:
       type: object
       properties:
-        permissionsGroupId:
+        storePermission:
+          title: store_permission
+          $ref: '#/components/schemas/identity.v1.StorePermission'
+        actionType:
+          title: action_type
+          $ref: '#/components/schemas/identity.v1.ResourceActionType'
+        storeId:
           type: string
-          title: permissions_group_id
+          title: store_id
           minLength: 3
-          description: The permission group id;
-        businessId:
-          type: string
-          title: business_id
-          minLength: 3
-          description: The unique identifier of the business.
-        name:
-          type: string
-          title: name
-          description: The name of the permission group. Generally the role of the group.
-          nullable: true
-        description:
-          type: string
-          title: description
-          description: The description of the permission group.
-          nullable: true
-        addPermissions:
-          type: array
-          items:
-            $ref: '#/components/schemas/identity.v1.Permission'
-          title: add_permissions
-          description: The permissions set to add.
-        removePermissions:
-          type: array
-          items:
-            $ref: '#/components/schemas/identity.v1.Permission'
-          title: remove_permissions
-          description: The permissions set to remove.
-      title: UpdatePermissionsGroupRequest
+      title: CreateStorePermissionRequest
       required:
-        - permissionsGroupId
-        - businessId
+        - storeId
       additionalProperties: false
-    identity.v1.UpdatePermissionsGroupResponse:
+    identity.v1.CreateStorePermissionResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the permission group was successfully created.
+      title: CreateStorePermissionResponse
+      additionalProperties: false
+    identity.v1.DeleteBusinessPermissionRequest:
+      type: object
+      properties:
+        businessPermissionId:
+          type: string
+          title: business_permission_id
+          minLength: 3
+          description: The unique identifier of the permission group to delete.
+      title: DeleteBusinessPermissionRequest
+      required:
+        - businessPermissionId
+      additionalProperties: false
+    identity.v1.DeleteBusinessPermissionResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the permission group was successfully deleted.
+      title: DeleteBusinessPermissionResponse
+      additionalProperties: false
+    identity.v1.DeleteStorePermissionRequest:
+      type: object
+      properties:
+        storePermissionId:
+          type: string
+          title: store_permission_id
+          minLength: 3
+          description: The unique identifier of the permission group to delete.
+      title: DeleteStorePermissionRequest
+      required:
+        - storePermissionId
+      additionalProperties: false
+    identity.v1.DeleteStorePermissionResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the permission group was successfully deleted.
+      title: DeleteStorePermissionResponse
+      additionalProperties: false
+    identity.v1.GetStorePermissionsRequest:
+      type: object
+      properties:
+        storeId:
+          type: string
+          title: store_id
+          minLength: 3
+          description: The unique identifier of the store to retrieve.
+      title: GetStorePermissionsRequest
+      required:
+        - storeId
+      additionalProperties: false
+    identity.v1.StorePermission:
+      type: object
+      properties:
+        resourceType:
+          title: resource_type
+          $ref: '#/components/schemas/identity.v1.StoreResourceType'
+        actionType:
+          title: action_type
+          $ref: '#/components/schemas/identity.v1.ResourceActionType'
+      title: StorePermission
+      additionalProperties: false
+    identity.v1.StoreResourceType:
+      type: string
+      title: StoreResourceType
+      enum:
+        - STORE_RESOURCE_TYPE_UNSPECIFIED
+        - STORE_RESOURCE_TYPE_STORE
+        - STORE_RESOURCE_TYPE_INVOICE
+        - STORE_RESOURCE_TYPE_ORDER
+        - STORE_RESOURCE_TYPE_SUPPLIER_ORDER
+        - STORE_RESOURCE_TYPE_PRODUCT
+    identity.v1.UpdateBusinessPermissionRequest:
+      type: object
+      properties:
+        businessPermission:
+          title: business_permission
+          $ref: '#/components/schemas/identity.v1.BusinessPermission'
+        actionType:
+          title: action_type
+          $ref: '#/components/schemas/identity.v1.ResourceActionType'
+        businessPermissionId:
+          type: string
+          title: business_permission_id
+          minLength: 3
+          description: The unique identifier of the business permission.
+      title: UpdateBusinessPermissionRequest
+      required:
+        - businessPermissionId
+      additionalProperties: false
+    identity.v1.UpdateBusinessPermissionResponse:
       type: object
       properties:
         success:
           type: boolean
           title: success
           description: Whether the permission group was successfully updated.
-      title: UpdatePermissionsGroupResponse
+      title: UpdateBusinessPermissionResponse
+      additionalProperties: false
+    identity.v1.UpdateStorePermissionRequest:
+      type: object
+      properties:
+        storePermission:
+          title: store_permission
+          $ref: '#/components/schemas/identity.v1.StorePermission'
+        actionType:
+          title: action_type
+          $ref: '#/components/schemas/identity.v1.ResourceActionType'
+        storePermissionId:
+          type: string
+          title: store_permission_id
+          minLength: 3
+      title: UpdateStorePermissionRequest
+      required:
+        - storePermissionId
+      additionalProperties: false
+    identity.v1.UpdateStorePermissionResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the permission group was successfully updated.
+      title: UpdateStorePermissionResponse
       additionalProperties: false
     identity.v1.AccountStatusType:
       type: string
@@ -4438,7 +4706,7 @@ components:
           description: Whether the category was successfully updated.
       title: UpdateCategoryResponse
       additionalProperties: false
-    inventory.v1.AddProductRequest:
+    inventory.v1.AddStoreProductRequest:
       type: object
       properties:
         globalProduct:
@@ -4447,158 +4715,41 @@ components:
             The product to add.
              If the product does not exist, it will be created.
           $ref: '#/components/schemas/inventory.v1.GlobalProduct'
-        businessId:
-          type: string
-          title: business_id
-          description: The unique identifier of the business.
-        priceInXaf:
-          type: integer
-          title: price_in_xaf
-          format: int32
-          description: |-
-            The price in XAF of the product.
-             The currency is determined by the business.
-        imagesRawImages:
-          type: array
-          items:
-            type: string
-            format: byte
-          title: images_raw_images
-          description: The media ids of the images of the product.
-        stockQuantity:
-          type: integer
-          title: stock_quantity
-          format: int32
-          description: The stock quantity of the product.
-        minStockThreshold:
-          type: integer
-          title: min_stock_threshold
-          format: int32
-          description: The minimum stock threshold of the product.
-        expirationDate:
-          title: expiration_date
-          description: The expiration date of the product.
-          nullable: true
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-      title: AddProductRequest
+        storeProduct:
+          title: store_product
+          description: The store product to add.
+          $ref: '#/components/schemas/inventory.v1.StoreProduct'
+      title: AddStoreProductRequest
       additionalProperties: false
-    inventory.v1.AddProductResponse:
+    inventory.v1.AddStoreProductResponse:
       type: object
       properties:
         success:
           type: boolean
           title: success
           description: Whether the product was successfully added.
-      title: AddProductResponse
+      title: AddStoreProductResponse
       additionalProperties: false
-    inventory.v1.BusinessProduct:
+    inventory.v1.DeleteStoreProductRequest:
       type: object
       properties:
-        refId:
+        storeProductId:
           type: string
-          title: ref_id
-          description: The unique identifier of the business product.
-          nullable: true
-        businessId:
-          type: string
-          title: business_id
-          description: The unique identifier of the business.
-        globalProductId:
-          type: string
-          title: global_product_id
-          description: The unique identifier of the global product.
-        priceInXaf:
-          type: integer
-          title: price_in_xaf
-          format: int32
-          description: |-
-            The price in XAF of the product.
-             The currency is determined by the business.
-        imagesLinksIds:
-          type: array
-          items:
-            type: string
-          title: images_links_ids
-          description: The media ids of the images of the product.
-        stockQuantity:
-          type: integer
-          title: stock_quantity
-          format: int32
-          description: The stock quantity of the product.
-        minStockThreshold:
-          type: integer
-          title: min_stock_threshold
-          format: int32
-          description: The minimum stock threshold of the product.
-        expirationDate:
-          title: expiration_date
-          description: The expiration date of the product.
-          nullable: true
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-        supplierId:
-          type: string
-          title: supplier_id
-          description: The unique identifier of the supplier.
-          nullable: true
-      title: BusinessProduct
-      additionalProperties: false
-    inventory.v1.DeleteProductRequest:
-      type: object
-      properties:
-        businessProductId:
-          type: string
-          title: business_product_id
+          title: store_product_id
           minLength: 3
-          description: The unique identifier of the business product.
-      title: DeleteProductRequest
+          description: The unique identifier of the store product.
+      title: DeleteStoreProductRequest
       required:
-        - businessProductId
+        - storeProductId
       additionalProperties: false
-    inventory.v1.DeleteProductResponse:
+    inventory.v1.DeleteStoreProductResponse:
       type: object
       properties:
         success:
           type: boolean
           title: success
-          description: Whether the business product was successfully deleted.
-      title: DeleteProductResponse
-      additionalProperties: false
-    inventory.v1.FindBusinessProductsRequest:
-      type: object
-      properties:
-        businessId:
-          type: string
-          title: business_id
-          description: The query to search for business products.
-        refId:
-          type: string
-          title: ref_id
-          description: The unique identifier of the product.
-          nullable: true
-        globalProductId:
-          type: string
-          title: global_product_id
-          description: The unique identifier of the global product.
-          nullable: true
-        expirationDate:
-          title: expiration_date
-          description: Identify the products that are expired.
-          nullable: true
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-      title: FindBusinessProductsRequest
-      additionalProperties: false
-    inventory.v1.FindBusinessProductsResponse:
-      type: object
-      properties:
-        products:
-          type: array
-          items:
-            $ref: '#/components/schemas/inventory.v1.BusinessProduct'
-          title: products
-          description: |-
-            The unique identifiers of the products.
-             WARN: all returned products will only have their id and name.
-      title: FindBusinessProductsResponse
+          description: Whether the store product was successfully deleted.
+      title: DeleteStoreProductResponse
       additionalProperties: false
     inventory.v1.FindCategoryRequest:
       type: object
@@ -4661,26 +4812,68 @@ components:
              WARN: all returned products will only have their id and name.
       title: FindGlobalProductsResponse
       additionalProperties: false
-    inventory.v1.GetProductRequest:
+    inventory.v1.FindStoreProductsRequest:
       type: object
       properties:
-        productId:
+        storeId:
           type: string
-          title: product_id
-          minLength: 3
-          description: The unique identifier of the business product.
-      title: GetProductRequest
-      required:
-        - productId
+          title: store_id
+          description: The query to search for store products.
+        refId:
+          type: string
+          title: ref_id
+          description: The unique identifier of the product.
+          nullable: true
+        globalProductId:
+          type: string
+          title: global_product_id
+          description: The unique identifier of the global product.
+          nullable: true
+        expirationDate:
+          title: expiration_date
+          description: Identify the products that are expired.
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        supplierId:
+          type: string
+          title: supplier_id
+          description: Identify the products by supplier.
+          nullable: true
+      title: FindStoreProductsRequest
       additionalProperties: false
-    inventory.v1.GetProductResponse:
+    inventory.v1.FindStoreProductsResponse:
       type: object
       properties:
-        product:
-          title: product
-          description: The retrieved business product data.
-          $ref: '#/components/schemas/inventory.v1.BusinessProduct'
-      title: GetProductResponse
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/inventory.v1.StoreProduct'
+          title: products
+          description: |-
+            The unique identifiers of the products.
+             WARN: all returned products will only have their id and name.
+      title: FindStoreProductsResponse
+      additionalProperties: false
+    inventory.v1.GetStoreProductRequest:
+      type: object
+      properties:
+        storeProductId:
+          type: string
+          title: store_product_id
+          minLength: 3
+          description: The unique identifier of the store product.
+      title: GetStoreProductRequest
+      required:
+        - storeProductId
+      additionalProperties: false
+    inventory.v1.GetStoreProductResponse:
+      type: object
+      properties:
+        storeProduct:
+          title: store_product
+          description: The retrieved store product data.
+          $ref: '#/components/schemas/inventory.v1.StoreProduct'
+      title: GetStoreProductResponse
       additionalProperties: false
     inventory.v1.GlobalProduct:
       type: object
@@ -4732,14 +4925,81 @@ components:
           description: The name of the product category.
       title: ProductCategory
       additionalProperties: false
-    inventory.v1.StreamBusinessProductsRequest:
+    inventory.v1.StoreProduct:
       type: object
       properties:
-        businessId:
+        refId:
           type: string
-          title: business_id
+          title: ref_id
+          description: The unique identifier of the business product.
+          nullable: true
+        storeId:
+          type: string
+          title: store_id
+          description: The unique identifier of the store.
+        globalProductId:
+          type: string
+          title: global_product_id
+          description: The unique identifier of the global product.
+        price:
+          type: integer
+          title: price
+          format: int32
+          description: |-
+            The price in XAF of the product.
+             The currency is determined by the business.
+          nullable: true
+        imagesLinksIds:
+          type: array
+          items:
+            type: string
+          title: images_links_ids
+          description: The media ids of the images of the product.
+        stockQuantity:
+          type: integer
+          title: stock_quantity
+          format: int32
+          description: The stock quantity of the product.
+          nullable: true
+        minStockThreshold:
+          type: integer
+          title: min_stock_threshold
+          format: int32
+          description: The minimum stock threshold of the product.
+        expirationDate:
+          title: expiration_date
+          description: The expiration date of the product.
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        inboundDate:
+          title: inbound_date
+          description: The inbound date.
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        createdAt:
+          title: created_at
+          description: The creation date of the product.
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        updatedAt:
+          title: updated_at
+          description: The last update date of the product.
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        supplierId:
+          type: string
+          title: supplier_id
+          description: The supplier.
+          nullable: true
+      title: StoreProduct
+      additionalProperties: false
+    inventory.v1.StreamStoreProductsRequest:
+      type: object
+      properties:
+        storeId:
+          type: string
+          title: store_id
           minLength: 3
-          description: The unique identifier of the business.
+          description: The unique identifier of the store.
         supplierId:
           type: string
           title: supplier_id
@@ -4750,32 +5010,51 @@ components:
           title: global_product_id
           description: Optional filter by global product ID.
           nullable: true
-      title: StreamBusinessProductsRequest
+      title: StreamStoreProductsRequest
       required:
-        - businessId
+        - storeId
       additionalProperties: false
-    inventory.v1.StreamBusinessProductsResponse:
+    inventory.v1.StreamStoreProductsResponse:
       type: object
       properties:
         products:
           type: array
           items:
-            $ref: '#/components/schemas/inventory.v1.BusinessProduct'
+            $ref: '#/components/schemas/inventory.v1.StoreProduct'
           title: products
-          description: The business products for the specified business.
-      title: StreamBusinessProductsResponse
+          description: The store products for the specified store.
+      title: StreamStoreProductsResponse
       additionalProperties: false
-    inventory.v1.UpdateProductRequest:
+    inventory.v1.SupplyEntry:
       type: object
       properties:
-        product:
-          title: product
+        quantity:
+          type: integer
+          title: quantity
+          format: int32
+          description: The quantity of the product.
+        price:
+          type: integer
+          title: price
+          format: int32
+          description: The price in XAF of the product.
+        supplierId:
+          type: string
+          title: supplier_id
+          description: The unique identifier of the supplier.
+      title: SupplyEntry
+      additionalProperties: false
+    inventory.v1.UpdateStoreProductRequest:
+      type: object
+      properties:
+        storeProduct:
+          title: store_product
           description: |-
-            The business product information to update.
+            The store product information to update.
              Note:Only the fields that are set will be updated.
-             Some fields cannot be updated like the product id, business id, and all
+             Some fields cannot be updated like the product id, store id, and all
              product fields.
-          $ref: '#/components/schemas/inventory.v1.BusinessProduct'
+          $ref: '#/components/schemas/inventory.v1.StoreProduct'
         globalProduct:
           title: global_product
           description: |-
@@ -4791,16 +5070,16 @@ components:
             format: byte
           title: images_raw_images
           description: The media ids of the images of the product.
-      title: UpdateProductRequest
+      title: UpdateStoreProductRequest
       additionalProperties: false
-    inventory.v1.UpdateProductResponse:
+    inventory.v1.UpdateStoreProductResponse:
       type: object
       properties:
         success:
           type: boolean
           title: success
-          description: Whether the business product was successfully updated.
-      title: UpdateProductResponse
+          description: Whether the store product was successfully updated.
+      title: UpdateStoreProductResponse
       additionalProperties: false
     link.v1.GetResourceLinksRequest:
       type: object
@@ -4933,10 +5212,10 @@ components:
           title: supplier_name
           description: The name of the supplier.
           nullable: true
-        businessId:
+        storeId:
           type: string
-          title: business_id
-          description: The unique identifier of the business.
+          title: store_id
+          description: The unique identifier of the store.
       title: CreateOrderRequest
       additionalProperties: false
     order.v1.CreateOrderResponse:
@@ -4996,6 +5275,11 @@ components:
             $ref: '#/components/schemas/order.v1.OrderStatus'
           title: status
           description: The status of the order.
+        storeId:
+          type: string
+          title: store_id
+          description: The unique identifier of the store associated with the order.
+          nullable: true
       title: FindOrdersRequest
       additionalProperties: false
     order.v1.FindOrdersResponse:
@@ -5062,15 +5346,21 @@ components:
             $ref: '#/components/schemas/order.v1.OrderItem'
           title: order_items
           description: The list of items in the order.
-        totalPriceInCents:
+        totalPrice:
           type: integer
-          title: total_price_in_cents
+          title: total_price
           format: int32
-          description: The total price of the order in cents.
+          description: The total price of the order in XAF.
         status:
           title: status
           description: The status of the order.
           $ref: '#/components/schemas/order.v1.OrderStatus'
+        statusHistory:
+          type: array
+          items:
+            $ref: '#/components/schemas/order.v1.StatusHistory'
+          title: status_history
+          description: The status history.
         createdAt:
           title: created_at
           description: The date and time the order was created.
@@ -5080,27 +5370,44 @@ components:
           description: The date and time the order was last updated.
           nullable: true
           $ref: '#/components/schemas/google.protobuf.Timestamp'
+        storeId:
+          type: string
+          title: store_id
+          format: uuid
+          description: The unique identifier of the store associated with the order.
+        initiatedBy:
+          type: string
+          title: initiated_by
+          minLength: 3
+          description: The unique identifier of the user who initiated the order.
       title: Order
+      required:
+        - storeId
+        - initiatedBy
       additionalProperties: false
     order.v1.OrderItem:
       type: object
       properties:
-        businessProductId:
+        storeProductId:
           type: string
-          title: business_product_id
-          description: The unique identifier of the business product.
+          title: store_product_id
+          description: The unique identifier of the store product.
         quantity:
           type: integer
           title: quantity
           format: int32
           description: The quantity of the product.
-        unitPriceInCents:
+        unitPrice:
           type: integer
-          title: unit_price_in_cents
+          title: unit_price
           format: int32
           description: |-
-            The unit price in cents of the product.
+            The unit price in XAF of the product.
              WARN: This value is stored because the unit price can change over time.
+        itemName:
+          type: string
+          title: item_name
+          description: The name of the product.
       title: OrderItem
       additionalProperties: false
     order.v1.OrderStatus:
@@ -5112,6 +5419,20 @@ components:
         - ORDER_STATUS_PROCESSING
         - ORDER_STATUS_COMPLETED
         - ORDER_STATUS_CANCELLED
+    order.v1.StatusHistory:
+      type: object
+      properties:
+        status:
+          title: status
+          $ref: '#/components/schemas/order.v1.OrderStatus'
+        updatedBy:
+          type: string
+          title: updated_by
+        updatedAt:
+          title: updated_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: StatusHistory
+      additionalProperties: false
     order.v1.GenerateBillingRequest:
       type: object
       properties:
@@ -5140,9 +5461,9 @@ components:
         orderStatus:
           type: string
           title: order_status
-        orderTotalPriceInCents:
+        orderTotalPrice:
           type: string
-          title: order_total_price_in_cents
+          title: order_total_price
         orderCreatedAt:
           type: string
           title: order_created_at
@@ -5184,18 +5505,50 @@ components:
         productName:
           type: string
           title: product_name
-        productPriceInCents:
+        productPrice:
           type: string
-          title: product_price_in_cents
+          title: product_price
         quantity:
           type: integer
           title: quantity
           format: int32
-        receiptItemTotalPriceInCents:
+        receiptItemTotalPrice:
           type: integer
-          title: receipt_item_total_price_in_cents
+          title: receipt_item_total_price
           format: int32
       title: OrderReceiptItem
+      additionalProperties: false
+    store.v1.AssociateUserToStoreRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+          title: user_id
+          description: The unique identifier of the user.
+        storeId:
+          type: string
+          title: store_id
+          description: The unique identifier of the store.
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/identity.v1.StorePermission'
+          title: permissions
+          description: The permissions that the user has.
+      title: AssociateUserToStoreRequest
+      additionalProperties: false
+      description: |-
+        The unique identifier of the user.
+         For example, the email address or @username.
+         string u_ref = 1;
+    store.v1.AssociateUserToStoreResponse:
+      type: object
+      properties:
+        storeMember:
+          title: store_member
+          description: The store member to return
+          $ref: '#/components/schemas/store.v1.StoreMember'
+      title: AssociateUserToStoreResponse
       additionalProperties: false
     store.v1.CreateStoreRequest:
       type: object
@@ -5223,6 +5576,58 @@ components:
       title: CreateStoreResponse
       required:
         - storeId
+      additionalProperties: false
+    store.v1.CreateUserToStoreRequest:
+      type: object
+      properties:
+        firstName:
+          type: string
+          title: first_name
+          description: The first name of the user.
+        lastName:
+          type: string
+          title: last_name
+          description: The last name of the user.
+        userName:
+          type: string
+          title: user_name
+          description: The username of the user.
+        phoneNumber:
+          type: string
+          title: phone_number
+          description: The phone number of the user.
+        email:
+          type: string
+          title: email
+          description: The email of the user.
+        password:
+          type: string
+          title: password
+          description: The password of the user.
+        businessId:
+          type: string
+          title: business_id
+          description: The unique identifier of the business.
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/identity.v1.StorePermission'
+          title: permissions
+          description: The permissions that the user has.
+      title: CreateUserToStoreRequest
+      additionalProperties: false
+      description: |-
+        The unique identifier of the user.
+         For example, the email address or @username.
+         string u_ref = 1;
+    store.v1.CreateUserToStoreResponse:
+      type: object
+      properties:
+        storeMember:
+          title: store_member
+          description: The store member to return
+          $ref: '#/components/schemas/store.v1.StoreMember'
+      title: CreateUserToStoreResponse
       additionalProperties: false
     store.v1.DeleteStoreRequest:
       type: object
@@ -5336,6 +5741,95 @@ components:
       description: |-
         Stores are used to store products.
          Note: A store is not always a shop.
+    store.v1.StoreMember:
+      type: object
+      properties:
+        userId:
+          type: string
+          title: user_id
+          description: The unique identifier of the user.
+        storeId:
+          type: string
+          title: store_id
+          description: The unique identifier of the store.
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/identity.v1.StorePermission'
+          title: permissions
+          description: The permissions that the user has.
+        memberSince:
+          title: member_since
+          description: The date since when the user became a member.
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: StoreMember
+      additionalProperties: false
+    store.v1.StreamStoreMembersRequest:
+      type: object
+      properties:
+        storeId:
+          type: string
+          title: store_id
+          minLength: 3
+          description: The unique identifier of the store.
+      title: StreamStoreMembersRequest
+      required:
+        - storeId
+      additionalProperties: false
+    store.v1.StreamStoreMembersResponse:
+      type: object
+      properties:
+        storeMembers:
+          type: array
+          items:
+            $ref: '#/components/schemas/store.v1.StoreMember'
+          title: store_members
+          description: The store members.
+      title: StreamStoreMembersResponse
+      additionalProperties: false
+    store.v1.UpdateStoreMemberRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+          title: user_id
+          minLength: 3
+          description: The unique identifier of the user.
+        storeId:
+          type: string
+          title: store_id
+          minLength: 3
+          description: The unique identifier of the store.
+        addPermissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/identity.v1.StorePermission'
+          title: add_permissions
+          description: The permissions to add (optional).
+        removePermissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/identity.v1.StorePermission'
+          title: remove_permissions
+          description: The permissions to remove (optional).
+      title: UpdateStoreMemberRequest
+      required:
+        - userId
+        - storeId
+      additionalProperties: false
+    store.v1.UpdateStoreMemberResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the member was successfully updated.
+        storeMember:
+          title: store_member
+          description: The updated store member.
+          $ref: '#/components/schemas/store.v1.StoreMember'
+      title: UpdateStoreMemberResponse
+      additionalProperties: false
     store.v1.UpdateStoreRequest:
       type: object
       properties:
@@ -5361,6 +5855,208 @@ components:
           description: The updated store data.
           $ref: '#/components/schemas/store.v1.Store'
       title: UpdateStoreResponse
+      additionalProperties: false
+    store.v1.CreateSupplierRequest:
+      type: object
+      properties:
+        supplier:
+          title: supplier
+          description: The supplier information to create.
+          $ref: '#/components/schemas/store.v1.Supplier'
+        logoRawImage:
+          type: string
+          title: logo_raw_image
+          format: byte
+          description: The raw image of the logo of the supplier.
+          nullable: true
+        externalLinks:
+          type: array
+          items:
+            $ref: '#/components/schemas/link.v1.ResourceLink'
+          title: external_links
+          description: The links of the supplier.
+      title: CreateSupplierRequest
+      additionalProperties: false
+    store.v1.CreateSupplierResponse:
+      type: object
+      properties:
+        supplierId:
+          type: string
+          title: supplier_id
+          minLength: 3
+          description: The reference id to the supplier identifier.
+      title: CreateSupplierResponse
+      required:
+        - supplierId
+      additionalProperties: false
+    store.v1.DeleteSupplierRequest:
+      type: object
+      properties:
+        supplierId:
+          type: string
+          title: supplier_id
+          minLength: 3
+          description: The reference id to the supplier identifier.
+      title: DeleteSupplierRequest
+      required:
+        - supplierId
+      additionalProperties: false
+    store.v1.DeleteSupplierResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the supplier was successfully deleted.
+      title: DeleteSupplierResponse
+      additionalProperties: false
+    store.v1.GetStoreSuppliersRequest:
+      type: object
+      properties:
+        storeId:
+          type: string
+          title: store_id
+          minLength: 3
+          description: The reference id to the store identifier.
+      title: GetStoreSuppliersRequest
+      required:
+        - storeId
+      additionalProperties: false
+    store.v1.GetStoreSuppliersResponse:
+      type: object
+      properties:
+        suppliers:
+          type: array
+          items:
+            $ref: '#/components/schemas/store.v1.Supplier'
+          title: suppliers
+          description: |-
+            The list of suppliers of the store.
+             Note: Only the ids and names of the suppliers are returned.
+      title: GetStoreSuppliersResponse
+      additionalProperties: false
+    store.v1.GetSupplierRequest:
+      type: object
+      properties:
+        supplierId:
+          type: string
+          title: supplier_id
+          minLength: 3
+          description: The reference id to the supplier identifier.
+      title: GetSupplierRequest
+      required:
+        - supplierId
+      additionalProperties: false
+    store.v1.GetSupplierResponse:
+      type: object
+      properties:
+        supplier:
+          title: supplier
+          description: The retrieved supplier data.
+          $ref: '#/components/schemas/store.v1.Supplier'
+      title: GetSupplierResponse
+      additionalProperties: false
+    store.v1.Link:
+      type: object
+      properties:
+        label:
+          type: string
+          title: label
+          description: The label of the link.
+        url:
+          type: string
+          title: url
+          description: |-
+            The url of the link.
+             Todo: We must automatically retrieve the icon of the link.
+      title: Link
+      additionalProperties: false
+    store.v1.Supplier:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+          description: The reference id to the supplier identifier.
+          nullable: true
+        name:
+          type: string
+          title: name
+          description: The name of the supplier.
+        description:
+          type: string
+          title: description
+          description: The description of the supplier.
+          nullable: true
+        logoLinkId:
+          type: string
+          title: logo_link_id
+          description: The id of the media of the logo of the supplier.
+          nullable: true
+        externalLinksIds:
+          type: array
+          items:
+            type: string
+          title: external_links_ids
+          description: The links of the supplier.
+        contactPhone:
+          type: string
+          title: contact_phone
+          description: The contact phone number.
+          nullable: true
+        contactEmail:
+          type: string
+          title: contact_email
+          description: The contact email.
+          nullable: true
+        contactAddress:
+          type: string
+          title: contact_address
+          description: The contact address.
+          nullable: true
+        isActive:
+          type: boolean
+          title: is_active
+          description: Whether the supplier is active.
+        storeIds:
+          type: array
+          items:
+            type: string
+          title: store_ids
+          description: The ids of the store of the supplier.
+      title: Supplier
+      additionalProperties: false
+    store.v1.UpdateSupplierRequest:
+      type: object
+      properties:
+        supplier:
+          title: supplier
+          description: |-
+            The supplier information to update.
+             Note:Only the fields that are set will be updated.
+          $ref: '#/components/schemas/store.v1.Supplier'
+        logoRawImage:
+          type: string
+          title: logo_raw_image
+          format: byte
+          description: The raw image of the logo of the supplier.
+          nullable: true
+        externalLinks:
+          type: array
+          items:
+            $ref: '#/components/schemas/link.v1.ResourceLink'
+          title: external_links
+          description: The links of the supplier.
+      title: UpdateSupplierRequest
+      additionalProperties: false
+    store.v1.UpdateSupplierResponse:
+      type: object
+      properties:
+        supplier:
+          title: supplier
+          description: The updated supplier data.
+          $ref: '#/components/schemas/store.v1.Supplier'
+      title: UpdateSupplierResponse
       additionalProperties: false
     transaction.v1.AddTransactionRequest:
       type: object
@@ -5401,14 +6097,10 @@ components:
     transaction.v1.FindTransactionsRequest:
       type: object
       properties:
-        businessId:
-          type: string
-          title: business_id
-          minLength: 3
         storeId:
           type: string
           title: store_id
-          nullable: true
+          minLength: 3
         orderId:
           type: string
           title: order_id
@@ -5433,7 +6125,7 @@ components:
           title: status
       title: FindTransactionsRequest
       required:
-        - businessId
+        - storeId
       additionalProperties: false
     transaction.v1.FindTransactionsResponse:
       type: object
@@ -5480,16 +6172,11 @@ components:
           title: status
           description: The status of the transaction (pending, completed, failed, cancelled).
           $ref: '#/components/schemas/transaction.v1.TransactionStatus'
-        businessId:
-          type: string
-          title: business_id
-          minLength: 3
-          description: The unique identifier of the business associated with the transaction.
         storeId:
           type: string
           title: store_id
+          minLength: 3
           description: The unique identifier of the store associated with the transaction.
-          nullable: true
         orderId:
           type: string
           title: order_id
@@ -5500,13 +6187,13 @@ components:
           title: from_id
           description: The unique identifier of the client or supplier associated with the transaction.
           nullable: true
-        amountInCents:
+        amount:
           type:
             - integer
             - string
-          title: amount_in_cents
+          title: amount
           format: int64
-          description: The amount of the transaction in cents.
+          description: The amount of the transaction in XAF.
         currencyCode:
           type: string
           title: currency_code
@@ -5525,10 +6212,10 @@ components:
           title: description
           description: 'The description or note of the transaction (ex. : "Refund for order cancellation").'
           nullable: true
-        businessProductId:
+        storeProductId:
           type: string
-          title: business_product_id
-          description: The unique identifier of the business product associated with the transaction.
+          title: store_product_id
+          description: The unique identifier of the store product associated with the transaction.
           nullable: true
         quantity:
           type: integer
@@ -5549,7 +6236,7 @@ components:
           description: 'The external links of the transaction (ex. : payment receipt, invoice).'
       title: Transaction
       required:
-        - businessId
+        - storeId
         - currencyCode
       additionalProperties: false
       description: |-

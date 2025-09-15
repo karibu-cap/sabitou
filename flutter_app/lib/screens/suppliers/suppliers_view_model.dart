@@ -8,8 +8,8 @@ import '../../services/rpc/fake_transport/supplier.dart';
 
 /// ViewModel for suppliers management.
 class SuppliersViewModel {
-  /// The business id.
-  final String businessId;
+  /// The store id.
+  final String storeId;
 
   /// The suppliers repository instance.
   final SuppliersRepository _suppliersRepository = SuppliersRepository(
@@ -22,19 +22,15 @@ class SuppliersViewModel {
   );
 
   /// Stream of suppliers for reactive UI updates.
-  Stream<List<Supplier>> get suppliersStream =>
-      _suppliersRepository.streamBusinessSuppliers(
-        GetBusinessSuppliersRequest(businessId: businessId),
-      );
+  Stream<List<Supplier>> get suppliersStream => _suppliersRepository
+      .streamStoreSuppliers(GetStoreSuppliersRequest(storeId: storeId));
 
   /// Stream of products for reactive UI updates.
-  Stream<List<BusinessProduct>> get productsStream =>
-      _productsRepository.streamBusinessProducts(
-        StreamBusinessProductsRequest(businessId: businessId),
-      );
+  Stream<List<StoreProduct>> get productsStream => _productsRepository
+      .streamStoreProducts(StreamStoreProductsRequest(storeId: storeId));
 
-  /// Construts a new SuppliersViewModel.
-  SuppliersViewModel({required this.businessId});
+  /// Constructors a new SuppliersViewModel.
+  SuppliersViewModel({required this.storeId});
 
   /// Add a new supplier
   Future<bool> addSupplier(Supplier supplier) async {

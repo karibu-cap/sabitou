@@ -107,15 +107,20 @@ class InventoryViewModel {
             .where(
               (p) => switch (status) {
                 ProductStatus.inStock =>
-                  p.businessProduct.stockQuantity > 0 &&
-                      !isLowStock(p.businessProduct),
-                ProductStatus.outOfStock =>
-                  p.businessProduct.stockQuantity <= 0,
-                ProductStatus.lowStock => isLowStock(p.businessProduct),
+                  p.storeProduct.stockQuantity > 0 &&
+                      !isLowStock(p.storeProduct),
+                ProductStatus.outOfStock => p.storeProduct.stockQuantity <= 0,
+                ProductStatus.lowStock => isLowStock(p.storeProduct),
               },
             )
             .toList();
       }
+
+      filtered.sort(
+        (a, b) => b.storeProduct.createdAt.toDateTime().compareTo(
+          a.storeProduct.createdAt.toDateTime(),
+        ),
+      );
 
       return filtered;
     },
@@ -131,7 +136,9 @@ class InventoryViewModel {
   Future<void> initPartialData() async {
     _logger.info('initPartialData is called');
     final businessId = userPreferences.business?.refId;
-    if (businessId == null) return;
+    if (businessId == null) {
+      return;
+    }
 
     final categories = await CategoriesRepository.to.getCategoriesByBusinessId(
       businessId,
@@ -150,10 +157,10 @@ class InventoryViewModel {
         throw Exception('Business or store not found');
       }
 
-      final businessProducts = await ProductsRepository.instance
-          .getProductsByBusinessId(businessId);
+      final storeProducts = await ProductsRepository.instance
+          .getProductsByStoreId(store.refId);
       final uniqueGlobalIds = <String>{
-        ...businessProducts.map((p) => p.globalProductId),
+        ...storeProducts.map((p) => p.globalProductId),
       };
       final globalFutures = uniqueGlobalIds.map(
         (id) => ProductsRepository.instance.findGlobalProduct(
@@ -166,12 +173,12 @@ class InventoryViewModel {
         globals.expand((g) => g),
       );
 
-      final products = businessProducts
+      final products = storeProducts
           .map((e) {
             final globalProduct = globalMap[e.globalProductId];
 
             return globalProduct != null
-                ? Product(businessProduct: e, globalProduct: globalProduct)
+                ? Product(storeProduct: e, globalProduct: globalProduct)
                 : null;
           })
           .whereType<Product>()
@@ -188,9 +195,9 @@ class InventoryViewModel {
   }
 
   /// Deletes a product.
-  Future<bool> deleteProduct(String businessProductId) async {
+  Future<bool> deleteProduct(String storeProductId) async {
     final result = await ProductsRepository.instance.deleteProduct(
-      DeleteProductRequest(businessProductId: businessProductId),
+      DeleteStoreProductRequest(storeProductId: storeProductId),
     );
     if (result) {
       unawaited(initTheData());
@@ -220,5 +227,6 @@ class InventoryViewModel {
     _errorSubject.close();
     _searchQuerySubject.close();
     _selectedCategorySubject.close();
+    _selectedStatusSubject.close();
   }
 }

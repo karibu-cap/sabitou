@@ -55,3 +55,38 @@ extension TransactionTypeExtension on TransactionType {
     }
   }
 }
+
+/// The extension for the [OrderStatus] enum.
+extension OrderStatusExtension on OrderStatus {
+  /// Get the label for the order status.
+  String? get label {
+    switch (this) {
+      case OrderStatus.ORDER_STATUS_PENDING:
+        return Intls.to.pending;
+      case OrderStatus.ORDER_STATUS_COMPLETED:
+        return Intls.to.completed;
+      case OrderStatus.ORDER_STATUS_CANCELLED:
+        return Intls.to.cancelled;
+      case OrderStatus.ORDER_STATUS_PROCESSING:
+        return Intls.to.processing;
+      default:
+        return null;
+    }
+  }
+
+  /// Get the color for the order status.
+  Color get color {
+    switch (this) {
+      case OrderStatus.ORDER_STATUS_PENDING:
+        return AppColors.warningColor;
+      case OrderStatus.ORDER_STATUS_COMPLETED:
+        return AppColors.dartGreen;
+      case OrderStatus.ORDER_STATUS_CANCELLED:
+        return AppColors.red;
+      case OrderStatus.ORDER_STATUS_PROCESSING:
+        return AppColors.orange500;
+      default:
+        return AppColors.grey500;
+    }
+  }
+}

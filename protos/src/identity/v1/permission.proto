@@ -16,177 +16,132 @@ enum ResourceActionType {
   RESOURCE_ACTION_TYPE_REMOVE = 4;
 }
 
-enum ResourceType {
-  RESOURCE_TYPE_UNSPECIFIED = 0;
-  /// Can make all actions about information bussiness.
-  RESOURCE_TYPE_BUSINESS = 1;
+enum BusinessResourceType {
+  BUSINESS_RESOURCE_TYPE_UNSPECIFIED = 0;
+  /// Can make all actions about information business.
+  BUSINESS_RESOURCE_TYPE_BUSINESS = 1;
   /// Can make all actions about business member.
-  RESOURCE_TYPE_BUSINESS_MEMBER = 2;
+  BUSINESS_RESOURCE_TYPE_MEMBER = 2;
   /// Can make all actions about business supplier.
-  RESOURCE_TYPE_BUSINESS_SUPPLIER = 3;
+  BUSINESS_RESOURCE_TYPE_SUPPLIER = 3;
+}
+
+enum StoreResourceType {
+  STORE_RESOURCE_TYPE_UNSPECIFIED = 0;
   /// Can make all actions about information store.
-  RESOURCE_TYPE_STORE = 4;
+  STORE_RESOURCE_TYPE_STORE = 1;
   /// Can make all actions about store invoice.
-  RESOURCE_TYPE_STORE_INVOICE = 5;
+  STORE_RESOURCE_TYPE_INVOICE = 2; 
   /// Can make all actions about store order.
-  RESOURCE_TYPE_STORE_ORDER = 6;
+  STORE_RESOURCE_TYPE_ORDER = 3;
   /// Can make all actions about supplier order.
-  RESOURCE_TYPE_SUPPLIER_ORDER = 7;
+  STORE_RESOURCE_TYPE_SUPPLIER_ORDER = 4;
   /// Can make all actions about store product.
-  RESOURCE_TYPE_STORE_PRODUCT = 8;
+  STORE_RESOURCE_TYPE_PRODUCT = 5;
 }
 
-message Permission {
-  ResourceType resource_type = 1;
-  // The resource_id is only specified when we want to restrict action on a specific resource.
-  optional string resource_id = 2;
-  // The action that the member can perform on the resource.
-  ResourceActionType action_type = 3;
+message BusinessPermission {
+  BusinessResourceType resource_type = 1;
+  ResourceActionType action_type = 2;
 }
 
-message PermissionsGroup {
-  // The reference id to the permission group identifier.
-  optional string ref_id = 1;
-
-  // The name of the permission group. Generally the role of the group.
-  string name = 2;
-
-  // The description of the permission group.
-  optional string description = 3;
-
-  // The permissions that the permission group has.
-  repeated Permission permissions = 4;
-
-  // The unique identifier of the business.
-  // must be set if the permission group is create by a business.
-  optional string business_id = 6;
+message StorePermission {
+  StoreResourceType resource_type = 1;
+  ResourceActionType action_type = 2;
 }
 
-message CreatePermissionsGroupRequest {
-  // The permission group information to create.
-  // Note:Only the fields that are set will be created.
-  PermissionsGroup permissions_group = 1;
-  // The unique identifier of the business on which the permission group is created.
-  string business_id = 2 [
+message CreateBusinessPermissionRequest {
+  BusinessPermission business_permission = 1;
+  ResourceActionType action_type = 2;
+  string business_id = 3 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
 }
 
-message CreatePermissionsGroupResponse {
-  // The unique identifier of the created permission group.
-  string permission_group_id = 1 [
+message CreateBusinessPermissionResponse {
+  // Whether the permission group was successfully created.
+  bool success = 1;
+}
+
+message CreateStorePermissionRequest {
+  StorePermission store_permission = 1;
+  ResourceActionType action_type = 2;
+  string store_id = 3 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
 }
 
-message GetPermissionsGroupRequest {
-  // The unique identifier of the permission group to retrieve.
-  string permission_group_id = 1 [
+message CreateStorePermissionResponse {
+  // Whether the permission group was successfully created.
+  bool success = 1;
+}
+
+message UpdateBusinessPermissionRequest {
+  BusinessPermission business_permission = 1;
+  ResourceActionType action_type = 2;
+  // The unique identifier of the business permission.
+  string business_permission_id = 3 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
 }
 
-message GetPermissionsGroupResponse {
-  // The retrieved permission group data.
-  PermissionsGroup permissions_group = 1;
-}
-
-message UpdatePermissionsGroupRequest {
-  // The permission group id;
-  string permissions_group_id = 1 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).string.min_len = 3
-  ];
-
-  // The unique identifier of the business.
-  string business_id = 6 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).string.min_len = 3
-  ];
-
-  // The name of the permission group. Generally the role of the group.
-  optional string name = 2;
-
-  // The description of the permission group.
-  optional string description = 3;
-
-  // The permissions set to add.
-  repeated Permission add_permissions = 4;
-
-  // The permissions set to remove.
-  repeated Permission remove_permissions = 5;
-}
-
-message UpdatePermissionsGroupResponse {
+message UpdateBusinessPermissionResponse {
   // Whether the permission group was successfully updated.
   bool success = 1;
 }
 
-message DeletePermissionsGroupRequest {
-  // The unique identifier of the permission group to delete.
-  string permission_group_id = 1 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).string.min_len = 3
-  ];
-  // The unique identifier of the business.
-  string business_id = 2 [
+message UpdateStorePermissionRequest {
+  StorePermission store_permission = 1;
+  ResourceActionType action_type = 2;
+  string store_permission_id = 3 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
 }
 
-message DeletePermissionsGroupResponse {
+message UpdateStorePermissionResponse {
+  // Whether the permission group was successfully updated.
+  bool success = 1;
+}
+
+message DeleteBusinessPermissionRequest {
+  // The unique identifier of the permission group to delete.
+  string business_permission_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+}
+
+message DeleteBusinessPermissionResponse {
   // Whether the permission group was successfully deleted.
   bool success = 1;
 }
 
-message UpdateMemberPermissionsRequest {
-  // The unique identifier of the member.
-  string user_id = 1 [
+message DeleteStorePermissionRequest {
+  // The unique identifier of the permission group to delete.
+  string store_permission_id = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
-  // The id of the business on which we want to update the permissions.
-  string business_id = 2 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).string.min_len = 3
-  ];
-
-  // The set of permissions to remove from the member.
-  repeated Permission remove_permissions = 3;
-
-  // The set of permissions to add on the member
-  repeated Permission add_permissions = 4;
-
-  // The set of permissions groups to remove the member from.
-  repeated string remove_permissions_groups_ids = 5;
-
-  // The set of permissions groups to add the member on.
-  repeated string add_permissions_groups_ids = 6;
 }
 
-message UpdateMemberPermissionsResponse {
-  // Whether the member was successfully removed from the permission group.
+message DeleteStorePermissionResponse {
+  // Whether the permission group was successfully deleted.
   bool success = 1;
 }
 
-message GetBusinessPermissionsGroupsRequest {
-  // The unique identifier of the business to retrieve.
-  string business_id = 1 [
+message GetStorePermissionsRequest {
+  // The unique identifier of the store to retrieve.
+  string store_id = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
 }
 
-message GetBusinessPermissionsGroupsResponse {
-  // The permission groups that the business has.
-  repeated PermissionsGroup permissions_groups = 1;
-}
-
-message CheckPermissionRequest {
+message CheckBusinessPermissionRequest {
   // The unique identifier of the member.
   string user_id = 1 [
     (buf.validate.field).required = true,
@@ -200,51 +155,58 @@ message CheckPermissionRequest {
   ];
 
   // The permission to check.
-  Permission permission = 4;
+  BusinessPermission permission = 4;
 }
 
-message CheckPermissionResponse {
+message CheckBusinessPermissionResponse {
   // Whether the member has the permission.
   bool has_permission = 1;
 }
 
-// Request to stream business permissions groups
-message StreamBusinessPermissionsGroupsRequest {
-  // The unique identifier of the business to stream.
-  string business_id = 1 [
+message CheckStorePermissionRequest {
+  // The unique identifier of the member.
+  string user_id = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
+
+  // The unique identifier of the store on which we want to check the permission.
+  string store_id = 3 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+
+  // The permission to check.
+  StorePermission permission = 4;
 }
 
-// Response for streaming business permissions groups
-message StreamBusinessPermissionsGroupsResponse {
-  // The permission groups that the business has.
-  repeated PermissionsGroup permissions_groups = 1;
+message CheckStorePermissionResponse {
+  // Whether the member has the permission.
+  bool has_permission = 1;
 }
 
 service PermissionService {
-  // Creates a new permission group.
-  rpc CreatePermissionsGroup(CreatePermissionsGroupRequest) returns (CreatePermissionsGroupResponse) {}
+  // Creates a new business permission.
+  rpc CreateBusinessPermission(CreateBusinessPermissionRequest) returns (CreateBusinessPermissionResponse) {}
 
-  // Gets a permission group by id.
-  rpc GetPermissionsGroup(GetPermissionsGroupRequest) returns (GetPermissionsGroupResponse) {}
+  // Updates a business permission.
+  rpc UpdateBusinessPermission(UpdateBusinessPermissionRequest) returns (UpdateBusinessPermissionResponse) {}
 
-  // Updates a permission group.
-  rpc UpdatePermissionsGroup(UpdatePermissionsGroupRequest) returns (UpdatePermissionsGroupResponse) {}
+  // Deletes a business permission.
+  rpc DeleteBusinessPermission(DeleteBusinessPermissionRequest) returns (DeleteBusinessPermissionResponse) {}
 
-  // Deletes a permission group.
-  rpc DeletePermissionsGroup(DeletePermissionsGroupRequest) returns (DeletePermissionsGroupResponse) {}
+  // Creates a new store permission.
+  rpc CreateStorePermission(CreateStorePermissionRequest) returns (CreateStorePermissionResponse) {}
 
-  // Update the member permissions on the provided business.
-  rpc UpdateMemberPermissions(UpdateMemberPermissionsRequest) returns (UpdateMemberPermissionsResponse) {}
+  // Updates a store permission.
+  rpc UpdateStorePermission(UpdateStorePermissionRequest) returns (UpdateStorePermissionResponse) {}
 
-  // Gets the permission groups of the business.
-  rpc GetBusinessPermissionsGroups(GetBusinessPermissionsGroupsRequest) returns (GetBusinessPermissionsGroupsResponse) {}
+  // Deletes a store permission.
+  rpc DeleteStorePermission(DeleteStorePermissionRequest) returns (DeleteStorePermissionResponse) {}
 
-  // Checks if the member has the provided permission for the provided resource.
-  rpc CheckPermission(CheckPermissionRequest) returns (CheckPermissionResponse) {}
+  // Checks if a member has a business permission.
+  rpc CheckBusinessPermission(CheckBusinessPermissionRequest) returns (CheckBusinessPermissionResponse) {}
 
-  // Stream the permission groups of the business with real-time updates.
-  rpc StreamBusinessPermissionsGroups(StreamBusinessPermissionsGroupsRequest) returns (stream StreamBusinessPermissionsGroupsResponse) {}
+  // Checks if a member has a store permission.
+  rpc CheckStorePermission(CheckStorePermissionRequest) returns (CheckStorePermissionResponse) {}
 }

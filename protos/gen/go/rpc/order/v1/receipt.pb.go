@@ -23,14 +23,14 @@ const (
 )
 
 type OrderReceiptItem struct {
-	state                        protoimpl.MessageState `protogen:"open.v1"`
-	ProductId                    string                 `protobuf:"bytes,1,opt,name=product_id,json=productId,proto3" json:"product_id,omitempty"`
-	ProductName                  string                 `protobuf:"bytes,2,opt,name=product_name,json=productName,proto3" json:"product_name,omitempty"`
-	ProductPriceInCents          string                 `protobuf:"bytes,3,opt,name=product_price_in_cents,json=productPriceInCents,proto3" json:"product_price_in_cents,omitempty"`
-	Quantity                     int32                  `protobuf:"varint,4,opt,name=quantity,proto3" json:"quantity,omitempty"`
-	ReceiptItemTotalPriceInCents int32                  `protobuf:"varint,5,opt,name=receipt_item_total_price_in_cents,json=receiptItemTotalPriceInCents,proto3" json:"receipt_item_total_price_in_cents,omitempty"`
-	unknownFields                protoimpl.UnknownFields
-	sizeCache                    protoimpl.SizeCache
+	state                 protoimpl.MessageState `protogen:"open.v1"`
+	ProductId             string                 `protobuf:"bytes,1,opt,name=product_id,json=productId,proto3" json:"product_id,omitempty"`
+	ProductName           string                 `protobuf:"bytes,2,opt,name=product_name,json=productName,proto3" json:"product_name,omitempty"`
+	ProductPrice          string                 `protobuf:"bytes,3,opt,name=product_price,json=productPrice,proto3" json:"product_price,omitempty"`
+	Quantity              int32                  `protobuf:"varint,4,opt,name=quantity,proto3" json:"quantity,omitempty"`
+	ReceiptItemTotalPrice int32                  `protobuf:"varint,5,opt,name=receipt_item_total_price,json=receiptItemTotalPrice,proto3" json:"receipt_item_total_price,omitempty"`
+	unknownFields         protoimpl.UnknownFields
+	sizeCache             protoimpl.SizeCache
 }
 
 func (x *OrderReceiptItem) Reset() {
@@ -77,9 +77,9 @@ func (x *OrderReceiptItem) GetProductName() string {
 	return ""
 }
 
-func (x *OrderReceiptItem) GetProductPriceInCents() string {
+func (x *OrderReceiptItem) GetProductPrice() string {
 	if x != nil {
-		return x.ProductPriceInCents
+		return x.ProductPrice
 	}
 	return ""
 }
@@ -91,9 +91,9 @@ func (x *OrderReceiptItem) GetQuantity() int32 {
 	return 0
 }
 
-func (x *OrderReceiptItem) GetReceiptItemTotalPriceInCents() int32 {
+func (x *OrderReceiptItem) GetReceiptItemTotalPrice() int32 {
 	if x != nil {
-		return x.ReceiptItemTotalPriceInCents
+		return x.ReceiptItemTotalPrice
 	}
 	return 0
 }
@@ -106,7 +106,7 @@ type OrderReceipt struct {
 	// / ...order details...
 	OrderId                  string              `protobuf:"bytes,1,opt,name=order_id,json=orderId,proto3" json:"order_id,omitempty"`
 	OrderStatus              string              `protobuf:"bytes,2,opt,name=order_status,json=orderStatus,proto3" json:"order_status,omitempty"`
-	OrderTotalPriceInCents   string              `protobuf:"bytes,3,opt,name=order_total_price_in_cents,json=orderTotalPriceInCents,proto3" json:"order_total_price_in_cents,omitempty"`
+	OrderTotalPrice          string              `protobuf:"bytes,3,opt,name=order_total_price,json=orderTotalPrice,proto3" json:"order_total_price,omitempty"`
 	OrderCreatedAt           string              `protobuf:"bytes,4,opt,name=order_created_at,json=orderCreatedAt,proto3" json:"order_created_at,omitempty"`
 	OrderUpdatedAt           string              `protobuf:"bytes,5,opt,name=order_updated_at,json=orderUpdatedAt,proto3" json:"order_updated_at,omitempty"`
 	OrderResourceName        string              `protobuf:"bytes,6,opt,name=order_resource_name,json=orderResourceName,proto3" json:"order_resource_name,omitempty"`
@@ -163,9 +163,9 @@ func (x *OrderReceipt) GetOrderStatus() string {
 	return ""
 }
 
-func (x *OrderReceipt) GetOrderTotalPriceInCents() string {
+func (x *OrderReceipt) GetOrderTotalPrice() string {
 	if x != nil {
-		return x.OrderTotalPriceInCents
+		return x.OrderTotalPrice
 	}
 	return ""
 }
@@ -320,18 +320,18 @@ var File_order_v1_receipt_proto protoreflect.FileDescriptor
 
 const file_order_v1_receipt_proto_rawDesc = "" +
 	"\n" +
-	"\x16order/v1/receipt.proto\x12\border.v1\x1a\x1bbuf/validate/validate.proto\"\xee\x01\n" +
+	"\x16order/v1/receipt.proto\x12\border.v1\x1a\x1bbuf/validate/validate.proto\"\xce\x01\n" +
 	"\x10OrderReceiptItem\x12\x1d\n" +
 	"\n" +
 	"product_id\x18\x01 \x01(\tR\tproductId\x12!\n" +
-	"\fproduct_name\x18\x02 \x01(\tR\vproductName\x123\n" +
-	"\x16product_price_in_cents\x18\x03 \x01(\tR\x13productPriceInCents\x12\x1a\n" +
-	"\bquantity\x18\x04 \x01(\x05R\bquantity\x12G\n" +
-	"!receipt_item_total_price_in_cents\x18\x05 \x01(\x05R\x1creceiptItemTotalPriceInCents\"\xb0\x04\n" +
+	"\fproduct_name\x18\x02 \x01(\tR\vproductName\x12#\n" +
+	"\rproduct_price\x18\x03 \x01(\tR\fproductPrice\x12\x1a\n" +
+	"\bquantity\x18\x04 \x01(\x05R\bquantity\x127\n" +
+	"\x18receipt_item_total_price\x18\x05 \x01(\x05R\x15receiptItemTotalPrice\"\xa0\x04\n" +
 	"\fOrderReceipt\x12\x19\n" +
 	"\border_id\x18\x01 \x01(\tR\aorderId\x12!\n" +
-	"\forder_status\x18\x02 \x01(\tR\vorderStatus\x12:\n" +
-	"\x1aorder_total_price_in_cents\x18\x03 \x01(\tR\x16orderTotalPriceInCents\x12(\n" +
+	"\forder_status\x18\x02 \x01(\tR\vorderStatus\x12*\n" +
+	"\x11order_total_price\x18\x03 \x01(\tR\x0forderTotalPrice\x12(\n" +
 	"\x10order_created_at\x18\x04 \x01(\tR\x0eorderCreatedAt\x12(\n" +
 	"\x10order_updated_at\x18\x05 \x01(\tR\x0eorderUpdatedAt\x12.\n" +
 	"\x13order_resource_name\x18\x06 \x01(\tR\x11orderResourceName\x124\n" +

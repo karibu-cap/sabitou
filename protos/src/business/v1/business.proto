@@ -58,16 +58,10 @@ message BusinessMember {
   string business_id = 2;
 
   // The permissions that the user has.
-  repeated identity.v1.Permission permissions = 3;
-
-  // The unique identifier of the permission group.
-  repeated string permissions_groups_ids = 4;
+  repeated identity.v1.BusinessPermission permissions = 3;
 
   // The date since when the user became a member.
-  google.protobuf.Timestamp member_since = 5;
-
-  // The unique identifier of the store.
-  optional string store_id = 7;
+  google.protobuf.Timestamp member_since = 4;
 }
 
 message CreateBusinessRequest {
@@ -104,7 +98,7 @@ message ChangeBusinessCurrencyRequest {
 }
 
 message ChangeBusinessCurrencyResponse {
-  bool sucess = 1;
+  bool success = 1;
 }
 
 message GetMyBusinessesRequest {}
@@ -161,17 +155,37 @@ message RequestDeleteBusinessResponse {
   string notice_period = 2;
 }
 
-message AddUserToBusinessRequest {
+message CreateUserToBusinessRequest {
   // The unique identifier of the user.
   // For example, the email address or @username.
   // string u_ref = 1;
 
-  string user_name = 1;
-  string password = 2;
-  string business_id = 3;
+  // The first name of the user.
+  string first_name = 1;
+
+  // The last name of the user.
+  string last_name = 2;
+
+  // The username of the user.
+  string user_name = 3;
+
+  // The phone number of the user.
+  string phone_number = 4;
+
+  // The email of the user.
+  string email = 5;
+
+  // The password of the user.
+  string password = 6;
+
+  // The unique identifier of the business.
+  string business_id = 7;
+
+  // The permissions that the user has.
+  repeated identity.v1.BusinessPermission permissions = 8;
 }
 
-message AddUserToBusinessResponse {
+message CreateUserToBusinessResponse {
   // The business member to return
   BusinessMember business_member = 1;
 }
@@ -181,8 +195,14 @@ message AssociateUserToBusinessRequest {
   // For example, the email address or @username.
   // string u_ref = 1;
 
-  string email = 1;
-  string business_id = 3;
+  // The unique identifier of the user.
+  string user_id = 1;
+
+  // The unique identifier of the business.
+  string business_id = 2;
+
+  // The permissions that the user has.
+  repeated identity.v1.BusinessPermission permissions = 3;
 }
 
 message AssociateUserToBusinessResponse {
@@ -234,19 +254,10 @@ message UpdateBusinessMemberRequest {
   ];
   
   // The permissions to add (optional).
-  repeated identity.v1.Permission add_permissions = 5;
+  repeated identity.v1.BusinessPermission add_permissions = 5;
   
   // The permissions to remove (optional).
-  repeated identity.v1.Permission remove_permissions = 6;
-  
-  // The permission group IDs to add (optional).
-  repeated string add_permissions_groups_ids = 7;
-  
-  // The permission group IDs to remove (optional).
-  repeated string remove_permissions_groups_ids = 8;
-  
-  // The unique identifier of the store.
-  optional string store_id = 9;
+  repeated identity.v1.BusinessPermission remove_permissions = 6;
 }
 
 message UpdateBusinessMemberResponse {
@@ -282,11 +293,6 @@ message StreamBusinessMembersRequest {
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
-  // The unique identifier of the store.
-  string store_id = 2 [
-    (buf.validate.field).required = false,
-    (buf.validate.field).string.min_len = 3
-  ];
 }
 
 message StreamBusinessMembersResponse {
@@ -307,11 +313,11 @@ service BusinessService {
   // Update a business.
   rpc UpdateBusiness(UpdateBusinessRequest) returns (UpdateBusinessResponse);
 
-  // Request the deletion of the business. This request doesn't delete the business direcly instead it put the business in inactive state and remove all business members.
+  // Request the deletion of the business. This request doesn't delete the business directly instead it put the business in inactive state and remove all business members.
   rpc RequestDeleteBusiness(RequestDeleteBusinessRequest) returns (RequestDeleteBusinessResponse);
 
   // Add user to business or invite user to business.
-  rpc AddUserToBusiness(AddUserToBusinessRequest) returns (AddUserToBusinessResponse);
+  rpc CreateUserToBusiness(CreateUserToBusinessRequest) returns (CreateUserToBusinessResponse);
 
   // Associate user to business.
   rpc AssociateUserToBusiness(AssociateUserToBusinessRequest) returns (AssociateUserToBusinessResponse);

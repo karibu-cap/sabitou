@@ -21,10 +21,9 @@ class TransactionsRepository {
         transport ?? ConnectRPCService.to.clientChannel,
       );
 
-  /// Gets the business transaction by business id.
-  Future<List<Transaction>> getCompleteTransactionsByBusinessId({
-    required String businessId,
-    String? storeId,
+  /// Gets the store transaction by store id.
+  Future<List<Transaction>> getCompleteTransactionsByStoreId({
+    required String storeId,
     String? orderId,
     DateTime? startOfDay,
     DateTime? endOfDay,
@@ -32,7 +31,6 @@ class TransactionsRepository {
     try {
       final response = await transactionServiceClient.findTransactions(
         FindTransactionsRequest(
-          businessId: businessId,
           storeId: storeId,
           orderId: orderId,
           startDate: startOfDay != null
@@ -44,7 +42,7 @@ class TransactionsRepository {
 
       return response.transactions;
     } on Exception catch (e) {
-      _logger.severe('getCompleteTransactionsByBusinessId Error: $e');
+      _logger.severe('getCompleteTransactionsByStoreId Error: $e');
 
       return [];
     }

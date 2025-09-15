@@ -674,6 +674,40 @@ class AppInternationalizationService extends ChangeNotifier {
       'fr': 'Gestion de votre inventaire de produits',
     },
     'totalValue': {'en': 'Total Value', 'fr': 'Valeur totale'},
+    'salesManagement': {'en': 'Sales Management', 'fr': 'Gestion des ventes'},
+    'salesManagementDescription': {
+      'en': 'Process transactions and manage sales history',
+      'fr': 'Gestion des transactions et historique des ventes',
+    },
+    'totalSales': {'en': 'Total Sales', 'fr': 'Ventes totales'},
+    'totalRevenue': {'en': 'Total Revenue', 'fr': 'Revenus totaux'},
+    'itemSold': {'en': 'Item Sold', 'fr': 'Article vendu'},
+    'transactionsCompleted': {
+      'en': 'Transactions Completed',
+      'fr': 'Transactions complétées',
+    },
+    'totalEarnings': {'en': 'Total Earnings', 'fr': 'Revenus totaux'},
+    'totalQuantity': {'en': 'Total Quantity', 'fr': 'Quantité totale'},
+    'salesHistory': {'en': 'Sales History', 'fr': 'Historique des ventes'},
+    'salesHistoryDescription': {
+      'en': 'View and manage your sales history',
+      'fr': 'Voir et gérer votre historique des ventes',
+    },
+    'searchForOrder': {
+      'en': 'Search by product name or transaction id ...',
+      'fr': 'Rechercher par nom de produit ou id de transaction ...',
+    },
+    'pending': {'en': 'Pending', 'fr': 'En attente'},
+    'completed': {'en': 'Completed', 'fr': 'Completé'},
+    'cancelled': {'en': 'Cancelled', 'fr': 'Annulé'},
+    'processing': {'en': 'Processing', 'fr': 'En traitement'},
+    'orderId': {'en': 'Order #', 'fr': 'Commande #'},
+    'dateAndTime': {'en': 'Date & Time', 'fr': 'Date & Heure'},
+    'items': {'en': 'Items', 'fr': 'Articles'},
+    'total': {'en': 'Total', 'fr': 'Total'},
+    'noDataFound': {'en': 'No data found', 'fr': 'Aucune donnée trouvée'},
+    'dateRange': {'en': 'Date Range', 'fr': 'Plage de date'},
+    'inboundDate': {'en': 'Inbound Date', 'fr': 'Date d\'entrée'},
   };
 
   /// Direct access to the internationalization service.
@@ -692,6 +726,75 @@ class AppInternationalizationService extends ChangeNotifier {
     const Locale('en'),
     const Locale('fr'),
   ];
+
+  /// Returns the localized value of text 'dateRange'.
+  String get dateRange => _stringOfLocalizedValue('dateRange');
+
+  /// Returns the localized value of text 'noDataFound'.
+  String get noDataFound => _stringOfLocalizedValue('noDataFound');
+
+  /// Returns the localized value of text 'orderId'.
+  String get orderId => _stringOfLocalizedValue('orderId');
+
+  /// Returns the localized value of text 'dateAndTime'.
+  String get dateAndTime => _stringOfLocalizedValue('dateAndTime');
+
+  /// Returns the localized value of text 'items'.
+  String get items => _stringOfLocalizedValue('items');
+
+  /// Returns the localized value of text 'total'.
+  String get total => _stringOfLocalizedValue('total');
+
+  /// Returns the localized value of text 'pending'.
+  String get pending => _stringOfLocalizedValue('pending');
+
+  /// Returns the localized value of text 'completed'.
+  String get completed => _stringOfLocalizedValue('completed');
+
+  /// Returns the localized value of text 'cancelled'.
+  String get cancelled => _stringOfLocalizedValue('cancelled');
+
+  /// Returns the localized value of text 'processing'.
+  String get processing => _stringOfLocalizedValue('processing');
+
+  /// Returns the localized value of text 'searchForOrder'.
+  String get searchForOrder => _stringOfLocalizedValue('searchForOrder');
+
+  /// Returns the localized value of text 'salesHistory'.
+  String get salesHistory => _stringOfLocalizedValue('salesHistory');
+
+  /// Returns the localized value of text 'salesHistoryDescription'.
+  String get salesHistoryDescription =>
+      _stringOfLocalizedValue('salesHistoryDescription');
+
+  /// Returns the localized value of text 'transactionsCompleted'.
+  String get transactionsCompleted =>
+      _stringOfLocalizedValue('transactionsCompleted');
+
+  /// Returns the localized value of text 'totalEarnings'.
+  String get totalEarnings => _stringOfLocalizedValue('totalEarnings');
+
+  /// Returns the localized value of text 'totalQuantity'.
+  String get totalQuantity => _stringOfLocalizedValue('totalQuantity');
+
+  /// Returns the localized value of text 'totalSales'.
+  String get totalSales => _stringOfLocalizedValue('totalSales');
+
+  /// Returns the localized value of text 'totalRevenue'.
+  String get totalRevenue => _stringOfLocalizedValue('totalRevenue');
+
+  /// Returns the localized value of text 'itemSold'.
+  String get itemSold => _stringOfLocalizedValue('itemSold');
+
+  /// Returns the localized value of text 'salesManagement'.
+  String get salesManagement => _stringOfLocalizedValue('salesManagement');
+
+  /// Returns the localized value of text 'salesManagementDescription'.
+  String get salesManagementDescription =>
+      _stringOfLocalizedValue('salesManagementDescription');
+
+  /// Returns the localized value of text 'inboundDate'.
+  String get inboundDate => _stringOfLocalizedValue('inboundDate');
 
   /// Returns the localized value of text 'totalValue'.
   String get totalValue => _stringOfLocalizedValue('totalValue');

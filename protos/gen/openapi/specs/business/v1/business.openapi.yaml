@@ -2,42 +2,6 @@ openapi: 3.1.0
 info:
   title: business.v1
 paths:
-  /business.v1.BusinessService/AddUserToBusiness:
-    post:
-      tags:
-        - business.v1.BusinessService
-      summary: Add user to business or invite user to business.
-      description: Add user to business or invite user to business.
-      operationId: business.v1.BusinessService.AddUserToBusiness
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/business.v1.AddUserToBusinessRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/business.v1.AddUserToBusinessResponse'
   /business.v1.BusinessService/AssociateUserToBusiness:
     post:
       tags:
@@ -146,6 +110,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/business.v1.CreateBusinessResponse'
+  /business.v1.BusinessService/CreateUserToBusiness:
+    post:
+      tags:
+        - business.v1.BusinessService
+      summary: Add user to business or invite user to business.
+      description: Add user to business or invite user to business.
+      operationId: business.v1.BusinessService.CreateUserToBusiness
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/business.v1.CreateUserToBusinessRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/business.v1.CreateUserToBusinessResponse'
   /business.v1.BusinessService/GetBusinessDetails:
     post:
       tags:
@@ -334,8 +334,8 @@ paths:
     post:
       tags:
         - business.v1.BusinessService
-      summary: Request the deletion of the business. This request doesn't delete the business direcly instead it put the business in inactive state and remove all business members.
-      description: Request the deletion of the business. This request doesn't delete the business direcly instead it put the business in inactive state and remove all business members.
+      summary: Request the deletion of the business. This request doesn't delete the business directly instead it put the business in inactive state and remove all business members.
+      description: Request the deletion of the business. This request doesn't delete the business directly instead it put the business in inactive state and remove all business members.
       operationId: business.v1.BusinessService.RequestDeleteBusiness
       parameters:
         - name: Connect-Protocol-Version
@@ -441,42 +441,23 @@ paths:
                 $ref: '#/components/schemas/business.v1.UpdateBusinessMemberResponse'
 components:
   schemas:
-    business.v1.AddUserToBusinessRequest:
-      type: object
-      properties:
-        userName:
-          type: string
-          title: user_name
-        password:
-          type: string
-          title: password
-        businessId:
-          type: string
-          title: business_id
-      title: AddUserToBusinessRequest
-      additionalProperties: false
-      description: |-
-        The unique identifier of the user.
-         For example, the email address or @username.
-         string u_ref = 1;
-    business.v1.AddUserToBusinessResponse:
-      type: object
-      properties:
-        businessMember:
-          title: business_member
-          description: The business member to return
-          $ref: '#/components/schemas/business.v1.BusinessMember'
-      title: AddUserToBusinessResponse
-      additionalProperties: false
     business.v1.AssociateUserToBusinessRequest:
       type: object
       properties:
-        email:
+        userId:
           type: string
-          title: email
+          title: user_id
+          description: The unique identifier of the user.
         businessId:
           type: string
           title: business_id
+          description: The unique identifier of the business.
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/identity.v1.BusinessPermission'
+          title: permissions
+          description: The permissions that the user has.
       title: AssociateUserToBusinessRequest
       additionalProperties: false
       description: |-
@@ -559,24 +540,13 @@ components:
         permissions:
           type: array
           items:
-            $ref: '#/components/schemas/identity.v1.Permission'
+            $ref: '#/components/schemas/identity.v1.BusinessPermission'
           title: permissions
           description: The permissions that the user has.
-        permissionsGroupsIds:
-          type: array
-          items:
-            type: string
-          title: permissions_groups_ids
-          description: The unique identifier of the permission group.
         memberSince:
           title: member_since
           description: The date since when the user became a member.
           $ref: '#/components/schemas/google.protobuf.Timestamp'
-        storeId:
-          type: string
-          title: store_id
-          description: The unique identifier of the store.
-          nullable: true
       title: BusinessMember
       additionalProperties: false
     business.v1.BusinessStatusType:
@@ -610,9 +580,9 @@ components:
     business.v1.ChangeBusinessCurrencyResponse:
       type: object
       properties:
-        sucess:
+        success:
           type: boolean
-          title: sucess
+          title: success
       title: ChangeBusinessCurrencyResponse
       additionalProperties: false
     business.v1.CreateBusinessRequest:
@@ -649,6 +619,58 @@ components:
       title: CreateBusinessResponse
       required:
         - businessId
+      additionalProperties: false
+    business.v1.CreateUserToBusinessRequest:
+      type: object
+      properties:
+        firstName:
+          type: string
+          title: first_name
+          description: The first name of the user.
+        lastName:
+          type: string
+          title: last_name
+          description: The last name of the user.
+        userName:
+          type: string
+          title: user_name
+          description: The username of the user.
+        phoneNumber:
+          type: string
+          title: phone_number
+          description: The phone number of the user.
+        email:
+          type: string
+          title: email
+          description: The email of the user.
+        password:
+          type: string
+          title: password
+          description: The password of the user.
+        businessId:
+          type: string
+          title: business_id
+          description: The unique identifier of the business.
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/identity.v1.BusinessPermission'
+          title: permissions
+          description: The permissions that the user has.
+      title: CreateUserToBusinessRequest
+      additionalProperties: false
+      description: |-
+        The unique identifier of the user.
+         For example, the email address or @username.
+         string u_ref = 1;
+    business.v1.CreateUserToBusinessResponse:
+      type: object
+      properties:
+        businessMember:
+          title: business_member
+          description: The business member to return
+          $ref: '#/components/schemas/business.v1.BusinessMember'
+      title: CreateUserToBusinessResponse
       additionalProperties: false
     business.v1.CurrencyChangePolicyType:
       type: string
@@ -807,11 +829,6 @@ components:
           title: business_id
           minLength: 3
           description: The unique identifier of the business.
-        storeId:
-          type: string
-          title: store_id
-          minLength: 3
-          description: The unique identifier of the store.
       title: StreamBusinessMembersRequest
       required:
         - businessId
@@ -843,32 +860,15 @@ components:
         addPermissions:
           type: array
           items:
-            $ref: '#/components/schemas/identity.v1.Permission'
+            $ref: '#/components/schemas/identity.v1.BusinessPermission'
           title: add_permissions
           description: The permissions to add (optional).
         removePermissions:
           type: array
           items:
-            $ref: '#/components/schemas/identity.v1.Permission'
+            $ref: '#/components/schemas/identity.v1.BusinessPermission'
           title: remove_permissions
           description: The permissions to remove (optional).
-        addPermissionsGroupsIds:
-          type: array
-          items:
-            type: string
-          title: add_permissions_groups_ids
-          description: The permission group IDs to add (optional).
-        removePermissionsGroupsIds:
-          type: array
-          items:
-            type: string
-          title: remove_permissions_groups_ids
-          description: The permission group IDs to remove (optional).
-        storeId:
-          type: string
-          title: store_id
-          description: The unique identifier of the store.
-          nullable: true
       title: UpdateBusinessMemberRequest
       required:
         - userId
@@ -1084,23 +1084,25 @@ components:
          the Joda Time's [`ISODateTimeFormat.dateTime()`](
          http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()
          ) to obtain a formatter capable of generating timestamps in this format.
-    identity.v1.Permission:
+    identity.v1.BusinessPermission:
       type: object
       properties:
         resourceType:
           title: resource_type
-          $ref: '#/components/schemas/identity.v1.ResourceType'
-        resourceId:
-          type: string
-          title: resource_id
-          description: The resource_id is only specified when we want to restrict action on a specific resource.
-          nullable: true
+          $ref: '#/components/schemas/identity.v1.BusinessResourceType'
         actionType:
           title: action_type
-          description: The action that the member can perform on the resource.
           $ref: '#/components/schemas/identity.v1.ResourceActionType'
-      title: Permission
+      title: BusinessPermission
       additionalProperties: false
+    identity.v1.BusinessResourceType:
+      type: string
+      title: BusinessResourceType
+      enum:
+        - BUSINESS_RESOURCE_TYPE_UNSPECIFIED
+        - BUSINESS_RESOURCE_TYPE_BUSINESS
+        - BUSINESS_RESOURCE_TYPE_MEMBER
+        - BUSINESS_RESOURCE_TYPE_SUPPLIER
     identity.v1.ResourceActionType:
       type: string
       title: ResourceActionType
@@ -1110,19 +1112,6 @@ components:
         - RESOURCE_ACTION_TYPE_ADD
         - RESOURCE_ACTION_TYPE_UPDATE
         - RESOURCE_ACTION_TYPE_REMOVE
-    identity.v1.ResourceType:
-      type: string
-      title: ResourceType
-      enum:
-        - RESOURCE_TYPE_UNSPECIFIED
-        - RESOURCE_TYPE_BUSINESS
-        - RESOURCE_TYPE_BUSINESS_MEMBER
-        - RESOURCE_TYPE_BUSINESS_SUPPLIER
-        - RESOURCE_TYPE_STORE
-        - RESOURCE_TYPE_STORE_INVOICE
-        - RESOURCE_TYPE_STORE_ORDER
-        - RESOURCE_TYPE_SUPPLIER_ORDER
-        - RESOURCE_TYPE_STORE_PRODUCT
     link.v1.ResourceLink:
       type: object
       properties:

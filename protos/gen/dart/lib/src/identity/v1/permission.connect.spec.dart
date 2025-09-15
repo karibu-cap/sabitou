@@ -10,67 +10,67 @@ abstract final class PermissionService {
   /// Fully-qualified name of the PermissionService service.
   static const name = 'identity.v1.PermissionService';
 
-  /// Creates a new permission group.
-  static const createPermissionsGroup = connect.Spec(
-    '/$name/CreatePermissionsGroup',
+  /// Creates a new business permission.
+  static const createBusinessPermission = connect.Spec(
+    '/$name/CreateBusinessPermission',
     connect.StreamType.unary,
-    identityv1permission.CreatePermissionsGroupRequest.new,
-    identityv1permission.CreatePermissionsGroupResponse.new,
+    identityv1permission.CreateBusinessPermissionRequest.new,
+    identityv1permission.CreateBusinessPermissionResponse.new,
   );
 
-  /// Gets a permission group by id.
-  static const getPermissionsGroup = connect.Spec(
-    '/$name/GetPermissionsGroup',
+  /// Updates a business permission.
+  static const updateBusinessPermission = connect.Spec(
+    '/$name/UpdateBusinessPermission',
     connect.StreamType.unary,
-    identityv1permission.GetPermissionsGroupRequest.new,
-    identityv1permission.GetPermissionsGroupResponse.new,
+    identityv1permission.UpdateBusinessPermissionRequest.new,
+    identityv1permission.UpdateBusinessPermissionResponse.new,
   );
 
-  /// Updates a permission group.
-  static const updatePermissionsGroup = connect.Spec(
-    '/$name/UpdatePermissionsGroup',
+  /// Deletes a business permission.
+  static const deleteBusinessPermission = connect.Spec(
+    '/$name/DeleteBusinessPermission',
     connect.StreamType.unary,
-    identityv1permission.UpdatePermissionsGroupRequest.new,
-    identityv1permission.UpdatePermissionsGroupResponse.new,
+    identityv1permission.DeleteBusinessPermissionRequest.new,
+    identityv1permission.DeleteBusinessPermissionResponse.new,
   );
 
-  /// Deletes a permission group.
-  static const deletePermissionsGroup = connect.Spec(
-    '/$name/DeletePermissionsGroup',
+  /// Creates a new store permission.
+  static const createStorePermission = connect.Spec(
+    '/$name/CreateStorePermission',
     connect.StreamType.unary,
-    identityv1permission.DeletePermissionsGroupRequest.new,
-    identityv1permission.DeletePermissionsGroupResponse.new,
+    identityv1permission.CreateStorePermissionRequest.new,
+    identityv1permission.CreateStorePermissionResponse.new,
   );
 
-  /// Update the member permissions on the provided business.
-  static const updateMemberPermissions = connect.Spec(
-    '/$name/UpdateMemberPermissions',
+  /// Updates a store permission.
+  static const updateStorePermission = connect.Spec(
+    '/$name/UpdateStorePermission',
     connect.StreamType.unary,
-    identityv1permission.UpdateMemberPermissionsRequest.new,
-    identityv1permission.UpdateMemberPermissionsResponse.new,
+    identityv1permission.UpdateStorePermissionRequest.new,
+    identityv1permission.UpdateStorePermissionResponse.new,
   );
 
-  /// Gets the permission groups of the business.
-  static const getBusinessPermissionsGroups = connect.Spec(
-    '/$name/GetBusinessPermissionsGroups',
+  /// Deletes a store permission.
+  static const deleteStorePermission = connect.Spec(
+    '/$name/DeleteStorePermission',
     connect.StreamType.unary,
-    identityv1permission.GetBusinessPermissionsGroupsRequest.new,
-    identityv1permission.GetBusinessPermissionsGroupsResponse.new,
+    identityv1permission.DeleteStorePermissionRequest.new,
+    identityv1permission.DeleteStorePermissionResponse.new,
   );
 
-  /// Checks if the member has the provided permission for the provided resource.
-  static const checkPermission = connect.Spec(
-    '/$name/CheckPermission',
+  /// Checks if a member has a business permission.
+  static const checkBusinessPermission = connect.Spec(
+    '/$name/CheckBusinessPermission',
     connect.StreamType.unary,
-    identityv1permission.CheckPermissionRequest.new,
-    identityv1permission.CheckPermissionResponse.new,
+    identityv1permission.CheckBusinessPermissionRequest.new,
+    identityv1permission.CheckBusinessPermissionResponse.new,
   );
 
-  /// Stream the permission groups of the business with real-time updates.
-  static const streamBusinessPermissionsGroups = connect.Spec(
-    '/$name/StreamBusinessPermissionsGroups',
-    connect.StreamType.server,
-    identityv1permission.StreamBusinessPermissionsGroupsRequest.new,
-    identityv1permission.StreamBusinessPermissionsGroupsResponse.new,
+  /// Checks if a member has a store permission.
+  static const checkStorePermission = connect.Spec(
+    '/$name/CheckStorePermission',
+    connect.StreamType.unary,
+    identityv1permission.CheckStorePermissionRequest.new,
+    identityv1permission.CheckStorePermissionResponse.new,
   );
 }

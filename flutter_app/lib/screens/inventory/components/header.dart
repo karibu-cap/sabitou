@@ -55,8 +55,8 @@ class InventoryHeader extends StatelessWidget {
         ),
         if (!isDesktop) const SizedBox(height: 16),
         FutureBuilder(
-          future: hasPermission(
-            ResourceType.RESOURCE_TYPE_PRODUCT,
+          future: hasStorePermission(
+            StoreResourceType.STORE_RESOURCE_TYPE_PRODUCT,
             ResourceActionType.RESOURCE_ACTION_TYPE_ADD,
           ),
           builder: (context, snapshot) {

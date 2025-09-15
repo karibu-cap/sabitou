@@ -125,47 +125,26 @@ const BusinessMember$json = {
       '3': 3,
       '4': 3,
       '5': 11,
-      '6': '.identity.v1.Permission',
+      '6': '.identity.v1.BusinessPermission',
       '10': 'permissions'
     },
     {
-      '1': 'permissions_groups_ids',
-      '3': 4,
-      '4': 3,
-      '5': 9,
-      '10': 'permissionsGroupsIds'
-    },
-    {
       '1': 'member_since',
-      '3': 5,
+      '3': 4,
       '4': 1,
       '5': 11,
       '6': '.google.protobuf.Timestamp',
       '10': 'memberSince'
     },
-    {
-      '1': 'store_id',
-      '3': 7,
-      '4': 1,
-      '5': 9,
-      '9': 0,
-      '10': 'storeId',
-      '17': true
-    },
-  ],
-  '8': [
-    {'1': '_store_id'},
   ],
 };
 
 /// Descriptor for `BusinessMember`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List businessMemberDescriptor = $convert.base64Decode(
     'Cg5CdXNpbmVzc01lbWJlchIXCgd1c2VyX2lkGAEgASgJUgZ1c2VySWQSHwoLYnVzaW5lc3NfaW'
-    'QYAiABKAlSCmJ1c2luZXNzSWQSOQoLcGVybWlzc2lvbnMYAyADKAsyFy5pZGVudGl0eS52MS5Q'
-    'ZXJtaXNzaW9uUgtwZXJtaXNzaW9ucxI0ChZwZXJtaXNzaW9uc19ncm91cHNfaWRzGAQgAygJUh'
-    'RwZXJtaXNzaW9uc0dyb3Vwc0lkcxI9CgxtZW1iZXJfc2luY2UYBSABKAsyGi5nb29nbGUucHJv'
-    'dG9idWYuVGltZXN0YW1wUgttZW1iZXJTaW5jZRIeCghzdG9yZV9pZBgHIAEoCUgAUgdzdG9yZU'
-    'lkiAEBQgsKCV9zdG9yZV9pZA==');
+    'QYAiABKAlSCmJ1c2luZXNzSWQSQQoLcGVybWlzc2lvbnMYAyADKAsyHy5pZGVudGl0eS52MS5C'
+    'dXNpbmVzc1Blcm1pc3Npb25SC3Blcm1pc3Npb25zEj0KDG1lbWJlcl9zaW5jZRgEIAEoCzIaLm'
+    'dvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSC21lbWJlclNpbmNl');
 
 @$core.Deprecated('Use createBusinessRequestDescriptor instead')
 const CreateBusinessRequest$json = {
@@ -251,15 +230,15 @@ final $typed_data.Uint8List changeBusinessCurrencyRequestDescriptor = $convert.b
 const ChangeBusinessCurrencyResponse$json = {
   '1': 'ChangeBusinessCurrencyResponse',
   '2': [
-    {'1': 'sucess', '3': 1, '4': 1, '5': 8, '10': 'sucess'},
+    {'1': 'success', '3': 1, '4': 1, '5': 8, '10': 'success'},
   ],
 };
 
 /// Descriptor for `ChangeBusinessCurrencyResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List changeBusinessCurrencyResponseDescriptor =
     $convert.base64Decode(
-        'Ch5DaGFuZ2VCdXNpbmVzc0N1cnJlbmN5UmVzcG9uc2USFgoGc3VjZXNzGAEgASgIUgZzdWNlc3'
-        'M=');
+        'Ch5DaGFuZ2VCdXNpbmVzc0N1cnJlbmN5UmVzcG9uc2USGAoHc3VjY2VzcxgBIAEoCFIHc3VjY2'
+        'Vzcw==');
 
 @$core.Deprecated('Use getMyBusinessesRequestDescriptor instead')
 const GetMyBusinessesRequest$json = {
@@ -411,25 +390,40 @@ final $typed_data.Uint8List requestDeleteBusinessResponseDescriptor =
         'Ch1SZXF1ZXN0RGVsZXRlQnVzaW5lc3NSZXNwb25zZRIYCgdzdWNjZXNzGAEgASgIUgdzdWNjZX'
         'NzEiMKDW5vdGljZV9wZXJpb2QYAiABKAlSDG5vdGljZVBlcmlvZA==');
 
-@$core.Deprecated('Use addUserToBusinessRequestDescriptor instead')
-const AddUserToBusinessRequest$json = {
-  '1': 'AddUserToBusinessRequest',
+@$core.Deprecated('Use createUserToBusinessRequestDescriptor instead')
+const CreateUserToBusinessRequest$json = {
+  '1': 'CreateUserToBusinessRequest',
   '2': [
-    {'1': 'user_name', '3': 1, '4': 1, '5': 9, '10': 'userName'},
-    {'1': 'password', '3': 2, '4': 1, '5': 9, '10': 'password'},
-    {'1': 'business_id', '3': 3, '4': 1, '5': 9, '10': 'businessId'},
+    {'1': 'first_name', '3': 1, '4': 1, '5': 9, '10': 'firstName'},
+    {'1': 'last_name', '3': 2, '4': 1, '5': 9, '10': 'lastName'},
+    {'1': 'user_name', '3': 3, '4': 1, '5': 9, '10': 'userName'},
+    {'1': 'phone_number', '3': 4, '4': 1, '5': 9, '10': 'phoneNumber'},
+    {'1': 'email', '3': 5, '4': 1, '5': 9, '10': 'email'},
+    {'1': 'password', '3': 6, '4': 1, '5': 9, '10': 'password'},
+    {'1': 'business_id', '3': 7, '4': 1, '5': 9, '10': 'businessId'},
+    {
+      '1': 'permissions',
+      '3': 8,
+      '4': 3,
+      '5': 11,
+      '6': '.identity.v1.BusinessPermission',
+      '10': 'permissions'
+    },
   ],
 };
 
-/// Descriptor for `AddUserToBusinessRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List addUserToBusinessRequestDescriptor = $convert.base64Decode(
-    'ChhBZGRVc2VyVG9CdXNpbmVzc1JlcXVlc3QSGwoJdXNlcl9uYW1lGAEgASgJUgh1c2VyTmFtZR'
-    'IaCghwYXNzd29yZBgCIAEoCVIIcGFzc3dvcmQSHwoLYnVzaW5lc3NfaWQYAyABKAlSCmJ1c2lu'
-    'ZXNzSWQ=');
+/// Descriptor for `CreateUserToBusinessRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List createUserToBusinessRequestDescriptor = $convert.base64Decode(
+    'ChtDcmVhdGVVc2VyVG9CdXNpbmVzc1JlcXVlc3QSHQoKZmlyc3RfbmFtZRgBIAEoCVIJZmlyc3'
+    'ROYW1lEhsKCWxhc3RfbmFtZRgCIAEoCVIIbGFzdE5hbWUSGwoJdXNlcl9uYW1lGAMgASgJUgh1'
+    'c2VyTmFtZRIhCgxwaG9uZV9udW1iZXIYBCABKAlSC3Bob25lTnVtYmVyEhQKBWVtYWlsGAUgAS'
+    'gJUgVlbWFpbBIaCghwYXNzd29yZBgGIAEoCVIIcGFzc3dvcmQSHwoLYnVzaW5lc3NfaWQYByAB'
+    'KAlSCmJ1c2luZXNzSWQSQQoLcGVybWlzc2lvbnMYCCADKAsyHy5pZGVudGl0eS52MS5CdXNpbm'
+    'Vzc1Blcm1pc3Npb25SC3Blcm1pc3Npb25z');
 
-@$core.Deprecated('Use addUserToBusinessResponseDescriptor instead')
-const AddUserToBusinessResponse$json = {
-  '1': 'AddUserToBusinessResponse',
+@$core.Deprecated('Use createUserToBusinessResponseDescriptor instead')
+const CreateUserToBusinessResponse$json = {
+  '1': 'CreateUserToBusinessResponse',
   '2': [
     {
       '1': 'business_member',
@@ -442,26 +436,35 @@ const AddUserToBusinessResponse$json = {
   ],
 };
 
-/// Descriptor for `AddUserToBusinessResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List addUserToBusinessResponseDescriptor =
+/// Descriptor for `CreateUserToBusinessResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List createUserToBusinessResponseDescriptor =
     $convert.base64Decode(
-        'ChlBZGRVc2VyVG9CdXNpbmVzc1Jlc3BvbnNlEkQKD2J1c2luZXNzX21lbWJlchgBIAEoCzIbLm'
-        'J1c2luZXNzLnYxLkJ1c2luZXNzTWVtYmVyUg5idXNpbmVzc01lbWJlcg==');
+        'ChxDcmVhdGVVc2VyVG9CdXNpbmVzc1Jlc3BvbnNlEkQKD2J1c2luZXNzX21lbWJlchgBIAEoCz'
+        'IbLmJ1c2luZXNzLnYxLkJ1c2luZXNzTWVtYmVyUg5idXNpbmVzc01lbWJlcg==');
 
 @$core.Deprecated('Use associateUserToBusinessRequestDescriptor instead')
 const AssociateUserToBusinessRequest$json = {
   '1': 'AssociateUserToBusinessRequest',
   '2': [
-    {'1': 'email', '3': 1, '4': 1, '5': 9, '10': 'email'},
-    {'1': 'business_id', '3': 3, '4': 1, '5': 9, '10': 'businessId'},
+    {'1': 'user_id', '3': 1, '4': 1, '5': 9, '10': 'userId'},
+    {'1': 'business_id', '3': 2, '4': 1, '5': 9, '10': 'businessId'},
+    {
+      '1': 'permissions',
+      '3': 3,
+      '4': 3,
+      '5': 11,
+      '6': '.identity.v1.BusinessPermission',
+      '10': 'permissions'
+    },
   ],
 };
 
 /// Descriptor for `AssociateUserToBusinessRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List associateUserToBusinessRequestDescriptor =
     $convert.base64Decode(
-        'Ch5Bc3NvY2lhdGVVc2VyVG9CdXNpbmVzc1JlcXVlc3QSFAoFZW1haWwYASABKAlSBWVtYWlsEh'
-        '8KC2J1c2luZXNzX2lkGAMgASgJUgpidXNpbmVzc0lk');
+        'Ch5Bc3NvY2lhdGVVc2VyVG9CdXNpbmVzc1JlcXVlc3QSFwoHdXNlcl9pZBgBIAEoCVIGdXNlck'
+        'lkEh8KC2J1c2luZXNzX2lkGAIgASgJUgpidXNpbmVzc0lkEkEKC3Blcm1pc3Npb25zGAMgAygL'
+        'Mh8uaWRlbnRpdHkudjEuQnVzaW5lc3NQZXJtaXNzaW9uUgtwZXJtaXNzaW9ucw==');
 
 @$core.Deprecated('Use associateUserToBusinessResponseDescriptor instead')
 const AssociateUserToBusinessResponse$json = {
@@ -560,7 +563,7 @@ const UpdateBusinessMemberRequest$json = {
       '3': 5,
       '4': 3,
       '5': 11,
-      '6': '.identity.v1.Permission',
+      '6': '.identity.v1.BusinessPermission',
       '10': 'addPermissions'
     },
     {
@@ -568,35 +571,9 @@ const UpdateBusinessMemberRequest$json = {
       '3': 6,
       '4': 3,
       '5': 11,
-      '6': '.identity.v1.Permission',
+      '6': '.identity.v1.BusinessPermission',
       '10': 'removePermissions'
     },
-    {
-      '1': 'add_permissions_groups_ids',
-      '3': 7,
-      '4': 3,
-      '5': 9,
-      '10': 'addPermissionsGroupsIds'
-    },
-    {
-      '1': 'remove_permissions_groups_ids',
-      '3': 8,
-      '4': 3,
-      '5': 9,
-      '10': 'removePermissionsGroupsIds'
-    },
-    {
-      '1': 'store_id',
-      '3': 9,
-      '4': 1,
-      '5': 9,
-      '9': 0,
-      '10': 'storeId',
-      '17': true
-    },
-  ],
-  '8': [
-    {'1': '_store_id'},
   ],
 };
 
@@ -604,12 +581,9 @@ const UpdateBusinessMemberRequest$json = {
 final $typed_data.Uint8List updateBusinessMemberRequestDescriptor = $convert.base64Decode(
     'ChtVcGRhdGVCdXNpbmVzc01lbWJlclJlcXVlc3QSIwoHdXNlcl9pZBgBIAEoCUIKukgHyAEBcg'
     'IQA1IGdXNlcklkEisKC2J1c2luZXNzX2lkGAIgASgJQgq6SAfIAQFyAhADUgpidXNpbmVzc0lk'
-    'EkAKD2FkZF9wZXJtaXNzaW9ucxgFIAMoCzIXLmlkZW50aXR5LnYxLlBlcm1pc3Npb25SDmFkZF'
-    'Blcm1pc3Npb25zEkYKEnJlbW92ZV9wZXJtaXNzaW9ucxgGIAMoCzIXLmlkZW50aXR5LnYxLlBl'
-    'cm1pc3Npb25SEXJlbW92ZVBlcm1pc3Npb25zEjsKGmFkZF9wZXJtaXNzaW9uc19ncm91cHNfaW'
-    'RzGAcgAygJUhdhZGRQZXJtaXNzaW9uc0dyb3Vwc0lkcxJBCh1yZW1vdmVfcGVybWlzc2lvbnNf'
-    'Z3JvdXBzX2lkcxgIIAMoCVIacmVtb3ZlUGVybWlzc2lvbnNHcm91cHNJZHMSHgoIc3RvcmVfaW'
-    'QYCSABKAlIAFIHc3RvcmVJZIgBAUILCglfc3RvcmVfaWQ=');
+    'EkgKD2FkZF9wZXJtaXNzaW9ucxgFIAMoCzIfLmlkZW50aXR5LnYxLkJ1c2luZXNzUGVybWlzc2'
+    'lvblIOYWRkUGVybWlzc2lvbnMSTgoScmVtb3ZlX3Blcm1pc3Npb25zGAYgAygLMh8uaWRlbnRp'
+    'dHkudjEuQnVzaW5lc3NQZXJtaXNzaW9uUhFyZW1vdmVQZXJtaXNzaW9ucw==');
 
 @$core.Deprecated('Use updateBusinessMemberResponseDescriptor instead')
 const UpdateBusinessMemberResponse$json = {
@@ -675,7 +649,6 @@ const StreamBusinessMembersRequest$json = {
   '1': 'StreamBusinessMembersRequest',
   '2': [
     {'1': 'business_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'businessId'},
-    {'1': 'store_id', '3': 2, '4': 1, '5': 9, '8': {}, '10': 'storeId'},
   ],
 };
 
@@ -683,8 +656,7 @@ const StreamBusinessMembersRequest$json = {
 final $typed_data.Uint8List streamBusinessMembersRequestDescriptor =
     $convert.base64Decode(
         'ChxTdHJlYW1CdXNpbmVzc01lbWJlcnNSZXF1ZXN0EisKC2J1c2luZXNzX2lkGAEgASgJQgq6SA'
-        'fIAQFyAhADUgpidXNpbmVzc0lkEiUKCHN0b3JlX2lkGAIgASgJQgq6SAfIAQByAhADUgdzdG9y'
-        'ZUlk');
+        'fIAQFyAhADUgpidXNpbmVzc0lk');
 
 @$core.Deprecated('Use streamBusinessMembersResponseDescriptor instead')
 const StreamBusinessMembersResponse$json = {
@@ -736,9 +708,9 @@ const $core.Map<$core.String, $core.dynamic> BusinessServiceBase$json = {
       '3': '.business.v1.RequestDeleteBusinessResponse'
     },
     {
-      '1': 'AddUserToBusiness',
-      '2': '.business.v1.AddUserToBusinessRequest',
-      '3': '.business.v1.AddUserToBusinessResponse'
+      '1': 'CreateUserToBusiness',
+      '2': '.business.v1.CreateUserToBusinessRequest',
+      '3': '.business.v1.CreateUserToBusinessResponse'
     },
     {
       '1': 'AssociateUserToBusiness',
@@ -796,10 +768,11 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
       RequestDeleteBusinessRequest$json,
   '.business.v1.RequestDeleteBusinessResponse':
       RequestDeleteBusinessResponse$json,
-  '.business.v1.AddUserToBusinessRequest': AddUserToBusinessRequest$json,
-  '.business.v1.AddUserToBusinessResponse': AddUserToBusinessResponse$json,
+  '.business.v1.CreateUserToBusinessRequest': CreateUserToBusinessRequest$json,
+  '.identity.v1.BusinessPermission': $0.BusinessPermission$json,
+  '.business.v1.CreateUserToBusinessResponse':
+      CreateUserToBusinessResponse$json,
   '.business.v1.BusinessMember': BusinessMember$json,
-  '.identity.v1.Permission': $0.Permission$json,
   '.google.protobuf.Timestamp': $1.Timestamp$json,
   '.business.v1.AssociateUserToBusinessRequest':
       AssociateUserToBusinessRequest$json,
@@ -837,19 +810,20 @@ final $typed_data.Uint8List businessServiceDescriptor = $convert.base64Decode(
     'cy52MS5VcGRhdGVCdXNpbmVzc1JlcXVlc3QaIy5idXNpbmVzcy52MS5VcGRhdGVCdXNpbmVzc1'
     'Jlc3BvbnNlEm4KFVJlcXVlc3REZWxldGVCdXNpbmVzcxIpLmJ1c2luZXNzLnYxLlJlcXVlc3RE'
     'ZWxldGVCdXNpbmVzc1JlcXVlc3QaKi5idXNpbmVzcy52MS5SZXF1ZXN0RGVsZXRlQnVzaW5lc3'
-    'NSZXNwb25zZRJiChFBZGRVc2VyVG9CdXNpbmVzcxIlLmJ1c2luZXNzLnYxLkFkZFVzZXJUb0J1'
-    'c2luZXNzUmVxdWVzdBomLmJ1c2luZXNzLnYxLkFkZFVzZXJUb0J1c2luZXNzUmVzcG9uc2USdA'
-    'oXQXNzb2NpYXRlVXNlclRvQnVzaW5lc3MSKy5idXNpbmVzcy52MS5Bc3NvY2lhdGVVc2VyVG9C'
-    'dXNpbmVzc1JlcXVlc3QaLC5idXNpbmVzcy52MS5Bc3NvY2lhdGVVc2VyVG9CdXNpbmVzc1Jlc3'
-    'BvbnNlEnEKFlJlbW92ZVVzZXJGcm9tQnVzaW5lc3MSKi5idXNpbmVzcy52MS5SZW1vdmVVc2Vy'
-    'RnJvbUJ1c2luZXNzUmVxdWVzdBorLmJ1c2luZXNzLnYxLlJlbW92ZVVzZXJGcm9tQnVzaW5lc3'
-    'NSZXNwb25zZRJxChZDaGFuZ2VCdXNpbmVzc0N1cnJlbmN5EiouYnVzaW5lc3MudjEuQ2hhbmdl'
-    'QnVzaW5lc3NDdXJyZW5jeVJlcXVlc3QaKy5idXNpbmVzcy52MS5DaGFuZ2VCdXNpbmVzc0N1cn'
-    'JlbmN5UmVzcG9uc2USZQoSR2V0QnVzaW5lc3NNZW1iZXJzEiYuYnVzaW5lc3MudjEuR2V0QnVz'
-    'aW5lc3NNZW1iZXJzUmVxdWVzdBonLmJ1c2luZXNzLnYxLkdldEJ1c2luZXNzTWVtYmVyc1Jlc3'
-    'BvbnNlEmIKEUdldEJ1c2luZXNzTWVtYmVyEiUuYnVzaW5lc3MudjEuR2V0QnVzaW5lc3NNZW1i'
-    'ZXJSZXF1ZXN0GiYuYnVzaW5lc3MudjEuR2V0QnVzaW5lc3NNZW1iZXJSZXNwb25zZRJrChRVcG'
-    'RhdGVCdXNpbmVzc01lbWJlchIoLmJ1c2luZXNzLnYxLlVwZGF0ZUJ1c2luZXNzTWVtYmVyUmVx'
-    'dWVzdBopLmJ1c2luZXNzLnYxLlVwZGF0ZUJ1c2luZXNzTWVtYmVyUmVzcG9uc2UScAoVU3RyZW'
-    'FtQnVzaW5lc3NNZW1iZXJzEikuYnVzaW5lc3MudjEuU3RyZWFtQnVzaW5lc3NNZW1iZXJzUmVx'
-    'dWVzdBoqLmJ1c2luZXNzLnYxLlN0cmVhbUJ1c2luZXNzTWVtYmVyc1Jlc3BvbnNlMAE=');
+    'NSZXNwb25zZRJrChRDcmVhdGVVc2VyVG9CdXNpbmVzcxIoLmJ1c2luZXNzLnYxLkNyZWF0ZVVz'
+    'ZXJUb0J1c2luZXNzUmVxdWVzdBopLmJ1c2luZXNzLnYxLkNyZWF0ZVVzZXJUb0J1c2luZXNzUm'
+    'VzcG9uc2USdAoXQXNzb2NpYXRlVXNlclRvQnVzaW5lc3MSKy5idXNpbmVzcy52MS5Bc3NvY2lh'
+    'dGVVc2VyVG9CdXNpbmVzc1JlcXVlc3QaLC5idXNpbmVzcy52MS5Bc3NvY2lhdGVVc2VyVG9CdX'
+    'NpbmVzc1Jlc3BvbnNlEnEKFlJlbW92ZVVzZXJGcm9tQnVzaW5lc3MSKi5idXNpbmVzcy52MS5S'
+    'ZW1vdmVVc2VyRnJvbUJ1c2luZXNzUmVxdWVzdBorLmJ1c2luZXNzLnYxLlJlbW92ZVVzZXJGcm'
+    '9tQnVzaW5lc3NSZXNwb25zZRJxChZDaGFuZ2VCdXNpbmVzc0N1cnJlbmN5EiouYnVzaW5lc3Mu'
+    'djEuQ2hhbmdlQnVzaW5lc3NDdXJyZW5jeVJlcXVlc3QaKy5idXNpbmVzcy52MS5DaGFuZ2VCdX'
+    'NpbmVzc0N1cnJlbmN5UmVzcG9uc2USZQoSR2V0QnVzaW5lc3NNZW1iZXJzEiYuYnVzaW5lc3Mu'
+    'djEuR2V0QnVzaW5lc3NNZW1iZXJzUmVxdWVzdBonLmJ1c2luZXNzLnYxLkdldEJ1c2luZXNzTW'
+    'VtYmVyc1Jlc3BvbnNlEmIKEUdldEJ1c2luZXNzTWVtYmVyEiUuYnVzaW5lc3MudjEuR2V0QnVz'
+    'aW5lc3NNZW1iZXJSZXF1ZXN0GiYuYnVzaW5lc3MudjEuR2V0QnVzaW5lc3NNZW1iZXJSZXNwb2'
+    '5zZRJrChRVcGRhdGVCdXNpbmVzc01lbWJlchIoLmJ1c2luZXNzLnYxLlVwZGF0ZUJ1c2luZXNz'
+    'TWVtYmVyUmVxdWVzdBopLmJ1c2luZXNzLnYxLlVwZGF0ZUJ1c2luZXNzTWVtYmVyUmVzcG9uc2'
+    'UScAoVU3RyZWFtQnVzaW5lc3NNZW1iZXJzEikuYnVzaW5lc3MudjEuU3RyZWFtQnVzaW5lc3NN'
+    'ZW1iZXJzUmVxdWVzdBoqLmJ1c2luZXNzLnYxLlN0cmVhbUJ1c2luZXNzTWVtYmVyc1Jlc3Bvbn'
+    'NlMAE=');

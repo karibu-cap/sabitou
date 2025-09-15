@@ -22,11 +22,9 @@ class OrdersRepository {
       );
 
   /// Gets list of order with filter by supplier id.
-  Future<List<Order>> getOrdersByQuery({String? supplierId}) async {
+  Future<List<Order>> getOrdersByQuery(FindOrdersRequest request) async {
     try {
-      final result = await orderServiceClient.findOrders(
-        FindOrdersRequest(fromId: supplierId),
-      );
+      final result = await orderServiceClient.findOrders(request);
 
       return result.orders;
     } on Exception catch (e) {

@@ -51,12 +51,12 @@ const (
 	// ProductServiceDeleteProductProcedure is the fully-qualified name of the ProductService's
 	// DeleteProduct RPC.
 	ProductServiceDeleteProductProcedure = "/inventory.v1.ProductService/DeleteProduct"
-	// ProductServiceFindBusinessProductsProcedure is the fully-qualified name of the ProductService's
-	// FindBusinessProducts RPC.
-	ProductServiceFindBusinessProductsProcedure = "/inventory.v1.ProductService/FindBusinessProducts"
-	// ProductServiceStreamBusinessProductsProcedure is the fully-qualified name of the ProductService's
-	// StreamBusinessProducts RPC.
-	ProductServiceStreamBusinessProductsProcedure = "/inventory.v1.ProductService/StreamBusinessProducts"
+	// ProductServiceFindStoreProductsProcedure is the fully-qualified name of the ProductService's
+	// FindStoreProducts RPC.
+	ProductServiceFindStoreProductsProcedure = "/inventory.v1.ProductService/FindStoreProducts"
+	// ProductServiceStreamStoreProductsProcedure is the fully-qualified name of the ProductService's
+	// StreamStoreProducts RPC.
+	ProductServiceStreamStoreProductsProcedure = "/inventory.v1.ProductService/StreamStoreProducts"
 )
 
 // ProductServiceClient is a client for the inventory.v1.ProductService service.
@@ -65,20 +65,19 @@ type ProductServiceClient interface {
 	FindGlobalProducts(context.Context, *connect.Request[v1.FindGlobalProductsRequest]) (*connect.Response[v1.FindGlobalProductsResponse], error)
 	// Finds categories by name.
 	FindCategory(context.Context, *connect.Request[v1.FindCategoryRequest]) (*connect.Response[v1.FindCategoryResponse], error)
-	// Adds a product to a business.
-	AddProduct(context.Context, *connect.Request[v1.AddProductRequest]) (*connect.Response[v1.AddProductResponse], error)
-	// Gets a business product by id.
-	GetProduct(context.Context, *connect.Request[v1.GetProductRequest]) (*connect.Response[v1.GetProductResponse], error)
-	// Updates a business product.
-	UpdateProduct(context.Context, *connect.Request[v1.UpdateProductRequest]) (*connect.Response[v1.UpdateProductResponse], error)
-	// Deletes a business product.
-	// Only business products that are not in any store and orders can be
-	// deleted.
-	DeleteProduct(context.Context, *connect.Request[v1.DeleteProductRequest]) (*connect.Response[v1.DeleteProductResponse], error)
+	// Adds a product to a store.
+	AddProduct(context.Context, *connect.Request[v1.AddStoreProductRequest]) (*connect.Response[v1.AddStoreProductResponse], error)
+	// Gets a store product by id.
+	GetProduct(context.Context, *connect.Request[v1.GetStoreProductRequest]) (*connect.Response[v1.GetStoreProductResponse], error)
+	// Updates a store product.
+	UpdateProduct(context.Context, *connect.Request[v1.UpdateStoreProductRequest]) (*connect.Response[v1.UpdateStoreProductResponse], error)
+	// Deletes a store product.
+	// Only store products that are not in any orders can be deleted.
+	DeleteProduct(context.Context, *connect.Request[v1.DeleteStoreProductRequest]) (*connect.Response[v1.DeleteStoreProductResponse], error)
 	// Finds products by name.
-	FindBusinessProducts(context.Context, *connect.Request[v1.FindBusinessProductsRequest]) (*connect.Response[v1.FindBusinessProductsResponse], error)
-	// Streams all products for a business for real-time updates.
-	StreamBusinessProducts(context.Context, *connect.Request[v1.StreamBusinessProductsRequest]) (*connect.ServerStreamForClient[v1.StreamBusinessProductsResponse], error)
+	FindStoreProducts(context.Context, *connect.Request[v1.FindStoreProductsRequest]) (*connect.Response[v1.FindStoreProductsResponse], error)
+	// Streams all products for a store for real-time updates.
+	StreamStoreProducts(context.Context, *connect.Request[v1.StreamStoreProductsRequest]) (*connect.ServerStreamForClient[v1.StreamStoreProductsResponse], error)
 }
 
 // NewProductServiceClient constructs a client for the inventory.v1.ProductService service. By
@@ -104,40 +103,40 @@ func NewProductServiceClient(httpClient connect.HTTPClient, baseURL string, opts
 			connect.WithSchema(productServiceMethods.ByName("FindCategory")),
 			connect.WithClientOptions(opts...),
 		),
-		addProduct: connect.NewClient[v1.AddProductRequest, v1.AddProductResponse](
+		addProduct: connect.NewClient[v1.AddStoreProductRequest, v1.AddStoreProductResponse](
 			httpClient,
 			baseURL+ProductServiceAddProductProcedure,
 			connect.WithSchema(productServiceMethods.ByName("AddProduct")),
 			connect.WithClientOptions(opts...),
 		),
-		getProduct: connect.NewClient[v1.GetProductRequest, v1.GetProductResponse](
+		getProduct: connect.NewClient[v1.GetStoreProductRequest, v1.GetStoreProductResponse](
 			httpClient,
 			baseURL+ProductServiceGetProductProcedure,
 			connect.WithSchema(productServiceMethods.ByName("GetProduct")),
 			connect.WithClientOptions(opts...),
 		),
-		updateProduct: connect.NewClient[v1.UpdateProductRequest, v1.UpdateProductResponse](
+		updateProduct: connect.NewClient[v1.UpdateStoreProductRequest, v1.UpdateStoreProductResponse](
 			httpClient,
 			baseURL+ProductServiceUpdateProductProcedure,
 			connect.WithSchema(productServiceMethods.ByName("UpdateProduct")),
 			connect.WithClientOptions(opts...),
 		),
-		deleteProduct: connect.NewClient[v1.DeleteProductRequest, v1.DeleteProductResponse](
+		deleteProduct: connect.NewClient[v1.DeleteStoreProductRequest, v1.DeleteStoreProductResponse](
 			httpClient,
 			baseURL+ProductServiceDeleteProductProcedure,
 			connect.WithSchema(productServiceMethods.ByName("DeleteProduct")),
 			connect.WithClientOptions(opts...),
 		),
-		findBusinessProducts: connect.NewClient[v1.FindBusinessProductsRequest, v1.FindBusinessProductsResponse](
+		findStoreProducts: connect.NewClient[v1.FindStoreProductsRequest, v1.FindStoreProductsResponse](
 			httpClient,
-			baseURL+ProductServiceFindBusinessProductsProcedure,
-			connect.WithSchema(productServiceMethods.ByName("FindBusinessProducts")),
+			baseURL+ProductServiceFindStoreProductsProcedure,
+			connect.WithSchema(productServiceMethods.ByName("FindStoreProducts")),
 			connect.WithClientOptions(opts...),
 		),
-		streamBusinessProducts: connect.NewClient[v1.StreamBusinessProductsRequest, v1.StreamBusinessProductsResponse](
+		streamStoreProducts: connect.NewClient[v1.StreamStoreProductsRequest, v1.StreamStoreProductsResponse](
 			httpClient,
-			baseURL+ProductServiceStreamBusinessProductsProcedure,
-			connect.WithSchema(productServiceMethods.ByName("StreamBusinessProducts")),
+			baseURL+ProductServiceStreamStoreProductsProcedure,
+			connect.WithSchema(productServiceMethods.ByName("StreamStoreProducts")),
 			connect.WithClientOptions(opts...),
 		),
 	}
@@ -145,14 +144,14 @@ func NewProductServiceClient(httpClient connect.HTTPClient, baseURL string, opts
 
 // productServiceClient implements ProductServiceClient.
 type productServiceClient struct {
-	findGlobalProducts     *connect.Client[v1.FindGlobalProductsRequest, v1.FindGlobalProductsResponse]
-	findCategory           *connect.Client[v1.FindCategoryRequest, v1.FindCategoryResponse]
-	addProduct             *connect.Client[v1.AddProductRequest, v1.AddProductResponse]
-	getProduct             *connect.Client[v1.GetProductRequest, v1.GetProductResponse]
-	updateProduct          *connect.Client[v1.UpdateProductRequest, v1.UpdateProductResponse]
-	deleteProduct          *connect.Client[v1.DeleteProductRequest, v1.DeleteProductResponse]
-	findBusinessProducts   *connect.Client[v1.FindBusinessProductsRequest, v1.FindBusinessProductsResponse]
-	streamBusinessProducts *connect.Client[v1.StreamBusinessProductsRequest, v1.StreamBusinessProductsResponse]
+	findGlobalProducts  *connect.Client[v1.FindGlobalProductsRequest, v1.FindGlobalProductsResponse]
+	findCategory        *connect.Client[v1.FindCategoryRequest, v1.FindCategoryResponse]
+	addProduct          *connect.Client[v1.AddStoreProductRequest, v1.AddStoreProductResponse]
+	getProduct          *connect.Client[v1.GetStoreProductRequest, v1.GetStoreProductResponse]
+	updateProduct       *connect.Client[v1.UpdateStoreProductRequest, v1.UpdateStoreProductResponse]
+	deleteProduct       *connect.Client[v1.DeleteStoreProductRequest, v1.DeleteStoreProductResponse]
+	findStoreProducts   *connect.Client[v1.FindStoreProductsRequest, v1.FindStoreProductsResponse]
+	streamStoreProducts *connect.Client[v1.StreamStoreProductsRequest, v1.StreamStoreProductsResponse]
 }
 
 // FindGlobalProducts calls inventory.v1.ProductService.FindGlobalProducts.
@@ -166,33 +165,33 @@ func (c *productServiceClient) FindCategory(ctx context.Context, req *connect.Re
 }
 
 // AddProduct calls inventory.v1.ProductService.AddProduct.
-func (c *productServiceClient) AddProduct(ctx context.Context, req *connect.Request[v1.AddProductRequest]) (*connect.Response[v1.AddProductResponse], error) {
+func (c *productServiceClient) AddProduct(ctx context.Context, req *connect.Request[v1.AddStoreProductRequest]) (*connect.Response[v1.AddStoreProductResponse], error) {
 	return c.addProduct.CallUnary(ctx, req)
 }
 
 // GetProduct calls inventory.v1.ProductService.GetProduct.
-func (c *productServiceClient) GetProduct(ctx context.Context, req *connect.Request[v1.GetProductRequest]) (*connect.Response[v1.GetProductResponse], error) {
+func (c *productServiceClient) GetProduct(ctx context.Context, req *connect.Request[v1.GetStoreProductRequest]) (*connect.Response[v1.GetStoreProductResponse], error) {
 	return c.getProduct.CallUnary(ctx, req)
 }
 
 // UpdateProduct calls inventory.v1.ProductService.UpdateProduct.
-func (c *productServiceClient) UpdateProduct(ctx context.Context, req *connect.Request[v1.UpdateProductRequest]) (*connect.Response[v1.UpdateProductResponse], error) {
+func (c *productServiceClient) UpdateProduct(ctx context.Context, req *connect.Request[v1.UpdateStoreProductRequest]) (*connect.Response[v1.UpdateStoreProductResponse], error) {
 	return c.updateProduct.CallUnary(ctx, req)
 }
 
 // DeleteProduct calls inventory.v1.ProductService.DeleteProduct.
-func (c *productServiceClient) DeleteProduct(ctx context.Context, req *connect.Request[v1.DeleteProductRequest]) (*connect.Response[v1.DeleteProductResponse], error) {
+func (c *productServiceClient) DeleteProduct(ctx context.Context, req *connect.Request[v1.DeleteStoreProductRequest]) (*connect.Response[v1.DeleteStoreProductResponse], error) {
 	return c.deleteProduct.CallUnary(ctx, req)
 }
 
-// FindBusinessProducts calls inventory.v1.ProductService.FindBusinessProducts.
-func (c *productServiceClient) FindBusinessProducts(ctx context.Context, req *connect.Request[v1.FindBusinessProductsRequest]) (*connect.Response[v1.FindBusinessProductsResponse], error) {
-	return c.findBusinessProducts.CallUnary(ctx, req)
+// FindStoreProducts calls inventory.v1.ProductService.FindStoreProducts.
+func (c *productServiceClient) FindStoreProducts(ctx context.Context, req *connect.Request[v1.FindStoreProductsRequest]) (*connect.Response[v1.FindStoreProductsResponse], error) {
+	return c.findStoreProducts.CallUnary(ctx, req)
 }
 
-// StreamBusinessProducts calls inventory.v1.ProductService.StreamBusinessProducts.
-func (c *productServiceClient) StreamBusinessProducts(ctx context.Context, req *connect.Request[v1.StreamBusinessProductsRequest]) (*connect.ServerStreamForClient[v1.StreamBusinessProductsResponse], error) {
-	return c.streamBusinessProducts.CallServerStream(ctx, req)
+// StreamStoreProducts calls inventory.v1.ProductService.StreamStoreProducts.
+func (c *productServiceClient) StreamStoreProducts(ctx context.Context, req *connect.Request[v1.StreamStoreProductsRequest]) (*connect.ServerStreamForClient[v1.StreamStoreProductsResponse], error) {
+	return c.streamStoreProducts.CallServerStream(ctx, req)
 }
 
 // ProductServiceHandler is an implementation of the inventory.v1.ProductService service.
@@ -201,20 +200,19 @@ type ProductServiceHandler interface {
 	FindGlobalProducts(context.Context, *connect.Request[v1.FindGlobalProductsRequest]) (*connect.Response[v1.FindGlobalProductsResponse], error)
 	// Finds categories by name.
 	FindCategory(context.Context, *connect.Request[v1.FindCategoryRequest]) (*connect.Response[v1.FindCategoryResponse], error)
-	// Adds a product to a business.
-	AddProduct(context.Context, *connect.Request[v1.AddProductRequest]) (*connect.Response[v1.AddProductResponse], error)
-	// Gets a business product by id.
-	GetProduct(context.Context, *connect.Request[v1.GetProductRequest]) (*connect.Response[v1.GetProductResponse], error)
-	// Updates a business product.
-	UpdateProduct(context.Context, *connect.Request[v1.UpdateProductRequest]) (*connect.Response[v1.UpdateProductResponse], error)
-	// Deletes a business product.
-	// Only business products that are not in any store and orders can be
-	// deleted.
-	DeleteProduct(context.Context, *connect.Request[v1.DeleteProductRequest]) (*connect.Response[v1.DeleteProductResponse], error)
+	// Adds a product to a store.
+	AddProduct(context.Context, *connect.Request[v1.AddStoreProductRequest]) (*connect.Response[v1.AddStoreProductResponse], error)
+	// Gets a store product by id.
+	GetProduct(context.Context, *connect.Request[v1.GetStoreProductRequest]) (*connect.Response[v1.GetStoreProductResponse], error)
+	// Updates a store product.
+	UpdateProduct(context.Context, *connect.Request[v1.UpdateStoreProductRequest]) (*connect.Response[v1.UpdateStoreProductResponse], error)
+	// Deletes a store product.
+	// Only store products that are not in any orders can be deleted.
+	DeleteProduct(context.Context, *connect.Request[v1.DeleteStoreProductRequest]) (*connect.Response[v1.DeleteStoreProductResponse], error)
 	// Finds products by name.
-	FindBusinessProducts(context.Context, *connect.Request[v1.FindBusinessProductsRequest]) (*connect.Response[v1.FindBusinessProductsResponse], error)
-	// Streams all products for a business for real-time updates.
-	StreamBusinessProducts(context.Context, *connect.Request[v1.StreamBusinessProductsRequest], *connect.ServerStream[v1.StreamBusinessProductsResponse]) error
+	FindStoreProducts(context.Context, *connect.Request[v1.FindStoreProductsRequest]) (*connect.Response[v1.FindStoreProductsResponse], error)
+	// Streams all products for a store for real-time updates.
+	StreamStoreProducts(context.Context, *connect.Request[v1.StreamStoreProductsRequest], *connect.ServerStream[v1.StreamStoreProductsResponse]) error
 }
 
 // NewProductServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -260,16 +258,16 @@ func NewProductServiceHandler(svc ProductServiceHandler, opts ...connect.Handler
 		connect.WithSchema(productServiceMethods.ByName("DeleteProduct")),
 		connect.WithHandlerOptions(opts...),
 	)
-	productServiceFindBusinessProductsHandler := connect.NewUnaryHandler(
-		ProductServiceFindBusinessProductsProcedure,
-		svc.FindBusinessProducts,
-		connect.WithSchema(productServiceMethods.ByName("FindBusinessProducts")),
+	productServiceFindStoreProductsHandler := connect.NewUnaryHandler(
+		ProductServiceFindStoreProductsProcedure,
+		svc.FindStoreProducts,
+		connect.WithSchema(productServiceMethods.ByName("FindStoreProducts")),
 		connect.WithHandlerOptions(opts...),
 	)
-	productServiceStreamBusinessProductsHandler := connect.NewServerStreamHandler(
-		ProductServiceStreamBusinessProductsProcedure,
-		svc.StreamBusinessProducts,
-		connect.WithSchema(productServiceMethods.ByName("StreamBusinessProducts")),
+	productServiceStreamStoreProductsHandler := connect.NewServerStreamHandler(
+		ProductServiceStreamStoreProductsProcedure,
+		svc.StreamStoreProducts,
+		connect.WithSchema(productServiceMethods.ByName("StreamStoreProducts")),
 		connect.WithHandlerOptions(opts...),
 	)
 	return "/inventory.v1.ProductService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -286,10 +284,10 @@ func NewProductServiceHandler(svc ProductServiceHandler, opts ...connect.Handler
 			productServiceUpdateProductHandler.ServeHTTP(w, r)
 		case ProductServiceDeleteProductProcedure:
 			productServiceDeleteProductHandler.ServeHTTP(w, r)
-		case ProductServiceFindBusinessProductsProcedure:
-			productServiceFindBusinessProductsHandler.ServeHTTP(w, r)
-		case ProductServiceStreamBusinessProductsProcedure:
-			productServiceStreamBusinessProductsHandler.ServeHTTP(w, r)
+		case ProductServiceFindStoreProductsProcedure:
+			productServiceFindStoreProductsHandler.ServeHTTP(w, r)
+		case ProductServiceStreamStoreProductsProcedure:
+			productServiceStreamStoreProductsHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -307,26 +305,26 @@ func (UnimplementedProductServiceHandler) FindCategory(context.Context, *connect
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("inventory.v1.ProductService.FindCategory is not implemented"))
 }
 
-func (UnimplementedProductServiceHandler) AddProduct(context.Context, *connect.Request[v1.AddProductRequest]) (*connect.Response[v1.AddProductResponse], error) {
+func (UnimplementedProductServiceHandler) AddProduct(context.Context, *connect.Request[v1.AddStoreProductRequest]) (*connect.Response[v1.AddStoreProductResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("inventory.v1.ProductService.AddProduct is not implemented"))
 }
 
-func (UnimplementedProductServiceHandler) GetProduct(context.Context, *connect.Request[v1.GetProductRequest]) (*connect.Response[v1.GetProductResponse], error) {
+func (UnimplementedProductServiceHandler) GetProduct(context.Context, *connect.Request[v1.GetStoreProductRequest]) (*connect.Response[v1.GetStoreProductResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("inventory.v1.ProductService.GetProduct is not implemented"))
 }
 
-func (UnimplementedProductServiceHandler) UpdateProduct(context.Context, *connect.Request[v1.UpdateProductRequest]) (*connect.Response[v1.UpdateProductResponse], error) {
+func (UnimplementedProductServiceHandler) UpdateProduct(context.Context, *connect.Request[v1.UpdateStoreProductRequest]) (*connect.Response[v1.UpdateStoreProductResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("inventory.v1.ProductService.UpdateProduct is not implemented"))
 }
 
-func (UnimplementedProductServiceHandler) DeleteProduct(context.Context, *connect.Request[v1.DeleteProductRequest]) (*connect.Response[v1.DeleteProductResponse], error) {
+func (UnimplementedProductServiceHandler) DeleteProduct(context.Context, *connect.Request[v1.DeleteStoreProductRequest]) (*connect.Response[v1.DeleteStoreProductResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("inventory.v1.ProductService.DeleteProduct is not implemented"))
 }
 
-func (UnimplementedProductServiceHandler) FindBusinessProducts(context.Context, *connect.Request[v1.FindBusinessProductsRequest]) (*connect.Response[v1.FindBusinessProductsResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("inventory.v1.ProductService.FindBusinessProducts is not implemented"))
+func (UnimplementedProductServiceHandler) FindStoreProducts(context.Context, *connect.Request[v1.FindStoreProductsRequest]) (*connect.Response[v1.FindStoreProductsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("inventory.v1.ProductService.FindStoreProducts is not implemented"))
 }
 
-func (UnimplementedProductServiceHandler) StreamBusinessProducts(context.Context, *connect.Request[v1.StreamBusinessProductsRequest], *connect.ServerStream[v1.StreamBusinessProductsResponse]) error {
-	return connect.NewError(connect.CodeUnimplemented, errors.New("inventory.v1.ProductService.StreamBusinessProducts is not implemented"))
+func (UnimplementedProductServiceHandler) StreamStoreProducts(context.Context, *connect.Request[v1.StreamStoreProductsRequest], *connect.ServerStream[v1.StreamStoreProductsResponse]) error {
+	return connect.NewError(connect.CodeUnimplemented, errors.New("inventory.v1.ProductService.StreamStoreProducts is not implemented"))
 }

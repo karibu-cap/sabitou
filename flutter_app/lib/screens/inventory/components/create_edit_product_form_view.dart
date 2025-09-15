@@ -1,15 +1,21 @@
 import 'package:clock/clock.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart' hide Category;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:provider/provider.dart';
 import 'package:sabitou_rpc/models.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+import '../../../repositories/suppliers_repository.dart';
 import '../../../services/internationalization/internationalization.dart';
+import '../../../utils/common_functions.dart';
 import '../../../utils/extends_models.dart';
+import '../../../utils/form/validation.dart';
 import '../../../utils/responsive_utils.dart';
+import '../../../utils/user_preference.dart';
 import '../../../widgets/input/auto_complete.dart';
 import '../../../widgets/loading.dart';
 import '../inventory_controller.dart';
@@ -60,10 +66,13 @@ class CreateEditProductFormView extends StatelessWidget {
                       key: controller.formKey,
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           _ProductNameField(),
                           const SizedBox(height: 16),
                           _BarcodeField(),
+                          const SizedBox(height: 16),
+                          _SupplierDropdown(),
                           const SizedBox(height: 16),
                           _CategoryDropdown(),
                           const SizedBox(height: 16),
@@ -125,13 +134,114 @@ class _ProductNameField extends StatelessWidget {
       displayStringForOption: (option) => option.name,
       inputValidator: (value) {
         if (value.isEmpty) {
-          return Intls.to.isRequiredField.replaceFirst(
-            '@field',
-            Intls.to.productName,
-          );
+          return Intls.to.isRequiredField.trParams({
+            'field': Intls.to.productName,
+          });
         }
 
         return null;
+      },
+    );
+  }
+}
+
+class _SupplierDropdown extends StatelessWidget {
+  final addSupplierPopoverController = ShadPopoverController();
+  final ValueNotifier<int> reloadTheSupplierList = ValueNotifier(0);
+  @override
+  Widget build(BuildContext context) {
+    final controller = context.watch<CreateEditProductFormController>();
+
+    final storeId = UserPreferences.instance.store?.refId;
+
+    if (storeId == null) {
+      return const SizedBox.shrink();
+    }
+
+    return ValueListenableBuilder(
+      valueListenable: reloadTheSupplierList,
+      builder: (context, value, child) {
+        return FutureBuilder<List<Supplier>?>(
+          key: ValueKey(value),
+          future: SuppliersRepository.instance.getSuppliersByStore(storeId),
+          builder: (context, asyncSnapshot) {
+            final suppliers = asyncSnapshot.data;
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              spacing: 12,
+              children: [
+                Text(
+                  Intls.to.supplier,
+                  style: ShadTheme.of(
+                    context,
+                  ).textTheme.small.copyWith(fontWeight: FontWeight.w400),
+                ),
+                if (suppliers == null)
+                  SpinKitCircle(
+                    size: 40,
+                    color: ShadTheme.of(context).colorScheme.primary,
+                  )
+                else if (suppliers.isEmpty)
+                  ShadPopover(
+                    controller: addSupplierPopoverController,
+                    closeOnTapOutside: false,
+                    popover: (context) => SizedBox(
+                      width: 288,
+                      child: _SupplierForm(
+                        popoverController: addSupplierPopoverController,
+                        reloadTheSupplierList: () =>
+                            reloadTheSupplierList.value++,
+                        storeId: storeId,
+                      ),
+                    ),
+                    child: ShadButton(
+                      onPressed: addSupplierPopoverController.toggle,
+                      child: Text(Intls.to.addSupplier),
+                    ),
+                  )
+                else
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      return ShadSelectFormField(
+                        minWidth: constraints.maxWidth,
+                        controller: controller.supplierController,
+                        placeholder: Text(Intls.to.selectSupplier),
+                        options: suppliers
+                            .map(
+                              (e) => ShadOption<String?>(
+                                value: e.refId,
+                                child: Text(e.name),
+                              ),
+                            )
+                            .toList(),
+                        selectedOptionBuilder: (context, option) =>
+                            option != null
+                            ? Text(
+                                suppliers
+                                        .firstWhereOrNull(
+                                          (e) => e.refId == option,
+                                        )
+                                        ?.name ??
+                                    '',
+                              )
+                            : const SizedBox.shrink(),
+                        validator: (value) {
+                          if (value == null) {
+                            return Intls.to.isRequiredField.trParams({
+                              'field': Intls.to.supplier,
+                            });
+                          }
+
+                          return null;
+                        },
+                      );
+                    },
+                  ),
+              ],
+            );
+          },
+        );
       },
     );
   }
@@ -160,6 +270,7 @@ class _BarcodeField extends StatelessWidget {
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
+      spacing: 12,
       children: [
         Expanded(
           child: ShadInputFormField(
@@ -176,10 +287,9 @@ class _BarcodeField extends StatelessWidget {
                   ),
             validator: (value) {
               if (value.isEmpty) {
-                return Intls.to.isRequiredField.replaceFirst(
-                  '@field',
-                  Intls.to.barcode,
-                );
+                return Intls.to.isRequiredField.trParams({
+                  'field': Intls.to.barcode,
+                });
               }
 
               return null;
@@ -188,7 +298,6 @@ class _BarcodeField extends StatelessWidget {
                 controller.product.globalProduct.barCodeValue = value,
           ),
         ),
-        const SizedBox(width: 12),
       ],
     );
   }
@@ -264,12 +373,19 @@ class _CategoryDropdown extends StatelessWidget {
                               );
                             });
 
-                            return ShadSelect<Category>.multipleWithSearch(
+                            return ShadSelect<String?>.multipleWithSearch(
                               closeOnSelect: false,
                               placeholder: Text(Intls.to.selectCategory),
                               enabled: !controller.onSaveProduct,
-                              selectedOptionsBuilder: (context, values) =>
-                                  Text(values.map((v) => v.name).join(', ')),
+                              selectedOptionsBuilder: (context, values) => Text(
+                                values
+                                    .map(
+                                      (v) => categories
+                                          .firstWhereOrNull((e) => e.refId == v)
+                                          ?.name,
+                                    )
+                                    .join(', '),
+                              ),
                               options: [
                                 if (filteredCategories.isEmpty)
                                   Padding(
@@ -288,8 +404,8 @@ class _CategoryDropdown extends StatelessWidget {
                                                       ?.toLowerCase() ??
                                                   '',
                                             ),
-                                        child: ShadOption<Category>(
-                                          value: category,
+                                        child: ShadOption<String?>(
+                                          value: category.refId,
                                           child: Text(category.name),
                                         ),
                                       ),
@@ -302,8 +418,12 @@ class _CategoryDropdown extends StatelessWidget {
                                   ..addAll(
                                     value.map(
                                       (e) => ProductCategory(
-                                        refId: e.refId,
-                                        name: e.name,
+                                        refId: e,
+                                        name: categories
+                                            .firstWhereOrNull(
+                                              (c) => c.refId == e,
+                                            )
+                                            ?.name,
                                       ),
                                     ),
                                   );
@@ -348,17 +468,15 @@ class _CategoryDropdown extends StatelessWidget {
                 enabled: !controller.onSaveProduct,
                 validator: (value) {
                   if (value.isEmpty) {
-                    return Intls.to.isRequiredField.replaceFirst(
-                      '@field',
-                      Intls.to.price,
-                    );
+                    return Intls.to.isRequiredField.trParams({
+                      'field': Intls.to.price,
+                    });
                   }
 
                   return null;
                 },
-                onChanged: (value) =>
-                    controller.product.businessProduct.priceInXaf =
-                        int.tryParse(value) ?? 0,
+                onChanged: (value) => controller.product.storeProduct.price =
+                    int.tryParse(value) ?? 0,
               ),
             ),
           ],
@@ -390,10 +508,9 @@ class _PriceQuantityFields extends StatelessWidget {
             keyboardType: TextInputType.number,
             validator: (value) {
               if (value.isEmpty) {
-                return Intls.to.isRequiredField.replaceFirst(
-                  '@field',
-                  Intls.to.stockQuantity,
-                );
+                return Intls.to.isRequiredField.trParams({
+                  'field': Intls.to.stockQuantity,
+                });
               }
 
               if (controller.minStockThresholdController.text.isNotEmpty &&
@@ -404,9 +521,8 @@ class _PriceQuantityFields extends StatelessWidget {
 
               return null;
             },
-            onChanged: (p0) =>
-                controller.product.businessProduct.stockQuantity =
-                    int.tryParse(p0) ?? 0,
+            onChanged: (p0) => controller.product.storeProduct.stockQuantity =
+                int.tryParse(p0) ?? 0,
           ),
         ),
         Flexible(
@@ -421,10 +537,9 @@ class _PriceQuantityFields extends StatelessWidget {
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             validator: (value) {
               if (value.isEmpty) {
-                return Intls.to.isRequiredField.replaceFirst(
-                  '@field',
-                  Intls.to.minStockThreshold,
-                );
+                return Intls.to.isRequiredField.trParams({
+                  'field': Intls.to.minStockThreshold,
+                });
               }
               if (controller.quantityController.text.isNotEmpty &&
                   int.parse(value) >
@@ -435,7 +550,7 @@ class _PriceQuantityFields extends StatelessWidget {
               return null;
             },
             onChanged: (p0) =>
-                controller.product.businessProduct.minStockThreshold =
+                controller.product.storeProduct.minStockThreshold =
                     int.tryParse(p0) ?? 0,
           ),
         ),
@@ -450,49 +565,106 @@ class _ExpiryDateField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = context.watch<CreateEditProductFormController>();
+    final isDesktop = ResponsiveUtils.isDesktop(context);
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        return ShadDatePickerFormField(
-          id: Intls.to.expirationDate,
-          width: constraints.maxWidth,
-          label: Text('${Intls.to.expirationDate}'),
-          initialMonth: clock.now(),
-          closeOnSelection: true,
-          enabled: !controller.onSaveProduct,
-          showOutsideDays: false,
-          fromMonth: clock.now(),
-          toMonth: clock.now().add(const Duration(days: 3650)),
-          initialValue: controller.expiryController.text.isNotEmpty
-              ? DateTime.tryParse(controller.expiryController.text)
-              : null,
-          placeholder: const Text('YYYY-MM-DD'),
-          allowDeselection: true,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          validator: (value) {
-            // In edition mode we potentially not want to update the expiration date. so we must skip the validation.
-            if (controller.productFormType == ProductFormType.edit &&
-                controller.product.businessProduct.expirationDate
-                        .toDateTime()
-                        .toIso8601String() ==
-                    value?.toIso8601String()) {
-              return null;
-            }
-            if (value != null && value.isBefore(clock.now())) {
-              return Intls.to.expirationDateShouldBeAfterToday;
-            }
+        return Flex(
+          direction: isDesktop ? Axis.horizontal : Axis.vertical,
+          spacing: 12,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Flexible(
+              flex: isDesktop ? 1 : 0,
+              child: ShadDatePickerFormField(
+                id: Intls.to.expirationDate,
+                width: constraints.maxWidth,
+                label: Text('${Intls.to.expirationDate}'),
+                initialMonth: clock.now(),
+                closeOnSelection: true,
+                enabled: !controller.onSaveProduct,
+                showOutsideDays: false,
+                fromMonth: clock.now(),
+                toMonth: clock.now().add(const Duration(days: 3650)),
+                initialValue: controller.expiryController.text.isNotEmpty
+                    ? DateTime.tryParse(controller.expiryController.text)
+                    : null,
+                placeholder: const Text('YYYY-MM-DD'),
+                allowDeselection: true,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: (value) {
+                  // In edition mode we potentially not want to update the expiration date. so we must skip the validation.
+                  if (controller.productFormType == ProductFormType.edit &&
+                      controller.product.storeProduct.expirationDate
+                              .toDateTime()
+                              .toIso8601String() ==
+                          value?.toIso8601String()) {
+                    return null;
+                  }
+                  if (value != null && value.isBefore(clock.now())) {
+                    return Intls.to.expirationDateShouldBeAfterToday;
+                  }
 
-            return null;
-          },
-          onChanged: (value) {
-            if (value != null) {
-              controller.product.businessProduct.expirationDate =
-                  Timestamp.fromDateTime(value);
+                  return null;
+                },
+                onChanged: (value) {
+                  if (value != null) {
+                    controller.product.storeProduct.expirationDate =
+                        Timestamp.fromDateTime(value);
 
-              return;
-            }
-            controller.product.businessProduct.clearExpirationDate();
-          },
+                    return;
+                  }
+                  controller.product.storeProduct.clearExpirationDate();
+                },
+              ),
+            ),
+            Flexible(
+              flex: isDesktop ? 1 : 0,
+              child: ShadDatePickerFormField(
+                id: Intls.to.inboundDate,
+                width: constraints.maxWidth,
+                label: Text('${Intls.to.inboundDate}'),
+                initialMonth: clock.now(),
+                closeOnSelection: true,
+                enabled: !controller.onSaveProduct,
+                showOutsideDays: false,
+                fromMonth: clock.now(),
+                toMonth: clock.now().add(const Duration(days: 3650)),
+                initialValue: controller.inboundDateController.text.isNotEmpty
+                    ? DateTime.tryParse(controller.inboundDateController.text)
+                    : null,
+                placeholder: const Text('YYYY-MM-DD'),
+                allowDeselection: true,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: (value) {
+                  // In edition mode we potentially not want to update the expiration date. so we must skip the validation.
+                  if (controller.productFormType == ProductFormType.edit &&
+                      controller.product.storeProduct.inboundDate
+                              .toDateTime()
+                              .toIso8601String() ==
+                          value?.toIso8601String()) {
+                    return null;
+                  }
+                  if (value == null) {
+                    return Intls.to.isRequiredField.trParams({
+                      'field': Intls.to.inboundDate,
+                    });
+                  }
+
+                  return null;
+                },
+                onChanged: (value) {
+                  if (value != null) {
+                    controller.product.storeProduct.inboundDate =
+                        Timestamp.fromDateTime(value);
+
+                    return;
+                  }
+                  controller.product.storeProduct.clearInboundDate();
+                },
+              ),
+            ),
+          ],
         );
       },
     );
@@ -527,6 +699,85 @@ class _FormActions extends StatelessWidget {
           }),
         ),
       ],
+    );
+  }
+}
+
+final class _SupplierForm extends StatelessWidget {
+  final supplierFormKey = GlobalKey<ShadFormState>();
+  _SupplierForm({
+    required this.popoverController,
+    required this.reloadTheSupplierList,
+    required this.storeId,
+  });
+
+  final ShadPopoverController popoverController;
+  final VoidCallback reloadTheSupplierList;
+  final String storeId;
+
+  @override
+  Widget build(BuildContext context) {
+    return ShadForm(
+      key: supplierFormKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        spacing: 12,
+        children: [
+          ShadInputFormField(
+            id: Intls.to.name,
+            label: Text(Intls.to.name),
+            validator: ValidationFormUtils.validateCompanyName,
+          ),
+          ShadInputFormField(
+            id: Intls.to.phoneNumber,
+            label: Text(Intls.to.phoneNumber),
+            validator: ValidationFormUtils.validatePhoneNumber,
+          ),
+          const SizedBox(height: 24),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            spacing: 12,
+            children: [
+              ShadButton.outline(
+                onPressed: popoverController.hide,
+                child: Text(Intls.to.cancel),
+              ),
+              ShadButton(
+                onPressed: () async {
+                  if (supplierFormKey.currentState?.saveAndValidate() == true) {
+                    final supplier = Supplier(
+                      name:
+                          supplierFormKey.currentState?.value[Intls.to.name]
+                              as String,
+                      contactPhone:
+                          supplierFormKey.currentState?.value[Intls
+                                  .to
+                                  .phoneNumber]
+                              as String,
+                      storeIds: [storeId],
+                      isActive: true,
+                    );
+                    final supplierId = await SuppliersRepository.instance
+                        .createSupplier(
+                          CreateSupplierRequest(supplier: supplier),
+                        );
+
+                    if (supplierId != null) {
+                      popoverController.hide();
+                      reloadTheSupplierList();
+
+                      return;
+                    }
+                    showErrorToast(context: context, message: Intls.to.error);
+                  }
+                },
+                child: Text(Intls.to.addSupplier),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

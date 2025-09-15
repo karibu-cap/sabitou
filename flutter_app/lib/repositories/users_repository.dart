@@ -123,34 +123,19 @@ final class UserRepository {
     }
   }
 
-  /// Gets all users for a business.
-  /// TODO: Uncomment when proto files are regenerated with GetBusinessUsersRequest
-  // Future<List<User>> getBusinessUsers(GetBusinessUsersRequest request) async {
-  //   try {
-  //     final result = await userClientService.getBusinessUsers(request);
-  //     _logger.log('Retrieved ${result.users.length} business users.');
-  //
-  //     return result.users;
-  //   } on Exception catch (e) {
-  //     _logger.severe('Error getting business users: $e');
-  //
-  //     return [];
-  //   }
-  // }
+  /// Stream user.
+  Stream<User?> streamUser(StreamUserRequest request) {
+    try {
+      // Use the native gRPC streaming service
+      final grpcStream = userClientService.streamUser(request);
 
-  /// Streams all users for a business with real-time updates.
-  /// TODO: Uncomment when proto files are regenerated with StreamBusinessUsersRequest
-  // Stream<List<User>> streamBusinessUsers(StreamBusinessUsersRequest request) {
-  //   try {
-  //     return userClientService.streamBusinessUsers(request).map((response) {
-  //       _logger.log('Streamed ${response.users.length} business users.');
-  //
-  //       return response.users;
-  //     });
-  //   } on Exception catch (e) {
-  //     _logger.severe('Error streaming business users: $e');
-  //
-  //     return Stream.value([]);
-  //   }
-  // }
+      // Transform the gRPC stream to return List<User>
+      return grpcStream.map((response) => response.user);
+    } on Exception catch (e) {
+      _logger.severe('streamUser Error: $e');
+
+      // Return null stream on error
+      return Stream.value(null);
+    }
+  }
 }
