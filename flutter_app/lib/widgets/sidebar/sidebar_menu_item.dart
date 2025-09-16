@@ -74,7 +74,7 @@ class SidebarMenuItem extends StatelessWidget {
     return Column(
       children: [
         _ItemWidget(
-          onTabChange: onTabChange,
+          onTabChange: item.children?.isNotEmpty == true ? null : onTabChange,
           item: item,
           isChild: isChild,
           isActive: activeTab == item.id,
@@ -106,7 +106,7 @@ class _ItemWidget extends StatelessWidget {
     required this.theme,
   });
 
-  final Function(DashboardItem) onTabChange;
+  final Function(DashboardItem)? onTabChange;
   final SideBarItem item;
   final bool isChild;
   final bool isActive;
@@ -116,42 +116,51 @@ class _ItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
 
-    return Container(
-      margin: const EdgeInsets.only(bottom: 8),
-      child: InkWell(
-        onTap: () => onTabChange(item.id),
-        child: Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: isChild ? 32 : 16,
-            vertical: isChild ? 8 : 12,
-          ),
-          decoration: BoxDecoration(
-            color: isActive
-                ? theme.colorScheme.primary
-                : theme.colorScheme.secondary,
-            borderRadius: const BorderRadius.all(Radius.circular(8)),
-          ),
-          child: Row(
-            children: [
-              Icon(
-                item.icon,
-                size: isChild ? 18 : 20,
+    return InkWell(
+      onTap: () => onTabChange?.call(item.id),
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: isChild ? 32 : 16,
+          vertical: 12,
+        ),
+
+        decoration: BoxDecoration(
+          color: isActive
+              ? theme.colorScheme.primary
+              : theme.colorScheme.secondary,
+          borderRadius: const BorderRadius.all(Radius.circular(8)),
+          gradient: !isActive
+              ? null
+              : LinearGradient(
+                  colors: [
+                    theme.colorScheme.primary,
+                    theme.colorScheme.primary.withValues(alpha: 0.6),
+                  ],
+                  stops: const [0, 1],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+        ),
+        child: Row(
+          children: [
+            Icon(
+              item.icon,
+              size: 15,
+              color: isActive
+                  ? theme.colorScheme.primaryForeground
+                  : theme.colorScheme.primary,
+            ),
+            const SizedBox(width: 12),
+            Text(
+              item.label,
+              style: ShadTheme.of(context).textTheme.small.copyWith(
+                fontWeight: isActive ? FontWeight.w600 : FontWeight.w400,
                 color: isActive
                     ? theme.colorScheme.primaryForeground
                     : theme.colorScheme.primary,
               ),
-              const SizedBox(width: 12),
-              Text(
-                item.label,
-                style: ShadTheme.of(context).textTheme.p.copyWith(
-                  fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
-                  color: isActive
-                      ? theme.colorScheme.primaryForeground
-                      : theme.colorScheme.primary,
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
