@@ -32,7 +32,7 @@ class CurrentUserView extends StatelessWidget {
                 border: Border.fromBorderSide(
                   BorderSide(color: theme.colorScheme.card),
                 ),
-                color: theme.colorScheme.muted,
+                color: ShadTheme.of(context).colorScheme.border,
               ),
               child: Icon(
                 LucideIcons.user400,
@@ -69,7 +69,8 @@ class CurrentUserView extends StatelessWidget {
           width: double.infinity,
           child: ShadButton.ghost(
             onPressed: onLogout,
-            leading: const Icon(LucideIcons.logOut400),
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 2),
+            leading: const Icon(LucideIcons.logOut400, size: 18),
             child: Text(Intls.to.logout),
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.start,

@@ -43,6 +43,24 @@ class UserPreferences extends ChangeNotifier {
     _user = user;
   }
 
+  /// Save business preferences.
+  Future<void> saveBusinessPreferences({required Business newBusiness}) async {
+    final storage = AppStorageService.to;
+    await storage.write<Business>(CollectionName.businesses, newBusiness);
+
+    business = newBusiness;
+    notifyListeners();
+  }
+
+  /// Save store preferences.
+  Future<void> saveStorePreferences({required Store newStore}) async {
+    final storage = AppStorageService.to;
+    await storage.write<Store>(CollectionName.stores, newStore);
+
+    store = newStore;
+    notifyListeners();
+  }
+
   /// Clear user preferences.
   Future<void> clearUserPreferences() async {
     final storage = AppStorageService.to;

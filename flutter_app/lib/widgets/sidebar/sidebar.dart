@@ -36,7 +36,7 @@ class SidebarWidget extends StatelessWidget {
     final theme = ShadTheme.of(context);
     final user = UserPreferences.instance.user;
 
-    final List<SideBarItem> menuItems = [
+    final List<SideBarItem<DashboardItem>> menuItems = [
       SideBarItem(
         id: DashboardItem.dashboard,
         label: Intls.to.dashboard,
@@ -114,7 +114,7 @@ class SidebarWidget extends StatelessWidget {
                 child: ListView(
                   children: menuItems
                       .map(
-                        (item) => SidebarMenuItem(
+                        (item) => SidebarMenuItem<DashboardItem>(
                           item: item,
                           activeTab: activeTab,
                           onTabChange: onTabChange,
@@ -151,6 +151,7 @@ final class _BusinessInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final business = UserPreferences.instance.business;
+    final store = UserPreferences.instance.store;
 
     if (business == null) {
       return const SizedBox.shrink();
@@ -173,7 +174,7 @@ final class _BusinessInfo extends StatelessWidget {
               border: Border.fromBorderSide(
                 BorderSide(color: ShadTheme.of(context).colorScheme.card),
               ),
-              color: ShadTheme.of(context).colorScheme.muted,
+              color: ShadTheme.of(context).colorScheme.border,
             ),
             child:
                 business.hasLogoLinkId() && AppUtils.isURL(business.logoLinkId)
@@ -193,32 +194,60 @@ final class _BusinessInfo extends StatelessWidget {
                           image: business.logoLinkId,
                           fit: BoxFit.contain,
                           imageErrorBuilder: (context, error, stackTrace) {
-                            return const Icon(LucideIcons.store400, size: 24);
+                            return Icon(
+                              LucideIcons.store400,
+                              size: 24,
+                              color: ShadTheme.of(context).colorScheme.primary,
+                            );
                           },
                           placeholderErrorBuilder:
                               (context, error, stackTrace) {
-                                return const Icon(
+                                return Icon(
                                   LucideIcons.store400,
+                                  color: ShadTheme.of(
+                                    context,
+                                  ).colorScheme.primary,
                                   size: 24,
                                 );
                               },
                         );
                       }
 
-                      return const Icon(LucideIcons.store400, size: 24);
+                      return Icon(
+                        LucideIcons.store400,
+                        size: 24,
+                        color: ShadTheme.of(context).colorScheme.primary,
+                      );
                     },
                   )
-                : const Icon(LucideIcons.store400, size: 24),
+                : Icon(
+                    LucideIcons.store400,
+                    size: 24,
+                    color: ShadTheme.of(context).colorScheme.primary,
+                  ),
           ),
 
           const SizedBox(width: 12),
           Flexible(
-            child: AutoSizeText(
-              business.hasName() ? business.name : Intls.to.sabitu,
-              style: ShadTheme.of(context).textTheme.h4,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              minFontSize: 8,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AutoSizeText(
+                  business.hasName() ? business.name : Intls.to.sabitu,
+                  style: ShadTheme.of(context).textTheme.h4,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  minFontSize: 8,
+                ),
+                if (store != null)
+                  AutoSizeText(
+                    '${Intls.to.store}: ${store.name}',
+                    style: ShadTheme.of(context).textTheme.muted,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    minFontSize: 8,
+                  ),
+              ],
             ),
           ),
         ],
