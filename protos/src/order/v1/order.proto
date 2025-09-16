@@ -78,12 +78,6 @@ message Order {
 message CreateOrderRequest {
   // The order to create.
   Order order = 1;
-
-  // The name of the supplier.
-  optional string supplier_name = 2;
-
-  // The unique identifier of the store.
-  string store_id = 3;
 }
 
 message CreateOrderResponse {

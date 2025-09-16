@@ -391,13 +391,9 @@ class Order extends $pb.GeneratedMessage {
 class CreateOrderRequest extends $pb.GeneratedMessage {
   factory CreateOrderRequest({
     Order? order,
-    $core.String? supplierName,
-    $core.String? storeId,
   }) {
     final result = create();
     if (order != null) result.order = order;
-    if (supplierName != null) result.supplierName = supplierName;
-    if (storeId != null) result.storeId = storeId;
     return result;
   }
 
@@ -415,8 +411,6 @@ class CreateOrderRequest extends $pb.GeneratedMessage {
       package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'),
       createEmptyInstance: create)
     ..aOM<Order>(1, _omitFieldNames ? '' : 'order', subBuilder: Order.create)
-    ..aOS(2, _omitFieldNames ? '' : 'supplierName')
-    ..aOS(3, _omitFieldNames ? '' : 'storeId')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -451,26 +445,6 @@ class CreateOrderRequest extends $pb.GeneratedMessage {
   void clearOrder() => $_clearField(1);
   @$pb.TagNumber(1)
   Order ensureOrder() => $_ensure(0);
-
-  /// The name of the supplier.
-  @$pb.TagNumber(2)
-  $core.String get supplierName => $_getSZ(1);
-  @$pb.TagNumber(2)
-  set supplierName($core.String value) => $_setString(1, value);
-  @$pb.TagNumber(2)
-  $core.bool hasSupplierName() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearSupplierName() => $_clearField(2);
-
-  /// The unique identifier of the store.
-  @$pb.TagNumber(3)
-  $core.String get storeId => $_getSZ(2);
-  @$pb.TagNumber(3)
-  set storeId($core.String value) => $_setString(2, value);
-  @$pb.TagNumber(3)
-  $core.bool hasStoreId() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearStoreId() => $_clearField(3);
 }
 
 class CreateOrderResponse extends $pb.GeneratedMessage {

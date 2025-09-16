@@ -94,7 +94,7 @@ const Transaction$json = {
       '10': 'fromId',
       '17': true
     },
-    {'1': 'amount', '3': 7, '4': 1, '5': 3, '10': 'amount'},
+    {'1': 'amount', '3': 7, '4': 1, '5': 1, '10': 'amount'},
     {
       '1': 'currency_code',
       '3': 8,
@@ -183,7 +183,7 @@ final $typed_data.Uint8List transactionDescriptor = $convert.base64Decode(
     'IfLnRyYW5zYWN0aW9uLnYxLlRyYW5zYWN0aW9uVHlwZVIEdHlwZRI5CgZzdGF0dXMYAyABKA4y'
     'IS50cmFuc2FjdGlvbi52MS5UcmFuc2FjdGlvblN0YXR1c1IGc3RhdHVzEiUKCHN0b3JlX2lkGA'
     'QgASgJQgq6SAfIAQFyAhADUgdzdG9yZUlkEh4KCG9yZGVyX2lkGAUgASgJSAFSB29yZGVySWSI'
-    'AQESHAoHZnJvbV9pZBgGIAEoCUgCUgZmcm9tSWSIAQESFgoGYW1vdW50GAcgASgDUgZhbW91bn'
+    'AQESHAoHZnJvbV9pZBgGIAEoCUgCUgZmcm9tSWSIAQESFgoGYW1vdW50GAcgASgBUgZhbW91bn'
     'QSKwoNY3VycmVuY3lfY29kZRgIIAEoCUIGukgDyAEBUgxjdXJyZW5jeUNvZGUSOQoKY3JlYXRl'
     'ZF9hdBgJIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSCWNyZWF0ZWRBdBI+Cgp1cG'
     'RhdGVkX2F0GAogASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEgDUgl1cGRhdGVkQXSI'
