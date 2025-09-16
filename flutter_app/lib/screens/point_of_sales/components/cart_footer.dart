@@ -6,6 +6,7 @@ import '../../../providers/cart_provider.dart';
 import '../../../services/internationalization/internationalization.dart';
 import '../../../utils/common_functions.dart';
 import '../../../utils/formatters.dart';
+import '../../../utils/responsive_utils.dart';
 import '../../../widgets/custom_shad_button.dart';
 
 /// The cart footer.
@@ -28,6 +29,8 @@ final class CartFooter extends StatelessWidget {
       }
       showErrorToast(context: context, message: Intls.to.failedToCompleteOrder);
     }
+
+    final isMobile = ResponsiveUtils.isMobile(context);
 
     return ListenableBuilder(
       listenable: GetIt.I.get<CartManager>(),
@@ -55,39 +58,50 @@ final class CartFooter extends StatelessWidget {
                 ),
               ],
             ),
-            CustomShadButton(
-              onPressed: onOrderCompleted,
-              enabled:
-                  CartManager.to.currentOrder?.orderItems.isNotEmpty ?? false,
-              text: Intls.to.completeOrder,
-              expands: true,
+            SizedBox(
+              width: double.infinity,
+              child: CustomShadButton(
+                onPressed: onOrderCompleted,
+                enabled:
+                    CartManager.to.currentOrder?.orderItems.isNotEmpty ?? false,
+                text: Intls.to.completeOrder,
+              ),
             ),
-            Row(
+            Flex(
+              direction: isMobile ? Axis.vertical : Axis.horizontal,
+              spacing: 12,
               children: [
                 Expanded(
-                  child: CustomShadButton(
-                    buttonType: ShadButtonVariant.outline,
-                    leading: const Icon(LucideIcons.pause400),
-                    onPressed: CartManager.to.onHoldCurrentOrder,
-                    enabled:
-                        CartManager.to.currentOrder?.orderItems.isNotEmpty ??
-                        false,
-                    text: Intls.to.holdOrder,
+                  flex: isMobile ? 0 : 1,
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: CustomShadButton(
+                      buttonType: ShadButtonVariant.outline,
+                      leading: const Icon(LucideIcons.pause400),
+                      onPressed: CartManager.to.onHoldCurrentOrder,
+                      enabled:
+                          CartManager.to.currentOrder?.orderItems.isNotEmpty ??
+                          false,
+                      text: Intls.to.holdOrder,
+                    ),
                   ),
                 ),
-                const SizedBox(width: 12),
                 Expanded(
-                  child: CustomShadButton(
-                    buttonType: ShadButtonVariant.destructive,
-                    leading: const Icon(LucideIcons.trash2400),
-                    onPressed: () async {
-                      await Future.value();
-                      CartManager.to.clearCart();
-                    },
-                    enabled:
-                        CartManager.to.currentOrder?.orderItems.isNotEmpty ??
-                        false,
-                    text: Intls.to.clearOrder,
+                  flex: isMobile ? 0 : 1,
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: CustomShadButton(
+                      buttonType: ShadButtonVariant.destructive,
+                      leading: const Icon(LucideIcons.trash2400),
+                      onPressed: () async {
+                        await Future.value();
+                        CartManager.to.clearCart();
+                      },
+                      enabled:
+                          CartManager.to.currentOrder?.orderItems.isNotEmpty ??
+                          false,
+                      text: Intls.to.clearOrder,
+                    ),
                   ),
                 ),
               ],

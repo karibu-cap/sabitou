@@ -26,6 +26,11 @@ class SearchAndScanView extends StatelessWidget {
           child: ShadInput(
             placeholder: Text(Intls.to.scanOrSearchProduct),
             leading: const Icon(LucideIcons.search, size: 16),
+            trailing: ShadButton.outline(
+              size: ShadButtonSize.sm,
+              onPressed: () {},
+              child: const Icon(LucideIcons.scan400, size: 16),
+            ),
             onChanged: (value) {
               if (value.isEmpty) {
                 popoverController.hide();

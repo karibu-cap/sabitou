@@ -746,6 +746,11 @@ class AppInternationalizationService extends ChangeNotifier {
       'en': 'Failed to complete order',
       'fr': 'Échec de la commande',
     },
+    'emptyCart': {'en': 'Empty Cart', 'fr': 'Panier vide'},
+    'addProductToStartSale': {
+      'en': 'Add product to start sale',
+      'fr': 'Ajouter un produit pour commencer la vente',
+    },
   };
 
   /// Direct access to the internationalization service.
@@ -767,6 +772,13 @@ class AppInternationalizationService extends ChangeNotifier {
     const Locale('en'),
     const Locale('fr'),
   ];
+
+  /// Returns the localized value of text 'emptyCart'.
+  String get emptyCart => _stringOfLocalizedValue('emptyCart');
+
+  /// Returns the localized value of text 'addProductToStartSale'.
+  String get addProductToStartSale =>
+      _stringOfLocalizedValue('addProductToStartSale');
 
   /// Returns the localized value of text 'failedToCompleteOrder'.
   String get failedToCompleteOrder =>

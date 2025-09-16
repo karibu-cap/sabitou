@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:provider/provider.dart';
+import 'package:sabitou_clients/providers/cart_provider.dart';
 import 'package:sabitou_clients/repositories/business_repository.dart';
 import 'package:sabitou_clients/repositories/categories_repository.dart';
 import 'package:sabitou_clients/repositories/orders_repository.dart';
@@ -44,7 +45,8 @@ Future<void> multiScreenMultiLocaleGolden(
       TransactionsRepository.new,
     )
     ..registerSingletonIfAbsent<BusinessRepository>(BusinessRepository.new)
-    ..registerSingletonIfAbsent<StoresRepository>(StoresRepository.new);
+    ..registerSingletonIfAbsent<StoresRepository>(StoresRepository.new)
+    ..registerSingletonIfAbsent<CartManager>(CartManager.new);
 
   await tester.pumpWidgetBuilder(
     MultiProvider(
