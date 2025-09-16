@@ -7,8 +7,8 @@ import '../../utils/logger.dart';
 import '../../utils/user_preference.dart';
 
 /// View model for point of sales screen
-final class PointOfSalesViewModel {
-  final LoggerApp _logger = LoggerApp('PointOfSalesViewModel');
+final class NewOrderViewModel {
+  final LoggerApp _logger = LoggerApp('NewOrderViewModel');
 
   /// Gets the user preferences.
   final UserPreferences userPreferences = UserPreferences.instance;
@@ -49,8 +49,8 @@ final class PointOfSalesViewModel {
     },
   );
 
-  /// Constructor of [PointOfSalesViewModel].
-  PointOfSalesViewModel() {
+  /// Constructor of [NewOrderViewModel].
+  NewOrderViewModel() {
     initTheData();
   }
 

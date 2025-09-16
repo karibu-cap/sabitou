@@ -7,7 +7,7 @@ import '../../../providers/cart_provider.dart';
 import '../../../services/internationalization/internationalization.dart';
 import '../../../utils/formatters.dart';
 import '../../../widgets/loading.dart';
-import '../point_of_sales_controller.dart';
+import '../new_order_controller.dart';
 
 /// The search and filter view.
 class SearchAndScanView extends StatelessWidget {
@@ -17,7 +17,7 @@ class SearchAndScanView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final popoverController = ShadPopoverController();
-    final controller = context.read<PointOfSalesController>();
+    final controller = context.read<NewOrderController>();
 
     return LayoutBuilder(
       builder: (context, constraints) {

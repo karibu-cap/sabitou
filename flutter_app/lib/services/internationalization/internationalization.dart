@@ -709,13 +709,10 @@ class AppInternationalizationService extends ChangeNotifier {
     'dateRange': {'en': 'Date Range', 'fr': 'Plage de date'},
     'inboundDate': {'en': 'Inbound Date', 'fr': 'Date d\'entrée'},
     'newOrders': {'en': 'New Orders', 'fr': 'Nouvelles commandes'},
-    'pointOfSalesManagement': {
-      'en': 'Point of Sales Management',
-      'fr': 'Gestion des points de vente',
-    },
-    'pointOfSalesManagementDescription': {
-      'en': 'Manage your point of sales',
-      'fr': 'Gestion de vos points de vente',
+    'newOrderSales': {'en': 'New Order Sales', 'fr': 'Nouvelle vente'},
+    'newOrderSalesDescription': {
+      'en': 'Manage your new order sales',
+      'fr': 'Gestion de vos nouvelles ventes',
     },
     'noItemsAdded': {'en': 'No items added', 'fr': 'Aucun article ajouté'},
     'each': {'en': 'each', 'fr': 'chaque'},
@@ -724,8 +721,8 @@ class AppInternationalizationService extends ChangeNotifier {
     'holdOrder': {'en': 'Hold Order', 'fr': 'Retenir la commande'},
     'clearOrder': {'en': 'Clear Order', 'fr': 'Effacer la commande'},
     'scanOrSearchProduct': {
-      'en': 'Scan or Search Product',
-      'fr': 'Scanner ou rechercher un produit',
+      'en': 'Scan or Search Product to add...',
+      'fr': 'Scanner ou rechercher un produit a ajouter...',
     },
     'noProductsFound': {
       'en': 'No products found',
@@ -826,13 +823,12 @@ class AppInternationalizationService extends ChangeNotifier {
   /// Returns the localized value of text 'noItemsAdded'.
   String get noItemsAdded => _stringOfLocalizedValue('noItemsAdded');
 
-  /// Returns the localized value of text 'pointOfSalesManagement'.
-  String get pointOfSalesManagement =>
-      _stringOfLocalizedValue('pointOfSalesManagement');
+  /// Returns the localized value of text 'newOrderSales'.
+  String get newOrderSales => _stringOfLocalizedValue('newOrderSales');
 
-  /// Returns the localized value of text 'pointOfSalesManagementDescription'.
-  String get pointOfSalesManagementDescription =>
-      _stringOfLocalizedValue('pointOfSalesManagementDescription');
+  /// Returns the localized value of text 'newOrderSalesDescription'.
+  String get newOrderSalesDescription =>
+      _stringOfLocalizedValue('newOrderSalesDescription');
 
   /// Returns the localized value of text 'dateRange'.
   String get dateRange => _stringOfLocalizedValue('dateRange');

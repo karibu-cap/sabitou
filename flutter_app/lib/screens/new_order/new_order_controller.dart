@@ -3,11 +3,11 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../utils/button_state.dart';
 import '../../utils/extends_models.dart';
-import 'point_of_sales_view_models.dart';
+import 'new_order_view_model.dart';
 
-/// Controller for point of sales screen
-class PointOfSalesController extends ChangeNotifier {
-  final PointOfSalesViewModel _viewModel;
+/// Controller for new order.
+class NewOrderController extends ChangeNotifier {
+  final NewOrderViewModel _viewModel;
 
   /// The complete order button state.
   final ButtonState completeOrderButtonState = ButtonState.initial;
@@ -26,6 +26,6 @@ class PointOfSalesController extends ChangeNotifier {
   /// Gets the search query.
   BehaviorSubject<String> get searchQuery => _viewModel.searchQuery;
 
-  /// Constructor of [PointOfSalesController].
-  PointOfSalesController(this._viewModel);
+  /// Constructor of [NewOrderController].
+  NewOrderController(this._viewModel);
 }

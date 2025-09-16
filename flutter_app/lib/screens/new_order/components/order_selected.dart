@@ -7,7 +7,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import '../../../providers/cart_provider.dart';
 import '../../../services/internationalization/internationalization.dart';
 import '../../../utils/formatters.dart';
-import '../point_of_sales_controller.dart';
+import '../new_order_controller.dart';
 
 /// The order selected component
 class OrderSelected extends StatelessWidget {
@@ -16,7 +16,7 @@ class OrderSelected extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<PointOfSalesController>(
+    return Consumer<NewOrderController>(
       builder: (context, controller, child) {
         return ListenableBuilder(
           listenable: GetIt.I.get<CartManager>(),
@@ -64,7 +64,7 @@ class OrderSelected extends StatelessWidget {
                               ),
                               Center(
                                 child: Text(
-                                  Intls.to.addProductToStartSale,
+                                  Intls.to.scanOrSearchProduct,
                                   style: ShadTheme.of(context).textTheme.small,
                                 ),
                               ),
@@ -106,7 +106,7 @@ class _CartItemCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final maxQuantity =
         context
-            .read<PointOfSalesController>()
+            .read<NewOrderController>()
             .productsSubject
             .valueOrNull
             ?.firstWhere((p) => p.storeProduct.refId == item.storeProductId)
@@ -115,6 +115,7 @@ class _CartItemCard extends StatelessWidget {
         0;
 
     return Row(
+      spacing: 8,
       children: [
         Expanded(
           child: Column(
@@ -140,6 +141,11 @@ class _CartItemCard extends StatelessWidget {
           ),
         ),
         _CartItemControls(item: item),
+        ShadButton.outline(
+          size: ShadButtonSize.sm,
+          onPressed: () => CartManager.to.removeItem(item.storeProductId),
+          child: const Icon(LucideIcons.trash, size: 12),
+        ),
       ],
     );
   }

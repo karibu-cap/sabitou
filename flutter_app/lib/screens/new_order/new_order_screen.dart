@@ -7,22 +7,22 @@ import 'components/header.dart';
 import 'components/hold_orders.dart';
 import 'components/order_selected.dart';
 import 'components/search_and_scan.dart';
-import 'point_of_sales_controller.dart';
-import 'point_of_sales_view_models.dart';
+import 'new_order_controller.dart';
+import 'new_order_view_model.dart';
 
-/// Point of sales screen
-class PointOfSalesView extends StatelessWidget {
-  /// Constructors of new [PointOfSalesView].
-  const PointOfSalesView({super.key});
+/// New order screen
+class NewOrderScreen extends StatelessWidget {
+  /// Constructors of new [NewOrderScreen].
+  const NewOrderScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = GetIt.I.registerSingletonIfAbsent<PointOfSalesViewModel>(
-      PointOfSalesViewModel.new,
+    final viewModel = GetIt.I.registerSingletonIfAbsent<NewOrderViewModel>(
+      NewOrderViewModel.new,
     );
 
     return ChangeNotifierProvider(
-      create: (_) => PointOfSalesController(viewModel),
+      create: (_) => NewOrderController(viewModel),
       child: const _SalesScreenContent(),
     );
   }
@@ -45,9 +45,9 @@ class _SalesScreenContent extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   spacing: 16,
                   children: [
-                    PointOfSalesHeader(),
-                    OrderSelected(),
+                    NewOrderHeader(),
                     SearchAndScanView(),
+                    OrderSelected(),
                     CartFooter(),
                   ],
                 ),

@@ -4,10 +4,10 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import '../../../services/internationalization/internationalization.dart';
 import '../../../utils/responsive_utils.dart';
 
-/// The point of sales header
-class PointOfSalesHeader extends StatelessWidget {
-  /// Constructs of new [PointOfSalesHeader].
-  const PointOfSalesHeader({super.key});
+/// The new order header
+class NewOrderHeader extends StatelessWidget {
+  /// Constructs of new [NewOrderHeader].
+  const NewOrderHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,10 +24,10 @@ class PointOfSalesHeader extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(Intls.to.pointOfSalesManagement, style: theme.textTheme.h4),
+            Text(Intls.to.newOrderSales, style: theme.textTheme.h4),
             const SizedBox(height: 4),
             Text(
-              Intls.to.pointOfSalesManagementDescription,
+              Intls.to.newOrderSalesDescription,
               style: theme.textTheme.muted,
             ),
           ],

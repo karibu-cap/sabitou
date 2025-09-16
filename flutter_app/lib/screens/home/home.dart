@@ -8,7 +8,7 @@ import '../../widgets/app_header/app_header.dart';
 import '../../widgets/sidebar/sidebar.dart';
 import '../dashboard/dashboard_screen.dart';
 import '../inventory/inventory_screen.dart';
-import '../point_of_sales/point_of_sales_view.dart';
+import '../new_order/new_order_screen.dart';
 import '../sales/sales_screen.dart';
 import '../suppliers/suppliers_view.dart';
 import 'home_controller.dart';
@@ -83,7 +83,7 @@ class HomeScreen extends StatelessWidget {
                                     DashboardItem.salesReports =>
                                       const SalesScreen(),
                                     DashboardItem.salesOrders =>
-                                      const PointOfSalesView(),
+                                      const NewOrderScreen(),
                                     DashboardItem.reports => const SizedBox(),
                                     DashboardItem.users => const SizedBox(),
                                     DashboardItem.suppliers =>
