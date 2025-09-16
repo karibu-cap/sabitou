@@ -10,6 +10,7 @@ import '../../../utils/common_functions.dart';
 import '../../../utils/extends_models.dart';
 import '../../../utils/formatters.dart';
 import '../../../utils/responsive_utils.dart';
+import '../../../utils/utils.dart';
 import '../../../widgets/loading.dart';
 import '../inventory_controller.dart';
 import 'create_edit_product_form_view.dart';
@@ -292,7 +293,9 @@ class _ProductNameCell extends StatelessWidget {
             ),
             color: ShadTheme.of(context).colorScheme.muted,
           ),
-          child: product.globalProduct.imagesLinksIds.isNotEmpty
+          child:
+              product.globalProduct.imagesLinksIds.isNotEmpty &&
+                  AppUtils.isURL(product.globalProduct.imagesLinksIds.first)
               ? FutureBuilder(
                   future: precacheImage(
                     NetworkImage(product.globalProduct.imagesLinksIds.first),

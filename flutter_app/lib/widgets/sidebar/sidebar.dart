@@ -1,11 +1,14 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:sabitou_rpc/models.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../utils/app_constants.dart';
 import '../../../utils/responsive_utils.dart';
+import '../../providers/auth/auth_provider.dart';
 import '../../services/internationalization/internationalization.dart';
+import '../../utils/user_preference.dart';
+import '../../utils/utils.dart';
+import '../app_header/current_user_view.dart';
 import 'sidebar_menu_item.dart';
 
 /// The sidebar widget.
@@ -29,47 +32,35 @@ class SidebarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const userRole = StoreResourceType.STORE_RESOURCE_TYPE_UNSPECIFIED;
     final isTablet = ResponsiveUtils.isTablet(context);
     final theme = ShadTheme.of(context);
-
-    bool hasAccess(
-      List<StoreResourceType> requiredRoles,
-      StoreResourceType userRole,
-    ) {
-      return requiredRoles.contains(userRole);
-    }
+    final user = UserPreferences.instance.user;
 
     final List<SideBarItem> menuItems = [
       SideBarItem(
         id: DashboardItem.dashboard,
         label: Intls.to.dashboard,
         icon: LucideIcons.house400,
-        roles: StoreResourceType.values,
       ),
       SideBarItem(
         id: DashboardItem.inventory,
         label: Intls.to.inventory,
         icon: LucideIcons.package400,
-        roles: StoreResourceType.values,
       ),
       SideBarItem(
         id: DashboardItem.sales,
         label: Intls.to.sales,
         icon: LucideIcons.shoppingCart400,
-        roles: StoreResourceType.values,
         children: [
           SideBarItem(
             id: DashboardItem.salesReports,
             label: Intls.to.reports,
             icon: LucideIcons.chartColumn400,
-            roles: StoreResourceType.values,
           ),
           SideBarItem(
             id: DashboardItem.salesOrders,
             label: Intls.to.newOrders,
             icon: LucideIcons.plus400,
-            roles: StoreResourceType.values,
           ),
         ],
       ),
@@ -77,25 +68,21 @@ class SidebarWidget extends StatelessWidget {
         id: DashboardItem.reports,
         label: Intls.to.reports,
         icon: LucideIcons.chartColumn400,
-        roles: StoreResourceType.values,
       ),
       SideBarItem(
         id: DashboardItem.suppliers,
         label: Intls.to.suppliers,
         icon: LucideIcons.truck400,
-        roles: StoreResourceType.values,
       ),
       SideBarItem(
         id: DashboardItem.users,
         label: Intls.to.users,
         icon: LucideIcons.users400,
-        roles: StoreResourceType.values,
       ),
       SideBarItem(
         id: DashboardItem.settings,
         label: Intls.to.settings,
         icon: LucideIcons.settings500,
-        roles: StoreResourceType.values,
       ),
     ];
 
@@ -120,80 +107,121 @@ class SidebarWidget extends StatelessWidget {
         ),
         child: Column(
           children: [
-            Container(
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: ShadTheme.of(context).colorScheme.card,
-                  ),
-                ),
-              ),
-              child: Row(
-                children: [
-                  Icon(
-                    LucideIcons.store400,
-                    size: 24,
-                    color: theme.colorScheme.primary,
-                  ),
-                  const SizedBox(width: 12),
-                  Text(
-                    Intls.to.sabitu,
-                    style: ShadTheme.of(context).textTheme.h4,
-                  ),
-                ],
-              ),
-            ),
+            _BusinessInfo(),
             Expanded(
               child: Container(
                 padding: const EdgeInsets.all(16),
                 child: ListView(
                   children: menuItems
-                      .where((item) => hasAccess(item.roles, userRole))
                       .map(
                         (item) => SidebarMenuItem(
                           item: item,
                           activeTab: activeTab,
                           onTabChange: onTabChange,
-                          userRole: userRole,
                         ),
                       )
                       .toList(),
                 ),
               ),
             ),
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: ShadTheme.of(context).colorScheme.secondary,
-                border: Border(
-                  top: BorderSide(
-                    color: ShadTheme.of(context).colorScheme.card,
-                  ),
-                ),
-              ),
-              child: Row(
-                children: [
-                  const Icon(LucideIcons.user400, size: 16),
-                  const SizedBox(width: 8),
-                  Text(
-                    'Logged in as: ',
-                    style: ShadTheme.of(context).textTheme.muted,
-                  ),
-                  Flexible(
-                    child: AutoSizeText(
-                      userRole.name,
-                      style: ShadTheme.of(context).textTheme.table,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      minFontSize: 8,
+            if (user != null)
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: ShadTheme.of(context).colorScheme.secondary,
+                  border: Border(
+                    top: BorderSide(
+                      color: ShadTheme.of(context).colorScheme.card,
                     ),
                   ),
-                ],
+                ),
+                child: CurrentUserView(
+                  user: user,
+                  onLogout: AuthProvider.instance.logout,
+                ),
               ),
-            ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+final class _BusinessInfo extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final business = UserPreferences.instance.business;
+
+    if (business == null) {
+      return const SizedBox.shrink();
+    }
+
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(color: ShadTheme.of(context).colorScheme.card),
+        ),
+      ),
+      child: Row(
+        children: [
+          Container(
+            height: 50,
+            width: 50,
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(Radius.circular(8)),
+              border: Border.fromBorderSide(
+                BorderSide(color: ShadTheme.of(context).colorScheme.card),
+              ),
+              color: ShadTheme.of(context).colorScheme.muted,
+            ),
+            child:
+                business.hasLogoLinkId() && AppUtils.isURL(business.logoLinkId)
+                ? FutureBuilder(
+                    future: precacheImage(
+                      NetworkImage(business.logoLinkId),
+                      context,
+                      onError: (error, stackTrace) {
+                        throw error;
+                      },
+                    ),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done &&
+                          snapshot.error == null) {
+                        return FadeInImage.assetNetwork(
+                          placeholder: StaticImages.placeholder,
+                          image: business.logoLinkId,
+                          fit: BoxFit.contain,
+                          imageErrorBuilder: (context, error, stackTrace) {
+                            return const Icon(LucideIcons.store400, size: 24);
+                          },
+                          placeholderErrorBuilder:
+                              (context, error, stackTrace) {
+                                return const Icon(
+                                  LucideIcons.store400,
+                                  size: 24,
+                                );
+                              },
+                        );
+                      }
+
+                      return const Icon(LucideIcons.store400, size: 24);
+                    },
+                  )
+                : const Icon(LucideIcons.store400, size: 24),
+          ),
+
+          const SizedBox(width: 12),
+          Flexible(
+            child: AutoSizeText(
+              business.hasName() ? business.name : Intls.to.sabitu,
+              style: ShadTheme.of(context).textTheme.h4,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              minFontSize: 8,
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -63,7 +63,7 @@ class HomeScreen extends StatelessWidget {
                             child: Container(
                               width: double.infinity,
                               padding: EdgeInsets.all(
-                                tabletBreakpoint ? 16.0 : 24.0,
+                                tabletBreakpoint ? 16.0 : 0.0,
                               ),
                               child: ConstrainedBox(
                                 constraints: const BoxConstraints(

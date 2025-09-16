@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sabitou_rpc/models.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../utils/app_constants.dart';
@@ -15,9 +14,6 @@ class SideBarItem {
   /// The sidebar item icon.
   final IconData icon;
 
-  /// The sidebar item roles.
-  final List<StoreResourceType> roles;
-
   /// The sidebar item children.
   final List<SideBarItem>? children;
 
@@ -26,7 +22,6 @@ class SideBarItem {
     required this.id,
     required this.label,
     required this.icon,
-    required this.roles,
     this.children,
   });
 }
@@ -42,9 +37,6 @@ class SidebarMenuItem extends StatelessWidget {
   /// The on tab change callback.
   final Function(DashboardItem) onTabChange;
 
-  /// The user role.
-  final StoreResourceType userRole;
-
   /// The is child.
   final bool isChild;
 
@@ -54,23 +46,11 @@ class SidebarMenuItem extends StatelessWidget {
     required this.item,
     required this.activeTab,
     required this.onTabChange,
-    required this.userRole,
     this.isChild = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    bool hasAccess(
-      List<StoreResourceType> requiredRoles,
-      StoreResourceType userRole,
-    ) {
-      return requiredRoles.contains(userRole);
-    }
-
-    if (!hasAccess(item.roles, userRole)) {
-      return const SizedBox.shrink();
-    }
-
     return Column(
       children: [
         _ItemWidget(
@@ -87,7 +67,6 @@ class SidebarMenuItem extends StatelessWidget {
               item: child,
               activeTab: activeTab,
               onTabChange: onTabChange,
-              userRole: userRole,
               isChild: true,
             ),
           ),

@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:provider/provider.dart';
+import 'package:sabitou_clients/providers/auth/auth_provider.dart';
 import 'package:sabitou_clients/providers/cart_provider.dart';
 import 'package:sabitou_clients/repositories/business_repository.dart';
 import 'package:sabitou_clients/repositories/categories_repository.dart';
@@ -12,6 +13,7 @@ import 'package:sabitou_clients/repositories/products_repository.dart';
 import 'package:sabitou_clients/repositories/stores_repository.dart';
 import 'package:sabitou_clients/repositories/suppliers_repository.dart';
 import 'package:sabitou_clients/repositories/transactions_repository.dart';
+import 'package:sabitou_clients/repositories/users_repository.dart';
 import 'package:sabitou_clients/services/app_theme_service.dart';
 import 'package:sabitou_clients/services/internationalization/internationalization.dart';
 import 'package:sabitou_clients/services/storage/app_storage.dart';
@@ -30,23 +32,7 @@ Future<void> multiScreenMultiLocaleGolden(
       AppInternationalizationService(const Locale('en'), storage);
   final themeService = AppThemeService(storage);
   await tester.pumpAndSettle();
-  GetIt.I
-    ..registerSingletonIfAbsent<AppStorageService>(() => storage)
-    ..registerSingletonIfAbsent<AppInternationalizationService>(
-      () => appInternationalization,
-    )
-    ..registerSingletonIfAbsent<AppThemeService>(() => themeService)
-    ..registerSingletonIfAbsent<UserPreferences>(UserPreferences.new)
-    ..registerSingletonIfAbsent<OrdersRepository>(OrdersRepository.new)
-    ..registerSingletonIfAbsent<ProductsRepository>(ProductsRepository.new)
-    ..registerSingletonIfAbsent<SuppliersRepository>(SuppliersRepository.new)
-    ..registerSingletonIfAbsent<CategoriesRepository>(CategoriesRepository.new)
-    ..registerSingletonIfAbsent<TransactionsRepository>(
-      TransactionsRepository.new,
-    )
-    ..registerSingletonIfAbsent<BusinessRepository>(BusinessRepository.new)
-    ..registerSingletonIfAbsent<StoresRepository>(StoresRepository.new)
-    ..registerSingletonIfAbsent<CartManager>(CartManager.new);
+  _initGetIt(storage, appInternationalization, themeService);
 
   await tester.pumpWidgetBuilder(
     MultiProvider(
@@ -60,31 +46,43 @@ Future<void> multiScreenMultiLocaleGolden(
         ChangeNotifierProvider(
           create: (context) => GetIt.I.get<UserPreferences>(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => GetIt.I.get<AuthProvider>(),
+        ),
       ],
       child:
-          Consumer3<
+          Consumer4<
             AppInternationalizationService,
             AppThemeService,
-            UserPreferences
+            UserPreferences,
+            AuthProvider
           >(
-            builder: (context, intls, themeService, userPreferences, child) {
-              return ShadApp(
-                title: intls.locale.languageCode.toUpperCase(),
-                themeMode: themeService.isDarkMode
-                    ? ThemeMode.dark
-                    : ThemeMode.light,
-                theme: AppThemeService.lightTheme,
-                darkTheme: AppThemeService.darkTheme,
-                localizationsDelegates: const [
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                ],
-                supportedLocales:
-                    AppInternationalizationService.supportedLocales,
-                home: widget,
-              );
-            },
+            builder:
+                (
+                  context,
+                  intls,
+                  themeService,
+                  userPreferences,
+                  authProvider,
+                  child,
+                ) {
+                  return ShadApp(
+                    title: intls.locale.languageCode.toUpperCase(),
+                    themeMode: themeService.isDarkMode
+                        ? ThemeMode.dark
+                        : ThemeMode.light,
+                    theme: AppThemeService.lightTheme,
+                    darkTheme: AppThemeService.darkTheme,
+                    localizationsDelegates: const [
+                      GlobalMaterialLocalizations.delegate,
+                      GlobalWidgetsLocalizations.delegate,
+                      GlobalCupertinoLocalizations.delegate,
+                    ],
+                    supportedLocales:
+                        AppInternationalizationService.supportedLocales,
+                    home: widget,
+                  );
+                },
           ),
     ),
   );
@@ -104,4 +102,30 @@ Future<void> multiScreenMultiLocaleGolden(
       ],
     );
   }
+}
+
+void _initGetIt(
+  AppStorageService storage,
+  AppInternationalizationService appInternationalization,
+  AppThemeService themeService,
+) {
+  GetIt.I
+    ..registerSingletonIfAbsent<AppStorageService>(() => storage)
+    ..registerSingletonIfAbsent<AppInternationalizationService>(
+      () => appInternationalization,
+    )
+    ..registerSingletonIfAbsent<AppThemeService>(() => themeService)
+    ..registerSingletonIfAbsent<UserPreferences>(UserPreferences.new)
+    ..registerSingletonIfAbsent<UserRepository>(UserRepository.new)
+    ..registerSingletonIfAbsent<OrdersRepository>(OrdersRepository.new)
+    ..registerSingletonIfAbsent<ProductsRepository>(ProductsRepository.new)
+    ..registerSingletonIfAbsent<SuppliersRepository>(SuppliersRepository.new)
+    ..registerSingletonIfAbsent<CategoriesRepository>(CategoriesRepository.new)
+    ..registerSingletonIfAbsent<TransactionsRepository>(
+      TransactionsRepository.new,
+    )
+    ..registerSingletonIfAbsent<BusinessRepository>(BusinessRepository.new)
+    ..registerSingletonIfAbsent<StoresRepository>(StoresRepository.new)
+    ..registerSingletonIfAbsent<CartManager>(CartManager.new)
+    ..registerSingletonIfAbsent<AuthProvider>(AuthProvider.new);
 }

@@ -748,6 +748,60 @@ class AppInternationalizationService extends ChangeNotifier {
       'en': 'Add product to start sale',
       'fr': 'Ajouter un produit pour commencer la vente',
     },
+    'settingsTitleDescription': {
+      'en':
+          'Manage your account, business information, and application preferences.',
+      'fr':
+          'Gestion de votre compte, informations de votre entreprise et préférences de l\'application.',
+    },
+    'businessInfo': {
+      'en': 'Business Information',
+      'fr': 'Informations de l\'entreprise',
+    },
+    'storeInfo': {'en': 'Store Information', 'fr': 'Informations du magasin'},
+    'security&privacy': {
+      'en': 'Security & Privacy',
+      'fr': 'Sécurité & Confidentialité',
+    },
+    'system': {'en': 'System', 'fr': 'Système'},
+    'businessInfoSubtitle': {
+      'en': 'Manage your business details and contact information',
+      'fr': 'Gestion de vos informations de l\'entreprise et de vos contacts',
+    },
+    'storeInfoSubtitle': {
+      'en': 'Manage your store details and contact information',
+      'fr': 'Gestion de vos informations du magasin et de vos contacts',
+    },
+    'notificationsSubtitle': {
+      'en': 'Configure notification preferences',
+      'fr': 'Configuration des préférences de notification',
+    },
+    'securitySubtitle': {
+      'en': 'Configure security settings and data privacy',
+      'fr':
+          'Configuration des paramètres de sécurité et de la confidentialité des données',
+    },
+    'systemSubtitle': {
+      'en': 'Manage your system settings',
+      'fr': 'Gestion des paramètres de votre système',
+    },
+    'businessDetails': {
+      'en': 'Business Details',
+      'fr': 'Informations de l\'entreprise',
+    },
+    'businessLogo': {'en': 'Business Logo', 'fr': 'Logo de l\'entreprise'},
+    'storeDetails': {'en': 'Store Details', 'fr': 'Informations du magasin'},
+    'saveChanges': {
+      'en': 'Save Changes',
+      'fr': 'Enregistrer les modifications',
+    },
+    'uploadYourBusinessLogo': {
+      'en': 'Upload your business logo',
+      'fr': 'Téléchargez votre logo d\'entreprise',
+    },
+    'changeLogo': {'en': 'Change Logo', 'fr': 'Changer de logo'},
+    'currency': {'en': 'Currency', 'fr': 'Devise'},
+    'guest': {'en': 'Guest', 'fr': 'Invité'},
   };
 
   /// Direct access to the internationalization service.
@@ -769,6 +823,57 @@ class AppInternationalizationService extends ChangeNotifier {
     const Locale('en'),
     const Locale('fr'),
   ];
+
+  /// Returns the localized value of text 'guest'.
+  String get guest => _stringOfLocalizedValue('guest');
+
+  /// Returns the localized value of text 'currency'.
+  String get currency => _stringOfLocalizedValue('currency');
+
+  /// Returns the localized value of text 'changeLogo'.
+  String get changeLogo => _stringOfLocalizedValue('changeLogo');
+
+  /// Returns the localized value of text 'businessLogo'.
+  String get businessLogo => _stringOfLocalizedValue('businessLogo');
+
+  /// Returns the localized value of text 'storeDetails'.
+  String get storeDetails => _stringOfLocalizedValue('storeDetails');
+
+  /// Returns the localized value of text 'businessDetails'.
+  String get businessDetails => _stringOfLocalizedValue('businessDetails');
+
+  /// Returns the localized value of text 'security&privacy'.
+  String get securityAndPrivacy => _stringOfLocalizedValue('security&privacy');
+
+  /// Returns the localized value of text 'businessInfo'.
+  String get businessInfo => _stringOfLocalizedValue('businessInfo');
+
+  /// Returns the localized value of text 'storeInfo'.
+  String get storeInfo => _stringOfLocalizedValue('storeInfo');
+
+  /// Returns the localized value of text 'system'.
+  String get system => _stringOfLocalizedValue('system');
+
+  /// Returns the localized value of text 'businessInfoSubtitle'.
+  String get businessInfoSubtitle =>
+      _stringOfLocalizedValue('businessInfoSubtitle');
+
+  /// Returns the localized value of text 'storeInfoSubtitle'.
+  String get storeInfoSubtitle => _stringOfLocalizedValue('storeInfoSubtitle');
+
+  /// Returns the localized value of text 'notificationsSubtitle'.
+  String get notificationsSubtitle =>
+      _stringOfLocalizedValue('notificationsSubtitle');
+
+  /// Returns the localized value of text 'securitySubtitle'.
+  String get securitySubtitle => _stringOfLocalizedValue('securitySubtitle');
+
+  /// Returns the localized value of text 'systemSubtitle'.
+  String get systemSubtitle => _stringOfLocalizedValue('systemSubtitle');
+
+  /// Returns the localized value of text 'settingsTitleDescription'.
+  String get settingsTitleDescription =>
+      _stringOfLocalizedValue('settingsTitleDescription');
 
   /// Returns the localized value of text 'emptyCart'.
   String get emptyCart => _stringOfLocalizedValue('emptyCart');
