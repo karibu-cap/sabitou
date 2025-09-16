@@ -33,7 +33,12 @@ class OrderSelected extends StatelessWidget {
                       spacing: 8,
                       children: [
                         const Icon(LucideIcons.shoppingCart),
-                        Expanded(child: Text(Intls.to.cart)),
+                        Expanded(
+                          child: Text(
+                            Intls.to.cart,
+                            style: ShadTheme.of(context).textTheme.small,
+                          ),
+                        ),
                         ShadBadge(
                           child: Text(
                             '${items?.length ?? 0} ${Intls.to.items}',
@@ -44,19 +49,27 @@ class OrderSelected extends StatelessWidget {
                     const SizedBox(height: 20),
                     if (items == null || items.isEmpty)
                       Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              LucideIcons.receipt400,
-                              size: 48,
-                              color: ShadTheme.of(context).colorScheme.border,
-                            ),
-                            Text(
-                              Intls.to.noItemsAdded,
-                              style: ShadTheme.of(context).textTheme.muted,
-                            ),
-                          ],
+                        child: Center(
+                          // ignore: avoid-shrink-wrap-in-lists
+                          child: ListView(
+                            shrinkWrap: true,
+                            children: [
+                              const Icon(LucideIcons.shoppingCart, size: 20),
+                              const SizedBox(height: 12),
+                              Center(
+                                child: Text(
+                                  Intls.to.emptyCart,
+                                  style: ShadTheme.of(context).textTheme.small,
+                                ),
+                              ),
+                              Center(
+                                child: Text(
+                                  Intls.to.addProductToStartSale,
+                                  style: ShadTheme.of(context).textTheme.small,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       )
                     else
