@@ -11,10 +11,10 @@ import '../loading.dart';
 /// of suggestions based on user input, with support for asynchronous option fetching.
 class CustomAutoComplete<T> extends StatefulWidget {
   /// The label displayed above the input field.
-  final Widget label;
+  final Widget? label;
 
   /// The placeholder text shown in the input field.
-  final String placeholder;
+  final String? placeholder;
 
   /// A callback that fetches selectable options based on the current input.
   final Future<Iterable<T>> Function(TextEditingController) optionsBuilder;
@@ -42,8 +42,8 @@ class CustomAutoComplete<T> extends StatefulWidget {
   /// Constructor for [CustomAutoComplete].
   const CustomAutoComplete({
     super.key,
-    required this.label,
-    required this.placeholder,
+    this.label,
+    this.placeholder,
     required this.optionsBuilder,
     required this.optionsViewBuilder,
     required this.displayStringForOption,
@@ -221,7 +221,7 @@ class _CustomAutoCompleteState<T> extends State<CustomAutoComplete<T>> {
           return ShadInputFormField(
             id: widget.label.toString(),
             label: widget.label,
-            placeholder: Text(widget.placeholder),
+            placeholder: Text(widget.placeholder ?? ''),
             controller: _inputController,
             focusNode: _focusNode,
             validator: widget.inputValidator,

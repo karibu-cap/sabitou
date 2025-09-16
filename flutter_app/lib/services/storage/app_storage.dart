@@ -18,7 +18,7 @@ abstract class AppStorageService {
   static AppStorageService get to => GetIt.I.get<AppStorageService>();
 
   /// Writes data on your container.
-  Future<void> write(String key, dynamic value);
+  Future<void> write<T>(String key, T value);
 
   /// Reads data from your container.
   T? read<T>(String key);

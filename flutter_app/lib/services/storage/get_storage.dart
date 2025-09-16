@@ -7,7 +7,7 @@ class GetStorageService implements AppStorageService {
   final GetStorage _box = GetStorage();
 
   @override
-  Future<void> write(String key, dynamic value) async {
+  Future<void> write<T>(String key, T value) async {
     await _box.write(key, value);
   }
 

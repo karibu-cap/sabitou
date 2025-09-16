@@ -206,7 +206,7 @@ class AppTheme {
     ),
     primaryButtonTheme: ShadButtonTheme(
       gradient: LinearGradient(
-        colors: [_primaryLight, _primaryLight.withValues(alpha: 0.6)],
+        colors: [_primaryLight, _primaryLight.withValues(alpha: 0.8)],
         stops: const [0, 1],
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
@@ -215,6 +215,18 @@ class AppTheme {
     ghostButtonTheme: const ShadButtonTheme(
       hoverBackgroundColor: _primaryLight,
       hoverForegroundColor: _primaryDark,
+    ),
+    outlineButtonTheme: const ShadButtonTheme(
+      hoverBackgroundColor: _primaryLight,
+      hoverForegroundColor: _primaryDark,
+    ),
+    destructiveButtonTheme: ShadButtonTheme(
+      gradient: LinearGradient(
+        colors: [_destructiveLight, _destructiveLight.withValues(alpha: 0.8)],
+        stops: const [0, 1],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      ),
     ),
   );
 
@@ -287,6 +299,10 @@ class AppTheme {
       ),
     ),
     ghostButtonTheme: const ShadButtonTheme(
+      hoverBackgroundColor: _primaryDark,
+      hoverForegroundColor: _primaryLight,
+    ),
+    outlineButtonTheme: const ShadButtonTheme(
       hoverBackgroundColor: _primaryDark,
       hoverForegroundColor: _primaryLight,
     ),

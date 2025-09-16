@@ -9,7 +9,7 @@ class FakeStorageService implements AppStorageService {
     : _storage = storage ?? {};
 
   @override
-  Future<void> write(String key, dynamic value) async {
+  Future<void> write<T>(String key, T value) async {
     _storage[key] = value;
   }
 

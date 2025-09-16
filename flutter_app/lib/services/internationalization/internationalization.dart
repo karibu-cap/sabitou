@@ -709,6 +709,45 @@ class AppInternationalizationService extends ChangeNotifier {
     'dateRange': {'en': 'Date Range', 'fr': 'Plage de date'},
     'inboundDate': {'en': 'Inbound Date', 'fr': 'Date d\'entrée'},
     'newOrders': {'en': 'New Orders', 'fr': 'Nouvelles commandes'},
+    'newOrderSales': {'en': 'New Order Sales', 'fr': 'Nouvelle vente'},
+    'newOrderSalesDescription': {
+      'en': 'Manage your new order sales',
+      'fr': 'Gestion de vos nouvelles ventes',
+    },
+    'noItemsAdded': {'en': 'No items added', 'fr': 'Aucun article ajouté'},
+    'each': {'en': 'each', 'fr': 'chaque'},
+    'cart': {'en': 'Cart', 'fr': 'Panier'},
+    'completeOrder': {'en': 'Complete Order', 'fr': 'Compléter la commande'},
+    'holdOrder': {'en': 'Hold Order', 'fr': 'Retenir la commande'},
+    'clearOrder': {'en': 'Clear Order', 'fr': 'Effacer la commande'},
+    'scanOrSearchProduct': {
+      'en': 'Scan or Search Product to add...',
+      'fr': 'Scanner ou rechercher un produit a ajouter...',
+    },
+    'noProductsFound': {
+      'en': 'No products found',
+      'fr': 'Aucun produit trouvé',
+    },
+    'resumeOrder': {'en': 'Resume Order', 'fr': 'Reprendre la commande'},
+    'holdOrders': {'en': 'Hold Orders', 'fr': 'Commandes retenues'},
+    'holdOrdersDescription': {
+      'en': 'Manage orders that are not completed.',
+      'fr': 'Gestion des commandes qui ne sont pas complétées.',
+    },
+    'max': {'en': 'Max', 'fr': 'Max'},
+    'orderCompletedSuccessfully': {
+      'en': 'Order completed successfully',
+      'fr': 'Commande complétée avec succès',
+    },
+    'failedToCompleteOrder': {
+      'en': 'Failed to complete order',
+      'fr': 'Échec de la commande',
+    },
+    'emptyCart': {'en': 'Empty Cart', 'fr': 'Panier vide'},
+    'addProductToStartSale': {
+      'en': 'Add product to start sale',
+      'fr': 'Ajouter un produit pour commencer la vente',
+    },
   };
 
   /// Direct access to the internationalization service.
@@ -730,6 +769,66 @@ class AppInternationalizationService extends ChangeNotifier {
     const Locale('en'),
     const Locale('fr'),
   ];
+
+  /// Returns the localized value of text 'emptyCart'.
+  String get emptyCart => _stringOfLocalizedValue('emptyCart');
+
+  /// Returns the localized value of text 'addProductToStartSale'.
+  String get addProductToStartSale =>
+      _stringOfLocalizedValue('addProductToStartSale');
+
+  /// Returns the localized value of text 'failedToCompleteOrder'.
+  String get failedToCompleteOrder =>
+      _stringOfLocalizedValue('failedToCompleteOrder');
+
+  /// Returns the localized value of text 'orderCompletedSuccessfully'.
+  String get orderCompletedSuccessfully =>
+      _stringOfLocalizedValue('orderCompletedSuccessfully');
+
+  /// Returns the localized value of text 'max'.
+  String get max => _stringOfLocalizedValue('max');
+
+  /// Returns the localized value of text 'holdOrders'.
+  String get holdOrders => _stringOfLocalizedValue('holdOrders');
+
+  /// Returns the localized value of text 'holdOrdersDescription'.
+  String get holdOrdersDescription =>
+      _stringOfLocalizedValue('holdOrdersDescription');
+
+  /// Returns the localized value of text 'resumeOrder'.
+  String get resumeOrder => _stringOfLocalizedValue('resumeOrder');
+
+  /// Returns the localized value of text 'noProductsFound'.
+  String get noProductsFound => _stringOfLocalizedValue('noProductsFound');
+
+  /// Returns the localized value of text 'scanOrSearchProduct'.
+  String get scanOrSearchProduct =>
+      _stringOfLocalizedValue('scanOrSearchProduct');
+
+  /// Returns the localized value of text 'completeOrder'.
+  String get completeOrder => _stringOfLocalizedValue('completeOrder');
+
+  /// Returns the localized value of text 'holdOrder'.
+  String get holdOrder => _stringOfLocalizedValue('holdOrder');
+
+  /// Returns the localized value of text 'clearOrder'.
+  String get clearOrder => _stringOfLocalizedValue('clearOrder');
+
+  /// Returns the localized value of text 'cart'.
+  String get cart => _stringOfLocalizedValue('cart');
+
+  /// Returns the localized value of text 'each'.
+  String get each => _stringOfLocalizedValue('each');
+
+  /// Returns the localized value of text 'noItemsAdded'.
+  String get noItemsAdded => _stringOfLocalizedValue('noItemsAdded');
+
+  /// Returns the localized value of text 'newOrderSales'.
+  String get newOrderSales => _stringOfLocalizedValue('newOrderSales');
+
+  /// Returns the localized value of text 'newOrderSalesDescription'.
+  String get newOrderSalesDescription =>
+      _stringOfLocalizedValue('newOrderSalesDescription');
 
   /// Returns the localized value of text 'dateRange'.
   String get dateRange => _stringOfLocalizedValue('dateRange');
