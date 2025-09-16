@@ -48,4 +48,17 @@ class OrdersRepository {
       return Order();
     }
   }
+
+  /// Adds an order.
+  Future<String?> addOrder(CreateOrderRequest request) async {
+    try {
+      final response = await orderServiceClient.createOrder(request);
+
+      return response.orderId;
+    } on Exception catch (e) {
+      _logger.severe('addOrder Error: $e');
+    }
+
+    return null;
+  }
 }

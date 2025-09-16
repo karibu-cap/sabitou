@@ -125,6 +125,37 @@ final _fakeTransport =
             ]);
         })
         // Product Service fakes
+        .unary(ProductService.findStoreProducts, (req, _) async {
+          final request = req;
+
+          return FindStoreProductsResponse(
+            products: [
+              StoreProduct()
+                ..refId = 'product_1'
+                ..globalProductId = 'global_product_1'
+                ..storeId = request.storeId,
+              StoreProduct()
+                ..refId = 'product_2'
+                ..globalProductId = 'global_product_2'
+                ..storeId = request.storeId,
+              StoreProduct()
+                ..refId = 'product_3'
+                ..globalProductId = 'global_product_3'
+                ..storeId = request.storeId,
+            ],
+          );
+        })
+        .unary(ProductService.getProduct, (req, _) async {
+          final storeProduct = _fakeData[CollectionName.storeProducts]
+              ?.map(
+                (e) =>
+                    StoreProduct()
+                      ..mergeFromProto3Json(e, ignoreUnknownFields: true),
+              )
+              .firstWhereOrNull((gp) => gp.refId == req.storeProductId);
+
+          return GetStoreProductResponse(storeProduct: storeProduct);
+        })
         .server(ProductService.streamStoreProducts, (req, _) async* {
           final request = req;
 
@@ -213,6 +244,15 @@ final _fakeTransport =
               .where((o) => o.storeId == req.storeId)
               .toList(),
         );
+      })
+      ..unary(OrderService.createOrder, (req, __) async {
+        final orderId = 'order-${Random().nextInt(1000000)}';
+        _fakeData[CollectionName.orders]?.add({
+          'ref_id': orderId,
+          ...req.order.toProto3Json() as Map<String, dynamic>,
+        });
+
+        return CreateOrderResponse(orderId: orderId);
       })
       ..unary(BusinessService.getBusinessMembers, (req, __) async {
         return GetBusinessMembersResponse(
@@ -452,7 +492,7 @@ final _fakeTransport =
 
 final fakeTransport = _fakeTransport.build();
 
-final fakeStorage = {
+final Map<String, dynamic> fakeStorage = {
   CollectionName.users: _fakeData[CollectionName.users]
       ?.map((e) => User()..mergeFromProto3Json(e, ignoreUnknownFields: true))
       .toList()

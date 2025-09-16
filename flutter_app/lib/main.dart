@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import 'providers/auth/auth_provider.dart';
+import 'providers/cart_provider.dart';
 import 'repositories/auth_repository.dart';
 import 'repositories/business_repository.dart';
 import 'repositories/categories_repository.dart';
@@ -59,8 +60,8 @@ Future<void> _initServices() async {
     ..registerLazySingleton<BusinessRepository>(BusinessRepository.new)
     ..registerLazySingleton<StoresRepository>(StoresRepository.new)
     ..registerLazySingleton<UserRepository>(UserRepository.new)
-    ..registerLazySingleton<CategoriesRepository>(CategoriesRepository.new);
-  /*setUrlStrategy(PathUrlStrategy());*/
+    ..registerLazySingleton<CategoriesRepository>(CategoriesRepository.new)
+    ..registerLazySingleton<CartManager>(CartManager.new);
 
   /// Initialize the get storage service.
 }

@@ -38,7 +38,7 @@ class UserPreferences extends ChangeNotifier {
   /// Save user preferences.
   Future<void> saveUserPreferences({required User user}) async {
     final storage = AppStorageService.to;
-    await storage.write(CollectionName.users, user);
+    await storage.write<User>(CollectionName.users, user);
 
     _user = user;
   }

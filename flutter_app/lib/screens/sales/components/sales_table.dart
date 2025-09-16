@@ -114,20 +114,25 @@ class _OrdersDataTable extends StatelessWidget {
 
                       DataCell(
                         order.orderItems.isNotEmpty
-                            ? Wrap(
-                                children:
-                                    order.orderItems
-                                        .map((item) {
-                                          return Text(
-                                            '${item.quantity}x ${item.itemName}',
-                                            style: ShadTheme.of(
-                                              context,
-                                            ).textTheme.p,
-                                          );
-                                        })
-                                        .expand((c) => [c, const Text(', ')])
-                                        .toList()
-                                      ..removeLast(),
+                            ? Container(
+                                constraints: const BoxConstraints(
+                                  maxWidth: 250,
+                                ),
+                                child: Wrap(
+                                  children:
+                                      order.orderItems
+                                          .map((item) {
+                                            return Text(
+                                              '${item.quantity}x ${item.itemName}',
+                                              style: ShadTheme.of(
+                                                context,
+                                              ).textTheme.p,
+                                            );
+                                          })
+                                          .expand((c) => [c, const Text(', ')])
+                                          .toList()
+                                        ..removeLast(),
+                                ),
                               )
                             : const SizedBox.shrink(),
                       ),
