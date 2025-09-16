@@ -13,7 +13,6 @@
 import 'dart:async' as $async;
 import 'dart:core' as $core;
 
-import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import '../../google/protobuf/timestamp.pb.dart' as $0;
@@ -35,7 +34,7 @@ class Transaction extends $pb.GeneratedMessage {
     $core.String? storeId,
     $core.String? orderId,
     $core.String? fromId,
-    $fixnum.Int64? amount,
+    $core.double? amount,
     $core.String? currencyCode,
     $0.Timestamp? createdAt,
     $0.Timestamp? updatedAt,
@@ -91,7 +90,7 @@ class Transaction extends $pb.GeneratedMessage {
     ..aOS(4, _omitFieldNames ? '' : 'storeId')
     ..aOS(5, _omitFieldNames ? '' : 'orderId')
     ..aOS(6, _omitFieldNames ? '' : 'fromId')
-    ..aInt64(7, _omitFieldNames ? '' : 'amount')
+    ..a<$core.double>(7, _omitFieldNames ? '' : 'amount', $pb.PbFieldType.OD)
     ..aOS(8, _omitFieldNames ? '' : 'currencyCode')
     ..aOM<$0.Timestamp>(9, _omitFieldNames ? '' : 'createdAt',
         subBuilder: $0.Timestamp.create)
@@ -186,9 +185,9 @@ class Transaction extends $pb.GeneratedMessage {
 
   /// The amount of the transaction in XAF.
   @$pb.TagNumber(7)
-  $fixnum.Int64 get amount => $_getI64(6);
+  $core.double get amount => $_getN(6);
   @$pb.TagNumber(7)
-  set amount($fixnum.Int64 value) => $_setInt64(6, value);
+  set amount($core.double value) => $_setDouble(6, value);
   @$pb.TagNumber(7)
   $core.bool hasAmount() => $_has(6);
   @$pb.TagNumber(7)

@@ -479,11 +479,9 @@ components:
           description: The unique identifier of the client or supplier associated with the transaction.
           nullable: true
         amount:
-          type:
-            - integer
-            - string
+          type: number
           title: amount
-          format: int64
+          format: double
           description: The amount of the transaction in XAF.
         currencyCode:
           type: string

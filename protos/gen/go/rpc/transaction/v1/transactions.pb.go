@@ -160,7 +160,7 @@ type Transaction struct {
 	// The unique identifier of the client or supplier associated with the transaction.
 	FromId *string `protobuf:"bytes,6,opt,name=from_id,json=fromId,proto3,oneof" json:"from_id,omitempty"`
 	// The amount of the transaction in XAF.
-	Amount int64 `protobuf:"varint,7,opt,name=amount,proto3" json:"amount,omitempty"`
+	Amount float64 `protobuf:"fixed64,7,opt,name=amount,proto3" json:"amount,omitempty"`
 	// The currency code of the transaction (ISO 4217).
 	CurrencyCode string `protobuf:"bytes,8,opt,name=currency_code,json=currencyCode,proto3" json:"currency_code,omitempty"`
 	// The creation date of the transaction (ISO 8601).
@@ -253,7 +253,7 @@ func (x *Transaction) GetFromId() string {
 	return ""
 }
 
-func (x *Transaction) GetAmount() int64 {
+func (x *Transaction) GetAmount() float64 {
 	if x != nil {
 		return x.Amount
 	}
@@ -818,7 +818,7 @@ const file_transaction_v1_transactions_proto_rawDesc = "" +
 	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\astoreId\x12\x1e\n" +
 	"\border_id\x18\x05 \x01(\tH\x01R\aorderId\x88\x01\x01\x12\x1c\n" +
 	"\afrom_id\x18\x06 \x01(\tH\x02R\x06fromId\x88\x01\x01\x12\x16\n" +
-	"\x06amount\x18\a \x01(\x03R\x06amount\x12+\n" +
+	"\x06amount\x18\a \x01(\x01R\x06amount\x12+\n" +
 	"\rcurrency_code\x18\b \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\fcurrencyCode\x129\n" +
 	"\n" +
 	"created_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12>\n" +

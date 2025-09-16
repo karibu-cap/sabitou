@@ -181,27 +181,13 @@ const CreateOrderRequest$json = {
       '6': '.order.v1.Order',
       '10': 'order'
     },
-    {
-      '1': 'supplier_name',
-      '3': 2,
-      '4': 1,
-      '5': 9,
-      '9': 0,
-      '10': 'supplierName',
-      '17': true
-    },
-    {'1': 'store_id', '3': 3, '4': 1, '5': 9, '10': 'storeId'},
-  ],
-  '8': [
-    {'1': '_supplier_name'},
   ],
 };
 
 /// Descriptor for `CreateOrderRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List createOrderRequestDescriptor = $convert.base64Decode(
     'ChJDcmVhdGVPcmRlclJlcXVlc3QSJQoFb3JkZXIYASABKAsyDy5vcmRlci52MS5PcmRlclIFb3'
-    'JkZXISKAoNc3VwcGxpZXJfbmFtZRgCIAEoCUgAUgxzdXBwbGllck5hbWWIAQESGQoIc3RvcmVf'
-    'aWQYAyABKAlSB3N0b3JlSWRCEAoOX3N1cHBsaWVyX25hbWU=');
+    'JkZXI=');
 
 @$core.Deprecated('Use createOrderResponseDescriptor instead')
 const CreateOrderResponse$json = {

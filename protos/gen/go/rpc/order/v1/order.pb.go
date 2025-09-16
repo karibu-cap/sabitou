@@ -349,11 +349,7 @@ func (x *Order) GetInitiatedBy() string {
 type CreateOrderRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The order to create.
-	Order *Order `protobuf:"bytes,1,opt,name=order,proto3" json:"order,omitempty"`
-	// The name of the supplier.
-	SupplierName *string `protobuf:"bytes,2,opt,name=supplier_name,json=supplierName,proto3,oneof" json:"supplier_name,omitempty"`
-	// The unique identifier of the store.
-	StoreId       string `protobuf:"bytes,3,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
+	Order         *Order `protobuf:"bytes,1,opt,name=order,proto3" json:"order,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -393,20 +389,6 @@ func (x *CreateOrderRequest) GetOrder() *Order {
 		return x.Order
 	}
 	return nil
-}
-
-func (x *CreateOrderRequest) GetSupplierName() string {
-	if x != nil && x.SupplierName != nil {
-		return *x.SupplierName
-	}
-	return ""
-}
-
-func (x *CreateOrderRequest) GetStoreId() string {
-	if x != nil {
-		return x.StoreId
-	}
-	return ""
 }
 
 type CreateOrderResponse struct {
@@ -816,12 +798,9 @@ const file_order_v1_order_proto_rawDesc = "" +
 	"\a_ref_idB\n" +
 	"\n" +
 	"\b_from_idB\r\n" +
-	"\v_updated_at\"\x92\x01\n" +
+	"\v_updated_at\";\n" +
 	"\x12CreateOrderRequest\x12%\n" +
-	"\x05order\x18\x01 \x01(\v2\x0f.order.v1.OrderR\x05order\x12(\n" +
-	"\rsupplier_name\x18\x02 \x01(\tH\x00R\fsupplierName\x88\x01\x01\x12\x19\n" +
-	"\bstore_id\x18\x03 \x01(\tR\astoreIdB\x10\n" +
-	"\x0e_supplier_name\"<\n" +
+	"\x05order\x18\x01 \x01(\v2\x0f.order.v1.OrderR\x05order\"<\n" +
 	"\x13CreateOrderResponse\x12%\n" +
 	"\border_id\x18\x01 \x01(\tB\n" +
 	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\aorderId\"8\n" +
@@ -932,7 +911,6 @@ func file_order_v1_order_proto_init() {
 		return
 	}
 	file_order_v1_order_proto_msgTypes[2].OneofWrappers = []any{}
-	file_order_v1_order_proto_msgTypes[3].OneofWrappers = []any{}
 	file_order_v1_order_proto_msgTypes[6].OneofWrappers = []any{}
 	file_order_v1_order_proto_msgTypes[9].OneofWrappers = []any{}
 	type x struct{}

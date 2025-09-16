@@ -5207,15 +5207,6 @@ components:
           title: order
           description: The order to create.
           $ref: '#/components/schemas/order.v1.Order'
-        supplierName:
-          type: string
-          title: supplier_name
-          description: The name of the supplier.
-          nullable: true
-        storeId:
-          type: string
-          title: store_id
-          description: The unique identifier of the store.
       title: CreateOrderRequest
       additionalProperties: false
     order.v1.CreateOrderResponse:
@@ -6188,11 +6179,9 @@ components:
           description: The unique identifier of the client or supplier associated with the transaction.
           nullable: true
         amount:
-          type:
-            - integer
-            - string
+          type: number
           title: amount
-          format: int64
+          format: double
           description: The amount of the transaction in XAF.
         currencyCode:
           type: string
