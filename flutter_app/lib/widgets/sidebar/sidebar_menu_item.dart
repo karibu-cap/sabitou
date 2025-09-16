@@ -16,7 +16,7 @@ class SideBarItem {
   final IconData icon;
 
   /// The sidebar item roles.
-  final List<ResourceType> roles;
+  final List<StoreResourceType> roles;
 
   /// The sidebar item children.
   final List<SideBarItem>? children;
@@ -43,7 +43,7 @@ class SidebarMenuItem extends StatelessWidget {
   final Function(DashboardItem) onTabChange;
 
   /// The user role.
-  final ResourceType userRole;
+  final StoreResourceType userRole;
 
   /// The is child.
   final bool isChild;
@@ -60,7 +60,10 @@ class SidebarMenuItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool hasAccess(List<ResourceType> requiredRoles, ResourceType userRole) {
+    bool hasAccess(
+      List<StoreResourceType> requiredRoles,
+      StoreResourceType userRole,
+    ) {
       return requiredRoles.contains(userRole);
     }
 

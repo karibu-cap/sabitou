@@ -21,585 +21,253 @@ export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 
 export 'permission.pbenum.dart';
 
-class Permission extends $pb.GeneratedMessage {
-  factory Permission({
-    ResourceType? resourceType,
-    $core.String? resourceId,
+class BusinessPermission extends $pb.GeneratedMessage {
+  factory BusinessPermission({
+    BusinessResourceType? resourceType,
     ResourceActionType? actionType,
   }) {
     final result = create();
     if (resourceType != null) result.resourceType = resourceType;
-    if (resourceId != null) result.resourceId = resourceId;
     if (actionType != null) result.actionType = actionType;
     return result;
   }
 
-  Permission._();
+  BusinessPermission._();
 
-  factory Permission.fromBuffer($core.List<$core.int> data,
+  factory BusinessPermission.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(data, registry);
-  factory Permission.fromJson($core.String json,
+  factory BusinessPermission.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'Permission',
+      _omitMessageNames ? '' : 'BusinessPermission',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'identity.v1'),
       createEmptyInstance: create)
-    ..e<ResourceType>(
+    ..e<BusinessResourceType>(
         1, _omitFieldNames ? '' : 'resourceType', $pb.PbFieldType.OE,
-        defaultOrMaker: ResourceType.RESOURCE_TYPE_UNSPECIFIED,
-        valueOf: ResourceType.valueOf,
-        enumValues: ResourceType.values)
-    ..aOS(2, _omitFieldNames ? '' : 'resourceId')
+        defaultOrMaker: BusinessResourceType.BUSINESS_RESOURCE_TYPE_UNSPECIFIED,
+        valueOf: BusinessResourceType.valueOf,
+        enumValues: BusinessResourceType.values)
     ..e<ResourceActionType>(
-        3, _omitFieldNames ? '' : 'actionType', $pb.PbFieldType.OE,
+        2, _omitFieldNames ? '' : 'actionType', $pb.PbFieldType.OE,
         defaultOrMaker: ResourceActionType.RESOURCE_ACTION_TYPE_UNSPECIFIED,
         valueOf: ResourceActionType.valueOf,
         enumValues: ResourceActionType.values)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  Permission clone() => Permission()..mergeFromMessage(this);
+  BusinessPermission clone() => BusinessPermission()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  Permission copyWith(void Function(Permission) updates) =>
-      super.copyWith((message) => updates(message as Permission)) as Permission;
+  BusinessPermission copyWith(void Function(BusinessPermission) updates) =>
+      super.copyWith((message) => updates(message as BusinessPermission))
+          as BusinessPermission;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static Permission create() => Permission._();
+  static BusinessPermission create() => BusinessPermission._();
   @$core.override
-  Permission createEmptyInstance() => create();
-  static $pb.PbList<Permission> createRepeated() => $pb.PbList<Permission>();
+  BusinessPermission createEmptyInstance() => create();
+  static $pb.PbList<BusinessPermission> createRepeated() =>
+      $pb.PbList<BusinessPermission>();
   @$core.pragma('dart2js:noInline')
-  static Permission getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<Permission>(create);
-  static Permission? _defaultInstance;
+  static BusinessPermission getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<BusinessPermission>(create);
+  static BusinessPermission? _defaultInstance;
 
   @$pb.TagNumber(1)
-  ResourceType get resourceType => $_getN(0);
+  BusinessResourceType get resourceType => $_getN(0);
   @$pb.TagNumber(1)
-  set resourceType(ResourceType value) => $_setField(1, value);
+  set resourceType(BusinessResourceType value) => $_setField(1, value);
   @$pb.TagNumber(1)
   $core.bool hasResourceType() => $_has(0);
   @$pb.TagNumber(1)
   void clearResourceType() => $_clearField(1);
 
-  /// The resource_id is only specified when we want to restrict action on a specific resource.
   @$pb.TagNumber(2)
-  $core.String get resourceId => $_getSZ(1);
+  ResourceActionType get actionType => $_getN(1);
   @$pb.TagNumber(2)
-  set resourceId($core.String value) => $_setString(1, value);
+  set actionType(ResourceActionType value) => $_setField(2, value);
   @$pb.TagNumber(2)
-  $core.bool hasResourceId() => $_has(1);
+  $core.bool hasActionType() => $_has(1);
   @$pb.TagNumber(2)
-  void clearResourceId() => $_clearField(2);
-
-  /// The action that the member can perform on the resource.
-  @$pb.TagNumber(3)
-  ResourceActionType get actionType => $_getN(2);
-  @$pb.TagNumber(3)
-  set actionType(ResourceActionType value) => $_setField(3, value);
-  @$pb.TagNumber(3)
-  $core.bool hasActionType() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearActionType() => $_clearField(3);
+  void clearActionType() => $_clearField(2);
 }
 
-class PermissionsGroup extends $pb.GeneratedMessage {
-  factory PermissionsGroup({
-    $core.String? refId,
-    $core.String? name,
-    $core.String? description,
-    $core.Iterable<Permission>? permissions,
+class StorePermission extends $pb.GeneratedMessage {
+  factory StorePermission({
+    StoreResourceType? resourceType,
+    ResourceActionType? actionType,
+  }) {
+    final result = create();
+    if (resourceType != null) result.resourceType = resourceType;
+    if (actionType != null) result.actionType = actionType;
+    return result;
+  }
+
+  StorePermission._();
+
+  factory StorePermission.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory StorePermission.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'StorePermission',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'identity.v1'),
+      createEmptyInstance: create)
+    ..e<StoreResourceType>(
+        1, _omitFieldNames ? '' : 'resourceType', $pb.PbFieldType.OE,
+        defaultOrMaker: StoreResourceType.STORE_RESOURCE_TYPE_UNSPECIFIED,
+        valueOf: StoreResourceType.valueOf,
+        enumValues: StoreResourceType.values)
+    ..e<ResourceActionType>(
+        2, _omitFieldNames ? '' : 'actionType', $pb.PbFieldType.OE,
+        defaultOrMaker: ResourceActionType.RESOURCE_ACTION_TYPE_UNSPECIFIED,
+        valueOf: ResourceActionType.valueOf,
+        enumValues: ResourceActionType.values)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  StorePermission clone() => StorePermission()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  StorePermission copyWith(void Function(StorePermission) updates) =>
+      super.copyWith((message) => updates(message as StorePermission))
+          as StorePermission;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static StorePermission create() => StorePermission._();
+  @$core.override
+  StorePermission createEmptyInstance() => create();
+  static $pb.PbList<StorePermission> createRepeated() =>
+      $pb.PbList<StorePermission>();
+  @$core.pragma('dart2js:noInline')
+  static StorePermission getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<StorePermission>(create);
+  static StorePermission? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  StoreResourceType get resourceType => $_getN(0);
+  @$pb.TagNumber(1)
+  set resourceType(StoreResourceType value) => $_setField(1, value);
+  @$pb.TagNumber(1)
+  $core.bool hasResourceType() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearResourceType() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  ResourceActionType get actionType => $_getN(1);
+  @$pb.TagNumber(2)
+  set actionType(ResourceActionType value) => $_setField(2, value);
+  @$pb.TagNumber(2)
+  $core.bool hasActionType() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearActionType() => $_clearField(2);
+}
+
+class CreateBusinessPermissionRequest extends $pb.GeneratedMessage {
+  factory CreateBusinessPermissionRequest({
+    BusinessPermission? businessPermission,
+    ResourceActionType? actionType,
     $core.String? businessId,
   }) {
     final result = create();
-    if (refId != null) result.refId = refId;
-    if (name != null) result.name = name;
-    if (description != null) result.description = description;
-    if (permissions != null) result.permissions.addAll(permissions);
+    if (businessPermission != null)
+      result.businessPermission = businessPermission;
+    if (actionType != null) result.actionType = actionType;
     if (businessId != null) result.businessId = businessId;
     return result;
   }
 
-  PermissionsGroup._();
+  CreateBusinessPermissionRequest._();
 
-  factory PermissionsGroup.fromBuffer($core.List<$core.int> data,
+  factory CreateBusinessPermissionRequest.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(data, registry);
-  factory PermissionsGroup.fromJson($core.String json,
+  factory CreateBusinessPermissionRequest.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'PermissionsGroup',
+      _omitMessageNames ? '' : 'CreateBusinessPermissionRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'identity.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'refId')
-    ..aOS(2, _omitFieldNames ? '' : 'name')
-    ..aOS(3, _omitFieldNames ? '' : 'description')
-    ..pc<Permission>(
-        4, _omitFieldNames ? '' : 'permissions', $pb.PbFieldType.PM,
-        subBuilder: Permission.create)
-    ..aOS(6, _omitFieldNames ? '' : 'businessId')
+    ..aOM<BusinessPermission>(1, _omitFieldNames ? '' : 'businessPermission',
+        subBuilder: BusinessPermission.create)
+    ..e<ResourceActionType>(
+        2, _omitFieldNames ? '' : 'actionType', $pb.PbFieldType.OE,
+        defaultOrMaker: ResourceActionType.RESOURCE_ACTION_TYPE_UNSPECIFIED,
+        valueOf: ResourceActionType.valueOf,
+        enumValues: ResourceActionType.values)
+    ..aOS(3, _omitFieldNames ? '' : 'businessId')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  PermissionsGroup clone() => PermissionsGroup()..mergeFromMessage(this);
+  CreateBusinessPermissionRequest clone() =>
+      CreateBusinessPermissionRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  PermissionsGroup copyWith(void Function(PermissionsGroup) updates) =>
-      super.copyWith((message) => updates(message as PermissionsGroup))
-          as PermissionsGroup;
-
-  @$core.override
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static PermissionsGroup create() => PermissionsGroup._();
-  @$core.override
-  PermissionsGroup createEmptyInstance() => create();
-  static $pb.PbList<PermissionsGroup> createRepeated() =>
-      $pb.PbList<PermissionsGroup>();
-  @$core.pragma('dart2js:noInline')
-  static PermissionsGroup getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<PermissionsGroup>(create);
-  static PermissionsGroup? _defaultInstance;
-
-  /// The reference id to the permission group identifier.
-  @$pb.TagNumber(1)
-  $core.String get refId => $_getSZ(0);
-  @$pb.TagNumber(1)
-  set refId($core.String value) => $_setString(0, value);
-  @$pb.TagNumber(1)
-  $core.bool hasRefId() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearRefId() => $_clearField(1);
-
-  /// The name of the permission group. Generally the role of the group.
-  @$pb.TagNumber(2)
-  $core.String get name => $_getSZ(1);
-  @$pb.TagNumber(2)
-  set name($core.String value) => $_setString(1, value);
-  @$pb.TagNumber(2)
-  $core.bool hasName() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearName() => $_clearField(2);
-
-  /// The description of the permission group.
-  @$pb.TagNumber(3)
-  $core.String get description => $_getSZ(2);
-  @$pb.TagNumber(3)
-  set description($core.String value) => $_setString(2, value);
-  @$pb.TagNumber(3)
-  $core.bool hasDescription() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearDescription() => $_clearField(3);
-
-  /// The permissions that the permission group has.
-  @$pb.TagNumber(4)
-  $pb.PbList<Permission> get permissions => $_getList(3);
-
-  /// The unique identifier of the business.
-  /// must be set if the permission group is create by a business.
-  @$pb.TagNumber(6)
-  $core.String get businessId => $_getSZ(4);
-  @$pb.TagNumber(6)
-  set businessId($core.String value) => $_setString(4, value);
-  @$pb.TagNumber(6)
-  $core.bool hasBusinessId() => $_has(4);
-  @$pb.TagNumber(6)
-  void clearBusinessId() => $_clearField(6);
-}
-
-class CreatePermissionsGroupRequest extends $pb.GeneratedMessage {
-  factory CreatePermissionsGroupRequest({
-    PermissionsGroup? permissionsGroup,
-    $core.String? businessId,
-  }) {
-    final result = create();
-    if (permissionsGroup != null) result.permissionsGroup = permissionsGroup;
-    if (businessId != null) result.businessId = businessId;
-    return result;
-  }
-
-  CreatePermissionsGroupRequest._();
-
-  factory CreatePermissionsGroupRequest.fromBuffer($core.List<$core.int> data,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
-  factory CreatePermissionsGroupRequest.fromJson($core.String json,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'CreatePermissionsGroupRequest',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'identity.v1'),
-      createEmptyInstance: create)
-    ..aOM<PermissionsGroup>(1, _omitFieldNames ? '' : 'permissionsGroup',
-        subBuilder: PermissionsGroup.create)
-    ..aOS(2, _omitFieldNames ? '' : 'businessId')
-    ..hasRequiredFields = false;
-
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreatePermissionsGroupRequest clone() =>
-      CreatePermissionsGroupRequest()..mergeFromMessage(this);
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreatePermissionsGroupRequest copyWith(
-          void Function(CreatePermissionsGroupRequest) updates) =>
+  CreateBusinessPermissionRequest copyWith(
+          void Function(CreateBusinessPermissionRequest) updates) =>
       super.copyWith(
-              (message) => updates(message as CreatePermissionsGroupRequest))
-          as CreatePermissionsGroupRequest;
+              (message) => updates(message as CreateBusinessPermissionRequest))
+          as CreateBusinessPermissionRequest;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static CreatePermissionsGroupRequest create() =>
-      CreatePermissionsGroupRequest._();
+  static CreateBusinessPermissionRequest create() =>
+      CreateBusinessPermissionRequest._();
   @$core.override
-  CreatePermissionsGroupRequest createEmptyInstance() => create();
-  static $pb.PbList<CreatePermissionsGroupRequest> createRepeated() =>
-      $pb.PbList<CreatePermissionsGroupRequest>();
+  CreateBusinessPermissionRequest createEmptyInstance() => create();
+  static $pb.PbList<CreateBusinessPermissionRequest> createRepeated() =>
+      $pb.PbList<CreateBusinessPermissionRequest>();
   @$core.pragma('dart2js:noInline')
-  static CreatePermissionsGroupRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<CreatePermissionsGroupRequest>(create);
-  static CreatePermissionsGroupRequest? _defaultInstance;
+  static CreateBusinessPermissionRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<CreateBusinessPermissionRequest>(
+          create);
+  static CreateBusinessPermissionRequest? _defaultInstance;
 
-  /// The permission group information to create.
-  /// Note:Only the fields that are set will be created.
   @$pb.TagNumber(1)
-  PermissionsGroup get permissionsGroup => $_getN(0);
+  BusinessPermission get businessPermission => $_getN(0);
   @$pb.TagNumber(1)
-  set permissionsGroup(PermissionsGroup value) => $_setField(1, value);
+  set businessPermission(BusinessPermission value) => $_setField(1, value);
   @$pb.TagNumber(1)
-  $core.bool hasPermissionsGroup() => $_has(0);
+  $core.bool hasBusinessPermission() => $_has(0);
   @$pb.TagNumber(1)
-  void clearPermissionsGroup() => $_clearField(1);
+  void clearBusinessPermission() => $_clearField(1);
   @$pb.TagNumber(1)
-  PermissionsGroup ensurePermissionsGroup() => $_ensure(0);
+  BusinessPermission ensureBusinessPermission() => $_ensure(0);
 
-  /// The unique identifier of the business on which the permission group is created.
   @$pb.TagNumber(2)
-  $core.String get businessId => $_getSZ(1);
+  ResourceActionType get actionType => $_getN(1);
   @$pb.TagNumber(2)
-  set businessId($core.String value) => $_setString(1, value);
+  set actionType(ResourceActionType value) => $_setField(2, value);
   @$pb.TagNumber(2)
-  $core.bool hasBusinessId() => $_has(1);
+  $core.bool hasActionType() => $_has(1);
   @$pb.TagNumber(2)
-  void clearBusinessId() => $_clearField(2);
-}
+  void clearActionType() => $_clearField(2);
 
-class CreatePermissionsGroupResponse extends $pb.GeneratedMessage {
-  factory CreatePermissionsGroupResponse({
-    $core.String? permissionGroupId,
-  }) {
-    final result = create();
-    if (permissionGroupId != null) result.permissionGroupId = permissionGroupId;
-    return result;
-  }
-
-  CreatePermissionsGroupResponse._();
-
-  factory CreatePermissionsGroupResponse.fromBuffer($core.List<$core.int> data,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
-  factory CreatePermissionsGroupResponse.fromJson($core.String json,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'CreatePermissionsGroupResponse',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'identity.v1'),
-      createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'permissionGroupId')
-    ..hasRequiredFields = false;
-
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreatePermissionsGroupResponse clone() =>
-      CreatePermissionsGroupResponse()..mergeFromMessage(this);
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreatePermissionsGroupResponse copyWith(
-          void Function(CreatePermissionsGroupResponse) updates) =>
-      super.copyWith(
-              (message) => updates(message as CreatePermissionsGroupResponse))
-          as CreatePermissionsGroupResponse;
-
-  @$core.override
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static CreatePermissionsGroupResponse create() =>
-      CreatePermissionsGroupResponse._();
-  @$core.override
-  CreatePermissionsGroupResponse createEmptyInstance() => create();
-  static $pb.PbList<CreatePermissionsGroupResponse> createRepeated() =>
-      $pb.PbList<CreatePermissionsGroupResponse>();
-  @$core.pragma('dart2js:noInline')
-  static CreatePermissionsGroupResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<CreatePermissionsGroupResponse>(create);
-  static CreatePermissionsGroupResponse? _defaultInstance;
-
-  /// The unique identifier of the created permission group.
-  @$pb.TagNumber(1)
-  $core.String get permissionGroupId => $_getSZ(0);
-  @$pb.TagNumber(1)
-  set permissionGroupId($core.String value) => $_setString(0, value);
-  @$pb.TagNumber(1)
-  $core.bool hasPermissionGroupId() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearPermissionGroupId() => $_clearField(1);
-}
-
-class GetPermissionsGroupRequest extends $pb.GeneratedMessage {
-  factory GetPermissionsGroupRequest({
-    $core.String? permissionGroupId,
-  }) {
-    final result = create();
-    if (permissionGroupId != null) result.permissionGroupId = permissionGroupId;
-    return result;
-  }
-
-  GetPermissionsGroupRequest._();
-
-  factory GetPermissionsGroupRequest.fromBuffer($core.List<$core.int> data,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
-  factory GetPermissionsGroupRequest.fromJson($core.String json,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'GetPermissionsGroupRequest',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'identity.v1'),
-      createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'permissionGroupId')
-    ..hasRequiredFields = false;
-
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetPermissionsGroupRequest clone() =>
-      GetPermissionsGroupRequest()..mergeFromMessage(this);
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetPermissionsGroupRequest copyWith(
-          void Function(GetPermissionsGroupRequest) updates) =>
-      super.copyWith(
-              (message) => updates(message as GetPermissionsGroupRequest))
-          as GetPermissionsGroupRequest;
-
-  @$core.override
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static GetPermissionsGroupRequest create() => GetPermissionsGroupRequest._();
-  @$core.override
-  GetPermissionsGroupRequest createEmptyInstance() => create();
-  static $pb.PbList<GetPermissionsGroupRequest> createRepeated() =>
-      $pb.PbList<GetPermissionsGroupRequest>();
-  @$core.pragma('dart2js:noInline')
-  static GetPermissionsGroupRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<GetPermissionsGroupRequest>(create);
-  static GetPermissionsGroupRequest? _defaultInstance;
-
-  /// The unique identifier of the permission group to retrieve.
-  @$pb.TagNumber(1)
-  $core.String get permissionGroupId => $_getSZ(0);
-  @$pb.TagNumber(1)
-  set permissionGroupId($core.String value) => $_setString(0, value);
-  @$pb.TagNumber(1)
-  $core.bool hasPermissionGroupId() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearPermissionGroupId() => $_clearField(1);
-}
-
-class GetPermissionsGroupResponse extends $pb.GeneratedMessage {
-  factory GetPermissionsGroupResponse({
-    PermissionsGroup? permissionsGroup,
-  }) {
-    final result = create();
-    if (permissionsGroup != null) result.permissionsGroup = permissionsGroup;
-    return result;
-  }
-
-  GetPermissionsGroupResponse._();
-
-  factory GetPermissionsGroupResponse.fromBuffer($core.List<$core.int> data,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
-  factory GetPermissionsGroupResponse.fromJson($core.String json,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'GetPermissionsGroupResponse',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'identity.v1'),
-      createEmptyInstance: create)
-    ..aOM<PermissionsGroup>(1, _omitFieldNames ? '' : 'permissionsGroup',
-        subBuilder: PermissionsGroup.create)
-    ..hasRequiredFields = false;
-
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetPermissionsGroupResponse clone() =>
-      GetPermissionsGroupResponse()..mergeFromMessage(this);
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetPermissionsGroupResponse copyWith(
-          void Function(GetPermissionsGroupResponse) updates) =>
-      super.copyWith(
-              (message) => updates(message as GetPermissionsGroupResponse))
-          as GetPermissionsGroupResponse;
-
-  @$core.override
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static GetPermissionsGroupResponse create() =>
-      GetPermissionsGroupResponse._();
-  @$core.override
-  GetPermissionsGroupResponse createEmptyInstance() => create();
-  static $pb.PbList<GetPermissionsGroupResponse> createRepeated() =>
-      $pb.PbList<GetPermissionsGroupResponse>();
-  @$core.pragma('dart2js:noInline')
-  static GetPermissionsGroupResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<GetPermissionsGroupResponse>(create);
-  static GetPermissionsGroupResponse? _defaultInstance;
-
-  /// The retrieved permission group data.
-  @$pb.TagNumber(1)
-  PermissionsGroup get permissionsGroup => $_getN(0);
-  @$pb.TagNumber(1)
-  set permissionsGroup(PermissionsGroup value) => $_setField(1, value);
-  @$pb.TagNumber(1)
-  $core.bool hasPermissionsGroup() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearPermissionsGroup() => $_clearField(1);
-  @$pb.TagNumber(1)
-  PermissionsGroup ensurePermissionsGroup() => $_ensure(0);
-}
-
-class UpdatePermissionsGroupRequest extends $pb.GeneratedMessage {
-  factory UpdatePermissionsGroupRequest({
-    $core.String? permissionsGroupId,
-    $core.String? name,
-    $core.String? description,
-    $core.Iterable<Permission>? addPermissions,
-    $core.Iterable<Permission>? removePermissions,
-    $core.String? businessId,
-  }) {
-    final result = create();
-    if (permissionsGroupId != null)
-      result.permissionsGroupId = permissionsGroupId;
-    if (name != null) result.name = name;
-    if (description != null) result.description = description;
-    if (addPermissions != null) result.addPermissions.addAll(addPermissions);
-    if (removePermissions != null)
-      result.removePermissions.addAll(removePermissions);
-    if (businessId != null) result.businessId = businessId;
-    return result;
-  }
-
-  UpdatePermissionsGroupRequest._();
-
-  factory UpdatePermissionsGroupRequest.fromBuffer($core.List<$core.int> data,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
-  factory UpdatePermissionsGroupRequest.fromJson($core.String json,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'UpdatePermissionsGroupRequest',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'identity.v1'),
-      createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'permissionsGroupId')
-    ..aOS(2, _omitFieldNames ? '' : 'name')
-    ..aOS(3, _omitFieldNames ? '' : 'description')
-    ..pc<Permission>(
-        4, _omitFieldNames ? '' : 'addPermissions', $pb.PbFieldType.PM,
-        subBuilder: Permission.create)
-    ..pc<Permission>(
-        5, _omitFieldNames ? '' : 'removePermissions', $pb.PbFieldType.PM,
-        subBuilder: Permission.create)
-    ..aOS(6, _omitFieldNames ? '' : 'businessId')
-    ..hasRequiredFields = false;
-
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  UpdatePermissionsGroupRequest clone() =>
-      UpdatePermissionsGroupRequest()..mergeFromMessage(this);
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  UpdatePermissionsGroupRequest copyWith(
-          void Function(UpdatePermissionsGroupRequest) updates) =>
-      super.copyWith(
-              (message) => updates(message as UpdatePermissionsGroupRequest))
-          as UpdatePermissionsGroupRequest;
-
-  @$core.override
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static UpdatePermissionsGroupRequest create() =>
-      UpdatePermissionsGroupRequest._();
-  @$core.override
-  UpdatePermissionsGroupRequest createEmptyInstance() => create();
-  static $pb.PbList<UpdatePermissionsGroupRequest> createRepeated() =>
-      $pb.PbList<UpdatePermissionsGroupRequest>();
-  @$core.pragma('dart2js:noInline')
-  static UpdatePermissionsGroupRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<UpdatePermissionsGroupRequest>(create);
-  static UpdatePermissionsGroupRequest? _defaultInstance;
-
-  /// The permission group id;
-  @$pb.TagNumber(1)
-  $core.String get permissionsGroupId => $_getSZ(0);
-  @$pb.TagNumber(1)
-  set permissionsGroupId($core.String value) => $_setString(0, value);
-  @$pb.TagNumber(1)
-  $core.bool hasPermissionsGroupId() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearPermissionsGroupId() => $_clearField(1);
-
-  /// The name of the permission group. Generally the role of the group.
-  @$pb.TagNumber(2)
-  $core.String get name => $_getSZ(1);
-  @$pb.TagNumber(2)
-  set name($core.String value) => $_setString(1, value);
-  @$pb.TagNumber(2)
-  $core.bool hasName() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearName() => $_clearField(2);
-
-  /// The description of the permission group.
   @$pb.TagNumber(3)
-  $core.String get description => $_getSZ(2);
+  $core.String get businessId => $_getSZ(2);
   @$pb.TagNumber(3)
-  set description($core.String value) => $_setString(2, value);
+  set businessId($core.String value) => $_setString(2, value);
   @$pb.TagNumber(3)
-  $core.bool hasDescription() => $_has(2);
+  $core.bool hasBusinessId() => $_has(2);
   @$pb.TagNumber(3)
-  void clearDescription() => $_clearField(3);
-
-  /// The permissions set to add.
-  @$pb.TagNumber(4)
-  $pb.PbList<Permission> get addPermissions => $_getList(3);
-
-  /// The permissions set to remove.
-  @$pb.TagNumber(5)
-  $pb.PbList<Permission> get removePermissions => $_getList(4);
-
-  /// The unique identifier of the business.
-  @$pb.TagNumber(6)
-  $core.String get businessId => $_getSZ(5);
-  @$pb.TagNumber(6)
-  set businessId($core.String value) => $_setString(5, value);
-  @$pb.TagNumber(6)
-  $core.bool hasBusinessId() => $_has(5);
-  @$pb.TagNumber(6)
-  void clearBusinessId() => $_clearField(6);
+  void clearBusinessId() => $_clearField(3);
 }
 
-class UpdatePermissionsGroupResponse extends $pb.GeneratedMessage {
-  factory UpdatePermissionsGroupResponse({
+class CreateBusinessPermissionResponse extends $pb.GeneratedMessage {
+  factory CreateBusinessPermissionResponse({
     $core.bool? success,
   }) {
     final result = create();
@@ -607,46 +275,358 @@ class UpdatePermissionsGroupResponse extends $pb.GeneratedMessage {
     return result;
   }
 
-  UpdatePermissionsGroupResponse._();
+  CreateBusinessPermissionResponse._();
 
-  factory UpdatePermissionsGroupResponse.fromBuffer($core.List<$core.int> data,
+  factory CreateBusinessPermissionResponse.fromBuffer(
+          $core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(data, registry);
-  factory UpdatePermissionsGroupResponse.fromJson($core.String json,
+  factory CreateBusinessPermissionResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'UpdatePermissionsGroupResponse',
+      _omitMessageNames ? '' : 'CreateBusinessPermissionResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'identity.v1'),
       createEmptyInstance: create)
     ..aOB(1, _omitFieldNames ? '' : 'success')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  UpdatePermissionsGroupResponse clone() =>
-      UpdatePermissionsGroupResponse()..mergeFromMessage(this);
+  CreateBusinessPermissionResponse clone() =>
+      CreateBusinessPermissionResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  UpdatePermissionsGroupResponse copyWith(
-          void Function(UpdatePermissionsGroupResponse) updates) =>
+  CreateBusinessPermissionResponse copyWith(
+          void Function(CreateBusinessPermissionResponse) updates) =>
       super.copyWith(
-              (message) => updates(message as UpdatePermissionsGroupResponse))
-          as UpdatePermissionsGroupResponse;
+              (message) => updates(message as CreateBusinessPermissionResponse))
+          as CreateBusinessPermissionResponse;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static UpdatePermissionsGroupResponse create() =>
-      UpdatePermissionsGroupResponse._();
+  static CreateBusinessPermissionResponse create() =>
+      CreateBusinessPermissionResponse._();
   @$core.override
-  UpdatePermissionsGroupResponse createEmptyInstance() => create();
-  static $pb.PbList<UpdatePermissionsGroupResponse> createRepeated() =>
-      $pb.PbList<UpdatePermissionsGroupResponse>();
+  CreateBusinessPermissionResponse createEmptyInstance() => create();
+  static $pb.PbList<CreateBusinessPermissionResponse> createRepeated() =>
+      $pb.PbList<CreateBusinessPermissionResponse>();
   @$core.pragma('dart2js:noInline')
-  static UpdatePermissionsGroupResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<UpdatePermissionsGroupResponse>(create);
-  static UpdatePermissionsGroupResponse? _defaultInstance;
+  static CreateBusinessPermissionResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<CreateBusinessPermissionResponse>(
+          create);
+  static CreateBusinessPermissionResponse? _defaultInstance;
+
+  /// Whether the permission group was successfully created.
+  @$pb.TagNumber(1)
+  $core.bool get success => $_getBF(0);
+  @$pb.TagNumber(1)
+  set success($core.bool value) => $_setBool(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasSuccess() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSuccess() => $_clearField(1);
+}
+
+class CreateStorePermissionRequest extends $pb.GeneratedMessage {
+  factory CreateStorePermissionRequest({
+    StorePermission? storePermission,
+    ResourceActionType? actionType,
+    $core.String? storeId,
+  }) {
+    final result = create();
+    if (storePermission != null) result.storePermission = storePermission;
+    if (actionType != null) result.actionType = actionType;
+    if (storeId != null) result.storeId = storeId;
+    return result;
+  }
+
+  CreateStorePermissionRequest._();
+
+  factory CreateStorePermissionRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory CreateStorePermissionRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'CreateStorePermissionRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'identity.v1'),
+      createEmptyInstance: create)
+    ..aOM<StorePermission>(1, _omitFieldNames ? '' : 'storePermission',
+        subBuilder: StorePermission.create)
+    ..e<ResourceActionType>(
+        2, _omitFieldNames ? '' : 'actionType', $pb.PbFieldType.OE,
+        defaultOrMaker: ResourceActionType.RESOURCE_ACTION_TYPE_UNSPECIFIED,
+        valueOf: ResourceActionType.valueOf,
+        enumValues: ResourceActionType.values)
+    ..aOS(3, _omitFieldNames ? '' : 'storeId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  CreateStorePermissionRequest clone() =>
+      CreateStorePermissionRequest()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  CreateStorePermissionRequest copyWith(
+          void Function(CreateStorePermissionRequest) updates) =>
+      super.copyWith(
+              (message) => updates(message as CreateStorePermissionRequest))
+          as CreateStorePermissionRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static CreateStorePermissionRequest create() =>
+      CreateStorePermissionRequest._();
+  @$core.override
+  CreateStorePermissionRequest createEmptyInstance() => create();
+  static $pb.PbList<CreateStorePermissionRequest> createRepeated() =>
+      $pb.PbList<CreateStorePermissionRequest>();
+  @$core.pragma('dart2js:noInline')
+  static CreateStorePermissionRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<CreateStorePermissionRequest>(create);
+  static CreateStorePermissionRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  StorePermission get storePermission => $_getN(0);
+  @$pb.TagNumber(1)
+  set storePermission(StorePermission value) => $_setField(1, value);
+  @$pb.TagNumber(1)
+  $core.bool hasStorePermission() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearStorePermission() => $_clearField(1);
+  @$pb.TagNumber(1)
+  StorePermission ensureStorePermission() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  ResourceActionType get actionType => $_getN(1);
+  @$pb.TagNumber(2)
+  set actionType(ResourceActionType value) => $_setField(2, value);
+  @$pb.TagNumber(2)
+  $core.bool hasActionType() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearActionType() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get storeId => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set storeId($core.String value) => $_setString(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasStoreId() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearStoreId() => $_clearField(3);
+}
+
+class CreateStorePermissionResponse extends $pb.GeneratedMessage {
+  factory CreateStorePermissionResponse({
+    $core.bool? success,
+  }) {
+    final result = create();
+    if (success != null) result.success = success;
+    return result;
+  }
+
+  CreateStorePermissionResponse._();
+
+  factory CreateStorePermissionResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory CreateStorePermissionResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'CreateStorePermissionResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'identity.v1'),
+      createEmptyInstance: create)
+    ..aOB(1, _omitFieldNames ? '' : 'success')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  CreateStorePermissionResponse clone() =>
+      CreateStorePermissionResponse()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  CreateStorePermissionResponse copyWith(
+          void Function(CreateStorePermissionResponse) updates) =>
+      super.copyWith(
+              (message) => updates(message as CreateStorePermissionResponse))
+          as CreateStorePermissionResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static CreateStorePermissionResponse create() =>
+      CreateStorePermissionResponse._();
+  @$core.override
+  CreateStorePermissionResponse createEmptyInstance() => create();
+  static $pb.PbList<CreateStorePermissionResponse> createRepeated() =>
+      $pb.PbList<CreateStorePermissionResponse>();
+  @$core.pragma('dart2js:noInline')
+  static CreateStorePermissionResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<CreateStorePermissionResponse>(create);
+  static CreateStorePermissionResponse? _defaultInstance;
+
+  /// Whether the permission group was successfully created.
+  @$pb.TagNumber(1)
+  $core.bool get success => $_getBF(0);
+  @$pb.TagNumber(1)
+  set success($core.bool value) => $_setBool(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasSuccess() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSuccess() => $_clearField(1);
+}
+
+class UpdateBusinessPermissionRequest extends $pb.GeneratedMessage {
+  factory UpdateBusinessPermissionRequest({
+    BusinessPermission? businessPermission,
+    ResourceActionType? actionType,
+    $core.String? businessPermissionId,
+  }) {
+    final result = create();
+    if (businessPermission != null)
+      result.businessPermission = businessPermission;
+    if (actionType != null) result.actionType = actionType;
+    if (businessPermissionId != null)
+      result.businessPermissionId = businessPermissionId;
+    return result;
+  }
+
+  UpdateBusinessPermissionRequest._();
+
+  factory UpdateBusinessPermissionRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory UpdateBusinessPermissionRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'UpdateBusinessPermissionRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'identity.v1'),
+      createEmptyInstance: create)
+    ..aOM<BusinessPermission>(1, _omitFieldNames ? '' : 'businessPermission',
+        subBuilder: BusinessPermission.create)
+    ..e<ResourceActionType>(
+        2, _omitFieldNames ? '' : 'actionType', $pb.PbFieldType.OE,
+        defaultOrMaker: ResourceActionType.RESOURCE_ACTION_TYPE_UNSPECIFIED,
+        valueOf: ResourceActionType.valueOf,
+        enumValues: ResourceActionType.values)
+    ..aOS(3, _omitFieldNames ? '' : 'businessPermissionId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  UpdateBusinessPermissionRequest clone() =>
+      UpdateBusinessPermissionRequest()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  UpdateBusinessPermissionRequest copyWith(
+          void Function(UpdateBusinessPermissionRequest) updates) =>
+      super.copyWith(
+              (message) => updates(message as UpdateBusinessPermissionRequest))
+          as UpdateBusinessPermissionRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static UpdateBusinessPermissionRequest create() =>
+      UpdateBusinessPermissionRequest._();
+  @$core.override
+  UpdateBusinessPermissionRequest createEmptyInstance() => create();
+  static $pb.PbList<UpdateBusinessPermissionRequest> createRepeated() =>
+      $pb.PbList<UpdateBusinessPermissionRequest>();
+  @$core.pragma('dart2js:noInline')
+  static UpdateBusinessPermissionRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<UpdateBusinessPermissionRequest>(
+          create);
+  static UpdateBusinessPermissionRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  BusinessPermission get businessPermission => $_getN(0);
+  @$pb.TagNumber(1)
+  set businessPermission(BusinessPermission value) => $_setField(1, value);
+  @$pb.TagNumber(1)
+  $core.bool hasBusinessPermission() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearBusinessPermission() => $_clearField(1);
+  @$pb.TagNumber(1)
+  BusinessPermission ensureBusinessPermission() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  ResourceActionType get actionType => $_getN(1);
+  @$pb.TagNumber(2)
+  set actionType(ResourceActionType value) => $_setField(2, value);
+  @$pb.TagNumber(2)
+  $core.bool hasActionType() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearActionType() => $_clearField(2);
+
+  /// The unique identifier of the business permission.
+  @$pb.TagNumber(3)
+  $core.String get businessPermissionId => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set businessPermissionId($core.String value) => $_setString(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasBusinessPermissionId() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearBusinessPermissionId() => $_clearField(3);
+}
+
+class UpdateBusinessPermissionResponse extends $pb.GeneratedMessage {
+  factory UpdateBusinessPermissionResponse({
+    $core.bool? success,
+  }) {
+    final result = create();
+    if (success != null) result.success = success;
+    return result;
+  }
+
+  UpdateBusinessPermissionResponse._();
+
+  factory UpdateBusinessPermissionResponse.fromBuffer(
+          $core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory UpdateBusinessPermissionResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'UpdateBusinessPermissionResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'identity.v1'),
+      createEmptyInstance: create)
+    ..aOB(1, _omitFieldNames ? '' : 'success')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  UpdateBusinessPermissionResponse clone() =>
+      UpdateBusinessPermissionResponse()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  UpdateBusinessPermissionResponse copyWith(
+          void Function(UpdateBusinessPermissionResponse) updates) =>
+      super.copyWith(
+              (message) => updates(message as UpdateBusinessPermissionResponse))
+          as UpdateBusinessPermissionResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static UpdateBusinessPermissionResponse create() =>
+      UpdateBusinessPermissionResponse._();
+  @$core.override
+  UpdateBusinessPermissionResponse createEmptyInstance() => create();
+  static $pb.PbList<UpdateBusinessPermissionResponse> createRepeated() =>
+      $pb.PbList<UpdateBusinessPermissionResponse>();
+  @$core.pragma('dart2js:noInline')
+  static UpdateBusinessPermissionResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<UpdateBusinessPermissionResponse>(
+          create);
+  static UpdateBusinessPermissionResponse? _defaultInstance;
 
   /// Whether the permission group was successfully updated.
   @$pb.TagNumber(1)
@@ -659,82 +639,99 @@ class UpdatePermissionsGroupResponse extends $pb.GeneratedMessage {
   void clearSuccess() => $_clearField(1);
 }
 
-class DeletePermissionsGroupRequest extends $pb.GeneratedMessage {
-  factory DeletePermissionsGroupRequest({
-    $core.String? permissionGroupId,
-    $core.String? businessId,
+class UpdateStorePermissionRequest extends $pb.GeneratedMessage {
+  factory UpdateStorePermissionRequest({
+    StorePermission? storePermission,
+    ResourceActionType? actionType,
+    $core.String? storePermissionId,
   }) {
     final result = create();
-    if (permissionGroupId != null) result.permissionGroupId = permissionGroupId;
-    if (businessId != null) result.businessId = businessId;
+    if (storePermission != null) result.storePermission = storePermission;
+    if (actionType != null) result.actionType = actionType;
+    if (storePermissionId != null) result.storePermissionId = storePermissionId;
     return result;
   }
 
-  DeletePermissionsGroupRequest._();
+  UpdateStorePermissionRequest._();
 
-  factory DeletePermissionsGroupRequest.fromBuffer($core.List<$core.int> data,
+  factory UpdateStorePermissionRequest.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(data, registry);
-  factory DeletePermissionsGroupRequest.fromJson($core.String json,
+  factory UpdateStorePermissionRequest.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'DeletePermissionsGroupRequest',
+      _omitMessageNames ? '' : 'UpdateStorePermissionRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'identity.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'permissionGroupId')
-    ..aOS(2, _omitFieldNames ? '' : 'businessId')
+    ..aOM<StorePermission>(1, _omitFieldNames ? '' : 'storePermission',
+        subBuilder: StorePermission.create)
+    ..e<ResourceActionType>(
+        2, _omitFieldNames ? '' : 'actionType', $pb.PbFieldType.OE,
+        defaultOrMaker: ResourceActionType.RESOURCE_ACTION_TYPE_UNSPECIFIED,
+        valueOf: ResourceActionType.valueOf,
+        enumValues: ResourceActionType.values)
+    ..aOS(3, _omitFieldNames ? '' : 'storePermissionId')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  DeletePermissionsGroupRequest clone() =>
-      DeletePermissionsGroupRequest()..mergeFromMessage(this);
+  UpdateStorePermissionRequest clone() =>
+      UpdateStorePermissionRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  DeletePermissionsGroupRequest copyWith(
-          void Function(DeletePermissionsGroupRequest) updates) =>
+  UpdateStorePermissionRequest copyWith(
+          void Function(UpdateStorePermissionRequest) updates) =>
       super.copyWith(
-              (message) => updates(message as DeletePermissionsGroupRequest))
-          as DeletePermissionsGroupRequest;
+              (message) => updates(message as UpdateStorePermissionRequest))
+          as UpdateStorePermissionRequest;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static DeletePermissionsGroupRequest create() =>
-      DeletePermissionsGroupRequest._();
+  static UpdateStorePermissionRequest create() =>
+      UpdateStorePermissionRequest._();
   @$core.override
-  DeletePermissionsGroupRequest createEmptyInstance() => create();
-  static $pb.PbList<DeletePermissionsGroupRequest> createRepeated() =>
-      $pb.PbList<DeletePermissionsGroupRequest>();
+  UpdateStorePermissionRequest createEmptyInstance() => create();
+  static $pb.PbList<UpdateStorePermissionRequest> createRepeated() =>
+      $pb.PbList<UpdateStorePermissionRequest>();
   @$core.pragma('dart2js:noInline')
-  static DeletePermissionsGroupRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<DeletePermissionsGroupRequest>(create);
-  static DeletePermissionsGroupRequest? _defaultInstance;
+  static UpdateStorePermissionRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<UpdateStorePermissionRequest>(create);
+  static UpdateStorePermissionRequest? _defaultInstance;
 
-  /// The unique identifier of the permission group to delete.
   @$pb.TagNumber(1)
-  $core.String get permissionGroupId => $_getSZ(0);
+  StorePermission get storePermission => $_getN(0);
   @$pb.TagNumber(1)
-  set permissionGroupId($core.String value) => $_setString(0, value);
+  set storePermission(StorePermission value) => $_setField(1, value);
   @$pb.TagNumber(1)
-  $core.bool hasPermissionGroupId() => $_has(0);
+  $core.bool hasStorePermission() => $_has(0);
   @$pb.TagNumber(1)
-  void clearPermissionGroupId() => $_clearField(1);
+  void clearStorePermission() => $_clearField(1);
+  @$pb.TagNumber(1)
+  StorePermission ensureStorePermission() => $_ensure(0);
 
-  /// The unique identifier of the business.
   @$pb.TagNumber(2)
-  $core.String get businessId => $_getSZ(1);
+  ResourceActionType get actionType => $_getN(1);
   @$pb.TagNumber(2)
-  set businessId($core.String value) => $_setString(1, value);
+  set actionType(ResourceActionType value) => $_setField(2, value);
   @$pb.TagNumber(2)
-  $core.bool hasBusinessId() => $_has(1);
+  $core.bool hasActionType() => $_has(1);
   @$pb.TagNumber(2)
-  void clearBusinessId() => $_clearField(2);
+  void clearActionType() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get storePermissionId => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set storePermissionId($core.String value) => $_setString(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasStorePermissionId() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearStorePermissionId() => $_clearField(3);
 }
 
-class DeletePermissionsGroupResponse extends $pb.GeneratedMessage {
-  factory DeletePermissionsGroupResponse({
+class UpdateStorePermissionResponse extends $pb.GeneratedMessage {
+  factory UpdateStorePermissionResponse({
     $core.bool? success,
   }) {
     final result = create();
@@ -742,46 +739,172 @@ class DeletePermissionsGroupResponse extends $pb.GeneratedMessage {
     return result;
   }
 
-  DeletePermissionsGroupResponse._();
+  UpdateStorePermissionResponse._();
 
-  factory DeletePermissionsGroupResponse.fromBuffer($core.List<$core.int> data,
+  factory UpdateStorePermissionResponse.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(data, registry);
-  factory DeletePermissionsGroupResponse.fromJson($core.String json,
+  factory UpdateStorePermissionResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'DeletePermissionsGroupResponse',
+      _omitMessageNames ? '' : 'UpdateStorePermissionResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'identity.v1'),
       createEmptyInstance: create)
     ..aOB(1, _omitFieldNames ? '' : 'success')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  DeletePermissionsGroupResponse clone() =>
-      DeletePermissionsGroupResponse()..mergeFromMessage(this);
+  UpdateStorePermissionResponse clone() =>
+      UpdateStorePermissionResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  DeletePermissionsGroupResponse copyWith(
-          void Function(DeletePermissionsGroupResponse) updates) =>
+  UpdateStorePermissionResponse copyWith(
+          void Function(UpdateStorePermissionResponse) updates) =>
       super.copyWith(
-              (message) => updates(message as DeletePermissionsGroupResponse))
-          as DeletePermissionsGroupResponse;
+              (message) => updates(message as UpdateStorePermissionResponse))
+          as UpdateStorePermissionResponse;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static DeletePermissionsGroupResponse create() =>
-      DeletePermissionsGroupResponse._();
+  static UpdateStorePermissionResponse create() =>
+      UpdateStorePermissionResponse._();
   @$core.override
-  DeletePermissionsGroupResponse createEmptyInstance() => create();
-  static $pb.PbList<DeletePermissionsGroupResponse> createRepeated() =>
-      $pb.PbList<DeletePermissionsGroupResponse>();
+  UpdateStorePermissionResponse createEmptyInstance() => create();
+  static $pb.PbList<UpdateStorePermissionResponse> createRepeated() =>
+      $pb.PbList<UpdateStorePermissionResponse>();
   @$core.pragma('dart2js:noInline')
-  static DeletePermissionsGroupResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<DeletePermissionsGroupResponse>(create);
-  static DeletePermissionsGroupResponse? _defaultInstance;
+  static UpdateStorePermissionResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<UpdateStorePermissionResponse>(create);
+  static UpdateStorePermissionResponse? _defaultInstance;
+
+  /// Whether the permission group was successfully updated.
+  @$pb.TagNumber(1)
+  $core.bool get success => $_getBF(0);
+  @$pb.TagNumber(1)
+  set success($core.bool value) => $_setBool(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasSuccess() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSuccess() => $_clearField(1);
+}
+
+class DeleteBusinessPermissionRequest extends $pb.GeneratedMessage {
+  factory DeleteBusinessPermissionRequest({
+    $core.String? businessPermissionId,
+  }) {
+    final result = create();
+    if (businessPermissionId != null)
+      result.businessPermissionId = businessPermissionId;
+    return result;
+  }
+
+  DeleteBusinessPermissionRequest._();
+
+  factory DeleteBusinessPermissionRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory DeleteBusinessPermissionRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'DeleteBusinessPermissionRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'identity.v1'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'businessPermissionId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  DeleteBusinessPermissionRequest clone() =>
+      DeleteBusinessPermissionRequest()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  DeleteBusinessPermissionRequest copyWith(
+          void Function(DeleteBusinessPermissionRequest) updates) =>
+      super.copyWith(
+              (message) => updates(message as DeleteBusinessPermissionRequest))
+          as DeleteBusinessPermissionRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static DeleteBusinessPermissionRequest create() =>
+      DeleteBusinessPermissionRequest._();
+  @$core.override
+  DeleteBusinessPermissionRequest createEmptyInstance() => create();
+  static $pb.PbList<DeleteBusinessPermissionRequest> createRepeated() =>
+      $pb.PbList<DeleteBusinessPermissionRequest>();
+  @$core.pragma('dart2js:noInline')
+  static DeleteBusinessPermissionRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<DeleteBusinessPermissionRequest>(
+          create);
+  static DeleteBusinessPermissionRequest? _defaultInstance;
+
+  /// The unique identifier of the permission group to delete.
+  @$pb.TagNumber(1)
+  $core.String get businessPermissionId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set businessPermissionId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasBusinessPermissionId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearBusinessPermissionId() => $_clearField(1);
+}
+
+class DeleteBusinessPermissionResponse extends $pb.GeneratedMessage {
+  factory DeleteBusinessPermissionResponse({
+    $core.bool? success,
+  }) {
+    final result = create();
+    if (success != null) result.success = success;
+    return result;
+  }
+
+  DeleteBusinessPermissionResponse._();
+
+  factory DeleteBusinessPermissionResponse.fromBuffer(
+          $core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory DeleteBusinessPermissionResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'DeleteBusinessPermissionResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'identity.v1'),
+      createEmptyInstance: create)
+    ..aOB(1, _omitFieldNames ? '' : 'success')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  DeleteBusinessPermissionResponse clone() =>
+      DeleteBusinessPermissionResponse()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  DeleteBusinessPermissionResponse copyWith(
+          void Function(DeleteBusinessPermissionResponse) updates) =>
+      super.copyWith(
+              (message) => updates(message as DeleteBusinessPermissionResponse))
+          as DeleteBusinessPermissionResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static DeleteBusinessPermissionResponse create() =>
+      DeleteBusinessPermissionResponse._();
+  @$core.override
+  DeleteBusinessPermissionResponse createEmptyInstance() => create();
+  static $pb.PbList<DeleteBusinessPermissionResponse> createRepeated() =>
+      $pb.PbList<DeleteBusinessPermissionResponse>();
+  @$core.pragma('dart2js:noInline')
+  static DeleteBusinessPermissionResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<DeleteBusinessPermissionResponse>(
+          create);
+  static DeleteBusinessPermissionResponse? _defaultInstance;
 
   /// Whether the permission group was successfully deleted.
   @$pb.TagNumber(1)
@@ -794,117 +917,69 @@ class DeletePermissionsGroupResponse extends $pb.GeneratedMessage {
   void clearSuccess() => $_clearField(1);
 }
 
-class UpdateMemberPermissionsRequest extends $pb.GeneratedMessage {
-  factory UpdateMemberPermissionsRequest({
-    $core.String? userId,
-    $core.String? businessId,
-    $core.Iterable<Permission>? removePermissions,
-    $core.Iterable<Permission>? addPermissions,
-    $core.Iterable<$core.String>? removePermissionsGroupsIds,
-    $core.Iterable<$core.String>? addPermissionsGroupsIds,
+class DeleteStorePermissionRequest extends $pb.GeneratedMessage {
+  factory DeleteStorePermissionRequest({
+    $core.String? storePermissionId,
   }) {
     final result = create();
-    if (userId != null) result.userId = userId;
-    if (businessId != null) result.businessId = businessId;
-    if (removePermissions != null)
-      result.removePermissions.addAll(removePermissions);
-    if (addPermissions != null) result.addPermissions.addAll(addPermissions);
-    if (removePermissionsGroupsIds != null)
-      result.removePermissionsGroupsIds.addAll(removePermissionsGroupsIds);
-    if (addPermissionsGroupsIds != null)
-      result.addPermissionsGroupsIds.addAll(addPermissionsGroupsIds);
+    if (storePermissionId != null) result.storePermissionId = storePermissionId;
     return result;
   }
 
-  UpdateMemberPermissionsRequest._();
+  DeleteStorePermissionRequest._();
 
-  factory UpdateMemberPermissionsRequest.fromBuffer($core.List<$core.int> data,
+  factory DeleteStorePermissionRequest.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(data, registry);
-  factory UpdateMemberPermissionsRequest.fromJson($core.String json,
+  factory DeleteStorePermissionRequest.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'UpdateMemberPermissionsRequest',
+      _omitMessageNames ? '' : 'DeleteStorePermissionRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'identity.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'userId')
-    ..aOS(2, _omitFieldNames ? '' : 'businessId')
-    ..pc<Permission>(
-        3, _omitFieldNames ? '' : 'removePermissions', $pb.PbFieldType.PM,
-        subBuilder: Permission.create)
-    ..pc<Permission>(
-        4, _omitFieldNames ? '' : 'addPermissions', $pb.PbFieldType.PM,
-        subBuilder: Permission.create)
-    ..pPS(5, _omitFieldNames ? '' : 'removePermissionsGroupsIds')
-    ..pPS(6, _omitFieldNames ? '' : 'addPermissionsGroupsIds')
+    ..aOS(1, _omitFieldNames ? '' : 'storePermissionId')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  UpdateMemberPermissionsRequest clone() =>
-      UpdateMemberPermissionsRequest()..mergeFromMessage(this);
+  DeleteStorePermissionRequest clone() =>
+      DeleteStorePermissionRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  UpdateMemberPermissionsRequest copyWith(
-          void Function(UpdateMemberPermissionsRequest) updates) =>
+  DeleteStorePermissionRequest copyWith(
+          void Function(DeleteStorePermissionRequest) updates) =>
       super.copyWith(
-              (message) => updates(message as UpdateMemberPermissionsRequest))
-          as UpdateMemberPermissionsRequest;
+              (message) => updates(message as DeleteStorePermissionRequest))
+          as DeleteStorePermissionRequest;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static UpdateMemberPermissionsRequest create() =>
-      UpdateMemberPermissionsRequest._();
+  static DeleteStorePermissionRequest create() =>
+      DeleteStorePermissionRequest._();
   @$core.override
-  UpdateMemberPermissionsRequest createEmptyInstance() => create();
-  static $pb.PbList<UpdateMemberPermissionsRequest> createRepeated() =>
-      $pb.PbList<UpdateMemberPermissionsRequest>();
+  DeleteStorePermissionRequest createEmptyInstance() => create();
+  static $pb.PbList<DeleteStorePermissionRequest> createRepeated() =>
+      $pb.PbList<DeleteStorePermissionRequest>();
   @$core.pragma('dart2js:noInline')
-  static UpdateMemberPermissionsRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<UpdateMemberPermissionsRequest>(create);
-  static UpdateMemberPermissionsRequest? _defaultInstance;
+  static DeleteStorePermissionRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<DeleteStorePermissionRequest>(create);
+  static DeleteStorePermissionRequest? _defaultInstance;
 
-  /// The unique identifier of the member.
+  /// The unique identifier of the permission group to delete.
   @$pb.TagNumber(1)
-  $core.String get userId => $_getSZ(0);
+  $core.String get storePermissionId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set userId($core.String value) => $_setString(0, value);
+  set storePermissionId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasUserId() => $_has(0);
+  $core.bool hasStorePermissionId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearUserId() => $_clearField(1);
-
-  /// The id of the business on which we want to update the permissions.
-  @$pb.TagNumber(2)
-  $core.String get businessId => $_getSZ(1);
-  @$pb.TagNumber(2)
-  set businessId($core.String value) => $_setString(1, value);
-  @$pb.TagNumber(2)
-  $core.bool hasBusinessId() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearBusinessId() => $_clearField(2);
-
-  /// The set of permissions to remove from the member.
-  @$pb.TagNumber(3)
-  $pb.PbList<Permission> get removePermissions => $_getList(2);
-
-  /// The set of permissions to add on the member
-  @$pb.TagNumber(4)
-  $pb.PbList<Permission> get addPermissions => $_getList(3);
-
-  /// The set of permissions groups to remove the member from.
-  @$pb.TagNumber(5)
-  $pb.PbList<$core.String> get removePermissionsGroupsIds => $_getList(4);
-
-  /// The set of permissions groups to add the member on.
-  @$pb.TagNumber(6)
-  $pb.PbList<$core.String> get addPermissionsGroupsIds => $_getList(5);
+  void clearStorePermissionId() => $_clearField(1);
 }
 
-class UpdateMemberPermissionsResponse extends $pb.GeneratedMessage {
-  factory UpdateMemberPermissionsResponse({
+class DeleteStorePermissionResponse extends $pb.GeneratedMessage {
+  factory DeleteStorePermissionResponse({
     $core.bool? success,
   }) {
     final result = create();
@@ -912,49 +987,48 @@ class UpdateMemberPermissionsResponse extends $pb.GeneratedMessage {
     return result;
   }
 
-  UpdateMemberPermissionsResponse._();
+  DeleteStorePermissionResponse._();
 
-  factory UpdateMemberPermissionsResponse.fromBuffer($core.List<$core.int> data,
+  factory DeleteStorePermissionResponse.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(data, registry);
-  factory UpdateMemberPermissionsResponse.fromJson($core.String json,
+  factory DeleteStorePermissionResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'UpdateMemberPermissionsResponse',
+      _omitMessageNames ? '' : 'DeleteStorePermissionResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'identity.v1'),
       createEmptyInstance: create)
     ..aOB(1, _omitFieldNames ? '' : 'success')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  UpdateMemberPermissionsResponse clone() =>
-      UpdateMemberPermissionsResponse()..mergeFromMessage(this);
+  DeleteStorePermissionResponse clone() =>
+      DeleteStorePermissionResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  UpdateMemberPermissionsResponse copyWith(
-          void Function(UpdateMemberPermissionsResponse) updates) =>
+  DeleteStorePermissionResponse copyWith(
+          void Function(DeleteStorePermissionResponse) updates) =>
       super.copyWith(
-              (message) => updates(message as UpdateMemberPermissionsResponse))
-          as UpdateMemberPermissionsResponse;
+              (message) => updates(message as DeleteStorePermissionResponse))
+          as DeleteStorePermissionResponse;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static UpdateMemberPermissionsResponse create() =>
-      UpdateMemberPermissionsResponse._();
+  static DeleteStorePermissionResponse create() =>
+      DeleteStorePermissionResponse._();
   @$core.override
-  UpdateMemberPermissionsResponse createEmptyInstance() => create();
-  static $pb.PbList<UpdateMemberPermissionsResponse> createRepeated() =>
-      $pb.PbList<UpdateMemberPermissionsResponse>();
+  DeleteStorePermissionResponse createEmptyInstance() => create();
+  static $pb.PbList<DeleteStorePermissionResponse> createRepeated() =>
+      $pb.PbList<DeleteStorePermissionResponse>();
   @$core.pragma('dart2js:noInline')
-  static UpdateMemberPermissionsResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<UpdateMemberPermissionsResponse>(
-          create);
-  static UpdateMemberPermissionsResponse? _defaultInstance;
+  static DeleteStorePermissionResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<DeleteStorePermissionResponse>(create);
+  static DeleteStorePermissionResponse? _defaultInstance;
 
-  /// Whether the member was successfully removed from the permission group.
+  /// Whether the permission group was successfully deleted.
   @$pb.TagNumber(1)
   $core.bool get success => $_getBF(0);
   @$pb.TagNumber(1)
@@ -965,134 +1039,71 @@ class UpdateMemberPermissionsResponse extends $pb.GeneratedMessage {
   void clearSuccess() => $_clearField(1);
 }
 
-class GetBusinessPermissionsGroupsRequest extends $pb.GeneratedMessage {
-  factory GetBusinessPermissionsGroupsRequest({
-    $core.String? businessId,
+class GetStorePermissionsRequest extends $pb.GeneratedMessage {
+  factory GetStorePermissionsRequest({
+    $core.String? storeId,
   }) {
     final result = create();
-    if (businessId != null) result.businessId = businessId;
+    if (storeId != null) result.storeId = storeId;
     return result;
   }
 
-  GetBusinessPermissionsGroupsRequest._();
+  GetStorePermissionsRequest._();
 
-  factory GetBusinessPermissionsGroupsRequest.fromBuffer(
-          $core.List<$core.int> data,
+  factory GetStorePermissionsRequest.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(data, registry);
-  factory GetBusinessPermissionsGroupsRequest.fromJson($core.String json,
+  factory GetStorePermissionsRequest.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'GetBusinessPermissionsGroupsRequest',
+      _omitMessageNames ? '' : 'GetStorePermissionsRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'identity.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'businessId')
+    ..aOS(1, _omitFieldNames ? '' : 'storeId')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetBusinessPermissionsGroupsRequest clone() =>
-      GetBusinessPermissionsGroupsRequest()..mergeFromMessage(this);
+  GetStorePermissionsRequest clone() =>
+      GetStorePermissionsRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetBusinessPermissionsGroupsRequest copyWith(
-          void Function(GetBusinessPermissionsGroupsRequest) updates) =>
-      super.copyWith((message) =>
-              updates(message as GetBusinessPermissionsGroupsRequest))
-          as GetBusinessPermissionsGroupsRequest;
+  GetStorePermissionsRequest copyWith(
+          void Function(GetStorePermissionsRequest) updates) =>
+      super.copyWith(
+              (message) => updates(message as GetStorePermissionsRequest))
+          as GetStorePermissionsRequest;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static GetBusinessPermissionsGroupsRequest create() =>
-      GetBusinessPermissionsGroupsRequest._();
+  static GetStorePermissionsRequest create() => GetStorePermissionsRequest._();
   @$core.override
-  GetBusinessPermissionsGroupsRequest createEmptyInstance() => create();
-  static $pb.PbList<GetBusinessPermissionsGroupsRequest> createRepeated() =>
-      $pb.PbList<GetBusinessPermissionsGroupsRequest>();
+  GetStorePermissionsRequest createEmptyInstance() => create();
+  static $pb.PbList<GetStorePermissionsRequest> createRepeated() =>
+      $pb.PbList<GetStorePermissionsRequest>();
   @$core.pragma('dart2js:noInline')
-  static GetBusinessPermissionsGroupsRequest getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<
-          GetBusinessPermissionsGroupsRequest>(create);
-  static GetBusinessPermissionsGroupsRequest? _defaultInstance;
+  static GetStorePermissionsRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetStorePermissionsRequest>(create);
+  static GetStorePermissionsRequest? _defaultInstance;
 
-  /// The unique identifier of the business to retrieve.
+  /// The unique identifier of the store to retrieve.
   @$pb.TagNumber(1)
-  $core.String get businessId => $_getSZ(0);
+  $core.String get storeId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set businessId($core.String value) => $_setString(0, value);
+  set storeId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasBusinessId() => $_has(0);
+  $core.bool hasStoreId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearBusinessId() => $_clearField(1);
+  void clearStoreId() => $_clearField(1);
 }
 
-class GetBusinessPermissionsGroupsResponse extends $pb.GeneratedMessage {
-  factory GetBusinessPermissionsGroupsResponse({
-    $core.Iterable<PermissionsGroup>? permissionsGroups,
-  }) {
-    final result = create();
-    if (permissionsGroups != null)
-      result.permissionsGroups.addAll(permissionsGroups);
-    return result;
-  }
-
-  GetBusinessPermissionsGroupsResponse._();
-
-  factory GetBusinessPermissionsGroupsResponse.fromBuffer(
-          $core.List<$core.int> data,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
-  factory GetBusinessPermissionsGroupsResponse.fromJson($core.String json,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'GetBusinessPermissionsGroupsResponse',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'identity.v1'),
-      createEmptyInstance: create)
-    ..pc<PermissionsGroup>(
-        1, _omitFieldNames ? '' : 'permissionsGroups', $pb.PbFieldType.PM,
-        subBuilder: PermissionsGroup.create)
-    ..hasRequiredFields = false;
-
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetBusinessPermissionsGroupsResponse clone() =>
-      GetBusinessPermissionsGroupsResponse()..mergeFromMessage(this);
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetBusinessPermissionsGroupsResponse copyWith(
-          void Function(GetBusinessPermissionsGroupsResponse) updates) =>
-      super.copyWith((message) =>
-              updates(message as GetBusinessPermissionsGroupsResponse))
-          as GetBusinessPermissionsGroupsResponse;
-
-  @$core.override
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static GetBusinessPermissionsGroupsResponse create() =>
-      GetBusinessPermissionsGroupsResponse._();
-  @$core.override
-  GetBusinessPermissionsGroupsResponse createEmptyInstance() => create();
-  static $pb.PbList<GetBusinessPermissionsGroupsResponse> createRepeated() =>
-      $pb.PbList<GetBusinessPermissionsGroupsResponse>();
-  @$core.pragma('dart2js:noInline')
-  static GetBusinessPermissionsGroupsResponse getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<
-          GetBusinessPermissionsGroupsResponse>(create);
-  static GetBusinessPermissionsGroupsResponse? _defaultInstance;
-
-  /// The permission groups that the business has.
-  @$pb.TagNumber(1)
-  $pb.PbList<PermissionsGroup> get permissionsGroups => $_getList(0);
-}
-
-class CheckPermissionRequest extends $pb.GeneratedMessage {
-  factory CheckPermissionRequest({
+class CheckBusinessPermissionRequest extends $pb.GeneratedMessage {
+  factory CheckBusinessPermissionRequest({
     $core.String? userId,
     $core.String? businessId,
-    Permission? permission,
+    BusinessPermission? permission,
   }) {
     final result = create();
     if (userId != null) result.userId = userId;
@@ -1101,47 +1112,49 @@ class CheckPermissionRequest extends $pb.GeneratedMessage {
     return result;
   }
 
-  CheckPermissionRequest._();
+  CheckBusinessPermissionRequest._();
 
-  factory CheckPermissionRequest.fromBuffer($core.List<$core.int> data,
+  factory CheckBusinessPermissionRequest.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(data, registry);
-  factory CheckPermissionRequest.fromJson($core.String json,
+  factory CheckBusinessPermissionRequest.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'CheckPermissionRequest',
+      _omitMessageNames ? '' : 'CheckBusinessPermissionRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'identity.v1'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'userId')
     ..aOS(3, _omitFieldNames ? '' : 'businessId')
-    ..aOM<Permission>(4, _omitFieldNames ? '' : 'permission',
-        subBuilder: Permission.create)
+    ..aOM<BusinessPermission>(4, _omitFieldNames ? '' : 'permission',
+        subBuilder: BusinessPermission.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CheckPermissionRequest clone() =>
-      CheckPermissionRequest()..mergeFromMessage(this);
+  CheckBusinessPermissionRequest clone() =>
+      CheckBusinessPermissionRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CheckPermissionRequest copyWith(
-          void Function(CheckPermissionRequest) updates) =>
-      super.copyWith((message) => updates(message as CheckPermissionRequest))
-          as CheckPermissionRequest;
+  CheckBusinessPermissionRequest copyWith(
+          void Function(CheckBusinessPermissionRequest) updates) =>
+      super.copyWith(
+              (message) => updates(message as CheckBusinessPermissionRequest))
+          as CheckBusinessPermissionRequest;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static CheckPermissionRequest create() => CheckPermissionRequest._();
+  static CheckBusinessPermissionRequest create() =>
+      CheckBusinessPermissionRequest._();
   @$core.override
-  CheckPermissionRequest createEmptyInstance() => create();
-  static $pb.PbList<CheckPermissionRequest> createRepeated() =>
-      $pb.PbList<CheckPermissionRequest>();
+  CheckBusinessPermissionRequest createEmptyInstance() => create();
+  static $pb.PbList<CheckBusinessPermissionRequest> createRepeated() =>
+      $pb.PbList<CheckBusinessPermissionRequest>();
   @$core.pragma('dart2js:noInline')
-  static CheckPermissionRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<CheckPermissionRequest>(create);
-  static CheckPermissionRequest? _defaultInstance;
+  static CheckBusinessPermissionRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<CheckBusinessPermissionRequest>(create);
+  static CheckBusinessPermissionRequest? _defaultInstance;
 
   /// The unique identifier of the member.
   @$pb.TagNumber(1)
@@ -1165,19 +1178,19 @@ class CheckPermissionRequest extends $pb.GeneratedMessage {
 
   /// The permission to check.
   @$pb.TagNumber(4)
-  Permission get permission => $_getN(2);
+  BusinessPermission get permission => $_getN(2);
   @$pb.TagNumber(4)
-  set permission(Permission value) => $_setField(4, value);
+  set permission(BusinessPermission value) => $_setField(4, value);
   @$pb.TagNumber(4)
   $core.bool hasPermission() => $_has(2);
   @$pb.TagNumber(4)
   void clearPermission() => $_clearField(4);
   @$pb.TagNumber(4)
-  Permission ensurePermission() => $_ensure(2);
+  BusinessPermission ensurePermission() => $_ensure(2);
 }
 
-class CheckPermissionResponse extends $pb.GeneratedMessage {
-  factory CheckPermissionResponse({
+class CheckBusinessPermissionResponse extends $pb.GeneratedMessage {
+  factory CheckBusinessPermissionResponse({
     $core.bool? hasPermission,
   }) {
     final result = create();
@@ -1185,44 +1198,47 @@ class CheckPermissionResponse extends $pb.GeneratedMessage {
     return result;
   }
 
-  CheckPermissionResponse._();
+  CheckBusinessPermissionResponse._();
 
-  factory CheckPermissionResponse.fromBuffer($core.List<$core.int> data,
+  factory CheckBusinessPermissionResponse.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(data, registry);
-  factory CheckPermissionResponse.fromJson($core.String json,
+  factory CheckBusinessPermissionResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'CheckPermissionResponse',
+      _omitMessageNames ? '' : 'CheckBusinessPermissionResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'identity.v1'),
       createEmptyInstance: create)
     ..aOB(1, _omitFieldNames ? '' : 'hasPermission')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CheckPermissionResponse clone() =>
-      CheckPermissionResponse()..mergeFromMessage(this);
+  CheckBusinessPermissionResponse clone() =>
+      CheckBusinessPermissionResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CheckPermissionResponse copyWith(
-          void Function(CheckPermissionResponse) updates) =>
-      super.copyWith((message) => updates(message as CheckPermissionResponse))
-          as CheckPermissionResponse;
+  CheckBusinessPermissionResponse copyWith(
+          void Function(CheckBusinessPermissionResponse) updates) =>
+      super.copyWith(
+              (message) => updates(message as CheckBusinessPermissionResponse))
+          as CheckBusinessPermissionResponse;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static CheckPermissionResponse create() => CheckPermissionResponse._();
+  static CheckBusinessPermissionResponse create() =>
+      CheckBusinessPermissionResponse._();
   @$core.override
-  CheckPermissionResponse createEmptyInstance() => create();
-  static $pb.PbList<CheckPermissionResponse> createRepeated() =>
-      $pb.PbList<CheckPermissionResponse>();
+  CheckBusinessPermissionResponse createEmptyInstance() => create();
+  static $pb.PbList<CheckBusinessPermissionResponse> createRepeated() =>
+      $pb.PbList<CheckBusinessPermissionResponse>();
   @$core.pragma('dart2js:noInline')
-  static CheckPermissionResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<CheckPermissionResponse>(create);
-  static CheckPermissionResponse? _defaultInstance;
+  static CheckBusinessPermissionResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<CheckBusinessPermissionResponse>(
+          create);
+  static CheckBusinessPermissionResponse? _defaultInstance;
 
   /// Whether the member has the permission.
   @$pb.TagNumber(1)
@@ -1235,129 +1251,155 @@ class CheckPermissionResponse extends $pb.GeneratedMessage {
   void clearHasPermission() => $_clearField(1);
 }
 
-/// Request to stream business permissions groups
-class StreamBusinessPermissionsGroupsRequest extends $pb.GeneratedMessage {
-  factory StreamBusinessPermissionsGroupsRequest({
-    $core.String? businessId,
+class CheckStorePermissionRequest extends $pb.GeneratedMessage {
+  factory CheckStorePermissionRequest({
+    $core.String? userId,
+    $core.String? storeId,
+    StorePermission? permission,
   }) {
     final result = create();
-    if (businessId != null) result.businessId = businessId;
+    if (userId != null) result.userId = userId;
+    if (storeId != null) result.storeId = storeId;
+    if (permission != null) result.permission = permission;
     return result;
   }
 
-  StreamBusinessPermissionsGroupsRequest._();
+  CheckStorePermissionRequest._();
 
-  factory StreamBusinessPermissionsGroupsRequest.fromBuffer(
-          $core.List<$core.int> data,
+  factory CheckStorePermissionRequest.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(data, registry);
-  factory StreamBusinessPermissionsGroupsRequest.fromJson($core.String json,
+  factory CheckStorePermissionRequest.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'StreamBusinessPermissionsGroupsRequest',
+      _omitMessageNames ? '' : 'CheckStorePermissionRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'identity.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'businessId')
+    ..aOS(1, _omitFieldNames ? '' : 'userId')
+    ..aOS(3, _omitFieldNames ? '' : 'storeId')
+    ..aOM<StorePermission>(4, _omitFieldNames ? '' : 'permission',
+        subBuilder: StorePermission.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  StreamBusinessPermissionsGroupsRequest clone() =>
-      StreamBusinessPermissionsGroupsRequest()..mergeFromMessage(this);
+  CheckStorePermissionRequest clone() =>
+      CheckStorePermissionRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  StreamBusinessPermissionsGroupsRequest copyWith(
-          void Function(StreamBusinessPermissionsGroupsRequest) updates) =>
-      super.copyWith((message) =>
-              updates(message as StreamBusinessPermissionsGroupsRequest))
-          as StreamBusinessPermissionsGroupsRequest;
+  CheckStorePermissionRequest copyWith(
+          void Function(CheckStorePermissionRequest) updates) =>
+      super.copyWith(
+              (message) => updates(message as CheckStorePermissionRequest))
+          as CheckStorePermissionRequest;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static StreamBusinessPermissionsGroupsRequest create() =>
-      StreamBusinessPermissionsGroupsRequest._();
+  static CheckStorePermissionRequest create() =>
+      CheckStorePermissionRequest._();
   @$core.override
-  StreamBusinessPermissionsGroupsRequest createEmptyInstance() => create();
-  static $pb.PbList<StreamBusinessPermissionsGroupsRequest> createRepeated() =>
-      $pb.PbList<StreamBusinessPermissionsGroupsRequest>();
+  CheckStorePermissionRequest createEmptyInstance() => create();
+  static $pb.PbList<CheckStorePermissionRequest> createRepeated() =>
+      $pb.PbList<CheckStorePermissionRequest>();
   @$core.pragma('dart2js:noInline')
-  static StreamBusinessPermissionsGroupsRequest getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<
-          StreamBusinessPermissionsGroupsRequest>(create);
-  static StreamBusinessPermissionsGroupsRequest? _defaultInstance;
+  static CheckStorePermissionRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<CheckStorePermissionRequest>(create);
+  static CheckStorePermissionRequest? _defaultInstance;
 
-  /// The unique identifier of the business to stream.
+  /// The unique identifier of the member.
   @$pb.TagNumber(1)
-  $core.String get businessId => $_getSZ(0);
+  $core.String get userId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set businessId($core.String value) => $_setString(0, value);
+  set userId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasBusinessId() => $_has(0);
+  $core.bool hasUserId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearBusinessId() => $_clearField(1);
+  void clearUserId() => $_clearField(1);
+
+  /// The unique identifier of the store on which we want to check the permission.
+  @$pb.TagNumber(3)
+  $core.String get storeId => $_getSZ(1);
+  @$pb.TagNumber(3)
+  set storeId($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(3)
+  $core.bool hasStoreId() => $_has(1);
+  @$pb.TagNumber(3)
+  void clearStoreId() => $_clearField(3);
+
+  /// The permission to check.
+  @$pb.TagNumber(4)
+  StorePermission get permission => $_getN(2);
+  @$pb.TagNumber(4)
+  set permission(StorePermission value) => $_setField(4, value);
+  @$pb.TagNumber(4)
+  $core.bool hasPermission() => $_has(2);
+  @$pb.TagNumber(4)
+  void clearPermission() => $_clearField(4);
+  @$pb.TagNumber(4)
+  StorePermission ensurePermission() => $_ensure(2);
 }
 
-/// Response for streaming business permissions groups
-class StreamBusinessPermissionsGroupsResponse extends $pb.GeneratedMessage {
-  factory StreamBusinessPermissionsGroupsResponse({
-    $core.Iterable<PermissionsGroup>? permissionsGroups,
+class CheckStorePermissionResponse extends $pb.GeneratedMessage {
+  factory CheckStorePermissionResponse({
+    $core.bool? hasPermission,
   }) {
     final result = create();
-    if (permissionsGroups != null)
-      result.permissionsGroups.addAll(permissionsGroups);
+    if (hasPermission != null) result.hasPermission = hasPermission;
     return result;
   }
 
-  StreamBusinessPermissionsGroupsResponse._();
+  CheckStorePermissionResponse._();
 
-  factory StreamBusinessPermissionsGroupsResponse.fromBuffer(
-          $core.List<$core.int> data,
+  factory CheckStorePermissionResponse.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(data, registry);
-  factory StreamBusinessPermissionsGroupsResponse.fromJson($core.String json,
+  factory CheckStorePermissionResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'StreamBusinessPermissionsGroupsResponse',
+      _omitMessageNames ? '' : 'CheckStorePermissionResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'identity.v1'),
       createEmptyInstance: create)
-    ..pc<PermissionsGroup>(
-        1, _omitFieldNames ? '' : 'permissionsGroups', $pb.PbFieldType.PM,
-        subBuilder: PermissionsGroup.create)
+    ..aOB(1, _omitFieldNames ? '' : 'hasPermission')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  StreamBusinessPermissionsGroupsResponse clone() =>
-      StreamBusinessPermissionsGroupsResponse()..mergeFromMessage(this);
+  CheckStorePermissionResponse clone() =>
+      CheckStorePermissionResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  StreamBusinessPermissionsGroupsResponse copyWith(
-          void Function(StreamBusinessPermissionsGroupsResponse) updates) =>
-      super.copyWith((message) =>
-              updates(message as StreamBusinessPermissionsGroupsResponse))
-          as StreamBusinessPermissionsGroupsResponse;
+  CheckStorePermissionResponse copyWith(
+          void Function(CheckStorePermissionResponse) updates) =>
+      super.copyWith(
+              (message) => updates(message as CheckStorePermissionResponse))
+          as CheckStorePermissionResponse;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static StreamBusinessPermissionsGroupsResponse create() =>
-      StreamBusinessPermissionsGroupsResponse._();
+  static CheckStorePermissionResponse create() =>
+      CheckStorePermissionResponse._();
   @$core.override
-  StreamBusinessPermissionsGroupsResponse createEmptyInstance() => create();
-  static $pb.PbList<StreamBusinessPermissionsGroupsResponse> createRepeated() =>
-      $pb.PbList<StreamBusinessPermissionsGroupsResponse>();
+  CheckStorePermissionResponse createEmptyInstance() => create();
+  static $pb.PbList<CheckStorePermissionResponse> createRepeated() =>
+      $pb.PbList<CheckStorePermissionResponse>();
   @$core.pragma('dart2js:noInline')
-  static StreamBusinessPermissionsGroupsResponse getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<
-          StreamBusinessPermissionsGroupsResponse>(create);
-  static StreamBusinessPermissionsGroupsResponse? _defaultInstance;
+  static CheckStorePermissionResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<CheckStorePermissionResponse>(create);
+  static CheckStorePermissionResponse? _defaultInstance;
 
-  /// The permission groups that the business has.
+  /// Whether the member has the permission.
   @$pb.TagNumber(1)
-  $pb.PbList<PermissionsGroup> get permissionsGroups => $_getList(0);
+  $core.bool get hasPermission => $_getBF(0);
+  @$pb.TagNumber(1)
+  set hasPermission($core.bool value) => $_setBool(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasHasPermission() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearHasPermission() => $_clearField(1);
 }
 
 class PermissionServiceApi {
@@ -1365,67 +1407,69 @@ class PermissionServiceApi {
 
   PermissionServiceApi(this._client);
 
-  /// Creates a new permission group.
-  $async.Future<CreatePermissionsGroupResponse> createPermissionsGroup(
-          $pb.ClientContext? ctx, CreatePermissionsGroupRequest request) =>
-      _client.invoke<CreatePermissionsGroupResponse>(ctx, 'PermissionService',
-          'CreatePermissionsGroup', request, CreatePermissionsGroupResponse());
-
-  /// Gets a permission group by id.
-  $async.Future<GetPermissionsGroupResponse> getPermissionsGroup(
-          $pb.ClientContext? ctx, GetPermissionsGroupRequest request) =>
-      _client.invoke<GetPermissionsGroupResponse>(ctx, 'PermissionService',
-          'GetPermissionsGroup', request, GetPermissionsGroupResponse());
-
-  /// Updates a permission group.
-  $async.Future<UpdatePermissionsGroupResponse> updatePermissionsGroup(
-          $pb.ClientContext? ctx, UpdatePermissionsGroupRequest request) =>
-      _client.invoke<UpdatePermissionsGroupResponse>(ctx, 'PermissionService',
-          'UpdatePermissionsGroup', request, UpdatePermissionsGroupResponse());
-
-  /// Deletes a permission group.
-  $async.Future<DeletePermissionsGroupResponse> deletePermissionsGroup(
-          $pb.ClientContext? ctx, DeletePermissionsGroupRequest request) =>
-      _client.invoke<DeletePermissionsGroupResponse>(ctx, 'PermissionService',
-          'DeletePermissionsGroup', request, DeletePermissionsGroupResponse());
-
-  /// Update the member permissions on the provided business.
-  $async.Future<UpdateMemberPermissionsResponse> updateMemberPermissions(
-          $pb.ClientContext? ctx, UpdateMemberPermissionsRequest request) =>
-      _client.invoke<UpdateMemberPermissionsResponse>(
+  /// Creates a new business permission.
+  $async.Future<CreateBusinessPermissionResponse> createBusinessPermission(
+          $pb.ClientContext? ctx, CreateBusinessPermissionRequest request) =>
+      _client.invoke<CreateBusinessPermissionResponse>(
           ctx,
           'PermissionService',
-          'UpdateMemberPermissions',
+          'CreateBusinessPermission',
           request,
-          UpdateMemberPermissionsResponse());
+          CreateBusinessPermissionResponse());
 
-  /// Gets the permission groups of the business.
-  $async.Future<GetBusinessPermissionsGroupsResponse>
-      getBusinessPermissionsGroups($pb.ClientContext? ctx,
-              GetBusinessPermissionsGroupsRequest request) =>
-          _client.invoke<GetBusinessPermissionsGroupsResponse>(
-              ctx,
-              'PermissionService',
-              'GetBusinessPermissionsGroups',
-              request,
-              GetBusinessPermissionsGroupsResponse());
+  /// Updates a business permission.
+  $async.Future<UpdateBusinessPermissionResponse> updateBusinessPermission(
+          $pb.ClientContext? ctx, UpdateBusinessPermissionRequest request) =>
+      _client.invoke<UpdateBusinessPermissionResponse>(
+          ctx,
+          'PermissionService',
+          'UpdateBusinessPermission',
+          request,
+          UpdateBusinessPermissionResponse());
 
-  /// Checks if the member has the provided permission for the provided resource.
-  $async.Future<CheckPermissionResponse> checkPermission(
-          $pb.ClientContext? ctx, CheckPermissionRequest request) =>
-      _client.invoke<CheckPermissionResponse>(ctx, 'PermissionService',
-          'CheckPermission', request, CheckPermissionResponse());
+  /// Deletes a business permission.
+  $async.Future<DeleteBusinessPermissionResponse> deleteBusinessPermission(
+          $pb.ClientContext? ctx, DeleteBusinessPermissionRequest request) =>
+      _client.invoke<DeleteBusinessPermissionResponse>(
+          ctx,
+          'PermissionService',
+          'DeleteBusinessPermission',
+          request,
+          DeleteBusinessPermissionResponse());
 
-  /// Stream the permission groups of the business with real-time updates.
-  $async.Future<StreamBusinessPermissionsGroupsResponse>
-      streamBusinessPermissionsGroups($pb.ClientContext? ctx,
-              StreamBusinessPermissionsGroupsRequest request) =>
-          _client.invoke<StreamBusinessPermissionsGroupsResponse>(
-              ctx,
-              'PermissionService',
-              'StreamBusinessPermissionsGroups',
-              request,
-              StreamBusinessPermissionsGroupsResponse());
+  /// Creates a new store permission.
+  $async.Future<CreateStorePermissionResponse> createStorePermission(
+          $pb.ClientContext? ctx, CreateStorePermissionRequest request) =>
+      _client.invoke<CreateStorePermissionResponse>(ctx, 'PermissionService',
+          'CreateStorePermission', request, CreateStorePermissionResponse());
+
+  /// Updates a store permission.
+  $async.Future<UpdateStorePermissionResponse> updateStorePermission(
+          $pb.ClientContext? ctx, UpdateStorePermissionRequest request) =>
+      _client.invoke<UpdateStorePermissionResponse>(ctx, 'PermissionService',
+          'UpdateStorePermission', request, UpdateStorePermissionResponse());
+
+  /// Deletes a store permission.
+  $async.Future<DeleteStorePermissionResponse> deleteStorePermission(
+          $pb.ClientContext? ctx, DeleteStorePermissionRequest request) =>
+      _client.invoke<DeleteStorePermissionResponse>(ctx, 'PermissionService',
+          'DeleteStorePermission', request, DeleteStorePermissionResponse());
+
+  /// Checks if a member has a business permission.
+  $async.Future<CheckBusinessPermissionResponse> checkBusinessPermission(
+          $pb.ClientContext? ctx, CheckBusinessPermissionRequest request) =>
+      _client.invoke<CheckBusinessPermissionResponse>(
+          ctx,
+          'PermissionService',
+          'CheckBusinessPermission',
+          request,
+          CheckBusinessPermissionResponse());
+
+  /// Checks if a member has a store permission.
+  $async.Future<CheckStorePermissionResponse> checkStorePermission(
+          $pb.ClientContext? ctx, CheckStorePermissionRequest request) =>
+      _client.invoke<CheckStorePermissionResponse>(ctx, 'PermissionService',
+          'CheckStorePermission', request, CheckStorePermissionResponse());
 }
 
 const $core.bool _omitFieldNames =

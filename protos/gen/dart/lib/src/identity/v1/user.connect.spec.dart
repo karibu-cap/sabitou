@@ -77,19 +77,11 @@ abstract final class UserService {
     identityv1user.ChangePasswordResponse.new,
   );
 
-  /// Get all users for a business.
-  static const getBusinessUsers = connect.Spec(
-    '/$name/GetBusinessUsers',
-    connect.StreamType.unary,
-    identityv1user.GetBusinessUsersRequest.new,
-    identityv1user.GetBusinessUsersResponse.new,
-  );
-
-  /// Stream all users for a business with real-time updates.
-  static const streamBusinessUsers = connect.Spec(
-    '/$name/StreamBusinessUsers',
+  /// Stream business members for real-time updates.
+  static const streamUser = connect.Spec(
+    '/$name/StreamUser',
     connect.StreamType.server,
-    identityv1user.StreamBusinessUsersRequest.new,
-    identityv1user.StreamBusinessUsersResponse.new,
+    identityv1user.StreamUserRequest.new,
+    identityv1user.StreamUserResponse.new,
   );
 }

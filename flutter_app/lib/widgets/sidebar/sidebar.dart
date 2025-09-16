@@ -29,11 +29,14 @@ class SidebarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const userRole = ResourceType.RESOURCE_TYPE_BUSINESS;
+    const userRole = StoreResourceType.STORE_RESOURCE_TYPE_UNSPECIFIED;
     final isTablet = ResponsiveUtils.isTablet(context);
     final theme = ShadTheme.of(context);
 
-    bool hasAccess(List<ResourceType> requiredRoles, ResourceType userRole) {
+    bool hasAccess(
+      List<StoreResourceType> requiredRoles,
+      StoreResourceType userRole,
+    ) {
       return requiredRoles.contains(userRole);
     }
 
@@ -42,31 +45,31 @@ class SidebarWidget extends StatelessWidget {
         id: DashboardItem.dashboard,
         label: Intls.to.dashboard,
         icon: LucideIcons.house400,
-        roles: ResourceType.values,
+        roles: StoreResourceType.values,
       ),
       SideBarItem(
         id: DashboardItem.inventory,
         label: Intls.to.inventory,
         icon: LucideIcons.package400,
-        roles: ResourceType.values,
+        roles: StoreResourceType.values,
       ),
       SideBarItem(
         id: DashboardItem.sales,
         label: Intls.to.sales,
         icon: LucideIcons.shoppingCart400,
-        roles: ResourceType.values,
+        roles: StoreResourceType.values,
         children: [
           SideBarItem(
             id: DashboardItem.salesReports,
             label: Intls.to.reports,
             icon: LucideIcons.chartColumn400,
-            roles: ResourceType.values,
+            roles: StoreResourceType.values,
           ),
           SideBarItem(
             id: DashboardItem.salesOrders,
             label: Intls.to.newOrders,
             icon: LucideIcons.plus400,
-            roles: ResourceType.values,
+            roles: StoreResourceType.values,
           ),
         ],
       ),
@@ -74,25 +77,25 @@ class SidebarWidget extends StatelessWidget {
         id: DashboardItem.reports,
         label: Intls.to.reports,
         icon: LucideIcons.chartColumn400,
-        roles: ResourceType.values,
+        roles: StoreResourceType.values,
       ),
       SideBarItem(
         id: DashboardItem.suppliers,
         label: Intls.to.suppliers,
         icon: LucideIcons.truck400,
-        roles: ResourceType.values,
+        roles: StoreResourceType.values,
       ),
       SideBarItem(
         id: DashboardItem.users,
         label: Intls.to.users,
         icon: LucideIcons.users400,
-        roles: ResourceType.values,
+        roles: StoreResourceType.values,
       ),
       SideBarItem(
         id: DashboardItem.settings,
         label: Intls.to.settings,
         icon: LucideIcons.settings500,
-        roles: ResourceType.values,
+        roles: StoreResourceType.values,
       ),
     ];
 

@@ -51,11 +51,19 @@ abstract final class BusinessService {
   );
 
   /// Add user to business or invite user to business.
-  static const addUserToBusiness = connect.Spec(
-    '/$name/AddUserToBusiness',
+  static const createUserToBusiness = connect.Spec(
+    '/$name/CreateUserToBusiness',
     connect.StreamType.unary,
-    businessv1business.AddUserToBusinessRequest.new,
-    businessv1business.AddUserToBusinessResponse.new,
+    businessv1business.CreateUserToBusinessRequest.new,
+    businessv1business.CreateUserToBusinessResponse.new,
+  );
+
+  /// Associate user to business.
+  static const associateUserToBusiness = connect.Spec(
+    '/$name/AssociateUserToBusiness',
+    connect.StreamType.unary,
+    businessv1business.AssociateUserToBusinessRequest.new,
+    businessv1business.AssociateUserToBusinessResponse.new,
   );
 
   /// Remove user from business.
@@ -83,5 +91,29 @@ abstract final class BusinessService {
     connect.StreamType.unary,
     businessv1business.GetBusinessMembersRequest.new,
     businessv1business.GetBusinessMembersResponse.new,
+  );
+
+  /// Get a specific business member.
+  static const getBusinessMember = connect.Spec(
+    '/$name/GetBusinessMember',
+    connect.StreamType.unary,
+    businessv1business.GetBusinessMemberRequest.new,
+    businessv1business.GetBusinessMemberResponse.new,
+  );
+
+  /// Update a business member (role, status, permissions).
+  static const updateBusinessMember = connect.Spec(
+    '/$name/UpdateBusinessMember',
+    connect.StreamType.unary,
+    businessv1business.UpdateBusinessMemberRequest.new,
+    businessv1business.UpdateBusinessMemberResponse.new,
+  );
+
+  /// Stream business members for real-time updates.
+  static const streamBusinessMembers = connect.Spec(
+    '/$name/StreamBusinessMembers',
+    connect.StreamType.server,
+    businessv1business.StreamBusinessMembersRequest.new,
+    businessv1business.StreamBusinessMembersResponse.new,
   );
 }

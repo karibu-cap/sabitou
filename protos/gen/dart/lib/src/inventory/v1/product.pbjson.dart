@@ -106,7 +106,7 @@ const StoreProduct$json = {
     {'1': 'store_id', '3': 2, '4': 1, '5': 9, '10': 'storeId'},
     {'1': 'global_product_id', '3': 3, '4': 1, '5': 9, '10': 'globalProductId'},
     {'1': 'price', '3': 4, '4': 1, '5': 5, '9': 1, '10': 'price', '17': true},
-    {'1': 'images_link_ids', '3': 5, '4': 3, '5': 9, '10': 'imagesLinkIds'},
+    {'1': 'images_links_ids', '3': 5, '4': 3, '5': 9, '10': 'imagesLinksIds'},
     {
       '1': 'stock_quantity',
       '3': 6,
@@ -186,17 +186,17 @@ const StoreProduct$json = {
 final $typed_data.Uint8List storeProductDescriptor = $convert.base64Decode(
     'CgxTdG9yZVByb2R1Y3QSGgoGcmVmX2lkGAEgASgJSABSBXJlZklkiAEBEhkKCHN0b3JlX2lkGA'
     'IgASgJUgdzdG9yZUlkEioKEWdsb2JhbF9wcm9kdWN0X2lkGAMgASgJUg9nbG9iYWxQcm9kdWN0'
-    'SWQSGQoFcHJpY2UYBCABKAVIAVIFcHJpY2WIAQESJgoPaW1hZ2VzX2xpbmtfaWRzGAUgAygJUg'
-    '1pbWFnZXNMaW5rSWRzEioKDnN0b2NrX3F1YW50aXR5GAYgASgFSAJSDXN0b2NrUXVhbnRpdHmI'
-    'AQESLgoTbWluX3N0b2NrX3RocmVzaG9sZBgHIAEoBVIRbWluU3RvY2tUaHJlc2hvbGQSSAoPZX'
-    'hwaXJhdGlvbl9kYXRlGAggASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEgDUg5leHBp'
-    'cmF0aW9uRGF0ZYgBARJCCgxpbmJvdW5kX2RhdGUYCSABKAsyGi5nb29nbGUucHJvdG9idWYuVG'
-    'ltZXN0YW1wSARSC2luYm91bmREYXRliAEBEjkKCmNyZWF0ZWRfYXQYCiABKAsyGi5nb29nbGUu'
-    'cHJvdG9idWYuVGltZXN0YW1wUgljcmVhdGVkQXQSPgoKdXBkYXRlZF9hdBgLIAEoCzIaLmdvb2'
-    'dsZS5wcm90b2J1Zi5UaW1lc3RhbXBIBVIJdXBkYXRlZEF0iAEBEiQKC3N1cHBsaWVyX2lkGAwg'
-    'ASgJSAZSCnN1cHBsaWVySWSIAQFCCQoHX3JlZl9pZEIICgZfcHJpY2VCEQoPX3N0b2NrX3F1YW'
-    '50aXR5QhIKEF9leHBpcmF0aW9uX2RhdGVCDwoNX2luYm91bmRfZGF0ZUINCgtfdXBkYXRlZF9h'
-    'dEIOCgxfc3VwcGxpZXJfaWQ=');
+    'SWQSGQoFcHJpY2UYBCABKAVIAVIFcHJpY2WIAQESKAoQaW1hZ2VzX2xpbmtzX2lkcxgFIAMoCV'
+    'IOaW1hZ2VzTGlua3NJZHMSKgoOc3RvY2tfcXVhbnRpdHkYBiABKAVIAlINc3RvY2tRdWFudGl0'
+    'eYgBARIuChNtaW5fc3RvY2tfdGhyZXNob2xkGAcgASgFUhFtaW5TdG9ja1RocmVzaG9sZBJICg'
+    '9leHBpcmF0aW9uX2RhdGUYCCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wSANSDmV4'
+    'cGlyYXRpb25EYXRliAEBEkIKDGluYm91bmRfZGF0ZRgJIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi'
+    '5UaW1lc3RhbXBIBFILaW5ib3VuZERhdGWIAQESOQoKY3JlYXRlZF9hdBgKIAEoCzIaLmdvb2ds'
+    'ZS5wcm90b2J1Zi5UaW1lc3RhbXBSCWNyZWF0ZWRBdBI+Cgp1cGRhdGVkX2F0GAsgASgLMhouZ2'
+    '9vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEgFUgl1cGRhdGVkQXSIAQESJAoLc3VwcGxpZXJfaWQY'
+    'DCABKAlIBlIKc3VwcGxpZXJJZIgBAUIJCgdfcmVmX2lkQggKBl9wcmljZUIRCg9fc3RvY2tfcX'
+    'VhbnRpdHlCEgoQX2V4cGlyYXRpb25fZGF0ZUIPCg1faW5ib3VuZF9kYXRlQg0KC191cGRhdGVk'
+    'X2F0Qg4KDF9zdXBwbGllcl9pZA==');
 
 @$core.Deprecated('Use findStoreProductsRequestDescriptor instead')
 const FindStoreProductsRequest$json = {

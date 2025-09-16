@@ -50,4 +50,36 @@ abstract final class StoreService {
     storev1store.GetBusinessStoresRequest.new,
     storev1store.GetBusinessStoresResponse.new,
   );
+
+  /// Add user to store or invite user to store.
+  static const createUserToStore = connect.Spec(
+    '/$name/CreateUserToStore',
+    connect.StreamType.unary,
+    storev1store.CreateUserToStoreRequest.new,
+    storev1store.CreateUserToStoreResponse.new,
+  );
+
+  /// Associate user to store.
+  static const associateUserToStore = connect.Spec(
+    '/$name/AssociateUserToStore',
+    connect.StreamType.unary,
+    storev1store.AssociateUserToStoreRequest.new,
+    storev1store.AssociateUserToStoreResponse.new,
+  );
+
+  /// Update store member.
+  static const updateStoreMember = connect.Spec(
+    '/$name/UpdateStoreMember',
+    connect.StreamType.unary,
+    storev1store.UpdateStoreMemberRequest.new,
+    storev1store.UpdateStoreMemberResponse.new,
+  );
+
+  /// Stream store members.
+  static const streamStoreMembers = connect.Spec(
+    '/$name/StreamStoreMembers',
+    connect.StreamType.server,
+    storev1store.StreamStoreMembersRequest.new,
+    storev1store.StreamStoreMembersResponse.new,
+  );
 }

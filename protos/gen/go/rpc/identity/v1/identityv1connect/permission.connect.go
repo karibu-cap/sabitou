@@ -33,50 +33,50 @@ const (
 // reflection-formatted method names, remove the leading slash and convert the remaining slash to a
 // period.
 const (
-	// PermissionServiceCreatePermissionsGroupProcedure is the fully-qualified name of the
-	// PermissionService's CreatePermissionsGroup RPC.
-	PermissionServiceCreatePermissionsGroupProcedure = "/identity.v1.PermissionService/CreatePermissionsGroup"
-	// PermissionServiceGetPermissionsGroupProcedure is the fully-qualified name of the
-	// PermissionService's GetPermissionsGroup RPC.
-	PermissionServiceGetPermissionsGroupProcedure = "/identity.v1.PermissionService/GetPermissionsGroup"
-	// PermissionServiceUpdatePermissionsGroupProcedure is the fully-qualified name of the
-	// PermissionService's UpdatePermissionsGroup RPC.
-	PermissionServiceUpdatePermissionsGroupProcedure = "/identity.v1.PermissionService/UpdatePermissionsGroup"
-	// PermissionServiceDeletePermissionsGroupProcedure is the fully-qualified name of the
-	// PermissionService's DeletePermissionsGroup RPC.
-	PermissionServiceDeletePermissionsGroupProcedure = "/identity.v1.PermissionService/DeletePermissionsGroup"
-	// PermissionServiceUpdateMemberPermissionsProcedure is the fully-qualified name of the
-	// PermissionService's UpdateMemberPermissions RPC.
-	PermissionServiceUpdateMemberPermissionsProcedure = "/identity.v1.PermissionService/UpdateMemberPermissions"
-	// PermissionServiceGetBusinessPermissionsGroupsProcedure is the fully-qualified name of the
-	// PermissionService's GetBusinessPermissionsGroups RPC.
-	PermissionServiceGetBusinessPermissionsGroupsProcedure = "/identity.v1.PermissionService/GetBusinessPermissionsGroups"
-	// PermissionServiceCheckPermissionProcedure is the fully-qualified name of the PermissionService's
-	// CheckPermission RPC.
-	PermissionServiceCheckPermissionProcedure = "/identity.v1.PermissionService/CheckPermission"
-	// PermissionServiceStreamBusinessPermissionsGroupsProcedure is the fully-qualified name of the
-	// PermissionService's StreamBusinessPermissionsGroups RPC.
-	PermissionServiceStreamBusinessPermissionsGroupsProcedure = "/identity.v1.PermissionService/StreamBusinessPermissionsGroups"
+	// PermissionServiceCreateBusinessPermissionProcedure is the fully-qualified name of the
+	// PermissionService's CreateBusinessPermission RPC.
+	PermissionServiceCreateBusinessPermissionProcedure = "/identity.v1.PermissionService/CreateBusinessPermission"
+	// PermissionServiceUpdateBusinessPermissionProcedure is the fully-qualified name of the
+	// PermissionService's UpdateBusinessPermission RPC.
+	PermissionServiceUpdateBusinessPermissionProcedure = "/identity.v1.PermissionService/UpdateBusinessPermission"
+	// PermissionServiceDeleteBusinessPermissionProcedure is the fully-qualified name of the
+	// PermissionService's DeleteBusinessPermission RPC.
+	PermissionServiceDeleteBusinessPermissionProcedure = "/identity.v1.PermissionService/DeleteBusinessPermission"
+	// PermissionServiceCreateStorePermissionProcedure is the fully-qualified name of the
+	// PermissionService's CreateStorePermission RPC.
+	PermissionServiceCreateStorePermissionProcedure = "/identity.v1.PermissionService/CreateStorePermission"
+	// PermissionServiceUpdateStorePermissionProcedure is the fully-qualified name of the
+	// PermissionService's UpdateStorePermission RPC.
+	PermissionServiceUpdateStorePermissionProcedure = "/identity.v1.PermissionService/UpdateStorePermission"
+	// PermissionServiceDeleteStorePermissionProcedure is the fully-qualified name of the
+	// PermissionService's DeleteStorePermission RPC.
+	PermissionServiceDeleteStorePermissionProcedure = "/identity.v1.PermissionService/DeleteStorePermission"
+	// PermissionServiceCheckBusinessPermissionProcedure is the fully-qualified name of the
+	// PermissionService's CheckBusinessPermission RPC.
+	PermissionServiceCheckBusinessPermissionProcedure = "/identity.v1.PermissionService/CheckBusinessPermission"
+	// PermissionServiceCheckStorePermissionProcedure is the fully-qualified name of the
+	// PermissionService's CheckStorePermission RPC.
+	PermissionServiceCheckStorePermissionProcedure = "/identity.v1.PermissionService/CheckStorePermission"
 )
 
 // PermissionServiceClient is a client for the identity.v1.PermissionService service.
 type PermissionServiceClient interface {
-	// Creates a new permission group.
-	CreatePermissionsGroup(context.Context, *connect.Request[v1.CreatePermissionsGroupRequest]) (*connect.Response[v1.CreatePermissionsGroupResponse], error)
-	// Gets a permission group by id.
-	GetPermissionsGroup(context.Context, *connect.Request[v1.GetPermissionsGroupRequest]) (*connect.Response[v1.GetPermissionsGroupResponse], error)
-	// Updates a permission group.
-	UpdatePermissionsGroup(context.Context, *connect.Request[v1.UpdatePermissionsGroupRequest]) (*connect.Response[v1.UpdatePermissionsGroupResponse], error)
-	// Deletes a permission group.
-	DeletePermissionsGroup(context.Context, *connect.Request[v1.DeletePermissionsGroupRequest]) (*connect.Response[v1.DeletePermissionsGroupResponse], error)
-	// Update the member permissions on the provided business.
-	UpdateMemberPermissions(context.Context, *connect.Request[v1.UpdateMemberPermissionsRequest]) (*connect.Response[v1.UpdateMemberPermissionsResponse], error)
-	// Gets the permission groups of the business.
-	GetBusinessPermissionsGroups(context.Context, *connect.Request[v1.GetBusinessPermissionsGroupsRequest]) (*connect.Response[v1.GetBusinessPermissionsGroupsResponse], error)
-	// Checks if the member has the provided permission for the provided resource.
-	CheckPermission(context.Context, *connect.Request[v1.CheckPermissionRequest]) (*connect.Response[v1.CheckPermissionResponse], error)
-	// Stream the permission groups of the business with real-time updates.
-	StreamBusinessPermissionsGroups(context.Context, *connect.Request[v1.StreamBusinessPermissionsGroupsRequest]) (*connect.ServerStreamForClient[v1.StreamBusinessPermissionsGroupsResponse], error)
+	// Creates a new business permission.
+	CreateBusinessPermission(context.Context, *connect.Request[v1.CreateBusinessPermissionRequest]) (*connect.Response[v1.CreateBusinessPermissionResponse], error)
+	// Updates a business permission.
+	UpdateBusinessPermission(context.Context, *connect.Request[v1.UpdateBusinessPermissionRequest]) (*connect.Response[v1.UpdateBusinessPermissionResponse], error)
+	// Deletes a business permission.
+	DeleteBusinessPermission(context.Context, *connect.Request[v1.DeleteBusinessPermissionRequest]) (*connect.Response[v1.DeleteBusinessPermissionResponse], error)
+	// Creates a new store permission.
+	CreateStorePermission(context.Context, *connect.Request[v1.CreateStorePermissionRequest]) (*connect.Response[v1.CreateStorePermissionResponse], error)
+	// Updates a store permission.
+	UpdateStorePermission(context.Context, *connect.Request[v1.UpdateStorePermissionRequest]) (*connect.Response[v1.UpdateStorePermissionResponse], error)
+	// Deletes a store permission.
+	DeleteStorePermission(context.Context, *connect.Request[v1.DeleteStorePermissionRequest]) (*connect.Response[v1.DeleteStorePermissionResponse], error)
+	// Checks if a member has a business permission.
+	CheckBusinessPermission(context.Context, *connect.Request[v1.CheckBusinessPermissionRequest]) (*connect.Response[v1.CheckBusinessPermissionResponse], error)
+	// Checks if a member has a store permission.
+	CheckStorePermission(context.Context, *connect.Request[v1.CheckStorePermissionRequest]) (*connect.Response[v1.CheckStorePermissionResponse], error)
 }
 
 // NewPermissionServiceClient constructs a client for the identity.v1.PermissionService service. By
@@ -90,52 +90,52 @@ func NewPermissionServiceClient(httpClient connect.HTTPClient, baseURL string, o
 	baseURL = strings.TrimRight(baseURL, "/")
 	permissionServiceMethods := v1.File_identity_v1_permission_proto.Services().ByName("PermissionService").Methods()
 	return &permissionServiceClient{
-		createPermissionsGroup: connect.NewClient[v1.CreatePermissionsGroupRequest, v1.CreatePermissionsGroupResponse](
+		createBusinessPermission: connect.NewClient[v1.CreateBusinessPermissionRequest, v1.CreateBusinessPermissionResponse](
 			httpClient,
-			baseURL+PermissionServiceCreatePermissionsGroupProcedure,
-			connect.WithSchema(permissionServiceMethods.ByName("CreatePermissionsGroup")),
+			baseURL+PermissionServiceCreateBusinessPermissionProcedure,
+			connect.WithSchema(permissionServiceMethods.ByName("CreateBusinessPermission")),
 			connect.WithClientOptions(opts...),
 		),
-		getPermissionsGroup: connect.NewClient[v1.GetPermissionsGroupRequest, v1.GetPermissionsGroupResponse](
+		updateBusinessPermission: connect.NewClient[v1.UpdateBusinessPermissionRequest, v1.UpdateBusinessPermissionResponse](
 			httpClient,
-			baseURL+PermissionServiceGetPermissionsGroupProcedure,
-			connect.WithSchema(permissionServiceMethods.ByName("GetPermissionsGroup")),
+			baseURL+PermissionServiceUpdateBusinessPermissionProcedure,
+			connect.WithSchema(permissionServiceMethods.ByName("UpdateBusinessPermission")),
 			connect.WithClientOptions(opts...),
 		),
-		updatePermissionsGroup: connect.NewClient[v1.UpdatePermissionsGroupRequest, v1.UpdatePermissionsGroupResponse](
+		deleteBusinessPermission: connect.NewClient[v1.DeleteBusinessPermissionRequest, v1.DeleteBusinessPermissionResponse](
 			httpClient,
-			baseURL+PermissionServiceUpdatePermissionsGroupProcedure,
-			connect.WithSchema(permissionServiceMethods.ByName("UpdatePermissionsGroup")),
+			baseURL+PermissionServiceDeleteBusinessPermissionProcedure,
+			connect.WithSchema(permissionServiceMethods.ByName("DeleteBusinessPermission")),
 			connect.WithClientOptions(opts...),
 		),
-		deletePermissionsGroup: connect.NewClient[v1.DeletePermissionsGroupRequest, v1.DeletePermissionsGroupResponse](
+		createStorePermission: connect.NewClient[v1.CreateStorePermissionRequest, v1.CreateStorePermissionResponse](
 			httpClient,
-			baseURL+PermissionServiceDeletePermissionsGroupProcedure,
-			connect.WithSchema(permissionServiceMethods.ByName("DeletePermissionsGroup")),
+			baseURL+PermissionServiceCreateStorePermissionProcedure,
+			connect.WithSchema(permissionServiceMethods.ByName("CreateStorePermission")),
 			connect.WithClientOptions(opts...),
 		),
-		updateMemberPermissions: connect.NewClient[v1.UpdateMemberPermissionsRequest, v1.UpdateMemberPermissionsResponse](
+		updateStorePermission: connect.NewClient[v1.UpdateStorePermissionRequest, v1.UpdateStorePermissionResponse](
 			httpClient,
-			baseURL+PermissionServiceUpdateMemberPermissionsProcedure,
-			connect.WithSchema(permissionServiceMethods.ByName("UpdateMemberPermissions")),
+			baseURL+PermissionServiceUpdateStorePermissionProcedure,
+			connect.WithSchema(permissionServiceMethods.ByName("UpdateStorePermission")),
 			connect.WithClientOptions(opts...),
 		),
-		getBusinessPermissionsGroups: connect.NewClient[v1.GetBusinessPermissionsGroupsRequest, v1.GetBusinessPermissionsGroupsResponse](
+		deleteStorePermission: connect.NewClient[v1.DeleteStorePermissionRequest, v1.DeleteStorePermissionResponse](
 			httpClient,
-			baseURL+PermissionServiceGetBusinessPermissionsGroupsProcedure,
-			connect.WithSchema(permissionServiceMethods.ByName("GetBusinessPermissionsGroups")),
+			baseURL+PermissionServiceDeleteStorePermissionProcedure,
+			connect.WithSchema(permissionServiceMethods.ByName("DeleteStorePermission")),
 			connect.WithClientOptions(opts...),
 		),
-		checkPermission: connect.NewClient[v1.CheckPermissionRequest, v1.CheckPermissionResponse](
+		checkBusinessPermission: connect.NewClient[v1.CheckBusinessPermissionRequest, v1.CheckBusinessPermissionResponse](
 			httpClient,
-			baseURL+PermissionServiceCheckPermissionProcedure,
-			connect.WithSchema(permissionServiceMethods.ByName("CheckPermission")),
+			baseURL+PermissionServiceCheckBusinessPermissionProcedure,
+			connect.WithSchema(permissionServiceMethods.ByName("CheckBusinessPermission")),
 			connect.WithClientOptions(opts...),
 		),
-		streamBusinessPermissionsGroups: connect.NewClient[v1.StreamBusinessPermissionsGroupsRequest, v1.StreamBusinessPermissionsGroupsResponse](
+		checkStorePermission: connect.NewClient[v1.CheckStorePermissionRequest, v1.CheckStorePermissionResponse](
 			httpClient,
-			baseURL+PermissionServiceStreamBusinessPermissionsGroupsProcedure,
-			connect.WithSchema(permissionServiceMethods.ByName("StreamBusinessPermissionsGroups")),
+			baseURL+PermissionServiceCheckStorePermissionProcedure,
+			connect.WithSchema(permissionServiceMethods.ByName("CheckStorePermission")),
 			connect.WithClientOptions(opts...),
 		),
 	}
@@ -143,75 +143,74 @@ func NewPermissionServiceClient(httpClient connect.HTTPClient, baseURL string, o
 
 // permissionServiceClient implements PermissionServiceClient.
 type permissionServiceClient struct {
-	createPermissionsGroup          *connect.Client[v1.CreatePermissionsGroupRequest, v1.CreatePermissionsGroupResponse]
-	getPermissionsGroup             *connect.Client[v1.GetPermissionsGroupRequest, v1.GetPermissionsGroupResponse]
-	updatePermissionsGroup          *connect.Client[v1.UpdatePermissionsGroupRequest, v1.UpdatePermissionsGroupResponse]
-	deletePermissionsGroup          *connect.Client[v1.DeletePermissionsGroupRequest, v1.DeletePermissionsGroupResponse]
-	updateMemberPermissions         *connect.Client[v1.UpdateMemberPermissionsRequest, v1.UpdateMemberPermissionsResponse]
-	getBusinessPermissionsGroups    *connect.Client[v1.GetBusinessPermissionsGroupsRequest, v1.GetBusinessPermissionsGroupsResponse]
-	checkPermission                 *connect.Client[v1.CheckPermissionRequest, v1.CheckPermissionResponse]
-	streamBusinessPermissionsGroups *connect.Client[v1.StreamBusinessPermissionsGroupsRequest, v1.StreamBusinessPermissionsGroupsResponse]
+	createBusinessPermission *connect.Client[v1.CreateBusinessPermissionRequest, v1.CreateBusinessPermissionResponse]
+	updateBusinessPermission *connect.Client[v1.UpdateBusinessPermissionRequest, v1.UpdateBusinessPermissionResponse]
+	deleteBusinessPermission *connect.Client[v1.DeleteBusinessPermissionRequest, v1.DeleteBusinessPermissionResponse]
+	createStorePermission    *connect.Client[v1.CreateStorePermissionRequest, v1.CreateStorePermissionResponse]
+	updateStorePermission    *connect.Client[v1.UpdateStorePermissionRequest, v1.UpdateStorePermissionResponse]
+	deleteStorePermission    *connect.Client[v1.DeleteStorePermissionRequest, v1.DeleteStorePermissionResponse]
+	checkBusinessPermission  *connect.Client[v1.CheckBusinessPermissionRequest, v1.CheckBusinessPermissionResponse]
+	checkStorePermission     *connect.Client[v1.CheckStorePermissionRequest, v1.CheckStorePermissionResponse]
 }
 
-// CreatePermissionsGroup calls identity.v1.PermissionService.CreatePermissionsGroup.
-func (c *permissionServiceClient) CreatePermissionsGroup(ctx context.Context, req *connect.Request[v1.CreatePermissionsGroupRequest]) (*connect.Response[v1.CreatePermissionsGroupResponse], error) {
-	return c.createPermissionsGroup.CallUnary(ctx, req)
+// CreateBusinessPermission calls identity.v1.PermissionService.CreateBusinessPermission.
+func (c *permissionServiceClient) CreateBusinessPermission(ctx context.Context, req *connect.Request[v1.CreateBusinessPermissionRequest]) (*connect.Response[v1.CreateBusinessPermissionResponse], error) {
+	return c.createBusinessPermission.CallUnary(ctx, req)
 }
 
-// GetPermissionsGroup calls identity.v1.PermissionService.GetPermissionsGroup.
-func (c *permissionServiceClient) GetPermissionsGroup(ctx context.Context, req *connect.Request[v1.GetPermissionsGroupRequest]) (*connect.Response[v1.GetPermissionsGroupResponse], error) {
-	return c.getPermissionsGroup.CallUnary(ctx, req)
+// UpdateBusinessPermission calls identity.v1.PermissionService.UpdateBusinessPermission.
+func (c *permissionServiceClient) UpdateBusinessPermission(ctx context.Context, req *connect.Request[v1.UpdateBusinessPermissionRequest]) (*connect.Response[v1.UpdateBusinessPermissionResponse], error) {
+	return c.updateBusinessPermission.CallUnary(ctx, req)
 }
 
-// UpdatePermissionsGroup calls identity.v1.PermissionService.UpdatePermissionsGroup.
-func (c *permissionServiceClient) UpdatePermissionsGroup(ctx context.Context, req *connect.Request[v1.UpdatePermissionsGroupRequest]) (*connect.Response[v1.UpdatePermissionsGroupResponse], error) {
-	return c.updatePermissionsGroup.CallUnary(ctx, req)
+// DeleteBusinessPermission calls identity.v1.PermissionService.DeleteBusinessPermission.
+func (c *permissionServiceClient) DeleteBusinessPermission(ctx context.Context, req *connect.Request[v1.DeleteBusinessPermissionRequest]) (*connect.Response[v1.DeleteBusinessPermissionResponse], error) {
+	return c.deleteBusinessPermission.CallUnary(ctx, req)
 }
 
-// DeletePermissionsGroup calls identity.v1.PermissionService.DeletePermissionsGroup.
-func (c *permissionServiceClient) DeletePermissionsGroup(ctx context.Context, req *connect.Request[v1.DeletePermissionsGroupRequest]) (*connect.Response[v1.DeletePermissionsGroupResponse], error) {
-	return c.deletePermissionsGroup.CallUnary(ctx, req)
+// CreateStorePermission calls identity.v1.PermissionService.CreateStorePermission.
+func (c *permissionServiceClient) CreateStorePermission(ctx context.Context, req *connect.Request[v1.CreateStorePermissionRequest]) (*connect.Response[v1.CreateStorePermissionResponse], error) {
+	return c.createStorePermission.CallUnary(ctx, req)
 }
 
-// UpdateMemberPermissions calls identity.v1.PermissionService.UpdateMemberPermissions.
-func (c *permissionServiceClient) UpdateMemberPermissions(ctx context.Context, req *connect.Request[v1.UpdateMemberPermissionsRequest]) (*connect.Response[v1.UpdateMemberPermissionsResponse], error) {
-	return c.updateMemberPermissions.CallUnary(ctx, req)
+// UpdateStorePermission calls identity.v1.PermissionService.UpdateStorePermission.
+func (c *permissionServiceClient) UpdateStorePermission(ctx context.Context, req *connect.Request[v1.UpdateStorePermissionRequest]) (*connect.Response[v1.UpdateStorePermissionResponse], error) {
+	return c.updateStorePermission.CallUnary(ctx, req)
 }
 
-// GetBusinessPermissionsGroups calls identity.v1.PermissionService.GetBusinessPermissionsGroups.
-func (c *permissionServiceClient) GetBusinessPermissionsGroups(ctx context.Context, req *connect.Request[v1.GetBusinessPermissionsGroupsRequest]) (*connect.Response[v1.GetBusinessPermissionsGroupsResponse], error) {
-	return c.getBusinessPermissionsGroups.CallUnary(ctx, req)
+// DeleteStorePermission calls identity.v1.PermissionService.DeleteStorePermission.
+func (c *permissionServiceClient) DeleteStorePermission(ctx context.Context, req *connect.Request[v1.DeleteStorePermissionRequest]) (*connect.Response[v1.DeleteStorePermissionResponse], error) {
+	return c.deleteStorePermission.CallUnary(ctx, req)
 }
 
-// CheckPermission calls identity.v1.PermissionService.CheckPermission.
-func (c *permissionServiceClient) CheckPermission(ctx context.Context, req *connect.Request[v1.CheckPermissionRequest]) (*connect.Response[v1.CheckPermissionResponse], error) {
-	return c.checkPermission.CallUnary(ctx, req)
+// CheckBusinessPermission calls identity.v1.PermissionService.CheckBusinessPermission.
+func (c *permissionServiceClient) CheckBusinessPermission(ctx context.Context, req *connect.Request[v1.CheckBusinessPermissionRequest]) (*connect.Response[v1.CheckBusinessPermissionResponse], error) {
+	return c.checkBusinessPermission.CallUnary(ctx, req)
 }
 
-// StreamBusinessPermissionsGroups calls
-// identity.v1.PermissionService.StreamBusinessPermissionsGroups.
-func (c *permissionServiceClient) StreamBusinessPermissionsGroups(ctx context.Context, req *connect.Request[v1.StreamBusinessPermissionsGroupsRequest]) (*connect.ServerStreamForClient[v1.StreamBusinessPermissionsGroupsResponse], error) {
-	return c.streamBusinessPermissionsGroups.CallServerStream(ctx, req)
+// CheckStorePermission calls identity.v1.PermissionService.CheckStorePermission.
+func (c *permissionServiceClient) CheckStorePermission(ctx context.Context, req *connect.Request[v1.CheckStorePermissionRequest]) (*connect.Response[v1.CheckStorePermissionResponse], error) {
+	return c.checkStorePermission.CallUnary(ctx, req)
 }
 
 // PermissionServiceHandler is an implementation of the identity.v1.PermissionService service.
 type PermissionServiceHandler interface {
-	// Creates a new permission group.
-	CreatePermissionsGroup(context.Context, *connect.Request[v1.CreatePermissionsGroupRequest]) (*connect.Response[v1.CreatePermissionsGroupResponse], error)
-	// Gets a permission group by id.
-	GetPermissionsGroup(context.Context, *connect.Request[v1.GetPermissionsGroupRequest]) (*connect.Response[v1.GetPermissionsGroupResponse], error)
-	// Updates a permission group.
-	UpdatePermissionsGroup(context.Context, *connect.Request[v1.UpdatePermissionsGroupRequest]) (*connect.Response[v1.UpdatePermissionsGroupResponse], error)
-	// Deletes a permission group.
-	DeletePermissionsGroup(context.Context, *connect.Request[v1.DeletePermissionsGroupRequest]) (*connect.Response[v1.DeletePermissionsGroupResponse], error)
-	// Update the member permissions on the provided business.
-	UpdateMemberPermissions(context.Context, *connect.Request[v1.UpdateMemberPermissionsRequest]) (*connect.Response[v1.UpdateMemberPermissionsResponse], error)
-	// Gets the permission groups of the business.
-	GetBusinessPermissionsGroups(context.Context, *connect.Request[v1.GetBusinessPermissionsGroupsRequest]) (*connect.Response[v1.GetBusinessPermissionsGroupsResponse], error)
-	// Checks if the member has the provided permission for the provided resource.
-	CheckPermission(context.Context, *connect.Request[v1.CheckPermissionRequest]) (*connect.Response[v1.CheckPermissionResponse], error)
-	// Stream the permission groups of the business with real-time updates.
-	StreamBusinessPermissionsGroups(context.Context, *connect.Request[v1.StreamBusinessPermissionsGroupsRequest], *connect.ServerStream[v1.StreamBusinessPermissionsGroupsResponse]) error
+	// Creates a new business permission.
+	CreateBusinessPermission(context.Context, *connect.Request[v1.CreateBusinessPermissionRequest]) (*connect.Response[v1.CreateBusinessPermissionResponse], error)
+	// Updates a business permission.
+	UpdateBusinessPermission(context.Context, *connect.Request[v1.UpdateBusinessPermissionRequest]) (*connect.Response[v1.UpdateBusinessPermissionResponse], error)
+	// Deletes a business permission.
+	DeleteBusinessPermission(context.Context, *connect.Request[v1.DeleteBusinessPermissionRequest]) (*connect.Response[v1.DeleteBusinessPermissionResponse], error)
+	// Creates a new store permission.
+	CreateStorePermission(context.Context, *connect.Request[v1.CreateStorePermissionRequest]) (*connect.Response[v1.CreateStorePermissionResponse], error)
+	// Updates a store permission.
+	UpdateStorePermission(context.Context, *connect.Request[v1.UpdateStorePermissionRequest]) (*connect.Response[v1.UpdateStorePermissionResponse], error)
+	// Deletes a store permission.
+	DeleteStorePermission(context.Context, *connect.Request[v1.DeleteStorePermissionRequest]) (*connect.Response[v1.DeleteStorePermissionResponse], error)
+	// Checks if a member has a business permission.
+	CheckBusinessPermission(context.Context, *connect.Request[v1.CheckBusinessPermissionRequest]) (*connect.Response[v1.CheckBusinessPermissionResponse], error)
+	// Checks if a member has a store permission.
+	CheckStorePermission(context.Context, *connect.Request[v1.CheckStorePermissionRequest]) (*connect.Response[v1.CheckStorePermissionResponse], error)
 }
 
 // NewPermissionServiceHandler builds an HTTP handler from the service implementation. It returns
@@ -221,72 +220,72 @@ type PermissionServiceHandler interface {
 // and JSON codecs. They also support gzip compression.
 func NewPermissionServiceHandler(svc PermissionServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
 	permissionServiceMethods := v1.File_identity_v1_permission_proto.Services().ByName("PermissionService").Methods()
-	permissionServiceCreatePermissionsGroupHandler := connect.NewUnaryHandler(
-		PermissionServiceCreatePermissionsGroupProcedure,
-		svc.CreatePermissionsGroup,
-		connect.WithSchema(permissionServiceMethods.ByName("CreatePermissionsGroup")),
+	permissionServiceCreateBusinessPermissionHandler := connect.NewUnaryHandler(
+		PermissionServiceCreateBusinessPermissionProcedure,
+		svc.CreateBusinessPermission,
+		connect.WithSchema(permissionServiceMethods.ByName("CreateBusinessPermission")),
 		connect.WithHandlerOptions(opts...),
 	)
-	permissionServiceGetPermissionsGroupHandler := connect.NewUnaryHandler(
-		PermissionServiceGetPermissionsGroupProcedure,
-		svc.GetPermissionsGroup,
-		connect.WithSchema(permissionServiceMethods.ByName("GetPermissionsGroup")),
+	permissionServiceUpdateBusinessPermissionHandler := connect.NewUnaryHandler(
+		PermissionServiceUpdateBusinessPermissionProcedure,
+		svc.UpdateBusinessPermission,
+		connect.WithSchema(permissionServiceMethods.ByName("UpdateBusinessPermission")),
 		connect.WithHandlerOptions(opts...),
 	)
-	permissionServiceUpdatePermissionsGroupHandler := connect.NewUnaryHandler(
-		PermissionServiceUpdatePermissionsGroupProcedure,
-		svc.UpdatePermissionsGroup,
-		connect.WithSchema(permissionServiceMethods.ByName("UpdatePermissionsGroup")),
+	permissionServiceDeleteBusinessPermissionHandler := connect.NewUnaryHandler(
+		PermissionServiceDeleteBusinessPermissionProcedure,
+		svc.DeleteBusinessPermission,
+		connect.WithSchema(permissionServiceMethods.ByName("DeleteBusinessPermission")),
 		connect.WithHandlerOptions(opts...),
 	)
-	permissionServiceDeletePermissionsGroupHandler := connect.NewUnaryHandler(
-		PermissionServiceDeletePermissionsGroupProcedure,
-		svc.DeletePermissionsGroup,
-		connect.WithSchema(permissionServiceMethods.ByName("DeletePermissionsGroup")),
+	permissionServiceCreateStorePermissionHandler := connect.NewUnaryHandler(
+		PermissionServiceCreateStorePermissionProcedure,
+		svc.CreateStorePermission,
+		connect.WithSchema(permissionServiceMethods.ByName("CreateStorePermission")),
 		connect.WithHandlerOptions(opts...),
 	)
-	permissionServiceUpdateMemberPermissionsHandler := connect.NewUnaryHandler(
-		PermissionServiceUpdateMemberPermissionsProcedure,
-		svc.UpdateMemberPermissions,
-		connect.WithSchema(permissionServiceMethods.ByName("UpdateMemberPermissions")),
+	permissionServiceUpdateStorePermissionHandler := connect.NewUnaryHandler(
+		PermissionServiceUpdateStorePermissionProcedure,
+		svc.UpdateStorePermission,
+		connect.WithSchema(permissionServiceMethods.ByName("UpdateStorePermission")),
 		connect.WithHandlerOptions(opts...),
 	)
-	permissionServiceGetBusinessPermissionsGroupsHandler := connect.NewUnaryHandler(
-		PermissionServiceGetBusinessPermissionsGroupsProcedure,
-		svc.GetBusinessPermissionsGroups,
-		connect.WithSchema(permissionServiceMethods.ByName("GetBusinessPermissionsGroups")),
+	permissionServiceDeleteStorePermissionHandler := connect.NewUnaryHandler(
+		PermissionServiceDeleteStorePermissionProcedure,
+		svc.DeleteStorePermission,
+		connect.WithSchema(permissionServiceMethods.ByName("DeleteStorePermission")),
 		connect.WithHandlerOptions(opts...),
 	)
-	permissionServiceCheckPermissionHandler := connect.NewUnaryHandler(
-		PermissionServiceCheckPermissionProcedure,
-		svc.CheckPermission,
-		connect.WithSchema(permissionServiceMethods.ByName("CheckPermission")),
+	permissionServiceCheckBusinessPermissionHandler := connect.NewUnaryHandler(
+		PermissionServiceCheckBusinessPermissionProcedure,
+		svc.CheckBusinessPermission,
+		connect.WithSchema(permissionServiceMethods.ByName("CheckBusinessPermission")),
 		connect.WithHandlerOptions(opts...),
 	)
-	permissionServiceStreamBusinessPermissionsGroupsHandler := connect.NewServerStreamHandler(
-		PermissionServiceStreamBusinessPermissionsGroupsProcedure,
-		svc.StreamBusinessPermissionsGroups,
-		connect.WithSchema(permissionServiceMethods.ByName("StreamBusinessPermissionsGroups")),
+	permissionServiceCheckStorePermissionHandler := connect.NewUnaryHandler(
+		PermissionServiceCheckStorePermissionProcedure,
+		svc.CheckStorePermission,
+		connect.WithSchema(permissionServiceMethods.ByName("CheckStorePermission")),
 		connect.WithHandlerOptions(opts...),
 	)
 	return "/identity.v1.PermissionService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
-		case PermissionServiceCreatePermissionsGroupProcedure:
-			permissionServiceCreatePermissionsGroupHandler.ServeHTTP(w, r)
-		case PermissionServiceGetPermissionsGroupProcedure:
-			permissionServiceGetPermissionsGroupHandler.ServeHTTP(w, r)
-		case PermissionServiceUpdatePermissionsGroupProcedure:
-			permissionServiceUpdatePermissionsGroupHandler.ServeHTTP(w, r)
-		case PermissionServiceDeletePermissionsGroupProcedure:
-			permissionServiceDeletePermissionsGroupHandler.ServeHTTP(w, r)
-		case PermissionServiceUpdateMemberPermissionsProcedure:
-			permissionServiceUpdateMemberPermissionsHandler.ServeHTTP(w, r)
-		case PermissionServiceGetBusinessPermissionsGroupsProcedure:
-			permissionServiceGetBusinessPermissionsGroupsHandler.ServeHTTP(w, r)
-		case PermissionServiceCheckPermissionProcedure:
-			permissionServiceCheckPermissionHandler.ServeHTTP(w, r)
-		case PermissionServiceStreamBusinessPermissionsGroupsProcedure:
-			permissionServiceStreamBusinessPermissionsGroupsHandler.ServeHTTP(w, r)
+		case PermissionServiceCreateBusinessPermissionProcedure:
+			permissionServiceCreateBusinessPermissionHandler.ServeHTTP(w, r)
+		case PermissionServiceUpdateBusinessPermissionProcedure:
+			permissionServiceUpdateBusinessPermissionHandler.ServeHTTP(w, r)
+		case PermissionServiceDeleteBusinessPermissionProcedure:
+			permissionServiceDeleteBusinessPermissionHandler.ServeHTTP(w, r)
+		case PermissionServiceCreateStorePermissionProcedure:
+			permissionServiceCreateStorePermissionHandler.ServeHTTP(w, r)
+		case PermissionServiceUpdateStorePermissionProcedure:
+			permissionServiceUpdateStorePermissionHandler.ServeHTTP(w, r)
+		case PermissionServiceDeleteStorePermissionProcedure:
+			permissionServiceDeleteStorePermissionHandler.ServeHTTP(w, r)
+		case PermissionServiceCheckBusinessPermissionProcedure:
+			permissionServiceCheckBusinessPermissionHandler.ServeHTTP(w, r)
+		case PermissionServiceCheckStorePermissionProcedure:
+			permissionServiceCheckStorePermissionHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -296,34 +295,34 @@ func NewPermissionServiceHandler(svc PermissionServiceHandler, opts ...connect.H
 // UnimplementedPermissionServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedPermissionServiceHandler struct{}
 
-func (UnimplementedPermissionServiceHandler) CreatePermissionsGroup(context.Context, *connect.Request[v1.CreatePermissionsGroupRequest]) (*connect.Response[v1.CreatePermissionsGroupResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("identity.v1.PermissionService.CreatePermissionsGroup is not implemented"))
+func (UnimplementedPermissionServiceHandler) CreateBusinessPermission(context.Context, *connect.Request[v1.CreateBusinessPermissionRequest]) (*connect.Response[v1.CreateBusinessPermissionResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("identity.v1.PermissionService.CreateBusinessPermission is not implemented"))
 }
 
-func (UnimplementedPermissionServiceHandler) GetPermissionsGroup(context.Context, *connect.Request[v1.GetPermissionsGroupRequest]) (*connect.Response[v1.GetPermissionsGroupResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("identity.v1.PermissionService.GetPermissionsGroup is not implemented"))
+func (UnimplementedPermissionServiceHandler) UpdateBusinessPermission(context.Context, *connect.Request[v1.UpdateBusinessPermissionRequest]) (*connect.Response[v1.UpdateBusinessPermissionResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("identity.v1.PermissionService.UpdateBusinessPermission is not implemented"))
 }
 
-func (UnimplementedPermissionServiceHandler) UpdatePermissionsGroup(context.Context, *connect.Request[v1.UpdatePermissionsGroupRequest]) (*connect.Response[v1.UpdatePermissionsGroupResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("identity.v1.PermissionService.UpdatePermissionsGroup is not implemented"))
+func (UnimplementedPermissionServiceHandler) DeleteBusinessPermission(context.Context, *connect.Request[v1.DeleteBusinessPermissionRequest]) (*connect.Response[v1.DeleteBusinessPermissionResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("identity.v1.PermissionService.DeleteBusinessPermission is not implemented"))
 }
 
-func (UnimplementedPermissionServiceHandler) DeletePermissionsGroup(context.Context, *connect.Request[v1.DeletePermissionsGroupRequest]) (*connect.Response[v1.DeletePermissionsGroupResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("identity.v1.PermissionService.DeletePermissionsGroup is not implemented"))
+func (UnimplementedPermissionServiceHandler) CreateStorePermission(context.Context, *connect.Request[v1.CreateStorePermissionRequest]) (*connect.Response[v1.CreateStorePermissionResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("identity.v1.PermissionService.CreateStorePermission is not implemented"))
 }
 
-func (UnimplementedPermissionServiceHandler) UpdateMemberPermissions(context.Context, *connect.Request[v1.UpdateMemberPermissionsRequest]) (*connect.Response[v1.UpdateMemberPermissionsResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("identity.v1.PermissionService.UpdateMemberPermissions is not implemented"))
+func (UnimplementedPermissionServiceHandler) UpdateStorePermission(context.Context, *connect.Request[v1.UpdateStorePermissionRequest]) (*connect.Response[v1.UpdateStorePermissionResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("identity.v1.PermissionService.UpdateStorePermission is not implemented"))
 }
 
-func (UnimplementedPermissionServiceHandler) GetBusinessPermissionsGroups(context.Context, *connect.Request[v1.GetBusinessPermissionsGroupsRequest]) (*connect.Response[v1.GetBusinessPermissionsGroupsResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("identity.v1.PermissionService.GetBusinessPermissionsGroups is not implemented"))
+func (UnimplementedPermissionServiceHandler) DeleteStorePermission(context.Context, *connect.Request[v1.DeleteStorePermissionRequest]) (*connect.Response[v1.DeleteStorePermissionResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("identity.v1.PermissionService.DeleteStorePermission is not implemented"))
 }
 
-func (UnimplementedPermissionServiceHandler) CheckPermission(context.Context, *connect.Request[v1.CheckPermissionRequest]) (*connect.Response[v1.CheckPermissionResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("identity.v1.PermissionService.CheckPermission is not implemented"))
+func (UnimplementedPermissionServiceHandler) CheckBusinessPermission(context.Context, *connect.Request[v1.CheckBusinessPermissionRequest]) (*connect.Response[v1.CheckBusinessPermissionResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("identity.v1.PermissionService.CheckBusinessPermission is not implemented"))
 }
 
-func (UnimplementedPermissionServiceHandler) StreamBusinessPermissionsGroups(context.Context, *connect.Request[v1.StreamBusinessPermissionsGroupsRequest], *connect.ServerStream[v1.StreamBusinessPermissionsGroupsResponse]) error {
-	return connect.NewError(connect.CodeUnimplemented, errors.New("identity.v1.PermissionService.StreamBusinessPermissionsGroups is not implemented"))
+func (UnimplementedPermissionServiceHandler) CheckStorePermission(context.Context, *connect.Request[v1.CheckStorePermissionRequest]) (*connect.Response[v1.CheckStorePermissionResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("identity.v1.PermissionService.CheckStorePermission is not implemented"))
 }

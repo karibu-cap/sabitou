@@ -667,11 +667,11 @@ components:
             The price in XAF of the product.
              The currency is determined by the business.
           nullable: true
-        imagesLinkIds:
+        imagesLinksIds:
           type: array
           items:
             type: string
-          title: images_link_ids
+          title: images_links_ids
           description: The media ids of the images of the product.
         stockQuantity:
           type: integer

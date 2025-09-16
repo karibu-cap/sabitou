@@ -138,7 +138,7 @@ final _fakeTransport =
                 minStockThreshold: 10,
                 price: 10000,
                 stockQuantity: 20,
-                imagesLinkIds: ['image_1', 'image_2'],
+                imagesLinksIds: ['image_1', 'image_2'],
               ),
               StoreProduct(
                 refId: 'product_2',
@@ -147,7 +147,7 @@ final _fakeTransport =
                 minStockThreshold: 10,
                 price: 20000,
                 stockQuantity: 50,
-                imagesLinkIds: ['image_1', 'image_2'],
+                imagesLinksIds: ['image_1', 'image_2'],
               ),
               StoreProduct(
                 refId: 'product_3',
@@ -156,7 +156,7 @@ final _fakeTransport =
                 minStockThreshold: 5,
                 price: 5000,
                 stockQuantity: 5,
-                imagesLinkIds: ['image_1', 'image_2'],
+                imagesLinksIds: ['image_1', 'image_2'],
               ),
             ]);
 
@@ -172,7 +172,7 @@ final _fakeTransport =
                 minStockThreshold: 10,
                 price: 10000,
                 stockQuantity: 20,
-                imagesLinkIds: ['image_1', 'image_2'],
+                imagesLinksIds: ['image_1', 'image_2'],
               ),
               StoreProduct(
                 refId: 'product_2',
@@ -181,7 +181,7 @@ final _fakeTransport =
                 minStockThreshold: 10,
                 price: 15000,
                 stockQuantity: 10,
-                imagesLinkIds: ['image_1', 'image_2'],
+                imagesLinksIds: ['image_1', 'image_2'],
               ),
               StoreProduct(
                 refId: 'product_3',
@@ -190,7 +190,7 @@ final _fakeTransport =
                 minStockThreshold: 10,
                 price: 2000,
                 stockQuantity: 200,
-                imagesLinkIds: ['image_1', 'image_2'],
+                imagesLinksIds: ['image_1', 'image_2'],
               ),
               StoreProduct(
                 refId: 'product_4',
@@ -199,7 +199,7 @@ final _fakeTransport =
                 minStockThreshold: 10,
                 price: 400,
                 stockQuantity: 500,
-                imagesLinkIds: ['image_1', 'image_2'],
+                imagesLinksIds: ['image_1', 'image_2'],
               ),
             ]);
         })
@@ -437,7 +437,7 @@ final _fakeTransport =
           'expiration_date': businessProduct.hasExpirationDate()
               ? businessProduct.expirationDate.toDateTime().toIso8601String()
               : null,
-          'images_link_ids': businessProduct.imagesLinkIds,
+          'images_link_ids': businessProduct.imagesLinksIds,
         });
 
         return UpdateStoreProductResponse()..success = true;

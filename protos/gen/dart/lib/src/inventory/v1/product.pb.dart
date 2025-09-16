@@ -289,7 +289,7 @@ class StoreProduct extends $pb.GeneratedMessage {
     $core.String? storeId,
     $core.String? globalProductId,
     $core.int? price,
-    $core.Iterable<$core.String>? imagesLinkIds,
+    $core.Iterable<$core.String>? imagesLinksIds,
     $core.int? stockQuantity,
     $core.int? minStockThreshold,
     $0.Timestamp? expirationDate,
@@ -303,7 +303,7 @@ class StoreProduct extends $pb.GeneratedMessage {
     if (storeId != null) result.storeId = storeId;
     if (globalProductId != null) result.globalProductId = globalProductId;
     if (price != null) result.price = price;
-    if (imagesLinkIds != null) result.imagesLinkIds.addAll(imagesLinkIds);
+    if (imagesLinksIds != null) result.imagesLinksIds.addAll(imagesLinksIds);
     if (stockQuantity != null) result.stockQuantity = stockQuantity;
     if (minStockThreshold != null) result.minStockThreshold = minStockThreshold;
     if (expirationDate != null) result.expirationDate = expirationDate;
@@ -331,7 +331,7 @@ class StoreProduct extends $pb.GeneratedMessage {
     ..aOS(2, _omitFieldNames ? '' : 'storeId')
     ..aOS(3, _omitFieldNames ? '' : 'globalProductId')
     ..a<$core.int>(4, _omitFieldNames ? '' : 'price', $pb.PbFieldType.O3)
-    ..pPS(5, _omitFieldNames ? '' : 'imagesLinkIds')
+    ..pPS(5, _omitFieldNames ? '' : 'imagesLinksIds')
     ..a<$core.int>(
         6, _omitFieldNames ? '' : 'stockQuantity', $pb.PbFieldType.O3)
     ..a<$core.int>(
@@ -411,7 +411,7 @@ class StoreProduct extends $pb.GeneratedMessage {
 
   /// The media ids of the images of the product.
   @$pb.TagNumber(5)
-  $pb.PbList<$core.String> get imagesLinkIds => $_getList(4);
+  $pb.PbList<$core.String> get imagesLinksIds => $_getList(4);
 
   /// The stock quantity of the product.
   @$pb.TagNumber(6)

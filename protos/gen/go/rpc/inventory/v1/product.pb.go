@@ -242,7 +242,7 @@ type StoreProduct struct {
 	// The currency is determined by the business.
 	Price *int32 `protobuf:"varint,4,opt,name=price,proto3,oneof" json:"price,omitempty"`
 	// The media ids of the images of the product.
-	ImagesLinkIds []string `protobuf:"bytes,5,rep,name=images_link_ids,json=imagesLinkIds,proto3" json:"images_link_ids,omitempty"`
+	ImagesLinksIds []string `protobuf:"bytes,5,rep,name=images_links_ids,json=imagesLinksIds,proto3" json:"images_links_ids,omitempty"`
 	// The stock quantity of the product.
 	StockQuantity *int32 `protobuf:"varint,6,opt,name=stock_quantity,json=stockQuantity,proto3,oneof" json:"stock_quantity,omitempty"`
 	// The minimum stock threshold of the product.
@@ -319,9 +319,9 @@ func (x *StoreProduct) GetPrice() int32 {
 	return 0
 }
 
-func (x *StoreProduct) GetImagesLinkIds() []string {
+func (x *StoreProduct) GetImagesLinksIds() []string {
 	if x != nil {
-		return x.ImagesLinkIds
+		return x.ImagesLinksIds
 	}
 	return nil
 }
@@ -1237,13 +1237,13 @@ const file_inventory_v1_product_proto_rawDesc = "" +
 	"\bquantity\x18\x01 \x01(\x05R\bquantity\x12\x14\n" +
 	"\x05price\x18\x02 \x01(\x05R\x05price\x12\x1f\n" +
 	"\vsupplier_id\x18\x03 \x01(\tR\n" +
-	"supplierId\"\xab\x05\n" +
+	"supplierId\"\xad\x05\n" +
 	"\fStoreProduct\x12\x1a\n" +
 	"\x06ref_id\x18\x01 \x01(\tH\x00R\x05refId\x88\x01\x01\x12\x19\n" +
 	"\bstore_id\x18\x02 \x01(\tR\astoreId\x12*\n" +
 	"\x11global_product_id\x18\x03 \x01(\tR\x0fglobalProductId\x12\x19\n" +
-	"\x05price\x18\x04 \x01(\x05H\x01R\x05price\x88\x01\x01\x12&\n" +
-	"\x0fimages_link_ids\x18\x05 \x03(\tR\rimagesLinkIds\x12*\n" +
+	"\x05price\x18\x04 \x01(\x05H\x01R\x05price\x88\x01\x01\x12(\n" +
+	"\x10images_links_ids\x18\x05 \x03(\tR\x0eimagesLinksIds\x12*\n" +
 	"\x0estock_quantity\x18\x06 \x01(\x05H\x02R\rstockQuantity\x88\x01\x01\x12.\n" +
 	"\x13min_stock_threshold\x18\a \x01(\x05R\x11minStockThreshold\x12H\n" +
 	"\x0fexpiration_date\x18\b \x01(\v2\x1a.google.protobuf.TimestampH\x03R\x0eexpirationDate\x88\x01\x01\x12B\n" +

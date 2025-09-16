@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:collection/collection.dart';
 import 'package:connectrpc/connect.dart' as connect;
 import 'package:get_it/get_it.dart';
@@ -6,7 +8,7 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 import '../services/rpc/connect_rpc.dart';
 import '../utils/logger.dart';
 
-/// The business repository.
+/// Repository for business operations and member management
 class BusinessRepository {
   final _logger = LoggerApp('BusinessRepository');
 
@@ -22,38 +24,105 @@ class BusinessRepository {
   /// The instance of [BusinessRepository].
   static final instance = GetIt.I.get<BusinessRepository>();
 
-  /// Gets the business by ref.
-  Future<Business?> getBusinessByRefId(String refId) async {
+  /// Gets a business
+  Future<Business?> getBusinessDetails(
+    GetBusinessDetailsRequest request,
+  ) async {
     try {
-      final response = await businessServiceClient.getBusinessDetails(
-        GetBusinessDetailsRequest(businessId: refId),
-      );
+      final response = await businessServiceClient.getBusinessDetails(request);
 
       return response.business;
     } on Exception catch (e) {
-      _logger.severe('getBusinessByRefId Error: $e');
+      _logger.severe('getBusiness Error: $e');
 
       return null;
     }
   }
 
-  /// Gets the business members by business ref.
-  Future<BusinessMember?> getBusinessMembersByBusinessRefId(
-    String businessId,
-    String userId,
+  /// Gets all business members for a business
+  Future<List<BusinessMember>> getBusinessMembers(
+    GetBusinessMembersRequest request,
   ) async {
     try {
-      final response = await businessServiceClient.getBusinessMembers(
-        GetBusinessMembersRequest(businessId: businessId),
+      final response = await businessServiceClient.getBusinessMembers(request);
+
+      return response.businessMembers;
+    } on Exception catch (e) {
+      _logger.severe('getBusinessMembers Error: $e');
+
+      return [];
+    }
+  }
+
+  /// Gets a specific business member by user ID and business ID
+  Future<BusinessMember?> getBusinessMember(
+    String userId,
+    String businessId,
+  ) async {
+    try {
+      final members = await getBusinessMembers(
+        GetBusinessMembersRequest()..businessId = businessId,
       );
 
-      return response.businessMembers.firstWhereOrNull(
-        (bm) => bm.businessId == businessId && bm.userId == userId,
+      return members.firstWhereOrNull(
+        (member) => member.userId == userId && member.businessId == businessId,
       );
     } on Exception catch (e) {
-      _logger.severe('getBusinessMembersByBusinessRefId Error: $e');
+      _logger.severe('getBusinessMember Error: $e');
 
       return null;
+    }
+  }
+
+  /// Adds a user to a business
+  Future<BusinessMember?> createUserToBusiness(
+    CreateUserToBusinessRequest request,
+  ) async {
+    try {
+      final response = await businessServiceClient.createUserToBusiness(
+        request,
+      );
+
+      return response.businessMember;
+    } on Exception catch (e) {
+      _logger.severe('addUserToBusiness Error: $e');
+
+      return null;
+    }
+  }
+
+  /// Removes a user from a business
+  Future<bool> removeUserFromBusiness(
+    RemoveUserFromBusinessRequest request,
+  ) async {
+    try {
+      final response = await businessServiceClient.removeUserFromBusiness(
+        request,
+      );
+
+      return response.success;
+    } on Exception catch (e) {
+      _logger.severe('removeUserFromBusiness Error: $e');
+
+      return false;
+    }
+  }
+
+  /// Stream business members.
+  Stream<List<BusinessMember>> streamBusinessMembers(
+    StreamBusinessMembersRequest request,
+  ) {
+    try {
+      // Use the native gRPC streaming service
+      final grpcStream = businessServiceClient.streamBusinessMembers(request);
+
+      // Transform the gRPC stream to return List<User>
+      return grpcStream.map((response) => response.businessMembers);
+    } on Exception catch (e) {
+      _logger.severe('streamBusinessMembers Error: $e');
+
+      // Return null stream on error
+      return Stream.value([]);
     }
   }
 }

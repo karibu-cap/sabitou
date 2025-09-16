@@ -7,9 +7,9 @@ import '../repositories/business_repository.dart';
 import '../themes/app_colors.dart';
 import 'user_preference.dart';
 
-/// Checks user permissions.
-Future<bool> hasPermission(
-  ResourceType resourceType,
+/// Checks user has store permissions.
+Future<bool> hasStorePermission(
+  StoreResourceType resourceType,
   ResourceActionType actionType,
 ) async {
   final userId = UserPreferences.instance.user?.refId;
@@ -17,8 +17,10 @@ Future<bool> hasPermission(
 
   if (userId == null || businessId == null) return false;
   final businessMemberRepository = BusinessRepository.instance;
-  final member = await businessMemberRepository
-      .getBusinessMembersByBusinessRefId(businessId, userId);
+  final member = await businessMemberRepository.getBusinessMember(
+    userId,
+    businessId,
+  );
   if (member == null) return false;
 
   return member.permissions.any(

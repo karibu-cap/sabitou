@@ -110,6 +110,19 @@ message GetUserResponse {
   User user = 1;
 }
 
+message StreamUserRequest {
+  // The id of the user to retrieve.
+  string user_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+}
+
+message StreamUserResponse {
+  // The retrieved user data.
+  User user = 1;
+}
+
 message UpdateMeRequest {
   // The user information to update.
   // Note:Only the fields that are set will be updated.
@@ -189,36 +202,6 @@ message ChangePasswordResponse {
   bool success = 1;
 }
 
-// Request to get business users
-message GetBusinessUsersRequest {
-  // The unique identifier of the business.
-  string business_id = 1 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).string.min_len = 3
-  ];
-}
-
-// Response containing business users
-message GetBusinessUsersResponse {
-  // The list of users in the business.
-  repeated User users = 1;
-}
-
-// Request to stream business users
-message StreamBusinessUsersRequest {
-  // The unique identifier of the business.
-  string business_id = 1 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).string.min_len = 3
-  ];
-}
-
-// Response for streaming business users
-message StreamBusinessUsersResponse {
-  // The list of users in the business.
-  repeated User users = 1;
-}
-
 service UserService {
   // Get the user information for the currently authenticated user.
   // @deprecated use GetCurrentUser instead.
@@ -247,9 +230,6 @@ service UserService {
   // Change the password for the currently authenticated user.
   rpc ChangePassword(ChangePasswordRequest) returns (ChangePasswordResponse) {}
 
-  // Get all users for a business.
-  rpc GetBusinessUsers(GetBusinessUsersRequest) returns (GetBusinessUsersResponse) {}
-
-  // Stream all users for a business with real-time updates.
-  rpc StreamBusinessUsers(StreamBusinessUsersRequest) returns (stream StreamBusinessUsersResponse) {}
+  // Stream business members for real-time updates.
+  rpc StreamUser(StreamUserRequest) returns (stream StreamUserResponse);
 }

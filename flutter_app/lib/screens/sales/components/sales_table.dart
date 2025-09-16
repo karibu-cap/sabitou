@@ -197,8 +197,8 @@ class _ActionsCell extends StatelessWidget {
           // onPressed: () => _showOrderDialog(context, order),
         ),
         FutureBuilder(
-          future: hasPermission(
-            ResourceType.RESOURCE_TYPE_INVOICE,
+          future: hasStorePermission(
+            StoreResourceType.STORE_RESOURCE_TYPE_INVOICE,
             ResourceActionType.RESOURCE_ACTION_TYPE_UPDATE,
           ),
           builder: (context, snapshot) {

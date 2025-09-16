@@ -471,8 +471,8 @@ class _ActionsCell extends StatelessWidget {
       spacing: 8,
       children: [
         FutureBuilder(
-          future: hasPermission(
-            ResourceType.RESOURCE_TYPE_PRODUCT,
+          future: hasStorePermission(
+            StoreResourceType.STORE_RESOURCE_TYPE_PRODUCT,
             ResourceActionType.RESOURCE_ACTION_TYPE_UPDATE,
           ),
           builder: (context, snapshot) {
@@ -492,8 +492,8 @@ class _ActionsCell extends StatelessWidget {
           },
         ),
         FutureBuilder(
-          future: hasPermission(
-            ResourceType.RESOURCE_TYPE_PRODUCT,
+          future: hasStorePermission(
+            StoreResourceType.STORE_RESOURCE_TYPE_PRODUCT,
             ResourceActionType.RESOURCE_ACTION_TYPE_REMOVE,
           ),
           builder: (context, snapshot) {

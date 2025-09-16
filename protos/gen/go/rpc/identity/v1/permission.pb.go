@@ -28,11 +28,11 @@ const (
 	ResourceActionType_RESOURCE_ACTION_TYPE_UNSPECIFIED ResourceActionType = 0
 	// Can read the resource.
 	ResourceActionType_RESOURCE_ACTION_TYPE_READ ResourceActionType = 1
-	// Can read and (create or add) the resource.
+	// Can read and create the resource.
 	ResourceActionType_RESOURCE_ACTION_TYPE_ADD ResourceActionType = 2
-	// Can read, create, update the resource.
+	// Can read, update the resource.
 	ResourceActionType_RESOURCE_ACTION_TYPE_UPDATE ResourceActionType = 3
-	// Can read, create, update, delete the resource.
+	// Can read, delete the resource.
 	ResourceActionType_RESOURCE_ACTION_TYPE_REMOVE ResourceActionType = 4
 )
 
@@ -81,98 +81,146 @@ func (ResourceActionType) EnumDescriptor() ([]byte, []int) {
 	return file_identity_v1_permission_proto_rawDescGZIP(), []int{0}
 }
 
-type ResourceType int32
+type BusinessResourceType int32
 
 const (
-	ResourceType_RESOURCE_TYPE_UNSPECIFIED       ResourceType = 0
-	ResourceType_RESOURCE_TYPE_BUSINESS          ResourceType = 1
-	ResourceType_RESOURCE_TYPE_BUSINESS_MEMBER   ResourceType = 2
-	ResourceType_RESOURCE_TYPE_BUSINESS_SUPPLIER ResourceType = 4
-	ResourceType_RESOURCE_TYPE_STORE             ResourceType = 5
-	ResourceType_RESOURCE_TYPE_INVOICE           ResourceType = 6
-	ResourceType_RESOURCE_TYPE_STORE_ORDER       ResourceType = 7
-	ResourceType_RESOURCE_TYPE_SUPPLIER_ORDER    ResourceType = 8
-	ResourceType_RESOURCE_TYPE_PRODUCT           ResourceType = 9
+	BusinessResourceType_BUSINESS_RESOURCE_TYPE_UNSPECIFIED BusinessResourceType = 0
+	// / Can make all actions about information business.
+	BusinessResourceType_BUSINESS_RESOURCE_TYPE_BUSINESS BusinessResourceType = 1
+	// / Can make all actions about business member.
+	BusinessResourceType_BUSINESS_RESOURCE_TYPE_MEMBER BusinessResourceType = 2
+	// / Can make all actions about business supplier.
+	BusinessResourceType_BUSINESS_RESOURCE_TYPE_SUPPLIER BusinessResourceType = 3
 )
 
-// Enum value maps for ResourceType.
+// Enum value maps for BusinessResourceType.
 var (
-	ResourceType_name = map[int32]string{
-		0: "RESOURCE_TYPE_UNSPECIFIED",
-		1: "RESOURCE_TYPE_BUSINESS",
-		2: "RESOURCE_TYPE_BUSINESS_MEMBER",
-		4: "RESOURCE_TYPE_BUSINESS_SUPPLIER",
-		5: "RESOURCE_TYPE_STORE",
-		6: "RESOURCE_TYPE_INVOICE",
-		7: "RESOURCE_TYPE_STORE_ORDER",
-		8: "RESOURCE_TYPE_SUPPLIER_ORDER",
-		9: "RESOURCE_TYPE_PRODUCT",
+	BusinessResourceType_name = map[int32]string{
+		0: "BUSINESS_RESOURCE_TYPE_UNSPECIFIED",
+		1: "BUSINESS_RESOURCE_TYPE_BUSINESS",
+		2: "BUSINESS_RESOURCE_TYPE_MEMBER",
+		3: "BUSINESS_RESOURCE_TYPE_SUPPLIER",
 	}
-	ResourceType_value = map[string]int32{
-		"RESOURCE_TYPE_UNSPECIFIED":       0,
-		"RESOURCE_TYPE_BUSINESS":          1,
-		"RESOURCE_TYPE_BUSINESS_MEMBER":   2,
-		"RESOURCE_TYPE_BUSINESS_SUPPLIER": 4,
-		"RESOURCE_TYPE_STORE":             5,
-		"RESOURCE_TYPE_INVOICE":           6,
-		"RESOURCE_TYPE_STORE_ORDER":       7,
-		"RESOURCE_TYPE_SUPPLIER_ORDER":    8,
-		"RESOURCE_TYPE_PRODUCT":           9,
+	BusinessResourceType_value = map[string]int32{
+		"BUSINESS_RESOURCE_TYPE_UNSPECIFIED": 0,
+		"BUSINESS_RESOURCE_TYPE_BUSINESS":    1,
+		"BUSINESS_RESOURCE_TYPE_MEMBER":      2,
+		"BUSINESS_RESOURCE_TYPE_SUPPLIER":    3,
 	}
 )
 
-func (x ResourceType) Enum() *ResourceType {
-	p := new(ResourceType)
+func (x BusinessResourceType) Enum() *BusinessResourceType {
+	p := new(BusinessResourceType)
 	*p = x
 	return p
 }
 
-func (x ResourceType) String() string {
+func (x BusinessResourceType) String() string {
 	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
 }
 
-func (ResourceType) Descriptor() protoreflect.EnumDescriptor {
+func (BusinessResourceType) Descriptor() protoreflect.EnumDescriptor {
 	return file_identity_v1_permission_proto_enumTypes[1].Descriptor()
 }
 
-func (ResourceType) Type() protoreflect.EnumType {
+func (BusinessResourceType) Type() protoreflect.EnumType {
 	return &file_identity_v1_permission_proto_enumTypes[1]
 }
 
-func (x ResourceType) Number() protoreflect.EnumNumber {
+func (x BusinessResourceType) Number() protoreflect.EnumNumber {
 	return protoreflect.EnumNumber(x)
 }
 
-// Deprecated: Use ResourceType.Descriptor instead.
-func (ResourceType) EnumDescriptor() ([]byte, []int) {
+// Deprecated: Use BusinessResourceType.Descriptor instead.
+func (BusinessResourceType) EnumDescriptor() ([]byte, []int) {
 	return file_identity_v1_permission_proto_rawDescGZIP(), []int{1}
 }
 
-type Permission struct {
-	state        protoimpl.MessageState `protogen:"open.v1"`
-	ResourceType ResourceType           `protobuf:"varint,1,opt,name=resource_type,json=resourceType,proto3,enum=identity.v1.ResourceType" json:"resource_type,omitempty"`
-	// The resource_id is only specified when we want to restrict action on a specific resource.
-	ResourceId *string `protobuf:"bytes,2,opt,name=resource_id,json=resourceId,proto3,oneof" json:"resource_id,omitempty"`
-	// The action that the member can perform on the resource.
-	ActionType    ResourceActionType `protobuf:"varint,3,opt,name=action_type,json=actionType,proto3,enum=identity.v1.ResourceActionType" json:"action_type,omitempty"`
+type StoreResourceType int32
+
+const (
+	StoreResourceType_STORE_RESOURCE_TYPE_UNSPECIFIED StoreResourceType = 0
+	// / Can make all actions about information store.
+	StoreResourceType_STORE_RESOURCE_TYPE_STORE StoreResourceType = 1
+	// / Can make all actions about store invoice.
+	StoreResourceType_STORE_RESOURCE_TYPE_INVOICE StoreResourceType = 2
+	// / Can make all actions about store order.
+	StoreResourceType_STORE_RESOURCE_TYPE_ORDER StoreResourceType = 3
+	// / Can make all actions about supplier order.
+	StoreResourceType_STORE_RESOURCE_TYPE_SUPPLIER_ORDER StoreResourceType = 4
+	// / Can make all actions about store product.
+	StoreResourceType_STORE_RESOURCE_TYPE_PRODUCT StoreResourceType = 5
+)
+
+// Enum value maps for StoreResourceType.
+var (
+	StoreResourceType_name = map[int32]string{
+		0: "STORE_RESOURCE_TYPE_UNSPECIFIED",
+		1: "STORE_RESOURCE_TYPE_STORE",
+		2: "STORE_RESOURCE_TYPE_INVOICE",
+		3: "STORE_RESOURCE_TYPE_ORDER",
+		4: "STORE_RESOURCE_TYPE_SUPPLIER_ORDER",
+		5: "STORE_RESOURCE_TYPE_PRODUCT",
+	}
+	StoreResourceType_value = map[string]int32{
+		"STORE_RESOURCE_TYPE_UNSPECIFIED":    0,
+		"STORE_RESOURCE_TYPE_STORE":          1,
+		"STORE_RESOURCE_TYPE_INVOICE":        2,
+		"STORE_RESOURCE_TYPE_ORDER":          3,
+		"STORE_RESOURCE_TYPE_SUPPLIER_ORDER": 4,
+		"STORE_RESOURCE_TYPE_PRODUCT":        5,
+	}
+)
+
+func (x StoreResourceType) Enum() *StoreResourceType {
+	p := new(StoreResourceType)
+	*p = x
+	return p
+}
+
+func (x StoreResourceType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (StoreResourceType) Descriptor() protoreflect.EnumDescriptor {
+	return file_identity_v1_permission_proto_enumTypes[2].Descriptor()
+}
+
+func (StoreResourceType) Type() protoreflect.EnumType {
+	return &file_identity_v1_permission_proto_enumTypes[2]
+}
+
+func (x StoreResourceType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use StoreResourceType.Descriptor instead.
+func (StoreResourceType) EnumDescriptor() ([]byte, []int) {
+	return file_identity_v1_permission_proto_rawDescGZIP(), []int{2}
+}
+
+type BusinessPermission struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ResourceType  BusinessResourceType   `protobuf:"varint,1,opt,name=resource_type,json=resourceType,proto3,enum=identity.v1.BusinessResourceType" json:"resource_type,omitempty"`
+	ActionType    ResourceActionType     `protobuf:"varint,2,opt,name=action_type,json=actionType,proto3,enum=identity.v1.ResourceActionType" json:"action_type,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *Permission) Reset() {
-	*x = Permission{}
+func (x *BusinessPermission) Reset() {
+	*x = BusinessPermission{}
 	mi := &file_identity_v1_permission_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *Permission) String() string {
+func (x *BusinessPermission) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Permission) ProtoMessage() {}
+func (*BusinessPermission) ProtoMessage() {}
 
-func (x *Permission) ProtoReflect() protoreflect.Message {
+func (x *BusinessPermission) ProtoReflect() protoreflect.Message {
 	mi := &file_identity_v1_permission_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -184,63 +232,47 @@ func (x *Permission) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use Permission.ProtoReflect.Descriptor instead.
-func (*Permission) Descriptor() ([]byte, []int) {
+// Deprecated: Use BusinessPermission.ProtoReflect.Descriptor instead.
+func (*BusinessPermission) Descriptor() ([]byte, []int) {
 	return file_identity_v1_permission_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *Permission) GetResourceType() ResourceType {
+func (x *BusinessPermission) GetResourceType() BusinessResourceType {
 	if x != nil {
 		return x.ResourceType
 	}
-	return ResourceType_RESOURCE_TYPE_UNSPECIFIED
+	return BusinessResourceType_BUSINESS_RESOURCE_TYPE_UNSPECIFIED
 }
 
-func (x *Permission) GetResourceId() string {
-	if x != nil && x.ResourceId != nil {
-		return *x.ResourceId
-	}
-	return ""
-}
-
-func (x *Permission) GetActionType() ResourceActionType {
+func (x *BusinessPermission) GetActionType() ResourceActionType {
 	if x != nil {
 		return x.ActionType
 	}
 	return ResourceActionType_RESOURCE_ACTION_TYPE_UNSPECIFIED
 }
 
-type PermissionsGroup struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The reference id to the permission group identifier.
-	RefId *string `protobuf:"bytes,1,opt,name=ref_id,json=refId,proto3,oneof" json:"ref_id,omitempty"`
-	// The name of the permission group. Generally the role of the group.
-	Name string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	// The description of the permission group.
-	Description *string `protobuf:"bytes,3,opt,name=description,proto3,oneof" json:"description,omitempty"`
-	// The permissions that the permission group has.
-	Permissions []*Permission `protobuf:"bytes,4,rep,name=permissions,proto3" json:"permissions,omitempty"`
-	// The unique identifier of the business.
-	// must be set if the permission group is create by a business.
-	BusinessId    *string `protobuf:"bytes,6,opt,name=business_id,json=businessId,proto3,oneof" json:"business_id,omitempty"`
+type StorePermission struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ResourceType  StoreResourceType      `protobuf:"varint,1,opt,name=resource_type,json=resourceType,proto3,enum=identity.v1.StoreResourceType" json:"resource_type,omitempty"`
+	ActionType    ResourceActionType     `protobuf:"varint,2,opt,name=action_type,json=actionType,proto3,enum=identity.v1.ResourceActionType" json:"action_type,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *PermissionsGroup) Reset() {
-	*x = PermissionsGroup{}
+func (x *StorePermission) Reset() {
+	*x = StorePermission{}
 	mi := &file_identity_v1_permission_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *PermissionsGroup) String() string {
+func (x *StorePermission) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*PermissionsGroup) ProtoMessage() {}
+func (*StorePermission) ProtoMessage() {}
 
-func (x *PermissionsGroup) ProtoReflect() protoreflect.Message {
+func (x *StorePermission) ProtoReflect() protoreflect.Message {
 	mi := &file_identity_v1_permission_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -252,123 +284,107 @@ func (x *PermissionsGroup) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use PermissionsGroup.ProtoReflect.Descriptor instead.
-func (*PermissionsGroup) Descriptor() ([]byte, []int) {
+// Deprecated: Use StorePermission.ProtoReflect.Descriptor instead.
+func (*StorePermission) Descriptor() ([]byte, []int) {
 	return file_identity_v1_permission_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *PermissionsGroup) GetRefId() string {
-	if x != nil && x.RefId != nil {
-		return *x.RefId
-	}
-	return ""
-}
-
-func (x *PermissionsGroup) GetName() string {
+func (x *StorePermission) GetResourceType() StoreResourceType {
 	if x != nil {
-		return x.Name
+		return x.ResourceType
 	}
-	return ""
+	return StoreResourceType_STORE_RESOURCE_TYPE_UNSPECIFIED
 }
 
-func (x *PermissionsGroup) GetDescription() string {
-	if x != nil && x.Description != nil {
-		return *x.Description
-	}
-	return ""
-}
-
-func (x *PermissionsGroup) GetPermissions() []*Permission {
+func (x *StorePermission) GetActionType() ResourceActionType {
 	if x != nil {
-		return x.Permissions
+		return x.ActionType
+	}
+	return ResourceActionType_RESOURCE_ACTION_TYPE_UNSPECIFIED
+}
+
+type CreateBusinessPermissionRequest struct {
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	BusinessPermission *BusinessPermission    `protobuf:"bytes,1,opt,name=business_permission,json=businessPermission,proto3" json:"business_permission,omitempty"`
+	ActionType         ResourceActionType     `protobuf:"varint,2,opt,name=action_type,json=actionType,proto3,enum=identity.v1.ResourceActionType" json:"action_type,omitempty"`
+	BusinessId         string                 `protobuf:"bytes,3,opt,name=business_id,json=businessId,proto3" json:"business_id,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
+}
+
+func (x *CreateBusinessPermissionRequest) Reset() {
+	*x = CreateBusinessPermissionRequest{}
+	mi := &file_identity_v1_permission_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateBusinessPermissionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateBusinessPermissionRequest) ProtoMessage() {}
+
+func (x *CreateBusinessPermissionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_identity_v1_permission_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateBusinessPermissionRequest.ProtoReflect.Descriptor instead.
+func (*CreateBusinessPermissionRequest) Descriptor() ([]byte, []int) {
+	return file_identity_v1_permission_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *CreateBusinessPermissionRequest) GetBusinessPermission() *BusinessPermission {
+	if x != nil {
+		return x.BusinessPermission
 	}
 	return nil
 }
 
-func (x *PermissionsGroup) GetBusinessId() string {
-	if x != nil && x.BusinessId != nil {
-		return *x.BusinessId
+func (x *CreateBusinessPermissionRequest) GetActionType() ResourceActionType {
+	if x != nil {
+		return x.ActionType
+	}
+	return ResourceActionType_RESOURCE_ACTION_TYPE_UNSPECIFIED
+}
+
+func (x *CreateBusinessPermissionRequest) GetBusinessId() string {
+	if x != nil {
+		return x.BusinessId
 	}
 	return ""
 }
 
-type CreatePermissionsGroupRequest struct {
+type CreateBusinessPermissionResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The permission group information to create.
-	// Note:Only the fields that are set will be created.
-	PermissionsGroup *PermissionsGroup `protobuf:"bytes,1,opt,name=permissions_group,json=permissionsGroup,proto3" json:"permissions_group,omitempty"`
-	// The unique identifier of the business on which the permission group is created.
-	BusinessId    string `protobuf:"bytes,2,opt,name=business_id,json=businessId,proto3" json:"business_id,omitempty"`
+	// Whether the permission group was successfully created.
+	Success       bool `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CreatePermissionsGroupRequest) Reset() {
-	*x = CreatePermissionsGroupRequest{}
-	mi := &file_identity_v1_permission_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreatePermissionsGroupRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreatePermissionsGroupRequest) ProtoMessage() {}
-
-func (x *CreatePermissionsGroupRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_identity_v1_permission_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreatePermissionsGroupRequest.ProtoReflect.Descriptor instead.
-func (*CreatePermissionsGroupRequest) Descriptor() ([]byte, []int) {
-	return file_identity_v1_permission_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *CreatePermissionsGroupRequest) GetPermissionsGroup() *PermissionsGroup {
-	if x != nil {
-		return x.PermissionsGroup
-	}
-	return nil
-}
-
-func (x *CreatePermissionsGroupRequest) GetBusinessId() string {
-	if x != nil {
-		return x.BusinessId
-	}
-	return ""
-}
-
-type CreatePermissionsGroupResponse struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The unique identifier of the created permission group.
-	PermissionGroupId string `protobuf:"bytes,1,opt,name=permission_group_id,json=permissionGroupId,proto3" json:"permission_group_id,omitempty"`
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
-}
-
-func (x *CreatePermissionsGroupResponse) Reset() {
-	*x = CreatePermissionsGroupResponse{}
+func (x *CreateBusinessPermissionResponse) Reset() {
+	*x = CreateBusinessPermissionResponse{}
 	mi := &file_identity_v1_permission_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CreatePermissionsGroupResponse) String() string {
+func (x *CreateBusinessPermissionResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CreatePermissionsGroupResponse) ProtoMessage() {}
+func (*CreateBusinessPermissionResponse) ProtoMessage() {}
 
-func (x *CreatePermissionsGroupResponse) ProtoReflect() protoreflect.Message {
+func (x *CreateBusinessPermissionResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_identity_v1_permission_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -380,40 +396,41 @@ func (x *CreatePermissionsGroupResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CreatePermissionsGroupResponse.ProtoReflect.Descriptor instead.
-func (*CreatePermissionsGroupResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreateBusinessPermissionResponse.ProtoReflect.Descriptor instead.
+func (*CreateBusinessPermissionResponse) Descriptor() ([]byte, []int) {
 	return file_identity_v1_permission_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *CreatePermissionsGroupResponse) GetPermissionGroupId() string {
+func (x *CreateBusinessPermissionResponse) GetSuccess() bool {
 	if x != nil {
-		return x.PermissionGroupId
+		return x.Success
 	}
-	return ""
+	return false
 }
 
-type GetPermissionsGroupRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The unique identifier of the permission group to retrieve.
-	PermissionGroupId string `protobuf:"bytes,1,opt,name=permission_group_id,json=permissionGroupId,proto3" json:"permission_group_id,omitempty"`
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
+type CreateStorePermissionRequest struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	StorePermission *StorePermission       `protobuf:"bytes,1,opt,name=store_permission,json=storePermission,proto3" json:"store_permission,omitempty"`
+	ActionType      ResourceActionType     `protobuf:"varint,2,opt,name=action_type,json=actionType,proto3,enum=identity.v1.ResourceActionType" json:"action_type,omitempty"`
+	StoreId         string                 `protobuf:"bytes,3,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
-func (x *GetPermissionsGroupRequest) Reset() {
-	*x = GetPermissionsGroupRequest{}
+func (x *CreateStorePermissionRequest) Reset() {
+	*x = CreateStorePermissionRequest{}
 	mi := &file_identity_v1_permission_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetPermissionsGroupRequest) String() string {
+func (x *CreateStorePermissionRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetPermissionsGroupRequest) ProtoMessage() {}
+func (*CreateStorePermissionRequest) ProtoMessage() {}
 
-func (x *GetPermissionsGroupRequest) ProtoReflect() protoreflect.Message {
+func (x *CreateStorePermissionRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_identity_v1_permission_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -425,40 +442,54 @@ func (x *GetPermissionsGroupRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetPermissionsGroupRequest.ProtoReflect.Descriptor instead.
-func (*GetPermissionsGroupRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreateStorePermissionRequest.ProtoReflect.Descriptor instead.
+func (*CreateStorePermissionRequest) Descriptor() ([]byte, []int) {
 	return file_identity_v1_permission_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *GetPermissionsGroupRequest) GetPermissionGroupId() string {
+func (x *CreateStorePermissionRequest) GetStorePermission() *StorePermission {
 	if x != nil {
-		return x.PermissionGroupId
+		return x.StorePermission
+	}
+	return nil
+}
+
+func (x *CreateStorePermissionRequest) GetActionType() ResourceActionType {
+	if x != nil {
+		return x.ActionType
+	}
+	return ResourceActionType_RESOURCE_ACTION_TYPE_UNSPECIFIED
+}
+
+func (x *CreateStorePermissionRequest) GetStoreId() string {
+	if x != nil {
+		return x.StoreId
 	}
 	return ""
 }
 
-type GetPermissionsGroupResponse struct {
+type CreateStorePermissionResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The retrieved permission group data.
-	PermissionsGroup *PermissionsGroup `protobuf:"bytes,1,opt,name=permissions_group,json=permissionsGroup,proto3" json:"permissions_group,omitempty"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
+	// Whether the permission group was successfully created.
+	Success       bool `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetPermissionsGroupResponse) Reset() {
-	*x = GetPermissionsGroupResponse{}
+func (x *CreateStorePermissionResponse) Reset() {
+	*x = CreateStorePermissionResponse{}
 	mi := &file_identity_v1_permission_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetPermissionsGroupResponse) String() string {
+func (x *CreateStorePermissionResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetPermissionsGroupResponse) ProtoMessage() {}
+func (*CreateStorePermissionResponse) ProtoMessage() {}
 
-func (x *GetPermissionsGroupResponse) ProtoReflect() protoreflect.Message {
+func (x *CreateStorePermissionResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_identity_v1_permission_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -470,50 +501,42 @@ func (x *GetPermissionsGroupResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetPermissionsGroupResponse.ProtoReflect.Descriptor instead.
-func (*GetPermissionsGroupResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreateStorePermissionResponse.ProtoReflect.Descriptor instead.
+func (*CreateStorePermissionResponse) Descriptor() ([]byte, []int) {
 	return file_identity_v1_permission_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *GetPermissionsGroupResponse) GetPermissionsGroup() *PermissionsGroup {
+func (x *CreateStorePermissionResponse) GetSuccess() bool {
 	if x != nil {
-		return x.PermissionsGroup
+		return x.Success
 	}
-	return nil
+	return false
 }
 
-type UpdatePermissionsGroupRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The permission group id;
-	PermissionsGroupId string `protobuf:"bytes,1,opt,name=permissions_group_id,json=permissionsGroupId,proto3" json:"permissions_group_id,omitempty"`
-	// The unique identifier of the business.
-	BusinessId string `protobuf:"bytes,6,opt,name=business_id,json=businessId,proto3" json:"business_id,omitempty"`
-	// The name of the permission group. Generally the role of the group.
-	Name *string `protobuf:"bytes,2,opt,name=name,proto3,oneof" json:"name,omitempty"`
-	// The description of the permission group.
-	Description *string `protobuf:"bytes,3,opt,name=description,proto3,oneof" json:"description,omitempty"`
-	// The permissions set to add.
-	AddPermissions []*Permission `protobuf:"bytes,4,rep,name=add_permissions,json=addPermissions,proto3" json:"add_permissions,omitempty"`
-	// The permissions set to remove.
-	RemovePermissions []*Permission `protobuf:"bytes,5,rep,name=remove_permissions,json=removePermissions,proto3" json:"remove_permissions,omitempty"`
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
+type UpdateBusinessPermissionRequest struct {
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	BusinessPermission *BusinessPermission    `protobuf:"bytes,1,opt,name=business_permission,json=businessPermission,proto3" json:"business_permission,omitempty"`
+	ActionType         ResourceActionType     `protobuf:"varint,2,opt,name=action_type,json=actionType,proto3,enum=identity.v1.ResourceActionType" json:"action_type,omitempty"`
+	// The unique identifier of the business permission.
+	BusinessPermissionId string `protobuf:"bytes,3,opt,name=business_permission_id,json=businessPermissionId,proto3" json:"business_permission_id,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
 }
 
-func (x *UpdatePermissionsGroupRequest) Reset() {
-	*x = UpdatePermissionsGroupRequest{}
+func (x *UpdateBusinessPermissionRequest) Reset() {
+	*x = UpdateBusinessPermissionRequest{}
 	mi := &file_identity_v1_permission_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UpdatePermissionsGroupRequest) String() string {
+func (x *UpdateBusinessPermissionRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UpdatePermissionsGroupRequest) ProtoMessage() {}
+func (*UpdateBusinessPermissionRequest) ProtoMessage() {}
 
-func (x *UpdatePermissionsGroupRequest) ProtoReflect() protoreflect.Message {
+func (x *UpdateBusinessPermissionRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_identity_v1_permission_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -525,54 +548,33 @@ func (x *UpdatePermissionsGroupRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UpdatePermissionsGroupRequest.ProtoReflect.Descriptor instead.
-func (*UpdatePermissionsGroupRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use UpdateBusinessPermissionRequest.ProtoReflect.Descriptor instead.
+func (*UpdateBusinessPermissionRequest) Descriptor() ([]byte, []int) {
 	return file_identity_v1_permission_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *UpdatePermissionsGroupRequest) GetPermissionsGroupId() string {
+func (x *UpdateBusinessPermissionRequest) GetBusinessPermission() *BusinessPermission {
 	if x != nil {
-		return x.PermissionsGroupId
-	}
-	return ""
-}
-
-func (x *UpdatePermissionsGroupRequest) GetBusinessId() string {
-	if x != nil {
-		return x.BusinessId
-	}
-	return ""
-}
-
-func (x *UpdatePermissionsGroupRequest) GetName() string {
-	if x != nil && x.Name != nil {
-		return *x.Name
-	}
-	return ""
-}
-
-func (x *UpdatePermissionsGroupRequest) GetDescription() string {
-	if x != nil && x.Description != nil {
-		return *x.Description
-	}
-	return ""
-}
-
-func (x *UpdatePermissionsGroupRequest) GetAddPermissions() []*Permission {
-	if x != nil {
-		return x.AddPermissions
+		return x.BusinessPermission
 	}
 	return nil
 }
 
-func (x *UpdatePermissionsGroupRequest) GetRemovePermissions() []*Permission {
+func (x *UpdateBusinessPermissionRequest) GetActionType() ResourceActionType {
 	if x != nil {
-		return x.RemovePermissions
+		return x.ActionType
 	}
-	return nil
+	return ResourceActionType_RESOURCE_ACTION_TYPE_UNSPECIFIED
 }
 
-type UpdatePermissionsGroupResponse struct {
+func (x *UpdateBusinessPermissionRequest) GetBusinessPermissionId() string {
+	if x != nil {
+		return x.BusinessPermissionId
+	}
+	return ""
+}
+
+type UpdateBusinessPermissionResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Whether the permission group was successfully updated.
 	Success       bool `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
@@ -580,20 +582,20 @@ type UpdatePermissionsGroupResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UpdatePermissionsGroupResponse) Reset() {
-	*x = UpdatePermissionsGroupResponse{}
+func (x *UpdateBusinessPermissionResponse) Reset() {
+	*x = UpdateBusinessPermissionResponse{}
 	mi := &file_identity_v1_permission_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UpdatePermissionsGroupResponse) String() string {
+func (x *UpdateBusinessPermissionResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UpdatePermissionsGroupResponse) ProtoMessage() {}
+func (*UpdateBusinessPermissionResponse) ProtoMessage() {}
 
-func (x *UpdatePermissionsGroupResponse) ProtoReflect() protoreflect.Message {
+func (x *UpdateBusinessPermissionResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_identity_v1_permission_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -605,42 +607,41 @@ func (x *UpdatePermissionsGroupResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UpdatePermissionsGroupResponse.ProtoReflect.Descriptor instead.
-func (*UpdatePermissionsGroupResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use UpdateBusinessPermissionResponse.ProtoReflect.Descriptor instead.
+func (*UpdateBusinessPermissionResponse) Descriptor() ([]byte, []int) {
 	return file_identity_v1_permission_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *UpdatePermissionsGroupResponse) GetSuccess() bool {
+func (x *UpdateBusinessPermissionResponse) GetSuccess() bool {
 	if x != nil {
 		return x.Success
 	}
 	return false
 }
 
-type DeletePermissionsGroupRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The unique identifier of the permission group to delete.
-	PermissionGroupId string `protobuf:"bytes,1,opt,name=permission_group_id,json=permissionGroupId,proto3" json:"permission_group_id,omitempty"`
-	// The unique identifier of the business.
-	BusinessId    string `protobuf:"bytes,2,opt,name=business_id,json=businessId,proto3" json:"business_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+type UpdateStorePermissionRequest struct {
+	state             protoimpl.MessageState `protogen:"open.v1"`
+	StorePermission   *StorePermission       `protobuf:"bytes,1,opt,name=store_permission,json=storePermission,proto3" json:"store_permission,omitempty"`
+	ActionType        ResourceActionType     `protobuf:"varint,2,opt,name=action_type,json=actionType,proto3,enum=identity.v1.ResourceActionType" json:"action_type,omitempty"`
+	StorePermissionId string                 `protobuf:"bytes,3,opt,name=store_permission_id,json=storePermissionId,proto3" json:"store_permission_id,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
 }
 
-func (x *DeletePermissionsGroupRequest) Reset() {
-	*x = DeletePermissionsGroupRequest{}
+func (x *UpdateStorePermissionRequest) Reset() {
+	*x = UpdateStorePermissionRequest{}
 	mi := &file_identity_v1_permission_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *DeletePermissionsGroupRequest) String() string {
+func (x *UpdateStorePermissionRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DeletePermissionsGroupRequest) ProtoMessage() {}
+func (*UpdateStorePermissionRequest) ProtoMessage() {}
 
-func (x *DeletePermissionsGroupRequest) ProtoReflect() protoreflect.Message {
+func (x *UpdateStorePermissionRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_identity_v1_permission_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -652,26 +653,123 @@ func (x *DeletePermissionsGroupRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DeletePermissionsGroupRequest.ProtoReflect.Descriptor instead.
-func (*DeletePermissionsGroupRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use UpdateStorePermissionRequest.ProtoReflect.Descriptor instead.
+func (*UpdateStorePermissionRequest) Descriptor() ([]byte, []int) {
 	return file_identity_v1_permission_proto_rawDescGZIP(), []int{8}
 }
 
-func (x *DeletePermissionsGroupRequest) GetPermissionGroupId() string {
+func (x *UpdateStorePermissionRequest) GetStorePermission() *StorePermission {
 	if x != nil {
-		return x.PermissionGroupId
+		return x.StorePermission
+	}
+	return nil
+}
+
+func (x *UpdateStorePermissionRequest) GetActionType() ResourceActionType {
+	if x != nil {
+		return x.ActionType
+	}
+	return ResourceActionType_RESOURCE_ACTION_TYPE_UNSPECIFIED
+}
+
+func (x *UpdateStorePermissionRequest) GetStorePermissionId() string {
+	if x != nil {
+		return x.StorePermissionId
 	}
 	return ""
 }
 
-func (x *DeletePermissionsGroupRequest) GetBusinessId() string {
+type UpdateStorePermissionResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Whether the permission group was successfully updated.
+	Success       bool `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateStorePermissionResponse) Reset() {
+	*x = UpdateStorePermissionResponse{}
+	mi := &file_identity_v1_permission_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateStorePermissionResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateStorePermissionResponse) ProtoMessage() {}
+
+func (x *UpdateStorePermissionResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_identity_v1_permission_proto_msgTypes[9]
 	if x != nil {
-		return x.BusinessId
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateStorePermissionResponse.ProtoReflect.Descriptor instead.
+func (*UpdateStorePermissionResponse) Descriptor() ([]byte, []int) {
+	return file_identity_v1_permission_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *UpdateStorePermissionResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+type DeleteBusinessPermissionRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The unique identifier of the permission group to delete.
+	BusinessPermissionId string `protobuf:"bytes,1,opt,name=business_permission_id,json=businessPermissionId,proto3" json:"business_permission_id,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
+}
+
+func (x *DeleteBusinessPermissionRequest) Reset() {
+	*x = DeleteBusinessPermissionRequest{}
+	mi := &file_identity_v1_permission_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteBusinessPermissionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteBusinessPermissionRequest) ProtoMessage() {}
+
+func (x *DeleteBusinessPermissionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_identity_v1_permission_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteBusinessPermissionRequest.ProtoReflect.Descriptor instead.
+func (*DeleteBusinessPermissionRequest) Descriptor() ([]byte, []int) {
+	return file_identity_v1_permission_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *DeleteBusinessPermissionRequest) GetBusinessPermissionId() string {
+	if x != nil {
+		return x.BusinessPermissionId
 	}
 	return ""
 }
 
-type DeletePermissionsGroupResponse struct {
+type DeleteBusinessPermissionResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Whether the permission group was successfully deleted.
 	Success       bool `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
@@ -679,21 +777,21 @@ type DeletePermissionsGroupResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *DeletePermissionsGroupResponse) Reset() {
-	*x = DeletePermissionsGroupResponse{}
-	mi := &file_identity_v1_permission_proto_msgTypes[9]
+func (x *DeleteBusinessPermissionResponse) Reset() {
+	*x = DeleteBusinessPermissionResponse{}
+	mi := &file_identity_v1_permission_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *DeletePermissionsGroupResponse) String() string {
+func (x *DeleteBusinessPermissionResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DeletePermissionsGroupResponse) ProtoMessage() {}
+func (*DeleteBusinessPermissionResponse) ProtoMessage() {}
 
-func (x *DeletePermissionsGroupResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_identity_v1_permission_proto_msgTypes[9]
+func (x *DeleteBusinessPermissionResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_identity_v1_permission_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -704,51 +802,41 @@ func (x *DeletePermissionsGroupResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DeletePermissionsGroupResponse.ProtoReflect.Descriptor instead.
-func (*DeletePermissionsGroupResponse) Descriptor() ([]byte, []int) {
-	return file_identity_v1_permission_proto_rawDescGZIP(), []int{9}
+// Deprecated: Use DeleteBusinessPermissionResponse.ProtoReflect.Descriptor instead.
+func (*DeleteBusinessPermissionResponse) Descriptor() ([]byte, []int) {
+	return file_identity_v1_permission_proto_rawDescGZIP(), []int{11}
 }
 
-func (x *DeletePermissionsGroupResponse) GetSuccess() bool {
+func (x *DeleteBusinessPermissionResponse) GetSuccess() bool {
 	if x != nil {
 		return x.Success
 	}
 	return false
 }
 
-type UpdateMemberPermissionsRequest struct {
+type DeleteStorePermissionRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The unique identifier of the member.
-	UserId string `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	// The id of the business on which we want to update the permissions.
-	BusinessId string `protobuf:"bytes,2,opt,name=business_id,json=businessId,proto3" json:"business_id,omitempty"`
-	// The set of permissions to remove from the member.
-	RemovePermissions []*Permission `protobuf:"bytes,3,rep,name=remove_permissions,json=removePermissions,proto3" json:"remove_permissions,omitempty"`
-	// The set of permissions to add on the member
-	AddPermissions []*Permission `protobuf:"bytes,4,rep,name=add_permissions,json=addPermissions,proto3" json:"add_permissions,omitempty"`
-	// The set of permissions groups to remove the member from.
-	RemovePermissionsGroupsIds []string `protobuf:"bytes,5,rep,name=remove_permissions_groups_ids,json=removePermissionsGroupsIds,proto3" json:"remove_permissions_groups_ids,omitempty"`
-	// The set of permissions groups to add the member on.
-	AddPermissionsGroupsIds []string `protobuf:"bytes,6,rep,name=add_permissions_groups_ids,json=addPermissionsGroupsIds,proto3" json:"add_permissions_groups_ids,omitempty"`
-	unknownFields           protoimpl.UnknownFields
-	sizeCache               protoimpl.SizeCache
+	// The unique identifier of the permission group to delete.
+	StorePermissionId string `protobuf:"bytes,1,opt,name=store_permission_id,json=storePermissionId,proto3" json:"store_permission_id,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
 }
 
-func (x *UpdateMemberPermissionsRequest) Reset() {
-	*x = UpdateMemberPermissionsRequest{}
-	mi := &file_identity_v1_permission_proto_msgTypes[10]
+func (x *DeleteStorePermissionRequest) Reset() {
+	*x = DeleteStorePermissionRequest{}
+	mi := &file_identity_v1_permission_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UpdateMemberPermissionsRequest) String() string {
+func (x *DeleteStorePermissionRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UpdateMemberPermissionsRequest) ProtoMessage() {}
+func (*DeleteStorePermissionRequest) ProtoMessage() {}
 
-func (x *UpdateMemberPermissionsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_identity_v1_permission_proto_msgTypes[10]
+func (x *DeleteStorePermissionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_identity_v1_permission_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -759,76 +847,41 @@ func (x *UpdateMemberPermissionsRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UpdateMemberPermissionsRequest.ProtoReflect.Descriptor instead.
-func (*UpdateMemberPermissionsRequest) Descriptor() ([]byte, []int) {
-	return file_identity_v1_permission_proto_rawDescGZIP(), []int{10}
+// Deprecated: Use DeleteStorePermissionRequest.ProtoReflect.Descriptor instead.
+func (*DeleteStorePermissionRequest) Descriptor() ([]byte, []int) {
+	return file_identity_v1_permission_proto_rawDescGZIP(), []int{12}
 }
 
-func (x *UpdateMemberPermissionsRequest) GetUserId() string {
+func (x *DeleteStorePermissionRequest) GetStorePermissionId() string {
 	if x != nil {
-		return x.UserId
+		return x.StorePermissionId
 	}
 	return ""
 }
 
-func (x *UpdateMemberPermissionsRequest) GetBusinessId() string {
-	if x != nil {
-		return x.BusinessId
-	}
-	return ""
-}
-
-func (x *UpdateMemberPermissionsRequest) GetRemovePermissions() []*Permission {
-	if x != nil {
-		return x.RemovePermissions
-	}
-	return nil
-}
-
-func (x *UpdateMemberPermissionsRequest) GetAddPermissions() []*Permission {
-	if x != nil {
-		return x.AddPermissions
-	}
-	return nil
-}
-
-func (x *UpdateMemberPermissionsRequest) GetRemovePermissionsGroupsIds() []string {
-	if x != nil {
-		return x.RemovePermissionsGroupsIds
-	}
-	return nil
-}
-
-func (x *UpdateMemberPermissionsRequest) GetAddPermissionsGroupsIds() []string {
-	if x != nil {
-		return x.AddPermissionsGroupsIds
-	}
-	return nil
-}
-
-type UpdateMemberPermissionsResponse struct {
+type DeleteStorePermissionResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Whether the member was successfully removed from the permission group.
+	// Whether the permission group was successfully deleted.
 	Success       bool `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UpdateMemberPermissionsResponse) Reset() {
-	*x = UpdateMemberPermissionsResponse{}
-	mi := &file_identity_v1_permission_proto_msgTypes[11]
+func (x *DeleteStorePermissionResponse) Reset() {
+	*x = DeleteStorePermissionResponse{}
+	mi := &file_identity_v1_permission_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UpdateMemberPermissionsResponse) String() string {
+func (x *DeleteStorePermissionResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UpdateMemberPermissionsResponse) ProtoMessage() {}
+func (*DeleteStorePermissionResponse) ProtoMessage() {}
 
-func (x *UpdateMemberPermissionsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_identity_v1_permission_proto_msgTypes[11]
+func (x *DeleteStorePermissionResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_identity_v1_permission_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -839,41 +892,41 @@ func (x *UpdateMemberPermissionsResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UpdateMemberPermissionsResponse.ProtoReflect.Descriptor instead.
-func (*UpdateMemberPermissionsResponse) Descriptor() ([]byte, []int) {
-	return file_identity_v1_permission_proto_rawDescGZIP(), []int{11}
+// Deprecated: Use DeleteStorePermissionResponse.ProtoReflect.Descriptor instead.
+func (*DeleteStorePermissionResponse) Descriptor() ([]byte, []int) {
+	return file_identity_v1_permission_proto_rawDescGZIP(), []int{13}
 }
 
-func (x *UpdateMemberPermissionsResponse) GetSuccess() bool {
+func (x *DeleteStorePermissionResponse) GetSuccess() bool {
 	if x != nil {
 		return x.Success
 	}
 	return false
 }
 
-type GetBusinessPermissionsGroupsRequest struct {
+type GetStorePermissionsRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The unique identifier of the business to retrieve.
-	BusinessId    string `protobuf:"bytes,1,opt,name=business_id,json=businessId,proto3" json:"business_id,omitempty"`
+	// The unique identifier of the store to retrieve.
+	StoreId       string `protobuf:"bytes,1,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetBusinessPermissionsGroupsRequest) Reset() {
-	*x = GetBusinessPermissionsGroupsRequest{}
-	mi := &file_identity_v1_permission_proto_msgTypes[12]
+func (x *GetStorePermissionsRequest) Reset() {
+	*x = GetStorePermissionsRequest{}
+	mi := &file_identity_v1_permission_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetBusinessPermissionsGroupsRequest) String() string {
+func (x *GetStorePermissionsRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetBusinessPermissionsGroupsRequest) ProtoMessage() {}
+func (*GetStorePermissionsRequest) ProtoMessage() {}
 
-func (x *GetBusinessPermissionsGroupsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_identity_v1_permission_proto_msgTypes[12]
+func (x *GetStorePermissionsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_identity_v1_permission_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -884,90 +937,45 @@ func (x *GetBusinessPermissionsGroupsRequest) ProtoReflect() protoreflect.Messag
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetBusinessPermissionsGroupsRequest.ProtoReflect.Descriptor instead.
-func (*GetBusinessPermissionsGroupsRequest) Descriptor() ([]byte, []int) {
-	return file_identity_v1_permission_proto_rawDescGZIP(), []int{12}
+// Deprecated: Use GetStorePermissionsRequest.ProtoReflect.Descriptor instead.
+func (*GetStorePermissionsRequest) Descriptor() ([]byte, []int) {
+	return file_identity_v1_permission_proto_rawDescGZIP(), []int{14}
 }
 
-func (x *GetBusinessPermissionsGroupsRequest) GetBusinessId() string {
+func (x *GetStorePermissionsRequest) GetStoreId() string {
 	if x != nil {
-		return x.BusinessId
+		return x.StoreId
 	}
 	return ""
 }
 
-type GetBusinessPermissionsGroupsResponse struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The permission groups that the business has.
-	PermissionsGroups []*PermissionsGroup `protobuf:"bytes,1,rep,name=permissions_groups,json=permissionsGroups,proto3" json:"permissions_groups,omitempty"`
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
-}
-
-func (x *GetBusinessPermissionsGroupsResponse) Reset() {
-	*x = GetBusinessPermissionsGroupsResponse{}
-	mi := &file_identity_v1_permission_proto_msgTypes[13]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetBusinessPermissionsGroupsResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetBusinessPermissionsGroupsResponse) ProtoMessage() {}
-
-func (x *GetBusinessPermissionsGroupsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_identity_v1_permission_proto_msgTypes[13]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetBusinessPermissionsGroupsResponse.ProtoReflect.Descriptor instead.
-func (*GetBusinessPermissionsGroupsResponse) Descriptor() ([]byte, []int) {
-	return file_identity_v1_permission_proto_rawDescGZIP(), []int{13}
-}
-
-func (x *GetBusinessPermissionsGroupsResponse) GetPermissionsGroups() []*PermissionsGroup {
-	if x != nil {
-		return x.PermissionsGroups
-	}
-	return nil
-}
-
-type CheckPermissionRequest struct {
+type CheckBusinessPermissionRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The unique identifier of the member.
 	UserId string `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	// The unique identifier of the business on which we want to check the permission.
 	BusinessId string `protobuf:"bytes,3,opt,name=business_id,json=businessId,proto3" json:"business_id,omitempty"`
 	// The permission to check.
-	Permission    *Permission `protobuf:"bytes,4,opt,name=permission,proto3" json:"permission,omitempty"`
+	Permission    *BusinessPermission `protobuf:"bytes,4,opt,name=permission,proto3" json:"permission,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CheckPermissionRequest) Reset() {
-	*x = CheckPermissionRequest{}
-	mi := &file_identity_v1_permission_proto_msgTypes[14]
+func (x *CheckBusinessPermissionRequest) Reset() {
+	*x = CheckBusinessPermissionRequest{}
+	mi := &file_identity_v1_permission_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CheckPermissionRequest) String() string {
+func (x *CheckBusinessPermissionRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CheckPermissionRequest) ProtoMessage() {}
+func (*CheckBusinessPermissionRequest) ProtoMessage() {}
 
-func (x *CheckPermissionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_identity_v1_permission_proto_msgTypes[14]
+func (x *CheckBusinessPermissionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_identity_v1_permission_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -978,33 +986,33 @@ func (x *CheckPermissionRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CheckPermissionRequest.ProtoReflect.Descriptor instead.
-func (*CheckPermissionRequest) Descriptor() ([]byte, []int) {
-	return file_identity_v1_permission_proto_rawDescGZIP(), []int{14}
+// Deprecated: Use CheckBusinessPermissionRequest.ProtoReflect.Descriptor instead.
+func (*CheckBusinessPermissionRequest) Descriptor() ([]byte, []int) {
+	return file_identity_v1_permission_proto_rawDescGZIP(), []int{15}
 }
 
-func (x *CheckPermissionRequest) GetUserId() string {
+func (x *CheckBusinessPermissionRequest) GetUserId() string {
 	if x != nil {
 		return x.UserId
 	}
 	return ""
 }
 
-func (x *CheckPermissionRequest) GetBusinessId() string {
+func (x *CheckBusinessPermissionRequest) GetBusinessId() string {
 	if x != nil {
 		return x.BusinessId
 	}
 	return ""
 }
 
-func (x *CheckPermissionRequest) GetPermission() *Permission {
+func (x *CheckBusinessPermissionRequest) GetPermission() *BusinessPermission {
 	if x != nil {
 		return x.Permission
 	}
 	return nil
 }
 
-type CheckPermissionResponse struct {
+type CheckBusinessPermissionResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Whether the member has the permission.
 	HasPermission bool `protobuf:"varint,1,opt,name=has_permission,json=hasPermission,proto3" json:"has_permission,omitempty"`
@@ -1012,21 +1020,21 @@ type CheckPermissionResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CheckPermissionResponse) Reset() {
-	*x = CheckPermissionResponse{}
-	mi := &file_identity_v1_permission_proto_msgTypes[15]
+func (x *CheckBusinessPermissionResponse) Reset() {
+	*x = CheckBusinessPermissionResponse{}
+	mi := &file_identity_v1_permission_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CheckPermissionResponse) String() string {
+func (x *CheckBusinessPermissionResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CheckPermissionResponse) ProtoMessage() {}
+func (*CheckBusinessPermissionResponse) ProtoMessage() {}
 
-func (x *CheckPermissionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_identity_v1_permission_proto_msgTypes[15]
+func (x *CheckBusinessPermissionResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_identity_v1_permission_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1037,42 +1045,45 @@ func (x *CheckPermissionResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CheckPermissionResponse.ProtoReflect.Descriptor instead.
-func (*CheckPermissionResponse) Descriptor() ([]byte, []int) {
-	return file_identity_v1_permission_proto_rawDescGZIP(), []int{15}
+// Deprecated: Use CheckBusinessPermissionResponse.ProtoReflect.Descriptor instead.
+func (*CheckBusinessPermissionResponse) Descriptor() ([]byte, []int) {
+	return file_identity_v1_permission_proto_rawDescGZIP(), []int{16}
 }
 
-func (x *CheckPermissionResponse) GetHasPermission() bool {
+func (x *CheckBusinessPermissionResponse) GetHasPermission() bool {
 	if x != nil {
 		return x.HasPermission
 	}
 	return false
 }
 
-// Request to stream business permissions groups
-type StreamBusinessPermissionsGroupsRequest struct {
+type CheckStorePermissionRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The unique identifier of the business to stream.
-	BusinessId    string `protobuf:"bytes,1,opt,name=business_id,json=businessId,proto3" json:"business_id,omitempty"`
+	// The unique identifier of the member.
+	UserId string `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	// The unique identifier of the store on which we want to check the permission.
+	StoreId string `protobuf:"bytes,3,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
+	// The permission to check.
+	Permission    *StorePermission `protobuf:"bytes,4,opt,name=permission,proto3" json:"permission,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *StreamBusinessPermissionsGroupsRequest) Reset() {
-	*x = StreamBusinessPermissionsGroupsRequest{}
-	mi := &file_identity_v1_permission_proto_msgTypes[16]
+func (x *CheckStorePermissionRequest) Reset() {
+	*x = CheckStorePermissionRequest{}
+	mi := &file_identity_v1_permission_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *StreamBusinessPermissionsGroupsRequest) String() string {
+func (x *CheckStorePermissionRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*StreamBusinessPermissionsGroupsRequest) ProtoMessage() {}
+func (*CheckStorePermissionRequest) ProtoMessage() {}
 
-func (x *StreamBusinessPermissionsGroupsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_identity_v1_permission_proto_msgTypes[16]
+func (x *CheckStorePermissionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_identity_v1_permission_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1083,42 +1094,55 @@ func (x *StreamBusinessPermissionsGroupsRequest) ProtoReflect() protoreflect.Mes
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use StreamBusinessPermissionsGroupsRequest.ProtoReflect.Descriptor instead.
-func (*StreamBusinessPermissionsGroupsRequest) Descriptor() ([]byte, []int) {
-	return file_identity_v1_permission_proto_rawDescGZIP(), []int{16}
+// Deprecated: Use CheckStorePermissionRequest.ProtoReflect.Descriptor instead.
+func (*CheckStorePermissionRequest) Descriptor() ([]byte, []int) {
+	return file_identity_v1_permission_proto_rawDescGZIP(), []int{17}
 }
 
-func (x *StreamBusinessPermissionsGroupsRequest) GetBusinessId() string {
+func (x *CheckStorePermissionRequest) GetUserId() string {
 	if x != nil {
-		return x.BusinessId
+		return x.UserId
 	}
 	return ""
 }
 
-// Response for streaming business permissions groups
-type StreamBusinessPermissionsGroupsResponse struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The permission groups that the business has.
-	PermissionsGroups []*PermissionsGroup `protobuf:"bytes,1,rep,name=permissions_groups,json=permissionsGroups,proto3" json:"permissions_groups,omitempty"`
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
+func (x *CheckStorePermissionRequest) GetStoreId() string {
+	if x != nil {
+		return x.StoreId
+	}
+	return ""
 }
 
-func (x *StreamBusinessPermissionsGroupsResponse) Reset() {
-	*x = StreamBusinessPermissionsGroupsResponse{}
-	mi := &file_identity_v1_permission_proto_msgTypes[17]
+func (x *CheckStorePermissionRequest) GetPermission() *StorePermission {
+	if x != nil {
+		return x.Permission
+	}
+	return nil
+}
+
+type CheckStorePermissionResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Whether the member has the permission.
+	HasPermission bool `protobuf:"varint,1,opt,name=has_permission,json=hasPermission,proto3" json:"has_permission,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CheckStorePermissionResponse) Reset() {
+	*x = CheckStorePermissionResponse{}
+	mi := &file_identity_v1_permission_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *StreamBusinessPermissionsGroupsResponse) String() string {
+func (x *CheckStorePermissionResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*StreamBusinessPermissionsGroupsResponse) ProtoMessage() {}
+func (*CheckStorePermissionResponse) ProtoMessage() {}
 
-func (x *StreamBusinessPermissionsGroupsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_identity_v1_permission_proto_msgTypes[17]
+func (x *CheckStorePermissionResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_identity_v1_permission_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1129,136 +1153,125 @@ func (x *StreamBusinessPermissionsGroupsResponse) ProtoReflect() protoreflect.Me
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use StreamBusinessPermissionsGroupsResponse.ProtoReflect.Descriptor instead.
-func (*StreamBusinessPermissionsGroupsResponse) Descriptor() ([]byte, []int) {
-	return file_identity_v1_permission_proto_rawDescGZIP(), []int{17}
+// Deprecated: Use CheckStorePermissionResponse.ProtoReflect.Descriptor instead.
+func (*CheckStorePermissionResponse) Descriptor() ([]byte, []int) {
+	return file_identity_v1_permission_proto_rawDescGZIP(), []int{18}
 }
 
-func (x *StreamBusinessPermissionsGroupsResponse) GetPermissionsGroups() []*PermissionsGroup {
+func (x *CheckStorePermissionResponse) GetHasPermission() bool {
 	if x != nil {
-		return x.PermissionsGroups
+		return x.HasPermission
 	}
-	return nil
+	return false
 }
 
 var File_identity_v1_permission_proto protoreflect.FileDescriptor
 
 const file_identity_v1_permission_proto_rawDesc = "" +
 	"\n" +
-	"\x1cidentity/v1/permission.proto\x12\videntity.v1\x1a\x1bbuf/validate/validate.proto\"\xc4\x01\n" +
-	"\n" +
-	"Permission\x12>\n" +
-	"\rresource_type\x18\x01 \x01(\x0e2\x19.identity.v1.ResourceTypeR\fresourceType\x12$\n" +
-	"\vresource_id\x18\x02 \x01(\tH\x00R\n" +
-	"resourceId\x88\x01\x01\x12@\n" +
-	"\vaction_type\x18\x03 \x01(\x0e2\x1f.identity.v1.ResourceActionTypeR\n" +
-	"actionTypeB\x0e\n" +
-	"\f_resource_id\"\xf5\x01\n" +
-	"\x10PermissionsGroup\x12\x1a\n" +
-	"\x06ref_id\x18\x01 \x01(\tH\x00R\x05refId\x88\x01\x01\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\x12%\n" +
-	"\vdescription\x18\x03 \x01(\tH\x01R\vdescription\x88\x01\x01\x129\n" +
-	"\vpermissions\x18\x04 \x03(\v2\x17.identity.v1.PermissionR\vpermissions\x12$\n" +
-	"\vbusiness_id\x18\x06 \x01(\tH\x02R\n" +
-	"businessId\x88\x01\x01B\t\n" +
-	"\a_ref_idB\x0e\n" +
-	"\f_descriptionB\x0e\n" +
-	"\f_business_id\"\x98\x01\n" +
-	"\x1dCreatePermissionsGroupRequest\x12J\n" +
-	"\x11permissions_group\x18\x01 \x01(\v2\x1d.identity.v1.PermissionsGroupR\x10permissionsGroup\x12+\n" +
-	"\vbusiness_id\x18\x02 \x01(\tB\n" +
+	"\x1cidentity/v1/permission.proto\x12\videntity.v1\x1a\x1bbuf/validate/validate.proto\"\x9e\x01\n" +
+	"\x12BusinessPermission\x12F\n" +
+	"\rresource_type\x18\x01 \x01(\x0e2!.identity.v1.BusinessResourceTypeR\fresourceType\x12@\n" +
+	"\vaction_type\x18\x02 \x01(\x0e2\x1f.identity.v1.ResourceActionTypeR\n" +
+	"actionType\"\x98\x01\n" +
+	"\x0fStorePermission\x12C\n" +
+	"\rresource_type\x18\x01 \x01(\x0e2\x1e.identity.v1.StoreResourceTypeR\fresourceType\x12@\n" +
+	"\vaction_type\x18\x02 \x01(\x0e2\x1f.identity.v1.ResourceActionTypeR\n" +
+	"actionType\"\xe2\x01\n" +
+	"\x1fCreateBusinessPermissionRequest\x12P\n" +
+	"\x13business_permission\x18\x01 \x01(\v2\x1f.identity.v1.BusinessPermissionR\x12businessPermission\x12@\n" +
+	"\vaction_type\x18\x02 \x01(\x0e2\x1f.identity.v1.ResourceActionTypeR\n" +
+	"actionType\x12+\n" +
+	"\vbusiness_id\x18\x03 \x01(\tB\n" +
 	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\n" +
-	"businessId\"\\\n" +
-	"\x1eCreatePermissionsGroupResponse\x12:\n" +
-	"\x13permission_group_id\x18\x01 \x01(\tB\n" +
-	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\x11permissionGroupId\"X\n" +
-	"\x1aGetPermissionsGroupRequest\x12:\n" +
-	"\x13permission_group_id\x18\x01 \x01(\tB\n" +
-	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\x11permissionGroupId\"i\n" +
-	"\x1bGetPermissionsGroupResponse\x12J\n" +
-	"\x11permissions_group\x18\x01 \x01(\v2\x1d.identity.v1.PermissionsGroupR\x10permissionsGroup\"\xed\x02\n" +
-	"\x1dUpdatePermissionsGroupRequest\x12<\n" +
-	"\x14permissions_group_id\x18\x01 \x01(\tB\n" +
-	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\x12permissionsGroupId\x12+\n" +
-	"\vbusiness_id\x18\x06 \x01(\tB\n" +
-	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\n" +
-	"businessId\x12\x17\n" +
-	"\x04name\x18\x02 \x01(\tH\x00R\x04name\x88\x01\x01\x12%\n" +
-	"\vdescription\x18\x03 \x01(\tH\x01R\vdescription\x88\x01\x01\x12@\n" +
-	"\x0fadd_permissions\x18\x04 \x03(\v2\x17.identity.v1.PermissionR\x0eaddPermissions\x12F\n" +
-	"\x12remove_permissions\x18\x05 \x03(\v2\x17.identity.v1.PermissionR\x11removePermissionsB\a\n" +
-	"\x05_nameB\x0e\n" +
-	"\f_description\":\n" +
-	"\x1eUpdatePermissionsGroupResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess\"\x88\x01\n" +
-	"\x1dDeletePermissionsGroupRequest\x12:\n" +
-	"\x13permission_group_id\x18\x01 \x01(\tB\n" +
-	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\x11permissionGroupId\x12+\n" +
-	"\vbusiness_id\x18\x02 \x01(\tB\n" +
-	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\n" +
-	"businessId\":\n" +
-	"\x1eDeletePermissionsGroupResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess\"\xfc\x02\n" +
-	"\x1eUpdateMemberPermissionsRequest\x12#\n" +
-	"\auser_id\x18\x01 \x01(\tB\n" +
-	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\x06userId\x12+\n" +
-	"\vbusiness_id\x18\x02 \x01(\tB\n" +
-	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\n" +
-	"businessId\x12F\n" +
-	"\x12remove_permissions\x18\x03 \x03(\v2\x17.identity.v1.PermissionR\x11removePermissions\x12@\n" +
-	"\x0fadd_permissions\x18\x04 \x03(\v2\x17.identity.v1.PermissionR\x0eaddPermissions\x12A\n" +
-	"\x1dremove_permissions_groups_ids\x18\x05 \x03(\tR\x1aremovePermissionsGroupsIds\x12;\n" +
-	"\x1aadd_permissions_groups_ids\x18\x06 \x03(\tR\x17addPermissionsGroupsIds\";\n" +
-	"\x1fUpdateMemberPermissionsResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess\"R\n" +
-	"#GetBusinessPermissionsGroupsRequest\x12+\n" +
-	"\vbusiness_id\x18\x01 \x01(\tB\n" +
-	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\n" +
-	"businessId\"t\n" +
-	"$GetBusinessPermissionsGroupsResponse\x12L\n" +
-	"\x12permissions_groups\x18\x01 \x03(\v2\x1d.identity.v1.PermissionsGroupR\x11permissionsGroups\"\xa3\x01\n" +
-	"\x16CheckPermissionRequest\x12#\n" +
+	"businessId\"<\n" +
+	" CreateBusinessPermissionResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"\xd0\x01\n" +
+	"\x1cCreateStorePermissionRequest\x12G\n" +
+	"\x10store_permission\x18\x01 \x01(\v2\x1c.identity.v1.StorePermissionR\x0fstorePermission\x12@\n" +
+	"\vaction_type\x18\x02 \x01(\x0e2\x1f.identity.v1.ResourceActionTypeR\n" +
+	"actionType\x12%\n" +
+	"\bstore_id\x18\x03 \x01(\tB\n" +
+	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\astoreId\"9\n" +
+	"\x1dCreateStorePermissionResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"\xf7\x01\n" +
+	"\x1fUpdateBusinessPermissionRequest\x12P\n" +
+	"\x13business_permission\x18\x01 \x01(\v2\x1f.identity.v1.BusinessPermissionR\x12businessPermission\x12@\n" +
+	"\vaction_type\x18\x02 \x01(\x0e2\x1f.identity.v1.ResourceActionTypeR\n" +
+	"actionType\x12@\n" +
+	"\x16business_permission_id\x18\x03 \x01(\tB\n" +
+	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\x14businessPermissionId\"<\n" +
+	" UpdateBusinessPermissionResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"\xe5\x01\n" +
+	"\x1cUpdateStorePermissionRequest\x12G\n" +
+	"\x10store_permission\x18\x01 \x01(\v2\x1c.identity.v1.StorePermissionR\x0fstorePermission\x12@\n" +
+	"\vaction_type\x18\x02 \x01(\x0e2\x1f.identity.v1.ResourceActionTypeR\n" +
+	"actionType\x12:\n" +
+	"\x13store_permission_id\x18\x03 \x01(\tB\n" +
+	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\x11storePermissionId\"9\n" +
+	"\x1dUpdateStorePermissionResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"c\n" +
+	"\x1fDeleteBusinessPermissionRequest\x12@\n" +
+	"\x16business_permission_id\x18\x01 \x01(\tB\n" +
+	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\x14businessPermissionId\"<\n" +
+	" DeleteBusinessPermissionResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"Z\n" +
+	"\x1cDeleteStorePermissionRequest\x12:\n" +
+	"\x13store_permission_id\x18\x01 \x01(\tB\n" +
+	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\x11storePermissionId\"9\n" +
+	"\x1dDeleteStorePermissionResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"C\n" +
+	"\x1aGetStorePermissionsRequest\x12%\n" +
+	"\bstore_id\x18\x01 \x01(\tB\n" +
+	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\astoreId\"\xb3\x01\n" +
+	"\x1eCheckBusinessPermissionRequest\x12#\n" +
 	"\auser_id\x18\x01 \x01(\tB\n" +
 	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\x06userId\x12+\n" +
 	"\vbusiness_id\x18\x03 \x01(\tB\n" +
 	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\n" +
-	"businessId\x127\n" +
+	"businessId\x12?\n" +
 	"\n" +
-	"permission\x18\x04 \x01(\v2\x17.identity.v1.PermissionR\n" +
-	"permission\"@\n" +
-	"\x17CheckPermissionResponse\x12%\n" +
-	"\x0ehas_permission\x18\x01 \x01(\bR\rhasPermission\"U\n" +
-	"&StreamBusinessPermissionsGroupsRequest\x12+\n" +
-	"\vbusiness_id\x18\x01 \x01(\tB\n" +
-	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\n" +
-	"businessId\"w\n" +
-	"'StreamBusinessPermissionsGroupsResponse\x12L\n" +
-	"\x12permissions_groups\x18\x01 \x03(\v2\x1d.identity.v1.PermissionsGroupR\x11permissionsGroups*\xb9\x01\n" +
+	"permission\x18\x04 \x01(\v2\x1f.identity.v1.BusinessPermissionR\n" +
+	"permission\"H\n" +
+	"\x1fCheckBusinessPermissionResponse\x12%\n" +
+	"\x0ehas_permission\x18\x01 \x01(\bR\rhasPermission\"\xa7\x01\n" +
+	"\x1bCheckStorePermissionRequest\x12#\n" +
+	"\auser_id\x18\x01 \x01(\tB\n" +
+	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\x06userId\x12%\n" +
+	"\bstore_id\x18\x03 \x01(\tB\n" +
+	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\astoreId\x12<\n" +
+	"\n" +
+	"permission\x18\x04 \x01(\v2\x1c.identity.v1.StorePermissionR\n" +
+	"permission\"E\n" +
+	"\x1cCheckStorePermissionResponse\x12%\n" +
+	"\x0ehas_permission\x18\x01 \x01(\bR\rhasPermission*\xb9\x01\n" +
 	"\x12ResourceActionType\x12$\n" +
 	" RESOURCE_ACTION_TYPE_UNSPECIFIED\x10\x00\x12\x1d\n" +
 	"\x19RESOURCE_ACTION_TYPE_READ\x10\x01\x12\x1c\n" +
 	"\x18RESOURCE_ACTION_TYPE_ADD\x10\x02\x12\x1f\n" +
 	"\x1bRESOURCE_ACTION_TYPE_UPDATE\x10\x03\x12\x1f\n" +
-	"\x1bRESOURCE_ACTION_TYPE_REMOVE\x10\x04*\xa1\x02\n" +
-	"\fResourceType\x12\x1d\n" +
-	"\x19RESOURCE_TYPE_UNSPECIFIED\x10\x00\x12\x1a\n" +
-	"\x16RESOURCE_TYPE_BUSINESS\x10\x01\x12!\n" +
-	"\x1dRESOURCE_TYPE_BUSINESS_MEMBER\x10\x02\x12#\n" +
-	"\x1fRESOURCE_TYPE_BUSINESS_SUPPLIER\x10\x04\x12\x17\n" +
-	"\x13RESOURCE_TYPE_STORE\x10\x05\x12\x19\n" +
-	"\x15RESOURCE_TYPE_INVOICE\x10\x06\x12\x1d\n" +
-	"\x19RESOURCE_TYPE_STORE_ORDER\x10\a\x12 \n" +
-	"\x1cRESOURCE_TYPE_SUPPLIER_ORDER\x10\b\x12\x19\n" +
-	"\x15RESOURCE_TYPE_PRODUCT\x10\t2\xd1\a\n" +
-	"\x11PermissionService\x12s\n" +
-	"\x16CreatePermissionsGroup\x12*.identity.v1.CreatePermissionsGroupRequest\x1a+.identity.v1.CreatePermissionsGroupResponse\"\x00\x12j\n" +
-	"\x13GetPermissionsGroup\x12'.identity.v1.GetPermissionsGroupRequest\x1a(.identity.v1.GetPermissionsGroupResponse\"\x00\x12s\n" +
-	"\x16UpdatePermissionsGroup\x12*.identity.v1.UpdatePermissionsGroupRequest\x1a+.identity.v1.UpdatePermissionsGroupResponse\"\x00\x12s\n" +
-	"\x16DeletePermissionsGroup\x12*.identity.v1.DeletePermissionsGroupRequest\x1a+.identity.v1.DeletePermissionsGroupResponse\"\x00\x12v\n" +
-	"\x17UpdateMemberPermissions\x12+.identity.v1.UpdateMemberPermissionsRequest\x1a,.identity.v1.UpdateMemberPermissionsResponse\"\x00\x12\x85\x01\n" +
-	"\x1cGetBusinessPermissionsGroups\x120.identity.v1.GetBusinessPermissionsGroupsRequest\x1a1.identity.v1.GetBusinessPermissionsGroupsResponse\"\x00\x12^\n" +
-	"\x0fCheckPermission\x12#.identity.v1.CheckPermissionRequest\x1a$.identity.v1.CheckPermissionResponse\"\x00\x12\x90\x01\n" +
-	"\x1fStreamBusinessPermissionsGroups\x123.identity.v1.StreamBusinessPermissionsGroupsRequest\x1a4.identity.v1.StreamBusinessPermissionsGroupsResponse\"\x000\x01B\xb7\x01\n" +
+	"\x1bRESOURCE_ACTION_TYPE_REMOVE\x10\x04*\xab\x01\n" +
+	"\x14BusinessResourceType\x12&\n" +
+	"\"BUSINESS_RESOURCE_TYPE_UNSPECIFIED\x10\x00\x12#\n" +
+	"\x1fBUSINESS_RESOURCE_TYPE_BUSINESS\x10\x01\x12!\n" +
+	"\x1dBUSINESS_RESOURCE_TYPE_MEMBER\x10\x02\x12#\n" +
+	"\x1fBUSINESS_RESOURCE_TYPE_SUPPLIER\x10\x03*\xe0\x01\n" +
+	"\x11StoreResourceType\x12#\n" +
+	"\x1fSTORE_RESOURCE_TYPE_UNSPECIFIED\x10\x00\x12\x1d\n" +
+	"\x19STORE_RESOURCE_TYPE_STORE\x10\x01\x12\x1f\n" +
+	"\x1bSTORE_RESOURCE_TYPE_INVOICE\x10\x02\x12\x1d\n" +
+	"\x19STORE_RESOURCE_TYPE_ORDER\x10\x03\x12&\n" +
+	"\"STORE_RESOURCE_TYPE_SUPPLIER_ORDER\x10\x04\x12\x1f\n" +
+	"\x1bSTORE_RESOURCE_TYPE_PRODUCT\x10\x052\xc1\a\n" +
+	"\x11PermissionService\x12y\n" +
+	"\x18CreateBusinessPermission\x12,.identity.v1.CreateBusinessPermissionRequest\x1a-.identity.v1.CreateBusinessPermissionResponse\"\x00\x12y\n" +
+	"\x18UpdateBusinessPermission\x12,.identity.v1.UpdateBusinessPermissionRequest\x1a-.identity.v1.UpdateBusinessPermissionResponse\"\x00\x12y\n" +
+	"\x18DeleteBusinessPermission\x12,.identity.v1.DeleteBusinessPermissionRequest\x1a-.identity.v1.DeleteBusinessPermissionResponse\"\x00\x12p\n" +
+	"\x15CreateStorePermission\x12).identity.v1.CreateStorePermissionRequest\x1a*.identity.v1.CreateStorePermissionResponse\"\x00\x12p\n" +
+	"\x15UpdateStorePermission\x12).identity.v1.UpdateStorePermissionRequest\x1a*.identity.v1.UpdateStorePermissionResponse\"\x00\x12p\n" +
+	"\x15DeleteStorePermission\x12).identity.v1.DeleteStorePermissionRequest\x1a*.identity.v1.DeleteStorePermissionResponse\"\x00\x12v\n" +
+	"\x17CheckBusinessPermission\x12+.identity.v1.CheckBusinessPermissionRequest\x1a,.identity.v1.CheckBusinessPermissionResponse\"\x00\x12m\n" +
+	"\x14CheckStorePermission\x12(.identity.v1.CheckStorePermissionRequest\x1a).identity.v1.CheckStorePermissionResponse\"\x00B\xb7\x01\n" +
 	"\x0fcom.identity.v1B\x0fPermissionProtoP\x01ZFgithub.com/karibu-cap/sabitou/protos/gen/go/rpc/identity/v1;identityv1\xa2\x02\x03IXX\xaa\x02\vIdentity.V1\xca\x02\vIdentity\\V1\xe2\x02\x17Identity\\V1\\GPBMetadata\xea\x02\fIdentity::V1b\x06proto3"
 
 var (
@@ -1273,64 +1286,68 @@ func file_identity_v1_permission_proto_rawDescGZIP() []byte {
 	return file_identity_v1_permission_proto_rawDescData
 }
 
-var file_identity_v1_permission_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_identity_v1_permission_proto_msgTypes = make([]protoimpl.MessageInfo, 18)
+var file_identity_v1_permission_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
+var file_identity_v1_permission_proto_msgTypes = make([]protoimpl.MessageInfo, 19)
 var file_identity_v1_permission_proto_goTypes = []any{
-	(ResourceActionType)(0),                         // 0: identity.v1.ResourceActionType
-	(ResourceType)(0),                               // 1: identity.v1.ResourceType
-	(*Permission)(nil),                              // 2: identity.v1.Permission
-	(*PermissionsGroup)(nil),                        // 3: identity.v1.PermissionsGroup
-	(*CreatePermissionsGroupRequest)(nil),           // 4: identity.v1.CreatePermissionsGroupRequest
-	(*CreatePermissionsGroupResponse)(nil),          // 5: identity.v1.CreatePermissionsGroupResponse
-	(*GetPermissionsGroupRequest)(nil),              // 6: identity.v1.GetPermissionsGroupRequest
-	(*GetPermissionsGroupResponse)(nil),             // 7: identity.v1.GetPermissionsGroupResponse
-	(*UpdatePermissionsGroupRequest)(nil),           // 8: identity.v1.UpdatePermissionsGroupRequest
-	(*UpdatePermissionsGroupResponse)(nil),          // 9: identity.v1.UpdatePermissionsGroupResponse
-	(*DeletePermissionsGroupRequest)(nil),           // 10: identity.v1.DeletePermissionsGroupRequest
-	(*DeletePermissionsGroupResponse)(nil),          // 11: identity.v1.DeletePermissionsGroupResponse
-	(*UpdateMemberPermissionsRequest)(nil),          // 12: identity.v1.UpdateMemberPermissionsRequest
-	(*UpdateMemberPermissionsResponse)(nil),         // 13: identity.v1.UpdateMemberPermissionsResponse
-	(*GetBusinessPermissionsGroupsRequest)(nil),     // 14: identity.v1.GetBusinessPermissionsGroupsRequest
-	(*GetBusinessPermissionsGroupsResponse)(nil),    // 15: identity.v1.GetBusinessPermissionsGroupsResponse
-	(*CheckPermissionRequest)(nil),                  // 16: identity.v1.CheckPermissionRequest
-	(*CheckPermissionResponse)(nil),                 // 17: identity.v1.CheckPermissionResponse
-	(*StreamBusinessPermissionsGroupsRequest)(nil),  // 18: identity.v1.StreamBusinessPermissionsGroupsRequest
-	(*StreamBusinessPermissionsGroupsResponse)(nil), // 19: identity.v1.StreamBusinessPermissionsGroupsResponse
+	(ResourceActionType)(0),                  // 0: identity.v1.ResourceActionType
+	(BusinessResourceType)(0),                // 1: identity.v1.BusinessResourceType
+	(StoreResourceType)(0),                   // 2: identity.v1.StoreResourceType
+	(*BusinessPermission)(nil),               // 3: identity.v1.BusinessPermission
+	(*StorePermission)(nil),                  // 4: identity.v1.StorePermission
+	(*CreateBusinessPermissionRequest)(nil),  // 5: identity.v1.CreateBusinessPermissionRequest
+	(*CreateBusinessPermissionResponse)(nil), // 6: identity.v1.CreateBusinessPermissionResponse
+	(*CreateStorePermissionRequest)(nil),     // 7: identity.v1.CreateStorePermissionRequest
+	(*CreateStorePermissionResponse)(nil),    // 8: identity.v1.CreateStorePermissionResponse
+	(*UpdateBusinessPermissionRequest)(nil),  // 9: identity.v1.UpdateBusinessPermissionRequest
+	(*UpdateBusinessPermissionResponse)(nil), // 10: identity.v1.UpdateBusinessPermissionResponse
+	(*UpdateStorePermissionRequest)(nil),     // 11: identity.v1.UpdateStorePermissionRequest
+	(*UpdateStorePermissionResponse)(nil),    // 12: identity.v1.UpdateStorePermissionResponse
+	(*DeleteBusinessPermissionRequest)(nil),  // 13: identity.v1.DeleteBusinessPermissionRequest
+	(*DeleteBusinessPermissionResponse)(nil), // 14: identity.v1.DeleteBusinessPermissionResponse
+	(*DeleteStorePermissionRequest)(nil),     // 15: identity.v1.DeleteStorePermissionRequest
+	(*DeleteStorePermissionResponse)(nil),    // 16: identity.v1.DeleteStorePermissionResponse
+	(*GetStorePermissionsRequest)(nil),       // 17: identity.v1.GetStorePermissionsRequest
+	(*CheckBusinessPermissionRequest)(nil),   // 18: identity.v1.CheckBusinessPermissionRequest
+	(*CheckBusinessPermissionResponse)(nil),  // 19: identity.v1.CheckBusinessPermissionResponse
+	(*CheckStorePermissionRequest)(nil),      // 20: identity.v1.CheckStorePermissionRequest
+	(*CheckStorePermissionResponse)(nil),     // 21: identity.v1.CheckStorePermissionResponse
 }
 var file_identity_v1_permission_proto_depIdxs = []int32{
-	1,  // 0: identity.v1.Permission.resource_type:type_name -> identity.v1.ResourceType
-	0,  // 1: identity.v1.Permission.action_type:type_name -> identity.v1.ResourceActionType
-	2,  // 2: identity.v1.PermissionsGroup.permissions:type_name -> identity.v1.Permission
-	3,  // 3: identity.v1.CreatePermissionsGroupRequest.permissions_group:type_name -> identity.v1.PermissionsGroup
-	3,  // 4: identity.v1.GetPermissionsGroupResponse.permissions_group:type_name -> identity.v1.PermissionsGroup
-	2,  // 5: identity.v1.UpdatePermissionsGroupRequest.add_permissions:type_name -> identity.v1.Permission
-	2,  // 6: identity.v1.UpdatePermissionsGroupRequest.remove_permissions:type_name -> identity.v1.Permission
-	2,  // 7: identity.v1.UpdateMemberPermissionsRequest.remove_permissions:type_name -> identity.v1.Permission
-	2,  // 8: identity.v1.UpdateMemberPermissionsRequest.add_permissions:type_name -> identity.v1.Permission
-	3,  // 9: identity.v1.GetBusinessPermissionsGroupsResponse.permissions_groups:type_name -> identity.v1.PermissionsGroup
-	2,  // 10: identity.v1.CheckPermissionRequest.permission:type_name -> identity.v1.Permission
-	3,  // 11: identity.v1.StreamBusinessPermissionsGroupsResponse.permissions_groups:type_name -> identity.v1.PermissionsGroup
-	4,  // 12: identity.v1.PermissionService.CreatePermissionsGroup:input_type -> identity.v1.CreatePermissionsGroupRequest
-	6,  // 13: identity.v1.PermissionService.GetPermissionsGroup:input_type -> identity.v1.GetPermissionsGroupRequest
-	8,  // 14: identity.v1.PermissionService.UpdatePermissionsGroup:input_type -> identity.v1.UpdatePermissionsGroupRequest
-	10, // 15: identity.v1.PermissionService.DeletePermissionsGroup:input_type -> identity.v1.DeletePermissionsGroupRequest
-	12, // 16: identity.v1.PermissionService.UpdateMemberPermissions:input_type -> identity.v1.UpdateMemberPermissionsRequest
-	14, // 17: identity.v1.PermissionService.GetBusinessPermissionsGroups:input_type -> identity.v1.GetBusinessPermissionsGroupsRequest
-	16, // 18: identity.v1.PermissionService.CheckPermission:input_type -> identity.v1.CheckPermissionRequest
-	18, // 19: identity.v1.PermissionService.StreamBusinessPermissionsGroups:input_type -> identity.v1.StreamBusinessPermissionsGroupsRequest
-	5,  // 20: identity.v1.PermissionService.CreatePermissionsGroup:output_type -> identity.v1.CreatePermissionsGroupResponse
-	7,  // 21: identity.v1.PermissionService.GetPermissionsGroup:output_type -> identity.v1.GetPermissionsGroupResponse
-	9,  // 22: identity.v1.PermissionService.UpdatePermissionsGroup:output_type -> identity.v1.UpdatePermissionsGroupResponse
-	11, // 23: identity.v1.PermissionService.DeletePermissionsGroup:output_type -> identity.v1.DeletePermissionsGroupResponse
-	13, // 24: identity.v1.PermissionService.UpdateMemberPermissions:output_type -> identity.v1.UpdateMemberPermissionsResponse
-	15, // 25: identity.v1.PermissionService.GetBusinessPermissionsGroups:output_type -> identity.v1.GetBusinessPermissionsGroupsResponse
-	17, // 26: identity.v1.PermissionService.CheckPermission:output_type -> identity.v1.CheckPermissionResponse
-	19, // 27: identity.v1.PermissionService.StreamBusinessPermissionsGroups:output_type -> identity.v1.StreamBusinessPermissionsGroupsResponse
-	20, // [20:28] is the sub-list for method output_type
-	12, // [12:20] is the sub-list for method input_type
-	12, // [12:12] is the sub-list for extension type_name
-	12, // [12:12] is the sub-list for extension extendee
-	0,  // [0:12] is the sub-list for field type_name
+	1,  // 0: identity.v1.BusinessPermission.resource_type:type_name -> identity.v1.BusinessResourceType
+	0,  // 1: identity.v1.BusinessPermission.action_type:type_name -> identity.v1.ResourceActionType
+	2,  // 2: identity.v1.StorePermission.resource_type:type_name -> identity.v1.StoreResourceType
+	0,  // 3: identity.v1.StorePermission.action_type:type_name -> identity.v1.ResourceActionType
+	3,  // 4: identity.v1.CreateBusinessPermissionRequest.business_permission:type_name -> identity.v1.BusinessPermission
+	0,  // 5: identity.v1.CreateBusinessPermissionRequest.action_type:type_name -> identity.v1.ResourceActionType
+	4,  // 6: identity.v1.CreateStorePermissionRequest.store_permission:type_name -> identity.v1.StorePermission
+	0,  // 7: identity.v1.CreateStorePermissionRequest.action_type:type_name -> identity.v1.ResourceActionType
+	3,  // 8: identity.v1.UpdateBusinessPermissionRequest.business_permission:type_name -> identity.v1.BusinessPermission
+	0,  // 9: identity.v1.UpdateBusinessPermissionRequest.action_type:type_name -> identity.v1.ResourceActionType
+	4,  // 10: identity.v1.UpdateStorePermissionRequest.store_permission:type_name -> identity.v1.StorePermission
+	0,  // 11: identity.v1.UpdateStorePermissionRequest.action_type:type_name -> identity.v1.ResourceActionType
+	3,  // 12: identity.v1.CheckBusinessPermissionRequest.permission:type_name -> identity.v1.BusinessPermission
+	4,  // 13: identity.v1.CheckStorePermissionRequest.permission:type_name -> identity.v1.StorePermission
+	5,  // 14: identity.v1.PermissionService.CreateBusinessPermission:input_type -> identity.v1.CreateBusinessPermissionRequest
+	9,  // 15: identity.v1.PermissionService.UpdateBusinessPermission:input_type -> identity.v1.UpdateBusinessPermissionRequest
+	13, // 16: identity.v1.PermissionService.DeleteBusinessPermission:input_type -> identity.v1.DeleteBusinessPermissionRequest
+	7,  // 17: identity.v1.PermissionService.CreateStorePermission:input_type -> identity.v1.CreateStorePermissionRequest
+	11, // 18: identity.v1.PermissionService.UpdateStorePermission:input_type -> identity.v1.UpdateStorePermissionRequest
+	15, // 19: identity.v1.PermissionService.DeleteStorePermission:input_type -> identity.v1.DeleteStorePermissionRequest
+	18, // 20: identity.v1.PermissionService.CheckBusinessPermission:input_type -> identity.v1.CheckBusinessPermissionRequest
+	20, // 21: identity.v1.PermissionService.CheckStorePermission:input_type -> identity.v1.CheckStorePermissionRequest
+	6,  // 22: identity.v1.PermissionService.CreateBusinessPermission:output_type -> identity.v1.CreateBusinessPermissionResponse
+	10, // 23: identity.v1.PermissionService.UpdateBusinessPermission:output_type -> identity.v1.UpdateBusinessPermissionResponse
+	14, // 24: identity.v1.PermissionService.DeleteBusinessPermission:output_type -> identity.v1.DeleteBusinessPermissionResponse
+	8,  // 25: identity.v1.PermissionService.CreateStorePermission:output_type -> identity.v1.CreateStorePermissionResponse
+	12, // 26: identity.v1.PermissionService.UpdateStorePermission:output_type -> identity.v1.UpdateStorePermissionResponse
+	16, // 27: identity.v1.PermissionService.DeleteStorePermission:output_type -> identity.v1.DeleteStorePermissionResponse
+	19, // 28: identity.v1.PermissionService.CheckBusinessPermission:output_type -> identity.v1.CheckBusinessPermissionResponse
+	21, // 29: identity.v1.PermissionService.CheckStorePermission:output_type -> identity.v1.CheckStorePermissionResponse
+	22, // [22:30] is the sub-list for method output_type
+	14, // [14:22] is the sub-list for method input_type
+	14, // [14:14] is the sub-list for extension type_name
+	14, // [14:14] is the sub-list for extension extendee
+	0,  // [0:14] is the sub-list for field type_name
 }
 
 func init() { file_identity_v1_permission_proto_init() }
@@ -1338,16 +1355,13 @@ func file_identity_v1_permission_proto_init() {
 	if File_identity_v1_permission_proto != nil {
 		return
 	}
-	file_identity_v1_permission_proto_msgTypes[0].OneofWrappers = []any{}
-	file_identity_v1_permission_proto_msgTypes[1].OneofWrappers = []any{}
-	file_identity_v1_permission_proto_msgTypes[6].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_identity_v1_permission_proto_rawDesc), len(file_identity_v1_permission_proto_rawDesc)),
-			NumEnums:      2,
-			NumMessages:   18,
+			NumEnums:      3,
+			NumMessages:   19,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
