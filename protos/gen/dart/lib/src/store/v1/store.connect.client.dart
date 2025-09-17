@@ -100,33 +100,15 @@ extension type StoreServiceClient (connect.Transport _transport) {
   }
 
   /// Add user to store or invite user to store.
-  Future<storev1store.CreateUserToStoreResponse> createUserToStore(
-    storev1store.CreateUserToStoreRequest input, {
+  Future<storev1store.AddUserToStoreResponse> addUserToStore(
+    storev1store.AddUserToStoreRequest input, {
     connect.Headers? headers,
     connect.AbortSignal? signal,
     Function(connect.Headers)? onHeader,
     Function(connect.Headers)? onTrailer,
   }) {
     return connect.Client(_transport).unary(
-      specs.StoreService.createUserToStore,
-      input,
-      signal: signal,
-      headers: headers,
-      onHeader: onHeader,
-      onTrailer: onTrailer,
-    );
-  }
-
-  /// Associate user to store.
-  Future<storev1store.AssociateUserToStoreResponse> associateUserToStore(
-    storev1store.AssociateUserToStoreRequest input, {
-    connect.Headers? headers,
-    connect.AbortSignal? signal,
-    Function(connect.Headers)? onHeader,
-    Function(connect.Headers)? onTrailer,
-  }) {
-    return connect.Client(_transport).unary(
-      specs.StoreService.associateUserToStore,
+      specs.StoreService.addUserToStore,
       input,
       signal: signal,
       headers: headers,
@@ -163,6 +145,60 @@ extension type StoreServiceClient (connect.Transport _transport) {
   }) {
     return connect.Client(_transport).server(
       specs.StoreService.streamStoreMembers,
+      input,
+      signal: signal,
+      headers: headers,
+      onHeader: onHeader,
+      onTrailer: onTrailer,
+    );
+  }
+
+  /// Get store members.
+  Future<storev1store.GetStoreMembersResponse> getStoreMembers(
+    storev1store.GetStoreMembersRequest input, {
+    connect.Headers? headers,
+    connect.AbortSignal? signal,
+    Function(connect.Headers)? onHeader,
+    Function(connect.Headers)? onTrailer,
+  }) {
+    return connect.Client(_transport).unary(
+      specs.StoreService.getStoreMembers,
+      input,
+      signal: signal,
+      headers: headers,
+      onHeader: onHeader,
+      onTrailer: onTrailer,
+    );
+  }
+
+  /// Set store member status.
+  Future<storev1store.SetStoreMemberStatusResponse> setStoreMemberStatus(
+    storev1store.SetStoreMemberStatusRequest input, {
+    connect.Headers? headers,
+    connect.AbortSignal? signal,
+    Function(connect.Headers)? onHeader,
+    Function(connect.Headers)? onTrailer,
+  }) {
+    return connect.Client(_transport).unary(
+      specs.StoreService.setStoreMemberStatus,
+      input,
+      signal: signal,
+      headers: headers,
+      onHeader: onHeader,
+      onTrailer: onTrailer,
+    );
+  }
+
+  /// Remove user from store.
+  Future<storev1store.RemoveUserFromStoreResponse> removeUserFromStore(
+    storev1store.RemoveUserFromStoreRequest input, {
+    connect.Headers? headers,
+    connect.AbortSignal? signal,
+    Function(connect.Headers)? onHeader,
+    Function(connect.Headers)? onTrailer,
+  }) {
+    return connect.Client(_transport).unary(
+      specs.StoreService.removeUserFromStore,
       input,
       signal: signal,
       headers: headers,

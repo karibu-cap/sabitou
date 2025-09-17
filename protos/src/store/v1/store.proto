@@ -5,6 +5,7 @@ package store.v1;
 import "buf/validate/validate.proto";
 import "google/protobuf/timestamp.proto";
 import "identity/v1/permission.proto";
+import "identity/v1/user.proto";
 
 // Stores are used to store products.
 // Note: A store is not always a shop.
@@ -34,9 +35,21 @@ message Store {
   optional google.protobuf.Timestamp updated_at = 10;
 }
 
+enum StoreMemberStatus {
+  STORE_MEMBER_STATUS_UNSPECIFIED = 0;
+  /// The user is active.
+  STORE_MEMBER_STATUS_ACTIVE = 1;
+  /// The user is pending.
+  STORE_MEMBER_STATUS_PENDING = 2; 
+  /// The user is inactive.
+  STORE_MEMBER_STATUS_INACTIVE = 3;
+  /// The user is banned.
+  STORE_MEMBER_STATUS_BANNED = 4;
+}
+
 message StoreMember {
-  // The unique identifier of the user.
-  string user_id = 1;
+  // The user.
+  identity.v1.User user = 1;
 
   // The unique identifier of the store.
   string store_id = 2;
@@ -46,6 +59,9 @@ message StoreMember {
 
   // The date since when the user became a member.
   google.protobuf.Timestamp member_since = 4;
+
+  // The status of the user.
+  StoreMemberStatus status = 5;
 }
 
 message CreateStoreRequest {
@@ -118,62 +134,24 @@ message DeleteStoreResponse {
   bool success = 1;
 }
 
-message CreateUserToStoreRequest {
-  // The unique identifier of the user.
-  // For example, the email address or @username.
-  // string u_ref = 1;
-
-  // The first name of the user.
-  string first_name = 1;
-
-  // The last name of the user.
-  string last_name = 2;
-
-  // The username of the user.
-  string user_name = 3;
-
-  // The phone number of the user.
-  string phone_number = 4;
-
+message AddUserToStoreRequest {
   // The email of the user.
-  string email = 5;
-
-  // The password of the user.
-  string password = 6;
-
-  // The unique identifier of the business.
-  string business_id = 7;
+  string email = 1;
 
   // The permissions that the user has.
-  repeated identity.v1.StorePermission permissions = 8;
+  repeated identity.v1.StorePermission permissions = 2;
+
+  // The store id.
+  string store_id = 3;
 }
 
-message CreateUserToStoreResponse {
+message AddUserToStoreResponse {
+  // Whether the store was successfully deleted.
+  bool success = 1;
+
   // The store member to return
-  StoreMember store_member = 1;
+  StoreMember store_member = 2;
 }
-
-message AssociateUserToStoreRequest {
-  // The unique identifier of the user.
-  // For example, the email address or @username.
-  // string u_ref = 1;
-
-  // The unique identifier of the user.
-  string user_id = 1;
-
-  // The unique identifier of the store.
-  string store_id = 2;
-
-  // The permissions that the user has.
-  repeated identity.v1.StorePermission permissions = 3;
-}
-
-message AssociateUserToStoreResponse {
-  // The store member to return
-  StoreMember store_member = 1;
-}
-
-
 
 message UpdateStoreMemberRequest {
   // The unique identifier of the user.
@@ -216,6 +194,58 @@ message StreamStoreMembersResponse {
   repeated StoreMember store_members = 1;
 }
 
+message SetStoreMemberStatusRequest {
+  // The unique identifier of the store.
+  string store_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+
+  // The unique identifier of the user.
+  string user_id = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+
+  // The status of the user.
+  StoreMemberStatus status = 3;
+}
+
+message SetStoreMemberStatusResponse {
+  // Whether the member was successfully updated.
+  bool success = 1;
+}
+
+message GetStoreMembersRequest {
+  // The unique identifier of the store.
+  string store_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+}
+
+message GetStoreMembersResponse {
+  // The store members.
+  repeated StoreMember store_members = 1;
+}
+
+message RemoveUserFromStoreRequest {
+  // The unique identifier of the user.
+  string user_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+  string store_id = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+}
+
+message RemoveUserFromStoreResponse {
+  // Whether the user was successfully removed from the store.
+  bool success = 1;
+}
+
 service StoreService {
   // Creates a new store.
   rpc CreateStore(CreateStoreRequest) returns (CreateStoreResponse) {}
@@ -234,14 +264,20 @@ service StoreService {
   rpc GetBusinessStores(GetBusinessStoresRequest) returns (GetBusinessStoresResponse) {}
 
   // Add user to store or invite user to store.
-  rpc CreateUserToStore(CreateUserToStoreRequest) returns (CreateUserToStoreResponse);
-
-  // Associate user to store.
-  rpc AssociateUserToStore(AssociateUserToStoreRequest) returns (AssociateUserToStoreResponse);
+  rpc AddUserToStore(AddUserToStoreRequest) returns (AddUserToStoreResponse);
 
   // Update store member.
   rpc UpdateStoreMember(UpdateStoreMemberRequest) returns (UpdateStoreMemberResponse);
 
   // Stream store members.
   rpc StreamStoreMembers(StreamStoreMembersRequest) returns (stream StreamStoreMembersResponse);
+
+  // Get store members.
+  rpc GetStoreMembers(GetStoreMembersRequest) returns (GetStoreMembersResponse);
+
+  // Set store member status.
+  rpc SetStoreMemberStatus(SetStoreMemberStatusRequest) returns (SetStoreMemberStatusResponse);
+
+  // Remove user from store.
+  rpc RemoveUserFromStore(RemoveUserFromStoreRequest) returns (RemoveUserFromStoreResponse);
 }

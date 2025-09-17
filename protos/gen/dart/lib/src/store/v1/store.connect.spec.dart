@@ -52,19 +52,11 @@ abstract final class StoreService {
   );
 
   /// Add user to store or invite user to store.
-  static const createUserToStore = connect.Spec(
-    '/$name/CreateUserToStore',
+  static const addUserToStore = connect.Spec(
+    '/$name/AddUserToStore',
     connect.StreamType.unary,
-    storev1store.CreateUserToStoreRequest.new,
-    storev1store.CreateUserToStoreResponse.new,
-  );
-
-  /// Associate user to store.
-  static const associateUserToStore = connect.Spec(
-    '/$name/AssociateUserToStore',
-    connect.StreamType.unary,
-    storev1store.AssociateUserToStoreRequest.new,
-    storev1store.AssociateUserToStoreResponse.new,
+    storev1store.AddUserToStoreRequest.new,
+    storev1store.AddUserToStoreResponse.new,
   );
 
   /// Update store member.
@@ -81,5 +73,29 @@ abstract final class StoreService {
     connect.StreamType.server,
     storev1store.StreamStoreMembersRequest.new,
     storev1store.StreamStoreMembersResponse.new,
+  );
+
+  /// Get store members.
+  static const getStoreMembers = connect.Spec(
+    '/$name/GetStoreMembers',
+    connect.StreamType.unary,
+    storev1store.GetStoreMembersRequest.new,
+    storev1store.GetStoreMembersResponse.new,
+  );
+
+  /// Set store member status.
+  static const setStoreMemberStatus = connect.Spec(
+    '/$name/SetStoreMemberStatus',
+    connect.StreamType.unary,
+    storev1store.SetStoreMemberStatusRequest.new,
+    storev1store.SetStoreMemberStatusResponse.new,
+  );
+
+  /// Remove user from store.
+  static const removeUserFromStore = connect.Spec(
+    '/$name/RemoveUserFromStore',
+    connect.StreamType.unary,
+    storev1store.RemoveUserFromStoreRequest.new,
+    storev1store.RemoveUserFromStoreResponse.new,
   );
 }
