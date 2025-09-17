@@ -524,6 +524,21 @@ components:
           description: |-
             The media ids of different links of the business.
              It can be social media links, website links, etc.
+        contactInfo:
+          type: string
+          title: contact_info
+          description: The business contact information.
+          nullable: true
+        address:
+          type: string
+          title: address
+          description: The business address.
+          nullable: true
+        email:
+          type: string
+          title: email
+          description: The business email.
+          nullable: true
       title: Business
       additionalProperties: false
     business.v1.BusinessMember:
@@ -752,6 +767,11 @@ components:
       additionalProperties: false
     business.v1.GetMyBusinessesRequest:
       type: object
+      properties:
+        ownerId:
+          type: string
+          title: owner_id
+          description: The unique identifier of the user.
       title: GetMyBusinessesRequest
       additionalProperties: false
     business.v1.GetMyBusinessesResponse:

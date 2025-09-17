@@ -35,6 +35,9 @@ class Business extends $pb.GeneratedMessage {
     $core.String? countryCode,
     $core.String? currencyCode,
     $core.Iterable<$core.String>? externalLinksIds,
+    $core.String? contactInfo,
+    $core.String? address,
+    $core.String? email,
   }) {
     final result = create();
     if (refId != null) result.refId = refId;
@@ -47,6 +50,9 @@ class Business extends $pb.GeneratedMessage {
     if (currencyCode != null) result.currencyCode = currencyCode;
     if (externalLinksIds != null)
       result.externalLinksIds.addAll(externalLinksIds);
+    if (contactInfo != null) result.contactInfo = contactInfo;
+    if (address != null) result.address = address;
+    if (email != null) result.email = email;
     return result;
   }
 
@@ -76,6 +82,9 @@ class Business extends $pb.GeneratedMessage {
     ..aOS(7, _omitFieldNames ? '' : 'countryCode')
     ..aOS(8, _omitFieldNames ? '' : 'currencyCode')
     ..pPS(9, _omitFieldNames ? '' : 'externalLinksIds')
+    ..aOS(10, _omitFieldNames ? '' : 'contactInfo')
+    ..aOS(11, _omitFieldNames ? '' : 'address')
+    ..aOS(12, _omitFieldNames ? '' : 'email')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -184,6 +193,36 @@ class Business extends $pb.GeneratedMessage {
   /// It can be social media links, website links, etc.
   @$pb.TagNumber(9)
   $pb.PbList<$core.String> get externalLinksIds => $_getList(8);
+
+  /// The business contact information.
+  @$pb.TagNumber(10)
+  $core.String get contactInfo => $_getSZ(9);
+  @$pb.TagNumber(10)
+  set contactInfo($core.String value) => $_setString(9, value);
+  @$pb.TagNumber(10)
+  $core.bool hasContactInfo() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearContactInfo() => $_clearField(10);
+
+  /// The business address.
+  @$pb.TagNumber(11)
+  $core.String get address => $_getSZ(10);
+  @$pb.TagNumber(11)
+  set address($core.String value) => $_setString(10, value);
+  @$pb.TagNumber(11)
+  $core.bool hasAddress() => $_has(10);
+  @$pb.TagNumber(11)
+  void clearAddress() => $_clearField(11);
+
+  /// The business email.
+  @$pb.TagNumber(12)
+  $core.String get email => $_getSZ(11);
+  @$pb.TagNumber(12)
+  set email($core.String value) => $_setString(11, value);
+  @$pb.TagNumber(12)
+  $core.bool hasEmail() => $_has(11);
+  @$pb.TagNumber(12)
+  void clearEmail() => $_clearField(12);
 }
 
 class BusinessMember extends $pb.GeneratedMessage {
@@ -583,7 +622,13 @@ class ChangeBusinessCurrencyResponse extends $pb.GeneratedMessage {
 }
 
 class GetMyBusinessesRequest extends $pb.GeneratedMessage {
-  factory GetMyBusinessesRequest() => create();
+  factory GetMyBusinessesRequest({
+    $core.String? ownerId,
+  }) {
+    final result = create();
+    if (ownerId != null) result.ownerId = ownerId;
+    return result;
+  }
 
   GetMyBusinessesRequest._();
 
@@ -598,6 +643,7 @@ class GetMyBusinessesRequest extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'GetMyBusinessesRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'),
       createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'ownerId')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -622,6 +668,16 @@ class GetMyBusinessesRequest extends $pb.GeneratedMessage {
   static GetMyBusinessesRequest getDefault() => _defaultInstance ??=
       $pb.GeneratedMessage.$_defaultFor<GetMyBusinessesRequest>(create);
   static GetMyBusinessesRequest? _defaultInstance;
+
+  /// The unique identifier of the user.
+  @$pb.TagNumber(1)
+  $core.String get ownerId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set ownerId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasOwnerId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearOwnerId() => $_clearField(1);
 }
 
 class GetMyBusinessesResponse extends $pb.GeneratedMessage {

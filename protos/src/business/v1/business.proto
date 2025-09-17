@@ -48,6 +48,15 @@ message Business {
   // The media ids of different links of the business.
   // It can be social media links, website links, etc.
   repeated string external_links_ids = 9;
+
+  // The business contact information.
+  optional string contact_info = 10;
+
+  // The business address.
+  optional string address = 11;
+
+  // The business email.
+  optional string email = 12;
 }
 
 message BusinessMember {
@@ -101,7 +110,10 @@ message ChangeBusinessCurrencyResponse {
   bool success = 1;
 }
 
-message GetMyBusinessesRequest {}
+message GetMyBusinessesRequest {
+  // The unique identifier of the user.
+  string owner_id = 1;
+}
 
 message GetMyBusinessesResponse {
   repeated Business businesses = 1;

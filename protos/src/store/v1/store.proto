@@ -33,6 +33,15 @@ message Store {
 
   // The date and time the store was last updated.
   optional google.protobuf.Timestamp updated_at = 10;
+
+  // The business contact information.
+  optional string contact_info = 11;
+
+  // The business address.
+  optional string address = 12;
+
+  // The business email.
+  optional string email = 13;
 }
 
 enum StoreMemberStatus {

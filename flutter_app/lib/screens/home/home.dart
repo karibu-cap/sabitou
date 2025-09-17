@@ -10,6 +10,7 @@ import '../dashboard/dashboard_screen.dart';
 import '../inventory/inventory_screen.dart';
 import '../new_order/new_order_screen.dart';
 import '../sales/sales_screen.dart';
+import '../settings/settings_screen.dart';
 import '../suppliers/suppliers_view.dart';
 import 'home_controller.dart';
 
@@ -88,7 +89,8 @@ class HomeScreen extends StatelessWidget {
                                     DashboardItem.users => const SizedBox(),
                                     DashboardItem.suppliers =>
                                       const SuppliersView(),
-                                    DashboardItem.settings => const SizedBox(),
+                                    DashboardItem.settings =>
+                                      const SettingsScreen(),
                                     _ => const SizedBox(),
                                   },
                                 ),

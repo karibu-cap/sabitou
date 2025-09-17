@@ -147,8 +147,14 @@ type Business struct {
 	// The media ids of different links of the business.
 	// It can be social media links, website links, etc.
 	ExternalLinksIds []string `protobuf:"bytes,9,rep,name=external_links_ids,json=externalLinksIds,proto3" json:"external_links_ids,omitempty"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
+	// The business contact information.
+	ContactInfo *string `protobuf:"bytes,10,opt,name=contact_info,json=contactInfo,proto3,oneof" json:"contact_info,omitempty"`
+	// The business address.
+	Address *string `protobuf:"bytes,11,opt,name=address,proto3,oneof" json:"address,omitempty"`
+	// The business email.
+	Email         *string `protobuf:"bytes,12,opt,name=email,proto3,oneof" json:"email,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Business) Reset() {
@@ -242,6 +248,27 @@ func (x *Business) GetExternalLinksIds() []string {
 		return x.ExternalLinksIds
 	}
 	return nil
+}
+
+func (x *Business) GetContactInfo() string {
+	if x != nil && x.ContactInfo != nil {
+		return *x.ContactInfo
+	}
+	return ""
+}
+
+func (x *Business) GetAddress() string {
+	if x != nil && x.Address != nil {
+		return *x.Address
+	}
+	return ""
+}
+
+func (x *Business) GetEmail() string {
+	if x != nil && x.Email != nil {
+		return *x.Email
+	}
+	return ""
 }
 
 type BusinessMember struct {
@@ -535,7 +562,9 @@ func (x *ChangeBusinessCurrencyResponse) GetSuccess() bool {
 }
 
 type GetMyBusinessesRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The unique identifier of the user.
+	OwnerId       string `protobuf:"bytes,1,opt,name=owner_id,json=ownerId,proto3" json:"owner_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -568,6 +597,13 @@ func (x *GetMyBusinessesRequest) ProtoReflect() protoreflect.Message {
 // Deprecated: Use GetMyBusinessesRequest.ProtoReflect.Descriptor instead.
 func (*GetMyBusinessesRequest) Descriptor() ([]byte, []int) {
 	return file_business_v1_business_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *GetMyBusinessesRequest) GetOwnerId() string {
+	if x != nil {
+		return x.OwnerId
+	}
+	return ""
 }
 
 type GetMyBusinessesResponse struct {
@@ -1690,7 +1726,7 @@ var File_business_v1_business_proto protoreflect.FileDescriptor
 
 const file_business_v1_business_proto_rawDesc = "" +
 	"\n" +
-	"\x1abusiness/v1/business.proto\x12\vbusiness.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cidentity/v1/permission.proto\x1a\x12link/v1/link.proto\"\xfe\x02\n" +
+	"\x1abusiness/v1/business.proto\x12\vbusiness.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cidentity/v1/permission.proto\x1a\x12link/v1/link.proto\"\x87\x04\n" +
 	"\bBusiness\x12\x1a\n" +
 	"\x06ref_id\x18\x01 \x01(\tH\x00R\x05refId\x88\x01\x01\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12%\n" +
@@ -1701,10 +1737,18 @@ const file_business_v1_business_proto_rawDesc = "" +
 	"logoLinkId\x88\x01\x01\x12!\n" +
 	"\fcountry_code\x18\a \x01(\tR\vcountryCode\x12#\n" +
 	"\rcurrency_code\x18\b \x01(\tR\fcurrencyCode\x12,\n" +
-	"\x12external_links_ids\x18\t \x03(\tR\x10externalLinksIdsB\t\n" +
+	"\x12external_links_ids\x18\t \x03(\tR\x10externalLinksIds\x12&\n" +
+	"\fcontact_info\x18\n" +
+	" \x01(\tH\x03R\vcontactInfo\x88\x01\x01\x12\x1d\n" +
+	"\aaddress\x18\v \x01(\tH\x04R\aaddress\x88\x01\x01\x12\x19\n" +
+	"\x05email\x18\f \x01(\tH\x05R\x05email\x88\x01\x01B\t\n" +
 	"\a_ref_idB\x0e\n" +
 	"\f_descriptionB\x0f\n" +
-	"\r_logo_link_id\"\xcc\x01\n" +
+	"\r_logo_link_idB\x0f\n" +
+	"\r_contact_infoB\n" +
+	"\n" +
+	"\b_addressB\b\n" +
+	"\x06_email\"\xcc\x01\n" +
 	"\x0eBusinessMember\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\tR\x06userId\x12\x1f\n" +
 	"\vbusiness_id\x18\x02 \x01(\tR\n" +
@@ -1726,8 +1770,9 @@ const file_business_v1_business_proto_rawDesc = "" +
 	"businessId\x12!\n" +
 	"\fcountry_code\x18\x03 \x01(\tR\vcountryCode\":\n" +
 	"\x1eChangeBusinessCurrencyResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess\"\x18\n" +
-	"\x16GetMyBusinessesRequest\"P\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"3\n" +
+	"\x16GetMyBusinessesRequest\x12\x19\n" +
+	"\bowner_id\x18\x01 \x01(\tR\aownerId\"P\n" +
 	"\x17GetMyBusinessesResponse\x125\n" +
 	"\n" +
 	"businesses\x18\x01 \x03(\v2\x15.business.v1.BusinessR\n" +

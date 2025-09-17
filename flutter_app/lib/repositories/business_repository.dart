@@ -125,4 +125,34 @@ class BusinessRepository {
       return Stream.value([]);
     }
   }
+
+  /// Gets all businesses for a user
+  Future<List<Business>> getMyBusinesses(String userId) async {
+    try {
+      final response = await businessServiceClient.getMyBusinesses(
+        GetMyBusinessesRequest(ownerId: userId),
+      );
+
+      return response.businesses;
+    } on Exception catch (e) {
+      _logger.severe('getMyBusinesses Error: $e');
+
+      return [];
+    }
+  }
+
+  /// Updates a business
+  Future<bool> updateBusiness(Business business) async {
+    try {
+      final response = await businessServiceClient.updateBusiness(
+        UpdateBusinessRequest()..business = business,
+      );
+
+      return response.success;
+    } on Exception catch (e) {
+      _logger.severe('updateBusiness Error: $e');
+
+      return false;
+    }
+  }
 }
