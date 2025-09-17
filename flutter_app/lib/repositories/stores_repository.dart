@@ -50,4 +50,89 @@ class StoresRepository {
       return null;
     }
   }
+
+  /// Updates an user from a store.
+  Future<bool> updateStoreMember(UpdateStoreMemberRequest request) async {
+    try {
+      final response = await storeServiceClient.updateStoreMember(request);
+
+      return response.success;
+    } on Exception catch (e) {
+      _logger.severe('updateStoreMember Error: $e');
+
+      return false;
+    }
+  }
+
+  /// Adds an user to a store.
+  Future<bool> addUserToStore(AddUserToStoreRequest request) async {
+    try {
+      final response = await storeServiceClient.addUserToStore(request);
+
+      return response.success;
+    } on Exception catch (e) {
+      _logger.severe('addUserToStore Error: $e');
+
+      return false;
+    }
+  }
+
+  /// Adds an user to a store.
+  Future<bool> setStoreMemberStatus(SetStoreMemberStatusRequest request) async {
+    try {
+      final response = await storeServiceClient.setStoreMemberStatus(request);
+
+      return response.success;
+    } on Exception catch (e) {
+      _logger.severe('setStoreMemberStatus Error: $e');
+
+      return false;
+    }
+  }
+
+  /// Removes an user from a business.
+  Future<bool> removeUserFromStore(RemoveUserFromStoreRequest request) async {
+    try {
+      final response = await storeServiceClient.removeUserFromStore(request);
+
+      return response.success;
+    } on Exception catch (e) {
+      _logger.severe('removeUserFromStore Error: $e');
+
+      return false;
+    }
+  }
+
+  /// Gets the members of a store.
+  Future<List<StoreMember>> getStoreMembers(
+    GetStoreMembersRequest request,
+  ) async {
+    try {
+      final response = await storeServiceClient.getStoreMembers(request);
+
+      return response.storeMembers;
+    } on Exception catch (e) {
+      _logger.severe('getStoreMembers Error: $e');
+
+      return [];
+    }
+  }
+
+  /// Stream store members.
+  Stream<List<StoreMember>> streamStoreMembers(
+    StreamStoreMembersRequest request,
+  ) {
+    try {
+      // Use the native gRPC streaming service
+      final grpcStream = storeServiceClient.streamStoreMembers(request);
+
+      // Transform the gRPC stream to return List<User>
+      return grpcStream.map((response) => response.storeMembers);
+    } on Exception catch (e) {
+      _logger.severe('streamStoreMembers Error: $e');
+
+      // Return null stream on error
+      return Stream.value([]);
+    }
+  }
 }
