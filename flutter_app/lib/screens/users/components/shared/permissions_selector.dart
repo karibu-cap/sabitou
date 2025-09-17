@@ -319,13 +319,13 @@ class PermissionTile extends StatelessWidget {
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           color: isSelected
-              ? color.withValues(alpha: 0.1)
-              : Colors.grey.shade200,
+              ? theme.colorScheme.primary.withValues(alpha: 0.9)
+              : theme.colorScheme.secondary.withValues(alpha: 0.9),
           borderRadius: const BorderRadius.all(Radius.circular(8)),
           border: Border.all(
             color: isSelected
-                ? color
-                : theme.textTheme.muted.color ?? Colors.grey.shade200,
+                ? theme.colorScheme.secondary.withValues(alpha: 0.9)
+                : theme.colorScheme.primary.withValues(alpha: 0.8),
             width: isSelected ? 2 : 1,
           ),
         ),
@@ -333,7 +333,7 @@ class PermissionTile extends StatelessWidget {
           children: [
             Icon(
               isSelected ? Icons.check_circle : Icons.circle_outlined,
-              color: isSelected ? color : theme.textTheme.muted.color,
+              color: isSelected ? color : theme.colorScheme.primary,
               size: 20,
             ),
             const SizedBox(width: 12),
@@ -346,7 +346,7 @@ class PermissionTile extends StatelessWidget {
                     style: theme.textTheme.p.copyWith(
                       fontWeight: FontWeight.w600,
                       fontSize: 15,
-                      color: isSelected ? color : theme.textTheme.muted.color,
+                      color: isSelected ? color : theme.colorScheme.primary,
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -354,7 +354,9 @@ class PermissionTile extends StatelessWidget {
                     item.description,
                     style: theme.textTheme.p.copyWith(
                       fontSize: 12,
-                      color: theme.textTheme.muted.color,
+                      color: isSelected
+                          ? theme.colorScheme.secondary
+                          : theme.colorScheme.primary,
                     ),
                   ),
                 ],

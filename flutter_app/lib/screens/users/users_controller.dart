@@ -30,6 +30,9 @@ class UsersController extends ChangeNotifier {
   BehaviorSubject<StoreMemberStatus?> get selectedStatus =>
       _viewModel.selectedStatus;
 
+  /// Gets the filtered status.
+  bool get isFiltered => _viewModel.isFiltered;
+
   /// Gets user stream for reactive UI updates
   Stream<User?> userStream(String userId) => _viewModel.userStream(userId);
 
@@ -134,5 +137,11 @@ class UsersController extends ChangeNotifier {
           )
           .length,
     );
+  }
+
+  /// Clears filters.
+  void clearFilters() {
+    searchQuery.add('');
+    selectedStatus.add(null);
   }
 }

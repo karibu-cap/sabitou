@@ -110,9 +110,9 @@ class _UserCardHeader extends StatelessWidget {
           child: Center(
             child: Text(
               controller.getInitials(user),
-              style: const TextStyle(
-                color: Colors.white,
+              style: TextStyle(
                 fontSize: 16,
+                color: theme.colorScheme.secondary,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -304,18 +304,11 @@ class _UserCardFooter extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(
-                      LucideIcons.settings,
-                      size: 16,
-                      color: Colors.white,
-                    ),
+                    const Icon(LucideIcons.settings, size: 16),
                     const SizedBox(width: 8),
                     Text(
                       AppInternationalizationService.to.manageAccess,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      style: const TextStyle(fontWeight: FontWeight.w500),
                     ),
                   ],
                 ),
