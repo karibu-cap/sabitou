@@ -939,6 +939,21 @@ components:
           description: The date and time the store was last updated.
           nullable: true
           $ref: '#/components/schemas/google.protobuf.Timestamp'
+        contactInfo:
+          type: string
+          title: contact_info
+          description: The business contact information.
+          nullable: true
+        address:
+          type: string
+          title: address
+          description: The business address.
+          nullable: true
+        email:
+          type: string
+          title: email
+          description: The business email.
+          nullable: true
       title: Store
       additionalProperties: false
       description: |-

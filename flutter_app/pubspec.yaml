@@ -107,6 +107,8 @@ dependencies:
   #Flutter Package that provides methods for fetching currencies information, All information about conversion currency are updated once a day.
   geo_currencies: ^0.0.6
 
+  # Package to pick an image from the device.
+  image_picker: ^1.2.0
 
 dev_dependencies:
   flutter_test:

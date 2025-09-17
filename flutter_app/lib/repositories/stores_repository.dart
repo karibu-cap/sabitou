@@ -135,4 +135,19 @@ class StoresRepository {
       return Stream.value([]);
     }
   }
+
+  /// Updates a store.
+  Future<bool> updateStore(Store store) async {
+    try {
+      final response = await storeServiceClient.updateStore(
+        UpdateStoreRequest()..store = store,
+      );
+
+      return response.hasStore();
+    } on Exception catch (e) {
+      _logger.severe('updateStore Error: $e');
+
+      return false;
+    }
+  }
 }

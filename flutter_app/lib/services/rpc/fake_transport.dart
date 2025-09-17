@@ -5,6 +5,7 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../../tmp/fake_data.dart';
 import '../../utils/app_constants.dart';
+import '../../utils/user_preference.dart';
 
 final _fakeData = fakeData;
 
@@ -253,6 +254,86 @@ final _fakeTransport =
         });
 
         return CreateOrderResponse(orderId: orderId);
+      })
+      ..unary(StoreService.getBusinessStores, (req, __) async {
+        return GetBusinessStoresResponse(
+          stores: _fakeData[CollectionName.stores]!
+              .map(
+                (e) =>
+                    Store()..mergeFromProto3Json(e, ignoreUnknownFields: true),
+              )
+              .where((s) => s.businessId == req.businessId)
+              .toList(),
+        );
+      })
+      ..unary(StoreService.updateStore, (req, __) async {
+        final store = req.store;
+        final stores = _fakeData[CollectionName.stores]
+            ?.map(
+              (e) => Store()..mergeFromProto3Json(e, ignoreUnknownFields: true),
+            )
+            .toList();
+
+        final getStore = stores?.firstWhereOrNull(
+          (s) => s.refId == store.refId,
+        );
+
+        if (getStore == null && store.refId.isEmpty) {
+          return UpdateStoreResponse();
+        }
+        _fakeData[CollectionName.stores]?.removeWhere(
+          (gp) => gp['ref_id'] == store.refId,
+        );
+        _fakeData[CollectionName.stores]?.add({
+          'ref_id': store.refId,
+          ...store.toProto3Json() as Map<String, dynamic>,
+        });
+        await UserPreferences.instance.saveStorePreferences(newStore: store);
+
+        return UpdateStoreResponse(store: store);
+      })
+      ..unary(BusinessService.getMyBusinesses, (req, __) async {
+        return GetMyBusinessesResponse(
+          businesses: _fakeData[CollectionName.businesses]
+              ?.map(
+                (e) =>
+                    Business()
+                      ..mergeFromProto3Json(e, ignoreUnknownFields: true),
+              )
+              .where((bm) => bm.ownerId == req.ownerId)
+              .toList(),
+        );
+      })
+      ..unary(BusinessService.updateBusiness, (req, __) async {
+        final business = req.business;
+        final businesses = _fakeData[CollectionName.businesses]
+            ?.map(
+              (e) =>
+                  Business()..mergeFromProto3Json(e, ignoreUnknownFields: true),
+            )
+            .toList();
+
+        final getBusiness = businesses?.firstWhereOrNull(
+          (s) => s.refId == business.refId,
+        );
+
+        if (getBusiness == null && business.refId.isEmpty) {
+          return UpdateBusinessResponse(success: false);
+        }
+
+        _fakeData[CollectionName.businesses]?.removeWhere(
+          (gp) => gp['ref_id'] == business.refId,
+        );
+        _fakeData[CollectionName.businesses]?.add({
+          'ref_id': business.refId,
+          ...business.toProto3Json() as Map<String, dynamic>,
+        });
+
+        await UserPreferences.instance.saveBusinessPreferences(
+          newBusiness: business,
+        );
+
+        return UpdateBusinessResponse(success: true);
       })
       ..unary(BusinessService.getBusinessMembers, (req, __) async {
         return GetBusinessMembersResponse(

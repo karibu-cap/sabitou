@@ -36,6 +36,9 @@ class Store extends $pb.GeneratedMessage {
     $core.String? businessId,
     $0.Timestamp? createdAt,
     $0.Timestamp? updatedAt,
+    $core.String? contactInfo,
+    $core.String? address,
+    $core.String? email,
   }) {
     final result = create();
     if (refId != null) result.refId = refId;
@@ -46,6 +49,9 @@ class Store extends $pb.GeneratedMessage {
     if (businessId != null) result.businessId = businessId;
     if (createdAt != null) result.createdAt = createdAt;
     if (updatedAt != null) result.updatedAt = updatedAt;
+    if (contactInfo != null) result.contactInfo = contactInfo;
+    if (address != null) result.address = address;
+    if (email != null) result.email = email;
     return result;
   }
 
@@ -72,6 +78,9 @@ class Store extends $pb.GeneratedMessage {
         subBuilder: $0.Timestamp.create)
     ..aOM<$0.Timestamp>(10, _omitFieldNames ? '' : 'updatedAt',
         subBuilder: $0.Timestamp.create)
+    ..aOS(11, _omitFieldNames ? '' : 'contactInfo')
+    ..aOS(12, _omitFieldNames ? '' : 'address')
+    ..aOS(13, _omitFieldNames ? '' : 'email')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -176,6 +185,36 @@ class Store extends $pb.GeneratedMessage {
   void clearUpdatedAt() => $_clearField(10);
   @$pb.TagNumber(10)
   $0.Timestamp ensureUpdatedAt() => $_ensure(7);
+
+  /// The business contact information.
+  @$pb.TagNumber(11)
+  $core.String get contactInfo => $_getSZ(8);
+  @$pb.TagNumber(11)
+  set contactInfo($core.String value) => $_setString(8, value);
+  @$pb.TagNumber(11)
+  $core.bool hasContactInfo() => $_has(8);
+  @$pb.TagNumber(11)
+  void clearContactInfo() => $_clearField(11);
+
+  /// The business address.
+  @$pb.TagNumber(12)
+  $core.String get address => $_getSZ(9);
+  @$pb.TagNumber(12)
+  set address($core.String value) => $_setString(9, value);
+  @$pb.TagNumber(12)
+  $core.bool hasAddress() => $_has(9);
+  @$pb.TagNumber(12)
+  void clearAddress() => $_clearField(12);
+
+  /// The business email.
+  @$pb.TagNumber(13)
+  $core.String get email => $_getSZ(10);
+  @$pb.TagNumber(13)
+  set email($core.String value) => $_setString(10, value);
+  @$pb.TagNumber(13)
+  $core.bool hasEmail() => $_has(10);
+  @$pb.TagNumber(13)
+  void clearEmail() => $_clearField(13);
 }
 
 class StoreMember extends $pb.GeneratedMessage {
