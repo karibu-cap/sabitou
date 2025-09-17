@@ -51,7 +51,9 @@ class UsersHeader extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                AppInternationalizationService.to.teamManagementDescription,
+                AppInternationalizationService
+                    .to
+                    .manageTeamMembersRolesPermissions,
                 style: theme.textTheme.muted,
               ),
             ],

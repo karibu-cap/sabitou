@@ -96,11 +96,33 @@ const Business$json = {
       '5': 9,
       '10': 'externalLinksIds'
     },
+    {
+      '1': 'contact_info',
+      '3': 10,
+      '4': 1,
+      '5': 9,
+      '9': 3,
+      '10': 'contactInfo',
+      '17': true
+    },
+    {
+      '1': 'address',
+      '3': 11,
+      '4': 1,
+      '5': 9,
+      '9': 4,
+      '10': 'address',
+      '17': true
+    },
+    {'1': 'email', '3': 12, '4': 1, '5': 9, '9': 5, '10': 'email', '17': true},
   ],
   '8': [
     {'1': '_ref_id'},
     {'1': '_description'},
     {'1': '_logo_link_id'},
+    {'1': '_contact_info'},
+    {'1': '_address'},
+    {'1': '_email'},
   ],
 };
 
@@ -112,7 +134,10 @@ final $typed_data.Uint8List businessDescriptor = $convert.base64Decode(
     'gFIAEoCVIHb3duZXJJZBIlCgxsb2dvX2xpbmtfaWQYBiABKAlIAlIKbG9nb0xpbmtJZIgBARIh'
     'Cgxjb3VudHJ5X2NvZGUYByABKAlSC2NvdW50cnlDb2RlEiMKDWN1cnJlbmN5X2NvZGUYCCABKA'
     'lSDGN1cnJlbmN5Q29kZRIsChJleHRlcm5hbF9saW5rc19pZHMYCSADKAlSEGV4dGVybmFsTGlu'
-    'a3NJZHNCCQoHX3JlZl9pZEIOCgxfZGVzY3JpcHRpb25CDwoNX2xvZ29fbGlua19pZA==');
+    'a3NJZHMSJgoMY29udGFjdF9pbmZvGAogASgJSANSC2NvbnRhY3RJbmZviAEBEh0KB2FkZHJlc3'
+    'MYCyABKAlIBFIHYWRkcmVzc4gBARIZCgVlbWFpbBgMIAEoCUgFUgVlbWFpbIgBAUIJCgdfcmVm'
+    'X2lkQg4KDF9kZXNjcmlwdGlvbkIPCg1fbG9nb19saW5rX2lkQg8KDV9jb250YWN0X2luZm9CCg'
+    'oIX2FkZHJlc3NCCAoGX2VtYWls');
 
 @$core.Deprecated('Use businessMemberDescriptor instead')
 const BusinessMember$json = {
@@ -243,11 +268,15 @@ final $typed_data.Uint8List changeBusinessCurrencyResponseDescriptor =
 @$core.Deprecated('Use getMyBusinessesRequestDescriptor instead')
 const GetMyBusinessesRequest$json = {
   '1': 'GetMyBusinessesRequest',
+  '2': [
+    {'1': 'owner_id', '3': 1, '4': 1, '5': 9, '10': 'ownerId'},
+  ],
 };
 
 /// Descriptor for `GetMyBusinessesRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List getMyBusinessesRequestDescriptor =
-    $convert.base64Decode('ChZHZXRNeUJ1c2luZXNzZXNSZXF1ZXN0');
+    $convert.base64Decode(
+        'ChZHZXRNeUJ1c2luZXNzZXNSZXF1ZXN0EhkKCG93bmVyX2lkGAEgASgJUgdvd25lcklk');
 
 @$core.Deprecated('Use getMyBusinessesResponseDescriptor instead')
 const GetMyBusinessesResponse$json = {

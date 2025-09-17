@@ -90,6 +90,25 @@ const Store$json = {
       '10': 'updatedAt',
       '17': true
     },
+    {
+      '1': 'contact_info',
+      '3': 11,
+      '4': 1,
+      '5': 9,
+      '9': 5,
+      '10': 'contactInfo',
+      '17': true
+    },
+    {
+      '1': 'address',
+      '3': 12,
+      '4': 1,
+      '5': 9,
+      '9': 6,
+      '10': 'address',
+      '17': true
+    },
+    {'1': 'email', '3': 13, '4': 1, '5': 9, '9': 7, '10': 'email', '17': true},
   ],
   '8': [
     {'1': '_ref_id'},
@@ -97,6 +116,9 @@ const Store$json = {
     {'1': '_logo_link_id'},
     {'1': '_external_links_ids'},
     {'1': '_updated_at'},
+    {'1': '_contact_info'},
+    {'1': '_address'},
+    {'1': '_email'},
   ],
 };
 
@@ -108,8 +130,11 @@ final $typed_data.Uint8List storeDescriptor = $convert.base64Decode(
     'h0ZXJuYWxMaW5rc0lkc4gBARIfCgtidXNpbmVzc19pZBgIIAEoCVIKYnVzaW5lc3NJZBI5Cgpj'
     'cmVhdGVkX2F0GAkgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIJY3JlYXRlZEF0Ej'
     '4KCnVwZGF0ZWRfYXQYCiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wSARSCXVwZGF0'
-    'ZWRBdIgBAUIJCgdfcmVmX2lkQg4KDF9kZXNjcmlwdGlvbkIPCg1fbG9nb19saW5rX2lkQhUKE1'
-    '9leHRlcm5hbF9saW5rc19pZHNCDQoLX3VwZGF0ZWRfYXQ=');
+    'ZWRBdIgBARImCgxjb250YWN0X2luZm8YCyABKAlIBVILY29udGFjdEluZm+IAQESHQoHYWRkcm'
+    'VzcxgMIAEoCUgGUgdhZGRyZXNziAEBEhkKBWVtYWlsGA0gASgJSAdSBWVtYWlsiAEBQgkKB19y'
+    'ZWZfaWRCDgoMX2Rlc2NyaXB0aW9uQg8KDV9sb2dvX2xpbmtfaWRCFQoTX2V4dGVybmFsX2xpbm'
+    'tzX2lkc0INCgtfdXBkYXRlZF9hdEIPCg1fY29udGFjdF9pbmZvQgoKCF9hZGRyZXNzQggKBl9l'
+    'bWFpbA==');
 
 @$core.Deprecated('Use storeMemberDescriptor instead')
 const StoreMember$json = {

@@ -3,7 +3,6 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../utils/responsive_utils.dart';
 import 'notification_dropdown.dart';
-import 'user_menu_dropdown.dart';
 
 /// The app header widget.
 class HeaderWidget extends StatelessWidget {
@@ -57,7 +56,6 @@ class HeaderWidget extends StatelessWidget {
             onMarkAsRead: (id) {},
           ),
           const SizedBox(width: 16),
-          UserMenuDropdown(user: null, onLogout: () {}),
         ],
       ),
     );

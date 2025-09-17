@@ -10,6 +10,7 @@ import '../dashboard/dashboard_screen.dart';
 import '../inventory/inventory_screen.dart';
 import '../new_order/new_order_screen.dart';
 import '../sales/sales_screen.dart';
+import '../settings/settings_screen.dart';
 import '../suppliers/suppliers_view.dart';
 import '../users/users_view.dart';
 import 'home_controller.dart';
@@ -64,7 +65,7 @@ class HomeScreen extends StatelessWidget {
                             child: Container(
                               width: double.infinity,
                               padding: EdgeInsets.all(
-                                tabletBreakpoint ? 16.0 : 24.0,
+                                tabletBreakpoint ? 16.0 : 0.0,
                               ),
                               child: ConstrainedBox(
                                 constraints: const BoxConstraints(
@@ -89,7 +90,8 @@ class HomeScreen extends StatelessWidget {
                                     DashboardItem.members => const UsersView(),
                                     DashboardItem.suppliers =>
                                       const SuppliersView(),
-                                    DashboardItem.settings => const SizedBox(),
+                                    DashboardItem.settings =>
+                                      const SettingsScreen(),
                                     _ => const SizedBox(),
                                   },
                                 ),

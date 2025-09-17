@@ -371,7 +371,7 @@ class _StatusBadge extends StatelessWidget {
         );
       case StoreMemberStatus.STORE_MEMBER_STATUS_BANNED:
         return _StatusInfo(
-          label: AppInternationalizationService.to.cancelled,
+          label: AppInternationalizationService.to.banned,
           color: Colors.red,
           icon: LucideIcons.userX,
         );

@@ -102,7 +102,13 @@ type Store struct {
 	// The date and time the store was created.
 	CreatedAt *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	// The date and time the store was last updated.
-	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=updated_at,json=updatedAt,proto3,oneof" json:"updated_at,omitempty"`
+	UpdatedAt *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=updated_at,json=updatedAt,proto3,oneof" json:"updated_at,omitempty"`
+	// The business contact information.
+	ContactInfo *string `protobuf:"bytes,11,opt,name=contact_info,json=contactInfo,proto3,oneof" json:"contact_info,omitempty"`
+	// The business address.
+	Address *string `protobuf:"bytes,12,opt,name=address,proto3,oneof" json:"address,omitempty"`
+	// The business email.
+	Email         *string `protobuf:"bytes,13,opt,name=email,proto3,oneof" json:"email,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -191,6 +197,27 @@ func (x *Store) GetUpdatedAt() *timestamppb.Timestamp {
 		return x.UpdatedAt
 	}
 	return nil
+}
+
+func (x *Store) GetContactInfo() string {
+	if x != nil && x.ContactInfo != nil {
+		return *x.ContactInfo
+	}
+	return ""
+}
+
+func (x *Store) GetAddress() string {
+	if x != nil && x.Address != nil {
+		return *x.Address
+	}
+	return ""
+}
+
+func (x *Store) GetEmail() string {
+	if x != nil && x.Email != nil {
+		return *x.Email
+	}
+	return ""
 }
 
 type StoreMember struct {
@@ -1377,7 +1404,7 @@ var File_store_v1_store_proto protoreflect.FileDescriptor
 
 const file_store_v1_store_proto_rawDesc = "" +
 	"\n" +
-	"\x14store/v1/store.proto\x12\bstore.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cidentity/v1/permission.proto\x1a\x16identity/v1/user.proto\"\xa6\x03\n" +
+	"\x14store/v1/store.proto\x12\bstore.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cidentity/v1/permission.proto\x1a\x16identity/v1/user.proto\"\xaf\x04\n" +
 	"\x05Store\x12\x1a\n" +
 	"\x06ref_id\x18\x01 \x01(\tH\x00R\x05refId\x88\x01\x01\x12\x12\n" +
 	"\x04name\x18\x03 \x01(\tR\x04name\x12%\n" +
@@ -1391,12 +1418,19 @@ const file_store_v1_store_proto_rawDesc = "" +
 	"created_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12>\n" +
 	"\n" +
 	"updated_at\x18\n" +
-	" \x01(\v2\x1a.google.protobuf.TimestampH\x04R\tupdatedAt\x88\x01\x01B\t\n" +
+	" \x01(\v2\x1a.google.protobuf.TimestampH\x04R\tupdatedAt\x88\x01\x01\x12&\n" +
+	"\fcontact_info\x18\v \x01(\tH\x05R\vcontactInfo\x88\x01\x01\x12\x1d\n" +
+	"\aaddress\x18\f \x01(\tH\x06R\aaddress\x88\x01\x01\x12\x19\n" +
+	"\x05email\x18\r \x01(\tH\aR\x05email\x88\x01\x01B\t\n" +
 	"\a_ref_idB\x0e\n" +
 	"\f_descriptionB\x0f\n" +
 	"\r_logo_link_idB\x15\n" +
 	"\x13_external_links_idsB\r\n" +
-	"\v_updated_at\"\x83\x02\n" +
+	"\v_updated_atB\x0f\n" +
+	"\r_contact_infoB\n" +
+	"\n" +
+	"\b_addressB\b\n" +
+	"\x06_email\"\x83\x02\n" +
 	"\vStoreMember\x12%\n" +
 	"\x04user\x18\x01 \x01(\v2\x11.identity.v1.UserR\x04user\x12\x19\n" +
 	"\bstore_id\x18\x02 \x01(\tR\astoreId\x12>\n" +

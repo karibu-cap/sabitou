@@ -40,10 +40,12 @@ class NotificationDropdown extends StatelessWidget {
       controller: popoverController,
       child: NotificationBadge(
         count: unreadCount,
-        child: IconButton(
+        child: ShadButton.ghost(
+          child: const Icon(LucideIcons.bell300),
           onPressed: popoverController.toggle,
-          icon: Icon(LucideIcons.bell400, color: theme.colorScheme.primary),
-          padding: const EdgeInsets.all(8),
+          hoverBackgroundColor: theme.colorScheme.primary.withValues(
+            alpha: 0.3,
+          ),
         ),
       ),
       popover: (context) => SizedBox(

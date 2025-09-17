@@ -33,6 +33,27 @@ message Store {
 
   // The date and time the store was last updated.
   optional google.protobuf.Timestamp updated_at = 10;
+
+  // The business contact information.
+  optional string contact_info = 11;
+
+  // The business address.
+  optional string address = 12;
+
+  // The business email.
+  optional string email = 13;
+}
+
+enum StoreMemberStatus {
+  STORE_MEMBER_STATUS_UNSPECIFIED = 0;
+  /// The user is active.
+  STORE_MEMBER_STATUS_ACTIVE = 1;
+  /// The user is pending.
+  STORE_MEMBER_STATUS_PENDING = 2; 
+  /// The user is inactive.
+  STORE_MEMBER_STATUS_INACTIVE = 3;
+  /// The user is banned.
+  STORE_MEMBER_STATUS_BANNED = 4;
 }
 
 enum StoreMemberStatus {

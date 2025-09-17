@@ -57,11 +57,11 @@ class UserDeletionModalController extends ChangeNotifier {
     _errorMessage = '';
     notifyListeners();
 
-    final sucess = await _usersController.removeUserFromStore(
+    final success = await _usersController.removeUserFromStore(
       _storeMember.user.refId,
     );
 
-    if (!sucess) {
+    if (!success) {
       _isLoading = false;
       notifyListeners();
       _errorMessage = AppInternationalizationService.to.errorDuringDeletion;
@@ -73,7 +73,7 @@ class UserDeletionModalController extends ChangeNotifier {
     _errorMessage = '';
     notifyListeners();
 
-    return sucess;
+    return success;
   }
 
   /// Clear any error message
