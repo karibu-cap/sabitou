@@ -9,22 +9,9 @@ import '../../users_controller.dart';
 /// Widget for search and filtering functionality in the users list.
 ///
 /// Provides search input and status filter for managing the team members display.
-class UserSearchFilters extends StatefulWidget {
-  /// Creates a new [UserSearchFilters].
+class UserSearchFilters extends StatelessWidget {
+  /// Constructs a new [UserSearchFilters].
   const UserSearchFilters({super.key});
-
-  @override
-  State<UserSearchFilters> createState() => _UserSearchFiltersState();
-}
-
-class _UserSearchFiltersState extends State<UserSearchFilters> {
-  final TextEditingController _searchController = TextEditingController();
-
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +73,6 @@ class _UserSearchFiltersState extends State<UserSearchFilters> {
         // Search input
         Expanded(
           child: ShadInput(
-            controller: _searchController,
             placeholder: Text(
               AppInternationalizationService
                   .to

@@ -65,9 +65,9 @@ class _UserPermissionsModalContent extends StatelessWidget {
                           Radius.circular(8),
                         ),
                       ),
-                      child: const Icon(
+                      child: Icon(
                         Icons.security,
-                        color: Colors.white,
+                        color: theme.colorScheme.secondary,
                         size: 20,
                       ),
                     ),

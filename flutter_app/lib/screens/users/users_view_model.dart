@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:rxdart/rxdart.dart';
-import 'package:rxdart/subjects.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../../repositories/stores_repository.dart';
@@ -29,6 +28,9 @@ class UsersViewModel {
     null,
   );
 
+  /// Gets the filtered status.
+  bool isFiltered = false;
+
   /// Gets the search query.
   BehaviorSubject<String> get searchQuery => _searchQuerySubject;
 
@@ -44,6 +46,7 @@ class UsersViewModel {
     (storeMembers, searchQuery, status) {
       var filtered = storeMembers.toList();
       if (searchQuery.isNotEmpty) {
+        isFiltered = true;
         filtered = filtered
             .where(
               (s) =>
@@ -63,6 +66,7 @@ class UsersViewModel {
             .toList();
       }
       if (status != null) {
+        isFiltered = true;
         filtered = filtered
             .where(
               (s) => switch (status) {
@@ -78,6 +82,9 @@ class UsersViewModel {
               },
             )
             .toList();
+      }
+      if (status == null && searchQuery.isEmpty) {
+        isFiltered = false;
       }
 
       return filtered;
