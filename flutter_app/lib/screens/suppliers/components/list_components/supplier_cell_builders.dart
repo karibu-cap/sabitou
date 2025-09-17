@@ -83,7 +83,7 @@ class SupplierCellBuilders {
         borderRadius: const BorderRadius.all(Radius.circular(12)),
       ),
       child: Text(
-        '$productCount products',
+        '$productCount ${AppInternationalizationService.to.productsText.toLowerCase()}',
         style: const TextStyle(
           fontSize: 12,
           color: Colors.blue,

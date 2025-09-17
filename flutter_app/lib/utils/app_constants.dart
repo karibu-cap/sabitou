@@ -144,8 +144,8 @@ enum DashboardItem {
   /// The suppliers item.
   suppliers,
 
-  /// The users item.
-  users,
+  /// The members item.
+  members,
 
   /// The settings item.
   settings,

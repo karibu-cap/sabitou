@@ -75,8 +75,8 @@ class SidebarWidget extends StatelessWidget {
         icon: LucideIcons.truck400,
       ),
       SideBarItem(
-        id: DashboardItem.users,
-        label: Intls.to.users,
+        id: DashboardItem.members,
+        label: Intls.to.members,
         icon: LucideIcons.users400,
       ),
       SideBarItem(
