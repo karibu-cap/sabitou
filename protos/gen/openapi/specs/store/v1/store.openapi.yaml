@@ -2,13 +2,13 @@ openapi: 3.1.0
 info:
   title: store.v1
 paths:
-  /store.v1.StoreService/AssociateUserToStore:
+  /store.v1.StoreService/AddUserToStore:
     post:
       tags:
         - store.v1.StoreService
-      summary: Associate user to store.
-      description: Associate user to store.
-      operationId: store.v1.StoreService.AssociateUserToStore
+      summary: Add user to store or invite user to store.
+      description: Add user to store or invite user to store.
+      operationId: store.v1.StoreService.AddUserToStore
       parameters:
         - name: Connect-Protocol-Version
           in: header
@@ -23,7 +23,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/store.v1.AssociateUserToStoreRequest'
+              $ref: '#/components/schemas/store.v1.AddUserToStoreRequest'
         required: true
       responses:
         default:
@@ -37,7 +37,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/store.v1.AssociateUserToStoreResponse'
+                $ref: '#/components/schemas/store.v1.AddUserToStoreResponse'
   /store.v1.StoreService/CreateStore:
     post:
       tags:
@@ -74,42 +74,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/store.v1.CreateStoreResponse'
-  /store.v1.StoreService/CreateUserToStore:
-    post:
-      tags:
-        - store.v1.StoreService
-      summary: Add user to store or invite user to store.
-      description: Add user to store or invite user to store.
-      operationId: store.v1.StoreService.CreateUserToStore
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/store.v1.CreateUserToStoreRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/store.v1.CreateUserToStoreResponse'
   /store.v1.StoreService/DeleteStore:
     post:
       tags:
@@ -218,6 +182,114 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/store.v1.GetStoreResponse'
+  /store.v1.StoreService/GetStoreMembers:
+    post:
+      tags:
+        - store.v1.StoreService
+      summary: Get store members.
+      description: Get store members.
+      operationId: store.v1.StoreService.GetStoreMembers
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/store.v1.GetStoreMembersRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/store.v1.GetStoreMembersResponse'
+  /store.v1.StoreService/RemoveUserFromStore:
+    post:
+      tags:
+        - store.v1.StoreService
+      summary: Remove user from store.
+      description: Remove user from store.
+      operationId: store.v1.StoreService.RemoveUserFromStore
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/store.v1.RemoveUserFromStoreRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/store.v1.RemoveUserFromStoreResponse'
+  /store.v1.StoreService/SetStoreMemberStatus:
+    post:
+      tags:
+        - store.v1.StoreService
+      summary: Set store member status.
+      description: Set store member status.
+      operationId: store.v1.StoreService.SetStoreMemberStatus
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/store.v1.SetStoreMemberStatusRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/store.v1.SetStoreMemberStatusResponse'
   /store.v1.StoreService/StreamStoreMembers: {}
   /store.v1.StoreService/UpdateStore:
     post:
@@ -460,6 +532,45 @@ components:
          the Joda Time's [`ISODateTimeFormat.dateTime()`](
          http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()
          ) to obtain a formatter capable of generating timestamps in this format.
+    identity.v1.AccountStatusType:
+      type: string
+      title: AccountStatusType
+      enum:
+        - ACCOUNT_STATUS_TYPE_UNSPECIFIED
+        - ACCOUNT_STATUS_TYPE_ACTIVE
+        - ACCOUNT_STATUS_TYPE_DELETED
+    identity.v1.AuthActionType:
+      type: string
+      title: AuthActionType
+      enum:
+        - AUTH_ACTION_TYPE_UNSPECIFIED
+        - AUTH_ACTION_TYPE_VERIFY_EMAIL
+        - AUTH_ACTION_TYPE_VERIFY_PHONE_NUMBER
+        - AUTH_ACTION_TYPE_INITIALIZE_PASSWORD
+        - AUTH_ACTION_TYPE_RESET_PASSWORD
+    identity.v1.ConnectedAccount:
+      type: object
+      properties:
+        provider:
+          title: provider
+          description: |-
+            The provider of the connected account.
+             For example, "google.com" or "email".
+          $ref: '#/components/schemas/identity.v1.ProviderType'
+        rawData:
+          type: string
+          title: raw_data
+          description: The raw information returned by the provider.
+      title: ConnectedAccount
+      additionalProperties: false
+    identity.v1.ProviderType:
+      type: string
+      title: ProviderType
+      enum:
+        - PROVIDER_TYPE_UNSPECIFIED
+        - PROVIDER_TYPE_FIREBASE_EMAIL
+        - PROVIDER_TYPE_GOOGLE
+        - PROVIDER_TYPE_INTERNAL_BUSINESS_AUTH
     identity.v1.ResourceActionType:
       type: string
       title: ResourceActionType
@@ -490,37 +601,129 @@ components:
         - STORE_RESOURCE_TYPE_ORDER
         - STORE_RESOURCE_TYPE_SUPPLIER_ORDER
         - STORE_RESOURCE_TYPE_PRODUCT
-    store.v1.AssociateUserToStoreRequest:
+    identity.v1.User:
       type: object
       properties:
-        userId:
+        refId:
           type: string
-          title: user_id
+          title: ref_id
           description: The unique identifier of the user.
-        storeId:
+          nullable: true
+        userName:
           type: string
-          title: store_id
-          description: The unique identifier of the store.
+          title: user_name
+          description: '[public] The user name of the user.'
+        connectedAccounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/identity.v1.ConnectedAccount'
+          title: connected_accounts
+          description: The connected accounts used by the user for authentication.
+        email:
+          type: string
+          title: email
+          format: email
+          description: The email address of the user.
+          nullable: true
+        phoneNumber:
+          type: string
+          title: phone_number
+          description: The phone number of the user.
+          nullable: true
+        firstName:
+          type: string
+          title: first_name
+          description: '[public] The first name of the user.'
+          nullable: true
+        lastName:
+          type: string
+          title: last_name
+          description: '[public] The last name of the user.'
+          nullable: true
+        profileLink:
+          title: profile_link
+          description: '[public] The profile link of the user.'
+          nullable: true
+          $ref: '#/components/schemas/link.v1.ResourceLink'
+        accountStatus:
+          title: account_status
+          description: The status of the user's account.
+          nullable: true
+          $ref: '#/components/schemas/identity.v1.AccountStatusType'
+        requiredActions:
+          type: array
+          items:
+            $ref: '#/components/schemas/identity.v1.AuthActionType'
+          title: required_actions
+          description: The actions that the user must complete to authenticate.
+      title: User
+      additionalProperties: false
+      description: |-
+        The user record.
+         The id of the user is the same as the uid of the Firebase user.
+    link.v1.ResourceLink:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+          description: The unique identifier of the resource link.
+          nullable: true
+        targetUri:
+          type: string
+          title: target_uri
+          description: The link of the resource link.
+        iconUri:
+          type: string
+          title: icon_uri
+          description: The icon of the resource type or owner.
+          nullable: true
+        info:
+          type: string
+          title: info
+          description: |-
+            The meta data of the resource link.
+             It can be the title of the target resource.
+          nullable: true
+        label:
+          type: string
+          title: label
+          description: The label use to identify the resource type.
+          nullable: true
+      title: ResourceLink
+      additionalProperties: false
+      description: 'TODO: Auto delete resource link not linked to any other resource.'
+    store.v1.AddUserToStoreRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          title: email
+          description: The email of the user.
         permissions:
           type: array
           items:
             $ref: '#/components/schemas/identity.v1.StorePermission'
           title: permissions
           description: The permissions that the user has.
-      title: AssociateUserToStoreRequest
+        storeId:
+          type: string
+          title: store_id
+          description: The store id.
+      title: AddUserToStoreRequest
       additionalProperties: false
-      description: |-
-        The unique identifier of the user.
-         For example, the email address or @username.
-         string u_ref = 1;
-    store.v1.AssociateUserToStoreResponse:
+    store.v1.AddUserToStoreResponse:
       type: object
       properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the store was successfully deleted.
         storeMember:
           title: store_member
           description: The store member to return
           $ref: '#/components/schemas/store.v1.StoreMember'
-      title: AssociateUserToStoreResponse
+      title: AddUserToStoreResponse
       additionalProperties: false
     store.v1.CreateStoreRequest:
       type: object
@@ -548,58 +751,6 @@ components:
       title: CreateStoreResponse
       required:
         - storeId
-      additionalProperties: false
-    store.v1.CreateUserToStoreRequest:
-      type: object
-      properties:
-        firstName:
-          type: string
-          title: first_name
-          description: The first name of the user.
-        lastName:
-          type: string
-          title: last_name
-          description: The last name of the user.
-        userName:
-          type: string
-          title: user_name
-          description: The username of the user.
-        phoneNumber:
-          type: string
-          title: phone_number
-          description: The phone number of the user.
-        email:
-          type: string
-          title: email
-          description: The email of the user.
-        password:
-          type: string
-          title: password
-          description: The password of the user.
-        businessId:
-          type: string
-          title: business_id
-          description: The unique identifier of the business.
-        permissions:
-          type: array
-          items:
-            $ref: '#/components/schemas/identity.v1.StorePermission'
-          title: permissions
-          description: The permissions that the user has.
-      title: CreateUserToStoreRequest
-      additionalProperties: false
-      description: |-
-        The unique identifier of the user.
-         For example, the email address or @username.
-         string u_ref = 1;
-    store.v1.CreateUserToStoreResponse:
-      type: object
-      properties:
-        storeMember:
-          title: store_member
-          description: The store member to return
-          $ref: '#/components/schemas/store.v1.StoreMember'
-      title: CreateUserToStoreResponse
       additionalProperties: false
     store.v1.DeleteStoreRequest:
       type: object
@@ -647,6 +798,29 @@ components:
              Note: Only the ids and names of the stores are returned.
       title: GetBusinessStoresResponse
       additionalProperties: false
+    store.v1.GetStoreMembersRequest:
+      type: object
+      properties:
+        storeId:
+          type: string
+          title: store_id
+          minLength: 3
+          description: The unique identifier of the store.
+      title: GetStoreMembersRequest
+      required:
+        - storeId
+      additionalProperties: false
+    store.v1.GetStoreMembersResponse:
+      type: object
+      properties:
+        storeMembers:
+          type: array
+          items:
+            $ref: '#/components/schemas/store.v1.StoreMember'
+          title: store_members
+          description: The store members.
+      title: GetStoreMembersResponse
+      additionalProperties: false
     store.v1.GetStoreRequest:
       type: object
       properties:
@@ -667,6 +841,63 @@ components:
           description: The retrieved store data.
           $ref: '#/components/schemas/store.v1.Store'
       title: GetStoreResponse
+      additionalProperties: false
+    store.v1.RemoveUserFromStoreRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+          title: user_id
+          minLength: 3
+          description: The unique identifier of the user.
+        storeId:
+          type: string
+          title: store_id
+          minLength: 3
+      title: RemoveUserFromStoreRequest
+      required:
+        - userId
+        - storeId
+      additionalProperties: false
+    store.v1.RemoveUserFromStoreResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the user was successfully removed from the store.
+      title: RemoveUserFromStoreResponse
+      additionalProperties: false
+    store.v1.SetStoreMemberStatusRequest:
+      type: object
+      properties:
+        storeId:
+          type: string
+          title: store_id
+          minLength: 3
+          description: The unique identifier of the store.
+        userId:
+          type: string
+          title: user_id
+          minLength: 3
+          description: The unique identifier of the user.
+        status:
+          title: status
+          description: The status of the user.
+          $ref: '#/components/schemas/store.v1.StoreMemberStatus'
+      title: SetStoreMemberStatusRequest
+      required:
+        - storeId
+        - userId
+      additionalProperties: false
+    store.v1.SetStoreMemberStatusResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the member was successfully updated.
+      title: SetStoreMemberStatusResponse
       additionalProperties: false
     store.v1.Store:
       type: object
@@ -716,10 +947,10 @@ components:
     store.v1.StoreMember:
       type: object
       properties:
-        userId:
-          type: string
-          title: user_id
-          description: The unique identifier of the user.
+        user:
+          title: user
+          description: The user.
+          $ref: '#/components/schemas/identity.v1.User'
         storeId:
           type: string
           title: store_id
@@ -734,8 +965,21 @@ components:
           title: member_since
           description: The date since when the user became a member.
           $ref: '#/components/schemas/google.protobuf.Timestamp'
+        status:
+          title: status
+          description: The status of the user.
+          $ref: '#/components/schemas/store.v1.StoreMemberStatus'
       title: StoreMember
       additionalProperties: false
+    store.v1.StoreMemberStatus:
+      type: string
+      title: StoreMemberStatus
+      enum:
+        - STORE_MEMBER_STATUS_UNSPECIFIED
+        - STORE_MEMBER_STATUS_ACTIVE
+        - STORE_MEMBER_STATUS_PENDING
+        - STORE_MEMBER_STATUS_INACTIVE
+        - STORE_MEMBER_STATUS_BANNED
     store.v1.StreamStoreMembersRequest:
       type: object
       properties:

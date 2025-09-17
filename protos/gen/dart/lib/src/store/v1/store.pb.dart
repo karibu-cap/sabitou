@@ -16,9 +16,13 @@ import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import '../../google/protobuf/timestamp.pb.dart' as $0;
-import '../../identity/v1/permission.pb.dart' as $1;
+import '../../identity/v1/permission.pb.dart' as $2;
+import '../../identity/v1/user.pb.dart' as $1;
+import 'store.pbenum.dart';
 
 export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
+
+export 'store.pbenum.dart';
 
 /// Stores are used to store products.
 /// Note: A store is not always a shop.
@@ -176,16 +180,18 @@ class Store extends $pb.GeneratedMessage {
 
 class StoreMember extends $pb.GeneratedMessage {
   factory StoreMember({
-    $core.String? userId,
+    $1.User? user,
     $core.String? storeId,
-    $core.Iterable<$1.StorePermission>? permissions,
+    $core.Iterable<$2.StorePermission>? permissions,
     $0.Timestamp? memberSince,
+    StoreMemberStatus? status,
   }) {
     final result = create();
-    if (userId != null) result.userId = userId;
+    if (user != null) result.user = user;
     if (storeId != null) result.storeId = storeId;
     if (permissions != null) result.permissions.addAll(permissions);
     if (memberSince != null) result.memberSince = memberSince;
+    if (status != null) result.status = status;
     return result;
   }
 
@@ -202,13 +208,18 @@ class StoreMember extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'StoreMember',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'store.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'userId')
+    ..aOM<$1.User>(1, _omitFieldNames ? '' : 'user', subBuilder: $1.User.create)
     ..aOS(2, _omitFieldNames ? '' : 'storeId')
-    ..pc<$1.StorePermission>(
+    ..pc<$2.StorePermission>(
         3, _omitFieldNames ? '' : 'permissions', $pb.PbFieldType.PM,
-        subBuilder: $1.StorePermission.create)
+        subBuilder: $2.StorePermission.create)
     ..aOM<$0.Timestamp>(4, _omitFieldNames ? '' : 'memberSince',
         subBuilder: $0.Timestamp.create)
+    ..e<StoreMemberStatus>(
+        5, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
+        defaultOrMaker: StoreMemberStatus.STORE_MEMBER_STATUS_UNSPECIFIED,
+        valueOf: StoreMemberStatus.valueOf,
+        enumValues: StoreMemberStatus.values)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -231,15 +242,17 @@ class StoreMember extends $pb.GeneratedMessage {
       $pb.GeneratedMessage.$_defaultFor<StoreMember>(create);
   static StoreMember? _defaultInstance;
 
-  /// The unique identifier of the user.
+  /// The user.
   @$pb.TagNumber(1)
-  $core.String get userId => $_getSZ(0);
+  $1.User get user => $_getN(0);
   @$pb.TagNumber(1)
-  set userId($core.String value) => $_setString(0, value);
+  set user($1.User value) => $_setField(1, value);
   @$pb.TagNumber(1)
-  $core.bool hasUserId() => $_has(0);
+  $core.bool hasUser() => $_has(0);
   @$pb.TagNumber(1)
-  void clearUserId() => $_clearField(1);
+  void clearUser() => $_clearField(1);
+  @$pb.TagNumber(1)
+  $1.User ensureUser() => $_ensure(0);
 
   /// The unique identifier of the store.
   @$pb.TagNumber(2)
@@ -253,7 +266,7 @@ class StoreMember extends $pb.GeneratedMessage {
 
   /// The permissions that the user has.
   @$pb.TagNumber(3)
-  $pb.PbList<$1.StorePermission> get permissions => $_getList(2);
+  $pb.PbList<$2.StorePermission> get permissions => $_getList(2);
 
   /// The date since when the user became a member.
   @$pb.TagNumber(4)
@@ -266,6 +279,16 @@ class StoreMember extends $pb.GeneratedMessage {
   void clearMemberSince() => $_clearField(4);
   @$pb.TagNumber(4)
   $0.Timestamp ensureMemberSince() => $_ensure(3);
+
+  /// The status of the user.
+  @$pb.TagNumber(5)
+  StoreMemberStatus get status => $_getN(4);
+  @$pb.TagNumber(5)
+  set status(StoreMemberStatus value) => $_setField(5, value);
+  @$pb.TagNumber(5)
+  $core.bool hasStatus() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearStatus() => $_clearField(5);
 }
 
 class CreateStoreRequest extends $pb.GeneratedMessage {
@@ -875,367 +898,168 @@ class DeleteStoreResponse extends $pb.GeneratedMessage {
   void clearSuccess() => $_clearField(1);
 }
 
-class CreateUserToStoreRequest extends $pb.GeneratedMessage {
-  factory CreateUserToStoreRequest({
-    $core.String? firstName,
-    $core.String? lastName,
-    $core.String? userName,
-    $core.String? phoneNumber,
+class AddUserToStoreRequest extends $pb.GeneratedMessage {
+  factory AddUserToStoreRequest({
     $core.String? email,
-    $core.String? password,
-    $core.String? businessId,
-    $core.Iterable<$1.StorePermission>? permissions,
+    $core.Iterable<$2.StorePermission>? permissions,
+    $core.String? storeId,
   }) {
     final result = create();
-    if (firstName != null) result.firstName = firstName;
-    if (lastName != null) result.lastName = lastName;
-    if (userName != null) result.userName = userName;
-    if (phoneNumber != null) result.phoneNumber = phoneNumber;
     if (email != null) result.email = email;
-    if (password != null) result.password = password;
-    if (businessId != null) result.businessId = businessId;
     if (permissions != null) result.permissions.addAll(permissions);
+    if (storeId != null) result.storeId = storeId;
     return result;
   }
 
-  CreateUserToStoreRequest._();
+  AddUserToStoreRequest._();
 
-  factory CreateUserToStoreRequest.fromBuffer($core.List<$core.int> data,
+  factory AddUserToStoreRequest.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(data, registry);
-  factory CreateUserToStoreRequest.fromJson($core.String json,
+  factory AddUserToStoreRequest.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'CreateUserToStoreRequest',
+      _omitMessageNames ? '' : 'AddUserToStoreRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'store.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'firstName')
-    ..aOS(2, _omitFieldNames ? '' : 'lastName')
-    ..aOS(3, _omitFieldNames ? '' : 'userName')
-    ..aOS(4, _omitFieldNames ? '' : 'phoneNumber')
-    ..aOS(5, _omitFieldNames ? '' : 'email')
-    ..aOS(6, _omitFieldNames ? '' : 'password')
-    ..aOS(7, _omitFieldNames ? '' : 'businessId')
-    ..pc<$1.StorePermission>(
-        8, _omitFieldNames ? '' : 'permissions', $pb.PbFieldType.PM,
-        subBuilder: $1.StorePermission.create)
+    ..aOS(1, _omitFieldNames ? '' : 'email')
+    ..pc<$2.StorePermission>(
+        2, _omitFieldNames ? '' : 'permissions', $pb.PbFieldType.PM,
+        subBuilder: $2.StorePermission.create)
+    ..aOS(3, _omitFieldNames ? '' : 'storeId')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreateUserToStoreRequest clone() =>
-      CreateUserToStoreRequest()..mergeFromMessage(this);
+  AddUserToStoreRequest clone() =>
+      AddUserToStoreRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreateUserToStoreRequest copyWith(
-          void Function(CreateUserToStoreRequest) updates) =>
-      super.copyWith((message) => updates(message as CreateUserToStoreRequest))
-          as CreateUserToStoreRequest;
+  AddUserToStoreRequest copyWith(
+          void Function(AddUserToStoreRequest) updates) =>
+      super.copyWith((message) => updates(message as AddUserToStoreRequest))
+          as AddUserToStoreRequest;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static CreateUserToStoreRequest create() => CreateUserToStoreRequest._();
+  static AddUserToStoreRequest create() => AddUserToStoreRequest._();
   @$core.override
-  CreateUserToStoreRequest createEmptyInstance() => create();
-  static $pb.PbList<CreateUserToStoreRequest> createRepeated() =>
-      $pb.PbList<CreateUserToStoreRequest>();
+  AddUserToStoreRequest createEmptyInstance() => create();
+  static $pb.PbList<AddUserToStoreRequest> createRepeated() =>
+      $pb.PbList<AddUserToStoreRequest>();
   @$core.pragma('dart2js:noInline')
-  static CreateUserToStoreRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<CreateUserToStoreRequest>(create);
-  static CreateUserToStoreRequest? _defaultInstance;
-
-  /// The first name of the user.
-  @$pb.TagNumber(1)
-  $core.String get firstName => $_getSZ(0);
-  @$pb.TagNumber(1)
-  set firstName($core.String value) => $_setString(0, value);
-  @$pb.TagNumber(1)
-  $core.bool hasFirstName() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearFirstName() => $_clearField(1);
-
-  /// The last name of the user.
-  @$pb.TagNumber(2)
-  $core.String get lastName => $_getSZ(1);
-  @$pb.TagNumber(2)
-  set lastName($core.String value) => $_setString(1, value);
-  @$pb.TagNumber(2)
-  $core.bool hasLastName() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearLastName() => $_clearField(2);
-
-  /// The username of the user.
-  @$pb.TagNumber(3)
-  $core.String get userName => $_getSZ(2);
-  @$pb.TagNumber(3)
-  set userName($core.String value) => $_setString(2, value);
-  @$pb.TagNumber(3)
-  $core.bool hasUserName() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearUserName() => $_clearField(3);
-
-  /// The phone number of the user.
-  @$pb.TagNumber(4)
-  $core.String get phoneNumber => $_getSZ(3);
-  @$pb.TagNumber(4)
-  set phoneNumber($core.String value) => $_setString(3, value);
-  @$pb.TagNumber(4)
-  $core.bool hasPhoneNumber() => $_has(3);
-  @$pb.TagNumber(4)
-  void clearPhoneNumber() => $_clearField(4);
+  static AddUserToStoreRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<AddUserToStoreRequest>(create);
+  static AddUserToStoreRequest? _defaultInstance;
 
   /// The email of the user.
-  @$pb.TagNumber(5)
-  $core.String get email => $_getSZ(4);
-  @$pb.TagNumber(5)
-  set email($core.String value) => $_setString(4, value);
-  @$pb.TagNumber(5)
-  $core.bool hasEmail() => $_has(4);
-  @$pb.TagNumber(5)
-  void clearEmail() => $_clearField(5);
-
-  /// The password of the user.
-  @$pb.TagNumber(6)
-  $core.String get password => $_getSZ(5);
-  @$pb.TagNumber(6)
-  set password($core.String value) => $_setString(5, value);
-  @$pb.TagNumber(6)
-  $core.bool hasPassword() => $_has(5);
-  @$pb.TagNumber(6)
-  void clearPassword() => $_clearField(6);
-
-  /// The unique identifier of the business.
-  @$pb.TagNumber(7)
-  $core.String get businessId => $_getSZ(6);
-  @$pb.TagNumber(7)
-  set businessId($core.String value) => $_setString(6, value);
-  @$pb.TagNumber(7)
-  $core.bool hasBusinessId() => $_has(6);
-  @$pb.TagNumber(7)
-  void clearBusinessId() => $_clearField(7);
+  @$pb.TagNumber(1)
+  $core.String get email => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set email($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasEmail() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearEmail() => $_clearField(1);
 
   /// The permissions that the user has.
-  @$pb.TagNumber(8)
-  $pb.PbList<$1.StorePermission> get permissions => $_getList(7);
-}
-
-class CreateUserToStoreResponse extends $pb.GeneratedMessage {
-  factory CreateUserToStoreResponse({
-    StoreMember? storeMember,
-  }) {
-    final result = create();
-    if (storeMember != null) result.storeMember = storeMember;
-    return result;
-  }
-
-  CreateUserToStoreResponse._();
-
-  factory CreateUserToStoreResponse.fromBuffer($core.List<$core.int> data,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
-  factory CreateUserToStoreResponse.fromJson($core.String json,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'CreateUserToStoreResponse',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'store.v1'),
-      createEmptyInstance: create)
-    ..aOM<StoreMember>(1, _omitFieldNames ? '' : 'storeMember',
-        subBuilder: StoreMember.create)
-    ..hasRequiredFields = false;
-
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreateUserToStoreResponse clone() =>
-      CreateUserToStoreResponse()..mergeFromMessage(this);
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreateUserToStoreResponse copyWith(
-          void Function(CreateUserToStoreResponse) updates) =>
-      super.copyWith((message) => updates(message as CreateUserToStoreResponse))
-          as CreateUserToStoreResponse;
-
-  @$core.override
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static CreateUserToStoreResponse create() => CreateUserToStoreResponse._();
-  @$core.override
-  CreateUserToStoreResponse createEmptyInstance() => create();
-  static $pb.PbList<CreateUserToStoreResponse> createRepeated() =>
-      $pb.PbList<CreateUserToStoreResponse>();
-  @$core.pragma('dart2js:noInline')
-  static CreateUserToStoreResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<CreateUserToStoreResponse>(create);
-  static CreateUserToStoreResponse? _defaultInstance;
-
-  /// The store member to return
-  @$pb.TagNumber(1)
-  StoreMember get storeMember => $_getN(0);
-  @$pb.TagNumber(1)
-  set storeMember(StoreMember value) => $_setField(1, value);
-  @$pb.TagNumber(1)
-  $core.bool hasStoreMember() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearStoreMember() => $_clearField(1);
-  @$pb.TagNumber(1)
-  StoreMember ensureStoreMember() => $_ensure(0);
-}
-
-class AssociateUserToStoreRequest extends $pb.GeneratedMessage {
-  factory AssociateUserToStoreRequest({
-    $core.String? userId,
-    $core.String? storeId,
-    $core.Iterable<$1.StorePermission>? permissions,
-  }) {
-    final result = create();
-    if (userId != null) result.userId = userId;
-    if (storeId != null) result.storeId = storeId;
-    if (permissions != null) result.permissions.addAll(permissions);
-    return result;
-  }
-
-  AssociateUserToStoreRequest._();
-
-  factory AssociateUserToStoreRequest.fromBuffer($core.List<$core.int> data,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
-  factory AssociateUserToStoreRequest.fromJson($core.String json,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'AssociateUserToStoreRequest',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'store.v1'),
-      createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'userId')
-    ..aOS(2, _omitFieldNames ? '' : 'storeId')
-    ..pc<$1.StorePermission>(
-        3, _omitFieldNames ? '' : 'permissions', $pb.PbFieldType.PM,
-        subBuilder: $1.StorePermission.create)
-    ..hasRequiredFields = false;
-
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  AssociateUserToStoreRequest clone() =>
-      AssociateUserToStoreRequest()..mergeFromMessage(this);
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  AssociateUserToStoreRequest copyWith(
-          void Function(AssociateUserToStoreRequest) updates) =>
-      super.copyWith(
-              (message) => updates(message as AssociateUserToStoreRequest))
-          as AssociateUserToStoreRequest;
-
-  @$core.override
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static AssociateUserToStoreRequest create() =>
-      AssociateUserToStoreRequest._();
-  @$core.override
-  AssociateUserToStoreRequest createEmptyInstance() => create();
-  static $pb.PbList<AssociateUserToStoreRequest> createRepeated() =>
-      $pb.PbList<AssociateUserToStoreRequest>();
-  @$core.pragma('dart2js:noInline')
-  static AssociateUserToStoreRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<AssociateUserToStoreRequest>(create);
-  static AssociateUserToStoreRequest? _defaultInstance;
-
-  /// The unique identifier of the user.
-  @$pb.TagNumber(1)
-  $core.String get userId => $_getSZ(0);
-  @$pb.TagNumber(1)
-  set userId($core.String value) => $_setString(0, value);
-  @$pb.TagNumber(1)
-  $core.bool hasUserId() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearUserId() => $_clearField(1);
-
-  /// The unique identifier of the store.
   @$pb.TagNumber(2)
-  $core.String get storeId => $_getSZ(1);
-  @$pb.TagNumber(2)
-  set storeId($core.String value) => $_setString(1, value);
-  @$pb.TagNumber(2)
-  $core.bool hasStoreId() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearStoreId() => $_clearField(2);
+  $pb.PbList<$2.StorePermission> get permissions => $_getList(1);
 
-  /// The permissions that the user has.
+  /// The store id.
   @$pb.TagNumber(3)
-  $pb.PbList<$1.StorePermission> get permissions => $_getList(2);
+  $core.String get storeId => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set storeId($core.String value) => $_setString(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasStoreId() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearStoreId() => $_clearField(3);
 }
 
-class AssociateUserToStoreResponse extends $pb.GeneratedMessage {
-  factory AssociateUserToStoreResponse({
+class AddUserToStoreResponse extends $pb.GeneratedMessage {
+  factory AddUserToStoreResponse({
+    $core.bool? success,
     StoreMember? storeMember,
   }) {
     final result = create();
+    if (success != null) result.success = success;
     if (storeMember != null) result.storeMember = storeMember;
     return result;
   }
 
-  AssociateUserToStoreResponse._();
+  AddUserToStoreResponse._();
 
-  factory AssociateUserToStoreResponse.fromBuffer($core.List<$core.int> data,
+  factory AddUserToStoreResponse.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(data, registry);
-  factory AssociateUserToStoreResponse.fromJson($core.String json,
+  factory AddUserToStoreResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'AssociateUserToStoreResponse',
+      _omitMessageNames ? '' : 'AddUserToStoreResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'store.v1'),
       createEmptyInstance: create)
-    ..aOM<StoreMember>(1, _omitFieldNames ? '' : 'storeMember',
+    ..aOB(1, _omitFieldNames ? '' : 'success')
+    ..aOM<StoreMember>(2, _omitFieldNames ? '' : 'storeMember',
         subBuilder: StoreMember.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  AssociateUserToStoreResponse clone() =>
-      AssociateUserToStoreResponse()..mergeFromMessage(this);
+  AddUserToStoreResponse clone() =>
+      AddUserToStoreResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  AssociateUserToStoreResponse copyWith(
-          void Function(AssociateUserToStoreResponse) updates) =>
-      super.copyWith(
-              (message) => updates(message as AssociateUserToStoreResponse))
-          as AssociateUserToStoreResponse;
+  AddUserToStoreResponse copyWith(
+          void Function(AddUserToStoreResponse) updates) =>
+      super.copyWith((message) => updates(message as AddUserToStoreResponse))
+          as AddUserToStoreResponse;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static AssociateUserToStoreResponse create() =>
-      AssociateUserToStoreResponse._();
+  static AddUserToStoreResponse create() => AddUserToStoreResponse._();
   @$core.override
-  AssociateUserToStoreResponse createEmptyInstance() => create();
-  static $pb.PbList<AssociateUserToStoreResponse> createRepeated() =>
-      $pb.PbList<AssociateUserToStoreResponse>();
+  AddUserToStoreResponse createEmptyInstance() => create();
+  static $pb.PbList<AddUserToStoreResponse> createRepeated() =>
+      $pb.PbList<AddUserToStoreResponse>();
   @$core.pragma('dart2js:noInline')
-  static AssociateUserToStoreResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<AssociateUserToStoreResponse>(create);
-  static AssociateUserToStoreResponse? _defaultInstance;
+  static AddUserToStoreResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<AddUserToStoreResponse>(create);
+  static AddUserToStoreResponse? _defaultInstance;
+
+  /// Whether the store was successfully deleted.
+  @$pb.TagNumber(1)
+  $core.bool get success => $_getBF(0);
+  @$pb.TagNumber(1)
+  set success($core.bool value) => $_setBool(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasSuccess() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSuccess() => $_clearField(1);
 
   /// The store member to return
-  @$pb.TagNumber(1)
-  StoreMember get storeMember => $_getN(0);
-  @$pb.TagNumber(1)
-  set storeMember(StoreMember value) => $_setField(1, value);
-  @$pb.TagNumber(1)
-  $core.bool hasStoreMember() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearStoreMember() => $_clearField(1);
-  @$pb.TagNumber(1)
-  StoreMember ensureStoreMember() => $_ensure(0);
+  @$pb.TagNumber(2)
+  StoreMember get storeMember => $_getN(1);
+  @$pb.TagNumber(2)
+  set storeMember(StoreMember value) => $_setField(2, value);
+  @$pb.TagNumber(2)
+  $core.bool hasStoreMember() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearStoreMember() => $_clearField(2);
+  @$pb.TagNumber(2)
+  StoreMember ensureStoreMember() => $_ensure(1);
 }
 
 class UpdateStoreMemberRequest extends $pb.GeneratedMessage {
   factory UpdateStoreMemberRequest({
     $core.String? userId,
     $core.String? storeId,
-    $core.Iterable<$1.StorePermission>? addPermissions,
-    $core.Iterable<$1.StorePermission>? removePermissions,
+    $core.Iterable<$2.StorePermission>? addPermissions,
+    $core.Iterable<$2.StorePermission>? removePermissions,
   }) {
     final result = create();
     if (userId != null) result.userId = userId;
@@ -1261,12 +1085,12 @@ class UpdateStoreMemberRequest extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'userId')
     ..aOS(2, _omitFieldNames ? '' : 'storeId')
-    ..pc<$1.StorePermission>(
+    ..pc<$2.StorePermission>(
         5, _omitFieldNames ? '' : 'addPermissions', $pb.PbFieldType.PM,
-        subBuilder: $1.StorePermission.create)
-    ..pc<$1.StorePermission>(
+        subBuilder: $2.StorePermission.create)
+    ..pc<$2.StorePermission>(
         6, _omitFieldNames ? '' : 'removePermissions', $pb.PbFieldType.PM,
-        subBuilder: $1.StorePermission.create)
+        subBuilder: $2.StorePermission.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -1314,11 +1138,11 @@ class UpdateStoreMemberRequest extends $pb.GeneratedMessage {
 
   /// The permissions to add (optional).
   @$pb.TagNumber(5)
-  $pb.PbList<$1.StorePermission> get addPermissions => $_getList(2);
+  $pb.PbList<$2.StorePermission> get addPermissions => $_getList(2);
 
   /// The permissions to remove (optional).
   @$pb.TagNumber(6)
-  $pb.PbList<$1.StorePermission> get removePermissions => $_getList(3);
+  $pb.PbList<$2.StorePermission> get removePermissions => $_getList(3);
 }
 
 class UpdateStoreMemberResponse extends $pb.GeneratedMessage {
@@ -1511,6 +1335,405 @@ class StreamStoreMembersResponse extends $pb.GeneratedMessage {
   $pb.PbList<StoreMember> get storeMembers => $_getList(0);
 }
 
+class SetStoreMemberStatusRequest extends $pb.GeneratedMessage {
+  factory SetStoreMemberStatusRequest({
+    $core.String? storeId,
+    $core.String? userId,
+    StoreMemberStatus? status,
+  }) {
+    final result = create();
+    if (storeId != null) result.storeId = storeId;
+    if (userId != null) result.userId = userId;
+    if (status != null) result.status = status;
+    return result;
+  }
+
+  SetStoreMemberStatusRequest._();
+
+  factory SetStoreMemberStatusRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory SetStoreMemberStatusRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'SetStoreMemberStatusRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'store.v1'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'storeId')
+    ..aOS(2, _omitFieldNames ? '' : 'userId')
+    ..e<StoreMemberStatus>(
+        3, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
+        defaultOrMaker: StoreMemberStatus.STORE_MEMBER_STATUS_UNSPECIFIED,
+        valueOf: StoreMemberStatus.valueOf,
+        enumValues: StoreMemberStatus.values)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  SetStoreMemberStatusRequest clone() =>
+      SetStoreMemberStatusRequest()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  SetStoreMemberStatusRequest copyWith(
+          void Function(SetStoreMemberStatusRequest) updates) =>
+      super.copyWith(
+              (message) => updates(message as SetStoreMemberStatusRequest))
+          as SetStoreMemberStatusRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static SetStoreMemberStatusRequest create() =>
+      SetStoreMemberStatusRequest._();
+  @$core.override
+  SetStoreMemberStatusRequest createEmptyInstance() => create();
+  static $pb.PbList<SetStoreMemberStatusRequest> createRepeated() =>
+      $pb.PbList<SetStoreMemberStatusRequest>();
+  @$core.pragma('dart2js:noInline')
+  static SetStoreMemberStatusRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<SetStoreMemberStatusRequest>(create);
+  static SetStoreMemberStatusRequest? _defaultInstance;
+
+  /// The unique identifier of the store.
+  @$pb.TagNumber(1)
+  $core.String get storeId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set storeId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasStoreId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearStoreId() => $_clearField(1);
+
+  /// The unique identifier of the user.
+  @$pb.TagNumber(2)
+  $core.String get userId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set userId($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasUserId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearUserId() => $_clearField(2);
+
+  /// The status of the user.
+  @$pb.TagNumber(3)
+  StoreMemberStatus get status => $_getN(2);
+  @$pb.TagNumber(3)
+  set status(StoreMemberStatus value) => $_setField(3, value);
+  @$pb.TagNumber(3)
+  $core.bool hasStatus() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearStatus() => $_clearField(3);
+}
+
+class SetStoreMemberStatusResponse extends $pb.GeneratedMessage {
+  factory SetStoreMemberStatusResponse({
+    $core.bool? success,
+  }) {
+    final result = create();
+    if (success != null) result.success = success;
+    return result;
+  }
+
+  SetStoreMemberStatusResponse._();
+
+  factory SetStoreMemberStatusResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory SetStoreMemberStatusResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'SetStoreMemberStatusResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'store.v1'),
+      createEmptyInstance: create)
+    ..aOB(1, _omitFieldNames ? '' : 'success')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  SetStoreMemberStatusResponse clone() =>
+      SetStoreMemberStatusResponse()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  SetStoreMemberStatusResponse copyWith(
+          void Function(SetStoreMemberStatusResponse) updates) =>
+      super.copyWith(
+              (message) => updates(message as SetStoreMemberStatusResponse))
+          as SetStoreMemberStatusResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static SetStoreMemberStatusResponse create() =>
+      SetStoreMemberStatusResponse._();
+  @$core.override
+  SetStoreMemberStatusResponse createEmptyInstance() => create();
+  static $pb.PbList<SetStoreMemberStatusResponse> createRepeated() =>
+      $pb.PbList<SetStoreMemberStatusResponse>();
+  @$core.pragma('dart2js:noInline')
+  static SetStoreMemberStatusResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<SetStoreMemberStatusResponse>(create);
+  static SetStoreMemberStatusResponse? _defaultInstance;
+
+  /// Whether the member was successfully updated.
+  @$pb.TagNumber(1)
+  $core.bool get success => $_getBF(0);
+  @$pb.TagNumber(1)
+  set success($core.bool value) => $_setBool(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasSuccess() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSuccess() => $_clearField(1);
+}
+
+class GetStoreMembersRequest extends $pb.GeneratedMessage {
+  factory GetStoreMembersRequest({
+    $core.String? storeId,
+  }) {
+    final result = create();
+    if (storeId != null) result.storeId = storeId;
+    return result;
+  }
+
+  GetStoreMembersRequest._();
+
+  factory GetStoreMembersRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory GetStoreMembersRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetStoreMembersRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'store.v1'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'storeId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetStoreMembersRequest clone() =>
+      GetStoreMembersRequest()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetStoreMembersRequest copyWith(
+          void Function(GetStoreMembersRequest) updates) =>
+      super.copyWith((message) => updates(message as GetStoreMembersRequest))
+          as GetStoreMembersRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static GetStoreMembersRequest create() => GetStoreMembersRequest._();
+  @$core.override
+  GetStoreMembersRequest createEmptyInstance() => create();
+  static $pb.PbList<GetStoreMembersRequest> createRepeated() =>
+      $pb.PbList<GetStoreMembersRequest>();
+  @$core.pragma('dart2js:noInline')
+  static GetStoreMembersRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetStoreMembersRequest>(create);
+  static GetStoreMembersRequest? _defaultInstance;
+
+  /// The unique identifier of the store.
+  @$pb.TagNumber(1)
+  $core.String get storeId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set storeId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasStoreId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearStoreId() => $_clearField(1);
+}
+
+class GetStoreMembersResponse extends $pb.GeneratedMessage {
+  factory GetStoreMembersResponse({
+    $core.Iterable<StoreMember>? storeMembers,
+  }) {
+    final result = create();
+    if (storeMembers != null) result.storeMembers.addAll(storeMembers);
+    return result;
+  }
+
+  GetStoreMembersResponse._();
+
+  factory GetStoreMembersResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory GetStoreMembersResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetStoreMembersResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'store.v1'),
+      createEmptyInstance: create)
+    ..pc<StoreMember>(
+        1, _omitFieldNames ? '' : 'storeMembers', $pb.PbFieldType.PM,
+        subBuilder: StoreMember.create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetStoreMembersResponse clone() =>
+      GetStoreMembersResponse()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetStoreMembersResponse copyWith(
+          void Function(GetStoreMembersResponse) updates) =>
+      super.copyWith((message) => updates(message as GetStoreMembersResponse))
+          as GetStoreMembersResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static GetStoreMembersResponse create() => GetStoreMembersResponse._();
+  @$core.override
+  GetStoreMembersResponse createEmptyInstance() => create();
+  static $pb.PbList<GetStoreMembersResponse> createRepeated() =>
+      $pb.PbList<GetStoreMembersResponse>();
+  @$core.pragma('dart2js:noInline')
+  static GetStoreMembersResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetStoreMembersResponse>(create);
+  static GetStoreMembersResponse? _defaultInstance;
+
+  /// The store members.
+  @$pb.TagNumber(1)
+  $pb.PbList<StoreMember> get storeMembers => $_getList(0);
+}
+
+class RemoveUserFromStoreRequest extends $pb.GeneratedMessage {
+  factory RemoveUserFromStoreRequest({
+    $core.String? userId,
+    $core.String? storeId,
+  }) {
+    final result = create();
+    if (userId != null) result.userId = userId;
+    if (storeId != null) result.storeId = storeId;
+    return result;
+  }
+
+  RemoveUserFromStoreRequest._();
+
+  factory RemoveUserFromStoreRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory RemoveUserFromStoreRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'RemoveUserFromStoreRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'store.v1'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'userId')
+    ..aOS(2, _omitFieldNames ? '' : 'storeId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  RemoveUserFromStoreRequest clone() =>
+      RemoveUserFromStoreRequest()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  RemoveUserFromStoreRequest copyWith(
+          void Function(RemoveUserFromStoreRequest) updates) =>
+      super.copyWith(
+              (message) => updates(message as RemoveUserFromStoreRequest))
+          as RemoveUserFromStoreRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static RemoveUserFromStoreRequest create() => RemoveUserFromStoreRequest._();
+  @$core.override
+  RemoveUserFromStoreRequest createEmptyInstance() => create();
+  static $pb.PbList<RemoveUserFromStoreRequest> createRepeated() =>
+      $pb.PbList<RemoveUserFromStoreRequest>();
+  @$core.pragma('dart2js:noInline')
+  static RemoveUserFromStoreRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<RemoveUserFromStoreRequest>(create);
+  static RemoveUserFromStoreRequest? _defaultInstance;
+
+  /// The unique identifier of the user.
+  @$pb.TagNumber(1)
+  $core.String get userId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set userId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasUserId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearUserId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get storeId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set storeId($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasStoreId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearStoreId() => $_clearField(2);
+}
+
+class RemoveUserFromStoreResponse extends $pb.GeneratedMessage {
+  factory RemoveUserFromStoreResponse({
+    $core.bool? success,
+  }) {
+    final result = create();
+    if (success != null) result.success = success;
+    return result;
+  }
+
+  RemoveUserFromStoreResponse._();
+
+  factory RemoveUserFromStoreResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory RemoveUserFromStoreResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'RemoveUserFromStoreResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'store.v1'),
+      createEmptyInstance: create)
+    ..aOB(1, _omitFieldNames ? '' : 'success')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  RemoveUserFromStoreResponse clone() =>
+      RemoveUserFromStoreResponse()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  RemoveUserFromStoreResponse copyWith(
+          void Function(RemoveUserFromStoreResponse) updates) =>
+      super.copyWith(
+              (message) => updates(message as RemoveUserFromStoreResponse))
+          as RemoveUserFromStoreResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static RemoveUserFromStoreResponse create() =>
+      RemoveUserFromStoreResponse._();
+  @$core.override
+  RemoveUserFromStoreResponse createEmptyInstance() => create();
+  static $pb.PbList<RemoveUserFromStoreResponse> createRepeated() =>
+      $pb.PbList<RemoveUserFromStoreResponse>();
+  @$core.pragma('dart2js:noInline')
+  static RemoveUserFromStoreResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<RemoveUserFromStoreResponse>(create);
+  static RemoveUserFromStoreResponse? _defaultInstance;
+
+  /// Whether the user was successfully removed from the store.
+  @$pb.TagNumber(1)
+  $core.bool get success => $_getBF(0);
+  @$pb.TagNumber(1)
+  set success($core.bool value) => $_setBool(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasSuccess() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSuccess() => $_clearField(1);
+}
+
 class StoreServiceApi {
   final $pb.RpcClient _client;
 
@@ -1548,16 +1771,10 @@ class StoreServiceApi {
           'GetBusinessStores', request, GetBusinessStoresResponse());
 
   /// Add user to store or invite user to store.
-  $async.Future<CreateUserToStoreResponse> createUserToStore(
-          $pb.ClientContext? ctx, CreateUserToStoreRequest request) =>
-      _client.invoke<CreateUserToStoreResponse>(ctx, 'StoreService',
-          'CreateUserToStore', request, CreateUserToStoreResponse());
-
-  /// Associate user to store.
-  $async.Future<AssociateUserToStoreResponse> associateUserToStore(
-          $pb.ClientContext? ctx, AssociateUserToStoreRequest request) =>
-      _client.invoke<AssociateUserToStoreResponse>(ctx, 'StoreService',
-          'AssociateUserToStore', request, AssociateUserToStoreResponse());
+  $async.Future<AddUserToStoreResponse> addUserToStore(
+          $pb.ClientContext? ctx, AddUserToStoreRequest request) =>
+      _client.invoke<AddUserToStoreResponse>(ctx, 'StoreService',
+          'AddUserToStore', request, AddUserToStoreResponse());
 
   /// Update store member.
   $async.Future<UpdateStoreMemberResponse> updateStoreMember(
@@ -1570,6 +1787,24 @@ class StoreServiceApi {
           $pb.ClientContext? ctx, StreamStoreMembersRequest request) =>
       _client.invoke<StreamStoreMembersResponse>(ctx, 'StoreService',
           'StreamStoreMembers', request, StreamStoreMembersResponse());
+
+  /// Get store members.
+  $async.Future<GetStoreMembersResponse> getStoreMembers(
+          $pb.ClientContext? ctx, GetStoreMembersRequest request) =>
+      _client.invoke<GetStoreMembersResponse>(ctx, 'StoreService',
+          'GetStoreMembers', request, GetStoreMembersResponse());
+
+  /// Set store member status.
+  $async.Future<SetStoreMemberStatusResponse> setStoreMemberStatus(
+          $pb.ClientContext? ctx, SetStoreMemberStatusRequest request) =>
+      _client.invoke<SetStoreMemberStatusResponse>(ctx, 'StoreService',
+          'SetStoreMemberStatus', request, SetStoreMemberStatusResponse());
+
+  /// Remove user from store.
+  $async.Future<RemoveUserFromStoreResponse> removeUserFromStore(
+          $pb.ClientContext? ctx, RemoveUserFromStoreRequest request) =>
+      _client.invoke<RemoveUserFromStoreResponse>(ctx, 'StoreService',
+          'RemoveUserFromStore', request, RemoveUserFromStoreResponse());
 }
 
 const $core.bool _omitFieldNames =

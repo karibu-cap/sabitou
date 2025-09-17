@@ -2183,13 +2183,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/order.v1.GenerateBillingResponse'
-  /store.v1.StoreService/AssociateUserToStore:
+  /store.v1.StoreService/AddUserToStore:
     post:
       tags:
         - store.v1.StoreService
-      summary: Associate user to store.
-      description: Associate user to store.
-      operationId: store.v1.StoreService.AssociateUserToStore
+      summary: Add user to store or invite user to store.
+      description: Add user to store or invite user to store.
+      operationId: store.v1.StoreService.AddUserToStore
       parameters:
         - name: Connect-Protocol-Version
           in: header
@@ -2204,7 +2204,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/store.v1.AssociateUserToStoreRequest'
+              $ref: '#/components/schemas/store.v1.AddUserToStoreRequest'
         required: true
       responses:
         default:
@@ -2218,7 +2218,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/store.v1.AssociateUserToStoreResponse'
+                $ref: '#/components/schemas/store.v1.AddUserToStoreResponse'
   /store.v1.StoreService/CreateStore:
     post:
       tags:
@@ -2255,42 +2255,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/store.v1.CreateStoreResponse'
-  /store.v1.StoreService/CreateUserToStore:
-    post:
-      tags:
-        - store.v1.StoreService
-      summary: Add user to store or invite user to store.
-      description: Add user to store or invite user to store.
-      operationId: store.v1.StoreService.CreateUserToStore
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/store.v1.CreateUserToStoreRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/store.v1.CreateUserToStoreResponse'
   /store.v1.StoreService/DeleteStore:
     post:
       tags:
@@ -2399,6 +2363,114 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/store.v1.GetStoreResponse'
+  /store.v1.StoreService/GetStoreMembers:
+    post:
+      tags:
+        - store.v1.StoreService
+      summary: Get store members.
+      description: Get store members.
+      operationId: store.v1.StoreService.GetStoreMembers
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/store.v1.GetStoreMembersRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/store.v1.GetStoreMembersResponse'
+  /store.v1.StoreService/RemoveUserFromStore:
+    post:
+      tags:
+        - store.v1.StoreService
+      summary: Remove user from store.
+      description: Remove user from store.
+      operationId: store.v1.StoreService.RemoveUserFromStore
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/store.v1.RemoveUserFromStoreRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/store.v1.RemoveUserFromStoreResponse'
+  /store.v1.StoreService/SetStoreMemberStatus:
+    post:
+      tags:
+        - store.v1.StoreService
+      summary: Set store member status.
+      description: Set store member status.
+      operationId: store.v1.StoreService.SetStoreMemberStatus
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/store.v1.SetStoreMemberStatusRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/store.v1.SetStoreMemberStatusResponse'
   /store.v1.StoreService/StreamStoreMembers: {}
   /store.v1.StoreService/UpdateStore:
     post:
@@ -5509,37 +5581,37 @@ components:
           format: int32
       title: OrderReceiptItem
       additionalProperties: false
-    store.v1.AssociateUserToStoreRequest:
+    store.v1.AddUserToStoreRequest:
       type: object
       properties:
-        userId:
+        email:
           type: string
-          title: user_id
-          description: The unique identifier of the user.
-        storeId:
-          type: string
-          title: store_id
-          description: The unique identifier of the store.
+          title: email
+          description: The email of the user.
         permissions:
           type: array
           items:
             $ref: '#/components/schemas/identity.v1.StorePermission'
           title: permissions
           description: The permissions that the user has.
-      title: AssociateUserToStoreRequest
+        storeId:
+          type: string
+          title: store_id
+          description: The store id.
+      title: AddUserToStoreRequest
       additionalProperties: false
-      description: |-
-        The unique identifier of the user.
-         For example, the email address or @username.
-         string u_ref = 1;
-    store.v1.AssociateUserToStoreResponse:
+    store.v1.AddUserToStoreResponse:
       type: object
       properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the store was successfully deleted.
         storeMember:
           title: store_member
           description: The store member to return
           $ref: '#/components/schemas/store.v1.StoreMember'
-      title: AssociateUserToStoreResponse
+      title: AddUserToStoreResponse
       additionalProperties: false
     store.v1.CreateStoreRequest:
       type: object
@@ -5567,58 +5639,6 @@ components:
       title: CreateStoreResponse
       required:
         - storeId
-      additionalProperties: false
-    store.v1.CreateUserToStoreRequest:
-      type: object
-      properties:
-        firstName:
-          type: string
-          title: first_name
-          description: The first name of the user.
-        lastName:
-          type: string
-          title: last_name
-          description: The last name of the user.
-        userName:
-          type: string
-          title: user_name
-          description: The username of the user.
-        phoneNumber:
-          type: string
-          title: phone_number
-          description: The phone number of the user.
-        email:
-          type: string
-          title: email
-          description: The email of the user.
-        password:
-          type: string
-          title: password
-          description: The password of the user.
-        businessId:
-          type: string
-          title: business_id
-          description: The unique identifier of the business.
-        permissions:
-          type: array
-          items:
-            $ref: '#/components/schemas/identity.v1.StorePermission'
-          title: permissions
-          description: The permissions that the user has.
-      title: CreateUserToStoreRequest
-      additionalProperties: false
-      description: |-
-        The unique identifier of the user.
-         For example, the email address or @username.
-         string u_ref = 1;
-    store.v1.CreateUserToStoreResponse:
-      type: object
-      properties:
-        storeMember:
-          title: store_member
-          description: The store member to return
-          $ref: '#/components/schemas/store.v1.StoreMember'
-      title: CreateUserToStoreResponse
       additionalProperties: false
     store.v1.DeleteStoreRequest:
       type: object
@@ -5666,6 +5686,29 @@ components:
              Note: Only the ids and names of the stores are returned.
       title: GetBusinessStoresResponse
       additionalProperties: false
+    store.v1.GetStoreMembersRequest:
+      type: object
+      properties:
+        storeId:
+          type: string
+          title: store_id
+          minLength: 3
+          description: The unique identifier of the store.
+      title: GetStoreMembersRequest
+      required:
+        - storeId
+      additionalProperties: false
+    store.v1.GetStoreMembersResponse:
+      type: object
+      properties:
+        storeMembers:
+          type: array
+          items:
+            $ref: '#/components/schemas/store.v1.StoreMember'
+          title: store_members
+          description: The store members.
+      title: GetStoreMembersResponse
+      additionalProperties: false
     store.v1.GetStoreRequest:
       type: object
       properties:
@@ -5686,6 +5729,63 @@ components:
           description: The retrieved store data.
           $ref: '#/components/schemas/store.v1.Store'
       title: GetStoreResponse
+      additionalProperties: false
+    store.v1.RemoveUserFromStoreRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+          title: user_id
+          minLength: 3
+          description: The unique identifier of the user.
+        storeId:
+          type: string
+          title: store_id
+          minLength: 3
+      title: RemoveUserFromStoreRequest
+      required:
+        - userId
+        - storeId
+      additionalProperties: false
+    store.v1.RemoveUserFromStoreResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the user was successfully removed from the store.
+      title: RemoveUserFromStoreResponse
+      additionalProperties: false
+    store.v1.SetStoreMemberStatusRequest:
+      type: object
+      properties:
+        storeId:
+          type: string
+          title: store_id
+          minLength: 3
+          description: The unique identifier of the store.
+        userId:
+          type: string
+          title: user_id
+          minLength: 3
+          description: The unique identifier of the user.
+        status:
+          title: status
+          description: The status of the user.
+          $ref: '#/components/schemas/store.v1.StoreMemberStatus'
+      title: SetStoreMemberStatusRequest
+      required:
+        - storeId
+        - userId
+      additionalProperties: false
+    store.v1.SetStoreMemberStatusResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the member was successfully updated.
+      title: SetStoreMemberStatusResponse
       additionalProperties: false
     store.v1.Store:
       type: object
@@ -5735,10 +5835,10 @@ components:
     store.v1.StoreMember:
       type: object
       properties:
-        userId:
-          type: string
-          title: user_id
-          description: The unique identifier of the user.
+        user:
+          title: user
+          description: The user.
+          $ref: '#/components/schemas/identity.v1.User'
         storeId:
           type: string
           title: store_id
@@ -5753,8 +5853,21 @@ components:
           title: member_since
           description: The date since when the user became a member.
           $ref: '#/components/schemas/google.protobuf.Timestamp'
+        status:
+          title: status
+          description: The status of the user.
+          $ref: '#/components/schemas/store.v1.StoreMemberStatus'
       title: StoreMember
       additionalProperties: false
+    store.v1.StoreMemberStatus:
+      type: string
+      title: StoreMemberStatus
+      enum:
+        - STORE_MEMBER_STATUS_UNSPECIFIED
+        - STORE_MEMBER_STATUS_ACTIVE
+        - STORE_MEMBER_STATUS_PENDING
+        - STORE_MEMBER_STATUS_INACTIVE
+        - STORE_MEMBER_STATUS_BANNED
     store.v1.StreamStoreMembersRequest:
       type: object
       properties:

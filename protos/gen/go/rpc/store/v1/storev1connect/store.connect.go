@@ -47,18 +47,24 @@ const (
 	// StoreServiceGetBusinessStoresProcedure is the fully-qualified name of the StoreService's
 	// GetBusinessStores RPC.
 	StoreServiceGetBusinessStoresProcedure = "/store.v1.StoreService/GetBusinessStores"
-	// StoreServiceCreateUserToStoreProcedure is the fully-qualified name of the StoreService's
-	// CreateUserToStore RPC.
-	StoreServiceCreateUserToStoreProcedure = "/store.v1.StoreService/CreateUserToStore"
-	// StoreServiceAssociateUserToStoreProcedure is the fully-qualified name of the StoreService's
-	// AssociateUserToStore RPC.
-	StoreServiceAssociateUserToStoreProcedure = "/store.v1.StoreService/AssociateUserToStore"
+	// StoreServiceAddUserToStoreProcedure is the fully-qualified name of the StoreService's
+	// AddUserToStore RPC.
+	StoreServiceAddUserToStoreProcedure = "/store.v1.StoreService/AddUserToStore"
 	// StoreServiceUpdateStoreMemberProcedure is the fully-qualified name of the StoreService's
 	// UpdateStoreMember RPC.
 	StoreServiceUpdateStoreMemberProcedure = "/store.v1.StoreService/UpdateStoreMember"
 	// StoreServiceStreamStoreMembersProcedure is the fully-qualified name of the StoreService's
 	// StreamStoreMembers RPC.
 	StoreServiceStreamStoreMembersProcedure = "/store.v1.StoreService/StreamStoreMembers"
+	// StoreServiceGetStoreMembersProcedure is the fully-qualified name of the StoreService's
+	// GetStoreMembers RPC.
+	StoreServiceGetStoreMembersProcedure = "/store.v1.StoreService/GetStoreMembers"
+	// StoreServiceSetStoreMemberStatusProcedure is the fully-qualified name of the StoreService's
+	// SetStoreMemberStatus RPC.
+	StoreServiceSetStoreMemberStatusProcedure = "/store.v1.StoreService/SetStoreMemberStatus"
+	// StoreServiceRemoveUserFromStoreProcedure is the fully-qualified name of the StoreService's
+	// RemoveUserFromStore RPC.
+	StoreServiceRemoveUserFromStoreProcedure = "/store.v1.StoreService/RemoveUserFromStore"
 )
 
 // StoreServiceClient is a client for the store.v1.StoreService service.
@@ -75,13 +81,17 @@ type StoreServiceClient interface {
 	// Gets all stores base on business Id.
 	GetBusinessStores(context.Context, *connect.Request[v1.GetBusinessStoresRequest]) (*connect.Response[v1.GetBusinessStoresResponse], error)
 	// Add user to store or invite user to store.
-	CreateUserToStore(context.Context, *connect.Request[v1.CreateUserToStoreRequest]) (*connect.Response[v1.CreateUserToStoreResponse], error)
-	// Associate user to store.
-	AssociateUserToStore(context.Context, *connect.Request[v1.AssociateUserToStoreRequest]) (*connect.Response[v1.AssociateUserToStoreResponse], error)
+	AddUserToStore(context.Context, *connect.Request[v1.AddUserToStoreRequest]) (*connect.Response[v1.AddUserToStoreResponse], error)
 	// Update store member.
 	UpdateStoreMember(context.Context, *connect.Request[v1.UpdateStoreMemberRequest]) (*connect.Response[v1.UpdateStoreMemberResponse], error)
 	// Stream store members.
 	StreamStoreMembers(context.Context, *connect.Request[v1.StreamStoreMembersRequest]) (*connect.ServerStreamForClient[v1.StreamStoreMembersResponse], error)
+	// Get store members.
+	GetStoreMembers(context.Context, *connect.Request[v1.GetStoreMembersRequest]) (*connect.Response[v1.GetStoreMembersResponse], error)
+	// Set store member status.
+	SetStoreMemberStatus(context.Context, *connect.Request[v1.SetStoreMemberStatusRequest]) (*connect.Response[v1.SetStoreMemberStatusResponse], error)
+	// Remove user from store.
+	RemoveUserFromStore(context.Context, *connect.Request[v1.RemoveUserFromStoreRequest]) (*connect.Response[v1.RemoveUserFromStoreResponse], error)
 }
 
 // NewStoreServiceClient constructs a client for the store.v1.StoreService service. By default, it
@@ -125,16 +135,10 @@ func NewStoreServiceClient(httpClient connect.HTTPClient, baseURL string, opts .
 			connect.WithSchema(storeServiceMethods.ByName("GetBusinessStores")),
 			connect.WithClientOptions(opts...),
 		),
-		createUserToStore: connect.NewClient[v1.CreateUserToStoreRequest, v1.CreateUserToStoreResponse](
+		addUserToStore: connect.NewClient[v1.AddUserToStoreRequest, v1.AddUserToStoreResponse](
 			httpClient,
-			baseURL+StoreServiceCreateUserToStoreProcedure,
-			connect.WithSchema(storeServiceMethods.ByName("CreateUserToStore")),
-			connect.WithClientOptions(opts...),
-		),
-		associateUserToStore: connect.NewClient[v1.AssociateUserToStoreRequest, v1.AssociateUserToStoreResponse](
-			httpClient,
-			baseURL+StoreServiceAssociateUserToStoreProcedure,
-			connect.WithSchema(storeServiceMethods.ByName("AssociateUserToStore")),
+			baseURL+StoreServiceAddUserToStoreProcedure,
+			connect.WithSchema(storeServiceMethods.ByName("AddUserToStore")),
 			connect.WithClientOptions(opts...),
 		),
 		updateStoreMember: connect.NewClient[v1.UpdateStoreMemberRequest, v1.UpdateStoreMemberResponse](
@@ -149,6 +153,24 @@ func NewStoreServiceClient(httpClient connect.HTTPClient, baseURL string, opts .
 			connect.WithSchema(storeServiceMethods.ByName("StreamStoreMembers")),
 			connect.WithClientOptions(opts...),
 		),
+		getStoreMembers: connect.NewClient[v1.GetStoreMembersRequest, v1.GetStoreMembersResponse](
+			httpClient,
+			baseURL+StoreServiceGetStoreMembersProcedure,
+			connect.WithSchema(storeServiceMethods.ByName("GetStoreMembers")),
+			connect.WithClientOptions(opts...),
+		),
+		setStoreMemberStatus: connect.NewClient[v1.SetStoreMemberStatusRequest, v1.SetStoreMemberStatusResponse](
+			httpClient,
+			baseURL+StoreServiceSetStoreMemberStatusProcedure,
+			connect.WithSchema(storeServiceMethods.ByName("SetStoreMemberStatus")),
+			connect.WithClientOptions(opts...),
+		),
+		removeUserFromStore: connect.NewClient[v1.RemoveUserFromStoreRequest, v1.RemoveUserFromStoreResponse](
+			httpClient,
+			baseURL+StoreServiceRemoveUserFromStoreProcedure,
+			connect.WithSchema(storeServiceMethods.ByName("RemoveUserFromStore")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -159,10 +181,12 @@ type storeServiceClient struct {
 	updateStore          *connect.Client[v1.UpdateStoreRequest, v1.UpdateStoreResponse]
 	deleteStore          *connect.Client[v1.DeleteStoreRequest, v1.DeleteStoreResponse]
 	getBusinessStores    *connect.Client[v1.GetBusinessStoresRequest, v1.GetBusinessStoresResponse]
-	createUserToStore    *connect.Client[v1.CreateUserToStoreRequest, v1.CreateUserToStoreResponse]
-	associateUserToStore *connect.Client[v1.AssociateUserToStoreRequest, v1.AssociateUserToStoreResponse]
+	addUserToStore       *connect.Client[v1.AddUserToStoreRequest, v1.AddUserToStoreResponse]
 	updateStoreMember    *connect.Client[v1.UpdateStoreMemberRequest, v1.UpdateStoreMemberResponse]
 	streamStoreMembers   *connect.Client[v1.StreamStoreMembersRequest, v1.StreamStoreMembersResponse]
+	getStoreMembers      *connect.Client[v1.GetStoreMembersRequest, v1.GetStoreMembersResponse]
+	setStoreMemberStatus *connect.Client[v1.SetStoreMemberStatusRequest, v1.SetStoreMemberStatusResponse]
+	removeUserFromStore  *connect.Client[v1.RemoveUserFromStoreRequest, v1.RemoveUserFromStoreResponse]
 }
 
 // CreateStore calls store.v1.StoreService.CreateStore.
@@ -190,14 +214,9 @@ func (c *storeServiceClient) GetBusinessStores(ctx context.Context, req *connect
 	return c.getBusinessStores.CallUnary(ctx, req)
 }
 
-// CreateUserToStore calls store.v1.StoreService.CreateUserToStore.
-func (c *storeServiceClient) CreateUserToStore(ctx context.Context, req *connect.Request[v1.CreateUserToStoreRequest]) (*connect.Response[v1.CreateUserToStoreResponse], error) {
-	return c.createUserToStore.CallUnary(ctx, req)
-}
-
-// AssociateUserToStore calls store.v1.StoreService.AssociateUserToStore.
-func (c *storeServiceClient) AssociateUserToStore(ctx context.Context, req *connect.Request[v1.AssociateUserToStoreRequest]) (*connect.Response[v1.AssociateUserToStoreResponse], error) {
-	return c.associateUserToStore.CallUnary(ctx, req)
+// AddUserToStore calls store.v1.StoreService.AddUserToStore.
+func (c *storeServiceClient) AddUserToStore(ctx context.Context, req *connect.Request[v1.AddUserToStoreRequest]) (*connect.Response[v1.AddUserToStoreResponse], error) {
+	return c.addUserToStore.CallUnary(ctx, req)
 }
 
 // UpdateStoreMember calls store.v1.StoreService.UpdateStoreMember.
@@ -208,6 +227,21 @@ func (c *storeServiceClient) UpdateStoreMember(ctx context.Context, req *connect
 // StreamStoreMembers calls store.v1.StoreService.StreamStoreMembers.
 func (c *storeServiceClient) StreamStoreMembers(ctx context.Context, req *connect.Request[v1.StreamStoreMembersRequest]) (*connect.ServerStreamForClient[v1.StreamStoreMembersResponse], error) {
 	return c.streamStoreMembers.CallServerStream(ctx, req)
+}
+
+// GetStoreMembers calls store.v1.StoreService.GetStoreMembers.
+func (c *storeServiceClient) GetStoreMembers(ctx context.Context, req *connect.Request[v1.GetStoreMembersRequest]) (*connect.Response[v1.GetStoreMembersResponse], error) {
+	return c.getStoreMembers.CallUnary(ctx, req)
+}
+
+// SetStoreMemberStatus calls store.v1.StoreService.SetStoreMemberStatus.
+func (c *storeServiceClient) SetStoreMemberStatus(ctx context.Context, req *connect.Request[v1.SetStoreMemberStatusRequest]) (*connect.Response[v1.SetStoreMemberStatusResponse], error) {
+	return c.setStoreMemberStatus.CallUnary(ctx, req)
+}
+
+// RemoveUserFromStore calls store.v1.StoreService.RemoveUserFromStore.
+func (c *storeServiceClient) RemoveUserFromStore(ctx context.Context, req *connect.Request[v1.RemoveUserFromStoreRequest]) (*connect.Response[v1.RemoveUserFromStoreResponse], error) {
+	return c.removeUserFromStore.CallUnary(ctx, req)
 }
 
 // StoreServiceHandler is an implementation of the store.v1.StoreService service.
@@ -224,13 +258,17 @@ type StoreServiceHandler interface {
 	// Gets all stores base on business Id.
 	GetBusinessStores(context.Context, *connect.Request[v1.GetBusinessStoresRequest]) (*connect.Response[v1.GetBusinessStoresResponse], error)
 	// Add user to store or invite user to store.
-	CreateUserToStore(context.Context, *connect.Request[v1.CreateUserToStoreRequest]) (*connect.Response[v1.CreateUserToStoreResponse], error)
-	// Associate user to store.
-	AssociateUserToStore(context.Context, *connect.Request[v1.AssociateUserToStoreRequest]) (*connect.Response[v1.AssociateUserToStoreResponse], error)
+	AddUserToStore(context.Context, *connect.Request[v1.AddUserToStoreRequest]) (*connect.Response[v1.AddUserToStoreResponse], error)
 	// Update store member.
 	UpdateStoreMember(context.Context, *connect.Request[v1.UpdateStoreMemberRequest]) (*connect.Response[v1.UpdateStoreMemberResponse], error)
 	// Stream store members.
 	StreamStoreMembers(context.Context, *connect.Request[v1.StreamStoreMembersRequest], *connect.ServerStream[v1.StreamStoreMembersResponse]) error
+	// Get store members.
+	GetStoreMembers(context.Context, *connect.Request[v1.GetStoreMembersRequest]) (*connect.Response[v1.GetStoreMembersResponse], error)
+	// Set store member status.
+	SetStoreMemberStatus(context.Context, *connect.Request[v1.SetStoreMemberStatusRequest]) (*connect.Response[v1.SetStoreMemberStatusResponse], error)
+	// Remove user from store.
+	RemoveUserFromStore(context.Context, *connect.Request[v1.RemoveUserFromStoreRequest]) (*connect.Response[v1.RemoveUserFromStoreResponse], error)
 }
 
 // NewStoreServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -270,16 +308,10 @@ func NewStoreServiceHandler(svc StoreServiceHandler, opts ...connect.HandlerOpti
 		connect.WithSchema(storeServiceMethods.ByName("GetBusinessStores")),
 		connect.WithHandlerOptions(opts...),
 	)
-	storeServiceCreateUserToStoreHandler := connect.NewUnaryHandler(
-		StoreServiceCreateUserToStoreProcedure,
-		svc.CreateUserToStore,
-		connect.WithSchema(storeServiceMethods.ByName("CreateUserToStore")),
-		connect.WithHandlerOptions(opts...),
-	)
-	storeServiceAssociateUserToStoreHandler := connect.NewUnaryHandler(
-		StoreServiceAssociateUserToStoreProcedure,
-		svc.AssociateUserToStore,
-		connect.WithSchema(storeServiceMethods.ByName("AssociateUserToStore")),
+	storeServiceAddUserToStoreHandler := connect.NewUnaryHandler(
+		StoreServiceAddUserToStoreProcedure,
+		svc.AddUserToStore,
+		connect.WithSchema(storeServiceMethods.ByName("AddUserToStore")),
 		connect.WithHandlerOptions(opts...),
 	)
 	storeServiceUpdateStoreMemberHandler := connect.NewUnaryHandler(
@@ -294,6 +326,24 @@ func NewStoreServiceHandler(svc StoreServiceHandler, opts ...connect.HandlerOpti
 		connect.WithSchema(storeServiceMethods.ByName("StreamStoreMembers")),
 		connect.WithHandlerOptions(opts...),
 	)
+	storeServiceGetStoreMembersHandler := connect.NewUnaryHandler(
+		StoreServiceGetStoreMembersProcedure,
+		svc.GetStoreMembers,
+		connect.WithSchema(storeServiceMethods.ByName("GetStoreMembers")),
+		connect.WithHandlerOptions(opts...),
+	)
+	storeServiceSetStoreMemberStatusHandler := connect.NewUnaryHandler(
+		StoreServiceSetStoreMemberStatusProcedure,
+		svc.SetStoreMemberStatus,
+		connect.WithSchema(storeServiceMethods.ByName("SetStoreMemberStatus")),
+		connect.WithHandlerOptions(opts...),
+	)
+	storeServiceRemoveUserFromStoreHandler := connect.NewUnaryHandler(
+		StoreServiceRemoveUserFromStoreProcedure,
+		svc.RemoveUserFromStore,
+		connect.WithSchema(storeServiceMethods.ByName("RemoveUserFromStore")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/store.v1.StoreService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case StoreServiceCreateStoreProcedure:
@@ -306,14 +356,18 @@ func NewStoreServiceHandler(svc StoreServiceHandler, opts ...connect.HandlerOpti
 			storeServiceDeleteStoreHandler.ServeHTTP(w, r)
 		case StoreServiceGetBusinessStoresProcedure:
 			storeServiceGetBusinessStoresHandler.ServeHTTP(w, r)
-		case StoreServiceCreateUserToStoreProcedure:
-			storeServiceCreateUserToStoreHandler.ServeHTTP(w, r)
-		case StoreServiceAssociateUserToStoreProcedure:
-			storeServiceAssociateUserToStoreHandler.ServeHTTP(w, r)
+		case StoreServiceAddUserToStoreProcedure:
+			storeServiceAddUserToStoreHandler.ServeHTTP(w, r)
 		case StoreServiceUpdateStoreMemberProcedure:
 			storeServiceUpdateStoreMemberHandler.ServeHTTP(w, r)
 		case StoreServiceStreamStoreMembersProcedure:
 			storeServiceStreamStoreMembersHandler.ServeHTTP(w, r)
+		case StoreServiceGetStoreMembersProcedure:
+			storeServiceGetStoreMembersHandler.ServeHTTP(w, r)
+		case StoreServiceSetStoreMemberStatusProcedure:
+			storeServiceSetStoreMemberStatusHandler.ServeHTTP(w, r)
+		case StoreServiceRemoveUserFromStoreProcedure:
+			storeServiceRemoveUserFromStoreHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -343,12 +397,8 @@ func (UnimplementedStoreServiceHandler) GetBusinessStores(context.Context, *conn
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("store.v1.StoreService.GetBusinessStores is not implemented"))
 }
 
-func (UnimplementedStoreServiceHandler) CreateUserToStore(context.Context, *connect.Request[v1.CreateUserToStoreRequest]) (*connect.Response[v1.CreateUserToStoreResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("store.v1.StoreService.CreateUserToStore is not implemented"))
-}
-
-func (UnimplementedStoreServiceHandler) AssociateUserToStore(context.Context, *connect.Request[v1.AssociateUserToStoreRequest]) (*connect.Response[v1.AssociateUserToStoreResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("store.v1.StoreService.AssociateUserToStore is not implemented"))
+func (UnimplementedStoreServiceHandler) AddUserToStore(context.Context, *connect.Request[v1.AddUserToStoreRequest]) (*connect.Response[v1.AddUserToStoreResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("store.v1.StoreService.AddUserToStore is not implemented"))
 }
 
 func (UnimplementedStoreServiceHandler) UpdateStoreMember(context.Context, *connect.Request[v1.UpdateStoreMemberRequest]) (*connect.Response[v1.UpdateStoreMemberResponse], error) {
@@ -357,4 +407,16 @@ func (UnimplementedStoreServiceHandler) UpdateStoreMember(context.Context, *conn
 
 func (UnimplementedStoreServiceHandler) StreamStoreMembers(context.Context, *connect.Request[v1.StreamStoreMembersRequest], *connect.ServerStream[v1.StreamStoreMembersResponse]) error {
 	return connect.NewError(connect.CodeUnimplemented, errors.New("store.v1.StoreService.StreamStoreMembers is not implemented"))
+}
+
+func (UnimplementedStoreServiceHandler) GetStoreMembers(context.Context, *connect.Request[v1.GetStoreMembersRequest]) (*connect.Response[v1.GetStoreMembersResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("store.v1.StoreService.GetStoreMembers is not implemented"))
+}
+
+func (UnimplementedStoreServiceHandler) SetStoreMemberStatus(context.Context, *connect.Request[v1.SetStoreMemberStatusRequest]) (*connect.Response[v1.SetStoreMemberStatusResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("store.v1.StoreService.SetStoreMemberStatus is not implemented"))
+}
+
+func (UnimplementedStoreServiceHandler) RemoveUserFromStore(context.Context, *connect.Request[v1.RemoveUserFromStoreRequest]) (*connect.Response[v1.RemoveUserFromStoreResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("store.v1.StoreService.RemoveUserFromStore is not implemented"))
 }
