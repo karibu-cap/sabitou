@@ -184,7 +184,7 @@ class AppTheme {
       list: _geistTextTheme.bodyMedium,
       lead: _geistTextTheme.titleLarge,
       large: _geistTextTheme.titleMedium,
-      small: _geistTextTheme.bodySmall,
+      small: _geistTextTheme.bodySmall?.copyWith(fontWeight: FontWeight.w600),
       muted: _geistTextTheme.bodySmall?.copyWith(color: _mutedForegroundLight),
     ),
     cardTheme: const ShadCardTheme(
@@ -270,7 +270,10 @@ class AppTheme {
       list: _geistTextTheme.bodyMedium?.copyWith(color: _foregroundDark),
       lead: _geistTextTheme.titleLarge?.copyWith(color: _foregroundDark),
       large: _geistTextTheme.titleMedium?.copyWith(color: _foregroundDark),
-      small: _geistTextTheme.bodySmall?.copyWith(color: _foregroundDark),
+      small: _geistTextTheme.bodySmall?.copyWith(
+        color: _foregroundDark,
+        fontWeight: FontWeight.w600,
+      ),
       muted: _geistTextTheme.bodySmall?.copyWith(color: _mutedForegroundDark),
     ),
     cardTheme: const ShadCardTheme(

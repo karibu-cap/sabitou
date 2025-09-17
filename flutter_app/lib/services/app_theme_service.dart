@@ -27,21 +27,24 @@ class AppThemeService extends ChangeNotifier {
   static ShadThemeData get darkTheme => _darkTheme;
 
   /// Constructor of new theme service.
-  AppThemeService(this._box);
+  AppThemeService(this._box) {
+    init();
+  }
 
   Future<void> _saveThemeToBox(bool isDarkMode) => _box.write(_key, isDarkMode);
 
   /// Initializes the theme service.
   Future<AppThemeService> init() async {
     _isDarkMode = _box.read(_key) ?? false;
+    notifyListeners();
 
     return this;
   }
 
   /// Switches the theme mode between light and dark, and saves it to the storage.
-  void switchTheme() {
+  Future<void> switchTheme() async {
     _isDarkMode = !_isDarkMode;
-    _saveThemeToBox(_isDarkMode);
+    await _saveThemeToBox(_isDarkMode);
     notifyListeners();
   }
 }
