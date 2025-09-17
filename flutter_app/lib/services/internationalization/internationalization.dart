@@ -196,6 +196,7 @@ class AppInternationalizationService extends ChangeNotifier {
     'reports': {'en': 'Reports', 'fr': 'Rapports'},
     'suppliers': {'en': 'Suppliers', 'fr': 'Fournisseurs'},
     'users': {'en': 'Users', 'fr': 'Utilisateurs'},
+    'members': {'en': 'Members', 'fr': 'Membres'},
     'settings': {'en': 'Settings', 'fr': 'Paramètres'},
     'logout': {'en': 'Logout', 'fr': 'Déconnexion'},
     'login': {'en': 'Login', 'fr': 'Connexion'},
@@ -748,6 +749,270 @@ class AppInternationalizationService extends ChangeNotifier {
       'en': 'Add product to start sale',
       'fr': 'Ajouter un produit pour commencer la vente',
     },
+    'teamManagement': {'en': 'Team Management', 'fr': 'Gestion d\'Équipe'},
+    'manageTeamMembersRolesPermissions': {
+      'en': 'Manage your team members, roles, and permissions.',
+      'fr': 'Gérez les membres de votre équipe, les rôles et les permissions.',
+    },
+    'inviteUser': {'en': 'Invite User', 'fr': 'Inviter un Utilisateur'},
+    'inviteNewTeamMember': {
+      'en': 'Invite a new team member',
+      'fr': 'Inviter un nouveau membre de l\'équipe',
+    },
+    'sendInvitationEmail': {
+      'en': 'Send an invitation email to add them to your team.',
+      'fr': 'Envoyez un e-mail d\'invitation pour les ajouter à votre équipe.',
+    },
+    'selectPermissions': {
+      'en': 'Select Permissions',
+      'fr': 'Sélectionner les Permissions',
+    },
+    'choosePermissionsForUser': {
+      'en': 'Choose what this user can access and manage.',
+      'fr': 'Choisissez ce que cet utilisateur peut accéder et gérer.',
+    },
+    'sendInvitation': {'en': 'Send Invitation', 'fr': 'Envoyer l\'Invitation'},
+    'invitationSentSuccessfully': {
+      'en': 'Invitation sent successfully',
+      'fr': 'Invitation envoyée avec succès',
+    },
+    'errorSendingInvitation': {
+      'en': 'Error sending invitation',
+      'fr': 'Erreur lors de l\'envoi de l\'invitation',
+    },
+    'allStatus': {'en': 'All Status', 'fr': 'Tous les Statuts'},
+    'searchTeamMembersByNameEmailStatus': {
+      'en': 'Search team members by name, email, or status...',
+      'fr': 'Rechercher les membres par nom, e-mail ou statut...',
+    },
+    'totalMembers': {'en': 'Total Members', 'fr': 'Total Membres'},
+    'activeMembers': {'en': 'Active Members', 'fr': 'Membres Actifs'},
+    'pendingMembers': {'en': 'Pending Members', 'fr': 'Membres en Attente'},
+    'bannedMembers': {'en': 'Banned Members', 'fr': 'Membres Bannis'},
+    'banned': {'en': 'Banned', 'fr': 'Banni'},
+    'inactiveMembers': {'en': 'Inactive Members', 'fr': 'Membres Inactifs'},
+    'teamMembers': {'en': 'Team members', 'fr': 'Membres de l\'équipe'},
+    'awaitingResponse': {
+      'en': 'Awaiting response',
+      'fr': 'En attente de réponse',
+    },
+    'restrictedAccess': {'en': 'Restricted access', 'fr': 'Accès restreint'},
+    'temporarilyDisabled': {
+      'en': 'Temporarily disabled',
+      'fr': 'Temporairement désactivé',
+    },
+    'joined': {'en': 'Joined', 'fr': 'Rejoint le'},
+    'manageAccess': {'en': 'Manage Access', 'fr': 'Gérer l\'Accès'},
+    'noPermissionsAssigned': {
+      'en': 'No permissions assigned',
+      'fr': 'Aucune permission assignée',
+    },
+    'thisUserHasNoPermissions': {
+      'en': 'This user has no permissions assigned yet.',
+      'fr': 'Cet utilisateur n\'a encore aucune permission assignée.',
+    },
+    'userPermissions': {
+      'en': 'User Permissions',
+      'fr': 'Permissions Utilisateur',
+    },
+    'manageUserPermissionsAndStatus': {
+      'en': 'Manage user permissions and status.',
+      'fr': 'Gérer les permissions et le statut de l\'utilisateur.',
+    },
+    'memberStatus': {'en': 'Member Status', 'fr': 'Statut du Membre'},
+    'changeUserStatus': {
+      'en': 'Change the user\'s access status.',
+      'fr': 'Changer le statut d\'accès de l\'utilisateur.',
+    },
+    'permissions': {'en': 'Permissions', 'fr': 'Permissions'},
+    'selectWhatUserCanAccess': {
+      'en': 'Select what this user can access and manage in your store.',
+      'fr':
+          'Sélectionnez ce que cet utilisateur peut accéder et gérer dans votre magasin.',
+    },
+    'saveChanges': {
+      'en': 'Save Changes',
+      'fr': 'Enregistrer les Modifications',
+    },
+    'permissionsUpdatedSuccessfully': {
+      'en': 'Permissions updated successfully',
+      'fr': 'Permissions mises à jour avec succès',
+    },
+    'errorUpdatingPermissions': {
+      'en': 'Error updating permissions',
+      'fr': 'Erreur lors de la mise à jour des permissions',
+    },
+    'errorUpdatingStatus': {
+      'en': 'Error updating status',
+      'fr': 'Erreur lors du changement de statut',
+    },
+    'deleteUser': {'en': 'Delete User', 'fr': 'Supprimer l\'Utilisateur'},
+    'thisActionIsIrreversible': {
+      'en': 'This action is irreversible',
+      'fr': 'Cette action est irréversible',
+    },
+    'userWillBeRemovedPermanently': {
+      'en':
+          'This user will be removed from your team permanently. They will lose access to all store data and cannot be recovered.',
+      'fr':
+          'Cet utilisateur sera supprimé définitivement de votre équipe. Il perdra l\'accès à toutes les données du magasin et ne pourra pas être récupéré.',
+    },
+    'confirmationRequired': {
+      'en': 'Confirmation required',
+      'fr': 'Confirmation requise',
+    },
+    'typeToConfirmDeletion': {
+      'en': 'To confirm deletion, type "{text}" below:',
+      'fr': 'Pour confirmer la suppression, tapez "{text}" ci-dessous :',
+    },
+    'deletePermanently': {
+      'en': 'Delete Permanently',
+      'fr': 'Supprimer Définitivement',
+    },
+    'userDeletedSuccessfully': {
+      'en': 'User deleted successfully',
+      'fr': 'Utilisateur supprimé avec succès',
+    },
+    'errorDuringDeletion': {
+      'en': 'Error during deletion',
+      'fr': 'Erreur lors de la suppression',
+    },
+    'noTeamMembersYet': {
+      'en': 'No team members yet',
+      'fr': 'Aucun membre d\'équipe encore',
+    },
+    'inviteFirstTeamMember': {
+      'en': 'Invite your first team member to get started.',
+      'fr': 'Invitez votre premier membre d\'équipe pour commencer.',
+    },
+    'noMembersMatchFilters': {
+      'en': 'No members match your filters',
+      'fr': 'Aucun membre ne correspond à vos filtres',
+    },
+    'tryAdjustingFilters': {
+      'en': 'Try adjusting your search or filter criteria.',
+      'fr': 'Essayez d\'ajuster vos critères de recherche ou de filtre.',
+    },
+    'inviteMember': {'en': 'Invite Member', 'fr': 'Inviter un Membre'},
+    'clearFilters': {'en': 'Clear Filters', 'fr': 'Effacer les Filtres'},
+    'somethingWentWrong': {
+      'en': 'Something went wrong',
+      'fr': 'Quelque chose s\'est mal passé',
+    },
+    'unableToLoadTeamMembers': {
+      'en':
+          'Unable to load team members. Please check your connection and try again.',
+      'fr':
+          'Impossible de charger les membres de l\'équipe. Veuillez vérifier votre connexion et réessayer.',
+    },
+    'tryAgain': {'en': 'Try Again', 'fr': 'Réessayer'},
+    'viewDashboard': {'en': 'View Dashboard', 'fr': 'Voir le Tableau de Bord'},
+    'accessOverviewAndMetrics': {
+      'en': 'Access overview and key metrics',
+      'fr': 'Accéder à la vue d\'ensemble et aux métriques principales',
+    },
+    'analytics': {'en': 'Analytics', 'fr': 'Analyses'},
+    'viewAnalytics': {'en': 'View Analytics', 'fr': 'Voir les Analyses'},
+    'consultAnalyticalData': {
+      'en': 'Consult analytical data and trends',
+      'fr': 'Consulter les données analytiques et les tendances',
+    },
+    'viewReports': {'en': 'View Reports', 'fr': 'Voir les Rapports'},
+    'accessPerformanceReports': {
+      'en': 'Access performance reports and statistics',
+      'fr': 'Accéder aux rapports de performance et statistiques',
+    },
+    'exportReports': {'en': 'Export Reports', 'fr': 'Exporter les Rapports'},
+    'downloadAndExportReportData': {
+      'en': 'Download and export report data',
+      'fr': 'Télécharger et exporter les données de rapport',
+    },
+    'deleteReports': {'en': 'Delete Reports', 'fr': 'Supprimer les Rapports'},
+    'deleteReportData': {
+      'en': 'Delete report data',
+      'fr': 'Supprimer les données de rapport',
+    },
+    'orders': {'en': 'Orders', 'fr': 'Commandes'},
+    'orderStatistics': {
+      'en': 'Order Statistics',
+      'fr': 'Statistiques des Commandes',
+    },
+    'consultMetricsHistoryAnalytics': {
+      'en': 'Consult metrics, history and sales analytics',
+      'fr': 'Consulter les métriques, historique et analyses des ventes',
+    },
+    'addOrders': {'en': 'Add Orders', 'fr': 'Ajouter des Commandes'},
+    'createNewOrdersRecordSales': {
+      'en': 'Create new orders and record sales',
+      'fr': 'Créer de nouvelles commandes et enregistrer des ventes',
+    },
+    'editOrders': {'en': 'Edit Orders', 'fr': 'Modifier les Commandes'},
+    'deleteOrders': {'en': 'Delete Orders', 'fr': 'Supprimer les Commandes'},
+    'cancelDeleteOrdersPermanently': {
+      'en': 'Cancel and delete orders permanently',
+      'fr': 'Annuler et supprimer définitivement des commandes',
+    },
+    'viewProducts': {'en': 'View Products', 'fr': 'Voir les Produits'},
+    'consultInventoryPricesDetails': {
+      'en': 'Consult inventory, prices and product details',
+      'fr': 'Consulter l\'inventaire, prix et détails des produits',
+    },
+    'addProducts': {'en': 'Add Products', 'fr': 'Ajouter des Produits'},
+    'createNewProductsWithPrices': {
+      'en': 'Create new products with prices, descriptions and images',
+      'fr': 'Créer de nouveaux produits avec prix, descriptions et images',
+    },
+    'editProducts': {'en': 'Edit Products', 'fr': 'Modifier les Produits'},
+    'deleteProducts': {'en': 'Delete Products', 'fr': 'Supprimer les Produits'},
+    'removeProductsPermanently': {
+      'en': 'Remove products from catalog permanently',
+      'fr': 'Retirer définitivement des produits du catalogue',
+    },
+    'viewSuppliers': {'en': 'View Suppliers', 'fr': 'Voir les Fournisseurs'},
+    'consultSupplierListContactInfo': {
+      'en': 'Consult supplier list and their contact information',
+      'fr':
+          'Consulter la liste des fournisseurs et leurs informations de contact',
+    },
+    'placeSupplierOrders': {
+      'en': 'Place Supplier Orders',
+      'fr': 'Passer des Commandes Fournisseurs',
+    },
+    'createPlaceNewSupplierOrders': {
+      'en': 'Create and place new orders with suppliers',
+      'fr': 'Créer et passer de nouvelles commandes auprès des fournisseurs',
+    },
+    'editSupplierOrders': {
+      'en': 'Edit Supplier Orders',
+      'fr': 'Modifier les Commandes Fournisseurs',
+    },
+    'cancelSupplierOrders': {
+      'en': 'Cancel Supplier Orders',
+      'fr': 'Annuler les Commandes Fournisseurs',
+    },
+    'selected': {'en': 'selected', 'fr': 'selectionnée(s)'},
+    'editOrderDetailsStatus': {
+      'en': 'Edit details, status and information of existing orders',
+      'fr':
+          'Éditer les détails, statuts et informations des commandes existantes',
+    },
+    'editProductInformationPriceStock': {
+      'en': 'Edit information, prices and stock of existing products',
+      'fr': 'Éditer les informations, prix et stock des produits existants',
+    },
+    'editSupplierOrderDetailsStatus': {
+      'en': 'Edit details and status of ongoing supplier orders',
+      'fr': 'Éditer les détails et statuts des commandes fournisseurs en cours',
+    },
+    'cancelDeleteSupplierOrders': {
+      'en': 'Cancel and delete supplier orders',
+      'fr': 'Annuler et supprimer les commandes fournisseurs',
+    },
+    'unspecified': {'en': 'Unspecified', 'fr': 'Non défini'},
+    'userInformation': {
+      'en': 'User Information',
+      'fr': 'Informations utilisateur',
+    },
   };
 
   /// Direct access to the internationalization service.
@@ -1169,6 +1434,9 @@ class AppInternationalizationService extends ChangeNotifier {
 
   /// Returns the localized value of text 'users'.
   String get users => _stringOfLocalizedValue('users');
+
+  /// Returns the localized value of text 'members'.
+  String get members => _stringOfLocalizedValue('members');
 
   /// Returns the localized value of text 'settings'.
   String get settings => _stringOfLocalizedValue('settings');
@@ -1910,6 +2178,328 @@ class AppInternationalizationService extends ChangeNotifier {
 
   /// Returns the localized value of errorText.
   String get errorText => _stringOfLocalizedValue('errorText');
+
+  // User Management Module Getters
+  /// Returns the localized value of teamManagement.
+  String get teamManagement => _stringOfLocalizedValue('teamManagement');
+
+  /// Returns the localized value of teamManagementDescription.
+  String get teamManagementDescription =>
+      _stringOfLocalizedValue('teamManagementDescription');
+
+  /// Returns the localized value of inviteUser.
+  String get inviteUser => _stringOfLocalizedValue('inviteUser');
+
+  /// Returns the localized value of inviteNewTeamMember.
+  String get inviteNewTeamMember =>
+      _stringOfLocalizedValue('inviteNewTeamMember');
+
+  /// Returns the localized value of sendInvitationEmail.
+  String get sendInvitationEmail =>
+      _stringOfLocalizedValue('sendInvitationEmail');
+
+  /// Returns the localized value of selectPermissions.
+  String get selectPermissions => _stringOfLocalizedValue('selectPermissions');
+
+  /// Returns the localized value of choosePermissionsForUser.
+  String get choosePermissionsForUser =>
+      _stringOfLocalizedValue('choosePermissionsForUser');
+
+  /// Returns the localized value of sendInvitation.
+  String get sendInvitation => _stringOfLocalizedValue('sendInvitation');
+
+  /// Returns the localized value of invitationSentSuccessfully.
+  String get invitationSentSuccessfully =>
+      _stringOfLocalizedValue('invitationSentSuccessfully');
+
+  /// Returns the localized value of errorSendingInvitation.
+  String get errorSendingInvitation =>
+      _stringOfLocalizedValue('errorSendingInvitation');
+
+  /// Returns the localized value of allStatus.
+  String get allStatus => _stringOfLocalizedValue('allStatus');
+
+  /// Returns the localized value of searchTeamMembersByNameEmailStatus.
+  String get searchTeamMembersByNameEmailStatus =>
+      _stringOfLocalizedValue('searchTeamMembersByNameEmailStatus');
+
+  /// Returns the localized value of totalMembers.
+  String get totalMembers => _stringOfLocalizedValue('totalMembers');
+
+  /// Returns the localized value of activeMembers.
+  String get activeMembers => _stringOfLocalizedValue('activeMembers');
+
+  /// Returns the localized value of pendingMembers.
+  String get pendingMembers => _stringOfLocalizedValue('pendingMembers');
+
+  /// Returns the localized value of bannedMembers.
+  String get bannedMembers => _stringOfLocalizedValue('bannedMembers');
+
+  /// Returns the localized value of banned.
+  String get banned => _stringOfLocalizedValue('banned');
+
+  /// Returns the localized value of inactiveMembers.
+  String get inactiveMembers => _stringOfLocalizedValue('inactiveMembers');
+
+  /// Returns the localized value of teamMembers.
+  String get teamMembers => _stringOfLocalizedValue('teamMembers');
+
+  /// Returns the localized value of awaitingResponse.
+  String get awaitingResponse => _stringOfLocalizedValue('awaitingResponse');
+
+  /// Returns the localized value of restrictedAccess.
+  String get restrictedAccess => _stringOfLocalizedValue('restrictedAccess');
+
+  /// Returns the localized value of temporarilyDisabled.
+  String get temporarilyDisabled =>
+      _stringOfLocalizedValue('temporarilyDisabled');
+
+  /// Returns the localized value of joined.
+  String get joined => _stringOfLocalizedValue('joined');
+
+  /// Returns the localized value of manageAccess.
+  String get manageAccess => _stringOfLocalizedValue('manageAccess');
+
+  /// Returns the localized value of noPermissionsAssigned.
+  String get noPermissionsAssigned =>
+      _stringOfLocalizedValue('noPermissionsAssigned');
+
+  /// Returns the localized value of thisUserHasNoPermissions.
+  String get thisUserHasNoPermissions =>
+      _stringOfLocalizedValue('thisUserHasNoPermissions');
+
+  /// Returns the localized value of userPermissions.
+  String get userPermissions => _stringOfLocalizedValue('userPermissions');
+
+  /// Returns the localized value of manageUserPermissionsAndStatus.
+  String get manageUserPermissionsAndStatus =>
+      _stringOfLocalizedValue('manageUserPermissionsAndStatus');
+
+  /// Returns the localized value of memberStatus.
+  String get memberStatus => _stringOfLocalizedValue('memberStatus');
+
+  /// Returns the localized value of changeUserStatus.
+  String get changeUserStatus => _stringOfLocalizedValue('changeUserStatus');
+
+  /// Returns the localized value of permissions.
+  String get permissions => _stringOfLocalizedValue('permissions');
+
+  /// Returns the localized value of selectWhatUserCanAccess.
+  String get selectWhatUserCanAccess =>
+      _stringOfLocalizedValue('selectWhatUserCanAccess');
+
+  /// Returns the localized value of saveChanges.
+  String get saveChanges => _stringOfLocalizedValue('saveChanges');
+
+  /// Returns the localized value of permissionsUpdatedSuccessfully.
+  String get permissionsUpdatedSuccessfully =>
+      _stringOfLocalizedValue('permissionsUpdatedSuccessfully');
+
+  /// Returns the localized value of errorUpdatingPermissions.
+  String get errorUpdatingPermissions =>
+      _stringOfLocalizedValue('errorUpdatingPermissions');
+
+  /// Returns the localized value of errorUpdatingStatus.
+  String get errorUpdatingStatus =>
+      _stringOfLocalizedValue('errorUpdatingStatus');
+
+  /// Returns the localized value of deleteUser.
+  String get deleteUser => _stringOfLocalizedValue('deleteUser');
+
+  /// Returns the localized value of thisActionIsIrreversible.
+  String get thisActionIsIrreversible =>
+      _stringOfLocalizedValue('thisActionIsIrreversible');
+
+  /// Returns the localized value of userWillBeRemovedPermanently.
+  String get userWillBeRemovedPermanently =>
+      _stringOfLocalizedValue('userWillBeRemovedPermanently');
+
+  /// Returns the localized value of confirmationRequired.
+  String get confirmationRequired =>
+      _stringOfLocalizedValue('confirmationRequired');
+
+  /// Returns the localized value of typeToConfirmDeletion.
+  String get typeToConfirmDeletion =>
+      _stringOfLocalizedValue('typeToConfirmDeletion');
+
+  /// Returns the localized value of deletePermanently.
+  String get deletePermanently => _stringOfLocalizedValue('deletePermanently');
+
+  /// Returns the localized value of userDeletedSuccessfully.
+  String get userDeletedSuccessfully =>
+      _stringOfLocalizedValue('userDeletedSuccessfully');
+
+  /// Returns the localized value of errorDuringDeletion.
+  String get errorDuringDeletion =>
+      _stringOfLocalizedValue('errorDuringDeletion');
+
+  /// Returns the localized value of noTeamMembersYet.
+  String get noTeamMembersYet => _stringOfLocalizedValue('noTeamMembersYet');
+
+  /// Returns the localized value of inviteFirstTeamMember.
+  String get inviteFirstTeamMember =>
+      _stringOfLocalizedValue('inviteFirstTeamMember');
+
+  /// Returns the localized value of noMembersMatchFilters.
+  String get noMembersMatchFilters =>
+      _stringOfLocalizedValue('noMembersMatchFilters');
+
+  /// Returns the localized value of tryAdjustingFilters.
+  String get tryAdjustingFilters =>
+      _stringOfLocalizedValue('tryAdjustingFilters');
+
+  /// Returns the localized value of inviteMember.
+  String get inviteMember => _stringOfLocalizedValue('inviteMember');
+
+  /// Returns the localized value of clearFilters.
+  String get clearFilters => _stringOfLocalizedValue('clearFilters');
+
+  /// Returns the localized value of somethingWentWrong.
+  String get somethingWentWrong =>
+      _stringOfLocalizedValue('somethingWentWrong');
+
+  /// Returns the localized value of unableToLoadTeamMembers.
+  String get unableToLoadTeamMembers =>
+      _stringOfLocalizedValue('unableToLoadTeamMembers');
+
+  /// Returns the localized value of tryAgain.
+  String get tryAgain => _stringOfLocalizedValue('tryAgain');
+
+  /// Returns the localized value of viewDashboard.
+  String get viewDashboard => _stringOfLocalizedValue('viewDashboard');
+
+  /// Returns the localized value of accessOverviewAndMetrics.
+  String get accessOverviewAndMetrics =>
+      _stringOfLocalizedValue('accessOverviewAndMetrics');
+
+  /// Returns the localized value of analytics.
+  String get analytics => _stringOfLocalizedValue('analytics');
+
+  /// Returns the localized value of viewAnalytics.
+  String get viewAnalytics => _stringOfLocalizedValue('viewAnalytics');
+
+  /// Returns the localized value of consultAnalyticalData.
+  String get consultAnalyticalData =>
+      _stringOfLocalizedValue('consultAnalyticalData');
+
+  /// Returns the localized value of viewReports.
+  String get viewReports => _stringOfLocalizedValue('viewReports');
+
+  /// Returns the localized value of accessPerformanceReports.
+  String get accessPerformanceReports =>
+      _stringOfLocalizedValue('accessPerformanceReports');
+
+  /// Returns the localized value of exportReports.
+  String get exportReports => _stringOfLocalizedValue('exportReports');
+
+  /// Returns the localized value of downloadAndExportReportData.
+  String get downloadAndExportReportData =>
+      _stringOfLocalizedValue('downloadAndExportReportData');
+
+  /// Returns the localized value of deleteReports.
+  String get deleteReports => _stringOfLocalizedValue('deleteReports');
+
+  /// Returns the localized value of deleteReportData.
+  String get deleteReportData => _stringOfLocalizedValue('deleteReportData');
+
+  /// Returns the localized value of orders.
+  String get orders => _stringOfLocalizedValue('orders');
+
+  /// Returns the localized value of orderStatistics.
+  String get orderStatistics => _stringOfLocalizedValue('orderStatistics');
+
+  /// Returns the localized value of consultMetricsHistoryAnalytics.
+  String get consultMetricsHistoryAnalytics =>
+      _stringOfLocalizedValue('consultMetricsHistoryAnalytics');
+
+  /// Returns the localized value of addOrders.
+  String get addOrders => _stringOfLocalizedValue('addOrders');
+
+  /// Returns the localized value of createNewOrdersRecordSales.
+  String get createNewOrdersRecordSales =>
+      _stringOfLocalizedValue('createNewOrdersRecordSales');
+
+  /// Returns the localized value of editOrders.
+  String get editOrders => _stringOfLocalizedValue('editOrders');
+
+  /// Returns the localized value of deleteOrders.
+  String get deleteOrders => _stringOfLocalizedValue('deleteOrders');
+
+  /// Returns the localized value of cancelDeleteOrdersPermanently.
+  String get cancelDeleteOrdersPermanently =>
+      _stringOfLocalizedValue('cancelDeleteOrdersPermanently');
+
+  /// Returns the localized value of viewProducts.
+  String get viewProducts => _stringOfLocalizedValue('viewProducts');
+
+  /// Returns the localized value of consultInventoryPricesDetails.
+  String get consultInventoryPricesDetails =>
+      _stringOfLocalizedValue('consultInventoryPricesDetails');
+
+  /// Returns the localized value of addProducts.
+  String get addProducts => _stringOfLocalizedValue('addProducts');
+
+  /// Returns the localized value of createNewProductsWithPrices.
+  String get createNewProductsWithPrices =>
+      _stringOfLocalizedValue('createNewProductsWithPrices');
+
+  /// Returns the localized value of editProducts.
+  String get editProducts => _stringOfLocalizedValue('editProducts');
+
+  /// Returns the localized value of deleteProducts.
+  String get deleteProducts => _stringOfLocalizedValue('deleteProducts');
+
+  /// Returns the localized value of removeProductsPermanently.
+  String get removeProductsPermanently =>
+      _stringOfLocalizedValue('removeProductsPermanently');
+
+  /// Returns the localized value of viewSuppliers.
+  String get viewSuppliers => _stringOfLocalizedValue('viewSuppliers');
+
+  /// Returns the localized value of consultSupplierListContactInfo.
+  String get consultSupplierListContactInfo =>
+      _stringOfLocalizedValue('consultSupplierListContactInfo');
+
+  /// Returns the localized value of placeSupplierOrders.
+  String get placeSupplierOrders =>
+      _stringOfLocalizedValue('placeSupplierOrders');
+
+  /// Returns the localized value of createPlaceNewSupplierOrders.
+  String get createPlaceNewSupplierOrders =>
+      _stringOfLocalizedValue('createPlaceNewSupplierOrders');
+
+  /// Returns the localized value of editSupplierOrders.
+  String get editSupplierOrders =>
+      _stringOfLocalizedValue('editSupplierOrders');
+
+  /// Returns the localized value of cancelSupplierOrders.
+  String get cancelSupplierOrders =>
+      _stringOfLocalizedValue('cancelSupplierOrders');
+
+  /// Returns the localized value of selected.
+  String get selected => _stringOfLocalizedValue('selected');
+
+  /// Returns the localized value of editOrderDetailsStatus.
+  String get editOrderDetailsStatus =>
+      _stringOfLocalizedValue('editOrderDetailsStatus');
+
+  /// Returns the localized value of editProductInformationPriceStock.
+  String get editProductInformationPriceStock =>
+      _stringOfLocalizedValue('editProductInformationPriceStock');
+
+  /// Returns the localized value of editSupplierOrderDetailsStatus.
+  String get editSupplierOrderDetailsStatus =>
+      _stringOfLocalizedValue('editSupplierOrderDetailsStatus');
+
+  /// Returns the localized value of cancelDeleteSupplierOrders.
+  String get cancelDeleteSupplierOrders =>
+      _stringOfLocalizedValue('cancelDeleteSupplierOrders');
+
+  /// Returns the localized value of unspecified.
+  String get unspecified => _stringOfLocalizedValue('unspecified');
+
+  /// Returns the localized value of userInformation.
+  String get userInformation => _stringOfLocalizedValue('userInformation');
 
   /// Changes the locale.
   void changeLocale([Locale? newLocale]) {

@@ -86,8 +86,8 @@ class SidebarWidget extends StatelessWidget {
         roles: StoreResourceType.values,
       ),
       SideBarItem(
-        id: DashboardItem.users,
-        label: Intls.to.users,
+        id: DashboardItem.members,
+        label: Intls.to.members,
         icon: LucideIcons.users400,
         roles: StoreResourceType.values,
       ),
