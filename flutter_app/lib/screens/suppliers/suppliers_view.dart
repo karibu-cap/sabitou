@@ -5,8 +5,8 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../services/internationalization/internationalization.dart';
 import '../../utils/common_scaffold.dart';
+import 'components/dialogs/suppliers_add/suppliers_add_view.dart';
 import 'components/list_components/supplier_shimmer_widgets.dart';
-import 'components/suppliers_form_dialogue.dart';
 import 'components/suppliers_list.dart';
 import 'components/suppliers_stats_grid.dart';
 import 'suppliers_controller.dart';
@@ -14,7 +14,7 @@ import 'suppliers_view_model.dart';
 
 /// Suppliers view.
 class SuppliersView extends StatelessWidget {
-  /// Constructs the registration view.
+  /// Constructs the SuppliersView view.
   const SuppliersView({super.key});
 
   @override
@@ -43,13 +43,15 @@ class SuppliersContent extends StatelessWidget {
     SuppliersController controller,
     Supplier? supplier,
   ) {
-    controller.setSelectedSupplier(supplier);
     showDialog(
       context: context,
       builder: (dialogContext) =>
           ChangeNotifierProvider<SuppliersController>.value(
             value: controller,
-            child: SupplierFormDialog(supplier: supplier),
+            child: SupplierFormDialog(
+              suppliersController: controller,
+              supplier: supplier,
+            ),
           ),
     );
   }
@@ -86,6 +88,7 @@ class SuppliersHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Provider.of<SuppliersController>(context);
+    final theme = ShadTheme.of(context);
 
     return StreamBuilder<List<Supplier>>(
       stream: controller.suppliersStream,
@@ -102,15 +105,12 @@ class SuppliersHeader extends StatelessWidget {
               children: [
                 Text(
                   AppInternationalizationService.to.supplierManagement,
-                  style: const TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: theme.textTheme.h4,
                 ),
                 const SizedBox(height: 4),
                 Text(
                   AppInternationalizationService.to.manageSupplierRelationships,
-                  style: const TextStyle(fontSize: 16, color: Colors.grey),
+                  style: theme.textTheme.muted,
                 ),
               ],
             ),

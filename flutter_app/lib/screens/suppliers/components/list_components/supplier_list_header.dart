@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../../services/internationalization/internationalization.dart';
 
@@ -10,13 +11,17 @@ class SupplierListHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final intl = AppInternationalizationService.to;
+    final theme = ShadTheme.of(context);
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          intl.suppliersTitle,
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          intl.suppliers,
+          style: theme.textTheme.h4.copyWith(
+            fontWeight: FontWeight.bold,
+            fontSize: 24,
+          ),
         ),
       ],
     );

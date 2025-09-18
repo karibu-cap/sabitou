@@ -123,6 +123,8 @@ class UserStatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
+
     return ShadCard(
       padding: const EdgeInsets.all(20),
       child: Column(
@@ -134,9 +136,9 @@ class UserStatCard extends StatelessWidget {
               Expanded(
                 child: AutoSizeText(
                   title,
-                  style: ShadTheme.of(
-                    context,
-                  ).textTheme.muted.copyWith(fontWeight: FontWeight.bold),
+                  style: theme.textTheme.muted.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -158,7 +160,7 @@ class UserStatCard extends StatelessWidget {
             children: [
               AutoSizeText(
                 value,
-                style: ShadTheme.of(context).textTheme.p.copyWith(
+                style: theme.textTheme.p.copyWith(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
                   color: color,
@@ -204,7 +206,7 @@ class UserStatCard extends StatelessWidget {
           const SizedBox(height: 4),
           AutoSizeText(
             subtitle,
-            style: ShadTheme.of(context).textTheme.muted.copyWith(fontSize: 12),
+            style: theme.textTheme.muted.copyWith(fontSize: 12),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),

@@ -223,27 +223,6 @@ class _StatusChangeSection extends StatelessWidget {
                 ),
               ),
               DropdownMenuItem(
-                value: StoreMemberStatus.STORE_MEMBER_STATUS_PENDING,
-                child: Row(
-                  children: [
-                    const Icon(
-                      LucideIcons.clock,
-                      size: 16,
-                      color: Colors.orange,
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      AppInternationalizationService.to.pending,
-                      style: theme.textTheme.h4.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: theme.textTheme.muted.color,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              DropdownMenuItem(
                 value: StoreMemberStatus.STORE_MEMBER_STATUS_INACTIVE,
                 child: Row(
                   children: [
@@ -289,6 +268,7 @@ class _StatusChangeSection extends StatelessWidget {
                       controller.changeUserStatus(newStatus);
                     }
                   },
+            dropdownColor: theme.colorScheme.background,
           ),
         ],
       ),
@@ -362,6 +342,8 @@ class _ActionButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -372,11 +354,11 @@ class _ActionButtons extends StatelessWidget {
         const SizedBox(width: 12),
         ShadButton(
           trailing: controller.isLoading
-              ? const SizedBox(
+              ? SizedBox(
                   width: 16,
                   height: 16,
                   child: CircularProgressIndicator(
-                    color: Colors.white,
+                    color: theme.colorScheme.secondary,
                     strokeWidth: 2,
                   ),
                 )
@@ -396,7 +378,7 @@ class _ActionButtons extends StatelessWidget {
           },
           child: Text(
             AppInternationalizationService.to.save,
-            style: const TextStyle(color: Colors.white),
+            style: TextStyle(color: theme.colorScheme.secondary),
           ),
         ),
       ],
