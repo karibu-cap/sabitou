@@ -5,6 +5,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../services/internationalization/internationalization.dart';
 import '../../utils/common_scaffold.dart';
+import '../../utils/responsive_utils.dart';
 import 'components/dialogs/suppliers_add/suppliers_add_view.dart';
 import 'components/list_components/supplier_shimmer_widgets.dart';
 import 'components/suppliers_list.dart';
@@ -89,16 +90,20 @@ class SuppliersHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Provider.of<SuppliersController>(context);
     final theme = ShadTheme.of(context);
+    final isMobile = ResponsiveUtils.isMobile(context);
 
     return StreamBuilder<List<Supplier>>(
       stream: controller.suppliersStream,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return SupplierShimmerWidgets.buildHeaderShimmer();
+          return SupplierShimmerWidgets.buildHeaderShimmer(isMobile);
         }
 
-        return Row(
+        return Flex(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          direction: isMobile ? Axis.vertical : Axis.horizontal,
+          spacing: 12,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,

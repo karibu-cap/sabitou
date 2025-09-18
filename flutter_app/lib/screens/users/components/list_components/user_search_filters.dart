@@ -71,8 +71,9 @@ class UserSearchFilters extends StatelessWidget {
     return Row(
       children: [
         // Search input
-        Expanded(
+        Flexible(
           child: ShadInput(
+            controller: controller.searchController,
             placeholder: Text(
               AppInternationalizationService
                   .to
@@ -87,6 +88,7 @@ class UserSearchFilters extends StatelessWidget {
 
         // Status filter dropdown
         ShadSelect<StoreMemberStatus>(
+          controller: controller.statusFilterController,
           placeholder: Text(
             AppInternationalizationService.to.allStatus,
             style: communStyle,

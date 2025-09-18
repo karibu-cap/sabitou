@@ -30,36 +30,32 @@ class UsersHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Provider.of<UsersController>(context, listen: false);
-    final isDesktop = ResponsiveUtils.isDesktop(context);
+    final isMobile = ResponsiveUtils.isMobile(context);
 
     final theme = ShadTheme.of(context);
 
     return Flex(
-      direction: isDesktop ? Axis.horizontal : Axis.vertical,
+      direction: isMobile ? Axis.vertical : Axis.horizontal,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: isDesktop
-          ? CrossAxisAlignment.center
-          : CrossAxisAlignment.start,
+      spacing: 12,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                AppInternationalizationService.to.teamManagement,
-                style: theme.textTheme.h4,
-              ),
-              const SizedBox(height: 8),
-              Text(
-                AppInternationalizationService
-                    .to
-                    .manageTeamMembersRolesPermissions,
-                style: theme.textTheme.muted,
-              ),
-            ],
-          ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              AppInternationalizationService.to.teamManagement,
+              style: theme.textTheme.h4,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              AppInternationalizationService
+                  .to
+                  .manageTeamMembersRolesPermissions,
+              style: theme.textTheme.muted,
+            ),
+          ],
         ),
-        const SizedBox(width: 24),
         ShadButton(
           onPressed: () => _showAddUserDialog(context, controller),
           child: Row(

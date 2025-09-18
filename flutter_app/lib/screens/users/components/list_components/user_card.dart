@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
@@ -126,15 +127,18 @@ class _UserCardHeader extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              AutoSizeText(
                 '${user.firstName} ${user.lastName}',
                 style: theme.textTheme.h4.copyWith(fontWeight: FontWeight.bold),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
               const SizedBox(height: 4),
-              _StatusBadge(status: storeMember.status),
+              FittedBox(child: _StatusBadge(status: storeMember.status)),
             ],
           ),
         ),
+        const SizedBox(width: 12),
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -209,11 +213,13 @@ class _ContactInfo extends StatelessWidget {
             ),
             const SizedBox(width: 8),
             Expanded(
-              child: Text(
+              child: AutoSizeText(
                 user.email,
                 style: theme.textTheme.muted.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ],
@@ -231,11 +237,13 @@ class _ContactInfo extends StatelessWidget {
             ),
             const SizedBox(width: 8),
             Expanded(
-              child: Text(
+              child: AutoSizeText(
                 user.phoneNumber,
                 style: theme.textTheme.muted.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ],
@@ -263,24 +271,11 @@ class _UserCardFooter extends StatelessWidget {
 
     return Column(
       children: [
-        Row(
-          children: [
-            Text(
-              '${AppInternationalizationService.to.joined} :',
-              style: theme.textTheme.muted.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(width: 2),
-            Text(
-              Formatters.formatDate(storeMember.memberSince.toDateTime()),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: theme.textTheme.muted.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
+        AutoSizeText(
+          '${AppInternationalizationService.to.joined} : ${Formatters.formatDate(storeMember.memberSince.toDateTime())}',
+          style: theme.textTheme.muted.copyWith(fontWeight: FontWeight.bold),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
 
         const SizedBox(height: 16),
