@@ -383,7 +383,6 @@ class AppInternationalizationService extends ChangeNotifier {
     'perSupplierText': {'en': 'Per supplier', 'fr': 'Par fournisseur'},
     'totalValueText': {'en': 'Total Value', 'fr': 'Valeur Totale'},
     'allInventoryText': {'en': 'All inventory', 'fr': 'Tout l\'inventaire'},
-    'suppliersTitle': {'en': 'Suppliers', 'fr': 'Fournisseurs'},
     'contactInfoText': {'en': 'Contact Info', 'fr': 'Info Contact'},
     'productsText': {'en': 'Products', 'fr': 'Produits'},
     'statusText': {'en': 'Status', 'fr': 'Statut'},
@@ -2267,9 +2266,6 @@ class AppInternationalizationService extends ChangeNotifier {
 
   /// Returns the localized value of allInventoryText.
   String get allInventoryText => _stringOfLocalizedValue('allInventoryText');
-
-  /// Returns the localized value of suppliersTitle.
-  String get suppliersTitle => _stringOfLocalizedValue('suppliersTitle');
 
   /// Returns the localized value of contactInfoText.
   String get contactInfoText => _stringOfLocalizedValue('contactInfoText');

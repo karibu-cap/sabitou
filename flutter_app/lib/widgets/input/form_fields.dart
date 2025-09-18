@@ -58,11 +58,15 @@ class InputField extends StatelessWidget {
       fontWeight: FontWeight.bold,
       fontSize: 14,
     );
+    final stylePlaceholder = theme.textTheme.p.copyWith(
+      color: theme.colorScheme.primary,
+      fontSize: 14,
+    );
 
     return ShadInputFormField(
       controller: controller,
-      placeholder: Text(placeholder),
-      trailing: Icon(icon),
+      placeholder: Text(placeholder, style: stylePlaceholder),
+      trailing: Icon(icon, color: theme.colorScheme.primary),
       keyboardType: keyboardType,
       inputFormatters: inputFormatters,
       id: id,

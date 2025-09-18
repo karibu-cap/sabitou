@@ -133,8 +133,14 @@ class UserPermissionsModalController extends ChangeNotifier {
   }
 
   /// Changes user status
-  Future<void> changeUserStatus(StoreMemberStatus newStatus) async {
-    if (_originalStoreMember.status == newStatus) return;
+  Future<bool> changeUserStatus(StoreMemberStatus newStatus) async {
+    if (_originalStoreMember.status == newStatus) {
+      return true;
+    }
+
+    print('newStatus: $newStatus');
+    print('newStatus: $newStatus');
+    print('newStatus: $newStatus');
 
     _isLoading = true;
     _errorMessage = '';
@@ -151,8 +157,7 @@ class UserPermissionsModalController extends ChangeNotifier {
     _isLoading = false;
     notifyListeners();
 
-    _isLoading = false;
-    notifyListeners();
+    return result;
   }
 
   /// Clear any error message

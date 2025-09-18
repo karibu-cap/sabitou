@@ -51,28 +51,6 @@ final supplierFakeTransport = FakeTransportBuilder()
       return DeleteSupplierResponse()..success = true;
     })
     .server(SupplierService.streamStoreSuppliers, (req, _) async* {
-      // Simulate initial data
-      yield GetStoreSuppliersResponse()
-        ..suppliers.addAll([
-          Supplier()
-            ..refId = 'supplier_1'
-            ..name = 'Fournisseur Alpha'
-            ..contactEmail = 'alpha@example.com'
-            ..contactPhone = '696123456'
-            ..contactAddress = 'Yaoundé, Cameroun'
-            ..isActive = true,
-          Supplier()
-            ..refId = 'supplier_2'
-            ..name = 'Fournisseur Beta'
-            ..contactEmail = 'beta@example.com'
-            ..contactPhone = '696789012'
-            ..contactAddress = 'Douala, Cameroun'
-            ..isActive = true,
-        ]);
-
-      // Simulate periodic updates every 10 seconds
-      await Future.delayed(const Duration(seconds: 10));
-
       yield GetStoreSuppliersResponse()
         ..suppliers.addAll([
           Supplier()
@@ -124,45 +102,6 @@ final supplierFakeTransport = FakeTransportBuilder()
     })
     .server(ProductService.streamStoreProducts, (req, _) async* {
       final request = req;
-
-      // Simulate initial products data
-      yield StreamStoreProductsResponse()
-        ..products.addAll([
-          StoreProduct(
-            refId: 'product_1',
-            globalProductId: 'global_product_1',
-            supplierId: 'supplier_1',
-            storeId: request.storeId,
-            minStockThreshold: 10,
-            price: 10000,
-            stockQuantity: 20,
-            imagesLinksIds: ['image_1', 'image_2'],
-          ),
-          StoreProduct(
-            refId: 'product_2',
-            globalProductId: 'global_product_2',
-            supplierId: 'supplier_1',
-            storeId: request.storeId,
-            minStockThreshold: 10,
-            price: 20000,
-            stockQuantity: 50,
-            imagesLinksIds: ['image_1', 'image_2'],
-          ),
-          StoreProduct(
-            refId: 'product_3',
-            globalProductId: 'global_product_3',
-            supplierId: 'supplier_2',
-            storeId: request.storeId,
-            minStockThreshold: 5,
-            price: 5000,
-            stockQuantity: 5,
-            imagesLinksIds: ['image_1', 'image_2'],
-          ),
-        ]);
-
-      // Simulate periodic updates every 15 seconds
-      await Future.delayed(const Duration(seconds: 15));
-
       yield StreamStoreProductsResponse()
         ..products.addAll([
           StoreProduct(
