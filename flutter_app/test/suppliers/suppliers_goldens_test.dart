@@ -1,4 +1,11 @@
+import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
+import 'package:golden_toolkit/golden_toolkit.dart';
+import 'package:sabitou_clients/screens/suppliers/suppliers_view.dart';
+import 'package:sabitou_clients/services/rpc/connect_rpc.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
+
+import '../goldens.dart';
 
 /// User fake transport.
 final userFakeTransport = FakeTransportBuilder()
@@ -211,3 +218,20 @@ final userFakeTransport = FakeTransportBuilder()
       yield StreamStoreMembersResponse()..storeMembers.addAll(storeMembers);
     })
     .build();
+
+void main() {
+  group('Goldens', () {
+    setUp(() {
+      GetIt.I.registerSingletonIfAbsent<ConnectRPCService>(
+        () => ConnectRPCService.new(clientChannel: userFakeTransport),
+      );
+    });
+    testGoldens('Suppliers view', (tester) async {
+      return await multiScreenMultiLocaleGolden(
+        tester,
+        const SuppliersView(),
+        'suppliers_view',
+      );
+    });
+  });
+}
