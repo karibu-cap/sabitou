@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 import 'users_view_model.dart';
 
@@ -14,6 +15,13 @@ class UsersController extends ChangeNotifier {
 
   /// Constructs a new UsersController.
   UsersController(UsersViewModel viewModel) : _viewModel = viewModel;
+
+  /// Text controller for search input field.
+  final TextEditingController searchController = TextEditingController();
+
+  /// Text controller for status filter input field.
+  final ShadSelectController<StoreMemberStatus>? statusFilterController =
+      ShadSelectController<StoreMemberStatus>();
 
   /// Gets store members stream for reactive UI updates
   Stream<List<StoreMember>> get storeMembersStream =>
@@ -143,5 +151,7 @@ class UsersController extends ChangeNotifier {
   void clearFilters() {
     searchQuery.add('');
     selectedStatus.add(null);
+    searchController.clear();
+    // statusFilterController?.value = null;
   }
 }

@@ -49,13 +49,11 @@ class UsersList extends StatelessWidget {
 
             return LayoutBuilder(
               builder: (context, constraints) {
-                final int columns = (constraints.maxWidth / 400).floor();
-
                 return ResponsiveGrid(
                   mainAxisExtent: 500,
-                  crossAxisCount: columns,
                   crossAxisSpacing: 20,
                   mainAxisSpacing: 20,
+                  childAspectRatio: 1,
                   children: [
                     ...storeMembers.map(
                       (storeMember) => UserCard(storeMember: storeMember),
