@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-import '../../../../services/internationalization/internationalization.dart';
-import '../../suppliers_controller.dart';
+import '../../../../../services/internationalization/internationalization.dart';
+import '../suppliers_add/suppliers_add_controller.dart';
 
 /// Action buttons widget for supplier form.
 class SupplierActionButtons extends StatelessWidget {
@@ -28,7 +28,8 @@ class SupplierActionButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final intl = AppInternationalizationService.to;
-    final controller = Provider.of<SuppliersController>(context);
+    final controller = Provider.of<SuppliersAddController>(context);
+    final theme = ShadTheme.of(context);
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -40,12 +41,14 @@ class SupplierActionButtons extends StatelessWidget {
           onPressed: controller.isFormLoading ? null : onSave,
 
           child: controller.isFormLoading
-              ? const SizedBox(
+              ? SizedBox(
                   width: 16,
                   height: 16,
                   child: CircularProgressIndicator(
                     strokeWidth: 2,
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      theme.colorScheme.secondary,
+                    ),
                   ),
                 )
               : Text(

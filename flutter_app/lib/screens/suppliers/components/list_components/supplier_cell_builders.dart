@@ -13,14 +13,17 @@ import '../../suppliers_controller.dart';
 /// supplier data table, promoting code reuse and consistency.
 class SupplierCellBuilders {
   /// Builds supplier cell with name and address.
-  static Widget buildSupplierCell(Supplier supplier) {
+  static Widget buildSupplierCell(Supplier supplier, ShadThemeData theme) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
           supplier.name,
-          style: const TextStyle(fontWeight: FontWeight.w600),
+          style: theme.textTheme.p.copyWith(
+            fontWeight: FontWeight.w600,
+            fontSize: 14,
+          ),
         ),
         if (supplier.contactAddress.isNotEmpty)
           Row(
@@ -30,7 +33,7 @@ class SupplierCellBuilders {
               Flexible(
                 child: Text(
                   supplier.contactAddress,
-                  style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                  style: theme.textTheme.muted.copyWith(fontSize: 12),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
@@ -41,23 +44,29 @@ class SupplierCellBuilders {
   }
 
   /// Builds supplier ID cell.
-  static Widget buildSupplierIdCell(Supplier supplier) {
+  static Widget buildSupplierIdCell(Supplier supplier, ShadThemeData theme) {
     return Text(
       supplier.refId.substring(0, 10),
-      style: const TextStyle(fontFamily: 'monospace', fontSize: 12),
+      style: theme.textTheme.muted.copyWith(fontSize: 12),
     );
   }
 
   /// Builds contact info cell with phone and email.
-  static Widget buildContactCell(Supplier supplier) {
+  static Widget buildContactCell(Supplier supplier, ShadThemeData theme) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
         if (supplier.contactPhone.isNotEmpty)
-          Text(
-            supplier.contactPhone,
-            style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+          Row(
+            children: [
+              const Icon(LucideIcons.phone400, size: 12),
+              const SizedBox(width: 4),
+              Text(
+                supplier.contactPhone,
+                style: theme.textTheme.muted.copyWith(fontSize: 12),
+              ),
+            ],
           ),
         if (supplier.contactEmail.isNotEmpty)
           Row(
@@ -66,7 +75,7 @@ class SupplierCellBuilders {
               const SizedBox(width: 4),
               Text(
                 supplier.contactEmail,
-                style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                style: theme.textTheme.muted.copyWith(fontSize: 12),
               ),
             ],
           ),
@@ -83,7 +92,7 @@ class SupplierCellBuilders {
         borderRadius: const BorderRadius.all(Radius.circular(12)),
       ),
       child: Text(
-        '$productCount products',
+        '$productCount ${AppInternationalizationService.to.productsText.toLowerCase()}',
         style: const TextStyle(
           fontSize: 12,
           color: Colors.blue,
@@ -97,12 +106,16 @@ class SupplierCellBuilders {
   static Widget buildTotalValueCell(
     List<StoreProduct> supplierProducts,
     SuppliersController controller,
+    ShadThemeData theme,
   ) {
     final totalValue = controller.calculateTotalValue(supplierProducts);
 
     return Text(
       Formatters.formatCurrency(totalValue),
-      style: const TextStyle(fontWeight: FontWeight.w600),
+      style: theme.textTheme.p.copyWith(
+        fontWeight: FontWeight.w600,
+        fontSize: 14,
+      ),
     );
   }
 
@@ -130,10 +143,10 @@ class SupplierCellBuilders {
   }
 
   /// Builds notes cell.
-  static Widget buildNotesCell(Supplier supplier) {
+  static Widget buildNotesCell(Supplier supplier, ShadThemeData theme) {
     return Text(
       supplier.description.isNotEmpty ? supplier.description : '/',
-      style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+      style: theme.textTheme.muted.copyWith(fontSize: 12),
     );
   }
 
@@ -141,16 +154,25 @@ class SupplierCellBuilders {
   static Widget buildActionsCell({
     required VoidCallback onEdit,
     required VoidCallback onDelete,
+    required ShadThemeData theme,
   }) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         IconButton(
-          icon: const Icon(LucideIcons.squarePen400, size: 16),
+          icon: Icon(
+            LucideIcons.squarePen400,
+            size: 16,
+            color: theme.colorScheme.primary,
+          ),
           onPressed: onEdit,
         ),
         IconButton(
-          icon: const Icon(LucideIcons.trash2400, size: 16),
+          icon: Icon(
+            LucideIcons.trash2400,
+            size: 16,
+            color: theme.colorScheme.primary,
+          ),
           onPressed: onDelete,
         ),
       ],

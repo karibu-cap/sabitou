@@ -5,6 +5,7 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../services/internationalization/internationalization.dart';
+import '../../../utils/formatters.dart';
 import '../../../widgets/grid/responsitive_grid.dart';
 import '../suppliers_controller.dart';
 import 'list_components/supplier_shimmer_widgets.dart';
@@ -16,7 +17,7 @@ class SuppliersStatsGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Provider.of<SuppliersController>(context);
+    final controller = Provider.of<SuppliersController>(context, listen: false);
     final appIntl = AppInternationalizationService.to;
 
     return StreamBuilder<List<Supplier>>(
@@ -72,7 +73,7 @@ class SuppliersStatsGrid extends StatelessWidget {
               ),
               StatCard(
                 title: appIntl.totalValueText,
-                value: totalInventoryValue.toStringAsFixed(0),
+                value: Formatters.formatCurrency(totalInventoryValue),
                 subtitle: appIntl.totalValueText,
                 icon: LucideIcons.check400,
                 color: Colors.orange,
@@ -128,6 +129,8 @@ class StatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
+
     return ShadCard(
       padding: const EdgeInsets.all(20),
       child: Column(
@@ -138,9 +141,9 @@ class StatCard extends StatelessWidget {
             children: [
               AutoSizeText(
                 title,
-                style: ShadTheme.of(
-                  context,
-                ).textTheme.p.copyWith(fontWeight: FontWeight.bold),
+                style: theme.textTheme.muted.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -157,18 +160,18 @@ class StatCard extends StatelessWidget {
           const SizedBox(height: 6),
           AutoSizeText(
             value,
-            style: ShadTheme.of(
-              context,
-            ).textTheme.p.copyWith(fontSize: 24, fontWeight: FontWeight.bold),
+            style: theme.textTheme.p.copyWith(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+              color: color,
+            ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
           const SizedBox(height: 2),
           AutoSizeText(
             subtitle,
-            style: ShadTheme.of(
-              context,
-            ).textTheme.p.copyWith(fontSize: 12, color: Colors.grey[600]),
+            style: theme.textTheme.muted.copyWith(fontSize: 12),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),

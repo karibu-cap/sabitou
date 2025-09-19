@@ -51,23 +51,30 @@ class InputField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
+
+    final style = theme.textTheme.p.copyWith(
+      color: theme.colorScheme.primary,
+      fontWeight: FontWeight.bold,
+      fontSize: 14,
+    );
+    final stylePlaceholder = theme.textTheme.p.copyWith(
+      color: theme.colorScheme.primary,
+      fontSize: 14,
+    );
+
     return ShadInputFormField(
       controller: controller,
-      placeholder: Text(placeholder),
-      trailing: Icon(icon),
+      placeholder: Text(placeholder, style: stylePlaceholder),
+      trailing: Icon(icon, color: theme.colorScheme.primary),
       keyboardType: keyboardType,
       inputFormatters: inputFormatters,
       id: id,
       validator: validator,
       description: description != null
-          ? Text(
-              description ?? '',
-              style: Theme.of(context).textTheme.bodySmall,
-            )
+          ? Text(description ?? '', style: style)
           : null,
-      label: label != null
-          ? Text(label ?? '', style: Theme.of(context).textTheme.bodyLarge)
-          : null,
+      label: label != null ? Text(label ?? '', style: style) : null,
     );
   }
 }

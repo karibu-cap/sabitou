@@ -1,6 +1,12 @@
+import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
+import 'package:golden_toolkit/golden_toolkit.dart';
+import 'package:sabitou_clients/screens/users/users_view.dart';
+import 'package:sabitou_clients/services/rpc/connect_rpc.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
-/// Supplier fake transport.
+import '../goldens.dart';
+
 final supplierFakeTransport = FakeTransportBuilder()
     .unary(SupplierService.getStoreSuppliers, (req, _) async {
       return GetStoreSuppliersResponse(
@@ -147,3 +153,20 @@ final supplierFakeTransport = FakeTransportBuilder()
         ]);
     })
     .build();
+
+void main() {
+  group('Goldens', () {
+    setUp(() {
+      GetIt.I.registerSingletonIfAbsent<ConnectRPCService>(
+        () => ConnectRPCService.new(clientChannel: supplierFakeTransport),
+      );
+    });
+    testGoldens('Members view', (tester) async {
+      return await multiScreenMultiLocaleGolden(
+        tester,
+        const UsersView(),
+        'members_view',
+      );
+    });
+  });
+}

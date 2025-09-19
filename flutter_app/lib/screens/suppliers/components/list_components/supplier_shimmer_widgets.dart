@@ -89,13 +89,16 @@ class SupplierShimmerWidgets {
   }
 
   /// Creates a shimmer effect for the suppliers list header.
-  static Widget buildHeaderShimmer() {
+  static Widget buildHeaderShimmer(bool isMobile) {
     return Shimmer(
       duration: const Duration(seconds: 2),
       interval: const Duration(milliseconds: 500),
       color: Colors.grey[300] ?? Colors.transparent,
-      child: Row(
+      child: Flex(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        direction: isMobile ? Axis.vertical : Axis.horizontal,
+        spacing: 12,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             height: 24,

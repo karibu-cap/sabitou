@@ -44,6 +44,10 @@ class ResponsiveGrid extends StatelessWidget {
   /// If not provided, items will have their natural height.
   final double? mainAxisExtent;
 
+  /// The aspect ratio of each grid item.
+  /// If not provided, items will have an aspect ratio of 2.
+  final double? childAspectRatio;
+
   /// Creates a responsive grid layout.
   const ResponsiveGrid({
     super.key,
@@ -53,6 +57,7 @@ class ResponsiveGrid extends StatelessWidget {
     this.crossAxisSpacing = 12,
     this.mainAxisSpacing = 12,
     this.mainAxisExtent,
+    this.childAspectRatio,
   });
 
   @override
@@ -74,7 +79,7 @@ class ResponsiveGrid extends StatelessWidget {
             crossAxisSpacing: crossAxisSpacing,
             mainAxisSpacing: mainAxisSpacing,
             mainAxisExtent: mainAxisExtent,
-            childAspectRatio: 2,
+            childAspectRatio: childAspectRatio ?? 2,
           ),
           itemCount: children.length,
           itemBuilder: (context, index) => children[index],

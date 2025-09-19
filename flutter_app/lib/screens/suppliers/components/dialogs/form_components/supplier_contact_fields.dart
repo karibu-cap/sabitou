@@ -3,10 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
-import '../../../../services/internationalization/internationalization.dart';
-import '../../../../utils/form/validation.dart';
-import '../../../../widgets/input/form_fields.dart';
-import '../../suppliers_controller.dart';
+import '../../../../../services/internationalization/internationalization.dart';
+import '../../../../../utils/form/validation.dart';
+import '../../../../../widgets/input/form_fields.dart';
+import '../suppliers_add/suppliers_add_controller.dart';
 
 /// Contact fields widget for supplier form.
 class SupplierContactFields extends StatelessWidget {
@@ -19,7 +19,7 @@ class SupplierContactFields extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final intl = AppInternationalizationService.to;
-    final controller = Provider.of<SuppliersController>(context);
+    final controller = Provider.of<SuppliersAddController>(context);
 
     return Row(
       children: [
