@@ -14,6 +14,8 @@ class SystemSettings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = context.watch<SettingsController>();
+
     return Column(
       spacing: 12,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -27,7 +29,10 @@ class SystemSettings extends StatelessWidget {
           children: [
             Flexible(
               child: ShadButton(
-                onPressed: () {},
+                onPressed: () async {
+                  await controller.switchBusiness();
+                  await controller.switchStore();
+                },
                 leading: const Icon(LucideIcons.save400),
                 child: Flexible(
                   child: Text(
@@ -37,7 +42,6 @@ class SystemSettings extends StatelessWidget {
                 ),
               ),
             ),
-            ShadButton.ghost(onPressed: () {}, child: Text(Intls.to.cancel)),
           ],
         ),
       ],
