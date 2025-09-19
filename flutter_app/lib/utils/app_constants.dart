@@ -149,4 +149,7 @@ enum DashboardItem {
 
   /// The settings item.
   settings,
+
+  /// The transactions item.
+  transactions,
 }

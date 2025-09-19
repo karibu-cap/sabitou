@@ -5,21 +5,21 @@ import 'package:provider/provider.dart';
 import '../../utils/responsive_utils.dart';
 import '../../widgets/loading.dart';
 import 'components/header.dart';
-import 'components/inentory_stats.dart';
-import 'components/product_table.dart';
 import 'components/search_and_filter.dart';
-import 'inventory_controller.dart';
-import 'inventory_view_model.dart';
+import 'components/transactions_stats.dart';
+import 'components/transactions_tables.dart';
+import 'transactions_controller.dart';
+import 'transactions_view_model.dart';
 
-/// Inventory screen.
-class InventoryScreen extends StatelessWidget {
-  /// Constructs of new [InventoryScreen].
-  const InventoryScreen({super.key});
+/// Transactions screen.
+class TransactionsScreen extends StatelessWidget {
+  /// Constructs of new [TransactionsScreen].
+  const TransactionsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = GetIt.I.registerSingletonIfAbsent<InventoryViewModel>(
-      InventoryViewModel.new,
+    final viewModel = GetIt.I.registerSingletonIfAbsent<TransactionsViewModel>(
+      TransactionsViewModel.new,
     );
 
     return LayoutBuilder(
@@ -27,8 +27,8 @@ class InventoryScreen extends StatelessWidget {
         final isDesktop = ResponsiveUtils.isDesktop(context);
 
         return ChangeNotifierProvider(
-          create: (context) => InventoryController(viewModel),
-          child: Consumer<InventoryController>(
+          create: (context) => TransactionsController(viewModel),
+          child: Consumer<TransactionsController>(
             builder: (context, controller, child) {
               return FutureBuilder<bool>(
                 future: controller.completer.future,
@@ -43,10 +43,10 @@ class InventoryScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       spacing: isDesktop ? 32 : 24,
                       children: const [
-                        InventoryHeader(),
-                        InventoryStats(),
+                        TransactionsHeader(),
+                        TransactionsStats(),
                         SearchAndFilterCard(),
-                        ProductsTable(),
+                        TransactionsTable(),
                       ],
                     ),
                   );

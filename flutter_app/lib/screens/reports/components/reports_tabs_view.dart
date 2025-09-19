@@ -17,7 +17,8 @@ class ReportsTabsView extends StatelessWidget {
 
     return CustomGrid(
       minItemWidth: 250,
-      mainAxisExtent: 80,
+      mainAxisExtent: 100,
+      crossSpacing: 20,
       children: ReportsTab.values
           .map(
             (tab) => SidebarMenuItem<ReportsTab>(

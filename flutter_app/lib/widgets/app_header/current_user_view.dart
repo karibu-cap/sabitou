@@ -30,14 +30,16 @@ class CurrentUserView extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: const BorderRadius.all(Radius.circular(8)),
                 border: Border.fromBorderSide(
-                  BorderSide(color: theme.colorScheme.card),
+                  BorderSide(color: theme.colorScheme.accent),
                 ),
-                color: ShadTheme.of(context).colorScheme.border,
+                color: ShadTheme.of(
+                  context,
+                ).colorScheme.accent.withValues(alpha: 0.05),
               ),
               child: Icon(
                 LucideIcons.user400,
                 size: 20,
-                color: theme.colorScheme.primary,
+                color: theme.colorScheme.accent,
               ),
             ),
             const SizedBox(width: 8),

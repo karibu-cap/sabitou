@@ -70,6 +70,11 @@ class SidebarWidget extends StatelessWidget {
         icon: LucideIcons.chartColumn400,
       ),
       SideBarItem(
+        id: DashboardItem.transactions,
+        label: Intls.to.transactions,
+        icon: LucideIcons.receipt400,
+      ),
+      SideBarItem(
         id: DashboardItem.suppliers,
         label: Intls.to.suppliers,
         icon: LucideIcons.truck400,
@@ -96,10 +101,11 @@ class SidebarWidget extends StatelessWidget {
       child: Container(
         width: AppConstants.sidebarWidth,
         decoration: BoxDecoration(
-          color: ShadTheme.of(context).colorScheme.secondary,
+          color: ShadTheme.of(context).colorScheme.background,
+          border: Border(right: BorderSide(color: theme.colorScheme.border)),
           boxShadow: [
             BoxShadow(
-              color: theme.colorScheme.primaryForeground.withValues(alpha: 0.1),
+              color: theme.colorScheme.border,
               blurRadius: 4,
               offset: const Offset(2, 0),
             ),
@@ -108,6 +114,7 @@ class SidebarWidget extends StatelessWidget {
         child: Column(
           children: [
             _BusinessInfo(),
+            Divider(color: theme.colorScheme.border),
             Expanded(
               child: Container(
                 padding: const EdgeInsets.all(16),
@@ -124,17 +131,11 @@ class SidebarWidget extends StatelessWidget {
                 ),
               ),
             ),
+            Divider(color: theme.colorScheme.border),
+
             if (user != null)
-              Container(
+              Padding(
                 padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: ShadTheme.of(context).colorScheme.secondary,
-                  border: Border(
-                    top: BorderSide(
-                      color: ShadTheme.of(context).colorScheme.card,
-                    ),
-                  ),
-                ),
                 child: CurrentUserView(
                   user: user,
                   onLogout: AuthProvider.instance.logout,
@@ -159,11 +160,6 @@ final class _BusinessInfo extends StatelessWidget {
 
     return Container(
       padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(color: ShadTheme.of(context).colorScheme.card),
-        ),
-      ),
       child: Row(
         children: [
           Container(
@@ -172,9 +168,11 @@ final class _BusinessInfo extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.all(Radius.circular(8)),
               border: Border.fromBorderSide(
-                BorderSide(color: ShadTheme.of(context).colorScheme.card),
+                BorderSide(color: ShadTheme.of(context).colorScheme.accent),
               ),
-              color: ShadTheme.of(context).colorScheme.border,
+              color: ShadTheme.of(
+                context,
+              ).colorScheme.accent.withValues(alpha: 0.05),
             ),
             child:
                 business.hasLogoLinkId() && AppUtils.isURL(business.logoLinkId)
@@ -197,7 +195,7 @@ final class _BusinessInfo extends StatelessWidget {
                             return Icon(
                               LucideIcons.store400,
                               size: 24,
-                              color: ShadTheme.of(context).colorScheme.primary,
+                              color: ShadTheme.of(context).colorScheme.accent,
                             );
                           },
                           placeholderErrorBuilder:
@@ -206,7 +204,7 @@ final class _BusinessInfo extends StatelessWidget {
                                   LucideIcons.store400,
                                   color: ShadTheme.of(
                                     context,
-                                  ).colorScheme.primary,
+                                  ).colorScheme.accent,
                                   size: 24,
                                 );
                               },
@@ -216,14 +214,14 @@ final class _BusinessInfo extends StatelessWidget {
                       return Icon(
                         LucideIcons.store400,
                         size: 24,
-                        color: ShadTheme.of(context).colorScheme.primary,
+                        color: ShadTheme.of(context).colorScheme.accent,
                       );
                     },
                   )
                 : Icon(
                     LucideIcons.store400,
                     size: 24,
-                    color: ShadTheme.of(context).colorScheme.primary,
+                    color: ShadTheme.of(context).colorScheme.accent,
                   ),
           ),
 

@@ -7,7 +7,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import '../../../services/internationalization/internationalization.dart';
 import '../../../utils/extensions.dart';
 import '../../../utils/responsive_utils.dart';
-import '../sales_controller.dart';
+import '../transactions_controller.dart';
 
 /// The search and filter view.
 class SearchAndFilterCard extends StatelessWidget {
@@ -32,7 +32,7 @@ class SearchAndFilterCard extends StatelessWidget {
               spacing: 12,
               children: [
                 Expanded(child: _StatusFilter()),
-                Expanded(child: _DateRangeFilter()),
+                Expanded(child: _TypeFilter()),
               ],
             ),
           ),
@@ -47,12 +47,12 @@ class _SearchInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = context.read<SalesController>();
+    final controller = context.read<TransactionsController>();
 
     return ShadInput(
-      placeholder: Text(Intls.to.searchForOrder),
+      placeholder: Text(Intls.to.searchForTransaction),
       leading: const Icon(LucideIcons.search, size: 16),
-      onChanged: (value) => controller.searchQuery.add(value),
+      onChanged: controller.searchQuery.add,
     );
   }
 }
@@ -62,9 +62,9 @@ class _StatusFilter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = context.read<SalesController>();
+    final controller = context.read<TransactionsController>();
 
-    return ShadSelect<OrderStatus?>(
+    return ShadSelect<TransactionStatus?>(
       placeholder: AutoSizeText(
         Intls.to.status,
         maxLines: 1,
@@ -74,15 +74,15 @@ class _StatusFilter extends StatelessWidget {
       initialValue: controller.selectedStatus.valueOrNull,
       options: [
         ...[
-          OrderStatus.ORDER_STATUS_PENDING,
-          OrderStatus.ORDER_STATUS_COMPLETED,
-          OrderStatus.ORDER_STATUS_CANCELLED,
-          OrderStatus.ORDER_STATUS_PROCESSING,
+          TransactionStatus.TRANSACTION_STATUS_PENDING,
+          TransactionStatus.TRANSACTION_STATUS_COMPLETED,
+          TransactionStatus.TRANSACTION_STATUS_CANCELLED,
+          TransactionStatus.TRANSACTION_STATUS_FAILED,
         ].map(
-          (status) => ShadOption<OrderStatus?>(
+          (status) => ShadOption<TransactionStatus?>(
             value: status,
             child: Text(
-              status.label ?? Intls.to.status,
+              status.label,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
@@ -96,33 +96,51 @@ class _StatusFilter extends StatelessWidget {
         minFontSize: 8,
       ),
       allowDeselection: true,
-      onChanged: (value) {
-        controller.selectedStatus.add(value);
-      },
+      onChanged: controller.selectedStatus.add,
     );
   }
 }
 
-class _DateRangeFilter extends StatelessWidget {
-  const _DateRangeFilter();
+class _TypeFilter extends StatelessWidget {
+  const _TypeFilter();
 
   @override
   Widget build(BuildContext context) {
-    final controller = context.read<SalesController>();
+    final controller = context.read<TransactionsController>();
 
-    return ShadDatePicker.range(
-      height: 32,
-      expands: true,
+    return ShadSelect<TransactionType?>(
       placeholder: AutoSizeText(
-        Intls.to.dateRange,
+        Intls.to.type,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        minFontSize: 8,
+      ),
+      initialValue: controller.selectedType.valueOrNull,
+      options: [
+        ...[
+          TransactionType.TRANSACTION_TYPE_SALE,
+          TransactionType.TRANSACTION_TYPE_REFUND,
+          TransactionType.TRANSACTION_TYPE_PURCHASE,
+          TransactionType.TRANSACTION_TYPE_ADJUSTMENT,
+        ].map(
+          (type) => ShadOption<TransactionType?>(
+            value: type,
+            child: Text(
+              type.label,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ),
+      ],
+      selectedOptionBuilder: (context, value) => AutoSizeText(
+        value?.label ?? Intls.to.type,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         minFontSize: 8,
       ),
       allowDeselection: true,
-      closeOnSelection: false,
-      closeOnTapOutside: false,
-      onRangeChanged: controller.selectedDateRange.add,
+      onChanged: controller.selectedType.add,
     );
   }
 }

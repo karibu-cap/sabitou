@@ -85,9 +85,9 @@ class StatCard extends StatelessWidget {
                 const SizedBox(height: 4),
                 AutoSizeText(
                   value,
-                  style: ShadTheme.of(context).textTheme.p.copyWith(
-                    fontSize: 24,
+                  style: ShadTheme.of(context).textTheme.large.copyWith(
                     fontWeight: FontWeight.bold,
+                    color: color,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -115,7 +115,7 @@ class StatCard extends StatelessWidget {
                 color: color?.withValues(alpha: 0.1),
                 borderRadius: const BorderRadius.all(Radius.circular(100)),
               ),
-              child: Icon(icon, color: color, size: AppConstants.largePadding),
+              child: Icon(icon, color: color, size: 15),
             ),
         ],
       ),

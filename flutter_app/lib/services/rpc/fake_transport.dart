@@ -304,6 +304,16 @@ final _fakeTransport =
               .toList(),
         );
       })
+      ..unary(UserService.getUser, (req, __) async {
+        return GetUserResponse(
+          user: _fakeData[CollectionName.users]
+              ?.map(
+                (e) =>
+                    User()..mergeFromProto3Json(e, ignoreUnknownFields: true),
+              )
+              .firstWhereOrNull((bm) => bm.refId == req.userId),
+        );
+      })
       ..unary(BusinessService.updateBusiness, (req, __) async {
         final business = req.business;
         final businesses = _fakeData[CollectionName.businesses]

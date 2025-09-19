@@ -59,6 +59,11 @@ final class InventoryStats extends StatelessWidget {
       ),
     ];
 
-    return CustomGrid(children: stats, minItemWidth: 250);
+    return CustomGrid(
+      children: stats,
+      minItemWidth: 250,
+      mainAxisExtent: 100,
+      crossSpacing: 20,
+    );
   }
 }

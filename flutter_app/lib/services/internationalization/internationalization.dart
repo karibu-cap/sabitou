@@ -1213,6 +1213,43 @@ class AppInternationalizationService extends ChangeNotifier {
     'pdf': {'en': 'PDF', 'fr': 'PDF'},
     'excel': {'en': 'Excel', 'fr': 'Excel'},
     'csv': {'en': 'CSV', 'fr': 'CSV'},
+    'transactions': {'en': 'Transactions', 'fr': 'Transactions'},
+    'transactionsDescription': {
+      'en':
+          'Track all financial transactions and movements across your business.',
+      'fr':
+          'Suivez toutes les transactions financières et les mouvements dans votre entreprise.',
+    },
+    'addTransaction': {
+      'en': 'Add Transaction',
+      'fr': 'Ajouter une transaction',
+    },
+    'export': {'en': 'Export', 'fr': 'Exporter'},
+    'totalRefunds': {'en': 'Total Refunds', 'fr': 'Total des remboursements'},
+    'netRevenue': {'en': 'Net Revenue', 'fr': 'Revenu net'},
+    'pendingTransactions': {
+      'en': 'Pending Transactions',
+      'fr': 'Transactions en attente',
+    },
+    'type': {'en': 'Type', 'fr': 'Type'},
+    'searchForTransaction': {
+      'en': 'Search by transaction id, order id ...',
+      'fr': 'Rechercher par id de transaction, id de commande ...',
+    },
+    'transactionsHistory': {
+      'en': 'Transactions History',
+      'fr': 'Historique des transactions',
+    },
+    'transactionsHistoryDescription': {
+      'en':
+          'Track all financial transactions and movements across your business.',
+      'fr':
+          'Suivez toutes les transactions financières et les mouvements dans votre entreprise.',
+    },
+    'amount': {'en': 'Amount', 'fr': 'Montant'},
+    'initiatedBy': {'en': 'Initiated By', 'fr': 'Initié par'},
+    'order': {'en': 'Order', 'fr': 'Commande'},
+    'units': {'en': 'Units', 'fr': 'Unités'},
   };
 
   /// Direct access to the internationalization service.
@@ -1231,6 +1268,46 @@ class AppInternationalizationService extends ChangeNotifier {
     const Locale('en'),
     const Locale('fr'),
   ];
+
+  /// The units.
+  String get units => _stringOfLocalizedValue('units');
+
+  /// The initiated by.
+  String get initiatedBy => _stringOfLocalizedValue('initiatedBy');
+
+  /// The order.
+  String get order => _stringOfLocalizedValue('order');
+
+  /// The amount.
+  String get amount => _stringOfLocalizedValue('amount');
+
+  /// The transactions history.
+  String get transactionsHistory =>
+      _stringOfLocalizedValue('transactionsHistory');
+
+  /// The transactions history description.
+  String get transactionsHistoryDescription =>
+      _stringOfLocalizedValue('transactionsHistoryDescription');
+
+  /// The search for transaction.
+  String get searchForTransaction =>
+      _stringOfLocalizedValue('searchForTransaction');
+
+  /// The type.
+  String get type => _stringOfLocalizedValue('type');
+
+  /// The total refunds.
+  String get totalRefunds => _stringOfLocalizedValue('totalRefunds');
+
+  /// The net revenue.
+  String get netRevenue => _stringOfLocalizedValue('netRevenue');
+
+  /// The pending transactions.
+  String get pendingTransactions =>
+      _stringOfLocalizedValue('pendingTransactions');
+
+  /// The export.
+  String get export => _stringOfLocalizedValue('export');
 
   /// The pdf.
   String get pdf => _stringOfLocalizedValue('pdf');
@@ -1320,6 +1397,16 @@ class AppInternationalizationService extends ChangeNotifier {
   /// Returns the localized value of text 'reportAndAnalyticsDescription'.
   String get reportAndAnalyticsDescription =>
       _stringOfLocalizedValue('reportAndAnalyticsDescription');
+
+  /// Returns the localized value of text 'transactions'.
+  String get transactions => _stringOfLocalizedValue('transactions');
+
+  /// Returns the localized value of text 'transactionsDescription'.
+  String get transactionsDescription =>
+      _stringOfLocalizedValue('transactionsDescription');
+
+  /// Returns the localized value of text 'addTransaction'.
+  String get addTransaction => _stringOfLocalizedValue('addTransaction');
 
   /// Returns the localized value of text 'businessUpdatedSuccessfully'.
   String get businessUpdatedSuccessfully =>

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:clock/clock.dart';
 import 'package:collection/collection.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
@@ -159,114 +160,96 @@ class ReportsViewModel {
     salesAndProfitData = generateSalesAndProfitTrendData(
       storeOrders,
       storeTransactions,
-      ShadDateTimeRange(
-        start: DateTime(DateTime.now().year),
-        end: DateTime.now(),
-      ),
+      ShadDateTimeRange(start: DateTime(clock.now().year), end: clock.now()),
     );
     categorySalesData = await generateSalesByCategoryData(
       storeOrders,
       storeTransactions,
-      ShadDateTimeRange(
-        start: DateTime(DateTime.now().year),
-        end: DateTime.now(),
-      ),
+      ShadDateTimeRange(start: DateTime(clock.now().year), end: clock.now()),
     );
     numberOfOrders = calculateOrders(
       storeOrders,
       dateRange: ShadDateTimeRange(
-        start: DateTime(DateTime.now().year),
-        end: DateTime.now(),
+        start: DateTime(clock.now().year),
+        end: clock.now(),
       ),
     );
     averageOrderValue = calculateAverageOrderValue(
       storeOrders,
       dateRange: ShadDateTimeRange(
-        start: DateTime(DateTime.now().year),
-        end: DateTime.now(),
+        start: DateTime(clock.now().year),
+        end: clock.now(),
       ),
     );
     netProfit = calculateNetProfit(
       storeOrders,
       storeTransactions,
       dateRange: ShadDateTimeRange(
-        start: DateTime(DateTime.now().year),
-        end: DateTime.now(),
+        start: DateTime(clock.now().year),
+        end: clock.now(),
       ),
     );
     totalRevenue = calculateTotalRevenue(
       storeOrders,
       storeTransactions,
       dateRange: ShadDateTimeRange(
-        start: DateTime(DateTime.now().year),
-        end: DateTime.now(),
+        start: DateTime(clock.now().year),
+        end: clock.now(),
       ),
     );
 
     previousYearsAverageOrderValue = calculateAverageOrderValue(
       storeOrders,
       dateRange: ShadDateTimeRange(
-        start: DateTime(DateTime.now().year - 1),
-        end: DateTime(DateTime.now().year - 1, 12, 31),
+        start: DateTime(clock.now().year - 1),
+        end: DateTime(clock.now().year - 1, 12, 31),
       ),
     );
     previousYearsNetProfit = calculateNetProfit(
       storeOrders,
       storeTransactions,
       dateRange: ShadDateTimeRange(
-        start: DateTime(DateTime.now().year - 1),
-        end: DateTime(DateTime.now().year - 1, 12, 31),
+        start: DateTime(clock.now().year - 1),
+        end: DateTime(clock.now().year - 1, 12, 31),
       ),
     );
     previousYearsTotalRevenue = calculateTotalRevenue(
       storeOrders,
       storeTransactions,
       dateRange: ShadDateTimeRange(
-        start: DateTime(DateTime.now().year - 1),
-        end: DateTime(DateTime.now().year - 1, 12, 31),
+        start: DateTime(clock.now().year - 1),
+        end: DateTime(clock.now().year - 1, 12, 31),
       ),
     );
     previousYearsNumberOfOrders = calculateOrders(
       storeOrders,
       dateRange: ShadDateTimeRange(
-        start: DateTime(DateTime.now().year - 1),
-        end: DateTime(DateTime.now().year - 1, 12, 31),
+        start: DateTime(clock.now().year - 1),
+        end: DateTime(clock.now().year - 1, 12, 31),
       ),
     );
 
     topPerformingProducts = generateTopPerformingProducts(
       storeOrders,
-      ShadDateTimeRange(
-        start: DateTime(DateTime.now().year),
-        end: DateTime.now(),
-      ),
+      ShadDateTimeRange(start: DateTime(clock.now().year), end: clock.now()),
     );
 
     storeProducts = await _getStoresProducts(storeId);
     stockMovementData = _getStockMovementData(
       storeTransactions,
-      ShadDateTimeRange(
-        start: DateTime(DateTime.now().year),
-        end: DateTime.now(),
-      ),
+      ShadDateTimeRange(start: DateTime(clock.now().year), end: clock.now()),
     );
 
     revenueVsExpensesData = generateRevenueVsExpensesData(
       storeOrders,
       storeTransactions,
-      ShadDateTimeRange(
-        start: DateTime(DateTime.now().year),
-        end: DateTime.now(),
-      ),
+      ShadDateTimeRange(start: DateTime(clock.now().year), end: clock.now()),
     );
 
     monthlyCashFlowData = generateMonthlyCashFlowData(
       storeOrders,
       storeTransactions,
-      ShadDateTimeRange(
-        start: DateTime(DateTime.now().year),
-        end: DateTime.now(),
-      ),
+      ShadDateTimeRange(start: DateTime(clock.now().year), end: clock.now()),
     );
 
     completer.complete(true);
@@ -278,8 +261,8 @@ class ReportsViewModel {
     ShadDateTimeRange? dateRange,
   ) {
     final startDate =
-        dateRange?.start ?? DateTime.now().subtract(const Duration(days: 7));
-    final endDate = dateRange?.end ?? DateTime.now();
+        dateRange?.start ?? clock.now().subtract(const Duration(days: 7));
+    final endDate = dateRange?.end ?? clock.now();
 
     // Aggregate sales by category from completed orders
     final relevantTransactions = transactions.where((transaction) {
@@ -301,8 +284,8 @@ class ReportsViewModel {
     ShadDateTimeRange? dateRange,
   ) {
     final startDate =
-        dateRange?.start ?? DateTime.now().subtract(const Duration(days: 7));
-    final endDate = dateRange?.end ?? DateTime.now();
+        dateRange?.start ?? clock.now().subtract(const Duration(days: 7));
+    final endDate = dateRange?.end ?? clock.now();
 
     final Map<String, TopPerformingProduct> setProduct = {};
 
@@ -346,8 +329,8 @@ class ReportsViewModel {
   ) async {
     final data = <CategorySalesData>{};
     final startDate =
-        dateRange?.start ?? DateTime.now().subtract(const Duration(days: 7));
-    final endDate = dateRange?.end ?? DateTime.now();
+        dateRange?.start ?? clock.now().subtract(const Duration(days: 7));
+    final endDate = dateRange?.end ?? clock.now();
 
     // Aggregate sales by category from completed orders
     final relevantOrders = orders.where((order) {
@@ -414,8 +397,8 @@ class ReportsViewModel {
   ) {
     final data = <TrendDataPoint>[];
     final startDate =
-        dateRange?.start ?? DateTime.now().subtract(const Duration(days: 7));
-    final endDate = dateRange?.end ?? DateTime.now();
+        dateRange?.start ?? clock.now().subtract(const Duration(days: 7));
+    final endDate = dateRange?.end ?? clock.now();
 
     for (int i = 0; i <= endDate.difference(startDate).inDays; i++) {
       final currentDate = startDate.add(Duration(days: i));
@@ -521,8 +504,8 @@ class ReportsViewModel {
   ) {
     final data = <CashFlowData>[];
     final startDate =
-        dateRange?.start ?? DateTime.now().subtract(const Duration(days: 7));
-    final endDate = dateRange?.end ?? DateTime.now();
+        dateRange?.start ?? clock.now().subtract(const Duration(days: 7));
+    final endDate = dateRange?.end ?? clock.now();
 
     final monthlySales = orders
         .where((order) {
@@ -581,8 +564,8 @@ class ReportsViewModel {
   ) {
     final data = <RevenueExpenseData>[];
     final startDate =
-        dateRange?.start ?? DateTime.now().subtract(const Duration(days: 7));
-    final endDate = dateRange?.end ?? DateTime.now();
+        dateRange?.start ?? clock.now().subtract(const Duration(days: 7));
+    final endDate = dateRange?.end ?? clock.now();
 
     for (int i = 0; i <= endDate.difference(startDate).inDays; i++) {
       final currentDate = startDate.add(Duration(days: i));
@@ -666,8 +649,8 @@ class ReportsViewModel {
     ShadDateTimeRange? dateRange,
   ) {
     final startDate =
-        dateRange?.start ?? DateTime.now().subtract(const Duration(days: 7));
-    final endDate = dateRange?.end ?? DateTime.now();
+        dateRange?.start ?? clock.now().subtract(const Duration(days: 7));
+    final endDate = dateRange?.end ?? clock.now();
 
     return orders.where((order) {
       final orderDate = order.createdAt.toDateTime();
@@ -685,8 +668,8 @@ class ReportsViewModel {
     ShadDateTimeRange? dateRange,
   ) {
     final startDate =
-        dateRange?.start ?? DateTime.now().subtract(const Duration(days: 7));
-    final endDate = dateRange?.end ?? DateTime.now();
+        dateRange?.start ?? clock.now().subtract(const Duration(days: 7));
+    final endDate = dateRange?.end ?? clock.now();
 
     return transactions.where((transaction) {
       final transactionDate = transaction.createdAt.toDateTime();
