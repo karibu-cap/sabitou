@@ -24,10 +24,11 @@ class StatCard extends StatelessWidget {
     super.key,
     required this.title,
     required this.value,
-    required this.icon,
-    required this.color,
+    this.icon,
+    this.color,
     this.change,
     this.trend,
+    this.changeWidget,
   });
 
   /// The title of the stat card.
@@ -37,13 +38,16 @@ class StatCard extends StatelessWidget {
   final String value;
 
   /// The icon of the stat card.
-  final IconData icon;
+  final IconData? icon;
 
   /// The color of the stat card.
-  final Color color;
+  final Color? color;
 
   /// The change of the stat card.
   final String? change;
+
+  /// The change widget of the stat card.
+  final Widget? changeWidget;
 
   /// The trend of the stat card.
   final TrendType? trend;
@@ -88,6 +92,10 @@ class StatCard extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
+                if (changeWidget != null) ...[
+                  const SizedBox(height: 4),
+                  changeWidget ?? const SizedBox.shrink(),
+                ],
                 if (change != null) ...[
                   const SizedBox(height: 4),
                   Text(
@@ -100,14 +108,15 @@ class StatCard extends StatelessWidget {
               ],
             ),
           ),
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: color.withValues(alpha: 0.1),
-              borderRadius: const BorderRadius.all(Radius.circular(100)),
+          if (icon != null)
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: color?.withValues(alpha: 0.1),
+                borderRadius: const BorderRadius.all(Radius.circular(100)),
+              ),
+              child: Icon(icon, color: color, size: AppConstants.largePadding),
             ),
-            child: Icon(icon, color: color, size: AppConstants.largePadding),
-          ),
         ],
       ),
     );

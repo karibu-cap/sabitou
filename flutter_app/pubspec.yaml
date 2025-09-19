@@ -110,6 +110,9 @@ dependencies:
   # Package to pick an image from the device.
   image_picker: ^1.2.0
 
+  # Syncfusion Flutter Charts
+  syncfusion_flutter_charts: ^28.2.12
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
