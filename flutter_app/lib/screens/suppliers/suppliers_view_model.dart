@@ -13,12 +13,12 @@ class SuppliersViewModel {
 
   /// The suppliers repository instance.
   final SuppliersRepository _suppliersRepository = SuppliersRepository(
-    supplierFakeTransport,
+    transport: supplierFakeTransport,
   );
 
   /// The products repository instance.
   final ProductsRepository _productsRepository = ProductsRepository(
-    supplierFakeTransport,
+    transport: supplierFakeTransport,
   );
 
   /// Stream of suppliers for reactive UI updates.

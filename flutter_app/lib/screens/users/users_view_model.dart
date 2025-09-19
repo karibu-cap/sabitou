@@ -15,10 +15,14 @@ class UsersViewModel {
   final String storeId;
 
   /// The users repository instance.
-  final UserRepository _usersRepository = UserRepository(userFakeTransport);
+  final UserRepository _usersRepository = UserRepository(
+    transport: userFakeTransport,
+  );
 
   /// The store repository instance.
-  final StoresRepository _storeRepository = StoresRepository(userFakeTransport);
+  final StoresRepository _storeRepository = StoresRepository(
+    transport: userFakeTransport,
+  );
 
   /// Gets the search query subject.
   final _searchQuerySubject = BehaviorSubject<String>.seeded('');

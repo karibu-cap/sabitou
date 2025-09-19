@@ -21,6 +21,7 @@ import 'repositories/users_repository.dart';
 import 'router/app_router.dart' as app_router;
 import 'services/app_theme_service.dart';
 import 'services/internationalization/internationalization.dart';
+import 'services/network_status_provider/network_status_provider.dart';
 import 'services/rpc/connect_rpc.dart';
 import 'services/rpc/fake_transport.dart';
 import 'services/storage/app_storage.dart';
@@ -37,12 +38,16 @@ Future<void> main() async {
 Future<void> _initServices() async {
   await GetStorage.init();
   final appStorage = AppStorageService(AppStorageType.fake, fakeStorage);
+  final networkStatusProvider = NetworkStatusProvider.create(
+    type: NetworkProviderType.real,
+  );
   final languageCode = appStorage.read<String>(PreferencesKey.language);
   GetIt.I
     ..registerLazySingleton<AppStorageService>(() => appStorage)
     ..registerLazySingleton<ConnectRPCService>(
       () => ConnectRPCService(clientChannel: fakeTransport),
     )
+    ..registerLazySingleton<NetworkStatusProvider>(() => networkStatusProvider)
     ..registerLazySingleton<AppInternationalizationService>(
       () => AppInternationalizationService(
         languageCode != null ? Locale(languageCode) : const Locale('en'),
@@ -97,52 +102,38 @@ class MyApp extends StatelessWidget {
           create: (context) => GetIt.I.get<AuthProvider>(),
         ),
       ],
-      child:
-          Consumer4<
-            AppThemeService,
-            AppInternationalizationService,
-            AuthProvider,
-            UserPreferences
-          >(
-            builder:
-                (
-                  context,
-                  themeService,
-                  intls,
-                  authProvider,
-                  userPreferences,
-                  child,
-                ) {
-                  return ShadApp.custom(
-                    themeMode: themeService.isDarkMode
-                        ? ThemeMode.dark
-                        : ThemeMode.light,
-                    theme: AppThemeService.lightTheme,
-                    darkTheme: AppThemeService.darkTheme,
-                    appBuilder: (context) {
-                      return MaterialApp.router(
-                        supportedLocales:
-                            AppInternationalizationService.supportedLocales,
-                        locale: intls.locale,
-                        routeInformationParser: BeamerParser(),
-                        routerDelegate: routerDelegate,
-                        localizationsDelegates: const [
-                          GlobalMaterialLocalizations.delegate,
-                          GlobalWidgetsLocalizations.delegate,
-                          GlobalCupertinoLocalizations.delegate,
-                        ],
-                        builder: (context, child) {
-                          if (child == null) {
-                            return const SizedBox.shrink();
-                          }
+      child: Consumer2<AppThemeService, AppInternationalizationService>(
+        builder: (context, themeService, intls, child) {
+          return ShadApp.custom(
+            themeMode: themeService.isDarkMode
+                ? ThemeMode.dark
+                : ThemeMode.light,
+            theme: AppThemeService.lightTheme,
+            darkTheme: AppThemeService.darkTheme,
+            appBuilder: (context) {
+              return MaterialApp.router(
+                supportedLocales:
+                    AppInternationalizationService.supportedLocales,
+                locale: intls.locale,
+                routeInformationParser: BeamerParser(),
+                routerDelegate: routerDelegate,
+                localizationsDelegates: const [
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                builder: (context, child) {
+                  if (child == null) {
+                    return const SizedBox.shrink();
+                  }
 
-                          return ShadAppBuilder(child: child);
-                        },
-                      );
-                    },
-                  );
+                  return ShadAppBuilder(child: child);
                 },
-          ),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }

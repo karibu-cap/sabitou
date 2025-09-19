@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:sabitou_rpc/connect_servers.dart';
 import 'package:sabitou_rpc/models.dart';
 
+import '../services/network_status_provider/network_status_provider.dart';
 import '../services/rpc/connect_rpc.dart';
 import '../utils/logger.dart';
 
@@ -16,11 +17,18 @@ class CategoriesRepository {
   /// The instance of [CategoriesRepository].
   static final to = GetIt.I.get<CategoriesRepository>();
 
+  /// The network status provider.
+  final NetworkStatusProvider networkStatusProvider;
+
   /// Constructs a new [CategoriesRepository].
-  CategoriesRepository([connect.Transport? transport])
-    : categoryServiceClient = CategoryServiceClient(
-        transport ?? ConnectRPCService.to.clientChannel,
-      );
+  CategoriesRepository({
+    connect.Transport? transport,
+    NetworkStatusProvider? networkStatusProvider,
+  }) : categoryServiceClient = CategoryServiceClient(
+         transport ?? ConnectRPCService.to.clientChannel,
+       ),
+       networkStatusProvider =
+           networkStatusProvider ?? GetIt.I.get<NetworkStatusProvider>();
 
   /// Gets all categories base on business Id.
   Future<List<Category>> getCategoriesByBusinessId(String businessId) async {

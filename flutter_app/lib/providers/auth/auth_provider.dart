@@ -20,7 +20,9 @@ class AuthProvider extends ChangeNotifier {
   User? _currentUser;
   AuthStatus _status = AuthStatus.unauthenticated;
   String? _errorMessage;
-  final AuthRepository _authRepository = AuthRepository(authFakeTransport);
+  final AuthRepository _authRepository = AuthRepository(
+    transport: authFakeTransport,
+  );
 
   /// Singleton access.
   static AuthProvider get instance => GetIt.I.get<AuthProvider>();

@@ -2,6 +2,7 @@ import 'package:connectrpc/connect.dart' as connect;
 import 'package:get_it/get_it.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
+import '../services/network_status_provider/network_status_provider.dart';
 import '../services/rpc/connect_rpc.dart';
 import '../utils/logger.dart';
 
@@ -12,14 +13,21 @@ class TransactionsRepository {
   /// The transaction service client.
   final TransactionServiceClient transactionServiceClient;
 
+  /// The network status provider.
+  final NetworkStatusProvider networkStatusProvider;
+
   /// The instance of [TransactionsRepository].
   static final instance = GetIt.I.get<TransactionsRepository>();
 
   /// Constructs a new [TransactionsRepository].
-  TransactionsRepository([connect.Transport? transport])
-    : transactionServiceClient = TransactionServiceClient(
-        transport ?? ConnectRPCService.to.clientChannel,
-      );
+  TransactionsRepository({
+    connect.Transport? transport,
+    NetworkStatusProvider? networkStatusProvider,
+  }) : transactionServiceClient = TransactionServiceClient(
+         transport ?? ConnectRPCService.to.clientChannel,
+       ),
+       networkStatusProvider =
+           networkStatusProvider ?? GetIt.I.get<NetworkStatusProvider>();
 
   /// Gets the store transaction by store id.
   Future<List<Transaction>> getCompleteTransactionsByStoreId({
