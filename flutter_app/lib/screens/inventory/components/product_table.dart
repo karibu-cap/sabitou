@@ -14,7 +14,6 @@ import '../../../utils/utils.dart';
 import '../../../widgets/loading.dart';
 import '../inventory_controller.dart';
 import 'create_edit_product_form_view.dart';
-import 'search_and_filter.dart';
 
 /// The products table view.
 class ProductsTable extends StatelessWidget {
@@ -27,10 +26,27 @@ class ProductsTable extends StatelessWidget {
     final controller = context.read<InventoryController>();
 
     return ShadCard(
+      padding: EdgeInsets.zero,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SearchAndFilterCard(),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  Intls.to.product,
+                  style: ShadTheme.of(context).textTheme.h4,
+                ),
+                Text(
+                  Intls.to.productManagementDescription,
+                  style: ShadTheme.of(context).textTheme.muted,
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
           StreamBuilder<List<Product>>(
             stream: controller.filteredProductsStream,
             builder: (context, snapshot) {
@@ -39,20 +55,17 @@ class ProductsTable extends StatelessWidget {
                 return const Loading();
               }
 
-              return Padding(
-                padding: const EdgeInsets.all(20),
-                child: products.isEmpty
-                    ? Center(child: Text(Intls.to.noProductsFoundAddNewProduct))
-                    : Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          if (!isMobile)
-                            _ProductsDataTable(products: products)
-                          else
-                            _ProductsCardList(products: products),
-                        ],
-                      ),
-              );
+              return products.isEmpty
+                  ? Center(child: Text(Intls.to.noProductsFoundAddNewProduct))
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (!isMobile)
+                          _ProductsDataTable(products: products)
+                        else
+                          _ProductsCardList(products: products),
+                      ],
+                    );
             },
           ),
         ],
@@ -72,19 +85,22 @@ class _ProductsDataTable extends StatelessWidget {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        return ConstrainedBox(
-          constraints: BoxConstraints(minWidth: constraints.maxWidth),
-          child: Scrollbar(
+        return Scrollbar(
+          controller: scrollController,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
             controller: scrollController,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              controller: scrollController,
+            child: Container(
+              constraints: BoxConstraints(minWidth: constraints.maxWidth),
               child: DataTable(
                 horizontalMargin: 12,
                 dataRowMaxHeight: 80,
                 headingTextStyle: ShadTheme.of(
                   context,
-                ).textTheme.p.copyWith(fontWeight: FontWeight.w600),
+                ).textTheme.lead.copyWith(fontWeight: FontWeight.w500),
+                headingRowColor: WidgetStateProperty.all(
+                  ShadTheme.of(context).colorScheme.secondary,
+                ),
                 columns: [
                   DataColumn(label: Text(Intls.to.product)),
                   DataColumn(label: Text(Intls.to.barcode)),
@@ -98,13 +114,20 @@ class _ProductsDataTable extends StatelessWidget {
                   return DataRow(
                     cells: [
                       DataCell(_ProductNameCell(product: product)),
-                      DataCell(Text(product.globalProduct.barCodeValue)),
+                      DataCell(
+                        Text(
+                          product.globalProduct.barCodeValue,
+                          style: ShadTheme.of(context).textTheme.list,
+                        ),
+                      ),
                       DataCell(
                         Text(
                           Formatters.formatCurrency(
                             product.storeProduct.price.toDouble(),
                           ),
-                          style: ShadTheme.of(context).textTheme.p,
+                          style: ShadTheme.of(context).textTheme.list.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                       DataCell(_StockCell(product: product)),
@@ -288,10 +311,9 @@ class _ProductNameCell extends StatelessWidget {
           width: 50,
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(Radius.circular(8)),
-            border: const Border.fromBorderSide(
-              BorderSide(color: AppColors.grey200),
-            ),
-            color: ShadTheme.of(context).colorScheme.muted,
+            color: ShadTheme.of(
+              context,
+            ).colorScheme.accent.withValues(alpha: 0.05),
           ),
           child:
               product.globalProduct.imagesLinksIds.isNotEmpty &&
@@ -312,18 +334,34 @@ class _ProductNameCell extends StatelessWidget {
                         image: product.globalProduct.imagesLinksIds.first,
                         fit: BoxFit.contain,
                         imageErrorBuilder: (context, error, stackTrace) {
-                          return const Icon(LucideIcons.package, size: 20);
+                          return Icon(
+                            LucideIcons.package,
+                            size: 20,
+                            color: ShadTheme.of(context).colorScheme.accent,
+                          );
                         },
                         placeholderErrorBuilder: (context, error, stackTrace) {
-                          return const Icon(LucideIcons.package, size: 20);
+                          return Icon(
+                            LucideIcons.package,
+                            size: 20,
+                            color: ShadTheme.of(context).colorScheme.accent,
+                          );
                         },
                       );
                     }
 
-                    return const Icon(LucideIcons.package, size: 20);
+                    return Icon(
+                      LucideIcons.package,
+                      size: 20,
+                      color: ShadTheme.of(context).colorScheme.accent,
+                    );
                   },
                 )
-              : const Icon(LucideIcons.package, size: 20),
+              : Icon(
+                  LucideIcons.package,
+                  size: 20,
+                  color: ShadTheme.of(context).colorScheme.accent,
+                ),
         ),
         const SizedBox(width: 8),
         Flexible(
@@ -365,8 +403,8 @@ class _StockCell extends StatelessWidget {
     final theme = ShadTheme.of(context);
 
     return Text(
-      '${product.storeProduct.stockQuantity} units',
-      style: theme.textTheme.p,
+      '${product.storeProduct.stockQuantity} ${Intls.to.units}',
+      style: theme.textTheme.list,
     );
   }
 }
@@ -402,7 +440,7 @@ class _StatusCell extends StatelessWidget {
         borderRadius: const BorderRadius.all(Radius.circular(12)),
       ),
       child: Text(
-        status.text,
+        status.text.toUpperCase(),
         style: theme.textTheme.muted.copyWith(
           color: AppColors.grey0,
           fontWeight: FontWeight.w600,
@@ -422,15 +460,14 @@ class _ExpiryCell extends StatelessWidget {
     final theme = ShadTheme.of(context);
 
     if (!product.storeProduct.hasExpirationDate()) {
-      return const Text('/');
+      return const Text('N/A');
     }
 
     return Text(
       Formatters.formatDate(product.storeProduct.expirationDate.toDateTime()),
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
-      style: theme.textTheme.muted.copyWith(
-        fontSize: 12,
+      style: theme.textTheme.list.copyWith(
         color: isExpiringSoon(product.storeProduct, 60)
             ? AppColors.error600
             : null,

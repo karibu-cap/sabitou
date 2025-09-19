@@ -9,9 +9,11 @@ import '../../widgets/sidebar/sidebar.dart';
 import '../dashboard/dashboard_screen.dart';
 import '../inventory/inventory_screen.dart';
 import '../new_order/new_order_screen.dart';
+import '../reports/reports_screen.dart';
 import '../sales/sales_screen.dart';
 import '../settings/settings_screen.dart';
 import '../suppliers/suppliers_view.dart';
+import '../transactions/transactions_screen.dart';
 import '../users/users_view.dart';
 import 'home_controller.dart';
 
@@ -40,66 +42,50 @@ class HomeScreen extends StatelessWidget {
                       isOpen: true,
                     ),
                   Expanded(
-                    child: Container(
-                      margin: EdgeInsets.only(top: tabletBreakpoint ? 0 : 20),
-                      decoration: BoxDecoration(
-                        color: ShadTheme.of(context).colorScheme.background,
-                        borderRadius: tabletBreakpoint
-                            ? null
-                            : const BorderRadius.only(
-                                topLeft: Radius.circular(
-                                  AppConstants.cardRadius,
-                                ),
-                                bottomLeft: Radius.circular(
-                                  AppConstants.cardRadius,
-                                ),
-                              ),
-                      ),
-                      child: Column(
-                        children: [
-                          HeaderWidget(
-                            onMenuClick: homeController.toggleSidebar,
-                            isSidebarOpen: homeController.isSidebarOpen,
-                          ),
-                          Expanded(
-                            child: Container(
-                              width: double.infinity,
-                              padding: EdgeInsets.all(
-                                tabletBreakpoint ? 16.0 : 0.0,
-                              ),
-                              child: ConstrainedBox(
-                                constraints: const BoxConstraints(
-                                  maxWidth: 1280,
-                                ),
-                                child: GestureDetector(
-                                  onTap: !tabletBreakpoint
-                                      ? null
-                                      : () => homeController.toggleSidebar(
-                                          value: false,
-                                        ),
-                                  child: switch (homeController.activeTab) {
-                                    DashboardItem.dashboard =>
-                                      const Dashboard(),
-                                    DashboardItem.inventory =>
-                                      const InventoryScreen(),
-                                    DashboardItem.salesReports =>
-                                      const SalesScreen(),
-                                    DashboardItem.salesOrders =>
-                                      const NewOrderScreen(),
-                                    DashboardItem.reports => const SizedBox(),
-                                    DashboardItem.members => const UsersView(),
-                                    DashboardItem.suppliers =>
-                                      const SuppliersView(),
-                                    DashboardItem.settings =>
-                                      const SettingsScreen(),
-                                    _ => const SizedBox(),
-                                  },
-                                ),
+                    child: Column(
+                      children: [
+                        HeaderWidget(
+                          onMenuClick: homeController.toggleSidebar,
+                          isSidebarOpen: homeController.isSidebarOpen,
+                        ),
+                        Expanded(
+                          child: Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.all(
+                              tabletBreakpoint ? 16.0 : 0.0,
+                            ),
+                            child: ConstrainedBox(
+                              constraints: const BoxConstraints(maxWidth: 1280),
+                              child: GestureDetector(
+                                onTap: !tabletBreakpoint
+                                    ? null
+                                    : () => homeController.toggleSidebar(
+                                        value: false,
+                                      ),
+                                child: switch (homeController.activeTab) {
+                                  DashboardItem.dashboard => const Dashboard(),
+                                  DashboardItem.inventory =>
+                                    const InventoryScreen(),
+                                  DashboardItem.salesReports =>
+                                    const SalesScreen(),
+                                  DashboardItem.salesOrders =>
+                                    const NewOrderScreen(),
+                                  DashboardItem.members => const UsersView(),
+                                  DashboardItem.reports =>
+                                    const ReportsScreen(),
+                                  DashboardItem.suppliers =>
+                                    const SuppliersView(),
+                                  DashboardItem.settings =>
+                                    const SettingsScreen(),
+                                  DashboardItem.transactions =>
+                                    const TransactionsScreen(),
+                                  _ => const SizedBox(),
+                                },
                               ),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ],

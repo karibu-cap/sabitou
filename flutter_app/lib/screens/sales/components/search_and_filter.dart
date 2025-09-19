@@ -18,37 +18,23 @@ class SearchAndFilterCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isMobile = ResponsiveUtils.isMobile(context);
 
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: Column(
+    return ShadCard(
+      padding: const EdgeInsets.all(24),
+      child: Flex(
+        direction: isMobile ? Axis.vertical : Axis.horizontal,
         crossAxisAlignment: CrossAxisAlignment.start,
+        spacing: 12,
         children: [
-          Text(
-            Intls.to.salesHistory,
-            style: ShadTheme.of(context).textTheme.h4,
-          ),
-          Text(
-            Intls.to.salesHistoryDescription,
-            style: ShadTheme.of(context).textTheme.muted,
-          ),
-          const SizedBox(height: 16),
-          Flex(
-            direction: isMobile ? Axis.vertical : Axis.horizontal,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            spacing: 12,
-            children: [
-              Expanded(flex: isMobile ? 0 : 2, child: const _SearchInput()),
-              Expanded(
-                flex: isMobile ? 0 : 1,
-                child: const Row(
-                  spacing: 12,
-                  children: [
-                    Expanded(child: _StatusFilter()),
-                    Expanded(child: _DateRangeFilter()),
-                  ],
-                ),
-              ),
-            ],
+          Expanded(flex: isMobile ? 0 : 2, child: const _SearchInput()),
+          Expanded(
+            flex: isMobile ? 0 : 1,
+            child: const Row(
+              spacing: 12,
+              children: [
+                Expanded(child: _StatusFilter()),
+                Expanded(child: _DateRangeFilter()),
+              ],
+            ),
           ),
         ],
       ),
