@@ -19,7 +19,8 @@ class ProductsRepository {
   final NetworkStatusProvider _network;
 
   /// The local products repository.
-  final localProductsRepository = LocalProductsRepository();
+  final LocalProductsRepository localProductsRepository =
+      LocalProductsRepository();
 
   /// The remote products repository.
   final RemoteProductsRepository remoteProductsRepository;

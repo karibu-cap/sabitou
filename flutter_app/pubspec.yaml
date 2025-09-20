@@ -48,11 +48,6 @@ dependencies:
   # Platform: Android, iOS, Linux, macOS, web, Windows
   beamer: 1.7.0
 
-  # Package to manage storage.
-  # SDK: Dart, Flutter
-  # Platform: Android, iOS, Linux, macOS, web, Windows
-  objectbox: ^4.3.1
-
   # Flutter color scheme dependency to create a custom theme.
   flex_color_scheme: ^8.2.0
 
@@ -116,6 +111,10 @@ dependencies:
   # ObjectBox Flutter libraries.
   objectbox_flutter_libs: ^4.3.1
 
+  #Isar database has a powerful query language that allows you to make use of your indexes.
+  isar_community: ^3.3.0-dev.2
+  isar_community_flutter_libs: ^3.3.0-dev.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -147,6 +146,9 @@ dev_dependencies:
 
   # ObjectBox generator.
   objectbox_generator: ^4.3.1
+
+  # The isar community generator.
+  isar_community_generator: ^3.3.0-dev.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -154,6 +154,7 @@ dart_code_linter:
   exclude:
     exclude:
       - sabitou_clients/**/build/**
+      - sabitou_clients/**/**.g.dart
       - sabitou_clients/test/**
       - sabitou_clients/ios/**
       - sabitou_clients/android/**

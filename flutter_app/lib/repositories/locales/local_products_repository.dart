@@ -1,24 +1,19 @@
 import 'package:get_it/get_it.dart';
+import 'package:isar_community/isar.dart';
 import 'package:sabitou_rpc/models.dart';
 
-import '../../entities/global_product_obx.dart';
-import '../../entities/product_category_obx.dart';
-import '../../entities/store_product_obx.dart';
-import '../../objectbox.g.dart' as obx;
+import '../../entities/global_product_isar.dart';
+import '../../entities/product_category_isar.dart';
+import '../../entities/store_product_isar.dart';
+import '../../services/isar/isar_database.dart';
 import '../../utils/logger.dart';
 
 /// The local products repository.
 class LocalProductsRepository {
   final _logger = LoggerApp('LocalProductsRepository');
 
-  /// The store product box.
-  final storeProductBox = GetIt.I.get<obx.Store>().box<StoreProductObx>();
-
-  /// The global product box.
-  final globalProductBox = GetIt.I.get<obx.Store>().box<GlobalProductObx>();
-
-  /// The product category box.
-  final productCategoryBox = GetIt.I.get<obx.Store>().box<ProductCategoryObx>();
+  /// The isar box.
+  final isarBox = GetIt.I.get<IsarDatabase>();
 
   /// Constructs a new [LocalProductsRepository].
   LocalProductsRepository();
@@ -26,10 +21,10 @@ class LocalProductsRepository {
   /// Gets all products base on store Id.
   Future<List<StoreProduct>> getProductsByStoreId(String storeId) async {
     try {
-      final response = storeProductBox
-          .query(obx.StoreProductObx_.storeId.equals(storeId))
-          .build()
-          .find();
+      final response = await isarBox.storeProductIsars
+          .filter()
+          .storeIdEqualTo(storeId)
+          .findAll();
 
       return response.map((e) => e.toProto()).toList();
     } on Exception catch (e) {
@@ -44,10 +39,10 @@ class LocalProductsRepository {
     FindGlobalProductsRequest request,
   ) async {
     try {
-      final response = globalProductBox
-          .query(obx.GlobalProductObx_.refId.equals(request.refId))
-          .build()
-          .find();
+      final response = await isarBox.globalProductIsars
+          .filter()
+          .refIdEqualTo(request.refId)
+          .findAll();
 
       return response.map((e) => e.toProto()).toList();
     } on Exception catch (e) {
@@ -62,10 +57,10 @@ class LocalProductsRepository {
     FindStoreProductsRequest request,
   ) async {
     try {
-      final response = storeProductBox
-          .query(obx.StoreProductObx_.globalProductId.equals(request.refId))
-          .build()
-          .find();
+      final response = await isarBox.storeProductIsars
+          .filter()
+          .globalProductIdEqualTo(request.refId)
+          .findAll();
 
       return response.map((e) => e.toProto()).toList();
     } on Exception catch (e) {
@@ -80,10 +75,10 @@ class LocalProductsRepository {
     FindCategoryRequest request,
   ) async {
     try {
-      final response = productCategoryBox
-          .query(obx.ProductCategoryObx_.name.contains(request.query))
-          .build()
-          .find();
+      final response = await isarBox.productCategoryIsars
+          .filter()
+          .nameContains(request.query, caseSensitive: false)
+          .findAll();
 
       return response.map((e) => e.toProto()).toList();
     } on Exception catch (e) {
@@ -96,11 +91,13 @@ class LocalProductsRepository {
   /// Adds a new product to a business.
   Future<bool> addProduct(AddStoreProductRequest request) async {
     try {
-      final response = storeProductBox.put(
-        StoreProductObx.fromProto(request.storeProduct),
-      );
+      await isarBox.writeTxn(() async {
+        await isarBox.storeProductIsars.put(
+          StoreProductIsar.fromProto(request.storeProduct),
+        );
+      });
 
-      return response > 0;
+      return true;
     } on Exception catch (e) {
       _logger.severe('addProduct Error: $e');
 
@@ -111,10 +108,10 @@ class LocalProductsRepository {
   /// Gets a business product by its ID.
   Future<StoreProduct?> getProduct(GetStoreProductRequest request) async {
     try {
-      final response = storeProductBox
-          .query(obx.StoreProductObx_.refId.equals(request.storeProductId))
-          .build()
-          .find();
+      final response = await isarBox.storeProductIsars
+          .filter()
+          .refIdEqualTo(request.storeProductId)
+          .findAll();
 
       return response.isNotEmpty ? response.first.toProto() : null;
     } on Exception catch (e) {
@@ -127,10 +124,10 @@ class LocalProductsRepository {
   /// Updates a business product.
   Future<bool> updateProduct(UpdateStoreProductRequest request) async {
     try {
-      final storeProductObx = storeProductBox
-          .query(obx.StoreProductObx_.refId.equals(request.storeProduct.refId))
-          .build()
-          .find();
+      final storeProductObx = await isarBox.storeProductIsars
+          .filter()
+          .refIdEqualTo(request.storeProduct.refId)
+          .findAll();
 
       if (storeProductObx.isEmpty) {
         return false;
@@ -142,16 +139,18 @@ class LocalProductsRepository {
         ..imagesLinksIds = request.storeProduct.imagesLinksIds
         ..globalProductId = request.storeProduct.globalProductId
         ..storeId = request.storeProduct.storeId
-        ..inboundDate = request.storeProduct.inboundDate
-        ..expirationDate = request.storeProduct.expirationDate
-        ..createdAt = request.storeProduct.createdAt
-        ..updatedAt = request.storeProduct.updatedAt
+        ..inboundDate = request.storeProduct.inboundDate.toDateTime()
+        ..expirationDate = request.storeProduct.expirationDate.toDateTime()
+        ..createdAt = request.storeProduct.createdAt.toDateTime()
+        ..updatedAt = request.storeProduct.updatedAt.toDateTime()
         ..stockQuantity = request.storeProduct.stockQuantity
         ..supplierId = request.storeProduct.supplierId;
 
-      final response = storeProductBox.put(storeProductObx.first);
+      await isarBox.writeTxn(() async {
+        await isarBox.storeProductIsars.put(storeProductObx.first);
+      });
 
-      return response > 0;
+      return true;
     } on Exception catch (e) {
       _logger.severe('updateProduct Error: $e');
 
@@ -162,18 +161,20 @@ class LocalProductsRepository {
   /// Deletes a business product.
   Future<bool> deleteProduct(DeleteStoreProductRequest request) async {
     try {
-      final storeProductObx = storeProductBox
-          .query(obx.StoreProductObx_.refId.equals(request.storeProductId))
-          .build()
-          .find();
+      final storeProductObx = await isarBox.storeProductIsars
+          .filter()
+          .refIdEqualTo(request.storeProductId)
+          .findAll();
 
       if (storeProductObx.isEmpty) {
         return false;
       }
 
-      final response = storeProductBox.remove(storeProductObx.first.id);
+      await isarBox.writeTxn(() async {
+        await isarBox.storeProductIsars.delete(storeProductObx.first.id);
+      });
 
-      return response;
+      return true;
     } on Exception catch (e) {
       _logger.severe('deleteProduct Error: $e');
 
@@ -186,10 +187,11 @@ class LocalProductsRepository {
     StreamStoreProductsRequest request,
   ) {
     try {
-      return storeProductBox
-          .query(obx.StoreProductObx_.storeId.equals(request.storeId))
-          .watch(triggerImmediately: true)
-          .map((response) => response.find().map((e) => e.toProto()).toList())
+      return isarBox.storeProductIsars
+          .filter()
+          .storeIdEqualTo(request.storeId)
+          .watch()
+          .map((response) => response.map((e) => e.toProto()).toList())
           .handleError((error) {
             _logger.severe('streamStoreProducts Error: $error');
           });

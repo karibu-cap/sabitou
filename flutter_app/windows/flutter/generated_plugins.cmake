@@ -4,6 +4,7 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   file_selector_windows
+  isar_community_flutter_libs
   objectbox_flutter_libs
 )
 
