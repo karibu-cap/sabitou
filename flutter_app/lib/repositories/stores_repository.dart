@@ -2,6 +2,7 @@ import 'package:connectrpc/connect.dart' as connect;
 import 'package:get_it/get_it.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
+import '../services/network_status_provider/network_status_provider.dart';
 import '../services/rpc/connect_rpc.dart';
 import '../utils/logger.dart';
 
@@ -12,14 +13,21 @@ class StoresRepository {
   /// The store service client.
   final StoreServiceClient storeServiceClient;
 
+  /// The network status provider.
+  final NetworkStatusProvider networkStatusProvider;
+
   /// The instance of [StoresRepository].
   static final instance = GetIt.I.get<StoresRepository>();
 
   /// Constructs a new [StoresRepository].
-  StoresRepository([connect.Transport? transport])
-    : storeServiceClient = StoreServiceClient(
-        transport ?? ConnectRPCService.to.clientChannel,
-      );
+  StoresRepository({
+    connect.Transport? transport,
+    NetworkStatusProvider? networkStatusProvider,
+  }) : storeServiceClient = StoreServiceClient(
+         transport ?? ConnectRPCService.to.clientChannel,
+       ),
+       networkStatusProvider =
+           networkStatusProvider ?? GetIt.I.get<NetworkStatusProvider>();
 
   /// Gets all stores base on business Id.
   Future<List<Store>> getStoresByBusinessId(String businessId) async {

@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:sabitou_rpc/connect_servers.dart';
 import 'package:sabitou_rpc/models.dart';
 
+import '../services/network_status_provider/network_status_provider.dart';
 import '../services/rpc/connect_rpc.dart';
 import '../utils/logger.dart';
 
@@ -16,14 +17,21 @@ final class UserRepository {
   /// The user service client.
   final UserServiceClient userClientService;
 
+  /// The network status provider.
+  final NetworkStatusProvider networkStatusProvider;
+
   /// Access the singleton instance.
   static UserRepository get instance => GetIt.I.get<UserRepository>();
 
   /// Constructs a new [UserRepository].
-  UserRepository([connect.Transport? transport])
-    : userClientService = UserServiceClient(
-        transport ?? ConnectRPCService.to.clientChannel,
-      );
+  UserRepository({
+    connect.Transport? transport,
+    NetworkStatusProvider? networkStatusProvider,
+  }) : userClientService = UserServiceClient(
+         transport ?? ConnectRPCService.to.clientChannel,
+       ),
+       networkStatusProvider =
+           networkStatusProvider ?? GetIt.I.get<NetworkStatusProvider>();
 
   /// Gets the current authenticated user.
   Future<User?> getCurrentUser(GetCurrentUserRequest request) async {

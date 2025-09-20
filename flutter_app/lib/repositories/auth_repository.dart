@@ -2,6 +2,7 @@ import 'package:connectrpc/connect.dart' as connect;
 import 'package:get_it/get_it.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
+import '../services/network_status_provider/network_status_provider.dart';
 import '../services/rpc/connect_rpc.dart';
 import '../utils/logger.dart';
 import 'users_repository.dart';
@@ -16,14 +17,21 @@ class AuthRepository {
   /// The auth service client.
   final AuthServiceClient authClientService;
 
+  /// The network status provider.
+  final NetworkStatusProvider networkStatusProvider;
+
   /// Access the singleton instance.
   static AuthRepository get instance => GetIt.I.get<AuthRepository>();
 
   /// Constructs a new [AuthRepository].
-  AuthRepository([connect.Transport? transport])
-    : authClientService = AuthServiceClient(
-        transport ?? ConnectRPCService.to.clientChannel,
-      );
+  AuthRepository({
+    connect.Transport? transport,
+    NetworkStatusProvider? networkStatusProvider,
+  }) : authClientService = AuthServiceClient(
+         transport ?? ConnectRPCService.to.clientChannel,
+       ),
+       networkStatusProvider =
+           networkStatusProvider ?? GetIt.I.get<NetworkStatusProvider>();
 
   /// Retrieves a auth by ID or email and password.
   Future<User?> getCurrentUser({required GetCurrentUserRequest request}) async {

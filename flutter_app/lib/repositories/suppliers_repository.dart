@@ -4,6 +4,7 @@ import 'package:connectrpc/connect.dart' as connect;
 import 'package:get_it/get_it.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
+import '../services/network_status_provider/network_status_provider.dart';
 import '../services/rpc/connect_rpc.dart';
 import '../utils/logger.dart';
 
@@ -14,14 +15,21 @@ final class SuppliersRepository {
   /// The supplier service client.
   final SupplierServiceClient supplierServiceClient;
 
+  /// The network status provider.
+  final NetworkStatusProvider networkStatusProvider;
+
   /// The instance of [SuppliersRepository].
   static final instance = GetIt.I.get<SuppliersRepository>();
 
   /// Constructs a new [SuppliersRepository].
-  SuppliersRepository([connect.Transport? transport])
-    : supplierServiceClient = SupplierServiceClient(
-        transport ?? ConnectRPCService.to.clientChannel,
-      );
+  SuppliersRepository({
+    connect.Transport? transport,
+    NetworkStatusProvider? networkStatusProvider,
+  }) : supplierServiceClient = SupplierServiceClient(
+         transport ?? ConnectRPCService.to.clientChannel,
+       ),
+       networkStatusProvider =
+           networkStatusProvider ?? GetIt.I.get<NetworkStatusProvider>();
 
   /// Gets all suppliers base on store Id.
   Future<List<Supplier>> getSuppliersByStore(String storeId) async {

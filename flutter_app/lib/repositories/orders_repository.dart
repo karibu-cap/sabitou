@@ -2,6 +2,7 @@ import 'package:connectrpc/connect.dart' as connect;
 import 'package:get_it/get_it.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
+import '../services/network_status_provider/network_status_provider.dart';
 import '../services/rpc/connect_rpc.dart';
 import '../utils/logger.dart';
 
@@ -15,11 +16,18 @@ class OrdersRepository {
   /// The instance of [OrdersRepository].
   static final instance = GetIt.I.get<OrdersRepository>();
 
+  /// The network status provider.
+  final NetworkStatusProvider networkStatusProvider;
+
   /// Constructs a new [OrdersRepository].
-  OrdersRepository([connect.Transport? transport])
-    : orderServiceClient = OrderServiceClient(
-        transport ?? ConnectRPCService.to.clientChannel,
-      );
+  OrdersRepository({
+    connect.Transport? transport,
+    NetworkStatusProvider? networkStatusProvider,
+  }) : orderServiceClient = OrderServiceClient(
+         transport ?? ConnectRPCService.to.clientChannel,
+       ),
+       networkStatusProvider =
+           networkStatusProvider ?? GetIt.I.get<NetworkStatusProvider>();
 
   /// Gets list of order with filter by supplier id.
   Future<List<Order>> getOrdersByQuery(FindOrdersRequest request) async {

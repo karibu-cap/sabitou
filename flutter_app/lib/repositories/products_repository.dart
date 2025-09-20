@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:sabitou_rpc/connect_servers.dart';
 import 'package:sabitou_rpc/models.dart';
 
+import '../services/network_status_provider/network_status_provider.dart';
 import '../services/rpc/connect_rpc.dart';
 import '../utils/logger.dart';
 
@@ -16,11 +17,18 @@ class ProductsRepository {
   /// The instance of [ProductsRepository].
   static final instance = GetIt.I.get<ProductsRepository>();
 
+  /// The network status provider.
+  final NetworkStatusProvider networkStatusProvider;
+
   /// Constructs a new [ProductsRepository].
-  ProductsRepository([connect.Transport? transport])
-    : productServiceClient = ProductServiceClient(
-        transport ?? ConnectRPCService.to.clientChannel,
-      );
+  ProductsRepository({
+    connect.Transport? transport,
+    NetworkStatusProvider? networkStatusProvider,
+  }) : productServiceClient = ProductServiceClient(
+         transport ?? ConnectRPCService.to.clientChannel,
+       ),
+       networkStatusProvider =
+           networkStatusProvider ?? GetIt.I.get<NetworkStatusProvider>();
 
   /// Gets all products base on store Id.
   Future<List<StoreProduct>> getProductsByStoreId(String storeId) async {
