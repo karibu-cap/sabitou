@@ -5,7 +5,6 @@ import 'package:get_it/get_it.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
-
 import 'providers/auth/auth_provider.dart';
 import 'providers/cart_provider.dart';
 import 'repositories/auth_repository.dart';
@@ -21,6 +20,7 @@ import 'repositories/users_repository.dart';
 import 'router/app_router.dart' as app_router;
 import 'services/app_theme_service.dart';
 import 'services/internationalization/internationalization.dart';
+import 'services/isar/isar_database.dart';
 import 'services/network_status_provider/network_status_provider.dart';
 import 'services/rpc/connect_rpc.dart';
 import 'services/rpc/fake_transport.dart';
@@ -36,6 +36,7 @@ Future<void> main() async {
 }
 
 Future<void> _initServices() async {
+  final isarDatabase = await IsarDatabase.create(IsarDatabaseType.real);
   await GetStorage.init();
   final appStorage = AppStorageService(AppStorageType.fake, fakeStorage);
   final networkStatusProvider = NetworkStatusProvider.create(
@@ -48,6 +49,7 @@ Future<void> _initServices() async {
       () => ConnectRPCService(clientChannel: fakeTransport),
     )
     ..registerLazySingleton<NetworkStatusProvider>(() => networkStatusProvider)
+    ..registerLazySingleton<IsarDatabase>(() => isarDatabase)
     ..registerLazySingleton<AppInternationalizationService>(
       () => AppInternationalizationService(
         languageCode != null ? Locale(languageCode) : const Locale('en'),

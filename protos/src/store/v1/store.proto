@@ -56,18 +56,6 @@ enum StoreMemberStatus {
   STORE_MEMBER_STATUS_BANNED = 4;
 }
 
-enum StoreMemberStatus {
-  STORE_MEMBER_STATUS_UNSPECIFIED = 0;
-  /// The user is active.
-  STORE_MEMBER_STATUS_ACTIVE = 1;
-  /// The user is pending.
-  STORE_MEMBER_STATUS_PENDING = 2; 
-  /// The user is inactive.
-  STORE_MEMBER_STATUS_INACTIVE = 3;
-  /// The user is banned.
-  STORE_MEMBER_STATUS_BANNED = 4;
-}
-
 message StoreMember {
   // The user.
   identity.v1.User user = 1;

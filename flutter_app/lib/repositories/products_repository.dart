@@ -1,43 +1,47 @@
 import 'package:connectrpc/connect.dart' as connect;
 import 'package:get_it/get_it.dart';
-import 'package:sabitou_rpc/connect_servers.dart';
 import 'package:sabitou_rpc/models.dart';
 
 import '../services/network_status_provider/network_status_provider.dart';
 import '../services/rpc/connect_rpc.dart';
 import '../utils/logger.dart';
+import 'locales/local_products_repository.dart';
+import 'remotes/remote_products_repository.dart';
 
 /// The products repository.
 class ProductsRepository {
   final _logger = LoggerApp('ProductsRepository');
 
-  /// The product service client.
-  final ProductServiceClient productServiceClient;
-
   /// The instance of [ProductsRepository].
   static final instance = GetIt.I.get<ProductsRepository>();
 
   /// The network status provider.
-  final NetworkStatusProvider networkStatusProvider;
+  final NetworkStatusProvider _network;
+
+  /// The local products repository.
+  final LocalProductsRepository localProductsRepository =
+      LocalProductsRepository();
+
+  /// The remote products repository.
+  final RemoteProductsRepository remoteProductsRepository;
 
   /// Constructs a new [ProductsRepository].
   ProductsRepository({
     connect.Transport? transport,
     NetworkStatusProvider? networkStatusProvider,
-  }) : productServiceClient = ProductServiceClient(
-         transport ?? ConnectRPCService.to.clientChannel,
-       ),
-       networkStatusProvider =
-           networkStatusProvider ?? GetIt.I.get<NetworkStatusProvider>();
+  }) : _network = networkStatusProvider ?? GetIt.I.get<NetworkStatusProvider>(),
+       remoteProductsRepository = RemoteProductsRepository(
+         transport: transport ?? ConnectRPCService.to.clientChannel,
+       );
 
   /// Gets all products base on store Id.
   Future<List<StoreProduct>> getProductsByStoreId(String storeId) async {
     try {
-      final response = await productServiceClient.findStoreProducts(
-        FindStoreProductsRequest(storeId: storeId),
+      final response = await remoteProductsRepository.getProductsByStoreId(
+        storeId,
       );
 
-      return response.products;
+      return response;
     } on Exception catch (e) {
       _logger.severe('getProductsByStoreId Error: $e');
 
@@ -50,9 +54,13 @@ class ProductsRepository {
     FindGlobalProductsRequest request,
   ) async {
     try {
-      final response = await productServiceClient.findGlobalProducts(request);
+      final connection = await _network.checkConnectivity();
 
-      return response.products;
+      if (connection) {
+        return await remoteProductsRepository.findGlobalProduct(request);
+      }
+
+      return localProductsRepository.findGlobalProduct(request);
     } on Exception catch (e) {
       _logger.severe('findGlobalProduct Error: $e');
 
@@ -65,9 +73,13 @@ class ProductsRepository {
     FindStoreProductsRequest request,
   ) async {
     try {
-      final response = await productServiceClient.findStoreProducts(request);
+      final connection = await _network.checkConnectivity();
 
-      return response.products;
+      if (connection) {
+        return await remoteProductsRepository.findStoreProducts(request);
+      }
+
+      return localProductsRepository.findStoreProducts(request);
     } on Exception catch (e) {
       _logger.severe('findStoreProducts Error: $e');
 
@@ -80,9 +92,13 @@ class ProductsRepository {
     FindCategoryRequest request,
   ) async {
     try {
-      final response = await productServiceClient.findCategory(request);
+      final connection = await _network.checkConnectivity();
 
-      return response.categories;
+      if (connection) {
+        return await remoteProductsRepository.findCategories(request);
+      }
+
+      return localProductsRepository.findCategories(request);
     } on Exception catch (e) {
       _logger.severe('findCategories Error: $e');
 
@@ -93,9 +109,13 @@ class ProductsRepository {
   /// Adds a new product to a business.
   Future<bool> addProduct(AddStoreProductRequest request) async {
     try {
-      final response = await productServiceClient.addProduct(request);
+      final connection = await _network.checkConnectivity();
 
-      return response.success;
+      if (connection) {
+        return await remoteProductsRepository.addProduct(request);
+      }
+
+      return localProductsRepository.addProduct(request);
     } on Exception catch (e) {
       _logger.severe('addProduct Error: $e');
 
@@ -106,9 +126,13 @@ class ProductsRepository {
   /// Gets a business product by its ID.
   Future<StoreProduct?> getProduct(GetStoreProductRequest request) async {
     try {
-      final response = await productServiceClient.getProduct(request);
+      final connection = await _network.checkConnectivity();
 
-      return response.storeProduct;
+      if (connection) {
+        return await remoteProductsRepository.getProduct(request);
+      }
+
+      return localProductsRepository.getProduct(request);
     } on Exception catch (e) {
       _logger.severe('getProduct Error: $e');
 
@@ -119,9 +143,13 @@ class ProductsRepository {
   /// Updates a business product.
   Future<bool> updateProduct(UpdateStoreProductRequest request) async {
     try {
-      final response = await productServiceClient.updateProduct(request);
+      final connection = await _network.checkConnectivity();
 
-      return response.success;
+      if (connection) {
+        return await remoteProductsRepository.updateProduct(request);
+      }
+
+      return localProductsRepository.updateProduct(request);
     } on Exception catch (e) {
       _logger.severe('updateProduct Error: $e');
 
@@ -132,9 +160,13 @@ class ProductsRepository {
   /// Deletes a business product.
   Future<bool> deleteProduct(DeleteStoreProductRequest request) async {
     try {
-      final response = await productServiceClient.deleteProduct(request);
+      final connection = await _network.checkConnectivity();
 
-      return response.success;
+      if (connection) {
+        return await remoteProductsRepository.deleteProduct(request);
+      }
+
+      return localProductsRepository.deleteProduct(request);
     } on Exception catch (e) {
       _logger.severe('deleteProduct Error: $e');
 
@@ -145,19 +177,20 @@ class ProductsRepository {
   /// Streams all products for a business for real-time updates.
   Stream<List<StoreProduct>> streamStoreProducts(
     StreamStoreProductsRequest request,
-  ) {
+  ) async* {
     try {
-      return productServiceClient
-          .streamStoreProducts(request)
-          .map((response) => response.products)
-          .handleError((error) {
-            _logger.severe('streamStoreProducts Error: $error');
-          });
+      final connection = await _network.checkConnectivity();
+
+      if (connection) {
+        yield* remoteProductsRepository.streamStoreProducts(request);
+      }
+
+      yield* localProductsRepository.streamStoreProducts(request);
     } on Exception catch (e) {
       _logger.severe('streamStoreProducts Error: $e');
       // Return empty stream on error
 
-      return const Stream.empty();
+      yield* const Stream.empty();
     }
   }
 }

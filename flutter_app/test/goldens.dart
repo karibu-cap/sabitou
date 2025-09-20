@@ -16,6 +16,7 @@ import 'package:sabitou_clients/repositories/transactions_repository.dart';
 import 'package:sabitou_clients/repositories/users_repository.dart';
 import 'package:sabitou_clients/services/app_theme_service.dart';
 import 'package:sabitou_clients/services/internationalization/internationalization.dart';
+import 'package:sabitou_clients/services/isar/isar_database.dart';
 import 'package:sabitou_clients/services/network_status_provider/network_status_provider.dart';
 import 'package:sabitou_clients/services/storage/app_storage.dart';
 import 'package:sabitou_clients/utils/user_preference.dart';
@@ -33,7 +34,7 @@ Future<void> multiScreenMultiLocaleGolden(
       AppInternationalizationService(const Locale('en'), storage);
   final themeService = AppThemeService(storage);
   await tester.pumpAndSettle();
-  _initGetIt(storage, appInternationalization, themeService);
+  await _initGetIt(storage, appInternationalization, themeService);
 
   await tester.pumpWidgetBuilder(
     MultiProvider(
@@ -105,11 +106,12 @@ Future<void> multiScreenMultiLocaleGolden(
   }
 }
 
-void _initGetIt(
+Future<void> _initGetIt(
   AppStorageService storage,
   AppInternationalizationService appInternationalization,
   AppThemeService themeService,
-) {
+) async {
+  final isarDatabase = await IsarDatabase.create(IsarDatabaseType.fake);
   GetIt.I
     ..registerSingletonIfAbsent<AppStorageService>(() => storage)
     ..registerSingletonIfAbsent<AppInternationalizationService>(
@@ -118,6 +120,7 @@ void _initGetIt(
     ..registerLazySingleton<NetworkStatusProvider>(
       () => NetworkStatusProvider.create(type: NetworkProviderType.fake),
     )
+    ..registerSingletonIfAbsent<IsarDatabase>(() => isarDatabase)
     ..registerSingletonIfAbsent<AppThemeService>(() => themeService)
     ..registerSingletonIfAbsent<UserPreferences>(UserPreferences.new)
     ..registerSingletonIfAbsent<UserRepository>(UserRepository.new)
