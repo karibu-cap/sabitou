@@ -544,10 +544,10 @@ components:
     business.v1.BusinessMember:
       type: object
       properties:
-        userId:
-          type: string
-          title: user_id
-          description: The unique identifier of the user.
+        user:
+          title: user
+          description: The user.
+          $ref: '#/components/schemas/identity.v1.User'
         businessId:
           type: string
           title: business_id
@@ -562,8 +562,21 @@ components:
           title: member_since
           description: The date since when the user became a member.
           $ref: '#/components/schemas/google.protobuf.Timestamp'
+        status:
+          title: status
+          description: The status of the user.
+          $ref: '#/components/schemas/business.v1.BusinessMemberStatus'
       title: BusinessMember
       additionalProperties: false
+    business.v1.BusinessMemberStatus:
+      type: string
+      title: BusinessMemberStatus
+      enum:
+        - BUSINESS_MEMBER_STATUS_UNSPECIFIED
+        - BUSINESS_MEMBER_STATUS_ACTIVE
+        - BUSINESS_MEMBER_STATUS_PENDING
+        - BUSINESS_MEMBER_STATUS_INACTIVE
+        - BUSINESS_MEMBER_STATUS_BANNED
     business.v1.BusinessStatusType:
       type: string
       title: BusinessStatusType
@@ -1104,6 +1117,22 @@ components:
          the Joda Time's [`ISODateTimeFormat.dateTime()`](
          http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()
          ) to obtain a formatter capable of generating timestamps in this format.
+    identity.v1.AccountStatusType:
+      type: string
+      title: AccountStatusType
+      enum:
+        - ACCOUNT_STATUS_TYPE_UNSPECIFIED
+        - ACCOUNT_STATUS_TYPE_ACTIVE
+        - ACCOUNT_STATUS_TYPE_DELETED
+    identity.v1.AuthActionType:
+      type: string
+      title: AuthActionType
+      enum:
+        - AUTH_ACTION_TYPE_UNSPECIFIED
+        - AUTH_ACTION_TYPE_VERIFY_EMAIL
+        - AUTH_ACTION_TYPE_VERIFY_PHONE_NUMBER
+        - AUTH_ACTION_TYPE_INITIALIZE_PASSWORD
+        - AUTH_ACTION_TYPE_RESET_PASSWORD
     identity.v1.BusinessPermission:
       type: object
       properties:
@@ -1123,6 +1152,29 @@ components:
         - BUSINESS_RESOURCE_TYPE_BUSINESS
         - BUSINESS_RESOURCE_TYPE_MEMBER
         - BUSINESS_RESOURCE_TYPE_SUPPLIER
+    identity.v1.ConnectedAccount:
+      type: object
+      properties:
+        provider:
+          title: provider
+          description: |-
+            The provider of the connected account.
+             For example, "google.com" or "email".
+          $ref: '#/components/schemas/identity.v1.ProviderType'
+        rawData:
+          type: string
+          title: raw_data
+          description: The raw information returned by the provider.
+      title: ConnectedAccount
+      additionalProperties: false
+    identity.v1.ProviderType:
+      type: string
+      title: ProviderType
+      enum:
+        - PROVIDER_TYPE_UNSPECIFIED
+        - PROVIDER_TYPE_FIREBASE_EMAIL
+        - PROVIDER_TYPE_GOOGLE
+        - PROVIDER_TYPE_INTERNAL_BUSINESS_AUTH
     identity.v1.ResourceActionType:
       type: string
       title: ResourceActionType
@@ -1132,6 +1184,66 @@ components:
         - RESOURCE_ACTION_TYPE_ADD
         - RESOURCE_ACTION_TYPE_UPDATE
         - RESOURCE_ACTION_TYPE_REMOVE
+    identity.v1.User:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+          description: The unique identifier of the user.
+          nullable: true
+        userName:
+          type: string
+          title: user_name
+          description: '[public] The user name of the user.'
+        connectedAccounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/identity.v1.ConnectedAccount'
+          title: connected_accounts
+          description: The connected accounts used by the user for authentication.
+        email:
+          type: string
+          title: email
+          format: email
+          description: The email address of the user.
+          nullable: true
+        phoneNumber:
+          type: string
+          title: phone_number
+          description: The phone number of the user.
+          nullable: true
+        firstName:
+          type: string
+          title: first_name
+          description: '[public] The first name of the user.'
+          nullable: true
+        lastName:
+          type: string
+          title: last_name
+          description: '[public] The last name of the user.'
+          nullable: true
+        profileLink:
+          title: profile_link
+          description: '[public] The profile link of the user.'
+          nullable: true
+          $ref: '#/components/schemas/link.v1.ResourceLink'
+        accountStatus:
+          title: account_status
+          description: The status of the user's account.
+          nullable: true
+          $ref: '#/components/schemas/identity.v1.AccountStatusType'
+        requiredActions:
+          type: array
+          items:
+            $ref: '#/components/schemas/identity.v1.AuthActionType'
+          title: required_actions
+          description: The actions that the user must complete to authenticate.
+      title: User
+      additionalProperties: false
+      description: |-
+        The user record.
+         The id of the user is the same as the uid of the Firebase user.
     link.v1.ResourceLink:
       type: object
       properties:

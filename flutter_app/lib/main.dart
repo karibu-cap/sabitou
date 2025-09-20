@@ -6,6 +6,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+import 'objectbox.g.dart';
 import 'providers/auth/auth_provider.dart';
 import 'providers/cart_provider.dart';
 import 'repositories/auth_repository.dart';
@@ -36,6 +37,7 @@ Future<void> main() async {
 }
 
 Future<void> _initServices() async {
+  final objectBoxStore = await openStore();
   await GetStorage.init();
   final appStorage = AppStorageService(AppStorageType.fake, fakeStorage);
   final networkStatusProvider = NetworkStatusProvider.create(
@@ -54,6 +56,7 @@ Future<void> _initServices() async {
         appStorage,
       ),
     )
+    ..registerLazySingleton<Store>(() => objectBoxStore)
     ..registerLazySingleton<UserPreferences>(UserPreferences.new)
     ..registerLazySingleton<AuthRepository>(AuthRepository.new)
     ..registerLazySingleton<AuthProvider>(AuthProvider.new)

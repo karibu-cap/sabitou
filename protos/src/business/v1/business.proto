@@ -6,6 +6,7 @@ import "buf/validate/validate.proto";
 import "google/protobuf/timestamp.proto";
 import "identity/v1/permission.proto";
 import "link/v1/link.proto";
+import "identity/v1/user.proto";
 
 enum BusinessStatusType {
   BUSINESS_STATUS_TYPE_UNSPECIFIED = 0;
@@ -59,9 +60,21 @@ message Business {
   optional string email = 12;
 }
 
+enum BusinessMemberStatus {
+  BUSINESS_MEMBER_STATUS_UNSPECIFIED = 0;
+  /// The user is active.
+  BUSINESS_MEMBER_STATUS_ACTIVE = 1;
+  /// The user is pending.
+  BUSINESS_MEMBER_STATUS_PENDING = 2; 
+  /// The user is inactive.
+  BUSINESS_MEMBER_STATUS_INACTIVE = 3;
+  /// The user is banned.
+  BUSINESS_MEMBER_STATUS_BANNED = 4;
+}
+
 message BusinessMember {
-  // The unique identifier of the user.
-  string user_id = 1;
+  // The user.
+  identity.v1.User user = 1;
 
   // The unique identifier of the business.
   string business_id = 2;
@@ -71,6 +84,9 @@ message BusinessMember {
 
   // The date since when the user became a member.
   google.protobuf.Timestamp member_since = 4;
+
+  // The status of the user.
+  BusinessMemberStatus status = 5;
 }
 
 message CreateBusinessRequest {
