@@ -3,10 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:isar_community/isar.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-import 'objectbox.g.dart';
+import 'entities/global_product_isar.dart';
+import 'entities/product_category_isar.dart';
+import 'entities/store_product_isar.dart';
 import 'providers/auth/auth_provider.dart';
 import 'providers/cart_provider.dart';
 import 'repositories/auth_repository.dart';
@@ -37,7 +41,12 @@ Future<void> main() async {
 }
 
 Future<void> _initServices() async {
-  final objectBoxStore = await openStore();
+  final dir = await getApplicationDocumentsDirectory();
+  final isar = await Isar.open([
+    StoreProductIsarSchema,
+    GlobalProductIsarSchema,
+    ProductCategoryIsarSchema,
+  ], directory: dir.path);
   await GetStorage.init();
   final appStorage = AppStorageService(AppStorageType.fake, fakeStorage);
   final networkStatusProvider = NetworkStatusProvider.create(
@@ -56,7 +65,7 @@ Future<void> _initServices() async {
         appStorage,
       ),
     )
-    ..registerLazySingleton<Store>(() => objectBoxStore)
+    ..registerLazySingleton<Isar>(() => isar)
     ..registerLazySingleton<UserPreferences>(UserPreferences.new)
     ..registerLazySingleton<AuthRepository>(AuthRepository.new)
     ..registerLazySingleton<AuthProvider>(AuthProvider.new)

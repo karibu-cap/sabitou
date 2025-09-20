@@ -3,7 +3,12 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
+import 'package:isar_community/isar.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:sabitou_clients/entities/global_product_isar.dart';
+import 'package:sabitou_clients/entities/product_category_isar.dart';
+import 'package:sabitou_clients/entities/store_product_isar.dart';
 import 'package:sabitou_clients/providers/auth/auth_provider.dart';
 import 'package:sabitou_clients/providers/cart_provider.dart';
 import 'package:sabitou_clients/repositories/business_repository.dart';
@@ -33,7 +38,7 @@ Future<void> multiScreenMultiLocaleGolden(
       AppInternationalizationService(const Locale('en'), storage);
   final themeService = AppThemeService(storage);
   await tester.pumpAndSettle();
-  _initGetIt(storage, appInternationalization, themeService);
+  await _initGetIt(storage, appInternationalization, themeService);
 
   await tester.pumpWidgetBuilder(
     MultiProvider(
@@ -105,11 +110,17 @@ Future<void> multiScreenMultiLocaleGolden(
   }
 }
 
-void _initGetIt(
+Future<void> _initGetIt(
   AppStorageService storage,
   AppInternationalizationService appInternationalization,
   AppThemeService themeService,
-) {
+) async {
+  final dir = await getApplicationDocumentsDirectory();
+  final isar = await Isar.open([
+    StoreProductIsarSchema,
+    GlobalProductIsarSchema,
+    ProductCategoryIsarSchema,
+  ], directory: dir.path);
   GetIt.I
     ..registerSingletonIfAbsent<AppStorageService>(() => storage)
     ..registerSingletonIfAbsent<AppInternationalizationService>(
@@ -118,6 +129,7 @@ void _initGetIt(
     ..registerLazySingleton<NetworkStatusProvider>(
       () => NetworkStatusProvider.create(type: NetworkProviderType.fake),
     )
+    ..registerSingletonIfAbsent<Isar>(() => isar)
     ..registerSingletonIfAbsent<AppThemeService>(() => themeService)
     ..registerSingletonIfAbsent<UserPreferences>(UserPreferences.new)
     ..registerSingletonIfAbsent<UserRepository>(UserRepository.new)
