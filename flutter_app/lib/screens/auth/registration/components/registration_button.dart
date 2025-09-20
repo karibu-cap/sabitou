@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-import '../../../../router/app_router.dart' as app_router;
+import '../../../../router/app_router.dart';
+import '../../../../router/page_routes.dart';
 import '../../../../services/internationalization/internationalization.dart';
 import '../../../../utils/button_state.dart';
 import '../../../../utils/common_functions.dart';
@@ -44,7 +45,7 @@ class RegistrationButton extends StatelessWidget {
           message: appIntl.registrationSuccess,
         );
         controller.buttonState.value = ButtonState.initial;
-        app_router.pushReplacement(context, app_router.businessListRoutePath);
+        AppRouter.pushReplacement(context, PagesRoutes.dashboard.create());
       } else {
         showErrorToast(
           context: context,

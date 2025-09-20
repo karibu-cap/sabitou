@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../services/internationalization/internationalization.dart';
+import '../../../utils/app_constants.dart';
 import '../../../utils/responsive_utils.dart';
 
 /// The new order header
@@ -21,6 +22,7 @@ class Header extends StatelessWidget {
       crossAxisAlignment: isDesktop
           ? CrossAxisAlignment.center
           : CrossAxisAlignment.start,
+      spacing: AppConstants.spacingM,
       children: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,

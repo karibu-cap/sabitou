@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../../services/internationalization/internationalization.dart';
+import '../../widgets/sidebar/sidebar_menu_item.dart';
 import 'reports_view_model.dart';
 
 /// The reports tab.
@@ -85,8 +86,8 @@ class ReportsController extends ChangeNotifier {
   ReportsController(this.viewModel);
 
   /// Sets the selected tab.
-  void setSelectedTab(ReportsTab tab) {
-    _selectedTab = tab;
+  void setSelectedTab(SideBarItem<ReportsTab> tab) {
+    _selectedTab = tab.id;
     notifyListeners();
   }
 

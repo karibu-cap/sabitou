@@ -25,7 +25,7 @@ class HeaderWidget extends StatelessWidget {
     final theme = ShadTheme.of(context);
 
     return Container(
-      padding: const EdgeInsets.all(12),
+      height: 56,
       decoration: BoxDecoration(
         color: theme.colorScheme.background,
         boxShadow: [
@@ -39,14 +39,14 @@ class HeaderWidget extends StatelessWidget {
       child: Row(
         children: [
           if (isTablet) ...[
-            IconButton(
+            ShadButton.ghost(
               onPressed: onMenuClick,
-              icon: Icon(
+              child: Icon(
                 isSidebarOpen ? LucideIcons.x400 : LucideIcons.menu400,
-                size: 24,
+                size: 20,
               ),
-              padding: const EdgeInsets.all(8),
             ),
+
             const SizedBox(width: 16),
           ],
           const Spacer(),
@@ -56,7 +56,6 @@ class HeaderWidget extends StatelessWidget {
             onMarkAllRead: () {},
             onMarkAsRead: (id) {},
           ),
-          const SizedBox(width: 16),
         ],
       ),
     );

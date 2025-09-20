@@ -69,12 +69,6 @@ final class CollectionName {
 
 /// The static images.
 final class StaticImages {
-  /// The logo image.
-  static const String logo = 'assets/images/logo.png';
-
-  /// The large logo image.
-  static const String largeLogo = 'assets/images/large-logo.png';
-
   /// The placeholder image.
   static const String placeholder = 'assets/images/placeholder.png';
 }

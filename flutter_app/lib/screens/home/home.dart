@@ -1,119 +1,71 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-import '../../../utils/app_constants.dart';
 import '../../../utils/responsive_utils.dart';
 import '../../widgets/app_header/app_header.dart';
 import '../../widgets/sidebar/sidebar.dart';
-import '../dashboard/dashboard_screen.dart';
-import '../inventory/inventory_screen.dart';
-import '../new_order/new_order_screen.dart';
-import '../reports/reports_screen.dart';
-import '../sales/sales_screen.dart';
-import '../settings/settings_screen.dart';
-import '../suppliers/suppliers_view.dart';
-import '../transactions/transactions_screen.dart';
-import '../users/users_view.dart';
 import 'home_controller.dart';
 
 /// The home screen.
 class HomeScreen extends StatelessWidget {
+  /// The navigation shell.
+  final StatefulNavigationShell navigationShell;
+
   /// Constructs the new home screen.
-  const HomeScreen({super.key});
+  const HomeScreen({super.key, required this.navigationShell});
 
   @override
   Widget build(BuildContext context) {
     final tabletBreakpoint = ResponsiveUtils.isTablet(context);
+    final isMobile = ResponsiveUtils.isMobile(context);
 
     return Scaffold(
       backgroundColor: ShadTheme.of(context).colorScheme.secondary,
-      body: ChangeNotifierProvider(
-        create: (context) => HomeController(),
-        child: Consumer<HomeController>(
-          builder: (context, homeController, child) => Stack(
-            children: [
-              Row(
-                children: [
-                  if (!tabletBreakpoint)
-                    SidebarWidget(
-                      activeTab: homeController.activeTab,
-                      onTabChange: homeController.changeTab,
-                      isOpen: true,
-                    ),
-                  Expanded(
-                    child: Column(
-                      children: [
-                        HeaderWidget(
-                          onMenuClick: homeController.toggleSidebar,
-                          isSidebarOpen: homeController.isSidebarOpen,
-                        ),
-                        Expanded(
-                          child: Container(
-                            width: double.infinity,
-                            padding: EdgeInsets.all(
-                              tabletBreakpoint ? 16.0 : 0.0,
-                            ),
-                            child: ConstrainedBox(
-                              constraints: const BoxConstraints(maxWidth: 1280),
-                              child: GestureDetector(
-                                onTap: !tabletBreakpoint
-                                    ? null
-                                    : () => homeController.toggleSidebar(
-                                        value: false,
-                                      ),
-                                child: switch (homeController.activeTab) {
-                                  DashboardItem.dashboard => const Dashboard(),
-                                  DashboardItem.inventory =>
-                                    const InventoryScreen(),
-                                  DashboardItem.salesReports =>
-                                    const SalesScreen(),
-                                  DashboardItem.salesOrders =>
-                                    const NewOrderScreen(),
-                                  DashboardItem.members => const UsersView(),
-                                  DashboardItem.reports =>
-                                    const ReportsScreen(),
-                                  DashboardItem.suppliers =>
-                                    const SuppliersView(),
-                                  DashboardItem.settings =>
-                                    const SettingsScreen(),
-                                  DashboardItem.transactions =>
-                                    const TransactionsScreen(),
-                                  _ => const SizedBox(),
-                                },
+      drawer: SafeArea(child: SidebarWidget(navigationShell: navigationShell)),
+      body: SafeArea(
+        child: ChangeNotifierProvider(
+          create: (context) => HomeController(),
+          child: Consumer<HomeController>(
+            builder: (context, homeController, child) => Stack(
+              children: [
+                Row(
+                  children: [
+                    if (!tabletBreakpoint)
+                      SidebarWidget(navigationShell: navigationShell),
+                    Expanded(
+                      child: Column(
+                        children: [
+                          HeaderWidget(
+                            onMenuClick: () {
+                              Scaffold.of(context).openDrawer();
+                            },
+                            isSidebarOpen: homeController.isSidebarOpen,
+                          ),
+                          Expanded(
+                            child: SizedBox(
+                              width: double.infinity,
+                              child: ConstrainedBox(
+                                constraints: const BoxConstraints(
+                                  maxWidth: 1280,
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: isMobile ? 16.0 : 24.0,
+                                  ),
+                                  child: navigationShell,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-
-              // Mobile sidebar
-              if (tabletBreakpoint)
-                AnimatedPositioned(
-                  duration: const Duration(milliseconds: 300),
-                  left: homeController.isSidebarOpen ? 0 : -280,
-                  top: 0,
-                  bottom: 0,
-                  child: SidebarWidget(
-                    activeTab: homeController.activeTab,
-                    onTabChange: homeController.changeTab,
-                    isOpen: homeController.isSidebarOpen,
-                  ),
+                  ],
                 ),
-
-              if (homeController.isSidebarOpen && tabletBreakpoint)
-                GestureDetector(
-                  onTap: homeController.toggleSidebar,
-                  child: const SizedBox(
-                    width: double.infinity,
-                    height: double.infinity,
-                  ),
-                ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

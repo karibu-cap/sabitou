@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../../../router/app_router.dart' as app_router;
 
+import '../../../../router/app_router.dart';
+import '../../../../router/page_routes.dart';
 import '../../../../services/internationalization/internationalization.dart';
 
 /// Widget for registration links (already have account, etc.)
@@ -10,7 +11,7 @@ class RegistrationLinks extends StatelessWidget {
 
   /// Navigate to register screen.
   void navigateToLoginScreen(BuildContext context) {
-    app_router.pushReplacement(context, app_router.loginRoutePath);
+    AppRouter.pushReplacement(context, PagesRoutes.login.create());
   }
 
   @override

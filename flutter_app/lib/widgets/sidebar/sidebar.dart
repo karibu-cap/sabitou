@@ -1,10 +1,12 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../utils/app_constants.dart';
-import '../../../utils/responsive_utils.dart';
 import '../../providers/auth/auth_provider.dart';
+import '../../router/page_routes.dart';
 import '../../services/internationalization/internationalization.dart';
 import '../../utils/user_preference.dart';
 import '../../utils/utils.dart';
@@ -13,39 +15,36 @@ import 'sidebar_menu_item.dart';
 
 /// The sidebar widget.
 class SidebarWidget extends StatelessWidget {
-  /// The active tab.
-  final DashboardItem activeTab;
+  /// The navigation shell.
+  final StatefulNavigationShell navigationShell;
 
-  /// The on tab change callback.
-  final Function(DashboardItem) onTabChange;
-
-  /// The is open.
-  final bool isOpen;
+  /// The selected tab.
+  final ValueNotifier<DashboardItem> _selected = ValueNotifier<DashboardItem>(
+    DashboardItem.dashboard,
+  );
 
   /// Constructs the new [SidebarWidget].
-  const SidebarWidget({
-    super.key,
-    required this.activeTab,
-    required this.onTabChange,
-    required this.isOpen,
-  });
+  SidebarWidget({super.key, required this.navigationShell});
 
   @override
   Widget build(BuildContext context) {
-    final isTablet = ResponsiveUtils.isTablet(context);
     final theme = ShadTheme.of(context);
     final user = UserPreferences.instance.user;
+    final router = GoRouter.of(context);
+    final path = router.routerDelegate.currentConfiguration.uri.toString();
 
     final List<SideBarItem<DashboardItem>> menuItems = [
       SideBarItem(
         id: DashboardItem.dashboard,
         label: Intls.to.dashboard,
         icon: LucideIcons.house400,
+        path: PagesRoutes.dashboard.pattern,
       ),
       SideBarItem(
         id: DashboardItem.inventory,
         label: Intls.to.inventory,
         icon: LucideIcons.package400,
+        path: PagesRoutes.inventory.pattern,
       ),
       SideBarItem(
         id: DashboardItem.sales,
@@ -54,13 +53,15 @@ class SidebarWidget extends StatelessWidget {
         children: [
           SideBarItem(
             id: DashboardItem.salesReports,
-            label: Intls.to.reports,
+            label: Intls.to.salesReports,
             icon: LucideIcons.chartColumn400,
+            path: PagesRoutes.salesReport.pattern,
           ),
           SideBarItem(
             id: DashboardItem.salesOrders,
             label: Intls.to.newOrders,
             icon: LucideIcons.plus400,
+            path: PagesRoutes.newOrder.pattern,
           ),
         ],
       ),
@@ -68,36 +69,45 @@ class SidebarWidget extends StatelessWidget {
         id: DashboardItem.reports,
         label: Intls.to.reports,
         icon: LucideIcons.chartColumn400,
+        path: PagesRoutes.reports.pattern,
       ),
       SideBarItem(
         id: DashboardItem.transactions,
         label: Intls.to.transactions,
         icon: LucideIcons.receipt400,
+        path: PagesRoutes.transactions.pattern,
       ),
       SideBarItem(
         id: DashboardItem.suppliers,
         label: Intls.to.suppliers,
         icon: LucideIcons.truck400,
+        path: PagesRoutes.suppliers.pattern,
       ),
       SideBarItem(
         id: DashboardItem.members,
         label: Intls.to.members,
         icon: LucideIcons.users400,
+        path: PagesRoutes.users.pattern,
       ),
       SideBarItem(
         id: DashboardItem.settings,
         label: Intls.to.settings,
         icon: LucideIcons.settings500,
+        path: PagesRoutes.settings.pattern,
       ),
     ];
 
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 300),
-      transform: Matrix4.translationValues(
-        isTablet && !isOpen ? -AppConstants.sidebarWidth : 0,
-        0,
-        0,
-      ),
+    _selected.value =
+        menuItems.firstWhereOrNull((element) => path == element.path)?.id ??
+        menuItems
+            .map((e) => e.children)
+            .expand((e) => e ?? <SideBarItem<DashboardItem>>[])
+            .firstWhereOrNull((element) => path == element.path)
+            ?.id ??
+        DashboardItem.dashboard;
+
+    return Drawer(
+      shape: const RoundedRectangleBorder(),
       child: Container(
         width: AppConstants.sidebarWidth,
         decoration: BoxDecoration(
@@ -118,16 +128,35 @@ class SidebarWidget extends StatelessWidget {
             Expanded(
               child: Container(
                 padding: const EdgeInsets.all(16),
-                child: ListView(
-                  children: menuItems
-                      .map(
-                        (item) => SidebarMenuItem<DashboardItem>(
-                          item: item,
-                          activeTab: activeTab,
-                          onTabChange: onTabChange,
-                        ),
-                      )
-                      .toList(),
+                child: ValueListenableBuilder(
+                  valueListenable: _selected,
+                  builder: (context, value, child) {
+                    return ListView(
+                      children: menuItems
+                          .map(
+                            (item) => SidebarMenuItem<DashboardItem>(
+                              item: item,
+                              activeTab: value,
+                              onTabChange: (tab) {
+                                _selected.value = tab.id;
+                                final test2 = navigationShell.route.branches;
+                                final index = test2.indexWhere(
+                                  (e) => e.defaultRoute?.path == tab.path,
+                                );
+                                navigationShell.goBranch(
+                                  index,
+                                  initialLocation:
+                                      index == navigationShell.currentIndex,
+                                );
+                                if (Scaffold.of(context).isDrawerOpen) {
+                                  Scaffold.of(context).closeDrawer();
+                                }
+                              },
+                            ),
+                          )
+                          .toList(),
+                    );
+                  },
                 ),
               ),
             ),

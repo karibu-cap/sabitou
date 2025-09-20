@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart' hide Category;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:provider/provider.dart';
 import 'package:sabitou_rpc/models.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
@@ -18,6 +17,7 @@ import '../../../utils/responsive_utils.dart';
 import '../../../utils/user_preference.dart';
 import '../../../widgets/input/auto_complete.dart';
 import '../../../widgets/loading.dart';
+import '../../../widgets/mobile_scanner_view.dart';
 import '../inventory_controller.dart';
 import 'create_edit_product_form_controller.dart';
 
@@ -59,8 +59,11 @@ class CreateEditProductFormView extends StatelessWidget {
             ],
             child: Consumer<CreateEditProductFormController>(
               builder: (context, controller, child) {
-                return SizedBox(
-                  width: dialogWidth,
+                return ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxWidth: dialogWidth,
+                    maxHeight: MediaQuery.sizeOf(context).height * 0.8,
+                  ),
                   child: SingleChildScrollView(
                     child: ShadForm(
                       key: controller.formKey,
@@ -252,22 +255,6 @@ class _BarcodeField extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = context.watch<CreateEditProductFormController>();
 
-    Future<void> _showBarcodeScanner(BuildContext context) async {
-      final barcode = await showDialog(
-        context: context,
-        builder: (context) => const _BarcodeScannerDialog(),
-      );
-
-      if (barcode != null && context.mounted) {
-        context
-            .read<CreateEditProductFormController>()
-            .product
-            .globalProduct
-            .barCodeValue = barcode
-            .toString();
-      }
-    }
-
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
       spacing: 12,
@@ -281,9 +268,10 @@ class _BarcodeField extends StatelessWidget {
             placeholder: Text(Intls.to.scanOrEnterBarcode),
             trailing: kIsWeb
                 ? null
-                : IconButton(
-                    icon: const Icon(LucideIcons.scan),
-                    onPressed: () => _showBarcodeScanner(context),
+                : MobileScannerView(
+                    onResult: (result) {
+                      controller.barcodeController.text = result;
+                    },
                   ),
             validator: (value) {
               if (value.isEmpty) {
@@ -299,30 +287,6 @@ class _BarcodeField extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class _BarcodeScannerDialog extends StatelessWidget {
-  const _BarcodeScannerDialog();
-
-  @override
-  Widget build(BuildContext context) {
-    return ShadDialog(
-      title: Text(Intls.to.scanBarcode),
-      child: SizedBox(
-        width: 300,
-        height: 300,
-        child: MobileScanner(
-          onDetect: (capture) {
-            final barcodes = capture.barcodes;
-            if (barcodes.isNotEmpty) {
-              final barcode = barcodes.first.rawValue ?? '';
-              Navigator.of(context).pop(barcode);
-            }
-          },
-        ),
-      ),
     );
   }
 }

@@ -1250,6 +1250,8 @@ class AppInternationalizationService extends ChangeNotifier {
     'initiatedBy': {'en': 'Initiated By', 'fr': 'Initié par'},
     'order': {'en': 'Order', 'fr': 'Commande'},
     'units': {'en': 'Units', 'fr': 'Unités'},
+    'codeBar': {'en': 'Code Bar', 'fr': 'Code Bar'},
+    'salesReports': {'en': 'Sales Reports', 'fr': 'Rapports de ventes'},
   };
 
   /// Direct access to the internationalization service.
@@ -1268,6 +1270,12 @@ class AppInternationalizationService extends ChangeNotifier {
     const Locale('en'),
     const Locale('fr'),
   ];
+
+  /// The sales reports.
+  String get salesReports => _stringOfLocalizedValue('salesReports');
+
+  /// The code bar.
+  String get codeBar => _stringOfLocalizedValue('codeBar');
 
   /// The units.
   String get units => _stringOfLocalizedValue('units');

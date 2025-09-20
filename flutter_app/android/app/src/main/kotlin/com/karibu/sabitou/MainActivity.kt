@@ -1,4 +1,4 @@
-package com.example.sabitou_clients
+package com.karibu.sabitou
 
 import io.flutter.embedding.android.FlutterActivity
 

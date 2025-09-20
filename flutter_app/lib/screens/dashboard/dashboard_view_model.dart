@@ -149,7 +149,6 @@ final class DashboardViewModel {
       globalProducts = globalMap;
     } catch (e) {
       error = e.toString();
-      print(e);
     } finally {
       completer.complete(true);
     }

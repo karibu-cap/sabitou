@@ -16,6 +16,7 @@ final class ExportDataReport extends StatelessWidget {
     return ShadCard(
       child: Flex(
         direction: isMobile ? Axis.vertical : Axis.horizontal,
+        spacing: 12,
         children: [
           Expanded(
             flex: isMobile ? 0 : 1,

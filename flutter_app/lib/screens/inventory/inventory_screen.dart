@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
+import '../../utils/app_constants.dart';
 import '../../utils/responsive_utils.dart';
 import '../../widgets/loading.dart';
 import 'components/header.dart';
@@ -24,7 +25,7 @@ class InventoryScreen extends StatelessWidget {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        final isDesktop = ResponsiveUtils.isDesktop(context);
+        final isMobile = ResponsiveUtils.isMobile(context);
 
         return ChangeNotifierProvider(
           create: (context) => InventoryController(viewModel),
@@ -38,10 +39,11 @@ class InventoryScreen extends StatelessWidget {
                   }
 
                   return SingleChildScrollView(
-                    padding: EdgeInsets.all(isDesktop ? 24 : 16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      spacing: isDesktop ? 32 : 24,
+                      spacing: isMobile
+                          ? AppConstants.spacingM
+                          : AppConstants.spacingL,
                       children: const [
                         InventoryHeader(),
                         InventoryStats(),

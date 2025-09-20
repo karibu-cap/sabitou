@@ -61,7 +61,7 @@ class InventoryHeader extends StatelessWidget {
           ),
           builder: (context, snapshot) {
             final canAdd = snapshot.data ?? false;
-            if (!canAdd) {
+            if (canAdd) {
               return const SizedBox.shrink();
             }
 

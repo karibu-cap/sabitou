@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
@@ -7,6 +8,7 @@ import '../../../providers/cart_provider.dart';
 import '../../../services/internationalization/internationalization.dart';
 import '../../../utils/formatters.dart';
 import '../../../widgets/loading.dart';
+import '../../../widgets/mobile_scanner_view.dart';
 import '../new_order_controller.dart';
 
 /// The search and filter view.
@@ -24,16 +26,21 @@ class SearchAndScanView extends StatelessWidget {
         return ShadPopover(
           controller: popoverController,
           child: ShadInput(
+            controller: controller.searchQueryController,
             decoration: ShadDecoration(
               color: ShadTheme.of(context).colorScheme.background,
             ),
             placeholder: Text(Intls.to.scanOrSearchProduct),
             leading: const Icon(LucideIcons.search, size: 16),
-            trailing: ShadButton.outline(
-              size: ShadButtonSize.sm,
-              onPressed: () {},
-              child: const Icon(LucideIcons.scan400, size: 16),
-            ),
+            trailing: kIsWeb
+                ? null
+                : MobileScannerView(
+                    onResult: (result) {
+                      controller.searchQueryController.text = result;
+                      controller.searchQuery.add(result);
+                      popoverController.show();
+                    },
+                  ),
             onChanged: (value) {
               if (value.isEmpty) {
                 popoverController.hide();

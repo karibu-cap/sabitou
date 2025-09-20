@@ -522,7 +522,6 @@ final _fakeTransport =
                     ) &&
                 newGlobalProduct.categories.length ==
                     globalProduct?.categories.length)) {
-          print('the old and new product are diffent $globalProductId');
           final otherBusinessWithTheGlobalProduct =
               _fakeData[CollectionName.storeProducts]?.firstWhereOrNull(
                 (gp) =>
@@ -530,7 +529,6 @@ final _fakeTransport =
                     gp['store_id'] != businessProduct.storeId,
               );
           if (otherBusinessWithTheGlobalProduct != null) {
-            print('The global product is link to another store ');
             globalProductId = 'global-product-${Random().nextInt(1000000)}';
             _fakeData[CollectionName.globalProducts]?.add({
               'ref_id': globalProductId,
