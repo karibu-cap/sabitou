@@ -25,8 +25,9 @@ class HeaderWidget extends StatelessWidget {
     final theme = ShadTheme.of(context);
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
+        color: theme.colorScheme.background,
         boxShadow: [
           BoxShadow(
             color: theme.colorScheme.secondary.withValues(alpha: 0.1),

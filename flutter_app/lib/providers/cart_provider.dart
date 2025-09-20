@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:clock/clock.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -63,7 +64,7 @@ class CartManager extends ChangeNotifier {
       ..refId = uuid.v4()
       ..storeId = currentStore.refId
       ..initiatedBy = user.refId
-      ..createdAt = Timestamp.fromDateTime(DateTime.now())
+      ..createdAt = Timestamp.fromDateTime(clock.now())
       ..status = OrderStatus.ORDER_STATUS_PENDING;
     notifyListeners();
   }
@@ -170,7 +171,7 @@ class CartManager extends ChangeNotifier {
           (sum, item) => sum + (item.quantity * item.unitPrice),
         ) ??
         0;
-    _currentOrder?.updatedAt = Timestamp.fromDateTime(DateTime.now());
+    _currentOrder?.updatedAt = Timestamp.fromDateTime(clock.now());
     notifyListeners();
   }
 
@@ -183,7 +184,7 @@ class CartManager extends ChangeNotifier {
     currentOrder
       ..fromId = UserPreferences.instance.user?.refId ?? ''
       ..status = OrderStatus.ORDER_STATUS_COMPLETED
-      ..updatedAt = Timestamp.fromDateTime(DateTime.now());
+      ..updatedAt = Timestamp.fromDateTime(clock.now());
 
     final result = await OrdersRepository.instance.addOrder(
       CreateOrderRequest(order: currentOrder),

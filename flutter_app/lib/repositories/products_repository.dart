@@ -75,21 +75,6 @@ class ProductsRepository {
     }
   }
 
-  /// Finds global products by categories.
-  Future<List<GlobalProduct>> findGlobalProducts(
-    FindGlobalProductsRequest request,
-  ) async {
-    try {
-      final response = await productServiceClient.findGlobalProducts(request);
-
-      return response.products;
-    } on Exception catch (e) {
-      _logger.severe('findGlobalProducts Error: $e');
-
-      return [];
-    }
-  }
-
   /// Finds product categories by query.
   Future<List<ProductCategory>> findCategories(
     FindCategoryRequest request,

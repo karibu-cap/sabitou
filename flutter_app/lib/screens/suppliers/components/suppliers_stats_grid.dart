@@ -1,18 +1,19 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../services/internationalization/internationalization.dart';
+import '../../../themes/app_colors.dart';
 import '../../../utils/formatters.dart';
-import '../../../widgets/grid/responsitive_grid.dart';
+import '../../../widgets/custom_grid.dart';
+import '../../../widgets/stat_card.dart';
 import '../suppliers_controller.dart';
 import 'list_components/supplier_shimmer_widgets.dart';
 
 /// Grid component for displaying supplier statistics.
 class SuppliersStatsGrid extends StatelessWidget {
-  /// Contructs a new SuppliersStatsGrid.
+  /// Constructs a new SuppliersStatsGrid.
   const SuppliersStatsGrid({super.key});
 
   @override
@@ -52,131 +53,43 @@ class SuppliersStatsGrid extends StatelessWidget {
               StatCard(
                 title: appIntl.totalSuppliersCount,
                 value: totalSuppliers.toString(),
-                subtitle:
+                change:
                     '$activeSuppliers ${appIntl.activeSuppliersText.toLowerCase()}',
                 icon: LucideIcons.building400,
-                color: Colors.blue,
+                color: AppColors.cobalt,
               ),
               StatCard(
                 title: appIntl.totalProductsCount,
                 value: totalProducts.toString(),
-                subtitle: appIntl.fromAllSuppliersText,
+                change: appIntl.fromAllSuppliersText,
                 icon: LucideIcons.package400,
-                color: Colors.green,
+                color: AppColors.dartGreen,
               ),
               StatCard(
                 title: appIntl.avgProductsText,
                 value: avgProductsPerSupplier,
-                subtitle: appIntl.perSupplierText,
+                change: appIntl.perSupplierText,
                 icon: LucideIcons.trendingUp400,
-                color: Colors.purple,
+                color: AppColors.purple,
               ),
               StatCard(
                 title: appIntl.totalValueText,
                 value: Formatters.formatCurrency(totalInventoryValue),
-                subtitle: appIntl.totalValueText,
+                change: appIntl.totalValueText,
                 icon: LucideIcons.check400,
-                color: Colors.orange,
+                color: AppColors.orange500,
               ),
             ];
 
-            return LayoutBuilder(
-              builder: (context, constraints) {
-                final int columns = (constraints.maxWidth / 250).floor();
-
-                return ResponsiveGrid(
-                  mainAxisExtent: 150,
-                  crossAxisCount: columns,
-                  children: statsCards,
-                );
-              },
+            return CustomGrid(
+              children: statsCards,
+              minItemWidth: 250,
+              mainAxisExtent: 100,
+              crossSpacing: 20,
             );
           },
         );
       },
-    );
-  }
-}
-
-/// Individual stat card widget
-class StatCard extends StatelessWidget {
-  /// Contructs a new StatCard.
-
-  /// The title of the stat card.
-  final String title;
-
-  /// The value of the stat card.
-  final String value;
-
-  /// The subtitle of the stat card.
-  final String subtitle;
-
-  /// The icon of the stat card.
-  final IconData icon;
-
-  /// The color of the stat card.
-  final Color color;
-
-  /// Contructs a new StatCard.
-  const StatCard({
-    super.key,
-    required this.title,
-    required this.value,
-    required this.subtitle,
-    required this.icon,
-    required this.color,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = ShadTheme.of(context);
-
-    return ShadCard(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              AutoSizeText(
-                title,
-                style: theme.textTheme.muted.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: color.withValues(alpha: 0.1),
-                  borderRadius: const BorderRadius.all(Radius.circular(8)),
-                ),
-                child: Icon(icon, color: color, size: 20),
-              ),
-            ],
-          ),
-          const SizedBox(height: 6),
-          AutoSizeText(
-            value,
-            style: theme.textTheme.p.copyWith(
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-              color: color,
-            ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-          const SizedBox(height: 2),
-          AutoSizeText(
-            subtitle,
-            style: theme.textTheme.muted.copyWith(fontSize: 12),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
-      ),
     );
   }
 }

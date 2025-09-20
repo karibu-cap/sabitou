@@ -66,62 +66,90 @@ class SupplierDataTable extends StatelessWidget {
     final intl = AppInternationalizationService.to;
     final controller = Provider.of<SuppliersController>(context, listen: false);
     final theme = ShadTheme.of(context);
+    final ScrollController scrollController = ScrollController();
 
-    final headersStyle = theme.textTheme.h4.copyWith(
-      fontWeight: FontWeight.bold,
-      fontSize: 16,
-    );
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Scrollbar(
+          controller: scrollController,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            controller: scrollController,
+            child: Container(
+              constraints: BoxConstraints(minWidth: constraints.maxWidth),
 
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: DataTable(
-        dataRowMinHeight: 60,
-        dataRowMaxHeight: 80,
-        columns: [
-          DataColumn(label: Text('', style: headersStyle)),
-          DataColumn(label: Text(intl.supplier, style: headersStyle)),
-          DataColumn(label: Text(intl.contactInfoText, style: headersStyle)),
-          DataColumn(label: Text(intl.productsText, style: headersStyle)),
-          DataColumn(label: Text(intl.totalValueText, style: headersStyle)),
-          DataColumn(label: Text(intl.statusText, style: headersStyle)),
-          DataColumn(label: Text(intl.notes, style: headersStyle)),
-          DataColumn(label: Text(intl.actions, style: headersStyle)),
-        ],
-        rows: suppliers.map((supplier) {
-          final supplierProducts = products
-              .where((product) => product.supplierId == supplier.refId)
-              .toList();
-          final productCount = supplierProducts.length;
-
-          return DataRow(
-            cells: [
-              DataCell(
-                SupplierCellBuilders.buildSupplierIdCell(supplier, theme),
-              ),
-              DataCell(SupplierCellBuilders.buildSupplierCell(supplier, theme)),
-              DataCell(SupplierCellBuilders.buildContactCell(supplier, theme)),
-              DataCell(SupplierCellBuilders.buildProductsCell(productCount)),
-              DataCell(
-                SupplierCellBuilders.buildTotalValueCell(
-                  supplierProducts,
-                  controller,
-                  theme,
+              child: DataTable(
+                horizontalMargin: 12,
+                dataRowMaxHeight: 80,
+                headingTextStyle: ShadTheme.of(
+                  context,
+                ).textTheme.lead.copyWith(fontWeight: FontWeight.w500),
+                headingRowColor: WidgetStateProperty.all(
+                  ShadTheme.of(context).colorScheme.secondary,
                 ),
+                columns: [
+                  const DataColumn(label: Text('')),
+                  DataColumn(label: Text(intl.supplier)),
+                  DataColumn(label: Text(intl.contactInfoText)),
+                  DataColumn(label: Text(intl.productsText)),
+                  DataColumn(label: Text(intl.totalValueText)),
+                  DataColumn(label: Text(intl.statusText)),
+                  DataColumn(label: Text(intl.notes)),
+                  DataColumn(label: Text(intl.actions)),
+                ],
+                rows: suppliers.map((supplier) {
+                  final supplierProducts = products
+                      .where((product) => product.supplierId == supplier.refId)
+                      .toList();
+                  final productCount = supplierProducts.length;
+
+                  return DataRow(
+                    cells: [
+                      DataCell(
+                        SupplierCellBuilders.buildSupplierIdCell(
+                          supplier,
+                          theme,
+                        ),
+                      ),
+                      DataCell(
+                        SupplierCellBuilders.buildSupplierCell(supplier, theme),
+                      ),
+                      DataCell(
+                        SupplierCellBuilders.buildContactCell(supplier, theme),
+                      ),
+                      DataCell(
+                        SupplierCellBuilders.buildProductsCell(productCount),
+                      ),
+                      DataCell(
+                        SupplierCellBuilders.buildTotalValueCell(
+                          supplierProducts,
+                          controller,
+                          theme,
+                        ),
+                      ),
+                      DataCell(SupplierCellBuilders.buildStatusCell(supplier)),
+                      DataCell(
+                        SupplierCellBuilders.buildNotesCell(supplier, theme),
+                      ),
+                      DataCell(
+                        SupplierCellBuilders.buildActionsCell(
+                          onEdit: () => _showSupplierDialog(context, supplier),
+                          onDelete: () => _showDeleteDialog(
+                            context,
+                            supplier,
+                            productCount,
+                          ),
+                          theme: theme,
+                        ),
+                      ),
+                    ],
+                  );
+                }).toList(),
               ),
-              DataCell(SupplierCellBuilders.buildStatusCell(supplier)),
-              DataCell(SupplierCellBuilders.buildNotesCell(supplier, theme)),
-              DataCell(
-                SupplierCellBuilders.buildActionsCell(
-                  onEdit: () => _showSupplierDialog(context, supplier),
-                  onDelete: () =>
-                      _showDeleteDialog(context, supplier, productCount),
-                  theme: theme,
-                ),
-              ),
-            ],
-          );
-        }).toList(),
-      ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

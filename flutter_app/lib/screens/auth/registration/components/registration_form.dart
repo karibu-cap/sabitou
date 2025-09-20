@@ -5,7 +5,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../../services/internationalization/internationalization.dart';
 import '../../../../utils/form/validation.dart';
-import '../../../../widgets/grid/responsitive_grid.dart';
+import '../../../../widgets/custom_grid.dart';
 import '../../../../widgets/input/form_fields.dart';
 import '../registration_controller.dart';
 
@@ -38,9 +38,8 @@ class RegistrationForm extends StatelessWidget {
             icon: LucideIcons.user400,
             validator: ValidationFormUtils.validateUserName,
           ),
-          ResponsiveGrid(
+          CustomGrid(
             minItemWidth: 200,
-            crossAxisSpacing: 16,
             mainAxisSpacing: 16,
             mainAxisExtent: 80,
             children: [

@@ -52,7 +52,7 @@ class Formatters {
 
   /// Format the distance to now.
   static String formatDistanceToNow(DateTime date) {
-    final now = DateTime.now();
+    final now = clock.now();
     final difference = now.difference(date);
 
     if (difference.inDays > 0) {

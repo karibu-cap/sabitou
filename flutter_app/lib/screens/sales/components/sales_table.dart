@@ -10,7 +10,6 @@ import '../../../utils/extensions.dart';
 import '../../../utils/formatters.dart';
 import '../../../widgets/loading.dart';
 import '../sales_controller.dart';
-import 'search_and_filter.dart';
 
 /// The products table view.
 class SalesTable extends StatelessWidget {
@@ -22,9 +21,27 @@ class SalesTable extends StatelessWidget {
     final controller = context.read<SalesController>();
 
     return ShadCard(
+      padding: EdgeInsets.zero,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SearchAndFilterCard(),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  Intls.to.salesHistory,
+                  style: ShadTheme.of(context).textTheme.h4,
+                ),
+                Text(
+                  Intls.to.salesHistoryDescription,
+                  style: ShadTheme.of(context).textTheme.muted,
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
           StreamBuilder<List<Order>>(
             stream: controller.filteredOrdersStream,
             builder: (context, snapshot) {
@@ -33,22 +50,19 @@ class SalesTable extends StatelessWidget {
                 return const Loading();
               }
 
-              return Padding(
-                padding: const EdgeInsets.all(20),
-                child: orders.isEmpty
-                    ? Column(
-                        spacing: 8,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(LucideIcons.wallet400, size: 50),
-                          Text(Intls.to.noDataFound),
-                        ],
-                      )
-                    : Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [_OrdersDataTable(orders: orders)],
-                      ),
-              );
+              return orders.isEmpty
+                  ? Column(
+                      spacing: 8,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(LucideIcons.wallet400, size: 50),
+                        Text(Intls.to.noDataFound),
+                      ],
+                    )
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [_OrdersDataTable(orders: orders)],
+                    );
             },
           ),
         ],
@@ -68,19 +82,22 @@ class _OrdersDataTable extends StatelessWidget {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        return ConstrainedBox(
-          constraints: BoxConstraints(minWidth: constraints.maxWidth),
-          child: Scrollbar(
+        return Scrollbar(
+          controller: scrollController,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
             controller: scrollController,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              controller: scrollController,
+            child: Container(
+              constraints: BoxConstraints(minWidth: constraints.maxWidth),
               child: DataTable(
                 horizontalMargin: 12,
                 dataRowMaxHeight: 80,
                 headingTextStyle: ShadTheme.of(
                   context,
-                ).textTheme.p.copyWith(fontWeight: FontWeight.w600),
+                ).textTheme.lead.copyWith(fontWeight: FontWeight.w500),
+                headingRowColor: WidgetStateProperty.all(
+                  ShadTheme.of(context).colorScheme.secondary,
+                ),
                 columns: [
                   DataColumn(label: Text(Intls.to.orderId)),
                   DataColumn(label: Text(Intls.to.dateAndTime)),
@@ -91,12 +108,6 @@ class _OrdersDataTable extends StatelessWidget {
                 ],
                 rows: orders.map((order) {
                   return DataRow(
-                    color: WidgetStatePropertyAll(
-                      order.status == OrderStatus.ORDER_STATUS_COMPLETED
-                          ? order.status.color.withValues(alpha: 0.05)
-                          : AppColors.grey0,
-                    ),
-
                     cells: [
                       DataCell(
                         Text(
@@ -141,7 +152,7 @@ class _OrdersDataTable extends StatelessWidget {
                           Formatters.formatCurrency(
                             order.totalPrice.toDouble(),
                           ),
-                          style: ShadTheme.of(context).textTheme.large.copyWith(
+                          style: ShadTheme.of(context).textTheme.list.copyWith(
                             fontWeight: FontWeight.w600,
                           ),
                         ),

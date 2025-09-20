@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 /// Supplier fake transport.
@@ -40,7 +41,7 @@ final supplierFakeTransport = FakeTransportBuilder()
     })
     .unary(SupplierService.createSupplier, (req, _) async {
       return CreateSupplierResponse()
-        ..supplierId = 'new_supplier_${DateTime.now().millisecondsSinceEpoch}';
+        ..supplierId = 'new_supplier_${clock.now().millisecondsSinceEpoch}';
     })
     .unary(SupplierService.updateSupplier, (req, _) async {
       final request = req;

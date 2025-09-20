@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
-import '../../../widgets/grid/responsitive_grid.dart';
+
+import '../../../widgets/custom_grid.dart';
 import '../users_controller.dart';
 import 'list_components/user_card.dart';
 import 'list_components/user_empty_state.dart';
@@ -49,16 +50,13 @@ class UsersList extends StatelessWidget {
 
             return LayoutBuilder(
               builder: (context, constraints) {
-                return ResponsiveGrid(
+                return CustomGrid(
+                  minItemWidth: 500,
                   mainAxisExtent: 500,
-                  crossAxisSpacing: 20,
-                  mainAxisSpacing: 20,
-                  childAspectRatio: 1,
-                  children: [
-                    ...storeMembers.map(
-                      (storeMember) => UserCard(storeMember: storeMember),
-                    ),
-                  ],
+                  crossSpacing: 20,
+                  children: storeMembers
+                      .map((storeMember) => UserCard(storeMember: storeMember))
+                      .toList(),
                 );
               },
             );

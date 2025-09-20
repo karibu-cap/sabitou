@@ -28,10 +28,14 @@ class SuppliersList extends StatelessWidget {
         final products = productsSnapshot.data ?? [];
 
         return ShadCard(
+          padding: EdgeInsets.zero,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SupplierListHeader(),
+              const Padding(
+                padding: EdgeInsets.all(16.0),
+                child: SupplierListHeader(),
+              ),
               const SizedBox(height: 16),
 
               StreamBuilder<List<Supplier>>(

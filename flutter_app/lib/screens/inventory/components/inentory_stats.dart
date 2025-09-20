@@ -76,7 +76,12 @@ final class InventoryStats extends StatelessWidget {
         return Shimmer(
           interval: const Duration(seconds: 5),
           enabled: !snapshot.hasData || products == null,
-          child: CustomGrid(children: stats, minItemWidth: 250),
+          child: CustomGrid(
+            children: stats,
+            minItemWidth: 250,
+            mainAxisExtent: 100,
+            crossSpacing: 20,
+          ),
         );
       },
     );

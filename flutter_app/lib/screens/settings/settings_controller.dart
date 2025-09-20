@@ -6,6 +6,7 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../../repositories/business_repository.dart';
 import '../../repositories/stores_repository.dart';
+import '../../utils/user_preference.dart';
 import 'settings_view_model.dart';
 
 /// The settings tab.
@@ -118,6 +119,31 @@ class SettingsController extends ChangeNotifier {
     notifyListeners();
 
     return result;
+  }
+
+  /// Switches the business.
+  Future<void> switchBusiness() async {
+    final selectedBusiness = this.selectedBusiness;
+    if (selectedBusiness == null) {
+      return;
+    }
+
+    await UserPreferences.instance.saveBusinessPreferences(
+      newBusiness: selectedBusiness,
+    );
+  }
+
+  /// Switches the store.
+  Future<void> switchStore() async {
+    final selectedStore = this.selectedStore;
+
+    if (selectedStore == null) {
+      return;
+    }
+
+    await UserPreferences.instance.saveStorePreferences(
+      newStore: selectedStore,
+    );
   }
 
   /// Rebuild the controller.

@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
@@ -46,7 +47,7 @@ final supplierFakeTransport = FakeTransportBuilder()
     })
     .unary(SupplierService.createSupplier, (req, _) async {
       return CreateSupplierResponse()
-        ..supplierId = 'new_supplier_${DateTime.now().millisecondsSinceEpoch}';
+        ..supplierId = 'new_supplier_${clock.now().millisecondsSinceEpoch}';
     })
     .unary(SupplierService.updateSupplier, (req, _) async {
       final request = req;

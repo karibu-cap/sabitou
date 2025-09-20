@@ -4,35 +4,34 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 /// App theme.
 class AppTheme {
   /// Convert OKLCH colors to Flutter Colors.
-  static const Color _backgroundLight = Color(0xFFFEFEFE);
-  static const Color _foregroundLight = Color(0xFF000000);
-  static const Color _cardLight = Color(0xFFFFFFFF);
-  static const Color _primaryLight = Color(0xFF000000);
+  static const Color _foregroundLight = Color(0xFF21232C);
+  static const Color _cardLight = Color(0xFFFCFCFD);
+  static const Color _primaryLight = Color(0xFF21232C);
   static const Color _primaryForegroundLight = Color(0xFFFFFFFF);
-  static const Color _secondaryLight = Color(0xFFF0F0F0);
-  static const Color _mutedLight = Color(0xFFF7F7F7);
-  static const Color _mutedForegroundLight = Color(0xFF707070);
-  static const Color _accentLight = Color(0xFFF0F0F0);
+  static const Color _secondaryLight = Color(0xFFF4F4F6);
+  static const Color _mutedLight = Color(0xFFF1F2F4);
+  static const Color _mutedForegroundLight = Color(0xFF626A84);
+  static const Color _accentLight = Color(0xFF5533FF);
   static const Color _destructiveLight = Color(0xFFDC2626);
   static const Color _destructiveForegroundLight = Color(0xFFFFFFFF);
-  static const Color _borderLight = Color(0xFFEBEBEB);
-  static const Color _inputLight = Color(0xFFF0F0F0);
-  static const Color _ringLight = Color(0xFF000000);
+  static const Color _borderLight = Color(0xFFE2E4E9);
+  static const Color _inputLight = Color(0xFFF3F4F6);
+  static const Color _ringLight = Color(0xFF5533FF);
 
   /// Dark theme colors.
-  static const Color _backgroundDark = Color(0xFF000000);
-  static const Color _foregroundDark = Color(0xFFFFFFFF);
-  static const Color _cardDark = Color.fromARGB(255, 9, 9, 9);
-  static const Color _primaryDark = Color(0xFFFFFFFF);
-  static const Color _primaryForegroundDark = Color(0xFF000000);
-  static const Color _secondaryDark = Color.fromARGB(255, 16, 16, 16);
-  static const Color _mutedDark = Color(0xFF3A3A3A);
-  static const Color _mutedForegroundDark = Color(0xFFB8B8B8);
-  static const Color _accentDark = Color(0xFF525252);
+  static const Color _backgroundDark = Color(0xFF0F121A);
+  static const Color _foregroundDark = Color(0xFFD3D6DE);
+  static const Color _cardDark = Color(0xFF131620);
+  static const Color _primaryDark = Color(0xFF401AFF);
+  static const Color _primaryForegroundDark = Color(0xFFD3D6DE);
+  static const Color _secondaryDark = Color(0xFF1A1C23);
+  static const Color _mutedDark = Color(0xFF111317);
+  static const Color _mutedForegroundDark = Color(0xFF989FB3);
+  static const Color _accentDark = Color(0xFF6A4DFF);
   static const Color _destructiveForegroundDark = Color(0xFF000000);
-  static const Color _borderDark = Color(0xFF424242);
-  static const Color _inputDark = Color(0xFF525252);
-  static const Color _ringDark = Color(0xFFB8B8B8);
+  static const Color _borderDark = Color(0xFF272A35);
+  static const Color _inputDark = Color(0xFF1A1C23);
+  static const Color _ringDark = Color(0xFF6A4DFF);
 
   /// Danger color.
   static const Color dangerColor = Color.fromARGB(255, 217, 10, 10);
@@ -149,10 +148,8 @@ class AppTheme {
   static final ShadThemeData lightTheme = ShadThemeData(
     brightness: Brightness.light,
     colorScheme: const ShadSlateColorScheme.light(
-      background: _backgroundLight,
       foreground: _foregroundLight,
       cardForeground: _foregroundLight,
-      popover: _backgroundLight,
       popoverForeground: _foregroundLight,
       primary: _primaryLight,
       primaryForeground: _primaryForegroundLight,
@@ -182,7 +179,7 @@ class AppTheme {
       ),
       table: _geistTextTheme.bodyMedium,
       list: _geistTextTheme.bodyMedium,
-      lead: _geistTextTheme.titleLarge,
+      lead: _geistTextTheme.titleSmall,
       large: _geistTextTheme.titleMedium,
       small: _geistTextTheme.bodySmall?.copyWith(fontWeight: FontWeight.w600),
       muted: _geistTextTheme.bodySmall?.copyWith(color: _mutedForegroundLight),
@@ -190,35 +187,24 @@ class AppTheme {
     cardTheme: const ShadCardTheme(
       backgroundColor: _cardLight,
       border: Border.fromBorderSide(BorderSide(color: _borderLight)),
-      shadows: [
-        BoxShadow(
-          color: Color(0x16000000),
-          offset: Offset(0, 1),
-          blurRadius: 2,
-        ),
-        BoxShadow(
-          color: Color(0x2E000000),
-          offset: Offset(0, 1),
-          blurRadius: 2,
-          spreadRadius: -1,
-        ),
-      ],
+      radius: BorderRadius.all(Radius.circular(16)),
+      padding: EdgeInsets.all(16),
     ),
-    primaryButtonTheme: ShadButtonTheme(
+    primaryButtonTheme: const ShadButtonTheme(
       gradient: LinearGradient(
-        colors: [_primaryLight, _primaryLight.withValues(alpha: 0.8)],
-        stops: const [0, 1],
+        colors: [Color(0xFF5533ff), Color(0xFFcc66ff)],
+        stops: [0, 1],
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
       ),
     ),
-    ghostButtonTheme: const ShadButtonTheme(
-      hoverBackgroundColor: _primaryLight,
-      hoverForegroundColor: _primaryDark,
+    ghostButtonTheme: ShadButtonTheme(
+      hoverBackgroundColor: _primaryLight.withValues(alpha: 0.05),
     ),
-    outlineButtonTheme: const ShadButtonTheme(
-      hoverBackgroundColor: _primaryLight,
-      hoverForegroundColor: _primaryDark,
+    outlineButtonTheme: ShadButtonTheme(
+      hoverBackgroundColor: _primaryLight.withValues(alpha: 0.05),
+      backgroundColor: _primaryForegroundLight,
+      decoration: ShadDecoration(border: ShadBorder.all(color: _borderLight)),
     ),
     destructiveButtonTheme: ShadButtonTheme(
       gradient: LinearGradient(
@@ -240,7 +226,7 @@ class AppTheme {
       cardForeground: _foregroundDark,
       popover: Color(0xFF2E2E2E),
       popoverForeground: _foregroundDark,
-      primary: _primaryDark,
+      primary: _primaryForegroundDark,
       primaryForeground: _primaryForegroundDark,
       secondary: _secondaryDark,
       secondaryForeground: _foregroundDark,
@@ -256,58 +242,42 @@ class AppTheme {
     radius: const BorderRadius.all(Radius.circular(8.0)),
     textTheme: ShadTextTheme(
       family: 'Geist',
-      h1Large: _geistTextTheme.displayLarge?.copyWith(color: _foregroundDark),
-      h1: _geistTextTheme.displayMedium?.copyWith(color: _foregroundDark),
-      h2: _geistTextTheme.displaySmall?.copyWith(color: _foregroundDark),
-      h3: _geistTextTheme.headlineLarge?.copyWith(color: _foregroundDark),
-      h4: _geistTextTheme.headlineMedium?.copyWith(color: _foregroundDark),
-      p: _geistTextTheme.bodyLarge?.copyWith(color: _foregroundDark),
+      h1Large: _geistTextTheme.displayLarge,
+      h1: _geistTextTheme.displayMedium,
+      h2: _geistTextTheme.displaySmall,
+      h3: _geistTextTheme.headlineLarge,
+      h4: _geistTextTheme.headlineMedium,
+      p: _geistTextTheme.bodyLarge,
       blockquote: _geistTextTheme.bodyLarge?.copyWith(
         fontStyle: FontStyle.italic,
-        color: _foregroundDark,
       ),
-      table: _geistTextTheme.bodyMedium?.copyWith(color: _foregroundDark),
-      list: _geistTextTheme.bodyMedium?.copyWith(color: _foregroundDark),
-      lead: _geistTextTheme.titleLarge?.copyWith(color: _foregroundDark),
-      large: _geistTextTheme.titleMedium?.copyWith(color: _foregroundDark),
-      small: _geistTextTheme.bodySmall?.copyWith(
-        color: _foregroundDark,
-        fontWeight: FontWeight.w600,
-      ),
-      muted: _geistTextTheme.bodySmall?.copyWith(color: _mutedForegroundDark),
+      table: _geistTextTheme.bodyMedium,
+      list: _geistTextTheme.bodyMedium,
+      lead: _geistTextTheme.titleSmall,
+      large: _geistTextTheme.titleMedium,
+      small: _geistTextTheme.bodySmall?.copyWith(fontWeight: FontWeight.w600),
+      muted: _geistTextTheme.bodySmall?.copyWith(color: _mutedForegroundLight),
     ),
     cardTheme: const ShadCardTheme(
       backgroundColor: _cardDark,
       border: Border.fromBorderSide(BorderSide(color: _borderDark)),
-      shadows: [
-        BoxShadow(
-          color: Color(0x16000000),
-          offset: Offset(0, 1),
-          blurRadius: 2,
-        ),
-        BoxShadow(
-          color: Color(0x2E000000),
-          offset: Offset(0, 1),
-          blurRadius: 2,
-          spreadRadius: -1,
-        ),
-      ],
+      radius: BorderRadius.all(Radius.circular(16)),
+      padding: EdgeInsets.all(16),
     ),
-    primaryButtonTheme: ShadButtonTheme(
+    primaryButtonTheme: const ShadButtonTheme(
       gradient: LinearGradient(
-        colors: [_primaryDark, _primaryDark.withValues(alpha: 0.6)],
-        stops: const [0, 1],
+        colors: [Color(0xFF5533ff), Color(0xFFcc66ff)],
+        stops: [0, 1],
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
       ),
     ),
-    ghostButtonTheme: const ShadButtonTheme(
-      hoverBackgroundColor: _primaryDark,
-      hoverForegroundColor: _primaryLight,
+    ghostButtonTheme: ShadButtonTheme(
+      hoverBackgroundColor: _primaryDark.withValues(alpha: 0.05),
     ),
-    outlineButtonTheme: const ShadButtonTheme(
-      hoverBackgroundColor: _primaryDark,
-      hoverForegroundColor: _primaryLight,
+    outlineButtonTheme: ShadButtonTheme(
+      hoverBackgroundColor: _primaryDark.withValues(alpha: 0.05),
+      decoration: ShadDecoration(border: ShadBorder.all(color: _borderDark)),
     ),
   );
 
