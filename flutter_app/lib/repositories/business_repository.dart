@@ -73,7 +73,8 @@ class BusinessRepository {
       );
 
       return members.firstWhereOrNull(
-        (member) => member.userId == userId && member.businessId == businessId,
+        (member) =>
+            member.user.refId == userId && member.businessId == businessId,
       );
     } on Exception catch (e) {
       _logger.severe('getBusinessMember Error: $e');

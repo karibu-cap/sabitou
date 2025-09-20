@@ -154,6 +154,7 @@ dart_code_linter:
   exclude:
     exclude:
       - sabitou_clients/**/build/**
+      - sabitou_clients/**/**.g.dart
       - sabitou_clients/test/**
       - sabitou_clients/ios/**
       - sabitou_clients/android/**
@@ -222,7 +223,7 @@ dart_code_linter:
     - prefer-last:
         severity: style
     - prefer-trailing-comma:
-        severity: error
+        severity: style
 
     # Flutter rules.
     - always-remove-listener:

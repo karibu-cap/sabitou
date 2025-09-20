@@ -123,6 +123,65 @@ func (CurrencyChangePolicyType) EnumDescriptor() ([]byte, []int) {
 	return file_business_v1_business_proto_rawDescGZIP(), []int{1}
 }
 
+type BusinessMemberStatus int32
+
+const (
+	BusinessMemberStatus_BUSINESS_MEMBER_STATUS_UNSPECIFIED BusinessMemberStatus = 0
+	// / The user is active.
+	BusinessMemberStatus_BUSINESS_MEMBER_STATUS_ACTIVE BusinessMemberStatus = 1
+	// / The user is pending.
+	BusinessMemberStatus_BUSINESS_MEMBER_STATUS_PENDING BusinessMemberStatus = 2
+	// / The user is inactive.
+	BusinessMemberStatus_BUSINESS_MEMBER_STATUS_INACTIVE BusinessMemberStatus = 3
+	// / The user is banned.
+	BusinessMemberStatus_BUSINESS_MEMBER_STATUS_BANNED BusinessMemberStatus = 4
+)
+
+// Enum value maps for BusinessMemberStatus.
+var (
+	BusinessMemberStatus_name = map[int32]string{
+		0: "BUSINESS_MEMBER_STATUS_UNSPECIFIED",
+		1: "BUSINESS_MEMBER_STATUS_ACTIVE",
+		2: "BUSINESS_MEMBER_STATUS_PENDING",
+		3: "BUSINESS_MEMBER_STATUS_INACTIVE",
+		4: "BUSINESS_MEMBER_STATUS_BANNED",
+	}
+	BusinessMemberStatus_value = map[string]int32{
+		"BUSINESS_MEMBER_STATUS_UNSPECIFIED": 0,
+		"BUSINESS_MEMBER_STATUS_ACTIVE":      1,
+		"BUSINESS_MEMBER_STATUS_PENDING":     2,
+		"BUSINESS_MEMBER_STATUS_INACTIVE":    3,
+		"BUSINESS_MEMBER_STATUS_BANNED":      4,
+	}
+)
+
+func (x BusinessMemberStatus) Enum() *BusinessMemberStatus {
+	p := new(BusinessMemberStatus)
+	*p = x
+	return p
+}
+
+func (x BusinessMemberStatus) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (BusinessMemberStatus) Descriptor() protoreflect.EnumDescriptor {
+	return file_business_v1_business_proto_enumTypes[2].Descriptor()
+}
+
+func (BusinessMemberStatus) Type() protoreflect.EnumType {
+	return &file_business_v1_business_proto_enumTypes[2]
+}
+
+func (x BusinessMemberStatus) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use BusinessMemberStatus.Descriptor instead.
+func (BusinessMemberStatus) EnumDescriptor() ([]byte, []int) {
+	return file_business_v1_business_proto_rawDescGZIP(), []int{2}
+}
+
 type Business struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The reference id to the business identifier.
@@ -273,14 +332,16 @@ func (x *Business) GetEmail() string {
 
 type BusinessMember struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The unique identifier of the user.
-	UserId string `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	// The user.
+	User *v1.User `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
 	// The unique identifier of the business.
 	BusinessId string `protobuf:"bytes,2,opt,name=business_id,json=businessId,proto3" json:"business_id,omitempty"`
 	// The permissions that the user has.
 	Permissions []*v1.BusinessPermission `protobuf:"bytes,3,rep,name=permissions,proto3" json:"permissions,omitempty"`
 	// The date since when the user became a member.
-	MemberSince   *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=member_since,json=memberSince,proto3" json:"member_since,omitempty"`
+	MemberSince *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=member_since,json=memberSince,proto3" json:"member_since,omitempty"`
+	// The status of the user.
+	Status        BusinessMemberStatus `protobuf:"varint,5,opt,name=status,proto3,enum=business.v1.BusinessMemberStatus" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -315,11 +376,11 @@ func (*BusinessMember) Descriptor() ([]byte, []int) {
 	return file_business_v1_business_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *BusinessMember) GetUserId() string {
+func (x *BusinessMember) GetUser() *v1.User {
 	if x != nil {
-		return x.UserId
+		return x.User
 	}
-	return ""
+	return nil
 }
 
 func (x *BusinessMember) GetBusinessId() string {
@@ -341,6 +402,13 @@ func (x *BusinessMember) GetMemberSince() *timestamppb.Timestamp {
 		return x.MemberSince
 	}
 	return nil
+}
+
+func (x *BusinessMember) GetStatus() BusinessMemberStatus {
+	if x != nil {
+		return x.Status
+	}
+	return BusinessMemberStatus_BUSINESS_MEMBER_STATUS_UNSPECIFIED
 }
 
 type CreateBusinessRequest struct {
@@ -1726,7 +1794,7 @@ var File_business_v1_business_proto protoreflect.FileDescriptor
 
 const file_business_v1_business_proto_rawDesc = "" +
 	"\n" +
-	"\x1abusiness/v1/business.proto\x12\vbusiness.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cidentity/v1/permission.proto\x1a\x12link/v1/link.proto\"\x87\x04\n" +
+	"\x1abusiness/v1/business.proto\x12\vbusiness.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cidentity/v1/permission.proto\x1a\x12link/v1/link.proto\x1a\x16identity/v1/user.proto\"\x87\x04\n" +
 	"\bBusiness\x12\x1a\n" +
 	"\x06ref_id\x18\x01 \x01(\tH\x00R\x05refId\x88\x01\x01\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12%\n" +
@@ -1748,13 +1816,14 @@ const file_business_v1_business_proto_rawDesc = "" +
 	"\r_contact_infoB\n" +
 	"\n" +
 	"\b_addressB\b\n" +
-	"\x06_email\"\xcc\x01\n" +
-	"\x0eBusinessMember\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\tR\x06userId\x12\x1f\n" +
+	"\x06_email\"\x95\x02\n" +
+	"\x0eBusinessMember\x12%\n" +
+	"\x04user\x18\x01 \x01(\v2\x11.identity.v1.UserR\x04user\x12\x1f\n" +
 	"\vbusiness_id\x18\x02 \x01(\tR\n" +
 	"businessId\x12A\n" +
 	"\vpermissions\x18\x03 \x03(\v2\x1f.identity.v1.BusinessPermissionR\vpermissions\x12=\n" +
-	"\fmember_since\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\vmemberSince\"\xc6\x01\n" +
+	"\fmember_since\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\vmemberSince\x129\n" +
+	"\x06status\x18\x05 \x01(\x0e2!.business.v1.BusinessMemberStatusR\x06status\"\xc6\x01\n" +
 	"\x15CreateBusinessRequest\x121\n" +
 	"\bbusiness\x18\x01 \x01(\v2\x15.business.v1.BusinessR\bbusiness\x12)\n" +
 	"\x0elogo_raw_image\x18\x02 \x01(\fH\x00R\flogoRawImage\x88\x01\x01\x12<\n" +
@@ -1864,7 +1933,13 @@ const file_business_v1_business_proto_rawDesc = "" +
 	"\x18CurrencyChangePolicyType\x12+\n" +
 	"'CURRENCY_CHANGE_POLICY_TYPE_UNSPECIFIED\x10\x00\x12<\n" +
 	"8CURRENCY_CHANGE_POLICY_TYPE_KEEP_PREVIOUS_CURRENCY_VALUE\x10\x01\x12F\n" +
-	"BCURRENCY_CHANGE_POLICY_TYPE_CONVERT_BASED_ON_CURRENT_EXCHANGE_RATE\x10\x022\xef\n" +
+	"BCURRENCY_CHANGE_POLICY_TYPE_CONVERT_BASED_ON_CURRENT_EXCHANGE_RATE\x10\x02*\xcd\x01\n" +
+	"\x14BusinessMemberStatus\x12&\n" +
+	"\"BUSINESS_MEMBER_STATUS_UNSPECIFIED\x10\x00\x12!\n" +
+	"\x1dBUSINESS_MEMBER_STATUS_ACTIVE\x10\x01\x12\"\n" +
+	"\x1eBUSINESS_MEMBER_STATUS_PENDING\x10\x02\x12#\n" +
+	"\x1fBUSINESS_MEMBER_STATUS_INACTIVE\x10\x03\x12!\n" +
+	"\x1dBUSINESS_MEMBER_STATUS_BANNED\x10\x042\xef\n" +
 	"\n" +
 	"\x0fBusinessService\x12Y\n" +
 	"\x0eCreateBusiness\x12\".business.v1.CreateBusinessRequest\x1a#.business.v1.CreateBusinessResponse\x12\\\n" +
@@ -1894,95 +1969,99 @@ func file_business_v1_business_proto_rawDescGZIP() []byte {
 	return file_business_v1_business_proto_rawDescData
 }
 
-var file_business_v1_business_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
+var file_business_v1_business_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
 var file_business_v1_business_proto_msgTypes = make([]protoimpl.MessageInfo, 28)
 var file_business_v1_business_proto_goTypes = []any{
 	(BusinessStatusType)(0),                 // 0: business.v1.BusinessStatusType
 	(CurrencyChangePolicyType)(0),           // 1: business.v1.CurrencyChangePolicyType
-	(*Business)(nil),                        // 2: business.v1.Business
-	(*BusinessMember)(nil),                  // 3: business.v1.BusinessMember
-	(*CreateBusinessRequest)(nil),           // 4: business.v1.CreateBusinessRequest
-	(*CreateBusinessResponse)(nil),          // 5: business.v1.CreateBusinessResponse
-	(*ChangeBusinessCurrencyRequest)(nil),   // 6: business.v1.ChangeBusinessCurrencyRequest
-	(*ChangeBusinessCurrencyResponse)(nil),  // 7: business.v1.ChangeBusinessCurrencyResponse
-	(*GetMyBusinessesRequest)(nil),          // 8: business.v1.GetMyBusinessesRequest
-	(*GetMyBusinessesResponse)(nil),         // 9: business.v1.GetMyBusinessesResponse
-	(*GetBusinessDetailsRequest)(nil),       // 10: business.v1.GetBusinessDetailsRequest
-	(*GetBusinessDetailsResponse)(nil),      // 11: business.v1.GetBusinessDetailsResponse
-	(*UpdateBusinessRequest)(nil),           // 12: business.v1.UpdateBusinessRequest
-	(*UpdateBusinessResponse)(nil),          // 13: business.v1.UpdateBusinessResponse
-	(*RequestDeleteBusinessRequest)(nil),    // 14: business.v1.RequestDeleteBusinessRequest
-	(*RequestDeleteBusinessResponse)(nil),   // 15: business.v1.RequestDeleteBusinessResponse
-	(*CreateUserToBusinessRequest)(nil),     // 16: business.v1.CreateUserToBusinessRequest
-	(*CreateUserToBusinessResponse)(nil),    // 17: business.v1.CreateUserToBusinessResponse
-	(*AssociateUserToBusinessRequest)(nil),  // 18: business.v1.AssociateUserToBusinessRequest
-	(*AssociateUserToBusinessResponse)(nil), // 19: business.v1.AssociateUserToBusinessResponse
-	(*RemoveUserFromBusinessRequest)(nil),   // 20: business.v1.RemoveUserFromBusinessRequest
-	(*RemoveUserFromBusinessResponse)(nil),  // 21: business.v1.RemoveUserFromBusinessResponse
-	(*GetBusinessMembersRequest)(nil),       // 22: business.v1.GetBusinessMembersRequest
-	(*GetBusinessMembersResponse)(nil),      // 23: business.v1.GetBusinessMembersResponse
-	(*UpdateBusinessMemberRequest)(nil),     // 24: business.v1.UpdateBusinessMemberRequest
-	(*UpdateBusinessMemberResponse)(nil),    // 25: business.v1.UpdateBusinessMemberResponse
-	(*GetBusinessMemberRequest)(nil),        // 26: business.v1.GetBusinessMemberRequest
-	(*GetBusinessMemberResponse)(nil),       // 27: business.v1.GetBusinessMemberResponse
-	(*StreamBusinessMembersRequest)(nil),    // 28: business.v1.StreamBusinessMembersRequest
-	(*StreamBusinessMembersResponse)(nil),   // 29: business.v1.StreamBusinessMembersResponse
-	(*v1.BusinessPermission)(nil),           // 30: identity.v1.BusinessPermission
-	(*timestamppb.Timestamp)(nil),           // 31: google.protobuf.Timestamp
-	(*v11.ResourceLink)(nil),                // 32: link.v1.ResourceLink
+	(BusinessMemberStatus)(0),               // 2: business.v1.BusinessMemberStatus
+	(*Business)(nil),                        // 3: business.v1.Business
+	(*BusinessMember)(nil),                  // 4: business.v1.BusinessMember
+	(*CreateBusinessRequest)(nil),           // 5: business.v1.CreateBusinessRequest
+	(*CreateBusinessResponse)(nil),          // 6: business.v1.CreateBusinessResponse
+	(*ChangeBusinessCurrencyRequest)(nil),   // 7: business.v1.ChangeBusinessCurrencyRequest
+	(*ChangeBusinessCurrencyResponse)(nil),  // 8: business.v1.ChangeBusinessCurrencyResponse
+	(*GetMyBusinessesRequest)(nil),          // 9: business.v1.GetMyBusinessesRequest
+	(*GetMyBusinessesResponse)(nil),         // 10: business.v1.GetMyBusinessesResponse
+	(*GetBusinessDetailsRequest)(nil),       // 11: business.v1.GetBusinessDetailsRequest
+	(*GetBusinessDetailsResponse)(nil),      // 12: business.v1.GetBusinessDetailsResponse
+	(*UpdateBusinessRequest)(nil),           // 13: business.v1.UpdateBusinessRequest
+	(*UpdateBusinessResponse)(nil),          // 14: business.v1.UpdateBusinessResponse
+	(*RequestDeleteBusinessRequest)(nil),    // 15: business.v1.RequestDeleteBusinessRequest
+	(*RequestDeleteBusinessResponse)(nil),   // 16: business.v1.RequestDeleteBusinessResponse
+	(*CreateUserToBusinessRequest)(nil),     // 17: business.v1.CreateUserToBusinessRequest
+	(*CreateUserToBusinessResponse)(nil),    // 18: business.v1.CreateUserToBusinessResponse
+	(*AssociateUserToBusinessRequest)(nil),  // 19: business.v1.AssociateUserToBusinessRequest
+	(*AssociateUserToBusinessResponse)(nil), // 20: business.v1.AssociateUserToBusinessResponse
+	(*RemoveUserFromBusinessRequest)(nil),   // 21: business.v1.RemoveUserFromBusinessRequest
+	(*RemoveUserFromBusinessResponse)(nil),  // 22: business.v1.RemoveUserFromBusinessResponse
+	(*GetBusinessMembersRequest)(nil),       // 23: business.v1.GetBusinessMembersRequest
+	(*GetBusinessMembersResponse)(nil),      // 24: business.v1.GetBusinessMembersResponse
+	(*UpdateBusinessMemberRequest)(nil),     // 25: business.v1.UpdateBusinessMemberRequest
+	(*UpdateBusinessMemberResponse)(nil),    // 26: business.v1.UpdateBusinessMemberResponse
+	(*GetBusinessMemberRequest)(nil),        // 27: business.v1.GetBusinessMemberRequest
+	(*GetBusinessMemberResponse)(nil),       // 28: business.v1.GetBusinessMemberResponse
+	(*StreamBusinessMembersRequest)(nil),    // 29: business.v1.StreamBusinessMembersRequest
+	(*StreamBusinessMembersResponse)(nil),   // 30: business.v1.StreamBusinessMembersResponse
+	(*v1.User)(nil),                         // 31: identity.v1.User
+	(*v1.BusinessPermission)(nil),           // 32: identity.v1.BusinessPermission
+	(*timestamppb.Timestamp)(nil),           // 33: google.protobuf.Timestamp
+	(*v11.ResourceLink)(nil),                // 34: link.v1.ResourceLink
 }
 var file_business_v1_business_proto_depIdxs = []int32{
 	0,  // 0: business.v1.Business.status:type_name -> business.v1.BusinessStatusType
-	30, // 1: business.v1.BusinessMember.permissions:type_name -> identity.v1.BusinessPermission
-	31, // 2: business.v1.BusinessMember.member_since:type_name -> google.protobuf.Timestamp
-	2,  // 3: business.v1.CreateBusinessRequest.business:type_name -> business.v1.Business
-	32, // 4: business.v1.CreateBusinessRequest.external_links:type_name -> link.v1.ResourceLink
-	1,  // 5: business.v1.ChangeBusinessCurrencyRequest.currency_change_policy:type_name -> business.v1.CurrencyChangePolicyType
-	2,  // 6: business.v1.GetMyBusinessesResponse.businesses:type_name -> business.v1.Business
-	2,  // 7: business.v1.GetBusinessDetailsResponse.business:type_name -> business.v1.Business
-	2,  // 8: business.v1.UpdateBusinessRequest.business:type_name -> business.v1.Business
-	32, // 9: business.v1.UpdateBusinessRequest.external_links:type_name -> link.v1.ResourceLink
-	30, // 10: business.v1.CreateUserToBusinessRequest.permissions:type_name -> identity.v1.BusinessPermission
-	3,  // 11: business.v1.CreateUserToBusinessResponse.business_member:type_name -> business.v1.BusinessMember
-	30, // 12: business.v1.AssociateUserToBusinessRequest.permissions:type_name -> identity.v1.BusinessPermission
-	3,  // 13: business.v1.AssociateUserToBusinessResponse.business_member:type_name -> business.v1.BusinessMember
-	3,  // 14: business.v1.GetBusinessMembersResponse.business_members:type_name -> business.v1.BusinessMember
-	30, // 15: business.v1.UpdateBusinessMemberRequest.add_permissions:type_name -> identity.v1.BusinessPermission
-	30, // 16: business.v1.UpdateBusinessMemberRequest.remove_permissions:type_name -> identity.v1.BusinessPermission
-	3,  // 17: business.v1.UpdateBusinessMemberResponse.business_member:type_name -> business.v1.BusinessMember
-	3,  // 18: business.v1.GetBusinessMemberResponse.business_member:type_name -> business.v1.BusinessMember
-	3,  // 19: business.v1.StreamBusinessMembersResponse.business_members:type_name -> business.v1.BusinessMember
-	4,  // 20: business.v1.BusinessService.CreateBusiness:input_type -> business.v1.CreateBusinessRequest
-	8,  // 21: business.v1.BusinessService.GetMyBusinesses:input_type -> business.v1.GetMyBusinessesRequest
-	10, // 22: business.v1.BusinessService.GetBusinessDetails:input_type -> business.v1.GetBusinessDetailsRequest
-	12, // 23: business.v1.BusinessService.UpdateBusiness:input_type -> business.v1.UpdateBusinessRequest
-	14, // 24: business.v1.BusinessService.RequestDeleteBusiness:input_type -> business.v1.RequestDeleteBusinessRequest
-	16, // 25: business.v1.BusinessService.CreateUserToBusiness:input_type -> business.v1.CreateUserToBusinessRequest
-	18, // 26: business.v1.BusinessService.AssociateUserToBusiness:input_type -> business.v1.AssociateUserToBusinessRequest
-	20, // 27: business.v1.BusinessService.RemoveUserFromBusiness:input_type -> business.v1.RemoveUserFromBusinessRequest
-	6,  // 28: business.v1.BusinessService.ChangeBusinessCurrency:input_type -> business.v1.ChangeBusinessCurrencyRequest
-	22, // 29: business.v1.BusinessService.GetBusinessMembers:input_type -> business.v1.GetBusinessMembersRequest
-	26, // 30: business.v1.BusinessService.GetBusinessMember:input_type -> business.v1.GetBusinessMemberRequest
-	24, // 31: business.v1.BusinessService.UpdateBusinessMember:input_type -> business.v1.UpdateBusinessMemberRequest
-	28, // 32: business.v1.BusinessService.StreamBusinessMembers:input_type -> business.v1.StreamBusinessMembersRequest
-	5,  // 33: business.v1.BusinessService.CreateBusiness:output_type -> business.v1.CreateBusinessResponse
-	9,  // 34: business.v1.BusinessService.GetMyBusinesses:output_type -> business.v1.GetMyBusinessesResponse
-	11, // 35: business.v1.BusinessService.GetBusinessDetails:output_type -> business.v1.GetBusinessDetailsResponse
-	13, // 36: business.v1.BusinessService.UpdateBusiness:output_type -> business.v1.UpdateBusinessResponse
-	15, // 37: business.v1.BusinessService.RequestDeleteBusiness:output_type -> business.v1.RequestDeleteBusinessResponse
-	17, // 38: business.v1.BusinessService.CreateUserToBusiness:output_type -> business.v1.CreateUserToBusinessResponse
-	19, // 39: business.v1.BusinessService.AssociateUserToBusiness:output_type -> business.v1.AssociateUserToBusinessResponse
-	21, // 40: business.v1.BusinessService.RemoveUserFromBusiness:output_type -> business.v1.RemoveUserFromBusinessResponse
-	7,  // 41: business.v1.BusinessService.ChangeBusinessCurrency:output_type -> business.v1.ChangeBusinessCurrencyResponse
-	23, // 42: business.v1.BusinessService.GetBusinessMembers:output_type -> business.v1.GetBusinessMembersResponse
-	27, // 43: business.v1.BusinessService.GetBusinessMember:output_type -> business.v1.GetBusinessMemberResponse
-	25, // 44: business.v1.BusinessService.UpdateBusinessMember:output_type -> business.v1.UpdateBusinessMemberResponse
-	29, // 45: business.v1.BusinessService.StreamBusinessMembers:output_type -> business.v1.StreamBusinessMembersResponse
-	33, // [33:46] is the sub-list for method output_type
-	20, // [20:33] is the sub-list for method input_type
-	20, // [20:20] is the sub-list for extension type_name
-	20, // [20:20] is the sub-list for extension extendee
-	0,  // [0:20] is the sub-list for field type_name
+	31, // 1: business.v1.BusinessMember.user:type_name -> identity.v1.User
+	32, // 2: business.v1.BusinessMember.permissions:type_name -> identity.v1.BusinessPermission
+	33, // 3: business.v1.BusinessMember.member_since:type_name -> google.protobuf.Timestamp
+	2,  // 4: business.v1.BusinessMember.status:type_name -> business.v1.BusinessMemberStatus
+	3,  // 5: business.v1.CreateBusinessRequest.business:type_name -> business.v1.Business
+	34, // 6: business.v1.CreateBusinessRequest.external_links:type_name -> link.v1.ResourceLink
+	1,  // 7: business.v1.ChangeBusinessCurrencyRequest.currency_change_policy:type_name -> business.v1.CurrencyChangePolicyType
+	3,  // 8: business.v1.GetMyBusinessesResponse.businesses:type_name -> business.v1.Business
+	3,  // 9: business.v1.GetBusinessDetailsResponse.business:type_name -> business.v1.Business
+	3,  // 10: business.v1.UpdateBusinessRequest.business:type_name -> business.v1.Business
+	34, // 11: business.v1.UpdateBusinessRequest.external_links:type_name -> link.v1.ResourceLink
+	32, // 12: business.v1.CreateUserToBusinessRequest.permissions:type_name -> identity.v1.BusinessPermission
+	4,  // 13: business.v1.CreateUserToBusinessResponse.business_member:type_name -> business.v1.BusinessMember
+	32, // 14: business.v1.AssociateUserToBusinessRequest.permissions:type_name -> identity.v1.BusinessPermission
+	4,  // 15: business.v1.AssociateUserToBusinessResponse.business_member:type_name -> business.v1.BusinessMember
+	4,  // 16: business.v1.GetBusinessMembersResponse.business_members:type_name -> business.v1.BusinessMember
+	32, // 17: business.v1.UpdateBusinessMemberRequest.add_permissions:type_name -> identity.v1.BusinessPermission
+	32, // 18: business.v1.UpdateBusinessMemberRequest.remove_permissions:type_name -> identity.v1.BusinessPermission
+	4,  // 19: business.v1.UpdateBusinessMemberResponse.business_member:type_name -> business.v1.BusinessMember
+	4,  // 20: business.v1.GetBusinessMemberResponse.business_member:type_name -> business.v1.BusinessMember
+	4,  // 21: business.v1.StreamBusinessMembersResponse.business_members:type_name -> business.v1.BusinessMember
+	5,  // 22: business.v1.BusinessService.CreateBusiness:input_type -> business.v1.CreateBusinessRequest
+	9,  // 23: business.v1.BusinessService.GetMyBusinesses:input_type -> business.v1.GetMyBusinessesRequest
+	11, // 24: business.v1.BusinessService.GetBusinessDetails:input_type -> business.v1.GetBusinessDetailsRequest
+	13, // 25: business.v1.BusinessService.UpdateBusiness:input_type -> business.v1.UpdateBusinessRequest
+	15, // 26: business.v1.BusinessService.RequestDeleteBusiness:input_type -> business.v1.RequestDeleteBusinessRequest
+	17, // 27: business.v1.BusinessService.CreateUserToBusiness:input_type -> business.v1.CreateUserToBusinessRequest
+	19, // 28: business.v1.BusinessService.AssociateUserToBusiness:input_type -> business.v1.AssociateUserToBusinessRequest
+	21, // 29: business.v1.BusinessService.RemoveUserFromBusiness:input_type -> business.v1.RemoveUserFromBusinessRequest
+	7,  // 30: business.v1.BusinessService.ChangeBusinessCurrency:input_type -> business.v1.ChangeBusinessCurrencyRequest
+	23, // 31: business.v1.BusinessService.GetBusinessMembers:input_type -> business.v1.GetBusinessMembersRequest
+	27, // 32: business.v1.BusinessService.GetBusinessMember:input_type -> business.v1.GetBusinessMemberRequest
+	25, // 33: business.v1.BusinessService.UpdateBusinessMember:input_type -> business.v1.UpdateBusinessMemberRequest
+	29, // 34: business.v1.BusinessService.StreamBusinessMembers:input_type -> business.v1.StreamBusinessMembersRequest
+	6,  // 35: business.v1.BusinessService.CreateBusiness:output_type -> business.v1.CreateBusinessResponse
+	10, // 36: business.v1.BusinessService.GetMyBusinesses:output_type -> business.v1.GetMyBusinessesResponse
+	12, // 37: business.v1.BusinessService.GetBusinessDetails:output_type -> business.v1.GetBusinessDetailsResponse
+	14, // 38: business.v1.BusinessService.UpdateBusiness:output_type -> business.v1.UpdateBusinessResponse
+	16, // 39: business.v1.BusinessService.RequestDeleteBusiness:output_type -> business.v1.RequestDeleteBusinessResponse
+	18, // 40: business.v1.BusinessService.CreateUserToBusiness:output_type -> business.v1.CreateUserToBusinessResponse
+	20, // 41: business.v1.BusinessService.AssociateUserToBusiness:output_type -> business.v1.AssociateUserToBusinessResponse
+	22, // 42: business.v1.BusinessService.RemoveUserFromBusiness:output_type -> business.v1.RemoveUserFromBusinessResponse
+	8,  // 43: business.v1.BusinessService.ChangeBusinessCurrency:output_type -> business.v1.ChangeBusinessCurrencyResponse
+	24, // 44: business.v1.BusinessService.GetBusinessMembers:output_type -> business.v1.GetBusinessMembersResponse
+	28, // 45: business.v1.BusinessService.GetBusinessMember:output_type -> business.v1.GetBusinessMemberResponse
+	26, // 46: business.v1.BusinessService.UpdateBusinessMember:output_type -> business.v1.UpdateBusinessMemberResponse
+	30, // 47: business.v1.BusinessService.StreamBusinessMembers:output_type -> business.v1.StreamBusinessMembersResponse
+	35, // [35:48] is the sub-list for method output_type
+	22, // [22:35] is the sub-list for method input_type
+	22, // [22:22] is the sub-list for extension type_name
+	22, // [22:22] is the sub-list for extension extendee
+	0,  // [0:22] is the sub-list for field type_name
 }
 
 func init() { file_business_v1_business_proto_init() }
@@ -1998,7 +2077,7 @@ func file_business_v1_business_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_business_v1_business_proto_rawDesc), len(file_business_v1_business_proto_rawDesc)),
-			NumEnums:      2,
+			NumEnums:      3,
 			NumMessages:   28,
 			NumExtensions: 0,
 			NumServices:   1,

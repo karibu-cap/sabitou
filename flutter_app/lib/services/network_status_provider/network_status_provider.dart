@@ -19,7 +19,6 @@ abstract class NetworkStatusProvider {
     required NetworkProviderType type,
     Duration pollingPeriod = const Duration(seconds: 1),
     bool fakeInitialStatus = true,
-    Duration fakeToggleDelay = const Duration(seconds: 3),
     String dnsAddress = '8.8.8.8',
   }) {
     switch (type) {
@@ -29,10 +28,7 @@ abstract class NetworkStatusProvider {
           dns: InternetAddress(dnsAddress),
         );
       case NetworkProviderType.fake:
-        return FakeNetworkStatusProvider(
-          initialStatus: fakeInitialStatus,
-          toggleEvery: fakeToggleDelay,
-        );
+        return FakeNetworkStatusProvider(initialStatus: fakeInitialStatus);
     }
   }
 

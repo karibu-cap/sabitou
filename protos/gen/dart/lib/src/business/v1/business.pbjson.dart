@@ -14,9 +14,10 @@ import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
-import '../../google/protobuf/timestamp.pbjson.dart' as $1;
-import '../../identity/v1/permission.pbjson.dart' as $0;
-import '../../link/v1/link.pbjson.dart' as $2;
+import '../../google/protobuf/timestamp.pbjson.dart' as $2;
+import '../../identity/v1/permission.pbjson.dart' as $1;
+import '../../identity/v1/user.pbjson.dart' as $0;
+import '../../link/v1/link.pbjson.dart' as $3;
 
 @$core.Deprecated('Use businessStatusTypeDescriptor instead')
 const BusinessStatusType$json = {
@@ -53,6 +54,25 @@ final $typed_data.Uint8List currencyChangePolicyTypeDescriptor = $convert.base64
     'BFX1VOU1BFQ0lGSUVEEAASPAo4Q1VSUkVOQ1lfQ0hBTkdFX1BPTElDWV9UWVBFX0tFRVBfUFJF'
     'VklPVVNfQ1VSUkVOQ1lfVkFMVUUQARJGCkJDVVJSRU5DWV9DSEFOR0VfUE9MSUNZX1RZUEVfQ0'
     '9OVkVSVF9CQVNFRF9PTl9DVVJSRU5UX0VYQ0hBTkdFX1JBVEUQAg==');
+
+@$core.Deprecated('Use businessMemberStatusDescriptor instead')
+const BusinessMemberStatus$json = {
+  '1': 'BusinessMemberStatus',
+  '2': [
+    {'1': 'BUSINESS_MEMBER_STATUS_UNSPECIFIED', '2': 0},
+    {'1': 'BUSINESS_MEMBER_STATUS_ACTIVE', '2': 1},
+    {'1': 'BUSINESS_MEMBER_STATUS_PENDING', '2': 2},
+    {'1': 'BUSINESS_MEMBER_STATUS_INACTIVE', '2': 3},
+    {'1': 'BUSINESS_MEMBER_STATUS_BANNED', '2': 4},
+  ],
+};
+
+/// Descriptor for `BusinessMemberStatus`. Decode as a `google.protobuf.EnumDescriptorProto`.
+final $typed_data.Uint8List businessMemberStatusDescriptor = $convert.base64Decode(
+    'ChRCdXNpbmVzc01lbWJlclN0YXR1cxImCiJCVVNJTkVTU19NRU1CRVJfU1RBVFVTX1VOU1BFQ0'
+    'lGSUVEEAASIQodQlVTSU5FU1NfTUVNQkVSX1NUQVRVU19BQ1RJVkUQARIiCh5CVVNJTkVTU19N'
+    'RU1CRVJfU1RBVFVTX1BFTkRJTkcQAhIjCh9CVVNJTkVTU19NRU1CRVJfU1RBVFVTX0lOQUNUSV'
+    'ZFEAMSIQodQlVTSU5FU1NfTUVNQkVSX1NUQVRVU19CQU5ORUQQBA==');
 
 @$core.Deprecated('Use businessDescriptor instead')
 const Business$json = {
@@ -143,7 +163,14 @@ final $typed_data.Uint8List businessDescriptor = $convert.base64Decode(
 const BusinessMember$json = {
   '1': 'BusinessMember',
   '2': [
-    {'1': 'user_id', '3': 1, '4': 1, '5': 9, '10': 'userId'},
+    {
+      '1': 'user',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.identity.v1.User',
+      '10': 'user'
+    },
     {'1': 'business_id', '3': 2, '4': 1, '5': 9, '10': 'businessId'},
     {
       '1': 'permissions',
@@ -161,15 +188,25 @@ const BusinessMember$json = {
       '6': '.google.protobuf.Timestamp',
       '10': 'memberSince'
     },
+    {
+      '1': 'status',
+      '3': 5,
+      '4': 1,
+      '5': 14,
+      '6': '.business.v1.BusinessMemberStatus',
+      '10': 'status'
+    },
   ],
 };
 
 /// Descriptor for `BusinessMember`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List businessMemberDescriptor = $convert.base64Decode(
-    'Cg5CdXNpbmVzc01lbWJlchIXCgd1c2VyX2lkGAEgASgJUgZ1c2VySWQSHwoLYnVzaW5lc3NfaW'
-    'QYAiABKAlSCmJ1c2luZXNzSWQSQQoLcGVybWlzc2lvbnMYAyADKAsyHy5pZGVudGl0eS52MS5C'
-    'dXNpbmVzc1Blcm1pc3Npb25SC3Blcm1pc3Npb25zEj0KDG1lbWJlcl9zaW5jZRgEIAEoCzIaLm'
-    'dvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSC21lbWJlclNpbmNl');
+    'Cg5CdXNpbmVzc01lbWJlchIlCgR1c2VyGAEgASgLMhEuaWRlbnRpdHkudjEuVXNlclIEdXNlch'
+    'IfCgtidXNpbmVzc19pZBgCIAEoCVIKYnVzaW5lc3NJZBJBCgtwZXJtaXNzaW9ucxgDIAMoCzIf'
+    'LmlkZW50aXR5LnYxLkJ1c2luZXNzUGVybWlzc2lvblILcGVybWlzc2lvbnMSPQoMbWVtYmVyX3'
+    'NpbmNlGAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFILbWVtYmVyU2luY2USOQoG'
+    'c3RhdHVzGAUgASgOMiEuYnVzaW5lc3MudjEuQnVzaW5lc3NNZW1iZXJTdGF0dXNSBnN0YXR1cw'
+    '==');
 
 @$core.Deprecated('Use createBusinessRequestDescriptor instead')
 const CreateBusinessRequest$json = {
@@ -785,7 +822,7 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
     BusinessServiceBase$messageJson = {
   '.business.v1.CreateBusinessRequest': CreateBusinessRequest$json,
   '.business.v1.Business': Business$json,
-  '.link.v1.ResourceLink': $2.ResourceLink$json,
+  '.link.v1.ResourceLink': $3.ResourceLink$json,
   '.business.v1.CreateBusinessResponse': CreateBusinessResponse$json,
   '.business.v1.GetMyBusinessesRequest': GetMyBusinessesRequest$json,
   '.business.v1.GetMyBusinessesResponse': GetMyBusinessesResponse$json,
@@ -798,11 +835,13 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
   '.business.v1.RequestDeleteBusinessResponse':
       RequestDeleteBusinessResponse$json,
   '.business.v1.CreateUserToBusinessRequest': CreateUserToBusinessRequest$json,
-  '.identity.v1.BusinessPermission': $0.BusinessPermission$json,
+  '.identity.v1.BusinessPermission': $1.BusinessPermission$json,
   '.business.v1.CreateUserToBusinessResponse':
       CreateUserToBusinessResponse$json,
   '.business.v1.BusinessMember': BusinessMember$json,
-  '.google.protobuf.Timestamp': $1.Timestamp$json,
+  '.identity.v1.User': $0.User$json,
+  '.identity.v1.ConnectedAccount': $0.ConnectedAccount$json,
+  '.google.protobuf.Timestamp': $2.Timestamp$json,
   '.business.v1.AssociateUserToBusinessRequest':
       AssociateUserToBusinessRequest$json,
   '.business.v1.AssociateUserToBusinessResponse':

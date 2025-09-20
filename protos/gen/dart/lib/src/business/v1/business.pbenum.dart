@@ -73,5 +73,46 @@ class CurrencyChangePolicyType extends $pb.ProtobufEnum {
   const CurrencyChangePolicyType._(super.value, super.name);
 }
 
+class BusinessMemberStatus extends $pb.ProtobufEnum {
+  static const BusinessMemberStatus BUSINESS_MEMBER_STATUS_UNSPECIFIED =
+      BusinessMemberStatus._(
+          0, _omitEnumNames ? '' : 'BUSINESS_MEMBER_STATUS_UNSPECIFIED');
+
+  /// / The user is active.
+  static const BusinessMemberStatus BUSINESS_MEMBER_STATUS_ACTIVE =
+      BusinessMemberStatus._(
+          1, _omitEnumNames ? '' : 'BUSINESS_MEMBER_STATUS_ACTIVE');
+
+  /// / The user is pending.
+  static const BusinessMemberStatus BUSINESS_MEMBER_STATUS_PENDING =
+      BusinessMemberStatus._(
+          2, _omitEnumNames ? '' : 'BUSINESS_MEMBER_STATUS_PENDING');
+
+  /// / The user is inactive.
+  static const BusinessMemberStatus BUSINESS_MEMBER_STATUS_INACTIVE =
+      BusinessMemberStatus._(
+          3, _omitEnumNames ? '' : 'BUSINESS_MEMBER_STATUS_INACTIVE');
+
+  /// / The user is banned.
+  static const BusinessMemberStatus BUSINESS_MEMBER_STATUS_BANNED =
+      BusinessMemberStatus._(
+          4, _omitEnumNames ? '' : 'BUSINESS_MEMBER_STATUS_BANNED');
+
+  static const $core.List<BusinessMemberStatus> values = <BusinessMemberStatus>[
+    BUSINESS_MEMBER_STATUS_UNSPECIFIED,
+    BUSINESS_MEMBER_STATUS_ACTIVE,
+    BUSINESS_MEMBER_STATUS_PENDING,
+    BUSINESS_MEMBER_STATUS_INACTIVE,
+    BUSINESS_MEMBER_STATUS_BANNED,
+  ];
+
+  static final $core.List<BusinessMemberStatus?> _byValue =
+      $pb.ProtobufEnum.$_initByValueList(values, 4);
+  static BusinessMemberStatus? valueOf($core.int value) =>
+      value < 0 || value >= _byValue.length ? null : _byValue[value];
+
+  const BusinessMemberStatus._(super.value, super.name);
+}
+
 const $core.bool _omitEnumNames =
     $core.bool.fromEnvironment('protobuf.omit_enum_names');
