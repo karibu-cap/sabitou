@@ -1,0 +1,146 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:3263316969890972502",
+      "lastPropertyId": "9:6617303716512172968",
+      "name": "StoreProductObx",
+      "properties": [
+        {
+          "id": "1:8268870558744898213",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:2989663027621969539",
+          "name": "refId",
+          "indexId": "1:6936822788710816425",
+          "type": 9,
+          "flags": 2080
+        },
+        {
+          "id": "3:3291410406225463638",
+          "name": "storeId",
+          "type": 9
+        },
+        {
+          "id": "4:2807120940658079205",
+          "name": "globalProductId",
+          "type": 9
+        },
+        {
+          "id": "5:3686976382154337447",
+          "name": "price",
+          "type": 6
+        },
+        {
+          "id": "6:7015301931247717992",
+          "name": "stockQuantity",
+          "type": 6
+        },
+        {
+          "id": "7:6046871898520374977",
+          "name": "minStockThreshold",
+          "type": 6
+        },
+        {
+          "id": "8:8488434664057395678",
+          "name": "supplierId",
+          "type": 9
+        },
+        {
+          "id": "9:6617303716512172968",
+          "name": "imagesLinksIds",
+          "type": 30
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "2:1028318294291256164",
+      "lastPropertyId": "7:2215789761340294862",
+      "name": "GlobalProductObx",
+      "properties": [
+        {
+          "id": "1:6224669373485302065",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:3859994609953599208",
+          "name": "refId",
+          "indexId": "2:7627644893617675365",
+          "type": 9,
+          "flags": 2080
+        },
+        {
+          "id": "3:432237928336167505",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "4:4477642393174021696",
+          "name": "description",
+          "type": 9
+        },
+        {
+          "id": "5:3768242238335623498",
+          "name": "barCodeValue",
+          "type": 9
+        },
+        {
+          "id": "6:5145697489341837266",
+          "name": "imagesLinksIds",
+          "type": 30
+        },
+        {
+          "id": "7:2215789761340294862",
+          "name": "categoriesIds",
+          "type": 30
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "3:7614225135537674745",
+      "lastPropertyId": "3:319945649765260537",
+      "name": "ProductCategoryObx",
+      "properties": [
+        {
+          "id": "1:2300454378466320280",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:3370026003075888623",
+          "name": "refId",
+          "indexId": "3:8352147871574794854",
+          "type": 9,
+          "flags": 2080
+        },
+        {
+          "id": "3:319945649765260537",
+          "name": "name",
+          "type": 9
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "3:7614225135537674745",
+  "lastIndexId": "3:8352147871574794854",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
+  "version": 1
+}
