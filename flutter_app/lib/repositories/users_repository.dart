@@ -43,7 +43,6 @@ final class UserRepository {
   Future<User?> getUser(GetUserRequest request) async {
     try {
       final result = await userClientService.getUser(request);
-      _logger.log('Retrieved user: ${result.user.writeToJson()}.');
 
       return result.user;
     } on Exception catch (e) {

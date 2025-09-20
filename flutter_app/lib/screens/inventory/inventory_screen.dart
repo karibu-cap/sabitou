@@ -7,6 +7,7 @@ import '../../widgets/loading.dart';
 import 'components/header.dart';
 import 'components/inentory_stats.dart';
 import 'components/product_table.dart';
+import 'components/search_and_filter.dart';
 import 'inventory_controller.dart';
 import 'inventory_view_model.dart';
 
@@ -40,12 +41,12 @@ class InventoryScreen extends StatelessWidget {
                     padding: EdgeInsets.all(isDesktop ? 24 : 16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const InventoryHeader(),
-                        SizedBox(height: isDesktop ? 32 : 24),
-                        const InventoryStats(),
-                        SizedBox(height: isDesktop ? 32 : 24),
-                        const ProductsTable(),
+                      spacing: isDesktop ? 32 : 24,
+                      children: const [
+                        InventoryHeader(),
+                        InventoryStats(),
+                        SearchAndFilterCard(),
+                        ProductsTable(),
                       ],
                     ),
                   );

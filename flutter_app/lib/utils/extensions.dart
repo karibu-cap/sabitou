@@ -90,3 +90,22 @@ extension OrderStatusExtension on OrderStatus {
     }
   }
 }
+
+/// The extension for the [TransactionStatus] enum.
+extension TransactionStatusExtension on TransactionStatus {
+  /// Get the label for the transaction status.
+  String get label {
+    switch (this) {
+      case TransactionStatus.TRANSACTION_STATUS_PENDING:
+        return Intls.to.pending;
+      case TransactionStatus.TRANSACTION_STATUS_COMPLETED:
+        return Intls.to.completed;
+      case TransactionStatus.TRANSACTION_STATUS_CANCELLED:
+        return Intls.to.cancelled;
+      case TransactionStatus.TRANSACTION_STATUS_FAILED:
+        return Intls.to.failed;
+      default:
+        return Intls.to.transaction;
+    }
+  }
+}

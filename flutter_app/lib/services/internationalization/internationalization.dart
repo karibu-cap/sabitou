@@ -923,8 +923,8 @@ class AppInternationalizationService extends ChangeNotifier {
     },
     'exportReports': {'en': 'Export Reports', 'fr': 'Exporter les Rapports'},
     'downloadAndExportReportData': {
-      'en': 'Download and export report data',
-      'fr': 'Télécharger et exporter les données de rapport',
+      'en': 'Download detailed reports in various formats',
+      'fr': 'Télécharger les rapports détaillés en différents formats',
     },
     'deleteReports': {'en': 'Delete Reports', 'fr': 'Supprimer les Rapports'},
     'deleteReportData': {
@@ -1136,6 +1136,120 @@ class AppInternationalizationService extends ChangeNotifier {
       'en': 'Business updated successfully',
       'fr': 'Entreprise mise à jour avec succès',
     },
+    'reportAndAnalytics': {
+      'en': 'Report & Analytics',
+      'fr': 'Rapports & Analyses',
+    },
+    'reportAndAnalyticsDescription': {
+      'en':
+          'Analyze your business performance with comprehensive reports and insights.',
+      'fr':
+          'Analysez les performances de votre entreprise avec des rapports et des analyses approfondies.',
+    },
+    'salesAnalytics': {'en': 'Sales Analytics', 'fr': 'Analyse des ventes'},
+    'inventoryReport': {
+      'en': 'Inventory Report',
+      'fr': 'Rapport d\'inventaire',
+    },
+    'productPerformance': {
+      'en': 'Product Performance',
+      'fr': 'Performance des produits',
+    },
+    'financialSummary': {
+      'en': 'Financial Summary',
+      'fr': 'Synthèse financière',
+    },
+    'netProfit': {'en': 'Net Profit', 'fr': 'Profit net'},
+    'averageOrderValue': {
+      'en': 'Average Order Value',
+      'fr': 'Valeur moyenne de la commande',
+    },
+    'salesProfileTrend': {
+      'en': 'Sales & Profit Trend',
+      'fr': 'Tendance des ventes et des bénéfices',
+    },
+    'performanceOverview': {
+      'en': 'Performance Overview',
+      'fr': 'Aperçu des performances',
+    },
+    'salesByCategories': {
+      'en': 'Sales by Categories',
+      'fr': 'Ventes par Catégorie',
+    },
+    'revenueDistribution': {
+      'en': 'Revenue Distribution',
+      'fr': 'Répartition des revenus',
+    },
+    'topPerformingProducts': {
+      'en': 'Top Performing Products',
+      'fr': 'Produits les plus performants',
+    },
+    'byQuantitySold': {'en': 'By Quantity Sold', 'fr': 'Par Quantité Vendue'},
+    'unitsSold': {'en': 'Units Sold', 'fr': 'Unité Vendues'},
+    'profit': {'en': 'Profit', 'fr': 'Profit'},
+    'totalItemsInStock': {
+      'en': 'Total Items In Stock',
+      'fr': 'Total des articles en stock',
+    },
+    'outOfStockItems': {
+      'en': 'Out of Stock Items',
+      'fr': 'Articles en rupture de stock',
+    },
+    'stockMovement': {'en': 'Stock Movement', 'fr': 'Mouvement d\'inventaire'},
+    'stockInOutMovement': {
+      'en': 'Stock In Out Movement',
+      'fr': 'Mouvement d\'entrée et de sortie du stock',
+    },
+    'revenueAndExpenses': {
+      'en': 'Revenue & Expenses',
+      'fr': 'Revenus & Dépenses',
+    },
+    'expenses': {'en': 'Expenses', 'fr': 'Dépenses'},
+    'revenue': {'en': 'Revenue', 'fr': 'Revenus'},
+    'monthlyCashFlow': {
+      'en': 'Monthly Cash Flow',
+      'fr': 'Flux de trésorerie mensuelle',
+    },
+    'pdf': {'en': 'PDF', 'fr': 'PDF'},
+    'excel': {'en': 'Excel', 'fr': 'Excel'},
+    'csv': {'en': 'CSV', 'fr': 'CSV'},
+    'transactions': {'en': 'Transactions', 'fr': 'Transactions'},
+    'transactionsDescription': {
+      'en':
+          'Track all financial transactions and movements across your business.',
+      'fr':
+          'Suivez toutes les transactions financières et les mouvements dans votre entreprise.',
+    },
+    'addTransaction': {
+      'en': 'Add Transaction',
+      'fr': 'Ajouter une transaction',
+    },
+    'export': {'en': 'Export', 'fr': 'Exporter'},
+    'totalRefunds': {'en': 'Total Refunds', 'fr': 'Total des remboursements'},
+    'netRevenue': {'en': 'Net Revenue', 'fr': 'Revenu net'},
+    'pendingTransactions': {
+      'en': 'Pending Transactions',
+      'fr': 'Transactions en attente',
+    },
+    'type': {'en': 'Type', 'fr': 'Type'},
+    'searchForTransaction': {
+      'en': 'Search by transaction id, order id ...',
+      'fr': 'Rechercher par id de transaction, id de commande ...',
+    },
+    'transactionsHistory': {
+      'en': 'Transactions History',
+      'fr': 'Historique des transactions',
+    },
+    'transactionsHistoryDescription': {
+      'en':
+          'Track all financial transactions and movements across your business.',
+      'fr':
+          'Suivez toutes les transactions financières et les mouvements dans votre entreprise.',
+    },
+    'amount': {'en': 'Amount', 'fr': 'Montant'},
+    'initiatedBy': {'en': 'Initiated By', 'fr': 'Initié par'},
+    'order': {'en': 'Order', 'fr': 'Commande'},
+    'units': {'en': 'Units', 'fr': 'Unités'},
   };
 
   /// Direct access to the internationalization service.
@@ -1154,6 +1268,145 @@ class AppInternationalizationService extends ChangeNotifier {
     const Locale('en'),
     const Locale('fr'),
   ];
+
+  /// The units.
+  String get units => _stringOfLocalizedValue('units');
+
+  /// The initiated by.
+  String get initiatedBy => _stringOfLocalizedValue('initiatedBy');
+
+  /// The order.
+  String get order => _stringOfLocalizedValue('order');
+
+  /// The amount.
+  String get amount => _stringOfLocalizedValue('amount');
+
+  /// The transactions history.
+  String get transactionsHistory =>
+      _stringOfLocalizedValue('transactionsHistory');
+
+  /// The transactions history description.
+  String get transactionsHistoryDescription =>
+      _stringOfLocalizedValue('transactionsHistoryDescription');
+
+  /// The search for transaction.
+  String get searchForTransaction =>
+      _stringOfLocalizedValue('searchForTransaction');
+
+  /// The type.
+  String get type => _stringOfLocalizedValue('type');
+
+  /// The total refunds.
+  String get totalRefunds => _stringOfLocalizedValue('totalRefunds');
+
+  /// The net revenue.
+  String get netRevenue => _stringOfLocalizedValue('netRevenue');
+
+  /// The pending transactions.
+  String get pendingTransactions =>
+      _stringOfLocalizedValue('pendingTransactions');
+
+  /// The export.
+  String get export => _stringOfLocalizedValue('export');
+
+  /// The pdf.
+  String get pdf => _stringOfLocalizedValue('pdf');
+
+  /// The excel.
+  String get excel => _stringOfLocalizedValue('excel');
+
+  /// The csv.
+  String get csv => _stringOfLocalizedValue('csv');
+
+  /// The monthly cash flow.
+  String get monthlyCashFlow => _stringOfLocalizedValue('monthlyCashFlow');
+
+  /// The expenses.
+  String get expenses => _stringOfLocalizedValue('expenses');
+
+  /// The revenue.
+  String get revenue => _stringOfLocalizedValue('revenue');
+
+  /// The revenue and expenses.
+  String get revenueAndExpenses =>
+      _stringOfLocalizedValue('revenueAndExpenses');
+
+  /// The stock movement.
+  String get stockMovement => _stringOfLocalizedValue('stockMovement');
+
+  /// The stock in out movement.
+  String get stockInOutMovement =>
+      _stringOfLocalizedValue('stockInOutMovement');
+
+  /// The out of stock items.
+  String get outOfStockItems => _stringOfLocalizedValue('outOfStockItems');
+
+  /// The total items in stock.
+  String get totalItemsInStock => _stringOfLocalizedValue('totalItemsInStock');
+
+  /// The profit.
+  String get profit => _stringOfLocalizedValue('profit');
+
+  /// The units sold.
+  String get unitsSold => _stringOfLocalizedValue('unitsSold');
+
+  /// The top performing products.
+  String get topPerformingProducts =>
+      _stringOfLocalizedValue('topPerformingProducts');
+
+  /// The by quantity sold.
+  String get byQuantitySold => _stringOfLocalizedValue('byQuantitySold');
+
+  /// The sales by categories.
+  String get salesByCategories => _stringOfLocalizedValue('salesByCategories');
+
+  /// The revenue distribution.
+  String get revenueDistribution =>
+      _stringOfLocalizedValue('revenueDistribution');
+
+  /// The performance overview.
+  String get performanceOverview =>
+      _stringOfLocalizedValue('performanceOverview');
+
+  /// The sales profile trend.
+  String get salesProfileTrend => _stringOfLocalizedValue('salesProfileTrend');
+
+  /// The net profit.
+  String get netProfit => _stringOfLocalizedValue('netProfit');
+
+  /// The average order value.
+  String get averageOrderValue => _stringOfLocalizedValue('averageOrderValue');
+
+  /// The sales analytics.
+  String get salesAnalytics => _stringOfLocalizedValue('salesAnalytics');
+
+  /// The inventory report.
+  String get inventoryReport => _stringOfLocalizedValue('inventoryReport');
+
+  /// The product performance.
+  String get productPerformance =>
+      _stringOfLocalizedValue('productPerformance');
+
+  /// The financial summary.
+  String get financialSummary => _stringOfLocalizedValue('financialSummary');
+
+  /// Returns the localized value of text 'reportAndAnalytics'.
+  String get reportAndAnalytics =>
+      _stringOfLocalizedValue('reportAndAnalytics');
+
+  /// Returns the localized value of text 'reportAndAnalyticsDescription'.
+  String get reportAndAnalyticsDescription =>
+      _stringOfLocalizedValue('reportAndAnalyticsDescription');
+
+  /// Returns the localized value of text 'transactions'.
+  String get transactions => _stringOfLocalizedValue('transactions');
+
+  /// Returns the localized value of text 'transactionsDescription'.
+  String get transactionsDescription =>
+      _stringOfLocalizedValue('transactionsDescription');
+
+  /// Returns the localized value of text 'addTransaction'.
+  String get addTransaction => _stringOfLocalizedValue('addTransaction');
 
   /// Returns the localized value of text 'businessUpdatedSuccessfully'.
   String get businessUpdatedSuccessfully =>

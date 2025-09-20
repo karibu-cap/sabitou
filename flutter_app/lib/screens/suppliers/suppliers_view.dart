@@ -4,7 +4,6 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../services/internationalization/internationalization.dart';
-import '../../utils/common_scaffold.dart';
 import '../../utils/responsive_utils.dart';
 import 'components/dialogs/suppliers_add/suppliers_add_view.dart';
 import 'components/list_components/supplier_shimmer_widgets.dart';
@@ -25,10 +24,7 @@ class SuppliersView extends StatelessWidget {
         SuppliersViewModel(storeId: 'store-id-placeholder'),
         AppInternationalizationService.to,
       ),
-      child: const CommonScaffold(
-        displayAppBar: false,
-        child: SuppliersContent(),
-      ),
+      child: const SuppliersContent(),
     );
   }
 }

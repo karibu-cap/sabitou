@@ -31,7 +31,9 @@ final class CustomGrid<T extends Widget> extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final int columns = (constraints.maxWidth / minItemWidth).floor();
+        final int columns =
+            (constraints.maxWidth.clamp(minItemWidth, 1000) / minItemWidth)
+                .floor();
 
         return GridView.builder(
           shrinkWrap: true,

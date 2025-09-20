@@ -97,7 +97,12 @@ class DashboardStats extends StatelessWidget {
           ),
         ];
 
-        return CustomGrid(children: statsCard, minItemWidth: 300);
+        return CustomGrid(
+          children: statsCard,
+          minItemWidth: 250,
+          mainAxisExtent: 100,
+          crossSpacing: 20,
+        );
       },
     );
   }
