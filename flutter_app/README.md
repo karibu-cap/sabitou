@@ -1,4 +1,4 @@
-# sabitou_clients
+# sabitou
 
 A new Flutter project.
 
