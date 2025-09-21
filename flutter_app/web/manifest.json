@@ -1,6 +1,6 @@
 {
-    "name": "sabitou_clients",
-    "short_name": "sabitou_clients",
+    "name": "sabitou",
+    "short_name": "sabitou",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
