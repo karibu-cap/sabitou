@@ -220,6 +220,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inventory.v1.GetStoreProductResponse'
+  /inventory.v1.ProductService/StreamGlobalProducts: {}
   /inventory.v1.ProductService/StreamStoreProducts: {}
   /inventory.v1.ProductService/UpdateProduct:
     post:
@@ -709,6 +710,27 @@ components:
           description: The supplier.
           nullable: true
       title: StoreProduct
+      additionalProperties: false
+    inventory.v1.StreamGlobalProductsRequest:
+      type: object
+      properties:
+        globalProductId:
+          type: string
+          title: global_product_id
+          description: Optional filter by global product ID.
+          nullable: true
+      title: StreamGlobalProductsRequest
+      additionalProperties: false
+    inventory.v1.StreamGlobalProductsResponse:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/inventory.v1.GlobalProduct'
+          title: products
+          description: The store products for the specified store.
+      title: StreamGlobalProductsResponse
       additionalProperties: false
     inventory.v1.StreamStoreProductsRequest:
       type: object

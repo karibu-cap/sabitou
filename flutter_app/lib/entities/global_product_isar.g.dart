@@ -15,7 +15,7 @@ extension GetGlobalProductIsarCollection on Isar {
 
 const GlobalProductIsarSchema = CollectionSchema(
   name: r'GlobalProductIsar',
-  id: -247284,
+  id: -2472812650201689644,
   properties: {
     r'barCodeValue': PropertySchema(
       id: 0,
@@ -41,10 +41,24 @@ const GlobalProductIsarSchema = CollectionSchema(
   deserialize: _globalProductIsarDeserialize,
   deserializeProp: _globalProductIsarDeserializeProp,
   idName: r'id',
-  indexes: {},
+  indexes: {
+    r'refId': IndexSchema(
+      id: -5849034591004344426,
+      name: r'refId',
+      unique: true,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'refId',
+          type: IndexType.hash,
+          caseSensitive: true,
+        ),
+      ],
+    ),
+  },
   links: {
     r'categories': LinkSchema(
-      id: 700919611,
+      id: 7009196197965042851,
       name: r'categories',
       target: r'ProductCategoryIsar',
       single: false,
@@ -169,6 +183,63 @@ void _globalProductIsarAttach(
   );
 }
 
+extension GlobalProductIsarByIndex on IsarCollection<GlobalProductIsar> {
+  Future<GlobalProductIsar?> getByRefId(String refId) {
+    return getByIndex(r'refId', [refId]);
+  }
+
+  GlobalProductIsar? getByRefIdSync(String refId) {
+    return getByIndexSync(r'refId', [refId]);
+  }
+
+  Future<bool> deleteByRefId(String refId) {
+    return deleteByIndex(r'refId', [refId]);
+  }
+
+  bool deleteByRefIdSync(String refId) {
+    return deleteByIndexSync(r'refId', [refId]);
+  }
+
+  Future<List<GlobalProductIsar?>> getAllByRefId(List<String> refIdValues) {
+    final values = refIdValues.map((e) => [e]).toList();
+    return getAllByIndex(r'refId', values);
+  }
+
+  List<GlobalProductIsar?> getAllByRefIdSync(List<String> refIdValues) {
+    final values = refIdValues.map((e) => [e]).toList();
+    return getAllByIndexSync(r'refId', values);
+  }
+
+  Future<int> deleteAllByRefId(List<String> refIdValues) {
+    final values = refIdValues.map((e) => [e]).toList();
+    return deleteAllByIndex(r'refId', values);
+  }
+
+  int deleteAllByRefIdSync(List<String> refIdValues) {
+    final values = refIdValues.map((e) => [e]).toList();
+    return deleteAllByIndexSync(r'refId', values);
+  }
+
+  Future<Id> putByRefId(GlobalProductIsar object) {
+    return putByIndex(r'refId', object);
+  }
+
+  Id putByRefIdSync(GlobalProductIsar object, {bool saveLinks = true}) {
+    return putByIndexSync(r'refId', object, saveLinks: saveLinks);
+  }
+
+  Future<List<Id>> putAllByRefId(List<GlobalProductIsar> objects) {
+    return putAllByIndex(r'refId', objects);
+  }
+
+  List<Id> putAllByRefIdSync(
+    List<GlobalProductIsar> objects, {
+    bool saveLinks = true,
+  }) {
+    return putAllByIndexSync(r'refId', objects, saveLinks: saveLinks);
+  }
+}
+
 extension GlobalProductIsarQueryWhereSort
     on QueryBuilder<GlobalProductIsar, GlobalProductIsar, QWhere> {
   QueryBuilder<GlobalProductIsar, GlobalProductIsar, QAfterWhere> anyId() {
@@ -244,6 +315,58 @@ extension GlobalProductIsarQueryWhere
           includeUpper: includeUpper,
         ),
       );
+    });
+  }
+
+  QueryBuilder<GlobalProductIsar, GlobalProductIsar, QAfterWhereClause>
+  refIdEqualTo(String refId) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        IndexWhereClause.equalTo(indexName: r'refId', value: [refId]),
+      );
+    });
+  }
+
+  QueryBuilder<GlobalProductIsar, GlobalProductIsar, QAfterWhereClause>
+  refIdNotEqualTo(String refId) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'refId',
+                lower: [],
+                upper: [refId],
+                includeUpper: false,
+              ),
+            )
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'refId',
+                lower: [refId],
+                includeLower: false,
+                upper: [],
+              ),
+            );
+      } else {
+        return query
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'refId',
+                lower: [refId],
+                includeLower: false,
+                upper: [],
+              ),
+            )
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'refId',
+                lower: [],
+                upper: [refId],
+                includeUpper: false,
+              ),
+            );
+      }
     });
   }
 }

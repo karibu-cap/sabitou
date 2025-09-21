@@ -217,6 +217,16 @@ message StreamStoreProductsResponse {
   repeated StoreProduct products = 1;
 }
 
+message StreamGlobalProductsRequest {
+  // Optional filter by global product ID.
+  optional string global_product_id = 1;
+}
+
+message StreamGlobalProductsResponse {
+  // The store products for the specified store.
+  repeated GlobalProduct products = 1;
+}
+
 service ProductService {
   // Finds products by name.
   rpc FindGlobalProducts(FindGlobalProductsRequest) returns (FindGlobalProductsResponse);
@@ -242,4 +252,7 @@ service ProductService {
 
   // Streams all products for a store for real-time updates.
   rpc StreamStoreProducts(StreamStoreProductsRequest) returns (stream StreamStoreProductsResponse);
+  
+  // Streams all global products for real-time updates.
+  rpc StreamGlobalProducts(StreamGlobalProductsRequest) returns (stream StreamGlobalProductsResponse);
 }

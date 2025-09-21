@@ -10,12 +10,15 @@ class StoreProductIsar {
   Id id = Isar.autoIncrement;
 
   /// StoreProduct refId
+  @Index(unique: true)
   String refId;
 
   /// Store ID
+  @Index()
   String storeId;
 
   /// GlobalProduct ID
+  @Index()
   String globalProductId;
 
   /// Price

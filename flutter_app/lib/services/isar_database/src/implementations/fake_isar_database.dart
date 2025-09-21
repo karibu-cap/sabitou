@@ -1,6 +1,8 @@
 import '../../../../entities/global_product_isar.dart';
+import '../../../../entities/order_isar.dart';
 import '../../../../entities/product_category_isar.dart';
 import '../../../../entities/store_product_isar.dart';
+import '../../../../entities/sync_operation_isar.dart';
 import '../../isar_database.dart';
 import '../utils/fake_isar_collection.dart';
 
@@ -25,6 +27,14 @@ class FakeIsarDatabase implements IsarDatabase {
   @override
   FakeIsarCollection<ProductCategoryIsar> get productCategoryIsars =>
       categories;
+
+  @override
+  FakeIsarCollection<OrderIsar> get orderIsars =>
+      FakeIsarCollection<OrderIsar>();
+
+  @override
+  FakeIsarCollection<SyncOperationIsar> get syncOperationsIsars =>
+      FakeIsarCollection<SyncOperationIsar>();
 
   @override
   Future<T> writeTxn<T>(Future<T> Function() callback) {

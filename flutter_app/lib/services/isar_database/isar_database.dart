@@ -2,8 +2,10 @@ import 'package:isar_community/isar.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../entities/global_product_isar.dart';
+import '../../entities/order_isar.dart';
 import '../../entities/product_category_isar.dart';
 import '../../entities/store_product_isar.dart';
+import '../../entities/sync_operation_isar.dart';
 import 'src/implementations/fake_isar_database.dart';
 import 'src/implementations/real_isar_database.dart';
 
@@ -27,6 +29,12 @@ abstract class IsarDatabase {
   /// Product categories collection.
   IsarCollection<ProductCategoryIsar> get productCategoryIsars;
 
+  /// Orders collection.
+  IsarCollection<OrderIsar> get orderIsars;
+
+  /// Sync operations collection.
+  IsarCollection<SyncOperationIsar> get syncOperationsIsars;
+
   /// Write transaction.
   Future<T> writeTxn<T>(Future<T> Function() callback);
 
@@ -40,6 +48,8 @@ abstract class IsarDatabase {
             StoreProductIsarSchema,
             GlobalProductIsarSchema,
             ProductCategoryIsarSchema,
+            OrderIsarSchema,
+            SyncOperationIsarSchema,
           ],
 
           /// source directory.

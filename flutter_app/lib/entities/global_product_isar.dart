@@ -12,6 +12,7 @@ class GlobalProductIsar {
   Id id = Isar.autoIncrement;
 
   /// GlobalProduct refId.
+  @Index(unique: true)
   String refId;
 
   /// The name of the product.

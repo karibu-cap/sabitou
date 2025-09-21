@@ -104,6 +104,9 @@ dependencies:
   isar_community: ^3.3.0-dev.2
   isar_community_flutter_libs: ^3.3.0-dev.2
 
+  # Package to generate a unique id.
+  uuid: ^4.4.2
+
   # Package to manage the navigation between screens.
   go_router: ^16.2.2
 

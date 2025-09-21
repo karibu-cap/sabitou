@@ -21,7 +21,7 @@ import 'repositories/users_repository.dart';
 import 'router/app_router.dart';
 import 'services/app_theme_service.dart';
 import 'services/internationalization/internationalization.dart';
-import 'services/isar/isar_database.dart';
+import 'services/isar_database/isar_database.dart';
 import 'services/network_status_provider/network_status_provider.dart';
 import 'services/rpc/connect_rpc.dart';
 import 'services/rpc/fake_transport.dart';

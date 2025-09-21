@@ -11,4 +11,5 @@ export 'src/order/v1/order.pb.dart';
 export 'src/order/v1/receipt.pb.dart';
 export 'src/store/v1/store.pb.dart';
 export 'src/store/v1/supplier.pb.dart';
+export 'src/sync/v1/sync.pb.dart';
 export 'src/transaction/v1/transactions.pb.dart';

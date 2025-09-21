@@ -74,4 +74,12 @@ abstract final class ProductService {
     inventoryv1product.StreamStoreProductsRequest.new,
     inventoryv1product.StreamStoreProductsResponse.new,
   );
+
+  /// Streams all global products for real-time updates.
+  static const streamGlobalProducts = connect.Spec(
+    '/$name/StreamGlobalProducts',
+    connect.StreamType.server,
+    inventoryv1product.StreamGlobalProductsRequest.new,
+    inventoryv1product.StreamGlobalProductsResponse.new,
+  );
 }

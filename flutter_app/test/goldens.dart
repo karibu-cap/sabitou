@@ -16,7 +16,7 @@ import 'package:sabitou_clients/repositories/transactions_repository.dart';
 import 'package:sabitou_clients/repositories/users_repository.dart';
 import 'package:sabitou_clients/services/app_theme_service.dart';
 import 'package:sabitou_clients/services/internationalization/internationalization.dart';
-import 'package:sabitou_clients/services/isar/isar_database.dart';
+import 'package:sabitou_clients/services/isar_database/isar_database.dart';
 import 'package:sabitou_clients/services/network_status_provider/network_status_provider.dart';
 import 'package:sabitou_clients/services/storage/app_storage.dart';
 import 'package:sabitou_clients/utils/user_preference.dart';

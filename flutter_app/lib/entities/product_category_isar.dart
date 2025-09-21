@@ -10,6 +10,7 @@ class ProductCategoryIsar {
   Id id = Isar.autoIncrement;
 
   /// ProductCategory refId.
+  @Index(unique: true)
   String refId;
 
   /// The name of the category.

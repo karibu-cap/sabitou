@@ -5,7 +5,7 @@ import 'package:sabitou_rpc/models.dart';
 import '../../entities/global_product_isar.dart';
 import '../../entities/product_category_isar.dart';
 import '../../entities/store_product_isar.dart';
-import '../../services/isar/isar_database.dart';
+import '../../services/isar_database/isar_database.dart';
 import '../../utils/logger.dart';
 
 /// The local products repository.

@@ -15,7 +15,7 @@ extension GetStoreProductIsarCollection on Isar {
 
 const StoreProductIsarSchema = CollectionSchema(
   name: r'StoreProductIsar',
-  id: -619533,
+  id: -619533839494174684,
   properties: {
     r'createdAt': PropertySchema(
       id: 0,
@@ -72,7 +72,47 @@ const StoreProductIsarSchema = CollectionSchema(
   deserialize: _storeProductIsarDeserialize,
   deserializeProp: _storeProductIsarDeserializeProp,
   idName: r'id',
-  indexes: {},
+  indexes: {
+    r'refId': IndexSchema(
+      id: -5849034591004344426,
+      name: r'refId',
+      unique: true,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'refId',
+          type: IndexType.hash,
+          caseSensitive: true,
+        ),
+      ],
+    ),
+    r'storeId': IndexSchema(
+      id: 2730892149058446507,
+      name: r'storeId',
+      unique: false,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'storeId',
+          type: IndexType.hash,
+          caseSensitive: true,
+        ),
+      ],
+    ),
+    r'globalProductId': IndexSchema(
+      id: -7909665468305483236,
+      name: r'globalProductId',
+      unique: false,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'globalProductId',
+          type: IndexType.hash,
+          caseSensitive: true,
+        ),
+      ],
+    ),
+  },
   links: {},
   embeddedSchemas: {},
 
@@ -208,6 +248,63 @@ void _storeProductIsarAttach(
   object.id = id;
 }
 
+extension StoreProductIsarByIndex on IsarCollection<StoreProductIsar> {
+  Future<StoreProductIsar?> getByRefId(String refId) {
+    return getByIndex(r'refId', [refId]);
+  }
+
+  StoreProductIsar? getByRefIdSync(String refId) {
+    return getByIndexSync(r'refId', [refId]);
+  }
+
+  Future<bool> deleteByRefId(String refId) {
+    return deleteByIndex(r'refId', [refId]);
+  }
+
+  bool deleteByRefIdSync(String refId) {
+    return deleteByIndexSync(r'refId', [refId]);
+  }
+
+  Future<List<StoreProductIsar?>> getAllByRefId(List<String> refIdValues) {
+    final values = refIdValues.map((e) => [e]).toList();
+    return getAllByIndex(r'refId', values);
+  }
+
+  List<StoreProductIsar?> getAllByRefIdSync(List<String> refIdValues) {
+    final values = refIdValues.map((e) => [e]).toList();
+    return getAllByIndexSync(r'refId', values);
+  }
+
+  Future<int> deleteAllByRefId(List<String> refIdValues) {
+    final values = refIdValues.map((e) => [e]).toList();
+    return deleteAllByIndex(r'refId', values);
+  }
+
+  int deleteAllByRefIdSync(List<String> refIdValues) {
+    final values = refIdValues.map((e) => [e]).toList();
+    return deleteAllByIndexSync(r'refId', values);
+  }
+
+  Future<Id> putByRefId(StoreProductIsar object) {
+    return putByIndex(r'refId', object);
+  }
+
+  Id putByRefIdSync(StoreProductIsar object, {bool saveLinks = true}) {
+    return putByIndexSync(r'refId', object, saveLinks: saveLinks);
+  }
+
+  Future<List<Id>> putAllByRefId(List<StoreProductIsar> objects) {
+    return putAllByIndex(r'refId', objects);
+  }
+
+  List<Id> putAllByRefIdSync(
+    List<StoreProductIsar> objects, {
+    bool saveLinks = true,
+  }) {
+    return putAllByIndexSync(r'refId', objects, saveLinks: saveLinks);
+  }
+}
+
 extension StoreProductIsarQueryWhereSort
     on QueryBuilder<StoreProductIsar, StoreProductIsar, QWhere> {
   QueryBuilder<StoreProductIsar, StoreProductIsar, QAfterWhere> anyId() {
@@ -283,6 +380,165 @@ extension StoreProductIsarQueryWhere
           includeUpper: includeUpper,
         ),
       );
+    });
+  }
+
+  QueryBuilder<StoreProductIsar, StoreProductIsar, QAfterWhereClause>
+  refIdEqualTo(String refId) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        IndexWhereClause.equalTo(indexName: r'refId', value: [refId]),
+      );
+    });
+  }
+
+  QueryBuilder<StoreProductIsar, StoreProductIsar, QAfterWhereClause>
+  refIdNotEqualTo(String refId) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'refId',
+                lower: [],
+                upper: [refId],
+                includeUpper: false,
+              ),
+            )
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'refId',
+                lower: [refId],
+                includeLower: false,
+                upper: [],
+              ),
+            );
+      } else {
+        return query
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'refId',
+                lower: [refId],
+                includeLower: false,
+                upper: [],
+              ),
+            )
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'refId',
+                lower: [],
+                upper: [refId],
+                includeUpper: false,
+              ),
+            );
+      }
+    });
+  }
+
+  QueryBuilder<StoreProductIsar, StoreProductIsar, QAfterWhereClause>
+  storeIdEqualTo(String storeId) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        IndexWhereClause.equalTo(indexName: r'storeId', value: [storeId]),
+      );
+    });
+  }
+
+  QueryBuilder<StoreProductIsar, StoreProductIsar, QAfterWhereClause>
+  storeIdNotEqualTo(String storeId) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'storeId',
+                lower: [],
+                upper: [storeId],
+                includeUpper: false,
+              ),
+            )
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'storeId',
+                lower: [storeId],
+                includeLower: false,
+                upper: [],
+              ),
+            );
+      } else {
+        return query
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'storeId',
+                lower: [storeId],
+                includeLower: false,
+                upper: [],
+              ),
+            )
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'storeId',
+                lower: [],
+                upper: [storeId],
+                includeUpper: false,
+              ),
+            );
+      }
+    });
+  }
+
+  QueryBuilder<StoreProductIsar, StoreProductIsar, QAfterWhereClause>
+  globalProductIdEqualTo(String globalProductId) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        IndexWhereClause.equalTo(
+          indexName: r'globalProductId',
+          value: [globalProductId],
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<StoreProductIsar, StoreProductIsar, QAfterWhereClause>
+  globalProductIdNotEqualTo(String globalProductId) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'globalProductId',
+                lower: [],
+                upper: [globalProductId],
+                includeUpper: false,
+              ),
+            )
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'globalProductId',
+                lower: [globalProductId],
+                includeLower: false,
+                upper: [],
+              ),
+            );
+      } else {
+        return query
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'globalProductId',
+                lower: [globalProductId],
+                includeLower: false,
+                upper: [],
+              ),
+            )
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'globalProductId',
+                lower: [],
+                upper: [globalProductId],
+                includeUpper: false,
+              ),
+            );
+      }
     });
   }
 }
