@@ -138,10 +138,6 @@ class UserPermissionsModalController extends ChangeNotifier {
       return true;
     }
 
-    print('newStatus: $newStatus');
-    print('newStatus: $newStatus');
-    print('newStatus: $newStatus');
-
     _isLoading = true;
     _errorMessage = '';
     notifyListeners();

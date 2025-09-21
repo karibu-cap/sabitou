@@ -9,6 +9,9 @@ import 'new_order_view_model.dart';
 class NewOrderController extends ChangeNotifier {
   final NewOrderViewModel _viewModel;
 
+  /// The search query controller.
+  final searchQueryController = TextEditingController();
+
   /// The complete order button state.
   final ButtonState completeOrderButtonState = ButtonState.initial;
 

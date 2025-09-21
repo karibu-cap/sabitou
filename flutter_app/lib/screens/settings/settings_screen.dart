@@ -18,7 +18,6 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isMobile = ResponsiveUtils.isMobile(context);
     final isDesktop = ResponsiveUtils.isDesktop(context);
     final viewModel = GetIt.I.registerSingletonIfAbsent<SettingsViewModel>(
       SettingsViewModel.new,
@@ -28,8 +27,6 @@ class SettingsScreen extends StatelessWidget {
       create: (context) => SettingsController(viewModel: viewModel),
       builder: (context, child) {
         return SingleChildScrollView(
-          padding: EdgeInsets.all(!isMobile ? 24 : 5),
-
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

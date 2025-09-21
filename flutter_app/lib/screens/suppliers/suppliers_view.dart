@@ -58,7 +58,6 @@ class SuppliersContent extends StatelessWidget {
     final controller = Provider.of<SuppliersController>(context);
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(24),
       child: Column(
         spacing: 32,
         crossAxisAlignment: CrossAxisAlignment.start,

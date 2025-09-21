@@ -1,115 +1,146 @@
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 
-import '../utils/user_preference.dart';
-import 'routes/auth/forgot_password.dart';
-import 'routes/auth/login.dart';
-import 'routes/auth/registration.dart';
-import 'routes/auth/user.dart';
-import 'routes/business/id/details.dart';
-import 'routes/business/id/iam.dart';
-import 'routes/business/id/summary.dart';
-import 'routes/business/list.dart';
-import 'routes/inventory/inventory.dart';
-import 'routes/store/id/details.dart';
-import 'routes/store/list.dart';
+import 'go_router.dart';
 
-export 'routes/auth/forgot_password.dart';
-export 'routes/auth/login.dart';
-export 'routes/auth/registration.dart';
-export 'routes/auth/user.dart';
-export 'routes/business/id/details.dart';
-export 'routes/business/id/iam.dart';
-export 'routes/business/id/summary.dart';
-export 'routes/business/list.dart';
-export 'routes/store/id/details.dart';
-export 'routes/store/list.dart';
-
-/// The default fallback route.
-const defaultRoutePath = loginRoutePath;
-
-/// The list of authenticated routes.
-const List<String> authenticatedRoutes = [
-  businessListRoutePath,
-  businessDetailsRoutePath,
-  businessIamRoutePath,
-  businessSummaryRoutePath,
-  storeListRoutePath,
-  storeDetailsRoutePath,
-  userRoutePath,
-  inventoryRoutePath,
-];
-
-/// The list of unauthenticated routes.
-const List<String> unauthenticatedRoutes = [
-  loginRoutePath,
-  registrationRoutePath,
-  forgotPasswordRoutePath,
-];
-
-/// The list of app routes.
-final Map<Pattern, dynamic Function(BuildContext, BeamState, Object?)> routes =
-    {
-      loginRoutePath: (context, state, extra) => loginPage,
-      registrationRoutePath: (context, state, extra) => registrationPage,
-      forgotPasswordRoutePath: (context, state, extra) => forgotPasswordPage,
-      businessListRoutePath: (context, state, extra) => businessListPage,
-      businessDetailsRoutePath: (context, state, extra) => businessDetailsPage,
-      businessIamRoutePath: (context, state, extra) => businessIamPage,
-      storeListRoutePath: (context, state, extra) => storeListPage,
-      storeDetailsRoutePath: (context, state, extra) => storeDetailsPage,
-      userRoutePath: (context, state, extra) => userPage,
-      businessSummaryRoutePath: (context, state, extra) => businessSummaryPage,
-      inventoryRoutePath: (context, state, extra) => inventoryPage,
-    };
-
-final routeGuards = [
-  BeamGuard(
-    pathPatterns: authenticatedRoutes,
-    check: (context, location) {
-      final bool isUserRegistered = UserPreferences.instance.user != null;
-      debugPrint('isUserRegistered: $isUserRegistered');
-
-      return isUserRegistered;
-    },
-    beamToNamed: (_, __) => unauthenticatedRoutes.first,
-  ),
-  BeamGuard(
-    pathPatterns: unauthenticatedRoutes,
-    check: (context, location) {
-      final bool isUserRegistered = UserPreferences.instance.user != null;
-      debugPrint('isUserRegistered: $isUserRegistered');
-
-      return !isUserRegistered;
-    },
-    beamToNamed: (_, __) => authenticatedRoutes.first,
-  ),
-];
-
-/// Gets the current route name.
-BeamState getCurrentLocation(BuildContext context) {
-  final beamState = Beamer.of(context).currentBeamLocation.state as BeamState;
-
-  return beamState;
+/// The supported routing types.
+enum AppRouterType {
+  /// GoRouter as routing subsystem.
+  gorouter,
 }
 
-/// Pops the current route.
-void onPop(BuildContext context) {
-  Beamer.of(context).beamBack();
+/// Interface for our routing subsystems.
+abstract class AppRouterSubsystem {
+  /// Returns the router config.
+  RouterConfig<Object>? get routerConfig;
+
+  /// Returns the route delegate.
+  RouterDelegate<Object>? get routerDelegate;
+
+  /// Returns the route information parser.
+  RouteInformationParser<Object>? get routeInformationParser;
+
+  /// Returns the route information provider.
+  RouteInformationProvider? get routeInformationProvider;
+
+  /// Returns the back button dispatcher.
+  BackButtonDispatcher? get backButtonDispatcher;
+
+  /// Initializes the routing subsystem.
+  Future<void> init();
+
+  /// Adds a route to the navigator stack.
+  void push(BuildContext context, String uri, {Object? extra});
+
+  /// Replaces the top route on the navigator stack.
+  void pushReplacement(BuildContext context, String uri, {Object? extra});
+
+  /// Replaces the navigator stack with the specified route.
+  void go(BuildContext context, String uri, {Object? extra});
+
+  /// Adds a route to the navigator stack.
+  void pushReplacementNamed(BuildContext context, String uri, {Object? extra});
+
+  /// Returns the current routing location.
+  String getCurrentLocation(BuildContext context);
+
+  /// Updates the routing information (displayed in the browser url bar).
+  void updateRouteInformation(BuildContext context, String uri);
+
+  /// Checks if the current route can be popped.
+  bool canPop(BuildContext context);
+
+  /// Removes the current route.
+  void onPop(BuildContext context);
 }
 
-/// Navigates to nex page.
-void push(
-  BuildContext context,
-  String path, {
-  Object? extra,
-  Map<String, String>? parameters,
-}) {
-  final uri = Uri(path: path, queryParameters: parameters);
-  Beamer.of(context).beamToNamed(uri.toString(), data: extra);
-}
+/// Navigation system which the subsytem specified on init().
+class AppRouter {
+  static AppRouterSubsystem subsystem = AppRouterGoRouter();
 
-/// Navigates to next page and replace the previous page.
-void pushReplacement(BuildContext context, String uri, {Object? extra}) {
-  Beamer.of(context).beamToReplacementNamed(uri, data: extra);
+  static Future<void> init(AppRouterType type) {
+    switch (type) {
+      case AppRouterType.gorouter:
+        subsystem = AppRouterGoRouter();
+        break;
+    }
+
+    return subsystem.init();
+  }
+
+  /// Adds a route to the navigator stack.
+  static void push(BuildContext context, String uri, {Object? extra}) {
+    return subsystem.push(context, uri, extra: extra);
+  }
+
+  /// Replaces the top route on the navigator stack.
+  static void pushReplacement(
+    BuildContext context,
+    String uri, {
+    Object? extra,
+  }) {
+    return subsystem.pushReplacement(context, uri, extra: extra);
+  }
+
+  /// Replaces the navigator stack with the specified route.
+  static void go(BuildContext context, String uri, {Object? extra}) {
+    return subsystem.go(context, uri, extra: extra);
+  }
+
+  /// Adds a route to the navigator stack.
+  static void pushReplacementNamed(
+    BuildContext context,
+    String uri, {
+    Object? extra,
+  }) {
+    return subsystem.pushReplacementNamed(context, uri, extra: extra);
+  }
+
+  /// Returns the current routing location.
+  static String getCurrentLocation(BuildContext context) {
+    return subsystem.getCurrentLocation(context);
+  }
+
+  /// Updates the routing information (displayed in the browser url bar).
+  static void updateRouteInformation(
+    BuildContext context,
+    String uri, {
+    Object? extra,
+  }) {
+    return subsystem.updateRouteInformation(context, uri);
+  }
+
+  /// Checks if the current route can be popped.
+  static bool canPop(BuildContext context) {
+    return subsystem.canPop(context);
+  }
+
+  /// Removes the current route.
+  static void onPop(BuildContext context) {
+    return subsystem.onPop(context);
+  }
+
+  /// Returns the router config.
+  static RouterConfig<Object>? getRouterConfig() {
+    return subsystem.routerConfig;
+  }
+
+  /// Returns the route delegate.
+  static RouterDelegate<Object>? getRouterDelegate() {
+    return subsystem.routerDelegate;
+  }
+
+  /// Returns the route information parser.
+  static RouteInformationParser<Object>? getRouteInformationParser() {
+    return subsystem.routeInformationParser;
+  }
+
+  /// Returns the back button dispatcher.
+  static BackButtonDispatcher? getBackButtonDispatcher() {
+    return subsystem.backButtonDispatcher;
+  }
+
+  /// Returns the route information provider.
+  static RouteInformationProvider? getRouteInformationProvider() {
+    return subsystem.routeInformationProvider;
+  }
 }

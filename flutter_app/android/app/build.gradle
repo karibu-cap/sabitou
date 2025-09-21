@@ -5,10 +5,72 @@ plugins {
     id "dev.flutter.flutter-gradle-plugin"
 }
 
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader ->
+        localProperties.load(reader)
+    }
+}
+
+def flutterRoot = localProperties.getProperty('flutter.sdk')
+if (flutterRoot == null) {
+    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+}
+
+def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
+if (flutterVersionCode == null) {
+    flutterVersionCode = '1'
+}
+
+def flutterVersionName = localProperties.getProperty('flutter.versionName')
+if (flutterVersionName == null) {
+    flutterVersionName = '1.0'
+}
+
+
+// Use 'dev' as our default environment.
+def dartEnvironmentVariables = [
+        APP_ENVIRONMENT: 'dev',
+        APP_NAME       : 'Sabitou.DEV',
+];
+
+// Parse the dart-defines given as input ('flutter run --dart-define=XXX') and
+// add them to dartEnvironmentVariables.
+if (project.hasProperty('dart-defines')) {
+    dartEnvironmentVariables = dartEnvironmentVariables + project.property('dart-defines')
+            .split(',')
+            .collectEntries { entry ->
+                def pair = new String(entry.decodeBase64(), 'UTF-8').split('=')
+                [(pair.first()): pair.last()]
+            }
+}
+
+def app_hosting = "sabitou-" + dartEnvironmentVariables.APP_ENVIRONMENT + ".web.app"
+if (dartEnvironmentVariables.APP_ENVIRONMENT == 'prod') {
+    app_hosting = 'sabitou.com'
+}
+
+// Copy the appropriate google-services config to the 'android/app/' directory.
+// The google-services.json file will then be parsed by the google-services
+// plugin to configure the app for the corresponding environment.
+copy {
+    into file(".").absolutePath
+    from file("services/${dartEnvironmentVariables.APP_ENVIRONMENT}/google-services.json").absolutePath
+}
+
+// Load the properties required to sign the release app.
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+def useDebugSignature = !keystorePropertiesFile.exists() && dartEnvironmentVariables.APP_ENVIRONMENT == 'dev'
+
 android {
-    namespace = "com.example.sabitou_clients"
-    compileSdk = flutter.compileSdkVersion
+    compileSdkVersion = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
+    namespace = "com.karibu.sabitou"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -18,27 +80,49 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8
     }
-
-    defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.sabitou_clients"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
     }
 
-    buildTypes {
+    lintOptions {
+        disable 'InvalidPackage'
+    }
+
+    defaultConfig {
+        // Unique applicationId for each environment.
+        // e.g.: for the dev environment, the applicationId will be: 
+        // com.karibu.sabitou.dev
+        applicationId "com.karibu.sabitou"
+        applicationIdSuffix "." + dartEnvironmentVariables.APP_ENVIRONMENT
+        minSdkVersion 23
+        targetSdkVersion flutter.targetSdkVersion
+        versionCode flutterVersionCode.toInteger()
+        versionName flutterVersionName
+        multiDexEnabled true
+        resValue "string", "app_name", dartEnvironmentVariables.APP_NAME
+        resValue 'string', 'app_hosting', app_hosting
+        manifestPlaceholders = [
+            'usesPermissionRemove': 'android.permission.READ_MEDIA_IMAGES, android.permission.READ_MEDIA_VIDEO'
+        ]
+    }
+
+    signingConfigs {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.debug
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+    buildTypes {
+        // Signing with the debug keys in the DEV environment as a fallback,
+        // to make local debugging easy.
+        release {
+            signingConfig useDebugSignature ? signingConfigs.debug : signingConfigs.release
         }
     }
 }
 
 flutter {
-    source = "../.."
+    source '../..'
 }

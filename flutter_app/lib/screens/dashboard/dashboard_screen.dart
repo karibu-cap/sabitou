@@ -15,9 +15,9 @@ import 'components/recent_activity.dart';
 import 'dashboard_controller.dart';
 
 /// Main dashboard widget that combines all dashboard components.
-class Dashboard extends StatelessWidget {
+class DashboardScreen extends StatelessWidget {
   /// Creates a new dashboard instance.
-  const Dashboard({super.key});
+  const DashboardScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,6 @@ class Dashboard extends StatelessWidget {
               }
 
               return SingleChildScrollView(
-                padding: const EdgeInsets.all(AppConstants.contentPadding),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

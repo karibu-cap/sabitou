@@ -38,7 +38,6 @@ class TransactionsScreen extends StatelessWidget {
                   }
 
                   return SingleChildScrollView(
-                    padding: EdgeInsets.all(isDesktop ? 24 : 16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       spacing: isDesktop ? 32 : 24,

@@ -1,9 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../services/internationalization/internationalization.dart';
 import '../../../utils/responsive_utils.dart';
+import '../../../widgets/mobile_scanner_view.dart';
 import '../inventory_controller.dart';
 import '../inventory_view_model.dart';
 
@@ -32,7 +34,7 @@ class SearchAndFilterCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         spacing: 12,
         children: [
-          Expanded(flex: isMobile ? 0 : 2, child: const _SearchInput()),
+          Expanded(flex: isMobile ? 0 : 2, child: _SearchInput()),
           Expanded(
             flex: isMobile ? 0 : 1,
             child: Row(
@@ -51,16 +53,26 @@ class SearchAndFilterCard extends StatelessWidget {
 }
 
 class _SearchInput extends StatelessWidget {
-  const _SearchInput();
+  final TextEditingController searchQueryController = TextEditingController();
+  _SearchInput();
 
   @override
   Widget build(BuildContext context) {
     final controller = context.read<InventoryController>();
 
     return ShadInput(
+      controller: searchQueryController,
       placeholder: Text(Intls.to.searchForProduct),
       leading: const Icon(LucideIcons.search, size: 16),
       onChanged: (value) => controller.searchQuery.add(value),
+      trailing: kIsWeb
+          ? null
+          : MobileScannerView(
+              onResult: (result) {
+                searchQueryController.text = result;
+                controller.searchQuery.add(result);
+              },
+            ),
     );
   }
 }

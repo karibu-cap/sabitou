@@ -7,6 +7,7 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 import '../../repositories/business_repository.dart';
 import '../../repositories/stores_repository.dart';
 import '../../utils/user_preference.dart';
+import '../../widgets/sidebar/sidebar_menu_item.dart';
 import 'settings_view_model.dart';
 
 /// The settings tab.
@@ -87,8 +88,8 @@ class SettingsController extends ChangeNotifier {
   }
 
   /// Sets the selected tab.
-  void setSelectedTab(SettingsTab tab) {
-    _selectedTab = tab;
+  void setSelectedTab(SideBarItem<SettingsTab> tab) {
+    _selectedTab = tab.id;
     notifyListeners();
   }
 

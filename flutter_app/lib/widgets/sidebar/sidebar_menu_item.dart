@@ -16,6 +16,9 @@ class SideBarItem<T> {
   /// The sidebar item description.
   final String? description;
 
+  /// The sidebar item path.
+  final String? path;
+
   /// The sidebar item children.
   final List<SideBarItem<T>>? children;
 
@@ -25,6 +28,7 @@ class SideBarItem<T> {
     required this.label,
     required this.icon,
     this.description,
+    this.path,
     this.children,
   });
 }
@@ -38,7 +42,7 @@ class SidebarMenuItem<T> extends StatelessWidget {
   final T activeTab;
 
   /// The on tab change callback.
-  final Function(T) onTabChange;
+  final Function(SideBarItem<T>) onTabChange;
 
   /// The is child.
   final bool isChild;
@@ -100,7 +104,7 @@ class _ItemWidget<T> extends StatelessWidget {
     required this.variant,
   });
 
-  final Function(T)? onTabChange;
+  final Function(SideBarItem<T>)? onTabChange;
   final SideBarItem<T> item;
   final bool isChild;
   final bool isActive;
@@ -118,7 +122,7 @@ class _ItemWidget<T> extends StatelessWidget {
           height:
               minHeight ?? (!isActive && item.description != null ? 70 : null),
           variant: isActive ? ShadButtonVariant.primary : variant,
-          onPressed: () => onTabChange?.call(item.id),
+          onPressed: () => onTabChange?.call(item),
           padding: EdgeInsets.symmetric(
             horizontal: isChild ? 32 : 16,
             vertical: 12,

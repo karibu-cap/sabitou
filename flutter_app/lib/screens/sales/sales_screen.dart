@@ -37,15 +37,13 @@ class SalesScreen extends StatelessWidget {
                   }
 
                   return SingleChildScrollView(
-                    padding: EdgeInsets.all(isDesktop ? 24 : 16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const InventoryHeader(),
-                        SizedBox(height: isDesktop ? 32 : 24),
-                        const InventoryStats(),
-                        SizedBox(height: isDesktop ? 32 : 24),
-                        const SalesTable(),
+                      spacing: isDesktop ? 32 : 24,
+                      children: const [
+                        InventoryHeader(),
+                        InventoryStats(),
+                        SalesTable(),
                       ],
                     ),
                   );

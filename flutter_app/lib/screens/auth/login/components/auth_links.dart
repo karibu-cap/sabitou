@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../router/app_router.dart' as app_router;
+import '../../../../router/page_routes.dart';
+import '../../../../router/app_router.dart';
 import '../../../../services/internationalization/internationalization.dart';
 
 /// Auth links.
@@ -14,12 +15,12 @@ class AuthLinks extends StatelessWidget {
 
     /// Navigate to register screen.
     void navigateToRegisterScreen(BuildContext context) {
-      app_router.pushReplacement(context, app_router.registrationRoutePath);
+      AppRouter.pushReplacement(context, PagesRoutes.registration.create());
     }
 
     /// Navigate to forgot password.
     void navigateToForgotPassword(BuildContext context) {
-      app_router.pushReplacement(context, app_router.forgotPasswordRoutePath);
+      AppRouter.pushReplacement(context, PagesRoutes.forgotPassword.create());
     }
 
     return Column(

@@ -1,10 +1,11 @@
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:get_it/get_it.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
+
 import 'providers/auth/auth_provider.dart';
 import 'providers/cart_provider.dart';
 import 'repositories/auth_repository.dart';
@@ -17,7 +18,7 @@ import 'repositories/stores_repository.dart';
 import 'repositories/suppliers_repository.dart';
 import 'repositories/transactions_repository.dart';
 import 'repositories/users_repository.dart';
-import 'router/app_router.dart' as app_router;
+import 'router/app_router.dart';
 import 'services/app_theme_service.dart';
 import 'services/internationalization/internationalization.dart';
 import 'services/isar/isar_database.dart';
@@ -32,12 +33,14 @@ import 'utils/user_preference.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await _initServices();
+  usePathUrlStrategy();
   runApp(const MyApp());
 }
 
 Future<void> _initServices() async {
   final isarDatabase = await IsarDatabase.create(IsarDatabaseType.real);
   await GetStorage.init();
+  await AppRouter.init(AppRouterType.gorouter);
   final appStorage = AppStorageService(AppStorageType.fake, fakeStorage);
   final networkStatusProvider = NetworkStatusProvider.create(
     type: NetworkProviderType.real,
@@ -82,13 +85,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final appStorage = GetIt.I.get<AppStorageService>();
 
-    /// Register theme service.
-    final routerDelegate = BeamerDelegate(
-      initialPath: app_router.defaultRoutePath,
-      locationBuilder: RoutesLocationBuilder(routes: app_router.routes).call,
-      guards: app_router.routeGuards,
-    );
-
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
@@ -104,38 +100,51 @@ class MyApp extends StatelessWidget {
           create: (context) => GetIt.I.get<AuthProvider>(),
         ),
       ],
-      child: Consumer2<AppThemeService, AppInternationalizationService>(
-        builder: (context, themeService, intls, child) {
-          return ShadApp.custom(
-            themeMode: themeService.isDarkMode
-                ? ThemeMode.dark
-                : ThemeMode.light,
-            theme: AppThemeService.lightTheme,
-            darkTheme: AppThemeService.darkTheme,
-            appBuilder: (context) {
-              return MaterialApp.router(
-                supportedLocales:
-                    AppInternationalizationService.supportedLocales,
-                locale: intls.locale,
-                routeInformationParser: BeamerParser(),
-                routerDelegate: routerDelegate,
-                localizationsDelegates: const [
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                ],
-                builder: (context, child) {
-                  if (child == null) {
-                    return const SizedBox.shrink();
-                  }
+      child:
+          Consumer4<
+            AppThemeService,
+            AppInternationalizationService,
+            AuthProvider,
+            UserPreferences
+          >(
+            builder:
+                (
+                  context,
+                  themeService,
+                  intls,
+                  authProvider,
+                  userPreferences,
+                  child,
+                ) {
+                  return ShadApp.custom(
+                    themeMode: themeService.isDarkMode
+                        ? ThemeMode.dark
+                        : ThemeMode.light,
+                    theme: AppThemeService.lightTheme,
+                    darkTheme: AppThemeService.darkTheme,
+                    appBuilder: (context) {
+                      return MaterialApp.router(
+                        supportedLocales:
+                            AppInternationalizationService.supportedLocales,
+                        locale: intls.locale,
+                        routerConfig: AppRouter.getRouterConfig(),
+                        localizationsDelegates: const [
+                          GlobalMaterialLocalizations.delegate,
+                          GlobalWidgetsLocalizations.delegate,
+                          GlobalCupertinoLocalizations.delegate,
+                        ],
+                        builder: (context, child) {
+                          if (child == null) {
+                            return const SizedBox.shrink();
+                          }
 
-                  return ShadAppBuilder(child: child);
+                          return ShadAppBuilder(child: child);
+                        },
+                      );
+                    },
+                  );
                 },
-              );
-            },
-          );
-        },
-      ),
+          ),
     );
   }
 }

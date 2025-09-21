@@ -50,13 +50,11 @@ class ReportsScreen extends StatelessWidget {
                   }
 
                   return SingleChildScrollView(
-                    padding: EdgeInsets.all(isDesktop ? 24 : 16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       spacing: 16,
                       children: [
                         const Header(),
-                        const SizedBox(height: 20),
                         const ReportsTabsView(),
                         const _ReportsStats(),
                         if (controller.selectedTab ==

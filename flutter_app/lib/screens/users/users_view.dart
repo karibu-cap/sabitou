@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../utils/common_scaffold.dart';
+
 import 'components/users_header.dart';
 import 'components/users_list.dart';
 import 'components/users_stats_grid.dart';
@@ -20,7 +20,7 @@ class UsersView extends StatelessWidget {
           create: (_) => UsersController(UsersViewModel(storeId: 'storeId')),
         ),
       ],
-      child: const CommonScaffold(child: UsersContent(), displayAppBar: false),
+      child: const UsersContent(),
     );
   }
 }
@@ -36,7 +36,6 @@ class UsersContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const SingleChildScrollView(
-      padding: EdgeInsets.all(24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

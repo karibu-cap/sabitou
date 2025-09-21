@@ -39,18 +39,15 @@ class _SalesScreenContent extends StatelessWidget {
           children: [
             SizedBox(
               height: constraints.maxHeight,
-              child: const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  spacing: 16,
-                  children: [
-                    NewOrderHeader(),
-                    SearchAndScanView(),
-                    OrderSelected(),
-                    CartFooter(),
-                  ],
-                ),
+              child: const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: 16,
+                children: [
+                  NewOrderHeader(),
+                  SearchAndScanView(),
+                  OrderSelected(),
+                  CartFooter(),
+                ],
               ),
             ),
             const SizedBox(height: 16),
