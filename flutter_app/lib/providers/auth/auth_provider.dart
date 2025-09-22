@@ -3,14 +3,24 @@ import 'package:get_it/get_it.dart';
 import 'package:sabitou_rpc/models.dart';
 
 import '../../repositories/auth_repository.dart';
+import '../../repositories/business_repository.dart';
+import '../../repositories/stores_repository.dart';
+import '../../services/data_sync/data_sync_service.dart';
 import '../../services/rpc/fake_transport/auth.dart';
 import '../../utils/user_preference.dart';
 
 /// Auth status.
 enum AuthStatus {
+  /// Unauthenticated status.
   unauthenticated,
+
+  /// Authenticating status.
   authenticating,
+
+  /// Authenticated status.
   authenticated,
+
+  /// Authentication failed status.
   authenticationFailed,
 }
 
@@ -23,6 +33,9 @@ class AuthProvider extends ChangeNotifier {
   final AuthRepository _authRepository = AuthRepository(
     transport: authFakeTransport,
   );
+  final _dataSyncService = GetIt.I.get<DataSyncService>();
+  final _businessRepository = GetIt.I.get<BusinessRepository>();
+  final _storesRepository = GetIt.I.get<StoresRepository>();
 
   /// Singleton access.
   static AuthProvider get instance => GetIt.I.get<AuthProvider>();
@@ -57,6 +70,12 @@ class AuthProvider extends ChangeNotifier {
       await UserPreferences.instance.saveUserPreferences(user: response);
       _setStatus(AuthStatus.authenticated);
 
+      // Save business and store after successful login
+      await _saveBusinessAndStore(response);
+
+      /// Initialize data sync after successful login.
+      await _initializeDataSync();
+
       return true;
     }
     _setStatus(AuthStatus.authenticationFailed);
@@ -66,6 +85,11 @@ class AuthProvider extends ChangeNotifier {
 
   /// Logout logic.
   Future<void> logout() async {
+    // Stop and dispose data sync on logout.
+    _dataSyncService
+      ..stopSync()
+      ..dispose();
+
     _currentUser = null;
     _errorMessage = null;
 
@@ -92,6 +116,12 @@ class AuthProvider extends ChangeNotifier {
     if (response != null) {
       await UserPreferences.instance.saveUserPreferences(user: response);
       _setStatus(AuthStatus.authenticated);
+
+      // Save business and store after successful register
+      await _saveBusinessAndStore(response);
+
+      /// Initialize data sync after successful register.
+      await _initializeDataSync();
 
       return true;
     }
@@ -137,5 +167,42 @@ class AuthProvider extends ChangeNotifier {
     _errorMessage = message;
     _status = AuthStatus.authenticationFailed;
     notifyListeners();
+  }
+
+  /// Saves business and store in user preference.
+  Future<void> _saveBusinessAndStore(User currentUser) async {
+    // Fetch user's businesses
+    final businesses = await _businessRepository.getMyBusinesses(
+      currentUser.refId,
+    );
+    if (businesses.isEmpty) {
+      // No businesses, skip sync init
+      return;
+    }
+
+    // Take first business
+    final firstBusiness = businesses.first;
+    await UserPreferences.instance.saveBusinessPreferences(
+      newBusiness: firstBusiness,
+    );
+
+    // Fetch stores for the first business
+    final stores = await _storesRepository.getStoresByBusinessId(
+      firstBusiness.refId,
+    );
+    if (stores.isEmpty) {
+      // No stores, skip sync init
+      return;
+    }
+
+    await UserPreferences.instance.saveStorePreferences(newStore: stores.first);
+  }
+
+  /// Initializes data sync by fetching businesses and stores
+  Future<void> _initializeDataSync() async {
+    final currentStore = UserPreferences.instance.store;
+
+    // Start sync with initial store
+    _dataSyncService.startSync(initialStoreId: currentStore?.refId);
   }
 }
