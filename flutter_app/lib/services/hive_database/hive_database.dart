@@ -1,6 +1,6 @@
-import 'package:hive_ce/hive.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:hive_ce_flutter/adapters.dart';
 import 'package:sabitou_rpc/models.dart';
+
 import 'protobuf_adapters.dart';
 import 'src/implementations/fake_hive_database.dart';
 import 'src/implementations/real_hive_database.dart';
@@ -45,10 +45,8 @@ abstract class HiveDatabase {
     switch (type) {
       case HiveDatabaseType.real:
         try {
-          final dir = await getApplicationDocumentsDirectory();
-
           // Initialize Hive
-          Hive.init(dir.path);
+          await Hive.initFlutter();
 
           // Register protobuf adapters
           registerProtobufAdapters();
