@@ -1,19 +1,19 @@
-import 'package:get_it/get_it.dart';
-import 'package:isar_community/isar.dart';
-import 'package:sabitou_rpc/models.dart';
+import 'dart:async';
 
-import '../../entities/global_product_isar.dart';
-import '../../entities/product_category_isar.dart';
-import '../../entities/store_product_isar.dart';
-import '../../services/isar/isar_database.dart';
+import 'package:get_it/get_it.dart';
+import 'package:hive_ce_flutter/adapters.dart';
+import 'package:sabitou_rpc/models.dart';
+import 'package:uuid/uuid.dart';
+
+import '../../services/hive_database/hive_database.dart';
 import '../../utils/logger.dart';
 
 /// The local products repository.
 class LocalProductsRepository {
   final _logger = LoggerApp('LocalProductsRepository');
 
-  /// The isar box.
-  final isarBox = GetIt.I.get<IsarDatabase>();
+  /// The hive database.
+  final hiveDb = GetIt.I.get<HiveDatabase>();
 
   /// Constructs a new [LocalProductsRepository].
   LocalProductsRepository();
@@ -21,12 +21,11 @@ class LocalProductsRepository {
   /// Gets all products base on store Id.
   Future<List<StoreProduct>> getProductsByStoreId(String storeId) async {
     try {
-      final response = await isarBox.storeProductIsars
-          .filter()
-          .storeIdEqualTo(storeId)
-          .findAll();
+      final response = hiveDb.storeProducts.values
+          .where((product) => product.storeId == storeId)
+          .toList();
 
-      return response.map((e) => e.toProto()).toList();
+      return response;
     } on Exception catch (e) {
       _logger.severe('getProductsByStoreId Error: $e');
 
@@ -39,12 +38,12 @@ class LocalProductsRepository {
     FindGlobalProductsRequest request,
   ) async {
     try {
-      final response = await isarBox.globalProductIsars
-          .filter()
-          .refIdEqualTo(request.refId)
-          .findAll();
+      final box = hiveDb.globalProducts;
+      final response = box.values
+          .where((product) => product.refId == request.refId)
+          .toList();
 
-      return response.map((e) => e.toProto()).toList();
+      return response;
     } on Exception catch (e) {
       _logger.severe('findGlobalProduct Error: $e');
 
@@ -57,12 +56,12 @@ class LocalProductsRepository {
     FindStoreProductsRequest request,
   ) async {
     try {
-      final response = await isarBox.storeProductIsars
-          .filter()
-          .globalProductIdEqualTo(request.refId)
-          .findAll();
+      final box = hiveDb.storeProducts;
+      final response = box.values
+          .where((product) => product.storeId == request.storeId)
+          .toList();
 
-      return response.map((e) => e.toProto()).toList();
+      return response;
     } on Exception catch (e) {
       _logger.severe('findStoreProducts Error: $e');
 
@@ -75,12 +74,15 @@ class LocalProductsRepository {
     FindCategoryRequest request,
   ) async {
     try {
-      final response = await isarBox.productCategoryIsars
-          .filter()
-          .nameContains(request.query, caseSensitive: false)
-          .findAll();
+      final response = hiveDb.productCategories.values
+          .where(
+            (category) => category.name.toLowerCase().contains(
+              request.query.toLowerCase(),
+            ),
+          )
+          .toList();
 
-      return response.map((e) => e.toProto()).toList();
+      return response;
     } on Exception catch (e) {
       _logger.severe('findCategories Error: $e');
 
@@ -91,11 +93,9 @@ class LocalProductsRepository {
   /// Adds a new product to a business.
   Future<bool> addProduct(AddStoreProductRequest request) async {
     try {
-      await isarBox.writeTxn(() async {
-        await isarBox.storeProductIsars.put(
-          StoreProductIsar.fromProto(request.storeProduct),
-        );
-      });
+      final box = hiveDb.storeProducts;
+      request.storeProduct..refId = const Uuid().v4();
+      await box.put(request.storeProduct.refId, request.storeProduct);
 
       return true;
     } on Exception catch (e) {
@@ -108,12 +108,12 @@ class LocalProductsRepository {
   /// Gets a business product by its ID.
   Future<StoreProduct?> getProduct(GetStoreProductRequest request) async {
     try {
-      final response = await isarBox.storeProductIsars
-          .filter()
-          .refIdEqualTo(request.storeProductId)
-          .findAll();
+      final box = hiveDb.storeProducts;
+      final hiveProduct = box.values
+          .where((product) => product.refId == request.storeProductId)
+          .firstOrNull;
 
-      return response.isNotEmpty ? response.first.toProto() : null;
+      return hiveProduct;
     } on Exception catch (e) {
       _logger.severe('getProduct Error: $e');
 
@@ -124,31 +124,20 @@ class LocalProductsRepository {
   /// Updates a business product.
   Future<bool> updateProduct(UpdateStoreProductRequest request) async {
     try {
-      final storeProductObx = await isarBox.storeProductIsars
-          .filter()
-          .refIdEqualTo(request.storeProduct.refId)
-          .findAll();
+      final storeProduct = hiveDb.storeProducts.values
+          .where((product) => product.refId == request.storeProduct.refId)
+          .firstOrNull;
 
-      if (storeProductObx.isEmpty) {
+      if (storeProduct == null) {
         return false;
       }
 
-      storeProductObx.first
-        ..price = request.storeProduct.price
-        ..minStockThreshold = request.storeProduct.minStockThreshold
-        ..imagesLinksIds = request.storeProduct.imagesLinksIds
-        ..globalProductId = request.storeProduct.globalProductId
-        ..storeId = request.storeProduct.storeId
-        ..inboundDate = request.storeProduct.inboundDate.toDateTime()
-        ..expirationDate = request.storeProduct.expirationDate.toDateTime()
-        ..createdAt = request.storeProduct.createdAt.toDateTime()
-        ..updatedAt = request.storeProduct.updatedAt.toDateTime()
-        ..stockQuantity = request.storeProduct.stockQuantity
-        ..supplierId = request.storeProduct.supplierId;
+      request.storeProduct..refId = storeProduct.refId;
 
-      await isarBox.writeTxn(() async {
-        await isarBox.storeProductIsars.put(storeProductObx.first);
-      });
+      await hiveDb.storeProducts.put(
+        request.storeProduct.refId,
+        request.storeProduct,
+      );
 
       return true;
     } on Exception catch (e) {
@@ -161,18 +150,8 @@ class LocalProductsRepository {
   /// Deletes a business product.
   Future<bool> deleteProduct(DeleteStoreProductRequest request) async {
     try {
-      final storeProductObx = await isarBox.storeProductIsars
-          .filter()
-          .refIdEqualTo(request.storeProductId)
-          .findAll();
-
-      if (storeProductObx.isEmpty) {
-        return false;
-      }
-
-      await isarBox.writeTxn(() async {
-        await isarBox.storeProductIsars.delete(storeProductObx.first.id);
-      });
+      final box = hiveDb.storeProducts;
+      await box.delete(request.storeProductId);
 
       return true;
     } on Exception catch (e) {
@@ -187,17 +166,29 @@ class LocalProductsRepository {
     StreamStoreProductsRequest request,
   ) {
     try {
-      return isarBox.storeProductIsars
-          .filter()
-          .storeIdEqualTo(request.storeId)
-          .watch()
-          .map((response) => response.map((e) => e.toProto()).toList())
-          .handleError((error) {
-            _logger.severe('streamStoreProducts Error: $error');
-          });
+      final listenable = hiveDb.storeProducts.listenable();
+
+      return Stream<List<StoreProduct>>.multi((controller) {
+        void listener() {
+          final products = hiveDb.storeProducts.values
+              .where((p) => p.storeId == request.storeId)
+              .toList();
+
+          controller.add(products);
+        }
+
+        listener();
+
+        listenable.addListener(listener);
+
+        controller.onCancel = () {
+          listenable.removeListener(listener);
+        };
+      }).handleError((error) {
+        _logger.severe('streamStoreProducts Error: $error');
+      });
     } on Exception catch (e) {
       _logger.severe('streamStoreProducts Error: $e');
-      // Return empty stream on error
 
       return const Stream.empty();
     }

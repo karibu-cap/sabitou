@@ -51,7 +51,7 @@ class UsersList extends StatelessWidget {
             return LayoutBuilder(
               builder: (context, constraints) {
                 return CustomGrid(
-                  minItemWidth: 500,
+                  minItemWidth: 260,
                   mainAxisExtent: 500,
                   crossSpacing: 20,
                   children: storeMembers

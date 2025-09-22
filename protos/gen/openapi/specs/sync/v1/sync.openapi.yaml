@@ -1,0 +1,1058 @@
+openapi: 3.1.0
+info:
+  title: sync.v1
+paths:
+  /sync.v1.SyncService/GetSyncOperationsStatus:
+    post:
+      tags:
+        - sync.v1.SyncService
+      summary: Get status of sync operations
+      description: Get status of sync operations
+      operationId: sync.v1.SyncService.GetSyncOperationsStatus
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/sync.v1.GetSyncOperationsStatusRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/sync.v1.GetSyncOperationsStatusResponse'
+  /sync.v1.SyncService/RetrySyncOperations:
+    post:
+      tags:
+        - sync.v1.SyncService
+      summary: Retry failed sync operations
+      description: Retry failed sync operations
+      operationId: sync.v1.SyncService.RetrySyncOperations
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/sync.v1.RetrySyncOperationsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/sync.v1.RetrySyncOperationsResponse'
+  /sync.v1.SyncService/StreamSyncOperations: {}
+  /sync.v1.SyncService/SubmitSyncOperations:
+    post:
+      tags:
+        - sync.v1.SyncService
+      summary: Submit sync operations for processing
+      description: Submit sync operations for processing
+      operationId: sync.v1.SyncService.SubmitSyncOperations
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/sync.v1.SubmitSyncOperationsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/sync.v1.SubmitSyncOperationsResponse'
+components:
+  schemas:
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+        - 1
+      description: Define the version of the Connect protocol
+      const: 1
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+            - not_found
+          enum:
+            - canceled
+            - unknown
+            - invalid_argument
+            - deadline_exceeded
+            - not_found
+            - already_exists
+            - permission_denied
+            - resource_exhausted
+            - failed_precondition
+            - aborted
+            - out_of_range
+            - unimplemented
+            - internal
+            - unavailable
+            - data_loss
+            - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/connect.error_details.Any'
+          description: A list of messages that carry the error details. There is no limit on the number of messages.
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+    connect.error_details.Any:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
+        value:
+          type: string
+          format: binary
+          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
+        debug:
+          oneOf:
+            - type: object
+              title: Any
+              additionalProperties: true
+              description: Detailed error information.
+          discriminator:
+            propertyName: type
+          title: Debug
+          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
+    google.protobuf.Timestamp:
+      type: string
+      examples:
+        - "2023-01-15T01:30:15.01Z"
+        - "2024-12-25T12:00:00Z"
+      format: date-time
+      description: |-
+        A Timestamp represents a point in time independent of any time zone or local
+         calendar, encoded as a count of seconds and fractions of seconds at
+         nanosecond resolution. The count is relative to an epoch at UTC midnight on
+         January 1, 1970, in the proleptic Gregorian calendar which extends the
+         Gregorian calendar backwards to year one.
+
+         All minutes are 60 seconds long. Leap seconds are "smeared" so that no leap
+         second table is needed for interpretation, using a [24-hour linear
+         smear](https://developers.google.com/time/smear).
+
+         The range is from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z. By
+         restricting to that range, we ensure that we can convert to and from [RFC
+         3339](https://www.ietf.org/rfc/rfc3339.txt) date strings.
+
+         # Examples
+
+         Example 1: Compute Timestamp from POSIX `time()`.
+
+             Timestamp timestamp;
+             timestamp.set_seconds(time(NULL));
+             timestamp.set_nanos(0);
+
+         Example 2: Compute Timestamp from POSIX `gettimeofday()`.
+
+             struct timeval tv;
+             gettimeofday(&tv, NULL);
+
+             Timestamp timestamp;
+             timestamp.set_seconds(tv.tv_sec);
+             timestamp.set_nanos(tv.tv_usec * 1000);
+
+         Example 3: Compute Timestamp from Win32 `GetSystemTimeAsFileTime()`.
+
+             FILETIME ft;
+             GetSystemTimeAsFileTime(&ft);
+             UINT64 ticks = (((UINT64)ft.dwHighDateTime) << 32) | ft.dwLowDateTime;
+
+             // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z
+             // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z.
+             Timestamp timestamp;
+             timestamp.set_seconds((INT64) ((ticks / 10000000) - 11644473600LL));
+             timestamp.set_nanos((INT32) ((ticks % 10000000) * 100));
+
+         Example 4: Compute Timestamp from Java `System.currentTimeMillis()`.
+
+             long millis = System.currentTimeMillis();
+
+             Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)
+                 .setNanos((int) ((millis % 1000) * 1000000)).build();
+
+         Example 5: Compute Timestamp from Java `Instant.now()`.
+
+             Instant now = Instant.now();
+
+             Timestamp timestamp =
+                 Timestamp.newBuilder().setSeconds(now.getEpochSecond())
+                     .setNanos(now.getNano()).build();
+
+         Example 6: Compute Timestamp from current time in Python.
+
+             timestamp = Timestamp()
+             timestamp.GetCurrentTime()
+
+         # JSON Mapping
+
+         In JSON format, the Timestamp type is encoded as a string in the
+         [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the
+         format is "{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z"
+         where {year} is always expressed using four digits while {month}, {day},
+         {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional
+         seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),
+         are optional. The "Z" suffix indicates the timezone ("UTC"); the timezone
+         is required. A proto3 JSON serializer should always use UTC (as indicated by
+         "Z") when printing the Timestamp type and a proto3 JSON parser should be
+         able to accept both UTC and other timezones (as indicated by an offset).
+
+         For example, "2017-01-15T01:30:15.01Z" encodes 15.01 seconds past
+         01:30 UTC on January 15, 2017.
+
+         In JavaScript, one can convert a Date object to this format using the
+         standard
+         [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)
+         method. In Python, a standard `datetime.datetime` object can be converted
+         to this format using
+         [`strftime`](https://docs.python.org/2/library/time.html#time.strftime) with
+         the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use
+         the Joda Time's [`ISODateTimeFormat.dateTime()`](
+         http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()
+         ) to obtain a formatter capable of generating timestamps in this format.
+    inventory.v1.GlobalProduct:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+          description: The unique identifier of the product.
+          nullable: true
+        name:
+          type: string
+          title: name
+          description: The name of the product.
+        description:
+          type: string
+          title: description
+          description: The description of the product.
+          nullable: true
+        barCodeValue:
+          type: string
+          title: bar_code_value
+          description: The bar code value of the product.
+          nullable: true
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/inventory.v1.ProductCategory'
+          title: categories
+          description: The product categories of the product.
+        imagesLinksIds:
+          type: array
+          items:
+            type: string
+          title: images_links_ids
+          description: The list of image related to the product.
+      title: GlobalProduct
+      additionalProperties: false
+    inventory.v1.ProductCategory:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+          description: The unique identifier of the product category.
+          nullable: true
+        name:
+          type: string
+          title: name
+          description: The name of the product category.
+      title: ProductCategory
+      additionalProperties: false
+    inventory.v1.StoreProduct:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+          description: The unique identifier of the business product.
+          nullable: true
+        storeId:
+          type: string
+          title: store_id
+          description: The unique identifier of the store.
+        globalProductId:
+          type: string
+          title: global_product_id
+          description: The unique identifier of the global product.
+        price:
+          type: integer
+          title: price
+          format: int32
+          description: |-
+            The price in XAF of the product.
+             The currency is determined by the business.
+          nullable: true
+        imagesLinksIds:
+          type: array
+          items:
+            type: string
+          title: images_links_ids
+          description: The media ids of the images of the product.
+        stockQuantity:
+          type: integer
+          title: stock_quantity
+          format: int32
+          description: The stock quantity of the product.
+          nullable: true
+        minStockThreshold:
+          type: integer
+          title: min_stock_threshold
+          format: int32
+          description: The minimum stock threshold of the product.
+        expirationDate:
+          title: expiration_date
+          description: The expiration date of the product.
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        inboundDate:
+          title: inbound_date
+          description: The inbound date.
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        createdAt:
+          title: created_at
+          description: The creation date of the product.
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        updatedAt:
+          title: updated_at
+          description: The last update date of the product.
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        supplierId:
+          type: string
+          title: supplier_id
+          description: The supplier.
+          nullable: true
+      title: StoreProduct
+      additionalProperties: false
+    order.v1.Order:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+          description: The unique identifier of the order.
+          nullable: true
+        fromId:
+          type: string
+          title: from_id
+          description: The id of the client or the supplier if available.
+          nullable: true
+        isClientOrder:
+          type: string
+          title: is_client_order
+          description: Whether the order is from the client or the supplier.
+        orderItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/order.v1.OrderItem'
+          title: order_items
+          description: The list of items in the order.
+        totalPrice:
+          type: integer
+          title: total_price
+          format: int32
+          description: The total price of the order in XAF.
+        status:
+          title: status
+          description: The status of the order.
+          $ref: '#/components/schemas/order.v1.OrderStatus'
+        statusHistory:
+          type: array
+          items:
+            $ref: '#/components/schemas/order.v1.StatusHistory'
+          title: status_history
+          description: The status history.
+        createdAt:
+          title: created_at
+          description: The date and time the order was created.
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        updatedAt:
+          title: updated_at
+          description: The date and time the order was last updated.
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        storeId:
+          type: string
+          title: store_id
+          format: uuid
+          description: The unique identifier of the store associated with the order.
+        initiatedBy:
+          type: string
+          title: initiated_by
+          minLength: 3
+          description: The unique identifier of the user who initiated the order.
+      title: Order
+      required:
+        - storeId
+        - initiatedBy
+      additionalProperties: false
+    order.v1.OrderItem:
+      type: object
+      properties:
+        storeProductId:
+          type: string
+          title: store_product_id
+          description: The unique identifier of the store product.
+        quantity:
+          type: integer
+          title: quantity
+          format: int32
+          description: The quantity of the product.
+        unitPrice:
+          type: integer
+          title: unit_price
+          format: int32
+          description: |-
+            The unit price in XAF of the product.
+             WARN: This value is stored because the unit price can change over time.
+        itemName:
+          type: string
+          title: item_name
+          description: The name of the product.
+      title: OrderItem
+      additionalProperties: false
+    order.v1.OrderStatus:
+      type: string
+      title: OrderStatus
+      enum:
+        - ORDER_STATUS_UNSPECIFIED
+        - ORDER_STATUS_PENDING
+        - ORDER_STATUS_PROCESSING
+        - ORDER_STATUS_COMPLETED
+        - ORDER_STATUS_CANCELLED
+    order.v1.StatusHistory:
+      type: object
+      properties:
+        status:
+          title: status
+          $ref: '#/components/schemas/order.v1.OrderStatus'
+        updatedBy:
+          type: string
+          title: updated_by
+        updatedAt:
+          title: updated_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: StatusHistory
+      additionalProperties: false
+    sync.v1.GetSyncOperationsStatusRequest:
+      type: object
+      properties:
+        storeId:
+          type: string
+          title: store_id
+          description: Store ID
+          nullable: true
+        businessId:
+          type: string
+          title: business_id
+          description: Business ID
+          nullable: true
+        userId:
+          type: string
+          title: user_id
+          description: User ID
+          nullable: true
+        batchId:
+          type: string
+          title: batch_id
+          description: Batch ID to check status for
+          nullable: true
+        operationIds:
+          type: array
+          items:
+            type: string
+          title: operation_ids
+          description: List of operation IDs to check
+        statusFilter:
+          type: array
+          items:
+            $ref: '#/components/schemas/sync.v1.SyncOperationStatus'
+          title: status_filter
+          description: Filter by status
+        entityTypeFilter:
+          type: array
+          items:
+            $ref: '#/components/schemas/sync.v1.SyncEntityType'
+          title: entity_type_filter
+          description: Filter by entity type
+        limit:
+          type: integer
+          title: limit
+          format: int32
+          description: Maximum number of results
+          nullable: true
+        offset:
+          type: integer
+          title: offset
+          format: int32
+          description: Offset for pagination
+          nullable: true
+      title: GetSyncOperationsStatusRequest
+      additionalProperties: false
+      description: Request to get sync operations status
+    sync.v1.GetSyncOperationsStatusResponse:
+      type: object
+      properties:
+        operations:
+          type: array
+          items:
+            $ref: '#/components/schemas/sync.v1.SyncOperation'
+          title: operations
+          description: List of operations with their current status
+        totalCount:
+          type: integer
+          title: total_count
+          format: int32
+          description: Total number of operations matching the filter
+        summary:
+          title: summary
+          description: Summary statistics
+          $ref: '#/components/schemas/sync.v1.SyncOperationsSummary'
+      title: GetSyncOperationsStatusResponse
+      additionalProperties: false
+      description: Response with sync operations status
+    sync.v1.RetrySyncOperationsRequest:
+      type: object
+      properties:
+        storeId:
+          type: string
+          title: store_id
+          description: Store ID
+          nullable: true
+        businessId:
+          type: string
+          title: business_id
+          description: Business ID
+          nullable: true
+        userId:
+          type: string
+          title: user_id
+          description: User ID
+          nullable: true
+        operationIds:
+          type: array
+          items:
+            type: string
+          title: operation_ids
+          description: Specific operation IDs to retry
+        batchId:
+          type: string
+          title: batch_id
+          description: Batch ID to retry all operations in batch
+          nullable: true
+        retryAllFailed:
+          type: boolean
+          title: retry_all_failed
+          description: Retry all failed operations (if no specific IDs provided)
+          nullable: true
+      title: RetrySyncOperationsRequest
+      additionalProperties: false
+      description: Request to retry failed sync operations
+    sync.v1.RetrySyncOperationsResponse:
+      type: object
+      properties:
+        operationsQueued:
+          type: integer
+          title: operations_queued
+          format: int32
+          description: Number of operations queued for retry
+        queuedOperationIds:
+          type: array
+          items:
+            type: string
+          title: queued_operation_ids
+          description: List of operation IDs that were queued for retry
+        failedToQueueIds:
+          type: array
+          items:
+            type: string
+          title: failed_to_queue_ids
+          description: List of operation IDs that could not be retried
+      title: RetrySyncOperationsResponse
+      additionalProperties: false
+      description: Response to retry sync operations
+    sync.v1.StreamSyncOperationsRequest:
+      type: object
+      properties:
+        storeId:
+          type: string
+          title: store_id
+          description: Store ID
+          nullable: true
+        businessId:
+          type: string
+          title: business_id
+          description: Business ID
+          nullable: true
+        userId:
+          type: string
+          title: user_id
+          description: User ID
+          nullable: true
+        entityTypeFilter:
+          type: array
+          items:
+            $ref: '#/components/schemas/sync.v1.SyncEntityType'
+          title: entity_type_filter
+          description: Filter by entity types
+        operationTypeFilter:
+          type: array
+          items:
+            $ref: '#/components/schemas/sync.v1.SyncOperationType'
+          title: operation_type_filter
+          description: Filter by operation types
+      title: StreamSyncOperationsRequest
+      additionalProperties: false
+      description: Request to stream sync operations in real-time
+    sync.v1.StreamSyncOperationsResponse:
+      type: object
+      properties:
+        operation:
+          title: operation
+          description: The sync operation that was updated
+          $ref: '#/components/schemas/sync.v1.SyncOperation'
+        updateType:
+          type: string
+          title: update_type
+          description: Type of update (created, updated, deleted)
+        updateTimestamp:
+          title: update_timestamp
+          description: Timestamp of the update
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: StreamSyncOperationsResponse
+      additionalProperties: false
+      description: Response for streaming sync operations
+    sync.v1.SubmitSyncOperationsRequest:
+      type: object
+      properties:
+        storeId:
+          type: string
+          title: store_id
+          description: Store ID
+          nullable: true
+        businessId:
+          type: string
+          title: business_id
+          description: Business ID
+          nullable: true
+        userId:
+          type: string
+          title: user_id
+          description: User ID
+          nullable: true
+        operations:
+          type: array
+          items:
+            $ref: '#/components/schemas/sync.v1.SyncOperation'
+          title: operations
+          minItems: 1
+          description: List of operations to submit
+        deviceId:
+          type: string
+          title: device_id
+          description: Client device identifier
+          nullable: true
+        appVersion:
+          type: string
+          title: app_version
+          description: Client application version
+          nullable: true
+      title: SubmitSyncOperationsRequest
+      additionalProperties: false
+      description: Request to submit sync operations
+    sync.v1.SubmitSyncOperationsResponse:
+      type: object
+      properties:
+        batchId:
+          type: string
+          title: batch_id
+          description: Batch ID for submitted operations
+        operationResults:
+          type: array
+          items:
+            $ref: '#/components/schemas/sync.v1.SyncOperationResult'
+          title: operation_results
+          description: List of operation results
+        batchStatus:
+          title: batch_status
+          description: Overall batch status
+          $ref: '#/components/schemas/sync.v1.SyncOperationStatus'
+        processedAt:
+          title: processed_at
+          description: Timestamp when batch was processed
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: SubmitSyncOperationsResponse
+      additionalProperties: false
+      description: Response to submit sync operations
+    sync.v1.SyncEntityType:
+      type: string
+      title: SyncEntityType
+      enum:
+        - SYNC_ENTITY_TYPE_UNSPECIFIED
+        - SYNC_ENTITY_TYPE_ORDER
+      description: Enum for sync entity types
+    sync.v1.SyncOperation:
+      type: object
+      allOf:
+        - properties:
+            refId:
+              type: string
+              title: ref_id
+              minLength: 1
+              description: Unique identifier for the operation
+            operationType:
+              title: operation_type
+              description: Type of operation (create, update, delete)
+              $ref: '#/components/schemas/sync.v1.SyncOperationType'
+            entityType:
+              title: entity_type
+              description: Type of entity being synchronized
+              $ref: '#/components/schemas/sync.v1.SyncEntityType'
+            entityId:
+              type: string
+              title: entity_id
+              minLength: 1
+              description: Unique identifier of the entity
+            storeId:
+              type: string
+              title: store_id
+              description: Store ID (if applicable)
+              nullable: true
+            businessId:
+              type: string
+              title: business_id
+              description: Business ID (if applicable)
+              nullable: true
+            userId:
+              type: string
+              title: user_id
+              description: User ID who performed the operation
+              nullable: true
+            createdAt:
+              title: created_at
+              description: Timestamp when operation was created
+              $ref: '#/components/schemas/google.protobuf.Timestamp'
+            updatedAt:
+              title: updated_at
+              description: Timestamp when operation was last updated
+              $ref: '#/components/schemas/google.protobuf.Timestamp'
+            status:
+              title: status
+              description: Current status of the operation
+              $ref: '#/components/schemas/sync.v1.SyncOperationStatus'
+            retryCount:
+              type: integer
+              title: retry_count
+              format: int32
+              description: Number of retry attempts
+            maxRetries:
+              type: integer
+              title: max_retries
+              format: int32
+              description: Maximum number of retries allowed
+            nextRetryAt:
+              title: next_retry_at
+              description: Next retry timestamp (if applicable)
+              nullable: true
+              $ref: '#/components/schemas/google.protobuf.Timestamp'
+            errorMessage:
+              type: string
+              title: error_message
+              description: Error message (if operation failed)
+              nullable: true
+            metadata:
+              type: object
+              title: metadata
+              additionalProperties:
+                type: string
+                title: value
+              description: Additional metadata
+        - oneOf:
+            - properties:
+                globalProductData:
+                  title: global_product_data
+                  description: Global product data
+                  $ref: '#/components/schemas/inventory.v1.GlobalProduct'
+              title: global_product_data
+              required:
+                - globalProductData
+            - properties:
+                jsonData:
+                  type: string
+                  title: json_data
+                  description: Generic JSON data for other entities
+              title: json_data
+              required:
+                - jsonData
+            - properties:
+                orderData:
+                  title: order_data
+                  description: Order data
+                  $ref: '#/components/schemas/order.v1.Order'
+              title: order_data
+              required:
+                - orderData
+            - properties:
+                productCategoryData:
+                  title: product_category_data
+                  description: Product category data
+                  $ref: '#/components/schemas/inventory.v1.ProductCategory'
+              title: product_category_data
+              required:
+                - productCategoryData
+            - properties:
+                storeProductData:
+                  title: store_product_data
+                  description: Store product data
+                  $ref: '#/components/schemas/inventory.v1.StoreProduct'
+              title: store_product_data
+              required:
+                - storeProductData
+      title: SyncOperation
+      additionalProperties: false
+      description: A single sync operation
+    sync.v1.SyncOperation.MetadataEntry:
+      type: object
+      properties:
+        key:
+          type: string
+          title: key
+        value:
+          type: string
+          title: value
+      title: MetadataEntry
+      additionalProperties: false
+    sync.v1.SyncOperationBatch:
+      type: object
+      properties:
+        batchId:
+          type: string
+          title: batch_id
+          minLength: 1
+          description: Unique identifier for the batch
+        operations:
+          type: array
+          items:
+            $ref: '#/components/schemas/sync.v1.SyncOperation'
+          title: operations
+          description: List of operations in this batch
+        storeId:
+          type: string
+          title: store_id
+          description: Store ID for all operations in this batch
+          nullable: true
+        businessId:
+          type: string
+          title: business_id
+          description: Business ID for all operations in this batch
+          nullable: true
+        userId:
+          type: string
+          title: user_id
+          description: User ID who created this batch
+          nullable: true
+        createdAt:
+          title: created_at
+          description: Timestamp when batch was created
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        totalOperations:
+          type: integer
+          title: total_operations
+          format: int32
+          description: Total number of operations in batch
+        successfulOperations:
+          type: integer
+          title: successful_operations
+          format: int32
+          description: Number of successful operations
+        failedOperations:
+          type: integer
+          title: failed_operations
+          format: int32
+          description: Number of failed operations
+        metadata:
+          type: object
+          title: metadata
+          additionalProperties:
+            type: string
+            title: value
+          description: Batch metadata
+      title: SyncOperationBatch
+      additionalProperties: false
+      description: Batch of sync operations
+    sync.v1.SyncOperationBatch.MetadataEntry:
+      type: object
+      properties:
+        key:
+          type: string
+          title: key
+        value:
+          type: string
+          title: value
+      title: MetadataEntry
+      additionalProperties: false
+    sync.v1.SyncOperationResult:
+      type: object
+      properties:
+        operationId:
+          type: string
+          title: operation_id
+          description: Operation ID
+        status:
+          title: status
+          description: Result status
+          $ref: '#/components/schemas/sync.v1.SyncOperationStatus'
+        errorMessage:
+          type: string
+          title: error_message
+          description: Error message (if failed)
+          nullable: true
+        serverEntityId:
+          type: string
+          title: server_entity_id
+          description: Server-side entity ID (if different from client)
+          nullable: true
+        processedAt:
+          title: processed_at
+          description: Timestamp when operation was processed
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: SyncOperationResult
+      additionalProperties: false
+      description: Result of a single sync operation
+    sync.v1.SyncOperationStatus:
+      type: string
+      title: SyncOperationStatus
+      enum:
+        - SYNC_OPERATION_STATUS_UNSPECIFIED
+        - SYNC_OPERATION_STATUS_PENDING
+        - SYNC_OPERATION_STATUS_IN_PROGRESS
+        - SYNC_OPERATION_STATUS_SUCCESS
+        - SYNC_OPERATION_STATUS_FAILED
+        - SYNC_OPERATION_STATUS_RETRYING
+        - SYNC_OPERATION_STATUS_ABANDONED
+      description: Enum for sync operation status
+    sync.v1.SyncOperationType:
+      type: string
+      title: SyncOperationType
+      enum:
+        - SYNC_OPERATION_TYPE_UNSPECIFIED
+        - SYNC_OPERATION_TYPE_CREATE
+        - SYNC_OPERATION_TYPE_UPDATE
+        - SYNC_OPERATION_TYPE_DELETE
+      description: Enum for sync operation types
+    sync.v1.SyncOperationsSummary:
+      type: object
+      properties:
+        totalOperations:
+          type: integer
+          title: total_operations
+          format: int32
+          description: Total operations
+        pendingOperations:
+          type: integer
+          title: pending_operations
+          format: int32
+          description: Pending operations
+        inProgressOperations:
+          type: integer
+          title: in_progress_operations
+          format: int32
+          description: In progress operations
+        successfulOperations:
+          type: integer
+          title: successful_operations
+          format: int32
+          description: Successful operations
+        failedOperations:
+          type: integer
+          title: failed_operations
+          format: int32
+          description: Failed operations
+        retryingOperations:
+          type: integer
+          title: retrying_operations
+          format: int32
+          description: Retrying operations
+        abandonedOperations:
+          type: integer
+          title: abandoned_operations
+          format: int32
+          description: Abandoned operations
+      title: SyncOperationsSummary
+      additionalProperties: false
+      description: Summary of sync operations
+security: []
+tags:
+  - name: sync.v1.SyncService
+    description: Sync service definition

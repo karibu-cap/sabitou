@@ -14,4 +14,5 @@ export 'src/order/v1/order.connect.client.dart';
 export 'src/order/v1/receipt.connect.client.dart';
 export 'src/store/v1/store.connect.client.dart';
 export 'src/store/v1/supplier.connect.client.dart';
+export 'src/sync/v1/sync.connect.client.dart';
 export 'src/transaction/v1/transactions.connect.client.dart';

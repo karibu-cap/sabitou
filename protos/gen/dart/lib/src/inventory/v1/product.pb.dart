@@ -1595,6 +1595,124 @@ class StreamStoreProductsResponse extends $pb.GeneratedMessage {
   $pb.PbList<StoreProduct> get products => $_getList(0);
 }
 
+class StreamGlobalProductsRequest extends $pb.GeneratedMessage {
+  factory StreamGlobalProductsRequest({
+    $core.String? globalProductId,
+  }) {
+    final result = create();
+    if (globalProductId != null) result.globalProductId = globalProductId;
+    return result;
+  }
+
+  StreamGlobalProductsRequest._();
+
+  factory StreamGlobalProductsRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory StreamGlobalProductsRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'StreamGlobalProductsRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'globalProductId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  StreamGlobalProductsRequest clone() =>
+      StreamGlobalProductsRequest()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  StreamGlobalProductsRequest copyWith(
+          void Function(StreamGlobalProductsRequest) updates) =>
+      super.copyWith(
+              (message) => updates(message as StreamGlobalProductsRequest))
+          as StreamGlobalProductsRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static StreamGlobalProductsRequest create() =>
+      StreamGlobalProductsRequest._();
+  @$core.override
+  StreamGlobalProductsRequest createEmptyInstance() => create();
+  static $pb.PbList<StreamGlobalProductsRequest> createRepeated() =>
+      $pb.PbList<StreamGlobalProductsRequest>();
+  @$core.pragma('dart2js:noInline')
+  static StreamGlobalProductsRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<StreamGlobalProductsRequest>(create);
+  static StreamGlobalProductsRequest? _defaultInstance;
+
+  /// Optional filter by global product ID.
+  @$pb.TagNumber(1)
+  $core.String get globalProductId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set globalProductId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasGlobalProductId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearGlobalProductId() => $_clearField(1);
+}
+
+class StreamGlobalProductsResponse extends $pb.GeneratedMessage {
+  factory StreamGlobalProductsResponse({
+    $core.Iterable<GlobalProduct>? products,
+  }) {
+    final result = create();
+    if (products != null) result.products.addAll(products);
+    return result;
+  }
+
+  StreamGlobalProductsResponse._();
+
+  factory StreamGlobalProductsResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory StreamGlobalProductsResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'StreamGlobalProductsResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'),
+      createEmptyInstance: create)
+    ..pc<GlobalProduct>(
+        1, _omitFieldNames ? '' : 'products', $pb.PbFieldType.PM,
+        subBuilder: GlobalProduct.create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  StreamGlobalProductsResponse clone() =>
+      StreamGlobalProductsResponse()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  StreamGlobalProductsResponse copyWith(
+          void Function(StreamGlobalProductsResponse) updates) =>
+      super.copyWith(
+              (message) => updates(message as StreamGlobalProductsResponse))
+          as StreamGlobalProductsResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static StreamGlobalProductsResponse create() =>
+      StreamGlobalProductsResponse._();
+  @$core.override
+  StreamGlobalProductsResponse createEmptyInstance() => create();
+  static $pb.PbList<StreamGlobalProductsResponse> createRepeated() =>
+      $pb.PbList<StreamGlobalProductsResponse>();
+  @$core.pragma('dart2js:noInline')
+  static StreamGlobalProductsResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<StreamGlobalProductsResponse>(create);
+  static StreamGlobalProductsResponse? _defaultInstance;
+
+  /// The store products for the specified store.
+  @$pb.TagNumber(1)
+  $pb.PbList<GlobalProduct> get products => $_getList(0);
+}
+
 class ProductServiceApi {
   final $pb.RpcClient _client;
 
@@ -1648,6 +1766,12 @@ class ProductServiceApi {
           $pb.ClientContext? ctx, StreamStoreProductsRequest request) =>
       _client.invoke<StreamStoreProductsResponse>(ctx, 'ProductService',
           'StreamStoreProducts', request, StreamStoreProductsResponse());
+
+  /// Streams all global products for real-time updates.
+  $async.Future<StreamGlobalProductsResponse> streamGlobalProducts(
+          $pb.ClientContext? ctx, StreamGlobalProductsRequest request) =>
+      _client.invoke<StreamGlobalProductsResponse>(ctx, 'ProductService',
+          'StreamGlobalProducts', request, StreamGlobalProductsResponse());
 }
 
 const $core.bool _omitFieldNames =

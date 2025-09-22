@@ -57,6 +57,9 @@ const (
 	// ProductServiceStreamStoreProductsProcedure is the fully-qualified name of the ProductService's
 	// StreamStoreProducts RPC.
 	ProductServiceStreamStoreProductsProcedure = "/inventory.v1.ProductService/StreamStoreProducts"
+	// ProductServiceStreamGlobalProductsProcedure is the fully-qualified name of the ProductService's
+	// StreamGlobalProducts RPC.
+	ProductServiceStreamGlobalProductsProcedure = "/inventory.v1.ProductService/StreamGlobalProducts"
 )
 
 // ProductServiceClient is a client for the inventory.v1.ProductService service.
@@ -78,6 +81,8 @@ type ProductServiceClient interface {
 	FindStoreProducts(context.Context, *connect.Request[v1.FindStoreProductsRequest]) (*connect.Response[v1.FindStoreProductsResponse], error)
 	// Streams all products for a store for real-time updates.
 	StreamStoreProducts(context.Context, *connect.Request[v1.StreamStoreProductsRequest]) (*connect.ServerStreamForClient[v1.StreamStoreProductsResponse], error)
+	// Streams all global products for real-time updates.
+	StreamGlobalProducts(context.Context, *connect.Request[v1.StreamGlobalProductsRequest]) (*connect.ServerStreamForClient[v1.StreamGlobalProductsResponse], error)
 }
 
 // NewProductServiceClient constructs a client for the inventory.v1.ProductService service. By
@@ -139,19 +144,26 @@ func NewProductServiceClient(httpClient connect.HTTPClient, baseURL string, opts
 			connect.WithSchema(productServiceMethods.ByName("StreamStoreProducts")),
 			connect.WithClientOptions(opts...),
 		),
+		streamGlobalProducts: connect.NewClient[v1.StreamGlobalProductsRequest, v1.StreamGlobalProductsResponse](
+			httpClient,
+			baseURL+ProductServiceStreamGlobalProductsProcedure,
+			connect.WithSchema(productServiceMethods.ByName("StreamGlobalProducts")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // productServiceClient implements ProductServiceClient.
 type productServiceClient struct {
-	findGlobalProducts  *connect.Client[v1.FindGlobalProductsRequest, v1.FindGlobalProductsResponse]
-	findCategory        *connect.Client[v1.FindCategoryRequest, v1.FindCategoryResponse]
-	addProduct          *connect.Client[v1.AddStoreProductRequest, v1.AddStoreProductResponse]
-	getProduct          *connect.Client[v1.GetStoreProductRequest, v1.GetStoreProductResponse]
-	updateProduct       *connect.Client[v1.UpdateStoreProductRequest, v1.UpdateStoreProductResponse]
-	deleteProduct       *connect.Client[v1.DeleteStoreProductRequest, v1.DeleteStoreProductResponse]
-	findStoreProducts   *connect.Client[v1.FindStoreProductsRequest, v1.FindStoreProductsResponse]
-	streamStoreProducts *connect.Client[v1.StreamStoreProductsRequest, v1.StreamStoreProductsResponse]
+	findGlobalProducts   *connect.Client[v1.FindGlobalProductsRequest, v1.FindGlobalProductsResponse]
+	findCategory         *connect.Client[v1.FindCategoryRequest, v1.FindCategoryResponse]
+	addProduct           *connect.Client[v1.AddStoreProductRequest, v1.AddStoreProductResponse]
+	getProduct           *connect.Client[v1.GetStoreProductRequest, v1.GetStoreProductResponse]
+	updateProduct        *connect.Client[v1.UpdateStoreProductRequest, v1.UpdateStoreProductResponse]
+	deleteProduct        *connect.Client[v1.DeleteStoreProductRequest, v1.DeleteStoreProductResponse]
+	findStoreProducts    *connect.Client[v1.FindStoreProductsRequest, v1.FindStoreProductsResponse]
+	streamStoreProducts  *connect.Client[v1.StreamStoreProductsRequest, v1.StreamStoreProductsResponse]
+	streamGlobalProducts *connect.Client[v1.StreamGlobalProductsRequest, v1.StreamGlobalProductsResponse]
 }
 
 // FindGlobalProducts calls inventory.v1.ProductService.FindGlobalProducts.
@@ -194,6 +206,11 @@ func (c *productServiceClient) StreamStoreProducts(ctx context.Context, req *con
 	return c.streamStoreProducts.CallServerStream(ctx, req)
 }
 
+// StreamGlobalProducts calls inventory.v1.ProductService.StreamGlobalProducts.
+func (c *productServiceClient) StreamGlobalProducts(ctx context.Context, req *connect.Request[v1.StreamGlobalProductsRequest]) (*connect.ServerStreamForClient[v1.StreamGlobalProductsResponse], error) {
+	return c.streamGlobalProducts.CallServerStream(ctx, req)
+}
+
 // ProductServiceHandler is an implementation of the inventory.v1.ProductService service.
 type ProductServiceHandler interface {
 	// Finds products by name.
@@ -213,6 +230,8 @@ type ProductServiceHandler interface {
 	FindStoreProducts(context.Context, *connect.Request[v1.FindStoreProductsRequest]) (*connect.Response[v1.FindStoreProductsResponse], error)
 	// Streams all products for a store for real-time updates.
 	StreamStoreProducts(context.Context, *connect.Request[v1.StreamStoreProductsRequest], *connect.ServerStream[v1.StreamStoreProductsResponse]) error
+	// Streams all global products for real-time updates.
+	StreamGlobalProducts(context.Context, *connect.Request[v1.StreamGlobalProductsRequest], *connect.ServerStream[v1.StreamGlobalProductsResponse]) error
 }
 
 // NewProductServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -270,6 +289,12 @@ func NewProductServiceHandler(svc ProductServiceHandler, opts ...connect.Handler
 		connect.WithSchema(productServiceMethods.ByName("StreamStoreProducts")),
 		connect.WithHandlerOptions(opts...),
 	)
+	productServiceStreamGlobalProductsHandler := connect.NewServerStreamHandler(
+		ProductServiceStreamGlobalProductsProcedure,
+		svc.StreamGlobalProducts,
+		connect.WithSchema(productServiceMethods.ByName("StreamGlobalProducts")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/inventory.v1.ProductService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case ProductServiceFindGlobalProductsProcedure:
@@ -288,6 +313,8 @@ func NewProductServiceHandler(svc ProductServiceHandler, opts ...connect.Handler
 			productServiceFindStoreProductsHandler.ServeHTTP(w, r)
 		case ProductServiceStreamStoreProductsProcedure:
 			productServiceStreamStoreProductsHandler.ServeHTTP(w, r)
+		case ProductServiceStreamGlobalProductsProcedure:
+			productServiceStreamGlobalProductsHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -327,4 +354,8 @@ func (UnimplementedProductServiceHandler) FindStoreProducts(context.Context, *co
 
 func (UnimplementedProductServiceHandler) StreamStoreProducts(context.Context, *connect.Request[v1.StreamStoreProductsRequest], *connect.ServerStream[v1.StreamStoreProductsResponse]) error {
 	return connect.NewError(connect.CodeUnimplemented, errors.New("inventory.v1.ProductService.StreamStoreProducts is not implemented"))
+}
+
+func (UnimplementedProductServiceHandler) StreamGlobalProducts(context.Context, *connect.Request[v1.StreamGlobalProductsRequest], *connect.ServerStream[v1.StreamGlobalProductsResponse]) error {
+	return connect.NewError(connect.CodeUnimplemented, errors.New("inventory.v1.ProductService.StreamGlobalProducts is not implemented"))
 }

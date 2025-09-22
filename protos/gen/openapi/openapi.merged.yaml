@@ -1892,6 +1892,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inventory.v1.GetStoreProductResponse'
+  /inventory.v1.ProductService/StreamGlobalProducts: {}
   /inventory.v1.ProductService/StreamStoreProducts: {}
   /inventory.v1.ProductService/UpdateProduct:
     post:
@@ -2729,6 +2730,115 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/store.v1.UpdateSupplierResponse'
+  /sync.v1.SyncService/GetSyncOperationsStatus:
+    post:
+      tags:
+        - sync.v1.SyncService
+      summary: Get status of sync operations
+      description: Get status of sync operations
+      operationId: sync.v1.SyncService.GetSyncOperationsStatus
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/sync.v1.GetSyncOperationsStatusRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/sync.v1.GetSyncOperationsStatusResponse'
+  /sync.v1.SyncService/RetrySyncOperations:
+    post:
+      tags:
+        - sync.v1.SyncService
+      summary: Retry failed sync operations
+      description: Retry failed sync operations
+      operationId: sync.v1.SyncService.RetrySyncOperations
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/sync.v1.RetrySyncOperationsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/sync.v1.RetrySyncOperationsResponse'
+  /sync.v1.SyncService/StreamSyncOperations: {}
+  /sync.v1.SyncService/SubmitSyncOperations:
+    post:
+      tags:
+        - sync.v1.SyncService
+      summary: Submit sync operations for processing
+      description: Submit sync operations for processing
+      operationId: sync.v1.SyncService.SubmitSyncOperations
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/sync.v1.SubmitSyncOperationsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/sync.v1.SubmitSyncOperationsResponse'
   /transaction.v1.TransactionService/AddTransaction:
     post:
       tags:
@@ -5097,6 +5207,27 @@ components:
           nullable: true
       title: StoreProduct
       additionalProperties: false
+    inventory.v1.StreamGlobalProductsRequest:
+      type: object
+      properties:
+        globalProductId:
+          type: string
+          title: global_product_id
+          description: Optional filter by global product ID.
+          nullable: true
+      title: StreamGlobalProductsRequest
+      additionalProperties: false
+    inventory.v1.StreamGlobalProductsResponse:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/inventory.v1.GlobalProduct'
+          title: products
+          description: The store products for the specified store.
+      title: StreamGlobalProductsResponse
+      additionalProperties: false
     inventory.v1.StreamStoreProductsRequest:
       type: object
       properties:
@@ -6210,6 +6341,553 @@ components:
           $ref: '#/components/schemas/store.v1.Supplier'
       title: UpdateSupplierResponse
       additionalProperties: false
+    sync.v1.GetSyncOperationsStatusRequest:
+      type: object
+      properties:
+        storeId:
+          type: string
+          title: store_id
+          description: Store ID
+          nullable: true
+        businessId:
+          type: string
+          title: business_id
+          description: Business ID
+          nullable: true
+        userId:
+          type: string
+          title: user_id
+          description: User ID
+          nullable: true
+        batchId:
+          type: string
+          title: batch_id
+          description: Batch ID to check status for
+          nullable: true
+        operationIds:
+          type: array
+          items:
+            type: string
+          title: operation_ids
+          description: List of operation IDs to check
+        statusFilter:
+          type: array
+          items:
+            $ref: '#/components/schemas/sync.v1.SyncOperationStatus'
+          title: status_filter
+          description: Filter by status
+        entityTypeFilter:
+          type: array
+          items:
+            $ref: '#/components/schemas/sync.v1.SyncEntityType'
+          title: entity_type_filter
+          description: Filter by entity type
+        limit:
+          type: integer
+          title: limit
+          format: int32
+          description: Maximum number of results
+          nullable: true
+        offset:
+          type: integer
+          title: offset
+          format: int32
+          description: Offset for pagination
+          nullable: true
+      title: GetSyncOperationsStatusRequest
+      additionalProperties: false
+      description: Request to get sync operations status
+    sync.v1.GetSyncOperationsStatusResponse:
+      type: object
+      properties:
+        operations:
+          type: array
+          items:
+            $ref: '#/components/schemas/sync.v1.SyncOperation'
+          title: operations
+          description: List of operations with their current status
+        totalCount:
+          type: integer
+          title: total_count
+          format: int32
+          description: Total number of operations matching the filter
+        summary:
+          title: summary
+          description: Summary statistics
+          $ref: '#/components/schemas/sync.v1.SyncOperationsSummary'
+      title: GetSyncOperationsStatusResponse
+      additionalProperties: false
+      description: Response with sync operations status
+    sync.v1.RetrySyncOperationsRequest:
+      type: object
+      properties:
+        storeId:
+          type: string
+          title: store_id
+          description: Store ID
+          nullable: true
+        businessId:
+          type: string
+          title: business_id
+          description: Business ID
+          nullable: true
+        userId:
+          type: string
+          title: user_id
+          description: User ID
+          nullable: true
+        operationIds:
+          type: array
+          items:
+            type: string
+          title: operation_ids
+          description: Specific operation IDs to retry
+        batchId:
+          type: string
+          title: batch_id
+          description: Batch ID to retry all operations in batch
+          nullable: true
+        retryAllFailed:
+          type: boolean
+          title: retry_all_failed
+          description: Retry all failed operations (if no specific IDs provided)
+          nullable: true
+      title: RetrySyncOperationsRequest
+      additionalProperties: false
+      description: Request to retry failed sync operations
+    sync.v1.RetrySyncOperationsResponse:
+      type: object
+      properties:
+        operationsQueued:
+          type: integer
+          title: operations_queued
+          format: int32
+          description: Number of operations queued for retry
+        queuedOperationIds:
+          type: array
+          items:
+            type: string
+          title: queued_operation_ids
+          description: List of operation IDs that were queued for retry
+        failedToQueueIds:
+          type: array
+          items:
+            type: string
+          title: failed_to_queue_ids
+          description: List of operation IDs that could not be retried
+      title: RetrySyncOperationsResponse
+      additionalProperties: false
+      description: Response to retry sync operations
+    sync.v1.StreamSyncOperationsRequest:
+      type: object
+      properties:
+        storeId:
+          type: string
+          title: store_id
+          description: Store ID
+          nullable: true
+        businessId:
+          type: string
+          title: business_id
+          description: Business ID
+          nullable: true
+        userId:
+          type: string
+          title: user_id
+          description: User ID
+          nullable: true
+        entityTypeFilter:
+          type: array
+          items:
+            $ref: '#/components/schemas/sync.v1.SyncEntityType'
+          title: entity_type_filter
+          description: Filter by entity types
+        operationTypeFilter:
+          type: array
+          items:
+            $ref: '#/components/schemas/sync.v1.SyncOperationType'
+          title: operation_type_filter
+          description: Filter by operation types
+      title: StreamSyncOperationsRequest
+      additionalProperties: false
+      description: Request to stream sync operations in real-time
+    sync.v1.StreamSyncOperationsResponse:
+      type: object
+      properties:
+        operation:
+          title: operation
+          description: The sync operation that was updated
+          $ref: '#/components/schemas/sync.v1.SyncOperation'
+        updateType:
+          type: string
+          title: update_type
+          description: Type of update (created, updated, deleted)
+        updateTimestamp:
+          title: update_timestamp
+          description: Timestamp of the update
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: StreamSyncOperationsResponse
+      additionalProperties: false
+      description: Response for streaming sync operations
+    sync.v1.SubmitSyncOperationsRequest:
+      type: object
+      properties:
+        storeId:
+          type: string
+          title: store_id
+          description: Store ID
+          nullable: true
+        businessId:
+          type: string
+          title: business_id
+          description: Business ID
+          nullable: true
+        userId:
+          type: string
+          title: user_id
+          description: User ID
+          nullable: true
+        operations:
+          type: array
+          items:
+            $ref: '#/components/schemas/sync.v1.SyncOperation'
+          title: operations
+          minItems: 1
+          description: List of operations to submit
+        deviceId:
+          type: string
+          title: device_id
+          description: Client device identifier
+          nullable: true
+        appVersion:
+          type: string
+          title: app_version
+          description: Client application version
+          nullable: true
+      title: SubmitSyncOperationsRequest
+      additionalProperties: false
+      description: Request to submit sync operations
+    sync.v1.SubmitSyncOperationsResponse:
+      type: object
+      properties:
+        batchId:
+          type: string
+          title: batch_id
+          description: Batch ID for submitted operations
+        operationResults:
+          type: array
+          items:
+            $ref: '#/components/schemas/sync.v1.SyncOperationResult'
+          title: operation_results
+          description: List of operation results
+        batchStatus:
+          title: batch_status
+          description: Overall batch status
+          $ref: '#/components/schemas/sync.v1.SyncOperationStatus'
+        processedAt:
+          title: processed_at
+          description: Timestamp when batch was processed
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: SubmitSyncOperationsResponse
+      additionalProperties: false
+      description: Response to submit sync operations
+    sync.v1.SyncEntityType:
+      type: string
+      title: SyncEntityType
+      enum:
+        - SYNC_ENTITY_TYPE_UNSPECIFIED
+        - SYNC_ENTITY_TYPE_ORDER
+      description: Enum for sync entity types
+    sync.v1.SyncOperation:
+      type: object
+      allOf:
+        - properties:
+            refId:
+              type: string
+              title: ref_id
+              minLength: 1
+              description: Unique identifier for the operation
+            operationType:
+              title: operation_type
+              description: Type of operation (create, update, delete)
+              $ref: '#/components/schemas/sync.v1.SyncOperationType'
+            entityType:
+              title: entity_type
+              description: Type of entity being synchronized
+              $ref: '#/components/schemas/sync.v1.SyncEntityType'
+            entityId:
+              type: string
+              title: entity_id
+              minLength: 1
+              description: Unique identifier of the entity
+            storeId:
+              type: string
+              title: store_id
+              description: Store ID (if applicable)
+              nullable: true
+            businessId:
+              type: string
+              title: business_id
+              description: Business ID (if applicable)
+              nullable: true
+            userId:
+              type: string
+              title: user_id
+              description: User ID who performed the operation
+              nullable: true
+            createdAt:
+              title: created_at
+              description: Timestamp when operation was created
+              $ref: '#/components/schemas/google.protobuf.Timestamp'
+            updatedAt:
+              title: updated_at
+              description: Timestamp when operation was last updated
+              $ref: '#/components/schemas/google.protobuf.Timestamp'
+            status:
+              title: status
+              description: Current status of the operation
+              $ref: '#/components/schemas/sync.v1.SyncOperationStatus'
+            retryCount:
+              type: integer
+              title: retry_count
+              format: int32
+              description: Number of retry attempts
+            maxRetries:
+              type: integer
+              title: max_retries
+              format: int32
+              description: Maximum number of retries allowed
+            nextRetryAt:
+              title: next_retry_at
+              description: Next retry timestamp (if applicable)
+              nullable: true
+              $ref: '#/components/schemas/google.protobuf.Timestamp'
+            errorMessage:
+              type: string
+              title: error_message
+              description: Error message (if operation failed)
+              nullable: true
+            metadata:
+              type: object
+              title: metadata
+              additionalProperties:
+                type: string
+                title: value
+              description: Additional metadata
+        - oneOf:
+            - properties:
+                globalProductData:
+                  title: global_product_data
+                  description: Global product data
+                  $ref: '#/components/schemas/inventory.v1.GlobalProduct'
+              title: global_product_data
+              required:
+                - globalProductData
+            - properties:
+                jsonData:
+                  type: string
+                  title: json_data
+                  description: Generic JSON data for other entities
+              title: json_data
+              required:
+                - jsonData
+            - properties:
+                orderData:
+                  title: order_data
+                  description: Order data
+                  $ref: '#/components/schemas/order.v1.Order'
+              title: order_data
+              required:
+                - orderData
+            - properties:
+                productCategoryData:
+                  title: product_category_data
+                  description: Product category data
+                  $ref: '#/components/schemas/inventory.v1.ProductCategory'
+              title: product_category_data
+              required:
+                - productCategoryData
+            - properties:
+                storeProductData:
+                  title: store_product_data
+                  description: Store product data
+                  $ref: '#/components/schemas/inventory.v1.StoreProduct'
+              title: store_product_data
+              required:
+                - storeProductData
+      title: SyncOperation
+      additionalProperties: false
+      description: A single sync operation
+    sync.v1.SyncOperation.MetadataEntry:
+      type: object
+      properties:
+        key:
+          type: string
+          title: key
+        value:
+          type: string
+          title: value
+      title: MetadataEntry
+      additionalProperties: false
+    sync.v1.SyncOperationBatch:
+      type: object
+      properties:
+        batchId:
+          type: string
+          title: batch_id
+          minLength: 1
+          description: Unique identifier for the batch
+        operations:
+          type: array
+          items:
+            $ref: '#/components/schemas/sync.v1.SyncOperation'
+          title: operations
+          description: List of operations in this batch
+        storeId:
+          type: string
+          title: store_id
+          description: Store ID for all operations in this batch
+          nullable: true
+        businessId:
+          type: string
+          title: business_id
+          description: Business ID for all operations in this batch
+          nullable: true
+        userId:
+          type: string
+          title: user_id
+          description: User ID who created this batch
+          nullable: true
+        createdAt:
+          title: created_at
+          description: Timestamp when batch was created
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        totalOperations:
+          type: integer
+          title: total_operations
+          format: int32
+          description: Total number of operations in batch
+        successfulOperations:
+          type: integer
+          title: successful_operations
+          format: int32
+          description: Number of successful operations
+        failedOperations:
+          type: integer
+          title: failed_operations
+          format: int32
+          description: Number of failed operations
+        metadata:
+          type: object
+          title: metadata
+          additionalProperties:
+            type: string
+            title: value
+          description: Batch metadata
+      title: SyncOperationBatch
+      additionalProperties: false
+      description: Batch of sync operations
+    sync.v1.SyncOperationBatch.MetadataEntry:
+      type: object
+      properties:
+        key:
+          type: string
+          title: key
+        value:
+          type: string
+          title: value
+      title: MetadataEntry
+      additionalProperties: false
+    sync.v1.SyncOperationResult:
+      type: object
+      properties:
+        operationId:
+          type: string
+          title: operation_id
+          description: Operation ID
+        status:
+          title: status
+          description: Result status
+          $ref: '#/components/schemas/sync.v1.SyncOperationStatus'
+        errorMessage:
+          type: string
+          title: error_message
+          description: Error message (if failed)
+          nullable: true
+        serverEntityId:
+          type: string
+          title: server_entity_id
+          description: Server-side entity ID (if different from client)
+          nullable: true
+        processedAt:
+          title: processed_at
+          description: Timestamp when operation was processed
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: SyncOperationResult
+      additionalProperties: false
+      description: Result of a single sync operation
+    sync.v1.SyncOperationStatus:
+      type: string
+      title: SyncOperationStatus
+      enum:
+        - SYNC_OPERATION_STATUS_UNSPECIFIED
+        - SYNC_OPERATION_STATUS_PENDING
+        - SYNC_OPERATION_STATUS_IN_PROGRESS
+        - SYNC_OPERATION_STATUS_SUCCESS
+        - SYNC_OPERATION_STATUS_FAILED
+        - SYNC_OPERATION_STATUS_RETRYING
+        - SYNC_OPERATION_STATUS_ABANDONED
+      description: Enum for sync operation status
+    sync.v1.SyncOperationType:
+      type: string
+      title: SyncOperationType
+      enum:
+        - SYNC_OPERATION_TYPE_UNSPECIFIED
+        - SYNC_OPERATION_TYPE_CREATE
+        - SYNC_OPERATION_TYPE_UPDATE
+        - SYNC_OPERATION_TYPE_DELETE
+      description: Enum for sync operation types
+    sync.v1.SyncOperationsSummary:
+      type: object
+      properties:
+        totalOperations:
+          type: integer
+          title: total_operations
+          format: int32
+          description: Total operations
+        pendingOperations:
+          type: integer
+          title: pending_operations
+          format: int32
+          description: Pending operations
+        inProgressOperations:
+          type: integer
+          title: in_progress_operations
+          format: int32
+          description: In progress operations
+        successfulOperations:
+          type: integer
+          title: successful_operations
+          format: int32
+          description: Successful operations
+        failedOperations:
+          type: integer
+          title: failed_operations
+          format: int32
+          description: Failed operations
+        retryingOperations:
+          type: integer
+          title: retrying_operations
+          format: int32
+          description: Retrying operations
+        abandonedOperations:
+          type: integer
+          title: abandoned_operations
+          format: int32
+          description: Abandoned operations
+      title: SyncOperationsSummary
+      additionalProperties: false
+      description: Summary of sync operations
     transaction.v1.AddTransactionRequest:
       type: object
       properties:
