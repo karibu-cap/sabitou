@@ -15,8 +15,8 @@ import 'package:sabitou_clients/repositories/suppliers_repository.dart';
 import 'package:sabitou_clients/repositories/transactions_repository.dart';
 import 'package:sabitou_clients/repositories/users_repository.dart';
 import 'package:sabitou_clients/services/app_theme_service.dart';
+import 'package:sabitou_clients/services/hive_database/hive_database.dart';
 import 'package:sabitou_clients/services/internationalization/internationalization.dart';
-import 'package:sabitou_clients/services/isar_database/isar_database.dart';
 import 'package:sabitou_clients/services/network_status_provider/network_status_provider.dart';
 import 'package:sabitou_clients/services/storage/app_storage.dart';
 import 'package:sabitou_clients/utils/user_preference.dart';
@@ -111,7 +111,8 @@ Future<void> _initGetIt(
   AppInternationalizationService appInternationalization,
   AppThemeService themeService,
 ) async {
-  final isarDatabase = await IsarDatabase.create(IsarDatabaseType.fake);
+  final hiveDatabase = await HiveDatabase.create(HiveDatabaseType.fake);
+  await hiveDatabase.initBoxes();
   GetIt.I
     ..registerSingletonIfAbsent<AppStorageService>(() => storage)
     ..registerSingletonIfAbsent<AppInternationalizationService>(
@@ -120,7 +121,7 @@ Future<void> _initGetIt(
     ..registerLazySingleton<NetworkStatusProvider>(
       () => NetworkStatusProvider.create(type: NetworkProviderType.fake),
     )
-    ..registerSingletonIfAbsent<IsarDatabase>(() => isarDatabase)
+    ..registerSingleton<HiveDatabase>(hiveDatabase)
     ..registerSingletonIfAbsent<AppThemeService>(() => themeService)
     ..registerSingletonIfAbsent<UserPreferences>(UserPreferences.new)
     ..registerSingletonIfAbsent<UserRepository>(UserRepository.new)

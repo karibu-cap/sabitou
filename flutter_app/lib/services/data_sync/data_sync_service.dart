@@ -1,7 +1,8 @@
 import 'package:connectrpc/connect.dart' as connect;
+import 'package:sabitou_rpc/models.dart';
 
-import '../../entities/sync_operation_isar.dart';
 import '../../utils/logger.dart';
+import '../rpc/connect_rpc.dart';
 import 'offline/offline_service_data.dart';
 import 'online/online_service_data.dart';
 
@@ -11,8 +12,8 @@ import 'online/online_service_data.dart';
 /// - Online synchronization via OnlineServiceData
 /// - Offline management via OfflineServiceData
 /// - Automatic transition between modes
-class DataSyncIsarService {
-  final _logger = LoggerApp('DataSyncIsarService');
+class DataSyncService {
+  final _logger = LoggerApp('DataSyncService');
 
   /// The online synchronization service
   OnlineServiceData? _onlineServiceData;
@@ -34,7 +35,7 @@ class DataSyncIsarService {
       _onlineServiceData?.storeIdStream ?? const Stream.empty();
 
   /// Stream of pending offline operations
-  Stream<List<SyncOperationIsar>> get offlineOperationsStream =>
+  Stream<List<SyncOperation>> get offlineOperationsStream =>
       _offlineServiceData?.operationsStream ?? const Stream.empty();
 
   /// Stream of offline synchronization status
@@ -45,9 +46,9 @@ class DataSyncIsarService {
   int get pendingOfflineOperations =>
       _offlineServiceData?.pendingOperationsCount ?? 0;
 
-  /// Constructs a new [DataSyncIsarService].
-  DataSyncIsarService({required connect.Transport transport})
-    : _transport = transport;
+  /// Constructs a new [DataSyncService].
+  DataSyncService({required connect.Transport? transport})
+    : _transport = transport ?? ConnectRPCService.to.clientChannel;
 
   /// Starts the continuous data sync.
   void startSync({String? initialStoreId}) {
@@ -61,6 +62,7 @@ class DataSyncIsarService {
 
     // Start the continuous sync
     _onlineServiceData?.startContinuousSync(initialStoreId: initialStoreId);
+    _offlineServiceData?.startContinuousSync();
 
     _logger.info('Data sync service started with store: $initialStoreId');
   }

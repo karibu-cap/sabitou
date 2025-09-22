@@ -3,22 +3,19 @@ import 'dart:core';
 
 import 'package:connectrpc/connect.dart' as connect;
 import 'package:get_it/get_it.dart';
-import 'package:isar_community/isar.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
-import '../../../entities/global_product_isar.dart';
-import '../../../entities/store_product_isar.dart';
 import '../../../utils/logger.dart';
-import '../../isar_database/isar_database.dart';
+import '../../hive_database/hive_database.dart';
 import '../../network_status_provider/network_status_provider.dart';
 
 /// Fetch all data operation with continuous stream support.
 class OnlineServiceData {
   final _logger = LoggerApp('OnlineServiceData');
 
-  /// The isar box.
-  final isarBox = GetIt.I.get<IsarDatabase>();
+  /// The hive database.
+  final hiveDatabase = GetIt.I.get<HiveDatabase>();
 
   /// The network status provider.
   final networkStatusProvider = GetIt.I.get<NetworkStatusProvider>();
@@ -58,16 +55,10 @@ class OnlineServiceData {
         StreamGlobalProductsRequest(),
       )) {
         if (response.products.isNotEmpty) {
-          await isarBox.writeTxn(() async {
-            await isarBox.globalProductIsars.clear();
-          });
+          await hiveDatabase.globalProducts.clear();
         }
         for (final product in response.products) {
-          await isarBox.writeTxn(() async {
-            await isarBox.globalProductIsars.put(
-              GlobalProductIsar.fromProto(product),
-            );
-          });
+          await hiveDatabase.globalProducts.put(product.refId, product);
         }
       }
     } on Exception catch (e) {
@@ -84,19 +75,22 @@ class OnlineServiceData {
         StreamStoreProductsRequest()..storeId = storeId,
       )) {
         if (response.products.isNotEmpty) {
-          await isarBox.writeTxn(() async {
-            await isarBox.storeProductIsars
-                .filter()
-                .storeIdEqualTo(storeId)
-                .deleteAll();
-          });
+          await hiveDatabase.storeProducts.clear();
+          final box = hiveDatabase.storeProducts;
+          final keysToDelete = <String>[];
+
+          // Find all products for this store to delete
+          for (final entry in box.toMap().entries) {
+            if (entry.value.storeId == storeId) {
+              keysToDelete.add(entry.key as String);
+            }
+          }
+
+          // Delete existing products for this store
+          await box.deleteAll(keysToDelete);
         }
         for (final product in response.products) {
-          await isarBox.writeTxn(() async {
-            await isarBox.storeProductIsars.put(
-              StoreProductIsar.fromProto(product),
-            );
-          });
+          await hiveDatabase.storeProducts.put(product.refId, product);
         }
       }
     } on Exception catch (e) {

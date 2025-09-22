@@ -204,7 +204,7 @@ func (SyncOperationStatus) EnumDescriptor() ([]byte, []int) {
 type SyncOperation struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Unique identifier for the operation
-	OperationId string `protobuf:"bytes,1,opt,name=operation_id,json=operationId,proto3" json:"operation_id,omitempty"`
+	RefId string `protobuf:"bytes,1,opt,name=ref_id,json=refId,proto3" json:"ref_id,omitempty"`
 	// Type of operation (create, update, delete)
 	OperationType SyncOperationType `protobuf:"varint,2,opt,name=operation_type,json=operationType,proto3,enum=sync.v1.SyncOperationType" json:"operation_type,omitempty"`
 	// Type of entity being synchronized
@@ -277,9 +277,9 @@ func (*SyncOperation) Descriptor() ([]byte, []int) {
 	return file_sync_v1_sync_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *SyncOperation) GetOperationId() string {
+func (x *SyncOperation) GetRefId() string {
 	if x != nil {
-		return x.OperationId
+		return x.RefId
 	}
 	return ""
 }
@@ -455,7 +455,7 @@ type SyncOperation_ProductCategoryData struct {
 
 type SyncOperation_OrderData struct {
 	// Order data
-	OrderData *v11.Order `protobuf:"bytes,15,opt,name=order_data,json=orderData,proto3,oneof"`
+	OrderData *v11.Order `protobuf:"bytes,13,opt,name=order_data,json=orderData,proto3,oneof"`
 }
 
 type SyncOperation_JsonData struct {
@@ -1433,9 +1433,9 @@ var File_sync_v1_sync_proto protoreflect.FileDescriptor
 
 const file_sync_v1_sync_proto_rawDesc = "" +
 	"\n" +
-	"\x12sync/v1/sync.proto\x12\async.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1ainventory/v1/product.proto\x1a\x14order/v1/order.proto\"\xd2\t\n" +
-	"\rSyncOperation\x12*\n" +
-	"\foperation_id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\voperationId\x12K\n" +
+	"\x12sync/v1/sync.proto\x12\async.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1ainventory/v1/product.proto\x1a\x14order/v1/order.proto\"\xc6\t\n" +
+	"\rSyncOperation\x12\x1e\n" +
+	"\x06ref_id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x05refId\x12K\n" +
 	"\x0eoperation_type\x18\x02 \x01(\x0e2\x1a.sync.v1.SyncOperationTypeB\b\xbaH\x05\x82\x01\x02\x10\x01R\roperationType\x12B\n" +
 	"\ventity_type\x18\x03 \x01(\x0e2\x17.sync.v1.SyncEntityTypeB\b\xbaH\x05\x82\x01\x02\x10\x01R\n" +
 	"entityType\x12$\n" +
@@ -1449,7 +1449,7 @@ const file_sync_v1_sync_proto_rawDesc = "" +
 	"\x13global_product_data\x18\v \x01(\v2\x1b.inventory.v1.GlobalProductH\x00R\x11globalProductData\x12S\n" +
 	"\x15product_category_data\x18\f \x01(\v2\x1d.inventory.v1.ProductCategoryH\x00R\x13productCategoryData\x120\n" +
 	"\n" +
-	"order_data\x18\x0f \x01(\v2\x0f.order.v1.OrderH\x00R\torderData\x12\x1d\n" +
+	"order_data\x18\r \x01(\v2\x0f.order.v1.OrderH\x00R\torderData\x12\x1d\n" +
 	"\tjson_data\x18( \x01(\tH\x00R\bjsonData\x129\n" +
 	"\n" +
 	"created_at\x18) \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +

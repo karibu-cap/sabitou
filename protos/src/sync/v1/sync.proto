@@ -58,7 +58,7 @@ enum SyncOperationStatus {
 // A single sync operation
 message SyncOperation {
   // Unique identifier for the operation
-  string operation_id = 1 [(buf.validate.field).string.min_len = 1];
+  string ref_id = 1 [(buf.validate.field).string.min_len = 1];
   
   // Type of operation (create, update, delete)
   SyncOperationType operation_type = 2 [(buf.validate.field).enum.defined_only = true];
@@ -90,7 +90,7 @@ message SyncOperation {
     inventory.v1.ProductCategory product_category_data = 12;
 
     // Order data
-    order.v1.Order order_data = 15;
+    order.v1.Order order_data = 13;
     
     // Generic JSON data for other entities
     string json_data = 40;

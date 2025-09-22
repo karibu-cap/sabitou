@@ -36,7 +36,7 @@ enum SyncOperation_OperationData {
 /// A single sync operation
 class SyncOperation extends $pb.GeneratedMessage {
   factory SyncOperation({
-    $core.String? operationId,
+    $core.String? refId,
     SyncOperationType? operationType,
     SyncEntityType? entityType,
     $core.String? entityId,
@@ -58,7 +58,7 @@ class SyncOperation extends $pb.GeneratedMessage {
     $core.Iterable<$core.MapEntry<$core.String, $core.String>>? metadata,
   }) {
     final result = create();
-    if (operationId != null) result.operationId = operationId;
+    if (refId != null) result.refId = refId;
     if (operationType != null) result.operationType = operationType;
     if (entityType != null) result.entityType = entityType;
     if (entityId != null) result.entityId = entityId;
@@ -96,7 +96,7 @@ class SyncOperation extends $pb.GeneratedMessage {
     10: SyncOperation_OperationData.storeProductData,
     11: SyncOperation_OperationData.globalProductData,
     12: SyncOperation_OperationData.productCategoryData,
-    15: SyncOperation_OperationData.orderData,
+    13: SyncOperation_OperationData.orderData,
     40: SyncOperation_OperationData.jsonData,
     0: SyncOperation_OperationData.notSet
   };
@@ -104,8 +104,8 @@ class SyncOperation extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'SyncOperation',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'sync.v1'),
       createEmptyInstance: create)
-    ..oo(0, [10, 11, 12, 15, 40])
-    ..aOS(1, _omitFieldNames ? '' : 'operationId')
+    ..oo(0, [10, 11, 12, 13, 40])
+    ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..e<SyncOperationType>(
         2, _omitFieldNames ? '' : 'operationType', $pb.PbFieldType.OE,
         defaultOrMaker: SyncOperationType.SYNC_OPERATION_TYPE_UNSPECIFIED,
@@ -126,7 +126,7 @@ class SyncOperation extends $pb.GeneratedMessage {
         subBuilder: $0.GlobalProduct.create)
     ..aOM<$0.ProductCategory>(12, _omitFieldNames ? '' : 'productCategoryData',
         subBuilder: $0.ProductCategory.create)
-    ..aOM<$1.Order>(15, _omitFieldNames ? '' : 'orderData',
+    ..aOM<$1.Order>(13, _omitFieldNames ? '' : 'orderData',
         subBuilder: $1.Order.create)
     ..aOS(40, _omitFieldNames ? '' : 'jsonData')
     ..aOM<$2.Timestamp>(41, _omitFieldNames ? '' : 'createdAt',
@@ -177,13 +177,13 @@ class SyncOperation extends $pb.GeneratedMessage {
 
   /// Unique identifier for the operation
   @$pb.TagNumber(1)
-  $core.String get operationId => $_getSZ(0);
+  $core.String get refId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set operationId($core.String value) => $_setString(0, value);
+  set refId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasOperationId() => $_has(0);
+  $core.bool hasRefId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearOperationId() => $_clearField(1);
+  void clearRefId() => $_clearField(1);
 
   /// Type of operation (create, update, delete)
   @$pb.TagNumber(2)
@@ -282,15 +282,15 @@ class SyncOperation extends $pb.GeneratedMessage {
   $0.ProductCategory ensureProductCategoryData() => $_ensure(9);
 
   /// Order data
-  @$pb.TagNumber(15)
+  @$pb.TagNumber(13)
   $1.Order get orderData => $_getN(10);
-  @$pb.TagNumber(15)
-  set orderData($1.Order value) => $_setField(15, value);
-  @$pb.TagNumber(15)
+  @$pb.TagNumber(13)
+  set orderData($1.Order value) => $_setField(13, value);
+  @$pb.TagNumber(13)
   $core.bool hasOrderData() => $_has(10);
-  @$pb.TagNumber(15)
-  void clearOrderData() => $_clearField(15);
-  @$pb.TagNumber(15)
+  @$pb.TagNumber(13)
+  void clearOrderData() => $_clearField(13);
+  @$pb.TagNumber(13)
   $1.Order ensureOrderData() => $_ensure(10);
 
   /// Generic JSON data for other entities

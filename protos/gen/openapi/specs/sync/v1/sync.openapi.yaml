@@ -766,9 +766,9 @@ components:
       type: object
       allOf:
         - properties:
-            operationId:
+            refId:
               type: string
-              title: operation_id
+              title: ref_id
               minLength: 1
               description: Unique identifier for the operation
             operationType:

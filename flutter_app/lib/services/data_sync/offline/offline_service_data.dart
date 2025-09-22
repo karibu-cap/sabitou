@@ -2,26 +2,24 @@ import 'dart:async';
 
 import 'package:connectrpc/connect.dart' as connect;
 import 'package:get_it/get_it.dart';
-import 'package:isar_community/isar.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
-import '../../../entities/sync_operation_isar.dart';
 import '../../../utils/logger.dart';
-import '../../isar_database/isar_database.dart';
+import '../../hive_database/hive_database.dart';
 import '../../network_status_provider/network_status_provider.dart';
 
 /// Offline operations management service
 ///
-/// This service uses existing Isar entities (SyncOperationIsar) and generated
+/// This service uses existing  entities (SyncOperation) and generated
 /// protobuf types to manage the offline operations queue, retry with
 /// exponential backoff, and synchronization via connectRPC.
 class OfflineServiceData {
   final _logger = LoggerApp('OfflineServiceData');
 
-  /// Isar database
-  final IsarDatabase _isarDatabase = GetIt.instance<IsarDatabase>();
+  ///  database
+  final HiveDatabase _hiveDatabase = GetIt.instance<HiveDatabase>();
 
   /// Network status provider
   final NetworkStatusProvider _networkStatusProvider =
@@ -31,8 +29,8 @@ class OfflineServiceData {
   final SyncServiceClient syncServiceClient;
 
   /// Stream of pending operations
-  final BehaviorSubject<List<SyncOperationIsar>> _operationsController =
-      BehaviorSubject<List<SyncOperationIsar>>.seeded([]);
+  final BehaviorSubject<List<SyncOperation>> _operationsController =
+      BehaviorSubject<List<SyncOperation>>.seeded([]);
 
   /// Stream of synchronization status
   final BehaviorSubject<bool> _syncStatusController =
@@ -52,7 +50,7 @@ class OfflineServiceData {
     : syncServiceClient = SyncServiceClient(transport);
 
   /// Stream of pending operations
-  Stream<List<SyncOperationIsar>> get operationsStream =>
+  Stream<List<SyncOperation>> get operationsStream =>
       _operationsController.stream;
 
   /// Stream of synchronization status
@@ -62,7 +60,7 @@ class OfflineServiceData {
   int get pendingOperationsCount => _operationsController.value.length;
 
   /// Starts the service
-  Future<void> start() async {
+  Future<void> startContinuousSync() async {
     if (_isActive) return;
 
     _logger.info('Starting offline service');
@@ -117,21 +115,18 @@ class OfflineServiceData {
     await _syncStatusController.close();
   }
 
-  /// Loads pending operations from Isar
+  /// Loads pending operations from
   Future<void> _loadPendingOperations() async {
     try {
-      final operations = await _isarDatabase.syncOperationsIsars
-          .filter()
-          .statusEqualTo(
-            SyncOperationStatus.SYNC_OPERATION_STATUS_PENDING.value,
-          )
-          .or()
-          .statusEqualTo(
-            SyncOperationStatus.SYNC_OPERATION_STATUS_RETRYING.value,
-          )
-          .or()
-          .statusEqualTo(SyncOperationStatus.SYNC_OPERATION_STATUS_FAILED.value)
-          .findAll();
+      final box = _hiveDatabase.syncOperations;
+      final allOperations = box.values.toList();
+
+      // Filter operations by status (pending, retrying, or failed)
+      final operations = allOperations.where((op) {
+        return op.status == SyncOperationStatus.SYNC_OPERATION_STATUS_PENDING ||
+            op.status == SyncOperationStatus.SYNC_OPERATION_STATUS_RETRYING ||
+            op.status == SyncOperationStatus.SYNC_OPERATION_STATUS_FAILED;
+      }).toList();
 
       _operationsController.add(operations);
       _logger.info('${operations.length} pending operations loaded');
@@ -192,9 +187,7 @@ class OfflineServiceData {
     if (!isConnected) return;
 
     final operations = _operationsController.value;
-    final readyOperations = operations
-        .where((op) => op.isReadyForRetry)
-        .toList();
+    final readyOperations = operations.where(isReadyForRetry).toList();
 
     if (readyOperations.isEmpty) return;
 
@@ -209,18 +202,18 @@ class OfflineServiceData {
   }
 
   /// Processes an individual operation
-  Future<void> _processOperation(SyncOperationIsar operation) async {
+  Future<void> _processOperation(SyncOperation operation) async {
     try {
-      _logger.info('Processing operation ${operation.operationId}');
+      _logger.info('Processing operation ${operation.refId}');
 
       // Mark as in progress
       await _updateOperationStatus(
         operation,
-        SyncOperationStatus.SYNC_OPERATION_STATUS_IN_PROGRESS.value,
+        SyncOperationStatus.SYNC_OPERATION_STATUS_IN_PROGRESS,
       );
 
       // Convert to proto and send
-      final syncOp = operation.toProto();
+      final syncOp = operation;
 
       // Submit operation via connectRPC
       final result = await syncServiceClient.submitSyncOperations(
@@ -236,11 +229,9 @@ class OfflineServiceData {
           // Mark as successful
           await _updateOperationStatus(
             operation,
-            SyncOperationStatus.SYNC_OPERATION_STATUS_SUCCESS.value,
+            SyncOperationStatus.SYNC_OPERATION_STATUS_SUCCESS,
           );
-          _logger.info(
-            'Operation ${operation.operationId} successfully synced',
-          );
+          _logger.info('Operation ${operation.refId} successfully synced');
         } else {
           // Handle failed operation from server
           final errorMessage = operationResult.hasErrorMessage()
@@ -254,23 +245,19 @@ class OfflineServiceData {
         throw Exception('No results returned from sync service');
       }
 
-      _logger.info('Operation ${operation.operationId} successful');
+      _logger.info('Operation ${operation.refId} successful');
     } on Exception catch (e) {
-      _logger.warning(
-        'Error processing operation ${operation.operationId}: $e',
-      );
+      _logger.warning('Error processing operation ${operation.refId}: $e');
 
       // Increment retry or mark as abandoned
-      if (operation.hasExceededMaxRetries) {
+      if (operation.retryCount >= operation.maxRetries) {
         await _updateOperationStatus(
           operation,
-          SyncOperationStatus.SYNC_OPERATION_STATUS_ABANDONED.value,
+          SyncOperationStatus.SYNC_OPERATION_STATUS_ABANDONED,
           errorMessage: e.toString(),
         );
       } else {
-        final retryOperation = operation.copyWithRetry(
-          newErrorMessage: e.toString(),
-        );
+        final retryOperation = operation..errorMessage = e.toString();
         await _saveOperation(retryOperation);
       }
     }
@@ -278,34 +265,36 @@ class OfflineServiceData {
 
   /// Updates an operation status
   Future<void> _updateOperationStatus(
-    SyncOperationIsar operation,
-    int newStatus, {
+    SyncOperation operation,
+    SyncOperationStatus newStatus, {
     String? errorMessage,
   }) async {
-    final updatedOperation = operation.copyWithStatus(
-      newStatus,
-      newErrorMessage: errorMessage,
-    );
+    final updatedOperation = operation
+      ..status = newStatus
+      ..errorMessage = errorMessage ?? '';
     await _saveOperation(updatedOperation);
   }
 
   /// Saves an operation to Isar
-  Future<void> _saveOperation(SyncOperationIsar operation) async {
-    await _isarDatabase.writeTxn(() async {
-      await _isarDatabase.syncOperationsIsars.put(operation);
-    });
+  Future<void> _saveOperation(SyncOperation operation) async {
+    await _hiveDatabase.syncOperations.put(operation.refId, operation);
   }
 
   /// Clears all completed operations (SUCCESS)
   Future<void> clearCompletedOperations() async {
-    await _isarDatabase.writeTxn(() async {
-      await _isarDatabase.syncOperationsIsars
-          .filter()
-          .statusEqualTo(
-            SyncOperationStatus.SYNC_OPERATION_STATUS_SUCCESS.value,
-          )
-          .deleteAll();
-    });
+    final box = _hiveDatabase.syncOperations;
+    final completedKeys = <String>[];
+
+    // Find all completed operations
+    for (final entry in box.toMap().entries) {
+      if (entry.value.status ==
+          SyncOperationStatus.SYNC_OPERATION_STATUS_SUCCESS) {
+        completedKeys.add(entry.key as String);
+      }
+    }
+
+    // Delete completed operations
+    await box.deleteAll(completedKeys);
 
     await _loadPendingOperations();
     _logger.info('Completed operations cleared');
@@ -313,14 +302,19 @@ class OfflineServiceData {
 
   /// Clears all abandoned operations (ABANDONED)
   Future<void> clearAbandonedOperations() async {
-    await _isarDatabase.writeTxn(() async {
-      await _isarDatabase.syncOperationsIsars
-          .filter()
-          .statusEqualTo(
-            SyncOperationStatus.SYNC_OPERATION_STATUS_ABANDONED.value,
-          )
-          .deleteAll();
-    });
+    final box = _hiveDatabase.syncOperations;
+    final abandonedKeys = <String>[];
+
+    // Find all abandoned operations
+    for (final entry in box.toMap().entries) {
+      if (entry.value.status ==
+          SyncOperationStatus.SYNC_OPERATION_STATUS_ABANDONED) {
+        abandonedKeys.add(entry.key as String);
+      }
+    }
+
+    // Delete abandoned operations
+    await box.deleteAll(abandonedKeys);
 
     await _loadPendingOperations();
     _logger.info('Abandoned operations cleared');
@@ -330,23 +324,26 @@ class OfflineServiceData {
   Future<void> clearOldOperations({int olderThanDays = 7}) async {
     final cutoffDate = DateTime.now().subtract(Duration(days: olderThanDays));
 
-    await _isarDatabase.writeTxn(() async {
-      await _isarDatabase.syncOperationsIsars
-          .filter()
-          .createdAtLessThan(cutoffDate)
-          .and()
-          .group(
-            (q) => q
-                .statusEqualTo(
-                  SyncOperationStatus.SYNC_OPERATION_STATUS_SUCCESS.value,
-                )
-                .or()
-                .statusEqualTo(
-                  SyncOperationStatus.SYNC_OPERATION_STATUS_ABANDONED.value,
-                ),
-          )
-          .deleteAll();
-    });
+    final box = _hiveDatabase.syncOperations;
+    final oldKeys = <String>[];
+
+    // Find old operations that are completed or abandoned
+    for (final entry in box.toMap().entries) {
+      final operation = entry.value;
+      final isOld = operation.createdAt.toDateTime().isBefore(cutoffDate);
+      final isCompletedOrAbandoned =
+          operation.status ==
+              SyncOperationStatus.SYNC_OPERATION_STATUS_SUCCESS ||
+          operation.status ==
+              SyncOperationStatus.SYNC_OPERATION_STATUS_ABANDONED;
+
+      if (isOld && isCompletedOrAbandoned) {
+        oldKeys.add(entry.key as String);
+      }
+    }
+
+    // Delete old operations
+    await box.deleteAll(oldKeys);
 
     await _loadPendingOperations();
     _logger.info('Old operations (>$olderThanDays days) cleared');
@@ -354,9 +351,8 @@ class OfflineServiceData {
 
   /// Gets operations statistics
   Future<Map<String, int>> getOperationsStats() async {
-    final allOperations = await _isarDatabase.syncOperationsIsars
-        .where()
-        .findAll();
+    final box = _hiveDatabase.syncOperations;
+    final allOperations = box.values.toList();
 
     final stats = <String, int>{
       'total': allOperations.length,
@@ -370,27 +366,48 @@ class OfflineServiceData {
 
     for (final op in allOperations) {
       switch (op.status) {
-        case 1: // PENDING
+        case SyncOperationStatus.SYNC_OPERATION_STATUS_PENDING: // PENDING
           stats['pending'] = (stats['pending'] ?? 0) + 1;
           break;
-        case 2: // IN_PROGRESS
+        case SyncOperationStatus
+            .SYNC_OPERATION_STATUS_IN_PROGRESS: // IN_PROGRESS
           stats['in_progress'] = (stats['in_progress'] ?? 0) + 1;
           break;
-        case 3: // SUCCESS
+        case SyncOperationStatus.SYNC_OPERATION_STATUS_SUCCESS: // SUCCESS
           stats['success'] = (stats['success'] ?? 0) + 1;
           break;
-        case 4: // FAILED
+        case SyncOperationStatus.SYNC_OPERATION_STATUS_FAILED: // FAILED
           stats['failed'] = (stats['failed'] ?? 0) + 1;
           break;
-        case 5: // RETRYING
+        case SyncOperationStatus.SYNC_OPERATION_STATUS_RETRYING: // RETRYING
           stats['retrying'] = (stats['retrying'] ?? 0) + 1;
           break;
-        case 6: // ABANDONED
+        case SyncOperationStatus.SYNC_OPERATION_STATUS_ABANDONED: // ABANDONED
           stats['abandoned'] = (stats['abandoned'] ?? 0) + 1;
           break;
       }
     }
 
     return stats;
+  }
+
+  /// Checks if this operation is ready for retry
+  ///
+  /// Returns true if the operation has failed and the next retry time
+  /// has passed (or no next retry time is set).
+  bool isReadyForRetry(SyncOperation operation) {
+    final _nextRetryAt = operation.nextRetryAt;
+    if (operation.status != SyncOperationStatus.SYNC_OPERATION_STATUS_FAILED &&
+        operation.status !=
+            SyncOperationStatus.SYNC_OPERATION_STATUS_RETRYING) {
+      return false; // Not FAILED or RETRYING
+    }
+    if (operation.retryCount >= operation.maxRetries) {
+      return false; // Exceeded max retries
+    }
+
+    return DateTime.now().isAfter(
+      _nextRetryAt.toDateTime(),
+    ); // Retry time has passed
   }
 }

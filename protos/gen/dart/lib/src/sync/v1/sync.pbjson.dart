@@ -75,7 +75,7 @@ final $typed_data.Uint8List syncOperationStatusDescriptor = $convert.base64Decod
 const SyncOperation$json = {
   '1': 'SyncOperation',
   '2': [
-    {'1': 'operation_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'operationId'},
+    {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'refId'},
     {
       '1': 'operation_type',
       '3': 2,
@@ -151,7 +151,7 @@ const SyncOperation$json = {
     },
     {
       '1': 'order_data',
-      '3': 15,
+      '3': 13,
       '4': 1,
       '5': 11,
       '6': '.order.v1.Order',
@@ -236,29 +236,29 @@ const SyncOperation_MetadataEntry$json = {
 
 /// Descriptor for `SyncOperation`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List syncOperationDescriptor = $convert.base64Decode(
-    'Cg1TeW5jT3BlcmF0aW9uEioKDG9wZXJhdGlvbl9pZBgBIAEoCUIHukgEcgIQAVILb3BlcmF0aW'
-    '9uSWQSSwoOb3BlcmF0aW9uX3R5cGUYAiABKA4yGi5zeW5jLnYxLlN5bmNPcGVyYXRpb25UeXBl'
-    'Qgi6SAWCAQIQAVINb3BlcmF0aW9uVHlwZRJCCgtlbnRpdHlfdHlwZRgDIAEoDjIXLnN5bmMudj'
-    'EuU3luY0VudGl0eVR5cGVCCLpIBYIBAhABUgplbnRpdHlUeXBlEiQKCWVudGl0eV9pZBgEIAEo'
-    'CUIHukgEcgIQAVIIZW50aXR5SWQSHgoIc3RvcmVfaWQYBSABKAlIAVIHc3RvcmVJZIgBARIkCg'
-    'tidXNpbmVzc19pZBgGIAEoCUgCUgpidXNpbmVzc0lkiAEBEhwKB3VzZXJfaWQYByABKAlIA1IG'
-    'dXNlcklkiAEBEkoKEnN0b3JlX3Byb2R1Y3RfZGF0YRgKIAEoCzIaLmludmVudG9yeS52MS5TdG'
-    '9yZVByb2R1Y3RIAFIQc3RvcmVQcm9kdWN0RGF0YRJNChNnbG9iYWxfcHJvZHVjdF9kYXRhGAsg'
-    'ASgLMhsuaW52ZW50b3J5LnYxLkdsb2JhbFByb2R1Y3RIAFIRZ2xvYmFsUHJvZHVjdERhdGESUw'
-    'oVcHJvZHVjdF9jYXRlZ29yeV9kYXRhGAwgASgLMh0uaW52ZW50b3J5LnYxLlByb2R1Y3RDYXRl'
-    'Z29yeUgAUhNwcm9kdWN0Q2F0ZWdvcnlEYXRhEjAKCm9yZGVyX2RhdGEYDyABKAsyDy5vcmRlci'
-    '52MS5PcmRlckgAUglvcmRlckRhdGESHQoJanNvbl9kYXRhGCggASgJSABSCGpzb25EYXRhEjkK'
-    'CmNyZWF0ZWRfYXQYKSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUgljcmVhdGVkQX'
-    'QSOQoKdXBkYXRlZF9hdBgqIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSCXVwZGF0'
-    'ZWRBdBI0CgZzdGF0dXMYKyABKA4yHC5zeW5jLnYxLlN5bmNPcGVyYXRpb25TdGF0dXNSBnN0YX'
-    'R1cxIfCgtyZXRyeV9jb3VudBgsIAEoBVIKcmV0cnlDb3VudBIfCgttYXhfcmV0cmllcxgtIAEo'
-    'BVIKbWF4UmV0cmllcxJDCg1uZXh0X3JldHJ5X2F0GC4gASgLMhouZ29vZ2xlLnByb3RvYnVmLl'
-    'RpbWVzdGFtcEgEUgtuZXh0UmV0cnlBdIgBARIoCg1lcnJvcl9tZXNzYWdlGC8gASgJSAVSDGVy'
-    'cm9yTWVzc2FnZYgBARJACghtZXRhZGF0YRgwIAMoCzIkLnN5bmMudjEuU3luY09wZXJhdGlvbi'
-    '5NZXRhZGF0YUVudHJ5UghtZXRhZGF0YRo7Cg1NZXRhZGF0YUVudHJ5EhAKA2tleRgBIAEoCVID'
-    'a2V5EhQKBXZhbHVlGAIgASgJUgV2YWx1ZToCOAFCEAoOb3BlcmF0aW9uX2RhdGFCCwoJX3N0b3'
-    'JlX2lkQg4KDF9idXNpbmVzc19pZEIKCghfdXNlcl9pZEIQCg5fbmV4dF9yZXRyeV9hdEIQCg5f'
-    'ZXJyb3JfbWVzc2FnZQ==');
+    'Cg1TeW5jT3BlcmF0aW9uEh4KBnJlZl9pZBgBIAEoCUIHukgEcgIQAVIFcmVmSWQSSwoOb3Blcm'
+    'F0aW9uX3R5cGUYAiABKA4yGi5zeW5jLnYxLlN5bmNPcGVyYXRpb25UeXBlQgi6SAWCAQIQAVIN'
+    'b3BlcmF0aW9uVHlwZRJCCgtlbnRpdHlfdHlwZRgDIAEoDjIXLnN5bmMudjEuU3luY0VudGl0eV'
+    'R5cGVCCLpIBYIBAhABUgplbnRpdHlUeXBlEiQKCWVudGl0eV9pZBgEIAEoCUIHukgEcgIQAVII'
+    'ZW50aXR5SWQSHgoIc3RvcmVfaWQYBSABKAlIAVIHc3RvcmVJZIgBARIkCgtidXNpbmVzc19pZB'
+    'gGIAEoCUgCUgpidXNpbmVzc0lkiAEBEhwKB3VzZXJfaWQYByABKAlIA1IGdXNlcklkiAEBEkoK'
+    'EnN0b3JlX3Byb2R1Y3RfZGF0YRgKIAEoCzIaLmludmVudG9yeS52MS5TdG9yZVByb2R1Y3RIAF'
+    'IQc3RvcmVQcm9kdWN0RGF0YRJNChNnbG9iYWxfcHJvZHVjdF9kYXRhGAsgASgLMhsuaW52ZW50'
+    'b3J5LnYxLkdsb2JhbFByb2R1Y3RIAFIRZ2xvYmFsUHJvZHVjdERhdGESUwoVcHJvZHVjdF9jYX'
+    'RlZ29yeV9kYXRhGAwgASgLMh0uaW52ZW50b3J5LnYxLlByb2R1Y3RDYXRlZ29yeUgAUhNwcm9k'
+    'dWN0Q2F0ZWdvcnlEYXRhEjAKCm9yZGVyX2RhdGEYDSABKAsyDy5vcmRlci52MS5PcmRlckgAUg'
+    'lvcmRlckRhdGESHQoJanNvbl9kYXRhGCggASgJSABSCGpzb25EYXRhEjkKCmNyZWF0ZWRfYXQY'
+    'KSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUgljcmVhdGVkQXQSOQoKdXBkYXRlZF'
+    '9hdBgqIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSCXVwZGF0ZWRBdBI0CgZzdGF0'
+    'dXMYKyABKA4yHC5zeW5jLnYxLlN5bmNPcGVyYXRpb25TdGF0dXNSBnN0YXR1cxIfCgtyZXRyeV'
+    '9jb3VudBgsIAEoBVIKcmV0cnlDb3VudBIfCgttYXhfcmV0cmllcxgtIAEoBVIKbWF4UmV0cmll'
+    'cxJDCg1uZXh0X3JldHJ5X2F0GC4gASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEgEUg'
+    'tuZXh0UmV0cnlBdIgBARIoCg1lcnJvcl9tZXNzYWdlGC8gASgJSAVSDGVycm9yTWVzc2FnZYgB'
+    'ARJACghtZXRhZGF0YRgwIAMoCzIkLnN5bmMudjEuU3luY09wZXJhdGlvbi5NZXRhZGF0YUVudH'
+    'J5UghtZXRhZGF0YRo7Cg1NZXRhZGF0YUVudHJ5EhAKA2tleRgBIAEoCVIDa2V5EhQKBXZhbHVl'
+    'GAIgASgJUgV2YWx1ZToCOAFCEAoOb3BlcmF0aW9uX2RhdGFCCwoJX3N0b3JlX2lkQg4KDF9idX'
+    'NpbmVzc19pZEIKCghfdXNlcl9pZEIQCg5fbmV4dF9yZXRyeV9hdEIQCg5fZXJyb3JfbWVzc2Fn'
+    'ZQ==');
 
 @$core.Deprecated('Use syncOperationBatchDescriptor instead')
 const SyncOperationBatch$json = {

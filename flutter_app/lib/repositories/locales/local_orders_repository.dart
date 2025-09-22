@@ -1,20 +1,17 @@
 import 'package:get_it/get_it.dart';
-import 'package:isar_community/isar.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../entities/order_isar.dart';
-import '../../entities/store_product_isar.dart';
-import '../../entities/sync_operation_isar.dart';
-import '../../services/isar_database/isar_database.dart';
+import '../../services/hive_database/hive_database.dart';
 import '../../utils/logger.dart';
 
 /// The local orders repository.
 class LocalOrdersRepository {
   final _logger = LoggerApp('LocalOrdersRepository');
 
-  /// The isar box.
-  final isarBox = GetIt.I.get<IsarDatabase>();
+  /// The hive database.
+  final hiveDatabase = GetIt.I.get<HiveDatabase>();
 
   /// Constructs a new [LocalOrdersRepository].
   LocalOrdersRepository();
@@ -22,12 +19,14 @@ class LocalOrdersRepository {
   /// Gets list of order with filter by supplier id.
   Future<List<Order>> getOrdersByQuery(FindOrdersRequest request) async {
     try {
-      final result = await isarBox.orderIsars
-          .filter()
-          .storeIdEqualTo(request.storeId)
-          .findAll();
+      final allOrders = hiveDatabase.orders.values.toList();
 
-      return result.map((e) => e.toProto()).toList();
+      // Filter orders by store ID
+      final result = allOrders
+          .where((order) => order.storeId == request.storeId)
+          .toList();
+
+      return result;
     } on Exception catch (e) {
       _logger.severe('getOrdersByQuery Error: $e');
 
@@ -38,12 +37,13 @@ class LocalOrdersRepository {
   /// Gets the order by ref-id.
   Future<Order> getOrderByRefId(String refId) async {
     try {
-      final result = await isarBox.orderIsars
-          .filter()
-          .refIdEqualTo(refId)
-          .findFirst();
+      final allOrders = hiveDatabase.orders.values.toList();
 
-      return result?.toProto() ?? Order();
+      final result = allOrders
+          .where((order) => order.refId == refId)
+          .firstOrNull;
+
+      return result ?? Order();
     } on Exception catch (e) {
       _logger.severe('getOrderByRefId Error: $e');
 
@@ -54,42 +54,45 @@ class LocalOrdersRepository {
   /// Adds an order with automatic stock validation and update.
   Future<String?> addOrder(CreateOrderRequest request) async {
     try {
-      // Create order and update stock in a transaction
-      return await isarBox.writeTxn(() async {
-        // Create the order
-        final orderIsar = OrderIsar.fromProto(request.order);
-        final orderId = await isarBox.orderIsars.put(orderIsar);
+      // Create the order
+      request.order..refId = const Uuid().v4();
+      await hiveDatabase.orders.put(request.order.refId, request.order);
 
-        // Create order items as separate entities for efficient querying
-        for (final orderItemProto in request.order.orderItems) {
-          // Update stock
-          await _updateProductStock(
-            storeProductId: orderItemProto.storeProductId,
-            quantityToSubtract: orderItemProto.quantity,
-            storeId: request.order.storeId,
-          );
-        }
-
-        // Create sync operation for the order
-        await isarBox.syncOperationsIsars.put(
-          SyncOperationIsar(
-            createdAt: DateTime.now(),
-            operationId: const Uuid().v4(),
-            operationType: SyncOperationType.SYNC_OPERATION_TYPE_CREATE.value,
-            entityType: SyncEntityType.SYNC_ENTITY_TYPE_ORDER.value,
-            entityId: request.order.refId,
-            operationDataJson: request.order.writeToJson(),
-            status: SyncOperationStatus.SYNC_OPERATION_STATUS_PENDING.value,
-            updatedAt: DateTime.now(),
-          ),
+      // Create order items as separate entities for efficient querying
+      for (final orderItem in request.order.orderItems) {
+        // Update stock
+        await _updateProductStock(
+          storeProductId: orderItem.storeProductId,
+          quantityToSubtract: orderItem.quantity,
+          storeId: request.order.storeId,
+          box: hiveDatabase.storeProducts,
         );
+      }
 
-        _logger.info(
-          'Order created successfully with stock update: ${request.order.refId}',
-        );
+      final syncId = const Uuid().v4();
 
-        return orderId.toString();
-      });
+      final sync = SyncOperation(
+        refId: syncId,
+        createdAt: Timestamp.fromDateTime(DateTime.now()),
+        operationType: SyncOperationType.SYNC_OPERATION_TYPE_CREATE,
+        entityType: SyncEntityType.SYNC_ENTITY_TYPE_ORDER,
+        entityId: request.order.refId,
+        orderData: request.order,
+        status: SyncOperationStatus.SYNC_OPERATION_STATUS_PENDING,
+        updatedAt: Timestamp.fromDateTime(DateTime.now()),
+        maxRetries: 1000,
+        retryCount: 0,
+        nextRetryAt: Timestamp.fromDateTime(DateTime.now()),
+      );
+
+      // Create sync operation for the order
+      await hiveDatabase.syncOperations.put(sync.refId, sync);
+
+      _logger.info(
+        'Order created successfully with stock update: ${request.order.refId}',
+      );
+
+      return syncId;
     } on Exception catch (e) {
       _logger.severe('addOrder Error: $e');
     }
@@ -102,35 +105,25 @@ class LocalOrdersRepository {
     required String storeProductId,
     required int quantityToSubtract,
     required String storeId,
+    required Box<StoreProduct> box,
   }) async {
-    final storeProduct = await isarBox.storeProductIsars
-        .filter()
-        .refIdEqualTo(storeProductId)
-        .and()
-        .storeIdEqualTo(storeId)
-        .findFirst();
+    final storeProduct = box.values
+        .where(
+          (storeProduct) =>
+              storeProduct.refId == storeProductId &&
+              storeProduct.storeId == storeId,
+        )
+        .firstOrNull;
 
     if (storeProduct != null) {
-      final updatedProduct = StoreProductIsar(
-        refId: storeProduct.refId,
-        storeId: storeProduct.storeId,
-        globalProductId: storeProduct.globalProductId,
-        price: storeProduct.price,
-        stockQuantity: storeProduct.stockQuantity - quantityToSubtract,
-        minStockThreshold: storeProduct.minStockThreshold,
-        supplierId: storeProduct.supplierId,
-        imagesLinksIds: storeProduct.imagesLinksIds,
-        inboundDate: storeProduct.inboundDate,
-        expirationDate: storeProduct.expirationDate,
-        createdAt: storeProduct.createdAt,
-        updatedAt: DateTime.now(),
-      );
-
-      await isarBox.storeProductIsars.put(updatedProduct);
+      storeProduct
+        ..stockQuantity -= quantityToSubtract
+        ..updatedAt = Timestamp.fromDateTime(DateTime.now());
+      await box.put(storeProduct.refId, storeProduct);
 
       _logger.info(
         'Stock updated for product $storeProductId: '
-        '${storeProduct.stockQuantity} -> ${updatedProduct.stockQuantity}',
+        '${storeProduct.stockQuantity} -> ${storeProduct.stockQuantity}',
       );
     }
   }
