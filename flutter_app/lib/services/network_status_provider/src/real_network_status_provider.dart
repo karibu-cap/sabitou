@@ -1,61 +1,42 @@
 import 'dart:async';
-import 'dart:io';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/foundation.dart';
 
 import '../network_status_provider.dart';
 
-/// Real network status provider by DNS lookup.
+/// Real network status provider using connectivity_plus package.
 class RealNetworkStatusProvider implements NetworkStatusProvider {
-  /// The polling period.
-  final Duration pollingPeriod;
-
-  /// The DNS address to use for the lookup.
-  final InternetAddress _dns;
-
-  /// The timer used for polling.
-  Timer? _timer;
-
-  /// The stream controller.
-  final StreamController<bool> _controller = StreamController.broadcast();
-
-  /// Creates a new instance of the real network status provider.
-  RealNetworkStatusProvider({
-    this.pollingPeriod = const Duration(seconds: 1),
-    required InternetAddress dns,
-  }) : _dns = dns;
+  /// The connectivity instance.
+  final Connectivity _connectivity = Connectivity();
 
   @override
-  Stream<bool> get connectivityStream => _controller.stream;
+  Stream<bool> get connectivityStream =>
+      _connectivity.onConnectivityChanged.map(_isConnected);
 
   @override
   Future<bool> checkConnectivity() async {
     try {
-      final result = await InternetAddress.lookup(_dns.address);
-      debugPrint('DNS lookup result: ${result.isNotEmpty}');
+      final connectivityResults = await _connectivity.checkConnectivity();
+      final isConnected = _isConnected(connectivityResults);
+      debugPrint(
+        'Connectivity check result: $isConnected (results: $connectivityResults)',
+      );
 
-      return result.isNotEmpty;
+      return isConnected;
     } on Exception catch (e) {
-      debugPrint('DNS lookup failed: $e');
+      debugPrint('Connectivity check failed: $e');
 
       return false;
     }
   }
 
-  @override
-  void startPolling() {
-    stopPolling();
-    _controller.add(false);
-    _timer = Timer.periodic(pollingPeriod, (_) async {
-      _controller.add(await checkConnectivity());
-    });
-  }
-
-  @override
-  void stopPolling() => _timer?.cancel();
-
-  @override
-  void dispose() {
-    stopPolling();
-    _controller.close();
+  /// Determines if the device is connected based on connectivity results.
+  bool _isConnected(List<ConnectivityResult> results) {
+    return results.any(
+      (result) =>
+          result == ConnectivityResult.wifi ||
+          result == ConnectivityResult.mobile ||
+          result == ConnectivityResult.ethernet,
+    );
   }
 }
