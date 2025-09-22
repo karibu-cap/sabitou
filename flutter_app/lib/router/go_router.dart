@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
 
+import '../providers/auth/auth_provider.dart';
 import '../screens/auth/forgot_password/forgot_password_view.dart';
 import '../screens/auth/login/login_view.dart';
 import '../screens/auth/registration/registration_view.dart';
@@ -160,11 +161,21 @@ class GoRouterRoutesProvider {
         pageBuilder: (context, state) {
           return const MaterialPage(child: LoginView());
         },
-        redirect: (context, state) {
-          final bool isUserRegistered = UserPreferences.instance.user != null;
-          debugPrint('isUserRegistered: $isUserRegistered');
+        redirect: (context, state) async {
+          final user = UserPreferences.instance.user;
 
-          return isUserRegistered ? PagesRoutes.dashboard.pattern : null;
+          if (user == null) {
+            debugPrint('isUserRegistered: false');
+
+            return PagesRoutes.login.pattern;
+          }
+
+          final authProvider = AuthProvider.instance;
+          await authProvider.saveBusinessAndStore(user);
+          await authProvider.initializeDataSync();
+          debugPrint('isUserRegistered: true');
+
+          return PagesRoutes.dashboard.pattern;
         },
       ),
       GoRoute(

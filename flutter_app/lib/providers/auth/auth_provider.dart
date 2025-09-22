@@ -71,10 +71,10 @@ class AuthProvider extends ChangeNotifier {
       _setStatus(AuthStatus.authenticated);
 
       // Save business and store after successful login
-      await _saveBusinessAndStore(response);
+      await saveBusinessAndStore(response);
 
       /// Initialize data sync after successful login.
-      await _initializeDataSync();
+      await initializeDataSync();
 
       return true;
     }
@@ -118,10 +118,10 @@ class AuthProvider extends ChangeNotifier {
       _setStatus(AuthStatus.authenticated);
 
       // Save business and store after successful register
-      await _saveBusinessAndStore(response);
+      await saveBusinessAndStore(response);
 
       /// Initialize data sync after successful register.
-      await _initializeDataSync();
+      await initializeDataSync();
 
       return true;
     }
@@ -170,7 +170,7 @@ class AuthProvider extends ChangeNotifier {
   }
 
   /// Saves business and store in user preference.
-  Future<void> _saveBusinessAndStore(User currentUser) async {
+  Future<void> saveBusinessAndStore(User currentUser) async {
     // Fetch user's businesses
     final businesses = await _businessRepository.getMyBusinesses(
       currentUser.refId,
@@ -199,7 +199,7 @@ class AuthProvider extends ChangeNotifier {
   }
 
   /// Initializes data sync by fetching businesses and stores
-  Future<void> _initializeDataSync() async {
+  Future<void> initializeDataSync() async {
     final currentStore = UserPreferences.instance.store;
 
     // Start sync with initial store
