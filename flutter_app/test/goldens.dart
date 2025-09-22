@@ -15,6 +15,7 @@ import 'package:sabitou_clients/repositories/suppliers_repository.dart';
 import 'package:sabitou_clients/repositories/transactions_repository.dart';
 import 'package:sabitou_clients/repositories/users_repository.dart';
 import 'package:sabitou_clients/services/app_theme_service.dart';
+import 'package:sabitou_clients/services/data_sync/data_sync_service.dart';
 import 'package:sabitou_clients/services/hive_database/hive_database.dart';
 import 'package:sabitou_clients/services/internationalization/internationalization.dart';
 import 'package:sabitou_clients/services/network_status_provider/network_status_provider.dart';
@@ -91,7 +92,7 @@ Future<void> multiScreenMultiLocaleGolden(
   // Screenshot the widget in each supported locale.
   for (final locale in AppInternationalizationService.supportedLocales) {
     appInternationalization.changeLocale(locale);
-    themeService.switchTheme();
+    await themeService.switchTheme();
 
     await tester.pumpAndSettle();
     await multiScreenGolden(
@@ -135,5 +136,6 @@ Future<void> _initGetIt(
     ..registerSingletonIfAbsent<BusinessRepository>(BusinessRepository.new)
     ..registerSingletonIfAbsent<StoresRepository>(StoresRepository.new)
     ..registerSingletonIfAbsent<CartManager>(CartManager.new)
+    ..registerLazySingleton<DataSyncService>(DataSyncService.new)
     ..registerSingletonIfAbsent<AuthProvider>(AuthProvider.new);
 }

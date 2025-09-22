@@ -20,6 +20,7 @@ import 'repositories/transactions_repository.dart';
 import 'repositories/users_repository.dart';
 import 'router/app_router.dart';
 import 'services/app_theme_service.dart';
+import 'services/data_sync/data_sync_service.dart';
 import 'services/hive_database/hive_database.dart';
 import 'services/internationalization/internationalization.dart';
 import 'services/network_status_provider/network_status_provider.dart';
@@ -62,7 +63,6 @@ Future<void> _initServices() async {
     )
     ..registerLazySingleton<UserPreferences>(UserPreferences.new)
     ..registerLazySingleton<AuthRepository>(AuthRepository.new)
-    ..registerLazySingleton<AuthProvider>(AuthProvider.new)
     ..registerLazySingleton<OrdersRepository>(OrdersRepository.new)
     ..registerLazySingleton<ProductsRepository>(ProductsRepository.new)
     ..registerLazySingleton<SuppliersRepository>(SuppliersRepository.new)
@@ -72,6 +72,8 @@ Future<void> _initServices() async {
     ..registerLazySingleton<StoresRepository>(StoresRepository.new)
     ..registerLazySingleton<UserRepository>(UserRepository.new)
     ..registerLazySingleton<CategoriesRepository>(CategoriesRepository.new)
+    ..registerLazySingleton<DataSyncService>(DataSyncService.new)
+    ..registerLazySingleton<AuthProvider>(AuthProvider.new)
     ..registerLazySingleton<CartManager>(CartManager.new);
 
   /// Initialize the get storage service.

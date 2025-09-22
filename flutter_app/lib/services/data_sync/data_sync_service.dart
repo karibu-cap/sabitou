@@ -47,7 +47,7 @@ class DataSyncService {
       _offlineServiceData?.pendingOperationsCount ?? 0;
 
   /// Constructs a new [DataSyncService].
-  DataSyncService({required connect.Transport? transport})
+  DataSyncService({connect.Transport? transport})
     : _transport = transport ?? ConnectRPCService.to.clientChannel;
 
   /// Starts the continuous data sync.
