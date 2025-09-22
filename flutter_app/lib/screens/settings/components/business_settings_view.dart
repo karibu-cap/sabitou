@@ -9,7 +9,6 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../services/internationalization/internationalization.dart';
-import '../../../themes/app_colors.dart';
 import '../../../utils/app_constants.dart';
 import '../../../utils/common_functions.dart';
 import '../../../utils/form/validation.dart';
@@ -231,7 +230,7 @@ class _BusinessLogo extends StatelessWidget {
       await showShadSheet(
         side: ShadSheetSide.bottom,
         context: context,
-        backgroundColor: AppColors.grey0,
+        backgroundColor: ShadTheme.of(context).colorScheme.background,
         builder: (context) => ShadSheet(
           padding: EdgeInsets.zero,
           closeIcon: const SizedBox.shrink(),
@@ -240,7 +239,7 @@ class _BusinessLogo extends StatelessWidget {
             topRight: Radius.circular(16),
           ),
           child: Material(
-            color: AppColors.grey0,
+            color: ShadTheme.of(context).colorScheme.background,
             borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(16),
               topRight: Radius.circular(16),

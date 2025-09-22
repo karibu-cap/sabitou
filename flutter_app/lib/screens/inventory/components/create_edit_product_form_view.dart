@@ -161,6 +161,70 @@ class _SupplierDropdown extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
+    void showSupplierSheet(BuildContext context) {
+      final supplierFormKey = GlobalKey<ShadFormState>();
+      showShadSheet(
+        side: ShadSheetSide.bottom,
+        context: context,
+        backgroundColor: ShadTheme.of(context).colorScheme.background,
+        builder: (context) => ShadSheet(
+          closeIcon: const SizedBox.shrink(),
+          radius: const BorderRadius.only(
+            topLeft: Radius.circular(16),
+            topRight: Radius.circular(16),
+          ),
+          child: Material(
+            color: ShadTheme.of(context).colorScheme.background,
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(16),
+              topRight: Radius.circular(16),
+            ),
+            child: _SupplierForm(
+              supplierFormKey: supplierFormKey,
+              storeId: storeId,
+            ),
+          ),
+          actions: [
+            ShadButton.outline(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(Intls.to.cancel),
+            ),
+            ShadButton(
+              onPressed: () async {
+                if (supplierFormKey.currentState?.saveAndValidate() == true) {
+                  final supplier = Supplier(
+                    name:
+                        supplierFormKey.currentState?.value[Intls.to.name]
+                            as String,
+                    contactPhone:
+                        supplierFormKey.currentState?.value[Intls
+                                .to
+                                .phoneNumber]
+                            as String,
+                    storeIds: [storeId],
+                    isActive: true,
+                  );
+                  final supplierId = await SuppliersRepository.instance
+                      .createSupplier(
+                        CreateSupplierRequest(supplier: supplier),
+                      );
+
+                  if (supplierId != null) {
+                    Navigator.of(context).pop();
+                    reloadTheSupplierList.value++;
+
+                    return;
+                  }
+                  showErrorToast(context: context, message: Intls.to.error);
+                }
+              },
+              child: Text(Intls.to.addSupplier),
+            ),
+          ],
+        ),
+      );
+    }
+
     return ValueListenableBuilder(
       valueListenable: reloadTheSupplierList,
       builder: (context, value, child) {
@@ -186,22 +250,9 @@ class _SupplierDropdown extends StatelessWidget {
                     color: ShadTheme.of(context).colorScheme.primary,
                   )
                 else if (suppliers.isEmpty)
-                  ShadPopover(
-                    controller: addSupplierPopoverController,
-                    closeOnTapOutside: false,
-                    popover: (context) => SizedBox(
-                      width: 288,
-                      child: _SupplierForm(
-                        popoverController: addSupplierPopoverController,
-                        reloadTheSupplierList: () =>
-                            reloadTheSupplierList.value++,
-                        storeId: storeId,
-                      ),
-                    ),
-                    child: ShadButton(
-                      onPressed: addSupplierPopoverController.toggle,
-                      child: Text(Intls.to.addSupplier),
-                    ),
+                  ShadButton(
+                    onPressed: () => showSupplierSheet(context),
+                    child: Text(Intls.to.addSupplier),
                   )
                 else
                   LayoutBuilder(
@@ -668,79 +719,34 @@ class _FormActions extends StatelessWidget {
 }
 
 final class _SupplierForm extends StatelessWidget {
-  final supplierFormKey = GlobalKey<ShadFormState>();
-  _SupplierForm({
-    required this.popoverController,
-    required this.reloadTheSupplierList,
-    required this.storeId,
-  });
-
-  final ShadPopoverController popoverController;
-  final VoidCallback reloadTheSupplierList;
+  final GlobalKey<ShadFormState> supplierFormKey;
   final String storeId;
+
+  _SupplierForm({required this.supplierFormKey, required this.storeId});
 
   @override
   Widget build(BuildContext context) {
     return ShadForm(
       key: supplierFormKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        spacing: 12,
-        children: [
-          ShadInputFormField(
-            id: Intls.to.name,
-            label: Text(Intls.to.name),
-            validator: ValidationFormUtils.validateCompanyName,
-          ),
-          ShadInputFormField(
-            id: Intls.to.phoneNumber,
-            label: Text(Intls.to.phoneNumber),
-            validator: ValidationFormUtils.validatePhoneNumber,
-          ),
-          const SizedBox(height: 24),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            spacing: 12,
-            children: [
-              ShadButton.outline(
-                onPressed: popoverController.hide,
-                child: Text(Intls.to.cancel),
-              ),
-              ShadButton(
-                onPressed: () async {
-                  if (supplierFormKey.currentState?.saveAndValidate() == true) {
-                    final supplier = Supplier(
-                      name:
-                          supplierFormKey.currentState?.value[Intls.to.name]
-                              as String,
-                      contactPhone:
-                          supplierFormKey.currentState?.value[Intls
-                                  .to
-                                  .phoneNumber]
-                              as String,
-                      storeIds: [storeId],
-                      isActive: true,
-                    );
-                    final supplierId = await SuppliersRepository.instance
-                        .createSupplier(
-                          CreateSupplierRequest(supplier: supplier),
-                        );
-
-                    if (supplierId != null) {
-                      popoverController.hide();
-                      reloadTheSupplierList();
-
-                      return;
-                    }
-                    showErrorToast(context: context, message: Intls.to.error);
-                  }
-                },
-                child: Text(Intls.to.addSupplier),
-              ),
-            ],
-          ),
-        ],
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          spacing: 12,
+          children: [
+            ShadInputFormField(
+              id: Intls.to.name,
+              label: Text(Intls.to.name),
+              validator: ValidationFormUtils.validateCompanyName,
+            ),
+            ShadInputFormField(
+              id: Intls.to.phoneNumber,
+              label: Text(Intls.to.phoneNumber),
+              validator: ValidationFormUtils.validatePhoneNumber,
+            ),
+          ],
+        ),
       ),
     );
   }
