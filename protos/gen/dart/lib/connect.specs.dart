@@ -12,4 +12,5 @@ export 'src/order/v1/order.connect.spec.dart';
 export 'src/order/v1/receipt.connect.spec.dart';
 export 'src/store/v1/store.connect.spec.dart';
 export 'src/store/v1/supplier.connect.spec.dart';
+export 'src/sync/v1/sync.connect.spec.dart';
 export 'src/transaction/v1/transactions.connect.spec.dart';

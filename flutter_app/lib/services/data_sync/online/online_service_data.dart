@@ -48,109 +48,78 @@ class OnlineServiceData {
   /// Stream of store ID changes.
   Stream<String?> get storeIdStream => _storeIdController.stream;
 
-  /// Fetches and saves global product.
+  /// Fetches and saves global products.
   Future<void> fetchAndSaveGlobalProducts() async {
     try {
+      int totalFetched = 0;
       await for (final response in productServiceClient.streamGlobalProducts(
         StreamGlobalProductsRequest(),
       )) {
-        if (response.products.isNotEmpty) {
-          await hiveDatabase.globalProducts.clear();
-        }
         for (final product in response.products) {
           await hiveDatabase.globalProducts.put(product.refId, product);
         }
+        totalFetched += response.products.length;
       }
+      _logger.info('Synced $totalFetched global products');
     } on Exception catch (e) {
-      _logger.severe('fetchAndSaveGlobalProducts Error: $e');
-
-      return;
+      _logger.severe('Failed to sync global products: $e');
     }
   }
 
-  /// Fetches and saves store product.
+  /// Fetches and saves store products.
   Future<void> fetchAndSaveStoreProducts(String storeId) async {
     try {
+      int totalFetched = 0;
       await for (final response in productServiceClient.streamStoreProducts(
         StreamStoreProductsRequest()..storeId = storeId,
       )) {
-        if (response.products.isNotEmpty) {
-          await hiveDatabase.storeProducts.clear();
-          final box = hiveDatabase.storeProducts;
-          final keysToDelete = <String>[];
-
-          // Find all products for this store to delete
-          for (final entry in box.toMap().entries) {
-            if (entry.value.storeId == storeId) {
-              keysToDelete.add(entry.key as String);
-            }
-          }
-
-          // Delete existing products for this store
-          await box.deleteAll(keysToDelete);
-        }
         for (final product in response.products) {
           await hiveDatabase.storeProducts.put(product.refId, product);
         }
+        totalFetched += response.products.length;
       }
+      _logger.info('Synced $totalFetched store products for $storeId');
     } on Exception catch (e) {
-      _logger.severe('fetchAndSaveStoreProducts Error: $e');
-
-      return;
+      _logger.severe('Failed to sync store products: $e');
     }
   }
 
   /// Starts continuous data synchronization.
-  /// This method will listen to network connectivity and sync data automatically.
-  void startContinuousSync({String? initialStoreId}) {
+  Future<void> startContinuousSync({String? initialStoreId}) async {
     if (_isActive) {
-      _logger.warning(
-        'Continuous sync already active. Stopping previous sync.',
-      );
       stopContinuousSync();
     }
 
     _isActive = true;
     _currentStoreId = initialStoreId;
+    _logger.info('Starting continuous sync for store: $initialStoreId');
 
     if (initialStoreId != null) {
       _storeIdController.add(initialStoreId);
     }
 
-    // Combine connectivity stream with store ID stream
+    // Listen to connectivity and store changes
     _syncSubscription =
         Rx.combineLatest2<bool, String?, void>(
               networkStatusProvider.connectivityStream,
               _storeIdController.stream.where((storeId) => storeId != null),
               (isConnected, storeId) => null,
             )
-            .where((event) => _isActive) // Only process if service is active
+            .where((event) => _isActive)
             .asyncMap((event) async {
-              final isConnected =
-                  await networkStatusProvider.connectivityStream.first;
+              final isConnected = await networkStatusProvider
+                  .checkConnectivity();
               final storeId = _storeIdController.valueOrNull;
 
               if (isConnected && storeId != null) {
-                _logger.info(
-                  'Network connected. Syncing data for store: $storeId',
-                );
+                _logger.info('Syncing data for store: $storeId');
                 await _performDataSync(storeId);
-              } else {
-                _logger.info(
-                  'Network disconnected or no store selected. Skipping sync.',
-                );
               }
             })
             .listen(
-              (event) {
-                _logger.info('Continuous sync event success: $event');
-              },
-              onError: (error) {
-                _logger.severe('Continuous sync error: $error');
-              },
+              null,
+              onError: (error) => _logger.severe('Sync error: $error'),
             );
-
-    _logger.info('Continuous data sync started');
   }
 
   /// Updates the store ID for data synchronization.

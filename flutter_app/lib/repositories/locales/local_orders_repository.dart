@@ -92,7 +92,7 @@ class LocalOrdersRepository {
         'Order created successfully with stock update: ${request.order.refId}',
       );
 
-      return syncId;
+      return request.order.refId;
     } on Exception catch (e) {
       _logger.severe('addOrder Error: $e');
     }
