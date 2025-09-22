@@ -5,6 +5,8 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 import '../services/network_status_provider/network_status_provider.dart';
 import '../services/rpc/connect_rpc.dart';
 import '../utils/logger.dart';
+import 'locales/local_orders_repository.dart';
+import 'remotes/remote_orders_repository.dart';
 
 /// The orders repository.
 class OrdersRepository {
@@ -17,7 +19,13 @@ class OrdersRepository {
   static final instance = GetIt.I.get<OrdersRepository>();
 
   /// The network status provider.
-  final NetworkStatusProvider networkStatusProvider;
+  final NetworkStatusProvider _network;
+
+  /// The local products repository.
+  final LocalOrdersRepository localOrdersRepository = LocalOrdersRepository();
+
+  /// The remote orders repository.
+  final RemoteOrdersRepository remoteOrdersRepository;
 
   /// Constructs a new [OrdersRepository].
   OrdersRepository({
@@ -26,15 +34,21 @@ class OrdersRepository {
   }) : orderServiceClient = OrderServiceClient(
          transport ?? ConnectRPCService.to.clientChannel,
        ),
-       networkStatusProvider =
-           networkStatusProvider ?? GetIt.I.get<NetworkStatusProvider>();
+       remoteOrdersRepository = RemoteOrdersRepository(
+         transport: transport ?? ConnectRPCService.to.clientChannel,
+       ),
+       _network = networkStatusProvider ?? GetIt.I.get<NetworkStatusProvider>();
 
   /// Gets list of order with filter by supplier id.
   Future<List<Order>> getOrdersByQuery(FindOrdersRequest request) async {
     try {
-      final result = await orderServiceClient.findOrders(request);
+      final connection = await _network.checkConnectivity();
 
-      return result.orders;
+      if (connection) {
+        return await remoteOrdersRepository.getOrdersByQuery(request);
+      }
+
+      return localOrdersRepository.getOrdersByQuery(request);
     } on Exception catch (e) {
       _logger.severe('getOrdersByQuery Error: $e');
 
@@ -45,11 +59,13 @@ class OrdersRepository {
   /// Gets the order by ref-id.
   Future<Order> getOrderByRefId(String refId) async {
     try {
-      final result = await orderServiceClient.getOrder(
-        GetOrderRequest(orderId: refId),
-      );
+      final connection = await _network.checkConnectivity();
 
-      return result.order;
+      if (connection) {
+        return await remoteOrdersRepository.getOrderByRefId(refId);
+      }
+
+      return localOrdersRepository.getOrderByRefId(refId);
     } on Exception catch (e) {
       _logger.severe('getOrderByRefId Error: $e');
 
@@ -60,9 +76,13 @@ class OrdersRepository {
   /// Adds an order.
   Future<String?> addOrder(CreateOrderRequest request) async {
     try {
-      final response = await orderServiceClient.createOrder(request);
+      final connection = await _network.checkConnectivity();
 
-      return response.orderId;
+      if (connection) {
+        return await remoteOrdersRepository.addOrder(request);
+      }
+
+      return localOrdersRepository.addOrder(request);
     } on Exception catch (e) {
       _logger.severe('addOrder Error: $e');
     }

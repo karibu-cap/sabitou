@@ -26,6 +26,8 @@ final class CartFooter extends StatelessWidget {
           context: context,
           message: Intls.to.orderCompletedSuccessfully,
         );
+
+        return;
       }
       showErrorToast(context: context, message: Intls.to.failedToCompleteOrder);
     }

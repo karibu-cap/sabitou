@@ -26,6 +26,7 @@ import 'services/internationalization/internationalization.dart';
 import 'services/network_status_provider/network_status_provider.dart';
 import 'services/rpc/connect_rpc.dart';
 import 'services/rpc/fake_transport.dart';
+import 'services/rpc/fake_transport/data_sync.dart';
 import 'services/storage/app_storage.dart';
 import 'utils/app_constants.dart';
 import 'utils/user_preference.dart';
@@ -72,7 +73,9 @@ Future<void> _initServices() async {
     ..registerLazySingleton<StoresRepository>(StoresRepository.new)
     ..registerLazySingleton<UserRepository>(UserRepository.new)
     ..registerLazySingleton<CategoriesRepository>(CategoriesRepository.new)
-    ..registerLazySingleton<DataSyncService>(DataSyncService.new)
+    ..registerLazySingleton<DataSyncService>(
+      () => DataSyncService(transport: syncFakeTransport),
+    )
     ..registerLazySingleton<AuthProvider>(AuthProvider.new)
     ..registerLazySingleton<CartManager>(CartManager.new);
 

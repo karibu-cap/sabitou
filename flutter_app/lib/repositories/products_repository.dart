@@ -37,11 +37,13 @@ class ProductsRepository {
   /// Gets all products base on store Id.
   Future<List<StoreProduct>> getProductsByStoreId(String storeId) async {
     try {
-      final response = await remoteProductsRepository.getProductsByStoreId(
-        storeId,
-      );
+      final connection = await _network.checkConnectivity();
 
-      return response;
+      if (connection) {
+        return await remoteProductsRepository.getProductsByStoreId(storeId);
+      }
+
+      return localProductsRepository.getProductsByStoreId(storeId);
     } on Exception catch (e) {
       _logger.severe('getProductsByStoreId Error: $e');
 
@@ -92,13 +94,7 @@ class ProductsRepository {
     FindCategoryRequest request,
   ) async {
     try {
-      final connection = await _network.checkConnectivity();
-
-      if (connection) {
-        return await remoteProductsRepository.findCategories(request);
-      }
-
-      return localProductsRepository.findCategories(request);
+      return await remoteProductsRepository.findCategories(request);
     } on Exception catch (e) {
       _logger.severe('findCategories Error: $e');
 
@@ -109,13 +105,7 @@ class ProductsRepository {
   /// Adds a new product to a business.
   Future<bool> addProduct(AddStoreProductRequest request) async {
     try {
-      final connection = await _network.checkConnectivity();
-
-      if (connection) {
-        return await remoteProductsRepository.addProduct(request);
-      }
-
-      return localProductsRepository.addProduct(request);
+      return await remoteProductsRepository.addProduct(request);
     } on Exception catch (e) {
       _logger.severe('addProduct Error: $e');
 
@@ -143,13 +133,7 @@ class ProductsRepository {
   /// Updates a business product.
   Future<bool> updateProduct(UpdateStoreProductRequest request) async {
     try {
-      final connection = await _network.checkConnectivity();
-
-      if (connection) {
-        return await remoteProductsRepository.updateProduct(request);
-      }
-
-      return localProductsRepository.updateProduct(request);
+      return await remoteProductsRepository.updateProduct(request);
     } on Exception catch (e) {
       _logger.severe('updateProduct Error: $e');
 
@@ -160,13 +144,7 @@ class ProductsRepository {
   /// Deletes a business product.
   Future<bool> deleteProduct(DeleteStoreProductRequest request) async {
     try {
-      final connection = await _network.checkConnectivity();
-
-      if (connection) {
-        return await remoteProductsRepository.deleteProduct(request);
-      }
-
-      return localProductsRepository.deleteProduct(request);
+      return await remoteProductsRepository.deleteProduct(request);
     } on Exception catch (e) {
       _logger.severe('deleteProduct Error: $e');
 
@@ -179,13 +157,7 @@ class ProductsRepository {
     StreamStoreProductsRequest request,
   ) async* {
     try {
-      final connection = await _network.checkConnectivity();
-
-      if (connection) {
-        yield* remoteProductsRepository.streamStoreProducts(request);
-      }
-
-      yield* localProductsRepository.streamStoreProducts(request);
+      yield* remoteProductsRepository.streamStoreProducts(request);
     } on Exception catch (e) {
       _logger.severe('streamStoreProducts Error: $e');
       // Return empty stream on error

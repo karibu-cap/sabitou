@@ -149,7 +149,7 @@ class OfflineServiceData {
   /// Starts the retry timer
   void _startRetryTimer() {
     _retryTimer?.cancel();
-    _retryTimer = Timer.periodic(const Duration(minutes: 1), (_) async {
+    _retryTimer = Timer.periodic(const Duration(minutes: 5), (_) async {
       if (_isActive) {
         final isConnected = await _networkStatusProvider.checkConnectivity();
         if (isConnected) {
@@ -181,15 +181,53 @@ class OfflineServiceData {
 
   /// Processes pending operations
   Future<void> _processPendingOperations() async {
-    if (!_isActive) return;
+    if (!_isActive) {
+      _logger.info('Service not active, skipping operation processing');
+
+      return;
+    }
 
     final isConnected = await _networkStatusProvider.checkConnectivity();
-    if (!isConnected) return;
+    if (!isConnected) {
+      _logger.info('No connection, skipping operation processing');
+
+      return;
+    }
 
     final operations = _operationsController.value;
+
+    // Only log if there are operations to check
+    if (operations.isNotEmpty) {
+      _logger.info('Found ${operations.length} total operations to check');
+
+      // Log details about each operation
+      for (int i = 0; i < operations.length; i++) {
+        final op = operations[i];
+        final ready = isReadyForRetry(op);
+        _logger.info(
+          'Operation $i: ${op.refId} - Status: ${op.status} - RetryCount: ${op.retryCount}/${op.maxRetries} - Ready: $ready',
+        );
+        if (!ready) {
+          _logger.info('  -> Not ready because: ${_getNotReadyReason(op)}');
+        }
+      }
+    }
+
     final readyOperations = operations.where(isReadyForRetry).toList();
 
-    if (readyOperations.isEmpty) return;
+    // Only log if there are operations or if this is the first time we see 0 operations
+    if (operations.isNotEmpty || readyOperations.isNotEmpty) {
+      _logger.info('${readyOperations.length} operations are ready for retry');
+    }
+
+    if (readyOperations.isEmpty) {
+      // Only log if there were operations to check
+      if (operations.isNotEmpty) {
+        _logger.info('No operations ready for processing');
+      }
+
+      return;
+    }
 
     _logger.info('Processing ${readyOperations.length} operations');
 
@@ -391,23 +429,52 @@ class OfflineServiceData {
     return stats;
   }
 
-  /// Checks if this operation is ready for retry
+  /// Checks if this operation is ready for processing
   ///
-  /// Returns true if the operation has failed and the next retry time
-  /// has passed (or no next retry time is set).
+  /// Returns true if the operation is pending, failed and ready for retry,
+  /// or currently retrying and ready for retry.
   bool isReadyForRetry(SyncOperation operation) {
-    final _nextRetryAt = operation.nextRetryAt;
+    // PENDING operations are always ready to be processed
+    if (operation.status == SyncOperationStatus.SYNC_OPERATION_STATUS_PENDING) {
+      return true;
+    }
+
+    // For FAILED or RETRYING operations, check retry conditions
     if (operation.status != SyncOperationStatus.SYNC_OPERATION_STATUS_FAILED &&
         operation.status !=
             SyncOperationStatus.SYNC_OPERATION_STATUS_RETRYING) {
-      return false; // Not FAILED or RETRYING
+      return false; // Not PENDING, FAILED or RETRYING
     }
+
     if (operation.retryCount >= operation.maxRetries) {
       return false; // Exceeded max retries
     }
 
+    final _nextRetryAt = operation.nextRetryAt;
+
     return DateTime.now().isAfter(
       _nextRetryAt.toDateTime(),
     ); // Retry time has passed
+  }
+
+  /// Gets the reason why an operation is not ready for retry
+  String _getNotReadyReason(SyncOperation operation) {
+    if (operation.status != SyncOperationStatus.SYNC_OPERATION_STATUS_FAILED &&
+        operation.status !=
+            SyncOperationStatus.SYNC_OPERATION_STATUS_RETRYING) {
+      return 'Status is ${operation.status} (needs FAILED or RETRYING)';
+    }
+    if (operation.retryCount >= operation.maxRetries) {
+      return 'Exceeded max retries (${operation.retryCount}/${operation.maxRetries})';
+    }
+    final nextRetryAt = operation.nextRetryAt.toDateTime();
+    final now = DateTime.now();
+    if (!now.isAfter(nextRetryAt)) {
+      final waitTime = nextRetryAt.difference(now);
+
+      return 'Next retry at $nextRetryAt (wait ${waitTime.inSeconds}s more)';
+    }
+
+    return 'Unknown reason';
   }
 }
