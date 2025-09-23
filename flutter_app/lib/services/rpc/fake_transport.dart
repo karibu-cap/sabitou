@@ -79,7 +79,7 @@ final _fakeTransport =
         })
         .server(SupplierService.streamStoreSuppliers, (req, _) async* {
           // Simulate initial data
-          yield GetStoreSuppliersResponse()
+          yield StreamStoreSuppliersResponse()
             ..suppliers.addAll([
               Supplier()
                 ..refId = 'supplier_1'
@@ -100,7 +100,7 @@ final _fakeTransport =
           // Simulate periodic updates every 10 seconds
           await Future.delayed(const Duration(seconds: 10));
 
-          yield GetStoreSuppliersResponse()
+          yield StreamStoreSuppliersResponse()
             ..suppliers.addAll([
               Supplier()
                 ..refId = 'supplier_1'

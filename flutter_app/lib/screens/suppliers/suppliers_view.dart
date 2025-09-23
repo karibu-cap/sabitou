@@ -5,6 +5,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../services/internationalization/internationalization.dart';
 import '../../utils/responsive_utils.dart';
+import '../../utils/user_preference.dart';
 import 'components/dialogs/suppliers_add/suppliers_add_view.dart';
 import 'components/list_components/supplier_shimmer_widgets.dart';
 import 'components/suppliers_list.dart';
@@ -19,9 +20,17 @@ class SuppliersView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final storeId = UserPreferences.instance.store?.refId;
+
+    if (storeId == null) {
+      return Center(
+        child: Text(AppInternationalizationService.to.noStoreSelected),
+      );
+    }
+
     return ChangeNotifierProvider<SuppliersController>(
       create: (_) => SuppliersController(
-        SuppliersViewModel(storeId: 'store-id-placeholder'),
+        SuppliersViewModel(storeId: storeId),
         AppInternationalizationService.to,
       ),
       child: const SuppliersContent(),

@@ -23,7 +23,7 @@ class SuppliersViewModel {
 
   /// Stream of suppliers for reactive UI updates.
   Stream<List<Supplier>> get suppliersStream => _suppliersRepository
-      .streamStoreSuppliers(GetStoreSuppliersRequest(storeId: storeId));
+      .streamStoreSuppliers(StreamStoreSuppliersRequest(storeId: storeId));
 
   /// Stream of products for reactive UI updates.
   Stream<List<StoreProduct>> get productsStream => _productsRepository

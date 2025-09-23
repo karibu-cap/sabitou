@@ -6253,6 +6253,31 @@ components:
              Todo: We must automatically retrieve the icon of the link.
       title: Link
       additionalProperties: false
+    store.v1.StreamStoreSuppliersRequest:
+      type: object
+      properties:
+        storeId:
+          type: string
+          title: store_id
+          minLength: 3
+          description: The reference id to the store identifier.
+      title: StreamStoreSuppliersRequest
+      required:
+        - storeId
+      additionalProperties: false
+    store.v1.StreamStoreSuppliersResponse:
+      type: object
+      properties:
+        suppliers:
+          type: array
+          items:
+            $ref: '#/components/schemas/store.v1.Supplier'
+          title: suppliers
+          description: |-
+            The list of suppliers of the store.
+             Note: Only the ids and names of the suppliers are returned.
+      title: StreamStoreSuppliersResponse
+      additionalProperties: false
     store.v1.Supplier:
       type: object
       properties:

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../services/internationalization/internationalization.dart';
+import '../../utils/user_preference.dart';
 import 'components/users_header.dart';
 import 'components/users_list.dart';
 import 'components/users_stats_grid.dart';
@@ -14,10 +16,18 @@ class UsersView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final storeId = UserPreferences.instance.store?.refId;
+
+    if (storeId == null) {
+      return Center(
+        child: Text(AppInternationalizationService.to.noStoreSelected),
+      );
+    }
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => UsersController(UsersViewModel(storeId: 'storeId')),
+          create: (_) => UsersController(UsersViewModel(storeId: storeId)),
         ),
       ],
       child: const UsersContent(),

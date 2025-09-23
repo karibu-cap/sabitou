@@ -63,7 +63,7 @@ type SupplierServiceClient interface {
 	GetStoreSuppliers(context.Context, *connect.Request[v1.GetStoreSuppliersRequest]) (*connect.Response[v1.GetStoreSuppliersResponse], error)
 	// Streams all suppliers of a store with real-time updates.
 	// This is a server streaming RPC that will send updates whenever suppliers change.
-	StreamStoreSuppliers(context.Context, *connect.Request[v1.GetStoreSuppliersRequest]) (*connect.ServerStreamForClient[v1.GetStoreSuppliersResponse], error)
+	StreamStoreSuppliers(context.Context, *connect.Request[v1.StreamStoreSuppliersRequest]) (*connect.ServerStreamForClient[v1.StreamStoreSuppliersResponse], error)
 	// Updates a supplier.
 	// Note:Only the fields that are set will be updated. array fields like external_links will be replaced.
 	UpdateSupplier(context.Context, *connect.Request[v1.UpdateSupplierRequest]) (*connect.Response[v1.UpdateSupplierResponse], error)
@@ -100,7 +100,7 @@ func NewSupplierServiceClient(httpClient connect.HTTPClient, baseURL string, opt
 			connect.WithSchema(supplierServiceMethods.ByName("GetStoreSuppliers")),
 			connect.WithClientOptions(opts...),
 		),
-		streamStoreSuppliers: connect.NewClient[v1.GetStoreSuppliersRequest, v1.GetStoreSuppliersResponse](
+		streamStoreSuppliers: connect.NewClient[v1.StreamStoreSuppliersRequest, v1.StreamStoreSuppliersResponse](
 			httpClient,
 			baseURL+SupplierServiceStreamStoreSuppliersProcedure,
 			connect.WithSchema(supplierServiceMethods.ByName("StreamStoreSuppliers")),
@@ -126,7 +126,7 @@ type supplierServiceClient struct {
 	createSupplier       *connect.Client[v1.CreateSupplierRequest, v1.CreateSupplierResponse]
 	getSupplier          *connect.Client[v1.GetSupplierRequest, v1.GetSupplierResponse]
 	getStoreSuppliers    *connect.Client[v1.GetStoreSuppliersRequest, v1.GetStoreSuppliersResponse]
-	streamStoreSuppliers *connect.Client[v1.GetStoreSuppliersRequest, v1.GetStoreSuppliersResponse]
+	streamStoreSuppliers *connect.Client[v1.StreamStoreSuppliersRequest, v1.StreamStoreSuppliersResponse]
 	updateSupplier       *connect.Client[v1.UpdateSupplierRequest, v1.UpdateSupplierResponse]
 	deleteSupplier       *connect.Client[v1.DeleteSupplierRequest, v1.DeleteSupplierResponse]
 }
@@ -147,7 +147,7 @@ func (c *supplierServiceClient) GetStoreSuppliers(ctx context.Context, req *conn
 }
 
 // StreamStoreSuppliers calls store.v1.SupplierService.StreamStoreSuppliers.
-func (c *supplierServiceClient) StreamStoreSuppliers(ctx context.Context, req *connect.Request[v1.GetStoreSuppliersRequest]) (*connect.ServerStreamForClient[v1.GetStoreSuppliersResponse], error) {
+func (c *supplierServiceClient) StreamStoreSuppliers(ctx context.Context, req *connect.Request[v1.StreamStoreSuppliersRequest]) (*connect.ServerStreamForClient[v1.StreamStoreSuppliersResponse], error) {
 	return c.streamStoreSuppliers.CallServerStream(ctx, req)
 }
 
@@ -171,7 +171,7 @@ type SupplierServiceHandler interface {
 	GetStoreSuppliers(context.Context, *connect.Request[v1.GetStoreSuppliersRequest]) (*connect.Response[v1.GetStoreSuppliersResponse], error)
 	// Streams all suppliers of a store with real-time updates.
 	// This is a server streaming RPC that will send updates whenever suppliers change.
-	StreamStoreSuppliers(context.Context, *connect.Request[v1.GetStoreSuppliersRequest], *connect.ServerStream[v1.GetStoreSuppliersResponse]) error
+	StreamStoreSuppliers(context.Context, *connect.Request[v1.StreamStoreSuppliersRequest], *connect.ServerStream[v1.StreamStoreSuppliersResponse]) error
 	// Updates a supplier.
 	// Note:Only the fields that are set will be updated. array fields like external_links will be replaced.
 	UpdateSupplier(context.Context, *connect.Request[v1.UpdateSupplierRequest]) (*connect.Response[v1.UpdateSupplierResponse], error)
@@ -257,7 +257,7 @@ func (UnimplementedSupplierServiceHandler) GetStoreSuppliers(context.Context, *c
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("store.v1.SupplierService.GetStoreSuppliers is not implemented"))
 }
 
-func (UnimplementedSupplierServiceHandler) StreamStoreSuppliers(context.Context, *connect.Request[v1.GetStoreSuppliersRequest], *connect.ServerStream[v1.GetStoreSuppliersResponse]) error {
+func (UnimplementedSupplierServiceHandler) StreamStoreSuppliers(context.Context, *connect.Request[v1.StreamStoreSuppliersRequest], *connect.ServerStream[v1.StreamStoreSuppliersResponse]) error {
 	return connect.NewError(connect.CodeUnimplemented, errors.New("store.v1.SupplierService.StreamStoreSuppliers is not implemented"))
 }
 

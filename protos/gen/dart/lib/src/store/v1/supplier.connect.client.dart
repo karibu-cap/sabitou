@@ -64,8 +64,8 @@ extension type SupplierServiceClient (connect.Transport _transport) {
 
   /// Streams all suppliers of a store with real-time updates.
   /// This is a server streaming RPC that will send updates whenever suppliers change.
-  Stream<storev1supplier.GetStoreSuppliersResponse> streamStoreSuppliers(
-    storev1supplier.GetStoreSuppliersRequest input, {
+  Stream<storev1supplier.StreamStoreSuppliersResponse> streamStoreSuppliers(
+    storev1supplier.StreamStoreSuppliersRequest input, {
     connect.Headers? headers,
     connect.AbortSignal? signal,
     Function(connect.Headers)? onHeader,

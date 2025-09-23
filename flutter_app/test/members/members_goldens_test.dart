@@ -58,7 +58,7 @@ final supplierFakeTransport = FakeTransportBuilder()
       return DeleteSupplierResponse()..success = true;
     })
     .server(SupplierService.streamStoreSuppliers, (req, _) async* {
-      yield GetStoreSuppliersResponse()
+      yield StreamStoreSuppliersResponse()
         ..suppliers.addAll([
           Supplier()
             ..refId = 'supplier_1'

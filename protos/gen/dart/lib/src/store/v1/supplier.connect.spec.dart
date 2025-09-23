@@ -39,8 +39,8 @@ abstract final class SupplierService {
   static const streamStoreSuppliers = connect.Spec(
     '/$name/StreamStoreSuppliers',
     connect.StreamType.server,
-    storev1supplier.GetStoreSuppliersRequest.new,
-    storev1supplier.GetStoreSuppliersResponse.new,
+    storev1supplier.StreamStoreSuppliersRequest.new,
+    storev1supplier.StreamStoreSuppliersResponse.new,
   );
 
   /// Updates a supplier.
