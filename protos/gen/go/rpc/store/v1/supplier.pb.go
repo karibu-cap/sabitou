@@ -493,6 +493,97 @@ func (x *GetStoreSuppliersResponse) GetSuppliers() []*Supplier {
 	return nil
 }
 
+type StreamStoreSuppliersRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The reference id to the store identifier.
+	StoreId       string `protobuf:"bytes,1,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *StreamStoreSuppliersRequest) Reset() {
+	*x = StreamStoreSuppliersRequest{}
+	mi := &file_store_v1_supplier_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StreamStoreSuppliersRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StreamStoreSuppliersRequest) ProtoMessage() {}
+
+func (x *StreamStoreSuppliersRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_store_v1_supplier_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StreamStoreSuppliersRequest.ProtoReflect.Descriptor instead.
+func (*StreamStoreSuppliersRequest) Descriptor() ([]byte, []int) {
+	return file_store_v1_supplier_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *StreamStoreSuppliersRequest) GetStoreId() string {
+	if x != nil {
+		return x.StoreId
+	}
+	return ""
+}
+
+type StreamStoreSuppliersResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The list of suppliers of the store.
+	// Note: Only the ids and names of the suppliers are returned.
+	Suppliers     []*Supplier `protobuf:"bytes,1,rep,name=suppliers,proto3" json:"suppliers,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *StreamStoreSuppliersResponse) Reset() {
+	*x = StreamStoreSuppliersResponse{}
+	mi := &file_store_v1_supplier_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StreamStoreSuppliersResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StreamStoreSuppliersResponse) ProtoMessage() {}
+
+func (x *StreamStoreSuppliersResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_store_v1_supplier_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StreamStoreSuppliersResponse.ProtoReflect.Descriptor instead.
+func (*StreamStoreSuppliersResponse) Descriptor() ([]byte, []int) {
+	return file_store_v1_supplier_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *StreamStoreSuppliersResponse) GetSuppliers() []*Supplier {
+	if x != nil {
+		return x.Suppliers
+	}
+	return nil
+}
+
 type UpdateSupplierRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The supplier information to update.
@@ -508,7 +599,7 @@ type UpdateSupplierRequest struct {
 
 func (x *UpdateSupplierRequest) Reset() {
 	*x = UpdateSupplierRequest{}
-	mi := &file_store_v1_supplier_proto_msgTypes[8]
+	mi := &file_store_v1_supplier_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -520,7 +611,7 @@ func (x *UpdateSupplierRequest) String() string {
 func (*UpdateSupplierRequest) ProtoMessage() {}
 
 func (x *UpdateSupplierRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_v1_supplier_proto_msgTypes[8]
+	mi := &file_store_v1_supplier_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -533,7 +624,7 @@ func (x *UpdateSupplierRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateSupplierRequest.ProtoReflect.Descriptor instead.
 func (*UpdateSupplierRequest) Descriptor() ([]byte, []int) {
-	return file_store_v1_supplier_proto_rawDescGZIP(), []int{8}
+	return file_store_v1_supplier_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *UpdateSupplierRequest) GetSupplier() *Supplier {
@@ -567,7 +658,7 @@ type UpdateSupplierResponse struct {
 
 func (x *UpdateSupplierResponse) Reset() {
 	*x = UpdateSupplierResponse{}
-	mi := &file_store_v1_supplier_proto_msgTypes[9]
+	mi := &file_store_v1_supplier_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -579,7 +670,7 @@ func (x *UpdateSupplierResponse) String() string {
 func (*UpdateSupplierResponse) ProtoMessage() {}
 
 func (x *UpdateSupplierResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_v1_supplier_proto_msgTypes[9]
+	mi := &file_store_v1_supplier_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -592,7 +683,7 @@ func (x *UpdateSupplierResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateSupplierResponse.ProtoReflect.Descriptor instead.
 func (*UpdateSupplierResponse) Descriptor() ([]byte, []int) {
-	return file_store_v1_supplier_proto_rawDescGZIP(), []int{9}
+	return file_store_v1_supplier_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *UpdateSupplierResponse) GetSupplier() *Supplier {
@@ -612,7 +703,7 @@ type DeleteSupplierRequest struct {
 
 func (x *DeleteSupplierRequest) Reset() {
 	*x = DeleteSupplierRequest{}
-	mi := &file_store_v1_supplier_proto_msgTypes[10]
+	mi := &file_store_v1_supplier_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -624,7 +715,7 @@ func (x *DeleteSupplierRequest) String() string {
 func (*DeleteSupplierRequest) ProtoMessage() {}
 
 func (x *DeleteSupplierRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_v1_supplier_proto_msgTypes[10]
+	mi := &file_store_v1_supplier_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -637,7 +728,7 @@ func (x *DeleteSupplierRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteSupplierRequest.ProtoReflect.Descriptor instead.
 func (*DeleteSupplierRequest) Descriptor() ([]byte, []int) {
-	return file_store_v1_supplier_proto_rawDescGZIP(), []int{10}
+	return file_store_v1_supplier_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *DeleteSupplierRequest) GetSupplierId() string {
@@ -657,7 +748,7 @@ type DeleteSupplierResponse struct {
 
 func (x *DeleteSupplierResponse) Reset() {
 	*x = DeleteSupplierResponse{}
-	mi := &file_store_v1_supplier_proto_msgTypes[11]
+	mi := &file_store_v1_supplier_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -669,7 +760,7 @@ func (x *DeleteSupplierResponse) String() string {
 func (*DeleteSupplierResponse) ProtoMessage() {}
 
 func (x *DeleteSupplierResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_v1_supplier_proto_msgTypes[11]
+	mi := &file_store_v1_supplier_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -682,7 +773,7 @@ func (x *DeleteSupplierResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteSupplierResponse.ProtoReflect.Descriptor instead.
 func (*DeleteSupplierResponse) Descriptor() ([]byte, []int) {
-	return file_store_v1_supplier_proto_rawDescGZIP(), []int{11}
+	return file_store_v1_supplier_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *DeleteSupplierResponse) GetSuccess() bool {
@@ -738,6 +829,11 @@ const file_store_v1_supplier_proto_rawDesc = "" +
 	"\bstore_id\x18\x01 \x01(\tB\n" +
 	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\astoreId\"M\n" +
 	"\x19GetStoreSuppliersResponse\x120\n" +
+	"\tsuppliers\x18\x01 \x03(\v2\x12.store.v1.SupplierR\tsuppliers\"D\n" +
+	"\x1bStreamStoreSuppliersRequest\x12%\n" +
+	"\bstore_id\x18\x01 \x01(\tB\n" +
+	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\astoreId\"P\n" +
+	"\x1cStreamStoreSuppliersResponse\x120\n" +
 	"\tsuppliers\x18\x01 \x03(\v2\x12.store.v1.SupplierR\tsuppliers\"\xc3\x01\n" +
 	"\x15UpdateSupplierRequest\x12.\n" +
 	"\bsupplier\x18\x01 \x01(\v2\x12.store.v1.SupplierR\bsupplier\x12)\n" +
@@ -751,12 +847,12 @@ const file_store_v1_supplier_proto_rawDesc = "" +
 	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\n" +
 	"supplierId\"2\n" +
 	"\x16DeleteSupplierResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess2\x9d\x04\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess2\xa3\x04\n" +
 	"\x0fSupplierService\x12S\n" +
 	"\x0eCreateSupplier\x12\x1f.store.v1.CreateSupplierRequest\x1a .store.v1.CreateSupplierResponse\x12J\n" +
 	"\vGetSupplier\x12\x1c.store.v1.GetSupplierRequest\x1a\x1d.store.v1.GetSupplierResponse\x12\\\n" +
-	"\x11GetStoreSuppliers\x12\".store.v1.GetStoreSuppliersRequest\x1a#.store.v1.GetStoreSuppliersResponse\x12a\n" +
-	"\x14StreamStoreSuppliers\x12\".store.v1.GetStoreSuppliersRequest\x1a#.store.v1.GetStoreSuppliersResponse0\x01\x12S\n" +
+	"\x11GetStoreSuppliers\x12\".store.v1.GetStoreSuppliersRequest\x1a#.store.v1.GetStoreSuppliersResponse\x12g\n" +
+	"\x14StreamStoreSuppliers\x12%.store.v1.StreamStoreSuppliersRequest\x1a&.store.v1.StreamStoreSuppliersResponse0\x01\x12S\n" +
 	"\x0eUpdateSupplier\x12\x1f.store.v1.UpdateSupplierRequest\x1a .store.v1.UpdateSupplierResponse\x12S\n" +
 	"\x0eDeleteSupplier\x12\x1f.store.v1.DeleteSupplierRequest\x1a .store.v1.DeleteSupplierResponseB\xa0\x01\n" +
 	"\fcom.store.v1B\rSupplierProtoP\x01Z@github.com/karibu-cap/sabitou/protos/gen/go/rpc/store/v1;storev1\xa2\x02\x03SXX\xaa\x02\bStore.V1\xca\x02\bStore\\V1\xe2\x02\x14Store\\V1\\GPBMetadata\xea\x02\tStore::V1b\x06proto3"
@@ -773,47 +869,50 @@ func file_store_v1_supplier_proto_rawDescGZIP() []byte {
 	return file_store_v1_supplier_proto_rawDescData
 }
 
-var file_store_v1_supplier_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
+var file_store_v1_supplier_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
 var file_store_v1_supplier_proto_goTypes = []any{
-	(*Link)(nil),                      // 0: store.v1.Link
-	(*Supplier)(nil),                  // 1: store.v1.Supplier
-	(*CreateSupplierRequest)(nil),     // 2: store.v1.CreateSupplierRequest
-	(*CreateSupplierResponse)(nil),    // 3: store.v1.CreateSupplierResponse
-	(*GetSupplierRequest)(nil),        // 4: store.v1.GetSupplierRequest
-	(*GetSupplierResponse)(nil),       // 5: store.v1.GetSupplierResponse
-	(*GetStoreSuppliersRequest)(nil),  // 6: store.v1.GetStoreSuppliersRequest
-	(*GetStoreSuppliersResponse)(nil), // 7: store.v1.GetStoreSuppliersResponse
-	(*UpdateSupplierRequest)(nil),     // 8: store.v1.UpdateSupplierRequest
-	(*UpdateSupplierResponse)(nil),    // 9: store.v1.UpdateSupplierResponse
-	(*DeleteSupplierRequest)(nil),     // 10: store.v1.DeleteSupplierRequest
-	(*DeleteSupplierResponse)(nil),    // 11: store.v1.DeleteSupplierResponse
-	(*v1.ResourceLink)(nil),           // 12: link.v1.ResourceLink
+	(*Link)(nil),                         // 0: store.v1.Link
+	(*Supplier)(nil),                     // 1: store.v1.Supplier
+	(*CreateSupplierRequest)(nil),        // 2: store.v1.CreateSupplierRequest
+	(*CreateSupplierResponse)(nil),       // 3: store.v1.CreateSupplierResponse
+	(*GetSupplierRequest)(nil),           // 4: store.v1.GetSupplierRequest
+	(*GetSupplierResponse)(nil),          // 5: store.v1.GetSupplierResponse
+	(*GetStoreSuppliersRequest)(nil),     // 6: store.v1.GetStoreSuppliersRequest
+	(*GetStoreSuppliersResponse)(nil),    // 7: store.v1.GetStoreSuppliersResponse
+	(*StreamStoreSuppliersRequest)(nil),  // 8: store.v1.StreamStoreSuppliersRequest
+	(*StreamStoreSuppliersResponse)(nil), // 9: store.v1.StreamStoreSuppliersResponse
+	(*UpdateSupplierRequest)(nil),        // 10: store.v1.UpdateSupplierRequest
+	(*UpdateSupplierResponse)(nil),       // 11: store.v1.UpdateSupplierResponse
+	(*DeleteSupplierRequest)(nil),        // 12: store.v1.DeleteSupplierRequest
+	(*DeleteSupplierResponse)(nil),       // 13: store.v1.DeleteSupplierResponse
+	(*v1.ResourceLink)(nil),              // 14: link.v1.ResourceLink
 }
 var file_store_v1_supplier_proto_depIdxs = []int32{
 	1,  // 0: store.v1.CreateSupplierRequest.supplier:type_name -> store.v1.Supplier
-	12, // 1: store.v1.CreateSupplierRequest.external_links:type_name -> link.v1.ResourceLink
+	14, // 1: store.v1.CreateSupplierRequest.external_links:type_name -> link.v1.ResourceLink
 	1,  // 2: store.v1.GetSupplierResponse.supplier:type_name -> store.v1.Supplier
 	1,  // 3: store.v1.GetStoreSuppliersResponse.suppliers:type_name -> store.v1.Supplier
-	1,  // 4: store.v1.UpdateSupplierRequest.supplier:type_name -> store.v1.Supplier
-	12, // 5: store.v1.UpdateSupplierRequest.external_links:type_name -> link.v1.ResourceLink
-	1,  // 6: store.v1.UpdateSupplierResponse.supplier:type_name -> store.v1.Supplier
-	2,  // 7: store.v1.SupplierService.CreateSupplier:input_type -> store.v1.CreateSupplierRequest
-	4,  // 8: store.v1.SupplierService.GetSupplier:input_type -> store.v1.GetSupplierRequest
-	6,  // 9: store.v1.SupplierService.GetStoreSuppliers:input_type -> store.v1.GetStoreSuppliersRequest
-	6,  // 10: store.v1.SupplierService.StreamStoreSuppliers:input_type -> store.v1.GetStoreSuppliersRequest
-	8,  // 11: store.v1.SupplierService.UpdateSupplier:input_type -> store.v1.UpdateSupplierRequest
-	10, // 12: store.v1.SupplierService.DeleteSupplier:input_type -> store.v1.DeleteSupplierRequest
-	3,  // 13: store.v1.SupplierService.CreateSupplier:output_type -> store.v1.CreateSupplierResponse
-	5,  // 14: store.v1.SupplierService.GetSupplier:output_type -> store.v1.GetSupplierResponse
-	7,  // 15: store.v1.SupplierService.GetStoreSuppliers:output_type -> store.v1.GetStoreSuppliersResponse
-	7,  // 16: store.v1.SupplierService.StreamStoreSuppliers:output_type -> store.v1.GetStoreSuppliersResponse
-	9,  // 17: store.v1.SupplierService.UpdateSupplier:output_type -> store.v1.UpdateSupplierResponse
-	11, // 18: store.v1.SupplierService.DeleteSupplier:output_type -> store.v1.DeleteSupplierResponse
-	13, // [13:19] is the sub-list for method output_type
-	7,  // [7:13] is the sub-list for method input_type
-	7,  // [7:7] is the sub-list for extension type_name
-	7,  // [7:7] is the sub-list for extension extendee
-	0,  // [0:7] is the sub-list for field type_name
+	1,  // 4: store.v1.StreamStoreSuppliersResponse.suppliers:type_name -> store.v1.Supplier
+	1,  // 5: store.v1.UpdateSupplierRequest.supplier:type_name -> store.v1.Supplier
+	14, // 6: store.v1.UpdateSupplierRequest.external_links:type_name -> link.v1.ResourceLink
+	1,  // 7: store.v1.UpdateSupplierResponse.supplier:type_name -> store.v1.Supplier
+	2,  // 8: store.v1.SupplierService.CreateSupplier:input_type -> store.v1.CreateSupplierRequest
+	4,  // 9: store.v1.SupplierService.GetSupplier:input_type -> store.v1.GetSupplierRequest
+	6,  // 10: store.v1.SupplierService.GetStoreSuppliers:input_type -> store.v1.GetStoreSuppliersRequest
+	8,  // 11: store.v1.SupplierService.StreamStoreSuppliers:input_type -> store.v1.StreamStoreSuppliersRequest
+	10, // 12: store.v1.SupplierService.UpdateSupplier:input_type -> store.v1.UpdateSupplierRequest
+	12, // 13: store.v1.SupplierService.DeleteSupplier:input_type -> store.v1.DeleteSupplierRequest
+	3,  // 14: store.v1.SupplierService.CreateSupplier:output_type -> store.v1.CreateSupplierResponse
+	5,  // 15: store.v1.SupplierService.GetSupplier:output_type -> store.v1.GetSupplierResponse
+	7,  // 16: store.v1.SupplierService.GetStoreSuppliers:output_type -> store.v1.GetStoreSuppliersResponse
+	9,  // 17: store.v1.SupplierService.StreamStoreSuppliers:output_type -> store.v1.StreamStoreSuppliersResponse
+	11, // 18: store.v1.SupplierService.UpdateSupplier:output_type -> store.v1.UpdateSupplierResponse
+	13, // 19: store.v1.SupplierService.DeleteSupplier:output_type -> store.v1.DeleteSupplierResponse
+	14, // [14:20] is the sub-list for method output_type
+	8,  // [8:14] is the sub-list for method input_type
+	8,  // [8:8] is the sub-list for extension type_name
+	8,  // [8:8] is the sub-list for extension extendee
+	0,  // [0:8] is the sub-list for field type_name
 }
 
 func init() { file_store_v1_supplier_proto_init() }
@@ -823,14 +922,14 @@ func file_store_v1_supplier_proto_init() {
 	}
 	file_store_v1_supplier_proto_msgTypes[1].OneofWrappers = []any{}
 	file_store_v1_supplier_proto_msgTypes[2].OneofWrappers = []any{}
-	file_store_v1_supplier_proto_msgTypes[8].OneofWrappers = []any{}
+	file_store_v1_supplier_proto_msgTypes[10].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_store_v1_supplier_proto_rawDesc), len(file_store_v1_supplier_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   12,
+			NumMessages:   14,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

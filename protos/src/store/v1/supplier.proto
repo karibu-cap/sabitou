@@ -92,6 +92,20 @@ message GetStoreSuppliersResponse {
   repeated Supplier suppliers = 1;
 }
 
+message StreamStoreSuppliersRequest {
+  // The reference id to the store identifier.
+  string store_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+}
+
+message StreamStoreSuppliersResponse {
+  // The list of suppliers of the store.
+  // Note: Only the ids and names of the suppliers are returned.
+  repeated Supplier suppliers = 1;
+}
+
 message UpdateSupplierRequest {
   // The supplier information to update.
   // Note:Only the fields that are set will be updated.
@@ -132,7 +146,7 @@ service SupplierService {
 
   // Streams all suppliers of a store with real-time updates.
   // This is a server streaming RPC that will send updates whenever suppliers change.
-  rpc StreamStoreSuppliers(GetStoreSuppliersRequest) returns (stream GetStoreSuppliersResponse);
+  rpc StreamStoreSuppliers(StreamStoreSuppliersRequest) returns (stream StreamStoreSuppliersResponse);
 
   // Updates a supplier.
   // Note:Only the fields that are set will be updated. array fields like external_links will be replaced.

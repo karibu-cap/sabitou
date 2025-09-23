@@ -1252,6 +1252,12 @@ class AppInternationalizationService extends ChangeNotifier {
     'units': {'en': 'Units', 'fr': 'Unités'},
     'codeBar': {'en': 'Code Bar', 'fr': 'Code Bar'},
     'salesReports': {'en': 'Sales Reports', 'fr': 'Rapports de ventes'},
+    'noStoreSelected': {
+      'en':
+          'You haven\'t selected a store, please go to settings to select a store',
+      'fr':
+          'Vous n\'avez pas sélectionné de magasin, veuillez aller dans les paramètres pour en sélectionner un',
+    },
   };
 
   /// Direct access to the internationalization service.
@@ -1273,6 +1279,9 @@ class AppInternationalizationService extends ChangeNotifier {
 
   /// The sales reports.
   String get salesReports => _stringOfLocalizedValue('salesReports');
+
+  /// No store selected message.
+  String get noStoreSelected => _stringOfLocalizedValue('noStoreSelected');
 
   /// The code bar.
   String get codeBar => _stringOfLocalizedValue('codeBar');

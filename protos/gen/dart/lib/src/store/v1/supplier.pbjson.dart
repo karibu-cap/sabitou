@@ -236,6 +236,41 @@ final $typed_data.Uint8List getStoreSuppliersResponseDescriptor =
         'ChlHZXRTdG9yZVN1cHBsaWVyc1Jlc3BvbnNlEjAKCXN1cHBsaWVycxgBIAMoCzISLnN0b3JlLn'
         'YxLlN1cHBsaWVyUglzdXBwbGllcnM=');
 
+@$core.Deprecated('Use streamStoreSuppliersRequestDescriptor instead')
+const StreamStoreSuppliersRequest$json = {
+  '1': 'StreamStoreSuppliersRequest',
+  '2': [
+    {'1': 'store_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'storeId'},
+  ],
+};
+
+/// Descriptor for `StreamStoreSuppliersRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List streamStoreSuppliersRequestDescriptor =
+    $convert.base64Decode(
+        'ChtTdHJlYW1TdG9yZVN1cHBsaWVyc1JlcXVlc3QSJQoIc3RvcmVfaWQYASABKAlCCrpIB8gBAX'
+        'ICEANSB3N0b3JlSWQ=');
+
+@$core.Deprecated('Use streamStoreSuppliersResponseDescriptor instead')
+const StreamStoreSuppliersResponse$json = {
+  '1': 'StreamStoreSuppliersResponse',
+  '2': [
+    {
+      '1': 'suppliers',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.store.v1.Supplier',
+      '10': 'suppliers'
+    },
+  ],
+};
+
+/// Descriptor for `StreamStoreSuppliersResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List streamStoreSuppliersResponseDescriptor =
+    $convert.base64Decode(
+        'ChxTdHJlYW1TdG9yZVN1cHBsaWVyc1Jlc3BvbnNlEjAKCXN1cHBsaWVycxgBIAMoCzISLnN0b3'
+        'JlLnYxLlN1cHBsaWVyUglzdXBwbGllcnM=');
+
 @$core.Deprecated('Use updateSupplierRequestDescriptor instead')
 const UpdateSupplierRequest$json = {
   '1': 'UpdateSupplierRequest',
@@ -345,8 +380,8 @@ const $core.Map<$core.String, $core.dynamic> SupplierServiceBase$json = {
     },
     {
       '1': 'StreamStoreSuppliers',
-      '2': '.store.v1.GetStoreSuppliersRequest',
-      '3': '.store.v1.GetStoreSuppliersResponse',
+      '2': '.store.v1.StreamStoreSuppliersRequest',
+      '3': '.store.v1.StreamStoreSuppliersResponse',
       '6': true
     },
     {
@@ -373,6 +408,8 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
   '.store.v1.GetSupplierResponse': GetSupplierResponse$json,
   '.store.v1.GetStoreSuppliersRequest': GetStoreSuppliersRequest$json,
   '.store.v1.GetStoreSuppliersResponse': GetStoreSuppliersResponse$json,
+  '.store.v1.StreamStoreSuppliersRequest': StreamStoreSuppliersRequest$json,
+  '.store.v1.StreamStoreSuppliersResponse': StreamStoreSuppliersResponse$json,
   '.store.v1.UpdateSupplierRequest': UpdateSupplierRequest$json,
   '.store.v1.UpdateSupplierResponse': UpdateSupplierResponse$json,
   '.store.v1.DeleteSupplierRequest': DeleteSupplierRequest$json,
@@ -385,9 +422,9 @@ final $typed_data.Uint8List supplierServiceDescriptor = $convert.base64Decode(
     'BwbGllclJlcXVlc3QaIC5zdG9yZS52MS5DcmVhdGVTdXBwbGllclJlc3BvbnNlEkoKC0dldFN1'
     'cHBsaWVyEhwuc3RvcmUudjEuR2V0U3VwcGxpZXJSZXF1ZXN0Gh0uc3RvcmUudjEuR2V0U3VwcG'
     'xpZXJSZXNwb25zZRJcChFHZXRTdG9yZVN1cHBsaWVycxIiLnN0b3JlLnYxLkdldFN0b3JlU3Vw'
-    'cGxpZXJzUmVxdWVzdBojLnN0b3JlLnYxLkdldFN0b3JlU3VwcGxpZXJzUmVzcG9uc2USYQoUU3'
-    'RyZWFtU3RvcmVTdXBwbGllcnMSIi5zdG9yZS52MS5HZXRTdG9yZVN1cHBsaWVyc1JlcXVlc3Qa'
-    'Iy5zdG9yZS52MS5HZXRTdG9yZVN1cHBsaWVyc1Jlc3BvbnNlMAESUwoOVXBkYXRlU3VwcGxpZX'
-    'ISHy5zdG9yZS52MS5VcGRhdGVTdXBwbGllclJlcXVlc3QaIC5zdG9yZS52MS5VcGRhdGVTdXBw'
-    'bGllclJlc3BvbnNlElMKDkRlbGV0ZVN1cHBsaWVyEh8uc3RvcmUudjEuRGVsZXRlU3VwcGxpZX'
-    'JSZXF1ZXN0GiAuc3RvcmUudjEuRGVsZXRlU3VwcGxpZXJSZXNwb25zZQ==');
+    'cGxpZXJzUmVxdWVzdBojLnN0b3JlLnYxLkdldFN0b3JlU3VwcGxpZXJzUmVzcG9uc2USZwoUU3'
+    'RyZWFtU3RvcmVTdXBwbGllcnMSJS5zdG9yZS52MS5TdHJlYW1TdG9yZVN1cHBsaWVyc1JlcXVl'
+    'c3QaJi5zdG9yZS52MS5TdHJlYW1TdG9yZVN1cHBsaWVyc1Jlc3BvbnNlMAESUwoOVXBkYXRlU3'
+    'VwcGxpZXISHy5zdG9yZS52MS5VcGRhdGVTdXBwbGllclJlcXVlc3QaIC5zdG9yZS52MS5VcGRh'
+    'dGVTdXBwbGllclJlc3BvbnNlElMKDkRlbGV0ZVN1cHBsaWVyEh8uc3RvcmUudjEuRGVsZXRlU3'
+    'VwcGxpZXJSZXF1ZXN0GiAuc3RvcmUudjEuRGVsZXRlU3VwcGxpZXJSZXNwb25zZQ==');

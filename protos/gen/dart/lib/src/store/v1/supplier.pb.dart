@@ -624,6 +624,124 @@ class GetStoreSuppliersResponse extends $pb.GeneratedMessage {
   $pb.PbList<Supplier> get suppliers => $_getList(0);
 }
 
+class StreamStoreSuppliersRequest extends $pb.GeneratedMessage {
+  factory StreamStoreSuppliersRequest({
+    $core.String? storeId,
+  }) {
+    final result = create();
+    if (storeId != null) result.storeId = storeId;
+    return result;
+  }
+
+  StreamStoreSuppliersRequest._();
+
+  factory StreamStoreSuppliersRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory StreamStoreSuppliersRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'StreamStoreSuppliersRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'store.v1'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'storeId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  StreamStoreSuppliersRequest clone() =>
+      StreamStoreSuppliersRequest()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  StreamStoreSuppliersRequest copyWith(
+          void Function(StreamStoreSuppliersRequest) updates) =>
+      super.copyWith(
+              (message) => updates(message as StreamStoreSuppliersRequest))
+          as StreamStoreSuppliersRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static StreamStoreSuppliersRequest create() =>
+      StreamStoreSuppliersRequest._();
+  @$core.override
+  StreamStoreSuppliersRequest createEmptyInstance() => create();
+  static $pb.PbList<StreamStoreSuppliersRequest> createRepeated() =>
+      $pb.PbList<StreamStoreSuppliersRequest>();
+  @$core.pragma('dart2js:noInline')
+  static StreamStoreSuppliersRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<StreamStoreSuppliersRequest>(create);
+  static StreamStoreSuppliersRequest? _defaultInstance;
+
+  /// The reference id to the store identifier.
+  @$pb.TagNumber(1)
+  $core.String get storeId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set storeId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasStoreId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearStoreId() => $_clearField(1);
+}
+
+class StreamStoreSuppliersResponse extends $pb.GeneratedMessage {
+  factory StreamStoreSuppliersResponse({
+    $core.Iterable<Supplier>? suppliers,
+  }) {
+    final result = create();
+    if (suppliers != null) result.suppliers.addAll(suppliers);
+    return result;
+  }
+
+  StreamStoreSuppliersResponse._();
+
+  factory StreamStoreSuppliersResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory StreamStoreSuppliersResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'StreamStoreSuppliersResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'store.v1'),
+      createEmptyInstance: create)
+    ..pc<Supplier>(1, _omitFieldNames ? '' : 'suppliers', $pb.PbFieldType.PM,
+        subBuilder: Supplier.create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  StreamStoreSuppliersResponse clone() =>
+      StreamStoreSuppliersResponse()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  StreamStoreSuppliersResponse copyWith(
+          void Function(StreamStoreSuppliersResponse) updates) =>
+      super.copyWith(
+              (message) => updates(message as StreamStoreSuppliersResponse))
+          as StreamStoreSuppliersResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static StreamStoreSuppliersResponse create() =>
+      StreamStoreSuppliersResponse._();
+  @$core.override
+  StreamStoreSuppliersResponse createEmptyInstance() => create();
+  static $pb.PbList<StreamStoreSuppliersResponse> createRepeated() =>
+      $pb.PbList<StreamStoreSuppliersResponse>();
+  @$core.pragma('dart2js:noInline')
+  static StreamStoreSuppliersResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<StreamStoreSuppliersResponse>(create);
+  static StreamStoreSuppliersResponse? _defaultInstance;
+
+  /// The list of suppliers of the store.
+  /// Note: Only the ids and names of the suppliers are returned.
+  @$pb.TagNumber(1)
+  $pb.PbList<Supplier> get suppliers => $_getList(0);
+}
+
 class UpdateSupplierRequest extends $pb.GeneratedMessage {
   factory UpdateSupplierRequest({
     Supplier? supplier,
@@ -915,10 +1033,10 @@ class SupplierServiceApi {
 
   /// Streams all suppliers of a store with real-time updates.
   /// This is a server streaming RPC that will send updates whenever suppliers change.
-  $async.Future<GetStoreSuppliersResponse> streamStoreSuppliers(
-          $pb.ClientContext? ctx, GetStoreSuppliersRequest request) =>
-      _client.invoke<GetStoreSuppliersResponse>(ctx, 'SupplierService',
-          'StreamStoreSuppliers', request, GetStoreSuppliersResponse());
+  $async.Future<StreamStoreSuppliersResponse> streamStoreSuppliers(
+          $pb.ClientContext? ctx, StreamStoreSuppliersRequest request) =>
+      _client.invoke<StreamStoreSuppliersResponse>(ctx, 'SupplierService',
+          'StreamStoreSuppliers', request, StreamStoreSuppliersResponse());
 
   /// Updates a supplier.
   /// Note:Only the fields that are set will be updated. array fields like external_links will be replaced.

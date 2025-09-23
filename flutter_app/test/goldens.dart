@@ -19,6 +19,7 @@ import 'package:sabitou_clients/services/data_sync/data_sync_service.dart';
 import 'package:sabitou_clients/services/hive_database/hive_database.dart';
 import 'package:sabitou_clients/services/internationalization/internationalization.dart';
 import 'package:sabitou_clients/services/network_status_provider/network_status_provider.dart';
+import 'package:sabitou_clients/services/rpc/fake_transport.dart';
 import 'package:sabitou_clients/services/storage/app_storage.dart';
 import 'package:sabitou_clients/utils/user_preference.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
@@ -29,7 +30,7 @@ Future<void> multiScreenMultiLocaleGolden(
   String name,
 ) async {
   TestWidgetsFlutterBinding.ensureInitialized();
-  final storage = AppStorageService(AppStorageType.fake);
+  final storage = AppStorageService(AppStorageType.fake, fakeStorage);
 
   final AppInternationalizationService appInternationalization =
       AppInternationalizationService(const Locale('en'), storage);

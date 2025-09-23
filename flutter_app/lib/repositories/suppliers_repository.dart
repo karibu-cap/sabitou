@@ -130,7 +130,7 @@ final class SuppliersRepository {
 
   /// Stream suppliers for a specific store.
   Stream<List<Supplier>> streamStoreSuppliers(
-    GetStoreSuppliersRequest request,
+    StreamStoreSuppliersRequest request,
   ) {
     try {
       // Use the native gRPC streaming service
