@@ -165,4 +165,18 @@ class ProductsRepository {
       yield* const Stream.empty();
     }
   }
+
+  /// Streams global products based on store Id for real-time updates.
+  Stream<List<GlobalProduct>> streamGlobalProducts(
+    StreamGlobalProductsRequest request,
+  ) async* {
+    try {
+      yield* remoteProductsRepository.streamGlobalProducts(request);
+    } on Exception catch (e) {
+      _logger.severe('streamGlobalProducts Error: $e');
+      // Return empty stream on error
+
+      yield* const Stream.empty();
+    }
+  }
 }

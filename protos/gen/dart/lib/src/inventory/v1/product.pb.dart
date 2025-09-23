@@ -1597,10 +1597,10 @@ class StreamStoreProductsResponse extends $pb.GeneratedMessage {
 
 class StreamGlobalProductsRequest extends $pb.GeneratedMessage {
   factory StreamGlobalProductsRequest({
-    $core.String? globalProductId,
+    $core.String? storeId,
   }) {
     final result = create();
-    if (globalProductId != null) result.globalProductId = globalProductId;
+    if (storeId != null) result.storeId = storeId;
     return result;
   }
 
@@ -1617,7 +1617,7 @@ class StreamGlobalProductsRequest extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'StreamGlobalProductsRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'globalProductId')
+    ..aOS(1, _omitFieldNames ? '' : 'storeId')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -1645,15 +1645,15 @@ class StreamGlobalProductsRequest extends $pb.GeneratedMessage {
       $pb.GeneratedMessage.$_defaultFor<StreamGlobalProductsRequest>(create);
   static StreamGlobalProductsRequest? _defaultInstance;
 
-  /// Optional filter by global product ID.
+  /// The unique identifier of the store.
   @$pb.TagNumber(1)
-  $core.String get globalProductId => $_getSZ(0);
+  $core.String get storeId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set globalProductId($core.String value) => $_setString(0, value);
+  set storeId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasGlobalProductId() => $_has(0);
+  $core.bool hasStoreId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearGlobalProductId() => $_clearField(1);
+  void clearStoreId() => $_clearField(1);
 }
 
 class StreamGlobalProductsResponse extends $pb.GeneratedMessage {
@@ -1708,7 +1708,7 @@ class StreamGlobalProductsResponse extends $pb.GeneratedMessage {
       $pb.GeneratedMessage.$_defaultFor<StreamGlobalProductsResponse>(create);
   static StreamGlobalProductsResponse? _defaultInstance;
 
-  /// The store products for the specified store.
+  /// The global products for the specified store.
   @$pb.TagNumber(1)
   $pb.PbList<GlobalProduct> get products => $_getList(0);
 }

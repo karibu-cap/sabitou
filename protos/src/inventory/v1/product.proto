@@ -218,12 +218,12 @@ message StreamStoreProductsResponse {
 }
 
 message StreamGlobalProductsRequest {
-  // Optional filter by global product ID.
-  optional string global_product_id = 1;
+  // The unique identifier of the store.
+  string store_id = 1;
 }
 
 message StreamGlobalProductsResponse {
-  // The store products for the specified store.
+  // The global products for the specified store.
   repeated GlobalProduct products = 1;
 }
 
