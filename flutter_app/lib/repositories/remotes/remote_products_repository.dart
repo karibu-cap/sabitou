@@ -145,4 +145,23 @@ class RemoteProductsRepository {
       return const Stream.empty();
     }
   }
+
+  /// Streams global products based on store Id for real-time updates.
+  Stream<List<GlobalProduct>> streamGlobalProducts(
+    StreamGlobalProductsRequest request,
+  ) {
+    try {
+      return productServiceClient
+          .streamGlobalProducts(request)
+          .map((response) => response.products)
+          .handleError((error) {
+            _logger.severe('streamGlobalProducts Error: $error');
+          });
+    } on Exception catch (e) {
+      _logger.severe('streamGlobalProducts Error: $e');
+      // Return empty stream on error
+
+      return const Stream.empty();
+    }
+  }
 }

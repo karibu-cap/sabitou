@@ -1214,10 +1214,10 @@ func (x *StreamStoreProductsResponse) GetProducts() []*StoreProduct {
 
 type StreamGlobalProductsRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Optional filter by global product ID.
-	GlobalProductId *string `protobuf:"bytes,1,opt,name=global_product_id,json=globalProductId,proto3,oneof" json:"global_product_id,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	// The unique identifier of the store.
+	StoreId       string `protobuf:"bytes,1,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *StreamGlobalProductsRequest) Reset() {
@@ -1250,16 +1250,16 @@ func (*StreamGlobalProductsRequest) Descriptor() ([]byte, []int) {
 	return file_inventory_v1_product_proto_rawDescGZIP(), []int{20}
 }
 
-func (x *StreamGlobalProductsRequest) GetGlobalProductId() string {
-	if x != nil && x.GlobalProductId != nil {
-		return *x.GlobalProductId
+func (x *StreamGlobalProductsRequest) GetStoreId() string {
+	if x != nil {
+		return x.StoreId
 	}
 	return ""
 }
 
 type StreamGlobalProductsResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The store products for the specified store.
+	// The global products for the specified store.
 	Products      []*GlobalProduct `protobuf:"bytes,1,rep,name=products,proto3" json:"products,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -1414,10 +1414,9 @@ const file_inventory_v1_product_proto_rawDesc = "" +
 	"\f_supplier_idB\x14\n" +
 	"\x12_global_product_id\"U\n" +
 	"\x1bStreamStoreProductsResponse\x126\n" +
-	"\bproducts\x18\x01 \x03(\v2\x1a.inventory.v1.StoreProductR\bproducts\"d\n" +
-	"\x1bStreamGlobalProductsRequest\x12/\n" +
-	"\x11global_product_id\x18\x01 \x01(\tH\x00R\x0fglobalProductId\x88\x01\x01B\x14\n" +
-	"\x12_global_product_id\"W\n" +
+	"\bproducts\x18\x01 \x03(\v2\x1a.inventory.v1.StoreProductR\bproducts\"8\n" +
+	"\x1bStreamGlobalProductsRequest\x12\x19\n" +
+	"\bstore_id\x18\x01 \x01(\tR\astoreId\"W\n" +
 	"\x1cStreamGlobalProductsResponse\x127\n" +
 	"\bproducts\x18\x01 \x03(\v2\x1b.inventory.v1.GlobalProductR\bproducts2\x93\a\n" +
 	"\x0eProductService\x12g\n" +
@@ -1527,7 +1526,6 @@ func file_inventory_v1_product_proto_init() {
 	file_inventory_v1_product_proto_msgTypes[6].OneofWrappers = []any{}
 	file_inventory_v1_product_proto_msgTypes[14].OneofWrappers = []any{}
 	file_inventory_v1_product_proto_msgTypes[18].OneofWrappers = []any{}
-	file_inventory_v1_product_proto_msgTypes[20].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

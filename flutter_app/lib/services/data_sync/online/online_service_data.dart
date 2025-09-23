@@ -6,6 +6,7 @@ import 'package:get_it/get_it.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
+import '../../../repositories/products_repository.dart';
 import '../../../utils/logger.dart';
 import '../../hive_database/hive_database.dart';
 import '../../network_status_provider/network_status_provider.dart';
@@ -20,8 +21,8 @@ class OnlineServiceData {
   /// The network status provider.
   final networkStatusProvider = GetIt.I.get<NetworkStatusProvider>();
 
-  /// The product service client.
-  final ProductServiceClient productServiceClient;
+  /// The product repository.
+  final ProductsRepository productsRepository;
 
   /// Stream controller for store ID changes.
   final _storeIdController = BehaviorSubject<String?>();
@@ -37,7 +38,7 @@ class OnlineServiceData {
 
   /// Contructs a new [OnlineServiceData].
   OnlineServiceData({required connect.Transport transport})
-    : productServiceClient = ProductServiceClient(transport);
+    : productsRepository = ProductsRepository(transport: transport);
 
   /// Gets the current store ID.
   String? get currentStoreId => _currentStoreId;
@@ -49,16 +50,16 @@ class OnlineServiceData {
   Stream<String?> get storeIdStream => _storeIdController.stream;
 
   /// Fetches and saves global products.
-  Future<void> fetchAndSaveGlobalProducts() async {
+  Future<void> fetchAndSaveGlobalProducts(String storeId) async {
     try {
       int totalFetched = 0;
-      await for (final response in productServiceClient.streamGlobalProducts(
-        StreamGlobalProductsRequest(),
+      await for (final products in productsRepository.streamGlobalProducts(
+        StreamGlobalProductsRequest()..storeId = storeId,
       )) {
-        for (final product in response.products) {
+        for (final product in products) {
           await hiveDatabase.globalProducts.put(product.refId, product);
         }
-        totalFetched += response.products.length;
+        totalFetched += products.length;
       }
       _logger.info('Synced $totalFetched global products');
     } on Exception catch (e) {
@@ -70,13 +71,13 @@ class OnlineServiceData {
   Future<void> fetchAndSaveStoreProducts(String storeId) async {
     try {
       int totalFetched = 0;
-      await for (final response in productServiceClient.streamStoreProducts(
+      await for (final products in productsRepository.streamStoreProducts(
         StreamStoreProductsRequest()..storeId = storeId,
       )) {
-        for (final product in response.products) {
+        for (final product in products) {
           await hiveDatabase.storeProducts.put(product.refId, product);
         }
-        totalFetched += response.products.length;
+        totalFetched += products.length;
       }
       _logger.info('Synced $totalFetched store products for $storeId');
     } on Exception catch (e) {
@@ -149,8 +150,8 @@ class OnlineServiceData {
   /// Performs the actual data synchronization.
   Future<void> _performDataSync(String storeId) async {
     try {
-      // Sync global products first
-      await fetchAndSaveGlobalProducts();
+      // Sync global products for the store
+      await fetchAndSaveGlobalProducts(storeId);
 
       // Then sync store-specific products
       await fetchAndSaveStoreProducts(storeId);

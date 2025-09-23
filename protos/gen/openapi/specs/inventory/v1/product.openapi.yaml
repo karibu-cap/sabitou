@@ -714,11 +714,10 @@ components:
     inventory.v1.StreamGlobalProductsRequest:
       type: object
       properties:
-        globalProductId:
+        storeId:
           type: string
-          title: global_product_id
-          description: Optional filter by global product ID.
-          nullable: true
+          title: store_id
+          description: The unique identifier of the store.
       title: StreamGlobalProductsRequest
       additionalProperties: false
     inventory.v1.StreamGlobalProductsResponse:
@@ -729,7 +728,7 @@ components:
           items:
             $ref: '#/components/schemas/inventory.v1.GlobalProduct'
           title: products
-          description: The store products for the specified store.
+          description: The global products for the specified store.
       title: StreamGlobalProductsResponse
       additionalProperties: false
     inventory.v1.StreamStoreProductsRequest:

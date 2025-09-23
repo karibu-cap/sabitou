@@ -600,26 +600,15 @@ final $typed_data.Uint8List streamStoreProductsResponseDescriptor =
 const StreamGlobalProductsRequest$json = {
   '1': 'StreamGlobalProductsRequest',
   '2': [
-    {
-      '1': 'global_product_id',
-      '3': 1,
-      '4': 1,
-      '5': 9,
-      '9': 0,
-      '10': 'globalProductId',
-      '17': true
-    },
-  ],
-  '8': [
-    {'1': '_global_product_id'},
+    {'1': 'store_id', '3': 1, '4': 1, '5': 9, '10': 'storeId'},
   ],
 };
 
 /// Descriptor for `StreamGlobalProductsRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List streamGlobalProductsRequestDescriptor =
     $convert.base64Decode(
-        'ChtTdHJlYW1HbG9iYWxQcm9kdWN0c1JlcXVlc3QSLwoRZ2xvYmFsX3Byb2R1Y3RfaWQYASABKA'
-        'lIAFIPZ2xvYmFsUHJvZHVjdElkiAEBQhQKEl9nbG9iYWxfcHJvZHVjdF9pZA==');
+        'ChtTdHJlYW1HbG9iYWxQcm9kdWN0c1JlcXVlc3QSGQoIc3RvcmVfaWQYASABKAlSB3N0b3JlSW'
+        'Q=');
 
 @$core.Deprecated('Use streamGlobalProductsResponseDescriptor instead')
 const StreamGlobalProductsResponse$json = {

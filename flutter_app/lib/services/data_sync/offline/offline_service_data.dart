@@ -6,6 +6,7 @@ import 'package:rxdart/rxdart.dart';
 
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
+import '../../../repositories/sync_repository.dart';
 import '../../../utils/logger.dart';
 import '../../hive_database/hive_database.dart';
 import '../../network_status_provider/network_status_provider.dart';
@@ -26,7 +27,7 @@ class OfflineServiceData {
       GetIt.instance<NetworkStatusProvider>();
 
   /// The sync service client.
-  final SyncServiceClient syncServiceClient;
+  final SyncRepository syncRepository;
 
   /// Stream of pending operations
   final BehaviorSubject<List<SyncOperation>> _operationsController =
@@ -47,7 +48,7 @@ class OfflineServiceData {
 
   /// Constructor
   OfflineServiceData({required connect.Transport transport})
-    : syncServiceClient = SyncServiceClient(transport);
+    : syncRepository = SyncRepository(transport: transport);
 
   /// Stream of pending operations
   Stream<List<SyncOperation>> get operationsStream =>
@@ -254,13 +255,17 @@ class OfflineServiceData {
       final syncOp = operation;
 
       // Submit operation via connectRPC
-      final result = await syncServiceClient.submitSyncOperations(
+      final result = await syncRepository.submitSyncOperations(
         SubmitSyncOperationsRequest(operations: [syncOp]),
       );
 
       // Handle API response
-      if (result.operationResults.isNotEmpty) {
-        final operationResult = result.operationResults.first;
+      if (result?.operationResults.isNotEmpty ?? false) {
+        final operationResult = result?.operationResults.first;
+
+        if (operationResult == null) {
+          throw Exception('No operation result returned from sync service');
+        }
 
         if (operationResult.status ==
             SyncOperationStatus.SYNC_OPERATION_STATUS_SUCCESS) {
