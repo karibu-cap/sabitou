@@ -1640,6 +1640,140 @@ class GetStoreMembersResponse extends $pb.GeneratedMessage {
   $pb.PbList<StoreMember> get storeMembers => $_getList(0);
 }
 
+class GetStoreMemberRequest extends $pb.GeneratedMessage {
+  factory GetStoreMemberRequest({
+    $core.String? storeId,
+    $core.String? userId,
+  }) {
+    final result = create();
+    if (storeId != null) result.storeId = storeId;
+    if (userId != null) result.userId = userId;
+    return result;
+  }
+
+  GetStoreMemberRequest._();
+
+  factory GetStoreMemberRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory GetStoreMemberRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetStoreMemberRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'store.v1'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'storeId')
+    ..aOS(2, _omitFieldNames ? '' : 'userId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetStoreMemberRequest clone() =>
+      GetStoreMemberRequest()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetStoreMemberRequest copyWith(
+          void Function(GetStoreMemberRequest) updates) =>
+      super.copyWith((message) => updates(message as GetStoreMemberRequest))
+          as GetStoreMemberRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static GetStoreMemberRequest create() => GetStoreMemberRequest._();
+  @$core.override
+  GetStoreMemberRequest createEmptyInstance() => create();
+  static $pb.PbList<GetStoreMemberRequest> createRepeated() =>
+      $pb.PbList<GetStoreMemberRequest>();
+  @$core.pragma('dart2js:noInline')
+  static GetStoreMemberRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetStoreMemberRequest>(create);
+  static GetStoreMemberRequest? _defaultInstance;
+
+  /// The unique identifier of the store.
+  @$pb.TagNumber(1)
+  $core.String get storeId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set storeId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasStoreId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearStoreId() => $_clearField(1);
+
+  /// The unique identifier of the user.
+  @$pb.TagNumber(2)
+  $core.String get userId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set userId($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasUserId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearUserId() => $_clearField(2);
+}
+
+class GetStoreMemberResponse extends $pb.GeneratedMessage {
+  factory GetStoreMemberResponse({
+    StoreMember? storeMember,
+  }) {
+    final result = create();
+    if (storeMember != null) result.storeMember = storeMember;
+    return result;
+  }
+
+  GetStoreMemberResponse._();
+
+  factory GetStoreMemberResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory GetStoreMemberResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetStoreMemberResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'store.v1'),
+      createEmptyInstance: create)
+    ..aOM<StoreMember>(1, _omitFieldNames ? '' : 'storeMember',
+        subBuilder: StoreMember.create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetStoreMemberResponse clone() =>
+      GetStoreMemberResponse()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetStoreMemberResponse copyWith(
+          void Function(GetStoreMemberResponse) updates) =>
+      super.copyWith((message) => updates(message as GetStoreMemberResponse))
+          as GetStoreMemberResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static GetStoreMemberResponse create() => GetStoreMemberResponse._();
+  @$core.override
+  GetStoreMemberResponse createEmptyInstance() => create();
+  static $pb.PbList<GetStoreMemberResponse> createRepeated() =>
+      $pb.PbList<GetStoreMemberResponse>();
+  @$core.pragma('dart2js:noInline')
+  static GetStoreMemberResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetStoreMemberResponse>(create);
+  static GetStoreMemberResponse? _defaultInstance;
+
+  /// The store member.
+  @$pb.TagNumber(1)
+  StoreMember get storeMember => $_getN(0);
+  @$pb.TagNumber(1)
+  set storeMember(StoreMember value) => $_setField(1, value);
+  @$pb.TagNumber(1)
+  $core.bool hasStoreMember() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearStoreMember() => $_clearField(1);
+  @$pb.TagNumber(1)
+  StoreMember ensureStoreMember() => $_ensure(0);
+}
+
 class RemoveUserFromStoreRequest extends $pb.GeneratedMessage {
   factory RemoveUserFromStoreRequest({
     $core.String? userId,
@@ -1832,6 +1966,12 @@ class StoreServiceApi {
           $pb.ClientContext? ctx, GetStoreMembersRequest request) =>
       _client.invoke<GetStoreMembersResponse>(ctx, 'StoreService',
           'GetStoreMembers', request, GetStoreMembersResponse());
+
+  /// Get store member.
+  $async.Future<GetStoreMemberResponse> getStoreMember(
+          $pb.ClientContext? ctx, GetStoreMemberRequest request) =>
+      _client.invoke<GetStoreMemberResponse>(ctx, 'StoreService',
+          'GetStoreMember', request, GetStoreMemberResponse());
 
   /// Set store member status.
   $async.Future<SetStoreMemberStatusResponse> setStoreMemberStatus(

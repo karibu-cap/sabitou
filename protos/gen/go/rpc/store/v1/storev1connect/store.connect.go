@@ -59,6 +59,9 @@ const (
 	// StoreServiceGetStoreMembersProcedure is the fully-qualified name of the StoreService's
 	// GetStoreMembers RPC.
 	StoreServiceGetStoreMembersProcedure = "/store.v1.StoreService/GetStoreMembers"
+	// StoreServiceGetStoreMemberProcedure is the fully-qualified name of the StoreService's
+	// GetStoreMember RPC.
+	StoreServiceGetStoreMemberProcedure = "/store.v1.StoreService/GetStoreMember"
 	// StoreServiceSetStoreMemberStatusProcedure is the fully-qualified name of the StoreService's
 	// SetStoreMemberStatus RPC.
 	StoreServiceSetStoreMemberStatusProcedure = "/store.v1.StoreService/SetStoreMemberStatus"
@@ -88,6 +91,8 @@ type StoreServiceClient interface {
 	StreamStoreMembers(context.Context, *connect.Request[v1.StreamStoreMembersRequest]) (*connect.ServerStreamForClient[v1.StreamStoreMembersResponse], error)
 	// Get store members.
 	GetStoreMembers(context.Context, *connect.Request[v1.GetStoreMembersRequest]) (*connect.Response[v1.GetStoreMembersResponse], error)
+	// Get store member.
+	GetStoreMember(context.Context, *connect.Request[v1.GetStoreMemberRequest]) (*connect.Response[v1.GetStoreMemberResponse], error)
 	// Set store member status.
 	SetStoreMemberStatus(context.Context, *connect.Request[v1.SetStoreMemberStatusRequest]) (*connect.Response[v1.SetStoreMemberStatusResponse], error)
 	// Remove user from store.
@@ -159,6 +164,12 @@ func NewStoreServiceClient(httpClient connect.HTTPClient, baseURL string, opts .
 			connect.WithSchema(storeServiceMethods.ByName("GetStoreMembers")),
 			connect.WithClientOptions(opts...),
 		),
+		getStoreMember: connect.NewClient[v1.GetStoreMemberRequest, v1.GetStoreMemberResponse](
+			httpClient,
+			baseURL+StoreServiceGetStoreMemberProcedure,
+			connect.WithSchema(storeServiceMethods.ByName("GetStoreMember")),
+			connect.WithClientOptions(opts...),
+		),
 		setStoreMemberStatus: connect.NewClient[v1.SetStoreMemberStatusRequest, v1.SetStoreMemberStatusResponse](
 			httpClient,
 			baseURL+StoreServiceSetStoreMemberStatusProcedure,
@@ -185,6 +196,7 @@ type storeServiceClient struct {
 	updateStoreMember    *connect.Client[v1.UpdateStoreMemberRequest, v1.UpdateStoreMemberResponse]
 	streamStoreMembers   *connect.Client[v1.StreamStoreMembersRequest, v1.StreamStoreMembersResponse]
 	getStoreMembers      *connect.Client[v1.GetStoreMembersRequest, v1.GetStoreMembersResponse]
+	getStoreMember       *connect.Client[v1.GetStoreMemberRequest, v1.GetStoreMemberResponse]
 	setStoreMemberStatus *connect.Client[v1.SetStoreMemberStatusRequest, v1.SetStoreMemberStatusResponse]
 	removeUserFromStore  *connect.Client[v1.RemoveUserFromStoreRequest, v1.RemoveUserFromStoreResponse]
 }
@@ -234,6 +246,11 @@ func (c *storeServiceClient) GetStoreMembers(ctx context.Context, req *connect.R
 	return c.getStoreMembers.CallUnary(ctx, req)
 }
 
+// GetStoreMember calls store.v1.StoreService.GetStoreMember.
+func (c *storeServiceClient) GetStoreMember(ctx context.Context, req *connect.Request[v1.GetStoreMemberRequest]) (*connect.Response[v1.GetStoreMemberResponse], error) {
+	return c.getStoreMember.CallUnary(ctx, req)
+}
+
 // SetStoreMemberStatus calls store.v1.StoreService.SetStoreMemberStatus.
 func (c *storeServiceClient) SetStoreMemberStatus(ctx context.Context, req *connect.Request[v1.SetStoreMemberStatusRequest]) (*connect.Response[v1.SetStoreMemberStatusResponse], error) {
 	return c.setStoreMemberStatus.CallUnary(ctx, req)
@@ -265,6 +282,8 @@ type StoreServiceHandler interface {
 	StreamStoreMembers(context.Context, *connect.Request[v1.StreamStoreMembersRequest], *connect.ServerStream[v1.StreamStoreMembersResponse]) error
 	// Get store members.
 	GetStoreMembers(context.Context, *connect.Request[v1.GetStoreMembersRequest]) (*connect.Response[v1.GetStoreMembersResponse], error)
+	// Get store member.
+	GetStoreMember(context.Context, *connect.Request[v1.GetStoreMemberRequest]) (*connect.Response[v1.GetStoreMemberResponse], error)
 	// Set store member status.
 	SetStoreMemberStatus(context.Context, *connect.Request[v1.SetStoreMemberStatusRequest]) (*connect.Response[v1.SetStoreMemberStatusResponse], error)
 	// Remove user from store.
@@ -332,6 +351,12 @@ func NewStoreServiceHandler(svc StoreServiceHandler, opts ...connect.HandlerOpti
 		connect.WithSchema(storeServiceMethods.ByName("GetStoreMembers")),
 		connect.WithHandlerOptions(opts...),
 	)
+	storeServiceGetStoreMemberHandler := connect.NewUnaryHandler(
+		StoreServiceGetStoreMemberProcedure,
+		svc.GetStoreMember,
+		connect.WithSchema(storeServiceMethods.ByName("GetStoreMember")),
+		connect.WithHandlerOptions(opts...),
+	)
 	storeServiceSetStoreMemberStatusHandler := connect.NewUnaryHandler(
 		StoreServiceSetStoreMemberStatusProcedure,
 		svc.SetStoreMemberStatus,
@@ -364,6 +389,8 @@ func NewStoreServiceHandler(svc StoreServiceHandler, opts ...connect.HandlerOpti
 			storeServiceStreamStoreMembersHandler.ServeHTTP(w, r)
 		case StoreServiceGetStoreMembersProcedure:
 			storeServiceGetStoreMembersHandler.ServeHTTP(w, r)
+		case StoreServiceGetStoreMemberProcedure:
+			storeServiceGetStoreMemberHandler.ServeHTTP(w, r)
 		case StoreServiceSetStoreMemberStatusProcedure:
 			storeServiceSetStoreMemberStatusHandler.ServeHTTP(w, r)
 		case StoreServiceRemoveUserFromStoreProcedure:
@@ -411,6 +438,10 @@ func (UnimplementedStoreServiceHandler) StreamStoreMembers(context.Context, *con
 
 func (UnimplementedStoreServiceHandler) GetStoreMembers(context.Context, *connect.Request[v1.GetStoreMembersRequest]) (*connect.Response[v1.GetStoreMembersResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("store.v1.StoreService.GetStoreMembers is not implemented"))
+}
+
+func (UnimplementedStoreServiceHandler) GetStoreMember(context.Context, *connect.Request[v1.GetStoreMemberRequest]) (*connect.Response[v1.GetStoreMemberResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("store.v1.StoreService.GetStoreMember is not implemented"))
 }
 
 func (UnimplementedStoreServiceHandler) SetStoreMemberStatus(context.Context, *connect.Request[v1.SetStoreMemberStatusRequest]) (*connect.Response[v1.SetStoreMemberStatusResponse], error) {

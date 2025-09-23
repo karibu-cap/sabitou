@@ -83,6 +83,14 @@ abstract final class StoreService {
     storev1store.GetStoreMembersResponse.new,
   );
 
+  /// Get store member.
+  static const getStoreMember = connect.Spec(
+    '/$name/GetStoreMember',
+    connect.StreamType.unary,
+    storev1store.GetStoreMemberRequest.new,
+    storev1store.GetStoreMemberResponse.new,
+  );
+
   /// Set store member status.
   static const setStoreMemberStatus = connect.Spec(
     '/$name/SetStoreMemberStatus',

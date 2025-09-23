@@ -126,6 +126,19 @@ class StoresRepository {
     }
   }
 
+  /// Gets the member of a store.
+  Future<StoreMember?> getStoreMember(GetStoreMemberRequest request) async {
+    try {
+      final response = await storeServiceClient.getStoreMember(request);
+
+      return response.storeMember;
+    } on Exception catch (e) {
+      _logger.severe('getStoreMember Error: $e');
+
+      return null;
+    }
+  }
+
   /// Stream store members.
   Stream<List<StoreMember>> streamStoreMembers(
     StreamStoreMembersRequest request,

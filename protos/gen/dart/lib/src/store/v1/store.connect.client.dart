@@ -171,6 +171,24 @@ extension type StoreServiceClient (connect.Transport _transport) {
     );
   }
 
+  /// Get store member.
+  Future<storev1store.GetStoreMemberResponse> getStoreMember(
+    storev1store.GetStoreMemberRequest input, {
+    connect.Headers? headers,
+    connect.AbortSignal? signal,
+    Function(connect.Headers)? onHeader,
+    Function(connect.Headers)? onTrailer,
+  }) {
+    return connect.Client(_transport).unary(
+      specs.StoreService.getStoreMember,
+      input,
+      signal: signal,
+      headers: headers,
+      onHeader: onHeader,
+      onTrailer: onTrailer,
+    );
+  }
+
   /// Set store member status.
   Future<storev1store.SetStoreMemberStatusResponse> setStoreMemberStatus(
     storev1store.SetStoreMemberStatusRequest input, {
