@@ -28,9 +28,6 @@ abstract class HiveDatabase {
   /// Orders box.
   Box<Order> get orders;
 
-  /// Order items box.
-  Box<OrderItem> get orderItems;
-
   /// Sync operations box.
   Box<SyncOperation> get syncOperations;
 

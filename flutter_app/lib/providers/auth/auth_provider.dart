@@ -93,6 +93,8 @@ class AuthProvider extends ChangeNotifier {
     _currentUser = null;
     _errorMessage = null;
 
+    await UserPreferences.instance.clearUserPreferences();
+
     _setStatus(AuthStatus.unauthenticated);
   }
 
@@ -175,16 +177,23 @@ class AuthProvider extends ChangeNotifier {
     final businesses = await _businessRepository.getMyBusinesses(
       currentUser.refId,
     );
-    if (businesses.isEmpty) {
-      // No businesses, skip sync init
-      return;
-    }
 
     // Take first business
     final firstBusiness = businesses.first;
     await UserPreferences.instance.saveBusinessPreferences(
       newBusiness: firstBusiness,
     );
+
+    final businessMember = await _businessRepository.getBusinessMember(
+      firstBusiness.refId,
+      currentUser.refId,
+    );
+
+    if (businessMember != null) {
+      await UserPreferences.instance.saveBusinessMemberPreferences(
+        newBusinessMember: businessMember,
+      );
+    }
 
     // Fetch stores for the first business
     final stores = await _storesRepository.getStoresByBusinessId(
@@ -196,6 +205,18 @@ class AuthProvider extends ChangeNotifier {
     }
 
     await UserPreferences.instance.saveStorePreferences(newStore: stores.first);
+
+    final storeMember = await _storesRepository.getStoreMember(
+      GetStoreMemberRequest(
+        storeId: stores.first.refId,
+        userId: currentUser.refId,
+      ),
+    );
+    if (storeMember != null) {
+      await UserPreferences.instance.saveStoreMemberPreferences(
+        newStoreMember: storeMember,
+      );
+    }
   }
 
   /// Initializes data sync by fetching businesses and stores

@@ -2364,6 +2364,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/store.v1.GetStoreResponse'
+  /store.v1.StoreService/GetStoreMember:
+    post:
+      tags:
+        - store.v1.StoreService
+      summary: Get store member.
+      description: Get store member.
+      operationId: store.v1.StoreService.GetStoreMember
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/store.v1.GetStoreMemberRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/store.v1.GetStoreMemberResponse'
   /store.v1.StoreService/GetStoreMembers:
     post:
       tags:
@@ -5848,6 +5884,33 @@ components:
             The list of stores of the business.
              Note: Only the ids and names of the stores are returned.
       title: GetBusinessStoresResponse
+      additionalProperties: false
+    store.v1.GetStoreMemberRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+          title: user_id
+          minLength: 3
+          description: The unique identifier of the user.
+        storeId:
+          type: string
+          title: store_id
+          minLength: 3
+          description: The unique identifier of the store.
+      title: GetStoreMemberRequest
+      required:
+        - userId
+        - storeId
+      additionalProperties: false
+    store.v1.GetStoreMemberResponse:
+      type: object
+      properties:
+        storeMember:
+          title: store_member
+          description: The store member.
+          $ref: '#/components/schemas/store.v1.StoreMember'
+      title: GetStoreMemberResponse
       additionalProperties: false
     store.v1.GetStoreMembersRequest:
       type: object

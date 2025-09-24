@@ -21,6 +21,9 @@ final class CollectionName {
   /// The business member collection.
   static const String businessMembers = 'business_members';
 
+  /// The store member collection.
+  static const String storeMembers = 'store_members';
+
   /// The business client collection.
   static const String businessClients = 'business_clients';
 

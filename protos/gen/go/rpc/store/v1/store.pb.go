@@ -1302,6 +1302,105 @@ func (x *GetStoreMembersResponse) GetStoreMembers() []*StoreMember {
 	return nil
 }
 
+type GetStoreMemberRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The unique identifier of the user.
+	UserId string `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	// The unique identifier of the store.
+	StoreId       string `protobuf:"bytes,1,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetStoreMemberRequest) Reset() {
+	*x = GetStoreMemberRequest{}
+	mi := &file_store_v1_store_proto_msgTypes[22]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetStoreMemberRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetStoreMemberRequest) ProtoMessage() {}
+
+func (x *GetStoreMemberRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_store_v1_store_proto_msgTypes[22]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetStoreMemberRequest.ProtoReflect.Descriptor instead.
+func (*GetStoreMemberRequest) Descriptor() ([]byte, []int) {
+	return file_store_v1_store_proto_rawDescGZIP(), []int{22}
+}
+
+func (x *GetStoreMemberRequest) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+func (x *GetStoreMemberRequest) GetStoreId() string {
+	if x != nil {
+		return x.StoreId
+	}
+	return ""
+}
+
+type GetStoreMemberResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The store member.
+	StoreMember   *StoreMember `protobuf:"bytes,1,opt,name=store_member,json=storeMember,proto3" json:"store_member,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetStoreMemberResponse) Reset() {
+	*x = GetStoreMemberResponse{}
+	mi := &file_store_v1_store_proto_msgTypes[23]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetStoreMemberResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetStoreMemberResponse) ProtoMessage() {}
+
+func (x *GetStoreMemberResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_store_v1_store_proto_msgTypes[23]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetStoreMemberResponse.ProtoReflect.Descriptor instead.
+func (*GetStoreMemberResponse) Descriptor() ([]byte, []int) {
+	return file_store_v1_store_proto_rawDescGZIP(), []int{23}
+}
+
+func (x *GetStoreMemberResponse) GetStoreMember() *StoreMember {
+	if x != nil {
+		return x.StoreMember
+	}
+	return nil
+}
+
 type RemoveUserFromStoreRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The unique identifier of the user.
@@ -1313,7 +1412,7 @@ type RemoveUserFromStoreRequest struct {
 
 func (x *RemoveUserFromStoreRequest) Reset() {
 	*x = RemoveUserFromStoreRequest{}
-	mi := &file_store_v1_store_proto_msgTypes[22]
+	mi := &file_store_v1_store_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1325,7 +1424,7 @@ func (x *RemoveUserFromStoreRequest) String() string {
 func (*RemoveUserFromStoreRequest) ProtoMessage() {}
 
 func (x *RemoveUserFromStoreRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_v1_store_proto_msgTypes[22]
+	mi := &file_store_v1_store_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1338,7 +1437,7 @@ func (x *RemoveUserFromStoreRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RemoveUserFromStoreRequest.ProtoReflect.Descriptor instead.
 func (*RemoveUserFromStoreRequest) Descriptor() ([]byte, []int) {
-	return file_store_v1_store_proto_rawDescGZIP(), []int{22}
+	return file_store_v1_store_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *RemoveUserFromStoreRequest) GetUserId() string {
@@ -1365,7 +1464,7 @@ type RemoveUserFromStoreResponse struct {
 
 func (x *RemoveUserFromStoreResponse) Reset() {
 	*x = RemoveUserFromStoreResponse{}
-	mi := &file_store_v1_store_proto_msgTypes[23]
+	mi := &file_store_v1_store_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1377,7 +1476,7 @@ func (x *RemoveUserFromStoreResponse) String() string {
 func (*RemoveUserFromStoreResponse) ProtoMessage() {}
 
 func (x *RemoveUserFromStoreResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_v1_store_proto_msgTypes[23]
+	mi := &file_store_v1_store_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1390,7 +1489,7 @@ func (x *RemoveUserFromStoreResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RemoveUserFromStoreResponse.ProtoReflect.Descriptor instead.
 func (*RemoveUserFromStoreResponse) Descriptor() ([]byte, []int) {
-	return file_store_v1_store_proto_rawDescGZIP(), []int{23}
+	return file_store_v1_store_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *RemoveUserFromStoreResponse) GetSuccess() bool {
@@ -1500,7 +1599,14 @@ const file_store_v1_store_proto_rawDesc = "" +
 	"\bstore_id\x18\x01 \x01(\tB\n" +
 	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\astoreId\"U\n" +
 	"\x17GetStoreMembersResponse\x12:\n" +
-	"\rstore_members\x18\x01 \x03(\v2\x15.store.v1.StoreMemberR\fstoreMembers\"h\n" +
+	"\rstore_members\x18\x01 \x03(\v2\x15.store.v1.StoreMemberR\fstoreMembers\"c\n" +
+	"\x15GetStoreMemberRequest\x12#\n" +
+	"\auser_id\x18\x02 \x01(\tB\n" +
+	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\x06userId\x12%\n" +
+	"\bstore_id\x18\x01 \x01(\tB\n" +
+	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\astoreId\"R\n" +
+	"\x16GetStoreMemberResponse\x128\n" +
+	"\fstore_member\x18\x01 \x01(\v2\x15.store.v1.StoreMemberR\vstoreMember\"h\n" +
 	"\x1aRemoveUserFromStoreRequest\x12#\n" +
 	"\auser_id\x18\x01 \x01(\tB\n" +
 	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\x06userId\x12%\n" +
@@ -1513,7 +1619,7 @@ const file_store_v1_store_proto_rawDesc = "" +
 	"\x1aSTORE_MEMBER_STATUS_ACTIVE\x10\x01\x12\x1f\n" +
 	"\x1bSTORE_MEMBER_STATUS_PENDING\x10\x02\x12 \n" +
 	"\x1cSTORE_MEMBER_STATUS_INACTIVE\x10\x03\x12\x1e\n" +
-	"\x1aSTORE_MEMBER_STATUS_BANNED\x10\x042\xd6\a\n" +
+	"\x1aSTORE_MEMBER_STATUS_BANNED\x10\x042\xab\b\n" +
 	"\fStoreService\x12L\n" +
 	"\vCreateStore\x12\x1c.store.v1.CreateStoreRequest\x1a\x1d.store.v1.CreateStoreResponse\"\x00\x12C\n" +
 	"\bGetStore\x12\x19.store.v1.GetStoreRequest\x1a\x1a.store.v1.GetStoreResponse\"\x00\x12L\n" +
@@ -1523,7 +1629,8 @@ const file_store_v1_store_proto_rawDesc = "" +
 	"\x0eAddUserToStore\x12\x1f.store.v1.AddUserToStoreRequest\x1a .store.v1.AddUserToStoreResponse\x12\\\n" +
 	"\x11UpdateStoreMember\x12\".store.v1.UpdateStoreMemberRequest\x1a#.store.v1.UpdateStoreMemberResponse\x12a\n" +
 	"\x12StreamStoreMembers\x12#.store.v1.StreamStoreMembersRequest\x1a$.store.v1.StreamStoreMembersResponse0\x01\x12V\n" +
-	"\x0fGetStoreMembers\x12 .store.v1.GetStoreMembersRequest\x1a!.store.v1.GetStoreMembersResponse\x12e\n" +
+	"\x0fGetStoreMembers\x12 .store.v1.GetStoreMembersRequest\x1a!.store.v1.GetStoreMembersResponse\x12S\n" +
+	"\x0eGetStoreMember\x12\x1f.store.v1.GetStoreMemberRequest\x1a .store.v1.GetStoreMemberResponse\x12e\n" +
 	"\x14SetStoreMemberStatus\x12%.store.v1.SetStoreMemberStatusRequest\x1a&.store.v1.SetStoreMemberStatusResponse\x12b\n" +
 	"\x13RemoveUserFromStore\x12$.store.v1.RemoveUserFromStoreRequest\x1a%.store.v1.RemoveUserFromStoreResponseB\x9d\x01\n" +
 	"\fcom.store.v1B\n" +
@@ -1542,7 +1649,7 @@ func file_store_v1_store_proto_rawDescGZIP() []byte {
 }
 
 var file_store_v1_store_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_store_v1_store_proto_msgTypes = make([]protoimpl.MessageInfo, 24)
+var file_store_v1_store_proto_msgTypes = make([]protoimpl.MessageInfo, 26)
 var file_store_v1_store_proto_goTypes = []any{
 	(StoreMemberStatus)(0),               // 0: store.v1.StoreMemberStatus
 	(*Store)(nil),                        // 1: store.v1.Store
@@ -1567,59 +1674,64 @@ var file_store_v1_store_proto_goTypes = []any{
 	(*SetStoreMemberStatusResponse)(nil), // 20: store.v1.SetStoreMemberStatusResponse
 	(*GetStoreMembersRequest)(nil),       // 21: store.v1.GetStoreMembersRequest
 	(*GetStoreMembersResponse)(nil),      // 22: store.v1.GetStoreMembersResponse
-	(*RemoveUserFromStoreRequest)(nil),   // 23: store.v1.RemoveUserFromStoreRequest
-	(*RemoveUserFromStoreResponse)(nil),  // 24: store.v1.RemoveUserFromStoreResponse
-	(*timestamppb.Timestamp)(nil),        // 25: google.protobuf.Timestamp
-	(*v1.User)(nil),                      // 26: identity.v1.User
-	(*v1.StorePermission)(nil),           // 27: identity.v1.StorePermission
+	(*GetStoreMemberRequest)(nil),        // 23: store.v1.GetStoreMemberRequest
+	(*GetStoreMemberResponse)(nil),       // 24: store.v1.GetStoreMemberResponse
+	(*RemoveUserFromStoreRequest)(nil),   // 25: store.v1.RemoveUserFromStoreRequest
+	(*RemoveUserFromStoreResponse)(nil),  // 26: store.v1.RemoveUserFromStoreResponse
+	(*timestamppb.Timestamp)(nil),        // 27: google.protobuf.Timestamp
+	(*v1.User)(nil),                      // 28: identity.v1.User
+	(*v1.StorePermission)(nil),           // 29: identity.v1.StorePermission
 }
 var file_store_v1_store_proto_depIdxs = []int32{
-	25, // 0: store.v1.Store.created_at:type_name -> google.protobuf.Timestamp
-	25, // 1: store.v1.Store.updated_at:type_name -> google.protobuf.Timestamp
-	26, // 2: store.v1.StoreMember.user:type_name -> identity.v1.User
-	27, // 3: store.v1.StoreMember.permissions:type_name -> identity.v1.StorePermission
-	25, // 4: store.v1.StoreMember.member_since:type_name -> google.protobuf.Timestamp
+	27, // 0: store.v1.Store.created_at:type_name -> google.protobuf.Timestamp
+	27, // 1: store.v1.Store.updated_at:type_name -> google.protobuf.Timestamp
+	28, // 2: store.v1.StoreMember.user:type_name -> identity.v1.User
+	29, // 3: store.v1.StoreMember.permissions:type_name -> identity.v1.StorePermission
+	27, // 4: store.v1.StoreMember.member_since:type_name -> google.protobuf.Timestamp
 	0,  // 5: store.v1.StoreMember.status:type_name -> store.v1.StoreMemberStatus
 	1,  // 6: store.v1.CreateStoreRequest.store:type_name -> store.v1.Store
 	1,  // 7: store.v1.GetStoreResponse.store:type_name -> store.v1.Store
 	1,  // 8: store.v1.UpdateStoreRequest.store:type_name -> store.v1.Store
 	1,  // 9: store.v1.UpdateStoreResponse.store:type_name -> store.v1.Store
 	1,  // 10: store.v1.GetBusinessStoresResponse.stores:type_name -> store.v1.Store
-	27, // 11: store.v1.AddUserToStoreRequest.permissions:type_name -> identity.v1.StorePermission
+	29, // 11: store.v1.AddUserToStoreRequest.permissions:type_name -> identity.v1.StorePermission
 	2,  // 12: store.v1.AddUserToStoreResponse.store_member:type_name -> store.v1.StoreMember
-	27, // 13: store.v1.UpdateStoreMemberRequest.add_permissions:type_name -> identity.v1.StorePermission
-	27, // 14: store.v1.UpdateStoreMemberRequest.remove_permissions:type_name -> identity.v1.StorePermission
+	29, // 13: store.v1.UpdateStoreMemberRequest.add_permissions:type_name -> identity.v1.StorePermission
+	29, // 14: store.v1.UpdateStoreMemberRequest.remove_permissions:type_name -> identity.v1.StorePermission
 	2,  // 15: store.v1.UpdateStoreMemberResponse.store_member:type_name -> store.v1.StoreMember
 	2,  // 16: store.v1.StreamStoreMembersResponse.store_members:type_name -> store.v1.StoreMember
 	0,  // 17: store.v1.SetStoreMemberStatusRequest.status:type_name -> store.v1.StoreMemberStatus
 	2,  // 18: store.v1.GetStoreMembersResponse.store_members:type_name -> store.v1.StoreMember
-	3,  // 19: store.v1.StoreService.CreateStore:input_type -> store.v1.CreateStoreRequest
-	5,  // 20: store.v1.StoreService.GetStore:input_type -> store.v1.GetStoreRequest
-	7,  // 21: store.v1.StoreService.UpdateStore:input_type -> store.v1.UpdateStoreRequest
-	9,  // 22: store.v1.StoreService.DeleteStore:input_type -> store.v1.DeleteStoreRequest
-	10, // 23: store.v1.StoreService.GetBusinessStores:input_type -> store.v1.GetBusinessStoresRequest
-	13, // 24: store.v1.StoreService.AddUserToStore:input_type -> store.v1.AddUserToStoreRequest
-	15, // 25: store.v1.StoreService.UpdateStoreMember:input_type -> store.v1.UpdateStoreMemberRequest
-	17, // 26: store.v1.StoreService.StreamStoreMembers:input_type -> store.v1.StreamStoreMembersRequest
-	21, // 27: store.v1.StoreService.GetStoreMembers:input_type -> store.v1.GetStoreMembersRequest
-	19, // 28: store.v1.StoreService.SetStoreMemberStatus:input_type -> store.v1.SetStoreMemberStatusRequest
-	23, // 29: store.v1.StoreService.RemoveUserFromStore:input_type -> store.v1.RemoveUserFromStoreRequest
-	4,  // 30: store.v1.StoreService.CreateStore:output_type -> store.v1.CreateStoreResponse
-	6,  // 31: store.v1.StoreService.GetStore:output_type -> store.v1.GetStoreResponse
-	8,  // 32: store.v1.StoreService.UpdateStore:output_type -> store.v1.UpdateStoreResponse
-	12, // 33: store.v1.StoreService.DeleteStore:output_type -> store.v1.DeleteStoreResponse
-	11, // 34: store.v1.StoreService.GetBusinessStores:output_type -> store.v1.GetBusinessStoresResponse
-	14, // 35: store.v1.StoreService.AddUserToStore:output_type -> store.v1.AddUserToStoreResponse
-	16, // 36: store.v1.StoreService.UpdateStoreMember:output_type -> store.v1.UpdateStoreMemberResponse
-	18, // 37: store.v1.StoreService.StreamStoreMembers:output_type -> store.v1.StreamStoreMembersResponse
-	22, // 38: store.v1.StoreService.GetStoreMembers:output_type -> store.v1.GetStoreMembersResponse
-	20, // 39: store.v1.StoreService.SetStoreMemberStatus:output_type -> store.v1.SetStoreMemberStatusResponse
-	24, // 40: store.v1.StoreService.RemoveUserFromStore:output_type -> store.v1.RemoveUserFromStoreResponse
-	30, // [30:41] is the sub-list for method output_type
-	19, // [19:30] is the sub-list for method input_type
-	19, // [19:19] is the sub-list for extension type_name
-	19, // [19:19] is the sub-list for extension extendee
-	0,  // [0:19] is the sub-list for field type_name
+	2,  // 19: store.v1.GetStoreMemberResponse.store_member:type_name -> store.v1.StoreMember
+	3,  // 20: store.v1.StoreService.CreateStore:input_type -> store.v1.CreateStoreRequest
+	5,  // 21: store.v1.StoreService.GetStore:input_type -> store.v1.GetStoreRequest
+	7,  // 22: store.v1.StoreService.UpdateStore:input_type -> store.v1.UpdateStoreRequest
+	9,  // 23: store.v1.StoreService.DeleteStore:input_type -> store.v1.DeleteStoreRequest
+	10, // 24: store.v1.StoreService.GetBusinessStores:input_type -> store.v1.GetBusinessStoresRequest
+	13, // 25: store.v1.StoreService.AddUserToStore:input_type -> store.v1.AddUserToStoreRequest
+	15, // 26: store.v1.StoreService.UpdateStoreMember:input_type -> store.v1.UpdateStoreMemberRequest
+	17, // 27: store.v1.StoreService.StreamStoreMembers:input_type -> store.v1.StreamStoreMembersRequest
+	21, // 28: store.v1.StoreService.GetStoreMembers:input_type -> store.v1.GetStoreMembersRequest
+	23, // 29: store.v1.StoreService.GetStoreMember:input_type -> store.v1.GetStoreMemberRequest
+	19, // 30: store.v1.StoreService.SetStoreMemberStatus:input_type -> store.v1.SetStoreMemberStatusRequest
+	25, // 31: store.v1.StoreService.RemoveUserFromStore:input_type -> store.v1.RemoveUserFromStoreRequest
+	4,  // 32: store.v1.StoreService.CreateStore:output_type -> store.v1.CreateStoreResponse
+	6,  // 33: store.v1.StoreService.GetStore:output_type -> store.v1.GetStoreResponse
+	8,  // 34: store.v1.StoreService.UpdateStore:output_type -> store.v1.UpdateStoreResponse
+	12, // 35: store.v1.StoreService.DeleteStore:output_type -> store.v1.DeleteStoreResponse
+	11, // 36: store.v1.StoreService.GetBusinessStores:output_type -> store.v1.GetBusinessStoresResponse
+	14, // 37: store.v1.StoreService.AddUserToStore:output_type -> store.v1.AddUserToStoreResponse
+	16, // 38: store.v1.StoreService.UpdateStoreMember:output_type -> store.v1.UpdateStoreMemberResponse
+	18, // 39: store.v1.StoreService.StreamStoreMembers:output_type -> store.v1.StreamStoreMembersResponse
+	22, // 40: store.v1.StoreService.GetStoreMembers:output_type -> store.v1.GetStoreMembersResponse
+	24, // 41: store.v1.StoreService.GetStoreMember:output_type -> store.v1.GetStoreMemberResponse
+	20, // 42: store.v1.StoreService.SetStoreMemberStatus:output_type -> store.v1.SetStoreMemberStatusResponse
+	26, // 43: store.v1.StoreService.RemoveUserFromStore:output_type -> store.v1.RemoveUserFromStoreResponse
+	32, // [32:44] is the sub-list for method output_type
+	20, // [20:32] is the sub-list for method input_type
+	20, // [20:20] is the sub-list for extension type_name
+	20, // [20:20] is the sub-list for extension extendee
+	0,  // [0:20] is the sub-list for field type_name
 }
 
 func init() { file_store_v1_store_proto_init() }
@@ -1636,7 +1748,7 @@ func file_store_v1_store_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_store_v1_store_proto_rawDesc), len(file_store_v1_store_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   24,
+			NumMessages:   26,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

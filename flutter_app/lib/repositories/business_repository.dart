@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:collection/collection.dart';
 import 'package:connectrpc/connect.dart' as connect;
 import 'package:get_it/get_it.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
@@ -68,14 +67,13 @@ class BusinessRepository {
     String businessId,
   ) async {
     try {
-      final members = await getBusinessMembers(
-        GetBusinessMembersRequest()..businessId = businessId,
+      final response = await businessServiceClient.getBusinessMember(
+        GetBusinessMemberRequest()
+          ..userId = userId
+          ..businessId = businessId,
       );
 
-      return members.firstWhereOrNull(
-        (member) =>
-            member.user.refId == userId && member.businessId == businessId,
-      );
+      return response.businessMember;
     } on Exception catch (e) {
       _logger.severe('getBusinessMember Error: $e');
 

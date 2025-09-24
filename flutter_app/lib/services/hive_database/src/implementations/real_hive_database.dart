@@ -27,9 +27,6 @@ class RealHiveDatabase implements HiveDatabase {
   Box<Order> get orders => Hive.box<Order>('orders');
 
   @override
-  Box<OrderItem> get orderItems => Hive.box<OrderItem>('orderItems');
-
-  @override
   Box<SyncOperation> get syncOperations =>
       Hive.box<SyncOperation>('syncOperations');
 

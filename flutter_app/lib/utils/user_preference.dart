@@ -13,8 +13,14 @@ class UserPreferences extends ChangeNotifier {
   /// Currents user business.
   Business? business;
 
+  /// Currents user business member.
+  BusinessMember? businessMember;
+
   /// Currents user store.
   Store? store;
+
+  /// Currents user store member.
+  StoreMember? storeMember;
 
   /// The singleton instance.
   static UserPreferences get instance => GetIt.I.get<UserPreferences>();
@@ -32,7 +38,11 @@ class UserPreferences extends ChangeNotifier {
     final storage = AppStorageService.to;
     _user = storage.read<User>(CollectionName.users);
     business = storage.read<Business>(CollectionName.businesses);
+    businessMember = storage.read<BusinessMember>(
+      CollectionName.businessMembers,
+    );
     store = storage.read<Store>(CollectionName.stores);
+    storeMember = storage.read<StoreMember>(CollectionName.storeMembers);
   }
 
   /// Save user preferences.
@@ -52,12 +62,40 @@ class UserPreferences extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Save business member preferences.
+  Future<void> saveBusinessMemberPreferences({
+    required BusinessMember newBusinessMember,
+  }) async {
+    final storage = AppStorageService.to;
+    await storage.write<BusinessMember>(
+      CollectionName.businessMembers,
+      newBusinessMember,
+    );
+
+    businessMember = newBusinessMember;
+    notifyListeners();
+  }
+
   /// Save store preferences.
   Future<void> saveStorePreferences({required Store newStore}) async {
     final storage = AppStorageService.to;
     await storage.write<Store>(CollectionName.stores, newStore);
 
     store = newStore;
+    notifyListeners();
+  }
+
+  /// Save store member preferences.
+  Future<void> saveStoreMemberPreferences({
+    required StoreMember newStoreMember,
+  }) async {
+    final storage = AppStorageService.to;
+    await storage.write<StoreMember>(
+      CollectionName.storeMembers,
+      newStoreMember,
+    );
+
+    storeMember = newStoreMember;
     notifyListeners();
   }
 
