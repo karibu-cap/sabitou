@@ -5,7 +5,7 @@ import 'user_preference.dart';
 /// Utility class for checking user permissions on resources using StorePermission data.
 class PermissionChecker {
   /// Checks if the user can read the given store resource.
-  static bool userCanReadResourceFromStore(StoreResourceType resource) {
+  static bool canReadResourceFromStore(StoreResourceType resource) {
     return _hasStorePermission(
       resource,
       ResourceActionType.RESOURCE_ACTION_TYPE_READ,
@@ -13,7 +13,7 @@ class PermissionChecker {
   }
 
   /// Checks if the user can update the given store resource.
-  static bool userCanUpdateResourceFromStore(StoreResourceType resource) {
+  static bool canUpdateResourceFromStore(StoreResourceType resource) {
     return _hasStorePermission(
       resource,
       ResourceActionType.RESOURCE_ACTION_TYPE_UPDATE,
@@ -21,7 +21,7 @@ class PermissionChecker {
   }
 
   /// Checks if the user can add to the given store resource.
-  static bool userCanAddResourceFromStore(StoreResourceType resource) {
+  static bool canAddResourceFromStore(StoreResourceType resource) {
     return _hasStorePermission(
       resource,
       ResourceActionType.RESOURCE_ACTION_TYPE_ADD,
@@ -29,7 +29,7 @@ class PermissionChecker {
   }
 
   /// Checks if the user can remove the given store resource.
-  static bool userCanRemoveResourceFromStore(StoreResourceType resource) {
+  static bool canRemoveResourceFromStore(StoreResourceType resource) {
     return _hasStorePermission(
       resource,
       ResourceActionType.RESOURCE_ACTION_TYPE_REMOVE,
@@ -42,7 +42,9 @@ class PermissionChecker {
     ResourceActionType action,
   ) {
     final storeMember = UserPreferences.instance.storeMember;
-    if (storeMember == null || storeMember.permissions.isEmpty) {
+    if (storeMember == null ||
+        storeMember.permissions.isEmpty ||
+        storeMember.status != StoreMemberStatus.STORE_MEMBER_STATUS_ACTIVE) {
       return false;
     }
 
@@ -59,7 +61,7 @@ class PermissionChecker {
   }
 
   /// Checks if the user can read the given business resource.
-  static bool userCanReadResourceFromBusiness(BusinessResourceType resource) {
+  static bool canReadResourceFromBusiness(BusinessResourceType resource) {
     return _hasBusinessPermission(
       resource,
       ResourceActionType.RESOURCE_ACTION_TYPE_READ,
@@ -67,7 +69,7 @@ class PermissionChecker {
   }
 
   /// Checks if the user can update the given business resource.
-  static bool userCanUpdateResourceFromBusiness(BusinessResourceType resource) {
+  static bool canUpdateResourceFromBusiness(BusinessResourceType resource) {
     return _hasBusinessPermission(
       resource,
       ResourceActionType.RESOURCE_ACTION_TYPE_UPDATE,
@@ -75,7 +77,7 @@ class PermissionChecker {
   }
 
   /// Checks if the user can add to the given business resource.
-  static bool userCanAddToResourceFromBusiness(BusinessResourceType resource) {
+  static bool canAddToResourceFromBusiness(BusinessResourceType resource) {
     return _hasBusinessPermission(
       resource,
       ResourceActionType.RESOURCE_ACTION_TYPE_ADD,
@@ -83,7 +85,7 @@ class PermissionChecker {
   }
 
   /// Checks if the user can remove the given business resource.
-  static bool userCanRemoveResourceFromBusiness(BusinessResourceType resource) {
+  static bool canRemoveResourceFromBusiness(BusinessResourceType resource) {
     return _hasBusinessPermission(
       resource,
       ResourceActionType.RESOURCE_ACTION_TYPE_REMOVE,
@@ -96,7 +98,10 @@ class PermissionChecker {
     ResourceActionType action,
   ) {
     final businessMember = UserPreferences.instance.businessMember;
-    if (businessMember == null || businessMember.permissions.isEmpty) {
+    if (businessMember == null ||
+        businessMember.permissions.isEmpty ||
+        businessMember.status !=
+            BusinessMemberStatus.BUSINESS_MEMBER_STATUS_ACTIVE) {
       return false;
     }
 
@@ -116,7 +121,7 @@ class PermissionChecker {
 /// Extension on StoreMember for easier permission checks.
 extension StoreMemberPermission on StoreMember {
   /// Checks if the store member can read the given resource (implicit if higher permission granted).
-  bool storeMemberCanReadResource(StoreResourceType resource) {
+  bool canReadResource(StoreResourceType resource) {
     return permissions.any(
       (p) =>
           p.resourceType == resource &&
@@ -127,7 +132,7 @@ extension StoreMemberPermission on StoreMember {
   }
 
   /// Checks if the store member can update the given resource (implicit if REMOVE granted).
-  bool storeMemberCanUpdateResource(StoreResourceType resource) {
+  bool canUpdateResource(StoreResourceType resource) {
     return permissions.any(
       (p) =>
           p.resourceType == resource &&
@@ -138,7 +143,7 @@ extension StoreMemberPermission on StoreMember {
   }
 
   /// Checks if the store member can add to the given resource (implicit if UPDATE or REMOVE granted).
-  bool storeMemberCanAddResource(StoreResourceType resource) {
+  bool canAddResource(StoreResourceType resource) {
     return permissions.any(
       (p) =>
           p.resourceType == resource &&
@@ -149,7 +154,7 @@ extension StoreMemberPermission on StoreMember {
   }
 
   /// Checks if the store member can remove the given resource.
-  bool storeMemberCanRemoveResource(StoreResourceType resource) {
+  bool canRemoveResource(StoreResourceType resource) {
     return permissions.any(
       (p) =>
           p.resourceType == resource &&
@@ -166,7 +171,7 @@ extension StoreMemberPermission on StoreMember {
 /// Extension on BusinessMember for easier permission checks.
 extension BusinessMemberPermission on BusinessMember {
   /// Checks if the business member can read the given business resource (implicit if higher permission granted).
-  bool businessMemberCanReadResource(BusinessResourceType resource) {
+  bool canReadResource(BusinessResourceType resource) {
     return permissions.any(
       (p) =>
           p.resourceType == resource &&
@@ -177,7 +182,7 @@ extension BusinessMemberPermission on BusinessMember {
   }
 
   /// Checks if the business member can update the given business resource (implicit if REMOVE granted).
-  bool businessMemberCanUpdateResource(BusinessResourceType resource) {
+  bool canUpdateResource(BusinessResourceType resource) {
     return permissions.any(
       (p) =>
           p.resourceType == resource &&
@@ -188,7 +193,7 @@ extension BusinessMemberPermission on BusinessMember {
   }
 
   /// Checks if the business member can add to the given business resource (implicit if UPDATE or REMOVE granted).
-  bool businessMemberCanAddResource(BusinessResourceType resource) {
+  bool canAddResource(BusinessResourceType resource) {
     return permissions.any(
       (p) =>
           p.resourceType == resource &&
@@ -199,7 +204,7 @@ extension BusinessMemberPermission on BusinessMember {
   }
 
   /// Checks if the business member can remove the given business resource.
-  bool businessMemberCanRemoveResource(BusinessResourceType resource) {
+  bool canRemoveResource(BusinessResourceType resource) {
     return permissions.any(
       (p) =>
           p.resourceType == resource &&
