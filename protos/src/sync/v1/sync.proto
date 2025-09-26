@@ -12,13 +12,13 @@ import "order/v1/order.proto";
 enum SyncOperationType {
   // Unknown operation type
   SYNC_OPERATION_TYPE_UNSPECIFIED = 0;
-  
+
   // Create operation
   SYNC_OPERATION_TYPE_CREATE = 1;
-  
+
   // Update operation
   SYNC_OPERATION_TYPE_UPDATE = 2;
-  
+
   // Delete operation
   SYNC_OPERATION_TYPE_DELETE = 3;
 }
@@ -27,7 +27,7 @@ enum SyncOperationType {
 enum SyncEntityType {
   // Unknown entity type
   SYNC_ENTITY_TYPE_UNSPECIFIED = 0;
-  
+
   // Order entity
   SYNC_ENTITY_TYPE_ORDER = 1;
 }
@@ -36,22 +36,22 @@ enum SyncEntityType {
 enum SyncOperationStatus {
   // Unknown status
   SYNC_OPERATION_STATUS_UNSPECIFIED = 0;
-  
+
   // Operation is pending
   SYNC_OPERATION_STATUS_PENDING = 1;
-  
+
   // Operation is in progress
   SYNC_OPERATION_STATUS_IN_PROGRESS = 2;
-  
+
   // Operation completed successfully
   SYNC_OPERATION_STATUS_SUCCESS = 3;
-  
+
   // Operation failed
   SYNC_OPERATION_STATUS_FAILED = 4;
-  
+
   // Operation was retried
   SYNC_OPERATION_STATUS_RETRYING = 5;
-  
+
   // Operation exceeded max retries
   SYNC_OPERATION_STATUS_ABANDONED = 6;
 }
@@ -60,64 +60,64 @@ enum SyncOperationStatus {
 message SyncOperation {
   // Unique identifier for the operation
   string ref_id = 1 [(buf.validate.field).string.min_len = 1];
-  
+
   // Type of operation (create, update, delete)
   SyncOperationType operation_type = 2 [(buf.validate.field).enum.defined_only = true];
-  
+
   // Type of entity being synchronized
   SyncEntityType entity_type = 3 [(buf.validate.field).enum.defined_only = true];
-  
+
   // Unique identifier of the entity
   string entity_id = 4 [(buf.validate.field).string.min_len = 1];
-  
+
   // Store ID (if applicable)
   optional string store_id = 5;
-  
+
   // Business ID (if applicable)
   optional string business_id = 6;
-  
+
   // User ID who performed the operation
   optional string user_id = 7;
-  
+
   // Operation data (entity-specific payload)
   oneof operation_data {
     // Store product data
     inventory.v1.StoreProduct store_product_data = 10;
-    
+
     // Global product data
     inventory.v1.GlobalProduct global_product_data = 11;
-    
+
     // Product category data
     inventory.v1.Category category_data = 12;
 
     // Order data
     order.v1.Order order_data = 13;
-    
+
     // Generic JSON data for other entities
     string json_data = 40;
   }
-  
+
   // Timestamp when operation was created
   google.protobuf.Timestamp created_at = 41;
-  
+
   // Timestamp when operation was last updated
   google.protobuf.Timestamp updated_at = 42;
-  
+
   // Current status of the operation
   SyncOperationStatus status = 43;
-  
+
   // Number of retry attempts
   int32 retry_count = 44;
-  
+
   // Maximum number of retries allowed
   int32 max_retries = 45;
-  
+
   // Next retry timestamp (if applicable)
   optional google.protobuf.Timestamp next_retry_at = 46;
-  
+
   // Error message (if operation failed)
   optional string error_message = 47;
-  
+
   // Additional metadata
   map<string, string> metadata = 48;
 }
@@ -126,31 +126,31 @@ message SyncOperation {
 message SyncOperationBatch {
   // Unique identifier for the batch
   string batch_id = 1 [(buf.validate.field).string.min_len = 1];
-  
+
   // List of operations in this batch
   repeated SyncOperation operations = 2;
-  
+
   // Store ID for all operations in this batch
   optional string store_id = 3;
-  
+
   // Business ID for all operations in this batch
   optional string business_id = 4;
-  
+
   // User ID who created this batch
   optional string user_id = 5;
-  
+
   // Timestamp when batch was created
   google.protobuf.Timestamp created_at = 6;
-  
+
   // Total number of operations in batch
   int32 total_operations = 7;
-  
+
   // Number of successful operations
   int32 successful_operations = 8;
-  
+
   // Number of failed operations
   int32 failed_operations = 9;
-  
+
   // Batch metadata
   map<string, string> metadata = 10;
 }
@@ -159,19 +159,19 @@ message SyncOperationBatch {
 message SubmitSyncOperationsRequest {
   // Store ID
   optional string store_id = 1;
-  
+
   // Business ID
   optional string business_id = 2;
-  
+
   // User ID
   optional string user_id = 3;
-  
+
   // List of operations to submit
   repeated SyncOperation operations = 4 [(buf.validate.field).repeated.min_items = 1];
-  
+
   // Client device identifier
   optional string device_id = 5;
-  
+
   // Client application version
   optional string app_version = 6;
 }
@@ -180,13 +180,13 @@ message SubmitSyncOperationsRequest {
 message SubmitSyncOperationsResponse {
   // Batch ID for submitted operations
   string batch_id = 1;
-  
+
   // List of operation results
   repeated SyncOperationResult operation_results = 2;
-  
+
   // Overall batch status
   SyncOperationStatus batch_status = 3;
-  
+
   // Timestamp when batch was processed
   google.protobuf.Timestamp processed_at = 4;
 }
@@ -195,16 +195,16 @@ message SubmitSyncOperationsResponse {
 message SyncOperationResult {
   // Operation ID
   string operation_id = 1;
-  
+
   // Result status
   SyncOperationStatus status = 2;
-  
+
   // Error message (if failed)
   optional string error_message = 3;
-  
+
   // Server-side entity ID (if different from client)
   optional string server_entity_id = 4;
-  
+
   // Timestamp when operation was processed
   google.protobuf.Timestamp processed_at = 5;
 }
@@ -213,28 +213,28 @@ message SyncOperationResult {
 message GetSyncOperationsStatusRequest {
   // Store ID
   optional string store_id = 1;
-  
+
   // Business ID
   optional string business_id = 2;
-  
+
   // User ID
   optional string user_id = 3;
-  
+
   // Batch ID to check status for
   optional string batch_id = 4;
-  
+
   // List of operation IDs to check
   repeated string operation_ids = 5;
-  
+
   // Filter by status
   repeated SyncOperationStatus status_filter = 6;
-  
+
   // Filter by entity type
   repeated SyncEntityType entity_type_filter = 7;
-  
+
   // Maximum number of results
   optional int32 limit = 8;
-  
+
   // Offset for pagination
   optional int32 offset = 9;
 }
@@ -243,10 +243,10 @@ message GetSyncOperationsStatusRequest {
 message GetSyncOperationsStatusResponse {
   // List of operations with their current status
   repeated SyncOperation operations = 1;
-  
+
   // Total number of operations matching the filter
   int32 total_count = 2;
-  
+
   // Summary statistics
   SyncOperationsSummary summary = 3;
 }
@@ -255,22 +255,22 @@ message GetSyncOperationsStatusResponse {
 message SyncOperationsSummary {
   // Total operations
   int32 total_operations = 1;
-  
+
   // Pending operations
   int32 pending_operations = 2;
-  
+
   // In progress operations
   int32 in_progress_operations = 3;
-  
+
   // Successful operations
   int32 successful_operations = 4;
-  
+
   // Failed operations
   int32 failed_operations = 5;
-  
+
   // Retrying operations
   int32 retrying_operations = 6;
-  
+
   // Abandoned operations
   int32 abandoned_operations = 7;
 }
@@ -279,16 +279,16 @@ message SyncOperationsSummary {
 message StreamSyncOperationsRequest {
   // Store ID
   optional string store_id = 1;
-  
+
   // Business ID
   optional string business_id = 2;
-  
+
   // User ID
   optional string user_id = 3;
-  
+
   // Filter by entity types
   repeated SyncEntityType entity_type_filter = 4;
-  
+
   // Filter by operation types
   repeated SyncOperationType operation_type_filter = 5;
 }
@@ -297,10 +297,10 @@ message StreamSyncOperationsRequest {
 message StreamSyncOperationsResponse {
   // The sync operation that was updated
   SyncOperation operation = 1;
-  
+
   // Type of update (created, updated, deleted)
   string update_type = 2;
-  
+
   // Timestamp of the update
   google.protobuf.Timestamp update_timestamp = 3;
 }
@@ -309,19 +309,19 @@ message StreamSyncOperationsResponse {
 message RetrySyncOperationsRequest {
   // Store ID
   optional string store_id = 1;
-  
+
   // Business ID
   optional string business_id = 2;
-  
+
   // User ID
   optional string user_id = 3;
-  
+
   // Specific operation IDs to retry
   repeated string operation_ids = 4;
-  
+
   // Batch ID to retry all operations in batch
   optional string batch_id = 5;
-  
+
   // Retry all failed operations (if no specific IDs provided)
   optional bool retry_all_failed = 6;
 }
@@ -330,10 +330,10 @@ message RetrySyncOperationsRequest {
 message RetrySyncOperationsResponse {
   // Number of operations queued for retry
   int32 operations_queued = 1;
-  
+
   // List of operation IDs that were queued for retry
   repeated string queued_operation_ids = 2;
-  
+
   // List of operation IDs that could not be retried
   repeated string failed_to_queue_ids = 3;
 }
@@ -342,13 +342,13 @@ message RetrySyncOperationsResponse {
 service SyncService {
   // Submit sync operations for processing
   rpc SubmitSyncOperations(SubmitSyncOperationsRequest) returns (SubmitSyncOperationsResponse);
-  
+
   // Get status of sync operations
   rpc GetSyncOperationsStatus(GetSyncOperationsStatusRequest) returns (GetSyncOperationsStatusResponse);
-  
+
   // Stream sync operations updates in real-time
   rpc StreamSyncOperations(StreamSyncOperationsRequest) returns (stream StreamSyncOperationsResponse);
-  
+
   // Retry failed sync operations
   rpc RetrySyncOperations(RetrySyncOperationsRequest) returns (RetrySyncOperationsResponse);
 }

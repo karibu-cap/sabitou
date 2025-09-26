@@ -1,0 +1,76 @@
+syntax = "proto3";
+package order.v1;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+
+enum VoucherStatus {
+  VOUCHER_STATUS_UNSPECIFIED = 0;
+  VOUCHER_STATUS_ISSUED = 1;
+  VOUCHER_STATUS_REDEEMED = 2;
+  VOUCHER_STATUS_EXPIRED = 3;
+}
+
+message Voucher {
+  string ref_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true
+  ];
+  string order_id = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true
+  ];
+  string invoice_id = 3 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true
+  ];
+  string store_id = 4 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true
+  ];
+  double amount = 5;
+  // When the voucher was created.
+  google.protobuf.Timestamp created_at = 6;
+  // When the voucher expires.
+  google.protobuf.Timestamp expiry_date = 7;
+  VoucherStatus status = 8;
+  // Who redeemed the voucher.
+  // The voucher can be redeemed by another invoice.
+  optional string redeemed_by_reference_id = 9;
+  optional google.protobuf.Timestamp redeemed_at = 10;
+  // The additional information about the voucher.
+  optional string additional_info = 11;
+}
+
+message CreateVoucherRequest {
+  Voucher voucher = 1;
+}
+
+message CreateVoucherResponse {
+  string ref_id = 1;
+}
+
+message GetVoucherRequest {
+  string ref_id = 1;
+}
+
+message GetVoucherResponse {
+  Voucher voucher = 1;
+}
+
+message RedeemVoucherRequest {
+  string ref_id = 1;
+}
+
+message RedeemVoucherResponse {
+  bool success = 1;
+  optional string error = 2;
+}
+
+// Similar for Get, Redeem, etc.
+
+service VoucherService {
+  rpc CreateVoucher(CreateVoucherRequest) returns (CreateVoucherResponse);
+  rpc GetVoucher(GetVoucherRequest) returns (GetVoucherResponse);
+  rpc RedeemVoucher(RedeemVoucherRequest) returns (RedeemVoucherResponse);
+}

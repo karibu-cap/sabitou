@@ -3,44 +3,110 @@ syntax = "proto3";
 package order.v1;
 
 import "buf/validate/validate.proto";
+import "order/v1/order.proto";
+import "google/protobuf/timestamp.proto";
 
-message OrderInvoiceItem {
-  string product_id = 1;
-  string product_name = 2;
-  string product_price_in_xaf = 3;
-  int32 quantity = 4;
-  int32 invoice_item_total_price_in_xaf = 5;
+enum InvoiceStatus {
+  INVOICE_STATUS_UNSPECIFIED = 0;
+  // Invoice is paid.
+  INVOICE_STATUS_PAID = 1;
+  // Wait for refund.
+  INVOICE_STATUS_PENDING_REFUND = 2;
+}
+
+enum PaymentMethod {
+  PAYMENT_METHOD_UNSPECIFIED = 0;
+  PAYMENT_METHOD_CASH = 1;
+  PAYMENT_METHOD_CARD = 2;
+  PAYMENT_METHOD_ORANGE_MONEY = 3;
+  PAYMENT_METHOD_MTN_MONEY = 4;
+  PAYMENT_METHOD_VOUCHER = 5;
+  PAYMENT_METHOD_MOBILE = 6;
+}
+
+message Payment {
+  double amount = 1;
+  PaymentMethod method = 2;
+  // The reference id of the payment.
+  // For voucher, it is the voucher id.
+  optional string reference_id = 3;
+  google.protobuf.Timestamp timestamp = 4;
 }
 
 // The invoice of an order.
 // The invoice is a PDF file that can be downloaded by the customer.
 // It contains the order details, the customer details, the payment details.
-message OrderInvoice {
-  /// ...order details...
-  string order_id = 1;
-  string order_status = 2;
-  string order_total_price_in_xaf = 3;
-  string order_created_at = 4;
-  string order_updated_at = 5;
-  string order_resource_name = 6;
-  string order_resource_address = 7;
-  string order_resource_phone_number = 8;
-  string order_resource_email = 9;
-  string order_resource_logo_media_id = 10;
-  repeated OrderInvoiceItem order_items = 11;
+message Invoice {
+  // The unique identifier of the invoice.
+  string ref_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true
+  ];
+
+  // The unique identifier of the order.
+  string order_id = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true
+  ];
+
+  // The status of the invoice.
+  InvoiceStatus status = 3;
+
+  // The list of items in the invoice.
+  repeated OrderItem order_items = 4;
+
+  // The payment methods used to pay the invoice.
+  // Some time, user can use multiple payment methods to pay the invoice.
+  repeated Payment payments = 5;
+
+  // Total discounts applied (e.g., promotions)
+  double total_discount = 6;
+
+  // Total tax/VAT amount
+  // Example: 300.0 (e.g., 5% VAT on 6000 XAF subtotal, assuming no discount: 6000 * 0.05 = 300 XAF)
+  double total_vat = 7;
+
+  // Amount hors taxe: pre-tax, pre-discount total from order_items
+  // Example: 6000.0 (e.g., from the 3 items at 2000 XAF each: 3 * 2000 = 6000 XAF)
+  double subtotal = 8;
+
+  // Amount with tax: subtotal - total_discount + total_vat
+  // Example: 5801.0 (e.g., subtotal 6000 - discount 500 + VAT 300= 5801 XAF)
+  double total = 9;
+
+  // Amount given by client (e.g., cash tendered).
+  // Example: 10000.0 (e.g., customer hands over 10000 XAF cash for a 6000 XAF total)
+  double customer_tendered_amount = 10;
+
+  // Amount refunded to client (e.g., change or overpayment refund) Set to 0 for pending cases.
+  // Example: 4000.0 (e.g., immediate cash refund for overpayment: 10000 tendered - 6000 grand_total = 4000 XAF given back)
+  double change_given = 11;
+
+  // Unpaid balance: grand_total - paid_amount (covers remaining_to_pay)
+  // Example: -4000.0 (e.g., after paying 10000 XAF on a 6000 XAF total: 6000 - 10000 = -4000 XAF, meaning 4000 XAF owed to customer)
+  double balance_due = 12;
+
+  // The voucher used to pay the invoice.
+  optional string voucher_id = 13 [(buf.validate.field).string.uuid = true];
+
+  // The date and time the invoice was created.
+  google.protobuf.Timestamp created_at = 14;
+
+  // The delivery date of the invoice.
+  google.protobuf.Timestamp delivery_date = 15;
 }
 
-message GenerateInvoiceRequest {
+message CreateInvoiceRequest {
   // The unique identifier of the order.
   string order_id = 1;
 }
 
-message GenerateInvoiceResponse {
+message CreateInvoiceResponse {
   // The invoice of the order.
-  OrderInvoice order_invoice = 1;
+  Invoice invoice = 1;
 }
 
 service InvoiceService {
-  // Generates an invoice for the order.
-  rpc GenerateInvoice(GenerateInvoiceRequest) returns (GenerateInvoiceResponse);
+  // Creates an invoice for the order.
+  rpc CreateInvoice(CreateInvoiceRequest) returns (CreateInvoiceResponse);
 }

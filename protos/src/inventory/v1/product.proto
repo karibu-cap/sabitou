@@ -59,15 +59,27 @@ message DeleteGlobalProductResponse {
   bool success = 1;
 }
 
-message SupplyEntry {
+enum ProductStatus {
+  PRODUCT_STATUS_UNSPECIFIED = 0;
+  PRODUCT_STATUS_ACTIVE = 1;
+  PRODUCT_STATUS_INACTIVE = 2;
+}
+
+message SupplyHistory {
   // The quantity of the product.
   int32 quantity = 1;
 
-  // The price in XAF of the product.
-  int32 price = 2;
+  // The buy price of the product.
+  int32 buy_price = 2;
 
-  // The unique identifier of the supplier.
-  string supplier_id = 3;
+  // The sale price of the product.
+  int32 sale_price = 3;
+
+  // The last quantity of the product.
+  int32 last_quantity = 4;
+
+  // The creation date of the supply history.
+  google.protobuf.Timestamp created_at = 5;
 }
 
 message StoreProduct {
@@ -80,14 +92,14 @@ message StoreProduct {
   // The unique identifier of the global product.
   string global_product_id = 3;
 
-  // The price in XAF of the product.
+  // The sale price in XAF of the product.
   // The currency is determined by the business.
-  optional int32 price = 4;
+  optional int32 sale_price = 4;
 
   // The media ids of the images of the product.
   repeated string images_links_ids = 5;
 
-  // The stock quantity of the product.
+  // The current stock quantity of the product.
   optional int32 stock_quantity = 6;
 
   // The minimum stock threshold of the product.
@@ -95,9 +107,6 @@ message StoreProduct {
 
   // The expiration date of the product.
   optional google.protobuf.Timestamp expiration_date = 8;
-
-  // The inbound date.
-  optional google.protobuf.Timestamp inbound_date = 9;
 
   // The creation date of the product.
   google.protobuf.Timestamp created_at = 10;
@@ -107,6 +116,12 @@ message StoreProduct {
 
   // The supplier.
   optional string supplier_id = 12;
+
+  // Current purchase/cost price.
+  optional int32 cost_price = 13;
+
+  // The status of the product.
+  ProductStatus status = 14;
 }
 
 message FindStoreProductsRequest {
@@ -287,7 +302,7 @@ service ProductService {
 
   // Streams all products for a store for real-time updates.
   rpc StreamStoreProducts(StreamStoreProductsRequest) returns (stream StreamStoreProductsResponse);
-  
+
   // Streams all global products for real-time updates.
   rpc StreamGlobalProducts(StreamGlobalProductsRequest) returns (stream StreamGlobalProductsResponse);
 }
