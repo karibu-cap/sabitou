@@ -31,7 +31,7 @@ enum StoreResourceType {
   /// Can make all actions about information store.
   STORE_RESOURCE_TYPE_STORE = 1;
   /// Can make all actions about store invoice.
-  STORE_RESOURCE_TYPE_INVOICE = 2; 
+  STORE_RESOURCE_TYPE_INVOICE = 2;
   /// Can make all actions about store order.
   STORE_RESOURCE_TYPE_ORDER = 3;
   /// Can make all actions about supplier order.
