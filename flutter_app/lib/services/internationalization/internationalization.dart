@@ -1370,6 +1370,41 @@ class AppInternationalizationService extends ChangeNotifier {
       'en': 'Failed to delete category',
       'fr': 'Échec de la suppression de la catégorie',
     },
+    'fifo': {'en': 'FIFO', 'fr': 'FIFO'},
+    'average': {'en': 'Average', 'fr': 'Moyenne'},
+    'costingMethod': {'en': 'Costing Method', 'fr': 'Méthode de comptage'},
+    'costingMethodDescription': {
+      'en': 'FIFO (First In First Out) would be used if nothing is selected',
+      'fr':
+          'FIFO (Premier Entré Premier Sorti) serait utilisé si rien n\'est sélectionné',
+    },
+    'costingMethodDoc': {
+      'en': '''Consider the following example to know how it impacts your stock:
+              | Date | Transaction | Qty | Unit Cost | | 1-4-2020 | Purchase | 10 | 100 | | 6-4-2020 | Purchase | 20 | 120 | | 10-4-2020 | Sale | 15 | ? |
+              Calculating Valuation Rate at the time of sale:
+              As per FIFO:
+              Since this is FIFO, we will consume quantities from the earliest transactions, therefore, to make a sale of 15 qty, we will take 10 qty from the first transaction and 5 qty from the second one. 
+              (10 * 100) + (5 * 120) = 1600, which leaves us 15 qty in stock at cost of 120 amounting to 1800.
+              As per Moving Average:
+              In the Moving Average method, the value of an item is recalculated every time when an item is acquired. This is done by adding the cost of the newly acquired items to the existing inventory’s value and then dividing it by the total quantity available. 
+              ((10 * 100) + (20 * 120)) / 30 = 113.33
+              To make a sale of 15 qty, we will directly multiply it by the average value we received just now. 
+              15 * 113.33 = 1700, which leaves us 15 qty in stock amounting to 1700.
+              If you check, even though the quantity is same the stock value is different but both amounts to a total of 3400 only.''',
+      'fr':
+          '''Considérez l'exemple suivant pour comprendre son impact sur votre stock :
+            | Date | Transaction | Quantité | Coût unitaire | | 1-4-2020 | Achat | 10 | 100 | | 6-4-2020 | Achat | 20 | 120 | | 10-4-2020 | Vente | 15 | ? |
+            Calcul du taux d'évaluation au moment de la vente :
+            Selon la méthode FIFO :
+            Comme il s'agit de la méthode FIFO, nous allons consommer les quantités des transactions les plus anciennes. Par conséquent, pour effectuer une vente de 15 quantités, nous allons prendre 10 quantités de la première transaction et 5 quantités de la deuxième. 
+            (10 * 100) + (5 * 120) = 1600, ce qui nous laisse 15 unités en stock au coût de 120, soit un total de 1800.
+            Selon la méthode de la moyenne mobile :
+            Dans la méthode de la moyenne mobile, la valeur d'un article est recalculée à chaque fois qu'un article est acquis. Pour ce faire, on ajoute le coût des articles nouvellement acquis à la valeur du stock existant, puis on divise le tout par la quantité totale disponible. 
+            ((10 * 100) + (20 * 120)) / 30 = 113,33
+            Pour réaliser une vente de 15 unités, nous la multiplierons directement par la valeur moyenne que nous venons d'obtenir. 
+            15 * 113,33 = 1 700, ce qui nous laisse 15 unités en stock pour un montant total de 1 700.
+            Si vous vérifiez, même si la quantité est la même, la valeur du stock est différente, mais les deux montent à un total de 3 400 seulement.''',
+    },
   };
 
   /// Direct access to the internationalization service.
@@ -1388,6 +1423,22 @@ class AppInternationalizationService extends ChangeNotifier {
     const Locale('en'),
     const Locale('fr'),
   ];
+
+  /// The costing method description.
+  String get costingMethodDoc => _stringOfLocalizedValue('costingMethodDoc');
+
+  /// The costing method description.
+  String get costingMethodDescription =>
+      _stringOfLocalizedValue('costingMethodDescription');
+
+  /// The fifo.
+  String get fifo => _stringOfLocalizedValue('fifo');
+
+  /// The average.
+  String get average => _stringOfLocalizedValue('average');
+
+  /// The costing method.
+  String get costingMethod => _stringOfLocalizedValue('costingMethod');
 
   /// The sales reports.
   String get salesReports => _stringOfLocalizedValue('salesReports');
