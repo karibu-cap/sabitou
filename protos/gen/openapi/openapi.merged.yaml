@@ -2038,6 +2038,78 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inventory.v1.UpdateStoreProductResponse'
+  /inventory.v1.StockInboundService/CreateStockInbound:
+    post:
+      tags:
+        - inventory.v1.StockInboundService
+      summary: Creates a stock in bound.
+      description: Creates a stock in bound.
+      operationId: inventory.v1.StockInboundService.CreateStockInbound
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inventory.v1.CreateStockInboundRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inventory.v1.CreateStockInboundResponse'
+  /inventory.v1.StockInboundService/UpdateStockInbound:
+    post:
+      tags:
+        - inventory.v1.StockInboundService
+      summary: Updates the stock in bound.
+      description: Updates the stock in bound.
+      operationId: inventory.v1.StockInboundService.UpdateStockInbound
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inventory.v1.UpdateStockInboundRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inventory.v1.UpdateStockInboundResponse'
   /link.v1.ResourceLinkService/GetResourceLinks:
     post:
       tags:
@@ -2076,13 +2148,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/link.v1.GetResourceLinksResponse'
-  /order.v1.InvoiceService/GenerateInvoice:
+  /order.v1.InvoiceService/CreateInvoice:
     post:
       tags:
         - order.v1.InvoiceService
-      summary: Generates an invoice for the order.
-      description: Generates an invoice for the order.
-      operationId: order.v1.InvoiceService.GenerateInvoice
+      summary: Creates an invoice for the order.
+      description: Creates an invoice for the order.
+      operationId: order.v1.InvoiceService.CreateInvoice
       parameters:
         - name: Connect-Protocol-Version
           in: header
@@ -2097,7 +2169,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/order.v1.GenerateInvoiceRequest'
+              $ref: '#/components/schemas/order.v1.CreateInvoiceRequest'
         required: true
       responses:
         default:
@@ -2111,7 +2183,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/order.v1.GenerateInvoiceResponse'
+                $ref: '#/components/schemas/order.v1.CreateInvoiceResponse'
   /order.v1.OrderService/CreateOrder:
     post:
       tags:
@@ -2292,6 +2364,111 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/order.v1.GenerateBillingResponse'
+  /order.v1.VoucherService/CreateVoucher:
+    post:
+      tags:
+        - order.v1.VoucherService
+      summary: CreateVoucher
+      operationId: order.v1.VoucherService.CreateVoucher
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/order.v1.CreateVoucherRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/order.v1.CreateVoucherResponse'
+  /order.v1.VoucherService/GetVoucher:
+    post:
+      tags:
+        - order.v1.VoucherService
+      summary: GetVoucher
+      operationId: order.v1.VoucherService.GetVoucher
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/order.v1.GetVoucherRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/order.v1.GetVoucherResponse'
+  /order.v1.VoucherService/RedeemVoucher:
+    post:
+      tags:
+        - order.v1.VoucherService
+      summary: RedeemVoucher
+      operationId: order.v1.VoucherService.RedeemVoucher
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/order.v1.RedeemVoucherRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/order.v1.RedeemVoucherResponse'
   /store.v1.StoreService/AddUserToStore:
     post:
       tags:
@@ -5349,6 +5526,13 @@ components:
           description: The list of image related to the product.
       title: GlobalProduct
       additionalProperties: false
+    inventory.v1.ProductStatus:
+      type: string
+      title: ProductStatus
+      enum:
+        - PRODUCT_STATUS_UNSPECIFIED
+        - PRODUCT_STATUS_ACTIVE
+        - PRODUCT_STATUS_INACTIVE
     inventory.v1.StoreProduct:
       type: object
       properties:
@@ -5365,12 +5549,12 @@ components:
           type: string
           title: global_product_id
           description: The unique identifier of the global product.
-        price:
+        salePrice:
           type: integer
-          title: price
+          title: sale_price
           format: int32
           description: |-
-            The price in XAF of the product.
+            The sale price in XAF of the product.
              The currency is determined by the business.
           nullable: true
         imagesLinksIds:
@@ -5383,7 +5567,7 @@ components:
           type: integer
           title: stock_quantity
           format: int32
-          description: The stock quantity of the product.
+          description: The current stock quantity of the product.
           nullable: true
         minStockThreshold:
           type: integer
@@ -5393,11 +5577,6 @@ components:
         expirationDate:
           title: expiration_date
           description: The expiration date of the product.
-          nullable: true
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-        inboundDate:
-          title: inbound_date
-          description: The inbound date.
           nullable: true
           $ref: '#/components/schemas/google.protobuf.Timestamp'
         createdAt:
@@ -5414,6 +5593,16 @@ components:
           title: supplier_id
           description: The supplier.
           nullable: true
+        costPrice:
+          type: integer
+          title: cost_price
+          format: int32
+          description: Current purchase/cost price.
+          nullable: true
+        status:
+          title: status
+          description: The status of the product.
+          $ref: '#/components/schemas/inventory.v1.ProductStatus'
       title: StoreProduct
       additionalProperties: false
     inventory.v1.StreamGlobalProductsRequest:
@@ -5469,7 +5658,7 @@ components:
           description: The store products for the specified store.
       title: StreamStoreProductsResponse
       additionalProperties: false
-    inventory.v1.SupplyEntry:
+    inventory.v1.SupplyHistory:
       type: object
       properties:
         quantity:
@@ -5477,16 +5666,26 @@ components:
           title: quantity
           format: int32
           description: The quantity of the product.
-        price:
+        buyPrice:
           type: integer
-          title: price
+          title: buy_price
           format: int32
-          description: The price in XAF of the product.
-        supplierId:
-          type: string
-          title: supplier_id
-          description: The unique identifier of the supplier.
-      title: SupplyEntry
+          description: The buy price of the product.
+        salePrice:
+          type: integer
+          title: sale_price
+          format: int32
+          description: The sale price of the product.
+        lastQuantity:
+          type: integer
+          title: last_quantity
+          format: int32
+          description: The last quantity of the product.
+        createdAt:
+          title: created_at
+          description: The creation date of the supply history.
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: SupplyHistory
       additionalProperties: false
     inventory.v1.UpdateGlobalProductRequest:
       type: object
@@ -5547,6 +5746,131 @@ components:
           description: Whether the store product was successfully updated.
       title: UpdateStoreProductResponse
       additionalProperties: false
+    inventory.v1.CreateStockInboundRequest:
+      type: object
+      properties:
+        stockInbound:
+          title: stock_inbound
+          description: The stock inbound to create.
+          $ref: '#/components/schemas/inventory.v1.StockInbound'
+      title: CreateStockInboundRequest
+      additionalProperties: false
+    inventory.v1.CreateStockInboundResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the stock inbound was successfully created.
+      title: CreateStockInboundResponse
+      additionalProperties: false
+    inventory.v1.InboundType:
+      type: string
+      title: InboundType
+      enum:
+        - INBOUND_TYPE_UNSPECIFIED
+        - INBOUND_TYPE_STOCK_IN
+        - INBOUND_TYPE_CUSTOMER_RETURN
+        - INBOUND_TYPE_ADJUSTMENT
+    inventory.v1.StockInbound:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+        inboundType:
+          title: inbound_type
+          description: Type of inbound stock
+          $ref: '#/components/schemas/inventory.v1.InboundType'
+        quantity:
+          type: integer
+          title: quantity
+          format: int32
+          description: Quantity added to inventory
+        quantityBefore:
+          type: integer
+          title: quantity_before
+          format: int32
+          description: Stock quantity before this transaction
+        quantityAfter:
+          type: integer
+          title: quantity_after
+          format: int32
+          description: Stock quantity after this transaction
+        unitCost:
+          type: integer
+          title: unit_cost
+          format: int32
+          description: Purchase/cost price per unit
+        supplierId:
+          type: string
+          title: supplier_id
+          description: Supplier ID (for stock in transactions)
+          nullable: true
+        referenceNumber:
+          type: string
+          title: reference_number
+          description: Reference number (PO number, invoice number, etc.)
+          nullable: true
+        batchNumber:
+          type: string
+          title: batch_number
+          description: Batch/lot number (for traceability if needed)
+          nullable: true
+        reason:
+          type: string
+          title: reason
+          description: Reason for the transaction (especially for adjustments)
+          nullable: true
+        batchExpiryDate:
+          title: batch_expiry_date
+          description: Expiration date for this batch (if applicable)
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        createdAt:
+          title: created_at
+          description: When this supply was received/processed
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        performedBy:
+          type: string
+          title: performed_by
+          description: User who performed the transaction
+      title: StockInbound
+      additionalProperties: false
+      description: Tracks all stock additions to inventory
+    inventory.v1.UpdateStockInboundRequest:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+        quantity:
+          type: integer
+          title: quantity
+          format: int32
+          description: |-
+            The quantity to update.
+             Note the quantity  can be negative for adjustments.
+          nullable: true
+        reason:
+          type: string
+          title: reason
+          nullable: true
+        performedBy:
+          type: string
+          title: performed_by
+          nullable: true
+      title: UpdateStockInboundRequest
+      additionalProperties: false
+      description: Limit the update to only (reason, quantity for return or adjustment, performed_by)
+    inventory.v1.UpdateStockInboundResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+      title: UpdateStockInboundResponse
+      additionalProperties: false
     link.v1.GetResourceLinksRequest:
       type: object
       properties:
@@ -5581,91 +5905,190 @@ components:
           $ref: '#/components/schemas/link.v1.ResourceLink'
       title: LinkEntry
       additionalProperties: false
-    order.v1.GenerateInvoiceRequest:
+    order.v1.CreateInvoiceRequest:
       type: object
       properties:
         orderId:
           type: string
           title: order_id
           description: The unique identifier of the order.
-      title: GenerateInvoiceRequest
+      title: CreateInvoiceRequest
       additionalProperties: false
-    order.v1.GenerateInvoiceResponse:
+    order.v1.CreateInvoiceResponse:
       type: object
       properties:
-        orderInvoice:
-          title: order_invoice
+        invoice:
+          title: invoice
           description: The invoice of the order.
-          $ref: '#/components/schemas/order.v1.OrderInvoice'
-      title: GenerateInvoiceResponse
+          $ref: '#/components/schemas/order.v1.Invoice'
+      title: CreateInvoiceResponse
       additionalProperties: false
-    order.v1.OrderInvoice:
+    order.v1.Invoice:
       type: object
       properties:
+        refId:
+          type: string
+          title: ref_id
+          format: uuid
+          description: The unique identifier of the invoice.
         orderId:
           type: string
           title: order_id
-          description: / ...order details...
-        orderStatus:
-          type: string
-          title: order_status
-        orderTotalPriceInXaf:
-          type: string
-          title: order_total_price_in_xaf
-        orderCreatedAt:
-          type: string
-          title: order_created_at
-        orderUpdatedAt:
-          type: string
-          title: order_updated_at
-        orderResourceName:
-          type: string
-          title: order_resource_name
-        orderResourceAddress:
-          type: string
-          title: order_resource_address
-        orderResourcePhoneNumber:
-          type: string
-          title: order_resource_phone_number
-        orderResourceEmail:
-          type: string
-          title: order_resource_email
-        orderResourceLogoMediaId:
-          type: string
-          title: order_resource_logo_media_id
+          format: uuid
+          description: The unique identifier of the order.
+        status:
+          title: status
+          description: The status of the invoice.
+          $ref: '#/components/schemas/order.v1.InvoiceStatus'
         orderItems:
           type: array
           items:
-            $ref: '#/components/schemas/order.v1.OrderInvoiceItem'
+            $ref: '#/components/schemas/order.v1.OrderItem'
           title: order_items
-      title: OrderInvoice
+          description: The list of items in the invoice.
+        payments:
+          type: array
+          items:
+            $ref: '#/components/schemas/order.v1.Payment'
+          title: payments
+          description: |-
+            The payment methods used to pay the invoice.
+             Some time, user can use multiple payment methods to pay the invoice.
+        totalDiscount:
+          type: number
+          title: total_discount
+          format: double
+          description: Total discounts applied (e.g., promotions)
+        totalVat:
+          type: number
+          title: total_vat
+          format: double
+          description: |-
+            Total tax/VAT amount
+             Example: 300.0 (e.g., 5% VAT on 6000 XAF subtotal, assuming no discount: 6000 * 0.05 = 300 XAF)
+        subtotal:
+          type: number
+          title: subtotal
+          format: double
+          description: |-
+            Amount hors taxe: pre-tax, pre-discount total from order_items
+             Example: 6000.0 (e.g., from the 3 items at 2000 XAF each: 3 * 2000 = 6000 XAF)
+        total:
+          type: number
+          title: total
+          format: double
+          description: |-
+            Amount with tax: subtotal - total_discount + total_vat
+             Example: 5801.0 (e.g., subtotal 6000 - discount 500 + VAT 300= 5801 XAF)
+        customerTenderedAmount:
+          type: number
+          title: customer_tendered_amount
+          format: double
+          description: |-
+            Amount given by client (e.g., cash tendered).
+             Example: 10000.0 (e.g., customer hands over 10000 XAF cash for a 6000 XAF total)
+        changeGiven:
+          type: number
+          title: change_given
+          format: double
+          description: |-
+            Amount refunded to client (e.g., change or overpayment refund) Set to 0 for pending cases.
+             Example: 4000.0 (e.g., immediate cash refund for overpayment: 10000 tendered - 6000 grand_total = 4000 XAF given back)
+        balanceDue:
+          type: number
+          title: balance_due
+          format: double
+          description: |-
+            Unpaid balance: grand_total - paid_amount (covers remaining_to_pay)
+             Example: -4000.0 (e.g., after paying 10000 XAF on a 6000 XAF total: 6000 - 10000 = -4000 XAF, meaning 4000 XAF owed to customer)
+        voucherId:
+          type: string
+          title: voucher_id
+          format: uuid
+          description: The voucher used to pay the invoice.
+          nullable: true
+        createdAt:
+          title: created_at
+          description: The date and time the invoice was created.
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        deliveryDate:
+          title: delivery_date
+          description: The delivery date of the invoice.
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: Invoice
+      required:
+        - refId
+        - orderId
       additionalProperties: false
       description: |-
         The invoice of an order.
          The invoice is a PDF file that can be downloaded by the customer.
          It contains the order details, the customer details, the payment details.
-    order.v1.OrderInvoiceItem:
+    order.v1.InvoiceStatus:
+      type: string
+      title: InvoiceStatus
+      enum:
+        - INVOICE_STATUS_UNSPECIFIED
+        - INVOICE_STATUS_PAID
+        - INVOICE_STATUS_PENDING_REFUND
+    order.v1.OrderItem:
       type: object
       properties:
-        productId:
+        storeProductId:
           type: string
-          title: product_id
-        productName:
-          type: string
-          title: product_name
-        productPriceInXaf:
-          type: string
-          title: product_price_in_xaf
+          title: store_product_id
+          description: The unique identifier of the store product.
         quantity:
           type: integer
           title: quantity
           format: int32
-        invoiceItemTotalPriceInXaf:
+          description: The quantity of the product.
+        unitPrice:
           type: integer
-          title: invoice_item_total_price_in_xaf
+          title: unit_price
           format: int32
-      title: OrderInvoiceItem
+          description: |-
+            The unit price in XAF of the product.
+             WARN: This value is stored because the unit price can change over time.
+        itemName:
+          type: string
+          title: item_name
+          description: The name of the product.
+      title: OrderItem
       additionalProperties: false
+    order.v1.Payment:
+      type: object
+      properties:
+        amount:
+          type: number
+          title: amount
+          format: double
+        method:
+          title: method
+          $ref: '#/components/schemas/order.v1.PaymentMethod'
+        referenceId:
+          type: string
+          title: reference_id
+          description: |-
+            The reference id of the payment.
+             For voucher, it is the voucher id.
+          nullable: true
+        timestamp:
+          title: timestamp
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: Payment
+      additionalProperties: false
+    order.v1.PaymentMethod:
+      type: string
+      title: PaymentMethod
+      enum:
+        - PAYMENT_METHOD_UNSPECIFIED
+        - PAYMENT_METHOD_CASH
+        - PAYMENT_METHOD_CARD
+        - PAYMENT_METHOD_ORANGE_MONEY
+        - PAYMENT_METHOD_MTN_MONEY
+        - PAYMENT_METHOD_VOUCHER
+        - PAYMENT_METHOD_MOBILE
     order.v1.CreateOrderRequest:
       type: object
       properties:
@@ -5782,90 +6205,97 @@ components:
       additionalProperties: false
     order.v1.Order:
       type: object
-      properties:
-        refId:
-          type: string
-          title: ref_id
-          description: The unique identifier of the order.
-          nullable: true
-        fromId:
-          type: string
-          title: from_id
-          description: The id of the client or the supplier if available.
-          nullable: true
-        isClientOrder:
-          type: string
-          title: is_client_order
-          description: Whether the order is from the client or the supplier.
-        orderItems:
-          type: array
-          items:
-            $ref: '#/components/schemas/order.v1.OrderItem'
-          title: order_items
-          description: The list of items in the order.
-        totalPrice:
-          type: integer
-          title: total_price
-          format: int32
-          description: The total price of the order in XAF.
-        status:
-          title: status
-          description: The status of the order.
-          $ref: '#/components/schemas/order.v1.OrderStatus'
-        statusHistory:
-          type: array
-          items:
-            $ref: '#/components/schemas/order.v1.StatusHistory'
-          title: status_history
-          description: The status history.
-        createdAt:
-          title: created_at
-          description: The date and time the order was created.
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-        updatedAt:
-          title: updated_at
-          description: The date and time the order was last updated.
-          nullable: true
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-        storeId:
-          type: string
-          title: store_id
-          format: uuid
-          description: The unique identifier of the store associated with the order.
-        initiatedBy:
-          type: string
-          title: initiated_by
-          minLength: 3
-          description: The unique identifier of the user who initiated the order.
+      allOf:
+        - properties:
+            refId:
+              type: string
+              title: ref_id
+              description: The unique identifier of the order.
+              nullable: true
+            orderItems:
+              type: array
+              items:
+                $ref: '#/components/schemas/order.v1.OrderItem'
+              title: order_items
+              description: The list of items in the order.
+            orderPrices:
+              title: order_prices
+              description: The total price of the order in XAF.
+              $ref: '#/components/schemas/order.v1.OrderPrices'
+            status:
+              title: status
+              description: The status of the order.
+              $ref: '#/components/schemas/order.v1.OrderStatus'
+            statusHistory:
+              type: array
+              items:
+                $ref: '#/components/schemas/order.v1.StatusHistory'
+              title: status_history
+              description: The status history.
+            createdAt:
+              title: created_at
+              description: The date and time the order was created.
+              $ref: '#/components/schemas/google.protobuf.Timestamp'
+            updatedAt:
+              title: updated_at
+              description: The date and time the order was last updated.
+              nullable: true
+              $ref: '#/components/schemas/google.protobuf.Timestamp'
+            storeId:
+              type: string
+              title: store_id
+              format: uuid
+              description: The unique identifier of the store associated with the order.
+            initiatedBy:
+              type: string
+              title: initiated_by
+              minLength: 3
+              description: The unique identifier of the user who initiated the order.
+            cancellationReason:
+              type: string
+              title: cancellation_reason
+              description: The reason for the cancellation of the order.
+              nullable: true
+        - oneOf:
+            - properties:
+                purchaseOrder:
+                  title: purchase_order
+                  $ref: '#/components/schemas/order.v1.PurchaseOrder'
+              title: purchase_order
+              required:
+                - purchaseOrder
+            - properties:
+                saleOrder:
+                  title: sale_order
+                  $ref: '#/components/schemas/order.v1.SaleOrder'
+              title: sale_order
+              required:
+                - saleOrder
       title: Order
       required:
         - storeId
         - initiatedBy
       additionalProperties: false
-    order.v1.OrderItem:
+    order.v1.OrderPrices:
       type: object
       properties:
-        storeProductId:
-          type: string
-          title: store_product_id
-          description: The unique identifier of the store product.
-        quantity:
+        subtotal:
           type: integer
-          title: quantity
+          title: subtotal
           format: int32
-          description: The quantity of the product.
-        unitPrice:
+        discounts:
           type: integer
-          title: unit_price
+          title: discounts
           format: int32
-          description: |-
-            The unit price in XAF of the product.
-             WARN: This value is stored because the unit price can change over time.
-        itemName:
-          type: string
-          title: item_name
-          description: The name of the product.
-      title: OrderItem
+        totalVatAmount:
+          type: integer
+          title: total_vat_amount
+          format: int32
+        grandTotal:
+          type: integer
+          title: grand_total
+          format: int32
+      title: OrderPrices
       additionalProperties: false
     order.v1.OrderStatus:
       type: string
@@ -5876,6 +6306,33 @@ components:
         - ORDER_STATUS_PROCESSING
         - ORDER_STATUS_COMPLETED
         - ORDER_STATUS_CANCELLED
+    order.v1.PurchaseOrder:
+      type: object
+      properties:
+        expectedDeliveryDate:
+          title: expected_delivery_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        supplierId:
+          type: string
+          title: supplier_id
+          format: uuid
+      title: PurchaseOrder
+      required:
+        - supplierId
+      additionalProperties: false
+    order.v1.SaleOrder:
+      type: object
+      properties:
+        commitmentDate:
+          title: commitment_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        clientId:
+          type: string
+          title: client_id
+          format: uuid
+          nullable: true
+      title: SaleOrder
+      additionalProperties: false
     order.v1.StatusHistory:
       type: object
       properties:
@@ -5975,6 +6432,123 @@ components:
           format: int32
       title: OrderReceiptItem
       additionalProperties: false
+    order.v1.CreateVoucherRequest:
+      type: object
+      properties:
+        voucher:
+          title: voucher
+          $ref: '#/components/schemas/order.v1.Voucher'
+      title: CreateVoucherRequest
+      additionalProperties: false
+    order.v1.CreateVoucherResponse:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+      title: CreateVoucherResponse
+      additionalProperties: false
+    order.v1.GetVoucherRequest:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+      title: GetVoucherRequest
+      additionalProperties: false
+    order.v1.GetVoucherResponse:
+      type: object
+      properties:
+        voucher:
+          title: voucher
+          $ref: '#/components/schemas/order.v1.Voucher'
+      title: GetVoucherResponse
+      additionalProperties: false
+    order.v1.RedeemVoucherRequest:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+      title: RedeemVoucherRequest
+      additionalProperties: false
+    order.v1.RedeemVoucherResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+        error:
+          type: string
+          title: error
+          nullable: true
+      title: RedeemVoucherResponse
+      additionalProperties: false
+    order.v1.Voucher:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+          format: uuid
+        orderId:
+          type: string
+          title: order_id
+          format: uuid
+        invoiceId:
+          type: string
+          title: invoice_id
+          format: uuid
+        storeId:
+          type: string
+          title: store_id
+          format: uuid
+        amount:
+          type: number
+          title: amount
+          format: double
+        createdAt:
+          title: created_at
+          description: When the voucher was created.
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        expiryDate:
+          title: expiry_date
+          description: When the voucher expires.
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        status:
+          title: status
+          $ref: '#/components/schemas/order.v1.VoucherStatus'
+        redeemedByReferenceId:
+          type: string
+          title: redeemed_by_reference_id
+          description: |-
+            Who redeemed the voucher.
+             The voucher can be redeemed by another invoice.
+          nullable: true
+        redeemedAt:
+          title: redeemed_at
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        additionalInfo:
+          type: string
+          title: additional_info
+          description: The additional information about the voucher.
+          nullable: true
+      title: Voucher
+      required:
+        - refId
+        - orderId
+        - invoiceId
+        - storeId
+      additionalProperties: false
+    order.v1.VoucherStatus:
+      type: string
+      title: VoucherStatus
+      enum:
+        - VOUCHER_STATUS_UNSPECIFIED
+        - VOUCHER_STATUS_ISSUED
+        - VOUCHER_STATUS_REDEEMED
+        - VOUCHER_STATUS_EXPIRED
     store.v1.AddUserToStoreRequest:
       type: object
       properties:
@@ -6263,11 +6837,23 @@ components:
           title: email
           description: The business email.
           nullable: true
+        costingMethod:
+          title: costing_method
+          description: The costing method of the store.
+          nullable: true
+          $ref: '#/components/schemas/store.v1.StoreCostingMethod'
       title: Store
       additionalProperties: false
       description: |-
         Stores are used to store products.
          Note: A store is not always a shop.
+    store.v1.StoreCostingMethod:
+      type: string
+      title: StoreCostingMethod
+      enum:
+        - STORE_COSTING_METHOD_UNSPECIFIED
+        - STORE_COSTING_METHOD_FIFO
+        - STORE_COSTING_METHOD_AVERAGE
     store.v1.StoreMember:
       type: object
       properties:

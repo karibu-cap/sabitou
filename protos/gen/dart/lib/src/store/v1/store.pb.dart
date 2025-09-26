@@ -39,6 +39,7 @@ class Store extends $pb.GeneratedMessage {
     $core.String? contactInfo,
     $core.String? address,
     $core.String? email,
+    StoreCostingMethod? costingMethod,
   }) {
     final result = create();
     if (refId != null) result.refId = refId;
@@ -52,6 +53,7 @@ class Store extends $pb.GeneratedMessage {
     if (contactInfo != null) result.contactInfo = contactInfo;
     if (address != null) result.address = address;
     if (email != null) result.email = email;
+    if (costingMethod != null) result.costingMethod = costingMethod;
     return result;
   }
 
@@ -81,6 +83,11 @@ class Store extends $pb.GeneratedMessage {
     ..aOS(11, _omitFieldNames ? '' : 'contactInfo')
     ..aOS(12, _omitFieldNames ? '' : 'address')
     ..aOS(13, _omitFieldNames ? '' : 'email')
+    ..e<StoreCostingMethod>(
+        14, _omitFieldNames ? '' : 'costingMethod', $pb.PbFieldType.OE,
+        defaultOrMaker: StoreCostingMethod.STORE_COSTING_METHOD_UNSPECIFIED,
+        valueOf: StoreCostingMethod.valueOf,
+        enumValues: StoreCostingMethod.values)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -215,6 +222,16 @@ class Store extends $pb.GeneratedMessage {
   $core.bool hasEmail() => $_has(10);
   @$pb.TagNumber(13)
   void clearEmail() => $_clearField(13);
+
+  /// The costing method of the store.
+  @$pb.TagNumber(14)
+  StoreCostingMethod get costingMethod => $_getN(11);
+  @$pb.TagNumber(14)
+  set costingMethod(StoreCostingMethod value) => $_setField(14, value);
+  @$pb.TagNumber(14)
+  $core.bool hasCostingMethod() => $_has(11);
+  @$pb.TagNumber(14)
+  void clearCostingMethod() => $_clearField(14);
 }
 
 class StoreMember extends $pb.GeneratedMessage {

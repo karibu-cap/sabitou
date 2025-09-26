@@ -10,11 +10,11 @@ abstract final class InvoiceService {
   /// Fully-qualified name of the InvoiceService service.
   static const name = 'order.v1.InvoiceService';
 
-  /// Generates an invoice for the order.
-  static const generateInvoice = connect.Spec(
-    '/$name/GenerateInvoice',
+  /// Creates an invoice for the order.
+  static const createInvoice = connect.Spec(
+    '/$name/CreateInvoice',
     connect.StreamType.unary,
-    orderv1invoice.GenerateInvoiceRequest.new,
-    orderv1invoice.GenerateInvoiceResponse.new,
+    orderv1invoice.CreateInvoiceRequest.new,
+    orderv1invoice.CreateInvoiceResponse.new,
   );
 }

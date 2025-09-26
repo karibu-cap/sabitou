@@ -17,8 +17,11 @@ import 'package:protobuf/protobuf.dart' as $pb;
 
 import '../../google/protobuf/timestamp.pb.dart' as $1;
 import 'category.pb.dart' as $0;
+import 'product.pbenum.dart';
 
 export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
+
+export 'product.pbenum.dart';
 
 class GlobalProduct extends $pb.GeneratedMessage {
   factory GlobalProduct({
@@ -520,56 +523,64 @@ class DeleteGlobalProductResponse extends $pb.GeneratedMessage {
   void clearSuccess() => $_clearField(1);
 }
 
-class SupplyEntry extends $pb.GeneratedMessage {
-  factory SupplyEntry({
+class SupplyHistory extends $pb.GeneratedMessage {
+  factory SupplyHistory({
     $core.int? quantity,
-    $core.int? price,
-    $core.String? supplierId,
+    $core.int? buyPrice,
+    $core.int? salePrice,
+    $core.int? lastQuantity,
+    $1.Timestamp? createdAt,
   }) {
     final result = create();
     if (quantity != null) result.quantity = quantity;
-    if (price != null) result.price = price;
-    if (supplierId != null) result.supplierId = supplierId;
+    if (buyPrice != null) result.buyPrice = buyPrice;
+    if (salePrice != null) result.salePrice = salePrice;
+    if (lastQuantity != null) result.lastQuantity = lastQuantity;
+    if (createdAt != null) result.createdAt = createdAt;
     return result;
   }
 
-  SupplyEntry._();
+  SupplyHistory._();
 
-  factory SupplyEntry.fromBuffer($core.List<$core.int> data,
+  factory SupplyHistory.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(data, registry);
-  factory SupplyEntry.fromJson($core.String json,
+  factory SupplyHistory.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'SupplyEntry',
+      _omitMessageNames ? '' : 'SupplyHistory',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'),
       createEmptyInstance: create)
     ..a<$core.int>(1, _omitFieldNames ? '' : 'quantity', $pb.PbFieldType.O3)
-    ..a<$core.int>(2, _omitFieldNames ? '' : 'price', $pb.PbFieldType.O3)
-    ..aOS(3, _omitFieldNames ? '' : 'supplierId')
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'buyPrice', $pb.PbFieldType.O3)
+    ..a<$core.int>(3, _omitFieldNames ? '' : 'salePrice', $pb.PbFieldType.O3)
+    ..a<$core.int>(4, _omitFieldNames ? '' : 'lastQuantity', $pb.PbFieldType.O3)
+    ..aOM<$1.Timestamp>(5, _omitFieldNames ? '' : 'createdAt',
+        subBuilder: $1.Timestamp.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  SupplyEntry clone() => SupplyEntry()..mergeFromMessage(this);
+  SupplyHistory clone() => SupplyHistory()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  SupplyEntry copyWith(void Function(SupplyEntry) updates) =>
-      super.copyWith((message) => updates(message as SupplyEntry))
-          as SupplyEntry;
+  SupplyHistory copyWith(void Function(SupplyHistory) updates) =>
+      super.copyWith((message) => updates(message as SupplyHistory))
+          as SupplyHistory;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static SupplyEntry create() => SupplyEntry._();
+  static SupplyHistory create() => SupplyHistory._();
   @$core.override
-  SupplyEntry createEmptyInstance() => create();
-  static $pb.PbList<SupplyEntry> createRepeated() => $pb.PbList<SupplyEntry>();
+  SupplyHistory createEmptyInstance() => create();
+  static $pb.PbList<SupplyHistory> createRepeated() =>
+      $pb.PbList<SupplyHistory>();
   @$core.pragma('dart2js:noInline')
-  static SupplyEntry getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<SupplyEntry>(create);
-  static SupplyEntry? _defaultInstance;
+  static SupplyHistory getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<SupplyHistory>(create);
+  static SupplyHistory? _defaultInstance;
 
   /// The quantity of the product.
   @$pb.TagNumber(1)
@@ -581,25 +592,47 @@ class SupplyEntry extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   void clearQuantity() => $_clearField(1);
 
-  /// The price in XAF of the product.
+  /// The buy price of the product.
   @$pb.TagNumber(2)
-  $core.int get price => $_getIZ(1);
+  $core.int get buyPrice => $_getIZ(1);
   @$pb.TagNumber(2)
-  set price($core.int value) => $_setSignedInt32(1, value);
+  set buyPrice($core.int value) => $_setSignedInt32(1, value);
   @$pb.TagNumber(2)
-  $core.bool hasPrice() => $_has(1);
+  $core.bool hasBuyPrice() => $_has(1);
   @$pb.TagNumber(2)
-  void clearPrice() => $_clearField(2);
+  void clearBuyPrice() => $_clearField(2);
 
-  /// The unique identifier of the supplier.
+  /// The sale price of the product.
   @$pb.TagNumber(3)
-  $core.String get supplierId => $_getSZ(2);
+  $core.int get salePrice => $_getIZ(2);
   @$pb.TagNumber(3)
-  set supplierId($core.String value) => $_setString(2, value);
+  set salePrice($core.int value) => $_setSignedInt32(2, value);
   @$pb.TagNumber(3)
-  $core.bool hasSupplierId() => $_has(2);
+  $core.bool hasSalePrice() => $_has(2);
   @$pb.TagNumber(3)
-  void clearSupplierId() => $_clearField(3);
+  void clearSalePrice() => $_clearField(3);
+
+  /// The last quantity of the product.
+  @$pb.TagNumber(4)
+  $core.int get lastQuantity => $_getIZ(3);
+  @$pb.TagNumber(4)
+  set lastQuantity($core.int value) => $_setSignedInt32(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasLastQuantity() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearLastQuantity() => $_clearField(4);
+
+  /// The creation date of the supply history.
+  @$pb.TagNumber(5)
+  $1.Timestamp get createdAt => $_getN(4);
+  @$pb.TagNumber(5)
+  set createdAt($1.Timestamp value) => $_setField(5, value);
+  @$pb.TagNumber(5)
+  $core.bool hasCreatedAt() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearCreatedAt() => $_clearField(5);
+  @$pb.TagNumber(5)
+  $1.Timestamp ensureCreatedAt() => $_ensure(4);
 }
 
 class StoreProduct extends $pb.GeneratedMessage {
@@ -607,29 +640,31 @@ class StoreProduct extends $pb.GeneratedMessage {
     $core.String? refId,
     $core.String? storeId,
     $core.String? globalProductId,
-    $core.int? price,
+    $core.int? salePrice,
     $core.Iterable<$core.String>? imagesLinksIds,
     $core.int? stockQuantity,
     $core.int? minStockThreshold,
     $1.Timestamp? expirationDate,
-    $1.Timestamp? inboundDate,
     $1.Timestamp? createdAt,
     $1.Timestamp? updatedAt,
     $core.String? supplierId,
+    $core.int? costPrice,
+    ProductStatus? status,
   }) {
     final result = create();
     if (refId != null) result.refId = refId;
     if (storeId != null) result.storeId = storeId;
     if (globalProductId != null) result.globalProductId = globalProductId;
-    if (price != null) result.price = price;
+    if (salePrice != null) result.salePrice = salePrice;
     if (imagesLinksIds != null) result.imagesLinksIds.addAll(imagesLinksIds);
     if (stockQuantity != null) result.stockQuantity = stockQuantity;
     if (minStockThreshold != null) result.minStockThreshold = minStockThreshold;
     if (expirationDate != null) result.expirationDate = expirationDate;
-    if (inboundDate != null) result.inboundDate = inboundDate;
     if (createdAt != null) result.createdAt = createdAt;
     if (updatedAt != null) result.updatedAt = updatedAt;
     if (supplierId != null) result.supplierId = supplierId;
+    if (costPrice != null) result.costPrice = costPrice;
+    if (status != null) result.status = status;
     return result;
   }
 
@@ -649,7 +684,7 @@ class StoreProduct extends $pb.GeneratedMessage {
     ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..aOS(2, _omitFieldNames ? '' : 'storeId')
     ..aOS(3, _omitFieldNames ? '' : 'globalProductId')
-    ..a<$core.int>(4, _omitFieldNames ? '' : 'price', $pb.PbFieldType.O3)
+    ..a<$core.int>(4, _omitFieldNames ? '' : 'salePrice', $pb.PbFieldType.O3)
     ..pPS(5, _omitFieldNames ? '' : 'imagesLinksIds')
     ..a<$core.int>(
         6, _omitFieldNames ? '' : 'stockQuantity', $pb.PbFieldType.O3)
@@ -657,13 +692,16 @@ class StoreProduct extends $pb.GeneratedMessage {
         7, _omitFieldNames ? '' : 'minStockThreshold', $pb.PbFieldType.O3)
     ..aOM<$1.Timestamp>(8, _omitFieldNames ? '' : 'expirationDate',
         subBuilder: $1.Timestamp.create)
-    ..aOM<$1.Timestamp>(9, _omitFieldNames ? '' : 'inboundDate',
-        subBuilder: $1.Timestamp.create)
     ..aOM<$1.Timestamp>(10, _omitFieldNames ? '' : 'createdAt',
         subBuilder: $1.Timestamp.create)
     ..aOM<$1.Timestamp>(11, _omitFieldNames ? '' : 'updatedAt',
         subBuilder: $1.Timestamp.create)
     ..aOS(12, _omitFieldNames ? '' : 'supplierId')
+    ..a<$core.int>(13, _omitFieldNames ? '' : 'costPrice', $pb.PbFieldType.O3)
+    ..e<ProductStatus>(14, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
+        defaultOrMaker: ProductStatus.PRODUCT_STATUS_UNSPECIFIED,
+        valueOf: ProductStatus.valueOf,
+        enumValues: ProductStatus.values)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -717,22 +755,22 @@ class StoreProduct extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   void clearGlobalProductId() => $_clearField(3);
 
-  /// The price in XAF of the product.
+  /// The sale price in XAF of the product.
   /// The currency is determined by the business.
   @$pb.TagNumber(4)
-  $core.int get price => $_getIZ(3);
+  $core.int get salePrice => $_getIZ(3);
   @$pb.TagNumber(4)
-  set price($core.int value) => $_setSignedInt32(3, value);
+  set salePrice($core.int value) => $_setSignedInt32(3, value);
   @$pb.TagNumber(4)
-  $core.bool hasPrice() => $_has(3);
+  $core.bool hasSalePrice() => $_has(3);
   @$pb.TagNumber(4)
-  void clearPrice() => $_clearField(4);
+  void clearSalePrice() => $_clearField(4);
 
   /// The media ids of the images of the product.
   @$pb.TagNumber(5)
   $pb.PbList<$core.String> get imagesLinksIds => $_getList(4);
 
-  /// The stock quantity of the product.
+  /// The current stock quantity of the product.
   @$pb.TagNumber(6)
   $core.int get stockQuantity => $_getIZ(5);
   @$pb.TagNumber(6)
@@ -764,51 +802,59 @@ class StoreProduct extends $pb.GeneratedMessage {
   @$pb.TagNumber(8)
   $1.Timestamp ensureExpirationDate() => $_ensure(7);
 
-  /// The inbound date.
-  @$pb.TagNumber(9)
-  $1.Timestamp get inboundDate => $_getN(8);
-  @$pb.TagNumber(9)
-  set inboundDate($1.Timestamp value) => $_setField(9, value);
-  @$pb.TagNumber(9)
-  $core.bool hasInboundDate() => $_has(8);
-  @$pb.TagNumber(9)
-  void clearInboundDate() => $_clearField(9);
-  @$pb.TagNumber(9)
-  $1.Timestamp ensureInboundDate() => $_ensure(8);
-
   /// The creation date of the product.
   @$pb.TagNumber(10)
-  $1.Timestamp get createdAt => $_getN(9);
+  $1.Timestamp get createdAt => $_getN(8);
   @$pb.TagNumber(10)
   set createdAt($1.Timestamp value) => $_setField(10, value);
   @$pb.TagNumber(10)
-  $core.bool hasCreatedAt() => $_has(9);
+  $core.bool hasCreatedAt() => $_has(8);
   @$pb.TagNumber(10)
   void clearCreatedAt() => $_clearField(10);
   @$pb.TagNumber(10)
-  $1.Timestamp ensureCreatedAt() => $_ensure(9);
+  $1.Timestamp ensureCreatedAt() => $_ensure(8);
 
   /// The last update date of the product.
   @$pb.TagNumber(11)
-  $1.Timestamp get updatedAt => $_getN(10);
+  $1.Timestamp get updatedAt => $_getN(9);
   @$pb.TagNumber(11)
   set updatedAt($1.Timestamp value) => $_setField(11, value);
   @$pb.TagNumber(11)
-  $core.bool hasUpdatedAt() => $_has(10);
+  $core.bool hasUpdatedAt() => $_has(9);
   @$pb.TagNumber(11)
   void clearUpdatedAt() => $_clearField(11);
   @$pb.TagNumber(11)
-  $1.Timestamp ensureUpdatedAt() => $_ensure(10);
+  $1.Timestamp ensureUpdatedAt() => $_ensure(9);
 
   /// The supplier.
   @$pb.TagNumber(12)
-  $core.String get supplierId => $_getSZ(11);
+  $core.String get supplierId => $_getSZ(10);
   @$pb.TagNumber(12)
-  set supplierId($core.String value) => $_setString(11, value);
+  set supplierId($core.String value) => $_setString(10, value);
   @$pb.TagNumber(12)
-  $core.bool hasSupplierId() => $_has(11);
+  $core.bool hasSupplierId() => $_has(10);
   @$pb.TagNumber(12)
   void clearSupplierId() => $_clearField(12);
+
+  /// Current purchase/cost price.
+  @$pb.TagNumber(13)
+  $core.int get costPrice => $_getIZ(11);
+  @$pb.TagNumber(13)
+  set costPrice($core.int value) => $_setSignedInt32(11, value);
+  @$pb.TagNumber(13)
+  $core.bool hasCostPrice() => $_has(11);
+  @$pb.TagNumber(13)
+  void clearCostPrice() => $_clearField(13);
+
+  /// The status of the product.
+  @$pb.TagNumber(14)
+  ProductStatus get status => $_getN(12);
+  @$pb.TagNumber(14)
+  set status(ProductStatus value) => $_setField(14, value);
+  @$pb.TagNumber(14)
+  $core.bool hasStatus() => $_has(12);
+  @$pb.TagNumber(14)
+  void clearStatus() => $_clearField(14);
 }
 
 class FindStoreProductsRequest extends $pb.GeneratedMessage {

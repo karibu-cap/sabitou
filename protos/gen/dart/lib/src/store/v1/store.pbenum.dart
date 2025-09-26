@@ -14,6 +14,35 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
+class StoreCostingMethod extends $pb.ProtobufEnum {
+  static const StoreCostingMethod STORE_COSTING_METHOD_UNSPECIFIED =
+      StoreCostingMethod._(
+          0, _omitEnumNames ? '' : 'STORE_COSTING_METHOD_UNSPECIFIED');
+
+  /// / The store uses the FIFO method.
+  static const StoreCostingMethod STORE_COSTING_METHOD_FIFO =
+      StoreCostingMethod._(
+          1, _omitEnumNames ? '' : 'STORE_COSTING_METHOD_FIFO');
+
+  /// / The store uses the Average method.
+  static const StoreCostingMethod STORE_COSTING_METHOD_AVERAGE =
+      StoreCostingMethod._(
+          2, _omitEnumNames ? '' : 'STORE_COSTING_METHOD_AVERAGE');
+
+  static const $core.List<StoreCostingMethod> values = <StoreCostingMethod>[
+    STORE_COSTING_METHOD_UNSPECIFIED,
+    STORE_COSTING_METHOD_FIFO,
+    STORE_COSTING_METHOD_AVERAGE,
+  ];
+
+  static final $core.List<StoreCostingMethod?> _byValue =
+      $pb.ProtobufEnum.$_initByValueList(values, 2);
+  static StoreCostingMethod? valueOf($core.int value) =>
+      value < 0 || value >= _byValue.length ? null : _byValue[value];
+
+  const StoreCostingMethod._(super.value, super.name);
+}
+
 class StoreMemberStatus extends $pb.ProtobufEnum {
   static const StoreMemberStatus STORE_MEMBER_STATUS_UNSPECIFIED =
       StoreMemberStatus._(

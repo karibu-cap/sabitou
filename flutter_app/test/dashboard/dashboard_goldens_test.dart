@@ -14,87 +14,30 @@ import '../goldens.dart';
 final fakeTransportBuilder = FakeTransportBuilder()
   ..unary(OrderService.findOrders, (req, __) async {
     return FindOrdersResponse(
-      orders: fakeData[CollectionName.orders]
-          ?.map(
-            (e) => Order()..mergeFromProto3Json(e, ignoreUnknownFields: true),
-          )
-          .where((o) => o.fromId == req.fromId)
+      orders: (fakeData[CollectionName.orders] as List<Order>)
+          .where((o) => o.saleOrder.clientId == req.fromId)
           .toList(),
     );
   })
   ..unary(BusinessService.getBusinessMembers, (req, __) async {
-    return GetBusinessMembersResponse(
-      businessMembers: fakeData[CollectionName.businessMembers]
-          ?.map(
-            (e) =>
-                BusinessMember()
-                  ..mergeFromProto3Json(e, ignoreUnknownFields: true),
-          )
-          .where((bm) => bm.businessId == req.businessId)
-          .toList(),
-    );
+    return GetBusinessMembersResponse(businessMembers: []);
   })
   ..unary(ProductService.findStoreProducts, (req, __) async {
     return FindStoreProductsResponse(
-      products: fakeData[CollectionName.storeProducts]
-          ?.map(
-            (e) =>
-                StoreProduct()
-                  ..mergeFromProto3Json(e, ignoreUnknownFields: true),
-          )
+      products: (fakeData[CollectionName.storeProducts] as List<StoreProduct>)
           .where((bp) => bp.storeId == req.storeId)
           .toList(),
     );
   })
   ..unary(ProductService.findGlobalProducts, (req, __) async {
     return FindGlobalProductsResponse(
-      products: fakeData[CollectionName.globalProducts]
-          ?.map(
-            (e) =>
-                GlobalProduct()
-                  ..mergeFromProto3Json(e, ignoreUnknownFields: true),
-          )
+      products: (fakeData[CollectionName.globalProducts] as List<GlobalProduct>)
           .where((gp) => gp.refId == req.refId)
           .toList(),
     );
   })
   ..unary(TransactionService.findTransactions, (req, __) async {
-    List<Transaction> response =
-        fakeData[CollectionName.transactions]
-            ?.map(
-              (e) =>
-                  Transaction()
-                    ..mergeFromProto3Json(e, ignoreUnknownFields: true),
-            )
-            .where(
-              (t) => t.status == TransactionStatus.TRANSACTION_STATUS_COMPLETED,
-            )
-            .toList() ??
-        [];
-
-    if (req.hasOrderId() && req.orderId.isNotEmpty) {
-      response = response.where((t) => t.orderId == req.orderId).toList();
-    }
-
-    if (req.hasStoreId() && req.storeId.isNotEmpty) {
-      response = response.where((t) => t.storeId == req.storeId).toList();
-    }
-
-    if (req.hasOrderId() && req.orderId.isNotEmpty) {
-      response = response.where((t) => t.orderId == req.orderId).toList();
-    }
-
-    if (req.hasStartDate() && req.hasEndDate()) {
-      response = response
-          .where(
-            (t) =>
-                t.createdAt.toDateTime().isAfter(req.startDate.toDateTime()) &&
-                t.createdAt.toDateTime().isBefore(req.endDate.toDateTime()),
-          )
-          .toList();
-    }
-
-    return FindTransactionsResponse(transactions: response);
+    return FindTransactionsResponse(transactions: []);
   });
 
 final fakeTransport = fakeTransportBuilder.build();
@@ -103,25 +46,12 @@ void main() {
   group('Goldens', () {
     setUpAll(() {
       final storage = AppStorageService(AppStorageType.fake, {
-        CollectionName.users: fakeData[CollectionName.users]
-            ?.map(
-              (e) => User()..mergeFromProto3Json(e, ignoreUnknownFields: true),
-            )
-            .toList()
-            .first,
-        CollectionName.businesses: fakeData[CollectionName.businesses]
-            ?.map(
-              (e) =>
-                  Business()..mergeFromProto3Json(e, ignoreUnknownFields: true),
-            )
-            .toList()
-            .first,
-        CollectionName.stores: fakeData[CollectionName.stores]
-            ?.map(
-              (e) => Store()..mergeFromProto3Json(e, ignoreUnknownFields: true),
-            )
-            .toList()
-            .first,
+        CollectionName.users:
+            (fakeData[CollectionName.users] as List<User>).first,
+        CollectionName.businesses:
+            (fakeData[CollectionName.businesses] as List<Business>).first,
+        CollectionName.stores:
+            (fakeData[CollectionName.stores] as List<Store>).first,
       });
       GetIt.I.registerSingletonIfAbsent<AppStorageService>(() => storage);
     });

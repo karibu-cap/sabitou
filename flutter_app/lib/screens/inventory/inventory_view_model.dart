@@ -14,7 +14,7 @@ import '../../utils/logger.dart';
 import '../../utils/user_preference.dart';
 
 /// Enum for product status.
-enum ProductStatus {
+enum ProductInventoryStatus {
   /// In stock.
   inStock,
 
@@ -48,7 +48,8 @@ class InventoryViewModel {
   final _selectedCategorySubject = BehaviorSubject<String>.seeded('');
 
   /// Gets the selected status subject.
-  final _selectedStatusSubject = BehaviorSubject<ProductStatus?>.seeded(null);
+  final _selectedStatusSubject =
+      BehaviorSubject<ProductInventoryStatus?>.seeded(null);
 
   /// Gets the business categories.
   UnmodifiableListView<Category> businessCategories =
@@ -68,7 +69,8 @@ class InventoryViewModel {
       _productsSubject;
 
   /// Gets the selected status.
-  BehaviorSubject<ProductStatus?> get selectedStatus => _selectedStatusSubject;
+  BehaviorSubject<ProductInventoryStatus?> get selectedStatus =>
+      _selectedStatusSubject;
 
   /// Gets the error stream.
   Stream<String> get errorStream => _errorSubject.stream;
@@ -108,11 +110,12 @@ class InventoryViewModel {
         filtered = filtered
             .where(
               (p) => switch (status) {
-                ProductStatus.inStock =>
+                ProductInventoryStatus.inStock =>
                   p.storeProduct.stockQuantity > 0 &&
                       !isLowStock(p.storeProduct),
-                ProductStatus.outOfStock => p.storeProduct.stockQuantity <= 0,
-                ProductStatus.lowStock => isLowStock(p.storeProduct),
+                ProductInventoryStatus.outOfStock =>
+                  p.storeProduct.stockQuantity <= 0,
+                ProductInventoryStatus.lowStock => isLowStock(p.storeProduct),
               },
             )
             .toList();

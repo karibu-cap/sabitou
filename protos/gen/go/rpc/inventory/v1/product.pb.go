@@ -23,6 +23,55 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type ProductStatus int32
+
+const (
+	ProductStatus_PRODUCT_STATUS_UNSPECIFIED ProductStatus = 0
+	ProductStatus_PRODUCT_STATUS_ACTIVE      ProductStatus = 1
+	ProductStatus_PRODUCT_STATUS_INACTIVE    ProductStatus = 2
+)
+
+// Enum value maps for ProductStatus.
+var (
+	ProductStatus_name = map[int32]string{
+		0: "PRODUCT_STATUS_UNSPECIFIED",
+		1: "PRODUCT_STATUS_ACTIVE",
+		2: "PRODUCT_STATUS_INACTIVE",
+	}
+	ProductStatus_value = map[string]int32{
+		"PRODUCT_STATUS_UNSPECIFIED": 0,
+		"PRODUCT_STATUS_ACTIVE":      1,
+		"PRODUCT_STATUS_INACTIVE":    2,
+	}
+)
+
+func (x ProductStatus) Enum() *ProductStatus {
+	p := new(ProductStatus)
+	*p = x
+	return p
+}
+
+func (x ProductStatus) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (ProductStatus) Descriptor() protoreflect.EnumDescriptor {
+	return file_inventory_v1_product_proto_enumTypes[0].Descriptor()
+}
+
+func (ProductStatus) Type() protoreflect.EnumType {
+	return &file_inventory_v1_product_proto_enumTypes[0]
+}
+
+func (x ProductStatus) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use ProductStatus.Descriptor instead.
+func (ProductStatus) EnumDescriptor() ([]byte, []int) {
+	return file_inventory_v1_product_proto_rawDescGZIP(), []int{0}
+}
+
 type GlobalProduct struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The unique identifier of the product.
@@ -392,32 +441,36 @@ func (x *DeleteGlobalProductResponse) GetSuccess() bool {
 	return false
 }
 
-type SupplyEntry struct {
+type SupplyHistory struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The quantity of the product.
 	Quantity int32 `protobuf:"varint,1,opt,name=quantity,proto3" json:"quantity,omitempty"`
-	// The price in XAF of the product.
-	Price int32 `protobuf:"varint,2,opt,name=price,proto3" json:"price,omitempty"`
-	// The unique identifier of the supplier.
-	SupplierId    string `protobuf:"bytes,3,opt,name=supplier_id,json=supplierId,proto3" json:"supplier_id,omitempty"`
+	// The buy price of the product.
+	BuyPrice int32 `protobuf:"varint,2,opt,name=buy_price,json=buyPrice,proto3" json:"buy_price,omitempty"`
+	// The sale price of the product.
+	SalePrice int32 `protobuf:"varint,3,opt,name=sale_price,json=salePrice,proto3" json:"sale_price,omitempty"`
+	// The last quantity of the product.
+	LastQuantity int32 `protobuf:"varint,4,opt,name=last_quantity,json=lastQuantity,proto3" json:"last_quantity,omitempty"`
+	// The creation date of the supply history.
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SupplyEntry) Reset() {
-	*x = SupplyEntry{}
+func (x *SupplyHistory) Reset() {
+	*x = SupplyHistory{}
 	mi := &file_inventory_v1_product_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *SupplyEntry) String() string {
+func (x *SupplyHistory) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SupplyEntry) ProtoMessage() {}
+func (*SupplyHistory) ProtoMessage() {}
 
-func (x *SupplyEntry) ProtoReflect() protoreflect.Message {
+func (x *SupplyHistory) ProtoReflect() protoreflect.Message {
 	mi := &file_inventory_v1_product_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -429,30 +482,44 @@ func (x *SupplyEntry) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SupplyEntry.ProtoReflect.Descriptor instead.
-func (*SupplyEntry) Descriptor() ([]byte, []int) {
+// Deprecated: Use SupplyHistory.ProtoReflect.Descriptor instead.
+func (*SupplyHistory) Descriptor() ([]byte, []int) {
 	return file_inventory_v1_product_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *SupplyEntry) GetQuantity() int32 {
+func (x *SupplyHistory) GetQuantity() int32 {
 	if x != nil {
 		return x.Quantity
 	}
 	return 0
 }
 
-func (x *SupplyEntry) GetPrice() int32 {
+func (x *SupplyHistory) GetBuyPrice() int32 {
 	if x != nil {
-		return x.Price
+		return x.BuyPrice
 	}
 	return 0
 }
 
-func (x *SupplyEntry) GetSupplierId() string {
+func (x *SupplyHistory) GetSalePrice() int32 {
 	if x != nil {
-		return x.SupplierId
+		return x.SalePrice
 	}
-	return ""
+	return 0
+}
+
+func (x *SupplyHistory) GetLastQuantity() int32 {
+	if x != nil {
+		return x.LastQuantity
+	}
+	return 0
+}
+
+func (x *SupplyHistory) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
 }
 
 type StoreProduct struct {
@@ -463,25 +530,27 @@ type StoreProduct struct {
 	StoreId string `protobuf:"bytes,2,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
 	// The unique identifier of the global product.
 	GlobalProductId string `protobuf:"bytes,3,opt,name=global_product_id,json=globalProductId,proto3" json:"global_product_id,omitempty"`
-	// The price in XAF of the product.
+	// The sale price in XAF of the product.
 	// The currency is determined by the business.
-	Price *int32 `protobuf:"varint,4,opt,name=price,proto3,oneof" json:"price,omitempty"`
+	SalePrice *int32 `protobuf:"varint,4,opt,name=sale_price,json=salePrice,proto3,oneof" json:"sale_price,omitempty"`
 	// The media ids of the images of the product.
 	ImagesLinksIds []string `protobuf:"bytes,5,rep,name=images_links_ids,json=imagesLinksIds,proto3" json:"images_links_ids,omitempty"`
-	// The stock quantity of the product.
+	// The current stock quantity of the product.
 	StockQuantity *int32 `protobuf:"varint,6,opt,name=stock_quantity,json=stockQuantity,proto3,oneof" json:"stock_quantity,omitempty"`
 	// The minimum stock threshold of the product.
 	MinStockThreshold int32 `protobuf:"varint,7,opt,name=min_stock_threshold,json=minStockThreshold,proto3" json:"min_stock_threshold,omitempty"`
 	// The expiration date of the product.
 	ExpirationDate *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=expiration_date,json=expirationDate,proto3,oneof" json:"expiration_date,omitempty"`
-	// The inbound date.
-	InboundDate *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=inbound_date,json=inboundDate,proto3,oneof" json:"inbound_date,omitempty"`
 	// The creation date of the product.
 	CreatedAt *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	// The last update date of the product.
 	UpdatedAt *timestamppb.Timestamp `protobuf:"bytes,11,opt,name=updated_at,json=updatedAt,proto3,oneof" json:"updated_at,omitempty"`
 	// The supplier.
-	SupplierId    *string `protobuf:"bytes,12,opt,name=supplier_id,json=supplierId,proto3,oneof" json:"supplier_id,omitempty"`
+	SupplierId *string `protobuf:"bytes,12,opt,name=supplier_id,json=supplierId,proto3,oneof" json:"supplier_id,omitempty"`
+	// Current purchase/cost price.
+	CostPrice *int32 `protobuf:"varint,13,opt,name=cost_price,json=costPrice,proto3,oneof" json:"cost_price,omitempty"`
+	// The status of the product.
+	Status        ProductStatus `protobuf:"varint,14,opt,name=status,proto3,enum=inventory.v1.ProductStatus" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -537,9 +606,9 @@ func (x *StoreProduct) GetGlobalProductId() string {
 	return ""
 }
 
-func (x *StoreProduct) GetPrice() int32 {
-	if x != nil && x.Price != nil {
-		return *x.Price
+func (x *StoreProduct) GetSalePrice() int32 {
+	if x != nil && x.SalePrice != nil {
+		return *x.SalePrice
 	}
 	return 0
 }
@@ -572,13 +641,6 @@ func (x *StoreProduct) GetExpirationDate() *timestamppb.Timestamp {
 	return nil
 }
 
-func (x *StoreProduct) GetInboundDate() *timestamppb.Timestamp {
-	if x != nil {
-		return x.InboundDate
-	}
-	return nil
-}
-
 func (x *StoreProduct) GetCreatedAt() *timestamppb.Timestamp {
 	if x != nil {
 		return x.CreatedAt
@@ -598,6 +660,20 @@ func (x *StoreProduct) GetSupplierId() string {
 		return *x.SupplierId
 	}
 	return ""
+}
+
+func (x *StoreProduct) GetCostPrice() int32 {
+	if x != nil && x.CostPrice != nil {
+		return *x.CostPrice
+	}
+	return 0
+}
+
+func (x *StoreProduct) GetStatus() ProductStatus {
+	if x != nil {
+		return x.Status
+	}
+	return ProductStatus_PRODUCT_STATUS_UNSPECIFIED
 }
 
 type FindStoreProductsRequest struct {
@@ -1556,36 +1632,42 @@ const file_inventory_v1_product_proto_rawDesc = "" +
 	"\x1aDeleteGlobalProductRequest\x12*\n" +
 	"\x11global_product_id\x18\x01 \x01(\tR\x0fglobalProductId\"7\n" +
 	"\x1bDeleteGlobalProductResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess\"`\n" +
-	"\vSupplyEntry\x12\x1a\n" +
-	"\bquantity\x18\x01 \x01(\x05R\bquantity\x12\x14\n" +
-	"\x05price\x18\x02 \x01(\x05R\x05price\x12\x1f\n" +
-	"\vsupplier_id\x18\x03 \x01(\tR\n" +
-	"supplierId\"\xad\x05\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"\xc7\x01\n" +
+	"\rSupplyHistory\x12\x1a\n" +
+	"\bquantity\x18\x01 \x01(\x05R\bquantity\x12\x1b\n" +
+	"\tbuy_price\x18\x02 \x01(\x05R\bbuyPrice\x12\x1d\n" +
+	"\n" +
+	"sale_price\x18\x03 \x01(\x05R\tsalePrice\x12#\n" +
+	"\rlast_quantity\x18\x04 \x01(\x05R\flastQuantity\x129\n" +
+	"\n" +
+	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"\xce\x05\n" +
 	"\fStoreProduct\x12\x1a\n" +
 	"\x06ref_id\x18\x01 \x01(\tH\x00R\x05refId\x88\x01\x01\x12\x19\n" +
 	"\bstore_id\x18\x02 \x01(\tR\astoreId\x12*\n" +
-	"\x11global_product_id\x18\x03 \x01(\tR\x0fglobalProductId\x12\x19\n" +
-	"\x05price\x18\x04 \x01(\x05H\x01R\x05price\x88\x01\x01\x12(\n" +
+	"\x11global_product_id\x18\x03 \x01(\tR\x0fglobalProductId\x12\"\n" +
+	"\n" +
+	"sale_price\x18\x04 \x01(\x05H\x01R\tsalePrice\x88\x01\x01\x12(\n" +
 	"\x10images_links_ids\x18\x05 \x03(\tR\x0eimagesLinksIds\x12*\n" +
 	"\x0estock_quantity\x18\x06 \x01(\x05H\x02R\rstockQuantity\x88\x01\x01\x12.\n" +
 	"\x13min_stock_threshold\x18\a \x01(\x05R\x11minStockThreshold\x12H\n" +
-	"\x0fexpiration_date\x18\b \x01(\v2\x1a.google.protobuf.TimestampH\x03R\x0eexpirationDate\x88\x01\x01\x12B\n" +
-	"\finbound_date\x18\t \x01(\v2\x1a.google.protobuf.TimestampH\x04R\vinboundDate\x88\x01\x01\x129\n" +
+	"\x0fexpiration_date\x18\b \x01(\v2\x1a.google.protobuf.TimestampH\x03R\x0eexpirationDate\x88\x01\x01\x129\n" +
 	"\n" +
 	"created_at\x18\n" +
 	" \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12>\n" +
 	"\n" +
-	"updated_at\x18\v \x01(\v2\x1a.google.protobuf.TimestampH\x05R\tupdatedAt\x88\x01\x01\x12$\n" +
-	"\vsupplier_id\x18\f \x01(\tH\x06R\n" +
-	"supplierId\x88\x01\x01B\t\n" +
-	"\a_ref_idB\b\n" +
-	"\x06_priceB\x11\n" +
+	"updated_at\x18\v \x01(\v2\x1a.google.protobuf.TimestampH\x04R\tupdatedAt\x88\x01\x01\x12$\n" +
+	"\vsupplier_id\x18\f \x01(\tH\x05R\n" +
+	"supplierId\x88\x01\x01\x12\"\n" +
+	"\n" +
+	"cost_price\x18\r \x01(\x05H\x06R\tcostPrice\x88\x01\x01\x123\n" +
+	"\x06status\x18\x0e \x01(\x0e2\x1b.inventory.v1.ProductStatusR\x06statusB\t\n" +
+	"\a_ref_idB\r\n" +
+	"\v_sale_priceB\x11\n" +
 	"\x0f_stock_quantityB\x12\n" +
-	"\x10_expiration_dateB\x0f\n" +
-	"\r_inbound_dateB\r\n" +
+	"\x10_expiration_dateB\r\n" +
 	"\v_updated_atB\x0e\n" +
-	"\f_supplier_id\"\xb7\x02\n" +
+	"\f_supplier_idB\r\n" +
+	"\v_cost_price\"\xb7\x02\n" +
 	"\x18FindStoreProductsRequest\x12\x19\n" +
 	"\bstore_id\x18\x01 \x01(\tR\astoreId\x12\x1a\n" +
 	"\x06ref_id\x18\x02 \x01(\tH\x00R\x05refId\x88\x01\x01\x12/\n" +
@@ -1652,7 +1734,11 @@ const file_inventory_v1_product_proto_rawDesc = "" +
 	"\x1bStreamGlobalProductsRequest\x12\x19\n" +
 	"\bstore_id\x18\x01 \x01(\tR\astoreId\"W\n" +
 	"\x1cStreamGlobalProductsResponse\x127\n" +
-	"\bproducts\x18\x01 \x03(\v2\x1b.inventory.v1.GlobalProductR\bproducts2\xec\t\n" +
+	"\bproducts\x18\x01 \x03(\v2\x1b.inventory.v1.GlobalProductR\bproducts*g\n" +
+	"\rProductStatus\x12\x1e\n" +
+	"\x1aPRODUCT_STATUS_UNSPECIFIED\x10\x00\x12\x19\n" +
+	"\x15PRODUCT_STATUS_ACTIVE\x10\x01\x12\x1b\n" +
+	"\x17PRODUCT_STATUS_INACTIVE\x10\x022\xec\t\n" +
 	"\x0eProductService\x12g\n" +
 	"\x12FindGlobalProducts\x12'.inventory.v1.FindGlobalProductsRequest\x1a(.inventory.v1.FindGlobalProductsResponse\x12j\n" +
 	"\x13FindProductCategory\x12(.inventory.v1.FindProductCategoryRequest\x1a).inventory.v1.FindProductCategoryResponse\x12j\n" +
@@ -1682,90 +1768,93 @@ func file_inventory_v1_product_proto_rawDescGZIP() []byte {
 	return file_inventory_v1_product_proto_rawDescData
 }
 
+var file_inventory_v1_product_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_inventory_v1_product_proto_msgTypes = make([]protoimpl.MessageInfo, 27)
 var file_inventory_v1_product_proto_goTypes = []any{
-	(*GlobalProduct)(nil),                // 0: inventory.v1.GlobalProduct
-	(*CreateGlobalProductRequest)(nil),   // 1: inventory.v1.CreateGlobalProductRequest
-	(*CreateGlobalProductResponse)(nil),  // 2: inventory.v1.CreateGlobalProductResponse
-	(*UpdateGlobalProductRequest)(nil),   // 3: inventory.v1.UpdateGlobalProductRequest
-	(*UpdateGlobalProductResponse)(nil),  // 4: inventory.v1.UpdateGlobalProductResponse
-	(*DeleteGlobalProductRequest)(nil),   // 5: inventory.v1.DeleteGlobalProductRequest
-	(*DeleteGlobalProductResponse)(nil),  // 6: inventory.v1.DeleteGlobalProductResponse
-	(*SupplyEntry)(nil),                  // 7: inventory.v1.SupplyEntry
-	(*StoreProduct)(nil),                 // 8: inventory.v1.StoreProduct
-	(*FindStoreProductsRequest)(nil),     // 9: inventory.v1.FindStoreProductsRequest
-	(*FindStoreProductsResponse)(nil),    // 10: inventory.v1.FindStoreProductsResponse
-	(*FindGlobalProductsRequest)(nil),    // 11: inventory.v1.FindGlobalProductsRequest
-	(*FindGlobalProductsResponse)(nil),   // 12: inventory.v1.FindGlobalProductsResponse
-	(*FindProductCategoryRequest)(nil),   // 13: inventory.v1.FindProductCategoryRequest
-	(*FindProductCategoryResponse)(nil),  // 14: inventory.v1.FindProductCategoryResponse
-	(*AddStoreProductRequest)(nil),       // 15: inventory.v1.AddStoreProductRequest
-	(*AddStoreProductResponse)(nil),      // 16: inventory.v1.AddStoreProductResponse
-	(*GetStoreProductRequest)(nil),       // 17: inventory.v1.GetStoreProductRequest
-	(*GetStoreProductResponse)(nil),      // 18: inventory.v1.GetStoreProductResponse
-	(*UpdateStoreProductRequest)(nil),    // 19: inventory.v1.UpdateStoreProductRequest
-	(*UpdateStoreProductResponse)(nil),   // 20: inventory.v1.UpdateStoreProductResponse
-	(*DeleteStoreProductRequest)(nil),    // 21: inventory.v1.DeleteStoreProductRequest
-	(*DeleteStoreProductResponse)(nil),   // 22: inventory.v1.DeleteStoreProductResponse
-	(*StreamStoreProductsRequest)(nil),   // 23: inventory.v1.StreamStoreProductsRequest
-	(*StreamStoreProductsResponse)(nil),  // 24: inventory.v1.StreamStoreProductsResponse
-	(*StreamGlobalProductsRequest)(nil),  // 25: inventory.v1.StreamGlobalProductsRequest
-	(*StreamGlobalProductsResponse)(nil), // 26: inventory.v1.StreamGlobalProductsResponse
-	(*Internationalized)(nil),            // 27: inventory.v1.Internationalized
-	(*Category)(nil),                     // 28: inventory.v1.Category
-	(*timestamppb.Timestamp)(nil),        // 29: google.protobuf.Timestamp
+	(ProductStatus)(0),                   // 0: inventory.v1.ProductStatus
+	(*GlobalProduct)(nil),                // 1: inventory.v1.GlobalProduct
+	(*CreateGlobalProductRequest)(nil),   // 2: inventory.v1.CreateGlobalProductRequest
+	(*CreateGlobalProductResponse)(nil),  // 3: inventory.v1.CreateGlobalProductResponse
+	(*UpdateGlobalProductRequest)(nil),   // 4: inventory.v1.UpdateGlobalProductRequest
+	(*UpdateGlobalProductResponse)(nil),  // 5: inventory.v1.UpdateGlobalProductResponse
+	(*DeleteGlobalProductRequest)(nil),   // 6: inventory.v1.DeleteGlobalProductRequest
+	(*DeleteGlobalProductResponse)(nil),  // 7: inventory.v1.DeleteGlobalProductResponse
+	(*SupplyHistory)(nil),                // 8: inventory.v1.SupplyHistory
+	(*StoreProduct)(nil),                 // 9: inventory.v1.StoreProduct
+	(*FindStoreProductsRequest)(nil),     // 10: inventory.v1.FindStoreProductsRequest
+	(*FindStoreProductsResponse)(nil),    // 11: inventory.v1.FindStoreProductsResponse
+	(*FindGlobalProductsRequest)(nil),    // 12: inventory.v1.FindGlobalProductsRequest
+	(*FindGlobalProductsResponse)(nil),   // 13: inventory.v1.FindGlobalProductsResponse
+	(*FindProductCategoryRequest)(nil),   // 14: inventory.v1.FindProductCategoryRequest
+	(*FindProductCategoryResponse)(nil),  // 15: inventory.v1.FindProductCategoryResponse
+	(*AddStoreProductRequest)(nil),       // 16: inventory.v1.AddStoreProductRequest
+	(*AddStoreProductResponse)(nil),      // 17: inventory.v1.AddStoreProductResponse
+	(*GetStoreProductRequest)(nil),       // 18: inventory.v1.GetStoreProductRequest
+	(*GetStoreProductResponse)(nil),      // 19: inventory.v1.GetStoreProductResponse
+	(*UpdateStoreProductRequest)(nil),    // 20: inventory.v1.UpdateStoreProductRequest
+	(*UpdateStoreProductResponse)(nil),   // 21: inventory.v1.UpdateStoreProductResponse
+	(*DeleteStoreProductRequest)(nil),    // 22: inventory.v1.DeleteStoreProductRequest
+	(*DeleteStoreProductResponse)(nil),   // 23: inventory.v1.DeleteStoreProductResponse
+	(*StreamStoreProductsRequest)(nil),   // 24: inventory.v1.StreamStoreProductsRequest
+	(*StreamStoreProductsResponse)(nil),  // 25: inventory.v1.StreamStoreProductsResponse
+	(*StreamGlobalProductsRequest)(nil),  // 26: inventory.v1.StreamGlobalProductsRequest
+	(*StreamGlobalProductsResponse)(nil), // 27: inventory.v1.StreamGlobalProductsResponse
+	(*Internationalized)(nil),            // 28: inventory.v1.Internationalized
+	(*Category)(nil),                     // 29: inventory.v1.Category
+	(*timestamppb.Timestamp)(nil),        // 30: google.protobuf.Timestamp
 }
 var file_inventory_v1_product_proto_depIdxs = []int32{
-	27, // 0: inventory.v1.GlobalProduct.name:type_name -> inventory.v1.Internationalized
-	27, // 1: inventory.v1.GlobalProduct.description:type_name -> inventory.v1.Internationalized
-	28, // 2: inventory.v1.GlobalProduct.categories:type_name -> inventory.v1.Category
-	0,  // 3: inventory.v1.CreateGlobalProductRequest.global_product:type_name -> inventory.v1.GlobalProduct
-	0,  // 4: inventory.v1.UpdateGlobalProductRequest.global_product:type_name -> inventory.v1.GlobalProduct
-	29, // 5: inventory.v1.StoreProduct.expiration_date:type_name -> google.protobuf.Timestamp
-	29, // 6: inventory.v1.StoreProduct.inbound_date:type_name -> google.protobuf.Timestamp
-	29, // 7: inventory.v1.StoreProduct.created_at:type_name -> google.protobuf.Timestamp
-	29, // 8: inventory.v1.StoreProduct.updated_at:type_name -> google.protobuf.Timestamp
-	29, // 9: inventory.v1.FindStoreProductsRequest.expiration_date:type_name -> google.protobuf.Timestamp
-	8,  // 10: inventory.v1.FindStoreProductsResponse.products:type_name -> inventory.v1.StoreProduct
-	28, // 11: inventory.v1.FindGlobalProductsRequest.categories:type_name -> inventory.v1.Category
-	0,  // 12: inventory.v1.FindGlobalProductsResponse.products:type_name -> inventory.v1.GlobalProduct
-	28, // 13: inventory.v1.FindProductCategoryResponse.categories:type_name -> inventory.v1.Category
-	0,  // 14: inventory.v1.AddStoreProductRequest.global_product:type_name -> inventory.v1.GlobalProduct
-	8,  // 15: inventory.v1.AddStoreProductRequest.store_product:type_name -> inventory.v1.StoreProduct
-	8,  // 16: inventory.v1.GetStoreProductResponse.store_product:type_name -> inventory.v1.StoreProduct
-	8,  // 17: inventory.v1.UpdateStoreProductRequest.store_product:type_name -> inventory.v1.StoreProduct
-	0,  // 18: inventory.v1.UpdateStoreProductRequest.global_product:type_name -> inventory.v1.GlobalProduct
-	8,  // 19: inventory.v1.StreamStoreProductsResponse.products:type_name -> inventory.v1.StoreProduct
-	0,  // 20: inventory.v1.StreamGlobalProductsResponse.products:type_name -> inventory.v1.GlobalProduct
-	11, // 21: inventory.v1.ProductService.FindGlobalProducts:input_type -> inventory.v1.FindGlobalProductsRequest
-	13, // 22: inventory.v1.ProductService.FindProductCategory:input_type -> inventory.v1.FindProductCategoryRequest
-	1,  // 23: inventory.v1.ProductService.CreateGlobalProduct:input_type -> inventory.v1.CreateGlobalProductRequest
-	3,  // 24: inventory.v1.ProductService.UpdateGlobalProduct:input_type -> inventory.v1.UpdateGlobalProductRequest
-	5,  // 25: inventory.v1.ProductService.DeleteGlobalProduct:input_type -> inventory.v1.DeleteGlobalProductRequest
-	15, // 26: inventory.v1.ProductService.AddProduct:input_type -> inventory.v1.AddStoreProductRequest
-	17, // 27: inventory.v1.ProductService.GetProduct:input_type -> inventory.v1.GetStoreProductRequest
-	19, // 28: inventory.v1.ProductService.UpdateProduct:input_type -> inventory.v1.UpdateStoreProductRequest
-	21, // 29: inventory.v1.ProductService.DeleteProduct:input_type -> inventory.v1.DeleteStoreProductRequest
-	9,  // 30: inventory.v1.ProductService.FindStoreProducts:input_type -> inventory.v1.FindStoreProductsRequest
-	23, // 31: inventory.v1.ProductService.StreamStoreProducts:input_type -> inventory.v1.StreamStoreProductsRequest
-	25, // 32: inventory.v1.ProductService.StreamGlobalProducts:input_type -> inventory.v1.StreamGlobalProductsRequest
-	12, // 33: inventory.v1.ProductService.FindGlobalProducts:output_type -> inventory.v1.FindGlobalProductsResponse
-	14, // 34: inventory.v1.ProductService.FindProductCategory:output_type -> inventory.v1.FindProductCategoryResponse
-	2,  // 35: inventory.v1.ProductService.CreateGlobalProduct:output_type -> inventory.v1.CreateGlobalProductResponse
-	4,  // 36: inventory.v1.ProductService.UpdateGlobalProduct:output_type -> inventory.v1.UpdateGlobalProductResponse
-	6,  // 37: inventory.v1.ProductService.DeleteGlobalProduct:output_type -> inventory.v1.DeleteGlobalProductResponse
-	16, // 38: inventory.v1.ProductService.AddProduct:output_type -> inventory.v1.AddStoreProductResponse
-	18, // 39: inventory.v1.ProductService.GetProduct:output_type -> inventory.v1.GetStoreProductResponse
-	20, // 40: inventory.v1.ProductService.UpdateProduct:output_type -> inventory.v1.UpdateStoreProductResponse
-	22, // 41: inventory.v1.ProductService.DeleteProduct:output_type -> inventory.v1.DeleteStoreProductResponse
-	10, // 42: inventory.v1.ProductService.FindStoreProducts:output_type -> inventory.v1.FindStoreProductsResponse
-	24, // 43: inventory.v1.ProductService.StreamStoreProducts:output_type -> inventory.v1.StreamStoreProductsResponse
-	26, // 44: inventory.v1.ProductService.StreamGlobalProducts:output_type -> inventory.v1.StreamGlobalProductsResponse
-	33, // [33:45] is the sub-list for method output_type
-	21, // [21:33] is the sub-list for method input_type
-	21, // [21:21] is the sub-list for extension type_name
-	21, // [21:21] is the sub-list for extension extendee
-	0,  // [0:21] is the sub-list for field type_name
+	28, // 0: inventory.v1.GlobalProduct.name:type_name -> inventory.v1.Internationalized
+	28, // 1: inventory.v1.GlobalProduct.description:type_name -> inventory.v1.Internationalized
+	29, // 2: inventory.v1.GlobalProduct.categories:type_name -> inventory.v1.Category
+	1,  // 3: inventory.v1.CreateGlobalProductRequest.global_product:type_name -> inventory.v1.GlobalProduct
+	1,  // 4: inventory.v1.UpdateGlobalProductRequest.global_product:type_name -> inventory.v1.GlobalProduct
+	30, // 5: inventory.v1.SupplyHistory.created_at:type_name -> google.protobuf.Timestamp
+	30, // 6: inventory.v1.StoreProduct.expiration_date:type_name -> google.protobuf.Timestamp
+	30, // 7: inventory.v1.StoreProduct.created_at:type_name -> google.protobuf.Timestamp
+	30, // 8: inventory.v1.StoreProduct.updated_at:type_name -> google.protobuf.Timestamp
+	0,  // 9: inventory.v1.StoreProduct.status:type_name -> inventory.v1.ProductStatus
+	30, // 10: inventory.v1.FindStoreProductsRequest.expiration_date:type_name -> google.protobuf.Timestamp
+	9,  // 11: inventory.v1.FindStoreProductsResponse.products:type_name -> inventory.v1.StoreProduct
+	29, // 12: inventory.v1.FindGlobalProductsRequest.categories:type_name -> inventory.v1.Category
+	1,  // 13: inventory.v1.FindGlobalProductsResponse.products:type_name -> inventory.v1.GlobalProduct
+	29, // 14: inventory.v1.FindProductCategoryResponse.categories:type_name -> inventory.v1.Category
+	1,  // 15: inventory.v1.AddStoreProductRequest.global_product:type_name -> inventory.v1.GlobalProduct
+	9,  // 16: inventory.v1.AddStoreProductRequest.store_product:type_name -> inventory.v1.StoreProduct
+	9,  // 17: inventory.v1.GetStoreProductResponse.store_product:type_name -> inventory.v1.StoreProduct
+	9,  // 18: inventory.v1.UpdateStoreProductRequest.store_product:type_name -> inventory.v1.StoreProduct
+	1,  // 19: inventory.v1.UpdateStoreProductRequest.global_product:type_name -> inventory.v1.GlobalProduct
+	9,  // 20: inventory.v1.StreamStoreProductsResponse.products:type_name -> inventory.v1.StoreProduct
+	1,  // 21: inventory.v1.StreamGlobalProductsResponse.products:type_name -> inventory.v1.GlobalProduct
+	12, // 22: inventory.v1.ProductService.FindGlobalProducts:input_type -> inventory.v1.FindGlobalProductsRequest
+	14, // 23: inventory.v1.ProductService.FindProductCategory:input_type -> inventory.v1.FindProductCategoryRequest
+	2,  // 24: inventory.v1.ProductService.CreateGlobalProduct:input_type -> inventory.v1.CreateGlobalProductRequest
+	4,  // 25: inventory.v1.ProductService.UpdateGlobalProduct:input_type -> inventory.v1.UpdateGlobalProductRequest
+	6,  // 26: inventory.v1.ProductService.DeleteGlobalProduct:input_type -> inventory.v1.DeleteGlobalProductRequest
+	16, // 27: inventory.v1.ProductService.AddProduct:input_type -> inventory.v1.AddStoreProductRequest
+	18, // 28: inventory.v1.ProductService.GetProduct:input_type -> inventory.v1.GetStoreProductRequest
+	20, // 29: inventory.v1.ProductService.UpdateProduct:input_type -> inventory.v1.UpdateStoreProductRequest
+	22, // 30: inventory.v1.ProductService.DeleteProduct:input_type -> inventory.v1.DeleteStoreProductRequest
+	10, // 31: inventory.v1.ProductService.FindStoreProducts:input_type -> inventory.v1.FindStoreProductsRequest
+	24, // 32: inventory.v1.ProductService.StreamStoreProducts:input_type -> inventory.v1.StreamStoreProductsRequest
+	26, // 33: inventory.v1.ProductService.StreamGlobalProducts:input_type -> inventory.v1.StreamGlobalProductsRequest
+	13, // 34: inventory.v1.ProductService.FindGlobalProducts:output_type -> inventory.v1.FindGlobalProductsResponse
+	15, // 35: inventory.v1.ProductService.FindProductCategory:output_type -> inventory.v1.FindProductCategoryResponse
+	3,  // 36: inventory.v1.ProductService.CreateGlobalProduct:output_type -> inventory.v1.CreateGlobalProductResponse
+	5,  // 37: inventory.v1.ProductService.UpdateGlobalProduct:output_type -> inventory.v1.UpdateGlobalProductResponse
+	7,  // 38: inventory.v1.ProductService.DeleteGlobalProduct:output_type -> inventory.v1.DeleteGlobalProductResponse
+	17, // 39: inventory.v1.ProductService.AddProduct:output_type -> inventory.v1.AddStoreProductResponse
+	19, // 40: inventory.v1.ProductService.GetProduct:output_type -> inventory.v1.GetStoreProductResponse
+	21, // 41: inventory.v1.ProductService.UpdateProduct:output_type -> inventory.v1.UpdateStoreProductResponse
+	23, // 42: inventory.v1.ProductService.DeleteProduct:output_type -> inventory.v1.DeleteStoreProductResponse
+	11, // 43: inventory.v1.ProductService.FindStoreProducts:output_type -> inventory.v1.FindStoreProductsResponse
+	25, // 44: inventory.v1.ProductService.StreamStoreProducts:output_type -> inventory.v1.StreamStoreProductsResponse
+	27, // 45: inventory.v1.ProductService.StreamGlobalProducts:output_type -> inventory.v1.StreamGlobalProductsResponse
+	34, // [34:46] is the sub-list for method output_type
+	22, // [22:34] is the sub-list for method input_type
+	22, // [22:22] is the sub-list for extension type_name
+	22, // [22:22] is the sub-list for extension extendee
+	0,  // [0:22] is the sub-list for field type_name
 }
 
 func init() { file_inventory_v1_product_proto_init() }
@@ -1785,13 +1874,14 @@ func file_inventory_v1_product_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_inventory_v1_product_proto_rawDesc), len(file_inventory_v1_product_proto_rawDesc)),
-			NumEnums:      0,
+			NumEnums:      1,
 			NumMessages:   27,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
 		GoTypes:           file_inventory_v1_product_proto_goTypes,
 		DependencyIndexes: file_inventory_v1_product_proto_depIdxs,
+		EnumInfos:         file_inventory_v1_product_proto_enumTypes,
 		MessageInfos:      file_inventory_v1_product_proto_msgTypes,
 	}.Build()
 	File_inventory_v1_product_proto = out.File

@@ -1,14 +1,14 @@
 openapi: 3.1.0
 info:
-  title: order.v1
+  title: inventory.v1
 paths:
-  /order.v1.InvoiceService/CreateInvoice:
+  /inventory.v1.StockInboundService/CreateStockInbound:
     post:
       tags:
-        - order.v1.InvoiceService
-      summary: Creates an invoice for the order.
-      description: Creates an invoice for the order.
-      operationId: order.v1.InvoiceService.CreateInvoice
+        - inventory.v1.StockInboundService
+      summary: Creates a stock in bound.
+      description: Creates a stock in bound.
+      operationId: inventory.v1.StockInboundService.CreateStockInbound
       parameters:
         - name: Connect-Protocol-Version
           in: header
@@ -23,7 +23,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/order.v1.CreateInvoiceRequest'
+              $ref: '#/components/schemas/inventory.v1.CreateStockInboundRequest'
         required: true
       responses:
         default:
@@ -37,7 +37,43 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/order.v1.CreateInvoiceResponse'
+                $ref: '#/components/schemas/inventory.v1.CreateStockInboundResponse'
+  /inventory.v1.StockInboundService/UpdateStockInbound:
+    post:
+      tags:
+        - inventory.v1.StockInboundService
+      summary: Updates the stock in bound.
+      description: Updates the stock in bound.
+      operationId: inventory.v1.StockInboundService.UpdateStockInbound
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inventory.v1.UpdateStockInboundRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inventory.v1.UpdateStockInboundResponse'
 components:
   schemas:
     connect-protocol-version:
@@ -205,190 +241,131 @@ components:
          the Joda Time's [`ISODateTimeFormat.dateTime()`](
          http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()
          ) to obtain a formatter capable of generating timestamps in this format.
-    order.v1.CreateInvoiceRequest:
+    inventory.v1.CreateStockInboundRequest:
       type: object
       properties:
-        orderId:
-          type: string
-          title: order_id
-          description: The unique identifier of the order.
-      title: CreateInvoiceRequest
+        stockInbound:
+          title: stock_inbound
+          description: The stock inbound to create.
+          $ref: '#/components/schemas/inventory.v1.StockInbound'
+      title: CreateStockInboundRequest
       additionalProperties: false
-    order.v1.CreateInvoiceResponse:
+    inventory.v1.CreateStockInboundResponse:
       type: object
       properties:
-        invoice:
-          title: invoice
-          description: The invoice of the order.
-          $ref: '#/components/schemas/order.v1.Invoice'
-      title: CreateInvoiceResponse
+        success:
+          type: boolean
+          title: success
+          description: Whether the stock inbound was successfully created.
+      title: CreateStockInboundResponse
       additionalProperties: false
-    order.v1.Invoice:
+    inventory.v1.InboundType:
+      type: string
+      title: InboundType
+      enum:
+        - INBOUND_TYPE_UNSPECIFIED
+        - INBOUND_TYPE_STOCK_IN
+        - INBOUND_TYPE_CUSTOMER_RETURN
+        - INBOUND_TYPE_ADJUSTMENT
+    inventory.v1.StockInbound:
       type: object
       properties:
         refId:
           type: string
           title: ref_id
-          format: uuid
-          description: The unique identifier of the invoice.
-        orderId:
-          type: string
-          title: order_id
-          format: uuid
-          description: The unique identifier of the order.
-        status:
-          title: status
-          description: The status of the invoice.
-          $ref: '#/components/schemas/order.v1.InvoiceStatus'
-        orderItems:
-          type: array
-          items:
-            $ref: '#/components/schemas/order.v1.OrderItem'
-          title: order_items
-          description: The list of items in the invoice.
-        payments:
-          type: array
-          items:
-            $ref: '#/components/schemas/order.v1.Payment'
-          title: payments
-          description: |-
-            The payment methods used to pay the invoice.
-             Some time, user can use multiple payment methods to pay the invoice.
-        totalDiscount:
-          type: number
-          title: total_discount
-          format: double
-          description: Total discounts applied (e.g., promotions)
-        totalVat:
-          type: number
-          title: total_vat
-          format: double
-          description: |-
-            Total tax/VAT amount
-             Example: 300.0 (e.g., 5% VAT on 6000 XAF subtotal, assuming no discount: 6000 * 0.05 = 300 XAF)
-        subtotal:
-          type: number
-          title: subtotal
-          format: double
-          description: |-
-            Amount hors taxe: pre-tax, pre-discount total from order_items
-             Example: 6000.0 (e.g., from the 3 items at 2000 XAF each: 3 * 2000 = 6000 XAF)
-        total:
-          type: number
-          title: total
-          format: double
-          description: |-
-            Amount with tax: subtotal - total_discount + total_vat
-             Example: 5801.0 (e.g., subtotal 6000 - discount 500 + VAT 300= 5801 XAF)
-        customerTenderedAmount:
-          type: number
-          title: customer_tendered_amount
-          format: double
-          description: |-
-            Amount given by client (e.g., cash tendered).
-             Example: 10000.0 (e.g., customer hands over 10000 XAF cash for a 6000 XAF total)
-        changeGiven:
-          type: number
-          title: change_given
-          format: double
-          description: |-
-            Amount refunded to client (e.g., change or overpayment refund) Set to 0 for pending cases.
-             Example: 4000.0 (e.g., immediate cash refund for overpayment: 10000 tendered - 6000 grand_total = 4000 XAF given back)
-        balanceDue:
-          type: number
-          title: balance_due
-          format: double
-          description: |-
-            Unpaid balance: grand_total - paid_amount (covers remaining_to_pay)
-             Example: -4000.0 (e.g., after paying 10000 XAF on a 6000 XAF total: 6000 - 10000 = -4000 XAF, meaning 4000 XAF owed to customer)
-        voucherId:
-          type: string
-          title: voucher_id
-          format: uuid
-          description: The voucher used to pay the invoice.
-          nullable: true
-        createdAt:
-          title: created_at
-          description: The date and time the invoice was created.
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-        deliveryDate:
-          title: delivery_date
-          description: The delivery date of the invoice.
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-      title: Invoice
-      required:
-        - refId
-        - orderId
-      additionalProperties: false
-      description: |-
-        The invoice of an order.
-         The invoice is a PDF file that can be downloaded by the customer.
-         It contains the order details, the customer details, the payment details.
-    order.v1.InvoiceStatus:
-      type: string
-      title: InvoiceStatus
-      enum:
-        - INVOICE_STATUS_UNSPECIFIED
-        - INVOICE_STATUS_PAID
-        - INVOICE_STATUS_PENDING_REFUND
-    order.v1.OrderItem:
-      type: object
-      properties:
-        storeProductId:
-          type: string
-          title: store_product_id
-          description: The unique identifier of the store product.
+        inboundType:
+          title: inbound_type
+          description: Type of inbound stock
+          $ref: '#/components/schemas/inventory.v1.InboundType'
         quantity:
           type: integer
           title: quantity
           format: int32
-          description: The quantity of the product.
-        unitPrice:
+          description: Quantity added to inventory
+        quantityBefore:
           type: integer
-          title: unit_price
+          title: quantity_before
           format: int32
-          description: |-
-            The unit price in XAF of the product.
-             WARN: This value is stored because the unit price can change over time.
-        itemName:
+          description: Stock quantity before this transaction
+        quantityAfter:
+          type: integer
+          title: quantity_after
+          format: int32
+          description: Stock quantity after this transaction
+        unitCost:
+          type: integer
+          title: unit_cost
+          format: int32
+          description: Purchase/cost price per unit
+        supplierId:
           type: string
-          title: item_name
-          description: The name of the product.
-      title: OrderItem
+          title: supplier_id
+          description: Supplier ID (for stock in transactions)
+          nullable: true
+        referenceNumber:
+          type: string
+          title: reference_number
+          description: Reference number (PO number, invoice number, etc.)
+          nullable: true
+        batchNumber:
+          type: string
+          title: batch_number
+          description: Batch/lot number (for traceability if needed)
+          nullable: true
+        reason:
+          type: string
+          title: reason
+          description: Reason for the transaction (especially for adjustments)
+          nullable: true
+        batchExpiryDate:
+          title: batch_expiry_date
+          description: Expiration date for this batch (if applicable)
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        createdAt:
+          title: created_at
+          description: When this supply was received/processed
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        performedBy:
+          type: string
+          title: performed_by
+          description: User who performed the transaction
+      title: StockInbound
       additionalProperties: false
-    order.v1.Payment:
+      description: Tracks all stock additions to inventory
+    inventory.v1.UpdateStockInboundRequest:
       type: object
       properties:
-        amount:
-          type: number
-          title: amount
-          format: double
-        method:
-          title: method
-          $ref: '#/components/schemas/order.v1.PaymentMethod'
-        referenceId:
+        refId:
           type: string
-          title: reference_id
+          title: ref_id
+        quantity:
+          type: integer
+          title: quantity
+          format: int32
           description: |-
-            The reference id of the payment.
-             For voucher, it is the voucher id.
+            The quantity to update.
+             Note the quantity  can be negative for adjustments.
           nullable: true
-        timestamp:
-          title: timestamp
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-      title: Payment
+        reason:
+          type: string
+          title: reason
+          nullable: true
+        performedBy:
+          type: string
+          title: performed_by
+          nullable: true
+      title: UpdateStockInboundRequest
       additionalProperties: false
-    order.v1.PaymentMethod:
-      type: string
-      title: PaymentMethod
-      enum:
-        - PAYMENT_METHOD_UNSPECIFIED
-        - PAYMENT_METHOD_CASH
-        - PAYMENT_METHOD_CARD
-        - PAYMENT_METHOD_ORANGE_MONEY
-        - PAYMENT_METHOD_MTN_MONEY
-        - PAYMENT_METHOD_VOUCHER
-        - PAYMENT_METHOD_MOBILE
+      description: Limit the update to only (reason, quantity for return or adjustment, performed_by)
+    inventory.v1.UpdateStockInboundResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+      title: UpdateStockInboundResponse
+      additionalProperties: false
 security: []
 tags:
-  - name: order.v1.InvoiceService
+  - name: inventory.v1.StockInboundService

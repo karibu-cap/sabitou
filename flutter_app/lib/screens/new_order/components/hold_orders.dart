@@ -103,7 +103,7 @@ final class HoldOrders extends StatelessWidget {
                                 DataCell(
                                   Text(
                                     Formatters.formatCurrency(
-                                      order.totalPrice.toDouble(),
+                                      order.orderPrices.grandTotal.toDouble(),
                                     ),
                                     style: ShadTheme.of(context).textTheme.large
                                         .copyWith(fontWeight: FontWeight.w600),

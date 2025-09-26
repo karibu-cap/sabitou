@@ -33,15 +33,15 @@ const (
 // reflection-formatted method names, remove the leading slash and convert the remaining slash to a
 // period.
 const (
-	// InvoiceServiceGenerateInvoiceProcedure is the fully-qualified name of the InvoiceService's
-	// GenerateInvoice RPC.
-	InvoiceServiceGenerateInvoiceProcedure = "/order.v1.InvoiceService/GenerateInvoice"
+	// InvoiceServiceCreateInvoiceProcedure is the fully-qualified name of the InvoiceService's
+	// CreateInvoice RPC.
+	InvoiceServiceCreateInvoiceProcedure = "/order.v1.InvoiceService/CreateInvoice"
 )
 
 // InvoiceServiceClient is a client for the order.v1.InvoiceService service.
 type InvoiceServiceClient interface {
-	// Generates an invoice for the order.
-	GenerateInvoice(context.Context, *connect.Request[v1.GenerateInvoiceRequest]) (*connect.Response[v1.GenerateInvoiceResponse], error)
+	// Creates an invoice for the order.
+	CreateInvoice(context.Context, *connect.Request[v1.CreateInvoiceRequest]) (*connect.Response[v1.CreateInvoiceResponse], error)
 }
 
 // NewInvoiceServiceClient constructs a client for the order.v1.InvoiceService service. By default,
@@ -55,10 +55,10 @@ func NewInvoiceServiceClient(httpClient connect.HTTPClient, baseURL string, opts
 	baseURL = strings.TrimRight(baseURL, "/")
 	invoiceServiceMethods := v1.File_order_v1_invoice_proto.Services().ByName("InvoiceService").Methods()
 	return &invoiceServiceClient{
-		generateInvoice: connect.NewClient[v1.GenerateInvoiceRequest, v1.GenerateInvoiceResponse](
+		createInvoice: connect.NewClient[v1.CreateInvoiceRequest, v1.CreateInvoiceResponse](
 			httpClient,
-			baseURL+InvoiceServiceGenerateInvoiceProcedure,
-			connect.WithSchema(invoiceServiceMethods.ByName("GenerateInvoice")),
+			baseURL+InvoiceServiceCreateInvoiceProcedure,
+			connect.WithSchema(invoiceServiceMethods.ByName("CreateInvoice")),
 			connect.WithClientOptions(opts...),
 		),
 	}
@@ -66,18 +66,18 @@ func NewInvoiceServiceClient(httpClient connect.HTTPClient, baseURL string, opts
 
 // invoiceServiceClient implements InvoiceServiceClient.
 type invoiceServiceClient struct {
-	generateInvoice *connect.Client[v1.GenerateInvoiceRequest, v1.GenerateInvoiceResponse]
+	createInvoice *connect.Client[v1.CreateInvoiceRequest, v1.CreateInvoiceResponse]
 }
 
-// GenerateInvoice calls order.v1.InvoiceService.GenerateInvoice.
-func (c *invoiceServiceClient) GenerateInvoice(ctx context.Context, req *connect.Request[v1.GenerateInvoiceRequest]) (*connect.Response[v1.GenerateInvoiceResponse], error) {
-	return c.generateInvoice.CallUnary(ctx, req)
+// CreateInvoice calls order.v1.InvoiceService.CreateInvoice.
+func (c *invoiceServiceClient) CreateInvoice(ctx context.Context, req *connect.Request[v1.CreateInvoiceRequest]) (*connect.Response[v1.CreateInvoiceResponse], error) {
+	return c.createInvoice.CallUnary(ctx, req)
 }
 
 // InvoiceServiceHandler is an implementation of the order.v1.InvoiceService service.
 type InvoiceServiceHandler interface {
-	// Generates an invoice for the order.
-	GenerateInvoice(context.Context, *connect.Request[v1.GenerateInvoiceRequest]) (*connect.Response[v1.GenerateInvoiceResponse], error)
+	// Creates an invoice for the order.
+	CreateInvoice(context.Context, *connect.Request[v1.CreateInvoiceRequest]) (*connect.Response[v1.CreateInvoiceResponse], error)
 }
 
 // NewInvoiceServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -87,16 +87,16 @@ type InvoiceServiceHandler interface {
 // and JSON codecs. They also support gzip compression.
 func NewInvoiceServiceHandler(svc InvoiceServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
 	invoiceServiceMethods := v1.File_order_v1_invoice_proto.Services().ByName("InvoiceService").Methods()
-	invoiceServiceGenerateInvoiceHandler := connect.NewUnaryHandler(
-		InvoiceServiceGenerateInvoiceProcedure,
-		svc.GenerateInvoice,
-		connect.WithSchema(invoiceServiceMethods.ByName("GenerateInvoice")),
+	invoiceServiceCreateInvoiceHandler := connect.NewUnaryHandler(
+		InvoiceServiceCreateInvoiceProcedure,
+		svc.CreateInvoice,
+		connect.WithSchema(invoiceServiceMethods.ByName("CreateInvoice")),
 		connect.WithHandlerOptions(opts...),
 	)
 	return "/order.v1.InvoiceService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
-		case InvoiceServiceGenerateInvoiceProcedure:
-			invoiceServiceGenerateInvoiceHandler.ServeHTTP(w, r)
+		case InvoiceServiceCreateInvoiceProcedure:
+			invoiceServiceCreateInvoiceHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -106,6 +106,6 @@ func NewInvoiceServiceHandler(svc InvoiceServiceHandler, opts ...connect.Handler
 // UnimplementedInvoiceServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedInvoiceServiceHandler struct{}
 
-func (UnimplementedInvoiceServiceHandler) GenerateInvoice(context.Context, *connect.Request[v1.GenerateInvoiceRequest]) (*connect.Response[v1.GenerateInvoiceResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("order.v1.InvoiceService.GenerateInvoice is not implemented"))
+func (UnimplementedInvoiceServiceHandler) CreateInvoice(context.Context, *connect.Request[v1.CreateInvoiceRequest]) (*connect.Response[v1.CreateInvoiceResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("order.v1.InvoiceService.CreateInvoice is not implemented"))
 }

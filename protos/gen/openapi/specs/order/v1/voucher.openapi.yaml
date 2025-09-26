@@ -2,13 +2,12 @@ openapi: 3.1.0
 info:
   title: order.v1
 paths:
-  /order.v1.InvoiceService/CreateInvoice:
+  /order.v1.VoucherService/CreateVoucher:
     post:
       tags:
-        - order.v1.InvoiceService
-      summary: Creates an invoice for the order.
-      description: Creates an invoice for the order.
-      operationId: order.v1.InvoiceService.CreateInvoice
+        - order.v1.VoucherService
+      summary: CreateVoucher
+      operationId: order.v1.VoucherService.CreateVoucher
       parameters:
         - name: Connect-Protocol-Version
           in: header
@@ -23,7 +22,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/order.v1.CreateInvoiceRequest'
+              $ref: '#/components/schemas/order.v1.CreateVoucherRequest'
         required: true
       responses:
         default:
@@ -37,7 +36,77 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/order.v1.CreateInvoiceResponse'
+                $ref: '#/components/schemas/order.v1.CreateVoucherResponse'
+  /order.v1.VoucherService/GetVoucher:
+    post:
+      tags:
+        - order.v1.VoucherService
+      summary: GetVoucher
+      operationId: order.v1.VoucherService.GetVoucher
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/order.v1.GetVoucherRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/order.v1.GetVoucherResponse'
+  /order.v1.VoucherService/RedeemVoucher:
+    post:
+      tags:
+        - order.v1.VoucherService
+      summary: RedeemVoucher
+      operationId: order.v1.VoucherService.RedeemVoucher
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/order.v1.RedeemVoucherRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/order.v1.RedeemVoucherResponse'
 components:
   schemas:
     connect-protocol-version:
@@ -205,190 +274,123 @@ components:
          the Joda Time's [`ISODateTimeFormat.dateTime()`](
          http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()
          ) to obtain a formatter capable of generating timestamps in this format.
-    order.v1.CreateInvoiceRequest:
+    order.v1.CreateVoucherRequest:
       type: object
       properties:
-        orderId:
+        voucher:
+          title: voucher
+          $ref: '#/components/schemas/order.v1.Voucher'
+      title: CreateVoucherRequest
+      additionalProperties: false
+    order.v1.CreateVoucherResponse:
+      type: object
+      properties:
+        refId:
           type: string
-          title: order_id
-          description: The unique identifier of the order.
-      title: CreateInvoiceRequest
+          title: ref_id
+      title: CreateVoucherResponse
       additionalProperties: false
-    order.v1.CreateInvoiceResponse:
+    order.v1.GetVoucherRequest:
       type: object
       properties:
-        invoice:
-          title: invoice
-          description: The invoice of the order.
-          $ref: '#/components/schemas/order.v1.Invoice'
-      title: CreateInvoiceResponse
+        refId:
+          type: string
+          title: ref_id
+      title: GetVoucherRequest
       additionalProperties: false
-    order.v1.Invoice:
+    order.v1.GetVoucherResponse:
+      type: object
+      properties:
+        voucher:
+          title: voucher
+          $ref: '#/components/schemas/order.v1.Voucher'
+      title: GetVoucherResponse
+      additionalProperties: false
+    order.v1.RedeemVoucherRequest:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+      title: RedeemVoucherRequest
+      additionalProperties: false
+    order.v1.RedeemVoucherResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+        error:
+          type: string
+          title: error
+          nullable: true
+      title: RedeemVoucherResponse
+      additionalProperties: false
+    order.v1.Voucher:
       type: object
       properties:
         refId:
           type: string
           title: ref_id
           format: uuid
-          description: The unique identifier of the invoice.
         orderId:
           type: string
           title: order_id
           format: uuid
-          description: The unique identifier of the order.
-        status:
-          title: status
-          description: The status of the invoice.
-          $ref: '#/components/schemas/order.v1.InvoiceStatus'
-        orderItems:
-          type: array
-          items:
-            $ref: '#/components/schemas/order.v1.OrderItem'
-          title: order_items
-          description: The list of items in the invoice.
-        payments:
-          type: array
-          items:
-            $ref: '#/components/schemas/order.v1.Payment'
-          title: payments
-          description: |-
-            The payment methods used to pay the invoice.
-             Some time, user can use multiple payment methods to pay the invoice.
-        totalDiscount:
-          type: number
-          title: total_discount
-          format: double
-          description: Total discounts applied (e.g., promotions)
-        totalVat:
-          type: number
-          title: total_vat
-          format: double
-          description: |-
-            Total tax/VAT amount
-             Example: 300.0 (e.g., 5% VAT on 6000 XAF subtotal, assuming no discount: 6000 * 0.05 = 300 XAF)
-        subtotal:
-          type: number
-          title: subtotal
-          format: double
-          description: |-
-            Amount hors taxe: pre-tax, pre-discount total from order_items
-             Example: 6000.0 (e.g., from the 3 items at 2000 XAF each: 3 * 2000 = 6000 XAF)
-        total:
-          type: number
-          title: total
-          format: double
-          description: |-
-            Amount with tax: subtotal - total_discount + total_vat
-             Example: 5801.0 (e.g., subtotal 6000 - discount 500 + VAT 300= 5801 XAF)
-        customerTenderedAmount:
-          type: number
-          title: customer_tendered_amount
-          format: double
-          description: |-
-            Amount given by client (e.g., cash tendered).
-             Example: 10000.0 (e.g., customer hands over 10000 XAF cash for a 6000 XAF total)
-        changeGiven:
-          type: number
-          title: change_given
-          format: double
-          description: |-
-            Amount refunded to client (e.g., change or overpayment refund) Set to 0 for pending cases.
-             Example: 4000.0 (e.g., immediate cash refund for overpayment: 10000 tendered - 6000 grand_total = 4000 XAF given back)
-        balanceDue:
-          type: number
-          title: balance_due
-          format: double
-          description: |-
-            Unpaid balance: grand_total - paid_amount (covers remaining_to_pay)
-             Example: -4000.0 (e.g., after paying 10000 XAF on a 6000 XAF total: 6000 - 10000 = -4000 XAF, meaning 4000 XAF owed to customer)
-        voucherId:
+        invoiceId:
           type: string
-          title: voucher_id
+          title: invoice_id
           format: uuid
-          description: The voucher used to pay the invoice.
-          nullable: true
-        createdAt:
-          title: created_at
-          description: The date and time the invoice was created.
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-        deliveryDate:
-          title: delivery_date
-          description: The delivery date of the invoice.
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-      title: Invoice
-      required:
-        - refId
-        - orderId
-      additionalProperties: false
-      description: |-
-        The invoice of an order.
-         The invoice is a PDF file that can be downloaded by the customer.
-         It contains the order details, the customer details, the payment details.
-    order.v1.InvoiceStatus:
-      type: string
-      title: InvoiceStatus
-      enum:
-        - INVOICE_STATUS_UNSPECIFIED
-        - INVOICE_STATUS_PAID
-        - INVOICE_STATUS_PENDING_REFUND
-    order.v1.OrderItem:
-      type: object
-      properties:
-        storeProductId:
+        storeId:
           type: string
-          title: store_product_id
-          description: The unique identifier of the store product.
-        quantity:
-          type: integer
-          title: quantity
-          format: int32
-          description: The quantity of the product.
-        unitPrice:
-          type: integer
-          title: unit_price
-          format: int32
-          description: |-
-            The unit price in XAF of the product.
-             WARN: This value is stored because the unit price can change over time.
-        itemName:
-          type: string
-          title: item_name
-          description: The name of the product.
-      title: OrderItem
-      additionalProperties: false
-    order.v1.Payment:
-      type: object
-      properties:
+          title: store_id
+          format: uuid
         amount:
           type: number
           title: amount
           format: double
-        method:
-          title: method
-          $ref: '#/components/schemas/order.v1.PaymentMethod'
-        referenceId:
-          type: string
-          title: reference_id
-          description: |-
-            The reference id of the payment.
-             For voucher, it is the voucher id.
-          nullable: true
-        timestamp:
-          title: timestamp
+        createdAt:
+          title: created_at
+          description: When the voucher was created.
           $ref: '#/components/schemas/google.protobuf.Timestamp'
-      title: Payment
+        expiryDate:
+          title: expiry_date
+          description: When the voucher expires.
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        status:
+          title: status
+          $ref: '#/components/schemas/order.v1.VoucherStatus'
+        redeemedByReferenceId:
+          type: string
+          title: redeemed_by_reference_id
+          description: |-
+            Who redeemed the voucher.
+             The voucher can be redeemed by another invoice.
+          nullable: true
+        redeemedAt:
+          title: redeemed_at
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        additionalInfo:
+          type: string
+          title: additional_info
+          description: The additional information about the voucher.
+          nullable: true
+      title: Voucher
+      required:
+        - refId
+        - orderId
+        - invoiceId
+        - storeId
       additionalProperties: false
-    order.v1.PaymentMethod:
+    order.v1.VoucherStatus:
       type: string
-      title: PaymentMethod
+      title: VoucherStatus
       enum:
-        - PAYMENT_METHOD_UNSPECIFIED
-        - PAYMENT_METHOD_CASH
-        - PAYMENT_METHOD_CARD
-        - PAYMENT_METHOD_ORANGE_MONEY
-        - PAYMENT_METHOD_MTN_MONEY
-        - PAYMENT_METHOD_VOUCHER
-        - PAYMENT_METHOD_MOBILE
+        - VOUCHER_STATUS_UNSPECIFIED
+        - VOUCHER_STATUS_ISSUED
+        - VOUCHER_STATUS_REDEEMED
+        - VOUCHER_STATUS_EXPIRED
 security: []
 tags:
-  - name: order.v1.InvoiceService
+  - name: order.v1.VoucherService

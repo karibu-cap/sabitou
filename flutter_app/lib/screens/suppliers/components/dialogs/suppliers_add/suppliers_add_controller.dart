@@ -175,7 +175,7 @@ class SuppliersAddController extends ChangeNotifier {
   double calculateTotalValue(List<StoreProduct> products) {
     return products.fold<double>(
       0.0,
-      (sum, product) => sum + (product.price * product.stockQuantity),
+      (sum, product) => sum + (product.salePrice * product.stockQuantity),
     );
   }
 

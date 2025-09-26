@@ -1017,11 +1017,23 @@ components:
           title: email
           description: The business email.
           nullable: true
+        costingMethod:
+          title: costing_method
+          description: The costing method of the store.
+          nullable: true
+          $ref: '#/components/schemas/store.v1.StoreCostingMethod'
       title: Store
       additionalProperties: false
       description: |-
         Stores are used to store products.
          Note: A store is not always a shop.
+    store.v1.StoreCostingMethod:
+      type: string
+      title: StoreCostingMethod
+      enum:
+        - STORE_COSTING_METHOD_UNSPECIFIED
+        - STORE_COSTING_METHOD_FIFO
+        - STORE_COSTING_METHOD_AVERAGE
     store.v1.StoreMember:
       type: object
       properties:

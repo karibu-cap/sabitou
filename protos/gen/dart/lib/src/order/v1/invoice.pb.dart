@@ -15,297 +15,366 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
+import '../../google/protobuf/timestamp.pb.dart' as $0;
+import 'invoice.pbenum.dart';
+import 'order.pb.dart' as $1;
+
 export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 
-class OrderInvoiceItem extends $pb.GeneratedMessage {
-  factory OrderInvoiceItem({
-    $core.String? productId,
-    $core.String? productName,
-    $core.String? productPriceInXaf,
-    $core.int? quantity,
-    $core.int? invoiceItemTotalPriceInXaf,
+export 'invoice.pbenum.dart';
+
+class Payment extends $pb.GeneratedMessage {
+  factory Payment({
+    $core.double? amount,
+    PaymentMethod? method,
+    $core.String? referenceId,
+    $0.Timestamp? timestamp,
   }) {
     final result = create();
-    if (productId != null) result.productId = productId;
-    if (productName != null) result.productName = productName;
-    if (productPriceInXaf != null) result.productPriceInXaf = productPriceInXaf;
-    if (quantity != null) result.quantity = quantity;
-    if (invoiceItemTotalPriceInXaf != null)
-      result.invoiceItemTotalPriceInXaf = invoiceItemTotalPriceInXaf;
+    if (amount != null) result.amount = amount;
+    if (method != null) result.method = method;
+    if (referenceId != null) result.referenceId = referenceId;
+    if (timestamp != null) result.timestamp = timestamp;
     return result;
   }
 
-  OrderInvoiceItem._();
+  Payment._();
 
-  factory OrderInvoiceItem.fromBuffer($core.List<$core.int> data,
+  factory Payment.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(data, registry);
-  factory OrderInvoiceItem.fromJson($core.String json,
+  factory Payment.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'OrderInvoiceItem',
+      _omitMessageNames ? '' : 'Payment',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'productId')
-    ..aOS(2, _omitFieldNames ? '' : 'productName')
-    ..aOS(3, _omitFieldNames ? '' : 'productPriceInXaf')
-    ..a<$core.int>(4, _omitFieldNames ? '' : 'quantity', $pb.PbFieldType.O3)
-    ..a<$core.int>(5, _omitFieldNames ? '' : 'invoiceItemTotalPriceInXaf',
-        $pb.PbFieldType.O3)
+    ..a<$core.double>(1, _omitFieldNames ? '' : 'amount', $pb.PbFieldType.OD)
+    ..e<PaymentMethod>(2, _omitFieldNames ? '' : 'method', $pb.PbFieldType.OE,
+        defaultOrMaker: PaymentMethod.PAYMENT_METHOD_UNSPECIFIED,
+        valueOf: PaymentMethod.valueOf,
+        enumValues: PaymentMethod.values)
+    ..aOS(3, _omitFieldNames ? '' : 'referenceId')
+    ..aOM<$0.Timestamp>(4, _omitFieldNames ? '' : 'timestamp',
+        subBuilder: $0.Timestamp.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  OrderInvoiceItem clone() => OrderInvoiceItem()..mergeFromMessage(this);
+  Payment clone() => Payment()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  OrderInvoiceItem copyWith(void Function(OrderInvoiceItem) updates) =>
-      super.copyWith((message) => updates(message as OrderInvoiceItem))
-          as OrderInvoiceItem;
+  Payment copyWith(void Function(Payment) updates) =>
+      super.copyWith((message) => updates(message as Payment)) as Payment;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static OrderInvoiceItem create() => OrderInvoiceItem._();
+  static Payment create() => Payment._();
   @$core.override
-  OrderInvoiceItem createEmptyInstance() => create();
-  static $pb.PbList<OrderInvoiceItem> createRepeated() =>
-      $pb.PbList<OrderInvoiceItem>();
+  Payment createEmptyInstance() => create();
+  static $pb.PbList<Payment> createRepeated() => $pb.PbList<Payment>();
   @$core.pragma('dart2js:noInline')
-  static OrderInvoiceItem getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<OrderInvoiceItem>(create);
-  static OrderInvoiceItem? _defaultInstance;
+  static Payment getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Payment>(create);
+  static Payment? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get productId => $_getSZ(0);
+  $core.double get amount => $_getN(0);
   @$pb.TagNumber(1)
-  set productId($core.String value) => $_setString(0, value);
+  set amount($core.double value) => $_setDouble(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasProductId() => $_has(0);
+  $core.bool hasAmount() => $_has(0);
   @$pb.TagNumber(1)
-  void clearProductId() => $_clearField(1);
+  void clearAmount() => $_clearField(1);
 
   @$pb.TagNumber(2)
-  $core.String get productName => $_getSZ(1);
+  PaymentMethod get method => $_getN(1);
   @$pb.TagNumber(2)
-  set productName($core.String value) => $_setString(1, value);
+  set method(PaymentMethod value) => $_setField(2, value);
   @$pb.TagNumber(2)
-  $core.bool hasProductName() => $_has(1);
+  $core.bool hasMethod() => $_has(1);
   @$pb.TagNumber(2)
-  void clearProductName() => $_clearField(2);
+  void clearMethod() => $_clearField(2);
 
+  /// The reference id of the payment.
+  /// For voucher, it is the voucher id.
   @$pb.TagNumber(3)
-  $core.String get productPriceInXaf => $_getSZ(2);
+  $core.String get referenceId => $_getSZ(2);
   @$pb.TagNumber(3)
-  set productPriceInXaf($core.String value) => $_setString(2, value);
+  set referenceId($core.String value) => $_setString(2, value);
   @$pb.TagNumber(3)
-  $core.bool hasProductPriceInXaf() => $_has(2);
+  $core.bool hasReferenceId() => $_has(2);
   @$pb.TagNumber(3)
-  void clearProductPriceInXaf() => $_clearField(3);
+  void clearReferenceId() => $_clearField(3);
 
   @$pb.TagNumber(4)
-  $core.int get quantity => $_getIZ(3);
+  $0.Timestamp get timestamp => $_getN(3);
   @$pb.TagNumber(4)
-  set quantity($core.int value) => $_setSignedInt32(3, value);
+  set timestamp($0.Timestamp value) => $_setField(4, value);
   @$pb.TagNumber(4)
-  $core.bool hasQuantity() => $_has(3);
+  $core.bool hasTimestamp() => $_has(3);
   @$pb.TagNumber(4)
-  void clearQuantity() => $_clearField(4);
-
-  @$pb.TagNumber(5)
-  $core.int get invoiceItemTotalPriceInXaf => $_getIZ(4);
-  @$pb.TagNumber(5)
-  set invoiceItemTotalPriceInXaf($core.int value) => $_setSignedInt32(4, value);
-  @$pb.TagNumber(5)
-  $core.bool hasInvoiceItemTotalPriceInXaf() => $_has(4);
-  @$pb.TagNumber(5)
-  void clearInvoiceItemTotalPriceInXaf() => $_clearField(5);
+  void clearTimestamp() => $_clearField(4);
+  @$pb.TagNumber(4)
+  $0.Timestamp ensureTimestamp() => $_ensure(3);
 }
 
 /// The invoice of an order.
 /// The invoice is a PDF file that can be downloaded by the customer.
 /// It contains the order details, the customer details, the payment details.
-class OrderInvoice extends $pb.GeneratedMessage {
-  factory OrderInvoice({
+class Invoice extends $pb.GeneratedMessage {
+  factory Invoice({
+    $core.String? refId,
     $core.String? orderId,
-    $core.String? orderStatus,
-    $core.String? orderTotalPriceInXaf,
-    $core.String? orderCreatedAt,
-    $core.String? orderUpdatedAt,
-    $core.String? orderResourceName,
-    $core.String? orderResourceAddress,
-    $core.String? orderResourcePhoneNumber,
-    $core.String? orderResourceEmail,
-    $core.String? orderResourceLogoMediaId,
-    $core.Iterable<OrderInvoiceItem>? orderItems,
+    InvoiceStatus? status,
+    $core.Iterable<$1.OrderItem>? orderItems,
+    $core.Iterable<Payment>? payments,
+    $core.double? totalDiscount,
+    $core.double? totalVat,
+    $core.double? subtotal,
+    $core.double? total,
+    $core.double? customerTenderedAmount,
+    $core.double? changeGiven,
+    $core.double? balanceDue,
+    $core.String? voucherId,
+    $0.Timestamp? createdAt,
+    $0.Timestamp? deliveryDate,
   }) {
     final result = create();
+    if (refId != null) result.refId = refId;
     if (orderId != null) result.orderId = orderId;
-    if (orderStatus != null) result.orderStatus = orderStatus;
-    if (orderTotalPriceInXaf != null)
-      result.orderTotalPriceInXaf = orderTotalPriceInXaf;
-    if (orderCreatedAt != null) result.orderCreatedAt = orderCreatedAt;
-    if (orderUpdatedAt != null) result.orderUpdatedAt = orderUpdatedAt;
-    if (orderResourceName != null) result.orderResourceName = orderResourceName;
-    if (orderResourceAddress != null)
-      result.orderResourceAddress = orderResourceAddress;
-    if (orderResourcePhoneNumber != null)
-      result.orderResourcePhoneNumber = orderResourcePhoneNumber;
-    if (orderResourceEmail != null)
-      result.orderResourceEmail = orderResourceEmail;
-    if (orderResourceLogoMediaId != null)
-      result.orderResourceLogoMediaId = orderResourceLogoMediaId;
+    if (status != null) result.status = status;
     if (orderItems != null) result.orderItems.addAll(orderItems);
+    if (payments != null) result.payments.addAll(payments);
+    if (totalDiscount != null) result.totalDiscount = totalDiscount;
+    if (totalVat != null) result.totalVat = totalVat;
+    if (subtotal != null) result.subtotal = subtotal;
+    if (total != null) result.total = total;
+    if (customerTenderedAmount != null)
+      result.customerTenderedAmount = customerTenderedAmount;
+    if (changeGiven != null) result.changeGiven = changeGiven;
+    if (balanceDue != null) result.balanceDue = balanceDue;
+    if (voucherId != null) result.voucherId = voucherId;
+    if (createdAt != null) result.createdAt = createdAt;
+    if (deliveryDate != null) result.deliveryDate = deliveryDate;
     return result;
   }
 
-  OrderInvoice._();
+  Invoice._();
 
-  factory OrderInvoice.fromBuffer($core.List<$core.int> data,
+  factory Invoice.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(data, registry);
-  factory OrderInvoice.fromJson($core.String json,
+  factory Invoice.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'OrderInvoice',
+      _omitMessageNames ? '' : 'Invoice',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'orderId')
-    ..aOS(2, _omitFieldNames ? '' : 'orderStatus')
-    ..aOS(3, _omitFieldNames ? '' : 'orderTotalPriceInXaf')
-    ..aOS(4, _omitFieldNames ? '' : 'orderCreatedAt')
-    ..aOS(5, _omitFieldNames ? '' : 'orderUpdatedAt')
-    ..aOS(6, _omitFieldNames ? '' : 'orderResourceName')
-    ..aOS(7, _omitFieldNames ? '' : 'orderResourceAddress')
-    ..aOS(8, _omitFieldNames ? '' : 'orderResourcePhoneNumber')
-    ..aOS(9, _omitFieldNames ? '' : 'orderResourceEmail')
-    ..aOS(10, _omitFieldNames ? '' : 'orderResourceLogoMediaId')
-    ..pc<OrderInvoiceItem>(
-        11, _omitFieldNames ? '' : 'orderItems', $pb.PbFieldType.PM,
-        subBuilder: OrderInvoiceItem.create)
+    ..aOS(1, _omitFieldNames ? '' : 'refId')
+    ..aOS(2, _omitFieldNames ? '' : 'orderId')
+    ..e<InvoiceStatus>(3, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
+        defaultOrMaker: InvoiceStatus.INVOICE_STATUS_UNSPECIFIED,
+        valueOf: InvoiceStatus.valueOf,
+        enumValues: InvoiceStatus.values)
+    ..pc<$1.OrderItem>(
+        4, _omitFieldNames ? '' : 'orderItems', $pb.PbFieldType.PM,
+        subBuilder: $1.OrderItem.create)
+    ..pc<Payment>(5, _omitFieldNames ? '' : 'payments', $pb.PbFieldType.PM,
+        subBuilder: Payment.create)
+    ..a<$core.double>(
+        6, _omitFieldNames ? '' : 'totalDiscount', $pb.PbFieldType.OD)
+    ..a<$core.double>(7, _omitFieldNames ? '' : 'totalVat', $pb.PbFieldType.OD)
+    ..a<$core.double>(8, _omitFieldNames ? '' : 'subtotal', $pb.PbFieldType.OD)
+    ..a<$core.double>(9, _omitFieldNames ? '' : 'total', $pb.PbFieldType.OD)
+    ..a<$core.double>(
+        10, _omitFieldNames ? '' : 'customerTenderedAmount', $pb.PbFieldType.OD)
+    ..a<$core.double>(
+        11, _omitFieldNames ? '' : 'changeGiven', $pb.PbFieldType.OD)
+    ..a<$core.double>(
+        12, _omitFieldNames ? '' : 'balanceDue', $pb.PbFieldType.OD)
+    ..aOS(13, _omitFieldNames ? '' : 'voucherId')
+    ..aOM<$0.Timestamp>(14, _omitFieldNames ? '' : 'createdAt',
+        subBuilder: $0.Timestamp.create)
+    ..aOM<$0.Timestamp>(15, _omitFieldNames ? '' : 'deliveryDate',
+        subBuilder: $0.Timestamp.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  OrderInvoice clone() => OrderInvoice()..mergeFromMessage(this);
+  Invoice clone() => Invoice()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  OrderInvoice copyWith(void Function(OrderInvoice) updates) =>
-      super.copyWith((message) => updates(message as OrderInvoice))
-          as OrderInvoice;
+  Invoice copyWith(void Function(Invoice) updates) =>
+      super.copyWith((message) => updates(message as Invoice)) as Invoice;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static OrderInvoice create() => OrderInvoice._();
+  static Invoice create() => Invoice._();
   @$core.override
-  OrderInvoice createEmptyInstance() => create();
-  static $pb.PbList<OrderInvoice> createRepeated() =>
-      $pb.PbList<OrderInvoice>();
+  Invoice createEmptyInstance() => create();
+  static $pb.PbList<Invoice> createRepeated() => $pb.PbList<Invoice>();
   @$core.pragma('dart2js:noInline')
-  static OrderInvoice getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<OrderInvoice>(create);
-  static OrderInvoice? _defaultInstance;
+  static Invoice getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Invoice>(create);
+  static Invoice? _defaultInstance;
 
-  /// / ...order details...
+  /// The unique identifier of the invoice.
   @$pb.TagNumber(1)
-  $core.String get orderId => $_getSZ(0);
+  $core.String get refId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set orderId($core.String value) => $_setString(0, value);
+  set refId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasOrderId() => $_has(0);
+  $core.bool hasRefId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearOrderId() => $_clearField(1);
+  void clearRefId() => $_clearField(1);
 
+  /// The unique identifier of the order.
   @$pb.TagNumber(2)
-  $core.String get orderStatus => $_getSZ(1);
+  $core.String get orderId => $_getSZ(1);
   @$pb.TagNumber(2)
-  set orderStatus($core.String value) => $_setString(1, value);
+  set orderId($core.String value) => $_setString(1, value);
   @$pb.TagNumber(2)
-  $core.bool hasOrderStatus() => $_has(1);
+  $core.bool hasOrderId() => $_has(1);
   @$pb.TagNumber(2)
-  void clearOrderStatus() => $_clearField(2);
+  void clearOrderId() => $_clearField(2);
 
+  /// The status of the invoice.
   @$pb.TagNumber(3)
-  $core.String get orderTotalPriceInXaf => $_getSZ(2);
+  InvoiceStatus get status => $_getN(2);
   @$pb.TagNumber(3)
-  set orderTotalPriceInXaf($core.String value) => $_setString(2, value);
+  set status(InvoiceStatus value) => $_setField(3, value);
   @$pb.TagNumber(3)
-  $core.bool hasOrderTotalPriceInXaf() => $_has(2);
+  $core.bool hasStatus() => $_has(2);
   @$pb.TagNumber(3)
-  void clearOrderTotalPriceInXaf() => $_clearField(3);
+  void clearStatus() => $_clearField(3);
 
+  /// The list of items in the invoice.
   @$pb.TagNumber(4)
-  $core.String get orderCreatedAt => $_getSZ(3);
-  @$pb.TagNumber(4)
-  set orderCreatedAt($core.String value) => $_setString(3, value);
-  @$pb.TagNumber(4)
-  $core.bool hasOrderCreatedAt() => $_has(3);
-  @$pb.TagNumber(4)
-  void clearOrderCreatedAt() => $_clearField(4);
+  $pb.PbList<$1.OrderItem> get orderItems => $_getList(3);
 
+  /// The payment methods used to pay the invoice.
+  /// Some time, user can use multiple payment methods to pay the invoice.
   @$pb.TagNumber(5)
-  $core.String get orderUpdatedAt => $_getSZ(4);
-  @$pb.TagNumber(5)
-  set orderUpdatedAt($core.String value) => $_setString(4, value);
-  @$pb.TagNumber(5)
-  $core.bool hasOrderUpdatedAt() => $_has(4);
-  @$pb.TagNumber(5)
-  void clearOrderUpdatedAt() => $_clearField(5);
+  $pb.PbList<Payment> get payments => $_getList(4);
 
+  /// Total discounts applied (e.g., promotions)
   @$pb.TagNumber(6)
-  $core.String get orderResourceName => $_getSZ(5);
+  $core.double get totalDiscount => $_getN(5);
   @$pb.TagNumber(6)
-  set orderResourceName($core.String value) => $_setString(5, value);
+  set totalDiscount($core.double value) => $_setDouble(5, value);
   @$pb.TagNumber(6)
-  $core.bool hasOrderResourceName() => $_has(5);
+  $core.bool hasTotalDiscount() => $_has(5);
   @$pb.TagNumber(6)
-  void clearOrderResourceName() => $_clearField(6);
+  void clearTotalDiscount() => $_clearField(6);
 
+  /// Total tax/VAT amount
+  /// Example: 300.0 (e.g., 5% VAT on 6000 XAF subtotal, assuming no discount: 6000 * 0.05 = 300 XAF)
   @$pb.TagNumber(7)
-  $core.String get orderResourceAddress => $_getSZ(6);
+  $core.double get totalVat => $_getN(6);
   @$pb.TagNumber(7)
-  set orderResourceAddress($core.String value) => $_setString(6, value);
+  set totalVat($core.double value) => $_setDouble(6, value);
   @$pb.TagNumber(7)
-  $core.bool hasOrderResourceAddress() => $_has(6);
+  $core.bool hasTotalVat() => $_has(6);
   @$pb.TagNumber(7)
-  void clearOrderResourceAddress() => $_clearField(7);
+  void clearTotalVat() => $_clearField(7);
 
+  /// Amount hors taxe: pre-tax, pre-discount total from order_items
+  /// Example: 6000.0 (e.g., from the 3 items at 2000 XAF each: 3 * 2000 = 6000 XAF)
   @$pb.TagNumber(8)
-  $core.String get orderResourcePhoneNumber => $_getSZ(7);
+  $core.double get subtotal => $_getN(7);
   @$pb.TagNumber(8)
-  set orderResourcePhoneNumber($core.String value) => $_setString(7, value);
+  set subtotal($core.double value) => $_setDouble(7, value);
   @$pb.TagNumber(8)
-  $core.bool hasOrderResourcePhoneNumber() => $_has(7);
+  $core.bool hasSubtotal() => $_has(7);
   @$pb.TagNumber(8)
-  void clearOrderResourcePhoneNumber() => $_clearField(8);
+  void clearSubtotal() => $_clearField(8);
 
+  /// Amount with tax: subtotal - total_discount + total_vat
+  /// Example: 5801.0 (e.g., subtotal 6000 - discount 500 + VAT 300= 5801 XAF)
   @$pb.TagNumber(9)
-  $core.String get orderResourceEmail => $_getSZ(8);
+  $core.double get total => $_getN(8);
   @$pb.TagNumber(9)
-  set orderResourceEmail($core.String value) => $_setString(8, value);
+  set total($core.double value) => $_setDouble(8, value);
   @$pb.TagNumber(9)
-  $core.bool hasOrderResourceEmail() => $_has(8);
+  $core.bool hasTotal() => $_has(8);
   @$pb.TagNumber(9)
-  void clearOrderResourceEmail() => $_clearField(9);
+  void clearTotal() => $_clearField(9);
 
+  /// Amount given by client (e.g., cash tendered).
+  /// Example: 10000.0 (e.g., customer hands over 10000 XAF cash for a 6000 XAF total)
   @$pb.TagNumber(10)
-  $core.String get orderResourceLogoMediaId => $_getSZ(9);
+  $core.double get customerTenderedAmount => $_getN(9);
   @$pb.TagNumber(10)
-  set orderResourceLogoMediaId($core.String value) => $_setString(9, value);
+  set customerTenderedAmount($core.double value) => $_setDouble(9, value);
   @$pb.TagNumber(10)
-  $core.bool hasOrderResourceLogoMediaId() => $_has(9);
+  $core.bool hasCustomerTenderedAmount() => $_has(9);
   @$pb.TagNumber(10)
-  void clearOrderResourceLogoMediaId() => $_clearField(10);
+  void clearCustomerTenderedAmount() => $_clearField(10);
 
+  /// Amount refunded to client (e.g., change or overpayment refund) Set to 0 for pending cases.
+  /// Example: 4000.0 (e.g., immediate cash refund for overpayment: 10000 tendered - 6000 grand_total = 4000 XAF given back)
   @$pb.TagNumber(11)
-  $pb.PbList<OrderInvoiceItem> get orderItems => $_getList(10);
+  $core.double get changeGiven => $_getN(10);
+  @$pb.TagNumber(11)
+  set changeGiven($core.double value) => $_setDouble(10, value);
+  @$pb.TagNumber(11)
+  $core.bool hasChangeGiven() => $_has(10);
+  @$pb.TagNumber(11)
+  void clearChangeGiven() => $_clearField(11);
+
+  /// Unpaid balance: grand_total - paid_amount (covers remaining_to_pay)
+  /// Example: -4000.0 (e.g., after paying 10000 XAF on a 6000 XAF total: 6000 - 10000 = -4000 XAF, meaning 4000 XAF owed to customer)
+  @$pb.TagNumber(12)
+  $core.double get balanceDue => $_getN(11);
+  @$pb.TagNumber(12)
+  set balanceDue($core.double value) => $_setDouble(11, value);
+  @$pb.TagNumber(12)
+  $core.bool hasBalanceDue() => $_has(11);
+  @$pb.TagNumber(12)
+  void clearBalanceDue() => $_clearField(12);
+
+  /// The voucher used to pay the invoice.
+  @$pb.TagNumber(13)
+  $core.String get voucherId => $_getSZ(12);
+  @$pb.TagNumber(13)
+  set voucherId($core.String value) => $_setString(12, value);
+  @$pb.TagNumber(13)
+  $core.bool hasVoucherId() => $_has(12);
+  @$pb.TagNumber(13)
+  void clearVoucherId() => $_clearField(13);
+
+  /// The date and time the invoice was created.
+  @$pb.TagNumber(14)
+  $0.Timestamp get createdAt => $_getN(13);
+  @$pb.TagNumber(14)
+  set createdAt($0.Timestamp value) => $_setField(14, value);
+  @$pb.TagNumber(14)
+  $core.bool hasCreatedAt() => $_has(13);
+  @$pb.TagNumber(14)
+  void clearCreatedAt() => $_clearField(14);
+  @$pb.TagNumber(14)
+  $0.Timestamp ensureCreatedAt() => $_ensure(13);
+
+  /// The delivery date of the invoice.
+  @$pb.TagNumber(15)
+  $0.Timestamp get deliveryDate => $_getN(14);
+  @$pb.TagNumber(15)
+  set deliveryDate($0.Timestamp value) => $_setField(15, value);
+  @$pb.TagNumber(15)
+  $core.bool hasDeliveryDate() => $_has(14);
+  @$pb.TagNumber(15)
+  void clearDeliveryDate() => $_clearField(15);
+  @$pb.TagNumber(15)
+  $0.Timestamp ensureDeliveryDate() => $_ensure(14);
 }
 
-class GenerateInvoiceRequest extends $pb.GeneratedMessage {
-  factory GenerateInvoiceRequest({
+class CreateInvoiceRequest extends $pb.GeneratedMessage {
+  factory CreateInvoiceRequest({
     $core.String? orderId,
   }) {
     final result = create();
@@ -313,44 +382,43 @@ class GenerateInvoiceRequest extends $pb.GeneratedMessage {
     return result;
   }
 
-  GenerateInvoiceRequest._();
+  CreateInvoiceRequest._();
 
-  factory GenerateInvoiceRequest.fromBuffer($core.List<$core.int> data,
+  factory CreateInvoiceRequest.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(data, registry);
-  factory GenerateInvoiceRequest.fromJson($core.String json,
+  factory CreateInvoiceRequest.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'GenerateInvoiceRequest',
+      _omitMessageNames ? '' : 'CreateInvoiceRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'orderId')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GenerateInvoiceRequest clone() =>
-      GenerateInvoiceRequest()..mergeFromMessage(this);
+  CreateInvoiceRequest clone() =>
+      CreateInvoiceRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GenerateInvoiceRequest copyWith(
-          void Function(GenerateInvoiceRequest) updates) =>
-      super.copyWith((message) => updates(message as GenerateInvoiceRequest))
-          as GenerateInvoiceRequest;
+  CreateInvoiceRequest copyWith(void Function(CreateInvoiceRequest) updates) =>
+      super.copyWith((message) => updates(message as CreateInvoiceRequest))
+          as CreateInvoiceRequest;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static GenerateInvoiceRequest create() => GenerateInvoiceRequest._();
+  static CreateInvoiceRequest create() => CreateInvoiceRequest._();
   @$core.override
-  GenerateInvoiceRequest createEmptyInstance() => create();
-  static $pb.PbList<GenerateInvoiceRequest> createRepeated() =>
-      $pb.PbList<GenerateInvoiceRequest>();
+  CreateInvoiceRequest createEmptyInstance() => create();
+  static $pb.PbList<CreateInvoiceRequest> createRepeated() =>
+      $pb.PbList<CreateInvoiceRequest>();
   @$core.pragma('dart2js:noInline')
-  static GenerateInvoiceRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<GenerateInvoiceRequest>(create);
-  static GenerateInvoiceRequest? _defaultInstance;
+  static CreateInvoiceRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<CreateInvoiceRequest>(create);
+  static CreateInvoiceRequest? _defaultInstance;
 
   /// The unique identifier of the order.
   @$pb.TagNumber(1)
@@ -363,66 +431,66 @@ class GenerateInvoiceRequest extends $pb.GeneratedMessage {
   void clearOrderId() => $_clearField(1);
 }
 
-class GenerateInvoiceResponse extends $pb.GeneratedMessage {
-  factory GenerateInvoiceResponse({
-    OrderInvoice? orderInvoice,
+class CreateInvoiceResponse extends $pb.GeneratedMessage {
+  factory CreateInvoiceResponse({
+    Invoice? invoice,
   }) {
     final result = create();
-    if (orderInvoice != null) result.orderInvoice = orderInvoice;
+    if (invoice != null) result.invoice = invoice;
     return result;
   }
 
-  GenerateInvoiceResponse._();
+  CreateInvoiceResponse._();
 
-  factory GenerateInvoiceResponse.fromBuffer($core.List<$core.int> data,
+  factory CreateInvoiceResponse.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(data, registry);
-  factory GenerateInvoiceResponse.fromJson($core.String json,
+  factory CreateInvoiceResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'GenerateInvoiceResponse',
+      _omitMessageNames ? '' : 'CreateInvoiceResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'),
       createEmptyInstance: create)
-    ..aOM<OrderInvoice>(1, _omitFieldNames ? '' : 'orderInvoice',
-        subBuilder: OrderInvoice.create)
+    ..aOM<Invoice>(1, _omitFieldNames ? '' : 'invoice',
+        subBuilder: Invoice.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GenerateInvoiceResponse clone() =>
-      GenerateInvoiceResponse()..mergeFromMessage(this);
+  CreateInvoiceResponse clone() =>
+      CreateInvoiceResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GenerateInvoiceResponse copyWith(
-          void Function(GenerateInvoiceResponse) updates) =>
-      super.copyWith((message) => updates(message as GenerateInvoiceResponse))
-          as GenerateInvoiceResponse;
+  CreateInvoiceResponse copyWith(
+          void Function(CreateInvoiceResponse) updates) =>
+      super.copyWith((message) => updates(message as CreateInvoiceResponse))
+          as CreateInvoiceResponse;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static GenerateInvoiceResponse create() => GenerateInvoiceResponse._();
+  static CreateInvoiceResponse create() => CreateInvoiceResponse._();
   @$core.override
-  GenerateInvoiceResponse createEmptyInstance() => create();
-  static $pb.PbList<GenerateInvoiceResponse> createRepeated() =>
-      $pb.PbList<GenerateInvoiceResponse>();
+  CreateInvoiceResponse createEmptyInstance() => create();
+  static $pb.PbList<CreateInvoiceResponse> createRepeated() =>
+      $pb.PbList<CreateInvoiceResponse>();
   @$core.pragma('dart2js:noInline')
-  static GenerateInvoiceResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<GenerateInvoiceResponse>(create);
-  static GenerateInvoiceResponse? _defaultInstance;
+  static CreateInvoiceResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<CreateInvoiceResponse>(create);
+  static CreateInvoiceResponse? _defaultInstance;
 
   /// The invoice of the order.
   @$pb.TagNumber(1)
-  OrderInvoice get orderInvoice => $_getN(0);
+  Invoice get invoice => $_getN(0);
   @$pb.TagNumber(1)
-  set orderInvoice(OrderInvoice value) => $_setField(1, value);
+  set invoice(Invoice value) => $_setField(1, value);
   @$pb.TagNumber(1)
-  $core.bool hasOrderInvoice() => $_has(0);
+  $core.bool hasInvoice() => $_has(0);
   @$pb.TagNumber(1)
-  void clearOrderInvoice() => $_clearField(1);
+  void clearInvoice() => $_clearField(1);
   @$pb.TagNumber(1)
-  OrderInvoice ensureOrderInvoice() => $_ensure(0);
+  Invoice ensureInvoice() => $_ensure(0);
 }
 
 class InvoiceServiceApi {
@@ -430,11 +498,11 @@ class InvoiceServiceApi {
 
   InvoiceServiceApi(this._client);
 
-  /// Generates an invoice for the order.
-  $async.Future<GenerateInvoiceResponse> generateInvoice(
-          $pb.ClientContext? ctx, GenerateInvoiceRequest request) =>
-      _client.invoke<GenerateInvoiceResponse>(ctx, 'InvoiceService',
-          'GenerateInvoice', request, GenerateInvoiceResponse());
+  /// Creates an invoice for the order.
+  $async.Future<CreateInvoiceResponse> createInvoice(
+          $pb.ClientContext? ctx, CreateInvoiceRequest request) =>
+      _client.invoke<CreateInvoiceResponse>(ctx, 'InvoiceService',
+          'CreateInvoice', request, CreateInvoiceResponse());
 }
 
 const $core.bool _omitFieldNames =

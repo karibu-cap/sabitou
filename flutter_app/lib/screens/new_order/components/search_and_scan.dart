@@ -103,7 +103,7 @@ class SearchAndScanView extends StatelessWidget {
                             children: [
                               Text(
                                 Formatters.formatCurrency(
-                                  product.storeProduct.price.toDouble(),
+                                  product.storeProduct.salePrice.toDouble(),
                                 ),
                                 style: ShadTheme.of(context).textTheme.small
                                     .copyWith(fontWeight: FontWeight.w600),
@@ -114,7 +114,7 @@ class SearchAndScanView extends StatelessWidget {
                                     product.storeProduct.refId,
                                     product.globalProduct.label,
                                     1,
-                                    product.storeProduct.price.toDouble(),
+                                    product.storeProduct.salePrice.toDouble(),
                                   );
                                 },
                                 child: const Icon(LucideIcons.plus400),

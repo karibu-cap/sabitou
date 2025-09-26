@@ -203,32 +203,270 @@ class OrderItem extends $pb.GeneratedMessage {
   void clearItemName() => $_clearField(4);
 }
 
+class PurchaseOrder extends $pb.GeneratedMessage {
+  factory PurchaseOrder({
+    $0.Timestamp? expectedDeliveryDate,
+    $core.String? supplierId,
+  }) {
+    final result = create();
+    if (expectedDeliveryDate != null)
+      result.expectedDeliveryDate = expectedDeliveryDate;
+    if (supplierId != null) result.supplierId = supplierId;
+    return result;
+  }
+
+  PurchaseOrder._();
+
+  factory PurchaseOrder.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory PurchaseOrder.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'PurchaseOrder',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'),
+      createEmptyInstance: create)
+    ..aOM<$0.Timestamp>(1, _omitFieldNames ? '' : 'expectedDeliveryDate',
+        subBuilder: $0.Timestamp.create)
+    ..aOS(2, _omitFieldNames ? '' : 'supplierId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  PurchaseOrder clone() => PurchaseOrder()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  PurchaseOrder copyWith(void Function(PurchaseOrder) updates) =>
+      super.copyWith((message) => updates(message as PurchaseOrder))
+          as PurchaseOrder;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static PurchaseOrder create() => PurchaseOrder._();
+  @$core.override
+  PurchaseOrder createEmptyInstance() => create();
+  static $pb.PbList<PurchaseOrder> createRepeated() =>
+      $pb.PbList<PurchaseOrder>();
+  @$core.pragma('dart2js:noInline')
+  static PurchaseOrder getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<PurchaseOrder>(create);
+  static PurchaseOrder? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $0.Timestamp get expectedDeliveryDate => $_getN(0);
+  @$pb.TagNumber(1)
+  set expectedDeliveryDate($0.Timestamp value) => $_setField(1, value);
+  @$pb.TagNumber(1)
+  $core.bool hasExpectedDeliveryDate() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearExpectedDeliveryDate() => $_clearField(1);
+  @$pb.TagNumber(1)
+  $0.Timestamp ensureExpectedDeliveryDate() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $core.String get supplierId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set supplierId($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasSupplierId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearSupplierId() => $_clearField(2);
+}
+
+class SaleOrder extends $pb.GeneratedMessage {
+  factory SaleOrder({
+    $0.Timestamp? commitmentDate,
+    $core.String? clientId,
+  }) {
+    final result = create();
+    if (commitmentDate != null) result.commitmentDate = commitmentDate;
+    if (clientId != null) result.clientId = clientId;
+    return result;
+  }
+
+  SaleOrder._();
+
+  factory SaleOrder.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory SaleOrder.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'SaleOrder',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'),
+      createEmptyInstance: create)
+    ..aOM<$0.Timestamp>(1, _omitFieldNames ? '' : 'commitmentDate',
+        subBuilder: $0.Timestamp.create)
+    ..aOS(2, _omitFieldNames ? '' : 'clientId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  SaleOrder clone() => SaleOrder()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  SaleOrder copyWith(void Function(SaleOrder) updates) =>
+      super.copyWith((message) => updates(message as SaleOrder)) as SaleOrder;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static SaleOrder create() => SaleOrder._();
+  @$core.override
+  SaleOrder createEmptyInstance() => create();
+  static $pb.PbList<SaleOrder> createRepeated() => $pb.PbList<SaleOrder>();
+  @$core.pragma('dart2js:noInline')
+  static SaleOrder getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SaleOrder>(create);
+  static SaleOrder? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $0.Timestamp get commitmentDate => $_getN(0);
+  @$pb.TagNumber(1)
+  set commitmentDate($0.Timestamp value) => $_setField(1, value);
+  @$pb.TagNumber(1)
+  $core.bool hasCommitmentDate() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearCommitmentDate() => $_clearField(1);
+  @$pb.TagNumber(1)
+  $0.Timestamp ensureCommitmentDate() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $core.String get clientId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set clientId($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasClientId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearClientId() => $_clearField(2);
+}
+
+class OrderPrices extends $pb.GeneratedMessage {
+  factory OrderPrices({
+    $core.int? subtotal,
+    $core.int? discounts,
+    $core.int? totalVatAmount,
+    $core.int? grandTotal,
+  }) {
+    final result = create();
+    if (subtotal != null) result.subtotal = subtotal;
+    if (discounts != null) result.discounts = discounts;
+    if (totalVatAmount != null) result.totalVatAmount = totalVatAmount;
+    if (grandTotal != null) result.grandTotal = grandTotal;
+    return result;
+  }
+
+  OrderPrices._();
+
+  factory OrderPrices.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory OrderPrices.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'OrderPrices',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'),
+      createEmptyInstance: create)
+    ..a<$core.int>(1, _omitFieldNames ? '' : 'subtotal', $pb.PbFieldType.O3)
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'discounts', $pb.PbFieldType.O3)
+    ..a<$core.int>(
+        3, _omitFieldNames ? '' : 'totalVatAmount', $pb.PbFieldType.O3)
+    ..a<$core.int>(4, _omitFieldNames ? '' : 'grandTotal', $pb.PbFieldType.O3)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  OrderPrices clone() => OrderPrices()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  OrderPrices copyWith(void Function(OrderPrices) updates) =>
+      super.copyWith((message) => updates(message as OrderPrices))
+          as OrderPrices;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static OrderPrices create() => OrderPrices._();
+  @$core.override
+  OrderPrices createEmptyInstance() => create();
+  static $pb.PbList<OrderPrices> createRepeated() => $pb.PbList<OrderPrices>();
+  @$core.pragma('dart2js:noInline')
+  static OrderPrices getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<OrderPrices>(create);
+  static OrderPrices? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get subtotal => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set subtotal($core.int value) => $_setSignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasSubtotal() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSubtotal() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.int get discounts => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set discounts($core.int value) => $_setSignedInt32(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasDiscounts() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearDiscounts() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.int get totalVatAmount => $_getIZ(2);
+  @$pb.TagNumber(3)
+  set totalVatAmount($core.int value) => $_setSignedInt32(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasTotalVatAmount() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearTotalVatAmount() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.int get grandTotal => $_getIZ(3);
+  @$pb.TagNumber(4)
+  set grandTotal($core.int value) => $_setSignedInt32(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasGrandTotal() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearGrandTotal() => $_clearField(4);
+}
+
+enum Order_OrderType { purchaseOrder, saleOrder, notSet }
+
 class Order extends $pb.GeneratedMessage {
   factory Order({
     $core.String? refId,
-    $core.String? fromId,
-    $core.String? isClientOrder,
     $core.Iterable<OrderItem>? orderItems,
-    $core.int? totalPrice,
+    OrderPrices? orderPrices,
     OrderStatus? status,
     $core.Iterable<StatusHistory>? statusHistory,
     $0.Timestamp? createdAt,
     $0.Timestamp? updatedAt,
     $core.String? storeId,
     $core.String? initiatedBy,
+    PurchaseOrder? purchaseOrder,
+    SaleOrder? saleOrder,
+    $core.String? cancellationReason,
   }) {
     final result = create();
     if (refId != null) result.refId = refId;
-    if (fromId != null) result.fromId = fromId;
-    if (isClientOrder != null) result.isClientOrder = isClientOrder;
     if (orderItems != null) result.orderItems.addAll(orderItems);
-    if (totalPrice != null) result.totalPrice = totalPrice;
+    if (orderPrices != null) result.orderPrices = orderPrices;
     if (status != null) result.status = status;
     if (statusHistory != null) result.statusHistory.addAll(statusHistory);
     if (createdAt != null) result.createdAt = createdAt;
     if (updatedAt != null) result.updatedAt = updatedAt;
     if (storeId != null) result.storeId = storeId;
     if (initiatedBy != null) result.initiatedBy = initiatedBy;
+    if (purchaseOrder != null) result.purchaseOrder = purchaseOrder;
+    if (saleOrder != null) result.saleOrder = saleOrder;
+    if (cancellationReason != null)
+      result.cancellationReason = cancellationReason;
     return result;
   }
 
@@ -241,29 +479,39 @@ class Order extends $pb.GeneratedMessage {
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
+  static const $core.Map<$core.int, Order_OrderType> _Order_OrderTypeByTag = {
+    10: Order_OrderType.purchaseOrder,
+    11: Order_OrderType.saleOrder,
+    0: Order_OrderType.notSet
+  };
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'Order',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'),
       createEmptyInstance: create)
+    ..oo(0, [10, 11])
     ..aOS(1, _omitFieldNames ? '' : 'refId')
-    ..aOS(2, _omitFieldNames ? '' : 'fromId')
-    ..aOS(3, _omitFieldNames ? '' : 'isClientOrder')
-    ..pc<OrderItem>(4, _omitFieldNames ? '' : 'orderItems', $pb.PbFieldType.PM,
+    ..pc<OrderItem>(2, _omitFieldNames ? '' : 'orderItems', $pb.PbFieldType.PM,
         subBuilder: OrderItem.create)
-    ..a<$core.int>(5, _omitFieldNames ? '' : 'totalPrice', $pb.PbFieldType.O3)
-    ..e<OrderStatus>(6, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
+    ..aOM<OrderPrices>(3, _omitFieldNames ? '' : 'orderPrices',
+        subBuilder: OrderPrices.create)
+    ..e<OrderStatus>(4, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
         defaultOrMaker: OrderStatus.ORDER_STATUS_UNSPECIFIED,
         valueOf: OrderStatus.valueOf,
         enumValues: OrderStatus.values)
     ..pc<StatusHistory>(
-        7, _omitFieldNames ? '' : 'statusHistory', $pb.PbFieldType.PM,
+        5, _omitFieldNames ? '' : 'statusHistory', $pb.PbFieldType.PM,
         subBuilder: StatusHistory.create)
-    ..aOM<$0.Timestamp>(8, _omitFieldNames ? '' : 'createdAt',
+    ..aOM<$0.Timestamp>(6, _omitFieldNames ? '' : 'createdAt',
         subBuilder: $0.Timestamp.create)
-    ..aOM<$0.Timestamp>(9, _omitFieldNames ? '' : 'updatedAt',
+    ..aOM<$0.Timestamp>(7, _omitFieldNames ? '' : 'updatedAt',
         subBuilder: $0.Timestamp.create)
-    ..aOS(10, _omitFieldNames ? '' : 'storeId')
-    ..aOS(11, _omitFieldNames ? '' : 'initiatedBy')
+    ..aOS(8, _omitFieldNames ? '' : 'storeId')
+    ..aOS(9, _omitFieldNames ? '' : 'initiatedBy')
+    ..aOM<PurchaseOrder>(10, _omitFieldNames ? '' : 'purchaseOrder',
+        subBuilder: PurchaseOrder.create)
+    ..aOM<SaleOrder>(11, _omitFieldNames ? '' : 'saleOrder',
+        subBuilder: SaleOrder.create)
+    ..aOS(12, _omitFieldNames ? '' : 'cancellationReason')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -285,6 +533,9 @@ class Order extends $pb.GeneratedMessage {
       _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Order>(create);
   static Order? _defaultInstance;
 
+  Order_OrderType whichOrderType() => _Order_OrderTypeByTag[$_whichOneof(0)]!;
+  void clearOrderType() => $_clearField($_whichOneof(0));
+
   /// The unique identifier of the order.
   @$pb.TagNumber(1)
   $core.String get refId => $_getSZ(0);
@@ -295,97 +546,111 @@ class Order extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   void clearRefId() => $_clearField(1);
 
-  /// The id of the client or the supplier if available.
-  @$pb.TagNumber(2)
-  $core.String get fromId => $_getSZ(1);
-  @$pb.TagNumber(2)
-  set fromId($core.String value) => $_setString(1, value);
-  @$pb.TagNumber(2)
-  $core.bool hasFromId() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearFromId() => $_clearField(2);
-
-  /// Whether the order is from the client or the supplier.
-  @$pb.TagNumber(3)
-  $core.String get isClientOrder => $_getSZ(2);
-  @$pb.TagNumber(3)
-  set isClientOrder($core.String value) => $_setString(2, value);
-  @$pb.TagNumber(3)
-  $core.bool hasIsClientOrder() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearIsClientOrder() => $_clearField(3);
-
   /// The list of items in the order.
-  @$pb.TagNumber(4)
-  $pb.PbList<OrderItem> get orderItems => $_getList(3);
+  @$pb.TagNumber(2)
+  $pb.PbList<OrderItem> get orderItems => $_getList(1);
 
   /// The total price of the order in XAF.
-  @$pb.TagNumber(5)
-  $core.int get totalPrice => $_getIZ(4);
-  @$pb.TagNumber(5)
-  set totalPrice($core.int value) => $_setSignedInt32(4, value);
-  @$pb.TagNumber(5)
-  $core.bool hasTotalPrice() => $_has(4);
-  @$pb.TagNumber(5)
-  void clearTotalPrice() => $_clearField(5);
+  @$pb.TagNumber(3)
+  OrderPrices get orderPrices => $_getN(2);
+  @$pb.TagNumber(3)
+  set orderPrices(OrderPrices value) => $_setField(3, value);
+  @$pb.TagNumber(3)
+  $core.bool hasOrderPrices() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearOrderPrices() => $_clearField(3);
+  @$pb.TagNumber(3)
+  OrderPrices ensureOrderPrices() => $_ensure(2);
 
   /// The status of the order.
-  @$pb.TagNumber(6)
-  OrderStatus get status => $_getN(5);
-  @$pb.TagNumber(6)
-  set status(OrderStatus value) => $_setField(6, value);
-  @$pb.TagNumber(6)
-  $core.bool hasStatus() => $_has(5);
-  @$pb.TagNumber(6)
-  void clearStatus() => $_clearField(6);
+  @$pb.TagNumber(4)
+  OrderStatus get status => $_getN(3);
+  @$pb.TagNumber(4)
+  set status(OrderStatus value) => $_setField(4, value);
+  @$pb.TagNumber(4)
+  $core.bool hasStatus() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearStatus() => $_clearField(4);
 
   /// The status history.
-  @$pb.TagNumber(7)
-  $pb.PbList<StatusHistory> get statusHistory => $_getList(6);
+  @$pb.TagNumber(5)
+  $pb.PbList<StatusHistory> get statusHistory => $_getList(4);
 
   /// The date and time the order was created.
-  @$pb.TagNumber(8)
-  $0.Timestamp get createdAt => $_getN(7);
-  @$pb.TagNumber(8)
-  set createdAt($0.Timestamp value) => $_setField(8, value);
-  @$pb.TagNumber(8)
-  $core.bool hasCreatedAt() => $_has(7);
-  @$pb.TagNumber(8)
-  void clearCreatedAt() => $_clearField(8);
-  @$pb.TagNumber(8)
-  $0.Timestamp ensureCreatedAt() => $_ensure(7);
+  @$pb.TagNumber(6)
+  $0.Timestamp get createdAt => $_getN(5);
+  @$pb.TagNumber(6)
+  set createdAt($0.Timestamp value) => $_setField(6, value);
+  @$pb.TagNumber(6)
+  $core.bool hasCreatedAt() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearCreatedAt() => $_clearField(6);
+  @$pb.TagNumber(6)
+  $0.Timestamp ensureCreatedAt() => $_ensure(5);
 
   /// The date and time the order was last updated.
-  @$pb.TagNumber(9)
-  $0.Timestamp get updatedAt => $_getN(8);
-  @$pb.TagNumber(9)
-  set updatedAt($0.Timestamp value) => $_setField(9, value);
-  @$pb.TagNumber(9)
-  $core.bool hasUpdatedAt() => $_has(8);
-  @$pb.TagNumber(9)
-  void clearUpdatedAt() => $_clearField(9);
-  @$pb.TagNumber(9)
-  $0.Timestamp ensureUpdatedAt() => $_ensure(8);
+  @$pb.TagNumber(7)
+  $0.Timestamp get updatedAt => $_getN(6);
+  @$pb.TagNumber(7)
+  set updatedAt($0.Timestamp value) => $_setField(7, value);
+  @$pb.TagNumber(7)
+  $core.bool hasUpdatedAt() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearUpdatedAt() => $_clearField(7);
+  @$pb.TagNumber(7)
+  $0.Timestamp ensureUpdatedAt() => $_ensure(6);
 
   /// The unique identifier of the store associated with the order.
-  @$pb.TagNumber(10)
-  $core.String get storeId => $_getSZ(9);
-  @$pb.TagNumber(10)
-  set storeId($core.String value) => $_setString(9, value);
-  @$pb.TagNumber(10)
-  $core.bool hasStoreId() => $_has(9);
-  @$pb.TagNumber(10)
-  void clearStoreId() => $_clearField(10);
+  @$pb.TagNumber(8)
+  $core.String get storeId => $_getSZ(7);
+  @$pb.TagNumber(8)
+  set storeId($core.String value) => $_setString(7, value);
+  @$pb.TagNumber(8)
+  $core.bool hasStoreId() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearStoreId() => $_clearField(8);
 
   /// The unique identifier of the user who initiated the order.
+  @$pb.TagNumber(9)
+  $core.String get initiatedBy => $_getSZ(8);
+  @$pb.TagNumber(9)
+  set initiatedBy($core.String value) => $_setString(8, value);
+  @$pb.TagNumber(9)
+  $core.bool hasInitiatedBy() => $_has(8);
+  @$pb.TagNumber(9)
+  void clearInitiatedBy() => $_clearField(9);
+
+  @$pb.TagNumber(10)
+  PurchaseOrder get purchaseOrder => $_getN(9);
+  @$pb.TagNumber(10)
+  set purchaseOrder(PurchaseOrder value) => $_setField(10, value);
+  @$pb.TagNumber(10)
+  $core.bool hasPurchaseOrder() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearPurchaseOrder() => $_clearField(10);
+  @$pb.TagNumber(10)
+  PurchaseOrder ensurePurchaseOrder() => $_ensure(9);
+
   @$pb.TagNumber(11)
-  $core.String get initiatedBy => $_getSZ(10);
+  SaleOrder get saleOrder => $_getN(10);
   @$pb.TagNumber(11)
-  set initiatedBy($core.String value) => $_setString(10, value);
+  set saleOrder(SaleOrder value) => $_setField(11, value);
   @$pb.TagNumber(11)
-  $core.bool hasInitiatedBy() => $_has(10);
+  $core.bool hasSaleOrder() => $_has(10);
   @$pb.TagNumber(11)
-  void clearInitiatedBy() => $_clearField(11);
+  void clearSaleOrder() => $_clearField(11);
+  @$pb.TagNumber(11)
+  SaleOrder ensureSaleOrder() => $_ensure(10);
+
+  /// The reason for the cancellation of the order.
+  @$pb.TagNumber(12)
+  $core.String get cancellationReason => $_getSZ(11);
+  @$pb.TagNumber(12)
+  set cancellationReason($core.String value) => $_setString(11, value);
+  @$pb.TagNumber(12)
+  $core.bool hasCancellationReason() => $_has(11);
+  @$pb.TagNumber(12)
+  void clearCancellationReason() => $_clearField(12);
 }
 
 class CreateOrderRequest extends $pb.GeneratedMessage {
