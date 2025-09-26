@@ -556,139 +556,224 @@ final fakeData = <String, List<Map<String, dynamic>>>{
     },
   ],
   CollectionName.productCategories: [
-    {'ref_id': 'category-001', 'name': 'Electronics'},
-    {'ref_id': 'category-002', 'name': 'Food'},
-    {'ref_id': 'category-003', 'name': 'Clothing'},
-    {'ref_id': 'category-004', 'name': 'Furniture'},
-    {'ref_id': 'category-005', 'name': 'Home Appliances'},
-    {'name': 'Snacks'},
-    {'ref_id': 'category-006', 'name': 'Dairy'},
-    {'ref_id': 'category-007', 'name': 'Entertainment'},
+    {
+      'ref_id': 'category-001',
+      'name': {'en': 'Electronics', 'fr': 'Electronique'},
+    },
+    {
+      'ref_id': 'category-002',
+      'name': {'en': 'Food', 'fr': 'Aliments'},
+    },
+    {
+      'ref_id': 'category-003',
+      'name': {'en': 'Clothing', 'fr': 'Vêtements'},
+    },
+    {
+      'ref_id': 'category-004',
+      'name': {'en': 'Furniture', 'fr': 'Meubles'},
+    },
+    {
+      'ref_id': 'category-005',
+      'name': {'en': 'Home Appliances', 'fr': 'Appareils domestiques'},
+    },
+    {
+      'name': {'en': 'Snacks', 'fr': 'Snacks'},
+    },
+    {
+      'ref_id': 'category-006',
+      'name': {'en': 'Dairy', 'fr': 'Laiterie'},
+    },
+    {
+      'ref_id': 'category-007',
+      'name': {'en': 'Entertainment', 'fr': 'Entretenement'},
+    },
   ],
   CollectionName.globalProducts: <Map<String, dynamic>>[
     {
       'ref_id': 'global-product-001',
-      'name': 'Smartphone',
-      'description': 'Latest model smartphone',
+      'name': {'en': 'Smartphone', 'fr': 'Smartphone'},
+      'description': {'en': 'Latest model smartphone', 'fr': 'Smartphone'},
       'bar_code_value': '1234567890123',
       'categories': [
-        {'ref_id': 'category-001', 'name': 'Electronics'},
+        {
+          'ref_id': 'category-001',
+          'name': {'en': 'Electronics', 'fr': 'Electronique'},
+        },
       ],
       'images_links_ids': ['media-image-001', 'media-image-002'],
     },
     {
       'ref_id': 'global-product-002',
-      'name': 'Apple',
-      'description': 'Fresh red apple',
+      'name': {'en': 'Apple', 'fr': 'Pomme'},
+      'description': {'en': 'Fresh red apple', 'fr': 'Pomme rouge fraîche'},
       'bar_code_value': '9876543210987',
       'categories': [
-        {'ref_id': 'category-002', 'name': 'Food'},
+        {
+          'ref_id': 'category-002',
+          'name': {'en': 'Food', 'fr': 'Aliments'},
+        },
       ],
       'images_links_ids': ['media-image-003'],
     },
     {
       'ref_id': 'global-product-003',
-      'name': 'T-Shirt',
-      'description': 'Cotton t-shirt',
+      'name': {'en': 'T-Shirt', 'fr': 'T-Shirt'},
+      'description': {'en': 'Cotton t-shirt', 'fr': 'T-Shirt en coton'},
       'categories': [
-        {'ref_id': 'category-003', 'name': 'Clothing'},
+        {
+          'ref_id': 'category-003',
+          'name': {'en': 'Clothing', 'fr': 'Vêtements'},
+        },
       ],
       'images_links_ids': [],
     },
     {
       'ref_id': 'global-product-004',
-      'name': 'TV',
-      'description': '4K Smart TV',
+      'name': {'en': 'TV', 'fr': 'TV'},
+      'description': {'en': '4K Smart TV', 'fr': 'TV 4K Smart'},
       'bar_code_value': '1112223334445',
       'categories': [
-        {'ref_id': 'category-001', 'name': 'Electronics'},
-        {'ref_id': 'category-007', 'name': 'Entertainment'},
+        {
+          'ref_id': 'category-001',
+          'name': {'en': 'Electronics', 'fr': 'Electronique'},
+        },
+        {
+          'ref_id': 'category-007',
+          'name': {'en': 'Entertainment', 'fr': 'Entretenement'},
+        },
       ],
       'images_links_ids': ['media-image-004', 'media-image-005'],
     },
     {
       'ref_id': 'global-product-005',
-      'name': 'Sofa',
-      'description': 'Comfortable leather sofa',
+      'name': {'en': 'Sofa', 'fr': 'Sofa'},
+      'description': {
+        'en': 'Comfortable leather sofa',
+        'fr': 'Sofa en cuir confortable',
+      },
       'bar_code_value': '5556667778889',
       'categories': [
-        {'ref_id': 'category-004', 'name': 'Furniture'},
+        {
+          'ref_id': 'category-004',
+          'name': {'en': 'Furniture', 'fr': 'Meubles'},
+        },
       ],
       'images_links_ids': ['media-image-006'],
     },
     {
       'ref_id': 'global-product-006',
-      'name': 'Home Cinema',
-      'description': 'Surround sound home cinema system',
+      'name': {'en': 'Home Cinema', 'fr': 'Home Cinema'},
+      'description': {
+        'en': 'Surround sound home cinema system',
+        'fr': 'Systeme de home cinema avec son surround',
+      },
       'bar_code_value': '9990001112223',
       'categories': [
-        {'ref_id': 'category-001', 'name': 'Electronics'},
-        {'ref_id': 'category-010', 'name': 'Entertainment'},
+        {
+          'ref_id': 'category-001',
+          'name': {'en': 'Electronics', 'fr': 'Electronique'},
+        },
+        {
+          'ref_id': 'category-010',
+          'name': {'en': 'Entertainment', 'fr': 'Entretenement'},
+        },
       ],
       'images_links_ids': ['media-image-007'],
     },
     {
       'ref_id': 'global-product-007',
-      'name': 'Milk',
-      'description': 'Fresh whole milk',
+      'name': {'en': 'Milk', 'fr': 'Lait'},
+      'description': {'en': 'Fresh whole milk', 'fr': 'Lait entier frais'},
       'bar_code_value': '3334445556667',
       'categories': [
-        {'ref_id': 'category-006', 'name': 'Dairy'},
-        {'ref_id': 'category-002', 'name': 'Food'},
+        {
+          'ref_id': 'category-006',
+          'name': {'en': 'Dairy', 'fr': 'Laiterie'},
+        },
+        {
+          'ref_id': 'category-002',
+          'name': {'en': 'Food', 'fr': 'Aliments'},
+        },
       ],
       'images_links_ids': ['media-image-008'],
     },
     {
       'ref_id': 'global-product-008',
-      'name': 'Chips',
-      'description': 'Potato chips snack',
+      'name': {'en': 'Chips', 'fr': 'Chips'},
+      'description': {
+        'en': 'Potato chips snack',
+        'fr': 'Chips de pomme de terre',
+      },
       'bar_code_value': '7778889990001',
       'categories': [
-        {'name': 'Snacks'},
-        {'ref_id': 'category-002', 'name': 'Food'},
+        {
+          'name': {'en': 'Snacks', 'fr': 'Snacks'},
+        },
+        {
+          'ref_id': 'category-002',
+          'name': {'en': 'Food', 'fr': 'Aliments'},
+        },
       ],
       'images_links_ids': ['media-image-009', 'media-image-010'],
     },
     {
       'ref_id': 'global-product-009',
-      'name': 'Laptop',
-      'description': 'High-performance laptop',
+      'name': {'en': 'Laptop', 'fr': 'Laptop'},
+      'description': {'en': 'High-performance laptop', 'fr': 'Laptop'},
       'categories': [
-        {'ref_id': 'category-001', 'name': 'Electronics'},
+        {
+          'ref_id': 'category-001',
+          'name': {'en': 'Electronics', 'fr': 'Electronique'},
+        },
       ],
     },
     {
       'ref_id': 'global-product-010',
-      'name': 'Refrigerator',
-      'description': 'Energy-efficient fridge',
+      'name': {'en': 'Refrigerator', 'fr': 'Refrigerateur'},
+      'description': {'en': 'Energy-efficient fridge', 'fr': 'Refrigerateur'},
       'bar_code_value': '2223334445556',
       'categories': [
-        {'ref_id': 'category-005', 'name': 'Home Appliances'},
+        {
+          'ref_id': 'category-005',
+          'name': {'en': 'Home Appliances', 'fr': 'Appareils domestiques'},
+        },
       ],
       'images_links_ids': ['media-image-011'],
     },
     {
-      'name': 'Coffee Table',
-      'description': 'Wooden coffee table',
-      'categories': [
-        {'ref_id': 'category-004', 'name': 'Furniture'},
-      ],
-    },
-    {
       'ref_id': 'global-product-011',
-      'name': 'Yogurt',
-      'description': 'Greek yogurt',
-      'bar_code_value': '6667778889990',
+      'name': {'en': 'Coffee Table', 'fr': 'Table de cafe'},
+      'description': {
+        'en': 'Wooden coffee table',
+        'fr': 'Table de cafe en bois',
+      },
       'categories': [
-        {'ref_id': 'category-006', 'name': 'Dairy'},
+        {
+          'ref_id': 'category-004',
+          'name': {'en': 'Furniture', 'fr': 'Meubles'},
+        },
       ],
     },
     {
       'ref_id': 'global-product-012',
-      'name': 'Candy Bar',
-      'description': 'Chocolate candy bar',
+      'name': {'en': 'Yogurt', 'fr': 'Yogourt'},
+      'description': {'en': 'Greek yogurt', 'fr': 'Yogourt grec'},
+      'bar_code_value': '6667778889990',
       'categories': [
-        {'name': 'Snacks'},
+        {
+          'ref_id': 'category-006',
+          'name': {'en': 'Dairy', 'fr': 'Laiterie'},
+        },
+      ],
+    },
+    {
+      'ref_id': 'global-product-013',
+      'name': {'en': 'Candy Bar', 'fr': 'Candy Bar'},
+      'description': {'en': 'Chocolate candy bar', 'fr': 'Candy Bar'},
+      'categories': [
+        {
+          'name': {'en': 'Snacks', 'fr': 'Snacks'},
+        },
       ],
       'images_links_ids': [],
     },
@@ -1310,14 +1395,14 @@ final fakeData = <String, List<Map<String, dynamic>>>{
   CollectionName.categories: [
     {
       'ref_id': 'category-001',
-      'name': 'Electronics',
+      'name': {'en': 'Electronics', 'fr': 'Electronique'},
       'business_id': 'business-001',
       'created_at': '2025-09-01T10:00:00Z',
       'updated_at': '2025-09-01T10:00:00Z',
     },
     {
       'ref_id': 'category-002',
-      'name': 'TVs',
+      'name': {'en': 'TVs', 'fr': 'TVs'},
       'business_id': 'business-001',
       'parent_category_id': 'category-001',
       'created_at': '2025-09-01T10:15:00Z',
@@ -1325,7 +1410,7 @@ final fakeData = <String, List<Map<String, dynamic>>>{
     },
     {
       'ref_id': 'category-003',
-      'name': 'Smart TVs',
+      'name': {'en': 'Smart TVs', 'fr': 'TVs intelligentes'},
       'business_id': 'business-001',
       'parent_category_id': 'category-002',
       'created_at': '2025-09-01T10:30:00Z',
@@ -1333,7 +1418,7 @@ final fakeData = <String, List<Map<String, dynamic>>>{
     },
     {
       'ref_id': 'category-004',
-      'name': 'Laptops',
+      'name': {'en': 'Laptops', 'fr': 'Ordinateurs portables'},
       'business_id': 'business-001',
       'parent_category_id': 'category-001',
       'created_at': '2025-09-01T11:00:00Z',
@@ -1341,14 +1426,14 @@ final fakeData = <String, List<Map<String, dynamic>>>{
     },
     {
       'ref_id': 'category-005',
-      'name': 'Clothing',
+      'name': {'en': 'Clothing', 'fr': 'Vêtements'},
       'business_id': 'business-002',
       'created_at': '2025-09-02T09:00:00Z',
       'updated_at': '2025-09-02T09:00:00Z',
     },
     {
       'ref_id': 'category-006',
-      'name': 'Men’s Clothing',
+      'name': {'en': 'Men’s Clothing', 'fr': 'Vêtements pour hommes'},
       'business_id': 'business-002',
       'parent_category_id': 'category-005',
       'created_at': '2025-09-02T09:15:00Z',
@@ -1356,7 +1441,7 @@ final fakeData = <String, List<Map<String, dynamic>>>{
     },
     {
       'ref_id': 'category-007',
-      'name': 'Suits',
+      'name': {'en': 'Suits', 'fr': 'Suits'},
       'business_id': 'business-002',
       'parent_category_id': 'category-006',
       'created_at': '2025-09-02T09:30:00Z',
@@ -1364,7 +1449,7 @@ final fakeData = <String, List<Map<String, dynamic>>>{
     },
     {
       'ref_id': 'category-008',
-      'name': 'Women’s Clothing',
+      'name': {'en': 'Women’s Clothing', 'fr': 'Vêtements pour femmes'},
       'business_id': 'business-002',
       'parent_category_id': 'category-005',
       'created_at': '2025-09-02T10:00:00Z',
@@ -1372,7 +1457,7 @@ final fakeData = <String, List<Map<String, dynamic>>>{
     },
     {
       'ref_id': 'category-009',
-      'name': 'Dresses',
+      'name': {'en': 'Dresses', 'fr': 'Robes'},
       'business_id': 'business-002',
       'parent_category_id': 'category-008',
       'created_at': '2025-09-02T10:15:00Z',
@@ -1380,7 +1465,7 @@ final fakeData = <String, List<Map<String, dynamic>>>{
     },
     {
       'ref_id': 'category-010',
-      'name': 'Entertainment',
+      'name': {'en': 'Entertainment', 'fr': 'Entretenement'},
       'business_id': 'business-002',
       'created_at': '2025-09-02T10:30:00Z',
       'updated_at': '2025-09-02T10:30:00Z',

@@ -22,8 +22,8 @@ abstract class HiveDatabase {
   /// Global products box.
   Box<GlobalProduct> get globalProducts;
 
-  /// Product categories box.
-  Box<ProductCategory> get productCategories;
+  /// Categories box.
+  Box<Category> get categories;
 
   /// Orders box.
   Box<Order> get orders;

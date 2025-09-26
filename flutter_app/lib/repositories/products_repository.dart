@@ -89,19 +89,6 @@ class ProductsRepository {
     }
   }
 
-  /// Finds product categories by query.
-  Future<List<ProductCategory>> findCategories(
-    FindCategoryRequest request,
-  ) async {
-    try {
-      return await remoteProductsRepository.findCategories(request);
-    } on Exception catch (e) {
-      _logger.severe('findCategories Error: $e');
-
-      return [];
-    }
-  }
-
   /// Adds a new product to a business.
   Future<bool> addProduct(AddStoreProductRequest request) async {
     try {
@@ -150,6 +137,21 @@ class ProductsRepository {
 
       return false;
     }
+  }
+
+  /// Adds a new global product.
+  Future<bool> createGlobalProduct(CreateGlobalProductRequest request) async {
+    return await remoteProductsRepository.createGlobalProduct(request);
+  }
+
+  /// Updates a global product.
+  Future<bool> updateGlobalProduct(UpdateGlobalProductRequest request) async {
+    return await remoteProductsRepository.updateGlobalProduct(request);
+  }
+
+  /// Deletes a global product.
+  Future<bool> deleteGlobalProduct(DeleteGlobalProductRequest request) async {
+    return await remoteProductsRepository.deleteGlobalProduct(request);
   }
 
   /// Streams all products for a business for real-time updates.

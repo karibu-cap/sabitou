@@ -10,6 +10,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import '../../repositories/orders_repository.dart';
 import '../../repositories/products_repository.dart';
 import '../../repositories/transactions_repository.dart';
+import '../../utils/extensions/category_extension.dart';
 import '../../utils/logger.dart';
 import '../../utils/user_preference.dart';
 
@@ -350,7 +351,7 @@ class ReportsViewModel {
 
         final orderContribution = item.quantity;
         final existing = data.firstWhereOrNull(
-          (d) => category?.any((c) => c.name == d.categoryName) == true,
+          (d) => category?.any((c) => c.label == d.categoryName) == true,
         );
         if (existing != null) {
           existing.itemQuantity += orderContribution;
@@ -358,7 +359,7 @@ class ReportsViewModel {
           data.addAll(
             category?.map(
                   (c) =>
-                      CategorySalesData(c.name, orderContribution.toDouble()),
+                      CategorySalesData(c.label, orderContribution.toDouble()),
                 ) ??
                 [],
           );
@@ -381,7 +382,7 @@ class ReportsViewModel {
         tx.storeProductId,
       );
       final existing = data.firstWhereOrNull(
-        (d) => category?.any((c) => c.name == d.categoryName) == true,
+        (d) => category?.any((c) => c.label == d.categoryName) == true,
       );
       existing?.itemQuantity -= tx.amount;
     }
@@ -686,7 +687,7 @@ class ReportsViewModel {
     }).toList();
   }
 
-  Future<List<ProductCategory>?> _getCategoryNameByStoreProductId(
+  Future<List<Category>?> _getCategoryNameByStoreProductId(
     String storeProductId,
   ) async {
     final product = await ProductsRepository.instance.getProduct(

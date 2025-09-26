@@ -16,14 +16,89 @@ import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import '../../google/protobuf/timestamp.pb.dart' as $0;
+import 'category.pbenum.dart';
 
 export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
+
+export 'category.pbenum.dart';
+
+class Internationalized extends $pb.GeneratedMessage {
+  factory Internationalized({
+    $core.String? en,
+    $core.String? fr,
+  }) {
+    final result = create();
+    if (en != null) result.en = en;
+    if (fr != null) result.fr = fr;
+    return result;
+  }
+
+  Internationalized._();
+
+  factory Internationalized.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory Internationalized.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'Internationalized',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'en')
+    ..aOS(2, _omitFieldNames ? '' : 'fr')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  Internationalized clone() => Internationalized()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  Internationalized copyWith(void Function(Internationalized) updates) =>
+      super.copyWith((message) => updates(message as Internationalized))
+          as Internationalized;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static Internationalized create() => Internationalized._();
+  @$core.override
+  Internationalized createEmptyInstance() => create();
+  static $pb.PbList<Internationalized> createRepeated() =>
+      $pb.PbList<Internationalized>();
+  @$core.pragma('dart2js:noInline')
+  static Internationalized getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<Internationalized>(create);
+  static Internationalized? _defaultInstance;
+
+  /// The English name of the product category.
+  @$pb.TagNumber(1)
+  $core.String get en => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set en($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasEn() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearEn() => $_clearField(1);
+
+  /// The French name of the product category.
+  @$pb.TagNumber(2)
+  $core.String get fr => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set fr($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasFr() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearFr() => $_clearField(2);
+}
 
 class Category extends $pb.GeneratedMessage {
   factory Category({
     $core.String? refId,
-    $core.String? name,
+    Internationalized? name,
     $core.String? parentCategoryId,
+    CategoryStatus? status,
+    CategoryType? type,
     $core.String? businessId,
     $0.Timestamp? createdAt,
     $0.Timestamp? updatedAt,
@@ -32,6 +107,8 @@ class Category extends $pb.GeneratedMessage {
     if (refId != null) result.refId = refId;
     if (name != null) result.name = name;
     if (parentCategoryId != null) result.parentCategoryId = parentCategoryId;
+    if (status != null) result.status = status;
+    if (type != null) result.type = type;
     if (businessId != null) result.businessId = businessId;
     if (createdAt != null) result.createdAt = createdAt;
     if (updatedAt != null) result.updatedAt = updatedAt;
@@ -52,12 +129,21 @@ class Category extends $pb.GeneratedMessage {
       package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'refId')
-    ..aOS(2, _omitFieldNames ? '' : 'name')
+    ..aOM<Internationalized>(2, _omitFieldNames ? '' : 'name',
+        subBuilder: Internationalized.create)
     ..aOS(3, _omitFieldNames ? '' : 'parentCategoryId')
-    ..aOS(4, _omitFieldNames ? '' : 'businessId')
-    ..aOM<$0.Timestamp>(6, _omitFieldNames ? '' : 'createdAt',
+    ..e<CategoryStatus>(4, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
+        defaultOrMaker: CategoryStatus.CATEGORY_STATUS_UNSPECIFIED,
+        valueOf: CategoryStatus.valueOf,
+        enumValues: CategoryStatus.values)
+    ..e<CategoryType>(5, _omitFieldNames ? '' : 'type', $pb.PbFieldType.OE,
+        defaultOrMaker: CategoryType.CATEGORY_TYPE_STORE,
+        valueOf: CategoryType.valueOf,
+        enumValues: CategoryType.values)
+    ..aOS(6, _omitFieldNames ? '' : 'businessId')
+    ..aOM<$0.Timestamp>(7, _omitFieldNames ? '' : 'createdAt',
         subBuilder: $0.Timestamp.create)
-    ..aOM<$0.Timestamp>(7, _omitFieldNames ? '' : 'updatedAt',
+    ..aOM<$0.Timestamp>(8, _omitFieldNames ? '' : 'updatedAt',
         subBuilder: $0.Timestamp.create)
     ..hasRequiredFields = false;
 
@@ -92,13 +178,15 @@ class Category extends $pb.GeneratedMessage {
 
   /// Name of the category (e.g., "Electronics", "Smart TVs")
   @$pb.TagNumber(2)
-  $core.String get name => $_getSZ(1);
+  Internationalized get name => $_getN(1);
   @$pb.TagNumber(2)
-  set name($core.String value) => $_setString(1, value);
+  set name(Internationalized value) => $_setField(2, value);
   @$pb.TagNumber(2)
   $core.bool hasName() => $_has(1);
   @$pb.TagNumber(2)
   void clearName() => $_clearField(2);
+  @$pb.TagNumber(2)
+  Internationalized ensureName() => $_ensure(1);
 
   /// Reference to parent category (empty for root categories)
   @$pb.TagNumber(3)
@@ -110,39 +198,59 @@ class Category extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   void clearParentCategoryId() => $_clearField(3);
 
+  /// The status of the category.
+  @$pb.TagNumber(4)
+  CategoryStatus get status => $_getN(3);
+  @$pb.TagNumber(4)
+  set status(CategoryStatus value) => $_setField(4, value);
+  @$pb.TagNumber(4)
+  $core.bool hasStatus() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearStatus() => $_clearField(4);
+
+  /// The status of the category.
+  @$pb.TagNumber(5)
+  CategoryType get type => $_getN(4);
+  @$pb.TagNumber(5)
+  set type(CategoryType value) => $_setField(5, value);
+  @$pb.TagNumber(5)
+  $core.bool hasType() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearType() => $_clearField(5);
+
   /// Business ID associated with the category
-  @$pb.TagNumber(4)
-  $core.String get businessId => $_getSZ(3);
-  @$pb.TagNumber(4)
-  set businessId($core.String value) => $_setString(3, value);
-  @$pb.TagNumber(4)
-  $core.bool hasBusinessId() => $_has(3);
-  @$pb.TagNumber(4)
-  void clearBusinessId() => $_clearField(4);
+  @$pb.TagNumber(6)
+  $core.String get businessId => $_getSZ(5);
+  @$pb.TagNumber(6)
+  set businessId($core.String value) => $_setString(5, value);
+  @$pb.TagNumber(6)
+  $core.bool hasBusinessId() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearBusinessId() => $_clearField(6);
 
   /// Timestamp when the category was created
-  @$pb.TagNumber(6)
-  $0.Timestamp get createdAt => $_getN(4);
-  @$pb.TagNumber(6)
-  set createdAt($0.Timestamp value) => $_setField(6, value);
-  @$pb.TagNumber(6)
-  $core.bool hasCreatedAt() => $_has(4);
-  @$pb.TagNumber(6)
-  void clearCreatedAt() => $_clearField(6);
-  @$pb.TagNumber(6)
-  $0.Timestamp ensureCreatedAt() => $_ensure(4);
+  @$pb.TagNumber(7)
+  $0.Timestamp get createdAt => $_getN(6);
+  @$pb.TagNumber(7)
+  set createdAt($0.Timestamp value) => $_setField(7, value);
+  @$pb.TagNumber(7)
+  $core.bool hasCreatedAt() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearCreatedAt() => $_clearField(7);
+  @$pb.TagNumber(7)
+  $0.Timestamp ensureCreatedAt() => $_ensure(6);
 
   /// Timestamp when the category was last updated
-  @$pb.TagNumber(7)
-  $0.Timestamp get updatedAt => $_getN(5);
-  @$pb.TagNumber(7)
-  set updatedAt($0.Timestamp value) => $_setField(7, value);
-  @$pb.TagNumber(7)
-  $core.bool hasUpdatedAt() => $_has(5);
-  @$pb.TagNumber(7)
-  void clearUpdatedAt() => $_clearField(7);
-  @$pb.TagNumber(7)
-  $0.Timestamp ensureUpdatedAt() => $_ensure(5);
+  @$pb.TagNumber(8)
+  $0.Timestamp get updatedAt => $_getN(7);
+  @$pb.TagNumber(8)
+  set updatedAt($0.Timestamp value) => $_setField(8, value);
+  @$pb.TagNumber(8)
+  $core.bool hasUpdatedAt() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearUpdatedAt() => $_clearField(8);
+  @$pb.TagNumber(8)
+  $0.Timestamp ensureUpdatedAt() => $_ensure(7);
 }
 
 class FindCategoriesRequest extends $pb.GeneratedMessage {
@@ -151,12 +259,16 @@ class FindCategoriesRequest extends $pb.GeneratedMessage {
     $core.String? refId,
     $core.String? name,
     $core.String? parentCategoryId,
+    CategoryStatus? status,
+    CategoryType? type,
   }) {
     final result = create();
     if (businessId != null) result.businessId = businessId;
     if (refId != null) result.refId = refId;
     if (name != null) result.name = name;
     if (parentCategoryId != null) result.parentCategoryId = parentCategoryId;
+    if (status != null) result.status = status;
+    if (type != null) result.type = type;
     return result;
   }
 
@@ -177,6 +289,14 @@ class FindCategoriesRequest extends $pb.GeneratedMessage {
     ..aOS(2, _omitFieldNames ? '' : 'refId')
     ..aOS(3, _omitFieldNames ? '' : 'name')
     ..aOS(4, _omitFieldNames ? '' : 'parentCategoryId')
+    ..e<CategoryStatus>(5, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
+        defaultOrMaker: CategoryStatus.CATEGORY_STATUS_UNSPECIFIED,
+        valueOf: CategoryStatus.valueOf,
+        enumValues: CategoryStatus.values)
+    ..e<CategoryType>(6, _omitFieldNames ? '' : 'type', $pb.PbFieldType.OE,
+        defaultOrMaker: CategoryType.CATEGORY_TYPE_STORE,
+        valueOf: CategoryType.valueOf,
+        enumValues: CategoryType.values)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -241,6 +361,26 @@ class FindCategoriesRequest extends $pb.GeneratedMessage {
   $core.bool hasParentCategoryId() => $_has(3);
   @$pb.TagNumber(4)
   void clearParentCategoryId() => $_clearField(4);
+
+  /// Find the category by status
+  @$pb.TagNumber(5)
+  CategoryStatus get status => $_getN(4);
+  @$pb.TagNumber(5)
+  set status(CategoryStatus value) => $_setField(5, value);
+  @$pb.TagNumber(5)
+  $core.bool hasStatus() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearStatus() => $_clearField(5);
+
+  /// Find the category by type
+  @$pb.TagNumber(6)
+  CategoryType get type => $_getN(5);
+  @$pb.TagNumber(6)
+  set type(CategoryType value) => $_setField(6, value);
+  @$pb.TagNumber(6)
+  $core.bool hasType() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearType() => $_clearField(6);
 }
 
 class FindCategoriesResponse extends $pb.GeneratedMessage {
@@ -419,12 +559,12 @@ class CreateCategoryResponse extends $pb.GeneratedMessage {
 
 class UpdateCategoryRequest extends $pb.GeneratedMessage {
   factory UpdateCategoryRequest({
-    $core.String? refId,
-    $core.String? name,
+    $core.String? categoryId,
+    Category? category,
   }) {
     final result = create();
-    if (refId != null) result.refId = refId;
-    if (name != null) result.name = name;
+    if (categoryId != null) result.categoryId = categoryId;
+    if (category != null) result.category = category;
     return result;
   }
 
@@ -441,8 +581,9 @@ class UpdateCategoryRequest extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'UpdateCategoryRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'refId')
-    ..aOS(2, _omitFieldNames ? '' : 'name')
+    ..aOS(1, _omitFieldNames ? '' : 'categoryId')
+    ..aOM<Category>(2, _omitFieldNames ? '' : 'category',
+        subBuilder: Category.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -470,23 +611,25 @@ class UpdateCategoryRequest extends $pb.GeneratedMessage {
 
   /// The category information to update.
   @$pb.TagNumber(1)
-  $core.String get refId => $_getSZ(0);
+  $core.String get categoryId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set refId($core.String value) => $_setString(0, value);
+  set categoryId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasRefId() => $_has(0);
+  $core.bool hasCategoryId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearRefId() => $_clearField(1);
+  void clearCategoryId() => $_clearField(1);
 
-  /// The name of the category.
+  /// The category information to update.
   @$pb.TagNumber(2)
-  $core.String get name => $_getSZ(1);
+  Category get category => $_getN(1);
   @$pb.TagNumber(2)
-  set name($core.String value) => $_setString(1, value);
+  set category(Category value) => $_setField(2, value);
   @$pb.TagNumber(2)
-  $core.bool hasName() => $_has(1);
+  $core.bool hasCategory() => $_has(1);
   @$pb.TagNumber(2)
-  void clearName() => $_clearField(2);
+  void clearCategory() => $_clearField(2);
+  @$pb.TagNumber(2)
+  Category ensureCategory() => $_ensure(1);
 }
 
 class UpdateCategoryResponse extends $pb.GeneratedMessage {
@@ -550,10 +693,10 @@ class UpdateCategoryResponse extends $pb.GeneratedMessage {
 
 class DeleteCategoryRequest extends $pb.GeneratedMessage {
   factory DeleteCategoryRequest({
-    $core.String? refId,
+    $core.String? categoryId,
   }) {
     final result = create();
-    if (refId != null) result.refId = refId;
+    if (categoryId != null) result.categoryId = categoryId;
     return result;
   }
 
@@ -570,7 +713,7 @@ class DeleteCategoryRequest extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'DeleteCategoryRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'refId')
+    ..aOS(1, _omitFieldNames ? '' : 'categoryId')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -598,13 +741,13 @@ class DeleteCategoryRequest extends $pb.GeneratedMessage {
 
   /// The unique identifier of the category.
   @$pb.TagNumber(1)
-  $core.String get refId => $_getSZ(0);
+  $core.String get categoryId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set refId($core.String value) => $_setString(0, value);
+  set categoryId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasRefId() => $_has(0);
+  $core.bool hasCategoryId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearRefId() => $_clearField(1);
+  void clearCategoryId() => $_clearField(1);
 }
 
 class DeleteCategoryResponse extends $pb.GeneratedMessage {
@@ -668,10 +811,10 @@ class DeleteCategoryResponse extends $pb.GeneratedMessage {
 
 class GetCategoryRequest extends $pb.GeneratedMessage {
   factory GetCategoryRequest({
-    $core.String? refId,
+    $core.String? categoryId,
   }) {
     final result = create();
-    if (refId != null) result.refId = refId;
+    if (categoryId != null) result.categoryId = categoryId;
     return result;
   }
 
@@ -688,7 +831,7 @@ class GetCategoryRequest extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'GetCategoryRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'refId')
+    ..aOS(1, _omitFieldNames ? '' : 'categoryId')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -714,13 +857,13 @@ class GetCategoryRequest extends $pb.GeneratedMessage {
 
   /// The unique identifier of the category.
   @$pb.TagNumber(1)
-  $core.String get refId => $_getSZ(0);
+  $core.String get categoryId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set refId($core.String value) => $_setString(0, value);
+  set categoryId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasRefId() => $_has(0);
+  $core.bool hasCategoryId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearRefId() => $_clearField(1);
+  void clearCategoryId() => $_clearField(1);
 }
 
 class GetCategoryResponse extends $pb.GeneratedMessage {

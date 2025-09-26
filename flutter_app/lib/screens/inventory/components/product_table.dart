@@ -8,6 +8,8 @@ import '../../../themes/app_colors.dart';
 import '../../../utils/app_constants.dart';
 import '../../../utils/common_functions.dart';
 import '../../../utils/extends_models.dart';
+import '../../../utils/extensions/category_extension.dart';
+import '../../../utils/extensions/global_product_extension.dart';
 import '../../../utils/formatters.dart';
 import '../../../utils/responsive_utils.dart';
 import '../../../utils/utils.dart';
@@ -176,7 +178,7 @@ class _ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
     final category = product.globalProduct.categories
-        .map((c) => c.name)
+        .map((c) => c.label)
         .toList();
 
     return ShadCard(
@@ -194,7 +196,7 @@ class _ProductCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        product.globalProduct.name,
+                        product.globalProduct.label,
                         style: theme.textTheme.large,
                       ),
                       const SizedBox(height: 4),
@@ -370,7 +372,7 @@ class _ProductNameCell extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                product.globalProduct.name,
+                product.globalProduct.label,
                 style: theme.textTheme.large.copyWith(
                   fontWeight: FontWeight.w600,
                 ),
@@ -581,7 +583,7 @@ class _DeleteProductDialog extends StatelessWidget {
         showErrorToast(
           context: context,
           message: Intls.to.failedToDeleteProduct.trParams({
-            'name': product.globalProduct.name,
+            'name': product.globalProduct.label,
           }),
         );
       }
@@ -600,7 +602,7 @@ class _DeleteProductDialog extends StatelessWidget {
             children: [
               Text(
                 Intls.to.areYouSureYouWantToDelete.trParams({
-                  'name': product.globalProduct.name,
+                  'name': product.globalProduct.label,
                 }),
               ),
               const SizedBox(height: 20),

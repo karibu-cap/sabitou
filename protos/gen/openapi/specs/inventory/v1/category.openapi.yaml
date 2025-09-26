@@ -358,20 +358,28 @@ components:
           description: Unique identifier for the category
           nullable: true
         name:
-          type: string
           title: name
-          minLength: 3
           description: Name of the category (e.g., "Electronics", "Smart TVs")
+          $ref: '#/components/schemas/inventory.v1.Internationalized'
         parentCategoryId:
           type: string
           title: parent_category_id
           description: Reference to parent category (empty for root categories)
           nullable: true
+        status:
+          title: status
+          description: The status of the category.
+          $ref: '#/components/schemas/inventory.v1.CategoryStatus'
+        type:
+          title: type
+          description: The status of the category.
+          $ref: '#/components/schemas/inventory.v1.CategoryType'
         businessId:
           type: string
           title: business_id
-          minLength: 3
+          minLength: 6
           description: Business ID associated with the category
+          nullable: true
         createdAt:
           title: created_at
           description: Timestamp when the category was created
@@ -383,9 +391,22 @@ components:
           $ref: '#/components/schemas/google.protobuf.Timestamp'
       title: Category
       required:
-        - name
         - businessId
       additionalProperties: false
+    inventory.v1.CategoryStatus:
+      type: string
+      title: CategoryStatus
+      enum:
+        - CATEGORY_STATUS_UNSPECIFIED
+        - CATEGORY_STATUS_ACTIVE
+        - CATEGORY_STATUS_INACTIVE
+    inventory.v1.CategoryType:
+      type: string
+      title: CategoryType
+      enum:
+        - CATEGORY_TYPE_STORE
+        - CATEGORY_TYPE_BUSINESS
+        - CATEGORY_TYPE_PRODUCT
     inventory.v1.CreateCategoryRequest:
       type: object
       properties:
@@ -407,14 +428,14 @@ components:
     inventory.v1.DeleteCategoryRequest:
       type: object
       properties:
-        refId:
+        categoryId:
           type: string
-          title: ref_id
+          title: category_id
           minLength: 3
           description: The unique identifier of the category.
       title: DeleteCategoryRequest
       required:
-        - refId
+        - categoryId
       additionalProperties: false
     inventory.v1.DeleteCategoryResponse:
       type: object
@@ -448,6 +469,16 @@ components:
           title: parent_category_id
           description: Find the category by parent_category_id
           nullable: true
+        status:
+          title: status
+          description: Find the category by status
+          nullable: true
+          $ref: '#/components/schemas/inventory.v1.CategoryStatus'
+        type:
+          title: type
+          description: Find the category by type
+          nullable: true
+          $ref: '#/components/schemas/inventory.v1.CategoryType'
       title: FindCategoriesRequest
       required:
         - businessId
@@ -465,14 +496,14 @@ components:
     inventory.v1.GetCategoryRequest:
       type: object
       properties:
-        refId:
+        categoryId:
           type: string
-          title: ref_id
+          title: category_id
           minLength: 3
           description: The unique identifier of the category.
       title: GetCategoryRequest
       required:
-        - refId
+        - categoryId
       additionalProperties: false
     inventory.v1.GetCategoryResponse:
       type: object
@@ -483,22 +514,34 @@ components:
           $ref: '#/components/schemas/inventory.v1.Category'
       title: GetCategoryResponse
       additionalProperties: false
+    inventory.v1.Internationalized:
+      type: object
+      properties:
+        en:
+          type: string
+          title: en
+          description: The English name of the product category.
+        fr:
+          type: string
+          title: fr
+          description: The French name of the product category.
+      title: Internationalized
+      additionalProperties: false
     inventory.v1.UpdateCategoryRequest:
       type: object
       properties:
-        refId:
+        categoryId:
           type: string
-          title: ref_id
+          title: category_id
           minLength: 3
           description: The category information to update.
-        name:
-          type: string
-          title: name
-          description: The name of the category.
+        category:
+          title: category
+          description: The category information to update.
+          $ref: '#/components/schemas/inventory.v1.Category'
       title: UpdateCategoryRequest
       required:
-        - refId
-        - name
+        - categoryId
       additionalProperties: false
     inventory.v1.UpdateCategoryResponse:
       type: object

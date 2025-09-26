@@ -14,36 +14,28 @@ import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
-import '../../google/protobuf/timestamp.pbjson.dart' as $0;
-
-@$core.Deprecated('Use productCategoryDescriptor instead')
-const ProductCategory$json = {
-  '1': 'ProductCategory',
-  '2': [
-    {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'refId', '17': true},
-    {'1': 'name', '3': 2, '4': 1, '5': 9, '10': 'name'},
-  ],
-  '8': [
-    {'1': '_ref_id'},
-  ],
-};
-
-/// Descriptor for `ProductCategory`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List productCategoryDescriptor = $convert.base64Decode(
-    'Cg9Qcm9kdWN0Q2F0ZWdvcnkSGgoGcmVmX2lkGAEgASgJSABSBXJlZklkiAEBEhIKBG5hbWUYAi'
-    'ABKAlSBG5hbWVCCQoHX3JlZl9pZA==');
+import '../../google/protobuf/timestamp.pbjson.dart' as $1;
+import 'category.pbjson.dart' as $0;
 
 @$core.Deprecated('Use globalProductDescriptor instead')
 const GlobalProduct$json = {
   '1': 'GlobalProduct',
   '2': [
     {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'refId', '17': true},
-    {'1': 'name', '3': 2, '4': 1, '5': 9, '10': 'name'},
+    {
+      '1': 'name',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.inventory.v1.Internationalized',
+      '10': 'name'
+    },
     {
       '1': 'description',
       '3': 3,
       '4': 1,
-      '5': 9,
+      '5': 11,
+      '6': '.inventory.v1.Internationalized',
       '9': 1,
       '10': 'description',
       '17': true
@@ -62,7 +54,7 @@ const GlobalProduct$json = {
       '3': 5,
       '4': 3,
       '5': 11,
-      '6': '.inventory.v1.ProductCategory',
+      '6': '.inventory.v1.Category',
       '10': 'categories'
     },
     {'1': 'images_links_ids', '3': 6, '4': 3, '5': 9, '10': 'imagesLinksIds'},
@@ -76,12 +68,113 @@ const GlobalProduct$json = {
 
 /// Descriptor for `GlobalProduct`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List globalProductDescriptor = $convert.base64Decode(
-    'Cg1HbG9iYWxQcm9kdWN0EhoKBnJlZl9pZBgBIAEoCUgAUgVyZWZJZIgBARISCgRuYW1lGAIgAS'
-    'gJUgRuYW1lEiUKC2Rlc2NyaXB0aW9uGAMgASgJSAFSC2Rlc2NyaXB0aW9uiAEBEikKDmJhcl9j'
-    'b2RlX3ZhbHVlGAQgASgJSAJSDGJhckNvZGVWYWx1ZYgBARI9CgpjYXRlZ29yaWVzGAUgAygLMh'
-    '0uaW52ZW50b3J5LnYxLlByb2R1Y3RDYXRlZ29yeVIKY2F0ZWdvcmllcxIoChBpbWFnZXNfbGlu'
-    'a3NfaWRzGAYgAygJUg5pbWFnZXNMaW5rc0lkc0IJCgdfcmVmX2lkQg4KDF9kZXNjcmlwdGlvbk'
-    'IRCg9fYmFyX2NvZGVfdmFsdWU=');
+    'Cg1HbG9iYWxQcm9kdWN0EhoKBnJlZl9pZBgBIAEoCUgAUgVyZWZJZIgBARIzCgRuYW1lGAIgAS'
+    'gLMh8uaW52ZW50b3J5LnYxLkludGVybmF0aW9uYWxpemVkUgRuYW1lEkYKC2Rlc2NyaXB0aW9u'
+    'GAMgASgLMh8uaW52ZW50b3J5LnYxLkludGVybmF0aW9uYWxpemVkSAFSC2Rlc2NyaXB0aW9uiA'
+    'EBEikKDmJhcl9jb2RlX3ZhbHVlGAQgASgJSAJSDGJhckNvZGVWYWx1ZYgBARI2CgpjYXRlZ29y'
+    'aWVzGAUgAygLMhYuaW52ZW50b3J5LnYxLkNhdGVnb3J5UgpjYXRlZ29yaWVzEigKEGltYWdlc1'
+    '9saW5rc19pZHMYBiADKAlSDmltYWdlc0xpbmtzSWRzQgkKB19yZWZfaWRCDgoMX2Rlc2NyaXB0'
+    'aW9uQhEKD19iYXJfY29kZV92YWx1ZQ==');
+
+@$core.Deprecated('Use createGlobalProductRequestDescriptor instead')
+const CreateGlobalProductRequest$json = {
+  '1': 'CreateGlobalProductRequest',
+  '2': [
+    {
+      '1': 'global_product',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.inventory.v1.GlobalProduct',
+      '10': 'globalProduct'
+    },
+  ],
+};
+
+/// Descriptor for `CreateGlobalProductRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List createGlobalProductRequestDescriptor =
+    $convert.base64Decode(
+        'ChpDcmVhdGVHbG9iYWxQcm9kdWN0UmVxdWVzdBJCCg5nbG9iYWxfcHJvZHVjdBgBIAEoCzIbLm'
+        'ludmVudG9yeS52MS5HbG9iYWxQcm9kdWN0Ug1nbG9iYWxQcm9kdWN0');
+
+@$core.Deprecated('Use createGlobalProductResponseDescriptor instead')
+const CreateGlobalProductResponse$json = {
+  '1': 'CreateGlobalProductResponse',
+  '2': [
+    {'1': 'success', '3': 1, '4': 1, '5': 8, '10': 'success'},
+  ],
+};
+
+/// Descriptor for `CreateGlobalProductResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List createGlobalProductResponseDescriptor =
+    $convert.base64Decode(
+        'ChtDcmVhdGVHbG9iYWxQcm9kdWN0UmVzcG9uc2USGAoHc3VjY2VzcxgBIAEoCFIHc3VjY2Vzcw'
+        '==');
+
+@$core.Deprecated('Use updateGlobalProductRequestDescriptor instead')
+const UpdateGlobalProductRequest$json = {
+  '1': 'UpdateGlobalProductRequest',
+  '2': [
+    {'1': 'global_product_id', '3': 1, '4': 1, '5': 9, '10': 'globalProductId'},
+    {
+      '1': 'global_product',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.inventory.v1.GlobalProduct',
+      '10': 'globalProduct'
+    },
+  ],
+};
+
+/// Descriptor for `UpdateGlobalProductRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List updateGlobalProductRequestDescriptor =
+    $convert.base64Decode(
+        'ChpVcGRhdGVHbG9iYWxQcm9kdWN0UmVxdWVzdBIqChFnbG9iYWxfcHJvZHVjdF9pZBgBIAEoCV'
+        'IPZ2xvYmFsUHJvZHVjdElkEkIKDmdsb2JhbF9wcm9kdWN0GAIgASgLMhsuaW52ZW50b3J5LnYx'
+        'Lkdsb2JhbFByb2R1Y3RSDWdsb2JhbFByb2R1Y3Q=');
+
+@$core.Deprecated('Use updateGlobalProductResponseDescriptor instead')
+const UpdateGlobalProductResponse$json = {
+  '1': 'UpdateGlobalProductResponse',
+  '2': [
+    {'1': 'success', '3': 1, '4': 1, '5': 8, '10': 'success'},
+  ],
+};
+
+/// Descriptor for `UpdateGlobalProductResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List updateGlobalProductResponseDescriptor =
+    $convert.base64Decode(
+        'ChtVcGRhdGVHbG9iYWxQcm9kdWN0UmVzcG9uc2USGAoHc3VjY2VzcxgBIAEoCFIHc3VjY2Vzcw'
+        '==');
+
+@$core.Deprecated('Use deleteGlobalProductRequestDescriptor instead')
+const DeleteGlobalProductRequest$json = {
+  '1': 'DeleteGlobalProductRequest',
+  '2': [
+    {'1': 'global_product_id', '3': 1, '4': 1, '5': 9, '10': 'globalProductId'},
+  ],
+};
+
+/// Descriptor for `DeleteGlobalProductRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List deleteGlobalProductRequestDescriptor =
+    $convert.base64Decode(
+        'ChpEZWxldGVHbG9iYWxQcm9kdWN0UmVxdWVzdBIqChFnbG9iYWxfcHJvZHVjdF9pZBgBIAEoCV'
+        'IPZ2xvYmFsUHJvZHVjdElk');
+
+@$core.Deprecated('Use deleteGlobalProductResponseDescriptor instead')
+const DeleteGlobalProductResponse$json = {
+  '1': 'DeleteGlobalProductResponse',
+  '2': [
+    {'1': 'success', '3': 1, '4': 1, '5': 8, '10': 'success'},
+  ],
+};
+
+/// Descriptor for `DeleteGlobalProductResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List deleteGlobalProductResponseDescriptor =
+    $convert.base64Decode(
+        'ChtEZWxldGVHbG9iYWxQcm9kdWN0UmVzcG9uc2USGAoHc3VjY2VzcxgBIAEoCFIHc3VjY2Vzcw'
+        '==');
 
 @$core.Deprecated('Use supplyEntryDescriptor instead')
 const SupplyEntry$json = {
@@ -281,7 +374,7 @@ const FindGlobalProductsRequest$json = {
       '3': 2,
       '4': 3,
       '5': 11,
-      '6': '.inventory.v1.ProductCategory',
+      '6': '.inventory.v1.Category',
       '10': 'categories'
     },
     {'1': 'name', '3': 3, '4': 1, '5': 9, '9': 1, '10': 'name', '17': true},
@@ -305,10 +398,9 @@ const FindGlobalProductsRequest$json = {
 /// Descriptor for `FindGlobalProductsRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List findGlobalProductsRequestDescriptor = $convert.base64Decode(
     'ChlGaW5kR2xvYmFsUHJvZHVjdHNSZXF1ZXN0EhoKBnJlZl9pZBgBIAEoCUgAUgVyZWZJZIgBAR'
-    'I9CgpjYXRlZ29yaWVzGAIgAygLMh0uaW52ZW50b3J5LnYxLlByb2R1Y3RDYXRlZ29yeVIKY2F0'
-    'ZWdvcmllcxIXCgRuYW1lGAMgASgJSAFSBG5hbWWIAQESKQoOYmFyX2NvZGVfdmFsdWUYBCABKA'
-    'lIAlIMYmFyQ29kZVZhbHVliAEBQgkKB19yZWZfaWRCBwoFX25hbWVCEQoPX2Jhcl9jb2RlX3Zh'
-    'bHVl');
+    'I2CgpjYXRlZ29yaWVzGAIgAygLMhYuaW52ZW50b3J5LnYxLkNhdGVnb3J5UgpjYXRlZ29yaWVz'
+    'EhcKBG5hbWUYAyABKAlIAVIEbmFtZYgBARIpCg5iYXJfY29kZV92YWx1ZRgEIAEoCUgCUgxiYX'
+    'JDb2RlVmFsdWWIAQFCCQoHX3JlZl9pZEIHCgVfbmFtZUIRCg9fYmFyX2NvZGVfdmFsdWU=');
 
 @$core.Deprecated('Use findGlobalProductsResponseDescriptor instead')
 const FindGlobalProductsResponse$json = {
@@ -331,38 +423,39 @@ final $typed_data.Uint8List findGlobalProductsResponseDescriptor =
         'ChpGaW5kR2xvYmFsUHJvZHVjdHNSZXNwb25zZRI3Cghwcm9kdWN0cxgBIAMoCzIbLmludmVudG'
         '9yeS52MS5HbG9iYWxQcm9kdWN0Ughwcm9kdWN0cw==');
 
-@$core.Deprecated('Use findCategoryRequestDescriptor instead')
-const FindCategoryRequest$json = {
-  '1': 'FindCategoryRequest',
+@$core.Deprecated('Use findProductCategoryRequestDescriptor instead')
+const FindProductCategoryRequest$json = {
+  '1': 'FindProductCategoryRequest',
   '2': [
     {'1': 'query', '3': 1, '4': 1, '5': 9, '10': 'query'},
   ],
 };
 
-/// Descriptor for `FindCategoryRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List findCategoryRequestDescriptor =
+/// Descriptor for `FindProductCategoryRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List findProductCategoryRequestDescriptor =
     $convert.base64Decode(
-        'ChNGaW5kQ2F0ZWdvcnlSZXF1ZXN0EhQKBXF1ZXJ5GAEgASgJUgVxdWVyeQ==');
+        'ChpGaW5kUHJvZHVjdENhdGVnb3J5UmVxdWVzdBIUCgVxdWVyeRgBIAEoCVIFcXVlcnk=');
 
-@$core.Deprecated('Use findCategoryResponseDescriptor instead')
-const FindCategoryResponse$json = {
-  '1': 'FindCategoryResponse',
+@$core.Deprecated('Use findProductCategoryResponseDescriptor instead')
+const FindProductCategoryResponse$json = {
+  '1': 'FindProductCategoryResponse',
   '2': [
     {
       '1': 'categories',
       '3': 1,
       '4': 3,
       '5': 11,
-      '6': '.inventory.v1.ProductCategory',
+      '6': '.inventory.v1.Category',
       '10': 'categories'
     },
   ],
 };
 
-/// Descriptor for `FindCategoryResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List findCategoryResponseDescriptor = $convert.base64Decode(
-    'ChRGaW5kQ2F0ZWdvcnlSZXNwb25zZRI9CgpjYXRlZ29yaWVzGAEgAygLMh0uaW52ZW50b3J5Ln'
-    'YxLlByb2R1Y3RDYXRlZ29yeVIKY2F0ZWdvcmllcw==');
+/// Descriptor for `FindProductCategoryResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List findProductCategoryResponseDescriptor =
+    $convert.base64Decode(
+        'ChtGaW5kUHJvZHVjdENhdGVnb3J5UmVzcG9uc2USNgoKY2F0ZWdvcmllcxgBIAMoCzIWLmludm'
+        'VudG9yeS52MS5DYXRlZ29yeVIKY2F0ZWdvcmllcw==');
 
 @$core.Deprecated('Use addStoreProductRequestDescriptor instead')
 const AddStoreProductRequest$json = {
@@ -640,9 +733,24 @@ const $core.Map<$core.String, $core.dynamic> ProductServiceBase$json = {
       '3': '.inventory.v1.FindGlobalProductsResponse'
     },
     {
-      '1': 'FindCategory',
-      '2': '.inventory.v1.FindCategoryRequest',
-      '3': '.inventory.v1.FindCategoryResponse'
+      '1': 'FindProductCategory',
+      '2': '.inventory.v1.FindProductCategoryRequest',
+      '3': '.inventory.v1.FindProductCategoryResponse'
+    },
+    {
+      '1': 'CreateGlobalProduct',
+      '2': '.inventory.v1.CreateGlobalProductRequest',
+      '3': '.inventory.v1.CreateGlobalProductResponse'
+    },
+    {
+      '1': 'UpdateGlobalProduct',
+      '2': '.inventory.v1.UpdateGlobalProductRequest',
+      '3': '.inventory.v1.UpdateGlobalProductResponse'
+    },
+    {
+      '1': 'DeleteGlobalProduct',
+      '2': '.inventory.v1.DeleteGlobalProductRequest',
+      '3': '.inventory.v1.DeleteGlobalProductResponse'
     },
     {
       '1': 'AddProduct',
@@ -688,14 +796,21 @@ const $core.Map<$core.String, $core.dynamic> ProductServiceBase$json = {
 const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
     ProductServiceBase$messageJson = {
   '.inventory.v1.FindGlobalProductsRequest': FindGlobalProductsRequest$json,
-  '.inventory.v1.ProductCategory': ProductCategory$json,
+  '.inventory.v1.Category': $0.Category$json,
+  '.inventory.v1.Internationalized': $0.Internationalized$json,
+  '.google.protobuf.Timestamp': $1.Timestamp$json,
   '.inventory.v1.FindGlobalProductsResponse': FindGlobalProductsResponse$json,
   '.inventory.v1.GlobalProduct': GlobalProduct$json,
-  '.inventory.v1.FindCategoryRequest': FindCategoryRequest$json,
-  '.inventory.v1.FindCategoryResponse': FindCategoryResponse$json,
+  '.inventory.v1.FindProductCategoryRequest': FindProductCategoryRequest$json,
+  '.inventory.v1.FindProductCategoryResponse': FindProductCategoryResponse$json,
+  '.inventory.v1.CreateGlobalProductRequest': CreateGlobalProductRequest$json,
+  '.inventory.v1.CreateGlobalProductResponse': CreateGlobalProductResponse$json,
+  '.inventory.v1.UpdateGlobalProductRequest': UpdateGlobalProductRequest$json,
+  '.inventory.v1.UpdateGlobalProductResponse': UpdateGlobalProductResponse$json,
+  '.inventory.v1.DeleteGlobalProductRequest': DeleteGlobalProductRequest$json,
+  '.inventory.v1.DeleteGlobalProductResponse': DeleteGlobalProductResponse$json,
   '.inventory.v1.AddStoreProductRequest': AddStoreProductRequest$json,
   '.inventory.v1.StoreProduct': StoreProduct$json,
-  '.google.protobuf.Timestamp': $0.Timestamp$json,
   '.inventory.v1.AddStoreProductResponse': AddStoreProductResponse$json,
   '.inventory.v1.GetStoreProductRequest': GetStoreProductRequest$json,
   '.inventory.v1.GetStoreProductResponse': GetStoreProductResponse$json,
@@ -716,18 +831,24 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
 final $typed_data.Uint8List productServiceDescriptor = $convert.base64Decode(
     'Cg5Qcm9kdWN0U2VydmljZRJnChJGaW5kR2xvYmFsUHJvZHVjdHMSJy5pbnZlbnRvcnkudjEuRm'
     'luZEdsb2JhbFByb2R1Y3RzUmVxdWVzdBooLmludmVudG9yeS52MS5GaW5kR2xvYmFsUHJvZHVj'
-    'dHNSZXNwb25zZRJVCgxGaW5kQ2F0ZWdvcnkSIS5pbnZlbnRvcnkudjEuRmluZENhdGVnb3J5Um'
-    'VxdWVzdBoiLmludmVudG9yeS52MS5GaW5kQ2F0ZWdvcnlSZXNwb25zZRJZCgpBZGRQcm9kdWN0'
-    'EiQuaW52ZW50b3J5LnYxLkFkZFN0b3JlUHJvZHVjdFJlcXVlc3QaJS5pbnZlbnRvcnkudjEuQW'
-    'RkU3RvcmVQcm9kdWN0UmVzcG9uc2USWQoKR2V0UHJvZHVjdBIkLmludmVudG9yeS52MS5HZXRT'
-    'dG9yZVByb2R1Y3RSZXF1ZXN0GiUuaW52ZW50b3J5LnYxLkdldFN0b3JlUHJvZHVjdFJlc3Bvbn'
-    'NlEmIKDVVwZGF0ZVByb2R1Y3QSJy5pbnZlbnRvcnkudjEuVXBkYXRlU3RvcmVQcm9kdWN0UmVx'
-    'dWVzdBooLmludmVudG9yeS52MS5VcGRhdGVTdG9yZVByb2R1Y3RSZXNwb25zZRJiCg1EZWxldG'
-    'VQcm9kdWN0EicuaW52ZW50b3J5LnYxLkRlbGV0ZVN0b3JlUHJvZHVjdFJlcXVlc3QaKC5pbnZl'
-    'bnRvcnkudjEuRGVsZXRlU3RvcmVQcm9kdWN0UmVzcG9uc2USZAoRRmluZFN0b3JlUHJvZHVjdH'
-    'MSJi5pbnZlbnRvcnkudjEuRmluZFN0b3JlUHJvZHVjdHNSZXF1ZXN0GicuaW52ZW50b3J5LnYx'
-    'LkZpbmRTdG9yZVByb2R1Y3RzUmVzcG9uc2USbAoTU3RyZWFtU3RvcmVQcm9kdWN0cxIoLmludm'
-    'VudG9yeS52MS5TdHJlYW1TdG9yZVByb2R1Y3RzUmVxdWVzdBopLmludmVudG9yeS52MS5TdHJl'
-    'YW1TdG9yZVByb2R1Y3RzUmVzcG9uc2UwARJvChRTdHJlYW1HbG9iYWxQcm9kdWN0cxIpLmludm'
-    'VudG9yeS52MS5TdHJlYW1HbG9iYWxQcm9kdWN0c1JlcXVlc3QaKi5pbnZlbnRvcnkudjEuU3Ry'
-    'ZWFtR2xvYmFsUHJvZHVjdHNSZXNwb25zZTAB');
+    'dHNSZXNwb25zZRJqChNGaW5kUHJvZHVjdENhdGVnb3J5EiguaW52ZW50b3J5LnYxLkZpbmRQcm'
+    '9kdWN0Q2F0ZWdvcnlSZXF1ZXN0GikuaW52ZW50b3J5LnYxLkZpbmRQcm9kdWN0Q2F0ZWdvcnlS'
+    'ZXNwb25zZRJqChNDcmVhdGVHbG9iYWxQcm9kdWN0EiguaW52ZW50b3J5LnYxLkNyZWF0ZUdsb2'
+    'JhbFByb2R1Y3RSZXF1ZXN0GikuaW52ZW50b3J5LnYxLkNyZWF0ZUdsb2JhbFByb2R1Y3RSZXNw'
+    'b25zZRJqChNVcGRhdGVHbG9iYWxQcm9kdWN0EiguaW52ZW50b3J5LnYxLlVwZGF0ZUdsb2JhbF'
+    'Byb2R1Y3RSZXF1ZXN0GikuaW52ZW50b3J5LnYxLlVwZGF0ZUdsb2JhbFByb2R1Y3RSZXNwb25z'
+    'ZRJqChNEZWxldGVHbG9iYWxQcm9kdWN0EiguaW52ZW50b3J5LnYxLkRlbGV0ZUdsb2JhbFByb2'
+    'R1Y3RSZXF1ZXN0GikuaW52ZW50b3J5LnYxLkRlbGV0ZUdsb2JhbFByb2R1Y3RSZXNwb25zZRJZ'
+    'CgpBZGRQcm9kdWN0EiQuaW52ZW50b3J5LnYxLkFkZFN0b3JlUHJvZHVjdFJlcXVlc3QaJS5pbn'
+    'ZlbnRvcnkudjEuQWRkU3RvcmVQcm9kdWN0UmVzcG9uc2USWQoKR2V0UHJvZHVjdBIkLmludmVu'
+    'dG9yeS52MS5HZXRTdG9yZVByb2R1Y3RSZXF1ZXN0GiUuaW52ZW50b3J5LnYxLkdldFN0b3JlUH'
+    'JvZHVjdFJlc3BvbnNlEmIKDVVwZGF0ZVByb2R1Y3QSJy5pbnZlbnRvcnkudjEuVXBkYXRlU3Rv'
+    'cmVQcm9kdWN0UmVxdWVzdBooLmludmVudG9yeS52MS5VcGRhdGVTdG9yZVByb2R1Y3RSZXNwb2'
+    '5zZRJiCg1EZWxldGVQcm9kdWN0EicuaW52ZW50b3J5LnYxLkRlbGV0ZVN0b3JlUHJvZHVjdFJl'
+    'cXVlc3QaKC5pbnZlbnRvcnkudjEuRGVsZXRlU3RvcmVQcm9kdWN0UmVzcG9uc2USZAoRRmluZF'
+    'N0b3JlUHJvZHVjdHMSJi5pbnZlbnRvcnkudjEuRmluZFN0b3JlUHJvZHVjdHNSZXF1ZXN0Gicu'
+    'aW52ZW50b3J5LnYxLkZpbmRTdG9yZVByb2R1Y3RzUmVzcG9uc2USbAoTU3RyZWFtU3RvcmVQcm'
+    '9kdWN0cxIoLmludmVudG9yeS52MS5TdHJlYW1TdG9yZVByb2R1Y3RzUmVxdWVzdBopLmludmVu'
+    'dG9yeS52MS5TdHJlYW1TdG9yZVByb2R1Y3RzUmVzcG9uc2UwARJvChRTdHJlYW1HbG9iYWxQcm'
+    '9kdWN0cxIpLmludmVudG9yeS52MS5TdHJlYW1HbG9iYWxQcm9kdWN0c1JlcXVlc3QaKi5pbnZl'
+    'bnRvcnkudjEuU3RyZWFtR2xvYmFsUHJvZHVjdHNSZXNwb25zZTAB');

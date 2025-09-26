@@ -49,7 +49,7 @@ class CategoriesRepository {
   Future<Category?> getCategoryByRefId(String refId) async {
     try {
       final response = await categoryServiceClient.getCategory(
-        GetCategoryRequest(refId: refId),
+        GetCategoryRequest(categoryId: refId),
       );
 
       return response.category;
@@ -57,6 +57,45 @@ class CategoriesRepository {
       _logger.severe('getCategoryByRefId Error: $e');
 
       return null;
+    }
+  }
+
+  /// Adds a new product category.
+  Future<bool> createCategory(CreateCategoryRequest request) async {
+    try {
+      final response = await categoryServiceClient.createCategory(request);
+
+      return response.success;
+    } on Exception catch (e) {
+      _logger.severe('CreateCategoryRequest Error: $e');
+
+      return false;
+    }
+  }
+
+  /// Updates a product category.
+  Future<bool> updateCategory(UpdateCategoryRequest request) async {
+    try {
+      final response = await categoryServiceClient.updateCategory(request);
+
+      return response.success;
+    } on Exception catch (e) {
+      _logger.severe('updateProductCategory Error: $e');
+
+      return false;
+    }
+  }
+
+  /// Deletes a product category.
+  Future<bool> deleteProductCategory(DeleteCategoryRequest request) async {
+    try {
+      final response = await categoryServiceClient.deleteCategory(request);
+
+      return response.success;
+    } on Exception catch (e) {
+      _logger.severe('deleteProductCategory Error: $e');
+
+      return false;
     }
   }
 }

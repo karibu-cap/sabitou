@@ -4,33 +4,59 @@ package inventory.v1;
 
 import "buf/validate/validate.proto";
 import "google/protobuf/timestamp.proto";
-
-message ProductCategory {
-  // The unique identifier of the product category.
-  optional string ref_id = 1;
-
-  // The name of the product category.
-  string name = 2;
-}
+import "inventory/v1/category.proto";
 
 message GlobalProduct {
   // The unique identifier of the product.
   optional string ref_id = 1;
 
   // The name of the product.
-  string name = 2;
+  inventory.v1.Internationalized name = 2;
 
   // The description of the product.
-  optional string description = 3;
+  optional inventory.v1.Internationalized description = 3;
 
   // The bar code value of the product.
   optional string bar_code_value = 4;
 
   // The product categories of the product.
-  repeated ProductCategory categories = 5;
+  repeated inventory.v1.Category categories = 5;
 
   // The list of image related to the product.
   repeated string images_links_ids = 6;
+}
+
+message CreateGlobalProductRequest {
+  // The global product to add.
+  GlobalProduct global_product = 1;
+}
+
+message CreateGlobalProductResponse {
+  // Whether the global product was successfully added.
+  bool success = 1;
+}
+
+message UpdateGlobalProductRequest {
+  // The unique identifier of the global product.
+  string global_product_id = 1;
+
+  // The global product to update.
+  GlobalProduct global_product = 2;
+}
+
+message UpdateGlobalProductResponse {
+  // Whether the global product was successfully updated.
+  bool success = 1;
+}
+
+message DeleteGlobalProductRequest {
+  // The unique identifier of the global product.
+  string global_product_id = 1;
+}
+
+message DeleteGlobalProductResponse {
+  // Whether the global product was successfully deleted.
+  bool success = 1;
 }
 
 message SupplyEntry {
@@ -111,7 +137,7 @@ message FindGlobalProductsRequest {
   optional string ref_id = 1;
 
   // The query to search for products by category.
-  repeated ProductCategory categories = 2;
+  repeated inventory.v1.Category categories = 2;
 
   // Query the product name.
   optional string name = 3;
@@ -126,15 +152,15 @@ message FindGlobalProductsResponse {
   repeated GlobalProduct products = 1;
 }
 
-message FindCategoryRequest {
+message FindProductCategoryRequest {
   // The query to search for product categories.
   string query = 1;
 }
 
-message FindCategoryResponse {
+message FindProductCategoryResponse {
   // The unique identifiers of the product categories.
   // WARN: all returned product categories will only have their id and name.
-  repeated ProductCategory categories = 1;
+  repeated inventory.v1.Category categories = 1;
 }
 
 message AddStoreProductRequest {
@@ -232,7 +258,16 @@ service ProductService {
   rpc FindGlobalProducts(FindGlobalProductsRequest) returns (FindGlobalProductsResponse);
 
   // Finds categories by name.
-  rpc FindCategory(FindCategoryRequest) returns (FindCategoryResponse);
+  rpc FindProductCategory(FindProductCategoryRequest) returns (FindProductCategoryResponse);
+
+  // Creates a global product.
+  rpc CreateGlobalProduct(CreateGlobalProductRequest) returns (CreateGlobalProductResponse);
+
+  // Updates a global product.
+  rpc UpdateGlobalProduct(UpdateGlobalProductRequest) returns (UpdateGlobalProductResponse);
+
+  // Deletes a global product.
+  rpc DeleteGlobalProduct(DeleteGlobalProductRequest) returns (DeleteGlobalProductResponse);
 
   // Adds a product to a store.
   rpc AddProduct(AddStoreProductRequest) returns (AddStoreProductResponse);

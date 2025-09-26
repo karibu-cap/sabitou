@@ -5,6 +5,7 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../../tmp/fake_data.dart';
 import '../../utils/app_constants.dart';
+import '../../utils/extensions/global_product_extension.dart';
 import '../../utils/user_preference.dart';
 
 final _fakeData = fakeData;
@@ -380,11 +381,13 @@ final _fakeTransport =
               .where((gp) {
                 if (req.refId.isNotEmpty && req.name.isNotEmpty) {
                   return gp.refId == req.refId &&
-                      gp.name.toLowerCase().contains(req.name.toLowerCase());
+                      gp.label.toLowerCase().contains(req.name.toLowerCase());
                 } else if (req.refId.isNotEmpty) {
                   return gp.refId == req.refId;
                 } else if (req.name.isNotEmpty) {
-                  return gp.name.toLowerCase().contains(req.name.toLowerCase());
+                  return gp.label.toLowerCase().contains(
+                    req.name.toLowerCase(),
+                  );
                 }
 
                 return false;

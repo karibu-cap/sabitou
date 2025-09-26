@@ -6,6 +6,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../providers/cart_provider.dart';
 import '../../../services/internationalization/internationalization.dart';
+import '../../../utils/extensions/global_product_extension.dart';
 import '../../../utils/formatters.dart';
 import '../../../widgets/loading.dart';
 import '../../../widgets/mobile_scanner_view.dart';
@@ -80,7 +81,7 @@ class SearchAndScanView extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               AutoSizeText(
-                                product.globalProduct.name,
+                                product.globalProduct.label,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 minFontSize: 8,
@@ -111,7 +112,7 @@ class SearchAndScanView extends StatelessWidget {
                                 onPressed: () {
                                   CartManager.to.addItem(
                                     product.storeProduct.refId,
-                                    product.globalProduct.name,
+                                    product.globalProduct.label,
                                     1,
                                     product.storeProduct.price.toDouble(),
                                   );

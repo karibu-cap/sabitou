@@ -23,72 +23,18 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type ProductCategory struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The unique identifier of the product category.
-	RefId *string `protobuf:"bytes,1,opt,name=ref_id,json=refId,proto3,oneof" json:"ref_id,omitempty"`
-	// The name of the product category.
-	Name          string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ProductCategory) Reset() {
-	*x = ProductCategory{}
-	mi := &file_inventory_v1_product_proto_msgTypes[0]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ProductCategory) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ProductCategory) ProtoMessage() {}
-
-func (x *ProductCategory) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_v1_product_proto_msgTypes[0]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ProductCategory.ProtoReflect.Descriptor instead.
-func (*ProductCategory) Descriptor() ([]byte, []int) {
-	return file_inventory_v1_product_proto_rawDescGZIP(), []int{0}
-}
-
-func (x *ProductCategory) GetRefId() string {
-	if x != nil && x.RefId != nil {
-		return *x.RefId
-	}
-	return ""
-}
-
-func (x *ProductCategory) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
 type GlobalProduct struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The unique identifier of the product.
 	RefId *string `protobuf:"bytes,1,opt,name=ref_id,json=refId,proto3,oneof" json:"ref_id,omitempty"`
 	// The name of the product.
-	Name string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Name *Internationalized `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	// The description of the product.
-	Description *string `protobuf:"bytes,3,opt,name=description,proto3,oneof" json:"description,omitempty"`
+	Description *Internationalized `protobuf:"bytes,3,opt,name=description,proto3,oneof" json:"description,omitempty"`
 	// The bar code value of the product.
 	BarCodeValue *string `protobuf:"bytes,4,opt,name=bar_code_value,json=barCodeValue,proto3,oneof" json:"bar_code_value,omitempty"`
 	// The product categories of the product.
-	Categories []*ProductCategory `protobuf:"bytes,5,rep,name=categories,proto3" json:"categories,omitempty"`
+	Categories []*Category `protobuf:"bytes,5,rep,name=categories,proto3" json:"categories,omitempty"`
 	// The list of image related to the product.
 	ImagesLinksIds []string `protobuf:"bytes,6,rep,name=images_links_ids,json=imagesLinksIds,proto3" json:"images_links_ids,omitempty"`
 	unknownFields  protoimpl.UnknownFields
@@ -97,7 +43,7 @@ type GlobalProduct struct {
 
 func (x *GlobalProduct) Reset() {
 	*x = GlobalProduct{}
-	mi := &file_inventory_v1_product_proto_msgTypes[1]
+	mi := &file_inventory_v1_product_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -109,7 +55,7 @@ func (x *GlobalProduct) String() string {
 func (*GlobalProduct) ProtoMessage() {}
 
 func (x *GlobalProduct) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_v1_product_proto_msgTypes[1]
+	mi := &file_inventory_v1_product_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -122,7 +68,7 @@ func (x *GlobalProduct) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GlobalProduct.ProtoReflect.Descriptor instead.
 func (*GlobalProduct) Descriptor() ([]byte, []int) {
-	return file_inventory_v1_product_proto_rawDescGZIP(), []int{1}
+	return file_inventory_v1_product_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *GlobalProduct) GetRefId() string {
@@ -132,18 +78,18 @@ func (x *GlobalProduct) GetRefId() string {
 	return ""
 }
 
-func (x *GlobalProduct) GetName() string {
+func (x *GlobalProduct) GetName() *Internationalized {
 	if x != nil {
 		return x.Name
 	}
-	return ""
+	return nil
 }
 
-func (x *GlobalProduct) GetDescription() string {
-	if x != nil && x.Description != nil {
-		return *x.Description
+func (x *GlobalProduct) GetDescription() *Internationalized {
+	if x != nil {
+		return x.Description
 	}
-	return ""
+	return nil
 }
 
 func (x *GlobalProduct) GetBarCodeValue() string {
@@ -153,7 +99,7 @@ func (x *GlobalProduct) GetBarCodeValue() string {
 	return ""
 }
 
-func (x *GlobalProduct) GetCategories() []*ProductCategory {
+func (x *GlobalProduct) GetCategories() []*Category {
 	if x != nil {
 		return x.Categories
 	}
@@ -165,6 +111,285 @@ func (x *GlobalProduct) GetImagesLinksIds() []string {
 		return x.ImagesLinksIds
 	}
 	return nil
+}
+
+type CreateGlobalProductRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The global product to add.
+	GlobalProduct *GlobalProduct `protobuf:"bytes,1,opt,name=global_product,json=globalProduct,proto3" json:"global_product,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateGlobalProductRequest) Reset() {
+	*x = CreateGlobalProductRequest{}
+	mi := &file_inventory_v1_product_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateGlobalProductRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateGlobalProductRequest) ProtoMessage() {}
+
+func (x *CreateGlobalProductRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_inventory_v1_product_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateGlobalProductRequest.ProtoReflect.Descriptor instead.
+func (*CreateGlobalProductRequest) Descriptor() ([]byte, []int) {
+	return file_inventory_v1_product_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *CreateGlobalProductRequest) GetGlobalProduct() *GlobalProduct {
+	if x != nil {
+		return x.GlobalProduct
+	}
+	return nil
+}
+
+type CreateGlobalProductResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Whether the global product was successfully added.
+	Success       bool `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateGlobalProductResponse) Reset() {
+	*x = CreateGlobalProductResponse{}
+	mi := &file_inventory_v1_product_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateGlobalProductResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateGlobalProductResponse) ProtoMessage() {}
+
+func (x *CreateGlobalProductResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_inventory_v1_product_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateGlobalProductResponse.ProtoReflect.Descriptor instead.
+func (*CreateGlobalProductResponse) Descriptor() ([]byte, []int) {
+	return file_inventory_v1_product_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *CreateGlobalProductResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+type UpdateGlobalProductRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The unique identifier of the global product.
+	GlobalProductId string `protobuf:"bytes,1,opt,name=global_product_id,json=globalProductId,proto3" json:"global_product_id,omitempty"`
+	// The global product to update.
+	GlobalProduct *GlobalProduct `protobuf:"bytes,2,opt,name=global_product,json=globalProduct,proto3" json:"global_product,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateGlobalProductRequest) Reset() {
+	*x = UpdateGlobalProductRequest{}
+	mi := &file_inventory_v1_product_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateGlobalProductRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateGlobalProductRequest) ProtoMessage() {}
+
+func (x *UpdateGlobalProductRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_inventory_v1_product_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateGlobalProductRequest.ProtoReflect.Descriptor instead.
+func (*UpdateGlobalProductRequest) Descriptor() ([]byte, []int) {
+	return file_inventory_v1_product_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *UpdateGlobalProductRequest) GetGlobalProductId() string {
+	if x != nil {
+		return x.GlobalProductId
+	}
+	return ""
+}
+
+func (x *UpdateGlobalProductRequest) GetGlobalProduct() *GlobalProduct {
+	if x != nil {
+		return x.GlobalProduct
+	}
+	return nil
+}
+
+type UpdateGlobalProductResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Whether the global product was successfully updated.
+	Success       bool `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateGlobalProductResponse) Reset() {
+	*x = UpdateGlobalProductResponse{}
+	mi := &file_inventory_v1_product_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateGlobalProductResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateGlobalProductResponse) ProtoMessage() {}
+
+func (x *UpdateGlobalProductResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_inventory_v1_product_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateGlobalProductResponse.ProtoReflect.Descriptor instead.
+func (*UpdateGlobalProductResponse) Descriptor() ([]byte, []int) {
+	return file_inventory_v1_product_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *UpdateGlobalProductResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+type DeleteGlobalProductRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The unique identifier of the global product.
+	GlobalProductId string `protobuf:"bytes,1,opt,name=global_product_id,json=globalProductId,proto3" json:"global_product_id,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *DeleteGlobalProductRequest) Reset() {
+	*x = DeleteGlobalProductRequest{}
+	mi := &file_inventory_v1_product_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteGlobalProductRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteGlobalProductRequest) ProtoMessage() {}
+
+func (x *DeleteGlobalProductRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_inventory_v1_product_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteGlobalProductRequest.ProtoReflect.Descriptor instead.
+func (*DeleteGlobalProductRequest) Descriptor() ([]byte, []int) {
+	return file_inventory_v1_product_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *DeleteGlobalProductRequest) GetGlobalProductId() string {
+	if x != nil {
+		return x.GlobalProductId
+	}
+	return ""
+}
+
+type DeleteGlobalProductResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Whether the global product was successfully deleted.
+	Success       bool `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteGlobalProductResponse) Reset() {
+	*x = DeleteGlobalProductResponse{}
+	mi := &file_inventory_v1_product_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteGlobalProductResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteGlobalProductResponse) ProtoMessage() {}
+
+func (x *DeleteGlobalProductResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_inventory_v1_product_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteGlobalProductResponse.ProtoReflect.Descriptor instead.
+func (*DeleteGlobalProductResponse) Descriptor() ([]byte, []int) {
+	return file_inventory_v1_product_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *DeleteGlobalProductResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
 }
 
 type SupplyEntry struct {
@@ -181,7 +406,7 @@ type SupplyEntry struct {
 
 func (x *SupplyEntry) Reset() {
 	*x = SupplyEntry{}
-	mi := &file_inventory_v1_product_proto_msgTypes[2]
+	mi := &file_inventory_v1_product_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -193,7 +418,7 @@ func (x *SupplyEntry) String() string {
 func (*SupplyEntry) ProtoMessage() {}
 
 func (x *SupplyEntry) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_v1_product_proto_msgTypes[2]
+	mi := &file_inventory_v1_product_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -206,7 +431,7 @@ func (x *SupplyEntry) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SupplyEntry.ProtoReflect.Descriptor instead.
 func (*SupplyEntry) Descriptor() ([]byte, []int) {
-	return file_inventory_v1_product_proto_rawDescGZIP(), []int{2}
+	return file_inventory_v1_product_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *SupplyEntry) GetQuantity() int32 {
@@ -263,7 +488,7 @@ type StoreProduct struct {
 
 func (x *StoreProduct) Reset() {
 	*x = StoreProduct{}
-	mi := &file_inventory_v1_product_proto_msgTypes[3]
+	mi := &file_inventory_v1_product_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -275,7 +500,7 @@ func (x *StoreProduct) String() string {
 func (*StoreProduct) ProtoMessage() {}
 
 func (x *StoreProduct) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_v1_product_proto_msgTypes[3]
+	mi := &file_inventory_v1_product_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -288,7 +513,7 @@ func (x *StoreProduct) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StoreProduct.ProtoReflect.Descriptor instead.
 func (*StoreProduct) Descriptor() ([]byte, []int) {
-	return file_inventory_v1_product_proto_rawDescGZIP(), []int{3}
+	return file_inventory_v1_product_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *StoreProduct) GetRefId() string {
@@ -393,7 +618,7 @@ type FindStoreProductsRequest struct {
 
 func (x *FindStoreProductsRequest) Reset() {
 	*x = FindStoreProductsRequest{}
-	mi := &file_inventory_v1_product_proto_msgTypes[4]
+	mi := &file_inventory_v1_product_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -405,7 +630,7 @@ func (x *FindStoreProductsRequest) String() string {
 func (*FindStoreProductsRequest) ProtoMessage() {}
 
 func (x *FindStoreProductsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_v1_product_proto_msgTypes[4]
+	mi := &file_inventory_v1_product_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -418,7 +643,7 @@ func (x *FindStoreProductsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FindStoreProductsRequest.ProtoReflect.Descriptor instead.
 func (*FindStoreProductsRequest) Descriptor() ([]byte, []int) {
-	return file_inventory_v1_product_proto_rawDescGZIP(), []int{4}
+	return file_inventory_v1_product_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *FindStoreProductsRequest) GetStoreId() string {
@@ -467,7 +692,7 @@ type FindStoreProductsResponse struct {
 
 func (x *FindStoreProductsResponse) Reset() {
 	*x = FindStoreProductsResponse{}
-	mi := &file_inventory_v1_product_proto_msgTypes[5]
+	mi := &file_inventory_v1_product_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -479,7 +704,7 @@ func (x *FindStoreProductsResponse) String() string {
 func (*FindStoreProductsResponse) ProtoMessage() {}
 
 func (x *FindStoreProductsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_v1_product_proto_msgTypes[5]
+	mi := &file_inventory_v1_product_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -492,7 +717,7 @@ func (x *FindStoreProductsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FindStoreProductsResponse.ProtoReflect.Descriptor instead.
 func (*FindStoreProductsResponse) Descriptor() ([]byte, []int) {
-	return file_inventory_v1_product_proto_rawDescGZIP(), []int{5}
+	return file_inventory_v1_product_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *FindStoreProductsResponse) GetProducts() []*StoreProduct {
@@ -507,7 +732,7 @@ type FindGlobalProductsRequest struct {
 	// The reference id to the global product identifier.
 	RefId *string `protobuf:"bytes,1,opt,name=ref_id,json=refId,proto3,oneof" json:"ref_id,omitempty"`
 	// The query to search for products by category.
-	Categories []*ProductCategory `protobuf:"bytes,2,rep,name=categories,proto3" json:"categories,omitempty"`
+	Categories []*Category `protobuf:"bytes,2,rep,name=categories,proto3" json:"categories,omitempty"`
 	// Query the product name.
 	Name *string `protobuf:"bytes,3,opt,name=name,proto3,oneof" json:"name,omitempty"`
 	// Identify the products by bar code.
@@ -518,7 +743,7 @@ type FindGlobalProductsRequest struct {
 
 func (x *FindGlobalProductsRequest) Reset() {
 	*x = FindGlobalProductsRequest{}
-	mi := &file_inventory_v1_product_proto_msgTypes[6]
+	mi := &file_inventory_v1_product_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -530,7 +755,7 @@ func (x *FindGlobalProductsRequest) String() string {
 func (*FindGlobalProductsRequest) ProtoMessage() {}
 
 func (x *FindGlobalProductsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_v1_product_proto_msgTypes[6]
+	mi := &file_inventory_v1_product_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -543,7 +768,7 @@ func (x *FindGlobalProductsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FindGlobalProductsRequest.ProtoReflect.Descriptor instead.
 func (*FindGlobalProductsRequest) Descriptor() ([]byte, []int) {
-	return file_inventory_v1_product_proto_rawDescGZIP(), []int{6}
+	return file_inventory_v1_product_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *FindGlobalProductsRequest) GetRefId() string {
@@ -553,7 +778,7 @@ func (x *FindGlobalProductsRequest) GetRefId() string {
 	return ""
 }
 
-func (x *FindGlobalProductsRequest) GetCategories() []*ProductCategory {
+func (x *FindGlobalProductsRequest) GetCategories() []*Category {
 	if x != nil {
 		return x.Categories
 	}
@@ -585,7 +810,7 @@ type FindGlobalProductsResponse struct {
 
 func (x *FindGlobalProductsResponse) Reset() {
 	*x = FindGlobalProductsResponse{}
-	mi := &file_inventory_v1_product_proto_msgTypes[7]
+	mi := &file_inventory_v1_product_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -597,7 +822,7 @@ func (x *FindGlobalProductsResponse) String() string {
 func (*FindGlobalProductsResponse) ProtoMessage() {}
 
 func (x *FindGlobalProductsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_v1_product_proto_msgTypes[7]
+	mi := &file_inventory_v1_product_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -610,7 +835,7 @@ func (x *FindGlobalProductsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FindGlobalProductsResponse.ProtoReflect.Descriptor instead.
 func (*FindGlobalProductsResponse) Descriptor() ([]byte, []int) {
-	return file_inventory_v1_product_proto_rawDescGZIP(), []int{7}
+	return file_inventory_v1_product_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *FindGlobalProductsResponse) GetProducts() []*GlobalProduct {
@@ -620,7 +845,7 @@ func (x *FindGlobalProductsResponse) GetProducts() []*GlobalProduct {
 	return nil
 }
 
-type FindCategoryRequest struct {
+type FindProductCategoryRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The query to search for product categories.
 	Query         string `protobuf:"bytes,1,opt,name=query,proto3" json:"query,omitempty"`
@@ -628,21 +853,21 @@ type FindCategoryRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *FindCategoryRequest) Reset() {
-	*x = FindCategoryRequest{}
-	mi := &file_inventory_v1_product_proto_msgTypes[8]
+func (x *FindProductCategoryRequest) Reset() {
+	*x = FindProductCategoryRequest{}
+	mi := &file_inventory_v1_product_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *FindCategoryRequest) String() string {
+func (x *FindProductCategoryRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*FindCategoryRequest) ProtoMessage() {}
+func (*FindProductCategoryRequest) ProtoMessage() {}
 
-func (x *FindCategoryRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_v1_product_proto_msgTypes[8]
+func (x *FindProductCategoryRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_inventory_v1_product_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -653,42 +878,42 @@ func (x *FindCategoryRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use FindCategoryRequest.ProtoReflect.Descriptor instead.
-func (*FindCategoryRequest) Descriptor() ([]byte, []int) {
-	return file_inventory_v1_product_proto_rawDescGZIP(), []int{8}
+// Deprecated: Use FindProductCategoryRequest.ProtoReflect.Descriptor instead.
+func (*FindProductCategoryRequest) Descriptor() ([]byte, []int) {
+	return file_inventory_v1_product_proto_rawDescGZIP(), []int{13}
 }
 
-func (x *FindCategoryRequest) GetQuery() string {
+func (x *FindProductCategoryRequest) GetQuery() string {
 	if x != nil {
 		return x.Query
 	}
 	return ""
 }
 
-type FindCategoryResponse struct {
+type FindProductCategoryResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The unique identifiers of the product categories.
 	// WARN: all returned product categories will only have their id and name.
-	Categories    []*ProductCategory `protobuf:"bytes,1,rep,name=categories,proto3" json:"categories,omitempty"`
+	Categories    []*Category `protobuf:"bytes,1,rep,name=categories,proto3" json:"categories,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *FindCategoryResponse) Reset() {
-	*x = FindCategoryResponse{}
-	mi := &file_inventory_v1_product_proto_msgTypes[9]
+func (x *FindProductCategoryResponse) Reset() {
+	*x = FindProductCategoryResponse{}
+	mi := &file_inventory_v1_product_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *FindCategoryResponse) String() string {
+func (x *FindProductCategoryResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*FindCategoryResponse) ProtoMessage() {}
+func (*FindProductCategoryResponse) ProtoMessage() {}
 
-func (x *FindCategoryResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_v1_product_proto_msgTypes[9]
+func (x *FindProductCategoryResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_inventory_v1_product_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -699,12 +924,12 @@ func (x *FindCategoryResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use FindCategoryResponse.ProtoReflect.Descriptor instead.
-func (*FindCategoryResponse) Descriptor() ([]byte, []int) {
-	return file_inventory_v1_product_proto_rawDescGZIP(), []int{9}
+// Deprecated: Use FindProductCategoryResponse.ProtoReflect.Descriptor instead.
+func (*FindProductCategoryResponse) Descriptor() ([]byte, []int) {
+	return file_inventory_v1_product_proto_rawDescGZIP(), []int{14}
 }
 
-func (x *FindCategoryResponse) GetCategories() []*ProductCategory {
+func (x *FindProductCategoryResponse) GetCategories() []*Category {
 	if x != nil {
 		return x.Categories
 	}
@@ -724,7 +949,7 @@ type AddStoreProductRequest struct {
 
 func (x *AddStoreProductRequest) Reset() {
 	*x = AddStoreProductRequest{}
-	mi := &file_inventory_v1_product_proto_msgTypes[10]
+	mi := &file_inventory_v1_product_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -736,7 +961,7 @@ func (x *AddStoreProductRequest) String() string {
 func (*AddStoreProductRequest) ProtoMessage() {}
 
 func (x *AddStoreProductRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_v1_product_proto_msgTypes[10]
+	mi := &file_inventory_v1_product_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -749,7 +974,7 @@ func (x *AddStoreProductRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddStoreProductRequest.ProtoReflect.Descriptor instead.
 func (*AddStoreProductRequest) Descriptor() ([]byte, []int) {
-	return file_inventory_v1_product_proto_rawDescGZIP(), []int{10}
+	return file_inventory_v1_product_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *AddStoreProductRequest) GetGlobalProduct() *GlobalProduct {
@@ -776,7 +1001,7 @@ type AddStoreProductResponse struct {
 
 func (x *AddStoreProductResponse) Reset() {
 	*x = AddStoreProductResponse{}
-	mi := &file_inventory_v1_product_proto_msgTypes[11]
+	mi := &file_inventory_v1_product_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -788,7 +1013,7 @@ func (x *AddStoreProductResponse) String() string {
 func (*AddStoreProductResponse) ProtoMessage() {}
 
 func (x *AddStoreProductResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_v1_product_proto_msgTypes[11]
+	mi := &file_inventory_v1_product_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -801,7 +1026,7 @@ func (x *AddStoreProductResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddStoreProductResponse.ProtoReflect.Descriptor instead.
 func (*AddStoreProductResponse) Descriptor() ([]byte, []int) {
-	return file_inventory_v1_product_proto_rawDescGZIP(), []int{11}
+	return file_inventory_v1_product_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *AddStoreProductResponse) GetSuccess() bool {
@@ -821,7 +1046,7 @@ type GetStoreProductRequest struct {
 
 func (x *GetStoreProductRequest) Reset() {
 	*x = GetStoreProductRequest{}
-	mi := &file_inventory_v1_product_proto_msgTypes[12]
+	mi := &file_inventory_v1_product_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -833,7 +1058,7 @@ func (x *GetStoreProductRequest) String() string {
 func (*GetStoreProductRequest) ProtoMessage() {}
 
 func (x *GetStoreProductRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_v1_product_proto_msgTypes[12]
+	mi := &file_inventory_v1_product_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -846,7 +1071,7 @@ func (x *GetStoreProductRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetStoreProductRequest.ProtoReflect.Descriptor instead.
 func (*GetStoreProductRequest) Descriptor() ([]byte, []int) {
-	return file_inventory_v1_product_proto_rawDescGZIP(), []int{12}
+	return file_inventory_v1_product_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *GetStoreProductRequest) GetStoreProductId() string {
@@ -866,7 +1091,7 @@ type GetStoreProductResponse struct {
 
 func (x *GetStoreProductResponse) Reset() {
 	*x = GetStoreProductResponse{}
-	mi := &file_inventory_v1_product_proto_msgTypes[13]
+	mi := &file_inventory_v1_product_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -878,7 +1103,7 @@ func (x *GetStoreProductResponse) String() string {
 func (*GetStoreProductResponse) ProtoMessage() {}
 
 func (x *GetStoreProductResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_v1_product_proto_msgTypes[13]
+	mi := &file_inventory_v1_product_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -891,7 +1116,7 @@ func (x *GetStoreProductResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetStoreProductResponse.ProtoReflect.Descriptor instead.
 func (*GetStoreProductResponse) Descriptor() ([]byte, []int) {
-	return file_inventory_v1_product_proto_rawDescGZIP(), []int{13}
+	return file_inventory_v1_product_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *GetStoreProductResponse) GetStoreProduct() *StoreProduct {
@@ -920,7 +1145,7 @@ type UpdateStoreProductRequest struct {
 
 func (x *UpdateStoreProductRequest) Reset() {
 	*x = UpdateStoreProductRequest{}
-	mi := &file_inventory_v1_product_proto_msgTypes[14]
+	mi := &file_inventory_v1_product_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -932,7 +1157,7 @@ func (x *UpdateStoreProductRequest) String() string {
 func (*UpdateStoreProductRequest) ProtoMessage() {}
 
 func (x *UpdateStoreProductRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_v1_product_proto_msgTypes[14]
+	mi := &file_inventory_v1_product_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -945,7 +1170,7 @@ func (x *UpdateStoreProductRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateStoreProductRequest.ProtoReflect.Descriptor instead.
 func (*UpdateStoreProductRequest) Descriptor() ([]byte, []int) {
-	return file_inventory_v1_product_proto_rawDescGZIP(), []int{14}
+	return file_inventory_v1_product_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *UpdateStoreProductRequest) GetStoreProduct() *StoreProduct {
@@ -979,7 +1204,7 @@ type UpdateStoreProductResponse struct {
 
 func (x *UpdateStoreProductResponse) Reset() {
 	*x = UpdateStoreProductResponse{}
-	mi := &file_inventory_v1_product_proto_msgTypes[15]
+	mi := &file_inventory_v1_product_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -991,7 +1216,7 @@ func (x *UpdateStoreProductResponse) String() string {
 func (*UpdateStoreProductResponse) ProtoMessage() {}
 
 func (x *UpdateStoreProductResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_v1_product_proto_msgTypes[15]
+	mi := &file_inventory_v1_product_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1004,7 +1229,7 @@ func (x *UpdateStoreProductResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateStoreProductResponse.ProtoReflect.Descriptor instead.
 func (*UpdateStoreProductResponse) Descriptor() ([]byte, []int) {
-	return file_inventory_v1_product_proto_rawDescGZIP(), []int{15}
+	return file_inventory_v1_product_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *UpdateStoreProductResponse) GetSuccess() bool {
@@ -1024,7 +1249,7 @@ type DeleteStoreProductRequest struct {
 
 func (x *DeleteStoreProductRequest) Reset() {
 	*x = DeleteStoreProductRequest{}
-	mi := &file_inventory_v1_product_proto_msgTypes[16]
+	mi := &file_inventory_v1_product_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1036,7 +1261,7 @@ func (x *DeleteStoreProductRequest) String() string {
 func (*DeleteStoreProductRequest) ProtoMessage() {}
 
 func (x *DeleteStoreProductRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_v1_product_proto_msgTypes[16]
+	mi := &file_inventory_v1_product_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1049,7 +1274,7 @@ func (x *DeleteStoreProductRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteStoreProductRequest.ProtoReflect.Descriptor instead.
 func (*DeleteStoreProductRequest) Descriptor() ([]byte, []int) {
-	return file_inventory_v1_product_proto_rawDescGZIP(), []int{16}
+	return file_inventory_v1_product_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *DeleteStoreProductRequest) GetStoreProductId() string {
@@ -1069,7 +1294,7 @@ type DeleteStoreProductResponse struct {
 
 func (x *DeleteStoreProductResponse) Reset() {
 	*x = DeleteStoreProductResponse{}
-	mi := &file_inventory_v1_product_proto_msgTypes[17]
+	mi := &file_inventory_v1_product_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1081,7 +1306,7 @@ func (x *DeleteStoreProductResponse) String() string {
 func (*DeleteStoreProductResponse) ProtoMessage() {}
 
 func (x *DeleteStoreProductResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_v1_product_proto_msgTypes[17]
+	mi := &file_inventory_v1_product_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1094,7 +1319,7 @@ func (x *DeleteStoreProductResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteStoreProductResponse.ProtoReflect.Descriptor instead.
 func (*DeleteStoreProductResponse) Descriptor() ([]byte, []int) {
-	return file_inventory_v1_product_proto_rawDescGZIP(), []int{17}
+	return file_inventory_v1_product_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *DeleteStoreProductResponse) GetSuccess() bool {
@@ -1118,7 +1343,7 @@ type StreamStoreProductsRequest struct {
 
 func (x *StreamStoreProductsRequest) Reset() {
 	*x = StreamStoreProductsRequest{}
-	mi := &file_inventory_v1_product_proto_msgTypes[18]
+	mi := &file_inventory_v1_product_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1130,7 +1355,7 @@ func (x *StreamStoreProductsRequest) String() string {
 func (*StreamStoreProductsRequest) ProtoMessage() {}
 
 func (x *StreamStoreProductsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_v1_product_proto_msgTypes[18]
+	mi := &file_inventory_v1_product_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1143,7 +1368,7 @@ func (x *StreamStoreProductsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StreamStoreProductsRequest.ProtoReflect.Descriptor instead.
 func (*StreamStoreProductsRequest) Descriptor() ([]byte, []int) {
-	return file_inventory_v1_product_proto_rawDescGZIP(), []int{18}
+	return file_inventory_v1_product_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *StreamStoreProductsRequest) GetStoreId() string {
@@ -1177,7 +1402,7 @@ type StreamStoreProductsResponse struct {
 
 func (x *StreamStoreProductsResponse) Reset() {
 	*x = StreamStoreProductsResponse{}
-	mi := &file_inventory_v1_product_proto_msgTypes[19]
+	mi := &file_inventory_v1_product_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1189,7 +1414,7 @@ func (x *StreamStoreProductsResponse) String() string {
 func (*StreamStoreProductsResponse) ProtoMessage() {}
 
 func (x *StreamStoreProductsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_v1_product_proto_msgTypes[19]
+	mi := &file_inventory_v1_product_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1202,7 +1427,7 @@ func (x *StreamStoreProductsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StreamStoreProductsResponse.ProtoReflect.Descriptor instead.
 func (*StreamStoreProductsResponse) Descriptor() ([]byte, []int) {
-	return file_inventory_v1_product_proto_rawDescGZIP(), []int{19}
+	return file_inventory_v1_product_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *StreamStoreProductsResponse) GetProducts() []*StoreProduct {
@@ -1222,7 +1447,7 @@ type StreamGlobalProductsRequest struct {
 
 func (x *StreamGlobalProductsRequest) Reset() {
 	*x = StreamGlobalProductsRequest{}
-	mi := &file_inventory_v1_product_proto_msgTypes[20]
+	mi := &file_inventory_v1_product_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1234,7 +1459,7 @@ func (x *StreamGlobalProductsRequest) String() string {
 func (*StreamGlobalProductsRequest) ProtoMessage() {}
 
 func (x *StreamGlobalProductsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_v1_product_proto_msgTypes[20]
+	mi := &file_inventory_v1_product_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1247,7 +1472,7 @@ func (x *StreamGlobalProductsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StreamGlobalProductsRequest.ProtoReflect.Descriptor instead.
 func (*StreamGlobalProductsRequest) Descriptor() ([]byte, []int) {
-	return file_inventory_v1_product_proto_rawDescGZIP(), []int{20}
+	return file_inventory_v1_product_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *StreamGlobalProductsRequest) GetStoreId() string {
@@ -1267,7 +1492,7 @@ type StreamGlobalProductsResponse struct {
 
 func (x *StreamGlobalProductsResponse) Reset() {
 	*x = StreamGlobalProductsResponse{}
-	mi := &file_inventory_v1_product_proto_msgTypes[21]
+	mi := &file_inventory_v1_product_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1279,7 +1504,7 @@ func (x *StreamGlobalProductsResponse) String() string {
 func (*StreamGlobalProductsResponse) ProtoMessage() {}
 
 func (x *StreamGlobalProductsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_v1_product_proto_msgTypes[21]
+	mi := &file_inventory_v1_product_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1292,7 +1517,7 @@ func (x *StreamGlobalProductsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StreamGlobalProductsResponse.ProtoReflect.Descriptor instead.
 func (*StreamGlobalProductsResponse) Descriptor() ([]byte, []int) {
-	return file_inventory_v1_product_proto_rawDescGZIP(), []int{21}
+	return file_inventory_v1_product_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *StreamGlobalProductsResponse) GetProducts() []*GlobalProduct {
@@ -1306,23 +1531,32 @@ var File_inventory_v1_product_proto protoreflect.FileDescriptor
 
 const file_inventory_v1_product_proto_rawDesc = "" +
 	"\n" +
-	"\x1ainventory/v1/product.proto\x12\finventory.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"L\n" +
-	"\x0fProductCategory\x12\x1a\n" +
-	"\x06ref_id\x18\x01 \x01(\tH\x00R\x05refId\x88\x01\x01\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04nameB\t\n" +
-	"\a_ref_id\"\xa8\x02\n" +
+	"\x1ainventory/v1/product.proto\x12\finventory.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1binventory/v1/category.proto\"\xe3\x02\n" +
 	"\rGlobalProduct\x12\x1a\n" +
-	"\x06ref_id\x18\x01 \x01(\tH\x00R\x05refId\x88\x01\x01\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\x12%\n" +
-	"\vdescription\x18\x03 \x01(\tH\x01R\vdescription\x88\x01\x01\x12)\n" +
-	"\x0ebar_code_value\x18\x04 \x01(\tH\x02R\fbarCodeValue\x88\x01\x01\x12=\n" +
+	"\x06ref_id\x18\x01 \x01(\tH\x00R\x05refId\x88\x01\x01\x123\n" +
+	"\x04name\x18\x02 \x01(\v2\x1f.inventory.v1.InternationalizedR\x04name\x12F\n" +
+	"\vdescription\x18\x03 \x01(\v2\x1f.inventory.v1.InternationalizedH\x01R\vdescription\x88\x01\x01\x12)\n" +
+	"\x0ebar_code_value\x18\x04 \x01(\tH\x02R\fbarCodeValue\x88\x01\x01\x126\n" +
 	"\n" +
-	"categories\x18\x05 \x03(\v2\x1d.inventory.v1.ProductCategoryR\n" +
+	"categories\x18\x05 \x03(\v2\x16.inventory.v1.CategoryR\n" +
 	"categories\x12(\n" +
 	"\x10images_links_ids\x18\x06 \x03(\tR\x0eimagesLinksIdsB\t\n" +
 	"\a_ref_idB\x0e\n" +
 	"\f_descriptionB\x11\n" +
 	"\x0f_bar_code_value\"`\n" +
+	"\x1aCreateGlobalProductRequest\x12B\n" +
+	"\x0eglobal_product\x18\x01 \x01(\v2\x1b.inventory.v1.GlobalProductR\rglobalProduct\"7\n" +
+	"\x1bCreateGlobalProductResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"\x8c\x01\n" +
+	"\x1aUpdateGlobalProductRequest\x12*\n" +
+	"\x11global_product_id\x18\x01 \x01(\tR\x0fglobalProductId\x12B\n" +
+	"\x0eglobal_product\x18\x02 \x01(\v2\x1b.inventory.v1.GlobalProductR\rglobalProduct\"7\n" +
+	"\x1bUpdateGlobalProductResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"H\n" +
+	"\x1aDeleteGlobalProductRequest\x12*\n" +
+	"\x11global_product_id\x18\x01 \x01(\tR\x0fglobalProductId\"7\n" +
+	"\x1bDeleteGlobalProductResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"`\n" +
 	"\vSupplyEntry\x12\x1a\n" +
 	"\bquantity\x18\x01 \x01(\x05R\bquantity\x12\x14\n" +
 	"\x05price\x18\x02 \x01(\x05R\x05price\x12\x1f\n" +
@@ -1364,11 +1598,11 @@ const file_inventory_v1_product_proto_rawDesc = "" +
 	"\x10_expiration_dateB\x0e\n" +
 	"\f_supplier_id\"S\n" +
 	"\x19FindStoreProductsResponse\x126\n" +
-	"\bproducts\x18\x01 \x03(\v2\x1a.inventory.v1.StoreProductR\bproducts\"\xe1\x01\n" +
+	"\bproducts\x18\x01 \x03(\v2\x1a.inventory.v1.StoreProductR\bproducts\"\xda\x01\n" +
 	"\x19FindGlobalProductsRequest\x12\x1a\n" +
-	"\x06ref_id\x18\x01 \x01(\tH\x00R\x05refId\x88\x01\x01\x12=\n" +
+	"\x06ref_id\x18\x01 \x01(\tH\x00R\x05refId\x88\x01\x01\x126\n" +
 	"\n" +
-	"categories\x18\x02 \x03(\v2\x1d.inventory.v1.ProductCategoryR\n" +
+	"categories\x18\x02 \x03(\v2\x16.inventory.v1.CategoryR\n" +
 	"categories\x12\x17\n" +
 	"\x04name\x18\x03 \x01(\tH\x01R\x04name\x88\x01\x01\x12)\n" +
 	"\x0ebar_code_value\x18\x04 \x01(\tH\x02R\fbarCodeValue\x88\x01\x01B\t\n" +
@@ -1376,12 +1610,12 @@ const file_inventory_v1_product_proto_rawDesc = "" +
 	"\x05_nameB\x11\n" +
 	"\x0f_bar_code_value\"U\n" +
 	"\x1aFindGlobalProductsResponse\x127\n" +
-	"\bproducts\x18\x01 \x03(\v2\x1b.inventory.v1.GlobalProductR\bproducts\"+\n" +
-	"\x13FindCategoryRequest\x12\x14\n" +
+	"\bproducts\x18\x01 \x03(\v2\x1b.inventory.v1.GlobalProductR\bproducts\"2\n" +
+	"\x1aFindProductCategoryRequest\x12\x14\n" +
 	"\x05query\x18\x01 \x01(\tR\x05query\"U\n" +
-	"\x14FindCategoryResponse\x12=\n" +
+	"\x1bFindProductCategoryResponse\x126\n" +
 	"\n" +
-	"categories\x18\x01 \x03(\v2\x1d.inventory.v1.ProductCategoryR\n" +
+	"categories\x18\x01 \x03(\v2\x16.inventory.v1.CategoryR\n" +
 	"categories\"\x9d\x01\n" +
 	"\x16AddStoreProductRequest\x12B\n" +
 	"\x0eglobal_product\x18\x01 \x01(\v2\x1b.inventory.v1.GlobalProductR\rglobalProduct\x12?\n" +
@@ -1418,10 +1652,13 @@ const file_inventory_v1_product_proto_rawDesc = "" +
 	"\x1bStreamGlobalProductsRequest\x12\x19\n" +
 	"\bstore_id\x18\x01 \x01(\tR\astoreId\"W\n" +
 	"\x1cStreamGlobalProductsResponse\x127\n" +
-	"\bproducts\x18\x01 \x03(\v2\x1b.inventory.v1.GlobalProductR\bproducts2\x93\a\n" +
+	"\bproducts\x18\x01 \x03(\v2\x1b.inventory.v1.GlobalProductR\bproducts2\xec\t\n" +
 	"\x0eProductService\x12g\n" +
-	"\x12FindGlobalProducts\x12'.inventory.v1.FindGlobalProductsRequest\x1a(.inventory.v1.FindGlobalProductsResponse\x12U\n" +
-	"\fFindCategory\x12!.inventory.v1.FindCategoryRequest\x1a\".inventory.v1.FindCategoryResponse\x12Y\n" +
+	"\x12FindGlobalProducts\x12'.inventory.v1.FindGlobalProductsRequest\x1a(.inventory.v1.FindGlobalProductsResponse\x12j\n" +
+	"\x13FindProductCategory\x12(.inventory.v1.FindProductCategoryRequest\x1a).inventory.v1.FindProductCategoryResponse\x12j\n" +
+	"\x13CreateGlobalProduct\x12(.inventory.v1.CreateGlobalProductRequest\x1a).inventory.v1.CreateGlobalProductResponse\x12j\n" +
+	"\x13UpdateGlobalProduct\x12(.inventory.v1.UpdateGlobalProductRequest\x1a).inventory.v1.UpdateGlobalProductResponse\x12j\n" +
+	"\x13DeleteGlobalProduct\x12(.inventory.v1.DeleteGlobalProductRequest\x1a).inventory.v1.DeleteGlobalProductResponse\x12Y\n" +
 	"\n" +
 	"AddProduct\x12$.inventory.v1.AddStoreProductRequest\x1a%.inventory.v1.AddStoreProductResponse\x12Y\n" +
 	"\n" +
@@ -1445,73 +1682,90 @@ func file_inventory_v1_product_proto_rawDescGZIP() []byte {
 	return file_inventory_v1_product_proto_rawDescData
 }
 
-var file_inventory_v1_product_proto_msgTypes = make([]protoimpl.MessageInfo, 22)
+var file_inventory_v1_product_proto_msgTypes = make([]protoimpl.MessageInfo, 27)
 var file_inventory_v1_product_proto_goTypes = []any{
-	(*ProductCategory)(nil),              // 0: inventory.v1.ProductCategory
-	(*GlobalProduct)(nil),                // 1: inventory.v1.GlobalProduct
-	(*SupplyEntry)(nil),                  // 2: inventory.v1.SupplyEntry
-	(*StoreProduct)(nil),                 // 3: inventory.v1.StoreProduct
-	(*FindStoreProductsRequest)(nil),     // 4: inventory.v1.FindStoreProductsRequest
-	(*FindStoreProductsResponse)(nil),    // 5: inventory.v1.FindStoreProductsResponse
-	(*FindGlobalProductsRequest)(nil),    // 6: inventory.v1.FindGlobalProductsRequest
-	(*FindGlobalProductsResponse)(nil),   // 7: inventory.v1.FindGlobalProductsResponse
-	(*FindCategoryRequest)(nil),          // 8: inventory.v1.FindCategoryRequest
-	(*FindCategoryResponse)(nil),         // 9: inventory.v1.FindCategoryResponse
-	(*AddStoreProductRequest)(nil),       // 10: inventory.v1.AddStoreProductRequest
-	(*AddStoreProductResponse)(nil),      // 11: inventory.v1.AddStoreProductResponse
-	(*GetStoreProductRequest)(nil),       // 12: inventory.v1.GetStoreProductRequest
-	(*GetStoreProductResponse)(nil),      // 13: inventory.v1.GetStoreProductResponse
-	(*UpdateStoreProductRequest)(nil),    // 14: inventory.v1.UpdateStoreProductRequest
-	(*UpdateStoreProductResponse)(nil),   // 15: inventory.v1.UpdateStoreProductResponse
-	(*DeleteStoreProductRequest)(nil),    // 16: inventory.v1.DeleteStoreProductRequest
-	(*DeleteStoreProductResponse)(nil),   // 17: inventory.v1.DeleteStoreProductResponse
-	(*StreamStoreProductsRequest)(nil),   // 18: inventory.v1.StreamStoreProductsRequest
-	(*StreamStoreProductsResponse)(nil),  // 19: inventory.v1.StreamStoreProductsResponse
-	(*StreamGlobalProductsRequest)(nil),  // 20: inventory.v1.StreamGlobalProductsRequest
-	(*StreamGlobalProductsResponse)(nil), // 21: inventory.v1.StreamGlobalProductsResponse
-	(*timestamppb.Timestamp)(nil),        // 22: google.protobuf.Timestamp
+	(*GlobalProduct)(nil),                // 0: inventory.v1.GlobalProduct
+	(*CreateGlobalProductRequest)(nil),   // 1: inventory.v1.CreateGlobalProductRequest
+	(*CreateGlobalProductResponse)(nil),  // 2: inventory.v1.CreateGlobalProductResponse
+	(*UpdateGlobalProductRequest)(nil),   // 3: inventory.v1.UpdateGlobalProductRequest
+	(*UpdateGlobalProductResponse)(nil),  // 4: inventory.v1.UpdateGlobalProductResponse
+	(*DeleteGlobalProductRequest)(nil),   // 5: inventory.v1.DeleteGlobalProductRequest
+	(*DeleteGlobalProductResponse)(nil),  // 6: inventory.v1.DeleteGlobalProductResponse
+	(*SupplyEntry)(nil),                  // 7: inventory.v1.SupplyEntry
+	(*StoreProduct)(nil),                 // 8: inventory.v1.StoreProduct
+	(*FindStoreProductsRequest)(nil),     // 9: inventory.v1.FindStoreProductsRequest
+	(*FindStoreProductsResponse)(nil),    // 10: inventory.v1.FindStoreProductsResponse
+	(*FindGlobalProductsRequest)(nil),    // 11: inventory.v1.FindGlobalProductsRequest
+	(*FindGlobalProductsResponse)(nil),   // 12: inventory.v1.FindGlobalProductsResponse
+	(*FindProductCategoryRequest)(nil),   // 13: inventory.v1.FindProductCategoryRequest
+	(*FindProductCategoryResponse)(nil),  // 14: inventory.v1.FindProductCategoryResponse
+	(*AddStoreProductRequest)(nil),       // 15: inventory.v1.AddStoreProductRequest
+	(*AddStoreProductResponse)(nil),      // 16: inventory.v1.AddStoreProductResponse
+	(*GetStoreProductRequest)(nil),       // 17: inventory.v1.GetStoreProductRequest
+	(*GetStoreProductResponse)(nil),      // 18: inventory.v1.GetStoreProductResponse
+	(*UpdateStoreProductRequest)(nil),    // 19: inventory.v1.UpdateStoreProductRequest
+	(*UpdateStoreProductResponse)(nil),   // 20: inventory.v1.UpdateStoreProductResponse
+	(*DeleteStoreProductRequest)(nil),    // 21: inventory.v1.DeleteStoreProductRequest
+	(*DeleteStoreProductResponse)(nil),   // 22: inventory.v1.DeleteStoreProductResponse
+	(*StreamStoreProductsRequest)(nil),   // 23: inventory.v1.StreamStoreProductsRequest
+	(*StreamStoreProductsResponse)(nil),  // 24: inventory.v1.StreamStoreProductsResponse
+	(*StreamGlobalProductsRequest)(nil),  // 25: inventory.v1.StreamGlobalProductsRequest
+	(*StreamGlobalProductsResponse)(nil), // 26: inventory.v1.StreamGlobalProductsResponse
+	(*Internationalized)(nil),            // 27: inventory.v1.Internationalized
+	(*Category)(nil),                     // 28: inventory.v1.Category
+	(*timestamppb.Timestamp)(nil),        // 29: google.protobuf.Timestamp
 }
 var file_inventory_v1_product_proto_depIdxs = []int32{
-	0,  // 0: inventory.v1.GlobalProduct.categories:type_name -> inventory.v1.ProductCategory
-	22, // 1: inventory.v1.StoreProduct.expiration_date:type_name -> google.protobuf.Timestamp
-	22, // 2: inventory.v1.StoreProduct.inbound_date:type_name -> google.protobuf.Timestamp
-	22, // 3: inventory.v1.StoreProduct.created_at:type_name -> google.protobuf.Timestamp
-	22, // 4: inventory.v1.StoreProduct.updated_at:type_name -> google.protobuf.Timestamp
-	22, // 5: inventory.v1.FindStoreProductsRequest.expiration_date:type_name -> google.protobuf.Timestamp
-	3,  // 6: inventory.v1.FindStoreProductsResponse.products:type_name -> inventory.v1.StoreProduct
-	0,  // 7: inventory.v1.FindGlobalProductsRequest.categories:type_name -> inventory.v1.ProductCategory
-	1,  // 8: inventory.v1.FindGlobalProductsResponse.products:type_name -> inventory.v1.GlobalProduct
-	0,  // 9: inventory.v1.FindCategoryResponse.categories:type_name -> inventory.v1.ProductCategory
-	1,  // 10: inventory.v1.AddStoreProductRequest.global_product:type_name -> inventory.v1.GlobalProduct
-	3,  // 11: inventory.v1.AddStoreProductRequest.store_product:type_name -> inventory.v1.StoreProduct
-	3,  // 12: inventory.v1.GetStoreProductResponse.store_product:type_name -> inventory.v1.StoreProduct
-	3,  // 13: inventory.v1.UpdateStoreProductRequest.store_product:type_name -> inventory.v1.StoreProduct
-	1,  // 14: inventory.v1.UpdateStoreProductRequest.global_product:type_name -> inventory.v1.GlobalProduct
-	3,  // 15: inventory.v1.StreamStoreProductsResponse.products:type_name -> inventory.v1.StoreProduct
-	1,  // 16: inventory.v1.StreamGlobalProductsResponse.products:type_name -> inventory.v1.GlobalProduct
-	6,  // 17: inventory.v1.ProductService.FindGlobalProducts:input_type -> inventory.v1.FindGlobalProductsRequest
-	8,  // 18: inventory.v1.ProductService.FindCategory:input_type -> inventory.v1.FindCategoryRequest
-	10, // 19: inventory.v1.ProductService.AddProduct:input_type -> inventory.v1.AddStoreProductRequest
-	12, // 20: inventory.v1.ProductService.GetProduct:input_type -> inventory.v1.GetStoreProductRequest
-	14, // 21: inventory.v1.ProductService.UpdateProduct:input_type -> inventory.v1.UpdateStoreProductRequest
-	16, // 22: inventory.v1.ProductService.DeleteProduct:input_type -> inventory.v1.DeleteStoreProductRequest
-	4,  // 23: inventory.v1.ProductService.FindStoreProducts:input_type -> inventory.v1.FindStoreProductsRequest
-	18, // 24: inventory.v1.ProductService.StreamStoreProducts:input_type -> inventory.v1.StreamStoreProductsRequest
-	20, // 25: inventory.v1.ProductService.StreamGlobalProducts:input_type -> inventory.v1.StreamGlobalProductsRequest
-	7,  // 26: inventory.v1.ProductService.FindGlobalProducts:output_type -> inventory.v1.FindGlobalProductsResponse
-	9,  // 27: inventory.v1.ProductService.FindCategory:output_type -> inventory.v1.FindCategoryResponse
-	11, // 28: inventory.v1.ProductService.AddProduct:output_type -> inventory.v1.AddStoreProductResponse
-	13, // 29: inventory.v1.ProductService.GetProduct:output_type -> inventory.v1.GetStoreProductResponse
-	15, // 30: inventory.v1.ProductService.UpdateProduct:output_type -> inventory.v1.UpdateStoreProductResponse
-	17, // 31: inventory.v1.ProductService.DeleteProduct:output_type -> inventory.v1.DeleteStoreProductResponse
-	5,  // 32: inventory.v1.ProductService.FindStoreProducts:output_type -> inventory.v1.FindStoreProductsResponse
-	19, // 33: inventory.v1.ProductService.StreamStoreProducts:output_type -> inventory.v1.StreamStoreProductsResponse
-	21, // 34: inventory.v1.ProductService.StreamGlobalProducts:output_type -> inventory.v1.StreamGlobalProductsResponse
-	26, // [26:35] is the sub-list for method output_type
-	17, // [17:26] is the sub-list for method input_type
-	17, // [17:17] is the sub-list for extension type_name
-	17, // [17:17] is the sub-list for extension extendee
-	0,  // [0:17] is the sub-list for field type_name
+	27, // 0: inventory.v1.GlobalProduct.name:type_name -> inventory.v1.Internationalized
+	27, // 1: inventory.v1.GlobalProduct.description:type_name -> inventory.v1.Internationalized
+	28, // 2: inventory.v1.GlobalProduct.categories:type_name -> inventory.v1.Category
+	0,  // 3: inventory.v1.CreateGlobalProductRequest.global_product:type_name -> inventory.v1.GlobalProduct
+	0,  // 4: inventory.v1.UpdateGlobalProductRequest.global_product:type_name -> inventory.v1.GlobalProduct
+	29, // 5: inventory.v1.StoreProduct.expiration_date:type_name -> google.protobuf.Timestamp
+	29, // 6: inventory.v1.StoreProduct.inbound_date:type_name -> google.protobuf.Timestamp
+	29, // 7: inventory.v1.StoreProduct.created_at:type_name -> google.protobuf.Timestamp
+	29, // 8: inventory.v1.StoreProduct.updated_at:type_name -> google.protobuf.Timestamp
+	29, // 9: inventory.v1.FindStoreProductsRequest.expiration_date:type_name -> google.protobuf.Timestamp
+	8,  // 10: inventory.v1.FindStoreProductsResponse.products:type_name -> inventory.v1.StoreProduct
+	28, // 11: inventory.v1.FindGlobalProductsRequest.categories:type_name -> inventory.v1.Category
+	0,  // 12: inventory.v1.FindGlobalProductsResponse.products:type_name -> inventory.v1.GlobalProduct
+	28, // 13: inventory.v1.FindProductCategoryResponse.categories:type_name -> inventory.v1.Category
+	0,  // 14: inventory.v1.AddStoreProductRequest.global_product:type_name -> inventory.v1.GlobalProduct
+	8,  // 15: inventory.v1.AddStoreProductRequest.store_product:type_name -> inventory.v1.StoreProduct
+	8,  // 16: inventory.v1.GetStoreProductResponse.store_product:type_name -> inventory.v1.StoreProduct
+	8,  // 17: inventory.v1.UpdateStoreProductRequest.store_product:type_name -> inventory.v1.StoreProduct
+	0,  // 18: inventory.v1.UpdateStoreProductRequest.global_product:type_name -> inventory.v1.GlobalProduct
+	8,  // 19: inventory.v1.StreamStoreProductsResponse.products:type_name -> inventory.v1.StoreProduct
+	0,  // 20: inventory.v1.StreamGlobalProductsResponse.products:type_name -> inventory.v1.GlobalProduct
+	11, // 21: inventory.v1.ProductService.FindGlobalProducts:input_type -> inventory.v1.FindGlobalProductsRequest
+	13, // 22: inventory.v1.ProductService.FindProductCategory:input_type -> inventory.v1.FindProductCategoryRequest
+	1,  // 23: inventory.v1.ProductService.CreateGlobalProduct:input_type -> inventory.v1.CreateGlobalProductRequest
+	3,  // 24: inventory.v1.ProductService.UpdateGlobalProduct:input_type -> inventory.v1.UpdateGlobalProductRequest
+	5,  // 25: inventory.v1.ProductService.DeleteGlobalProduct:input_type -> inventory.v1.DeleteGlobalProductRequest
+	15, // 26: inventory.v1.ProductService.AddProduct:input_type -> inventory.v1.AddStoreProductRequest
+	17, // 27: inventory.v1.ProductService.GetProduct:input_type -> inventory.v1.GetStoreProductRequest
+	19, // 28: inventory.v1.ProductService.UpdateProduct:input_type -> inventory.v1.UpdateStoreProductRequest
+	21, // 29: inventory.v1.ProductService.DeleteProduct:input_type -> inventory.v1.DeleteStoreProductRequest
+	9,  // 30: inventory.v1.ProductService.FindStoreProducts:input_type -> inventory.v1.FindStoreProductsRequest
+	23, // 31: inventory.v1.ProductService.StreamStoreProducts:input_type -> inventory.v1.StreamStoreProductsRequest
+	25, // 32: inventory.v1.ProductService.StreamGlobalProducts:input_type -> inventory.v1.StreamGlobalProductsRequest
+	12, // 33: inventory.v1.ProductService.FindGlobalProducts:output_type -> inventory.v1.FindGlobalProductsResponse
+	14, // 34: inventory.v1.ProductService.FindProductCategory:output_type -> inventory.v1.FindProductCategoryResponse
+	2,  // 35: inventory.v1.ProductService.CreateGlobalProduct:output_type -> inventory.v1.CreateGlobalProductResponse
+	4,  // 36: inventory.v1.ProductService.UpdateGlobalProduct:output_type -> inventory.v1.UpdateGlobalProductResponse
+	6,  // 37: inventory.v1.ProductService.DeleteGlobalProduct:output_type -> inventory.v1.DeleteGlobalProductResponse
+	16, // 38: inventory.v1.ProductService.AddProduct:output_type -> inventory.v1.AddStoreProductResponse
+	18, // 39: inventory.v1.ProductService.GetProduct:output_type -> inventory.v1.GetStoreProductResponse
+	20, // 40: inventory.v1.ProductService.UpdateProduct:output_type -> inventory.v1.UpdateStoreProductResponse
+	22, // 41: inventory.v1.ProductService.DeleteProduct:output_type -> inventory.v1.DeleteStoreProductResponse
+	10, // 42: inventory.v1.ProductService.FindStoreProducts:output_type -> inventory.v1.FindStoreProductsResponse
+	24, // 43: inventory.v1.ProductService.StreamStoreProducts:output_type -> inventory.v1.StreamStoreProductsResponse
+	26, // 44: inventory.v1.ProductService.StreamGlobalProducts:output_type -> inventory.v1.StreamGlobalProductsResponse
+	33, // [33:45] is the sub-list for method output_type
+	21, // [21:33] is the sub-list for method input_type
+	21, // [21:21] is the sub-list for extension type_name
+	21, // [21:21] is the sub-list for extension extendee
+	0,  // [0:21] is the sub-list for field type_name
 }
 
 func init() { file_inventory_v1_product_proto_init() }
@@ -1519,20 +1773,20 @@ func file_inventory_v1_product_proto_init() {
 	if File_inventory_v1_product_proto != nil {
 		return
 	}
+	file_inventory_v1_category_proto_init()
 	file_inventory_v1_product_proto_msgTypes[0].OneofWrappers = []any{}
-	file_inventory_v1_product_proto_msgTypes[1].OneofWrappers = []any{}
-	file_inventory_v1_product_proto_msgTypes[3].OneofWrappers = []any{}
-	file_inventory_v1_product_proto_msgTypes[4].OneofWrappers = []any{}
-	file_inventory_v1_product_proto_msgTypes[6].OneofWrappers = []any{}
-	file_inventory_v1_product_proto_msgTypes[14].OneofWrappers = []any{}
-	file_inventory_v1_product_proto_msgTypes[18].OneofWrappers = []any{}
+	file_inventory_v1_product_proto_msgTypes[8].OneofWrappers = []any{}
+	file_inventory_v1_product_proto_msgTypes[9].OneofWrappers = []any{}
+	file_inventory_v1_product_proto_msgTypes[11].OneofWrappers = []any{}
+	file_inventory_v1_product_proto_msgTypes[19].OneofWrappers = []any{}
+	file_inventory_v1_product_proto_msgTypes[23].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_inventory_v1_product_proto_rawDesc), len(file_inventory_v1_product_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   22,
+			NumMessages:   27,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

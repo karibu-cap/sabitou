@@ -14,9 +14,10 @@ import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
-import '../../google/protobuf/timestamp.pbjson.dart' as $2;
+import '../../google/protobuf/timestamp.pbjson.dart' as $3;
+import '../../inventory/v1/category.pbjson.dart' as $1;
 import '../../inventory/v1/product.pbjson.dart' as $0;
-import '../../order/v1/order.pbjson.dart' as $1;
+import '../../order/v1/order.pbjson.dart' as $2;
 
 @$core.Deprecated('Use syncOperationTypeDescriptor instead')
 const SyncOperationType$json = {
@@ -141,13 +142,13 @@ const SyncOperation$json = {
       '10': 'globalProductData'
     },
     {
-      '1': 'product_category_data',
+      '1': 'category_data',
       '3': 12,
       '4': 1,
       '5': 11,
-      '6': '.inventory.v1.ProductCategory',
+      '6': '.inventory.v1.Category',
       '9': 0,
-      '10': 'productCategoryData'
+      '10': 'categoryData'
     },
     {
       '1': 'order_data',
@@ -244,21 +245,20 @@ final $typed_data.Uint8List syncOperationDescriptor = $convert.base64Decode(
     'gGIAEoCUgCUgpidXNpbmVzc0lkiAEBEhwKB3VzZXJfaWQYByABKAlIA1IGdXNlcklkiAEBEkoK'
     'EnN0b3JlX3Byb2R1Y3RfZGF0YRgKIAEoCzIaLmludmVudG9yeS52MS5TdG9yZVByb2R1Y3RIAF'
     'IQc3RvcmVQcm9kdWN0RGF0YRJNChNnbG9iYWxfcHJvZHVjdF9kYXRhGAsgASgLMhsuaW52ZW50'
-    'b3J5LnYxLkdsb2JhbFByb2R1Y3RIAFIRZ2xvYmFsUHJvZHVjdERhdGESUwoVcHJvZHVjdF9jYX'
-    'RlZ29yeV9kYXRhGAwgASgLMh0uaW52ZW50b3J5LnYxLlByb2R1Y3RDYXRlZ29yeUgAUhNwcm9k'
-    'dWN0Q2F0ZWdvcnlEYXRhEjAKCm9yZGVyX2RhdGEYDSABKAsyDy5vcmRlci52MS5PcmRlckgAUg'
-    'lvcmRlckRhdGESHQoJanNvbl9kYXRhGCggASgJSABSCGpzb25EYXRhEjkKCmNyZWF0ZWRfYXQY'
-    'KSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUgljcmVhdGVkQXQSOQoKdXBkYXRlZF'
-    '9hdBgqIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSCXVwZGF0ZWRBdBI0CgZzdGF0'
-    'dXMYKyABKA4yHC5zeW5jLnYxLlN5bmNPcGVyYXRpb25TdGF0dXNSBnN0YXR1cxIfCgtyZXRyeV'
-    '9jb3VudBgsIAEoBVIKcmV0cnlDb3VudBIfCgttYXhfcmV0cmllcxgtIAEoBVIKbWF4UmV0cmll'
-    'cxJDCg1uZXh0X3JldHJ5X2F0GC4gASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEgEUg'
-    'tuZXh0UmV0cnlBdIgBARIoCg1lcnJvcl9tZXNzYWdlGC8gASgJSAVSDGVycm9yTWVzc2FnZYgB'
-    'ARJACghtZXRhZGF0YRgwIAMoCzIkLnN5bmMudjEuU3luY09wZXJhdGlvbi5NZXRhZGF0YUVudH'
-    'J5UghtZXRhZGF0YRo7Cg1NZXRhZGF0YUVudHJ5EhAKA2tleRgBIAEoCVIDa2V5EhQKBXZhbHVl'
-    'GAIgASgJUgV2YWx1ZToCOAFCEAoOb3BlcmF0aW9uX2RhdGFCCwoJX3N0b3JlX2lkQg4KDF9idX'
-    'NpbmVzc19pZEIKCghfdXNlcl9pZEIQCg5fbmV4dF9yZXRyeV9hdEIQCg5fZXJyb3JfbWVzc2Fn'
-    'ZQ==');
+    'b3J5LnYxLkdsb2JhbFByb2R1Y3RIAFIRZ2xvYmFsUHJvZHVjdERhdGESPQoNY2F0ZWdvcnlfZG'
+    'F0YRgMIAEoCzIWLmludmVudG9yeS52MS5DYXRlZ29yeUgAUgxjYXRlZ29yeURhdGESMAoKb3Jk'
+    'ZXJfZGF0YRgNIAEoCzIPLm9yZGVyLnYxLk9yZGVySABSCW9yZGVyRGF0YRIdCglqc29uX2RhdG'
+    'EYKCABKAlIAFIIanNvbkRhdGESOQoKY3JlYXRlZF9hdBgpIAEoCzIaLmdvb2dsZS5wcm90b2J1'
+    'Zi5UaW1lc3RhbXBSCWNyZWF0ZWRBdBI5Cgp1cGRhdGVkX2F0GCogASgLMhouZ29vZ2xlLnByb3'
+    'RvYnVmLlRpbWVzdGFtcFIJdXBkYXRlZEF0EjQKBnN0YXR1cxgrIAEoDjIcLnN5bmMudjEuU3lu'
+    'Y09wZXJhdGlvblN0YXR1c1IGc3RhdHVzEh8KC3JldHJ5X2NvdW50GCwgASgFUgpyZXRyeUNvdW'
+    '50Eh8KC21heF9yZXRyaWVzGC0gASgFUgptYXhSZXRyaWVzEkMKDW5leHRfcmV0cnlfYXQYLiAB'
+    'KAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wSARSC25leHRSZXRyeUF0iAEBEigKDWVycm'
+    '9yX21lc3NhZ2UYLyABKAlIBVIMZXJyb3JNZXNzYWdliAEBEkAKCG1ldGFkYXRhGDAgAygLMiQu'
+    'c3luYy52MS5TeW5jT3BlcmF0aW9uLk1ldGFkYXRhRW50cnlSCG1ldGFkYXRhGjsKDU1ldGFkYX'
+    'RhRW50cnkSEAoDa2V5GAEgASgJUgNrZXkSFAoFdmFsdWUYAiABKAlSBXZhbHVlOgI4AUIQCg5v'
+    'cGVyYXRpb25fZGF0YUILCglfc3RvcmVfaWRCDgoMX2J1c2luZXNzX2lkQgoKCF91c2VyX2lkQh'
+    'AKDl9uZXh0X3JldHJ5X2F0QhAKDl9lcnJvcl9tZXNzYWdl');
 
 @$core.Deprecated('Use syncOperationBatchDescriptor instead')
 const SyncOperationBatch$json = {
@@ -943,12 +943,13 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
   '.sync.v1.SubmitSyncOperationsRequest': SubmitSyncOperationsRequest$json,
   '.sync.v1.SyncOperation': SyncOperation$json,
   '.inventory.v1.StoreProduct': $0.StoreProduct$json,
-  '.google.protobuf.Timestamp': $2.Timestamp$json,
+  '.google.protobuf.Timestamp': $3.Timestamp$json,
   '.inventory.v1.GlobalProduct': $0.GlobalProduct$json,
-  '.inventory.v1.ProductCategory': $0.ProductCategory$json,
-  '.order.v1.Order': $1.Order$json,
-  '.order.v1.OrderItem': $1.OrderItem$json,
-  '.order.v1.StatusHistory': $1.StatusHistory$json,
+  '.inventory.v1.Internationalized': $1.Internationalized$json,
+  '.inventory.v1.Category': $1.Category$json,
+  '.order.v1.Order': $2.Order$json,
+  '.order.v1.OrderItem': $2.OrderItem$json,
+  '.order.v1.StatusHistory': $2.StatusHistory$json,
   '.sync.v1.SyncOperation.MetadataEntry': SyncOperation_MetadataEntry$json,
   '.sync.v1.SubmitSyncOperationsResponse': SubmitSyncOperationsResponse$json,
   '.sync.v1.SyncOperationResult': SyncOperationResult$json,

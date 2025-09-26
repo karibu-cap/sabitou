@@ -16,7 +16,7 @@ class FakeHiveDatabase implements HiveDatabase {
       throw UnimplementedError('Fake implementation - use for testing only');
 
   @override
-  Box<ProductCategory> get productCategories =>
+  Box<Category> get categories =>
       throw UnimplementedError('Fake implementation - use for testing only');
 
   @override

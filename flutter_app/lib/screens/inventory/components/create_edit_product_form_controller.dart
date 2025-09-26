@@ -7,6 +7,7 @@ import '../../../repositories/products_repository.dart';
 import '../../../services/internationalization/internationalization.dart';
 import '../../../utils/common_functions.dart';
 import '../../../utils/extends_models.dart';
+import '../../../utils/extensions/global_product_extension.dart';
 import '../../../utils/user_preference.dart';
 
 /// The type of the product form.
@@ -79,7 +80,9 @@ class CreateEditProductFormController extends ChangeNotifier {
       productFormType = product == null
           ? ProductFormType.create
           : ProductFormType.edit,
-      nameController = TextEditingController(text: product?.globalProduct.name),
+      nameController = TextEditingController(
+        text: product?.globalProduct.label,
+      ),
       barcodeController = TextEditingController(
         text: product?.globalProduct.barCodeValue,
       ),
@@ -135,7 +138,7 @@ class CreateEditProductFormController extends ChangeNotifier {
 
   /// Sets the new product.
   void setNewProduct(GlobalProduct globalProduct) {
-    nameController.text = globalProduct.name;
+    nameController.text = globalProduct.label;
     barcodeController.text = globalProduct.barCodeValue;
     categoryController.value = globalProduct.categories
         .map((e) => e.refId)

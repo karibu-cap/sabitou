@@ -27,15 +27,69 @@ extension type ProductServiceClient (connect.Transport _transport) {
   }
 
   /// Finds categories by name.
-  Future<inventoryv1product.FindCategoryResponse> findCategory(
-    inventoryv1product.FindCategoryRequest input, {
+  Future<inventoryv1product.FindProductCategoryResponse> findProductCategory(
+    inventoryv1product.FindProductCategoryRequest input, {
     connect.Headers? headers,
     connect.AbortSignal? signal,
     Function(connect.Headers)? onHeader,
     Function(connect.Headers)? onTrailer,
   }) {
     return connect.Client(_transport).unary(
-      specs.ProductService.findCategory,
+      specs.ProductService.findProductCategory,
+      input,
+      signal: signal,
+      headers: headers,
+      onHeader: onHeader,
+      onTrailer: onTrailer,
+    );
+  }
+
+  /// Creates a global product.
+  Future<inventoryv1product.CreateGlobalProductResponse> createGlobalProduct(
+    inventoryv1product.CreateGlobalProductRequest input, {
+    connect.Headers? headers,
+    connect.AbortSignal? signal,
+    Function(connect.Headers)? onHeader,
+    Function(connect.Headers)? onTrailer,
+  }) {
+    return connect.Client(_transport).unary(
+      specs.ProductService.createGlobalProduct,
+      input,
+      signal: signal,
+      headers: headers,
+      onHeader: onHeader,
+      onTrailer: onTrailer,
+    );
+  }
+
+  /// Updates a global product.
+  Future<inventoryv1product.UpdateGlobalProductResponse> updateGlobalProduct(
+    inventoryv1product.UpdateGlobalProductRequest input, {
+    connect.Headers? headers,
+    connect.AbortSignal? signal,
+    Function(connect.Headers)? onHeader,
+    Function(connect.Headers)? onTrailer,
+  }) {
+    return connect.Client(_transport).unary(
+      specs.ProductService.updateGlobalProduct,
+      input,
+      signal: signal,
+      headers: headers,
+      onHeader: onHeader,
+      onTrailer: onTrailer,
+    );
+  }
+
+  /// Deletes a global product.
+  Future<inventoryv1product.DeleteGlobalProductResponse> deleteGlobalProduct(
+    inventoryv1product.DeleteGlobalProductRequest input, {
+    connect.Headers? headers,
+    connect.AbortSignal? signal,
+    Function(connect.Headers)? onHeader,
+    Function(connect.Headers)? onTrailer,
+  }) {
+    return connect.Client(_transport).unary(
+      specs.ProductService.deleteGlobalProduct,
       input,
       signal: signal,
       headers: headers,

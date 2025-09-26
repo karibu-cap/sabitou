@@ -223,7 +223,7 @@ type SyncOperation struct {
 	//
 	//	*SyncOperation_StoreProductData
 	//	*SyncOperation_GlobalProductData
-	//	*SyncOperation_ProductCategoryData
+	//	*SyncOperation_CategoryData
 	//	*SyncOperation_OrderData
 	//	*SyncOperation_JsonData
 	OperationData isSyncOperation_OperationData `protobuf_oneof:"operation_data"`
@@ -351,10 +351,10 @@ func (x *SyncOperation) GetGlobalProductData() *v1.GlobalProduct {
 	return nil
 }
 
-func (x *SyncOperation) GetProductCategoryData() *v1.ProductCategory {
+func (x *SyncOperation) GetCategoryData() *v1.Category {
 	if x != nil {
-		if x, ok := x.OperationData.(*SyncOperation_ProductCategoryData); ok {
-			return x.ProductCategoryData
+		if x, ok := x.OperationData.(*SyncOperation_CategoryData); ok {
+			return x.CategoryData
 		}
 	}
 	return nil
@@ -448,9 +448,9 @@ type SyncOperation_GlobalProductData struct {
 	GlobalProductData *v1.GlobalProduct `protobuf:"bytes,11,opt,name=global_product_data,json=globalProductData,proto3,oneof"`
 }
 
-type SyncOperation_ProductCategoryData struct {
+type SyncOperation_CategoryData struct {
 	// Product category data
-	ProductCategoryData *v1.ProductCategory `protobuf:"bytes,12,opt,name=product_category_data,json=productCategoryData,proto3,oneof"`
+	CategoryData *v1.Category `protobuf:"bytes,12,opt,name=category_data,json=categoryData,proto3,oneof"`
 }
 
 type SyncOperation_OrderData struct {
@@ -467,7 +467,7 @@ func (*SyncOperation_StoreProductData) isSyncOperation_OperationData() {}
 
 func (*SyncOperation_GlobalProductData) isSyncOperation_OperationData() {}
 
-func (*SyncOperation_ProductCategoryData) isSyncOperation_OperationData() {}
+func (*SyncOperation_CategoryData) isSyncOperation_OperationData() {}
 
 func (*SyncOperation_OrderData) isSyncOperation_OperationData() {}
 
@@ -1433,7 +1433,7 @@ var File_sync_v1_sync_proto protoreflect.FileDescriptor
 
 const file_sync_v1_sync_proto_rawDesc = "" +
 	"\n" +
-	"\x12sync/v1/sync.proto\x12\async.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1ainventory/v1/product.proto\x1a\x14order/v1/order.proto\"\xc6\t\n" +
+	"\x12sync/v1/sync.proto\x12\async.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1ainventory/v1/product.proto\x1a\x1binventory/v1/category.proto\x1a\x14order/v1/order.proto\"\xb0\t\n" +
 	"\rSyncOperation\x12\x1e\n" +
 	"\x06ref_id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x05refId\x12K\n" +
 	"\x0eoperation_type\x18\x02 \x01(\x0e2\x1a.sync.v1.SyncOperationTypeB\b\xbaH\x05\x82\x01\x02\x10\x01R\roperationType\x12B\n" +
@@ -1446,8 +1446,8 @@ const file_sync_v1_sync_proto_rawDesc = "" +
 	"\auser_id\x18\a \x01(\tH\x03R\x06userId\x88\x01\x01\x12J\n" +
 	"\x12store_product_data\x18\n" +
 	" \x01(\v2\x1a.inventory.v1.StoreProductH\x00R\x10storeProductData\x12M\n" +
-	"\x13global_product_data\x18\v \x01(\v2\x1b.inventory.v1.GlobalProductH\x00R\x11globalProductData\x12S\n" +
-	"\x15product_category_data\x18\f \x01(\v2\x1d.inventory.v1.ProductCategoryH\x00R\x13productCategoryData\x120\n" +
+	"\x13global_product_data\x18\v \x01(\v2\x1b.inventory.v1.GlobalProductH\x00R\x11globalProductData\x12=\n" +
+	"\rcategory_data\x18\f \x01(\v2\x16.inventory.v1.CategoryH\x00R\fcategoryData\x120\n" +
 	"\n" +
 	"order_data\x18\r \x01(\v2\x0f.order.v1.OrderH\x00R\torderData\x12\x1d\n" +
 	"\tjson_data\x18( \x01(\tH\x00R\bjsonData\x129\n" +
@@ -1651,7 +1651,7 @@ var file_sync_v1_sync_proto_goTypes = []any{
 	nil,                                     // 16: sync.v1.SyncOperationBatch.MetadataEntry
 	(*v1.StoreProduct)(nil),                 // 17: inventory.v1.StoreProduct
 	(*v1.GlobalProduct)(nil),                // 18: inventory.v1.GlobalProduct
-	(*v1.ProductCategory)(nil),              // 19: inventory.v1.ProductCategory
+	(*v1.Category)(nil),                     // 19: inventory.v1.Category
 	(*v11.Order)(nil),                       // 20: order.v1.Order
 	(*timestamppb.Timestamp)(nil),           // 21: google.protobuf.Timestamp
 }
@@ -1660,7 +1660,7 @@ var file_sync_v1_sync_proto_depIdxs = []int32{
 	1,  // 1: sync.v1.SyncOperation.entity_type:type_name -> sync.v1.SyncEntityType
 	17, // 2: sync.v1.SyncOperation.store_product_data:type_name -> inventory.v1.StoreProduct
 	18, // 3: sync.v1.SyncOperation.global_product_data:type_name -> inventory.v1.GlobalProduct
-	19, // 4: sync.v1.SyncOperation.product_category_data:type_name -> inventory.v1.ProductCategory
+	19, // 4: sync.v1.SyncOperation.category_data:type_name -> inventory.v1.Category
 	20, // 5: sync.v1.SyncOperation.order_data:type_name -> order.v1.Order
 	21, // 6: sync.v1.SyncOperation.created_at:type_name -> google.protobuf.Timestamp
 	21, // 7: sync.v1.SyncOperation.updated_at:type_name -> google.protobuf.Timestamp
@@ -1707,7 +1707,7 @@ func file_sync_v1_sync_proto_init() {
 	file_sync_v1_sync_proto_msgTypes[0].OneofWrappers = []any{
 		(*SyncOperation_StoreProductData)(nil),
 		(*SyncOperation_GlobalProductData)(nil),
-		(*SyncOperation_ProductCategoryData)(nil),
+		(*SyncOperation_CategoryData)(nil),
 		(*SyncOperation_OrderData)(nil),
 		(*SyncOperation_JsonData)(nil),
 	}

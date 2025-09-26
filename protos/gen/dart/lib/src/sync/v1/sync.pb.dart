@@ -15,9 +15,10 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import '../../google/protobuf/timestamp.pb.dart' as $2;
+import '../../google/protobuf/timestamp.pb.dart' as $3;
+import '../../inventory/v1/category.pb.dart' as $1;
 import '../../inventory/v1/product.pb.dart' as $0;
-import '../../order/v1/order.pb.dart' as $1;
+import '../../order/v1/order.pb.dart' as $2;
 import 'sync.pbenum.dart';
 
 export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
@@ -27,7 +28,7 @@ export 'sync.pbenum.dart';
 enum SyncOperation_OperationData {
   storeProductData,
   globalProductData,
-  productCategoryData,
+  categoryData,
   orderData,
   jsonData,
   notSet
@@ -45,15 +46,15 @@ class SyncOperation extends $pb.GeneratedMessage {
     $core.String? userId,
     $0.StoreProduct? storeProductData,
     $0.GlobalProduct? globalProductData,
-    $0.ProductCategory? productCategoryData,
-    $1.Order? orderData,
+    $1.Category? categoryData,
+    $2.Order? orderData,
     $core.String? jsonData,
-    $2.Timestamp? createdAt,
-    $2.Timestamp? updatedAt,
+    $3.Timestamp? createdAt,
+    $3.Timestamp? updatedAt,
     SyncOperationStatus? status,
     $core.int? retryCount,
     $core.int? maxRetries,
-    $2.Timestamp? nextRetryAt,
+    $3.Timestamp? nextRetryAt,
     $core.String? errorMessage,
     $core.Iterable<$core.MapEntry<$core.String, $core.String>>? metadata,
   }) {
@@ -67,8 +68,7 @@ class SyncOperation extends $pb.GeneratedMessage {
     if (userId != null) result.userId = userId;
     if (storeProductData != null) result.storeProductData = storeProductData;
     if (globalProductData != null) result.globalProductData = globalProductData;
-    if (productCategoryData != null)
-      result.productCategoryData = productCategoryData;
+    if (categoryData != null) result.categoryData = categoryData;
     if (orderData != null) result.orderData = orderData;
     if (jsonData != null) result.jsonData = jsonData;
     if (createdAt != null) result.createdAt = createdAt;
@@ -95,7 +95,7 @@ class SyncOperation extends $pb.GeneratedMessage {
       _SyncOperation_OperationDataByTag = {
     10: SyncOperation_OperationData.storeProductData,
     11: SyncOperation_OperationData.globalProductData,
-    12: SyncOperation_OperationData.productCategoryData,
+    12: SyncOperation_OperationData.categoryData,
     13: SyncOperation_OperationData.orderData,
     40: SyncOperation_OperationData.jsonData,
     0: SyncOperation_OperationData.notSet
@@ -124,15 +124,15 @@ class SyncOperation extends $pb.GeneratedMessage {
         subBuilder: $0.StoreProduct.create)
     ..aOM<$0.GlobalProduct>(11, _omitFieldNames ? '' : 'globalProductData',
         subBuilder: $0.GlobalProduct.create)
-    ..aOM<$0.ProductCategory>(12, _omitFieldNames ? '' : 'productCategoryData',
-        subBuilder: $0.ProductCategory.create)
-    ..aOM<$1.Order>(13, _omitFieldNames ? '' : 'orderData',
-        subBuilder: $1.Order.create)
+    ..aOM<$1.Category>(12, _omitFieldNames ? '' : 'categoryData',
+        subBuilder: $1.Category.create)
+    ..aOM<$2.Order>(13, _omitFieldNames ? '' : 'orderData',
+        subBuilder: $2.Order.create)
     ..aOS(40, _omitFieldNames ? '' : 'jsonData')
-    ..aOM<$2.Timestamp>(41, _omitFieldNames ? '' : 'createdAt',
-        subBuilder: $2.Timestamp.create)
-    ..aOM<$2.Timestamp>(42, _omitFieldNames ? '' : 'updatedAt',
-        subBuilder: $2.Timestamp.create)
+    ..aOM<$3.Timestamp>(41, _omitFieldNames ? '' : 'createdAt',
+        subBuilder: $3.Timestamp.create)
+    ..aOM<$3.Timestamp>(42, _omitFieldNames ? '' : 'updatedAt',
+        subBuilder: $3.Timestamp.create)
     ..e<SyncOperationStatus>(
         43, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
         defaultOrMaker: SyncOperationStatus.SYNC_OPERATION_STATUS_UNSPECIFIED,
@@ -140,8 +140,8 @@ class SyncOperation extends $pb.GeneratedMessage {
         enumValues: SyncOperationStatus.values)
     ..a<$core.int>(44, _omitFieldNames ? '' : 'retryCount', $pb.PbFieldType.O3)
     ..a<$core.int>(45, _omitFieldNames ? '' : 'maxRetries', $pb.PbFieldType.O3)
-    ..aOM<$2.Timestamp>(46, _omitFieldNames ? '' : 'nextRetryAt',
-        subBuilder: $2.Timestamp.create)
+    ..aOM<$3.Timestamp>(46, _omitFieldNames ? '' : 'nextRetryAt',
+        subBuilder: $3.Timestamp.create)
     ..aOS(47, _omitFieldNames ? '' : 'errorMessage')
     ..m<$core.String, $core.String>(48, _omitFieldNames ? '' : 'metadata',
         entryClassName: 'SyncOperation.MetadataEntry',
@@ -271,27 +271,27 @@ class SyncOperation extends $pb.GeneratedMessage {
 
   /// Product category data
   @$pb.TagNumber(12)
-  $0.ProductCategory get productCategoryData => $_getN(9);
+  $1.Category get categoryData => $_getN(9);
   @$pb.TagNumber(12)
-  set productCategoryData($0.ProductCategory value) => $_setField(12, value);
+  set categoryData($1.Category value) => $_setField(12, value);
   @$pb.TagNumber(12)
-  $core.bool hasProductCategoryData() => $_has(9);
+  $core.bool hasCategoryData() => $_has(9);
   @$pb.TagNumber(12)
-  void clearProductCategoryData() => $_clearField(12);
+  void clearCategoryData() => $_clearField(12);
   @$pb.TagNumber(12)
-  $0.ProductCategory ensureProductCategoryData() => $_ensure(9);
+  $1.Category ensureCategoryData() => $_ensure(9);
 
   /// Order data
   @$pb.TagNumber(13)
-  $1.Order get orderData => $_getN(10);
+  $2.Order get orderData => $_getN(10);
   @$pb.TagNumber(13)
-  set orderData($1.Order value) => $_setField(13, value);
+  set orderData($2.Order value) => $_setField(13, value);
   @$pb.TagNumber(13)
   $core.bool hasOrderData() => $_has(10);
   @$pb.TagNumber(13)
   void clearOrderData() => $_clearField(13);
   @$pb.TagNumber(13)
-  $1.Order ensureOrderData() => $_ensure(10);
+  $2.Order ensureOrderData() => $_ensure(10);
 
   /// Generic JSON data for other entities
   @$pb.TagNumber(40)
@@ -305,27 +305,27 @@ class SyncOperation extends $pb.GeneratedMessage {
 
   /// Timestamp when operation was created
   @$pb.TagNumber(41)
-  $2.Timestamp get createdAt => $_getN(12);
+  $3.Timestamp get createdAt => $_getN(12);
   @$pb.TagNumber(41)
-  set createdAt($2.Timestamp value) => $_setField(41, value);
+  set createdAt($3.Timestamp value) => $_setField(41, value);
   @$pb.TagNumber(41)
   $core.bool hasCreatedAt() => $_has(12);
   @$pb.TagNumber(41)
   void clearCreatedAt() => $_clearField(41);
   @$pb.TagNumber(41)
-  $2.Timestamp ensureCreatedAt() => $_ensure(12);
+  $3.Timestamp ensureCreatedAt() => $_ensure(12);
 
   /// Timestamp when operation was last updated
   @$pb.TagNumber(42)
-  $2.Timestamp get updatedAt => $_getN(13);
+  $3.Timestamp get updatedAt => $_getN(13);
   @$pb.TagNumber(42)
-  set updatedAt($2.Timestamp value) => $_setField(42, value);
+  set updatedAt($3.Timestamp value) => $_setField(42, value);
   @$pb.TagNumber(42)
   $core.bool hasUpdatedAt() => $_has(13);
   @$pb.TagNumber(42)
   void clearUpdatedAt() => $_clearField(42);
   @$pb.TagNumber(42)
-  $2.Timestamp ensureUpdatedAt() => $_ensure(13);
+  $3.Timestamp ensureUpdatedAt() => $_ensure(13);
 
   /// Current status of the operation
   @$pb.TagNumber(43)
@@ -359,15 +359,15 @@ class SyncOperation extends $pb.GeneratedMessage {
 
   /// Next retry timestamp (if applicable)
   @$pb.TagNumber(46)
-  $2.Timestamp get nextRetryAt => $_getN(17);
+  $3.Timestamp get nextRetryAt => $_getN(17);
   @$pb.TagNumber(46)
-  set nextRetryAt($2.Timestamp value) => $_setField(46, value);
+  set nextRetryAt($3.Timestamp value) => $_setField(46, value);
   @$pb.TagNumber(46)
   $core.bool hasNextRetryAt() => $_has(17);
   @$pb.TagNumber(46)
   void clearNextRetryAt() => $_clearField(46);
   @$pb.TagNumber(46)
-  $2.Timestamp ensureNextRetryAt() => $_ensure(17);
+  $3.Timestamp ensureNextRetryAt() => $_ensure(17);
 
   /// Error message (if operation failed)
   @$pb.TagNumber(47)
@@ -392,7 +392,7 @@ class SyncOperationBatch extends $pb.GeneratedMessage {
     $core.String? storeId,
     $core.String? businessId,
     $core.String? userId,
-    $2.Timestamp? createdAt,
+    $3.Timestamp? createdAt,
     $core.int? totalOperations,
     $core.int? successfulOperations,
     $core.int? failedOperations,
@@ -433,8 +433,8 @@ class SyncOperationBatch extends $pb.GeneratedMessage {
     ..aOS(3, _omitFieldNames ? '' : 'storeId')
     ..aOS(4, _omitFieldNames ? '' : 'businessId')
     ..aOS(5, _omitFieldNames ? '' : 'userId')
-    ..aOM<$2.Timestamp>(6, _omitFieldNames ? '' : 'createdAt',
-        subBuilder: $2.Timestamp.create)
+    ..aOM<$3.Timestamp>(6, _omitFieldNames ? '' : 'createdAt',
+        subBuilder: $3.Timestamp.create)
     ..a<$core.int>(
         7, _omitFieldNames ? '' : 'totalOperations', $pb.PbFieldType.O3)
     ..a<$core.int>(
@@ -515,15 +515,15 @@ class SyncOperationBatch extends $pb.GeneratedMessage {
 
   /// Timestamp when batch was created
   @$pb.TagNumber(6)
-  $2.Timestamp get createdAt => $_getN(5);
+  $3.Timestamp get createdAt => $_getN(5);
   @$pb.TagNumber(6)
-  set createdAt($2.Timestamp value) => $_setField(6, value);
+  set createdAt($3.Timestamp value) => $_setField(6, value);
   @$pb.TagNumber(6)
   $core.bool hasCreatedAt() => $_has(5);
   @$pb.TagNumber(6)
   void clearCreatedAt() => $_clearField(6);
   @$pb.TagNumber(6)
-  $2.Timestamp ensureCreatedAt() => $_ensure(5);
+  $3.Timestamp ensureCreatedAt() => $_ensure(5);
 
   /// Total number of operations in batch
   @$pb.TagNumber(7)
@@ -689,7 +689,7 @@ class SubmitSyncOperationsResponse extends $pb.GeneratedMessage {
     $core.String? batchId,
     $core.Iterable<SyncOperationResult>? operationResults,
     SyncOperationStatus? batchStatus,
-    $2.Timestamp? processedAt,
+    $3.Timestamp? processedAt,
   }) {
     final result = create();
     if (batchId != null) result.batchId = batchId;
@@ -722,8 +722,8 @@ class SubmitSyncOperationsResponse extends $pb.GeneratedMessage {
         defaultOrMaker: SyncOperationStatus.SYNC_OPERATION_STATUS_UNSPECIFIED,
         valueOf: SyncOperationStatus.valueOf,
         enumValues: SyncOperationStatus.values)
-    ..aOM<$2.Timestamp>(4, _omitFieldNames ? '' : 'processedAt',
-        subBuilder: $2.Timestamp.create)
+    ..aOM<$3.Timestamp>(4, _omitFieldNames ? '' : 'processedAt',
+        subBuilder: $3.Timestamp.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -777,15 +777,15 @@ class SubmitSyncOperationsResponse extends $pb.GeneratedMessage {
 
   /// Timestamp when batch was processed
   @$pb.TagNumber(4)
-  $2.Timestamp get processedAt => $_getN(3);
+  $3.Timestamp get processedAt => $_getN(3);
   @$pb.TagNumber(4)
-  set processedAt($2.Timestamp value) => $_setField(4, value);
+  set processedAt($3.Timestamp value) => $_setField(4, value);
   @$pb.TagNumber(4)
   $core.bool hasProcessedAt() => $_has(3);
   @$pb.TagNumber(4)
   void clearProcessedAt() => $_clearField(4);
   @$pb.TagNumber(4)
-  $2.Timestamp ensureProcessedAt() => $_ensure(3);
+  $3.Timestamp ensureProcessedAt() => $_ensure(3);
 }
 
 /// Result of a single sync operation
@@ -795,7 +795,7 @@ class SyncOperationResult extends $pb.GeneratedMessage {
     SyncOperationStatus? status,
     $core.String? errorMessage,
     $core.String? serverEntityId,
-    $2.Timestamp? processedAt,
+    $3.Timestamp? processedAt,
   }) {
     final result = create();
     if (operationId != null) result.operationId = operationId;
@@ -827,8 +827,8 @@ class SyncOperationResult extends $pb.GeneratedMessage {
         enumValues: SyncOperationStatus.values)
     ..aOS(3, _omitFieldNames ? '' : 'errorMessage')
     ..aOS(4, _omitFieldNames ? '' : 'serverEntityId')
-    ..aOM<$2.Timestamp>(5, _omitFieldNames ? '' : 'processedAt',
-        subBuilder: $2.Timestamp.create)
+    ..aOM<$3.Timestamp>(5, _omitFieldNames ? '' : 'processedAt',
+        subBuilder: $3.Timestamp.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -894,15 +894,15 @@ class SyncOperationResult extends $pb.GeneratedMessage {
 
   /// Timestamp when operation was processed
   @$pb.TagNumber(5)
-  $2.Timestamp get processedAt => $_getN(4);
+  $3.Timestamp get processedAt => $_getN(4);
   @$pb.TagNumber(5)
-  set processedAt($2.Timestamp value) => $_setField(5, value);
+  set processedAt($3.Timestamp value) => $_setField(5, value);
   @$pb.TagNumber(5)
   $core.bool hasProcessedAt() => $_has(4);
   @$pb.TagNumber(5)
   void clearProcessedAt() => $_clearField(5);
   @$pb.TagNumber(5)
-  $2.Timestamp ensureProcessedAt() => $_ensure(4);
+  $3.Timestamp ensureProcessedAt() => $_ensure(4);
 }
 
 /// Request to get sync operations status
@@ -1416,7 +1416,7 @@ class StreamSyncOperationsResponse extends $pb.GeneratedMessage {
   factory StreamSyncOperationsResponse({
     SyncOperation? operation,
     $core.String? updateType,
-    $2.Timestamp? updateTimestamp,
+    $3.Timestamp? updateTimestamp,
   }) {
     final result = create();
     if (operation != null) result.operation = operation;
@@ -1441,8 +1441,8 @@ class StreamSyncOperationsResponse extends $pb.GeneratedMessage {
     ..aOM<SyncOperation>(1, _omitFieldNames ? '' : 'operation',
         subBuilder: SyncOperation.create)
     ..aOS(2, _omitFieldNames ? '' : 'updateType')
-    ..aOM<$2.Timestamp>(3, _omitFieldNames ? '' : 'updateTimestamp',
-        subBuilder: $2.Timestamp.create)
+    ..aOM<$3.Timestamp>(3, _omitFieldNames ? '' : 'updateTimestamp',
+        subBuilder: $3.Timestamp.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -1494,15 +1494,15 @@ class StreamSyncOperationsResponse extends $pb.GeneratedMessage {
 
   /// Timestamp of the update
   @$pb.TagNumber(3)
-  $2.Timestamp get updateTimestamp => $_getN(2);
+  $3.Timestamp get updateTimestamp => $_getN(2);
   @$pb.TagNumber(3)
-  set updateTimestamp($2.Timestamp value) => $_setField(3, value);
+  set updateTimestamp($3.Timestamp value) => $_setField(3, value);
   @$pb.TagNumber(3)
   $core.bool hasUpdateTimestamp() => $_has(2);
   @$pb.TagNumber(3)
   void clearUpdateTimestamp() => $_clearField(3);
   @$pb.TagNumber(3)
-  $2.Timestamp ensureUpdateTimestamp() => $_ensure(2);
+  $3.Timestamp ensureUpdateTimestamp() => $_ensure(2);
 }
 
 /// Request to retry failed sync operations

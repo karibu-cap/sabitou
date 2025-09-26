@@ -20,8 +20,7 @@ class RealHiveDatabase implements HiveDatabase {
       Hive.box<GlobalProduct>('globalProducts');
 
   @override
-  Box<ProductCategory> get productCategories =>
-      Hive.box<ProductCategory>('productCategories');
+  Box<Category> get categories => Hive.box<Category>('categories');
 
   @override
   Box<Order> get orders => Hive.box<Order>('orders');
@@ -38,7 +37,7 @@ class RealHiveDatabase implements HiveDatabase {
     // Open all boxes
     await Hive.openBox<StoreProduct>('storeProducts');
     await Hive.openBox<GlobalProduct>('globalProducts');
-    await Hive.openBox<ProductCategory>('productCategories');
+    await Hive.openBox<Category>('categories');
     await Hive.openBox<Order>('orders');
     await Hive.openBox<OrderItem>('orderItems');
     await Hive.openBox<SyncOperation>('syncOperations');
@@ -49,7 +48,7 @@ class RealHiveDatabase implements HiveDatabase {
     // close all boxes
     await Hive.box<StoreProduct>('storeProducts').close();
     await Hive.box<GlobalProduct>('globalProducts').close();
-    await Hive.box<ProductCategory>('productCategories').close();
+    await Hive.box<Category>('categories').close();
     await Hive.box<Order>('orders').close();
     await Hive.box<OrderItem>('orderItems').close();
     await Hive.box<SyncOperation>('syncOperations').close();
