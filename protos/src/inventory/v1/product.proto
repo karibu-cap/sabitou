@@ -92,10 +92,10 @@ message StoreProduct {
   optional string supplier_id = 12;
 
   // Current purchase/cost price.
-  optional int32 cost_price = 6;
+  optional int32 cost_price = 13;
 
   // The status of the product.
-  ProductStatus status = 7;
+  ProductStatus status = 14;
 }
 
 message FindStoreProductsRequest {

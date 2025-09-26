@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package stockInBound.v1;
+package inventory.v1;
 import "google/protobuf/timestamp.proto";
 
 enum InboundType {
