@@ -69,27 +69,6 @@ class LocalProductsRepository {
     }
   }
 
-  /// Finds product categories by query.
-  Future<List<ProductCategory>> findCategories(
-    FindCategoryRequest request,
-  ) async {
-    try {
-      final response = hiveDb.productCategories.values
-          .where(
-            (category) => category.name.toLowerCase().contains(
-              request.query.toLowerCase(),
-            ),
-          )
-          .toList();
-
-      return response;
-    } on Exception catch (e) {
-      _logger.severe('findCategories Error: $e');
-
-      return [];
-    }
-  }
-
   /// Adds a new product to a business.
   Future<bool> addProduct(AddStoreProductRequest request) async {
     try {

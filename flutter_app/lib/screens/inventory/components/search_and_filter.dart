@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../services/internationalization/internationalization.dart';
+import '../../../utils/extensions/category_extension.dart';
 import '../../../utils/responsive_utils.dart';
 import '../../../widgets/mobile_scanner_view.dart';
 import '../inventory_controller.dart';
@@ -22,7 +23,7 @@ class SearchAndFilterCard extends StatelessWidget {
         controller.productsStream.valueOrNull
             ?.map((p) => p.globalProduct.categories)
             .expand((c) => c)
-            .map((c) => c.name)
+            .map((c) => c.label)
             .toSet()
             .toList() ??
         [];

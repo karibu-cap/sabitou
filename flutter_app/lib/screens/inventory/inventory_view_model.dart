@@ -8,6 +8,8 @@ import '../../repositories/categories_repository.dart';
 import '../../repositories/products_repository.dart';
 import '../../utils/common_functions.dart';
 import '../../utils/extends_models.dart';
+import '../../utils/extensions/category_extension.dart';
+import '../../utils/extensions/global_product_extension.dart';
 import '../../utils/logger.dart';
 import '../../utils/user_preference.dart';
 
@@ -83,7 +85,7 @@ class InventoryViewModel {
         filtered = filtered
             .where(
               (p) =>
-                  p.globalProduct.name.toLowerCase().contains(
+                  p.globalProduct.label.toLowerCase().contains(
                     searchQuery.toLowerCase(),
                   ) ||
                   p.globalProduct.barCodeValue.toLowerCase().contains(
@@ -96,7 +98,7 @@ class InventoryViewModel {
         filtered = filtered
             .where(
               (p) => p.globalProduct.categories.any(
-                (c) => c.name.toLowerCase() == category.toLowerCase(),
+                (c) => c.label.toLowerCase() == category.toLowerCase(),
               ),
             )
             .toList();

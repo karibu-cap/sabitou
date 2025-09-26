@@ -60,21 +60,6 @@ class RemoteProductsRepository {
     }
   }
 
-  /// Finds product categories by query.
-  Future<List<ProductCategory>> findCategories(
-    FindCategoryRequest request,
-  ) async {
-    try {
-      final response = await productServiceClient.findCategory(request);
-
-      return response.categories;
-    } on Exception catch (e) {
-      _logger.severe('findCategories Error: $e');
-
-      return [];
-    }
-  }
-
   /// Adds a new product to a business.
   Future<bool> addProduct(AddStoreProductRequest request) async {
     try {
@@ -122,6 +107,45 @@ class RemoteProductsRepository {
       return response.success;
     } on Exception catch (e) {
       _logger.severe('deleteProduct Error: $e');
+
+      return false;
+    }
+  }
+
+  /// Adds a new global product.
+  Future<bool> createGlobalProduct(CreateGlobalProductRequest request) async {
+    try {
+      final response = await productServiceClient.createGlobalProduct(request);
+
+      return response.success;
+    } on Exception catch (e) {
+      _logger.severe('createGlobalProduct Error: $e');
+
+      return false;
+    }
+  }
+
+  /// Updates a global product.
+  Future<bool> updateGlobalProduct(UpdateGlobalProductRequest request) async {
+    try {
+      final response = await productServiceClient.updateGlobalProduct(request);
+
+      return response.success;
+    } on Exception catch (e) {
+      _logger.severe('updateGlobalProduct Error: $e');
+
+      return false;
+    }
+  }
+
+  /// Deletes a global product.
+  Future<bool> deleteGlobalProduct(DeleteGlobalProductRequest request) async {
+    try {
+      final response = await productServiceClient.deleteGlobalProduct(request);
+
+      return response.success;
+    } on Exception catch (e) {
+      _logger.severe('deleteGlobalProduct Error: $e');
 
       return false;
     }

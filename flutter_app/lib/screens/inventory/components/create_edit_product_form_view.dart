@@ -12,6 +12,8 @@ import '../../../repositories/suppliers_repository.dart';
 import '../../../services/internationalization/internationalization.dart';
 import '../../../utils/common_functions.dart';
 import '../../../utils/extends_models.dart';
+import '../../../utils/extensions/category_extension.dart';
+import '../../../utils/extensions/global_product_extension.dart';
 import '../../../utils/form/validation.dart';
 import '../../../utils/responsive_utils.dart';
 import '../../../utils/user_preference.dart';
@@ -109,7 +111,7 @@ class _ProductNameField extends StatelessWidget {
       initialValue: controller.nameController.text,
       placeholder: Intls.to.enterProductName,
       optionsBuilder: (textController) async {
-        controller.product.globalProduct.name = textController.text;
+        controller.product.globalProduct.name.en = textController.text;
         if (textController.text.isEmpty) {
           return [];
         }
@@ -125,7 +127,7 @@ class _ProductNameField extends StatelessWidget {
                 final option = options.elementAt(index);
 
                 return ListTile(
-                  title: Text(option.name),
+                  title: Text(option.label),
                   onTap: () => {
                     onSelected(option),
                     controller.setNewProduct(option),
@@ -134,7 +136,7 @@ class _ProductNameField extends StatelessWidget {
               },
             );
           },
-      displayStringForOption: (option) => option.name,
+      displayStringForOption: (option) => option.label,
       inputValidator: (value) {
         if (value.isEmpty) {
           return Intls.to.isRequiredField.trParams({
@@ -383,7 +385,7 @@ class _CategoryDropdown extends StatelessWidget {
                                 return true;
                               }
 
-                              return category.name.toLowerCase().contains(
+                              return category.label.toLowerCase().contains(
                                 searchValue.value?.toLowerCase() ?? '',
                               );
                             });
@@ -412,7 +414,7 @@ class _CategoryDropdown extends StatelessWidget {
                                 ...filteredCategories
                                     .map(
                                       (category) => Offstage(
-                                        offstage: !category.name
+                                        offstage: !category.label
                                             .toLowerCase()
                                             .contains(
                                               searchValue.value
@@ -421,7 +423,7 @@ class _CategoryDropdown extends StatelessWidget {
                                             ),
                                         child: ShadOption<String?>(
                                           value: category.refId,
-                                          child: Text(category.name),
+                                          child: Text(category.label),
                                         ),
                                       ),
                                     )
@@ -432,7 +434,7 @@ class _CategoryDropdown extends StatelessWidget {
                                   ..clear()
                                   ..addAll(
                                     value.map(
-                                      (e) => ProductCategory(
+                                      (e) => Category(
                                         refId: e,
                                         name: categories
                                             .firstWhereOrNull(

@@ -278,6 +278,64 @@ components:
          the Joda Time's [`ISODateTimeFormat.dateTime()`](
          http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()
          ) to obtain a formatter capable of generating timestamps in this format.
+    inventory.v1.Category:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+          description: Unique identifier for the category
+          nullable: true
+        name:
+          title: name
+          description: Name of the category (e.g., "Electronics", "Smart TVs")
+          $ref: '#/components/schemas/inventory.v1.Internationalized'
+        parentCategoryId:
+          type: string
+          title: parent_category_id
+          description: Reference to parent category (empty for root categories)
+          nullable: true
+        status:
+          title: status
+          description: The status of the category.
+          $ref: '#/components/schemas/inventory.v1.CategoryStatus'
+        type:
+          title: type
+          description: The status of the category.
+          $ref: '#/components/schemas/inventory.v1.CategoryType'
+        businessId:
+          type: string
+          title: business_id
+          minLength: 6
+          description: Business ID associated with the category
+          nullable: true
+        createdAt:
+          title: created_at
+          description: Timestamp when the category was created
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        updatedAt:
+          title: updated_at
+          description: Timestamp when the category was last updated
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: Category
+      required:
+        - businessId
+      additionalProperties: false
+    inventory.v1.CategoryStatus:
+      type: string
+      title: CategoryStatus
+      enum:
+        - CATEGORY_STATUS_UNSPECIFIED
+        - CATEGORY_STATUS_ACTIVE
+        - CATEGORY_STATUS_INACTIVE
+    inventory.v1.CategoryType:
+      type: string
+      title: CategoryType
+      enum:
+        - CATEGORY_TYPE_STORE
+        - CATEGORY_TYPE_BUSINESS
+        - CATEGORY_TYPE_PRODUCT
     inventory.v1.GlobalProduct:
       type: object
       properties:
@@ -287,14 +345,14 @@ components:
           description: The unique identifier of the product.
           nullable: true
         name:
-          type: string
           title: name
           description: The name of the product.
+          $ref: '#/components/schemas/inventory.v1.Internationalized'
         description:
-          type: string
           title: description
           description: The description of the product.
           nullable: true
+          $ref: '#/components/schemas/inventory.v1.Internationalized'
         barCodeValue:
           type: string
           title: bar_code_value
@@ -303,7 +361,7 @@ components:
         categories:
           type: array
           items:
-            $ref: '#/components/schemas/inventory.v1.ProductCategory'
+            $ref: '#/components/schemas/inventory.v1.Category'
           title: categories
           description: The product categories of the product.
         imagesLinksIds:
@@ -314,19 +372,18 @@ components:
           description: The list of image related to the product.
       title: GlobalProduct
       additionalProperties: false
-    inventory.v1.ProductCategory:
+    inventory.v1.Internationalized:
       type: object
       properties:
-        refId:
+        en:
           type: string
-          title: ref_id
-          description: The unique identifier of the product category.
-          nullable: true
-        name:
+          title: en
+          description: The English name of the product category.
+        fr:
           type: string
-          title: name
-          description: The name of the product category.
-      title: ProductCategory
+          title: fr
+          description: The French name of the product category.
+      title: Internationalized
       additionalProperties: false
     inventory.v1.StoreProduct:
       type: object
@@ -840,6 +897,14 @@ components:
               description: Additional metadata
         - oneOf:
             - properties:
+                categoryData:
+                  title: category_data
+                  description: Product category data
+                  $ref: '#/components/schemas/inventory.v1.Category'
+              title: category_data
+              required:
+                - categoryData
+            - properties:
                 globalProductData:
                   title: global_product_data
                   description: Global product data
@@ -863,14 +928,6 @@ components:
               title: order_data
               required:
                 - orderData
-            - properties:
-                productCategoryData:
-                  title: product_category_data
-                  description: Product category data
-                  $ref: '#/components/schemas/inventory.v1.ProductCategory'
-              title: product_category_data
-              required:
-                - productCategoryData
             - properties:
                 storeProductData:
                   title: store_product_data

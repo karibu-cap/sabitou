@@ -4,6 +4,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../services/internationalization/internationalization.dart';
 import '../../../themes/app_colors.dart';
+import '../../../utils/extensions/global_product_extension.dart';
 import '../dashboard_controller.dart';
 import 'alert_card.dart';
 import 'empty_state.dart';
@@ -58,7 +59,7 @@ class LowStockAlert extends StatelessWidget {
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 12),
                       child: ProductItemCard(
-                        productName: globalProduct.name,
+                        productName: globalProduct.label,
                         subtitle:
                             'Reorder threshold: ${businessProduct.minStockThreshold}',
                         badgeText: '${businessProduct.stockQuantity} left',

@@ -16,12 +16,62 @@ import 'dart:typed_data' as $typed_data;
 
 import '../../google/protobuf/timestamp.pbjson.dart' as $0;
 
+@$core.Deprecated('Use categoryStatusDescriptor instead')
+const CategoryStatus$json = {
+  '1': 'CategoryStatus',
+  '2': [
+    {'1': 'CATEGORY_STATUS_UNSPECIFIED', '2': 0},
+    {'1': 'CATEGORY_STATUS_ACTIVE', '2': 1},
+    {'1': 'CATEGORY_STATUS_INACTIVE', '2': 2},
+  ],
+};
+
+/// Descriptor for `CategoryStatus`. Decode as a `google.protobuf.EnumDescriptorProto`.
+final $typed_data.Uint8List categoryStatusDescriptor = $convert.base64Decode(
+    'Cg5DYXRlZ29yeVN0YXR1cxIfChtDQVRFR09SWV9TVEFUVVNfVU5TUEVDSUZJRUQQABIaChZDQV'
+    'RFR09SWV9TVEFUVVNfQUNUSVZFEAESHAoYQ0FURUdPUllfU1RBVFVTX0lOQUNUSVZFEAI=');
+
+@$core.Deprecated('Use categoryTypeDescriptor instead')
+const CategoryType$json = {
+  '1': 'CategoryType',
+  '2': [
+    {'1': 'CATEGORY_TYPE_STORE', '2': 0},
+    {'1': 'CATEGORY_TYPE_BUSINESS', '2': 1},
+    {'1': 'CATEGORY_TYPE_PRODUCT', '2': 2},
+  ],
+};
+
+/// Descriptor for `CategoryType`. Decode as a `google.protobuf.EnumDescriptorProto`.
+final $typed_data.Uint8List categoryTypeDescriptor = $convert.base64Decode(
+    'CgxDYXRlZ29yeVR5cGUSFwoTQ0FURUdPUllfVFlQRV9TVE9SRRAAEhoKFkNBVEVHT1JZX1RZUE'
+    'VfQlVTSU5FU1MQARIZChVDQVRFR09SWV9UWVBFX1BST0RVQ1QQAg==');
+
+@$core.Deprecated('Use internationalizedDescriptor instead')
+const Internationalized$json = {
+  '1': 'Internationalized',
+  '2': [
+    {'1': 'en', '3': 1, '4': 1, '5': 9, '10': 'en'},
+    {'1': 'fr', '3': 2, '4': 1, '5': 9, '10': 'fr'},
+  ],
+};
+
+/// Descriptor for `Internationalized`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List internationalizedDescriptor = $convert.base64Decode(
+    'ChFJbnRlcm5hdGlvbmFsaXplZBIOCgJlbhgBIAEoCVICZW4SDgoCZnIYAiABKAlSAmZy');
+
 @$core.Deprecated('Use categoryDescriptor instead')
 const Category$json = {
   '1': 'Category',
   '2': [
     {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'refId', '17': true},
-    {'1': 'name', '3': 2, '4': 1, '5': 9, '8': {}, '10': 'name'},
+    {
+      '1': 'name',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.inventory.v1.Internationalized',
+      '10': 'name'
+    },
     {
       '1': 'parent_category_id',
       '3': 3,
@@ -31,10 +81,35 @@ const Category$json = {
       '10': 'parentCategoryId',
       '17': true
     },
-    {'1': 'business_id', '3': 4, '4': 1, '5': 9, '8': {}, '10': 'businessId'},
+    {
+      '1': 'status',
+      '3': 4,
+      '4': 1,
+      '5': 14,
+      '6': '.inventory.v1.CategoryStatus',
+      '10': 'status'
+    },
+    {
+      '1': 'type',
+      '3': 5,
+      '4': 1,
+      '5': 14,
+      '6': '.inventory.v1.CategoryType',
+      '10': 'type'
+    },
+    {
+      '1': 'business_id',
+      '3': 6,
+      '4': 1,
+      '5': 9,
+      '8': {},
+      '9': 2,
+      '10': 'businessId',
+      '17': true
+    },
     {
       '1': 'created_at',
-      '3': 6,
+      '3': 7,
       '4': 1,
       '5': 11,
       '6': '.google.protobuf.Timestamp',
@@ -42,11 +117,11 @@ const Category$json = {
     },
     {
       '1': 'updated_at',
-      '3': 7,
+      '3': 8,
       '4': 1,
       '5': 11,
       '6': '.google.protobuf.Timestamp',
-      '9': 2,
+      '9': 3,
       '10': 'updatedAt',
       '17': true
     },
@@ -54,19 +129,22 @@ const Category$json = {
   '8': [
     {'1': '_ref_id'},
     {'1': '_parent_category_id'},
+    {'1': '_business_id'},
     {'1': '_updated_at'},
   ],
 };
 
 /// Descriptor for `Category`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List categoryDescriptor = $convert.base64Decode(
-    'CghDYXRlZ29yeRIaCgZyZWZfaWQYASABKAlIAFIFcmVmSWSIAQESHgoEbmFtZRgCIAEoCUIKuk'
-    'gHyAEBcgIQA1IEbmFtZRIxChJwYXJlbnRfY2F0ZWdvcnlfaWQYAyABKAlIAVIQcGFyZW50Q2F0'
-    'ZWdvcnlJZIgBARIrCgtidXNpbmVzc19pZBgEIAEoCUIKukgHyAEBcgIQA1IKYnVzaW5lc3NJZB'
-    'I5CgpjcmVhdGVkX2F0GAYgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIJY3JlYXRl'
-    'ZEF0Ej4KCnVwZGF0ZWRfYXQYByABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wSAJSCX'
-    'VwZGF0ZWRBdIgBAUIJCgdfcmVmX2lkQhUKE19wYXJlbnRfY2F0ZWdvcnlfaWRCDQoLX3VwZGF0'
-    'ZWRfYXQ=');
+    'CghDYXRlZ29yeRIaCgZyZWZfaWQYASABKAlIAFIFcmVmSWSIAQESMwoEbmFtZRgCIAEoCzIfLm'
+    'ludmVudG9yeS52MS5JbnRlcm5hdGlvbmFsaXplZFIEbmFtZRIxChJwYXJlbnRfY2F0ZWdvcnlf'
+    'aWQYAyABKAlIAVIQcGFyZW50Q2F0ZWdvcnlJZIgBARI0CgZzdGF0dXMYBCABKA4yHC5pbnZlbn'
+    'RvcnkudjEuQ2F0ZWdvcnlTdGF0dXNSBnN0YXR1cxIuCgR0eXBlGAUgASgOMhouaW52ZW50b3J5'
+    'LnYxLkNhdGVnb3J5VHlwZVIEdHlwZRIwCgtidXNpbmVzc19pZBgGIAEoCUIKukgHyAEBcgIQBk'
+    'gCUgpidXNpbmVzc0lkiAEBEjkKCmNyZWF0ZWRfYXQYByABKAsyGi5nb29nbGUucHJvdG9idWYu'
+    'VGltZXN0YW1wUgljcmVhdGVkQXQSPgoKdXBkYXRlZF9hdBgIIAEoCzIaLmdvb2dsZS5wcm90b2'
+    'J1Zi5UaW1lc3RhbXBIA1IJdXBkYXRlZEF0iAEBQgkKB19yZWZfaWRCFQoTX3BhcmVudF9jYXRl'
+    'Z29yeV9pZEIOCgxfYnVzaW5lc3NfaWRCDQoLX3VwZGF0ZWRfYXQ=');
 
 @$core.Deprecated('Use findCategoriesRequestDescriptor instead')
 const FindCategoriesRequest$json = {
@@ -84,11 +162,33 @@ const FindCategoriesRequest$json = {
       '10': 'parentCategoryId',
       '17': true
     },
+    {
+      '1': 'status',
+      '3': 5,
+      '4': 1,
+      '5': 14,
+      '6': '.inventory.v1.CategoryStatus',
+      '9': 3,
+      '10': 'status',
+      '17': true
+    },
+    {
+      '1': 'type',
+      '3': 6,
+      '4': 1,
+      '5': 14,
+      '6': '.inventory.v1.CategoryType',
+      '9': 4,
+      '10': 'type',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_ref_id'},
     {'1': '_name'},
     {'1': '_parent_category_id'},
+    {'1': '_status'},
+    {'1': '_type'},
   ],
 };
 
@@ -97,7 +197,10 @@ final $typed_data.Uint8List findCategoriesRequestDescriptor = $convert.base64Dec
     'ChVGaW5kQ2F0ZWdvcmllc1JlcXVlc3QSKwoLYnVzaW5lc3NfaWQYASABKAlCCrpIB8gBAXICEA'
     'NSCmJ1c2luZXNzSWQSGgoGcmVmX2lkGAIgASgJSABSBXJlZklkiAEBEhcKBG5hbWUYAyABKAlI'
     'AVIEbmFtZYgBARIxChJwYXJlbnRfY2F0ZWdvcnlfaWQYBCABKAlIAlIQcGFyZW50Q2F0ZWdvcn'
-    'lJZIgBAUIJCgdfcmVmX2lkQgcKBV9uYW1lQhUKE19wYXJlbnRfY2F0ZWdvcnlfaWQ=');
+    'lJZIgBARI5CgZzdGF0dXMYBSABKA4yHC5pbnZlbnRvcnkudjEuQ2F0ZWdvcnlTdGF0dXNIA1IG'
+    'c3RhdHVziAEBEjMKBHR5cGUYBiABKA4yGi5pbnZlbnRvcnkudjEuQ2F0ZWdvcnlUeXBlSARSBH'
+    'R5cGWIAQFCCQoHX3JlZl9pZEIHCgVfbmFtZUIVChNfcGFyZW50X2NhdGVnb3J5X2lkQgkKB19z'
+    'dGF0dXNCBwoFX3R5cGU=');
 
 @$core.Deprecated('Use findCategoriesResponseDescriptor instead')
 const FindCategoriesResponse$json = {
@@ -157,15 +260,23 @@ final $typed_data.Uint8List createCategoryResponseDescriptor =
 const UpdateCategoryRequest$json = {
   '1': 'UpdateCategoryRequest',
   '2': [
-    {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'refId'},
-    {'1': 'name', '3': 2, '4': 1, '5': 9, '8': {}, '10': 'name'},
+    {'1': 'category_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'categoryId'},
+    {
+      '1': 'category',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.inventory.v1.Category',
+      '10': 'category'
+    },
   ],
 };
 
 /// Descriptor for `UpdateCategoryRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List updateCategoryRequestDescriptor = $convert.base64Decode(
-    'ChVVcGRhdGVDYXRlZ29yeVJlcXVlc3QSIQoGcmVmX2lkGAEgASgJQgq6SAfIAQFyAhADUgVyZW'
-    'ZJZBIaCgRuYW1lGAIgASgJQga6SAPIAQFSBG5hbWU=');
+    'ChVVcGRhdGVDYXRlZ29yeVJlcXVlc3QSKwoLY2F0ZWdvcnlfaWQYASABKAlCCrpIB8gBAXICEA'
+    'NSCmNhdGVnb3J5SWQSMgoIY2F0ZWdvcnkYAiABKAsyFi5pbnZlbnRvcnkudjEuQ2F0ZWdvcnlS'
+    'CGNhdGVnb3J5');
 
 @$core.Deprecated('Use updateCategoryResponseDescriptor instead')
 const UpdateCategoryResponse$json = {
@@ -184,14 +295,14 @@ final $typed_data.Uint8List updateCategoryResponseDescriptor =
 const DeleteCategoryRequest$json = {
   '1': 'DeleteCategoryRequest',
   '2': [
-    {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'refId'},
+    {'1': 'category_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'categoryId'},
   ],
 };
 
 /// Descriptor for `DeleteCategoryRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List deleteCategoryRequestDescriptor = $convert.base64Decode(
-    'ChVEZWxldGVDYXRlZ29yeVJlcXVlc3QSIQoGcmVmX2lkGAEgASgJQgq6SAfIAQFyAhADUgVyZW'
-    'ZJZA==');
+    'ChVEZWxldGVDYXRlZ29yeVJlcXVlc3QSKwoLY2F0ZWdvcnlfaWQYASABKAlCCrpIB8gBAXICEA'
+    'NSCmNhdGVnb3J5SWQ=');
 
 @$core.Deprecated('Use deleteCategoryResponseDescriptor instead')
 const DeleteCategoryResponse$json = {
@@ -210,14 +321,14 @@ final $typed_data.Uint8List deleteCategoryResponseDescriptor =
 const GetCategoryRequest$json = {
   '1': 'GetCategoryRequest',
   '2': [
-    {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'refId'},
+    {'1': 'category_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'categoryId'},
   ],
 };
 
 /// Descriptor for `GetCategoryRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List getCategoryRequestDescriptor = $convert.base64Decode(
-    'ChJHZXRDYXRlZ29yeVJlcXVlc3QSIQoGcmVmX2lkGAEgASgJQgq6SAfIAQFyAhADUgVyZWZJZA'
-    '==');
+    'ChJHZXRDYXRlZ29yeVJlcXVlc3QSKwoLY2F0ZWdvcnlfaWQYASABKAlCCrpIB8gBAXICEANSCm'
+    'NhdGVnb3J5SWQ=');
 
 @$core.Deprecated('Use getCategoryResponseDescriptor instead')
 const GetCategoryResponse$json = {
@@ -275,6 +386,7 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
     CategoryServiceBase$messageJson = {
   '.inventory.v1.CreateCategoryRequest': CreateCategoryRequest$json,
   '.inventory.v1.Category': Category$json,
+  '.inventory.v1.Internationalized': Internationalized$json,
   '.google.protobuf.Timestamp': $0.Timestamp$json,
   '.inventory.v1.CreateCategoryResponse': CreateCategoryResponse$json,
   '.inventory.v1.UpdateCategoryRequest': UpdateCategoryRequest$json,

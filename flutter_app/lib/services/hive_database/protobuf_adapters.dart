@@ -37,20 +37,20 @@ class GlobalProductAdapter extends TypeAdapter<GlobalProduct> {
   }
 }
 
-/// Hive TypeAdapter for ProductCategory protobuf
-class ProductCategoryAdapter extends TypeAdapter<ProductCategory> {
+/// Hive TypeAdapter for Category protobuf
+class CategoryAdapter extends TypeAdapter<Category> {
   @override
   final int typeId = 2;
 
   @override
-  ProductCategory read(BinaryReader reader) {
+  Category read(BinaryReader reader) {
     final bytes = reader.readByteList();
 
-    return ProductCategory.fromBuffer(bytes);
+    return Category.fromBuffer(bytes);
   }
 
   @override
-  void write(BinaryWriter writer, ProductCategory obj) {
+  void write(BinaryWriter writer, Category obj) {
     writer.writeByteList(obj.writeToBuffer());
   }
 }
@@ -100,7 +100,7 @@ void registerProtobufAdapters() {
     Hive.registerAdapter(GlobalProductAdapter());
   }
   if (!Hive.isAdapterRegistered(2)) {
-    Hive.registerAdapter(ProductCategoryAdapter());
+    Hive.registerAdapter(CategoryAdapter());
   }
   if (!Hive.isAdapterRegistered(3)) {
     Hive.registerAdapter(OrderAdapter());

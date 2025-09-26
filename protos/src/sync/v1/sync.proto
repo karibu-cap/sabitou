@@ -5,6 +5,7 @@ package sync.v1;
 import "buf/validate/validate.proto";
 import "google/protobuf/timestamp.proto";
 import "inventory/v1/product.proto";
+import "inventory/v1/category.proto";
 import "order/v1/order.proto";
 
 // Enum for sync operation types
@@ -87,7 +88,7 @@ message SyncOperation {
     inventory.v1.GlobalProduct global_product_data = 11;
 
     // Product category data
-    inventory.v1.ProductCategory product_category_data = 12;
+    inventory.v1.Category category_data = 12;
 
     // Order data
     order.v1.Order order_data = 13;

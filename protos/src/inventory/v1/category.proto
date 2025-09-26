@@ -5,30 +5,57 @@ package inventory.v1;
 import "buf/validate/validate.proto";
 import "google/protobuf/timestamp.proto";
 
+message Internationalized {
+  // The English name of the product category.
+  string en = 1;
+
+  // The French name of the product category.
+  string fr = 2;
+}
+
+enum CategoryStatus {
+  CATEGORY_STATUS_UNSPECIFIED = 0;
+  /// The product category is active.
+  CATEGORY_STATUS_ACTIVE = 1;
+  /// The product category is inactive.
+  CATEGORY_STATUS_INACTIVE = 2;
+}
+
+enum CategoryType {
+  CATEGORY_TYPE_STORE = 0;
+  /// The product category is activ.
+  CATEGORY_TYPE_BUSINESS = 1;
+  /// The product category is inactive.
+  CATEGORY_TYPE_PRODUCT = 2;
+}
+
 message Category {
   // Unique identifier for the category
   optional string ref_id = 1;
 
   // Name of the category (e.g., "Electronics", "Smart TVs")
-  string name = 2 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).string.min_len = 3
-  ];
+  Internationalized name = 2;
 
   // Reference to parent category (empty for root categories)
   optional string parent_category_id = 3;
 
+  // The status of the category.
+  CategoryStatus status = 4;
+
+  // The status of the category.
+  CategoryType type = 5;
+
   // Business ID associated with the category
-  string business_id = 4 [
+  optional string business_id = 6 [
     (buf.validate.field).required = true,
-    (buf.validate.field).string.min_len = 3
+    (buf.validate.field).string.min_len = 6
   ];
 
   // Timestamp when the category was created
-  google.protobuf.Timestamp created_at = 6;
+  google.protobuf.Timestamp created_at = 7;
 
   // Timestamp when the category was last updated
-  optional google.protobuf.Timestamp updated_at = 7;
+  optional google.protobuf.Timestamp updated_at = 8;
 }
 
 message FindCategoriesRequest {
@@ -46,6 +73,12 @@ message FindCategoriesRequest {
 
   // Find the category by parent_category_id
   optional string parent_category_id = 4;
+
+  // Find the category by status
+  optional CategoryStatus status = 5;
+
+  // Find the category by type
+  optional CategoryType type = 6;
 }
 
 message FindCategoriesResponse {
@@ -64,13 +97,13 @@ message CreateCategoryResponse {
 
 message UpdateCategoryRequest {
   // The category information to update.
-  string ref_id = 1 [
+  string category_id = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
 
-  // The name of the category.
-  string name = 2 [(buf.validate.field).required = true];
+  // The category information to update.
+  Category category = 2;
 }
 
 message UpdateCategoryResponse {
@@ -80,7 +113,7 @@ message UpdateCategoryResponse {
 
 message DeleteCategoryRequest {
   // The unique identifier of the category.
-  string ref_id = 1 [
+  string category_id = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
@@ -93,7 +126,7 @@ message DeleteCategoryResponse {
 
 message GetCategoryRequest {
   // The unique identifier of the category.
-  string ref_id = 1 [
+  string category_id = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];

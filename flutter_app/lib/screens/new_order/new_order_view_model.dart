@@ -3,6 +3,7 @@ import 'package:sabitou_rpc/models.dart';
 
 import '../../repositories/products_repository.dart';
 import '../../utils/extends_models.dart';
+import '../../utils/extensions/global_product_extension.dart';
 import '../../utils/logger.dart';
 import '../../utils/user_preference.dart';
 
@@ -35,7 +36,7 @@ final class NewOrderViewModel {
         filtered = filtered
             .where(
               (p) =>
-                  p.globalProduct.name.toLowerCase().contains(
+                  p.globalProduct.label.toLowerCase().contains(
                     searchQuery.toLowerCase(),
                   ) ||
                   p.globalProduct.barCodeValue.toLowerCase().contains(

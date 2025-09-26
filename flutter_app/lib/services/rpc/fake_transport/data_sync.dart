@@ -6,27 +6,34 @@ final syncFakeTransport = FakeTransportBuilder()
       final globalProducts = {
         GlobalProduct()
           ..refId = 'global_product_1'
-          ..name = 'Produit Global Alpha'
-          ..description = 'Description du produit Alpha'
+          ..name.en = 'Global Product Alpha'
+          ..name.fr = 'Produit Global Alpha'
+          ..description.en = 'Description du produit Alpha'
+          ..description.fr = 'Description du produit Alpha'
           ..barCodeValue = '1234567890123'
           ..categories.addAll([
-            ProductCategory()
+            Category()
               ..refId = 'category_1'
-              ..name = 'Électronique',
-            ProductCategory()
+              ..name.en = 'Electronics'
+              ..name.fr = 'Électronique',
+            Category()
               ..refId = 'category_2'
-              ..name = 'Smartphones',
+              ..name.en = 'Smartphones'
+              ..name.fr = 'Smartphones',
           ])
           ..imagesLinksIds.addAll(['image_1', 'image_2']),
         GlobalProduct()
           ..refId = 'global_product_2'
-          ..name = 'Produit Global Beta'
-          ..description = 'Description du produit Beta'
+          ..name.en = 'Global Product Beta'
+          ..name.fr = 'Produit Global Beta'
+          ..description.en = 'Description du produit Beta'
+          ..description.fr = 'Description du produit Beta'
           ..barCodeValue = '2345678901234'
           ..categories.addAll([
-            ProductCategory()
+            Category()
               ..refId = 'category_3'
-              ..name = 'Alimentation',
+              ..name.en = 'Alimentation'
+              ..name.fr = 'Alimentation',
           ])
           ..imagesLinksIds.addAll(['image_3']),
       };
@@ -40,13 +47,16 @@ final syncFakeTransport = FakeTransportBuilder()
       // Add a new product to simulate real-time updates
       final newProduct = GlobalProduct()
         ..refId = 'global_product_3'
-        ..name = 'Nouveau Produit'
-        ..description = 'Description du nouveau produit'
+        ..name.en = 'New Product'
+        ..name.fr = 'Nouveau Produit'
+        ..description.en = 'Description of the new product'
+        ..description.fr = 'Description du nouveau produit'
         ..barCodeValue = '3456789012345'
         ..categories.addAll([
-          ProductCategory()
+          Category()
             ..refId = 'category_4'
-            ..name = 'Nouvelle Catégorie',
+            ..name.en = 'New Category'
+            ..name.fr = 'Nouvelle Catégorie',
         ]);
 
       yield StreamGlobalProductsResponse()..products.addAll([newProduct]);

@@ -19,11 +19,35 @@ abstract final class ProductService {
   );
 
   /// Finds categories by name.
-  static const findCategory = connect.Spec(
-    '/$name/FindCategory',
+  static const findProductCategory = connect.Spec(
+    '/$name/FindProductCategory',
     connect.StreamType.unary,
-    inventoryv1product.FindCategoryRequest.new,
-    inventoryv1product.FindCategoryResponse.new,
+    inventoryv1product.FindProductCategoryRequest.new,
+    inventoryv1product.FindProductCategoryResponse.new,
+  );
+
+  /// Creates a global product.
+  static const createGlobalProduct = connect.Spec(
+    '/$name/CreateGlobalProduct',
+    connect.StreamType.unary,
+    inventoryv1product.CreateGlobalProductRequest.new,
+    inventoryv1product.CreateGlobalProductResponse.new,
+  );
+
+  /// Updates a global product.
+  static const updateGlobalProduct = connect.Spec(
+    '/$name/UpdateGlobalProduct',
+    connect.StreamType.unary,
+    inventoryv1product.UpdateGlobalProductRequest.new,
+    inventoryv1product.UpdateGlobalProductResponse.new,
+  );
+
+  /// Deletes a global product.
+  static const deleteGlobalProduct = connect.Spec(
+    '/$name/DeleteGlobalProduct',
+    connect.StreamType.unary,
+    inventoryv1product.DeleteGlobalProductRequest.new,
+    inventoryv1product.DeleteGlobalProductResponse.new,
   );
 
   /// Adds a product to a store.
