@@ -17,6 +17,21 @@ import 'dart:typed_data' as $typed_data;
 import '../../google/protobuf/timestamp.pbjson.dart' as $1;
 import 'category.pbjson.dart' as $0;
 
+@$core.Deprecated('Use productStatusDescriptor instead')
+const ProductStatus$json = {
+  '1': 'ProductStatus',
+  '2': [
+    {'1': 'PRODUCT_STATUS_UNSPECIFIED', '2': 0},
+    {'1': 'PRODUCT_STATUS_ACTIVE', '2': 1},
+    {'1': 'PRODUCT_STATUS_INACTIVE', '2': 2},
+  ],
+};
+
+/// Descriptor for `ProductStatus`. Decode as a `google.protobuf.EnumDescriptorProto`.
+final $typed_data.Uint8List productStatusDescriptor = $convert.base64Decode(
+    'Cg1Qcm9kdWN0U3RhdHVzEh4KGlBST0RVQ1RfU1RBVFVTX1VOU1BFQ0lGSUVEEAASGQoVUFJPRF'
+    'VDVF9TVEFUVVNfQUNUSVZFEAESGwoXUFJPRFVDVF9TVEFUVVNfSU5BQ1RJVkUQAg==');
+
 @$core.Deprecated('Use globalProductDescriptor instead')
 const GlobalProduct$json = {
   '1': 'GlobalProduct',
@@ -176,20 +191,31 @@ final $typed_data.Uint8List deleteGlobalProductResponseDescriptor =
         'ChtEZWxldGVHbG9iYWxQcm9kdWN0UmVzcG9uc2USGAoHc3VjY2VzcxgBIAEoCFIHc3VjY2Vzcw'
         '==');
 
-@$core.Deprecated('Use supplyEntryDescriptor instead')
-const SupplyEntry$json = {
-  '1': 'SupplyEntry',
+@$core.Deprecated('Use supplyHistoryDescriptor instead')
+const SupplyHistory$json = {
+  '1': 'SupplyHistory',
   '2': [
     {'1': 'quantity', '3': 1, '4': 1, '5': 5, '10': 'quantity'},
-    {'1': 'price', '3': 2, '4': 1, '5': 5, '10': 'price'},
-    {'1': 'supplier_id', '3': 3, '4': 1, '5': 9, '10': 'supplierId'},
+    {'1': 'buy_price', '3': 2, '4': 1, '5': 5, '10': 'buyPrice'},
+    {'1': 'sale_price', '3': 3, '4': 1, '5': 5, '10': 'salePrice'},
+    {'1': 'last_quantity', '3': 4, '4': 1, '5': 5, '10': 'lastQuantity'},
+    {
+      '1': 'created_at',
+      '3': 5,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '10': 'createdAt'
+    },
   ],
 };
 
-/// Descriptor for `SupplyEntry`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List supplyEntryDescriptor = $convert.base64Decode(
-    'CgtTdXBwbHlFbnRyeRIaCghxdWFudGl0eRgBIAEoBVIIcXVhbnRpdHkSFAoFcHJpY2UYAiABKA'
-    'VSBXByaWNlEh8KC3N1cHBsaWVyX2lkGAMgASgJUgpzdXBwbGllcklk');
+/// Descriptor for `SupplyHistory`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List supplyHistoryDescriptor = $convert.base64Decode(
+    'Cg1TdXBwbHlIaXN0b3J5EhoKCHF1YW50aXR5GAEgASgFUghxdWFudGl0eRIbCglidXlfcHJpY2'
+    'UYAiABKAVSCGJ1eVByaWNlEh0KCnNhbGVfcHJpY2UYAyABKAVSCXNhbGVQcmljZRIjCg1sYXN0'
+    'X3F1YW50aXR5GAQgASgFUgxsYXN0UXVhbnRpdHkSOQoKY3JlYXRlZF9hdBgFIAEoCzIaLmdvb2'
+    'dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSCWNyZWF0ZWRBdA==');
 
 @$core.Deprecated('Use storeProductDescriptor instead')
 const StoreProduct$json = {
@@ -198,7 +224,15 @@ const StoreProduct$json = {
     {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'refId', '17': true},
     {'1': 'store_id', '3': 2, '4': 1, '5': 9, '10': 'storeId'},
     {'1': 'global_product_id', '3': 3, '4': 1, '5': 9, '10': 'globalProductId'},
-    {'1': 'price', '3': 4, '4': 1, '5': 5, '9': 1, '10': 'price', '17': true},
+    {
+      '1': 'sale_price',
+      '3': 4,
+      '4': 1,
+      '5': 5,
+      '9': 1,
+      '10': 'salePrice',
+      '17': true
+    },
     {'1': 'images_links_ids', '3': 5, '4': 3, '5': 9, '10': 'imagesLinksIds'},
     {
       '1': 'stock_quantity',
@@ -227,16 +261,6 @@ const StoreProduct$json = {
       '17': true
     },
     {
-      '1': 'inbound_date',
-      '3': 9,
-      '4': 1,
-      '5': 11,
-      '6': '.google.protobuf.Timestamp',
-      '9': 4,
-      '10': 'inboundDate',
-      '17': true
-    },
-    {
       '1': 'created_at',
       '3': 10,
       '4': 1,
@@ -250,7 +274,7 @@ const StoreProduct$json = {
       '4': 1,
       '5': 11,
       '6': '.google.protobuf.Timestamp',
-      '9': 5,
+      '9': 4,
       '10': 'updatedAt',
       '17': true
     },
@@ -259,19 +283,36 @@ const StoreProduct$json = {
       '3': 12,
       '4': 1,
       '5': 9,
-      '9': 6,
+      '9': 5,
       '10': 'supplierId',
       '17': true
+    },
+    {
+      '1': 'cost_price',
+      '3': 13,
+      '4': 1,
+      '5': 5,
+      '9': 6,
+      '10': 'costPrice',
+      '17': true
+    },
+    {
+      '1': 'status',
+      '3': 14,
+      '4': 1,
+      '5': 14,
+      '6': '.inventory.v1.ProductStatus',
+      '10': 'status'
     },
   ],
   '8': [
     {'1': '_ref_id'},
-    {'1': '_price'},
+    {'1': '_sale_price'},
     {'1': '_stock_quantity'},
     {'1': '_expiration_date'},
-    {'1': '_inbound_date'},
     {'1': '_updated_at'},
     {'1': '_supplier_id'},
+    {'1': '_cost_price'},
   ],
 };
 
@@ -279,17 +320,17 @@ const StoreProduct$json = {
 final $typed_data.Uint8List storeProductDescriptor = $convert.base64Decode(
     'CgxTdG9yZVByb2R1Y3QSGgoGcmVmX2lkGAEgASgJSABSBXJlZklkiAEBEhkKCHN0b3JlX2lkGA'
     'IgASgJUgdzdG9yZUlkEioKEWdsb2JhbF9wcm9kdWN0X2lkGAMgASgJUg9nbG9iYWxQcm9kdWN0'
-    'SWQSGQoFcHJpY2UYBCABKAVIAVIFcHJpY2WIAQESKAoQaW1hZ2VzX2xpbmtzX2lkcxgFIAMoCV'
-    'IOaW1hZ2VzTGlua3NJZHMSKgoOc3RvY2tfcXVhbnRpdHkYBiABKAVIAlINc3RvY2tRdWFudGl0'
-    'eYgBARIuChNtaW5fc3RvY2tfdGhyZXNob2xkGAcgASgFUhFtaW5TdG9ja1RocmVzaG9sZBJICg'
-    '9leHBpcmF0aW9uX2RhdGUYCCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wSANSDmV4'
-    'cGlyYXRpb25EYXRliAEBEkIKDGluYm91bmRfZGF0ZRgJIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi'
-    '5UaW1lc3RhbXBIBFILaW5ib3VuZERhdGWIAQESOQoKY3JlYXRlZF9hdBgKIAEoCzIaLmdvb2ds'
-    'ZS5wcm90b2J1Zi5UaW1lc3RhbXBSCWNyZWF0ZWRBdBI+Cgp1cGRhdGVkX2F0GAsgASgLMhouZ2'
-    '9vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEgFUgl1cGRhdGVkQXSIAQESJAoLc3VwcGxpZXJfaWQY'
-    'DCABKAlIBlIKc3VwcGxpZXJJZIgBAUIJCgdfcmVmX2lkQggKBl9wcmljZUIRCg9fc3RvY2tfcX'
-    'VhbnRpdHlCEgoQX2V4cGlyYXRpb25fZGF0ZUIPCg1faW5ib3VuZF9kYXRlQg0KC191cGRhdGVk'
-    'X2F0Qg4KDF9zdXBwbGllcl9pZA==');
+    'SWQSIgoKc2FsZV9wcmljZRgEIAEoBUgBUglzYWxlUHJpY2WIAQESKAoQaW1hZ2VzX2xpbmtzX2'
+    'lkcxgFIAMoCVIOaW1hZ2VzTGlua3NJZHMSKgoOc3RvY2tfcXVhbnRpdHkYBiABKAVIAlINc3Rv'
+    'Y2tRdWFudGl0eYgBARIuChNtaW5fc3RvY2tfdGhyZXNob2xkGAcgASgFUhFtaW5TdG9ja1Rocm'
+    'VzaG9sZBJICg9leHBpcmF0aW9uX2RhdGUYCCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0'
+    'YW1wSANSDmV4cGlyYXRpb25EYXRliAEBEjkKCmNyZWF0ZWRfYXQYCiABKAsyGi5nb29nbGUucH'
+    'JvdG9idWYuVGltZXN0YW1wUgljcmVhdGVkQXQSPgoKdXBkYXRlZF9hdBgLIAEoCzIaLmdvb2ds'
+    'ZS5wcm90b2J1Zi5UaW1lc3RhbXBIBFIJdXBkYXRlZEF0iAEBEiQKC3N1cHBsaWVyX2lkGAwgAS'
+    'gJSAVSCnN1cHBsaWVySWSIAQESIgoKY29zdF9wcmljZRgNIAEoBUgGUgljb3N0UHJpY2WIAQES'
+    'MwoGc3RhdHVzGA4gASgOMhsuaW52ZW50b3J5LnYxLlByb2R1Y3RTdGF0dXNSBnN0YXR1c0IJCg'
+    'dfcmVmX2lkQg0KC19zYWxlX3ByaWNlQhEKD19zdG9ja19xdWFudGl0eUISChBfZXhwaXJhdGlv'
+    'bl9kYXRlQg0KC191cGRhdGVkX2F0Qg4KDF9zdXBwbGllcl9pZEINCgtfY29zdF9wcmljZQ==');
 
 @$core.Deprecated('Use findStoreProductsRequestDescriptor instead')
 const FindStoreProductsRequest$json = {

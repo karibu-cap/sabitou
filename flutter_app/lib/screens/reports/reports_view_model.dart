@@ -423,7 +423,7 @@ class ReportsViewModel {
 
       final double dailySales = dailyOrders.fold(
         0,
-        (sum, order) => sum + order.totalPrice,
+        (sum, order) => sum + order.orderPrices.grandTotal,
       );
       final double dailyRefunds = dailyTransactions
           .where((tx) => tx.type == TransactionType.TRANSACTION_TYPE_REFUND)
@@ -491,7 +491,7 @@ class ReportsViewModel {
     if (completedOrders.isEmpty) return 0.0;
     final totalValue = completedOrders.fold<int>(
       0,
-      (sum, order) => sum + order.totalPrice,
+      (sum, order) => sum + order.orderPrices.grandTotal,
     );
 
     return totalValue / completedOrders.length / 100;
@@ -520,7 +520,7 @@ class ReportsViewModel {
               (orderDate.isBefore(endDate) ||
                   orderDate.isAtSameMomentAs(endDate));
         })
-        .fold(0, (sum, order) => sum + order.totalPrice);
+        .fold(0, (sum, order) => sum + order.orderPrices.grandTotal);
 
     final double purchaseTransactions = transactions
         .where((tx) {
@@ -601,7 +601,7 @@ class ReportsViewModel {
 
       final double dailyRevenue = salesOrders.fold(
         0,
-        (sum, order) => sum + order.totalPrice,
+        (sum, order) => sum + order.orderPrices.grandTotal,
       );
       final double dailyExpenses =
           purchaseTransactions.fold(0, (sum, tx) => sum + tx.amount.toInt()) +
@@ -624,7 +624,7 @@ class ReportsViewModel {
 
     for (var order in relevantOrders) {
       if (order.status == OrderStatus.ORDER_STATUS_COMPLETED) {
-        totalRevenue += order.totalPrice;
+        totalRevenue += order.orderPrices.grandTotal;
       }
     }
 

@@ -110,26 +110,28 @@ class _StatusFilter extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = context.read<InventoryController>();
 
-    return ShadSelect<ProductStatus?>(
+    return ShadSelect<ProductInventoryStatus?>(
       placeholder: Text(Intls.to.status),
       options: [
-        ...ProductStatus.values.map(
-          (status) => ShadOption<ProductStatus?>(
+        ...ProductInventoryStatus.values.map(
+          (status) => ShadOption<ProductInventoryStatus?>(
             value: status,
             child: Text(switch (status) {
-              ProductStatus.inStock => Intls.to.inStock.trParams({
+              ProductInventoryStatus.inStock => Intls.to.inStock.trParams({
                 'quantity': '',
               }),
-              ProductStatus.outOfStock => Intls.to.outOfStock,
-              ProductStatus.lowStock => Intls.to.lowStock,
+              ProductInventoryStatus.outOfStock => Intls.to.outOfStock,
+              ProductInventoryStatus.lowStock => Intls.to.lowStock,
             }),
           ),
         ),
       ],
       selectedOptionBuilder: (context, value) => Text(switch (value) {
-        ProductStatus.inStock => Intls.to.inStock.trParams({'quantity': ''}),
-        ProductStatus.outOfStock => Intls.to.outOfStock,
-        ProductStatus.lowStock => Intls.to.lowStock,
+        ProductInventoryStatus.inStock => Intls.to.inStock.trParams({
+          'quantity': '',
+        }),
+        ProductInventoryStatus.outOfStock => Intls.to.outOfStock,
+        ProductInventoryStatus.lowStock => Intls.to.lowStock,
         _ => Intls.to.status,
       }),
       allowDeselection: true,

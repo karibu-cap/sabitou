@@ -845,6 +845,13 @@ components:
           description: The French name of the product category.
       title: Internationalized
       additionalProperties: false
+    inventory.v1.ProductStatus:
+      type: string
+      title: ProductStatus
+      enum:
+        - PRODUCT_STATUS_UNSPECIFIED
+        - PRODUCT_STATUS_ACTIVE
+        - PRODUCT_STATUS_INACTIVE
     inventory.v1.StoreProduct:
       type: object
       properties:
@@ -861,12 +868,12 @@ components:
           type: string
           title: global_product_id
           description: The unique identifier of the global product.
-        price:
+        salePrice:
           type: integer
-          title: price
+          title: sale_price
           format: int32
           description: |-
-            The price in XAF of the product.
+            The sale price in XAF of the product.
              The currency is determined by the business.
           nullable: true
         imagesLinksIds:
@@ -879,7 +886,7 @@ components:
           type: integer
           title: stock_quantity
           format: int32
-          description: The stock quantity of the product.
+          description: The current stock quantity of the product.
           nullable: true
         minStockThreshold:
           type: integer
@@ -889,11 +896,6 @@ components:
         expirationDate:
           title: expiration_date
           description: The expiration date of the product.
-          nullable: true
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-        inboundDate:
-          title: inbound_date
-          description: The inbound date.
           nullable: true
           $ref: '#/components/schemas/google.protobuf.Timestamp'
         createdAt:
@@ -910,6 +912,16 @@ components:
           title: supplier_id
           description: The supplier.
           nullable: true
+        costPrice:
+          type: integer
+          title: cost_price
+          format: int32
+          description: Current purchase/cost price.
+          nullable: true
+        status:
+          title: status
+          description: The status of the product.
+          $ref: '#/components/schemas/inventory.v1.ProductStatus'
       title: StoreProduct
       additionalProperties: false
     inventory.v1.StreamGlobalProductsRequest:
@@ -965,7 +977,7 @@ components:
           description: The store products for the specified store.
       title: StreamStoreProductsResponse
       additionalProperties: false
-    inventory.v1.SupplyEntry:
+    inventory.v1.SupplyHistory:
       type: object
       properties:
         quantity:
@@ -973,16 +985,26 @@ components:
           title: quantity
           format: int32
           description: The quantity of the product.
-        price:
+        buyPrice:
           type: integer
-          title: price
+          title: buy_price
           format: int32
-          description: The price in XAF of the product.
-        supplierId:
-          type: string
-          title: supplier_id
-          description: The unique identifier of the supplier.
-      title: SupplyEntry
+          description: The buy price of the product.
+        salePrice:
+          type: integer
+          title: sale_price
+          format: int32
+          description: The sale price of the product.
+        lastQuantity:
+          type: integer
+          title: last_quantity
+          format: int32
+          description: The last quantity of the product.
+        createdAt:
+          title: created_at
+          description: The creation date of the supply history.
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: SupplyHistory
       additionalProperties: false
     inventory.v1.UpdateGlobalProductRequest:
       type: object

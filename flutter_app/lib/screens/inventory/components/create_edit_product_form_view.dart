@@ -492,8 +492,9 @@ class _CategoryDropdown extends StatelessWidget {
 
                   return null;
                 },
-                onChanged: (value) => controller.product.storeProduct.price =
-                    int.tryParse(value) ?? 0,
+                onChanged: (value) =>
+                    controller.product.storeProduct.salePrice =
+                        int.tryParse(value) ?? 0,
               ),
             ),
           ],
@@ -632,52 +633,6 @@ class _ExpiryDateField extends StatelessWidget {
                     return;
                   }
                   controller.product.storeProduct.clearExpirationDate();
-                },
-              ),
-            ),
-            Flexible(
-              flex: isDesktop ? 1 : 0,
-              child: ShadDatePickerFormField(
-                id: Intls.to.inboundDate,
-                width: constraints.maxWidth,
-                label: Text('${Intls.to.inboundDate}'),
-                initialMonth: clock.now(),
-                closeOnSelection: true,
-                enabled: !controller.onSaveProduct,
-                showOutsideDays: false,
-                fromMonth: clock.now(),
-                toMonth: clock.now().add(const Duration(days: 3650)),
-                initialValue: controller.inboundDateController.text.isNotEmpty
-                    ? DateTime.tryParse(controller.inboundDateController.text)
-                    : null,
-                placeholder: const Text('YYYY-MM-DD'),
-                allowDeselection: true,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (value) {
-                  // In edition mode we potentially not want to update the expiration date. so we must skip the validation.
-                  if (controller.productFormType == ProductFormType.edit &&
-                      controller.product.storeProduct.inboundDate
-                              .toDateTime()
-                              .toIso8601String() ==
-                          value?.toIso8601String()) {
-                    return null;
-                  }
-                  if (value == null) {
-                    return Intls.to.isRequiredField.trParams({
-                      'field': Intls.to.inboundDate,
-                    });
-                  }
-
-                  return null;
-                },
-                onChanged: (value) {
-                  if (value != null) {
-                    controller.product.storeProduct.inboundDate =
-                        Timestamp.fromDateTime(value);
-
-                    return;
-                  }
-                  controller.product.storeProduct.clearInboundDate();
                 },
               ),
             ),

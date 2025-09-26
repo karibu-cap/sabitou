@@ -2,13 +2,13 @@ openapi: 3.1.0
 info:
   title: order.v1
 paths:
-  /order.v1.InvoiceService/GenerateInvoice:
+  /order.v1.InvoiceService/CreateInvoice:
     post:
       tags:
         - order.v1.InvoiceService
-      summary: Generates an invoice for the order.
-      description: Generates an invoice for the order.
-      operationId: order.v1.InvoiceService.GenerateInvoice
+      summary: Creates an invoice for the order.
+      description: Creates an invoice for the order.
+      operationId: order.v1.InvoiceService.CreateInvoice
       parameters:
         - name: Connect-Protocol-Version
           in: header
@@ -23,7 +23,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/order.v1.GenerateInvoiceRequest'
+              $ref: '#/components/schemas/order.v1.CreateInvoiceRequest'
         required: true
       responses:
         default:
@@ -37,7 +37,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/order.v1.GenerateInvoiceResponse'
+                $ref: '#/components/schemas/order.v1.CreateInvoiceResponse'
 components:
   schemas:
     connect-protocol-version:
@@ -109,91 +109,286 @@ components:
           description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
       additionalProperties: true
       description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
-    order.v1.GenerateInvoiceRequest:
+    google.protobuf.Timestamp:
+      type: string
+      examples:
+        - "2023-01-15T01:30:15.01Z"
+        - "2024-12-25T12:00:00Z"
+      format: date-time
+      description: |-
+        A Timestamp represents a point in time independent of any time zone or local
+         calendar, encoded as a count of seconds and fractions of seconds at
+         nanosecond resolution. The count is relative to an epoch at UTC midnight on
+         January 1, 1970, in the proleptic Gregorian calendar which extends the
+         Gregorian calendar backwards to year one.
+
+         All minutes are 60 seconds long. Leap seconds are "smeared" so that no leap
+         second table is needed for interpretation, using a [24-hour linear
+         smear](https://developers.google.com/time/smear).
+
+         The range is from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z. By
+         restricting to that range, we ensure that we can convert to and from [RFC
+         3339](https://www.ietf.org/rfc/rfc3339.txt) date strings.
+
+         # Examples
+
+         Example 1: Compute Timestamp from POSIX `time()`.
+
+             Timestamp timestamp;
+             timestamp.set_seconds(time(NULL));
+             timestamp.set_nanos(0);
+
+         Example 2: Compute Timestamp from POSIX `gettimeofday()`.
+
+             struct timeval tv;
+             gettimeofday(&tv, NULL);
+
+             Timestamp timestamp;
+             timestamp.set_seconds(tv.tv_sec);
+             timestamp.set_nanos(tv.tv_usec * 1000);
+
+         Example 3: Compute Timestamp from Win32 `GetSystemTimeAsFileTime()`.
+
+             FILETIME ft;
+             GetSystemTimeAsFileTime(&ft);
+             UINT64 ticks = (((UINT64)ft.dwHighDateTime) << 32) | ft.dwLowDateTime;
+
+             // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z
+             // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z.
+             Timestamp timestamp;
+             timestamp.set_seconds((INT64) ((ticks / 10000000) - 11644473600LL));
+             timestamp.set_nanos((INT32) ((ticks % 10000000) * 100));
+
+         Example 4: Compute Timestamp from Java `System.currentTimeMillis()`.
+
+             long millis = System.currentTimeMillis();
+
+             Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)
+                 .setNanos((int) ((millis % 1000) * 1000000)).build();
+
+         Example 5: Compute Timestamp from Java `Instant.now()`.
+
+             Instant now = Instant.now();
+
+             Timestamp timestamp =
+                 Timestamp.newBuilder().setSeconds(now.getEpochSecond())
+                     .setNanos(now.getNano()).build();
+
+         Example 6: Compute Timestamp from current time in Python.
+
+             timestamp = Timestamp()
+             timestamp.GetCurrentTime()
+
+         # JSON Mapping
+
+         In JSON format, the Timestamp type is encoded as a string in the
+         [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the
+         format is "{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z"
+         where {year} is always expressed using four digits while {month}, {day},
+         {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional
+         seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),
+         are optional. The "Z" suffix indicates the timezone ("UTC"); the timezone
+         is required. A proto3 JSON serializer should always use UTC (as indicated by
+         "Z") when printing the Timestamp type and a proto3 JSON parser should be
+         able to accept both UTC and other timezones (as indicated by an offset).
+
+         For example, "2017-01-15T01:30:15.01Z" encodes 15.01 seconds past
+         01:30 UTC on January 15, 2017.
+
+         In JavaScript, one can convert a Date object to this format using the
+         standard
+         [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)
+         method. In Python, a standard `datetime.datetime` object can be converted
+         to this format using
+         [`strftime`](https://docs.python.org/2/library/time.html#time.strftime) with
+         the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use
+         the Joda Time's [`ISODateTimeFormat.dateTime()`](
+         http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()
+         ) to obtain a formatter capable of generating timestamps in this format.
+    order.v1.CreateInvoiceRequest:
       type: object
       properties:
         orderId:
           type: string
           title: order_id
           description: The unique identifier of the order.
-      title: GenerateInvoiceRequest
+      title: CreateInvoiceRequest
       additionalProperties: false
-    order.v1.GenerateInvoiceResponse:
+    order.v1.CreateInvoiceResponse:
       type: object
       properties:
-        orderInvoice:
-          title: order_invoice
+        invoice:
+          title: invoice
           description: The invoice of the order.
-          $ref: '#/components/schemas/order.v1.OrderInvoice'
-      title: GenerateInvoiceResponse
+          $ref: '#/components/schemas/order.v1.Invoice'
+      title: CreateInvoiceResponse
       additionalProperties: false
-    order.v1.OrderInvoice:
+    order.v1.Invoice:
       type: object
       properties:
+        refId:
+          type: string
+          title: ref_id
+          format: uuid
+          description: The unique identifier of the invoice.
         orderId:
           type: string
           title: order_id
-          description: / ...order details...
-        orderStatus:
-          type: string
-          title: order_status
-        orderTotalPriceInXaf:
-          type: string
-          title: order_total_price_in_xaf
-        orderCreatedAt:
-          type: string
-          title: order_created_at
-        orderUpdatedAt:
-          type: string
-          title: order_updated_at
-        orderResourceName:
-          type: string
-          title: order_resource_name
-        orderResourceAddress:
-          type: string
-          title: order_resource_address
-        orderResourcePhoneNumber:
-          type: string
-          title: order_resource_phone_number
-        orderResourceEmail:
-          type: string
-          title: order_resource_email
-        orderResourceLogoMediaId:
-          type: string
-          title: order_resource_logo_media_id
+          format: uuid
+          description: The unique identifier of the order.
+        status:
+          title: status
+          description: The status of the invoice.
+          $ref: '#/components/schemas/order.v1.InvoiceStatus'
         orderItems:
           type: array
           items:
-            $ref: '#/components/schemas/order.v1.OrderInvoiceItem'
+            $ref: '#/components/schemas/order.v1.OrderItem'
           title: order_items
-      title: OrderInvoice
+          description: The list of items in the invoice.
+        payments:
+          type: array
+          items:
+            $ref: '#/components/schemas/order.v1.Payment'
+          title: payments
+          description: |-
+            The payment methods used to pay the invoice.
+             Some time, user can use multiple payment methods to pay the invoice.
+        totalDiscount:
+          type: number
+          title: total_discount
+          format: double
+          description: Total discounts applied (e.g., promotions)
+        totalVat:
+          type: number
+          title: total_vat
+          format: double
+          description: |-
+            Total tax/VAT amount
+             Example: 300.0 (e.g., 5% VAT on 6000 XAF subtotal, assuming no discount: 6000 * 0.05 = 300 XAF)
+        subtotal:
+          type: number
+          title: subtotal
+          format: double
+          description: |-
+            Amount hors taxe: pre-tax, pre-discount total from order_items
+             Example: 6000.0 (e.g., from the 3 items at 2000 XAF each: 3 * 2000 = 6000 XAF)
+        total:
+          type: number
+          title: total
+          format: double
+          description: |-
+            Amount with tax: subtotal - total_discount + total_vat
+             Example: 5801.0 (e.g., subtotal 6000 - discount 500 + VAT 300= 5801 XAF)
+        customerTenderedAmount:
+          type: number
+          title: customer_tendered_amount
+          format: double
+          description: |-
+            Amount given by client (e.g., cash tendered).
+             Example: 10000.0 (e.g., customer hands over 10000 XAF cash for a 6000 XAF total)
+        changeGiven:
+          type: number
+          title: change_given
+          format: double
+          description: |-
+            Amount refunded to client (e.g., change or overpayment refund) Set to 0 for pending cases.
+             Example: 4000.0 (e.g., immediate cash refund for overpayment: 10000 tendered - 6000 grand_total = 4000 XAF given back)
+        balanceDue:
+          type: number
+          title: balance_due
+          format: double
+          description: |-
+            Unpaid balance: grand_total - paid_amount (covers remaining_to_pay)
+             Example: -4000.0 (e.g., after paying 10000 XAF on a 6000 XAF total: 6000 - 10000 = -4000 XAF, meaning 4000 XAF owed to customer)
+        voucherId:
+          type: string
+          title: voucher_id
+          format: uuid
+          description: The voucher used to pay the invoice.
+          nullable: true
+        createdAt:
+          title: created_at
+          description: The date and time the invoice was created.
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        deliveryDate:
+          title: delivery_date
+          description: The delivery date of the invoice.
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: Invoice
+      required:
+        - refId
+        - orderId
       additionalProperties: false
       description: |-
         The invoice of an order.
          The invoice is a PDF file that can be downloaded by the customer.
          It contains the order details, the customer details, the payment details.
-    order.v1.OrderInvoiceItem:
+    order.v1.InvoiceStatus:
+      type: string
+      title: InvoiceStatus
+      enum:
+        - INVOICE_STATUS_UNSPECIFIED
+        - INVOICE_STATUS_PAID
+        - INVOICE_STATUS_PENDING_REFUND
+    order.v1.OrderItem:
       type: object
       properties:
-        productId:
+        storeProductId:
           type: string
-          title: product_id
-        productName:
-          type: string
-          title: product_name
-        productPriceInXaf:
-          type: string
-          title: product_price_in_xaf
+          title: store_product_id
+          description: The unique identifier of the store product.
         quantity:
           type: integer
           title: quantity
           format: int32
-        invoiceItemTotalPriceInXaf:
+          description: The quantity of the product.
+        unitPrice:
           type: integer
-          title: invoice_item_total_price_in_xaf
+          title: unit_price
           format: int32
-      title: OrderInvoiceItem
+          description: |-
+            The unit price in XAF of the product.
+             WARN: This value is stored because the unit price can change over time.
+        itemName:
+          type: string
+          title: item_name
+          description: The name of the product.
+      title: OrderItem
       additionalProperties: false
+    order.v1.Payment:
+      type: object
+      properties:
+        amount:
+          type: number
+          title: amount
+          format: double
+        method:
+          title: method
+          $ref: '#/components/schemas/order.v1.PaymentMethod'
+        referenceId:
+          type: string
+          title: reference_id
+          description: |-
+            The reference id of the payment.
+             For voucher, it is the voucher id.
+          nullable: true
+        timestamp:
+          title: timestamp
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: Payment
+      additionalProperties: false
+    order.v1.PaymentMethod:
+      type: string
+      title: PaymentMethod
+      enum:
+        - PAYMENT_METHOD_UNSPECIFIED
+        - PAYMENT_METHOD_CASH
+        - PAYMENT_METHOD_CARD
+        - PAYMENT_METHOD_ORANGE_MONEY
+        - PAYMENT_METHOD_MTN_MONEY
+        - PAYMENT_METHOD_VOUCHER
+        - PAYMENT_METHOD_MOBILE
 security: []
 tags:
   - name: order.v1.InvoiceService

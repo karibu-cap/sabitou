@@ -34,7 +34,7 @@ class InventoryController extends ChangeNotifier {
       _viewModel.businessCategories;
 
   /// Gets the selected status.
-  BehaviorSubject<ProductStatus?> get selectedStatus =>
+  BehaviorSubject<ProductInventoryStatus?> get selectedStatus =>
       _viewModel.selectedStatus;
 
   /// Gets the completer.

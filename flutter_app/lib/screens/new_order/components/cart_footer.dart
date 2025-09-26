@@ -53,7 +53,7 @@ final class CartFooter extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '${Formatters.formatCurrency((CartManager.to.currentOrder?.totalPrice ?? 0).toDouble())}',
+                  '${Formatters.formatCurrency((CartManager.to.currentOrder?.orderPrices.grandTotal ?? 0).toDouble())}',
                   style: ShadTheme.of(context).textTheme.h4.copyWith(
                     color: ShadTheme.of(context).colorScheme.primary,
                   ),

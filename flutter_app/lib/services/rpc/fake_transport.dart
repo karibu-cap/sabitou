@@ -5,7 +5,6 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../../tmp/fake_data.dart';
 import '../../utils/app_constants.dart';
-import '../../utils/extensions/global_product_extension.dart';
 import '../../utils/user_preference.dart';
 
 final _fakeData = fakeData;
@@ -42,12 +41,7 @@ final _fakeTransport =
         })
         .unary(SupplierService.getStoreSuppliers, (req, _) async {
           return GetStoreSuppliersResponse(
-            suppliers: _fakeData[CollectionName.suppliers]
-                ?.map(
-                  (e) =>
-                      Supplier()
-                        ..mergeFromProto3Json(e, ignoreUnknownFields: true),
-                )
+            suppliers: (_fakeData[CollectionName.suppliers] as List<Supplier>)
                 .where((gp) => gp.storeIds.contains(req.storeId))
                 .toList(),
           );
@@ -148,13 +142,9 @@ final _fakeTransport =
           );
         })
         .unary(ProductService.getProduct, (req, _) async {
-          final storeProduct = _fakeData[CollectionName.storeProducts]
-              ?.map(
-                (e) =>
-                    StoreProduct()
-                      ..mergeFromProto3Json(e, ignoreUnknownFields: true),
-              )
-              .firstWhereOrNull((gp) => gp.refId == req.storeProductId);
+          final storeProduct =
+              (_fakeData[CollectionName.storeProducts] as List<StoreProduct>)
+                  .firstWhere((gp) => gp.refId == req.storeProductId);
 
           return GetStoreProductResponse(storeProduct: storeProduct);
         })
@@ -169,7 +159,7 @@ final _fakeTransport =
                 globalProductId: 'global_product_1',
                 storeId: request.storeId,
                 minStockThreshold: 10,
-                price: 10000,
+                salePrice: 10000,
                 stockQuantity: 20,
                 imagesLinksIds: ['image_1', 'image_2'],
               ),
@@ -178,7 +168,7 @@ final _fakeTransport =
                 globalProductId: 'global_product_2',
                 storeId: request.storeId,
                 minStockThreshold: 10,
-                price: 20000,
+                salePrice: 20000,
                 stockQuantity: 50,
                 imagesLinksIds: ['image_1', 'image_2'],
               ),
@@ -187,7 +177,7 @@ final _fakeTransport =
                 globalProductId: 'global_product_3',
                 storeId: request.storeId,
                 minStockThreshold: 5,
-                price: 5000,
+                salePrice: 5000,
                 stockQuantity: 5,
                 imagesLinksIds: ['image_1', 'image_2'],
               ),
@@ -203,7 +193,7 @@ final _fakeTransport =
                 globalProductId: 'global_product_1',
                 storeId: request.storeId,
                 minStockThreshold: 10,
-                price: 10000,
+                salePrice: 10000,
                 stockQuantity: 20,
                 imagesLinksIds: ['image_1', 'image_2'],
               ),
@@ -212,7 +202,7 @@ final _fakeTransport =
                 globalProductId: 'global_product_2',
                 storeId: request.storeId,
                 minStockThreshold: 10,
-                price: 15000,
+                salePrice: 15000,
                 stockQuantity: 10,
                 imagesLinksIds: ['image_1', 'image_2'],
               ),
@@ -221,7 +211,7 @@ final _fakeTransport =
                 globalProductId: 'global_product_3',
                 storeId: request.storeId,
                 minStockThreshold: 10,
-                price: 2000,
+                salePrice: 2000,
                 stockQuantity: 200,
                 imagesLinksIds: ['image_1', 'image_2'],
               ),
@@ -230,7 +220,7 @@ final _fakeTransport =
                 globalProductId: 'global_product_4',
                 storeId: request.storeId,
                 minStockThreshold: 10,
-                price: 400,
+                salePrice: 400,
                 stockQuantity: 500,
                 imagesLinksIds: ['image_1', 'image_2'],
               ),
@@ -238,11 +228,7 @@ final _fakeTransport =
         })
       ..unary(OrderService.findOrders, (req, __) async {
         return FindOrdersResponse(
-          orders: _fakeData[CollectionName.orders]!
-              .map(
-                (e) =>
-                    Order()..mergeFromProto3Json(e, ignoreUnknownFields: true),
-              )
+          orders: (_fakeData[CollectionName.orders] as List<Order>)
               .where((o) => o.storeId == req.storeId)
               .toList(),
         );
@@ -258,11 +244,7 @@ final _fakeTransport =
       })
       ..unary(StoreService.getBusinessStores, (req, __) async {
         return GetBusinessStoresResponse(
-          stores: _fakeData[CollectionName.stores]!
-              .map(
-                (e) =>
-                    Store()..mergeFromProto3Json(e, ignoreUnknownFields: true),
-              )
+          stores: (_fakeData[CollectionName.stores] as List<Store>)
               .where((s) => s.businessId == req.businessId)
               .toList(),
         );
@@ -283,7 +265,7 @@ final _fakeTransport =
           return UpdateStoreResponse();
         }
         _fakeData[CollectionName.stores]?.removeWhere(
-          (gp) => gp['ref_id'] == store.refId,
+          (gp) => gp.refId == store.refId,
         );
         _fakeData[CollectionName.stores]?.add({
           'ref_id': store.refId,
@@ -295,23 +277,14 @@ final _fakeTransport =
       })
       ..unary(BusinessService.getMyBusinesses, (req, __) async {
         return GetMyBusinessesResponse(
-          businesses: _fakeData[CollectionName.businesses]
-              ?.map(
-                (e) =>
-                    Business()
-                      ..mergeFromProto3Json(e, ignoreUnknownFields: true),
-              )
+          businesses: (_fakeData[CollectionName.businesses] as List<Business>)
               .where((bm) => bm.ownerId == req.ownerId)
               .toList(),
         );
       })
       ..unary(UserService.getUser, (req, __) async {
         return GetUserResponse(
-          user: _fakeData[CollectionName.users]
-              ?.map(
-                (e) =>
-                    User()..mergeFromProto3Json(e, ignoreUnknownFields: true),
-              )
+          user: (_fakeData[CollectionName.users] as List<User>)
               .firstWhereOrNull((bm) => bm.refId == req.userId),
         );
       })
@@ -348,126 +321,84 @@ final _fakeTransport =
       })
       ..unary(BusinessService.getBusinessMembers, (req, __) async {
         return GetBusinessMembersResponse(
-          businessMembers: _fakeData[CollectionName.businessMembers]
-              ?.map(
-                (e) =>
-                    BusinessMember()
-                      ..mergeFromProto3Json(e, ignoreUnknownFields: true),
-              )
-              .where((bm) => bm.businessId == req.businessId)
-              .toList(),
+          businessMembers:
+              (_fakeData[CollectionName.businessMembers]
+                      as List<BusinessMember>)
+                  .where((bm) => bm.businessId == req.businessId)
+                  .toList(),
+        );
+      })
+      ..unary(BusinessService.getBusinessMember, (req, __) async {
+        return GetBusinessMemberResponse(
+          businessMember:
+              (_fakeData[CollectionName.businessMembers]
+                      as List<BusinessMember>)
+                  .firstWhereOrNull((bm) => bm.user.refId == req.userId),
+        );
+      })
+      ..unary(StoreService.getStoreMember, (req, __) async {
+        return GetStoreMemberResponse(
+          storeMember:
+              (_fakeData[CollectionName.storeMembers] as List<StoreMember>)
+                  .firstWhereOrNull((bm) => bm.user.refId == req.userId),
         );
       })
       ..unary(ProductService.findStoreProducts, (req, __) async {
         return FindStoreProductsResponse(
-          products: _fakeData[CollectionName.storeProducts]
-              ?.map(
-                (e) =>
-                    StoreProduct()
-                      ..mergeFromProto3Json(e, ignoreUnknownFields: true),
-              )
-              .where((bp) => bp.storeId == req.storeId)
-              .toList(),
+          products:
+              (_fakeData[CollectionName.storeProducts] as List<StoreProduct>)
+                  .where((bp) => bp.storeId == req.storeId)
+                  .toList(),
         );
       })
       ..unary(ProductService.findGlobalProducts, (req, __) async {
         return FindGlobalProductsResponse(
-          products: _fakeData[CollectionName.globalProducts]
-              ?.map(
-                (e) =>
-                    GlobalProduct()
-                      ..mergeFromProto3Json(e, ignoreUnknownFields: true),
-              )
-              .where((gp) {
-                if (req.refId.isNotEmpty && req.name.isNotEmpty) {
-                  return gp.refId == req.refId &&
-                      gp.label.toLowerCase().contains(req.name.toLowerCase());
-                } else if (req.refId.isNotEmpty) {
-                  return gp.refId == req.refId;
-                } else if (req.name.isNotEmpty) {
-                  return gp.label.toLowerCase().contains(
-                    req.name.toLowerCase(),
-                  );
-                }
+          products:
+              (_fakeData[CollectionName.globalProducts] as List<GlobalProduct>)
+                  .where((gp) {
+                    if (req.refId.isNotEmpty && req.name.isNotEmpty) {
+                      return gp.refId == req.refId &&
+                          (gp.name.en.toLowerCase().contains(
+                                req.name.toLowerCase(),
+                              ) ||
+                              gp.name.fr.toLowerCase().contains(
+                                req.name.toLowerCase(),
+                              ));
+                    } else if (req.refId.isNotEmpty) {
+                      return gp.refId == req.refId;
+                    } else if (req.name.isNotEmpty) {
+                      return (gp.name.en.toLowerCase().contains(
+                            req.name.toLowerCase(),
+                          ) ||
+                          gp.name.fr.toLowerCase().contains(
+                            req.name.toLowerCase(),
+                          ));
+                    }
 
-                return false;
-              })
-              .toList(),
+                    return false;
+                  })
+                  .toList(),
         );
       })
       ..unary(SupplierService.getStoreSuppliers, (req, __) async {
         return GetStoreSuppliersResponse(
-          suppliers: _fakeData[CollectionName.suppliers]
-              ?.map(
-                (e) =>
-                    Supplier()
-                      ..mergeFromProto3Json(e, ignoreUnknownFields: true),
-              )
+          suppliers: (_fakeData[CollectionName.suppliers] as List<Supplier>)
               .where((gp) => gp.storeIds.contains(req.storeId))
               .toList(),
         );
       })
       ..unary(SupplierService.getSupplier, (req, __) async {
         return GetSupplierResponse(
-          supplier: _fakeData[CollectionName.suppliers]
-              ?.map(
-                (e) =>
-                    Supplier()
-                      ..mergeFromProto3Json(e, ignoreUnknownFields: true),
-              )
-              .firstWhere((gp) => gp.refId == req.supplierId),
+          supplier: (_fakeData[CollectionName.suppliers] as List<Supplier>)
+              .firstWhereOrNull((gp) => gp.refId == req.supplierId),
         );
       })
       ..unary(TransactionService.findTransactions, (req, __) async {
-        List<Transaction> response =
-            _fakeData[CollectionName.transactions]
-                ?.map(
-                  (e) =>
-                      Transaction()
-                        ..mergeFromProto3Json(e, ignoreUnknownFields: true),
-                )
-                .where(
-                  (t) =>
-                      t.status ==
-                      TransactionStatus.TRANSACTION_STATUS_COMPLETED,
-                )
-                .toList() ??
-            [];
-
-        if (req.hasOrderId() && req.orderId.isNotEmpty) {
-          response = response.where((t) => t.orderId == req.orderId).toList();
-        }
-
-        if (req.hasStoreId() && req.storeId.isNotEmpty) {
-          response = response.where((t) => t.storeId == req.storeId).toList();
-        }
-
-        if (req.hasOrderId() && req.orderId.isNotEmpty) {
-          response = response.where((t) => t.orderId == req.orderId).toList();
-        }
-
-        if (req.hasStartDate() && req.hasEndDate()) {
-          response = response
-              .where(
-                (t) =>
-                    t.createdAt.toDateTime().isAfter(
-                      req.startDate.toDateTime(),
-                    ) &&
-                    t.createdAt.toDateTime().isBefore(req.endDate.toDateTime()),
-              )
-              .toList();
-        }
-
-        return FindTransactionsResponse(transactions: response);
+        return FindTransactionsResponse(transactions: []);
       })
       ..unary(CategoryService.findCategories, (req, __) async {
         return FindCategoriesResponse(
-          categories: _fakeData[CollectionName.categories]
-              ?.map(
-                (e) =>
-                    Category()
-                      ..mergeFromProto3Json(e, ignoreUnknownFields: true),
-              )
+          categories: (_fakeData[CollectionName.categories] as List<Category>)
               .where((c) => c.businessId == req.businessId)
               .toList(),
         );
@@ -564,7 +495,7 @@ final _fakeTransport =
           'store_id': businessProduct.storeId,
           'global_product_id': globalProductId,
           'min_stock_threshold': businessProduct.minStockThreshold,
-          'price': businessProduct.price,
+          'sale_price': businessProduct.salePrice,
           'stock_quantity': businessProduct.stockQuantity,
           'expiration_date': businessProduct.hasExpirationDate()
               ? businessProduct.expirationDate.toDateTime().toIso8601String()
@@ -585,18 +516,9 @@ final _fakeTransport =
 final fakeTransport = _fakeTransport.build();
 
 final Map<String, dynamic> fakeStorage = {
-  CollectionName.users: _fakeData[CollectionName.users]
-      ?.map((e) => User()..mergeFromProto3Json(e, ignoreUnknownFields: true))
-      .toList()
-      .first,
-  CollectionName.businesses: _fakeData[CollectionName.businesses]
-      ?.map(
-        (e) => Business()..mergeFromProto3Json(e, ignoreUnknownFields: true),
-      )
-      .toList()
-      .first,
-  CollectionName.stores: _fakeData[CollectionName.stores]
-      ?.map((e) => Store()..mergeFromProto3Json(e, ignoreUnknownFields: true))
-      .toList()
-      .first,
+  CollectionName.users: (_fakeData[CollectionName.users] as List<User>).first,
+  CollectionName.businesses:
+      (_fakeData[CollectionName.businesses] as List<Business>).first,
+  CollectionName.stores:
+      (_fakeData[CollectionName.stores] as List<Store>).first,
 };

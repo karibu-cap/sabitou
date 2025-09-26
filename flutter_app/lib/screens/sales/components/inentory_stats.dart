@@ -40,7 +40,7 @@ final class InventoryStats extends StatelessWidget {
         value: Formatters.formatCurrency(
           orders
                   .where((p) => p.status == OrderStatus.ORDER_STATUS_COMPLETED)
-                  .fold(0, (sum, p) => (sum ?? 0) + p.totalPrice) ??
+                  .fold(0, (sum, p) => (sum ?? 0) + p.orderPrices.grandTotal) ??
               0,
         ),
         icon: LucideIcons.dollarSign400,

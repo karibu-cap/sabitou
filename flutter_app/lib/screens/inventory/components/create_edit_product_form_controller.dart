@@ -63,9 +63,6 @@ class CreateEditProductFormController extends ChangeNotifier {
   /// The expiry controller.
   final TextEditingController expiryController;
 
-  /// The inbound date controller.
-  final TextEditingController inboundDateController;
-
   /// Gets the loading state.
   bool get onSaveProduct => _onSaveProduct;
 
@@ -87,7 +84,7 @@ class CreateEditProductFormController extends ChangeNotifier {
         text: product?.globalProduct.barCodeValue,
       ),
       priceController = TextEditingController(
-        text: product?.storeProduct.price.toString(),
+        text: product?.storeProduct.salePrice.toString(),
       ),
       quantityController = TextEditingController(
         text: product?.storeProduct.stockQuantity.toString(),
@@ -95,9 +92,7 @@ class CreateEditProductFormController extends ChangeNotifier {
       minStockThresholdController = TextEditingController(
         text: product?.storeProduct.minStockThreshold.toString(),
       ),
-      inboundDateController = TextEditingController(
-        text: product?.storeProduct.inboundDate.toDateTime().toIso8601String(),
-      ),
+
       expiryController = TextEditingController(
         text: product?.storeProduct.expirationDate
             .toDateTime()

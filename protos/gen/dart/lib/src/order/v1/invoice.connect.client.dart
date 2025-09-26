@@ -8,16 +8,16 @@ import "invoice.pb.dart" as orderv1invoice;
 import "invoice.connect.spec.dart" as specs;
 
 extension type InvoiceServiceClient (connect.Transport _transport) {
-  /// Generates an invoice for the order.
-  Future<orderv1invoice.GenerateInvoiceResponse> generateInvoice(
-    orderv1invoice.GenerateInvoiceRequest input, {
+  /// Creates an invoice for the order.
+  Future<orderv1invoice.CreateInvoiceResponse> createInvoice(
+    orderv1invoice.CreateInvoiceRequest input, {
     connect.Headers? headers,
     connect.AbortSignal? signal,
     Function(connect.Headers)? onHeader,
     Function(connect.Headers)? onTrailer,
   }) {
     return connect.Client(_transport).unary(
-      specs.InvoiceService.generateInvoice,
+      specs.InvoiceService.createInvoice,
       input,
       signal: signal,
       headers: headers,

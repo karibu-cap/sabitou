@@ -57,17 +57,20 @@ final class CollectionName {
   /// The order collection.
   static const String orders = 'orders';
 
-  /// The order receipt item collection.
-  static const String orderReceiptItems = 'order_receipt_items';
-
-  /// The order receipt collection.
-  static const String orderReceipts = 'order_receipts';
+  /// The invoice collection.
+  static const String invoices = 'invoices';
 
   /// The transaction collection.
   static const String transactions = 'transactions';
 
   /// The category collection.
   static const String categories = 'categories';
+
+  /// The voucher collection.
+  static const String vouchers = 'vouchers';
+
+  /// The voucher collection.
+  static const String stockInBounds = 'stock_in_bounds';
 }
 
 /// The static images.

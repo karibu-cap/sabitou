@@ -81,33 +81,103 @@ final $typed_data.Uint8List orderItemDescriptor = $convert.base64Decode(
     'oIcXVhbnRpdHkYAiABKAVSCHF1YW50aXR5Eh0KCnVuaXRfcHJpY2UYAyABKAVSCXVuaXRQcmlj'
     'ZRIbCglpdGVtX25hbWUYBCABKAlSCGl0ZW1OYW1l');
 
+@$core.Deprecated('Use purchaseOrderDescriptor instead')
+const PurchaseOrder$json = {
+  '1': 'PurchaseOrder',
+  '2': [
+    {
+      '1': 'expected_delivery_date',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '10': 'expectedDeliveryDate'
+    },
+    {'1': 'supplier_id', '3': 2, '4': 1, '5': 9, '8': {}, '10': 'supplierId'},
+  ],
+};
+
+/// Descriptor for `PurchaseOrder`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List purchaseOrderDescriptor = $convert.base64Decode(
+    'Cg1QdXJjaGFzZU9yZGVyElAKFmV4cGVjdGVkX2RlbGl2ZXJ5X2RhdGUYASABKAsyGi5nb29nbG'
+    'UucHJvdG9idWYuVGltZXN0YW1wUhRleHBlY3RlZERlbGl2ZXJ5RGF0ZRIsCgtzdXBwbGllcl9p'
+    'ZBgCIAEoCUILukgIyAEBcgOwAQFSCnN1cHBsaWVySWQ=');
+
+@$core.Deprecated('Use saleOrderDescriptor instead')
+const SaleOrder$json = {
+  '1': 'SaleOrder',
+  '2': [
+    {
+      '1': 'commitment_date',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '10': 'commitmentDate'
+    },
+    {
+      '1': 'client_id',
+      '3': 2,
+      '4': 1,
+      '5': 9,
+      '8': {},
+      '9': 0,
+      '10': 'clientId',
+      '17': true
+    },
+  ],
+  '8': [
+    {'1': '_client_id'},
+  ],
+};
+
+/// Descriptor for `SaleOrder`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List saleOrderDescriptor = $convert.base64Decode(
+    'CglTYWxlT3JkZXISQwoPY29tbWl0bWVudF9kYXRlGAEgASgLMhouZ29vZ2xlLnByb3RvYnVmLl'
+    'RpbWVzdGFtcFIOY29tbWl0bWVudERhdGUSKgoJY2xpZW50X2lkGAIgASgJQgi6SAVyA7ABAUgA'
+    'UghjbGllbnRJZIgBAUIMCgpfY2xpZW50X2lk');
+
+@$core.Deprecated('Use orderPricesDescriptor instead')
+const OrderPrices$json = {
+  '1': 'OrderPrices',
+  '2': [
+    {'1': 'subtotal', '3': 1, '4': 1, '5': 5, '10': 'subtotal'},
+    {'1': 'discounts', '3': 2, '4': 1, '5': 5, '10': 'discounts'},
+    {'1': 'total_vat_amount', '3': 3, '4': 1, '5': 5, '10': 'totalVatAmount'},
+    {'1': 'grand_total', '3': 4, '4': 1, '5': 5, '10': 'grandTotal'},
+  ],
+};
+
+/// Descriptor for `OrderPrices`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List orderPricesDescriptor = $convert.base64Decode(
+    'CgtPcmRlclByaWNlcxIaCghzdWJ0b3RhbBgBIAEoBVIIc3VidG90YWwSHAoJZGlzY291bnRzGA'
+    'IgASgFUglkaXNjb3VudHMSKAoQdG90YWxfdmF0X2Ftb3VudBgDIAEoBVIOdG90YWxWYXRBbW91'
+    'bnQSHwoLZ3JhbmRfdG90YWwYBCABKAVSCmdyYW5kVG90YWw=');
+
 @$core.Deprecated('Use orderDescriptor instead')
 const Order$json = {
   '1': 'Order',
   '2': [
-    {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'refId', '17': true},
-    {
-      '1': 'from_id',
-      '3': 2,
-      '4': 1,
-      '5': 9,
-      '9': 1,
-      '10': 'fromId',
-      '17': true
-    },
-    {'1': 'is_client_order', '3': 3, '4': 1, '5': 9, '10': 'isClientOrder'},
+    {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '9': 1, '10': 'refId', '17': true},
     {
       '1': 'order_items',
-      '3': 4,
+      '3': 2,
       '4': 3,
       '5': 11,
       '6': '.order.v1.OrderItem',
       '10': 'orderItems'
     },
-    {'1': 'total_price', '3': 5, '4': 1, '5': 5, '10': 'totalPrice'},
+    {
+      '1': 'order_prices',
+      '3': 3,
+      '4': 1,
+      '5': 11,
+      '6': '.order.v1.OrderPrices',
+      '10': 'orderPrices'
+    },
     {
       '1': 'status',
-      '3': 6,
+      '3': 4,
       '4': 1,
       '5': 14,
       '6': '.order.v1.OrderStatus',
@@ -115,7 +185,7 @@ const Order$json = {
     },
     {
       '1': 'status_history',
-      '3': 7,
+      '3': 5,
       '4': 3,
       '5': 11,
       '6': '.order.v1.StatusHistory',
@@ -123,7 +193,7 @@ const Order$json = {
     },
     {
       '1': 'created_at',
-      '3': 8,
+      '3': 6,
       '4': 1,
       '5': 11,
       '6': '.google.protobuf.Timestamp',
@@ -131,7 +201,7 @@ const Order$json = {
     },
     {
       '1': 'updated_at',
-      '3': 9,
+      '3': 7,
       '4': 1,
       '5': 11,
       '6': '.google.protobuf.Timestamp',
@@ -139,35 +209,59 @@ const Order$json = {
       '10': 'updatedAt',
       '17': true
     },
-    {'1': 'store_id', '3': 10, '4': 1, '5': 9, '8': {}, '10': 'storeId'},
+    {'1': 'store_id', '3': 8, '4': 1, '5': 9, '8': {}, '10': 'storeId'},
+    {'1': 'initiated_by', '3': 9, '4': 1, '5': 9, '8': {}, '10': 'initiatedBy'},
     {
-      '1': 'initiated_by',
+      '1': 'purchase_order',
+      '3': 10,
+      '4': 1,
+      '5': 11,
+      '6': '.order.v1.PurchaseOrder',
+      '9': 0,
+      '10': 'purchaseOrder'
+    },
+    {
+      '1': 'sale_order',
       '3': 11,
       '4': 1,
+      '5': 11,
+      '6': '.order.v1.SaleOrder',
+      '9': 0,
+      '10': 'saleOrder'
+    },
+    {
+      '1': 'cancellation_reason',
+      '3': 12,
+      '4': 1,
       '5': 9,
-      '8': {},
-      '10': 'initiatedBy'
+      '9': 3,
+      '10': 'cancellationReason',
+      '17': true
     },
   ],
   '8': [
+    {'1': 'order_type'},
     {'1': '_ref_id'},
-    {'1': '_from_id'},
     {'1': '_updated_at'},
+    {'1': '_cancellation_reason'},
   ],
 };
 
 /// Descriptor for `Order`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List orderDescriptor = $convert.base64Decode(
-    'CgVPcmRlchIaCgZyZWZfaWQYASABKAlIAFIFcmVmSWSIAQESHAoHZnJvbV9pZBgCIAEoCUgBUg'
-    'Zmcm9tSWSIAQESJgoPaXNfY2xpZW50X29yZGVyGAMgASgJUg1pc0NsaWVudE9yZGVyEjQKC29y'
-    'ZGVyX2l0ZW1zGAQgAygLMhMub3JkZXIudjEuT3JkZXJJdGVtUgpvcmRlckl0ZW1zEh8KC3RvdG'
-    'FsX3ByaWNlGAUgASgFUgp0b3RhbFByaWNlEi0KBnN0YXR1cxgGIAEoDjIVLm9yZGVyLnYxLk9y'
-    'ZGVyU3RhdHVzUgZzdGF0dXMSPgoOc3RhdHVzX2hpc3RvcnkYByADKAsyFy5vcmRlci52MS5TdG'
-    'F0dXNIaXN0b3J5Ug1zdGF0dXNIaXN0b3J5EjkKCmNyZWF0ZWRfYXQYCCABKAsyGi5nb29nbGUu'
-    'cHJvdG9idWYuVGltZXN0YW1wUgljcmVhdGVkQXQSPgoKdXBkYXRlZF9hdBgJIAEoCzIaLmdvb2'
-    'dsZS5wcm90b2J1Zi5UaW1lc3RhbXBIAlIJdXBkYXRlZEF0iAEBEiYKCHN0b3JlX2lkGAogASgJ'
-    'Qgu6SAjIAQFyA7ABAVIHc3RvcmVJZBItCgxpbml0aWF0ZWRfYnkYCyABKAlCCrpIB8gBAXICEA'
-    'NSC2luaXRpYXRlZEJ5QgkKB19yZWZfaWRCCgoIX2Zyb21faWRCDQoLX3VwZGF0ZWRfYXQ=');
+    'CgVPcmRlchIaCgZyZWZfaWQYASABKAlIAVIFcmVmSWSIAQESNAoLb3JkZXJfaXRlbXMYAiADKA'
+    'syEy5vcmRlci52MS5PcmRlckl0ZW1SCm9yZGVySXRlbXMSOAoMb3JkZXJfcHJpY2VzGAMgASgL'
+    'MhUub3JkZXIudjEuT3JkZXJQcmljZXNSC29yZGVyUHJpY2VzEi0KBnN0YXR1cxgEIAEoDjIVLm'
+    '9yZGVyLnYxLk9yZGVyU3RhdHVzUgZzdGF0dXMSPgoOc3RhdHVzX2hpc3RvcnkYBSADKAsyFy5v'
+    'cmRlci52MS5TdGF0dXNIaXN0b3J5Ug1zdGF0dXNIaXN0b3J5EjkKCmNyZWF0ZWRfYXQYBiABKA'
+    'syGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUgljcmVhdGVkQXQSPgoKdXBkYXRlZF9hdBgH'
+    'IAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBIAlIJdXBkYXRlZEF0iAEBEiYKCHN0b3'
+    'JlX2lkGAggASgJQgu6SAjIAQFyA7ABAVIHc3RvcmVJZBItCgxpbml0aWF0ZWRfYnkYCSABKAlC'
+    'CrpIB8gBAXICEANSC2luaXRpYXRlZEJ5EkAKDnB1cmNoYXNlX29yZGVyGAogASgLMhcub3JkZX'
+    'IudjEuUHVyY2hhc2VPcmRlckgAUg1wdXJjaGFzZU9yZGVyEjQKCnNhbGVfb3JkZXIYCyABKAsy'
+    'Ey5vcmRlci52MS5TYWxlT3JkZXJIAFIJc2FsZU9yZGVyEjQKE2NhbmNlbGxhdGlvbl9yZWFzb2'
+    '4YDCABKAlIA1ISY2FuY2VsbGF0aW9uUmVhc29uiAEBQgwKCm9yZGVyX3R5cGVCCQoHX3JlZl9p'
+    'ZEINCgtfdXBkYXRlZF9hdEIWChRfY2FuY2VsbGF0aW9uX3JlYXNvbg==');
 
 @$core.Deprecated('Use createOrderRequestDescriptor instead')
 const CreateOrderRequest$json = {
@@ -397,8 +491,11 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
   '.order.v1.CreateOrderRequest': CreateOrderRequest$json,
   '.order.v1.Order': Order$json,
   '.order.v1.OrderItem': OrderItem$json,
+  '.order.v1.OrderPrices': OrderPrices$json,
   '.order.v1.StatusHistory': StatusHistory$json,
   '.google.protobuf.Timestamp': $0.Timestamp$json,
+  '.order.v1.PurchaseOrder': PurchaseOrder$json,
+  '.order.v1.SaleOrder': SaleOrder$json,
   '.order.v1.CreateOrderResponse': CreateOrderResponse$json,
   '.order.v1.GetOrderRequest': GetOrderRequest$json,
   '.order.v1.GetOrderResponse': GetOrderResponse$json,

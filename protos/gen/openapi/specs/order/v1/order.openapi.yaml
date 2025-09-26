@@ -429,61 +429,72 @@ components:
       additionalProperties: false
     order.v1.Order:
       type: object
-      properties:
-        refId:
-          type: string
-          title: ref_id
-          description: The unique identifier of the order.
-          nullable: true
-        fromId:
-          type: string
-          title: from_id
-          description: The id of the client or the supplier if available.
-          nullable: true
-        isClientOrder:
-          type: string
-          title: is_client_order
-          description: Whether the order is from the client or the supplier.
-        orderItems:
-          type: array
-          items:
-            $ref: '#/components/schemas/order.v1.OrderItem'
-          title: order_items
-          description: The list of items in the order.
-        totalPrice:
-          type: integer
-          title: total_price
-          format: int32
-          description: The total price of the order in XAF.
-        status:
-          title: status
-          description: The status of the order.
-          $ref: '#/components/schemas/order.v1.OrderStatus'
-        statusHistory:
-          type: array
-          items:
-            $ref: '#/components/schemas/order.v1.StatusHistory'
-          title: status_history
-          description: The status history.
-        createdAt:
-          title: created_at
-          description: The date and time the order was created.
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-        updatedAt:
-          title: updated_at
-          description: The date and time the order was last updated.
-          nullable: true
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-        storeId:
-          type: string
-          title: store_id
-          format: uuid
-          description: The unique identifier of the store associated with the order.
-        initiatedBy:
-          type: string
-          title: initiated_by
-          minLength: 3
-          description: The unique identifier of the user who initiated the order.
+      allOf:
+        - properties:
+            refId:
+              type: string
+              title: ref_id
+              description: The unique identifier of the order.
+              nullable: true
+            orderItems:
+              type: array
+              items:
+                $ref: '#/components/schemas/order.v1.OrderItem'
+              title: order_items
+              description: The list of items in the order.
+            orderPrices:
+              title: order_prices
+              description: The total price of the order in XAF.
+              $ref: '#/components/schemas/order.v1.OrderPrices'
+            status:
+              title: status
+              description: The status of the order.
+              $ref: '#/components/schemas/order.v1.OrderStatus'
+            statusHistory:
+              type: array
+              items:
+                $ref: '#/components/schemas/order.v1.StatusHistory'
+              title: status_history
+              description: The status history.
+            createdAt:
+              title: created_at
+              description: The date and time the order was created.
+              $ref: '#/components/schemas/google.protobuf.Timestamp'
+            updatedAt:
+              title: updated_at
+              description: The date and time the order was last updated.
+              nullable: true
+              $ref: '#/components/schemas/google.protobuf.Timestamp'
+            storeId:
+              type: string
+              title: store_id
+              format: uuid
+              description: The unique identifier of the store associated with the order.
+            initiatedBy:
+              type: string
+              title: initiated_by
+              minLength: 3
+              description: The unique identifier of the user who initiated the order.
+            cancellationReason:
+              type: string
+              title: cancellation_reason
+              description: The reason for the cancellation of the order.
+              nullable: true
+        - oneOf:
+            - properties:
+                purchaseOrder:
+                  title: purchase_order
+                  $ref: '#/components/schemas/order.v1.PurchaseOrder'
+              title: purchase_order
+              required:
+                - purchaseOrder
+            - properties:
+                saleOrder:
+                  title: sale_order
+                  $ref: '#/components/schemas/order.v1.SaleOrder'
+              title: sale_order
+              required:
+                - saleOrder
       title: Order
       required:
         - storeId
@@ -514,6 +525,27 @@ components:
           description: The name of the product.
       title: OrderItem
       additionalProperties: false
+    order.v1.OrderPrices:
+      type: object
+      properties:
+        subtotal:
+          type: integer
+          title: subtotal
+          format: int32
+        discounts:
+          type: integer
+          title: discounts
+          format: int32
+        totalVatAmount:
+          type: integer
+          title: total_vat_amount
+          format: int32
+        grandTotal:
+          type: integer
+          title: grand_total
+          format: int32
+      title: OrderPrices
+      additionalProperties: false
     order.v1.OrderStatus:
       type: string
       title: OrderStatus
@@ -523,6 +555,33 @@ components:
         - ORDER_STATUS_PROCESSING
         - ORDER_STATUS_COMPLETED
         - ORDER_STATUS_CANCELLED
+    order.v1.PurchaseOrder:
+      type: object
+      properties:
+        expectedDeliveryDate:
+          title: expected_delivery_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        supplierId:
+          type: string
+          title: supplier_id
+          format: uuid
+      title: PurchaseOrder
+      required:
+        - supplierId
+      additionalProperties: false
+    order.v1.SaleOrder:
+      type: object
+      properties:
+        commitmentDate:
+          title: commitment_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        clientId:
+          type: string
+          title: client_id
+          format: uuid
+          nullable: true
+      title: SaleOrder
+      additionalProperties: false
     order.v1.StatusHistory:
       type: object
       properties:

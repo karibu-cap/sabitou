@@ -165,7 +165,7 @@ class CartManager extends ChangeNotifier {
   }
 
   void _updateTotal() {
-    _currentOrder?.totalPrice =
+    _currentOrder?.orderPrices.grandTotal =
         _currentOrder?.orderItems.fold<int>(
           0,
           (sum, item) => sum + (item.quantity * item.unitPrice),
@@ -182,7 +182,6 @@ class CartManager extends ChangeNotifier {
       return false;
     }
     currentOrder
-      ..fromId = UserPreferences.instance.user?.refId ?? ''
       ..status = OrderStatus.ORDER_STATUS_COMPLETED
       ..updatedAt = Timestamp.fromDateTime(clock.now());
 

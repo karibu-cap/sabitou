@@ -19,6 +19,22 @@ import '../../identity/v1/permission.pbjson.dart' as $2;
 import '../../identity/v1/user.pbjson.dart' as $1;
 import '../../link/v1/link.pbjson.dart' as $3;
 
+@$core.Deprecated('Use storeCostingMethodDescriptor instead')
+const StoreCostingMethod$json = {
+  '1': 'StoreCostingMethod',
+  '2': [
+    {'1': 'STORE_COSTING_METHOD_UNSPECIFIED', '2': 0},
+    {'1': 'STORE_COSTING_METHOD_FIFO', '2': 1},
+    {'1': 'STORE_COSTING_METHOD_AVERAGE', '2': 2},
+  ],
+};
+
+/// Descriptor for `StoreCostingMethod`. Decode as a `google.protobuf.EnumDescriptorProto`.
+final $typed_data.Uint8List storeCostingMethodDescriptor = $convert.base64Decode(
+    'ChJTdG9yZUNvc3RpbmdNZXRob2QSJAogU1RPUkVfQ09TVElOR19NRVRIT0RfVU5TUEVDSUZJRU'
+    'QQABIdChlTVE9SRV9DT1NUSU5HX01FVEhPRF9GSUZPEAESIAocU1RPUkVfQ09TVElOR19NRVRI'
+    'T0RfQVZFUkFHRRAC');
+
 @$core.Deprecated('Use storeMemberStatusDescriptor instead')
 const StoreMemberStatus$json = {
   '1': 'StoreMemberStatus',
@@ -109,6 +125,16 @@ const Store$json = {
       '17': true
     },
     {'1': 'email', '3': 13, '4': 1, '5': 9, '9': 7, '10': 'email', '17': true},
+    {
+      '1': 'costing_method',
+      '3': 14,
+      '4': 1,
+      '5': 14,
+      '6': '.store.v1.StoreCostingMethod',
+      '9': 8,
+      '10': 'costingMethod',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_ref_id'},
@@ -119,6 +145,7 @@ const Store$json = {
     {'1': '_contact_info'},
     {'1': '_address'},
     {'1': '_email'},
+    {'1': '_costing_method'},
   ],
 };
 
@@ -131,10 +158,11 @@ final $typed_data.Uint8List storeDescriptor = $convert.base64Decode(
     'cmVhdGVkX2F0GAkgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIJY3JlYXRlZEF0Ej'
     '4KCnVwZGF0ZWRfYXQYCiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wSARSCXVwZGF0'
     'ZWRBdIgBARImCgxjb250YWN0X2luZm8YCyABKAlIBVILY29udGFjdEluZm+IAQESHQoHYWRkcm'
-    'VzcxgMIAEoCUgGUgdhZGRyZXNziAEBEhkKBWVtYWlsGA0gASgJSAdSBWVtYWlsiAEBQgkKB19y'
-    'ZWZfaWRCDgoMX2Rlc2NyaXB0aW9uQg8KDV9sb2dvX2xpbmtfaWRCFQoTX2V4dGVybmFsX2xpbm'
-    'tzX2lkc0INCgtfdXBkYXRlZF9hdEIPCg1fY29udGFjdF9pbmZvQgoKCF9hZGRyZXNzQggKBl9l'
-    'bWFpbA==');
+    'VzcxgMIAEoCUgGUgdhZGRyZXNziAEBEhkKBWVtYWlsGA0gASgJSAdSBWVtYWlsiAEBEkgKDmNv'
+    'c3RpbmdfbWV0aG9kGA4gASgOMhwuc3RvcmUudjEuU3RvcmVDb3N0aW5nTWV0aG9kSAhSDWNvc3'
+    'RpbmdNZXRob2SIAQFCCQoHX3JlZl9pZEIOCgxfZGVzY3JpcHRpb25CDwoNX2xvZ29fbGlua19p'
+    'ZEIVChNfZXh0ZXJuYWxfbGlua3NfaWRzQg0KC191cGRhdGVkX2F0Qg8KDV9jb250YWN0X2luZm'
+    '9CCgoIX2FkZHJlc3NCCAoGX2VtYWlsQhEKD19jb3N0aW5nX21ldGhvZA==');
 
 @$core.Deprecated('Use storeMemberDescriptor instead')
 const StoreMember$json = {

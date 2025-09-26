@@ -150,7 +150,7 @@ class _OrdersDataTable extends StatelessWidget {
                       DataCell(
                         Text(
                           Formatters.formatCurrency(
-                            order.totalPrice.toDouble(),
+                            order.orderPrices.grandTotal.toDouble(),
                           ),
                           style: ShadTheme.of(context).textTheme.list.copyWith(
                             fontWeight: FontWeight.w600,
