@@ -57,6 +57,9 @@ abstract class PagesRoutes {
   /// The suppliers route, for example, http:localhost:8080/suppliers.
   static final suppliers = _SuppliersRoute();
 
+  /// The categories route, for example, http:localhost:8080/categories.
+  static final categories = _CategoriesRoute();
+
   /// The settings route, for example, http:localhost:8080/settings.
   static final settings = _SettingsRoute();
 }
@@ -115,6 +118,14 @@ class _SuppliersRoute extends PagesRoutesWithNoParams {
 
   @override
   String get name => 'suppliers';
+}
+
+class _CategoriesRoute extends PagesRoutesWithNoParams {
+  @override
+  String get pattern => '/categories';
+
+  @override
+  String get name => 'categories';
 }
 
 class _SettingsRoute extends PagesRoutesWithNoParams {

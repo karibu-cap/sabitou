@@ -45,6 +45,21 @@ class CategoriesRepository {
     }
   }
 
+  /// Gets all categories.
+  Future<List<Category>> getCategories() async {
+    try {
+      final response = await categoryServiceClient.findCategories(
+        FindCategoriesRequest(),
+      );
+
+      return response.categories;
+    } on Exception catch (e) {
+      _logger.severe('getCategories Error: $e');
+
+      return [];
+    }
+  }
+
   /// Gets a category by ref.
   Future<Category?> getCategoryByRefId(String refId) async {
     try {

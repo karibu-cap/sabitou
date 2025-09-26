@@ -58,19 +58,19 @@ class _SuggestionItem extends StatelessWidget {
   }
 }
 
-/// Error widget for suppliers list when data loading fails.
+/// Error widget for when data loading fails.
 ///
 /// Displays a user-friendly error message with retry functionality
 /// and helpful suggestions for resolving the issue.
-class SupplierErrorWidget extends StatelessWidget {
+class LoadingFailedWidget extends StatelessWidget {
   /// The error that occurred.
   final Object error;
 
   /// Callback function to retry loading data.
   final VoidCallback? onRetry;
 
-  /// Creates a new [SupplierErrorWidget].
-  const SupplierErrorWidget({super.key, required this.error, this.onRetry});
+  /// Creates a new [LoadingFailedWidget].
+  const LoadingFailedWidget({super.key, required this.error, this.onRetry});
 
   /// Converts technical error messages to user-friendly descriptions.
   String _getHumanReadableError(

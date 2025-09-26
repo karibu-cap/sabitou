@@ -144,6 +144,9 @@ enum DashboardItem {
   /// The members item.
   members,
 
+  /// The categories item.
+  categories,
+
   /// The settings item.
   settings,
 

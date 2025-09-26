@@ -3,10 +3,10 @@ import 'package:provider/provider.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+import '../../../widgets/error/loading_failed.dart';
 import '../suppliers_controller.dart';
 import 'list_components/supplier_data_table.dart';
 import 'list_components/supplier_empty_state.dart';
-import 'list_components/supplier_error_widget.dart';
 import 'list_components/supplier_list_header.dart';
 import 'list_components/supplier_shimmer_widgets.dart';
 
@@ -46,7 +46,7 @@ class SuppliersList extends StatelessWidget {
                   }
                   final error = snapshot.error;
                   if (snapshot.hasError && error != null) {
-                    return SupplierErrorWidget(error: error);
+                    return LoadingFailedWidget(error: error);
                   }
                   final suppliers = snapshot.data ?? [];
                   if (suppliers.isEmpty) {

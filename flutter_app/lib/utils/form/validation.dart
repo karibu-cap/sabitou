@@ -132,4 +132,30 @@ class ValidationFormUtils {
 
     return null;
   }
+
+  /// Validates the category name english version.
+  static String? validateCategoryNameEnglishVersion([String? value]) {
+    final categoryName = value?.trim() ?? '';
+    if (categoryName.isEmpty) {
+      return _intl.categoryNameEnglishVersionRequired;
+    }
+    if (categoryName.trim().length < 3) {
+      return _intl.categoryNameTooShort;
+    }
+
+    return null;
+  }
+
+  /// Validates the category name french version.
+  static String? validateCategoryNameFrenchVersion([String? value]) {
+    final categoryName = value?.trim() ?? '';
+    if (categoryName.isEmpty) {
+      return _intl.categoryNameFrenchVersionRequired;
+    }
+    if (categoryName.trim().length < 3) {
+      return _intl.categoryNameTooShort;
+    }
+
+    return null;
+  }
 }
