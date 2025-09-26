@@ -24,16 +24,16 @@ message Voucher {
     (buf.validate.field).required = true,
     (buf.validate.field).string.uuid = true
   ];
-  string store_id = 8 [
+  string store_id = 4 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.uuid = true
   ];
-  double amount = 4;
+  double amount = 5;
   // When the voucher was created.
-  google.protobuf.Timestamp created_at = 7;
+  google.protobuf.Timestamp created_at = 6;
   // When the voucher expires.
-  google.protobuf.Timestamp expiry_date = 6;
-  VoucherStatus status = 7;
+  google.protobuf.Timestamp expiry_date = 7;
+  VoucherStatus status = 8;
   // Who redeemed the voucher.
   // The voucher can be redeemed by another invoice.
   optional string redeemed_by_reference_id = 9;
