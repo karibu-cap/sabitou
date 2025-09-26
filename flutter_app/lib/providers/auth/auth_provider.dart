@@ -7,6 +7,7 @@ import '../../repositories/business_repository.dart';
 import '../../repositories/stores_repository.dart';
 import '../../services/data_sync/data_sync_service.dart';
 import '../../services/rpc/fake_transport/auth.dart';
+import '../../services/rpc/fake_transport/data_sync.dart';
 import '../../utils/user_preference.dart';
 
 /// Auth status.
@@ -33,9 +34,9 @@ class AuthProvider extends ChangeNotifier {
   final AuthRepository _authRepository = AuthRepository(
     transport: authFakeTransport,
   );
-  final _dataSyncService = GetIt.I.get<DataSyncService>();
-  final _businessRepository = GetIt.I.get<BusinessRepository>();
-  final _storesRepository = GetIt.I.get<StoresRepository>();
+  final _dataSyncService = DataSyncService(transport: syncFakeTransport);
+  final _businessRepository = BusinessRepository(transport: authFakeTransport);
+  final _storesRepository = StoresRepository(transport: authFakeTransport);
 
   /// Singleton access.
   static AuthProvider get instance => GetIt.I.get<AuthProvider>();

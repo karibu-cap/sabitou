@@ -16,4 +16,19 @@ extension CategoryExtension on Category {
 
     return name.en;
   }
+
+  /// Get the type for the product category.
+  String get typeLabel {
+    if (type == CategoryType.CATEGORY_TYPE_BUSINESS) {
+      return Intls.to.business;
+    }
+    if (type == CategoryType.CATEGORY_TYPE_STORE) {
+      return Intls.to.store;
+    }
+    if (type == CategoryType.CATEGORY_TYPE_PRODUCT) {
+      return Intls.to.product;
+    }
+
+    return '';
+  }
 }

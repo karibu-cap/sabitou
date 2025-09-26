@@ -6,6 +6,7 @@ import '../providers/auth/auth_provider.dart';
 import '../screens/auth/forgot_password/forgot_password_view.dart';
 import '../screens/auth/login/login_view.dart';
 import '../screens/auth/registration/registration_view.dart';
+import '../screens/categories/categories_view.dart';
 import '../screens/dashboard/dashboard_screen.dart';
 import '../screens/home/home.dart';
 import '../screens/inventory/inventory_screen.dart';
@@ -145,6 +146,17 @@ class GoRouterRoutesProvider {
           StatefulShellBranch(
             routes: [
               GoRoute(
+                name: PagesRoutes.categories.name,
+                path: PagesRoutes.categories.pattern,
+                pageBuilder: (context, state) {
+                  return const MaterialPage(child: CategoriesView());
+                },
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
                 name: PagesRoutes.settings.name,
                 path: PagesRoutes.settings.pattern,
                 pageBuilder: (context, state) {
@@ -170,7 +182,7 @@ class GoRouterRoutesProvider {
             return PagesRoutes.login.pattern;
           }
 
-          final authProvider = AuthProvider.instance;
+          final authProvider = AuthProvider();
           await authProvider.saveBusinessAndStore(user);
           await authProvider.initializeDataSync();
           debugPrint('isUserRegistered: true');

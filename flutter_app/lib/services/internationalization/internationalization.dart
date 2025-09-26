@@ -1258,6 +1258,118 @@ class AppInternationalizationService extends ChangeNotifier {
       'fr':
           'Vous n\'avez pas sélectionné de magasin, veuillez aller dans les paramètres pour en sélectionner un',
     },
+    'noCategoriesYet': {
+      'en': 'No categories yet',
+      'fr': 'Aucune catégorie encore',
+    },
+    'noCategoriesMatchFilters': {
+      'en': 'No categories match your filters',
+      'fr': 'Aucune catégorie ne correspond à vos filtres',
+    },
+    'categoryWillBeRemovedPermanently': {
+      'en': 'This category will be removed from your team permanently.',
+      'fr': 'Cette catégorie sera supprimée définitivement de votre équipe.',
+    },
+    'deleteCategory': {'en': 'Delete Category', 'fr': 'Supprimer la Catégorie'},
+    'categoryNameTooShort': {
+      'en': 'Category name is too short',
+      'fr': 'Le nom de la catégorie est trop court',
+    },
+    'categoryManagement': {
+      'en': 'Category Management',
+      'fr': 'Gestion des Catégories',
+    },
+    'manageCategories': {
+      'en': 'Manage your categories',
+      'fr': 'Gérez vos catégories',
+    },
+    'editCategory': {'en': 'Edit Category', 'fr': 'Modifier la Catégorie'},
+    'deleteCategoryBtn': {
+      'en': 'Delete Category',
+      'fr': 'Supprimer la Catégorie',
+    },
+    'totalCategories': {'en': 'Total Categories', 'fr': 'Total Catégories'},
+    'activeCategories': {'en': 'Active Categories', 'fr': 'Catégories Actives'},
+    'inactiveCategories': {
+      'en': 'Inactive Categories',
+      'fr': 'Catégories Inactives',
+    },
+    'nameText': {'en': 'Name', 'fr': 'Nom'},
+    'typeText': {'en': 'Type', 'fr': 'Type'},
+    'addFirstCategory': {
+      'en': 'Add your first category to get started',
+      'fr': 'Ajoutez votre première catégorie pour commencer',
+    },
+    'deleteCategoryConfirm': {
+      'en':
+          'Are you sure you want to delete this category? This action cannot be undone.',
+      'fr':
+          'Êtes-vous sûr de vouloir supprimer cette catégorie ? Cette action ne peut pas être annulée.',
+    },
+    'categoryDeletedSuccessfully': {
+      'en': 'Category deleted successfully',
+      'fr': 'Catégorie supprimée avec succès',
+    },
+    'addNewCategory': {
+      'en': 'Add New Category',
+      'fr': 'Ajouter une Nouvelle Catégorie',
+    },
+    'enterDetailsNewCategory': {
+      'en': 'Enter the details for the new category',
+      'fr': 'Entrez les détails de la nouvelle catégorie',
+    },
+    'updateCategory': {
+      'en': 'Update category information',
+      'fr': 'Mettre à jour les informations de la catégorie',
+    },
+    'categoryNameEnglishVersion': {
+      'en': 'Category Name (English version)',
+      'fr': 'Nom de la Catégorie (version anglaise)',
+    },
+    'categoryNameFrenchVersion': {
+      'en': 'Category Name (French version)',
+      'fr': 'Nom de la Catégorie (version française)',
+    },
+    'enterCategoryName': {
+      'en': 'Enter category name',
+      'fr': 'Entrez le nom de la catégorie',
+    },
+    'categoryNameEnglishVersionRequired': {
+      'en': 'Category name (English version) is required',
+      'fr': 'Le nom de la catégorie (version anglaise) est requis',
+    },
+    'categoryNameFrenchVersionRequired': {
+      'en': 'Category name (version anglaise) is required',
+      'fr': 'Le nom de la catégorie (version française) est requis',
+    },
+    'categoryType': {'en': 'Category Type', 'fr': 'Type de Catégorie'},
+    'selectType': {'en': 'Select Type', 'fr': 'Sélectionner le Type'},
+    'allTypes': {'en': 'All Type', 'fr': 'Tous les Types'},
+    'productType': {'en': 'Product', 'fr': 'Produit'},
+    'categoryStatus': {'en': 'Category Status', 'fr': 'Statut de la Catégorie'},
+    'selectStatus': {'en': 'Select Status', 'fr': 'Sélectionner le Statut'},
+    'searchCategories': {
+      'en': 'Search categories by name, type, or status...',
+      'fr': 'Rechercher des catégories par nom, type ou statut...',
+    },
+    'filterByStatus': {'en': 'Filter by Status', 'fr': 'Filtrer par Statut'},
+    'filterByType': {'en': 'Filter by Type', 'fr': 'Filtrer par Type'},
+    'categoryAddedSuccessfully': {
+      'en': 'Category added successfully',
+      'fr': 'Catégorie ajoutée avec succès',
+    },
+    'categoryUpdatedSuccessfully': {
+      'en': 'Category updated successfully',
+      'fr': 'Catégorie mise à jour avec succès',
+    },
+    'failedToSaveCategory': {
+      'en': 'Failed to save category',
+      'fr': 'Échec de la sauvegarde de la catégorie',
+    },
+    'failedToDeleteCategory': {
+      'en': 'Failed to delete category',
+      'fr': 'Échec de la suppression de la catégorie',
+    },
   };
 
   /// Direct access to the internationalization service.
@@ -3041,6 +3153,147 @@ class AppInternationalizationService extends ChangeNotifier {
 
   /// Returns the localized value of userInformation.
   String get userInformation => _stringOfLocalizedValue('userInformation');
+
+  /// Returns the localized value of noCategoriesYet.
+  String get noCategoriesYet => _stringOfLocalizedValue('noCategoriesYet');
+
+  /// Returns the localized value of categoryWillBeRemovedPermanently.
+  String get categoryWillBeRemovedPermanently =>
+      _stringOfLocalizedValue('categoryWillBeRemovedPermanently');
+
+  /// Returns the localized value of noCategoriesMatchFilters.
+  String get noCategoriesMatchFilters =>
+      _stringOfLocalizedValue('noCategoriesMatchFilters');
+
+  /// Returns the localized value of deleteCategory.
+  String get deleteCategory => _stringOfLocalizedValue('deleteCategory');
+
+  // Category module getters
+  /// Returns the localized value of categoryNameTooShort.
+  String get categoryNameTooShort =>
+      _stringOfLocalizedValue('categoryNameTooShort');
+
+  // Category module getters
+  /// Returns the localized value of categoryManagement.
+  String get categoryManagement =>
+      _stringOfLocalizedValue('categoryManagement');
+
+  /// Returns the localized value of manageCategories.
+  String get manageCategories => _stringOfLocalizedValue('manageCategories');
+
+  /// Returns the localized value of editCategory.
+  String get editCategory => _stringOfLocalizedValue('editCategory');
+
+  /// Returns the localized value of deleteCategoryBtn.
+  String get deleteCategoryBtn => _stringOfLocalizedValue('deleteCategoryBtn');
+
+  /// Returns the localized value of totalCategories.
+  String get totalCategories => _stringOfLocalizedValue('totalCategories');
+
+  /// Returns the localized value of activeCategories.
+  String get activeCategories => _stringOfLocalizedValue('activeCategories');
+
+  /// Returns the localized value of inactiveCategories.
+  String get inactiveCategories =>
+      _stringOfLocalizedValue('inactiveCategories');
+
+  /// Returns the localized value of nameText.
+  String get nameText => _stringOfLocalizedValue('nameText');
+
+  /// Returns the localized value of typeText.
+  String get typeText => _stringOfLocalizedValue('typeText');
+
+  /// Returns the localized value of addFirstCategory.
+  String get addFirstCategory => _stringOfLocalizedValue('addFirstCategory');
+
+  /// Returns the localized value of deleteCategoryConfirm.
+  String get deleteCategoryConfirm =>
+      _stringOfLocalizedValue('deleteCategoryConfirm');
+
+  /// Returns the localized value of categoryDeletedSuccessfully.
+  String get categoryDeletedSuccessfully =>
+      _stringOfLocalizedValue('categoryDeletedSuccessfully');
+
+  /// Returns the localized value of addNewCategory.
+  String get addNewCategory => _stringOfLocalizedValue('addNewCategory');
+
+  /// Returns the localized value of enterDetailsNewCategory.
+  String get enterDetailsNewCategory =>
+      _stringOfLocalizedValue('enterDetailsNewCategory');
+
+  /// Returns the localized value of updateCategory.
+  String get updateCategory => _stringOfLocalizedValue('updateCategory');
+
+  /// Returns the localized value of categoryNameEnglishVersion.
+  String get categoryNameEnglishVersion =>
+      _stringOfLocalizedValue('categoryNameEnglishVersion');
+
+  /// Returns the localized value of categoryNameFrenchVersion.
+  String get categoryNameFrenchVersion =>
+      _stringOfLocalizedValue('categoryNameFrenchVersion');
+
+  /// Returns the localized value of categoryNameEnglishVersionRequired.
+  String get categoryNameEnglishVersionRequired =>
+      _stringOfLocalizedValue('categoryNameEnglishVersionRequired');
+
+  /// Returns the localized value of categoryNameFrenchVersionRequired.
+  String get categoryNameFrenchVersionRequired =>
+      _stringOfLocalizedValue('categoryNameFrenchVersionRequired');
+
+  /// Returns the localized value of categoryType.
+  String get categoryType => _stringOfLocalizedValue('categoryType');
+
+  /// Returns the localized value of selectType.
+  String get selectType => _stringOfLocalizedValue('selectType');
+
+  /// Returns the localized value of storeType.
+  String get storeType => _stringOfLocalizedValue('storeType');
+
+  /// Returns the localized value of businessType.
+  String get businessType => _stringOfLocalizedValue('businessType');
+
+  /// Returns the localized value of productType.
+  String get productType => _stringOfLocalizedValue('productType');
+
+  /// Returns the localized value of categoryStatus.
+  String get categoryStatus => _stringOfLocalizedValue('categoryStatus');
+
+  /// Returns the localized value of selectStatus.
+  String get selectStatus => _stringOfLocalizedValue('selectStatus');
+
+  /// Returns the localized value of activeStatus.
+  String get activeStatus => _stringOfLocalizedValue('activeStatus');
+
+  /// Returns the localized value of inactiveStatus.
+  String get inactiveStatus => _stringOfLocalizedValue('inactiveStatus');
+
+  /// Returns the localized value of searchCategories.
+  String get searchCategories => _stringOfLocalizedValue('searchCategories');
+
+  /// Returns the localized value of filterByStatus.
+  String get filterByStatus => _stringOfLocalizedValue('filterByStatus');
+
+  /// Returns the localized value of filterByType.
+  String get filterByType => _stringOfLocalizedValue('filterByType');
+
+  /// Returns the localized value of categoryAddedSuccessfully.
+  String get categoryAddedSuccessfully =>
+      _stringOfLocalizedValue('categoryAddedSuccessfully');
+
+  /// Returns the localized value of categoryUpdatedSuccessfully.
+  String get categoryUpdatedSuccessfully =>
+      _stringOfLocalizedValue('categoryUpdatedSuccessfully');
+
+  /// Returns the localized value of failedToSaveCategory.
+  String get failedToSaveCategory =>
+      _stringOfLocalizedValue('failedToSaveCategory');
+
+  /// Returns the localized value of failedToDeleteCategory.
+  String get failedToDeleteCategory =>
+      _stringOfLocalizedValue('failedToDeleteCategory');
+
+  /// Returns the localized value of allTypes.
+  String get allTypes => _stringOfLocalizedValue('allTypes');
 
   /// Changes the locale.
   void changeLocale([Locale? newLocale]) {

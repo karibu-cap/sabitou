@@ -1,0 +1,86 @@
+import 'package:flutter/material.dart';
+import 'package:sabitou_rpc/sabitou_rpc.dart';
+
+import '../../../../../services/internationalization/internationalization.dart';
+import '../../../categories_controller.dart';
+
+/// Controller for managing category deletion confirmation modal state and operations.
+class DeleteCategoryController extends ChangeNotifier {
+  final CategoriesController _categoriesController;
+  final Category _category;
+
+  /// The intl
+  final AppInternationalizationService intl;
+
+  bool _isLoading = false;
+  String _errorMessage = '';
+  String _confirmationText = '';
+
+  /// Constructs a new DeleteCategoryController.
+  DeleteCategoryController({
+    required CategoriesController categoriesController,
+    required Category category,
+    required this.intl,
+  }) : _categoriesController = categoriesController,
+       _category = category;
+
+  /// Whether the modal is currently loading
+  bool get isLoading => _isLoading;
+
+  /// Current error message, if any
+  String get errorMessage => _errorMessage;
+
+  /// Category to be deleted
+  Category get category => _category;
+
+  /// Confirmation text entered by user
+  String get confirmationText => _confirmationText;
+
+  /// Expected confirmation text
+  String get expectedConfirmationText =>
+      AppInternationalizationService.to.delete.toUpperCase();
+
+  /// Whether the confirmation text is correct
+  bool get isConfirmationValid =>
+      _confirmationText.trim().toUpperCase() == expectedConfirmationText;
+
+  /// Whether the deletion can be performed
+  bool get canDelete => isConfirmationValid && !_isLoading;
+
+  /// Update confirmation text
+  void updateConfirmationText(String value) {
+    _confirmationText = value;
+    notifyListeners();
+  }
+
+  /// Delete the user from the business
+  Future<bool> deleteUser() async {
+    if (!canDelete) return false;
+
+    _isLoading = true;
+    _errorMessage = '';
+    notifyListeners();
+
+    final success = await _categoriesController.deleteCategory(_category.refId);
+
+    if (!success) {
+      _isLoading = false;
+      notifyListeners();
+      _errorMessage = intl.failedToDeleteCategory;
+
+      return false;
+    }
+
+    _isLoading = false;
+    _errorMessage = '';
+    notifyListeners();
+
+    return success;
+  }
+
+  /// Clear any error message
+  void clearError() {
+    _errorMessage = '';
+    notifyListeners();
+  }
+}

@@ -17,7 +17,7 @@ class SupplierFormHeader extends StatelessWidget {
 
     return Text(
       supplier == null ? intl.enterDetailsNewSupplier : intl.updateSupplierInfo,
-      style: const TextStyle(color: Colors.grey, fontSize: 14),
+      style: const TextStyle(color: Colors.grey, fontSize: 12),
     );
   }
 }
