@@ -5,8 +5,8 @@ package business.v1;
 import "buf/validate/validate.proto";
 import "google/protobuf/timestamp.proto";
 import "identity/v1/permission.proto";
-import "link/v1/link.proto";
 import "identity/v1/user.proto";
+import "link/v1/link.proto";
 
 enum BusinessStatusType {
   BUSINESS_STATUS_TYPE_UNSPECIFIED = 0;
@@ -65,7 +65,7 @@ enum BusinessMemberStatus {
   /// The user is active.
   BUSINESS_MEMBER_STATUS_ACTIVE = 1;
   /// The user is pending.
-  BUSINESS_MEMBER_STATUS_PENDING = 2; 
+  BUSINESS_MEMBER_STATUS_PENDING = 2;
   /// The user is inactive.
   BUSINESS_MEMBER_STATUS_INACTIVE = 3;
   /// The user is banned.
@@ -274,16 +274,16 @@ message UpdateBusinessMemberRequest {
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
-  
+
   // The unique identifier of the business.
   string business_id = 2 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
-  
+
   // The permissions to add (optional).
   repeated identity.v1.BusinessPermission add_permissions = 5;
-  
+
   // The permissions to remove (optional).
   repeated identity.v1.BusinessPermission remove_permissions = 6;
 }
@@ -291,7 +291,7 @@ message UpdateBusinessMemberRequest {
 message UpdateBusinessMemberResponse {
   // Whether the member was successfully updated.
   bool success = 1;
-  
+
   // The updated business member.
   BusinessMember business_member = 2;
 }
@@ -302,7 +302,7 @@ message GetBusinessMemberRequest {
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
-  
+
   // The unique identifier of the business.
   string business_id = 2 [
     (buf.validate.field).required = true,
@@ -361,13 +361,13 @@ service BusinessService {
 
   // Get the users of the business.
   rpc GetBusinessMembers(GetBusinessMembersRequest) returns (GetBusinessMembersResponse);
-  
+
   // Get a specific business member.
   rpc GetBusinessMember(GetBusinessMemberRequest) returns (GetBusinessMemberResponse);
-  
+
   // Update a business member (role, status, permissions).
   rpc UpdateBusinessMember(UpdateBusinessMemberRequest) returns (UpdateBusinessMemberResponse);
-  
+
   // Stream business members for real-time updates.
   rpc StreamBusinessMembers(StreamBusinessMembersRequest) returns (stream StreamBusinessMembersResponse);
 }

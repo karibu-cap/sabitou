@@ -34,45 +34,68 @@ message OrderItem {
   string item_name = 4;
 }
 
+message PurchaseOrder {
+  google.protobuf.Timestamp expected_delivery_date = 1;
+  string supplier_id = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true
+  ];
+}
+
+message SaleOrder {
+  google.protobuf.Timestamp commitment_date = 1;
+  optional string client_id = 2 [(buf.validate.field).string.uuid = true];
+}
+
+message OrderPrices {
+  int32 subtotal = 1;
+  int32 discounts = 2;
+  int32 total_vat_amount = 3;
+  int32 grand_total = 4;
+}
+
 message Order {
   // The unique identifier of the order.
   optional string ref_id = 1;
 
-  // The id of the client or the supplier if available.
-  optional string from_id = 2;
-
-  // Whether the order is from the client or the supplier.
-  string is_client_order = 3;
-
   // The list of items in the order.
-  repeated OrderItem order_items = 4;
+  repeated OrderItem order_items = 2;
 
   // The total price of the order in XAF.
-  int32 total_price = 5;
+  OrderPrices order_prices = 3;
 
   // The status of the order.
-  OrderStatus status = 6;
+  OrderStatus status = 4;
 
   // The status history.
-  repeated StatusHistory status_history = 7;
+  repeated StatusHistory status_history = 5;
 
   // The date and time the order was created.
-  google.protobuf.Timestamp created_at = 8;
+  google.protobuf.Timestamp created_at = 6;
 
   // The date and time the order was last updated.
-  optional google.protobuf.Timestamp updated_at = 9;
+  optional google.protobuf.Timestamp updated_at = 7;
 
   // The unique identifier of the store associated with the order.
-  string store_id = 10 [
+  string store_id = 8 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.uuid = true
   ];
 
   // The unique identifier of the user who initiated the order.
-  string initiated_by = 11 [
+  string initiated_by = 9 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
+
+  // Whether the order is a purchase order or a sale order.
+  oneof order_type {
+    PurchaseOrder purchase_order = 10;
+    SaleOrder sale_order = 11;
+  }
+
+  // The reason for the cancellation of the order.
+  optional string cancellation_reason = 12;
 }
 
 message CreateOrderRequest {
