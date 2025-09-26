@@ -11,9 +11,11 @@ import 'providers/cart_provider.dart';
 import 'repositories/auth_repository.dart';
 import 'repositories/business_repository.dart';
 import 'repositories/categories_repository.dart';
+import 'repositories/invoice_repository.dart';
 import 'repositories/orders_repository.dart';
 import 'repositories/permissions_repository.dart';
 import 'repositories/products_repository.dart';
+import 'repositories/stock_inbound_repository.dart';
 import 'repositories/stores_repository.dart';
 import 'repositories/suppliers_repository.dart';
 import 'repositories/transactions_repository.dart';
@@ -72,6 +74,8 @@ Future<void> _initServices() async {
     ..registerLazySingleton<BusinessRepository>(BusinessRepository.new)
     ..registerLazySingleton<StoresRepository>(StoresRepository.new)
     ..registerLazySingleton<UserRepository>(UserRepository.new)
+    ..registerLazySingleton<StockInboundRepository>(StockInboundRepository.new)
+    ..registerLazySingleton<InvoiceRepository>(InvoiceRepository.new)
     ..registerLazySingleton<CategoriesRepository>(CategoriesRepository.new)
     ..registerLazySingleton<DataSyncService>(
       () => DataSyncService(transport: syncFakeTransport),

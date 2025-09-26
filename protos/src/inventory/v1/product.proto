@@ -65,23 +65,6 @@ enum ProductStatus {
   PRODUCT_STATUS_INACTIVE = 2;
 }
 
-message SupplyHistory {
-  // The quantity of the product.
-  int32 quantity = 1;
-
-  // The buy price of the product.
-  int32 buy_price = 2;
-
-  // The sale price of the product.
-  int32 sale_price = 3;
-
-  // The last quantity of the product.
-  int32 last_quantity = 4;
-
-  // The creation date of the supply history.
-  google.protobuf.Timestamp created_at = 5;
-}
-
 message StoreProduct {
   // The unique identifier of the business product.
   optional string ref_id = 1;

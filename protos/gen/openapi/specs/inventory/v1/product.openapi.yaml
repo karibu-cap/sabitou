@@ -977,35 +977,6 @@ components:
           description: The store products for the specified store.
       title: StreamStoreProductsResponse
       additionalProperties: false
-    inventory.v1.SupplyHistory:
-      type: object
-      properties:
-        quantity:
-          type: integer
-          title: quantity
-          format: int32
-          description: The quantity of the product.
-        buyPrice:
-          type: integer
-          title: buy_price
-          format: int32
-          description: The buy price of the product.
-        salePrice:
-          type: integer
-          title: sale_price
-          format: int32
-          description: The sale price of the product.
-        lastQuantity:
-          type: integer
-          title: last_quantity
-          format: int32
-          description: The last quantity of the product.
-        createdAt:
-          title: created_at
-          description: The creation date of the supply history.
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-      title: SupplyHistory
-      additionalProperties: false
     inventory.v1.UpdateGlobalProductRequest:
       type: object
       properties:

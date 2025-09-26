@@ -1405,6 +1405,66 @@ class AppInternationalizationService extends ChangeNotifier {
             15 * 113,33 = 1 700, ce qui nous laisse 15 unités en stock pour un montant total de 1 700.
             Si vous vérifiez, même si la quantité est la même, la valeur du stock est différente, mais les deux montent à un total de 3 400 seulement.''',
     },
+    'productDescription': {
+      'en': 'Product Description',
+      'fr': 'Description du produit',
+    },
+    'enterProductDescription': {
+      'en': 'Enter product description',
+      'fr': 'Entrez la description du produit',
+    },
+    'optional': {'en': 'Optional', 'fr': 'Optionnel'},
+    'restock': {'en': 'Restock', 'fr': 'Reapprovisionnement'},
+    'selectProduct': {'en': 'Select product', 'fr': 'Sélectionner un produit'},
+    'salePrice': {'en': 'Sale Price', 'fr': 'Prix de vente'},
+    'unitCost': {'en': 'Unit Cost', 'fr': 'Coût unitaire'},
+    'failedToCreateStockInbound': {
+      'en': 'Failed to create stock inbound',
+      'fr': 'Échec de la création du stock',
+    },
+    'stockInboundSavedSuccessfully': {
+      'en': 'Stock inbound saved successfully',
+      'fr': 'Stock d\'approvisionnement enregistré avec succès',
+    },
+    'restockProductDescription': {
+      'en': 'Ensure to have a valid product before restocking',
+      'fr': 'Assurez-vous d\'avoir un produit valide avant de reapprovisionner',
+    },
+    'adjustmentStock': {'en': 'Adjustment Stock', 'fr': 'Ajustement de stock'},
+    'adjustmentAmount': {
+      'en': 'Adjustment Amount',
+      'fr': 'Montant d\'ajustement',
+    },
+    'isCustomerReturn': {'en': 'Customer Return', 'fr': 'Retour client'},
+    'reason': {'en': 'Reason', 'fr': 'Motif'},
+    'adjustmentAmountDescription': {
+      'en': 'The adjustment amount (positive or negative)',
+      'fr': 'Le montant d\'ajustement (positif ou négatif)',
+    },
+    'autoCreateRefund': {
+      'en': 'Auto Create Refund',
+      'fr': 'Créer automatiquement un remboursement',
+    },
+    'quantityMustBePositiveWhenCustomerReturn': {
+      'en': 'Quantity must be positive when customer return',
+      'fr': 'La quantité doit être positive lors d\'un retour client',
+    },
+    'weCannotAdjustTheStockToANegativeValue': {
+      'en':
+          'The difference between the initial quantity and the new quantity must be greater than 0.',
+      'fr':
+          'La différence entre la quantité initiale et la nouvelle quantité doit être supérieure à 0.',
+    },
+    'stockAdjustedSuccessfully': {
+      'en': 'Stock adjusted successfully',
+      'fr': 'Stock ajusté avec succès',
+    },
+    'invoiceCreatedSuccessfully': {
+      'en': 'Invoice created successfully',
+      'fr': 'Facture créée avec succès',
+    },
+    'adjustStock': {'en': 'Adjust Stock', 'fr': 'Ajuster le stock'},
+    'productNotFound': {'en': 'Product not found', 'fr': 'Produit non trouvé'},
   };
 
   /// Direct access to the internationalization service.
@@ -1423,6 +1483,82 @@ class AppInternationalizationService extends ChangeNotifier {
     const Locale('en'),
     const Locale('fr'),
   ];
+
+  /// The product not found.
+  String get productNotFound => _stringOfLocalizedValue('productNotFound');
+
+  /// The adjust stock.
+  String get adjustStock => _stringOfLocalizedValue('adjustStock');
+
+  /// The invoice created successfully.
+  String get invoiceCreatedSuccessfully =>
+      _stringOfLocalizedValue('invoiceCreatedSuccessfully');
+
+  /// The stock adjusted successfully.
+  String get stockAdjustedSuccessfully =>
+      _stringOfLocalizedValue('stockAdjustedSuccessfully');
+
+  /// The quantity must be positive when customer return.
+  String get quantityMustBePositiveWhenCustomerReturn =>
+      _stringOfLocalizedValue('quantityMustBePositiveWhenCustomerReturn');
+
+  /// The we can adjust the stock to a negative value.
+  String get weCannotAdjustTheStockToANegativeValue =>
+      _stringOfLocalizedValue('weCannotAdjustTheStockToANegativeValue');
+
+  /// The auto create refund.
+  String get autoCreateRefund => _stringOfLocalizedValue('autoCreateRefund');
+
+  /// The adjustment amount description.
+  String get adjustmentAmountDescription =>
+      _stringOfLocalizedValue('adjustmentAmountDescription');
+
+  /// The reason.
+  String get reason => _stringOfLocalizedValue('reason');
+
+  /// The customer return.
+  String get isCustomerReturn => _stringOfLocalizedValue('isCustomerReturn');
+
+  /// The adjustment amount.
+  String get adjustmentAmount => _stringOfLocalizedValue('adjustmentAmount');
+
+  /// The adjustment stock.
+  String get adjustmentStock => _stringOfLocalizedValue('adjustmentStock');
+
+  /// The restock product description.
+  String get restockProductDescription =>
+      _stringOfLocalizedValue('restockProductDescription');
+
+  /// The stock inbound saved successfully.
+  String get stockInboundSavedSuccessfully =>
+      _stringOfLocalizedValue('stockInboundSavedSuccessfully');
+
+  /// The failed to create stock inbound.
+  String get failedToCreateStockInbound =>
+      _stringOfLocalizedValue('failedToCreateStockInbound');
+
+  /// The sale price.
+  String get salePrice => _stringOfLocalizedValue('salePrice');
+
+  /// The unit cost.
+  String get unitCost => _stringOfLocalizedValue('unitCost');
+
+  /// The select product.
+  String get selectProduct => _stringOfLocalizedValue('selectProduct');
+
+  /// The restock.
+  String get restock => _stringOfLocalizedValue('restock');
+
+  /// The optional.
+  String get optional => _stringOfLocalizedValue('optional');
+
+  /// The product description.
+  String get productDescription =>
+      _stringOfLocalizedValue('productDescription');
+
+  /// The enter product description.
+  String get enterProductDescription =>
+      _stringOfLocalizedValue('enterProductDescription');
 
   /// The costing method description.
   String get costingMethodDoc => _stringOfLocalizedValue('costingMethodDoc');

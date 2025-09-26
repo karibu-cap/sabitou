@@ -26,6 +26,7 @@ export 'stock_in_bound.pbenum.dart';
 class StockInbound extends $pb.GeneratedMessage {
   factory StockInbound({
     $core.String? refId,
+    $core.String? globalProductId,
     InboundType? inboundType,
     $core.int? quantity,
     $core.int? quantityBefore,
@@ -41,6 +42,7 @@ class StockInbound extends $pb.GeneratedMessage {
   }) {
     final result = create();
     if (refId != null) result.refId = refId;
+    if (globalProductId != null) result.globalProductId = globalProductId;
     if (inboundType != null) result.inboundType = inboundType;
     if (quantity != null) result.quantity = quantity;
     if (quantityBefore != null) result.quantityBefore = quantityBefore;
@@ -70,16 +72,17 @@ class StockInbound extends $pb.GeneratedMessage {
       package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'refId')
+    ..aOS(2, _omitFieldNames ? '' : 'globalProductId')
     ..e<InboundType>(
-        2, _omitFieldNames ? '' : 'inboundType', $pb.PbFieldType.OE,
+        3, _omitFieldNames ? '' : 'inboundType', $pb.PbFieldType.OE,
         defaultOrMaker: InboundType.INBOUND_TYPE_UNSPECIFIED,
         valueOf: InboundType.valueOf,
         enumValues: InboundType.values)
-    ..a<$core.int>(3, _omitFieldNames ? '' : 'quantity', $pb.PbFieldType.O3)
+    ..a<$core.int>(4, _omitFieldNames ? '' : 'quantity', $pb.PbFieldType.O3)
     ..a<$core.int>(
-        4, _omitFieldNames ? '' : 'quantityBefore', $pb.PbFieldType.O3)
+        5, _omitFieldNames ? '' : 'quantityBefore', $pb.PbFieldType.O3)
     ..a<$core.int>(
-        5, _omitFieldNames ? '' : 'quantityAfter', $pb.PbFieldType.O3)
+        6, _omitFieldNames ? '' : 'quantityAfter', $pb.PbFieldType.O3)
     ..a<$core.int>(7, _omitFieldNames ? '' : 'unitCost', $pb.PbFieldType.O3)
     ..aOS(8, _omitFieldNames ? '' : 'supplierId')
     ..aOS(9, _omitFieldNames ? '' : 'referenceNumber')
@@ -122,127 +125,137 @@ class StockInbound extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   void clearRefId() => $_clearField(1);
 
+  /// The unique identifier of the global product.
+  @$pb.TagNumber(2)
+  $core.String get globalProductId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set globalProductId($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasGlobalProductId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearGlobalProductId() => $_clearField(2);
+
   /// Type of inbound stock
-  @$pb.TagNumber(2)
-  InboundType get inboundType => $_getN(1);
-  @$pb.TagNumber(2)
-  set inboundType(InboundType value) => $_setField(2, value);
-  @$pb.TagNumber(2)
-  $core.bool hasInboundType() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearInboundType() => $_clearField(2);
+  @$pb.TagNumber(3)
+  InboundType get inboundType => $_getN(2);
+  @$pb.TagNumber(3)
+  set inboundType(InboundType value) => $_setField(3, value);
+  @$pb.TagNumber(3)
+  $core.bool hasInboundType() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearInboundType() => $_clearField(3);
 
   /// Quantity added to inventory
-  @$pb.TagNumber(3)
-  $core.int get quantity => $_getIZ(2);
-  @$pb.TagNumber(3)
-  set quantity($core.int value) => $_setSignedInt32(2, value);
-  @$pb.TagNumber(3)
-  $core.bool hasQuantity() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearQuantity() => $_clearField(3);
+  @$pb.TagNumber(4)
+  $core.int get quantity => $_getIZ(3);
+  @$pb.TagNumber(4)
+  set quantity($core.int value) => $_setSignedInt32(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasQuantity() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearQuantity() => $_clearField(4);
 
   /// Stock quantity before this transaction
-  @$pb.TagNumber(4)
-  $core.int get quantityBefore => $_getIZ(3);
-  @$pb.TagNumber(4)
-  set quantityBefore($core.int value) => $_setSignedInt32(3, value);
-  @$pb.TagNumber(4)
-  $core.bool hasQuantityBefore() => $_has(3);
-  @$pb.TagNumber(4)
-  void clearQuantityBefore() => $_clearField(4);
+  @$pb.TagNumber(5)
+  $core.int get quantityBefore => $_getIZ(4);
+  @$pb.TagNumber(5)
+  set quantityBefore($core.int value) => $_setSignedInt32(4, value);
+  @$pb.TagNumber(5)
+  $core.bool hasQuantityBefore() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearQuantityBefore() => $_clearField(5);
 
   /// Stock quantity after this transaction
-  @$pb.TagNumber(5)
-  $core.int get quantityAfter => $_getIZ(4);
-  @$pb.TagNumber(5)
-  set quantityAfter($core.int value) => $_setSignedInt32(4, value);
-  @$pb.TagNumber(5)
-  $core.bool hasQuantityAfter() => $_has(4);
-  @$pb.TagNumber(5)
-  void clearQuantityAfter() => $_clearField(5);
+  @$pb.TagNumber(6)
+  $core.int get quantityAfter => $_getIZ(5);
+  @$pb.TagNumber(6)
+  set quantityAfter($core.int value) => $_setSignedInt32(5, value);
+  @$pb.TagNumber(6)
+  $core.bool hasQuantityAfter() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearQuantityAfter() => $_clearField(6);
 
   /// Purchase/cost price per unit
   @$pb.TagNumber(7)
-  $core.int get unitCost => $_getIZ(5);
+  $core.int get unitCost => $_getIZ(6);
   @$pb.TagNumber(7)
-  set unitCost($core.int value) => $_setSignedInt32(5, value);
+  set unitCost($core.int value) => $_setSignedInt32(6, value);
   @$pb.TagNumber(7)
-  $core.bool hasUnitCost() => $_has(5);
+  $core.bool hasUnitCost() => $_has(6);
   @$pb.TagNumber(7)
   void clearUnitCost() => $_clearField(7);
 
   /// Supplier ID (for stock in transactions)
   @$pb.TagNumber(8)
-  $core.String get supplierId => $_getSZ(6);
+  $core.String get supplierId => $_getSZ(7);
   @$pb.TagNumber(8)
-  set supplierId($core.String value) => $_setString(6, value);
+  set supplierId($core.String value) => $_setString(7, value);
   @$pb.TagNumber(8)
-  $core.bool hasSupplierId() => $_has(6);
+  $core.bool hasSupplierId() => $_has(7);
   @$pb.TagNumber(8)
   void clearSupplierId() => $_clearField(8);
 
   /// Reference number (PO number, invoice number, etc.)
   @$pb.TagNumber(9)
-  $core.String get referenceNumber => $_getSZ(7);
+  $core.String get referenceNumber => $_getSZ(8);
   @$pb.TagNumber(9)
-  set referenceNumber($core.String value) => $_setString(7, value);
+  set referenceNumber($core.String value) => $_setString(8, value);
   @$pb.TagNumber(9)
-  $core.bool hasReferenceNumber() => $_has(7);
+  $core.bool hasReferenceNumber() => $_has(8);
   @$pb.TagNumber(9)
   void clearReferenceNumber() => $_clearField(9);
 
   /// Batch/lot number (for traceability if needed)
   @$pb.TagNumber(10)
-  $core.String get batchNumber => $_getSZ(8);
+  $core.String get batchNumber => $_getSZ(9);
   @$pb.TagNumber(10)
-  set batchNumber($core.String value) => $_setString(8, value);
+  set batchNumber($core.String value) => $_setString(9, value);
   @$pb.TagNumber(10)
-  $core.bool hasBatchNumber() => $_has(8);
+  $core.bool hasBatchNumber() => $_has(9);
   @$pb.TagNumber(10)
   void clearBatchNumber() => $_clearField(10);
 
   /// Reason for the transaction (especially for adjustments)
   @$pb.TagNumber(11)
-  $core.String get reason => $_getSZ(9);
+  $core.String get reason => $_getSZ(10);
   @$pb.TagNumber(11)
-  set reason($core.String value) => $_setString(9, value);
+  set reason($core.String value) => $_setString(10, value);
   @$pb.TagNumber(11)
-  $core.bool hasReason() => $_has(9);
+  $core.bool hasReason() => $_has(10);
   @$pb.TagNumber(11)
   void clearReason() => $_clearField(11);
 
   /// Expiration date for this batch (if applicable)
   @$pb.TagNumber(12)
-  $0.Timestamp get batchExpiryDate => $_getN(10);
+  $0.Timestamp get batchExpiryDate => $_getN(11);
   @$pb.TagNumber(12)
   set batchExpiryDate($0.Timestamp value) => $_setField(12, value);
   @$pb.TagNumber(12)
-  $core.bool hasBatchExpiryDate() => $_has(10);
+  $core.bool hasBatchExpiryDate() => $_has(11);
   @$pb.TagNumber(12)
   void clearBatchExpiryDate() => $_clearField(12);
   @$pb.TagNumber(12)
-  $0.Timestamp ensureBatchExpiryDate() => $_ensure(10);
+  $0.Timestamp ensureBatchExpiryDate() => $_ensure(11);
 
   /// When this supply was received/processed
   @$pb.TagNumber(13)
-  $0.Timestamp get createdAt => $_getN(11);
+  $0.Timestamp get createdAt => $_getN(12);
   @$pb.TagNumber(13)
   set createdAt($0.Timestamp value) => $_setField(13, value);
   @$pb.TagNumber(13)
-  $core.bool hasCreatedAt() => $_has(11);
+  $core.bool hasCreatedAt() => $_has(12);
   @$pb.TagNumber(13)
   void clearCreatedAt() => $_clearField(13);
   @$pb.TagNumber(13)
-  $0.Timestamp ensureCreatedAt() => $_ensure(11);
+  $0.Timestamp ensureCreatedAt() => $_ensure(12);
 
   /// User who performed the transaction
   @$pb.TagNumber(14)
-  $core.String get performedBy => $_getSZ(12);
+  $core.String get performedBy => $_getSZ(13);
   @$pb.TagNumber(14)
-  set performedBy($core.String value) => $_setString(12, value);
+  set performedBy($core.String value) => $_setString(13, value);
   @$pb.TagNumber(14)
-  $core.bool hasPerformedBy() => $_has(12);
+  $core.bool hasPerformedBy() => $_has(13);
   @$pb.TagNumber(14)
   void clearPerformedBy() => $_clearField(14);
 }

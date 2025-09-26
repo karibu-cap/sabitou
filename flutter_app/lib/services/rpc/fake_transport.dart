@@ -336,6 +336,12 @@ final _fakeTransport =
                   .firstWhereOrNull((bm) => bm.user.refId == req.userId),
         );
       })
+      ..unary(InvoiceService.createInvoice, (req, __) async {
+        final invoice = req.invoice;
+        (_fakeData[CollectionName.invoices] as List<Invoice>)..add(invoice);
+
+        return CreateInvoiceResponse(success: true);
+      })
       ..unary(StoreService.getStoreMember, (req, __) async {
         return GetStoreMemberResponse(
           storeMember:
@@ -352,6 +358,8 @@ final _fakeTransport =
         );
       })
       ..unary(ProductService.findGlobalProducts, (req, __) async {
+        print(req);
+
         return FindGlobalProductsResponse(
           products:
               (_fakeData[CollectionName.globalProducts] as List<GlobalProduct>)
@@ -403,6 +411,34 @@ final _fakeTransport =
               .toList(),
         );
       })
+      ..unary(ProductService.createGlobalProduct, (req, __) async {
+        final listOfGlobalProduct =
+            (_fakeData[CollectionName.globalProducts] as List<GlobalProduct>);
+        // verify is the global product with the name and qrcode exit if not create one.
+        final globalProduct = listOfGlobalProduct.firstWhereOrNull(
+          (gp) =>
+              gp.name == req.globalProduct.name &&
+              gp.barCodeValue == req.globalProduct.barCodeValue,
+        );
+        final globalProductRefId =
+            globalProduct?.refId ??
+            'global-product-${Random().nextInt(1000000)}';
+        if (globalProduct == null) {
+          listOfGlobalProduct.add(
+            req.globalProduct
+              ..refId = globalProductRefId
+              ..name = req.globalProduct.name,
+          );
+        }
+
+        return CreateGlobalProductResponse()..success = true;
+      })
+      ..unary(StockInboundService.createStockInbound, (req, __) async {
+        (_fakeData[CollectionName.stockInBounds] as List<StockInbound>)
+          ..add(req.stockInbound);
+
+        return CreateStockInboundResponse()..success = true;
+      })
       ..unary(ProductService.addProduct, (req, __) async {
         // verify is the global product with the name and qrcode exit if not create one.
         final globalProduct = _fakeData[CollectionName.globalProducts]
@@ -434,14 +470,16 @@ final _fakeTransport =
         final newGlobalProduct = req.globalProduct;
         final businessProduct = req.storeProduct;
         String? globalProductId = newGlobalProduct.refId;
+        final listOfGlobalProduct =
+            _fakeData[CollectionName.globalProducts] as List<GlobalProduct>;
+        final listOfStoreProduct =
+            _fakeData[CollectionName.storeProducts] as List<StoreProduct>;
 
-        final GlobalProduct? globalProduct = GlobalProduct()
-          ..mergeFromProto3Json(
-            _fakeData[CollectionName.globalProducts]?.firstWhereOrNull(
-              (gp) => gp['ref_id'] == businessProduct.globalProductId,
-            ),
-            ignoreUnknownFields: true,
-          );
+        final GlobalProduct? globalProduct = listOfGlobalProduct
+            .firstWhereOrNull(
+              (gp) => gp.refId == businessProduct.globalProductId,
+            );
+
         // If the use want to update the global product data, first verify if the product is not link to
         // any other store, if yes create a new global product else update the global product info.
         if (globalProduct?.refId != newGlobalProduct.refId ||
@@ -456,59 +494,55 @@ final _fakeTransport =
                     ) &&
                 newGlobalProduct.categories.length ==
                     globalProduct?.categories.length)) {
-          final otherBusinessWithTheGlobalProduct =
-              _fakeData[CollectionName.storeProducts]?.firstWhereOrNull(
+          final otherBusinessWithTheGlobalProduct = listOfStoreProduct
+              .firstWhereOrNull(
                 (gp) =>
-                    gp['global_product_id'] == globalProductId &&
-                    gp['store_id'] != businessProduct.storeId,
+                    gp.refId == globalProductId &&
+                    gp.storeId != businessProduct.storeId,
               );
           if (otherBusinessWithTheGlobalProduct != null) {
             globalProductId = 'global-product-${Random().nextInt(1000000)}';
-            _fakeData[CollectionName.globalProducts]?.add({
-              'ref_id': globalProductId,
-              'name': newGlobalProduct.name,
-              'bar_code_value': newGlobalProduct.barCodeValue,
-              'categories': newGlobalProduct.categories
-                  .map((e) => e.toProto3Json())
-                  .toList(),
-            });
-          } else {
-            _fakeData[CollectionName.globalProducts]?.removeWhere(
-              (gp) => gp['ref_id'] == globalProductId,
+            listOfGlobalProduct.add(
+              GlobalProduct(
+                refId: globalProductId,
+                name: newGlobalProduct.name,
+                barCodeValue: newGlobalProduct.barCodeValue,
+                categories: newGlobalProduct.categories,
+              ),
             );
-            _fakeData[CollectionName.globalProducts]?.add({
-              'ref_id': globalProductId,
-              'name': newGlobalProduct.name,
-              'bar_code_value': newGlobalProduct.barCodeValue,
-              'categories': newGlobalProduct.categories
-                  .map((e) => e.toProto3Json())
-                  .toList(),
-            });
+          } else {
+            listOfGlobalProduct
+              ..removeWhere((gp) => gp.refId == globalProductId)
+              ..add(
+                GlobalProduct(
+                  refId: globalProductId,
+                  name: newGlobalProduct.name,
+                  barCodeValue: newGlobalProduct.barCodeValue,
+                  categories: newGlobalProduct.categories,
+                ),
+              );
           }
         }
 
-        _fakeData[CollectionName.storeProducts]?.removeWhere(
-          (gp) => gp['ref_id'] == businessProduct.refId,
-        );
-        _fakeData[CollectionName.storeProducts]?.add({
-          'ref_id': businessProduct.refId,
-          'store_id': businessProduct.storeId,
-          'global_product_id': globalProductId,
-          'min_stock_threshold': businessProduct.minStockThreshold,
-          'sale_price': businessProduct.salePrice,
-          'stock_quantity': businessProduct.stockQuantity,
-          'expiration_date': businessProduct.hasExpirationDate()
-              ? businessProduct.expirationDate.toDateTime().toIso8601String()
-              : null,
-          'images_link_ids': businessProduct.imagesLinksIds,
-        });
+        listOfStoreProduct
+          ..removeWhere((gp) => gp.refId == businessProduct.refId)
+          ..add(
+            StoreProduct(
+              refId: businessProduct.refId,
+              storeId: businessProduct.storeId,
+              globalProductId: globalProductId,
+              minStockThreshold: businessProduct.minStockThreshold,
+              salePrice: businessProduct.salePrice,
+              stockQuantity: businessProduct.stockQuantity,
+              expirationDate: businessProduct.expirationDate,
+            ),
+          );
 
         return UpdateStoreProductResponse()..success = true;
       })
       ..unary(ProductService.deleteProduct, (req, _) async {
-        _fakeData[CollectionName.storeProducts]?.removeWhere(
-          (gp) => gp['ref_id'] == req.storeProductId,
-        );
+        (_fakeData[CollectionName.storeProducts] as List<StoreProduct>)
+            .removeWhere((gp) => gp.refId == req.storeProductId);
 
         return DeleteStoreProductResponse()..success = true;
       });

@@ -24,13 +24,15 @@ const InvoiceStatus$json = {
     {'1': 'INVOICE_STATUS_UNSPECIFIED', '2': 0},
     {'1': 'INVOICE_STATUS_PAID', '2': 1},
     {'1': 'INVOICE_STATUS_PENDING_REFUND', '2': 2},
+    {'1': 'INVOICE_STATUS_REFUNDED', '2': 3},
   ],
 };
 
 /// Descriptor for `InvoiceStatus`. Decode as a `google.protobuf.EnumDescriptorProto`.
 final $typed_data.Uint8List invoiceStatusDescriptor = $convert.base64Decode(
     'Cg1JbnZvaWNlU3RhdHVzEh4KGklOVk9JQ0VfU1RBVFVTX1VOU1BFQ0lGSUVEEAASFwoTSU5WT0'
-    'lDRV9TVEFUVVNfUEFJRBABEiEKHUlOVk9JQ0VfU1RBVFVTX1BFTkRJTkdfUkVGVU5EEAI=');
+    'lDRV9TVEFUVVNfUEFJRBABEiEKHUlOVk9JQ0VfU1RBVFVTX1BFTkRJTkdfUkVGVU5EEAISGwoX'
+    'SU5WT0lDRV9TVEFUVVNfUkVGVU5ERUQQAw==');
 
 @$core.Deprecated('Use paymentMethodDescriptor instead')
 const PaymentMethod$json = {
@@ -101,7 +103,15 @@ const Invoice$json = {
   '1': 'Invoice',
   '2': [
     {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'refId'},
-    {'1': 'order_id', '3': 2, '4': 1, '5': 9, '8': {}, '10': 'orderId'},
+    {
+      '1': 'order_id',
+      '3': 2,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'orderId',
+      '17': true
+    },
     {
       '1': 'status',
       '3': 3,
@@ -145,7 +155,7 @@ const Invoice$json = {
       '4': 1,
       '5': 9,
       '8': {},
-      '9': 0,
+      '9': 1,
       '10': 'voucherId',
       '17': true
     },
@@ -167,41 +177,30 @@ const Invoice$json = {
     },
   ],
   '8': [
+    {'1': '_order_id'},
     {'1': '_voucher_id'},
   ],
 };
 
 /// Descriptor for `Invoice`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List invoiceDescriptor = $convert.base64Decode(
-    'CgdJbnZvaWNlEiIKBnJlZl9pZBgBIAEoCUILukgIyAEBcgOwAQFSBXJlZklkEiYKCG9yZGVyX2'
-    'lkGAIgASgJQgu6SAjIAQFyA7ABAVIHb3JkZXJJZBIvCgZzdGF0dXMYAyABKA4yFy5vcmRlci52'
-    'MS5JbnZvaWNlU3RhdHVzUgZzdGF0dXMSNAoLb3JkZXJfaXRlbXMYBCADKAsyEy5vcmRlci52MS'
-    '5PcmRlckl0ZW1SCm9yZGVySXRlbXMSLQoIcGF5bWVudHMYBSADKAsyES5vcmRlci52MS5QYXlt'
-    'ZW50UghwYXltZW50cxIlCg50b3RhbF9kaXNjb3VudBgGIAEoAVINdG90YWxEaXNjb3VudBIbCg'
-    'l0b3RhbF92YXQYByABKAFSCHRvdGFsVmF0EhoKCHN1YnRvdGFsGAggASgBUghzdWJ0b3RhbBIU'
-    'CgV0b3RhbBgJIAEoAVIFdG90YWwSOAoYY3VzdG9tZXJfdGVuZGVyZWRfYW1vdW50GAogASgBUh'
-    'ZjdXN0b21lclRlbmRlcmVkQW1vdW50EiEKDGNoYW5nZV9naXZlbhgLIAEoAVILY2hhbmdlR2l2'
-    'ZW4SHwoLYmFsYW5jZV9kdWUYDCABKAFSCmJhbGFuY2VEdWUSLAoKdm91Y2hlcl9pZBgNIAEoCU'
-    'IIukgFcgOwAQFIAFIJdm91Y2hlcklkiAEBEjkKCmNyZWF0ZWRfYXQYDiABKAsyGi5nb29nbGUu'
-    'cHJvdG9idWYuVGltZXN0YW1wUgljcmVhdGVkQXQSPwoNZGVsaXZlcnlfZGF0ZRgPIAEoCzIaLm'
-    'dvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSDGRlbGl2ZXJ5RGF0ZUINCgtfdm91Y2hlcl9pZA==');
+    'CgdJbnZvaWNlEiIKBnJlZl9pZBgBIAEoCUILukgIyAEBcgOwAQFSBXJlZklkEh4KCG9yZGVyX2'
+    'lkGAIgASgJSABSB29yZGVySWSIAQESLwoGc3RhdHVzGAMgASgOMhcub3JkZXIudjEuSW52b2lj'
+    'ZVN0YXR1c1IGc3RhdHVzEjQKC29yZGVyX2l0ZW1zGAQgAygLMhMub3JkZXIudjEuT3JkZXJJdG'
+    'VtUgpvcmRlckl0ZW1zEi0KCHBheW1lbnRzGAUgAygLMhEub3JkZXIudjEuUGF5bWVudFIIcGF5'
+    'bWVudHMSJQoOdG90YWxfZGlzY291bnQYBiABKAFSDXRvdGFsRGlzY291bnQSGwoJdG90YWxfdm'
+    'F0GAcgASgBUgh0b3RhbFZhdBIaCghzdWJ0b3RhbBgIIAEoAVIIc3VidG90YWwSFAoFdG90YWwY'
+    'CSABKAFSBXRvdGFsEjgKGGN1c3RvbWVyX3RlbmRlcmVkX2Ftb3VudBgKIAEoAVIWY3VzdG9tZX'
+    'JUZW5kZXJlZEFtb3VudBIhCgxjaGFuZ2VfZ2l2ZW4YCyABKAFSC2NoYW5nZUdpdmVuEh8KC2Jh'
+    'bGFuY2VfZHVlGAwgASgBUgpiYWxhbmNlRHVlEiwKCnZvdWNoZXJfaWQYDSABKAlCCLpIBXIDsA'
+    'EBSAFSCXZvdWNoZXJJZIgBARI5CgpjcmVhdGVkX2F0GA4gASgLMhouZ29vZ2xlLnByb3RvYnVm'
+    'LlRpbWVzdGFtcFIJY3JlYXRlZEF0Ej8KDWRlbGl2ZXJ5X2RhdGUYDyABKAsyGi5nb29nbGUucH'
+    'JvdG9idWYuVGltZXN0YW1wUgxkZWxpdmVyeURhdGVCCwoJX29yZGVyX2lkQg0KC192b3VjaGVy'
+    'X2lk');
 
 @$core.Deprecated('Use createInvoiceRequestDescriptor instead')
 const CreateInvoiceRequest$json = {
   '1': 'CreateInvoiceRequest',
-  '2': [
-    {'1': 'order_id', '3': 1, '4': 1, '5': 9, '10': 'orderId'},
-  ],
-};
-
-/// Descriptor for `CreateInvoiceRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List createInvoiceRequestDescriptor =
-    $convert.base64Decode(
-        'ChRDcmVhdGVJbnZvaWNlUmVxdWVzdBIZCghvcmRlcl9pZBgBIAEoCVIHb3JkZXJJZA==');
-
-@$core.Deprecated('Use createInvoiceResponseDescriptor instead')
-const CreateInvoiceResponse$json = {
-  '1': 'CreateInvoiceResponse',
   '2': [
     {
       '1': 'invoice',
@@ -214,10 +213,57 @@ const CreateInvoiceResponse$json = {
   ],
 };
 
+/// Descriptor for `CreateInvoiceRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List createInvoiceRequestDescriptor = $convert.base64Decode(
+    'ChRDcmVhdGVJbnZvaWNlUmVxdWVzdBIrCgdpbnZvaWNlGAEgASgLMhEub3JkZXIudjEuSW52b2'
+    'ljZVIHaW52b2ljZQ==');
+
+@$core.Deprecated('Use createInvoiceResponseDescriptor instead')
+const CreateInvoiceResponse$json = {
+  '1': 'CreateInvoiceResponse',
+  '2': [
+    {'1': 'success', '3': 1, '4': 1, '5': 8, '10': 'success'},
+    {'1': 'error', '3': 2, '4': 1, '5': 9, '10': 'error'},
+  ],
+};
+
 /// Descriptor for `CreateInvoiceResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List createInvoiceResponseDescriptor = $convert.base64Decode(
-    'ChVDcmVhdGVJbnZvaWNlUmVzcG9uc2USKwoHaW52b2ljZRgBIAEoCzIRLm9yZGVyLnYxLkludm'
-    '9pY2VSB2ludm9pY2U=');
+    'ChVDcmVhdGVJbnZvaWNlUmVzcG9uc2USGAoHc3VjY2VzcxgBIAEoCFIHc3VjY2VzcxIUCgVlcn'
+    'JvchgCIAEoCVIFZXJyb3I=');
+
+@$core.Deprecated('Use updateInvoiceRequestDescriptor instead')
+const UpdateInvoiceRequest$json = {
+  '1': 'UpdateInvoiceRequest',
+  '2': [
+    {
+      '1': 'invoice',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.order.v1.Invoice',
+      '10': 'invoice'
+    },
+  ],
+};
+
+/// Descriptor for `UpdateInvoiceRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List updateInvoiceRequestDescriptor = $convert.base64Decode(
+    'ChRVcGRhdGVJbnZvaWNlUmVxdWVzdBIrCgdpbnZvaWNlGAEgASgLMhEub3JkZXIudjEuSW52b2'
+    'ljZVIHaW52b2ljZQ==');
+
+@$core.Deprecated('Use updateInvoiceResponseDescriptor instead')
+const UpdateInvoiceResponse$json = {
+  '1': 'UpdateInvoiceResponse',
+  '2': [
+    {'1': 'success', '3': 1, '4': 1, '5': 8, '10': 'success'},
+  ],
+};
+
+/// Descriptor for `UpdateInvoiceResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List updateInvoiceResponseDescriptor =
+    $convert.base64Decode(
+        'ChVVcGRhdGVJbnZvaWNlUmVzcG9uc2USGAoHc3VjY2VzcxgBIAEoCFIHc3VjY2Vzcw==');
 
 const $core.Map<$core.String, $core.dynamic> InvoiceServiceBase$json = {
   '1': 'InvoiceService',
@@ -227,6 +273,11 @@ const $core.Map<$core.String, $core.dynamic> InvoiceServiceBase$json = {
       '2': '.order.v1.CreateInvoiceRequest',
       '3': '.order.v1.CreateInvoiceResponse'
     },
+    {
+      '1': 'UpdateInvoice',
+      '2': '.order.v1.UpdateInvoiceRequest',
+      '3': '.order.v1.UpdateInvoiceResponse'
+    },
   ],
 };
 
@@ -234,14 +285,18 @@ const $core.Map<$core.String, $core.dynamic> InvoiceServiceBase$json = {
 const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
     InvoiceServiceBase$messageJson = {
   '.order.v1.CreateInvoiceRequest': CreateInvoiceRequest$json,
-  '.order.v1.CreateInvoiceResponse': CreateInvoiceResponse$json,
   '.order.v1.Invoice': Invoice$json,
   '.order.v1.OrderItem': $1.OrderItem$json,
   '.order.v1.Payment': Payment$json,
   '.google.protobuf.Timestamp': $0.Timestamp$json,
+  '.order.v1.CreateInvoiceResponse': CreateInvoiceResponse$json,
+  '.order.v1.UpdateInvoiceRequest': UpdateInvoiceRequest$json,
+  '.order.v1.UpdateInvoiceResponse': UpdateInvoiceResponse$json,
 };
 
 /// Descriptor for `InvoiceService`. Decode as a `google.protobuf.ServiceDescriptorProto`.
 final $typed_data.Uint8List invoiceServiceDescriptor = $convert.base64Decode(
     'Cg5JbnZvaWNlU2VydmljZRJQCg1DcmVhdGVJbnZvaWNlEh4ub3JkZXIudjEuQ3JlYXRlSW52b2'
-    'ljZVJlcXVlc3QaHy5vcmRlci52MS5DcmVhdGVJbnZvaWNlUmVzcG9uc2U=');
+    'ljZVJlcXVlc3QaHy5vcmRlci52MS5DcmVhdGVJbnZvaWNlUmVzcG9uc2USUAoNVXBkYXRlSW52'
+    'b2ljZRIeLm9yZGVyLnYxLlVwZGF0ZUludm9pY2VSZXF1ZXN0Gh8ub3JkZXIudjEuVXBkYXRlSW'
+    '52b2ljZVJlc3BvbnNl');

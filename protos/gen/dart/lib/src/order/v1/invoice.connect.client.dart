@@ -25,4 +25,22 @@ extension type InvoiceServiceClient (connect.Transport _transport) {
       onTrailer: onTrailer,
     );
   }
+
+  /// Updates an invoice.
+  Future<orderv1invoice.UpdateInvoiceResponse> updateInvoice(
+    orderv1invoice.UpdateInvoiceRequest input, {
+    connect.Headers? headers,
+    connect.AbortSignal? signal,
+    Function(connect.Headers)? onHeader,
+    Function(connect.Headers)? onTrailer,
+  }) {
+    return connect.Client(_transport).unary(
+      specs.InvoiceService.updateInvoice,
+      input,
+      signal: signal,
+      headers: headers,
+      onHeader: onHeader,
+      onTrailer: onTrailer,
+    );
+  }
 }

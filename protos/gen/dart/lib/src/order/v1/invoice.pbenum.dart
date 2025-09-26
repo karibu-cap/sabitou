@@ -26,14 +26,19 @@ class InvoiceStatus extends $pb.ProtobufEnum {
   static const InvoiceStatus INVOICE_STATUS_PENDING_REFUND =
       InvoiceStatus._(2, _omitEnumNames ? '' : 'INVOICE_STATUS_PENDING_REFUND');
 
+  /// Invoice is refunded.
+  static const InvoiceStatus INVOICE_STATUS_REFUNDED =
+      InvoiceStatus._(3, _omitEnumNames ? '' : 'INVOICE_STATUS_REFUNDED');
+
   static const $core.List<InvoiceStatus> values = <InvoiceStatus>[
     INVOICE_STATUS_UNSPECIFIED,
     INVOICE_STATUS_PAID,
     INVOICE_STATUS_PENDING_REFUND,
+    INVOICE_STATUS_REFUNDED,
   ];
 
   static final $core.List<InvoiceStatus?> _byValue =
-      $pb.ProtobufEnum.$_initByValueList(values, 2);
+      $pb.ProtobufEnum.$_initByValueList(values, 3);
   static InvoiceStatus? valueOf($core.int value) =>
       value < 0 || value >= _byValue.length ? null : _byValue[value];
 

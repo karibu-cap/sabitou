@@ -12,6 +12,8 @@ enum InvoiceStatus {
   INVOICE_STATUS_PAID = 1;
   // Wait for refund.
   INVOICE_STATUS_PENDING_REFUND = 2;
+  // Invoice is refunded.
+  INVOICE_STATUS_REFUNDED = 3;
 }
 
 enum PaymentMethod {
@@ -44,10 +46,7 @@ message Invoice {
   ];
 
   // The unique identifier of the order.
-  string order_id = 2 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).string.uuid = true
-  ];
+  optional string order_id = 2;
 
   // The status of the invoice.
   InvoiceStatus status = 3;
@@ -97,16 +96,32 @@ message Invoice {
 }
 
 message CreateInvoiceRequest {
-  // The unique identifier of the order.
-  string order_id = 1;
+  // The invoice to create.
+  Invoice invoice = 1;
 }
 
 message CreateInvoiceResponse {
   // The invoice of the order.
+  bool success = 1;
+
+  // The error message.
+  string error = 2;
+}
+
+message UpdateInvoiceRequest {
+  // The invoice to update.
   Invoice invoice = 1;
+}
+
+message UpdateInvoiceResponse {
+  // Whether the invoice was successfully updated.
+  bool success = 1;
 }
 
 service InvoiceService {
   // Creates an invoice for the order.
   rpc CreateInvoice(CreateInvoiceRequest) returns (CreateInvoiceResponse);
+
+  // Updates an invoice.
+  rpc UpdateInvoice(UpdateInvoiceRequest) returns (UpdateInvoiceResponse);
 }

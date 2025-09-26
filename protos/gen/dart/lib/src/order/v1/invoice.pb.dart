@@ -375,10 +375,10 @@ class Invoice extends $pb.GeneratedMessage {
 
 class CreateInvoiceRequest extends $pb.GeneratedMessage {
   factory CreateInvoiceRequest({
-    $core.String? orderId,
+    Invoice? invoice,
   }) {
     final result = create();
-    if (orderId != null) result.orderId = orderId;
+    if (invoice != null) result.invoice = invoice;
     return result;
   }
 
@@ -395,7 +395,8 @@ class CreateInvoiceRequest extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'CreateInvoiceRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'orderId')
+    ..aOM<Invoice>(1, _omitFieldNames ? '' : 'invoice',
+        subBuilder: Invoice.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -420,23 +421,27 @@ class CreateInvoiceRequest extends $pb.GeneratedMessage {
       $pb.GeneratedMessage.$_defaultFor<CreateInvoiceRequest>(create);
   static CreateInvoiceRequest? _defaultInstance;
 
-  /// The unique identifier of the order.
+  /// The invoice to create.
   @$pb.TagNumber(1)
-  $core.String get orderId => $_getSZ(0);
+  Invoice get invoice => $_getN(0);
   @$pb.TagNumber(1)
-  set orderId($core.String value) => $_setString(0, value);
+  set invoice(Invoice value) => $_setField(1, value);
   @$pb.TagNumber(1)
-  $core.bool hasOrderId() => $_has(0);
+  $core.bool hasInvoice() => $_has(0);
   @$pb.TagNumber(1)
-  void clearOrderId() => $_clearField(1);
+  void clearInvoice() => $_clearField(1);
+  @$pb.TagNumber(1)
+  Invoice ensureInvoice() => $_ensure(0);
 }
 
 class CreateInvoiceResponse extends $pb.GeneratedMessage {
   factory CreateInvoiceResponse({
-    Invoice? invoice,
+    $core.bool? success,
+    $core.String? error,
   }) {
     final result = create();
-    if (invoice != null) result.invoice = invoice;
+    if (success != null) result.success = success;
+    if (error != null) result.error = error;
     return result;
   }
 
@@ -453,8 +458,8 @@ class CreateInvoiceResponse extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'CreateInvoiceResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'),
       createEmptyInstance: create)
-    ..aOM<Invoice>(1, _omitFieldNames ? '' : 'invoice',
-        subBuilder: Invoice.create)
+    ..aOB(1, _omitFieldNames ? '' : 'success')
+    ..aOS(2, _omitFieldNames ? '' : 'error')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -482,6 +487,75 @@ class CreateInvoiceResponse extends $pb.GeneratedMessage {
 
   /// The invoice of the order.
   @$pb.TagNumber(1)
+  $core.bool get success => $_getBF(0);
+  @$pb.TagNumber(1)
+  set success($core.bool value) => $_setBool(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasSuccess() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSuccess() => $_clearField(1);
+
+  /// The error message.
+  @$pb.TagNumber(2)
+  $core.String get error => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set error($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasError() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearError() => $_clearField(2);
+}
+
+class UpdateInvoiceRequest extends $pb.GeneratedMessage {
+  factory UpdateInvoiceRequest({
+    Invoice? invoice,
+  }) {
+    final result = create();
+    if (invoice != null) result.invoice = invoice;
+    return result;
+  }
+
+  UpdateInvoiceRequest._();
+
+  factory UpdateInvoiceRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory UpdateInvoiceRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'UpdateInvoiceRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'),
+      createEmptyInstance: create)
+    ..aOM<Invoice>(1, _omitFieldNames ? '' : 'invoice',
+        subBuilder: Invoice.create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  UpdateInvoiceRequest clone() =>
+      UpdateInvoiceRequest()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  UpdateInvoiceRequest copyWith(void Function(UpdateInvoiceRequest) updates) =>
+      super.copyWith((message) => updates(message as UpdateInvoiceRequest))
+          as UpdateInvoiceRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static UpdateInvoiceRequest create() => UpdateInvoiceRequest._();
+  @$core.override
+  UpdateInvoiceRequest createEmptyInstance() => create();
+  static $pb.PbList<UpdateInvoiceRequest> createRepeated() =>
+      $pb.PbList<UpdateInvoiceRequest>();
+  @$core.pragma('dart2js:noInline')
+  static UpdateInvoiceRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<UpdateInvoiceRequest>(create);
+  static UpdateInvoiceRequest? _defaultInstance;
+
+  /// The invoice to update.
+  @$pb.TagNumber(1)
   Invoice get invoice => $_getN(0);
   @$pb.TagNumber(1)
   set invoice(Invoice value) => $_setField(1, value);
@@ -491,6 +565,65 @@ class CreateInvoiceResponse extends $pb.GeneratedMessage {
   void clearInvoice() => $_clearField(1);
   @$pb.TagNumber(1)
   Invoice ensureInvoice() => $_ensure(0);
+}
+
+class UpdateInvoiceResponse extends $pb.GeneratedMessage {
+  factory UpdateInvoiceResponse({
+    $core.bool? success,
+  }) {
+    final result = create();
+    if (success != null) result.success = success;
+    return result;
+  }
+
+  UpdateInvoiceResponse._();
+
+  factory UpdateInvoiceResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory UpdateInvoiceResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'UpdateInvoiceResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'),
+      createEmptyInstance: create)
+    ..aOB(1, _omitFieldNames ? '' : 'success')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  UpdateInvoiceResponse clone() =>
+      UpdateInvoiceResponse()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  UpdateInvoiceResponse copyWith(
+          void Function(UpdateInvoiceResponse) updates) =>
+      super.copyWith((message) => updates(message as UpdateInvoiceResponse))
+          as UpdateInvoiceResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static UpdateInvoiceResponse create() => UpdateInvoiceResponse._();
+  @$core.override
+  UpdateInvoiceResponse createEmptyInstance() => create();
+  static $pb.PbList<UpdateInvoiceResponse> createRepeated() =>
+      $pb.PbList<UpdateInvoiceResponse>();
+  @$core.pragma('dart2js:noInline')
+  static UpdateInvoiceResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<UpdateInvoiceResponse>(create);
+  static UpdateInvoiceResponse? _defaultInstance;
+
+  /// Whether the invoice was successfully updated.
+  @$pb.TagNumber(1)
+  $core.bool get success => $_getBF(0);
+  @$pb.TagNumber(1)
+  set success($core.bool value) => $_setBool(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasSuccess() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSuccess() => $_clearField(1);
 }
 
 class InvoiceServiceApi {
@@ -503,6 +636,12 @@ class InvoiceServiceApi {
           $pb.ClientContext? ctx, CreateInvoiceRequest request) =>
       _client.invoke<CreateInvoiceResponse>(ctx, 'InvoiceService',
           'CreateInvoice', request, CreateInvoiceResponse());
+
+  /// Updates an invoice.
+  $async.Future<UpdateInvoiceResponse> updateInvoice(
+          $pb.ClientContext? ctx, UpdateInvoiceRequest request) =>
+      _client.invoke<UpdateInvoiceResponse>(ctx, 'InvoiceService',
+          'UpdateInvoice', request, UpdateInvoiceResponse());
 }
 
 const $core.bool _omitFieldNames =

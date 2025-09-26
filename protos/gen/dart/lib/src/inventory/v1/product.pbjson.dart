@@ -191,32 +191,6 @@ final $typed_data.Uint8List deleteGlobalProductResponseDescriptor =
         'ChtEZWxldGVHbG9iYWxQcm9kdWN0UmVzcG9uc2USGAoHc3VjY2VzcxgBIAEoCFIHc3VjY2Vzcw'
         '==');
 
-@$core.Deprecated('Use supplyHistoryDescriptor instead')
-const SupplyHistory$json = {
-  '1': 'SupplyHistory',
-  '2': [
-    {'1': 'quantity', '3': 1, '4': 1, '5': 5, '10': 'quantity'},
-    {'1': 'buy_price', '3': 2, '4': 1, '5': 5, '10': 'buyPrice'},
-    {'1': 'sale_price', '3': 3, '4': 1, '5': 5, '10': 'salePrice'},
-    {'1': 'last_quantity', '3': 4, '4': 1, '5': 5, '10': 'lastQuantity'},
-    {
-      '1': 'created_at',
-      '3': 5,
-      '4': 1,
-      '5': 11,
-      '6': '.google.protobuf.Timestamp',
-      '10': 'createdAt'
-    },
-  ],
-};
-
-/// Descriptor for `SupplyHistory`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List supplyHistoryDescriptor = $convert.base64Decode(
-    'Cg1TdXBwbHlIaXN0b3J5EhoKCHF1YW50aXR5GAEgASgFUghxdWFudGl0eRIbCglidXlfcHJpY2'
-    'UYAiABKAVSCGJ1eVByaWNlEh0KCnNhbGVfcHJpY2UYAyABKAVSCXNhbGVQcmljZRIjCg1sYXN0'
-    'X3F1YW50aXR5GAQgASgFUgxsYXN0UXVhbnRpdHkSOQoKY3JlYXRlZF9hdBgFIAEoCzIaLmdvb2'
-    'dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSCWNyZWF0ZWRBdA==');
-
 @$core.Deprecated('Use storeProductDescriptor instead')
 const StoreProduct$json = {
   '1': 'StoreProduct',
