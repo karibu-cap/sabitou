@@ -4,6 +4,7 @@ package order.v1;
 
 import "buf/validate/validate.proto";
 import "order/v1/order.proto";
+import "google/protobuf/timestamp.proto";
 
 enum InvoiceStatus {
   INVOICE_STATUS_UNSPECIFIED = 0;
@@ -102,7 +103,7 @@ message CreateInvoiceRequest {
 
 message CreateInvoiceResponse {
   // The invoice of the order.
-  OrderInvoice order_invoice = 1;
+  Invoice invoice = 1;
 }
 
 service InvoiceService {
