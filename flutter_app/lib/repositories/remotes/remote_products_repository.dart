@@ -31,7 +31,7 @@ class RemoteProductsRepository {
   }
 
   /// Finds global products.
-  Future<List<GlobalProduct>> findGlobalProduct(
+  Future<List<GlobalProduct>> findGlobalProducts(
     FindGlobalProductsRequest request,
   ) async {
     try {

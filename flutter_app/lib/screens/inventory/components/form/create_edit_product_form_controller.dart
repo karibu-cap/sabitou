@@ -90,7 +90,7 @@ class CreateEditProductFormController extends ChangeNotifier {
   Future<List<GlobalProduct>> filterGlobalProduct(String name) async {
     print(' name $name');
 
-    return await ProductsRepository.instance.findGlobalProduct(
+    return await ProductsRepository.instance.findGlobalProducts(
       FindGlobalProductsRequest(name: name),
     );
   }

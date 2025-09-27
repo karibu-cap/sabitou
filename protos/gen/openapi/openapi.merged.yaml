@@ -5533,6 +5533,11 @@ components:
           title: bar_code_value
           description: Identify the products by bar code.
           nullable: true
+        status:
+          title: status
+          description: Identify the products by store.
+          nullable: true
+          $ref: '#/components/schemas/inventory.v1.GlobalProductStatus'
       title: FindGlobalProductsRequest
       additionalProperties: false
     inventory.v1.FindGlobalProductsResponse:
@@ -5667,8 +5672,19 @@ components:
             type: string
           title: images_links_ids
           description: The list of image related to the product.
+        status:
+          title: status
+          description: The status of the product.
+          $ref: '#/components/schemas/inventory.v1.GlobalProductStatus'
       title: GlobalProduct
       additionalProperties: false
+    inventory.v1.GlobalProductStatus:
+      type: string
+      title: GlobalProductStatus
+      enum:
+        - GLOBAL_PRODUCT_STATUS_UNSPECIFIED
+        - GLOBAL_PRODUCT_STATUS_ACTIVE
+        - GLOBAL_PRODUCT_STATUS_INACTIVE
     inventory.v1.ProductStatus:
       type: string
       title: ProductStatus

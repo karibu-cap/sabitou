@@ -158,4 +158,56 @@ class ValidationFormUtils {
 
     return null;
   }
+
+  /// Validates the product name english version.
+  static String? validateProductNameEnglishVersion([String? value]) {
+    final productName = value?.trim() ?? '';
+    if (productName.isEmpty) {
+      return _intl.productNameEnglishVersionRequired;
+    }
+    if (productName.trim().length < 3) {
+      return _intl.productNameTooShort;
+    }
+
+    return null;
+  }
+
+  /// Validates the product name french version.
+  static String? validateProductNameFrenchVersion([String? value]) {
+    final productName = value?.trim() ?? '';
+    if (productName.isEmpty) {
+      return _intl.productNameFrenchVersionRequired;
+    }
+    if (productName.trim().length < 3) {
+      return _intl.productNameTooShort;
+    }
+
+    return null;
+  }
+
+  /// Validates the product description english version.
+  static String? validateProductDescriptionEnglishVersion([String? value]) {
+    final productDescription = value?.trim() ?? '';
+    if (productDescription.isEmpty) {
+      return _intl.productDescriptionEnglishVersionRequired;
+    }
+    if (productDescription.trim().length < 3) {
+      return _intl.productDescriptionTooShort;
+    }
+
+    return null;
+  }
+
+  /// Validates the product description french version.
+  static String? validateProductDescriptionFrenchVersion([String? value]) {
+    final productDescription = value?.trim() ?? '';
+    if (productDescription.isEmpty) {
+      return _intl.productDescriptionFrenchVersionRequired;
+    }
+    if (productDescription.trim().length < 3) {
+      return _intl.productDescriptionTooShort;
+    }
+
+    return null;
+  }
 }

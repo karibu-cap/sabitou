@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-import '../../../../../services/internationalization/internationalization.dart';
+import '../../../services/internationalization/internationalization.dart';
 
-import '../../../categories_controller.dart';
+import 'add_category_view_model.dart';
 
 /// Controller for category add/edit dialog.
 class CategoryAddController extends ChangeNotifier {
@@ -13,7 +13,7 @@ class CategoryAddController extends ChangeNotifier {
   String _errorMessage = '';
 
   /// The categories Controller.
-  final CategoriesController controller;
+  final AddCategoryViewModel viewModel;
 
   /// The category.
   final Category? category;
@@ -58,7 +58,7 @@ class CategoryAddController extends ChangeNotifier {
 
   /// Constructs a new
   CategoryAddController({
-    required this.controller,
+    required this.viewModel,
     required this.intl,
     this.category,
   }) {
@@ -125,11 +125,11 @@ class CategoryAddController extends ChangeNotifier {
     if (this.category == null) {
       final request = CreateCategoryRequest(category: category);
 
-      result = await controller.createCategory(request);
+      result = await viewModel.createCategory(request);
     } else {
       final request = UpdateCategoryRequest(category: category);
 
-      result = await controller.updateCategory(request);
+      result = await viewModel.updateCategory(request);
     }
     if (result == false) {
       _errorMessage = intl.failedToSaveCategory;

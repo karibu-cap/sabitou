@@ -4,8 +4,8 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../../services/internationalization/internationalization.dart';
+import '../../../../widgets/pop_up/add_category/add_category_view.dart';
 import '../../categories_controller.dart';
-import '../dialogs/add_category/add_category_view.dart';
 import '../dialogs/delete_category/delete_category_view.dart';
 import 'categories_cell_builders.dart';
 
@@ -28,12 +28,7 @@ class CategoriesDataTable extends StatelessWidget {
       context: context,
       builder: (context) => ChangeNotifierProvider.value(
         value: controller,
-        child: ShadDialog(
-          child: CategoryFormDialog(
-            categoriesController: controller,
-            category: category,
-          ),
-        ),
+        child: ShadDialog(child: CategoryFormDialog(category: category)),
       ),
     );
   }
@@ -47,13 +42,10 @@ class CategoriesDataTable extends StatelessWidget {
 
     showDialog(
       context: context,
-      builder: (dialogContext) => ChangeNotifierProvider.value(
-        value: controller,
-        child: ShadDialog(
-          child: DeleteCategoryDialog(
-            category: category,
-            categoriesController: controller,
-          ),
+      builder: (dialogContext) => ShadDialog(
+        child: DeleteCategoryDialog(
+          category: category,
+          categoriesController: controller,
         ),
       ),
     );

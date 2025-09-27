@@ -96,6 +96,12 @@ class SidebarWidget extends StatelessWidget {
         path: PagesRoutes.categories.pattern,
       ),
       SideBarItem(
+        id: DashboardItem.globalProducts,
+        label: Intls.to.globalProducts,
+        icon: LucideIcons.package,
+        path: PagesRoutes.globalProducts.pattern,
+      ),
+      SideBarItem(
         id: DashboardItem.settings,
         label: Intls.to.settings,
         icon: LucideIcons.settings500,

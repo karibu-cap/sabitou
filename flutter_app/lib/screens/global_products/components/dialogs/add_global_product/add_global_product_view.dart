@@ -5,51 +5,53 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../../../../services/internationalization/internationalization.dart';
 import '../../../../../utils/common_functions.dart';
+import '../../../../../utils/extensions/category_extension.dart';
 import '../../../../../utils/form/validation.dart';
 import '../../../../../widgets/input/form_fields.dart';
-import '../../../categories_controller.dart';
-import 'add_category_controller.dart';
+import '../../../global_products_controller.dart';
+import 'add_global_product_controller.dart';
+import 'components/dialog/select_categories_view.dart';
 
 /// Modal for viewing and modifying user permissions.
-class CategoryFormDialog extends StatelessWidget {
-  /// The category.
-  final Category? category;
+class GlobalProductFormDialog extends StatelessWidget {
+  /// The global product.
+  final GlobalProduct? globalProduct;
 
-  /// The categories controller.
-  final CategoriesController categoriesController;
+  /// The global products controller.
+  final GlobalProductsController globalProductsController;
 
   /// Constructs a new CategoryFormDialog.
-  CategoryFormDialog({
+  GlobalProductFormDialog({
     super.key,
-    required this.categoriesController,
-    this.category,
+    required this.globalProductsController,
+    this.globalProduct,
   });
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => CategoryAddController(
+      create: (context) => GlobalProductAddController(
         intl: AppInternationalizationService.to,
-        controller: categoriesController,
-        category: category,
+        controller: globalProductsController,
+        globalProduct: globalProduct,
       ),
-      child: _CategoryFormDialogContent(category: category),
+      child: _GlobalProductFormDialogContent(globalProduct: globalProduct),
     );
   }
 }
 
 /// Supplier form dialog widget.ee
-class _CategoryFormDialogContent extends StatelessWidget {
+class _GlobalProductFormDialogContent extends StatelessWidget {
   /// The supplier.
-  final Category? category;
+  final GlobalProduct? globalProduct;
 
   /// Creates a new [SupplierFormDialog].
-  const _CategoryFormDialogContent({this.category});
+  const _GlobalProductFormDialogContent({this.globalProduct});
 
   /// Handles the save operation for the category form.
   Future<void> _saveCategory(
     BuildContext context,
-    CategoryAddController controller,
+    GlobalProductAddController controller,
   ) async {
     final validation = controller.validateForm();
 
@@ -63,7 +65,7 @@ class _CategoryFormDialogContent extends StatelessWidget {
     // Handle successful save operation
     if (saveSuccess && context.mounted) {
       Navigator.of(context).pop(true);
-      if (category == null) {
+      if (globalProduct == null) {
         showSuccessToast(
           context: context,
           title: _intl.successText,
@@ -89,27 +91,9 @@ class _CategoryFormDialogContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Provider.of<CategoryAddController>(context);
+    final controller = Provider.of<GlobalProductAddController>(context);
     final intl = AppInternationalizationService.to;
     final theme = ShadTheme.of(context);
-
-    final communStyle = theme.textTheme.muted.copyWith(
-      fontWeight: FontWeight.bold,
-      fontSize: 12,
-    );
-
-    String getTypeLabel(CategoryType type) {
-      switch (type) {
-        case CategoryType.CATEGORY_TYPE_BUSINESS:
-          return AppInternationalizationService.to.business;
-        case CategoryType.CATEGORY_TYPE_PRODUCT:
-          return AppInternationalizationService.to.product;
-        case CategoryType.CATEGORY_TYPE_STORE:
-          return AppInternationalizationService.to.store;
-        default:
-          return AppInternationalizationService.to.allTypes;
-      }
-    }
 
     return Material(
       color: theme.colorScheme.background,
@@ -126,9 +110,9 @@ class _CategoryFormDialogContent extends StatelessWidget {
 
                 children: [
                   Text(
-                    category == null
-                        ? intl.enterDetailsNewCategory
-                        : intl.updateCategory,
+                    globalProduct == null
+                        ? intl.enterDetailsNewProduct
+                        : intl.updateProduct,
                     style: theme.textTheme.p.copyWith(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -137,34 +121,46 @@ class _CategoryFormDialogContent extends StatelessWidget {
                   const SizedBox(height: 20),
 
                   InputField(
-                    id: intl.categoryNameEnglishVersion,
-                    label: '${intl.categoryNameEnglishVersion} *',
-                    controller: controller.enController,
-                    placeholder: intl.categoryNameEnglishVersion,
+                    id: intl.productNameEnglishVersion,
+                    label: '${intl.productNameEnglishVersion} *',
+                    controller: controller.enNameController,
+                    placeholder: intl.productNameEnglishVersion,
                     validator:
-                        ValidationFormUtils.validateCategoryNameEnglishVersion,
+                        ValidationFormUtils.validateProductNameEnglishVersion,
                   ),
                   const SizedBox(height: 16),
 
                   InputField(
-                    id: intl.categoryNameFrenchVersion,
-                    label: '${intl.categoryNameFrenchVersion} *',
-                    controller: controller.frController,
-                    placeholder: intl.categoryNameFrenchVersion,
+                    id: intl.productNameFrenchVersion,
+                    label: '${intl.productNameFrenchVersion} *',
+                    controller: controller.frNameController,
+                    placeholder: intl.productNameFrenchVersion,
                     validator:
-                        ValidationFormUtils.validateCategoryNameFrenchVersion,
+                        ValidationFormUtils.validateProductNameFrenchVersion,
                   ),
 
                   const SizedBox(height: 16),
 
-                  Text(
-                    intl.selectCategory,
-                    style: theme.textTheme.p.copyWith(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  InputField(
+                    id: intl.productDescriptionEnglishVersion,
+                    label: '${intl.productDescriptionEnglishVersion} *',
+                    controller: controller.enDescriptionController,
+                    placeholder: intl.productDescriptionEnglishVersion,
+                    validator: ValidationFormUtils
+                        .validateProductDescriptionEnglishVersion,
                   ),
-                  const SizedBox(height: 5),
+                  const SizedBox(height: 16),
+
+                  InputField(
+                    id: intl.productDescriptionFrenchVersion,
+                    label: '${intl.productDescriptionFrenchVersion} *',
+                    controller: controller.frDescriptionController,
+                    placeholder: intl.productDescriptionFrenchVersion,
+                    validator: ValidationFormUtils
+                        .validateProductDescriptionFrenchVersion,
+                  ),
+
+                  const SizedBox(height: 16),
 
                   InkWell(
                     onTap: controller.setIsActive,
@@ -213,49 +209,55 @@ class _CategoryFormDialogContent extends StatelessWidget {
                   const SizedBox(height: 16),
 
                   Text(
-                    intl.selectType,
+                    intl.selectCategory,
                     style: theme.textTheme.p.copyWith(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 5),
+                  const SizedBox(height: 8),
 
-                  ShadSelect<CategoryType>(
-                    controller: controller.typeController,
-                    placeholder: Text(
-                      AppInternationalizationService.to.selectType,
-                      style: communStyle,
+                  if (controller.selectedCategories.isEmpty)
+                    Text(
+                      intl.noCategoriesYet,
+                      style: theme.textTheme.p.copyWith(
+                        fontSize: 12,
+                        fontStyle: FontStyle.italic,
+                        color: theme.colorScheme.primary.withValues(alpha: 0.6),
+                      ),
+                    )
+                  else
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: controller.selectedCategories
+                          .map(
+                            (category) => Chip(
+                              label: Text(
+                                category.label,
+                                style: theme.textTheme.p.copyWith(fontSize: 12),
+                              ),
+                              deleteIcon: const Icon(Icons.close, size: 16),
+                              onDeleted: () =>
+                                  controller.removeSelectedCategory(category),
+                            ),
+                          )
+                          .toList(),
                     ),
-                    options: [
-                      ShadOption(
-                        value: CategoryType.CATEGORY_TYPE_PRODUCT,
-                        child: Text(
-                          AppInternationalizationService.to.product,
-                          style: communStyle,
-                        ),
-                      ),
-                      ShadOption(
-                        value: CategoryType.CATEGORY_TYPE_BUSINESS,
-                        child: Text(
-                          AppInternationalizationService.to.business,
-                          style: communStyle,
-                        ),
-                      ),
-                      ShadOption(
-                        value: CategoryType.CATEGORY_TYPE_STORE,
-                        child: Text(
-                          AppInternationalizationService.to.store,
-                          style: communStyle,
-                        ),
-                      ),
-                    ],
-                    selectedOptionBuilder: (context, value) => Row(
+
+                  const SizedBox(height: 12),
+
+                  ShadButton.outline(
+                    onPressed: () =>
+                        showSelectCategoriesSheet(context, controller),
+                    child: Row(
                       mainAxisSize: MainAxisSize.min,
-                      children: [Text(getTypeLabel(value), style: communStyle)],
+                      children: [
+                        const Icon(Icons.category_outlined, size: 16),
+                        const SizedBox(width: 8),
+                        Text(intl.selectCategory),
+                      ],
                     ),
-                    allowDeselection: true,
-                    onChanged: controller.setType,
                   ),
 
                   const SizedBox(height: 16),
@@ -285,9 +287,9 @@ class _CategoryFormDialogContent extends StatelessWidget {
                               )
                             : null,
                         child: Text(
-                          category == null
-                              ? intl.addNewCategory
-                              : intl.updateCategory,
+                          globalProduct == null
+                              ? intl.addProduct
+                              : intl.updateProduct,
                         ),
                       ),
                     ],

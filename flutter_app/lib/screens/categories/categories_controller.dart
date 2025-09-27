@@ -3,7 +3,6 @@ import 'package:rxdart/rxdart.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-import '../../../services/internationalization/internationalization.dart';
 import 'categories_view_model.dart';
 
 /// The categories controller.
@@ -13,20 +12,9 @@ import 'categories_view_model.dart';
 class CategoriesController extends ChangeNotifier {
   /// The view model that handles data operations for categories
   final CategoriesViewModel _viewModel;
-  final AppInternationalizationService _intl;
 
   /// Constructs a new CategoriesController.
-  CategoriesController(
-    CategoriesViewModel viewModel,
-    AppInternationalizationService intl,
-  ) : _viewModel = viewModel,
-      _intl = intl;
-
-  /// Loading state for general categories operations.
-  bool _isLoading = false;
-
-  /// Error message to display when operations fail.
-  String _errorMessage = '';
+  CategoriesController(CategoriesViewModel viewModel) : _viewModel = viewModel;
 
   /// Text controller for search input field.
   final TextEditingController searchController = TextEditingController();
@@ -49,17 +37,8 @@ class CategoriesController extends ChangeNotifier {
   /// Gets the selected category type.
   BehaviorSubject<CategoryType?> get selectedType => _viewModel.selectedType;
 
-  /// Loading state for categories operations.
-  bool get isLoading => _isLoading;
-
-  /// Returns the last error message from failed operations.
-  String get errorMessage => _errorMessage;
-
   /// Wether if list is filtered.
   bool get isFiltered => _viewModel.isFiltered;
-
-  /// Returns the view model.
-  CategoriesViewModel get viewModel => _viewModel;
 
   /// Gets categories stream for reactive UI updates
   Stream<List<Category>> get categoriesStream => _viewModel.categoriesStream;
@@ -70,19 +49,9 @@ class CategoriesController extends ChangeNotifier {
 
   /// Deletes a category from the system.
   Future<bool> deleteCategory(String categoryId) async {
-    _isLoading = true;
-    _errorMessage = '';
-    notifyListeners();
-
     final request = DeleteCategoryRequest(categoryId: categoryId);
-    final result = await _viewModel.deleteCategory(request);
-    _isLoading = false;
-    if (!result) {
-      _errorMessage = _intl.failedToDeleteCategory;
-    }
-    notifyListeners();
 
-    return result;
+    return await _viewModel.deleteCategory(request);
   }
 
   /// Creates a category in the system.
@@ -93,12 +62,6 @@ class CategoriesController extends ChangeNotifier {
   /// Updates a category in the system.
   Future<bool> updateCategory(UpdateCategoryRequest request) async {
     return await _viewModel.updateCategory(request);
-  }
-
-  /// Clears error message.
-  void clearError() {
-    _errorMessage = '';
-    notifyListeners();
   }
 
   /// Calculates total categories count

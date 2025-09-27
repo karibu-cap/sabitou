@@ -14,6 +14,35 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
+class GlobalProductStatus extends $pb.ProtobufEnum {
+  static const GlobalProductStatus GLOBAL_PRODUCT_STATUS_UNSPECIFIED =
+      GlobalProductStatus._(
+          0, _omitEnumNames ? '' : 'GLOBAL_PRODUCT_STATUS_UNSPECIFIED');
+
+  /// / The product category is active.
+  static const GlobalProductStatus GLOBAL_PRODUCT_STATUS_ACTIVE =
+      GlobalProductStatus._(
+          1, _omitEnumNames ? '' : 'GLOBAL_PRODUCT_STATUS_ACTIVE');
+
+  /// / The product category is inactive.
+  static const GlobalProductStatus GLOBAL_PRODUCT_STATUS_INACTIVE =
+      GlobalProductStatus._(
+          2, _omitEnumNames ? '' : 'GLOBAL_PRODUCT_STATUS_INACTIVE');
+
+  static const $core.List<GlobalProductStatus> values = <GlobalProductStatus>[
+    GLOBAL_PRODUCT_STATUS_UNSPECIFIED,
+    GLOBAL_PRODUCT_STATUS_ACTIVE,
+    GLOBAL_PRODUCT_STATUS_INACTIVE,
+  ];
+
+  static final $core.List<GlobalProductStatus?> _byValue =
+      $pb.ProtobufEnum.$_initByValueList(values, 2);
+  static GlobalProductStatus? valueOf($core.int value) =>
+      value < 0 || value >= _byValue.length ? null : _byValue[value];
+
+  const GlobalProductStatus._(super.value, super.name);
+}
+
 class ProductStatus extends $pb.ProtobufEnum {
   static const ProductStatus PRODUCT_STATUS_UNSPECIFIED =
       ProductStatus._(0, _omitEnumNames ? '' : 'PRODUCT_STATUS_UNSPECIFIED');

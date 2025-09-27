@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../../services/internationalization/internationalization.dart';
+import '../../../../widgets/pop_up/add_category/add_category_view.dart';
 import '../../categories_controller.dart';
-import '../dialogs/add_category/add_category_view.dart';
 
 /// Widget displayed when there are no users to show.
 ///
@@ -14,18 +14,10 @@ class CategoriesEmptyState extends StatelessWidget {
   /// Creates a new [CategoriesEmptyState].
   const CategoriesEmptyState({super.key});
 
-  void _showAddCategoryDialog(
-    BuildContext context,
-    CategoriesController controller,
-  ) {
+  void _showAddCategoryDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (dialogContext) => ChangeNotifierProvider.value(
-        value: controller,
-        child: ShadDialog(
-          child: CategoryFormDialog(categoriesController: controller),
-        ),
-      ),
+      builder: (dialogContext) => ShadDialog(child: CategoryFormDialog()),
     );
   }
 
@@ -77,7 +69,7 @@ class CategoriesEmptyState extends StatelessWidget {
           // Action button
           if (!controller.isFiltered) ...[
             ShadButton(
-              onPressed: () => _showAddCategoryDialog(context, controller),
+              onPressed: () => _showAddCategoryDialog(context),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [

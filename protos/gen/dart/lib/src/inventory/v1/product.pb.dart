@@ -31,6 +31,7 @@ class GlobalProduct extends $pb.GeneratedMessage {
     $core.String? barCodeValue,
     $core.Iterable<$0.Category>? categories,
     $core.Iterable<$core.String>? imagesLinksIds,
+    GlobalProductStatus? status,
   }) {
     final result = create();
     if (refId != null) result.refId = refId;
@@ -39,6 +40,7 @@ class GlobalProduct extends $pb.GeneratedMessage {
     if (barCodeValue != null) result.barCodeValue = barCodeValue;
     if (categories != null) result.categories.addAll(categories);
     if (imagesLinksIds != null) result.imagesLinksIds.addAll(imagesLinksIds);
+    if (status != null) result.status = status;
     return result;
   }
 
@@ -65,6 +67,11 @@ class GlobalProduct extends $pb.GeneratedMessage {
         5, _omitFieldNames ? '' : 'categories', $pb.PbFieldType.PM,
         subBuilder: $0.Category.create)
     ..pPS(6, _omitFieldNames ? '' : 'imagesLinksIds')
+    ..e<GlobalProductStatus>(
+        7, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
+        defaultOrMaker: GlobalProductStatus.GLOBAL_PRODUCT_STATUS_UNSPECIFIED,
+        valueOf: GlobalProductStatus.valueOf,
+        enumValues: GlobalProductStatus.values)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -139,6 +146,16 @@ class GlobalProduct extends $pb.GeneratedMessage {
   /// The list of image related to the product.
   @$pb.TagNumber(6)
   $pb.PbList<$core.String> get imagesLinksIds => $_getList(5);
+
+  /// The status of the product.
+  @$pb.TagNumber(7)
+  GlobalProductStatus get status => $_getN(6);
+  @$pb.TagNumber(7)
+  set status(GlobalProductStatus value) => $_setField(7, value);
+  @$pb.TagNumber(7)
+  $core.bool hasStatus() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearStatus() => $_clearField(7);
 }
 
 class CreateGlobalProductRequest extends $pb.GeneratedMessage {
@@ -920,12 +937,14 @@ class FindGlobalProductsRequest extends $pb.GeneratedMessage {
     $core.Iterable<$0.Category>? categories,
     $core.String? name,
     $core.String? barCodeValue,
+    GlobalProductStatus? status,
   }) {
     final result = create();
     if (refId != null) result.refId = refId;
     if (categories != null) result.categories.addAll(categories);
     if (name != null) result.name = name;
     if (barCodeValue != null) result.barCodeValue = barCodeValue;
+    if (status != null) result.status = status;
     return result;
   }
 
@@ -948,6 +967,11 @@ class FindGlobalProductsRequest extends $pb.GeneratedMessage {
         subBuilder: $0.Category.create)
     ..aOS(3, _omitFieldNames ? '' : 'name')
     ..aOS(4, _omitFieldNames ? '' : 'barCodeValue')
+    ..e<GlobalProductStatus>(
+        5, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
+        defaultOrMaker: GlobalProductStatus.GLOBAL_PRODUCT_STATUS_UNSPECIFIED,
+        valueOf: GlobalProductStatus.valueOf,
+        enumValues: GlobalProductStatus.values)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -1006,6 +1030,16 @@ class FindGlobalProductsRequest extends $pb.GeneratedMessage {
   $core.bool hasBarCodeValue() => $_has(3);
   @$pb.TagNumber(4)
   void clearBarCodeValue() => $_clearField(4);
+
+  /// Identify the products by store.
+  @$pb.TagNumber(5)
+  GlobalProductStatus get status => $_getN(4);
+  @$pb.TagNumber(5)
+  set status(GlobalProductStatus value) => $_setField(5, value);
+  @$pb.TagNumber(5)
+  $core.bool hasStatus() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearStatus() => $_clearField(5);
 }
 
 class FindGlobalProductsResponse extends $pb.GeneratedMessage {

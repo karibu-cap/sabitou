@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../services/internationalization/internationalization.dart';
 import 'categories_controller.dart';
 import 'categories_view_model.dart';
 import 'components/categories_header.dart';
@@ -17,10 +16,7 @@ class CategoriesView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<CategoriesController>(
-      create: (_) => CategoriesController(
-        CategoriesViewModel(),
-        AppInternationalizationService.to,
-      ),
+      create: (_) => CategoriesController(CategoriesViewModel()),
       child: const CategoriesContent(),
     );
   }
