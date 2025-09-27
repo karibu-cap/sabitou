@@ -17,4 +17,12 @@ abstract final class InvoiceService {
     orderv1invoice.CreateInvoiceRequest.new,
     orderv1invoice.CreateInvoiceResponse.new,
   );
+
+  /// Updates an invoice.
+  static const updateInvoice = connect.Spec(
+    '/$name/UpdateInvoice',
+    connect.StreamType.unary,
+    orderv1invoice.UpdateInvoiceRequest.new,
+    orderv1invoice.UpdateInvoiceResponse.new,
+  );
 }

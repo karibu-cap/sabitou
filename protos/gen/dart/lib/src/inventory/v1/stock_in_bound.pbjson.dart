@@ -38,17 +38,18 @@ const StockInbound$json = {
   '1': 'StockInbound',
   '2': [
     {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '10': 'refId'},
+    {'1': 'global_product_id', '3': 2, '4': 1, '5': 9, '10': 'globalProductId'},
     {
       '1': 'inbound_type',
-      '3': 2,
+      '3': 3,
       '4': 1,
       '5': 14,
       '6': '.inventory.v1.InboundType',
       '10': 'inboundType'
     },
-    {'1': 'quantity', '3': 3, '4': 1, '5': 5, '10': 'quantity'},
-    {'1': 'quantity_before', '3': 4, '4': 1, '5': 5, '10': 'quantityBefore'},
-    {'1': 'quantity_after', '3': 5, '4': 1, '5': 5, '10': 'quantityAfter'},
+    {'1': 'quantity', '3': 4, '4': 1, '5': 5, '10': 'quantity'},
+    {'1': 'quantity_before', '3': 5, '4': 1, '5': 5, '10': 'quantityBefore'},
+    {'1': 'quantity_after', '3': 6, '4': 1, '5': 5, '10': 'quantityAfter'},
     {'1': 'unit_cost', '3': 7, '4': 1, '5': 5, '10': 'unitCost'},
     {
       '1': 'supplier_id',
@@ -117,18 +118,19 @@ const StockInbound$json = {
 
 /// Descriptor for `StockInbound`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List stockInboundDescriptor = $convert.base64Decode(
-    'CgxTdG9ja0luYm91bmQSFQoGcmVmX2lkGAEgASgJUgVyZWZJZBI8CgxpbmJvdW5kX3R5cGUYAi'
-    'ABKA4yGS5pbnZlbnRvcnkudjEuSW5ib3VuZFR5cGVSC2luYm91bmRUeXBlEhoKCHF1YW50aXR5'
-    'GAMgASgFUghxdWFudGl0eRInCg9xdWFudGl0eV9iZWZvcmUYBCABKAVSDnF1YW50aXR5QmVmb3'
-    'JlEiUKDnF1YW50aXR5X2FmdGVyGAUgASgFUg1xdWFudGl0eUFmdGVyEhsKCXVuaXRfY29zdBgH'
-    'IAEoBVIIdW5pdENvc3QSJAoLc3VwcGxpZXJfaWQYCCABKAlIAFIKc3VwcGxpZXJJZIgBARIuCh'
-    'ByZWZlcmVuY2VfbnVtYmVyGAkgASgJSAFSD3JlZmVyZW5jZU51bWJlcogBARImCgxiYXRjaF9u'
-    'dW1iZXIYCiABKAlIAlILYmF0Y2hOdW1iZXKIAQESGwoGcmVhc29uGAsgASgJSANSBnJlYXNvbo'
-    'gBARJLChFiYXRjaF9leHBpcnlfZGF0ZRgMIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3Rh'
-    'bXBIBFIPYmF0Y2hFeHBpcnlEYXRliAEBEjkKCmNyZWF0ZWRfYXQYDSABKAsyGi5nb29nbGUucH'
-    'JvdG9idWYuVGltZXN0YW1wUgljcmVhdGVkQXQSIQoMcGVyZm9ybWVkX2J5GA4gASgJUgtwZXJm'
-    'b3JtZWRCeUIOCgxfc3VwcGxpZXJfaWRCEwoRX3JlZmVyZW5jZV9udW1iZXJCDwoNX2JhdGNoX2'
-    '51bWJlckIJCgdfcmVhc29uQhQKEl9iYXRjaF9leHBpcnlfZGF0ZQ==');
+    'CgxTdG9ja0luYm91bmQSFQoGcmVmX2lkGAEgASgJUgVyZWZJZBIqChFnbG9iYWxfcHJvZHVjdF'
+    '9pZBgCIAEoCVIPZ2xvYmFsUHJvZHVjdElkEjwKDGluYm91bmRfdHlwZRgDIAEoDjIZLmludmVu'
+    'dG9yeS52MS5JbmJvdW5kVHlwZVILaW5ib3VuZFR5cGUSGgoIcXVhbnRpdHkYBCABKAVSCHF1YW'
+    '50aXR5EicKD3F1YW50aXR5X2JlZm9yZRgFIAEoBVIOcXVhbnRpdHlCZWZvcmUSJQoOcXVhbnRp'
+    'dHlfYWZ0ZXIYBiABKAVSDXF1YW50aXR5QWZ0ZXISGwoJdW5pdF9jb3N0GAcgASgFUgh1bml0Q2'
+    '9zdBIkCgtzdXBwbGllcl9pZBgIIAEoCUgAUgpzdXBwbGllcklkiAEBEi4KEHJlZmVyZW5jZV9u'
+    'dW1iZXIYCSABKAlIAVIPcmVmZXJlbmNlTnVtYmVyiAEBEiYKDGJhdGNoX251bWJlchgKIAEoCU'
+    'gCUgtiYXRjaE51bWJlcogBARIbCgZyZWFzb24YCyABKAlIA1IGcmVhc29uiAEBEksKEWJhdGNo'
+    'X2V4cGlyeV9kYXRlGAwgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEgEUg9iYXRjaE'
+    'V4cGlyeURhdGWIAQESOQoKY3JlYXRlZF9hdBgNIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1l'
+    'c3RhbXBSCWNyZWF0ZWRBdBIhCgxwZXJmb3JtZWRfYnkYDiABKAlSC3BlcmZvcm1lZEJ5Qg4KDF'
+    '9zdXBwbGllcl9pZEITChFfcmVmZXJlbmNlX251bWJlckIPCg1fYmF0Y2hfbnVtYmVyQgkKB19y'
+    'ZWFzb25CFAoSX2JhdGNoX2V4cGlyeV9kYXRl');
 
 @$core.Deprecated('Use createStockInboundRequestDescriptor instead')
 const CreateStockInboundRequest$json = {

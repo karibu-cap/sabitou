@@ -1370,6 +1370,101 @@ class AppInternationalizationService extends ChangeNotifier {
       'en': 'Failed to delete category',
       'fr': 'Échec de la suppression de la catégorie',
     },
+    'fifo': {'en': 'FIFO', 'fr': 'FIFO'},
+    'average': {'en': 'Average', 'fr': 'Moyenne'},
+    'costingMethod': {'en': 'Costing Method', 'fr': 'Méthode de comptage'},
+    'costingMethodDescription': {
+      'en': 'FIFO (First In First Out) would be used if nothing is selected',
+      'fr':
+          'FIFO (Premier Entré Premier Sorti) serait utilisé si rien n\'est sélectionné',
+    },
+    'costingMethodDoc': {
+      'en': '''Consider the following example to know how it impacts your stock:
+              | Date | Transaction | Qty | Unit Cost | | 1-4-2020 | Purchase | 10 | 100 | | 6-4-2020 | Purchase | 20 | 120 | | 10-4-2020 | Sale | 15 | ? |
+              Calculating Valuation Rate at the time of sale:
+              As per FIFO:
+              Since this is FIFO, we will consume quantities from the earliest transactions, therefore, to make a sale of 15 qty, we will take 10 qty from the first transaction and 5 qty from the second one. 
+              (10 * 100) + (5 * 120) = 1600, which leaves us 15 qty in stock at cost of 120 amounting to 1800.
+              As per Moving Average:
+              In the Moving Average method, the value of an item is recalculated every time when an item is acquired. This is done by adding the cost of the newly acquired items to the existing inventory’s value and then dividing it by the total quantity available. 
+              ((10 * 100) + (20 * 120)) / 30 = 113.33
+              To make a sale of 15 qty, we will directly multiply it by the average value we received just now. 
+              15 * 113.33 = 1700, which leaves us 15 qty in stock amounting to 1700.
+              If you check, even though the quantity is same the stock value is different but both amounts to a total of 3400 only.''',
+      'fr':
+          '''Considérez l'exemple suivant pour comprendre son impact sur votre stock :
+            | Date | Transaction | Quantité | Coût unitaire | | 1-4-2020 | Achat | 10 | 100 | | 6-4-2020 | Achat | 20 | 120 | | 10-4-2020 | Vente | 15 | ? |
+            Calcul du taux d'évaluation au moment de la vente :
+            Selon la méthode FIFO :
+            Comme il s'agit de la méthode FIFO, nous allons consommer les quantités des transactions les plus anciennes. Par conséquent, pour effectuer une vente de 15 quantités, nous allons prendre 10 quantités de la première transaction et 5 quantités de la deuxième. 
+            (10 * 100) + (5 * 120) = 1600, ce qui nous laisse 15 unités en stock au coût de 120, soit un total de 1800.
+            Selon la méthode de la moyenne mobile :
+            Dans la méthode de la moyenne mobile, la valeur d'un article est recalculée à chaque fois qu'un article est acquis. Pour ce faire, on ajoute le coût des articles nouvellement acquis à la valeur du stock existant, puis on divise le tout par la quantité totale disponible. 
+            ((10 * 100) + (20 * 120)) / 30 = 113,33
+            Pour réaliser une vente de 15 unités, nous la multiplierons directement par la valeur moyenne que nous venons d'obtenir. 
+            15 * 113,33 = 1 700, ce qui nous laisse 15 unités en stock pour un montant total de 1 700.
+            Si vous vérifiez, même si la quantité est la même, la valeur du stock est différente, mais les deux montent à un total de 3 400 seulement.''',
+    },
+    'productDescription': {
+      'en': 'Product Description',
+      'fr': 'Description du produit',
+    },
+    'enterProductDescription': {
+      'en': 'Enter product description',
+      'fr': 'Entrez la description du produit',
+    },
+    'optional': {'en': 'Optional', 'fr': 'Optionnel'},
+    'restock': {'en': 'Restock', 'fr': 'Reapprovisionnement'},
+    'selectProduct': {'en': 'Select product', 'fr': 'Sélectionner un produit'},
+    'salePrice': {'en': 'Sale Price', 'fr': 'Prix de vente'},
+    'unitCost': {'en': 'Unit Cost', 'fr': 'Coût unitaire'},
+    'failedToCreateStockInbound': {
+      'en': 'Failed to create stock inbound',
+      'fr': 'Échec de la création du stock',
+    },
+    'stockInboundSavedSuccessfully': {
+      'en': 'Stock inbound saved successfully',
+      'fr': 'Stock d\'approvisionnement enregistré avec succès',
+    },
+    'restockProductDescription': {
+      'en': 'Ensure to have a valid product before restocking',
+      'fr': 'Assurez-vous d\'avoir un produit valide avant de reapprovisionner',
+    },
+    'adjustmentStock': {'en': 'Adjustment Stock', 'fr': 'Ajustement de stock'},
+    'adjustmentAmount': {
+      'en': 'Adjustment Amount',
+      'fr': 'Montant d\'ajustement',
+    },
+    'isCustomerReturn': {'en': 'Customer Return', 'fr': 'Retour client'},
+    'reason': {'en': 'Reason', 'fr': 'Motif'},
+    'adjustmentAmountDescription': {
+      'en': 'The adjustment amount (positive or negative)',
+      'fr': 'Le montant d\'ajustement (positif ou négatif)',
+    },
+    'autoCreateRefund': {
+      'en': 'Auto Create Refund',
+      'fr': 'Créer automatiquement un remboursement',
+    },
+    'quantityMustBePositiveWhenCustomerReturn': {
+      'en': 'Quantity must be positive when customer return',
+      'fr': 'La quantité doit être positive lors d\'un retour client',
+    },
+    'weCannotAdjustTheStockToANegativeValue': {
+      'en':
+          'The difference between the initial quantity and the new quantity must be greater than 0.',
+      'fr':
+          'La différence entre la quantité initiale et la nouvelle quantité doit être supérieure à 0.',
+    },
+    'stockAdjustedSuccessfully': {
+      'en': 'Stock adjusted successfully',
+      'fr': 'Stock ajusté avec succès',
+    },
+    'invoiceCreatedSuccessfully': {
+      'en': 'Invoice created successfully',
+      'fr': 'Facture créée avec succès',
+    },
+    'adjustStock': {'en': 'Adjust Stock', 'fr': 'Ajuster le stock'},
+    'productNotFound': {'en': 'Product not found', 'fr': 'Produit non trouvé'},
   };
 
   /// Direct access to the internationalization service.
@@ -1388,6 +1483,98 @@ class AppInternationalizationService extends ChangeNotifier {
     const Locale('en'),
     const Locale('fr'),
   ];
+
+  /// The product not found.
+  String get productNotFound => _stringOfLocalizedValue('productNotFound');
+
+  /// The adjust stock.
+  String get adjustStock => _stringOfLocalizedValue('adjustStock');
+
+  /// The invoice created successfully.
+  String get invoiceCreatedSuccessfully =>
+      _stringOfLocalizedValue('invoiceCreatedSuccessfully');
+
+  /// The stock adjusted successfully.
+  String get stockAdjustedSuccessfully =>
+      _stringOfLocalizedValue('stockAdjustedSuccessfully');
+
+  /// The quantity must be positive when customer return.
+  String get quantityMustBePositiveWhenCustomerReturn =>
+      _stringOfLocalizedValue('quantityMustBePositiveWhenCustomerReturn');
+
+  /// The we can adjust the stock to a negative value.
+  String get weCannotAdjustTheStockToANegativeValue =>
+      _stringOfLocalizedValue('weCannotAdjustTheStockToANegativeValue');
+
+  /// The auto create refund.
+  String get autoCreateRefund => _stringOfLocalizedValue('autoCreateRefund');
+
+  /// The adjustment amount description.
+  String get adjustmentAmountDescription =>
+      _stringOfLocalizedValue('adjustmentAmountDescription');
+
+  /// The reason.
+  String get reason => _stringOfLocalizedValue('reason');
+
+  /// The customer return.
+  String get isCustomerReturn => _stringOfLocalizedValue('isCustomerReturn');
+
+  /// The adjustment amount.
+  String get adjustmentAmount => _stringOfLocalizedValue('adjustmentAmount');
+
+  /// The adjustment stock.
+  String get adjustmentStock => _stringOfLocalizedValue('adjustmentStock');
+
+  /// The restock product description.
+  String get restockProductDescription =>
+      _stringOfLocalizedValue('restockProductDescription');
+
+  /// The stock inbound saved successfully.
+  String get stockInboundSavedSuccessfully =>
+      _stringOfLocalizedValue('stockInboundSavedSuccessfully');
+
+  /// The failed to create stock inbound.
+  String get failedToCreateStockInbound =>
+      _stringOfLocalizedValue('failedToCreateStockInbound');
+
+  /// The sale price.
+  String get salePrice => _stringOfLocalizedValue('salePrice');
+
+  /// The unit cost.
+  String get unitCost => _stringOfLocalizedValue('unitCost');
+
+  /// The select product.
+  String get selectProduct => _stringOfLocalizedValue('selectProduct');
+
+  /// The restock.
+  String get restock => _stringOfLocalizedValue('restock');
+
+  /// The optional.
+  String get optional => _stringOfLocalizedValue('optional');
+
+  /// The product description.
+  String get productDescription =>
+      _stringOfLocalizedValue('productDescription');
+
+  /// The enter product description.
+  String get enterProductDescription =>
+      _stringOfLocalizedValue('enterProductDescription');
+
+  /// The costing method description.
+  String get costingMethodDoc => _stringOfLocalizedValue('costingMethodDoc');
+
+  /// The costing method description.
+  String get costingMethodDescription =>
+      _stringOfLocalizedValue('costingMethodDescription');
+
+  /// The fifo.
+  String get fifo => _stringOfLocalizedValue('fifo');
+
+  /// The average.
+  String get average => _stringOfLocalizedValue('average');
+
+  /// The costing method.
+  String get costingMethod => _stringOfLocalizedValue('costingMethod');
 
   /// The sales reports.
   String get salesReports => _stringOfLocalizedValue('salesReports');

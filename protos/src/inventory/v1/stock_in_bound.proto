@@ -18,17 +18,20 @@ enum InboundType {
 message StockInbound {
   string ref_id = 1;
 
+  // The unique identifier of the global product.
+  string global_product_id = 2;
+
   // Type of inbound stock
-  InboundType inbound_type = 2;
+  InboundType inbound_type = 3;
 
   // Quantity added to inventory
-  int32 quantity = 3;
+  int32 quantity = 4;
 
   // Stock quantity before this transaction
-  int32 quantity_before = 4;
+  int32 quantity_before = 5;
 
   // Stock quantity after this transaction
-  int32 quantity_after = 5;
+  int32 quantity_after =  6;
 
   // Purchase/cost price per unit
   int32 unit_cost = 7;

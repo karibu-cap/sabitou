@@ -273,6 +273,10 @@ components:
         refId:
           type: string
           title: ref_id
+        globalProductId:
+          type: string
+          title: global_product_id
+          description: The unique identifier of the global product.
         inboundType:
           title: inbound_type
           description: Type of inbound stock

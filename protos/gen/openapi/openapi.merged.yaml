@@ -2184,6 +2184,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/order.v1.CreateInvoiceResponse'
+  /order.v1.InvoiceService/UpdateInvoice:
+    post:
+      tags:
+        - order.v1.InvoiceService
+      summary: Updates an invoice.
+      description: Updates an invoice.
+      operationId: order.v1.InvoiceService.UpdateInvoice
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/order.v1.UpdateInvoiceRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/order.v1.UpdateInvoiceResponse'
   /order.v1.OrderService/CreateOrder:
     post:
       tags:
@@ -5658,35 +5694,6 @@ components:
           description: The store products for the specified store.
       title: StreamStoreProductsResponse
       additionalProperties: false
-    inventory.v1.SupplyHistory:
-      type: object
-      properties:
-        quantity:
-          type: integer
-          title: quantity
-          format: int32
-          description: The quantity of the product.
-        buyPrice:
-          type: integer
-          title: buy_price
-          format: int32
-          description: The buy price of the product.
-        salePrice:
-          type: integer
-          title: sale_price
-          format: int32
-          description: The sale price of the product.
-        lastQuantity:
-          type: integer
-          title: last_quantity
-          format: int32
-          description: The last quantity of the product.
-        createdAt:
-          title: created_at
-          description: The creation date of the supply history.
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-      title: SupplyHistory
-      additionalProperties: false
     inventory.v1.UpdateGlobalProductRequest:
       type: object
       properties:
@@ -5778,6 +5785,10 @@ components:
         refId:
           type: string
           title: ref_id
+        globalProductId:
+          type: string
+          title: global_product_id
+          description: The unique identifier of the global product.
         inboundType:
           title: inbound_type
           description: Type of inbound stock
@@ -5908,19 +5919,23 @@ components:
     order.v1.CreateInvoiceRequest:
       type: object
       properties:
-        orderId:
-          type: string
-          title: order_id
-          description: The unique identifier of the order.
+        invoice:
+          title: invoice
+          description: The invoice to create.
+          $ref: '#/components/schemas/order.v1.Invoice'
       title: CreateInvoiceRequest
       additionalProperties: false
     order.v1.CreateInvoiceResponse:
       type: object
       properties:
-        invoice:
-          title: invoice
+        success:
+          type: boolean
+          title: success
           description: The invoice of the order.
-          $ref: '#/components/schemas/order.v1.Invoice'
+        error:
+          type: string
+          title: error
+          description: The error message.
       title: CreateInvoiceResponse
       additionalProperties: false
     order.v1.Invoice:
@@ -5934,8 +5949,8 @@ components:
         orderId:
           type: string
           title: order_id
-          format: uuid
           description: The unique identifier of the order.
+          nullable: true
         status:
           title: status
           description: The status of the invoice.
@@ -6018,7 +6033,6 @@ components:
       title: Invoice
       required:
         - refId
-        - orderId
       additionalProperties: false
       description: |-
         The invoice of an order.
@@ -6031,6 +6045,7 @@ components:
         - INVOICE_STATUS_UNSPECIFIED
         - INVOICE_STATUS_PAID
         - INVOICE_STATUS_PENDING_REFUND
+        - INVOICE_STATUS_REFUNDED
     order.v1.OrderItem:
       type: object
       properties:
@@ -6089,6 +6104,24 @@ components:
         - PAYMENT_METHOD_MTN_MONEY
         - PAYMENT_METHOD_VOUCHER
         - PAYMENT_METHOD_MOBILE
+    order.v1.UpdateInvoiceRequest:
+      type: object
+      properties:
+        invoice:
+          title: invoice
+          description: The invoice to update.
+          $ref: '#/components/schemas/order.v1.Invoice'
+      title: UpdateInvoiceRequest
+      additionalProperties: false
+    order.v1.UpdateInvoiceResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the invoice was successfully updated.
+      title: UpdateInvoiceResponse
+      additionalProperties: false
     order.v1.CreateOrderRequest:
       type: object
       properties:

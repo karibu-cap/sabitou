@@ -11,6 +11,7 @@ import '../../../services/internationalization/internationalization.dart';
 import '../../../themes/app_colors.dart';
 import '../../../utils/app_constants.dart';
 import '../../../utils/common_functions.dart';
+import '../../../utils/extensions.dart';
 import '../../../utils/form/validation.dart';
 import '../../../utils/user_preference.dart';
 import '../../../utils/utils.dart';
@@ -25,6 +26,7 @@ class StoreSettingsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ValueNotifier<bool> _isValidForm = ValueNotifier(true);
+    final costPopoverController = ShadPopoverController();
     final controller = context.watch<SettingsController>();
     final userPreferences = UserPreferences.instance;
     final store = userPreferences.store;
@@ -133,6 +135,56 @@ class StoreSettingsView extends StatelessWidget {
                     validator: ValidationFormUtils.validateAddress,
                     onChanged: (value) {
                       tempsStore.description = value;
+                    },
+                  ),
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      return ShadSelectFormField<StoreCostingMethod>(
+                        id: Intls.to.costingMethod,
+                        minWidth: constraints.maxWidth,
+                        initialValue: !store.hasCostingMethod()
+                            ? null
+                            : store.costingMethod,
+                        label: Row(
+                          spacing: 12,
+                          children: [
+                            Text(Intls.to.costingMethod),
+                            ShadPopover(
+                              controller: costPopoverController,
+                              child: InkWell(
+                                onTap: costPopoverController.toggle,
+                                child: const Icon(LucideIcons.info, size: 12),
+                              ),
+                              popover: (_) => Text(
+                                Intls.to.costingMethodDoc,
+                                textAlign: TextAlign.start,
+                              ),
+                            ),
+                          ],
+                        ),
+                        placeholder: Text(Intls.to.costingMethod),
+                        options:
+                            [
+                                  StoreCostingMethod
+                                      .STORE_COSTING_METHOD_AVERAGE,
+                                  StoreCostingMethod.STORE_COSTING_METHOD_FIFO,
+                                ]
+                                .map(
+                                  (e) => ShadOption<StoreCostingMethod>(
+                                    value: e,
+                                    child: Text(e.label),
+                                  ),
+                                )
+                                .toList(),
+                        selectedOptionBuilder: (context, option) =>
+                            Text(option.label),
+                        onChanged: (value) {
+                          if (value == null) {
+                            return;
+                          }
+                          tempsStore.costingMethod = value;
+                        },
+                      );
                     },
                   ),
                 ],

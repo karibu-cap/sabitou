@@ -17,6 +17,19 @@ extension GlobalProductExtension on GlobalProduct {
     return name.en;
   }
 
+  /// Get the label for the global product.
+  String get descriptionIntl {
+    if (Intls.to.locale.languageCode == 'en') {
+      return description.en;
+    }
+
+    if (Intls.to.locale.languageCode == 'fr') {
+      return description.fr;
+    }
+
+    return description.en;
+  }
+
   /// Get the description for the global product.
   String get about {
     if (Intls.to.locale.languageCode == 'en') {

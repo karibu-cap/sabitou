@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sabitou_rpc/models.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../services/internationalization/internationalization.dart';
@@ -15,7 +14,7 @@ import '../../../utils/responsive_utils.dart';
 import '../../../utils/utils.dart';
 import '../../../widgets/loading.dart';
 import '../inventory_controller.dart';
-import 'create_edit_product_form_view.dart';
+import 'form/ajustment_stock_form.dart';
 
 /// The products table view.
 class ProductsTable extends StatelessWidget {
@@ -489,7 +488,7 @@ class _ActionsCell extends StatelessWidget {
       final controller = context.read<InventoryController>();
       final result = await showShadDialog<bool?>(
         context: context,
-        builder: (context) => CreateEditProductFormView(
+        builder: (context) => AdjustmentStockForm(
           product: product,
           inventoryController: controller,
         ),
@@ -512,47 +511,21 @@ class _ActionsCell extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       spacing: 8,
       children: [
-        FutureBuilder(
-          future: hasStorePermission(
-            StoreResourceType.STORE_RESOURCE_TYPE_PRODUCT,
-            ResourceActionType.RESOURCE_ACTION_TYPE_UPDATE,
+        ShadButton.ghost(
+          child: Icon(
+            LucideIcons.squarePen400,
+            color: ShadTheme.of(context).colorScheme.primary,
+            size: 15,
           ),
-          builder: (context, snapshot) {
-            final canUpdate = snapshot.data ?? false;
-            if (!canUpdate) {
-              return const Text('N/A');
-            }
-
-            return ShadButton.ghost(
-              child: Icon(
-                LucideIcons.squarePen400,
-                color: ShadTheme.of(context).colorScheme.primary,
-                size: 15,
-              ),
-              onPressed: () => _showProductDialog(context, product),
-            );
-          },
+          onPressed: () => _showProductDialog(context, product),
         ),
-        FutureBuilder(
-          future: hasStorePermission(
-            StoreResourceType.STORE_RESOURCE_TYPE_PRODUCT,
-            ResourceActionType.RESOURCE_ACTION_TYPE_REMOVE,
+        ShadButton.ghost(
+          child: Icon(
+            LucideIcons.trash2400,
+            color: ShadTheme.of(context).colorScheme.destructive,
+            size: 15,
           ),
-          builder: (context, snapshot) {
-            final canDelete = snapshot.data ?? false;
-            if (!canDelete) {
-              return const SizedBox.shrink();
-            }
-
-            return ShadButton.ghost(
-              child: Icon(
-                LucideIcons.trash2400,
-                color: ShadTheme.of(context).colorScheme.destructive,
-                size: 15,
-              ),
-              onPressed: () => _showDeleteDialog(context, product),
-            );
-          },
+          onPressed: () => _showDeleteDialog(context, product),
         ),
       ],
     );

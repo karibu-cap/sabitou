@@ -82,14 +82,16 @@ func (InboundType) EnumDescriptor() ([]byte, []int) {
 type StockInbound struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	RefId string                 `protobuf:"bytes,1,opt,name=ref_id,json=refId,proto3" json:"ref_id,omitempty"`
+	// The unique identifier of the global product.
+	GlobalProductId string `protobuf:"bytes,2,opt,name=global_product_id,json=globalProductId,proto3" json:"global_product_id,omitempty"`
 	// Type of inbound stock
-	InboundType InboundType `protobuf:"varint,2,opt,name=inbound_type,json=inboundType,proto3,enum=inventory.v1.InboundType" json:"inbound_type,omitempty"`
+	InboundType InboundType `protobuf:"varint,3,opt,name=inbound_type,json=inboundType,proto3,enum=inventory.v1.InboundType" json:"inbound_type,omitempty"`
 	// Quantity added to inventory
-	Quantity int32 `protobuf:"varint,3,opt,name=quantity,proto3" json:"quantity,omitempty"`
+	Quantity int32 `protobuf:"varint,4,opt,name=quantity,proto3" json:"quantity,omitempty"`
 	// Stock quantity before this transaction
-	QuantityBefore int32 `protobuf:"varint,4,opt,name=quantity_before,json=quantityBefore,proto3" json:"quantity_before,omitempty"`
+	QuantityBefore int32 `protobuf:"varint,5,opt,name=quantity_before,json=quantityBefore,proto3" json:"quantity_before,omitempty"`
 	// Stock quantity after this transaction
-	QuantityAfter int32 `protobuf:"varint,5,opt,name=quantity_after,json=quantityAfter,proto3" json:"quantity_after,omitempty"`
+	QuantityAfter int32 `protobuf:"varint,6,opt,name=quantity_after,json=quantityAfter,proto3" json:"quantity_after,omitempty"`
 	// Purchase/cost price per unit
 	UnitCost int32 `protobuf:"varint,7,opt,name=unit_cost,json=unitCost,proto3" json:"unit_cost,omitempty"`
 	// Supplier ID (for stock in transactions)
@@ -143,6 +145,13 @@ func (*StockInbound) Descriptor() ([]byte, []int) {
 func (x *StockInbound) GetRefId() string {
 	if x != nil {
 		return x.RefId
+	}
+	return ""
+}
+
+func (x *StockInbound) GetGlobalProductId() string {
+	if x != nil {
+		return x.GlobalProductId
 	}
 	return ""
 }
@@ -440,13 +449,14 @@ var File_inventory_v1_stock_in_bound_proto protoreflect.FileDescriptor
 
 const file_inventory_v1_stock_in_bound_proto_rawDesc = "" +
 	"\n" +
-	"!inventory/v1/stock_in_bound.proto\x12\finventory.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\x89\x05\n" +
+	"!inventory/v1/stock_in_bound.proto\x12\finventory.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\xb5\x05\n" +
 	"\fStockInbound\x12\x15\n" +
-	"\x06ref_id\x18\x01 \x01(\tR\x05refId\x12<\n" +
-	"\finbound_type\x18\x02 \x01(\x0e2\x19.inventory.v1.InboundTypeR\vinboundType\x12\x1a\n" +
-	"\bquantity\x18\x03 \x01(\x05R\bquantity\x12'\n" +
-	"\x0fquantity_before\x18\x04 \x01(\x05R\x0equantityBefore\x12%\n" +
-	"\x0equantity_after\x18\x05 \x01(\x05R\rquantityAfter\x12\x1b\n" +
+	"\x06ref_id\x18\x01 \x01(\tR\x05refId\x12*\n" +
+	"\x11global_product_id\x18\x02 \x01(\tR\x0fglobalProductId\x12<\n" +
+	"\finbound_type\x18\x03 \x01(\x0e2\x19.inventory.v1.InboundTypeR\vinboundType\x12\x1a\n" +
+	"\bquantity\x18\x04 \x01(\x05R\bquantity\x12'\n" +
+	"\x0fquantity_before\x18\x05 \x01(\x05R\x0equantityBefore\x12%\n" +
+	"\x0equantity_after\x18\x06 \x01(\x05R\rquantityAfter\x12\x1b\n" +
 	"\tunit_cost\x18\a \x01(\x05R\bunitCost\x12$\n" +
 	"\vsupplier_id\x18\b \x01(\tH\x00R\n" +
 	"supplierId\x88\x01\x01\x12.\n" +

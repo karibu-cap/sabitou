@@ -1,14 +1,13 @@
-import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
+import 'package:sabitou_rpc/models.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-import '../../../repositories/products_repository.dart';
-import '../../../services/internationalization/internationalization.dart';
-import '../../../utils/common_functions.dart';
-import '../../../utils/extends_models.dart';
-import '../../../utils/extensions/global_product_extension.dart';
-import '../../../utils/user_preference.dart';
+import '../../../../repositories/products_repository.dart';
+import '../../../../services/internationalization/internationalization.dart';
+import '../../../../utils/common_functions.dart';
+import '../../../../utils/extensions/global_product_extension.dart';
+import '../../../../utils/user_preference.dart';
 
 /// The type of the product form.
 enum ProductFormType {
@@ -27,7 +26,7 @@ enum ErrorType {
 
 /// Product form provider.
 class CreateEditProductFormController extends ChangeNotifier {
-  final Product _product;
+  GlobalProduct _product;
   bool _onSaveProduct = false;
 
   /// Gets the error type.
@@ -42,71 +41,34 @@ class CreateEditProductFormController extends ChangeNotifier {
   /// The name controller.
   final TextEditingController nameController;
 
+  /// The description controller.
+  final TextEditingController descriptionController;
+
   /// The category controller.
   ShadSelectController<String?> categoryController;
 
-  /// The supplier controller.
-  ShadSelectController<String?> supplierController;
-
   /// The barcode controller.
   final TextEditingController barcodeController;
-
-  /// The price controller.
-  final TextEditingController priceController;
-
-  /// The quantity controller.
-  final TextEditingController quantityController;
-
-  /// The reorder threshold controller.
-  final TextEditingController minStockThresholdController;
-
-  /// The expiry controller.
-  final TextEditingController expiryController;
 
   /// Gets the loading state.
   bool get onSaveProduct => _onSaveProduct;
 
   /// Gets the product.
-  Product get product => _product;
+  GlobalProduct get product => _product;
 
   /// Constructs of new [CreateEditProductFormController].
-  CreateEditProductFormController({Product? product})
-    : _product =
-          product ??
-          Product(storeProduct: StoreProduct(), globalProduct: GlobalProduct()),
+  CreateEditProductFormController({GlobalProduct? product})
+    : _product = product ?? GlobalProduct(),
       productFormType = product == null
           ? ProductFormType.create
           : ProductFormType.edit,
-      nameController = TextEditingController(
-        text: product?.globalProduct.label,
+      nameController = TextEditingController(text: product?.label),
+      descriptionController = TextEditingController(
+        text: product?.descriptionIntl,
       ),
-      barcodeController = TextEditingController(
-        text: product?.globalProduct.barCodeValue,
-      ),
-      priceController = TextEditingController(
-        text: product?.storeProduct.salePrice.toString(),
-      ),
-      quantityController = TextEditingController(
-        text: product?.storeProduct.stockQuantity.toString(),
-      ),
-      minStockThresholdController = TextEditingController(
-        text: product?.storeProduct.minStockThreshold.toString(),
-      ),
-
-      expiryController = TextEditingController(
-        text: product?.storeProduct.expirationDate
-            .toDateTime()
-            .toIso8601String(),
-      ),
+      barcodeController = TextEditingController(text: product?.barCodeValue),
       categoryController = ShadSelectController<String?>(
-        initialValue: product?.globalProduct.categories
-            .map((e) => e.refId)
-            .toSet(),
-      ),
-      supplierController = ShadSelectController<String?>(
-        initialValue: product?.storeProduct.supplierId != null
-            ? {product?.storeProduct.supplierId}
-            : null,
+        initialValue: product?.categories.map((e) => e.refId).toSet(),
       );
 
   /// Validates the form.
@@ -126,6 +88,8 @@ class CreateEditProductFormController extends ChangeNotifier {
 
   /// Filters global products.
   Future<List<GlobalProduct>> filterGlobalProduct(String name) async {
+    print(' name $name');
+
     return await ProductsRepository.instance.findGlobalProduct(
       FindGlobalProductsRequest(name: name),
     );
@@ -135,10 +99,11 @@ class CreateEditProductFormController extends ChangeNotifier {
   void setNewProduct(GlobalProduct globalProduct) {
     nameController.text = globalProduct.label;
     barcodeController.text = globalProduct.barCodeValue;
+    descriptionController.text = globalProduct.descriptionIntl;
     categoryController.value = globalProduct.categories
         .map((e) => e.refId)
         .toSet();
-    _product.globalProduct = globalProduct;
+    _product = globalProduct;
     notifyListeners();
   }
 
@@ -157,27 +122,17 @@ class CreateEditProductFormController extends ChangeNotifier {
       }
 
       final result = productFormType == ProductFormType.create
-          ? await ProductsRepository.instance.addProduct(
-              AddStoreProductRequest(
-                globalProduct: product.globalProduct,
-                storeProduct: product.storeProduct
-                  ..storeId = storeId
-                  ..createdAt = Timestamp.fromDateTime(clock.now())
-                  ..updatedAt = Timestamp.fromDateTime(clock.now()),
-              ),
+          ? await ProductsRepository.instance.createGlobalProduct(
+              CreateGlobalProductRequest(globalProduct: product),
             )
-          : await ProductsRepository.instance.updateProduct(
-              UpdateStoreProductRequest(
-                globalProduct: product.globalProduct,
-                storeProduct: product.storeProduct
-                  ..updatedAt = Timestamp.fromDateTime(clock.now()),
-              ),
+          : await ProductsRepository.instance.updateGlobalProduct(
+              UpdateGlobalProductRequest(globalProduct: product),
             );
 
+      if (!context.mounted) {
+        return;
+      }
       if (result) {
-        if (!context.mounted) {
-          return;
-        }
         Navigator.of(context).pop(true);
         showSuccessToast(
           context: context,
