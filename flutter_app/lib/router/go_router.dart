@@ -8,6 +8,7 @@ import '../screens/auth/login/login_view.dart';
 import '../screens/auth/registration/registration_view.dart';
 import '../screens/categories/categories_view.dart';
 import '../screens/dashboard/dashboard_screen.dart';
+import '../screens/global_products/global_products_view.dart';
 import '../screens/home/home.dart';
 import '../screens/inventory/inventory_screen.dart';
 import '../screens/new_order/new_order_screen.dart';
@@ -150,6 +151,17 @@ class GoRouterRoutesProvider {
                 path: PagesRoutes.categories.pattern,
                 pageBuilder: (context, state) {
                   return const MaterialPage(child: CategoriesView());
+                },
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                name: PagesRoutes.globalProducts.name,
+                path: PagesRoutes.globalProducts.pattern,
+                pageBuilder: (context, state) {
+                  return const MaterialPage(child: GlobalProductsView());
                 },
               ),
             ],

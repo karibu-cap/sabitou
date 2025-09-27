@@ -52,19 +52,19 @@ class ProductsRepository {
   }
 
   /// Finds global products.
-  Future<List<GlobalProduct>> findGlobalProduct(
+  Future<List<GlobalProduct>> findGlobalProducts(
     FindGlobalProductsRequest request,
   ) async {
     try {
       final connection = await _network.checkConnectivity();
 
       if (connection) {
-        return await remoteProductsRepository.findGlobalProduct(request);
+        return await remoteProductsRepository.findGlobalProducts(request);
       }
 
-      return localProductsRepository.findGlobalProduct(request);
+      return localProductsRepository.findGlobalProducts(request);
     } on Exception catch (e) {
-      _logger.severe('findGlobalProduct Error: $e');
+      _logger.severe('findGlobalProducts Error: $e');
 
       return [];
     }

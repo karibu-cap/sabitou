@@ -60,6 +60,9 @@ abstract class PagesRoutes {
   /// The categories route, for example, http:localhost:8080/categories.
   static final categories = _CategoriesRoute();
 
+  /// The global products route, for example, http:localhost:8080/global-products.
+  static final globalProducts = _GlobalProductsRoute();
+
   /// The settings route, for example, http:localhost:8080/settings.
   static final settings = _SettingsRoute();
 }
@@ -126,6 +129,14 @@ class _CategoriesRoute extends PagesRoutesWithNoParams {
 
   @override
   String get name => 'categories';
+}
+
+class _GlobalProductsRoute extends PagesRoutesWithNoParams {
+  @override
+  String get pattern => '/global-products';
+
+  @override
+  String get name => 'global-products';
 }
 
 class _SettingsRoute extends PagesRoutesWithNoParams {

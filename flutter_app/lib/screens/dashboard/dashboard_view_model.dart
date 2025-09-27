@@ -136,7 +136,7 @@ final class DashboardViewModel {
         ...expiringProducts.map((p) => p.globalProductId),
       };
       final globalFutures = uniqueGlobalIds.map(
-        (id) => ProductsRepository.instance.findGlobalProduct(
+        (id) => ProductsRepository.instance.findGlobalProducts(
           FindGlobalProductsRequest(refId: id),
         ),
       );
@@ -147,7 +147,7 @@ final class DashboardViewModel {
         globals.expand((g) => g),
       );
       globalProducts = globalMap;
-    } catch (e) {
+    } on Exception catch (e) {
       error = e.toString();
     } finally {
       completer.complete(true);

@@ -57,7 +57,7 @@ final class AdjustmentStockFormController extends ChangeNotifier {
 
   /// Filters global products.
   Future<List<GlobalProduct>> filterGlobalProduct(String name) async {
-    return await ProductsRepository.instance.findGlobalProduct(
+    return await ProductsRepository.instance.findGlobalProducts(
       FindGlobalProductsRequest(name: name),
     );
   }

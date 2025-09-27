@@ -696,11 +696,11 @@ class ReportsViewModel {
     if (product == null) {
       return null;
     }
-    final globalProduct = await ProductsRepository.instance.findGlobalProduct(
+    final globalProducts = await ProductsRepository.instance.findGlobalProducts(
       FindGlobalProductsRequest(refId: product.globalProductId),
     );
 
-    return globalProduct.firstOrNull?.categories.toList();
+    return globalProducts.firstOrNull?.categories.toList();
   }
 
   Future<List<StoreProduct>> _getStoresProducts(String storeId) async {

@@ -17,6 +17,22 @@ import 'dart:typed_data' as $typed_data;
 import '../../google/protobuf/timestamp.pbjson.dart' as $1;
 import 'category.pbjson.dart' as $0;
 
+@$core.Deprecated('Use globalProductStatusDescriptor instead')
+const GlobalProductStatus$json = {
+  '1': 'GlobalProductStatus',
+  '2': [
+    {'1': 'GLOBAL_PRODUCT_STATUS_UNSPECIFIED', '2': 0},
+    {'1': 'GLOBAL_PRODUCT_STATUS_ACTIVE', '2': 1},
+    {'1': 'GLOBAL_PRODUCT_STATUS_INACTIVE', '2': 2},
+  ],
+};
+
+/// Descriptor for `GlobalProductStatus`. Decode as a `google.protobuf.EnumDescriptorProto`.
+final $typed_data.Uint8List globalProductStatusDescriptor = $convert.base64Decode(
+    'ChNHbG9iYWxQcm9kdWN0U3RhdHVzEiUKIUdMT0JBTF9QUk9EVUNUX1NUQVRVU19VTlNQRUNJRk'
+    'lFRBAAEiAKHEdMT0JBTF9QUk9EVUNUX1NUQVRVU19BQ1RJVkUQARIiCh5HTE9CQUxfUFJPRFVD'
+    'VF9TVEFUVVNfSU5BQ1RJVkUQAg==');
+
 @$core.Deprecated('Use productStatusDescriptor instead')
 const ProductStatus$json = {
   '1': 'ProductStatus',
@@ -73,6 +89,14 @@ const GlobalProduct$json = {
       '10': 'categories'
     },
     {'1': 'images_links_ids', '3': 6, '4': 3, '5': 9, '10': 'imagesLinksIds'},
+    {
+      '1': 'status',
+      '3': 7,
+      '4': 1,
+      '5': 14,
+      '6': '.inventory.v1.GlobalProductStatus',
+      '10': 'status'
+    },
   ],
   '8': [
     {'1': '_ref_id'},
@@ -88,8 +112,9 @@ final $typed_data.Uint8List globalProductDescriptor = $convert.base64Decode(
     'GAMgASgLMh8uaW52ZW50b3J5LnYxLkludGVybmF0aW9uYWxpemVkSAFSC2Rlc2NyaXB0aW9uiA'
     'EBEikKDmJhcl9jb2RlX3ZhbHVlGAQgASgJSAJSDGJhckNvZGVWYWx1ZYgBARI2CgpjYXRlZ29y'
     'aWVzGAUgAygLMhYuaW52ZW50b3J5LnYxLkNhdGVnb3J5UgpjYXRlZ29yaWVzEigKEGltYWdlc1'
-    '9saW5rc19pZHMYBiADKAlSDmltYWdlc0xpbmtzSWRzQgkKB19yZWZfaWRCDgoMX2Rlc2NyaXB0'
-    'aW9uQhEKD19iYXJfY29kZV92YWx1ZQ==');
+    '9saW5rc19pZHMYBiADKAlSDmltYWdlc0xpbmtzSWRzEjkKBnN0YXR1cxgHIAEoDjIhLmludmVu'
+    'dG9yeS52MS5HbG9iYWxQcm9kdWN0U3RhdHVzUgZzdGF0dXNCCQoHX3JlZl9pZEIOCgxfZGVzY3'
+    'JpcHRpb25CEQoPX2Jhcl9jb2RlX3ZhbHVl');
 
 @$core.Deprecated('Use createGlobalProductRequestDescriptor instead')
 const CreateGlobalProductRequest$json = {
@@ -402,11 +427,22 @@ const FindGlobalProductsRequest$json = {
       '10': 'barCodeValue',
       '17': true
     },
+    {
+      '1': 'status',
+      '3': 5,
+      '4': 1,
+      '5': 14,
+      '6': '.inventory.v1.GlobalProductStatus',
+      '9': 3,
+      '10': 'status',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_ref_id'},
     {'1': '_name'},
     {'1': '_bar_code_value'},
+    {'1': '_status'},
   ],
 };
 
@@ -415,7 +451,9 @@ final $typed_data.Uint8List findGlobalProductsRequestDescriptor = $convert.base6
     'ChlGaW5kR2xvYmFsUHJvZHVjdHNSZXF1ZXN0EhoKBnJlZl9pZBgBIAEoCUgAUgVyZWZJZIgBAR'
     'I2CgpjYXRlZ29yaWVzGAIgAygLMhYuaW52ZW50b3J5LnYxLkNhdGVnb3J5UgpjYXRlZ29yaWVz'
     'EhcKBG5hbWUYAyABKAlIAVIEbmFtZYgBARIpCg5iYXJfY29kZV92YWx1ZRgEIAEoCUgCUgxiYX'
-    'JDb2RlVmFsdWWIAQFCCQoHX3JlZl9pZEIHCgVfbmFtZUIRCg9fYmFyX2NvZGVfdmFsdWU=');
+    'JDb2RlVmFsdWWIAQESPgoGc3RhdHVzGAUgASgOMiEuaW52ZW50b3J5LnYxLkdsb2JhbFByb2R1'
+    'Y3RTdGF0dXNIA1IGc3RhdHVziAEBQgkKB19yZWZfaWRCBwoFX25hbWVCEQoPX2Jhcl9jb2RlX3'
+    'ZhbHVlQgkKB19zdGF0dXM=');
 
 @$core.Deprecated('Use findGlobalProductsResponseDescriptor instead')
 const FindGlobalProductsResponse$json = {

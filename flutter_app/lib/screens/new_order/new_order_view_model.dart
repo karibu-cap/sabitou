@@ -71,7 +71,7 @@ final class NewOrderViewModel {
         ...storeProducts.map((p) => p.globalProductId),
       };
       final globalFutures = uniqueGlobalIds.map(
-        (id) => ProductsRepository.instance.findGlobalProduct(
+        (id) => ProductsRepository.instance.findGlobalProducts(
           FindGlobalProductsRequest(refId: id),
         ),
       );

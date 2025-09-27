@@ -6,6 +6,16 @@ import "buf/validate/validate.proto";
 import "google/protobuf/timestamp.proto";
 import "inventory/v1/category.proto";
 
+
+
+enum GlobalProductStatus {
+  GLOBAL_PRODUCT_STATUS_UNSPECIFIED = 0;
+  /// The product category is active.
+  GLOBAL_PRODUCT_STATUS_ACTIVE = 1;
+  /// The product category is inactive.
+  GLOBAL_PRODUCT_STATUS_INACTIVE = 2;
+}
+
 message GlobalProduct {
   // The unique identifier of the product.
   optional string ref_id = 1;
@@ -24,6 +34,9 @@ message GlobalProduct {
 
   // The list of image related to the product.
   repeated string images_links_ids = 6;
+
+  // The status of the product.
+  GlobalProductStatus status = 7;
 }
 
 message CreateGlobalProductRequest {
@@ -142,6 +155,9 @@ message FindGlobalProductsRequest {
 
   // Identify the products by bar code.
   optional string bar_code_value = 4;
+
+  // Identify the products by store.
+  optional GlobalProductStatus status = 5;
 }
 
 message FindGlobalProductsResponse {

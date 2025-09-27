@@ -150,6 +150,9 @@ enum DashboardItem {
   /// The categories item.
   categories,
 
+  /// The global products item.
+  globalProducts,
+
   /// The settings item.
   settings,
 

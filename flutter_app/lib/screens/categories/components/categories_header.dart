@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../../services/internationalization/internationalization.dart';
 import '../../../../utils/responsive_utils.dart';
-import '../categories_controller.dart';
-import 'dialogs/add_category/add_category_view.dart';
+import '../../../widgets/pop_up/add_category/add_category_view.dart';
 
 /// Header widget for categories view.
 class CategoriesHeader extends StatelessWidget {
@@ -13,18 +11,10 @@ class CategoriesHeader extends StatelessWidget {
   const CategoriesHeader({super.key});
 
   /// Show category dialog for adding or editing
-  void _showCategoryDialog(
-    BuildContext context,
-    CategoriesController controller,
-  ) {
+  void _showCategoryDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (dialogContext) => ChangeNotifierProvider<CategoriesController>(
-        create: (_) => controller,
-        child: ShadDialog(
-          child: CategoryFormDialog(categoriesController: controller),
-        ),
-      ),
+      builder: (context) => ShadDialog(child: CategoryFormDialog()),
     );
   }
 
@@ -32,8 +22,6 @@ class CategoriesHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
     final isMobile = ResponsiveUtils.isMobile(context);
-
-    final controller = Provider.of<CategoriesController>(context);
 
     return Flex(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -56,7 +44,7 @@ class CategoriesHeader extends StatelessWidget {
           ],
         ),
         ShadButton(
-          onPressed: () => _showCategoryDialog(context, controller),
+          onPressed: () => _showCategoryDialog(context),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [

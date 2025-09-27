@@ -1284,10 +1284,6 @@ class AppInternationalizationService extends ChangeNotifier {
       'fr': 'Gérez vos catégories',
     },
     'editCategory': {'en': 'Edit Category', 'fr': 'Modifier la Catégorie'},
-    'deleteCategoryBtn': {
-      'en': 'Delete Category',
-      'fr': 'Supprimer la Catégorie',
-    },
     'totalCategories': {'en': 'Total Categories', 'fr': 'Total Catégories'},
     'activeCategories': {'en': 'Active Categories', 'fr': 'Catégories Actives'},
     'inactiveCategories': {
@@ -1329,10 +1325,6 @@ class AppInternationalizationService extends ChangeNotifier {
     'categoryNameFrenchVersion': {
       'en': 'Category Name (French version)',
       'fr': 'Nom de la Catégorie (version française)',
-    },
-    'enterCategoryName': {
-      'en': 'Enter category name',
-      'fr': 'Entrez le nom de la catégorie',
     },
     'categoryNameEnglishVersionRequired': {
       'en': 'Category name (English version) is required',
@@ -1465,6 +1457,108 @@ class AppInternationalizationService extends ChangeNotifier {
     },
     'adjustStock': {'en': 'Adjust Stock', 'fr': 'Ajuster le stock'},
     'productNotFound': {'en': 'Product not found', 'fr': 'Produit non trouvé'},
+    'totalGlobalProducts': {
+      'en': 'Total Global Products',
+      'fr': 'Total Produits Généraux',
+    },
+    'activeGlobalProducts': {
+      'en': 'Active Global Products',
+      'fr': 'Produits Généraux Actifs',
+    },
+    'inactiveGlobalProducts': {
+      'en': 'Inactive Global Products',
+      'fr': 'Produits Généraux Inactifs',
+    },
+    'globalProductsManagement': {
+      'en': 'Global Products Management',
+      'fr': 'Gestion des Produits Généraux',
+    },
+    'manageGlobalProducts': {
+      'en': 'Manage your global products and their information',
+      'fr': 'Gérez vos produits généraux et leurs informations',
+    },
+    'searchProducts': {
+      'en': 'Search products by name, categories, or status...',
+      'fr': 'Rechercher des produits par nom, catégories ou statut...',
+    },
+    'noProductsMatchFilters': {
+      'en': 'No products match your filters',
+      'fr': 'Aucun produit ne correspond à vos filtres',
+    },
+    'noProductsYet': {'en': 'No products yet', 'fr': 'Aucun produit encore'},
+    'addFirstProduct': {
+      'en': 'Add your first product',
+      'fr': 'Ajoutez votre premier produit',
+    },
+    'productWillBeRemovedPermanently': {
+      'en': 'This product will be removed from your stock permanently.',
+      'fr': 'Ce produit sera supprimée définitivement de votre stock.',
+    },
+    'productAddedSuccessfully': {
+      'en': 'Product added successfully',
+      'fr': 'Produit ajoutée avec succès',
+    },
+    'productUpdatedSuccessfully': {
+      'en': 'Product updated successfully',
+      'fr': 'Produit mise à jour avec succès',
+    },
+    'failedToSaveProduct': {
+      'en': 'Failed to save product',
+      'fr': 'Échec de la sauvegarde du produit',
+    },
+    'addNewProduct': {
+      'en': 'Add New Product',
+      'fr': 'Ajouter un Nouveau Produit',
+    },
+    'enterDetailsNewProduct': {
+      'en': 'Enter the details for the new product',
+      'fr': 'Entrez les détails du nouveau produit',
+    },
+    'updateProduct': {
+      'en': 'Update product information',
+      'fr': 'Mettre à jour les informations du produit',
+    },
+    'productNameEnglishVersion': {
+      'en': 'Product Name (English version)',
+      'fr': 'Nom du Produit (version anglaise)',
+    },
+    'productNameFrenchVersion': {
+      'en': 'Product Name (French version)',
+      'fr': 'Nom du Produit (version française)',
+    },
+    'productNameEnglishVersionRequired': {
+      'en': 'Product name (English version) is required',
+      'fr': 'Le nom du produit (version anglaise) est requis',
+    },
+    'productNameFrenchVersionRequired': {
+      'en': 'Product name (version anglaise) is required',
+      'fr': 'Le nom du produit (version française) est requis',
+    },
+    'productDescriptionEnglishVersion': {
+      'en': 'Product Description (English version)',
+      'fr': 'Description du Produit (version anglaise)',
+    },
+    'productDescriptionFrenchVersion': {
+      'en': 'Product Description (French version)',
+      'fr': 'Description du Produit (version française)',
+    },
+    'productDescriptionEnglishVersionRequired': {
+      'en': 'Product description (English version) is required',
+      'fr': 'La description du produit (version anglaise) est requise',
+    },
+    'productDescriptionFrenchVersionRequired': {
+      'en': 'Product description (version anglaise) is required',
+      'fr': 'La description du produit (version française) est requise',
+    },
+    'productNameTooShort': {
+      'en': 'Product name is too short',
+      'fr': 'Le nom du produit est trop court',
+    },
+    'productDescriptionTooShort': {
+      'en': 'Product description is too short',
+      'fr': 'La description du produit est trop courte',
+    },
+    'globalProducts': {'en': 'Global Products', 'fr': 'Produits globaux'},
   };
 
   /// Direct access to the internationalization service.
@@ -2084,10 +2178,6 @@ class AppInternationalizationService extends ChangeNotifier {
 
   /// Returns the localized value of text 'outOfStock'.
   String get outOfStock => _stringOfLocalizedValue('outOfStock');
-
-  /// Returns the localized value of text 'productDeletedSuccessfully'.
-  String get productDeletedSuccessfully =>
-      _stringOfLocalizedValue('productDeletedSuccessfully');
 
   /// Returns the localized value of text 'failedToDeleteProduct'.
   String get failedToDeleteProduct =>
@@ -3371,9 +3461,6 @@ class AppInternationalizationService extends ChangeNotifier {
   /// Returns the localized value of editCategory.
   String get editCategory => _stringOfLocalizedValue('editCategory');
 
-  /// Returns the localized value of deleteCategoryBtn.
-  String get deleteCategoryBtn => _stringOfLocalizedValue('deleteCategoryBtn');
-
   /// Returns the localized value of totalCategories.
   String get totalCategories => _stringOfLocalizedValue('totalCategories');
 
@@ -3481,6 +3568,112 @@ class AppInternationalizationService extends ChangeNotifier {
 
   /// Returns the localized value of allTypes.
   String get allTypes => _stringOfLocalizedValue('allTypes');
+
+  /// Returns the localized value of totalGlobalProducts.
+  String get totalGlobalProducts =>
+      _stringOfLocalizedValue('totalGlobalProducts');
+
+  /// Returns the localized value of activeGlobalProducts.
+  String get activeGlobalProducts =>
+      _stringOfLocalizedValue('activeGlobalProducts');
+
+  /// Returns the localized value of inactiveGlobalProducts.
+  String get inactiveGlobalProducts =>
+      _stringOfLocalizedValue('inactiveGlobalProducts');
+
+  /// Returns the localized value of globalProductsManagement.
+  String get globalProductsManagement =>
+      _stringOfLocalizedValue('globalProductsManagement');
+
+  /// Returns the localized value of manageGlobalProducts.
+  String get manageGlobalProducts =>
+      _stringOfLocalizedValue('manageGlobalProducts');
+
+  /// Returns the localized value of searchProducts.
+  String get searchProducts => _stringOfLocalizedValue('searchProducts');
+
+  /// Returns the localized value of noProductsMatchFilters.
+  String get noProductsMatchFilters =>
+      _stringOfLocalizedValue('noProductsMatchFilters');
+
+  /// Returns the localized value of noProductsYet.
+  String get noProductsYet => _stringOfLocalizedValue('noProductsYet');
+
+  /// Returns the localized value of addFirstProduct.
+  String get addFirstProduct => _stringOfLocalizedValue('addFirstProduct');
+
+  /// Returns the localized value of productWillBeRemovedPermanently.
+  String get productWillBeRemovedPermanently =>
+      _stringOfLocalizedValue('productWillBeRemovedPermanently');
+
+  /// Returns the localized value of productAddedSuccessfully.
+  String get productAddedSuccessfully =>
+      _stringOfLocalizedValue('productAddedSuccessfully');
+
+  /// Returns the localized value of productUpdatedSuccessfully.
+  String get productUpdatedSuccessfully =>
+      _stringOfLocalizedValue('productUpdatedSuccessfully');
+
+  /// Returns the localized value of failedToSaveProduct.
+  String get failedToSaveProduct =>
+      _stringOfLocalizedValue('failedToSaveProduct');
+
+  /// Returns the localized value of addNewProduct.
+  String get addNewProduct => _stringOfLocalizedValue('addNewProduct');
+
+  /// Returns the localized value of enterDetailsNewProduct.
+  String get enterDetailsNewProduct =>
+      _stringOfLocalizedValue('enterDetailsNewProduct');
+
+  /// Returns the localized value of updateProduct.
+  String get updateProduct => _stringOfLocalizedValue('updateProduct');
+
+  /// Returns the localized value of productDeletedSuccessfully.
+  String get productDeletedSuccessfully =>
+      _stringOfLocalizedValue('productDeletedSuccessfully');
+
+  /// Returns the localized value of productNameEnglishVersion.
+  String get productNameEnglishVersion =>
+      _stringOfLocalizedValue('productNameEnglishVersion');
+
+  /// Returns the localized value of productNameFrenchVersion.
+  String get productNameFrenchVersion =>
+      _stringOfLocalizedValue('productNameFrenchVersion');
+
+  /// Returns the localized value of productNameEnglishVersionRequired.
+  String get productNameEnglishVersionRequired =>
+      _stringOfLocalizedValue('productNameEnglishVersionRequired');
+
+  /// Returns the localized value of productNameFrenchVersionRequired.
+  String get productNameFrenchVersionRequired =>
+      _stringOfLocalizedValue('productNameFrenchVersionRequired');
+
+  /// Returns the localized value of productDescriptionEnglishVersion.
+  String get productDescriptionEnglishVersion =>
+      _stringOfLocalizedValue('productDescriptionEnglishVersion');
+
+  /// Returns the localized value of productDescriptionFrenchVersion.
+  String get productDescriptionFrenchVersion =>
+      _stringOfLocalizedValue('productDescriptionFrenchVersion');
+
+  /// Returns the localized value of productDescriptionEnglishVersionRequired.
+  String get productDescriptionEnglishVersionRequired =>
+      _stringOfLocalizedValue('productDescriptionEnglishVersionRequired');
+
+  /// Returns the localized value of productDescriptionFrenchVersionRequired.
+  String get productDescriptionFrenchVersionRequired =>
+      _stringOfLocalizedValue('productDescriptionFrenchVersionRequired');
+
+  /// Returns the localized value of productNameTooShort.
+  String get productNameTooShort =>
+      _stringOfLocalizedValue('productNameTooShort');
+
+  /// Returns the localized value of productDescriptionTooShort.
+  String get productDescriptionTooShort =>
+      _stringOfLocalizedValue('productDescriptionTooShort');
+
+  /// Returns the localized value of globalProducts.
+  String get globalProducts => _stringOfLocalizedValue('globalProducts');
 
   /// Changes the locale.
   void changeLocale([Locale? newLocale]) {
