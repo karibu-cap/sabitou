@@ -37,6 +37,41 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/order.v1.CreateVoucherResponse'
+  /order.v1.VoucherService/FindVouchers:
+    post:
+      tags:
+        - order.v1.VoucherService
+      summary: FindVouchers
+      operationId: order.v1.VoucherService.FindVouchers
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/order.v1.FindVouchersRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/order.v1.FindVouchersResponse'
   /order.v1.VoucherService/GetVoucher:
     post:
       tags:
@@ -289,6 +324,25 @@ components:
           type: string
           title: ref_id
       title: CreateVoucherResponse
+      additionalProperties: false
+    order.v1.FindVouchersRequest:
+      type: object
+      properties:
+        storeId:
+          type: string
+          title: store_id
+          description: The store id.
+      title: FindVouchersRequest
+      additionalProperties: false
+    order.v1.FindVouchersResponse:
+      type: object
+      properties:
+        vouchers:
+          type: array
+          items:
+            $ref: '#/components/schemas/order.v1.Voucher'
+          title: vouchers
+      title: FindVouchersResponse
       additionalProperties: false
     order.v1.GetVoucherRequest:
       type: object

@@ -30,4 +30,11 @@ abstract final class VoucherService {
     orderv1voucher.RedeemVoucherRequest.new,
     orderv1voucher.RedeemVoucherResponse.new,
   );
+
+  static const findVouchers = connect.Spec(
+    '/$name/FindVouchers',
+    connect.StreamType.unary,
+    orderv1voucher.FindVouchersRequest.new,
+    orderv1voucher.FindVouchersResponse.new,
+  );
 }

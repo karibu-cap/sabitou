@@ -574,6 +574,115 @@ class RedeemVoucherResponse extends $pb.GeneratedMessage {
   void clearError() => $_clearField(2);
 }
 
+class FindVouchersRequest extends $pb.GeneratedMessage {
+  factory FindVouchersRequest({
+    $core.String? storeId,
+  }) {
+    final result = create();
+    if (storeId != null) result.storeId = storeId;
+    return result;
+  }
+
+  FindVouchersRequest._();
+
+  factory FindVouchersRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory FindVouchersRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FindVouchersRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'storeId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FindVouchersRequest clone() => FindVouchersRequest()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FindVouchersRequest copyWith(void Function(FindVouchersRequest) updates) =>
+      super.copyWith((message) => updates(message as FindVouchersRequest))
+          as FindVouchersRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static FindVouchersRequest create() => FindVouchersRequest._();
+  @$core.override
+  FindVouchersRequest createEmptyInstance() => create();
+  static $pb.PbList<FindVouchersRequest> createRepeated() =>
+      $pb.PbList<FindVouchersRequest>();
+  @$core.pragma('dart2js:noInline')
+  static FindVouchersRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FindVouchersRequest>(create);
+  static FindVouchersRequest? _defaultInstance;
+
+  /// The store id.
+  @$pb.TagNumber(1)
+  $core.String get storeId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set storeId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasStoreId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearStoreId() => $_clearField(1);
+}
+
+class FindVouchersResponse extends $pb.GeneratedMessage {
+  factory FindVouchersResponse({
+    $core.Iterable<Voucher>? vouchers,
+  }) {
+    final result = create();
+    if (vouchers != null) result.vouchers.addAll(vouchers);
+    return result;
+  }
+
+  FindVouchersResponse._();
+
+  factory FindVouchersResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory FindVouchersResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FindVouchersResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'),
+      createEmptyInstance: create)
+    ..pc<Voucher>(1, _omitFieldNames ? '' : 'vouchers', $pb.PbFieldType.PM,
+        subBuilder: Voucher.create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FindVouchersResponse clone() =>
+      FindVouchersResponse()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FindVouchersResponse copyWith(void Function(FindVouchersResponse) updates) =>
+      super.copyWith((message) => updates(message as FindVouchersResponse))
+          as FindVouchersResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static FindVouchersResponse create() => FindVouchersResponse._();
+  @$core.override
+  FindVouchersResponse createEmptyInstance() => create();
+  static $pb.PbList<FindVouchersResponse> createRepeated() =>
+      $pb.PbList<FindVouchersResponse>();
+  @$core.pragma('dart2js:noInline')
+  static FindVouchersResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FindVouchersResponse>(create);
+  static FindVouchersResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $pb.PbList<Voucher> get vouchers => $_getList(0);
+}
+
 class VoucherServiceApi {
   final $pb.RpcClient _client;
 
@@ -591,6 +700,10 @@ class VoucherServiceApi {
           $pb.ClientContext? ctx, RedeemVoucherRequest request) =>
       _client.invoke<RedeemVoucherResponse>(ctx, 'VoucherService',
           'RedeemVoucher', request, RedeemVoucherResponse());
+  $async.Future<FindVouchersResponse> findVouchers(
+          $pb.ClientContext? ctx, FindVouchersRequest request) =>
+      _client.invoke<FindVouchersResponse>(ctx, 'VoucherService',
+          'FindVouchers', request, FindVouchersResponse());
 }
 
 const $core.bool _omitFieldNames =

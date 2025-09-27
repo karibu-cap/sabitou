@@ -38,6 +38,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inventory.v1.CreateStockInboundResponse'
+  /inventory.v1.StockInboundService/FindStockInbounds:
+    post:
+      tags:
+        - inventory.v1.StockInboundService
+      summary: Finds the stock in bounds.
+      description: Finds the stock in bounds.
+      operationId: inventory.v1.StockInboundService.FindStockInbounds
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inventory.v1.FindStockInboundRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inventory.v1.FindStockInboundResponse'
   /inventory.v1.StockInboundService/UpdateStockInbound:
     post:
       tags:
@@ -259,6 +295,24 @@ components:
           description: Whether the stock inbound was successfully created.
       title: CreateStockInboundResponse
       additionalProperties: false
+    inventory.v1.FindStockInboundRequest:
+      type: object
+      properties:
+        storeId:
+          type: string
+          title: store_id
+      title: FindStockInboundRequest
+      additionalProperties: false
+    inventory.v1.FindStockInboundResponse:
+      type: object
+      properties:
+        stockInbounds:
+          type: array
+          items:
+            $ref: '#/components/schemas/inventory.v1.StockInbound'
+          title: stock_inbounds
+      title: FindStockInboundResponse
+      additionalProperties: false
     inventory.v1.InboundType:
       type: string
       title: InboundType
@@ -334,6 +388,10 @@ components:
           type: string
           title: performed_by
           description: User who performed the transaction
+        storeId:
+          type: string
+          title: store_id
+          description: The store id
       title: StockInbound
       additionalProperties: false
       description: Tracks all stock additions to inventory

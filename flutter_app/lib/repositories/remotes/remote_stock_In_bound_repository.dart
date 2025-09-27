@@ -43,4 +43,21 @@ class RemoteStockInboundRepository {
       return false;
     }
   }
+
+  /// Finds the stock in bounds via RPC.
+  Future<List<StockInbound>> findStockInbounds(
+    FindStockInboundRequest request,
+  ) async {
+    try {
+      final response = await stockInboundServiceClient.findStockInbounds(
+        request,
+      );
+
+      return response.stockInbounds;
+    } on Exception catch (e) {
+      _logger.severe('findStockInbounds Error: $e');
+
+      return [];
+    }
+  }
 }

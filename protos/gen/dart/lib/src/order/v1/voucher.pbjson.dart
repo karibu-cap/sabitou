@@ -211,6 +211,39 @@ final $typed_data.Uint8List redeemVoucherResponseDescriptor = $convert.base64Dec
     'ChVSZWRlZW1Wb3VjaGVyUmVzcG9uc2USGAoHc3VjY2VzcxgBIAEoCFIHc3VjY2VzcxIZCgVlcn'
     'JvchgCIAEoCUgAUgVlcnJvcogBAUIICgZfZXJyb3I=');
 
+@$core.Deprecated('Use findVouchersRequestDescriptor instead')
+const FindVouchersRequest$json = {
+  '1': 'FindVouchersRequest',
+  '2': [
+    {'1': 'store_id', '3': 1, '4': 1, '5': 9, '10': 'storeId'},
+  ],
+};
+
+/// Descriptor for `FindVouchersRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List findVouchersRequestDescriptor =
+    $convert.base64Decode(
+        'ChNGaW5kVm91Y2hlcnNSZXF1ZXN0EhkKCHN0b3JlX2lkGAEgASgJUgdzdG9yZUlk');
+
+@$core.Deprecated('Use findVouchersResponseDescriptor instead')
+const FindVouchersResponse$json = {
+  '1': 'FindVouchersResponse',
+  '2': [
+    {
+      '1': 'vouchers',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.order.v1.Voucher',
+      '10': 'vouchers'
+    },
+  ],
+};
+
+/// Descriptor for `FindVouchersResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List findVouchersResponseDescriptor = $convert.base64Decode(
+    'ChRGaW5kVm91Y2hlcnNSZXNwb25zZRItCgh2b3VjaGVycxgBIAMoCzIRLm9yZGVyLnYxLlZvdW'
+    'NoZXJSCHZvdWNoZXJz');
+
 const $core.Map<$core.String, $core.dynamic> VoucherServiceBase$json = {
   '1': 'VoucherService',
   '2': [
@@ -229,6 +262,11 @@ const $core.Map<$core.String, $core.dynamic> VoucherServiceBase$json = {
       '2': '.order.v1.RedeemVoucherRequest',
       '3': '.order.v1.RedeemVoucherResponse'
     },
+    {
+      '1': 'FindVouchers',
+      '2': '.order.v1.FindVouchersRequest',
+      '3': '.order.v1.FindVouchersResponse'
+    },
   ],
 };
 
@@ -243,6 +281,8 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
   '.order.v1.GetVoucherResponse': GetVoucherResponse$json,
   '.order.v1.RedeemVoucherRequest': RedeemVoucherRequest$json,
   '.order.v1.RedeemVoucherResponse': RedeemVoucherResponse$json,
+  '.order.v1.FindVouchersRequest': FindVouchersRequest$json,
+  '.order.v1.FindVouchersResponse': FindVouchersResponse$json,
 };
 
 /// Descriptor for `VoucherService`. Decode as a `google.protobuf.ServiceDescriptorProto`.
@@ -251,4 +291,5 @@ final $typed_data.Uint8List voucherServiceDescriptor = $convert.base64Decode(
     'hlclJlcXVlc3QaHy5vcmRlci52MS5DcmVhdGVWb3VjaGVyUmVzcG9uc2USRwoKR2V0Vm91Y2hl'
     'chIbLm9yZGVyLnYxLkdldFZvdWNoZXJSZXF1ZXN0Ghwub3JkZXIudjEuR2V0Vm91Y2hlclJlc3'
     'BvbnNlElAKDVJlZGVlbVZvdWNoZXISHi5vcmRlci52MS5SZWRlZW1Wb3VjaGVyUmVxdWVzdBof'
-    'Lm9yZGVyLnYxLlJlZGVlbVZvdWNoZXJSZXNwb25zZQ==');
+    'Lm9yZGVyLnYxLlJlZGVlbVZvdWNoZXJSZXNwb25zZRJNCgxGaW5kVm91Y2hlcnMSHS5vcmRlci'
+    '52MS5GaW5kVm91Y2hlcnNSZXF1ZXN0Gh4ub3JkZXIudjEuRmluZFZvdWNoZXJzUmVzcG9uc2U=');

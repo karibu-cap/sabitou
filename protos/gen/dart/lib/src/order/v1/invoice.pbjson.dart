@@ -175,6 +175,7 @@ const Invoice$json = {
       '6': '.google.protobuf.Timestamp',
       '10': 'deliveryDate'
     },
+    {'1': 'store_id', '3': 16, '4': 1, '5': 9, '10': 'storeId'},
   ],
   '8': [
     {'1': '_order_id'},
@@ -195,8 +196,8 @@ final $typed_data.Uint8List invoiceDescriptor = $convert.base64Decode(
     'bGFuY2VfZHVlGAwgASgBUgpiYWxhbmNlRHVlEiwKCnZvdWNoZXJfaWQYDSABKAlCCLpIBXIDsA'
     'EBSAFSCXZvdWNoZXJJZIgBARI5CgpjcmVhdGVkX2F0GA4gASgLMhouZ29vZ2xlLnByb3RvYnVm'
     'LlRpbWVzdGFtcFIJY3JlYXRlZEF0Ej8KDWRlbGl2ZXJ5X2RhdGUYDyABKAsyGi5nb29nbGUucH'
-    'JvdG9idWYuVGltZXN0YW1wUgxkZWxpdmVyeURhdGVCCwoJX29yZGVyX2lkQg0KC192b3VjaGVy'
-    'X2lk');
+    'JvdG9idWYuVGltZXN0YW1wUgxkZWxpdmVyeURhdGUSGQoIc3RvcmVfaWQYECABKAlSB3N0b3Jl'
+    'SWRCCwoJX29yZGVyX2lkQg0KC192b3VjaGVyX2lk');
 
 @$core.Deprecated('Use createInvoiceRequestDescriptor instead')
 const CreateInvoiceRequest$json = {
@@ -265,6 +266,39 @@ final $typed_data.Uint8List updateInvoiceResponseDescriptor =
     $convert.base64Decode(
         'ChVVcGRhdGVJbnZvaWNlUmVzcG9uc2USGAoHc3VjY2VzcxgBIAEoCFIHc3VjY2Vzcw==');
 
+@$core.Deprecated('Use findInvoiceRequestDescriptor instead')
+const FindInvoiceRequest$json = {
+  '1': 'FindInvoiceRequest',
+  '2': [
+    {'1': 'store_id', '3': 1, '4': 1, '5': 9, '10': 'storeId'},
+  ],
+};
+
+/// Descriptor for `FindInvoiceRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List findInvoiceRequestDescriptor =
+    $convert.base64Decode(
+        'ChJGaW5kSW52b2ljZVJlcXVlc3QSGQoIc3RvcmVfaWQYASABKAlSB3N0b3JlSWQ=');
+
+@$core.Deprecated('Use findInvoiceResponseDescriptor instead')
+const FindInvoiceResponse$json = {
+  '1': 'FindInvoiceResponse',
+  '2': [
+    {
+      '1': 'invoices',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.order.v1.Invoice',
+      '10': 'invoices'
+    },
+  ],
+};
+
+/// Descriptor for `FindInvoiceResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List findInvoiceResponseDescriptor = $convert.base64Decode(
+    'ChNGaW5kSW52b2ljZVJlc3BvbnNlEi0KCGludm9pY2VzGAEgAygLMhEub3JkZXIudjEuSW52b2'
+    'ljZVIIaW52b2ljZXM=');
+
 const $core.Map<$core.String, $core.dynamic> InvoiceServiceBase$json = {
   '1': 'InvoiceService',
   '2': [
@@ -277,6 +311,11 @@ const $core.Map<$core.String, $core.dynamic> InvoiceServiceBase$json = {
       '1': 'UpdateInvoice',
       '2': '.order.v1.UpdateInvoiceRequest',
       '3': '.order.v1.UpdateInvoiceResponse'
+    },
+    {
+      '1': 'FindInvoices',
+      '2': '.order.v1.FindInvoiceRequest',
+      '3': '.order.v1.FindInvoiceResponse'
     },
   ],
 };
@@ -292,6 +331,8 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
   '.order.v1.CreateInvoiceResponse': CreateInvoiceResponse$json,
   '.order.v1.UpdateInvoiceRequest': UpdateInvoiceRequest$json,
   '.order.v1.UpdateInvoiceResponse': UpdateInvoiceResponse$json,
+  '.order.v1.FindInvoiceRequest': FindInvoiceRequest$json,
+  '.order.v1.FindInvoiceResponse': FindInvoiceResponse$json,
 };
 
 /// Descriptor for `InvoiceService`. Decode as a `google.protobuf.ServiceDescriptorProto`.
@@ -299,4 +340,5 @@ final $typed_data.Uint8List invoiceServiceDescriptor = $convert.base64Decode(
     'Cg5JbnZvaWNlU2VydmljZRJQCg1DcmVhdGVJbnZvaWNlEh4ub3JkZXIudjEuQ3JlYXRlSW52b2'
     'ljZVJlcXVlc3QaHy5vcmRlci52MS5DcmVhdGVJbnZvaWNlUmVzcG9uc2USUAoNVXBkYXRlSW52'
     'b2ljZRIeLm9yZGVyLnYxLlVwZGF0ZUludm9pY2VSZXF1ZXN0Gh8ub3JkZXIudjEuVXBkYXRlSW'
-    '52b2ljZVJlc3BvbnNl');
+    '52b2ljZVJlc3BvbnNlEksKDEZpbmRJbnZvaWNlcxIcLm9yZGVyLnYxLkZpbmRJbnZvaWNlUmVx'
+    'dWVzdBodLm9yZGVyLnYxLkZpbmRJbnZvaWNlUmVzcG9uc2U=');

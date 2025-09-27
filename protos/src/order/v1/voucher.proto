@@ -67,10 +67,20 @@ message RedeemVoucherResponse {
   optional string error = 2;
 }
 
+message FindVouchersRequest {
+  // The store id.
+  string store_id = 1;
+}
+
+message FindVouchersResponse {
+  repeated Voucher vouchers = 1;
+}
+
 // Similar for Get, Redeem, etc.
 
 service VoucherService {
   rpc CreateVoucher(CreateVoucherRequest) returns (CreateVoucherResponse);
   rpc GetVoucher(GetVoucherRequest) returns (GetVoucherResponse);
   rpc RedeemVoucher(RedeemVoucherRequest) returns (RedeemVoucherResponse);
+  rpc FindVouchers(FindVouchersRequest) returns (FindVouchersResponse);
 }

@@ -42,6 +42,9 @@ const (
 	// VoucherServiceRedeemVoucherProcedure is the fully-qualified name of the VoucherService's
 	// RedeemVoucher RPC.
 	VoucherServiceRedeemVoucherProcedure = "/order.v1.VoucherService/RedeemVoucher"
+	// VoucherServiceFindVouchersProcedure is the fully-qualified name of the VoucherService's
+	// FindVouchers RPC.
+	VoucherServiceFindVouchersProcedure = "/order.v1.VoucherService/FindVouchers"
 )
 
 // VoucherServiceClient is a client for the order.v1.VoucherService service.
@@ -49,6 +52,7 @@ type VoucherServiceClient interface {
 	CreateVoucher(context.Context, *connect.Request[v1.CreateVoucherRequest]) (*connect.Response[v1.CreateVoucherResponse], error)
 	GetVoucher(context.Context, *connect.Request[v1.GetVoucherRequest]) (*connect.Response[v1.GetVoucherResponse], error)
 	RedeemVoucher(context.Context, *connect.Request[v1.RedeemVoucherRequest]) (*connect.Response[v1.RedeemVoucherResponse], error)
+	FindVouchers(context.Context, *connect.Request[v1.FindVouchersRequest]) (*connect.Response[v1.FindVouchersResponse], error)
 }
 
 // NewVoucherServiceClient constructs a client for the order.v1.VoucherService service. By default,
@@ -80,6 +84,12 @@ func NewVoucherServiceClient(httpClient connect.HTTPClient, baseURL string, opts
 			connect.WithSchema(voucherServiceMethods.ByName("RedeemVoucher")),
 			connect.WithClientOptions(opts...),
 		),
+		findVouchers: connect.NewClient[v1.FindVouchersRequest, v1.FindVouchersResponse](
+			httpClient,
+			baseURL+VoucherServiceFindVouchersProcedure,
+			connect.WithSchema(voucherServiceMethods.ByName("FindVouchers")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -88,6 +98,7 @@ type voucherServiceClient struct {
 	createVoucher *connect.Client[v1.CreateVoucherRequest, v1.CreateVoucherResponse]
 	getVoucher    *connect.Client[v1.GetVoucherRequest, v1.GetVoucherResponse]
 	redeemVoucher *connect.Client[v1.RedeemVoucherRequest, v1.RedeemVoucherResponse]
+	findVouchers  *connect.Client[v1.FindVouchersRequest, v1.FindVouchersResponse]
 }
 
 // CreateVoucher calls order.v1.VoucherService.CreateVoucher.
@@ -105,11 +116,17 @@ func (c *voucherServiceClient) RedeemVoucher(ctx context.Context, req *connect.R
 	return c.redeemVoucher.CallUnary(ctx, req)
 }
 
+// FindVouchers calls order.v1.VoucherService.FindVouchers.
+func (c *voucherServiceClient) FindVouchers(ctx context.Context, req *connect.Request[v1.FindVouchersRequest]) (*connect.Response[v1.FindVouchersResponse], error) {
+	return c.findVouchers.CallUnary(ctx, req)
+}
+
 // VoucherServiceHandler is an implementation of the order.v1.VoucherService service.
 type VoucherServiceHandler interface {
 	CreateVoucher(context.Context, *connect.Request[v1.CreateVoucherRequest]) (*connect.Response[v1.CreateVoucherResponse], error)
 	GetVoucher(context.Context, *connect.Request[v1.GetVoucherRequest]) (*connect.Response[v1.GetVoucherResponse], error)
 	RedeemVoucher(context.Context, *connect.Request[v1.RedeemVoucherRequest]) (*connect.Response[v1.RedeemVoucherResponse], error)
+	FindVouchers(context.Context, *connect.Request[v1.FindVouchersRequest]) (*connect.Response[v1.FindVouchersResponse], error)
 }
 
 // NewVoucherServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -137,6 +154,12 @@ func NewVoucherServiceHandler(svc VoucherServiceHandler, opts ...connect.Handler
 		connect.WithSchema(voucherServiceMethods.ByName("RedeemVoucher")),
 		connect.WithHandlerOptions(opts...),
 	)
+	voucherServiceFindVouchersHandler := connect.NewUnaryHandler(
+		VoucherServiceFindVouchersProcedure,
+		svc.FindVouchers,
+		connect.WithSchema(voucherServiceMethods.ByName("FindVouchers")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/order.v1.VoucherService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case VoucherServiceCreateVoucherProcedure:
@@ -145,6 +168,8 @@ func NewVoucherServiceHandler(svc VoucherServiceHandler, opts ...connect.Handler
 			voucherServiceGetVoucherHandler.ServeHTTP(w, r)
 		case VoucherServiceRedeemVoucherProcedure:
 			voucherServiceRedeemVoucherHandler.ServeHTTP(w, r)
+		case VoucherServiceFindVouchersProcedure:
+			voucherServiceFindVouchersHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -164,4 +189,8 @@ func (UnimplementedVoucherServiceHandler) GetVoucher(context.Context, *connect.R
 
 func (UnimplementedVoucherServiceHandler) RedeemVoucher(context.Context, *connect.Request[v1.RedeemVoucherRequest]) (*connect.Response[v1.RedeemVoucherResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("order.v1.VoucherService.RedeemVoucher is not implemented"))
+}
+
+func (UnimplementedVoucherServiceHandler) FindVouchers(context.Context, *connect.Request[v1.FindVouchersRequest]) (*connect.Response[v1.FindVouchersResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("order.v1.VoucherService.FindVouchers is not implemented"))
 }

@@ -39,4 +39,17 @@ class RemoteInvoiceRepository {
       return false;
     }
   }
+
+  /// Finds the invoices via RPC.
+  Future<List<Invoice>> findInvoices(FindInvoiceRequest request) async {
+    try {
+      final response = await invoiceServiceClient.findInvoices(request);
+
+      return response.invoices;
+    } on Exception catch (e) {
+      _logger.severe('findInvoices Error: $e');
+
+      return [];
+    }
+  }
 }

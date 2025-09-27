@@ -107,7 +107,9 @@ type StockInbound struct {
 	// When this supply was received/processed
 	CreatedAt *timestamppb.Timestamp `protobuf:"bytes,13,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	// User who performed the transaction
-	PerformedBy   string `protobuf:"bytes,14,opt,name=performed_by,json=performedBy,proto3" json:"performed_by,omitempty"`
+	PerformedBy string `protobuf:"bytes,14,opt,name=performed_by,json=performedBy,proto3" json:"performed_by,omitempty"`
+	// The store id
+	StoreId       string `protobuf:"bytes,15,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -236,6 +238,13 @@ func (x *StockInbound) GetCreatedAt() *timestamppb.Timestamp {
 func (x *StockInbound) GetPerformedBy() string {
 	if x != nil {
 		return x.PerformedBy
+	}
+	return ""
+}
+
+func (x *StockInbound) GetStoreId() string {
+	if x != nil {
+		return x.StoreId
 	}
 	return ""
 }
@@ -445,11 +454,99 @@ func (x *UpdateStockInboundResponse) GetSuccess() bool {
 	return false
 }
 
+type FindStockInboundRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	StoreId       string                 `protobuf:"bytes,1,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FindStockInboundRequest) Reset() {
+	*x = FindStockInboundRequest{}
+	mi := &file_inventory_v1_stock_in_bound_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FindStockInboundRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FindStockInboundRequest) ProtoMessage() {}
+
+func (x *FindStockInboundRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_inventory_v1_stock_in_bound_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FindStockInboundRequest.ProtoReflect.Descriptor instead.
+func (*FindStockInboundRequest) Descriptor() ([]byte, []int) {
+	return file_inventory_v1_stock_in_bound_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *FindStockInboundRequest) GetStoreId() string {
+	if x != nil {
+		return x.StoreId
+	}
+	return ""
+}
+
+type FindStockInboundResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	StockInbounds []*StockInbound        `protobuf:"bytes,1,rep,name=stock_inbounds,json=stockInbounds,proto3" json:"stock_inbounds,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FindStockInboundResponse) Reset() {
+	*x = FindStockInboundResponse{}
+	mi := &file_inventory_v1_stock_in_bound_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FindStockInboundResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FindStockInboundResponse) ProtoMessage() {}
+
+func (x *FindStockInboundResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_inventory_v1_stock_in_bound_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FindStockInboundResponse.ProtoReflect.Descriptor instead.
+func (*FindStockInboundResponse) Descriptor() ([]byte, []int) {
+	return file_inventory_v1_stock_in_bound_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *FindStockInboundResponse) GetStockInbounds() []*StockInbound {
+	if x != nil {
+		return x.StockInbounds
+	}
+	return nil
+}
+
 var File_inventory_v1_stock_in_bound_proto protoreflect.FileDescriptor
 
 const file_inventory_v1_stock_in_bound_proto_rawDesc = "" +
 	"\n" +
-	"!inventory/v1/stock_in_bound.proto\x12\finventory.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\xb5\x05\n" +
+	"!inventory/v1/stock_in_bound.proto\x12\finventory.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\xd0\x05\n" +
 	"\fStockInbound\x12\x15\n" +
 	"\x06ref_id\x18\x01 \x01(\tR\x05refId\x12*\n" +
 	"\x11global_product_id\x18\x02 \x01(\tR\x0fglobalProductId\x12<\n" +
@@ -467,7 +564,8 @@ const file_inventory_v1_stock_in_bound_proto_rawDesc = "" +
 	"\x11batch_expiry_date\x18\f \x01(\v2\x1a.google.protobuf.TimestampH\x04R\x0fbatchExpiryDate\x88\x01\x01\x129\n" +
 	"\n" +
 	"created_at\x18\r \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12!\n" +
-	"\fperformed_by\x18\x0e \x01(\tR\vperformedByB\x0e\n" +
+	"\fperformed_by\x18\x0e \x01(\tR\vperformedBy\x12\x19\n" +
+	"\bstore_id\x18\x0f \x01(\tR\astoreIdB\x0e\n" +
 	"\f_supplier_idB\x13\n" +
 	"\x11_reference_numberB\x0f\n" +
 	"\r_batch_numberB\t\n" +
@@ -486,15 +584,20 @@ const file_inventory_v1_stock_in_bound_proto_rawDesc = "" +
 	"\a_reasonB\x0f\n" +
 	"\r_performed_by\"6\n" +
 	"\x1aUpdateStockInboundResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess*\x85\x01\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"4\n" +
+	"\x17FindStockInboundRequest\x12\x19\n" +
+	"\bstore_id\x18\x01 \x01(\tR\astoreId\"]\n" +
+	"\x18FindStockInboundResponse\x12A\n" +
+	"\x0estock_inbounds\x18\x01 \x03(\v2\x1a.inventory.v1.StockInboundR\rstockInbounds*\x85\x01\n" +
 	"\vInboundType\x12\x1c\n" +
 	"\x18INBOUND_TYPE_UNSPECIFIED\x10\x00\x12\x19\n" +
 	"\x15INBOUND_TYPE_STOCK_IN\x10\x01\x12 \n" +
 	"\x1cINBOUND_TYPE_CUSTOMER_RETURN\x10\x02\x12\x1b\n" +
-	"\x17INBOUND_TYPE_ADJUSTMENT\x10\x032\xe7\x01\n" +
+	"\x17INBOUND_TYPE_ADJUSTMENT\x10\x032\xcb\x02\n" +
 	"\x13StockInboundService\x12g\n" +
 	"\x12CreateStockInbound\x12'.inventory.v1.CreateStockInboundRequest\x1a(.inventory.v1.CreateStockInboundResponse\x12g\n" +
-	"\x12UpdateStockInbound\x12'.inventory.v1.UpdateStockInboundRequest\x1a(.inventory.v1.UpdateStockInboundResponseB\xc0\x01\n" +
+	"\x12UpdateStockInbound\x12'.inventory.v1.UpdateStockInboundRequest\x1a(.inventory.v1.UpdateStockInboundResponse\x12b\n" +
+	"\x11FindStockInbounds\x12%.inventory.v1.FindStockInboundRequest\x1a&.inventory.v1.FindStockInboundResponseB\xc0\x01\n" +
 	"\x10com.inventory.v1B\x11StockInBoundProtoP\x01ZHgithub.com/karibu-cap/sabitou/protos/gen/go/rpc/inventory/v1;inventoryv1\xa2\x02\x03IXX\xaa\x02\fInventory.V1\xca\x02\fInventory\\V1\xe2\x02\x18Inventory\\V1\\GPBMetadata\xea\x02\rInventory::V1b\x06proto3"
 
 var (
@@ -510,7 +613,7 @@ func file_inventory_v1_stock_in_bound_proto_rawDescGZIP() []byte {
 }
 
 var file_inventory_v1_stock_in_bound_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_inventory_v1_stock_in_bound_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_inventory_v1_stock_in_bound_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_inventory_v1_stock_in_bound_proto_goTypes = []any{
 	(InboundType)(0),                   // 0: inventory.v1.InboundType
 	(*StockInbound)(nil),               // 1: inventory.v1.StockInbound
@@ -518,22 +621,27 @@ var file_inventory_v1_stock_in_bound_proto_goTypes = []any{
 	(*CreateStockInboundResponse)(nil), // 3: inventory.v1.CreateStockInboundResponse
 	(*UpdateStockInboundRequest)(nil),  // 4: inventory.v1.UpdateStockInboundRequest
 	(*UpdateStockInboundResponse)(nil), // 5: inventory.v1.UpdateStockInboundResponse
-	(*timestamppb.Timestamp)(nil),      // 6: google.protobuf.Timestamp
+	(*FindStockInboundRequest)(nil),    // 6: inventory.v1.FindStockInboundRequest
+	(*FindStockInboundResponse)(nil),   // 7: inventory.v1.FindStockInboundResponse
+	(*timestamppb.Timestamp)(nil),      // 8: google.protobuf.Timestamp
 }
 var file_inventory_v1_stock_in_bound_proto_depIdxs = []int32{
 	0, // 0: inventory.v1.StockInbound.inbound_type:type_name -> inventory.v1.InboundType
-	6, // 1: inventory.v1.StockInbound.batch_expiry_date:type_name -> google.protobuf.Timestamp
-	6, // 2: inventory.v1.StockInbound.created_at:type_name -> google.protobuf.Timestamp
+	8, // 1: inventory.v1.StockInbound.batch_expiry_date:type_name -> google.protobuf.Timestamp
+	8, // 2: inventory.v1.StockInbound.created_at:type_name -> google.protobuf.Timestamp
 	1, // 3: inventory.v1.CreateStockInboundRequest.stock_inbound:type_name -> inventory.v1.StockInbound
-	2, // 4: inventory.v1.StockInboundService.CreateStockInbound:input_type -> inventory.v1.CreateStockInboundRequest
-	4, // 5: inventory.v1.StockInboundService.UpdateStockInbound:input_type -> inventory.v1.UpdateStockInboundRequest
-	3, // 6: inventory.v1.StockInboundService.CreateStockInbound:output_type -> inventory.v1.CreateStockInboundResponse
-	5, // 7: inventory.v1.StockInboundService.UpdateStockInbound:output_type -> inventory.v1.UpdateStockInboundResponse
-	6, // [6:8] is the sub-list for method output_type
-	4, // [4:6] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	1, // 4: inventory.v1.FindStockInboundResponse.stock_inbounds:type_name -> inventory.v1.StockInbound
+	2, // 5: inventory.v1.StockInboundService.CreateStockInbound:input_type -> inventory.v1.CreateStockInboundRequest
+	4, // 6: inventory.v1.StockInboundService.UpdateStockInbound:input_type -> inventory.v1.UpdateStockInboundRequest
+	6, // 7: inventory.v1.StockInboundService.FindStockInbounds:input_type -> inventory.v1.FindStockInboundRequest
+	3, // 8: inventory.v1.StockInboundService.CreateStockInbound:output_type -> inventory.v1.CreateStockInboundResponse
+	5, // 9: inventory.v1.StockInboundService.UpdateStockInbound:output_type -> inventory.v1.UpdateStockInboundResponse
+	7, // 10: inventory.v1.StockInboundService.FindStockInbounds:output_type -> inventory.v1.FindStockInboundResponse
+	8, // [8:11] is the sub-list for method output_type
+	5, // [5:8] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_inventory_v1_stock_in_bound_proto_init() }
@@ -549,7 +657,7 @@ func file_inventory_v1_stock_in_bound_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_inventory_v1_stock_in_bound_proto_rawDesc), len(file_inventory_v1_stock_in_bound_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   5,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

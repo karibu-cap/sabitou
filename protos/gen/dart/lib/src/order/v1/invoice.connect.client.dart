@@ -43,4 +43,22 @@ extension type InvoiceServiceClient (connect.Transport _transport) {
       onTrailer: onTrailer,
     );
   }
+
+  /// Finds the invoices.
+  Future<orderv1invoice.FindInvoiceResponse> findInvoices(
+    orderv1invoice.FindInvoiceRequest input, {
+    connect.Headers? headers,
+    connect.AbortSignal? signal,
+    Function(connect.Headers)? onHeader,
+    Function(connect.Headers)? onTrailer,
+  }) {
+    return connect.Client(_transport).unary(
+      specs.InvoiceService.findInvoices,
+      input,
+      signal: signal,
+      headers: headers,
+      onHeader: onHeader,
+      onTrailer: onTrailer,
+    );
+  }
 }

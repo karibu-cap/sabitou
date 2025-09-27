@@ -25,4 +25,12 @@ abstract final class InvoiceService {
     orderv1invoice.UpdateInvoiceRequest.new,
     orderv1invoice.UpdateInvoiceResponse.new,
   );
+
+  /// Finds the invoices.
+  static const findInvoices = connect.Spec(
+    '/$name/FindInvoices',
+    connect.StreamType.unary,
+    orderv1invoice.FindInvoiceRequest.new,
+    orderv1invoice.FindInvoiceResponse.new,
+  );
 }

@@ -106,6 +106,7 @@ const StockInbound$json = {
       '10': 'createdAt'
     },
     {'1': 'performed_by', '3': 14, '4': 1, '5': 9, '10': 'performedBy'},
+    {'1': 'store_id', '3': 15, '4': 1, '5': 9, '10': 'storeId'},
   ],
   '8': [
     {'1': '_supplier_id'},
@@ -128,9 +129,9 @@ final $typed_data.Uint8List stockInboundDescriptor = $convert.base64Decode(
     'gCUgtiYXRjaE51bWJlcogBARIbCgZyZWFzb24YCyABKAlIA1IGcmVhc29uiAEBEksKEWJhdGNo'
     'X2V4cGlyeV9kYXRlGAwgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEgEUg9iYXRjaE'
     'V4cGlyeURhdGWIAQESOQoKY3JlYXRlZF9hdBgNIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1l'
-    'c3RhbXBSCWNyZWF0ZWRBdBIhCgxwZXJmb3JtZWRfYnkYDiABKAlSC3BlcmZvcm1lZEJ5Qg4KDF'
-    '9zdXBwbGllcl9pZEITChFfcmVmZXJlbmNlX251bWJlckIPCg1fYmF0Y2hfbnVtYmVyQgkKB19y'
-    'ZWFzb25CFAoSX2JhdGNoX2V4cGlyeV9kYXRl');
+    'c3RhbXBSCWNyZWF0ZWRBdBIhCgxwZXJmb3JtZWRfYnkYDiABKAlSC3BlcmZvcm1lZEJ5EhkKCH'
+    'N0b3JlX2lkGA8gASgJUgdzdG9yZUlkQg4KDF9zdXBwbGllcl9pZEITChFfcmVmZXJlbmNlX251'
+    'bWJlckIPCg1fYmF0Y2hfbnVtYmVyQgkKB19yZWFzb25CFAoSX2JhdGNoX2V4cGlyeV9kYXRl');
 
 @$core.Deprecated('Use createStockInboundRequestDescriptor instead')
 const CreateStockInboundRequest$json = {
@@ -218,6 +219,40 @@ final $typed_data.Uint8List updateStockInboundResponseDescriptor =
     $convert.base64Decode(
         'ChpVcGRhdGVTdG9ja0luYm91bmRSZXNwb25zZRIYCgdzdWNjZXNzGAEgASgIUgdzdWNjZXNz');
 
+@$core.Deprecated('Use findStockInboundRequestDescriptor instead')
+const FindStockInboundRequest$json = {
+  '1': 'FindStockInboundRequest',
+  '2': [
+    {'1': 'store_id', '3': 1, '4': 1, '5': 9, '10': 'storeId'},
+  ],
+};
+
+/// Descriptor for `FindStockInboundRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List findStockInboundRequestDescriptor =
+    $convert.base64Decode(
+        'ChdGaW5kU3RvY2tJbmJvdW5kUmVxdWVzdBIZCghzdG9yZV9pZBgBIAEoCVIHc3RvcmVJZA==');
+
+@$core.Deprecated('Use findStockInboundResponseDescriptor instead')
+const FindStockInboundResponse$json = {
+  '1': 'FindStockInboundResponse',
+  '2': [
+    {
+      '1': 'stock_inbounds',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.inventory.v1.StockInbound',
+      '10': 'stockInbounds'
+    },
+  ],
+};
+
+/// Descriptor for `FindStockInboundResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List findStockInboundResponseDescriptor =
+    $convert.base64Decode(
+        'ChhGaW5kU3RvY2tJbmJvdW5kUmVzcG9uc2USQQoOc3RvY2tfaW5ib3VuZHMYASADKAsyGi5pbn'
+        'ZlbnRvcnkudjEuU3RvY2tJbmJvdW5kUg1zdG9ja0luYm91bmRz');
+
 const $core.Map<$core.String, $core.dynamic> StockInboundServiceBase$json = {
   '1': 'StockInboundService',
   '2': [
@@ -231,6 +266,11 @@ const $core.Map<$core.String, $core.dynamic> StockInboundServiceBase$json = {
       '2': '.inventory.v1.UpdateStockInboundRequest',
       '3': '.inventory.v1.UpdateStockInboundResponse'
     },
+    {
+      '1': 'FindStockInbounds',
+      '2': '.inventory.v1.FindStockInboundRequest',
+      '3': '.inventory.v1.FindStockInboundResponse'
+    },
   ],
 };
 
@@ -243,6 +283,8 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
   '.inventory.v1.CreateStockInboundResponse': CreateStockInboundResponse$json,
   '.inventory.v1.UpdateStockInboundRequest': UpdateStockInboundRequest$json,
   '.inventory.v1.UpdateStockInboundResponse': UpdateStockInboundResponse$json,
+  '.inventory.v1.FindStockInboundRequest': FindStockInboundRequest$json,
+  '.inventory.v1.FindStockInboundResponse': FindStockInboundResponse$json,
 };
 
 /// Descriptor for `StockInboundService`. Decode as a `google.protobuf.ServiceDescriptorProto`.
@@ -251,4 +293,5 @@ final $typed_data.Uint8List stockInboundServiceDescriptor = $convert.base64Decod
     '52MS5DcmVhdGVTdG9ja0luYm91bmRSZXF1ZXN0GiguaW52ZW50b3J5LnYxLkNyZWF0ZVN0b2Nr'
     'SW5ib3VuZFJlc3BvbnNlEmcKElVwZGF0ZVN0b2NrSW5ib3VuZBInLmludmVudG9yeS52MS5VcG'
     'RhdGVTdG9ja0luYm91bmRSZXF1ZXN0GiguaW52ZW50b3J5LnYxLlVwZGF0ZVN0b2NrSW5ib3Vu'
-    'ZFJlc3BvbnNl');
+    'ZFJlc3BvbnNlEmIKEUZpbmRTdG9ja0luYm91bmRzEiUuaW52ZW50b3J5LnYxLkZpbmRTdG9ja0'
+    'luYm91bmRSZXF1ZXN0GiYuaW52ZW50b3J5LnYxLkZpbmRTdG9ja0luYm91bmRSZXNwb25zZQ==');
