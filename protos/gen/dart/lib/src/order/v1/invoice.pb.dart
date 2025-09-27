@@ -141,6 +141,7 @@ class Invoice extends $pb.GeneratedMessage {
     $core.String? voucherId,
     $0.Timestamp? createdAt,
     $0.Timestamp? deliveryDate,
+    $core.String? storeId,
   }) {
     final result = create();
     if (refId != null) result.refId = refId;
@@ -159,6 +160,7 @@ class Invoice extends $pb.GeneratedMessage {
     if (voucherId != null) result.voucherId = voucherId;
     if (createdAt != null) result.createdAt = createdAt;
     if (deliveryDate != null) result.deliveryDate = deliveryDate;
+    if (storeId != null) result.storeId = storeId;
     return result;
   }
 
@@ -202,6 +204,7 @@ class Invoice extends $pb.GeneratedMessage {
         subBuilder: $0.Timestamp.create)
     ..aOM<$0.Timestamp>(15, _omitFieldNames ? '' : 'deliveryDate',
         subBuilder: $0.Timestamp.create)
+    ..aOS(16, _omitFieldNames ? '' : 'storeId')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -371,6 +374,16 @@ class Invoice extends $pb.GeneratedMessage {
   void clearDeliveryDate() => $_clearField(15);
   @$pb.TagNumber(15)
   $0.Timestamp ensureDeliveryDate() => $_ensure(14);
+
+  /// The store id
+  @$pb.TagNumber(16)
+  $core.String get storeId => $_getSZ(15);
+  @$pb.TagNumber(16)
+  set storeId($core.String value) => $_setString(15, value);
+  @$pb.TagNumber(16)
+  $core.bool hasStoreId() => $_has(15);
+  @$pb.TagNumber(16)
+  void clearStoreId() => $_clearField(16);
 }
 
 class CreateInvoiceRequest extends $pb.GeneratedMessage {
@@ -626,6 +639,115 @@ class UpdateInvoiceResponse extends $pb.GeneratedMessage {
   void clearSuccess() => $_clearField(1);
 }
 
+class FindInvoiceRequest extends $pb.GeneratedMessage {
+  factory FindInvoiceRequest({
+    $core.String? storeId,
+  }) {
+    final result = create();
+    if (storeId != null) result.storeId = storeId;
+    return result;
+  }
+
+  FindInvoiceRequest._();
+
+  factory FindInvoiceRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory FindInvoiceRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FindInvoiceRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'storeId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FindInvoiceRequest clone() => FindInvoiceRequest()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FindInvoiceRequest copyWith(void Function(FindInvoiceRequest) updates) =>
+      super.copyWith((message) => updates(message as FindInvoiceRequest))
+          as FindInvoiceRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static FindInvoiceRequest create() => FindInvoiceRequest._();
+  @$core.override
+  FindInvoiceRequest createEmptyInstance() => create();
+  static $pb.PbList<FindInvoiceRequest> createRepeated() =>
+      $pb.PbList<FindInvoiceRequest>();
+  @$core.pragma('dart2js:noInline')
+  static FindInvoiceRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FindInvoiceRequest>(create);
+  static FindInvoiceRequest? _defaultInstance;
+
+  /// The invoice to get.
+  @$pb.TagNumber(1)
+  $core.String get storeId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set storeId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasStoreId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearStoreId() => $_clearField(1);
+}
+
+class FindInvoiceResponse extends $pb.GeneratedMessage {
+  factory FindInvoiceResponse({
+    $core.Iterable<Invoice>? invoices,
+  }) {
+    final result = create();
+    if (invoices != null) result.invoices.addAll(invoices);
+    return result;
+  }
+
+  FindInvoiceResponse._();
+
+  factory FindInvoiceResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory FindInvoiceResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FindInvoiceResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'),
+      createEmptyInstance: create)
+    ..pc<Invoice>(1, _omitFieldNames ? '' : 'invoices', $pb.PbFieldType.PM,
+        subBuilder: Invoice.create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FindInvoiceResponse clone() => FindInvoiceResponse()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FindInvoiceResponse copyWith(void Function(FindInvoiceResponse) updates) =>
+      super.copyWith((message) => updates(message as FindInvoiceResponse))
+          as FindInvoiceResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static FindInvoiceResponse create() => FindInvoiceResponse._();
+  @$core.override
+  FindInvoiceResponse createEmptyInstance() => create();
+  static $pb.PbList<FindInvoiceResponse> createRepeated() =>
+      $pb.PbList<FindInvoiceResponse>();
+  @$core.pragma('dart2js:noInline')
+  static FindInvoiceResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FindInvoiceResponse>(create);
+  static FindInvoiceResponse? _defaultInstance;
+
+  /// The invoice of the order.
+  @$pb.TagNumber(1)
+  $pb.PbList<Invoice> get invoices => $_getList(0);
+}
+
 class InvoiceServiceApi {
   final $pb.RpcClient _client;
 
@@ -642,6 +764,12 @@ class InvoiceServiceApi {
           $pb.ClientContext? ctx, UpdateInvoiceRequest request) =>
       _client.invoke<UpdateInvoiceResponse>(ctx, 'InvoiceService',
           'UpdateInvoice', request, UpdateInvoiceResponse());
+
+  /// Finds the invoices.
+  $async.Future<FindInvoiceResponse> findInvoices(
+          $pb.ClientContext? ctx, FindInvoiceRequest request) =>
+      _client.invoke<FindInvoiceResponse>(ctx, 'InvoiceService', 'FindInvoices',
+          request, FindInvoiceResponse());
 }
 
 const $core.bool _omitFieldNames =

@@ -545,6 +545,34 @@ final _fakeTransport =
             .removeWhere((gp) => gp.refId == req.storeProductId);
 
         return DeleteStoreProductResponse()..success = true;
+      })
+      ..unary(VoucherService.createVoucher, (req, _) async {
+        (_fakeData[CollectionName.vouchers] as List<Voucher>)..add(req.voucher);
+
+        return CreateVoucherResponse()
+          ..refId = 'voucher-${Random().nextInt(1000000)}';
+      })
+      ..unary(VoucherService.findVouchers, (req, _) async {
+        return FindVouchersResponse(
+          vouchers: (_fakeData[CollectionName.vouchers] as List<Voucher>)
+              .where((c) => c.storeId == req.storeId)
+              .toList(),
+        );
+      })
+      ..unary(InvoiceService.findInvoices, (req, _) async {
+        return FindInvoiceResponse(
+          invoices: (_fakeData[CollectionName.invoices] as List<Invoice>)
+              .where((c) => c.storeId == req.storeId)
+              .toList(),
+        );
+      })
+      ..unary(StockInboundService.findStockInbounds, (req, _) async {
+        return FindStockInboundResponse(
+          stockInbounds:
+              (_fakeData[CollectionName.stockInBounds] as List<StockInbound>)
+                  .where((c) => c.storeId == req.storeId)
+                  .toList(),
+        );
       });
 
 final fakeTransport = _fakeTransport.build();

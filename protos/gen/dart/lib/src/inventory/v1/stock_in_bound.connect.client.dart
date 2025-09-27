@@ -43,4 +43,22 @@ extension type StockInboundServiceClient (connect.Transport _transport) {
       onTrailer: onTrailer,
     );
   }
+
+  /// Finds the stock in bounds.
+  Future<inventoryv1stock_in_bound.FindStockInboundResponse> findStockInbounds(
+    inventoryv1stock_in_bound.FindStockInboundRequest input, {
+    connect.Headers? headers,
+    connect.AbortSignal? signal,
+    Function(connect.Headers)? onHeader,
+    Function(connect.Headers)? onTrailer,
+  }) {
+    return connect.Client(_transport).unary(
+      specs.StockInboundService.findStockInbounds,
+      input,
+      signal: signal,
+      headers: headers,
+      onHeader: onHeader,
+      onTrailer: onTrailer,
+    );
+  }
 }

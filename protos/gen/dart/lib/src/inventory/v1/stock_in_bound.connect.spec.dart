@@ -25,4 +25,12 @@ abstract final class StockInboundService {
     inventoryv1stock_in_bound.UpdateStockInboundRequest.new,
     inventoryv1stock_in_bound.UpdateStockInboundResponse.new,
   );
+
+  /// Finds the stock in bounds.
+  static const findStockInbounds = connect.Spec(
+    '/$name/FindStockInbounds',
+    connect.StreamType.unary,
+    inventoryv1stock_in_bound.FindStockInboundRequest.new,
+    inventoryv1stock_in_bound.FindStockInboundResponse.new,
+  );
 }

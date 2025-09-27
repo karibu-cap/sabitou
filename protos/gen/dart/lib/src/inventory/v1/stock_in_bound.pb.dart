@@ -39,6 +39,7 @@ class StockInbound extends $pb.GeneratedMessage {
     $0.Timestamp? batchExpiryDate,
     $0.Timestamp? createdAt,
     $core.String? performedBy,
+    $core.String? storeId,
   }) {
     final result = create();
     if (refId != null) result.refId = refId;
@@ -55,6 +56,7 @@ class StockInbound extends $pb.GeneratedMessage {
     if (batchExpiryDate != null) result.batchExpiryDate = batchExpiryDate;
     if (createdAt != null) result.createdAt = createdAt;
     if (performedBy != null) result.performedBy = performedBy;
+    if (storeId != null) result.storeId = storeId;
     return result;
   }
 
@@ -93,6 +95,7 @@ class StockInbound extends $pb.GeneratedMessage {
     ..aOM<$0.Timestamp>(13, _omitFieldNames ? '' : 'createdAt',
         subBuilder: $0.Timestamp.create)
     ..aOS(14, _omitFieldNames ? '' : 'performedBy')
+    ..aOS(15, _omitFieldNames ? '' : 'storeId')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -258,6 +261,16 @@ class StockInbound extends $pb.GeneratedMessage {
   $core.bool hasPerformedBy() => $_has(13);
   @$pb.TagNumber(14)
   void clearPerformedBy() => $_clearField(14);
+
+  /// The store id
+  @$pb.TagNumber(15)
+  $core.String get storeId => $_getSZ(14);
+  @$pb.TagNumber(15)
+  set storeId($core.String value) => $_setString(14, value);
+  @$pb.TagNumber(15)
+  $core.bool hasStoreId() => $_has(14);
+  @$pb.TagNumber(15)
+  void clearStoreId() => $_clearField(15);
 }
 
 class CreateStockInboundRequest extends $pb.GeneratedMessage {
@@ -538,6 +551,118 @@ class UpdateStockInboundResponse extends $pb.GeneratedMessage {
   void clearSuccess() => $_clearField(1);
 }
 
+class FindStockInboundRequest extends $pb.GeneratedMessage {
+  factory FindStockInboundRequest({
+    $core.String? storeId,
+  }) {
+    final result = create();
+    if (storeId != null) result.storeId = storeId;
+    return result;
+  }
+
+  FindStockInboundRequest._();
+
+  factory FindStockInboundRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory FindStockInboundRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FindStockInboundRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'storeId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FindStockInboundRequest clone() =>
+      FindStockInboundRequest()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FindStockInboundRequest copyWith(
+          void Function(FindStockInboundRequest) updates) =>
+      super.copyWith((message) => updates(message as FindStockInboundRequest))
+          as FindStockInboundRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static FindStockInboundRequest create() => FindStockInboundRequest._();
+  @$core.override
+  FindStockInboundRequest createEmptyInstance() => create();
+  static $pb.PbList<FindStockInboundRequest> createRepeated() =>
+      $pb.PbList<FindStockInboundRequest>();
+  @$core.pragma('dart2js:noInline')
+  static FindStockInboundRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FindStockInboundRequest>(create);
+  static FindStockInboundRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get storeId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set storeId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasStoreId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearStoreId() => $_clearField(1);
+}
+
+class FindStockInboundResponse extends $pb.GeneratedMessage {
+  factory FindStockInboundResponse({
+    $core.Iterable<StockInbound>? stockInbounds,
+  }) {
+    final result = create();
+    if (stockInbounds != null) result.stockInbounds.addAll(stockInbounds);
+    return result;
+  }
+
+  FindStockInboundResponse._();
+
+  factory FindStockInboundResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory FindStockInboundResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FindStockInboundResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'),
+      createEmptyInstance: create)
+    ..pc<StockInbound>(
+        1, _omitFieldNames ? '' : 'stockInbounds', $pb.PbFieldType.PM,
+        subBuilder: StockInbound.create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FindStockInboundResponse clone() =>
+      FindStockInboundResponse()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FindStockInboundResponse copyWith(
+          void Function(FindStockInboundResponse) updates) =>
+      super.copyWith((message) => updates(message as FindStockInboundResponse))
+          as FindStockInboundResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static FindStockInboundResponse create() => FindStockInboundResponse._();
+  @$core.override
+  FindStockInboundResponse createEmptyInstance() => create();
+  static $pb.PbList<FindStockInboundResponse> createRepeated() =>
+      $pb.PbList<FindStockInboundResponse>();
+  @$core.pragma('dart2js:noInline')
+  static FindStockInboundResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FindStockInboundResponse>(create);
+  static FindStockInboundResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $pb.PbList<StockInbound> get stockInbounds => $_getList(0);
+}
+
 class StockInboundServiceApi {
   final $pb.RpcClient _client;
 
@@ -554,6 +679,12 @@ class StockInboundServiceApi {
           $pb.ClientContext? ctx, UpdateStockInboundRequest request) =>
       _client.invoke<UpdateStockInboundResponse>(ctx, 'StockInboundService',
           'UpdateStockInbound', request, UpdateStockInboundResponse());
+
+  /// Finds the stock in bounds.
+  $async.Future<FindStockInboundResponse> findStockInbounds(
+          $pb.ClientContext? ctx, FindStockInboundRequest request) =>
+      _client.invoke<FindStockInboundResponse>(ctx, 'StockInboundService',
+          'FindStockInbounds', request, FindStockInboundResponse());
 }
 
 const $core.bool _omitFieldNames =

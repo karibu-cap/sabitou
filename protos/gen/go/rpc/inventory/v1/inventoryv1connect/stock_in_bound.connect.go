@@ -39,6 +39,9 @@ const (
 	// StockInboundServiceUpdateStockInboundProcedure is the fully-qualified name of the
 	// StockInboundService's UpdateStockInbound RPC.
 	StockInboundServiceUpdateStockInboundProcedure = "/inventory.v1.StockInboundService/UpdateStockInbound"
+	// StockInboundServiceFindStockInboundsProcedure is the fully-qualified name of the
+	// StockInboundService's FindStockInbounds RPC.
+	StockInboundServiceFindStockInboundsProcedure = "/inventory.v1.StockInboundService/FindStockInbounds"
 )
 
 // StockInboundServiceClient is a client for the inventory.v1.StockInboundService service.
@@ -47,6 +50,8 @@ type StockInboundServiceClient interface {
 	CreateStockInbound(context.Context, *connect.Request[v1.CreateStockInboundRequest]) (*connect.Response[v1.CreateStockInboundResponse], error)
 	// Updates the stock in bound.
 	UpdateStockInbound(context.Context, *connect.Request[v1.UpdateStockInboundRequest]) (*connect.Response[v1.UpdateStockInboundResponse], error)
+	// Finds the stock in bounds.
+	FindStockInbounds(context.Context, *connect.Request[v1.FindStockInboundRequest]) (*connect.Response[v1.FindStockInboundResponse], error)
 }
 
 // NewStockInboundServiceClient constructs a client for the inventory.v1.StockInboundService
@@ -72,6 +77,12 @@ func NewStockInboundServiceClient(httpClient connect.HTTPClient, baseURL string,
 			connect.WithSchema(stockInboundServiceMethods.ByName("UpdateStockInbound")),
 			connect.WithClientOptions(opts...),
 		),
+		findStockInbounds: connect.NewClient[v1.FindStockInboundRequest, v1.FindStockInboundResponse](
+			httpClient,
+			baseURL+StockInboundServiceFindStockInboundsProcedure,
+			connect.WithSchema(stockInboundServiceMethods.ByName("FindStockInbounds")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -79,6 +90,7 @@ func NewStockInboundServiceClient(httpClient connect.HTTPClient, baseURL string,
 type stockInboundServiceClient struct {
 	createStockInbound *connect.Client[v1.CreateStockInboundRequest, v1.CreateStockInboundResponse]
 	updateStockInbound *connect.Client[v1.UpdateStockInboundRequest, v1.UpdateStockInboundResponse]
+	findStockInbounds  *connect.Client[v1.FindStockInboundRequest, v1.FindStockInboundResponse]
 }
 
 // CreateStockInbound calls inventory.v1.StockInboundService.CreateStockInbound.
@@ -91,12 +103,19 @@ func (c *stockInboundServiceClient) UpdateStockInbound(ctx context.Context, req 
 	return c.updateStockInbound.CallUnary(ctx, req)
 }
 
+// FindStockInbounds calls inventory.v1.StockInboundService.FindStockInbounds.
+func (c *stockInboundServiceClient) FindStockInbounds(ctx context.Context, req *connect.Request[v1.FindStockInboundRequest]) (*connect.Response[v1.FindStockInboundResponse], error) {
+	return c.findStockInbounds.CallUnary(ctx, req)
+}
+
 // StockInboundServiceHandler is an implementation of the inventory.v1.StockInboundService service.
 type StockInboundServiceHandler interface {
 	// Creates a stock in bound.
 	CreateStockInbound(context.Context, *connect.Request[v1.CreateStockInboundRequest]) (*connect.Response[v1.CreateStockInboundResponse], error)
 	// Updates the stock in bound.
 	UpdateStockInbound(context.Context, *connect.Request[v1.UpdateStockInboundRequest]) (*connect.Response[v1.UpdateStockInboundResponse], error)
+	// Finds the stock in bounds.
+	FindStockInbounds(context.Context, *connect.Request[v1.FindStockInboundRequest]) (*connect.Response[v1.FindStockInboundResponse], error)
 }
 
 // NewStockInboundServiceHandler builds an HTTP handler from the service implementation. It returns
@@ -118,12 +137,20 @@ func NewStockInboundServiceHandler(svc StockInboundServiceHandler, opts ...conne
 		connect.WithSchema(stockInboundServiceMethods.ByName("UpdateStockInbound")),
 		connect.WithHandlerOptions(opts...),
 	)
+	stockInboundServiceFindStockInboundsHandler := connect.NewUnaryHandler(
+		StockInboundServiceFindStockInboundsProcedure,
+		svc.FindStockInbounds,
+		connect.WithSchema(stockInboundServiceMethods.ByName("FindStockInbounds")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/inventory.v1.StockInboundService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case StockInboundServiceCreateStockInboundProcedure:
 			stockInboundServiceCreateStockInboundHandler.ServeHTTP(w, r)
 		case StockInboundServiceUpdateStockInboundProcedure:
 			stockInboundServiceUpdateStockInboundHandler.ServeHTTP(w, r)
+		case StockInboundServiceFindStockInboundsProcedure:
+			stockInboundServiceFindStockInboundsHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -139,4 +166,8 @@ func (UnimplementedStockInboundServiceHandler) CreateStockInbound(context.Contex
 
 func (UnimplementedStockInboundServiceHandler) UpdateStockInbound(context.Context, *connect.Request[v1.UpdateStockInboundRequest]) (*connect.Response[v1.UpdateStockInboundResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("inventory.v1.StockInboundService.UpdateStockInbound is not implemented"))
+}
+
+func (UnimplementedStockInboundServiceHandler) FindStockInbounds(context.Context, *connect.Request[v1.FindStockInboundRequest]) (*connect.Response[v1.FindStockInboundResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("inventory.v1.StockInboundService.FindStockInbounds is not implemented"))
 }

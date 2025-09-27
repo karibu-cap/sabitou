@@ -93,6 +93,9 @@ message Invoice {
 
   // The delivery date of the invoice.
   google.protobuf.Timestamp delivery_date = 15;
+
+  // The store id
+  string store_id = 16;
 }
 
 message CreateInvoiceRequest {
@@ -118,10 +121,24 @@ message UpdateInvoiceResponse {
   bool success = 1;
 }
 
+message FindInvoiceRequest {
+  // The invoice to get.
+  string store_id = 1;
+}
+
+message FindInvoiceResponse {
+  // The invoice of the order.
+  repeated Invoice invoices = 1;
+}
+
+
 service InvoiceService {
   // Creates an invoice for the order.
   rpc CreateInvoice(CreateInvoiceRequest) returns (CreateInvoiceResponse);
 
   // Updates an invoice.
   rpc UpdateInvoice(UpdateInvoiceRequest) returns (UpdateInvoiceResponse);
+
+  // Finds the invoices.
+  rpc FindInvoices(FindInvoiceRequest) returns (FindInvoiceResponse);
 }

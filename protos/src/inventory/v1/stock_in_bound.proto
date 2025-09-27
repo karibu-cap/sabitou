@@ -56,6 +56,9 @@ message StockInbound {
 
   // User who performed the transaction
   string performed_by = 14;
+
+  // The store id
+  string store_id = 15;
 }
 
 message CreateStockInboundRequest {
@@ -82,6 +85,14 @@ message UpdateStockInboundResponse {
   bool success = 1;
 }
 
+message FindStockInboundRequest {
+  string store_id = 1;
+}
+
+message FindStockInboundResponse {
+  repeated StockInbound stock_inbounds = 1;
+}
+
 
 service StockInboundService {
   // Creates a stock in bound.
@@ -89,5 +100,8 @@ service StockInboundService {
 
   // Updates the stock in bound.
   rpc UpdateStockInbound(UpdateStockInboundRequest) returns (UpdateStockInboundResponse);
+
+  // Finds the stock in bounds.
+  rpc FindStockInbounds(FindStockInboundRequest) returns (FindStockInboundResponse);
 }
 

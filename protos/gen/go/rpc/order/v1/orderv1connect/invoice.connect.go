@@ -39,6 +39,9 @@ const (
 	// InvoiceServiceUpdateInvoiceProcedure is the fully-qualified name of the InvoiceService's
 	// UpdateInvoice RPC.
 	InvoiceServiceUpdateInvoiceProcedure = "/order.v1.InvoiceService/UpdateInvoice"
+	// InvoiceServiceFindInvoicesProcedure is the fully-qualified name of the InvoiceService's
+	// FindInvoices RPC.
+	InvoiceServiceFindInvoicesProcedure = "/order.v1.InvoiceService/FindInvoices"
 )
 
 // InvoiceServiceClient is a client for the order.v1.InvoiceService service.
@@ -47,6 +50,8 @@ type InvoiceServiceClient interface {
 	CreateInvoice(context.Context, *connect.Request[v1.CreateInvoiceRequest]) (*connect.Response[v1.CreateInvoiceResponse], error)
 	// Updates an invoice.
 	UpdateInvoice(context.Context, *connect.Request[v1.UpdateInvoiceRequest]) (*connect.Response[v1.UpdateInvoiceResponse], error)
+	// Finds the invoices.
+	FindInvoices(context.Context, *connect.Request[v1.FindInvoiceRequest]) (*connect.Response[v1.FindInvoiceResponse], error)
 }
 
 // NewInvoiceServiceClient constructs a client for the order.v1.InvoiceService service. By default,
@@ -72,6 +77,12 @@ func NewInvoiceServiceClient(httpClient connect.HTTPClient, baseURL string, opts
 			connect.WithSchema(invoiceServiceMethods.ByName("UpdateInvoice")),
 			connect.WithClientOptions(opts...),
 		),
+		findInvoices: connect.NewClient[v1.FindInvoiceRequest, v1.FindInvoiceResponse](
+			httpClient,
+			baseURL+InvoiceServiceFindInvoicesProcedure,
+			connect.WithSchema(invoiceServiceMethods.ByName("FindInvoices")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -79,6 +90,7 @@ func NewInvoiceServiceClient(httpClient connect.HTTPClient, baseURL string, opts
 type invoiceServiceClient struct {
 	createInvoice *connect.Client[v1.CreateInvoiceRequest, v1.CreateInvoiceResponse]
 	updateInvoice *connect.Client[v1.UpdateInvoiceRequest, v1.UpdateInvoiceResponse]
+	findInvoices  *connect.Client[v1.FindInvoiceRequest, v1.FindInvoiceResponse]
 }
 
 // CreateInvoice calls order.v1.InvoiceService.CreateInvoice.
@@ -91,12 +103,19 @@ func (c *invoiceServiceClient) UpdateInvoice(ctx context.Context, req *connect.R
 	return c.updateInvoice.CallUnary(ctx, req)
 }
 
+// FindInvoices calls order.v1.InvoiceService.FindInvoices.
+func (c *invoiceServiceClient) FindInvoices(ctx context.Context, req *connect.Request[v1.FindInvoiceRequest]) (*connect.Response[v1.FindInvoiceResponse], error) {
+	return c.findInvoices.CallUnary(ctx, req)
+}
+
 // InvoiceServiceHandler is an implementation of the order.v1.InvoiceService service.
 type InvoiceServiceHandler interface {
 	// Creates an invoice for the order.
 	CreateInvoice(context.Context, *connect.Request[v1.CreateInvoiceRequest]) (*connect.Response[v1.CreateInvoiceResponse], error)
 	// Updates an invoice.
 	UpdateInvoice(context.Context, *connect.Request[v1.UpdateInvoiceRequest]) (*connect.Response[v1.UpdateInvoiceResponse], error)
+	// Finds the invoices.
+	FindInvoices(context.Context, *connect.Request[v1.FindInvoiceRequest]) (*connect.Response[v1.FindInvoiceResponse], error)
 }
 
 // NewInvoiceServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -118,12 +137,20 @@ func NewInvoiceServiceHandler(svc InvoiceServiceHandler, opts ...connect.Handler
 		connect.WithSchema(invoiceServiceMethods.ByName("UpdateInvoice")),
 		connect.WithHandlerOptions(opts...),
 	)
+	invoiceServiceFindInvoicesHandler := connect.NewUnaryHandler(
+		InvoiceServiceFindInvoicesProcedure,
+		svc.FindInvoices,
+		connect.WithSchema(invoiceServiceMethods.ByName("FindInvoices")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/order.v1.InvoiceService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case InvoiceServiceCreateInvoiceProcedure:
 			invoiceServiceCreateInvoiceHandler.ServeHTTP(w, r)
 		case InvoiceServiceUpdateInvoiceProcedure:
 			invoiceServiceUpdateInvoiceHandler.ServeHTTP(w, r)
+		case InvoiceServiceFindInvoicesProcedure:
+			invoiceServiceFindInvoicesHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -139,4 +166,8 @@ func (UnimplementedInvoiceServiceHandler) CreateInvoice(context.Context, *connec
 
 func (UnimplementedInvoiceServiceHandler) UpdateInvoice(context.Context, *connect.Request[v1.UpdateInvoiceRequest]) (*connect.Response[v1.UpdateInvoiceResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("order.v1.InvoiceService.UpdateInvoice is not implemented"))
+}
+
+func (UnimplementedInvoiceServiceHandler) FindInvoices(context.Context, *connect.Request[v1.FindInvoiceRequest]) (*connect.Response[v1.FindInvoiceResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("order.v1.InvoiceService.FindInvoices is not implemented"))
 }

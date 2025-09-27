@@ -2074,6 +2074,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inventory.v1.CreateStockInboundResponse'
+  /inventory.v1.StockInboundService/FindStockInbounds:
+    post:
+      tags:
+        - inventory.v1.StockInboundService
+      summary: Finds the stock in bounds.
+      description: Finds the stock in bounds.
+      operationId: inventory.v1.StockInboundService.FindStockInbounds
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inventory.v1.FindStockInboundRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inventory.v1.FindStockInboundResponse'
   /inventory.v1.StockInboundService/UpdateStockInbound:
     post:
       tags:
@@ -2184,6 +2220,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/order.v1.CreateInvoiceResponse'
+  /order.v1.InvoiceService/FindInvoices:
+    post:
+      tags:
+        - order.v1.InvoiceService
+      summary: Finds the invoices.
+      description: Finds the invoices.
+      operationId: order.v1.InvoiceService.FindInvoices
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/order.v1.FindInvoiceRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/order.v1.FindInvoiceResponse'
   /order.v1.InvoiceService/UpdateInvoice:
     post:
       tags:
@@ -2435,6 +2507,41 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/order.v1.CreateVoucherResponse'
+  /order.v1.VoucherService/FindVouchers:
+    post:
+      tags:
+        - order.v1.VoucherService
+      summary: FindVouchers
+      operationId: order.v1.VoucherService.FindVouchers
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/order.v1.FindVouchersRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/order.v1.FindVouchersResponse'
   /order.v1.VoucherService/GetVoucher:
     post:
       tags:
@@ -5771,6 +5878,24 @@ components:
           description: Whether the stock inbound was successfully created.
       title: CreateStockInboundResponse
       additionalProperties: false
+    inventory.v1.FindStockInboundRequest:
+      type: object
+      properties:
+        storeId:
+          type: string
+          title: store_id
+      title: FindStockInboundRequest
+      additionalProperties: false
+    inventory.v1.FindStockInboundResponse:
+      type: object
+      properties:
+        stockInbounds:
+          type: array
+          items:
+            $ref: '#/components/schemas/inventory.v1.StockInbound'
+          title: stock_inbounds
+      title: FindStockInboundResponse
+      additionalProperties: false
     inventory.v1.InboundType:
       type: string
       title: InboundType
@@ -5846,6 +5971,10 @@ components:
           type: string
           title: performed_by
           description: User who performed the transaction
+        storeId:
+          type: string
+          title: store_id
+          description: The store id
       title: StockInbound
       additionalProperties: false
       description: Tracks all stock additions to inventory
@@ -5937,6 +6066,26 @@ components:
           title: error
           description: The error message.
       title: CreateInvoiceResponse
+      additionalProperties: false
+    order.v1.FindInvoiceRequest:
+      type: object
+      properties:
+        storeId:
+          type: string
+          title: store_id
+          description: The invoice to get.
+      title: FindInvoiceRequest
+      additionalProperties: false
+    order.v1.FindInvoiceResponse:
+      type: object
+      properties:
+        invoices:
+          type: array
+          items:
+            $ref: '#/components/schemas/order.v1.Invoice'
+          title: invoices
+          description: The invoice of the order.
+      title: FindInvoiceResponse
       additionalProperties: false
     order.v1.Invoice:
       type: object
@@ -6030,6 +6179,10 @@ components:
           title: delivery_date
           description: The delivery date of the invoice.
           $ref: '#/components/schemas/google.protobuf.Timestamp'
+        storeId:
+          type: string
+          title: store_id
+          description: The store id
       title: Invoice
       required:
         - refId
@@ -6480,6 +6633,25 @@ components:
           type: string
           title: ref_id
       title: CreateVoucherResponse
+      additionalProperties: false
+    order.v1.FindVouchersRequest:
+      type: object
+      properties:
+        storeId:
+          type: string
+          title: store_id
+          description: The store id.
+      title: FindVouchersRequest
+      additionalProperties: false
+    order.v1.FindVouchersResponse:
+      type: object
+      properties:
+        vouchers:
+          type: array
+          items:
+            $ref: '#/components/schemas/order.v1.Voucher'
+          title: vouchers
+      title: FindVouchersResponse
       additionalProperties: false
     order.v1.GetVoucherRequest:
       type: object

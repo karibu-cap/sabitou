@@ -476,6 +476,95 @@ func (x *RedeemVoucherResponse) GetError() string {
 	return ""
 }
 
+type FindVouchersRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The store id.
+	StoreId       string `protobuf:"bytes,1,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FindVouchersRequest) Reset() {
+	*x = FindVouchersRequest{}
+	mi := &file_order_v1_voucher_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FindVouchersRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FindVouchersRequest) ProtoMessage() {}
+
+func (x *FindVouchersRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_order_v1_voucher_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FindVouchersRequest.ProtoReflect.Descriptor instead.
+func (*FindVouchersRequest) Descriptor() ([]byte, []int) {
+	return file_order_v1_voucher_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *FindVouchersRequest) GetStoreId() string {
+	if x != nil {
+		return x.StoreId
+	}
+	return ""
+}
+
+type FindVouchersResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Vouchers      []*Voucher             `protobuf:"bytes,1,rep,name=vouchers,proto3" json:"vouchers,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FindVouchersResponse) Reset() {
+	*x = FindVouchersResponse{}
+	mi := &file_order_v1_voucher_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FindVouchersResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FindVouchersResponse) ProtoMessage() {}
+
+func (x *FindVouchersResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_order_v1_voucher_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FindVouchersResponse.ProtoReflect.Descriptor instead.
+func (*FindVouchersResponse) Descriptor() ([]byte, []int) {
+	return file_order_v1_voucher_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *FindVouchersResponse) GetVouchers() []*Voucher {
+	if x != nil {
+		return x.Vouchers
+	}
+	return nil
+}
+
 var File_order_v1_voucher_proto protoreflect.FileDescriptor
 
 const file_order_v1_voucher_proto_rawDesc = "" +
@@ -514,17 +603,22 @@ const file_order_v1_voucher_proto_rawDesc = "" +
 	"\x15RedeemVoucherResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x19\n" +
 	"\x05error\x18\x02 \x01(\tH\x00R\x05error\x88\x01\x01B\b\n" +
-	"\x06_error*\x83\x01\n" +
+	"\x06_error\"0\n" +
+	"\x13FindVouchersRequest\x12\x19\n" +
+	"\bstore_id\x18\x01 \x01(\tR\astoreId\"E\n" +
+	"\x14FindVouchersResponse\x12-\n" +
+	"\bvouchers\x18\x01 \x03(\v2\x11.order.v1.VoucherR\bvouchers*\x83\x01\n" +
 	"\rVoucherStatus\x12\x1e\n" +
 	"\x1aVOUCHER_STATUS_UNSPECIFIED\x10\x00\x12\x19\n" +
 	"\x15VOUCHER_STATUS_ISSUED\x10\x01\x12\x1b\n" +
 	"\x17VOUCHER_STATUS_REDEEMED\x10\x02\x12\x1a\n" +
-	"\x16VOUCHER_STATUS_EXPIRED\x10\x032\xfd\x01\n" +
+	"\x16VOUCHER_STATUS_EXPIRED\x10\x032\xcc\x02\n" +
 	"\x0eVoucherService\x12P\n" +
 	"\rCreateVoucher\x12\x1e.order.v1.CreateVoucherRequest\x1a\x1f.order.v1.CreateVoucherResponse\x12G\n" +
 	"\n" +
 	"GetVoucher\x12\x1b.order.v1.GetVoucherRequest\x1a\x1c.order.v1.GetVoucherResponse\x12P\n" +
-	"\rRedeemVoucher\x12\x1e.order.v1.RedeemVoucherRequest\x1a\x1f.order.v1.RedeemVoucherResponseB\x9f\x01\n" +
+	"\rRedeemVoucher\x12\x1e.order.v1.RedeemVoucherRequest\x1a\x1f.order.v1.RedeemVoucherResponse\x12M\n" +
+	"\fFindVouchers\x12\x1d.order.v1.FindVouchersRequest\x1a\x1e.order.v1.FindVouchersResponseB\x9f\x01\n" +
 	"\fcom.order.v1B\fVoucherProtoP\x01Z@github.com/karibu-cap/sabitou/protos/gen/go/rpc/order/v1;orderv1\xa2\x02\x03OXX\xaa\x02\bOrder.V1\xca\x02\bOrder\\V1\xe2\x02\x14Order\\V1\\GPBMetadata\xea\x02\tOrder::V1b\x06proto3"
 
 var (
@@ -540,7 +634,7 @@ func file_order_v1_voucher_proto_rawDescGZIP() []byte {
 }
 
 var file_order_v1_voucher_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_order_v1_voucher_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_order_v1_voucher_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_order_v1_voucher_proto_goTypes = []any{
 	(VoucherStatus)(0),            // 0: order.v1.VoucherStatus
 	(*Voucher)(nil),               // 1: order.v1.Voucher
@@ -550,26 +644,31 @@ var file_order_v1_voucher_proto_goTypes = []any{
 	(*GetVoucherResponse)(nil),    // 5: order.v1.GetVoucherResponse
 	(*RedeemVoucherRequest)(nil),  // 6: order.v1.RedeemVoucherRequest
 	(*RedeemVoucherResponse)(nil), // 7: order.v1.RedeemVoucherResponse
-	(*timestamppb.Timestamp)(nil), // 8: google.protobuf.Timestamp
+	(*FindVouchersRequest)(nil),   // 8: order.v1.FindVouchersRequest
+	(*FindVouchersResponse)(nil),  // 9: order.v1.FindVouchersResponse
+	(*timestamppb.Timestamp)(nil), // 10: google.protobuf.Timestamp
 }
 var file_order_v1_voucher_proto_depIdxs = []int32{
-	8, // 0: order.v1.Voucher.created_at:type_name -> google.protobuf.Timestamp
-	8, // 1: order.v1.Voucher.expiry_date:type_name -> google.protobuf.Timestamp
-	0, // 2: order.v1.Voucher.status:type_name -> order.v1.VoucherStatus
-	8, // 3: order.v1.Voucher.redeemed_at:type_name -> google.protobuf.Timestamp
-	1, // 4: order.v1.CreateVoucherRequest.voucher:type_name -> order.v1.Voucher
-	1, // 5: order.v1.GetVoucherResponse.voucher:type_name -> order.v1.Voucher
-	2, // 6: order.v1.VoucherService.CreateVoucher:input_type -> order.v1.CreateVoucherRequest
-	4, // 7: order.v1.VoucherService.GetVoucher:input_type -> order.v1.GetVoucherRequest
-	6, // 8: order.v1.VoucherService.RedeemVoucher:input_type -> order.v1.RedeemVoucherRequest
-	3, // 9: order.v1.VoucherService.CreateVoucher:output_type -> order.v1.CreateVoucherResponse
-	5, // 10: order.v1.VoucherService.GetVoucher:output_type -> order.v1.GetVoucherResponse
-	7, // 11: order.v1.VoucherService.RedeemVoucher:output_type -> order.v1.RedeemVoucherResponse
-	9, // [9:12] is the sub-list for method output_type
-	6, // [6:9] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	10, // 0: order.v1.Voucher.created_at:type_name -> google.protobuf.Timestamp
+	10, // 1: order.v1.Voucher.expiry_date:type_name -> google.protobuf.Timestamp
+	0,  // 2: order.v1.Voucher.status:type_name -> order.v1.VoucherStatus
+	10, // 3: order.v1.Voucher.redeemed_at:type_name -> google.protobuf.Timestamp
+	1,  // 4: order.v1.CreateVoucherRequest.voucher:type_name -> order.v1.Voucher
+	1,  // 5: order.v1.GetVoucherResponse.voucher:type_name -> order.v1.Voucher
+	1,  // 6: order.v1.FindVouchersResponse.vouchers:type_name -> order.v1.Voucher
+	2,  // 7: order.v1.VoucherService.CreateVoucher:input_type -> order.v1.CreateVoucherRequest
+	4,  // 8: order.v1.VoucherService.GetVoucher:input_type -> order.v1.GetVoucherRequest
+	6,  // 9: order.v1.VoucherService.RedeemVoucher:input_type -> order.v1.RedeemVoucherRequest
+	8,  // 10: order.v1.VoucherService.FindVouchers:input_type -> order.v1.FindVouchersRequest
+	3,  // 11: order.v1.VoucherService.CreateVoucher:output_type -> order.v1.CreateVoucherResponse
+	5,  // 12: order.v1.VoucherService.GetVoucher:output_type -> order.v1.GetVoucherResponse
+	7,  // 13: order.v1.VoucherService.RedeemVoucher:output_type -> order.v1.RedeemVoucherResponse
+	9,  // 14: order.v1.VoucherService.FindVouchers:output_type -> order.v1.FindVouchersResponse
+	11, // [11:15] is the sub-list for method output_type
+	7,  // [7:11] is the sub-list for method input_type
+	7,  // [7:7] is the sub-list for extension type_name
+	7,  // [7:7] is the sub-list for extension extendee
+	0,  // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_order_v1_voucher_proto_init() }
@@ -585,7 +684,7 @@ func file_order_v1_voucher_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_order_v1_voucher_proto_rawDesc), len(file_order_v1_voucher_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   7,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -250,7 +250,9 @@ type Invoice struct {
 	// The date and time the invoice was created.
 	CreatedAt *timestamppb.Timestamp `protobuf:"bytes,14,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	// The delivery date of the invoice.
-	DeliveryDate  *timestamppb.Timestamp `protobuf:"bytes,15,opt,name=delivery_date,json=deliveryDate,proto3" json:"delivery_date,omitempty"`
+	DeliveryDate *timestamppb.Timestamp `protobuf:"bytes,15,opt,name=delivery_date,json=deliveryDate,proto3" json:"delivery_date,omitempty"`
+	// The store id
+	StoreId       string `protobuf:"bytes,16,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -388,6 +390,13 @@ func (x *Invoice) GetDeliveryDate() *timestamppb.Timestamp {
 		return x.DeliveryDate
 	}
 	return nil
+}
+
+func (x *Invoice) GetStoreId() string {
+	if x != nil {
+		return x.StoreId
+	}
+	return ""
 }
 
 type CreateInvoiceRequest struct {
@@ -579,6 +588,96 @@ func (x *UpdateInvoiceResponse) GetSuccess() bool {
 	return false
 }
 
+type FindInvoiceRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The invoice to get.
+	StoreId       string `protobuf:"bytes,1,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FindInvoiceRequest) Reset() {
+	*x = FindInvoiceRequest{}
+	mi := &file_order_v1_invoice_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FindInvoiceRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FindInvoiceRequest) ProtoMessage() {}
+
+func (x *FindInvoiceRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_order_v1_invoice_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FindInvoiceRequest.ProtoReflect.Descriptor instead.
+func (*FindInvoiceRequest) Descriptor() ([]byte, []int) {
+	return file_order_v1_invoice_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *FindInvoiceRequest) GetStoreId() string {
+	if x != nil {
+		return x.StoreId
+	}
+	return ""
+}
+
+type FindInvoiceResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The invoice of the order.
+	Invoices      []*Invoice `protobuf:"bytes,1,rep,name=invoices,proto3" json:"invoices,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FindInvoiceResponse) Reset() {
+	*x = FindInvoiceResponse{}
+	mi := &file_order_v1_invoice_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FindInvoiceResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FindInvoiceResponse) ProtoMessage() {}
+
+func (x *FindInvoiceResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_order_v1_invoice_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FindInvoiceResponse.ProtoReflect.Descriptor instead.
+func (*FindInvoiceResponse) Descriptor() ([]byte, []int) {
+	return file_order_v1_invoice_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *FindInvoiceResponse) GetInvoices() []*Invoice {
+	if x != nil {
+		return x.Invoices
+	}
+	return nil
+}
+
 var File_order_v1_invoice_proto protoreflect.FileDescriptor
 
 const file_order_v1_invoice_proto_rawDesc = "" +
@@ -589,7 +688,7 @@ const file_order_v1_invoice_proto_rawDesc = "" +
 	"\x06method\x18\x02 \x01(\x0e2\x17.order.v1.PaymentMethodR\x06method\x12&\n" +
 	"\freference_id\x18\x03 \x01(\tH\x00R\vreferenceId\x88\x01\x01\x128\n" +
 	"\ttimestamp\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestampB\x0f\n" +
-	"\r_reference_id\"\x9d\x05\n" +
+	"\r_reference_id\"\xb8\x05\n" +
 	"\aInvoice\x12\"\n" +
 	"\x06ref_id\x18\x01 \x01(\tB\v\xbaH\b\xc8\x01\x01r\x03\xb0\x01\x01R\x05refId\x12\x1e\n" +
 	"\border_id\x18\x02 \x01(\tH\x00R\aorderId\x88\x01\x01\x12/\n" +
@@ -610,7 +709,8 @@ const file_order_v1_invoice_proto_rawDesc = "" +
 	"voucher_id\x18\r \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01H\x01R\tvoucherId\x88\x01\x01\x129\n" +
 	"\n" +
 	"created_at\x18\x0e \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12?\n" +
-	"\rdelivery_date\x18\x0f \x01(\v2\x1a.google.protobuf.TimestampR\fdeliveryDateB\v\n" +
+	"\rdelivery_date\x18\x0f \x01(\v2\x1a.google.protobuf.TimestampR\fdeliveryDate\x12\x19\n" +
+	"\bstore_id\x18\x10 \x01(\tR\astoreIdB\v\n" +
 	"\t_order_idB\r\n" +
 	"\v_voucher_id\"C\n" +
 	"\x14CreateInvoiceRequest\x12+\n" +
@@ -621,7 +721,11 @@ const file_order_v1_invoice_proto_rawDesc = "" +
 	"\x14UpdateInvoiceRequest\x12+\n" +
 	"\ainvoice\x18\x01 \x01(\v2\x11.order.v1.InvoiceR\ainvoice\"1\n" +
 	"\x15UpdateInvoiceResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess*\x88\x01\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"/\n" +
+	"\x12FindInvoiceRequest\x12\x19\n" +
+	"\bstore_id\x18\x01 \x01(\tR\astoreId\"D\n" +
+	"\x13FindInvoiceResponse\x12-\n" +
+	"\binvoices\x18\x01 \x03(\v2\x11.order.v1.InvoiceR\binvoices*\x88\x01\n" +
 	"\rInvoiceStatus\x12\x1e\n" +
 	"\x1aINVOICE_STATUS_UNSPECIFIED\x10\x00\x12\x17\n" +
 	"\x13INVOICE_STATUS_PAID\x10\x01\x12!\n" +
@@ -634,10 +738,11 @@ const file_order_v1_invoice_proto_rawDesc = "" +
 	"\x1bPAYMENT_METHOD_ORANGE_MONEY\x10\x03\x12\x1c\n" +
 	"\x18PAYMENT_METHOD_MTN_MONEY\x10\x04\x12\x1a\n" +
 	"\x16PAYMENT_METHOD_VOUCHER\x10\x05\x12\x19\n" +
-	"\x15PAYMENT_METHOD_MOBILE\x10\x062\xb4\x01\n" +
+	"\x15PAYMENT_METHOD_MOBILE\x10\x062\x81\x02\n" +
 	"\x0eInvoiceService\x12P\n" +
 	"\rCreateInvoice\x12\x1e.order.v1.CreateInvoiceRequest\x1a\x1f.order.v1.CreateInvoiceResponse\x12P\n" +
-	"\rUpdateInvoice\x12\x1e.order.v1.UpdateInvoiceRequest\x1a\x1f.order.v1.UpdateInvoiceResponseB\x9f\x01\n" +
+	"\rUpdateInvoice\x12\x1e.order.v1.UpdateInvoiceRequest\x1a\x1f.order.v1.UpdateInvoiceResponse\x12K\n" +
+	"\fFindInvoices\x12\x1c.order.v1.FindInvoiceRequest\x1a\x1d.order.v1.FindInvoiceResponseB\x9f\x01\n" +
 	"\fcom.order.v1B\fInvoiceProtoP\x01Z@github.com/karibu-cap/sabitou/protos/gen/go/rpc/order/v1;orderv1\xa2\x02\x03OXX\xaa\x02\bOrder.V1\xca\x02\bOrder\\V1\xe2\x02\x14Order\\V1\\GPBMetadata\xea\x02\tOrder::V1b\x06proto3"
 
 var (
@@ -653,7 +758,7 @@ func file_order_v1_invoice_proto_rawDescGZIP() []byte {
 }
 
 var file_order_v1_invoice_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_order_v1_invoice_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_order_v1_invoice_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_order_v1_invoice_proto_goTypes = []any{
 	(InvoiceStatus)(0),            // 0: order.v1.InvoiceStatus
 	(PaymentMethod)(0),            // 1: order.v1.PaymentMethod
@@ -663,28 +768,33 @@ var file_order_v1_invoice_proto_goTypes = []any{
 	(*CreateInvoiceResponse)(nil), // 5: order.v1.CreateInvoiceResponse
 	(*UpdateInvoiceRequest)(nil),  // 6: order.v1.UpdateInvoiceRequest
 	(*UpdateInvoiceResponse)(nil), // 7: order.v1.UpdateInvoiceResponse
-	(*timestamppb.Timestamp)(nil), // 8: google.protobuf.Timestamp
-	(*OrderItem)(nil),             // 9: order.v1.OrderItem
+	(*FindInvoiceRequest)(nil),    // 8: order.v1.FindInvoiceRequest
+	(*FindInvoiceResponse)(nil),   // 9: order.v1.FindInvoiceResponse
+	(*timestamppb.Timestamp)(nil), // 10: google.protobuf.Timestamp
+	(*OrderItem)(nil),             // 11: order.v1.OrderItem
 }
 var file_order_v1_invoice_proto_depIdxs = []int32{
 	1,  // 0: order.v1.Payment.method:type_name -> order.v1.PaymentMethod
-	8,  // 1: order.v1.Payment.timestamp:type_name -> google.protobuf.Timestamp
+	10, // 1: order.v1.Payment.timestamp:type_name -> google.protobuf.Timestamp
 	0,  // 2: order.v1.Invoice.status:type_name -> order.v1.InvoiceStatus
-	9,  // 3: order.v1.Invoice.order_items:type_name -> order.v1.OrderItem
+	11, // 3: order.v1.Invoice.order_items:type_name -> order.v1.OrderItem
 	2,  // 4: order.v1.Invoice.payments:type_name -> order.v1.Payment
-	8,  // 5: order.v1.Invoice.created_at:type_name -> google.protobuf.Timestamp
-	8,  // 6: order.v1.Invoice.delivery_date:type_name -> google.protobuf.Timestamp
+	10, // 5: order.v1.Invoice.created_at:type_name -> google.protobuf.Timestamp
+	10, // 6: order.v1.Invoice.delivery_date:type_name -> google.protobuf.Timestamp
 	3,  // 7: order.v1.CreateInvoiceRequest.invoice:type_name -> order.v1.Invoice
 	3,  // 8: order.v1.UpdateInvoiceRequest.invoice:type_name -> order.v1.Invoice
-	4,  // 9: order.v1.InvoiceService.CreateInvoice:input_type -> order.v1.CreateInvoiceRequest
-	6,  // 10: order.v1.InvoiceService.UpdateInvoice:input_type -> order.v1.UpdateInvoiceRequest
-	5,  // 11: order.v1.InvoiceService.CreateInvoice:output_type -> order.v1.CreateInvoiceResponse
-	7,  // 12: order.v1.InvoiceService.UpdateInvoice:output_type -> order.v1.UpdateInvoiceResponse
-	11, // [11:13] is the sub-list for method output_type
-	9,  // [9:11] is the sub-list for method input_type
-	9,  // [9:9] is the sub-list for extension type_name
-	9,  // [9:9] is the sub-list for extension extendee
-	0,  // [0:9] is the sub-list for field type_name
+	3,  // 9: order.v1.FindInvoiceResponse.invoices:type_name -> order.v1.Invoice
+	4,  // 10: order.v1.InvoiceService.CreateInvoice:input_type -> order.v1.CreateInvoiceRequest
+	6,  // 11: order.v1.InvoiceService.UpdateInvoice:input_type -> order.v1.UpdateInvoiceRequest
+	8,  // 12: order.v1.InvoiceService.FindInvoices:input_type -> order.v1.FindInvoiceRequest
+	5,  // 13: order.v1.InvoiceService.CreateInvoice:output_type -> order.v1.CreateInvoiceResponse
+	7,  // 14: order.v1.InvoiceService.UpdateInvoice:output_type -> order.v1.UpdateInvoiceResponse
+	9,  // 15: order.v1.InvoiceService.FindInvoices:output_type -> order.v1.FindInvoiceResponse
+	13, // [13:16] is the sub-list for method output_type
+	10, // [10:13] is the sub-list for method input_type
+	10, // [10:10] is the sub-list for extension type_name
+	10, // [10:10] is the sub-list for extension extendee
+	0,  // [0:10] is the sub-list for field type_name
 }
 
 func init() { file_order_v1_invoice_proto_init() }
@@ -701,7 +811,7 @@ func file_order_v1_invoice_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_order_v1_invoice_proto_rawDesc), len(file_order_v1_invoice_proto_rawDesc)),
 			NumEnums:      2,
-			NumMessages:   6,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

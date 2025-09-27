@@ -38,6 +38,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/order.v1.CreateInvoiceResponse'
+  /order.v1.InvoiceService/FindInvoices:
+    post:
+      tags:
+        - order.v1.InvoiceService
+      summary: Finds the invoices.
+      description: Finds the invoices.
+      operationId: order.v1.InvoiceService.FindInvoices
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/order.v1.FindInvoiceRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/order.v1.FindInvoiceResponse'
   /order.v1.InvoiceService/UpdateInvoice:
     post:
       tags:
@@ -263,6 +299,26 @@ components:
           description: The error message.
       title: CreateInvoiceResponse
       additionalProperties: false
+    order.v1.FindInvoiceRequest:
+      type: object
+      properties:
+        storeId:
+          type: string
+          title: store_id
+          description: The invoice to get.
+      title: FindInvoiceRequest
+      additionalProperties: false
+    order.v1.FindInvoiceResponse:
+      type: object
+      properties:
+        invoices:
+          type: array
+          items:
+            $ref: '#/components/schemas/order.v1.Invoice'
+          title: invoices
+          description: The invoice of the order.
+      title: FindInvoiceResponse
+      additionalProperties: false
     order.v1.Invoice:
       type: object
       properties:
@@ -355,6 +411,10 @@ components:
           title: delivery_date
           description: The delivery date of the invoice.
           $ref: '#/components/schemas/google.protobuf.Timestamp'
+        storeId:
+          type: string
+          title: store_id
+          description: The store id
       title: Invoice
       required:
         - refId
