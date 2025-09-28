@@ -6,7 +6,8 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import '../../services/internationalization/internationalization.dart';
 import '../../utils/responsive_utils.dart';
 import '../../utils/user_preference.dart';
-import 'components/dialogs/suppliers_add/suppliers_add_view.dart';
+import '../../widgets/pop_up/add_supplier/add_supplier_view.dart';
+import 'components/list_components/supplier_search_filters.dart';
 import 'components/list_components/supplier_shimmer_widgets.dart';
 import 'components/suppliers_list.dart';
 import 'components/suppliers_stats_grid.dart';
@@ -43,39 +44,17 @@ class SuppliersContent extends StatelessWidget {
   /// Constructs the suppliers content.
   const SuppliersContent({super.key});
 
-  /// Show supplier dialog for adding or editing
-  void _showSupplierDialog(
-    BuildContext context,
-    SuppliersController controller,
-    Supplier? supplier,
-  ) {
-    showDialog(
-      context: context,
-      builder: (dialogContext) =>
-          ChangeNotifierProvider<SuppliersController>.value(
-            value: controller,
-            child: SupplierFormDialog(
-              suppliersController: controller,
-              supplier: supplier,
-            ),
-          ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    final controller = Provider.of<SuppliersController>(context);
-
-    return SingleChildScrollView(
+    return const SingleChildScrollView(
       child: Column(
         spacing: 32,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SuppliersHeader(
-            onAddSupplier: () => _showSupplierDialog(context, controller, null),
-          ),
-          const SuppliersStatsGrid(),
-          const SuppliersList(),
+          SuppliersHeader(),
+          SuppliersStatsGrid(),
+          SuppliersSearchFilters(),
+          SuppliersList(),
         ],
       ),
     );
@@ -84,11 +63,8 @@ class SuppliersContent extends StatelessWidget {
 
 /// Header widget for suppliers view.
 class SuppliersHeader extends StatelessWidget {
-  /// The add supplier callback.
-  final VoidCallback onAddSupplier;
-
   /// Constructs a new SuppliersHeader.
-  const SuppliersHeader({super.key, required this.onAddSupplier});
+  const SuppliersHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -124,7 +100,7 @@ class SuppliersHeader extends StatelessWidget {
               ],
             ),
             ShadButton(
-              onPressed: onAddSupplier,
+              onPressed: () => showAddSupplierDialog(context),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [

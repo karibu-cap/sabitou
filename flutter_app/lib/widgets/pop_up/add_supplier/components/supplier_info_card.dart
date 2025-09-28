@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-import '../../../../../services/internationalization/internationalization.dart';
+import '../../../../services/internationalization/internationalization.dart';
 
 /// Information card widget for supplier form.
 class SupplierInfoCard extends StatelessWidget {

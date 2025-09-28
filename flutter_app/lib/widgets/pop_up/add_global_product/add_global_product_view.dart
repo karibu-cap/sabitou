@@ -3,39 +3,56 @@ import 'package:provider/provider.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-import '../../../../../../services/internationalization/internationalization.dart';
-import '../../../../../utils/common_functions.dart';
-import '../../../../../utils/extensions/category_extension.dart';
-import '../../../../../utils/form/validation.dart';
-import '../../../../../widgets/input/form_fields.dart';
-import '../../../global_products_controller.dart';
+import '../../../../services/internationalization/internationalization.dart';
+import '../../../utils/common_functions.dart';
+import '../../../utils/extensions/category_extension.dart';
+import '../../../utils/form/validation.dart';
+import '../../input/form_fields.dart';
 import 'add_global_product_controller.dart';
+import 'add_global_product_view_model.dart';
 import 'components/dialog/select_categories_view.dart';
+
+/// Show global product dialog for adding or editing
+void showGlobalProductDialog(
+  BuildContext context, {
+  GlobalProduct? globalProduct,
+}) {
+  showDialog(
+    context: context,
+    builder: (dialogContext) => ShadDialog(
+      child: GlobalProductFormDialog(globalProduct: globalProduct),
+    ),
+  );
+}
 
 /// Modal for viewing and modifying user permissions.
 class GlobalProductFormDialog extends StatelessWidget {
   /// The global product.
   final GlobalProduct? globalProduct;
 
-  /// The global products controller.
-  final GlobalProductsController globalProductsController;
-
   /// Constructs a new CategoryFormDialog.
-  GlobalProductFormDialog({
-    super.key,
-    required this.globalProductsController,
-    this.globalProduct,
-  });
+  GlobalProductFormDialog({super.key, this.globalProduct});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => GlobalProductAddController(
+      create: (context) => AddGlobalProductController(
         intl: AppInternationalizationService.to,
-        controller: globalProductsController,
+        viewModel: AddGlobalProductViewModel(),
         globalProduct: globalProduct,
       ),
-      child: _GlobalProductFormDialogContent(globalProduct: globalProduct),
+      child: Consumer<AddGlobalProductController>(
+        builder: (context, controller, _) {
+          return FutureBuilder<void>(
+            future: controller.getCategories(),
+            builder: (context, snapshot) {
+              return _GlobalProductFormDialogContent(
+                globalProduct: globalProduct,
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }
@@ -45,13 +62,13 @@ class _GlobalProductFormDialogContent extends StatelessWidget {
   /// The supplier.
   final GlobalProduct? globalProduct;
 
-  /// Creates a new [SupplierFormDialog].
+  /// Creates a new [_GlobalProductFormDialogContent].
   const _GlobalProductFormDialogContent({this.globalProduct});
 
   /// Handles the save operation for the category form.
   Future<void> _saveCategory(
     BuildContext context,
-    GlobalProductAddController controller,
+    AddGlobalProductController controller,
   ) async {
     final validation = controller.validateForm();
 
@@ -69,13 +86,13 @@ class _GlobalProductFormDialogContent extends StatelessWidget {
         showSuccessToast(
           context: context,
           title: _intl.successText,
-          message: _intl.categoryAddedSuccessfully,
+          message: _intl.productAddedSuccessfully,
         );
       } else {
         showSuccessToast(
           context: context,
           title: _intl.successText,
-          message: _intl.categoryUpdatedSuccessfully,
+          message: _intl.productUpdatedSuccessfully,
         );
       }
     }
@@ -91,7 +108,7 @@ class _GlobalProductFormDialogContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Provider.of<GlobalProductAddController>(context);
+    final controller = Provider.of<AddGlobalProductController>(context);
     final intl = AppInternationalizationService.to;
     final theme = ShadTheme.of(context);
 

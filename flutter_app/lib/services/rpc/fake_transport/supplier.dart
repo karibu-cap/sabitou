@@ -12,21 +12,21 @@ final supplierFakeTransport = FakeTransportBuilder()
             ..contactEmail = 'alpha@example.com'
             ..contactPhone = '696123456'
             ..contactAddress = 'Yaoundé, Cameroun'
-            ..isActive = true),
+            ..status = SupplierStatus.SUPPLIER_STATUS_ACTIVE),
           Supplier()
             ..refId = 'supplier_2'
             ..name = 'Fournisseur Beta'
             ..contactEmail = 'beta@example.com'
             ..contactPhone = '696789012'
             ..contactAddress = 'Douala, Cameroun'
-            ..isActive = true,
+            ..status = SupplierStatus.SUPPLIER_STATUS_ACTIVE,
           Supplier()
             ..refId = 'supplier_3'
             ..name = 'Fournisseur Gamma'
             ..contactEmail = 'gamma@example.com'
             ..contactPhone = '696345678'
             ..contactAddress = 'Bafoussam, Cameroun'
-            ..isActive = false,
+            ..status = SupplierStatus.SUPPLIER_STATUS_INACTIVE,
         ],
       );
     })
@@ -37,7 +37,7 @@ final supplierFakeTransport = FakeTransportBuilder()
         ..supplier.contactEmail = 'beta@example.com'
         ..supplier.contactPhone = '696789012'
         ..supplier.contactAddress = 'Douala, Cameroun'
-        ..supplier.isActive = true;
+        ..supplier.status = SupplierStatus.SUPPLIER_STATUS_ACTIVE;
     })
     .unary(SupplierService.createSupplier, (req, _) async {
       return CreateSupplierResponse()
@@ -60,21 +60,21 @@ final supplierFakeTransport = FakeTransportBuilder()
             ..contactEmail = 'alpha@example.com'
             ..contactPhone = '696123456'
             ..contactAddress = 'Yaoundé, Cameroun'
-            ..isActive = true,
+            ..status = SupplierStatus.SUPPLIER_STATUS_ACTIVE,
           Supplier()
             ..refId = 'supplier_2'
             ..name = 'Fournisseur Beta'
             ..contactEmail = 'beta@example.com'
             ..contactPhone = '696789012'
             ..contactAddress = 'Douala, Cameroun'
-            ..isActive = true,
+            ..status = SupplierStatus.SUPPLIER_STATUS_ACTIVE,
           Supplier()
             ..refId = 'supplier_3'
             ..name = 'Nouveau Fournisseur'
             ..contactEmail = 'nouveau@example.com'
             ..contactPhone = '696999999'
             ..contactAddress = 'Bamenda, Cameroun'
-            ..isActive = true,
+            ..status = SupplierStatus.SUPPLIER_STATUS_ACTIVE,
         ]);
     })
     // Product Service fakes

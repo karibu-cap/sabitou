@@ -14,13 +14,6 @@ class CategoriesEmptyState extends StatelessWidget {
   /// Creates a new [CategoriesEmptyState].
   const CategoriesEmptyState({super.key});
 
-  void _showAddCategoryDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (dialogContext) => ShadDialog(child: CategoryFormDialog()),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final controller = Provider.of<CategoriesController>(context);
@@ -69,7 +62,7 @@ class CategoriesEmptyState extends StatelessWidget {
           // Action button
           if (!controller.isFiltered) ...[
             ShadButton(
-              onPressed: () => _showAddCategoryDialog(context),
+              onPressed: () => showAddCategoryDialog(context),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [

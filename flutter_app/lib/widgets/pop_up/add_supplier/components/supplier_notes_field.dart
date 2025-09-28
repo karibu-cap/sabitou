@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
-import '../../../../../services/internationalization/internationalization.dart';
-import '../../../../../widgets/input/form_fields.dart';
-import '../suppliers_add/suppliers_add_controller.dart';
+import '../../../../services/internationalization/internationalization.dart';
+import '../../../input/form_fields.dart';
+import '../add_supplier_controller.dart';
 
 /// Notes field widget for supplier form.
 class SupplierNotesField extends StatelessWidget {
@@ -17,7 +17,7 @@ class SupplierNotesField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final intl = AppInternationalizationService.to;
-    final controller = Provider.of<SuppliersAddController>(context);
+    final controller = Provider.of<AddSupplierController>(context);
 
     return InputField(
       id: intl.notes,

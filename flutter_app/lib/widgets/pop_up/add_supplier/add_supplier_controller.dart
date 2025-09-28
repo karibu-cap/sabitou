@@ -2,33 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-import '../../../../../services/internationalization/internationalization.dart';
-import '../../../suppliers_controller.dart';
+import '../../../services/internationalization/internationalization.dart';
+import 'add_supplier_view_model.dart';
 
 /// The suppliers controller.
 ///
 /// Manages the state and store logic for the suppliers module.
 /// Uses ChangeNotifier for state management with Provider pattern.
-class SuppliersAddController extends ChangeNotifier {
+class AddSupplierController extends ChangeNotifier {
   final AppInternationalizationService _intl;
-  final SuppliersController _controller;
   final Supplier? _supplier;
+  final AddSupplierViewModel _viewModel;
 
   /// Constructs a new SuppliersAddController.
-  SuppliersAddController({
+  AddSupplierController({
     required AppInternationalizationService intl,
-    required SuppliersController controller,
     Supplier? supplier,
+    required AddSupplierViewModel viewModel,
   }) : _intl = intl,
-       _controller = controller,
-       _supplier = supplier {
+       _supplier = supplier,
+       _viewModel = viewModel {
     if (supplier != null) {
       nameController.text = supplier.name;
       phoneController.text = supplier.contactPhone;
       emailController.text = supplier.contactEmail;
       addressController.text = supplier.contactAddress;
       notesController.text = supplier.description;
-      isActive = supplier.isActive;
+      supplierStatus = supplier.status;
     } else {
       _clearForm();
     }
@@ -56,7 +56,7 @@ class SuppliersAddController extends ChangeNotifier {
   final TextEditingController notesController = TextEditingController();
 
   /// Active status of the supplier being edited.
-  bool isActive = false;
+  SupplierStatus? supplierStatus;
 
   /// Loading state specifically for form save operations.
   bool _isFormLoading = false;
@@ -70,12 +70,6 @@ class SuppliersAddController extends ChangeNotifier {
   /// Gets loading state specifically for form save operations.
   bool get isFormLoading => _isFormLoading;
 
-  /// Set the active status of the supplier being edited.
-  void setIsActive(bool value) {
-    isActive = value;
-    notifyListeners();
-  }
-
   /// Clears all form controllers and reset form state.
   void _clearForm() {
     nameController.clear();
@@ -83,7 +77,7 @@ class SuppliersAddController extends ChangeNotifier {
     emailController.clear();
     addressController.clear();
     notesController.clear();
-    isActive = false;
+    supplierStatus = null;
   }
 
   /// Validates all registration form fields.
@@ -115,14 +109,14 @@ class SuppliersAddController extends ChangeNotifier {
       description: notesController.text.trim().isEmpty
           ? null
           : notesController.text.trim(),
-      isActive: isActive,
+      status: supplierStatus,
     );
     var result;
     if (_supplier == null) {
-      result = await _controller.viewModel.addSupplier(newSupplier);
+      result = await _viewModel.addSupplier(newSupplier);
       debugPrint('Would add new supplier: ${newSupplier.name}');
     } else {
-      result = await _controller.viewModel.updateSupplier(newSupplier);
+      result = await _viewModel.updateSupplier(newSupplier);
       debugPrint('Would update supplier: ${newSupplier.name}');
     }
 
@@ -188,5 +182,13 @@ class SuppliersAddController extends ChangeNotifier {
     addressController.dispose();
     notesController.dispose();
     super.dispose();
+  }
+
+  /// Sets the supplier status.
+  void setSupplierStatus(bool value) {
+    supplierStatus = value
+        ? SupplierStatus.SUPPLIER_STATUS_ACTIVE
+        : SupplierStatus.SUPPLIER_STATUS_INACTIVE;
+    notifyListeners();
   }
 }

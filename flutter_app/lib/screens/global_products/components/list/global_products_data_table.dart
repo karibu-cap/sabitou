@@ -4,8 +4,8 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../../services/internationalization/internationalization.dart';
+import '../../../../widgets/pop_up/add_global_product/add_global_product_view.dart';
 import '../../global_products_controller.dart';
-import '../dialogs/add_global_product/add_global_product_view.dart';
 import '../dialogs/delete_global_product/delete_global_product_view.dart';
 import 'global_products_cell_builders.dart';
 
@@ -16,30 +16,6 @@ class GlobalProductDataTable extends StatelessWidget {
 
   /// Creates a new [GlobalProductDataTable].
   GlobalProductDataTable({super.key, required this.globalProducts});
-
-  /// Shows product form dialog for editing.
-  void _showGlobalProductDialog(
-    BuildContext context,
-    GlobalProduct globalProduct,
-  ) {
-    final controller = Provider.of<GlobalProductsController>(
-      context,
-      listen: false,
-    );
-
-    showDialog<bool>(
-      context: context,
-      builder: (context) => ChangeNotifierProvider.value(
-        value: controller,
-        child: ShadDialog(
-          child: GlobalProductFormDialog(
-            globalProductsController: controller,
-            globalProduct: globalProduct,
-          ),
-        ),
-      ),
-    );
-  }
 
   /// Shows delete confirmation dialog.
   void _showDeleteDialog(BuildContext context, GlobalProduct globalProduct) {
@@ -122,8 +98,10 @@ class GlobalProductDataTable extends StatelessWidget {
                       ),
                       DataCell(
                         GlobalProductCellBuilders.buildActionsCell(
-                          onEdit: () =>
-                              _showGlobalProductDialog(context, globalProduct),
+                          onEdit: () => showGlobalProductDialog(
+                            context,
+                            globalProduct: globalProduct,
+                          ),
                           onDelete: () =>
                               _showDeleteDialog(context, globalProduct),
                           theme: theme,

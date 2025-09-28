@@ -16,6 +16,21 @@ import 'dart:typed_data' as $typed_data;
 
 import '../../link/v1/link.pbjson.dart' as $0;
 
+@$core.Deprecated('Use supplierStatusDescriptor instead')
+const SupplierStatus$json = {
+  '1': 'SupplierStatus',
+  '2': [
+    {'1': 'SUPPLIER_STATUS_UNSPECIFIED', '2': 0},
+    {'1': 'SUPPLIER_STATUS_ACTIVE', '2': 1},
+    {'1': 'SUPPLIER_STATUS_INACTIVE', '2': 2},
+  ],
+};
+
+/// Descriptor for `SupplierStatus`. Decode as a `google.protobuf.EnumDescriptorProto`.
+final $typed_data.Uint8List supplierStatusDescriptor = $convert.base64Decode(
+    'Cg5TdXBwbGllclN0YXR1cxIfChtTVVBQTElFUl9TVEFUVVNfVU5TUEVDSUZJRUQQABIaChZTVV'
+    'BQTElFUl9TVEFUVVNfQUNUSVZFEAESHAoYU1VQUExJRVJfU1RBVFVTX0lOQUNUSVZFEAI=');
+
 @$core.Deprecated('Use linkDescriptor instead')
 const Link$json = {
   '1': 'Link',
@@ -87,7 +102,14 @@ const Supplier$json = {
       '10': 'contactAddress',
       '17': true
     },
-    {'1': 'is_active', '3': 9, '4': 1, '5': 8, '10': 'isActive'},
+    {
+      '1': 'status',
+      '3': 9,
+      '4': 1,
+      '5': 14,
+      '6': '.store.v1.SupplierStatus',
+      '10': 'status'
+    },
     {'1': 'store_ids', '3': 10, '4': 3, '5': 9, '10': 'storeIds'},
   ],
   '8': [
@@ -107,10 +129,10 @@ final $typed_data.Uint8List supplierDescriptor = $convert.base64Decode(
     'aWQYBCABKAlIAlIKbG9nb0xpbmtJZIgBARIsChJleHRlcm5hbF9saW5rc19pZHMYBSADKAlSEG'
     'V4dGVybmFsTGlua3NJZHMSKAoNY29udGFjdF9waG9uZRgGIAEoCUgDUgxjb250YWN0UGhvbmWI'
     'AQESKAoNY29udGFjdF9lbWFpbBgHIAEoCUgEUgxjb250YWN0RW1haWyIAQESLAoPY29udGFjdF'
-    '9hZGRyZXNzGAggASgJSAVSDmNvbnRhY3RBZGRyZXNziAEBEhsKCWlzX2FjdGl2ZRgJIAEoCFII'
-    'aXNBY3RpdmUSGwoJc3RvcmVfaWRzGAogAygJUghzdG9yZUlkc0IJCgdfcmVmX2lkQg4KDF9kZX'
-    'NjcmlwdGlvbkIPCg1fbG9nb19saW5rX2lkQhAKDl9jb250YWN0X3Bob25lQhAKDl9jb250YWN0'
-    'X2VtYWlsQhIKEF9jb250YWN0X2FkZHJlc3M=');
+    '9hZGRyZXNzGAggASgJSAVSDmNvbnRhY3RBZGRyZXNziAEBEjAKBnN0YXR1cxgJIAEoDjIYLnN0'
+    'b3JlLnYxLlN1cHBsaWVyU3RhdHVzUgZzdGF0dXMSGwoJc3RvcmVfaWRzGAogAygJUghzdG9yZU'
+    'lkc0IJCgdfcmVmX2lkQg4KDF9kZXNjcmlwdGlvbkIPCg1fbG9nb19saW5rX2lkQhAKDl9jb250'
+    'YWN0X3Bob25lQhAKDl9jb250YWN0X2VtYWlsQhIKEF9jb250YWN0X2FkZHJlc3M=');
 
 @$core.Deprecated('Use createSupplierRequestDescriptor instead')
 const CreateSupplierRequest$json = {

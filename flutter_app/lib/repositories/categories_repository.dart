@@ -46,11 +46,9 @@ class CategoriesRepository {
   }
 
   /// Gets all categories.
-  Future<List<Category>> getCategories() async {
+  Future<List<Category>> getCategories(FindCategoriesRequest request) async {
     try {
-      final response = await categoryServiceClient.findCategories(
-        FindCategoriesRequest(),
-      );
+      final response = await categoryServiceClient.findCategories(request);
 
       return response.categories;
     } on Exception catch (e) {

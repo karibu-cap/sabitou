@@ -418,7 +418,7 @@ class _SupplierDropdown extends StatelessWidget {
                                 .phoneNumber]
                             as String,
                     storeIds: [storeId],
-                    isActive: true,
+                    status: SupplierStatus.SUPPLIER_STATUS_ACTIVE,
                   );
                   final supplierId = await SuppliersRepository.instance
                       .createSupplier(

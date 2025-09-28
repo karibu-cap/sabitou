@@ -45,9 +45,6 @@ class GlobalProductsController extends ChangeNotifier {
   /// Wether if list is filtered.
   bool get isFiltered => _viewModel.isFiltered;
 
-  /// Returns the view model.
-  GlobalProductsViewModel get viewModel => _viewModel;
-
   /// Gets global products stream for reactive UI updates
   Stream<List<GlobalProduct>> get globalProductsStream =>
       _viewModel.globalProductsStream;

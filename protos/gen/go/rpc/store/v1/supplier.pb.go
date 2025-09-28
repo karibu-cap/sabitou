@@ -23,6 +23,57 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type SupplierStatus int32
+
+const (
+	SupplierStatus_SUPPLIER_STATUS_UNSPECIFIED SupplierStatus = 0
+	// / The product category is active.
+	SupplierStatus_SUPPLIER_STATUS_ACTIVE SupplierStatus = 1
+	// / The product category is inactive.
+	SupplierStatus_SUPPLIER_STATUS_INACTIVE SupplierStatus = 2
+)
+
+// Enum value maps for SupplierStatus.
+var (
+	SupplierStatus_name = map[int32]string{
+		0: "SUPPLIER_STATUS_UNSPECIFIED",
+		1: "SUPPLIER_STATUS_ACTIVE",
+		2: "SUPPLIER_STATUS_INACTIVE",
+	}
+	SupplierStatus_value = map[string]int32{
+		"SUPPLIER_STATUS_UNSPECIFIED": 0,
+		"SUPPLIER_STATUS_ACTIVE":      1,
+		"SUPPLIER_STATUS_INACTIVE":    2,
+	}
+)
+
+func (x SupplierStatus) Enum() *SupplierStatus {
+	p := new(SupplierStatus)
+	*p = x
+	return p
+}
+
+func (x SupplierStatus) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (SupplierStatus) Descriptor() protoreflect.EnumDescriptor {
+	return file_store_v1_supplier_proto_enumTypes[0].Descriptor()
+}
+
+func (SupplierStatus) Type() protoreflect.EnumType {
+	return &file_store_v1_supplier_proto_enumTypes[0]
+}
+
+func (x SupplierStatus) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use SupplierStatus.Descriptor instead.
+func (SupplierStatus) EnumDescriptor() ([]byte, []int) {
+	return file_store_v1_supplier_proto_rawDescGZIP(), []int{0}
+}
+
 type Link struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The label of the link.
@@ -97,7 +148,7 @@ type Supplier struct {
 	// The contact address.
 	ContactAddress *string `protobuf:"bytes,8,opt,name=contact_address,json=contactAddress,proto3,oneof" json:"contact_address,omitempty"`
 	// Whether the supplier is active.
-	IsActive bool `protobuf:"varint,9,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`
+	Status SupplierStatus `protobuf:"varint,9,opt,name=status,proto3,enum=store.v1.SupplierStatus" json:"status,omitempty"`
 	// The ids of the store of the supplier.
 	StoreIds      []string `protobuf:"bytes,10,rep,name=store_ids,json=storeIds,proto3" json:"store_ids,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -190,11 +241,11 @@ func (x *Supplier) GetContactAddress() string {
 	return ""
 }
 
-func (x *Supplier) GetIsActive() bool {
+func (x *Supplier) GetStatus() SupplierStatus {
 	if x != nil {
-		return x.IsActive
+		return x.Status
 	}
-	return false
+	return SupplierStatus_SUPPLIER_STATUS_UNSPECIFIED
 }
 
 func (x *Supplier) GetStoreIds() []string {
@@ -790,7 +841,7 @@ const file_store_v1_supplier_proto_rawDesc = "" +
 	"\x17store/v1/supplier.proto\x12\bstore.v1\x1a\x1bbuf/validate/validate.proto\x1a\x12link/v1/link.proto\".\n" +
 	"\x04Link\x12\x14\n" +
 	"\x05label\x18\x01 \x01(\tR\x05label\x12\x10\n" +
-	"\x03url\x18\x02 \x01(\tR\x03url\"\xd6\x03\n" +
+	"\x03url\x18\x02 \x01(\tR\x03url\"\xeb\x03\n" +
 	"\bSupplier\x12\x1a\n" +
 	"\x06ref_id\x18\x01 \x01(\tH\x00R\x05refId\x88\x01\x01\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12%\n" +
@@ -800,8 +851,8 @@ const file_store_v1_supplier_proto_rawDesc = "" +
 	"\x12external_links_ids\x18\x05 \x03(\tR\x10externalLinksIds\x12(\n" +
 	"\rcontact_phone\x18\x06 \x01(\tH\x03R\fcontactPhone\x88\x01\x01\x12(\n" +
 	"\rcontact_email\x18\a \x01(\tH\x04R\fcontactEmail\x88\x01\x01\x12,\n" +
-	"\x0fcontact_address\x18\b \x01(\tH\x05R\x0econtactAddress\x88\x01\x01\x12\x1b\n" +
-	"\tis_active\x18\t \x01(\bR\bisActive\x12\x1b\n" +
+	"\x0fcontact_address\x18\b \x01(\tH\x05R\x0econtactAddress\x88\x01\x01\x120\n" +
+	"\x06status\x18\t \x01(\x0e2\x18.store.v1.SupplierStatusR\x06status\x12\x1b\n" +
 	"\tstore_ids\x18\n" +
 	" \x03(\tR\bstoreIdsB\t\n" +
 	"\a_ref_idB\x0e\n" +
@@ -847,7 +898,11 @@ const file_store_v1_supplier_proto_rawDesc = "" +
 	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\n" +
 	"supplierId\"2\n" +
 	"\x16DeleteSupplierResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess2\xa3\x04\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess*k\n" +
+	"\x0eSupplierStatus\x12\x1f\n" +
+	"\x1bSUPPLIER_STATUS_UNSPECIFIED\x10\x00\x12\x1a\n" +
+	"\x16SUPPLIER_STATUS_ACTIVE\x10\x01\x12\x1c\n" +
+	"\x18SUPPLIER_STATUS_INACTIVE\x10\x022\xa3\x04\n" +
 	"\x0fSupplierService\x12S\n" +
 	"\x0eCreateSupplier\x12\x1f.store.v1.CreateSupplierRequest\x1a .store.v1.CreateSupplierResponse\x12J\n" +
 	"\vGetSupplier\x12\x1c.store.v1.GetSupplierRequest\x1a\x1d.store.v1.GetSupplierResponse\x12\\\n" +
@@ -869,50 +924,53 @@ func file_store_v1_supplier_proto_rawDescGZIP() []byte {
 	return file_store_v1_supplier_proto_rawDescData
 }
 
+var file_store_v1_supplier_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_store_v1_supplier_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
 var file_store_v1_supplier_proto_goTypes = []any{
-	(*Link)(nil),                         // 0: store.v1.Link
-	(*Supplier)(nil),                     // 1: store.v1.Supplier
-	(*CreateSupplierRequest)(nil),        // 2: store.v1.CreateSupplierRequest
-	(*CreateSupplierResponse)(nil),       // 3: store.v1.CreateSupplierResponse
-	(*GetSupplierRequest)(nil),           // 4: store.v1.GetSupplierRequest
-	(*GetSupplierResponse)(nil),          // 5: store.v1.GetSupplierResponse
-	(*GetStoreSuppliersRequest)(nil),     // 6: store.v1.GetStoreSuppliersRequest
-	(*GetStoreSuppliersResponse)(nil),    // 7: store.v1.GetStoreSuppliersResponse
-	(*StreamStoreSuppliersRequest)(nil),  // 8: store.v1.StreamStoreSuppliersRequest
-	(*StreamStoreSuppliersResponse)(nil), // 9: store.v1.StreamStoreSuppliersResponse
-	(*UpdateSupplierRequest)(nil),        // 10: store.v1.UpdateSupplierRequest
-	(*UpdateSupplierResponse)(nil),       // 11: store.v1.UpdateSupplierResponse
-	(*DeleteSupplierRequest)(nil),        // 12: store.v1.DeleteSupplierRequest
-	(*DeleteSupplierResponse)(nil),       // 13: store.v1.DeleteSupplierResponse
-	(*v1.ResourceLink)(nil),              // 14: link.v1.ResourceLink
+	(SupplierStatus)(0),                  // 0: store.v1.SupplierStatus
+	(*Link)(nil),                         // 1: store.v1.Link
+	(*Supplier)(nil),                     // 2: store.v1.Supplier
+	(*CreateSupplierRequest)(nil),        // 3: store.v1.CreateSupplierRequest
+	(*CreateSupplierResponse)(nil),       // 4: store.v1.CreateSupplierResponse
+	(*GetSupplierRequest)(nil),           // 5: store.v1.GetSupplierRequest
+	(*GetSupplierResponse)(nil),          // 6: store.v1.GetSupplierResponse
+	(*GetStoreSuppliersRequest)(nil),     // 7: store.v1.GetStoreSuppliersRequest
+	(*GetStoreSuppliersResponse)(nil),    // 8: store.v1.GetStoreSuppliersResponse
+	(*StreamStoreSuppliersRequest)(nil),  // 9: store.v1.StreamStoreSuppliersRequest
+	(*StreamStoreSuppliersResponse)(nil), // 10: store.v1.StreamStoreSuppliersResponse
+	(*UpdateSupplierRequest)(nil),        // 11: store.v1.UpdateSupplierRequest
+	(*UpdateSupplierResponse)(nil),       // 12: store.v1.UpdateSupplierResponse
+	(*DeleteSupplierRequest)(nil),        // 13: store.v1.DeleteSupplierRequest
+	(*DeleteSupplierResponse)(nil),       // 14: store.v1.DeleteSupplierResponse
+	(*v1.ResourceLink)(nil),              // 15: link.v1.ResourceLink
 }
 var file_store_v1_supplier_proto_depIdxs = []int32{
-	1,  // 0: store.v1.CreateSupplierRequest.supplier:type_name -> store.v1.Supplier
-	14, // 1: store.v1.CreateSupplierRequest.external_links:type_name -> link.v1.ResourceLink
-	1,  // 2: store.v1.GetSupplierResponse.supplier:type_name -> store.v1.Supplier
-	1,  // 3: store.v1.GetStoreSuppliersResponse.suppliers:type_name -> store.v1.Supplier
-	1,  // 4: store.v1.StreamStoreSuppliersResponse.suppliers:type_name -> store.v1.Supplier
-	1,  // 5: store.v1.UpdateSupplierRequest.supplier:type_name -> store.v1.Supplier
-	14, // 6: store.v1.UpdateSupplierRequest.external_links:type_name -> link.v1.ResourceLink
-	1,  // 7: store.v1.UpdateSupplierResponse.supplier:type_name -> store.v1.Supplier
-	2,  // 8: store.v1.SupplierService.CreateSupplier:input_type -> store.v1.CreateSupplierRequest
-	4,  // 9: store.v1.SupplierService.GetSupplier:input_type -> store.v1.GetSupplierRequest
-	6,  // 10: store.v1.SupplierService.GetStoreSuppliers:input_type -> store.v1.GetStoreSuppliersRequest
-	8,  // 11: store.v1.SupplierService.StreamStoreSuppliers:input_type -> store.v1.StreamStoreSuppliersRequest
-	10, // 12: store.v1.SupplierService.UpdateSupplier:input_type -> store.v1.UpdateSupplierRequest
-	12, // 13: store.v1.SupplierService.DeleteSupplier:input_type -> store.v1.DeleteSupplierRequest
-	3,  // 14: store.v1.SupplierService.CreateSupplier:output_type -> store.v1.CreateSupplierResponse
-	5,  // 15: store.v1.SupplierService.GetSupplier:output_type -> store.v1.GetSupplierResponse
-	7,  // 16: store.v1.SupplierService.GetStoreSuppliers:output_type -> store.v1.GetStoreSuppliersResponse
-	9,  // 17: store.v1.SupplierService.StreamStoreSuppliers:output_type -> store.v1.StreamStoreSuppliersResponse
-	11, // 18: store.v1.SupplierService.UpdateSupplier:output_type -> store.v1.UpdateSupplierResponse
-	13, // 19: store.v1.SupplierService.DeleteSupplier:output_type -> store.v1.DeleteSupplierResponse
-	14, // [14:20] is the sub-list for method output_type
-	8,  // [8:14] is the sub-list for method input_type
-	8,  // [8:8] is the sub-list for extension type_name
-	8,  // [8:8] is the sub-list for extension extendee
-	0,  // [0:8] is the sub-list for field type_name
+	0,  // 0: store.v1.Supplier.status:type_name -> store.v1.SupplierStatus
+	2,  // 1: store.v1.CreateSupplierRequest.supplier:type_name -> store.v1.Supplier
+	15, // 2: store.v1.CreateSupplierRequest.external_links:type_name -> link.v1.ResourceLink
+	2,  // 3: store.v1.GetSupplierResponse.supplier:type_name -> store.v1.Supplier
+	2,  // 4: store.v1.GetStoreSuppliersResponse.suppliers:type_name -> store.v1.Supplier
+	2,  // 5: store.v1.StreamStoreSuppliersResponse.suppliers:type_name -> store.v1.Supplier
+	2,  // 6: store.v1.UpdateSupplierRequest.supplier:type_name -> store.v1.Supplier
+	15, // 7: store.v1.UpdateSupplierRequest.external_links:type_name -> link.v1.ResourceLink
+	2,  // 8: store.v1.UpdateSupplierResponse.supplier:type_name -> store.v1.Supplier
+	3,  // 9: store.v1.SupplierService.CreateSupplier:input_type -> store.v1.CreateSupplierRequest
+	5,  // 10: store.v1.SupplierService.GetSupplier:input_type -> store.v1.GetSupplierRequest
+	7,  // 11: store.v1.SupplierService.GetStoreSuppliers:input_type -> store.v1.GetStoreSuppliersRequest
+	9,  // 12: store.v1.SupplierService.StreamStoreSuppliers:input_type -> store.v1.StreamStoreSuppliersRequest
+	11, // 13: store.v1.SupplierService.UpdateSupplier:input_type -> store.v1.UpdateSupplierRequest
+	13, // 14: store.v1.SupplierService.DeleteSupplier:input_type -> store.v1.DeleteSupplierRequest
+	4,  // 15: store.v1.SupplierService.CreateSupplier:output_type -> store.v1.CreateSupplierResponse
+	6,  // 16: store.v1.SupplierService.GetSupplier:output_type -> store.v1.GetSupplierResponse
+	8,  // 17: store.v1.SupplierService.GetStoreSuppliers:output_type -> store.v1.GetStoreSuppliersResponse
+	10, // 18: store.v1.SupplierService.StreamStoreSuppliers:output_type -> store.v1.StreamStoreSuppliersResponse
+	12, // 19: store.v1.SupplierService.UpdateSupplier:output_type -> store.v1.UpdateSupplierResponse
+	14, // 20: store.v1.SupplierService.DeleteSupplier:output_type -> store.v1.DeleteSupplierResponse
+	15, // [15:21] is the sub-list for method output_type
+	9,  // [9:15] is the sub-list for method input_type
+	9,  // [9:9] is the sub-list for extension type_name
+	9,  // [9:9] is the sub-list for extension extendee
+	0,  // [0:9] is the sub-list for field type_name
 }
 
 func init() { file_store_v1_supplier_proto_init() }
@@ -928,13 +986,14 @@ func file_store_v1_supplier_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_store_v1_supplier_proto_rawDesc), len(file_store_v1_supplier_proto_rawDesc)),
-			NumEnums:      0,
+			NumEnums:      1,
 			NumMessages:   14,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
 		GoTypes:           file_store_v1_supplier_proto_goTypes,
 		DependencyIndexes: file_store_v1_supplier_proto_depIdxs,
+		EnumInfos:         file_store_v1_supplier_proto_enumTypes,
 		MessageInfos:      file_store_v1_supplier_proto_msgTypes,
 	}.Build()
 	File_store_v1_supplier_proto = out.File

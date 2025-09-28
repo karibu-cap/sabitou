@@ -53,7 +53,7 @@ final _fakeTransport =
             ..supplier.contactEmail = 'beta@example.com'
             ..supplier.contactPhone = '696789012'
             ..supplier.contactAddress = 'Douala, Cameroun'
-            ..supplier.isActive = true;
+            ..supplier.status = SupplierStatus.SUPPLIER_STATUS_ACTIVE;
         })
         .unary(SupplierService.createSupplier, (req, _) async {
           final refId = 'supplier-${Random().nextInt(1000000)}';
@@ -82,14 +82,14 @@ final _fakeTransport =
                 ..contactEmail = 'alpha@example.com'
                 ..contactPhone = '696123456'
                 ..contactAddress = 'Yaoundé, Cameroun'
-                ..isActive = true,
+                ..status = SupplierStatus.SUPPLIER_STATUS_ACTIVE,
               Supplier()
                 ..refId = 'supplier_2'
                 ..name = 'Fournisseur Beta'
                 ..contactEmail = 'beta@example.com'
                 ..contactPhone = '696789012'
                 ..contactAddress = 'Douala, Cameroun'
-                ..isActive = true,
+                ..status = SupplierStatus.SUPPLIER_STATUS_ACTIVE,
             ]);
 
           // Simulate periodic updates every 10 seconds
@@ -103,21 +103,21 @@ final _fakeTransport =
                 ..contactEmail = 'alpha@example.com'
                 ..contactPhone = '696123456'
                 ..contactAddress = 'Yaoundé, Cameroun'
-                ..isActive = true,
+                ..status = SupplierStatus.SUPPLIER_STATUS_ACTIVE,
               Supplier()
                 ..refId = 'supplier_2'
                 ..name = 'Fournisseur Beta'
                 ..contactEmail = 'beta@example.com'
                 ..contactPhone = '696789012'
                 ..contactAddress = 'Douala, Cameroun'
-                ..isActive = true,
+                ..status = SupplierStatus.SUPPLIER_STATUS_ACTIVE,
               Supplier()
                 ..refId = 'supplier_3'
                 ..name = 'Nouveau Fournisseur'
                 ..contactEmail = 'nouveau@example.com'
                 ..contactPhone = '696999999'
                 ..contactAddress = 'Bamenda, Cameroun'
-                ..isActive = true,
+                ..status = SupplierStatus.SUPPLIER_STATUS_ACTIVE,
             ]);
         })
         // Product Service fakes

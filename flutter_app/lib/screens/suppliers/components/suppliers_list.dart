@@ -39,7 +39,7 @@ class SuppliersList extends StatelessWidget {
               const SizedBox(height: 16),
 
               StreamBuilder<List<Supplier>>(
-                stream: controller.suppliersStream,
+                stream: controller.filteredSuppliersStream,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return SupplierShimmerWidgets.buildTableShimmer();
@@ -50,7 +50,7 @@ class SuppliersList extends StatelessWidget {
                   }
                   final suppliers = snapshot.data ?? [];
                   if (suppliers.isEmpty) {
-                    return const SupplierEmptyState();
+                    return const SuppliersEmptyState();
                   }
 
                   return SupplierDataTable(

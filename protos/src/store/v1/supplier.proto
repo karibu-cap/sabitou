@@ -14,6 +14,16 @@ message Link {
   string url = 2;
 }
 
+
+
+enum SupplierStatus {
+  SUPPLIER_STATUS_UNSPECIFIED = 0;
+  /// The product category is active.
+  SUPPLIER_STATUS_ACTIVE = 1;
+  /// The product category is inactive.
+  SUPPLIER_STATUS_INACTIVE = 2;
+}
+
 message Supplier {
   // The reference id to the supplier identifier.
   optional string ref_id = 1;
@@ -40,7 +50,7 @@ message Supplier {
   optional string contact_address = 8;
 
   // Whether the supplier is active.
-  bool is_active = 9;
+  SupplierStatus status = 9;
 
   // The ids of the store of the supplier.
   repeated string store_ids = 10;

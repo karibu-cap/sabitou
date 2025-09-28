@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
-
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-import '../../../../../services/internationalization/internationalization.dart';
-import '../../../../../utils/extensions/category_extension.dart';
-
-import '../../../global_products_controller.dart';
+import '../../../services/internationalization/internationalization.dart';
+import '../../../utils/extensions/category_extension.dart';
+import 'add_global_product_view_model.dart';
 
 /// Controller for global product add/edit dialog.
-class GlobalProductAddController extends ChangeNotifier {
+class AddGlobalProductController extends ChangeNotifier {
   bool _isLoading = false;
   String _errorMessage = '';
-
-  /// The global products Controller.
-  final GlobalProductsController controller;
+  final AddGlobalProductViewModel _viewModel;
 
   /// The global product.
   final GlobalProduct? globalProduct;
@@ -49,10 +45,10 @@ class GlobalProductAddController extends ChangeNotifier {
   /// Available categories to pick from.
   List<Category> get availableCategories {
     final seen = <String>{};
+    final localCategories = _viewModel.categories;
     final categories = <Category>[];
 
-    for (final category
-        in controller.viewModel.categories.whereType<Category>()) {
+    for (final category in localCategories) {
       final identifier = category.refId.isNotEmpty
           ? category.refId
           : '${category.name.en}_${category.name.fr}';
@@ -90,11 +86,11 @@ class GlobalProductAddController extends ChangeNotifier {
       !_isLoading;
 
   /// Constructs a new
-  GlobalProductAddController({
-    required this.controller,
+  AddGlobalProductController({
     required this.intl,
+    required AddGlobalProductViewModel viewModel,
     this.globalProduct,
-  }) {
+  }) : _viewModel = viewModel {
     final globalProduct = this.globalProduct;
     if (globalProduct != null) {
       enNameController.text = globalProduct.name.en;
@@ -198,11 +194,11 @@ class GlobalProductAddController extends ChangeNotifier {
     if (this.globalProduct == null) {
       final request = CreateGlobalProductRequest(globalProduct: globalProduct);
 
-      result = await controller.createGlobalProduct(request);
+      result = await _viewModel.createGlobalProduct(request);
     } else {
       final request = UpdateGlobalProductRequest(globalProduct: globalProduct);
 
-      result = await controller.updateGlobalProduct(request);
+      result = await _viewModel.updateGlobalProduct(request);
     }
     if (result == false) {
       _errorMessage = intl.failedToSaveProduct;
@@ -238,5 +234,10 @@ class GlobalProductAddController extends ChangeNotifier {
     _isLoading = false;
     isActive = false;
     notifyListeners();
+  }
+
+  /// Gets categories.
+  Future<void> getCategories() async {
+    await _viewModel.getCategories();
   }
 }

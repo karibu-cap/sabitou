@@ -80,7 +80,9 @@ class CategoriesViewModel {
 
   /// Loads categories from repository.
   Future<void> _loadCategories() async {
-    final categories = await _categoriesRepository.getCategories();
+    final categories = await _categoriesRepository.getCategories(
+      FindCategoriesRequest(),
+    );
     _categoriesSubject.add(categories);
   }
 
