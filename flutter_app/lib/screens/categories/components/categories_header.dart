@@ -10,14 +10,6 @@ class CategoriesHeader extends StatelessWidget {
   /// Construts a new CategoriesHeader.
   const CategoriesHeader({super.key});
 
-  /// Show category dialog for adding or editing
-  void _showCategoryDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => ShadDialog(child: CategoryFormDialog()),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
@@ -44,7 +36,7 @@ class CategoriesHeader extends StatelessWidget {
           ],
         ),
         ShadButton(
-          onPressed: () => _showCategoryDialog(context),
+          onPressed: () => showAddCategoryDialog(context),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [

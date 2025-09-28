@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../../../services/internationalization/internationalization.dart';
@@ -129,14 +130,6 @@ class _SheetHeader extends StatelessWidget {
     final theme = ShadTheme.of(context);
     final controller = context.watch<SelectCategoriesController>();
 
-    /// Show category dialog for adding or editing
-    void _showAddCategoryDialog(BuildContext context) {
-      showDialog(
-        context: context,
-        builder: (context) => ShadDialog(child: CategoryFormDialog()),
-      );
-    }
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
@@ -181,7 +174,11 @@ class _SheetHeader extends StatelessWidget {
               ),
               const SizedBox(width: 12),
               ShadButton(
-                onPressed: () => _showAddCategoryDialog(context),
+                onPressed: () => showAddCategoryDialog(
+                  context,
+                  category: Category()
+                    ..type = CategoryType.CATEGORY_TYPE_BUSINESS,
+                ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
