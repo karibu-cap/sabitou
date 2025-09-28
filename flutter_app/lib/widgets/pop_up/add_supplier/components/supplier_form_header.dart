@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
-import '../../../../../services/internationalization/internationalization.dart';
+import '../../../../services/internationalization/internationalization.dart';
 
 /// Header widget for supplier form dialog.
 class SupplierFormHeader extends StatelessWidget {

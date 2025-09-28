@@ -126,16 +126,20 @@ class SupplierCellBuilders {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: supplier.isActive
+        color: supplier.status == SupplierStatus.SUPPLIER_STATUS_ACTIVE
             ? AppColors.dartGreen.withValues(alpha: 0.1)
             : AppColors.red.withValues(alpha: 0.1),
         borderRadius: const BorderRadius.all(Radius.circular(12)),
       ),
       child: Text(
-        supplier.isActive ? intl.activeText : intl.inactiveText,
+        supplier.status == SupplierStatus.SUPPLIER_STATUS_ACTIVE
+            ? intl.activeText
+            : intl.inactiveText,
         style: TextStyle(
           fontSize: 12,
-          color: supplier.isActive ? AppColors.dartGreen : AppColors.red,
+          color: supplier.status == SupplierStatus.SUPPLIER_STATUS_ACTIVE
+              ? AppColors.dartGreen
+              : AppColors.red,
           fontWeight: FontWeight.w600,
         ),
       ),

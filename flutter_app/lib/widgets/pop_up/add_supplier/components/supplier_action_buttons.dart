@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-import '../../../../../services/internationalization/internationalization.dart';
-import '../suppliers_add/suppliers_add_controller.dart';
+import '../../../../services/internationalization/internationalization.dart';
+import '../add_supplier_controller.dart';
 
 /// Action buttons widget for supplier form.
 class SupplierActionButtons extends StatelessWidget {
@@ -28,7 +28,7 @@ class SupplierActionButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final intl = AppInternationalizationService.to;
-    final controller = Provider.of<SuppliersAddController>(context);
+    final controller = Provider.of<AddSupplierController>(context);
     final theme = ShadTheme.of(context);
 
     return Row(

@@ -3,39 +3,40 @@ import 'package:provider/provider.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-import '../../../../../services/internationalization/internationalization.dart';
-import '../../../../../utils/common_functions.dart';
-import '../../../suppliers_controller.dart';
-import '../form_components/supplier_action_buttons.dart';
-import '../form_components/supplier_address_field.dart';
-import '../form_components/supplier_contact_fields.dart';
-import '../form_components/supplier_form_header.dart';
-import '../form_components/supplier_info_card.dart';
-import '../form_components/supplier_name_status_fields.dart';
-import '../form_components/supplier_notes_field.dart';
-import 'suppliers_add_controller.dart';
+import '../../../services/internationalization/internationalization.dart';
+import '../../../utils/common_functions.dart';
+import 'add_supplier_controller.dart';
+import 'add_supplier_view_model.dart';
+import 'components/supplier_action_buttons.dart';
+import 'components/supplier_address_field.dart';
+import 'components/supplier_contact_fields.dart';
+import 'components/supplier_form_header.dart';
+import 'components/supplier_info_card.dart';
+import 'components/supplier_name_status_fields.dart';
+import 'components/supplier_notes_field.dart';
+
+/// Shows supplier form dialog for editing.
+void showAddSupplierDialog(BuildContext context, {Supplier? supplier}) {
+  showDialog<bool>(
+    context: context,
+    builder: (context) => SupplierFormDialog(supplier: supplier),
+  );
+}
 
 /// Modal for viewing and modifying user permissions.
 class SupplierFormDialog extends StatelessWidget {
   /// The supplier.
   final Supplier? supplier;
 
-  /// The suppliers controller.
-  final SuppliersController suppliersController;
-
   /// Constructs a new UserPermissionsModal.
-  const SupplierFormDialog({
-    super.key,
-    required this.suppliersController,
-    required this.supplier,
-  });
+  const SupplierFormDialog({super.key, required this.supplier});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => SuppliersAddController(
+      create: (context) => AddSupplierController(
         intl: AppInternationalizationService.to,
-        controller: suppliersController,
+        viewModel: AddSupplierViewModel(),
         supplier: supplier,
       ),
       child: _SupplierFormDialogContent(supplier: supplier),
@@ -54,7 +55,7 @@ class _SupplierFormDialogContent extends StatelessWidget {
   /// Handles the save operation for the supplier form.
   Future<void> _saveSupplier(
     BuildContext context,
-    SuppliersAddController controller,
+    AddSupplierController controller,
   ) async {
     final validation = controller.validateForm();
 
@@ -94,7 +95,7 @@ class _SupplierFormDialogContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Provider.of<SuppliersAddController>(context);
+    final controller = Provider.of<AddSupplierController>(context);
 
     return LayoutBuilder(
       builder: (context, constraints) {

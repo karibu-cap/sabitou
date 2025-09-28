@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../services/internationalization/internationalization.dart';
 import 'suppliers_view_model.dart';
@@ -26,14 +28,32 @@ class SuppliersController extends ChangeNotifier {
   /// Error message to display when operations fail.
   String _errorMessage = '';
 
+  /// Text controller for search input field.
+  final TextEditingController searchController = TextEditingController();
+
+  /// Text controller for status filter input field.
+  final ShadSelectController<SupplierStatus>? statusFilterController =
+      ShadSelectController<SupplierStatus>();
+
+  /// Gets the selected category status.
+  BehaviorSubject<SupplierStatus?> get selectedStatus =>
+      _viewModel.selectedStatus;
+
   /// Loading state for suppliers operations.
   bool get isLoading => _isLoading;
 
   /// Returns the last error message from failed operations.
   String get errorMessage => _errorMessage;
 
-  /// Returns the view model.
-  SuppliersViewModel get viewModel => _viewModel;
+  /// Gets the search query.
+  BehaviorSubject<String> get searchQuery => _viewModel.searchQuery;
+
+  /// Wether if list is filtered.
+  bool get isFiltered => _viewModel.isFiltered;
+
+  /// Gets filtered suppliers stream for reactive UI updates
+  Stream<List<Supplier>> get filteredSuppliersStream =>
+      _viewModel.filteredSuppliersStream;
 
   /// Gets suppliers stream for reactive UI updates
   Stream<List<Supplier>> get suppliersStream => _viewModel.suppliersStream;
@@ -89,5 +109,12 @@ class SuppliersController extends ChangeNotifier {
       0.0,
       (sum, product) => sum + (product.salePrice * product.stockQuantity),
     );
+  }
+
+  /// Clears filters.
+  void clearFilters() {
+    searchQuery.add('');
+    selectedStatus.add(null);
+    searchController.clear();
   }
 }

@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../../services/internationalization/internationalization.dart';
+import '../../../../widgets/pop_up/add_global_product/add_global_product_view.dart';
 import '../../global_products_controller.dart';
-import '../dialogs/add_global_product/add_global_product_view.dart';
 
 /// Widget displayed when there are no products to show.
 ///
@@ -13,21 +13,6 @@ import '../dialogs/add_global_product/add_global_product_view.dart';
 class GlobalProductsEmptyState extends StatelessWidget {
   /// Creates a new [GlobalProductsEmptyState].
   const GlobalProductsEmptyState({super.key});
-
-  void _showAddGlobalProductDialog(
-    BuildContext context,
-    GlobalProductsController controller,
-  ) {
-    showDialog(
-      context: context,
-      builder: (dialogContext) => ChangeNotifierProvider.value(
-        value: controller,
-        child: ShadDialog(
-          child: GlobalProductFormDialog(globalProductsController: controller),
-        ),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +62,7 @@ class GlobalProductsEmptyState extends StatelessWidget {
           // Action button
           if (!controller.isFiltered) ...[
             ShadButton(
-              onPressed: () => _showAddGlobalProductDialog(context, controller),
+              onPressed: () => showGlobalProductDialog(context),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [

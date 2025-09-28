@@ -10,6 +10,15 @@ import '../../input/form_fields.dart';
 import 'add_category_controller.dart';
 import 'add_category_view_model.dart';
 
+/// Shows the add/edit category dialog.
+void showAddCategoryDialog(BuildContext context, {Category? category}) {
+  showDialog(
+    context: context,
+    builder: (dialogContext) =>
+        ShadDialog(child: CategoryFormDialog(category: category)),
+  );
+}
+
 /// Modal for viewing and modifying user permissions.
 class CategoryFormDialog extends StatelessWidget {
   /// The category.

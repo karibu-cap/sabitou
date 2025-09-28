@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-import '../../../../../../../services/internationalization/internationalization.dart';
-import '../../../../../../../utils/extensions/category_extension.dart';
-import '../../../../../../../widgets/pop_up/add_category/add_category_view.dart';
+import '../../../../../services/internationalization/internationalization.dart';
+import '../../../../../utils/extensions/category_extension.dart';
+import '../../../add_category/add_category_view.dart';
 import '../../add_global_product_controller.dart';
 import 'select_categories_controller.dart';
 
 /// Opens the modal bottom sheet responsible for displaying the category selector.
 Future<void> showSelectCategoriesSheet(
   BuildContext context,
-  GlobalProductAddController controller,
+  AddGlobalProductController controller,
 ) {
   return showModalBottomSheet<void>(
     context: context,
@@ -22,7 +22,7 @@ Future<void> showSelectCategoriesSheet(
     builder: (sheetContext) {
       return ChangeNotifierProvider<SelectCategoriesController>(
         create: (_) =>
-            SelectCategoriesController(globalProductController: controller),
+            SelectCategoriesController(addGlobalProductController: controller),
         child: const SelectCategoriesSheet(),
       );
     },

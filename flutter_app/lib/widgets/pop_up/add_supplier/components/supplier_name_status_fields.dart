@@ -3,10 +3,10 @@ import 'package:provider/provider.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-import '../../../../../services/internationalization/internationalization.dart';
-import '../../../../../utils/form/validation.dart';
-import '../../../../../widgets/input/form_fields.dart';
-import '../suppliers_add/suppliers_add_controller.dart';
+import '../../../../services/internationalization/internationalization.dart';
+import '../../../../utils/form/validation.dart';
+import '../../../input/form_fields.dart';
+import '../add_supplier_controller.dart';
 
 /// Name and status fields widget for supplier form.
 class SupplierNameStatusFields extends StatelessWidget {
@@ -19,7 +19,7 @@ class SupplierNameStatusFields extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final intl = AppInternationalizationService.to;
-    final controller = Provider.of<SuppliersAddController>(context);
+    final controller = Provider.of<AddSupplierController>(context);
 
     return Row(
       children: [
@@ -49,15 +49,22 @@ class SupplierNameStatusFields extends StatelessWidget {
               Row(
                 children: [
                   ShadSwitch(
-                    value: controller.isActive,
-                    onChanged: controller.setIsActive,
+                    value:
+                        controller.supplierStatus ==
+                        SupplierStatus.SUPPLIER_STATUS_ACTIVE,
+                    onChanged: controller.setSupplierStatus,
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    controller.isActive ? intl.active : intl.inactive,
+                    controller.supplierStatus ==
+                            SupplierStatus.SUPPLIER_STATUS_ACTIVE
+                        ? intl.active
+                        : intl.inactive,
                     style: TextStyle(
                       fontSize: 12,
-                      color: controller.isActive
+                      color:
+                          controller.supplierStatus ==
+                              SupplierStatus.SUPPLIER_STATUS_ACTIVE
                           ? Colors.green.shade700
                           : Colors.red.shade700,
                       fontWeight: FontWeight.w500,

@@ -16,8 +16,11 @@ import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import '../../link/v1/link.pb.dart' as $0;
+import 'supplier.pbenum.dart';
 
 export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
+
+export 'supplier.pbenum.dart';
 
 class Link extends $pb.GeneratedMessage {
   factory Link({
@@ -98,7 +101,7 @@ class Supplier extends $pb.GeneratedMessage {
     $core.String? contactPhone,
     $core.String? contactEmail,
     $core.String? contactAddress,
-    $core.bool? isActive,
+    SupplierStatus? status,
     $core.Iterable<$core.String>? storeIds,
   }) {
     final result = create();
@@ -111,7 +114,7 @@ class Supplier extends $pb.GeneratedMessage {
     if (contactPhone != null) result.contactPhone = contactPhone;
     if (contactEmail != null) result.contactEmail = contactEmail;
     if (contactAddress != null) result.contactAddress = contactAddress;
-    if (isActive != null) result.isActive = isActive;
+    if (status != null) result.status = status;
     if (storeIds != null) result.storeIds.addAll(storeIds);
     return result;
   }
@@ -137,7 +140,10 @@ class Supplier extends $pb.GeneratedMessage {
     ..aOS(6, _omitFieldNames ? '' : 'contactPhone')
     ..aOS(7, _omitFieldNames ? '' : 'contactEmail')
     ..aOS(8, _omitFieldNames ? '' : 'contactAddress')
-    ..aOB(9, _omitFieldNames ? '' : 'isActive')
+    ..e<SupplierStatus>(9, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
+        defaultOrMaker: SupplierStatus.SUPPLIER_STATUS_UNSPECIFIED,
+        valueOf: SupplierStatus.valueOf,
+        enumValues: SupplierStatus.values)
     ..pPS(10, _omitFieldNames ? '' : 'storeIds')
     ..hasRequiredFields = false;
 
@@ -236,13 +242,13 @@ class Supplier extends $pb.GeneratedMessage {
 
   /// Whether the supplier is active.
   @$pb.TagNumber(9)
-  $core.bool get isActive => $_getBF(8);
+  SupplierStatus get status => $_getN(8);
   @$pb.TagNumber(9)
-  set isActive($core.bool value) => $_setBool(8, value);
+  set status(SupplierStatus value) => $_setField(9, value);
   @$pb.TagNumber(9)
-  $core.bool hasIsActive() => $_has(8);
+  $core.bool hasStatus() => $_has(8);
   @$pb.TagNumber(9)
-  void clearIsActive() => $_clearField(9);
+  void clearStatus() => $_clearField(9);
 
   /// The ids of the store of the supplier.
   @$pb.TagNumber(10)

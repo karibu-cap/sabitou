@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
-import '../../../../../../../utils/extensions/category_extension.dart';
+import '../../../../../utils/extensions/category_extension.dart';
 import '../../add_global_product_controller.dart';
 
 /// Controller dedicated to the category selection sheet.
 class SelectCategoriesController extends ChangeNotifier {
   /// Constructs a new SelectCategoriesController.
-  SelectCategoriesController({required this.globalProductController});
+  SelectCategoriesController({required this.addGlobalProductController});
 
   /// The controller used by the global product form.
-  final GlobalProductAddController globalProductController;
+  final AddGlobalProductController addGlobalProductController;
 
   String _searchQuery = '';
 
@@ -20,7 +20,7 @@ class SelectCategoriesController extends ChangeNotifier {
   /// List of categories filtered by the current search query.
   List<Category> get filteredCategories {
     final query = _searchQuery.trim().toLowerCase();
-    final categories = globalProductController.availableCategories;
+    final categories = addGlobalProductController.availableCategories;
 
     if (query.isEmpty) {
       return categories;
@@ -37,12 +37,12 @@ class SelectCategoriesController extends ChangeNotifier {
 
   /// Whether the provided category is currently selected.
   bool isCategorySelected(Category category) {
-    return globalProductController.isCategorySelected(category);
+    return addGlobalProductController.isCategorySelected(category);
   }
 
   /// Toggles the selection of the provided category.
   void toggleCategory(Category category) {
-    globalProductController.toggleCategory(category);
+    addGlobalProductController.toggleCategory(category);
     notifyListeners();
   }
 

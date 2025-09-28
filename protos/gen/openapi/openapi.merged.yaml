@@ -7386,10 +7386,10 @@ components:
           title: contact_address
           description: The contact address.
           nullable: true
-        isActive:
-          type: boolean
-          title: is_active
+        status:
+          title: status
           description: Whether the supplier is active.
+          $ref: '#/components/schemas/store.v1.SupplierStatus'
         storeIds:
           type: array
           items:
@@ -7398,6 +7398,13 @@ components:
           description: The ids of the store of the supplier.
       title: Supplier
       additionalProperties: false
+    store.v1.SupplierStatus:
+      type: string
+      title: SupplierStatus
+      enum:
+        - SUPPLIER_STATUS_UNSPECIFIED
+        - SUPPLIER_STATUS_ACTIVE
+        - SUPPLIER_STATUS_INACTIVE
     store.v1.UpdateSupplierRequest:
       type: object
       properties:

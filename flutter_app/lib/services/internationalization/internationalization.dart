@@ -1559,6 +1559,14 @@ class AppInternationalizationService extends ChangeNotifier {
       'fr': 'La description du produit est trop courte',
     },
     'globalProducts': {'en': 'Global Products', 'fr': 'Produits globaux'},
+    'searchSuppliers': {
+      'en': 'Search suppliers by name or status...',
+      'fr': 'Rechercher des fournisseurs par nom ou statut...',
+    },
+    'noSuppliersMatchFilters': {
+      'en': 'No suppliers match your filters',
+      'fr': 'Aucun fournisseur ne correspond à vos filtres',
+    },
   };
 
   /// Direct access to the internationalization service.
@@ -3674,6 +3682,13 @@ class AppInternationalizationService extends ChangeNotifier {
 
   /// Returns the localized value of globalProducts.
   String get globalProducts => _stringOfLocalizedValue('globalProducts');
+
+  /// Returns the localized value of searchSuppliers.
+  String get searchSuppliers => _stringOfLocalizedValue('searchSuppliers');
+
+  /// Returns the localized value of noSuppliersMatchFilters.
+  String get noSuppliersMatchFilters =>
+      _stringOfLocalizedValue('noSuppliersMatchFilters');
 
   /// Changes the locale.
   void changeLocale([Locale? newLocale]) {

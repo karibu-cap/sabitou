@@ -5,7 +5,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../../services/internationalization/internationalization.dart';
 import '../../suppliers_controller.dart';
-import '../dialogs/suppliers_add/suppliers_add_view.dart';
+import '../../../../widgets/pop_up/add_supplier/add_supplier_view.dart';
 import 'supplier_cell_builders.dart';
 import 'supplier_delete_dialog.dart';
 
@@ -23,22 +23,6 @@ class SupplierDataTable extends StatelessWidget {
     required this.suppliers,
     required this.products,
   });
-
-  /// Shows supplier form dialog for editing.
-  void _showSupplierDialog(BuildContext context, Supplier supplier) {
-    final controller = Provider.of<SuppliersController>(context, listen: false);
-
-    showDialog<bool>(
-      context: context,
-      builder: (context) => ChangeNotifierProvider.value(
-        value: controller,
-        child: SupplierFormDialog(
-          suppliersController: controller,
-          supplier: supplier,
-        ),
-      ),
-    );
-  }
 
   /// Shows delete confirmation dialog.
   void _showDeleteDialog(
@@ -133,7 +117,10 @@ class SupplierDataTable extends StatelessWidget {
                       ),
                       DataCell(
                         SupplierCellBuilders.buildActionsCell(
-                          onEdit: () => _showSupplierDialog(context, supplier),
+                          onEdit: () => showAddSupplierDialog(
+                            context,
+                            supplier: supplier,
+                          ),
                           onDelete: () => _showDeleteDialog(
                             context,
                             supplier,
