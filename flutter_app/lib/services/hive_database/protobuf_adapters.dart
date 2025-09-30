@@ -56,19 +56,19 @@ class CategoryAdapter extends TypeAdapter<Category> {
 }
 
 /// Hive TypeAdapter for Order protobuf
-class OrderAdapter extends TypeAdapter<Order> {
+class SalesOrderAdapter extends TypeAdapter<SalesOrder> {
   @override
   final int typeId = 3;
 
   @override
-  Order read(BinaryReader reader) {
+  SalesOrder read(BinaryReader reader) {
     final bytes = reader.readByteList();
 
-    return Order.fromBuffer(bytes);
+    return SalesOrder.fromBuffer(bytes);
   }
 
   @override
-  void write(BinaryWriter writer, Order obj) {
+  void write(BinaryWriter writer, SalesOrder obj) {
     writer.writeByteList(obj.writeToBuffer());
   }
 }
@@ -103,7 +103,7 @@ void registerProtobufAdapters() {
     Hive.registerAdapter(CategoryAdapter());
   }
   if (!Hive.isAdapterRegistered(3)) {
-    Hive.registerAdapter(OrderAdapter());
+    Hive.registerAdapter(SalesOrderAdapter());
   }
   if (!Hive.isAdapterRegistered(4)) {
     Hive.registerAdapter(SyncOperationAdapter());

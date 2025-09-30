@@ -84,7 +84,7 @@ final supplierFakeTransport = FakeTransportBuilder()
         ]);
     })
     // Product Service fakes
-    .unary(ProductService.findStoreProducts, (req, _) async {
+    .unary(StoreProductService.findStoreProducts, (req, _) async {
       final request = req;
 
       return FindStoreProductsResponse(
@@ -107,7 +107,7 @@ final supplierFakeTransport = FakeTransportBuilder()
         ],
       );
     })
-    .server(ProductService.streamStoreProducts, (req, _) async* {
+    .server(StoreProductService.streamStoreProducts, (req, _) async* {
       final request = req;
       yield StreamStoreProductsResponse()
         ..products.addAll([
@@ -116,9 +116,7 @@ final supplierFakeTransport = FakeTransportBuilder()
             globalProductId: 'global_product_1',
             supplierId: 'supplier_1',
             storeId: request.storeId,
-            minStockThreshold: 10,
             salePrice: 10000,
-            stockQuantity: 20,
             imagesLinksIds: ['image_1', 'image_2'],
           ),
           StoreProduct(
@@ -126,9 +124,7 @@ final supplierFakeTransport = FakeTransportBuilder()
             globalProductId: 'global_product_2',
             supplierId: 'supplier_1',
             storeId: request.storeId,
-            minStockThreshold: 10,
             salePrice: 15000,
-            stockQuantity: 10,
             imagesLinksIds: ['image_1', 'image_2'],
           ),
           StoreProduct(
@@ -136,9 +132,7 @@ final supplierFakeTransport = FakeTransportBuilder()
             globalProductId: 'global_product_3',
             supplierId: 'supplier_2',
             storeId: request.storeId,
-            minStockThreshold: 10,
             salePrice: 2000,
-            stockQuantity: 200,
             imagesLinksIds: ['image_1', 'image_2'],
           ),
           StoreProduct(
@@ -146,9 +140,7 @@ final supplierFakeTransport = FakeTransportBuilder()
             globalProductId: 'global_product_4',
             supplierId: 'supplier_3',
             storeId: request.storeId,
-            minStockThreshold: 10,
             salePrice: 400,
-            stockQuantity: 500,
             imagesLinksIds: ['image_1', 'image_2'],
           ),
         ]);

@@ -1,7 +1,7 @@
 import 'dart:async';
 
+import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
-import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import 'dashboard_view_model.dart';
 
@@ -14,24 +14,25 @@ class DashboardController extends ChangeNotifier {
   String get error => viewModel.error;
 
   /// Dashboard stats.
-  DashboardStatsData get stats => viewModel.stats;
-
-  /// List of low stock products.
-  List<StoreProduct> get lowStockProducts => viewModel.lowStockProducts;
-
-  /// List of expiring products.
-  List<StoreProduct> get expiringProducts => viewModel.expiringProducts;
-
-  /// Map of global products for quick lookup (only for low stock and expiring).
-  Map<String, GlobalProduct> get globalProducts => viewModel.globalProducts;
+  DashboardData get stats => viewModel.stats;
 
   /// Completer for loading state.
   Completer<bool> get completer => viewModel.completer;
 
   /// Calculates the percentage change.
-  double calculatePercentChange(num current, num? previous) {
-    if (previous == null || previous == 0) return 0;
+  /// Takes into account Int64 values for monetary amounts.
+  /// Returns the percentage change between two values as a double.
+  double calculatePercentChange(dynamic current, dynamic previous) {
+    // Handle Int64 values
+    final num currentValue = current is Int64
+        ? current.toInt()
+        : (current as num? ?? 0);
+    final num previousValue = previous is Int64
+        ? previous.toInt()
+        : (previous as num? ?? 0);
 
-    return ((current - previous) / previous) * 100;
+    if (previousValue == 0) return 0.0;
+
+    return ((currentValue - previousValue) / previousValue) * 100.0;
   }
 }

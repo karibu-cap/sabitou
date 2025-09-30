@@ -16,17 +16,19 @@ class SalesByCategories extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = context.watch<ReportsController>();
 
-    final List<ChartData<String>> chartDatas = controller.categorySalesData
-        .map((e) => e.categoryName)
-        .toSet()
+    // Use category sales data from the reports view model (pre-calculated by backend)
+    final categorySalesData = controller.categorySalesData;
+
+    if (categorySalesData.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    final List<ChartData<String>> chartDatas = categorySalesData
         .map(
-          (e) => ChartData(
-            x: e,
-            y: controller.categorySalesData
-                .where((element) => element.categoryName == e)
-                .map((e) => e.itemQuantity)
-                .reduce((value, element) => value + element),
-            pointColor: controller.stringToColor(e),
+          (category) => ChartData<String>(
+            x: category.categoryName,
+            y: category.totalSalesAmount,
+            pointColor: controller.stringToColor(category.categoryName),
           ),
         )
         .toList();

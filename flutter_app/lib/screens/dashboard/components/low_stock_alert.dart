@@ -15,7 +15,7 @@ class LowStockAlert extends StatelessWidget {
   /// Constructor of new [LowStockAlert].
   const LowStockAlert({super.key});
 
-  Color _getCriticalityColor(int quantity, int threshold) {
+  Color _getCriticalityColor(double quantity, double threshold) {
     final ratio = quantity / threshold;
     if (ratio <= 0.5) return AppColors.red;
     if (ratio <= 0.8) return AppColors.orange500;
@@ -31,7 +31,7 @@ class LowStockAlert extends StatelessWidget {
           return const SizedBox.shrink();
         }
 
-        final lowStock = controller.lowStockProducts;
+        final lowStock = controller.stats.lowStockAlerts;
 
         return AlertCard(
           title: Intls.to.lowStockAlert,
@@ -43,29 +43,23 @@ class LowStockAlert extends StatelessWidget {
                   message: Intls.to.allProductsAreWellStocked,
                 )
               : Column(
-                  children: lowStock.map((businessProduct) {
+                  children: lowStock.map((product) {
                     final criticalityColor = _getCriticalityColor(
-                      businessProduct.stockQuantity,
-                      businessProduct.minStockThreshold,
+                      product.level.quantityAvailable,
+                      product.level.minThreshold,
                     );
-
-                    final globalProduct = controller
-                        .globalProducts[businessProduct.globalProductId];
-
-                    if (globalProduct == null) {
-                      return const SizedBox.shrink();
-                    }
 
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 12),
                       child: ProductItemCard(
-                        productName: globalProduct.label,
+                        productName: product.globalProduct.label,
                         subtitle:
-                            'Reorder threshold: ${businessProduct.minStockThreshold}',
-                        badgeText: '${businessProduct.stockQuantity} left',
+                            'Reorder threshold: ${product.level.minThreshold.toInt()}',
+                        badgeText:
+                            '${product.level.quantityAvailable.toInt()} left',
                         badgeColor: criticalityColor,
                         additionalInfo:
-                            '\$${(businessProduct.salePrice / 100).toStringAsFixed(2)}/unit',
+                            '\$${(product.product.salePrice.toInt() / 100).toStringAsFixed(2)}/unit',
                       ),
                     );
                   }).toList(),

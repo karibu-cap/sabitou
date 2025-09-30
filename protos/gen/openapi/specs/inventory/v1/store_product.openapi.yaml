@@ -1,0 +1,1138 @@
+openapi: 3.1.0
+info:
+  title: inventory.v1
+paths:
+  /inventory.v1.StoreProductService/AddProduct:
+    post:
+      tags:
+        - inventory.v1.StoreProductService
+      summary: Adds a product to a store.
+      description: Adds a product to a store.
+      operationId: inventory.v1.StoreProductService.AddProduct
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inventory.v1.AddStoreProductRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inventory.v1.AddStoreProductResponse'
+  /inventory.v1.StoreProductService/CreateGlobalProduct:
+    post:
+      tags:
+        - inventory.v1.StoreProductService
+      summary: Creates a global product.
+      description: Creates a global product.
+      operationId: inventory.v1.StoreProductService.CreateGlobalProduct
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inventory.v1.CreateGlobalProductRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inventory.v1.CreateGlobalProductResponse'
+  /inventory.v1.StoreProductService/DeleteGlobalProduct:
+    post:
+      tags:
+        - inventory.v1.StoreProductService
+      summary: Deletes a global product.
+      description: Deletes a global product.
+      operationId: inventory.v1.StoreProductService.DeleteGlobalProduct
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inventory.v1.DeleteGlobalProductRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inventory.v1.DeleteGlobalProductResponse'
+  /inventory.v1.StoreProductService/DeleteProduct:
+    post:
+      tags:
+        - inventory.v1.StoreProductService
+      summary: Deletes a store product.  Only store products that are not in any orders can be deleted.
+      description: |-
+        Deletes a store product.
+         Only store products that are not in any orders can be deleted.
+      operationId: inventory.v1.StoreProductService.DeleteProduct
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inventory.v1.DeleteStoreProductRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inventory.v1.DeleteStoreProductResponse'
+  /inventory.v1.StoreProductService/FindGlobalProducts:
+    post:
+      tags:
+        - inventory.v1.StoreProductService
+      summary: Finds products by name.
+      description: Finds products by name.
+      operationId: inventory.v1.StoreProductService.FindGlobalProducts
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inventory.v1.FindGlobalProductsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inventory.v1.FindGlobalProductsResponse'
+  /inventory.v1.StoreProductService/FindProductCategory:
+    post:
+      tags:
+        - inventory.v1.StoreProductService
+      summary: Finds categories by name.
+      description: Finds categories by name.
+      operationId: inventory.v1.StoreProductService.FindProductCategory
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inventory.v1.FindProductCategoryRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inventory.v1.FindProductCategoryResponse'
+  /inventory.v1.StoreProductService/FindStoreProducts:
+    post:
+      tags:
+        - inventory.v1.StoreProductService
+      summary: Finds products by name.
+      description: Finds products by name.
+      operationId: inventory.v1.StoreProductService.FindStoreProducts
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inventory.v1.FindStoreProductsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inventory.v1.FindStoreProductsResponse'
+  /inventory.v1.StoreProductService/GetProduct:
+    post:
+      tags:
+        - inventory.v1.StoreProductService
+      summary: Gets a store product by id.
+      description: Gets a store product by id.
+      operationId: inventory.v1.StoreProductService.GetProduct
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inventory.v1.GetStoreProductRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inventory.v1.GetStoreProductResponse'
+  /inventory.v1.StoreProductService/ListProducts:
+    post:
+      tags:
+        - inventory.v1.StoreProductService
+      summary: Lists products with pagination and filters.
+      description: Lists products with pagination and filters.
+      operationId: inventory.v1.StoreProductService.ListProducts
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inventory.v1.ListProductsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inventory.v1.ListProductsResponse'
+  /inventory.v1.StoreProductService/StreamGlobalProducts: {}
+  /inventory.v1.StoreProductService/StreamStoreProducts: {}
+  /inventory.v1.StoreProductService/UpdateGlobalProduct:
+    post:
+      tags:
+        - inventory.v1.StoreProductService
+      summary: Updates a global product.
+      description: Updates a global product.
+      operationId: inventory.v1.StoreProductService.UpdateGlobalProduct
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inventory.v1.UpdateGlobalProductRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inventory.v1.UpdateGlobalProductResponse'
+  /inventory.v1.StoreProductService/UpdateProduct:
+    post:
+      tags:
+        - inventory.v1.StoreProductService
+      summary: Updates a store product.
+      description: Updates a store product.
+      operationId: inventory.v1.StoreProductService.UpdateProduct
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inventory.v1.UpdateStoreProductRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inventory.v1.UpdateStoreProductResponse'
+components:
+  schemas:
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+        - 1
+      description: Define the version of the Connect protocol
+      const: 1
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+            - not_found
+          enum:
+            - canceled
+            - unknown
+            - invalid_argument
+            - deadline_exceeded
+            - not_found
+            - already_exists
+            - permission_denied
+            - resource_exhausted
+            - failed_precondition
+            - aborted
+            - out_of_range
+            - unimplemented
+            - internal
+            - unavailable
+            - data_loss
+            - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/connect.error_details.Any'
+          description: A list of messages that carry the error details. There is no limit on the number of messages.
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+    connect.error_details.Any:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
+        value:
+          type: string
+          format: binary
+          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
+        debug:
+          oneOf:
+            - type: object
+              title: Any
+              additionalProperties: true
+              description: Detailed error information.
+          discriminator:
+            propertyName: type
+          title: Debug
+          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
+    google.protobuf.Timestamp:
+      type: string
+      examples:
+        - "2023-01-15T01:30:15.01Z"
+        - "2024-12-25T12:00:00Z"
+      format: date-time
+      description: |-
+        A Timestamp represents a point in time independent of any time zone or local
+         calendar, encoded as a count of seconds and fractions of seconds at
+         nanosecond resolution. The count is relative to an epoch at UTC midnight on
+         January 1, 1970, in the proleptic Gregorian calendar which extends the
+         Gregorian calendar backwards to year one.
+
+         All minutes are 60 seconds long. Leap seconds are "smeared" so that no leap
+         second table is needed for interpretation, using a [24-hour linear
+         smear](https://developers.google.com/time/smear).
+
+         The range is from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z. By
+         restricting to that range, we ensure that we can convert to and from [RFC
+         3339](https://www.ietf.org/rfc/rfc3339.txt) date strings.
+
+         # Examples
+
+         Example 1: Compute Timestamp from POSIX `time()`.
+
+             Timestamp timestamp;
+             timestamp.set_seconds(time(NULL));
+             timestamp.set_nanos(0);
+
+         Example 2: Compute Timestamp from POSIX `gettimeofday()`.
+
+             struct timeval tv;
+             gettimeofday(&tv, NULL);
+
+             Timestamp timestamp;
+             timestamp.set_seconds(tv.tv_sec);
+             timestamp.set_nanos(tv.tv_usec * 1000);
+
+         Example 3: Compute Timestamp from Win32 `GetSystemTimeAsFileTime()`.
+
+             FILETIME ft;
+             GetSystemTimeAsFileTime(&ft);
+             UINT64 ticks = (((UINT64)ft.dwHighDateTime) << 32) | ft.dwLowDateTime;
+
+             // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z
+             // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z.
+             Timestamp timestamp;
+             timestamp.set_seconds((INT64) ((ticks / 10000000) - 11644473600LL));
+             timestamp.set_nanos((INT32) ((ticks % 10000000) * 100));
+
+         Example 4: Compute Timestamp from Java `System.currentTimeMillis()`.
+
+             long millis = System.currentTimeMillis();
+
+             Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)
+                 .setNanos((int) ((millis % 1000) * 1000000)).build();
+
+         Example 5: Compute Timestamp from Java `Instant.now()`.
+
+             Instant now = Instant.now();
+
+             Timestamp timestamp =
+                 Timestamp.newBuilder().setSeconds(now.getEpochSecond())
+                     .setNanos(now.getNano()).build();
+
+         Example 6: Compute Timestamp from current time in Python.
+
+             timestamp = Timestamp()
+             timestamp.GetCurrentTime()
+
+         # JSON Mapping
+
+         In JSON format, the Timestamp type is encoded as a string in the
+         [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the
+         format is "{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z"
+         where {year} is always expressed using four digits while {month}, {day},
+         {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional
+         seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),
+         are optional. The "Z" suffix indicates the timezone ("UTC"); the timezone
+         is required. A proto3 JSON serializer should always use UTC (as indicated by
+         "Z") when printing the Timestamp type and a proto3 JSON parser should be
+         able to accept both UTC and other timezones (as indicated by an offset).
+
+         For example, "2017-01-15T01:30:15.01Z" encodes 15.01 seconds past
+         01:30 UTC on January 15, 2017.
+
+         In JavaScript, one can convert a Date object to this format using the
+         standard
+         [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)
+         method. In Python, a standard `datetime.datetime` object can be converted
+         to this format using
+         [`strftime`](https://docs.python.org/2/library/time.html#time.strftime) with
+         the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use
+         the Joda Time's [`ISODateTimeFormat.dateTime()`](
+         http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()
+         ) to obtain a formatter capable of generating timestamps in this format.
+    inventory.v1.AddStoreProductRequest:
+      type: object
+      properties:
+        globalProduct:
+          title: global_product
+          description: |-
+            The product to add.
+             If the product does not exist, it will be created.
+          $ref: '#/components/schemas/inventory.v1.GlobalProduct'
+        storeProduct:
+          title: store_product
+          description: The store product to add.
+          $ref: '#/components/schemas/inventory.v1.StoreProduct'
+      title: AddStoreProductRequest
+      additionalProperties: false
+    inventory.v1.AddStoreProductResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the product was successfully added.
+      title: AddStoreProductResponse
+      additionalProperties: false
+    inventory.v1.Category:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+          description: Unique identifier for the category
+          nullable: true
+        name:
+          title: name
+          description: Name of the category (e.g., "Electronics", "Smart TVs")
+          $ref: '#/components/schemas/inventory.v1.Internationalized'
+        parentCategoryId:
+          type: string
+          title: parent_category_id
+          description: Reference to parent category (empty for root categories)
+          nullable: true
+        status:
+          title: status
+          description: The status of the category.
+          $ref: '#/components/schemas/inventory.v1.CategoryStatus'
+        type:
+          title: type
+          description: The status of the category.
+          $ref: '#/components/schemas/inventory.v1.CategoryType'
+        businessId:
+          type: string
+          title: business_id
+          minLength: 6
+          description: Business ID associated with the category
+          nullable: true
+        createdAt:
+          title: created_at
+          description: Timestamp when the category was created
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        updatedAt:
+          title: updated_at
+          description: Timestamp when the category was last updated
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: Category
+      required:
+        - businessId
+      additionalProperties: false
+    inventory.v1.CategoryStatus:
+      type: string
+      title: CategoryStatus
+      enum:
+        - CATEGORY_STATUS_UNSPECIFIED
+        - CATEGORY_STATUS_ACTIVE
+        - CATEGORY_STATUS_INACTIVE
+    inventory.v1.CategoryType:
+      type: string
+      title: CategoryType
+      enum:
+        - CATEGORY_TYPE_UNSPECIFIED
+        - CATEGORY_TYPE_STORE
+        - CATEGORY_TYPE_BUSINESS
+        - CATEGORY_TYPE_PRODUCT
+    inventory.v1.CreateGlobalProductRequest:
+      type: object
+      properties:
+        globalProduct:
+          title: global_product
+          description: The global product to add.
+          $ref: '#/components/schemas/inventory.v1.GlobalProduct'
+      title: CreateGlobalProductRequest
+      additionalProperties: false
+    inventory.v1.CreateGlobalProductResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the global product was successfully added.
+      title: CreateGlobalProductResponse
+      additionalProperties: false
+    inventory.v1.DeleteGlobalProductRequest:
+      type: object
+      properties:
+        globalProductId:
+          type: string
+          title: global_product_id
+          description: The unique identifier of the global product.
+      title: DeleteGlobalProductRequest
+      additionalProperties: false
+    inventory.v1.DeleteGlobalProductResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the global product was successfully deleted.
+      title: DeleteGlobalProductResponse
+      additionalProperties: false
+    inventory.v1.DeleteStoreProductRequest:
+      type: object
+      properties:
+        storeProductId:
+          type: string
+          title: store_product_id
+          minLength: 3
+          description: The unique identifier of the store product.
+      title: DeleteStoreProductRequest
+      required:
+        - storeProductId
+      additionalProperties: false
+    inventory.v1.DeleteStoreProductResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the store product was successfully deleted.
+      title: DeleteStoreProductResponse
+      additionalProperties: false
+    inventory.v1.ExpirationType:
+      type: string
+      title: ExpirationType
+      enum:
+        - EXPIRATION_TYPE_UNSPECIFIED
+        - EXPIRATION_TYPE_NONE
+        - EXPIRATION_TYPE_PRODUCT_LEVEL
+        - EXPIRATION_TYPE_LOT_LEVEL
+    inventory.v1.FindGlobalProductsRequest:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+          description: The reference id to the global product identifier.
+          nullable: true
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/inventory.v1.Category'
+          title: categories
+          description: The query to search for products by category.
+        name:
+          type: string
+          title: name
+          description: Query the product name.
+          nullable: true
+        barCodeValue:
+          type: string
+          title: bar_code_value
+          description: Identify the products by bar code.
+          nullable: true
+        status:
+          title: status
+          description: Identify the products by store.
+          nullable: true
+          $ref: '#/components/schemas/inventory.v1.GlobalProductStatus'
+      title: FindGlobalProductsRequest
+      additionalProperties: false
+    inventory.v1.FindGlobalProductsResponse:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/inventory.v1.GlobalProduct'
+          title: products
+          description: |-
+            The unique identifiers of the products.
+             WARN: all returned products will only have their id and name.
+      title: FindGlobalProductsResponse
+      additionalProperties: false
+    inventory.v1.FindProductCategoryRequest:
+      type: object
+      properties:
+        query:
+          type: string
+          title: query
+          description: The query to search for product categories.
+      title: FindProductCategoryRequest
+      additionalProperties: false
+    inventory.v1.FindProductCategoryResponse:
+      type: object
+      properties:
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/inventory.v1.Category'
+          title: categories
+          description: |-
+            The unique identifiers of the product categories.
+             WARN: all returned product categories will only have their id and name.
+      title: FindProductCategoryResponse
+      additionalProperties: false
+    inventory.v1.FindStoreProductsRequest:
+      type: object
+      properties:
+        storeId:
+          type: string
+          title: store_id
+          description: The query to search for store products.
+        refId:
+          type: string
+          title: ref_id
+          description: The unique identifier of the product.
+          nullable: true
+        globalProductId:
+          type: string
+          title: global_product_id
+          description: The unique identifier of the global product.
+          nullable: true
+        expirationDate:
+          title: expiration_date
+          description: Identify the products that are expired.
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        supplierId:
+          type: string
+          title: supplier_id
+          description: Identify the products by supplier.
+          nullable: true
+      title: FindStoreProductsRequest
+      additionalProperties: false
+    inventory.v1.FindStoreProductsResponse:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/inventory.v1.StoreProduct'
+          title: products
+          description: |-
+            The unique identifiers of the products.
+             WARN: all returned products will only have their id and name.
+      title: FindStoreProductsResponse
+      additionalProperties: false
+    inventory.v1.GetStoreProductRequest:
+      type: object
+      properties:
+        storeProductId:
+          type: string
+          title: store_product_id
+          minLength: 3
+          description: The unique identifier of the store product.
+      title: GetStoreProductRequest
+      required:
+        - storeProductId
+      additionalProperties: false
+    inventory.v1.GetStoreProductResponse:
+      type: object
+      properties:
+        storeProduct:
+          title: store_product
+          description: The retrieved store product data.
+          $ref: '#/components/schemas/inventory.v1.StoreProduct'
+      title: GetStoreProductResponse
+      additionalProperties: false
+    inventory.v1.GlobalProduct:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+          description: The unique identifier of the product.
+          nullable: true
+        name:
+          title: name
+          description: The name of the product.
+          $ref: '#/components/schemas/inventory.v1.Internationalized'
+        description:
+          title: description
+          description: The description of the product.
+          nullable: true
+          $ref: '#/components/schemas/inventory.v1.Internationalized'
+        barCodeValue:
+          type: string
+          title: bar_code_value
+          description: The bar code value of the product.
+          nullable: true
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/inventory.v1.Category'
+          title: categories
+          description: The product categories of the product.
+        imagesLinksIds:
+          type: array
+          items:
+            type: string
+          title: images_links_ids
+          description: The list of image related to the product.
+        status:
+          title: status
+          description: The status of the product.
+          $ref: '#/components/schemas/inventory.v1.GlobalProductStatus'
+      title: GlobalProduct
+      additionalProperties: false
+    inventory.v1.GlobalProductStatus:
+      type: string
+      title: GlobalProductStatus
+      enum:
+        - GLOBAL_PRODUCT_STATUS_UNSPECIFIED
+        - GLOBAL_PRODUCT_STATUS_ACTIVE
+        - GLOBAL_PRODUCT_STATUS_INACTIVE
+    inventory.v1.Internationalized:
+      type: object
+      properties:
+        en:
+          type: string
+          title: en
+          description: The English name of the product category.
+        fr:
+          type: string
+          title: fr
+          description: The French name of the product category.
+      title: Internationalized
+      additionalProperties: false
+    inventory.v1.ListProductsRequest:
+      type: object
+      properties:
+        storeId:
+          type: string
+          title: store_id
+        searchQuery:
+          type: string
+          title: search_query
+          description: Name/SKU search
+          nullable: true
+        categoryIds:
+          type: array
+          items:
+            type: string
+          title: category_ids
+        status:
+          title: status
+          nullable: true
+          $ref: '#/components/schemas/inventory.v1.ProductStatus'
+        pageSize:
+          type: integer
+          title: page_size
+          format: int32
+        pageToken:
+          type: string
+          title: page_token
+          description: For pagination
+      title: ListProductsRequest
+      required:
+        - storeId
+      additionalProperties: false
+    inventory.v1.ListProductsResponse:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/inventory.v1.StoreProduct'
+          title: products
+        totalCount:
+          type: integer
+          title: total_count
+          format: int32
+        nextPageToken:
+          type: string
+          title: next_page_token
+      title: ListProductsResponse
+      additionalProperties: false
+    inventory.v1.ProductStatus:
+      type: string
+      title: ProductStatus
+      enum:
+        - PRODUCT_STATUS_UNSPECIFIED
+        - PRODUCT_STATUS_ACTIVE
+        - PRODUCT_STATUS_INACTIVE
+    inventory.v1.StoreProduct:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+          description: The unique identifier of the business product.
+          nullable: true
+        storeId:
+          type: string
+          title: store_id
+          description: The unique identifier of the store.
+        globalProductId:
+          type: string
+          title: global_product_id
+          description: The unique identifier of the global product.
+        salePrice:
+          type: integer
+          title: sale_price
+          format: int32
+          description: |-
+            The sale price in XAF of the product.
+             The currency is determined by the business.
+          nullable: true
+        imagesLinksIds:
+          type: array
+          items:
+            type: string
+          title: images_links_ids
+          description: The media ids of the images of the product.
+        supplierId:
+          type: string
+          title: supplier_id
+          description: The supplier.
+          nullable: true
+        status:
+          title: status
+          description: The status of the product.
+          $ref: '#/components/schemas/inventory.v1.ProductStatus'
+        sku:
+          type: string
+          title: sku
+          description: The stock keeping unit.
+          nullable: true
+        expirationType:
+          title: expiration_type
+          description: The type of expiration of the product.
+          $ref: '#/components/schemas/inventory.v1.ExpirationType'
+        createdAt:
+          title: created_at
+          description: The creation date of the product.
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        updatedAt:
+          title: updated_at
+          description: The last update date of the product.
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: StoreProduct
+      additionalProperties: false
+    inventory.v1.StreamGlobalProductsRequest:
+      type: object
+      properties:
+        storeId:
+          type: string
+          title: store_id
+          description: The unique identifier of the store.
+      title: StreamGlobalProductsRequest
+      additionalProperties: false
+    inventory.v1.StreamGlobalProductsResponse:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/inventory.v1.GlobalProduct'
+          title: products
+          description: The global products for the specified store.
+      title: StreamGlobalProductsResponse
+      additionalProperties: false
+    inventory.v1.StreamStoreProductsRequest:
+      type: object
+      properties:
+        storeId:
+          type: string
+          title: store_id
+          minLength: 3
+          description: The unique identifier of the store.
+        supplierId:
+          type: string
+          title: supplier_id
+          description: Optional filter by supplier ID.
+          nullable: true
+        globalProductId:
+          type: string
+          title: global_product_id
+          description: Optional filter by global product ID.
+          nullable: true
+      title: StreamStoreProductsRequest
+      required:
+        - storeId
+      additionalProperties: false
+    inventory.v1.StreamStoreProductsResponse:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/inventory.v1.StoreProduct'
+          title: products
+          description: The store products for the specified store.
+      title: StreamStoreProductsResponse
+      additionalProperties: false
+    inventory.v1.UpdateGlobalProductRequest:
+      type: object
+      properties:
+        globalProductId:
+          type: string
+          title: global_product_id
+          description: The unique identifier of the global product.
+        globalProduct:
+          title: global_product
+          description: The global product to update.
+          $ref: '#/components/schemas/inventory.v1.GlobalProduct'
+      title: UpdateGlobalProductRequest
+      additionalProperties: false
+    inventory.v1.UpdateGlobalProductResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the global product was successfully updated.
+      title: UpdateGlobalProductResponse
+      additionalProperties: false
+    inventory.v1.UpdateStoreProductRequest:
+      type: object
+      properties:
+        storeProduct:
+          title: store_product
+          description: |-
+            The store product information to update.
+             Note:Only the fields that are set will be updated.
+             Some fields cannot be updated like the product id, store id, and all
+             product fields.
+          $ref: '#/components/schemas/inventory.v1.StoreProduct'
+        globalProduct:
+          title: global_product
+          description: |-
+            The global product information to update.
+             Note:Only the fields that are set will be updated if there is no
+             ref_id set for the global product or will be created in other case.
+          nullable: true
+          $ref: '#/components/schemas/inventory.v1.GlobalProduct'
+        imagesRawImages:
+          type: array
+          items:
+            type: string
+            format: byte
+          title: images_raw_images
+          description: The media ids of the images of the product.
+      title: UpdateStoreProductRequest
+      additionalProperties: false
+    inventory.v1.UpdateStoreProductResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: Whether the store product was successfully updated.
+      title: UpdateStoreProductResponse
+      additionalProperties: false
+security: []
+tags:
+  - name: inventory.v1.StoreProductService

@@ -1,0 +1,182 @@
+syntax = "proto3";
+
+package payments.v1;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+
+/**
+ * GiftVoucher (Bon Cadeau / Bon d'Achat)
+ * Prepaid credit that can be used for future purchases.
+ * Like a gift card or store credit.
+ *
+ * Example:
+ *   voucher_id: "GV-2025-001"
+ *   voucher_code: "GIFT-XMAS-12345"
+ *   initial_value: 100000
+ *   remaining_value: 100000
+ *   issued_to_customer_id: "CMP-003"
+ *   valid_until: 2026-12-31
+ *   status: VOUCHER_STATUS_ACTIVE
+ */
+message GiftVoucher {
+  string document_id = 1 [(buf.validate.field).required = true]; // "GV-2025-001"
+  string voucher_code = 2; // "GIFT-XMAS-12345" - what customer uses
+  int64 initial_value = 3; // Original amount
+  int64 remaining_value = 4; // What's left
+  string currency = 5;
+  string issued_to_customer_id = 6; // Optional - can be transferred
+  string issued_by_user_id = 7;
+  VoucherStatus status = 8;
+  google.protobuf.Timestamp issued_at = 9;
+  google.protobuf.Timestamp valid_until = 10; // Expiration
+  string notes = 11;
+}
+
+enum VoucherStatus {
+  VOUCHER_STATUS_UNSPECIFIED = 0;
+  VOUCHER_STATUS_ACTIVE = 1; // Can be used
+  VOUCHER_STATUS_PARTIALLY_USED = 2; // Some value used
+  VOUCHER_STATUS_FULLY_USED = 3; // No value left
+  VOUCHER_STATUS_EXPIRED = 4; // Past valid_until date
+  VOUCHER_STATUS_CANCELLED = 5; // Voided
+}
+
+/**
+ * VoucherTransaction tracks each time a voucher is used.
+ *
+ * Example:
+ *   transaction_id: "VT-001"
+ *   voucher_id: "GV-2025-001"
+ *   related_invoice_id: "INV-2025-005"
+ *   amount_used: 50000
+ *   remaining_after: 50000
+ */
+message VoucherTransaction {
+  string document_id = 1 [(buf.validate.field).required = true];
+  string voucher_id = 2; // Which voucher used
+  string related_invoice_id = 3; // Which purchase
+  string related_receipt_id = 4; // Or cash receipt
+  int64 amount_used = 5;
+  int64 remaining_after = 6;
+  google.protobuf.Timestamp used_at = 7;
+  string used_by_user_id = 8;
+}
+
+service GiftVoucherService {
+  // Create a gift voucher (manual or from change shortage)
+  rpc CreateGiftVoucher(CreateGiftVoucherRequest) returns (CreateGiftVoucherResponse);
+
+  // Validate voucher before use
+  rpc ValidateVoucher(ValidateVoucherRequest) returns (ValidateVoucherResponse);
+
+  // Use voucher in transaction (called by PointOfSaleService)
+  rpc UseVoucher(UseVoucherRequest) returns (UseVoucherResponse);
+
+  // Get voucher details
+  rpc GetVoucher(GetVoucherRequest) returns (GetVoucherResponse);
+
+  // List vouchers with filtering
+  rpc ListVouchers(ListVouchersRequest) returns (ListVouchersResponse);
+
+  // Cancel a voucher
+  rpc CancelVoucher(CancelVoucherRequest) returns (CancelVoucherResponse);
+
+  // Get voucher usage history
+  rpc GetVoucherHistory(GetVoucherHistoryRequest) returns (GetVoucherHistoryResponse);
+}
+
+message ValidateVoucherRequest {
+  string voucher_code = 1;
+}
+
+message ValidateVoucherResponse {
+  bool is_valid = 1;
+  string voucher_id = 2;
+  int64 remaining_value = 3;
+  google.protobuf.Timestamp valid_until = 4;
+  VoucherStatus status = 5;
+  string message = 6; // Error message if invalid
+}
+
+message CreateGiftVoucherRequest {
+  int64 initial_value = 1;
+  string currency = 2;
+  string issued_to_customer_id = 3; // Optional
+  string issued_by_user_id = 4;
+  google.protobuf.Timestamp valid_until = 5;
+  string related_invoice_id = 6; // If issued from change shortage
+  string notes = 7;
+}
+
+message CreateGiftVoucherResponse {
+  string voucher_id = 1;
+  GiftVoucher voucher = 2;
+  string voucher_code = 3; // Print this - barcode compatible
+  string message = 4;
+}
+
+message UseVoucherRequest {
+  string voucher_code = 1;
+  int64 amount_to_use = 2;
+  string related_receipt_id = 3; // Or related_invoice_id
+  string used_by_user_id = 4;
+}
+
+message UseVoucherResponse {
+  string transaction_id = 1;
+  VoucherTransaction transaction = 2;
+  GiftVoucher updated_voucher = 3;
+  int64 remaining_value = 4;
+  bool fully_used = 5;
+  string message = 6;
+}
+
+message GetVoucherRequest {
+  oneof identifier {
+    string voucher_id = 1;
+    string voucher_code = 2;
+  }
+}
+
+message GetVoucherResponse {
+  GiftVoucher voucher = 1;
+  repeated VoucherTransaction transactions = 2; // Usage history
+}
+
+message ListVouchersRequest {
+  string customer_id = 1; // Optional
+  VoucherStatus status = 2; // Optional
+  bool expiring_soon = 3; // Expiring within 30 days
+  google.protobuf.Timestamp issued_after = 4;
+  int32 page_size = 5;
+  int32 page_number = 6;
+}
+
+message ListVouchersResponse {
+  repeated GiftVoucher vouchers = 1;
+  int32 total_count = 2;
+  int64 total_value = 3; // Sum of remaining values
+}
+
+message CancelVoucherRequest {
+  string voucher_id = 1;
+  string reason = 2;
+  string cancelled_by_user_id = 3;
+}
+
+message CancelVoucherResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message GetVoucherHistoryRequest {
+  string voucher_id = 1;
+}
+
+message GetVoucherHistoryResponse {
+  GiftVoucher voucher = 1;
+  repeated VoucherTransaction transactions = 2;
+  int64 total_used = 3;
+  int32 usage_count = 4;
+}

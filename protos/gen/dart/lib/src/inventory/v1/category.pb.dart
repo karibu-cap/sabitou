@@ -137,7 +137,7 @@ class Category extends $pb.GeneratedMessage {
         valueOf: CategoryStatus.valueOf,
         enumValues: CategoryStatus.values)
     ..e<CategoryType>(5, _omitFieldNames ? '' : 'type', $pb.PbFieldType.OE,
-        defaultOrMaker: CategoryType.CATEGORY_TYPE_STORE,
+        defaultOrMaker: CategoryType.CATEGORY_TYPE_UNSPECIFIED,
         valueOf: CategoryType.valueOf,
         enumValues: CategoryType.values)
     ..aOS(6, _omitFieldNames ? '' : 'businessId')
@@ -294,7 +294,7 @@ class FindCategoriesRequest extends $pb.GeneratedMessage {
         valueOf: CategoryStatus.valueOf,
         enumValues: CategoryStatus.values)
     ..e<CategoryType>(6, _omitFieldNames ? '' : 'type', $pb.PbFieldType.OE,
-        defaultOrMaker: CategoryType.CATEGORY_TYPE_STORE,
+        defaultOrMaker: CategoryType.CATEGORY_TYPE_UNSPECIFIED,
         valueOf: CategoryType.valueOf,
         enumValues: CategoryType.values)
     ..hasRequiredFields = false;

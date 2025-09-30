@@ -16,8 +16,9 @@ import 'dart:typed_data' as $typed_data;
 
 import '../../google/protobuf/timestamp.pbjson.dart' as $3;
 import '../../inventory/v1/category.pbjson.dart' as $1;
-import '../../inventory/v1/product.pbjson.dart' as $0;
-import '../../order/v1/order.pbjson.dart' as $2;
+import '../../inventory/v1/store_product.pbjson.dart' as $0;
+import '../../order/v1/order_utils.pbjson.dart' as $4;
+import '../../order/v1/sales_order.pbjson.dart' as $2;
 
 @$core.Deprecated('Use syncOperationTypeDescriptor instead')
 const SyncOperationType$json = {
@@ -155,7 +156,7 @@ const SyncOperation$json = {
       '3': 13,
       '4': 1,
       '5': 11,
-      '6': '.order.v1.Order',
+      '6': '.order.v1.SalesOrder',
       '9': 0,
       '10': 'orderData'
     },
@@ -246,19 +247,19 @@ final $typed_data.Uint8List syncOperationDescriptor = $convert.base64Decode(
     'EnN0b3JlX3Byb2R1Y3RfZGF0YRgKIAEoCzIaLmludmVudG9yeS52MS5TdG9yZVByb2R1Y3RIAF'
     'IQc3RvcmVQcm9kdWN0RGF0YRJNChNnbG9iYWxfcHJvZHVjdF9kYXRhGAsgASgLMhsuaW52ZW50'
     'b3J5LnYxLkdsb2JhbFByb2R1Y3RIAFIRZ2xvYmFsUHJvZHVjdERhdGESPQoNY2F0ZWdvcnlfZG'
-    'F0YRgMIAEoCzIWLmludmVudG9yeS52MS5DYXRlZ29yeUgAUgxjYXRlZ29yeURhdGESMAoKb3Jk'
-    'ZXJfZGF0YRgNIAEoCzIPLm9yZGVyLnYxLk9yZGVySABSCW9yZGVyRGF0YRIdCglqc29uX2RhdG'
-    'EYKCABKAlIAFIIanNvbkRhdGESOQoKY3JlYXRlZF9hdBgpIAEoCzIaLmdvb2dsZS5wcm90b2J1'
-    'Zi5UaW1lc3RhbXBSCWNyZWF0ZWRBdBI5Cgp1cGRhdGVkX2F0GCogASgLMhouZ29vZ2xlLnByb3'
-    'RvYnVmLlRpbWVzdGFtcFIJdXBkYXRlZEF0EjQKBnN0YXR1cxgrIAEoDjIcLnN5bmMudjEuU3lu'
-    'Y09wZXJhdGlvblN0YXR1c1IGc3RhdHVzEh8KC3JldHJ5X2NvdW50GCwgASgFUgpyZXRyeUNvdW'
-    '50Eh8KC21heF9yZXRyaWVzGC0gASgFUgptYXhSZXRyaWVzEkMKDW5leHRfcmV0cnlfYXQYLiAB'
-    'KAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wSARSC25leHRSZXRyeUF0iAEBEigKDWVycm'
-    '9yX21lc3NhZ2UYLyABKAlIBVIMZXJyb3JNZXNzYWdliAEBEkAKCG1ldGFkYXRhGDAgAygLMiQu'
-    'c3luYy52MS5TeW5jT3BlcmF0aW9uLk1ldGFkYXRhRW50cnlSCG1ldGFkYXRhGjsKDU1ldGFkYX'
-    'RhRW50cnkSEAoDa2V5GAEgASgJUgNrZXkSFAoFdmFsdWUYAiABKAlSBXZhbHVlOgI4AUIQCg5v'
-    'cGVyYXRpb25fZGF0YUILCglfc3RvcmVfaWRCDgoMX2J1c2luZXNzX2lkQgoKCF91c2VyX2lkQh'
-    'AKDl9uZXh0X3JldHJ5X2F0QhAKDl9lcnJvcl9tZXNzYWdl');
+    'F0YRgMIAEoCzIWLmludmVudG9yeS52MS5DYXRlZ29yeUgAUgxjYXRlZ29yeURhdGESNQoKb3Jk'
+    'ZXJfZGF0YRgNIAEoCzIULm9yZGVyLnYxLlNhbGVzT3JkZXJIAFIJb3JkZXJEYXRhEh0KCWpzb2'
+    '5fZGF0YRgoIAEoCUgAUghqc29uRGF0YRI5CgpjcmVhdGVkX2F0GCkgASgLMhouZ29vZ2xlLnBy'
+    'b3RvYnVmLlRpbWVzdGFtcFIJY3JlYXRlZEF0EjkKCnVwZGF0ZWRfYXQYKiABKAsyGi5nb29nbG'
+    'UucHJvdG9idWYuVGltZXN0YW1wUgl1cGRhdGVkQXQSNAoGc3RhdHVzGCsgASgOMhwuc3luYy52'
+    'MS5TeW5jT3BlcmF0aW9uU3RhdHVzUgZzdGF0dXMSHwoLcmV0cnlfY291bnQYLCABKAVSCnJldH'
+    'J5Q291bnQSHwoLbWF4X3JldHJpZXMYLSABKAVSCm1heFJldHJpZXMSQwoNbmV4dF9yZXRyeV9h'
+    'dBguIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBIBFILbmV4dFJldHJ5QXSIAQESKA'
+    'oNZXJyb3JfbWVzc2FnZRgvIAEoCUgFUgxlcnJvck1lc3NhZ2WIAQESQAoIbWV0YWRhdGEYMCAD'
+    'KAsyJC5zeW5jLnYxLlN5bmNPcGVyYXRpb24uTWV0YWRhdGFFbnRyeVIIbWV0YWRhdGEaOwoNTW'
+    'V0YWRhdGFFbnRyeRIQCgNrZXkYASABKAlSA2tleRIUCgV2YWx1ZRgCIAEoCVIFdmFsdWU6AjgB'
+    'QhAKDm9wZXJhdGlvbl9kYXRhQgsKCV9zdG9yZV9pZEIOCgxfYnVzaW5lc3NfaWRCCgoIX3VzZX'
+    'JfaWRCEAoOX25leHRfcmV0cnlfYXRCEAoOX2Vycm9yX21lc3NhZ2U=');
 
 @$core.Deprecated('Use syncOperationBatchDescriptor instead')
 const SyncOperationBatch$json = {
@@ -947,12 +948,9 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
   '.inventory.v1.GlobalProduct': $0.GlobalProduct$json,
   '.inventory.v1.Internationalized': $1.Internationalized$json,
   '.inventory.v1.Category': $1.Category$json,
-  '.order.v1.Order': $2.Order$json,
-  '.order.v1.OrderItem': $2.OrderItem$json,
-  '.order.v1.OrderPrices': $2.OrderPrices$json,
-  '.order.v1.StatusHistory': $2.StatusHistory$json,
-  '.order.v1.PurchaseOrder': $2.PurchaseOrder$json,
-  '.order.v1.SaleOrder': $2.SaleOrder$json,
+  '.order.v1.SalesOrder': $2.SalesOrder$json,
+  '.order.v1.OrderLineItem': $4.OrderLineItem$json,
+  '.order.v1.OrderPrices': $4.OrderPrices$json,
   '.sync.v1.SyncOperation.MetadataEntry': SyncOperation_MetadataEntry$json,
   '.sync.v1.SubmitSyncOperationsResponse': SubmitSyncOperationsResponse$json,
   '.sync.v1.SyncOperationResult': SyncOperationResult$json,

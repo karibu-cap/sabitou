@@ -1567,6 +1567,13 @@ class AppInternationalizationService extends ChangeNotifier {
       'en': 'No suppliers match your filters',
       'fr': 'Aucun fournisseur ne correspond à vos filtres',
     },
+    'storePostalCode': {
+      'en': 'Store Postal Code',
+      'fr': 'Code Postal du magasin',
+    },
+    'salesOrders': {'en': 'Sales Orders', 'fr': 'Commandes de vente'},
+    'cashReceipts': {'en': 'Cash Receipts', 'fr': 'Reçus de caisse'},
+    'pos': {'en': 'Point of Sale', 'fr': 'Point de vente'},
   };
 
   /// Direct access to the internationalization service.
@@ -1585,6 +1592,18 @@ class AppInternationalizationService extends ChangeNotifier {
     const Locale('en'),
     const Locale('fr'),
   ];
+
+  /// The pos.
+  String get pos => _stringOfLocalizedValue('pos');
+
+  /// The sales orders.
+  String get salesOrders => _stringOfLocalizedValue('salesOrders');
+
+  /// The cash receipts.
+  String get cashReceipts => _stringOfLocalizedValue('cashReceipts');
+
+  /// The store postal code.
+  String get storePostalCode => _stringOfLocalizedValue('storePostalCode');
 
   /// The product not found.
   String get productNotFound => _stringOfLocalizedValue('productNotFound');

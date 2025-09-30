@@ -4,6 +4,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../../services/internationalization/internationalization.dart';
+import '../../../utils/common_functions.dart';
 import '../reports_controller.dart';
 import '../reports_view_model.dart';
 
@@ -16,128 +17,26 @@ class StockMovement extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = context.watch<ReportsController>();
 
-    final List<ChartData<String>> chartDatas = [
-      ChartData(
-        x: 'Jan',
-        y: controller.stockMovementData
-            .where((data) => data.date.month == 1)
+    // Get inventory data from the InventoryReportViewModel through the controller
+    final inventoryData = controller.agingItems;
+
+    // Create monthly data from aging items
+    final List<ChartData<String>> chartDatas = List.generate(12, (index) {
+      final month = index + 1;
+      final monthName = getMonthName(month);
+
+      return ChartData<String>(
+        x: monthName,
+        y: inventoryData
+            .where((item) => item.lastMovementDate.toDateTime().month == month)
             .fold(
-              0,
+              0.0,
               (previousValue, element) =>
-                  (previousValue ?? 0) + element.nbOfTransaction,
+                  (previousValue ?? 0.0) +
+                  element.daysSinceLastMovement.toDouble(),
             ),
-      ),
-      ChartData(
-        x: 'Feb',
-        y: controller.stockMovementData
-            .where((data) => data.date.month == 2)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.nbOfTransaction,
-            ),
-      ),
-      ChartData(
-        x: 'Mar',
-        y: controller.stockMovementData
-            .where((data) => data.date.month == 3)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.nbOfTransaction,
-            ),
-      ),
-      ChartData(
-        x: 'Apr',
-        y: controller.stockMovementData
-            .where((data) => data.date.month == 4)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.nbOfTransaction,
-            ),
-      ),
-      ChartData(
-        x: 'May',
-        y: controller.stockMovementData
-            .where((data) => data.date.month == 5)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.nbOfTransaction,
-            ),
-      ),
-      ChartData(
-        x: 'Jun',
-        y: controller.stockMovementData
-            .where((data) => data.date.month == 6)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.nbOfTransaction,
-            ),
-      ),
-      ChartData(
-        x: 'Jul',
-        y: controller.stockMovementData
-            .where((data) => data.date.month == 7)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.nbOfTransaction,
-            ),
-      ),
-      ChartData(
-        x: 'Aug',
-        y: controller.stockMovementData
-            .where((data) => data.date.month == 8)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.nbOfTransaction,
-            ),
-      ),
-      ChartData(
-        x: 'Sep',
-        y: controller.stockMovementData
-            .where((data) => data.date.month == 9)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.nbOfTransaction,
-            ),
-      ),
-      ChartData(
-        x: 'Oct',
-        y: controller.stockMovementData
-            .where((data) => data.date.month == 10)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.nbOfTransaction,
-            ),
-      ),
-      ChartData(
-        x: 'Nov',
-        y: controller.stockMovementData
-            .where((data) => data.date.month == 11)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.nbOfTransaction,
-            ),
-      ),
-      ChartData(
-        x: 'Dec',
-        y: controller.stockMovementData
-            .where((data) => data.date.month == 12)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.nbOfTransaction,
-            ),
-      ),
-    ];
+      );
+    });
 
     return ShadCard(
       child: Column(

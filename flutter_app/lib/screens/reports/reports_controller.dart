@@ -61,19 +61,12 @@ class ReportsController extends ChangeNotifier {
   /// The previous years number of orders.
   int get previousYearsNumberOfOrders => viewModel.previousYearsNumberOfOrders;
 
-  /// The store products.
-  List<StoreProduct> get storeProducts => viewModel.storeProducts;
-
   /// The top performing products.
-  List<TopPerformingProduct> get topPerformingProducts =>
+  List<BestSellingProduct> get topPerformingProducts =>
       viewModel.topPerformingProducts;
 
-  /// The stock movement data.
-  List<StockMovementDataPoint> get stockMovementData =>
-      viewModel.stockMovementData;
-
   /// The revenue vs expenses data.
-  List<RevenueExpenseData> get revenueVsExpensesData =>
+  List<RevenueExpenseDataPoint> get revenueVsExpensesData =>
       viewModel.revenueVsExpensesData;
 
   /// The monthly cash flow data.
@@ -81,6 +74,21 @@ class ReportsController extends ChangeNotifier {
 
   /// Gets the completer.
   Completer<bool> get completer => viewModel.completer;
+
+  /// Gets the total inventory value.
+  double get totalInventoryValue => viewModel.totalInventoryValue;
+
+  /// Gets the total products.
+  int get totalProducts => viewModel.totalProducts;
+
+  /// Gets the total purchases.
+  double get totalPurchases => viewModel.totalPurchases;
+
+  /// Gets the aging items.
+  List<StockAgingItem> get agingItems => viewModel.agingItems;
+
+  /// Gets the low stock count.
+  int get lowStockCount => viewModel.lowStockCount;
 
   /// Constructors of new [ReportsController].
   ReportsController(this.viewModel);

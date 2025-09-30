@@ -1,0 +1,18 @@
+openapi: 3.1.0
+info:
+  title: payments.v1
+paths: {}
+components:
+  schemas:
+    payments.v1.PaymentMethod:
+      type: string
+      title: PaymentMethod
+      enum:
+        - PAYMENT_METHOD_UNSPECIFIED
+        - PAYMENT_METHOD_CASH
+        - PAYMENT_METHOD_CHECK
+        - PAYMENT_METHOD_BANK_TRANSFER
+        - PAYMENT_METHOD_CREDIT_CARD
+        - PAYMENT_METHOD_MOBILE_MONEY
+        - PAYMENT_METHOD_STORE_CREDIT
+security: []

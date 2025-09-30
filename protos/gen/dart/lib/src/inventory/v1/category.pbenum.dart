@@ -41,25 +41,28 @@ class CategoryStatus extends $pb.ProtobufEnum {
 }
 
 class CategoryType extends $pb.ProtobufEnum {
+  static const CategoryType CATEGORY_TYPE_UNSPECIFIED =
+      CategoryType._(0, _omitEnumNames ? '' : 'CATEGORY_TYPE_UNSPECIFIED');
   static const CategoryType CATEGORY_TYPE_STORE =
-      CategoryType._(0, _omitEnumNames ? '' : 'CATEGORY_TYPE_STORE');
+      CategoryType._(1, _omitEnumNames ? '' : 'CATEGORY_TYPE_STORE');
 
   /// / The product category is activ.
   static const CategoryType CATEGORY_TYPE_BUSINESS =
-      CategoryType._(1, _omitEnumNames ? '' : 'CATEGORY_TYPE_BUSINESS');
+      CategoryType._(2, _omitEnumNames ? '' : 'CATEGORY_TYPE_BUSINESS');
 
   /// / The product category is inactive.
   static const CategoryType CATEGORY_TYPE_PRODUCT =
-      CategoryType._(2, _omitEnumNames ? '' : 'CATEGORY_TYPE_PRODUCT');
+      CategoryType._(3, _omitEnumNames ? '' : 'CATEGORY_TYPE_PRODUCT');
 
   static const $core.List<CategoryType> values = <CategoryType>[
+    CATEGORY_TYPE_UNSPECIFIED,
     CATEGORY_TYPE_STORE,
     CATEGORY_TYPE_BUSINESS,
     CATEGORY_TYPE_PRODUCT,
   ];
 
   static final $core.List<CategoryType?> _byValue =
-      $pb.ProtobufEnum.$_initByValueList(values, 2);
+      $pb.ProtobufEnum.$_initByValueList(values, 3);
   static CategoryType? valueOf($core.int value) =>
       value < 0 || value >= _byValue.length ? null : _byValue[value];
 

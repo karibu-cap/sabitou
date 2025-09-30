@@ -1,14 +1,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../services/internationalization/internationalization.dart';
 import '../../../utils/extensions/category_extension.dart';
+import '../../../utils/extensions/inventory_extenxions.dart';
 import '../../../utils/responsive_utils.dart';
 import '../../../widgets/mobile_scanner_view.dart';
 import '../inventory_controller.dart';
-import '../inventory_view_model.dart';
 
 /// The search and filter view.
 class SearchAndFilterCard extends StatelessWidget {
@@ -20,7 +21,7 @@ class SearchAndFilterCard extends StatelessWidget {
     final isMobile = ResponsiveUtils.isMobile(context);
     final controller = context.read<InventoryController>();
     final categories =
-        controller.productsStream.valueOrNull
+        controller.invLevelSubject.valueOrNull
             ?.map((p) => p.globalProduct.categories)
             .expand((c) => c)
             .map((c) => c.label)
@@ -32,7 +33,6 @@ class SearchAndFilterCard extends StatelessWidget {
       padding: const EdgeInsets.all(24),
       child: Flex(
         direction: isMobile ? Axis.vertical : Axis.horizontal,
-        crossAxisAlignment: CrossAxisAlignment.start,
         spacing: 12,
         children: [
           Expanded(flex: isMobile ? 0 : 2, child: _SearchInput()),
@@ -110,30 +110,22 @@ class _StatusFilter extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = context.read<InventoryController>();
 
-    return ShadSelect<ProductInventoryStatus?>(
+    return ShadSelect<StockStatus?>(
       placeholder: Text(Intls.to.status),
       options: [
-        ...ProductInventoryStatus.values.map(
-          (status) => ShadOption<ProductInventoryStatus?>(
+        ...[
+          StockStatus.STOCK_STATUS_OK,
+          StockStatus.STOCK_STATUS_OUT_OF_STOCK,
+          StockStatus.STOCK_STATUS_LOW,
+        ].map(
+          (status) => ShadOption<StockStatus?>(
             value: status,
-            child: Text(switch (status) {
-              ProductInventoryStatus.inStock => Intls.to.inStock.trParams({
-                'quantity': '',
-              }),
-              ProductInventoryStatus.outOfStock => Intls.to.outOfStock,
-              ProductInventoryStatus.lowStock => Intls.to.lowStock,
-            }),
+            child: Text(status.label ?? Intls.to.status),
           ),
         ),
       ],
-      selectedOptionBuilder: (context, value) => Text(switch (value) {
-        ProductInventoryStatus.inStock => Intls.to.inStock.trParams({
-          'quantity': '',
-        }),
-        ProductInventoryStatus.outOfStock => Intls.to.outOfStock,
-        ProductInventoryStatus.lowStock => Intls.to.lowStock,
-        _ => Intls.to.status,
-      }),
+      selectedOptionBuilder: (context, value) =>
+          Text(value?.label ?? Intls.to.status),
       allowDeselection: true,
       onChanged: (value) {
         controller.selectedStatus.add(value);

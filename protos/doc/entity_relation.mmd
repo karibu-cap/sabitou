@@ -1,0 +1,270 @@
+erDiagram
+    COMPANY ||--o{ USER : employs
+    COMPANY ||--o{ WAREHOUSE : owns
+    COMPANY ||--o{ PURCHASE_ORDER : "places/receives"
+    COMPANY ||--o{ SALES_ORDER : "places/receives"
+    COMPANY ||--o{ INVOICE : "issues/receives"
+    COMPANY ||--o{ QUOTATION : "requests/provides"
+    
+    USER ||--o{ PURCHASE_ORDER : creates
+    USER ||--o{ SALES_ORDER : creates
+    USER ||--o{ DELIVERY_NOTE : creates
+    USER ||--o{ RECEIVING_NOTE : receives
+    USER ||--o{ INVOICE : creates
+    USER ||--o{ STOCK_ADJUSTMENT : performs
+    USER ||--o{ CASH_RECEIPT : processes
+    
+    WAREHOUSE ||--o{ INVENTORY_LEVEL : "has stock"
+    WAREHOUSE ||--o{ DELIVERY_NOTE : "ships from"
+    WAREHOUSE ||--o{ RECEIVING_NOTE : "receives to"
+    WAREHOUSE ||--o{ TRANSFER_NOTE : "source/destination"
+    WAREHOUSE ||--o{ STOCK_COUNT : "counted in"
+    
+    PRODUCT ||--o{ INVENTORY_LEVEL : "tracked in"
+    PRODUCT ||--o{ ORDER_LINE_ITEM : "appears in"
+    PRODUCT ||--o{ INVOICE_LINE_ITEM : "appears in"
+    PRODUCT ||--o{ STOCK_ADJUSTMENT : "adjusted"
+    PRODUCT ||--o{ INVENTORY_TRANSACTION : "moved"
+    
+    QUOTATION ||--o{ SALES_ORDER : "converts to"
+    SALES_ORDER ||--o{ DELIVERY_NOTE : "fulfilled by"
+    SALES_ORDER ||--o{ INVOICE : "billed in"
+    DELIVERY_NOTE ||--o{ INVOICE : "referenced in"
+    
+    PURCHASE_ORDER ||--o{ RECEIVING_NOTE : "fulfilled by"
+    PURCHASE_ORDER ||--o{ INVOICE : "billed in"
+    RECEIVING_NOTE ||--o{ INVOICE : "referenced in"
+    
+    INVOICE ||--o{ CREDIT_NOTE : "corrected by"
+    INVOICE ||--o{ DEBIT_NOTE : "adjusted by"
+    INVOICE ||--o{ PAYMENT : "paid by"
+    INVOICE ||--o{ VOUCHER_TRANSACTION : "paid with voucher"
+    
+    DELIVERY_NOTE ||--o{ RETURN_NOTE : "reversed by"
+    RETURN_NOTE ||--o{ CREDIT_NOTE : "triggers"
+    RETURN_NOTE ||--o{ DEBIT_NOTE : "triggers"
+    
+    CREDIT_NOTE ||--o{ PAYMENT : "triggers refund"
+    GIFT_VOUCHER ||--o{ VOUCHER_TRANSACTION : "used in"
+    
+    STOCK_COUNT ||--o{ STOCK_ADJUSTMENT : "generates"
+    STOCK_ADJUSTMENT ||--o{ INVENTORY_TRANSACTION : "creates"
+    DELIVERY_NOTE ||--o{ INVENTORY_TRANSACTION : "creates"
+    RECEIVING_NOTE ||--o{ INVENTORY_TRANSACTION : "creates"
+    TRANSFER_NOTE ||--o{ INVENTORY_TRANSACTION : "creates 2x"
+    RETURN_NOTE ||--o{ INVENTORY_TRANSACTION : "creates"
+    CASH_RECEIPT ||--o{ INVENTORY_TRANSACTION : "creates"
+    
+    COMPANY {
+        string company_id PK
+        string name
+        enum type "OWN/SUPPLIER/CUSTOMER"
+        string tax_id
+        string email
+    }
+    
+    USER {
+        string user_id PK
+        string company_id FK
+        string full_name
+        enum role "ADMIN/WAREHOUSE_MGR/SALES/etc"
+    }
+    
+    WAREHOUSE {
+        string warehouse_id PK
+        string company_id FK
+        string name
+        enum type "MAIN/BRANCH/RETAIL"
+    }
+    
+    PRODUCT {
+        string product_id PK
+        string sku
+        string name
+        int64 unit_price
+        enum unit "PIECE/KG/LITER"
+    }
+    
+    INVENTORY_LEVEL {
+        string product_id PK_FK
+        string warehouse_id PK_FK
+        double quantity_available
+        double quantity_reserved
+        double quantity_in_transit
+    }
+    
+    QUOTATION {
+        string quotation_id PK
+        string customer_id FK
+        enum status "DRAFT/SENT/ACCEPTED"
+        int64 total_amount
+        timestamp valid_until
+    }
+    
+    PURCHASE_ORDER {
+        string po_id PK
+        string supplier_id FK
+        string buyer_id FK
+        string destination_warehouse_id FK
+        enum status "PENDING/RECEIVED"
+        int64 total_amount
+    }
+    
+    SALES_ORDER {
+        string so_id PK
+        string customer_id FK
+        string seller_id FK
+        string source_warehouse_id FK
+        enum status "CONFIRMED/SHIPPED"
+        int64 total_amount
+    }
+    
+    ORDER_LINE_ITEM {
+        string product_id FK
+        double quantity
+        int64 unit_price
+        int64 total
+    }
+    
+    DELIVERY_NOTE {
+        string dn_id PK
+        string related_sales_order_id FK
+        string from_warehouse_id FK
+        string to_company_id FK
+        enum status "IN_TRANSIT/DELIVERED"
+        timestamp shipped_at
+    }
+    
+    RECEIVING_NOTE {
+        string rn_id PK
+        string related_purchase_order_id FK
+        string supplier_id FK
+        string warehouse_id FK
+        enum status "COMPLETED/REJECTED"
+        timestamp received_at
+    }
+    
+    TRANSFER_NOTE {
+        string tn_id PK
+        string from_warehouse_id FK
+        string to_warehouse_id FK
+        enum status "IN_TRANSIT/COMPLETED"
+    }
+    
+    INVOICE {
+        string invoice_id PK
+        enum type "SALES/PURCHASE"
+        string issuer_id FK
+        string recipient_id FK
+        string related_order_id FK
+        enum status "UNPAID/PAID/CREDITED"
+        int64 total_amount
+        timestamp due_date
+    }
+    
+    INVOICE_LINE_ITEM {
+        string product_id FK
+        double quantity
+        int64 unit_price
+        int64 tax_amount
+        int64 total
+    }
+    
+    CREDIT_NOTE {
+        string cn_id PK
+        string related_invoice_id FK
+        enum type "RETURN/PRICE_ERROR/DISCOUNT"
+        int64 total_amount "negative"
+        bool has_inventory_impact
+        string related_return_note_id FK
+    }
+    
+    DEBIT_NOTE {
+        string dn_id PK
+        string related_invoice_id FK
+        enum type "RETURN/QUALITY_ISSUE"
+        int64 total_amount "negative"
+        bool has_inventory_impact
+    }
+    
+    RETURN_NOTE {
+        string return_id PK
+        enum type "CUSTOMER_TO_SELLER/SELLER_TO_SUPPLIER"
+        string from_company_id FK
+        string to_warehouse_id FK
+        string related_delivery_note_id FK
+        enum status "RECEIVED/REJECTED"
+    }
+    
+    PAYMENT {
+        string payment_id PK
+        string payer_id FK
+        string payee_id FK
+        string related_invoice_id FK
+        int64 amount
+        enum method "CASH/BANK_TRANSFER/MOBILE_MONEY"
+        enum status "COMPLETED/PENDING"
+    }
+    
+    CASH_RECEIPT {
+        string receipt_id PK
+        string cashier_user_id FK
+        string customer_id FK
+        string warehouse_id FK
+        int64 total_amount
+        int64 amount_paid
+        int64 change_given
+        enum payment_method
+        timestamp transaction_time
+    }
+    
+    GIFT_VOUCHER {
+        string voucher_id PK
+        string voucher_code
+        int64 initial_value
+        int64 remaining_value
+        string issued_to_customer_id FK
+        enum status "ACTIVE/USED/EXPIRED"
+        timestamp valid_until
+    }
+    
+    VOUCHER_TRANSACTION {
+        string transaction_id PK
+        string voucher_id FK
+        string related_invoice_id FK
+        int64 amount_used
+        timestamp used_at
+    }
+    
+    STOCK_ADJUSTMENT {
+        string adjustment_id PK
+        string warehouse_id FK
+        string product_id FK
+        double system_quantity
+        double physical_quantity
+        double adjustment_quantity
+        enum reason "DAMAGED/THEFT/COUNT"
+        string approved_by_user_id FK
+    }
+    
+    STOCK_COUNT {
+        string count_id PK
+        string warehouse_id FK
+        enum type "FULL/PARTIAL/CYCLE"
+        enum status "IN_PROGRESS/COMPLETED"
+        string supervisor_user_id FK
+        timestamp scheduled_date
+    }
+    
+    INVENTORY_TRANSACTION {
+        string transaction_id PK
+        string warehouse_id FK
+        string product_id FK
+        enum type "PURCHASE/SALE/TRANSFER/ADJUSTMENT"
+        double quantity_change
+        double quantity_before
+        double quantity_after
+        string related_document_type
+        string related_document_id
+        timestamp transaction_time
+    }

@@ -360,7 +360,7 @@ func (x *SyncOperation) GetCategoryData() *v1.Category {
 	return nil
 }
 
-func (x *SyncOperation) GetOrderData() *v11.Order {
+func (x *SyncOperation) GetOrderData() *v11.SalesOrder {
 	if x != nil {
 		if x, ok := x.OperationData.(*SyncOperation_OrderData); ok {
 			return x.OrderData
@@ -455,7 +455,7 @@ type SyncOperation_CategoryData struct {
 
 type SyncOperation_OrderData struct {
 	// Order data
-	OrderData *v11.Order `protobuf:"bytes,13,opt,name=order_data,json=orderData,proto3,oneof"`
+	OrderData *v11.SalesOrder `protobuf:"bytes,13,opt,name=order_data,json=orderData,proto3,oneof"`
 }
 
 type SyncOperation_JsonData struct {
@@ -1433,7 +1433,7 @@ var File_sync_v1_sync_proto protoreflect.FileDescriptor
 
 const file_sync_v1_sync_proto_rawDesc = "" +
 	"\n" +
-	"\x12sync/v1/sync.proto\x12\async.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1ainventory/v1/product.proto\x1a\x1binventory/v1/category.proto\x1a\x14order/v1/order.proto\"\xb0\t\n" +
+	"\x12sync/v1/sync.proto\x12\async.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1binventory/v1/category.proto\x1a inventory/v1/store_product.proto\x1a\x1aorder/v1/sales_order.proto\"\xb5\t\n" +
 	"\rSyncOperation\x12\x1e\n" +
 	"\x06ref_id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x05refId\x12K\n" +
 	"\x0eoperation_type\x18\x02 \x01(\x0e2\x1a.sync.v1.SyncOperationTypeB\b\xbaH\x05\x82\x01\x02\x10\x01R\roperationType\x12B\n" +
@@ -1447,9 +1447,9 @@ const file_sync_v1_sync_proto_rawDesc = "" +
 	"\x12store_product_data\x18\n" +
 	" \x01(\v2\x1a.inventory.v1.StoreProductH\x00R\x10storeProductData\x12M\n" +
 	"\x13global_product_data\x18\v \x01(\v2\x1b.inventory.v1.GlobalProductH\x00R\x11globalProductData\x12=\n" +
-	"\rcategory_data\x18\f \x01(\v2\x16.inventory.v1.CategoryH\x00R\fcategoryData\x120\n" +
+	"\rcategory_data\x18\f \x01(\v2\x16.inventory.v1.CategoryH\x00R\fcategoryData\x125\n" +
 	"\n" +
-	"order_data\x18\r \x01(\v2\x0f.order.v1.OrderH\x00R\torderData\x12\x1d\n" +
+	"order_data\x18\r \x01(\v2\x14.order.v1.SalesOrderH\x00R\torderData\x12\x1d\n" +
 	"\tjson_data\x18( \x01(\tH\x00R\bjsonData\x129\n" +
 	"\n" +
 	"created_at\x18) \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
@@ -1652,7 +1652,7 @@ var file_sync_v1_sync_proto_goTypes = []any{
 	(*v1.StoreProduct)(nil),                 // 17: inventory.v1.StoreProduct
 	(*v1.GlobalProduct)(nil),                // 18: inventory.v1.GlobalProduct
 	(*v1.Category)(nil),                     // 19: inventory.v1.Category
-	(*v11.Order)(nil),                       // 20: order.v1.Order
+	(*v11.SalesOrder)(nil),                  // 20: order.v1.SalesOrder
 	(*timestamppb.Timestamp)(nil),           // 21: google.protobuf.Timestamp
 }
 var file_sync_v1_sync_proto_depIdxs = []int32{
@@ -1661,7 +1661,7 @@ var file_sync_v1_sync_proto_depIdxs = []int32{
 	17, // 2: sync.v1.SyncOperation.store_product_data:type_name -> inventory.v1.StoreProduct
 	18, // 3: sync.v1.SyncOperation.global_product_data:type_name -> inventory.v1.GlobalProduct
 	19, // 4: sync.v1.SyncOperation.category_data:type_name -> inventory.v1.Category
-	20, // 5: sync.v1.SyncOperation.order_data:type_name -> order.v1.Order
+	20, // 5: sync.v1.SyncOperation.order_data:type_name -> order.v1.SalesOrder
 	21, // 6: sync.v1.SyncOperation.created_at:type_name -> google.protobuf.Timestamp
 	21, // 7: sync.v1.SyncOperation.updated_at:type_name -> google.protobuf.Timestamp
 	2,  // 8: sync.v1.SyncOperation.status:type_name -> sync.v1.SyncOperationStatus

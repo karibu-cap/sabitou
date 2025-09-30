@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../services/internationalization/internationalization.dart';
 import '../../../themes/app_colors.dart';
 import '../../../utils/app_constants.dart';
 import '../../../utils/common_functions.dart';
-import '../../../utils/extends_models.dart';
 import '../../../utils/extensions/category_extension.dart';
 import '../../../utils/extensions/global_product_extension.dart';
+import '../../../utils/extensions/inventory_extenxions.dart';
 import '../../../utils/formatters.dart';
 import '../../../utils/responsive_utils.dart';
 import '../../../utils/utils.dart';
 import '../../../widgets/loading.dart';
 import '../inventory_controller.dart';
-import 'form/ajustment_stock_form.dart';
 
 /// The products table view.
 class ProductsTable extends StatelessWidget {
@@ -48,23 +48,35 @@ class ProductsTable extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          StreamBuilder<List<Product>>(
+          StreamBuilder<List<InventoryLevelWithProduct>>(
             stream: controller.filteredProductsStream,
             builder: (context, snapshot) {
-              final products = snapshot.data;
-              if (!snapshot.hasData || products == null) {
+              final invLevels = snapshot.data;
+              if (!snapshot.hasData || invLevels == null) {
                 return const Loading();
               }
 
-              return products.isEmpty
-                  ? Center(child: Text(Intls.to.noProductsFoundAddNewProduct))
+              return invLevels.isEmpty
+                  ? Column(
+                      children: [
+                        Icon(
+                          LucideIcons.box,
+                          size: 48,
+                          color: ShadTheme.of(context).colorScheme.muted,
+                        ),
+                        Text(
+                          Intls.to.noProductsFoundAddNewProduct,
+                          style: ShadTheme.of(context).textTheme.muted,
+                        ),
+                      ],
+                    )
                   : Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         if (!isMobile)
-                          _ProductsDataTable(products: products)
+                          _InventoryDataTable(inv: invLevels)
                         else
-                          _ProductsCardList(products: products),
+                          _InventoryCardList(inv: invLevels),
                       ],
                     );
             },
@@ -75,10 +87,10 @@ class ProductsTable extends StatelessWidget {
   }
 }
 
-class _ProductsDataTable extends StatelessWidget {
-  const _ProductsDataTable({required this.products});
+class _InventoryDataTable extends StatelessWidget {
+  const _InventoryDataTable({required this.inv});
 
-  final List<Product> products;
+  final List<InventoryLevelWithProduct> inv;
 
   @override
   Widget build(BuildContext context) {
@@ -108,33 +120,31 @@ class _ProductsDataTable extends StatelessWidget {
                   DataColumn(label: Text(Intls.to.price)),
                   DataColumn(label: Text(Intls.to.stock)),
                   DataColumn(label: Text(Intls.to.status)),
-                  DataColumn(label: Text(Intls.to.expiry)),
                   DataColumn(label: Text(Intls.to.actions)),
                 ],
-                rows: products.map((product) {
+                rows: inv.map((inv) {
                   return DataRow(
                     cells: [
-                      DataCell(_ProductNameCell(product: product)),
+                      DataCell(_ProductNameCell(product: inv.globalProduct)),
                       DataCell(
                         Text(
-                          product.globalProduct.barCodeValue,
+                          inv.globalProduct.barCodeValue,
                           style: ShadTheme.of(context).textTheme.list,
                         ),
                       ),
                       DataCell(
                         Text(
                           Formatters.formatCurrency(
-                            product.storeProduct.salePrice.toDouble(),
+                            inv.product.salePrice.toDouble(),
                           ),
                           style: ShadTheme.of(context).textTheme.list.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
-                      DataCell(_StockCell(product: product)),
-                      DataCell(_StatusCell(product: product)),
-                      DataCell(_ExpiryCell(product: product)),
-                      DataCell(_ActionsCell(product: product)),
+                      DataCell(_StockCell(inventoryLevel: inv.level)),
+                      DataCell(_StatusCell(inventory: inv)),
+                      DataCell(_ActionsCell(inventory: inv)),
                     ],
                   );
                 }).toList(),
@@ -147,38 +157,36 @@ class _ProductsDataTable extends StatelessWidget {
   }
 }
 
-class _ProductsCardList extends StatelessWidget {
-  const _ProductsCardList({required this.products});
+class _InventoryCardList extends StatelessWidget {
+  const _InventoryCardList({required this.inv});
 
-  final List<Product> products;
+  final List<InventoryLevelWithProduct> inv;
 
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      itemCount: products.length,
+      itemCount: inv.length,
       separatorBuilder: (context, index) => const SizedBox(height: 12),
       itemBuilder: (context, index) {
-        final product = products[index];
+        final invLevel = inv[index];
 
-        return _ProductCard(product: product);
+        return _InventoryCard(inv: invLevel);
       },
     );
   }
 }
 
-class _ProductCard extends StatelessWidget {
-  const _ProductCard({required this.product});
+class _InventoryCard extends StatelessWidget {
+  const _InventoryCard({required this.inv});
 
-  final Product product;
+  final InventoryLevelWithProduct inv;
 
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    final category = product.globalProduct.categories
-        .map((c) => c.label)
-        .toList();
+    final category = inv.globalProduct.categories.map((c) => c.label).toList();
 
     return ShadCard(
       child: Padding(
@@ -195,16 +203,15 @@ class _ProductCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        product.globalProduct.label,
+                        inv.globalProduct.label,
                         style: theme.textTheme.large,
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        switch (product.globalProduct.barCodeValue.length) {
+                        switch (inv.globalProduct.barCodeValue.length) {
                           > 0 && > 5 =>
-                            '#${product.globalProduct.barCodeValue.substring(0, 5)}',
-                          > 0 && < 5 =>
-                            '#${product.globalProduct.barCodeValue}',
+                            '#${inv.globalProduct.barCodeValue.substring(0, 5)}',
+                          > 0 && < 5 => '#${inv.globalProduct.barCodeValue}',
                           _ => '',
                         },
                         style: theme.textTheme.muted.copyWith(
@@ -215,35 +222,34 @@ class _ProductCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                _ActionsCell(product: product),
+                _ActionsCell(inventory: inv),
               ],
             ),
             const SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(Intls.to.category, style: theme.textTheme.p),
-                Flexible(
-                  child: Wrap(
-                    children:
-                        category
-                            .map((c) => Text(c, style: theme.textTheme.muted))
-                            .expand((c) => [c, const Text(', ')])
-                            .toList()
-                          ..removeLast(),
+            if (category.isNotEmpty)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(Intls.to.category, style: theme.textTheme.p),
+                  Flexible(
+                    child: Wrap(
+                      children:
+                          category
+                              .map((c) => Text(c, style: theme.textTheme.muted))
+                              .expand((c) => [c, const Text(', ')])
+                              .toList()
+                            ..removeLast(),
+                    ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(Intls.to.price, style: theme.textTheme.p),
                 Flexible(
                   child: Text(
-                    Formatters.formatCurrency(
-                      product.storeProduct.salePrice.toDouble(),
-                    ),
+                    Formatters.formatCurrency(inv.product.salePrice.toDouble()),
                     style: theme.textTheme.muted,
                   ),
                 ),
@@ -254,9 +260,9 @@ class _ProductCard extends StatelessWidget {
               children: [
                 Text(Intls.to.stock, style: theme.textTheme.p),
                 _InfoChip(
-                  value: '${product.storeProduct.stockQuantity} units',
-                  color: isLowStock(product.storeProduct)
-                      ? AppColors.warningColor
+                  value: '${inv.level.quantityAvailable} units',
+                  color: inv.stockStatus == StockStatus.STOCK_STATUS_LOW
+                      ? AppColors.orange500
                       : AppColors.dartGreen,
                 ),
               ],
@@ -267,7 +273,6 @@ class _ProductCard extends StatelessWidget {
                 Expanded(
                   child: Text(Intls.to.expiry, style: theme.textTheme.p),
                 ),
-                _ExpiryCell(product: product),
               ],
             ),
           ],
@@ -298,7 +303,7 @@ class _InfoChip extends StatelessWidget {
 class _ProductNameCell extends StatelessWidget {
   const _ProductNameCell({required this.product});
 
-  final Product product;
+  final GlobalProduct product;
 
   @override
   Widget build(BuildContext context) {
@@ -317,11 +322,11 @@ class _ProductNameCell extends StatelessWidget {
             ).colorScheme.accent.withValues(alpha: 0.05),
           ),
           child:
-              product.globalProduct.imagesLinksIds.isNotEmpty &&
-                  AppUtils.isURL(product.globalProduct.imagesLinksIds.first)
+              product.imagesLinksIds.isNotEmpty &&
+                  AppUtils.isURL(product.imagesLinksIds.first)
               ? FutureBuilder(
                   future: precacheImage(
-                    NetworkImage(product.globalProduct.imagesLinksIds.first),
+                    NetworkImage(product.imagesLinksIds.first),
                     context,
                     onError: (error, stackTrace) {
                       return null;
@@ -332,7 +337,7 @@ class _ProductNameCell extends StatelessWidget {
                         snapshot.error == null) {
                       return FadeInImage.assetNetwork(
                         placeholder: StaticImages.placeholder,
-                        image: product.globalProduct.imagesLinksIds.first,
+                        image: product.imagesLinksIds.first,
                         fit: BoxFit.contain,
                         imageErrorBuilder: (context, error, stackTrace) {
                           return Icon(
@@ -371,13 +376,13 @@ class _ProductNameCell extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                product.globalProduct.label,
+                product.label,
                 style: theme.textTheme.large.copyWith(
                   fontWeight: FontWeight.w600,
                 ),
               ),
               Text(
-                product.globalProduct.categories
+                product.categories
                     .map((c) => c.name)
                     .take(2)
                     .join(' > ')
@@ -395,53 +400,38 @@ class _ProductNameCell extends StatelessWidget {
 }
 
 class _StockCell extends StatelessWidget {
-  const _StockCell({required this.product});
+  const _StockCell({required this.inventoryLevel});
 
-  final Product product;
+  final InventoryLevel inventoryLevel;
 
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
 
     return Text(
-      '${product.storeProduct.stockQuantity} ${Intls.to.units}',
+      '${inventoryLevel.quantityAvailable} ${Intls.to.units}',
       style: theme.textTheme.list,
     );
   }
 }
 
 class _StatusCell extends StatelessWidget {
-  const _StatusCell({required this.product});
+  const _StatusCell({required this.inventory});
 
-  final Product product;
+  final InventoryLevelWithProduct inventory;
 
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
 
-    ({String text, Color color}) getProductStatus(Product product) {
-      if (product.storeProduct.stockQuantity <= 0) {
-        return (text: Intls.to.outOfStock, color: AppColors.red);
-      } else if (isLowStock(product.storeProduct)) {
-        return (text: Intls.to.lowStock, color: AppColors.warningColor);
-      } else {
-        return (
-          text: Intls.to.inStock.trParams({'quantity': ''}),
-          color: AppColors.dartGreen,
-        );
-      }
-    }
-
-    final status = getProductStatus(product);
-
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: status.color,
+        color: inventory.stockStatus.color,
         borderRadius: const BorderRadius.all(Radius.circular(12)),
       ),
       child: Text(
-        status.text.toUpperCase(),
+        inventory.stockStatus.label?.toUpperCase() ?? '',
         style: theme.textTheme.muted.copyWith(
           color: AppColors.grey0,
           fontWeight: FontWeight.w600,
@@ -451,59 +441,33 @@ class _StatusCell extends StatelessWidget {
   }
 }
 
-class _ExpiryCell extends StatelessWidget {
-  const _ExpiryCell({required this.product});
-
-  final Product product;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = ShadTheme.of(context);
-
-    if (!product.storeProduct.hasExpirationDate()) {
-      return const Text('N/A');
-    }
-
-    return Text(
-      Formatters.formatDate(product.storeProduct.expirationDate.toDateTime()),
-      maxLines: 1,
-      overflow: TextOverflow.ellipsis,
-      style: theme.textTheme.list.copyWith(
-        color: isExpiringSoon(product.storeProduct, 60)
-            ? AppColors.error600
-            : null,
-      ),
-    );
-  }
-}
-
 class _ActionsCell extends StatelessWidget {
-  const _ActionsCell({required this.product});
+  const _ActionsCell({required this.inventory});
 
-  final Product product;
+  final InventoryLevelWithProduct inventory;
 
   @override
   Widget build(BuildContext context) {
-    void _showProductDialog(BuildContext context, Product product) async {
+    void _showProductDialog(BuildContext context) async {
       final controller = context.read<InventoryController>();
-      final result = await showShadDialog<bool?>(
-        context: context,
-        builder: (context) => AdjustmentStockForm(
-          product: product,
-          inventoryController: controller,
-        ),
-      );
-      if (result == true) {
-        await controller.refreshProducts();
-      }
+      // final result = await showShadDialog<bool?>(
+      //   context: context,
+      //   builder: (context) => AdjustmentStockForm(
+      //     product: product,
+      //     inventoryController: controller,
+      //   ),
+      // );
+      // if (result == true) {
+      //   await controller.refreshProducts();
+      // }
     }
 
-    void _showDeleteDialog(BuildContext context, Product product) {
+    void _showDeleteDialog(BuildContext context) {
       final controller = context.read<InventoryController>();
       showShadDialog(
         context: context,
         builder: (context) =>
-            _DeleteProductDialog(product: product, controller: controller),
+            _DeleteProductDialog(inventory: inventory, controller: controller),
       );
     }
 
@@ -517,7 +481,7 @@ class _ActionsCell extends StatelessWidget {
             color: ShadTheme.of(context).colorScheme.primary,
             size: 15,
           ),
-          onPressed: () => _showProductDialog(context, product),
+          onPressed: () => _showProductDialog(context),
         ),
         ShadButton.ghost(
           child: Icon(
@@ -525,7 +489,7 @@ class _ActionsCell extends StatelessWidget {
             color: ShadTheme.of(context).colorScheme.destructive,
             size: 15,
           ),
-          onPressed: () => _showDeleteDialog(context, product),
+          onPressed: () => _showDeleteDialog(context),
         ),
       ],
     );
@@ -533,9 +497,9 @@ class _ActionsCell extends StatelessWidget {
 }
 
 class _DeleteProductDialog extends StatelessWidget {
-  _DeleteProductDialog({required this.product, required this.controller});
+  _DeleteProductDialog({required this.inventory, required this.controller});
 
-  final Product product;
+  final InventoryLevelWithProduct inventory;
   final InventoryController controller;
   final ValueNotifier<bool> isLoading = ValueNotifier(false);
 
@@ -546,7 +510,7 @@ class _DeleteProductDialog extends StatelessWidget {
         return;
       }
       isLoading.value = true;
-      final result = await controller.deleteProduct(product.storeProduct.refId);
+      final result = await controller.deleteProduct(inventory.product.refId);
       if (result) {
         showSuccessToast(
           context: context,
@@ -556,7 +520,7 @@ class _DeleteProductDialog extends StatelessWidget {
         showErrorToast(
           context: context,
           message: Intls.to.failedToDeleteProduct.trParams({
-            'name': product.globalProduct.label,
+            'name': inventory.globalProduct.label,
           }),
         );
       }
@@ -575,7 +539,7 @@ class _DeleteProductDialog extends StatelessWidget {
             children: [
               Text(
                 Intls.to.areYouSureYouWantToDelete.trParams({
-                  'name': product.globalProduct.label,
+                  'name': inventory.globalProduct.label,
                 }),
               ),
               const SizedBox(height: 20),

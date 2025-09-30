@@ -1,0 +1,76 @@
+openapi: 3.1.0
+info:
+  title: financial.v1
+paths: {}
+components:
+  schemas:
+    financial.v1.InvoiceLineItem:
+      type: object
+      properties:
+        productId:
+          type: string
+          title: product_id
+        quantity:
+          type: number
+          title: quantity
+          format: double
+        unitPrice:
+          type:
+            - integer
+            - string
+          title: unit_price
+          format: int64
+        subtotal:
+          type:
+            - integer
+            - string
+          title: subtotal
+          format: int64
+          description: quantity * unit_price
+        taxRate:
+          type: number
+          title: tax_rate
+          format: double
+          description: 0.20 for 20% VAT
+        taxAmount:
+          type:
+            - integer
+            - string
+          title: tax_amount
+          format: int64
+        total:
+          type:
+            - integer
+            - string
+          title: total
+          format: int64
+          description: subtotal + tax_amount
+        batchId:
+          type: string
+          title: batch_id
+          description: 'Optional: Batch/lot referenced'
+        productName:
+          title: product_name
+          description: The name of the item
+          $ref: '#/components/schemas/inventory.v1.Internationalized'
+      title: InvoiceLineItem
+      additionalProperties: false
+      description: |-
+        *
+         InvoiceLineItem represents one product on an invoice.
+
+         Fix: Added optional batch_id for lot traceability in accounting.
+    inventory.v1.Internationalized:
+      type: object
+      properties:
+        en:
+          type: string
+          title: en
+          description: The English name of the product category.
+        fr:
+          type: string
+          title: fr
+          description: The French name of the product category.
+      title: Internationalized
+      additionalProperties: false
+security: []

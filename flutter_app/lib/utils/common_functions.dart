@@ -1,4 +1,3 @@
-import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:sabitou_rpc/models.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
@@ -28,33 +27,33 @@ Future<bool> hasStorePermission(
   );
 }
 
-/// Checks if a product is low in stock.
-bool isLowStock(StoreProduct businessProduct) {
-  return businessProduct.stockQuantity <= businessProduct.minStockThreshold;
-}
+// /// Checks if a product is low in stock.
+// bool isLowStock(StoreProduct businessProduct) {
+//   return businessProduct.stockQuantity <= businessProduct.minStockThreshold;
+// }
 
 /// Computes expiring products (improved to next 30 days).
-List<StoreProduct> computeExpiringProducts(List<StoreProduct> storeProducts) {
-  return storeProducts.where((p) {
-    return isExpiringSoon(p, 60);
-  }).toList()..sort(
-    (a, b) =>
-        a.expirationDate.toDateTime().compareTo(b.expirationDate.toDateTime()),
-  );
-}
+// List<StoreProduct> computeExpiringProducts(List<StoreProduct> storeProducts) {
+//   return storeProducts.where((p) {
+//     return isExpiringSoon(p, 60);
+//   }).toList()..sort(
+//     (a, b) =>
+//         a.expirationDate.toDateTime().compareTo(b.expirationDate.toDateTime()),
+//   );
+// }
 
 /// Checks if a product is expiring soon.
-bool isExpiringSoon(StoreProduct businessProduct, int days) {
-  final now = clock.now();
-  final threshold = now.add(Duration(days: days));
+// bool isExpiringSoon(StoreProduct businessProduct, int days) {
+//   final now = clock.now();
+//   final threshold = now.add(Duration(days: days));
 
-  if (!businessProduct.hasExpirationDate()) {
-    return false;
-  }
-  final expiry = businessProduct.expirationDate.toDateTime().toUtc();
+//   if (!businessProduct.hasExpirationDate()) {
+//     return false;
+//   }
+//   final expiry = businessProduct.expirationDate.toDateTime().toUtc();
 
-  return !expiry.isAfter(threshold);
-}
+//   return !expiry.isAfter(threshold);
+// }
 
 /// Shows an error toast.
 void showErrorToast({
@@ -117,4 +116,24 @@ void showNeutralToast({
       description: Text(message),
     ),
   );
+}
+
+/// Gets the month name from month number.
+String getMonthName(int month) {
+  const monthNames = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
+
+  return monthNames[month - 1];
 }

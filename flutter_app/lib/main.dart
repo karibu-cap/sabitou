@@ -11,16 +11,13 @@ import 'providers/cart_provider.dart';
 import 'repositories/auth_repository.dart';
 import 'repositories/business_repository.dart';
 import 'repositories/categories_repository.dart';
-import 'repositories/invoice_repository.dart';
-import 'repositories/orders_repository.dart';
+import 'repositories/inventory_repository.dart';
 import 'repositories/permissions_repository.dart';
 import 'repositories/products_repository.dart';
-import 'repositories/stock_inbound_repository.dart';
+import 'repositories/reports_repository.dart';
 import 'repositories/stores_repository.dart';
 import 'repositories/suppliers_repository.dart';
-import 'repositories/transactions_repository.dart';
 import 'repositories/users_repository.dart';
-import 'repositories/voucher_repository.dart';
 import 'router/app_router.dart';
 import 'services/app_theme_service.dart';
 import 'services/data_sync/data_sync_service.dart';
@@ -67,18 +64,15 @@ Future<void> _initServices() async {
     )
     ..registerLazySingleton<UserPreferences>(UserPreferences.new)
     ..registerLazySingleton<AuthRepository>(AuthRepository.new)
-    ..registerLazySingleton<OrdersRepository>(OrdersRepository.new)
     ..registerLazySingleton<ProductsRepository>(ProductsRepository.new)
     ..registerLazySingleton<SuppliersRepository>(SuppliersRepository.new)
     ..registerLazySingleton<PermissionsRepository>(PermissionsRepository.new)
-    ..registerLazySingleton<TransactionsRepository>(TransactionsRepository.new)
     ..registerLazySingleton<BusinessRepository>(BusinessRepository.new)
     ..registerLazySingleton<StoresRepository>(StoresRepository.new)
     ..registerLazySingleton<UserRepository>(UserRepository.new)
-    ..registerLazySingleton<StockInboundRepository>(StockInboundRepository.new)
-    ..registerLazySingleton<InvoiceRepository>(InvoiceRepository.new)
     ..registerLazySingleton<CategoriesRepository>(CategoriesRepository.new)
-    ..registerLazySingleton<VoucherRepository>(VoucherRepository.new)
+    ..registerLazySingleton<InventoryRepository>(InventoryRepository.new)
+    ..registerLazySingleton<ReportsRepository>(ReportsRepository.new)
     ..registerLazySingleton<DataSyncService>(
       () => DataSyncService(transport: syncFakeTransport),
     )

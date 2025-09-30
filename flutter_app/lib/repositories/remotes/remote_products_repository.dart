@@ -9,11 +9,11 @@ class RemoteProductsRepository {
   final _logger = LoggerApp('RemoteProductsRepository');
 
   /// The product service client.
-  final ProductServiceClient productServiceClient;
+  final StoreProductServiceClient productServiceClient;
 
   /// Constructs a new [RemoteProductsRepository].
   RemoteProductsRepository({required connect.Transport transport})
-    : productServiceClient = ProductServiceClient(transport);
+    : productServiceClient = StoreProductServiceClient(transport);
 
   /// Gets all products base on store Id.
   Future<List<StoreProduct>> getProductsByStoreId(String storeId) async {

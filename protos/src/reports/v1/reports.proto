@@ -1,0 +1,381 @@
+
+syntax = "proto3";
+
+package reports.v1;
+
+import "audits/v1/inventory_transaction.proto";
+import "financial/v1/invoice.proto";
+import "google/protobuf/timestamp.proto";
+import "inventory/v1/store_product.proto";
+import "store/v1/store.proto";
+import "store/v1/supplier.proto";
+
+service ReportingService {
+  // Sales report by period
+  rpc GetSalesReport(GetSalesReportRequest) returns (GetSalesReportResponse);
+
+  // Purchase report by period
+  rpc GetPurchaseReport(GetPurchaseReportRequest) returns (GetPurchaseReportResponse);
+
+  // Inventory movement report
+  rpc GetInventoryMovementReport(GetInventoryMovementReportRequest) returns (GetInventoryMovementReportResponse);
+
+  // Best selling products
+  rpc GetBestSellingProducts(GetBestSellingProductsRequest) returns (GetBestSellingProductsResponse);
+
+  // Store purchase history
+  rpc GetStorePurchaseHistory(GetStorePurchaseHistoryRequest) returns (GetStorePurchaseHistoryResponse);
+
+  // Supplier performance report
+  rpc GetSupplierPerformanceReport(GetSupplierPerformanceReportRequest) returns (GetSupplierPerformanceReportResponse);
+
+  // Profit & Loss report
+  rpc GetProfitLossReport(GetProfitLossReportRequest) returns (GetProfitLossReportResponse);
+
+  // Stock aging report
+  rpc GetStockAgingReport(GetStockAgingReportRequest) returns (GetStockAgingReportResponse);
+
+  // Comprehensive inventory report with aggregates
+  rpc GetInventoryReport(GetInventoryReportRequest) returns (GetInventoryReportResponse);
+
+  // Full sales report including best sellers
+  rpc GetSalesReportFull(GetSalesReportRequest) returns (GetSalesReportFullResponse);
+
+  // Comprehensive financial report with purchases and balances
+  rpc GetFinancialReport(GetFinancialReportRequest) returns (GetFinancialReportResponse);
+}
+
+message GetSalesReportRequest {
+  google.protobuf.Timestamp start_date = 1;
+  google.protobuf.Timestamp end_date = 2;
+  optional string supplier_id = 3; // Optional
+optional  string store_id = 4; // Optional
+  string category = 5; // Product category filter
+  ReportGroupBy group_by = 6; // Daily, weekly, monthly
+}
+
+message GetSalesReportResponse {
+  repeated SalesSummary summaries = 1;
+  int64 total_sales_amount = 2;
+  int32 total_transactions = 3;
+  int32 total_units_sold = 4;
+  int64 average_transaction_value = 5;
+}
+
+message SalesSummary {
+  google.protobuf.Timestamp period_start = 1;
+  google.protobuf.Timestamp period_end = 2;
+  int64 sales_amount = 3;
+  int32 transaction_count = 4;
+  int32 units_sold = 5;
+}
+
+message GetPurchaseReportRequest {
+  google.protobuf.Timestamp start_date = 1;
+  google.protobuf.Timestamp end_date = 2;
+  string store_id = 3;
+  string supplier_id = 4;
+  string category = 5;
+  ReportGroupBy group_by = 6;
+}
+
+message GetPurchaseReportResponse {
+  repeated PurchaseSummary summaries = 1;
+  int64 total_purchase_amount = 2;
+  int32 total_purchase_orders = 3;
+  int32 total_units_purchased = 4;
+}
+
+message PurchaseSummary {
+  google.protobuf.Timestamp period_start = 1;
+  google.protobuf.Timestamp period_end = 2;
+  int64 purchase_amount = 3;
+  int32 purchase_order_count = 4;
+  int32 units_purchased = 5;
+}
+
+message GetInventoryMovementReportRequest {
+  string product_id = 1; // Required
+  google.protobuf.Timestamp start_date = 2;
+  google.protobuf.Timestamp end_date = 3;
+  string store_id = 4; // Optional
+}
+
+message GetInventoryMovementReportResponse {
+  inventory.v1.StoreProduct product = 1;
+  double opening_balance = 2;
+  double total_in = 3;
+  double total_out = 4;
+  double closing_balance = 5;
+  repeated audits.v1.InventoryTransaction transactions = 6;
+}
+
+message GetBestSellingProductsRequest {
+  google.protobuf.Timestamp start_date = 1;
+  google.protobuf.Timestamp end_date = 2;
+ optional string store_id = 3; // Optional
+ optional string category = 4; // Optional
+  int32 top_n = 5; // Top 10, 20, etc. Default 20
+}
+
+message GetBestSellingProductsResponse {
+  repeated BestSellingProduct products = 1;
+}
+
+message BestSellingProduct {
+  inventory.v1.StoreProduct product = 1;
+  int32 units_sold = 2;
+  int64 total_revenue = 3;
+  int32 transaction_count = 4;
+  string productName = 5;
+  int32 rank = 6;
+}
+
+message GetStorePurchaseHistoryRequest {
+  string store_id = 1;
+  google.protobuf.Timestamp start_date = 2;
+  google.protobuf.Timestamp end_date = 3;
+}
+
+message GetStorePurchaseHistoryResponse {
+  store.v1.Store store = 1;
+  repeated financial.v1.Invoice invoices = 2;
+  int64 total_purchases = 3;
+  int64 total_paid = 4;
+  int64 outstanding_balance = 5;
+  int32 transaction_count = 6;
+  google.protobuf.Timestamp last_purchase_date = 7;
+}
+
+message GetSupplierPerformanceReportRequest {
+  string supplier_id = 1;
+  google.protobuf.Timestamp start_date = 2;
+  google.protobuf.Timestamp end_date = 3;
+}
+
+message GetSupplierPerformanceReportResponse {
+  store.v1.Supplier supplier = 1;
+  int32 total_purchase_orders = 2;
+  int64 total_purchase_value = 3;
+  int32 on_time_deliveries = 4;
+  int32 late_deliveries = 5;
+  double on_time_percentage = 6;
+  int32 quality_issues = 7; // Count of returns/rejections
+  double average_delivery_time_days = 8;
+}
+
+message GetProfitLossReportRequest {
+  google.protobuf.Timestamp start_date = 1;
+  google.protobuf.Timestamp end_date = 2;
+optional  string store_id = 3; // Optional
+}
+
+message GetProfitLossReportResponse {
+  int64 total_revenue = 1; // Sales
+  int64 cost_of_goods_sold = 2; // Purchases
+  int64 gross_profit = 3; // Revenue - COGS
+  double gross_profit_margin = 4; // Percentage
+  int64 returns_value = 5; // Store returns
+  int64 adjustments_value = 6; // Stock adjustments (damage, theft)
+  int64 net_profit = 7; // After returns and adjustments
+}
+
+message GetStockAgingReportRequest {
+optional string store_id = 1; // Optional
+optional string category = 2; // Optional
+}
+
+message GetStockAgingReportResponse {
+  repeated StockAgingItem items = 1;
+  int64 total_stock_value = 2;
+  int64 slow_moving_stock_value = 3; // > 90 days
+}
+
+message StockAgingItem {
+  inventory.v1.StoreProduct product = 1;
+  double quantity = 2;
+  int64 stock_value = 3;
+  google.protobuf.Timestamp last_movement_date = 4;
+  int32 days_since_last_movement = 5;
+  StockMovementCategory movement_category = 6;
+}
+
+message GetInventoryReportRequest {
+  optional string store_id = 1;
+  google.protobuf.Timestamp start_date = 2;
+  google.protobuf.Timestamp end_date = 3;
+  optional string category = 4;
+}
+
+message InventoryMovementSummary {
+  double total_in = 1;
+  double total_out = 2;
+  double net_change = 3;
+}
+
+message GetInventoryReportResponse {
+   int32 total_products = 1;
+   int64 total_value = 2; // Sum of (quantity * cost_price)
+   int32 low_stock_count = 3;
+   repeated StockAgingItem aging_items = 4;
+   InventoryMovementSummary movement_summary = 5;
+   repeated BestSellingProduct best_sellers = 6;
+   repeated StockMovementDataPoint stock_movement_data = 7;
+   InventoryComparisonData previous_year_comparison = 8;
+}
+
+message StockMovementDataPoint {
+   google.protobuf.Timestamp date = 1;
+   double stock_level = 2;
+   double movement_quantity = 3;
+   string movement_type = 4; // "IN", "OUT", "ADJUSTMENT"
+}
+
+message GetSalesReportFullResponse {
+   repeated SalesSummary summaries = 1;
+   int64 total_sales_amount = 2;
+   int32 total_transactions = 3;
+   int32 total_units_sold = 4;
+   int64 average_transaction_value = 5;
+   repeated BestSellingProduct best_products = 6;
+   repeated CategorySalesData category_sales_data = 7;
+   SalesComparisonData previous_year_comparison = 8;
+}
+
+message CategorySalesData {
+   string category_name = 1;
+   double total_sales_amount = 2;
+   int32 total_units_sold = 3;
+   int32 transaction_count = 4;
+   double percentage_of_total = 5;
+}
+
+message SalesComparisonData {
+   int64 previous_year_total_sales = 1;
+   int32 previous_year_total_transactions = 2;
+   double previous_year_average_transaction_value = 3;
+}
+
+message GetFinancialReportRequest {
+  optional string store_id = 1;
+  google.protobuf.Timestamp start_date = 2;
+  google.protobuf.Timestamp end_date = 3;
+}
+
+message GetFinancialReportResponse {
+   int64 total_revenue = 1; // Sales
+   int64 cost_of_goods_sold = 2; // Purchases
+   int64 gross_profit = 3;
+   double gross_profit_margin = 4;
+   int64 returns_value = 5;
+   int64 adjustments_value = 6;
+   int64 net_profit = 7;
+   int64 total_purchases = 8;
+   int64 outstanding_balance = 9;
+   repeated SupplierPerformanceSummary supplier_performances = 10;
+   repeated RevenueExpenseDataPoint revenue_vs_expenses_data = 11;
+   FinancialComparisonData previous_year_comparison = 12;
+}
+
+message RevenueExpenseDataPoint {
+   google.protobuf.Timestamp period_start = 1;
+   google.protobuf.Timestamp period_end = 2;
+   double revenue = 3;
+   double expenses = 4;
+   double net_amount = 5;
+}
+
+message SupplierPerformanceSummary {
+   string supplier_id = 1;
+   string supplier_name = 2;
+   int64 total_purchase_value = 3;
+   double on_time_percentage = 4;
+   int32 total_orders = 5;
+}
+
+message FinancialComparisonData {
+   int64 previous_year_total_revenue = 1;
+   int64 previous_year_net_profit = 2;
+   double previous_year_gross_profit_margin = 3;
+   int64 previous_year_total_purchases = 4;
+}
+
+message InventoryComparisonData {
+   int32 previous_year_total_products = 1;
+   int64 previous_year_total_value = 2;
+   int32 previous_year_low_stock_count = 3;
+   double previous_year_movement_total_in = 4;
+   double previous_year_movement_total_out = 5;
+}
+
+// Comprehensive dashboard data service for aggregated calculations
+service DashboardReportingService {
+   // Get comprehensive dashboard data with all calculated fields
+   rpc GetDashboardReport(GetDashboardReportRequest) returns (GetDashboardReportResponse);
+}
+
+message GetDashboardReportRequest {
+   optional string store_id = 1;
+   google.protobuf.Timestamp start_date = 2;
+   google.protobuf.Timestamp end_date = 3;
+}
+
+message GetDashboardReportResponse {
+   // Sales metrics
+   int64 total_sales_amount = 1;
+   int32 total_transactions = 2;
+   double average_transaction_value = 3;
+   int32 total_units_sold = 4;
+
+   // Financial metrics
+   int64 total_revenue = 5;
+   int64 net_profit = 6;
+   double gross_profit_margin = 7;
+   int64 total_purchases = 8;
+
+   // Inventory metrics
+   int32 total_products = 9;
+   int64 total_inventory_value = 10;
+   int32 low_stock_count = 11;
+
+   // Trend and comparison data
+   repeated TrendDataPoint sales_and_profit_trend = 12;
+   repeated CategorySalesData category_sales_breakdown = 13;
+   repeated RevenueExpenseDataPoint revenue_vs_expenses = 14;
+   repeated StockMovementDataPoint inventory_movement = 15;
+
+   // Previous year comparisons
+   SalesComparisonData sales_comparison = 16;
+   FinancialComparisonData financial_comparison = 17;
+   InventoryComparisonData inventory_comparison = 18;
+
+   // Top performers
+   repeated BestSellingProduct top_performing_products = 19;
+   repeated SupplierPerformanceSummary supplier_performances = 20;
+
+   // Stock aging
+   repeated StockAgingItem stock_aging_items = 21;
+}
+
+message TrendDataPoint {
+   google.protobuf.Timestamp date = 1;
+   double sales_value = 2;
+   double profit_value = 3;
+}
+
+enum StockMovementCategory {
+  STOCK_MOVEMENT_CATEGORY_UNSPECIFIED = 0;
+  STOCK_MOVEMENT_CATEGORY_FAST = 1; // < 30 days
+  STOCK_MOVEMENT_CATEGORY_MEDIUM = 2; // 30-60 days
+  STOCK_MOVEMENT_CATEGORY_SLOW = 3; // 60-90 days
+  STOCK_MOVEMENT_CATEGORY_VERY_SLOW = 4; // > 90 days
+}
+
+enum ReportGroupBy {
+  REPORT_GROUP_BY_UNSPECIFIED = 0;
+  REPORT_GROUP_BY_DAILY = 1;
+  REPORT_GROUP_BY_WEEKLY = 2;
+  REPORT_GROUP_BY_MONTHLY = 3;
+  REPORT_GROUP_BY_QUARTERLY = 4;
+  REPORT_GROUP_BY_YEARLY = 5;
+}

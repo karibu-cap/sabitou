@@ -4,8 +4,8 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../../services/internationalization/internationalization.dart';
-import '../../suppliers_controller.dart';
 import '../../../../widgets/pop_up/add_supplier/add_supplier_view.dart';
+import '../../suppliers_controller.dart';
 import 'supplier_cell_builders.dart';
 import 'supplier_delete_dialog.dart';
 
@@ -15,7 +15,7 @@ class SupplierDataTable extends StatelessWidget {
   final List<Supplier> suppliers;
 
   /// List of all products for calculations.
-  final List<StoreProduct> products;
+  final List<InventoryLevelWithProduct> products;
 
   /// Creates a new [SupplierDataTable].
   const SupplierDataTable({
@@ -83,7 +83,10 @@ class SupplierDataTable extends StatelessWidget {
                 ],
                 rows: suppliers.map((supplier) {
                   final supplierProducts = products
-                      .where((product) => product.supplierId == supplier.refId)
+                      .where(
+                        (product) =>
+                            product.product.supplierId == supplier.refId,
+                      )
                       .toList();
                   final productCount = supplierProducts.length;
 

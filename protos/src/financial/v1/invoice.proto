@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+package financial.v1;
+
+import "buf/validate/validate.proto";
+import "financial/v1/financial_utils.proto";
+import "google/protobuf/timestamp.proto";
+
+/**
+ * Invoice (Facture)
+ * The official accounting document for a sale or purchase.
+ * Created AFTER goods are delivered (usually).
+ *
+ * Fix: InvoiceLineItem now includes optional batch_id for traceability.
+ *
+ * For SALES: You issue to customer
+ * For PURCHASES: You receive from supplier
+ *
+ * Example SALES invoice:
+ *   invoice_id: "INV-2025-001"
+ *   invoice_type: INVOICE_TYPE_SALES
+ *   issuer_id: "CMP-001" (your company)
+ *   recipient_id: "CMP-003" (customer)
+ *   related_sales_order_id: "SO-2025-001"
+ *   related_delivery_note_id: "DN-2025-001"
+ *   items: [10x PRD-001 @ 450000]
+ *   subtotal: 4500000
+ *   tax_amount: 900000 (20% VAT)
+ *   total_amount: 5400000
+ *   status: INVOICE_STATUS_UNPAID
+ *
+ * INVENTORY IMPACT: None (already moved by DeliveryNote)
+ */
+message Invoice {
+  string document_id = 1 [(buf.validate.field).required = true]; // "INV-2025-001"
+  InvoiceType invoice_type = 2; // Sales or Purchase
+  string issuer_id = 3; // Company issuing invoice
+  string recipient_id = 4; // Company receiving invoice
+  string related_sales_order_id = 5; // Optional link
+  string related_purchase_order_id = 6; // Optional link
+  string related_delivery_note_id = 7; // Optional link
+  InvoiceStatus status = 8;
+  repeated financial.v1.InvoiceLineItem items = 9;
+  int64 subtotal = 10; // Before tax
+  int64 tax_amount = 11; // VAT/sales tax
+  int64 total_amount = 12; // Final amount due
+  string currency = 13;
+  google.protobuf.Timestamp issue_date = 14;
+  google.protobuf.Timestamp due_date = 15; // Payment deadline
+  string created_by_user_id = 16;
+  google.protobuf.Timestamp created_at = 17;
+  repeated string payment_ids = 18;
+  string notes = 19;
+  string payment_terms = 20; // "Net 30", "Cash on delivery", etc.
+}
+
+enum InvoiceType {
+  INVOICE_TYPE_UNSPECIFIED = 0;
+  INVOICE_TYPE_SALES = 1; // You selling to customer
+  INVOICE_TYPE_PURCHASE = 2; // Supplier selling to you
+}
+
+enum InvoiceStatus {
+  INVOICE_STATUS_UNSPECIFIED = 0;
+  INVOICE_STATUS_DRAFT = 1; // Being prepared
+  INVOICE_STATUS_ISSUED = 2; // Sent to customer/received from supplier
+  INVOICE_STATUS_UNPAID = 3; // Awaiting payment
+  INVOICE_STATUS_PARTIALLY_PAID = 4; // Some payment received
+  INVOICE_STATUS_PAID = 5; // Fully paid
+  INVOICE_STATUS_OVERDUE = 6; // Past due_date
+  INVOICE_STATUS_CANCELLED = 7; // Cancelled (use CreditNote instead)
+  INVOICE_STATUS_CREDITED = 8; // CreditNote issued against this
+}

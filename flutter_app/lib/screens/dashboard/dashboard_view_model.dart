@@ -1,25 +1,13 @@
 import 'dart:async';
 
 import 'package:clock/clock.dart';
+import 'package:fixnum/fixnum.dart';
 import 'package:sabitou_rpc/models.dart';
 
-import '../../repositories/orders_repository.dart';
-import '../../repositories/products_repository.dart';
-import '../../repositories/transactions_repository.dart';
-import '../../utils/common_functions.dart';
+import '../../repositories/inventory_repository.dart';
+import '../../repositories/report_repository.dart';
+import '../../repositories/store_products_repository.dart';
 import '../../utils/user_preference.dart';
-
-/// Data class for dashboard statistics.
-typedef DashboardStatsData = ({
-  int totalProducts,
-  int lowStockItems,
-  int expiringItems,
-  double todaySales,
-  int todayTransactions,
-  List<Transaction> transactions,
-  List<Transaction> yesterdayTransactions,
-  double yesterdaySales,
-});
 
 /// The [DashboardViewModel].
 final class DashboardViewModel {
@@ -29,148 +17,130 @@ final class DashboardViewModel {
   /// Error message if any.
   String error = '';
 
-  /// List of low stock products.
-  List<StoreProduct> lowStockProducts = <StoreProduct>[];
-
-  /// List of expiring products (improved to include soon-to-expire, not just expired).
-  List<StoreProduct> expiringProducts = <StoreProduct>[];
-
-  /// Map of global products for quick lookup (only for low stock and expiring).
-  Map<String, GlobalProduct> globalProducts = <String, GlobalProduct>{};
-
   /// Completer for loading state.
   final Completer<bool> completer = Completer<bool>();
+
+  /// Dashboard data.
+  DashboardData stats = DashboardData(
+    totalProducts: 0,
+    lowStockItemsCount: 0,
+    expiringItemsCount: 0,
+    expiringTimeframe: '',
+    todaySales: Int64(),
+    todayTransactions: 0,
+    recentActivities: [],
+    lowStockAlerts: [],
+    expirationAlerts: [],
+  );
 
   /// Constructs of new [DashboardViewModel].
   DashboardViewModel() {
     fetchDashboardData();
   }
 
-  /// Dashboard stats.
-  DashboardStatsData stats = (
-    totalProducts: 0,
-    lowStockItems: 0,
-    expiringItems: 0,
-    todaySales: 0.0,
-    todayTransactions: 0,
-    transactions: <Transaction>[],
-    yesterdayTransactions: <Transaction>[],
-    yesterdaySales: 0.0,
-  );
-
   /// Fetches all dashboard data in one go to avoid duplicate fetches.
-  Future<void> fetchDashboardData() async {
-    error = '';
+  Future<DashboardData> fetchDashboardData() async {
     try {
       final businessId = userPreferences.business?.refId;
       final store = userPreferences.store;
       if (businessId == null || store == null) {
         throw Exception('Business or store not found');
       }
-      final now = clock.now();
-      // Fetch all data in parallel.
-      final [
-        orders as List<Order>,
-        storeProducts as List<StoreProduct>,
-        recentTransactions as List<Transaction>,
-        yesterdayTransactions as List<Transaction>,
-      ] = await Future.wait([
-        OrdersRepository.instance.getOrdersByQuery(
-          FindOrdersRequest(storeId: store.refId),
+
+      // Execute all calls in parallel for better performance
+      final results = await Future.wait([
+        StoreProductsRepository.instance.listProducts(
+          ListProductsRequest(storeId: store.refId),
         ),
-        ProductsRepository.instance.getProductsByStoreId(store.refId),
-        TransactionsRepository.instance.getCompleteTransactionsByStoreId(
+        InventoryRepository.instance.getLowStockItems(store.refId),
+        InventoryRepository.instance.getExpiringItems(store.refId),
+        ReportRepository.instance.getSalesByPeriod(
           storeId: store.refId,
-          startOfDay: now.subtract(const Duration(days: 30)),
-          endOfDay: now,
+          startDate: clock.now(),
+          endDate: clock.now().add(const Duration(days: 1)),
         ),
-        TransactionsRepository.instance.getCompleteTransactionsByStoreId(
-          storeId: store.refId,
-          startOfDay: DateTime(
-            now.year,
-            now.month,
-            now.day,
-          ).subtract(const Duration(days: 1)),
-          endOfDay: DateTime(now.year, now.month, now.day),
+        InventoryRepository.instance.getInventoryTransactionHistory(
+          GetInventoryTransactionHistoryRequest(
+            storeId: store.refId,
+            pageSize: 10,
+          ),
         ),
       ]);
-      // Filter store products to match storeId (safety).
-      final filteredProducts = storeProducts
-          .where((p) => p.storeId == store.refId)
-          .toList();
 
-      /// Today's transactions.
-      final todayTransactions = recentTransactions
-          .where(
-            (t) =>
-                t.createdAt.toDateTime().year == now.year &&
-                t.createdAt.toDateTime().month == now.month &&
-                t.createdAt.toDateTime().day == now.day,
-          )
-          .toList();
+      final totalProducts = results.first as ListProductsResponse;
+      final lowStockItems = results[1] as List<InventoryLevelWithProduct>;
+      final expiringItems = results[2] as List<InventoryLevelWithProduct>;
+      final salesReport = results[3] as GetSalesReportResponse;
+      final recentActivities =
+          results[4] as GetInventoryTransactionHistoryResponse;
 
-      // Compute low stock.
-      lowStockProducts = filteredProducts.where(isLowStock).toList();
-
-      // Compute expiring products (improved: expiring in next 30 days, including already expired).
-      expiringProducts = computeExpiringProducts(filteredProducts);
-
-      // Compute total products.
-      final totalProductsCount = filteredProducts.length;
-
-      // Update stats.
-      stats = (
-        totalProducts: totalProductsCount,
-        lowStockItems: lowStockProducts.length,
-        expiringItems: expiringProducts.length,
-        todaySales: _computeSales(todayTransactions, store.refId),
-        todayTransactions: todayTransactions.length,
-        transactions: recentTransactions,
-        yesterdayTransactions: yesterdayTransactions,
-        yesterdaySales: _computeSales(yesterdayTransactions, store.refId),
+      final newStats = DashboardData(
+        totalProducts: totalProducts.totalCount,
+        lowStockItemsCount: lowStockItems.length,
+        expiringItemsCount: expiringItems.length,
+        expiringTimeframe: 'Next 60 days',
+        todaySales: salesReport.totalSalesAmount,
+        todayTransactions: salesReport.totalTransactions,
+        recentActivities: recentActivities.transactions,
+        lowStockAlerts: lowStockItems,
+        expirationAlerts: expiringItems,
       );
+      stats = newStats;
 
-      // Fetch global products for low stock and expiring in parallel.
-      final uniqueGlobalIds = <String>{
-        ...lowStockProducts.map((p) => p.globalProductId),
-        ...expiringProducts.map((p) => p.globalProductId),
-      };
-      final globalFutures = uniqueGlobalIds.map(
-        (id) => ProductsRepository.instance.findGlobalProducts(
-          FindGlobalProductsRequest(refId: id),
-        ),
-      );
-      final globals = await Future.wait(globalFutures);
+      return stats;
+    } catch (e) {
+      print('Error loading dashboard data: $e');
 
-      final globalMap = Map<String, GlobalProduct>.fromIterables(
-        uniqueGlobalIds.toList(),
-        globals.expand((g) => g),
-      );
-      globalProducts = globalMap;
-    } on Exception catch (e) {
       error = e.toString();
+
+      return stats;
     } finally {
-      completer.complete(true);
+      if (!completer.isCompleted) {
+        completer.complete(true);
+      }
     }
   }
+}
 
-  /// Compute sales.
-  double _computeSales(List<Transaction> transactions, String storeRefId) {
-    return transactions
-        .where(
-          (t) =>
-              (t.type == TransactionType.TRANSACTION_TYPE_SALE ||
-                  t.type == TransactionType.TRANSACTION_TYPE_REFUND) &&
-              (t.storeId == storeRefId),
-        )
-        .fold(0.0, (sum, t) {
-          if (t.type == TransactionType.TRANSACTION_TYPE_SALE) {
-            return sum + t.amount.toDouble();
-          } else if (t.type == TransactionType.TRANSACTION_TYPE_REFUND) {
-            return sum - t.amount.abs().toDouble();
-          }
+/// The dashboard data model.
+class DashboardData {
+  /// The total products.
+  final int totalProducts;
 
-          return sum;
-        });
-  }
+  /// The low stock items count.
+  final int lowStockItemsCount;
+
+  /// The expiring items count.
+  final int expiringItemsCount;
+
+  /// The expiring timeframe.
+  final String expiringTimeframe; // "Next 2 months"
+
+  /// Sales
+  final Int64 todaySales;
+
+  /// Transactionsd
+  final int todayTransactions;
+
+  /// Recent Activity
+  final List<InventoryTransaction> recentActivities;
+
+  /// Low Stock Alerts
+  final List<InventoryLevelWithProduct> lowStockAlerts;
+
+  /// Expiration Alerts
+  final List<InventoryLevelWithProduct> expirationAlerts;
+
+  /// Constructs a new [DashboardData].
+  DashboardData({
+    required this.totalProducts,
+    required this.lowStockItemsCount,
+    required this.expiringItemsCount,
+    required this.expiringTimeframe,
+    required this.todaySales,
+    required this.todayTransactions,
+    required this.recentActivities,
+    required this.lowStockAlerts,
+    required this.expirationAlerts,
+  });
 }

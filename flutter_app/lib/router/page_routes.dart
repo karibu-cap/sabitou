@@ -39,14 +39,20 @@ abstract class PagesRoutes {
   /// The inventory route, for example, http:localhost:8080/inventory.
   static final inventory = _InventoryRoute();
 
-  /// The sales route, for example, http:localhost:8080/sales-report.
-  static final salesReport = _SalesRoute();
+  /// The sales route, for example, http:localhost:8080/sales/sales-orders.
+  static final salesOrders = _SalesOrderRoute();
 
-  /// The new order route, for example, http:localhost:8080/sales/new-order.
-  static final newOrder = _NewOrderRoute();
+  /// The sales route, for example, http:localhost:8080/sales.
+  static final sales = _SalesRoute();
+
+  /// The new order route, for example, http:localhost:8080/sales/pos.
+  static final pos = _PosRoute();
 
   /// The reports route, for example, http:localhost:8080/reports.
   static final reports = _ReportsRoute();
+
+  /// The reports route, for example, http:localhost:8080/sales/cash-receipts.
+  static final cashReceipts = _CashReceiptsRoute();
 
   /// The transactions route, for example, http:localhost:8080/transactions.
   static final transactions = _TransactionsRoute();
@@ -67,6 +73,22 @@ abstract class PagesRoutes {
   static final settings = _SettingsRoute();
 }
 
+class _CashReceiptsRoute extends PagesRoutesWithNoParams {
+  @override
+  String get pattern => '/sales/cash-receipts';
+
+  @override
+  String get name => 'sales/cash-receipts';
+}
+
+class _SalesOrderRoute extends PagesRoutesWithNoParams {
+  @override
+  String get pattern => '/sales/sales-order';
+
+  @override
+  String get name => 'sales/sales-order';
+}
+
 class _InventoryRoute extends PagesRoutesWithNoParams {
   @override
   String get pattern => '/inventory';
@@ -77,18 +99,18 @@ class _InventoryRoute extends PagesRoutesWithNoParams {
 
 class _SalesRoute extends PagesRoutesWithNoParams {
   @override
-  String get pattern => '/sales-report';
+  String get pattern => '/sales';
 
   @override
-  String get name => 'sales-report';
+  String get name => 'sales';
 }
 
-class _NewOrderRoute extends PagesRoutesWithNoParams {
+class _PosRoute extends PagesRoutesWithNoParams {
   @override
-  String get pattern => '/new-order';
+  String get pattern => '/sales/pos';
 
   @override
-  String get name => 'new-order';
+  String get name => 'sales/pos';
 }
 
 class _ReportsRoute extends PagesRoutesWithNoParams {

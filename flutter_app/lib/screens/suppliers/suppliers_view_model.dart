@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:rxdart/rxdart.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
-import '../../../repositories/products_repository.dart';
 import '../../../repositories/suppliers_repository.dart';
+import '../../repositories/inventory_repository.dart';
 import '../../services/rpc/fake_transport/supplier.dart';
 
 /// ViewModel for suppliers management.
@@ -26,11 +26,6 @@ class SuppliersViewModel {
     transport: supplierFakeTransport,
   );
 
-  /// The products repository instance.
-  final ProductsRepository _productsRepository = ProductsRepository(
-    transport: supplierFakeTransport,
-  );
-
   /// Gets the search query.
   BehaviorSubject<String> get searchQuery => _searchQuerySubject;
 
@@ -42,8 +37,8 @@ class SuppliersViewModel {
       .streamStoreSuppliers(StreamStoreSuppliersRequest(storeId: storeId));
 
   /// Stream of products for reactive UI updates.
-  Stream<List<StoreProduct>> get productsStream => _productsRepository
-      .streamStoreProducts(StreamStoreProductsRequest(storeId: storeId));
+  Stream<List<InventoryLevelWithProduct>> get productsStream =>
+      InventoryRepository.instance.getStoreInventory(storeId).asStream();
 
   /// Constructors a new SuppliersViewModel.
   SuppliersViewModel({required this.storeId});

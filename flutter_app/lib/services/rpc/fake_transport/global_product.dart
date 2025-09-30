@@ -2,7 +2,7 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 /// Fake transport for global product data.
 final globalProductFakeTransport = FakeTransportBuilder()
-    .unary(ProductService.findGlobalProducts, (req, _) async {
+    .unary(StoreProductService.findGlobalProducts, (req, _) async {
       return FindGlobalProductsResponse()
         ..products.addAll([
           GlobalProduct()
@@ -75,13 +75,13 @@ final globalProductFakeTransport = FakeTransportBuilder()
             ..status = GlobalProductStatus.GLOBAL_PRODUCT_STATUS_ACTIVE,
         ]);
     })
-    .unary(ProductService.createGlobalProduct, (req, _) async {
+    .unary(StoreProductService.createGlobalProduct, (req, _) async {
       return CreateGlobalProductResponse()..success = true;
     })
-    .unary(ProductService.updateGlobalProduct, (req, _) async {
+    .unary(StoreProductService.updateGlobalProduct, (req, _) async {
       return UpdateGlobalProductResponse()..success = true;
     })
-    .unary(ProductService.deleteGlobalProduct, (req, _) async {
+    .unary(StoreProductService.deleteGlobalProduct, (req, _) async {
       return DeleteGlobalProductResponse()..success = true;
     })
     .unary(CategoryService.findCategories, (req, _) async {

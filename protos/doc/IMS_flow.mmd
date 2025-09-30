@@ -1,0 +1,109 @@
+graph TB
+    subgraph "PURCHASE FLOW - Acheter des produits du fournisseur"
+        P1[PurchaseOrder<br/>Bon de Commande<br/>📝 NO inventory change]
+        P2[Supplier Ships<br/>Fournisseur expédie]
+        P3[ReceivingNote<br/>Bon de Réception<br/>📦 +Stock]
+        P4[Purchase Invoice<br/>Facture Fournisseur<br/>💰 NO inventory change]
+        P5[Payment<br/>Paiement Fournisseur<br/>💸]
+        
+        P1 -->|Send to supplier| P2
+        P2 -->|Goods arrive| P3
+        P3 -->|Supplier sends| P4
+        P4 -->|Pay| P5
+        
+        P3 -.->|Creates| IT1[InventoryTransaction<br/>TXN_TYPE_PURCHASE]
+    end
+    
+    subgraph "SALES FLOW - Vendre aux clients"
+        S1[Quotation Optional<br/>Devis<br/>📋]
+        S2[SalesOrder<br/>Bon de Commande Client<br/>📝 Reserves stock]
+        S3[DeliveryNote<br/>Bon de Livraison<br/>📦 -Stock]
+        S4[Sales Invoice<br/>Facture de Vente<br/>💰 NO inventory change]
+        S5[Payment<br/>Paiement Client<br/>💸]
+        
+        S1 -.->|If accepted| S2
+        S2 -->|Prepare shipment| S3
+        S3 -->|Issue invoice| S4
+        S4 -->|Customer pays| S5
+        
+        S3 -.->|Creates| IT2[InventoryTransaction<br/>TXN_TYPE_SALE]
+    end
+    
+    subgraph "RETURN FLOW - Retours Client"
+        R1[Customer Return Request<br/>Demande de retour]
+        R2[ReturnNote<br/>Bon de Retour<br/>📦 +Stock damaged]
+        R3[CreditNote<br/>Avoir/Bon d'Avoir<br/>💰 Reduces invoice]
+        R4[Refund Payment<br/>Remboursement<br/>💸]
+        R5[StockAdjustment<br/>Ajustement<br/>📉 Write off damaged]
+        
+        S4 -->|Customer complaints| R1
+        R1 -->|Goods return| R2
+        R2 -->|Issue credit| R3
+        R3 -->|Refund customer| R4
+        R2 -->|If damaged| R5
+        
+        R2 -.->|Creates| IT3[InventoryTransaction<br/>TXN_TYPE_RETURN_IN]
+        R5 -.->|Creates| IT4[InventoryTransaction<br/>TXN_TYPE_DAMAGE]
+    end
+    
+    subgraph "SUPPLIER RETURN FLOW - Retour Fournisseur"
+        SR1[Quality Issue Found<br/>Problème qualité]
+        SR2[ReturnNote<br/>Bon de Retour<br/>📦 -Stock]
+        SR3[DebitNote<br/>Note de Débit<br/>💰 Reduces payable]
+        
+        P3 -->|Defective goods| SR1
+        SR1 -->|Return to supplier| SR2
+        SR2 -->|Issue debit note| SR3
+        
+        SR2 -.->|Creates| IT5[InventoryTransaction<br/>TXN_TYPE_RETURN_OUT]
+    end
+    
+    subgraph "TRANSFER FLOW - Transfert Inter-Entrepôts"
+        T1[TransferNote<br/>Bon de Transfert<br/>📝 Request]
+        T2[Ship from Source<br/>Expédition<br/>📦 -Stock WH1]
+        T3[Receive at Destination<br/>Réception<br/>📦 +Stock WH2]
+        
+        T1 -->|Approved| T2
+        T2 -->|In transit| T3
+        
+        T2 -.->|Creates| IT6[InventoryTransaction<br/>TXN_TYPE_TRANSFER_OUT]
+        T3 -.->|Creates| IT7[InventoryTransaction<br/>TXN_TYPE_TRANSFER_IN]
+    end
+    
+    subgraph "RETAIL/POS FLOW - Vente au Comptoir"
+        POS1[Walk-in Customer<br/>Client au comptoir]
+        POS2[CashReceipt<br/>Bon de Caisse<br/>📦💰 -Stock + Payment]
+        
+        POS1 -->|Immediate sale| POS2
+        
+        POS2 -.->|Creates| IT8[InventoryTransaction<br/>TXN_TYPE_SALE]
+    end
+    
+    subgraph "INVENTORY MANAGEMENT - Gestion du Stock"
+        INV1[StockCount<br/>Inventaire Physique<br/>📊 Physical count]
+        INV2[Variance Found<br/>Écarts trouvés]
+        INV3[StockAdjustment<br/>Ajustement<br/>📈📉 Correct stock]
+        
+        INV1 -->|Count complete| INV2
+        INV2 -->|If variance| INV3
+        
+        INV3 -.->|Creates| IT9[InventoryTransaction<br/>TXN_TYPE_ADJUSTMENT]
+    end
+    
+    style P3 fill:#90EE90,color:black
+    style S3 fill:#FFB6C1,color:black
+    style R2 fill:#FFD700,color:black
+    style SR2 fill:#FFD700,color:black
+    style T2 fill:#87CEEB,color:black
+    style T3 fill:#90EE90,color:black
+    style POS2 fill:#DDA0DD,color:black
+    style INV3 fill:#F0E68C,color:black
+    
+    classDef inventoryIncrease fill:#90EE90,stroke:#2d8f2d,stroke-width:3px,color:black
+    classDef inventoryDecrease fill:#FFB6C1,stroke:#d63384,stroke-width:3px,color:black
+    classDef noInventoryChange fill:#E6E6FA,stroke:#6c757d,stroke-width:2px,color:black
+    
+    class P3,T3 inventoryIncrease
+    class S3,T2,SR2 inventoryDecrease
+    class P1,P4,S1,S2,S4,R3,SR3,T1 noInventoryChange
+    

@@ -1,0 +1,201 @@
+syntax = "proto3";
+
+package inventory.v1;
+
+import "audits/v1/inventory_transaction.proto";
+import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+import "inventory/v1/store_product.proto";
+
+/**
+ * Batch represents a lot of products with specific attributes like expiration.
+ *
+ * Fix: New message added for lot tracking. Each batch can have its own quantity, expiration date, and is linked to a product and warehouse.
+ * InventoryLevel now aggregates from batches, but batches provide detailed quantity per lot.
+ *
+ * Example:
+ *   batch_id: "BATCH-2025-001"
+ *   product_id: "PRD-001"
+ *   warehouse_id: "WH-001"
+ *   quantity: 50.0
+ *   expiration_date: 2026-09-29T00:00:00Z
+ *   received_at: 2025-09-29T10:30:00Z
+ */
+message Batch {
+  string document_id = 1 [(buf.validate.field).required = true]; // Unique batch/lot ID: "BATCH-2025-001"
+  string product_id = 2; // Which product this batch is for
+  string warehouse_id = 3; // Which warehouse stores this batch
+  double quantity = 4; // Quantity in this specific batch
+  google.protobuf.Timestamp expiration_date = 5; // Expiration date for this batch
+  google.protobuf.Timestamp received_at = 6; // When the batch was received
+  string supplier_batch_number = 7; // Supplier's reference number
+  BatchStatus status = 8; // e.g., Active, Expired
+  string notes = 9; // Additional details
+}
+
+enum BatchStatus {
+  BATCH_STATUS_UNSPECIFIED = 0;
+  BATCH_STATUS_ACTIVE = 1; // Available for use/sale
+  BATCH_STATUS_QUARANTINE = 2; // Under inspection
+  BATCH_STATUS_EXPIRED = 3; // Past expiration
+  BATCH_STATUS_CONSUMED = 4; // Fully used/sold
+}
+
+/**
+ * InventoryLevel tracks how much stock exists in each warehouse.
+ * This is the current state, updated by various documents.
+ *
+ * Fixes: Added repeated batches for lot-level details (quantity per lot, expiration).
+ * The quantity_available is now the sum of batch quantities (computed).
+ * Added min_threshold per warehouse for the product.
+ *
+ * Example:
+ *   product_id: "PRD-001"
+ *   store_id: "WH-001"
+ *   quantity_available: 50
+ *   quantity_reserved: 10 (in pending orders)
+ *   quantity_in_transit: 20 (being delivered)
+ *   min_threshold: 15.0
+ *   last_updated: 2025-09-29T10:30:00Z
+ *   batches: [Batch1 with qty 30 exp 2026-01-01, Batch2 with qty 20 exp 2026-06-01]
+ * Note we can only have one InventoryLevel per (product_id, supplier_id).
+ * Reason why we don't add it directly to Storeproduct is because the Storeproduct can be handler by multiple supplier.
+ * Example: On product Coffee can be provide by 2 different supplier.
+ */
+message InventoryLevel {
+  // The product id to get level.
+  string store_product_id = 1;
+  // The warehouse id to get level.
+  string store_id = 2;
+  // Ready to sell/use (sum of batch quantities)
+  double quantity_available = 3;
+  // Allocated to orders not yet fulfilled
+  double quantity_reserved = 4;
+  // Being delivered here
+  double quantity_in_transit = 5;
+  // Minimum stock threshold for this product in this warehouse
+  double min_threshold = 8;
+  google.protobuf.Timestamp last_updated = 6;
+  // Who made last change
+  string last_updated_by_user_id = 7;
+  // Detailed batches/lots for this product in this store
+  repeated Batch batches = 9;
+}
+
+message InventoryLevelWithProduct {
+  InventoryLevel level = 1;
+  StoreProduct product = 2;
+  GlobalProduct globalProduct = 3;
+  int64 stock_value = 4; // quantity * product.unit_price
+  StockStatus stockStatus = 5;
+}
+
+enum StockStatus {
+  STOCK_STATUS_UNSPECIFIED = 0;
+  STOCK_STATUS_LOW = 1;
+  STOCK_STATUS_OK = 2;
+  STOCK_STATUS_OUT_OF_STOCK = 3;
+}
+
+service InventoryService {
+  // Gets the inventory levels of a product.
+  rpc GetProductInventoryLevels(GetProductInventoryLevelsRequest) returns (GetProductInventoryLevelsResponse);
+
+  // Checks if a product is available in a warehouse.
+  rpc CheckProductAvailability(CheckProductAvailabilityRequest) returns (CheckProductAvailabilityResponse);
+
+  // Gets low stock items for a store.
+  rpc GetLowStockItems(GetLowStockItemsRequest) returns (GetLowStockItemsResponse);
+
+  // Gets a snapshot of store inventory.
+  rpc GetResourceInventory(GetResourceInventoryRequest) returns (GetResourceInventoryResponse);
+
+  // Gets recent inventory transactions for a store (for dashboard activity).
+  rpc GetRecentInventoryTransactions(GetInventoryTransactionHistoryRequest) returns (GetInventoryTransactionHistoryResponse);
+
+  // Gets the transaction history of a product.
+  rpc GetProductTransactionHistory(GetProductTransactionHistoryRequest) returns (GetProductTransactionHistoryResponse);
+}
+
+message GetInventoryTransactionHistoryRequest {
+  optional string store_id = 1;  // Optional
+  optional string product_id = 2;  // Optional
+  optional audits.v1.TransactionType transaction_type = 3;  // Optional
+  google.protobuf.Timestamp start_date = 4;
+  google.protobuf.Timestamp end_date = 5;
+  int32 page_size = 6;
+  int32 page_number = 7;
+}
+
+message GetInventoryTransactionHistoryResponse {
+  repeated  audits.v1.InventoryTransaction transactions = 1;
+  int32 total_count = 2;
+  double total_quantity_in = 3;  // Sum of positive changes
+  double total_quantity_out = 4;  // Sum of negative changes
+}
+
+message GetProductInventoryLevelsRequest {
+  string product_id = 1;
+}
+
+message GetProductInventoryLevelsResponse {
+  repeated InventoryLevel levels = 1;
+  int64 total_available = 2;
+  int64 total_reserved = 3;
+  int64 total_in_transit = 4;
+}
+
+message CheckProductAvailabilityRequest {
+  string product_id = 1;
+  string store_id = 2;
+  double quantity_needed = 3;
+}
+
+message CheckProductAvailabilityResponse {
+  bool is_available = 1;
+  double quantity_available = 2;
+  double quantity_needed = 3;
+  double shortage = 4; // If not available
+}
+
+message GetLowStockItemsRequest {
+  string store_id = 1 [(buf.validate.field).required = true];
+  // Min stock level to flag as low
+  optional int32 threshold = 2;  
+  optional string category_id = 3;
+  optional string supplier_id = 4;
+}
+
+message GetLowStockItemsResponse {
+  repeated InventoryLevel low_stock_items = 1;
+  int32 total_count = 2;
+}
+
+message GetResourceInventoryRequest {
+  string store_id = 1 [(buf.validate.field).required = true];
+  //  Specific product, if omitted: full snapshot
+  optional string product_id = 2;
+  // Historical snapshot
+  optional google.protobuf.Timestamp as_of_date = 3;
+  optional string supplier_id = 4;  
+}
+
+message GetResourceInventoryResponse {
+  repeated InventoryLevel items = 1;
+  double total_quantity = 2;
+  google.protobuf.Timestamp snapshot_date = 3;
+}
+
+message GetProductTransactionHistoryRequest {
+  string product_id = 1;
+  optional string store_id = 2; // Optional filter
+  google.protobuf.Timestamp start_date = 3;
+  google.protobuf.Timestamp end_date = 4;
+  int32 page_size = 5;
+  int32 page_number = 6;
+}
+
+message GetProductTransactionHistoryResponse {
+  repeated audits.v1.InventoryTransaction transactions = 1;
+  int32 total_count = 2;
+}
