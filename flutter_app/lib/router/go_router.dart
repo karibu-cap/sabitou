@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:logging/logging.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../providers/auth/auth_provider.dart';
 import '../screens/auth/forgot_password/forgot_password_view.dart';
@@ -31,9 +31,28 @@ class GoRouterRoutesProvider {
   static final GoRouter routes = GoRouter(
     navigatorKey: rootNavigatorKey,
     initialLocation: PagesRoutes.login.pattern,
-    onException: (context, state, router) {
-      final _log = Logger('GoRouter');
-      _log.severe('Unknown router path: ${state.fullPath}');
+    errorPageBuilder: (context, state) {
+      return MaterialPage(
+        child: Scaffold(
+          body: SafeArea(
+            child: SizedBox(
+              height: double.infinity,
+              width: double.infinity,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                spacing: 12,
+                children: [
+                  Text('Unknown router path ${state.fullPath}'),
+                  ShadButton(
+                    onPressed: () => context.go(PagesRoutes.dashboard.pattern),
+                    child: const Text('Go to Dashboard'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
     },
     routes: [
       StatefulShellRoute.indexedStack(
@@ -79,33 +98,24 @@ class GoRouterRoutesProvider {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                name: PagesRoutes.sales.name,
-                path: PagesRoutes.sales.pattern,
-                routes: [
-                  GoRoute(
-                    name: PagesRoutes.cashReceipts.name,
-                    path: PagesRoutes.cashReceipts.pattern,
-                    pageBuilder: (context, state) {
-                      return const MaterialPage(child: SizedBox());
-                    },
-                  ),
-                  GoRoute(
-                    name: PagesRoutes.salesOrders.name,
-                    path: PagesRoutes.salesOrders.pattern,
-                    pageBuilder: (context, state) {
-                      return const MaterialPage(child: PointOfSaleScreen());
-                    },
-                  ),
-                  GoRoute(
-                    name: PagesRoutes.pos.name,
-                    path: PagesRoutes.pos.pattern,
-                    pageBuilder: (context, state) {
-                      return const MaterialPage(child: PointOfSaleScreen());
-                    },
-                  ),
-                ],
-                redirect: (context, state) {
-                  return PagesRoutes.pos.pattern;
+                name: PagesRoutes.cashReceipts.name,
+                path: PagesRoutes.cashReceipts.pattern,
+                pageBuilder: (context, state) {
+                  return const MaterialPage(child: SizedBox());
+                },
+              ),
+              GoRoute(
+                name: PagesRoutes.salesOrders.name,
+                path: PagesRoutes.salesOrders.pattern,
+                pageBuilder: (context, state) {
+                  return const MaterialPage(child: PointOfSaleScreen());
+                },
+              ),
+              GoRoute(
+                name: PagesRoutes.pos.name,
+                path: PagesRoutes.pos.pattern,
+                pageBuilder: (context, state) {
+                  return const MaterialPage(child: PointOfSaleScreen());
                 },
               ),
             ],
@@ -188,8 +198,6 @@ class GoRouterRoutesProvider {
           final user = UserPreferences.instance.user;
 
           if (user == null) {
-            debugPrint('isUserRegistered: false');
-
             return PagesRoutes.login.pattern;
           }
 

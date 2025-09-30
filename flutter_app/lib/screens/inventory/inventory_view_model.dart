@@ -8,7 +8,7 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 import '../../repositories/categories_repository.dart';
 import '../../repositories/inventory_repository.dart';
 import '../../repositories/products_repository.dart';
-import '../../repositories/report_repository.dart';
+import '../../repositories/reports_repository.dart';
 import '../../repositories/store_products_repository.dart';
 import '../../utils/extensions/category_extension.dart';
 import '../../utils/extensions/global_product_extension.dart';
@@ -166,7 +166,7 @@ class InventoryViewModel {
           ListProductsRequest(storeId: store.refId),
         ),
         InventoryRepository.instance.getLowStockItems(store.refId),
-        ReportRepository.instance.getSalesByPeriod(
+        ReportsRepository.instance.getSalesByPeriod(
           storeId: store.refId,
           startDate: store.hasCreatedAt()
               ? store.createdAt.toDateTime()

@@ -26,6 +26,73 @@ class SidebarWidget extends StatelessWidget {
   /// Constructs the new [SidebarWidget].
   SidebarWidget({super.key, required this.navigationShell});
 
+  int? findBranchIndexForPath(List<StatefulShellBranch> branches, String path) {
+    print('=== DEBUG: Finding branch for path: $path ===');
+
+    for (var i = 0; i < branches.length; i++) {
+      final branch = branches[i];
+      print('Branch $i:');
+      print('  - defaultRoute: ${branch.defaultRoute?.path}');
+
+      for (var route in branch.routes) {
+        print('  - route: ${route.runtimeType}');
+        if (route is GoRoute) {
+          print('    path: ${route.path}');
+          print('    name: ${route.name}');
+        }
+      }
+
+      if (_branchContainsPath(branch, path)) {
+        print('✓ MATCH FOUND at branch $i');
+
+        return i;
+      }
+    }
+
+    print('✗ NO MATCH FOUND');
+
+    return null;
+  }
+
+  bool _branchContainsPath(StatefulShellBranch branch, String targetPath) {
+    for (var route in branch.routes) {
+      if (_routeMatchesPath(route, targetPath)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  bool _routeMatchesPath(RouteBase route, String targetPath) {
+    if (route is GoRoute) {
+      print('    Checking route: ${route.path} against $targetPath');
+
+      // Try exact match
+      if (route.path == targetPath) {
+        print('      ✓ Exact match!');
+
+        return true;
+      }
+
+      // Try with/without leading slash
+      if ('/${route.path}' == targetPath || route.path == '/$targetPath') {
+        print('      ✓ Slash-adjusted match!');
+
+        return true;
+      }
+
+      // Check child routes
+      for (var child in route.routes) {
+        if (_routeMatchesPath(child, targetPath)) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
@@ -151,15 +218,12 @@ class SidebarWidget extends StatelessWidget {
                               activeTab: value,
                               onTabChange: (tab) {
                                 _selected.value = tab.id;
-                                final test2 = navigationShell.route.branches;
-                                final index = test2.indexWhere(
-                                  (e) => e.defaultRoute?.path == tab.path,
-                                );
-                                navigationShell.goBranch(
-                                  index,
-                                  initialLocation:
-                                      index == navigationShell.currentIndex,
-                                );
+
+                                if (tab.path != null &&
+                                    tab.path?.isNotEmpty == true) {
+                                  context.go(tab.path ?? '');
+                                }
+
                                 if (Scaffold.of(context).isDrawerOpen) {
                                   Scaffold.of(context).closeDrawer();
                                 }

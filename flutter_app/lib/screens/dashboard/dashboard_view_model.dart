@@ -5,7 +5,7 @@ import 'package:fixnum/fixnum.dart';
 import 'package:sabitou_rpc/models.dart';
 
 import '../../repositories/inventory_repository.dart';
-import '../../repositories/report_repository.dart';
+import '../../repositories/reports_repository.dart';
 import '../../repositories/store_products_repository.dart';
 import '../../utils/user_preference.dart';
 
@@ -54,7 +54,7 @@ final class DashboardViewModel {
         ),
         InventoryRepository.instance.getLowStockItems(store.refId),
         InventoryRepository.instance.getExpiringItems(store.refId),
-        ReportRepository.instance.getSalesByPeriod(
+        ReportsRepository.instance.getSalesByPeriod(
           storeId: store.refId,
           startDate: clock.now(),
           endDate: clock.now().add(const Duration(days: 1)),
