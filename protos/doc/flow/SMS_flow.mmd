@@ -1,0 +1,145 @@
+graph TB
+    subgraph "SCÉNARIO 1 : Vente Normale au Comptoir 95% des cas"
+        S1_START[Client arrive à la caisse<br/>avec produits]
+        S1_SCAN[Caissier scanne les produits<br/>👤 USR-CAISSE-01]
+        S1_TOTAL[Système calcule total<br/>Subtotal + TVA]
+        S1_PAY[Client paie le montant exact<br/>💵 Cash/Card/Mobile Money]
+        S1_RECEIPT[CashReceipt créé<br/>📄 CASH-2025-0001<br/>✅ -INVENTORY]
+        S1_PRINT[Imprimer ticket de caisse<br/>🖨️ Reçu donné au client]
+        S1_INV_TXN[InventoryTransaction auto-créé<br/>📊 TXN_TYPE_SALE]
+        S1_INV_LEVEL[InventoryLevel mis à jour<br/>📦 quantity_available diminue]
+        S1_END[Transaction terminée ✓<br/>Client part avec produits]
+        
+        S1_START --> S1_SCAN
+        S1_SCAN --> S1_TOTAL
+        S1_TOTAL --> S1_PAY
+        S1_PAY --> S1_RECEIPT
+        S1_RECEIPT --> S1_PRINT
+        S1_RECEIPT -.->|Déclenche| S1_INV_TXN
+        S1_INV_TXN -.->|Met à jour| S1_INV_LEVEL
+        S1_PRINT --> S1_END
+        
+        style S1_RECEIPT fill:#90EE90,stroke:#2d8f2d,stroke-width:3px,color:black
+        style S1_INV_TXN fill:#87CEEB,stroke:#4682B4,stroke-width:2px,color:black
+        style S1_INV_LEVEL fill:#FFD700,stroke:#DAA520,stroke-width:2px,color:black
+    end
+    
+    subgraph "SCÉNARIO 2A : Caissier N'a Pas de Monnaie - CLIENT PAIE PLUS"
+        S2_START[Client arrive à la caisse]
+        S2_SCAN[Caissier scanne produits]
+        S2_TOTAL[Total: 12000 XAF]
+        S2_PAY[Client donne 15000 XAF<br/>💵 Surplus: 3000 XAF]
+        S2_NO_CHANGE{Caissier a la monnaie?}
+        S2_RECEIPT[CashReceipt créé<br/>📄 CASH-2025-0002<br/>amount_paid: 15000<br/>change_given: 3000<br/>✅ -INVENTORY]
+        S2_GIVE_CHANGE[Donner monnaie: 3000 XAF<br/>Transaction normale]
+        S2_INVOICE[Invoice créée<br/>📄 INV-2025-001<br/>total: 12000 XAF<br/>status: PAID<br/>✅ -INVENTORY]
+        S2_PAYMENT[Payment enregistré<br/>💰 PAY-2025-001<br/>amount: 15000 XAF<br/>Surplus: 3000 XAF]
+        S2_VOUCHER[GiftVoucher créé<br/>🎟️ GV-2025-001<br/>code: BON-2025-0001<br/>value: 3000 XAF<br/>valid_until: +1 an]
+        S2_PRINT_BOTH[Imprimer facture + bon<br/>🖨️ Bon imprimé avec code-barres]
+        S2_INV_TXN[InventoryTransaction<br/>TXN_TYPE_SALE]
+        S2_END[Client part avec:<br/>✓ Produits<br/>✓ Facture<br/>✓ Bon d'achat 3000 XAF]
+        
+        S2_START --> S2_SCAN
+        S2_SCAN --> S2_TOTAL
+        S2_TOTAL --> S2_PAY
+        S2_PAY --> S2_NO_CHANGE
+        S2_NO_CHANGE -->|OUI| S2_RECEIPT
+        S2_RECEIPT --> S2_GIVE_CHANGE
+        S2_GIVE_CHANGE --> S2_END
+        S2_NO_CHANGE -->|NON| S2_INVOICE
+        S2_INVOICE --> S2_PAYMENT
+        S2_PAYMENT --> S2_VOUCHER
+        S2_VOUCHER --> S2_PRINT_BOTH
+        S2_INVOICE -.->|Déclenche| S2_INV_TXN
+        S2_PRINT_BOTH --> S2_END
+        
+        style S2_INVOICE fill:#90EE90,stroke:#2d8f2d,stroke-width:3px,color:black
+        style S2_VOUCHER fill:#FF69B4,stroke:#C71585,stroke-width:3px,color:black
+        style S2_NO_CHANGE fill:#FFD700,stroke:#DAA520,stroke-width:3px,color:black
+    end
+    
+    subgraph "SCÉNARIO 2B : Client Revient Utiliser Son Bon d'Achat"
+        S3_START[Client revient avec bon<br/>🎟️ BON-2025-0001]
+        S3_SCAN[Caissier scanne produits<br/>Total: 4800 XAF]
+        S3_PRESENT[Client présente le bon<br/>Valeur: 3000 XAF]
+        S3_SCAN_VOUCHER[Caissier scanne le bon<br/>Système vérifie validité]
+        S3_VALID{Bon valide?}
+        S3_CALC[Calcul paiement:<br/>Total: 4800 XAF<br/>Bon: -3000 XAF<br/>Reste à payer: 1800 XAF]
+        S3_PAY_REST[Client paie 1800 XAF<br/>💵 Cash/Card]
+        S3_RECEIPT[CashReceipt créé<br/>📄 CASH-2025-0003<br/>total: 4800 XAF<br/>paid_with_voucher: 3000<br/>paid_cash: 1800<br/>✅ -INVENTORY]
+        S3_VOUCHER_TXN[VoucherTransaction créé<br/>📋 VT-001<br/>voucher_id: GV-2025-001<br/>amount_used: 3000<br/>remaining_after: 0]
+        S3_UPDATE_VOUCHER[GiftVoucher mis à jour<br/>🎟️ GV-2025-001<br/>remaining_value: 0<br/>status: FULLY_USED]
+        S3_INV_TXN[InventoryTransaction<br/>TXN_TYPE_SALE]
+        S3_PRINT[Imprimer ticket<br/>Mention: Payé avec bon 3000 XAF]
+        S3_END[Transaction terminée ✓<br/>Bon épuisé]
+        S3_REJECT[❌ Bon invalide/expiré<br/>Client paie normalement]
+        
+        S3_START --> S3_SCAN
+        S3_SCAN --> S3_PRESENT
+        S3_PRESENT --> S3_SCAN_VOUCHER
+        S3_SCAN_VOUCHER --> S3_VALID
+        S3_VALID -->|OUI| S3_CALC
+        S3_VALID -->|NON| S3_REJECT
+        S3_CALC --> S3_PAY_REST
+        S3_PAY_REST --> S3_RECEIPT
+        S3_RECEIPT --> S3_VOUCHER_TXN
+        S3_VOUCHER_TXN --> S3_UPDATE_VOUCHER
+        S3_RECEIPT -.->|Déclenche| S3_INV_TXN
+        S3_UPDATE_VOUCHER --> S3_PRINT
+        S3_PRINT --> S3_END
+        
+        style S3_RECEIPT fill:#90EE90,stroke:#2d8f2d,stroke-width:3px,color:black
+        style S3_VOUCHER_TXN fill:#DDA0DD,stroke:#9370DB,stroke-width:2px,color:black
+        style S3_UPDATE_VOUCHER fill:#FF69B4,stroke:#C71585,stroke-width:2px,color:black
+        style S3_VALID fill:#FFD700,stroke:#DAA520,stroke-width:3px,color:black
+    end
+    
+    subgraph "SCÉNARIO 3 : Client Entreprise avec Compte Crédit 5% des cas"
+        S4_START[Client entreprise arrive<br/>Compte: CMP-CLIENT-ENT-001]
+        S4_SCAN[Caissier scanne produits]
+        S4_IDENTIFY[Identification client<br/>Carte de fidélité/Compte]
+        S4_INVOICE[Invoice créée<br/>📄 INV-2025-002<br/>recipient_id: CMP-CLIENT-ENT-001<br/>total: 500000 XAF<br/>due_date: +30 jours<br/>status: UNPAID<br/>✅ -INVENTORY]
+        S4_DELIVERY[DeliveryNote optionnel<br/>Si livraison requise]
+        S4_INV_TXN[InventoryTransaction<br/>TXN_TYPE_SALE]
+        S4_PRINT[Imprimer facture officielle<br/>🖨️ Avec TVA détaillée]
+        S4_END[Client part avec produits<br/>Facture à régler sous 30j]
+        S4_LATER[... 15 jours plus tard ...]
+        S4_PAY[Client effectue paiement<br/>💳 Virement bancaire]
+        S4_PAYMENT[Payment créé<br/>💰 PAY-2025-003<br/>amount: 500000 XAF<br/>method: BANK_TRANSFER]
+        S4_UPDATE_INV[Invoice mise à jour<br/>status: PAID]
+        S4_FINAL[Compte à jour ✓]
+        
+        S4_START --> S4_SCAN
+        S4_SCAN --> S4_IDENTIFY
+        S4_IDENTIFY --> S4_INVOICE
+        S4_INVOICE --> S4_DELIVERY
+        S4_INVOICE -.->|Déclenche| S4_INV_TXN
+        S4_DELIVERY --> S4_PRINT
+        S4_PRINT --> S4_END
+        S4_END -.->|Délai de paiement| S4_LATER
+        S4_LATER --> S4_PAY
+        S4_PAY --> S4_PAYMENT
+        S4_PAYMENT --> S4_UPDATE_INV
+        S4_UPDATE_INV --> S4_FINAL
+        
+        style S4_INVOICE fill:#87CEEB,stroke:#4682B4,stroke-width:3px,color:black
+        style S4_PAYMENT fill:#98FB98,stroke:#3CB371,stroke-width:2px,color:black
+    end
+    
+    subgraph "LÉGENDE"
+        LEG1[Document Principal<br/>Change l'inventaire]
+        LEG2[Transaction Audit]
+        LEG3[Mise à jour État]
+        LEG4[Point de Décision]
+        
+        style LEG1 fill:#90EE90,stroke:#2d8f2d,stroke-width:3px,color:black
+        style LEG2 fill:#87CEEB,stroke:#4682B4,stroke-width:2px,color:black
+        style LEG3 fill:#FF69B4,stroke:#C71585,stroke-width:2px,color:black
+        style LEG4 fill:#FFD700,stroke:#DAA520,stroke-width:3px,color:black
+    end
+    
+    note1[📊 STATISTIQUES RECOMMANDÉES:<br/>✓ Scénario 1: 90-95% des transactions<br/>✓ Scénario 2: 2-5% avec bon d'achat<br/>✓ Scénario 3: 3-5% clients entreprise]
+    
+    style note1 fill:#F0F8FF,stroke:#4682B4,stroke-width:2px,color:black
+
+

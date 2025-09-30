@@ -98,7 +98,8 @@ class Ignore extends $pb.ProtobufEnum {
   ///   // The field's rules will always be ignored, including any validations
   ///   // on value's fields.
   ///   MyOtherMessage value = 1 [
-  ///     (buf.validate.field).ignore = IGNORE_ALWAYS];
+  ///     (buf.validate.field).ignore = IGNORE_ALWAYS
+  ///   ];
   /// }
   /// ```
   static const Ignore IGNORE_ALWAYS =

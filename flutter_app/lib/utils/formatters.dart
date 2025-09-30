@@ -11,7 +11,7 @@ class Formatters {
     final GeoCurrencies geoCurrencies = GeoCurrencies(
       config: GeoCurrenciesConfig(
         geoCurrenciesType: GeoCurrenciesType.live,
-        decimalDigits: 2,
+        decimalDigits: 0,
         decimalSeparator: '.',
         includeSymbol: true,
         symbolSeparator: ' ',

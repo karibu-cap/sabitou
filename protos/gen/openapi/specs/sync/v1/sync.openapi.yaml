@@ -333,9 +333,18 @@ components:
       type: string
       title: CategoryType
       enum:
+        - CATEGORY_TYPE_UNSPECIFIED
         - CATEGORY_TYPE_STORE
         - CATEGORY_TYPE_BUSINESS
         - CATEGORY_TYPE_PRODUCT
+    inventory.v1.ExpirationType:
+      type: string
+      title: ExpirationType
+      enum:
+        - EXPIRATION_TYPE_UNSPECIFIED
+        - EXPIRATION_TYPE_NONE
+        - EXPIRATION_TYPE_PRODUCT_LEVEL
+        - EXPIRATION_TYPE_LOT_LEVEL
     inventory.v1.GlobalProduct:
       type: object
       properties:
@@ -433,22 +442,24 @@ components:
             type: string
           title: images_links_ids
           description: The media ids of the images of the product.
-        stockQuantity:
-          type: integer
-          title: stock_quantity
-          format: int32
-          description: The current stock quantity of the product.
+        supplierId:
+          type: string
+          title: supplier_id
+          description: The supplier.
           nullable: true
-        minStockThreshold:
-          type: integer
-          title: min_stock_threshold
-          format: int32
-          description: The minimum stock threshold of the product.
-        expirationDate:
-          title: expiration_date
-          description: The expiration date of the product.
+        status:
+          title: status
+          description: The status of the product.
+          $ref: '#/components/schemas/inventory.v1.ProductStatus'
+        sku:
+          type: string
+          title: sku
+          description: The stock keeping unit.
           nullable: true
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        expirationType:
+          title: expiration_type
+          description: The type of expiration of the product.
+          $ref: '#/components/schemas/inventory.v1.ExpirationType'
         createdAt:
           title: created_at
           description: The creation date of the product.
@@ -458,121 +469,62 @@ components:
           description: The last update date of the product.
           nullable: true
           $ref: '#/components/schemas/google.protobuf.Timestamp'
-        supplierId:
-          type: string
-          title: supplier_id
-          description: The supplier.
-          nullable: true
-        costPrice:
-          type: integer
-          title: cost_price
-          format: int32
-          description: Current purchase/cost price.
-          nullable: true
-        status:
-          title: status
-          description: The status of the product.
-          $ref: '#/components/schemas/inventory.v1.ProductStatus'
       title: StoreProduct
       additionalProperties: false
-    order.v1.Order:
-      type: object
-      allOf:
-        - properties:
-            refId:
-              type: string
-              title: ref_id
-              description: The unique identifier of the order.
-              nullable: true
-            orderItems:
-              type: array
-              items:
-                $ref: '#/components/schemas/order.v1.OrderItem'
-              title: order_items
-              description: The list of items in the order.
-            orderPrices:
-              title: order_prices
-              description: The total price of the order in XAF.
-              $ref: '#/components/schemas/order.v1.OrderPrices'
-            status:
-              title: status
-              description: The status of the order.
-              $ref: '#/components/schemas/order.v1.OrderStatus'
-            statusHistory:
-              type: array
-              items:
-                $ref: '#/components/schemas/order.v1.StatusHistory'
-              title: status_history
-              description: The status history.
-            createdAt:
-              title: created_at
-              description: The date and time the order was created.
-              $ref: '#/components/schemas/google.protobuf.Timestamp'
-            updatedAt:
-              title: updated_at
-              description: The date and time the order was last updated.
-              nullable: true
-              $ref: '#/components/schemas/google.protobuf.Timestamp'
-            storeId:
-              type: string
-              title: store_id
-              format: uuid
-              description: The unique identifier of the store associated with the order.
-            initiatedBy:
-              type: string
-              title: initiated_by
-              minLength: 3
-              description: The unique identifier of the user who initiated the order.
-            cancellationReason:
-              type: string
-              title: cancellation_reason
-              description: The reason for the cancellation of the order.
-              nullable: true
-        - oneOf:
-            - properties:
-                purchaseOrder:
-                  title: purchase_order
-                  $ref: '#/components/schemas/order.v1.PurchaseOrder'
-              title: purchase_order
-              required:
-                - purchaseOrder
-            - properties:
-                saleOrder:
-                  title: sale_order
-                  $ref: '#/components/schemas/order.v1.SaleOrder'
-              title: sale_order
-              required:
-                - saleOrder
-      title: Order
-      required:
-        - storeId
-        - initiatedBy
-      additionalProperties: false
-    order.v1.OrderItem:
+    order.v1.OrderLineItem:
       type: object
       properties:
-        storeProductId:
+        productId:
           type: string
-          title: store_product_id
-          description: The unique identifier of the store product.
+          title: product_id
+          description: Which product
         quantity:
-          type: integer
+          type: number
           title: quantity
-          format: int32
-          description: The quantity of the product.
+          format: double
+          description: How many units
+        productName:
+          title: product_name
+          description: Product name
+          $ref: '#/components/schemas/inventory.v1.Internationalized'
         unitPrice:
-          type: integer
+          type:
+            - integer
+            - string
           title: unit_price
-          format: int32
-          description: |-
-            The unit price in XAF of the product.
-             WARN: This value is stored because the unit price can change over time.
-        itemName:
+          format: int64
+          description: Price per unit (in smallest currency)
+        total:
+          type:
+            - integer
+            - string
+          title: total
+          format: int64
+          description: quantity * unit_price
+        notes:
           type: string
-          title: item_name
-          description: The name of the product.
-      title: OrderItem
+          title: notes
+          description: Special notes for this line
+        batchId:
+          type: string
+          title: batch_id
+          description: 'Optional: Specific batch/lot requested'
+      title: OrderLineItem
       additionalProperties: false
+      description: |-
+        *
+         OrderLineItem represents a single product line in an order or quotation.
+         Used in PurchaseOrder, SalesOrder, Quotation, etc.
+
+         Fix: Added optional batch_id for specifying lots in orders (e.g., for perishable goods).
+
+         Example:
+           product_id: "PRD-001"
+           quantity: 10
+           product_name: "Product Name"
+           unit_price: 450000
+           total: 4500000
+           batch_id: "BATCH-2025-001" (optional)
     order.v1.OrderPrices:
       type: object
       properties:
@@ -594,56 +546,82 @@ components:
           format: int32
       title: OrderPrices
       additionalProperties: false
-    order.v1.OrderStatus:
-      type: string
-      title: OrderStatus
-      enum:
-        - ORDER_STATUS_UNSPECIFIED
-        - ORDER_STATUS_PENDING
-        - ORDER_STATUS_PROCESSING
-        - ORDER_STATUS_COMPLETED
-        - ORDER_STATUS_CANCELLED
-    order.v1.PurchaseOrder:
+    order.v1.SalesOrder:
       type: object
       properties:
-        expectedDeliveryDate:
-          title: expected_delivery_date
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-        supplierId:
+        documentId:
           type: string
-          title: supplier_id
-          format: uuid
-      title: PurchaseOrder
-      required:
-        - supplierId
-      additionalProperties: false
-    order.v1.SaleOrder:
-      type: object
-      properties:
-        commitmentDate:
-          title: commitment_date
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-        clientId:
+          title: document_id
+          description: '"SO-2025-001"'
+        customerId:
           type: string
-          title: client_id
-          format: uuid
-          nullable: true
-      title: SaleOrder
-      additionalProperties: false
-    order.v1.StatusHistory:
-      type: object
-      properties:
+          title: customer_id
+          description: Company buying from you
+        sellerId:
+          type: string
+          title: seller_id
+          description: Your company
+        sourceWarehouseId:
+          type: string
+          title: source_warehouse_id
+          description: Where to pick items
         status:
           title: status
-          $ref: '#/components/schemas/order.v1.OrderStatus'
-        updatedBy:
+          $ref: '#/components/schemas/order.v1.SalesOrderStatus'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/order.v1.OrderLineItem'
+          title: items
+        orderPrices:
+          title: order_prices
+          $ref: '#/components/schemas/order.v1.OrderPrices'
+        currency:
           type: string
-          title: updated_by
-        updatedAt:
-          title: updated_at
+          title: currency
+          nullable: true
+        createdByUserId:
+          type: string
+          title: created_by_user_id
+        createdAt:
+          title: created_at
           $ref: '#/components/schemas/google.protobuf.Timestamp'
-      title: StatusHistory
+        deliveryDate:
+          title: delivery_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        notes:
+          type: string
+          title: notes
+          nullable: true
+      title: SalesOrder
+      required:
+        - documentId
       additionalProperties: false
+      description: |-
+        *
+         SalesOrder (Bon de Commande from customer)
+         Created when a customer wants to buy from you.
+         Does NOT change inventory yet - just reserves it.
+
+         Flow: Receive customer order → Prepare items → Ship
+
+         Example:
+           so_id: "SO-2025-001"
+           customer_id: "CMP-003"
+           seller_id: "CMP-001" (your company)
+           status: SO_STATUS_CONFIRMED
+           items: [10x PRD-001 @ 450000 each]
+    order.v1.SalesOrderStatus:
+      type: string
+      title: SalesOrderStatus
+      enum:
+        - SO_STATUS_UNSPECIFIED
+        - SO_STATUS_DRAFT
+        - SO_STATUS_CONFIRMED
+        - SO_STATUS_PROCESSING
+        - SO_STATUS_SHIPPED
+        - SO_STATUS_DELIVERED
+        - SO_STATUS_CANCELLED
     sync.v1.GetSyncOperationsStatusRequest:
       type: object
       properties:
@@ -1006,7 +984,7 @@ components:
                 orderData:
                   title: order_data
                   description: Order data
-                  $ref: '#/components/schemas/order.v1.Order'
+                  $ref: '#/components/schemas/order.v1.SalesOrder'
               title: order_data
               required:
                 - orderData

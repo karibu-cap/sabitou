@@ -17,8 +17,8 @@ import 'package:protobuf/protobuf.dart' as $pb;
 
 import '../../google/protobuf/timestamp.pb.dart' as $3;
 import '../../inventory/v1/category.pb.dart' as $1;
-import '../../inventory/v1/product.pb.dart' as $0;
-import '../../order/v1/order.pb.dart' as $2;
+import '../../inventory/v1/store_product.pb.dart' as $0;
+import '../../order/v1/sales_order.pb.dart' as $2;
 import 'sync.pbenum.dart';
 
 export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
@@ -47,7 +47,7 @@ class SyncOperation extends $pb.GeneratedMessage {
     $0.StoreProduct? storeProductData,
     $0.GlobalProduct? globalProductData,
     $1.Category? categoryData,
-    $2.Order? orderData,
+    $2.SalesOrder? orderData,
     $core.String? jsonData,
     $3.Timestamp? createdAt,
     $3.Timestamp? updatedAt,
@@ -126,8 +126,8 @@ class SyncOperation extends $pb.GeneratedMessage {
         subBuilder: $0.GlobalProduct.create)
     ..aOM<$1.Category>(12, _omitFieldNames ? '' : 'categoryData',
         subBuilder: $1.Category.create)
-    ..aOM<$2.Order>(13, _omitFieldNames ? '' : 'orderData',
-        subBuilder: $2.Order.create)
+    ..aOM<$2.SalesOrder>(13, _omitFieldNames ? '' : 'orderData',
+        subBuilder: $2.SalesOrder.create)
     ..aOS(40, _omitFieldNames ? '' : 'jsonData')
     ..aOM<$3.Timestamp>(41, _omitFieldNames ? '' : 'createdAt',
         subBuilder: $3.Timestamp.create)
@@ -283,15 +283,15 @@ class SyncOperation extends $pb.GeneratedMessage {
 
   /// Order data
   @$pb.TagNumber(13)
-  $2.Order get orderData => $_getN(10);
+  $2.SalesOrder get orderData => $_getN(10);
   @$pb.TagNumber(13)
-  set orderData($2.Order value) => $_setField(13, value);
+  set orderData($2.SalesOrder value) => $_setField(13, value);
   @$pb.TagNumber(13)
   $core.bool hasOrderData() => $_has(10);
   @$pb.TagNumber(13)
   void clearOrderData() => $_clearField(13);
   @$pb.TagNumber(13)
-  $2.Order ensureOrderData() => $_ensure(10);
+  $2.SalesOrder ensureOrderData() => $_ensure(10);
 
   /// Generic JSON data for other entities
   @$pb.TagNumber(40)

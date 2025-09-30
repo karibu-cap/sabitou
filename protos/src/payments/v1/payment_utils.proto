@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package payments.v1;
+
+enum PaymentMethod {
+  PAYMENT_METHOD_UNSPECIFIED = 0;
+  PAYMENT_METHOD_CASH = 1; // Physical cash
+  PAYMENT_METHOD_CHECK = 2; // Cheque
+  PAYMENT_METHOD_BANK_TRANSFER = 3; // Wire transfer
+  PAYMENT_METHOD_CREDIT_CARD = 4; // Card payment
+  PAYMENT_METHOD_MOBILE_MONEY = 5; // MTN, Orange Money, etc.
+  PAYMENT_METHOD_STORE_CREDIT = 6; // From previous credit note
+}

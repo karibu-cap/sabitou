@@ -1,0 +1,1092 @@
+openapi: 3.1.0
+info:
+  title: inventory.v1
+paths:
+  /inventory.v1.InventoryService/CheckProductAvailability:
+    post:
+      tags:
+        - inventory.v1.InventoryService
+      summary: Checks if a product is available in a warehouse.
+      description: Checks if a product is available in a warehouse.
+      operationId: inventory.v1.InventoryService.CheckProductAvailability
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inventory.v1.CheckProductAvailabilityRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inventory.v1.CheckProductAvailabilityResponse'
+  /inventory.v1.InventoryService/GetLowStockItems:
+    post:
+      tags:
+        - inventory.v1.InventoryService
+      summary: Gets low stock items for a store.
+      description: Gets low stock items for a store.
+      operationId: inventory.v1.InventoryService.GetLowStockItems
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inventory.v1.GetLowStockItemsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inventory.v1.GetLowStockItemsResponse'
+  /inventory.v1.InventoryService/GetProductInventoryLevels:
+    post:
+      tags:
+        - inventory.v1.InventoryService
+      summary: Gets the inventory levels of a product.
+      description: Gets the inventory levels of a product.
+      operationId: inventory.v1.InventoryService.GetProductInventoryLevels
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inventory.v1.GetProductInventoryLevelsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inventory.v1.GetProductInventoryLevelsResponse'
+  /inventory.v1.InventoryService/GetProductTransactionHistory:
+    post:
+      tags:
+        - inventory.v1.InventoryService
+      summary: Gets the transaction history of a product.
+      description: Gets the transaction history of a product.
+      operationId: inventory.v1.InventoryService.GetProductTransactionHistory
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inventory.v1.GetProductTransactionHistoryRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inventory.v1.GetProductTransactionHistoryResponse'
+  /inventory.v1.InventoryService/GetRecentInventoryTransactions:
+    post:
+      tags:
+        - inventory.v1.InventoryService
+      summary: Gets recent inventory transactions for a store (for dashboard activity).
+      description: Gets recent inventory transactions for a store (for dashboard activity).
+      operationId: inventory.v1.InventoryService.GetRecentInventoryTransactions
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inventory.v1.GetInventoryTransactionHistoryRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inventory.v1.GetInventoryTransactionHistoryResponse'
+  /inventory.v1.InventoryService/GetResourceInventory:
+    post:
+      tags:
+        - inventory.v1.InventoryService
+      summary: Gets a snapshot of store inventory.
+      description: Gets a snapshot of store inventory.
+      operationId: inventory.v1.InventoryService.GetResourceInventory
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inventory.v1.GetResourceInventoryRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inventory.v1.GetResourceInventoryResponse'
+components:
+  schemas:
+    audits.v1.InventoryTransaction:
+      type: object
+      properties:
+        documentId:
+          type: string
+          title: document_id
+          description: '"TXN-2025-00123"'
+          nullable: true
+        storeId:
+          type: string
+          title: store_id
+        productId:
+          type: string
+          title: product_id
+        transactionType:
+          title: transaction_type
+          $ref: '#/components/schemas/audits.v1.TransactionType'
+        quantityChange:
+          type: number
+          title: quantity_change
+          format: double
+          description: Positive = increase, negative = decrease
+        quantityBefore:
+          type: number
+          title: quantity_before
+          format: double
+          description: Stock level before
+        quantityAfter:
+          type: number
+          title: quantity_after
+          format: double
+          description: Stock level after
+        relatedDocumentType:
+          type: string
+          title: related_document_type
+          description: '"DeliveryNote", "ReceivingNote", etc.'
+        relatedDocumentId:
+          type: string
+          title: related_document_id
+          description: ID of the document
+        performedByUserId:
+          type: string
+          title: performed_by_user_id
+        transactionTime:
+          title: transaction_time
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        notes:
+          type: string
+          title: notes
+        batchId:
+          type: string
+          title: batch_id
+          description: Specific batch affected
+      title: InventoryTransaction
+      required:
+        - documentId
+      additionalProperties: false
+      description: |-
+        *
+         InventoryTransaction (Journal des Mouvements)
+         Complete audit trail of every inventory change.
+         Auto-generated by all operations that affect stock.
+
+         Fix: Added batch_id for lot-specific transactions.
+
+         Example:
+           transaction_id: "TXN-2025-00123"
+           warehouse_id: "WH-001"
+           product_id: "PRD-001"
+           transaction_type: TXN_TYPE_SALE
+           quantity_change: -10
+           quantity_before: 100
+           quantity_after: 90
+           related_document_type: "DeliveryNote"
+           related_document_id: "DN-2025-001"
+           performed_by_user_id: "USR-003"
+           batch_id: "BATCH-2025-001"
+    audits.v1.TransactionType:
+      type: string
+      title: TransactionType
+      enum:
+        - TXN_TYPE_UNSPECIFIED
+        - TXN_TYPE_PURCHASE
+        - TXN_TYPE_SALE
+        - TXN_TYPE_RETURN_IN
+        - TXN_TYPE_RETURN_OUT
+        - TXN_TYPE_TRANSFER_OUT
+        - TXN_TYPE_TRANSFER_IN
+        - TXN_TYPE_ADJUSTMENT
+        - TXN_TYPE_DAMAGE
+        - TXN_TYPE_THEFT
+        - TXN_TYPE_INITIAL
+        - TXN_TYPE_EXPIRATION
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+        - 1
+      description: Define the version of the Connect protocol
+      const: 1
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+            - not_found
+          enum:
+            - canceled
+            - unknown
+            - invalid_argument
+            - deadline_exceeded
+            - not_found
+            - already_exists
+            - permission_denied
+            - resource_exhausted
+            - failed_precondition
+            - aborted
+            - out_of_range
+            - unimplemented
+            - internal
+            - unavailable
+            - data_loss
+            - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/connect.error_details.Any'
+          description: A list of messages that carry the error details. There is no limit on the number of messages.
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+    connect.error_details.Any:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
+        value:
+          type: string
+          format: binary
+          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
+        debug:
+          oneOf:
+            - type: object
+              title: Any
+              additionalProperties: true
+              description: Detailed error information.
+          discriminator:
+            propertyName: type
+          title: Debug
+          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
+    google.protobuf.Timestamp:
+      type: string
+      examples:
+        - "2023-01-15T01:30:15.01Z"
+        - "2024-12-25T12:00:00Z"
+      format: date-time
+      description: |-
+        A Timestamp represents a point in time independent of any time zone or local
+         calendar, encoded as a count of seconds and fractions of seconds at
+         nanosecond resolution. The count is relative to an epoch at UTC midnight on
+         January 1, 1970, in the proleptic Gregorian calendar which extends the
+         Gregorian calendar backwards to year one.
+
+         All minutes are 60 seconds long. Leap seconds are "smeared" so that no leap
+         second table is needed for interpretation, using a [24-hour linear
+         smear](https://developers.google.com/time/smear).
+
+         The range is from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z. By
+         restricting to that range, we ensure that we can convert to and from [RFC
+         3339](https://www.ietf.org/rfc/rfc3339.txt) date strings.
+
+         # Examples
+
+         Example 1: Compute Timestamp from POSIX `time()`.
+
+             Timestamp timestamp;
+             timestamp.set_seconds(time(NULL));
+             timestamp.set_nanos(0);
+
+         Example 2: Compute Timestamp from POSIX `gettimeofday()`.
+
+             struct timeval tv;
+             gettimeofday(&tv, NULL);
+
+             Timestamp timestamp;
+             timestamp.set_seconds(tv.tv_sec);
+             timestamp.set_nanos(tv.tv_usec * 1000);
+
+         Example 3: Compute Timestamp from Win32 `GetSystemTimeAsFileTime()`.
+
+             FILETIME ft;
+             GetSystemTimeAsFileTime(&ft);
+             UINT64 ticks = (((UINT64)ft.dwHighDateTime) << 32) | ft.dwLowDateTime;
+
+             // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z
+             // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z.
+             Timestamp timestamp;
+             timestamp.set_seconds((INT64) ((ticks / 10000000) - 11644473600LL));
+             timestamp.set_nanos((INT32) ((ticks % 10000000) * 100));
+
+         Example 4: Compute Timestamp from Java `System.currentTimeMillis()`.
+
+             long millis = System.currentTimeMillis();
+
+             Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)
+                 .setNanos((int) ((millis % 1000) * 1000000)).build();
+
+         Example 5: Compute Timestamp from Java `Instant.now()`.
+
+             Instant now = Instant.now();
+
+             Timestamp timestamp =
+                 Timestamp.newBuilder().setSeconds(now.getEpochSecond())
+                     .setNanos(now.getNano()).build();
+
+         Example 6: Compute Timestamp from current time in Python.
+
+             timestamp = Timestamp()
+             timestamp.GetCurrentTime()
+
+         # JSON Mapping
+
+         In JSON format, the Timestamp type is encoded as a string in the
+         [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the
+         format is "{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z"
+         where {year} is always expressed using four digits while {month}, {day},
+         {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional
+         seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),
+         are optional. The "Z" suffix indicates the timezone ("UTC"); the timezone
+         is required. A proto3 JSON serializer should always use UTC (as indicated by
+         "Z") when printing the Timestamp type and a proto3 JSON parser should be
+         able to accept both UTC and other timezones (as indicated by an offset).
+
+         For example, "2017-01-15T01:30:15.01Z" encodes 15.01 seconds past
+         01:30 UTC on January 15, 2017.
+
+         In JavaScript, one can convert a Date object to this format using the
+         standard
+         [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)
+         method. In Python, a standard `datetime.datetime` object can be converted
+         to this format using
+         [`strftime`](https://docs.python.org/2/library/time.html#time.strftime) with
+         the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use
+         the Joda Time's [`ISODateTimeFormat.dateTime()`](
+         http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()
+         ) to obtain a formatter capable of generating timestamps in this format.
+    inventory.v1.Batch:
+      type: object
+      properties:
+        documentId:
+          type: string
+          title: document_id
+          description: 'Unique batch/lot ID: "BATCH-2025-001"'
+        productId:
+          type: string
+          title: product_id
+          description: Which product this batch is for
+        warehouseId:
+          type: string
+          title: warehouse_id
+          description: Which warehouse stores this batch
+        quantity:
+          type: number
+          title: quantity
+          format: double
+          description: Quantity in this specific batch
+        expirationDate:
+          title: expiration_date
+          description: Expiration date for this batch
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        receivedAt:
+          title: received_at
+          description: When the batch was received
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        supplierBatchNumber:
+          type: string
+          title: supplier_batch_number
+          description: Supplier's reference number
+        status:
+          title: status
+          description: e.g., Active, Expired
+          $ref: '#/components/schemas/inventory.v1.BatchStatus'
+        notes:
+          type: string
+          title: notes
+          description: Additional details
+      title: Batch
+      required:
+        - documentId
+      additionalProperties: false
+      description: |-
+        *
+         Batch represents a lot of products with specific attributes like expiration.
+
+         Fix: New message added for lot tracking. Each batch can have its own quantity, expiration date, and is linked to a product and warehouse.
+         InventoryLevel now aggregates from batches, but batches provide detailed quantity per lot.
+
+         Example:
+           batch_id: "BATCH-2025-001"
+           product_id: "PRD-001"
+           warehouse_id: "WH-001"
+           quantity: 50.0
+           expiration_date: 2026-09-29T00:00:00Z
+           received_at: 2025-09-29T10:30:00Z
+    inventory.v1.BatchStatus:
+      type: string
+      title: BatchStatus
+      enum:
+        - BATCH_STATUS_UNSPECIFIED
+        - BATCH_STATUS_ACTIVE
+        - BATCH_STATUS_QUARANTINE
+        - BATCH_STATUS_EXPIRED
+        - BATCH_STATUS_CONSUMED
+    inventory.v1.Category:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+          description: Unique identifier for the category
+          nullable: true
+        name:
+          title: name
+          description: Name of the category (e.g., "Electronics", "Smart TVs")
+          $ref: '#/components/schemas/inventory.v1.Internationalized'
+        parentCategoryId:
+          type: string
+          title: parent_category_id
+          description: Reference to parent category (empty for root categories)
+          nullable: true
+        status:
+          title: status
+          description: The status of the category.
+          $ref: '#/components/schemas/inventory.v1.CategoryStatus'
+        type:
+          title: type
+          description: The status of the category.
+          $ref: '#/components/schemas/inventory.v1.CategoryType'
+        businessId:
+          type: string
+          title: business_id
+          minLength: 6
+          description: Business ID associated with the category
+          nullable: true
+        createdAt:
+          title: created_at
+          description: Timestamp when the category was created
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        updatedAt:
+          title: updated_at
+          description: Timestamp when the category was last updated
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: Category
+      required:
+        - businessId
+      additionalProperties: false
+    inventory.v1.CategoryStatus:
+      type: string
+      title: CategoryStatus
+      enum:
+        - CATEGORY_STATUS_UNSPECIFIED
+        - CATEGORY_STATUS_ACTIVE
+        - CATEGORY_STATUS_INACTIVE
+    inventory.v1.CategoryType:
+      type: string
+      title: CategoryType
+      enum:
+        - CATEGORY_TYPE_UNSPECIFIED
+        - CATEGORY_TYPE_STORE
+        - CATEGORY_TYPE_BUSINESS
+        - CATEGORY_TYPE_PRODUCT
+    inventory.v1.CheckProductAvailabilityRequest:
+      type: object
+      properties:
+        productId:
+          type: string
+          title: product_id
+        storeId:
+          type: string
+          title: store_id
+        quantityNeeded:
+          type: number
+          title: quantity_needed
+          format: double
+      title: CheckProductAvailabilityRequest
+      additionalProperties: false
+    inventory.v1.CheckProductAvailabilityResponse:
+      type: object
+      properties:
+        isAvailable:
+          type: boolean
+          title: is_available
+        quantityAvailable:
+          type: number
+          title: quantity_available
+          format: double
+        quantityNeeded:
+          type: number
+          title: quantity_needed
+          format: double
+        shortage:
+          type: number
+          title: shortage
+          format: double
+          description: If not available
+      title: CheckProductAvailabilityResponse
+      additionalProperties: false
+    inventory.v1.ExpirationType:
+      type: string
+      title: ExpirationType
+      enum:
+        - EXPIRATION_TYPE_UNSPECIFIED
+        - EXPIRATION_TYPE_NONE
+        - EXPIRATION_TYPE_PRODUCT_LEVEL
+        - EXPIRATION_TYPE_LOT_LEVEL
+    inventory.v1.GetInventoryTransactionHistoryRequest:
+      type: object
+      properties:
+        storeId:
+          type: string
+          title: store_id
+          description: Optional
+          nullable: true
+        productId:
+          type: string
+          title: product_id
+          description: Optional
+          nullable: true
+        transactionType:
+          title: transaction_type
+          description: Optional
+          nullable: true
+          $ref: '#/components/schemas/audits.v1.TransactionType'
+        startDate:
+          title: start_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        endDate:
+          title: end_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        pageSize:
+          type: integer
+          title: page_size
+          format: int32
+        pageNumber:
+          type: integer
+          title: page_number
+          format: int32
+      title: GetInventoryTransactionHistoryRequest
+      additionalProperties: false
+    inventory.v1.GetInventoryTransactionHistoryResponse:
+      type: object
+      properties:
+        transactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/audits.v1.InventoryTransaction'
+          title: transactions
+        totalCount:
+          type: integer
+          title: total_count
+          format: int32
+        totalQuantityIn:
+          type: number
+          title: total_quantity_in
+          format: double
+          description: Sum of positive changes
+        totalQuantityOut:
+          type: number
+          title: total_quantity_out
+          format: double
+          description: Sum of negative changes
+      title: GetInventoryTransactionHistoryResponse
+      additionalProperties: false
+    inventory.v1.GetLowStockItemsRequest:
+      type: object
+      properties:
+        storeId:
+          type: string
+          title: store_id
+        threshold:
+          type: integer
+          title: threshold
+          format: int32
+          description: Min stock level to flag as low
+          nullable: true
+        categoryId:
+          type: string
+          title: category_id
+          nullable: true
+        supplierId:
+          type: string
+          title: supplier_id
+          nullable: true
+      title: GetLowStockItemsRequest
+      required:
+        - storeId
+      additionalProperties: false
+    inventory.v1.GetLowStockItemsResponse:
+      type: object
+      properties:
+        lowStockItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/inventory.v1.InventoryLevel'
+          title: low_stock_items
+        totalCount:
+          type: integer
+          title: total_count
+          format: int32
+      title: GetLowStockItemsResponse
+      additionalProperties: false
+    inventory.v1.GetProductInventoryLevelsRequest:
+      type: object
+      properties:
+        productId:
+          type: string
+          title: product_id
+      title: GetProductInventoryLevelsRequest
+      additionalProperties: false
+    inventory.v1.GetProductInventoryLevelsResponse:
+      type: object
+      properties:
+        levels:
+          type: array
+          items:
+            $ref: '#/components/schemas/inventory.v1.InventoryLevel'
+          title: levels
+        totalAvailable:
+          type:
+            - integer
+            - string
+          title: total_available
+          format: int64
+        totalReserved:
+          type:
+            - integer
+            - string
+          title: total_reserved
+          format: int64
+        totalInTransit:
+          type:
+            - integer
+            - string
+          title: total_in_transit
+          format: int64
+      title: GetProductInventoryLevelsResponse
+      additionalProperties: false
+    inventory.v1.GetProductTransactionHistoryRequest:
+      type: object
+      properties:
+        productId:
+          type: string
+          title: product_id
+        storeId:
+          type: string
+          title: store_id
+          description: Optional filter
+          nullable: true
+        startDate:
+          title: start_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        endDate:
+          title: end_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        pageSize:
+          type: integer
+          title: page_size
+          format: int32
+        pageNumber:
+          type: integer
+          title: page_number
+          format: int32
+      title: GetProductTransactionHistoryRequest
+      additionalProperties: false
+    inventory.v1.GetProductTransactionHistoryResponse:
+      type: object
+      properties:
+        transactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/audits.v1.InventoryTransaction'
+          title: transactions
+        totalCount:
+          type: integer
+          title: total_count
+          format: int32
+      title: GetProductTransactionHistoryResponse
+      additionalProperties: false
+    inventory.v1.GetResourceInventoryRequest:
+      type: object
+      properties:
+        storeId:
+          type: string
+          title: store_id
+        productId:
+          type: string
+          title: product_id
+          description: 'Specific product, if omitted: full snapshot'
+          nullable: true
+        asOfDate:
+          title: as_of_date
+          description: Historical snapshot
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        supplierId:
+          type: string
+          title: supplier_id
+          nullable: true
+      title: GetResourceInventoryRequest
+      required:
+        - storeId
+      additionalProperties: false
+    inventory.v1.GetResourceInventoryResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/inventory.v1.InventoryLevel'
+          title: items
+        totalQuantity:
+          type: number
+          title: total_quantity
+          format: double
+        snapshotDate:
+          title: snapshot_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: GetResourceInventoryResponse
+      additionalProperties: false
+    inventory.v1.GlobalProduct:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+          description: The unique identifier of the product.
+          nullable: true
+        name:
+          title: name
+          description: The name of the product.
+          $ref: '#/components/schemas/inventory.v1.Internationalized'
+        description:
+          title: description
+          description: The description of the product.
+          nullable: true
+          $ref: '#/components/schemas/inventory.v1.Internationalized'
+        barCodeValue:
+          type: string
+          title: bar_code_value
+          description: The bar code value of the product.
+          nullable: true
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/inventory.v1.Category'
+          title: categories
+          description: The product categories of the product.
+        imagesLinksIds:
+          type: array
+          items:
+            type: string
+          title: images_links_ids
+          description: The list of image related to the product.
+        status:
+          title: status
+          description: The status of the product.
+          $ref: '#/components/schemas/inventory.v1.GlobalProductStatus'
+      title: GlobalProduct
+      additionalProperties: false
+    inventory.v1.GlobalProductStatus:
+      type: string
+      title: GlobalProductStatus
+      enum:
+        - GLOBAL_PRODUCT_STATUS_UNSPECIFIED
+        - GLOBAL_PRODUCT_STATUS_ACTIVE
+        - GLOBAL_PRODUCT_STATUS_INACTIVE
+    inventory.v1.Internationalized:
+      type: object
+      properties:
+        en:
+          type: string
+          title: en
+          description: The English name of the product category.
+        fr:
+          type: string
+          title: fr
+          description: The French name of the product category.
+      title: Internationalized
+      additionalProperties: false
+    inventory.v1.InventoryLevel:
+      type: object
+      properties:
+        storeProductId:
+          type: string
+          title: store_product_id
+          description: The product id to get level.
+        storeId:
+          type: string
+          title: store_id
+          description: The warehouse id to get level.
+        quantityAvailable:
+          type: number
+          title: quantity_available
+          format: double
+          description: Ready to sell/use (sum of batch quantities)
+        quantityReserved:
+          type: number
+          title: quantity_reserved
+          format: double
+          description: Allocated to orders not yet fulfilled
+        quantityInTransit:
+          type: number
+          title: quantity_in_transit
+          format: double
+          description: Being delivered here
+        minThreshold:
+          type: number
+          title: min_threshold
+          format: double
+          description: Minimum stock threshold for this product in this warehouse
+        lastUpdated:
+          title: last_updated
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        lastUpdatedByUserId:
+          type: string
+          title: last_updated_by_user_id
+          description: Who made last change
+        batches:
+          type: array
+          items:
+            $ref: '#/components/schemas/inventory.v1.Batch'
+          title: batches
+          description: Detailed batches/lots for this product in this store
+      title: InventoryLevel
+      additionalProperties: false
+      description: |-
+        *
+         InventoryLevel tracks how much stock exists in each warehouse.
+         This is the current state, updated by various documents.
+
+         Fixes: Added repeated batches for lot-level details (quantity per lot, expiration).
+         The quantity_available is now the sum of batch quantities (computed).
+         Added min_threshold per warehouse for the product.
+
+         Example:
+           product_id: "PRD-001"
+           store_id: "WH-001"
+           quantity_available: 50
+           quantity_reserved: 10 (in pending orders)
+           quantity_in_transit: 20 (being delivered)
+           min_threshold: 15.0
+           last_updated: 2025-09-29T10:30:00Z
+           batches: [Batch1 with qty 30 exp 2026-01-01, Batch2 with qty 20 exp 2026-06-01]
+         Note we can only have one InventoryLevel per (product_id, supplier_id).
+         Reason why we don't add it directly to Storeproduct is because the Storeproduct can be handler by multiple supplier.
+         Example: On product Coffee can be provide by 2 different supplier.
+    inventory.v1.InventoryLevelWithProduct:
+      type: object
+      properties:
+        level:
+          title: level
+          $ref: '#/components/schemas/inventory.v1.InventoryLevel'
+        product:
+          title: product
+          $ref: '#/components/schemas/inventory.v1.StoreProduct'
+        globalProduct:
+          title: globalProduct
+          $ref: '#/components/schemas/inventory.v1.GlobalProduct'
+        stockValue:
+          type:
+            - integer
+            - string
+          title: stock_value
+          format: int64
+          description: quantity * product.unit_price
+        stockStatus:
+          title: stockStatus
+          $ref: '#/components/schemas/inventory.v1.StockStatus'
+      title: InventoryLevelWithProduct
+      additionalProperties: false
+    inventory.v1.ProductStatus:
+      type: string
+      title: ProductStatus
+      enum:
+        - PRODUCT_STATUS_UNSPECIFIED
+        - PRODUCT_STATUS_ACTIVE
+        - PRODUCT_STATUS_INACTIVE
+    inventory.v1.StockStatus:
+      type: string
+      title: StockStatus
+      enum:
+        - STOCK_STATUS_UNSPECIFIED
+        - STOCK_STATUS_LOW
+        - STOCK_STATUS_OK
+        - STOCK_STATUS_OUT_OF_STOCK
+    inventory.v1.StoreProduct:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+          description: The unique identifier of the business product.
+          nullable: true
+        storeId:
+          type: string
+          title: store_id
+          description: The unique identifier of the store.
+        globalProductId:
+          type: string
+          title: global_product_id
+          description: The unique identifier of the global product.
+        salePrice:
+          type: integer
+          title: sale_price
+          format: int32
+          description: |-
+            The sale price in XAF of the product.
+             The currency is determined by the business.
+          nullable: true
+        imagesLinksIds:
+          type: array
+          items:
+            type: string
+          title: images_links_ids
+          description: The media ids of the images of the product.
+        supplierId:
+          type: string
+          title: supplier_id
+          description: The supplier.
+          nullable: true
+        status:
+          title: status
+          description: The status of the product.
+          $ref: '#/components/schemas/inventory.v1.ProductStatus'
+        sku:
+          type: string
+          title: sku
+          description: The stock keeping unit.
+          nullable: true
+        expirationType:
+          title: expiration_type
+          description: The type of expiration of the product.
+          $ref: '#/components/schemas/inventory.v1.ExpirationType'
+        createdAt:
+          title: created_at
+          description: The creation date of the product.
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        updatedAt:
+          title: updated_at
+          description: The last update date of the product.
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: StoreProduct
+      additionalProperties: false
+security: []
+tags:
+  - name: inventory.v1.InventoryService

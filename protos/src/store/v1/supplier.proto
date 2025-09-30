@@ -14,8 +14,6 @@ message Link {
   string url = 2;
 }
 
-
-
 enum SupplierStatus {
   SUPPLIER_STATUS_UNSPECIFIED = 0;
   /// The product category is active.

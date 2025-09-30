@@ -77,24 +77,27 @@ func (CategoryStatus) EnumDescriptor() ([]byte, []int) {
 type CategoryType int32
 
 const (
-	CategoryType_CATEGORY_TYPE_STORE CategoryType = 0
+	CategoryType_CATEGORY_TYPE_UNSPECIFIED CategoryType = 0
+	CategoryType_CATEGORY_TYPE_STORE       CategoryType = 1
 	// / The product category is activ.
-	CategoryType_CATEGORY_TYPE_BUSINESS CategoryType = 1
+	CategoryType_CATEGORY_TYPE_BUSINESS CategoryType = 2
 	// / The product category is inactive.
-	CategoryType_CATEGORY_TYPE_PRODUCT CategoryType = 2
+	CategoryType_CATEGORY_TYPE_PRODUCT CategoryType = 3
 )
 
 // Enum value maps for CategoryType.
 var (
 	CategoryType_name = map[int32]string{
-		0: "CATEGORY_TYPE_STORE",
-		1: "CATEGORY_TYPE_BUSINESS",
-		2: "CATEGORY_TYPE_PRODUCT",
+		0: "CATEGORY_TYPE_UNSPECIFIED",
+		1: "CATEGORY_TYPE_STORE",
+		2: "CATEGORY_TYPE_BUSINESS",
+		3: "CATEGORY_TYPE_PRODUCT",
 	}
 	CategoryType_value = map[string]int32{
-		"CATEGORY_TYPE_STORE":    0,
-		"CATEGORY_TYPE_BUSINESS": 1,
-		"CATEGORY_TYPE_PRODUCT":  2,
+		"CATEGORY_TYPE_UNSPECIFIED": 0,
+		"CATEGORY_TYPE_STORE":       1,
+		"CATEGORY_TYPE_BUSINESS":    2,
+		"CATEGORY_TYPE_PRODUCT":     3,
 	}
 )
 
@@ -263,7 +266,7 @@ func (x *Category) GetType() CategoryType {
 	if x != nil {
 		return x.Type
 	}
-	return CategoryType_CATEGORY_TYPE_STORE
+	return CategoryType_CATEGORY_TYPE_UNSPECIFIED
 }
 
 func (x *Category) GetBusinessId() string {
@@ -374,7 +377,7 @@ func (x *FindCategoriesRequest) GetType() CategoryType {
 	if x != nil && x.Type != nil {
 		return *x.Type
 	}
-	return CategoryType_CATEGORY_TYPE_STORE
+	return CategoryType_CATEGORY_TYPE_UNSPECIFIED
 }
 
 type FindCategoriesResponse struct {
@@ -859,11 +862,12 @@ const file_inventory_v1_category_proto_rawDesc = "" +
 	"\x0eCategoryStatus\x12\x1f\n" +
 	"\x1bCATEGORY_STATUS_UNSPECIFIED\x10\x00\x12\x1a\n" +
 	"\x16CATEGORY_STATUS_ACTIVE\x10\x01\x12\x1c\n" +
-	"\x18CATEGORY_STATUS_INACTIVE\x10\x02*^\n" +
-	"\fCategoryType\x12\x17\n" +
-	"\x13CATEGORY_TYPE_STORE\x10\x00\x12\x1a\n" +
-	"\x16CATEGORY_TYPE_BUSINESS\x10\x01\x12\x19\n" +
-	"\x15CATEGORY_TYPE_PRODUCT\x10\x022\xd9\x03\n" +
+	"\x18CATEGORY_STATUS_INACTIVE\x10\x02*}\n" +
+	"\fCategoryType\x12\x1d\n" +
+	"\x19CATEGORY_TYPE_UNSPECIFIED\x10\x00\x12\x17\n" +
+	"\x13CATEGORY_TYPE_STORE\x10\x01\x12\x1a\n" +
+	"\x16CATEGORY_TYPE_BUSINESS\x10\x02\x12\x19\n" +
+	"\x15CATEGORY_TYPE_PRODUCT\x10\x032\xd9\x03\n" +
 	"\x0fCategoryService\x12[\n" +
 	"\x0eCreateCategory\x12#.inventory.v1.CreateCategoryRequest\x1a$.inventory.v1.CreateCategoryResponse\x12[\n" +
 	"\x0eUpdateCategory\x12#.inventory.v1.UpdateCategoryRequest\x1a$.inventory.v1.UpdateCategoryResponse\x12[\n" +

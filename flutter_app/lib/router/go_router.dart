@@ -11,12 +11,10 @@ import '../screens/dashboard/dashboard_screen.dart';
 import '../screens/global_products/global_products_view.dart';
 import '../screens/home/home.dart';
 import '../screens/inventory/inventory_screen.dart';
-import '../screens/new_order/new_order_screen.dart';
+import '../screens/point-of-sale/point_of_sale_screen.dart';
 import '../screens/reports/reports_screen.dart';
-import '../screens/sales/sales_screen.dart';
 import '../screens/settings/settings_screen.dart';
 import '../screens/suppliers/suppliers_view.dart';
-import '../screens/transactions/transactions_screen.dart';
 import '../screens/users/users_view.dart';
 import '../utils/user_preference.dart';
 import 'app_router.dart';
@@ -81,10 +79,41 @@ class GoRouterRoutesProvider {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                name: PagesRoutes.salesReport.name,
-                path: PagesRoutes.salesReport.pattern,
+                name: PagesRoutes.sales.name,
+                path: PagesRoutes.sales.pattern,
+                routes: [
+                  GoRoute(
+                    name: PagesRoutes.cashReceipts.name,
+                    path: PagesRoutes.cashReceipts.pattern,
+                    pageBuilder: (context, state) {
+                      return const MaterialPage(child: SizedBox());
+                    },
+                  ),
+                  GoRoute(
+                    name: PagesRoutes.salesOrders.name,
+                    path: PagesRoutes.salesOrders.pattern,
+                    pageBuilder: (context, state) {
+                      return const MaterialPage(child: PointOfSaleScreen());
+                    },
+                  ),
+                  GoRoute(
+                    name: PagesRoutes.pos.name,
+                    path: PagesRoutes.pos.pattern,
+                    pageBuilder: (context, state) {
+                      return const MaterialPage(child: PointOfSaleScreen());
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                name: PagesRoutes.cashReceipts.name,
+                path: PagesRoutes.cashReceipts.pattern,
                 pageBuilder: (context, state) {
-                  return const MaterialPage(child: SalesScreen());
+                  return const MaterialPage(child: SizedBox());
                 },
               ),
             ],
@@ -92,10 +121,10 @@ class GoRouterRoutesProvider {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                name: PagesRoutes.newOrder.name,
-                path: PagesRoutes.newOrder.pattern,
+                name: PagesRoutes.pos.name,
+                path: PagesRoutes.pos.pattern,
                 pageBuilder: (context, state) {
-                  return const MaterialPage(child: NewOrderScreen());
+                  return const MaterialPage(child: PointOfSaleScreen());
                 },
               ),
             ],
@@ -107,17 +136,6 @@ class GoRouterRoutesProvider {
                 path: PagesRoutes.reports.pattern,
                 pageBuilder: (context, state) {
                   return const MaterialPage(child: ReportsScreen());
-                },
-              ),
-            ],
-          ),
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                name: PagesRoutes.transactions.name,
-                path: PagesRoutes.transactions.pattern,
-                pageBuilder: (context, state) {
-                  return const MaterialPage(child: TransactionsScreen());
                 },
               ),
             ],

@@ -2,8 +2,6 @@ syntax = "proto3";
 
 package link.v1;
 
-import "buf/validate/validate.proto";
-
 // TODO: Auto delete resource link not linked to any other resource.
 message ResourceLink {
   // The unique identifier of the resource link.

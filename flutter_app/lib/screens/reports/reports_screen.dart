@@ -13,13 +13,14 @@ import '../../widgets/stat_card.dart';
 import 'components/export_data_report.dart';
 import 'components/header.dart';
 import 'components/inventory_in_stock.dart';
+import 'components/inventory_value_trend.dart';
 import 'components/monthly_cash_flow.dart';
 import 'components/reports_tabs_view.dart';
-import 'components/revenu_and_expenses.dart';
+import 'components/revenue_and_expenses.dart';
 import 'components/sales_by_categories.dart';
 import 'components/sales_profile_trend.dart';
 import 'components/stock_movement.dart';
-import 'components/top_perfoming_product_view.dart';
+import 'components/top_performing_product_view.dart';
 import 'reports_controller.dart';
 import 'reports_view_model.dart';
 
@@ -99,6 +100,9 @@ class ReportsScreen extends StatelessWidget {
                               ),
                             ],
                           ),
+                        if (controller.selectedTab ==
+                            ReportsTab.inventoryReport)
+                          const InventoryValueTrend(),
                         if (controller.selectedTab == ReportsTab.salesAnalytics)
                           const TopPerformingProductView(),
                         const ExportDataReport(),

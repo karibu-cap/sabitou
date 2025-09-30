@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+package logistic.v1;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+
+/**
+ * ReceivingNote (Bon de Réception)
+ * Created when YOU receive goods from a supplier.
+ * THIS IS WHAT INCREASES YOUR INVENTORY.
+ *
+ * Fix: ReceivingLineItem now includes batch_id (system-generated or from supplier).
+ * When creating, new Batches are added to InventoryLevel.
+ *
+ * Flow: Goods arrive → Inspect → Create ReceivingNote → Update inventory
+ *
+ * Example:
+ *   rn_id: "RN-2025-001"
+ *   related_purchase_order_id: "PO-2025-001"
+ *   supplier_id: "CMP-002"
+ *   warehouse_id: "WH-001"
+ *   items: [48x PRD-001] (expected 50, but 2 damaged)
+ *   status: RN_STATUS_COMPLETED
+ *
+ * INVENTORY IMPACT: +48 PRD-001 in WH-001
+ */
+message ReceivingNote {
+  string document_id = 1 [(buf.validate.field).required = true]; // "RN-2025-001"
+  string related_purchase_order_id = 2; // Which PO this fulfills
+  string supplier_id = 3; // Who sent the goods
+  string warehouse_id = 4; // Where goods are stored
+  ReceivingNoteStatus status = 5;
+  repeated ReceivingLineItem items = 6;
+  string received_by_user_id = 7; // Who accepted delivery
+  google.protobuf.Timestamp received_at = 8;
+  string notes = 9; // Condition notes, damages, etc.
+}
+
+enum ReceivingNoteStatus {
+  RN_STATUS_UNSPECIFIED = 0;
+  RN_STATUS_PENDING = 1; // Expected but not yet arrived
+  RN_STATUS_INSPECTING = 2; // Goods arrived, being checked
+  RN_STATUS_COMPLETED = 3; // Accepted and stored
+  RN_STATUS_REJECTED = 4; // Quality issues, sent back
+}
+
+/**
+ * ReceivingLineItem shows what was actually received vs expected.
+ *
+ * Fix: Added batch_id and expiration_date for creating new batches on reception.
+ *
+ * Example:
+ *   product_id: "PRD-001"
+ *   quantity_expected: 50
+ *   quantity_received: 48
+ *   quantity_rejected: 2 (damaged)
+ *   rejection_reason: "Damaged packaging"
+ *   batch_id: "BATCH-2025-001" (generated)
+ *   expiration_date: 2026-09-29T00:00:00Z
+ */
+message ReceivingLineItem {
+  string product_id = 1;
+  double quantity_expected = 2; // From PO
+  double quantity_received = 3; // Actually got
+  double quantity_rejected = 4; // Damaged/wrong items
+  string rejection_reason = 5;
+  string batch_id = 6; // Generated batch ID for received items
+  google.protobuf.Timestamp expiration_date = 7; // Provided by supplier or calculated
+}

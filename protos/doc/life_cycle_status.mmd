@@ -1,0 +1,139 @@
+stateDiagram-v2
+    [*] --> DRAFT: Create Document
+    
+    state "PURCHASE ORDER States" as PO {
+        [*] --> PO_DRAFT
+        PO_DRAFT --> PO_PENDING: Send to Supplier
+        PO_PENDING --> PO_PARTIALLY_RECEIVED: Some items arrive
+        PO_PARTIALLY_RECEIVED --> PO_RECEIVED: All items arrive
+        PO_PENDING --> PO_RECEIVED: All items arrive at once
+        PO_DRAFT --> PO_CANCELLED: Cancel order
+        PO_PENDING --> PO_CANCELLED: Cancel order
+    }
+    
+    state "SALES ORDER States" as SO {
+        [*] --> SO_DRAFT
+        SO_DRAFT --> SO_CONFIRMED: Customer confirms
+        SO_CONFIRMED --> SO_PROCESSING: Start preparing
+        SO_PROCESSING --> SO_SHIPPED: Create DeliveryNote
+        SO_SHIPPED --> SO_DELIVERED: Customer receives
+        SO_DRAFT --> SO_CANCELLED: Cancel
+        SO_CONFIRMED --> SO_CANCELLED: Cancel
+    }
+    
+    state "QUOTATION States" as QT {
+        [*] --> QT_DRAFT
+        QT_DRAFT --> QT_SENT: Send to customer
+        QT_SENT --> QT_ACCEPTED: Customer accepts
+        QT_SENT --> QT_REJECTED: Customer declines
+        QT_SENT --> QT_EXPIRED: Past valid_until date
+        QT_ACCEPTED --> SO_DRAFT: Convert to SalesOrder
+    }
+    
+    state "DELIVERY NOTE States" as DN {
+        [*] --> DN_PREPARED
+        DN_PREPARED --> DN_IN_TRANSIT: Ship to customer
+        DN_IN_TRANSIT --> DN_DELIVERED: Customer receives
+        DN_DELIVERED --> RN_PENDING: Customer returns
+        DN_IN_TRANSIT --> DN_RETURNED: Delivery failed
+    }
+    
+    state "RECEIVING NOTE States" as RN {
+        [*] --> RN_PENDING
+        RN_PENDING --> RN_INSPECTING: Goods arrive
+        RN_INSPECTING --> RN_COMPLETED: Accept goods<br/>✅ +INVENTORY
+        RN_INSPECTING --> RN_REJECTED: Quality issues
+        RN_REJECTED --> SR_PENDING: Return to supplier
+    }
+    
+    state "TRANSFER NOTE States" as TN {
+        [*] --> TN_REQUESTED
+        TN_REQUESTED --> TN_APPROVED: Manager approves
+        TN_APPROVED --> TN_IN_TRANSIT: Ship items<br/>✅ -INVENTORY source
+        TN_IN_TRANSIT --> TN_COMPLETED: Receive at destination<br/>✅ +INVENTORY destination
+        TN_REQUESTED --> TN_CANCELLED: Cancel transfer
+        TN_APPROVED --> TN_CANCELLED: Cancel transfer
+    }
+    
+    state "INVOICE States" as INV {
+        [*] --> INV_DRAFT
+        INV_DRAFT --> INV_ISSUED: Send to customer
+        INV_ISSUED --> INV_UNPAID: Awaiting payment
+        INV_UNPAID --> INV_PARTIALLY_PAID: Receive partial payment
+        INV_PARTIALLY_PAID --> INV_PAID: Receive full payment
+        INV_UNPAID --> INV_PAID: Receive full payment
+        INV_UNPAID --> INV_OVERDUE: Past due_date
+        INV_OVERDUE --> INV_PAID: Late payment
+        INV_ISSUED --> INV_CREDITED: Issue CreditNote
+        INV_UNPAID --> INV_CREDITED: Issue CreditNote
+        INV_DRAFT --> INV_CANCELLED: Cancel
+    }
+    
+    state "CREDIT NOTE States" as CN {
+        [*] --> CN_DRAFT
+        CN_DRAFT --> CN_ISSUED: Send to customer
+        CN_ISSUED --> CN_APPLIED: Apply to account<br/>✅ +INVENTORY if return
+    }
+    
+    state "DEBIT NOTE States" as DEBIT {
+        [*] --> DEBIT_DRAFT
+        DEBIT_DRAFT --> DEBIT_ISSUED: Send to supplier
+        DEBIT_ISSUED --> DEBIT_ACCEPTED: Supplier agrees<br/>✅ -INVENTORY
+        DEBIT_ISSUED --> DEBIT_DISPUTED: Supplier disagrees
+    }
+    
+    state "RETURN NOTE States" as RETURN {
+        [*] --> RETURN_PENDING
+        RETURN_PENDING --> RETURN_APPROVED: Authorize return
+        RETURN_APPROVED --> RETURN_IN_TRANSIT: Customer ships back
+        RETURN_IN_TRANSIT --> RETURN_RECEIVED: Inspect goods<br/>✅ +/-INVENTORY
+        RETURN_RECEIVED --> CN_DRAFT: Issue CreditNote
+        RETURN_PENDING --> RETURN_REJECTED: Deny return
+    }
+    
+    state "STOCK COUNT States" as COUNT {
+        [*] --> COUNT_SCHEDULED
+        COUNT_SCHEDULED --> COUNT_IN_PROGRESS: Start counting
+        COUNT_IN_PROGRESS --> COUNT_COMPLETED: Finish count
+        COUNT_COMPLETED --> COUNT_ADJUSTMENTS_PENDING: Review variances
+        COUNT_ADJUSTMENTS_PENDING --> COUNT_FINALIZED: Apply adjustments<br/>✅ +/-INVENTORY
+    }
+    
+    state "PAYMENT States" as PAY {
+        [*] --> PAY_PENDING
+        PAY_PENDING --> PAY_COMPLETED: Payment confirmed<br/>✅ Update invoice
+        PAY_PENDING --> PAY_FAILED: Payment rejected
+        PAY_COMPLETED --> PAY_REFUNDED: Issue refund
+    }
+    
+    state "GIFT VOUCHER States" as VOUCHER {
+        [*] --> VOUCHER_ACTIVE
+        VOUCHER_ACTIVE --> VOUCHER_PARTIALLY_USED: Use some value
+        VOUCHER_PARTIALLY_USED --> VOUCHER_FULLY_USED: Use remaining
+        VOUCHER_ACTIVE --> VOUCHER_FULLY_USED: Use all at once
+        VOUCHER_ACTIVE --> VOUCHER_EXPIRED: Past valid_until
+        VOUCHER_PARTIALLY_USED --> VOUCHER_EXPIRED: Past valid_until
+        VOUCHER_ACTIVE --> VOUCHER_CANCELLED: Cancel voucher
+    }
+    
+    note right of DN
+        Green boxes = Inventory changes
+        Blue boxes = Status only
+    end note
+    
+    note right of INV
+        Key Triggers:
+        • DeliveryNote → Invoice
+        • ReceivingNote → Invoice
+        • Return → CreditNote
+        • Payment → Update Invoice
+    end note
+    
+    note right of COUNT
+        StockCount workflow:
+        1. Schedule count
+        2. Physically count
+        3. Find variances
+        4. Create adjustments
+        5. Update inventory
+    end note

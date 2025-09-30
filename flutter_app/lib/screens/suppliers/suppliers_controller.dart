@@ -59,7 +59,8 @@ class SuppliersController extends ChangeNotifier {
   Stream<List<Supplier>> get suppliersStream => _viewModel.suppliersStream;
 
   /// Gets products stream for reactive UI updates
-  Stream<List<StoreProduct>> get productsStream => _viewModel.productsStream;
+  Stream<List<InventoryLevelWithProduct>> get invStream =>
+      _viewModel.productsStream;
 
   /// Deletes a supplier from the system.
   Future<bool> deleteSupplier(String supplierId) async {
@@ -104,10 +105,10 @@ class SuppliersController extends ChangeNotifier {
   }
 
   /// Calculates total inventory value from all products
-  double calculateTotalValue(List<StoreProduct> products) {
-    return products.fold<double>(
+  double calculateTotalValue(List<InventoryLevelWithProduct> inv) {
+    return inv.fold<double>(
       0.0,
-      (sum, product) => sum + (product.salePrice * product.stockQuantity),
+      (sum, inv) => sum + (inv.product.salePrice * inv.level.quantityAvailable),
     );
   }
 

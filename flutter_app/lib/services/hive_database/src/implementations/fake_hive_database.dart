@@ -1,5 +1,6 @@
 import 'package:hive_ce/hive.dart';
 import 'package:sabitou_rpc/models.dart';
+
 import '../../hive_database.dart';
 
 /// Fake hive database implementation for testing.
@@ -20,7 +21,7 @@ class FakeHiveDatabase implements HiveDatabase {
       throw UnimplementedError('Fake implementation - use for testing only');
 
   @override
-  Box<Order> get orders =>
+  Box<SalesOrder> get salesOrder =>
       throw UnimplementedError('Fake implementation - use for testing only');
 
   @override

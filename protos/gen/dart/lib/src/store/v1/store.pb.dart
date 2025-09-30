@@ -24,6 +24,108 @@ export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 
 export 'store.pbenum.dart';
 
+class Address extends $pb.GeneratedMessage {
+  factory Address({
+    $core.String? street,
+    $core.String? city,
+    $core.String? region,
+    $core.String? postalCode,
+    $core.String? country,
+  }) {
+    final result = create();
+    if (street != null) result.street = street;
+    if (city != null) result.city = city;
+    if (region != null) result.region = region;
+    if (postalCode != null) result.postalCode = postalCode;
+    if (country != null) result.country = country;
+    return result;
+  }
+
+  Address._();
+
+  factory Address.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory Address.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'Address',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'store.v1'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'street')
+    ..aOS(2, _omitFieldNames ? '' : 'city')
+    ..aOS(3, _omitFieldNames ? '' : 'region')
+    ..aOS(4, _omitFieldNames ? '' : 'postalCode')
+    ..aOS(5, _omitFieldNames ? '' : 'country')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  Address clone() => Address()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  Address copyWith(void Function(Address) updates) =>
+      super.copyWith((message) => updates(message as Address)) as Address;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static Address create() => Address._();
+  @$core.override
+  Address createEmptyInstance() => create();
+  static $pb.PbList<Address> createRepeated() => $pb.PbList<Address>();
+  @$core.pragma('dart2js:noInline')
+  static Address getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Address>(create);
+  static Address? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get street => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set street($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasStreet() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearStreet() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get city => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set city($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasCity() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearCity() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get region => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set region($core.String value) => $_setString(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasRegion() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearRegion() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get postalCode => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set postalCode($core.String value) => $_setString(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasPostalCode() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearPostalCode() => $_clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.String get country => $_getSZ(4);
+  @$pb.TagNumber(5)
+  set country($core.String value) => $_setString(4, value);
+  @$pb.TagNumber(5)
+  $core.bool hasCountry() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearCountry() => $_clearField(5);
+}
+
 /// Stores are used to store products.
 /// Note: A store is not always a shop.
 class Store extends $pb.GeneratedMessage {
@@ -36,10 +138,14 @@ class Store extends $pb.GeneratedMessage {
     $core.String? businessId,
     $0.Timestamp? createdAt,
     $0.Timestamp? updatedAt,
-    $core.String? contactInfo,
-    $core.String? address,
+    $core.String? phone,
+    Address? address,
     $core.String? email,
     StoreCostingMethod? costingMethod,
+    $core.double? tax,
+    $core.String? postalBox,
+    $core.String? nui,
+    $core.String? taxPayerNumber,
   }) {
     final result = create();
     if (refId != null) result.refId = refId;
@@ -50,10 +156,14 @@ class Store extends $pb.GeneratedMessage {
     if (businessId != null) result.businessId = businessId;
     if (createdAt != null) result.createdAt = createdAt;
     if (updatedAt != null) result.updatedAt = updatedAt;
-    if (contactInfo != null) result.contactInfo = contactInfo;
+    if (phone != null) result.phone = phone;
     if (address != null) result.address = address;
     if (email != null) result.email = email;
     if (costingMethod != null) result.costingMethod = costingMethod;
+    if (tax != null) result.tax = tax;
+    if (postalBox != null) result.postalBox = postalBox;
+    if (nui != null) result.nui = nui;
+    if (taxPayerNumber != null) result.taxPayerNumber = taxPayerNumber;
     return result;
   }
 
@@ -80,14 +190,19 @@ class Store extends $pb.GeneratedMessage {
         subBuilder: $0.Timestamp.create)
     ..aOM<$0.Timestamp>(10, _omitFieldNames ? '' : 'updatedAt',
         subBuilder: $0.Timestamp.create)
-    ..aOS(11, _omitFieldNames ? '' : 'contactInfo')
-    ..aOS(12, _omitFieldNames ? '' : 'address')
+    ..aOS(11, _omitFieldNames ? '' : 'phone')
+    ..aOM<Address>(12, _omitFieldNames ? '' : 'address',
+        subBuilder: Address.create)
     ..aOS(13, _omitFieldNames ? '' : 'email')
     ..e<StoreCostingMethod>(
         14, _omitFieldNames ? '' : 'costingMethod', $pb.PbFieldType.OE,
         defaultOrMaker: StoreCostingMethod.STORE_COSTING_METHOD_UNSPECIFIED,
         valueOf: StoreCostingMethod.valueOf,
         enumValues: StoreCostingMethod.values)
+    ..a<$core.double>(15, _omitFieldNames ? '' : 'tax', $pb.PbFieldType.OD)
+    ..aOS(16, _omitFieldNames ? '' : 'postalBox')
+    ..aOS(17, _omitFieldNames ? '' : 'nui')
+    ..aOS(18, _omitFieldNames ? '' : 'taxPayerNumber')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -195,23 +310,25 @@ class Store extends $pb.GeneratedMessage {
 
   /// The business contact information.
   @$pb.TagNumber(11)
-  $core.String get contactInfo => $_getSZ(8);
+  $core.String get phone => $_getSZ(8);
   @$pb.TagNumber(11)
-  set contactInfo($core.String value) => $_setString(8, value);
+  set phone($core.String value) => $_setString(8, value);
   @$pb.TagNumber(11)
-  $core.bool hasContactInfo() => $_has(8);
+  $core.bool hasPhone() => $_has(8);
   @$pb.TagNumber(11)
-  void clearContactInfo() => $_clearField(11);
+  void clearPhone() => $_clearField(11);
 
   /// The business address.
   @$pb.TagNumber(12)
-  $core.String get address => $_getSZ(9);
+  Address get address => $_getN(9);
   @$pb.TagNumber(12)
-  set address($core.String value) => $_setString(9, value);
+  set address(Address value) => $_setField(12, value);
   @$pb.TagNumber(12)
   $core.bool hasAddress() => $_has(9);
   @$pb.TagNumber(12)
   void clearAddress() => $_clearField(12);
+  @$pb.TagNumber(12)
+  Address ensureAddress() => $_ensure(9);
 
   /// The business email.
   @$pb.TagNumber(13)
@@ -232,6 +349,46 @@ class Store extends $pb.GeneratedMessage {
   $core.bool hasCostingMethod() => $_has(11);
   @$pb.TagNumber(14)
   void clearCostingMethod() => $_clearField(14);
+
+  /// The tax of the store.
+  @$pb.TagNumber(15)
+  $core.double get tax => $_getN(12);
+  @$pb.TagNumber(15)
+  set tax($core.double value) => $_setDouble(12, value);
+  @$pb.TagNumber(15)
+  $core.bool hasTax() => $_has(12);
+  @$pb.TagNumber(15)
+  void clearTax() => $_clearField(15);
+
+  /// The postal box of the store.
+  @$pb.TagNumber(16)
+  $core.String get postalBox => $_getSZ(13);
+  @$pb.TagNumber(16)
+  set postalBox($core.String value) => $_setString(13, value);
+  @$pb.TagNumber(16)
+  $core.bool hasPostalBox() => $_has(13);
+  @$pb.TagNumber(16)
+  void clearPostalBox() => $_clearField(16);
+
+  /// The nui of the store.
+  @$pb.TagNumber(17)
+  $core.String get nui => $_getSZ(14);
+  @$pb.TagNumber(17)
+  set nui($core.String value) => $_setString(14, value);
+  @$pb.TagNumber(17)
+  $core.bool hasNui() => $_has(14);
+  @$pb.TagNumber(17)
+  void clearNui() => $_clearField(17);
+
+  /// The tax payer number of the store.
+  @$pb.TagNumber(18)
+  $core.String get taxPayerNumber => $_getSZ(15);
+  @$pb.TagNumber(18)
+  set taxPayerNumber($core.String value) => $_setString(15, value);
+  @$pb.TagNumber(18)
+  $core.bool hasTaxPayerNumber() => $_has(15);
+  @$pb.TagNumber(18)
+  void clearTaxPayerNumber() => $_clearField(18);
 }
 
 class StoreMember extends $pb.GeneratedMessage {

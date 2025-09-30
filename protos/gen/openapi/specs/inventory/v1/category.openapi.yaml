@@ -404,6 +404,7 @@ components:
       type: string
       title: CategoryType
       enum:
+        - CATEGORY_TYPE_UNSPECIFIED
         - CATEGORY_TYPE_STORE
         - CATEGORY_TYPE_BUSINESS
         - CATEGORY_TYPE_PRODUCT

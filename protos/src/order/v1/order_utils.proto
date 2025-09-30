@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package order.v1;
+
+import "inventory/v1/category.proto";
+
+/**
+ * OrderLineItem represents a single product line in an order or quotation.
+ * Used in PurchaseOrder, SalesOrder, Quotation, etc.
+ *
+ * Fix: Added optional batch_id for specifying lots in orders (e.g., for perishable goods).
+ *
+ * Example:
+ *   product_id: "PRD-001"
+ *   quantity: 10
+ *   product_name: "Product Name"
+ *   unit_price: 450000
+ *   total: 4500000
+ *   batch_id: "BATCH-2025-001" (optional)
+ */
+message OrderLineItem {
+  string product_id = 1; // Which product
+  double quantity = 2; // How many units
+  inventory.v1.Internationalized product_name = 3; // Product name
+  int64 unit_price = 4; // Price per unit (in smallest currency)
+  int64 total = 5; // quantity * unit_price
+  string notes = 6; // Special notes for this line
+  string batch_id = 7; // Optional: Specific batch/lot requested
+}
+
+message OrderPrices {
+  int32 subtotal = 1;
+  int32 discounts = 2;
+  int32 total_vat_amount = 3;
+  int32 grand_total = 4;
+}

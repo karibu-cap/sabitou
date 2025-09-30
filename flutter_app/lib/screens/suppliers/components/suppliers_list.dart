@@ -22,10 +22,10 @@ class SuppliersList extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Provider.of<SuppliersController>(context, listen: false);
 
-    return StreamBuilder<List<StoreProduct>>(
-      stream: controller.productsStream,
+    return StreamBuilder<List<InventoryLevelWithProduct>>(
+      stream: controller.invStream,
       builder: (context, productsSnapshot) {
-        final products = productsSnapshot.data ?? [];
+        final invList = productsSnapshot.data ?? [];
 
         return ShadCard(
           padding: EdgeInsets.zero,
@@ -55,7 +55,7 @@ class SuppliersList extends StatelessWidget {
 
                   return SupplierDataTable(
                     suppliers: suppliers,
-                    products: products,
+                    products: invList,
                   );
                 },
               ),

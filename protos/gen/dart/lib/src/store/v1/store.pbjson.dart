@@ -54,6 +54,24 @@ final $typed_data.Uint8List storeMemberStatusDescriptor = $convert.base64Decode(
     'X1BFTkRJTkcQAhIgChxTVE9SRV9NRU1CRVJfU1RBVFVTX0lOQUNUSVZFEAMSHgoaU1RPUkVfTU'
     'VNQkVSX1NUQVRVU19CQU5ORUQQBA==');
 
+@$core.Deprecated('Use addressDescriptor instead')
+const Address$json = {
+  '1': 'Address',
+  '2': [
+    {'1': 'street', '3': 1, '4': 1, '5': 9, '10': 'street'},
+    {'1': 'city', '3': 2, '4': 1, '5': 9, '10': 'city'},
+    {'1': 'region', '3': 3, '4': 1, '5': 9, '10': 'region'},
+    {'1': 'postal_code', '3': 4, '4': 1, '5': 9, '10': 'postalCode'},
+    {'1': 'country', '3': 5, '4': 1, '5': 9, '10': 'country'},
+  ],
+};
+
+/// Descriptor for `Address`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List addressDescriptor = $convert.base64Decode(
+    'CgdBZGRyZXNzEhYKBnN0cmVldBgBIAEoCVIGc3RyZWV0EhIKBGNpdHkYAiABKAlSBGNpdHkSFg'
+    'oGcmVnaW9uGAMgASgJUgZyZWdpb24SHwoLcG9zdGFsX2NvZGUYBCABKAlSCnBvc3RhbENvZGUS'
+    'GAoHY291bnRyeRgFIAEoCVIHY291bnRyeQ==');
+
 @$core.Deprecated('Use storeDescriptor instead')
 const Store$json = {
   '1': 'Store',
@@ -106,20 +124,13 @@ const Store$json = {
       '10': 'updatedAt',
       '17': true
     },
-    {
-      '1': 'contact_info',
-      '3': 11,
-      '4': 1,
-      '5': 9,
-      '9': 5,
-      '10': 'contactInfo',
-      '17': true
-    },
+    {'1': 'phone', '3': 11, '4': 1, '5': 9, '9': 5, '10': 'phone', '17': true},
     {
       '1': 'address',
       '3': 12,
       '4': 1,
-      '5': 9,
+      '5': 11,
+      '6': '.store.v1.Address',
       '9': 6,
       '10': 'address',
       '17': true
@@ -135,6 +146,26 @@ const Store$json = {
       '10': 'costingMethod',
       '17': true
     },
+    {'1': 'tax', '3': 15, '4': 1, '5': 1, '9': 9, '10': 'tax', '17': true},
+    {
+      '1': 'postal_box',
+      '3': 16,
+      '4': 1,
+      '5': 9,
+      '9': 10,
+      '10': 'postalBox',
+      '17': true
+    },
+    {'1': 'nui', '3': 17, '4': 1, '5': 9, '9': 11, '10': 'nui', '17': true},
+    {
+      '1': 'tax_payer_number',
+      '3': 18,
+      '4': 1,
+      '5': 9,
+      '9': 12,
+      '10': 'taxPayerNumber',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_ref_id'},
@@ -142,10 +173,14 @@ const Store$json = {
     {'1': '_logo_link_id'},
     {'1': '_external_links_ids'},
     {'1': '_updated_at'},
-    {'1': '_contact_info'},
+    {'1': '_phone'},
     {'1': '_address'},
     {'1': '_email'},
     {'1': '_costing_method'},
+    {'1': '_tax'},
+    {'1': '_postal_box'},
+    {'1': '_nui'},
+    {'1': '_tax_payer_number'},
   ],
 };
 
@@ -157,12 +192,16 @@ final $typed_data.Uint8List storeDescriptor = $convert.base64Decode(
     'h0ZXJuYWxMaW5rc0lkc4gBARIfCgtidXNpbmVzc19pZBgIIAEoCVIKYnVzaW5lc3NJZBI5Cgpj'
     'cmVhdGVkX2F0GAkgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIJY3JlYXRlZEF0Ej'
     '4KCnVwZGF0ZWRfYXQYCiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wSARSCXVwZGF0'
-    'ZWRBdIgBARImCgxjb250YWN0X2luZm8YCyABKAlIBVILY29udGFjdEluZm+IAQESHQoHYWRkcm'
-    'VzcxgMIAEoCUgGUgdhZGRyZXNziAEBEhkKBWVtYWlsGA0gASgJSAdSBWVtYWlsiAEBEkgKDmNv'
-    'c3RpbmdfbWV0aG9kGA4gASgOMhwuc3RvcmUudjEuU3RvcmVDb3N0aW5nTWV0aG9kSAhSDWNvc3'
-    'RpbmdNZXRob2SIAQFCCQoHX3JlZl9pZEIOCgxfZGVzY3JpcHRpb25CDwoNX2xvZ29fbGlua19p'
-    'ZEIVChNfZXh0ZXJuYWxfbGlua3NfaWRzQg0KC191cGRhdGVkX2F0Qg8KDV9jb250YWN0X2luZm'
-    '9CCgoIX2FkZHJlc3NCCAoGX2VtYWlsQhEKD19jb3N0aW5nX21ldGhvZA==');
+    'ZWRBdIgBARIZCgVwaG9uZRgLIAEoCUgFUgVwaG9uZYgBARIwCgdhZGRyZXNzGAwgASgLMhEuc3'
+    'RvcmUudjEuQWRkcmVzc0gGUgdhZGRyZXNziAEBEhkKBWVtYWlsGA0gASgJSAdSBWVtYWlsiAEB'
+    'EkgKDmNvc3RpbmdfbWV0aG9kGA4gASgOMhwuc3RvcmUudjEuU3RvcmVDb3N0aW5nTWV0aG9kSA'
+    'hSDWNvc3RpbmdNZXRob2SIAQESFQoDdGF4GA8gASgBSAlSA3RheIgBARIiCgpwb3N0YWxfYm94'
+    'GBAgASgJSApSCXBvc3RhbEJveIgBARIVCgNudWkYESABKAlIC1IDbnVpiAEBEi0KEHRheF9wYX'
+    'llcl9udW1iZXIYEiABKAlIDFIOdGF4UGF5ZXJOdW1iZXKIAQFCCQoHX3JlZl9pZEIOCgxfZGVz'
+    'Y3JpcHRpb25CDwoNX2xvZ29fbGlua19pZEIVChNfZXh0ZXJuYWxfbGlua3NfaWRzQg0KC191cG'
+    'RhdGVkX2F0QggKBl9waG9uZUIKCghfYWRkcmVzc0IICgZfZW1haWxCEQoPX2Nvc3RpbmdfbWV0'
+    'aG9kQgYKBF90YXhCDQoLX3Bvc3RhbF9ib3hCBgoEX251aUITChFfdGF4X3BheWVyX251bWJlcg'
+    '==');
 
 @$core.Deprecated('Use storeMemberDescriptor instead')
 const StoreMember$json = {
@@ -744,6 +783,7 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
   '.store.v1.CreateStoreRequest': CreateStoreRequest$json,
   '.store.v1.Store': Store$json,
   '.google.protobuf.Timestamp': $0.Timestamp$json,
+  '.store.v1.Address': Address$json,
   '.store.v1.CreateStoreResponse': CreateStoreResponse$json,
   '.store.v1.GetStoreRequest': GetStoreRequest$json,
   '.store.v1.GetStoreResponse': GetStoreResponse$json,

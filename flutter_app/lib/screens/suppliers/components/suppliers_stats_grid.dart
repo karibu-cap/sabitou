@@ -34,21 +34,23 @@ class SuppliersStatsGrid extends StatelessWidget {
             .where((s) => s.status == SupplierStatus.SUPPLIER_STATUS_ACTIVE)
             .length;
 
-        return StreamBuilder<List<StoreProduct>>(
-          stream: controller.productsStream,
+        return StreamBuilder<List<InventoryLevelWithProduct>>(
+          stream: controller.invStream,
           builder: (context, productsSnapshot) {
             if (productsSnapshot.connectionState == ConnectionState.waiting) {
               return SupplierShimmerWidgets.buildStatsShimmer();
             }
-            final products = productsSnapshot.data ?? [];
-            final totalProducts = controller.calculateTotalProducts(products);
+            final invWithProducts = productsSnapshot.data ?? [];
+            final totalProducts = controller.calculateTotalProducts(
+              invWithProducts.map((p) => p.product).toList(),
+            );
             final avgProductsPerSupplier = controller
                 .calculateAverageProductsPerSupplier(
                   totalProducts,
                   totalSuppliers,
                 );
             final totalInventoryValue = controller.calculateTotalValue(
-              products,
+              invWithProducts,
             );
 
             final statsCards = [

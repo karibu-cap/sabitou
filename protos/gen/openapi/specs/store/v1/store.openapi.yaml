@@ -858,6 +858,26 @@ components:
           $ref: '#/components/schemas/store.v1.StoreMember'
       title: AddUserToStoreResponse
       additionalProperties: false
+    store.v1.Address:
+      type: object
+      properties:
+        street:
+          type: string
+          title: street
+        city:
+          type: string
+          title: city
+        region:
+          type: string
+          title: region
+        postalCode:
+          type: string
+          title: postal_code
+        country:
+          type: string
+          title: country
+      title: Address
+      additionalProperties: false
     store.v1.CreateStoreRequest:
       type: object
       properties:
@@ -1099,16 +1119,16 @@ components:
           description: The date and time the store was last updated.
           nullable: true
           $ref: '#/components/schemas/google.protobuf.Timestamp'
-        contactInfo:
+        phone:
           type: string
-          title: contact_info
+          title: phone
           description: The business contact information.
           nullable: true
         address:
-          type: string
           title: address
           description: The business address.
           nullable: true
+          $ref: '#/components/schemas/store.v1.Address'
         email:
           type: string
           title: email
@@ -1119,6 +1139,27 @@ components:
           description: The costing method of the store.
           nullable: true
           $ref: '#/components/schemas/store.v1.StoreCostingMethod'
+        tax:
+          type: number
+          title: tax
+          format: double
+          description: The tax of the store.
+          nullable: true
+        postalBox:
+          type: string
+          title: postal_box
+          description: The postal box of the store.
+          nullable: true
+        nui:
+          type: string
+          title: nui
+          description: The nui of the store.
+          nullable: true
+        taxPayerNumber:
+          type: string
+          title: tax_payer_number
+          description: The tax payer number of the store.
+          nullable: true
       title: Store
       additionalProperties: false
       description: |-

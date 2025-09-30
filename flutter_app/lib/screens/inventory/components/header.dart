@@ -6,9 +6,6 @@ import '../../../services/internationalization/internationalization.dart';
 import '../../../utils/extends_models.dart';
 import '../../../utils/responsive_utils.dart';
 import '../inventory_controller.dart';
-import 'form/ajustment_stock_form.dart';
-import 'form/create_edit_product_form_view.dart';
-import 'form/restock_product_form.dart';
 
 /// The inventory header
 class InventoryHeader extends StatelessWidget {
@@ -23,43 +20,43 @@ class InventoryHeader extends StatelessWidget {
     void _showProductDialog(BuildContext context, Product? product) async {
       final controller = context.read<InventoryController>();
 
-      showShadDialog<bool?>(
-        context: context,
-        builder: (context) => CreateEditProductFormView(
-          product: product?.globalProduct,
-          inventoryController: controller,
-        ),
-      );
+      // showShadDialog<bool?>(
+      //   context: context,
+      //   builder: (context) => CreateEditProductFormView(
+      //     product: product?.globalProduct,
+      //     inventoryController: controller,
+      //   ),
+      // );
     }
 
     Future<void> _showRestockDialog(BuildContext context) async {
       final controller = context.read<InventoryController>();
       if (context.mounted) {
-        final result = await showShadDialog<bool?>(
-          context: context,
-          builder: (context) =>
-              RestockProductForm(inventoryController: controller),
-        );
+        // final result = await showShadDialog<bool?>(
+        //   context: context,
+        //   builder: (context) =>
+        //       RestockProductForm(inventoryController: controller),
+        // );
 
-        if (result == true) {
-          await controller.refreshProducts();
-        }
+        // if (result == true) {
+        //   await controller.refreshProducts();
+        // }
       }
     }
 
     Future<void> _showAdjustmentDialog(BuildContext context) async {
       final controller = context.read<InventoryController>();
       if (context.mounted) {
-        final result = await showShadDialog<bool?>(
-          context: context,
-          builder: (context) => AdjustmentStockForm(
-            inventoryController: controller,
-            product: null,
-          ),
-        );
-        if (result == true) {
-          await controller.refreshProducts();
-        }
+        // final result = await showShadDialog<bool?>(
+        //   context: context,
+        //   builder: (context) => AdjustmentStockForm(
+        //     inventoryController: controller,
+        //     product: null,
+        //   ),
+        // );
+        // if (result == true) {
+        //   await controller.refreshProducts();
+        // }
       }
     }
 
