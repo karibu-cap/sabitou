@@ -15,6 +15,7 @@ import 'repositories/inventory_repository.dart';
 import 'repositories/permissions_repository.dart';
 import 'repositories/products_repository.dart';
 import 'repositories/reports_repository.dart';
+import 'repositories/store_products_repository.dart';
 import 'repositories/stores_repository.dart';
 import 'repositories/suppliers_repository.dart';
 import 'repositories/users_repository.dart';
@@ -70,6 +71,9 @@ Future<void> _initServices() async {
     ..registerLazySingleton<BusinessRepository>(BusinessRepository.new)
     ..registerLazySingleton<StoresRepository>(StoresRepository.new)
     ..registerLazySingleton<UserRepository>(UserRepository.new)
+    ..registerLazySingleton<StoreProductsRepository>(
+      StoreProductsRepository.new,
+    )
     ..registerLazySingleton<CategoriesRepository>(CategoriesRepository.new)
     ..registerLazySingleton<InventoryRepository>(InventoryRepository.new)
     ..registerLazySingleton<ReportsRepository>(ReportsRepository.new)

@@ -104,27 +104,8 @@ class GoRouterRoutesProvider {
                     },
                   ),
                 ],
-              ),
-            ],
-          ),
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                name: PagesRoutes.cashReceipts.name,
-                path: PagesRoutes.cashReceipts.pattern,
-                pageBuilder: (context, state) {
-                  return const MaterialPage(child: SizedBox());
-                },
-              ),
-            ],
-          ),
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                name: PagesRoutes.pos.name,
-                path: PagesRoutes.pos.pattern,
-                pageBuilder: (context, state) {
-                  return const MaterialPage(child: PointOfSaleScreen());
+                redirect: (context, state) {
+                  return PagesRoutes.pos.pattern;
                 },
               ),
             ],
