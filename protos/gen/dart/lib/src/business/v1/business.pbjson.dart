@@ -14,10 +14,9 @@ import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
-import '../../google/protobuf/timestamp.pbjson.dart' as $2;
-import '../../identity/v1/permission.pbjson.dart' as $1;
+import '../../google/protobuf/timestamp.pbjson.dart' as $1;
 import '../../identity/v1/user.pbjson.dart' as $0;
-import '../../link/v1/link.pbjson.dart' as $3;
+import '../../link/v1/link.pbjson.dart' as $2;
 
 @$core.Deprecated('Use businessStatusTypeDescriptor instead')
 const BusinessStatusType$json = {
@@ -173,14 +172,6 @@ const BusinessMember$json = {
     },
     {'1': 'business_id', '3': 2, '4': 1, '5': 9, '10': 'businessId'},
     {
-      '1': 'permissions',
-      '3': 3,
-      '4': 3,
-      '5': 11,
-      '6': '.identity.v1.BusinessPermission',
-      '10': 'permissions'
-    },
-    {
       '1': 'member_since',
       '3': 4,
       '4': 1,
@@ -202,11 +193,9 @@ const BusinessMember$json = {
 /// Descriptor for `BusinessMember`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List businessMemberDescriptor = $convert.base64Decode(
     'Cg5CdXNpbmVzc01lbWJlchIlCgR1c2VyGAEgASgLMhEuaWRlbnRpdHkudjEuVXNlclIEdXNlch'
-    'IfCgtidXNpbmVzc19pZBgCIAEoCVIKYnVzaW5lc3NJZBJBCgtwZXJtaXNzaW9ucxgDIAMoCzIf'
-    'LmlkZW50aXR5LnYxLkJ1c2luZXNzUGVybWlzc2lvblILcGVybWlzc2lvbnMSPQoMbWVtYmVyX3'
-    'NpbmNlGAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFILbWVtYmVyU2luY2USOQoG'
-    'c3RhdHVzGAUgASgOMiEuYnVzaW5lc3MudjEuQnVzaW5lc3NNZW1iZXJTdGF0dXNSBnN0YXR1cw'
-    '==');
+    'IfCgtidXNpbmVzc19pZBgCIAEoCVIKYnVzaW5lc3NJZBI9CgxtZW1iZXJfc2luY2UYBCABKAsy'
+    'Gi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUgttZW1iZXJTaW5jZRI5CgZzdGF0dXMYBSABKA'
+    '4yIS5idXNpbmVzcy52MS5CdXNpbmVzc01lbWJlclN0YXR1c1IGc3RhdHVz');
 
 @$core.Deprecated('Use createBusinessRequestDescriptor instead')
 const CreateBusinessRequest$json = {
@@ -467,14 +456,6 @@ const CreateUserToBusinessRequest$json = {
     {'1': 'email', '3': 5, '4': 1, '5': 9, '10': 'email'},
     {'1': 'password', '3': 6, '4': 1, '5': 9, '10': 'password'},
     {'1': 'business_id', '3': 7, '4': 1, '5': 9, '10': 'businessId'},
-    {
-      '1': 'permissions',
-      '3': 8,
-      '4': 3,
-      '5': 11,
-      '6': '.identity.v1.BusinessPermission',
-      '10': 'permissions'
-    },
   ],
 };
 
@@ -484,8 +465,7 @@ final $typed_data.Uint8List createUserToBusinessRequestDescriptor = $convert.bas
     'ROYW1lEhsKCWxhc3RfbmFtZRgCIAEoCVIIbGFzdE5hbWUSGwoJdXNlcl9uYW1lGAMgASgJUgh1'
     'c2VyTmFtZRIhCgxwaG9uZV9udW1iZXIYBCABKAlSC3Bob25lTnVtYmVyEhQKBWVtYWlsGAUgAS'
     'gJUgVlbWFpbBIaCghwYXNzd29yZBgGIAEoCVIIcGFzc3dvcmQSHwoLYnVzaW5lc3NfaWQYByAB'
-    'KAlSCmJ1c2luZXNzSWQSQQoLcGVybWlzc2lvbnMYCCADKAsyHy5pZGVudGl0eS52MS5CdXNpbm'
-    'Vzc1Blcm1pc3Npb25SC3Blcm1pc3Npb25z');
+    'KAlSCmJ1c2luZXNzSWQ=');
 
 @$core.Deprecated('Use createUserToBusinessResponseDescriptor instead')
 const CreateUserToBusinessResponse$json = {
@@ -514,14 +494,6 @@ const AssociateUserToBusinessRequest$json = {
   '2': [
     {'1': 'user_id', '3': 1, '4': 1, '5': 9, '10': 'userId'},
     {'1': 'business_id', '3': 2, '4': 1, '5': 9, '10': 'businessId'},
-    {
-      '1': 'permissions',
-      '3': 3,
-      '4': 3,
-      '5': 11,
-      '6': '.identity.v1.BusinessPermission',
-      '10': 'permissions'
-    },
   ],
 };
 
@@ -529,8 +501,7 @@ const AssociateUserToBusinessRequest$json = {
 final $typed_data.Uint8List associateUserToBusinessRequestDescriptor =
     $convert.base64Decode(
         'Ch5Bc3NvY2lhdGVVc2VyVG9CdXNpbmVzc1JlcXVlc3QSFwoHdXNlcl9pZBgBIAEoCVIGdXNlck'
-        'lkEh8KC2J1c2luZXNzX2lkGAIgASgJUgpidXNpbmVzc0lkEkEKC3Blcm1pc3Npb25zGAMgAygL'
-        'Mh8uaWRlbnRpdHkudjEuQnVzaW5lc3NQZXJtaXNzaW9uUgtwZXJtaXNzaW9ucw==');
+        'lkEh8KC2J1c2luZXNzX2lkGAIgASgJUgpidXNpbmVzc0lk');
 
 @$core.Deprecated('Use associateUserToBusinessResponseDescriptor instead')
 const AssociateUserToBusinessResponse$json = {
@@ -624,32 +595,14 @@ const UpdateBusinessMemberRequest$json = {
   '2': [
     {'1': 'user_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'userId'},
     {'1': 'business_id', '3': 2, '4': 1, '5': 9, '8': {}, '10': 'businessId'},
-    {
-      '1': 'add_permissions',
-      '3': 5,
-      '4': 3,
-      '5': 11,
-      '6': '.identity.v1.BusinessPermission',
-      '10': 'addPermissions'
-    },
-    {
-      '1': 'remove_permissions',
-      '3': 6,
-      '4': 3,
-      '5': 11,
-      '6': '.identity.v1.BusinessPermission',
-      '10': 'removePermissions'
-    },
   ],
 };
 
 /// Descriptor for `UpdateBusinessMemberRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List updateBusinessMemberRequestDescriptor = $convert.base64Decode(
-    'ChtVcGRhdGVCdXNpbmVzc01lbWJlclJlcXVlc3QSIwoHdXNlcl9pZBgBIAEoCUIKukgHyAEBcg'
-    'IQA1IGdXNlcklkEisKC2J1c2luZXNzX2lkGAIgASgJQgq6SAfIAQFyAhADUgpidXNpbmVzc0lk'
-    'EkgKD2FkZF9wZXJtaXNzaW9ucxgFIAMoCzIfLmlkZW50aXR5LnYxLkJ1c2luZXNzUGVybWlzc2'
-    'lvblIOYWRkUGVybWlzc2lvbnMSTgoScmVtb3ZlX3Blcm1pc3Npb25zGAYgAygLMh8uaWRlbnRp'
-    'dHkudjEuQnVzaW5lc3NQZXJtaXNzaW9uUhFyZW1vdmVQZXJtaXNzaW9ucw==');
+final $typed_data.Uint8List updateBusinessMemberRequestDescriptor =
+    $convert.base64Decode(
+        'ChtVcGRhdGVCdXNpbmVzc01lbWJlclJlcXVlc3QSIwoHdXNlcl9pZBgBIAEoCUIKukgHyAEBcg'
+        'IQA1IGdXNlcklkEisKC2J1c2luZXNzX2lkGAIgASgJQgq6SAfIAQFyAhADUgpidXNpbmVzc0lk');
 
 @$core.Deprecated('Use updateBusinessMemberResponseDescriptor instead')
 const UpdateBusinessMemberResponse$json = {
@@ -822,7 +775,7 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
     BusinessServiceBase$messageJson = {
   '.business.v1.CreateBusinessRequest': CreateBusinessRequest$json,
   '.business.v1.Business': Business$json,
-  '.link.v1.ResourceLink': $3.ResourceLink$json,
+  '.link.v1.ResourceLink': $2.ResourceLink$json,
   '.business.v1.CreateBusinessResponse': CreateBusinessResponse$json,
   '.business.v1.GetMyBusinessesRequest': GetMyBusinessesRequest$json,
   '.business.v1.GetMyBusinessesResponse': GetMyBusinessesResponse$json,
@@ -835,13 +788,12 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
   '.business.v1.RequestDeleteBusinessResponse':
       RequestDeleteBusinessResponse$json,
   '.business.v1.CreateUserToBusinessRequest': CreateUserToBusinessRequest$json,
-  '.identity.v1.BusinessPermission': $1.BusinessPermission$json,
   '.business.v1.CreateUserToBusinessResponse':
       CreateUserToBusinessResponse$json,
   '.business.v1.BusinessMember': BusinessMember$json,
   '.identity.v1.User': $0.User$json,
   '.identity.v1.ConnectedAccount': $0.ConnectedAccount$json,
-  '.google.protobuf.Timestamp': $2.Timestamp$json,
+  '.google.protobuf.Timestamp': $1.Timestamp$json,
   '.business.v1.AssociateUserToBusinessRequest':
       AssociateUserToBusinessRequest$json,
   '.business.v1.AssociateUserToBusinessResponse':

@@ -399,7 +399,7 @@ type StoreMember struct {
 	// The unique identifier of the store.
 	StoreId string `protobuf:"bytes,2,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
 	// The permissions that the user has.
-	Permissions []*v1.StorePermission `protobuf:"bytes,3,rep,name=permissions,proto3" json:"permissions,omitempty"`
+	Permissions *v1.StorePermissions `protobuf:"bytes,3,opt,name=permissions,proto3" json:"permissions,omitempty"`
 	// The date since when the user became a member.
 	MemberSince *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=member_since,json=memberSince,proto3" json:"member_since,omitempty"`
 	// The status of the user.
@@ -452,7 +452,7 @@ func (x *StoreMember) GetStoreId() string {
 	return ""
 }
 
-func (x *StoreMember) GetPermissions() []*v1.StorePermission {
+func (x *StoreMember) GetPermissions() *v1.StorePermissions {
 	if x != nil {
 		return x.Permissions
 	}
@@ -948,7 +948,7 @@ type AddUserToStoreRequest struct {
 	// The email of the user.
 	Email string `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
 	// The permissions that the user has.
-	Permissions []*v1.StorePermission `protobuf:"bytes,2,rep,name=permissions,proto3" json:"permissions,omitempty"`
+	Permissions *v1.StorePermissions `protobuf:"bytes,2,opt,name=permissions,proto3" json:"permissions,omitempty"`
 	// The store id.
 	StoreId       string `protobuf:"bytes,3,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -992,7 +992,7 @@ func (x *AddUserToStoreRequest) GetEmail() string {
 	return ""
 }
 
-func (x *AddUserToStoreRequest) GetPermissions() []*v1.StorePermission {
+func (x *AddUserToStoreRequest) GetPermissions() *v1.StorePermissions {
 	if x != nil {
 		return x.Permissions
 	}
@@ -1066,12 +1066,10 @@ type UpdateStoreMemberRequest struct {
 	UserId string `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	// The unique identifier of the store.
 	StoreId string `protobuf:"bytes,2,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
-	// The permissions to add (optional).
-	AddPermissions []*v1.StorePermission `protobuf:"bytes,5,rep,name=add_permissions,json=addPermissions,proto3" json:"add_permissions,omitempty"`
-	// The permissions to remove (optional).
-	RemovePermissions []*v1.StorePermission `protobuf:"bytes,6,rep,name=remove_permissions,json=removePermissions,proto3" json:"remove_permissions,omitempty"`
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
+	// The new permissions to add (optional).
+	Permissions   *v1.StorePermissions `protobuf:"bytes,5,opt,name=permissions,proto3" json:"permissions,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *UpdateStoreMemberRequest) Reset() {
@@ -1118,16 +1116,9 @@ func (x *UpdateStoreMemberRequest) GetStoreId() string {
 	return ""
 }
 
-func (x *UpdateStoreMemberRequest) GetAddPermissions() []*v1.StorePermission {
+func (x *UpdateStoreMemberRequest) GetPermissions() *v1.StorePermissions {
 	if x != nil {
-		return x.AddPermissions
-	}
-	return nil
-}
-
-func (x *UpdateStoreMemberRequest) GetRemovePermissions() []*v1.StorePermission {
-	if x != nil {
-		return x.RemovePermissions
+		return x.Permissions
 	}
 	return nil
 }
@@ -1720,11 +1711,11 @@ const file_store_v1_store_proto_rawDesc = "" +
 	"\x04_taxB\r\n" +
 	"\v_postal_boxB\x06\n" +
 	"\x04_nuiB\x13\n" +
-	"\x11_tax_payer_number\"\x83\x02\n" +
+	"\x11_tax_payer_number\"\x84\x02\n" +
 	"\vStoreMember\x12%\n" +
 	"\x04user\x18\x01 \x01(\v2\x11.identity.v1.UserR\x04user\x12\x19\n" +
-	"\bstore_id\x18\x02 \x01(\tR\astoreId\x12>\n" +
-	"\vpermissions\x18\x03 \x03(\v2\x1c.identity.v1.StorePermissionR\vpermissions\x12=\n" +
+	"\bstore_id\x18\x02 \x01(\tR\astoreId\x12?\n" +
+	"\vpermissions\x18\x03 \x01(\v2\x1d.identity.v1.StorePermissionsR\vpermissions\x12=\n" +
 	"\fmember_since\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\vmemberSince\x123\n" +
 	"\x06status\x18\x05 \x01(\x0e2\x1b.store.v1.StoreMemberStatusR\x06status\"y\n" +
 	"\x12CreateStoreRequest\x12%\n" +
@@ -1755,21 +1746,20 @@ const file_store_v1_store_proto_rawDesc = "" +
 	"\x19GetBusinessStoresResponse\x12'\n" +
 	"\x06stores\x18\x01 \x03(\v2\x0f.store.v1.StoreR\x06stores\"/\n" +
 	"\x13DeleteStoreResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess\"\x88\x01\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"\x89\x01\n" +
 	"\x15AddUserToStoreRequest\x12\x14\n" +
-	"\x05email\x18\x01 \x01(\tR\x05email\x12>\n" +
-	"\vpermissions\x18\x02 \x03(\v2\x1c.identity.v1.StorePermissionR\vpermissions\x12\x19\n" +
+	"\x05email\x18\x01 \x01(\tR\x05email\x12?\n" +
+	"\vpermissions\x18\x02 \x01(\v2\x1d.identity.v1.StorePermissionsR\vpermissions\x12\x19\n" +
 	"\bstore_id\x18\x03 \x01(\tR\astoreId\"l\n" +
 	"\x16AddUserToStoreResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x128\n" +
-	"\fstore_member\x18\x02 \x01(\v2\x15.store.v1.StoreMemberR\vstoreMember\"\xfa\x01\n" +
+	"\fstore_member\x18\x02 \x01(\v2\x15.store.v1.StoreMemberR\vstoreMember\"\xa7\x01\n" +
 	"\x18UpdateStoreMemberRequest\x12#\n" +
 	"\auser_id\x18\x01 \x01(\tB\n" +
 	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\x06userId\x12%\n" +
 	"\bstore_id\x18\x02 \x01(\tB\n" +
-	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\astoreId\x12E\n" +
-	"\x0fadd_permissions\x18\x05 \x03(\v2\x1c.identity.v1.StorePermissionR\x0eaddPermissions\x12K\n" +
-	"\x12remove_permissions\x18\x06 \x03(\v2\x1c.identity.v1.StorePermissionR\x11removePermissions\"o\n" +
+	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\astoreId\x12?\n" +
+	"\vpermissions\x18\x05 \x01(\v2\x1d.identity.v1.StorePermissionsR\vpermissions\"o\n" +
 	"\x19UpdateStoreMemberResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x128\n" +
 	"\fstore_member\x18\x02 \x01(\v2\x15.store.v1.StoreMemberR\vstoreMember\"B\n" +
@@ -1877,7 +1867,7 @@ var file_store_v1_store_proto_goTypes = []any{
 	(*RemoveUserFromStoreResponse)(nil),  // 28: store.v1.RemoveUserFromStoreResponse
 	(*timestamppb.Timestamp)(nil),        // 29: google.protobuf.Timestamp
 	(*v1.User)(nil),                      // 30: identity.v1.User
-	(*v1.StorePermission)(nil),           // 31: identity.v1.StorePermission
+	(*v1.StorePermissions)(nil),          // 31: identity.v1.StorePermissions
 }
 var file_store_v1_store_proto_depIdxs = []int32{
 	29, // 0: store.v1.Store.created_at:type_name -> google.protobuf.Timestamp
@@ -1885,7 +1875,7 @@ var file_store_v1_store_proto_depIdxs = []int32{
 	2,  // 2: store.v1.Store.address:type_name -> store.v1.Address
 	0,  // 3: store.v1.Store.costing_method:type_name -> store.v1.StoreCostingMethod
 	30, // 4: store.v1.StoreMember.user:type_name -> identity.v1.User
-	31, // 5: store.v1.StoreMember.permissions:type_name -> identity.v1.StorePermission
+	31, // 5: store.v1.StoreMember.permissions:type_name -> identity.v1.StorePermissions
 	29, // 6: store.v1.StoreMember.member_since:type_name -> google.protobuf.Timestamp
 	1,  // 7: store.v1.StoreMember.status:type_name -> store.v1.StoreMemberStatus
 	3,  // 8: store.v1.CreateStoreRequest.store:type_name -> store.v1.Store
@@ -1893,44 +1883,43 @@ var file_store_v1_store_proto_depIdxs = []int32{
 	3,  // 10: store.v1.UpdateStoreRequest.store:type_name -> store.v1.Store
 	3,  // 11: store.v1.UpdateStoreResponse.store:type_name -> store.v1.Store
 	3,  // 12: store.v1.GetBusinessStoresResponse.stores:type_name -> store.v1.Store
-	31, // 13: store.v1.AddUserToStoreRequest.permissions:type_name -> identity.v1.StorePermission
+	31, // 13: store.v1.AddUserToStoreRequest.permissions:type_name -> identity.v1.StorePermissions
 	4,  // 14: store.v1.AddUserToStoreResponse.store_member:type_name -> store.v1.StoreMember
-	31, // 15: store.v1.UpdateStoreMemberRequest.add_permissions:type_name -> identity.v1.StorePermission
-	31, // 16: store.v1.UpdateStoreMemberRequest.remove_permissions:type_name -> identity.v1.StorePermission
-	4,  // 17: store.v1.UpdateStoreMemberResponse.store_member:type_name -> store.v1.StoreMember
-	4,  // 18: store.v1.StreamStoreMembersResponse.store_members:type_name -> store.v1.StoreMember
-	1,  // 19: store.v1.SetStoreMemberStatusRequest.status:type_name -> store.v1.StoreMemberStatus
-	4,  // 20: store.v1.GetStoreMembersResponse.store_members:type_name -> store.v1.StoreMember
-	4,  // 21: store.v1.GetStoreMemberResponse.store_member:type_name -> store.v1.StoreMember
-	5,  // 22: store.v1.StoreService.CreateStore:input_type -> store.v1.CreateStoreRequest
-	7,  // 23: store.v1.StoreService.GetStore:input_type -> store.v1.GetStoreRequest
-	9,  // 24: store.v1.StoreService.UpdateStore:input_type -> store.v1.UpdateStoreRequest
-	11, // 25: store.v1.StoreService.DeleteStore:input_type -> store.v1.DeleteStoreRequest
-	12, // 26: store.v1.StoreService.GetBusinessStores:input_type -> store.v1.GetBusinessStoresRequest
-	15, // 27: store.v1.StoreService.AddUserToStore:input_type -> store.v1.AddUserToStoreRequest
-	17, // 28: store.v1.StoreService.UpdateStoreMember:input_type -> store.v1.UpdateStoreMemberRequest
-	19, // 29: store.v1.StoreService.StreamStoreMembers:input_type -> store.v1.StreamStoreMembersRequest
-	23, // 30: store.v1.StoreService.GetStoreMembers:input_type -> store.v1.GetStoreMembersRequest
-	25, // 31: store.v1.StoreService.GetStoreMember:input_type -> store.v1.GetStoreMemberRequest
-	21, // 32: store.v1.StoreService.SetStoreMemberStatus:input_type -> store.v1.SetStoreMemberStatusRequest
-	27, // 33: store.v1.StoreService.RemoveUserFromStore:input_type -> store.v1.RemoveUserFromStoreRequest
-	6,  // 34: store.v1.StoreService.CreateStore:output_type -> store.v1.CreateStoreResponse
-	8,  // 35: store.v1.StoreService.GetStore:output_type -> store.v1.GetStoreResponse
-	10, // 36: store.v1.StoreService.UpdateStore:output_type -> store.v1.UpdateStoreResponse
-	14, // 37: store.v1.StoreService.DeleteStore:output_type -> store.v1.DeleteStoreResponse
-	13, // 38: store.v1.StoreService.GetBusinessStores:output_type -> store.v1.GetBusinessStoresResponse
-	16, // 39: store.v1.StoreService.AddUserToStore:output_type -> store.v1.AddUserToStoreResponse
-	18, // 40: store.v1.StoreService.UpdateStoreMember:output_type -> store.v1.UpdateStoreMemberResponse
-	20, // 41: store.v1.StoreService.StreamStoreMembers:output_type -> store.v1.StreamStoreMembersResponse
-	24, // 42: store.v1.StoreService.GetStoreMembers:output_type -> store.v1.GetStoreMembersResponse
-	26, // 43: store.v1.StoreService.GetStoreMember:output_type -> store.v1.GetStoreMemberResponse
-	22, // 44: store.v1.StoreService.SetStoreMemberStatus:output_type -> store.v1.SetStoreMemberStatusResponse
-	28, // 45: store.v1.StoreService.RemoveUserFromStore:output_type -> store.v1.RemoveUserFromStoreResponse
-	34, // [34:46] is the sub-list for method output_type
-	22, // [22:34] is the sub-list for method input_type
-	22, // [22:22] is the sub-list for extension type_name
-	22, // [22:22] is the sub-list for extension extendee
-	0,  // [0:22] is the sub-list for field type_name
+	31, // 15: store.v1.UpdateStoreMemberRequest.permissions:type_name -> identity.v1.StorePermissions
+	4,  // 16: store.v1.UpdateStoreMemberResponse.store_member:type_name -> store.v1.StoreMember
+	4,  // 17: store.v1.StreamStoreMembersResponse.store_members:type_name -> store.v1.StoreMember
+	1,  // 18: store.v1.SetStoreMemberStatusRequest.status:type_name -> store.v1.StoreMemberStatus
+	4,  // 19: store.v1.GetStoreMembersResponse.store_members:type_name -> store.v1.StoreMember
+	4,  // 20: store.v1.GetStoreMemberResponse.store_member:type_name -> store.v1.StoreMember
+	5,  // 21: store.v1.StoreService.CreateStore:input_type -> store.v1.CreateStoreRequest
+	7,  // 22: store.v1.StoreService.GetStore:input_type -> store.v1.GetStoreRequest
+	9,  // 23: store.v1.StoreService.UpdateStore:input_type -> store.v1.UpdateStoreRequest
+	11, // 24: store.v1.StoreService.DeleteStore:input_type -> store.v1.DeleteStoreRequest
+	12, // 25: store.v1.StoreService.GetBusinessStores:input_type -> store.v1.GetBusinessStoresRequest
+	15, // 26: store.v1.StoreService.AddUserToStore:input_type -> store.v1.AddUserToStoreRequest
+	17, // 27: store.v1.StoreService.UpdateStoreMember:input_type -> store.v1.UpdateStoreMemberRequest
+	19, // 28: store.v1.StoreService.StreamStoreMembers:input_type -> store.v1.StreamStoreMembersRequest
+	23, // 29: store.v1.StoreService.GetStoreMembers:input_type -> store.v1.GetStoreMembersRequest
+	25, // 30: store.v1.StoreService.GetStoreMember:input_type -> store.v1.GetStoreMemberRequest
+	21, // 31: store.v1.StoreService.SetStoreMemberStatus:input_type -> store.v1.SetStoreMemberStatusRequest
+	27, // 32: store.v1.StoreService.RemoveUserFromStore:input_type -> store.v1.RemoveUserFromStoreRequest
+	6,  // 33: store.v1.StoreService.CreateStore:output_type -> store.v1.CreateStoreResponse
+	8,  // 34: store.v1.StoreService.GetStore:output_type -> store.v1.GetStoreResponse
+	10, // 35: store.v1.StoreService.UpdateStore:output_type -> store.v1.UpdateStoreResponse
+	14, // 36: store.v1.StoreService.DeleteStore:output_type -> store.v1.DeleteStoreResponse
+	13, // 37: store.v1.StoreService.GetBusinessStores:output_type -> store.v1.GetBusinessStoresResponse
+	16, // 38: store.v1.StoreService.AddUserToStore:output_type -> store.v1.AddUserToStoreResponse
+	18, // 39: store.v1.StoreService.UpdateStoreMember:output_type -> store.v1.UpdateStoreMemberResponse
+	20, // 40: store.v1.StoreService.StreamStoreMembers:output_type -> store.v1.StreamStoreMembersResponse
+	24, // 41: store.v1.StoreService.GetStoreMembers:output_type -> store.v1.GetStoreMembersResponse
+	26, // 42: store.v1.StoreService.GetStoreMember:output_type -> store.v1.GetStoreMemberResponse
+	22, // 43: store.v1.StoreService.SetStoreMemberStatus:output_type -> store.v1.SetStoreMemberStatusResponse
+	28, // 44: store.v1.StoreService.RemoveUserFromStore:output_type -> store.v1.RemoveUserFromStoreResponse
+	33, // [33:45] is the sub-list for method output_type
+	21, // [21:33] is the sub-list for method input_type
+	21, // [21:21] is the sub-list for extension type_name
+	21, // [21:21] is the sub-list for extension extendee
+	0,  // [0:21] is the sub-list for field type_name
 }
 
 func init() { file_store_v1_store_proto_init() }

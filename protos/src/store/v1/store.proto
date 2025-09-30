@@ -95,7 +95,7 @@ message StoreMember {
   string store_id = 2;
 
   // The permissions that the user has.
-  repeated identity.v1.StorePermission permissions = 3;
+  identity.v1.StorePermissions permissions = 3;
 
   // The date since when the user became a member.
   google.protobuf.Timestamp member_since = 4;
@@ -178,7 +178,7 @@ message AddUserToStoreRequest {
   string email = 1;
 
   // The permissions that the user has.
-  repeated identity.v1.StorePermission permissions = 2;
+  identity.v1.StorePermissions permissions = 2;
 
   // The store id.
   string store_id = 3;
@@ -205,11 +205,8 @@ message UpdateStoreMemberRequest {
     (buf.validate.field).string.min_len = 3
   ];
 
-  // The permissions to add (optional).
-  repeated identity.v1.StorePermission add_permissions = 5;
-
-  // The permissions to remove (optional).
-  repeated identity.v1.StorePermission remove_permissions = 6;
+  // The new permissions to add (optional).
+  identity.v1.StorePermissions permissions = 5;
 }
 
 message UpdateStoreMemberResponse {

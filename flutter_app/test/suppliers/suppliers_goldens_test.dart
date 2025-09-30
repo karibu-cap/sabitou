@@ -213,24 +213,31 @@ final userFakeTransport = FakeTransportBuilder()
         ..storeId = req.storeId
         ..memberSince = Timestamp.fromDateTime(DateTime(2023, 3, 15))
         ..status = StoreMemberStatus.STORE_MEMBER_STATUS_ACTIVE
-        ..permissions.addAll([
-          StorePermission(
-            resourceType: StoreResourceType.STORE_RESOURCE_TYPE_INVOICE,
-            actionType: ResourceActionType.RESOURCE_ACTION_TYPE_REMOVE,
-          ),
-          StorePermission(
-            resourceType: StoreResourceType.STORE_RESOURCE_TYPE_PRODUCT,
-            actionType: ResourceActionType.RESOURCE_ACTION_TYPE_REMOVE,
-          ),
-          StorePermission(
-            resourceType: StoreResourceType.STORE_RESOURCE_TYPE_ORDER,
-            actionType: ResourceActionType.RESOURCE_ACTION_TYPE_REMOVE,
-          ),
-          StorePermission(
-            resourceType: StoreResourceType.STORE_RESOURCE_TYPE_PRODUCT,
-            actionType: ResourceActionType.RESOURCE_ACTION_TYPE_UPDATE,
-          ),
-        ]),
+        ..permissions = StorePermissions()
+        ..permissions.member = StoreMemberPermission()
+        ..permissions.member.deleteMember = true
+        ..permissions.member.updateMember = true
+        ..permissions.member.readInformation = true
+        ..permissions.member.inviteMember = true
+        ..permissions.product = StoreProductPermission()
+        ..permissions.product.createProductInInventory = true
+        ..permissions.product.updateProductInInventory = true
+        ..permissions.product.deleteProductInInventory = true
+        ..permissions.product.readProductInInventory = true
+        ..permissions.invoice = StoreInvoicePermission()
+        ..permissions.invoice.readInvoice = true
+        ..permissions.invoice.createInvoice = true
+        ..permissions.transaction = StoreTransactionPermission()
+        ..permissions.transaction.readTransaction = true
+        ..permissions.transaction.createTransaction = true
+        ..permissions.transaction.updateTransaction = true
+        ..permissions.supplier = StoreSupplierPermission()
+        ..permissions.supplier.readSupplier = true
+        ..permissions.supplier.createSupplier = true
+        ..permissions.supplier.updateSupplier = true
+        ..permissions.supplier.deleteSupplier = true
+        ..permissions.report = StoreReportPermission()
+        ..permissions.report.readReport = true,
       StoreMember()
         ..user = User()
         ..user.refId = 'user_2'
@@ -243,24 +250,31 @@ final userFakeTransport = FakeTransportBuilder()
         ..storeId = req.storeId
         ..memberSince = Timestamp.fromDateTime(DateTime(2023, 5, 20))
         ..status = StoreMemberStatus.STORE_MEMBER_STATUS_PENDING
-        ..permissions.addAll([
-          StorePermission(
-            resourceType: StoreResourceType.STORE_RESOURCE_TYPE_INVOICE,
-            actionType: ResourceActionType.RESOURCE_ACTION_TYPE_UPDATE,
-          ),
-          StorePermission(
-            resourceType: StoreResourceType.STORE_RESOURCE_TYPE_PRODUCT,
-            actionType: ResourceActionType.RESOURCE_ACTION_TYPE_ADD,
-          ),
-          StorePermission(
-            resourceType: StoreResourceType.STORE_RESOURCE_TYPE_ORDER,
-            actionType: ResourceActionType.RESOURCE_ACTION_TYPE_UPDATE,
-          ),
-          StorePermission(
-            resourceType: StoreResourceType.STORE_RESOURCE_TYPE_ORDER,
-            actionType: ResourceActionType.RESOURCE_ACTION_TYPE_ADD,
-          ),
-        ]),
+        ..permissions = StorePermissions()
+        ..permissions.member = StoreMemberPermission()
+        ..permissions.member.deleteMember = true
+        ..permissions.member.updateMember = true
+        ..permissions.member.readInformation = true
+        ..permissions.member.inviteMember = true
+        ..permissions.product = StoreProductPermission()
+        ..permissions.product.createProductInInventory = true
+        ..permissions.product.updateProductInInventory = true
+        ..permissions.product.deleteProductInInventory = true
+        ..permissions.product.readProductInInventory = true
+        ..permissions.invoice = StoreInvoicePermission()
+        ..permissions.invoice.readInvoice = true
+        ..permissions.invoice.createInvoice = true
+        ..permissions.transaction = StoreTransactionPermission()
+        ..permissions.transaction.readTransaction = true
+        ..permissions.transaction.createTransaction = true
+        ..permissions.transaction.updateTransaction = true
+        ..permissions.supplier = StoreSupplierPermission()
+        ..permissions.supplier.readSupplier = true
+        ..permissions.supplier.createSupplier = true
+        ..permissions.supplier.updateSupplier = true
+        ..permissions.supplier.deleteSupplier = true
+        ..permissions.report = StoreReportPermission()
+        ..permissions.report.readReport = true,
       StoreMember()
         ..user = User()
         ..user.refId = 'user_3'
@@ -273,16 +287,31 @@ final userFakeTransport = FakeTransportBuilder()
         ..storeId = req.storeId
         ..memberSince = Timestamp.fromDateTime(DateTime(2023, 8, 10))
         ..status = StoreMemberStatus.STORE_MEMBER_STATUS_BANNED
-        ..permissions.addAll([
-          StorePermission(
-            resourceType: StoreResourceType.STORE_RESOURCE_TYPE_INVOICE,
-            actionType: ResourceActionType.RESOURCE_ACTION_TYPE_READ,
-          ),
-          StorePermission(
-            resourceType: StoreResourceType.STORE_RESOURCE_TYPE_STORE,
-            actionType: ResourceActionType.RESOURCE_ACTION_TYPE_READ,
-          ),
-        ]),
+        ..permissions = StorePermissions()
+        ..permissions.member = StoreMemberPermission()
+        ..permissions.member.deleteMember = true
+        ..permissions.member.updateMember = true
+        ..permissions.member.readInformation = true
+        ..permissions.member.inviteMember = true
+        ..permissions.product = StoreProductPermission()
+        ..permissions.product.createProductInInventory = true
+        ..permissions.product.updateProductInInventory = true
+        ..permissions.product.deleteProductInInventory = true
+        ..permissions.product.readProductInInventory = true
+        ..permissions.invoice = StoreInvoicePermission()
+        ..permissions.invoice.readInvoice = true
+        ..permissions.invoice.createInvoice = true
+        ..permissions.transaction = StoreTransactionPermission()
+        ..permissions.transaction.readTransaction = true
+        ..permissions.transaction.createTransaction = true
+        ..permissions.transaction.updateTransaction = true
+        ..permissions.supplier = StoreSupplierPermission()
+        ..permissions.supplier.readSupplier = true
+        ..permissions.supplier.createSupplier = true
+        ..permissions.supplier.updateSupplier = true
+        ..permissions.supplier.deleteSupplier = true
+        ..permissions.report = StoreReportPermission()
+        ..permissions.report.readReport = true,
       StoreMember()
         ..user = User()
         ..user.refId = 'user_4'
@@ -295,12 +324,31 @@ final userFakeTransport = FakeTransportBuilder()
         ..storeId = req.storeId
         ..memberSince = Timestamp.fromDateTime(DateTime(2023, 10, 5))
         ..status = StoreMemberStatus.STORE_MEMBER_STATUS_BANNED
-        ..permissions.addAll([
-          StorePermission(
-            resourceType: StoreResourceType.STORE_RESOURCE_TYPE_INVOICE,
-            actionType: ResourceActionType.RESOURCE_ACTION_TYPE_READ,
-          ),
-        ]),
+        ..permissions = StorePermissions()
+        ..permissions.member = StoreMemberPermission()
+        ..permissions.member.deleteMember = true
+        ..permissions.member.updateMember = true
+        ..permissions.member.readInformation = true
+        ..permissions.member.inviteMember = true
+        ..permissions.product = StoreProductPermission()
+        ..permissions.product.createProductInInventory = true
+        ..permissions.product.updateProductInInventory = true
+        ..permissions.product.deleteProductInInventory = true
+        ..permissions.product.readProductInInventory = true
+        ..permissions.invoice = StoreInvoicePermission()
+        ..permissions.invoice.readInvoice = true
+        ..permissions.invoice.createInvoice = true
+        ..permissions.transaction = StoreTransactionPermission()
+        ..permissions.transaction.readTransaction = true
+        ..permissions.transaction.createTransaction = true
+        ..permissions.transaction.updateTransaction = true
+        ..permissions.supplier = StoreSupplierPermission()
+        ..permissions.supplier.readSupplier = true
+        ..permissions.supplier.createSupplier = true
+        ..permissions.supplier.updateSupplier = true
+        ..permissions.supplier.deleteSupplier = true
+        ..permissions.report = StoreReportPermission()
+        ..permissions.report.readReport = true,
     ];
 
     yield StreamStoreMembersResponse()..storeMembers.addAll(storeMembers);

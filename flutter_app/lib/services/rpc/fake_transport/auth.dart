@@ -19,25 +19,7 @@ final authFakeTransport = FakeTransportBuilder()
           DateTime(2023, 3, 15),
         )
         ..businessMember.status =
-            BusinessMemberStatus.BUSINESS_MEMBER_STATUS_ACTIVE
-        ..businessMember.permissions.addAll([
-          BusinessPermission(
-            resourceType: BusinessResourceType.BUSINESS_RESOURCE_TYPE_BUSINESS,
-            actionType: ResourceActionType.RESOURCE_ACTION_TYPE_REMOVE,
-          ),
-          BusinessPermission(
-            resourceType: BusinessResourceType.BUSINESS_RESOURCE_TYPE_MEMBER,
-            actionType: ResourceActionType.RESOURCE_ACTION_TYPE_REMOVE,
-          ),
-          BusinessPermission(
-            resourceType: BusinessResourceType.BUSINESS_RESOURCE_TYPE_SUPPLIER,
-            actionType: ResourceActionType.RESOURCE_ACTION_TYPE_REMOVE,
-          ),
-          BusinessPermission(
-            resourceType: BusinessResourceType.BUSINESS_RESOURCE_TYPE_BUSINESS,
-            actionType: ResourceActionType.RESOURCE_ACTION_TYPE_UPDATE,
-          ),
-        ]);
+            BusinessMemberStatus.BUSINESS_MEMBER_STATUS_ACTIVE;
     })
     .unary(AuthService.register, (req, _) async {
       return RegisterResponse()
@@ -103,23 +85,30 @@ final authFakeTransport = FakeTransportBuilder()
           DateTime(2023, 3, 15),
         )
         ..storeMember.status = StoreMemberStatus.STORE_MEMBER_STATUS_ACTIVE
-        ..storeMember.permissions.addAll([
-          StorePermission(
-            resourceType: StoreResourceType.STORE_RESOURCE_TYPE_INVOICE,
-            actionType: ResourceActionType.RESOURCE_ACTION_TYPE_REMOVE,
-          ),
-          StorePermission(
-            resourceType: StoreResourceType.STORE_RESOURCE_TYPE_PRODUCT,
-            actionType: ResourceActionType.RESOURCE_ACTION_TYPE_REMOVE,
-          ),
-          StorePermission(
-            resourceType: StoreResourceType.STORE_RESOURCE_TYPE_ORDER,
-            actionType: ResourceActionType.RESOURCE_ACTION_TYPE_REMOVE,
-          ),
-          StorePermission(
-            resourceType: StoreResourceType.STORE_RESOURCE_TYPE_PRODUCT,
-            actionType: ResourceActionType.RESOURCE_ACTION_TYPE_UPDATE,
-          ),
-        ]);
+        ..storeMember.permissions = StorePermissions()
+        ..storeMember.permissions.member = StoreMemberPermission()
+        ..storeMember.permissions.member.deleteMember = true
+        ..storeMember.permissions.member.updateMember = true
+        ..storeMember.permissions.member.readInformation = true
+        ..storeMember.permissions.member.inviteMember = true
+        ..storeMember.permissions.product = StoreProductPermission()
+        ..storeMember.permissions.product.createProductInInventory = true
+        ..storeMember.permissions.product.updateProductInInventory = true
+        ..storeMember.permissions.product.deleteProductInInventory = true
+        ..storeMember.permissions.product.readProductInInventory = true
+        ..storeMember.permissions.invoice = StoreInvoicePermission()
+        ..storeMember.permissions.invoice.readInvoice = true
+        ..storeMember.permissions.invoice.createInvoice = true
+        ..storeMember.permissions.transaction = StoreTransactionPermission()
+        ..storeMember.permissions.transaction.readTransaction = true
+        ..storeMember.permissions.transaction.createTransaction = true
+        ..storeMember.permissions.transaction.updateTransaction = true
+        ..storeMember.permissions.supplier = StoreSupplierPermission()
+        ..storeMember.permissions.supplier.readSupplier = true
+        ..storeMember.permissions.supplier.createSupplier = true
+        ..storeMember.permissions.supplier.updateSupplier = true
+        ..storeMember.permissions.supplier.deleteSupplier = true
+        ..storeMember.permissions.report = StoreReportPermission()
+        ..storeMember.permissions.report.readReport = true;
     })
     .build();

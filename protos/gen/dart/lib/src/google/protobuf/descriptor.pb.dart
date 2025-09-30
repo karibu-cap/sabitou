@@ -92,7 +92,6 @@ class FileDescriptorProto extends $pb.GeneratedMessage {
     $core.Iterable<$core.int>? weakDependency,
     $core.String? syntax,
     Edition? edition,
-    $core.Iterable<$core.String>? optionDependency,
   }) {
     final result = create();
     if (name != null) result.name = name;
@@ -109,8 +108,6 @@ class FileDescriptorProto extends $pb.GeneratedMessage {
     if (weakDependency != null) result.weakDependency.addAll(weakDependency);
     if (syntax != null) result.syntax = syntax;
     if (edition != null) result.edition = edition;
-    if (optionDependency != null)
-      result.optionDependency.addAll(optionDependency);
     return result;
   }
 
@@ -155,8 +152,7 @@ class FileDescriptorProto extends $pb.GeneratedMessage {
     ..e<Edition>(14, _omitFieldNames ? '' : 'edition', $pb.PbFieldType.OE,
         defaultOrMaker: Edition.EDITION_UNKNOWN,
         valueOf: Edition.valueOf,
-        enumValues: Edition.values)
-    ..pPS(15, _omitFieldNames ? '' : 'optionDependency');
+        enumValues: Edition.values);
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   FileDescriptorProto clone() => FileDescriptorProto()..mergeFromMessage(this);
@@ -253,9 +249,6 @@ class FileDescriptorProto extends $pb.GeneratedMessage {
   /// The supported values are "proto2", "proto3", and "editions".
   ///
   /// If `edition` is present, this value must be "editions".
-  /// WARNING: This field should only be used by protobuf plugins or special
-  /// cases like the proto compiler. Other uses are discouraged and
-  /// developers should rely on the protoreflect APIs for their client language.
   @$pb.TagNumber(12)
   $core.String get syntax => $_getSZ(11);
   @$pb.TagNumber(12)
@@ -266,9 +259,6 @@ class FileDescriptorProto extends $pb.GeneratedMessage {
   void clearSyntax() => $_clearField(12);
 
   /// The edition of the proto file.
-  /// WARNING: This field should only be used by protobuf plugins or special
-  /// cases like the proto compiler. Other uses are discouraged and
-  /// developers should rely on the protoreflect APIs for their client language.
   @$pb.TagNumber(14)
   Edition get edition => $_getN(12);
   @$pb.TagNumber(14)
@@ -277,11 +267,6 @@ class FileDescriptorProto extends $pb.GeneratedMessage {
   $core.bool hasEdition() => $_has(12);
   @$pb.TagNumber(14)
   void clearEdition() => $_clearField(14);
-
-  /// Names of files imported by this file purely for the purpose of providing
-  /// option extensions. These are excluded from the dependency list above.
-  @$pb.TagNumber(15)
-  $pb.PbList<$core.String> get optionDependency => $_getList(13);
 }
 
 class DescriptorProto_ExtensionRange extends $pb.GeneratedMessage {
@@ -460,7 +445,6 @@ class DescriptorProto extends $pb.GeneratedMessage {
     $core.Iterable<OneofDescriptorProto>? oneofDecl,
     $core.Iterable<DescriptorProto_ReservedRange>? reservedRange,
     $core.Iterable<$core.String>? reservedName,
-    SymbolVisibility? visibility,
   }) {
     final result = create();
     if (name != null) result.name = name;
@@ -473,7 +457,6 @@ class DescriptorProto extends $pb.GeneratedMessage {
     if (oneofDecl != null) result.oneofDecl.addAll(oneofDecl);
     if (reservedRange != null) result.reservedRange.addAll(reservedRange);
     if (reservedName != null) result.reservedName.addAll(reservedName);
-    if (visibility != null) result.visibility = visibility;
     return result;
   }
 
@@ -515,12 +498,7 @@ class DescriptorProto extends $pb.GeneratedMessage {
     ..pc<DescriptorProto_ReservedRange>(
         9, _omitFieldNames ? '' : 'reservedRange', $pb.PbFieldType.PM,
         subBuilder: DescriptorProto_ReservedRange.create)
-    ..pPS(10, _omitFieldNames ? '' : 'reservedName')
-    ..e<SymbolVisibility>(
-        11, _omitFieldNames ? '' : 'visibility', $pb.PbFieldType.OE,
-        defaultOrMaker: SymbolVisibility.VISIBILITY_UNSET,
-        valueOf: SymbolVisibility.valueOf,
-        enumValues: SymbolVisibility.values);
+    ..pPS(10, _omitFieldNames ? '' : 'reservedName');
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   DescriptorProto clone() => DescriptorProto()..mergeFromMessage(this);
@@ -588,16 +566,6 @@ class DescriptorProto extends $pb.GeneratedMessage {
   /// A given name may only be reserved once.
   @$pb.TagNumber(10)
   $pb.PbList<$core.String> get reservedName => $_getList(9);
-
-  /// Support for `export` and `local` keywords on enums.
-  @$pb.TagNumber(11)
-  SymbolVisibility get visibility => $_getN(10);
-  @$pb.TagNumber(11)
-  set visibility(SymbolVisibility value) => $_setField(11, value);
-  @$pb.TagNumber(11)
-  $core.bool hasVisibility() => $_has(10);
-  @$pb.TagNumber(11)
-  void clearVisibility() => $_clearField(11);
 }
 
 class ExtensionRangeOptions_Declaration extends $pb.GeneratedMessage {
@@ -1217,7 +1185,6 @@ class EnumDescriptorProto extends $pb.GeneratedMessage {
     EnumOptions? options,
     $core.Iterable<EnumDescriptorProto_EnumReservedRange>? reservedRange,
     $core.Iterable<$core.String>? reservedName,
-    SymbolVisibility? visibility,
   }) {
     final result = create();
     if (name != null) result.name = name;
@@ -1225,7 +1192,6 @@ class EnumDescriptorProto extends $pb.GeneratedMessage {
     if (options != null) result.options = options;
     if (reservedRange != null) result.reservedRange.addAll(reservedRange);
     if (reservedName != null) result.reservedName.addAll(reservedName);
-    if (visibility != null) result.visibility = visibility;
     return result;
   }
 
@@ -1252,12 +1218,7 @@ class EnumDescriptorProto extends $pb.GeneratedMessage {
     ..pc<EnumDescriptorProto_EnumReservedRange>(
         4, _omitFieldNames ? '' : 'reservedRange', $pb.PbFieldType.PM,
         subBuilder: EnumDescriptorProto_EnumReservedRange.create)
-    ..pPS(5, _omitFieldNames ? '' : 'reservedName')
-    ..e<SymbolVisibility>(
-        6, _omitFieldNames ? '' : 'visibility', $pb.PbFieldType.OE,
-        defaultOrMaker: SymbolVisibility.VISIBILITY_UNSET,
-        valueOf: SymbolVisibility.valueOf,
-        enumValues: SymbolVisibility.values);
+    ..pPS(5, _omitFieldNames ? '' : 'reservedName');
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   EnumDescriptorProto clone() => EnumDescriptorProto()..mergeFromMessage(this);
@@ -1314,16 +1275,6 @@ class EnumDescriptorProto extends $pb.GeneratedMessage {
   /// be reserved once.
   @$pb.TagNumber(5)
   $pb.PbList<$core.String> get reservedName => $_getList(4);
-
-  /// Support for `export` and `local` keywords on enums.
-  @$pb.TagNumber(6)
-  SymbolVisibility get visibility => $_getN(5);
-  @$pb.TagNumber(6)
-  set visibility(SymbolVisibility value) => $_setField(6, value);
-  @$pb.TagNumber(6)
-  $core.bool hasVisibility() => $_has(5);
-  @$pb.TagNumber(6)
-  void clearVisibility() => $_clearField(6);
 }
 
 /// Describes a value within an enum.
@@ -1983,9 +1934,6 @@ class FileOptions extends $pb.GeneratedMessage {
   void clearRubyPackage() => $_clearField(45);
 
   /// Any features defined in the specific edition.
-  /// WARNING: This field should only be used by protobuf plugins or special
-  /// cases like the proto compiler. Other uses are discouraged and
-  /// developers should rely on the protoreflect APIs for their client language.
   @$pb.TagNumber(50)
   FeatureSet get features => $_getN(19);
   @$pb.TagNumber(50)
@@ -2184,9 +2132,6 @@ class MessageOptions extends $pb.GeneratedMessage {
   void clearDeprecatedLegacyJsonFieldConflicts() => $_clearField(11);
 
   /// Any features defined in the specific edition.
-  /// WARNING: This field should only be used by protobuf plugins or special
-  /// cases like the proto compiler. Other uses are discouraged and
-  /// developers should rely on the protoreflect APIs for their client language.
   @$pb.TagNumber(12)
   FeatureSet get features => $_getN(5);
   @$pb.TagNumber(12)
@@ -2654,9 +2599,6 @@ class FieldOptions extends $pb.GeneratedMessage {
   $pb.PbList<FieldOptions_EditionDefault> get editionDefaults => $_getList(10);
 
   /// Any features defined in the specific edition.
-  /// WARNING: This field should only be used by protobuf plugins or special
-  /// cases like the proto compiler. Other uses are discouraged and
-  /// developers should rely on the protoreflect APIs for their client language.
   @$pb.TagNumber(21)
   FeatureSet get features => $_getN(11);
   @$pb.TagNumber(21)
@@ -2740,9 +2682,6 @@ class OneofOptions extends $pb.GeneratedMessage {
   static OneofOptions? _defaultInstance;
 
   /// Any features defined in the specific edition.
-  /// WARNING: This field should only be used by protobuf plugins or special
-  /// cases like the proto compiler. Other uses are discouraged and
-  /// developers should rely on the protoreflect APIs for their client language.
   @$pb.TagNumber(1)
   FeatureSet get features => $_getN(0);
   @$pb.TagNumber(1)
@@ -2869,9 +2808,6 @@ class EnumOptions extends $pb.GeneratedMessage {
   void clearDeprecatedLegacyJsonFieldConflicts() => $_clearField(6);
 
   /// Any features defined in the specific edition.
-  /// WARNING: This field should only be used by protobuf plugins or special
-  /// cases like the proto compiler. Other uses are discouraged and
-  /// developers should rely on the protoreflect APIs for their client language.
   @$pb.TagNumber(7)
   FeatureSet get features => $_getN(3);
   @$pb.TagNumber(7)
@@ -2967,9 +2903,6 @@ class EnumValueOptions extends $pb.GeneratedMessage {
   void clearDeprecated() => $_clearField(1);
 
   /// Any features defined in the specific edition.
-  /// WARNING: This field should only be used by protobuf plugins or special
-  /// cases like the proto compiler. Other uses are discouraged and
-  /// developers should rely on the protoreflect APIs for their client language.
   @$pb.TagNumber(2)
   FeatureSet get features => $_getN(1);
   @$pb.TagNumber(2)
@@ -3081,9 +3014,6 @@ class ServiceOptions extends $pb.GeneratedMessage {
   void clearDeprecated() => $_clearField(33);
 
   /// Any features defined in the specific edition.
-  /// WARNING: This field should only be used by protobuf plugins or special
-  /// cases like the proto compiler. Other uses are discouraged and
-  /// developers should rely on the protoreflect APIs for their client language.
   @$pb.TagNumber(34)
   FeatureSet get features => $_getN(1);
   @$pb.TagNumber(34)
@@ -3188,9 +3118,6 @@ class MethodOptions extends $pb.GeneratedMessage {
   void clearIdempotencyLevel() => $_clearField(34);
 
   /// Any features defined in the specific edition.
-  /// WARNING: This field should only be used by protobuf plugins or special
-  /// cases like the proto compiler. Other uses are discouraged and
-  /// developers should rely on the protoreflect APIs for their client language.
   @$pb.TagNumber(35)
   FeatureSet get features => $_getN(2);
   @$pb.TagNumber(35)
@@ -3421,51 +3348,6 @@ class UninterpretedOption extends $pb.GeneratedMessage {
   void clearAggregateValue() => $_clearField(8);
 }
 
-class FeatureSet_VisibilityFeature extends $pb.GeneratedMessage {
-  factory FeatureSet_VisibilityFeature() => create();
-
-  FeatureSet_VisibilityFeature._();
-
-  factory FeatureSet_VisibilityFeature.fromBuffer($core.List<$core.int> data,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
-  factory FeatureSet_VisibilityFeature.fromJson($core.String json,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'FeatureSet.VisibilityFeature',
-      package:
-          const $pb.PackageName(_omitMessageNames ? '' : 'google.protobuf'),
-      createEmptyInstance: create)
-    ..hasRequiredFields = false;
-
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  FeatureSet_VisibilityFeature clone() =>
-      FeatureSet_VisibilityFeature()..mergeFromMessage(this);
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  FeatureSet_VisibilityFeature copyWith(
-          void Function(FeatureSet_VisibilityFeature) updates) =>
-      super.copyWith(
-              (message) => updates(message as FeatureSet_VisibilityFeature))
-          as FeatureSet_VisibilityFeature;
-
-  @$core.override
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static FeatureSet_VisibilityFeature create() =>
-      FeatureSet_VisibilityFeature._();
-  @$core.override
-  FeatureSet_VisibilityFeature createEmptyInstance() => create();
-  static $pb.PbList<FeatureSet_VisibilityFeature> createRepeated() =>
-      $pb.PbList<FeatureSet_VisibilityFeature>();
-  @$core.pragma('dart2js:noInline')
-  static FeatureSet_VisibilityFeature getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<FeatureSet_VisibilityFeature>(create);
-  static FeatureSet_VisibilityFeature? _defaultInstance;
-}
-
 /// TODO Enums in C++ gencode (and potentially other languages) are
 /// not well scoped.  This means that each of the feature enums below can clash
 /// with each other.  The short names we've chosen maximize call-site
@@ -3480,9 +3362,6 @@ class FeatureSet extends $pb.GeneratedMessage {
     FeatureSet_Utf8Validation? utf8Validation,
     FeatureSet_MessageEncoding? messageEncoding,
     FeatureSet_JsonFormat? jsonFormat,
-    FeatureSet_EnforceNamingStyle? enforceNamingStyle,
-    FeatureSet_VisibilityFeature_DefaultSymbolVisibility?
-        defaultSymbolVisibility,
   }) {
     final result = create();
     if (fieldPresence != null) result.fieldPresence = fieldPresence;
@@ -3492,10 +3371,6 @@ class FeatureSet extends $pb.GeneratedMessage {
     if (utf8Validation != null) result.utf8Validation = utf8Validation;
     if (messageEncoding != null) result.messageEncoding = messageEncoding;
     if (jsonFormat != null) result.jsonFormat = jsonFormat;
-    if (enforceNamingStyle != null)
-      result.enforceNamingStyle = enforceNamingStyle;
-    if (defaultSymbolVisibility != null)
-      result.defaultSymbolVisibility = defaultSymbolVisibility;
     return result;
   }
 
@@ -3544,18 +3419,6 @@ class FeatureSet extends $pb.GeneratedMessage {
         defaultOrMaker: FeatureSet_JsonFormat.JSON_FORMAT_UNKNOWN,
         valueOf: FeatureSet_JsonFormat.valueOf,
         enumValues: FeatureSet_JsonFormat.values)
-    ..e<FeatureSet_EnforceNamingStyle>(
-        7, _omitFieldNames ? '' : 'enforceNamingStyle', $pb.PbFieldType.OE,
-        defaultOrMaker:
-            FeatureSet_EnforceNamingStyle.ENFORCE_NAMING_STYLE_UNKNOWN,
-        valueOf: FeatureSet_EnforceNamingStyle.valueOf,
-        enumValues: FeatureSet_EnforceNamingStyle.values)
-    ..e<FeatureSet_VisibilityFeature_DefaultSymbolVisibility>(
-        8, _omitFieldNames ? '' : 'defaultSymbolVisibility', $pb.PbFieldType.OE,
-        defaultOrMaker: FeatureSet_VisibilityFeature_DefaultSymbolVisibility
-            .DEFAULT_SYMBOL_VISIBILITY_UNKNOWN,
-        valueOf: FeatureSet_VisibilityFeature_DefaultSymbolVisibility.valueOf,
-        enumValues: FeatureSet_VisibilityFeature_DefaultSymbolVisibility.values)
     ..hasExtensions = true;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -3631,28 +3494,6 @@ class FeatureSet extends $pb.GeneratedMessage {
   $core.bool hasJsonFormat() => $_has(5);
   @$pb.TagNumber(6)
   void clearJsonFormat() => $_clearField(6);
-
-  @$pb.TagNumber(7)
-  FeatureSet_EnforceNamingStyle get enforceNamingStyle => $_getN(6);
-  @$pb.TagNumber(7)
-  set enforceNamingStyle(FeatureSet_EnforceNamingStyle value) =>
-      $_setField(7, value);
-  @$pb.TagNumber(7)
-  $core.bool hasEnforceNamingStyle() => $_has(6);
-  @$pb.TagNumber(7)
-  void clearEnforceNamingStyle() => $_clearField(7);
-
-  @$pb.TagNumber(8)
-  FeatureSet_VisibilityFeature_DefaultSymbolVisibility
-      get defaultSymbolVisibility => $_getN(7);
-  @$pb.TagNumber(8)
-  set defaultSymbolVisibility(
-          FeatureSet_VisibilityFeature_DefaultSymbolVisibility value) =>
-      $_setField(8, value);
-  @$pb.TagNumber(8)
-  $core.bool hasDefaultSymbolVisibility() => $_has(7);
-  @$pb.TagNumber(8)
-  void clearDefaultSymbolVisibility() => $_clearField(8);
 }
 
 /// A map from every known edition with a unique set of defaults to its

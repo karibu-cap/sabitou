@@ -68,11 +68,6 @@ final fakeData = <String, List<dynamic>>{
     BusinessMember()
       ..user = fakeUsers.first
       ..businessId = 'business-001'
-      ..permissions.addAll([
-        BusinessPermission()
-          ..resourceType = BusinessResourceType.BUSINESS_RESOURCE_TYPE_BUSINESS
-          ..actionType = ResourceActionType.RESOURCE_ACTION_TYPE_REMOVE,
-      ])
       ..memberSince = Timestamp.fromDateTime(
         DateTime.parse('2023-01-01T00:00:00Z'),
       ),
@@ -81,14 +76,34 @@ final fakeData = <String, List<dynamic>>{
     StoreMember()
       ..user = fakeUsers.first
       ..storeId = 'store-001'
-      ..permissions.addAll([
-        StorePermission()
-          ..resourceType = StoreResourceType.STORE_RESOURCE_TYPE_STORE
-          ..actionType = ResourceActionType.RESOURCE_ACTION_TYPE_REMOVE,
-      ])
       ..memberSince = Timestamp.fromDateTime(
         DateTime.parse('2023-01-01T00:00:00Z'),
-      ),
+      )
+      ..permissions = StorePermissions()
+      ..permissions.member = StoreMemberPermission()
+      ..permissions.member.deleteMember = true
+      ..permissions.member.updateMember = true
+      ..permissions.member.readInformation = true
+      ..permissions.member.inviteMember = true
+      ..permissions.product = StoreProductPermission()
+      ..permissions.product.createProductInInventory = true
+      ..permissions.product.updateProductInInventory = true
+      ..permissions.product.deleteProductInInventory = true
+      ..permissions.product.readProductInInventory = true
+      ..permissions.invoice = StoreInvoicePermission()
+      ..permissions.invoice.readInvoice = true
+      ..permissions.invoice.createInvoice = true
+      ..permissions.transaction = StoreTransactionPermission()
+      ..permissions.transaction.readTransaction = true
+      ..permissions.transaction.createTransaction = true
+      ..permissions.transaction.updateTransaction = true
+      ..permissions.supplier = StoreSupplierPermission()
+      ..permissions.supplier.readSupplier = true
+      ..permissions.supplier.createSupplier = true
+      ..permissions.supplier.updateSupplier = true
+      ..permissions.supplier.deleteSupplier = true
+      ..permissions.report = StoreReportPermission()
+      ..permissions.report.readReport = true,
   ],
   CollectionName.suppliers: <Supplier>[
     Supplier()

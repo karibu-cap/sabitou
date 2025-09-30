@@ -79,9 +79,6 @@ message BusinessMember {
   // The unique identifier of the business.
   string business_id = 2;
 
-  // The permissions that the user has.
-  repeated identity.v1.BusinessPermission permissions = 3;
-
   // The date since when the user became a member.
   google.protobuf.Timestamp member_since = 4;
 
@@ -208,9 +205,6 @@ message CreateUserToBusinessRequest {
 
   // The unique identifier of the business.
   string business_id = 7;
-
-  // The permissions that the user has.
-  repeated identity.v1.BusinessPermission permissions = 8;
 }
 
 message CreateUserToBusinessResponse {
@@ -228,9 +222,6 @@ message AssociateUserToBusinessRequest {
 
   // The unique identifier of the business.
   string business_id = 2;
-
-  // The permissions that the user has.
-  repeated identity.v1.BusinessPermission permissions = 3;
 }
 
 message AssociateUserToBusinessResponse {
@@ -280,12 +271,6 @@ message UpdateBusinessMemberRequest {
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
-
-  // The permissions to add (optional).
-  repeated identity.v1.BusinessPermission add_permissions = 5;
-
-  // The permissions to remove (optional).
-  repeated identity.v1.BusinessPermission remove_permissions = 6;
 }
 
 message UpdateBusinessMemberResponse {
