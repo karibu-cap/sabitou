@@ -62,13 +62,11 @@ class UsersController extends ChangeNotifier {
   /// Updates user permissions for the current business.
   Future<bool> updateUserPermissions({
     required String userId,
-    List<StorePermission>? addPermissions,
-    List<StorePermission>? removePermissions,
+    StorePermissions? permissions,
   }) async {
     final result = await _viewModel.updateStoreMemberPermissions(
       userId: userId,
-      addPermissions: addPermissions,
-      removePermissions: removePermissions,
+      permissions: permissions,
     );
     notifyListeners();
 
@@ -83,7 +81,7 @@ class UsersController extends ChangeNotifier {
   /// Invites a user to join the store.
   Future<bool> addUserToStore(
     String email,
-    List<StorePermission> permissions,
+    StorePermissions permissions,
   ) async {
     return await _viewModel.addUserToStore(email, permissions);
   }

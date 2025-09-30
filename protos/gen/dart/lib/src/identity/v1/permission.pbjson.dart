@@ -14,289 +14,268 @@ import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
-@$core.Deprecated('Use resourceActionTypeDescriptor instead')
-const ResourceActionType$json = {
-  '1': 'ResourceActionType',
-  '2': [
-    {'1': 'RESOURCE_ACTION_TYPE_UNSPECIFIED', '2': 0},
-    {'1': 'RESOURCE_ACTION_TYPE_READ', '2': 1},
-    {'1': 'RESOURCE_ACTION_TYPE_ADD', '2': 2},
-    {'1': 'RESOURCE_ACTION_TYPE_UPDATE', '2': 3},
-    {'1': 'RESOURCE_ACTION_TYPE_REMOVE', '2': 4},
-  ],
-};
-
-/// Descriptor for `ResourceActionType`. Decode as a `google.protobuf.EnumDescriptorProto`.
-final $typed_data.Uint8List resourceActionTypeDescriptor = $convert.base64Decode(
-    'ChJSZXNvdXJjZUFjdGlvblR5cGUSJAogUkVTT1VSQ0VfQUNUSU9OX1RZUEVfVU5TUEVDSUZJRU'
-    'QQABIdChlSRVNPVVJDRV9BQ1RJT05fVFlQRV9SRUFEEAESHAoYUkVTT1VSQ0VfQUNUSU9OX1RZ'
-    'UEVfQUREEAISHwobUkVTT1VSQ0VfQUNUSU9OX1RZUEVfVVBEQVRFEAMSHwobUkVTT1VSQ0VfQU'
-    'NUSU9OX1RZUEVfUkVNT1ZFEAQ=');
-
-@$core.Deprecated('Use businessResourceTypeDescriptor instead')
-const BusinessResourceType$json = {
-  '1': 'BusinessResourceType',
-  '2': [
-    {'1': 'BUSINESS_RESOURCE_TYPE_UNSPECIFIED', '2': 0},
-    {'1': 'BUSINESS_RESOURCE_TYPE_BUSINESS', '2': 1},
-    {'1': 'BUSINESS_RESOURCE_TYPE_MEMBER', '2': 2},
-    {'1': 'BUSINESS_RESOURCE_TYPE_SUPPLIER', '2': 3},
-  ],
-};
-
-/// Descriptor for `BusinessResourceType`. Decode as a `google.protobuf.EnumDescriptorProto`.
-final $typed_data.Uint8List businessResourceTypeDescriptor = $convert.base64Decode(
-    'ChRCdXNpbmVzc1Jlc291cmNlVHlwZRImCiJCVVNJTkVTU19SRVNPVVJDRV9UWVBFX1VOU1BFQ0'
-    'lGSUVEEAASIwofQlVTSU5FU1NfUkVTT1VSQ0VfVFlQRV9CVVNJTkVTUxABEiEKHUJVU0lORVNT'
-    'X1JFU09VUkNFX1RZUEVfTUVNQkVSEAISIwofQlVTSU5FU1NfUkVTT1VSQ0VfVFlQRV9TVVBQTE'
-    'lFUhAD');
-
-@$core.Deprecated('Use storeResourceTypeDescriptor instead')
-const StoreResourceType$json = {
-  '1': 'StoreResourceType',
-  '2': [
-    {'1': 'STORE_RESOURCE_TYPE_UNSPECIFIED', '2': 0},
-    {'1': 'STORE_RESOURCE_TYPE_STORE', '2': 1},
-    {'1': 'STORE_RESOURCE_TYPE_INVOICE', '2': 2},
-    {'1': 'STORE_RESOURCE_TYPE_ORDER', '2': 3},
-    {'1': 'STORE_RESOURCE_TYPE_SUPPLIER_ORDER', '2': 4},
-    {'1': 'STORE_RESOURCE_TYPE_PRODUCT', '2': 5},
-  ],
-};
-
-/// Descriptor for `StoreResourceType`. Decode as a `google.protobuf.EnumDescriptorProto`.
-final $typed_data.Uint8List storeResourceTypeDescriptor = $convert.base64Decode(
-    'ChFTdG9yZVJlc291cmNlVHlwZRIjCh9TVE9SRV9SRVNPVVJDRV9UWVBFX1VOU1BFQ0lGSUVEEA'
-    'ASHQoZU1RPUkVfUkVTT1VSQ0VfVFlQRV9TVE9SRRABEh8KG1NUT1JFX1JFU09VUkNFX1RZUEVf'
-    'SU5WT0lDRRACEh0KGVNUT1JFX1JFU09VUkNFX1RZUEVfT1JERVIQAxImCiJTVE9SRV9SRVNPVV'
-    'JDRV9UWVBFX1NVUFBMSUVSX09SREVSEAQSHwobU1RPUkVfUkVTT1VSQ0VfVFlQRV9QUk9EVUNU'
-    'EAU=');
-
-@$core.Deprecated('Use businessPermissionDescriptor instead')
-const BusinessPermission$json = {
-  '1': 'BusinessPermission',
+@$core.Deprecated('Use storeProductPermissionDescriptor instead')
+const StoreProductPermission$json = {
+  '1': 'StoreProductPermission',
   '2': [
     {
-      '1': 'resource_type',
+      '1': 'read_product_in_inventory',
       '3': 1,
       '4': 1,
-      '5': 14,
-      '6': '.identity.v1.BusinessResourceType',
-      '10': 'resourceType'
+      '5': 8,
+      '10': 'readProductInInventory'
     },
     {
-      '1': 'action_type',
+      '1': 'create_product_in_inventory',
       '3': 2,
       '4': 1,
-      '5': 14,
-      '6': '.identity.v1.ResourceActionType',
-      '10': 'actionType'
+      '5': 8,
+      '10': 'createProductInInventory'
+    },
+    {
+      '1': 'update_product_in_inventory',
+      '3': 3,
+      '4': 1,
+      '5': 8,
+      '10': 'updateProductInInventory'
+    },
+    {
+      '1': 'delete_product_in_inventory',
+      '3': 4,
+      '4': 1,
+      '5': 8,
+      '10': 'deleteProductInInventory'
     },
   ],
 };
 
-/// Descriptor for `BusinessPermission`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List businessPermissionDescriptor = $convert.base64Decode(
-    'ChJCdXNpbmVzc1Blcm1pc3Npb24SRgoNcmVzb3VyY2VfdHlwZRgBIAEoDjIhLmlkZW50aXR5Ln'
-    'YxLkJ1c2luZXNzUmVzb3VyY2VUeXBlUgxyZXNvdXJjZVR5cGUSQAoLYWN0aW9uX3R5cGUYAiAB'
-    'KA4yHy5pZGVudGl0eS52MS5SZXNvdXJjZUFjdGlvblR5cGVSCmFjdGlvblR5cGU=');
+/// Descriptor for `StoreProductPermission`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List storeProductPermissionDescriptor = $convert.base64Decode(
+    'ChZTdG9yZVByb2R1Y3RQZXJtaXNzaW9uEjkKGXJlYWRfcHJvZHVjdF9pbl9pbnZlbnRvcnkYAS'
+    'ABKAhSFnJlYWRQcm9kdWN0SW5JbnZlbnRvcnkSPQobY3JlYXRlX3Byb2R1Y3RfaW5faW52ZW50'
+    'b3J5GAIgASgIUhhjcmVhdGVQcm9kdWN0SW5JbnZlbnRvcnkSPQobdXBkYXRlX3Byb2R1Y3RfaW'
+    '5faW52ZW50b3J5GAMgASgIUhh1cGRhdGVQcm9kdWN0SW5JbnZlbnRvcnkSPQobZGVsZXRlX3By'
+    'b2R1Y3RfaW5faW52ZW50b3J5GAQgASgIUhhkZWxldGVQcm9kdWN0SW5JbnZlbnRvcnk=');
 
-@$core.Deprecated('Use storePermissionDescriptor instead')
-const StorePermission$json = {
-  '1': 'StorePermission',
+@$core.Deprecated('Use storeMemberPermissionDescriptor instead')
+const StoreMemberPermission$json = {
+  '1': 'StoreMemberPermission',
   '2': [
+    {'1': 'read_information', '3': 1, '4': 1, '5': 8, '10': 'readInformation'},
+    {'1': 'invite_member', '3': 2, '4': 1, '5': 8, '10': 'inviteMember'},
+    {'1': 'update_member', '3': 3, '4': 1, '5': 8, '10': 'updateMember'},
+    {'1': 'delete_member', '3': 4, '4': 1, '5': 8, '10': 'deleteMember'},
+  ],
+};
+
+/// Descriptor for `StoreMemberPermission`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List storeMemberPermissionDescriptor = $convert.base64Decode(
+    'ChVTdG9yZU1lbWJlclBlcm1pc3Npb24SKQoQcmVhZF9pbmZvcm1hdGlvbhgBIAEoCFIPcmVhZE'
+    'luZm9ybWF0aW9uEiMKDWludml0ZV9tZW1iZXIYAiABKAhSDGludml0ZU1lbWJlchIjCg11cGRh'
+    'dGVfbWVtYmVyGAMgASgIUgx1cGRhdGVNZW1iZXISIwoNZGVsZXRlX21lbWJlchgEIAEoCFIMZG'
+    'VsZXRlTWVtYmVy');
+
+@$core.Deprecated('Use storeReportPermissionDescriptor instead')
+const StoreReportPermission$json = {
+  '1': 'StoreReportPermission',
+  '2': [
+    {'1': 'read_report', '3': 1, '4': 1, '5': 8, '10': 'readReport'},
+  ],
+};
+
+/// Descriptor for `StoreReportPermission`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List storeReportPermissionDescriptor = $convert.base64Decode(
+    'ChVTdG9yZVJlcG9ydFBlcm1pc3Npb24SHwoLcmVhZF9yZXBvcnQYASABKAhSCnJlYWRSZXBvcn'
+    'Q=');
+
+@$core.Deprecated('Use storeOrderPermissionDescriptor instead')
+const StoreOrderPermission$json = {
+  '1': 'StoreOrderPermission',
+  '2': [
+    {'1': 'read_order', '3': 1, '4': 1, '5': 8, '10': 'readOrder'},
+    {'1': 'create_order', '3': 2, '4': 1, '5': 8, '10': 'createOrder'},
+  ],
+};
+
+/// Descriptor for `StoreOrderPermission`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List storeOrderPermissionDescriptor = $convert.base64Decode(
+    'ChRTdG9yZU9yZGVyUGVybWlzc2lvbhIdCgpyZWFkX29yZGVyGAEgASgIUglyZWFkT3JkZXISIQ'
+    'oMY3JlYXRlX29yZGVyGAIgASgIUgtjcmVhdGVPcmRlcg==');
+
+@$core.Deprecated('Use storeInvoicePermissionDescriptor instead')
+const StoreInvoicePermission$json = {
+  '1': 'StoreInvoicePermission',
+  '2': [
+    {'1': 'read_invoice', '3': 1, '4': 1, '5': 8, '10': 'readInvoice'},
+    {'1': 'create_invoice', '3': 2, '4': 1, '5': 8, '10': 'createInvoice'},
+  ],
+};
+
+/// Descriptor for `StoreInvoicePermission`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List storeInvoicePermissionDescriptor =
+    $convert.base64Decode(
+        'ChZTdG9yZUludm9pY2VQZXJtaXNzaW9uEiEKDHJlYWRfaW52b2ljZRgBIAEoCFILcmVhZEludm'
+        '9pY2USJQoOY3JlYXRlX2ludm9pY2UYAiABKAhSDWNyZWF0ZUludm9pY2U=');
+
+@$core.Deprecated('Use storeSupplierPermissionDescriptor instead')
+const StoreSupplierPermission$json = {
+  '1': 'StoreSupplierPermission',
+  '2': [
+    {'1': 'read_supplier', '3': 1, '4': 1, '5': 8, '10': 'readSupplier'},
+    {'1': 'create_supplier', '3': 2, '4': 1, '5': 8, '10': 'createSupplier'},
+    {'1': 'update_supplier', '3': 3, '4': 1, '5': 8, '10': 'updateSupplier'},
+    {'1': 'delete_supplier', '3': 4, '4': 1, '5': 8, '10': 'deleteSupplier'},
+  ],
+};
+
+/// Descriptor for `StoreSupplierPermission`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List storeSupplierPermissionDescriptor = $convert.base64Decode(
+    'ChdTdG9yZVN1cHBsaWVyUGVybWlzc2lvbhIjCg1yZWFkX3N1cHBsaWVyGAEgASgIUgxyZWFkU3'
+    'VwcGxpZXISJwoPY3JlYXRlX3N1cHBsaWVyGAIgASgIUg5jcmVhdGVTdXBwbGllchInCg91cGRh'
+    'dGVfc3VwcGxpZXIYAyABKAhSDnVwZGF0ZVN1cHBsaWVyEicKD2RlbGV0ZV9zdXBwbGllchgEIA'
+    'EoCFIOZGVsZXRlU3VwcGxpZXI=');
+
+@$core.Deprecated('Use storeTransactionPermissionDescriptor instead')
+const StoreTransactionPermission$json = {
+  '1': 'StoreTransactionPermission',
+  '2': [
+    {'1': 'read_transaction', '3': 1, '4': 1, '5': 8, '10': 'readTransaction'},
     {
-      '1': 'resource_type',
-      '3': 1,
-      '4': 1,
-      '5': 14,
-      '6': '.identity.v1.StoreResourceType',
-      '10': 'resourceType'
-    },
-    {
-      '1': 'action_type',
+      '1': 'create_transaction',
       '3': 2,
       '4': 1,
-      '5': 14,
-      '6': '.identity.v1.ResourceActionType',
-      '10': 'actionType'
+      '5': 8,
+      '10': 'createTransaction'
+    },
+    {
+      '1': 'update_transaction',
+      '3': 3,
+      '4': 1,
+      '5': 8,
+      '10': 'updateTransaction'
     },
   ],
 };
 
-/// Descriptor for `StorePermission`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List storePermissionDescriptor = $convert.base64Decode(
-    'Cg9TdG9yZVBlcm1pc3Npb24SQwoNcmVzb3VyY2VfdHlwZRgBIAEoDjIeLmlkZW50aXR5LnYxLl'
-    'N0b3JlUmVzb3VyY2VUeXBlUgxyZXNvdXJjZVR5cGUSQAoLYWN0aW9uX3R5cGUYAiABKA4yHy5p'
-    'ZGVudGl0eS52MS5SZXNvdXJjZUFjdGlvblR5cGVSCmFjdGlvblR5cGU=');
+/// Descriptor for `StoreTransactionPermission`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List storeTransactionPermissionDescriptor = $convert.base64Decode(
+    'ChpTdG9yZVRyYW5zYWN0aW9uUGVybWlzc2lvbhIpChByZWFkX3RyYW5zYWN0aW9uGAEgASgIUg'
+    '9yZWFkVHJhbnNhY3Rpb24SLQoSY3JlYXRlX3RyYW5zYWN0aW9uGAIgASgIUhFjcmVhdGVUcmFu'
+    'c2FjdGlvbhItChJ1cGRhdGVfdHJhbnNhY3Rpb24YAyABKAhSEXVwZGF0ZVRyYW5zYWN0aW9u');
 
-@$core.Deprecated('Use createBusinessPermissionRequestDescriptor instead')
-const CreateBusinessPermissionRequest$json = {
-  '1': 'CreateBusinessPermissionRequest',
+@$core.Deprecated('Use storePermissionsDescriptor instead')
+const StorePermissions$json = {
+  '1': 'StorePermissions',
   '2': [
     {
-      '1': 'business_permission',
+      '1': 'product',
       '3': 1,
       '4': 1,
       '5': 11,
-      '6': '.identity.v1.BusinessPermission',
-      '10': 'businessPermission'
+      '6': '.identity.v1.StoreProductPermission',
+      '10': 'product'
     },
     {
-      '1': 'action_type',
+      '1': 'member',
       '3': 2,
       '4': 1,
-      '5': 14,
-      '6': '.identity.v1.ResourceActionType',
-      '10': 'actionType'
+      '5': 11,
+      '6': '.identity.v1.StoreMemberPermission',
+      '10': 'member'
     },
-    {'1': 'business_id', '3': 3, '4': 1, '5': 9, '8': {}, '10': 'businessId'},
+    {
+      '1': 'report',
+      '3': 3,
+      '4': 1,
+      '5': 11,
+      '6': '.identity.v1.StoreReportPermission',
+      '10': 'report'
+    },
+    {
+      '1': 'order',
+      '3': 4,
+      '4': 1,
+      '5': 11,
+      '6': '.identity.v1.StoreOrderPermission',
+      '10': 'order'
+    },
+    {
+      '1': 'invoice',
+      '3': 5,
+      '4': 1,
+      '5': 11,
+      '6': '.identity.v1.StoreInvoicePermission',
+      '10': 'invoice'
+    },
+    {
+      '1': 'supplier',
+      '3': 6,
+      '4': 1,
+      '5': 11,
+      '6': '.identity.v1.StoreSupplierPermission',
+      '10': 'supplier'
+    },
+    {
+      '1': 'transaction',
+      '3': 7,
+      '4': 1,
+      '5': 11,
+      '6': '.identity.v1.StoreTransactionPermission',
+      '10': 'transaction'
+    },
   ],
 };
 
-/// Descriptor for `CreateBusinessPermissionRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List createBusinessPermissionRequestDescriptor = $convert.base64Decode(
-    'Ch9DcmVhdGVCdXNpbmVzc1Blcm1pc3Npb25SZXF1ZXN0ElAKE2J1c2luZXNzX3Blcm1pc3Npb2'
-    '4YASABKAsyHy5pZGVudGl0eS52MS5CdXNpbmVzc1Blcm1pc3Npb25SEmJ1c2luZXNzUGVybWlz'
-    'c2lvbhJACgthY3Rpb25fdHlwZRgCIAEoDjIfLmlkZW50aXR5LnYxLlJlc291cmNlQWN0aW9uVH'
-    'lwZVIKYWN0aW9uVHlwZRIrCgtidXNpbmVzc19pZBgDIAEoCUIKukgHyAEBcgIQA1IKYnVzaW5l'
-    'c3NJZA==');
-
-@$core.Deprecated('Use createBusinessPermissionResponseDescriptor instead')
-const CreateBusinessPermissionResponse$json = {
-  '1': 'CreateBusinessPermissionResponse',
-  '2': [
-    {'1': 'success', '3': 1, '4': 1, '5': 8, '10': 'success'},
-  ],
-};
-
-/// Descriptor for `CreateBusinessPermissionResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List createBusinessPermissionResponseDescriptor =
-    $convert.base64Decode(
-        'CiBDcmVhdGVCdXNpbmVzc1Blcm1pc3Npb25SZXNwb25zZRIYCgdzdWNjZXNzGAEgASgIUgdzdW'
-        'NjZXNz');
+/// Descriptor for `StorePermissions`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List storePermissionsDescriptor = $convert.base64Decode(
+    'ChBTdG9yZVBlcm1pc3Npb25zEj0KB3Byb2R1Y3QYASABKAsyIy5pZGVudGl0eS52MS5TdG9yZV'
+    'Byb2R1Y3RQZXJtaXNzaW9uUgdwcm9kdWN0EjoKBm1lbWJlchgCIAEoCzIiLmlkZW50aXR5LnYx'
+    'LlN0b3JlTWVtYmVyUGVybWlzc2lvblIGbWVtYmVyEjoKBnJlcG9ydBgDIAEoCzIiLmlkZW50aX'
+    'R5LnYxLlN0b3JlUmVwb3J0UGVybWlzc2lvblIGcmVwb3J0EjcKBW9yZGVyGAQgASgLMiEuaWRl'
+    'bnRpdHkudjEuU3RvcmVPcmRlclBlcm1pc3Npb25SBW9yZGVyEj0KB2ludm9pY2UYBSABKAsyIy'
+    '5pZGVudGl0eS52MS5TdG9yZUludm9pY2VQZXJtaXNzaW9uUgdpbnZvaWNlEkAKCHN1cHBsaWVy'
+    'GAYgASgLMiQuaWRlbnRpdHkudjEuU3RvcmVTdXBwbGllclBlcm1pc3Npb25SCHN1cHBsaWVyEk'
+    'kKC3RyYW5zYWN0aW9uGAcgASgLMicuaWRlbnRpdHkudjEuU3RvcmVUcmFuc2FjdGlvblBlcm1p'
+    'c3Npb25SC3RyYW5zYWN0aW9u');
 
 @$core.Deprecated('Use createStorePermissionRequestDescriptor instead')
 const CreateStorePermissionRequest$json = {
   '1': 'CreateStorePermissionRequest',
   '2': [
     {
-      '1': 'store_permission',
+      '1': 'permissions',
       '3': 1,
       '4': 1,
       '5': 11,
-      '6': '.identity.v1.StorePermission',
-      '10': 'storePermission'
+      '6': '.identity.v1.StorePermissions',
+      '10': 'permissions'
     },
-    {
-      '1': 'action_type',
-      '3': 2,
-      '4': 1,
-      '5': 14,
-      '6': '.identity.v1.ResourceActionType',
-      '10': 'actionType'
-    },
-    {'1': 'store_id', '3': 3, '4': 1, '5': 9, '8': {}, '10': 'storeId'},
+    {'1': 'store_id', '3': 2, '4': 1, '5': 9, '8': {}, '10': 'storeId'},
   ],
 };
 
 /// Descriptor for `CreateStorePermissionRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List createStorePermissionRequestDescriptor = $convert.base64Decode(
-    'ChxDcmVhdGVTdG9yZVBlcm1pc3Npb25SZXF1ZXN0EkcKEHN0b3JlX3Blcm1pc3Npb24YASABKA'
-    'syHC5pZGVudGl0eS52MS5TdG9yZVBlcm1pc3Npb25SD3N0b3JlUGVybWlzc2lvbhJACgthY3Rp'
-    'b25fdHlwZRgCIAEoDjIfLmlkZW50aXR5LnYxLlJlc291cmNlQWN0aW9uVHlwZVIKYWN0aW9uVH'
-    'lwZRIlCghzdG9yZV9pZBgDIAEoCUIKukgHyAEBcgIQA1IHc3RvcmVJZA==');
-
-@$core.Deprecated('Use createStorePermissionResponseDescriptor instead')
-const CreateStorePermissionResponse$json = {
-  '1': 'CreateStorePermissionResponse',
-  '2': [
-    {'1': 'success', '3': 1, '4': 1, '5': 8, '10': 'success'},
-  ],
-};
-
-/// Descriptor for `CreateStorePermissionResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List createStorePermissionResponseDescriptor =
+final $typed_data.Uint8List createStorePermissionRequestDescriptor =
     $convert.base64Decode(
-        'Ch1DcmVhdGVTdG9yZVBlcm1pc3Npb25SZXNwb25zZRIYCgdzdWNjZXNzGAEgASgIUgdzdWNjZX'
-        'Nz');
-
-@$core.Deprecated('Use updateBusinessPermissionRequestDescriptor instead')
-const UpdateBusinessPermissionRequest$json = {
-  '1': 'UpdateBusinessPermissionRequest',
-  '2': [
-    {
-      '1': 'business_permission',
-      '3': 1,
-      '4': 1,
-      '5': 11,
-      '6': '.identity.v1.BusinessPermission',
-      '10': 'businessPermission'
-    },
-    {
-      '1': 'action_type',
-      '3': 2,
-      '4': 1,
-      '5': 14,
-      '6': '.identity.v1.ResourceActionType',
-      '10': 'actionType'
-    },
-    {
-      '1': 'business_permission_id',
-      '3': 3,
-      '4': 1,
-      '5': 9,
-      '8': {},
-      '10': 'businessPermissionId'
-    },
-  ],
-};
-
-/// Descriptor for `UpdateBusinessPermissionRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List updateBusinessPermissionRequestDescriptor = $convert.base64Decode(
-    'Ch9VcGRhdGVCdXNpbmVzc1Blcm1pc3Npb25SZXF1ZXN0ElAKE2J1c2luZXNzX3Blcm1pc3Npb2'
-    '4YASABKAsyHy5pZGVudGl0eS52MS5CdXNpbmVzc1Blcm1pc3Npb25SEmJ1c2luZXNzUGVybWlz'
-    'c2lvbhJACgthY3Rpb25fdHlwZRgCIAEoDjIfLmlkZW50aXR5LnYxLlJlc291cmNlQWN0aW9uVH'
-    'lwZVIKYWN0aW9uVHlwZRJAChZidXNpbmVzc19wZXJtaXNzaW9uX2lkGAMgASgJQgq6SAfIAQFy'
-    'AhADUhRidXNpbmVzc1Blcm1pc3Npb25JZA==');
-
-@$core.Deprecated('Use updateBusinessPermissionResponseDescriptor instead')
-const UpdateBusinessPermissionResponse$json = {
-  '1': 'UpdateBusinessPermissionResponse',
-  '2': [
-    {'1': 'success', '3': 1, '4': 1, '5': 8, '10': 'success'},
-  ],
-};
-
-/// Descriptor for `UpdateBusinessPermissionResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List updateBusinessPermissionResponseDescriptor =
-    $convert.base64Decode(
-        'CiBVcGRhdGVCdXNpbmVzc1Blcm1pc3Npb25SZXNwb25zZRIYCgdzdWNjZXNzGAEgASgIUgdzdW'
-        'NjZXNz');
+        'ChxDcmVhdGVTdG9yZVBlcm1pc3Npb25SZXF1ZXN0Ej8KC3Blcm1pc3Npb25zGAEgASgLMh0uaW'
+        'RlbnRpdHkudjEuU3RvcmVQZXJtaXNzaW9uc1ILcGVybWlzc2lvbnMSJQoIc3RvcmVfaWQYAiAB'
+        'KAlCCrpIB8gBAXICEANSB3N0b3JlSWQ=');
 
 @$core.Deprecated('Use updateStorePermissionRequestDescriptor instead')
 const UpdateStorePermissionRequest$json = {
   '1': 'UpdateStorePermissionRequest',
   '2': [
     {
-      '1': 'store_permission',
+      '1': 'permissions',
       '3': 1,
       '4': 1,
       '5': 11,
-      '6': '.identity.v1.StorePermission',
-      '10': 'storePermission'
-    },
-    {
-      '1': 'action_type',
-      '3': 2,
-      '4': 1,
-      '5': 14,
-      '6': '.identity.v1.ResourceActionType',
-      '10': 'actionType'
+      '6': '.identity.v1.StorePermissions',
+      '10': 'permissions'
     },
     {
       '1': 'store_permission_id',
-      '3': 3,
+      '3': 2,
       '4': 1,
       '5': 9,
       '8': {},
@@ -306,61 +285,11 @@ const UpdateStorePermissionRequest$json = {
 };
 
 /// Descriptor for `UpdateStorePermissionRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List updateStorePermissionRequestDescriptor = $convert.base64Decode(
-    'ChxVcGRhdGVTdG9yZVBlcm1pc3Npb25SZXF1ZXN0EkcKEHN0b3JlX3Blcm1pc3Npb24YASABKA'
-    'syHC5pZGVudGl0eS52MS5TdG9yZVBlcm1pc3Npb25SD3N0b3JlUGVybWlzc2lvbhJACgthY3Rp'
-    'b25fdHlwZRgCIAEoDjIfLmlkZW50aXR5LnYxLlJlc291cmNlQWN0aW9uVHlwZVIKYWN0aW9uVH'
-    'lwZRI6ChNzdG9yZV9wZXJtaXNzaW9uX2lkGAMgASgJQgq6SAfIAQFyAhADUhFzdG9yZVBlcm1p'
-    'c3Npb25JZA==');
-
-@$core.Deprecated('Use updateStorePermissionResponseDescriptor instead')
-const UpdateStorePermissionResponse$json = {
-  '1': 'UpdateStorePermissionResponse',
-  '2': [
-    {'1': 'success', '3': 1, '4': 1, '5': 8, '10': 'success'},
-  ],
-};
-
-/// Descriptor for `UpdateStorePermissionResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List updateStorePermissionResponseDescriptor =
+final $typed_data.Uint8List updateStorePermissionRequestDescriptor =
     $convert.base64Decode(
-        'Ch1VcGRhdGVTdG9yZVBlcm1pc3Npb25SZXNwb25zZRIYCgdzdWNjZXNzGAEgASgIUgdzdWNjZX'
-        'Nz');
-
-@$core.Deprecated('Use deleteBusinessPermissionRequestDescriptor instead')
-const DeleteBusinessPermissionRequest$json = {
-  '1': 'DeleteBusinessPermissionRequest',
-  '2': [
-    {
-      '1': 'business_permission_id',
-      '3': 1,
-      '4': 1,
-      '5': 9,
-      '8': {},
-      '10': 'businessPermissionId'
-    },
-  ],
-};
-
-/// Descriptor for `DeleteBusinessPermissionRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List deleteBusinessPermissionRequestDescriptor =
-    $convert.base64Decode(
-        'Ch9EZWxldGVCdXNpbmVzc1Blcm1pc3Npb25SZXF1ZXN0EkAKFmJ1c2luZXNzX3Blcm1pc3Npb2'
-        '5faWQYASABKAlCCrpIB8gBAXICEANSFGJ1c2luZXNzUGVybWlzc2lvbklk');
-
-@$core.Deprecated('Use deleteBusinessPermissionResponseDescriptor instead')
-const DeleteBusinessPermissionResponse$json = {
-  '1': 'DeleteBusinessPermissionResponse',
-  '2': [
-    {'1': 'success', '3': 1, '4': 1, '5': 8, '10': 'success'},
-  ],
-};
-
-/// Descriptor for `DeleteBusinessPermissionResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List deleteBusinessPermissionResponseDescriptor =
-    $convert.base64Decode(
-        'CiBEZWxldGVCdXNpbmVzc1Blcm1pc3Npb25SZXNwb25zZRIYCgdzdWNjZXNzGAEgASgIUgdzdW'
-        'NjZXNz');
+        'ChxVcGRhdGVTdG9yZVBlcm1pc3Npb25SZXF1ZXN0Ej8KC3Blcm1pc3Npb25zGAEgASgLMh0uaW'
+        'RlbnRpdHkudjEuU3RvcmVQZXJtaXNzaW9uc1ILcGVybWlzc2lvbnMSOgoTc3RvcmVfcGVybWlz'
+        'c2lvbl9pZBgCIAEoCUIKukgHyAEBcgIQA1IRc3RvcmVQZXJtaXNzaW9uSWQ=');
 
 @$core.Deprecated('Use deleteStorePermissionRequestDescriptor instead')
 const DeleteStorePermissionRequest$json = {
@@ -383,96 +312,34 @@ final $typed_data.Uint8List deleteStorePermissionRequestDescriptor =
         'ChxEZWxldGVTdG9yZVBlcm1pc3Npb25SZXF1ZXN0EjoKE3N0b3JlX3Blcm1pc3Npb25faWQYAS'
         'ABKAlCCrpIB8gBAXICEANSEXN0b3JlUGVybWlzc2lvbklk');
 
-@$core.Deprecated('Use deleteStorePermissionResponseDescriptor instead')
-const DeleteStorePermissionResponse$json = {
-  '1': 'DeleteStorePermissionResponse',
-  '2': [
-    {'1': 'success', '3': 1, '4': 1, '5': 8, '10': 'success'},
-  ],
-};
-
-/// Descriptor for `DeleteStorePermissionResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List deleteStorePermissionResponseDescriptor =
-    $convert.base64Decode(
-        'Ch1EZWxldGVTdG9yZVBlcm1pc3Npb25SZXNwb25zZRIYCgdzdWNjZXNzGAEgASgIUgdzdWNjZX'
-        'Nz');
-
-@$core.Deprecated('Use getStorePermissionsRequestDescriptor instead')
-const GetStorePermissionsRequest$json = {
-  '1': 'GetStorePermissionsRequest',
-  '2': [
-    {'1': 'store_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'storeId'},
-  ],
-};
-
-/// Descriptor for `GetStorePermissionsRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List getStorePermissionsRequestDescriptor =
-    $convert.base64Decode(
-        'ChpHZXRTdG9yZVBlcm1pc3Npb25zUmVxdWVzdBIlCghzdG9yZV9pZBgBIAEoCUIKukgHyAEBcg'
-        'IQA1IHc3RvcmVJZA==');
-
-@$core.Deprecated('Use checkBusinessPermissionRequestDescriptor instead')
-const CheckBusinessPermissionRequest$json = {
-  '1': 'CheckBusinessPermissionRequest',
-  '2': [
-    {'1': 'user_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'userId'},
-    {'1': 'business_id', '3': 3, '4': 1, '5': 9, '8': {}, '10': 'businessId'},
-    {
-      '1': 'permission',
-      '3': 4,
-      '4': 1,
-      '5': 11,
-      '6': '.identity.v1.BusinessPermission',
-      '10': 'permission'
-    },
-  ],
-};
-
-/// Descriptor for `CheckBusinessPermissionRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List checkBusinessPermissionRequestDescriptor =
-    $convert.base64Decode(
-        'Ch5DaGVja0J1c2luZXNzUGVybWlzc2lvblJlcXVlc3QSIwoHdXNlcl9pZBgBIAEoCUIKukgHyA'
-        'EBcgIQA1IGdXNlcklkEisKC2J1c2luZXNzX2lkGAMgASgJQgq6SAfIAQFyAhADUgpidXNpbmVz'
-        'c0lkEj8KCnBlcm1pc3Npb24YBCABKAsyHy5pZGVudGl0eS52MS5CdXNpbmVzc1Blcm1pc3Npb2'
-        '5SCnBlcm1pc3Npb24=');
-
-@$core.Deprecated('Use checkBusinessPermissionResponseDescriptor instead')
-const CheckBusinessPermissionResponse$json = {
-  '1': 'CheckBusinessPermissionResponse',
-  '2': [
-    {'1': 'has_permission', '3': 1, '4': 1, '5': 8, '10': 'hasPermission'},
-  ],
-};
-
-/// Descriptor for `CheckBusinessPermissionResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List checkBusinessPermissionResponseDescriptor =
-    $convert.base64Decode(
-        'Ch9DaGVja0J1c2luZXNzUGVybWlzc2lvblJlc3BvbnNlEiUKDmhhc19wZXJtaXNzaW9uGAEgAS'
-        'gIUg1oYXNQZXJtaXNzaW9u');
-
 @$core.Deprecated('Use checkStorePermissionRequestDescriptor instead')
 const CheckStorePermissionRequest$json = {
   '1': 'CheckStorePermissionRequest',
   '2': [
     {'1': 'user_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'userId'},
-    {'1': 'store_id', '3': 3, '4': 1, '5': 9, '8': {}, '10': 'storeId'},
-    {
-      '1': 'permission',
-      '3': 4,
-      '4': 1,
-      '5': 11,
-      '6': '.identity.v1.StorePermission',
-      '10': 'permission'
-    },
+    {'1': 'store_id', '3': 2, '4': 1, '5': 9, '8': {}, '10': 'storeId'},
+    {'1': 'permission_field', '3': 3, '4': 1, '5': 9, '10': 'permissionField'},
   ],
 };
 
 /// Descriptor for `CheckStorePermissionRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List checkStorePermissionRequestDescriptor = $convert.base64Decode(
-    'ChtDaGVja1N0b3JlUGVybWlzc2lvblJlcXVlc3QSIwoHdXNlcl9pZBgBIAEoCUIKukgHyAEBcg'
-    'IQA1IGdXNlcklkEiUKCHN0b3JlX2lkGAMgASgJQgq6SAfIAQFyAhADUgdzdG9yZUlkEjwKCnBl'
-    'cm1pc3Npb24YBCABKAsyHC5pZGVudGl0eS52MS5TdG9yZVBlcm1pc3Npb25SCnBlcm1pc3Npb2'
-    '4=');
+final $typed_data.Uint8List checkStorePermissionRequestDescriptor =
+    $convert.base64Decode(
+        'ChtDaGVja1N0b3JlUGVybWlzc2lvblJlcXVlc3QSIwoHdXNlcl9pZBgBIAEoCUIKukgHyAEBcg'
+        'IQA1IGdXNlcklkEiUKCHN0b3JlX2lkGAIgASgJQgq6SAfIAQFyAhADUgdzdG9yZUlkEikKEHBl'
+        'cm1pc3Npb25fZmllbGQYAyABKAlSD3Blcm1pc3Npb25GaWVsZA==');
+
+@$core.Deprecated('Use successResponseDescriptor instead')
+const SuccessResponse$json = {
+  '1': 'SuccessResponse',
+  '2': [
+    {'1': 'success', '3': 1, '4': 1, '5': 8, '10': 'success'},
+  ],
+};
+
+/// Descriptor for `SuccessResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List successResponseDescriptor = $convert.base64Decode(
+    'Cg9TdWNjZXNzUmVzcG9uc2USGAoHc3VjY2VzcxgBIAEoCFIHc3VjY2Vzcw==');
 
 @$core.Deprecated('Use checkStorePermissionResponseDescriptor instead')
 const CheckStorePermissionResponse$json = {
@@ -492,45 +359,21 @@ const $core.Map<$core.String, $core.dynamic> PermissionServiceBase$json = {
   '1': 'PermissionService',
   '2': [
     {
-      '1': 'CreateBusinessPermission',
-      '2': '.identity.v1.CreateBusinessPermissionRequest',
-      '3': '.identity.v1.CreateBusinessPermissionResponse',
-      '4': {}
-    },
-    {
-      '1': 'UpdateBusinessPermission',
-      '2': '.identity.v1.UpdateBusinessPermissionRequest',
-      '3': '.identity.v1.UpdateBusinessPermissionResponse',
-      '4': {}
-    },
-    {
-      '1': 'DeleteBusinessPermission',
-      '2': '.identity.v1.DeleteBusinessPermissionRequest',
-      '3': '.identity.v1.DeleteBusinessPermissionResponse',
-      '4': {}
-    },
-    {
       '1': 'CreateStorePermission',
       '2': '.identity.v1.CreateStorePermissionRequest',
-      '3': '.identity.v1.CreateStorePermissionResponse',
+      '3': '.identity.v1.SuccessResponse',
       '4': {}
     },
     {
       '1': 'UpdateStorePermission',
       '2': '.identity.v1.UpdateStorePermissionRequest',
-      '3': '.identity.v1.UpdateStorePermissionResponse',
+      '3': '.identity.v1.SuccessResponse',
       '4': {}
     },
     {
       '1': 'DeleteStorePermission',
       '2': '.identity.v1.DeleteStorePermissionRequest',
-      '3': '.identity.v1.DeleteStorePermissionResponse',
-      '4': {}
-    },
-    {
-      '1': 'CheckBusinessPermission',
-      '2': '.identity.v1.CheckBusinessPermissionRequest',
-      '3': '.identity.v1.CheckBusinessPermissionResponse',
+      '3': '.identity.v1.SuccessResponse',
       '4': {}
     },
     {
@@ -545,36 +388,21 @@ const $core.Map<$core.String, $core.dynamic> PermissionServiceBase$json = {
 @$core.Deprecated('Use permissionServiceDescriptor instead')
 const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
     PermissionServiceBase$messageJson = {
-  '.identity.v1.CreateBusinessPermissionRequest':
-      CreateBusinessPermissionRequest$json,
-  '.identity.v1.BusinessPermission': BusinessPermission$json,
-  '.identity.v1.CreateBusinessPermissionResponse':
-      CreateBusinessPermissionResponse$json,
-  '.identity.v1.UpdateBusinessPermissionRequest':
-      UpdateBusinessPermissionRequest$json,
-  '.identity.v1.UpdateBusinessPermissionResponse':
-      UpdateBusinessPermissionResponse$json,
-  '.identity.v1.DeleteBusinessPermissionRequest':
-      DeleteBusinessPermissionRequest$json,
-  '.identity.v1.DeleteBusinessPermissionResponse':
-      DeleteBusinessPermissionResponse$json,
   '.identity.v1.CreateStorePermissionRequest':
       CreateStorePermissionRequest$json,
-  '.identity.v1.StorePermission': StorePermission$json,
-  '.identity.v1.CreateStorePermissionResponse':
-      CreateStorePermissionResponse$json,
+  '.identity.v1.StorePermissions': StorePermissions$json,
+  '.identity.v1.StoreProductPermission': StoreProductPermission$json,
+  '.identity.v1.StoreMemberPermission': StoreMemberPermission$json,
+  '.identity.v1.StoreReportPermission': StoreReportPermission$json,
+  '.identity.v1.StoreOrderPermission': StoreOrderPermission$json,
+  '.identity.v1.StoreInvoicePermission': StoreInvoicePermission$json,
+  '.identity.v1.StoreSupplierPermission': StoreSupplierPermission$json,
+  '.identity.v1.StoreTransactionPermission': StoreTransactionPermission$json,
+  '.identity.v1.SuccessResponse': SuccessResponse$json,
   '.identity.v1.UpdateStorePermissionRequest':
       UpdateStorePermissionRequest$json,
-  '.identity.v1.UpdateStorePermissionResponse':
-      UpdateStorePermissionResponse$json,
   '.identity.v1.DeleteStorePermissionRequest':
       DeleteStorePermissionRequest$json,
-  '.identity.v1.DeleteStorePermissionResponse':
-      DeleteStorePermissionResponse$json,
-  '.identity.v1.CheckBusinessPermissionRequest':
-      CheckBusinessPermissionRequest$json,
-  '.identity.v1.CheckBusinessPermissionResponse':
-      CheckBusinessPermissionResponse$json,
   '.identity.v1.CheckStorePermissionRequest': CheckStorePermissionRequest$json,
   '.identity.v1.CheckStorePermissionResponse':
       CheckStorePermissionResponse$json,
@@ -582,21 +410,11 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
 
 /// Descriptor for `PermissionService`. Decode as a `google.protobuf.ServiceDescriptorProto`.
 final $typed_data.Uint8List permissionServiceDescriptor = $convert.base64Decode(
-    'ChFQZXJtaXNzaW9uU2VydmljZRJ5ChhDcmVhdGVCdXNpbmVzc1Blcm1pc3Npb24SLC5pZGVudG'
-    'l0eS52MS5DcmVhdGVCdXNpbmVzc1Blcm1pc3Npb25SZXF1ZXN0Gi0uaWRlbnRpdHkudjEuQ3Jl'
-    'YXRlQnVzaW5lc3NQZXJtaXNzaW9uUmVzcG9uc2UiABJ5ChhVcGRhdGVCdXNpbmVzc1Blcm1pc3'
-    'Npb24SLC5pZGVudGl0eS52MS5VcGRhdGVCdXNpbmVzc1Blcm1pc3Npb25SZXF1ZXN0Gi0uaWRl'
-    'bnRpdHkudjEuVXBkYXRlQnVzaW5lc3NQZXJtaXNzaW9uUmVzcG9uc2UiABJ5ChhEZWxldGVCdX'
-    'NpbmVzc1Blcm1pc3Npb24SLC5pZGVudGl0eS52MS5EZWxldGVCdXNpbmVzc1Blcm1pc3Npb25S'
-    'ZXF1ZXN0Gi0uaWRlbnRpdHkudjEuRGVsZXRlQnVzaW5lc3NQZXJtaXNzaW9uUmVzcG9uc2UiAB'
-    'JwChVDcmVhdGVTdG9yZVBlcm1pc3Npb24SKS5pZGVudGl0eS52MS5DcmVhdGVTdG9yZVBlcm1p'
-    'c3Npb25SZXF1ZXN0GiouaWRlbnRpdHkudjEuQ3JlYXRlU3RvcmVQZXJtaXNzaW9uUmVzcG9uc2'
-    'UiABJwChVVcGRhdGVTdG9yZVBlcm1pc3Npb24SKS5pZGVudGl0eS52MS5VcGRhdGVTdG9yZVBl'
-    'cm1pc3Npb25SZXF1ZXN0GiouaWRlbnRpdHkudjEuVXBkYXRlU3RvcmVQZXJtaXNzaW9uUmVzcG'
-    '9uc2UiABJwChVEZWxldGVTdG9yZVBlcm1pc3Npb24SKS5pZGVudGl0eS52MS5EZWxldGVTdG9y'
-    'ZVBlcm1pc3Npb25SZXF1ZXN0GiouaWRlbnRpdHkudjEuRGVsZXRlU3RvcmVQZXJtaXNzaW9uUm'
-    'VzcG9uc2UiABJ2ChdDaGVja0J1c2luZXNzUGVybWlzc2lvbhIrLmlkZW50aXR5LnYxLkNoZWNr'
-    'QnVzaW5lc3NQZXJtaXNzaW9uUmVxdWVzdBosLmlkZW50aXR5LnYxLkNoZWNrQnVzaW5lc3NQZX'
-    'JtaXNzaW9uUmVzcG9uc2UiABJtChRDaGVja1N0b3JlUGVybWlzc2lvbhIoLmlkZW50aXR5LnYx'
-    'LkNoZWNrU3RvcmVQZXJtaXNzaW9uUmVxdWVzdBopLmlkZW50aXR5LnYxLkNoZWNrU3RvcmVQZX'
-    'JtaXNzaW9uUmVzcG9uc2UiAA==');
+    'ChFQZXJtaXNzaW9uU2VydmljZRJiChVDcmVhdGVTdG9yZVBlcm1pc3Npb24SKS5pZGVudGl0eS'
+    '52MS5DcmVhdGVTdG9yZVBlcm1pc3Npb25SZXF1ZXN0GhwuaWRlbnRpdHkudjEuU3VjY2Vzc1Jl'
+    'c3BvbnNlIgASYgoVVXBkYXRlU3RvcmVQZXJtaXNzaW9uEikuaWRlbnRpdHkudjEuVXBkYXRlU3'
+    'RvcmVQZXJtaXNzaW9uUmVxdWVzdBocLmlkZW50aXR5LnYxLlN1Y2Nlc3NSZXNwb25zZSIAEmIK'
+    'FURlbGV0ZVN0b3JlUGVybWlzc2lvbhIpLmlkZW50aXR5LnYxLkRlbGV0ZVN0b3JlUGVybWlzc2'
+    'lvblJlcXVlc3QaHC5pZGVudGl0eS52MS5TdWNjZXNzUmVzcG9uc2UiABJtChRDaGVja1N0b3Jl'
+    'UGVybWlzc2lvbhIoLmlkZW50aXR5LnYxLkNoZWNrU3RvcmVQZXJtaXNzaW9uUmVxdWVzdBopLm'
+    'lkZW50aXR5LnYxLkNoZWNrU3RvcmVQZXJtaXNzaW9uUmVzcG9uc2UiAA==');

@@ -319,7 +319,7 @@ class _UserCardFooter extends StatelessWidget {
 /// Container for permissions with fade overflow effect.
 class _PermissionsContainer extends StatelessWidget {
   /// The list of store permissions to display.
-  final List<StorePermission> permissions;
+  final StorePermissions permissions;
 
   /// Creates a new PermissionsContainer.
   const _PermissionsContainer({required this.permissions});

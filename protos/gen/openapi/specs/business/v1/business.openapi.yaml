@@ -452,12 +452,6 @@ components:
           type: string
           title: business_id
           description: The unique identifier of the business.
-        permissions:
-          type: array
-          items:
-            $ref: '#/components/schemas/identity.v1.BusinessPermission'
-          title: permissions
-          description: The permissions that the user has.
       title: AssociateUserToBusinessRequest
       additionalProperties: false
       description: |-
@@ -552,12 +546,6 @@ components:
           type: string
           title: business_id
           description: The unique identifier of the business.
-        permissions:
-          type: array
-          items:
-            $ref: '#/components/schemas/identity.v1.BusinessPermission'
-          title: permissions
-          description: The permissions that the user has.
         memberSince:
           title: member_since
           description: The date since when the user became a member.
@@ -679,12 +667,6 @@ components:
           type: string
           title: business_id
           description: The unique identifier of the business.
-        permissions:
-          type: array
-          items:
-            $ref: '#/components/schemas/identity.v1.BusinessPermission'
-          title: permissions
-          description: The permissions that the user has.
       title: CreateUserToBusinessRequest
       additionalProperties: false
       description: |-
@@ -890,18 +872,6 @@ components:
           title: business_id
           minLength: 3
           description: The unique identifier of the business.
-        addPermissions:
-          type: array
-          items:
-            $ref: '#/components/schemas/identity.v1.BusinessPermission'
-          title: add_permissions
-          description: The permissions to add (optional).
-        removePermissions:
-          type: array
-          items:
-            $ref: '#/components/schemas/identity.v1.BusinessPermission'
-          title: remove_permissions
-          description: The permissions to remove (optional).
       title: UpdateBusinessMemberRequest
       required:
         - userId
@@ -1133,25 +1103,6 @@ components:
         - AUTH_ACTION_TYPE_VERIFY_PHONE_NUMBER
         - AUTH_ACTION_TYPE_INITIALIZE_PASSWORD
         - AUTH_ACTION_TYPE_RESET_PASSWORD
-    identity.v1.BusinessPermission:
-      type: object
-      properties:
-        resourceType:
-          title: resource_type
-          $ref: '#/components/schemas/identity.v1.BusinessResourceType'
-        actionType:
-          title: action_type
-          $ref: '#/components/schemas/identity.v1.ResourceActionType'
-      title: BusinessPermission
-      additionalProperties: false
-    identity.v1.BusinessResourceType:
-      type: string
-      title: BusinessResourceType
-      enum:
-        - BUSINESS_RESOURCE_TYPE_UNSPECIFIED
-        - BUSINESS_RESOURCE_TYPE_BUSINESS
-        - BUSINESS_RESOURCE_TYPE_MEMBER
-        - BUSINESS_RESOURCE_TYPE_SUPPLIER
     identity.v1.ConnectedAccount:
       type: object
       properties:
@@ -1175,15 +1126,6 @@ components:
         - PROVIDER_TYPE_FIREBASE_EMAIL
         - PROVIDER_TYPE_GOOGLE
         - PROVIDER_TYPE_INTERNAL_BUSINESS_AUTH
-    identity.v1.ResourceActionType:
-      type: string
-      title: ResourceActionType
-      enum:
-        - RESOURCE_ACTION_TYPE_UNSPECIFIED
-        - RESOURCE_ACTION_TYPE_READ
-        - RESOURCE_ACTION_TYPE_ADD
-        - RESOURCE_ACTION_TYPE_UPDATE
-        - RESOURCE_ACTION_TYPE_REMOVE
     identity.v1.User:
       type: object
       properties:

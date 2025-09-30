@@ -15,10 +15,9 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import '../../google/protobuf/timestamp.pb.dart' as $2;
-import '../../identity/v1/permission.pb.dart' as $1;
+import '../../google/protobuf/timestamp.pb.dart' as $1;
 import '../../identity/v1/user.pb.dart' as $0;
-import '../../link/v1/link.pb.dart' as $3;
+import '../../link/v1/link.pb.dart' as $2;
 import 'business.pbenum.dart';
 
 export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
@@ -230,14 +229,12 @@ class BusinessMember extends $pb.GeneratedMessage {
   factory BusinessMember({
     $0.User? user,
     $core.String? businessId,
-    $core.Iterable<$1.BusinessPermission>? permissions,
-    $2.Timestamp? memberSince,
+    $1.Timestamp? memberSince,
     BusinessMemberStatus? status,
   }) {
     final result = create();
     if (user != null) result.user = user;
     if (businessId != null) result.businessId = businessId;
-    if (permissions != null) result.permissions.addAll(permissions);
     if (memberSince != null) result.memberSince = memberSince;
     if (status != null) result.status = status;
     return result;
@@ -258,11 +255,8 @@ class BusinessMember extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOM<$0.User>(1, _omitFieldNames ? '' : 'user', subBuilder: $0.User.create)
     ..aOS(2, _omitFieldNames ? '' : 'businessId')
-    ..pc<$1.BusinessPermission>(
-        3, _omitFieldNames ? '' : 'permissions', $pb.PbFieldType.PM,
-        subBuilder: $1.BusinessPermission.create)
-    ..aOM<$2.Timestamp>(4, _omitFieldNames ? '' : 'memberSince',
-        subBuilder: $2.Timestamp.create)
+    ..aOM<$1.Timestamp>(4, _omitFieldNames ? '' : 'memberSince',
+        subBuilder: $1.Timestamp.create)
     ..e<BusinessMemberStatus>(
         5, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
         defaultOrMaker: BusinessMemberStatus.BUSINESS_MEMBER_STATUS_UNSPECIFIED,
@@ -313,29 +307,25 @@ class BusinessMember extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   void clearBusinessId() => $_clearField(2);
 
-  /// The permissions that the user has.
-  @$pb.TagNumber(3)
-  $pb.PbList<$1.BusinessPermission> get permissions => $_getList(2);
-
   /// The date since when the user became a member.
   @$pb.TagNumber(4)
-  $2.Timestamp get memberSince => $_getN(3);
+  $1.Timestamp get memberSince => $_getN(2);
   @$pb.TagNumber(4)
-  set memberSince($2.Timestamp value) => $_setField(4, value);
+  set memberSince($1.Timestamp value) => $_setField(4, value);
   @$pb.TagNumber(4)
-  $core.bool hasMemberSince() => $_has(3);
+  $core.bool hasMemberSince() => $_has(2);
   @$pb.TagNumber(4)
   void clearMemberSince() => $_clearField(4);
   @$pb.TagNumber(4)
-  $2.Timestamp ensureMemberSince() => $_ensure(3);
+  $1.Timestamp ensureMemberSince() => $_ensure(2);
 
   /// The status of the user.
   @$pb.TagNumber(5)
-  BusinessMemberStatus get status => $_getN(4);
+  BusinessMemberStatus get status => $_getN(3);
   @$pb.TagNumber(5)
   set status(BusinessMemberStatus value) => $_setField(5, value);
   @$pb.TagNumber(5)
-  $core.bool hasStatus() => $_has(4);
+  $core.bool hasStatus() => $_has(3);
   @$pb.TagNumber(5)
   void clearStatus() => $_clearField(5);
 }
@@ -344,7 +334,7 @@ class CreateBusinessRequest extends $pb.GeneratedMessage {
   factory CreateBusinessRequest({
     Business? business,
     $core.List<$core.int>? logoRawImage,
-    $core.Iterable<$3.ResourceLink>? externalLinks,
+    $core.Iterable<$2.ResourceLink>? externalLinks,
   }) {
     final result = create();
     if (business != null) result.business = business;
@@ -370,9 +360,9 @@ class CreateBusinessRequest extends $pb.GeneratedMessage {
         subBuilder: Business.create)
     ..a<$core.List<$core.int>>(
         2, _omitFieldNames ? '' : 'logoRawImage', $pb.PbFieldType.OY)
-    ..pc<$3.ResourceLink>(
+    ..pc<$2.ResourceLink>(
         3, _omitFieldNames ? '' : 'externalLinks', $pb.PbFieldType.PM,
-        subBuilder: $3.ResourceLink.create)
+        subBuilder: $2.ResourceLink.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -423,7 +413,7 @@ class CreateBusinessRequest extends $pb.GeneratedMessage {
 
   /// The links of the business.
   @$pb.TagNumber(3)
-  $pb.PbList<$3.ResourceLink> get externalLinks => $_getList(2);
+  $pb.PbList<$2.ResourceLink> get externalLinks => $_getList(2);
 }
 
 class CreateBusinessResponse extends $pb.GeneratedMessage {
@@ -879,7 +869,7 @@ class UpdateBusinessRequest extends $pb.GeneratedMessage {
   factory UpdateBusinessRequest({
     Business? business,
     $core.List<$core.int>? logoRawImage,
-    $core.Iterable<$3.ResourceLink>? externalLinks,
+    $core.Iterable<$2.ResourceLink>? externalLinks,
   }) {
     final result = create();
     if (business != null) result.business = business;
@@ -905,9 +895,9 @@ class UpdateBusinessRequest extends $pb.GeneratedMessage {
         subBuilder: Business.create)
     ..a<$core.List<$core.int>>(
         2, _omitFieldNames ? '' : 'logoRawImage', $pb.PbFieldType.OY)
-    ..pc<$3.ResourceLink>(
+    ..pc<$2.ResourceLink>(
         3, _omitFieldNames ? '' : 'externalLinks', $pb.PbFieldType.PM,
-        subBuilder: $3.ResourceLink.create)
+        subBuilder: $2.ResourceLink.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -958,7 +948,7 @@ class UpdateBusinessRequest extends $pb.GeneratedMessage {
 
   /// The links of the business.
   @$pb.TagNumber(3)
-  $pb.PbList<$3.ResourceLink> get externalLinks => $_getList(2);
+  $pb.PbList<$2.ResourceLink> get externalLinks => $_getList(2);
 }
 
 class UpdateBusinessResponse extends $pb.GeneratedMessage {
@@ -1178,7 +1168,6 @@ class CreateUserToBusinessRequest extends $pb.GeneratedMessage {
     $core.String? email,
     $core.String? password,
     $core.String? businessId,
-    $core.Iterable<$1.BusinessPermission>? permissions,
   }) {
     final result = create();
     if (firstName != null) result.firstName = firstName;
@@ -1188,7 +1177,6 @@ class CreateUserToBusinessRequest extends $pb.GeneratedMessage {
     if (email != null) result.email = email;
     if (password != null) result.password = password;
     if (businessId != null) result.businessId = businessId;
-    if (permissions != null) result.permissions.addAll(permissions);
     return result;
   }
 
@@ -1212,9 +1200,6 @@ class CreateUserToBusinessRequest extends $pb.GeneratedMessage {
     ..aOS(5, _omitFieldNames ? '' : 'email')
     ..aOS(6, _omitFieldNames ? '' : 'password')
     ..aOS(7, _omitFieldNames ? '' : 'businessId')
-    ..pc<$1.BusinessPermission>(
-        8, _omitFieldNames ? '' : 'permissions', $pb.PbFieldType.PM,
-        subBuilder: $1.BusinessPermission.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -1311,10 +1296,6 @@ class CreateUserToBusinessRequest extends $pb.GeneratedMessage {
   $core.bool hasBusinessId() => $_has(6);
   @$pb.TagNumber(7)
   void clearBusinessId() => $_clearField(7);
-
-  /// The permissions that the user has.
-  @$pb.TagNumber(8)
-  $pb.PbList<$1.BusinessPermission> get permissions => $_getList(7);
 }
 
 class CreateUserToBusinessResponse extends $pb.GeneratedMessage {
@@ -1385,12 +1366,10 @@ class AssociateUserToBusinessRequest extends $pb.GeneratedMessage {
   factory AssociateUserToBusinessRequest({
     $core.String? userId,
     $core.String? businessId,
-    $core.Iterable<$1.BusinessPermission>? permissions,
   }) {
     final result = create();
     if (userId != null) result.userId = userId;
     if (businessId != null) result.businessId = businessId;
-    if (permissions != null) result.permissions.addAll(permissions);
     return result;
   }
 
@@ -1409,9 +1388,6 @@ class AssociateUserToBusinessRequest extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'userId')
     ..aOS(2, _omitFieldNames ? '' : 'businessId')
-    ..pc<$1.BusinessPermission>(
-        3, _omitFieldNames ? '' : 'permissions', $pb.PbFieldType.PM,
-        subBuilder: $1.BusinessPermission.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -1458,10 +1434,6 @@ class AssociateUserToBusinessRequest extends $pb.GeneratedMessage {
   $core.bool hasBusinessId() => $_has(1);
   @$pb.TagNumber(2)
   void clearBusinessId() => $_clearField(2);
-
-  /// The permissions that the user has.
-  @$pb.TagNumber(3)
-  $pb.PbList<$1.BusinessPermission> get permissions => $_getList(2);
 }
 
 class AssociateUserToBusinessResponse extends $pb.GeneratedMessage {
@@ -1782,15 +1754,10 @@ class UpdateBusinessMemberRequest extends $pb.GeneratedMessage {
   factory UpdateBusinessMemberRequest({
     $core.String? userId,
     $core.String? businessId,
-    $core.Iterable<$1.BusinessPermission>? addPermissions,
-    $core.Iterable<$1.BusinessPermission>? removePermissions,
   }) {
     final result = create();
     if (userId != null) result.userId = userId;
     if (businessId != null) result.businessId = businessId;
-    if (addPermissions != null) result.addPermissions.addAll(addPermissions);
-    if (removePermissions != null)
-      result.removePermissions.addAll(removePermissions);
     return result;
   }
 
@@ -1809,12 +1776,6 @@ class UpdateBusinessMemberRequest extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'userId')
     ..aOS(2, _omitFieldNames ? '' : 'businessId')
-    ..pc<$1.BusinessPermission>(
-        5, _omitFieldNames ? '' : 'addPermissions', $pb.PbFieldType.PM,
-        subBuilder: $1.BusinessPermission.create)
-    ..pc<$1.BusinessPermission>(
-        6, _omitFieldNames ? '' : 'removePermissions', $pb.PbFieldType.PM,
-        subBuilder: $1.BusinessPermission.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -1861,14 +1822,6 @@ class UpdateBusinessMemberRequest extends $pb.GeneratedMessage {
   $core.bool hasBusinessId() => $_has(1);
   @$pb.TagNumber(2)
   void clearBusinessId() => $_clearField(2);
-
-  /// The permissions to add (optional).
-  @$pb.TagNumber(5)
-  $pb.PbList<$1.BusinessPermission> get addPermissions => $_getList(2);
-
-  /// The permissions to remove (optional).
-  @$pb.TagNumber(6)
-  $pb.PbList<$1.BusinessPermission> get removePermissions => $_getList(3);
 }
 
 class UpdateBusinessMemberResponse extends $pb.GeneratedMessage {

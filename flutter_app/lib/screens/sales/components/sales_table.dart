@@ -5,7 +5,6 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../services/internationalization/internationalization.dart';
 import '../../../themes/app_colors.dart';
-import '../../../utils/common_functions.dart';
 import '../../../utils/extensions.dart';
 import '../../../utils/formatters.dart';
 import '../../../widgets/loading.dart';
@@ -204,30 +203,17 @@ class _ActionsCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return const Row(
       mainAxisSize: MainAxisSize.min,
       spacing: 8,
       children: [
-        const ShadButton.ghost(
+        ShadButton.ghost(
           child: Icon(LucideIcons.eye400, size: 15),
           // onPressed: () => _showOrderDialog(context, order),
         ),
-        FutureBuilder(
-          future: hasStorePermission(
-            StoreResourceType.STORE_RESOURCE_TYPE_INVOICE,
-            ResourceActionType.RESOURCE_ACTION_TYPE_UPDATE,
-          ),
-          builder: (context, snapshot) {
-            final canDelete = snapshot.data ?? false;
-            if (!canDelete) {
-              return const SizedBox.shrink();
-            }
-
-            return const ShadButton.ghost(
-              child: Icon(LucideIcons.receipt400, size: 15),
-              // onPressed: () => _showInvoiceDialog(context, order),
-            );
-          },
+        ShadButton.ghost(
+          child: Icon(LucideIcons.receipt400, size: 15),
+          // onPressed: () => _showInvoiceDialog(context, order),
         ),
       ],
     );

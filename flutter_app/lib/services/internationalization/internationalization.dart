@@ -212,6 +212,9 @@ class AppInternationalizationService extends ChangeNotifier {
     'welcome': {'en': 'Welcome', 'fr': 'Bienvenue'},
     'add': {'en': 'Add', 'fr': 'Ajouter'},
     'update': {'en': 'Update', 'fr': 'Mettre à jour'},
+    'read': {'en': 'Read', 'fr': 'Lire'},
+    'invite': {'en': 'Invite', 'fr': 'Inviter'},
+    'create': {'en': 'Create', 'fr': 'Créer'},
     'close': {'en': 'Close', 'fr': 'Fermer'},
     'description': {'en': 'Description', 'fr': 'Description'},
     'quantity': {'en': 'Quantity', 'fr': 'Quantité'},
@@ -945,8 +948,7 @@ class AppInternationalizationService extends ChangeNotifier {
       'en': 'Create new orders and record sales',
       'fr': 'Créer de nouvelles commandes et enregistrer des ventes',
     },
-    'editOrders': {'en': 'Edit Orders', 'fr': 'Modifier les Commandes'},
-    'deleteOrders': {'en': 'Delete Orders', 'fr': 'Supprimer les Commandes'},
+    'viewOrders': {'en': 'View Orders', 'fr': 'Voir les Commandes'},
     'cancelDeleteOrdersPermanently': {
       'en': 'Cancel and delete orders permanently',
       'fr': 'Annuler et supprimer définitivement des commandes',
@@ -973,22 +975,23 @@ class AppInternationalizationService extends ChangeNotifier {
       'fr':
           'Consulter la liste des fournisseurs et leurs informations de contact',
     },
-    'placeSupplierOrders': {
-      'en': 'Place Supplier Orders',
-      'fr': 'Passer des Commandes Fournisseurs',
+    'editSupplierInformation': {
+      'en': 'Edit Supplier Information',
+      'fr': 'Modifier les Informations des Fournisseurs',
     },
-    'createPlaceNewSupplierOrders': {
-      'en': 'Create and place new orders with suppliers',
-      'fr': 'Créer et passer de nouvelles commandes auprès des fournisseurs',
+    'deleteSuppliers': {
+      'en': 'Delete Suppliers',
+      'fr': 'Supprimer les Fournisseurs',
     },
-    'editSupplierOrders': {
-      'en': 'Edit Supplier Orders',
-      'fr': 'Modifier les Commandes Fournisseurs',
+    'inviteNewMembers': {
+      'en': 'Invite New Members',
+      'fr': 'Inviter de nouveaux Membres',
     },
-    'cancelSupplierOrders': {
-      'en': 'Cancel Supplier Orders',
-      'fr': 'Annuler les Commandes Fournisseurs',
+    'updateMembersPermissionsAndStatus': {
+      'en': 'Update Members Permissions and Status',
+      'fr': 'Modifier les Permissions et les Statuts des Membres',
     },
+    'deleteMembers': {'en': 'Delete Members', 'fr': 'Supprimer les Membres'},
     'selected': {'en': 'selected', 'fr': 'selectionnée(s)'},
     'editOrderDetailsStatus': {
       'en': 'Edit details, status and information of existing orders',
@@ -998,14 +1001,6 @@ class AppInternationalizationService extends ChangeNotifier {
     'editProductInformationPriceStock': {
       'en': 'Edit information, prices and stock of existing products',
       'fr': 'Éditer les informations, prix et stock des produits existants',
-    },
-    'editSupplierOrderDetailsStatus': {
-      'en': 'Edit details and status of ongoing supplier orders',
-      'fr': 'Éditer les détails et statuts des commandes fournisseurs en cours',
-    },
-    'cancelDeleteSupplierOrders': {
-      'en': 'Cancel and delete supplier orders',
-      'fr': 'Annuler et supprimer les commandes fournisseurs',
     },
     'unspecified': {'en': 'Unspecified', 'fr': 'Non défini'},
     'userInformation': {
@@ -1566,6 +1561,21 @@ class AppInternationalizationService extends ChangeNotifier {
     'noSuppliersMatchFilters': {
       'en': 'No suppliers match your filters',
       'fr': 'Aucun fournisseur ne correspond à vos filtres',
+    },
+    'invoices': {'en': 'Invoices', 'fr': 'Factures'},
+    'viewInvoices': {'en': 'View Invoices', 'fr': 'Voir les Factures'},
+    'createInvoices': {'en': 'Create Invoices', 'fr': 'Créer des Factures'},
+    'viewTransactions': {
+      'en': 'View Transactions',
+      'fr': 'Voir les Transactions',
+    },
+    'createTransactions': {
+      'en': 'Create Transactions',
+      'fr': 'Créer des Transactions',
+    },
+    'editTransactions': {
+      'en': 'Edit Transactions',
+      'fr': 'Modifier des Transactions',
     },
   };
 
@@ -3357,11 +3367,8 @@ class AppInternationalizationService extends ChangeNotifier {
   String get createNewOrdersRecordSales =>
       _stringOfLocalizedValue('createNewOrdersRecordSales');
 
-  /// Returns the localized value of editOrders.
-  String get editOrders => _stringOfLocalizedValue('editOrders');
-
-  /// Returns the localized value of deleteOrders.
-  String get deleteOrders => _stringOfLocalizedValue('deleteOrders');
+  /// Returns the localized value of viewOrders.
+  String get viewOrders => _stringOfLocalizedValue('viewOrders');
 
   /// Returns the localized value of cancelDeleteOrdersPermanently.
   String get cancelDeleteOrdersPermanently =>
@@ -3398,21 +3405,22 @@ class AppInternationalizationService extends ChangeNotifier {
   String get consultSupplierListContactInfo =>
       _stringOfLocalizedValue('consultSupplierListContactInfo');
 
-  /// Returns the localized value of placeSupplierOrders.
-  String get placeSupplierOrders =>
-      _stringOfLocalizedValue('placeSupplierOrders');
+  /// Returns the localized value of editSupplierInformation.
+  String get editSupplierInformation =>
+      _stringOfLocalizedValue('editSupplierInformation');
 
-  /// Returns the localized value of createPlaceNewSupplierOrders.
-  String get createPlaceNewSupplierOrders =>
-      _stringOfLocalizedValue('createPlaceNewSupplierOrders');
+  /// Returns the localized value of deleteSuppliers.
+  String get deleteSuppliers => _stringOfLocalizedValue('deleteSuppliers');
 
-  /// Returns the localized value of editSupplierOrders.
-  String get editSupplierOrders =>
-      _stringOfLocalizedValue('editSupplierOrders');
+  /// Returns the localized value of inviteNewMembers.
+  String get inviteNewMembers => _stringOfLocalizedValue('inviteNewMembers');
 
-  /// Returns the localized value of cancelSupplierOrders.
-  String get cancelSupplierOrders =>
-      _stringOfLocalizedValue('cancelSupplierOrders');
+  /// Returns the localized value of updateMembersPermissionsAndStatus.
+  String get updateMembersPermissionsAndStatus =>
+      _stringOfLocalizedValue('updateMembersPermissionsAndStatus');
+
+  /// Returns the localized value of deleteMembers.
+  String get deleteMembers => _stringOfLocalizedValue('deleteMembers');
 
   /// Returns the localized value of selected.
   String get selected => _stringOfLocalizedValue('selected');
@@ -3424,14 +3432,6 @@ class AppInternationalizationService extends ChangeNotifier {
   /// Returns the localized value of editProductInformationPriceStock.
   String get editProductInformationPriceStock =>
       _stringOfLocalizedValue('editProductInformationPriceStock');
-
-  /// Returns the localized value of editSupplierOrderDetailsStatus.
-  String get editSupplierOrderDetailsStatus =>
-      _stringOfLocalizedValue('editSupplierOrderDetailsStatus');
-
-  /// Returns the localized value of cancelDeleteSupplierOrders.
-  String get cancelDeleteSupplierOrders =>
-      _stringOfLocalizedValue('cancelDeleteSupplierOrders');
 
   /// Returns the localized value of unspecified.
   String get unspecified => _stringOfLocalizedValue('unspecified');
@@ -3689,6 +3689,34 @@ class AppInternationalizationService extends ChangeNotifier {
   /// Returns the localized value of noSuppliersMatchFilters.
   String get noSuppliersMatchFilters =>
       _stringOfLocalizedValue('noSuppliersMatchFilters');
+
+  /// Returns the localized value of invoices.
+  String get invoices => _stringOfLocalizedValue('invoices');
+
+  /// Returns the localized value of invite.
+  String get invite => _stringOfLocalizedValue('invite');
+
+  /// Returns the localized value of read.
+  String get read => _stringOfLocalizedValue('read');
+
+  /// Returns the localized value of create.
+  String get create => _stringOfLocalizedValue('create');
+
+  /// Returns the localized value of viewInvoices.
+  String get viewInvoices => _stringOfLocalizedValue('viewInvoices');
+
+  /// Returns the localized value of createInvoices.
+  String get createInvoices => _stringOfLocalizedValue('createInvoices');
+
+  /// Returns the localized value of viewTransactions.
+  String get viewTransactions => _stringOfLocalizedValue('viewTransactions');
+
+  /// Returns the localized value of createTransactions.
+  String get createTransactions =>
+      _stringOfLocalizedValue('createTransactions');
+
+  /// Returns the localized value of editTransactions.
+  String get editTransactions => _stringOfLocalizedValue('editTransactions');
 
   /// Changes the locale.
   void changeLocale([Locale? newLocale]) {

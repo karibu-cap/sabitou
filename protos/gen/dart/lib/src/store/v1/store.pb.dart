@@ -238,14 +238,14 @@ class StoreMember extends $pb.GeneratedMessage {
   factory StoreMember({
     $1.User? user,
     $core.String? storeId,
-    $core.Iterable<$2.StorePermission>? permissions,
+    $2.StorePermissions? permissions,
     $0.Timestamp? memberSince,
     StoreMemberStatus? status,
   }) {
     final result = create();
     if (user != null) result.user = user;
     if (storeId != null) result.storeId = storeId;
-    if (permissions != null) result.permissions.addAll(permissions);
+    if (permissions != null) result.permissions = permissions;
     if (memberSince != null) result.memberSince = memberSince;
     if (status != null) result.status = status;
     return result;
@@ -266,9 +266,8 @@ class StoreMember extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOM<$1.User>(1, _omitFieldNames ? '' : 'user', subBuilder: $1.User.create)
     ..aOS(2, _omitFieldNames ? '' : 'storeId')
-    ..pc<$2.StorePermission>(
-        3, _omitFieldNames ? '' : 'permissions', $pb.PbFieldType.PM,
-        subBuilder: $2.StorePermission.create)
+    ..aOM<$2.StorePermissions>(3, _omitFieldNames ? '' : 'permissions',
+        subBuilder: $2.StorePermissions.create)
     ..aOM<$0.Timestamp>(4, _omitFieldNames ? '' : 'memberSince',
         subBuilder: $0.Timestamp.create)
     ..e<StoreMemberStatus>(
@@ -322,7 +321,15 @@ class StoreMember extends $pb.GeneratedMessage {
 
   /// The permissions that the user has.
   @$pb.TagNumber(3)
-  $pb.PbList<$2.StorePermission> get permissions => $_getList(2);
+  $2.StorePermissions get permissions => $_getN(2);
+  @$pb.TagNumber(3)
+  set permissions($2.StorePermissions value) => $_setField(3, value);
+  @$pb.TagNumber(3)
+  $core.bool hasPermissions() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearPermissions() => $_clearField(3);
+  @$pb.TagNumber(3)
+  $2.StorePermissions ensurePermissions() => $_ensure(2);
 
   /// The date since when the user became a member.
   @$pb.TagNumber(4)
@@ -957,12 +964,12 @@ class DeleteStoreResponse extends $pb.GeneratedMessage {
 class AddUserToStoreRequest extends $pb.GeneratedMessage {
   factory AddUserToStoreRequest({
     $core.String? email,
-    $core.Iterable<$2.StorePermission>? permissions,
+    $2.StorePermissions? permissions,
     $core.String? storeId,
   }) {
     final result = create();
     if (email != null) result.email = email;
-    if (permissions != null) result.permissions.addAll(permissions);
+    if (permissions != null) result.permissions = permissions;
     if (storeId != null) result.storeId = storeId;
     return result;
   }
@@ -981,9 +988,8 @@ class AddUserToStoreRequest extends $pb.GeneratedMessage {
       package: const $pb.PackageName(_omitMessageNames ? '' : 'store.v1'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'email')
-    ..pc<$2.StorePermission>(
-        2, _omitFieldNames ? '' : 'permissions', $pb.PbFieldType.PM,
-        subBuilder: $2.StorePermission.create)
+    ..aOM<$2.StorePermissions>(2, _omitFieldNames ? '' : 'permissions',
+        subBuilder: $2.StorePermissions.create)
     ..aOS(3, _omitFieldNames ? '' : 'storeId')
     ..hasRequiredFields = false;
 
@@ -1022,7 +1028,15 @@ class AddUserToStoreRequest extends $pb.GeneratedMessage {
 
   /// The permissions that the user has.
   @$pb.TagNumber(2)
-  $pb.PbList<$2.StorePermission> get permissions => $_getList(1);
+  $2.StorePermissions get permissions => $_getN(1);
+  @$pb.TagNumber(2)
+  set permissions($2.StorePermissions value) => $_setField(2, value);
+  @$pb.TagNumber(2)
+  $core.bool hasPermissions() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearPermissions() => $_clearField(2);
+  @$pb.TagNumber(2)
+  $2.StorePermissions ensurePermissions() => $_ensure(1);
 
   /// The store id.
   @$pb.TagNumber(3)
@@ -1114,15 +1128,12 @@ class UpdateStoreMemberRequest extends $pb.GeneratedMessage {
   factory UpdateStoreMemberRequest({
     $core.String? userId,
     $core.String? storeId,
-    $core.Iterable<$2.StorePermission>? addPermissions,
-    $core.Iterable<$2.StorePermission>? removePermissions,
+    $2.StorePermissions? permissions,
   }) {
     final result = create();
     if (userId != null) result.userId = userId;
     if (storeId != null) result.storeId = storeId;
-    if (addPermissions != null) result.addPermissions.addAll(addPermissions);
-    if (removePermissions != null)
-      result.removePermissions.addAll(removePermissions);
+    if (permissions != null) result.permissions = permissions;
     return result;
   }
 
@@ -1141,12 +1152,8 @@ class UpdateStoreMemberRequest extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'userId')
     ..aOS(2, _omitFieldNames ? '' : 'storeId')
-    ..pc<$2.StorePermission>(
-        5, _omitFieldNames ? '' : 'addPermissions', $pb.PbFieldType.PM,
-        subBuilder: $2.StorePermission.create)
-    ..pc<$2.StorePermission>(
-        6, _omitFieldNames ? '' : 'removePermissions', $pb.PbFieldType.PM,
-        subBuilder: $2.StorePermission.create)
+    ..aOM<$2.StorePermissions>(5, _omitFieldNames ? '' : 'permissions',
+        subBuilder: $2.StorePermissions.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -1192,13 +1199,17 @@ class UpdateStoreMemberRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   void clearStoreId() => $_clearField(2);
 
-  /// The permissions to add (optional).
+  /// The new permissions to add (optional).
   @$pb.TagNumber(5)
-  $pb.PbList<$2.StorePermission> get addPermissions => $_getList(2);
-
-  /// The permissions to remove (optional).
-  @$pb.TagNumber(6)
-  $pb.PbList<$2.StorePermission> get removePermissions => $_getList(3);
+  $2.StorePermissions get permissions => $_getN(2);
+  @$pb.TagNumber(5)
+  set permissions($2.StorePermissions value) => $_setField(5, value);
+  @$pb.TagNumber(5)
+  $core.bool hasPermissions() => $_has(2);
+  @$pb.TagNumber(5)
+  void clearPermissions() => $_clearField(5);
+  @$pb.TagNumber(5)
+  $2.StorePermissions ensurePermissions() => $_ensure(2);
 }
 
 class UpdateStoreMemberResponse extends $pb.GeneratedMessage {

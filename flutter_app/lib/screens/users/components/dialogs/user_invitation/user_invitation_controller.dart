@@ -9,7 +9,8 @@ import '../../../users_controller.dart';
 class UserInvitationModalController extends ChangeNotifier {
   final UsersController _usersController;
 
-  final List<StorePermission> _selectedPermissions = [];
+  /// The permissions object for the invited user.
+  StorePermissions _permissions = _createEmptyPermissions();
 
   /// The form key.
   final formKey = GlobalKey<ShadFormState>();
@@ -22,65 +23,106 @@ class UserInvitationModalController extends ChangeNotifier {
 
   /// Constructs a new UserInvitationModalController.
   UserInvitationModalController({required UsersController usersController})
-    : _usersController = usersController;
-
-  /// Current selected permissions list
-  List<StorePermission> get selectedPermissions =>
-      List.unmodifiable(_selectedPermissions);
-
-  /// Whether the modal is currently loading
-  bool get isLoading => _isLoading;
-
-  /// Current error message, if any
-  String get errorMessage => _errorMessage;
-
-  /// Number of selected permissions
-  int get selectedPermissionsCount => _selectedPermissions.length;
-
-  /// Whether the form can be submitted
-  bool get canSubmit =>
-      emailController.text.trim().isNotEmpty &&
-      _selectedPermissions.isNotEmpty &&
-      !_isLoading;
-
-  /// Whether a specific permission is selected
-  bool isPermissionSelected(
-    StoreResourceType resourceType,
-    ResourceActionType actionType,
-  ) {
-    return _selectedPermissions.any(
-      (p) => p.resourceType == resourceType && p.actionType == actionType,
-    );
+    : _usersController = usersController {
+    emailController.addListener(_onEmailChanged);
   }
 
-  /// Toggle a permission on/off
-  void togglePermission(
-    StoreResourceType resourceType,
-    ResourceActionType actionType,
-  ) {
-    final existingIndex = _selectedPermissions.indexWhere(
-      (p) => p.resourceType == resourceType && p.actionType == actionType,
-    );
+  /// Current permissions object (immutable from outside).
+  StorePermissions get permissions => _permissions;
 
-    if (existingIndex >= 0) {
-      _selectedPermissions.removeAt(existingIndex);
-    } else {
-      _selectedPermissions.add(
-        StorePermission(resourceType: resourceType, actionType: actionType),
-      );
-    }
+  /// Whether the modal is currently loading.
+  bool get isLoading => _isLoading;
 
+  /// Current error message, if any.
+  String get errorMessage => _errorMessage;
+
+  /// Number of selected permissions (total booleans set to true across all groups).
+  int get selectedPermissionsCount => _countSelectedPermissions();
+
+  /// Whether the form can be submitted.
+  bool get canSubmit {
+    final hasEmail = emailController.text.trim().isNotEmpty;
+    final hasPermissions = _hasAnyPermissionSelected();
+    final isLoading = _isLoading;
+
+    return hasEmail && hasPermissions && !isLoading;
+  }
+
+  /// Returns true if at least one permission is selected.
+  bool _hasAnyPermissionSelected() => selectedPermissionsCount > 0;
+
+  /// Helper that counts all true boolean fields inside StorePermissions.
+  int _countSelectedPermissions() {
+    return _allPermissionFlags(
+      _permissions,
+    ).where((isEnabled) => isEnabled).length;
+  }
+
+  void _onEmailChanged() {
     notifyListeners();
   }
 
-  /// Send invitation to user
+  /// Returns all boolean flags contained in StorePermissions.
+  Iterable<bool> _allPermissionFlags(StorePermissions permissions) sync* {
+    final product = permissions.product;
+    yield product.readProductInInventory;
+    yield product.createProductInInventory;
+    yield product.updateProductInInventory;
+    yield product.deleteProductInInventory;
+
+    final member = permissions.member;
+    yield member.readInformation;
+    yield member.inviteMember;
+    yield member.updateMember;
+    yield member.deleteMember;
+
+    yield permissions.report.readReport;
+
+    final order = permissions.order;
+    yield order.readOrder;
+    yield order.createOrder;
+
+    final invoice = permissions.invoice;
+    yield invoice.readInvoice;
+    yield invoice.createInvoice;
+
+    final supplier = permissions.supplier;
+    yield supplier.readSupplier;
+    yield supplier.createSupplier;
+    yield supplier.updateSupplier;
+    yield supplier.deleteSupplier;
+
+    final transaction = permissions.transaction;
+    yield transaction.readTransaction;
+    yield transaction.createTransaction;
+    yield transaction.updateTransaction;
+  }
+
+  /// Whether a specific permission is selected.
+  /// [path] is a function that returns the boolean field inside StorePermissions.
+  bool isPermissionSelected(bool Function(StorePermissions) path) {
+    return path(_permissions);
+  }
+
+  /// Toggle a specific permission on/off.
+  /// [path] is used to read the current value, [set] applies the new value.
+  void togglePermission(
+    bool Function(StorePermissions) path,
+    void Function(StorePermissions, bool) set,
+  ) {
+    final current = path(_permissions);
+    set(_permissions, !current);
+    notifyListeners();
+  }
+
+  /// Send invitation to user.
   Future<bool> sendInvitation() async {
     // Validate form first
     if (formKey.currentState?.validate() != true) {
       return false;
     }
 
-    if (emailController.text.trim().isEmpty || _selectedPermissions.isEmpty) {
+    if (emailController.text.trim().isEmpty || !_hasAnyPermissionSelected()) {
       return false;
     }
 
@@ -90,7 +132,7 @@ class UserInvitationModalController extends ChangeNotifier {
 
     final success = await _usersController.addUserToStore(
       emailController.text.trim(),
-      _selectedPermissions,
+      _permissions,
     );
 
     if (!success) {
@@ -109,17 +151,37 @@ class UserInvitationModalController extends ChangeNotifier {
     return success;
   }
 
-  /// Clear any error message
+  /// Clear any error message.
   void clearError() {
     _errorMessage = '';
     notifyListeners();
   }
 
-  /// Reset form to initial state
+  /// Reset form to initial state.
   void resetForm() {
     emailController.clear();
-    _selectedPermissions.clear();
+    _permissions = _createEmptyPermissions();
     _errorMessage = '';
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    emailController
+      ..removeListener(_onEmailChanged)
+      ..dispose();
+    super.dispose();
+  }
+
+  static StorePermissions _createEmptyPermissions() {
+    return StorePermissions(
+      product: StoreProductPermission(),
+      member: StoreMemberPermission(),
+      report: StoreReportPermission(),
+      order: StoreOrderPermission(),
+      invoice: StoreInvoicePermission(),
+      supplier: StoreSupplierPermission(),
+      transaction: StoreTransactionPermission(),
+    );
   }
 }

@@ -3,30 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:sabitou_rpc/models.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-import '../repositories/business_repository.dart';
 import '../themes/app_colors.dart';
-import 'user_preference.dart';
-
-/// Checks user has store permissions.
-Future<bool> hasStorePermission(
-  StoreResourceType resourceType,
-  ResourceActionType actionType,
-) async {
-  final userId = UserPreferences.instance.user?.refId;
-  final businessId = UserPreferences.instance.business?.refId;
-
-  if (userId == null || businessId == null) return false;
-  final businessMemberRepository = BusinessRepository.instance;
-  final member = await businessMemberRepository.getBusinessMember(
-    userId,
-    businessId,
-  );
-  if (member == null) return false;
-
-  return member.permissions.any(
-    (p) => p.resourceType == resourceType && p.actionType == actionType,
-  );
-}
 
 /// Checks if a product is low in stock.
 bool isLowStock(StoreProduct businessProduct) {

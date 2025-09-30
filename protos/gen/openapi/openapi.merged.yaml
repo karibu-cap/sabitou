@@ -912,48 +912,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/identity.v1.ResetPasswordResponse'
-  /identity.v1.PermissionService/CheckBusinessPermission:
-    post:
-      tags:
-        - identity.v1.PermissionService
-      summary: Checks if a member has a business permission.
-      description: Checks if a member has a business permission.
-      operationId: identity.v1.PermissionService.CheckBusinessPermission
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/identity.v1.CheckBusinessPermissionRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/identity.v1.CheckBusinessPermissionResponse'
   /identity.v1.PermissionService/CheckStorePermission:
     post:
       tags:
         - identity.v1.PermissionService
-      summary: Checks if a member has a store permission.
-      description: Checks if a member has a store permission.
+      summary: Check if a user has a store permission
+      description: Check if a user has a store permission
       operationId: identity.v1.PermissionService.CheckStorePermission
       parameters:
         - name: Connect-Protocol-Version
@@ -984,48 +948,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/identity.v1.CheckStorePermissionResponse'
-  /identity.v1.PermissionService/CreateBusinessPermission:
-    post:
-      tags:
-        - identity.v1.PermissionService
-      summary: Creates a new business permission.
-      description: Creates a new business permission.
-      operationId: identity.v1.PermissionService.CreateBusinessPermission
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/identity.v1.CreateBusinessPermissionRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/identity.v1.CreateBusinessPermissionResponse'
   /identity.v1.PermissionService/CreateStorePermission:
     post:
       tags:
         - identity.v1.PermissionService
-      summary: Creates a new store permission.
-      description: Creates a new store permission.
+      summary: Create store permission
+      description: Create store permission
       operationId: identity.v1.PermissionService.CreateStorePermission
       parameters:
         - name: Connect-Protocol-Version
@@ -1055,49 +983,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/identity.v1.CreateStorePermissionResponse'
-  /identity.v1.PermissionService/DeleteBusinessPermission:
-    post:
-      tags:
-        - identity.v1.PermissionService
-      summary: Deletes a business permission.
-      description: Deletes a business permission.
-      operationId: identity.v1.PermissionService.DeleteBusinessPermission
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/identity.v1.DeleteBusinessPermissionRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/identity.v1.DeleteBusinessPermissionResponse'
+                $ref: '#/components/schemas/identity.v1.SuccessResponse'
   /identity.v1.PermissionService/DeleteStorePermission:
     post:
       tags:
         - identity.v1.PermissionService
-      summary: Deletes a store permission.
-      description: Deletes a store permission.
+      summary: Delete store permission
+      description: Delete store permission
       operationId: identity.v1.PermissionService.DeleteStorePermission
       parameters:
         - name: Connect-Protocol-Version
@@ -1127,49 +1019,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/identity.v1.DeleteStorePermissionResponse'
-  /identity.v1.PermissionService/UpdateBusinessPermission:
-    post:
-      tags:
-        - identity.v1.PermissionService
-      summary: Updates a business permission.
-      description: Updates a business permission.
-      operationId: identity.v1.PermissionService.UpdateBusinessPermission
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/identity.v1.UpdateBusinessPermissionRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/identity.v1.UpdateBusinessPermissionResponse'
+                $ref: '#/components/schemas/identity.v1.SuccessResponse'
   /identity.v1.PermissionService/UpdateStorePermission:
     post:
       tags:
         - identity.v1.PermissionService
-      summary: Updates a store permission.
-      description: Updates a store permission.
+      summary: Update store permission
+      description: Update store permission
       operationId: identity.v1.PermissionService.UpdateStorePermission
       parameters:
         - name: Connect-Protocol-Version
@@ -1199,7 +1055,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/identity.v1.UpdateStorePermissionResponse'
+                $ref: '#/components/schemas/identity.v1.SuccessResponse'
   /identity.v1.UserService/ChangePassword:
     post:
       tags:
@@ -3496,12 +3352,6 @@ components:
           type: string
           title: business_id
           description: The unique identifier of the business.
-        permissions:
-          type: array
-          items:
-            $ref: '#/components/schemas/identity.v1.BusinessPermission'
-          title: permissions
-          description: The permissions that the user has.
       title: AssociateUserToBusinessRequest
       additionalProperties: false
       description: |-
@@ -3596,12 +3446,6 @@ components:
           type: string
           title: business_id
           description: The unique identifier of the business.
-        permissions:
-          type: array
-          items:
-            $ref: '#/components/schemas/identity.v1.BusinessPermission'
-          title: permissions
-          description: The permissions that the user has.
         memberSince:
           title: member_since
           description: The date since when the user became a member.
@@ -3723,12 +3567,6 @@ components:
           type: string
           title: business_id
           description: The unique identifier of the business.
-        permissions:
-          type: array
-          items:
-            $ref: '#/components/schemas/identity.v1.BusinessPermission'
-          title: permissions
-          description: The permissions that the user has.
       title: CreateUserToBusinessRequest
       additionalProperties: false
       description: |-
@@ -3934,18 +3772,6 @@ components:
           title: business_id
           minLength: 3
           description: The unique identifier of the business.
-        addPermissions:
-          type: array
-          items:
-            $ref: '#/components/schemas/identity.v1.BusinessPermission'
-          title: add_permissions
-          description: The permissions to add (optional).
-        removePermissions:
-          type: array
-          items:
-            $ref: '#/components/schemas/identity.v1.BusinessPermission'
-          title: remove_permissions
-          description: The permissions to remove (optional).
       title: UpdateBusinessMemberRequest
       required:
         - userId
@@ -4177,25 +4003,6 @@ components:
         - AUTH_ACTION_TYPE_VERIFY_PHONE_NUMBER
         - AUTH_ACTION_TYPE_INITIALIZE_PASSWORD
         - AUTH_ACTION_TYPE_RESET_PASSWORD
-    identity.v1.BusinessPermission:
-      type: object
-      properties:
-        resourceType:
-          title: resource_type
-          $ref: '#/components/schemas/identity.v1.BusinessResourceType'
-        actionType:
-          title: action_type
-          $ref: '#/components/schemas/identity.v1.ResourceActionType'
-      title: BusinessPermission
-      additionalProperties: false
-    identity.v1.BusinessResourceType:
-      type: string
-      title: BusinessResourceType
-      enum:
-        - BUSINESS_RESOURCE_TYPE_UNSPECIFIED
-        - BUSINESS_RESOURCE_TYPE_BUSINESS
-        - BUSINESS_RESOURCE_TYPE_MEMBER
-        - BUSINESS_RESOURCE_TYPE_SUPPLIER
     identity.v1.ConnectedAccount:
       type: object
       properties:
@@ -4219,15 +4026,6 @@ components:
         - PROVIDER_TYPE_FIREBASE_EMAIL
         - PROVIDER_TYPE_GOOGLE
         - PROVIDER_TYPE_INTERNAL_BUSINESS_AUTH
-    identity.v1.ResourceActionType:
-      type: string
-      title: ResourceActionType
-      enum:
-        - RESOURCE_ACTION_TYPE_UNSPECIFIED
-        - RESOURCE_ACTION_TYPE_READ
-        - RESOURCE_ACTION_TYPE_ADD
-        - RESOURCE_ACTION_TYPE_UPDATE
-        - RESOURCE_ACTION_TYPE_REMOVE
     identity.v1.User:
       type: object
       properties:
@@ -4788,37 +4586,6 @@ components:
           description: Whether the password was successfully reset.
       title: ResetPasswordResponse
       additionalProperties: false
-    identity.v1.CheckBusinessPermissionRequest:
-      type: object
-      properties:
-        userId:
-          type: string
-          title: user_id
-          minLength: 3
-          description: The unique identifier of the member.
-        businessId:
-          type: string
-          title: business_id
-          minLength: 3
-          description: The unique identifier of the business on which we want to check the permission.
-        permission:
-          title: permission
-          description: The permission to check.
-          $ref: '#/components/schemas/identity.v1.BusinessPermission'
-      title: CheckBusinessPermissionRequest
-      required:
-        - userId
-        - businessId
-      additionalProperties: false
-    identity.v1.CheckBusinessPermissionResponse:
-      type: object
-      properties:
-        hasPermission:
-          type: boolean
-          title: has_permission
-          description: Whether the member has the permission.
-      title: CheckBusinessPermissionResponse
-      additionalProperties: false
     identity.v1.CheckStorePermissionRequest:
       type: object
       properties:
@@ -4826,16 +4593,14 @@ components:
           type: string
           title: user_id
           minLength: 3
-          description: The unique identifier of the member.
         storeId:
           type: string
           title: store_id
           minLength: 3
-          description: The unique identifier of the store on which we want to check the permission.
-        permission:
-          title: permission
-          description: The permission to check.
-          $ref: '#/components/schemas/identity.v1.StorePermission'
+        permissionField:
+          type: string
+          title: permission_field
+          description: 'Example: "product.create_product_in_inventory"'
       title: CheckStorePermissionRequest
       required:
         - userId
@@ -4847,44 +4612,14 @@ components:
         hasPermission:
           type: boolean
           title: has_permission
-          description: Whether the member has the permission.
       title: CheckStorePermissionResponse
-      additionalProperties: false
-    identity.v1.CreateBusinessPermissionRequest:
-      type: object
-      properties:
-        businessPermission:
-          title: business_permission
-          $ref: '#/components/schemas/identity.v1.BusinessPermission'
-        actionType:
-          title: action_type
-          $ref: '#/components/schemas/identity.v1.ResourceActionType'
-        businessId:
-          type: string
-          title: business_id
-          minLength: 3
-      title: CreateBusinessPermissionRequest
-      required:
-        - businessId
-      additionalProperties: false
-    identity.v1.CreateBusinessPermissionResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          title: success
-          description: Whether the permission group was successfully created.
-      title: CreateBusinessPermissionResponse
       additionalProperties: false
     identity.v1.CreateStorePermissionRequest:
       type: object
       properties:
-        storePermission:
-          title: store_permission
-          $ref: '#/components/schemas/identity.v1.StorePermission'
-        actionType:
-          title: action_type
-          $ref: '#/components/schemas/identity.v1.ResourceActionType'
+        permissions:
+          title: permissions
+          $ref: '#/components/schemas/identity.v1.StorePermissions'
         storeId:
           type: string
           title: store_id
@@ -4893,36 +4628,6 @@ components:
       required:
         - storeId
       additionalProperties: false
-    identity.v1.CreateStorePermissionResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          title: success
-          description: Whether the permission group was successfully created.
-      title: CreateStorePermissionResponse
-      additionalProperties: false
-    identity.v1.DeleteBusinessPermissionRequest:
-      type: object
-      properties:
-        businessPermissionId:
-          type: string
-          title: business_permission_id
-          minLength: 3
-          description: The unique identifier of the permission group to delete.
-      title: DeleteBusinessPermissionRequest
-      required:
-        - businessPermissionId
-      additionalProperties: false
-    identity.v1.DeleteBusinessPermissionResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          title: success
-          description: Whether the permission group was successfully deleted.
-      title: DeleteBusinessPermissionResponse
-      additionalProperties: false
     identity.v1.DeleteStorePermissionRequest:
       type: object
       properties:
@@ -4930,89 +4635,153 @@ components:
           type: string
           title: store_permission_id
           minLength: 3
-          description: The unique identifier of the permission group to delete.
       title: DeleteStorePermissionRequest
       required:
         - storePermissionId
       additionalProperties: false
-    identity.v1.DeleteStorePermissionResponse:
+    identity.v1.StoreInvoicePermission:
+      type: object
+      properties:
+        readInvoice:
+          type: boolean
+          title: read_invoice
+        createInvoice:
+          type: boolean
+          title: create_invoice
+      title: StoreInvoicePermission
+      additionalProperties: false
+      description: / ----- INVOICE ----- ///
+    identity.v1.StoreMemberPermission:
+      type: object
+      properties:
+        readInformation:
+          type: boolean
+          title: read_information
+        inviteMember:
+          type: boolean
+          title: invite_member
+        updateMember:
+          type: boolean
+          title: update_member
+        deleteMember:
+          type: boolean
+          title: delete_member
+      title: StoreMemberPermission
+      additionalProperties: false
+      description: / ----- MEMBER ----- ///
+    identity.v1.StoreOrderPermission:
+      type: object
+      properties:
+        readOrder:
+          type: boolean
+          title: read_order
+        createOrder:
+          type: boolean
+          title: create_order
+      title: StoreOrderPermission
+      additionalProperties: false
+      description: / ----- ORDER ----- ///
+    identity.v1.StorePermissions:
+      type: object
+      properties:
+        product:
+          title: product
+          $ref: '#/components/schemas/identity.v1.StoreProductPermission'
+        member:
+          title: member
+          $ref: '#/components/schemas/identity.v1.StoreMemberPermission'
+        report:
+          title: report
+          $ref: '#/components/schemas/identity.v1.StoreReportPermission'
+        order:
+          title: order
+          $ref: '#/components/schemas/identity.v1.StoreOrderPermission'
+        invoice:
+          title: invoice
+          $ref: '#/components/schemas/identity.v1.StoreInvoicePermission'
+        supplier:
+          title: supplier
+          $ref: '#/components/schemas/identity.v1.StoreSupplierPermission'
+        transaction:
+          title: transaction
+          $ref: '#/components/schemas/identity.v1.StoreTransactionPermission'
+      title: StorePermissions
+      additionalProperties: false
+      description: / ----- STORE PERMISSIONS (AGGREGATOR) ----- ///
+    identity.v1.StoreProductPermission:
+      type: object
+      properties:
+        readProductInInventory:
+          type: boolean
+          title: read_product_in_inventory
+        createProductInInventory:
+          type: boolean
+          title: create_product_in_inventory
+        updateProductInInventory:
+          type: boolean
+          title: update_product_in_inventory
+        deleteProductInInventory:
+          type: boolean
+          title: delete_product_in_inventory
+      title: StoreProductPermission
+      additionalProperties: false
+      description: / ----- PRODUCT ----- ///
+    identity.v1.StoreReportPermission:
+      type: object
+      properties:
+        readReport:
+          type: boolean
+          title: read_report
+      title: StoreReportPermission
+      additionalProperties: false
+      description: / ----- REPORT ----- ///
+    identity.v1.StoreSupplierPermission:
+      type: object
+      properties:
+        readSupplier:
+          type: boolean
+          title: read_supplier
+        createSupplier:
+          type: boolean
+          title: create_supplier
+        updateSupplier:
+          type: boolean
+          title: update_supplier
+        deleteSupplier:
+          type: boolean
+          title: delete_supplier
+      title: StoreSupplierPermission
+      additionalProperties: false
+      description: / ----- SUPPLIER ----- ///
+    identity.v1.StoreTransactionPermission:
+      type: object
+      properties:
+        readTransaction:
+          type: boolean
+          title: read_transaction
+        createTransaction:
+          type: boolean
+          title: create_transaction
+        updateTransaction:
+          type: boolean
+          title: update_transaction
+      title: StoreTransactionPermission
+      additionalProperties: false
+      description: / ----- TRANSACTION ----- ///
+    identity.v1.SuccessResponse:
       type: object
       properties:
         success:
           type: boolean
           title: success
-          description: Whether the permission group was successfully deleted.
-      title: DeleteStorePermissionResponse
-      additionalProperties: false
-    identity.v1.GetStorePermissionsRequest:
-      type: object
-      properties:
-        storeId:
-          type: string
-          title: store_id
-          minLength: 3
-          description: The unique identifier of the store to retrieve.
-      title: GetStorePermissionsRequest
-      required:
-        - storeId
-      additionalProperties: false
-    identity.v1.StorePermission:
-      type: object
-      properties:
-        resourceType:
-          title: resource_type
-          $ref: '#/components/schemas/identity.v1.StoreResourceType'
-        actionType:
-          title: action_type
-          $ref: '#/components/schemas/identity.v1.ResourceActionType'
-      title: StorePermission
-      additionalProperties: false
-    identity.v1.StoreResourceType:
-      type: string
-      title: StoreResourceType
-      enum:
-        - STORE_RESOURCE_TYPE_UNSPECIFIED
-        - STORE_RESOURCE_TYPE_STORE
-        - STORE_RESOURCE_TYPE_INVOICE
-        - STORE_RESOURCE_TYPE_ORDER
-        - STORE_RESOURCE_TYPE_SUPPLIER_ORDER
-        - STORE_RESOURCE_TYPE_PRODUCT
-    identity.v1.UpdateBusinessPermissionRequest:
-      type: object
-      properties:
-        businessPermission:
-          title: business_permission
-          $ref: '#/components/schemas/identity.v1.BusinessPermission'
-        actionType:
-          title: action_type
-          $ref: '#/components/schemas/identity.v1.ResourceActionType'
-        businessPermissionId:
-          type: string
-          title: business_permission_id
-          minLength: 3
-          description: The unique identifier of the business permission.
-      title: UpdateBusinessPermissionRequest
-      required:
-        - businessPermissionId
-      additionalProperties: false
-    identity.v1.UpdateBusinessPermissionResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          title: success
-          description: Whether the permission group was successfully updated.
-      title: UpdateBusinessPermissionResponse
+      title: SuccessResponse
       additionalProperties: false
     identity.v1.UpdateStorePermissionRequest:
       type: object
       properties:
-        storePermission:
-          title: store_permission
-          $ref: '#/components/schemas/identity.v1.StorePermission'
-        actionType:
-          title: action_type
-          $ref: '#/components/schemas/identity.v1.ResourceActionType'
+        permissions:
+          title: permissions
+          $ref: '#/components/schemas/identity.v1.StorePermissions'
         storePermissionId:
           type: string
           title: store_permission_id
@@ -5020,15 +4789,6 @@ components:
       title: UpdateStorePermissionRequest
       required:
         - storePermissionId
-      additionalProperties: false
-    identity.v1.UpdateStorePermissionResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          title: success
-          description: Whether the permission group was successfully updated.
-      title: UpdateStorePermissionResponse
       additionalProperties: false
     identity.v1.ChangePasswordRequest:
       type: object
@@ -6778,11 +6538,9 @@ components:
           title: email
           description: The email of the user.
         permissions:
-          type: array
-          items:
-            $ref: '#/components/schemas/identity.v1.StorePermission'
           title: permissions
           description: The permissions that the user has.
+          $ref: '#/components/schemas/identity.v1.StorePermissions'
         storeId:
           type: string
           title: store_id
@@ -7087,11 +6845,9 @@ components:
           title: store_id
           description: The unique identifier of the store.
         permissions:
-          type: array
-          items:
-            $ref: '#/components/schemas/identity.v1.StorePermission'
           title: permissions
           description: The permissions that the user has.
+          $ref: '#/components/schemas/identity.v1.StorePermissions'
         memberSince:
           title: member_since
           description: The date since when the user became a member.
@@ -7147,18 +6903,10 @@ components:
           title: store_id
           minLength: 3
           description: The unique identifier of the store.
-        addPermissions:
-          type: array
-          items:
-            $ref: '#/components/schemas/identity.v1.StorePermission'
-          title: add_permissions
-          description: The permissions to add (optional).
-        removePermissions:
-          type: array
-          items:
-            $ref: '#/components/schemas/identity.v1.StorePermission'
-          title: remove_permissions
-          description: The permissions to remove (optional).
+        permissions:
+          title: permissions
+          description: The new permissions to add (optional).
+          $ref: '#/components/schemas/identity.v1.StorePermissions'
       title: UpdateStoreMemberRequest
       required:
         - userId

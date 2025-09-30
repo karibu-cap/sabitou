@@ -607,36 +607,135 @@ components:
         - PROVIDER_TYPE_FIREBASE_EMAIL
         - PROVIDER_TYPE_GOOGLE
         - PROVIDER_TYPE_INTERNAL_BUSINESS_AUTH
-    identity.v1.ResourceActionType:
-      type: string
-      title: ResourceActionType
-      enum:
-        - RESOURCE_ACTION_TYPE_UNSPECIFIED
-        - RESOURCE_ACTION_TYPE_READ
-        - RESOURCE_ACTION_TYPE_ADD
-        - RESOURCE_ACTION_TYPE_UPDATE
-        - RESOURCE_ACTION_TYPE_REMOVE
-    identity.v1.StorePermission:
+    identity.v1.StoreInvoicePermission:
       type: object
       properties:
-        resourceType:
-          title: resource_type
-          $ref: '#/components/schemas/identity.v1.StoreResourceType'
-        actionType:
-          title: action_type
-          $ref: '#/components/schemas/identity.v1.ResourceActionType'
-      title: StorePermission
+        readInvoice:
+          type: boolean
+          title: read_invoice
+        createInvoice:
+          type: boolean
+          title: create_invoice
+      title: StoreInvoicePermission
       additionalProperties: false
-    identity.v1.StoreResourceType:
-      type: string
-      title: StoreResourceType
-      enum:
-        - STORE_RESOURCE_TYPE_UNSPECIFIED
-        - STORE_RESOURCE_TYPE_STORE
-        - STORE_RESOURCE_TYPE_INVOICE
-        - STORE_RESOURCE_TYPE_ORDER
-        - STORE_RESOURCE_TYPE_SUPPLIER_ORDER
-        - STORE_RESOURCE_TYPE_PRODUCT
+      description: / ----- INVOICE ----- ///
+    identity.v1.StoreMemberPermission:
+      type: object
+      properties:
+        readInformation:
+          type: boolean
+          title: read_information
+        inviteMember:
+          type: boolean
+          title: invite_member
+        updateMember:
+          type: boolean
+          title: update_member
+        deleteMember:
+          type: boolean
+          title: delete_member
+      title: StoreMemberPermission
+      additionalProperties: false
+      description: / ----- MEMBER ----- ///
+    identity.v1.StoreOrderPermission:
+      type: object
+      properties:
+        readOrder:
+          type: boolean
+          title: read_order
+        createOrder:
+          type: boolean
+          title: create_order
+      title: StoreOrderPermission
+      additionalProperties: false
+      description: / ----- ORDER ----- ///
+    identity.v1.StorePermissions:
+      type: object
+      properties:
+        product:
+          title: product
+          $ref: '#/components/schemas/identity.v1.StoreProductPermission'
+        member:
+          title: member
+          $ref: '#/components/schemas/identity.v1.StoreMemberPermission'
+        report:
+          title: report
+          $ref: '#/components/schemas/identity.v1.StoreReportPermission'
+        order:
+          title: order
+          $ref: '#/components/schemas/identity.v1.StoreOrderPermission'
+        invoice:
+          title: invoice
+          $ref: '#/components/schemas/identity.v1.StoreInvoicePermission'
+        supplier:
+          title: supplier
+          $ref: '#/components/schemas/identity.v1.StoreSupplierPermission'
+        transaction:
+          title: transaction
+          $ref: '#/components/schemas/identity.v1.StoreTransactionPermission'
+      title: StorePermissions
+      additionalProperties: false
+      description: / ----- STORE PERMISSIONS (AGGREGATOR) ----- ///
+    identity.v1.StoreProductPermission:
+      type: object
+      properties:
+        readProductInInventory:
+          type: boolean
+          title: read_product_in_inventory
+        createProductInInventory:
+          type: boolean
+          title: create_product_in_inventory
+        updateProductInInventory:
+          type: boolean
+          title: update_product_in_inventory
+        deleteProductInInventory:
+          type: boolean
+          title: delete_product_in_inventory
+      title: StoreProductPermission
+      additionalProperties: false
+      description: / ----- PRODUCT ----- ///
+    identity.v1.StoreReportPermission:
+      type: object
+      properties:
+        readReport:
+          type: boolean
+          title: read_report
+      title: StoreReportPermission
+      additionalProperties: false
+      description: / ----- REPORT ----- ///
+    identity.v1.StoreSupplierPermission:
+      type: object
+      properties:
+        readSupplier:
+          type: boolean
+          title: read_supplier
+        createSupplier:
+          type: boolean
+          title: create_supplier
+        updateSupplier:
+          type: boolean
+          title: update_supplier
+        deleteSupplier:
+          type: boolean
+          title: delete_supplier
+      title: StoreSupplierPermission
+      additionalProperties: false
+      description: / ----- SUPPLIER ----- ///
+    identity.v1.StoreTransactionPermission:
+      type: object
+      properties:
+        readTransaction:
+          type: boolean
+          title: read_transaction
+        createTransaction:
+          type: boolean
+          title: create_transaction
+        updateTransaction:
+          type: boolean
+          title: update_transaction
+      title: StoreTransactionPermission
+      additionalProperties: false
+      description: / ----- TRANSACTION ----- ///
     identity.v1.User:
       type: object
       properties:
@@ -737,11 +836,9 @@ components:
           title: email
           description: The email of the user.
         permissions:
-          type: array
-          items:
-            $ref: '#/components/schemas/identity.v1.StorePermission'
           title: permissions
           description: The permissions that the user has.
+          $ref: '#/components/schemas/identity.v1.StorePermissions'
         storeId:
           type: string
           title: store_id
@@ -1046,11 +1143,9 @@ components:
           title: store_id
           description: The unique identifier of the store.
         permissions:
-          type: array
-          items:
-            $ref: '#/components/schemas/identity.v1.StorePermission'
           title: permissions
           description: The permissions that the user has.
+          $ref: '#/components/schemas/identity.v1.StorePermissions'
         memberSince:
           title: member_since
           description: The date since when the user became a member.
@@ -1106,18 +1201,10 @@ components:
           title: store_id
           minLength: 3
           description: The unique identifier of the store.
-        addPermissions:
-          type: array
-          items:
-            $ref: '#/components/schemas/identity.v1.StorePermission'
-          title: add_permissions
-          description: The permissions to add (optional).
-        removePermissions:
-          type: array
-          items:
-            $ref: '#/components/schemas/identity.v1.StorePermission'
-          title: remove_permissions
-          description: The permissions to remove (optional).
+        permissions:
+          title: permissions
+          description: The new permissions to add (optional).
+          $ref: '#/components/schemas/identity.v1.StorePermissions'
       title: UpdateStoreMemberRequest
       required:
         - userId

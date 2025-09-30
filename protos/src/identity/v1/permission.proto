@@ -4,209 +4,145 @@ package identity.v1;
 
 import "buf/validate/validate.proto";
 
-enum ResourceActionType {
-  RESOURCE_ACTION_TYPE_UNSPECIFIED = 0;
-  // Can read the resource.
-  RESOURCE_ACTION_TYPE_READ = 1;
-  // Can read and create the resource.
-  RESOURCE_ACTION_TYPE_ADD = 2;
-  // Can read, update the resource.
-  RESOURCE_ACTION_TYPE_UPDATE = 3;
-  // Can read, delete the resource.
-  RESOURCE_ACTION_TYPE_REMOVE = 4;
+//
+// ==========================
+//   STORE PERMISSIONS
+// ==========================
+//
+
+/// ----- PRODUCT ----- ///
+message StoreProductPermission {
+  bool read_product_in_inventory = 1;
+  bool create_product_in_inventory = 2;
+  bool update_product_in_inventory = 3;
+  bool delete_product_in_inventory = 4;
 }
 
-enum BusinessResourceType {
-  BUSINESS_RESOURCE_TYPE_UNSPECIFIED = 0;
-  /// Can make all actions about information business.
-  BUSINESS_RESOURCE_TYPE_BUSINESS = 1;
-  /// Can make all actions about business member.
-  BUSINESS_RESOURCE_TYPE_MEMBER = 2;
-  /// Can make all actions about business supplier.
-  BUSINESS_RESOURCE_TYPE_SUPPLIER = 3;
+/// ----- MEMBER ----- ///
+message StoreMemberPermission {
+  bool read_information = 1;
+  bool invite_member = 2;
+  bool update_member = 3;
+  bool delete_member = 4;
 }
 
-enum StoreResourceType {
-  STORE_RESOURCE_TYPE_UNSPECIFIED = 0;
-  /// Can make all actions about information store.
-  STORE_RESOURCE_TYPE_STORE = 1;
-  /// Can make all actions about store invoice.
-  STORE_RESOURCE_TYPE_INVOICE = 2;
-  /// Can make all actions about store order.
-  STORE_RESOURCE_TYPE_ORDER = 3;
-  /// Can make all actions about supplier order.
-  STORE_RESOURCE_TYPE_SUPPLIER_ORDER = 4;
-  /// Can make all actions about store product.
-  STORE_RESOURCE_TYPE_PRODUCT = 5;
+/// ----- REPORT ----- ///
+message StoreReportPermission {
+  bool read_report = 1;
 }
 
-message BusinessPermission {
-  BusinessResourceType resource_type = 1;
-  ResourceActionType action_type = 2;
+/// ----- ORDER ----- ///
+message StoreOrderPermission {
+  bool read_order = 1;
+  bool create_order = 2;
 }
 
-message StorePermission {
-  StoreResourceType resource_type = 1;
-  ResourceActionType action_type = 2;
+/// ----- INVOICE ----- ///
+message StoreInvoicePermission {
+  bool read_invoice = 1;
+  bool create_invoice = 2;
 }
 
-message CreateBusinessPermissionRequest {
-  BusinessPermission business_permission = 1;
-  ResourceActionType action_type = 2;
-  string business_id = 3 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).string.min_len = 3
-  ];
+/// ----- SUPPLIER ----- ///
+message StoreSupplierPermission {
+  bool read_supplier = 1;
+  bool create_supplier = 2;
+  bool update_supplier = 3;
+  bool delete_supplier = 4;
 }
 
-message CreateBusinessPermissionResponse {
-  // Whether the permission group was successfully created.
-  bool success = 1;
+/// ----- TRANSACTION ----- ///
+message StoreTransactionPermission {
+  bool read_transaction = 1;
+  bool create_transaction = 2;
+  bool update_transaction = 3;
 }
+
+/// ----- STORE PERMISSIONS (AGGREGATOR) ----- ///
+message StorePermissions {
+  StoreProductPermission product = 1;
+  StoreMemberPermission member = 2;
+  StoreReportPermission report = 3;
+  StoreOrderPermission order = 4;
+  StoreInvoicePermission invoice = 5;
+  StoreSupplierPermission supplier = 6;
+  StoreTransactionPermission transaction = 7;
+}
+
+//
+// ==========================
+//   REQUESTS
+// ==========================
+//
 
 message CreateStorePermissionRequest {
-  StorePermission store_permission = 1;
-  ResourceActionType action_type = 2;
-  string store_id = 3 [
+  StorePermissions permissions = 1;
+  string store_id = 2 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
-}
-
-message CreateStorePermissionResponse {
-  // Whether the permission group was successfully created.
-  bool success = 1;
-}
-
-message UpdateBusinessPermissionRequest {
-  BusinessPermission business_permission = 1;
-  ResourceActionType action_type = 2;
-  // The unique identifier of the business permission.
-  string business_permission_id = 3 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).string.min_len = 3
-  ];
-}
-
-message UpdateBusinessPermissionResponse {
-  // Whether the permission group was successfully updated.
-  bool success = 1;
 }
 
 message UpdateStorePermissionRequest {
-  StorePermission store_permission = 1;
-  ResourceActionType action_type = 2;
-  string store_permission_id = 3 [
+  StorePermissions permissions = 1;
+  string store_permission_id = 2 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
-}
-
-message UpdateStorePermissionResponse {
-  // Whether the permission group was successfully updated.
-  bool success = 1;
-}
-
-message DeleteBusinessPermissionRequest {
-  // The unique identifier of the permission group to delete.
-  string business_permission_id = 1 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).string.min_len = 3
-  ];
-}
-
-message DeleteBusinessPermissionResponse {
-  // Whether the permission group was successfully deleted.
-  bool success = 1;
 }
 
 message DeleteStorePermissionRequest {
-  // The unique identifier of the permission group to delete.
   string store_permission_id = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3
   ];
 }
 
-message DeleteStorePermissionResponse {
-  // Whether the permission group was successfully deleted.
+message CheckStorePermissionRequest {
+  string user_id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+
+  string store_id = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 3
+  ];
+
+  // Example: "product.create_product_in_inventory"
+  string permission_field = 3;
+}
+
+//
+// ==========================
+//   RESPONSES
+// ==========================
+//
+
+message SuccessResponse {
   bool success = 1;
 }
 
-message GetStorePermissionsRequest {
-  // The unique identifier of the store to retrieve.
-  string store_id = 1 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).string.min_len = 3
-  ];
-}
-
-message CheckBusinessPermissionRequest {
-  // The unique identifier of the member.
-  string user_id = 1 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).string.min_len = 3
-  ];
-
-  // The unique identifier of the business on which we want to check the permission.
-  string business_id = 3 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).string.min_len = 3
-  ];
-
-  // The permission to check.
-  BusinessPermission permission = 4;
-}
-
-message CheckBusinessPermissionResponse {
-  // Whether the member has the permission.
-  bool has_permission = 1;
-}
-
-message CheckStorePermissionRequest {
-  // The unique identifier of the member.
-  string user_id = 1 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).string.min_len = 3
-  ];
-
-  // The unique identifier of the store on which we want to check the permission.
-  string store_id = 3 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).string.min_len = 3
-  ];
-
-  // The permission to check.
-  StorePermission permission = 4;
-}
-
 message CheckStorePermissionResponse {
-  // Whether the member has the permission.
   bool has_permission = 1;
 }
+
+//
+// ==========================
+//   SERVICE
+// ==========================
+//
 
 service PermissionService {
-  // Creates a new business permission.
-  rpc CreateBusinessPermission(CreateBusinessPermissionRequest) returns (CreateBusinessPermissionResponse) {}
+  // Create store permission
+  rpc CreateStorePermission(CreateStorePermissionRequest) returns (SuccessResponse) {}
 
-  // Updates a business permission.
-  rpc UpdateBusinessPermission(UpdateBusinessPermissionRequest) returns (UpdateBusinessPermissionResponse) {}
+  // Update store permission
+  rpc UpdateStorePermission(UpdateStorePermissionRequest) returns (SuccessResponse) {}
 
-  // Deletes a business permission.
-  rpc DeleteBusinessPermission(DeleteBusinessPermissionRequest) returns (DeleteBusinessPermissionResponse) {}
+  // Delete store permission
+  rpc DeleteStorePermission(DeleteStorePermissionRequest) returns (SuccessResponse) {}
 
-  // Creates a new store permission.
-  rpc CreateStorePermission(CreateStorePermissionRequest) returns (CreateStorePermissionResponse) {}
-
-  // Updates a store permission.
-  rpc UpdateStorePermission(UpdateStorePermissionRequest) returns (UpdateStorePermissionResponse) {}
-
-  // Deletes a store permission.
-  rpc DeleteStorePermission(DeleteStorePermissionRequest) returns (DeleteStorePermissionResponse) {}
-
-  // Checks if a member has a business permission.
-  rpc CheckBusinessPermission(CheckBusinessPermissionRequest) returns (CheckBusinessPermissionResponse) {}
-
-  // Checks if a member has a store permission.
+  // Check if a user has a store permission
   rpc CheckStorePermission(CheckStorePermissionRequest) returns (CheckStorePermissionResponse) {}
 }

@@ -129,14 +129,12 @@ class UsersViewModel {
   /// Updates member permissions
   Future<bool> updateStoreMemberPermissions({
     required String userId,
-    List<StorePermission>? addPermissions,
-    List<StorePermission>? removePermissions,
+    StorePermissions? permissions,
   }) async {
     final request = UpdateStoreMemberRequest(
       userId: userId,
       storeId: storeId,
-      addPermissions: addPermissions ?? [],
-      removePermissions: removePermissions ?? [],
+      permissions: permissions,
     );
 
     return await _storeRepository.updateStoreMember(request);
@@ -166,7 +164,7 @@ class UsersViewModel {
   /// Invites a user to join the store.
   Future<bool> addUserToStore(
     String email,
-    List<StorePermission> permissions,
+    StorePermissions permissions,
   ) async {
     final request = AddUserToStoreRequest(
       email: email,
