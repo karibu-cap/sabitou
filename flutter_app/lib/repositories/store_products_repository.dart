@@ -44,7 +44,6 @@ class StoreProductsRepository {
     }
   }
 
-
   /// Lists products with pagination and filters.
   Future<ListProductsResponse> listProducts(ListProductsRequest request) async {
     try {
