@@ -4,7 +4,6 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../services/internationalization/internationalization.dart';
 import '../../../themes/app_colors.dart';
-import '../../../utils/common_functions.dart';
 import '../../../widgets/custom_grid.dart';
 import '../reports_controller.dart';
 
@@ -16,6 +15,8 @@ class InventoryInStock extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = context.watch<ReportsController>();
+
+    // Get inventory data from the ReportsViewModel through the controller
 
     return CustomGrid(
       minItemWidth: 300,
@@ -30,16 +31,7 @@ class InventoryInStock extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                controller.storeProducts
-                    .fold(
-                      0,
-                      (previousValue, element) =>
-                          previousValue +
-                          (element.stockQuantity > 0 && !isLowStock(element)
-                              ? 1
-                              : 0),
-                    )
-                    .toString(),
+                controller.totalProducts.toString(),
                 style: ShadTheme.of(
                   context,
                 ).textTheme.h4.copyWith(color: AppColors.success700),
@@ -60,13 +52,7 @@ class InventoryInStock extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                controller.storeProducts
-                    .fold(
-                      0,
-                      (previousValue, element) =>
-                          previousValue + (isLowStock(element) ? 1 : 0),
-                    )
-                    .toString(),
+                controller.lowStockCount.toString(),
                 style: ShadTheme.of(
                   context,
                 ).textTheme.h4.copyWith(color: AppColors.orange500),
@@ -87,12 +73,7 @@ class InventoryInStock extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                controller.storeProducts
-                    .fold(
-                      0,
-                      (previousValue, element) =>
-                          previousValue + (element.stockQuantity <= 0 ? 1 : 0),
-                    )
+                (controller.totalProducts - controller.lowStockCount)
                     .toString(),
                 style: ShadTheme.of(
                   context,

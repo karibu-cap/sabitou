@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+package financial.v1;
+
+import "buf/validate/validate.proto";
+import "financial/v1/financial_utils.proto";
+import "google/protobuf/timestamp.proto";
+
+/**
+ * CreditNote (Avoir / Bon d'Avoir)
+ * Issued to cancel or reduce a previous invoice.
+ * Can be for returns, errors, discounts, etc.
+ *
+ * Fix: Items include batch_id if inventory impact involves specific lots.
+ *
+ * Example - Customer returns damaged goods:
+ *   cn_id: "CN-2025-001"
+ *   related_invoice_id: "INV-2025-001"
+ *   credit_type: CREDIT_TYPE_RETURN
+ *   recipient_id: "CMP-003" (customer)
+ *   items: [2x PRD-001 @ 450000]
+ *   total_amount: -900000 (negative = credit)
+ *   has_inventory_impact: true
+ *
+ * INVENTORY IMPACT (if has_inventory_impact = true):
+ *   +2 PRD-001 back to warehouse
+ *
+ * ACCOUNTING IMPACT:
+ *   Customer now owes: 5400000 - 900000 = 4500000
+ */
+message CreditNote {
+  string document_id = 1 [(buf.validate.field).required = true]; // "CN-2025-001"
+  string related_invoice_id = 2; // Which invoice this corrects
+  CreditNoteType credit_type = 3; // Why credit is issued
+  string issuer_id = 4; // Who issues the credit
+  string recipient_id = 5; // Who receives the credit
+  CreditNoteStatus status = 6;
+  repeated financial.v1.InvoiceLineItem items = 7; // What's being credited
+  int64 total_amount = 8; // Negative value
+  string currency = 9;
+  bool has_inventory_impact = 10; // Does stock come back?
+  string related_return_note_id = 11; // If goods returned
+  google.protobuf.Timestamp issue_date = 12;
+  string created_by_user_id = 13;
+  string reason = 14; // Detailed explanation
+  string notes = 15;
+}
+
+enum CreditNoteType {
+  CREDIT_TYPE_UNSPECIFIED = 0;
+  CREDIT_TYPE_RETURN = 1; // Customer returns goods
+  CREDIT_TYPE_PRICE_ERROR = 2; // Invoice had wrong price
+  CREDIT_TYPE_DISCOUNT = 3; // Goodwill gesture
+  CREDIT_TYPE_CANCELLATION = 4; // Full invoice cancellation
+  CREDIT_TYPE_DAMAGED_GOODS = 5; // Goods arrived damaged
+}
+
+enum CreditNoteStatus {
+  CN_STATUS_UNSPECIFIED = 0;
+  CN_STATUS_DRAFT = 1;
+  CN_STATUS_ISSUED = 2; // Sent to customer
+  CN_STATUS_APPLIED = 3; // Applied to customer account
+}

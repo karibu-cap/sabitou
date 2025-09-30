@@ -5,6 +5,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../../services/internationalization/internationalization.dart';
 import '../../../themes/app_colors.dart';
+import '../../../utils/common_functions.dart';
 import '../reports_controller.dart';
 import '../reports_view_model.dart';
 
@@ -17,212 +18,21 @@ class SalesProfileTrend extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = context.watch<ReportsController>();
 
-    final List<ChartData<String>> chartData = [
-      ChartData(
-        x: 'Jan',
+    // Create monthly data from supplier performances
+    final List<ChartData<String>> chartDatas = List.generate(12, (index) {
+      final month = index + 1;
+      final monthName = getMonthName(month);
+
+      return ChartData<String>(
+        x: monthName,
         y: controller.salesAndProfitData
-            .where((data) => data.date.month == 1)
-            .fold(
+            .where((data) => data.date.toDateTime().month == month)
+            .fold<double>(
               0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.salesValue,
+              (previousValue, element) => previousValue + element.salesValue,
             ),
-        y1: controller.salesAndProfitData
-            .where((data) => data.date.month == 1)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.profitValue,
-            ),
-      ),
-      ChartData(
-        x: 'Feb',
-        y: controller.salesAndProfitData
-            .where((data) => data.date.month == 2)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.salesValue,
-            ),
-        y1: controller.salesAndProfitData
-            .where((data) => data.date.month == 1)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.profitValue,
-            ),
-      ),
-      ChartData(
-        x: 'Mar',
-        y: controller.salesAndProfitData
-            .where((data) => data.date.month == 3)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.salesValue,
-            ),
-        y1: controller.salesAndProfitData
-            .where((data) => data.date.month == 1)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.profitValue,
-            ),
-      ),
-      ChartData(
-        x: 'Apr',
-        y: controller.salesAndProfitData
-            .where((data) => data.date.month == 4)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.salesValue,
-            ),
-        y1: controller.salesAndProfitData
-            .where((data) => data.date.month == 1)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.profitValue,
-            ),
-      ),
-      ChartData(
-        x: 'May',
-        y: controller.salesAndProfitData
-            .where((data) => data.date.month == 5)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.salesValue,
-            ),
-        y1: controller.salesAndProfitData
-            .where((data) => data.date.month == 1)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.profitValue,
-            ),
-      ),
-      ChartData(
-        x: 'Jun',
-        y: controller.salesAndProfitData
-            .where((data) => data.date.month == 6)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.salesValue,
-            ),
-        y1: controller.salesAndProfitData
-            .where((data) => data.date.month == 1)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.profitValue,
-            ),
-      ),
-      ChartData(
-        x: 'Jul',
-        y: controller.salesAndProfitData
-            .where((data) => data.date.month == 7)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.salesValue,
-            ),
-        y1: controller.salesAndProfitData
-            .where((data) => data.date.month == 1)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.profitValue,
-            ),
-      ),
-      ChartData(
-        x: 'Aug',
-        y: controller.salesAndProfitData
-            .where((data) => data.date.month == 8)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.salesValue,
-            ),
-        y1: controller.salesAndProfitData
-            .where((data) => data.date.month == 1)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.profitValue,
-            ),
-      ),
-      ChartData(
-        x: 'Sep',
-        y: controller.salesAndProfitData
-            .where((data) => data.date.month == 9)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.salesValue,
-            ),
-        y1: controller.salesAndProfitData
-            .where((data) => data.date.month == 1)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.profitValue,
-            ),
-      ),
-      ChartData(
-        x: 'Oct',
-        y: controller.salesAndProfitData
-            .where((data) => data.date.month == 10)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.salesValue,
-            ),
-        y1: controller.salesAndProfitData
-            .where((data) => data.date.month == 1)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.profitValue,
-            ),
-      ),
-      ChartData(
-        x: 'Nov',
-        y: controller.salesAndProfitData
-            .where((data) => data.date.month == 11)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.salesValue,
-            ),
-        y1: controller.salesAndProfitData
-            .where((data) => data.date.month == 1)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.profitValue,
-            ),
-      ),
-      ChartData(
-        x: 'Dec',
-        y: controller.salesAndProfitData
-            .where((data) => data.date.month == 12)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.salesValue,
-            ),
-        y1: controller.salesAndProfitData
-            .where((data) => data.date.month == 1)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.profitValue,
-            ),
-      ),
-    ];
+      );
+    });
 
     return ShadCard(
       child: Column(
@@ -244,14 +54,14 @@ class SalesProfileTrend extends StatelessWidget {
             tooltipBehavior: TooltipBehavior(enable: true),
             series: [
               SplineSeries<ChartData<String>, String>(
-                dataSource: chartData,
+                dataSource: chartDatas,
                 xValueMapper: (data, _) => data.x,
                 yValueMapper: (data, _) => data.y,
                 markerSettings: const MarkerSettings(isVisible: true),
                 color: AppColors.darkPrimary,
               ),
               SplineSeries<ChartData<String>, String>(
-                dataSource: chartData,
+                dataSource: chartDatas,
                 xValueMapper: (data, _) => data.x,
                 yValueMapper: (data, _) => data.y1,
                 color: AppColors.dartGreen,

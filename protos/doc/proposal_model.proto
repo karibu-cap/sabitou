@@ -1,0 +1,1291 @@
+syntax = "proto3";
+
+package inventory.v1;
+
+import "google/protobuf/timestamp.proto";
+
+// ============================================================================
+// CORE ENTITIES - The main actors in the system
+// ============================================================================
+
+/**
+ * Company represents any business entity in the system.
+ * This can be your own company, suppliers, or customers.
+ * 
+ * Example:
+ *   company_id: "CMP-001"
+ *   name: "TechStore SARL"
+ *   type: COMPANY_TYPE_OWN
+ *   tax_id: "FR12345678901"
+ *   email: "contact@techstore.cm"
+ */
+message Company {
+  string company_id = 1;  // Unique identifier: "CMP-001", "CMP-002"
+  string name = 2;  // Full legal name
+  CompanyType type = 3;  // Own company, supplier, or customer
+  string tax_id = 4;  // VAT/Tax registration number
+  Address address = 5;  // Physical address
+  string email = 6;
+  string phone = 7;
+  google.protobuf.Timestamp created_at = 8;
+}
+
+enum CompanyType {
+  COMPANY_TYPE_UNSPECIFIED = 0;
+  COMPANY_TYPE_OWN = 1;  // Your own company
+  COMPANY_TYPE_SUPPLIER = 2;  // Vendor/supplier
+  COMPANY_TYPE_CUSTOMER = 3;  // Client/customer
+}
+
+/**
+ * Address represents a physical location.
+ */
+message Address {
+  string street = 1;  // "123 Main Street"
+  string city = 2;  // "Yaoundé"
+  string region = 3;  // "Centre"
+  string postal_code = 4;  // "BP 1234"
+  string country = 5;  // "CM" (ISO code)
+}
+
+/**
+ * User represents a person who uses the system.
+ * They belong to a Company and have specific roles.
+ * 
+ * Example:
+ *   user_id: "USR-001"
+ *   company_id: "CMP-001"
+ *   full_name: "Jean Dupont"
+ *   role: USER_ROLE_SALES_MANAGER
+ */
+message User {
+  string user_id = 1;  // "USR-001"
+  string company_id = 2;  // Which company they work for
+  string full_name = 3;  // "Jean Dupont"
+  string email = 4;
+  UserRole role = 5;  // Their permission level
+  google.protobuf.Timestamp created_at = 6;
+}
+
+enum UserRole {
+  USER_ROLE_UNSPECIFIED = 0;
+  USER_ROLE_ADMIN = 1;  // Full system access
+  USER_ROLE_WAREHOUSE_MANAGER = 2;  // Manages inventory
+  USER_ROLE_SALES_MANAGER = 3;  // Handles sales
+  USER_ROLE_PURCHASE_MANAGER = 4;  // Handles purchases
+  USER_ROLE_ACCOUNTANT = 5;  // Financial documents
+  USER_ROLE_CASHIER = 6;  // Point of sale
+}
+
+/**
+ * Warehouse represents a physical storage location.
+ * A company can have multiple warehouses.
+ * 
+ * Example:
+ *   warehouse_id: "WH-001"
+ *   company_id: "CMP-001"
+ *   name: "Main Warehouse Yaoundé"
+ *   type: WAREHOUSE_TYPE_MAIN
+ */
+message Warehouse {
+  string warehouse_id = 1;  // "WH-001"
+  string company_id = 2;  // Owner company
+  string name = 3;  // "Main Warehouse Yaoundé"
+  WarehouseType type = 4;
+  Address address = 5;
+  string manager_user_id = 6;  // Who manages this warehouse
+  google.protobuf.Timestamp created_at = 7;
+}
+
+enum WarehouseType {
+  WAREHOUSE_TYPE_UNSPECIFIED = 0;
+  WAREHOUSE_TYPE_MAIN = 1;  // Primary warehouse
+  WAREHOUSE_TYPE_BRANCH = 2;  // Secondary location
+  WAREHOUSE_TYPE_RETAIL = 3;  // Store with inventory
+  WAREHOUSE_TYPE_TRANSIT = 4;  // Temporary storage
+}
+
+// ============================================================================
+// PRODUCT & INVENTORY
+// ============================================================================
+
+/**
+ * Product represents an item that can be bought, sold, or stored.
+ * 
+ * Fixes: Added purchase_unit_price to distinguish from selling price (unit_price renamed to selling_unit_price for clarity).
+ * Added min_stock_threshold for reorder alerts.
+ * Added expiration_type to indicate if product is perishable (e.g., for general expiration handling).
+ * 
+ * Example:
+ *   product_id: "PRD-001"
+ *   sku: "LAPTOP-HP-15"
+ *   name: "HP Laptop 15 inch"
+ *   category: "Electronics"
+ *   selling_unit_price: 450000 (in smallest currency unit, e.g., cents/centimes)
+ *   purchase_unit_price: 400000
+ *   currency: "XAF"
+ *   unit: "UNIT"
+ *   min_stock_threshold: 10.0
+ */
+message Product {
+  string product_id = 1;  // Internal ID: "PRD-001"
+  string sku = 2;  // Stock Keeping Unit: "LAPTOP-HP-15"
+  string name = 3;  // Display name
+  string description = 4;  // Detailed description
+  string category = 5;  // "Electronics", "Furniture", etc.
+  int64 selling_unit_price = 6;  // Selling price per unit (in smallest currency)
+  int64 purchase_unit_price = 12;  // Purchase price per unit (in smallest currency)
+  string currency = 7;  // "XAF", "EUR", "USD"
+  ProductUnit unit = 8;  // How it's measured
+  double weight_kg = 9;  // Physical weight
+  bool is_active = 10;  // Can still be sold/bought
+  google.protobuf.Timestamp created_at = 11;
+  double min_stock_threshold = 13;  // Minimum stock level to trigger reorder alert
+  ExpirationType expiration_type = 14;  // Indicates if product has expiration
+}
+
+enum ExpirationType {
+  EXPIRATION_TYPE_UNSPECIFIED = 0;
+  EXPIRATION_TYPE_NONE = 1;  // Non-perishable
+  EXPIRATION_TYPE_PRODUCT_LEVEL = 2;  // Expiration at product level (e.g., fixed shelf life)
+  EXPIRATION_TYPE_LOT_LEVEL = 3;  // Requires lot tracking for expiration
+}
+
+enum ProductUnit {
+  PRODUCT_UNIT_UNSPECIFIED = 0;
+  PRODUCT_UNIT_PIECE = 1;  // Individual items (laptops, phones)
+  PRODUCT_UNIT_KILOGRAM = 2;  // Weight-based (rice, sugar)
+  PRODUCT_UNIT_LITER = 3;  // Volume-based (oil, water)
+  PRODUCT_UNIT_METER = 4;  // Length-based (fabric, cable)
+  PRODUCT_UNIT_BOX = 5;  // Packaging unit
+  PRODUCT_UNIT_CARTON = 6;  // Larger packaging
+}
+
+/**
+ * Batch represents a lot of products with specific attributes like expiration.
+ * 
+ * Fix: New message added for lot tracking. Each batch can have its own quantity, expiration date, and is linked to a product and warehouse.
+ * InventoryLevel now aggregates from batches, but batches provide detailed quantity per lot.
+ * 
+ * Example:
+ *   batch_id: "BATCH-2025-001"
+ *   product_id: "PRD-001"
+ *   warehouse_id: "WH-001"
+ *   quantity: 50.0
+ *   expiration_date: 2026-09-29T00:00:00Z
+ *   received_at: 2025-09-29T10:30:00Z
+ */
+message Batch {
+  string batch_id = 1;  // Unique batch/lot ID: "BATCH-2025-001"
+  string product_id = 2;  // Which product this batch is for
+  string warehouse_id = 3;  // Which warehouse stores this batch
+  double quantity = 4;  // Quantity in this specific batch
+  google.protobuf.Timestamp expiration_date = 5;  // Expiration date for this batch
+  google.protobuf.Timestamp received_at = 6;  // When the batch was received
+  string supplier_batch_number = 7;  // Supplier's reference number
+  BatchStatus status = 8;  // e.g., Active, Expired
+  string notes = 9;  // Additional details
+}
+
+enum BatchStatus {
+  BATCH_STATUS_UNSPECIFIED = 0;
+  BATCH_STATUS_ACTIVE = 1;  // Available for use/sale
+  BATCH_STATUS_QUARANTINE = 2;  // Under inspection
+  BATCH_STATUS_EXPIRED = 3;  // Past expiration
+  BATCH_STATUS_CONSUMED = 4;  // Fully used/sold
+}
+
+/**
+ * InventoryLevel tracks how much stock exists in each warehouse.
+ * This is the current state, updated by various documents.
+ * 
+ * Fixes: Added repeated batches for lot-level details (quantity per lot, expiration).
+ * The quantity_available is now the sum of batch quantities (computed).
+ * Added min_threshold per warehouse for the product.
+ * 
+ * Example:
+ *   product_id: "PRD-001"
+ *   warehouse_id: "WH-001"
+ *   quantity_available: 50
+ *   quantity_reserved: 10 (in pending orders)
+ *   quantity_in_transit: 20 (being delivered)
+ *   min_threshold: 15.0
+ *   last_updated: 2025-09-29T10:30:00Z
+ *   batches: [Batch1 with qty 30 exp 2026-01-01, Batch2 with qty 20 exp 2026-06-01]
+ */
+message InventoryLevel {
+  string product_id = 1;  // Which product
+  string warehouse_id = 2;  // Which location
+  double quantity_available = 3;  // Ready to sell/use (sum of batch quantities)
+  double quantity_reserved = 4;  // Allocated to orders not yet fulfilled
+  double quantity_in_transit = 5;  // Being delivered here
+  double min_threshold = 8;  // Minimum stock threshold for this product in this warehouse
+  google.protobuf.Timestamp last_updated = 6;
+  string last_updated_by_user_id = 7;  // Who made last change
+  repeated Batch batches = 9;  // Detailed batches/lots for this product in this warehouse
+}
+
+// ============================================================================
+// PRE-TRANSACTION DOCUMENTS (Before goods move or invoices are issued)
+// ============================================================================
+
+/**
+ * PurchaseOrder (Bon de Commande to supplier)
+ * Created when you want to buy products from a supplier.
+ * Does NOT change inventory yet - just an intention.
+ * 
+ * Flow: Create PO → Send to supplier → Wait for delivery
+ * 
+ * Example:
+ *   po_id: "PO-2025-001"
+ *   supplier_id: "CMP-002" (supplier company)
+ *   buyer_id: "CMP-001" (your company)
+ *   status: PO_STATUS_PENDING
+ *   items: [50x PRD-001 @ 400000 each]
+ *   total_amount: 20000000 (centimes)
+ */
+message PurchaseOrder {
+  string po_id = 1;  // "PO-2025-001"
+  string supplier_id = 2;  // Company selling to you
+  string buyer_id = 3;  // Your company
+  string destination_warehouse_id = 4;  // Where goods will go
+  PurchaseOrderStatus status = 5;
+  repeated OrderLineItem items = 6;
+  int64 total_amount = 7;  // Total cost in smallest currency unit
+  string currency = 8;
+  string created_by_user_id = 9;
+  google.protobuf.Timestamp created_at = 10;
+  google.protobuf.Timestamp expected_delivery_date = 11;
+  string notes = 12;  // Special instructions
+}
+
+enum PurchaseOrderStatus {
+  PO_STATUS_UNSPECIFIED = 0;
+  PO_STATUS_DRAFT = 1;  // Being prepared
+  PO_STATUS_PENDING = 2;  // Sent to supplier, awaiting delivery
+  PO_STATUS_PARTIALLY_RECEIVED = 3;  // Some items delivered
+  PO_STATUS_RECEIVED = 4;  // All items delivered
+  PO_STATUS_CANCELLED = 5;  // Order cancelled
+}
+
+/**
+ * SalesOrder (Bon de Commande from customer)
+ * Created when a customer wants to buy from you.
+ * Does NOT change inventory yet - just reserves it.
+ * 
+ * Flow: Receive customer order → Prepare items → Ship
+ * 
+ * Example:
+ *   so_id: "SO-2025-001"
+ *   customer_id: "CMP-003"
+ *   seller_id: "CMP-001" (your company)
+ *   status: SO_STATUS_CONFIRMED
+ *   items: [10x PRD-001 @ 450000 each]
+ */
+message SalesOrder {
+  string so_id = 1;  // "SO-2025-001"
+  string customer_id = 2;  // Company buying from you
+  string seller_id = 3;  // Your company
+  string source_warehouse_id = 4;  // Where to pick items
+  SalesOrderStatus status = 5;
+  repeated OrderLineItem items = 6;
+  int64 total_amount = 7;
+  string currency = 8;
+  string created_by_user_id = 9;
+  google.protobuf.Timestamp created_at = 10;
+  google.protobuf.Timestamp delivery_date = 11;
+  string notes = 12;
+}
+
+enum SalesOrderStatus {
+  SO_STATUS_UNSPECIFIED = 0;
+  SO_STATUS_DRAFT = 1;  // Being prepared
+  SO_STATUS_CONFIRMED = 2;  // Customer confirmed
+  SO_STATUS_PROCESSING = 3;  // Being prepared in warehouse
+  SO_STATUS_SHIPPED = 4;  // On the way to customer
+  SO_STATUS_DELIVERED = 5;  // Customer received
+  SO_STATUS_CANCELLED = 6;  // Order cancelled
+}
+
+/**
+ * Quotation / Proforma Invoice
+ * A preliminary document showing what the sale would cost.
+ * NOT a real invoice, no accounting impact.
+ * Can be converted to a SalesOrder or Invoice later.
+ * 
+ * Example:
+ *   quotation_id: "QT-2025-001"
+ *   customer_id: "CMP-003"
+ *   valid_until: 2025-10-15
+ *   items: [5x PRD-001 @ 450000 each]
+ *   status: QUOTATION_STATUS_SENT
+ */
+message Quotation {
+  string quotation_id = 1;  // "QT-2025-001"
+  string customer_id = 2;  // Potential customer
+  string seller_id = 3;  // Your company
+  QuotationStatus status = 4;
+  repeated OrderLineItem items = 5;
+  int64 total_amount = 6;
+  string currency = 7;
+  google.protobuf.Timestamp valid_until = 8;  // Expiration date
+  string created_by_user_id = 9;
+  google.protobuf.Timestamp created_at = 10;
+  string notes = 11;
+}
+
+enum QuotationStatus {
+  QUOTATION_STATUS_UNSPECIFIED = 0;
+  QUOTATION_STATUS_DRAFT = 1;
+  QUOTATION_STATUS_SENT = 2;  // Sent to customer
+  QUOTATION_STATUS_ACCEPTED = 3;  // Customer agreed
+  QUOTATION_STATUS_REJECTED = 4;  // Customer declined
+  QUOTATION_STATUS_EXPIRED = 5;  // Past valid_until date
+}
+
+/**
+ * OrderLineItem represents a single product line in an order or quotation.
+ * Used in PurchaseOrder, SalesOrder, Quotation, etc.
+ * 
+ * Fix: Added optional batch_id for specifying lots in orders (e.g., for perishable goods).
+ * 
+ * Example:
+ *   product_id: "PRD-001"
+ *   quantity: 10
+ *   unit_price: 450000
+ *   total: 4500000
+ *   batch_id: "BATCH-2025-001" (optional)
+ */
+message OrderLineItem {
+  string product_id = 1;  // Which product
+  double quantity = 2;  // How many units
+  int64 unit_price = 3;  // Price per unit (in smallest currency)
+  int64 total = 4;  // quantity * unit_price
+  string notes = 5;  // Special notes for this line
+  string batch_id = 6;  // Optional: Specific batch/lot requested
+}
+
+// ============================================================================
+// LOGISTICS DOCUMENTS (Physical movement of goods)
+// These documents ACTUALLY change inventory levels
+// ============================================================================
+
+/**
+ * DeliveryNote (Bon de Livraison)
+ * Accompanies goods when they are physically shipped.
+ * THIS IS WHAT REDUCES INVENTORY at the source.
+ * 
+ * Fix: DeliveryLineItem now includes batch_id for lot tracking.
+ * 
+ * Flow: Pick items → Create DeliveryNote → Ship → Customer receives
+ * 
+ * Example:
+ *   dn_id: "DN-2025-001"
+ *   related_sales_order_id: "SO-2025-001"
+ *   from_warehouse_id: "WH-001"
+ *   to_company_id: "CMP-003" (customer)
+ *   items: [10x PRD-001]
+ *   status: DN_STATUS_IN_TRANSIT
+ * 
+ * INVENTORY IMPACT: -10 PRD-001 from WH-001
+ */
+message DeliveryNote {
+  string dn_id = 1;  // "DN-2025-001"
+  string related_sales_order_id = 2;  // Optional link to order
+  string from_warehouse_id = 3;  // Where goods leave
+  string to_company_id = 4;  // Customer receiving
+  string to_address = 5;  // Delivery address
+  DeliveryNoteStatus status = 6;
+  repeated DeliveryLineItem items = 7;
+  string carrier = 8;  // "DHL", "Local Delivery", etc.
+  string tracking_number = 9;
+  string created_by_user_id = 10;
+  google.protobuf.Timestamp created_at = 11;
+  google.protobuf.Timestamp shipped_at = 12;
+  google.protobuf.Timestamp delivered_at = 13;
+  string notes = 14;
+}
+
+enum DeliveryNoteStatus {
+  DN_STATUS_UNSPECIFIED = 0;
+  DN_STATUS_PREPARED = 1;  // Packed, ready to ship
+  DN_STATUS_IN_TRANSIT = 2;  // On the way
+  DN_STATUS_DELIVERED = 3;  // Customer received
+  DN_STATUS_RETURNED = 4;  // Sent back
+}
+
+/**
+ * ReceivingNote (Bon de Réception)
+ * Created when YOU receive goods from a supplier.
+ * THIS IS WHAT INCREASES YOUR INVENTORY.
+ * 
+ * Fix: ReceivingLineItem now includes batch_id (system-generated or from supplier).
+ * When creating, new Batches are added to InventoryLevel.
+ * 
+ * Flow: Goods arrive → Inspect → Create ReceivingNote → Update inventory
+ * 
+ * Example:
+ *   rn_id: "RN-2025-001"
+ *   related_purchase_order_id: "PO-2025-001"
+ *   supplier_id: "CMP-002"
+ *   warehouse_id: "WH-001"
+ *   items: [48x PRD-001] (expected 50, but 2 damaged)
+ *   status: RN_STATUS_COMPLETED
+ * 
+ * INVENTORY IMPACT: +48 PRD-001 in WH-001
+ */
+message ReceivingNote {
+  string rn_id = 1;  // "RN-2025-001"
+  string related_purchase_order_id = 2;  // Which PO this fulfills
+  string supplier_id = 3;  // Who sent the goods
+  string warehouse_id = 4;  // Where goods are stored
+  ReceivingNoteStatus status = 5;
+  repeated ReceivingLineItem items = 6;
+  string received_by_user_id = 7;  // Who accepted delivery
+  google.protobuf.Timestamp received_at = 8;
+  string notes = 9;  // Condition notes, damages, etc.
+}
+
+enum ReceivingNoteStatus {
+  RN_STATUS_UNSPECIFIED = 0;
+  RN_STATUS_PENDING = 1;  // Expected but not yet arrived
+  RN_STATUS_INSPECTING = 2;  // Goods arrived, being checked
+  RN_STATUS_COMPLETED = 3;  // Accepted and stored
+  RN_STATUS_REJECTED = 4;  // Quality issues, sent back
+}
+
+/**
+ * ReceivingLineItem shows what was actually received vs expected.
+ * 
+ * Fix: Added batch_id and expiration_date for creating new batches on reception.
+ * 
+ * Example:
+ *   product_id: "PRD-001"
+ *   quantity_expected: 50
+ *   quantity_received: 48
+ *   quantity_rejected: 2 (damaged)
+ *   rejection_reason: "Damaged packaging"
+ *   batch_id: "BATCH-2025-001" (generated)
+ *   expiration_date: 2026-09-29T00:00:00Z
+ */
+message ReceivingLineItem {
+  string product_id = 1;
+  double quantity_expected = 2;  // From PO
+  double quantity_received = 3;  // Actually got
+  double quantity_rejected = 4;  // Damaged/wrong items
+  string rejection_reason = 5;
+  string batch_id = 6;  // Generated batch ID for received items
+  google.protobuf.Timestamp expiration_date = 7;  // Provided by supplier or calculated
+}
+
+/**
+ * DeliveryLineItem for tracking shipped quantities.
+ * 
+ * Fix: Added batch_id to specify which lot is being shipped (FIFO/LIFO/expiration-based picking).
+ */
+message DeliveryLineItem {
+  string product_id = 1;
+  double quantity = 2;
+  string serial_numbers = 3;  // For tracked items
+  string batch_id = 4;  // Specific batch/lot being delivered
+}
+
+/**
+ * TransferNote (Bon de Transfert)
+ * For moving inventory between YOUR OWN warehouses.
+ * Reduces at source, increases at destination.
+ * 
+ * Fix: Items now include batch_id for transferring specific lots.
+ * 
+ * Example:
+ *   tn_id: "TN-2025-001"
+ *   from_warehouse_id: "WH-001" (Main warehouse)
+ *   to_warehouse_id: "WH-002" (Branch store)
+ *   items: [20x PRD-001]
+ *   status: TN_STATUS_COMPLETED
+ * 
+ * INVENTORY IMPACT:
+ *   WH-001: -20 PRD-001
+ *   WH-002: +20 PRD-001
+ */
+message TransferNote {
+  string tn_id = 1;  // "TN-2025-001"
+  string from_warehouse_id = 2;  // Source
+  string to_warehouse_id = 3;  // Destination
+  TransferNoteStatus status = 4;
+  repeated DeliveryLineItem items = 5;
+  string requested_by_user_id = 6;
+  string approved_by_user_id = 7;
+  google.protobuf.Timestamp created_at = 8;
+  google.protobuf.Timestamp shipped_at = 9;
+  google.protobuf.Timestamp received_at = 10;
+  string notes = 11;
+}
+
+enum TransferNoteStatus {
+  TN_STATUS_UNSPECIFIED = 0;
+  TN_STATUS_REQUESTED = 1;  // Transfer requested
+  TN_STATUS_APPROVED = 2;  // Management approved
+  TN_STATUS_IN_TRANSIT = 3;  // Being moved
+  TN_STATUS_COMPLETED = 4;  // Received at destination
+  TN_STATUS_CANCELLED = 5;  // Transfer cancelled
+}
+
+// ============================================================================
+// ACCOUNTING DOCUMENTS (Financial records)
+// These are the official financial documents
+// ============================================================================
+
+/**
+ * Invoice (Facture)
+ * The official accounting document for a sale or purchase.
+ * Created AFTER goods are delivered (usually).
+ * 
+ * Fix: InvoiceLineItem now includes optional batch_id for traceability.
+ * 
+ * For SALES: You issue to customer
+ * For PURCHASES: You receive from supplier
+ * 
+ * Example SALES invoice:
+ *   invoice_id: "INV-2025-001"
+ *   invoice_type: INVOICE_TYPE_SALES
+ *   issuer_id: "CMP-001" (your company)
+ *   recipient_id: "CMP-003" (customer)
+ *   related_sales_order_id: "SO-2025-001"
+ *   related_delivery_note_id: "DN-2025-001"
+ *   items: [10x PRD-001 @ 450000]
+ *   subtotal: 4500000
+ *   tax_amount: 900000 (20% VAT)
+ *   total_amount: 5400000
+ *   status: INVOICE_STATUS_UNPAID
+ * 
+ * INVENTORY IMPACT: None (already moved by DeliveryNote)
+ */
+message Invoice {
+  string invoice_id = 1;  // "INV-2025-001"
+  InvoiceType invoice_type = 2;  // Sales or Purchase
+  string issuer_id = 3;  // Company issuing invoice
+  string recipient_id = 4;  // Company receiving invoice
+  string related_sales_order_id = 5;  // Optional link
+  string related_purchase_order_id = 6;  // Optional link
+  string related_delivery_note_id = 7;  // Optional link
+  InvoiceStatus status = 8;
+  repeated InvoiceLineItem items = 9;
+  int64 subtotal = 10;  // Before tax
+  int64 tax_amount = 11;  // VAT/sales tax
+  int64 total_amount = 12;  // Final amount due
+  string currency = 13;
+  google.protobuf.Timestamp issue_date = 14;
+  google.protobuf.Timestamp due_date = 15;  // Payment deadline
+  string created_by_user_id = 16;
+  google.protobuf.Timestamp created_at = 17;
+  string notes = 18;
+  string payment_terms = 19;  // "Net 30", "Cash on delivery", etc.
+}
+
+enum InvoiceType {
+  INVOICE_TYPE_UNSPECIFIED = 0;
+  INVOICE_TYPE_SALES = 1;  // You selling to customer
+  INVOICE_TYPE_PURCHASE = 2;  // Supplier selling to you
+}
+
+enum InvoiceStatus {
+  INVOICE_STATUS_UNSPECIFIED = 0;
+  INVOICE_STATUS_DRAFT = 1;  // Being prepared
+  INVOICE_STATUS_ISSUED = 2;  // Sent to customer/received from supplier
+  INVOICE_STATUS_UNPAID = 3;  // Awaiting payment
+  INVOICE_STATUS_PARTIALLY_PAID = 4;  // Some payment received
+  INVOICE_STATUS_PAID = 5;  // Fully paid
+  INVOICE_STATUS_OVERDUE = 6;  // Past due_date
+  INVOICE_STATUS_CANCELLED = 7;  // Cancelled (use CreditNote instead)
+  INVOICE_STATUS_CREDITED = 8;  // CreditNote issued against this
+}
+
+/**
+ * InvoiceLineItem represents one product on an invoice.
+ * 
+ * Fix: Added optional batch_id for lot traceability in accounting.
+ */
+message InvoiceLineItem {
+  string product_id = 1;
+  double quantity = 2;
+  int64 unit_price = 3;
+  int64 subtotal = 4;  // quantity * unit_price
+  double tax_rate = 5;  // 0.20 for 20% VAT
+  int64 tax_amount = 6;
+  int64 total = 7;  // subtotal + tax_amount
+  string batch_id = 8;  // Optional: Batch/lot referenced
+}
+
+/**
+ * CreditNote (Avoir / Bon d'Avoir)
+ * Issued to cancel or reduce a previous invoice.
+ * Can be for returns, errors, discounts, etc.
+ * 
+ * Fix: Items include batch_id if inventory impact involves specific lots.
+ * 
+ * Example - Customer returns damaged goods:
+ *   cn_id: "CN-2025-001"
+ *   related_invoice_id: "INV-2025-001"
+ *   credit_type: CREDIT_TYPE_RETURN
+ *   recipient_id: "CMP-003" (customer)
+ *   items: [2x PRD-001 @ 450000]
+ *   total_amount: -900000 (negative = credit)
+ *   has_inventory_impact: true
+ * 
+ * INVENTORY IMPACT (if has_inventory_impact = true):
+ *   +2 PRD-001 back to warehouse
+ * 
+ * ACCOUNTING IMPACT:
+ *   Customer now owes: 5400000 - 900000 = 4500000
+ */
+message CreditNote {
+  string cn_id = 1;  // "CN-2025-001"
+  string related_invoice_id = 2;  // Which invoice this corrects
+  CreditNoteType credit_type = 3;  // Why credit is issued
+  string issuer_id = 4;  // Who issues the credit
+  string recipient_id = 5;  // Who receives the credit
+  CreditNoteStatus status = 6;
+  repeated InvoiceLineItem items = 7;  // What's being credited
+  int64 total_amount = 8;  // Negative value
+  string currency = 9;
+  bool has_inventory_impact = 10;  // Does stock come back?
+  string related_return_note_id = 11;  // If goods returned
+  google.protobuf.Timestamp issue_date = 12;
+  string created_by_user_id = 13;
+  string reason = 14;  // Detailed explanation
+  string notes = 15;
+}
+
+enum CreditNoteType {
+  CREDIT_TYPE_UNSPECIFIED = 0;
+  CREDIT_TYPE_RETURN = 1;  // Customer returns goods
+  CREDIT_TYPE_PRICE_ERROR = 2;  // Invoice had wrong price
+  CREDIT_TYPE_DISCOUNT = 3;  // Goodwill gesture
+  CREDIT_TYPE_CANCELLATION = 4;  // Full invoice cancellation
+  CREDIT_TYPE_DAMAGED_GOODS = 5;  // Goods arrived damaged
+}
+
+enum CreditNoteStatus {
+  CN_STATUS_UNSPECIFIED = 0;
+  CN_STATUS_DRAFT = 1;
+  CN_STATUS_ISSUED = 2;  // Sent to customer
+  CN_STATUS_APPLIED = 3;  // Applied to customer account
+}
+
+/**
+ * DebitNote (Note de Débit)
+ * Like a CreditNote but in reverse - YOU issue it TO supplier.
+ * Used when returning goods to supplier or correcting purchase invoice.
+ * 
+ * Fix: Items include batch_id.
+ * 
+ * Example - You return defective goods to supplier:
+ *   dn_id: "DEBIT-2025-001"
+ *   related_invoice_id: "PINV-2025-001" (purchase invoice)
+ *   debit_type: DEBIT_TYPE_RETURN
+ *   issuer_id: "CMP-001" (your company)
+ *   recipient_id: "CMP-002" (supplier)
+ *   items: [5x PRD-001 @ 400000]
+ *   total_amount: -2000000
+ * 
+ * INVENTORY IMPACT: -5 PRD-001 (returned to supplier)
+ * ACCOUNTING IMPACT: You owe supplier 2000000 less
+ */
+message DebitNote {
+  string dn_id = 1;  // "DEBIT-2025-001"
+  string related_invoice_id = 2;  // Purchase invoice being adjusted
+  DebitNoteType debit_type = 3;
+  string issuer_id = 4;  // You (buyer)
+  string recipient_id = 5;  // Supplier
+  DebitNoteStatus status = 6;
+  repeated InvoiceLineItem items = 7;
+  int64 total_amount = 8;  // Negative value
+  string currency = 9;
+  bool has_inventory_impact = 10;
+  string related_return_note_id = 11;
+  google.protobuf.Timestamp issue_date = 12;
+  string created_by_user_id = 13;
+  string reason = 14;
+  string notes = 15;
+}
+
+enum DebitNoteType {
+  DEBIT_TYPE_UNSPECIFIED = 0;
+  DEBIT_TYPE_RETURN = 1;  // Returning goods to supplier
+  DEBIT_TYPE_PRICE_DISPUTE = 2;  // Invoice price was wrong
+  DEBIT_TYPE_QUALITY_ISSUE = 3;  // Goods defective
+  DEBIT_TYPE_SHORTAGE = 4;  // Received less than invoiced
+}
+
+enum DebitNoteStatus {
+  DEBIT_STATUS_UNSPECIFIED = 0;
+  DEBIT_STATUS_DRAFT = 1;
+  DEBIT_STATUS_ISSUED = 2;
+  DEBIT_STATUS_ACCEPTED = 3;  // Supplier agreed
+  DEBIT_STATUS_DISPUTED = 4;  // Supplier disagrees
+}
+
+/**
+ * ReturnNote (Bon de Retour)
+ * Logistics document for goods coming BACK.
+ * Can be customer returning to you OR you returning to supplier.
+ * 
+ * Fix: ReturnLineItem now includes batch_id for returning specific lots.
+ * 
+ * Example - Customer returns:
+ *   return_id: "RET-2025-001"
+ *   return_type: RETURN_TYPE_CUSTOMER_TO_SELLER
+ *   from_company_id: "CMP-003" (customer)
+ *   to_warehouse_id: "WH-001" (your warehouse)
+ *   related_delivery_note_id: "DN-2025-001"
+ *   items: [2x PRD-001]
+ *   reason: "Defective"
+ * 
+ * INVENTORY IMPACT: +2 PRD-001 in WH-001
+ */
+message ReturnNote {
+  string return_id = 1;  // "RET-2025-001"
+  ReturnType return_type = 2;
+  string from_company_id = 3;  // Who's returning
+  string to_warehouse_id = 4;  // Where it goes
+  string related_delivery_note_id = 5;  // Original delivery
+  string related_invoice_id = 6;  // Original invoice
+  ReturnNoteStatus status = 7;
+  repeated ReturnLineItem items = 8;
+  string reason = 9;  // Why returned
+  google.protobuf.Timestamp received_at = 10;
+  string received_by_user_id = 11;
+  string notes = 12;
+}
+
+enum ReturnType {
+  RETURN_TYPE_UNSPECIFIED = 0;
+  RETURN_TYPE_CUSTOMER_TO_SELLER = 1;  // Customer returns to you
+  RETURN_TYPE_SELLER_TO_SUPPLIER = 2;  // You return to supplier
+}
+
+enum ReturnNoteStatus {
+  RETURN_STATUS_UNSPECIFIED = 0;
+  RETURN_STATUS_PENDING = 1;  // Return requested
+  RETURN_STATUS_APPROVED = 2;  // Return authorized
+  RETURN_STATUS_IN_TRANSIT = 3;  // Being shipped back
+  RETURN_STATUS_RECEIVED = 4;  // Arrived and inspected
+  RETURN_STATUS_REJECTED = 5;  // Return not accepted
+}
+
+/**
+ * ReturnLineItem shows what's being returned and its condition.
+ * 
+ * Fix: Added batch_id to identify the specific lot being returned.
+ */
+message ReturnLineItem {
+  string product_id = 1;
+  double quantity = 2;
+  ReturnCondition condition = 3;
+  string condition_notes = 4;  // Detailed state description
+  string batch_id = 5;  // Specific batch/lot returned
+}
+
+enum ReturnCondition {
+  RETURN_CONDITION_UNSPECIFIED = 0;
+  RETURN_CONDITION_NEW = 1;  // Unopened, resalable
+  RETURN_CONDITION_USED_GOOD = 2;  // Used but functional
+  RETURN_CONDITION_DAMAGED = 3;  // Not resalable
+  RETURN_CONDITION_DEFECTIVE = 4;  // Manufacturing defect
+}
+
+// ============================================================================
+// PAYMENT DOCUMENTS
+// ============================================================================
+
+/**
+ * Payment represents money transfer between parties.
+ * Links to invoices to track what's been paid.
+ * 
+ * Example:
+ *   payment_id: "PAY-2025-001"
+ *   payer_id: "CMP-003" (customer)
+ *   payee_id: "CMP-001" (your company)
+ *   amount: 5400000
+ *   payment_method: PAYMENT_METHOD_BANK_TRANSFER
+ *   related_invoice_id: "INV-2025-001"
+ *   status: PAYMENT_STATUS_COMPLETED
+ */
+message Payment {
+  string payment_id = 1;  // "PAY-2025-001"
+  string payer_id = 2;  // Who pays
+  string payee_id = 3;  // Who receives
+  int64 amount = 4;  // Amount in smallest currency unit
+  string currency = 5;
+  PaymentMethod payment_method = 6;
+  PaymentStatus status = 7;
+  string related_invoice_id = 8;  // Which invoice this pays
+  google.protobuf.Timestamp payment_date = 9;
+  string reference_number = 10;  // Bank reference, check number, etc.
+  string created_by_user_id = 11;
+  string notes = 12;
+}
+
+enum PaymentMethod {
+  PAYMENT_METHOD_UNSPECIFIED = 0;
+  PAYMENT_METHOD_CASH = 1;  // Physical cash
+  PAYMENT_METHOD_CHECK = 2;  // Cheque
+  PAYMENT_METHOD_BANK_TRANSFER = 3;  // Wire transfer
+  PAYMENT_METHOD_CREDIT_CARD = 4;  // Card payment
+  PAYMENT_METHOD_MOBILE_MONEY = 5;  // MTN, Orange Money, etc.
+  PAYMENT_METHOD_STORE_CREDIT = 6;  // From previous credit note
+}
+
+enum PaymentStatus {
+  PAYMENT_STATUS_UNSPECIFIED = 0;
+  PAYMENT_STATUS_PENDING = 1;  // Initiated but not confirmed
+  PAYMENT_STATUS_COMPLETED = 2;  // Money received
+  PAYMENT_STATUS_FAILED = 3;  // Payment didn't go through
+  PAYMENT_STATUS_REFUNDED = 4;  // Money returned
+}
+
+/**
+ * CashReceipt (Bon de Caisse)
+ * Issued at point of sale for immediate payment.
+ * Combines invoice + payment proof in one document.
+ * Common in retail where customer pays immediately.
+ * 
+ * Fix: Items include batch_id for lot-specific sales (e.g., FIFO for perishables).
+ * 
+ * Example - Retail store sale:
+ *   receipt_id: "CASH-2025-001"
+ *   cashier_user_id: "USR-005"
+ *   customer_id: "CMP-003" (can be null for walk-in)
+ *   warehouse_id: "WH-002" (retail store)
+ *   items: [1x PRD-001 @ 450000]
+ *   subtotal: 450000
+ *   tax: 90000
+ *   total: 540000
+ *   amount_paid: 540000
+ *   payment_method: PAYMENT_METHOD_CASH
+ * 
+ * INVENTORY IMPACT: -1 PRD-001 from WH-002
+ * ACCOUNTING IMPACT: Immediate revenue + payment
+ */
+message CashReceipt {
+  string receipt_id = 1;  // "CASH-2025-001"
+  string cashier_user_id = 2;  // Who processed sale
+  string customer_id = 3;  // Can be null for anonymous
+  string warehouse_id = 4;  // Which location/store
+  repeated InvoiceLineItem items = 5;
+  int64 subtotal = 6;
+  int64 tax_amount = 7;
+  int64 total_amount = 8;
+  int64 amount_paid = 9;  // What customer gave
+  int64 change_given = 10;  // amount_paid - total_amount
+  string currency = 11;
+  PaymentMethod payment_method = 12;
+  google.protobuf.Timestamp transaction_time = 13;
+  string notes = 14;
+}
+
+/**
+ * GiftVoucher (Bon Cadeau / Bon d'Achat)
+ * Prepaid credit that can be used for future purchases.
+ * Like a gift card or store credit.
+ * 
+ * Example:
+ *   voucher_id: "GV-2025-001"
+ *   voucher_code: "GIFT-XMAS-12345"
+ *   initial_value: 100000
+ *   remaining_value: 100000
+ *   issued_to_customer_id: "CMP-003"
+ *   valid_until: 2026-12-31
+ *   status: VOUCHER_STATUS_ACTIVE
+ */
+message GiftVoucher {
+  string voucher_id = 1;  // "GV-2025-001"
+  string voucher_code = 2;  // "GIFT-XMAS-12345" - what customer uses
+  int64 initial_value = 3;  // Original amount
+  int64 remaining_value = 4;  // What's left
+  string currency = 5;
+  string issued_to_customer_id = 6;  // Optional - can be transferred
+  string issued_by_user_id = 7;
+  VoucherStatus status = 8;
+  google.protobuf.Timestamp issued_at = 9;
+  google.protobuf.Timestamp valid_until = 10;  // Expiration
+  string notes = 11;
+}
+
+enum VoucherStatus {
+  VOUCHER_STATUS_UNSPECIFIED = 0;
+  VOUCHER_STATUS_ACTIVE = 1;  // Can be used
+  VOUCHER_STATUS_PARTIALLY_USED = 2;  // Some value used
+  VOUCHER_STATUS_FULLY_USED = 3;  // No value left
+  VOUCHER_STATUS_EXPIRED = 4;  // Past valid_until date
+  VOUCHER_STATUS_CANCELLED = 5;  // Voided
+}
+
+/**
+ * VoucherTransaction tracks each time a voucher is used.
+ * 
+ * Example:
+ *   transaction_id: "VT-001"
+ *   voucher_id: "GV-2025-001"
+ *   related_invoice_id: "INV-2025-005"
+ *   amount_used: 50000
+ *   remaining_after: 50000
+ */
+message VoucherTransaction {
+  string transaction_id = 1;
+  string voucher_id = 2;  // Which voucher used
+  string related_invoice_id = 3;  // Which purchase
+  string related_receipt_id = 4;  // Or cash receipt
+  int64 amount_used = 5;
+  int64 remaining_after = 6;
+  google.protobuf.Timestamp used_at = 7;
+  string used_by_user_id = 8;
+}
+
+// ============================================================================
+// INVENTORY ADJUSTMENTS
+// ============================================================================
+
+/**
+ * StockAdjustment (Ajustement de Stock)
+ * For correcting inventory when physical count doesn't match system.
+ * Used after inventory audits, for damaged goods, theft, etc.
+ * 
+ * Fix: Added batch_id for adjusting specific lots (e.g., expiring a batch).
+ * 
+ * Example - After physical count:
+ *   adjustment_id: "ADJ-2025-001"
+ *   warehouse_id: "WH-001"
+ *   product_id: "PRD-001"
+ *   system_quantity: 100
+ *   physical_quantity: 97
+ *   adjustment_quantity: -3
+ *   reason_type: ADJUSTMENT_REASON_DAMAGED
+ *   reason_notes: "Found 3 units with water damage"
+ *   batch_id: "BATCH-2025-001"
+ * 
+ * INVENTORY IMPACT: -3 PRD-001 from WH-001
+ */
+message StockAdjustment {
+  string adjustment_id = 1;  // "ADJ-2025-001"
+  string warehouse_id = 2;  // Which warehouse
+  string product_id = 3;  // Which product
+  double system_quantity = 4;  // What system showed before
+  double physical_quantity = 5;  // What was actually counted
+  double adjustment_quantity = 6;  // Difference (can be + or -)
+  AdjustmentReasonType reason_type = 7;
+  string reason_notes = 8;  // Detailed explanation
+  string adjusted_by_user_id = 9;
+  string approved_by_user_id = 10;  // Manager approval
+  google.protobuf.Timestamp adjustment_date = 11;
+  string supporting_document_url = 12;  // Photo evidence, etc.
+  string batch_id = 13;  // Optional: Specific batch adjusted
+}
+
+enum AdjustmentReasonType {
+  ADJUSTMENT_REASON_UNSPECIFIED = 0;
+  ADJUSTMENT_REASON_PHYSICAL_COUNT = 1;  // Regular inventory audit
+  ADJUSTMENT_REASON_DAMAGED = 2;  // Goods damaged in warehouse
+  ADJUSTMENT_REASON_EXPIRED = 3;  // Past expiration date
+  ADJUSTMENT_REASON_THEFT = 4;  // Stolen items
+  ADJUSTMENT_REASON_DATA_ERROR = 5;  // System data was wrong
+  ADJUSTMENT_REASON_FOUND = 6;  // Found missing items
+  ADJUSTMENT_REASON_WRITE_OFF = 7;  // Officially removing from books
+}
+
+/**
+ * StockCount (Inventaire Physique)
+ * A scheduled physical count of all inventory.
+ * Multiple StockCountLines for each product.
+ * 
+ * Fix: StockCountLine now includes batch_id for lot-level counting.
+ * 
+ * Example:
+ *   count_id: "COUNT-2025-Q3"
+ *   warehouse_id: "WH-001"
+ *   count_type: COUNT_TYPE_FULL
+ *   status: COUNT_STATUS_IN_PROGRESS
+ *   scheduled_date: 2025-09-30
+ *   counted_lines: [multiple CountLines]
+ */
+message StockCount {
+  string count_id = 1;  // "COUNT-2025-Q3"
+  string warehouse_id = 2;  // Which warehouse being counted
+  StockCountType count_type = 3;
+  StockCountStatus status = 4;
+  google.protobuf.Timestamp scheduled_date = 5;
+  google.protobuf.Timestamp started_at = 6;
+  google.protobuf.Timestamp completed_at = 7;
+  repeated StockCountLine count_lines = 8;
+  string supervisor_user_id = 9;  // Who oversees the count
+  repeated string counter_user_ids = 10;  // Who does counting
+  string notes = 11;
+}
+
+enum StockCountType {
+  COUNT_TYPE_UNSPECIFIED = 0;
+  COUNT_TYPE_FULL = 1;  // Count everything
+  COUNT_TYPE_PARTIAL = 2;  // Count specific products/areas
+  COUNT_TYPE_CYCLE = 3;  // Regular rotating count
+  COUNT_TYPE_SPOT_CHECK = 4;  // Random verification
+}
+
+enum StockCountStatus {
+  COUNT_STATUS_UNSPECIFIED = 0;
+  COUNT_STATUS_SCHEDULED = 1;  // Planned for future
+  COUNT_STATUS_IN_PROGRESS = 2;  // Currently counting
+  COUNT_STATUS_COMPLETED = 3;  // Finished counting
+  COUNT_STATUS_ADJUSTMENTS_PENDING = 4;  // Waiting for approval
+  COUNT_STATUS_FINALIZED = 5;  // Adjustments applied
+}
+
+/**
+ * StockCountLine represents one product in a stock count.
+ * 
+ * Fix: Added batch_id and expiration_date for verifying lots during count.
+ */
+message StockCountLine {
+  string product_id = 1;
+  double system_quantity = 2;  // What system says
+  double counted_quantity = 3;  // What was physically counted
+  double variance = 4;  // Difference
+  string counted_by_user_id = 5;
+  google.protobuf.Timestamp counted_at = 6;
+  string notes = 7;
+  bool requires_adjustment = 8;  // If variance significant
+  string batch_id = 9;  // Specific batch counted
+  google.protobuf.Timestamp expiration_date = 10;  // Verified expiration
+}
+
+// ============================================================================
+// AUDIT & HISTORY
+// ============================================================================
+
+/**
+ * InventoryTransaction (Journal des Mouvements)
+ * Complete audit trail of every inventory change.
+ * Auto-generated by all operations that affect stock.
+ * 
+ * Fix: Added batch_id for lot-specific transactions.
+ * 
+ * Example:
+ *   transaction_id: "TXN-2025-00123"
+ *   warehouse_id: "WH-001"
+ *   product_id: "PRD-001"
+ *   transaction_type: TXN_TYPE_SALE
+ *   quantity_change: -10
+ *   quantity_before: 100
+ *   quantity_after: 90
+ *   related_document_type: "DeliveryNote"
+ *   related_document_id: "DN-2025-001"
+ *   performed_by_user_id: "USR-003"
+ *   batch_id: "BATCH-2025-001"
+ */
+message InventoryTransaction {
+  string transaction_id = 1;  // "TXN-2025-00123"
+  string warehouse_id = 2;
+  string product_id = 3;
+  TransactionType transaction_type = 4;
+  double quantity_change = 5;  // Positive = increase, negative = decrease
+  double quantity_before = 6;  // Stock level before
+  double quantity_after = 7;  // Stock level after
+  string related_document_type = 8;  // "DeliveryNote", "ReceivingNote", etc.
+  string related_document_id = 9;  // ID of the document
+  string performed_by_user_id = 10;
+  google.protobuf.Timestamp transaction_time = 11;
+  string notes = 12;
+  string batch_id = 13;  // Specific batch affected
+}
+
+enum TransactionType {
+  TXN_TYPE_UNSPECIFIED = 0;
+  TXN_TYPE_PURCHASE = 1;  // Receiving from supplier
+  TXN_TYPE_SALE = 2;  // Selling to customer
+  TXN_TYPE_RETURN_IN = 3;  // Customer returning to you
+  TXN_TYPE_RETURN_OUT = 4;  // You returning to supplier
+  TXN_TYPE_TRANSFER_OUT = 5;  // Moving to another warehouse
+  TXN_TYPE_TRANSFER_IN = 6;  // Receiving from another warehouse
+  TXN_TYPE_ADJUSTMENT = 7;  // Manual adjustment
+  TXN_TYPE_DAMAGE = 8;  // Damaged goods write-off
+  TXN_TYPE_THEFT = 9;  // Stolen items
+  TXN_TYPE_INITIAL = 10;  // Initial stock entry
+  TXN_TYPE_EXPIRATION = 11;  // Batch expired
+}
+
+// ============================================================================
+// WORKFLOW EXAMPLES & DOCUMENTATION
+// ============================================================================
+
+/**
+ * COMPLETE WORKFLOW EXAMPLES
+ * ===========================
+ * 
+ * EXAMPLE 1: STANDARD PURCHASE FLOW (with batches)
+ * ----------------------------------
+ * You need to buy laptops from a supplier.
+ * 
+ * Step 1: Create PurchaseOrder
+ *   - po_id: "PO-2025-001"
+ *   - supplier_id: "CMP-002" (Dell Cameroon)
+ *   - items: [50x PRD-001 @ 400000 each]
+ *   - status: PO_STATUS_PENDING
+ *   - Inventory: NO CHANGE
+ * 
+ * Step 2: Supplier ships goods
+ *   - Wait for delivery...
+ * 
+ * Step 3: Goods arrive - Create ReceivingNote
+ *   - rn_id: "RN-2025-001"
+ *   - related_purchase_order_id: "PO-2025-001"
+ *   - warehouse_id: "WH-001"
+ *   - quantity_received: 50
+ *   - batch_id: "BATCH-2025-001" (generated)
+ *   - expiration_date: 2027-09-29 (if applicable)
+ *   - status: RN_STATUS_COMPLETED
+ *   - Inventory: +50 PRD-001 in WH-001, new Batch created
+ *   - Creates InventoryTransaction: TXN_TYPE_PURCHASE with batch_id
+ * 
+ * Step 4: Supplier sends Invoice (or you receive it)
+ *   - invoice_id: "PINV-2025-001"
+ *   - invoice_type: INVOICE_TYPE_PURCHASE
+ *   - related_purchase_order_id: "PO-2025-001"
+ *   - total_amount: 20000000
+ *   - status: INVOICE_STATUS_UNPAID
+ *   - Inventory: NO CHANGE
+ * 
+ * Step 5: You pay the Invoice
+ *   - payment_id: "PAY-2025-001"
+ *   - related_invoice_id: "PINV-2025-001"
+ *   - amount: 20000000
+ *   - payment_method: PAYMENT_METHOD_BANK_TRANSFER
+ *   - Invoice status: INVOICE_STATUS_PAID
+ * 
+ * EXAMPLE 2: STANDARD SALES FLOW (with batches)
+ * -------------------------------
+ * Customer orders laptops from you.
+ * 
+ * Step 1: Receive customer order - Create SalesOrder
+ *   - so_id: "SO-2025-001"
+ *   - customer_id: "CMP-003" (Ministry of Education)
+ *   - items: [10x PRD-001 @ 450000 each]
+ *   - status: SO_STATUS_CONFIRMED
+ *   - Inventory: Reserved but not moved (update quantity_reserved)
+ * 
+ * Step 2: Prepare shipment - Create DeliveryNote
+ *   - dn_id: "DN-2025-001"
+ *   - related_sales_order_id: "SO-2025-001"
+ *   - from_warehouse_id: "WH-001"
+ *   - items: [10x PRD-001, batch_id: "BATCH-2025-001"]
+ *   - status: DN_STATUS_IN_TRANSIT
+ *   - Inventory: -10 from Batch in WH-001, update quantity_available
+ *   - Creates InventoryTransaction: TXN_TYPE_SALE with batch_id
+ * 
+ * Step 3: Issue Invoice
+ *   - invoice_id: "INV-2025-001"
+ *   - invoice_type: INVOICE_TYPE_SALES
+ *   - related_sales_order_id: "SO-2025-001"
+ *   - related_delivery_note_id: "DN-2025-001"
+ *   - items: [10x PRD-001, batch_id: "BATCH-2025-001"]
+ *   - total_amount: 5400000 (including 20% VAT)
+ *   - status: INVOICE_STATUS_UNPAID
+ *   - Inventory: NO CHANGE
+ * 
+ * Step 4: Customer pays
+ *   - payment_id: "PAY-2025-002"
+ *   - related_invoice_id: "INV-2025-001"
+ *   - amount: 5400000
+ *   - Invoice status: INVOICE_STATUS_PAID
+ * 
+ * EXAMPLE 3: CUSTOMER RETURN WITH CREDIT NOTE (with batches)
+ * --------------------------------------------
+ * Customer returns 2 defective laptops from a specific batch.
+ * 
+ * Step 1: Customer requests return
+ *   - Communication...
+ * 
+ * Step 2: Create ReturnNote
+ *   - return_id: "RET-2025-001"
+ *   - return_type: RETURN_TYPE_CUSTOMER_TO_SELLER
+ *   - from_company_id: "CMP-003"
+ *   - to_warehouse_id: "WH-001"
+ *   - related_delivery_note_id: "DN-2025-001"
+ *   - items: [2x PRD-001, batch_id: "BATCH-2025-001", condition: RETURN_CONDITION_DEFECTIVE]
+ *   - status: RETURN_STATUS_RECEIVED
+ *   - Inventory: +2 to Batch in WH-001 (or new batch if damaged)
+ *   - Creates InventoryTransaction: TXN_TYPE_RETURN_IN with batch_id
+ * 
+ * Step 3: Issue CreditNote
+ *   - cn_id: "CN-2025-001"
+ *   - related_invoice_id: "INV-2025-001"
+ *   - credit_type: CREDIT_TYPE_DAMAGED_GOODS
+ *   - items: [2x PRD-001 @ 450000, batch_id: "BATCH-2025-001"]
+ *   - total_amount: -1080000 (including VAT)
+ *   - has_inventory_impact: true
+ *   - related_return_note_id: "RET-2025-001"
+ *   - Invoice status: INVOICE_STATUS_CREDITED
+ * 
+ * Step 4: Refund customer or give store credit
+ *   - payment_id: "PAY-2025-003"
+ *   - amount: -1080000 (negative = refund)
+ *   - status: PAYMENT_STATUS_COMPLETED
+ * 
+ * Step 5: Mark damaged items - Create StockAdjustment
+ *   - adjustment_id: "ADJ-2025-001"
+ *   - product_id: "PRD-001"
+ *   - adjustment_quantity: -2
+ *   - reason_type: ADJUSTMENT_REASON_DAMAGED
+ *   - batch_id: "BATCH-2025-001"
+ *   - Inventory: -2 from Batch (removing damaged units)
+ * 
+ * EXAMPLE 4: INTER-WAREHOUSE TRANSFER (with batches)
+ * ------------------------------------
+ * Branch store needs stock from main warehouse.
+ * 
+ * Step 1: Create TransferNote
+ *   - tn_id: "TN-2025-001"
+ *   - from_warehouse_id: "WH-001" (Main)
+ *   - to_warehouse_id: "WH-002" (Branch)
+ *   - items: [20x PRD-001, batch_id: "BATCH-2025-001"]
+ *   - status: TN_STATUS_APPROVED
+ * 
+ * Step 2: Ship items - Update status
+ *   - status: TN_STATUS_IN_TRANSIT
+ *   - Inventory WH-001: -20 from Batch
+ *   - Creates InventoryTransaction: TXN_TYPE_TRANSFER_OUT with batch_id
+ * 
+ * Step 3: Receive at destination
+ *   - status: TN_STATUS_COMPLETED
+ *   - Inventory WH-002: +20 to same or new Batch (transfer batch details)
+ *   - Creates InventoryTransaction: TXN_TYPE_TRANSFER_IN with batch_id
+ * 
+ * EXAMPLE 5: POINT OF SALE (RETAIL) (with batches)
+ * ----------------------------------
+ * Walk-in customer buys immediately with cash.
+ * 
+ * Step 1: Create CashReceipt (combines everything)
+ *   - receipt_id: "CASH-2025-001"
+ *   - cashier_user_id: "USR-005"
+ *   - warehouse_id: "WH-002" (retail store)
+ *   - items: [1x PRD-001 @ 450000, batch_id: "BATCH-2025-001"]
+ *   - total_amount: 540000
+ *   - amount_paid: 550000
+ *   - change_given: 10000
+ *   - payment_method: PAYMENT_METHOD_CASH
+ *   - Inventory: -1 from Batch in WH-002
+ *   - Creates InventoryTransaction: TXN_TYPE_SALE with batch_id
+ *   - Payment is immediate (no separate Payment record needed)
+ * 
+ * KEY PRINCIPLES:
+ * ===============
+ * 1. Orders (PO, SO) don't change inventory - they're intentions
+ * 2. Logistics documents (DeliveryNote, ReceivingNote) DO change inventory and handle batches
+ * 3. Invoices are accounting documents - usually after logistics, with batch references for traceability
+ * 4. Payments are separate from invoices (except CashReceipt)
+ * 5. Every inventory change creates an InventoryTransaction for audit, including batch_id
+ * 6. CreditNote/DebitNote are for corrections, not direct edits
+ * 7. Use has_inventory_impact flag to know if returns affect stock
+ * 8. Batches enable lot tracking: quantity per lot, expiration per lot
+ * 9. Min thresholds in Product (global) and InventoryLevel (per warehouse) for alerts
+ * 10. Prices distinguished: selling_unit_price and purchase_unit_price in Product
+ */

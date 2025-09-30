@@ -1,0 +1,1084 @@
+openapi: 3.1.0
+info:
+  title: logistic.v1
+paths:
+  /logistic.v1.ReturnService/CreateCreditNoteFromReturn:
+    post:
+      tags:
+        - logistic.v1.ReturnService
+      summary: Create credit note from return
+      description: Create credit note from return
+      operationId: logistic.v1.ReturnService.CreateCreditNoteFromReturn
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/logistic.v1.CreateCreditNoteFromReturnRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/logistic.v1.CreateCreditNoteFromReturnResponse'
+  /logistic.v1.ReturnService/CreateCustomerReturn:
+    post:
+      tags:
+        - logistic.v1.ReturnService
+      summary: Create a return note (customer returning to you)
+      description: Create a return note (customer returning to you)
+      operationId: logistic.v1.ReturnService.CreateCustomerReturn
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/logistic.v1.CreateCustomerReturnRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/logistic.v1.CreateCustomerReturnResponse'
+  /logistic.v1.ReturnService/CreateDebitNoteFromReturn:
+    post:
+      tags:
+        - logistic.v1.ReturnService
+      summary: Create debit note for supplier return
+      description: Create debit note for supplier return
+      operationId: logistic.v1.ReturnService.CreateDebitNoteFromReturn
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/logistic.v1.CreateDebitNoteFromReturnRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/logistic.v1.CreateDebitNoteFromReturnResponse'
+  /logistic.v1.ReturnService/GetReturn:
+    post:
+      tags:
+        - logistic.v1.ReturnService
+      summary: Get return details
+      description: Get return details
+      operationId: logistic.v1.ReturnService.GetReturn
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/logistic.v1.GetReturnRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/logistic.v1.GetReturnResponse'
+  /logistic.v1.ReturnService/ListReturns:
+    post:
+      tags:
+        - logistic.v1.ReturnService
+      summary: List returns
+      description: List returns
+      operationId: logistic.v1.ReturnService.ListReturns
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/logistic.v1.ListReturnsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/logistic.v1.ListReturnsResponse'
+  /logistic.v1.ReturnService/ProcessReturnRequest:
+    post:
+      tags:
+        - logistic.v1.ReturnService
+      summary: Approve/reject a return request
+      description: Approve/reject a return request
+      operationId: logistic.v1.ReturnService.ProcessReturnRequest
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/logistic.v1.ProcessReturnRequestRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/logistic.v1.ProcessReturnRequestResponse'
+components:
+  schemas:
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+        - 1
+      description: Define the version of the Connect protocol
+      const: 1
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+            - not_found
+          enum:
+            - canceled
+            - unknown
+            - invalid_argument
+            - deadline_exceeded
+            - not_found
+            - already_exists
+            - permission_denied
+            - resource_exhausted
+            - failed_precondition
+            - aborted
+            - out_of_range
+            - unimplemented
+            - internal
+            - unavailable
+            - data_loss
+            - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/connect.error_details.Any'
+          description: A list of messages that carry the error details. There is no limit on the number of messages.
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+    connect.error_details.Any:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
+        value:
+          type: string
+          format: binary
+          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
+        debug:
+          oneOf:
+            - type: object
+              title: Any
+              additionalProperties: true
+              description: Detailed error information.
+          discriminator:
+            propertyName: type
+          title: Debug
+          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
+    financial.v1.CreditNote:
+      type: object
+      properties:
+        documentId:
+          type: string
+          title: document_id
+          description: '"CN-2025-001"'
+        relatedInvoiceId:
+          type: string
+          title: related_invoice_id
+          description: Which invoice this corrects
+        creditType:
+          title: credit_type
+          description: Why credit is issued
+          $ref: '#/components/schemas/financial.v1.CreditNoteType'
+        issuerId:
+          type: string
+          title: issuer_id
+          description: Who issues the credit
+        recipientId:
+          type: string
+          title: recipient_id
+          description: Who receives the credit
+        status:
+          title: status
+          $ref: '#/components/schemas/financial.v1.CreditNoteStatus'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/financial.v1.InvoiceLineItem'
+          title: items
+          description: What's being credited
+        totalAmount:
+          type:
+            - integer
+            - string
+          title: total_amount
+          format: int64
+          description: Negative value
+        currency:
+          type: string
+          title: currency
+        hasInventoryImpact:
+          type: boolean
+          title: has_inventory_impact
+          description: Does stock come back?
+        relatedReturnNoteId:
+          type: string
+          title: related_return_note_id
+          description: If goods returned
+        issueDate:
+          title: issue_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        createdByUserId:
+          type: string
+          title: created_by_user_id
+        reason:
+          type: string
+          title: reason
+          description: Detailed explanation
+        notes:
+          type: string
+          title: notes
+      title: CreditNote
+      required:
+        - documentId
+      additionalProperties: false
+      description: |-
+        *
+         CreditNote (Avoir / Bon d'Avoir)
+         Issued to cancel or reduce a previous invoice.
+         Can be for returns, errors, discounts, etc.
+
+         Fix: Items include batch_id if inventory impact involves specific lots.
+
+         Example - Customer returns damaged goods:
+           cn_id: "CN-2025-001"
+           related_invoice_id: "INV-2025-001"
+           credit_type: CREDIT_TYPE_RETURN
+           recipient_id: "CMP-003" (customer)
+           items: [2x PRD-001 @ 450000]
+           total_amount: -900000 (negative = credit)
+           has_inventory_impact: true
+
+         INVENTORY IMPACT (if has_inventory_impact = true):
+           +2 PRD-001 back to warehouse
+
+         ACCOUNTING IMPACT:
+           Customer now owes: 5400000 - 900000 = 4500000
+    financial.v1.CreditNoteStatus:
+      type: string
+      title: CreditNoteStatus
+      enum:
+        - CN_STATUS_UNSPECIFIED
+        - CN_STATUS_DRAFT
+        - CN_STATUS_ISSUED
+        - CN_STATUS_APPLIED
+    financial.v1.CreditNoteType:
+      type: string
+      title: CreditNoteType
+      enum:
+        - CREDIT_TYPE_UNSPECIFIED
+        - CREDIT_TYPE_RETURN
+        - CREDIT_TYPE_PRICE_ERROR
+        - CREDIT_TYPE_DISCOUNT
+        - CREDIT_TYPE_CANCELLATION
+        - CREDIT_TYPE_DAMAGED_GOODS
+    financial.v1.DebitNote:
+      type: object
+      properties:
+        documentId:
+          type: string
+          title: document_id
+          description: '"DEBIT-2025-001"'
+        relatedInvoiceId:
+          type: string
+          title: related_invoice_id
+          description: Purchase invoice being adjusted
+        debitType:
+          title: debit_type
+          $ref: '#/components/schemas/financial.v1.DebitNoteType'
+        issuerId:
+          type: string
+          title: issuer_id
+          description: You (buyer)
+        recipientId:
+          type: string
+          title: recipient_id
+          description: Supplier
+        status:
+          title: status
+          $ref: '#/components/schemas/financial.v1.DebitNoteStatus'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/financial.v1.InvoiceLineItem'
+          title: items
+        totalAmount:
+          type:
+            - integer
+            - string
+          title: total_amount
+          format: int64
+          description: Negative value
+        currency:
+          type: string
+          title: currency
+        hasInventoryImpact:
+          type: boolean
+          title: has_inventory_impact
+        relatedReturnNoteId:
+          type: string
+          title: related_return_note_id
+        issueDate:
+          title: issue_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        createdByUserId:
+          type: string
+          title: created_by_user_id
+        reason:
+          type: string
+          title: reason
+        notes:
+          type: string
+          title: notes
+      title: DebitNote
+      required:
+        - documentId
+      additionalProperties: false
+      description: |-
+        *
+         DebitNote (Note de Débit)
+         Like a CreditNote but in reverse - YOU issue it TO supplier.
+         Used when returning goods to supplier or correcting purchase invoice.
+
+         Fix: Items include batch_id.
+
+         Example - You return defective goods to supplier:
+           dn_id: "DEBIT-2025-001"
+           related_invoice_id: "PINV-2025-001" (purchase invoice)
+           debit_type: DEBIT_TYPE_RETURN
+           issuer_id: "CMP-001" (your company)
+           recipient_id: "CMP-002" (supplier)
+           items: [5x PRD-001 @ 400000]
+           total_amount: -2000000
+
+         INVENTORY IMPACT: -5 PRD-001 (returned to supplier)
+         ACCOUNTING IMPACT: You owe supplier 2000000 less
+    financial.v1.DebitNoteStatus:
+      type: string
+      title: DebitNoteStatus
+      enum:
+        - DEBIT_STATUS_UNSPECIFIED
+        - DEBIT_STATUS_DRAFT
+        - DEBIT_STATUS_ISSUED
+        - DEBIT_STATUS_ACCEPTED
+        - DEBIT_STATUS_DISPUTED
+    financial.v1.DebitNoteType:
+      type: string
+      title: DebitNoteType
+      enum:
+        - DEBIT_TYPE_UNSPECIFIED
+        - DEBIT_TYPE_RETURN
+        - DEBIT_TYPE_PRICE_DISPUTE
+        - DEBIT_TYPE_QUALITY_ISSUE
+        - DEBIT_TYPE_SHORTAGE
+    financial.v1.InvoiceLineItem:
+      type: object
+      properties:
+        productId:
+          type: string
+          title: product_id
+        quantity:
+          type: number
+          title: quantity
+          format: double
+        unitPrice:
+          type:
+            - integer
+            - string
+          title: unit_price
+          format: int64
+        subtotal:
+          type:
+            - integer
+            - string
+          title: subtotal
+          format: int64
+          description: quantity * unit_price
+        taxRate:
+          type: number
+          title: tax_rate
+          format: double
+          description: 0.20 for 20% VAT
+        taxAmount:
+          type:
+            - integer
+            - string
+          title: tax_amount
+          format: int64
+        total:
+          type:
+            - integer
+            - string
+          title: total
+          format: int64
+          description: subtotal + tax_amount
+        batchId:
+          type: string
+          title: batch_id
+          description: 'Optional: Batch/lot referenced'
+        productName:
+          title: product_name
+          description: The name of the item
+          $ref: '#/components/schemas/inventory.v1.Internationalized'
+      title: InvoiceLineItem
+      additionalProperties: false
+      description: |-
+        *
+         InvoiceLineItem represents one product on an invoice.
+
+         Fix: Added optional batch_id for lot traceability in accounting.
+    google.protobuf.Timestamp:
+      type: string
+      examples:
+        - "2023-01-15T01:30:15.01Z"
+        - "2024-12-25T12:00:00Z"
+      format: date-time
+      description: |-
+        A Timestamp represents a point in time independent of any time zone or local
+         calendar, encoded as a count of seconds and fractions of seconds at
+         nanosecond resolution. The count is relative to an epoch at UTC midnight on
+         January 1, 1970, in the proleptic Gregorian calendar which extends the
+         Gregorian calendar backwards to year one.
+
+         All minutes are 60 seconds long. Leap seconds are "smeared" so that no leap
+         second table is needed for interpretation, using a [24-hour linear
+         smear](https://developers.google.com/time/smear).
+
+         The range is from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z. By
+         restricting to that range, we ensure that we can convert to and from [RFC
+         3339](https://www.ietf.org/rfc/rfc3339.txt) date strings.
+
+         # Examples
+
+         Example 1: Compute Timestamp from POSIX `time()`.
+
+             Timestamp timestamp;
+             timestamp.set_seconds(time(NULL));
+             timestamp.set_nanos(0);
+
+         Example 2: Compute Timestamp from POSIX `gettimeofday()`.
+
+             struct timeval tv;
+             gettimeofday(&tv, NULL);
+
+             Timestamp timestamp;
+             timestamp.set_seconds(tv.tv_sec);
+             timestamp.set_nanos(tv.tv_usec * 1000);
+
+         Example 3: Compute Timestamp from Win32 `GetSystemTimeAsFileTime()`.
+
+             FILETIME ft;
+             GetSystemTimeAsFileTime(&ft);
+             UINT64 ticks = (((UINT64)ft.dwHighDateTime) << 32) | ft.dwLowDateTime;
+
+             // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z
+             // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z.
+             Timestamp timestamp;
+             timestamp.set_seconds((INT64) ((ticks / 10000000) - 11644473600LL));
+             timestamp.set_nanos((INT32) ((ticks % 10000000) * 100));
+
+         Example 4: Compute Timestamp from Java `System.currentTimeMillis()`.
+
+             long millis = System.currentTimeMillis();
+
+             Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)
+                 .setNanos((int) ((millis % 1000) * 1000000)).build();
+
+         Example 5: Compute Timestamp from Java `Instant.now()`.
+
+             Instant now = Instant.now();
+
+             Timestamp timestamp =
+                 Timestamp.newBuilder().setSeconds(now.getEpochSecond())
+                     .setNanos(now.getNano()).build();
+
+         Example 6: Compute Timestamp from current time in Python.
+
+             timestamp = Timestamp()
+             timestamp.GetCurrentTime()
+
+         # JSON Mapping
+
+         In JSON format, the Timestamp type is encoded as a string in the
+         [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the
+         format is "{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z"
+         where {year} is always expressed using four digits while {month}, {day},
+         {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional
+         seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),
+         are optional. The "Z" suffix indicates the timezone ("UTC"); the timezone
+         is required. A proto3 JSON serializer should always use UTC (as indicated by
+         "Z") when printing the Timestamp type and a proto3 JSON parser should be
+         able to accept both UTC and other timezones (as indicated by an offset).
+
+         For example, "2017-01-15T01:30:15.01Z" encodes 15.01 seconds past
+         01:30 UTC on January 15, 2017.
+
+         In JavaScript, one can convert a Date object to this format using the
+         standard
+         [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)
+         method. In Python, a standard `datetime.datetime` object can be converted
+         to this format using
+         [`strftime`](https://docs.python.org/2/library/time.html#time.strftime) with
+         the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use
+         the Joda Time's [`ISODateTimeFormat.dateTime()`](
+         http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()
+         ) to obtain a formatter capable of generating timestamps in this format.
+    inventory.v1.Internationalized:
+      type: object
+      properties:
+        en:
+          type: string
+          title: en
+          description: The English name of the product category.
+        fr:
+          type: string
+          title: fr
+          description: The French name of the product category.
+      title: Internationalized
+      additionalProperties: false
+    logistic.v1.CreateCreditNoteFromReturnRequest:
+      type: object
+      properties:
+        returnId:
+          type: string
+          title: return_id
+        relatedInvoiceId:
+          type: string
+          title: related_invoice_id
+        issuedByUserId:
+          type: string
+          title: issued_by_user_id
+      title: CreateCreditNoteFromReturnRequest
+      additionalProperties: false
+    logistic.v1.CreateCreditNoteFromReturnResponse:
+      type: object
+      properties:
+        cnId:
+          type: string
+          title: cn_id
+        creditNote:
+          title: credit_note
+          $ref: '#/components/schemas/financial.v1.CreditNote'
+        message:
+          type: string
+          title: message
+      title: CreateCreditNoteFromReturnResponse
+      additionalProperties: false
+    logistic.v1.CreateCustomerReturnRequest:
+      type: object
+      properties:
+        fromCompanyId:
+          type: string
+          title: from_company_id
+          description: Customer
+        toWarehouseId:
+          type: string
+          title: to_warehouse_id
+          description: Your warehouse
+        relatedDeliveryNoteId:
+          type: string
+          title: related_delivery_note_id
+        relatedInvoiceId:
+          type: string
+          title: related_invoice_id
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/logistic.v1.ReturnLineItem'
+          title: items
+        reason:
+          type: string
+          title: reason
+        receivedByUserId:
+          type: string
+          title: received_by_user_id
+      title: CreateCustomerReturnRequest
+      additionalProperties: false
+    logistic.v1.CreateCustomerReturnResponse:
+      type: object
+      properties:
+        returnId:
+          type: string
+          title: return_id
+        returnNote:
+          title: return_note
+          $ref: '#/components/schemas/logistic.v1.ReturnNote'
+        inventoryTransactionIds:
+          type: array
+          items:
+            type: string
+          title: inventory_transaction_ids
+        requiresCreditNote:
+          type: boolean
+          title: requires_credit_note
+        message:
+          type: string
+          title: message
+      title: CreateCustomerReturnResponse
+      additionalProperties: false
+    logistic.v1.CreateDebitNoteFromReturnRequest:
+      type: object
+      properties:
+        returnId:
+          type: string
+          title: return_id
+        relatedInvoiceId:
+          type: string
+          title: related_invoice_id
+        issuedByUserId:
+          type: string
+          title: issued_by_user_id
+      title: CreateDebitNoteFromReturnRequest
+      additionalProperties: false
+    logistic.v1.CreateDebitNoteFromReturnResponse:
+      type: object
+      properties:
+        dnId:
+          type: string
+          title: dn_id
+        debitNote:
+          title: debit_note
+          $ref: '#/components/schemas/financial.v1.DebitNote'
+        message:
+          type: string
+          title: message
+      title: CreateDebitNoteFromReturnResponse
+      additionalProperties: false
+    logistic.v1.GetReturnRequest:
+      type: object
+      properties:
+        returnId:
+          type: string
+          title: return_id
+      title: GetReturnRequest
+      additionalProperties: false
+    logistic.v1.GetReturnResponse:
+      type: object
+      properties:
+        returnNote:
+          title: return_note
+          $ref: '#/components/schemas/logistic.v1.ReturnNote'
+        creditNote:
+          title: credit_note
+          description: If issued
+          $ref: '#/components/schemas/financial.v1.CreditNote'
+        debitNote:
+          title: debit_note
+          description: If issued
+          $ref: '#/components/schemas/financial.v1.DebitNote'
+        refundPayment:
+          title: refund_payment
+          description: If refund given
+          $ref: '#/components/schemas/payments.v1.Payment'
+      title: GetReturnResponse
+      additionalProperties: false
+    logistic.v1.ListReturnsRequest:
+      type: object
+      properties:
+        returnType:
+          title: return_type
+          description: Customer or supplier
+          $ref: '#/components/schemas/logistic.v1.ReturnType'
+        status:
+          title: status
+          $ref: '#/components/schemas/logistic.v1.ReturnNoteStatus'
+        startDate:
+          title: start_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        endDate:
+          title: end_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        pageSize:
+          type: integer
+          title: page_size
+          format: int32
+        pageNumber:
+          type: integer
+          title: page_number
+          format: int32
+      title: ListReturnsRequest
+      additionalProperties: false
+    logistic.v1.ListReturnsResponse:
+      type: object
+      properties:
+        returns:
+          type: array
+          items:
+            $ref: '#/components/schemas/logistic.v1.ReturnNote'
+          title: returns
+        totalCount:
+          type: integer
+          title: total_count
+          format: int32
+        totalValue:
+          type:
+            - integer
+            - string
+          title: total_value
+          format: int64
+      title: ListReturnsResponse
+      additionalProperties: false
+    logistic.v1.ProcessReturnRequestRequest:
+      type: object
+      properties:
+        returnId:
+          type: string
+          title: return_id
+        newStatus:
+          title: new_status
+          description: APPROVED or REJECTED
+          $ref: '#/components/schemas/logistic.v1.ReturnNoteStatus'
+        processedByUserId:
+          type: string
+          title: processed_by_user_id
+        notes:
+          type: string
+          title: notes
+      title: ProcessReturnRequestRequest
+      additionalProperties: false
+    logistic.v1.ProcessReturnRequestResponse:
+      type: object
+      properties:
+        returnNote:
+          title: return_note
+          $ref: '#/components/schemas/logistic.v1.ReturnNote'
+        message:
+          type: string
+          title: message
+      title: ProcessReturnRequestResponse
+      additionalProperties: false
+    logistic.v1.ReturnCondition:
+      type: string
+      title: ReturnCondition
+      enum:
+        - RETURN_CONDITION_UNSPECIFIED
+        - RETURN_CONDITION_NEW
+        - RETURN_CONDITION_USED_GOOD
+        - RETURN_CONDITION_DAMAGED
+        - RETURN_CONDITION_DEFECTIVE
+    logistic.v1.ReturnLineItem:
+      type: object
+      properties:
+        productId:
+          type: string
+          title: product_id
+        quantity:
+          type: number
+          title: quantity
+          format: double
+        condition:
+          title: condition
+          $ref: '#/components/schemas/logistic.v1.ReturnCondition'
+        conditionNotes:
+          type: string
+          title: condition_notes
+          description: Detailed state description
+        batchId:
+          type: string
+          title: batch_id
+          description: Specific batch/lot returned
+      title: ReturnLineItem
+      additionalProperties: false
+      description: |-
+        *
+         ReturnLineItem shows what's being returned and its condition.
+
+         Fix: Added batch_id to identify the specific lot being returned.
+    logistic.v1.ReturnNote:
+      type: object
+      properties:
+        documentId:
+          type: string
+          title: document_id
+          description: '"RET-2025-001"'
+        returnType:
+          title: return_type
+          $ref: '#/components/schemas/logistic.v1.ReturnType'
+        fromId:
+          type: string
+          title: from_id
+          description: Who's returning
+        toId:
+          type: string
+          title: to_id
+          description: Where it goes
+        relatedDeliveryNoteId:
+          type: string
+          title: related_delivery_note_id
+          description: Original delivery
+        relatedInvoiceId:
+          type: string
+          title: related_invoice_id
+          description: Original invoice
+        status:
+          title: status
+          $ref: '#/components/schemas/logistic.v1.ReturnNoteStatus'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/logistic.v1.ReturnLineItem'
+          title: items
+        reason:
+          type: string
+          title: reason
+          description: Why returned
+        receivedAt:
+          title: received_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        receivedByUserId:
+          type: string
+          title: received_by_user_id
+        notes:
+          type: string
+          title: notes
+      title: ReturnNote
+      required:
+        - documentId
+      additionalProperties: false
+      description: |-
+        *
+         ReturnNote (Bon de Retour)
+         Logistics document for goods coming BACK.
+         Can be customer returning to you OR you returning to supplier.
+
+         Fix: ReturnLineItem now includes batch_id for returning specific lots.
+
+         Example - Customer returns:
+           return_id: "RET-2025-001"
+           return_type: RETURN_TYPE_CUSTOMER_TO_SELLER
+           from_id: "CMP-003" (customer)
+           to_id: "WH-001" (your warehouse)
+           related_delivery_note_id: "DN-2025-001"
+           items: [2x PRD-001]
+           reason: "Defective"
+
+         INVENTORY IMPACT: +2 PRD-001 in WH-001
+    logistic.v1.ReturnNoteStatus:
+      type: string
+      title: ReturnNoteStatus
+      enum:
+        - RETURN_STATUS_UNSPECIFIED
+        - RETURN_STATUS_PENDING
+        - RETURN_STATUS_APPROVED
+        - RETURN_STATUS_IN_TRANSIT
+        - RETURN_STATUS_RECEIVED
+        - RETURN_STATUS_REJECTED
+    logistic.v1.ReturnType:
+      type: string
+      title: ReturnType
+      enum:
+        - RETURN_TYPE_UNSPECIFIED
+        - RETURN_TYPE_CUSTOMER_TO_SELLER
+        - RETURN_TYPE_SELLER_TO_SUPPLIER
+    payments.v1.Payment:
+      type: object
+      properties:
+        documentId:
+          type: string
+          title: document_id
+          description: '"PAY-2025-001"'
+        payerId:
+          type: string
+          title: payer_id
+          description: Who pays
+        payeeId:
+          type: string
+          title: payee_id
+          description: Who receives
+        amount:
+          type:
+            - integer
+            - string
+          title: amount
+          format: int64
+          description: Amount in smallest currency unit
+        currency:
+          type: string
+          title: currency
+        paymentMethod:
+          title: payment_method
+          $ref: '#/components/schemas/payments.v1.PaymentMethod'
+        status:
+          title: status
+          $ref: '#/components/schemas/payments.v1.PaymentStatus'
+        relatedInvoiceId:
+          type: string
+          title: related_invoice_id
+          description: Which invoice this pays
+        paymentDate:
+          title: payment_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        referenceNumber:
+          type: string
+          title: reference_number
+          description: Bank reference, check number, etc.
+        createdByUserId:
+          type: string
+          title: created_by_user_id
+        notes:
+          type: string
+          title: notes
+      title: Payment
+      required:
+        - documentId
+      additionalProperties: false
+      description: |-
+        *
+         Payment represents money transfer between parties.
+         Links to invoices to track what's been paid.
+
+         Example:
+           payment_id: "PAY-2025-001"
+           payer_id: "CMP-003" (customer)
+           payee_id: "CMP-001" (your company)
+           amount: 5400000
+           payment_method: PAYMENT_METHOD_BANK_TRANSFER
+           related_invoice_id: "INV-2025-001"
+           status: PAYMENT_STATUS_COMPLETED
+    payments.v1.PaymentMethod:
+      type: string
+      title: PaymentMethod
+      enum:
+        - PAYMENT_METHOD_UNSPECIFIED
+        - PAYMENT_METHOD_CASH
+        - PAYMENT_METHOD_CHECK
+        - PAYMENT_METHOD_BANK_TRANSFER
+        - PAYMENT_METHOD_CREDIT_CARD
+        - PAYMENT_METHOD_MOBILE_MONEY
+        - PAYMENT_METHOD_STORE_CREDIT
+    payments.v1.PaymentStatus:
+      type: string
+      title: PaymentStatus
+      enum:
+        - PAYMENT_STATUS_UNSPECIFIED
+        - PAYMENT_STATUS_PENDING
+        - PAYMENT_STATUS_COMPLETED
+        - PAYMENT_STATUS_FAILED
+        - PAYMENT_STATUS_REFUNDED
+security: []
+tags:
+  - name: logistic.v1.ReturnService

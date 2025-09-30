@@ -35,16 +35,18 @@ final $typed_data.Uint8List categoryStatusDescriptor = $convert.base64Decode(
 const CategoryType$json = {
   '1': 'CategoryType',
   '2': [
-    {'1': 'CATEGORY_TYPE_STORE', '2': 0},
-    {'1': 'CATEGORY_TYPE_BUSINESS', '2': 1},
-    {'1': 'CATEGORY_TYPE_PRODUCT', '2': 2},
+    {'1': 'CATEGORY_TYPE_UNSPECIFIED', '2': 0},
+    {'1': 'CATEGORY_TYPE_STORE', '2': 1},
+    {'1': 'CATEGORY_TYPE_BUSINESS', '2': 2},
+    {'1': 'CATEGORY_TYPE_PRODUCT', '2': 3},
   ],
 };
 
 /// Descriptor for `CategoryType`. Decode as a `google.protobuf.EnumDescriptorProto`.
 final $typed_data.Uint8List categoryTypeDescriptor = $convert.base64Decode(
-    'CgxDYXRlZ29yeVR5cGUSFwoTQ0FURUdPUllfVFlQRV9TVE9SRRAAEhoKFkNBVEVHT1JZX1RZUE'
-    'VfQlVTSU5FU1MQARIZChVDQVRFR09SWV9UWVBFX1BST0RVQ1QQAg==');
+    'CgxDYXRlZ29yeVR5cGUSHQoZQ0FURUdPUllfVFlQRV9VTlNQRUNJRklFRBAAEhcKE0NBVEVHT1'
+    'JZX1RZUEVfU1RPUkUQARIaChZDQVRFR09SWV9UWVBFX0JVU0lORVNTEAISGQoVQ0FURUdPUllf'
+    'VFlQRV9QUk9EVUNUEAM=');
 
 @$core.Deprecated('Use internationalizedDescriptor instead')
 const Internationalized$json = {

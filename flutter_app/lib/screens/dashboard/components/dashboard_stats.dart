@@ -1,3 +1,4 @@
+import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
@@ -23,17 +24,17 @@ class DashboardStats extends StatelessWidget {
         }
 
         final statsData = controller.stats;
-        final yesterdayTransactions = statsData.yesterdayTransactions;
-        final yesterdaySales = statsData.yesterdaySales;
-        final todayTransactions = statsData.transactions;
+        final yesterdaySales = Int64.ZERO;
+        final yesterdayTransactionsCount = 0;
+        final todayTransactionsCount = statsData.todayTransactions;
         final todaySales = statsData.todaySales;
         final percentChangeSales = controller.calculatePercentChange(
-          todaySales,
-          yesterdaySales,
+          todaySales.toInt(),
+          yesterdaySales.toInt(),
         );
         final percentChangeTransactions = controller.calculatePercentChange(
-          todayTransactions.length,
-          yesterdayTransactions.length,
+          todayTransactionsCount,
+          yesterdayTransactionsCount,
         );
 
         final statsCard = [
@@ -46,33 +47,33 @@ class DashboardStats extends StatelessWidget {
           ),
           StatCard(
             title: Intls.to.lowStockItems,
-            value: statsData.lowStockItems.toString(),
+            value: statsData.lowStockItemsCount.toString(),
             icon: LucideIcons.triangleAlert400,
             color: AppColors.red,
-            change: statsData.lowStockItems > 0
+            change: statsData.lowStockItemsCount > 0
                 ? Intls.to.requiresAttention
                 : Intls.to.allGood,
-            trend: statsData.lowStockItems > 0
+            trend: statsData.lowStockItemsCount > 0
                 ? TrendType.down
                 : TrendType.neutral,
           ),
           StatCard(
             title: Intls.to.expiringSoon,
-            value: statsData.expiringItems.toString(),
+            value: statsData.expiringItemsCount.toString(),
             icon: LucideIcons.calendar400,
             color: AppColors.warningColor,
-            change: Intls.to.next2months,
+            change: statsData.expiringTimeframe,
             trend: TrendType.neutral,
           ),
           StatCard(
             title: Intls.to.todaySales,
-            value: Formatters.formatCurrency(statsData.todaySales),
+            value: Formatters.formatCurrency(statsData.todaySales.toDouble()),
             icon: LucideIcons.wallet400,
             color: AppColors.lightGreen,
             change: switch (percentChangeSales) {
               0 => null,
               _ =>
-                '${percentChangeSales > 0 ? '+' : '-'}$percentChangeSales% ${Intls.to.fromYesterday}',
+                '${percentChangeSales > 0 ? '+' : '-'}${percentChangeSales.toStringAsFixed(1)}% ${Intls.to.fromYesterday}',
             },
             trend: switch (percentChangeSales) {
               0 => TrendType.neutral,
@@ -81,13 +82,13 @@ class DashboardStats extends StatelessWidget {
           ),
           StatCard(
             title: Intls.to.todayTransactions,
-            value: statsData.todayTransactions.toString(),
+            value: todayTransactionsCount.toString(),
             icon: LucideIcons.shoppingCart400,
             color: AppColors.purple,
             change: switch (percentChangeTransactions) {
               0 => null,
               _ =>
-                '${percentChangeTransactions > 0 ? '+' : '-'}$percentChangeTransactions% ${Intls.to.fromYesterday}',
+                '${percentChangeTransactions > 0 ? '+' : '-'}${percentChangeTransactions.toStringAsFixed(1)}% ${Intls.to.fromYesterday}',
             },
             trend: switch (percentChangeTransactions) {
               0 => TrendType.neutral,

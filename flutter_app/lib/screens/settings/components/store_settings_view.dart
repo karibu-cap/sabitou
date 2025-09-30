@@ -11,7 +11,7 @@ import '../../../services/internationalization/internationalization.dart';
 import '../../../themes/app_colors.dart';
 import '../../../utils/app_constants.dart';
 import '../../../utils/common_functions.dart';
-import '../../../utils/extensions.dart';
+import '../../../utils/extensions/store_extenxion.dart';
 import '../../../utils/form/validation.dart';
 import '../../../utils/user_preference.dart';
 import '../../../utils/utils.dart';
@@ -112,20 +112,20 @@ class StoreSettingsView extends StatelessWidget {
                   ShadInputFormField(
                     id: Intls.to.storePhone,
                     label: Text(Intls.to.storePhone),
-                    initialValue: store.contactInfo,
+                    initialValue: store.phone,
                     keyboardType: TextInputType.phone,
                     validator: ValidationFormUtils.validatePhoneNumber,
                     onChanged: (value) {
-                      tempsStore.contactInfo = value;
+                      tempsStore.phone = value;
                     },
                   ),
                   ShadInputFormField(
-                    id: Intls.to.storeAddress,
-                    label: Text(Intls.to.storeAddress),
-                    initialValue: store.address,
+                    id: Intls.to.storePostalCode,
+                    label: Text(Intls.to.storePostalCode),
+                    initialValue: store.address.postalCode,
                     validator: ValidationFormUtils.validateAddress,
                     onChanged: (value) {
-                      tempsStore.address = value;
+                      tempsStore.address.postalCode = value;
                     },
                   ),
                   ShadInputFormField(

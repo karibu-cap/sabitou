@@ -1,0 +1,178 @@
+syntax = "proto3";
+
+package logistic.v1;
+
+import "buf/validate/validate.proto";
+import "financial/v1/credit_note.proto";
+import "financial/v1/debit_note.proto";
+import "google/protobuf/timestamp.proto";
+import "payments/v1/payments.proto";
+
+/**
+ * ReturnNote (Bon de Retour)
+ * Logistics document for goods coming BACK.
+ * Can be customer returning to you OR you returning to supplier.
+ *
+ * Fix: ReturnLineItem now includes batch_id for returning specific lots.
+ *
+ * Example - Customer returns:
+ *   return_id: "RET-2025-001"
+ *   return_type: RETURN_TYPE_CUSTOMER_TO_SELLER
+ *   from_id: "CMP-003" (customer)
+ *   to_id: "WH-001" (your warehouse)
+ *   related_delivery_note_id: "DN-2025-001"
+ *   items: [2x PRD-001]
+ *   reason: "Defective"
+ *
+ * INVENTORY IMPACT: +2 PRD-001 in WH-001
+ */
+message ReturnNote {
+  string document_id = 1 [(buf.validate.field).required = true]; // "RET-2025-001"
+  ReturnType return_type = 2;
+  string from_id = 3; // Who's returning
+  string to_id = 4; // Where it goes
+  string related_delivery_note_id = 5; // Original delivery
+  string related_invoice_id = 6; // Original invoice
+  ReturnNoteStatus status = 7;
+  repeated ReturnLineItem items = 8;
+  string reason = 9; // Why returned
+  google.protobuf.Timestamp received_at = 10;
+  string received_by_user_id = 11;
+  string notes = 12;
+}
+
+enum ReturnType {
+  RETURN_TYPE_UNSPECIFIED = 0;
+  RETURN_TYPE_CUSTOMER_TO_SELLER = 1; // Customer returns to you
+  RETURN_TYPE_SELLER_TO_SUPPLIER = 2; // You return to supplier
+}
+
+enum ReturnNoteStatus {
+  RETURN_STATUS_UNSPECIFIED = 0;
+  RETURN_STATUS_PENDING = 1; // Return requested
+  RETURN_STATUS_APPROVED = 2; // Return authorized
+  RETURN_STATUS_IN_TRANSIT = 3; // Being shipped back
+  RETURN_STATUS_RECEIVED = 4; // Arrived and inspected
+  RETURN_STATUS_REJECTED = 5; // Return not accepted
+}
+
+/**
+ * ReturnLineItem shows what's being returned and its condition.
+ *
+ * Fix: Added batch_id to identify the specific lot being returned.
+ */
+message ReturnLineItem {
+  string product_id = 1;
+  double quantity = 2;
+  ReturnCondition condition = 3;
+  string condition_notes = 4; // Detailed state description
+  string batch_id = 5; // Specific batch/lot returned
+}
+
+enum ReturnCondition {
+  RETURN_CONDITION_UNSPECIFIED = 0;
+  RETURN_CONDITION_NEW = 1; // Unopened, resalable
+  RETURN_CONDITION_USED_GOOD = 2; // Used but functional
+  RETURN_CONDITION_DAMAGED = 3; // Not resalable
+  RETURN_CONDITION_DEFECTIVE = 4; // Manufacturing defect
+}
+
+service ReturnService {
+  // Create a return note (customer returning to you)
+  rpc CreateCustomerReturn(CreateCustomerReturnRequest) returns (CreateCustomerReturnResponse);
+
+  // Approve/reject a return request
+  rpc ProcessReturnRequest(ProcessReturnRequestRequest) returns (ProcessReturnRequestResponse);
+
+  // Create credit note from return
+  rpc CreateCreditNoteFromReturn(CreateCreditNoteFromReturnRequest) returns (CreateCreditNoteFromReturnResponse);
+
+  // Create debit note for supplier return
+  rpc CreateDebitNoteFromReturn(CreateDebitNoteFromReturnRequest) returns (CreateDebitNoteFromReturnResponse);
+
+  // Get return details
+  rpc GetReturn(GetReturnRequest) returns (GetReturnResponse);
+
+  // List returns
+  rpc ListReturns(ListReturnsRequest) returns (ListReturnsResponse);
+}
+
+message CreateCustomerReturnRequest {
+  string from_company_id = 1; // Customer
+  string to_warehouse_id = 2; // Your warehouse
+  string related_delivery_note_id = 3;
+  string related_invoice_id = 4;
+  repeated ReturnLineItem items = 5;
+  string reason = 6;
+  string received_by_user_id = 7;
+}
+
+message CreateCustomerReturnResponse {
+  string return_id = 1;
+  ReturnNote return_note = 2;
+  repeated string inventory_transaction_ids = 3;
+  bool requires_credit_note = 4;
+  string message = 5;
+}
+
+message ProcessReturnRequestRequest {
+  string return_id = 1;
+  ReturnNoteStatus new_status = 2; // APPROVED or REJECTED
+  string processed_by_user_id = 3;
+  string notes = 4;
+}
+
+message ProcessReturnRequestResponse {
+  ReturnNote return_note = 1;
+  string message = 2;
+}
+
+message CreateCreditNoteFromReturnRequest {
+  string return_id = 1;
+  string related_invoice_id = 2;
+  string issued_by_user_id = 3;
+}
+
+message CreateCreditNoteFromReturnResponse {
+  string cn_id = 1;
+  financial.v1.CreditNote credit_note = 2;
+  string message = 3;
+}
+
+message CreateDebitNoteFromReturnRequest {
+  string return_id = 1;
+  string related_invoice_id = 2;
+  string issued_by_user_id = 3;
+}
+
+message CreateDebitNoteFromReturnResponse {
+  string dn_id = 1;
+  financial.v1.DebitNote debit_note = 2;
+  string message = 3;
+}
+
+message GetReturnRequest {
+  string return_id = 1;
+}
+
+message GetReturnResponse {
+  ReturnNote return_note = 1;
+  financial.v1.CreditNote credit_note = 2; // If issued
+  financial.v1.DebitNote debit_note = 3; // If issued
+  payments.v1.Payment refund_payment = 4; // If refund given
+}
+
+message ListReturnsRequest {
+  ReturnType return_type = 1; // Customer or supplier
+  ReturnNoteStatus status = 2;
+  google.protobuf.Timestamp start_date = 3;
+  google.protobuf.Timestamp end_date = 4;
+  int32 page_size = 5;
+  int32 page_number = 6;
+}
+
+message ListReturnsResponse {
+  repeated ReturnNote returns = 1;
+  int32 total_count = 2;
+  int64 total_value = 3;
+}

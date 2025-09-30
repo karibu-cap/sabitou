@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+package logistic.v1;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+
+/**
+ * DeliveryNote (Bon de Livraison)
+ * Accompanies goods when they are physically shipped.
+ * THIS IS WHAT REDUCES INVENTORY at the source.
+ *
+ * Fix: DeliveryLineItem now includes batch_id for lot tracking.
+ *
+ * Flow: Pick items → Create DeliveryNote → Ship → Customer receives
+ *
+ * Example:
+ *   dn_id: "DN-2025-001"
+ *   related_sales_order_id: "SO-2025-001"
+ *   from_warehouse_id: "WH-001"
+ *   to_company_id: "CMP-003" (customer)
+ *   items: [10x PRD-001]
+ *   status: DN_STATUS_IN_TRANSIT
+ *
+ * INVENTORY IMPACT: -10 PRD-001 from WH-001
+ */
+message DeliveryNote {
+  string document_id = 1 [(buf.validate.field).required = true]; // "DN-2025-001"
+  string related_sales_order_id = 2; // Optional link to order
+  string from_warehouse_id = 3; // Where goods leave
+  string to_company_id = 4; // Customer receiving
+  string to_address = 5; // Delivery address
+  DeliveryNoteStatus status = 6;
+  repeated DeliveryLineItem items = 7;
+  string carrier = 8; // "DHL", "Local Delivery", etc.
+  string tracking_number = 9;
+  string created_by_user_id = 10;
+  google.protobuf.Timestamp created_at = 11;
+  google.protobuf.Timestamp shipped_at = 12;
+  google.protobuf.Timestamp delivered_at = 13;
+  string notes = 14;
+}
+
+/**
+ * DeliveryLineItem for tracking shipped quantities.
+ *
+ * Fix: Added batch_id to specify which lot is being shipped (FIFO/LIFO/expiration-based picking).
+ */
+message DeliveryLineItem {
+  string product_id = 1;
+  double quantity = 2;
+  string serial_numbers = 3; // For tracked items
+  string batch_id = 4; // Specific batch/lot being delivered
+}
+
+enum DeliveryNoteStatus {
+  DN_STATUS_UNSPECIFIED = 0;
+  DN_STATUS_PREPARED = 1; // Packed, ready to ship
+  DN_STATUS_IN_TRANSIT = 2; // On the way
+  DN_STATUS_DELIVERED = 3; // Customer received
+  DN_STATUS_RETURNED = 4; // Sent back
+}

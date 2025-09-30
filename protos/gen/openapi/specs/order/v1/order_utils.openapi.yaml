@@ -1,0 +1,95 @@
+openapi: 3.1.0
+info:
+  title: order.v1
+paths: {}
+components:
+  schemas:
+    inventory.v1.Internationalized:
+      type: object
+      properties:
+        en:
+          type: string
+          title: en
+          description: The English name of the product category.
+        fr:
+          type: string
+          title: fr
+          description: The French name of the product category.
+      title: Internationalized
+      additionalProperties: false
+    order.v1.OrderLineItem:
+      type: object
+      properties:
+        productId:
+          type: string
+          title: product_id
+          description: Which product
+        quantity:
+          type: number
+          title: quantity
+          format: double
+          description: How many units
+        productName:
+          title: product_name
+          description: Product name
+          $ref: '#/components/schemas/inventory.v1.Internationalized'
+        unitPrice:
+          type:
+            - integer
+            - string
+          title: unit_price
+          format: int64
+          description: Price per unit (in smallest currency)
+        total:
+          type:
+            - integer
+            - string
+          title: total
+          format: int64
+          description: quantity * unit_price
+        notes:
+          type: string
+          title: notes
+          description: Special notes for this line
+        batchId:
+          type: string
+          title: batch_id
+          description: 'Optional: Specific batch/lot requested'
+      title: OrderLineItem
+      additionalProperties: false
+      description: |-
+        *
+         OrderLineItem represents a single product line in an order or quotation.
+         Used in PurchaseOrder, SalesOrder, Quotation, etc.
+
+         Fix: Added optional batch_id for specifying lots in orders (e.g., for perishable goods).
+
+         Example:
+           product_id: "PRD-001"
+           quantity: 10
+           product_name: "Product Name"
+           unit_price: 450000
+           total: 4500000
+           batch_id: "BATCH-2025-001" (optional)
+    order.v1.OrderPrices:
+      type: object
+      properties:
+        subtotal:
+          type: integer
+          title: subtotal
+          format: int32
+        discounts:
+          type: integer
+          title: discounts
+          format: int32
+        totalVatAmount:
+          type: integer
+          title: total_vat_amount
+          format: int32
+        grandTotal:
+          type: integer
+          title: grand_total
+          format: int32
+      title: OrderPrices
+      additionalProperties: false
+security: []

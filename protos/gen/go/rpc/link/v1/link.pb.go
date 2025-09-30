@@ -7,7 +7,6 @@
 package linkv1
 
 import (
-	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -199,7 +198,7 @@ var File_link_v1_link_proto protoreflect.FileDescriptor
 
 const file_link_v1_link_proto_rawDesc = "" +
 	"\n" +
-	"\x12link/v1/link.proto\x12\alink.v1\x1a\x1bbuf/validate/validate.proto\"\xc8\x01\n" +
+	"\x12link/v1/link.proto\x12\alink.v1\"\xc8\x01\n" +
 	"\fResourceLink\x12\x1a\n" +
 	"\x06ref_id\x18\x01 \x01(\tH\x00R\x05refId\x88\x01\x01\x12\x1d\n" +
 	"\n" +

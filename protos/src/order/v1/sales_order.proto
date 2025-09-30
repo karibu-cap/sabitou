@@ -1,0 +1,169 @@
+syntax = "proto3";
+
+package order.v1;
+
+import "buf/validate/validate.proto";
+import "financial/v1/invoice.proto";
+import "google/protobuf/timestamp.proto";
+import "logistic/v1/delivery_notes.proto";
+import "order/v1/order_utils.proto";
+import "payments/v1/payments.proto";
+
+/**
+ * SalesOrder (Bon de Commande from customer)
+ * Created when a customer wants to buy from you.
+ * Does NOT change inventory yet - just reserves it.
+ *
+ * Flow: Receive customer order → Prepare items → Ship
+ *
+ * Example:
+ *   so_id: "SO-2025-001"
+ *   customer_id: "CMP-003"
+ *   seller_id: "CMP-001" (your company)
+ *   status: SO_STATUS_CONFIRMED
+ *   items: [10x PRD-001 @ 450000 each]
+ */
+message SalesOrder {
+  string document_id = 1 [(buf.validate.field).required = true]; // "SO-2025-001"
+  string customer_id = 2; // Company buying from you
+  string seller_id = 3; // Your company
+  string source_warehouse_id = 4; // Where to pick items
+  SalesOrderStatus status = 5;
+  repeated order.v1.OrderLineItem items = 6;
+  OrderPrices order_prices = 7;
+  optional string currency = 8;
+  string created_by_user_id = 9;
+  google.protobuf.Timestamp created_at = 10;
+  google.protobuf.Timestamp delivery_date = 11;
+  optional string notes = 12;
+}
+
+enum SalesOrderStatus {
+  SO_STATUS_UNSPECIFIED = 0;
+  SO_STATUS_DRAFT = 1; // Being prepared
+  SO_STATUS_CONFIRMED = 2; // Customer confirmed
+  SO_STATUS_PROCESSING = 3; // Being prepared in warehouse
+  SO_STATUS_SHIPPED = 4; // On the way to customer
+  SO_STATUS_DELIVERED = 5; // Customer received
+  SO_STATUS_CANCELLED = 6; // Order cancelled
+}
+
+service SalesOrderService {
+  // Create a sales order (customer order)
+  rpc CreateSalesOrder(CreateSalesOrderRequest) returns (CreateSalesOrderResponse);
+
+  // Get sales order details
+  rpc GetSalesOrder(GetSalesOrderRequest) returns (GetSalesOrderResponse);
+
+  // List sales orders with filtering
+  rpc ListSalesOrders(ListSalesOrdersRequest) returns (ListSalesOrdersResponse);
+
+  // Update sales order status
+  rpc UpdateSalesOrderStatus(UpdateSalesOrderStatusRequest) returns (UpdateSalesOrderStatusResponse);
+
+  // Cancel a sales order
+  rpc CancelSalesOrder(CancelSalesOrderRequest) returns (CancelSalesOrderResponse);
+
+  // Create delivery note from sales order
+  rpc CreateDeliveryNote(CreateDeliveryNoteRequest) returns (CreateDeliveryNoteResponse);
+
+  // Create invoice from sales order
+  rpc CreateInvoiceFromSalesOrder(CreateInvoiceFromSalesOrderRequest) returns (CreateInvoiceFromSalesOrderResponse);
+}
+
+message CreateSalesOrderRequest {
+  string customer_id = 1;
+  string seller_id = 2; // Your company
+  string source_warehouse_id = 3;
+  repeated OrderLineItem items = 4;
+  google.protobuf.Timestamp delivery_date = 5;
+  string created_by_user_id = 6;
+  string notes = 7;
+}
+
+message CreateSalesOrderResponse {
+  string so_id = 1;
+  SalesOrder sales_order = 2;
+  bool all_items_available = 3;
+  repeated string unavailable_product_ids = 4;
+  string message = 5;
+}
+
+message GetSalesOrderRequest {
+  string so_id = 1;
+}
+
+message GetSalesOrderResponse {
+  SalesOrder sales_order = 1;
+  repeated logistic.v1.DeliveryNote delivery_notes = 2; // Associated deliveries
+  repeated financial.v1.Invoice invoices = 3; // Associated invoices
+  repeated payments.v1.Payment payments = 4; // Associated payments
+}
+
+message ListSalesOrdersRequest {
+  string customer_id = 1; // Filter by customer
+  SalesOrderStatus status = 2; // Filter by status
+  google.protobuf.Timestamp start_date = 3;
+  google.protobuf.Timestamp end_date = 4;
+  int32 page_size = 5;
+  int32 page_number = 6;
+}
+
+message ListSalesOrdersResponse {
+  repeated SalesOrder sales_orders = 1;
+  int32 total_count = 2;
+  int64 total_value = 3; // Sum of all orders
+}
+
+message UpdateSalesOrderStatusRequest {
+  string so_id = 1;
+  SalesOrderStatus new_status = 2;
+  string updated_by_user_id = 3;
+  string notes = 4;
+}
+
+message UpdateSalesOrderStatusResponse {
+  SalesOrder sales_order = 1;
+  string message = 2;
+}
+
+message CancelSalesOrderRequest {
+  string document_id = 1;
+  string reason = 2;
+  string cancelled_by_user_id = 3;
+}
+
+message CancelSalesOrderResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message CreateDeliveryNoteRequest {
+  string sales_order_id = 1;
+  string carrier = 2; // Shipping company
+  string tracking_number = 3;
+  string created_by_user_id = 4;
+  repeated logistic.v1.DeliveryLineItem items = 5; // Can be partial delivery
+  string notes = 6;
+}
+
+message CreateDeliveryNoteResponse {
+  string document_id = 1;
+  logistic.v1.DeliveryNote delivery_note = 2;
+  repeated string inventory_transaction_ids = 3;
+  string message = 4;
+}
+
+message CreateInvoiceFromSalesOrderRequest {
+  string sales_order_id = 1;
+  string delivery_note_id = 2; // Optional - link to delivery
+  google.protobuf.Timestamp due_date = 3;
+  string payment_terms = 4; // "Net 30", "COD", etc.
+  string created_by_user_id = 5;
+}
+
+message CreateInvoiceFromSalesOrderResponse {
+  string document_id = 1; // The invoice id
+  financial.v1.Invoice invoice = 2;
+  string message = 3;
+}

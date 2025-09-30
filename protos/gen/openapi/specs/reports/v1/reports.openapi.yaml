@@ -1,0 +1,2196 @@
+openapi: 3.1.0
+info:
+  title: reports.v1
+paths:
+  /reports.v1.DashboardReportingService/GetDashboardReport:
+    post:
+      tags:
+        - reports.v1.DashboardReportingService
+      summary: Get comprehensive dashboard data with all calculated fields
+      description: Get comprehensive dashboard data with all calculated fields
+      operationId: reports.v1.DashboardReportingService.GetDashboardReport
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reports.v1.GetDashboardReportRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/reports.v1.GetDashboardReportResponse'
+  /reports.v1.ReportingService/GetBestSellingProducts:
+    post:
+      tags:
+        - reports.v1.ReportingService
+      summary: Best selling products
+      description: Best selling products
+      operationId: reports.v1.ReportingService.GetBestSellingProducts
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reports.v1.GetBestSellingProductsRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/reports.v1.GetBestSellingProductsResponse'
+  /reports.v1.ReportingService/GetFinancialReport:
+    post:
+      tags:
+        - reports.v1.ReportingService
+      summary: Comprehensive financial report with purchases and balances
+      description: Comprehensive financial report with purchases and balances
+      operationId: reports.v1.ReportingService.GetFinancialReport
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reports.v1.GetFinancialReportRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/reports.v1.GetFinancialReportResponse'
+  /reports.v1.ReportingService/GetInventoryMovementReport:
+    post:
+      tags:
+        - reports.v1.ReportingService
+      summary: Inventory movement report
+      description: Inventory movement report
+      operationId: reports.v1.ReportingService.GetInventoryMovementReport
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reports.v1.GetInventoryMovementReportRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/reports.v1.GetInventoryMovementReportResponse'
+  /reports.v1.ReportingService/GetInventoryReport:
+    post:
+      tags:
+        - reports.v1.ReportingService
+      summary: Comprehensive inventory report with aggregates
+      description: Comprehensive inventory report with aggregates
+      operationId: reports.v1.ReportingService.GetInventoryReport
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reports.v1.GetInventoryReportRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/reports.v1.GetInventoryReportResponse'
+  /reports.v1.ReportingService/GetProfitLossReport:
+    post:
+      tags:
+        - reports.v1.ReportingService
+      summary: Profit & Loss report
+      description: Profit & Loss report
+      operationId: reports.v1.ReportingService.GetProfitLossReport
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reports.v1.GetProfitLossReportRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/reports.v1.GetProfitLossReportResponse'
+  /reports.v1.ReportingService/GetPurchaseReport:
+    post:
+      tags:
+        - reports.v1.ReportingService
+      summary: Purchase report by period
+      description: Purchase report by period
+      operationId: reports.v1.ReportingService.GetPurchaseReport
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reports.v1.GetPurchaseReportRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/reports.v1.GetPurchaseReportResponse'
+  /reports.v1.ReportingService/GetSalesReport:
+    post:
+      tags:
+        - reports.v1.ReportingService
+      summary: Sales report by period
+      description: Sales report by period
+      operationId: reports.v1.ReportingService.GetSalesReport
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reports.v1.GetSalesReportRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/reports.v1.GetSalesReportResponse'
+  /reports.v1.ReportingService/GetSalesReportFull:
+    post:
+      tags:
+        - reports.v1.ReportingService
+      summary: Full sales report including best sellers
+      description: Full sales report including best sellers
+      operationId: reports.v1.ReportingService.GetSalesReportFull
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reports.v1.GetSalesReportRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/reports.v1.GetSalesReportFullResponse'
+  /reports.v1.ReportingService/GetStockAgingReport:
+    post:
+      tags:
+        - reports.v1.ReportingService
+      summary: Stock aging report
+      description: Stock aging report
+      operationId: reports.v1.ReportingService.GetStockAgingReport
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reports.v1.GetStockAgingReportRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/reports.v1.GetStockAgingReportResponse'
+  /reports.v1.ReportingService/GetStorePurchaseHistory:
+    post:
+      tags:
+        - reports.v1.ReportingService
+      summary: Store purchase history
+      description: Store purchase history
+      operationId: reports.v1.ReportingService.GetStorePurchaseHistory
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reports.v1.GetStorePurchaseHistoryRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/reports.v1.GetStorePurchaseHistoryResponse'
+  /reports.v1.ReportingService/GetSupplierPerformanceReport:
+    post:
+      tags:
+        - reports.v1.ReportingService
+      summary: Supplier performance report
+      description: Supplier performance report
+      operationId: reports.v1.ReportingService.GetSupplierPerformanceReport
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reports.v1.GetSupplierPerformanceReportRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/reports.v1.GetSupplierPerformanceReportResponse'
+components:
+  schemas:
+    audits.v1.InventoryTransaction:
+      type: object
+      properties:
+        documentId:
+          type: string
+          title: document_id
+          description: '"TXN-2025-00123"'
+          nullable: true
+        storeId:
+          type: string
+          title: store_id
+        productId:
+          type: string
+          title: product_id
+        transactionType:
+          title: transaction_type
+          $ref: '#/components/schemas/audits.v1.TransactionType'
+        quantityChange:
+          type: number
+          title: quantity_change
+          format: double
+          description: Positive = increase, negative = decrease
+        quantityBefore:
+          type: number
+          title: quantity_before
+          format: double
+          description: Stock level before
+        quantityAfter:
+          type: number
+          title: quantity_after
+          format: double
+          description: Stock level after
+        relatedDocumentType:
+          type: string
+          title: related_document_type
+          description: '"DeliveryNote", "ReceivingNote", etc.'
+        relatedDocumentId:
+          type: string
+          title: related_document_id
+          description: ID of the document
+        performedByUserId:
+          type: string
+          title: performed_by_user_id
+        transactionTime:
+          title: transaction_time
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        notes:
+          type: string
+          title: notes
+        batchId:
+          type: string
+          title: batch_id
+          description: Specific batch affected
+      title: InventoryTransaction
+      required:
+        - documentId
+      additionalProperties: false
+      description: |-
+        *
+         InventoryTransaction (Journal des Mouvements)
+         Complete audit trail of every inventory change.
+         Auto-generated by all operations that affect stock.
+
+         Fix: Added batch_id for lot-specific transactions.
+
+         Example:
+           transaction_id: "TXN-2025-00123"
+           warehouse_id: "WH-001"
+           product_id: "PRD-001"
+           transaction_type: TXN_TYPE_SALE
+           quantity_change: -10
+           quantity_before: 100
+           quantity_after: 90
+           related_document_type: "DeliveryNote"
+           related_document_id: "DN-2025-001"
+           performed_by_user_id: "USR-003"
+           batch_id: "BATCH-2025-001"
+    audits.v1.TransactionType:
+      type: string
+      title: TransactionType
+      enum:
+        - TXN_TYPE_UNSPECIFIED
+        - TXN_TYPE_PURCHASE
+        - TXN_TYPE_SALE
+        - TXN_TYPE_RETURN_IN
+        - TXN_TYPE_RETURN_OUT
+        - TXN_TYPE_TRANSFER_OUT
+        - TXN_TYPE_TRANSFER_IN
+        - TXN_TYPE_ADJUSTMENT
+        - TXN_TYPE_DAMAGE
+        - TXN_TYPE_THEFT
+        - TXN_TYPE_INITIAL
+        - TXN_TYPE_EXPIRATION
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+        - 1
+      description: Define the version of the Connect protocol
+      const: 1
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+            - not_found
+          enum:
+            - canceled
+            - unknown
+            - invalid_argument
+            - deadline_exceeded
+            - not_found
+            - already_exists
+            - permission_denied
+            - resource_exhausted
+            - failed_precondition
+            - aborted
+            - out_of_range
+            - unimplemented
+            - internal
+            - unavailable
+            - data_loss
+            - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/connect.error_details.Any'
+          description: A list of messages that carry the error details. There is no limit on the number of messages.
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+    connect.error_details.Any:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
+        value:
+          type: string
+          format: binary
+          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
+        debug:
+          oneOf:
+            - type: object
+              title: Any
+              additionalProperties: true
+              description: Detailed error information.
+          discriminator:
+            propertyName: type
+          title: Debug
+          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
+    financial.v1.Invoice:
+      type: object
+      properties:
+        documentId:
+          type: string
+          title: document_id
+          description: '"INV-2025-001"'
+        invoiceType:
+          title: invoice_type
+          description: Sales or Purchase
+          $ref: '#/components/schemas/financial.v1.InvoiceType'
+        issuerId:
+          type: string
+          title: issuer_id
+          description: Company issuing invoice
+        recipientId:
+          type: string
+          title: recipient_id
+          description: Company receiving invoice
+        relatedSalesOrderId:
+          type: string
+          title: related_sales_order_id
+          description: Optional link
+        relatedPurchaseOrderId:
+          type: string
+          title: related_purchase_order_id
+          description: Optional link
+        relatedDeliveryNoteId:
+          type: string
+          title: related_delivery_note_id
+          description: Optional link
+        status:
+          title: status
+          $ref: '#/components/schemas/financial.v1.InvoiceStatus'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/financial.v1.InvoiceLineItem'
+          title: items
+        subtotal:
+          type:
+            - integer
+            - string
+          title: subtotal
+          format: int64
+          description: Before tax
+        taxAmount:
+          type:
+            - integer
+            - string
+          title: tax_amount
+          format: int64
+          description: VAT/sales tax
+        totalAmount:
+          type:
+            - integer
+            - string
+          title: total_amount
+          format: int64
+          description: Final amount due
+        currency:
+          type: string
+          title: currency
+        issueDate:
+          title: issue_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        dueDate:
+          title: due_date
+          description: Payment deadline
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        createdByUserId:
+          type: string
+          title: created_by_user_id
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        paymentIds:
+          type: array
+          items:
+            type: string
+          title: payment_ids
+        notes:
+          type: string
+          title: notes
+        paymentTerms:
+          type: string
+          title: payment_terms
+          description: '"Net 30", "Cash on delivery", etc.'
+      title: Invoice
+      required:
+        - documentId
+      additionalProperties: false
+      description: |-
+        *
+         Invoice (Facture)
+         The official accounting document for a sale or purchase.
+         Created AFTER goods are delivered (usually).
+
+         Fix: InvoiceLineItem now includes optional batch_id for traceability.
+
+         For SALES: You issue to customer
+         For PURCHASES: You receive from supplier
+
+         Example SALES invoice:
+           invoice_id: "INV-2025-001"
+           invoice_type: INVOICE_TYPE_SALES
+           issuer_id: "CMP-001" (your company)
+           recipient_id: "CMP-003" (customer)
+           related_sales_order_id: "SO-2025-001"
+           related_delivery_note_id: "DN-2025-001"
+           items: [10x PRD-001 @ 450000]
+           subtotal: 4500000
+           tax_amount: 900000 (20% VAT)
+           total_amount: 5400000
+           status: INVOICE_STATUS_UNPAID
+
+         INVENTORY IMPACT: None (already moved by DeliveryNote)
+    financial.v1.InvoiceLineItem:
+      type: object
+      properties:
+        productId:
+          type: string
+          title: product_id
+        quantity:
+          type: number
+          title: quantity
+          format: double
+        unitPrice:
+          type:
+            - integer
+            - string
+          title: unit_price
+          format: int64
+        subtotal:
+          type:
+            - integer
+            - string
+          title: subtotal
+          format: int64
+          description: quantity * unit_price
+        taxRate:
+          type: number
+          title: tax_rate
+          format: double
+          description: 0.20 for 20% VAT
+        taxAmount:
+          type:
+            - integer
+            - string
+          title: tax_amount
+          format: int64
+        total:
+          type:
+            - integer
+            - string
+          title: total
+          format: int64
+          description: subtotal + tax_amount
+        batchId:
+          type: string
+          title: batch_id
+          description: 'Optional: Batch/lot referenced'
+        productName:
+          title: product_name
+          description: The name of the item
+          $ref: '#/components/schemas/inventory.v1.Internationalized'
+      title: InvoiceLineItem
+      additionalProperties: false
+      description: |-
+        *
+         InvoiceLineItem represents one product on an invoice.
+
+         Fix: Added optional batch_id for lot traceability in accounting.
+    financial.v1.InvoiceStatus:
+      type: string
+      title: InvoiceStatus
+      enum:
+        - INVOICE_STATUS_UNSPECIFIED
+        - INVOICE_STATUS_DRAFT
+        - INVOICE_STATUS_ISSUED
+        - INVOICE_STATUS_UNPAID
+        - INVOICE_STATUS_PARTIALLY_PAID
+        - INVOICE_STATUS_PAID
+        - INVOICE_STATUS_OVERDUE
+        - INVOICE_STATUS_CANCELLED
+        - INVOICE_STATUS_CREDITED
+    financial.v1.InvoiceType:
+      type: string
+      title: InvoiceType
+      enum:
+        - INVOICE_TYPE_UNSPECIFIED
+        - INVOICE_TYPE_SALES
+        - INVOICE_TYPE_PURCHASE
+    google.protobuf.Timestamp:
+      type: string
+      examples:
+        - "2023-01-15T01:30:15.01Z"
+        - "2024-12-25T12:00:00Z"
+      format: date-time
+      description: |-
+        A Timestamp represents a point in time independent of any time zone or local
+         calendar, encoded as a count of seconds and fractions of seconds at
+         nanosecond resolution. The count is relative to an epoch at UTC midnight on
+         January 1, 1970, in the proleptic Gregorian calendar which extends the
+         Gregorian calendar backwards to year one.
+
+         All minutes are 60 seconds long. Leap seconds are "smeared" so that no leap
+         second table is needed for interpretation, using a [24-hour linear
+         smear](https://developers.google.com/time/smear).
+
+         The range is from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z. By
+         restricting to that range, we ensure that we can convert to and from [RFC
+         3339](https://www.ietf.org/rfc/rfc3339.txt) date strings.
+
+         # Examples
+
+         Example 1: Compute Timestamp from POSIX `time()`.
+
+             Timestamp timestamp;
+             timestamp.set_seconds(time(NULL));
+             timestamp.set_nanos(0);
+
+         Example 2: Compute Timestamp from POSIX `gettimeofday()`.
+
+             struct timeval tv;
+             gettimeofday(&tv, NULL);
+
+             Timestamp timestamp;
+             timestamp.set_seconds(tv.tv_sec);
+             timestamp.set_nanos(tv.tv_usec * 1000);
+
+         Example 3: Compute Timestamp from Win32 `GetSystemTimeAsFileTime()`.
+
+             FILETIME ft;
+             GetSystemTimeAsFileTime(&ft);
+             UINT64 ticks = (((UINT64)ft.dwHighDateTime) << 32) | ft.dwLowDateTime;
+
+             // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z
+             // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z.
+             Timestamp timestamp;
+             timestamp.set_seconds((INT64) ((ticks / 10000000) - 11644473600LL));
+             timestamp.set_nanos((INT32) ((ticks % 10000000) * 100));
+
+         Example 4: Compute Timestamp from Java `System.currentTimeMillis()`.
+
+             long millis = System.currentTimeMillis();
+
+             Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)
+                 .setNanos((int) ((millis % 1000) * 1000000)).build();
+
+         Example 5: Compute Timestamp from Java `Instant.now()`.
+
+             Instant now = Instant.now();
+
+             Timestamp timestamp =
+                 Timestamp.newBuilder().setSeconds(now.getEpochSecond())
+                     .setNanos(now.getNano()).build();
+
+         Example 6: Compute Timestamp from current time in Python.
+
+             timestamp = Timestamp()
+             timestamp.GetCurrentTime()
+
+         # JSON Mapping
+
+         In JSON format, the Timestamp type is encoded as a string in the
+         [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the
+         format is "{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z"
+         where {year} is always expressed using four digits while {month}, {day},
+         {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional
+         seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),
+         are optional. The "Z" suffix indicates the timezone ("UTC"); the timezone
+         is required. A proto3 JSON serializer should always use UTC (as indicated by
+         "Z") when printing the Timestamp type and a proto3 JSON parser should be
+         able to accept both UTC and other timezones (as indicated by an offset).
+
+         For example, "2017-01-15T01:30:15.01Z" encodes 15.01 seconds past
+         01:30 UTC on January 15, 2017.
+
+         In JavaScript, one can convert a Date object to this format using the
+         standard
+         [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)
+         method. In Python, a standard `datetime.datetime` object can be converted
+         to this format using
+         [`strftime`](https://docs.python.org/2/library/time.html#time.strftime) with
+         the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use
+         the Joda Time's [`ISODateTimeFormat.dateTime()`](
+         http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()
+         ) to obtain a formatter capable of generating timestamps in this format.
+    inventory.v1.ExpirationType:
+      type: string
+      title: ExpirationType
+      enum:
+        - EXPIRATION_TYPE_UNSPECIFIED
+        - EXPIRATION_TYPE_NONE
+        - EXPIRATION_TYPE_PRODUCT_LEVEL
+        - EXPIRATION_TYPE_LOT_LEVEL
+    inventory.v1.Internationalized:
+      type: object
+      properties:
+        en:
+          type: string
+          title: en
+          description: The English name of the product category.
+        fr:
+          type: string
+          title: fr
+          description: The French name of the product category.
+      title: Internationalized
+      additionalProperties: false
+    inventory.v1.ProductStatus:
+      type: string
+      title: ProductStatus
+      enum:
+        - PRODUCT_STATUS_UNSPECIFIED
+        - PRODUCT_STATUS_ACTIVE
+        - PRODUCT_STATUS_INACTIVE
+    inventory.v1.StoreProduct:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+          description: The unique identifier of the business product.
+          nullable: true
+        storeId:
+          type: string
+          title: store_id
+          description: The unique identifier of the store.
+        globalProductId:
+          type: string
+          title: global_product_id
+          description: The unique identifier of the global product.
+        salePrice:
+          type: integer
+          title: sale_price
+          format: int32
+          description: |-
+            The sale price in XAF of the product.
+             The currency is determined by the business.
+          nullable: true
+        imagesLinksIds:
+          type: array
+          items:
+            type: string
+          title: images_links_ids
+          description: The media ids of the images of the product.
+        supplierId:
+          type: string
+          title: supplier_id
+          description: The supplier.
+          nullable: true
+        status:
+          title: status
+          description: The status of the product.
+          $ref: '#/components/schemas/inventory.v1.ProductStatus'
+        sku:
+          type: string
+          title: sku
+          description: The stock keeping unit.
+          nullable: true
+        expirationType:
+          title: expiration_type
+          description: The type of expiration of the product.
+          $ref: '#/components/schemas/inventory.v1.ExpirationType'
+        createdAt:
+          title: created_at
+          description: The creation date of the product.
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        updatedAt:
+          title: updated_at
+          description: The last update date of the product.
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: StoreProduct
+      additionalProperties: false
+    reports.v1.BestSellingProduct:
+      type: object
+      properties:
+        product:
+          title: product
+          $ref: '#/components/schemas/inventory.v1.StoreProduct'
+        unitsSold:
+          type: integer
+          title: units_sold
+          format: int32
+        totalRevenue:
+          type:
+            - integer
+            - string
+          title: total_revenue
+          format: int64
+        transactionCount:
+          type: integer
+          title: transaction_count
+          format: int32
+        productName:
+          type: string
+          title: productName
+        rank:
+          type: integer
+          title: rank
+          format: int32
+      title: BestSellingProduct
+      additionalProperties: false
+    reports.v1.CategorySalesData:
+      type: object
+      properties:
+        categoryName:
+          type: string
+          title: category_name
+        totalSalesAmount:
+          type: number
+          title: total_sales_amount
+          format: double
+        totalUnitsSold:
+          type: integer
+          title: total_units_sold
+          format: int32
+        transactionCount:
+          type: integer
+          title: transaction_count
+          format: int32
+        percentageOfTotal:
+          type: number
+          title: percentage_of_total
+          format: double
+      title: CategorySalesData
+      additionalProperties: false
+    reports.v1.FinancialComparisonData:
+      type: object
+      properties:
+        previousYearTotalRevenue:
+          type:
+            - integer
+            - string
+          title: previous_year_total_revenue
+          format: int64
+        previousYearNetProfit:
+          type:
+            - integer
+            - string
+          title: previous_year_net_profit
+          format: int64
+        previousYearGrossProfitMargin:
+          type: number
+          title: previous_year_gross_profit_margin
+          format: double
+        previousYearTotalPurchases:
+          type:
+            - integer
+            - string
+          title: previous_year_total_purchases
+          format: int64
+      title: FinancialComparisonData
+      additionalProperties: false
+    reports.v1.GetBestSellingProductsRequest:
+      type: object
+      properties:
+        startDate:
+          title: start_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        endDate:
+          title: end_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        storeId:
+          type: string
+          title: store_id
+          description: Optional
+          nullable: true
+        category:
+          type: string
+          title: category
+          description: Optional
+          nullable: true
+        topN:
+          type: integer
+          title: top_n
+          format: int32
+          description: Top 10, 20, etc. Default 20
+      title: GetBestSellingProductsRequest
+      additionalProperties: false
+    reports.v1.GetBestSellingProductsResponse:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/reports.v1.BestSellingProduct'
+          title: products
+      title: GetBestSellingProductsResponse
+      additionalProperties: false
+    reports.v1.GetDashboardReportRequest:
+      type: object
+      properties:
+        storeId:
+          type: string
+          title: store_id
+          nullable: true
+        startDate:
+          title: start_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        endDate:
+          title: end_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: GetDashboardReportRequest
+      additionalProperties: false
+    reports.v1.GetDashboardReportResponse:
+      type: object
+      properties:
+        totalSalesAmount:
+          type:
+            - integer
+            - string
+          title: total_sales_amount
+          format: int64
+          description: Sales metrics
+        totalTransactions:
+          type: integer
+          title: total_transactions
+          format: int32
+        averageTransactionValue:
+          type: number
+          title: average_transaction_value
+          format: double
+        totalUnitsSold:
+          type: integer
+          title: total_units_sold
+          format: int32
+        totalRevenue:
+          type:
+            - integer
+            - string
+          title: total_revenue
+          format: int64
+          description: Financial metrics
+        netProfit:
+          type:
+            - integer
+            - string
+          title: net_profit
+          format: int64
+        grossProfitMargin:
+          type: number
+          title: gross_profit_margin
+          format: double
+        totalPurchases:
+          type:
+            - integer
+            - string
+          title: total_purchases
+          format: int64
+        totalProducts:
+          type: integer
+          title: total_products
+          format: int32
+          description: Inventory metrics
+        totalInventoryValue:
+          type:
+            - integer
+            - string
+          title: total_inventory_value
+          format: int64
+        lowStockCount:
+          type: integer
+          title: low_stock_count
+          format: int32
+        salesAndProfitTrend:
+          type: array
+          items:
+            $ref: '#/components/schemas/reports.v1.TrendDataPoint'
+          title: sales_and_profit_trend
+          description: Trend and comparison data
+        categorySalesBreakdown:
+          type: array
+          items:
+            $ref: '#/components/schemas/reports.v1.CategorySalesData'
+          title: category_sales_breakdown
+        revenueVsExpenses:
+          type: array
+          items:
+            $ref: '#/components/schemas/reports.v1.RevenueExpenseDataPoint'
+          title: revenue_vs_expenses
+        inventoryMovement:
+          type: array
+          items:
+            $ref: '#/components/schemas/reports.v1.StockMovementDataPoint'
+          title: inventory_movement
+        salesComparison:
+          title: sales_comparison
+          description: Previous year comparisons
+          $ref: '#/components/schemas/reports.v1.SalesComparisonData'
+        financialComparison:
+          title: financial_comparison
+          $ref: '#/components/schemas/reports.v1.FinancialComparisonData'
+        inventoryComparison:
+          title: inventory_comparison
+          $ref: '#/components/schemas/reports.v1.InventoryComparisonData'
+        topPerformingProducts:
+          type: array
+          items:
+            $ref: '#/components/schemas/reports.v1.BestSellingProduct'
+          title: top_performing_products
+          description: Top performers
+        supplierPerformances:
+          type: array
+          items:
+            $ref: '#/components/schemas/reports.v1.SupplierPerformanceSummary'
+          title: supplier_performances
+        stockAgingItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/reports.v1.StockAgingItem'
+          title: stock_aging_items
+          description: Stock aging
+      title: GetDashboardReportResponse
+      additionalProperties: false
+    reports.v1.GetFinancialReportRequest:
+      type: object
+      properties:
+        storeId:
+          type: string
+          title: store_id
+          nullable: true
+        startDate:
+          title: start_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        endDate:
+          title: end_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: GetFinancialReportRequest
+      additionalProperties: false
+    reports.v1.GetFinancialReportResponse:
+      type: object
+      properties:
+        totalRevenue:
+          type:
+            - integer
+            - string
+          title: total_revenue
+          format: int64
+          description: Sales
+        costOfGoodsSold:
+          type:
+            - integer
+            - string
+          title: cost_of_goods_sold
+          format: int64
+          description: Purchases
+        grossProfit:
+          type:
+            - integer
+            - string
+          title: gross_profit
+          format: int64
+        grossProfitMargin:
+          type: number
+          title: gross_profit_margin
+          format: double
+        returnsValue:
+          type:
+            - integer
+            - string
+          title: returns_value
+          format: int64
+        adjustmentsValue:
+          type:
+            - integer
+            - string
+          title: adjustments_value
+          format: int64
+        netProfit:
+          type:
+            - integer
+            - string
+          title: net_profit
+          format: int64
+        totalPurchases:
+          type:
+            - integer
+            - string
+          title: total_purchases
+          format: int64
+        outstandingBalance:
+          type:
+            - integer
+            - string
+          title: outstanding_balance
+          format: int64
+        supplierPerformances:
+          type: array
+          items:
+            $ref: '#/components/schemas/reports.v1.SupplierPerformanceSummary'
+          title: supplier_performances
+        revenueVsExpensesData:
+          type: array
+          items:
+            $ref: '#/components/schemas/reports.v1.RevenueExpenseDataPoint'
+          title: revenue_vs_expenses_data
+        previousYearComparison:
+          title: previous_year_comparison
+          $ref: '#/components/schemas/reports.v1.FinancialComparisonData'
+      title: GetFinancialReportResponse
+      additionalProperties: false
+    reports.v1.GetInventoryMovementReportRequest:
+      type: object
+      properties:
+        productId:
+          type: string
+          title: product_id
+          description: Required
+        startDate:
+          title: start_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        endDate:
+          title: end_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        storeId:
+          type: string
+          title: store_id
+          description: Optional
+      title: GetInventoryMovementReportRequest
+      additionalProperties: false
+    reports.v1.GetInventoryMovementReportResponse:
+      type: object
+      properties:
+        product:
+          title: product
+          $ref: '#/components/schemas/inventory.v1.StoreProduct'
+        openingBalance:
+          type: number
+          title: opening_balance
+          format: double
+        totalIn:
+          type: number
+          title: total_in
+          format: double
+        totalOut:
+          type: number
+          title: total_out
+          format: double
+        closingBalance:
+          type: number
+          title: closing_balance
+          format: double
+        transactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/audits.v1.InventoryTransaction'
+          title: transactions
+      title: GetInventoryMovementReportResponse
+      additionalProperties: false
+    reports.v1.GetInventoryReportRequest:
+      type: object
+      properties:
+        storeId:
+          type: string
+          title: store_id
+          nullable: true
+        startDate:
+          title: start_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        endDate:
+          title: end_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        category:
+          type: string
+          title: category
+          nullable: true
+      title: GetInventoryReportRequest
+      additionalProperties: false
+    reports.v1.GetInventoryReportResponse:
+      type: object
+      properties:
+        totalProducts:
+          type: integer
+          title: total_products
+          format: int32
+        totalValue:
+          type:
+            - integer
+            - string
+          title: total_value
+          format: int64
+          description: Sum of (quantity * cost_price)
+        lowStockCount:
+          type: integer
+          title: low_stock_count
+          format: int32
+        agingItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/reports.v1.StockAgingItem'
+          title: aging_items
+        movementSummary:
+          title: movement_summary
+          $ref: '#/components/schemas/reports.v1.InventoryMovementSummary'
+        bestSellers:
+          type: array
+          items:
+            $ref: '#/components/schemas/reports.v1.BestSellingProduct'
+          title: best_sellers
+        stockMovementData:
+          type: array
+          items:
+            $ref: '#/components/schemas/reports.v1.StockMovementDataPoint'
+          title: stock_movement_data
+        previousYearComparison:
+          title: previous_year_comparison
+          $ref: '#/components/schemas/reports.v1.InventoryComparisonData'
+      title: GetInventoryReportResponse
+      additionalProperties: false
+    reports.v1.GetProfitLossReportRequest:
+      type: object
+      properties:
+        startDate:
+          title: start_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        endDate:
+          title: end_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        storeId:
+          type: string
+          title: store_id
+          description: Optional
+          nullable: true
+      title: GetProfitLossReportRequest
+      additionalProperties: false
+    reports.v1.GetProfitLossReportResponse:
+      type: object
+      properties:
+        totalRevenue:
+          type:
+            - integer
+            - string
+          title: total_revenue
+          format: int64
+          description: Sales
+        costOfGoodsSold:
+          type:
+            - integer
+            - string
+          title: cost_of_goods_sold
+          format: int64
+          description: Purchases
+        grossProfit:
+          type:
+            - integer
+            - string
+          title: gross_profit
+          format: int64
+          description: Revenue - COGS
+        grossProfitMargin:
+          type: number
+          title: gross_profit_margin
+          format: double
+          description: Percentage
+        returnsValue:
+          type:
+            - integer
+            - string
+          title: returns_value
+          format: int64
+          description: Store returns
+        adjustmentsValue:
+          type:
+            - integer
+            - string
+          title: adjustments_value
+          format: int64
+          description: Stock adjustments (damage, theft)
+        netProfit:
+          type:
+            - integer
+            - string
+          title: net_profit
+          format: int64
+          description: After returns and adjustments
+      title: GetProfitLossReportResponse
+      additionalProperties: false
+    reports.v1.GetPurchaseReportRequest:
+      type: object
+      properties:
+        startDate:
+          title: start_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        endDate:
+          title: end_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        storeId:
+          type: string
+          title: store_id
+        supplierId:
+          type: string
+          title: supplier_id
+        category:
+          type: string
+          title: category
+        groupBy:
+          title: group_by
+          $ref: '#/components/schemas/reports.v1.ReportGroupBy'
+      title: GetPurchaseReportRequest
+      additionalProperties: false
+    reports.v1.GetPurchaseReportResponse:
+      type: object
+      properties:
+        summaries:
+          type: array
+          items:
+            $ref: '#/components/schemas/reports.v1.PurchaseSummary'
+          title: summaries
+        totalPurchaseAmount:
+          type:
+            - integer
+            - string
+          title: total_purchase_amount
+          format: int64
+        totalPurchaseOrders:
+          type: integer
+          title: total_purchase_orders
+          format: int32
+        totalUnitsPurchased:
+          type: integer
+          title: total_units_purchased
+          format: int32
+      title: GetPurchaseReportResponse
+      additionalProperties: false
+    reports.v1.GetSalesReportFullResponse:
+      type: object
+      properties:
+        summaries:
+          type: array
+          items:
+            $ref: '#/components/schemas/reports.v1.SalesSummary'
+          title: summaries
+        totalSalesAmount:
+          type:
+            - integer
+            - string
+          title: total_sales_amount
+          format: int64
+        totalTransactions:
+          type: integer
+          title: total_transactions
+          format: int32
+        totalUnitsSold:
+          type: integer
+          title: total_units_sold
+          format: int32
+        averageTransactionValue:
+          type:
+            - integer
+            - string
+          title: average_transaction_value
+          format: int64
+        bestProducts:
+          type: array
+          items:
+            $ref: '#/components/schemas/reports.v1.BestSellingProduct'
+          title: best_products
+        categorySalesData:
+          type: array
+          items:
+            $ref: '#/components/schemas/reports.v1.CategorySalesData'
+          title: category_sales_data
+        previousYearComparison:
+          title: previous_year_comparison
+          $ref: '#/components/schemas/reports.v1.SalesComparisonData'
+      title: GetSalesReportFullResponse
+      additionalProperties: false
+    reports.v1.GetSalesReportRequest:
+      type: object
+      properties:
+        startDate:
+          title: start_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        endDate:
+          title: end_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        supplierId:
+          type: string
+          title: supplier_id
+          description: Optional
+          nullable: true
+        storeId:
+          type: string
+          title: store_id
+          description: Optional
+          nullable: true
+        category:
+          type: string
+          title: category
+          description: Product category filter
+        groupBy:
+          title: group_by
+          description: Daily, weekly, monthly
+          $ref: '#/components/schemas/reports.v1.ReportGroupBy'
+      title: GetSalesReportRequest
+      additionalProperties: false
+    reports.v1.GetSalesReportResponse:
+      type: object
+      properties:
+        summaries:
+          type: array
+          items:
+            $ref: '#/components/schemas/reports.v1.SalesSummary'
+          title: summaries
+        totalSalesAmount:
+          type:
+            - integer
+            - string
+          title: total_sales_amount
+          format: int64
+        totalTransactions:
+          type: integer
+          title: total_transactions
+          format: int32
+        totalUnitsSold:
+          type: integer
+          title: total_units_sold
+          format: int32
+        averageTransactionValue:
+          type:
+            - integer
+            - string
+          title: average_transaction_value
+          format: int64
+      title: GetSalesReportResponse
+      additionalProperties: false
+    reports.v1.GetStockAgingReportRequest:
+      type: object
+      properties:
+        storeId:
+          type: string
+          title: store_id
+          description: Optional
+          nullable: true
+        category:
+          type: string
+          title: category
+          description: Optional
+          nullable: true
+      title: GetStockAgingReportRequest
+      additionalProperties: false
+    reports.v1.GetStockAgingReportResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/reports.v1.StockAgingItem'
+          title: items
+        totalStockValue:
+          type:
+            - integer
+            - string
+          title: total_stock_value
+          format: int64
+        slowMovingStockValue:
+          type:
+            - integer
+            - string
+          title: slow_moving_stock_value
+          format: int64
+          description: '> 90 days'
+      title: GetStockAgingReportResponse
+      additionalProperties: false
+    reports.v1.GetStorePurchaseHistoryRequest:
+      type: object
+      properties:
+        storeId:
+          type: string
+          title: store_id
+        startDate:
+          title: start_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        endDate:
+          title: end_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: GetStorePurchaseHistoryRequest
+      additionalProperties: false
+    reports.v1.GetStorePurchaseHistoryResponse:
+      type: object
+      properties:
+        store:
+          title: store
+          $ref: '#/components/schemas/store.v1.Store'
+        invoices:
+          type: array
+          items:
+            $ref: '#/components/schemas/financial.v1.Invoice'
+          title: invoices
+        totalPurchases:
+          type:
+            - integer
+            - string
+          title: total_purchases
+          format: int64
+        totalPaid:
+          type:
+            - integer
+            - string
+          title: total_paid
+          format: int64
+        outstandingBalance:
+          type:
+            - integer
+            - string
+          title: outstanding_balance
+          format: int64
+        transactionCount:
+          type: integer
+          title: transaction_count
+          format: int32
+        lastPurchaseDate:
+          title: last_purchase_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: GetStorePurchaseHistoryResponse
+      additionalProperties: false
+    reports.v1.GetSupplierPerformanceReportRequest:
+      type: object
+      properties:
+        supplierId:
+          type: string
+          title: supplier_id
+        startDate:
+          title: start_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        endDate:
+          title: end_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: GetSupplierPerformanceReportRequest
+      additionalProperties: false
+    reports.v1.GetSupplierPerformanceReportResponse:
+      type: object
+      properties:
+        supplier:
+          title: supplier
+          $ref: '#/components/schemas/store.v1.Supplier'
+        totalPurchaseOrders:
+          type: integer
+          title: total_purchase_orders
+          format: int32
+        totalPurchaseValue:
+          type:
+            - integer
+            - string
+          title: total_purchase_value
+          format: int64
+        onTimeDeliveries:
+          type: integer
+          title: on_time_deliveries
+          format: int32
+        lateDeliveries:
+          type: integer
+          title: late_deliveries
+          format: int32
+        onTimePercentage:
+          type: number
+          title: on_time_percentage
+          format: double
+        qualityIssues:
+          type: integer
+          title: quality_issues
+          format: int32
+          description: Count of returns/rejections
+        averageDeliveryTimeDays:
+          type: number
+          title: average_delivery_time_days
+          format: double
+      title: GetSupplierPerformanceReportResponse
+      additionalProperties: false
+    reports.v1.InventoryComparisonData:
+      type: object
+      properties:
+        previousYearTotalProducts:
+          type: integer
+          title: previous_year_total_products
+          format: int32
+        previousYearTotalValue:
+          type:
+            - integer
+            - string
+          title: previous_year_total_value
+          format: int64
+        previousYearLowStockCount:
+          type: integer
+          title: previous_year_low_stock_count
+          format: int32
+        previousYearMovementTotalIn:
+          type: number
+          title: previous_year_movement_total_in
+          format: double
+        previousYearMovementTotalOut:
+          type: number
+          title: previous_year_movement_total_out
+          format: double
+      title: InventoryComparisonData
+      additionalProperties: false
+    reports.v1.InventoryMovementSummary:
+      type: object
+      properties:
+        totalIn:
+          type: number
+          title: total_in
+          format: double
+        totalOut:
+          type: number
+          title: total_out
+          format: double
+        netChange:
+          type: number
+          title: net_change
+          format: double
+      title: InventoryMovementSummary
+      additionalProperties: false
+    reports.v1.PurchaseSummary:
+      type: object
+      properties:
+        periodStart:
+          title: period_start
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        periodEnd:
+          title: period_end
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        purchaseAmount:
+          type:
+            - integer
+            - string
+          title: purchase_amount
+          format: int64
+        purchaseOrderCount:
+          type: integer
+          title: purchase_order_count
+          format: int32
+        unitsPurchased:
+          type: integer
+          title: units_purchased
+          format: int32
+      title: PurchaseSummary
+      additionalProperties: false
+    reports.v1.ReportGroupBy:
+      type: string
+      title: ReportGroupBy
+      enum:
+        - REPORT_GROUP_BY_UNSPECIFIED
+        - REPORT_GROUP_BY_DAILY
+        - REPORT_GROUP_BY_WEEKLY
+        - REPORT_GROUP_BY_MONTHLY
+        - REPORT_GROUP_BY_QUARTERLY
+        - REPORT_GROUP_BY_YEARLY
+    reports.v1.RevenueExpenseDataPoint:
+      type: object
+      properties:
+        periodStart:
+          title: period_start
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        periodEnd:
+          title: period_end
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        revenue:
+          type: number
+          title: revenue
+          format: double
+        expenses:
+          type: number
+          title: expenses
+          format: double
+        netAmount:
+          type: number
+          title: net_amount
+          format: double
+      title: RevenueExpenseDataPoint
+      additionalProperties: false
+    reports.v1.SalesComparisonData:
+      type: object
+      properties:
+        previousYearTotalSales:
+          type:
+            - integer
+            - string
+          title: previous_year_total_sales
+          format: int64
+        previousYearTotalTransactions:
+          type: integer
+          title: previous_year_total_transactions
+          format: int32
+        previousYearAverageTransactionValue:
+          type: number
+          title: previous_year_average_transaction_value
+          format: double
+      title: SalesComparisonData
+      additionalProperties: false
+    reports.v1.SalesSummary:
+      type: object
+      properties:
+        periodStart:
+          title: period_start
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        periodEnd:
+          title: period_end
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        salesAmount:
+          type:
+            - integer
+            - string
+          title: sales_amount
+          format: int64
+        transactionCount:
+          type: integer
+          title: transaction_count
+          format: int32
+        unitsSold:
+          type: integer
+          title: units_sold
+          format: int32
+      title: SalesSummary
+      additionalProperties: false
+    reports.v1.StockAgingItem:
+      type: object
+      properties:
+        product:
+          title: product
+          $ref: '#/components/schemas/inventory.v1.StoreProduct'
+        quantity:
+          type: number
+          title: quantity
+          format: double
+        stockValue:
+          type:
+            - integer
+            - string
+          title: stock_value
+          format: int64
+        lastMovementDate:
+          title: last_movement_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        daysSinceLastMovement:
+          type: integer
+          title: days_since_last_movement
+          format: int32
+        movementCategory:
+          title: movement_category
+          $ref: '#/components/schemas/reports.v1.StockMovementCategory'
+      title: StockAgingItem
+      additionalProperties: false
+    reports.v1.StockMovementCategory:
+      type: string
+      title: StockMovementCategory
+      enum:
+        - STOCK_MOVEMENT_CATEGORY_UNSPECIFIED
+        - STOCK_MOVEMENT_CATEGORY_FAST
+        - STOCK_MOVEMENT_CATEGORY_MEDIUM
+        - STOCK_MOVEMENT_CATEGORY_SLOW
+        - STOCK_MOVEMENT_CATEGORY_VERY_SLOW
+    reports.v1.StockMovementDataPoint:
+      type: object
+      properties:
+        date:
+          title: date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        stockLevel:
+          type: number
+          title: stock_level
+          format: double
+        movementQuantity:
+          type: number
+          title: movement_quantity
+          format: double
+        movementType:
+          type: string
+          title: movement_type
+          description: '"IN", "OUT", "ADJUSTMENT"'
+      title: StockMovementDataPoint
+      additionalProperties: false
+    reports.v1.SupplierPerformanceSummary:
+      type: object
+      properties:
+        supplierId:
+          type: string
+          title: supplier_id
+        supplierName:
+          type: string
+          title: supplier_name
+        totalPurchaseValue:
+          type:
+            - integer
+            - string
+          title: total_purchase_value
+          format: int64
+        onTimePercentage:
+          type: number
+          title: on_time_percentage
+          format: double
+        totalOrders:
+          type: integer
+          title: total_orders
+          format: int32
+      title: SupplierPerformanceSummary
+      additionalProperties: false
+    reports.v1.TrendDataPoint:
+      type: object
+      properties:
+        date:
+          title: date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        salesValue:
+          type: number
+          title: sales_value
+          format: double
+        profitValue:
+          type: number
+          title: profit_value
+          format: double
+      title: TrendDataPoint
+      additionalProperties: false
+    store.v1.Address:
+      type: object
+      properties:
+        street:
+          type: string
+          title: street
+        city:
+          type: string
+          title: city
+        region:
+          type: string
+          title: region
+        postalCode:
+          type: string
+          title: postal_code
+        country:
+          type: string
+          title: country
+      title: Address
+      additionalProperties: false
+    store.v1.Store:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+          description: The unique identifier of the store.
+          nullable: true
+        name:
+          type: string
+          title: name
+          description: The name of the store.
+        description:
+          type: string
+          title: description
+          description: The description of the store.
+          nullable: true
+        logoLinkId:
+          type: string
+          title: logo_link_id
+          description: The id of the media of the logo of the store.
+          nullable: true
+        externalLinksIds:
+          type: string
+          title: external_links_ids
+          description: The list of external links of the store it can be an address link, a phone number, an email, a website etc.
+          nullable: true
+        businessId:
+          type: string
+          title: business_id
+          description: The id of the business of the store.
+        createdAt:
+          title: created_at
+          description: The date and time the store was created.
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        updatedAt:
+          title: updated_at
+          description: The date and time the store was last updated.
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        phone:
+          type: string
+          title: phone
+          description: The business contact information.
+          nullable: true
+        address:
+          title: address
+          description: The business address.
+          nullable: true
+          $ref: '#/components/schemas/store.v1.Address'
+        email:
+          type: string
+          title: email
+          description: The business email.
+          nullable: true
+        costingMethod:
+          title: costing_method
+          description: The costing method of the store.
+          nullable: true
+          $ref: '#/components/schemas/store.v1.StoreCostingMethod'
+        tax:
+          type: number
+          title: tax
+          format: double
+          description: The tax of the store.
+          nullable: true
+        postalBox:
+          type: string
+          title: postal_box
+          description: The postal box of the store.
+          nullable: true
+        nui:
+          type: string
+          title: nui
+          description: The nui of the store.
+          nullable: true
+        taxPayerNumber:
+          type: string
+          title: tax_payer_number
+          description: The tax payer number of the store.
+          nullable: true
+      title: Store
+      additionalProperties: false
+      description: |-
+        Stores are used to store products.
+         Note: A store is not always a shop.
+    store.v1.StoreCostingMethod:
+      type: string
+      title: StoreCostingMethod
+      enum:
+        - STORE_COSTING_METHOD_UNSPECIFIED
+        - STORE_COSTING_METHOD_FIFO
+        - STORE_COSTING_METHOD_AVERAGE
+    store.v1.Supplier:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+          description: The reference id to the supplier identifier.
+          nullable: true
+        name:
+          type: string
+          title: name
+          description: The name of the supplier.
+        description:
+          type: string
+          title: description
+          description: The description of the supplier.
+          nullable: true
+        logoLinkId:
+          type: string
+          title: logo_link_id
+          description: The id of the media of the logo of the supplier.
+          nullable: true
+        externalLinksIds:
+          type: array
+          items:
+            type: string
+          title: external_links_ids
+          description: The links of the supplier.
+        contactPhone:
+          type: string
+          title: contact_phone
+          description: The contact phone number.
+          nullable: true
+        contactEmail:
+          type: string
+          title: contact_email
+          description: The contact email.
+          nullable: true
+        contactAddress:
+          type: string
+          title: contact_address
+          description: The contact address.
+          nullable: true
+        status:
+          title: status
+          description: Whether the supplier is active.
+          $ref: '#/components/schemas/store.v1.SupplierStatus'
+        storeIds:
+          type: array
+          items:
+            type: string
+          title: store_ids
+          description: The ids of the store of the supplier.
+      title: Supplier
+      additionalProperties: false
+    store.v1.SupplierStatus:
+      type: string
+      title: SupplierStatus
+      enum:
+        - SUPPLIER_STATUS_UNSPECIFIED
+        - SUPPLIER_STATUS_ACTIVE
+        - SUPPLIER_STATUS_INACTIVE
+security: []
+tags:
+  - name: reports.v1.ReportingService
+  - name: reports.v1.DashboardReportingService
+    description: Comprehensive dashboard data service for aggregated calculations

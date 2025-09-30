@@ -4,6 +4,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../../services/internationalization/internationalization.dart';
+import '../../../utils/common_functions.dart';
 import '../reports_controller.dart';
 import '../reports_view_model.dart';
 
@@ -15,129 +16,21 @@ class MonthlyCashFlow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = context.watch<ReportsController>();
+    // Create monthly data from supplier performances
+    final List<ChartData<String>> chartDatas = List.generate(12, (index) {
+      final month = index + 1;
+      final monthName = getMonthName(month);
 
-    final List<ChartData<String>> chartDatas = [
-      ChartData(
-        x: 'Jan',
+      return ChartData<String>(
+        x: monthName,
         y: controller.monthlyCashFlowData
-            .where((data) => data.month.month == 1)
-            .fold(
+            .where((data) => data.month.month == month)
+            .fold<double>(
               0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.cashFlow,
+              (previousValue, element) => previousValue + element.cashFlow,
             ),
-      ),
-      ChartData(
-        x: 'Feb',
-        y: controller.monthlyCashFlowData
-            .where((data) => data.month.month == 2)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.cashFlow,
-            ),
-      ),
-      ChartData(
-        x: 'Mar',
-        y: controller.monthlyCashFlowData
-            .where((data) => data.month.month == 3)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.cashFlow,
-            ),
-      ),
-      ChartData(
-        x: 'Apr',
-        y: controller.monthlyCashFlowData
-            .where((data) => data.month.month == 4)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.cashFlow,
-            ),
-      ),
-      ChartData(
-        x: 'May',
-        y: controller.monthlyCashFlowData
-            .where((data) => data.month.month == 5)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.cashFlow,
-            ),
-      ),
-      ChartData(
-        x: 'Jun',
-        y: controller.monthlyCashFlowData
-            .where((data) => data.month.month == 6)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.cashFlow,
-            ),
-      ),
-      ChartData(
-        x: 'Jul',
-        y: controller.monthlyCashFlowData
-            .where((data) => data.month.month == 7)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.cashFlow,
-            ),
-      ),
-      ChartData(
-        x: 'Aug',
-        y: controller.monthlyCashFlowData
-            .where((data) => data.month.month == 8)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.cashFlow,
-            ),
-      ),
-      ChartData(
-        x: 'Sep',
-        y: controller.monthlyCashFlowData
-            .where((data) => data.month.month == 9)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.cashFlow,
-            ),
-      ),
-      ChartData(
-        x: 'Oct',
-        y: controller.monthlyCashFlowData
-            .where((data) => data.month.month == 10)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.cashFlow,
-            ),
-      ),
-      ChartData(
-        x: 'Nov',
-        y: controller.monthlyCashFlowData
-            .where((data) => data.month.month == 11)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.cashFlow,
-            ),
-      ),
-      ChartData(
-        x: 'Dec',
-        y: controller.monthlyCashFlowData
-            .where((data) => data.month.month == 12)
-            .fold(
-              0,
-              (previousValue, element) =>
-                  (previousValue ?? 0) + element.cashFlow,
-            ),
-      ),
-    ];
+      );
+    });
 
     return ShadCard(
       child: Column(

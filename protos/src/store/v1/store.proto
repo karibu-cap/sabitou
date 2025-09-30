@@ -7,6 +7,14 @@ import "google/protobuf/timestamp.proto";
 import "identity/v1/permission.proto";
 import "identity/v1/user.proto";
 
+message Address {
+  string street = 1;
+  string city = 2;
+  string region = 3;
+  string postal_code = 4;
+  string country = 5;
+}
+
 // Stores are used to store products.
 // Note: A store is not always a shop.
 message Store {
@@ -35,16 +43,28 @@ message Store {
   optional google.protobuf.Timestamp updated_at = 10;
 
   // The business contact information.
-  optional string contact_info = 11;
+  optional string phone = 11;
 
   // The business address.
-  optional string address = 12;
+  optional Address address = 12;
 
   // The business email.
   optional string email = 13;
 
   // The costing method of the store.
   optional StoreCostingMethod costing_method = 14;
+
+  // The tax of the store.
+  optional double tax = 15;
+
+  // The postal box of the store.
+  optional string postal_box = 16;
+
+  // The nui of the store.
+  optional string nui = 17;
+
+  // The tax payer number of the store.
+  optional string tax_payer_number = 18;
 }
 
 enum StoreCostingMethod {
@@ -134,7 +154,6 @@ message DeleteStoreRequest {
     (buf.validate.field).string.min_len = 3
   ];
 }
-
 message GetBusinessStoresRequest {
   // The reference id to the supplier identifier.
   string business_id = 1 [
@@ -285,6 +304,7 @@ message RemoveUserFromStoreResponse {
   bool success = 1;
 }
 
+
 service StoreService {
   // Creates a new store.
   rpc CreateStore(CreateStoreRequest) returns (CreateStoreResponse) {}
@@ -322,4 +342,5 @@ service StoreService {
 
   // Remove user from store.
   rpc RemoveUserFromStore(RemoveUserFromStoreRequest) returns (RemoveUserFromStoreResponse);
+
 }

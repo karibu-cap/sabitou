@@ -1,0 +1,1329 @@
+openapi: 3.1.0
+info:
+  title: order.v1
+paths:
+  /order.v1.PurchaseOrderService/CancelPurchaseOrder:
+    post:
+      tags:
+        - order.v1.PurchaseOrderService
+      summary: Cancel purchase order
+      description: Cancel purchase order
+      operationId: order.v1.PurchaseOrderService.CancelPurchaseOrder
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/order.v1.CancelPurchaseOrderRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/order.v1.CancelPurchaseOrderResponse'
+  /order.v1.PurchaseOrderService/CreatePurchaseOrder:
+    post:
+      tags:
+        - order.v1.PurchaseOrderService
+      summary: Create a purchase order to supplier
+      description: Create a purchase order to supplier
+      operationId: order.v1.PurchaseOrderService.CreatePurchaseOrder
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/order.v1.CreatePurchaseOrderRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/order.v1.CreatePurchaseOrderResponse'
+  /order.v1.PurchaseOrderService/CreateReceivingNote:
+    post:
+      tags:
+        - order.v1.PurchaseOrderService
+      summary: Create receiving note when goods arrive
+      description: Create receiving note when goods arrive
+      operationId: order.v1.PurchaseOrderService.CreateReceivingNote
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/order.v1.CreateReceivingNoteRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/order.v1.CreateReceivingNoteResponse'
+  /order.v1.PurchaseOrderService/GetPurchaseOrder:
+    post:
+      tags:
+        - order.v1.PurchaseOrderService
+      summary: Get purchase order details
+      description: Get purchase order details
+      operationId: order.v1.PurchaseOrderService.GetPurchaseOrder
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/order.v1.GetPurchaseOrderRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/order.v1.GetPurchaseOrderResponse'
+  /order.v1.PurchaseOrderService/GetSuggestedPurchaseOrders:
+    post:
+      tags:
+        - order.v1.PurchaseOrderService
+      summary: Get suggested purchase orders (low stock items)
+      description: Get suggested purchase orders (low stock items)
+      operationId: order.v1.PurchaseOrderService.GetSuggestedPurchaseOrders
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/order.v1.GetSuggestedPurchaseOrdersRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/order.v1.GetSuggestedPurchaseOrdersResponse'
+  /order.v1.PurchaseOrderService/ListPurchaseOrders:
+    post:
+      tags:
+        - order.v1.PurchaseOrderService
+      summary: List purchase orders
+      description: List purchase orders
+      operationId: order.v1.PurchaseOrderService.ListPurchaseOrders
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/order.v1.ListPurchaseOrdersRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/order.v1.ListPurchaseOrdersResponse'
+  /order.v1.PurchaseOrderService/UpdatePurchaseOrderStatus:
+    post:
+      tags:
+        - order.v1.PurchaseOrderService
+      summary: Update purchase order status
+      description: Update purchase order status
+      operationId: order.v1.PurchaseOrderService.UpdatePurchaseOrderStatus
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/order.v1.UpdatePurchaseOrderStatusRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/order.v1.UpdatePurchaseOrderStatusResponse'
+components:
+  schemas:
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+        - 1
+      description: Define the version of the Connect protocol
+      const: 1
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+            - not_found
+          enum:
+            - canceled
+            - unknown
+            - invalid_argument
+            - deadline_exceeded
+            - not_found
+            - already_exists
+            - permission_denied
+            - resource_exhausted
+            - failed_precondition
+            - aborted
+            - out_of_range
+            - unimplemented
+            - internal
+            - unavailable
+            - data_loss
+            - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/connect.error_details.Any'
+          description: A list of messages that carry the error details. There is no limit on the number of messages.
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+    connect.error_details.Any:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
+        value:
+          type: string
+          format: binary
+          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
+        debug:
+          oneOf:
+            - type: object
+              title: Any
+              additionalProperties: true
+              description: Detailed error information.
+          discriminator:
+            propertyName: type
+          title: Debug
+          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
+    financial.v1.Invoice:
+      type: object
+      properties:
+        documentId:
+          type: string
+          title: document_id
+          description: '"INV-2025-001"'
+        invoiceType:
+          title: invoice_type
+          description: Sales or Purchase
+          $ref: '#/components/schemas/financial.v1.InvoiceType'
+        issuerId:
+          type: string
+          title: issuer_id
+          description: Company issuing invoice
+        recipientId:
+          type: string
+          title: recipient_id
+          description: Company receiving invoice
+        relatedSalesOrderId:
+          type: string
+          title: related_sales_order_id
+          description: Optional link
+        relatedPurchaseOrderId:
+          type: string
+          title: related_purchase_order_id
+          description: Optional link
+        relatedDeliveryNoteId:
+          type: string
+          title: related_delivery_note_id
+          description: Optional link
+        status:
+          title: status
+          $ref: '#/components/schemas/financial.v1.InvoiceStatus'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/financial.v1.InvoiceLineItem'
+          title: items
+        subtotal:
+          type:
+            - integer
+            - string
+          title: subtotal
+          format: int64
+          description: Before tax
+        taxAmount:
+          type:
+            - integer
+            - string
+          title: tax_amount
+          format: int64
+          description: VAT/sales tax
+        totalAmount:
+          type:
+            - integer
+            - string
+          title: total_amount
+          format: int64
+          description: Final amount due
+        currency:
+          type: string
+          title: currency
+        issueDate:
+          title: issue_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        dueDate:
+          title: due_date
+          description: Payment deadline
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        createdByUserId:
+          type: string
+          title: created_by_user_id
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        paymentIds:
+          type: array
+          items:
+            type: string
+          title: payment_ids
+        notes:
+          type: string
+          title: notes
+        paymentTerms:
+          type: string
+          title: payment_terms
+          description: '"Net 30", "Cash on delivery", etc.'
+      title: Invoice
+      required:
+        - documentId
+      additionalProperties: false
+      description: |-
+        *
+         Invoice (Facture)
+         The official accounting document for a sale or purchase.
+         Created AFTER goods are delivered (usually).
+
+         Fix: InvoiceLineItem now includes optional batch_id for traceability.
+
+         For SALES: You issue to customer
+         For PURCHASES: You receive from supplier
+
+         Example SALES invoice:
+           invoice_id: "INV-2025-001"
+           invoice_type: INVOICE_TYPE_SALES
+           issuer_id: "CMP-001" (your company)
+           recipient_id: "CMP-003" (customer)
+           related_sales_order_id: "SO-2025-001"
+           related_delivery_note_id: "DN-2025-001"
+           items: [10x PRD-001 @ 450000]
+           subtotal: 4500000
+           tax_amount: 900000 (20% VAT)
+           total_amount: 5400000
+           status: INVOICE_STATUS_UNPAID
+
+         INVENTORY IMPACT: None (already moved by DeliveryNote)
+    financial.v1.InvoiceLineItem:
+      type: object
+      properties:
+        productId:
+          type: string
+          title: product_id
+        quantity:
+          type: number
+          title: quantity
+          format: double
+        unitPrice:
+          type:
+            - integer
+            - string
+          title: unit_price
+          format: int64
+        subtotal:
+          type:
+            - integer
+            - string
+          title: subtotal
+          format: int64
+          description: quantity * unit_price
+        taxRate:
+          type: number
+          title: tax_rate
+          format: double
+          description: 0.20 for 20% VAT
+        taxAmount:
+          type:
+            - integer
+            - string
+          title: tax_amount
+          format: int64
+        total:
+          type:
+            - integer
+            - string
+          title: total
+          format: int64
+          description: subtotal + tax_amount
+        batchId:
+          type: string
+          title: batch_id
+          description: 'Optional: Batch/lot referenced'
+        productName:
+          title: product_name
+          description: The name of the item
+          $ref: '#/components/schemas/inventory.v1.Internationalized'
+      title: InvoiceLineItem
+      additionalProperties: false
+      description: |-
+        *
+         InvoiceLineItem represents one product on an invoice.
+
+         Fix: Added optional batch_id for lot traceability in accounting.
+    financial.v1.InvoiceStatus:
+      type: string
+      title: InvoiceStatus
+      enum:
+        - INVOICE_STATUS_UNSPECIFIED
+        - INVOICE_STATUS_DRAFT
+        - INVOICE_STATUS_ISSUED
+        - INVOICE_STATUS_UNPAID
+        - INVOICE_STATUS_PARTIALLY_PAID
+        - INVOICE_STATUS_PAID
+        - INVOICE_STATUS_OVERDUE
+        - INVOICE_STATUS_CANCELLED
+        - INVOICE_STATUS_CREDITED
+    financial.v1.InvoiceType:
+      type: string
+      title: InvoiceType
+      enum:
+        - INVOICE_TYPE_UNSPECIFIED
+        - INVOICE_TYPE_SALES
+        - INVOICE_TYPE_PURCHASE
+    google.protobuf.Timestamp:
+      type: string
+      examples:
+        - "2023-01-15T01:30:15.01Z"
+        - "2024-12-25T12:00:00Z"
+      format: date-time
+      description: |-
+        A Timestamp represents a point in time independent of any time zone or local
+         calendar, encoded as a count of seconds and fractions of seconds at
+         nanosecond resolution. The count is relative to an epoch at UTC midnight on
+         January 1, 1970, in the proleptic Gregorian calendar which extends the
+         Gregorian calendar backwards to year one.
+
+         All minutes are 60 seconds long. Leap seconds are "smeared" so that no leap
+         second table is needed for interpretation, using a [24-hour linear
+         smear](https://developers.google.com/time/smear).
+
+         The range is from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z. By
+         restricting to that range, we ensure that we can convert to and from [RFC
+         3339](https://www.ietf.org/rfc/rfc3339.txt) date strings.
+
+         # Examples
+
+         Example 1: Compute Timestamp from POSIX `time()`.
+
+             Timestamp timestamp;
+             timestamp.set_seconds(time(NULL));
+             timestamp.set_nanos(0);
+
+         Example 2: Compute Timestamp from POSIX `gettimeofday()`.
+
+             struct timeval tv;
+             gettimeofday(&tv, NULL);
+
+             Timestamp timestamp;
+             timestamp.set_seconds(tv.tv_sec);
+             timestamp.set_nanos(tv.tv_usec * 1000);
+
+         Example 3: Compute Timestamp from Win32 `GetSystemTimeAsFileTime()`.
+
+             FILETIME ft;
+             GetSystemTimeAsFileTime(&ft);
+             UINT64 ticks = (((UINT64)ft.dwHighDateTime) << 32) | ft.dwLowDateTime;
+
+             // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z
+             // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z.
+             Timestamp timestamp;
+             timestamp.set_seconds((INT64) ((ticks / 10000000) - 11644473600LL));
+             timestamp.set_nanos((INT32) ((ticks % 10000000) * 100));
+
+         Example 4: Compute Timestamp from Java `System.currentTimeMillis()`.
+
+             long millis = System.currentTimeMillis();
+
+             Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)
+                 .setNanos((int) ((millis % 1000) * 1000000)).build();
+
+         Example 5: Compute Timestamp from Java `Instant.now()`.
+
+             Instant now = Instant.now();
+
+             Timestamp timestamp =
+                 Timestamp.newBuilder().setSeconds(now.getEpochSecond())
+                     .setNanos(now.getNano()).build();
+
+         Example 6: Compute Timestamp from current time in Python.
+
+             timestamp = Timestamp()
+             timestamp.GetCurrentTime()
+
+         # JSON Mapping
+
+         In JSON format, the Timestamp type is encoded as a string in the
+         [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the
+         format is "{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z"
+         where {year} is always expressed using four digits while {month}, {day},
+         {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional
+         seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),
+         are optional. The "Z" suffix indicates the timezone ("UTC"); the timezone
+         is required. A proto3 JSON serializer should always use UTC (as indicated by
+         "Z") when printing the Timestamp type and a proto3 JSON parser should be
+         able to accept both UTC and other timezones (as indicated by an offset).
+
+         For example, "2017-01-15T01:30:15.01Z" encodes 15.01 seconds past
+         01:30 UTC on January 15, 2017.
+
+         In JavaScript, one can convert a Date object to this format using the
+         standard
+         [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)
+         method. In Python, a standard `datetime.datetime` object can be converted
+         to this format using
+         [`strftime`](https://docs.python.org/2/library/time.html#time.strftime) with
+         the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use
+         the Joda Time's [`ISODateTimeFormat.dateTime()`](
+         http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()
+         ) to obtain a formatter capable of generating timestamps in this format.
+    inventory.v1.ExpirationType:
+      type: string
+      title: ExpirationType
+      enum:
+        - EXPIRATION_TYPE_UNSPECIFIED
+        - EXPIRATION_TYPE_NONE
+        - EXPIRATION_TYPE_PRODUCT_LEVEL
+        - EXPIRATION_TYPE_LOT_LEVEL
+    inventory.v1.Internationalized:
+      type: object
+      properties:
+        en:
+          type: string
+          title: en
+          description: The English name of the product category.
+        fr:
+          type: string
+          title: fr
+          description: The French name of the product category.
+      title: Internationalized
+      additionalProperties: false
+    inventory.v1.ProductStatus:
+      type: string
+      title: ProductStatus
+      enum:
+        - PRODUCT_STATUS_UNSPECIFIED
+        - PRODUCT_STATUS_ACTIVE
+        - PRODUCT_STATUS_INACTIVE
+    inventory.v1.StoreProduct:
+      type: object
+      properties:
+        refId:
+          type: string
+          title: ref_id
+          description: The unique identifier of the business product.
+          nullable: true
+        storeId:
+          type: string
+          title: store_id
+          description: The unique identifier of the store.
+        globalProductId:
+          type: string
+          title: global_product_id
+          description: The unique identifier of the global product.
+        salePrice:
+          type: integer
+          title: sale_price
+          format: int32
+          description: |-
+            The sale price in XAF of the product.
+             The currency is determined by the business.
+          nullable: true
+        imagesLinksIds:
+          type: array
+          items:
+            type: string
+          title: images_links_ids
+          description: The media ids of the images of the product.
+        supplierId:
+          type: string
+          title: supplier_id
+          description: The supplier.
+          nullable: true
+        status:
+          title: status
+          description: The status of the product.
+          $ref: '#/components/schemas/inventory.v1.ProductStatus'
+        sku:
+          type: string
+          title: sku
+          description: The stock keeping unit.
+          nullable: true
+        expirationType:
+          title: expiration_type
+          description: The type of expiration of the product.
+          $ref: '#/components/schemas/inventory.v1.ExpirationType'
+        createdAt:
+          title: created_at
+          description: The creation date of the product.
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        updatedAt:
+          title: updated_at
+          description: The last update date of the product.
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: StoreProduct
+      additionalProperties: false
+    logistic.v1.ReceivingLineItem:
+      type: object
+      properties:
+        productId:
+          type: string
+          title: product_id
+        quantityExpected:
+          type: number
+          title: quantity_expected
+          format: double
+          description: From PO
+        quantityReceived:
+          type: number
+          title: quantity_received
+          format: double
+          description: Actually got
+        quantityRejected:
+          type: number
+          title: quantity_rejected
+          format: double
+          description: Damaged/wrong items
+        rejectionReason:
+          type: string
+          title: rejection_reason
+        batchId:
+          type: string
+          title: batch_id
+          description: Generated batch ID for received items
+        expirationDate:
+          title: expiration_date
+          description: Provided by supplier or calculated
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+      title: ReceivingLineItem
+      additionalProperties: false
+      description: |-
+        *
+         ReceivingLineItem shows what was actually received vs expected.
+
+         Fix: Added batch_id and expiration_date for creating new batches on reception.
+
+         Example:
+           product_id: "PRD-001"
+           quantity_expected: 50
+           quantity_received: 48
+           quantity_rejected: 2 (damaged)
+           rejection_reason: "Damaged packaging"
+           batch_id: "BATCH-2025-001" (generated)
+           expiration_date: 2026-09-29T00:00:00Z
+    logistic.v1.ReceivingNote:
+      type: object
+      properties:
+        documentId:
+          type: string
+          title: document_id
+          description: '"RN-2025-001"'
+        relatedPurchaseOrderId:
+          type: string
+          title: related_purchase_order_id
+          description: Which PO this fulfills
+        supplierId:
+          type: string
+          title: supplier_id
+          description: Who sent the goods
+        warehouseId:
+          type: string
+          title: warehouse_id
+          description: Where goods are stored
+        status:
+          title: status
+          $ref: '#/components/schemas/logistic.v1.ReceivingNoteStatus'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/logistic.v1.ReceivingLineItem'
+          title: items
+        receivedByUserId:
+          type: string
+          title: received_by_user_id
+          description: Who accepted delivery
+        receivedAt:
+          title: received_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        notes:
+          type: string
+          title: notes
+          description: Condition notes, damages, etc.
+      title: ReceivingNote
+      required:
+        - documentId
+      additionalProperties: false
+      description: |-
+        *
+         ReceivingNote (Bon de Réception)
+         Created when YOU receive goods from a supplier.
+         THIS IS WHAT INCREASES YOUR INVENTORY.
+
+         Fix: ReceivingLineItem now includes batch_id (system-generated or from supplier).
+         When creating, new Batches are added to InventoryLevel.
+
+         Flow: Goods arrive → Inspect → Create ReceivingNote → Update inventory
+
+         Example:
+           rn_id: "RN-2025-001"
+           related_purchase_order_id: "PO-2025-001"
+           supplier_id: "CMP-002"
+           warehouse_id: "WH-001"
+           items: [48x PRD-001] (expected 50, but 2 damaged)
+           status: RN_STATUS_COMPLETED
+
+         INVENTORY IMPACT: +48 PRD-001 in WH-001
+    logistic.v1.ReceivingNoteStatus:
+      type: string
+      title: ReceivingNoteStatus
+      enum:
+        - RN_STATUS_UNSPECIFIED
+        - RN_STATUS_PENDING
+        - RN_STATUS_INSPECTING
+        - RN_STATUS_COMPLETED
+        - RN_STATUS_REJECTED
+    order.v1.CancelPurchaseOrderRequest:
+      type: object
+      properties:
+        poId:
+          type: string
+          title: po_id
+        reason:
+          type: string
+          title: reason
+        cancelledByUserId:
+          type: string
+          title: cancelled_by_user_id
+      title: CancelPurchaseOrderRequest
+      additionalProperties: false
+    order.v1.CancelPurchaseOrderResponse:
+      type: object
+      properties:
+        purchaseOrder:
+          title: purchase_order
+          $ref: '#/components/schemas/order.v1.PurchaseOrder'
+        message:
+          type: string
+          title: message
+      title: CancelPurchaseOrderResponse
+      additionalProperties: false
+    order.v1.CreatePurchaseOrderRequest:
+      type: object
+      properties:
+        supplierId:
+          type: string
+          title: supplier_id
+        buyerId:
+          type: string
+          title: buyer_id
+          description: Your company
+        destinationId:
+          type: string
+          title: destination_id
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/order.v1.OrderLineItem'
+          title: items
+        expectedDeliveryDate:
+          title: expected_delivery_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        createdByUserId:
+          type: string
+          title: created_by_user_id
+        notes:
+          type: string
+          title: notes
+      title: CreatePurchaseOrderRequest
+      additionalProperties: false
+    order.v1.CreatePurchaseOrderResponse:
+      type: object
+      properties:
+        poId:
+          type: string
+          title: po_id
+        purchaseOrder:
+          title: purchase_order
+          $ref: '#/components/schemas/order.v1.PurchaseOrder'
+        message:
+          type: string
+          title: message
+      title: CreatePurchaseOrderResponse
+      additionalProperties: false
+    order.v1.CreateReceivingNoteRequest:
+      type: object
+      properties:
+        purchaseOrderId:
+          type: string
+          title: purchase_order_id
+        supplierId:
+          type: string
+          title: supplier_id
+        storeId:
+          type: string
+          title: store_id
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/logistic.v1.ReceivingLineItem'
+          title: items
+          description: What actually arrived
+        receivedByUserId:
+          type: string
+          title: received_by_user_id
+        notes:
+          type: string
+          title: notes
+          description: Condition notes
+      title: CreateReceivingNoteRequest
+      additionalProperties: false
+    order.v1.CreateReceivingNoteResponse:
+      type: object
+      properties:
+        rnId:
+          type: string
+          title: rn_id
+        receivingNote:
+          title: receiving_note
+          $ref: '#/components/schemas/logistic.v1.ReceivingNote'
+        inventoryTransactionIds:
+          type: array
+          items:
+            type: string
+          title: inventory_transaction_ids
+        hasDiscrepancies:
+          type: boolean
+          title: has_discrepancies
+          description: If received != expected
+        discrepancyProductIds:
+          type: array
+          items:
+            type: string
+          title: discrepancy_product_ids
+        message:
+          type: string
+          title: message
+      title: CreateReceivingNoteResponse
+      additionalProperties: false
+    order.v1.GetPurchaseOrderRequest:
+      type: object
+      properties:
+        poId:
+          type: string
+          title: po_id
+      title: GetPurchaseOrderRequest
+      additionalProperties: false
+    order.v1.GetPurchaseOrderResponse:
+      type: object
+      properties:
+        purchaseOrder:
+          title: purchase_order
+          $ref: '#/components/schemas/order.v1.PurchaseOrder'
+        receivingNotes:
+          type: array
+          items:
+            $ref: '#/components/schemas/logistic.v1.ReceivingNote'
+          title: receiving_notes
+        invoices:
+          type: array
+          items:
+            $ref: '#/components/schemas/financial.v1.Invoice'
+          title: invoices
+          description: Supplier invoices
+        payments:
+          type: array
+          items:
+            $ref: '#/components/schemas/payments.v1.Payment'
+          title: payments
+      title: GetPurchaseOrderResponse
+      additionalProperties: false
+    order.v1.GetSuggestedPurchaseOrdersRequest:
+      type: object
+      properties:
+        storeId:
+          type: string
+          title: store_id
+          description: Optional - all stores if not specified
+      title: GetSuggestedPurchaseOrdersRequest
+      additionalProperties: false
+    order.v1.GetSuggestedPurchaseOrdersResponse:
+      type: object
+      properties:
+        suggestions:
+          type: array
+          items:
+            $ref: '#/components/schemas/order.v1.SuggestedPurchase'
+          title: suggestions
+        totalItems:
+          type: integer
+          title: total_items
+          format: int32
+      title: GetSuggestedPurchaseOrdersResponse
+      additionalProperties: false
+    order.v1.ListPurchaseOrdersRequest:
+      type: object
+      properties:
+        supplierId:
+          type: string
+          title: supplier_id
+          description: Filter by supplier
+        status:
+          title: status
+          $ref: '#/components/schemas/order.v1.PurchaseOrderStatus'
+        startDate:
+          title: start_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        endDate:
+          title: end_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        pageSize:
+          type: integer
+          title: page_size
+          format: int32
+        pageNumber:
+          type: integer
+          title: page_number
+          format: int32
+      title: ListPurchaseOrdersRequest
+      additionalProperties: false
+    order.v1.ListPurchaseOrdersResponse:
+      type: object
+      properties:
+        purchaseOrders:
+          type: array
+          items:
+            $ref: '#/components/schemas/order.v1.PurchaseOrder'
+          title: purchase_orders
+        totalCount:
+          type: integer
+          title: total_count
+          format: int32
+        totalValue:
+          type:
+            - integer
+            - string
+          title: total_value
+          format: int64
+      title: ListPurchaseOrdersResponse
+      additionalProperties: false
+    order.v1.OrderLineItem:
+      type: object
+      properties:
+        productId:
+          type: string
+          title: product_id
+          description: Which product
+        quantity:
+          type: number
+          title: quantity
+          format: double
+          description: How many units
+        productName:
+          title: product_name
+          description: Product name
+          $ref: '#/components/schemas/inventory.v1.Internationalized'
+        unitPrice:
+          type:
+            - integer
+            - string
+          title: unit_price
+          format: int64
+          description: Price per unit (in smallest currency)
+        total:
+          type:
+            - integer
+            - string
+          title: total
+          format: int64
+          description: quantity * unit_price
+        notes:
+          type: string
+          title: notes
+          description: Special notes for this line
+        batchId:
+          type: string
+          title: batch_id
+          description: 'Optional: Specific batch/lot requested'
+      title: OrderLineItem
+      additionalProperties: false
+      description: |-
+        *
+         OrderLineItem represents a single product line in an order or quotation.
+         Used in PurchaseOrder, SalesOrder, Quotation, etc.
+
+         Fix: Added optional batch_id for specifying lots in orders (e.g., for perishable goods).
+
+         Example:
+           product_id: "PRD-001"
+           quantity: 10
+           product_name: "Product Name"
+           unit_price: 450000
+           total: 4500000
+           batch_id: "BATCH-2025-001" (optional)
+    order.v1.PurchaseOrder:
+      type: object
+      properties:
+        documentId:
+          type: string
+          title: document_id
+          description: '"PO-2025-001"'
+        supplierId:
+          type: string
+          title: supplier_id
+          description: Company selling to you
+        buyerIdId:
+          type: string
+          title: buyer_id_id
+          description: The store company
+        status:
+          title: status
+          $ref: '#/components/schemas/order.v1.PurchaseOrderStatus'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/order.v1.OrderLineItem'
+          title: items
+        totalAmount:
+          type:
+            - integer
+            - string
+          title: total_amount
+          format: int64
+          description: Total cost in smallest currency unit
+        currency:
+          type: string
+          title: currency
+          nullable: true
+        createdByUserId:
+          type: string
+          title: created_by_user_id
+        createdAt:
+          title: created_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        expectedDeliveryDate:
+          title: expected_delivery_date
+          nullable: true
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        notes:
+          type: string
+          title: notes
+          description: Special instructions.
+          nullable: true
+      title: PurchaseOrder
+      required:
+        - documentId
+      additionalProperties: false
+      description: |-
+        *
+         PurchaseOrder (Bon de Commande to supplier)
+         Created when you want to buy products from a supplier.
+         Does NOT change inventory yet - just an intention.
+
+         Flow: Create PO → Send to supplier → Wait for delivery
+
+         Example:
+           po_id: "PO-2025-001"
+           supplier_id: "CMP-002" (supplier company)
+           buyer_id: "CMP-001" (your company)
+           status: PO_STATUS_PENDING
+           items: [50x PRD-001 @ 400000 each]
+           total_amount: 20000000 (centimes)
+    order.v1.PurchaseOrderStatus:
+      type: string
+      title: PurchaseOrderStatus
+      enum:
+        - PO_STATUS_UNSPECIFIED
+        - PO_STATUS_DRAFT
+        - PO_STATUS_PENDING
+        - PO_STATUS_PARTIALLY_RECEIVED
+        - PO_STATUS_RECEIVED
+        - PO_STATUS_CANCELLED
+    order.v1.SuggestedPurchase:
+      type: object
+      properties:
+        product:
+          title: product
+          $ref: '#/components/schemas/inventory.v1.StoreProduct'
+        preferredSupplierId:
+          type: string
+          title: preferred_supplier_id
+        currentStock:
+          type:
+            - integer
+            - string
+          title: current_stock
+          format: int64
+        reorderLevel:
+          type:
+            - integer
+            - string
+          title: reorder_level
+          format: int64
+        suggestedQuantity:
+          type:
+            - integer
+            - string
+          title: suggested_quantity
+          format: int64
+        estimatedCost:
+          type:
+            - integer
+            - string
+          title: estimated_cost
+          format: int64
+      title: SuggestedPurchase
+      additionalProperties: false
+    order.v1.UpdatePurchaseOrderStatusRequest:
+      type: object
+      properties:
+        poId:
+          type: string
+          title: po_id
+        newStatus:
+          title: new_status
+          $ref: '#/components/schemas/order.v1.PurchaseOrderStatus'
+        updatedByUserId:
+          type: string
+          title: updated_by_user_id
+        notes:
+          type: string
+          title: notes
+      title: UpdatePurchaseOrderStatusRequest
+      additionalProperties: false
+    order.v1.UpdatePurchaseOrderStatusResponse:
+      type: object
+      properties:
+        purchaseOrder:
+          title: purchase_order
+          $ref: '#/components/schemas/order.v1.PurchaseOrder'
+        message:
+          type: string
+          title: message
+      title: UpdatePurchaseOrderStatusResponse
+      additionalProperties: false
+    payments.v1.Payment:
+      type: object
+      properties:
+        documentId:
+          type: string
+          title: document_id
+          description: '"PAY-2025-001"'
+        payerId:
+          type: string
+          title: payer_id
+          description: Who pays
+        payeeId:
+          type: string
+          title: payee_id
+          description: Who receives
+        amount:
+          type:
+            - integer
+            - string
+          title: amount
+          format: int64
+          description: Amount in smallest currency unit
+        currency:
+          type: string
+          title: currency
+        paymentMethod:
+          title: payment_method
+          $ref: '#/components/schemas/payments.v1.PaymentMethod'
+        status:
+          title: status
+          $ref: '#/components/schemas/payments.v1.PaymentStatus'
+        relatedInvoiceId:
+          type: string
+          title: related_invoice_id
+          description: Which invoice this pays
+        paymentDate:
+          title: payment_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        referenceNumber:
+          type: string
+          title: reference_number
+          description: Bank reference, check number, etc.
+        createdByUserId:
+          type: string
+          title: created_by_user_id
+        notes:
+          type: string
+          title: notes
+      title: Payment
+      required:
+        - documentId
+      additionalProperties: false
+      description: |-
+        *
+         Payment represents money transfer between parties.
+         Links to invoices to track what's been paid.
+
+         Example:
+           payment_id: "PAY-2025-001"
+           payer_id: "CMP-003" (customer)
+           payee_id: "CMP-001" (your company)
+           amount: 5400000
+           payment_method: PAYMENT_METHOD_BANK_TRANSFER
+           related_invoice_id: "INV-2025-001"
+           status: PAYMENT_STATUS_COMPLETED
+    payments.v1.PaymentMethod:
+      type: string
+      title: PaymentMethod
+      enum:
+        - PAYMENT_METHOD_UNSPECIFIED
+        - PAYMENT_METHOD_CASH
+        - PAYMENT_METHOD_CHECK
+        - PAYMENT_METHOD_BANK_TRANSFER
+        - PAYMENT_METHOD_CREDIT_CARD
+        - PAYMENT_METHOD_MOBILE_MONEY
+        - PAYMENT_METHOD_STORE_CREDIT
+    payments.v1.PaymentStatus:
+      type: string
+      title: PaymentStatus
+      enum:
+        - PAYMENT_STATUS_UNSPECIFIED
+        - PAYMENT_STATUS_PENDING
+        - PAYMENT_STATUS_COMPLETED
+        - PAYMENT_STATUS_FAILED
+        - PAYMENT_STATUS_REFUNDED
+security: []
+tags:
+  - name: order.v1.PurchaseOrderService

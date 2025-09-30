@@ -1,0 +1,173 @@
+syntax = "proto3";
+
+package order.v1;
+
+import "buf/validate/validate.proto";
+import "financial/v1/invoice.proto";
+import "google/protobuf/timestamp.proto";
+import "inventory/v1/store_product.proto";
+import "logistic/v1/receiving_notes.proto";
+import "order/v1/order_utils.proto";
+import "payments/v1/payments.proto";
+
+/**
+ * PurchaseOrder (Bon de Commande to supplier)
+ * Created when you want to buy products from a supplier.
+ * Does NOT change inventory yet - just an intention.
+ *
+ * Flow: Create PO → Send to supplier → Wait for delivery
+ *
+ * Example:
+ *   po_id: "PO-2025-001"
+ *   supplier_id: "CMP-002" (supplier company)
+ *   buyer_id: "CMP-001" (your company)
+ *   status: PO_STATUS_PENDING
+ *   items: [50x PRD-001 @ 400000 each]
+ *   total_amount: 20000000 (centimes)
+ */
+message PurchaseOrder {
+  string document_id = 1 [(buf.validate.field).required = true]; // "PO-2025-001"
+  string supplier_id = 2; // Company selling to you
+  string buyer_id_id = 3; // The store company
+  PurchaseOrderStatus status = 5;
+  repeated order.v1.OrderLineItem items = 6;
+  int64 total_amount = 7; // Total cost in smallest currency unit
+  optional string currency = 8;
+  string created_by_user_id = 9;
+  google.protobuf.Timestamp created_at = 10;
+  optional google.protobuf.Timestamp expected_delivery_date = 11;
+  optional string notes = 12; // Special instructions.
+}
+
+enum PurchaseOrderStatus {
+  PO_STATUS_UNSPECIFIED = 0;
+  PO_STATUS_DRAFT = 1; // Being prepared
+  PO_STATUS_PENDING = 2; // Sent to supplier, awaiting delivery
+  PO_STATUS_PARTIALLY_RECEIVED = 3; // Some items delivered
+  PO_STATUS_RECEIVED = 4; // All items delivered
+  PO_STATUS_CANCELLED = 5; // Order cancelled
+}
+
+service PurchaseOrderService {
+  // Create a purchase order to supplier
+  rpc CreatePurchaseOrder(CreatePurchaseOrderRequest) returns (CreatePurchaseOrderResponse);
+
+  // Get purchase order details
+  rpc GetPurchaseOrder(GetPurchaseOrderRequest) returns (GetPurchaseOrderResponse);
+
+  // List purchase orders
+  rpc ListPurchaseOrders(ListPurchaseOrdersRequest) returns (ListPurchaseOrdersResponse);
+
+  // Update purchase order status
+  rpc UpdatePurchaseOrderStatus(UpdatePurchaseOrderStatusRequest) returns (UpdatePurchaseOrderStatusResponse);
+
+  // Cancel purchase order
+  rpc CancelPurchaseOrder(CancelPurchaseOrderRequest) returns (CancelPurchaseOrderResponse);
+
+  // Create receiving note when goods arrive
+  rpc CreateReceivingNote(CreateReceivingNoteRequest) returns (CreateReceivingNoteResponse);
+
+  // Get suggested purchase orders (low stock items)
+  rpc GetSuggestedPurchaseOrders(GetSuggestedPurchaseOrdersRequest) returns (GetSuggestedPurchaseOrdersResponse);
+}
+
+message CancelPurchaseOrderResponse {
+  PurchaseOrder purchase_order = 1;
+  string message = 2;
+}
+
+message CreatePurchaseOrderRequest {
+  string supplier_id = 1;
+  string buyer_id = 2; // Your company
+  string destination_id = 3;
+  repeated order.v1.OrderLineItem items = 4;
+  google.protobuf.Timestamp expected_delivery_date = 5;
+  string created_by_user_id = 6;
+  string notes = 7;
+}
+
+message CreatePurchaseOrderResponse {
+  string po_id = 1;
+  PurchaseOrder purchase_order = 2;
+  string message = 3;
+}
+
+message GetPurchaseOrderRequest {
+  string po_id = 1;
+}
+
+message GetPurchaseOrderResponse {
+  PurchaseOrder purchase_order = 1;
+  repeated logistic.v1.ReceivingNote receiving_notes = 2;
+  repeated financial.v1.Invoice invoices = 3; // Supplier invoices
+  repeated payments.v1.Payment payments = 4;
+}
+
+message ListPurchaseOrdersRequest {
+  string supplier_id = 1; // Filter by supplier
+  PurchaseOrderStatus status = 2;
+  google.protobuf.Timestamp start_date = 3;
+  google.protobuf.Timestamp end_date = 4;
+  int32 page_size = 5;
+  int32 page_number = 6;
+}
+
+message ListPurchaseOrdersResponse {
+  repeated PurchaseOrder purchase_orders = 1;
+  int32 total_count = 2;
+  int64 total_value = 3;
+}
+
+message UpdatePurchaseOrderStatusRequest {
+  string po_id = 1;
+  PurchaseOrderStatus new_status = 2;
+  string updated_by_user_id = 3;
+  string notes = 4;
+}
+
+message UpdatePurchaseOrderStatusResponse {
+  PurchaseOrder purchase_order = 1;
+  string message = 2;
+}
+
+message CancelPurchaseOrderRequest {
+  string po_id = 1;
+  string reason = 2;
+  string cancelled_by_user_id = 3;
+}
+
+message CreateReceivingNoteRequest {
+  string purchase_order_id = 1;
+  string supplier_id = 2;
+  string store_id = 3;
+  repeated logistic.v1.ReceivingLineItem items = 4; // What actually arrived
+  string received_by_user_id = 5;
+  string notes = 6; // Condition notes
+}
+
+message CreateReceivingNoteResponse {
+  string rn_id = 1;
+  logistic.v1.ReceivingNote receiving_note = 2;
+  repeated string inventory_transaction_ids = 3;
+  bool has_discrepancies = 4; // If received != expected
+  repeated string discrepancy_product_ids = 5;
+  string message = 6;
+}
+
+message GetSuggestedPurchaseOrdersRequest {
+  string store_id = 1; // Optional - all stores if not specified
+}
+
+message GetSuggestedPurchaseOrdersResponse {
+  repeated SuggestedPurchase suggestions = 1;
+  int32 total_items = 2;
+}
+
+message SuggestedPurchase {
+  inventory.v1.StoreProduct product = 1;
+  string preferred_supplier_id = 2;
+  int64 current_stock = 3;
+  int64 reorder_level = 4;
+  int64 suggested_quantity = 5;
+  int64 estimated_cost = 6;
+}

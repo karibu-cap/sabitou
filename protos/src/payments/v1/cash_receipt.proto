@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package payments.v1;
+
+import "buf/validate/validate.proto";
+import "financial/v1/financial_utils.proto";
+import "google/protobuf/timestamp.proto";
+import "payments/v1/payment_utils.proto";
+
+/**
+ * CashReceipt (Bon de Caisse)
+ * Issued at point of sale for immediate payment.
+ * Combines invoice + payment proof in one document.
+ * Common in retail where customer pays immediately.
+ *
+ * Fix: Items include batch_id for lot-specific sales (e.g., FIFO for perishables).
+ *
+ * Example - Retail store sale:
+ *   receipt_id: "CASH-2025-001"
+ *   cashier_user_id: "USR-005"
+ *   customer_id: "CMP-003" (can be null for walk-in)
+ *   store_id: "WH-002" (retail store)
+ *   items: [1x PRD-001 @ 450000]
+ *   subtotal: 450000
+ *   tax: 90000
+ *   total: 540000
+ *   amount_paid: 540000
+ *   payment_method: PAYMENT_METHOD_CASH
+ *
+ * INVENTORY IMPACT: -1 PRD-001 from WH-002
+ * ACCOUNTING IMPACT: Immediate revenue + payment
+ */
+message CashReceipt {
+  string document_id = 1 [(buf.validate.field).required = true]; // "CASH-2025-001"
+  string cashier_user_id = 2; // Who processed sale
+  string customer_id = 3; // Can be null for anonymous
+  string store_id = 4; // Which location/store
+  repeated financial.v1.InvoiceLineItem items = 5;
+  int64 subtotal = 6;
+  int64 tax_amount = 7;
+  int64 total_amount = 8;
+  int64 amount_paid = 9; // What customer gave
+  int64 change_given = 10; // amount_paid - total_amount
+  string currency = 11;
+  repeated string payment_ids = 12;
+  google.protobuf.Timestamp transaction_time = 13;
+  string notes = 14;
+}

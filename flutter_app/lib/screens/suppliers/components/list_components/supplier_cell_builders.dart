@@ -104,7 +104,7 @@ class SupplierCellBuilders {
 
   /// Builds total value cell with formatted currency.
   static Widget buildTotalValueCell(
-    List<StoreProduct> supplierProducts,
+    List<InventoryLevelWithProduct> supplierProducts,
     SuppliersController controller,
     ShadThemeData theme,
   ) {

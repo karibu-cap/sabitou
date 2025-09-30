@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:sabitou_rpc/models.dart';
 
-import '../../utils/extends_models.dart';
 import 'inventory_view_model.dart';
 
 /// Controller for inventory screen
@@ -13,12 +12,12 @@ class InventoryController extends ChangeNotifier {
   final InventoryViewModel _viewModel;
 
   /// Gets the filtered products stream.
-  Stream<List<Product>> get filteredProductsStream =>
+  Stream<List<InventoryLevelWithProduct>> get filteredProductsStream =>
       _viewModel.filteredProductsStream;
 
   /// Gets the products stream.
-  BehaviorSubject<UnmodifiableListView<Product>> get productsStream =>
-      _viewModel.productsStream;
+  BehaviorSubject<UnmodifiableListView<InventoryLevelWithProduct>>
+  get invLevelSubject => _viewModel.invLevelSubject;
 
   /// Gets the error stream.
   Stream<String> get errorStream => _viewModel.errorStream;
@@ -34,11 +33,13 @@ class InventoryController extends ChangeNotifier {
       _viewModel.businessCategories;
 
   /// Gets the selected status.
-  BehaviorSubject<ProductInventoryStatus?> get selectedStatus =>
-      _viewModel.selectedStatus;
+  BehaviorSubject<StockStatus?> get selectedStatus => _viewModel.selectedStatus;
 
   /// Gets the completer.
   Completer<bool> get completer => _viewModel.completer;
+
+  /// Gets the stats.
+  InventoryData get stats => _viewModel.stats;
 
   /// Constructor of [InventoryController].
   InventoryController(this._viewModel);

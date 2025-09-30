@@ -52,16 +52,22 @@ class SidebarWidget extends StatelessWidget {
         icon: LucideIcons.shoppingCart400,
         children: [
           SideBarItem(
-            id: DashboardItem.salesReports,
-            label: Intls.to.salesReports,
-            icon: LucideIcons.chartColumn400,
-            path: PagesRoutes.salesReport.pattern,
+            id: DashboardItem.cashReceipts,
+            label: Intls.to.cashReceipts,
+            icon: LucideIcons.printer400,
+            path: PagesRoutes.cashReceipts.pattern,
           ),
           SideBarItem(
             id: DashboardItem.salesOrders,
-            label: Intls.to.newOrders,
+            label: Intls.to.salesOrders,
+            icon: LucideIcons.shoppingCart400,
+            path: PagesRoutes.salesOrders.pattern,
+          ),
+          SideBarItem(
+            id: DashboardItem.pos,
+            label: Intls.to.pos,
             icon: LucideIcons.plus400,
-            path: PagesRoutes.newOrder.pattern,
+            path: PagesRoutes.pos.pattern,
           ),
         ],
       ),
@@ -70,12 +76,6 @@ class SidebarWidget extends StatelessWidget {
         label: Intls.to.reports,
         icon: LucideIcons.chartColumn400,
         path: PagesRoutes.reports.pattern,
-      ),
-      SideBarItem(
-        id: DashboardItem.transactions,
-        label: Intls.to.transactions,
-        icon: LucideIcons.receipt400,
-        path: PagesRoutes.transactions.pattern,
       ),
       SideBarItem(
         id: DashboardItem.suppliers,

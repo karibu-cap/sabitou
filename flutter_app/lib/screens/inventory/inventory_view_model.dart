@@ -1,29 +1,19 @@
 import 'dart:async';
 import 'dart:collection';
 
+import 'package:clock/clock.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../../repositories/categories_repository.dart';
+import '../../repositories/inventory_repository.dart';
 import '../../repositories/products_repository.dart';
-import '../../utils/common_functions.dart';
-import '../../utils/extends_models.dart';
+import '../../repositories/report_repository.dart';
+import '../../repositories/store_products_repository.dart';
 import '../../utils/extensions/category_extension.dart';
 import '../../utils/extensions/global_product_extension.dart';
 import '../../utils/logger.dart';
 import '../../utils/user_preference.dart';
-
-/// Enum for product status.
-enum ProductInventoryStatus {
-  /// In stock.
-  inStock,
-
-  /// Out of stock.
-  outOfStock,
-
-  /// Low stock.
-  lowStock,
-}
 
 /// View model for inventory screen
 class InventoryViewModel {
@@ -33,8 +23,8 @@ class InventoryViewModel {
   final UserPreferences userPreferences = UserPreferences.instance;
 
   /// Gets the products subject.
-  final _productsSubject =
-      BehaviorSubject<UnmodifiableListView<Product>>.seeded(
+  final _invLevelSubject =
+      BehaviorSubject<UnmodifiableListView<InventoryLevelWithProduct>>.seeded(
         UnmodifiableListView([]),
       );
 
@@ -48,8 +38,7 @@ class InventoryViewModel {
   final _selectedCategorySubject = BehaviorSubject<String>.seeded('');
 
   /// Gets the selected status subject.
-  final _selectedStatusSubject =
-      BehaviorSubject<ProductInventoryStatus?>.seeded(null);
+  final _selectedStatusSubject = BehaviorSubject<StockStatus?>.seeded(null);
 
   /// Gets the business categories.
   UnmodifiableListView<Category> businessCategories =
@@ -58,6 +47,14 @@ class InventoryViewModel {
   /// Gets the completer.
   final Completer<bool> completer = Completer<bool>();
 
+  /// InventoryData data.
+  InventoryData stats = InventoryData(
+    totalProducts: 0,
+    lowStockItemsCount: 0,
+    inventoryLevels: [],
+    totalSales: 0,
+  );
+
   /// Gets the search query.
   BehaviorSubject<String> get searchQuery => _searchQuerySubject;
 
@@ -65,71 +62,72 @@ class InventoryViewModel {
   BehaviorSubject<String> get selectedCategory => _selectedCategorySubject;
 
   /// Gets the products stream.
-  BehaviorSubject<UnmodifiableListView<Product>> get productsStream =>
-      _productsSubject;
+  BehaviorSubject<UnmodifiableListView<InventoryLevelWithProduct>>
+  get invLevelSubject => _invLevelSubject;
 
   /// Gets the selected status.
-  BehaviorSubject<ProductInventoryStatus?> get selectedStatus =>
-      _selectedStatusSubject;
+  BehaviorSubject<StockStatus?> get selectedStatus => _selectedStatusSubject;
 
   /// Gets the error stream.
   Stream<String> get errorStream => _errorSubject.stream;
 
   /// Gets the filtered products stream.
-  Stream<List<Product>> get filteredProductsStream => Rx.combineLatest4(
-    _productsSubject.stream,
-    _searchQuerySubject.stream,
-    _selectedCategorySubject.stream,
-    _selectedStatusSubject.stream,
-    (products, searchQuery, category, status) {
-      var filtered = products.toList();
-      if (searchQuery.isNotEmpty) {
-        filtered = filtered
-            .where(
-              (p) =>
-                  p.globalProduct.label.toLowerCase().contains(
-                    searchQuery.toLowerCase(),
-                  ) ||
-                  p.globalProduct.barCodeValue.toLowerCase().contains(
-                    searchQuery.toLowerCase(),
+  Stream<List<InventoryLevelWithProduct>> get filteredProductsStream =>
+      Rx.combineLatest4(
+        _invLevelSubject.stream,
+        _searchQuerySubject.stream,
+        _selectedCategorySubject.stream,
+        _selectedStatusSubject.stream,
+        (products, searchQuery, category, status) {
+          var filtered = products.toList();
+          if (searchQuery.isNotEmpty) {
+            filtered = filtered
+                .where(
+                  (p) =>
+                      p.globalProduct.label.toLowerCase().contains(
+                        searchQuery.toLowerCase(),
+                      ) ||
+                      p.globalProduct.barCodeValue.toLowerCase().contains(
+                        searchQuery.toLowerCase(),
+                      ),
+                )
+                .toList();
+          }
+          if (category.isNotEmpty) {
+            filtered = filtered
+                .where(
+                  (p) => p.globalProduct.categories.any(
+                    (c) => c.label.toLowerCase() == category.toLowerCase(),
                   ),
-            )
-            .toList();
-      }
-      if (category.isNotEmpty) {
-        filtered = filtered
-            .where(
-              (p) => p.globalProduct.categories.any(
-                (c) => c.label.toLowerCase() == category.toLowerCase(),
-              ),
-            )
-            .toList();
-      }
+                )
+                .toList();
+          }
 
-      if (status != null) {
-        filtered = filtered
-            .where(
-              (p) => switch (status) {
-                ProductInventoryStatus.inStock =>
-                  p.storeProduct.stockQuantity > 0 &&
-                      !isLowStock(p.storeProduct),
-                ProductInventoryStatus.outOfStock =>
-                  p.storeProduct.stockQuantity <= 0,
-                ProductInventoryStatus.lowStock => isLowStock(p.storeProduct),
-              },
-            )
-            .toList();
-      }
+          if (status != null) {
+            filtered = filtered
+                .where(
+                  (p) => switch (status) {
+                    StockStatus.STOCK_STATUS_OK =>
+                      p.stockStatus == StockStatus.STOCK_STATUS_OK,
+                    StockStatus.STOCK_STATUS_OUT_OF_STOCK =>
+                      p.stockStatus == StockStatus.STOCK_STATUS_OUT_OF_STOCK,
+                    StockStatus.STOCK_STATUS_LOW =>
+                      p.stockStatus == StockStatus.STOCK_STATUS_LOW,
+                    _ => false,
+                  },
+                )
+                .toList();
+          }
 
-      filtered.sort(
-        (a, b) => b.storeProduct.createdAt.toDateTime().compareTo(
-          a.storeProduct.createdAt.toDateTime(),
-        ),
+          filtered.sort(
+            (a, b) => b.product.createdAt.toDateTime().compareTo(
+              a.product.createdAt.toDateTime(),
+            ),
+          );
+
+          return filtered;
+        },
       );
-
-      return filtered;
-    },
-  );
 
   /// Constructor of [InventoryViewModel].
   InventoryViewModel() {
@@ -153,7 +151,7 @@ class InventoryViewModel {
   }
 
   /// Fetches global products.
-  Future<void> initTheData() async {
+  Future<InventoryData> initTheData() async {
     try {
       _logger.info('initTheData is called');
       final businessId = userPreferences.business?.refId;
@@ -162,40 +160,46 @@ class InventoryViewModel {
         throw Exception('Business or store not found');
       }
 
-      final storeProducts = await ProductsRepository.instance
-          .getProductsByStoreId(store.refId);
-      final uniqueGlobalIds = <String>{
-        ...storeProducts.map((p) => p.globalProductId),
-      };
-      final globalFutures = uniqueGlobalIds.map(
-        (id) => ProductsRepository.instance.findGlobalProducts(
-          FindGlobalProductsRequest(refId: id),
+      // Execute all calls in parallel for better performance
+      final results = await Future.wait([
+        StoreProductsRepository.instance.listProducts(
+          ListProductsRequest(storeId: store.refId),
         ),
-      );
-      final globals = await Future.wait(globalFutures);
-      final globalMap = Map<String, GlobalProduct>.fromIterables(
-        uniqueGlobalIds.toList(),
-        globals.expand((g) => g),
-      );
+        InventoryRepository.instance.getLowStockItems(store.refId),
+        ReportRepository.instance.getSalesByPeriod(
+          storeId: store.refId,
+          startDate: store.hasCreatedAt()
+              ? store.createdAt.toDateTime()
+              : clock.now(),
+          endDate: clock.now().add(const Duration(days: 1)),
+        ),
+        InventoryRepository.instance.getStoreInventory(store.refId),
+      ]);
 
-      final products = storeProducts
-          .map((e) {
-            final globalProduct = globalMap[e.globalProductId];
+      final totalProducts = results.first as ListProductsResponse;
+      final lowStockItems = results[1] as List<InventoryLevelWithProduct>;
+      final inventoryLevels = results[3] as List<InventoryLevelWithProduct>;
+      final sales = results[2] as GetSalesReportResponse;
 
-            return globalProduct != null
-                ? Product(storeProduct: e, globalProduct: globalProduct)
-                : null;
-          })
-          .whereType<Product>()
-          .toList();
-      _productsSubject.add(UnmodifiableListView(products));
-      _errorSubject.add('');
-    } on Exception catch (e) {
-      _logger.severe('initTheData failed: $e');
-      _errorSubject.add(e.toString());
+      final newStats = InventoryData(
+        totalProducts: totalProducts.totalCount,
+        lowStockItemsCount: lowStockItems.length,
+        inventoryLevels: inventoryLevels,
+        totalSales: sales.totalSalesAmount.toDouble(),
+      );
+      stats = newStats;
+
+      _invLevelSubject.add(UnmodifiableListView(inventoryLevels));
+
+      return stats;
+    } catch (e) {
+      print('Error loading inventory data: $e');
+
+      return stats;
     } finally {
-      _logger.info('initTheData is done');
-      if (!completer.isCompleted) completer.complete(true);
+      if (!completer.isCompleted) {
+        completer.complete(true);
+      }
     }
   }
 
@@ -228,10 +232,33 @@ class InventoryViewModel {
 
   /// Disposes the view model.
   void dispose() {
-    _productsSubject.close();
+    _invLevelSubject.close();
     _errorSubject.close();
     _searchQuerySubject.close();
     _selectedCategorySubject.close();
     _selectedStatusSubject.close();
   }
+}
+
+/// The dashboard data model.
+class InventoryData {
+  /// The total products.
+  final int totalProducts;
+
+  /// The low stock items count.
+  final int lowStockItemsCount;
+
+  /// The total sales.
+  final double totalSales;
+
+  /// Recent Activity
+  final List<InventoryLevelWithProduct> inventoryLevels;
+
+  /// Constructs a new [InventoryData].
+  InventoryData({
+    required this.totalProducts,
+    required this.lowStockItemsCount,
+    required this.inventoryLevels,
+    required this.totalSales,
+  });
 }

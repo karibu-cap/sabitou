@@ -22,11 +22,13 @@ enum CategoryStatus {
 }
 
 enum CategoryType {
-  CATEGORY_TYPE_STORE = 0;
+  CATEGORY_TYPE_UNSPECIFIED = 0;
+
+  CATEGORY_TYPE_STORE = 1;
   /// The product category is activ.
-  CATEGORY_TYPE_BUSINESS = 1;
+  CATEGORY_TYPE_BUSINESS = 2;
   /// The product category is inactive.
-  CATEGORY_TYPE_PRODUCT = 2;
+  CATEGORY_TYPE_PRODUCT = 3;
 }
 
 message Category {

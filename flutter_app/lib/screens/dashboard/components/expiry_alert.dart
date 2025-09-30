@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
@@ -24,7 +25,7 @@ class ExpiryAlert extends StatelessWidget {
           return const SizedBox.shrink();
         }
 
-        final expiring = controller.expiringProducts;
+        final expiring = controller.stats.expirationAlerts;
 
         return AlertCard(
           title: Intls.to.expiryAlert,
@@ -36,15 +37,21 @@ class ExpiryAlert extends StatelessWidget {
                   message: Intls.to.noProductsExpiringSoon,
                 )
               : Column(
-                  children: expiring.map((businessProduct) {
-                    final expiredDate = businessProduct.expirationDate
-                        .toDateTime();
-                    if (!businessProduct.hasExpirationDate()) {
+                  children: expiring.map((product) {
+                    final expiringBatches = product.level.batches
+                        .where((b) => b.hasExpirationDate())
+                        .toList();
+                    if (expiringBatches.isEmpty) {
                       return const SizedBox.shrink();
                     }
-
-                    final globalProduct = controller
-                        .globalProducts[businessProduct.globalProductId];
+                    final expiringBatch = expiringBatches.firstWhereOrNull(
+                      (e) => e.productId == product.product.refId,
+                    );
+                    if (expiringBatch == null) {
+                      return const SizedBox.shrink();
+                    }
+                    final expiredDate = expiringBatch.expirationDate
+                        .toDateTime();
 
                     final daysUntilExpiry = Formatters.formatDurationToNow(
                       expiredDate,
@@ -53,20 +60,17 @@ class ExpiryAlert extends StatelessWidget {
                         ? AppColors.red
                         : AppColors.warningColor;
 
-                    if (globalProduct == null) {
-                      return const SizedBox.shrink();
-                    }
-
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 12),
                       child: ProductItemCard(
-                        productName: globalProduct.label,
+                        productName: product.globalProduct.label,
                         subtitle:
                             '${Intls.to.expires}: ${Formatters.formatDate(expiredDate)}',
                         badgeText: daysUntilExpiry ?? Intls.to.expired,
                         badgeColor: urgencyColor,
                         additionalInfo: Intls.to.inStock.trParams({
-                          'quantity': businessProduct.stockQuantity.toString(),
+                          'quantity': product.level.quantityAvailable
+                              .toString(),
                         }),
                       ),
                     );

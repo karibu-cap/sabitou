@@ -54,23 +54,23 @@ final class CollectionName {
   /// The resource link collection.
   static const String resourceLinks = 'resource_links';
 
-  /// The order collection.
-  static const String orders = 'orders';
-
   /// The invoice collection.
   static const String invoices = 'invoices';
-
-  /// The transaction collection.
-  static const String transactions = 'transactions';
 
   /// The category collection.
   static const String categories = 'categories';
 
-  /// The voucher collection.
-  static const String vouchers = 'vouchers';
+  /// The payments collection.
+  static const String payments = 'payments';
 
-  /// The voucher collection.
-  static const String stockInBounds = 'stock_in_bounds';
+  /// The gift vouchers collection.
+  static const String giftVouchers = 'gift_vouchers';
+
+  /// The voucher transactions collection.
+  static const String voucherTransactions = 'voucher_transactions';
+
+  /// The cash receipts collection.
+  static const String cashReceipts = 'cash_receipts';
 }
 
 /// The static images.
@@ -156,6 +156,12 @@ enum DashboardItem {
   /// The settings item.
   settings,
 
-  /// The transactions item.
-  transactions,
+  /// The cash receipts item.
+  cashReceipts,
+
+  /// The sales item.
+  salesOrder,
+
+  /// The pos item.
+  pos,
 }
