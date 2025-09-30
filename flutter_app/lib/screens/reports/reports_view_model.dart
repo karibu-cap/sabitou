@@ -7,7 +7,7 @@ import 'package:sabitou_rpc/models.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-import '../../repositories/report_repository.dart';
+import '../../repositories/reports_repository.dart';
 import '../../utils/logger.dart';
 import '../../utils/user_preference.dart';
 
@@ -117,7 +117,7 @@ class ReportsViewModel {
         throw Exception('Business or store not found');
       }
 
-      final dashboardData = await ReportRepository.instance.getDashboardReport(
+      final dashboardData = await ReportsRepository.instance.getDashboardReport(
         storeId: store.refId,
         startDate: clock.now().subtract(const Duration(days: 30)),
         endDate: clock.now(),

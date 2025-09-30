@@ -64,6 +64,7 @@ Future<void> _initServices() async {
       ),
     )
     ..registerLazySingleton<UserPreferences>(UserPreferences.new)
+    ..registerLazySingleton<ReportsRepository>(ReportsRepository.new)
     ..registerLazySingleton<AuthRepository>(AuthRepository.new)
     ..registerLazySingleton<ProductsRepository>(ProductsRepository.new)
     ..registerLazySingleton<SuppliersRepository>(SuppliersRepository.new)
@@ -76,7 +77,6 @@ Future<void> _initServices() async {
     )
     ..registerLazySingleton<CategoriesRepository>(CategoriesRepository.new)
     ..registerLazySingleton<InventoryRepository>(InventoryRepository.new)
-    ..registerLazySingleton<ReportsRepository>(ReportsRepository.new)
     ..registerLazySingleton<DataSyncService>(
       () => DataSyncService(transport: syncFakeTransport),
     )

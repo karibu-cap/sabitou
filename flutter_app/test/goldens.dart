@@ -10,7 +10,6 @@ import 'package:sabitou_clients/repositories/business_repository.dart';
 import 'package:sabitou_clients/repositories/categories_repository.dart';
 import 'package:sabitou_clients/repositories/inventory_repository.dart';
 import 'package:sabitou_clients/repositories/products_repository.dart';
-import 'package:sabitou_clients/repositories/report_repository.dart';
 import 'package:sabitou_clients/repositories/reports_repository.dart';
 import 'package:sabitou_clients/repositories/store_products_repository.dart';
 import 'package:sabitou_clients/repositories/stores_repository.dart';
@@ -133,7 +132,6 @@ Future<void> _initGetIt(
     ..registerSingletonIfAbsent<SuppliersRepository>(SuppliersRepository.new)
     ..registerSingletonIfAbsent<CategoriesRepository>(CategoriesRepository.new)
     ..registerSingletonIfAbsent<BusinessRepository>(BusinessRepository.new)
-    ..registerSingletonIfAbsent<ReportRepository>(ReportRepository.new)
     ..registerSingletonIfAbsent<ReportsRepository>(ReportsRepository.new)
     ..registerSingletonIfAbsent<InventoryRepository>(InventoryRepository.new)
     ..registerSingletonIfAbsent<StoreProductsRepository>(

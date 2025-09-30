@@ -1,138 +1,73 @@
+import 'dart:async';
+
 import 'package:connectrpc/connect.dart' as connect;
 import 'package:get_it/get_it.dart';
-import 'package:sabitou_rpc/sabitou_rpc.dart';
+import 'package:sabitou_rpc/connect_servers.dart';
+import 'package:sabitou_rpc/models.dart';
 
-import '../services/network_status_provider/network_status_provider.dart';
 import '../services/rpc/connect_rpc.dart';
 import '../utils/logger.dart';
-import 'remotes/remote_reports_repository.dart';
 
-/// The reports repository.
+/// The report repository.
 class ReportsRepository {
   final _logger = LoggerApp('ReportsRepository');
 
-  /// The remote reports repository.
-  final RemoteReportsRepository remoteReportsRepository;
-
-  /// The network status provider.
-  final NetworkStatusProvider networkStatusProvider;
+  /// The reporting service client for reports and analytics.
+  final ReportingServiceClient _reportingService;
 
   /// The instance of [ReportsRepository].
   static final instance = GetIt.I.get<ReportsRepository>();
 
   /// Constructs a new [ReportsRepository].
-  ReportsRepository({
-    connect.Transport? transport,
-    NetworkStatusProvider? networkStatusProvider,
-  }) : remoteReportsRepository = RemoteReportsRepository(
-         transport: transport ?? ConnectRPCService.to.clientChannel,
-       ),
-       networkStatusProvider =
-           networkStatusProvider ?? GetIt.I.get<NetworkStatusProvider>();
-
-  /// Gets sales report.
-  Future<GetSalesReportResponse?> getSalesReport(
-    GetSalesReportRequest request,
-  ) async {
-    try {
-      return await remoteReportsRepository.getSalesReport(request);
-    } on Exception catch (e) {
-      _logger.severe('getSalesReport Error: $e');
-
-      return null;
-    }
-  }
-
-  /// Gets purchase report.
-  Future<GetPurchaseReportResponse?> getPurchaseReport(
-    GetPurchaseReportRequest request,
-  ) async {
-    try {
-      return await remoteReportsRepository.getPurchaseReport(request);
-    } on Exception catch (e) {
-      _logger.severe('getPurchaseReport Error: $e');
-
-      return null;
-    }
-  }
-
-  /// Gets inventory movement report.
-  Future<GetInventoryMovementReportResponse?> getInventoryMovementReport(
-    GetInventoryMovementReportRequest request,
-  ) async {
-    try {
-      return await remoteReportsRepository.getInventoryMovementReport(request);
-    } on Exception catch (e) {
-      _logger.severe('getInventoryMovementReport Error: $e');
-
-      return null;
-    }
-  }
-
-  /// Gets best selling products.
-  Future<GetBestSellingProductsResponse?> getBestSellingProducts(
-    GetBestSellingProductsRequest request,
-  ) async {
-    try {
-      return await remoteReportsRepository.getBestSellingProducts(request);
-    } on Exception catch (e) {
-      _logger.severe('getBestSellingProducts Error: $e');
-
-      return null;
-    }
-  }
-
-  /// Gets store purchase history.
-  Future<GetStorePurchaseHistoryResponse?> getStorePurchaseHistory(
-    GetStorePurchaseHistoryRequest request,
-  ) async {
-    try {
-      return await remoteReportsRepository.getStorePurchaseHistory(request);
-    } on Exception catch (e) {
-      _logger.severe('getStorePurchaseHistory Error: $e');
-
-      return null;
-    }
-  }
-
-  /// Gets supplier performance report.
-  Future<GetSupplierPerformanceReportResponse?> getSupplierPerformanceReport(
-    GetSupplierPerformanceReportRequest request,
-  ) async {
-    try {
-      return await remoteReportsRepository.getSupplierPerformanceReport(
-        request,
+  ReportsRepository({connect.Transport? transport})
+    : _reportingService = ReportingServiceClient(
+        transport ?? ConnectRPCService.to.clientChannel,
       );
-    } on Exception catch (e) {
-      _logger.severe('getSupplierPerformanceReport Error: $e');
 
-      return null;
+  /// Get sales data by period.
+  Future<GetSalesReportResponse> getSalesByPeriod({
+    required String storeId,
+    required DateTime startDate,
+    required DateTime endDate,
+  }) async {
+    try {
+      final request = GetSalesReportRequest(
+        storeId: storeId,
+        startDate: Timestamp.fromDateTime(startDate),
+        endDate: Timestamp.fromDateTime(endDate),
+      );
+      final response = await _reportingService.getSalesReport(request);
+
+      return response;
+    } catch (e) {
+      _logger.severe('Error getting sales by period: $e');
+      rethrow;
     }
   }
 
-  /// Gets profit and loss report.
-  Future<GetProfitLossReportResponse?> getProfitLossReport(
-    GetProfitLossReportRequest request,
-  ) async {
+  /// Get comprehensive dashboard report with all calculated data.
+  Future<GetDashboardReportResponse> getDashboardReport({
+    String? storeId,
+    required DateTime startDate,
+    required DateTime endDate,
+  }) async {
     try {
-      return await remoteReportsRepository.getProfitLossReport(request);
-    } on Exception catch (e) {
-      _logger.severe('getProfitLossReport Error: $e');
+      // Using DashboardReportingService instead of ReportingService
+      final dashboardService = DashboardReportingServiceClient(
+        ConnectRPCService.to.clientChannel,
+      );
 
-      return null;
-    }
-  }
+      final request = GetDashboardReportRequest(
+        storeId: storeId,
+        startDate: Timestamp.fromDateTime(startDate),
+        endDate: Timestamp.fromDateTime(endDate),
+      );
+      final response = await dashboardService.getDashboardReport(request);
 
-  /// Gets stock aging report.
-  Future<GetStockAgingReportResponse?> getStockAgingReport(
-    GetStockAgingReportRequest request,
-  ) async {
-    try {
-      return await remoteReportsRepository.getStockAgingReport(request);
-    } on Exception catch (e) {
-      _logger.severe('getStockAgingReport Error: $e');
-
-      return null;
+      return response;
+    } catch (e) {
+      _logger.severe('Error getting dashboard report: $e');
+      rethrow;
     }
   }
 }
