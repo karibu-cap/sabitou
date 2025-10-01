@@ -1823,6 +1823,10 @@ class AppInternationalizationService extends ChangeNotifier {
       'fr': 'Laissez vide si vous ne voulez pas rendre la monnaie',
     },
     'amountChangeGiven': {'en': 'Change given', 'fr': 'Monnaie rendue'},
+    'changeGivenMustBeLessThan': {
+      'en': 'Change given must be less than or equal to',
+      'fr': 'La monnaie rendue doit être inférieure ou égale à',
+    },
   };
 
   /// Direct access to the internationalization service.
@@ -1841,6 +1845,10 @@ class AppInternationalizationService extends ChangeNotifier {
     const Locale('en'),
     const Locale('fr'),
   ];
+
+  /// The amount change given.
+  String get changeGivenMustBeLessThan =>
+      _stringOfLocalizedValue('changeGivenMustBeLessThan');
 
   /// The amount change given.
   String get amountChangeGiven => _stringOfLocalizedValue('amountChangeGiven');

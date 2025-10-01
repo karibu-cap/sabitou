@@ -48,10 +48,7 @@ final class CartFooter extends StatelessWidget {
                 ),
               ],
             ),
-            PaymentSection(
-              key: ValueKey(cart.currentCashReceipt?.totalAmount ?? 0),
-              total: cart.currentCashReceipt?.totalAmount ?? 0,
-            ),
+            const PaymentSection(),
 
             Flex(
               direction: isMobile ? Axis.vertical : Axis.horizontal,
