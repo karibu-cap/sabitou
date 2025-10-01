@@ -65,6 +65,7 @@ message Store {
 
   // The tax payer number of the store.
   optional string tax_payer_number = 18;
+  
 }
 
 enum StoreCostingMethod {

@@ -1,238 +1,207 @@
-import 'dart:async';
-
+import 'package:clock/clock.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:sabitou_rpc/models.dart';
 import 'package:uuid/uuid.dart';
 
-/// The cart manager.
+import '../utils/user_preference.dart';
+
+/// The cart manager for POS system
 class CartManager extends ChangeNotifier {
-  /// The uuid generator.
-  final uuid = const Uuid();
+  final Uuid _uuid = const Uuid();
 
-  // /// The list of saved orders.
-  // List<Order> listOfSaveOrder = [];
+  CashReceipt? _currentCashReceipt;
+  final List<Payment> _payments = [];
 
-  // /// The current order.
-  // Order? _currentOrder;
+  /// The instance of [CartManager].
+  static CartManager get instance => GetIt.I<CartManager>();
 
-  // /// The current order.
-  // Order? get currentOrder => _currentOrder;
-
-  /// Direct access to the cart manager.
+  /// Backward compatibility accessor
   static CartManager get to => GetIt.I<CartManager>();
+
+  /// The current cash receipt.
+  CashReceipt? get currentCashReceipt => _currentCashReceipt;
+
+  /// The list of payments.
+  List<Payment> get payments => _payments;
+
+  /// The can complete.
+  bool get canComplete {
+    final cashReceipt = _currentCashReceipt;
+    if (cashReceipt == null) return false;
+    if (cashReceipt.items.isEmpty) return false;
+
+    return cashReceipt.amountPaid >= cashReceipt.totalAmount;
+  }
 
   /// Constructor of new [CartManager].
   CartManager() {
-    _init();
+    _initializeCart();
   }
 
-  Future<void> _init() async {
-    // final listOfSaveOrder = AppStorageService.to.read<List<Order>?>(
-    //   '${CollectionName.orders}-${UserPreferences.instance.store?.refId}',
-    // );
+  /// Initialize the cart.
+  void _initializeCart() {
+    final store = UserPreferences.instance.store;
+    final user = UserPreferences.instance.user;
+    if (store == null || user == null) {
+      return;
+    }
 
-    // if (listOfSaveOrder != null && listOfSaveOrder.isNotEmpty) {
-    //   this.listOfSaveOrder = listOfSaveOrder;
-    // }
-
-    // _resetCart();
+    _currentCashReceipt = CashReceipt(
+      documentId: _uuid.v4(),
+      storeId: store.refId,
+      cashierUserId: user.refId,
+      items: [],
+      transactionTime: Timestamp.fromDateTime(clock.now()),
+    );
   }
 
-  // /// Clears the cart.
-  // void clearCart() {
-  //   _resetCart();
-  // }
+  /// Add item to cart
+  bool addItem(InvoiceLineItem item) {
+    if (item.quantity <= 0) return false;
 
-  // /// Resets the cart.
-  // void _resetCart() {
-  //   // final currentStore = UserPreferences.instance.store;
-  //   // final user = UserPreferences.instance.user;
-  //   // if (currentStore == null || user == null) {
-  //   //   return;
-  //   // }
-  //   // _currentOrder = Order()
-  //   //   ..refId = uuid.v4()
-  //   //   ..storeId = currentStore.refId
-  //   //   ..initiatedBy = user.refId
-  //   //   ..createdAt = Timestamp.fromDateTime(clock.now())
-  //   //   ..status = OrderStatus.ORDER_STATUS_PENDING;
-  //   // notifyListeners();
-  // }
+    final existingIndex = _currentCashReceipt?.items.indexWhere(
+      (cartItem) =>
+          cartItem.productId == item.productId &&
+          cartItem.batchId == item.batchId,
+    );
 
-  // /// Adds an item to the order.
-  // Future<bool> addItem(
-  //   String storeProductId,
-  //   String itemName,
-  //   int quantity,
-  //   double unitPrice,
-  // ) async {
-  //   if (quantity <= 0) return false;
+    final currentCart = _currentCashReceipt;
+    if (currentCart == null) return false;
 
-  //   final product = await ProductsRepository.instance.getProduct(
-  //     GetStoreProductRequest(storeProductId: storeProductId),
-  //   );
-  //   // if ((product?. ?? 0) < quantity) {
-  //   //   return false;
-  //   // }
+    if (existingIndex != null && existingIndex >= 0) {
+      currentCart.items[existingIndex]
+        ..quantity = currentCart.items[existingIndex].quantity + item.quantity
+        ..subtotal =
+            (currentCart.items[existingIndex].quantity + item.quantity) *
+            item.unitPrice
+        ..total =
+            (currentCart.items[existingIndex].quantity + item.quantity) *
+                item.unitPrice +
+            item.taxAmount;
+    } else {
+      currentCart.items.add(item);
+    }
+    _updatePaymentCalculations();
+    notifyListeners();
 
-  //   final existingItem = _currentOrder?.orderItems.firstWhereOrNull(
-  //     (item) => item.storeProductId == storeProductId,
-  //   );
-  //   if (existingItem != null) {
-  //     existingItem.quantity += quantity;
-  //   } else {
-  //     _currentOrder?.orderItems.add(
-  //       OrderItem()
-  //         ..storeProductId = storeProductId
-  //         ..itemName = itemName
-  //         ..quantity = quantity
-  //         ..unitPrice = unitPrice.toInt(),
-  //     );
-  //   }
-  //   _updateTotal();
-  //   notifyListeners();
+    return true;
+  }
 
-  //   return true;
-  // }
+  /// Update item quantity
+  bool updateQuantity(String productId, int newQuantity, {String? batchId}) {
+    if (newQuantity <= 0) {
+      return false;
+    }
 
-  // /// On hold the current order.
-  // Future<void> onHoldCurrentOrder() async {
-  //   _currentOrder?.status = OrderStatus.ORDER_STATUS_PROCESSING;
-  //   await _saveCart();
-  //   await _init();
-  //   notifyListeners();
-  // }
+    final itemIndex = _currentCashReceipt?.items.indexWhere(
+      (item) => item.productId == productId && item.batchId == batchId,
+    );
 
-  // /// Resumes the order.
-  // void resumeOrder(Order order) {
-  //   _currentOrder = Order()..mergeFromMessage(order);
-  //   notifyListeners();
-  // }
+    final currentCart = _currentCashReceipt;
+    if (itemIndex == null || itemIndex < 0 || currentCart == null) {
+      return false;
+    }
 
-  // /// Removes an item from the order.
-  // bool removeItem(String storeProductId) {
-  //   if (_currentOrder == null) {
-  //     return false;
-  //   }
-  //   final itemIndex = _currentOrder?.orderItems.indexWhere(
-  //     (item) => item.storeProductId == storeProductId,
-  //   );
-  //   if (itemIndex != null && itemIndex >= 0) {
-  //     _currentOrder?.orderItems.removeAt(itemIndex);
-  //     _updateTotal();
-  //     notifyListeners();
+    currentCart.items[itemIndex]
+      ..quantity = newQuantity
+      ..subtotal = newQuantity * currentCart.items[itemIndex].unitPrice
+      ..total =
+          (newQuantity * currentCart.items[itemIndex].unitPrice) +
+          (currentCart.items[itemIndex].taxAmount);
+    _updatePaymentCalculations();
 
-  //     return true;
-  //   }
-  //   notifyListeners();
+    notifyListeners();
 
-  //   return false;
-  // }
+    return true;
+  }
 
-  // /// Updates the quantity of an item in the order.
-  // Future<bool> updateQuantity(String storeProductId, int quantity) async {
-  //   // // if (quantity <= 0) {
-  //   // //   return false;
-  //   // // }
-  //   // // final item = _currentOrder?.orderItems.firstWhereOrNull(
-  //   // //   (item) => item.storeProductId == storeProductId,
-  //   // // );
-  //   // // if (item == null) {
-  //   // //   return false;
-  //   // // }
+  /// Remove item from cart
+  bool removeItem(String productId, {String? batchId}) {
+    final currentCart = _currentCashReceipt;
+    if (currentCart == null) return false;
 
-  //   // // final product = await ProductsRepository.instance.getProduct(
-  //   // //   GetStoreProductRequest(storeProductId: storeProductId),
-  //   // // );
-  //   // // if ((product?.stockQuantity ?? 0) < quantity) {
-  //   // //   return false;
-  //   // // }
-  //   // item.quantity = quantity;
-  //   _updateTotal();
-  //   notifyListeners();
+    final itemIndex = currentCart.items.indexWhere(
+      (item) => item.productId == productId && item.batchId == batchId,
+    );
 
-  //   return true;
-  // }
+    if (itemIndex >= 0) {
+      currentCart.items.removeAt(itemIndex);
+      _updatePaymentCalculations();
+      notifyListeners();
 
-  // void _updateTotal() {
-  //   _currentOrder?.orderPrices.grandTotal =
-  //       _currentOrder?.orderItems.fold<int>(
-  //         0,
-  //         (sum, item) => sum + (item.quantity * item.unitPrice),
-  //       ) ??
-  //       0;
-  //   _currentOrder?.updatedAt = Timestamp.fromDateTime(clock.now());
-  //   notifyListeners();
-  // }
+      return true;
+    }
 
-  // /// Completes the order.
-  // Future<bool> completeOrder() async {
-  //   final currentOrder = _currentOrder;
-  //   if (currentOrder == null || currentOrder.orderItems.isEmpty) {
-  //     return false;
-  //   }
-  //   currentOrder
-  //     ..status = OrderStatus.ORDER_STATUS_COMPLETED
-  //     ..updatedAt = Timestamp.fromDateTime(clock.now());
+    return false;
+  }
 
-  //   final result = await OrdersRepository.instance.addOrder(
-  //     CreateOrderRequest(order: currentOrder),
-  //   );
+  /// Clear cart
+  void clearCart() {
+    final currentCart = _currentCashReceipt;
+    if (currentCart == null) return;
 
-  //   if (result == null) {
-  //     return false;
-  //   }
+    _currentCashReceipt = CashReceipt(
+      documentId: _uuid.v4(),
+      storeId: currentCart.storeId,
+      cashierUserId: currentCart.cashierUserId,
+      items: [],
+      customerId: currentCart.customerId,
+    );
+    _payments.clear();
+    notifyListeners();
+  }
 
-  //   listOfSaveOrder.removeWhere((order) => order.refId == _currentOrder?.refId);
-  //   unawaited(_removeOrderFromSaveCart());
-  //   clearCart();
+  /// Add payment
+  void addPayment(Payment payment) {
+    _payments.add(payment);
+    _updatePaymentCalculations();
+    notifyListeners();
+  }
 
-  //   notifyListeners();
+  /// Remove payment
+  void removePayment(int index) {
+    if (index >= 0 && index < _payments.length) {
+      _payments.removeAt(index);
+      _updatePaymentCalculations();
+      notifyListeners();
+    }
+  }
 
-  //   return true;
-  // }
+  /// Update payment calculations
+  void _updatePaymentCalculations() {
+    final totalAmount =
+        _currentCashReceipt?.items.fold(0.0, (sum, item) => sum + item.total) ??
+        0;
+    final paidAmount = _payments.fold(
+      0.0,
+      (sum, payment) => sum + payment.amount.toDouble(),
+    );
 
-  // Future<void> _saveCart() async {
-  //   final currentOrder = _currentOrder;
-  //   if (currentOrder == null) {
-  //     return;
-  //   }
-  //   final storeId = UserPreferences.instance.store?.refId;
-  //   if (storeId == null) {
-  //     return;
-  //   }
+    _currentCashReceipt?.amountPaid = paidAmount;
+    _currentCashReceipt?.totalAmount = totalAmount;
+    _currentCashReceipt?.owedToCustomer = paidAmount > totalAmount
+        ? totalAmount - paidAmount - (_currentCashReceipt?.changeGiven ?? 0)
+        : 0;
+    notifyListeners();
+  }
 
-  //   // Update or add the current order
-  //   final index = listOfSaveOrder.indexWhere(
-  //     (order) => order.refId == currentOrder.refId,
-  //   );
-  //   if (index >= 0) {
-  //     listOfSaveOrder[index] = currentOrder;
-  //   } else {
-  //     listOfSaveOrder.add(currentOrder);
-  //   }
+  /// Set customer for current cart
+  void setChangeGiven(double changeGiven) {
+    final currentCashReceipt = _currentCashReceipt;
+    if (currentCashReceipt != null) {
+      _currentCashReceipt?.changeGiven = changeGiven;
+      _currentCashReceipt?.owedToCustomer =
+          currentCashReceipt.amountPaid -
+          currentCashReceipt.totalAmount -
+          changeGiven;
+      notifyListeners();
+    }
+  }
 
-  //   await AppStorageService.to.write(
-  //     '${CollectionName.orders}-$storeId',
-  //     listOfSaveOrder,
-  //   );
-  // }
-
-  // Future<void> _removeOrderFromSaveCart() async {
-  //   final currentOrder = _currentOrder;
-  //   if (currentOrder == null) {
-  //     return;
-  //   }
-  //   final storeId = UserPreferences.instance.store?.refId;
-  //   if (storeId == null) {
-  //     return;
-  //   }
-
-  //   listOfSaveOrder.removeWhere((order) => order.refId == currentOrder.refId);
-  //   await AppStorageService.to.write(
-  //     '${CollectionName.orders}-$storeId',
-  //     listOfSaveOrder,
-  //   );
-  // }
+  /// Get cart items for display
+  List<InvoiceLineItem> getCartItems() {
+    return _currentCashReceipt?.items ?? [];
+  }
 }

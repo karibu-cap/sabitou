@@ -17,23 +17,6 @@ class RemoteGiftVoucherRepository {
         transport ?? ConnectRPCService.to.clientChannel,
       );
 
-  /// Creates a gift voucher.
-  Future<CreateGiftVoucherResponse?> createGiftVoucher(
-    CreateGiftVoucherRequest request,
-  ) async {
-    try {
-      final response = await giftVoucherServiceClient.createGiftVoucher(
-        request,
-      );
-
-      return response;
-    } on Exception catch (e) {
-      _logger.severe('createGiftVoucher Error: $e');
-
-      return null;
-    }
-  }
-
   /// Validates a voucher.
   Future<ValidateVoucherResponse?> validateVoucher(
     ValidateVoucherRequest request,
@@ -44,19 +27,6 @@ class RemoteGiftVoucherRepository {
       return response;
     } on Exception catch (e) {
       _logger.severe('validateVoucher Error: $e');
-
-      return null;
-    }
-  }
-
-  /// Uses a voucher.
-  Future<UseVoucherResponse?> useVoucher(UseVoucherRequest request) async {
-    try {
-      final response = await giftVoucherServiceClient.useVoucher(request);
-
-      return response;
-    } on Exception catch (e) {
-      _logger.severe('useVoucher Error: $e');
 
       return null;
     }
@@ -85,38 +55,6 @@ class RemoteGiftVoucherRepository {
       return response;
     } on Exception catch (e) {
       _logger.severe('listVouchers Error: $e');
-
-      return null;
-    }
-  }
-
-  /// Cancels a voucher.
-  Future<CancelVoucherResponse?> cancelVoucher(
-    CancelVoucherRequest request,
-  ) async {
-    try {
-      final response = await giftVoucherServiceClient.cancelVoucher(request);
-
-      return response;
-    } on Exception catch (e) {
-      _logger.severe('cancelVoucher Error: $e');
-
-      return null;
-    }
-  }
-
-  /// Gets voucher history.
-  Future<GetVoucherHistoryResponse?> getVoucherHistory(
-    GetVoucherHistoryRequest request,
-  ) async {
-    try {
-      final response = await giftVoucherServiceClient.getVoucherHistory(
-        request,
-      );
-
-      return response;
-    } on Exception catch (e) {
-      _logger.severe('getVoucherHistory Error: $e');
 
       return null;
     }

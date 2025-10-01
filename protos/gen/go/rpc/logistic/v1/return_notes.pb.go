@@ -1145,7 +1145,7 @@ type ListReturnsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Returns       []*ReturnNote          `protobuf:"bytes,1,rep,name=returns,proto3" json:"returns,omitempty"`
 	TotalCount    int32                  `protobuf:"varint,2,opt,name=total_count,json=totalCount,proto3" json:"total_count,omitempty"`
-	TotalValue    int64                  `protobuf:"varint,3,opt,name=total_value,json=totalValue,proto3" json:"total_value,omitempty"`
+	TotalValue    float64                `protobuf:"fixed64,3,opt,name=total_value,json=totalValue,proto3" json:"total_value,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1194,7 +1194,7 @@ func (x *ListReturnsResponse) GetTotalCount() int32 {
 	return 0
 }
 
-func (x *ListReturnsResponse) GetTotalValue() int64 {
+func (x *ListReturnsResponse) GetTotalValue() float64 {
 	if x != nil {
 		return x.TotalValue
 	}
@@ -1298,7 +1298,7 @@ const file_logistic_v1_return_notes_proto_rawDesc = "" +
 	"\areturns\x18\x01 \x03(\v2\x17.logistic.v1.ReturnNoteR\areturns\x12\x1f\n" +
 	"\vtotal_count\x18\x02 \x01(\x05R\n" +
 	"totalCount\x12\x1f\n" +
-	"\vtotal_value\x18\x03 \x01(\x03R\n" +
+	"\vtotal_value\x18\x03 \x01(\x01R\n" +
 	"totalValue*q\n" +
 	"\n" +
 	"ReturnType\x12\x1b\n" +

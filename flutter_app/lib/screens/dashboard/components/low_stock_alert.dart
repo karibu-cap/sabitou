@@ -45,8 +45,8 @@ class LowStockAlert extends StatelessWidget {
               : Column(
                   children: lowStock.map((product) {
                     final criticalityColor = _getCriticalityColor(
-                      product.level.quantityAvailable,
-                      product.level.minThreshold,
+                      product.level.quantityAvailable.toDouble(),
+                      product.level.minThreshold.toDouble(),
                     );
 
                     return Padding(

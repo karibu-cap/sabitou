@@ -1,9 +1,114 @@
 openapi: 3.1.0
 info:
   title: payments.v1
-paths: {}
+paths:
+  /payments.v1.CashReceiptService/CreateCashReceipt:
+    post:
+      tags:
+        - payments.v1.CashReceiptService
+      summary: Create a cash receipt (most common - 95% of transactions)
+      description: Create a cash receipt (most common - 95% of transactions)
+      operationId: payments.v1.CashReceiptService.CreateCashReceipt
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/payments.v1.CreateCashReceiptRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/payments.v1.CreateCashReceiptResponse'
 components:
   schemas:
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+        - 1
+      description: Define the version of the Connect protocol
+      const: 1
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+            - not_found
+          enum:
+            - canceled
+            - unknown
+            - invalid_argument
+            - deadline_exceeded
+            - not_found
+            - already_exists
+            - permission_denied
+            - resource_exhausted
+            - failed_precondition
+            - aborted
+            - out_of_range
+            - unimplemented
+            - internal
+            - unavailable
+            - data_loss
+            - unauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/connect.error_details.Any'
+          description: A list of messages that carry the error details. There is no limit on the number of messages.
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+    connect.error_details.Any:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
+        value:
+          type: string
+          format: binary
+          description: The Protobuf message, serialized as bytes and base64-encoded. The specific message type is identified by the `type` field.
+        debug:
+          oneOf:
+            - type: object
+              title: Any
+              additionalProperties: true
+              description: Detailed error information.
+          discriminator:
+            propertyName: type
+          title: Debug
+          description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
     financial.v1.InvoiceLineItem:
       type: object
       properties:
@@ -11,21 +116,17 @@ components:
           type: string
           title: product_id
         quantity:
-          type: number
+          type: integer
           title: quantity
-          format: double
+          format: int32
         unitPrice:
-          type:
-            - integer
-            - string
+          type: number
           title: unit_price
-          format: int64
+          format: double
         subtotal:
-          type:
-            - integer
-            - string
+          type: number
           title: subtotal
-          format: int64
+          format: double
           description: quantity * unit_price
         taxRate:
           type: number
@@ -33,17 +134,13 @@ components:
           format: double
           description: 0.20 for 20% VAT
         taxAmount:
-          type:
-            - integer
-            - string
+          type: number
           title: tax_amount
-          format: int64
+          format: double
         total:
-          type:
-            - integer
-            - string
+          type: number
           title: total
-          format: int64
+          format: double
           description: subtotal + tax_amount
         batchId:
           type: string
@@ -194,37 +291,26 @@ components:
             $ref: '#/components/schemas/financial.v1.InvoiceLineItem'
           title: items
         subtotal:
-          type:
-            - integer
-            - string
+          type: number
           title: subtotal
-          format: int64
+          format: double
         taxAmount:
-          type:
-            - integer
-            - string
+          type: number
           title: tax_amount
-          format: int64
+          format: double
         totalAmount:
-          type:
-            - integer
-            - string
+          type: number
           title: total_amount
-          format: int64
+          format: double
         amountPaid:
-          type:
-            - integer
-            - string
+          type: number
           title: amount_paid
-          format: int64
+          format: double
           description: What customer gave
         changeGiven:
-          type:
-            - integer
-            - string
+          type: number
           title: change_given
-          format: int64
-          description: amount_paid - total_amount
+          format: double
         currency:
           type: string
           title: currency
@@ -239,6 +325,13 @@ components:
         notes:
           type: string
           title: notes
+        voucherIssued:
+          type: string
+          title: voucher_issued
+        owedToCustomer:
+          type: number
+          title: owed_to_customer
+          format: double
       title: CashReceipt
       required:
         - documentId
@@ -266,4 +359,194 @@ components:
 
          INVENTORY IMPACT: -1 PRD-001 from WH-002
          ACCOUNTING IMPACT: Immediate revenue + payment
+    payments.v1.CreateCashReceiptRequest:
+      type: object
+      properties:
+        receipt:
+          title: receipt
+          description: The partial cash receipt to create.
+          $ref: '#/components/schemas/payments.v1.CashReceipt'
+        payments:
+          type: array
+          items:
+            $ref: '#/components/schemas/payments.v1.Payment'
+          title: payments
+        issueVoucherOnChange:
+          type: boolean
+          title: issue_voucher_on_change
+          description: |-
+            Issue voucher on change
+             If true and change_given > 0, issue a voucher instead of cash
+      title: CreateCashReceiptRequest
+      additionalProperties: false
+    payments.v1.CreateCashReceiptResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: success
+          description: The created cash receipt.
+        voucher:
+          title: voucher
+          description: If a voucher was issued
+          nullable: true
+          $ref: '#/components/schemas/payments.v1.GiftVoucher'
+      title: CreateCashReceiptResponse
+      additionalProperties: false
+    payments.v1.GiftVoucher:
+      type: object
+      properties:
+        documentId:
+          type: string
+          title: document_id
+          description: '"GV-2025-001"'
+        voucherCode:
+          type: string
+          title: voucher_code
+          description: '"GIFT-XMAS-12345" - what customer uses'
+        initialValue:
+          type: number
+          title: initial_value
+          format: double
+          description: Original amount
+        remainingValue:
+          type: number
+          title: remaining_value
+          format: double
+          description: What's left
+        currency:
+          type: string
+          title: currency
+        issuedToCustomerId:
+          type: string
+          title: issued_to_customer_id
+          description: Optional - can be transferred
+        issuedByUserId:
+          type: string
+          title: issued_by_user_id
+        status:
+          title: status
+          $ref: '#/components/schemas/payments.v1.VoucherStatus'
+        issuedAt:
+          title: issued_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        validUntil:
+          title: valid_until
+          description: Expiration
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        notes:
+          type: string
+          title: notes
+      title: GiftVoucher
+      required:
+        - documentId
+      additionalProperties: false
+      description: |-
+        *
+         GiftVoucher (Bon Cadeau / Bon d'Achat)
+         Prepaid credit that can be used for future purchases.
+         Like a gift card or store credit.
+
+         Example:
+           voucher_id: "GV-2025-001"
+           voucher_code: "GIFT-XMAS-12345"
+           initial_value: 100000
+           remaining_value: 100000
+           issued_to_customer_id: "CMP-003"
+           valid_until: 2026-12-31
+           status: VOUCHER_STATUS_ACTIVE
+    payments.v1.Payment:
+      type: object
+      properties:
+        documentId:
+          type: string
+          title: document_id
+          description: '"PAY-2025-001"'
+        payerId:
+          type: string
+          title: payer_id
+          description: Who pays
+        payeeId:
+          type: string
+          title: payee_id
+          description: Who receives
+        amount:
+          type: number
+          title: amount
+          format: double
+          description: Amount in smallest currency unit
+        currency:
+          type: string
+          title: currency
+        paymentMethod:
+          title: payment_method
+          $ref: '#/components/schemas/payments.v1.PaymentMethod'
+        status:
+          title: status
+          $ref: '#/components/schemas/payments.v1.PaymentStatus'
+        relatedInvoiceId:
+          type: string
+          title: related_invoice_id
+          description: Which invoice this pays
+        paymentDate:
+          title: payment_date
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        referenceNumber:
+          type: string
+          title: reference_number
+          description: Bank reference, check number, etc.
+        createdByUserId:
+          type: string
+          title: created_by_user_id
+        notes:
+          type: string
+          title: notes
+      title: Payment
+      required:
+        - documentId
+      additionalProperties: false
+      description: |-
+        *
+         Payment represents money transfer between parties.
+         Links to invoices to track what's been paid.
+
+         Example:
+           payment_id: "PAY-2025-001"
+           payer_id: "CMP-003" (customer)
+           payee_id: "CMP-001" (your company)
+           amount: 5400000
+           payment_method: PAYMENT_METHOD_BANK_TRANSFER
+           related_invoice_id: "INV-2025-001"
+           status: PAYMENT_STATUS_COMPLETED
+    payments.v1.PaymentMethod:
+      type: string
+      title: PaymentMethod
+      enum:
+        - PAYMENT_METHOD_UNSPECIFIED
+        - PAYMENT_METHOD_CASH
+        - PAYMENT_METHOD_CREDIT_CARD
+        - PAYMENT_METHOD_MOBILE_MONEY
+        - PAYMENT_METHOD_VOUCHER
+        - PAYMENT_METHOD_ORANGE_MONEY
+        - PAYMENT_METHOD_MTN_MONEY
+    payments.v1.PaymentStatus:
+      type: string
+      title: PaymentStatus
+      enum:
+        - PAYMENT_STATUS_UNSPECIFIED
+        - PAYMENT_STATUS_PENDING
+        - PAYMENT_STATUS_COMPLETED
+        - PAYMENT_STATUS_FAILED
+    payments.v1.VoucherStatus:
+      type: string
+      title: VoucherStatus
+      enum:
+        - VOUCHER_STATUS_UNSPECIFIED
+        - VOUCHER_STATUS_ACTIVE
+        - VOUCHER_STATUS_PARTIALLY_USED
+        - VOUCHER_STATUS_FULLY_USED
+        - VOUCHER_STATUS_EXPIRED
+        - VOUCHER_STATUS_CANCELLED
 security: []
+tags:
+  - name: payments.v1.CashReceiptService

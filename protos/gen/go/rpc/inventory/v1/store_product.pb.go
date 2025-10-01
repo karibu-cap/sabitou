@@ -689,7 +689,7 @@ func (x *DeleteGlobalProductResponse) GetSuccess() bool {
 	return false
 }
 
-type FindStoreProductsRequest struct {
+type FindProductsRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The query to search for store products.
 	StoreId string `protobuf:"bytes,1,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
@@ -697,28 +697,28 @@ type FindStoreProductsRequest struct {
 	RefId *string `protobuf:"bytes,2,opt,name=ref_id,json=refId,proto3,oneof" json:"ref_id,omitempty"`
 	// The unique identifier of the global product.
 	GlobalProductId *string `protobuf:"bytes,3,opt,name=global_product_id,json=globalProductId,proto3,oneof" json:"global_product_id,omitempty"`
-	// Identify the products that are expired.
-	ExpirationDate *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=expiration_date,json=expirationDate,proto3,oneof" json:"expiration_date,omitempty"`
-	// Identify the products by supplier.
-	SupplierId    *string `protobuf:"bytes,5,opt,name=supplier_id,json=supplierId,proto3,oneof" json:"supplier_id,omitempty"`
+	// The page size.
+	PageSize *int32 `protobuf:"varint,4,opt,name=page_size,json=pageSize,proto3,oneof" json:"page_size,omitempty"`
+	// The page token.
+	PageToken     *string `protobuf:"bytes,5,opt,name=page_token,json=pageToken,proto3,oneof" json:"page_token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *FindStoreProductsRequest) Reset() {
-	*x = FindStoreProductsRequest{}
+func (x *FindProductsRequest) Reset() {
+	*x = FindProductsRequest{}
 	mi := &file_inventory_v1_store_product_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *FindStoreProductsRequest) String() string {
+func (x *FindProductsRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*FindStoreProductsRequest) ProtoMessage() {}
+func (*FindProductsRequest) ProtoMessage() {}
 
-func (x *FindStoreProductsRequest) ProtoReflect() protoreflect.Message {
+func (x *FindProductsRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_inventory_v1_store_product_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -730,69 +730,73 @@ func (x *FindStoreProductsRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use FindStoreProductsRequest.ProtoReflect.Descriptor instead.
-func (*FindStoreProductsRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use FindProductsRequest.ProtoReflect.Descriptor instead.
+func (*FindProductsRequest) Descriptor() ([]byte, []int) {
 	return file_inventory_v1_store_product_proto_rawDescGZIP(), []int{8}
 }
 
-func (x *FindStoreProductsRequest) GetStoreId() string {
+func (x *FindProductsRequest) GetStoreId() string {
 	if x != nil {
 		return x.StoreId
 	}
 	return ""
 }
 
-func (x *FindStoreProductsRequest) GetRefId() string {
+func (x *FindProductsRequest) GetRefId() string {
 	if x != nil && x.RefId != nil {
 		return *x.RefId
 	}
 	return ""
 }
 
-func (x *FindStoreProductsRequest) GetGlobalProductId() string {
+func (x *FindProductsRequest) GetGlobalProductId() string {
 	if x != nil && x.GlobalProductId != nil {
 		return *x.GlobalProductId
 	}
 	return ""
 }
 
-func (x *FindStoreProductsRequest) GetExpirationDate() *timestamppb.Timestamp {
-	if x != nil {
-		return x.ExpirationDate
+func (x *FindProductsRequest) GetPageSize() int32 {
+	if x != nil && x.PageSize != nil {
+		return *x.PageSize
 	}
-	return nil
+	return 0
 }
 
-func (x *FindStoreProductsRequest) GetSupplierId() string {
-	if x != nil && x.SupplierId != nil {
-		return *x.SupplierId
+func (x *FindProductsRequest) GetPageToken() string {
+	if x != nil && x.PageToken != nil {
+		return *x.PageToken
 	}
 	return ""
 }
 
-type FindStoreProductsResponse struct {
+type FindProductsResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The unique identifiers of the products.
 	// WARN: all returned products will only have their id and name.
-	Products      []*StoreProduct `protobuf:"bytes,1,rep,name=products,proto3" json:"products,omitempty"`
+	Products []*StoreProductWithGlobalProduct `protobuf:"bytes,1,rep,name=products,proto3" json:"products,omitempty"`
+	// The total count of products.
+	TotalCount int32 `protobuf:"varint,2,opt,name=total_count,json=totalCount,proto3" json:"total_count,omitempty"`
+	// The next page token.
+	NextPageToken *string `protobuf:"bytes,3,opt,name=next_page_token,json=nextPageToken,proto3,oneof" json:"next_page_token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *FindStoreProductsResponse) Reset() {
-	*x = FindStoreProductsResponse{}
+func (x *FindProductsResponse) Reset() {
+	*x = FindProductsResponse{}
 	mi := &file_inventory_v1_store_product_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *FindStoreProductsResponse) String() string {
+func (x *FindProductsResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*FindStoreProductsResponse) ProtoMessage() {}
+func (*FindProductsResponse) ProtoMessage() {}
 
-func (x *FindStoreProductsResponse) ProtoReflect() protoreflect.Message {
+func (x *FindProductsResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_inventory_v1_store_product_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -804,14 +808,82 @@ func (x *FindStoreProductsResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use FindStoreProductsResponse.ProtoReflect.Descriptor instead.
-func (*FindStoreProductsResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use FindProductsResponse.ProtoReflect.Descriptor instead.
+func (*FindProductsResponse) Descriptor() ([]byte, []int) {
 	return file_inventory_v1_store_product_proto_rawDescGZIP(), []int{9}
 }
 
-func (x *FindStoreProductsResponse) GetProducts() []*StoreProduct {
+func (x *FindProductsResponse) GetProducts() []*StoreProductWithGlobalProduct {
 	if x != nil {
 		return x.Products
+	}
+	return nil
+}
+
+func (x *FindProductsResponse) GetTotalCount() int32 {
+	if x != nil {
+		return x.TotalCount
+	}
+	return 0
+}
+
+func (x *FindProductsResponse) GetNextPageToken() string {
+	if x != nil && x.NextPageToken != nil {
+		return *x.NextPageToken
+	}
+	return ""
+}
+
+type StoreProductWithGlobalProduct struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The store product.
+	StoreProduct *StoreProduct `protobuf:"bytes,1,opt,name=store_product,json=storeProduct,proto3" json:"store_product,omitempty"`
+	// The global product.
+	GlobalProduct *GlobalProduct `protobuf:"bytes,2,opt,name=global_product,json=globalProduct,proto3" json:"global_product,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *StoreProductWithGlobalProduct) Reset() {
+	*x = StoreProductWithGlobalProduct{}
+	mi := &file_inventory_v1_store_product_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StoreProductWithGlobalProduct) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StoreProductWithGlobalProduct) ProtoMessage() {}
+
+func (x *StoreProductWithGlobalProduct) ProtoReflect() protoreflect.Message {
+	mi := &file_inventory_v1_store_product_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StoreProductWithGlobalProduct.ProtoReflect.Descriptor instead.
+func (*StoreProductWithGlobalProduct) Descriptor() ([]byte, []int) {
+	return file_inventory_v1_store_product_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *StoreProductWithGlobalProduct) GetStoreProduct() *StoreProduct {
+	if x != nil {
+		return x.StoreProduct
+	}
+	return nil
+}
+
+func (x *StoreProductWithGlobalProduct) GetGlobalProduct() *GlobalProduct {
+	if x != nil {
+		return x.GlobalProduct
 	}
 	return nil
 }
@@ -834,7 +906,7 @@ type FindGlobalProductsRequest struct {
 
 func (x *FindGlobalProductsRequest) Reset() {
 	*x = FindGlobalProductsRequest{}
-	mi := &file_inventory_v1_store_product_proto_msgTypes[10]
+	mi := &file_inventory_v1_store_product_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -846,7 +918,7 @@ func (x *FindGlobalProductsRequest) String() string {
 func (*FindGlobalProductsRequest) ProtoMessage() {}
 
 func (x *FindGlobalProductsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_v1_store_product_proto_msgTypes[10]
+	mi := &file_inventory_v1_store_product_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -859,7 +931,7 @@ func (x *FindGlobalProductsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FindGlobalProductsRequest.ProtoReflect.Descriptor instead.
 func (*FindGlobalProductsRequest) Descriptor() ([]byte, []int) {
-	return file_inventory_v1_store_product_proto_rawDescGZIP(), []int{10}
+	return file_inventory_v1_store_product_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *FindGlobalProductsRequest) GetRefId() string {
@@ -908,7 +980,7 @@ type FindGlobalProductsResponse struct {
 
 func (x *FindGlobalProductsResponse) Reset() {
 	*x = FindGlobalProductsResponse{}
-	mi := &file_inventory_v1_store_product_proto_msgTypes[11]
+	mi := &file_inventory_v1_store_product_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -920,7 +992,7 @@ func (x *FindGlobalProductsResponse) String() string {
 func (*FindGlobalProductsResponse) ProtoMessage() {}
 
 func (x *FindGlobalProductsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_v1_store_product_proto_msgTypes[11]
+	mi := &file_inventory_v1_store_product_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -933,7 +1005,7 @@ func (x *FindGlobalProductsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FindGlobalProductsResponse.ProtoReflect.Descriptor instead.
 func (*FindGlobalProductsResponse) Descriptor() ([]byte, []int) {
-	return file_inventory_v1_store_product_proto_rawDescGZIP(), []int{11}
+	return file_inventory_v1_store_product_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *FindGlobalProductsResponse) GetProducts() []*GlobalProduct {
@@ -1730,20 +1802,28 @@ const file_inventory_v1_store_product_proto_rawDesc = "" +
 	"\x1aDeleteGlobalProductRequest\x12*\n" +
 	"\x11global_product_id\x18\x01 \x01(\tR\x0fglobalProductId\"7\n" +
 	"\x1bDeleteGlobalProductResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess\"\xb7\x02\n" +
-	"\x18FindStoreProductsRequest\x12\x19\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"\x81\x02\n" +
+	"\x13FindProductsRequest\x12\x19\n" +
 	"\bstore_id\x18\x01 \x01(\tR\astoreId\x12\x1a\n" +
 	"\x06ref_id\x18\x02 \x01(\tH\x00R\x05refId\x88\x01\x01\x12/\n" +
-	"\x11global_product_id\x18\x03 \x01(\tH\x01R\x0fglobalProductId\x88\x01\x01\x12H\n" +
-	"\x0fexpiration_date\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampH\x02R\x0eexpirationDate\x88\x01\x01\x12$\n" +
-	"\vsupplier_id\x18\x05 \x01(\tH\x03R\n" +
-	"supplierId\x88\x01\x01B\t\n" +
+	"\x11global_product_id\x18\x03 \x01(\tH\x01R\x0fglobalProductId\x88\x01\x01\x12 \n" +
+	"\tpage_size\x18\x04 \x01(\x05H\x02R\bpageSize\x88\x01\x01\x12\"\n" +
+	"\n" +
+	"page_token\x18\x05 \x01(\tH\x03R\tpageToken\x88\x01\x01B\t\n" +
 	"\a_ref_idB\x14\n" +
-	"\x12_global_product_idB\x12\n" +
-	"\x10_expiration_dateB\x0e\n" +
-	"\f_supplier_id\"S\n" +
-	"\x19FindStoreProductsResponse\x126\n" +
-	"\bproducts\x18\x01 \x03(\v2\x1a.inventory.v1.StoreProductR\bproducts\"\xa5\x02\n" +
+	"\x12_global_product_idB\f\n" +
+	"\n" +
+	"_page_sizeB\r\n" +
+	"\v_page_token\"\xc1\x01\n" +
+	"\x14FindProductsResponse\x12G\n" +
+	"\bproducts\x18\x01 \x03(\v2+.inventory.v1.StoreProductWithGlobalProductR\bproducts\x12\x1f\n" +
+	"\vtotal_count\x18\x02 \x01(\x05R\n" +
+	"totalCount\x12+\n" +
+	"\x0fnext_page_token\x18\x03 \x01(\tH\x00R\rnextPageToken\x88\x01\x01B\x12\n" +
+	"\x10_next_page_token\"\xa4\x01\n" +
+	"\x1dStoreProductWithGlobalProduct\x12?\n" +
+	"\rstore_product\x18\x01 \x01(\v2\x1a.inventory.v1.StoreProductR\fstoreProduct\x12B\n" +
+	"\x0eglobal_product\x18\x02 \x01(\v2\x1b.inventory.v1.GlobalProductR\rglobalProduct\"\xa5\x02\n" +
 	"\x19FindGlobalProductsRequest\x12\x1a\n" +
 	"\x06ref_id\x18\x01 \x01(\tH\x00R\x05refId\x88\x01\x01\x126\n" +
 	"\n" +

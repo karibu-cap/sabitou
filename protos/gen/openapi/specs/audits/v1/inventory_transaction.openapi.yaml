@@ -22,19 +22,19 @@ components:
           title: transaction_type
           $ref: '#/components/schemas/audits.v1.TransactionType'
         quantityChange:
-          type: number
+          type: integer
           title: quantity_change
-          format: double
+          format: int32
           description: Positive = increase, negative = decrease
         quantityBefore:
-          type: number
+          type: integer
           title: quantity_before
-          format: double
+          format: int32
           description: Stock level before
         quantityAfter:
-          type: number
+          type: integer
           title: quantity_after
-          format: double
+          format: int32
           description: Stock level after
         relatedDocumentType:
           type: string

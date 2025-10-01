@@ -125,9 +125,9 @@ type InventoryTransaction struct {
 	StoreId             string                 `protobuf:"bytes,2,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
 	ProductId           string                 `protobuf:"bytes,3,opt,name=product_id,json=productId,proto3" json:"product_id,omitempty"`
 	TransactionType     TransactionType        `protobuf:"varint,4,opt,name=transaction_type,json=transactionType,proto3,enum=audits.v1.TransactionType" json:"transaction_type,omitempty"`
-	QuantityChange      float64                `protobuf:"fixed64,5,opt,name=quantity_change,json=quantityChange,proto3" json:"quantity_change,omitempty"`                // Positive = increase, negative = decrease
-	QuantityBefore      float64                `protobuf:"fixed64,6,opt,name=quantity_before,json=quantityBefore,proto3" json:"quantity_before,omitempty"`                // Stock level before
-	QuantityAfter       float64                `protobuf:"fixed64,7,opt,name=quantity_after,json=quantityAfter,proto3" json:"quantity_after,omitempty"`                   // Stock level after
+	QuantityChange      int32                  `protobuf:"varint,5,opt,name=quantity_change,json=quantityChange,proto3" json:"quantity_change,omitempty"`                 // Positive = increase, negative = decrease
+	QuantityBefore      int32                  `protobuf:"varint,6,opt,name=quantity_before,json=quantityBefore,proto3" json:"quantity_before,omitempty"`                 // Stock level before
+	QuantityAfter       int32                  `protobuf:"varint,7,opt,name=quantity_after,json=quantityAfter,proto3" json:"quantity_after,omitempty"`                    // Stock level after
 	RelatedDocumentType string                 `protobuf:"bytes,8,opt,name=related_document_type,json=relatedDocumentType,proto3" json:"related_document_type,omitempty"` // "DeliveryNote", "ReceivingNote", etc.
 	RelatedDocumentId   string                 `protobuf:"bytes,9,opt,name=related_document_id,json=relatedDocumentId,proto3" json:"related_document_id,omitempty"`       // ID of the document
 	PerformedByUserId   string                 `protobuf:"bytes,10,opt,name=performed_by_user_id,json=performedByUserId,proto3" json:"performed_by_user_id,omitempty"`
@@ -196,21 +196,21 @@ func (x *InventoryTransaction) GetTransactionType() TransactionType {
 	return TransactionType_TXN_TYPE_UNSPECIFIED
 }
 
-func (x *InventoryTransaction) GetQuantityChange() float64 {
+func (x *InventoryTransaction) GetQuantityChange() int32 {
 	if x != nil {
 		return x.QuantityChange
 	}
 	return 0
 }
 
-func (x *InventoryTransaction) GetQuantityBefore() float64 {
+func (x *InventoryTransaction) GetQuantityBefore() int32 {
 	if x != nil {
 		return x.QuantityBefore
 	}
 	return 0
 }
 
-func (x *InventoryTransaction) GetQuantityAfter() float64 {
+func (x *InventoryTransaction) GetQuantityAfter() int32 {
 	if x != nil {
 		return x.QuantityAfter
 	}
@@ -271,9 +271,9 @@ const file_audits_v1_inventory_transaction_proto_rawDesc = "" +
 	"\n" +
 	"product_id\x18\x03 \x01(\tR\tproductId\x12E\n" +
 	"\x10transaction_type\x18\x04 \x01(\x0e2\x1a.audits.v1.TransactionTypeR\x0ftransactionType\x12'\n" +
-	"\x0fquantity_change\x18\x05 \x01(\x01R\x0equantityChange\x12'\n" +
-	"\x0fquantity_before\x18\x06 \x01(\x01R\x0equantityBefore\x12%\n" +
-	"\x0equantity_after\x18\a \x01(\x01R\rquantityAfter\x122\n" +
+	"\x0fquantity_change\x18\x05 \x01(\x05R\x0equantityChange\x12'\n" +
+	"\x0fquantity_before\x18\x06 \x01(\x05R\x0equantityBefore\x12%\n" +
+	"\x0equantity_after\x18\a \x01(\x05R\rquantityAfter\x122\n" +
 	"\x15related_document_type\x18\b \x01(\tR\x13relatedDocumentType\x12.\n" +
 	"\x13related_document_id\x18\t \x01(\tR\x11relatedDocumentId\x12/\n" +
 	"\x14performed_by_user_id\x18\n" +

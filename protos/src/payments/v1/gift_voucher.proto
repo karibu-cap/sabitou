@@ -22,8 +22,8 @@ import "google/protobuf/timestamp.proto";
 message GiftVoucher {
   string document_id = 1 [(buf.validate.field).required = true]; // "GV-2025-001"
   string voucher_code = 2; // "GIFT-XMAS-12345" - what customer uses
-  int64 initial_value = 3; // Original amount
-  int64 remaining_value = 4; // What's left
+  double initial_value = 3; // Original amount
+  double remaining_value = 4; // What's left
   string currency = 5;
   string issued_to_customer_id = 6; // Optional - can be transferred
   string issued_by_user_id = 7;
@@ -57,33 +57,22 @@ message VoucherTransaction {
   string voucher_id = 2; // Which voucher used
   string related_invoice_id = 3; // Which purchase
   string related_receipt_id = 4; // Or cash receipt
-  int64 amount_used = 5;
-  int64 remaining_after = 6;
+  double amount_used = 5;
+  double remaining_after = 6;
   google.protobuf.Timestamp used_at = 7;
   string used_by_user_id = 8;
 }
 
 service GiftVoucherService {
-  // Create a gift voucher (manual or from change shortage)
-  rpc CreateGiftVoucher(CreateGiftVoucherRequest) returns (CreateGiftVoucherResponse);
 
   // Validate voucher before use
   rpc ValidateVoucher(ValidateVoucherRequest) returns (ValidateVoucherResponse);
-
-  // Use voucher in transaction (called by PointOfSaleService)
-  rpc UseVoucher(UseVoucherRequest) returns (UseVoucherResponse);
 
   // Get voucher details
   rpc GetVoucher(GetVoucherRequest) returns (GetVoucherResponse);
 
   // List vouchers with filtering
   rpc ListVouchers(ListVouchersRequest) returns (ListVouchersResponse);
-
-  // Cancel a voucher
-  rpc CancelVoucher(CancelVoucherRequest) returns (CancelVoucherResponse);
-
-  // Get voucher usage history
-  rpc GetVoucherHistory(GetVoucherHistoryRequest) returns (GetVoucherHistoryResponse);
 }
 
 message ValidateVoucherRequest {
@@ -93,43 +82,10 @@ message ValidateVoucherRequest {
 message ValidateVoucherResponse {
   bool is_valid = 1;
   string voucher_id = 2;
-  int64 remaining_value = 3;
+  double remaining_value = 3;
   google.protobuf.Timestamp valid_until = 4;
   VoucherStatus status = 5;
   string message = 6; // Error message if invalid
-}
-
-message CreateGiftVoucherRequest {
-  int64 initial_value = 1;
-  string currency = 2;
-  string issued_to_customer_id = 3; // Optional
-  string issued_by_user_id = 4;
-  google.protobuf.Timestamp valid_until = 5;
-  string related_invoice_id = 6; // If issued from change shortage
-  string notes = 7;
-}
-
-message CreateGiftVoucherResponse {
-  string voucher_id = 1;
-  GiftVoucher voucher = 2;
-  string voucher_code = 3; // Print this - barcode compatible
-  string message = 4;
-}
-
-message UseVoucherRequest {
-  string voucher_code = 1;
-  int64 amount_to_use = 2;
-  string related_receipt_id = 3; // Or related_invoice_id
-  string used_by_user_id = 4;
-}
-
-message UseVoucherResponse {
-  string transaction_id = 1;
-  VoucherTransaction transaction = 2;
-  GiftVoucher updated_voucher = 3;
-  int64 remaining_value = 4;
-  bool fully_used = 5;
-  string message = 6;
 }
 
 message GetVoucherRequest {
@@ -156,27 +112,6 @@ message ListVouchersRequest {
 message ListVouchersResponse {
   repeated GiftVoucher vouchers = 1;
   int32 total_count = 2;
-  int64 total_value = 3; // Sum of remaining values
+  double total_value = 3; // Sum of remaining values
 }
 
-message CancelVoucherRequest {
-  string voucher_id = 1;
-  string reason = 2;
-  string cancelled_by_user_id = 3;
-}
-
-message CancelVoucherResponse {
-  bool success = 1;
-  string message = 2;
-}
-
-message GetVoucherHistoryRequest {
-  string voucher_id = 1;
-}
-
-message GetVoucherHistoryResponse {
-  GiftVoucher voucher = 1;
-  repeated VoucherTransaction transactions = 2;
-  int64 total_used = 3;
-  int32 usage_count = 4;
-}

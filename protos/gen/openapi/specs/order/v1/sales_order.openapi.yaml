@@ -365,25 +365,19 @@ components:
             $ref: '#/components/schemas/financial.v1.InvoiceLineItem'
           title: items
         subtotal:
-          type:
-            - integer
-            - string
+          type: number
           title: subtotal
-          format: int64
+          format: double
           description: Before tax
         taxAmount:
-          type:
-            - integer
-            - string
+          type: number
           title: tax_amount
-          format: int64
+          format: double
           description: VAT/sales tax
         totalAmount:
-          type:
-            - integer
-            - string
+          type: number
           title: total_amount
-          format: int64
+          format: double
           description: Final amount due
         currency:
           type: string
@@ -449,21 +443,17 @@ components:
           type: string
           title: product_id
         quantity:
-          type: number
+          type: integer
           title: quantity
-          format: double
+          format: int32
         unitPrice:
-          type:
-            - integer
-            - string
+          type: number
           title: unit_price
-          format: int64
+          format: double
         subtotal:
-          type:
-            - integer
-            - string
+          type: number
           title: subtotal
-          format: int64
+          format: double
           description: quantity * unit_price
         taxRate:
           type: number
@@ -471,17 +461,13 @@ components:
           format: double
           description: 0.20 for 20% VAT
         taxAmount:
-          type:
-            - integer
-            - string
+          type: number
           title: tax_amount
-          format: int64
+          format: double
         total:
-          type:
-            - integer
-            - string
+          type: number
           title: total
-          format: int64
+          format: double
           description: subtotal + tax_amount
         batchId:
           type: string
@@ -970,11 +956,9 @@ components:
           title: total_count
           format: int32
         totalValue:
-          type:
-            - integer
-            - string
+          type: number
           title: total_value
-          format: int64
+          format: double
           description: Sum of all orders
       title: ListSalesOrdersResponse
       additionalProperties: false
@@ -995,18 +979,14 @@ components:
           description: Product name
           $ref: '#/components/schemas/inventory.v1.Internationalized'
         unitPrice:
-          type:
-            - integer
-            - string
+          type: number
           title: unit_price
-          format: int64
+          format: double
           description: Price per unit (in smallest currency)
         total:
-          type:
-            - integer
-            - string
+          type: number
           title: total
-          format: int64
+          format: double
           description: quantity * unit_price
         notes:
           type: string
@@ -1173,11 +1153,9 @@ components:
           title: payee_id
           description: Who receives
         amount:
-          type:
-            - integer
-            - string
+          type: number
           title: amount
-          format: int64
+          format: double
           description: Amount in smallest currency unit
         currency:
           type: string
@@ -1228,11 +1206,11 @@ components:
       enum:
         - PAYMENT_METHOD_UNSPECIFIED
         - PAYMENT_METHOD_CASH
-        - PAYMENT_METHOD_CHECK
-        - PAYMENT_METHOD_BANK_TRANSFER
         - PAYMENT_METHOD_CREDIT_CARD
         - PAYMENT_METHOD_MOBILE_MONEY
-        - PAYMENT_METHOD_STORE_CREDIT
+        - PAYMENT_METHOD_VOUCHER
+        - PAYMENT_METHOD_ORANGE_MONEY
+        - PAYMENT_METHOD_MTN_MONEY
     payments.v1.PaymentStatus:
       type: string
       title: PaymentStatus
@@ -1241,7 +1219,6 @@ components:
         - PAYMENT_STATUS_PENDING
         - PAYMENT_STATUS_COMPLETED
         - PAYMENT_STATUS_FAILED
-        - PAYMENT_STATUS_REFUNDED
 security: []
 tags:
   - name: order.v1.SalesOrderService

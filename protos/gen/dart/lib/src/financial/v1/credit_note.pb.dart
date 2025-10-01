@@ -12,7 +12,6 @@
 
 import 'dart:core' as $core;
 
-import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import '../../google/protobuf/timestamp.pb.dart' as $1;
@@ -53,7 +52,7 @@ class CreditNote extends $pb.GeneratedMessage {
     $core.String? recipientId,
     CreditNoteStatus? status,
     $core.Iterable<$0.InvoiceLineItem>? items,
-    $fixnum.Int64? totalAmount,
+    $core.double? totalAmount,
     $core.String? currency,
     $core.bool? hasInventoryImpact,
     $core.String? relatedReturnNoteId,
@@ -113,7 +112,8 @@ class CreditNote extends $pb.GeneratedMessage {
     ..pc<$0.InvoiceLineItem>(
         7, _omitFieldNames ? '' : 'items', $pb.PbFieldType.PM,
         subBuilder: $0.InvoiceLineItem.create)
-    ..aInt64(8, _omitFieldNames ? '' : 'totalAmount')
+    ..a<$core.double>(
+        8, _omitFieldNames ? '' : 'totalAmount', $pb.PbFieldType.OD)
     ..aOS(9, _omitFieldNames ? '' : 'currency')
     ..aOB(10, _omitFieldNames ? '' : 'hasInventoryImpact')
     ..aOS(11, _omitFieldNames ? '' : 'relatedReturnNoteId')
@@ -201,9 +201,9 @@ class CreditNote extends $pb.GeneratedMessage {
   $pb.PbList<$0.InvoiceLineItem> get items => $_getList(6);
 
   @$pb.TagNumber(8)
-  $fixnum.Int64 get totalAmount => $_getI64(7);
+  $core.double get totalAmount => $_getN(7);
   @$pb.TagNumber(8)
-  set totalAmount($fixnum.Int64 value) => $_setInt64(7, value);
+  set totalAmount($core.double value) => $_setDouble(7, value);
   @$pb.TagNumber(8)
   $core.bool hasTotalAmount() => $_has(7);
   @$pb.TagNumber(8)

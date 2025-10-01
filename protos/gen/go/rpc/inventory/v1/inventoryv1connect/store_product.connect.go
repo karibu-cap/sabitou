@@ -91,7 +91,7 @@ type StoreProductServiceClient interface {
 	// Only store products that are not in any orders can be deleted.
 	DeleteStoreProduct(context.Context, *connect.Request[v1.DeleteStoreProductRequest]) (*connect.Response[v1.DeleteStoreProductResponse], error)
 	// Finds products by name.
-	FindStoreProducts(context.Context, *connect.Request[v1.FindStoreProductsRequest]) (*connect.Response[v1.FindStoreProductsResponse], error)
+	FindProducts(context.Context, *connect.Request[v1.FindProductsRequest]) (*connect.Response[v1.FindProductsResponse], error)
 	// Streams all products for a store for real-time updates.
 	StreamStoreProducts(context.Context, *connect.Request[v1.StreamStoreProductsRequest]) (*connect.ServerStreamForClient[v1.StreamStoreProductsResponse], error)
 	// Streams all global products for real-time updates.
@@ -159,10 +159,10 @@ func NewStoreProductServiceClient(httpClient connect.HTTPClient, baseURL string,
 			connect.WithSchema(storeProductServiceMethods.ByName("DeleteStoreProduct")),
 			connect.WithClientOptions(opts...),
 		),
-		findStoreProducts: connect.NewClient[v1.FindStoreProductsRequest, v1.FindStoreProductsResponse](
+		findProducts: connect.NewClient[v1.FindProductsRequest, v1.FindProductsResponse](
 			httpClient,
-			baseURL+StoreProductServiceFindStoreProductsProcedure,
-			connect.WithSchema(storeProductServiceMethods.ByName("FindStoreProducts")),
+			baseURL+StoreProductServiceFindProductsProcedure,
+			connect.WithSchema(storeProductServiceMethods.ByName("FindProducts")),
 			connect.WithClientOptions(opts...),
 		),
 		streamStoreProducts: connect.NewClient[v1.StreamStoreProductsRequest, v1.StreamStoreProductsResponse](
@@ -242,9 +242,9 @@ func (c *storeProductServiceClient) DeleteStoreProduct(ctx context.Context, req 
 	return c.deleteStoreProduct.CallUnary(ctx, req)
 }
 
-// FindStoreProducts calls inventory.v1.StoreProductService.FindStoreProducts.
-func (c *storeProductServiceClient) FindStoreProducts(ctx context.Context, req *connect.Request[v1.FindStoreProductsRequest]) (*connect.Response[v1.FindStoreProductsResponse], error) {
-	return c.findStoreProducts.CallUnary(ctx, req)
+// FindProducts calls inventory.v1.StoreProductService.FindProducts.
+func (c *storeProductServiceClient) FindProducts(ctx context.Context, req *connect.Request[v1.FindProductsRequest]) (*connect.Response[v1.FindProductsResponse], error) {
+	return c.findProducts.CallUnary(ctx, req)
 }
 
 // StreamStoreProducts calls inventory.v1.StoreProductService.StreamStoreProducts.
@@ -282,7 +282,7 @@ type StoreProductServiceHandler interface {
 	// Only store products that are not in any orders can be deleted.
 	DeleteStoreProduct(context.Context, *connect.Request[v1.DeleteStoreProductRequest]) (*connect.Response[v1.DeleteStoreProductResponse], error)
 	// Finds products by name.
-	FindStoreProducts(context.Context, *connect.Request[v1.FindStoreProductsRequest]) (*connect.Response[v1.FindStoreProductsResponse], error)
+	FindProducts(context.Context, *connect.Request[v1.FindProductsRequest]) (*connect.Response[v1.FindProductsResponse], error)
 	// Streams all products for a store for real-time updates.
 	StreamStoreProducts(context.Context, *connect.Request[v1.StreamStoreProductsRequest], *connect.ServerStream[v1.StreamStoreProductsResponse]) error
 	// Streams all global products for real-time updates.
@@ -346,10 +346,10 @@ func NewStoreProductServiceHandler(svc StoreProductServiceHandler, opts ...conne
 		connect.WithSchema(storeProductServiceMethods.ByName("DeleteStoreProduct")),
 		connect.WithHandlerOptions(opts...),
 	)
-	storeProductServiceFindStoreProductsHandler := connect.NewUnaryHandler(
-		StoreProductServiceFindStoreProductsProcedure,
-		svc.FindStoreProducts,
-		connect.WithSchema(storeProductServiceMethods.ByName("FindStoreProducts")),
+	storeProductServiceFindProductsHandler := connect.NewUnaryHandler(
+		StoreProductServiceFindProductsProcedure,
+		svc.FindProducts,
+		connect.WithSchema(storeProductServiceMethods.ByName("FindProducts")),
 		connect.WithHandlerOptions(opts...),
 	)
 	storeProductServiceStreamStoreProductsHandler := connect.NewServerStreamHandler(
@@ -437,8 +437,8 @@ func (UnimplementedStoreProductServiceHandler) DeleteStoreProduct(context.Contex
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("inventory.v1.StoreProductService.DeleteStoreProduct is not implemented"))
 }
 
-func (UnimplementedStoreProductServiceHandler) FindStoreProducts(context.Context, *connect.Request[v1.FindStoreProductsRequest]) (*connect.Response[v1.FindStoreProductsResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("inventory.v1.StoreProductService.FindStoreProducts is not implemented"))
+func (UnimplementedStoreProductServiceHandler) FindProducts(context.Context, *connect.Request[v1.FindProductsRequest]) (*connect.Response[v1.FindProductsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("inventory.v1.StoreProductService.FindProducts is not implemented"))
 }
 
 func (UnimplementedStoreProductServiceHandler) StreamStoreProducts(context.Context, *connect.Request[v1.StreamStoreProductsRequest], *connect.ServerStream[v1.StreamStoreProductsResponse]) error {

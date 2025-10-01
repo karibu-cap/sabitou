@@ -538,7 +538,7 @@ const ListReturnsResponse$json = {
       '10': 'returns'
     },
     {'1': 'total_count', '3': 2, '4': 1, '5': 5, '10': 'totalCount'},
-    {'1': 'total_value', '3': 3, '4': 1, '5': 3, '10': 'totalValue'},
+    {'1': 'total_value', '3': 3, '4': 1, '5': 1, '10': 'totalValue'},
   ],
 };
 
@@ -546,7 +546,7 @@ const ListReturnsResponse$json = {
 final $typed_data.Uint8List listReturnsResponseDescriptor = $convert.base64Decode(
     'ChNMaXN0UmV0dXJuc1Jlc3BvbnNlEjEKB3JldHVybnMYASADKAsyFy5sb2dpc3RpYy52MS5SZX'
     'R1cm5Ob3RlUgdyZXR1cm5zEh8KC3RvdGFsX2NvdW50GAIgASgFUgp0b3RhbENvdW50Eh8KC3Rv'
-    'dGFsX3ZhbHVlGAMgASgDUgp0b3RhbFZhbHVl');
+    'dGFsX3ZhbHVlGAMgASgBUgp0b3RhbFZhbHVl');
 
 const $core.Map<$core.String, $core.dynamic> ReturnServiceBase$json = {
   '1': 'ReturnService',

@@ -23,23 +23,54 @@ class PaymentStatus extends $pb.ProtobufEnum {
       PaymentStatus._(2, _omitEnumNames ? '' : 'PAYMENT_STATUS_COMPLETED');
   static const PaymentStatus PAYMENT_STATUS_FAILED =
       PaymentStatus._(3, _omitEnumNames ? '' : 'PAYMENT_STATUS_FAILED');
-  static const PaymentStatus PAYMENT_STATUS_REFUNDED =
-      PaymentStatus._(4, _omitEnumNames ? '' : 'PAYMENT_STATUS_REFUNDED');
 
   static const $core.List<PaymentStatus> values = <PaymentStatus>[
     PAYMENT_STATUS_UNSPECIFIED,
     PAYMENT_STATUS_PENDING,
     PAYMENT_STATUS_COMPLETED,
     PAYMENT_STATUS_FAILED,
-    PAYMENT_STATUS_REFUNDED,
   ];
 
   static final $core.List<PaymentStatus?> _byValue =
-      $pb.ProtobufEnum.$_initByValueList(values, 4);
+      $pb.ProtobufEnum.$_initByValueList(values, 3);
   static PaymentStatus? valueOf($core.int value) =>
       value < 0 || value >= _byValue.length ? null : _byValue[value];
 
   const PaymentStatus._(super.value, super.name);
+}
+
+class PaymentMethod extends $pb.ProtobufEnum {
+  static const PaymentMethod PAYMENT_METHOD_UNSPECIFIED =
+      PaymentMethod._(0, _omitEnumNames ? '' : 'PAYMENT_METHOD_UNSPECIFIED');
+  static const PaymentMethod PAYMENT_METHOD_CASH =
+      PaymentMethod._(1, _omitEnumNames ? '' : 'PAYMENT_METHOD_CASH');
+  static const PaymentMethod PAYMENT_METHOD_CREDIT_CARD =
+      PaymentMethod._(2, _omitEnumNames ? '' : 'PAYMENT_METHOD_CREDIT_CARD');
+  static const PaymentMethod PAYMENT_METHOD_MOBILE_MONEY =
+      PaymentMethod._(3, _omitEnumNames ? '' : 'PAYMENT_METHOD_MOBILE_MONEY');
+  static const PaymentMethod PAYMENT_METHOD_VOUCHER =
+      PaymentMethod._(4, _omitEnumNames ? '' : 'PAYMENT_METHOD_VOUCHER');
+  static const PaymentMethod PAYMENT_METHOD_ORANGE_MONEY =
+      PaymentMethod._(5, _omitEnumNames ? '' : 'PAYMENT_METHOD_ORANGE_MONEY');
+  static const PaymentMethod PAYMENT_METHOD_MTN_MONEY =
+      PaymentMethod._(6, _omitEnumNames ? '' : 'PAYMENT_METHOD_MTN_MONEY');
+
+  static const $core.List<PaymentMethod> values = <PaymentMethod>[
+    PAYMENT_METHOD_UNSPECIFIED,
+    PAYMENT_METHOD_CASH,
+    PAYMENT_METHOD_CREDIT_CARD,
+    PAYMENT_METHOD_MOBILE_MONEY,
+    PAYMENT_METHOD_VOUCHER,
+    PAYMENT_METHOD_ORANGE_MONEY,
+    PAYMENT_METHOD_MTN_MONEY,
+  ];
+
+  static final $core.List<PaymentMethod?> _byValue =
+      $pb.ProtobufEnum.$_initByValueList(values, 6);
+  static PaymentMethod? valueOf($core.int value) =>
+      value < 0 || value >= _byValue.length ? null : _byValue[value];
+
+  const PaymentMethod._(super.value, super.name);
 }
 
 const $core.bool _omitEnumNames =

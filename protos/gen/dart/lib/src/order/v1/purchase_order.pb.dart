@@ -13,7 +13,6 @@
 import 'dart:async' as $async;
 import 'dart:core' as $core;
 
-import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import '../../financial/v1/invoice.pb.dart' as $3;
@@ -49,7 +48,7 @@ class PurchaseOrder extends $pb.GeneratedMessage {
     $core.String? buyerIdId,
     PurchaseOrderStatus? status,
     $core.Iterable<$0.OrderLineItem>? items,
-    $fixnum.Int64? totalAmount,
+    $core.double? totalAmount,
     $core.String? currency,
     $core.String? createdByUserId,
     $1.Timestamp? createdAt,
@@ -96,7 +95,8 @@ class PurchaseOrder extends $pb.GeneratedMessage {
     ..pc<$0.OrderLineItem>(
         6, _omitFieldNames ? '' : 'items', $pb.PbFieldType.PM,
         subBuilder: $0.OrderLineItem.create)
-    ..aInt64(7, _omitFieldNames ? '' : 'totalAmount')
+    ..a<$core.double>(
+        7, _omitFieldNames ? '' : 'totalAmount', $pb.PbFieldType.OD)
     ..aOS(8, _omitFieldNames ? '' : 'currency')
     ..aOS(9, _omitFieldNames ? '' : 'createdByUserId')
     ..aOM<$1.Timestamp>(10, _omitFieldNames ? '' : 'createdAt',
@@ -167,9 +167,9 @@ class PurchaseOrder extends $pb.GeneratedMessage {
   $pb.PbList<$0.OrderLineItem> get items => $_getList(4);
 
   @$pb.TagNumber(7)
-  $fixnum.Int64 get totalAmount => $_getI64(5);
+  $core.double get totalAmount => $_getN(5);
   @$pb.TagNumber(7)
-  set totalAmount($fixnum.Int64 value) => $_setInt64(5, value);
+  set totalAmount($core.double value) => $_setDouble(5, value);
   @$pb.TagNumber(7)
   $core.bool hasTotalAmount() => $_has(5);
   @$pb.TagNumber(7)
@@ -791,7 +791,7 @@ class ListPurchaseOrdersResponse extends $pb.GeneratedMessage {
   factory ListPurchaseOrdersResponse({
     $core.Iterable<PurchaseOrder>? purchaseOrders,
     $core.int? totalCount,
-    $fixnum.Int64? totalValue,
+    $core.double? totalValue,
   }) {
     final result = create();
     if (purchaseOrders != null) result.purchaseOrders.addAll(purchaseOrders);
@@ -817,7 +817,8 @@ class ListPurchaseOrdersResponse extends $pb.GeneratedMessage {
         1, _omitFieldNames ? '' : 'purchaseOrders', $pb.PbFieldType.PM,
         subBuilder: PurchaseOrder.create)
     ..a<$core.int>(2, _omitFieldNames ? '' : 'totalCount', $pb.PbFieldType.O3)
-    ..aInt64(3, _omitFieldNames ? '' : 'totalValue')
+    ..a<$core.double>(
+        3, _omitFieldNames ? '' : 'totalValue', $pb.PbFieldType.OD)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -857,9 +858,9 @@ class ListPurchaseOrdersResponse extends $pb.GeneratedMessage {
   void clearTotalCount() => $_clearField(2);
 
   @$pb.TagNumber(3)
-  $fixnum.Int64 get totalValue => $_getI64(2);
+  $core.double get totalValue => $_getN(2);
   @$pb.TagNumber(3)
-  set totalValue($fixnum.Int64 value) => $_setInt64(2, value);
+  set totalValue($core.double value) => $_setDouble(2, value);
   @$pb.TagNumber(3)
   $core.bool hasTotalValue() => $_has(2);
   @$pb.TagNumber(3)
@@ -1492,10 +1493,10 @@ class SuggestedPurchase extends $pb.GeneratedMessage {
   factory SuggestedPurchase({
     $5.StoreProduct? product,
     $core.String? preferredSupplierId,
-    $fixnum.Int64? currentStock,
-    $fixnum.Int64? reorderLevel,
-    $fixnum.Int64? suggestedQuantity,
-    $fixnum.Int64? estimatedCost,
+    $core.int? currentStock,
+    $core.int? reorderLevel,
+    $core.int? suggestedQuantity,
+    $core.int? estimatedCost,
   }) {
     final result = create();
     if (product != null) result.product = product;
@@ -1524,10 +1525,12 @@ class SuggestedPurchase extends $pb.GeneratedMessage {
     ..aOM<$5.StoreProduct>(1, _omitFieldNames ? '' : 'product',
         subBuilder: $5.StoreProduct.create)
     ..aOS(2, _omitFieldNames ? '' : 'preferredSupplierId')
-    ..aInt64(3, _omitFieldNames ? '' : 'currentStock')
-    ..aInt64(4, _omitFieldNames ? '' : 'reorderLevel')
-    ..aInt64(5, _omitFieldNames ? '' : 'suggestedQuantity')
-    ..aInt64(6, _omitFieldNames ? '' : 'estimatedCost')
+    ..a<$core.int>(3, _omitFieldNames ? '' : 'currentStock', $pb.PbFieldType.O3)
+    ..a<$core.int>(4, _omitFieldNames ? '' : 'reorderLevel', $pb.PbFieldType.O3)
+    ..a<$core.int>(
+        5, _omitFieldNames ? '' : 'suggestedQuantity', $pb.PbFieldType.O3)
+    ..a<$core.int>(
+        6, _omitFieldNames ? '' : 'estimatedCost', $pb.PbFieldType.O3)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -1572,36 +1575,36 @@ class SuggestedPurchase extends $pb.GeneratedMessage {
   void clearPreferredSupplierId() => $_clearField(2);
 
   @$pb.TagNumber(3)
-  $fixnum.Int64 get currentStock => $_getI64(2);
+  $core.int get currentStock => $_getIZ(2);
   @$pb.TagNumber(3)
-  set currentStock($fixnum.Int64 value) => $_setInt64(2, value);
+  set currentStock($core.int value) => $_setSignedInt32(2, value);
   @$pb.TagNumber(3)
   $core.bool hasCurrentStock() => $_has(2);
   @$pb.TagNumber(3)
   void clearCurrentStock() => $_clearField(3);
 
   @$pb.TagNumber(4)
-  $fixnum.Int64 get reorderLevel => $_getI64(3);
+  $core.int get reorderLevel => $_getIZ(3);
   @$pb.TagNumber(4)
-  set reorderLevel($fixnum.Int64 value) => $_setInt64(3, value);
+  set reorderLevel($core.int value) => $_setSignedInt32(3, value);
   @$pb.TagNumber(4)
   $core.bool hasReorderLevel() => $_has(3);
   @$pb.TagNumber(4)
   void clearReorderLevel() => $_clearField(4);
 
   @$pb.TagNumber(5)
-  $fixnum.Int64 get suggestedQuantity => $_getI64(4);
+  $core.int get suggestedQuantity => $_getIZ(4);
   @$pb.TagNumber(5)
-  set suggestedQuantity($fixnum.Int64 value) => $_setInt64(4, value);
+  set suggestedQuantity($core.int value) => $_setSignedInt32(4, value);
   @$pb.TagNumber(5)
   $core.bool hasSuggestedQuantity() => $_has(4);
   @$pb.TagNumber(5)
   void clearSuggestedQuantity() => $_clearField(5);
 
   @$pb.TagNumber(6)
-  $fixnum.Int64 get estimatedCost => $_getI64(5);
+  $core.int get estimatedCost => $_getIZ(5);
   @$pb.TagNumber(6)
-  set estimatedCost($fixnum.Int64 value) => $_setInt64(5, value);
+  set estimatedCost($core.int value) => $_setSignedInt32(5, value);
   @$pb.TagNumber(6)
   $core.bool hasEstimatedCost() => $_has(5);
   @$pb.TagNumber(6)

@@ -4,6 +4,7 @@
 //
 
 import "package:connectrpc/connect.dart" as connect;
+
 import "store_product.pb.dart" as inventoryv1store_product;
 
 abstract final class StoreProductService {
@@ -76,11 +77,11 @@ abstract final class StoreProductService {
   );
 
   /// Finds products by name.
-  static const findStoreProducts = connect.Spec(
-    '/$name/FindStoreProducts',
+  static const findProducts = connect.Spec(
+    '/$name/FindProducts',
     connect.StreamType.unary,
-    inventoryv1store_product.FindStoreProductsRequest.new,
-    inventoryv1store_product.FindStoreProductsResponse.new,
+    inventoryv1store_product.FindProductsRequest.new,
+    inventoryv1store_product.FindProductsResponse.new,
   );
 
   /// Streams all products for a store for real-time updates.

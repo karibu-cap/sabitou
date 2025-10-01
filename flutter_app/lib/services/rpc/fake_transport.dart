@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:clock/clock.dart';
 import 'package:collection/collection.dart';
-import 'package:fixnum/fixnum.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../../tmp/fake_data.dart';
@@ -122,28 +121,7 @@ final _fakeTransport =
                 ..status = SupplierStatus.SUPPLIER_STATUS_ACTIVE,
             ]);
         })
-        // StoreProductService fakes (replaced ProductService)
-        .unary(StoreProductService.findStoreProducts, (req, _) async {
-          final request = req;
-
-          return FindStoreProductsResponse(
-            products: [
-              StoreProduct()
-                ..refId = 'product_1'
-                ..globalProductId = 'global_product_1'
-                ..storeId = request.storeId,
-              StoreProduct()
-                ..refId = 'product_2'
-                ..globalProductId = 'global_product_2'
-                ..storeId = request.storeId,
-              StoreProduct()
-                ..refId = 'product_3'
-                ..globalProductId = 'global_product_3'
-                ..storeId = request.storeId,
-            ],
-          );
-        })
-        .unary(StoreProductService.getStoreProduct, (req, _) async {
+        .unary(StoreProductService.getProduct, (req, _) async {
           final storeProduct =
               (_fakeData[CollectionName.storeProducts] as List<StoreProduct>)
                   .firstWhere((gp) => gp.refId == req.storeProductId);
@@ -303,17 +281,83 @@ final _fakeTransport =
                     .firstWhereOrNull((bm) => bm.user.refId == req.userId),
           );
         })
-        .unary(StoreProductService.findStoreProducts, (req, __) async {
-          return FindStoreProductsResponse(
-            products:
-                (_fakeData[CollectionName.storeProducts] as List<StoreProduct>)
-                    .where((bp) => bp.storeId == req.storeId)
-                    .toList(),
+        .unary(StoreProductService.findProducts, (req, __) async {
+          final storeProducts =
+              (_fakeData[CollectionName.storeProducts] as List<StoreProduct>)
+                  .where((bp) => bp.storeId == req.storeId)
+                  .toList();
+          final globalProductIds = storeProducts
+              .map((bp) => bp.globalProductId)
+              .toList();
+
+          final globalProducts =
+              (_fakeData[CollectionName.globalProducts] as List<GlobalProduct>)
+                  .where((gp) => globalProductIds.contains(gp.refId))
+                  .toList();
+
+          final storeProductWithGlobalProducts = storeProducts
+              .map(
+                (bp) => StoreProductWithGlobalProduct()
+                  ..storeProduct = bp
+                  ..globalProduct =
+                      globalProducts.firstWhereOrNull(
+                        (gp) => gp.refId == bp.globalProductId,
+                      ) ??
+                      GlobalProduct(),
+              )
+              .toSet();
+
+          return FindProductsResponse(products: storeProductWithGlobalProducts);
+        })
+        .unary(StoreProductService.searchProducts, (req, __) async {
+          final storeProducts =
+              (_fakeData[CollectionName.storeProducts] as List<StoreProduct>)
+                  .where((bp) => bp.storeId == req.storeId)
+                  .toList();
+          final globalProductIds = storeProducts
+              .map((bp) => bp.globalProductId)
+              .toList();
+
+          final globalProducts =
+              (_fakeData[CollectionName.globalProducts] as List<GlobalProduct>)
+                  .where((gp) => globalProductIds.contains(gp.refId))
+                  .where((gp) {
+                    if (req.searchQuery.isNotEmpty) {
+                      return (gp.name.en.toLowerCase().contains(
+                            req.searchQuery.toLowerCase(),
+                          ) ||
+                          gp.name.fr.toLowerCase().contains(
+                            req.searchQuery.toLowerCase(),
+                          ) ||
+                          gp.refId.toLowerCase().contains(
+                            req.searchQuery.toLowerCase(),
+                          ));
+                    }
+
+                    return true;
+                  })
+                  .toList();
+
+          final storeProductWithGlobalProducts = storeProducts
+              .where(
+                (sp) =>
+                    globalProducts.any((gp) => gp.refId == sp.globalProductId),
+              )
+              .map(
+                (bp) => StoreProductWithGlobalProduct()
+                  ..storeProduct = bp
+                  ..globalProduct = globalProducts.firstWhere(
+                    (gp) => gp.refId == bp.globalProductId,
+                  ),
+              )
+              .toList();
+
+          return SearchProductsResponse(
+            products: storeProductWithGlobalProducts,
+            totalCount: storeProductWithGlobalProducts.length,
           );
         })
         .unary(StoreProductService.findGlobalProducts, (req, __) async {
-          print(req);
-
           return FindGlobalProductsResponse(
             products:
                 (_fakeData[CollectionName.globalProducts]
@@ -489,34 +533,7 @@ final _fakeTransport =
 
           return DeleteStoreProductResponse()..success = true;
         })
-      ..unary(StoreProductService.listStoreProducts, (req, _) async {
-        final request = req;
-
-        return ListStoreProductsResponse(
-          products: [
-            StoreProduct()
-              ..refId = 'sp_1'
-              ..storeId = request.storeId
-              ..globalProductId = 'gp_1'
-              ..salePrice = 10000
-              ..status = ProductStatus.PRODUCT_STATUS_ACTIVE,
-            StoreProduct()
-              ..refId = 'sp_2'
-              ..storeId = request.storeId
-              ..globalProductId = 'gp_2'
-              ..salePrice = 15000
-              ..status = ProductStatus.PRODUCT_STATUS_ACTIVE,
-            StoreProduct()
-              ..refId = 'sp_3'
-              ..storeId = request.storeId
-              ..globalProductId = 'gp_3'
-              ..salePrice = 20000
-              ..status = ProductStatus.PRODUCT_STATUS_ACTIVE,
-          ],
-          totalCount: 3,
-        );
-      })
-      ..unary(StoreProductService.getStoreProduct, (req, _) async {
+      ..unary(StoreProductService.getProduct, (req, _) async {
         final request = req;
 
         return GetStoreProductResponse(
@@ -537,16 +554,16 @@ final _fakeTransport =
             InventoryLevel()
               ..storeProductId = 'sp_1'
               ..storeId = request.storeId
-              ..quantityAvailable = 5.0
-              ..quantityReserved = 0.0
-              ..minThreshold = 10.0
+              ..quantityAvailable = 5
+              ..quantityReserved = 0
+              ..minThreshold = 10
               ..lastUpdated = Timestamp.fromDateTime(clock.now()),
             InventoryLevel()
               ..storeProductId = 'sp_2'
               ..storeId = request.storeId
-              ..quantityAvailable = 8.0
-              ..quantityReserved = 2.0
-              ..minThreshold = 15.0
+              ..quantityAvailable = 8
+              ..quantityReserved = 2
+              ..minThreshold = 15
               ..lastUpdated = Timestamp.fromDateTime(clock.now()),
           ],
           totalCount: 2,
@@ -560,14 +577,14 @@ final _fakeTransport =
             InventoryLevel()
               ..storeProductId = 'sp_3'
               ..storeId = request.storeId
-              ..quantityAvailable = 20.0
-              ..quantityReserved = 0.0
+              ..quantityAvailable = 20
+              ..quantityReserved = 0
               ..batches.add(
                 Batch()
                   ..documentId = 'batch_1'
                   ..productId = 'sp_3'
                   ..warehouseId = request.storeId
-                  ..quantity = 20.0
+                  ..quantity = 20
                   ..expirationDate = Timestamp.fromDateTime(
                     clock.now().add(const Duration(days: 45)),
                   )
@@ -580,7 +597,7 @@ final _fakeTransport =
                   ..documentId = 'batch_2'
                   ..productId = 'sp_3'
                   ..warehouseId = request.storeId
-                  ..quantity = 0.0
+                  ..quantity = 0
                   ..expirationDate = Timestamp.fromDateTime(
                     clock.now().subtract(const Duration(days: 1)),
                   )
@@ -588,7 +605,7 @@ final _fakeTransport =
               )
               ..lastUpdated = Timestamp.fromDateTime(clock.now()),
           ],
-          totalQuantity: 20.0,
+          totalQuantity: 20,
           snapshotDate: Timestamp.fromDateTime(clock.now()),
         );
       })
@@ -600,14 +617,14 @@ final _fakeTransport =
               ..periodEnd = Timestamp.fromDateTime(
                 clock.now().add(const Duration(days: 1)),
               )
-              ..salesAmount = Int64(250000)
+              ..salesAmount = 250000
               ..transactionCount = 8
               ..unitsSold = 50,
           ],
-          totalSalesAmount: Int64(500000),
+          totalSalesAmount: 500000,
           totalTransactions: 15,
           totalUnitsSold: 100,
-          averageTransactionValue: Int64(33333),
+          averageTransactionValue: 33333,
         );
       })
       ..unary(ReportingService.getPurchaseReport, (req, _) async {
@@ -618,11 +635,11 @@ final _fakeTransport =
               ..periodEnd = Timestamp.fromDateTime(
                 clock.now().add(const Duration(days: 1)),
               )
-              ..purchaseAmount = Int64(300000)
+              ..purchaseAmount = 300000
               ..purchaseOrderCount = 5
               ..unitsPurchased = 15,
           ],
-          totalPurchaseAmount: Int64(600000),
+          totalPurchaseAmount: 600000,
           totalPurchaseOrders: 12,
           totalUnitsPurchased: 50,
         );
@@ -649,7 +666,7 @@ final _fakeTransport =
                 ..globalProductId = 'gp_1'
                 ..salePrice = 10000)
               ..productName = 'Product One'
-              ..totalRevenue = Int64(50000)
+              ..totalRevenue = 50000
               ..transactionCount = 5
               ..unitsSold = 10,
             BestSellingProduct()
@@ -658,7 +675,7 @@ final _fakeTransport =
                 ..globalProductId = 'gp_2'
                 ..salePrice = 15000)
               ..productName = 'Product Two'
-              ..totalRevenue = Int64(75000)
+              ..totalRevenue = 75000
               ..transactionCount = 7
               ..unitsSold = 15,
           ],
@@ -673,17 +690,17 @@ final _fakeTransport =
             Invoice()
               ..documentId = 'inv_1'
               ..issueDate = Timestamp.fromDateTime(clock.now())
-              ..totalAmount = Int64(100000),
+              ..totalAmount = 100000,
             Invoice()
               ..documentId = 'inv_2'
               ..issueDate = Timestamp.fromDateTime(
                 clock.now().subtract(const Duration(days: 1)),
               )
-              ..totalAmount = Int64(150000),
+              ..totalAmount = 150000,
           ],
-          totalPurchases: Int64(250000),
-          totalPaid: Int64(200000),
-          outstandingBalance: Int64(50000),
+          totalPurchases: 250000,
+          totalPaid: 200000,
+          outstandingBalance: 50000,
           transactionCount: 2,
           lastPurchaseDate: Timestamp.fromDateTime(clock.now()),
         );
@@ -694,7 +711,7 @@ final _fakeTransport =
             ..refId = req.supplierId
             ..name = 'Test Supplier',
           totalPurchaseOrders: 8,
-          totalPurchaseValue: Int64(250000),
+          totalPurchaseValue: 250000,
           onTimeDeliveries: 6,
           lateDeliveries: 2,
           onTimePercentage: 75.0,
@@ -704,13 +721,13 @@ final _fakeTransport =
       })
       ..unary(ReportingService.getProfitLossReport, (req, _) async {
         return GetProfitLossReportResponse(
-          totalRevenue: Int64(500000),
-          costOfGoodsSold: Int64(300000),
-          grossProfit: Int64(200000),
+          totalRevenue: 500000,
+          costOfGoodsSold: 300000,
+          grossProfit: 200000,
           grossProfitMargin: 0.4,
-          returnsValue: Int64(10000),
-          adjustmentsValue: Int64(5000),
-          netProfit: Int64(175000),
+          returnsValue: 10000,
+          adjustmentsValue: 5000,
+          netProfit: 175000,
         );
       })
       ..unary(ReportingService.getStockAgingReport, (req, _) async {
@@ -722,7 +739,7 @@ final _fakeTransport =
                 ..globalProductId = 'gp_1'
                 ..salePrice = 10000)
               ..quantity = 10.0
-              ..stockValue = Int64(100000)
+              ..stockValue = 100000
               ..lastMovementDate = Timestamp.fromDateTime(
                 clock.now().subtract(const Duration(days: 15)),
               )
@@ -735,7 +752,7 @@ final _fakeTransport =
                 ..globalProductId = 'gp_2'
                 ..salePrice = 15000)
               ..quantity = 5.0
-              ..stockValue = Int64(75000)
+              ..stockValue = 75000
               ..lastMovementDate = Timestamp.fromDateTime(
                 clock.now().subtract(const Duration(days: 30)),
               )
@@ -743,8 +760,8 @@ final _fakeTransport =
               ..movementCategory =
                   StockMovementCategory.STOCK_MOVEMENT_CATEGORY_MEDIUM,
           ],
-          totalStockValue: Int64(175000),
-          slowMovingStockValue: Int64(75000),
+          totalStockValue: 175000,
+          slowMovingStockValue: 75000,
         );
       })
       ..unary(InventoryService.getRecentInventoryTransactions, (req, _) async {
@@ -757,9 +774,9 @@ final _fakeTransport =
               ..storeId = request.storeId
               ..productId = 'sp_1'
               ..transactionType = TransactionType.TXN_TYPE_PURCHASE
-              ..quantityChange = 10.0
-              ..quantityBefore = 0.0
-              ..quantityAfter = 10.0
+              ..quantityChange = 10
+              ..quantityBefore = 0
+              ..quantityAfter = 10
               ..relatedDocumentType = 'Purchase Order'
               ..relatedDocumentId = 'po_1'
               ..performedByUserId = 'user_1'
@@ -772,9 +789,9 @@ final _fakeTransport =
               ..storeId = request.storeId
               ..productId = 'sp_2'
               ..transactionType = TransactionType.TXN_TYPE_SALE
-              ..quantityChange = -5.0
-              ..quantityBefore = 15.0
-              ..quantityAfter = 10.0
+              ..quantityChange = -5
+              ..quantityBefore = 15
+              ..quantityAfter = 10
               ..relatedDocumentType = 'Sales Order'
               ..relatedDocumentId = 'so_1'
               ..performedByUserId = 'user_2'
@@ -845,16 +862,16 @@ final _fakeTransport =
       })
       ..unary(DashboardReportingService.getDashboardReport, (req, _) async {
         return GetDashboardReportResponse(
-          totalSalesAmount: Int64(500000),
+          totalSalesAmount: 500000,
           totalTransactions: 15,
           averageTransactionValue: 33333.33,
           totalUnitsSold: 100,
-          totalRevenue: Int64(450000),
-          netProfit: Int64(150000),
+          totalRevenue: 450000,
+          netProfit: 150000,
           grossProfitMargin: 0.333,
-          totalPurchases: Int64(300000),
+          totalPurchases: 300000,
           totalProducts: 50,
-          totalInventoryValue: Int64(750000),
+          totalInventoryValue: 750000,
           lowStockCount: 5,
           salesAndProfitTrend: [
             TrendDataPoint()
@@ -900,14 +917,14 @@ final _fakeTransport =
               ..movementType = 'IN',
           ],
           salesComparison: SalesComparisonData()
-            ..previousYearTotalSales = Int64(400000)
+            ..previousYearTotalSales = 400000
             ..previousYearTotalTransactions = 12
             ..previousYearAverageTransactionValue = 33333.33,
           financialComparison: FinancialComparisonData()
-            ..previousYearTotalRevenue = Int64(380000)
-            ..previousYearNetProfit = Int64(120000)
+            ..previousYearTotalRevenue = 380000
+            ..previousYearNetProfit = 120000
             ..previousYearGrossProfitMargin = 0.316
-            ..previousYearTotalPurchases = Int64(260000),
+            ..previousYearTotalPurchases = 260000,
           topPerformingProducts: [
             BestSellingProduct()
               ..product = (StoreProduct()
@@ -915,7 +932,7 @@ final _fakeTransport =
                 ..globalProductId = 'gp_1'
                 ..salePrice = 10000)
               ..productName = 'Product One'
-              ..totalRevenue = Int64(50000)
+              ..totalRevenue = 50000
               ..transactionCount = 5
               ..unitsSold = 10,
           ],
@@ -923,7 +940,7 @@ final _fakeTransport =
             SupplierPerformanceSummary()
               ..supplierId = 'supplier_1'
               ..supplierName = 'Supplier One'
-              ..totalPurchaseValue = Int64(150000)
+              ..totalPurchaseValue = 150000
               ..onTimePercentage = 85.0
               ..totalOrders = 6,
           ],
@@ -934,7 +951,7 @@ final _fakeTransport =
                 ..globalProductId = 'gp_1'
                 ..salePrice = 10000)
               ..quantity = 10.0
-              ..stockValue = Int64(100000)
+              ..stockValue = 100000
               ..lastMovementDate = Timestamp.fromDateTime(
                 clock.now().subtract(const Duration(days: 15)),
               )
@@ -943,6 +960,121 @@ final _fakeTransport =
                   StockMovementCategory.STOCK_MOVEMENT_CATEGORY_FAST,
           ],
         );
+      })
+      // Point of Sale Service mocks for testing
+      ..unary(CashReceiptService.createCashReceipt, (req, _) async {
+        final request = req;
+        GiftVoucher voucher;
+        final receiptId = 'CR-${Random().nextInt(1000000)}';
+        // Create a mock cash receipt
+        final cashReceipt = request.receipt
+          ..transactionTime = Timestamp.fromDateTime(clock.now())
+          ..documentId = receiptId
+          ..currency = 'XAF';
+
+        final paymentRef = <String>[];
+
+        // create the payment and add the id to receipt.
+        for (var payment in request.payments) {
+          final paymentId = 'PAY-${Random().nextInt(1000000)}';
+          paymentRef.add(paymentId);
+          (_fakeData[CollectionName.payments] as List<Payment>).add(
+            payment..documentId = paymentId,
+          );
+        }
+
+        cashReceipt.paymentIds.addAll(paymentRef);
+
+        // if issue_voucher_on_change is true, create a voucher
+        if (request.issueVoucherOnChange) {
+          final voucherId = 'GV-${Random().nextInt(1000000)}';
+
+          voucher = GiftVoucher(
+            documentId: voucherId,
+            voucherCode: voucherId,
+            initialValue: request.receipt.owedToCustomer,
+            remainingValue: request.receipt.owedToCustomer,
+            issuedToCustomerId: request.receipt.customerId,
+            validUntil: Timestamp.fromDateTime(
+              clock.now().add(const Duration(days: 30)),
+            ),
+            status: VoucherStatus.VOUCHER_STATUS_ACTIVE,
+            issuedAt: Timestamp.fromDateTime(clock.now()),
+            issuedByUserId: request.receipt.cashierUserId,
+          );
+          _fakeData[CollectionName.giftVouchers]?.add(voucher);
+          cashReceipt.voucherIssued = voucherId;
+        }
+
+        /// Gets the inventory level for each item in the receipt and update the quantity.
+        for (var item in request.receipt.items) {
+          for (var inventoryLevel
+              in (_fakeData[CollectionName.inventoryLevels]
+                  as List<InventoryLevel>)) {
+            if (inventoryLevel.storeProductId == item.productId &&
+                inventoryLevel.storeId == request.receipt.storeId) {
+              inventoryLevel
+                ..quantityAvailable -= item.quantity
+                ..lastUpdated = Timestamp.fromDateTime(clock.now())
+                ..lastUpdatedByUserId = request.receipt.cashierUserId;
+            }
+          }
+        }
+
+        // Create a inventory transaction for each item in the receipt.
+        for (var item in request.receipt.items) {
+          (_fakeData[CollectionName.inventoryLevels]
+                  as List<InventoryTransaction>)
+              .add(
+                InventoryTransaction()
+                  ..documentId = receiptId
+                  ..storeId = request.receipt.storeId
+                  ..productId = item.productId
+                  ..transactionType = TransactionType.TXN_TYPE_SALE
+                  ..quantityChange = -item.quantity
+                  ..quantityBefore =
+                      (_fakeData[CollectionName.inventoryLevels]
+                              as List<InventoryLevel>)
+                          .firstWhere(
+                            (level) =>
+                                level.storeProductId == item.productId &&
+                                level.storeId == request.receipt.storeId,
+                          )
+                          .quantityAvailable +
+                      item.quantity
+                  ..quantityAfter =
+                      (_fakeData[CollectionName.inventoryLevels]
+                              as List<InventoryLevel>)
+                          .firstWhere(
+                            (level) =>
+                                level.storeProductId == item.productId &&
+                                level.storeId == request.receipt.storeId,
+                          )
+                          .quantityAvailable
+                  ..relatedDocumentType = 'CashReceipt'
+                  ..relatedDocumentId = receiptId
+                  ..performedByUserId = request.receipt.cashierUserId
+                  ..transactionTime = Timestamp.fromDateTime(clock.now())
+                  ..notes = 'Sale of products'
+                  ..batchId =
+                      (_fakeData[CollectionName.inventoryLevels]
+                              as List<InventoryLevel>)
+                          .firstWhere(
+                            (level) =>
+                                level.storeProductId == item.productId &&
+                                level.storeId == request.receipt.storeId,
+                          )
+                          .batches
+                          .firstWhere(
+                            (e) =>
+                                e.documentId == item.batchId ||
+                                e.productId == item.productId,
+                          )
+                          .documentId,
+              );
+        }
+
+        return CreateCashReceiptResponse();
       }).build();
 
 final fakeTransport = _fakeTransport.build();

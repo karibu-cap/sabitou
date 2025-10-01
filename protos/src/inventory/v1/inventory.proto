@@ -25,7 +25,7 @@ message Batch {
   string document_id = 1 [(buf.validate.field).required = true]; // Unique batch/lot ID: "BATCH-2025-001"
   string product_id = 2; // Which product this batch is for
   string warehouse_id = 3; // Which warehouse stores this batch
-  double quantity = 4; // Quantity in this specific batch
+  int32 quantity = 4; // Quantity in this specific batch
   google.protobuf.Timestamp expiration_date = 5; // Expiration date for this batch
   google.protobuf.Timestamp received_at = 6; // When the batch was received
   string supplier_batch_number = 7; // Supplier's reference number
@@ -68,13 +68,13 @@ message InventoryLevel {
   // The warehouse id to get level.
   string store_id = 2;
   // Ready to sell/use (sum of batch quantities)
-  double quantity_available = 3;
+  int32 quantity_available = 3;
   // Allocated to orders not yet fulfilled
-  double quantity_reserved = 4;
+  int32 quantity_reserved = 4;
   // Being delivered here
-  double quantity_in_transit = 5;
+  int32 quantity_in_transit = 5;
   // Minimum stock threshold for this product in this warehouse
-  double min_threshold = 8;
+  int32 min_threshold = 8;
   google.protobuf.Timestamp last_updated = 6;
   // Who made last change
   string last_updated_by_user_id = 7;
@@ -86,7 +86,7 @@ message InventoryLevelWithProduct {
   InventoryLevel level = 1;
   StoreProduct product = 2;
   GlobalProduct globalProduct = 3;
-  int64 stock_value = 4; // quantity * product.unit_price
+  int32 stock_value = 4; // quantity * product.unit_price
   StockStatus stockStatus = 5;
 }
 
@@ -140,9 +140,9 @@ message GetProductInventoryLevelsRequest {
 
 message GetProductInventoryLevelsResponse {
   repeated InventoryLevel levels = 1;
-  int64 total_available = 2;
-  int64 total_reserved = 3;
-  int64 total_in_transit = 4;
+  int32 total_available = 2;
+  int32 total_reserved = 3;
+  int32 total_in_transit = 4;
 }
 
 message CheckProductAvailabilityRequest {

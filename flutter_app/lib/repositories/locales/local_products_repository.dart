@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_ce_flutter/adapters.dart';
 import 'package:sabitou_rpc/models.dart';
@@ -52,20 +53,38 @@ class LocalProductsRepository {
   }
 
   /// Gets all products base on business Id.
-  Future<List<StoreProduct>> findStoreProducts(
-    FindStoreProductsRequest request,
+  Future<List<StoreProductWithGlobalProduct>?> findStoreProducts(
+    FindProductsRequest request,
   ) async {
     try {
-      final box = hiveDb.storeProducts;
-      final response = box.values
-          .where((product) => product.storeId == request.storeId)
+      final storeProducts = hiveDb.storeProducts.values
+          .where((bp) => bp.storeId == request.storeId)
+          .toList();
+      final globalProductIds = storeProducts
+          .map((bp) => bp.globalProductId)
           .toList();
 
-      return response;
+      final globalProducts = hiveDb.globalProducts.values
+          .where((gp) => globalProductIds.contains(gp.refId))
+          .toList();
+
+      final storeProductWithGlobalProducts = storeProducts
+          .map(
+            (bp) => StoreProductWithGlobalProduct()
+              ..storeProduct = bp
+              ..globalProduct =
+                  globalProducts.firstWhereOrNull(
+                    (gp) => gp.refId == bp.globalProductId,
+                  ) ??
+                  GlobalProduct(),
+          )
+          .toSet();
+
+      return storeProductWithGlobalProducts.toList();
     } on Exception catch (e) {
       _logger.severe('findStoreProducts Error: $e');
 
-      return [];
+      return null;
     }
   }
 

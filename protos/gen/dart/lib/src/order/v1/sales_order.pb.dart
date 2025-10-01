@@ -13,7 +13,6 @@
 import 'dart:async' as $async;
 import 'dart:core' as $core;
 
-import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import '../../financial/v1/invoice.pb.dart' as $3;
@@ -740,7 +739,7 @@ class ListSalesOrdersResponse extends $pb.GeneratedMessage {
   factory ListSalesOrdersResponse({
     $core.Iterable<SalesOrder>? salesOrders,
     $core.int? totalCount,
-    $fixnum.Int64? totalValue,
+    $core.double? totalValue,
   }) {
     final result = create();
     if (salesOrders != null) result.salesOrders.addAll(salesOrders);
@@ -766,7 +765,8 @@ class ListSalesOrdersResponse extends $pb.GeneratedMessage {
         1, _omitFieldNames ? '' : 'salesOrders', $pb.PbFieldType.PM,
         subBuilder: SalesOrder.create)
     ..a<$core.int>(2, _omitFieldNames ? '' : 'totalCount', $pb.PbFieldType.O3)
-    ..aInt64(3, _omitFieldNames ? '' : 'totalValue')
+    ..a<$core.double>(
+        3, _omitFieldNames ? '' : 'totalValue', $pb.PbFieldType.OD)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -805,9 +805,9 @@ class ListSalesOrdersResponse extends $pb.GeneratedMessage {
   void clearTotalCount() => $_clearField(2);
 
   @$pb.TagNumber(3)
-  $fixnum.Int64 get totalValue => $_getI64(2);
+  $core.double get totalValue => $_getN(2);
   @$pb.TagNumber(3)
-  set totalValue($fixnum.Int64 value) => $_setInt64(2, value);
+  set totalValue($core.double value) => $_setDouble(2, value);
   @$pb.TagNumber(3)
   $core.bool hasTotalValue() => $_has(2);
   @$pb.TagNumber(3)

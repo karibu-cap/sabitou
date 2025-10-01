@@ -12,7 +12,6 @@
 
 import 'dart:core' as $core;
 
-import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import '../../inventory/v1/category.pb.dart' as $0;
@@ -26,12 +25,12 @@ export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 class InvoiceLineItem extends $pb.GeneratedMessage {
   factory InvoiceLineItem({
     $core.String? productId,
-    $core.double? quantity,
-    $fixnum.Int64? unitPrice,
-    $fixnum.Int64? subtotal,
+    $core.int? quantity,
+    $core.double? unitPrice,
+    $core.double? subtotal,
     $core.double? taxRate,
-    $fixnum.Int64? taxAmount,
-    $fixnum.Int64? total,
+    $core.double? taxAmount,
+    $core.double? total,
     $core.String? batchId,
     $0.Internationalized? productName,
   }) {
@@ -62,12 +61,12 @@ class InvoiceLineItem extends $pb.GeneratedMessage {
       package: const $pb.PackageName(_omitMessageNames ? '' : 'financial.v1'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'productId')
-    ..a<$core.double>(2, _omitFieldNames ? '' : 'quantity', $pb.PbFieldType.OD)
-    ..aInt64(3, _omitFieldNames ? '' : 'unitPrice')
-    ..aInt64(4, _omitFieldNames ? '' : 'subtotal')
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'quantity', $pb.PbFieldType.O3)
+    ..a<$core.double>(3, _omitFieldNames ? '' : 'unitPrice', $pb.PbFieldType.OD)
+    ..a<$core.double>(4, _omitFieldNames ? '' : 'subtotal', $pb.PbFieldType.OD)
     ..a<$core.double>(5, _omitFieldNames ? '' : 'taxRate', $pb.PbFieldType.OD)
-    ..aInt64(6, _omitFieldNames ? '' : 'taxAmount')
-    ..aInt64(7, _omitFieldNames ? '' : 'total')
+    ..a<$core.double>(6, _omitFieldNames ? '' : 'taxAmount', $pb.PbFieldType.OD)
+    ..a<$core.double>(7, _omitFieldNames ? '' : 'total', $pb.PbFieldType.OD)
     ..aOS(8, _omitFieldNames ? '' : 'batchId')
     ..aOM<$0.Internationalized>(9, _omitFieldNames ? '' : 'productName',
         subBuilder: $0.Internationalized.create)
@@ -104,27 +103,27 @@ class InvoiceLineItem extends $pb.GeneratedMessage {
   void clearProductId() => $_clearField(1);
 
   @$pb.TagNumber(2)
-  $core.double get quantity => $_getN(1);
+  $core.int get quantity => $_getIZ(1);
   @$pb.TagNumber(2)
-  set quantity($core.double value) => $_setDouble(1, value);
+  set quantity($core.int value) => $_setSignedInt32(1, value);
   @$pb.TagNumber(2)
   $core.bool hasQuantity() => $_has(1);
   @$pb.TagNumber(2)
   void clearQuantity() => $_clearField(2);
 
   @$pb.TagNumber(3)
-  $fixnum.Int64 get unitPrice => $_getI64(2);
+  $core.double get unitPrice => $_getN(2);
   @$pb.TagNumber(3)
-  set unitPrice($fixnum.Int64 value) => $_setInt64(2, value);
+  set unitPrice($core.double value) => $_setDouble(2, value);
   @$pb.TagNumber(3)
   $core.bool hasUnitPrice() => $_has(2);
   @$pb.TagNumber(3)
   void clearUnitPrice() => $_clearField(3);
 
   @$pb.TagNumber(4)
-  $fixnum.Int64 get subtotal => $_getI64(3);
+  $core.double get subtotal => $_getN(3);
   @$pb.TagNumber(4)
-  set subtotal($fixnum.Int64 value) => $_setInt64(3, value);
+  set subtotal($core.double value) => $_setDouble(3, value);
   @$pb.TagNumber(4)
   $core.bool hasSubtotal() => $_has(3);
   @$pb.TagNumber(4)
@@ -140,18 +139,18 @@ class InvoiceLineItem extends $pb.GeneratedMessage {
   void clearTaxRate() => $_clearField(5);
 
   @$pb.TagNumber(6)
-  $fixnum.Int64 get taxAmount => $_getI64(5);
+  $core.double get taxAmount => $_getN(5);
   @$pb.TagNumber(6)
-  set taxAmount($fixnum.Int64 value) => $_setInt64(5, value);
+  set taxAmount($core.double value) => $_setDouble(5, value);
   @$pb.TagNumber(6)
   $core.bool hasTaxAmount() => $_has(5);
   @$pb.TagNumber(6)
   void clearTaxAmount() => $_clearField(6);
 
   @$pb.TagNumber(7)
-  $fixnum.Int64 get total => $_getI64(6);
+  $core.double get total => $_getN(6);
   @$pb.TagNumber(7)
-  set total($fixnum.Int64 value) => $_setInt64(6, value);
+  set total($core.double value) => $_setDouble(6, value);
   @$pb.TagNumber(7)
   $core.bool hasTotal() => $_has(6);
   @$pb.TagNumber(7)

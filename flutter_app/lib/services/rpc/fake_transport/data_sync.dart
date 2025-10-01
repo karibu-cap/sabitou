@@ -92,24 +92,45 @@ final syncFakeTransport = FakeTransportBuilder()
       ];
       yield StreamStoreProductsResponse()..products.addAll(products);
     })
-    .unary(StoreProductService.findStoreProducts, (req, _) {
-      return FindStoreProductsResponse()
+    .unary(StoreProductService.findProducts, (req, _) {
+      return FindProductsResponse()
         ..products.addAll([
-          StoreProduct()
-            ..refId = 'product_1'
-            ..globalProductId = 'global_product_1'
-            ..storeId = req.storeId
-            ..salePrice = 10000,
-          StoreProduct()
-            ..refId = 'product_2'
-            ..globalProductId = 'global_product_2'
-            ..storeId = req.storeId
-            ..salePrice = 20000,
-          StoreProduct()
-            ..refId = 'product_3'
-            ..globalProductId = 'global_product_3'
-            ..storeId = req.storeId
-            ..salePrice = 5000,
+          StoreProductWithGlobalProduct(
+            storeProduct: StoreProduct()
+              ..refId = 'product_1'
+              ..globalProductId = 'global_product_1'
+              ..storeId = req.storeId
+              ..salePrice = 10000,
+            globalProduct: GlobalProduct()
+              ..refId = 'global_product_1'
+              ..name = Internationalized()
+              ..name.en = 'Product Alpha'
+              ..name.fr = 'Produit Alpha',
+          ),
+          StoreProductWithGlobalProduct(
+            storeProduct: StoreProduct()
+              ..refId = 'product_2'
+              ..globalProductId = 'global_product_2'
+              ..storeId = req.storeId
+              ..salePrice = 20000,
+            globalProduct: GlobalProduct()
+              ..refId = 'global_product_2'
+              ..name = Internationalized()
+              ..name.en = 'Product Beta'
+              ..name.fr = 'Produit Beta',
+          ),
+          StoreProductWithGlobalProduct(
+            storeProduct: StoreProduct()
+              ..refId = 'product_3'
+              ..globalProductId = 'global_product_3'
+              ..storeId = req.storeId
+              ..salePrice = 5000,
+            globalProduct: GlobalProduct()
+              ..refId = 'global_product_3'
+              ..name = Internationalized()
+              ..name.en = 'Product Gamma'
+              ..name.fr = 'Produit Gamma',
+          ),
         ]);
     })
     .unary(SyncService.submitSyncOperations, (req, _) {

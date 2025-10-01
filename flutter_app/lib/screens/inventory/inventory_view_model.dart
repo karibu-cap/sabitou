@@ -7,7 +7,6 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../../repositories/categories_repository.dart';
 import '../../repositories/inventory_repository.dart';
-import '../../repositories/products_repository.dart';
 import '../../repositories/reports_repository.dart';
 import '../../repositories/store_products_repository.dart';
 import '../../utils/extensions/category_extension.dart';
@@ -162,8 +161,8 @@ class InventoryViewModel {
 
       // Execute all calls in parallel for better performance
       final results = await Future.wait([
-        StoreProductsRepository.instance.listStoreProducts(
-          ListStoreProductsRequest(storeId: store.refId),
+        StoreProductsRepository.instance.findProducts(
+          FindProductsRequest(storeId: store.refId),
         ),
         InventoryRepository.instance.getLowStockItems(store.refId),
         ReportsRepository.instance.getSalesByPeriod(
@@ -176,13 +175,14 @@ class InventoryViewModel {
         InventoryRepository.instance.getStoreInventory(store.refId),
       ]);
 
-      final totalProducts = results.first as ListStoreProductsResponse;
+      final totalProducts =
+          results.first as List<StoreProductWithGlobalProduct>;
       final lowStockItems = results[1] as List<InventoryLevelWithProduct>;
       final inventoryLevels = results[3] as List<InventoryLevelWithProduct>;
       final sales = results[2] as GetSalesReportResponse;
 
       final newStats = InventoryData(
-        totalProducts: totalProducts.totalCount,
+        totalProducts: totalProducts.length,
         lowStockItemsCount: lowStockItems.length,
         inventoryLevels: inventoryLevels,
         totalSales: sales.totalSalesAmount.toDouble(),
@@ -205,7 +205,7 @@ class InventoryViewModel {
 
   /// Deletes a product.
   Future<bool> deleteProduct(String storeProductId) async {
-    final result = await ProductsRepository.instance.deleteStoreProduct(
+    final result = await StoreProductsRepository.instance.deleteProduct(
       DeleteStoreProductRequest(storeProductId: storeProductId),
     );
     if (result) {

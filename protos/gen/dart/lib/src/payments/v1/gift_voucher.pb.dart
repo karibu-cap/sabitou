@@ -13,7 +13,6 @@
 import 'dart:async' as $async;
 import 'dart:core' as $core;
 
-import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import '../../google/protobuf/timestamp.pb.dart' as $0;
@@ -40,8 +39,8 @@ class GiftVoucher extends $pb.GeneratedMessage {
   factory GiftVoucher({
     $core.String? documentId,
     $core.String? voucherCode,
-    $fixnum.Int64? initialValue,
-    $fixnum.Int64? remainingValue,
+    $core.double? initialValue,
+    $core.double? remainingValue,
     $core.String? currency,
     $core.String? issuedToCustomerId,
     $core.String? issuedByUserId,
@@ -81,8 +80,10 @@ class GiftVoucher extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'documentId')
     ..aOS(2, _omitFieldNames ? '' : 'voucherCode')
-    ..aInt64(3, _omitFieldNames ? '' : 'initialValue')
-    ..aInt64(4, _omitFieldNames ? '' : 'remainingValue')
+    ..a<$core.double>(
+        3, _omitFieldNames ? '' : 'initialValue', $pb.PbFieldType.OD)
+    ..a<$core.double>(
+        4, _omitFieldNames ? '' : 'remainingValue', $pb.PbFieldType.OD)
     ..aOS(5, _omitFieldNames ? '' : 'currency')
     ..aOS(6, _omitFieldNames ? '' : 'issuedToCustomerId')
     ..aOS(7, _omitFieldNames ? '' : 'issuedByUserId')
@@ -136,18 +137,18 @@ class GiftVoucher extends $pb.GeneratedMessage {
   void clearVoucherCode() => $_clearField(2);
 
   @$pb.TagNumber(3)
-  $fixnum.Int64 get initialValue => $_getI64(2);
+  $core.double get initialValue => $_getN(2);
   @$pb.TagNumber(3)
-  set initialValue($fixnum.Int64 value) => $_setInt64(2, value);
+  set initialValue($core.double value) => $_setDouble(2, value);
   @$pb.TagNumber(3)
   $core.bool hasInitialValue() => $_has(2);
   @$pb.TagNumber(3)
   void clearInitialValue() => $_clearField(3);
 
   @$pb.TagNumber(4)
-  $fixnum.Int64 get remainingValue => $_getI64(3);
+  $core.double get remainingValue => $_getN(3);
   @$pb.TagNumber(4)
-  set remainingValue($fixnum.Int64 value) => $_setInt64(3, value);
+  set remainingValue($core.double value) => $_setDouble(3, value);
   @$pb.TagNumber(4)
   $core.bool hasRemainingValue() => $_has(3);
   @$pb.TagNumber(4)
@@ -236,8 +237,8 @@ class VoucherTransaction extends $pb.GeneratedMessage {
     $core.String? voucherId,
     $core.String? relatedInvoiceId,
     $core.String? relatedReceiptId,
-    $fixnum.Int64? amountUsed,
-    $fixnum.Int64? remainingAfter,
+    $core.double? amountUsed,
+    $core.double? remainingAfter,
     $0.Timestamp? usedAt,
     $core.String? usedByUserId,
   }) {
@@ -270,8 +271,10 @@ class VoucherTransaction extends $pb.GeneratedMessage {
     ..aOS(2, _omitFieldNames ? '' : 'voucherId')
     ..aOS(3, _omitFieldNames ? '' : 'relatedInvoiceId')
     ..aOS(4, _omitFieldNames ? '' : 'relatedReceiptId')
-    ..aInt64(5, _omitFieldNames ? '' : 'amountUsed')
-    ..aInt64(6, _omitFieldNames ? '' : 'remainingAfter')
+    ..a<$core.double>(
+        5, _omitFieldNames ? '' : 'amountUsed', $pb.PbFieldType.OD)
+    ..a<$core.double>(
+        6, _omitFieldNames ? '' : 'remainingAfter', $pb.PbFieldType.OD)
     ..aOM<$0.Timestamp>(7, _omitFieldNames ? '' : 'usedAt',
         subBuilder: $0.Timestamp.create)
     ..aOS(8, _omitFieldNames ? '' : 'usedByUserId')
@@ -335,18 +338,18 @@ class VoucherTransaction extends $pb.GeneratedMessage {
   void clearRelatedReceiptId() => $_clearField(4);
 
   @$pb.TagNumber(5)
-  $fixnum.Int64 get amountUsed => $_getI64(4);
+  $core.double get amountUsed => $_getN(4);
   @$pb.TagNumber(5)
-  set amountUsed($fixnum.Int64 value) => $_setInt64(4, value);
+  set amountUsed($core.double value) => $_setDouble(4, value);
   @$pb.TagNumber(5)
   $core.bool hasAmountUsed() => $_has(4);
   @$pb.TagNumber(5)
   void clearAmountUsed() => $_clearField(5);
 
   @$pb.TagNumber(6)
-  $fixnum.Int64 get remainingAfter => $_getI64(5);
+  $core.double get remainingAfter => $_getN(5);
   @$pb.TagNumber(6)
-  set remainingAfter($fixnum.Int64 value) => $_setInt64(5, value);
+  set remainingAfter($core.double value) => $_setDouble(5, value);
   @$pb.TagNumber(6)
   $core.bool hasRemainingAfter() => $_has(5);
   @$pb.TagNumber(6)
@@ -435,7 +438,7 @@ class ValidateVoucherResponse extends $pb.GeneratedMessage {
   factory ValidateVoucherResponse({
     $core.bool? isValid,
     $core.String? voucherId,
-    $fixnum.Int64? remainingValue,
+    $core.double? remainingValue,
     $0.Timestamp? validUntil,
     VoucherStatus? status,
     $core.String? message,
@@ -465,7 +468,8 @@ class ValidateVoucherResponse extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOB(1, _omitFieldNames ? '' : 'isValid')
     ..aOS(2, _omitFieldNames ? '' : 'voucherId')
-    ..aInt64(3, _omitFieldNames ? '' : 'remainingValue')
+    ..a<$core.double>(
+        3, _omitFieldNames ? '' : 'remainingValue', $pb.PbFieldType.OD)
     ..aOM<$0.Timestamp>(4, _omitFieldNames ? '' : 'validUntil',
         subBuilder: $0.Timestamp.create)
     ..e<VoucherStatus>(5, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
@@ -517,9 +521,9 @@ class ValidateVoucherResponse extends $pb.GeneratedMessage {
   void clearVoucherId() => $_clearField(2);
 
   @$pb.TagNumber(3)
-  $fixnum.Int64 get remainingValue => $_getI64(2);
+  $core.double get remainingValue => $_getN(2);
   @$pb.TagNumber(3)
-  set remainingValue($fixnum.Int64 value) => $_setInt64(2, value);
+  set remainingValue($core.double value) => $_setDouble(2, value);
   @$pb.TagNumber(3)
   $core.bool hasRemainingValue() => $_has(2);
   @$pb.TagNumber(3)
@@ -544,451 +548,6 @@ class ValidateVoucherResponse extends $pb.GeneratedMessage {
   $core.bool hasStatus() => $_has(4);
   @$pb.TagNumber(5)
   void clearStatus() => $_clearField(5);
-
-  @$pb.TagNumber(6)
-  $core.String get message => $_getSZ(5);
-  @$pb.TagNumber(6)
-  set message($core.String value) => $_setString(5, value);
-  @$pb.TagNumber(6)
-  $core.bool hasMessage() => $_has(5);
-  @$pb.TagNumber(6)
-  void clearMessage() => $_clearField(6);
-}
-
-class CreateGiftVoucherRequest extends $pb.GeneratedMessage {
-  factory CreateGiftVoucherRequest({
-    $fixnum.Int64? initialValue,
-    $core.String? currency,
-    $core.String? issuedToCustomerId,
-    $core.String? issuedByUserId,
-    $0.Timestamp? validUntil,
-    $core.String? relatedInvoiceId,
-    $core.String? notes,
-  }) {
-    final result = create();
-    if (initialValue != null) result.initialValue = initialValue;
-    if (currency != null) result.currency = currency;
-    if (issuedToCustomerId != null)
-      result.issuedToCustomerId = issuedToCustomerId;
-    if (issuedByUserId != null) result.issuedByUserId = issuedByUserId;
-    if (validUntil != null) result.validUntil = validUntil;
-    if (relatedInvoiceId != null) result.relatedInvoiceId = relatedInvoiceId;
-    if (notes != null) result.notes = notes;
-    return result;
-  }
-
-  CreateGiftVoucherRequest._();
-
-  factory CreateGiftVoucherRequest.fromBuffer($core.List<$core.int> data,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
-  factory CreateGiftVoucherRequest.fromJson($core.String json,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'CreateGiftVoucherRequest',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'payments.v1'),
-      createEmptyInstance: create)
-    ..aInt64(1, _omitFieldNames ? '' : 'initialValue')
-    ..aOS(2, _omitFieldNames ? '' : 'currency')
-    ..aOS(3, _omitFieldNames ? '' : 'issuedToCustomerId')
-    ..aOS(4, _omitFieldNames ? '' : 'issuedByUserId')
-    ..aOM<$0.Timestamp>(5, _omitFieldNames ? '' : 'validUntil',
-        subBuilder: $0.Timestamp.create)
-    ..aOS(6, _omitFieldNames ? '' : 'relatedInvoiceId')
-    ..aOS(7, _omitFieldNames ? '' : 'notes')
-    ..hasRequiredFields = false;
-
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreateGiftVoucherRequest clone() =>
-      CreateGiftVoucherRequest()..mergeFromMessage(this);
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreateGiftVoucherRequest copyWith(
-          void Function(CreateGiftVoucherRequest) updates) =>
-      super.copyWith((message) => updates(message as CreateGiftVoucherRequest))
-          as CreateGiftVoucherRequest;
-
-  @$core.override
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static CreateGiftVoucherRequest create() => CreateGiftVoucherRequest._();
-  @$core.override
-  CreateGiftVoucherRequest createEmptyInstance() => create();
-  static $pb.PbList<CreateGiftVoucherRequest> createRepeated() =>
-      $pb.PbList<CreateGiftVoucherRequest>();
-  @$core.pragma('dart2js:noInline')
-  static CreateGiftVoucherRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<CreateGiftVoucherRequest>(create);
-  static CreateGiftVoucherRequest? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $fixnum.Int64 get initialValue => $_getI64(0);
-  @$pb.TagNumber(1)
-  set initialValue($fixnum.Int64 value) => $_setInt64(0, value);
-  @$pb.TagNumber(1)
-  $core.bool hasInitialValue() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearInitialValue() => $_clearField(1);
-
-  @$pb.TagNumber(2)
-  $core.String get currency => $_getSZ(1);
-  @$pb.TagNumber(2)
-  set currency($core.String value) => $_setString(1, value);
-  @$pb.TagNumber(2)
-  $core.bool hasCurrency() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearCurrency() => $_clearField(2);
-
-  @$pb.TagNumber(3)
-  $core.String get issuedToCustomerId => $_getSZ(2);
-  @$pb.TagNumber(3)
-  set issuedToCustomerId($core.String value) => $_setString(2, value);
-  @$pb.TagNumber(3)
-  $core.bool hasIssuedToCustomerId() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearIssuedToCustomerId() => $_clearField(3);
-
-  @$pb.TagNumber(4)
-  $core.String get issuedByUserId => $_getSZ(3);
-  @$pb.TagNumber(4)
-  set issuedByUserId($core.String value) => $_setString(3, value);
-  @$pb.TagNumber(4)
-  $core.bool hasIssuedByUserId() => $_has(3);
-  @$pb.TagNumber(4)
-  void clearIssuedByUserId() => $_clearField(4);
-
-  @$pb.TagNumber(5)
-  $0.Timestamp get validUntil => $_getN(4);
-  @$pb.TagNumber(5)
-  set validUntil($0.Timestamp value) => $_setField(5, value);
-  @$pb.TagNumber(5)
-  $core.bool hasValidUntil() => $_has(4);
-  @$pb.TagNumber(5)
-  void clearValidUntil() => $_clearField(5);
-  @$pb.TagNumber(5)
-  $0.Timestamp ensureValidUntil() => $_ensure(4);
-
-  @$pb.TagNumber(6)
-  $core.String get relatedInvoiceId => $_getSZ(5);
-  @$pb.TagNumber(6)
-  set relatedInvoiceId($core.String value) => $_setString(5, value);
-  @$pb.TagNumber(6)
-  $core.bool hasRelatedInvoiceId() => $_has(5);
-  @$pb.TagNumber(6)
-  void clearRelatedInvoiceId() => $_clearField(6);
-
-  @$pb.TagNumber(7)
-  $core.String get notes => $_getSZ(6);
-  @$pb.TagNumber(7)
-  set notes($core.String value) => $_setString(6, value);
-  @$pb.TagNumber(7)
-  $core.bool hasNotes() => $_has(6);
-  @$pb.TagNumber(7)
-  void clearNotes() => $_clearField(7);
-}
-
-class CreateGiftVoucherResponse extends $pb.GeneratedMessage {
-  factory CreateGiftVoucherResponse({
-    $core.String? voucherId,
-    GiftVoucher? voucher,
-    $core.String? voucherCode,
-    $core.String? message,
-  }) {
-    final result = create();
-    if (voucherId != null) result.voucherId = voucherId;
-    if (voucher != null) result.voucher = voucher;
-    if (voucherCode != null) result.voucherCode = voucherCode;
-    if (message != null) result.message = message;
-    return result;
-  }
-
-  CreateGiftVoucherResponse._();
-
-  factory CreateGiftVoucherResponse.fromBuffer($core.List<$core.int> data,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
-  factory CreateGiftVoucherResponse.fromJson($core.String json,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'CreateGiftVoucherResponse',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'payments.v1'),
-      createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'voucherId')
-    ..aOM<GiftVoucher>(2, _omitFieldNames ? '' : 'voucher',
-        subBuilder: GiftVoucher.create)
-    ..aOS(3, _omitFieldNames ? '' : 'voucherCode')
-    ..aOS(4, _omitFieldNames ? '' : 'message')
-    ..hasRequiredFields = false;
-
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreateGiftVoucherResponse clone() =>
-      CreateGiftVoucherResponse()..mergeFromMessage(this);
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreateGiftVoucherResponse copyWith(
-          void Function(CreateGiftVoucherResponse) updates) =>
-      super.copyWith((message) => updates(message as CreateGiftVoucherResponse))
-          as CreateGiftVoucherResponse;
-
-  @$core.override
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static CreateGiftVoucherResponse create() => CreateGiftVoucherResponse._();
-  @$core.override
-  CreateGiftVoucherResponse createEmptyInstance() => create();
-  static $pb.PbList<CreateGiftVoucherResponse> createRepeated() =>
-      $pb.PbList<CreateGiftVoucherResponse>();
-  @$core.pragma('dart2js:noInline')
-  static CreateGiftVoucherResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<CreateGiftVoucherResponse>(create);
-  static CreateGiftVoucherResponse? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $core.String get voucherId => $_getSZ(0);
-  @$pb.TagNumber(1)
-  set voucherId($core.String value) => $_setString(0, value);
-  @$pb.TagNumber(1)
-  $core.bool hasVoucherId() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearVoucherId() => $_clearField(1);
-
-  @$pb.TagNumber(2)
-  GiftVoucher get voucher => $_getN(1);
-  @$pb.TagNumber(2)
-  set voucher(GiftVoucher value) => $_setField(2, value);
-  @$pb.TagNumber(2)
-  $core.bool hasVoucher() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearVoucher() => $_clearField(2);
-  @$pb.TagNumber(2)
-  GiftVoucher ensureVoucher() => $_ensure(1);
-
-  @$pb.TagNumber(3)
-  $core.String get voucherCode => $_getSZ(2);
-  @$pb.TagNumber(3)
-  set voucherCode($core.String value) => $_setString(2, value);
-  @$pb.TagNumber(3)
-  $core.bool hasVoucherCode() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearVoucherCode() => $_clearField(3);
-
-  @$pb.TagNumber(4)
-  $core.String get message => $_getSZ(3);
-  @$pb.TagNumber(4)
-  set message($core.String value) => $_setString(3, value);
-  @$pb.TagNumber(4)
-  $core.bool hasMessage() => $_has(3);
-  @$pb.TagNumber(4)
-  void clearMessage() => $_clearField(4);
-}
-
-class UseVoucherRequest extends $pb.GeneratedMessage {
-  factory UseVoucherRequest({
-    $core.String? voucherCode,
-    $fixnum.Int64? amountToUse,
-    $core.String? relatedReceiptId,
-    $core.String? usedByUserId,
-  }) {
-    final result = create();
-    if (voucherCode != null) result.voucherCode = voucherCode;
-    if (amountToUse != null) result.amountToUse = amountToUse;
-    if (relatedReceiptId != null) result.relatedReceiptId = relatedReceiptId;
-    if (usedByUserId != null) result.usedByUserId = usedByUserId;
-    return result;
-  }
-
-  UseVoucherRequest._();
-
-  factory UseVoucherRequest.fromBuffer($core.List<$core.int> data,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
-  factory UseVoucherRequest.fromJson($core.String json,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'UseVoucherRequest',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'payments.v1'),
-      createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'voucherCode')
-    ..aInt64(2, _omitFieldNames ? '' : 'amountToUse')
-    ..aOS(3, _omitFieldNames ? '' : 'relatedReceiptId')
-    ..aOS(4, _omitFieldNames ? '' : 'usedByUserId')
-    ..hasRequiredFields = false;
-
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  UseVoucherRequest clone() => UseVoucherRequest()..mergeFromMessage(this);
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  UseVoucherRequest copyWith(void Function(UseVoucherRequest) updates) =>
-      super.copyWith((message) => updates(message as UseVoucherRequest))
-          as UseVoucherRequest;
-
-  @$core.override
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static UseVoucherRequest create() => UseVoucherRequest._();
-  @$core.override
-  UseVoucherRequest createEmptyInstance() => create();
-  static $pb.PbList<UseVoucherRequest> createRepeated() =>
-      $pb.PbList<UseVoucherRequest>();
-  @$core.pragma('dart2js:noInline')
-  static UseVoucherRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<UseVoucherRequest>(create);
-  static UseVoucherRequest? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $core.String get voucherCode => $_getSZ(0);
-  @$pb.TagNumber(1)
-  set voucherCode($core.String value) => $_setString(0, value);
-  @$pb.TagNumber(1)
-  $core.bool hasVoucherCode() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearVoucherCode() => $_clearField(1);
-
-  @$pb.TagNumber(2)
-  $fixnum.Int64 get amountToUse => $_getI64(1);
-  @$pb.TagNumber(2)
-  set amountToUse($fixnum.Int64 value) => $_setInt64(1, value);
-  @$pb.TagNumber(2)
-  $core.bool hasAmountToUse() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearAmountToUse() => $_clearField(2);
-
-  @$pb.TagNumber(3)
-  $core.String get relatedReceiptId => $_getSZ(2);
-  @$pb.TagNumber(3)
-  set relatedReceiptId($core.String value) => $_setString(2, value);
-  @$pb.TagNumber(3)
-  $core.bool hasRelatedReceiptId() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearRelatedReceiptId() => $_clearField(3);
-
-  @$pb.TagNumber(4)
-  $core.String get usedByUserId => $_getSZ(3);
-  @$pb.TagNumber(4)
-  set usedByUserId($core.String value) => $_setString(3, value);
-  @$pb.TagNumber(4)
-  $core.bool hasUsedByUserId() => $_has(3);
-  @$pb.TagNumber(4)
-  void clearUsedByUserId() => $_clearField(4);
-}
-
-class UseVoucherResponse extends $pb.GeneratedMessage {
-  factory UseVoucherResponse({
-    $core.String? transactionId,
-    VoucherTransaction? transaction,
-    GiftVoucher? updatedVoucher,
-    $fixnum.Int64? remainingValue,
-    $core.bool? fullyUsed,
-    $core.String? message,
-  }) {
-    final result = create();
-    if (transactionId != null) result.transactionId = transactionId;
-    if (transaction != null) result.transaction = transaction;
-    if (updatedVoucher != null) result.updatedVoucher = updatedVoucher;
-    if (remainingValue != null) result.remainingValue = remainingValue;
-    if (fullyUsed != null) result.fullyUsed = fullyUsed;
-    if (message != null) result.message = message;
-    return result;
-  }
-
-  UseVoucherResponse._();
-
-  factory UseVoucherResponse.fromBuffer($core.List<$core.int> data,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
-  factory UseVoucherResponse.fromJson($core.String json,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'UseVoucherResponse',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'payments.v1'),
-      createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'transactionId')
-    ..aOM<VoucherTransaction>(2, _omitFieldNames ? '' : 'transaction',
-        subBuilder: VoucherTransaction.create)
-    ..aOM<GiftVoucher>(3, _omitFieldNames ? '' : 'updatedVoucher',
-        subBuilder: GiftVoucher.create)
-    ..aInt64(4, _omitFieldNames ? '' : 'remainingValue')
-    ..aOB(5, _omitFieldNames ? '' : 'fullyUsed')
-    ..aOS(6, _omitFieldNames ? '' : 'message')
-    ..hasRequiredFields = false;
-
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  UseVoucherResponse clone() => UseVoucherResponse()..mergeFromMessage(this);
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  UseVoucherResponse copyWith(void Function(UseVoucherResponse) updates) =>
-      super.copyWith((message) => updates(message as UseVoucherResponse))
-          as UseVoucherResponse;
-
-  @$core.override
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static UseVoucherResponse create() => UseVoucherResponse._();
-  @$core.override
-  UseVoucherResponse createEmptyInstance() => create();
-  static $pb.PbList<UseVoucherResponse> createRepeated() =>
-      $pb.PbList<UseVoucherResponse>();
-  @$core.pragma('dart2js:noInline')
-  static UseVoucherResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<UseVoucherResponse>(create);
-  static UseVoucherResponse? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $core.String get transactionId => $_getSZ(0);
-  @$pb.TagNumber(1)
-  set transactionId($core.String value) => $_setString(0, value);
-  @$pb.TagNumber(1)
-  $core.bool hasTransactionId() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearTransactionId() => $_clearField(1);
-
-  @$pb.TagNumber(2)
-  VoucherTransaction get transaction => $_getN(1);
-  @$pb.TagNumber(2)
-  set transaction(VoucherTransaction value) => $_setField(2, value);
-  @$pb.TagNumber(2)
-  $core.bool hasTransaction() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearTransaction() => $_clearField(2);
-  @$pb.TagNumber(2)
-  VoucherTransaction ensureTransaction() => $_ensure(1);
-
-  @$pb.TagNumber(3)
-  GiftVoucher get updatedVoucher => $_getN(2);
-  @$pb.TagNumber(3)
-  set updatedVoucher(GiftVoucher value) => $_setField(3, value);
-  @$pb.TagNumber(3)
-  $core.bool hasUpdatedVoucher() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearUpdatedVoucher() => $_clearField(3);
-  @$pb.TagNumber(3)
-  GiftVoucher ensureUpdatedVoucher() => $_ensure(2);
-
-  @$pb.TagNumber(4)
-  $fixnum.Int64 get remainingValue => $_getI64(3);
-  @$pb.TagNumber(4)
-  set remainingValue($fixnum.Int64 value) => $_setInt64(3, value);
-  @$pb.TagNumber(4)
-  $core.bool hasRemainingValue() => $_has(3);
-  @$pb.TagNumber(4)
-  void clearRemainingValue() => $_clearField(4);
-
-  @$pb.TagNumber(5)
-  $core.bool get fullyUsed => $_getBF(4);
-  @$pb.TagNumber(5)
-  set fullyUsed($core.bool value) => $_setBool(4, value);
-  @$pb.TagNumber(5)
-  $core.bool hasFullyUsed() => $_has(4);
-  @$pb.TagNumber(5)
-  void clearFullyUsed() => $_clearField(5);
 
   @$pb.TagNumber(6)
   $core.String get message => $_getSZ(5);
@@ -1274,7 +833,7 @@ class ListVouchersResponse extends $pb.GeneratedMessage {
   factory ListVouchersResponse({
     $core.Iterable<GiftVoucher>? vouchers,
     $core.int? totalCount,
-    $fixnum.Int64? totalValue,
+    $core.double? totalValue,
   }) {
     final result = create();
     if (vouchers != null) result.vouchers.addAll(vouchers);
@@ -1299,7 +858,8 @@ class ListVouchersResponse extends $pb.GeneratedMessage {
     ..pc<GiftVoucher>(1, _omitFieldNames ? '' : 'vouchers', $pb.PbFieldType.PM,
         subBuilder: GiftVoucher.create)
     ..a<$core.int>(2, _omitFieldNames ? '' : 'totalCount', $pb.PbFieldType.O3)
-    ..aInt64(3, _omitFieldNames ? '' : 'totalValue')
+    ..a<$core.double>(
+        3, _omitFieldNames ? '' : 'totalValue', $pb.PbFieldType.OD)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -1337,315 +897,13 @@ class ListVouchersResponse extends $pb.GeneratedMessage {
   void clearTotalCount() => $_clearField(2);
 
   @$pb.TagNumber(3)
-  $fixnum.Int64 get totalValue => $_getI64(2);
+  $core.double get totalValue => $_getN(2);
   @$pb.TagNumber(3)
-  set totalValue($fixnum.Int64 value) => $_setInt64(2, value);
+  set totalValue($core.double value) => $_setDouble(2, value);
   @$pb.TagNumber(3)
   $core.bool hasTotalValue() => $_has(2);
   @$pb.TagNumber(3)
   void clearTotalValue() => $_clearField(3);
-}
-
-class CancelVoucherRequest extends $pb.GeneratedMessage {
-  factory CancelVoucherRequest({
-    $core.String? voucherId,
-    $core.String? reason,
-    $core.String? cancelledByUserId,
-  }) {
-    final result = create();
-    if (voucherId != null) result.voucherId = voucherId;
-    if (reason != null) result.reason = reason;
-    if (cancelledByUserId != null) result.cancelledByUserId = cancelledByUserId;
-    return result;
-  }
-
-  CancelVoucherRequest._();
-
-  factory CancelVoucherRequest.fromBuffer($core.List<$core.int> data,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
-  factory CancelVoucherRequest.fromJson($core.String json,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'CancelVoucherRequest',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'payments.v1'),
-      createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'voucherId')
-    ..aOS(2, _omitFieldNames ? '' : 'reason')
-    ..aOS(3, _omitFieldNames ? '' : 'cancelledByUserId')
-    ..hasRequiredFields = false;
-
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CancelVoucherRequest clone() =>
-      CancelVoucherRequest()..mergeFromMessage(this);
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CancelVoucherRequest copyWith(void Function(CancelVoucherRequest) updates) =>
-      super.copyWith((message) => updates(message as CancelVoucherRequest))
-          as CancelVoucherRequest;
-
-  @$core.override
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static CancelVoucherRequest create() => CancelVoucherRequest._();
-  @$core.override
-  CancelVoucherRequest createEmptyInstance() => create();
-  static $pb.PbList<CancelVoucherRequest> createRepeated() =>
-      $pb.PbList<CancelVoucherRequest>();
-  @$core.pragma('dart2js:noInline')
-  static CancelVoucherRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<CancelVoucherRequest>(create);
-  static CancelVoucherRequest? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $core.String get voucherId => $_getSZ(0);
-  @$pb.TagNumber(1)
-  set voucherId($core.String value) => $_setString(0, value);
-  @$pb.TagNumber(1)
-  $core.bool hasVoucherId() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearVoucherId() => $_clearField(1);
-
-  @$pb.TagNumber(2)
-  $core.String get reason => $_getSZ(1);
-  @$pb.TagNumber(2)
-  set reason($core.String value) => $_setString(1, value);
-  @$pb.TagNumber(2)
-  $core.bool hasReason() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearReason() => $_clearField(2);
-
-  @$pb.TagNumber(3)
-  $core.String get cancelledByUserId => $_getSZ(2);
-  @$pb.TagNumber(3)
-  set cancelledByUserId($core.String value) => $_setString(2, value);
-  @$pb.TagNumber(3)
-  $core.bool hasCancelledByUserId() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearCancelledByUserId() => $_clearField(3);
-}
-
-class CancelVoucherResponse extends $pb.GeneratedMessage {
-  factory CancelVoucherResponse({
-    $core.bool? success,
-    $core.String? message,
-  }) {
-    final result = create();
-    if (success != null) result.success = success;
-    if (message != null) result.message = message;
-    return result;
-  }
-
-  CancelVoucherResponse._();
-
-  factory CancelVoucherResponse.fromBuffer($core.List<$core.int> data,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
-  factory CancelVoucherResponse.fromJson($core.String json,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'CancelVoucherResponse',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'payments.v1'),
-      createEmptyInstance: create)
-    ..aOB(1, _omitFieldNames ? '' : 'success')
-    ..aOS(2, _omitFieldNames ? '' : 'message')
-    ..hasRequiredFields = false;
-
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CancelVoucherResponse clone() =>
-      CancelVoucherResponse()..mergeFromMessage(this);
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CancelVoucherResponse copyWith(
-          void Function(CancelVoucherResponse) updates) =>
-      super.copyWith((message) => updates(message as CancelVoucherResponse))
-          as CancelVoucherResponse;
-
-  @$core.override
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static CancelVoucherResponse create() => CancelVoucherResponse._();
-  @$core.override
-  CancelVoucherResponse createEmptyInstance() => create();
-  static $pb.PbList<CancelVoucherResponse> createRepeated() =>
-      $pb.PbList<CancelVoucherResponse>();
-  @$core.pragma('dart2js:noInline')
-  static CancelVoucherResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<CancelVoucherResponse>(create);
-  static CancelVoucherResponse? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $core.bool get success => $_getBF(0);
-  @$pb.TagNumber(1)
-  set success($core.bool value) => $_setBool(0, value);
-  @$pb.TagNumber(1)
-  $core.bool hasSuccess() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearSuccess() => $_clearField(1);
-
-  @$pb.TagNumber(2)
-  $core.String get message => $_getSZ(1);
-  @$pb.TagNumber(2)
-  set message($core.String value) => $_setString(1, value);
-  @$pb.TagNumber(2)
-  $core.bool hasMessage() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearMessage() => $_clearField(2);
-}
-
-class GetVoucherHistoryRequest extends $pb.GeneratedMessage {
-  factory GetVoucherHistoryRequest({
-    $core.String? voucherId,
-  }) {
-    final result = create();
-    if (voucherId != null) result.voucherId = voucherId;
-    return result;
-  }
-
-  GetVoucherHistoryRequest._();
-
-  factory GetVoucherHistoryRequest.fromBuffer($core.List<$core.int> data,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
-  factory GetVoucherHistoryRequest.fromJson($core.String json,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'GetVoucherHistoryRequest',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'payments.v1'),
-      createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'voucherId')
-    ..hasRequiredFields = false;
-
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetVoucherHistoryRequest clone() =>
-      GetVoucherHistoryRequest()..mergeFromMessage(this);
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetVoucherHistoryRequest copyWith(
-          void Function(GetVoucherHistoryRequest) updates) =>
-      super.copyWith((message) => updates(message as GetVoucherHistoryRequest))
-          as GetVoucherHistoryRequest;
-
-  @$core.override
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static GetVoucherHistoryRequest create() => GetVoucherHistoryRequest._();
-  @$core.override
-  GetVoucherHistoryRequest createEmptyInstance() => create();
-  static $pb.PbList<GetVoucherHistoryRequest> createRepeated() =>
-      $pb.PbList<GetVoucherHistoryRequest>();
-  @$core.pragma('dart2js:noInline')
-  static GetVoucherHistoryRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<GetVoucherHistoryRequest>(create);
-  static GetVoucherHistoryRequest? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $core.String get voucherId => $_getSZ(0);
-  @$pb.TagNumber(1)
-  set voucherId($core.String value) => $_setString(0, value);
-  @$pb.TagNumber(1)
-  $core.bool hasVoucherId() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearVoucherId() => $_clearField(1);
-}
-
-class GetVoucherHistoryResponse extends $pb.GeneratedMessage {
-  factory GetVoucherHistoryResponse({
-    GiftVoucher? voucher,
-    $core.Iterable<VoucherTransaction>? transactions,
-    $fixnum.Int64? totalUsed,
-    $core.int? usageCount,
-  }) {
-    final result = create();
-    if (voucher != null) result.voucher = voucher;
-    if (transactions != null) result.transactions.addAll(transactions);
-    if (totalUsed != null) result.totalUsed = totalUsed;
-    if (usageCount != null) result.usageCount = usageCount;
-    return result;
-  }
-
-  GetVoucherHistoryResponse._();
-
-  factory GetVoucherHistoryResponse.fromBuffer($core.List<$core.int> data,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
-  factory GetVoucherHistoryResponse.fromJson($core.String json,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'GetVoucherHistoryResponse',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'payments.v1'),
-      createEmptyInstance: create)
-    ..aOM<GiftVoucher>(1, _omitFieldNames ? '' : 'voucher',
-        subBuilder: GiftVoucher.create)
-    ..pc<VoucherTransaction>(
-        2, _omitFieldNames ? '' : 'transactions', $pb.PbFieldType.PM,
-        subBuilder: VoucherTransaction.create)
-    ..aInt64(3, _omitFieldNames ? '' : 'totalUsed')
-    ..a<$core.int>(4, _omitFieldNames ? '' : 'usageCount', $pb.PbFieldType.O3)
-    ..hasRequiredFields = false;
-
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetVoucherHistoryResponse clone() =>
-      GetVoucherHistoryResponse()..mergeFromMessage(this);
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetVoucherHistoryResponse copyWith(
-          void Function(GetVoucherHistoryResponse) updates) =>
-      super.copyWith((message) => updates(message as GetVoucherHistoryResponse))
-          as GetVoucherHistoryResponse;
-
-  @$core.override
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static GetVoucherHistoryResponse create() => GetVoucherHistoryResponse._();
-  @$core.override
-  GetVoucherHistoryResponse createEmptyInstance() => create();
-  static $pb.PbList<GetVoucherHistoryResponse> createRepeated() =>
-      $pb.PbList<GetVoucherHistoryResponse>();
-  @$core.pragma('dart2js:noInline')
-  static GetVoucherHistoryResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<GetVoucherHistoryResponse>(create);
-  static GetVoucherHistoryResponse? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  GiftVoucher get voucher => $_getN(0);
-  @$pb.TagNumber(1)
-  set voucher(GiftVoucher value) => $_setField(1, value);
-  @$pb.TagNumber(1)
-  $core.bool hasVoucher() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearVoucher() => $_clearField(1);
-  @$pb.TagNumber(1)
-  GiftVoucher ensureVoucher() => $_ensure(0);
-
-  @$pb.TagNumber(2)
-  $pb.PbList<VoucherTransaction> get transactions => $_getList(1);
-
-  @$pb.TagNumber(3)
-  $fixnum.Int64 get totalUsed => $_getI64(2);
-  @$pb.TagNumber(3)
-  set totalUsed($fixnum.Int64 value) => $_setInt64(2, value);
-  @$pb.TagNumber(3)
-  $core.bool hasTotalUsed() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearTotalUsed() => $_clearField(3);
-
-  @$pb.TagNumber(4)
-  $core.int get usageCount => $_getIZ(3);
-  @$pb.TagNumber(4)
-  set usageCount($core.int value) => $_setSignedInt32(3, value);
-  @$pb.TagNumber(4)
-  $core.bool hasUsageCount() => $_has(3);
-  @$pb.TagNumber(4)
-  void clearUsageCount() => $_clearField(4);
 }
 
 class GiftVoucherServiceApi {
@@ -1653,23 +911,11 @@ class GiftVoucherServiceApi {
 
   GiftVoucherServiceApi(this._client);
 
-  /// Create a gift voucher (manual or from change shortage)
-  $async.Future<CreateGiftVoucherResponse> createGiftVoucher(
-          $pb.ClientContext? ctx, CreateGiftVoucherRequest request) =>
-      _client.invoke<CreateGiftVoucherResponse>(ctx, 'GiftVoucherService',
-          'CreateGiftVoucher', request, CreateGiftVoucherResponse());
-
   /// Validate voucher before use
   $async.Future<ValidateVoucherResponse> validateVoucher(
           $pb.ClientContext? ctx, ValidateVoucherRequest request) =>
       _client.invoke<ValidateVoucherResponse>(ctx, 'GiftVoucherService',
           'ValidateVoucher', request, ValidateVoucherResponse());
-
-  /// Use voucher in transaction (called by PointOfSaleService)
-  $async.Future<UseVoucherResponse> useVoucher(
-          $pb.ClientContext? ctx, UseVoucherRequest request) =>
-      _client.invoke<UseVoucherResponse>(ctx, 'GiftVoucherService',
-          'UseVoucher', request, UseVoucherResponse());
 
   /// Get voucher details
   $async.Future<GetVoucherResponse> getVoucher(
@@ -1682,18 +928,6 @@ class GiftVoucherServiceApi {
           $pb.ClientContext? ctx, ListVouchersRequest request) =>
       _client.invoke<ListVouchersResponse>(ctx, 'GiftVoucherService',
           'ListVouchers', request, ListVouchersResponse());
-
-  /// Cancel a voucher
-  $async.Future<CancelVoucherResponse> cancelVoucher(
-          $pb.ClientContext? ctx, CancelVoucherRequest request) =>
-      _client.invoke<CancelVoucherResponse>(ctx, 'GiftVoucherService',
-          'CancelVoucher', request, CancelVoucherResponse());
-
-  /// Get voucher usage history
-  $async.Future<GetVoucherHistoryResponse> getVoucherHistory(
-          $pb.ClientContext? ctx, GetVoucherHistoryRequest request) =>
-      _client.invoke<GetVoucherHistoryResponse>(ctx, 'GiftVoucherService',
-          'GetVoucherHistory', request, GetVoucherHistoryResponse());
 }
 
 const $core.bool _omitFieldNames =

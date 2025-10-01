@@ -22,8 +22,8 @@ message OrderLineItem {
   string product_id = 1; // Which product
   double quantity = 2; // How many units
   inventory.v1.Internationalized product_name = 3; // Product name
-  int64 unit_price = 4; // Price per unit (in smallest currency)
-  int64 total = 5; // quantity * unit_price
+  double unit_price = 4; // Price per unit (in smallest currency)
+  double total = 5; // quantity * unit_price
   string notes = 6; // Special notes for this line
   string batch_id = 7; // Optional: Specific batch/lot requested
 }

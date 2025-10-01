@@ -4,12 +4,14 @@
 //
 
 import "package:connectrpc/connect.dart" as connect;
-import "store_product.pb.dart" as inventoryv1store_product;
-import "store_product.connect.spec.dart" as specs;
 
-extension type StoreProductServiceClient (connect.Transport _transport) {
+import "store_product.connect.spec.dart" as specs;
+import "store_product.pb.dart" as inventoryv1store_product;
+
+extension type StoreProductServiceClient(connect.Transport _transport) {
   /// Finds products by name.
-  Future<inventoryv1store_product.FindGlobalProductsResponse> findGlobalProducts(
+  Future<inventoryv1store_product.FindGlobalProductsResponse>
+      findGlobalProducts(
     inventoryv1store_product.FindGlobalProductsRequest input, {
     connect.Headers? headers,
     connect.AbortSignal? signal,
@@ -27,7 +29,8 @@ extension type StoreProductServiceClient (connect.Transport _transport) {
   }
 
   /// Creates a global product.
-  Future<inventoryv1store_product.CreateGlobalProductResponse> createGlobalProduct(
+  Future<inventoryv1store_product.CreateGlobalProductResponse>
+      createGlobalProduct(
     inventoryv1store_product.CreateGlobalProductRequest input, {
     connect.Headers? headers,
     connect.AbortSignal? signal,
@@ -45,7 +48,8 @@ extension type StoreProductServiceClient (connect.Transport _transport) {
   }
 
   /// Updates a global product.
-  Future<inventoryv1store_product.UpdateGlobalProductResponse> updateGlobalProduct(
+  Future<inventoryv1store_product.UpdateGlobalProductResponse>
+      updateGlobalProduct(
     inventoryv1store_product.UpdateGlobalProductRequest input, {
     connect.Headers? headers,
     connect.AbortSignal? signal,
@@ -63,7 +67,8 @@ extension type StoreProductServiceClient (connect.Transport _transport) {
   }
 
   /// Deletes a global product.
-  Future<inventoryv1store_product.DeleteGlobalProductResponse> deleteGlobalProduct(
+  Future<inventoryv1store_product.DeleteGlobalProductResponse>
+      deleteGlobalProduct(
     inventoryv1store_product.DeleteGlobalProductRequest input, {
     connect.Headers? headers,
     connect.AbortSignal? signal,
@@ -117,7 +122,8 @@ extension type StoreProductServiceClient (connect.Transport _transport) {
   }
 
   /// Updates a store product.
-  Future<inventoryv1store_product.UpdateStoreProductResponse> updateStoreProduct(
+  Future<inventoryv1store_product.UpdateStoreProductResponse>
+      updateStoreProduct(
     inventoryv1store_product.UpdateStoreProductRequest input, {
     connect.Headers? headers,
     connect.AbortSignal? signal,
@@ -136,7 +142,8 @@ extension type StoreProductServiceClient (connect.Transport _transport) {
 
   /// Deletes a store product.
   /// Only store products that are not in any orders can be deleted.
-  Future<inventoryv1store_product.DeleteStoreProductResponse> deleteStoreProduct(
+  Future<inventoryv1store_product.DeleteStoreProductResponse>
+      deleteStoreProduct(
     inventoryv1store_product.DeleteStoreProductRequest input, {
     connect.Headers? headers,
     connect.AbortSignal? signal,
@@ -154,15 +161,15 @@ extension type StoreProductServiceClient (connect.Transport _transport) {
   }
 
   /// Finds products by name.
-  Future<inventoryv1store_product.FindStoreProductsResponse> findStoreProducts(
-    inventoryv1store_product.FindStoreProductsRequest input, {
+  Future<inventoryv1store_product.FindProductsResponse> findProducts(
+    inventoryv1store_product.FindProductsRequest input, {
     connect.Headers? headers,
     connect.AbortSignal? signal,
     Function(connect.Headers)? onHeader,
     Function(connect.Headers)? onTrailer,
   }) {
     return connect.Client(_transport).unary(
-      specs.StoreProductService.findStoreProducts,
+      specs.StoreProductService.findProducts,
       input,
       signal: signal,
       headers: headers,
@@ -172,7 +179,8 @@ extension type StoreProductServiceClient (connect.Transport _transport) {
   }
 
   /// Streams all products for a store for real-time updates.
-  Stream<inventoryv1store_product.StreamStoreProductsResponse> streamStoreProducts(
+  Stream<inventoryv1store_product.StreamStoreProductsResponse>
+      streamStoreProducts(
     inventoryv1store_product.StreamStoreProductsRequest input, {
     connect.Headers? headers,
     connect.AbortSignal? signal,
@@ -190,7 +198,8 @@ extension type StoreProductServiceClient (connect.Transport _transport) {
   }
 
   /// Streams all global products for real-time updates.
-  Stream<inventoryv1store_product.StreamGlobalProductsResponse> streamGlobalProducts(
+  Stream<inventoryv1store_product.StreamGlobalProductsResponse>
+      streamGlobalProducts(
     inventoryv1store_product.StreamGlobalProductsRequest input, {
     connect.Headers? headers,
     connect.AbortSignal? signal,

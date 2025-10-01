@@ -177,7 +177,9 @@ class _TransactionItem extends StatelessWidget {
                   children: [
                     if (transaction.quantityChange > 0)
                       AutoSizeText(
-                        Formatters.formatCurrency(transaction.quantityChange),
+                        Formatters.formatCurrency(
+                          transaction.quantityChange.toDouble(),
+                        ),
                         style: ShadTheme.of(
                           context,
                         ).textTheme.small.copyWith(fontWeight: FontWeight.bold),

@@ -15,21 +15,6 @@ class RemoteProductsRepository {
   RemoteProductsRepository({required connect.Transport transport})
     : productServiceClient = StoreProductServiceClient(transport);
 
-  /// Gets all products base on store Id.
-  Future<List<StoreProduct>> getProductsByStoreId(String storeId) async {
-    try {
-      final response = await productServiceClient.findStoreProducts(
-        FindStoreProductsRequest(storeId: storeId),
-      );
-
-      return response.products;
-    } on Exception catch (e) {
-      _logger.severe('getProductsByStoreId Error: $e');
-
-      return [];
-    }
-  }
-
   /// Finds global products.
   Future<List<GlobalProduct>> findGlobalProducts(
     FindGlobalProductsRequest request,
@@ -46,11 +31,11 @@ class RemoteProductsRepository {
   }
 
   /// Gets all products base on business Id.
-  Future<List<StoreProduct>> findStoreProducts(
-    FindStoreProductsRequest request,
+  Future<List<StoreProductWithGlobalProduct>> findStoreProducts(
+    FindProductsRequest request,
   ) async {
     try {
-      final response = await productServiceClient.findStoreProducts(request);
+      final response = await productServiceClient.findProducts(request);
 
       return response.products;
     } on Exception catch (e) {
@@ -186,6 +171,19 @@ class RemoteProductsRepository {
       // Return empty stream on error
 
       return const Stream.empty();
+    }
+  }
+
+  /// Searches product .
+  Future<SearchProductsResponse> searchProducts(
+    SearchProductsRequest request,
+  ) async {
+    try {
+      return await productServiceClient.searchProducts(request);
+    } on Exception catch (e) {
+      _logger.severe('searchProducts Error: $e');
+
+      return SearchProductsResponse();
     }
   }
 }

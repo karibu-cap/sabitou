@@ -238,19 +238,19 @@ components:
           title: transaction_type
           $ref: '#/components/schemas/audits.v1.TransactionType'
         quantityChange:
-          type: number
+          type: integer
           title: quantity_change
-          format: double
+          format: int32
           description: Positive = increase, negative = decrease
         quantityBefore:
-          type: number
+          type: integer
           title: quantity_before
-          format: double
+          format: int32
           description: Stock level before
         quantityAfter:
-          type: number
+          type: integer
           title: quantity_after
-          format: double
+          format: int32
           description: Stock level after
         relatedDocumentType:
           type: string
@@ -494,9 +494,9 @@ components:
           title: warehouse_id
           description: Which warehouse stores this batch
         quantity:
-          type: number
+          type: integer
           title: quantity
-          format: double
+          format: int32
           description: Quantity in this specific batch
         expirationDate:
           title: expiration_date
@@ -761,23 +761,17 @@ components:
             $ref: '#/components/schemas/inventory.v1.InventoryLevel'
           title: levels
         totalAvailable:
-          type:
-            - integer
-            - string
+          type: integer
           title: total_available
-          format: int64
+          format: int32
         totalReserved:
-          type:
-            - integer
-            - string
+          type: integer
           title: total_reserved
-          format: int64
+          format: int32
         totalInTransit:
-          type:
-            - integer
-            - string
+          type: integer
           title: total_in_transit
-          format: int64
+          format: int32
       title: GetProductInventoryLevelsResponse
       additionalProperties: false
     inventory.v1.GetProductTransactionHistoryRequest:
@@ -934,24 +928,24 @@ components:
           title: store_id
           description: The warehouse id to get level.
         quantityAvailable:
-          type: number
+          type: integer
           title: quantity_available
-          format: double
+          format: int32
           description: Ready to sell/use (sum of batch quantities)
         quantityReserved:
-          type: number
+          type: integer
           title: quantity_reserved
-          format: double
+          format: int32
           description: Allocated to orders not yet fulfilled
         quantityInTransit:
-          type: number
+          type: integer
           title: quantity_in_transit
-          format: double
+          format: int32
           description: Being delivered here
         minThreshold:
-          type: number
+          type: integer
           title: min_threshold
-          format: double
+          format: int32
           description: Minimum stock threshold for this product in this warehouse
         lastUpdated:
           title: last_updated
@@ -1002,11 +996,9 @@ components:
           title: globalProduct
           $ref: '#/components/schemas/inventory.v1.GlobalProduct'
         stockValue:
-          type:
-            - integer
-            - string
+          type: integer
           title: stock_value
-          format: int64
+          format: int32
           description: quantity * product.unit_price
         stockStatus:
           title: stockStatus

@@ -31,7 +31,7 @@ message PurchaseOrder {
   string buyer_id_id = 3; // The store company
   PurchaseOrderStatus status = 5;
   repeated order.v1.OrderLineItem items = 6;
-  int64 total_amount = 7; // Total cost in smallest currency unit
+  double total_amount = 7; // Total cost in smallest currency unit
   optional string currency = 8;
   string created_by_user_id = 9;
   google.protobuf.Timestamp created_at = 10;
@@ -115,7 +115,7 @@ message ListPurchaseOrdersRequest {
 message ListPurchaseOrdersResponse {
   repeated PurchaseOrder purchase_orders = 1;
   int32 total_count = 2;
-  int64 total_value = 3;
+  double total_value = 3;
 }
 
 message UpdatePurchaseOrderStatusRequest {
@@ -166,8 +166,8 @@ message GetSuggestedPurchaseOrdersResponse {
 message SuggestedPurchase {
   inventory.v1.StoreProduct product = 1;
   string preferred_supplier_id = 2;
-  int64 current_stock = 3;
-  int64 reorder_level = 4;
-  int64 suggested_quantity = 5;
-  int64 estimated_cost = 6;
+  int32 current_stock = 3;
+  int32 reorder_level = 4;
+  int32 suggested_quantity = 5;
+  int32 estimated_cost = 6;
 }

@@ -124,22 +124,33 @@ message FindStoreProductsRequest {
   string store_id = 1;
 
   // The unique identifier of the product.
-  optional string ref_id = 2;
+  optional string store_product_id = 2;
 
-  // The unique identifier of the global product.
-  optional string global_product_id = 3;
+  // The page size.
+  optional int32 page_size = 4;
 
-  // Identify the products that are expired.
-  optional google.protobuf.Timestamp expiration_date = 4;
-
-  // Identify the products by supplier.
-  optional string supplier_id = 5;
+  // The page token.
+  optional string page_token = 5;
 }
 
 message FindStoreProductsResponse {
   // The unique identifiers of the products.
   // WARN: all returned products will only have their id and name.
-  repeated StoreProduct products = 1;
+  repeated StoreProductWithGlobalProduct products = 1;
+
+  // The total count of products.
+  int32 total_count = 2;
+
+  // The next page token.
+  optional string next_page_token = 3;
+}
+
+message StoreProductWithGlobalProduct {
+  // The store product.
+  StoreProduct store_product = 1;
+
+  // The global product.
+  GlobalProduct global_product = 2;
 }
 
 message FindGlobalProductsRequest {
@@ -163,6 +174,17 @@ message FindGlobalProductsResponse {
   // The unique identifiers of the products.
   // WARN: all returned products will only have their id and name.
   repeated GlobalProduct products = 1;
+}
+
+message FindProductCategoryRequest {
+  // The query to search for product categories.
+  string query = 1;
+}
+
+message FindProductCategoryResponse {
+  // The unique identifiers of the product categories.
+  // WARN: all returned product categories will only have their id and name.
+  repeated inventory.v1.Category categories = 1;
 }
 
 message AddStoreProductRequest {
@@ -255,9 +277,7 @@ message StreamGlobalProductsResponse {
   repeated GlobalProduct products = 1;
 }
 
-
-
-message ListStoreProductsRequest {
+message SearchProductsRequest {
   string store_id = 1 [(buf.validate.field).required = true];
   optional string search_query = 2;  // Name/SKU search
   repeated string category_ids = 3;
@@ -266,8 +286,8 @@ message ListStoreProductsRequest {
   string page_token = 6;  // For pagination
 }
 
-message ListStoreProductsResponse {
-  repeated inventory.v1.StoreProduct products = 1;
+message SearchProductsResponse {
+  repeated StoreProductWithGlobalProduct products = 1;
   int32 total_count = 2;
   string next_page_token = 3;
 }
@@ -275,6 +295,9 @@ message ListStoreProductsResponse {
 service StoreProductService {
   // Finds products by name.
   rpc FindGlobalProducts(FindGlobalProductsRequest) returns (FindGlobalProductsResponse);
+
+  // Finds categories by name.
+  rpc FindProductCategory(FindProductCategoryRequest) returns (FindProductCategoryResponse);
 
   // Creates a global product.
   rpc CreateGlobalProduct(CreateGlobalProductRequest) returns (CreateGlobalProductResponse);
@@ -289,14 +312,14 @@ service StoreProductService {
   rpc AddProduct(AddStoreProductRequest) returns (AddStoreProductResponse);
 
   // Gets a store product by id.
-  rpc GetStoreProduct(GetStoreProductRequest) returns (GetStoreProductResponse);
+  rpc GetProduct(GetStoreProductRequest) returns (GetStoreProductResponse);
 
   // Updates a store product.
-  rpc UpdateStoreProduct(UpdateStoreProductRequest) returns (UpdateStoreProductResponse);
+  rpc UpdateProduct(UpdateStoreProductRequest) returns (UpdateStoreProductResponse);
 
   // Deletes a store product.
   // Only store products that are not in any orders can be deleted.
-  rpc DeleteStoreProduct(DeleteStoreProductRequest) returns (DeleteStoreProductResponse);
+  rpc DeleteProduct(DeleteStoreProductRequest) returns (DeleteStoreProductResponse);
 
   // Finds products by name.
   rpc FindStoreProducts(FindStoreProductsRequest) returns (FindStoreProductsResponse);
@@ -307,6 +330,6 @@ service StoreProductService {
   // Streams all global products for real-time updates.
   rpc StreamGlobalProducts(StreamGlobalProductsRequest) returns (stream StreamGlobalProductsResponse);
 
-    // Lists products with pagination and filters.
-  rpc ListStoreProducts(ListStoreProductsRequest) returns (ListStoreProductsResponse);
+  // Search products with pagination and filters.
+  rpc SearchProducts(SearchProductsRequest) returns (SearchProductsResponse);
 }

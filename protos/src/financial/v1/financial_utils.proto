@@ -10,13 +10,13 @@ import "inventory/v1/category.proto";
  */
 message InvoiceLineItem {
   string product_id = 1;
-  double quantity = 2;
-  int64 unit_price = 3;
+  int32 quantity = 2;
+  double unit_price = 3;
 
-  int64 subtotal = 4; // quantity * unit_price
+  double subtotal = 4; // quantity * unit_price
   double tax_rate = 5; // 0.20 for 20% VAT
-  int64 tax_amount = 6;
-  int64 total = 7; // subtotal + tax_amount
+  double tax_amount = 6;
+  double total = 7; // subtotal + tax_amount
   string batch_id = 8; // Optional: Batch/lot referenced
   inventory.v1.Internationalized product_name = 9; // The name of the item
 }

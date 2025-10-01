@@ -161,7 +161,7 @@ type DebitNote struct {
 	RecipientId         string                 `protobuf:"bytes,5,opt,name=recipient_id,json=recipientId,proto3" json:"recipient_id,omitempty"` // Supplier
 	Status              DebitNoteStatus        `protobuf:"varint,6,opt,name=status,proto3,enum=financial.v1.DebitNoteStatus" json:"status,omitempty"`
 	Items               []*InvoiceLineItem     `protobuf:"bytes,7,rep,name=items,proto3" json:"items,omitempty"`
-	TotalAmount         int64                  `protobuf:"varint,8,opt,name=total_amount,json=totalAmount,proto3" json:"total_amount,omitempty"` // Negative value
+	TotalAmount         float64                `protobuf:"fixed64,8,opt,name=total_amount,json=totalAmount,proto3" json:"total_amount,omitempty"` // Negative value
 	Currency            string                 `protobuf:"bytes,9,opt,name=currency,proto3" json:"currency,omitempty"`
 	HasInventoryImpact  bool                   `protobuf:"varint,10,opt,name=has_inventory_impact,json=hasInventoryImpact,proto3" json:"has_inventory_impact,omitempty"`
 	RelatedReturnNoteId string                 `protobuf:"bytes,11,opt,name=related_return_note_id,json=relatedReturnNoteId,proto3" json:"related_return_note_id,omitempty"`
@@ -252,7 +252,7 @@ func (x *DebitNote) GetItems() []*InvoiceLineItem {
 	return nil
 }
 
-func (x *DebitNote) GetTotalAmount() int64 {
+func (x *DebitNote) GetTotalAmount() float64 {
 	if x != nil {
 		return x.TotalAmount
 	}
@@ -323,7 +323,7 @@ const file_financial_v1_debit_note_proto_rawDesc = "" +
 	"\frecipient_id\x18\x05 \x01(\tR\vrecipientId\x125\n" +
 	"\x06status\x18\x06 \x01(\x0e2\x1d.financial.v1.DebitNoteStatusR\x06status\x123\n" +
 	"\x05items\x18\a \x03(\v2\x1d.financial.v1.InvoiceLineItemR\x05items\x12!\n" +
-	"\ftotal_amount\x18\b \x01(\x03R\vtotalAmount\x12\x1a\n" +
+	"\ftotal_amount\x18\b \x01(\x01R\vtotalAmount\x12\x1a\n" +
 	"\bcurrency\x18\t \x01(\tR\bcurrency\x120\n" +
 	"\x14has_inventory_impact\x18\n" +
 	" \x01(\bR\x12hasInventoryImpact\x123\n" +

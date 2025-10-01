@@ -6,7 +6,7 @@ import 'package:get_it/get_it.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
-import '../../../repositories/products_repository.dart';
+import '../../../repositories/store_products_repository.dart';
 import '../../../utils/logger.dart';
 import '../../hive_database/hive_database.dart';
 import '../../network_status_provider/network_status_provider.dart';
@@ -22,7 +22,7 @@ class OnlineServiceData {
   final networkStatusProvider = GetIt.I.get<NetworkStatusProvider>();
 
   /// The product repository.
-  final ProductsRepository productsRepository;
+  final StoreProductsRepository productsRepository;
 
   /// Stream controller for store ID changes.
   final _storeIdController = BehaviorSubject<String?>();
@@ -38,7 +38,7 @@ class OnlineServiceData {
 
   /// Contructs a new [OnlineServiceData].
   OnlineServiceData({required connect.Transport transport})
-    : productsRepository = ProductsRepository(transport: transport);
+    : productsRepository = StoreProductsRepository(transport: transport);
 
   /// Gets the current store ID.
   String? get currentStoreId => _currentStoreId;

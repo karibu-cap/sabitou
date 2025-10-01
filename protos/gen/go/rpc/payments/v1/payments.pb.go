@@ -31,7 +31,6 @@ const (
 	PaymentStatus_PAYMENT_STATUS_PENDING     PaymentStatus = 1 // Initiated but not confirmed
 	PaymentStatus_PAYMENT_STATUS_COMPLETED   PaymentStatus = 2 // Money received
 	PaymentStatus_PAYMENT_STATUS_FAILED      PaymentStatus = 3 // Payment didn't go through
-	PaymentStatus_PAYMENT_STATUS_REFUNDED    PaymentStatus = 4 // Money returned
 )
 
 // Enum value maps for PaymentStatus.
@@ -41,14 +40,12 @@ var (
 		1: "PAYMENT_STATUS_PENDING",
 		2: "PAYMENT_STATUS_COMPLETED",
 		3: "PAYMENT_STATUS_FAILED",
-		4: "PAYMENT_STATUS_REFUNDED",
 	}
 	PaymentStatus_value = map[string]int32{
 		"PAYMENT_STATUS_UNSPECIFIED": 0,
 		"PAYMENT_STATUS_PENDING":     1,
 		"PAYMENT_STATUS_COMPLETED":   2,
 		"PAYMENT_STATUS_FAILED":      3,
-		"PAYMENT_STATUS_REFUNDED":    4,
 	}
 )
 
@@ -79,6 +76,67 @@ func (PaymentStatus) EnumDescriptor() ([]byte, []int) {
 	return file_payments_v1_payments_proto_rawDescGZIP(), []int{0}
 }
 
+type PaymentMethod int32
+
+const (
+	PaymentMethod_PAYMENT_METHOD_UNSPECIFIED  PaymentMethod = 0
+	PaymentMethod_PAYMENT_METHOD_CASH         PaymentMethod = 1 // Physical cash
+	PaymentMethod_PAYMENT_METHOD_CREDIT_CARD  PaymentMethod = 2 // Card payment
+	PaymentMethod_PAYMENT_METHOD_MOBILE_MONEY PaymentMethod = 3 // MTN, Orange Money, etc.
+	PaymentMethod_PAYMENT_METHOD_VOUCHER      PaymentMethod = 4 // payment with voucher
+	PaymentMethod_PAYMENT_METHOD_ORANGE_MONEY PaymentMethod = 5 // Orange Money
+	PaymentMethod_PAYMENT_METHOD_MTN_MONEY    PaymentMethod = 6 // MTN Money
+)
+
+// Enum value maps for PaymentMethod.
+var (
+	PaymentMethod_name = map[int32]string{
+		0: "PAYMENT_METHOD_UNSPECIFIED",
+		1: "PAYMENT_METHOD_CASH",
+		2: "PAYMENT_METHOD_CREDIT_CARD",
+		3: "PAYMENT_METHOD_MOBILE_MONEY",
+		4: "PAYMENT_METHOD_VOUCHER",
+		5: "PAYMENT_METHOD_ORANGE_MONEY",
+		6: "PAYMENT_METHOD_MTN_MONEY",
+	}
+	PaymentMethod_value = map[string]int32{
+		"PAYMENT_METHOD_UNSPECIFIED":  0,
+		"PAYMENT_METHOD_CASH":         1,
+		"PAYMENT_METHOD_CREDIT_CARD":  2,
+		"PAYMENT_METHOD_MOBILE_MONEY": 3,
+		"PAYMENT_METHOD_VOUCHER":      4,
+		"PAYMENT_METHOD_ORANGE_MONEY": 5,
+		"PAYMENT_METHOD_MTN_MONEY":    6,
+	}
+)
+
+func (x PaymentMethod) Enum() *PaymentMethod {
+	p := new(PaymentMethod)
+	*p = x
+	return p
+}
+
+func (x PaymentMethod) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (PaymentMethod) Descriptor() protoreflect.EnumDescriptor {
+	return file_payments_v1_payments_proto_enumTypes[1].Descriptor()
+}
+
+func (PaymentMethod) Type() protoreflect.EnumType {
+	return &file_payments_v1_payments_proto_enumTypes[1]
+}
+
+func (x PaymentMethod) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use PaymentMethod.Descriptor instead.
+func (PaymentMethod) EnumDescriptor() ([]byte, []int) {
+	return file_payments_v1_payments_proto_rawDescGZIP(), []int{1}
+}
+
 // *
 // Payment represents money transfer between parties.
 // Links to invoices to track what's been paid.
@@ -97,7 +155,7 @@ type Payment struct {
 	DocumentId       string                 `protobuf:"bytes,1,opt,name=document_id,json=documentId,proto3" json:"document_id,omitempty"` // "PAY-2025-001"
 	PayerId          string                 `protobuf:"bytes,2,opt,name=payer_id,json=payerId,proto3" json:"payer_id,omitempty"`          // Who pays
 	PayeeId          string                 `protobuf:"bytes,3,opt,name=payee_id,json=payeeId,proto3" json:"payee_id,omitempty"`          // Who receives
-	Amount           int64                  `protobuf:"varint,4,opt,name=amount,proto3" json:"amount,omitempty"`                          // Amount in smallest currency unit
+	Amount           float64                `protobuf:"fixed64,4,opt,name=amount,proto3" json:"amount,omitempty"`                         // Amount in smallest currency unit
 	Currency         string                 `protobuf:"bytes,5,opt,name=currency,proto3" json:"currency,omitempty"`
 	PaymentMethod    PaymentMethod          `protobuf:"varint,6,opt,name=payment_method,json=paymentMethod,proto3,enum=payments.v1.PaymentMethod" json:"payment_method,omitempty"`
 	Status           PaymentStatus          `protobuf:"varint,7,opt,name=status,proto3,enum=payments.v1.PaymentStatus" json:"status,omitempty"`
@@ -161,7 +219,7 @@ func (x *Payment) GetPayeeId() string {
 	return ""
 }
 
-func (x *Payment) GetAmount() int64 {
+func (x *Payment) GetAmount() float64 {
 	if x != nil {
 		return x.Amount
 	}
@@ -228,7 +286,7 @@ type CreatePaymentRequest struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
 	PayerId         string                 `protobuf:"bytes,1,opt,name=payer_id,json=payerId,proto3" json:"payer_id,omitempty"` // Company making payment
 	PayeeId         string                 `protobuf:"bytes,2,opt,name=payee_id,json=payeeId,proto3" json:"payee_id,omitempty"` // Company receiving payment
-	Amount          int64                  `protobuf:"varint,3,opt,name=amount,proto3" json:"amount,omitempty"`
+	Amount          float64                `protobuf:"fixed64,3,opt,name=amount,proto3" json:"amount,omitempty"`
 	Currency        string                 `protobuf:"bytes,4,opt,name=currency,proto3" json:"currency,omitempty"`
 	PaymentMethod   PaymentMethod          `protobuf:"varint,5,opt,name=payment_method,json=paymentMethod,proto3,enum=payments.v1.PaymentMethod" json:"payment_method,omitempty"`
 	ReferenceNumber *string                `protobuf:"bytes,7,opt,name=reference_number,json=referenceNumber,proto3,oneof" json:"reference_number,omitempty"` // Bank ref, check number, etc.
@@ -281,7 +339,7 @@ func (x *CreatePaymentRequest) GetPayeeId() string {
 	return ""
 }
 
-func (x *CreatePaymentRequest) GetAmount() int64 {
+func (x *CreatePaymentRequest) GetAmount() float64 {
 	if x != nil {
 		return x.Amount
 	}
@@ -576,7 +634,7 @@ type ListPaymentsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Payments      []*Payment             `protobuf:"bytes,1,rep,name=payments,proto3" json:"payments,omitempty"`
 	TotalCount    int32                  `protobuf:"varint,2,opt,name=total_count,json=totalCount,proto3" json:"total_count,omitempty"`
-	TotalAmount   int64                  `protobuf:"varint,3,opt,name=total_amount,json=totalAmount,proto3" json:"total_amount,omitempty"`
+	TotalAmount   float64                `protobuf:"fixed64,3,opt,name=total_amount,json=totalAmount,proto3" json:"total_amount,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -625,7 +683,7 @@ func (x *ListPaymentsResponse) GetTotalCount() int32 {
 	return 0
 }
 
-func (x *ListPaymentsResponse) GetTotalAmount() int64 {
+func (x *ListPaymentsResponse) GetTotalAmount() float64 {
 	if x != nil {
 		return x.TotalAmount
 	}
@@ -636,7 +694,7 @@ type CreateRefundRequest struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
 	OriginalPaymentId string                 `protobuf:"bytes,1,opt,name=original_payment_id,json=originalPaymentId,proto3" json:"original_payment_id,omitempty"`
 	CreditNoteId      string                 `protobuf:"bytes,2,opt,name=credit_note_id,json=creditNoteId,proto3" json:"credit_note_id,omitempty"` // Reason for refund
-	RefundAmount      int64                  `protobuf:"varint,3,opt,name=refund_amount,json=refundAmount,proto3" json:"refund_amount,omitempty"`
+	RefundAmount      float64                `protobuf:"fixed64,3,opt,name=refund_amount,json=refundAmount,proto3" json:"refund_amount,omitempty"`
 	RefundedByUserId  string                 `protobuf:"bytes,4,opt,name=refunded_by_user_id,json=refundedByUserId,proto3" json:"refunded_by_user_id,omitempty"`
 	Notes             string                 `protobuf:"bytes,5,opt,name=notes,proto3" json:"notes,omitempty"`
 	unknownFields     protoimpl.UnknownFields
@@ -687,7 +745,7 @@ func (x *CreateRefundRequest) GetCreditNoteId() string {
 	return ""
 }
 
-func (x *CreateRefundRequest) GetRefundAmount() int64 {
+func (x *CreateRefundRequest) GetRefundAmount() float64 {
 	if x != nil {
 		return x.RefundAmount
 	}
@@ -778,7 +836,7 @@ const file_payments_v1_payments_proto_rawDesc = "" +
 	"documentId\x12\x19\n" +
 	"\bpayer_id\x18\x02 \x01(\tR\apayerId\x12\x19\n" +
 	"\bpayee_id\x18\x03 \x01(\tR\apayeeId\x12\x16\n" +
-	"\x06amount\x18\x04 \x01(\x03R\x06amount\x12\x1a\n" +
+	"\x06amount\x18\x04 \x01(\x01R\x06amount\x12\x1a\n" +
 	"\bcurrency\x18\x05 \x01(\tR\bcurrency\x12A\n" +
 	"\x0epayment_method\x18\x06 \x01(\x0e2\x1a.payments.v1.PaymentMethodR\rpaymentMethod\x122\n" +
 	"\x06status\x18\a \x01(\x0e2\x1a.payments.v1.PaymentStatusR\x06status\x12,\n" +
@@ -791,7 +849,7 @@ const file_payments_v1_payments_proto_rawDesc = "" +
 	"\x14CreatePaymentRequest\x12\x19\n" +
 	"\bpayer_id\x18\x01 \x01(\tR\apayerId\x12\x19\n" +
 	"\bpayee_id\x18\x02 \x01(\tR\apayeeId\x12\x16\n" +
-	"\x06amount\x18\x03 \x01(\x03R\x06amount\x12\x1a\n" +
+	"\x06amount\x18\x03 \x01(\x01R\x06amount\x12\x1a\n" +
 	"\bcurrency\x18\x04 \x01(\tR\bcurrency\x12A\n" +
 	"\x0epayment_method\x18\x05 \x01(\x0e2\x1a.payments.v1.PaymentMethodR\rpaymentMethod\x12.\n" +
 	"\x10reference_number\x18\a \x01(\tH\x00R\x0freferenceNumber\x88\x01\x01\x12\x19\n" +
@@ -824,23 +882,30 @@ const file_payments_v1_payments_proto_rawDesc = "" +
 	"\bpayments\x18\x01 \x03(\v2\x14.payments.v1.PaymentR\bpayments\x12\x1f\n" +
 	"\vtotal_count\x18\x02 \x01(\x05R\n" +
 	"totalCount\x12!\n" +
-	"\ftotal_amount\x18\x03 \x01(\x03R\vtotalAmount\"\xd5\x01\n" +
+	"\ftotal_amount\x18\x03 \x01(\x01R\vtotalAmount\"\xd5\x01\n" +
 	"\x13CreateRefundRequest\x12.\n" +
 	"\x13original_payment_id\x18\x01 \x01(\tR\x11originalPaymentId\x12$\n" +
 	"\x0ecredit_note_id\x18\x02 \x01(\tR\fcreditNoteId\x12#\n" +
-	"\rrefund_amount\x18\x03 \x01(\x03R\frefundAmount\x12-\n" +
+	"\rrefund_amount\x18\x03 \x01(\x01R\frefundAmount\x12-\n" +
 	"\x13refunded_by_user_id\x18\x04 \x01(\tR\x10refundedByUserId\x12\x14\n" +
 	"\x05notes\x18\x05 \x01(\tR\x05notes\"\x99\x01\n" +
 	"\x14CreateRefundResponse\x12*\n" +
 	"\x11refund_payment_id\x18\x01 \x01(\tR\x0frefundPaymentId\x12;\n" +
 	"\x0erefund_payment\x18\x02 \x01(\v2\x14.payments.v1.PaymentR\rrefundPayment\x12\x18\n" +
-	"\amessage\x18\x03 \x01(\tR\amessage*\xa1\x01\n" +
+	"\amessage\x18\x03 \x01(\tR\amessage*\x84\x01\n" +
 	"\rPaymentStatus\x12\x1e\n" +
 	"\x1aPAYMENT_STATUS_UNSPECIFIED\x10\x00\x12\x1a\n" +
 	"\x16PAYMENT_STATUS_PENDING\x10\x01\x12\x1c\n" +
 	"\x18PAYMENT_STATUS_COMPLETED\x10\x02\x12\x19\n" +
-	"\x15PAYMENT_STATUS_FAILED\x10\x03\x12\x1b\n" +
-	"\x17PAYMENT_STATUS_REFUNDED\x10\x042\xe1\x02\n" +
+	"\x15PAYMENT_STATUS_FAILED\x10\x03*\xe4\x01\n" +
+	"\rPaymentMethod\x12\x1e\n" +
+	"\x1aPAYMENT_METHOD_UNSPECIFIED\x10\x00\x12\x17\n" +
+	"\x13PAYMENT_METHOD_CASH\x10\x01\x12\x1e\n" +
+	"\x1aPAYMENT_METHOD_CREDIT_CARD\x10\x02\x12\x1f\n" +
+	"\x1bPAYMENT_METHOD_MOBILE_MONEY\x10\x03\x12\x1a\n" +
+	"\x16PAYMENT_METHOD_VOUCHER\x10\x04\x12\x1f\n" +
+	"\x1bPAYMENT_METHOD_ORANGE_MONEY\x10\x05\x12\x1c\n" +
+	"\x18PAYMENT_METHOD_MTN_MONEY\x10\x062\xe1\x02\n" +
 	"\x0ePaymentService\x12V\n" +
 	"\rCreatePayment\x12!.payments.v1.CreatePaymentRequest\x1a\".payments.v1.CreatePaymentResponse\x12M\n" +
 	"\n" +
@@ -861,46 +926,46 @@ func file_payments_v1_payments_proto_rawDescGZIP() []byte {
 	return file_payments_v1_payments_proto_rawDescData
 }
 
-var file_payments_v1_payments_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_payments_v1_payments_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
 var file_payments_v1_payments_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_payments_v1_payments_proto_goTypes = []any{
 	(PaymentStatus)(0),            // 0: payments.v1.PaymentStatus
-	(*Payment)(nil),               // 1: payments.v1.Payment
-	(*CreatePaymentRequest)(nil),  // 2: payments.v1.CreatePaymentRequest
-	(*CreatePaymentResponse)(nil), // 3: payments.v1.CreatePaymentResponse
-	(*GetPaymentRequest)(nil),     // 4: payments.v1.GetPaymentRequest
-	(*GetPaymentResponse)(nil),    // 5: payments.v1.GetPaymentResponse
-	(*ListPaymentsRequest)(nil),   // 6: payments.v1.ListPaymentsRequest
-	(*ListPaymentsResponse)(nil),  // 7: payments.v1.ListPaymentsResponse
-	(*CreateRefundRequest)(nil),   // 8: payments.v1.CreateRefundRequest
-	(*CreateRefundResponse)(nil),  // 9: payments.v1.CreateRefundResponse
-	(PaymentMethod)(0),            // 10: payments.v1.PaymentMethod
+	(PaymentMethod)(0),            // 1: payments.v1.PaymentMethod
+	(*Payment)(nil),               // 2: payments.v1.Payment
+	(*CreatePaymentRequest)(nil),  // 3: payments.v1.CreatePaymentRequest
+	(*CreatePaymentResponse)(nil), // 4: payments.v1.CreatePaymentResponse
+	(*GetPaymentRequest)(nil),     // 5: payments.v1.GetPaymentRequest
+	(*GetPaymentResponse)(nil),    // 6: payments.v1.GetPaymentResponse
+	(*ListPaymentsRequest)(nil),   // 7: payments.v1.ListPaymentsRequest
+	(*ListPaymentsResponse)(nil),  // 8: payments.v1.ListPaymentsResponse
+	(*CreateRefundRequest)(nil),   // 9: payments.v1.CreateRefundRequest
+	(*CreateRefundResponse)(nil),  // 10: payments.v1.CreateRefundResponse
 	(*timestamppb.Timestamp)(nil), // 11: google.protobuf.Timestamp
 	(*v1.Invoice)(nil),            // 12: financial.v1.Invoice
 }
 var file_payments_v1_payments_proto_depIdxs = []int32{
-	10, // 0: payments.v1.Payment.payment_method:type_name -> payments.v1.PaymentMethod
+	1,  // 0: payments.v1.Payment.payment_method:type_name -> payments.v1.PaymentMethod
 	0,  // 1: payments.v1.Payment.status:type_name -> payments.v1.PaymentStatus
 	11, // 2: payments.v1.Payment.payment_date:type_name -> google.protobuf.Timestamp
-	10, // 3: payments.v1.CreatePaymentRequest.payment_method:type_name -> payments.v1.PaymentMethod
-	1,  // 4: payments.v1.CreatePaymentResponse.payment:type_name -> payments.v1.Payment
+	1,  // 3: payments.v1.CreatePaymentRequest.payment_method:type_name -> payments.v1.PaymentMethod
+	2,  // 4: payments.v1.CreatePaymentResponse.payment:type_name -> payments.v1.Payment
 	12, // 5: payments.v1.CreatePaymentResponse.updated_invoice:type_name -> financial.v1.Invoice
-	1,  // 6: payments.v1.GetPaymentResponse.payment:type_name -> payments.v1.Payment
+	2,  // 6: payments.v1.GetPaymentResponse.payment:type_name -> payments.v1.Payment
 	12, // 7: payments.v1.GetPaymentResponse.related_invoice:type_name -> financial.v1.Invoice
-	10, // 8: payments.v1.ListPaymentsRequest.method:type_name -> payments.v1.PaymentMethod
+	1,  // 8: payments.v1.ListPaymentsRequest.method:type_name -> payments.v1.PaymentMethod
 	0,  // 9: payments.v1.ListPaymentsRequest.status:type_name -> payments.v1.PaymentStatus
 	11, // 10: payments.v1.ListPaymentsRequest.start_date:type_name -> google.protobuf.Timestamp
 	11, // 11: payments.v1.ListPaymentsRequest.end_date:type_name -> google.protobuf.Timestamp
-	1,  // 12: payments.v1.ListPaymentsResponse.payments:type_name -> payments.v1.Payment
-	1,  // 13: payments.v1.CreateRefundResponse.refund_payment:type_name -> payments.v1.Payment
-	2,  // 14: payments.v1.PaymentService.CreatePayment:input_type -> payments.v1.CreatePaymentRequest
-	4,  // 15: payments.v1.PaymentService.GetPayment:input_type -> payments.v1.GetPaymentRequest
-	6,  // 16: payments.v1.PaymentService.ListPayments:input_type -> payments.v1.ListPaymentsRequest
-	8,  // 17: payments.v1.PaymentService.CreateRefund:input_type -> payments.v1.CreateRefundRequest
-	3,  // 18: payments.v1.PaymentService.CreatePayment:output_type -> payments.v1.CreatePaymentResponse
-	5,  // 19: payments.v1.PaymentService.GetPayment:output_type -> payments.v1.GetPaymentResponse
-	7,  // 20: payments.v1.PaymentService.ListPayments:output_type -> payments.v1.ListPaymentsResponse
-	9,  // 21: payments.v1.PaymentService.CreateRefund:output_type -> payments.v1.CreateRefundResponse
+	2,  // 12: payments.v1.ListPaymentsResponse.payments:type_name -> payments.v1.Payment
+	2,  // 13: payments.v1.CreateRefundResponse.refund_payment:type_name -> payments.v1.Payment
+	3,  // 14: payments.v1.PaymentService.CreatePayment:input_type -> payments.v1.CreatePaymentRequest
+	5,  // 15: payments.v1.PaymentService.GetPayment:input_type -> payments.v1.GetPaymentRequest
+	7,  // 16: payments.v1.PaymentService.ListPayments:input_type -> payments.v1.ListPaymentsRequest
+	9,  // 17: payments.v1.PaymentService.CreateRefund:input_type -> payments.v1.CreateRefundRequest
+	4,  // 18: payments.v1.PaymentService.CreatePayment:output_type -> payments.v1.CreatePaymentResponse
+	6,  // 19: payments.v1.PaymentService.GetPayment:output_type -> payments.v1.GetPaymentResponse
+	8,  // 20: payments.v1.PaymentService.ListPayments:output_type -> payments.v1.ListPaymentsResponse
+	10, // 21: payments.v1.PaymentService.CreateRefund:output_type -> payments.v1.CreateRefundResponse
 	18, // [18:22] is the sub-list for method output_type
 	14, // [14:18] is the sub-list for method input_type
 	14, // [14:14] is the sub-list for extension type_name
@@ -920,7 +985,7 @@ func file_payments_v1_payments_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_payments_v1_payments_proto_rawDesc), len(file_payments_v1_payments_proto_rawDesc)),
-			NumEnums:      1,
+			NumEnums:      2,
 			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   1,

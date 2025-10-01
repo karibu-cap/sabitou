@@ -66,9 +66,9 @@ const InventoryTransaction$json = {
       '6': '.audits.v1.TransactionType',
       '10': 'transactionType'
     },
-    {'1': 'quantity_change', '3': 5, '4': 1, '5': 1, '10': 'quantityChange'},
-    {'1': 'quantity_before', '3': 6, '4': 1, '5': 1, '10': 'quantityBefore'},
-    {'1': 'quantity_after', '3': 7, '4': 1, '5': 1, '10': 'quantityAfter'},
+    {'1': 'quantity_change', '3': 5, '4': 1, '5': 5, '10': 'quantityChange'},
+    {'1': 'quantity_before', '3': 6, '4': 1, '5': 5, '10': 'quantityBefore'},
+    {'1': 'quantity_after', '3': 7, '4': 1, '5': 5, '10': 'quantityAfter'},
     {
       '1': 'related_document_type',
       '3': 8,
@@ -111,9 +111,9 @@ final $typed_data.Uint8List inventoryTransactionDescriptor = $convert.base64Deco
     'ChRJbnZlbnRvcnlUcmFuc2FjdGlvbhIsCgtkb2N1bWVudF9pZBgBIAEoCUIGukgDyAEBSABSCm'
     'RvY3VtZW50SWSIAQESGQoIc3RvcmVfaWQYAiABKAlSB3N0b3JlSWQSHQoKcHJvZHVjdF9pZBgD'
     'IAEoCVIJcHJvZHVjdElkEkUKEHRyYW5zYWN0aW9uX3R5cGUYBCABKA4yGi5hdWRpdHMudjEuVH'
-    'JhbnNhY3Rpb25UeXBlUg90cmFuc2FjdGlvblR5cGUSJwoPcXVhbnRpdHlfY2hhbmdlGAUgASgB'
-    'Ug5xdWFudGl0eUNoYW5nZRInCg9xdWFudGl0eV9iZWZvcmUYBiABKAFSDnF1YW50aXR5QmVmb3'
-    'JlEiUKDnF1YW50aXR5X2FmdGVyGAcgASgBUg1xdWFudGl0eUFmdGVyEjIKFXJlbGF0ZWRfZG9j'
+    'JhbnNhY3Rpb25UeXBlUg90cmFuc2FjdGlvblR5cGUSJwoPcXVhbnRpdHlfY2hhbmdlGAUgASgF'
+    'Ug5xdWFudGl0eUNoYW5nZRInCg9xdWFudGl0eV9iZWZvcmUYBiABKAVSDnF1YW50aXR5QmVmb3'
+    'JlEiUKDnF1YW50aXR5X2FmdGVyGAcgASgFUg1xdWFudGl0eUFmdGVyEjIKFXJlbGF0ZWRfZG9j'
     'dW1lbnRfdHlwZRgIIAEoCVITcmVsYXRlZERvY3VtZW50VHlwZRIuChNyZWxhdGVkX2RvY3VtZW'
     '50X2lkGAkgASgJUhFyZWxhdGVkRG9jdW1lbnRJZBIvChRwZXJmb3JtZWRfYnlfdXNlcl9pZBgK'
     'IAEoCVIRcGVyZm9ybWVkQnlVc2VySWQSRQoQdHJhbnNhY3Rpb25fdGltZRgLIAEoCzIaLmdvb2'

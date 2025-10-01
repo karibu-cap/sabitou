@@ -141,7 +141,7 @@ const GetSalesReportResponse$json = {
       '1': 'total_sales_amount',
       '3': 2,
       '4': 1,
-      '5': 3,
+      '5': 1,
       '10': 'totalSalesAmount'
     },
     {
@@ -156,7 +156,7 @@ const GetSalesReportResponse$json = {
       '1': 'average_transaction_value',
       '3': 5,
       '4': 1,
-      '5': 3,
+      '5': 1,
       '10': 'averageTransactionValue'
     },
   ],
@@ -165,10 +165,10 @@ const GetSalesReportResponse$json = {
 /// Descriptor for `GetSalesReportResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List getSalesReportResponseDescriptor = $convert.base64Decode(
     'ChZHZXRTYWxlc1JlcG9ydFJlc3BvbnNlEjYKCXN1bW1hcmllcxgBIAMoCzIYLnJlcG9ydHMudj'
-    'EuU2FsZXNTdW1tYXJ5UglzdW1tYXJpZXMSLAoSdG90YWxfc2FsZXNfYW1vdW50GAIgASgDUhB0'
+    'EuU2FsZXNTdW1tYXJ5UglzdW1tYXJpZXMSLAoSdG90YWxfc2FsZXNfYW1vdW50GAIgASgBUhB0'
     'b3RhbFNhbGVzQW1vdW50Ei0KEnRvdGFsX3RyYW5zYWN0aW9ucxgDIAEoBVIRdG90YWxUcmFuc2'
     'FjdGlvbnMSKAoQdG90YWxfdW5pdHNfc29sZBgEIAEoBVIOdG90YWxVbml0c1NvbGQSOgoZYXZl'
-    'cmFnZV90cmFuc2FjdGlvbl92YWx1ZRgFIAEoA1IXYXZlcmFnZVRyYW5zYWN0aW9uVmFsdWU=');
+    'cmFnZV90cmFuc2FjdGlvbl92YWx1ZRgFIAEoAVIXYXZlcmFnZVRyYW5zYWN0aW9uVmFsdWU=');
 
 @$core.Deprecated('Use salesSummaryDescriptor instead')
 const SalesSummary$json = {
@@ -190,7 +190,7 @@ const SalesSummary$json = {
       '6': '.google.protobuf.Timestamp',
       '10': 'periodEnd'
     },
-    {'1': 'sales_amount', '3': 3, '4': 1, '5': 3, '10': 'salesAmount'},
+    {'1': 'sales_amount', '3': 3, '4': 1, '5': 1, '10': 'salesAmount'},
     {
       '1': 'transaction_count',
       '3': 4,
@@ -206,7 +206,7 @@ const SalesSummary$json = {
 final $typed_data.Uint8List salesSummaryDescriptor = $convert.base64Decode(
     'CgxTYWxlc1N1bW1hcnkSPQoMcGVyaW9kX3N0YXJ0GAEgASgLMhouZ29vZ2xlLnByb3RvYnVmLl'
     'RpbWVzdGFtcFILcGVyaW9kU3RhcnQSOQoKcGVyaW9kX2VuZBgCIAEoCzIaLmdvb2dsZS5wcm90'
-    'b2J1Zi5UaW1lc3RhbXBSCXBlcmlvZEVuZBIhCgxzYWxlc19hbW91bnQYAyABKANSC3NhbGVzQW'
+    'b2J1Zi5UaW1lc3RhbXBSCXBlcmlvZEVuZBIhCgxzYWxlc19hbW91bnQYAyABKAFSC3NhbGVzQW'
     '1vdW50EisKEXRyYW5zYWN0aW9uX2NvdW50GAQgASgFUhB0cmFuc2FjdGlvbkNvdW50Eh0KCnVu'
     'aXRzX3NvbGQYBSABKAVSCXVuaXRzU29sZA==');
 
@@ -269,7 +269,7 @@ const GetPurchaseReportResponse$json = {
       '1': 'total_purchase_amount',
       '3': 2,
       '4': 1,
-      '5': 3,
+      '5': 1,
       '10': 'totalPurchaseAmount'
     },
     {
@@ -293,7 +293,7 @@ const GetPurchaseReportResponse$json = {
 final $typed_data.Uint8List getPurchaseReportResponseDescriptor = $convert.base64Decode(
     'ChlHZXRQdXJjaGFzZVJlcG9ydFJlc3BvbnNlEjkKCXN1bW1hcmllcxgBIAMoCzIbLnJlcG9ydH'
     'MudjEuUHVyY2hhc2VTdW1tYXJ5UglzdW1tYXJpZXMSMgoVdG90YWxfcHVyY2hhc2VfYW1vdW50'
-    'GAIgASgDUhN0b3RhbFB1cmNoYXNlQW1vdW50EjIKFXRvdGFsX3B1cmNoYXNlX29yZGVycxgDIA'
+    'GAIgASgBUhN0b3RhbFB1cmNoYXNlQW1vdW50EjIKFXRvdGFsX3B1cmNoYXNlX29yZGVycxgDIA'
     'EoBVITdG90YWxQdXJjaGFzZU9yZGVycxIyChV0b3RhbF91bml0c19wdXJjaGFzZWQYBCABKAVS'
     'E3RvdGFsVW5pdHNQdXJjaGFzZWQ=');
 
@@ -317,7 +317,7 @@ const PurchaseSummary$json = {
       '6': '.google.protobuf.Timestamp',
       '10': 'periodEnd'
     },
-    {'1': 'purchase_amount', '3': 3, '4': 1, '5': 3, '10': 'purchaseAmount'},
+    {'1': 'purchase_amount', '3': 3, '4': 1, '5': 1, '10': 'purchaseAmount'},
     {
       '1': 'purchase_order_count',
       '3': 4,
@@ -333,7 +333,7 @@ const PurchaseSummary$json = {
 final $typed_data.Uint8List purchaseSummaryDescriptor = $convert.base64Decode(
     'Cg9QdXJjaGFzZVN1bW1hcnkSPQoMcGVyaW9kX3N0YXJ0GAEgASgLMhouZ29vZ2xlLnByb3RvYn'
     'VmLlRpbWVzdGFtcFILcGVyaW9kU3RhcnQSOQoKcGVyaW9kX2VuZBgCIAEoCzIaLmdvb2dsZS5w'
-    'cm90b2J1Zi5UaW1lc3RhbXBSCXBlcmlvZEVuZBInCg9wdXJjaGFzZV9hbW91bnQYAyABKANSDn'
+    'cm90b2J1Zi5UaW1lc3RhbXBSCXBlcmlvZEVuZBInCg9wdXJjaGFzZV9hbW91bnQYAyABKAFSDn'
     'B1cmNoYXNlQW1vdW50EjAKFHB1cmNoYXNlX29yZGVyX2NvdW50GAQgASgFUhJwdXJjaGFzZU9y'
     'ZGVyQ291bnQSJwoPdW5pdHNfcHVyY2hhc2VkGAUgASgFUg51bml0c1B1cmNoYXNlZA==');
 
@@ -494,7 +494,7 @@ const BestSellingProduct$json = {
       '10': 'product'
     },
     {'1': 'units_sold', '3': 2, '4': 1, '5': 5, '10': 'unitsSold'},
-    {'1': 'total_revenue', '3': 3, '4': 1, '5': 3, '10': 'totalRevenue'},
+    {'1': 'total_revenue', '3': 3, '4': 1, '5': 1, '10': 'totalRevenue'},
     {
       '1': 'transaction_count',
       '3': 4,
@@ -511,7 +511,7 @@ const BestSellingProduct$json = {
 final $typed_data.Uint8List bestSellingProductDescriptor = $convert.base64Decode(
     'ChJCZXN0U2VsbGluZ1Byb2R1Y3QSNAoHcHJvZHVjdBgBIAEoCzIaLmludmVudG9yeS52MS5TdG'
     '9yZVByb2R1Y3RSB3Byb2R1Y3QSHQoKdW5pdHNfc29sZBgCIAEoBVIJdW5pdHNTb2xkEiMKDXRv'
-    'dGFsX3JldmVudWUYAyABKANSDHRvdGFsUmV2ZW51ZRIrChF0cmFuc2FjdGlvbl9jb3VudBgEIA'
+    'dGFsX3JldmVudWUYAyABKAFSDHRvdGFsUmV2ZW51ZRIrChF0cmFuc2FjdGlvbl9jb3VudBgEIA'
     'EoBVIQdHJhbnNhY3Rpb25Db3VudBIgCgtwcm9kdWN0TmFtZRgFIAEoCVILcHJvZHVjdE5hbWUS'
     'EgoEcmFuaxgGIAEoBVIEcmFuaw==');
 
@@ -567,13 +567,13 @@ const GetStorePurchaseHistoryResponse$json = {
       '6': '.financial.v1.Invoice',
       '10': 'invoices'
     },
-    {'1': 'total_purchases', '3': 3, '4': 1, '5': 3, '10': 'totalPurchases'},
-    {'1': 'total_paid', '3': 4, '4': 1, '5': 3, '10': 'totalPaid'},
+    {'1': 'total_purchases', '3': 3, '4': 1, '5': 1, '10': 'totalPurchases'},
+    {'1': 'total_paid', '3': 4, '4': 1, '5': 1, '10': 'totalPaid'},
     {
       '1': 'outstanding_balance',
       '3': 5,
       '4': 1,
-      '5': 3,
+      '5': 1,
       '10': 'outstandingBalance'
     },
     {
@@ -598,9 +598,9 @@ const GetStorePurchaseHistoryResponse$json = {
 final $typed_data.Uint8List getStorePurchaseHistoryResponseDescriptor = $convert.base64Decode(
     'Ch9HZXRTdG9yZVB1cmNoYXNlSGlzdG9yeVJlc3BvbnNlEiUKBXN0b3JlGAEgASgLMg8uc3Rvcm'
     'UudjEuU3RvcmVSBXN0b3JlEjEKCGludm9pY2VzGAIgAygLMhUuZmluYW5jaWFsLnYxLkludm9p'
-    'Y2VSCGludm9pY2VzEicKD3RvdGFsX3B1cmNoYXNlcxgDIAEoA1IOdG90YWxQdXJjaGFzZXMSHQ'
-    'oKdG90YWxfcGFpZBgEIAEoA1IJdG90YWxQYWlkEi8KE291dHN0YW5kaW5nX2JhbGFuY2UYBSAB'
-    'KANSEm91dHN0YW5kaW5nQmFsYW5jZRIrChF0cmFuc2FjdGlvbl9jb3VudBgGIAEoBVIQdHJhbn'
+    'Y2VSCGludm9pY2VzEicKD3RvdGFsX3B1cmNoYXNlcxgDIAEoAVIOdG90YWxQdXJjaGFzZXMSHQ'
+    'oKdG90YWxfcGFpZBgEIAEoAVIJdG90YWxQYWlkEi8KE291dHN0YW5kaW5nX2JhbGFuY2UYBSAB'
+    'KAFSEm91dHN0YW5kaW5nQmFsYW5jZRIrChF0cmFuc2FjdGlvbl9jb3VudBgGIAEoBVIQdHJhbn'
     'NhY3Rpb25Db3VudBJIChJsYXN0X3B1cmNoYXNlX2RhdGUYByABKAsyGi5nb29nbGUucHJvdG9i'
     'dWYuVGltZXN0YW1wUhBsYXN0UHVyY2hhc2VEYXRl');
 
@@ -659,7 +659,7 @@ const GetSupplierPerformanceReportResponse$json = {
       '1': 'total_purchase_value',
       '3': 3,
       '4': 1,
-      '5': 3,
+      '5': 1,
       '10': 'totalPurchaseValue'
     },
     {
@@ -693,7 +693,7 @@ final $typed_data.Uint8List getSupplierPerformanceReportResponseDescriptor = $co
     'CiRHZXRTdXBwbGllclBlcmZvcm1hbmNlUmVwb3J0UmVzcG9uc2USLgoIc3VwcGxpZXIYASABKA'
     'syEi5zdG9yZS52MS5TdXBwbGllclIIc3VwcGxpZXISMgoVdG90YWxfcHVyY2hhc2Vfb3JkZXJz'
     'GAIgASgFUhN0b3RhbFB1cmNoYXNlT3JkZXJzEjAKFHRvdGFsX3B1cmNoYXNlX3ZhbHVlGAMgAS'
-    'gDUhJ0b3RhbFB1cmNoYXNlVmFsdWUSLAoSb25fdGltZV9kZWxpdmVyaWVzGAQgASgFUhBvblRp'
+    'gBUhJ0b3RhbFB1cmNoYXNlVmFsdWUSLAoSb25fdGltZV9kZWxpdmVyaWVzGAQgASgFUhBvblRp'
     'bWVEZWxpdmVyaWVzEicKD2xhdGVfZGVsaXZlcmllcxgFIAEoBVIObGF0ZURlbGl2ZXJpZXMSLA'
     'oSb25fdGltZV9wZXJjZW50YWdlGAYgASgBUhBvblRpbWVQZXJjZW50YWdlEiUKDnF1YWxpdHlf'
     'aXNzdWVzGAcgASgFUg1xdWFsaXR5SXNzdWVzEjsKGmF2ZXJhZ2VfZGVsaXZlcnlfdGltZV9kYX'
@@ -745,15 +745,15 @@ final $typed_data.Uint8List getProfitLossReportRequestDescriptor = $convert.base
 const GetProfitLossReportResponse$json = {
   '1': 'GetProfitLossReportResponse',
   '2': [
-    {'1': 'total_revenue', '3': 1, '4': 1, '5': 3, '10': 'totalRevenue'},
+    {'1': 'total_revenue', '3': 1, '4': 1, '5': 1, '10': 'totalRevenue'},
     {
       '1': 'cost_of_goods_sold',
       '3': 2,
       '4': 1,
-      '5': 3,
+      '5': 1,
       '10': 'costOfGoodsSold'
     },
-    {'1': 'gross_profit', '3': 3, '4': 1, '5': 3, '10': 'grossProfit'},
+    {'1': 'gross_profit', '3': 3, '4': 1, '5': 1, '10': 'grossProfit'},
     {
       '1': 'gross_profit_margin',
       '3': 4,
@@ -761,26 +761,26 @@ const GetProfitLossReportResponse$json = {
       '5': 1,
       '10': 'grossProfitMargin'
     },
-    {'1': 'returns_value', '3': 5, '4': 1, '5': 3, '10': 'returnsValue'},
+    {'1': 'returns_value', '3': 5, '4': 1, '5': 1, '10': 'returnsValue'},
     {
       '1': 'adjustments_value',
       '3': 6,
       '4': 1,
-      '5': 3,
+      '5': 1,
       '10': 'adjustmentsValue'
     },
-    {'1': 'net_profit', '3': 7, '4': 1, '5': 3, '10': 'netProfit'},
+    {'1': 'net_profit', '3': 7, '4': 1, '5': 1, '10': 'netProfit'},
   ],
 };
 
 /// Descriptor for `GetProfitLossReportResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List getProfitLossReportResponseDescriptor = $convert.base64Decode(
-    'ChtHZXRQcm9maXRMb3NzUmVwb3J0UmVzcG9uc2USIwoNdG90YWxfcmV2ZW51ZRgBIAEoA1IMdG'
-    '90YWxSZXZlbnVlEisKEmNvc3Rfb2ZfZ29vZHNfc29sZBgCIAEoA1IPY29zdE9mR29vZHNTb2xk'
-    'EiEKDGdyb3NzX3Byb2ZpdBgDIAEoA1ILZ3Jvc3NQcm9maXQSLgoTZ3Jvc3NfcHJvZml0X21hcm'
-    'dpbhgEIAEoAVIRZ3Jvc3NQcm9maXRNYXJnaW4SIwoNcmV0dXJuc192YWx1ZRgFIAEoA1IMcmV0'
-    'dXJuc1ZhbHVlEisKEWFkanVzdG1lbnRzX3ZhbHVlGAYgASgDUhBhZGp1c3RtZW50c1ZhbHVlEh'
-    '0KCm5ldF9wcm9maXQYByABKANSCW5ldFByb2ZpdA==');
+    'ChtHZXRQcm9maXRMb3NzUmVwb3J0UmVzcG9uc2USIwoNdG90YWxfcmV2ZW51ZRgBIAEoAVIMdG'
+    '90YWxSZXZlbnVlEisKEmNvc3Rfb2ZfZ29vZHNfc29sZBgCIAEoAVIPY29zdE9mR29vZHNTb2xk'
+    'EiEKDGdyb3NzX3Byb2ZpdBgDIAEoAVILZ3Jvc3NQcm9maXQSLgoTZ3Jvc3NfcHJvZml0X21hcm'
+    'dpbhgEIAEoAVIRZ3Jvc3NQcm9maXRNYXJnaW4SIwoNcmV0dXJuc192YWx1ZRgFIAEoAVIMcmV0'
+    'dXJuc1ZhbHVlEisKEWFkanVzdG1lbnRzX3ZhbHVlGAYgASgBUhBhZGp1c3RtZW50c1ZhbHVlEh'
+    '0KCm5ldF9wcm9maXQYByABKAFSCW5ldFByb2ZpdA==');
 
 @$core.Deprecated('Use getStockAgingReportRequestDescriptor instead')
 const GetStockAgingReportRequest$json = {
@@ -830,12 +830,12 @@ const GetStockAgingReportResponse$json = {
       '6': '.reports.v1.StockAgingItem',
       '10': 'items'
     },
-    {'1': 'total_stock_value', '3': 2, '4': 1, '5': 3, '10': 'totalStockValue'},
+    {'1': 'total_stock_value', '3': 2, '4': 1, '5': 1, '10': 'totalStockValue'},
     {
       '1': 'slow_moving_stock_value',
       '3': 3,
       '4': 1,
-      '5': 3,
+      '5': 1,
       '10': 'slowMovingStockValue'
     },
   ],
@@ -844,8 +844,8 @@ const GetStockAgingReportResponse$json = {
 /// Descriptor for `GetStockAgingReportResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List getStockAgingReportResponseDescriptor = $convert.base64Decode(
     'ChtHZXRTdG9ja0FnaW5nUmVwb3J0UmVzcG9uc2USMAoFaXRlbXMYASADKAsyGi5yZXBvcnRzLn'
-    'YxLlN0b2NrQWdpbmdJdGVtUgVpdGVtcxIqChF0b3RhbF9zdG9ja192YWx1ZRgCIAEoA1IPdG90'
-    'YWxTdG9ja1ZhbHVlEjUKF3Nsb3dfbW92aW5nX3N0b2NrX3ZhbHVlGAMgASgDUhRzbG93TW92aW'
+    'YxLlN0b2NrQWdpbmdJdGVtUgVpdGVtcxIqChF0b3RhbF9zdG9ja192YWx1ZRgCIAEoAVIPdG90'
+    'YWxTdG9ja1ZhbHVlEjUKF3Nsb3dfbW92aW5nX3N0b2NrX3ZhbHVlGAMgASgBUhRzbG93TW92aW'
     '5nU3RvY2tWYWx1ZQ==');
 
 @$core.Deprecated('Use stockAgingItemDescriptor instead')
@@ -861,7 +861,7 @@ const StockAgingItem$json = {
       '10': 'product'
     },
     {'1': 'quantity', '3': 2, '4': 1, '5': 1, '10': 'quantity'},
-    {'1': 'stock_value', '3': 3, '4': 1, '5': 3, '10': 'stockValue'},
+    {'1': 'stock_value', '3': 3, '4': 1, '5': 1, '10': 'stockValue'},
     {
       '1': 'last_movement_date',
       '3': 4,
@@ -892,7 +892,7 @@ const StockAgingItem$json = {
 final $typed_data.Uint8List stockAgingItemDescriptor = $convert.base64Decode(
     'Cg5TdG9ja0FnaW5nSXRlbRI0Cgdwcm9kdWN0GAEgASgLMhouaW52ZW50b3J5LnYxLlN0b3JlUH'
     'JvZHVjdFIHcHJvZHVjdBIaCghxdWFudGl0eRgCIAEoAVIIcXVhbnRpdHkSHwoLc3RvY2tfdmFs'
-    'dWUYAyABKANSCnN0b2NrVmFsdWUSSAoSbGFzdF9tb3ZlbWVudF9kYXRlGAQgASgLMhouZ29vZ2'
+    'dWUYAyABKAFSCnN0b2NrVmFsdWUSSAoSbGFzdF9tb3ZlbWVudF9kYXRlGAQgASgLMhouZ29vZ2'
     'xlLnByb3RvYnVmLlRpbWVzdGFtcFIQbGFzdE1vdmVtZW50RGF0ZRI3ChhkYXlzX3NpbmNlX2xh'
     'c3RfbW92ZW1lbnQYBSABKAVSFWRheXNTaW5jZUxhc3RNb3ZlbWVudBJOChFtb3ZlbWVudF9jYX'
     'RlZ29yeRgGIAEoDjIhLnJlcG9ydHMudjEuU3RvY2tNb3ZlbWVudENhdGVnb3J5UhBtb3ZlbWVu'
@@ -972,7 +972,7 @@ const GetInventoryReportResponse$json = {
   '1': 'GetInventoryReportResponse',
   '2': [
     {'1': 'total_products', '3': 1, '4': 1, '5': 5, '10': 'totalProducts'},
-    {'1': 'total_value', '3': 2, '4': 1, '5': 3, '10': 'totalValue'},
+    {'1': 'total_value', '3': 2, '4': 1, '5': 1, '10': 'totalValue'},
     {'1': 'low_stock_count', '3': 3, '4': 1, '5': 5, '10': 'lowStockCount'},
     {
       '1': 'aging_items',
@@ -1020,7 +1020,7 @@ const GetInventoryReportResponse$json = {
 /// Descriptor for `GetInventoryReportResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List getInventoryReportResponseDescriptor = $convert.base64Decode(
     'ChpHZXRJbnZlbnRvcnlSZXBvcnRSZXNwb25zZRIlCg50b3RhbF9wcm9kdWN0cxgBIAEoBVINdG'
-    '90YWxQcm9kdWN0cxIfCgt0b3RhbF92YWx1ZRgCIAEoA1IKdG90YWxWYWx1ZRImCg9sb3dfc3Rv'
+    '90YWxQcm9kdWN0cxIfCgt0b3RhbF92YWx1ZRgCIAEoAVIKdG90YWxWYWx1ZRImCg9sb3dfc3Rv'
     'Y2tfY291bnQYAyABKAVSDWxvd1N0b2NrQ291bnQSOwoLYWdpbmdfaXRlbXMYBCADKAsyGi5yZX'
     'BvcnRzLnYxLlN0b2NrQWdpbmdJdGVtUgphZ2luZ0l0ZW1zEk8KEG1vdmVtZW50X3N1bW1hcnkY'
     'BSABKAsyJC5yZXBvcnRzLnYxLkludmVudG9yeU1vdmVtZW50U3VtbWFyeVIPbW92ZW1lbnRTdW'
@@ -1077,7 +1077,7 @@ const GetSalesReportFullResponse$json = {
       '1': 'total_sales_amount',
       '3': 2,
       '4': 1,
-      '5': 3,
+      '5': 1,
       '10': 'totalSalesAmount'
     },
     {
@@ -1092,7 +1092,7 @@ const GetSalesReportFullResponse$json = {
       '1': 'average_transaction_value',
       '3': 5,
       '4': 1,
-      '5': 3,
+      '5': 1,
       '10': 'averageTransactionValue'
     },
     {
@@ -1126,9 +1126,9 @@ const GetSalesReportFullResponse$json = {
 final $typed_data.Uint8List getSalesReportFullResponseDescriptor = $convert.base64Decode(
     'ChpHZXRTYWxlc1JlcG9ydEZ1bGxSZXNwb25zZRI2CglzdW1tYXJpZXMYASADKAsyGC5yZXBvcn'
     'RzLnYxLlNhbGVzU3VtbWFyeVIJc3VtbWFyaWVzEiwKEnRvdGFsX3NhbGVzX2Ftb3VudBgCIAEo'
-    'A1IQdG90YWxTYWxlc0Ftb3VudBItChJ0b3RhbF90cmFuc2FjdGlvbnMYAyABKAVSEXRvdGFsVH'
+    'AVIQdG90YWxTYWxlc0Ftb3VudBItChJ0b3RhbF90cmFuc2FjdGlvbnMYAyABKAVSEXRvdGFsVH'
     'JhbnNhY3Rpb25zEigKEHRvdGFsX3VuaXRzX3NvbGQYBCABKAVSDnRvdGFsVW5pdHNTb2xkEjoK'
-    'GWF2ZXJhZ2VfdHJhbnNhY3Rpb25fdmFsdWUYBSABKANSF2F2ZXJhZ2VUcmFuc2FjdGlvblZhbH'
+    'GWF2ZXJhZ2VfdHJhbnNhY3Rpb25fdmFsdWUYBSABKAFSF2F2ZXJhZ2VUcmFuc2FjdGlvblZhbH'
     'VlEkMKDWJlc3RfcHJvZHVjdHMYBiADKAsyHi5yZXBvcnRzLnYxLkJlc3RTZWxsaW5nUHJvZHVj'
     'dFIMYmVzdFByb2R1Y3RzEk0KE2NhdGVnb3J5X3NhbGVzX2RhdGEYByADKAsyHS5yZXBvcnRzLn'
     'YxLkNhdGVnb3J5U2FsZXNEYXRhUhFjYXRlZ29yeVNhbGVzRGF0YRJZChhwcmV2aW91c195ZWFy'
@@ -1181,7 +1181,7 @@ const SalesComparisonData$json = {
       '1': 'previous_year_total_sales',
       '3': 1,
       '4': 1,
-      '5': 3,
+      '5': 1,
       '10': 'previousYearTotalSales'
     },
     {
@@ -1204,7 +1204,7 @@ const SalesComparisonData$json = {
 /// Descriptor for `SalesComparisonData`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List salesComparisonDataDescriptor = $convert.base64Decode(
     'ChNTYWxlc0NvbXBhcmlzb25EYXRhEjkKGXByZXZpb3VzX3llYXJfdG90YWxfc2FsZXMYASABKA'
-    'NSFnByZXZpb3VzWWVhclRvdGFsU2FsZXMSRwogcHJldmlvdXNfeWVhcl90b3RhbF90cmFuc2Fj'
+    'FSFnByZXZpb3VzWWVhclRvdGFsU2FsZXMSRwogcHJldmlvdXNfeWVhcl90b3RhbF90cmFuc2Fj'
     'dGlvbnMYAiABKAVSHXByZXZpb3VzWWVhclRvdGFsVHJhbnNhY3Rpb25zElQKJ3ByZXZpb3VzX3'
     'llYXJfYXZlcmFnZV90cmFuc2FjdGlvbl92YWx1ZRgDIAEoAVIjcHJldmlvdXNZZWFyQXZlcmFn'
     'ZVRyYW5zYWN0aW9uVmFsdWU=');
@@ -1255,15 +1255,15 @@ final $typed_data.Uint8List getFinancialReportRequestDescriptor = $convert.base6
 const GetFinancialReportResponse$json = {
   '1': 'GetFinancialReportResponse',
   '2': [
-    {'1': 'total_revenue', '3': 1, '4': 1, '5': 3, '10': 'totalRevenue'},
+    {'1': 'total_revenue', '3': 1, '4': 1, '5': 1, '10': 'totalRevenue'},
     {
       '1': 'cost_of_goods_sold',
       '3': 2,
       '4': 1,
-      '5': 3,
+      '5': 1,
       '10': 'costOfGoodsSold'
     },
-    {'1': 'gross_profit', '3': 3, '4': 1, '5': 3, '10': 'grossProfit'},
+    {'1': 'gross_profit', '3': 3, '4': 1, '5': 1, '10': 'grossProfit'},
     {
       '1': 'gross_profit_margin',
       '3': 4,
@@ -1271,21 +1271,21 @@ const GetFinancialReportResponse$json = {
       '5': 1,
       '10': 'grossProfitMargin'
     },
-    {'1': 'returns_value', '3': 5, '4': 1, '5': 3, '10': 'returnsValue'},
+    {'1': 'returns_value', '3': 5, '4': 1, '5': 1, '10': 'returnsValue'},
     {
       '1': 'adjustments_value',
       '3': 6,
       '4': 1,
-      '5': 3,
+      '5': 1,
       '10': 'adjustmentsValue'
     },
-    {'1': 'net_profit', '3': 7, '4': 1, '5': 3, '10': 'netProfit'},
-    {'1': 'total_purchases', '3': 8, '4': 1, '5': 3, '10': 'totalPurchases'},
+    {'1': 'net_profit', '3': 7, '4': 1, '5': 1, '10': 'netProfit'},
+    {'1': 'total_purchases', '3': 8, '4': 1, '5': 1, '10': 'totalPurchases'},
     {
       '1': 'outstanding_balance',
       '3': 9,
       '4': 1,
-      '5': 3,
+      '5': 1,
       '10': 'outstandingBalance'
     },
     {
@@ -1317,13 +1317,13 @@ const GetFinancialReportResponse$json = {
 
 /// Descriptor for `GetFinancialReportResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List getFinancialReportResponseDescriptor = $convert.base64Decode(
-    'ChpHZXRGaW5hbmNpYWxSZXBvcnRSZXNwb25zZRIjCg10b3RhbF9yZXZlbnVlGAEgASgDUgx0b3'
-    'RhbFJldmVudWUSKwoSY29zdF9vZl9nb29kc19zb2xkGAIgASgDUg9jb3N0T2ZHb29kc1NvbGQS'
-    'IQoMZ3Jvc3NfcHJvZml0GAMgASgDUgtncm9zc1Byb2ZpdBIuChNncm9zc19wcm9maXRfbWFyZ2'
-    'luGAQgASgBUhFncm9zc1Byb2ZpdE1hcmdpbhIjCg1yZXR1cm5zX3ZhbHVlGAUgASgDUgxyZXR1'
-    'cm5zVmFsdWUSKwoRYWRqdXN0bWVudHNfdmFsdWUYBiABKANSEGFkanVzdG1lbnRzVmFsdWUSHQ'
-    'oKbmV0X3Byb2ZpdBgHIAEoA1IJbmV0UHJvZml0EicKD3RvdGFsX3B1cmNoYXNlcxgIIAEoA1IO'
-    'dG90YWxQdXJjaGFzZXMSLwoTb3V0c3RhbmRpbmdfYmFsYW5jZRgJIAEoA1ISb3V0c3RhbmRpbm'
+    'ChpHZXRGaW5hbmNpYWxSZXBvcnRSZXNwb25zZRIjCg10b3RhbF9yZXZlbnVlGAEgASgBUgx0b3'
+    'RhbFJldmVudWUSKwoSY29zdF9vZl9nb29kc19zb2xkGAIgASgBUg9jb3N0T2ZHb29kc1NvbGQS'
+    'IQoMZ3Jvc3NfcHJvZml0GAMgASgBUgtncm9zc1Byb2ZpdBIuChNncm9zc19wcm9maXRfbWFyZ2'
+    'luGAQgASgBUhFncm9zc1Byb2ZpdE1hcmdpbhIjCg1yZXR1cm5zX3ZhbHVlGAUgASgBUgxyZXR1'
+    'cm5zVmFsdWUSKwoRYWRqdXN0bWVudHNfdmFsdWUYBiABKAFSEGFkanVzdG1lbnRzVmFsdWUSHQ'
+    'oKbmV0X3Byb2ZpdBgHIAEoAVIJbmV0UHJvZml0EicKD3RvdGFsX3B1cmNoYXNlcxgIIAEoAVIO'
+    'dG90YWxQdXJjaGFzZXMSLwoTb3V0c3RhbmRpbmdfYmFsYW5jZRgJIAEoAVISb3V0c3RhbmRpbm'
     'dCYWxhbmNlElsKFXN1cHBsaWVyX3BlcmZvcm1hbmNlcxgKIAMoCzImLnJlcG9ydHMudjEuU3Vw'
     'cGxpZXJQZXJmb3JtYW5jZVN1bW1hcnlSFHN1cHBsaWVyUGVyZm9ybWFuY2VzElwKGHJldmVudW'
     'VfdnNfZXhwZW5zZXNfZGF0YRgLIAMoCzIjLnJlcG9ydHMudjEuUmV2ZW51ZUV4cGVuc2VEYXRh'
@@ -1375,7 +1375,7 @@ const SupplierPerformanceSummary$json = {
       '1': 'total_purchase_value',
       '3': 3,
       '4': 1,
-      '5': 3,
+      '5': 1,
       '10': 'totalPurchaseValue'
     },
     {
@@ -1393,7 +1393,7 @@ const SupplierPerformanceSummary$json = {
 final $typed_data.Uint8List supplierPerformanceSummaryDescriptor = $convert.base64Decode(
     'ChpTdXBwbGllclBlcmZvcm1hbmNlU3VtbWFyeRIfCgtzdXBwbGllcl9pZBgBIAEoCVIKc3VwcG'
     'xpZXJJZBIjCg1zdXBwbGllcl9uYW1lGAIgASgJUgxzdXBwbGllck5hbWUSMAoUdG90YWxfcHVy'
-    'Y2hhc2VfdmFsdWUYAyABKANSEnRvdGFsUHVyY2hhc2VWYWx1ZRIsChJvbl90aW1lX3BlcmNlbn'
+    'Y2hhc2VfdmFsdWUYAyABKAFSEnRvdGFsUHVyY2hhc2VWYWx1ZRIsChJvbl90aW1lX3BlcmNlbn'
     'RhZ2UYBCABKAFSEG9uVGltZVBlcmNlbnRhZ2USIQoMdG90YWxfb3JkZXJzGAUgASgFUgt0b3Rh'
     'bE9yZGVycw==');
 
@@ -1405,14 +1405,14 @@ const FinancialComparisonData$json = {
       '1': 'previous_year_total_revenue',
       '3': 1,
       '4': 1,
-      '5': 3,
+      '5': 1,
       '10': 'previousYearTotalRevenue'
     },
     {
       '1': 'previous_year_net_profit',
       '3': 2,
       '4': 1,
-      '5': 3,
+      '5': 1,
       '10': 'previousYearNetProfit'
     },
     {
@@ -1426,7 +1426,7 @@ const FinancialComparisonData$json = {
       '1': 'previous_year_total_purchases',
       '3': 4,
       '4': 1,
-      '5': 3,
+      '5': 1,
       '10': 'previousYearTotalPurchases'
     },
   ],
@@ -1435,10 +1435,10 @@ const FinancialComparisonData$json = {
 /// Descriptor for `FinancialComparisonData`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List financialComparisonDataDescriptor = $convert.base64Decode(
     'ChdGaW5hbmNpYWxDb21wYXJpc29uRGF0YRI9ChtwcmV2aW91c195ZWFyX3RvdGFsX3JldmVudW'
-    'UYASABKANSGHByZXZpb3VzWWVhclRvdGFsUmV2ZW51ZRI3ChhwcmV2aW91c195ZWFyX25ldF9w'
-    'cm9maXQYAiABKANSFXByZXZpb3VzWWVhck5ldFByb2ZpdBJICiFwcmV2aW91c195ZWFyX2dyb3'
+    'UYASABKAFSGHByZXZpb3VzWWVhclRvdGFsUmV2ZW51ZRI3ChhwcmV2aW91c195ZWFyX25ldF9w'
+    'cm9maXQYAiABKAFSFXByZXZpb3VzWWVhck5ldFByb2ZpdBJICiFwcmV2aW91c195ZWFyX2dyb3'
     'NzX3Byb2ZpdF9tYXJnaW4YAyABKAFSHXByZXZpb3VzWWVhckdyb3NzUHJvZml0TWFyZ2luEkEK'
-    'HXByZXZpb3VzX3llYXJfdG90YWxfcHVyY2hhc2VzGAQgASgDUhpwcmV2aW91c1llYXJUb3RhbF'
+    'HXByZXZpb3VzX3llYXJfdG90YWxfcHVyY2hhc2VzGAQgASgBUhpwcmV2aW91c1llYXJUb3RhbF'
     'B1cmNoYXNlcw==');
 
 @$core.Deprecated('Use inventoryComparisonDataDescriptor instead')
@@ -1456,7 +1456,7 @@ const InventoryComparisonData$json = {
       '1': 'previous_year_total_value',
       '3': 2,
       '4': 1,
-      '5': 3,
+      '5': 1,
       '10': 'previousYearTotalValue'
     },
     {
@@ -1487,7 +1487,7 @@ const InventoryComparisonData$json = {
 final $typed_data.Uint8List inventoryComparisonDataDescriptor = $convert.base64Decode(
     'ChdJbnZlbnRvcnlDb21wYXJpc29uRGF0YRI/ChxwcmV2aW91c195ZWFyX3RvdGFsX3Byb2R1Y3'
     'RzGAEgASgFUhlwcmV2aW91c1llYXJUb3RhbFByb2R1Y3RzEjkKGXByZXZpb3VzX3llYXJfdG90'
-    'YWxfdmFsdWUYAiABKANSFnByZXZpb3VzWWVhclRvdGFsVmFsdWUSQAodcHJldmlvdXNfeWVhcl'
+    'YWxfdmFsdWUYAiABKAFSFnByZXZpb3VzWWVhclRvdGFsVmFsdWUSQAodcHJldmlvdXNfeWVhcl'
     '9sb3dfc3RvY2tfY291bnQYAyABKAVSGXByZXZpb3VzWWVhckxvd1N0b2NrQ291bnQSRAofcHJl'
     'dmlvdXNfeWVhcl9tb3ZlbWVudF90b3RhbF9pbhgEIAEoAVIbcHJldmlvdXNZZWFyTW92ZW1lbn'
     'RUb3RhbEluEkYKIHByZXZpb3VzX3llYXJfbW92ZW1lbnRfdG90YWxfb3V0GAUgASgBUhxwcmV2'
@@ -1543,7 +1543,7 @@ const GetDashboardReportResponse$json = {
       '1': 'total_sales_amount',
       '3': 1,
       '4': 1,
-      '5': 3,
+      '5': 1,
       '10': 'totalSalesAmount'
     },
     {
@@ -1561,8 +1561,8 @@ const GetDashboardReportResponse$json = {
       '10': 'averageTransactionValue'
     },
     {'1': 'total_units_sold', '3': 4, '4': 1, '5': 5, '10': 'totalUnitsSold'},
-    {'1': 'total_revenue', '3': 5, '4': 1, '5': 3, '10': 'totalRevenue'},
-    {'1': 'net_profit', '3': 6, '4': 1, '5': 3, '10': 'netProfit'},
+    {'1': 'total_revenue', '3': 5, '4': 1, '5': 1, '10': 'totalRevenue'},
+    {'1': 'net_profit', '3': 6, '4': 1, '5': 1, '10': 'netProfit'},
     {
       '1': 'gross_profit_margin',
       '3': 7,
@@ -1570,13 +1570,13 @@ const GetDashboardReportResponse$json = {
       '5': 1,
       '10': 'grossProfitMargin'
     },
-    {'1': 'total_purchases', '3': 8, '4': 1, '5': 3, '10': 'totalPurchases'},
+    {'1': 'total_purchases', '3': 8, '4': 1, '5': 1, '10': 'totalPurchases'},
     {'1': 'total_products', '3': 9, '4': 1, '5': 5, '10': 'totalProducts'},
     {
       '1': 'total_inventory_value',
       '3': 10,
       '4': 1,
-      '5': 3,
+      '5': 1,
       '10': 'totalInventoryValue'
     },
     {'1': 'low_stock_count', '3': 11, '4': 1, '5': 5, '10': 'lowStockCount'},
@@ -1666,14 +1666,14 @@ const GetDashboardReportResponse$json = {
 /// Descriptor for `GetDashboardReportResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List getDashboardReportResponseDescriptor = $convert.base64Decode(
     'ChpHZXREYXNoYm9hcmRSZXBvcnRSZXNwb25zZRIsChJ0b3RhbF9zYWxlc19hbW91bnQYASABKA'
-    'NSEHRvdGFsU2FsZXNBbW91bnQSLQoSdG90YWxfdHJhbnNhY3Rpb25zGAIgASgFUhF0b3RhbFRy'
+    'FSEHRvdGFsU2FsZXNBbW91bnQSLQoSdG90YWxfdHJhbnNhY3Rpb25zGAIgASgFUhF0b3RhbFRy'
     'YW5zYWN0aW9ucxI6ChlhdmVyYWdlX3RyYW5zYWN0aW9uX3ZhbHVlGAMgASgBUhdhdmVyYWdlVH'
     'JhbnNhY3Rpb25WYWx1ZRIoChB0b3RhbF91bml0c19zb2xkGAQgASgFUg50b3RhbFVuaXRzU29s'
-    'ZBIjCg10b3RhbF9yZXZlbnVlGAUgASgDUgx0b3RhbFJldmVudWUSHQoKbmV0X3Byb2ZpdBgGIA'
-    'EoA1IJbmV0UHJvZml0Ei4KE2dyb3NzX3Byb2ZpdF9tYXJnaW4YByABKAFSEWdyb3NzUHJvZml0'
-    'TWFyZ2luEicKD3RvdGFsX3B1cmNoYXNlcxgIIAEoA1IOdG90YWxQdXJjaGFzZXMSJQoOdG90YW'
+    'ZBIjCg10b3RhbF9yZXZlbnVlGAUgASgBUgx0b3RhbFJldmVudWUSHQoKbmV0X3Byb2ZpdBgGIA'
+    'EoAVIJbmV0UHJvZml0Ei4KE2dyb3NzX3Byb2ZpdF9tYXJnaW4YByABKAFSEWdyb3NzUHJvZml0'
+    'TWFyZ2luEicKD3RvdGFsX3B1cmNoYXNlcxgIIAEoAVIOdG90YWxQdXJjaGFzZXMSJQoOdG90YW'
     'xfcHJvZHVjdHMYCSABKAVSDXRvdGFsUHJvZHVjdHMSMgoVdG90YWxfaW52ZW50b3J5X3ZhbHVl'
-    'GAogASgDUhN0b3RhbEludmVudG9yeVZhbHVlEiYKD2xvd19zdG9ja19jb3VudBgLIAEoBVINbG'
+    'GAogASgBUhN0b3RhbEludmVudG9yeVZhbHVlEiYKD2xvd19zdG9ja19jb3VudBgLIAEoBVINbG'
     '93U3RvY2tDb3VudBJPChZzYWxlc19hbmRfcHJvZml0X3RyZW5kGAwgAygLMhoucmVwb3J0cy52'
     'MS5UcmVuZERhdGFQb2ludFITc2FsZXNBbmRQcm9maXRUcmVuZBJXChhjYXRlZ29yeV9zYWxlc1'
     '9icmVha2Rvd24YDSADKAsyHS5yZXBvcnRzLnYxLkNhdGVnb3J5U2FsZXNEYXRhUhZjYXRlZ29y'

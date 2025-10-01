@@ -2,78 +2,6 @@ openapi: 3.1.0
 info:
   title: payments.v1
 paths:
-  /payments.v1.GiftVoucherService/CancelVoucher:
-    post:
-      tags:
-        - payments.v1.GiftVoucherService
-      summary: Cancel a voucher
-      description: Cancel a voucher
-      operationId: payments.v1.GiftVoucherService.CancelVoucher
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/payments.v1.CancelVoucherRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/payments.v1.CancelVoucherResponse'
-  /payments.v1.GiftVoucherService/CreateGiftVoucher:
-    post:
-      tags:
-        - payments.v1.GiftVoucherService
-      summary: Create a gift voucher (manual or from change shortage)
-      description: Create a gift voucher (manual or from change shortage)
-      operationId: payments.v1.GiftVoucherService.CreateGiftVoucher
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/payments.v1.CreateGiftVoucherRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/payments.v1.CreateGiftVoucherResponse'
   /payments.v1.GiftVoucherService/GetVoucher:
     post:
       tags:
@@ -110,42 +38,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/payments.v1.GetVoucherResponse'
-  /payments.v1.GiftVoucherService/GetVoucherHistory:
-    post:
-      tags:
-        - payments.v1.GiftVoucherService
-      summary: Get voucher usage history
-      description: Get voucher usage history
-      operationId: payments.v1.GiftVoucherService.GetVoucherHistory
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/payments.v1.GetVoucherHistoryRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/payments.v1.GetVoucherHistoryResponse'
   /payments.v1.GiftVoucherService/ListVouchers:
     post:
       tags:
@@ -182,42 +74,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/payments.v1.ListVouchersResponse'
-  /payments.v1.GiftVoucherService/UseVoucher:
-    post:
-      tags:
-        - payments.v1.GiftVoucherService
-      summary: Use voucher in transaction (called by PointOfSaleService)
-      description: Use voucher in transaction (called by PointOfSaleService)
-      operationId: payments.v1.GiftVoucherService.UseVoucher
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/payments.v1.UseVoucherRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/payments.v1.UseVoucherResponse'
   /payments.v1.GiftVoucherService/ValidateVoucher:
     post:
       tags:
@@ -421,111 +277,6 @@ components:
          the Joda Time's [`ISODateTimeFormat.dateTime()`](
          http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()
          ) to obtain a formatter capable of generating timestamps in this format.
-    payments.v1.CancelVoucherRequest:
-      type: object
-      properties:
-        voucherId:
-          type: string
-          title: voucher_id
-        reason:
-          type: string
-          title: reason
-        cancelledByUserId:
-          type: string
-          title: cancelled_by_user_id
-      title: CancelVoucherRequest
-      additionalProperties: false
-    payments.v1.CancelVoucherResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          title: success
-        message:
-          type: string
-          title: message
-      title: CancelVoucherResponse
-      additionalProperties: false
-    payments.v1.CreateGiftVoucherRequest:
-      type: object
-      properties:
-        initialValue:
-          type:
-            - integer
-            - string
-          title: initial_value
-          format: int64
-        currency:
-          type: string
-          title: currency
-        issuedToCustomerId:
-          type: string
-          title: issued_to_customer_id
-          description: Optional
-        issuedByUserId:
-          type: string
-          title: issued_by_user_id
-        validUntil:
-          title: valid_until
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-        relatedInvoiceId:
-          type: string
-          title: related_invoice_id
-          description: If issued from change shortage
-        notes:
-          type: string
-          title: notes
-      title: CreateGiftVoucherRequest
-      additionalProperties: false
-    payments.v1.CreateGiftVoucherResponse:
-      type: object
-      properties:
-        voucherId:
-          type: string
-          title: voucher_id
-        voucher:
-          title: voucher
-          $ref: '#/components/schemas/payments.v1.GiftVoucher'
-        voucherCode:
-          type: string
-          title: voucher_code
-          description: Print this - barcode compatible
-        message:
-          type: string
-          title: message
-      title: CreateGiftVoucherResponse
-      additionalProperties: false
-    payments.v1.GetVoucherHistoryRequest:
-      type: object
-      properties:
-        voucherId:
-          type: string
-          title: voucher_id
-      title: GetVoucherHistoryRequest
-      additionalProperties: false
-    payments.v1.GetVoucherHistoryResponse:
-      type: object
-      properties:
-        voucher:
-          title: voucher
-          $ref: '#/components/schemas/payments.v1.GiftVoucher'
-        transactions:
-          type: array
-          items:
-            $ref: '#/components/schemas/payments.v1.VoucherTransaction'
-          title: transactions
-        totalUsed:
-          type:
-            - integer
-            - string
-          title: total_used
-          format: int64
-        usageCount:
-          type: integer
-          title: usage_count
-          format: int32
-      title: GetVoucherHistoryResponse
-      additionalProperties: false
     payments.v1.GetVoucherRequest:
       type: object
       oneOf:
@@ -571,18 +322,14 @@ components:
           title: voucher_code
           description: '"GIFT-XMAS-12345" - what customer uses'
         initialValue:
-          type:
-            - integer
-            - string
+          type: number
           title: initial_value
-          format: int64
+          format: double
           description: Original amount
         remainingValue:
-          type:
-            - integer
-            - string
+          type: number
           title: remaining_value
-          format: int64
+          format: double
           description: What's left
         currency:
           type: string
@@ -666,60 +413,11 @@ components:
           title: total_count
           format: int32
         totalValue:
-          type:
-            - integer
-            - string
+          type: number
           title: total_value
-          format: int64
+          format: double
           description: Sum of remaining values
       title: ListVouchersResponse
-      additionalProperties: false
-    payments.v1.UseVoucherRequest:
-      type: object
-      properties:
-        voucherCode:
-          type: string
-          title: voucher_code
-        amountToUse:
-          type:
-            - integer
-            - string
-          title: amount_to_use
-          format: int64
-        relatedReceiptId:
-          type: string
-          title: related_receipt_id
-          description: Or related_invoice_id
-        usedByUserId:
-          type: string
-          title: used_by_user_id
-      title: UseVoucherRequest
-      additionalProperties: false
-    payments.v1.UseVoucherResponse:
-      type: object
-      properties:
-        transactionId:
-          type: string
-          title: transaction_id
-        transaction:
-          title: transaction
-          $ref: '#/components/schemas/payments.v1.VoucherTransaction'
-        updatedVoucher:
-          title: updated_voucher
-          $ref: '#/components/schemas/payments.v1.GiftVoucher'
-        remainingValue:
-          type:
-            - integer
-            - string
-          title: remaining_value
-          format: int64
-        fullyUsed:
-          type: boolean
-          title: fully_used
-        message:
-          type: string
-          title: message
-      title: UseVoucherResponse
       additionalProperties: false
     payments.v1.ValidateVoucherRequest:
       type: object
@@ -739,11 +437,9 @@ components:
           type: string
           title: voucher_id
         remainingValue:
-          type:
-            - integer
-            - string
+          type: number
           title: remaining_value
-          format: int64
+          format: double
         validUntil:
           title: valid_until
           $ref: '#/components/schemas/google.protobuf.Timestamp'
@@ -785,17 +481,13 @@ components:
           title: related_receipt_id
           description: Or cash receipt
         amountUsed:
-          type:
-            - integer
-            - string
+          type: number
           title: amount_used
-          format: int64
+          format: double
         remainingAfter:
-          type:
-            - integer
-            - string
+          type: number
           title: remaining_after
-          format: int64
+          format: double
         usedAt:
           title: used_at
           $ref: '#/components/schemas/google.protobuf.Timestamp'

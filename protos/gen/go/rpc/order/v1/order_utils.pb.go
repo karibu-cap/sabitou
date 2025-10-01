@@ -41,8 +41,8 @@ type OrderLineItem struct {
 	ProductId     string                 `protobuf:"bytes,1,opt,name=product_id,json=productId,proto3" json:"product_id,omitempty"`       // Which product
 	Quantity      float64                `protobuf:"fixed64,2,opt,name=quantity,proto3" json:"quantity,omitempty"`                        // How many units
 	ProductName   *v1.Internationalized  `protobuf:"bytes,3,opt,name=product_name,json=productName,proto3" json:"product_name,omitempty"` // Product name
-	UnitPrice     int64                  `protobuf:"varint,4,opt,name=unit_price,json=unitPrice,proto3" json:"unit_price,omitempty"`      // Price per unit (in smallest currency)
-	Total         int64                  `protobuf:"varint,5,opt,name=total,proto3" json:"total,omitempty"`                               // quantity * unit_price
+	UnitPrice     float64                `protobuf:"fixed64,4,opt,name=unit_price,json=unitPrice,proto3" json:"unit_price,omitempty"`     // Price per unit (in smallest currency)
+	Total         float64                `protobuf:"fixed64,5,opt,name=total,proto3" json:"total,omitempty"`                              // quantity * unit_price
 	Notes         string                 `protobuf:"bytes,6,opt,name=notes,proto3" json:"notes,omitempty"`                                // Special notes for this line
 	BatchId       string                 `protobuf:"bytes,7,opt,name=batch_id,json=batchId,proto3" json:"batch_id,omitempty"`             // Optional: Specific batch/lot requested
 	unknownFields protoimpl.UnknownFields
@@ -100,14 +100,14 @@ func (x *OrderLineItem) GetProductName() *v1.Internationalized {
 	return nil
 }
 
-func (x *OrderLineItem) GetUnitPrice() int64 {
+func (x *OrderLineItem) GetUnitPrice() float64 {
 	if x != nil {
 		return x.UnitPrice
 	}
 	return 0
 }
 
-func (x *OrderLineItem) GetTotal() int64 {
+func (x *OrderLineItem) GetTotal() float64 {
 	if x != nil {
 		return x.Total
 	}
@@ -207,8 +207,8 @@ const file_order_v1_order_utils_proto_rawDesc = "" +
 	"\bquantity\x18\x02 \x01(\x01R\bquantity\x12B\n" +
 	"\fproduct_name\x18\x03 \x01(\v2\x1f.inventory.v1.InternationalizedR\vproductName\x12\x1d\n" +
 	"\n" +
-	"unit_price\x18\x04 \x01(\x03R\tunitPrice\x12\x14\n" +
-	"\x05total\x18\x05 \x01(\x03R\x05total\x12\x14\n" +
+	"unit_price\x18\x04 \x01(\x01R\tunitPrice\x12\x14\n" +
+	"\x05total\x18\x05 \x01(\x01R\x05total\x12\x14\n" +
 	"\x05notes\x18\x06 \x01(\tR\x05notes\x12\x19\n" +
 	"\bbatch_id\x18\a \x01(\tR\abatchId\"\x92\x01\n" +
 	"\vOrderPrices\x12\x1a\n" +

@@ -1,5 +1,4 @@
 import 'package:clock/clock.dart';
-import 'package:fixnum/fixnum.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
@@ -12,29 +11,62 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 import '../goldens.dart';
 
 final inventoryFakeTransport = FakeTransportBuilder()
-  ..unary(StoreProductService.listStoreProducts, (req, _) async {
+  ..unary(StoreProductService.findProducts, (req, _) async {
     final request = req;
 
-    return ListStoreProductsResponse(
+    return FindProductsResponse(
       products: [
-        StoreProduct()
-          ..refId = 'sp_1'
-          ..storeId = request.storeId
-          ..globalProductId = 'gp_1'
-          ..salePrice = 10000
-          ..status = ProductStatus.PRODUCT_STATUS_ACTIVE,
-        StoreProduct()
-          ..refId = 'sp_2'
-          ..storeId = request.storeId
-          ..globalProductId = 'gp_2'
-          ..salePrice = 15000
-          ..status = ProductStatus.PRODUCT_STATUS_ACTIVE,
-        StoreProduct()
-          ..refId = 'sp_3'
-          ..storeId = request.storeId
-          ..globalProductId = 'gp_3'
-          ..salePrice = 20000
-          ..status = ProductStatus.PRODUCT_STATUS_ACTIVE,
+        StoreProductWithGlobalProduct(
+          storeProduct: StoreProduct()
+            ..refId = 'sp_1'
+            ..storeId = request.storeId
+            ..globalProductId = 'gp_1'
+            ..salePrice = 10000
+            ..status = ProductStatus.PRODUCT_STATUS_ACTIVE,
+          globalProduct: GlobalProduct()
+            ..refId = 'gp_1'
+            ..name = (Internationalized()
+              ..en = 'Product One'
+              ..fr = 'Produit Un')
+            ..description = (Internationalized()
+              ..en = 'Description One'
+              ..fr = 'Description Un')
+            ..status = GlobalProductStatus.GLOBAL_PRODUCT_STATUS_ACTIVE,
+        ),
+        StoreProductWithGlobalProduct(
+          storeProduct: StoreProduct()
+            ..refId = 'sp_2'
+            ..storeId = request.storeId
+            ..globalProductId = 'gp_2'
+            ..salePrice = 15000
+            ..status = ProductStatus.PRODUCT_STATUS_ACTIVE,
+          globalProduct: GlobalProduct()
+            ..refId = 'gp_2'
+            ..name = (Internationalized()
+              ..en = 'Product Two'
+              ..fr = 'Produit Deux')
+            ..description = (Internationalized()
+              ..en = 'Description Two'
+              ..fr = 'Description Deux')
+            ..status = GlobalProductStatus.GLOBAL_PRODUCT_STATUS_ACTIVE,
+        ),
+        StoreProductWithGlobalProduct(
+          storeProduct: StoreProduct()
+            ..refId = 'sp_3'
+            ..storeId = request.storeId
+            ..globalProductId = 'gp_3'
+            ..salePrice = 20000
+            ..status = ProductStatus.PRODUCT_STATUS_ACTIVE,
+          globalProduct: GlobalProduct()
+            ..refId = 'gp_3'
+            ..name = (Internationalized()
+              ..en = 'Product Three'
+              ..fr = 'Produit Trois')
+            ..description = (Internationalized()
+              ..en = 'Description Three'
+              ..fr = 'Description Trois')
+            ..status = GlobalProductStatus.GLOBAL_PRODUCT_STATUS_ACTIVE,
+        ),
       ],
       totalCount: 3,
     );
@@ -60,16 +92,16 @@ final inventoryFakeTransport = FakeTransportBuilder()
         InventoryLevel()
           ..storeProductId = 'sp_1'
           ..storeId = request.storeId
-          ..quantityAvailable = 5.0
-          ..quantityReserved = 0.0
-          ..minThreshold = 10.0
+          ..quantityAvailable = 5
+          ..quantityReserved = 0
+          ..minThreshold = 10
           ..lastUpdated = Timestamp.fromDateTime(clock.now()),
         InventoryLevel()
           ..storeProductId = 'sp_2'
           ..storeId = request.storeId
-          ..quantityAvailable = 8.0
-          ..quantityReserved = 2.0
-          ..minThreshold = 15.0
+          ..quantityAvailable = 8
+          ..quantityReserved = 2
+          ..minThreshold = 15
           ..lastUpdated = Timestamp.fromDateTime(clock.now()),
       ],
       totalCount: 2,
@@ -83,14 +115,14 @@ final inventoryFakeTransport = FakeTransportBuilder()
         InventoryLevel()
           ..storeProductId = 'sp_3'
           ..storeId = request.storeId
-          ..quantityAvailable = 20.0
-          ..quantityReserved = 0.0
+          ..quantityAvailable = 20
+          ..quantityReserved = 0
           ..batches.add(
             Batch()
               ..documentId = 'batch_1'
               ..productId = 'sp_3'
               ..warehouseId = request.storeId
-              ..quantity = 20.0
+              ..quantity = 20
               ..expirationDate = Timestamp.fromDateTime(
                 clock.now().add(const Duration(days: 45)),
               )
@@ -103,7 +135,7 @@ final inventoryFakeTransport = FakeTransportBuilder()
               ..documentId = 'batch_2'
               ..productId = 'sp_3'
               ..warehouseId = request.storeId
-              ..quantity = 0.0
+              ..quantity = 0
               ..expirationDate = Timestamp.fromDateTime(
                 clock.now().subtract(const Duration(days: 1)),
               )
@@ -123,14 +155,14 @@ final inventoryFakeTransport = FakeTransportBuilder()
           ..periodEnd = Timestamp.fromDateTime(
             clock.now().add(const Duration(days: 1)),
           )
-          ..salesAmount = Int64(250000)
+          ..salesAmount = 250000
           ..transactionCount = 8
           ..unitsSold = 50,
       ],
-      totalSalesAmount: Int64(500000),
+      totalSalesAmount: 500000,
       totalTransactions: 15,
       totalUnitsSold: 100,
-      averageTransactionValue: Int64(33333),
+      averageTransactionValue: 33333,
     );
   })
   ..unary(InventoryService.getRecentInventoryTransactions, (req, _) async {
@@ -143,9 +175,9 @@ final inventoryFakeTransport = FakeTransportBuilder()
           ..storeId = request.storeId
           ..productId = 'sp_1'
           ..transactionType = TransactionType.TXN_TYPE_PURCHASE
-          ..quantityChange = 10.0
-          ..quantityBefore = 0.0
-          ..quantityAfter = 10.0
+          ..quantityChange = 10
+          ..quantityBefore = 0
+          ..quantityAfter = 10
           ..relatedDocumentType = 'Purchase Order'
           ..relatedDocumentId = 'po_1'
           ..performedByUserId = 'user_1'
@@ -158,9 +190,9 @@ final inventoryFakeTransport = FakeTransportBuilder()
           ..storeId = request.storeId
           ..productId = 'sp_2'
           ..transactionType = TransactionType.TXN_TYPE_SALE
-          ..quantityChange = -5.0
-          ..quantityBefore = 15.0
-          ..quantityAfter = 10.0
+          ..quantityChange = -5
+          ..quantityBefore = 15
+          ..quantityAfter = 10
           ..relatedDocumentType = 'Sales Order'
           ..relatedDocumentId = 'so_1'
           ..performedByUserId = 'user_2'

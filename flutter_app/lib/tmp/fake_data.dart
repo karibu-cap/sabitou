@@ -1,4 +1,3 @@
-import 'package:fixnum/fixnum.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../utils/app_constants.dart';
@@ -126,6 +125,36 @@ final fakeData = <String, List<dynamic>>{
       ..barCodeValue = '1234567890123'
       ..categories.addAll(<Category>[fakeCategories.first])
       ..imagesLinksIds.addAll(['media-image-001']),
+    GlobalProduct()
+      ..refId = 'global-product-002'
+      ..name = Internationalized(fr: 'Laptop', en: 'Laptop')
+      ..description = Internationalized(
+        en: 'Latest model laptop',
+        fr: 'Dernier modèle de laptop',
+      )
+      ..barCodeValue = '1234567890123'
+      ..categories.addAll(<Category>[fakeCategories.first])
+      ..imagesLinksIds.addAll(['media-image-001']),
+    GlobalProduct()
+      ..refId = 'global-product-003'
+      ..name = Internationalized(fr: 'Tablette', en: 'Tablet')
+      ..description = Internationalized(
+        en: 'Latest model tablet',
+        fr: 'Dernier modèle de tablet',
+      )
+      ..barCodeValue = '1234567890123'
+      ..categories.addAll(<Category>[fakeCategories.first])
+      ..imagesLinksIds.addAll(['media-image-001']),
+    GlobalProduct()
+      ..refId = 'global-product-004'
+      ..name = Internationalized(fr: 'TV', en: 'TV')
+      ..description = Internationalized(
+        en: 'Latest model TV',
+        fr: 'Dernier modèle de TV',
+      )
+      ..barCodeValue = '1234567890123'
+      ..categories.addAll(<Category>[fakeCategories.first])
+      ..imagesLinksIds.addAll(['media-image-001']),
   ],
   CollectionName.storeProducts: <StoreProduct>[
     StoreProduct()
@@ -136,6 +165,30 @@ final fakeData = <String, List<dynamic>>{
       ..createdAt = Timestamp.fromDateTime(
         DateTime.parse('2024-09-01T08:00:00Z'),
       ),
+    StoreProduct()
+      ..refId = 'product-002'
+      ..storeId = 'store-001'
+      ..globalProductId = 'global-product-002'
+      ..salePrice = 7500
+      ..createdAt = Timestamp.fromDateTime(
+        DateTime.parse('2024-09-01T08:00:00Z'),
+      ),
+    StoreProduct()
+      ..refId = 'product-002'
+      ..storeId = 'store-001'
+      ..globalProductId = 'global-product-003'
+      ..salePrice = 1500
+      ..createdAt = Timestamp.fromDateTime(
+        DateTime.parse('2024-09-01T08:00:00Z'),
+      ),
+    StoreProduct()
+      ..refId = 'product-003'
+      ..storeId = 'store-001'
+      ..globalProductId = 'global-product-004'
+      ..salePrice = 12500
+      ..createdAt = Timestamp.fromDateTime(
+        DateTime.parse('2024-09-01T08:00:00Z'),
+      ),
   ],
   CollectionName.categories: fakeCategories,
   CollectionName.payments: <Payment>[
@@ -143,7 +196,7 @@ final fakeData = <String, List<dynamic>>{
       ..documentId = 'PAY-2025-001'
       ..payerId = 'user-001'
       ..payeeId = 'business-001'
-      ..amount = Int64(10000)
+      ..amount = 10000
       ..currency = 'USD'
       ..paymentMethod = PaymentMethod.PAYMENT_METHOD_CASH
       ..status = PaymentStatus.PAYMENT_STATUS_COMPLETED
@@ -157,8 +210,8 @@ final fakeData = <String, List<dynamic>>{
     GiftVoucher()
       ..documentId = 'GV-2025-001'
       ..voucherCode = 'GIFT-001'
-      ..initialValue = Int64(5000)
-      ..remainingValue = Int64(5000)
+      ..initialValue = 5000
+      ..remainingValue = 5000
       ..currency = 'USD'
       ..issuedToCustomerId = 'user-001'
       ..issuedByUserId = 'user-001'
@@ -175,8 +228,8 @@ final fakeData = <String, List<dynamic>>{
       ..voucherId = 'GV-2025-001'
       ..relatedInvoiceId = 'INV-001'
       ..relatedReceiptId = ''
-      ..amountUsed = Int64()
-      ..remainingAfter = Int64(5000)
+      ..amountUsed = 5000
+      ..remainingAfter = 5000
       ..usedAt = Timestamp.fromDateTime(DateTime.now())
       ..usedByUserId = 'user-001',
   ],
@@ -189,15 +242,15 @@ final fakeData = <String, List<dynamic>>{
       ..items.addAll(<InvoiceLineItem>[
         InvoiceLineItem()
           ..productId = 'product-001'
-          ..quantity = 1.0
-          ..unitPrice = Int64(10000)
+          ..quantity = 1
+          ..unitPrice = 10000
           ..productName = Internationalized(en: 'Test Item', fr: 'Test Item'),
       ])
-      ..subtotal = Int64(10000)
-      ..taxAmount = Int64()
-      ..totalAmount = Int64(10000)
-      ..amountPaid = Int64(10000)
-      ..changeGiven = Int64()
+      ..subtotal = 10000
+      ..taxAmount = 0
+      ..totalAmount = 10000
+      ..amountPaid = 10000
+      ..changeGiven = 0
       ..currency = 'USD'
       ..paymentIds.addAll(['PAY-2025-001'])
       ..transactionTime = Timestamp.fromDateTime(DateTime.now())

@@ -88,7 +88,7 @@ const CreditNote$json = {
       '6': '.financial.v1.InvoiceLineItem',
       '10': 'items'
     },
-    {'1': 'total_amount', '3': 8, '4': 1, '5': 3, '10': 'totalAmount'},
+    {'1': 'total_amount', '3': 8, '4': 1, '5': 1, '10': 'totalAmount'},
     {'1': 'currency', '3': 9, '4': 1, '5': 9, '10': 'currency'},
     {
       '1': 'has_inventory_impact',
@@ -132,7 +132,7 @@ final $typed_data.Uint8List creditNoteDescriptor = $convert.base64Decode(
     'lzc3Vlcl9pZBgEIAEoCVIIaXNzdWVySWQSIQoMcmVjaXBpZW50X2lkGAUgASgJUgtyZWNpcGll'
     'bnRJZBI2CgZzdGF0dXMYBiABKA4yHi5maW5hbmNpYWwudjEuQ3JlZGl0Tm90ZVN0YXR1c1IGc3'
     'RhdHVzEjMKBWl0ZW1zGAcgAygLMh0uZmluYW5jaWFsLnYxLkludm9pY2VMaW5lSXRlbVIFaXRl'
-    'bXMSIQoMdG90YWxfYW1vdW50GAggASgDUgt0b3RhbEFtb3VudBIaCghjdXJyZW5jeRgJIAEoCV'
+    'bXMSIQoMdG90YWxfYW1vdW50GAggASgBUgt0b3RhbEFtb3VudBIaCghjdXJyZW5jeRgJIAEoCV'
     'IIY3VycmVuY3kSMAoUaGFzX2ludmVudG9yeV9pbXBhY3QYCiABKAhSEmhhc0ludmVudG9yeUlt'
     'cGFjdBIzChZyZWxhdGVkX3JldHVybl9ub3RlX2lkGAsgASgJUhNyZWxhdGVkUmV0dXJuTm90ZU'
     'lkEjkKCmlzc3VlX2RhdGUYDCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUglpc3N1'

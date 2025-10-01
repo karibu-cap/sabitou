@@ -1,6 +1,5 @@
 import 'package:clock/clock.dart';
 import 'package:connectrpc/connect.dart' as connect;
-import 'package:fixnum/fixnum.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
@@ -99,10 +98,9 @@ class InventoryRepository {
             level: level,
             product: productResp.storeProduct,
             globalProduct: globalProductResp,
-            stockValue: Int64(
-              (level.quantityAvailable * productResp.storeProduct.salePrice)
-                  .truncate(),
-            ),
+            stockValue:
+                (level.quantityAvailable * productResp.storeProduct.salePrice)
+                    .truncate(),
           ),
         );
       }
@@ -159,10 +157,9 @@ class InventoryRepository {
                 : level.quantityAvailable > level.minThreshold
                 ? StockStatus.STOCK_STATUS_OK
                 : StockStatus.STOCK_STATUS_LOW,
-            stockValue: Int64(
-              (level.quantityAvailable * productResp.storeProduct.salePrice)
-                  .truncate(),
-            ),
+            stockValue:
+                (level.quantityAvailable * productResp.storeProduct.salePrice)
+                    .truncate(),
           ),
         );
       }

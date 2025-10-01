@@ -13,7 +13,6 @@
 import 'dart:async' as $async;
 import 'dart:core' as $core;
 
-import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import '../../audits/v1/inventory_transaction.pb.dart' as $2;
@@ -43,7 +42,7 @@ class Batch extends $pb.GeneratedMessage {
     $core.String? documentId,
     $core.String? productId,
     $core.String? warehouseId,
-    $core.double? quantity,
+    $core.int? quantity,
     $0.Timestamp? expirationDate,
     $0.Timestamp? receivedAt,
     $core.String? supplierBatchNumber,
@@ -80,7 +79,7 @@ class Batch extends $pb.GeneratedMessage {
     ..aOS(1, _omitFieldNames ? '' : 'documentId')
     ..aOS(2, _omitFieldNames ? '' : 'productId')
     ..aOS(3, _omitFieldNames ? '' : 'warehouseId')
-    ..a<$core.double>(4, _omitFieldNames ? '' : 'quantity', $pb.PbFieldType.OD)
+    ..a<$core.int>(4, _omitFieldNames ? '' : 'quantity', $pb.PbFieldType.O3)
     ..aOM<$0.Timestamp>(5, _omitFieldNames ? '' : 'expirationDate',
         subBuilder: $0.Timestamp.create)
     ..aOM<$0.Timestamp>(6, _omitFieldNames ? '' : 'receivedAt',
@@ -140,9 +139,9 @@ class Batch extends $pb.GeneratedMessage {
   void clearWarehouseId() => $_clearField(3);
 
   @$pb.TagNumber(4)
-  $core.double get quantity => $_getN(3);
+  $core.int get quantity => $_getIZ(3);
   @$pb.TagNumber(4)
-  set quantity($core.double value) => $_setDouble(3, value);
+  set quantity($core.int value) => $_setSignedInt32(3, value);
   @$pb.TagNumber(4)
   $core.bool hasQuantity() => $_has(3);
   @$pb.TagNumber(4)
@@ -222,12 +221,12 @@ class InventoryLevel extends $pb.GeneratedMessage {
   factory InventoryLevel({
     $core.String? storeProductId,
     $core.String? storeId,
-    $core.double? quantityAvailable,
-    $core.double? quantityReserved,
-    $core.double? quantityInTransit,
+    $core.int? quantityAvailable,
+    $core.int? quantityReserved,
+    $core.int? quantityInTransit,
     $0.Timestamp? lastUpdated,
     $core.String? lastUpdatedByUserId,
-    $core.double? minThreshold,
+    $core.int? minThreshold,
     $core.Iterable<Batch>? batches,
   }) {
     final result = create();
@@ -259,17 +258,16 @@ class InventoryLevel extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'storeProductId')
     ..aOS(2, _omitFieldNames ? '' : 'storeId')
-    ..a<$core.double>(
-        3, _omitFieldNames ? '' : 'quantityAvailable', $pb.PbFieldType.OD)
-    ..a<$core.double>(
-        4, _omitFieldNames ? '' : 'quantityReserved', $pb.PbFieldType.OD)
-    ..a<$core.double>(
-        5, _omitFieldNames ? '' : 'quantityInTransit', $pb.PbFieldType.OD)
+    ..a<$core.int>(
+        3, _omitFieldNames ? '' : 'quantityAvailable', $pb.PbFieldType.O3)
+    ..a<$core.int>(
+        4, _omitFieldNames ? '' : 'quantityReserved', $pb.PbFieldType.O3)
+    ..a<$core.int>(
+        5, _omitFieldNames ? '' : 'quantityInTransit', $pb.PbFieldType.O3)
     ..aOM<$0.Timestamp>(6, _omitFieldNames ? '' : 'lastUpdated',
         subBuilder: $0.Timestamp.create)
     ..aOS(7, _omitFieldNames ? '' : 'lastUpdatedByUserId')
-    ..a<$core.double>(
-        8, _omitFieldNames ? '' : 'minThreshold', $pb.PbFieldType.OD)
+    ..a<$core.int>(8, _omitFieldNames ? '' : 'minThreshold', $pb.PbFieldType.O3)
     ..pc<Batch>(9, _omitFieldNames ? '' : 'batches', $pb.PbFieldType.PM,
         subBuilder: Batch.create)
     ..hasRequiredFields = false;
@@ -317,9 +315,9 @@ class InventoryLevel extends $pb.GeneratedMessage {
 
   /// Ready to sell/use (sum of batch quantities)
   @$pb.TagNumber(3)
-  $core.double get quantityAvailable => $_getN(2);
+  $core.int get quantityAvailable => $_getIZ(2);
   @$pb.TagNumber(3)
-  set quantityAvailable($core.double value) => $_setDouble(2, value);
+  set quantityAvailable($core.int value) => $_setSignedInt32(2, value);
   @$pb.TagNumber(3)
   $core.bool hasQuantityAvailable() => $_has(2);
   @$pb.TagNumber(3)
@@ -327,9 +325,9 @@ class InventoryLevel extends $pb.GeneratedMessage {
 
   /// Allocated to orders not yet fulfilled
   @$pb.TagNumber(4)
-  $core.double get quantityReserved => $_getN(3);
+  $core.int get quantityReserved => $_getIZ(3);
   @$pb.TagNumber(4)
-  set quantityReserved($core.double value) => $_setDouble(3, value);
+  set quantityReserved($core.int value) => $_setSignedInt32(3, value);
   @$pb.TagNumber(4)
   $core.bool hasQuantityReserved() => $_has(3);
   @$pb.TagNumber(4)
@@ -337,9 +335,9 @@ class InventoryLevel extends $pb.GeneratedMessage {
 
   /// Being delivered here
   @$pb.TagNumber(5)
-  $core.double get quantityInTransit => $_getN(4);
+  $core.int get quantityInTransit => $_getIZ(4);
   @$pb.TagNumber(5)
-  set quantityInTransit($core.double value) => $_setDouble(4, value);
+  set quantityInTransit($core.int value) => $_setSignedInt32(4, value);
   @$pb.TagNumber(5)
   $core.bool hasQuantityInTransit() => $_has(4);
   @$pb.TagNumber(5)
@@ -368,9 +366,9 @@ class InventoryLevel extends $pb.GeneratedMessage {
 
   /// Minimum stock threshold for this product in this warehouse
   @$pb.TagNumber(8)
-  $core.double get minThreshold => $_getN(7);
+  $core.int get minThreshold => $_getIZ(7);
   @$pb.TagNumber(8)
-  set minThreshold($core.double value) => $_setDouble(7, value);
+  set minThreshold($core.int value) => $_setSignedInt32(7, value);
   @$pb.TagNumber(8)
   $core.bool hasMinThreshold() => $_has(7);
   @$pb.TagNumber(8)
@@ -386,7 +384,7 @@ class InventoryLevelWithProduct extends $pb.GeneratedMessage {
     InventoryLevel? level,
     $1.StoreProduct? product,
     $1.GlobalProduct? globalProduct,
-    $fixnum.Int64? stockValue,
+    $core.int? stockValue,
     StockStatus? stockStatus,
   }) {
     final result = create();
@@ -417,7 +415,7 @@ class InventoryLevelWithProduct extends $pb.GeneratedMessage {
         subBuilder: $1.StoreProduct.create)
     ..aOM<$1.GlobalProduct>(3, _omitFieldNames ? '' : 'globalProduct',
         protoName: 'globalProduct', subBuilder: $1.GlobalProduct.create)
-    ..aInt64(4, _omitFieldNames ? '' : 'stockValue')
+    ..a<$core.int>(4, _omitFieldNames ? '' : 'stockValue', $pb.PbFieldType.O3)
     ..e<StockStatus>(
         5, _omitFieldNames ? '' : 'stockStatus', $pb.PbFieldType.OE,
         protoName: 'stockStatus',
@@ -483,9 +481,9 @@ class InventoryLevelWithProduct extends $pb.GeneratedMessage {
   $1.GlobalProduct ensureGlobalProduct() => $_ensure(2);
 
   @$pb.TagNumber(4)
-  $fixnum.Int64 get stockValue => $_getI64(3);
+  $core.int get stockValue => $_getIZ(3);
   @$pb.TagNumber(4)
-  set stockValue($fixnum.Int64 value) => $_setInt64(3, value);
+  set stockValue($core.int value) => $_setSignedInt32(3, value);
   @$pb.TagNumber(4)
   $core.bool hasStockValue() => $_has(3);
   @$pb.TagNumber(4)
@@ -806,9 +804,9 @@ class GetProductInventoryLevelsRequest extends $pb.GeneratedMessage {
 class GetProductInventoryLevelsResponse extends $pb.GeneratedMessage {
   factory GetProductInventoryLevelsResponse({
     $core.Iterable<InventoryLevel>? levels,
-    $fixnum.Int64? totalAvailable,
-    $fixnum.Int64? totalReserved,
-    $fixnum.Int64? totalInTransit,
+    $core.int? totalAvailable,
+    $core.int? totalReserved,
+    $core.int? totalInTransit,
   }) {
     final result = create();
     if (levels != null) result.levels.addAll(levels);
@@ -834,9 +832,12 @@ class GetProductInventoryLevelsResponse extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..pc<InventoryLevel>(1, _omitFieldNames ? '' : 'levels', $pb.PbFieldType.PM,
         subBuilder: InventoryLevel.create)
-    ..aInt64(2, _omitFieldNames ? '' : 'totalAvailable')
-    ..aInt64(3, _omitFieldNames ? '' : 'totalReserved')
-    ..aInt64(4, _omitFieldNames ? '' : 'totalInTransit')
+    ..a<$core.int>(
+        2, _omitFieldNames ? '' : 'totalAvailable', $pb.PbFieldType.O3)
+    ..a<$core.int>(
+        3, _omitFieldNames ? '' : 'totalReserved', $pb.PbFieldType.O3)
+    ..a<$core.int>(
+        4, _omitFieldNames ? '' : 'totalInTransit', $pb.PbFieldType.O3)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -869,27 +870,27 @@ class GetProductInventoryLevelsResponse extends $pb.GeneratedMessage {
   $pb.PbList<InventoryLevel> get levels => $_getList(0);
 
   @$pb.TagNumber(2)
-  $fixnum.Int64 get totalAvailable => $_getI64(1);
+  $core.int get totalAvailable => $_getIZ(1);
   @$pb.TagNumber(2)
-  set totalAvailable($fixnum.Int64 value) => $_setInt64(1, value);
+  set totalAvailable($core.int value) => $_setSignedInt32(1, value);
   @$pb.TagNumber(2)
   $core.bool hasTotalAvailable() => $_has(1);
   @$pb.TagNumber(2)
   void clearTotalAvailable() => $_clearField(2);
 
   @$pb.TagNumber(3)
-  $fixnum.Int64 get totalReserved => $_getI64(2);
+  $core.int get totalReserved => $_getIZ(2);
   @$pb.TagNumber(3)
-  set totalReserved($fixnum.Int64 value) => $_setInt64(2, value);
+  set totalReserved($core.int value) => $_setSignedInt32(2, value);
   @$pb.TagNumber(3)
   $core.bool hasTotalReserved() => $_has(2);
   @$pb.TagNumber(3)
   void clearTotalReserved() => $_clearField(3);
 
   @$pb.TagNumber(4)
-  $fixnum.Int64 get totalInTransit => $_getI64(3);
+  $core.int get totalInTransit => $_getIZ(3);
   @$pb.TagNumber(4)
-  set totalInTransit($fixnum.Int64 value) => $_setInt64(3, value);
+  set totalInTransit($core.int value) => $_setSignedInt32(3, value);
   @$pb.TagNumber(4)
   $core.bool hasTotalInTransit() => $_has(3);
   @$pb.TagNumber(4)

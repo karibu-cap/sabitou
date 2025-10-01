@@ -33,45 +33,25 @@ const (
 // reflection-formatted method names, remove the leading slash and convert the remaining slash to a
 // period.
 const (
-	// GiftVoucherServiceCreateGiftVoucherProcedure is the fully-qualified name of the
-	// GiftVoucherService's CreateGiftVoucher RPC.
-	GiftVoucherServiceCreateGiftVoucherProcedure = "/payments.v1.GiftVoucherService/CreateGiftVoucher"
 	// GiftVoucherServiceValidateVoucherProcedure is the fully-qualified name of the
 	// GiftVoucherService's ValidateVoucher RPC.
 	GiftVoucherServiceValidateVoucherProcedure = "/payments.v1.GiftVoucherService/ValidateVoucher"
-	// GiftVoucherServiceUseVoucherProcedure is the fully-qualified name of the GiftVoucherService's
-	// UseVoucher RPC.
-	GiftVoucherServiceUseVoucherProcedure = "/payments.v1.GiftVoucherService/UseVoucher"
 	// GiftVoucherServiceGetVoucherProcedure is the fully-qualified name of the GiftVoucherService's
 	// GetVoucher RPC.
 	GiftVoucherServiceGetVoucherProcedure = "/payments.v1.GiftVoucherService/GetVoucher"
 	// GiftVoucherServiceListVouchersProcedure is the fully-qualified name of the GiftVoucherService's
 	// ListVouchers RPC.
 	GiftVoucherServiceListVouchersProcedure = "/payments.v1.GiftVoucherService/ListVouchers"
-	// GiftVoucherServiceCancelVoucherProcedure is the fully-qualified name of the GiftVoucherService's
-	// CancelVoucher RPC.
-	GiftVoucherServiceCancelVoucherProcedure = "/payments.v1.GiftVoucherService/CancelVoucher"
-	// GiftVoucherServiceGetVoucherHistoryProcedure is the fully-qualified name of the
-	// GiftVoucherService's GetVoucherHistory RPC.
-	GiftVoucherServiceGetVoucherHistoryProcedure = "/payments.v1.GiftVoucherService/GetVoucherHistory"
 )
 
 // GiftVoucherServiceClient is a client for the payments.v1.GiftVoucherService service.
 type GiftVoucherServiceClient interface {
-	// Create a gift voucher (manual or from change shortage)
-	CreateGiftVoucher(context.Context, *connect.Request[v1.CreateGiftVoucherRequest]) (*connect.Response[v1.CreateGiftVoucherResponse], error)
 	// Validate voucher before use
 	ValidateVoucher(context.Context, *connect.Request[v1.ValidateVoucherRequest]) (*connect.Response[v1.ValidateVoucherResponse], error)
-	// Use voucher in transaction (called by PointOfSaleService)
-	UseVoucher(context.Context, *connect.Request[v1.UseVoucherRequest]) (*connect.Response[v1.UseVoucherResponse], error)
 	// Get voucher details
 	GetVoucher(context.Context, *connect.Request[v1.GetVoucherRequest]) (*connect.Response[v1.GetVoucherResponse], error)
 	// List vouchers with filtering
 	ListVouchers(context.Context, *connect.Request[v1.ListVouchersRequest]) (*connect.Response[v1.ListVouchersResponse], error)
-	// Cancel a voucher
-	CancelVoucher(context.Context, *connect.Request[v1.CancelVoucherRequest]) (*connect.Response[v1.CancelVoucherResponse], error)
-	// Get voucher usage history
-	GetVoucherHistory(context.Context, *connect.Request[v1.GetVoucherHistoryRequest]) (*connect.Response[v1.GetVoucherHistoryResponse], error)
 }
 
 // NewGiftVoucherServiceClient constructs a client for the payments.v1.GiftVoucherService service.
@@ -85,22 +65,10 @@ func NewGiftVoucherServiceClient(httpClient connect.HTTPClient, baseURL string, 
 	baseURL = strings.TrimRight(baseURL, "/")
 	giftVoucherServiceMethods := v1.File_payments_v1_gift_voucher_proto.Services().ByName("GiftVoucherService").Methods()
 	return &giftVoucherServiceClient{
-		createGiftVoucher: connect.NewClient[v1.CreateGiftVoucherRequest, v1.CreateGiftVoucherResponse](
-			httpClient,
-			baseURL+GiftVoucherServiceCreateGiftVoucherProcedure,
-			connect.WithSchema(giftVoucherServiceMethods.ByName("CreateGiftVoucher")),
-			connect.WithClientOptions(opts...),
-		),
 		validateVoucher: connect.NewClient[v1.ValidateVoucherRequest, v1.ValidateVoucherResponse](
 			httpClient,
 			baseURL+GiftVoucherServiceValidateVoucherProcedure,
 			connect.WithSchema(giftVoucherServiceMethods.ByName("ValidateVoucher")),
-			connect.WithClientOptions(opts...),
-		),
-		useVoucher: connect.NewClient[v1.UseVoucherRequest, v1.UseVoucherResponse](
-			httpClient,
-			baseURL+GiftVoucherServiceUseVoucherProcedure,
-			connect.WithSchema(giftVoucherServiceMethods.ByName("UseVoucher")),
 			connect.WithClientOptions(opts...),
 		),
 		getVoucher: connect.NewClient[v1.GetVoucherRequest, v1.GetVoucherResponse](
@@ -115,45 +83,19 @@ func NewGiftVoucherServiceClient(httpClient connect.HTTPClient, baseURL string, 
 			connect.WithSchema(giftVoucherServiceMethods.ByName("ListVouchers")),
 			connect.WithClientOptions(opts...),
 		),
-		cancelVoucher: connect.NewClient[v1.CancelVoucherRequest, v1.CancelVoucherResponse](
-			httpClient,
-			baseURL+GiftVoucherServiceCancelVoucherProcedure,
-			connect.WithSchema(giftVoucherServiceMethods.ByName("CancelVoucher")),
-			connect.WithClientOptions(opts...),
-		),
-		getVoucherHistory: connect.NewClient[v1.GetVoucherHistoryRequest, v1.GetVoucherHistoryResponse](
-			httpClient,
-			baseURL+GiftVoucherServiceGetVoucherHistoryProcedure,
-			connect.WithSchema(giftVoucherServiceMethods.ByName("GetVoucherHistory")),
-			connect.WithClientOptions(opts...),
-		),
 	}
 }
 
 // giftVoucherServiceClient implements GiftVoucherServiceClient.
 type giftVoucherServiceClient struct {
-	createGiftVoucher *connect.Client[v1.CreateGiftVoucherRequest, v1.CreateGiftVoucherResponse]
-	validateVoucher   *connect.Client[v1.ValidateVoucherRequest, v1.ValidateVoucherResponse]
-	useVoucher        *connect.Client[v1.UseVoucherRequest, v1.UseVoucherResponse]
-	getVoucher        *connect.Client[v1.GetVoucherRequest, v1.GetVoucherResponse]
-	listVouchers      *connect.Client[v1.ListVouchersRequest, v1.ListVouchersResponse]
-	cancelVoucher     *connect.Client[v1.CancelVoucherRequest, v1.CancelVoucherResponse]
-	getVoucherHistory *connect.Client[v1.GetVoucherHistoryRequest, v1.GetVoucherHistoryResponse]
-}
-
-// CreateGiftVoucher calls payments.v1.GiftVoucherService.CreateGiftVoucher.
-func (c *giftVoucherServiceClient) CreateGiftVoucher(ctx context.Context, req *connect.Request[v1.CreateGiftVoucherRequest]) (*connect.Response[v1.CreateGiftVoucherResponse], error) {
-	return c.createGiftVoucher.CallUnary(ctx, req)
+	validateVoucher *connect.Client[v1.ValidateVoucherRequest, v1.ValidateVoucherResponse]
+	getVoucher      *connect.Client[v1.GetVoucherRequest, v1.GetVoucherResponse]
+	listVouchers    *connect.Client[v1.ListVouchersRequest, v1.ListVouchersResponse]
 }
 
 // ValidateVoucher calls payments.v1.GiftVoucherService.ValidateVoucher.
 func (c *giftVoucherServiceClient) ValidateVoucher(ctx context.Context, req *connect.Request[v1.ValidateVoucherRequest]) (*connect.Response[v1.ValidateVoucherResponse], error) {
 	return c.validateVoucher.CallUnary(ctx, req)
-}
-
-// UseVoucher calls payments.v1.GiftVoucherService.UseVoucher.
-func (c *giftVoucherServiceClient) UseVoucher(ctx context.Context, req *connect.Request[v1.UseVoucherRequest]) (*connect.Response[v1.UseVoucherResponse], error) {
-	return c.useVoucher.CallUnary(ctx, req)
 }
 
 // GetVoucher calls payments.v1.GiftVoucherService.GetVoucher.
@@ -166,32 +108,14 @@ func (c *giftVoucherServiceClient) ListVouchers(ctx context.Context, req *connec
 	return c.listVouchers.CallUnary(ctx, req)
 }
 
-// CancelVoucher calls payments.v1.GiftVoucherService.CancelVoucher.
-func (c *giftVoucherServiceClient) CancelVoucher(ctx context.Context, req *connect.Request[v1.CancelVoucherRequest]) (*connect.Response[v1.CancelVoucherResponse], error) {
-	return c.cancelVoucher.CallUnary(ctx, req)
-}
-
-// GetVoucherHistory calls payments.v1.GiftVoucherService.GetVoucherHistory.
-func (c *giftVoucherServiceClient) GetVoucherHistory(ctx context.Context, req *connect.Request[v1.GetVoucherHistoryRequest]) (*connect.Response[v1.GetVoucherHistoryResponse], error) {
-	return c.getVoucherHistory.CallUnary(ctx, req)
-}
-
 // GiftVoucherServiceHandler is an implementation of the payments.v1.GiftVoucherService service.
 type GiftVoucherServiceHandler interface {
-	// Create a gift voucher (manual or from change shortage)
-	CreateGiftVoucher(context.Context, *connect.Request[v1.CreateGiftVoucherRequest]) (*connect.Response[v1.CreateGiftVoucherResponse], error)
 	// Validate voucher before use
 	ValidateVoucher(context.Context, *connect.Request[v1.ValidateVoucherRequest]) (*connect.Response[v1.ValidateVoucherResponse], error)
-	// Use voucher in transaction (called by PointOfSaleService)
-	UseVoucher(context.Context, *connect.Request[v1.UseVoucherRequest]) (*connect.Response[v1.UseVoucherResponse], error)
 	// Get voucher details
 	GetVoucher(context.Context, *connect.Request[v1.GetVoucherRequest]) (*connect.Response[v1.GetVoucherResponse], error)
 	// List vouchers with filtering
 	ListVouchers(context.Context, *connect.Request[v1.ListVouchersRequest]) (*connect.Response[v1.ListVouchersResponse], error)
-	// Cancel a voucher
-	CancelVoucher(context.Context, *connect.Request[v1.CancelVoucherRequest]) (*connect.Response[v1.CancelVoucherResponse], error)
-	// Get voucher usage history
-	GetVoucherHistory(context.Context, *connect.Request[v1.GetVoucherHistoryRequest]) (*connect.Response[v1.GetVoucherHistoryResponse], error)
 }
 
 // NewGiftVoucherServiceHandler builds an HTTP handler from the service implementation. It returns
@@ -201,22 +125,10 @@ type GiftVoucherServiceHandler interface {
 // and JSON codecs. They also support gzip compression.
 func NewGiftVoucherServiceHandler(svc GiftVoucherServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
 	giftVoucherServiceMethods := v1.File_payments_v1_gift_voucher_proto.Services().ByName("GiftVoucherService").Methods()
-	giftVoucherServiceCreateGiftVoucherHandler := connect.NewUnaryHandler(
-		GiftVoucherServiceCreateGiftVoucherProcedure,
-		svc.CreateGiftVoucher,
-		connect.WithSchema(giftVoucherServiceMethods.ByName("CreateGiftVoucher")),
-		connect.WithHandlerOptions(opts...),
-	)
 	giftVoucherServiceValidateVoucherHandler := connect.NewUnaryHandler(
 		GiftVoucherServiceValidateVoucherProcedure,
 		svc.ValidateVoucher,
 		connect.WithSchema(giftVoucherServiceMethods.ByName("ValidateVoucher")),
-		connect.WithHandlerOptions(opts...),
-	)
-	giftVoucherServiceUseVoucherHandler := connect.NewUnaryHandler(
-		GiftVoucherServiceUseVoucherProcedure,
-		svc.UseVoucher,
-		connect.WithSchema(giftVoucherServiceMethods.ByName("UseVoucher")),
 		connect.WithHandlerOptions(opts...),
 	)
 	giftVoucherServiceGetVoucherHandler := connect.NewUnaryHandler(
@@ -231,34 +143,14 @@ func NewGiftVoucherServiceHandler(svc GiftVoucherServiceHandler, opts ...connect
 		connect.WithSchema(giftVoucherServiceMethods.ByName("ListVouchers")),
 		connect.WithHandlerOptions(opts...),
 	)
-	giftVoucherServiceCancelVoucherHandler := connect.NewUnaryHandler(
-		GiftVoucherServiceCancelVoucherProcedure,
-		svc.CancelVoucher,
-		connect.WithSchema(giftVoucherServiceMethods.ByName("CancelVoucher")),
-		connect.WithHandlerOptions(opts...),
-	)
-	giftVoucherServiceGetVoucherHistoryHandler := connect.NewUnaryHandler(
-		GiftVoucherServiceGetVoucherHistoryProcedure,
-		svc.GetVoucherHistory,
-		connect.WithSchema(giftVoucherServiceMethods.ByName("GetVoucherHistory")),
-		connect.WithHandlerOptions(opts...),
-	)
 	return "/payments.v1.GiftVoucherService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
-		case GiftVoucherServiceCreateGiftVoucherProcedure:
-			giftVoucherServiceCreateGiftVoucherHandler.ServeHTTP(w, r)
 		case GiftVoucherServiceValidateVoucherProcedure:
 			giftVoucherServiceValidateVoucherHandler.ServeHTTP(w, r)
-		case GiftVoucherServiceUseVoucherProcedure:
-			giftVoucherServiceUseVoucherHandler.ServeHTTP(w, r)
 		case GiftVoucherServiceGetVoucherProcedure:
 			giftVoucherServiceGetVoucherHandler.ServeHTTP(w, r)
 		case GiftVoucherServiceListVouchersProcedure:
 			giftVoucherServiceListVouchersHandler.ServeHTTP(w, r)
-		case GiftVoucherServiceCancelVoucherProcedure:
-			giftVoucherServiceCancelVoucherHandler.ServeHTTP(w, r)
-		case GiftVoucherServiceGetVoucherHistoryProcedure:
-			giftVoucherServiceGetVoucherHistoryHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -268,16 +160,8 @@ func NewGiftVoucherServiceHandler(svc GiftVoucherServiceHandler, opts ...connect
 // UnimplementedGiftVoucherServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedGiftVoucherServiceHandler struct{}
 
-func (UnimplementedGiftVoucherServiceHandler) CreateGiftVoucher(context.Context, *connect.Request[v1.CreateGiftVoucherRequest]) (*connect.Response[v1.CreateGiftVoucherResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("payments.v1.GiftVoucherService.CreateGiftVoucher is not implemented"))
-}
-
 func (UnimplementedGiftVoucherServiceHandler) ValidateVoucher(context.Context, *connect.Request[v1.ValidateVoucherRequest]) (*connect.Response[v1.ValidateVoucherResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("payments.v1.GiftVoucherService.ValidateVoucher is not implemented"))
-}
-
-func (UnimplementedGiftVoucherServiceHandler) UseVoucher(context.Context, *connect.Request[v1.UseVoucherRequest]) (*connect.Response[v1.UseVoucherResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("payments.v1.GiftVoucherService.UseVoucher is not implemented"))
 }
 
 func (UnimplementedGiftVoucherServiceHandler) GetVoucher(context.Context, *connect.Request[v1.GetVoucherRequest]) (*connect.Response[v1.GetVoucherResponse], error) {
@@ -286,12 +170,4 @@ func (UnimplementedGiftVoucherServiceHandler) GetVoucher(context.Context, *conne
 
 func (UnimplementedGiftVoucherServiceHandler) ListVouchers(context.Context, *connect.Request[v1.ListVouchersRequest]) (*connect.Response[v1.ListVouchersResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("payments.v1.GiftVoucherService.ListVouchers is not implemented"))
-}
-
-func (UnimplementedGiftVoucherServiceHandler) CancelVoucher(context.Context, *connect.Request[v1.CancelVoucherRequest]) (*connect.Response[v1.CancelVoucherResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("payments.v1.GiftVoucherService.CancelVoucher is not implemented"))
-}
-
-func (UnimplementedGiftVoucherServiceHandler) GetVoucherHistory(context.Context, *connect.Request[v1.GetVoucherHistoryRequest]) (*connect.Response[v1.GetVoucherHistoryResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("payments.v1.GiftVoucherService.GetVoucherHistory is not implemented"))
 }

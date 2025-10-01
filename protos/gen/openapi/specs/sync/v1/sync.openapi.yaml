@@ -488,18 +488,14 @@ components:
           description: Product name
           $ref: '#/components/schemas/inventory.v1.Internationalized'
         unitPrice:
-          type:
-            - integer
-            - string
+          type: number
           title: unit_price
-          format: int64
+          format: double
           description: Price per unit (in smallest currency)
         total:
-          type:
-            - integer
-            - string
+          type: number
           title: total
-          format: int64
+          format: double
           description: quantity * unit_price
         notes:
           type: string

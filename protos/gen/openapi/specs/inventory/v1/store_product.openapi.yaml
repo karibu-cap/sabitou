@@ -190,7 +190,7 @@ paths:
         - inventory.v1.StoreProductService
       summary: Finds products by name.
       description: Finds products by name.
-      operationId: inventory.v1.StoreProductService.FindStoreProducts
+      operationId: inventory.v1.StoreProductService.FindProducts
       parameters:
         - name: Connect-Protocol-Version
           in: header
@@ -205,7 +205,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/inventory.v1.FindStoreProductsRequest'
+              $ref: '#/components/schemas/inventory.v1.FindProductsRequest'
         required: true
       responses:
         default:
@@ -742,30 +742,41 @@ components:
           title: global_product_id
           description: The unique identifier of the global product.
           nullable: true
-        expirationDate:
-          title: expiration_date
-          description: Identify the products that are expired.
+        pageSize:
+          type: integer
+          title: page_size
+          format: int32
+          description: The page size.
           nullable: true
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-        supplierId:
+        pageToken:
           type: string
-          title: supplier_id
-          description: Identify the products by supplier.
+          title: page_token
+          description: The page token.
           nullable: true
-      title: FindStoreProductsRequest
+      title: FindProductsRequest
       additionalProperties: false
-    inventory.v1.FindStoreProductsResponse:
+    inventory.v1.FindProductsResponse:
       type: object
       properties:
         products:
           type: array
           items:
-            $ref: '#/components/schemas/inventory.v1.StoreProduct'
+            $ref: '#/components/schemas/inventory.v1.StoreProductWithGlobalProduct'
           title: products
           description: |-
             The unique identifiers of the products.
              WARN: all returned products will only have their id and name.
-      title: FindStoreProductsResponse
+        totalCount:
+          type: integer
+          title: total_count
+          format: int32
+          description: The total count of products.
+        nextPageToken:
+          type: string
+          title: next_page_token
+          description: The next page token.
+          nullable: true
+      title: FindProductsResponse
       additionalProperties: false
     inventory.v1.GetStoreProductRequest:
       type: object
@@ -886,7 +897,7 @@ components:
         products:
           type: array
           items:
-            $ref: '#/components/schemas/inventory.v1.StoreProduct'
+            $ref: '#/components/schemas/inventory.v1.StoreProductWithGlobalProduct'
           title: products
         totalCount:
           type: integer
@@ -897,13 +908,6 @@ components:
           title: next_page_token
       title: ListStoreProductsResponse
       additionalProperties: false
-    inventory.v1.ProductStatus:
-      type: string
-      title: ProductStatus
-      enum:
-        - PRODUCT_STATUS_UNSPECIFIED
-        - PRODUCT_STATUS_ACTIVE
-        - PRODUCT_STATUS_INACTIVE
     inventory.v1.StoreProduct:
       type: object
       properties:
@@ -962,6 +966,19 @@ components:
           nullable: true
           $ref: '#/components/schemas/google.protobuf.Timestamp'
       title: StoreProduct
+      additionalProperties: false
+    inventory.v1.StoreProductWithGlobalProduct:
+      type: object
+      properties:
+        storeProduct:
+          title: store_product
+          description: The store product.
+          $ref: '#/components/schemas/inventory.v1.StoreProduct'
+        globalProduct:
+          title: global_product
+          description: The global product.
+          $ref: '#/components/schemas/inventory.v1.GlobalProduct'
+      title: StoreProductWithGlobalProduct
       additionalProperties: false
     inventory.v1.StreamGlobalProductsRequest:
       type: object

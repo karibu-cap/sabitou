@@ -318,9 +318,9 @@ final $typed_data.Uint8List deleteGlobalProductResponseDescriptor =
         'ChtEZWxldGVHbG9iYWxQcm9kdWN0UmVzcG9uc2USGAoHc3VjY2VzcxgBIAEoCFIHc3VjY2Vzcw'
         '==');
 
-@$core.Deprecated('Use findStoreProductsRequestDescriptor instead')
-const FindStoreProductsRequest$json = {
-  '1': 'FindStoreProductsRequest',
+@$core.Deprecated('Use findProductsRequestDescriptor instead')
+const FindProductsRequest$json = {
+  '1': 'FindProductsRequest',
   '2': [
     {'1': 'store_id', '3': 1, '4': 1, '5': 9, '10': 'storeId'},
     {'1': 'ref_id', '3': 2, '4': 1, '5': 9, '9': 0, '10': 'refId', '17': true},
@@ -334,62 +334,103 @@ const FindStoreProductsRequest$json = {
       '17': true
     },
     {
-      '1': 'expiration_date',
+      '1': 'page_size',
       '3': 4,
       '4': 1,
-      '5': 11,
-      '6': '.google.protobuf.Timestamp',
+      '5': 5,
       '9': 2,
-      '10': 'expirationDate',
+      '10': 'pageSize',
       '17': true
     },
     {
-      '1': 'supplier_id',
+      '1': 'page_token',
       '3': 5,
       '4': 1,
       '5': 9,
       '9': 3,
-      '10': 'supplierId',
+      '10': 'pageToken',
       '17': true
     },
   ],
   '8': [
     {'1': '_ref_id'},
     {'1': '_global_product_id'},
-    {'1': '_expiration_date'},
-    {'1': '_supplier_id'},
+    {'1': '_page_size'},
+    {'1': '_page_token'},
   ],
 };
 
-/// Descriptor for `FindStoreProductsRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List findStoreProductsRequestDescriptor = $convert.base64Decode(
-    'ChhGaW5kU3RvcmVQcm9kdWN0c1JlcXVlc3QSGQoIc3RvcmVfaWQYASABKAlSB3N0b3JlSWQSGg'
-    'oGcmVmX2lkGAIgASgJSABSBXJlZklkiAEBEi8KEWdsb2JhbF9wcm9kdWN0X2lkGAMgASgJSAFS'
-    'D2dsb2JhbFByb2R1Y3RJZIgBARJICg9leHBpcmF0aW9uX2RhdGUYBCABKAsyGi5nb29nbGUucH'
-    'JvdG9idWYuVGltZXN0YW1wSAJSDmV4cGlyYXRpb25EYXRliAEBEiQKC3N1cHBsaWVyX2lkGAUg'
-    'ASgJSANSCnN1cHBsaWVySWSIAQFCCQoHX3JlZl9pZEIUChJfZ2xvYmFsX3Byb2R1Y3RfaWRCEg'
-    'oQX2V4cGlyYXRpb25fZGF0ZUIOCgxfc3VwcGxpZXJfaWQ=');
+/// Descriptor for `FindProductsRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List findProductsRequestDescriptor = $convert.base64Decode(
+    'ChNGaW5kUHJvZHVjdHNSZXF1ZXN0EhkKCHN0b3JlX2lkGAEgASgJUgdzdG9yZUlkEhoKBnJlZl'
+    '9pZBgCIAEoCUgAUgVyZWZJZIgBARIvChFnbG9iYWxfcHJvZHVjdF9pZBgDIAEoCUgBUg9nbG9i'
+    'YWxQcm9kdWN0SWSIAQESIAoJcGFnZV9zaXplGAQgASgFSAJSCHBhZ2VTaXpliAEBEiIKCnBhZ2'
+    'VfdG9rZW4YBSABKAlIA1IJcGFnZVRva2VuiAEBQgkKB19yZWZfaWRCFAoSX2dsb2JhbF9wcm9k'
+    'dWN0X2lkQgwKCl9wYWdlX3NpemVCDQoLX3BhZ2VfdG9rZW4=');
 
-@$core.Deprecated('Use findStoreProductsResponseDescriptor instead')
-const FindStoreProductsResponse$json = {
-  '1': 'FindStoreProductsResponse',
+@$core.Deprecated('Use findProductsResponseDescriptor instead')
+const FindProductsResponse$json = {
+  '1': 'FindProductsResponse',
   '2': [
     {
       '1': 'products',
       '3': 1,
       '4': 3,
       '5': 11,
-      '6': '.inventory.v1.StoreProduct',
+      '6': '.inventory.v1.StoreProductWithGlobalProduct',
       '10': 'products'
+    },
+    {'1': 'total_count', '3': 2, '4': 1, '5': 5, '10': 'totalCount'},
+    {
+      '1': 'next_page_token',
+      '3': 3,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'nextPageToken',
+      '17': true
+    },
+  ],
+  '8': [
+    {'1': '_next_page_token'},
+  ],
+};
+
+/// Descriptor for `FindProductsResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List findProductsResponseDescriptor = $convert.base64Decode(
+    'ChRGaW5kUHJvZHVjdHNSZXNwb25zZRJHCghwcm9kdWN0cxgBIAMoCzIrLmludmVudG9yeS52MS'
+    '5TdG9yZVByb2R1Y3RXaXRoR2xvYmFsUHJvZHVjdFIIcHJvZHVjdHMSHwoLdG90YWxfY291bnQY'
+    'AiABKAVSCnRvdGFsQ291bnQSKwoPbmV4dF9wYWdlX3Rva2VuGAMgASgJSABSDW5leHRQYWdlVG'
+    '9rZW6IAQFCEgoQX25leHRfcGFnZV90b2tlbg==');
+
+@$core.Deprecated('Use storeProductWithGlobalProductDescriptor instead')
+const StoreProductWithGlobalProduct$json = {
+  '1': 'StoreProductWithGlobalProduct',
+  '2': [
+    {
+      '1': 'store_product',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.inventory.v1.StoreProduct',
+      '10': 'storeProduct'
+    },
+    {
+      '1': 'global_product',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.inventory.v1.GlobalProduct',
+      '10': 'globalProduct'
     },
   ],
 };
 
-/// Descriptor for `FindStoreProductsResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List findStoreProductsResponseDescriptor =
-    $convert.base64Decode(
-        'ChlGaW5kU3RvcmVQcm9kdWN0c1Jlc3BvbnNlEjYKCHByb2R1Y3RzGAEgAygLMhouaW52ZW50b3'
-        'J5LnYxLlN0b3JlUHJvZHVjdFIIcHJvZHVjdHM=');
+/// Descriptor for `StoreProductWithGlobalProduct`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List storeProductWithGlobalProductDescriptor = $convert.base64Decode(
+    'Ch1TdG9yZVByb2R1Y3RXaXRoR2xvYmFsUHJvZHVjdBI/Cg1zdG9yZV9wcm9kdWN0GAEgASgLMh'
+    'ouaW52ZW50b3J5LnYxLlN0b3JlUHJvZHVjdFIMc3RvcmVQcm9kdWN0EkIKDmdsb2JhbF9wcm9k'
+    'dWN0GAIgASgLMhsuaW52ZW50b3J5LnYxLkdsb2JhbFByb2R1Y3RSDWdsb2JhbFByb2R1Y3Q=');
 
 @$core.Deprecated('Use findGlobalProductsRequestDescriptor instead')
 const FindGlobalProductsRequest$json = {
@@ -782,7 +823,7 @@ const ListStoreProductsResponse$json = {
       '3': 1,
       '4': 3,
       '5': 11,
-      '6': '.inventory.v1.StoreProduct',
+      '6': '.inventory.v1.StoreProductWithGlobalProduct',
       '10': 'products'
     },
     {'1': 'total_count', '3': 2, '4': 1, '5': 5, '10': 'totalCount'},
@@ -840,9 +881,9 @@ const $core.Map<$core.String, $core.dynamic> StoreProductServiceBase$json = {
       '3': '.inventory.v1.DeleteStoreProductResponse'
     },
     {
-      '1': 'FindStoreProducts',
-      '2': '.inventory.v1.FindStoreProductsRequest',
-      '3': '.inventory.v1.FindStoreProductsResponse'
+      '1': 'FindProducts',
+      '2': '.inventory.v1.FindProductsRequest',
+      '3': '.inventory.v1.FindProductsResponse'
     },
     {
       '1': 'StreamStoreProducts',
@@ -888,8 +929,10 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
   '.inventory.v1.UpdateStoreProductResponse': UpdateStoreProductResponse$json,
   '.inventory.v1.DeleteStoreProductRequest': DeleteStoreProductRequest$json,
   '.inventory.v1.DeleteStoreProductResponse': DeleteStoreProductResponse$json,
-  '.inventory.v1.FindStoreProductsRequest': FindStoreProductsRequest$json,
-  '.inventory.v1.FindStoreProductsResponse': FindStoreProductsResponse$json,
+  '.inventory.v1.FindProductsRequest': FindProductsRequest$json,
+  '.inventory.v1.FindProductsResponse': FindProductsResponse$json,
+  '.inventory.v1.StoreProductWithGlobalProduct':
+      StoreProductWithGlobalProduct$json,
   '.inventory.v1.StreamStoreProductsRequest': StreamStoreProductsRequest$json,
   '.inventory.v1.StreamStoreProductsResponse': StreamStoreProductsResponse$json,
   '.inventory.v1.StreamGlobalProductsRequest': StreamGlobalProductsRequest$json,

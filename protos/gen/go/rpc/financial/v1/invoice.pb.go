@@ -175,9 +175,9 @@ type Invoice struct {
 	RelatedDeliveryNoteId  string                 `protobuf:"bytes,7,opt,name=related_delivery_note_id,json=relatedDeliveryNoteId,proto3" json:"related_delivery_note_id,omitempty"`    // Optional link
 	Status                 InvoiceStatus          `protobuf:"varint,8,opt,name=status,proto3,enum=financial.v1.InvoiceStatus" json:"status,omitempty"`
 	Items                  []*InvoiceLineItem     `protobuf:"bytes,9,rep,name=items,proto3" json:"items,omitempty"`
-	Subtotal               int64                  `protobuf:"varint,10,opt,name=subtotal,proto3" json:"subtotal,omitempty"`                          // Before tax
-	TaxAmount              int64                  `protobuf:"varint,11,opt,name=tax_amount,json=taxAmount,proto3" json:"tax_amount,omitempty"`       // VAT/sales tax
-	TotalAmount            int64                  `protobuf:"varint,12,opt,name=total_amount,json=totalAmount,proto3" json:"total_amount,omitempty"` // Final amount due
+	Subtotal               float64                `protobuf:"fixed64,10,opt,name=subtotal,proto3" json:"subtotal,omitempty"`                          // Before tax
+	TaxAmount              float64                `protobuf:"fixed64,11,opt,name=tax_amount,json=taxAmount,proto3" json:"tax_amount,omitempty"`       // VAT/sales tax
+	TotalAmount            float64                `protobuf:"fixed64,12,opt,name=total_amount,json=totalAmount,proto3" json:"total_amount,omitempty"` // Final amount due
 	Currency               string                 `protobuf:"bytes,13,opt,name=currency,proto3" json:"currency,omitempty"`
 	IssueDate              *timestamppb.Timestamp `protobuf:"bytes,14,opt,name=issue_date,json=issueDate,proto3" json:"issue_date,omitempty"`
 	DueDate                *timestamppb.Timestamp `protobuf:"bytes,15,opt,name=due_date,json=dueDate,proto3" json:"due_date,omitempty"` // Payment deadline
@@ -283,21 +283,21 @@ func (x *Invoice) GetItems() []*InvoiceLineItem {
 	return nil
 }
 
-func (x *Invoice) GetSubtotal() int64 {
+func (x *Invoice) GetSubtotal() float64 {
 	if x != nil {
 		return x.Subtotal
 	}
 	return 0
 }
 
-func (x *Invoice) GetTaxAmount() int64 {
+func (x *Invoice) GetTaxAmount() float64 {
 	if x != nil {
 		return x.TaxAmount
 	}
 	return 0
 }
 
-func (x *Invoice) GetTotalAmount() int64 {
+func (x *Invoice) GetTotalAmount() float64 {
 	if x != nil {
 		return x.TotalAmount
 	}
@@ -377,10 +377,10 @@ const file_financial_v1_invoice_proto_rawDesc = "" +
 	"\x06status\x18\b \x01(\x0e2\x1b.financial.v1.InvoiceStatusR\x06status\x123\n" +
 	"\x05items\x18\t \x03(\v2\x1d.financial.v1.InvoiceLineItemR\x05items\x12\x1a\n" +
 	"\bsubtotal\x18\n" +
-	" \x01(\x03R\bsubtotal\x12\x1d\n" +
+	" \x01(\x01R\bsubtotal\x12\x1d\n" +
 	"\n" +
-	"tax_amount\x18\v \x01(\x03R\ttaxAmount\x12!\n" +
-	"\ftotal_amount\x18\f \x01(\x03R\vtotalAmount\x12\x1a\n" +
+	"tax_amount\x18\v \x01(\x01R\ttaxAmount\x12!\n" +
+	"\ftotal_amount\x18\f \x01(\x01R\vtotalAmount\x12\x1a\n" +
 	"\bcurrency\x18\r \x01(\tR\bcurrency\x129\n" +
 	"\n" +
 	"issue_date\x18\x0e \x01(\v2\x1a.google.protobuf.TimestampR\tissueDate\x125\n" +

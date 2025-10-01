@@ -109,6 +109,16 @@ dependencies:
   # Package to manage the navigation between screens.
   go_router: ^16.2.2
 
+  # Package to print a receipt.
+  printing: ^5.14.2
+
+  # Package to generate a PDF.
+  pdf: ^3.11.3
+  sunmi_printer_plus: ^4.1.1
+  blue_thermal_printer: ^1.2.3
+  pdf_image_renderer: ^1.0.1
+  image: ^4.5.4
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

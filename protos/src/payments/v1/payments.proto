@@ -24,7 +24,7 @@ message Payment {
   string document_id = 1 [(buf.validate.field).required = true]; // "PAY-2025-001"
   string payer_id = 2; // Who pays
   string payee_id = 3; // Who receives
-  int64 amount = 4; // Amount in smallest currency unit
+  double amount = 4; // Amount in smallest currency unit
   string currency = 5;
   payments.v1.PaymentMethod payment_method = 6;
   PaymentStatus status = 7;
@@ -40,7 +40,16 @@ enum PaymentStatus {
   PAYMENT_STATUS_PENDING = 1; // Initiated but not confirmed
   PAYMENT_STATUS_COMPLETED = 2; // Money received
   PAYMENT_STATUS_FAILED = 3; // Payment didn't go through
-  PAYMENT_STATUS_REFUNDED = 4; // Money returned
+}
+
+enum PaymentMethod {
+  PAYMENT_METHOD_UNSPECIFIED = 0;
+  PAYMENT_METHOD_CASH = 1; // Physical cash
+  PAYMENT_METHOD_CREDIT_CARD = 2; // Card payment
+  PAYMENT_METHOD_MOBILE_MONEY = 3; // MTN, Orange Money, etc.
+  PAYMENT_METHOD_VOUCHER = 4; // payment with voucher
+  PAYMENT_METHOD_ORANGE_MONEY = 5; // Orange Money
+  PAYMENT_METHOD_MTN_MONEY = 6; // MTN Money
 }
 
 service PaymentService {
@@ -60,7 +69,7 @@ service PaymentService {
 message CreatePaymentRequest {
   string payer_id = 1; // Company making payment
   string payee_id = 2; // Company receiving payment
-  int64 amount = 3;
+  double amount = 3;
   string currency = 4;
   PaymentMethod payment_method = 5;
   optional string reference_number = 7; // Bank ref, check number, etc.
@@ -96,13 +105,13 @@ message ListPaymentsRequest {
 message ListPaymentsResponse {
   repeated Payment payments = 1;
   int32 total_count = 2;
-  int64 total_amount = 3;
+  double total_amount = 3;
 }
 
 message CreateRefundRequest {
   string original_payment_id = 1;
   string credit_note_id = 2; // Reason for refund
-  int64 refund_amount = 3;
+  double refund_amount = 3;
   string refunded_by_user_id = 4;
   string notes = 5;
 }

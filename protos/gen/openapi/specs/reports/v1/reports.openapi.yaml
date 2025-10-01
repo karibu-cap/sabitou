@@ -454,19 +454,19 @@ components:
           title: transaction_type
           $ref: '#/components/schemas/audits.v1.TransactionType'
         quantityChange:
-          type: number
+          type: integer
           title: quantity_change
-          format: double
+          format: int32
           description: Positive = increase, negative = decrease
         quantityBefore:
-          type: number
+          type: integer
           title: quantity_before
-          format: double
+          format: int32
           description: Stock level before
         quantityAfter:
-          type: number
+          type: integer
           title: quantity_after
-          format: double
+          format: int32
           description: Stock level after
         relatedDocumentType:
           type: string
@@ -638,25 +638,19 @@ components:
             $ref: '#/components/schemas/financial.v1.InvoiceLineItem'
           title: items
         subtotal:
-          type:
-            - integer
-            - string
+          type: number
           title: subtotal
-          format: int64
+          format: double
           description: Before tax
         taxAmount:
-          type:
-            - integer
-            - string
+          type: number
           title: tax_amount
-          format: int64
+          format: double
           description: VAT/sales tax
         totalAmount:
-          type:
-            - integer
-            - string
+          type: number
           title: total_amount
-          format: int64
+          format: double
           description: Final amount due
         currency:
           type: string
@@ -722,21 +716,17 @@ components:
           type: string
           title: product_id
         quantity:
-          type: number
+          type: integer
           title: quantity
-          format: double
+          format: int32
         unitPrice:
-          type:
-            - integer
-            - string
+          type: number
           title: unit_price
-          format: int64
+          format: double
         subtotal:
-          type:
-            - integer
-            - string
+          type: number
           title: subtotal
-          format: int64
+          format: double
           description: quantity * unit_price
         taxRate:
           type: number
@@ -744,17 +734,13 @@ components:
           format: double
           description: 0.20 for 20% VAT
         taxAmount:
-          type:
-            - integer
-            - string
+          type: number
           title: tax_amount
-          format: int64
+          format: double
         total:
-          type:
-            - integer
-            - string
+          type: number
           title: total
-          format: int64
+          format: double
           description: subtotal + tax_amount
         batchId:
           type: string
@@ -985,11 +971,9 @@ components:
           title: units_sold
           format: int32
         totalRevenue:
-          type:
-            - integer
-            - string
+          type: number
           title: total_revenue
-          format: int64
+          format: double
         transactionCount:
           type: integer
           title: transaction_count
@@ -1031,27 +1015,21 @@ components:
       type: object
       properties:
         previousYearTotalRevenue:
-          type:
-            - integer
-            - string
+          type: number
           title: previous_year_total_revenue
-          format: int64
+          format: double
         previousYearNetProfit:
-          type:
-            - integer
-            - string
+          type: number
           title: previous_year_net_profit
-          format: int64
+          format: double
         previousYearGrossProfitMargin:
           type: number
           title: previous_year_gross_profit_margin
           format: double
         previousYearTotalPurchases:
-          type:
-            - integer
-            - string
+          type: number
           title: previous_year_total_purchases
-          format: int64
+          format: double
       title: FinancialComparisonData
       additionalProperties: false
     reports.v1.GetBestSellingProductsRequest:
@@ -1109,11 +1087,9 @@ components:
       type: object
       properties:
         totalSalesAmount:
-          type:
-            - integer
-            - string
+          type: number
           title: total_sales_amount
-          format: int64
+          format: double
           description: Sales metrics
         totalTransactions:
           type: integer
@@ -1128,39 +1104,31 @@ components:
           title: total_units_sold
           format: int32
         totalRevenue:
-          type:
-            - integer
-            - string
+          type: number
           title: total_revenue
-          format: int64
+          format: double
           description: Financial metrics
         netProfit:
-          type:
-            - integer
-            - string
+          type: number
           title: net_profit
-          format: int64
+          format: double
         grossProfitMargin:
           type: number
           title: gross_profit_margin
           format: double
         totalPurchases:
-          type:
-            - integer
-            - string
+          type: number
           title: total_purchases
-          format: int64
+          format: double
         totalProducts:
           type: integer
           title: total_products
           format: int32
           description: Inventory metrics
         totalInventoryValue:
-          type:
-            - integer
-            - string
+          type: number
           title: total_inventory_value
-          format: int64
+          format: double
         lowStockCount:
           type: integer
           title: low_stock_count
@@ -1234,59 +1202,43 @@ components:
       type: object
       properties:
         totalRevenue:
-          type:
-            - integer
-            - string
+          type: number
           title: total_revenue
-          format: int64
+          format: double
           description: Sales
         costOfGoodsSold:
-          type:
-            - integer
-            - string
+          type: number
           title: cost_of_goods_sold
-          format: int64
+          format: double
           description: Purchases
         grossProfit:
-          type:
-            - integer
-            - string
+          type: number
           title: gross_profit
-          format: int64
+          format: double
         grossProfitMargin:
           type: number
           title: gross_profit_margin
           format: double
         returnsValue:
-          type:
-            - integer
-            - string
+          type: number
           title: returns_value
-          format: int64
+          format: double
         adjustmentsValue:
-          type:
-            - integer
-            - string
+          type: number
           title: adjustments_value
-          format: int64
+          format: double
         netProfit:
-          type:
-            - integer
-            - string
+          type: number
           title: net_profit
-          format: int64
+          format: double
         totalPurchases:
-          type:
-            - integer
-            - string
+          type: number
           title: total_purchases
-          format: int64
+          format: double
         outstandingBalance:
-          type:
-            - integer
-            - string
+          type: number
           title: outstanding_balance
-          format: int64
+          format: double
         supplierPerformances:
           type: array
           items:
@@ -1377,11 +1329,9 @@ components:
           title: total_products
           format: int32
         totalValue:
-          type:
-            - integer
-            - string
+          type: number
           title: total_value
-          format: int64
+          format: double
           description: Sum of (quantity * cost_price)
         lowStockCount:
           type: integer
@@ -1430,25 +1380,19 @@ components:
       type: object
       properties:
         totalRevenue:
-          type:
-            - integer
-            - string
+          type: number
           title: total_revenue
-          format: int64
+          format: double
           description: Sales
         costOfGoodsSold:
-          type:
-            - integer
-            - string
+          type: number
           title: cost_of_goods_sold
-          format: int64
+          format: double
           description: Purchases
         grossProfit:
-          type:
-            - integer
-            - string
+          type: number
           title: gross_profit
-          format: int64
+          format: double
           description: Revenue - COGS
         grossProfitMargin:
           type: number
@@ -1456,25 +1400,19 @@ components:
           format: double
           description: Percentage
         returnsValue:
-          type:
-            - integer
-            - string
+          type: number
           title: returns_value
-          format: int64
+          format: double
           description: Store returns
         adjustmentsValue:
-          type:
-            - integer
-            - string
+          type: number
           title: adjustments_value
-          format: int64
+          format: double
           description: Stock adjustments (damage, theft)
         netProfit:
-          type:
-            - integer
-            - string
+          type: number
           title: net_profit
-          format: int64
+          format: double
           description: After returns and adjustments
       title: GetProfitLossReportResponse
       additionalProperties: false
@@ -1510,11 +1448,9 @@ components:
             $ref: '#/components/schemas/reports.v1.PurchaseSummary'
           title: summaries
         totalPurchaseAmount:
-          type:
-            - integer
-            - string
+          type: number
           title: total_purchase_amount
-          format: int64
+          format: double
         totalPurchaseOrders:
           type: integer
           title: total_purchase_orders
@@ -1534,11 +1470,9 @@ components:
             $ref: '#/components/schemas/reports.v1.SalesSummary'
           title: summaries
         totalSalesAmount:
-          type:
-            - integer
-            - string
+          type: number
           title: total_sales_amount
-          format: int64
+          format: double
         totalTransactions:
           type: integer
           title: total_transactions
@@ -1548,11 +1482,9 @@ components:
           title: total_units_sold
           format: int32
         averageTransactionValue:
-          type:
-            - integer
-            - string
+          type: number
           title: average_transaction_value
-          format: int64
+          format: double
         bestProducts:
           type: array
           items:
@@ -1606,11 +1538,9 @@ components:
             $ref: '#/components/schemas/reports.v1.SalesSummary'
           title: summaries
         totalSalesAmount:
-          type:
-            - integer
-            - string
+          type: number
           title: total_sales_amount
-          format: int64
+          format: double
         totalTransactions:
           type: integer
           title: total_transactions
@@ -1620,11 +1550,9 @@ components:
           title: total_units_sold
           format: int32
         averageTransactionValue:
-          type:
-            - integer
-            - string
+          type: number
           title: average_transaction_value
-          format: int64
+          format: double
       title: GetSalesReportResponse
       additionalProperties: false
     reports.v1.GetStockAgingReportRequest:
@@ -1651,17 +1579,13 @@ components:
             $ref: '#/components/schemas/reports.v1.StockAgingItem'
           title: items
         totalStockValue:
-          type:
-            - integer
-            - string
+          type: number
           title: total_stock_value
-          format: int64
+          format: double
         slowMovingStockValue:
-          type:
-            - integer
-            - string
+          type: number
           title: slow_moving_stock_value
-          format: int64
+          format: double
           description: '> 90 days'
       title: GetStockAgingReportResponse
       additionalProperties: false
@@ -1691,23 +1615,17 @@ components:
             $ref: '#/components/schemas/financial.v1.Invoice'
           title: invoices
         totalPurchases:
-          type:
-            - integer
-            - string
+          type: number
           title: total_purchases
-          format: int64
+          format: double
         totalPaid:
-          type:
-            - integer
-            - string
+          type: number
           title: total_paid
-          format: int64
+          format: double
         outstandingBalance:
-          type:
-            - integer
-            - string
+          type: number
           title: outstanding_balance
-          format: int64
+          format: double
         transactionCount:
           type: integer
           title: transaction_count
@@ -1742,11 +1660,9 @@ components:
           title: total_purchase_orders
           format: int32
         totalPurchaseValue:
-          type:
-            - integer
-            - string
+          type: number
           title: total_purchase_value
-          format: int64
+          format: double
         onTimeDeliveries:
           type: integer
           title: on_time_deliveries
@@ -1778,11 +1694,9 @@ components:
           title: previous_year_total_products
           format: int32
         previousYearTotalValue:
-          type:
-            - integer
-            - string
+          type: number
           title: previous_year_total_value
-          format: int64
+          format: double
         previousYearLowStockCount:
           type: integer
           title: previous_year_low_stock_count
@@ -1824,11 +1738,9 @@ components:
           title: period_end
           $ref: '#/components/schemas/google.protobuf.Timestamp'
         purchaseAmount:
-          type:
-            - integer
-            - string
+          type: number
           title: purchase_amount
-          format: int64
+          format: double
         purchaseOrderCount:
           type: integer
           title: purchase_order_count
@@ -1876,11 +1788,9 @@ components:
       type: object
       properties:
         previousYearTotalSales:
-          type:
-            - integer
-            - string
+          type: number
           title: previous_year_total_sales
-          format: int64
+          format: double
         previousYearTotalTransactions:
           type: integer
           title: previous_year_total_transactions
@@ -1901,11 +1811,9 @@ components:
           title: period_end
           $ref: '#/components/schemas/google.protobuf.Timestamp'
         salesAmount:
-          type:
-            - integer
-            - string
+          type: number
           title: sales_amount
-          format: int64
+          format: double
         transactionCount:
           type: integer
           title: transaction_count
@@ -1927,11 +1835,9 @@ components:
           title: quantity
           format: double
         stockValue:
-          type:
-            - integer
-            - string
+          type: number
           title: stock_value
-          format: int64
+          format: double
         lastMovementDate:
           title: last_movement_date
           $ref: '#/components/schemas/google.protobuf.Timestamp'
@@ -1983,11 +1889,9 @@ components:
           type: string
           title: supplier_name
         totalPurchaseValue:
-          type:
-            - integer
-            - string
+          type: number
           title: total_purchase_value
-          format: int64
+          format: double
         onTimePercentage:
           type: number
           title: on_time_percentage

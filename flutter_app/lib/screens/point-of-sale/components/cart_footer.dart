@@ -7,6 +7,7 @@ import '../../../services/internationalization/internationalization.dart';
 import '../../../utils/formatters.dart';
 import '../../../utils/responsive_utils.dart';
 import '../../../widgets/custom_shad_button.dart';
+import 'payment_section.dart';
 
 /// The cart footer.
 final class CartFooter extends StatelessWidget {
@@ -15,26 +16,11 @@ final class CartFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<void> onOrderCompleted() async {
-      // final result = await CartManager.to.completeOrder();
-      // if (!context.mounted) {
-      //   return;
-      // }
-      // if (result) {
-      //   showSuccessToast(
-      //     context: context,
-      //     message: Intls.to.orderCompletedSuccessfully,
-      //   );
-
-      //   return;
-      // }
-      // showErrorToast(context: context, message: Intls.to.failedToCompleteOrder);
-    }
-
     final isMobile = ResponsiveUtils.isMobile(context);
+    final cart = GetIt.I.get<CartManager>();
 
     return ListenableBuilder(
-      listenable: GetIt.I.get<CartManager>(),
+      listenable: cart,
       builder: (context, value) {
         return Column(
           spacing: 12,
@@ -47,27 +33,26 @@ final class CartFooter extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    '${Intls.to.total}: ',
-                    style: ShadTheme.of(context).textTheme.h4,
+                    Intls.to.total,
+                    style: ShadTheme.of(
+                      context,
+                    ).textTheme.p.copyWith(fontWeight: FontWeight.bold),
                   ),
                 ),
                 Text(
-                  '${Formatters.formatCurrency((0).toDouble())}',
-                  style: ShadTheme.of(context).textTheme.h4.copyWith(
+                  '${Formatters.formatCurrency(cart.currentCashReceipt?.totalAmount ?? 0)}',
+                  style: ShadTheme.of(context).textTheme.p.copyWith(
+                    fontWeight: FontWeight.bold,
                     color: ShadTheme.of(context).colorScheme.primary,
                   ),
                 ),
               ],
             ),
-            SizedBox(
-              width: double.infinity,
-              child: CustomShadButton(
-                onPressed: onOrderCompleted,
-                // enabled:
-                //     CartManager.to.currentOrder?.orderItems.isNotEmpty ?? false,
-                text: Intls.to.completeOrder,
-              ),
+            PaymentSection(
+              key: ValueKey(cart.currentCashReceipt?.totalAmount ?? 0),
+              total: cart.currentCashReceipt?.totalAmount ?? 0,
             ),
+
             Flex(
               direction: isMobile ? Axis.vertical : Axis.horizontal,
               spacing: 12,
@@ -96,11 +81,11 @@ final class CartFooter extends StatelessWidget {
                       leading: const Icon(LucideIcons.trash2400),
                       onPressed: () async {
                         await Future.value();
-                        // CartManager.to.clearCart();
+                        CartManager.to.clearCart();
                       },
-                      // enabled:
-                      //     CartManager.to.currentOrder?.orderItems.isNotEmpty ??
-                      //     false,
+                      enabled:
+                          CartManager.to.currentCashReceipt?.items.isNotEmpty ??
+                          false,
                       text: Intls.to.clearOrder,
                     ),
                   ),

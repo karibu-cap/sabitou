@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
-import 'package:sabitou_rpc/models.dart';
+import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../providers/cart_provider.dart';
 import '../../../services/internationalization/internationalization.dart';
+import '../../../utils/extensions/global_product_extension.dart';
 import '../../../utils/formatters.dart';
 import '../point_of_sale_controller.dart';
 
@@ -16,15 +17,17 @@ class OrderSelected extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cart = GetIt.I.get<CartManager>();
+
     return Consumer<PointOfSaleController>(
       builder: (context, controller, child) {
         return ListenableBuilder(
-          listenable: GetIt.I.get<CartManager>(),
+          listenable: cart,
           builder: (context, value) {
-            // final items = CartManager.to.currentOrder?.OrderLineItems;
-            final items = [];
+            final items = cart.getCartItems();
 
-            return Expanded(
+            return Container(
+              constraints: const BoxConstraints(maxHeight: 400),
               child: ShadCard(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -41,7 +44,7 @@ class OrderSelected extends StatelessWidget {
                           ),
                         ),
                         ShadBadge(
-                          child: Text('${items.length ?? 0} ${Intls.to.items}'),
+                          child: Text('${items.length} ${Intls.to.items}'),
                         ),
                       ],
                     ),
@@ -49,9 +52,7 @@ class OrderSelected extends StatelessWidget {
                     if (items.isEmpty)
                       Expanded(
                         child: Center(
-                          // ignore: avoid-shrink-wrap-in-lists
                           child: ListView(
-                            shrinkWrap: true,
                             children: [
                               const Icon(LucideIcons.shoppingCart, size: 20),
                               const SizedBox(height: 12),
@@ -63,28 +64,28 @@ class OrderSelected extends StatelessWidget {
                               ),
                               Center(
                                 child: Text(
-                                  Intls.to.scanOrSearchProduct,
+                                  Intls.to.scanOrSearchForProducts,
                                   style: ShadTheme.of(context).textTheme.small,
                                 ),
                               ),
                             ],
                           ),
                         ),
-                      ),
-                    // else
-                    //   Expanded(
-                    //     child: ListView.builder(
-                    //       itemCount: items.length,
-                    //       itemBuilder: (context, index) {
-                    //         final item = items[index];
+                      )
+                    else
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: items.length,
+                          itemBuilder: (context, index) {
+                            final item = items[index];
 
-                    //         return Padding(
-                    //           padding: const EdgeInsets.all(8.0),
-                    //           child: _CartItemCard(item: item),
-                    //         );
-                    //       },
-                    //     ),
-                    //   ),
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: _CartItemCard(item: item),
+                            );
+                          },
+                        ),
+                      ),
                   ],
                 ),
               ),
@@ -99,20 +100,10 @@ class OrderSelected extends StatelessWidget {
 class _CartItemCard extends StatelessWidget {
   const _CartItemCard({required this.item});
 
-  final OrderLineItem item;
+  final InvoiceLineItem item;
 
   @override
   Widget build(BuildContext context) {
-    final maxQuantity = 8;
-    // context
-    //     .read<NewOrderController>()
-    //     .productsSubject
-    //     .valueOrNull
-    //     ?.firstWhere((p) => p.storeProduct.refId == item.storeProductId)
-    //     .storeProduct
-    //     .stockQuantity ??
-    // 0;
-
     return Row(
       spacing: 8,
       children: [
@@ -121,7 +112,7 @@ class _CartItemCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'item.productName',
+                item.label,
                 style: ShadTheme.of(
                   context,
                 ).textTheme.small.copyWith(fontWeight: FontWeight.w600),
@@ -133,17 +124,17 @@ class _CartItemCard extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                '${Intls.to.max}: $maxQuantity',
+                '${Intls.to.max}:',
                 style: ShadTheme.of(context).textTheme.muted,
               ),
             ],
           ),
         ),
         _CartItemControls(item: item),
-        const ShadButton.outline(
+        ShadButton.outline(
           size: ShadButtonSize.sm,
-          // onPressed: () => CartManager.to.removeItem(item.storeProductId),
-          child: Icon(LucideIcons.trash, size: 12),
+          onPressed: () => CartManager.to.removeItem(item.productId),
+          child: const Icon(LucideIcons.trash, size: 12),
         ),
       ],
     );
@@ -153,7 +144,7 @@ class _CartItemCard extends StatelessWidget {
 class _CartItemControls extends StatelessWidget {
   const _CartItemControls({required this.item});
 
-  final OrderLineItem item;
+  final InvoiceLineItem item;
 
   @override
   Widget build(BuildContext context) {
@@ -162,13 +153,14 @@ class _CartItemControls extends StatelessWidget {
       children: [
         Row(
           children: [
-            const ShadButton.outline(
+            ShadButton.outline(
               size: ShadButtonSize.sm,
-              // onPressed: () => CartManager.to.updateQuantity(
-              //   item.storeProductId,
-              //   item.quantity - 1,
-              // ),
-              child: Icon(LucideIcons.minus, size: 12),
+              onPressed: () => CartManager.to.updateQuantity(
+                item.productId,
+                item.quantity - 1,
+                batchId: item.batchId,
+              ),
+              child: const Icon(LucideIcons.minus, size: 12),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -177,13 +169,14 @@ class _CartItemControls extends StatelessWidget {
                 style: const TextStyle(fontWeight: FontWeight.w600),
               ),
             ),
-            const ShadButton.outline(
+            ShadButton.outline(
               size: ShadButtonSize.sm,
-              // onPressed: () => CartManager.to.updateQuantity(
-              //   item.storeProductId,
-              //   item.quantity + 1,
-              // ),
-              child: Icon(LucideIcons.plus, size: 12),
+              onPressed: () => CartManager.to.updateQuantity(
+                item.productId,
+                item.quantity + 1,
+                batchId: item.batchId,
+              ),
+              child: const Icon(LucideIcons.plus, size: 12),
             ),
           ],
         ),

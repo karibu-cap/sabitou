@@ -59,7 +59,7 @@ const Batch$json = {
     {'1': 'document_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'documentId'},
     {'1': 'product_id', '3': 2, '4': 1, '5': 9, '10': 'productId'},
     {'1': 'warehouse_id', '3': 3, '4': 1, '5': 9, '10': 'warehouseId'},
-    {'1': 'quantity', '3': 4, '4': 1, '5': 1, '10': 'quantity'},
+    {'1': 'quantity', '3': 4, '4': 1, '5': 5, '10': 'quantity'},
     {
       '1': 'expiration_date',
       '3': 5,
@@ -99,7 +99,7 @@ const Batch$json = {
 final $typed_data.Uint8List batchDescriptor = $convert.base64Decode(
     'CgVCYXRjaBInCgtkb2N1bWVudF9pZBgBIAEoCUIGukgDyAEBUgpkb2N1bWVudElkEh0KCnByb2'
     'R1Y3RfaWQYAiABKAlSCXByb2R1Y3RJZBIhCgx3YXJlaG91c2VfaWQYAyABKAlSC3dhcmVob3Vz'
-    'ZUlkEhoKCHF1YW50aXR5GAQgASgBUghxdWFudGl0eRJDCg9leHBpcmF0aW9uX2RhdGUYBSABKA'
+    'ZUlkEhoKCHF1YW50aXR5GAQgASgFUghxdWFudGl0eRJDCg9leHBpcmF0aW9uX2RhdGUYBSABKA'
     'syGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUg5leHBpcmF0aW9uRGF0ZRI7CgtyZWNlaXZl'
     'ZF9hdBgGIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSCnJlY2VpdmVkQXQSMgoVc3'
     'VwcGxpZXJfYmF0Y2hfbnVtYmVyGAcgASgJUhNzdXBwbGllckJhdGNoTnVtYmVyEjEKBnN0YXR1'
@@ -116,24 +116,24 @@ const InventoryLevel$json = {
       '1': 'quantity_available',
       '3': 3,
       '4': 1,
-      '5': 1,
+      '5': 5,
       '10': 'quantityAvailable'
     },
     {
       '1': 'quantity_reserved',
       '3': 4,
       '4': 1,
-      '5': 1,
+      '5': 5,
       '10': 'quantityReserved'
     },
     {
       '1': 'quantity_in_transit',
       '3': 5,
       '4': 1,
-      '5': 1,
+      '5': 5,
       '10': 'quantityInTransit'
     },
-    {'1': 'min_threshold', '3': 8, '4': 1, '5': 1, '10': 'minThreshold'},
+    {'1': 'min_threshold', '3': 8, '4': 1, '5': 5, '10': 'minThreshold'},
     {
       '1': 'last_updated',
       '3': 6,
@@ -164,9 +164,9 @@ const InventoryLevel$json = {
 final $typed_data.Uint8List inventoryLevelDescriptor = $convert.base64Decode(
     'Cg5JbnZlbnRvcnlMZXZlbBIoChBzdG9yZV9wcm9kdWN0X2lkGAEgASgJUg5zdG9yZVByb2R1Y3'
     'RJZBIZCghzdG9yZV9pZBgCIAEoCVIHc3RvcmVJZBItChJxdWFudGl0eV9hdmFpbGFibGUYAyAB'
-    'KAFSEXF1YW50aXR5QXZhaWxhYmxlEisKEXF1YW50aXR5X3Jlc2VydmVkGAQgASgBUhBxdWFudG'
-    'l0eVJlc2VydmVkEi4KE3F1YW50aXR5X2luX3RyYW5zaXQYBSABKAFSEXF1YW50aXR5SW5UcmFu'
-    'c2l0EiMKDW1pbl90aHJlc2hvbGQYCCABKAFSDG1pblRocmVzaG9sZBI9CgxsYXN0X3VwZGF0ZW'
+    'KAVSEXF1YW50aXR5QXZhaWxhYmxlEisKEXF1YW50aXR5X3Jlc2VydmVkGAQgASgFUhBxdWFudG'
+    'l0eVJlc2VydmVkEi4KE3F1YW50aXR5X2luX3RyYW5zaXQYBSABKAVSEXF1YW50aXR5SW5UcmFu'
+    'c2l0EiMKDW1pbl90aHJlc2hvbGQYCCABKAVSDG1pblRocmVzaG9sZBI9CgxsYXN0X3VwZGF0ZW'
     'QYBiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUgtsYXN0VXBkYXRlZBI0ChdsYXN0'
     'X3VwZGF0ZWRfYnlfdXNlcl9pZBgHIAEoCVITbGFzdFVwZGF0ZWRCeVVzZXJJZBItCgdiYXRjaG'
     'VzGAkgAygLMhMuaW52ZW50b3J5LnYxLkJhdGNoUgdiYXRjaGVz');
@@ -199,7 +199,7 @@ const InventoryLevelWithProduct$json = {
       '6': '.inventory.v1.GlobalProduct',
       '10': 'globalProduct'
     },
-    {'1': 'stock_value', '3': 4, '4': 1, '5': 3, '10': 'stockValue'},
+    {'1': 'stock_value', '3': 4, '4': 1, '5': 5, '10': 'stockValue'},
     {
       '1': 'stockStatus',
       '3': 5,
@@ -216,7 +216,7 @@ final $typed_data.Uint8List inventoryLevelWithProductDescriptor = $convert.base6
     'ChlJbnZlbnRvcnlMZXZlbFdpdGhQcm9kdWN0EjIKBWxldmVsGAEgASgLMhwuaW52ZW50b3J5Ln'
     'YxLkludmVudG9yeUxldmVsUgVsZXZlbBI0Cgdwcm9kdWN0GAIgASgLMhouaW52ZW50b3J5LnYx'
     'LlN0b3JlUHJvZHVjdFIHcHJvZHVjdBJBCg1nbG9iYWxQcm9kdWN0GAMgASgLMhsuaW52ZW50b3'
-    'J5LnYxLkdsb2JhbFByb2R1Y3RSDWdsb2JhbFByb2R1Y3QSHwoLc3RvY2tfdmFsdWUYBCABKANS'
+    'J5LnYxLkdsb2JhbFByb2R1Y3RSDWdsb2JhbFByb2R1Y3QSHwoLc3RvY2tfdmFsdWUYBCABKAVS'
     'CnN0b2NrVmFsdWUSOwoLc3RvY2tTdGF0dXMYBSABKA4yGS5pbnZlbnRvcnkudjEuU3RvY2tTdG'
     'F0dXNSC3N0b2NrU3RhdHVz');
 
@@ -349,9 +349,9 @@ const GetProductInventoryLevelsResponse$json = {
       '6': '.inventory.v1.InventoryLevel',
       '10': 'levels'
     },
-    {'1': 'total_available', '3': 2, '4': 1, '5': 3, '10': 'totalAvailable'},
-    {'1': 'total_reserved', '3': 3, '4': 1, '5': 3, '10': 'totalReserved'},
-    {'1': 'total_in_transit', '3': 4, '4': 1, '5': 3, '10': 'totalInTransit'},
+    {'1': 'total_available', '3': 2, '4': 1, '5': 5, '10': 'totalAvailable'},
+    {'1': 'total_reserved', '3': 3, '4': 1, '5': 5, '10': 'totalReserved'},
+    {'1': 'total_in_transit', '3': 4, '4': 1, '5': 5, '10': 'totalInTransit'},
   ],
 };
 
@@ -360,8 +360,8 @@ final $typed_data.Uint8List getProductInventoryLevelsResponseDescriptor =
     $convert.base64Decode(
         'CiFHZXRQcm9kdWN0SW52ZW50b3J5TGV2ZWxzUmVzcG9uc2USNAoGbGV2ZWxzGAEgAygLMhwuaW'
         '52ZW50b3J5LnYxLkludmVudG9yeUxldmVsUgZsZXZlbHMSJwoPdG90YWxfYXZhaWxhYmxlGAIg'
-        'ASgDUg50b3RhbEF2YWlsYWJsZRIlCg50b3RhbF9yZXNlcnZlZBgDIAEoA1INdG90YWxSZXNlcn'
-        'ZlZBIoChB0b3RhbF9pbl90cmFuc2l0GAQgASgDUg50b3RhbEluVHJhbnNpdA==');
+        'ASgFUg50b3RhbEF2YWlsYWJsZRIlCg50b3RhbF9yZXNlcnZlZBgDIAEoBVINdG90YWxSZXNlcn'
+        'ZlZBIoChB0b3RhbF9pbl90cmFuc2l0GAQgASgFUg50b3RhbEluVHJhbnNpdA==');
 
 @$core.Deprecated('Use checkProductAvailabilityRequestDescriptor instead')
 const CheckProductAvailabilityRequest$json = {

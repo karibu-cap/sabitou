@@ -30,9 +30,9 @@ message InventoryTransaction {
   string store_id = 2;
   string product_id = 3;
   TransactionType transaction_type = 4;
-  double quantity_change = 5; // Positive = increase, negative = decrease
-  double quantity_before = 6; // Stock level before
-  double quantity_after = 7; // Stock level after
+  int32 quantity_change = 5; // Positive = increase, negative = decrease
+  int32 quantity_before = 6; // Stock level before
+  int32 quantity_after = 7; // Stock level after
   string related_document_type = 8; // "DeliveryNote", "ReceivingNote", etc.
   string related_document_id = 9; // ID of the document
   string performed_by_user_id = 10;

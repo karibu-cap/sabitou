@@ -8,6 +8,9 @@ final class PreferencesKey {
 
   /// The language of the app.
   static const String language = 'language';
+
+  /// The prints list key.
+  static const String printsList = 'printsList';
 }
 
 /// The app collection names.
@@ -71,6 +74,9 @@ final class CollectionName {
 
   /// The cash receipts collection.
   static const String cashReceipts = 'cash_receipts';
+
+  /// The inventory level collection.
+  static const String inventoryLevels = 'inventory_levels';
 }
 
 /// The static images.

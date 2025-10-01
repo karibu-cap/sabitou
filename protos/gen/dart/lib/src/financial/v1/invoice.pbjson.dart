@@ -105,9 +105,9 @@ const Invoice$json = {
       '6': '.financial.v1.InvoiceLineItem',
       '10': 'items'
     },
-    {'1': 'subtotal', '3': 10, '4': 1, '5': 3, '10': 'subtotal'},
-    {'1': 'tax_amount', '3': 11, '4': 1, '5': 3, '10': 'taxAmount'},
-    {'1': 'total_amount', '3': 12, '4': 1, '5': 3, '10': 'totalAmount'},
+    {'1': 'subtotal', '3': 10, '4': 1, '5': 1, '10': 'subtotal'},
+    {'1': 'tax_amount', '3': 11, '4': 1, '5': 1, '10': 'taxAmount'},
+    {'1': 'total_amount', '3': 12, '4': 1, '5': 1, '10': 'totalAmount'},
     {'1': 'currency', '3': 13, '4': 1, '5': 9, '10': 'currency'},
     {
       '1': 'issue_date',
@@ -156,8 +156,8 @@ final $typed_data.Uint8List invoiceDescriptor = $convert.base64Decode(
     'hhc2VPcmRlcklkEjcKGHJlbGF0ZWRfZGVsaXZlcnlfbm90ZV9pZBgHIAEoCVIVcmVsYXRlZERl'
     'bGl2ZXJ5Tm90ZUlkEjMKBnN0YXR1cxgIIAEoDjIbLmZpbmFuY2lhbC52MS5JbnZvaWNlU3RhdH'
     'VzUgZzdGF0dXMSMwoFaXRlbXMYCSADKAsyHS5maW5hbmNpYWwudjEuSW52b2ljZUxpbmVJdGVt'
-    'UgVpdGVtcxIaCghzdWJ0b3RhbBgKIAEoA1IIc3VidG90YWwSHQoKdGF4X2Ftb3VudBgLIAEoA1'
-    'IJdGF4QW1vdW50EiEKDHRvdGFsX2Ftb3VudBgMIAEoA1ILdG90YWxBbW91bnQSGgoIY3VycmVu'
+    'UgVpdGVtcxIaCghzdWJ0b3RhbBgKIAEoAVIIc3VidG90YWwSHQoKdGF4X2Ftb3VudBgLIAEoAV'
+    'IJdGF4QW1vdW50EiEKDHRvdGFsX2Ftb3VudBgMIAEoAVILdG90YWxBbW91bnQSGgoIY3VycmVu'
     'Y3kYDSABKAlSCGN1cnJlbmN5EjkKCmlzc3VlX2RhdGUYDiABKAsyGi5nb29nbGUucHJvdG9idW'
     'YuVGltZXN0YW1wUglpc3N1ZURhdGUSNQoIZHVlX2RhdGUYDyABKAsyGi5nb29nbGUucHJvdG9i'
     'dWYuVGltZXN0YW1wUgdkdWVEYXRlEisKEmNyZWF0ZWRfYnlfdXNlcl9pZBgQIAEoCVIPY3JlYX'
