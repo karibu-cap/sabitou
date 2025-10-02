@@ -88,7 +88,7 @@ const DebitNote$json = {
       '6': '.financial.v1.InvoiceLineItem',
       '10': 'items'
     },
-    {'1': 'total_amount', '3': 8, '4': 1, '5': 3, '10': 'totalAmount'},
+    {'1': 'total_amount', '3': 8, '4': 1, '5': 1, '10': 'totalAmount'},
     {'1': 'currency', '3': 9, '4': 1, '5': 9, '10': 'currency'},
     {
       '1': 'has_inventory_impact',
@@ -132,7 +132,7 @@ final $typed_data.Uint8List debitNoteDescriptor = $convert.base64Decode(
     'VyX2lkGAQgASgJUghpc3N1ZXJJZBIhCgxyZWNpcGllbnRfaWQYBSABKAlSC3JlY2lwaWVudElk'
     'EjUKBnN0YXR1cxgGIAEoDjIdLmZpbmFuY2lhbC52MS5EZWJpdE5vdGVTdGF0dXNSBnN0YXR1cx'
     'IzCgVpdGVtcxgHIAMoCzIdLmZpbmFuY2lhbC52MS5JbnZvaWNlTGluZUl0ZW1SBWl0ZW1zEiEK'
-    'DHRvdGFsX2Ftb3VudBgIIAEoA1ILdG90YWxBbW91bnQSGgoIY3VycmVuY3kYCSABKAlSCGN1cn'
+    'DHRvdGFsX2Ftb3VudBgIIAEoAVILdG90YWxBbW91bnQSGgoIY3VycmVuY3kYCSABKAlSCGN1cn'
     'JlbmN5EjAKFGhhc19pbnZlbnRvcnlfaW1wYWN0GAogASgIUhJoYXNJbnZlbnRvcnlJbXBhY3QS'
     'MwoWcmVsYXRlZF9yZXR1cm5fbm90ZV9pZBgLIAEoCVITcmVsYXRlZFJldHVybk5vdGVJZBI5Cg'
     'ppc3N1ZV9kYXRlGAwgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIJaXNzdWVEYXRl'

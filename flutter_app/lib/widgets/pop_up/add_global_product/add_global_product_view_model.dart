@@ -3,13 +3,13 @@ import 'dart:async';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../../../repositories/categories_repository.dart';
-import '../../../repositories/products_repository.dart';
+import '../../../repositories/store_products_repository.dart';
 import '../../../services/rpc/fake_transport/global_product.dart';
 
 /// ViewModel for add global product management.
 class AddGlobalProductViewModel {
   /// The products repository instance.
-  final ProductsRepository _productsRepository = ProductsRepository(
+  final StoreProductsRepository _productsRepository = StoreProductsRepository(
     transport: globalProductFakeTransport,
   );
 

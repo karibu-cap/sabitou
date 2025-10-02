@@ -46,9 +46,9 @@ class InventoryTransaction extends $pb.GeneratedMessage {
     $core.String? storeId,
     $core.String? productId,
     TransactionType? transactionType,
-    $core.double? quantityChange,
-    $core.double? quantityBefore,
-    $core.double? quantityAfter,
+    $core.int? quantityChange,
+    $core.int? quantityBefore,
+    $core.int? quantityAfter,
     $core.String? relatedDocumentType,
     $core.String? relatedDocumentId,
     $core.String? performedByUserId,
@@ -95,12 +95,12 @@ class InventoryTransaction extends $pb.GeneratedMessage {
         defaultOrMaker: TransactionType.TXN_TYPE_UNSPECIFIED,
         valueOf: TransactionType.valueOf,
         enumValues: TransactionType.values)
-    ..a<$core.double>(
-        5, _omitFieldNames ? '' : 'quantityChange', $pb.PbFieldType.OD)
-    ..a<$core.double>(
-        6, _omitFieldNames ? '' : 'quantityBefore', $pb.PbFieldType.OD)
-    ..a<$core.double>(
-        7, _omitFieldNames ? '' : 'quantityAfter', $pb.PbFieldType.OD)
+    ..a<$core.int>(
+        5, _omitFieldNames ? '' : 'quantityChange', $pb.PbFieldType.O3)
+    ..a<$core.int>(
+        6, _omitFieldNames ? '' : 'quantityBefore', $pb.PbFieldType.O3)
+    ..a<$core.int>(
+        7, _omitFieldNames ? '' : 'quantityAfter', $pb.PbFieldType.O3)
     ..aOS(8, _omitFieldNames ? '' : 'relatedDocumentType')
     ..aOS(9, _omitFieldNames ? '' : 'relatedDocumentId')
     ..aOS(10, _omitFieldNames ? '' : 'performedByUserId')
@@ -169,27 +169,27 @@ class InventoryTransaction extends $pb.GeneratedMessage {
   void clearTransactionType() => $_clearField(4);
 
   @$pb.TagNumber(5)
-  $core.double get quantityChange => $_getN(4);
+  $core.int get quantityChange => $_getIZ(4);
   @$pb.TagNumber(5)
-  set quantityChange($core.double value) => $_setDouble(4, value);
+  set quantityChange($core.int value) => $_setSignedInt32(4, value);
   @$pb.TagNumber(5)
   $core.bool hasQuantityChange() => $_has(4);
   @$pb.TagNumber(5)
   void clearQuantityChange() => $_clearField(5);
 
   @$pb.TagNumber(6)
-  $core.double get quantityBefore => $_getN(5);
+  $core.int get quantityBefore => $_getIZ(5);
   @$pb.TagNumber(6)
-  set quantityBefore($core.double value) => $_setDouble(5, value);
+  set quantityBefore($core.int value) => $_setSignedInt32(5, value);
   @$pb.TagNumber(6)
   $core.bool hasQuantityBefore() => $_has(5);
   @$pb.TagNumber(6)
   void clearQuantityBefore() => $_clearField(6);
 
   @$pb.TagNumber(7)
-  $core.double get quantityAfter => $_getN(6);
+  $core.int get quantityAfter => $_getIZ(6);
   @$pb.TagNumber(7)
-  set quantityAfter($core.double value) => $_setDouble(6, value);
+  set quantityAfter($core.int value) => $_setSignedInt32(6, value);
   @$pb.TagNumber(7)
   $core.bool hasQuantityAfter() => $_has(6);
   @$pb.TagNumber(7)

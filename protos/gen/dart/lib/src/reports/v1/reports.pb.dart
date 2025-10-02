@@ -13,7 +13,6 @@
 import 'dart:async' as $async;
 import 'dart:core' as $core;
 
-import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import '../../audits/v1/inventory_transaction.pb.dart' as $2;
@@ -158,10 +157,10 @@ class GetSalesReportRequest extends $pb.GeneratedMessage {
 class GetSalesReportResponse extends $pb.GeneratedMessage {
   factory GetSalesReportResponse({
     $core.Iterable<SalesSummary>? summaries,
-    $fixnum.Int64? totalSalesAmount,
+    $core.double? totalSalesAmount,
     $core.int? totalTransactions,
     $core.int? totalUnitsSold,
-    $fixnum.Int64? averageTransactionValue,
+    $core.double? averageTransactionValue,
   }) {
     final result = create();
     if (summaries != null) result.summaries.addAll(summaries);
@@ -189,12 +188,14 @@ class GetSalesReportResponse extends $pb.GeneratedMessage {
     ..pc<SalesSummary>(
         1, _omitFieldNames ? '' : 'summaries', $pb.PbFieldType.PM,
         subBuilder: SalesSummary.create)
-    ..aInt64(2, _omitFieldNames ? '' : 'totalSalesAmount')
+    ..a<$core.double>(
+        2, _omitFieldNames ? '' : 'totalSalesAmount', $pb.PbFieldType.OD)
     ..a<$core.int>(
         3, _omitFieldNames ? '' : 'totalTransactions', $pb.PbFieldType.O3)
     ..a<$core.int>(
         4, _omitFieldNames ? '' : 'totalUnitsSold', $pb.PbFieldType.O3)
-    ..aInt64(5, _omitFieldNames ? '' : 'averageTransactionValue')
+    ..a<$core.double>(
+        5, _omitFieldNames ? '' : 'averageTransactionValue', $pb.PbFieldType.OD)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -224,9 +225,9 @@ class GetSalesReportResponse extends $pb.GeneratedMessage {
   $pb.PbList<SalesSummary> get summaries => $_getList(0);
 
   @$pb.TagNumber(2)
-  $fixnum.Int64 get totalSalesAmount => $_getI64(1);
+  $core.double get totalSalesAmount => $_getN(1);
   @$pb.TagNumber(2)
-  set totalSalesAmount($fixnum.Int64 value) => $_setInt64(1, value);
+  set totalSalesAmount($core.double value) => $_setDouble(1, value);
   @$pb.TagNumber(2)
   $core.bool hasTotalSalesAmount() => $_has(1);
   @$pb.TagNumber(2)
@@ -251,9 +252,9 @@ class GetSalesReportResponse extends $pb.GeneratedMessage {
   void clearTotalUnitsSold() => $_clearField(4);
 
   @$pb.TagNumber(5)
-  $fixnum.Int64 get averageTransactionValue => $_getI64(4);
+  $core.double get averageTransactionValue => $_getN(4);
   @$pb.TagNumber(5)
-  set averageTransactionValue($fixnum.Int64 value) => $_setInt64(4, value);
+  set averageTransactionValue($core.double value) => $_setDouble(4, value);
   @$pb.TagNumber(5)
   $core.bool hasAverageTransactionValue() => $_has(4);
   @$pb.TagNumber(5)
@@ -264,7 +265,7 @@ class SalesSummary extends $pb.GeneratedMessage {
   factory SalesSummary({
     $0.Timestamp? periodStart,
     $0.Timestamp? periodEnd,
-    $fixnum.Int64? salesAmount,
+    $core.double? salesAmount,
     $core.int? transactionCount,
     $core.int? unitsSold,
   }) {
@@ -294,7 +295,8 @@ class SalesSummary extends $pb.GeneratedMessage {
         subBuilder: $0.Timestamp.create)
     ..aOM<$0.Timestamp>(2, _omitFieldNames ? '' : 'periodEnd',
         subBuilder: $0.Timestamp.create)
-    ..aInt64(3, _omitFieldNames ? '' : 'salesAmount')
+    ..a<$core.double>(
+        3, _omitFieldNames ? '' : 'salesAmount', $pb.PbFieldType.OD)
     ..a<$core.int>(
         4, _omitFieldNames ? '' : 'transactionCount', $pb.PbFieldType.O3)
     ..a<$core.int>(5, _omitFieldNames ? '' : 'unitsSold', $pb.PbFieldType.O3)
@@ -344,9 +346,9 @@ class SalesSummary extends $pb.GeneratedMessage {
   $0.Timestamp ensurePeriodEnd() => $_ensure(1);
 
   @$pb.TagNumber(3)
-  $fixnum.Int64 get salesAmount => $_getI64(2);
+  $core.double get salesAmount => $_getN(2);
   @$pb.TagNumber(3)
-  set salesAmount($fixnum.Int64 value) => $_setInt64(2, value);
+  set salesAmount($core.double value) => $_setDouble(2, value);
   @$pb.TagNumber(3)
   $core.bool hasSalesAmount() => $_has(2);
   @$pb.TagNumber(3)
@@ -501,7 +503,7 @@ class GetPurchaseReportRequest extends $pb.GeneratedMessage {
 class GetPurchaseReportResponse extends $pb.GeneratedMessage {
   factory GetPurchaseReportResponse({
     $core.Iterable<PurchaseSummary>? summaries,
-    $fixnum.Int64? totalPurchaseAmount,
+    $core.double? totalPurchaseAmount,
     $core.int? totalPurchaseOrders,
     $core.int? totalUnitsPurchased,
   }) {
@@ -532,7 +534,8 @@ class GetPurchaseReportResponse extends $pb.GeneratedMessage {
     ..pc<PurchaseSummary>(
         1, _omitFieldNames ? '' : 'summaries', $pb.PbFieldType.PM,
         subBuilder: PurchaseSummary.create)
-    ..aInt64(2, _omitFieldNames ? '' : 'totalPurchaseAmount')
+    ..a<$core.double>(
+        2, _omitFieldNames ? '' : 'totalPurchaseAmount', $pb.PbFieldType.OD)
     ..a<$core.int>(
         3, _omitFieldNames ? '' : 'totalPurchaseOrders', $pb.PbFieldType.O3)
     ..a<$core.int>(
@@ -566,9 +569,9 @@ class GetPurchaseReportResponse extends $pb.GeneratedMessage {
   $pb.PbList<PurchaseSummary> get summaries => $_getList(0);
 
   @$pb.TagNumber(2)
-  $fixnum.Int64 get totalPurchaseAmount => $_getI64(1);
+  $core.double get totalPurchaseAmount => $_getN(1);
   @$pb.TagNumber(2)
-  set totalPurchaseAmount($fixnum.Int64 value) => $_setInt64(1, value);
+  set totalPurchaseAmount($core.double value) => $_setDouble(1, value);
   @$pb.TagNumber(2)
   $core.bool hasTotalPurchaseAmount() => $_has(1);
   @$pb.TagNumber(2)
@@ -597,7 +600,7 @@ class PurchaseSummary extends $pb.GeneratedMessage {
   factory PurchaseSummary({
     $0.Timestamp? periodStart,
     $0.Timestamp? periodEnd,
-    $fixnum.Int64? purchaseAmount,
+    $core.double? purchaseAmount,
     $core.int? purchaseOrderCount,
     $core.int? unitsPurchased,
   }) {
@@ -628,7 +631,8 @@ class PurchaseSummary extends $pb.GeneratedMessage {
         subBuilder: $0.Timestamp.create)
     ..aOM<$0.Timestamp>(2, _omitFieldNames ? '' : 'periodEnd',
         subBuilder: $0.Timestamp.create)
-    ..aInt64(3, _omitFieldNames ? '' : 'purchaseAmount')
+    ..a<$core.double>(
+        3, _omitFieldNames ? '' : 'purchaseAmount', $pb.PbFieldType.OD)
     ..a<$core.int>(
         4, _omitFieldNames ? '' : 'purchaseOrderCount', $pb.PbFieldType.O3)
     ..a<$core.int>(
@@ -679,9 +683,9 @@ class PurchaseSummary extends $pb.GeneratedMessage {
   $0.Timestamp ensurePeriodEnd() => $_ensure(1);
 
   @$pb.TagNumber(3)
-  $fixnum.Int64 get purchaseAmount => $_getI64(2);
+  $core.double get purchaseAmount => $_getN(2);
   @$pb.TagNumber(3)
-  set purchaseAmount($fixnum.Int64 value) => $_setInt64(2, value);
+  set purchaseAmount($core.double value) => $_setDouble(2, value);
   @$pb.TagNumber(3)
   $core.bool hasPurchaseAmount() => $_has(2);
   @$pb.TagNumber(3)
@@ -1107,7 +1111,7 @@ class BestSellingProduct extends $pb.GeneratedMessage {
   factory BestSellingProduct({
     $1.StoreProduct? product,
     $core.int? unitsSold,
-    $fixnum.Int64? totalRevenue,
+    $core.double? totalRevenue,
     $core.int? transactionCount,
     $core.String? productName,
     $core.int? rank,
@@ -1138,7 +1142,8 @@ class BestSellingProduct extends $pb.GeneratedMessage {
     ..aOM<$1.StoreProduct>(1, _omitFieldNames ? '' : 'product',
         subBuilder: $1.StoreProduct.create)
     ..a<$core.int>(2, _omitFieldNames ? '' : 'unitsSold', $pb.PbFieldType.O3)
-    ..aInt64(3, _omitFieldNames ? '' : 'totalRevenue')
+    ..a<$core.double>(
+        3, _omitFieldNames ? '' : 'totalRevenue', $pb.PbFieldType.OD)
     ..a<$core.int>(
         4, _omitFieldNames ? '' : 'transactionCount', $pb.PbFieldType.O3)
     ..aOS(5, _omitFieldNames ? '' : 'productName', protoName: 'productName')
@@ -1187,9 +1192,9 @@ class BestSellingProduct extends $pb.GeneratedMessage {
   void clearUnitsSold() => $_clearField(2);
 
   @$pb.TagNumber(3)
-  $fixnum.Int64 get totalRevenue => $_getI64(2);
+  $core.double get totalRevenue => $_getN(2);
   @$pb.TagNumber(3)
-  set totalRevenue($fixnum.Int64 value) => $_setInt64(2, value);
+  set totalRevenue($core.double value) => $_setDouble(2, value);
   @$pb.TagNumber(3)
   $core.bool hasTotalRevenue() => $_has(2);
   @$pb.TagNumber(3)
@@ -1317,9 +1322,9 @@ class GetStorePurchaseHistoryResponse extends $pb.GeneratedMessage {
   factory GetStorePurchaseHistoryResponse({
     $3.Store? store,
     $core.Iterable<$4.Invoice>? invoices,
-    $fixnum.Int64? totalPurchases,
-    $fixnum.Int64? totalPaid,
-    $fixnum.Int64? outstandingBalance,
+    $core.double? totalPurchases,
+    $core.double? totalPaid,
+    $core.double? outstandingBalance,
     $core.int? transactionCount,
     $0.Timestamp? lastPurchaseDate,
   }) {
@@ -1352,9 +1357,11 @@ class GetStorePurchaseHistoryResponse extends $pb.GeneratedMessage {
         subBuilder: $3.Store.create)
     ..pc<$4.Invoice>(2, _omitFieldNames ? '' : 'invoices', $pb.PbFieldType.PM,
         subBuilder: $4.Invoice.create)
-    ..aInt64(3, _omitFieldNames ? '' : 'totalPurchases')
-    ..aInt64(4, _omitFieldNames ? '' : 'totalPaid')
-    ..aInt64(5, _omitFieldNames ? '' : 'outstandingBalance')
+    ..a<$core.double>(
+        3, _omitFieldNames ? '' : 'totalPurchases', $pb.PbFieldType.OD)
+    ..a<$core.double>(4, _omitFieldNames ? '' : 'totalPaid', $pb.PbFieldType.OD)
+    ..a<$core.double>(
+        5, _omitFieldNames ? '' : 'outstandingBalance', $pb.PbFieldType.OD)
     ..a<$core.int>(
         6, _omitFieldNames ? '' : 'transactionCount', $pb.PbFieldType.O3)
     ..aOM<$0.Timestamp>(7, _omitFieldNames ? '' : 'lastPurchaseDate',
@@ -1402,27 +1409,27 @@ class GetStorePurchaseHistoryResponse extends $pb.GeneratedMessage {
   $pb.PbList<$4.Invoice> get invoices => $_getList(1);
 
   @$pb.TagNumber(3)
-  $fixnum.Int64 get totalPurchases => $_getI64(2);
+  $core.double get totalPurchases => $_getN(2);
   @$pb.TagNumber(3)
-  set totalPurchases($fixnum.Int64 value) => $_setInt64(2, value);
+  set totalPurchases($core.double value) => $_setDouble(2, value);
   @$pb.TagNumber(3)
   $core.bool hasTotalPurchases() => $_has(2);
   @$pb.TagNumber(3)
   void clearTotalPurchases() => $_clearField(3);
 
   @$pb.TagNumber(4)
-  $fixnum.Int64 get totalPaid => $_getI64(3);
+  $core.double get totalPaid => $_getN(3);
   @$pb.TagNumber(4)
-  set totalPaid($fixnum.Int64 value) => $_setInt64(3, value);
+  set totalPaid($core.double value) => $_setDouble(3, value);
   @$pb.TagNumber(4)
   $core.bool hasTotalPaid() => $_has(3);
   @$pb.TagNumber(4)
   void clearTotalPaid() => $_clearField(4);
 
   @$pb.TagNumber(5)
-  $fixnum.Int64 get outstandingBalance => $_getI64(4);
+  $core.double get outstandingBalance => $_getN(4);
   @$pb.TagNumber(5)
-  set outstandingBalance($fixnum.Int64 value) => $_setInt64(4, value);
+  set outstandingBalance($core.double value) => $_setDouble(4, value);
   @$pb.TagNumber(5)
   $core.bool hasOutstandingBalance() => $_has(4);
   @$pb.TagNumber(5)
@@ -1545,7 +1552,7 @@ class GetSupplierPerformanceReportResponse extends $pb.GeneratedMessage {
   factory GetSupplierPerformanceReportResponse({
     $5.Supplier? supplier,
     $core.int? totalPurchaseOrders,
-    $fixnum.Int64? totalPurchaseValue,
+    $core.double? totalPurchaseValue,
     $core.int? onTimeDeliveries,
     $core.int? lateDeliveries,
     $core.double? onTimePercentage,
@@ -1585,7 +1592,8 @@ class GetSupplierPerformanceReportResponse extends $pb.GeneratedMessage {
         subBuilder: $5.Supplier.create)
     ..a<$core.int>(
         2, _omitFieldNames ? '' : 'totalPurchaseOrders', $pb.PbFieldType.O3)
-    ..aInt64(3, _omitFieldNames ? '' : 'totalPurchaseValue')
+    ..a<$core.double>(
+        3, _omitFieldNames ? '' : 'totalPurchaseValue', $pb.PbFieldType.OD)
     ..a<$core.int>(
         4, _omitFieldNames ? '' : 'onTimeDeliveries', $pb.PbFieldType.O3)
     ..a<$core.int>(
@@ -1645,9 +1653,9 @@ class GetSupplierPerformanceReportResponse extends $pb.GeneratedMessage {
   void clearTotalPurchaseOrders() => $_clearField(2);
 
   @$pb.TagNumber(3)
-  $fixnum.Int64 get totalPurchaseValue => $_getI64(2);
+  $core.double get totalPurchaseValue => $_getN(2);
   @$pb.TagNumber(3)
-  set totalPurchaseValue($fixnum.Int64 value) => $_setInt64(2, value);
+  set totalPurchaseValue($core.double value) => $_setDouble(2, value);
   @$pb.TagNumber(3)
   $core.bool hasTotalPurchaseValue() => $_has(2);
   @$pb.TagNumber(3)
@@ -1790,13 +1798,13 @@ class GetProfitLossReportRequest extends $pb.GeneratedMessage {
 
 class GetProfitLossReportResponse extends $pb.GeneratedMessage {
   factory GetProfitLossReportResponse({
-    $fixnum.Int64? totalRevenue,
-    $fixnum.Int64? costOfGoodsSold,
-    $fixnum.Int64? grossProfit,
+    $core.double? totalRevenue,
+    $core.double? costOfGoodsSold,
+    $core.double? grossProfit,
     $core.double? grossProfitMargin,
-    $fixnum.Int64? returnsValue,
-    $fixnum.Int64? adjustmentsValue,
-    $fixnum.Int64? netProfit,
+    $core.double? returnsValue,
+    $core.double? adjustmentsValue,
+    $core.double? netProfit,
   }) {
     final result = create();
     if (totalRevenue != null) result.totalRevenue = totalRevenue;
@@ -1822,14 +1830,19 @@ class GetProfitLossReportResponse extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'GetProfitLossReportResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'reports.v1'),
       createEmptyInstance: create)
-    ..aInt64(1, _omitFieldNames ? '' : 'totalRevenue')
-    ..aInt64(2, _omitFieldNames ? '' : 'costOfGoodsSold')
-    ..aInt64(3, _omitFieldNames ? '' : 'grossProfit')
+    ..a<$core.double>(
+        1, _omitFieldNames ? '' : 'totalRevenue', $pb.PbFieldType.OD)
+    ..a<$core.double>(
+        2, _omitFieldNames ? '' : 'costOfGoodsSold', $pb.PbFieldType.OD)
+    ..a<$core.double>(
+        3, _omitFieldNames ? '' : 'grossProfit', $pb.PbFieldType.OD)
     ..a<$core.double>(
         4, _omitFieldNames ? '' : 'grossProfitMargin', $pb.PbFieldType.OD)
-    ..aInt64(5, _omitFieldNames ? '' : 'returnsValue')
-    ..aInt64(6, _omitFieldNames ? '' : 'adjustmentsValue')
-    ..aInt64(7, _omitFieldNames ? '' : 'netProfit')
+    ..a<$core.double>(
+        5, _omitFieldNames ? '' : 'returnsValue', $pb.PbFieldType.OD)
+    ..a<$core.double>(
+        6, _omitFieldNames ? '' : 'adjustmentsValue', $pb.PbFieldType.OD)
+    ..a<$core.double>(7, _omitFieldNames ? '' : 'netProfit', $pb.PbFieldType.OD)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -1858,27 +1871,27 @@ class GetProfitLossReportResponse extends $pb.GeneratedMessage {
   static GetProfitLossReportResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $fixnum.Int64 get totalRevenue => $_getI64(0);
+  $core.double get totalRevenue => $_getN(0);
   @$pb.TagNumber(1)
-  set totalRevenue($fixnum.Int64 value) => $_setInt64(0, value);
+  set totalRevenue($core.double value) => $_setDouble(0, value);
   @$pb.TagNumber(1)
   $core.bool hasTotalRevenue() => $_has(0);
   @$pb.TagNumber(1)
   void clearTotalRevenue() => $_clearField(1);
 
   @$pb.TagNumber(2)
-  $fixnum.Int64 get costOfGoodsSold => $_getI64(1);
+  $core.double get costOfGoodsSold => $_getN(1);
   @$pb.TagNumber(2)
-  set costOfGoodsSold($fixnum.Int64 value) => $_setInt64(1, value);
+  set costOfGoodsSold($core.double value) => $_setDouble(1, value);
   @$pb.TagNumber(2)
   $core.bool hasCostOfGoodsSold() => $_has(1);
   @$pb.TagNumber(2)
   void clearCostOfGoodsSold() => $_clearField(2);
 
   @$pb.TagNumber(3)
-  $fixnum.Int64 get grossProfit => $_getI64(2);
+  $core.double get grossProfit => $_getN(2);
   @$pb.TagNumber(3)
-  set grossProfit($fixnum.Int64 value) => $_setInt64(2, value);
+  set grossProfit($core.double value) => $_setDouble(2, value);
   @$pb.TagNumber(3)
   $core.bool hasGrossProfit() => $_has(2);
   @$pb.TagNumber(3)
@@ -1894,27 +1907,27 @@ class GetProfitLossReportResponse extends $pb.GeneratedMessage {
   void clearGrossProfitMargin() => $_clearField(4);
 
   @$pb.TagNumber(5)
-  $fixnum.Int64 get returnsValue => $_getI64(4);
+  $core.double get returnsValue => $_getN(4);
   @$pb.TagNumber(5)
-  set returnsValue($fixnum.Int64 value) => $_setInt64(4, value);
+  set returnsValue($core.double value) => $_setDouble(4, value);
   @$pb.TagNumber(5)
   $core.bool hasReturnsValue() => $_has(4);
   @$pb.TagNumber(5)
   void clearReturnsValue() => $_clearField(5);
 
   @$pb.TagNumber(6)
-  $fixnum.Int64 get adjustmentsValue => $_getI64(5);
+  $core.double get adjustmentsValue => $_getN(5);
   @$pb.TagNumber(6)
-  set adjustmentsValue($fixnum.Int64 value) => $_setInt64(5, value);
+  set adjustmentsValue($core.double value) => $_setDouble(5, value);
   @$pb.TagNumber(6)
   $core.bool hasAdjustmentsValue() => $_has(5);
   @$pb.TagNumber(6)
   void clearAdjustmentsValue() => $_clearField(6);
 
   @$pb.TagNumber(7)
-  $fixnum.Int64 get netProfit => $_getI64(6);
+  $core.double get netProfit => $_getN(6);
   @$pb.TagNumber(7)
-  set netProfit($fixnum.Int64 value) => $_setInt64(6, value);
+  set netProfit($core.double value) => $_setDouble(6, value);
   @$pb.TagNumber(7)
   $core.bool hasNetProfit() => $_has(6);
   @$pb.TagNumber(7)
@@ -1995,8 +2008,8 @@ class GetStockAgingReportRequest extends $pb.GeneratedMessage {
 class GetStockAgingReportResponse extends $pb.GeneratedMessage {
   factory GetStockAgingReportResponse({
     $core.Iterable<StockAgingItem>? items,
-    $fixnum.Int64? totalStockValue,
-    $fixnum.Int64? slowMovingStockValue,
+    $core.double? totalStockValue,
+    $core.double? slowMovingStockValue,
   }) {
     final result = create();
     if (items != null) result.items.addAll(items);
@@ -2021,8 +2034,10 @@ class GetStockAgingReportResponse extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..pc<StockAgingItem>(1, _omitFieldNames ? '' : 'items', $pb.PbFieldType.PM,
         subBuilder: StockAgingItem.create)
-    ..aInt64(2, _omitFieldNames ? '' : 'totalStockValue')
-    ..aInt64(3, _omitFieldNames ? '' : 'slowMovingStockValue')
+    ..a<$core.double>(
+        2, _omitFieldNames ? '' : 'totalStockValue', $pb.PbFieldType.OD)
+    ..a<$core.double>(
+        3, _omitFieldNames ? '' : 'slowMovingStockValue', $pb.PbFieldType.OD)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -2054,18 +2069,18 @@ class GetStockAgingReportResponse extends $pb.GeneratedMessage {
   $pb.PbList<StockAgingItem> get items => $_getList(0);
 
   @$pb.TagNumber(2)
-  $fixnum.Int64 get totalStockValue => $_getI64(1);
+  $core.double get totalStockValue => $_getN(1);
   @$pb.TagNumber(2)
-  set totalStockValue($fixnum.Int64 value) => $_setInt64(1, value);
+  set totalStockValue($core.double value) => $_setDouble(1, value);
   @$pb.TagNumber(2)
   $core.bool hasTotalStockValue() => $_has(1);
   @$pb.TagNumber(2)
   void clearTotalStockValue() => $_clearField(2);
 
   @$pb.TagNumber(3)
-  $fixnum.Int64 get slowMovingStockValue => $_getI64(2);
+  $core.double get slowMovingStockValue => $_getN(2);
   @$pb.TagNumber(3)
-  set slowMovingStockValue($fixnum.Int64 value) => $_setInt64(2, value);
+  set slowMovingStockValue($core.double value) => $_setDouble(2, value);
   @$pb.TagNumber(3)
   $core.bool hasSlowMovingStockValue() => $_has(2);
   @$pb.TagNumber(3)
@@ -2076,7 +2091,7 @@ class StockAgingItem extends $pb.GeneratedMessage {
   factory StockAgingItem({
     $1.StoreProduct? product,
     $core.double? quantity,
-    $fixnum.Int64? stockValue,
+    $core.double? stockValue,
     $0.Timestamp? lastMovementDate,
     $core.int? daysSinceLastMovement,
     StockMovementCategory? movementCategory,
@@ -2108,7 +2123,8 @@ class StockAgingItem extends $pb.GeneratedMessage {
     ..aOM<$1.StoreProduct>(1, _omitFieldNames ? '' : 'product',
         subBuilder: $1.StoreProduct.create)
     ..a<$core.double>(2, _omitFieldNames ? '' : 'quantity', $pb.PbFieldType.OD)
-    ..aInt64(3, _omitFieldNames ? '' : 'stockValue')
+    ..a<$core.double>(
+        3, _omitFieldNames ? '' : 'stockValue', $pb.PbFieldType.OD)
     ..aOM<$0.Timestamp>(4, _omitFieldNames ? '' : 'lastMovementDate',
         subBuilder: $0.Timestamp.create)
     ..a<$core.int>(
@@ -2163,9 +2179,9 @@ class StockAgingItem extends $pb.GeneratedMessage {
   void clearQuantity() => $_clearField(2);
 
   @$pb.TagNumber(3)
-  $fixnum.Int64 get stockValue => $_getI64(2);
+  $core.double get stockValue => $_getN(2);
   @$pb.TagNumber(3)
-  set stockValue($fixnum.Int64 value) => $_setInt64(2, value);
+  set stockValue($core.double value) => $_setDouble(2, value);
   @$pb.TagNumber(3)
   $core.bool hasStockValue() => $_has(2);
   @$pb.TagNumber(3)
@@ -2386,7 +2402,7 @@ class InventoryMovementSummary extends $pb.GeneratedMessage {
 class GetInventoryReportResponse extends $pb.GeneratedMessage {
   factory GetInventoryReportResponse({
     $core.int? totalProducts,
-    $fixnum.Int64? totalValue,
+    $core.double? totalValue,
     $core.int? lowStockCount,
     $core.Iterable<StockAgingItem>? agingItems,
     InventoryMovementSummary? movementSummary,
@@ -2423,7 +2439,8 @@ class GetInventoryReportResponse extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..a<$core.int>(
         1, _omitFieldNames ? '' : 'totalProducts', $pb.PbFieldType.O3)
-    ..aInt64(2, _omitFieldNames ? '' : 'totalValue')
+    ..a<$core.double>(
+        2, _omitFieldNames ? '' : 'totalValue', $pb.PbFieldType.OD)
     ..a<$core.int>(
         3, _omitFieldNames ? '' : 'lowStockCount', $pb.PbFieldType.O3)
     ..pc<StockAgingItem>(
@@ -2476,9 +2493,9 @@ class GetInventoryReportResponse extends $pb.GeneratedMessage {
   void clearTotalProducts() => $_clearField(1);
 
   @$pb.TagNumber(2)
-  $fixnum.Int64 get totalValue => $_getI64(1);
+  $core.double get totalValue => $_getN(1);
   @$pb.TagNumber(2)
-  set totalValue($fixnum.Int64 value) => $_setInt64(1, value);
+  set totalValue($core.double value) => $_setDouble(1, value);
   @$pb.TagNumber(2)
   $core.bool hasTotalValue() => $_has(1);
   @$pb.TagNumber(2)
@@ -2628,10 +2645,10 @@ class StockMovementDataPoint extends $pb.GeneratedMessage {
 class GetSalesReportFullResponse extends $pb.GeneratedMessage {
   factory GetSalesReportFullResponse({
     $core.Iterable<SalesSummary>? summaries,
-    $fixnum.Int64? totalSalesAmount,
+    $core.double? totalSalesAmount,
     $core.int? totalTransactions,
     $core.int? totalUnitsSold,
-    $fixnum.Int64? averageTransactionValue,
+    $core.double? averageTransactionValue,
     $core.Iterable<BestSellingProduct>? bestProducts,
     $core.Iterable<CategorySalesData>? categorySalesData,
     SalesComparisonData? previousYearComparison,
@@ -2667,12 +2684,14 @@ class GetSalesReportFullResponse extends $pb.GeneratedMessage {
     ..pc<SalesSummary>(
         1, _omitFieldNames ? '' : 'summaries', $pb.PbFieldType.PM,
         subBuilder: SalesSummary.create)
-    ..aInt64(2, _omitFieldNames ? '' : 'totalSalesAmount')
+    ..a<$core.double>(
+        2, _omitFieldNames ? '' : 'totalSalesAmount', $pb.PbFieldType.OD)
     ..a<$core.int>(
         3, _omitFieldNames ? '' : 'totalTransactions', $pb.PbFieldType.O3)
     ..a<$core.int>(
         4, _omitFieldNames ? '' : 'totalUnitsSold', $pb.PbFieldType.O3)
-    ..aInt64(5, _omitFieldNames ? '' : 'averageTransactionValue')
+    ..a<$core.double>(
+        5, _omitFieldNames ? '' : 'averageTransactionValue', $pb.PbFieldType.OD)
     ..pc<BestSellingProduct>(
         6, _omitFieldNames ? '' : 'bestProducts', $pb.PbFieldType.PM,
         subBuilder: BestSellingProduct.create)
@@ -2712,9 +2731,9 @@ class GetSalesReportFullResponse extends $pb.GeneratedMessage {
   $pb.PbList<SalesSummary> get summaries => $_getList(0);
 
   @$pb.TagNumber(2)
-  $fixnum.Int64 get totalSalesAmount => $_getI64(1);
+  $core.double get totalSalesAmount => $_getN(1);
   @$pb.TagNumber(2)
-  set totalSalesAmount($fixnum.Int64 value) => $_setInt64(1, value);
+  set totalSalesAmount($core.double value) => $_setDouble(1, value);
   @$pb.TagNumber(2)
   $core.bool hasTotalSalesAmount() => $_has(1);
   @$pb.TagNumber(2)
@@ -2739,9 +2758,9 @@ class GetSalesReportFullResponse extends $pb.GeneratedMessage {
   void clearTotalUnitsSold() => $_clearField(4);
 
   @$pb.TagNumber(5)
-  $fixnum.Int64 get averageTransactionValue => $_getI64(4);
+  $core.double get averageTransactionValue => $_getN(4);
   @$pb.TagNumber(5)
-  set averageTransactionValue($fixnum.Int64 value) => $_setInt64(4, value);
+  set averageTransactionValue($core.double value) => $_setDouble(4, value);
   @$pb.TagNumber(5)
   $core.bool hasAverageTransactionValue() => $_has(4);
   @$pb.TagNumber(5)
@@ -2875,7 +2894,7 @@ class CategorySalesData extends $pb.GeneratedMessage {
 
 class SalesComparisonData extends $pb.GeneratedMessage {
   factory SalesComparisonData({
-    $fixnum.Int64? previousYearTotalSales,
+    $core.double? previousYearTotalSales,
     $core.int? previousYearTotalTransactions,
     $core.double? previousYearAverageTransactionValue,
   }) {
@@ -2903,7 +2922,8 @@ class SalesComparisonData extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'SalesComparisonData',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'reports.v1'),
       createEmptyInstance: create)
-    ..aInt64(1, _omitFieldNames ? '' : 'previousYearTotalSales')
+    ..a<$core.double>(
+        1, _omitFieldNames ? '' : 'previousYearTotalSales', $pb.PbFieldType.OD)
     ..a<$core.int>(2, _omitFieldNames ? '' : 'previousYearTotalTransactions',
         $pb.PbFieldType.O3)
     ..a<$core.double>(
@@ -2934,9 +2954,9 @@ class SalesComparisonData extends $pb.GeneratedMessage {
   static SalesComparisonData? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $fixnum.Int64 get previousYearTotalSales => $_getI64(0);
+  $core.double get previousYearTotalSales => $_getN(0);
   @$pb.TagNumber(1)
-  set previousYearTotalSales($fixnum.Int64 value) => $_setInt64(0, value);
+  set previousYearTotalSales($core.double value) => $_setDouble(0, value);
   @$pb.TagNumber(1)
   $core.bool hasPreviousYearTotalSales() => $_has(0);
   @$pb.TagNumber(1)
@@ -3053,15 +3073,15 @@ class GetFinancialReportRequest extends $pb.GeneratedMessage {
 
 class GetFinancialReportResponse extends $pb.GeneratedMessage {
   factory GetFinancialReportResponse({
-    $fixnum.Int64? totalRevenue,
-    $fixnum.Int64? costOfGoodsSold,
-    $fixnum.Int64? grossProfit,
+    $core.double? totalRevenue,
+    $core.double? costOfGoodsSold,
+    $core.double? grossProfit,
     $core.double? grossProfitMargin,
-    $fixnum.Int64? returnsValue,
-    $fixnum.Int64? adjustmentsValue,
-    $fixnum.Int64? netProfit,
-    $fixnum.Int64? totalPurchases,
-    $fixnum.Int64? outstandingBalance,
+    $core.double? returnsValue,
+    $core.double? adjustmentsValue,
+    $core.double? netProfit,
+    $core.double? totalPurchases,
+    $core.double? outstandingBalance,
     $core.Iterable<SupplierPerformanceSummary>? supplierPerformances,
     $core.Iterable<RevenueExpenseDataPoint>? revenueVsExpensesData,
     FinancialComparisonData? previousYearComparison,
@@ -3099,16 +3119,23 @@ class GetFinancialReportResponse extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'GetFinancialReportResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'reports.v1'),
       createEmptyInstance: create)
-    ..aInt64(1, _omitFieldNames ? '' : 'totalRevenue')
-    ..aInt64(2, _omitFieldNames ? '' : 'costOfGoodsSold')
-    ..aInt64(3, _omitFieldNames ? '' : 'grossProfit')
+    ..a<$core.double>(
+        1, _omitFieldNames ? '' : 'totalRevenue', $pb.PbFieldType.OD)
+    ..a<$core.double>(
+        2, _omitFieldNames ? '' : 'costOfGoodsSold', $pb.PbFieldType.OD)
+    ..a<$core.double>(
+        3, _omitFieldNames ? '' : 'grossProfit', $pb.PbFieldType.OD)
     ..a<$core.double>(
         4, _omitFieldNames ? '' : 'grossProfitMargin', $pb.PbFieldType.OD)
-    ..aInt64(5, _omitFieldNames ? '' : 'returnsValue')
-    ..aInt64(6, _omitFieldNames ? '' : 'adjustmentsValue')
-    ..aInt64(7, _omitFieldNames ? '' : 'netProfit')
-    ..aInt64(8, _omitFieldNames ? '' : 'totalPurchases')
-    ..aInt64(9, _omitFieldNames ? '' : 'outstandingBalance')
+    ..a<$core.double>(
+        5, _omitFieldNames ? '' : 'returnsValue', $pb.PbFieldType.OD)
+    ..a<$core.double>(
+        6, _omitFieldNames ? '' : 'adjustmentsValue', $pb.PbFieldType.OD)
+    ..a<$core.double>(7, _omitFieldNames ? '' : 'netProfit', $pb.PbFieldType.OD)
+    ..a<$core.double>(
+        8, _omitFieldNames ? '' : 'totalPurchases', $pb.PbFieldType.OD)
+    ..a<$core.double>(
+        9, _omitFieldNames ? '' : 'outstandingBalance', $pb.PbFieldType.OD)
     ..pc<SupplierPerformanceSummary>(
         10, _omitFieldNames ? '' : 'supplierPerformances', $pb.PbFieldType.PM,
         subBuilder: SupplierPerformanceSummary.create)
@@ -3145,27 +3172,27 @@ class GetFinancialReportResponse extends $pb.GeneratedMessage {
   static GetFinancialReportResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $fixnum.Int64 get totalRevenue => $_getI64(0);
+  $core.double get totalRevenue => $_getN(0);
   @$pb.TagNumber(1)
-  set totalRevenue($fixnum.Int64 value) => $_setInt64(0, value);
+  set totalRevenue($core.double value) => $_setDouble(0, value);
   @$pb.TagNumber(1)
   $core.bool hasTotalRevenue() => $_has(0);
   @$pb.TagNumber(1)
   void clearTotalRevenue() => $_clearField(1);
 
   @$pb.TagNumber(2)
-  $fixnum.Int64 get costOfGoodsSold => $_getI64(1);
+  $core.double get costOfGoodsSold => $_getN(1);
   @$pb.TagNumber(2)
-  set costOfGoodsSold($fixnum.Int64 value) => $_setInt64(1, value);
+  set costOfGoodsSold($core.double value) => $_setDouble(1, value);
   @$pb.TagNumber(2)
   $core.bool hasCostOfGoodsSold() => $_has(1);
   @$pb.TagNumber(2)
   void clearCostOfGoodsSold() => $_clearField(2);
 
   @$pb.TagNumber(3)
-  $fixnum.Int64 get grossProfit => $_getI64(2);
+  $core.double get grossProfit => $_getN(2);
   @$pb.TagNumber(3)
-  set grossProfit($fixnum.Int64 value) => $_setInt64(2, value);
+  set grossProfit($core.double value) => $_setDouble(2, value);
   @$pb.TagNumber(3)
   $core.bool hasGrossProfit() => $_has(2);
   @$pb.TagNumber(3)
@@ -3181,45 +3208,45 @@ class GetFinancialReportResponse extends $pb.GeneratedMessage {
   void clearGrossProfitMargin() => $_clearField(4);
 
   @$pb.TagNumber(5)
-  $fixnum.Int64 get returnsValue => $_getI64(4);
+  $core.double get returnsValue => $_getN(4);
   @$pb.TagNumber(5)
-  set returnsValue($fixnum.Int64 value) => $_setInt64(4, value);
+  set returnsValue($core.double value) => $_setDouble(4, value);
   @$pb.TagNumber(5)
   $core.bool hasReturnsValue() => $_has(4);
   @$pb.TagNumber(5)
   void clearReturnsValue() => $_clearField(5);
 
   @$pb.TagNumber(6)
-  $fixnum.Int64 get adjustmentsValue => $_getI64(5);
+  $core.double get adjustmentsValue => $_getN(5);
   @$pb.TagNumber(6)
-  set adjustmentsValue($fixnum.Int64 value) => $_setInt64(5, value);
+  set adjustmentsValue($core.double value) => $_setDouble(5, value);
   @$pb.TagNumber(6)
   $core.bool hasAdjustmentsValue() => $_has(5);
   @$pb.TagNumber(6)
   void clearAdjustmentsValue() => $_clearField(6);
 
   @$pb.TagNumber(7)
-  $fixnum.Int64 get netProfit => $_getI64(6);
+  $core.double get netProfit => $_getN(6);
   @$pb.TagNumber(7)
-  set netProfit($fixnum.Int64 value) => $_setInt64(6, value);
+  set netProfit($core.double value) => $_setDouble(6, value);
   @$pb.TagNumber(7)
   $core.bool hasNetProfit() => $_has(6);
   @$pb.TagNumber(7)
   void clearNetProfit() => $_clearField(7);
 
   @$pb.TagNumber(8)
-  $fixnum.Int64 get totalPurchases => $_getI64(7);
+  $core.double get totalPurchases => $_getN(7);
   @$pb.TagNumber(8)
-  set totalPurchases($fixnum.Int64 value) => $_setInt64(7, value);
+  set totalPurchases($core.double value) => $_setDouble(7, value);
   @$pb.TagNumber(8)
   $core.bool hasTotalPurchases() => $_has(7);
   @$pb.TagNumber(8)
   void clearTotalPurchases() => $_clearField(8);
 
   @$pb.TagNumber(9)
-  $fixnum.Int64 get outstandingBalance => $_getI64(8);
+  $core.double get outstandingBalance => $_getN(8);
   @$pb.TagNumber(9)
-  set outstandingBalance($fixnum.Int64 value) => $_setInt64(8, value);
+  set outstandingBalance($core.double value) => $_setDouble(8, value);
   @$pb.TagNumber(9)
   $core.bool hasOutstandingBalance() => $_has(8);
   @$pb.TagNumber(9)
@@ -3362,7 +3389,7 @@ class SupplierPerformanceSummary extends $pb.GeneratedMessage {
   factory SupplierPerformanceSummary({
     $core.String? supplierId,
     $core.String? supplierName,
-    $fixnum.Int64? totalPurchaseValue,
+    $core.double? totalPurchaseValue,
     $core.double? onTimePercentage,
     $core.int? totalOrders,
   }) {
@@ -3391,7 +3418,8 @@ class SupplierPerformanceSummary extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'supplierId')
     ..aOS(2, _omitFieldNames ? '' : 'supplierName')
-    ..aInt64(3, _omitFieldNames ? '' : 'totalPurchaseValue')
+    ..a<$core.double>(
+        3, _omitFieldNames ? '' : 'totalPurchaseValue', $pb.PbFieldType.OD)
     ..a<$core.double>(
         4, _omitFieldNames ? '' : 'onTimePercentage', $pb.PbFieldType.OD)
     ..a<$core.int>(5, _omitFieldNames ? '' : 'totalOrders', $pb.PbFieldType.O3)
@@ -3440,9 +3468,9 @@ class SupplierPerformanceSummary extends $pb.GeneratedMessage {
   void clearSupplierName() => $_clearField(2);
 
   @$pb.TagNumber(3)
-  $fixnum.Int64 get totalPurchaseValue => $_getI64(2);
+  $core.double get totalPurchaseValue => $_getN(2);
   @$pb.TagNumber(3)
-  set totalPurchaseValue($fixnum.Int64 value) => $_setInt64(2, value);
+  set totalPurchaseValue($core.double value) => $_setDouble(2, value);
   @$pb.TagNumber(3)
   $core.bool hasTotalPurchaseValue() => $_has(2);
   @$pb.TagNumber(3)
@@ -3469,10 +3497,10 @@ class SupplierPerformanceSummary extends $pb.GeneratedMessage {
 
 class FinancialComparisonData extends $pb.GeneratedMessage {
   factory FinancialComparisonData({
-    $fixnum.Int64? previousYearTotalRevenue,
-    $fixnum.Int64? previousYearNetProfit,
+    $core.double? previousYearTotalRevenue,
+    $core.double? previousYearNetProfit,
     $core.double? previousYearGrossProfitMargin,
-    $fixnum.Int64? previousYearTotalPurchases,
+    $core.double? previousYearTotalPurchases,
   }) {
     final result = create();
     if (previousYearTotalRevenue != null)
@@ -3499,11 +3527,14 @@ class FinancialComparisonData extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'FinancialComparisonData',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'reports.v1'),
       createEmptyInstance: create)
-    ..aInt64(1, _omitFieldNames ? '' : 'previousYearTotalRevenue')
-    ..aInt64(2, _omitFieldNames ? '' : 'previousYearNetProfit')
+    ..a<$core.double>(1, _omitFieldNames ? '' : 'previousYearTotalRevenue',
+        $pb.PbFieldType.OD)
+    ..a<$core.double>(
+        2, _omitFieldNames ? '' : 'previousYearNetProfit', $pb.PbFieldType.OD)
     ..a<$core.double>(3, _omitFieldNames ? '' : 'previousYearGrossProfitMargin',
         $pb.PbFieldType.OD)
-    ..aInt64(4, _omitFieldNames ? '' : 'previousYearTotalPurchases')
+    ..a<$core.double>(4, _omitFieldNames ? '' : 'previousYearTotalPurchases',
+        $pb.PbFieldType.OD)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -3530,18 +3561,18 @@ class FinancialComparisonData extends $pb.GeneratedMessage {
   static FinancialComparisonData? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $fixnum.Int64 get previousYearTotalRevenue => $_getI64(0);
+  $core.double get previousYearTotalRevenue => $_getN(0);
   @$pb.TagNumber(1)
-  set previousYearTotalRevenue($fixnum.Int64 value) => $_setInt64(0, value);
+  set previousYearTotalRevenue($core.double value) => $_setDouble(0, value);
   @$pb.TagNumber(1)
   $core.bool hasPreviousYearTotalRevenue() => $_has(0);
   @$pb.TagNumber(1)
   void clearPreviousYearTotalRevenue() => $_clearField(1);
 
   @$pb.TagNumber(2)
-  $fixnum.Int64 get previousYearNetProfit => $_getI64(1);
+  $core.double get previousYearNetProfit => $_getN(1);
   @$pb.TagNumber(2)
-  set previousYearNetProfit($fixnum.Int64 value) => $_setInt64(1, value);
+  set previousYearNetProfit($core.double value) => $_setDouble(1, value);
   @$pb.TagNumber(2)
   $core.bool hasPreviousYearNetProfit() => $_has(1);
   @$pb.TagNumber(2)
@@ -3558,9 +3589,9 @@ class FinancialComparisonData extends $pb.GeneratedMessage {
   void clearPreviousYearGrossProfitMargin() => $_clearField(3);
 
   @$pb.TagNumber(4)
-  $fixnum.Int64 get previousYearTotalPurchases => $_getI64(3);
+  $core.double get previousYearTotalPurchases => $_getN(3);
   @$pb.TagNumber(4)
-  set previousYearTotalPurchases($fixnum.Int64 value) => $_setInt64(3, value);
+  set previousYearTotalPurchases($core.double value) => $_setDouble(3, value);
   @$pb.TagNumber(4)
   $core.bool hasPreviousYearTotalPurchases() => $_has(3);
   @$pb.TagNumber(4)
@@ -3570,7 +3601,7 @@ class FinancialComparisonData extends $pb.GeneratedMessage {
 class InventoryComparisonData extends $pb.GeneratedMessage {
   factory InventoryComparisonData({
     $core.int? previousYearTotalProducts,
-    $fixnum.Int64? previousYearTotalValue,
+    $core.double? previousYearTotalValue,
     $core.int? previousYearLowStockCount,
     $core.double? previousYearMovementTotalIn,
     $core.double? previousYearMovementTotalOut,
@@ -3604,7 +3635,8 @@ class InventoryComparisonData extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..a<$core.int>(1, _omitFieldNames ? '' : 'previousYearTotalProducts',
         $pb.PbFieldType.O3)
-    ..aInt64(2, _omitFieldNames ? '' : 'previousYearTotalValue')
+    ..a<$core.double>(
+        2, _omitFieldNames ? '' : 'previousYearTotalValue', $pb.PbFieldType.OD)
     ..a<$core.int>(3, _omitFieldNames ? '' : 'previousYearLowStockCount',
         $pb.PbFieldType.O3)
     ..a<$core.double>(4, _omitFieldNames ? '' : 'previousYearMovementTotalIn',
@@ -3646,9 +3678,9 @@ class InventoryComparisonData extends $pb.GeneratedMessage {
   void clearPreviousYearTotalProducts() => $_clearField(1);
 
   @$pb.TagNumber(2)
-  $fixnum.Int64 get previousYearTotalValue => $_getI64(1);
+  $core.double get previousYearTotalValue => $_getN(1);
   @$pb.TagNumber(2)
-  set previousYearTotalValue($fixnum.Int64 value) => $_setInt64(1, value);
+  set previousYearTotalValue($core.double value) => $_setDouble(1, value);
   @$pb.TagNumber(2)
   $core.bool hasPreviousYearTotalValue() => $_has(1);
   @$pb.TagNumber(2)
@@ -3772,16 +3804,16 @@ class GetDashboardReportRequest extends $pb.GeneratedMessage {
 
 class GetDashboardReportResponse extends $pb.GeneratedMessage {
   factory GetDashboardReportResponse({
-    $fixnum.Int64? totalSalesAmount,
+    $core.double? totalSalesAmount,
     $core.int? totalTransactions,
     $core.double? averageTransactionValue,
     $core.int? totalUnitsSold,
-    $fixnum.Int64? totalRevenue,
-    $fixnum.Int64? netProfit,
+    $core.double? totalRevenue,
+    $core.double? netProfit,
     $core.double? grossProfitMargin,
-    $fixnum.Int64? totalPurchases,
+    $core.double? totalPurchases,
     $core.int? totalProducts,
-    $fixnum.Int64? totalInventoryValue,
+    $core.double? totalInventoryValue,
     $core.int? lowStockCount,
     $core.Iterable<TrendDataPoint>? salesAndProfitTrend,
     $core.Iterable<CategorySalesData>? categorySalesBreakdown,
@@ -3842,21 +3874,25 @@ class GetDashboardReportResponse extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'GetDashboardReportResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'reports.v1'),
       createEmptyInstance: create)
-    ..aInt64(1, _omitFieldNames ? '' : 'totalSalesAmount')
+    ..a<$core.double>(
+        1, _omitFieldNames ? '' : 'totalSalesAmount', $pb.PbFieldType.OD)
     ..a<$core.int>(
         2, _omitFieldNames ? '' : 'totalTransactions', $pb.PbFieldType.O3)
     ..a<$core.double>(
         3, _omitFieldNames ? '' : 'averageTransactionValue', $pb.PbFieldType.OD)
     ..a<$core.int>(
         4, _omitFieldNames ? '' : 'totalUnitsSold', $pb.PbFieldType.O3)
-    ..aInt64(5, _omitFieldNames ? '' : 'totalRevenue')
-    ..aInt64(6, _omitFieldNames ? '' : 'netProfit')
+    ..a<$core.double>(
+        5, _omitFieldNames ? '' : 'totalRevenue', $pb.PbFieldType.OD)
+    ..a<$core.double>(6, _omitFieldNames ? '' : 'netProfit', $pb.PbFieldType.OD)
     ..a<$core.double>(
         7, _omitFieldNames ? '' : 'grossProfitMargin', $pb.PbFieldType.OD)
-    ..aInt64(8, _omitFieldNames ? '' : 'totalPurchases')
+    ..a<$core.double>(
+        8, _omitFieldNames ? '' : 'totalPurchases', $pb.PbFieldType.OD)
     ..a<$core.int>(
         9, _omitFieldNames ? '' : 'totalProducts', $pb.PbFieldType.O3)
-    ..aInt64(10, _omitFieldNames ? '' : 'totalInventoryValue')
+    ..a<$core.double>(
+        10, _omitFieldNames ? '' : 'totalInventoryValue', $pb.PbFieldType.OD)
     ..a<$core.int>(
         11, _omitFieldNames ? '' : 'lowStockCount', $pb.PbFieldType.O3)
     ..pc<TrendDataPoint>(
@@ -3916,9 +3952,9 @@ class GetDashboardReportResponse extends $pb.GeneratedMessage {
 
   /// Sales metrics
   @$pb.TagNumber(1)
-  $fixnum.Int64 get totalSalesAmount => $_getI64(0);
+  $core.double get totalSalesAmount => $_getN(0);
   @$pb.TagNumber(1)
-  set totalSalesAmount($fixnum.Int64 value) => $_setInt64(0, value);
+  set totalSalesAmount($core.double value) => $_setDouble(0, value);
   @$pb.TagNumber(1)
   $core.bool hasTotalSalesAmount() => $_has(0);
   @$pb.TagNumber(1)
@@ -3953,18 +3989,18 @@ class GetDashboardReportResponse extends $pb.GeneratedMessage {
 
   /// Financial metrics
   @$pb.TagNumber(5)
-  $fixnum.Int64 get totalRevenue => $_getI64(4);
+  $core.double get totalRevenue => $_getN(4);
   @$pb.TagNumber(5)
-  set totalRevenue($fixnum.Int64 value) => $_setInt64(4, value);
+  set totalRevenue($core.double value) => $_setDouble(4, value);
   @$pb.TagNumber(5)
   $core.bool hasTotalRevenue() => $_has(4);
   @$pb.TagNumber(5)
   void clearTotalRevenue() => $_clearField(5);
 
   @$pb.TagNumber(6)
-  $fixnum.Int64 get netProfit => $_getI64(5);
+  $core.double get netProfit => $_getN(5);
   @$pb.TagNumber(6)
-  set netProfit($fixnum.Int64 value) => $_setInt64(5, value);
+  set netProfit($core.double value) => $_setDouble(5, value);
   @$pb.TagNumber(6)
   $core.bool hasNetProfit() => $_has(5);
   @$pb.TagNumber(6)
@@ -3980,9 +4016,9 @@ class GetDashboardReportResponse extends $pb.GeneratedMessage {
   void clearGrossProfitMargin() => $_clearField(7);
 
   @$pb.TagNumber(8)
-  $fixnum.Int64 get totalPurchases => $_getI64(7);
+  $core.double get totalPurchases => $_getN(7);
   @$pb.TagNumber(8)
-  set totalPurchases($fixnum.Int64 value) => $_setInt64(7, value);
+  set totalPurchases($core.double value) => $_setDouble(7, value);
   @$pb.TagNumber(8)
   $core.bool hasTotalPurchases() => $_has(7);
   @$pb.TagNumber(8)
@@ -3999,9 +4035,9 @@ class GetDashboardReportResponse extends $pb.GeneratedMessage {
   void clearTotalProducts() => $_clearField(9);
 
   @$pb.TagNumber(10)
-  $fixnum.Int64 get totalInventoryValue => $_getI64(9);
+  $core.double get totalInventoryValue => $_getN(9);
   @$pb.TagNumber(10)
-  set totalInventoryValue($fixnum.Int64 value) => $_setInt64(9, value);
+  set totalInventoryValue($core.double value) => $_setDouble(9, value);
   @$pb.TagNumber(10)
   $core.bool hasTotalInventoryValue() => $_has(9);
   @$pb.TagNumber(10)

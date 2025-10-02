@@ -14,10 +14,10 @@ import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
-import '../../financial/v1/financial_utils.pbjson.dart' as $3;
+import '../../financial/v1/financial_utils.pbjson.dart' as $2;
 import '../../financial/v1/invoice.pbjson.dart' as $1;
 import '../../google/protobuf/timestamp.pbjson.dart' as $0;
-import '../../inventory/v1/category.pbjson.dart' as $4;
+import '../../inventory/v1/category.pbjson.dart' as $3;
 
 @$core.Deprecated('Use paymentStatusDescriptor instead')
 const PaymentStatus$json = {
@@ -27,7 +27,6 @@ const PaymentStatus$json = {
     {'1': 'PAYMENT_STATUS_PENDING', '2': 1},
     {'1': 'PAYMENT_STATUS_COMPLETED', '2': 2},
     {'1': 'PAYMENT_STATUS_FAILED', '2': 3},
-    {'1': 'PAYMENT_STATUS_REFUNDED', '2': 4},
   ],
 };
 
@@ -35,7 +34,29 @@ const PaymentStatus$json = {
 final $typed_data.Uint8List paymentStatusDescriptor = $convert.base64Decode(
     'Cg1QYXltZW50U3RhdHVzEh4KGlBBWU1FTlRfU1RBVFVTX1VOU1BFQ0lGSUVEEAASGgoWUEFZTU'
     'VOVF9TVEFUVVNfUEVORElORxABEhwKGFBBWU1FTlRfU1RBVFVTX0NPTVBMRVRFRBACEhkKFVBB'
-    'WU1FTlRfU1RBVFVTX0ZBSUxFRBADEhsKF1BBWU1FTlRfU1RBVFVTX1JFRlVOREVEEAQ=');
+    'WU1FTlRfU1RBVFVTX0ZBSUxFRBAD');
+
+@$core.Deprecated('Use paymentMethodDescriptor instead')
+const PaymentMethod$json = {
+  '1': 'PaymentMethod',
+  '2': [
+    {'1': 'PAYMENT_METHOD_UNSPECIFIED', '2': 0},
+    {'1': 'PAYMENT_METHOD_CASH', '2': 1},
+    {'1': 'PAYMENT_METHOD_CREDIT_CARD', '2': 2},
+    {'1': 'PAYMENT_METHOD_MOBILE_MONEY', '2': 3},
+    {'1': 'PAYMENT_METHOD_VOUCHER', '2': 4},
+    {'1': 'PAYMENT_METHOD_ORANGE_MONEY', '2': 5},
+    {'1': 'PAYMENT_METHOD_MTN_MONEY', '2': 6},
+  ],
+};
+
+/// Descriptor for `PaymentMethod`. Decode as a `google.protobuf.EnumDescriptorProto`.
+final $typed_data.Uint8List paymentMethodDescriptor = $convert.base64Decode(
+    'Cg1QYXltZW50TWV0aG9kEh4KGlBBWU1FTlRfTUVUSE9EX1VOU1BFQ0lGSUVEEAASFwoTUEFZTU'
+    'VOVF9NRVRIT0RfQ0FTSBABEh4KGlBBWU1FTlRfTUVUSE9EX0NSRURJVF9DQVJEEAISHwobUEFZ'
+    'TUVOVF9NRVRIT0RfTU9CSUxFX01PTkVZEAMSGgoWUEFZTUVOVF9NRVRIT0RfVk9VQ0hFUhAEEh'
+    '8KG1BBWU1FTlRfTUVUSE9EX09SQU5HRV9NT05FWRAFEhwKGFBBWU1FTlRfTUVUSE9EX01UTl9N'
+    'T05FWRAG');
 
 @$core.Deprecated('Use paymentDescriptor instead')
 const Payment$json = {
@@ -44,7 +65,7 @@ const Payment$json = {
     {'1': 'document_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'documentId'},
     {'1': 'payer_id', '3': 2, '4': 1, '5': 9, '10': 'payerId'},
     {'1': 'payee_id', '3': 3, '4': 1, '5': 9, '10': 'payeeId'},
-    {'1': 'amount', '3': 4, '4': 1, '5': 3, '10': 'amount'},
+    {'1': 'amount', '3': 4, '4': 1, '5': 1, '10': 'amount'},
     {'1': 'currency', '3': 5, '4': 1, '5': 9, '10': 'currency'},
     {
       '1': 'payment_method',
@@ -93,7 +114,7 @@ const Payment$json = {
 final $typed_data.Uint8List paymentDescriptor = $convert.base64Decode(
     'CgdQYXltZW50EicKC2RvY3VtZW50X2lkGAEgASgJQga6SAPIAQFSCmRvY3VtZW50SWQSGQoIcG'
     'F5ZXJfaWQYAiABKAlSB3BheWVySWQSGQoIcGF5ZWVfaWQYAyABKAlSB3BheWVlSWQSFgoGYW1v'
-    'dW50GAQgASgDUgZhbW91bnQSGgoIY3VycmVuY3kYBSABKAlSCGN1cnJlbmN5EkEKDnBheW1lbn'
+    'dW50GAQgASgBUgZhbW91bnQSGgoIY3VycmVuY3kYBSABKAlSCGN1cnJlbmN5EkEKDnBheW1lbn'
     'RfbWV0aG9kGAYgASgOMhoucGF5bWVudHMudjEuUGF5bWVudE1ldGhvZFINcGF5bWVudE1ldGhv'
     'ZBIyCgZzdGF0dXMYByABKA4yGi5wYXltZW50cy52MS5QYXltZW50U3RhdHVzUgZzdGF0dXMSLA'
     'oScmVsYXRlZF9pbnZvaWNlX2lkGAggASgJUhByZWxhdGVkSW52b2ljZUlkEj0KDHBheW1lbnRf'
@@ -107,7 +128,7 @@ const CreatePaymentRequest$json = {
   '2': [
     {'1': 'payer_id', '3': 1, '4': 1, '5': 9, '10': 'payerId'},
     {'1': 'payee_id', '3': 2, '4': 1, '5': 9, '10': 'payeeId'},
-    {'1': 'amount', '3': 3, '4': 1, '5': 3, '10': 'amount'},
+    {'1': 'amount', '3': 3, '4': 1, '5': 1, '10': 'amount'},
     {'1': 'currency', '3': 4, '4': 1, '5': 9, '10': 'currency'},
     {
       '1': 'payment_method',
@@ -137,7 +158,7 @@ const CreatePaymentRequest$json = {
 /// Descriptor for `CreatePaymentRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List createPaymentRequestDescriptor = $convert.base64Decode(
     'ChRDcmVhdGVQYXltZW50UmVxdWVzdBIZCghwYXllcl9pZBgBIAEoCVIHcGF5ZXJJZBIZCghwYX'
-    'llZV9pZBgCIAEoCVIHcGF5ZWVJZBIWCgZhbW91bnQYAyABKANSBmFtb3VudBIaCghjdXJyZW5j'
+    'llZV9pZBgCIAEoCVIHcGF5ZWVJZBIWCgZhbW91bnQYAyABKAFSBmFtb3VudBIaCghjdXJyZW5j'
     'eRgEIAEoCVIIY3VycmVuY3kSQQoOcGF5bWVudF9tZXRob2QYBSABKA4yGi5wYXltZW50cy52MS'
     '5QYXltZW50TWV0aG9kUg1wYXltZW50TWV0aG9kEi4KEHJlZmVyZW5jZV9udW1iZXIYByABKAlI'
     'AFIPcmVmZXJlbmNlTnVtYmVyiAEBEhkKBW5vdGVzGAggASgJSAFSBW5vdGVziAEBQhMKEV9yZW'
@@ -280,7 +301,7 @@ const ListPaymentsResponse$json = {
       '10': 'payments'
     },
     {'1': 'total_count', '3': 2, '4': 1, '5': 5, '10': 'totalCount'},
-    {'1': 'total_amount', '3': 3, '4': 1, '5': 3, '10': 'totalAmount'},
+    {'1': 'total_amount', '3': 3, '4': 1, '5': 1, '10': 'totalAmount'},
   ],
 };
 
@@ -288,7 +309,7 @@ const ListPaymentsResponse$json = {
 final $typed_data.Uint8List listPaymentsResponseDescriptor = $convert.base64Decode(
     'ChRMaXN0UGF5bWVudHNSZXNwb25zZRIwCghwYXltZW50cxgBIAMoCzIULnBheW1lbnRzLnYxLl'
     'BheW1lbnRSCHBheW1lbnRzEh8KC3RvdGFsX2NvdW50GAIgASgFUgp0b3RhbENvdW50EiEKDHRv'
-    'dGFsX2Ftb3VudBgDIAEoA1ILdG90YWxBbW91bnQ=');
+    'dGFsX2Ftb3VudBgDIAEoAVILdG90YWxBbW91bnQ=');
 
 @$core.Deprecated('Use createRefundRequestDescriptor instead')
 const CreateRefundRequest$json = {
@@ -302,7 +323,7 @@ const CreateRefundRequest$json = {
       '10': 'originalPaymentId'
     },
     {'1': 'credit_note_id', '3': 2, '4': 1, '5': 9, '10': 'creditNoteId'},
-    {'1': 'refund_amount', '3': 3, '4': 1, '5': 3, '10': 'refundAmount'},
+    {'1': 'refund_amount', '3': 3, '4': 1, '5': 1, '10': 'refundAmount'},
     {
       '1': 'refunded_by_user_id',
       '3': 4,
@@ -318,7 +339,7 @@ const CreateRefundRequest$json = {
 final $typed_data.Uint8List createRefundRequestDescriptor = $convert.base64Decode(
     'ChNDcmVhdGVSZWZ1bmRSZXF1ZXN0Ei4KE29yaWdpbmFsX3BheW1lbnRfaWQYASABKAlSEW9yaW'
     'dpbmFsUGF5bWVudElkEiQKDmNyZWRpdF9ub3RlX2lkGAIgASgJUgxjcmVkaXROb3RlSWQSIwoN'
-    'cmVmdW5kX2Ftb3VudBgDIAEoA1IMcmVmdW5kQW1vdW50Ei0KE3JlZnVuZGVkX2J5X3VzZXJfaW'
+    'cmVmdW5kX2Ftb3VudBgDIAEoAVIMcmVmdW5kQW1vdW50Ei0KE3JlZnVuZGVkX2J5X3VzZXJfaW'
     'QYBCABKAlSEHJlZnVuZGVkQnlVc2VySWQSFAoFbm90ZXMYBSABKAlSBW5vdGVz');
 
 @$core.Deprecated('Use createRefundResponseDescriptor instead')
@@ -378,8 +399,8 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
   '.payments.v1.Payment': Payment$json,
   '.google.protobuf.Timestamp': $0.Timestamp$json,
   '.financial.v1.Invoice': $1.Invoice$json,
-  '.financial.v1.InvoiceLineItem': $3.InvoiceLineItem$json,
-  '.inventory.v1.Internationalized': $4.Internationalized$json,
+  '.financial.v1.InvoiceLineItem': $2.InvoiceLineItem$json,
+  '.inventory.v1.Internationalized': $3.Internationalized$json,
   '.payments.v1.GetPaymentRequest': GetPaymentRequest$json,
   '.payments.v1.GetPaymentResponse': GetPaymentResponse$json,
   '.payments.v1.ListPaymentsRequest': ListPaymentsRequest$json,

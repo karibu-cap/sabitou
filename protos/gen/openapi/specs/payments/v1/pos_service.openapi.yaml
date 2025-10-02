@@ -257,25 +257,19 @@ components:
             $ref: '#/components/schemas/financial.v1.InvoiceLineItem'
           title: items
         subtotal:
-          type:
-            - integer
-            - string
+          type: number
           title: subtotal
-          format: int64
+          format: double
           description: Before tax
         taxAmount:
-          type:
-            - integer
-            - string
+          type: number
           title: tax_amount
-          format: int64
+          format: double
           description: VAT/sales tax
         totalAmount:
-          type:
-            - integer
-            - string
+          type: number
           title: total_amount
-          format: int64
+          format: double
           description: Final amount due
         currency:
           type: string
@@ -345,17 +339,13 @@ components:
           title: quantity
           format: double
         unitPrice:
-          type:
-            - integer
-            - string
+          type: number
           title: unit_price
-          format: int64
+          format: double
         subtotal:
-          type:
-            - integer
-            - string
+          type: number
           title: subtotal
-          format: int64
+          format: double
           description: quantity * unit_price
         taxRate:
           type: number
@@ -363,17 +353,13 @@ components:
           format: double
           description: 0.20 for 20% VAT
         taxAmount:
-          type:
-            - integer
-            - string
+          type: number
           title: tax_amount
-          format: int64
+          format: double
         total:
-          type:
-            - integer
-            - string
+          type: number
           title: total
-          format: int64
+          format: double
           description: subtotal + tax_amount
         batchId:
           type: string
@@ -544,36 +530,26 @@ components:
             $ref: '#/components/schemas/financial.v1.InvoiceLineItem'
           title: items
         subtotal:
-          type:
-            - integer
-            - string
+          type: number
           title: subtotal
-          format: int64
+          format: double
         taxAmount:
-          type:
-            - integer
-            - string
+          type: number
           title: tax_amount
-          format: int64
+          format: double
         totalAmount:
-          type:
-            - integer
-            - string
+          type: number
           title: total_amount
-          format: int64
+          format: double
         amountPaid:
-          type:
-            - integer
-            - string
+          type: number
           title: amount_paid
-          format: int64
+          format: double
           description: What customer gave
         changeGiven:
-          type:
-            - integer
-            - string
+          type: number
           title: change_given
-          format: int64
+          format: double
           description: amount_paid - total_amount
         currency:
           type: string
@@ -636,11 +612,9 @@ components:
             $ref: '#/components/schemas/payments.v1.SaleLineItem'
           title: items
         amountPaid:
-          type:
-            - integer
-            - string
+          type: number
           title: amount_paid
-          format: int64
+          format: double
         paymentMethod:
           title: payment_method
           $ref: '#/components/schemas/payments.v1.PaymentMethod'
@@ -659,11 +633,9 @@ components:
           title: receipt
           $ref: '#/components/schemas/payments.v1.CashReceipt'
         changeGiven:
-          type:
-            - integer
-            - string
+          type: number
           title: change_given
-          format: int64
+          format: double
         inventoryTransactionIds:
           type: array
           items:
@@ -701,41 +673,29 @@ components:
           title: total_transactions
           format: int32
         totalSalesAmount:
-          type:
-            - integer
-            - string
+          type: number
           title: total_sales_amount
-          format: int64
+          format: double
         totalCashCollected:
-          type:
-            - integer
-            - string
+          type: number
           title: total_cash_collected
-          format: int64
+          format: double
         totalCardPayments:
-          type:
-            - integer
-            - string
+          type: number
           title: total_card_payments
-          format: int64
+          format: double
         totalMobileMoney:
-          type:
-            - integer
-            - string
+          type: number
           title: total_mobile_money
-          format: int64
+          format: double
         totalVouchersIssued:
-          type:
-            - integer
-            - string
+          type: number
           title: total_vouchers_issued
-          format: int64
+          format: double
         totalVouchersRedeemed:
-          type:
-            - integer
-            - string
+          type: number
           title: total_vouchers_redeemed
-          format: int64
+          format: double
         receipts:
           type: array
           items:
@@ -755,18 +715,14 @@ components:
           title: voucher_code
           description: '"GIFT-XMAS-12345" - what customer uses'
         initialValue:
-          type:
-            - integer
-            - string
+          type: number
           title: initial_value
-          format: int64
+          format: double
           description: Original amount
         remainingValue:
-          type:
-            - integer
-            - string
+          type: number
           title: remaining_value
-          format: int64
+          format: double
           description: What's left
         currency:
           type: string
@@ -828,11 +784,9 @@ components:
             $ref: '#/components/schemas/payments.v1.SaleLineItem'
           title: items
         additionalCashPayment:
-          type:
-            - integer
-            - string
+          type: number
           title: additional_cash_payment
-          format: int64
+          format: double
           description: If voucher not enough
         additionalPaymentMethod:
           title: additional_payment_method
@@ -855,17 +809,13 @@ components:
           title: voucher_transaction
           $ref: '#/components/schemas/payments.v1.VoucherTransaction'
         voucherAmountUsed:
-          type:
-            - integer
-            - string
+          type: number
           title: voucher_amount_used
-          format: int64
+          format: double
         voucherRemaining:
-          type:
-            - integer
-            - string
+          type: number
           title: voucher_remaining
-          format: int64
+          format: double
         voucherFullyUsed:
           type: boolean
           title: voucher_fully_used
@@ -890,11 +840,9 @@ components:
           title: payee_id
           description: Who receives
         amount:
-          type:
-            - integer
-            - string
+          type: number
           title: amount
-          format: int64
+          format: double
           description: Amount in smallest currency unit
         currency:
           type: string
@@ -950,6 +898,8 @@ components:
         - PAYMENT_METHOD_CREDIT_CARD
         - PAYMENT_METHOD_MOBILE_MONEY
         - PAYMENT_METHOD_STORE_CREDIT
+        - PAYMENT_METHOD_ORANGE_MONEY
+        - PAYMENT_METHOD_MTN_MONEY
     payments.v1.PaymentStatus:
       type: string
       title: PaymentStatus
@@ -978,21 +928,17 @@ components:
             $ref: '#/components/schemas/payments.v1.SaleLineItem'
           title: items
         amountPaid:
-          type:
-            - integer
-            - string
+          type: number
           title: amount_paid
-          format: int64
+          format: double
           description: Amount customer gave (more than total)
         paymentMethod:
           title: payment_method
           $ref: '#/components/schemas/payments.v1.PaymentMethod'
         changeShortage:
-          type:
-            - integer
-            - string
+          type: number
           title: change_shortage
-          format: int64
+          format: double
           description: How much change we can't give
         notes:
           type: string
@@ -1045,11 +991,9 @@ components:
           title: quantity
           format: double
         unitPrice:
-          type:
-            - integer
-            - string
+          type: number
           title: unit_price
-          format: int64
+          format: double
           description: Can override product price for discounts
       title: SaleLineItem
       additionalProperties: false
@@ -1082,17 +1026,13 @@ components:
           title: related_receipt_id
           description: Or cash receipt
         amountUsed:
-          type:
-            - integer
-            - string
+          type: number
           title: amount_used
-          format: int64
+          format: double
         remainingAfter:
-          type:
-            - integer
-            - string
+          type: number
           title: remaining_after
-          format: int64
+          format: double
         usedAt:
           title: used_at
           $ref: '#/components/schemas/google.protobuf.Timestamp'

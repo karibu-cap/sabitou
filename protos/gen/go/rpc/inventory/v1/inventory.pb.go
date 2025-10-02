@@ -150,7 +150,7 @@ type Batch struct {
 	DocumentId          string                 `protobuf:"bytes,1,opt,name=document_id,json=documentId,proto3" json:"document_id,omitempty"`                              // Unique batch/lot ID: "BATCH-2025-001"
 	ProductId           string                 `protobuf:"bytes,2,opt,name=product_id,json=productId,proto3" json:"product_id,omitempty"`                                 // Which product this batch is for
 	WarehouseId         string                 `protobuf:"bytes,3,opt,name=warehouse_id,json=warehouseId,proto3" json:"warehouse_id,omitempty"`                           // Which warehouse stores this batch
-	Quantity            float64                `protobuf:"fixed64,4,opt,name=quantity,proto3" json:"quantity,omitempty"`                                                  // Quantity in this specific batch
+	Quantity            int32                  `protobuf:"varint,4,opt,name=quantity,proto3" json:"quantity,omitempty"`                                                   // Quantity in this specific batch
 	ExpirationDate      *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=expiration_date,json=expirationDate,proto3" json:"expiration_date,omitempty"`                  // Expiration date for this batch
 	ReceivedAt          *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=received_at,json=receivedAt,proto3" json:"received_at,omitempty"`                              // When the batch was received
 	SupplierBatchNumber string                 `protobuf:"bytes,7,opt,name=supplier_batch_number,json=supplierBatchNumber,proto3" json:"supplier_batch_number,omitempty"` // Supplier's reference number
@@ -211,7 +211,7 @@ func (x *Batch) GetWarehouseId() string {
 	return ""
 }
 
-func (x *Batch) GetQuantity() float64 {
+func (x *Batch) GetQuantity() int32 {
 	if x != nil {
 		return x.Quantity
 	}
@@ -282,13 +282,13 @@ type InventoryLevel struct {
 	// The warehouse id to get level.
 	StoreId string `protobuf:"bytes,2,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
 	// Ready to sell/use (sum of batch quantities)
-	QuantityAvailable float64 `protobuf:"fixed64,3,opt,name=quantity_available,json=quantityAvailable,proto3" json:"quantity_available,omitempty"`
+	QuantityAvailable int32 `protobuf:"varint,3,opt,name=quantity_available,json=quantityAvailable,proto3" json:"quantity_available,omitempty"`
 	// Allocated to orders not yet fulfilled
-	QuantityReserved float64 `protobuf:"fixed64,4,opt,name=quantity_reserved,json=quantityReserved,proto3" json:"quantity_reserved,omitempty"`
+	QuantityReserved int32 `protobuf:"varint,4,opt,name=quantity_reserved,json=quantityReserved,proto3" json:"quantity_reserved,omitempty"`
 	// Being delivered here
-	QuantityInTransit float64 `protobuf:"fixed64,5,opt,name=quantity_in_transit,json=quantityInTransit,proto3" json:"quantity_in_transit,omitempty"`
+	QuantityInTransit int32 `protobuf:"varint,5,opt,name=quantity_in_transit,json=quantityInTransit,proto3" json:"quantity_in_transit,omitempty"`
 	// Minimum stock threshold for this product in this warehouse
-	MinThreshold float64                `protobuf:"fixed64,8,opt,name=min_threshold,json=minThreshold,proto3" json:"min_threshold,omitempty"`
+	MinThreshold int32                  `protobuf:"varint,8,opt,name=min_threshold,json=minThreshold,proto3" json:"min_threshold,omitempty"`
 	LastUpdated  *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=last_updated,json=lastUpdated,proto3" json:"last_updated,omitempty"`
 	// Who made last change
 	LastUpdatedByUserId string `protobuf:"bytes,7,opt,name=last_updated_by_user_id,json=lastUpdatedByUserId,proto3" json:"last_updated_by_user_id,omitempty"`
@@ -342,28 +342,28 @@ func (x *InventoryLevel) GetStoreId() string {
 	return ""
 }
 
-func (x *InventoryLevel) GetQuantityAvailable() float64 {
+func (x *InventoryLevel) GetQuantityAvailable() int32 {
 	if x != nil {
 		return x.QuantityAvailable
 	}
 	return 0
 }
 
-func (x *InventoryLevel) GetQuantityReserved() float64 {
+func (x *InventoryLevel) GetQuantityReserved() int32 {
 	if x != nil {
 		return x.QuantityReserved
 	}
 	return 0
 }
 
-func (x *InventoryLevel) GetQuantityInTransit() float64 {
+func (x *InventoryLevel) GetQuantityInTransit() int32 {
 	if x != nil {
 		return x.QuantityInTransit
 	}
 	return 0
 }
 
-func (x *InventoryLevel) GetMinThreshold() float64 {
+func (x *InventoryLevel) GetMinThreshold() int32 {
 	if x != nil {
 		return x.MinThreshold
 	}
@@ -396,7 +396,7 @@ type InventoryLevelWithProduct struct {
 	Level         *InventoryLevel        `protobuf:"bytes,1,opt,name=level,proto3" json:"level,omitempty"`
 	Product       *StoreProduct          `protobuf:"bytes,2,opt,name=product,proto3" json:"product,omitempty"`
 	GlobalProduct *GlobalProduct         `protobuf:"bytes,3,opt,name=globalProduct,proto3" json:"globalProduct,omitempty"`
-	StockValue    int64                  `protobuf:"varint,4,opt,name=stock_value,json=stockValue,proto3" json:"stock_value,omitempty"` // quantity * product.unit_price
+	StockValue    int32                  `protobuf:"varint,4,opt,name=stock_value,json=stockValue,proto3" json:"stock_value,omitempty"` // quantity * product.unit_price
 	StockStatus   StockStatus            `protobuf:"varint,5,opt,name=stockStatus,proto3,enum=inventory.v1.StockStatus" json:"stockStatus,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -453,7 +453,7 @@ func (x *InventoryLevelWithProduct) GetGlobalProduct() *GlobalProduct {
 	return nil
 }
 
-func (x *InventoryLevelWithProduct) GetStockValue() int64 {
+func (x *InventoryLevelWithProduct) GetStockValue() int32 {
 	if x != nil {
 		return x.StockValue
 	}
@@ -674,9 +674,9 @@ func (x *GetProductInventoryLevelsRequest) GetProductId() string {
 type GetProductInventoryLevelsResponse struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	Levels         []*InventoryLevel      `protobuf:"bytes,1,rep,name=levels,proto3" json:"levels,omitempty"`
-	TotalAvailable int64                  `protobuf:"varint,2,opt,name=total_available,json=totalAvailable,proto3" json:"total_available,omitempty"`
-	TotalReserved  int64                  `protobuf:"varint,3,opt,name=total_reserved,json=totalReserved,proto3" json:"total_reserved,omitempty"`
-	TotalInTransit int64                  `protobuf:"varint,4,opt,name=total_in_transit,json=totalInTransit,proto3" json:"total_in_transit,omitempty"`
+	TotalAvailable int32                  `protobuf:"varint,2,opt,name=total_available,json=totalAvailable,proto3" json:"total_available,omitempty"`
+	TotalReserved  int32                  `protobuf:"varint,3,opt,name=total_reserved,json=totalReserved,proto3" json:"total_reserved,omitempty"`
+	TotalInTransit int32                  `protobuf:"varint,4,opt,name=total_in_transit,json=totalInTransit,proto3" json:"total_in_transit,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -718,21 +718,21 @@ func (x *GetProductInventoryLevelsResponse) GetLevels() []*InventoryLevel {
 	return nil
 }
 
-func (x *GetProductInventoryLevelsResponse) GetTotalAvailable() int64 {
+func (x *GetProductInventoryLevelsResponse) GetTotalAvailable() int32 {
 	if x != nil {
 		return x.TotalAvailable
 	}
 	return 0
 }
 
-func (x *GetProductInventoryLevelsResponse) GetTotalReserved() int64 {
+func (x *GetProductInventoryLevelsResponse) GetTotalReserved() int32 {
 	if x != nil {
 		return x.TotalReserved
 	}
 	return 0
 }
 
-func (x *GetProductInventoryLevelsResponse) GetTotalInTransit() int64 {
+func (x *GetProductInventoryLevelsResponse) GetTotalInTransit() int32 {
 	if x != nil {
 		return x.TotalInTransit
 	}
@@ -1265,7 +1265,7 @@ const file_inventory_v1_inventory_proto_rawDesc = "" +
 	"\n" +
 	"product_id\x18\x02 \x01(\tR\tproductId\x12!\n" +
 	"\fwarehouse_id\x18\x03 \x01(\tR\vwarehouseId\x12\x1a\n" +
-	"\bquantity\x18\x04 \x01(\x01R\bquantity\x12C\n" +
+	"\bquantity\x18\x04 \x01(\x05R\bquantity\x12C\n" +
 	"\x0fexpiration_date\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\x0eexpirationDate\x12;\n" +
 	"\vreceived_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
 	"receivedAt\x122\n" +
@@ -1275,10 +1275,10 @@ const file_inventory_v1_inventory_proto_rawDesc = "" +
 	"\x0eInventoryLevel\x12(\n" +
 	"\x10store_product_id\x18\x01 \x01(\tR\x0estoreProductId\x12\x19\n" +
 	"\bstore_id\x18\x02 \x01(\tR\astoreId\x12-\n" +
-	"\x12quantity_available\x18\x03 \x01(\x01R\x11quantityAvailable\x12+\n" +
-	"\x11quantity_reserved\x18\x04 \x01(\x01R\x10quantityReserved\x12.\n" +
-	"\x13quantity_in_transit\x18\x05 \x01(\x01R\x11quantityInTransit\x12#\n" +
-	"\rmin_threshold\x18\b \x01(\x01R\fminThreshold\x12=\n" +
+	"\x12quantity_available\x18\x03 \x01(\x05R\x11quantityAvailable\x12+\n" +
+	"\x11quantity_reserved\x18\x04 \x01(\x05R\x10quantityReserved\x12.\n" +
+	"\x13quantity_in_transit\x18\x05 \x01(\x05R\x11quantityInTransit\x12#\n" +
+	"\rmin_threshold\x18\b \x01(\x05R\fminThreshold\x12=\n" +
 	"\flast_updated\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\vlastUpdated\x124\n" +
 	"\x17last_updated_by_user_id\x18\a \x01(\tR\x13lastUpdatedByUserId\x12-\n" +
 	"\abatches\x18\t \x03(\v2\x13.inventory.v1.BatchR\abatches\"\xa6\x02\n" +
@@ -1286,7 +1286,7 @@ const file_inventory_v1_inventory_proto_rawDesc = "" +
 	"\x05level\x18\x01 \x01(\v2\x1c.inventory.v1.InventoryLevelR\x05level\x124\n" +
 	"\aproduct\x18\x02 \x01(\v2\x1a.inventory.v1.StoreProductR\aproduct\x12A\n" +
 	"\rglobalProduct\x18\x03 \x01(\v2\x1b.inventory.v1.GlobalProductR\rglobalProduct\x12\x1f\n" +
-	"\vstock_value\x18\x04 \x01(\x03R\n" +
+	"\vstock_value\x18\x04 \x01(\x05R\n" +
 	"stockValue\x12;\n" +
 	"\vstockStatus\x18\x05 \x01(\x0e2\x19.inventory.v1.StockStatusR\vstockStatus\"\x98\x03\n" +
 	"%GetInventoryTransactionHistoryRequest\x12\x1e\n" +
@@ -1314,9 +1314,9 @@ const file_inventory_v1_inventory_proto_rawDesc = "" +
 	"product_id\x18\x01 \x01(\tR\tproductId\"\xd3\x01\n" +
 	"!GetProductInventoryLevelsResponse\x124\n" +
 	"\x06levels\x18\x01 \x03(\v2\x1c.inventory.v1.InventoryLevelR\x06levels\x12'\n" +
-	"\x0ftotal_available\x18\x02 \x01(\x03R\x0etotalAvailable\x12%\n" +
-	"\x0etotal_reserved\x18\x03 \x01(\x03R\rtotalReserved\x12(\n" +
-	"\x10total_in_transit\x18\x04 \x01(\x03R\x0etotalInTransit\"\x84\x01\n" +
+	"\x0ftotal_available\x18\x02 \x01(\x05R\x0etotalAvailable\x12%\n" +
+	"\x0etotal_reserved\x18\x03 \x01(\x05R\rtotalReserved\x12(\n" +
+	"\x10total_in_transit\x18\x04 \x01(\x05R\x0etotalInTransit\"\x84\x01\n" +
 	"\x1fCheckProductAvailabilityRequest\x12\x1d\n" +
 	"\n" +
 	"product_id\x18\x01 \x01(\tR\tproductId\x12\x19\n" +

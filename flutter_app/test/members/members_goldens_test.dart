@@ -89,21 +89,57 @@ final supplierFakeTransport = FakeTransportBuilder()
 
       return FindStoreProductsResponse(
         products: [
-          StoreProduct()
-            ..refId = 'product_1'
-            ..globalProductId = 'global_product_1'
-            ..supplierId = 'supplier_1'
-            ..storeId = request.storeId,
-          StoreProduct()
-            ..refId = 'product_2'
-            ..globalProductId = 'global_product_2'
-            ..supplierId = 'supplier_1'
-            ..storeId = request.storeId,
-          StoreProduct()
-            ..refId = 'product_3'
-            ..globalProductId = 'global_product_3'
-            ..supplierId = 'supplier_2'
-            ..storeId = request.storeId,
+          StoreProductWithGlobalProduct(
+            storeProduct: StoreProduct()
+              ..refId = 'sp_1'
+              ..storeId = request.storeId
+              ..globalProductId = 'gp_1'
+              ..salePrice = 10000
+              ..status = ProductStatus.PRODUCT_STATUS_ACTIVE,
+            globalProduct: GlobalProduct()
+              ..refId = 'gp_1'
+              ..name = (Internationalized()
+                ..en = 'Product One'
+                ..fr = 'Produit Un')
+              ..description = (Internationalized()
+                ..en = 'Description One'
+                ..fr = 'Description Un')
+              ..status = GlobalProductStatus.GLOBAL_PRODUCT_STATUS_ACTIVE,
+          ),
+          StoreProductWithGlobalProduct(
+            storeProduct: StoreProduct()
+              ..refId = 'sp_2'
+              ..storeId = request.storeId
+              ..globalProductId = 'gp_2'
+              ..salePrice = 15000
+              ..status = ProductStatus.PRODUCT_STATUS_ACTIVE,
+            globalProduct: GlobalProduct()
+              ..refId = 'gp_2'
+              ..name = (Internationalized()
+                ..en = 'Product Two'
+                ..fr = 'Produit Deux')
+              ..description = (Internationalized()
+                ..en = 'Description Two'
+                ..fr = 'Description Deux')
+              ..status = GlobalProductStatus.GLOBAL_PRODUCT_STATUS_ACTIVE,
+          ),
+          StoreProductWithGlobalProduct(
+            storeProduct: StoreProduct()
+              ..refId = 'sp_3'
+              ..storeId = request.storeId
+              ..globalProductId = 'gp_3'
+              ..salePrice = 20000
+              ..status = ProductStatus.PRODUCT_STATUS_ACTIVE,
+            globalProduct: GlobalProduct()
+              ..refId = 'gp_3'
+              ..name = (Internationalized()
+                ..en = 'Product Three'
+                ..fr = 'Produit Trois')
+              ..description = (Internationalized()
+                ..en = 'Description Three'
+                ..fr = 'Description Trois')
+              ..status = GlobalProductStatus.GLOBAL_PRODUCT_STATUS_ACTIVE,
+          ),
         ],
       );
     })

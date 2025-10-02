@@ -339,7 +339,7 @@ const ListSalesOrdersResponse$json = {
       '10': 'salesOrders'
     },
     {'1': 'total_count', '3': 2, '4': 1, '5': 5, '10': 'totalCount'},
-    {'1': 'total_value', '3': 3, '4': 1, '5': 3, '10': 'totalValue'},
+    {'1': 'total_value', '3': 3, '4': 1, '5': 1, '10': 'totalValue'},
   ],
 };
 
@@ -347,7 +347,7 @@ const ListSalesOrdersResponse$json = {
 final $typed_data.Uint8List listSalesOrdersResponseDescriptor = $convert.base64Decode(
     'ChdMaXN0U2FsZXNPcmRlcnNSZXNwb25zZRI3CgxzYWxlc19vcmRlcnMYASADKAsyFC5vcmRlci'
     '52MS5TYWxlc09yZGVyUgtzYWxlc09yZGVycxIfCgt0b3RhbF9jb3VudBgCIAEoBVIKdG90YWxD'
-    'b3VudBIfCgt0b3RhbF92YWx1ZRgDIAEoA1IKdG90YWxWYWx1ZQ==');
+    'b3VudBIfCgt0b3RhbF92YWx1ZRgDIAEoAVIKdG90YWxWYWx1ZQ==');
 
 @$core.Deprecated('Use updateSalesOrderStatusRequestDescriptor instead')
 const UpdateSalesOrderStatusRequest$json = {

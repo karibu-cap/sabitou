@@ -13,12 +13,10 @@
 import 'dart:async' as $async;
 import 'dart:core' as $core;
 
-import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import '../../financial/v1/invoice.pb.dart' as $1;
 import '../../google/protobuf/timestamp.pb.dart' as $0;
-import 'payment_utils.pbenum.dart' as $2;
 import 'payments.pbenum.dart';
 
 export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
@@ -42,9 +40,9 @@ class Payment extends $pb.GeneratedMessage {
     $core.String? documentId,
     $core.String? payerId,
     $core.String? payeeId,
-    $fixnum.Int64? amount,
+    $core.double? amount,
     $core.String? currency,
-    $2.PaymentMethod? paymentMethod,
+    PaymentMethod? paymentMethod,
     PaymentStatus? status,
     $core.String? relatedInvoiceId,
     $0.Timestamp? paymentDate,
@@ -84,13 +82,13 @@ class Payment extends $pb.GeneratedMessage {
     ..aOS(1, _omitFieldNames ? '' : 'documentId')
     ..aOS(2, _omitFieldNames ? '' : 'payerId')
     ..aOS(3, _omitFieldNames ? '' : 'payeeId')
-    ..aInt64(4, _omitFieldNames ? '' : 'amount')
+    ..a<$core.double>(4, _omitFieldNames ? '' : 'amount', $pb.PbFieldType.OD)
     ..aOS(5, _omitFieldNames ? '' : 'currency')
-    ..e<$2.PaymentMethod>(
+    ..e<PaymentMethod>(
         6, _omitFieldNames ? '' : 'paymentMethod', $pb.PbFieldType.OE,
-        defaultOrMaker: $2.PaymentMethod.PAYMENT_METHOD_UNSPECIFIED,
-        valueOf: $2.PaymentMethod.valueOf,
-        enumValues: $2.PaymentMethod.values)
+        defaultOrMaker: PaymentMethod.PAYMENT_METHOD_UNSPECIFIED,
+        valueOf: PaymentMethod.valueOf,
+        enumValues: PaymentMethod.values)
     ..e<PaymentStatus>(7, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
         defaultOrMaker: PaymentStatus.PAYMENT_STATUS_UNSPECIFIED,
         valueOf: PaymentStatus.valueOf,
@@ -150,9 +148,9 @@ class Payment extends $pb.GeneratedMessage {
   void clearPayeeId() => $_clearField(3);
 
   @$pb.TagNumber(4)
-  $fixnum.Int64 get amount => $_getI64(3);
+  $core.double get amount => $_getN(3);
   @$pb.TagNumber(4)
-  set amount($fixnum.Int64 value) => $_setInt64(3, value);
+  set amount($core.double value) => $_setDouble(3, value);
   @$pb.TagNumber(4)
   $core.bool hasAmount() => $_has(3);
   @$pb.TagNumber(4)
@@ -168,9 +166,9 @@ class Payment extends $pb.GeneratedMessage {
   void clearCurrency() => $_clearField(5);
 
   @$pb.TagNumber(6)
-  $2.PaymentMethod get paymentMethod => $_getN(5);
+  PaymentMethod get paymentMethod => $_getN(5);
   @$pb.TagNumber(6)
-  set paymentMethod($2.PaymentMethod value) => $_setField(6, value);
+  set paymentMethod(PaymentMethod value) => $_setField(6, value);
   @$pb.TagNumber(6)
   $core.bool hasPaymentMethod() => $_has(5);
   @$pb.TagNumber(6)
@@ -237,9 +235,9 @@ class CreatePaymentRequest extends $pb.GeneratedMessage {
   factory CreatePaymentRequest({
     $core.String? payerId,
     $core.String? payeeId,
-    $fixnum.Int64? amount,
+    $core.double? amount,
     $core.String? currency,
-    $2.PaymentMethod? paymentMethod,
+    PaymentMethod? paymentMethod,
     $core.String? referenceNumber,
     $core.String? notes,
   }) {
@@ -269,13 +267,13 @@ class CreatePaymentRequest extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'payerId')
     ..aOS(2, _omitFieldNames ? '' : 'payeeId')
-    ..aInt64(3, _omitFieldNames ? '' : 'amount')
+    ..a<$core.double>(3, _omitFieldNames ? '' : 'amount', $pb.PbFieldType.OD)
     ..aOS(4, _omitFieldNames ? '' : 'currency')
-    ..e<$2.PaymentMethod>(
+    ..e<PaymentMethod>(
         5, _omitFieldNames ? '' : 'paymentMethod', $pb.PbFieldType.OE,
-        defaultOrMaker: $2.PaymentMethod.PAYMENT_METHOD_UNSPECIFIED,
-        valueOf: $2.PaymentMethod.valueOf,
-        enumValues: $2.PaymentMethod.values)
+        defaultOrMaker: PaymentMethod.PAYMENT_METHOD_UNSPECIFIED,
+        valueOf: PaymentMethod.valueOf,
+        enumValues: PaymentMethod.values)
     ..aOS(7, _omitFieldNames ? '' : 'referenceNumber')
     ..aOS(8, _omitFieldNames ? '' : 'notes')
     ..hasRequiredFields = false;
@@ -321,9 +319,9 @@ class CreatePaymentRequest extends $pb.GeneratedMessage {
   void clearPayeeId() => $_clearField(2);
 
   @$pb.TagNumber(3)
-  $fixnum.Int64 get amount => $_getI64(2);
+  $core.double get amount => $_getN(2);
   @$pb.TagNumber(3)
-  set amount($fixnum.Int64 value) => $_setInt64(2, value);
+  set amount($core.double value) => $_setDouble(2, value);
   @$pb.TagNumber(3)
   $core.bool hasAmount() => $_has(2);
   @$pb.TagNumber(3)
@@ -339,9 +337,9 @@ class CreatePaymentRequest extends $pb.GeneratedMessage {
   void clearCurrency() => $_clearField(4);
 
   @$pb.TagNumber(5)
-  $2.PaymentMethod get paymentMethod => $_getN(4);
+  PaymentMethod get paymentMethod => $_getN(4);
   @$pb.TagNumber(5)
-  set paymentMethod($2.PaymentMethod value) => $_setField(5, value);
+  set paymentMethod(PaymentMethod value) => $_setField(5, value);
   @$pb.TagNumber(5)
   $core.bool hasPaymentMethod() => $_has(4);
   @$pb.TagNumber(5)
@@ -599,7 +597,7 @@ class GetPaymentResponse extends $pb.GeneratedMessage {
 class ListPaymentsRequest extends $pb.GeneratedMessage {
   factory ListPaymentsRequest({
     $core.String? storeId,
-    $2.PaymentMethod? method,
+    PaymentMethod? method,
     PaymentStatus? status,
     $0.Timestamp? startDate,
     $0.Timestamp? endDate,
@@ -631,11 +629,10 @@ class ListPaymentsRequest extends $pb.GeneratedMessage {
       package: const $pb.PackageName(_omitMessageNames ? '' : 'payments.v1'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'storeId')
-    ..e<$2.PaymentMethod>(
-        2, _omitFieldNames ? '' : 'method', $pb.PbFieldType.OE,
-        defaultOrMaker: $2.PaymentMethod.PAYMENT_METHOD_UNSPECIFIED,
-        valueOf: $2.PaymentMethod.valueOf,
-        enumValues: $2.PaymentMethod.values)
+    ..e<PaymentMethod>(2, _omitFieldNames ? '' : 'method', $pb.PbFieldType.OE,
+        defaultOrMaker: PaymentMethod.PAYMENT_METHOD_UNSPECIFIED,
+        valueOf: PaymentMethod.valueOf,
+        enumValues: PaymentMethod.values)
     ..e<PaymentStatus>(3, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
         defaultOrMaker: PaymentStatus.PAYMENT_STATUS_UNSPECIFIED,
         valueOf: PaymentStatus.valueOf,
@@ -679,9 +676,9 @@ class ListPaymentsRequest extends $pb.GeneratedMessage {
   void clearStoreId() => $_clearField(1);
 
   @$pb.TagNumber(2)
-  $2.PaymentMethod get method => $_getN(1);
+  PaymentMethod get method => $_getN(1);
   @$pb.TagNumber(2)
-  set method($2.PaymentMethod value) => $_setField(2, value);
+  set method(PaymentMethod value) => $_setField(2, value);
   @$pb.TagNumber(2)
   $core.bool hasMethod() => $_has(1);
   @$pb.TagNumber(2)
@@ -741,7 +738,7 @@ class ListPaymentsResponse extends $pb.GeneratedMessage {
   factory ListPaymentsResponse({
     $core.Iterable<Payment>? payments,
     $core.int? totalCount,
-    $fixnum.Int64? totalAmount,
+    $core.double? totalAmount,
   }) {
     final result = create();
     if (payments != null) result.payments.addAll(payments);
@@ -766,7 +763,8 @@ class ListPaymentsResponse extends $pb.GeneratedMessage {
     ..pc<Payment>(1, _omitFieldNames ? '' : 'payments', $pb.PbFieldType.PM,
         subBuilder: Payment.create)
     ..a<$core.int>(2, _omitFieldNames ? '' : 'totalCount', $pb.PbFieldType.O3)
-    ..aInt64(3, _omitFieldNames ? '' : 'totalAmount')
+    ..a<$core.double>(
+        3, _omitFieldNames ? '' : 'totalAmount', $pb.PbFieldType.OD)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -804,9 +802,9 @@ class ListPaymentsResponse extends $pb.GeneratedMessage {
   void clearTotalCount() => $_clearField(2);
 
   @$pb.TagNumber(3)
-  $fixnum.Int64 get totalAmount => $_getI64(2);
+  $core.double get totalAmount => $_getN(2);
   @$pb.TagNumber(3)
-  set totalAmount($fixnum.Int64 value) => $_setInt64(2, value);
+  set totalAmount($core.double value) => $_setDouble(2, value);
   @$pb.TagNumber(3)
   $core.bool hasTotalAmount() => $_has(2);
   @$pb.TagNumber(3)
@@ -817,7 +815,7 @@ class CreateRefundRequest extends $pb.GeneratedMessage {
   factory CreateRefundRequest({
     $core.String? originalPaymentId,
     $core.String? creditNoteId,
-    $fixnum.Int64? refundAmount,
+    $core.double? refundAmount,
     $core.String? refundedByUserId,
     $core.String? notes,
   }) {
@@ -845,7 +843,8 @@ class CreateRefundRequest extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'originalPaymentId')
     ..aOS(2, _omitFieldNames ? '' : 'creditNoteId')
-    ..aInt64(3, _omitFieldNames ? '' : 'refundAmount')
+    ..a<$core.double>(
+        3, _omitFieldNames ? '' : 'refundAmount', $pb.PbFieldType.OD)
     ..aOS(4, _omitFieldNames ? '' : 'refundedByUserId')
     ..aOS(5, _omitFieldNames ? '' : 'notes')
     ..hasRequiredFields = false;
@@ -890,9 +889,9 @@ class CreateRefundRequest extends $pb.GeneratedMessage {
   void clearCreditNoteId() => $_clearField(2);
 
   @$pb.TagNumber(3)
-  $fixnum.Int64 get refundAmount => $_getI64(2);
+  $core.double get refundAmount => $_getN(2);
   @$pb.TagNumber(3)
-  set refundAmount($fixnum.Int64 value) => $_setInt64(2, value);
+  set refundAmount($core.double value) => $_setDouble(2, value);
   @$pb.TagNumber(3)
   $core.bool hasRefundAmount() => $_has(2);
   @$pb.TagNumber(3)

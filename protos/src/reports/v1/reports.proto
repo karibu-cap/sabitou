@@ -56,16 +56,16 @@ optional  string store_id = 4; // Optional
 
 message GetSalesReportResponse {
   repeated SalesSummary summaries = 1;
-  int64 total_sales_amount = 2;
+  double total_sales_amount = 2;
   int32 total_transactions = 3;
   int32 total_units_sold = 4;
-  int64 average_transaction_value = 5;
+  double average_transaction_value = 5;
 }
 
 message SalesSummary {
   google.protobuf.Timestamp period_start = 1;
   google.protobuf.Timestamp period_end = 2;
-  int64 sales_amount = 3;
+  double sales_amount = 3;
   int32 transaction_count = 4;
   int32 units_sold = 5;
 }
@@ -81,7 +81,7 @@ message GetPurchaseReportRequest {
 
 message GetPurchaseReportResponse {
   repeated PurchaseSummary summaries = 1;
-  int64 total_purchase_amount = 2;
+  double total_purchase_amount = 2;
   int32 total_purchase_orders = 3;
   int32 total_units_purchased = 4;
 }
@@ -89,7 +89,7 @@ message GetPurchaseReportResponse {
 message PurchaseSummary {
   google.protobuf.Timestamp period_start = 1;
   google.protobuf.Timestamp period_end = 2;
-  int64 purchase_amount = 3;
+  double purchase_amount = 3;
   int32 purchase_order_count = 4;
   int32 units_purchased = 5;
 }
@@ -125,7 +125,7 @@ message GetBestSellingProductsResponse {
 message BestSellingProduct {
   inventory.v1.StoreProduct product = 1;
   int32 units_sold = 2;
-  int64 total_revenue = 3;
+  double total_revenue = 3;
   int32 transaction_count = 4;
   string productName = 5;
   int32 rank = 6;
@@ -140,9 +140,9 @@ message GetStorePurchaseHistoryRequest {
 message GetStorePurchaseHistoryResponse {
   store.v1.Store store = 1;
   repeated financial.v1.Invoice invoices = 2;
-  int64 total_purchases = 3;
-  int64 total_paid = 4;
-  int64 outstanding_balance = 5;
+  double total_purchases = 3;
+  double total_paid = 4;
+  double outstanding_balance = 5;
   int32 transaction_count = 6;
   google.protobuf.Timestamp last_purchase_date = 7;
 }
@@ -156,7 +156,7 @@ message GetSupplierPerformanceReportRequest {
 message GetSupplierPerformanceReportResponse {
   store.v1.Supplier supplier = 1;
   int32 total_purchase_orders = 2;
-  int64 total_purchase_value = 3;
+  double total_purchase_value = 3;
   int32 on_time_deliveries = 4;
   int32 late_deliveries = 5;
   double on_time_percentage = 6;
@@ -171,13 +171,13 @@ optional  string store_id = 3; // Optional
 }
 
 message GetProfitLossReportResponse {
-  int64 total_revenue = 1; // Sales
-  int64 cost_of_goods_sold = 2; // Purchases
-  int64 gross_profit = 3; // Revenue - COGS
+  double total_revenue = 1; // Sales
+  double cost_of_goods_sold = 2; // Purchases
+  double gross_profit = 3; // Revenue - COGS
   double gross_profit_margin = 4; // Percentage
-  int64 returns_value = 5; // Store returns
-  int64 adjustments_value = 6; // Stock adjustments (damage, theft)
-  int64 net_profit = 7; // After returns and adjustments
+  double returns_value = 5; // Store returns
+  double adjustments_value = 6; // Stock adjustments (damage, theft)
+  double net_profit = 7; // After returns and adjustments
 }
 
 message GetStockAgingReportRequest {
@@ -187,14 +187,14 @@ optional string category = 2; // Optional
 
 message GetStockAgingReportResponse {
   repeated StockAgingItem items = 1;
-  int64 total_stock_value = 2;
-  int64 slow_moving_stock_value = 3; // > 90 days
+  double total_stock_value = 2;
+  double slow_moving_stock_value = 3; // > 90 days
 }
 
 message StockAgingItem {
   inventory.v1.StoreProduct product = 1;
   double quantity = 2;
-  int64 stock_value = 3;
+  double stock_value = 3;
   google.protobuf.Timestamp last_movement_date = 4;
   int32 days_since_last_movement = 5;
   StockMovementCategory movement_category = 6;
@@ -215,7 +215,7 @@ message InventoryMovementSummary {
 
 message GetInventoryReportResponse {
    int32 total_products = 1;
-   int64 total_value = 2; // Sum of (quantity * cost_price)
+   double total_value = 2; // Sum of (quantity * cost_price)
    int32 low_stock_count = 3;
    repeated StockAgingItem aging_items = 4;
    InventoryMovementSummary movement_summary = 5;
@@ -233,10 +233,10 @@ message StockMovementDataPoint {
 
 message GetSalesReportFullResponse {
    repeated SalesSummary summaries = 1;
-   int64 total_sales_amount = 2;
+   double total_sales_amount = 2;
    int32 total_transactions = 3;
    int32 total_units_sold = 4;
-   int64 average_transaction_value = 5;
+   double average_transaction_value = 5;
    repeated BestSellingProduct best_products = 6;
    repeated CategorySalesData category_sales_data = 7;
    SalesComparisonData previous_year_comparison = 8;
@@ -251,7 +251,7 @@ message CategorySalesData {
 }
 
 message SalesComparisonData {
-   int64 previous_year_total_sales = 1;
+   double previous_year_total_sales = 1;
    int32 previous_year_total_transactions = 2;
    double previous_year_average_transaction_value = 3;
 }
@@ -263,15 +263,15 @@ message GetFinancialReportRequest {
 }
 
 message GetFinancialReportResponse {
-   int64 total_revenue = 1; // Sales
-   int64 cost_of_goods_sold = 2; // Purchases
-   int64 gross_profit = 3;
+   double total_revenue = 1; // Sales
+   double cost_of_goods_sold = 2; // Purchases
+   double gross_profit = 3;
    double gross_profit_margin = 4;
-   int64 returns_value = 5;
-   int64 adjustments_value = 6;
-   int64 net_profit = 7;
-   int64 total_purchases = 8;
-   int64 outstanding_balance = 9;
+   double returns_value = 5;
+   double adjustments_value = 6;
+   double net_profit = 7;
+   double total_purchases = 8;
+   double outstanding_balance = 9;
    repeated SupplierPerformanceSummary supplier_performances = 10;
    repeated RevenueExpenseDataPoint revenue_vs_expenses_data = 11;
    FinancialComparisonData previous_year_comparison = 12;
@@ -288,21 +288,21 @@ message RevenueExpenseDataPoint {
 message SupplierPerformanceSummary {
    string supplier_id = 1;
    string supplier_name = 2;
-   int64 total_purchase_value = 3;
+   double total_purchase_value = 3;
    double on_time_percentage = 4;
    int32 total_orders = 5;
 }
 
 message FinancialComparisonData {
-   int64 previous_year_total_revenue = 1;
-   int64 previous_year_net_profit = 2;
+   double previous_year_total_revenue = 1;
+   double previous_year_net_profit = 2;
    double previous_year_gross_profit_margin = 3;
-   int64 previous_year_total_purchases = 4;
+   double previous_year_total_purchases = 4;
 }
 
 message InventoryComparisonData {
    int32 previous_year_total_products = 1;
-   int64 previous_year_total_value = 2;
+   double previous_year_total_value = 2;
    int32 previous_year_low_stock_count = 3;
    double previous_year_movement_total_in = 4;
    double previous_year_movement_total_out = 5;
@@ -322,20 +322,20 @@ message GetDashboardReportRequest {
 
 message GetDashboardReportResponse {
    // Sales metrics
-   int64 total_sales_amount = 1;
+   double total_sales_amount = 1;
    int32 total_transactions = 2;
    double average_transaction_value = 3;
    int32 total_units_sold = 4;
 
    // Financial metrics
-   int64 total_revenue = 5;
-   int64 net_profit = 6;
+   double total_revenue = 5;
+   double net_profit = 6;
    double gross_profit_margin = 7;
-   int64 total_purchases = 8;
+   double total_purchases = 8;
 
    // Inventory metrics
    int32 total_products = 9;
-   int64 total_inventory_value = 10;
+   double total_inventory_value = 10;
    int32 low_stock_count = 11;
 
    // Trend and comparison data

@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:clock/clock.dart';
-import 'package:fixnum/fixnum.dart';
 import 'package:sabitou_rpc/models.dart';
 
 import '../../repositories/inventory_repository.dart';
@@ -26,7 +25,7 @@ final class DashboardViewModel {
     lowStockItemsCount: 0,
     expiringItemsCount: 0,
     expiringTimeframe: '',
-    todaySales: Int64(),
+    todaySales: 0,
     todayTransactions: 0,
     recentActivities: [],
     lowStockAlerts: [],
@@ -49,8 +48,8 @@ final class DashboardViewModel {
 
       // Execute all calls in parallel for better performance
       final results = await Future.wait([
-        StoreProductsRepository.instance.listStoreProducts(
-          ListStoreProductsRequest(storeId: store.refId),
+        StoreProductsRepository.instance.findStoreProducts(
+          FindStoreProductsRequest(storeId: store.refId),
         ),
         InventoryRepository.instance.getLowStockItems(store.refId),
         InventoryRepository.instance.getExpiringItems(store.refId),
@@ -67,7 +66,8 @@ final class DashboardViewModel {
         ),
       ]);
 
-      final totalProducts = results.first as ListStoreProductsResponse;
+      final totalProducts =
+          results.first as List<StoreProductWithGlobalProduct>;
       final lowStockItems = results[1] as List<InventoryLevelWithProduct>;
       final expiringItems = results[2] as List<InventoryLevelWithProduct>;
       final salesReport = results[3] as GetSalesReportResponse;
@@ -75,7 +75,7 @@ final class DashboardViewModel {
           results[4] as GetInventoryTransactionHistoryResponse;
 
       final newStats = DashboardData(
-        totalProducts: totalProducts.totalCount,
+        totalProducts: totalProducts.length,
         lowStockItemsCount: lowStockItems.length,
         expiringItemsCount: expiringItems.length,
         expiringTimeframe: 'Next 60 days',
@@ -117,7 +117,7 @@ class DashboardData {
   final String expiringTimeframe; // "Next 2 months"
 
   /// Sales
-  final Int64 todaySales;
+  final double todaySales;
 
   /// Transactionsd
   final int todayTransactions;

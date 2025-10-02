@@ -12,7 +12,6 @@
 
 import 'dart:core' as $core;
 
-import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import '../../inventory/v1/category.pb.dart' as $0;
@@ -37,8 +36,8 @@ class OrderLineItem extends $pb.GeneratedMessage {
     $core.String? productId,
     $core.double? quantity,
     $0.Internationalized? productName,
-    $fixnum.Int64? unitPrice,
-    $fixnum.Int64? total,
+    $core.double? unitPrice,
+    $core.double? total,
     $core.String? notes,
     $core.String? batchId,
   }) {
@@ -70,8 +69,8 @@ class OrderLineItem extends $pb.GeneratedMessage {
     ..a<$core.double>(2, _omitFieldNames ? '' : 'quantity', $pb.PbFieldType.OD)
     ..aOM<$0.Internationalized>(3, _omitFieldNames ? '' : 'productName',
         subBuilder: $0.Internationalized.create)
-    ..aInt64(4, _omitFieldNames ? '' : 'unitPrice')
-    ..aInt64(5, _omitFieldNames ? '' : 'total')
+    ..a<$core.double>(4, _omitFieldNames ? '' : 'unitPrice', $pb.PbFieldType.OD)
+    ..a<$core.double>(5, _omitFieldNames ? '' : 'total', $pb.PbFieldType.OD)
     ..aOS(6, _omitFieldNames ? '' : 'notes')
     ..aOS(7, _omitFieldNames ? '' : 'batchId')
     ..hasRequiredFields = false;
@@ -127,18 +126,18 @@ class OrderLineItem extends $pb.GeneratedMessage {
   $0.Internationalized ensureProductName() => $_ensure(2);
 
   @$pb.TagNumber(4)
-  $fixnum.Int64 get unitPrice => $_getI64(3);
+  $core.double get unitPrice => $_getN(3);
   @$pb.TagNumber(4)
-  set unitPrice($fixnum.Int64 value) => $_setInt64(3, value);
+  set unitPrice($core.double value) => $_setDouble(3, value);
   @$pb.TagNumber(4)
   $core.bool hasUnitPrice() => $_has(3);
   @$pb.TagNumber(4)
   void clearUnitPrice() => $_clearField(4);
 
   @$pb.TagNumber(5)
-  $fixnum.Int64 get total => $_getI64(4);
+  $core.double get total => $_getN(4);
   @$pb.TagNumber(5)
-  set total($fixnum.Int64 value) => $_setInt64(4, value);
+  set total($core.double value) => $_setDouble(4, value);
   @$pb.TagNumber(5)
   $core.bool hasTotal() => $_has(4);
   @$pb.TagNumber(5)

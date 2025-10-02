@@ -24,19 +24,6 @@ class GiftVoucherRepository {
         transport: transport ?? ConnectRPCService.to.clientChannel,
       );
 
-  /// Creates a gift voucher.
-  Future<CreateGiftVoucherResponse?> createGiftVoucher(
-    CreateGiftVoucherRequest request,
-  ) async {
-    try {
-      return await remoteGiftVoucherRepository.createGiftVoucher(request);
-    } on Exception catch (e) {
-      _logger.severe('createGiftVoucher Error: $e');
-
-      return null;
-    }
-  }
-
   /// Validates a voucher.
   Future<ValidateVoucherResponse?> validateVoucher(
     ValidateVoucherRequest request,
@@ -45,17 +32,6 @@ class GiftVoucherRepository {
       return await remoteGiftVoucherRepository.validateVoucher(request);
     } on Exception catch (e) {
       _logger.severe('validateVoucher Error: $e');
-
-      return null;
-    }
-  }
-
-  /// Uses a voucher.
-  Future<UseVoucherResponse?> useVoucher(UseVoucherRequest request) async {
-    try {
-      return await remoteGiftVoucherRepository.useVoucher(request);
-    } on Exception catch (e) {
-      _logger.severe('useVoucher Error: $e');
 
       return null;
     }
@@ -80,32 +56,6 @@ class GiftVoucherRepository {
       return await remoteGiftVoucherRepository.listVouchers(request);
     } on Exception catch (e) {
       _logger.severe('listVouchers Error: $e');
-
-      return null;
-    }
-  }
-
-  /// Cancels a voucher.
-  Future<CancelVoucherResponse?> cancelVoucher(
-    CancelVoucherRequest request,
-  ) async {
-    try {
-      return await remoteGiftVoucherRepository.cancelVoucher(request);
-    } on Exception catch (e) {
-      _logger.severe('cancelVoucher Error: $e');
-
-      return null;
-    }
-  }
-
-  /// Gets voucher history.
-  Future<GetVoucherHistoryResponse?> getVoucherHistory(
-    GetVoucherHistoryRequest request,
-  ) async {
-    try {
-      return await remoteGiftVoucherRepository.getVoucherHistory(request);
-    } on Exception catch (e) {
-      _logger.severe('getVoucherHistory Error: $e');
 
       return null;
     }

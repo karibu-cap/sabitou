@@ -2,8 +2,10 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+import '../../../providers/cart_provider.dart';
 import '../../../services/internationalization/internationalization.dart';
 import '../../../utils/extensions/global_product_extension.dart';
 import '../../../utils/formatters.dart';
@@ -109,12 +111,22 @@ class SearchAndScanView extends StatelessWidget {
                               ),
                               ShadButton.outline(
                                 onPressed: () {
-                                  // CartManager.to.addItem(
-                                  //   product.storeProduct.refId,
-                                  //   product.globalProduct.label,
-                                  //   1,
-                                  //   product.storeProduct.salePrice.toDouble(),
-                                  // );
+                                  CartManager.to.addItem(
+                                    InvoiceLineItem(
+                                      productId: product.storeProduct.refId,
+                                      productName: product.globalProduct.name,
+                                      unitPrice: product.storeProduct.salePrice
+                                          .toDouble(),
+                                      quantity: 1,
+                                      subtotal: product.storeProduct.salePrice
+                                          .toDouble(),
+                                      total: product.storeProduct.salePrice
+                                          .toDouble(),
+                                      taxAmount: 0,
+                                    ),
+                                  );
+                                  popoverController.hide();
+                                  controller.searchQueryController.clear();
                                 },
                                 child: const Icon(LucideIcons.plus400),
                               ),

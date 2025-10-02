@@ -1,6 +1,5 @@
 import 'package:clock/clock.dart';
 import 'package:connectrpc/connect.dart' as connect;
-import 'package:fixnum/fixnum.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
@@ -78,31 +77,19 @@ class InventoryRepository {
           productReq,
         );
 
-        if (!productResp.hasStoreProduct()) {
+        if (!productResp.hasProduct()) {
           continue;
         }
-
-        final globalProduct = await storeProductService.findGlobalProducts(
-          FindGlobalProductsRequest(
-            refId: productResp.storeProduct.globalProductId,
-          ),
-        );
-
-        if (globalProduct.products.isEmpty) {
-          continue;
-        }
-
-        final globalProductResp = globalProduct.products.first;
 
         items.add(
           InventoryLevelWithProduct(
             level: level,
-            product: productResp.storeProduct,
-            globalProduct: globalProductResp,
-            stockValue: Int64(
-              (level.quantityAvailable * productResp.storeProduct.salePrice)
-                  .truncate(),
-            ),
+            product: productResp.product.storeProduct,
+            globalProduct: productResp.product.globalProduct,
+            stockValue:
+                (level.quantityAvailable *
+                        productResp.product.storeProduct.salePrice)
+                    .truncate(),
           ),
         );
       }
@@ -133,36 +120,24 @@ class InventoryRepository {
           productReq,
         );
 
-        if (!productResp.hasStoreProduct()) {
+        if (!productResp.hasProduct()) {
           continue;
         }
-
-        final globalProduct = await storeProductService.findGlobalProducts(
-          FindGlobalProductsRequest(
-            refId: productResp.storeProduct.globalProductId,
-          ),
-        );
-
-        if (globalProduct.products.isEmpty) {
-          continue;
-        }
-
-        final globalProductResp = globalProduct.products.first;
 
         items.add(
           InventoryLevelWithProduct(
             level: level,
-            product: productResp.storeProduct,
-            globalProduct: globalProductResp,
+            product: productResp.product.storeProduct,
+            globalProduct: productResp.product.globalProduct,
             stockStatus: level.quantityAvailable == 0
                 ? StockStatus.STOCK_STATUS_OUT_OF_STOCK
                 : level.quantityAvailable > level.minThreshold
                 ? StockStatus.STOCK_STATUS_OK
                 : StockStatus.STOCK_STATUS_LOW,
-            stockValue: Int64(
-              (level.quantityAvailable * productResp.storeProduct.salePrice)
-                  .truncate(),
-            ),
+            stockValue:
+                (level.quantityAvailable *
+                        productResp.product.storeProduct.salePrice)
+                    .truncate(),
           ),
         );
       }

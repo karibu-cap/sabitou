@@ -36,7 +36,7 @@ message CreditNote {
   string recipient_id = 5; // Who receives the credit
   CreditNoteStatus status = 6;
   repeated financial.v1.InvoiceLineItem items = 7; // What's being credited
-  int64 total_amount = 8; // Negative value
+  double total_amount = 8; // Negative value
   string currency = 9;
   bool has_inventory_impact = 10; // Does stock come back?
   string related_return_note_id = 11; // If goods returned

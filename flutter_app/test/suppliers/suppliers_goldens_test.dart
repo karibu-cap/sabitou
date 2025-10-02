@@ -152,14 +152,14 @@ final userFakeTransport = FakeTransportBuilder()
         InventoryLevel()
           ..storeProductId = 'sp_3'
           ..storeId = request.storeId
-          ..quantityAvailable = 20.0
-          ..quantityReserved = 0.0
+          ..quantityAvailable = 20
+          ..quantityReserved = 0
           ..batches.add(
             Batch()
               ..documentId = 'batch_1'
               ..productId = 'sp_3'
               ..warehouseId = request.storeId
-              ..quantity = 20.0
+              ..quantity = 20
               ..expirationDate = Timestamp.fromDateTime(
                 clock.now().add(const Duration(days: 45)),
               )
@@ -172,7 +172,7 @@ final userFakeTransport = FakeTransportBuilder()
               ..documentId = 'batch_2'
               ..productId = 'sp_3'
               ..warehouseId = request.storeId
-              ..quantity = 0.0
+              ..quantity = 0
               ..expirationDate = Timestamp.fromDateTime(
                 clock.now().subtract(const Duration(days: 1)),
               )
@@ -188,14 +188,25 @@ final userFakeTransport = FakeTransportBuilder()
     final request = req;
 
     return GetStoreProductResponse(
-      storeProduct: StoreProduct()
-        ..refId = request.storeProductId
-        ..storeId = 'store_1'
-        ..supplierId = 'supplier_1'
-        ..globalProductId = 'gp_${request.storeProductId.substring(3)}'
-        ..salePrice =
-            10000 + int.parse(request.storeProductId.substring(3)) * 5000
-        ..status = ProductStatus.PRODUCT_STATUS_ACTIVE,
+      product: StoreProductWithGlobalProduct(
+        storeProduct: StoreProduct()
+          ..refId = request.storeProductId
+          ..storeId = 'store_1'
+          ..supplierId = 'supplier_1'
+          ..globalProductId = 'gp_${request.storeProductId.substring(3)}'
+          ..salePrice =
+              10000 + int.parse(request.storeProductId.substring(3)) * 5000
+          ..status = ProductStatus.PRODUCT_STATUS_ACTIVE,
+        globalProduct: GlobalProduct()
+          ..refId = 'gp_${request.storeProductId.substring(3)}'
+          ..name = (Internationalized()
+            ..en = 'Product ${request.storeProductId.substring(3)}'
+            ..fr = 'Produit ${request.storeProductId.substring(3)}')
+          ..description = (Internationalized()
+            ..en = 'Description ${request.storeProductId.substring(3)}'
+            ..fr = 'Description ${request.storeProductId.substring(3)}')
+          ..status = GlobalProductStatus.GLOBAL_PRODUCT_STATUS_ACTIVE,
+      ),
     );
   })
   // Streaming store members

@@ -18,6 +18,14 @@ abstract final class StoreProductService {
     inventoryv1store_product.FindGlobalProductsResponse.new,
   );
 
+  /// Finds categories by name.
+  static const findProductCategory = connect.Spec(
+    '/$name/FindProductCategory',
+    connect.StreamType.unary,
+    inventoryv1store_product.FindProductCategoryRequest.new,
+    inventoryv1store_product.FindProductCategoryResponse.new,
+  );
+
   /// Creates a global product.
   static const createGlobalProduct = connect.Spec(
     '/$name/CreateGlobalProduct',
@@ -99,11 +107,11 @@ abstract final class StoreProductService {
     inventoryv1store_product.StreamGlobalProductsResponse.new,
   );
 
-  /// Lists products with pagination and filters.
-  static const listStoreProducts = connect.Spec(
-    '/$name/ListStoreProducts',
+  /// Search products with pagination and filters.
+  static const searchStoreProducts = connect.Spec(
+    '/$name/SearchStoreProducts',
     connect.StreamType.unary,
-    inventoryv1store_product.ListStoreProductsRequest.new,
-    inventoryv1store_product.ListStoreProductsResponse.new,
+    inventoryv1store_product.SearchStoreProductsRequest.new,
+    inventoryv1store_product.SearchStoreProductsResponse.new,
   );
 }

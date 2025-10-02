@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_ce_flutter/adapters.dart';
 import 'package:sabitou_rpc/models.dart';
@@ -52,20 +53,38 @@ class LocalProductsRepository {
   }
 
   /// Gets all products base on business Id.
-  Future<List<StoreProduct>> findStoreProducts(
+  Future<List<StoreProductWithGlobalProduct>?> findStoreProducts(
     FindStoreProductsRequest request,
   ) async {
     try {
-      final box = hiveDb.storeProducts;
-      final response = box.values
-          .where((product) => product.storeId == request.storeId)
+      final storeProducts = hiveDb.storeProducts.values
+          .where((bp) => bp.storeId == request.storeId)
+          .toList();
+      final globalProductIds = storeProducts
+          .map((bp) => bp.globalProductId)
           .toList();
 
-      return response;
+      final globalProducts = hiveDb.globalProducts.values
+          .where((gp) => globalProductIds.contains(gp.refId))
+          .toList();
+
+      final storeProductWithGlobalProducts = storeProducts
+          .map(
+            (bp) => StoreProductWithGlobalProduct()
+              ..storeProduct = bp
+              ..globalProduct =
+                  globalProducts.firstWhereOrNull(
+                    (gp) => gp.refId == bp.globalProductId,
+                  ) ??
+                  GlobalProduct(),
+          )
+          .toSet();
+
+      return storeProductWithGlobalProducts.toList();
     } on Exception catch (e) {
       _logger.severe('findStoreProducts Error: $e');
 
-      return [];
+      return null;
     }
   }
 
@@ -85,14 +104,28 @@ class LocalProductsRepository {
   }
 
   /// Gets a business product by its ID.
-  Future<StoreProduct?> getStoreProduct(GetStoreProductRequest request) async {
+  Future<StoreProductWithGlobalProduct?> getStoreProduct(
+    GetStoreProductRequest request,
+  ) async {
     try {
       final box = hiveDb.storeProducts;
       final hiveProduct = box.values
           .where((product) => product.refId == request.storeProductId)
           .firstOrNull;
+      if (hiveProduct == null) {
+        return null;
+      }
 
-      return hiveProduct;
+      final globalProductIds = hiveProduct.globalProductId;
+      final globalProducts = hiveDb.globalProducts.values.firstWhereOrNull(
+        (gp) => gp.refId == globalProductIds,
+      );
+
+      final storeProductWithGlobalProducts = StoreProductWithGlobalProduct()
+        ..storeProduct = hiveProduct
+        ..globalProduct = globalProducts ?? GlobalProduct();
+
+      return storeProductWithGlobalProducts;
     } on Exception catch (e) {
       _logger.severe('getProduct Error: $e');
 

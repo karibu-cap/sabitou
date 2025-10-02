@@ -9,7 +9,6 @@ import 'package:sabitou_clients/providers/cart_provider.dart';
 import 'package:sabitou_clients/repositories/business_repository.dart';
 import 'package:sabitou_clients/repositories/categories_repository.dart';
 import 'package:sabitou_clients/repositories/inventory_repository.dart';
-import 'package:sabitou_clients/repositories/products_repository.dart';
 import 'package:sabitou_clients/repositories/reports_repository.dart';
 import 'package:sabitou_clients/repositories/store_products_repository.dart';
 import 'package:sabitou_clients/repositories/stores_repository.dart';
@@ -128,7 +127,9 @@ Future<void> _initGetIt(
     ..registerSingletonIfAbsent<AppThemeService>(() => themeService)
     ..registerSingletonIfAbsent<UserPreferences>(UserPreferences.new)
     ..registerSingletonIfAbsent<UserRepository>(UserRepository.new)
-    ..registerSingletonIfAbsent<ProductsRepository>(ProductsRepository.new)
+    ..registerSingletonIfAbsent<StoreProductsRepository>(
+      StoreProductsRepository.new,
+    )
     ..registerSingletonIfAbsent<SuppliersRepository>(SuppliersRepository.new)
     ..registerSingletonIfAbsent<CategoriesRepository>(CategoriesRepository.new)
     ..registerSingletonIfAbsent<BusinessRepository>(BusinessRepository.new)

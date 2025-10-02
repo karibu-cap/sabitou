@@ -746,7 +746,10 @@ class AppInternationalizationService extends ChangeNotifier {
       'en': 'Failed to complete order',
       'fr': 'Échec de la commande',
     },
-    'emptyCart': {'en': 'Empty Cart', 'fr': 'Panier vide'},
+    'emptyCart': {
+      'en': 'Empty Cart, please add products to continue',
+      'fr': 'Panier vide. Ajoutez des articles avant de continuer.',
+    },
     'addProductToStartSale': {
       'en': 'Add product to start sale',
       'fr': 'Ajouter un produit pour commencer la vente',
@@ -1584,6 +1587,247 @@ class AppInternationalizationService extends ChangeNotifier {
     'salesOrders': {'en': 'Sales Orders', 'fr': 'Commandes de vente'},
     'cashReceipts': {'en': 'Cash Receipts', 'fr': 'Reçus de caisse'},
     'pos': {'en': 'Point of Sale', 'fr': 'Point de vente'},
+    'invoicesManagement': {
+      'en': 'Invoices Management',
+      'fr': 'Gestion des factures',
+    },
+    'invoicesManagementDescription': {
+      'en': 'Manage your invoices, vouchers and purchases.',
+      'fr': 'Gestion des factures et  bon de commande.',
+    },
+    'invoicesHistory': {
+      'en': 'Invoices History',
+      'fr': 'Historique des factures',
+    },
+    'cash': {'en': 'Cash', 'fr': 'Espèces'},
+    'card': {'en': 'Card', 'fr': 'Carte'},
+    'orangeMoney': {'en': 'Orange Money', 'fr': 'Orange Money'},
+    'mtnMoney': {'en': 'MTN Money', 'fr': 'MTN Money'},
+    'voucher': {'en': 'Voucher', 'fr': 'Bon de commande'},
+    'mobile': {'en': 'Mobile', 'fr': 'Mobile'},
+    'unknown': {'en': 'Unknown', 'fr': 'Inconnu'},
+    'paid': {'en': 'Paid', 'fr': 'Payé'},
+    'pendingRefund': {
+      'en': 'Pending Refund',
+      'fr': 'En attente de remboursement',
+    },
+    'refunded': {'en': 'Refunded', 'fr': 'Remboursé'},
+    'id': {'en': 'ID', 'fr': 'ID'},
+    'paymentMethod': {'en': 'Payment Method', 'fr': 'Méthode de paiement'},
+    'issued': {'en': 'Issued', 'fr': 'Émis'},
+    'redeemed': {'en': 'Redeemed', 'fr': 'Remboursé'},
+    'vouchersHistory': {
+      'en': 'Vouchers History',
+      'fr': 'Historique des bons de commande',
+    },
+    'invoice': {'en': 'Invoice', 'fr': 'Facture'},
+    'expiryDate': {'en': 'Expiry Date', 'fr': 'Date d\'expiration'},
+    'redeemedAt': {'en': 'Redeemed At', 'fr': 'Remboursé le'},
+    'redeemedBy': {'en': 'Redeemed By', 'fr': 'Remboursé par'},
+    'addInvoice': {'en': 'Add Invoice', 'fr': 'Ajouter une facture'},
+    'thankYouForYourOrder': {
+      'en': 'Thank you for your order',
+      'fr': 'Merci pour votre commande',
+    },
+    'restToPaid': {'en': 'Rest To Paid', 'fr': 'Reste à payer'},
+    'stopThePresentInvoiceAtTheSumOf': {
+      'en': 'Stop the present invoice at the sum of',
+      'fr': 'Arrêtez la facture actuelle à la somme de',
+    },
+    'designation': {'en': 'Designation', 'fr': 'Désignation'},
+    'qte': {'en': 'Qty', 'fr': 'Qte'},
+    'prixUnit': {'en': 'U.P.', 'fr': 'P.U.'},
+    'discount': {'en': 'Discount', 'fr': 'Remise'},
+    'bySabitou': {'en': 'By Sabitou', 'fr': 'Par Sabitou'},
+    'contacts': {'en': 'Contacts', 'fr': 'Contacts'},
+    'taxPayerNumber': {'en': 'Tax Payer Number', 'fr': 'Numéro de TVA'},
+    'nui': {'en': 'NUI', 'fr': 'NUI'},
+    'tax': {'en': 'Tax', 'fr': 'Taxe'},
+    'balance': {'en': 'Change', 'fr': 'Reste'},
+    'changeGiven': {'en': 'Rendering', 'fr': 'Rendu'},
+    'amountReceiced': {'en': 'Amount received', 'fr': 'Montant reçu'},
+    'totalVat': {'en': 'Total VAT', 'fr': 'Total TVA'},
+    'subtotal': {'en': 'Subtotal', 'fr': 'Sous-total'},
+    'selectOnOrMorePrinter': {
+      'en': 'Select one or more printer',
+      'fr': 'Sélectionner un ou plusieurs imprimantes',
+    },
+    'printerNotConnected': {
+      'en': '@printer is no longer connected. Please reconnect and try again',
+      'fr': '@printer n\'est plus connecté. Veuillez reconnecter et reessayer',
+    },
+    'noDeviceSelected': {
+      'en': 'No device selected',
+      'fr': 'Aucun appareil selectionne',
+    },
+    'theDevice': {'en': 'The Device', 'fr': 'L\'appareil'},
+    'preview': {'en': 'Preview', 'fr': 'Aperçu'},
+    'printerConfigurationError': {
+      'en':
+          'Printer configuration error. Please try again and check the bluetooth connection.',
+      'fr':
+          'Erreur de configuration de l\'imprimante. Veuillez reessayer et vérifier la connexion bluetooth.',
+    },
+    'addProductToCart': {
+      'en': 'Add the product to cart',
+      'fr': 'Ajouter les produit au panier',
+    },
+    'processPayment': {'en': 'Process Payment', 'fr': 'Traiter le paiement'},
+    'invalidPaymentAmount': {
+      'en': 'Invalid payment amount',
+      'fr': 'Montant de paiement invalide',
+    },
+    'paymentAmountExceedsRemaining': {
+      'en': 'Payment amount exceeds remaining',
+      'fr': 'Le montant du paiement excède le reste',
+    },
+    'totalPaid': {'en': 'Total paid', 'fr': 'Total payé'},
+    'remaining': {'en': 'Remaining', 'fr': 'Restant'},
+    'amountToBePaidBack': {
+      'en': 'Amount to be paid back',
+      'fr': 'Montant à rendre',
+    },
+    'insufficientCashInRegister': {
+      'en': 'Insufficient cash in register',
+      'fr': 'Argent insuffisant en caisse',
+    },
+    'paymentMethods': {'en': 'Payment methods', 'fr': 'Méthodes de paiement'},
+    'validedThePayment': {
+      'en': 'Valided the payment',
+      'fr': 'Valide le paiement',
+    },
+    'selectPaymentMethod': {
+      'en': 'Select payment method',
+      'fr': 'Sélectionner une methode de paiement',
+    },
+    'amountExceedsRemaining': {
+      'en': 'Amount exceeds remaining',
+      'fr': 'Le montant du paiement excède le reste',
+    },
+    'completePayment': {'en': 'Complete Payment', 'fr': 'Terminer le paiement'},
+    'voucherId': {'en': 'Voucher ID', 'fr': 'ID du bon de commande'},
+    'referenceId': {'en': 'Reference ID', 'fr': 'ID de référence'},
+    'invalidOrExpiredVoucher': {
+      'en': 'Invalid or expired voucher',
+      'fr': 'Bon invalide ou expiré',
+    },
+    'invalidAmount': {'en': 'Invalid amount', 'fr': 'Montant invalide'},
+    'willGive': {'en': 'Will give', 'fr': 'Rendre'},
+    'stillOwe': {'en': 'Still owe', 'fr': 'Encore dette'},
+    'statusWillBePendingRefund': {
+      'en': 'Status will be pending refund',
+      'fr': 'Le statut sera en attente de remboursement',
+    },
+    'viewThePaymentSelected': {
+      'en': 'View payment selected',
+      'fr': 'Voir les paiements choisis',
+    },
+    'selectedPayments': {
+      'en': 'Selected payment(s)',
+      'fr': 'Paiement(s) sélectionné(s)',
+    },
+    'areYouAbleToGiveChange': {
+      'en': 'Are you able to give change ?',
+      'fr': 'Etes-vous en mesure de rendre la monaie ?',
+    },
+    'mobileMoney': {'en': 'Mobile Money', 'fr': 'Mobile Money'},
+    'storeCredit': {'en': 'Store Credit', 'fr': 'Store Credit'},
+    'draft': {'en': 'Draft', 'fr': 'Brouillon'},
+    'unpaid': {'en': 'Unpaid', 'fr': 'Non payé'},
+    'partiallyPaid': {'en': 'Partially Paid', 'fr': 'Partiellement payé'},
+    'overdue': {'en': 'Overdue', 'fr': 'En retard'},
+    'credited': {'en': 'Credited', 'fr': 'Remboursé'},
+    'partiallyUsed': {'en': 'Partially Used', 'fr': 'Partiellement utilisé'},
+    'fullyUsed': {'en': 'Fully Used', 'fr': 'Complettement utilisé'},
+    'scanOrSearchForProducts': {
+      'en': 'Scan or search for products',
+      'fr': 'Scanner ou rechercher des produits',
+    },
+    'applyVoucher': {'en': 'Apply Voucher', 'fr': 'Appliquer un bon'},
+    'enterVoucherCode': {
+      'en': 'Enter voucher code (e.g., BON-2025-001)',
+      'fr': 'Entrez le code du bon de commande (e.g., BON-2025-001)',
+    },
+    'validate': {'en': 'Validate', 'fr': 'Valider'},
+    'validVoucher': {'en': 'Valid Voucher', 'fr': 'Bon valide'},
+    'code': {'en': 'Code', 'fr': 'Code'},
+    'available': {'en': 'Available', 'fr': 'Disponible'},
+    'usableAmount': {'en': 'Usable Amount', 'fr': 'Montant utilisable'},
+    'clear': {'en': 'Clear', 'fr': 'Effacer'},
+    'invalidOrExpiredVoucherCode': {
+      'en': 'Invalid or expired voucher code',
+      'fr': 'Bon invalide ou expiré',
+    },
+    'failedToValidateVoucher': {
+      'en': 'Failed to validate voucher',
+      'fr': 'Erreur de validation du bon',
+    },
+    'voucherCode': {'en': 'Voucher Code', 'fr': 'Code du bon'},
+    'storeNotConfigured': {
+      'en': 'Store not configured. Please contact the administrator.',
+      'fr': 'Magasin non configuré. Veuillez contacter l\'administrateur.',
+    },
+    'failedToCreateCashReceipt': {
+      'en': 'Failed to create cash receipt',
+      'fr': 'Erreur lors de la création du reçu de caisse',
+    },
+    'saleCompletedSuccessfully': {
+      'en': 'Sale completed successfully',
+      'fr': 'Vente terminée avec succès',
+    },
+    'insufficientStockFor': {
+      'en': 'Insufficient stock for @product',
+      'fr': 'Stock insuffisant pour @product',
+    },
+    'requested': {'en': 'Requested', 'fr': 'Demandé'},
+    'inventoryCheckFailed': {
+      'en': 'Inventory check failed for @product',
+      'fr': 'Erreur de vérification du stock pour @product',
+    },
+    'inventoryAvailable': {
+      'en': 'Inventory available',
+      'fr': 'Stock disponible',
+    },
+    'validCart': {'en': 'Valid Cart', 'fr': 'Panier valide'},
+    'productNotIdentifiedInCart': {
+      'en': 'Product not identified in cart',
+      'fr': 'Produit non identifié dans le panier',
+    },
+    'invalidQuantityForProduct': {
+      'en': 'Invalid quantity for product @product',
+      'fr': 'Quantité invalide pour le produit @product',
+    },
+    'invalidPriceForProduct': {
+      'en': 'Invalid price for product @product',
+      'fr': 'Prix invalide pour le produit @product',
+    },
+    'failedToCompleteSale': {
+      'en': 'Failed to complete sale',
+      'fr': 'Erreur lors de la vente',
+    },
+    'failedToCreateSaleWithVoucher': {
+      'en': 'Failed to create sale with voucher',
+      'fr': 'Erreur lors de la création de la vente avec le bon',
+    },
+    'enterReference': {
+      'en': 'Enter the reference',
+      'fr': 'Entrez la référence',
+    },
+    'insufficientVoucherAmount': {
+      'en': 'Insufficient voucher amount. Max to use: @remainingAmount',
+      'fr': 'Montant du bon insuffisant. Max à utiliser: @remainingAmount',
+    },
+    'leaveEmptyIfYouDontWantToGiveChange': {
+      'en': 'Leave empty if you don\'t want to give change',
+      'fr': 'Laissez vide si vous ne voulez pas rendre la monnaie',
+    },
+    'amountChangeGiven': {'en': 'Change given', 'fr': 'Monnaie rendue'},
+    'changeGivenMustBeLessThan': {
+      'en': 'Change given must be less or equal to',
+      'fr': 'La monnaie rendue doit être inférieure ou égale à',
+    },
+    'received': {'en': 'Received', 'fr': 'Reçue'},
+    'given': {'en': 'Given', 'fr': 'Rendue'},
   };
 
   /// Direct access to the internationalization service.
@@ -1603,6 +1847,146 @@ class AppInternationalizationService extends ChangeNotifier {
     const Locale('fr'),
   ];
 
+  /// The amount change given.
+  String get received => _stringOfLocalizedValue('received');
+
+  /// The amount change given.
+  String get given => _stringOfLocalizedValue('given');
+
+  /// The amount change given.
+  String get changeGivenMustBeLessThan =>
+      _stringOfLocalizedValue('changeGivenMustBeLessThan');
+
+  /// The amount change given.
+  String get amountChangeGiven => _stringOfLocalizedValue('amountChangeGiven');
+
+  /// The leave empty if you don't want to give change  .
+  String get leaveEmptyIfYouDontWantToGiveChange =>
+      _stringOfLocalizedValue('leaveEmptyIfYouDontWantToGiveChange');
+
+  /// The enter reference.
+  String get insufficientVoucherAmount =>
+      _stringOfLocalizedValue('insufficientVoucherAmount');
+
+  /// The enter reference.
+  String get enterReference => _stringOfLocalizedValue('enterReference');
+
+  /// The failed to create sale with voucher.
+  String get failedToCreateSaleWithVoucher =>
+      _stringOfLocalizedValue('failedToCreateSaleWithVoucher');
+
+  /// The failed to complete sale.
+  String get failedToCompleteSale =>
+      _stringOfLocalizedValue('failedToCompleteSale');
+
+  /// The inventory available.
+  String get invalidPriceForProduct =>
+      _stringOfLocalizedValue('invalidPriceForProduct');
+
+  /// The inventory available.
+  String get invalidQuantityForProduct =>
+      _stringOfLocalizedValue('invalidQuantityForProduct');
+
+  /// The inventory available.
+  String get productNotIdentifiedInCart =>
+      _stringOfLocalizedValue('productNotIdentifiedInCart');
+
+  /// The inventory available.
+  String get validCart => _stringOfLocalizedValue('validCart');
+
+  /// The inventory available.
+  String get inventoryAvailable =>
+      _stringOfLocalizedValue('inventoryAvailable');
+
+  /// The inventory check failed.
+  String get inventoryCheckFailed =>
+      _stringOfLocalizedValue('inventoryCheckFailed');
+
+  /// The insufficient stock for.
+  String get insufficientStockFor =>
+      _stringOfLocalizedValue('insufficientStockFor');
+
+  /// The requested.
+  String get requested => _stringOfLocalizedValue('requested');
+
+  /// The sale completed successfully.
+  String get saleCompletedSuccessfully =>
+      _stringOfLocalizedValue('saleCompletedSuccessfully');
+
+  /// The failed to create cash receipt.
+  String get failedToCreateCashReceipt =>
+      _stringOfLocalizedValue('failedToCreateCashReceipt');
+
+  /// The store not configured.
+  String get storeNotConfigured =>
+      _stringOfLocalizedValue('storeNotConfigured');
+
+  /// The voucher code.
+  String get voucherCode => _stringOfLocalizedValue('voucherCode');
+
+  /// The invalid or expired voucher code.
+  String get invalidOrExpiredVoucherCode =>
+      _stringOfLocalizedValue('invalidOrExpiredVoucherCode');
+
+  /// The failed to validate voucher.
+  String get failedToValidateVoucher =>
+      _stringOfLocalizedValue('failedToValidateVoucher');
+
+  /// The clear.
+  String get clear => _stringOfLocalizedValue('clear');
+
+  /// The valid voucher.
+  String get validVoucher => _stringOfLocalizedValue('validVoucher');
+
+  /// The code.
+  String get code => _stringOfLocalizedValue('code');
+
+  /// The available.
+  String get available => _stringOfLocalizedValue('available');
+
+  /// The usable amount.
+  String get usableAmount => _stringOfLocalizedValue('usableAmount');
+
+  /// The apply voucher.
+  String get applyVoucher => _stringOfLocalizedValue('applyVoucher');
+
+  /// The enter voucher code.
+  String get enterVoucherCode => _stringOfLocalizedValue('enterVoucherCode');
+
+  /// The validate.
+  String get validate => _stringOfLocalizedValue('validate');
+
+  /// The scan or search for products.
+  String get scanOrSearchForProducts =>
+      _stringOfLocalizedValue('scanOrSearchForProducts');
+
+  /// The partially used.
+  String get partiallyUsed => _stringOfLocalizedValue('partiallyUsed');
+
+  /// The fully used.
+  String get fullyUsed => _stringOfLocalizedValue('fullyUsed');
+
+  /// The draft.
+  String get draft => _stringOfLocalizedValue('draft');
+
+  /// The unpaid.
+  String get unpaid => _stringOfLocalizedValue('unpaid');
+
+  /// The partially paid.
+  String get partiallyPaid => _stringOfLocalizedValue('partiallyPaid');
+
+  /// The overdue.
+  String get overdue => _stringOfLocalizedValue('overdue');
+
+  /// The credited.
+  String get credited => _stringOfLocalizedValue('credited');
+
+  /// The mobile money.
+  String get mobileMoney => _stringOfLocalizedValue('mobileMoney');
+
+  /// The store credit.
+  String get storeCredit => _stringOfLocalizedValue('storeCredit');
+
   /// The pos.
   String get pos => _stringOfLocalizedValue('pos');
 
@@ -1614,6 +1998,230 @@ class AppInternationalizationService extends ChangeNotifier {
 
   /// The store postal code.
   String get storePostalCode => _stringOfLocalizedValue('storePostalCode');
+
+  /// The [areYouAbleToGiveChange].
+  String get areYouAbleToGiveChange =>
+      _stringOfLocalizedValue('areYouAbleToGiveChange');
+
+  /// The [selectedPayments].
+  String get selectedPayments => _stringOfLocalizedValue('selectedPayments');
+
+  /// The [viewThePaymentSelected].
+  String get viewThePaymentSelected =>
+      _stringOfLocalizedValue('viewThePaymentSelected');
+
+  /// The [stillOwe].
+  String get stillOwe => _stringOfLocalizedValue('stillOwe');
+
+  /// The [statusWillBePendingRefund].
+  String get statusWillBePendingRefund =>
+      _stringOfLocalizedValue('statusWillBePendingRefund');
+
+  /// The [willGive].
+  String get willGive => _stringOfLocalizedValue('willGive');
+
+  /// The [invalidAmount].
+  String get invalidAmount => _stringOfLocalizedValue('invalidAmount');
+
+  /// The [invalidOrExpiredVoucher].
+  String get invalidOrExpiredVoucher =>
+      _stringOfLocalizedValue('invalidOrExpiredVoucher');
+
+  /// The [invalidPaymentAmount].
+  String get invalidPaymentAmount =>
+      _stringOfLocalizedValue('invalidPaymentAmount');
+
+  /// The [paymentAmountExceedsRemaining].
+  String get paymentAmountExceedsRemaining =>
+      _stringOfLocalizedValue('paymentAmountExceedsRemaining');
+
+  /// The [amountExceedsRemaining].
+  String get amountExceedsRemaining =>
+      _stringOfLocalizedValue('amountExceedsRemaining');
+
+  /// The [completePayment].
+  String get completePayment => _stringOfLocalizedValue('completePayment');
+
+  /// The [validedThePayment].
+  String get validedThePayment => _stringOfLocalizedValue('validedThePayment');
+
+  /// The [selectPaymentMethod].
+  String get selectPaymentMethod =>
+      _stringOfLocalizedValue('selectPaymentMethod');
+
+  /// The [totalPaid].
+  String get totalPaid => _stringOfLocalizedValue('totalPaid');
+
+  /// The [remaining].
+  String get remaining => _stringOfLocalizedValue('remaining');
+
+  /// The [amountToBePaidBack].
+  String get amountToBePaidBack =>
+      _stringOfLocalizedValue('amountToBePaidBack');
+
+  /// The [insufficientCashInRegister].
+  String get insufficientCashInRegister =>
+      _stringOfLocalizedValue('insufficientCashInRegister');
+
+  /// The [paymentMethods].
+  String get paymentMethods => _stringOfLocalizedValue('paymentMethods');
+
+  /// The [referenceId].
+  String get referenceId => _stringOfLocalizedValue('referenceId');
+
+  /// The [voucherId].
+  String get voucherId => _stringOfLocalizedValue('voucherId');
+
+  /// The [processPayment].
+  String get processPayment => _stringOfLocalizedValue('processPayment');
+
+  /// The [addProductToCart].
+  String get addProductToCart => _stringOfLocalizedValue('addProductToCart');
+
+  /// The printer configuration error.
+  String get printerConfigurationError =>
+      _stringOfLocalizedValue('printerConfigurationError');
+
+  /// The preview.
+  String get preview => _stringOfLocalizedValue('preview');
+
+  /// The printer.
+  String get theDevice => _stringOfLocalizedValue('theDevice');
+
+  /// The no device selected.
+  String get noDeviceSelected => _stringOfLocalizedValue('noDeviceSelected');
+
+  /// The select one or more printer.
+  String get printerNotConnected =>
+      _stringOfLocalizedValue('printerNotConnected');
+
+  /// The select one or more printer.
+  String get selectOnOrMorePrinter =>
+      _stringOfLocalizedValue('selectOnOrMorePrinter');
+
+  /// The subtotal.
+  String get subtotal => _stringOfLocalizedValue('subtotal');
+
+  /// The total VAT.
+  String get totalVat => _stringOfLocalizedValue('totalVat');
+
+  /// The customer tendered amount.
+  String get amountReceiced => _stringOfLocalizedValue('amountReceiced');
+
+  /// The change given.
+  String get changeGiven => _stringOfLocalizedValue('changeGiven');
+
+  /// The balance due.
+  String get balance => _stringOfLocalizedValue('balance');
+
+  /// The tax.
+  String get tax => _stringOfLocalizedValue('tax');
+
+  /// The contacts.
+  String get contacts => _stringOfLocalizedValue('contacts');
+
+  /// The tax payer number.
+  String get taxPayerNumber => _stringOfLocalizedValue('taxPayerNumber');
+
+  /// The nui.
+  String get nui => _stringOfLocalizedValue('nui');
+
+  /// The by Sabitou.
+  String get bySabitou => _stringOfLocalizedValue('bySabitou');
+
+  /// The designation.
+  String get designation => _stringOfLocalizedValue('designation');
+
+  /// The quantity.
+  String get qte => _stringOfLocalizedValue('qte');
+
+  /// The unit price.
+  String get prixUnit => _stringOfLocalizedValue('prixUnit');
+
+  /// The discount.
+  String get discount => _stringOfLocalizedValue('discount');
+
+  /// The rest to paid.
+  String get restToPaid => _stringOfLocalizedValue('restToPaid');
+
+  /// The stop the present invoice at the sum of.
+  String get stopThePresentInvoiceAtTheSumOf =>
+      _stringOfLocalizedValue('stopThePresentInvoiceAtTheSumOf');
+
+  /// The thank you for your order.
+  String get thankYouForYourOrder =>
+      _stringOfLocalizedValue('thankYouForYourOrder');
+
+  /// The add invoice.
+  String get addInvoice => _stringOfLocalizedValue('addInvoice');
+
+  /// The expiry date.
+  String get expiryDate => _stringOfLocalizedValue('expiryDate');
+
+  /// The redeemed at.
+  String get redeemedAt => _stringOfLocalizedValue('redeemedAt');
+
+  /// The redeemed by.
+  String get redeemedBy => _stringOfLocalizedValue('redeemedBy');
+
+  /// The invoice.
+  String get invoice => _stringOfLocalizedValue('invoice');
+
+  /// The vouchers history.
+  String get vouchersHistory => _stringOfLocalizedValue('vouchersHistory');
+
+  /// The issued.
+  String get issued => _stringOfLocalizedValue('issued');
+
+  /// The redeemed.
+  String get redeemed => _stringOfLocalizedValue('redeemed');
+
+  /// The id.
+  String get id => _stringOfLocalizedValue('id');
+
+  /// The payment method.
+  String get paymentMethod => _stringOfLocalizedValue('paymentMethod');
+
+  /// The invoice status extension.
+  String get paid => _stringOfLocalizedValue('paid');
+
+  /// The invoice status extension.
+  String get pendingRefund => _stringOfLocalizedValue('pendingRefund');
+
+  /// The invoice status extension.
+  String get refunded => _stringOfLocalizedValue('refunded');
+
+  /// The cash.
+  String get cash => _stringOfLocalizedValue('cash');
+
+  /// The card.
+  String get card => _stringOfLocalizedValue('card');
+
+  /// The orange money.
+  String get orangeMoney => _stringOfLocalizedValue('orangeMoney');
+
+  /// The mtn money.
+  String get mtnMoney => _stringOfLocalizedValue('mtnMoney');
+
+  /// The voucher.
+  String get voucher => _stringOfLocalizedValue('voucher');
+
+  /// The mobile.
+  String get mobile => _stringOfLocalizedValue('mobile');
+
+  /// The unknown.
+  String get unknown => _stringOfLocalizedValue('unknown');
+
+  /// The invoices history.
+  String get invoicesHistory => _stringOfLocalizedValue('invoicesHistory');
+
+  /// The invoices management.
+  String get invoicesManagement =>
+      _stringOfLocalizedValue('invoicesManagement');
+
+  /// The invoices management description.
+  String get invoicesManagementDescription =>
+      _stringOfLocalizedValue('invoicesManagementDescription');
 
   /// The product not found.
   String get productNotFound => _stringOfLocalizedValue('productNotFound');

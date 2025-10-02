@@ -66,7 +66,7 @@ const PurchaseOrder$json = {
       '6': '.order.v1.OrderLineItem',
       '10': 'items'
     },
-    {'1': 'total_amount', '3': 7, '4': 1, '5': 3, '10': 'totalAmount'},
+    {'1': 'total_amount', '3': 7, '4': 1, '5': 1, '10': 'totalAmount'},
     {
       '1': 'currency',
       '3': 8,
@@ -116,7 +116,7 @@ final $typed_data.Uint8List purchaseOrderDescriptor = $convert.base64Decode(
     'QSHwoLc3VwcGxpZXJfaWQYAiABKAlSCnN1cHBsaWVySWQSHgoLYnV5ZXJfaWRfaWQYAyABKAlS'
     'CWJ1eWVySWRJZBI1CgZzdGF0dXMYBSABKA4yHS5vcmRlci52MS5QdXJjaGFzZU9yZGVyU3RhdH'
     'VzUgZzdGF0dXMSLQoFaXRlbXMYBiADKAsyFy5vcmRlci52MS5PcmRlckxpbmVJdGVtUgVpdGVt'
-    'cxIhCgx0b3RhbF9hbW91bnQYByABKANSC3RvdGFsQW1vdW50Eh8KCGN1cnJlbmN5GAggASgJSA'
+    'cxIhCgx0b3RhbF9hbW91bnQYByABKAFSC3RvdGFsQW1vdW50Eh8KCGN1cnJlbmN5GAggASgJSA'
     'BSCGN1cnJlbmN5iAEBEisKEmNyZWF0ZWRfYnlfdXNlcl9pZBgJIAEoCVIPY3JlYXRlZEJ5VXNl'
     'cklkEjkKCmNyZWF0ZWRfYXQYCiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUgljcm'
     'VhdGVkQXQSVQoWZXhwZWN0ZWRfZGVsaXZlcnlfZGF0ZRgLIAEoCzIaLmdvb2dsZS5wcm90b2J1'
@@ -330,7 +330,7 @@ const ListPurchaseOrdersResponse$json = {
       '10': 'purchaseOrders'
     },
     {'1': 'total_count', '3': 2, '4': 1, '5': 5, '10': 'totalCount'},
-    {'1': 'total_value', '3': 3, '4': 1, '5': 3, '10': 'totalValue'},
+    {'1': 'total_value', '3': 3, '4': 1, '5': 1, '10': 'totalValue'},
   ],
 };
 
@@ -339,7 +339,7 @@ final $typed_data.Uint8List listPurchaseOrdersResponseDescriptor =
     $convert.base64Decode(
         'ChpMaXN0UHVyY2hhc2VPcmRlcnNSZXNwb25zZRJACg9wdXJjaGFzZV9vcmRlcnMYASADKAsyFy'
         '5vcmRlci52MS5QdXJjaGFzZU9yZGVyUg5wdXJjaGFzZU9yZGVycxIfCgt0b3RhbF9jb3VudBgC'
-        'IAEoBVIKdG90YWxDb3VudBIfCgt0b3RhbF92YWx1ZRgDIAEoA1IKdG90YWxWYWx1ZQ==');
+        'IAEoBVIKdG90YWxDb3VudBIfCgt0b3RhbF92YWx1ZRgDIAEoAVIKdG90YWxWYWx1ZQ==');
 
 @$core.Deprecated('Use updatePurchaseOrderStatusRequestDescriptor instead')
 const UpdatePurchaseOrderStatusRequest$json = {
@@ -556,16 +556,16 @@ const SuggestedPurchase$json = {
       '5': 9,
       '10': 'preferredSupplierId'
     },
-    {'1': 'current_stock', '3': 3, '4': 1, '5': 3, '10': 'currentStock'},
-    {'1': 'reorder_level', '3': 4, '4': 1, '5': 3, '10': 'reorderLevel'},
+    {'1': 'current_stock', '3': 3, '4': 1, '5': 5, '10': 'currentStock'},
+    {'1': 'reorder_level', '3': 4, '4': 1, '5': 5, '10': 'reorderLevel'},
     {
       '1': 'suggested_quantity',
       '3': 5,
       '4': 1,
-      '5': 3,
+      '5': 5,
       '10': 'suggestedQuantity'
     },
-    {'1': 'estimated_cost', '3': 6, '4': 1, '5': 3, '10': 'estimatedCost'},
+    {'1': 'estimated_cost', '3': 6, '4': 1, '5': 5, '10': 'estimatedCost'},
   ],
 };
 
@@ -573,9 +573,9 @@ const SuggestedPurchase$json = {
 final $typed_data.Uint8List suggestedPurchaseDescriptor = $convert.base64Decode(
     'ChFTdWdnZXN0ZWRQdXJjaGFzZRI0Cgdwcm9kdWN0GAEgASgLMhouaW52ZW50b3J5LnYxLlN0b3'
     'JlUHJvZHVjdFIHcHJvZHVjdBIyChVwcmVmZXJyZWRfc3VwcGxpZXJfaWQYAiABKAlSE3ByZWZl'
-    'cnJlZFN1cHBsaWVySWQSIwoNY3VycmVudF9zdG9jaxgDIAEoA1IMY3VycmVudFN0b2NrEiMKDX'
-    'Jlb3JkZXJfbGV2ZWwYBCABKANSDHJlb3JkZXJMZXZlbBItChJzdWdnZXN0ZWRfcXVhbnRpdHkY'
-    'BSABKANSEXN1Z2dlc3RlZFF1YW50aXR5EiUKDmVzdGltYXRlZF9jb3N0GAYgASgDUg1lc3RpbW'
+    'cnJlZFN1cHBsaWVySWQSIwoNY3VycmVudF9zdG9jaxgDIAEoBVIMY3VycmVudFN0b2NrEiMKDX'
+    'Jlb3JkZXJfbGV2ZWwYBCABKAVSDHJlb3JkZXJMZXZlbBItChJzdWdnZXN0ZWRfcXVhbnRpdHkY'
+    'BSABKAVSEXN1Z2dlc3RlZFF1YW50aXR5EiUKDmVzdGltYXRlZF9jb3N0GAYgASgFUg1lc3RpbW'
     'F0ZWRDb3N0');
 
 const $core.Map<$core.String, $core.dynamic> PurchaseOrderServiceBase$json = {

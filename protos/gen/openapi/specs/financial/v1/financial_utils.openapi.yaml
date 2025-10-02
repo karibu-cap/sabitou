@@ -11,21 +11,17 @@ components:
           type: string
           title: product_id
         quantity:
-          type: number
+          type: integer
           title: quantity
-          format: double
+          format: int32
         unitPrice:
-          type:
-            - integer
-            - string
+          type: number
           title: unit_price
-          format: int64
+          format: double
         subtotal:
-          type:
-            - integer
-            - string
+          type: number
           title: subtotal
-          format: int64
+          format: double
           description: quantity * unit_price
         taxRate:
           type: number
@@ -33,17 +29,13 @@ components:
           format: double
           description: 0.20 for 20% VAT
         taxAmount:
-          type:
-            - integer
-            - string
+          type: number
           title: tax_amount
-          format: int64
+          format: double
         total:
-          type:
-            - integer
-            - string
+          type: number
           title: total
-          format: int64
+          format: double
           description: subtotal + tax_amount
         batchId:
           type: string

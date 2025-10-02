@@ -15,21 +15,6 @@ class RemoteProductsRepository {
   RemoteProductsRepository({required connect.Transport transport})
     : productServiceClient = StoreProductServiceClient(transport);
 
-  /// Gets all products base on store Id.
-  Future<List<StoreProduct>> getProductsByStoreId(String storeId) async {
-    try {
-      final response = await productServiceClient.findStoreProducts(
-        FindStoreProductsRequest(storeId: storeId),
-      );
-
-      return response.products;
-    } on Exception catch (e) {
-      _logger.severe('getProductsByStoreId Error: $e');
-
-      return [];
-    }
-  }
-
   /// Finds global products.
   Future<List<GlobalProduct>> findGlobalProducts(
     FindGlobalProductsRequest request,
@@ -46,7 +31,7 @@ class RemoteProductsRepository {
   }
 
   /// Gets all products base on business Id.
-  Future<List<StoreProduct>> findStoreProducts(
+  Future<List<StoreProductWithGlobalProduct>> findStoreProducts(
     FindStoreProductsRequest request,
   ) async {
     try {
@@ -74,11 +59,13 @@ class RemoteProductsRepository {
   }
 
   /// Gets a business product by its ID.
-  Future<StoreProduct?> getStoreProduct(GetStoreProductRequest request) async {
+  Future<StoreProductWithGlobalProduct?> getStoreProduct(
+    GetStoreProductRequest request,
+  ) async {
     try {
       final response = await productServiceClient.getStoreProduct(request);
 
-      return response.storeProduct;
+      return response.product;
     } on Exception catch (e) {
       _logger.severe('getProduct Error: $e');
 
@@ -186,6 +173,19 @@ class RemoteProductsRepository {
       // Return empty stream on error
 
       return const Stream.empty();
+    }
+  }
+
+  /// Searches product .
+  Future<SearchStoreProductsResponse> searchStoreProducts(
+    SearchStoreProductsRequest request,
+  ) async {
+    try {
+      return await productServiceClient.searchStoreProducts(request);
+    } on Exception catch (e) {
+      _logger.severe('searchProducts Error: $e');
+
+      return SearchStoreProductsResponse();
     }
   }
 }

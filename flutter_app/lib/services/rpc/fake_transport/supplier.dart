@@ -83,21 +83,42 @@ final supplierFakeTransport = FakeTransportBuilder()
 
       return FindStoreProductsResponse(
         products: [
-          StoreProduct()
-            ..refId = 'product_1'
-            ..globalProductId = 'global_product_1'
-            ..supplierId = 'supplier_1'
-            ..storeId = request.storeId,
-          StoreProduct()
-            ..refId = 'product_2'
-            ..globalProductId = 'global_product_2'
-            ..supplierId = 'supplier_1'
-            ..storeId = request.storeId,
-          StoreProduct()
-            ..refId = 'product_3'
-            ..globalProductId = 'global_product_3'
-            ..supplierId = 'supplier_2'
-            ..storeId = request.storeId,
+          StoreProductWithGlobalProduct(
+            storeProduct: StoreProduct()
+              ..refId = 'product_1'
+              ..globalProductId = 'global_product_1'
+              ..supplierId = 'supplier_1'
+              ..storeId = request.storeId,
+            globalProduct: GlobalProduct()
+              ..refId = 'global_product_1'
+              ..name = Internationalized()
+              ..name.en = 'Product Alpha'
+              ..name.fr = 'Produit Alpha',
+          ),
+          StoreProductWithGlobalProduct(
+            storeProduct: StoreProduct()
+              ..refId = 'product_2'
+              ..globalProductId = 'global_product_2'
+              ..supplierId = 'supplier_1'
+              ..storeId = request.storeId,
+            globalProduct: GlobalProduct()
+              ..refId = 'global_product_2'
+              ..name = Internationalized()
+              ..name.en = 'Product Beta'
+              ..name.fr = 'Produit Beta',
+          ),
+          StoreProductWithGlobalProduct(
+            storeProduct: StoreProduct()
+              ..refId = 'product_3'
+              ..globalProductId = 'global_product_3'
+              ..supplierId = 'supplier_2'
+              ..storeId = request.storeId,
+            globalProduct: GlobalProduct()
+              ..refId = 'global_product_3'
+              ..name = Internationalized()
+              ..name.en = 'Product Gamma'
+              ..name.fr = 'Produit Gamma',
+          ),
         ],
       );
     })

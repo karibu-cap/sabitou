@@ -41,9 +41,9 @@ message Invoice {
   string related_delivery_note_id = 7; // Optional link
   InvoiceStatus status = 8;
   repeated financial.v1.InvoiceLineItem items = 9;
-  int64 subtotal = 10; // Before tax
-  int64 tax_amount = 11; // VAT/sales tax
-  int64 total_amount = 12; // Final amount due
+  double subtotal = 10; // Before tax
+  double tax_amount = 11; // VAT/sales tax
+  double total_amount = 12; // Final amount due
   string currency = 13;
   google.protobuf.Timestamp issue_date = 14;
   google.protobuf.Timestamp due_date = 15; // Payment deadline

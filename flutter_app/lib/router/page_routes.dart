@@ -71,6 +71,9 @@ abstract class PagesRoutes {
 
   /// The settings route, for example, http:localhost:8080/settings.
   static final settings = _SettingsRoute();
+
+  /// The vouchers invoices route, for example, http:localhost:8080/vouchers-invoices.
+  static final vouchersInvoices = _VouchersInvoicesRoute();
 }
 
 class _CashReceiptsRoute extends PagesRoutesWithNoParams {
@@ -167,6 +170,17 @@ class _SettingsRoute extends PagesRoutesWithNoParams {
 
   @override
   String get name => 'settings';
+}
+
+/// The vouchers invoices route, for example, http:localhost:8080/vouchers-invoices.
+final vouchersInvoices = _VouchersInvoicesRoute();
+
+class _VouchersInvoicesRoute extends PagesRoutesWithNoParams {
+  @override
+  String get pattern => '/vouchers-invoices';
+
+  @override
+  String get name => 'vouchers-invoices';
 }
 
 class _LoginRoute extends PagesRoutesWithNoParams {

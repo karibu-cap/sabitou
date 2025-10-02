@@ -12,7 +12,6 @@
 
 import 'dart:core' as $core;
 
-import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import '../../google/protobuf/timestamp.pb.dart' as $1;
@@ -58,9 +57,9 @@ class Invoice extends $pb.GeneratedMessage {
     $core.String? relatedDeliveryNoteId,
     InvoiceStatus? status,
     $core.Iterable<$0.InvoiceLineItem>? items,
-    $fixnum.Int64? subtotal,
-    $fixnum.Int64? taxAmount,
-    $fixnum.Int64? totalAmount,
+    $core.double? subtotal,
+    $core.double? taxAmount,
+    $core.double? totalAmount,
     $core.String? currency,
     $1.Timestamp? issueDate,
     $1.Timestamp? dueDate,
@@ -128,9 +127,11 @@ class Invoice extends $pb.GeneratedMessage {
     ..pc<$0.InvoiceLineItem>(
         9, _omitFieldNames ? '' : 'items', $pb.PbFieldType.PM,
         subBuilder: $0.InvoiceLineItem.create)
-    ..aInt64(10, _omitFieldNames ? '' : 'subtotal')
-    ..aInt64(11, _omitFieldNames ? '' : 'taxAmount')
-    ..aInt64(12, _omitFieldNames ? '' : 'totalAmount')
+    ..a<$core.double>(10, _omitFieldNames ? '' : 'subtotal', $pb.PbFieldType.OD)
+    ..a<$core.double>(
+        11, _omitFieldNames ? '' : 'taxAmount', $pb.PbFieldType.OD)
+    ..a<$core.double>(
+        12, _omitFieldNames ? '' : 'totalAmount', $pb.PbFieldType.OD)
     ..aOS(13, _omitFieldNames ? '' : 'currency')
     ..aOM<$1.Timestamp>(14, _omitFieldNames ? '' : 'issueDate',
         subBuilder: $1.Timestamp.create)
@@ -239,27 +240,27 @@ class Invoice extends $pb.GeneratedMessage {
   $pb.PbList<$0.InvoiceLineItem> get items => $_getList(8);
 
   @$pb.TagNumber(10)
-  $fixnum.Int64 get subtotal => $_getI64(9);
+  $core.double get subtotal => $_getN(9);
   @$pb.TagNumber(10)
-  set subtotal($fixnum.Int64 value) => $_setInt64(9, value);
+  set subtotal($core.double value) => $_setDouble(9, value);
   @$pb.TagNumber(10)
   $core.bool hasSubtotal() => $_has(9);
   @$pb.TagNumber(10)
   void clearSubtotal() => $_clearField(10);
 
   @$pb.TagNumber(11)
-  $fixnum.Int64 get taxAmount => $_getI64(10);
+  $core.double get taxAmount => $_getN(10);
   @$pb.TagNumber(11)
-  set taxAmount($fixnum.Int64 value) => $_setInt64(10, value);
+  set taxAmount($core.double value) => $_setDouble(10, value);
   @$pb.TagNumber(11)
   $core.bool hasTaxAmount() => $_has(10);
   @$pb.TagNumber(11)
   void clearTaxAmount() => $_clearField(11);
 
   @$pb.TagNumber(12)
-  $fixnum.Int64 get totalAmount => $_getI64(11);
+  $core.double get totalAmount => $_getN(11);
   @$pb.TagNumber(12)
-  set totalAmount($fixnum.Int64 value) => $_setInt64(11, value);
+  set totalAmount($core.double value) => $_setDouble(11, value);
   @$pb.TagNumber(12)
   $core.bool hasTotalAmount() => $_has(11);
   @$pb.TagNumber(12)

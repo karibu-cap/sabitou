@@ -43,3 +43,19 @@ extension GlobalProductExtension on GlobalProduct {
     return description.en;
   }
 }
+
+/// The extension for the [InvoiceLineItem] class.
+extension InvoiceLineItemExtension on InvoiceLineItem {
+  /// Get the label for the global product.
+  String get label {
+    if (Intls.to.locale.languageCode == 'en') {
+      return productName.en;
+    }
+
+    if (Intls.to.locale.languageCode == 'fr') {
+      return productName.fr;
+    }
+
+    return productName.en;
+  }
+}

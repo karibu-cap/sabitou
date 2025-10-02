@@ -107,7 +107,7 @@ type PurchaseOrder struct {
 	BuyerIdId            string                 `protobuf:"bytes,3,opt,name=buyer_id_id,json=buyerIdId,proto3" json:"buyer_id_id,omitempty"`  // The store company
 	Status               PurchaseOrderStatus    `protobuf:"varint,5,opt,name=status,proto3,enum=order.v1.PurchaseOrderStatus" json:"status,omitempty"`
 	Items                []*OrderLineItem       `protobuf:"bytes,6,rep,name=items,proto3" json:"items,omitempty"`
-	TotalAmount          int64                  `protobuf:"varint,7,opt,name=total_amount,json=totalAmount,proto3" json:"total_amount,omitempty"` // Total cost in smallest currency unit
+	TotalAmount          float64                `protobuf:"fixed64,7,opt,name=total_amount,json=totalAmount,proto3" json:"total_amount,omitempty"` // Total cost in smallest currency unit
 	Currency             *string                `protobuf:"bytes,8,opt,name=currency,proto3,oneof" json:"currency,omitempty"`
 	CreatedByUserId      string                 `protobuf:"bytes,9,opt,name=created_by_user_id,json=createdByUserId,proto3" json:"created_by_user_id,omitempty"`
 	CreatedAt            *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
@@ -182,7 +182,7 @@ func (x *PurchaseOrder) GetItems() []*OrderLineItem {
 	return nil
 }
 
-func (x *PurchaseOrder) GetTotalAmount() int64 {
+func (x *PurchaseOrder) GetTotalAmount() float64 {
 	if x != nil {
 		return x.TotalAmount
 	}
@@ -628,7 +628,7 @@ type ListPurchaseOrdersResponse struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	PurchaseOrders []*PurchaseOrder       `protobuf:"bytes,1,rep,name=purchase_orders,json=purchaseOrders,proto3" json:"purchase_orders,omitempty"`
 	TotalCount     int32                  `protobuf:"varint,2,opt,name=total_count,json=totalCount,proto3" json:"total_count,omitempty"`
-	TotalValue     int64                  `protobuf:"varint,3,opt,name=total_value,json=totalValue,proto3" json:"total_value,omitempty"`
+	TotalValue     float64                `protobuf:"fixed64,3,opt,name=total_value,json=totalValue,proto3" json:"total_value,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -677,7 +677,7 @@ func (x *ListPurchaseOrdersResponse) GetTotalCount() int32 {
 	return 0
 }
 
-func (x *ListPurchaseOrdersResponse) GetTotalValue() int64 {
+func (x *ListPurchaseOrdersResponse) GetTotalValue() float64 {
 	if x != nil {
 		return x.TotalValue
 	}
@@ -1132,10 +1132,10 @@ type SuggestedPurchase struct {
 	state               protoimpl.MessageState `protogen:"open.v1"`
 	Product             *v13.StoreProduct      `protobuf:"bytes,1,opt,name=product,proto3" json:"product,omitempty"`
 	PreferredSupplierId string                 `protobuf:"bytes,2,opt,name=preferred_supplier_id,json=preferredSupplierId,proto3" json:"preferred_supplier_id,omitempty"`
-	CurrentStock        int64                  `protobuf:"varint,3,opt,name=current_stock,json=currentStock,proto3" json:"current_stock,omitempty"`
-	ReorderLevel        int64                  `protobuf:"varint,4,opt,name=reorder_level,json=reorderLevel,proto3" json:"reorder_level,omitempty"`
-	SuggestedQuantity   int64                  `protobuf:"varint,5,opt,name=suggested_quantity,json=suggestedQuantity,proto3" json:"suggested_quantity,omitempty"`
-	EstimatedCost       int64                  `protobuf:"varint,6,opt,name=estimated_cost,json=estimatedCost,proto3" json:"estimated_cost,omitempty"`
+	CurrentStock        int32                  `protobuf:"varint,3,opt,name=current_stock,json=currentStock,proto3" json:"current_stock,omitempty"`
+	ReorderLevel        int32                  `protobuf:"varint,4,opt,name=reorder_level,json=reorderLevel,proto3" json:"reorder_level,omitempty"`
+	SuggestedQuantity   int32                  `protobuf:"varint,5,opt,name=suggested_quantity,json=suggestedQuantity,proto3" json:"suggested_quantity,omitempty"`
+	EstimatedCost       int32                  `protobuf:"varint,6,opt,name=estimated_cost,json=estimatedCost,proto3" json:"estimated_cost,omitempty"`
 	unknownFields       protoimpl.UnknownFields
 	sizeCache           protoimpl.SizeCache
 }
@@ -1184,28 +1184,28 @@ func (x *SuggestedPurchase) GetPreferredSupplierId() string {
 	return ""
 }
 
-func (x *SuggestedPurchase) GetCurrentStock() int64 {
+func (x *SuggestedPurchase) GetCurrentStock() int32 {
 	if x != nil {
 		return x.CurrentStock
 	}
 	return 0
 }
 
-func (x *SuggestedPurchase) GetReorderLevel() int64 {
+func (x *SuggestedPurchase) GetReorderLevel() int32 {
 	if x != nil {
 		return x.ReorderLevel
 	}
 	return 0
 }
 
-func (x *SuggestedPurchase) GetSuggestedQuantity() int64 {
+func (x *SuggestedPurchase) GetSuggestedQuantity() int32 {
 	if x != nil {
 		return x.SuggestedQuantity
 	}
 	return 0
 }
 
-func (x *SuggestedPurchase) GetEstimatedCost() int64 {
+func (x *SuggestedPurchase) GetEstimatedCost() int32 {
 	if x != nil {
 		return x.EstimatedCost
 	}
@@ -1225,7 +1225,7 @@ const file_order_v1_purchase_order_proto_rawDesc = "" +
 	"\vbuyer_id_id\x18\x03 \x01(\tR\tbuyerIdId\x125\n" +
 	"\x06status\x18\x05 \x01(\x0e2\x1d.order.v1.PurchaseOrderStatusR\x06status\x12-\n" +
 	"\x05items\x18\x06 \x03(\v2\x17.order.v1.OrderLineItemR\x05items\x12!\n" +
-	"\ftotal_amount\x18\a \x01(\x03R\vtotalAmount\x12\x1f\n" +
+	"\ftotal_amount\x18\a \x01(\x01R\vtotalAmount\x12\x1f\n" +
 	"\bcurrency\x18\b \x01(\tH\x00R\bcurrency\x88\x01\x01\x12+\n" +
 	"\x12created_by_user_id\x18\t \x01(\tR\x0fcreatedByUserId\x129\n" +
 	"\n" +
@@ -1273,7 +1273,7 @@ const file_order_v1_purchase_order_proto_rawDesc = "" +
 	"\x0fpurchase_orders\x18\x01 \x03(\v2\x17.order.v1.PurchaseOrderR\x0epurchaseOrders\x12\x1f\n" +
 	"\vtotal_count\x18\x02 \x01(\x05R\n" +
 	"totalCount\x12\x1f\n" +
-	"\vtotal_value\x18\x03 \x01(\x03R\n" +
+	"\vtotal_value\x18\x03 \x01(\x01R\n" +
 	"totalValue\"\xb8\x01\n" +
 	" UpdatePurchaseOrderStatusRequest\x12\x13\n" +
 	"\x05po_id\x18\x01 \x01(\tR\x04poId\x12<\n" +
@@ -1312,10 +1312,10 @@ const file_order_v1_purchase_order_proto_rawDesc = "" +
 	"\x11SuggestedPurchase\x124\n" +
 	"\aproduct\x18\x01 \x01(\v2\x1a.inventory.v1.StoreProductR\aproduct\x122\n" +
 	"\x15preferred_supplier_id\x18\x02 \x01(\tR\x13preferredSupplierId\x12#\n" +
-	"\rcurrent_stock\x18\x03 \x01(\x03R\fcurrentStock\x12#\n" +
-	"\rreorder_level\x18\x04 \x01(\x03R\freorderLevel\x12-\n" +
-	"\x12suggested_quantity\x18\x05 \x01(\x03R\x11suggestedQuantity\x12%\n" +
-	"\x0eestimated_cost\x18\x06 \x01(\x03R\restimatedCost*\xaf\x01\n" +
+	"\rcurrent_stock\x18\x03 \x01(\x05R\fcurrentStock\x12#\n" +
+	"\rreorder_level\x18\x04 \x01(\x05R\freorderLevel\x12-\n" +
+	"\x12suggested_quantity\x18\x05 \x01(\x05R\x11suggestedQuantity\x12%\n" +
+	"\x0eestimated_cost\x18\x06 \x01(\x05R\restimatedCost*\xaf\x01\n" +
 	"\x13PurchaseOrderStatus\x12\x19\n" +
 	"\x15PO_STATUS_UNSPECIFIED\x10\x00\x12\x13\n" +
 	"\x0fPO_STATUS_DRAFT\x10\x01\x12\x15\n" +

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../services/internationalization/internationalization.dart';
-import '../../../utils/extends_models.dart';
 import '../../../utils/responsive_utils.dart';
 import '../inventory_controller.dart';
 
@@ -17,7 +17,10 @@ class InventoryHeader extends StatelessWidget {
     final isDesktop = ResponsiveUtils.isDesktop(context);
     final theme = ShadTheme.of(context);
 
-    void _showProductDialog(BuildContext context, Product? product) async {
+    void _showProductDialog(
+      BuildContext context,
+      StoreProductWithGlobalProduct? product,
+    ) async {
       final controller = context.read<InventoryController>();
 
       // showShadDialog<bool?>(

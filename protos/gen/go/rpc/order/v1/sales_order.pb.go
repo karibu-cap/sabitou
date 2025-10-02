@@ -601,7 +601,7 @@ type ListSalesOrdersResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	SalesOrders   []*SalesOrder          `protobuf:"bytes,1,rep,name=sales_orders,json=salesOrders,proto3" json:"sales_orders,omitempty"`
 	TotalCount    int32                  `protobuf:"varint,2,opt,name=total_count,json=totalCount,proto3" json:"total_count,omitempty"`
-	TotalValue    int64                  `protobuf:"varint,3,opt,name=total_value,json=totalValue,proto3" json:"total_value,omitempty"` // Sum of all orders
+	TotalValue    float64                `protobuf:"fixed64,3,opt,name=total_value,json=totalValue,proto3" json:"total_value,omitempty"` // Sum of all orders
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -650,7 +650,7 @@ func (x *ListSalesOrdersResponse) GetTotalCount() int32 {
 	return 0
 }
 
-func (x *ListSalesOrdersResponse) GetTotalValue() int64 {
+func (x *ListSalesOrdersResponse) GetTotalValue() float64 {
 	if x != nil {
 		return x.TotalValue
 	}
@@ -1240,7 +1240,7 @@ const file_order_v1_sales_order_proto_rawDesc = "" +
 	"\fsales_orders\x18\x01 \x03(\v2\x14.order.v1.SalesOrderR\vsalesOrders\x12\x1f\n" +
 	"\vtotal_count\x18\x02 \x01(\x05R\n" +
 	"totalCount\x12\x1f\n" +
-	"\vtotal_value\x18\x03 \x01(\x03R\n" +
+	"\vtotal_value\x18\x03 \x01(\x01R\n" +
 	"totalValue\"\xb2\x01\n" +
 	"\x1dUpdateSalesOrderStatusRequest\x12\x13\n" +
 	"\x05so_id\x18\x01 \x01(\tR\x04soId\x129\n" +

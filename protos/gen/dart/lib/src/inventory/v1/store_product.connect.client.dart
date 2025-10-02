@@ -26,6 +26,24 @@ extension type StoreProductServiceClient (connect.Transport _transport) {
     );
   }
 
+  /// Finds categories by name.
+  Future<inventoryv1store_product.FindProductCategoryResponse> findProductCategory(
+    inventoryv1store_product.FindProductCategoryRequest input, {
+    connect.Headers? headers,
+    connect.AbortSignal? signal,
+    Function(connect.Headers)? onHeader,
+    Function(connect.Headers)? onTrailer,
+  }) {
+    return connect.Client(_transport).unary(
+      specs.StoreProductService.findProductCategory,
+      input,
+      signal: signal,
+      headers: headers,
+      onHeader: onHeader,
+      onTrailer: onTrailer,
+    );
+  }
+
   /// Creates a global product.
   Future<inventoryv1store_product.CreateGlobalProductResponse> createGlobalProduct(
     inventoryv1store_product.CreateGlobalProductRequest input, {
@@ -207,16 +225,16 @@ extension type StoreProductServiceClient (connect.Transport _transport) {
     );
   }
 
-  /// Lists products with pagination and filters.
-  Future<inventoryv1store_product.ListStoreProductsResponse> listStoreProducts(
-    inventoryv1store_product.ListStoreProductsRequest input, {
+  /// Search products with pagination and filters.
+  Future<inventoryv1store_product.SearchStoreProductsResponse> searchStoreProducts(
+    inventoryv1store_product.SearchStoreProductsRequest input, {
     connect.Headers? headers,
     connect.AbortSignal? signal,
     Function(connect.Headers)? onHeader,
     Function(connect.Headers)? onTrailer,
   }) {
     return connect.Client(_transport).unary(
-      specs.StoreProductService.listStoreProducts,
+      specs.StoreProductService.searchStoreProducts,
       input,
       signal: signal,
       headers: headers,

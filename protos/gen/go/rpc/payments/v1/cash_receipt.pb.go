@@ -54,15 +54,17 @@ type CashReceipt struct {
 	CustomerId      string                 `protobuf:"bytes,3,opt,name=customer_id,json=customerId,proto3" json:"customer_id,omitempty"`            // Can be null for anonymous
 	StoreId         string                 `protobuf:"bytes,4,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`                     // Which location/store
 	Items           []*v1.InvoiceLineItem  `protobuf:"bytes,5,rep,name=items,proto3" json:"items,omitempty"`
-	Subtotal        int64                  `protobuf:"varint,6,opt,name=subtotal,proto3" json:"subtotal,omitempty"`
-	TaxAmount       int64                  `protobuf:"varint,7,opt,name=tax_amount,json=taxAmount,proto3" json:"tax_amount,omitempty"`
-	TotalAmount     int64                  `protobuf:"varint,8,opt,name=total_amount,json=totalAmount,proto3" json:"total_amount,omitempty"`
-	AmountPaid      int64                  `protobuf:"varint,9,opt,name=amount_paid,json=amountPaid,proto3" json:"amount_paid,omitempty"`     // What customer gave
-	ChangeGiven     int64                  `protobuf:"varint,10,opt,name=change_given,json=changeGiven,proto3" json:"change_given,omitempty"` // amount_paid - total_amount
+	Subtotal        float64                `protobuf:"fixed64,6,opt,name=subtotal,proto3" json:"subtotal,omitempty"`
+	TaxAmount       float64                `protobuf:"fixed64,7,opt,name=tax_amount,json=taxAmount,proto3" json:"tax_amount,omitempty"`
+	TotalAmount     float64                `protobuf:"fixed64,8,opt,name=total_amount,json=totalAmount,proto3" json:"total_amount,omitempty"`
+	AmountPaid      float64                `protobuf:"fixed64,9,opt,name=amount_paid,json=amountPaid,proto3" json:"amount_paid,omitempty"` // What customer gave
+	ChangeGiven     float64                `protobuf:"fixed64,10,opt,name=change_given,json=changeGiven,proto3" json:"change_given,omitempty"`
 	Currency        string                 `protobuf:"bytes,11,opt,name=currency,proto3" json:"currency,omitempty"`
 	PaymentIds      []string               `protobuf:"bytes,12,rep,name=payment_ids,json=paymentIds,proto3" json:"payment_ids,omitempty"`
 	TransactionTime *timestamppb.Timestamp `protobuf:"bytes,13,opt,name=transaction_time,json=transactionTime,proto3" json:"transaction_time,omitempty"`
 	Notes           string                 `protobuf:"bytes,14,opt,name=notes,proto3" json:"notes,omitempty"`
+	VoucherIssued   string                 `protobuf:"bytes,15,opt,name=voucher_issued,json=voucherIssued,proto3" json:"voucher_issued,omitempty"`
+	OwedToCustomer  float64                `protobuf:"fixed64,16,opt,name=owed_to_customer,json=owedToCustomer,proto3" json:"owed_to_customer,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -132,35 +134,35 @@ func (x *CashReceipt) GetItems() []*v1.InvoiceLineItem {
 	return nil
 }
 
-func (x *CashReceipt) GetSubtotal() int64 {
+func (x *CashReceipt) GetSubtotal() float64 {
 	if x != nil {
 		return x.Subtotal
 	}
 	return 0
 }
 
-func (x *CashReceipt) GetTaxAmount() int64 {
+func (x *CashReceipt) GetTaxAmount() float64 {
 	if x != nil {
 		return x.TaxAmount
 	}
 	return 0
 }
 
-func (x *CashReceipt) GetTotalAmount() int64 {
+func (x *CashReceipt) GetTotalAmount() float64 {
 	if x != nil {
 		return x.TotalAmount
 	}
 	return 0
 }
 
-func (x *CashReceipt) GetAmountPaid() int64 {
+func (x *CashReceipt) GetAmountPaid() float64 {
 	if x != nil {
 		return x.AmountPaid
 	}
 	return 0
 }
 
-func (x *CashReceipt) GetChangeGiven() int64 {
+func (x *CashReceipt) GetChangeGiven() float64 {
 	if x != nil {
 		return x.ChangeGiven
 	}
@@ -195,11 +197,142 @@ func (x *CashReceipt) GetNotes() string {
 	return ""
 }
 
+func (x *CashReceipt) GetVoucherIssued() string {
+	if x != nil {
+		return x.VoucherIssued
+	}
+	return ""
+}
+
+func (x *CashReceipt) GetOwedToCustomer() float64 {
+	if x != nil {
+		return x.OwedToCustomer
+	}
+	return 0
+}
+
+type CreateCashReceiptRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The partial cash receipt to create.
+	Receipt *CashReceipt `protobuf:"bytes,1,opt,name=receipt,proto3" json:"receipt,omitempty"`
+	// The partial payment use by the client.
+	Payments []*Payment `protobuf:"bytes,2,rep,name=payments,proto3" json:"payments,omitempty"`
+	// Issue voucher on change
+	// If true and change_given > 0, issue a voucher instead of cash
+	IssueVoucherOnChange bool `protobuf:"varint,3,opt,name=issue_voucher_on_change,json=issueVoucherOnChange,proto3" json:"issue_voucher_on_change,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
+}
+
+func (x *CreateCashReceiptRequest) Reset() {
+	*x = CreateCashReceiptRequest{}
+	mi := &file_payments_v1_cash_receipt_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateCashReceiptRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateCashReceiptRequest) ProtoMessage() {}
+
+func (x *CreateCashReceiptRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_payments_v1_cash_receipt_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateCashReceiptRequest.ProtoReflect.Descriptor instead.
+func (*CreateCashReceiptRequest) Descriptor() ([]byte, []int) {
+	return file_payments_v1_cash_receipt_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *CreateCashReceiptRequest) GetReceipt() *CashReceipt {
+	if x != nil {
+		return x.Receipt
+	}
+	return nil
+}
+
+func (x *CreateCashReceiptRequest) GetPayments() []*Payment {
+	if x != nil {
+		return x.Payments
+	}
+	return nil
+}
+
+func (x *CreateCashReceiptRequest) GetIssueVoucherOnChange() bool {
+	if x != nil {
+		return x.IssueVoucherOnChange
+	}
+	return false
+}
+
+type CreateCashReceiptResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The created cash receipt.
+	Success       bool         `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Voucher       *GiftVoucher `protobuf:"bytes,2,opt,name=voucher,proto3,oneof" json:"voucher,omitempty"` // If a voucher was issued
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateCashReceiptResponse) Reset() {
+	*x = CreateCashReceiptResponse{}
+	mi := &file_payments_v1_cash_receipt_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateCashReceiptResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateCashReceiptResponse) ProtoMessage() {}
+
+func (x *CreateCashReceiptResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_payments_v1_cash_receipt_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateCashReceiptResponse.ProtoReflect.Descriptor instead.
+func (*CreateCashReceiptResponse) Descriptor() ([]byte, []int) {
+	return file_payments_v1_cash_receipt_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *CreateCashReceiptResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *CreateCashReceiptResponse) GetVoucher() *GiftVoucher {
+	if x != nil {
+		return x.Voucher
+	}
+	return nil
+}
+
 var File_payments_v1_cash_receipt_proto protoreflect.FileDescriptor
 
 const file_payments_v1_cash_receipt_proto_rawDesc = "" +
 	"\n" +
-	"\x1epayments/v1/cash_receipt.proto\x12\vpayments.v1\x1a\x1bbuf/validate/validate.proto\x1a\"financial/v1/financial_utils.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1fpayments/v1/payment_utils.proto\"\x8b\x04\n" +
+	"\x1epayments/v1/cash_receipt.proto\x12\vpayments.v1\x1a\x1bbuf/validate/validate.proto\x1a\"financial/v1/financial_utils.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1epayments/v1/gift_voucher.proto\x1a\x1apayments/v1/payments.proto\"\xdc\x04\n" +
 	"\vCashReceipt\x12'\n" +
 	"\vdocument_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\n" +
 	"documentId\x12&\n" +
@@ -208,19 +341,32 @@ const file_payments_v1_cash_receipt_proto_rawDesc = "" +
 	"customerId\x12\x19\n" +
 	"\bstore_id\x18\x04 \x01(\tR\astoreId\x123\n" +
 	"\x05items\x18\x05 \x03(\v2\x1d.financial.v1.InvoiceLineItemR\x05items\x12\x1a\n" +
-	"\bsubtotal\x18\x06 \x01(\x03R\bsubtotal\x12\x1d\n" +
+	"\bsubtotal\x18\x06 \x01(\x01R\bsubtotal\x12\x1d\n" +
 	"\n" +
-	"tax_amount\x18\a \x01(\x03R\ttaxAmount\x12!\n" +
-	"\ftotal_amount\x18\b \x01(\x03R\vtotalAmount\x12\x1f\n" +
-	"\vamount_paid\x18\t \x01(\x03R\n" +
+	"tax_amount\x18\a \x01(\x01R\ttaxAmount\x12!\n" +
+	"\ftotal_amount\x18\b \x01(\x01R\vtotalAmount\x12\x1f\n" +
+	"\vamount_paid\x18\t \x01(\x01R\n" +
 	"amountPaid\x12!\n" +
 	"\fchange_given\x18\n" +
-	" \x01(\x03R\vchangeGiven\x12\x1a\n" +
+	" \x01(\x01R\vchangeGiven\x12\x1a\n" +
 	"\bcurrency\x18\v \x01(\tR\bcurrency\x12\x1f\n" +
 	"\vpayment_ids\x18\f \x03(\tR\n" +
 	"paymentIds\x12E\n" +
 	"\x10transaction_time\x18\r \x01(\v2\x1a.google.protobuf.TimestampR\x0ftransactionTime\x12\x14\n" +
-	"\x05notes\x18\x0e \x01(\tR\x05notesB\xb8\x01\n" +
+	"\x05notes\x18\x0e \x01(\tR\x05notes\x12%\n" +
+	"\x0evoucher_issued\x18\x0f \x01(\tR\rvoucherIssued\x12(\n" +
+	"\x10owed_to_customer\x18\x10 \x01(\x01R\x0eowedToCustomer\"\xb7\x01\n" +
+	"\x18CreateCashReceiptRequest\x122\n" +
+	"\areceipt\x18\x01 \x01(\v2\x18.payments.v1.CashReceiptR\areceipt\x120\n" +
+	"\bpayments\x18\x02 \x03(\v2\x14.payments.v1.PaymentR\bpayments\x125\n" +
+	"\x17issue_voucher_on_change\x18\x03 \x01(\bR\x14issueVoucherOnChange\"z\n" +
+	"\x19CreateCashReceiptResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x127\n" +
+	"\avoucher\x18\x02 \x01(\v2\x18.payments.v1.GiftVoucherH\x00R\avoucher\x88\x01\x01B\n" +
+	"\n" +
+	"\b_voucher2x\n" +
+	"\x12CashReceiptService\x12b\n" +
+	"\x11CreateCashReceipt\x12%.payments.v1.CreateCashReceiptRequest\x1a&.payments.v1.CreateCashReceiptResponseB\xb8\x01\n" +
 	"\x0fcom.payments.v1B\x10CashReceiptProtoP\x01ZFgithub.com/karibu-cap/sabitou/protos/gen/go/rpc/payments/v1;paymentsv1\xa2\x02\x03PXX\xaa\x02\vPayments.V1\xca\x02\vPayments\\V1\xe2\x02\x17Payments\\V1\\GPBMetadata\xea\x02\fPayments::V1b\x06proto3"
 
 var (
@@ -235,20 +381,29 @@ func file_payments_v1_cash_receipt_proto_rawDescGZIP() []byte {
 	return file_payments_v1_cash_receipt_proto_rawDescData
 }
 
-var file_payments_v1_cash_receipt_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_payments_v1_cash_receipt_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_payments_v1_cash_receipt_proto_goTypes = []any{
-	(*CashReceipt)(nil),           // 0: payments.v1.CashReceipt
-	(*v1.InvoiceLineItem)(nil),    // 1: financial.v1.InvoiceLineItem
-	(*timestamppb.Timestamp)(nil), // 2: google.protobuf.Timestamp
+	(*CashReceipt)(nil),               // 0: payments.v1.CashReceipt
+	(*CreateCashReceiptRequest)(nil),  // 1: payments.v1.CreateCashReceiptRequest
+	(*CreateCashReceiptResponse)(nil), // 2: payments.v1.CreateCashReceiptResponse
+	(*v1.InvoiceLineItem)(nil),        // 3: financial.v1.InvoiceLineItem
+	(*timestamppb.Timestamp)(nil),     // 4: google.protobuf.Timestamp
+	(*Payment)(nil),                   // 5: payments.v1.Payment
+	(*GiftVoucher)(nil),               // 6: payments.v1.GiftVoucher
 }
 var file_payments_v1_cash_receipt_proto_depIdxs = []int32{
-	1, // 0: payments.v1.CashReceipt.items:type_name -> financial.v1.InvoiceLineItem
-	2, // 1: payments.v1.CashReceipt.transaction_time:type_name -> google.protobuf.Timestamp
-	2, // [2:2] is the sub-list for method output_type
-	2, // [2:2] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	3, // 0: payments.v1.CashReceipt.items:type_name -> financial.v1.InvoiceLineItem
+	4, // 1: payments.v1.CashReceipt.transaction_time:type_name -> google.protobuf.Timestamp
+	0, // 2: payments.v1.CreateCashReceiptRequest.receipt:type_name -> payments.v1.CashReceipt
+	5, // 3: payments.v1.CreateCashReceiptRequest.payments:type_name -> payments.v1.Payment
+	6, // 4: payments.v1.CreateCashReceiptResponse.voucher:type_name -> payments.v1.GiftVoucher
+	1, // 5: payments.v1.CashReceiptService.CreateCashReceipt:input_type -> payments.v1.CreateCashReceiptRequest
+	2, // 6: payments.v1.CashReceiptService.CreateCashReceipt:output_type -> payments.v1.CreateCashReceiptResponse
+	6, // [6:7] is the sub-list for method output_type
+	5, // [5:6] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_payments_v1_cash_receipt_proto_init() }
@@ -256,16 +411,18 @@ func file_payments_v1_cash_receipt_proto_init() {
 	if File_payments_v1_cash_receipt_proto != nil {
 		return
 	}
-	file_payments_v1_payment_utils_proto_init()
+	file_payments_v1_gift_voucher_proto_init()
+	file_payments_v1_payments_proto_init()
+	file_payments_v1_cash_receipt_proto_msgTypes[2].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_payments_v1_cash_receipt_proto_rawDesc), len(file_payments_v1_cash_receipt_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   1,
+			NumMessages:   3,
 			NumExtensions: 0,
-			NumServices:   0,
+			NumServices:   1,
 		},
 		GoTypes:           file_payments_v1_cash_receipt_proto_goTypes,
 		DependencyIndexes: file_payments_v1_cash_receipt_proto_depIdxs,

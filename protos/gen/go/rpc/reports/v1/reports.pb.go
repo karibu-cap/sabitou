@@ -226,10 +226,10 @@ func (x *GetSalesReportRequest) GetGroupBy() ReportGroupBy {
 type GetSalesReportResponse struct {
 	state                   protoimpl.MessageState `protogen:"open.v1"`
 	Summaries               []*SalesSummary        `protobuf:"bytes,1,rep,name=summaries,proto3" json:"summaries,omitempty"`
-	TotalSalesAmount        int64                  `protobuf:"varint,2,opt,name=total_sales_amount,json=totalSalesAmount,proto3" json:"total_sales_amount,omitempty"`
+	TotalSalesAmount        float64                `protobuf:"fixed64,2,opt,name=total_sales_amount,json=totalSalesAmount,proto3" json:"total_sales_amount,omitempty"`
 	TotalTransactions       int32                  `protobuf:"varint,3,opt,name=total_transactions,json=totalTransactions,proto3" json:"total_transactions,omitempty"`
 	TotalUnitsSold          int32                  `protobuf:"varint,4,opt,name=total_units_sold,json=totalUnitsSold,proto3" json:"total_units_sold,omitempty"`
-	AverageTransactionValue int64                  `protobuf:"varint,5,opt,name=average_transaction_value,json=averageTransactionValue,proto3" json:"average_transaction_value,omitempty"`
+	AverageTransactionValue float64                `protobuf:"fixed64,5,opt,name=average_transaction_value,json=averageTransactionValue,proto3" json:"average_transaction_value,omitempty"`
 	unknownFields           protoimpl.UnknownFields
 	sizeCache               protoimpl.SizeCache
 }
@@ -271,7 +271,7 @@ func (x *GetSalesReportResponse) GetSummaries() []*SalesSummary {
 	return nil
 }
 
-func (x *GetSalesReportResponse) GetTotalSalesAmount() int64 {
+func (x *GetSalesReportResponse) GetTotalSalesAmount() float64 {
 	if x != nil {
 		return x.TotalSalesAmount
 	}
@@ -292,7 +292,7 @@ func (x *GetSalesReportResponse) GetTotalUnitsSold() int32 {
 	return 0
 }
 
-func (x *GetSalesReportResponse) GetAverageTransactionValue() int64 {
+func (x *GetSalesReportResponse) GetAverageTransactionValue() float64 {
 	if x != nil {
 		return x.AverageTransactionValue
 	}
@@ -303,7 +303,7 @@ type SalesSummary struct {
 	state            protoimpl.MessageState `protogen:"open.v1"`
 	PeriodStart      *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=period_start,json=periodStart,proto3" json:"period_start,omitempty"`
 	PeriodEnd        *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=period_end,json=periodEnd,proto3" json:"period_end,omitempty"`
-	SalesAmount      int64                  `protobuf:"varint,3,opt,name=sales_amount,json=salesAmount,proto3" json:"sales_amount,omitempty"`
+	SalesAmount      float64                `protobuf:"fixed64,3,opt,name=sales_amount,json=salesAmount,proto3" json:"sales_amount,omitempty"`
 	TransactionCount int32                  `protobuf:"varint,4,opt,name=transaction_count,json=transactionCount,proto3" json:"transaction_count,omitempty"`
 	UnitsSold        int32                  `protobuf:"varint,5,opt,name=units_sold,json=unitsSold,proto3" json:"units_sold,omitempty"`
 	unknownFields    protoimpl.UnknownFields
@@ -354,7 +354,7 @@ func (x *SalesSummary) GetPeriodEnd() *timestamppb.Timestamp {
 	return nil
 }
 
-func (x *SalesSummary) GetSalesAmount() int64 {
+func (x *SalesSummary) GetSalesAmount() float64 {
 	if x != nil {
 		return x.SalesAmount
 	}
@@ -462,7 +462,7 @@ func (x *GetPurchaseReportRequest) GetGroupBy() ReportGroupBy {
 type GetPurchaseReportResponse struct {
 	state               protoimpl.MessageState `protogen:"open.v1"`
 	Summaries           []*PurchaseSummary     `protobuf:"bytes,1,rep,name=summaries,proto3" json:"summaries,omitempty"`
-	TotalPurchaseAmount int64                  `protobuf:"varint,2,opt,name=total_purchase_amount,json=totalPurchaseAmount,proto3" json:"total_purchase_amount,omitempty"`
+	TotalPurchaseAmount float64                `protobuf:"fixed64,2,opt,name=total_purchase_amount,json=totalPurchaseAmount,proto3" json:"total_purchase_amount,omitempty"`
 	TotalPurchaseOrders int32                  `protobuf:"varint,3,opt,name=total_purchase_orders,json=totalPurchaseOrders,proto3" json:"total_purchase_orders,omitempty"`
 	TotalUnitsPurchased int32                  `protobuf:"varint,4,opt,name=total_units_purchased,json=totalUnitsPurchased,proto3" json:"total_units_purchased,omitempty"`
 	unknownFields       protoimpl.UnknownFields
@@ -506,7 +506,7 @@ func (x *GetPurchaseReportResponse) GetSummaries() []*PurchaseSummary {
 	return nil
 }
 
-func (x *GetPurchaseReportResponse) GetTotalPurchaseAmount() int64 {
+func (x *GetPurchaseReportResponse) GetTotalPurchaseAmount() float64 {
 	if x != nil {
 		return x.TotalPurchaseAmount
 	}
@@ -531,7 +531,7 @@ type PurchaseSummary struct {
 	state              protoimpl.MessageState `protogen:"open.v1"`
 	PeriodStart        *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=period_start,json=periodStart,proto3" json:"period_start,omitempty"`
 	PeriodEnd          *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=period_end,json=periodEnd,proto3" json:"period_end,omitempty"`
-	PurchaseAmount     int64                  `protobuf:"varint,3,opt,name=purchase_amount,json=purchaseAmount,proto3" json:"purchase_amount,omitempty"`
+	PurchaseAmount     float64                `protobuf:"fixed64,3,opt,name=purchase_amount,json=purchaseAmount,proto3" json:"purchase_amount,omitempty"`
 	PurchaseOrderCount int32                  `protobuf:"varint,4,opt,name=purchase_order_count,json=purchaseOrderCount,proto3" json:"purchase_order_count,omitempty"`
 	UnitsPurchased     int32                  `protobuf:"varint,5,opt,name=units_purchased,json=unitsPurchased,proto3" json:"units_purchased,omitempty"`
 	unknownFields      protoimpl.UnknownFields
@@ -582,7 +582,7 @@ func (x *PurchaseSummary) GetPeriodEnd() *timestamppb.Timestamp {
 	return nil
 }
 
-func (x *PurchaseSummary) GetPurchaseAmount() int64 {
+func (x *PurchaseSummary) GetPurchaseAmount() float64 {
 	if x != nil {
 		return x.PurchaseAmount
 	}
@@ -879,7 +879,7 @@ type BestSellingProduct struct {
 	state            protoimpl.MessageState `protogen:"open.v1"`
 	Product          *v1.StoreProduct       `protobuf:"bytes,1,opt,name=product,proto3" json:"product,omitempty"`
 	UnitsSold        int32                  `protobuf:"varint,2,opt,name=units_sold,json=unitsSold,proto3" json:"units_sold,omitempty"`
-	TotalRevenue     int64                  `protobuf:"varint,3,opt,name=total_revenue,json=totalRevenue,proto3" json:"total_revenue,omitempty"`
+	TotalRevenue     float64                `protobuf:"fixed64,3,opt,name=total_revenue,json=totalRevenue,proto3" json:"total_revenue,omitempty"`
 	TransactionCount int32                  `protobuf:"varint,4,opt,name=transaction_count,json=transactionCount,proto3" json:"transaction_count,omitempty"`
 	ProductName      string                 `protobuf:"bytes,5,opt,name=productName,proto3" json:"productName,omitempty"`
 	Rank             int32                  `protobuf:"varint,6,opt,name=rank,proto3" json:"rank,omitempty"`
@@ -931,7 +931,7 @@ func (x *BestSellingProduct) GetUnitsSold() int32 {
 	return 0
 }
 
-func (x *BestSellingProduct) GetTotalRevenue() int64 {
+func (x *BestSellingProduct) GetTotalRevenue() float64 {
 	if x != nil {
 		return x.TotalRevenue
 	}
@@ -1023,9 +1023,9 @@ type GetStorePurchaseHistoryResponse struct {
 	state              protoimpl.MessageState `protogen:"open.v1"`
 	Store              *v12.Store             `protobuf:"bytes,1,opt,name=store,proto3" json:"store,omitempty"`
 	Invoices           []*v13.Invoice         `protobuf:"bytes,2,rep,name=invoices,proto3" json:"invoices,omitempty"`
-	TotalPurchases     int64                  `protobuf:"varint,3,opt,name=total_purchases,json=totalPurchases,proto3" json:"total_purchases,omitempty"`
-	TotalPaid          int64                  `protobuf:"varint,4,opt,name=total_paid,json=totalPaid,proto3" json:"total_paid,omitempty"`
-	OutstandingBalance int64                  `protobuf:"varint,5,opt,name=outstanding_balance,json=outstandingBalance,proto3" json:"outstanding_balance,omitempty"`
+	TotalPurchases     float64                `protobuf:"fixed64,3,opt,name=total_purchases,json=totalPurchases,proto3" json:"total_purchases,omitempty"`
+	TotalPaid          float64                `protobuf:"fixed64,4,opt,name=total_paid,json=totalPaid,proto3" json:"total_paid,omitempty"`
+	OutstandingBalance float64                `protobuf:"fixed64,5,opt,name=outstanding_balance,json=outstandingBalance,proto3" json:"outstanding_balance,omitempty"`
 	TransactionCount   int32                  `protobuf:"varint,6,opt,name=transaction_count,json=transactionCount,proto3" json:"transaction_count,omitempty"`
 	LastPurchaseDate   *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=last_purchase_date,json=lastPurchaseDate,proto3" json:"last_purchase_date,omitempty"`
 	unknownFields      protoimpl.UnknownFields
@@ -1076,21 +1076,21 @@ func (x *GetStorePurchaseHistoryResponse) GetInvoices() []*v13.Invoice {
 	return nil
 }
 
-func (x *GetStorePurchaseHistoryResponse) GetTotalPurchases() int64 {
+func (x *GetStorePurchaseHistoryResponse) GetTotalPurchases() float64 {
 	if x != nil {
 		return x.TotalPurchases
 	}
 	return 0
 }
 
-func (x *GetStorePurchaseHistoryResponse) GetTotalPaid() int64 {
+func (x *GetStorePurchaseHistoryResponse) GetTotalPaid() float64 {
 	if x != nil {
 		return x.TotalPaid
 	}
 	return 0
 }
 
-func (x *GetStorePurchaseHistoryResponse) GetOutstandingBalance() int64 {
+func (x *GetStorePurchaseHistoryResponse) GetOutstandingBalance() float64 {
 	if x != nil {
 		return x.OutstandingBalance
 	}
@@ -1175,7 +1175,7 @@ type GetSupplierPerformanceReportResponse struct {
 	state                   protoimpl.MessageState `protogen:"open.v1"`
 	Supplier                *v12.Supplier          `protobuf:"bytes,1,opt,name=supplier,proto3" json:"supplier,omitempty"`
 	TotalPurchaseOrders     int32                  `protobuf:"varint,2,opt,name=total_purchase_orders,json=totalPurchaseOrders,proto3" json:"total_purchase_orders,omitempty"`
-	TotalPurchaseValue      int64                  `protobuf:"varint,3,opt,name=total_purchase_value,json=totalPurchaseValue,proto3" json:"total_purchase_value,omitempty"`
+	TotalPurchaseValue      float64                `protobuf:"fixed64,3,opt,name=total_purchase_value,json=totalPurchaseValue,proto3" json:"total_purchase_value,omitempty"`
 	OnTimeDeliveries        int32                  `protobuf:"varint,4,opt,name=on_time_deliveries,json=onTimeDeliveries,proto3" json:"on_time_deliveries,omitempty"`
 	LateDeliveries          int32                  `protobuf:"varint,5,opt,name=late_deliveries,json=lateDeliveries,proto3" json:"late_deliveries,omitempty"`
 	OnTimePercentage        float64                `protobuf:"fixed64,6,opt,name=on_time_percentage,json=onTimePercentage,proto3" json:"on_time_percentage,omitempty"`
@@ -1229,7 +1229,7 @@ func (x *GetSupplierPerformanceReportResponse) GetTotalPurchaseOrders() int32 {
 	return 0
 }
 
-func (x *GetSupplierPerformanceReportResponse) GetTotalPurchaseValue() int64 {
+func (x *GetSupplierPerformanceReportResponse) GetTotalPurchaseValue() float64 {
 	if x != nil {
 		return x.TotalPurchaseValue
 	}
@@ -1333,13 +1333,13 @@ func (x *GetProfitLossReportRequest) GetStoreId() string {
 
 type GetProfitLossReportResponse struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
-	TotalRevenue      int64                  `protobuf:"varint,1,opt,name=total_revenue,json=totalRevenue,proto3" json:"total_revenue,omitempty"`                   // Sales
-	CostOfGoodsSold   int64                  `protobuf:"varint,2,opt,name=cost_of_goods_sold,json=costOfGoodsSold,proto3" json:"cost_of_goods_sold,omitempty"`      // Purchases
-	GrossProfit       int64                  `protobuf:"varint,3,opt,name=gross_profit,json=grossProfit,proto3" json:"gross_profit,omitempty"`                      // Revenue - COGS
+	TotalRevenue      float64                `protobuf:"fixed64,1,opt,name=total_revenue,json=totalRevenue,proto3" json:"total_revenue,omitempty"`                  // Sales
+	CostOfGoodsSold   float64                `protobuf:"fixed64,2,opt,name=cost_of_goods_sold,json=costOfGoodsSold,proto3" json:"cost_of_goods_sold,omitempty"`     // Purchases
+	GrossProfit       float64                `protobuf:"fixed64,3,opt,name=gross_profit,json=grossProfit,proto3" json:"gross_profit,omitempty"`                     // Revenue - COGS
 	GrossProfitMargin float64                `protobuf:"fixed64,4,opt,name=gross_profit_margin,json=grossProfitMargin,proto3" json:"gross_profit_margin,omitempty"` // Percentage
-	ReturnsValue      int64                  `protobuf:"varint,5,opt,name=returns_value,json=returnsValue,proto3" json:"returns_value,omitempty"`                   // Store returns
-	AdjustmentsValue  int64                  `protobuf:"varint,6,opt,name=adjustments_value,json=adjustmentsValue,proto3" json:"adjustments_value,omitempty"`       // Stock adjustments (damage, theft)
-	NetProfit         int64                  `protobuf:"varint,7,opt,name=net_profit,json=netProfit,proto3" json:"net_profit,omitempty"`                            // After returns and adjustments
+	ReturnsValue      float64                `protobuf:"fixed64,5,opt,name=returns_value,json=returnsValue,proto3" json:"returns_value,omitempty"`                  // Store returns
+	AdjustmentsValue  float64                `protobuf:"fixed64,6,opt,name=adjustments_value,json=adjustmentsValue,proto3" json:"adjustments_value,omitempty"`      // Stock adjustments (damage, theft)
+	NetProfit         float64                `protobuf:"fixed64,7,opt,name=net_profit,json=netProfit,proto3" json:"net_profit,omitempty"`                           // After returns and adjustments
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
 }
@@ -1374,21 +1374,21 @@ func (*GetProfitLossReportResponse) Descriptor() ([]byte, []int) {
 	return file_reports_v1_reports_proto_rawDescGZIP(), []int{16}
 }
 
-func (x *GetProfitLossReportResponse) GetTotalRevenue() int64 {
+func (x *GetProfitLossReportResponse) GetTotalRevenue() float64 {
 	if x != nil {
 		return x.TotalRevenue
 	}
 	return 0
 }
 
-func (x *GetProfitLossReportResponse) GetCostOfGoodsSold() int64 {
+func (x *GetProfitLossReportResponse) GetCostOfGoodsSold() float64 {
 	if x != nil {
 		return x.CostOfGoodsSold
 	}
 	return 0
 }
 
-func (x *GetProfitLossReportResponse) GetGrossProfit() int64 {
+func (x *GetProfitLossReportResponse) GetGrossProfit() float64 {
 	if x != nil {
 		return x.GrossProfit
 	}
@@ -1402,21 +1402,21 @@ func (x *GetProfitLossReportResponse) GetGrossProfitMargin() float64 {
 	return 0
 }
 
-func (x *GetProfitLossReportResponse) GetReturnsValue() int64 {
+func (x *GetProfitLossReportResponse) GetReturnsValue() float64 {
 	if x != nil {
 		return x.ReturnsValue
 	}
 	return 0
 }
 
-func (x *GetProfitLossReportResponse) GetAdjustmentsValue() int64 {
+func (x *GetProfitLossReportResponse) GetAdjustmentsValue() float64 {
 	if x != nil {
 		return x.AdjustmentsValue
 	}
 	return 0
 }
 
-func (x *GetProfitLossReportResponse) GetNetProfit() int64 {
+func (x *GetProfitLossReportResponse) GetNetProfit() float64 {
 	if x != nil {
 		return x.NetProfit
 	}
@@ -1478,8 +1478,8 @@ func (x *GetStockAgingReportRequest) GetCategory() string {
 type GetStockAgingReportResponse struct {
 	state                protoimpl.MessageState `protogen:"open.v1"`
 	Items                []*StockAgingItem      `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
-	TotalStockValue      int64                  `protobuf:"varint,2,opt,name=total_stock_value,json=totalStockValue,proto3" json:"total_stock_value,omitempty"`
-	SlowMovingStockValue int64                  `protobuf:"varint,3,opt,name=slow_moving_stock_value,json=slowMovingStockValue,proto3" json:"slow_moving_stock_value,omitempty"` // > 90 days
+	TotalStockValue      float64                `protobuf:"fixed64,2,opt,name=total_stock_value,json=totalStockValue,proto3" json:"total_stock_value,omitempty"`
+	SlowMovingStockValue float64                `protobuf:"fixed64,3,opt,name=slow_moving_stock_value,json=slowMovingStockValue,proto3" json:"slow_moving_stock_value,omitempty"` // > 90 days
 	unknownFields        protoimpl.UnknownFields
 	sizeCache            protoimpl.SizeCache
 }
@@ -1521,14 +1521,14 @@ func (x *GetStockAgingReportResponse) GetItems() []*StockAgingItem {
 	return nil
 }
 
-func (x *GetStockAgingReportResponse) GetTotalStockValue() int64 {
+func (x *GetStockAgingReportResponse) GetTotalStockValue() float64 {
 	if x != nil {
 		return x.TotalStockValue
 	}
 	return 0
 }
 
-func (x *GetStockAgingReportResponse) GetSlowMovingStockValue() int64 {
+func (x *GetStockAgingReportResponse) GetSlowMovingStockValue() float64 {
 	if x != nil {
 		return x.SlowMovingStockValue
 	}
@@ -1539,7 +1539,7 @@ type StockAgingItem struct {
 	state                 protoimpl.MessageState `protogen:"open.v1"`
 	Product               *v1.StoreProduct       `protobuf:"bytes,1,opt,name=product,proto3" json:"product,omitempty"`
 	Quantity              float64                `protobuf:"fixed64,2,opt,name=quantity,proto3" json:"quantity,omitempty"`
-	StockValue            int64                  `protobuf:"varint,3,opt,name=stock_value,json=stockValue,proto3" json:"stock_value,omitempty"`
+	StockValue            float64                `protobuf:"fixed64,3,opt,name=stock_value,json=stockValue,proto3" json:"stock_value,omitempty"`
 	LastMovementDate      *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=last_movement_date,json=lastMovementDate,proto3" json:"last_movement_date,omitempty"`
 	DaysSinceLastMovement int32                  `protobuf:"varint,5,opt,name=days_since_last_movement,json=daysSinceLastMovement,proto3" json:"days_since_last_movement,omitempty"`
 	MovementCategory      StockMovementCategory  `protobuf:"varint,6,opt,name=movement_category,json=movementCategory,proto3,enum=reports.v1.StockMovementCategory" json:"movement_category,omitempty"`
@@ -1591,7 +1591,7 @@ func (x *StockAgingItem) GetQuantity() float64 {
 	return 0
 }
 
-func (x *StockAgingItem) GetStockValue() int64 {
+func (x *StockAgingItem) GetStockValue() float64 {
 	if x != nil {
 		return x.StockValue
 	}
@@ -1750,7 +1750,7 @@ func (x *InventoryMovementSummary) GetNetChange() float64 {
 type GetInventoryReportResponse struct {
 	state                  protoimpl.MessageState    `protogen:"open.v1"`
 	TotalProducts          int32                     `protobuf:"varint,1,opt,name=total_products,json=totalProducts,proto3" json:"total_products,omitempty"`
-	TotalValue             int64                     `protobuf:"varint,2,opt,name=total_value,json=totalValue,proto3" json:"total_value,omitempty"` // Sum of (quantity * cost_price)
+	TotalValue             float64                   `protobuf:"fixed64,2,opt,name=total_value,json=totalValue,proto3" json:"total_value,omitempty"` // Sum of (quantity * cost_price)
 	LowStockCount          int32                     `protobuf:"varint,3,opt,name=low_stock_count,json=lowStockCount,proto3" json:"low_stock_count,omitempty"`
 	AgingItems             []*StockAgingItem         `protobuf:"bytes,4,rep,name=aging_items,json=agingItems,proto3" json:"aging_items,omitempty"`
 	MovementSummary        *InventoryMovementSummary `protobuf:"bytes,5,opt,name=movement_summary,json=movementSummary,proto3" json:"movement_summary,omitempty"`
@@ -1798,7 +1798,7 @@ func (x *GetInventoryReportResponse) GetTotalProducts() int32 {
 	return 0
 }
 
-func (x *GetInventoryReportResponse) GetTotalValue() int64 {
+func (x *GetInventoryReportResponse) GetTotalValue() float64 {
 	if x != nil {
 		return x.TotalValue
 	}
@@ -1918,10 +1918,10 @@ func (x *StockMovementDataPoint) GetMovementType() string {
 type GetSalesReportFullResponse struct {
 	state                   protoimpl.MessageState `protogen:"open.v1"`
 	Summaries               []*SalesSummary        `protobuf:"bytes,1,rep,name=summaries,proto3" json:"summaries,omitempty"`
-	TotalSalesAmount        int64                  `protobuf:"varint,2,opt,name=total_sales_amount,json=totalSalesAmount,proto3" json:"total_sales_amount,omitempty"`
+	TotalSalesAmount        float64                `protobuf:"fixed64,2,opt,name=total_sales_amount,json=totalSalesAmount,proto3" json:"total_sales_amount,omitempty"`
 	TotalTransactions       int32                  `protobuf:"varint,3,opt,name=total_transactions,json=totalTransactions,proto3" json:"total_transactions,omitempty"`
 	TotalUnitsSold          int32                  `protobuf:"varint,4,opt,name=total_units_sold,json=totalUnitsSold,proto3" json:"total_units_sold,omitempty"`
-	AverageTransactionValue int64                  `protobuf:"varint,5,opt,name=average_transaction_value,json=averageTransactionValue,proto3" json:"average_transaction_value,omitempty"`
+	AverageTransactionValue float64                `protobuf:"fixed64,5,opt,name=average_transaction_value,json=averageTransactionValue,proto3" json:"average_transaction_value,omitempty"`
 	BestProducts            []*BestSellingProduct  `protobuf:"bytes,6,rep,name=best_products,json=bestProducts,proto3" json:"best_products,omitempty"`
 	CategorySalesData       []*CategorySalesData   `protobuf:"bytes,7,rep,name=category_sales_data,json=categorySalesData,proto3" json:"category_sales_data,omitempty"`
 	PreviousYearComparison  *SalesComparisonData   `protobuf:"bytes,8,opt,name=previous_year_comparison,json=previousYearComparison,proto3" json:"previous_year_comparison,omitempty"`
@@ -1966,7 +1966,7 @@ func (x *GetSalesReportFullResponse) GetSummaries() []*SalesSummary {
 	return nil
 }
 
-func (x *GetSalesReportFullResponse) GetTotalSalesAmount() int64 {
+func (x *GetSalesReportFullResponse) GetTotalSalesAmount() float64 {
 	if x != nil {
 		return x.TotalSalesAmount
 	}
@@ -1987,7 +1987,7 @@ func (x *GetSalesReportFullResponse) GetTotalUnitsSold() int32 {
 	return 0
 }
 
-func (x *GetSalesReportFullResponse) GetAverageTransactionValue() int64 {
+func (x *GetSalesReportFullResponse) GetAverageTransactionValue() float64 {
 	if x != nil {
 		return x.AverageTransactionValue
 	}
@@ -2093,7 +2093,7 @@ func (x *CategorySalesData) GetPercentageOfTotal() float64 {
 
 type SalesComparisonData struct {
 	state                               protoimpl.MessageState `protogen:"open.v1"`
-	PreviousYearTotalSales              int64                  `protobuf:"varint,1,opt,name=previous_year_total_sales,json=previousYearTotalSales,proto3" json:"previous_year_total_sales,omitempty"`
+	PreviousYearTotalSales              float64                `protobuf:"fixed64,1,opt,name=previous_year_total_sales,json=previousYearTotalSales,proto3" json:"previous_year_total_sales,omitempty"`
 	PreviousYearTotalTransactions       int32                  `protobuf:"varint,2,opt,name=previous_year_total_transactions,json=previousYearTotalTransactions,proto3" json:"previous_year_total_transactions,omitempty"`
 	PreviousYearAverageTransactionValue float64                `protobuf:"fixed64,3,opt,name=previous_year_average_transaction_value,json=previousYearAverageTransactionValue,proto3" json:"previous_year_average_transaction_value,omitempty"`
 	unknownFields                       protoimpl.UnknownFields
@@ -2130,7 +2130,7 @@ func (*SalesComparisonData) Descriptor() ([]byte, []int) {
 	return file_reports_v1_reports_proto_rawDescGZIP(), []int{26}
 }
 
-func (x *SalesComparisonData) GetPreviousYearTotalSales() int64 {
+func (x *SalesComparisonData) GetPreviousYearTotalSales() float64 {
 	if x != nil {
 		return x.PreviousYearTotalSales
 	}
@@ -2213,15 +2213,15 @@ func (x *GetFinancialReportRequest) GetEndDate() *timestamppb.Timestamp {
 
 type GetFinancialReportResponse struct {
 	state                  protoimpl.MessageState        `protogen:"open.v1"`
-	TotalRevenue           int64                         `protobuf:"varint,1,opt,name=total_revenue,json=totalRevenue,proto3" json:"total_revenue,omitempty"`              // Sales
-	CostOfGoodsSold        int64                         `protobuf:"varint,2,opt,name=cost_of_goods_sold,json=costOfGoodsSold,proto3" json:"cost_of_goods_sold,omitempty"` // Purchases
-	GrossProfit            int64                         `protobuf:"varint,3,opt,name=gross_profit,json=grossProfit,proto3" json:"gross_profit,omitempty"`
+	TotalRevenue           float64                       `protobuf:"fixed64,1,opt,name=total_revenue,json=totalRevenue,proto3" json:"total_revenue,omitempty"`              // Sales
+	CostOfGoodsSold        float64                       `protobuf:"fixed64,2,opt,name=cost_of_goods_sold,json=costOfGoodsSold,proto3" json:"cost_of_goods_sold,omitempty"` // Purchases
+	GrossProfit            float64                       `protobuf:"fixed64,3,opt,name=gross_profit,json=grossProfit,proto3" json:"gross_profit,omitempty"`
 	GrossProfitMargin      float64                       `protobuf:"fixed64,4,opt,name=gross_profit_margin,json=grossProfitMargin,proto3" json:"gross_profit_margin,omitempty"`
-	ReturnsValue           int64                         `protobuf:"varint,5,opt,name=returns_value,json=returnsValue,proto3" json:"returns_value,omitempty"`
-	AdjustmentsValue       int64                         `protobuf:"varint,6,opt,name=adjustments_value,json=adjustmentsValue,proto3" json:"adjustments_value,omitempty"`
-	NetProfit              int64                         `protobuf:"varint,7,opt,name=net_profit,json=netProfit,proto3" json:"net_profit,omitempty"`
-	TotalPurchases         int64                         `protobuf:"varint,8,opt,name=total_purchases,json=totalPurchases,proto3" json:"total_purchases,omitempty"`
-	OutstandingBalance     int64                         `protobuf:"varint,9,opt,name=outstanding_balance,json=outstandingBalance,proto3" json:"outstanding_balance,omitempty"`
+	ReturnsValue           float64                       `protobuf:"fixed64,5,opt,name=returns_value,json=returnsValue,proto3" json:"returns_value,omitempty"`
+	AdjustmentsValue       float64                       `protobuf:"fixed64,6,opt,name=adjustments_value,json=adjustmentsValue,proto3" json:"adjustments_value,omitempty"`
+	NetProfit              float64                       `protobuf:"fixed64,7,opt,name=net_profit,json=netProfit,proto3" json:"net_profit,omitempty"`
+	TotalPurchases         float64                       `protobuf:"fixed64,8,opt,name=total_purchases,json=totalPurchases,proto3" json:"total_purchases,omitempty"`
+	OutstandingBalance     float64                       `protobuf:"fixed64,9,opt,name=outstanding_balance,json=outstandingBalance,proto3" json:"outstanding_balance,omitempty"`
 	SupplierPerformances   []*SupplierPerformanceSummary `protobuf:"bytes,10,rep,name=supplier_performances,json=supplierPerformances,proto3" json:"supplier_performances,omitempty"`
 	RevenueVsExpensesData  []*RevenueExpenseDataPoint    `protobuf:"bytes,11,rep,name=revenue_vs_expenses_data,json=revenueVsExpensesData,proto3" json:"revenue_vs_expenses_data,omitempty"`
 	PreviousYearComparison *FinancialComparisonData      `protobuf:"bytes,12,opt,name=previous_year_comparison,json=previousYearComparison,proto3" json:"previous_year_comparison,omitempty"`
@@ -2259,21 +2259,21 @@ func (*GetFinancialReportResponse) Descriptor() ([]byte, []int) {
 	return file_reports_v1_reports_proto_rawDescGZIP(), []int{28}
 }
 
-func (x *GetFinancialReportResponse) GetTotalRevenue() int64 {
+func (x *GetFinancialReportResponse) GetTotalRevenue() float64 {
 	if x != nil {
 		return x.TotalRevenue
 	}
 	return 0
 }
 
-func (x *GetFinancialReportResponse) GetCostOfGoodsSold() int64 {
+func (x *GetFinancialReportResponse) GetCostOfGoodsSold() float64 {
 	if x != nil {
 		return x.CostOfGoodsSold
 	}
 	return 0
 }
 
-func (x *GetFinancialReportResponse) GetGrossProfit() int64 {
+func (x *GetFinancialReportResponse) GetGrossProfit() float64 {
 	if x != nil {
 		return x.GrossProfit
 	}
@@ -2287,35 +2287,35 @@ func (x *GetFinancialReportResponse) GetGrossProfitMargin() float64 {
 	return 0
 }
 
-func (x *GetFinancialReportResponse) GetReturnsValue() int64 {
+func (x *GetFinancialReportResponse) GetReturnsValue() float64 {
 	if x != nil {
 		return x.ReturnsValue
 	}
 	return 0
 }
 
-func (x *GetFinancialReportResponse) GetAdjustmentsValue() int64 {
+func (x *GetFinancialReportResponse) GetAdjustmentsValue() float64 {
 	if x != nil {
 		return x.AdjustmentsValue
 	}
 	return 0
 }
 
-func (x *GetFinancialReportResponse) GetNetProfit() int64 {
+func (x *GetFinancialReportResponse) GetNetProfit() float64 {
 	if x != nil {
 		return x.NetProfit
 	}
 	return 0
 }
 
-func (x *GetFinancialReportResponse) GetTotalPurchases() int64 {
+func (x *GetFinancialReportResponse) GetTotalPurchases() float64 {
 	if x != nil {
 		return x.TotalPurchases
 	}
 	return 0
 }
 
-func (x *GetFinancialReportResponse) GetOutstandingBalance() int64 {
+func (x *GetFinancialReportResponse) GetOutstandingBalance() float64 {
 	if x != nil {
 		return x.OutstandingBalance
 	}
@@ -2423,7 +2423,7 @@ type SupplierPerformanceSummary struct {
 	state              protoimpl.MessageState `protogen:"open.v1"`
 	SupplierId         string                 `protobuf:"bytes,1,opt,name=supplier_id,json=supplierId,proto3" json:"supplier_id,omitempty"`
 	SupplierName       string                 `protobuf:"bytes,2,opt,name=supplier_name,json=supplierName,proto3" json:"supplier_name,omitempty"`
-	TotalPurchaseValue int64                  `protobuf:"varint,3,opt,name=total_purchase_value,json=totalPurchaseValue,proto3" json:"total_purchase_value,omitempty"`
+	TotalPurchaseValue float64                `protobuf:"fixed64,3,opt,name=total_purchase_value,json=totalPurchaseValue,proto3" json:"total_purchase_value,omitempty"`
 	OnTimePercentage   float64                `protobuf:"fixed64,4,opt,name=on_time_percentage,json=onTimePercentage,proto3" json:"on_time_percentage,omitempty"`
 	TotalOrders        int32                  `protobuf:"varint,5,opt,name=total_orders,json=totalOrders,proto3" json:"total_orders,omitempty"`
 	unknownFields      protoimpl.UnknownFields
@@ -2474,7 +2474,7 @@ func (x *SupplierPerformanceSummary) GetSupplierName() string {
 	return ""
 }
 
-func (x *SupplierPerformanceSummary) GetTotalPurchaseValue() int64 {
+func (x *SupplierPerformanceSummary) GetTotalPurchaseValue() float64 {
 	if x != nil {
 		return x.TotalPurchaseValue
 	}
@@ -2497,10 +2497,10 @@ func (x *SupplierPerformanceSummary) GetTotalOrders() int32 {
 
 type FinancialComparisonData struct {
 	state                         protoimpl.MessageState `protogen:"open.v1"`
-	PreviousYearTotalRevenue      int64                  `protobuf:"varint,1,opt,name=previous_year_total_revenue,json=previousYearTotalRevenue,proto3" json:"previous_year_total_revenue,omitempty"`
-	PreviousYearNetProfit         int64                  `protobuf:"varint,2,opt,name=previous_year_net_profit,json=previousYearNetProfit,proto3" json:"previous_year_net_profit,omitempty"`
+	PreviousYearTotalRevenue      float64                `protobuf:"fixed64,1,opt,name=previous_year_total_revenue,json=previousYearTotalRevenue,proto3" json:"previous_year_total_revenue,omitempty"`
+	PreviousYearNetProfit         float64                `protobuf:"fixed64,2,opt,name=previous_year_net_profit,json=previousYearNetProfit,proto3" json:"previous_year_net_profit,omitempty"`
 	PreviousYearGrossProfitMargin float64                `protobuf:"fixed64,3,opt,name=previous_year_gross_profit_margin,json=previousYearGrossProfitMargin,proto3" json:"previous_year_gross_profit_margin,omitempty"`
-	PreviousYearTotalPurchases    int64                  `protobuf:"varint,4,opt,name=previous_year_total_purchases,json=previousYearTotalPurchases,proto3" json:"previous_year_total_purchases,omitempty"`
+	PreviousYearTotalPurchases    float64                `protobuf:"fixed64,4,opt,name=previous_year_total_purchases,json=previousYearTotalPurchases,proto3" json:"previous_year_total_purchases,omitempty"`
 	unknownFields                 protoimpl.UnknownFields
 	sizeCache                     protoimpl.SizeCache
 }
@@ -2535,14 +2535,14 @@ func (*FinancialComparisonData) Descriptor() ([]byte, []int) {
 	return file_reports_v1_reports_proto_rawDescGZIP(), []int{31}
 }
 
-func (x *FinancialComparisonData) GetPreviousYearTotalRevenue() int64 {
+func (x *FinancialComparisonData) GetPreviousYearTotalRevenue() float64 {
 	if x != nil {
 		return x.PreviousYearTotalRevenue
 	}
 	return 0
 }
 
-func (x *FinancialComparisonData) GetPreviousYearNetProfit() int64 {
+func (x *FinancialComparisonData) GetPreviousYearNetProfit() float64 {
 	if x != nil {
 		return x.PreviousYearNetProfit
 	}
@@ -2556,7 +2556,7 @@ func (x *FinancialComparisonData) GetPreviousYearGrossProfitMargin() float64 {
 	return 0
 }
 
-func (x *FinancialComparisonData) GetPreviousYearTotalPurchases() int64 {
+func (x *FinancialComparisonData) GetPreviousYearTotalPurchases() float64 {
 	if x != nil {
 		return x.PreviousYearTotalPurchases
 	}
@@ -2566,7 +2566,7 @@ func (x *FinancialComparisonData) GetPreviousYearTotalPurchases() int64 {
 type InventoryComparisonData struct {
 	state                        protoimpl.MessageState `protogen:"open.v1"`
 	PreviousYearTotalProducts    int32                  `protobuf:"varint,1,opt,name=previous_year_total_products,json=previousYearTotalProducts,proto3" json:"previous_year_total_products,omitempty"`
-	PreviousYearTotalValue       int64                  `protobuf:"varint,2,opt,name=previous_year_total_value,json=previousYearTotalValue,proto3" json:"previous_year_total_value,omitempty"`
+	PreviousYearTotalValue       float64                `protobuf:"fixed64,2,opt,name=previous_year_total_value,json=previousYearTotalValue,proto3" json:"previous_year_total_value,omitempty"`
 	PreviousYearLowStockCount    int32                  `protobuf:"varint,3,opt,name=previous_year_low_stock_count,json=previousYearLowStockCount,proto3" json:"previous_year_low_stock_count,omitempty"`
 	PreviousYearMovementTotalIn  float64                `protobuf:"fixed64,4,opt,name=previous_year_movement_total_in,json=previousYearMovementTotalIn,proto3" json:"previous_year_movement_total_in,omitempty"`
 	PreviousYearMovementTotalOut float64                `protobuf:"fixed64,5,opt,name=previous_year_movement_total_out,json=previousYearMovementTotalOut,proto3" json:"previous_year_movement_total_out,omitempty"`
@@ -2611,7 +2611,7 @@ func (x *InventoryComparisonData) GetPreviousYearTotalProducts() int32 {
 	return 0
 }
 
-func (x *InventoryComparisonData) GetPreviousYearTotalValue() int64 {
+func (x *InventoryComparisonData) GetPreviousYearTotalValue() float64 {
 	if x != nil {
 		return x.PreviousYearTotalValue
 	}
@@ -2702,19 +2702,19 @@ func (x *GetDashboardReportRequest) GetEndDate() *timestamppb.Timestamp {
 type GetDashboardReportResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Sales metrics
-	TotalSalesAmount        int64   `protobuf:"varint,1,opt,name=total_sales_amount,json=totalSalesAmount,proto3" json:"total_sales_amount,omitempty"`
+	TotalSalesAmount        float64 `protobuf:"fixed64,1,opt,name=total_sales_amount,json=totalSalesAmount,proto3" json:"total_sales_amount,omitempty"`
 	TotalTransactions       int32   `protobuf:"varint,2,opt,name=total_transactions,json=totalTransactions,proto3" json:"total_transactions,omitempty"`
 	AverageTransactionValue float64 `protobuf:"fixed64,3,opt,name=average_transaction_value,json=averageTransactionValue,proto3" json:"average_transaction_value,omitempty"`
 	TotalUnitsSold          int32   `protobuf:"varint,4,opt,name=total_units_sold,json=totalUnitsSold,proto3" json:"total_units_sold,omitempty"`
 	// Financial metrics
-	TotalRevenue      int64   `protobuf:"varint,5,opt,name=total_revenue,json=totalRevenue,proto3" json:"total_revenue,omitempty"`
-	NetProfit         int64   `protobuf:"varint,6,opt,name=net_profit,json=netProfit,proto3" json:"net_profit,omitempty"`
+	TotalRevenue      float64 `protobuf:"fixed64,5,opt,name=total_revenue,json=totalRevenue,proto3" json:"total_revenue,omitempty"`
+	NetProfit         float64 `protobuf:"fixed64,6,opt,name=net_profit,json=netProfit,proto3" json:"net_profit,omitempty"`
 	GrossProfitMargin float64 `protobuf:"fixed64,7,opt,name=gross_profit_margin,json=grossProfitMargin,proto3" json:"gross_profit_margin,omitempty"`
-	TotalPurchases    int64   `protobuf:"varint,8,opt,name=total_purchases,json=totalPurchases,proto3" json:"total_purchases,omitempty"`
+	TotalPurchases    float64 `protobuf:"fixed64,8,opt,name=total_purchases,json=totalPurchases,proto3" json:"total_purchases,omitempty"`
 	// Inventory metrics
-	TotalProducts       int32 `protobuf:"varint,9,opt,name=total_products,json=totalProducts,proto3" json:"total_products,omitempty"`
-	TotalInventoryValue int64 `protobuf:"varint,10,opt,name=total_inventory_value,json=totalInventoryValue,proto3" json:"total_inventory_value,omitempty"`
-	LowStockCount       int32 `protobuf:"varint,11,opt,name=low_stock_count,json=lowStockCount,proto3" json:"low_stock_count,omitempty"`
+	TotalProducts       int32   `protobuf:"varint,9,opt,name=total_products,json=totalProducts,proto3" json:"total_products,omitempty"`
+	TotalInventoryValue float64 `protobuf:"fixed64,10,opt,name=total_inventory_value,json=totalInventoryValue,proto3" json:"total_inventory_value,omitempty"`
+	LowStockCount       int32   `protobuf:"varint,11,opt,name=low_stock_count,json=lowStockCount,proto3" json:"low_stock_count,omitempty"`
 	// Trend and comparison data
 	SalesAndProfitTrend    []*TrendDataPoint          `protobuf:"bytes,12,rep,name=sales_and_profit_trend,json=salesAndProfitTrend,proto3" json:"sales_and_profit_trend,omitempty"`
 	CategorySalesBreakdown []*CategorySalesData       `protobuf:"bytes,13,rep,name=category_sales_breakdown,json=categorySalesBreakdown,proto3" json:"category_sales_breakdown,omitempty"`
@@ -2763,7 +2763,7 @@ func (*GetDashboardReportResponse) Descriptor() ([]byte, []int) {
 	return file_reports_v1_reports_proto_rawDescGZIP(), []int{34}
 }
 
-func (x *GetDashboardReportResponse) GetTotalSalesAmount() int64 {
+func (x *GetDashboardReportResponse) GetTotalSalesAmount() float64 {
 	if x != nil {
 		return x.TotalSalesAmount
 	}
@@ -2791,14 +2791,14 @@ func (x *GetDashboardReportResponse) GetTotalUnitsSold() int32 {
 	return 0
 }
 
-func (x *GetDashboardReportResponse) GetTotalRevenue() int64 {
+func (x *GetDashboardReportResponse) GetTotalRevenue() float64 {
 	if x != nil {
 		return x.TotalRevenue
 	}
 	return 0
 }
 
-func (x *GetDashboardReportResponse) GetNetProfit() int64 {
+func (x *GetDashboardReportResponse) GetNetProfit() float64 {
 	if x != nil {
 		return x.NetProfit
 	}
@@ -2812,7 +2812,7 @@ func (x *GetDashboardReportResponse) GetGrossProfitMargin() float64 {
 	return 0
 }
 
-func (x *GetDashboardReportResponse) GetTotalPurchases() int64 {
+func (x *GetDashboardReportResponse) GetTotalPurchases() float64 {
 	if x != nil {
 		return x.TotalPurchases
 	}
@@ -2826,7 +2826,7 @@ func (x *GetDashboardReportResponse) GetTotalProducts() int32 {
 	return 0
 }
 
-func (x *GetDashboardReportResponse) GetTotalInventoryValue() int64 {
+func (x *GetDashboardReportResponse) GetTotalInventoryValue() float64 {
 	if x != nil {
 		return x.TotalInventoryValue
 	}
@@ -2989,15 +2989,15 @@ const file_reports_v1_reports_proto_rawDesc = "" +
 	"\t_store_id\"\x93\x02\n" +
 	"\x16GetSalesReportResponse\x126\n" +
 	"\tsummaries\x18\x01 \x03(\v2\x18.reports.v1.SalesSummaryR\tsummaries\x12,\n" +
-	"\x12total_sales_amount\x18\x02 \x01(\x03R\x10totalSalesAmount\x12-\n" +
+	"\x12total_sales_amount\x18\x02 \x01(\x01R\x10totalSalesAmount\x12-\n" +
 	"\x12total_transactions\x18\x03 \x01(\x05R\x11totalTransactions\x12(\n" +
 	"\x10total_units_sold\x18\x04 \x01(\x05R\x0etotalUnitsSold\x12:\n" +
-	"\x19average_transaction_value\x18\x05 \x01(\x03R\x17averageTransactionValue\"\xf7\x01\n" +
+	"\x19average_transaction_value\x18\x05 \x01(\x01R\x17averageTransactionValue\"\xf7\x01\n" +
 	"\fSalesSummary\x12=\n" +
 	"\fperiod_start\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\vperiodStart\x129\n" +
 	"\n" +
 	"period_end\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tperiodEnd\x12!\n" +
-	"\fsales_amount\x18\x03 \x01(\x03R\vsalesAmount\x12+\n" +
+	"\fsales_amount\x18\x03 \x01(\x01R\vsalesAmount\x12+\n" +
 	"\x11transaction_count\x18\x04 \x01(\x05R\x10transactionCount\x12\x1d\n" +
 	"\n" +
 	"units_sold\x18\x05 \x01(\x05R\tunitsSold\"\x9a\x02\n" +
@@ -3012,14 +3012,14 @@ const file_reports_v1_reports_proto_rawDesc = "" +
 	"\bgroup_by\x18\x06 \x01(\x0e2\x19.reports.v1.ReportGroupByR\agroupBy\"\xf2\x01\n" +
 	"\x19GetPurchaseReportResponse\x129\n" +
 	"\tsummaries\x18\x01 \x03(\v2\x1b.reports.v1.PurchaseSummaryR\tsummaries\x122\n" +
-	"\x15total_purchase_amount\x18\x02 \x01(\x03R\x13totalPurchaseAmount\x122\n" +
+	"\x15total_purchase_amount\x18\x02 \x01(\x01R\x13totalPurchaseAmount\x122\n" +
 	"\x15total_purchase_orders\x18\x03 \x01(\x05R\x13totalPurchaseOrders\x122\n" +
 	"\x15total_units_purchased\x18\x04 \x01(\x05R\x13totalUnitsPurchased\"\x8f\x02\n" +
 	"\x0fPurchaseSummary\x12=\n" +
 	"\fperiod_start\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\vperiodStart\x129\n" +
 	"\n" +
 	"period_end\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tperiodEnd\x12'\n" +
-	"\x0fpurchase_amount\x18\x03 \x01(\x03R\x0epurchaseAmount\x120\n" +
+	"\x0fpurchase_amount\x18\x03 \x01(\x01R\x0epurchaseAmount\x120\n" +
 	"\x14purchase_order_count\x18\x04 \x01(\x05R\x12purchaseOrderCount\x12'\n" +
 	"\x0funits_purchased\x18\x05 \x01(\x05R\x0eunitsPurchased\"\xcf\x01\n" +
 	"!GetInventoryMovementReportRequest\x12\x1d\n" +
@@ -3051,7 +3051,7 @@ const file_reports_v1_reports_proto_rawDesc = "" +
 	"\aproduct\x18\x01 \x01(\v2\x1a.inventory.v1.StoreProductR\aproduct\x12\x1d\n" +
 	"\n" +
 	"units_sold\x18\x02 \x01(\x05R\tunitsSold\x12#\n" +
-	"\rtotal_revenue\x18\x03 \x01(\x03R\ftotalRevenue\x12+\n" +
+	"\rtotal_revenue\x18\x03 \x01(\x01R\ftotalRevenue\x12+\n" +
 	"\x11transaction_count\x18\x04 \x01(\x05R\x10transactionCount\x12 \n" +
 	"\vproductName\x18\x05 \x01(\tR\vproductName\x12\x12\n" +
 	"\x04rank\x18\x06 \x01(\x05R\x04rank\"\xad\x01\n" +
@@ -3063,10 +3063,10 @@ const file_reports_v1_reports_proto_rawDesc = "" +
 	"\x1fGetStorePurchaseHistoryResponse\x12%\n" +
 	"\x05store\x18\x01 \x01(\v2\x0f.store.v1.StoreR\x05store\x121\n" +
 	"\binvoices\x18\x02 \x03(\v2\x15.financial.v1.InvoiceR\binvoices\x12'\n" +
-	"\x0ftotal_purchases\x18\x03 \x01(\x03R\x0etotalPurchases\x12\x1d\n" +
+	"\x0ftotal_purchases\x18\x03 \x01(\x01R\x0etotalPurchases\x12\x1d\n" +
 	"\n" +
-	"total_paid\x18\x04 \x01(\x03R\ttotalPaid\x12/\n" +
-	"\x13outstanding_balance\x18\x05 \x01(\x03R\x12outstandingBalance\x12+\n" +
+	"total_paid\x18\x04 \x01(\x01R\ttotalPaid\x12/\n" +
+	"\x13outstanding_balance\x18\x05 \x01(\x01R\x12outstandingBalance\x12+\n" +
 	"\x11transaction_count\x18\x06 \x01(\x05R\x10transactionCount\x12H\n" +
 	"\x12last_purchase_date\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\x10lastPurchaseDate\"\xb8\x01\n" +
 	"#GetSupplierPerformanceReportRequest\x12\x1f\n" +
@@ -3078,7 +3078,7 @@ const file_reports_v1_reports_proto_rawDesc = "" +
 	"$GetSupplierPerformanceReportResponse\x12.\n" +
 	"\bsupplier\x18\x01 \x01(\v2\x12.store.v1.SupplierR\bsupplier\x122\n" +
 	"\x15total_purchase_orders\x18\x02 \x01(\x05R\x13totalPurchaseOrders\x120\n" +
-	"\x14total_purchase_value\x18\x03 \x01(\x03R\x12totalPurchaseValue\x12,\n" +
+	"\x14total_purchase_value\x18\x03 \x01(\x01R\x12totalPurchaseValue\x12,\n" +
 	"\x12on_time_deliveries\x18\x04 \x01(\x05R\x10onTimeDeliveries\x12'\n" +
 	"\x0flate_deliveries\x18\x05 \x01(\x05R\x0elateDeliveries\x12,\n" +
 	"\x12on_time_percentage\x18\x06 \x01(\x01R\x10onTimePercentage\x12%\n" +
@@ -3091,14 +3091,14 @@ const file_reports_v1_reports_proto_rawDesc = "" +
 	"\bstore_id\x18\x03 \x01(\tH\x00R\astoreId\x88\x01\x01B\v\n" +
 	"\t_store_id\"\xb3\x02\n" +
 	"\x1bGetProfitLossReportResponse\x12#\n" +
-	"\rtotal_revenue\x18\x01 \x01(\x03R\ftotalRevenue\x12+\n" +
-	"\x12cost_of_goods_sold\x18\x02 \x01(\x03R\x0fcostOfGoodsSold\x12!\n" +
-	"\fgross_profit\x18\x03 \x01(\x03R\vgrossProfit\x12.\n" +
+	"\rtotal_revenue\x18\x01 \x01(\x01R\ftotalRevenue\x12+\n" +
+	"\x12cost_of_goods_sold\x18\x02 \x01(\x01R\x0fcostOfGoodsSold\x12!\n" +
+	"\fgross_profit\x18\x03 \x01(\x01R\vgrossProfit\x12.\n" +
 	"\x13gross_profit_margin\x18\x04 \x01(\x01R\x11grossProfitMargin\x12#\n" +
-	"\rreturns_value\x18\x05 \x01(\x03R\freturnsValue\x12+\n" +
-	"\x11adjustments_value\x18\x06 \x01(\x03R\x10adjustmentsValue\x12\x1d\n" +
+	"\rreturns_value\x18\x05 \x01(\x01R\freturnsValue\x12+\n" +
+	"\x11adjustments_value\x18\x06 \x01(\x01R\x10adjustmentsValue\x12\x1d\n" +
 	"\n" +
-	"net_profit\x18\a \x01(\x03R\tnetProfit\"w\n" +
+	"net_profit\x18\a \x01(\x01R\tnetProfit\"w\n" +
 	"\x1aGetStockAgingReportRequest\x12\x1e\n" +
 	"\bstore_id\x18\x01 \x01(\tH\x00R\astoreId\x88\x01\x01\x12\x1f\n" +
 	"\bcategory\x18\x02 \x01(\tH\x01R\bcategory\x88\x01\x01B\v\n" +
@@ -3106,12 +3106,12 @@ const file_reports_v1_reports_proto_rawDesc = "" +
 	"\t_category\"\xb2\x01\n" +
 	"\x1bGetStockAgingReportResponse\x120\n" +
 	"\x05items\x18\x01 \x03(\v2\x1a.reports.v1.StockAgingItemR\x05items\x12*\n" +
-	"\x11total_stock_value\x18\x02 \x01(\x03R\x0ftotalStockValue\x125\n" +
-	"\x17slow_moving_stock_value\x18\x03 \x01(\x03R\x14slowMovingStockValue\"\xd6\x02\n" +
+	"\x11total_stock_value\x18\x02 \x01(\x01R\x0ftotalStockValue\x125\n" +
+	"\x17slow_moving_stock_value\x18\x03 \x01(\x01R\x14slowMovingStockValue\"\xd6\x02\n" +
 	"\x0eStockAgingItem\x124\n" +
 	"\aproduct\x18\x01 \x01(\v2\x1a.inventory.v1.StoreProductR\aproduct\x12\x1a\n" +
 	"\bquantity\x18\x02 \x01(\x01R\bquantity\x12\x1f\n" +
-	"\vstock_value\x18\x03 \x01(\x03R\n" +
+	"\vstock_value\x18\x03 \x01(\x01R\n" +
 	"stockValue\x12H\n" +
 	"\x12last_movement_date\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\x10lastMovementDate\x127\n" +
 	"\x18days_since_last_movement\x18\x05 \x01(\x05R\x15daysSinceLastMovement\x12N\n" +
@@ -3131,7 +3131,7 @@ const file_reports_v1_reports_proto_rawDesc = "" +
 	"net_change\x18\x03 \x01(\x01R\tnetChange\"\x90\x04\n" +
 	"\x1aGetInventoryReportResponse\x12%\n" +
 	"\x0etotal_products\x18\x01 \x01(\x05R\rtotalProducts\x12\x1f\n" +
-	"\vtotal_value\x18\x02 \x01(\x03R\n" +
+	"\vtotal_value\x18\x02 \x01(\x01R\n" +
 	"totalValue\x12&\n" +
 	"\x0flow_stock_count\x18\x03 \x01(\x05R\rlowStockCount\x12;\n" +
 	"\vaging_items\x18\x04 \x03(\v2\x1a.reports.v1.StockAgingItemR\n" +
@@ -3148,10 +3148,10 @@ const file_reports_v1_reports_proto_rawDesc = "" +
 	"\rmovement_type\x18\x04 \x01(\tR\fmovementType\"\x86\x04\n" +
 	"\x1aGetSalesReportFullResponse\x126\n" +
 	"\tsummaries\x18\x01 \x03(\v2\x18.reports.v1.SalesSummaryR\tsummaries\x12,\n" +
-	"\x12total_sales_amount\x18\x02 \x01(\x03R\x10totalSalesAmount\x12-\n" +
+	"\x12total_sales_amount\x18\x02 \x01(\x01R\x10totalSalesAmount\x12-\n" +
 	"\x12total_transactions\x18\x03 \x01(\x05R\x11totalTransactions\x12(\n" +
 	"\x10total_units_sold\x18\x04 \x01(\x05R\x0etotalUnitsSold\x12:\n" +
-	"\x19average_transaction_value\x18\x05 \x01(\x03R\x17averageTransactionValue\x12C\n" +
+	"\x19average_transaction_value\x18\x05 \x01(\x01R\x17averageTransactionValue\x12C\n" +
 	"\rbest_products\x18\x06 \x03(\v2\x1e.reports.v1.BestSellingProductR\fbestProducts\x12M\n" +
 	"\x13category_sales_data\x18\a \x03(\v2\x1d.reports.v1.CategorySalesDataR\x11categorySalesData\x12Y\n" +
 	"\x18previous_year_comparison\x18\b \x01(\v2\x1f.reports.v1.SalesComparisonDataR\x16previousYearComparison\"\xed\x01\n" +
@@ -3162,7 +3162,7 @@ const file_reports_v1_reports_proto_rawDesc = "" +
 	"\x11transaction_count\x18\x04 \x01(\x05R\x10transactionCount\x12.\n" +
 	"\x13percentage_of_total\x18\x05 \x01(\x01R\x11percentageOfTotal\"\xef\x01\n" +
 	"\x13SalesComparisonData\x129\n" +
-	"\x19previous_year_total_sales\x18\x01 \x01(\x03R\x16previousYearTotalSales\x12G\n" +
+	"\x19previous_year_total_sales\x18\x01 \x01(\x01R\x16previousYearTotalSales\x12G\n" +
 	" previous_year_total_transactions\x18\x02 \x01(\x05R\x1dpreviousYearTotalTransactions\x12T\n" +
 	"'previous_year_average_transaction_value\x18\x03 \x01(\x01R#previousYearAverageTransactionValue\"\xba\x01\n" +
 	"\x19GetFinancialReportRequest\x12\x1e\n" +
@@ -3172,16 +3172,16 @@ const file_reports_v1_reports_proto_rawDesc = "" +
 	"\bend_date\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\aendDateB\v\n" +
 	"\t_store_id\"\xa6\x05\n" +
 	"\x1aGetFinancialReportResponse\x12#\n" +
-	"\rtotal_revenue\x18\x01 \x01(\x03R\ftotalRevenue\x12+\n" +
-	"\x12cost_of_goods_sold\x18\x02 \x01(\x03R\x0fcostOfGoodsSold\x12!\n" +
-	"\fgross_profit\x18\x03 \x01(\x03R\vgrossProfit\x12.\n" +
+	"\rtotal_revenue\x18\x01 \x01(\x01R\ftotalRevenue\x12+\n" +
+	"\x12cost_of_goods_sold\x18\x02 \x01(\x01R\x0fcostOfGoodsSold\x12!\n" +
+	"\fgross_profit\x18\x03 \x01(\x01R\vgrossProfit\x12.\n" +
 	"\x13gross_profit_margin\x18\x04 \x01(\x01R\x11grossProfitMargin\x12#\n" +
-	"\rreturns_value\x18\x05 \x01(\x03R\freturnsValue\x12+\n" +
-	"\x11adjustments_value\x18\x06 \x01(\x03R\x10adjustmentsValue\x12\x1d\n" +
+	"\rreturns_value\x18\x05 \x01(\x01R\freturnsValue\x12+\n" +
+	"\x11adjustments_value\x18\x06 \x01(\x01R\x10adjustmentsValue\x12\x1d\n" +
 	"\n" +
-	"net_profit\x18\a \x01(\x03R\tnetProfit\x12'\n" +
-	"\x0ftotal_purchases\x18\b \x01(\x03R\x0etotalPurchases\x12/\n" +
-	"\x13outstanding_balance\x18\t \x01(\x03R\x12outstandingBalance\x12[\n" +
+	"net_profit\x18\a \x01(\x01R\tnetProfit\x12'\n" +
+	"\x0ftotal_purchases\x18\b \x01(\x01R\x0etotalPurchases\x12/\n" +
+	"\x13outstanding_balance\x18\t \x01(\x01R\x12outstandingBalance\x12[\n" +
 	"\x15supplier_performances\x18\n" +
 	" \x03(\v2&.reports.v1.SupplierPerformanceSummaryR\x14supplierPerformances\x12\\\n" +
 	"\x18revenue_vs_expenses_data\x18\v \x03(\v2#.reports.v1.RevenueExpenseDataPointR\x15revenueVsExpensesData\x12]\n" +
@@ -3198,17 +3198,17 @@ const file_reports_v1_reports_proto_rawDesc = "" +
 	"\vsupplier_id\x18\x01 \x01(\tR\n" +
 	"supplierId\x12#\n" +
 	"\rsupplier_name\x18\x02 \x01(\tR\fsupplierName\x120\n" +
-	"\x14total_purchase_value\x18\x03 \x01(\x03R\x12totalPurchaseValue\x12,\n" +
+	"\x14total_purchase_value\x18\x03 \x01(\x01R\x12totalPurchaseValue\x12,\n" +
 	"\x12on_time_percentage\x18\x04 \x01(\x01R\x10onTimePercentage\x12!\n" +
 	"\ftotal_orders\x18\x05 \x01(\x05R\vtotalOrders\"\x9e\x02\n" +
 	"\x17FinancialComparisonData\x12=\n" +
-	"\x1bprevious_year_total_revenue\x18\x01 \x01(\x03R\x18previousYearTotalRevenue\x127\n" +
-	"\x18previous_year_net_profit\x18\x02 \x01(\x03R\x15previousYearNetProfit\x12H\n" +
+	"\x1bprevious_year_total_revenue\x18\x01 \x01(\x01R\x18previousYearTotalRevenue\x127\n" +
+	"\x18previous_year_net_profit\x18\x02 \x01(\x01R\x15previousYearNetProfit\x12H\n" +
 	"!previous_year_gross_profit_margin\x18\x03 \x01(\x01R\x1dpreviousYearGrossProfitMargin\x12A\n" +
-	"\x1dprevious_year_total_purchases\x18\x04 \x01(\x03R\x1apreviousYearTotalPurchases\"\xe5\x02\n" +
+	"\x1dprevious_year_total_purchases\x18\x04 \x01(\x01R\x1apreviousYearTotalPurchases\"\xe5\x02\n" +
 	"\x17InventoryComparisonData\x12?\n" +
 	"\x1cprevious_year_total_products\x18\x01 \x01(\x05R\x19previousYearTotalProducts\x129\n" +
-	"\x19previous_year_total_value\x18\x02 \x01(\x03R\x16previousYearTotalValue\x12@\n" +
+	"\x19previous_year_total_value\x18\x02 \x01(\x01R\x16previousYearTotalValue\x12@\n" +
 	"\x1dprevious_year_low_stock_count\x18\x03 \x01(\x05R\x19previousYearLowStockCount\x12D\n" +
 	"\x1fprevious_year_movement_total_in\x18\x04 \x01(\x01R\x1bpreviousYearMovementTotalIn\x12F\n" +
 	" previous_year_movement_total_out\x18\x05 \x01(\x01R\x1cpreviousYearMovementTotalOut\"\xba\x01\n" +
@@ -3220,18 +3220,18 @@ const file_reports_v1_reports_proto_rawDesc = "" +
 	"\t_store_id\"\xca\n" +
 	"\n" +
 	"\x1aGetDashboardReportResponse\x12,\n" +
-	"\x12total_sales_amount\x18\x01 \x01(\x03R\x10totalSalesAmount\x12-\n" +
+	"\x12total_sales_amount\x18\x01 \x01(\x01R\x10totalSalesAmount\x12-\n" +
 	"\x12total_transactions\x18\x02 \x01(\x05R\x11totalTransactions\x12:\n" +
 	"\x19average_transaction_value\x18\x03 \x01(\x01R\x17averageTransactionValue\x12(\n" +
 	"\x10total_units_sold\x18\x04 \x01(\x05R\x0etotalUnitsSold\x12#\n" +
-	"\rtotal_revenue\x18\x05 \x01(\x03R\ftotalRevenue\x12\x1d\n" +
+	"\rtotal_revenue\x18\x05 \x01(\x01R\ftotalRevenue\x12\x1d\n" +
 	"\n" +
-	"net_profit\x18\x06 \x01(\x03R\tnetProfit\x12.\n" +
+	"net_profit\x18\x06 \x01(\x01R\tnetProfit\x12.\n" +
 	"\x13gross_profit_margin\x18\a \x01(\x01R\x11grossProfitMargin\x12'\n" +
-	"\x0ftotal_purchases\x18\b \x01(\x03R\x0etotalPurchases\x12%\n" +
+	"\x0ftotal_purchases\x18\b \x01(\x01R\x0etotalPurchases\x12%\n" +
 	"\x0etotal_products\x18\t \x01(\x05R\rtotalProducts\x122\n" +
 	"\x15total_inventory_value\x18\n" +
-	" \x01(\x03R\x13totalInventoryValue\x12&\n" +
+	" \x01(\x01R\x13totalInventoryValue\x12&\n" +
 	"\x0flow_stock_count\x18\v \x01(\x05R\rlowStockCount\x12O\n" +
 	"\x16sales_and_profit_trend\x18\f \x03(\v2\x1a.reports.v1.TrendDataPointR\x13salesAndProfitTrend\x12W\n" +
 	"\x18category_sales_breakdown\x18\r \x03(\v2\x1d.reports.v1.CategorySalesDataR\x16categorySalesBreakdown\x12S\n" +

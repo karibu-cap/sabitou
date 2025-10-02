@@ -174,5 +174,5 @@ message ListReturnsRequest {
 message ListReturnsResponse {
   repeated ReturnNote returns = 1;
   int32 total_count = 2;
-  int64 total_value = 3;
+  double total_value = 3;
 }

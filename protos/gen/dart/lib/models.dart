@@ -22,7 +22,6 @@ export 'src/payments/v1/cash_receipt.pb.dart';
 export 'src/payments/v1/gift_voucher.pb.dart';
 export 'src/payments/v1/payment_utils.pb.dart';
 export 'src/payments/v1/payments.pb.dart';
-export 'src/payments/v1/pos_service.pb.dart';
 export 'src/reports/v1/reports.pb.dart';
 export 'src/store/v1/store.pb.dart';
 export 'src/store/v1/supplier.pb.dart';

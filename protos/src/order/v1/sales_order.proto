@@ -112,7 +112,7 @@ message ListSalesOrdersRequest {
 message ListSalesOrdersResponse {
   repeated SalesOrder sales_orders = 1;
   int32 total_count = 2;
-  int64 total_value = 3; // Sum of all orders
+  double total_value = 3; // Sum of all orders
 }
 
 message UpdateSalesOrderStatusRequest {

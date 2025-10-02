@@ -5,7 +5,8 @@ package payments.v1;
 import "buf/validate/validate.proto";
 import "financial/v1/financial_utils.proto";
 import "google/protobuf/timestamp.proto";
-import "payments/v1/payment_utils.proto";
+import "payments/v1/gift_voucher.proto";
+import "payments/v1/payments.proto";
 
 /**
  * CashReceipt (Bon de Caisse)
@@ -36,13 +37,42 @@ message CashReceipt {
   string customer_id = 3; // Can be null for anonymous
   string store_id = 4; // Which location/store
   repeated financial.v1.InvoiceLineItem items = 5;
-  int64 subtotal = 6;
-  int64 tax_amount = 7;
-  int64 total_amount = 8;
-  int64 amount_paid = 9; // What customer gave
-  int64 change_given = 10; // amount_paid - total_amount
+  double subtotal = 6;
+  double tax_amount = 7;
+  double total_amount = 8;
+  double amount_paid = 9; // What customer gave
+  double change_given = 10;
   string currency = 11;
   repeated string payment_ids = 12;
   google.protobuf.Timestamp transaction_time = 13;
   string notes = 14;
+  string voucher_issued = 15;
+  double owed_to_customer = 16;
+}
+
+message CreateCashReceiptRequest {
+  // The partial cash receipt to create.
+  CashReceipt receipt = 1;
+
+  // The partial payment use by the client.
+  repeated payments.v1.Payment payments = 2;
+
+  // Issue voucher on change
+  // If true and change_given > 0, issue a voucher instead of cash
+  bool issue_voucher_on_change = 3;
+}
+
+message CreateCashReceiptResponse {
+  // The created cash receipt.
+  bool success = 1;
+
+  optional payments.v1.GiftVoucher voucher = 2; // If a voucher was issued
+}
+
+
+
+service CashReceiptService {
+  // Create a cash receipt (most common - 95% of transactions)
+  rpc CreateCashReceipt(CreateCashReceiptRequest) returns (CreateCashReceiptResponse);
+
 }

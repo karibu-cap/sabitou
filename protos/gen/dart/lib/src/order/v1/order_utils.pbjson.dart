@@ -28,8 +28,8 @@ const OrderLineItem$json = {
       '6': '.inventory.v1.Internationalized',
       '10': 'productName'
     },
-    {'1': 'unit_price', '3': 4, '4': 1, '5': 3, '10': 'unitPrice'},
-    {'1': 'total', '3': 5, '4': 1, '5': 3, '10': 'total'},
+    {'1': 'unit_price', '3': 4, '4': 1, '5': 1, '10': 'unitPrice'},
+    {'1': 'total', '3': 5, '4': 1, '5': 1, '10': 'total'},
     {'1': 'notes', '3': 6, '4': 1, '5': 9, '10': 'notes'},
     {'1': 'batch_id', '3': 7, '4': 1, '5': 9, '10': 'batchId'},
   ],
@@ -39,8 +39,8 @@ const OrderLineItem$json = {
 final $typed_data.Uint8List orderLineItemDescriptor = $convert.base64Decode(
     'Cg1PcmRlckxpbmVJdGVtEh0KCnByb2R1Y3RfaWQYASABKAlSCXByb2R1Y3RJZBIaCghxdWFudG'
     'l0eRgCIAEoAVIIcXVhbnRpdHkSQgoMcHJvZHVjdF9uYW1lGAMgASgLMh8uaW52ZW50b3J5LnYx'
-    'LkludGVybmF0aW9uYWxpemVkUgtwcm9kdWN0TmFtZRIdCgp1bml0X3ByaWNlGAQgASgDUgl1bm'
-    'l0UHJpY2USFAoFdG90YWwYBSABKANSBXRvdGFsEhQKBW5vdGVzGAYgASgJUgVub3RlcxIZCghi'
+    'LkludGVybmF0aW9uYWxpemVkUgtwcm9kdWN0TmFtZRIdCgp1bml0X3ByaWNlGAQgASgBUgl1bm'
+    'l0UHJpY2USFAoFdG90YWwYBSABKAFSBXRvdGFsEhQKBW5vdGVzGAYgASgJUgVub3RlcxIZCghi'
     'YXRjaF9pZBgHIAEoCVIHYmF0Y2hJZA==');
 
 @$core.Deprecated('Use orderPricesDescriptor instead')

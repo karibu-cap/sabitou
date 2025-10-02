@@ -29,12 +29,12 @@ const (
 type InvoiceLineItem struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ProductId     string                 `protobuf:"bytes,1,opt,name=product_id,json=productId,proto3" json:"product_id,omitempty"`
-	Quantity      float64                `protobuf:"fixed64,2,opt,name=quantity,proto3" json:"quantity,omitempty"`
-	UnitPrice     int64                  `protobuf:"varint,3,opt,name=unit_price,json=unitPrice,proto3" json:"unit_price,omitempty"`
-	Subtotal      int64                  `protobuf:"varint,4,opt,name=subtotal,proto3" json:"subtotal,omitempty"`               // quantity * unit_price
+	Quantity      int32                  `protobuf:"varint,2,opt,name=quantity,proto3" json:"quantity,omitempty"`
+	UnitPrice     float64                `protobuf:"fixed64,3,opt,name=unit_price,json=unitPrice,proto3" json:"unit_price,omitempty"`
+	Subtotal      float64                `protobuf:"fixed64,4,opt,name=subtotal,proto3" json:"subtotal,omitempty"`              // quantity * unit_price
 	TaxRate       float64                `protobuf:"fixed64,5,opt,name=tax_rate,json=taxRate,proto3" json:"tax_rate,omitempty"` // 0.20 for 20% VAT
-	TaxAmount     int64                  `protobuf:"varint,6,opt,name=tax_amount,json=taxAmount,proto3" json:"tax_amount,omitempty"`
-	Total         int64                  `protobuf:"varint,7,opt,name=total,proto3" json:"total,omitempty"`                               // subtotal + tax_amount
+	TaxAmount     float64                `protobuf:"fixed64,6,opt,name=tax_amount,json=taxAmount,proto3" json:"tax_amount,omitempty"`
+	Total         float64                `protobuf:"fixed64,7,opt,name=total,proto3" json:"total,omitempty"`                              // subtotal + tax_amount
 	BatchId       string                 `protobuf:"bytes,8,opt,name=batch_id,json=batchId,proto3" json:"batch_id,omitempty"`             // Optional: Batch/lot referenced
 	ProductName   *v1.Internationalized  `protobuf:"bytes,9,opt,name=product_name,json=productName,proto3" json:"product_name,omitempty"` // The name of the item
 	unknownFields protoimpl.UnknownFields
@@ -78,21 +78,21 @@ func (x *InvoiceLineItem) GetProductId() string {
 	return ""
 }
 
-func (x *InvoiceLineItem) GetQuantity() float64 {
+func (x *InvoiceLineItem) GetQuantity() int32 {
 	if x != nil {
 		return x.Quantity
 	}
 	return 0
 }
 
-func (x *InvoiceLineItem) GetUnitPrice() int64 {
+func (x *InvoiceLineItem) GetUnitPrice() float64 {
 	if x != nil {
 		return x.UnitPrice
 	}
 	return 0
 }
 
-func (x *InvoiceLineItem) GetSubtotal() int64 {
+func (x *InvoiceLineItem) GetSubtotal() float64 {
 	if x != nil {
 		return x.Subtotal
 	}
@@ -106,14 +106,14 @@ func (x *InvoiceLineItem) GetTaxRate() float64 {
 	return 0
 }
 
-func (x *InvoiceLineItem) GetTaxAmount() int64 {
+func (x *InvoiceLineItem) GetTaxAmount() float64 {
 	if x != nil {
 		return x.TaxAmount
 	}
 	return 0
 }
 
-func (x *InvoiceLineItem) GetTotal() int64 {
+func (x *InvoiceLineItem) GetTotal() float64 {
 	if x != nil {
 		return x.Total
 	}
@@ -142,14 +142,14 @@ const file_financial_v1_financial_utils_proto_rawDesc = "" +
 	"\x0fInvoiceLineItem\x12\x1d\n" +
 	"\n" +
 	"product_id\x18\x01 \x01(\tR\tproductId\x12\x1a\n" +
-	"\bquantity\x18\x02 \x01(\x01R\bquantity\x12\x1d\n" +
+	"\bquantity\x18\x02 \x01(\x05R\bquantity\x12\x1d\n" +
 	"\n" +
-	"unit_price\x18\x03 \x01(\x03R\tunitPrice\x12\x1a\n" +
-	"\bsubtotal\x18\x04 \x01(\x03R\bsubtotal\x12\x19\n" +
+	"unit_price\x18\x03 \x01(\x01R\tunitPrice\x12\x1a\n" +
+	"\bsubtotal\x18\x04 \x01(\x01R\bsubtotal\x12\x19\n" +
 	"\btax_rate\x18\x05 \x01(\x01R\ataxRate\x12\x1d\n" +
 	"\n" +
-	"tax_amount\x18\x06 \x01(\x03R\ttaxAmount\x12\x14\n" +
-	"\x05total\x18\a \x01(\x03R\x05total\x12\x19\n" +
+	"tax_amount\x18\x06 \x01(\x01R\ttaxAmount\x12\x14\n" +
+	"\x05total\x18\a \x01(\x01R\x05total\x12\x19\n" +
 	"\bbatch_id\x18\b \x01(\tR\abatchId\x12B\n" +
 	"\fproduct_name\x18\t \x01(\v2\x1f.inventory.v1.InternationalizedR\vproductNameB\xc2\x01\n" +
 	"\x10com.financial.v1B\x13FinancialUtilsProtoP\x01ZHgithub.com/karibu-cap/sabitou/protos/gen/go/rpc/financial/v1;financialv1\xa2\x02\x03FXX\xaa\x02\fFinancial.V1\xca\x02\fFinancial\\V1\xe2\x02\x18Financial\\V1\\GPBMetadata\xea\x02\rFinancial::V1b\x06proto3"
