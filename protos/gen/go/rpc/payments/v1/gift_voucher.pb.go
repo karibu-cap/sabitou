@@ -637,7 +637,7 @@ var File_payments_v1_gift_voucher_proto protoreflect.FileDescriptor
 
 const file_payments_v1_gift_voucher_proto_rawDesc = "" +
 	"\n" +
-	"\x1epayments/v1/gift_voucher.proto\x12\vpayments.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a#audits/v1/voucher_transaction.proto\"\xb2\x04\n" +
+	"\x1epayments/v1/gift_voucher.proto\x12\vpayments.v1\x1a#audits/v1/voucher_transaction.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xb2\x04\n" +
 	"\vGiftVoucher\x12'\n" +
 	"\vdocument_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\n" +
 	"documentId\x12!\n" +

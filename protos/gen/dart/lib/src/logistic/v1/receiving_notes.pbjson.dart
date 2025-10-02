@@ -14,6 +14,8 @@ import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
+import '../../google/protobuf/timestamp.pbjson.dart' as $0;
+
 @$core.Deprecated('Use receivingNoteStatusDescriptor instead')
 const ReceivingNoteStatus$json = {
   '1': 'ReceivingNoteStatus',
@@ -119,7 +121,15 @@ const ReceivingLineItem$json = {
       '10': 'quantityRejected'
     },
     {'1': 'rejection_reason', '3': 5, '4': 1, '5': 9, '10': 'rejectionReason'},
-    {'1': 'batch_id', '3': 6, '4': 1, '5': 9, '10': 'batchId'},
+    {
+      '1': 'batch_id',
+      '3': 6,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'batchId',
+      '17': true
+    },
     {
       '1': 'expiration_date',
       '3': 7,
@@ -128,6 +138,10 @@ const ReceivingLineItem$json = {
       '6': '.google.protobuf.Timestamp',
       '10': 'expirationDate'
     },
+    {'1': 'purchase_price', '3': 8, '4': 1, '5': 5, '10': 'purchasePrice'},
+  ],
+  '8': [
+    {'1': '_batch_id'},
   ],
 };
 
@@ -137,5 +151,69 @@ final $typed_data.Uint8List receivingLineItemDescriptor = $convert.base64Decode(
     'VhbnRpdHlfZXhwZWN0ZWQYAiABKAFSEHF1YW50aXR5RXhwZWN0ZWQSKwoRcXVhbnRpdHlfcmVj'
     'ZWl2ZWQYAyABKAFSEHF1YW50aXR5UmVjZWl2ZWQSKwoRcXVhbnRpdHlfcmVqZWN0ZWQYBCABKA'
     'FSEHF1YW50aXR5UmVqZWN0ZWQSKQoQcmVqZWN0aW9uX3JlYXNvbhgFIAEoCVIPcmVqZWN0aW9u'
-    'UmVhc29uEhkKCGJhdGNoX2lkGAYgASgJUgdiYXRjaElkEkMKD2V4cGlyYXRpb25fZGF0ZRgHIA'
-    'EoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSDmV4cGlyYXRpb25EYXRl');
+    'UmVhc29uEh4KCGJhdGNoX2lkGAYgASgJSABSB2JhdGNoSWSIAQESQwoPZXhwaXJhdGlvbl9kYX'
+    'RlGAcgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIOZXhwaXJhdGlvbkRhdGUSJQoO'
+    'cHVyY2hhc2VfcHJpY2UYCCABKAVSDXB1cmNoYXNlUHJpY2VCCwoJX2JhdGNoX2lk');
+
+@$core.Deprecated('Use createReceivingNoteRequestDescriptor instead')
+const CreateReceivingNoteRequest$json = {
+  '1': 'CreateReceivingNoteRequest',
+  '2': [
+    {
+      '1': 'receiving_note',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.logistic.v1.ReceivingNote',
+      '10': 'receivingNote'
+    },
+  ],
+};
+
+/// Descriptor for `CreateReceivingNoteRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List createReceivingNoteRequestDescriptor =
+    $convert.base64Decode(
+        'ChpDcmVhdGVSZWNlaXZpbmdOb3RlUmVxdWVzdBJBCg5yZWNlaXZpbmdfbm90ZRgBIAEoCzIaLm'
+        'xvZ2lzdGljLnYxLlJlY2VpdmluZ05vdGVSDXJlY2VpdmluZ05vdGU=');
+
+@$core.Deprecated('Use createReceivingNoteResponseDescriptor instead')
+const CreateReceivingNoteResponse$json = {
+  '1': 'CreateReceivingNoteResponse',
+  '2': [
+    {'1': 'success', '3': 1, '4': 1, '5': 8, '10': 'success'},
+  ],
+};
+
+/// Descriptor for `CreateReceivingNoteResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List createReceivingNoteResponseDescriptor =
+    $convert.base64Decode(
+        'ChtDcmVhdGVSZWNlaXZpbmdOb3RlUmVzcG9uc2USGAoHc3VjY2VzcxgBIAEoCFIHc3VjY2Vzcw'
+        '==');
+
+const $core.Map<$core.String, $core.dynamic> ReceivingNoteServiceBase$json = {
+  '1': 'ReceivingNoteService',
+  '2': [
+    {
+      '1': 'CreateReceivingNote',
+      '2': '.logistic.v1.CreateReceivingNoteRequest',
+      '3': '.logistic.v1.CreateReceivingNoteResponse',
+      '4': {}
+    },
+  ],
+};
+
+@$core.Deprecated('Use receivingNoteServiceDescriptor instead')
+const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
+    ReceivingNoteServiceBase$messageJson = {
+  '.logistic.v1.CreateReceivingNoteRequest': CreateReceivingNoteRequest$json,
+  '.logistic.v1.ReceivingNote': ReceivingNote$json,
+  '.logistic.v1.ReceivingLineItem': ReceivingLineItem$json,
+  '.google.protobuf.Timestamp': $0.Timestamp$json,
+  '.logistic.v1.CreateReceivingNoteResponse': CreateReceivingNoteResponse$json,
+};
+
+/// Descriptor for `ReceivingNoteService`. Decode as a `google.protobuf.ServiceDescriptorProto`.
+final $typed_data.Uint8List receivingNoteServiceDescriptor = $convert.base64Decode(
+    'ChRSZWNlaXZpbmdOb3RlU2VydmljZRJqChNDcmVhdGVSZWNlaXZpbmdOb3RlEicubG9naXN0aW'
+    'MudjEuQ3JlYXRlUmVjZWl2aW5nTm90ZVJlcXVlc3QaKC5sb2dpc3RpYy52MS5DcmVhdGVSZWNl'
+    'aXZpbmdOb3RlUmVzcG9uc2UiAA==');

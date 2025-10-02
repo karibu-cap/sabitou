@@ -51,6 +51,9 @@ const (
 	// InventoryServiceGetProductTransactionHistoryProcedure is the fully-qualified name of the
 	// InventoryService's GetProductTransactionHistory RPC.
 	InventoryServiceGetProductTransactionHistoryProcedure = "/inventory.v1.InventoryService/GetProductTransactionHistory"
+	// InventoryServiceListProductsBySupplierProcedure is the fully-qualified name of the
+	// InventoryService's ListProductsBySupplier RPC.
+	InventoryServiceListProductsBySupplierProcedure = "/inventory.v1.InventoryService/ListProductsBySupplier"
 )
 
 // InventoryServiceClient is a client for the inventory.v1.InventoryService service.
@@ -67,6 +70,8 @@ type InventoryServiceClient interface {
 	GetRecentInventoryTransactions(context.Context, *connect.Request[v1.GetInventoryTransactionHistoryRequest]) (*connect.Response[v1.GetInventoryTransactionHistoryResponse], error)
 	// Gets the transaction history of a product.
 	GetProductTransactionHistory(context.Context, *connect.Request[v1.GetProductTransactionHistoryRequest]) (*connect.Response[v1.GetProductTransactionHistoryResponse], error)
+	// Gets the products by supplier.
+	ListProductsBySupplier(context.Context, *connect.Request[v1.ListProductsBySupplierRequest]) (*connect.Response[v1.ListProductsBySupplierResponse], error)
 }
 
 // NewInventoryServiceClient constructs a client for the inventory.v1.InventoryService service. By
@@ -116,6 +121,12 @@ func NewInventoryServiceClient(httpClient connect.HTTPClient, baseURL string, op
 			connect.WithSchema(inventoryServiceMethods.ByName("GetProductTransactionHistory")),
 			connect.WithClientOptions(opts...),
 		),
+		listProductsBySupplier: connect.NewClient[v1.ListProductsBySupplierRequest, v1.ListProductsBySupplierResponse](
+			httpClient,
+			baseURL+InventoryServiceListProductsBySupplierProcedure,
+			connect.WithSchema(inventoryServiceMethods.ByName("ListProductsBySupplier")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -127,6 +138,7 @@ type inventoryServiceClient struct {
 	getResourceInventory           *connect.Client[v1.GetResourceInventoryRequest, v1.GetResourceInventoryResponse]
 	getRecentInventoryTransactions *connect.Client[v1.GetInventoryTransactionHistoryRequest, v1.GetInventoryTransactionHistoryResponse]
 	getProductTransactionHistory   *connect.Client[v1.GetProductTransactionHistoryRequest, v1.GetProductTransactionHistoryResponse]
+	listProductsBySupplier         *connect.Client[v1.ListProductsBySupplierRequest, v1.ListProductsBySupplierResponse]
 }
 
 // GetProductInventoryLevels calls inventory.v1.InventoryService.GetProductInventoryLevels.
@@ -160,6 +172,11 @@ func (c *inventoryServiceClient) GetProductTransactionHistory(ctx context.Contex
 	return c.getProductTransactionHistory.CallUnary(ctx, req)
 }
 
+// ListProductsBySupplier calls inventory.v1.InventoryService.ListProductsBySupplier.
+func (c *inventoryServiceClient) ListProductsBySupplier(ctx context.Context, req *connect.Request[v1.ListProductsBySupplierRequest]) (*connect.Response[v1.ListProductsBySupplierResponse], error) {
+	return c.listProductsBySupplier.CallUnary(ctx, req)
+}
+
 // InventoryServiceHandler is an implementation of the inventory.v1.InventoryService service.
 type InventoryServiceHandler interface {
 	// Gets the inventory levels of a product.
@@ -174,6 +191,8 @@ type InventoryServiceHandler interface {
 	GetRecentInventoryTransactions(context.Context, *connect.Request[v1.GetInventoryTransactionHistoryRequest]) (*connect.Response[v1.GetInventoryTransactionHistoryResponse], error)
 	// Gets the transaction history of a product.
 	GetProductTransactionHistory(context.Context, *connect.Request[v1.GetProductTransactionHistoryRequest]) (*connect.Response[v1.GetProductTransactionHistoryResponse], error)
+	// Gets the products by supplier.
+	ListProductsBySupplier(context.Context, *connect.Request[v1.ListProductsBySupplierRequest]) (*connect.Response[v1.ListProductsBySupplierResponse], error)
 }
 
 // NewInventoryServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -219,6 +238,12 @@ func NewInventoryServiceHandler(svc InventoryServiceHandler, opts ...connect.Han
 		connect.WithSchema(inventoryServiceMethods.ByName("GetProductTransactionHistory")),
 		connect.WithHandlerOptions(opts...),
 	)
+	inventoryServiceListProductsBySupplierHandler := connect.NewUnaryHandler(
+		InventoryServiceListProductsBySupplierProcedure,
+		svc.ListProductsBySupplier,
+		connect.WithSchema(inventoryServiceMethods.ByName("ListProductsBySupplier")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/inventory.v1.InventoryService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case InventoryServiceGetProductInventoryLevelsProcedure:
@@ -233,6 +258,8 @@ func NewInventoryServiceHandler(svc InventoryServiceHandler, opts ...connect.Han
 			inventoryServiceGetRecentInventoryTransactionsHandler.ServeHTTP(w, r)
 		case InventoryServiceGetProductTransactionHistoryProcedure:
 			inventoryServiceGetProductTransactionHistoryHandler.ServeHTTP(w, r)
+		case InventoryServiceListProductsBySupplierProcedure:
+			inventoryServiceListProductsBySupplierHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -264,4 +291,8 @@ func (UnimplementedInventoryServiceHandler) GetRecentInventoryTransactions(conte
 
 func (UnimplementedInventoryServiceHandler) GetProductTransactionHistory(context.Context, *connect.Request[v1.GetProductTransactionHistoryRequest]) (*connect.Response[v1.GetProductTransactionHistoryResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("inventory.v1.InventoryService.GetProductTransactionHistory is not implemented"))
+}
+
+func (UnimplementedInventoryServiceHandler) ListProductsBySupplier(context.Context, *connect.Request[v1.ListProductsBySupplierRequest]) (*connect.Response[v1.ListProductsBySupplierResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("inventory.v1.InventoryService.ListProductsBySupplier is not implemented"))
 }

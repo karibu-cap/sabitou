@@ -5,7 +5,6 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../services/internationalization/internationalization.dart';
 import '../../../themes/app_colors.dart';
-import '../../../utils/formatters.dart';
 import '../../../widgets/custom_grid.dart';
 import '../../../widgets/stat_card.dart';
 import '../suppliers_controller.dart';
@@ -34,64 +33,22 @@ class SuppliersStatsGrid extends StatelessWidget {
             .where((s) => s.status == SupplierStatus.SUPPLIER_STATUS_ACTIVE)
             .length;
 
-        return StreamBuilder<List<InventoryLevelWithProduct>>(
-          stream: controller.invStream,
-          builder: (context, productsSnapshot) {
-            if (productsSnapshot.connectionState == ConnectionState.waiting) {
-              return SupplierShimmerWidgets.buildStatsShimmer();
-            }
-            final invWithProducts = productsSnapshot.data ?? [];
-            final totalProducts = controller.calculateTotalProducts(
-              invWithProducts.map((p) => p.product).toList(),
-            );
-            final avgProductsPerSupplier = controller
-                .calculateAverageProductsPerSupplier(
-                  totalProducts,
-                  totalSuppliers,
-                );
-            final totalInventoryValue = controller.calculateTotalValue(
-              invWithProducts,
-            );
+        final statsCards = [
+          StatCard(
+            title: appIntl.totalSuppliersCount,
+            value: totalSuppliers.toString(),
+            change:
+                '$activeSuppliers ${appIntl.activeSuppliersText.toLowerCase()}',
+            icon: LucideIcons.building400,
+            color: AppColors.cobalt,
+          ),
+        ];
 
-            final statsCards = [
-              StatCard(
-                title: appIntl.totalSuppliersCount,
-                value: totalSuppliers.toString(),
-                change:
-                    '$activeSuppliers ${appIntl.activeSuppliersText.toLowerCase()}',
-                icon: LucideIcons.building400,
-                color: AppColors.cobalt,
-              ),
-              StatCard(
-                title: appIntl.totalProductsCount,
-                value: totalProducts.toString(),
-                change: appIntl.fromAllSuppliersText,
-                icon: LucideIcons.package400,
-                color: AppColors.dartGreen,
-              ),
-              StatCard(
-                title: appIntl.avgProductsText,
-                value: avgProductsPerSupplier,
-                change: appIntl.perSupplierText,
-                icon: LucideIcons.trendingUp400,
-                color: AppColors.purple,
-              ),
-              StatCard(
-                title: appIntl.totalValueText,
-                value: Formatters.formatCurrency(totalInventoryValue),
-                change: appIntl.totalValueText,
-                icon: LucideIcons.check400,
-                color: AppColors.orange500,
-              ),
-            ];
-
-            return CustomGrid(
-              children: statsCards,
-              minItemWidth: 250,
-              mainAxisExtent: 100,
-              crossSpacing: 20,
-            );
-          },
+        return CustomGrid(
+          children: statsCards,
+          minItemWidth: 250,
+          mainAxisExtent: 100,
+          crossSpacing: 20,
         );
       },
     );

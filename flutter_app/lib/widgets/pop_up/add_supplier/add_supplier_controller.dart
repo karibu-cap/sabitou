@@ -142,14 +142,6 @@ class AddSupplierController extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Gets products for a specific supplier
-  List<StoreProduct> getProductsForSupplier(
-    String supplierRefId,
-    List<StoreProduct> allProducts,
-  ) {
-    return allProducts.where((p) => p.supplierId == supplierRefId).toList();
-  }
-
   /// Calculates total products count
   int calculateTotalProducts(List<StoreProduct> products) {
     return products.length;

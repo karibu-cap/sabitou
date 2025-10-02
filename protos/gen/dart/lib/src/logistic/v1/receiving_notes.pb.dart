@@ -10,6 +10,7 @@
 // ignore_for_file: deprecated_member_use_from_same_package, library_prefixes
 // ignore_for_file: non_constant_identifier_names
 
+import 'dart:async' as $async;
 import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
@@ -25,9 +26,6 @@ export 'receiving_notes.pbenum.dart';
 ///  ReceivingNote (Bon de Réception)
 ///  Created when YOU receive goods from a supplier.
 ///  THIS IS WHAT INCREASES YOUR INVENTORY.
-///
-///  Fix: ReceivingLineItem now includes batch_id (system-generated or from supplier).
-///  When creating, new Batches are added to InventoryLevel.
 ///
 ///  Flow: Goods arrive → Inspect → Create ReceivingNote → Update inventory
 ///
@@ -199,8 +197,6 @@ class ReceivingNote extends $pb.GeneratedMessage {
 /// *
 ///  ReceivingLineItem shows what was actually received vs expected.
 ///
-///  Fix: Added batch_id and expiration_date for creating new batches on reception.
-///
 ///  Example:
 ///    product_id: "PRD-001"
 ///    quantity_expected: 50
@@ -218,6 +214,7 @@ class ReceivingLineItem extends $pb.GeneratedMessage {
     $core.String? rejectionReason,
     $core.String? batchId,
     $0.Timestamp? expirationDate,
+    $core.int? purchasePrice,
   }) {
     final result = create();
     if (productId != null) result.productId = productId;
@@ -227,6 +224,7 @@ class ReceivingLineItem extends $pb.GeneratedMessage {
     if (rejectionReason != null) result.rejectionReason = rejectionReason;
     if (batchId != null) result.batchId = batchId;
     if (expirationDate != null) result.expirationDate = expirationDate;
+    if (purchasePrice != null) result.purchasePrice = purchasePrice;
     return result;
   }
 
@@ -254,6 +252,8 @@ class ReceivingLineItem extends $pb.GeneratedMessage {
     ..aOS(6, _omitFieldNames ? '' : 'batchId')
     ..aOM<$0.Timestamp>(7, _omitFieldNames ? '' : 'expirationDate',
         subBuilder: $0.Timestamp.create)
+    ..a<$core.int>(
+        8, _omitFieldNames ? '' : 'purchasePrice', $pb.PbFieldType.O3)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -341,6 +341,148 @@ class ReceivingLineItem extends $pb.GeneratedMessage {
   void clearExpirationDate() => $_clearField(7);
   @$pb.TagNumber(7)
   $0.Timestamp ensureExpirationDate() => $_ensure(6);
+
+  @$pb.TagNumber(8)
+  $core.int get purchasePrice => $_getIZ(7);
+  @$pb.TagNumber(8)
+  set purchasePrice($core.int value) => $_setSignedInt32(7, value);
+  @$pb.TagNumber(8)
+  $core.bool hasPurchasePrice() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearPurchasePrice() => $_clearField(8);
+}
+
+class CreateReceivingNoteRequest extends $pb.GeneratedMessage {
+  factory CreateReceivingNoteRequest({
+    ReceivingNote? receivingNote,
+  }) {
+    final result = create();
+    if (receivingNote != null) result.receivingNote = receivingNote;
+    return result;
+  }
+
+  CreateReceivingNoteRequest._();
+
+  factory CreateReceivingNoteRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory CreateReceivingNoteRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'CreateReceivingNoteRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'logistic.v1'),
+      createEmptyInstance: create)
+    ..aOM<ReceivingNote>(1, _omitFieldNames ? '' : 'receivingNote',
+        subBuilder: ReceivingNote.create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  CreateReceivingNoteRequest clone() =>
+      CreateReceivingNoteRequest()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  CreateReceivingNoteRequest copyWith(
+          void Function(CreateReceivingNoteRequest) updates) =>
+      super.copyWith(
+              (message) => updates(message as CreateReceivingNoteRequest))
+          as CreateReceivingNoteRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static CreateReceivingNoteRequest create() => CreateReceivingNoteRequest._();
+  @$core.override
+  CreateReceivingNoteRequest createEmptyInstance() => create();
+  static $pb.PbList<CreateReceivingNoteRequest> createRepeated() =>
+      $pb.PbList<CreateReceivingNoteRequest>();
+  @$core.pragma('dart2js:noInline')
+  static CreateReceivingNoteRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<CreateReceivingNoteRequest>(create);
+  static CreateReceivingNoteRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  ReceivingNote get receivingNote => $_getN(0);
+  @$pb.TagNumber(1)
+  set receivingNote(ReceivingNote value) => $_setField(1, value);
+  @$pb.TagNumber(1)
+  $core.bool hasReceivingNote() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearReceivingNote() => $_clearField(1);
+  @$pb.TagNumber(1)
+  ReceivingNote ensureReceivingNote() => $_ensure(0);
+}
+
+class CreateReceivingNoteResponse extends $pb.GeneratedMessage {
+  factory CreateReceivingNoteResponse({
+    $core.bool? success,
+  }) {
+    final result = create();
+    if (success != null) result.success = success;
+    return result;
+  }
+
+  CreateReceivingNoteResponse._();
+
+  factory CreateReceivingNoteResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory CreateReceivingNoteResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'CreateReceivingNoteResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'logistic.v1'),
+      createEmptyInstance: create)
+    ..aOB(1, _omitFieldNames ? '' : 'success')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  CreateReceivingNoteResponse clone() =>
+      CreateReceivingNoteResponse()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  CreateReceivingNoteResponse copyWith(
+          void Function(CreateReceivingNoteResponse) updates) =>
+      super.copyWith(
+              (message) => updates(message as CreateReceivingNoteResponse))
+          as CreateReceivingNoteResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static CreateReceivingNoteResponse create() =>
+      CreateReceivingNoteResponse._();
+  @$core.override
+  CreateReceivingNoteResponse createEmptyInstance() => create();
+  static $pb.PbList<CreateReceivingNoteResponse> createRepeated() =>
+      $pb.PbList<CreateReceivingNoteResponse>();
+  @$core.pragma('dart2js:noInline')
+  static CreateReceivingNoteResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<CreateReceivingNoteResponse>(create);
+  static CreateReceivingNoteResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.bool get success => $_getBF(0);
+  @$pb.TagNumber(1)
+  set success($core.bool value) => $_setBool(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasSuccess() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSuccess() => $_clearField(1);
+}
+
+class ReceivingNoteServiceApi {
+  final $pb.RpcClient _client;
+
+  ReceivingNoteServiceApi(this._client);
+
+  $async.Future<CreateReceivingNoteResponse> createReceivingNote(
+          $pb.ClientContext? ctx, CreateReceivingNoteRequest request) =>
+      _client.invoke<CreateReceivingNoteResponse>(ctx, 'ReceivingNoteService',
+          'CreateReceivingNote', request, CreateReceivingNoteResponse());
 }
 
 const $core.bool _omitFieldNames =

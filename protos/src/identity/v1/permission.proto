@@ -69,12 +69,10 @@ message StorePermissions {
   StoreTransactionPermission transaction = 7;
 }
 
-
 //
 // ==========================
 //   SERVICE
 // ==========================
 //
 
-service PermissionService {
-}
+service PermissionService {}

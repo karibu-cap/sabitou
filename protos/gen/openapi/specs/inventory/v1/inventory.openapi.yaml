@@ -218,6 +218,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inventory.v1.GetResourceInventoryResponse'
+  /inventory.v1.InventoryService/ListProductsBySupplier:
+    post:
+      tags:
+        - inventory.v1.InventoryService
+      summary: Gets the products by supplier.
+      description: Gets the products by supplier.
+      operationId: inventory.v1.InventoryService.ListProductsBySupplier
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inventory.v1.ListProductsBySupplierRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inventory.v1.ListProductsBySupplierResponse'
 components:
   schemas:
     audits.v1.InventoryTransaction:
@@ -510,6 +546,15 @@ components:
           type: string
           title: supplier_batch_number
           description: Supplier's reference number
+        supplierId:
+          type: string
+          title: supplier_id
+          description: Supplier's reference number
+        purchasePrice:
+          type: integer
+          title: purchase_price
+          format: int32
+          description: Purchase price
         status:
           title: status
           description: e.g., Active, Expired
@@ -525,9 +570,6 @@ components:
       description: |-
         *
          Batch represents a lot of products with specific attributes like expiration.
-
-         Fix: New message added for lot tracking. Each batch can have its own quantity, expiration date, and is linked to a product and warehouse.
-         InventoryLevel now aggregates from batches, but batches provide detailed quantity per lot.
 
          Example:
            batch_id: "BATCH-2025-001"
@@ -967,10 +1009,6 @@ components:
          InventoryLevel tracks how much stock exists in each warehouse.
          This is the current state, updated by various documents.
 
-         Fixes: Added repeated batches for lot-level details (quantity per lot, expiration).
-         The quantity_available is now the sum of batch quantities (computed).
-         Added min_threshold per warehouse for the product.
-
          Example:
            product_id: "PRD-001"
            store_id: "WH-001"
@@ -980,9 +1018,7 @@ components:
            min_threshold: 15.0
            last_updated: 2025-09-29T10:30:00Z
            batches: [Batch1 with qty 30 exp 2026-01-01, Batch2 with qty 20 exp 2026-06-01]
-         Note we can only have one InventoryLevel per (product_id, supplier_id).
-         Reason why we don't add it directly to Storeproduct is because the Storeproduct can be handler by multiple supplier.
-         Example: On product Coffee can be provide by 2 different supplier.
+         Note we can only have one InventoryLevel per (product_id).
     inventory.v1.InventoryLevelWithProduct:
       type: object
       properties:
@@ -1004,6 +1040,43 @@ components:
           title: stockStatus
           $ref: '#/components/schemas/inventory.v1.StockStatus'
       title: InventoryLevelWithProduct
+      additionalProperties: false
+    inventory.v1.ListProductsBySupplierRequest:
+      type: object
+      properties:
+        supplierId:
+          type: string
+          title: supplier_id
+          description: 'ex. : "CMP-SUPPLIER-001"'
+        storeId:
+          type: string
+          title: store_id
+          description: Optional filter
+          nullable: true
+      title: ListProductsBySupplierRequest
+      additionalProperties: false
+    inventory.v1.ListProductsBySupplierResponse:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/inventory.v1.ProductBySupplier'
+          title: products
+      title: ListProductsBySupplierResponse
+      additionalProperties: false
+    inventory.v1.ProductBySupplier:
+      type: object
+      properties:
+        storeProduct:
+          title: store_product
+          description: StoreProduct details
+          $ref: '#/components/schemas/inventory.v1.StoreProduct'
+        globalProduct:
+          title: global_product
+          description: GlobalProduct details
+          $ref: '#/components/schemas/inventory.v1.GlobalProduct'
+      title: ProductBySupplier
       additionalProperties: false
     inventory.v1.ProductStatus:
       type: string
@@ -1050,11 +1123,6 @@ components:
             type: string
           title: images_links_ids
           description: The media ids of the images of the product.
-        supplierId:
-          type: string
-          title: supplier_id
-          description: The supplier.
-          nullable: true
         status:
           title: status
           description: The status of the product.

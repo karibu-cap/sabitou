@@ -11,6 +11,7 @@ export 'src/inventory/v1/category.connect.client.dart';
 export 'src/inventory/v1/inventory.connect.client.dart';
 export 'src/inventory/v1/store_product.connect.client.dart';
 export 'src/link/v1/link.connect.client.dart';
+export 'src/logistic/v1/receiving_notes.connect.client.dart';
 export 'src/logistic/v1/return_notes.connect.client.dart';
 export 'src/order/v1/purchase_order.connect.client.dart';
 export 'src/order/v1/sales_order.connect.client.dart';

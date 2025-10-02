@@ -10,9 +10,6 @@ import "inventory/v1/store_product.proto";
 /**
  * Batch represents a lot of products with specific attributes like expiration.
  *
- * Fix: New message added for lot tracking. Each batch can have its own quantity, expiration date, and is linked to a product and warehouse.
- * InventoryLevel now aggregates from batches, but batches provide detailed quantity per lot.
- *
  * Example:
  *   batch_id: "BATCH-2025-001"
  *   product_id: "PRD-001"
@@ -29,8 +26,10 @@ message Batch {
   google.protobuf.Timestamp expiration_date = 5; // Expiration date for this batch
   google.protobuf.Timestamp received_at = 6; // When the batch was received
   string supplier_batch_number = 7; // Supplier's reference number
-  BatchStatus status = 8; // e.g., Active, Expired
-  string notes = 9; // Additional details
+  string supplier_id = 8; // Supplier's reference number
+  int32 purchase_price = 9; // Purchase price
+  BatchStatus status = 10; // e.g., Active, Expired
+  string notes = 11; // Additional details
 }
 
 enum BatchStatus {
@@ -45,10 +44,6 @@ enum BatchStatus {
  * InventoryLevel tracks how much stock exists in each warehouse.
  * This is the current state, updated by various documents.
  *
- * Fixes: Added repeated batches for lot-level details (quantity per lot, expiration).
- * The quantity_available is now the sum of batch quantities (computed).
- * Added min_threshold per warehouse for the product.
- *
  * Example:
  *   product_id: "PRD-001"
  *   store_id: "WH-001"
@@ -58,9 +53,7 @@ enum BatchStatus {
  *   min_threshold: 15.0
  *   last_updated: 2025-09-29T10:30:00Z
  *   batches: [Batch1 with qty 30 exp 2026-01-01, Batch2 with qty 20 exp 2026-06-01]
- * Note we can only have one InventoryLevel per (product_id, supplier_id).
- * Reason why we don't add it directly to Storeproduct is because the Storeproduct can be handler by multiple supplier.
- * Example: On product Coffee can be provide by 2 different supplier.
+ * Note we can only have one InventoryLevel per (product_id).
  */
 message InventoryLevel {
   // The product id to get level.
@@ -115,12 +108,15 @@ service InventoryService {
 
   // Gets the transaction history of a product.
   rpc GetProductTransactionHistory(GetProductTransactionHistoryRequest) returns (GetProductTransactionHistoryResponse);
+
+  // Gets the products by supplier.
+  rpc ListProductsBySupplier(ListProductsBySupplierRequest) returns (ListProductsBySupplierResponse);
 }
 
 message GetInventoryTransactionHistoryRequest {
-  optional string store_id = 1;  // Optional
-  optional string product_id = 2;  // Optional
-  optional audits.v1.TransactionType transaction_type = 3;  // Optional
+  optional string store_id = 1; // Optional
+  optional string product_id = 2; // Optional
+  optional audits.v1.TransactionType transaction_type = 3; // Optional
   google.protobuf.Timestamp start_date = 4;
   google.protobuf.Timestamp end_date = 5;
   int32 page_size = 6;
@@ -128,10 +124,10 @@ message GetInventoryTransactionHistoryRequest {
 }
 
 message GetInventoryTransactionHistoryResponse {
-  repeated  audits.v1.InventoryTransaction transactions = 1;
+  repeated audits.v1.InventoryTransaction transactions = 1;
   int32 total_count = 2;
-  double total_quantity_in = 3;  // Sum of positive changes
-  double total_quantity_out = 4;  // Sum of negative changes
+  double total_quantity_in = 3; // Sum of positive changes
+  double total_quantity_out = 4; // Sum of negative changes
 }
 
 message GetProductInventoryLevelsRequest {
@@ -161,7 +157,7 @@ message CheckProductAvailabilityResponse {
 message GetLowStockItemsRequest {
   string store_id = 1 [(buf.validate.field).required = true];
   // Min stock level to flag as low
-  optional int32 threshold = 2;  
+  optional int32 threshold = 2;
   optional string category_id = 3;
   optional string supplier_id = 4;
 }
@@ -177,7 +173,7 @@ message GetResourceInventoryRequest {
   optional string product_id = 2;
   // Historical snapshot
   optional google.protobuf.Timestamp as_of_date = 3;
-  optional string supplier_id = 4;  
+  optional string supplier_id = 4;
 }
 
 message GetResourceInventoryResponse {
@@ -198,4 +194,19 @@ message GetProductTransactionHistoryRequest {
 message GetProductTransactionHistoryResponse {
   repeated audits.v1.InventoryTransaction transactions = 1;
   int32 total_count = 2;
+}
+
+
+message ListProductsBySupplierRequest {
+  string supplier_id = 1;  // ex. : "CMP-SUPPLIER-001"
+  optional string store_id = 2;  // Optional filter
+}
+
+message ListProductsBySupplierResponse {
+  repeated ProductBySupplier products = 1;
+}
+
+message ProductBySupplier {
+  StoreProduct store_product = 1;  // StoreProduct details
+  GlobalProduct global_product = 2;  // GlobalProduct details
 }

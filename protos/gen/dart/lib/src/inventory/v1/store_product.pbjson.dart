@@ -151,26 +151,17 @@ const StoreProduct$json = {
     },
     {'1': 'images_links_ids', '3': 5, '4': 3, '5': 9, '10': 'imagesLinksIds'},
     {
-      '1': 'supplier_id',
-      '3': 6,
-      '4': 1,
-      '5': 9,
-      '9': 2,
-      '10': 'supplierId',
-      '17': true
-    },
-    {
       '1': 'status',
-      '3': 7,
+      '3': 6,
       '4': 1,
       '5': 14,
       '6': '.inventory.v1.ProductStatus',
       '10': 'status'
     },
-    {'1': 'sku', '3': 8, '4': 1, '5': 9, '9': 3, '10': 'sku', '17': true},
+    {'1': 'sku', '3': 7, '4': 1, '5': 9, '9': 2, '10': 'sku', '17': true},
     {
       '1': 'expiration_type',
-      '3': 9,
+      '3': 8,
       '4': 1,
       '5': 14,
       '6': '.inventory.v1.ExpirationType',
@@ -178,7 +169,7 @@ const StoreProduct$json = {
     },
     {
       '1': 'created_at',
-      '3': 10,
+      '3': 9,
       '4': 1,
       '5': 11,
       '6': '.google.protobuf.Timestamp',
@@ -186,11 +177,11 @@ const StoreProduct$json = {
     },
     {
       '1': 'updated_at',
-      '3': 11,
+      '3': 10,
       '4': 1,
       '5': 11,
       '6': '.google.protobuf.Timestamp',
-      '9': 4,
+      '9': 3,
       '10': 'updatedAt',
       '17': true
     },
@@ -198,7 +189,6 @@ const StoreProduct$json = {
   '8': [
     {'1': '_ref_id'},
     {'1': '_sale_price'},
-    {'1': '_supplier_id'},
     {'1': '_sku'},
     {'1': '_updated_at'},
   ],
@@ -209,14 +199,13 @@ final $typed_data.Uint8List storeProductDescriptor = $convert.base64Decode(
     'CgxTdG9yZVByb2R1Y3QSGgoGcmVmX2lkGAEgASgJSABSBXJlZklkiAEBEhkKCHN0b3JlX2lkGA'
     'IgASgJUgdzdG9yZUlkEioKEWdsb2JhbF9wcm9kdWN0X2lkGAMgASgJUg9nbG9iYWxQcm9kdWN0'
     'SWQSIgoKc2FsZV9wcmljZRgEIAEoBUgBUglzYWxlUHJpY2WIAQESKAoQaW1hZ2VzX2xpbmtzX2'
-    'lkcxgFIAMoCVIOaW1hZ2VzTGlua3NJZHMSJAoLc3VwcGxpZXJfaWQYBiABKAlIAlIKc3VwcGxp'
-    'ZXJJZIgBARIzCgZzdGF0dXMYByABKA4yGy5pbnZlbnRvcnkudjEuUHJvZHVjdFN0YXR1c1IGc3'
-    'RhdHVzEhUKA3NrdRgIIAEoCUgDUgNza3WIAQESRQoPZXhwaXJhdGlvbl90eXBlGAkgASgOMhwu'
-    'aW52ZW50b3J5LnYxLkV4cGlyYXRpb25UeXBlUg5leHBpcmF0aW9uVHlwZRI5CgpjcmVhdGVkX2'
-    'F0GAogASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIJY3JlYXRlZEF0Ej4KCnVwZGF0'
-    'ZWRfYXQYCyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wSARSCXVwZGF0ZWRBdIgBAU'
-    'IJCgdfcmVmX2lkQg0KC19zYWxlX3ByaWNlQg4KDF9zdXBwbGllcl9pZEIGCgRfc2t1Qg0KC191'
-    'cGRhdGVkX2F0');
+    'lkcxgFIAMoCVIOaW1hZ2VzTGlua3NJZHMSMwoGc3RhdHVzGAYgASgOMhsuaW52ZW50b3J5LnYx'
+    'LlByb2R1Y3RTdGF0dXNSBnN0YXR1cxIVCgNza3UYByABKAlIAlIDc2t1iAEBEkUKD2V4cGlyYX'
+    'Rpb25fdHlwZRgIIAEoDjIcLmludmVudG9yeS52MS5FeHBpcmF0aW9uVHlwZVIOZXhwaXJhdGlv'
+    'blR5cGUSOQoKY3JlYXRlZF9hdBgJIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSCW'
+    'NyZWF0ZWRBdBI+Cgp1cGRhdGVkX2F0GAogASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFt'
+    'cEgDUgl1cGRhdGVkQXSIAQFCCQoHX3JlZl9pZEINCgtfc2FsZV9wcmljZUIGCgRfc2t1Qg0KC1'
+    '91cGRhdGVkX2F0');
 
 @$core.Deprecated('Use createGlobalProductRequestDescriptor instead')
 const CreateGlobalProductRequest$json = {

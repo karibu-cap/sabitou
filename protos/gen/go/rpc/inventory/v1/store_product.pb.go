@@ -287,18 +287,16 @@ type StoreProduct struct {
 	SalePrice *int32 `protobuf:"varint,4,opt,name=sale_price,json=salePrice,proto3,oneof" json:"sale_price,omitempty"`
 	// The media ids of the images of the product.
 	ImagesLinksIds []string `protobuf:"bytes,5,rep,name=images_links_ids,json=imagesLinksIds,proto3" json:"images_links_ids,omitempty"`
-	// The supplier.
-	SupplierId *string `protobuf:"bytes,6,opt,name=supplier_id,json=supplierId,proto3,oneof" json:"supplier_id,omitempty"`
 	// The status of the product.
-	Status ProductStatus `protobuf:"varint,7,opt,name=status,proto3,enum=inventory.v1.ProductStatus" json:"status,omitempty"`
+	Status ProductStatus `protobuf:"varint,6,opt,name=status,proto3,enum=inventory.v1.ProductStatus" json:"status,omitempty"`
 	// The stock keeping unit.
-	Sku *string `protobuf:"bytes,8,opt,name=sku,proto3,oneof" json:"sku,omitempty"`
+	Sku *string `protobuf:"bytes,7,opt,name=sku,proto3,oneof" json:"sku,omitempty"`
 	// The type of expiration of the product.
-	ExpirationType ExpirationType `protobuf:"varint,9,opt,name=expiration_type,json=expirationType,proto3,enum=inventory.v1.ExpirationType" json:"expiration_type,omitempty"`
+	ExpirationType ExpirationType `protobuf:"varint,8,opt,name=expiration_type,json=expirationType,proto3,enum=inventory.v1.ExpirationType" json:"expiration_type,omitempty"`
 	// The creation date of the product.
-	CreatedAt *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	CreatedAt *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	// The last update date of the product.
-	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,11,opt,name=updated_at,json=updatedAt,proto3,oneof" json:"updated_at,omitempty"`
+	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=updated_at,json=updatedAt,proto3,oneof" json:"updated_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -366,13 +364,6 @@ func (x *StoreProduct) GetImagesLinksIds() []string {
 		return x.ImagesLinksIds
 	}
 	return nil
-}
-
-func (x *StoreProduct) GetSupplierId() string {
-	if x != nil && x.SupplierId != nil {
-		return *x.SupplierId
-	}
-	return ""
 }
 
 func (x *StoreProduct) GetStatus() ProductStatus {
@@ -1849,27 +1840,24 @@ const file_inventory_v1_store_product_proto_rawDesc = "" +
 	"\x06status\x18\a \x01(\x0e2!.inventory.v1.GlobalProductStatusR\x06statusB\t\n" +
 	"\a_ref_idB\x0e\n" +
 	"\f_descriptionB\x11\n" +
-	"\x0f_bar_code_value\"\xb4\x04\n" +
+	"\x0f_bar_code_value\"\xfe\x03\n" +
 	"\fStoreProduct\x12\x1a\n" +
 	"\x06ref_id\x18\x01 \x01(\tH\x00R\x05refId\x88\x01\x01\x12\x19\n" +
 	"\bstore_id\x18\x02 \x01(\tR\astoreId\x12*\n" +
 	"\x11global_product_id\x18\x03 \x01(\tR\x0fglobalProductId\x12\"\n" +
 	"\n" +
 	"sale_price\x18\x04 \x01(\x05H\x01R\tsalePrice\x88\x01\x01\x12(\n" +
-	"\x10images_links_ids\x18\x05 \x03(\tR\x0eimagesLinksIds\x12$\n" +
-	"\vsupplier_id\x18\x06 \x01(\tH\x02R\n" +
-	"supplierId\x88\x01\x01\x123\n" +
-	"\x06status\x18\a \x01(\x0e2\x1b.inventory.v1.ProductStatusR\x06status\x12\x15\n" +
-	"\x03sku\x18\b \x01(\tH\x03R\x03sku\x88\x01\x01\x12E\n" +
-	"\x0fexpiration_type\x18\t \x01(\x0e2\x1c.inventory.v1.ExpirationTypeR\x0eexpirationType\x129\n" +
+	"\x10images_links_ids\x18\x05 \x03(\tR\x0eimagesLinksIds\x123\n" +
+	"\x06status\x18\x06 \x01(\x0e2\x1b.inventory.v1.ProductStatusR\x06status\x12\x15\n" +
+	"\x03sku\x18\a \x01(\tH\x02R\x03sku\x88\x01\x01\x12E\n" +
+	"\x0fexpiration_type\x18\b \x01(\x0e2\x1c.inventory.v1.ExpirationTypeR\x0eexpirationType\x129\n" +
 	"\n" +
-	"created_at\x18\n" +
-	" \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12>\n" +
+	"created_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12>\n" +
 	"\n" +
-	"updated_at\x18\v \x01(\v2\x1a.google.protobuf.TimestampH\x04R\tupdatedAt\x88\x01\x01B\t\n" +
+	"updated_at\x18\n" +
+	" \x01(\v2\x1a.google.protobuf.TimestampH\x03R\tupdatedAt\x88\x01\x01B\t\n" +
 	"\a_ref_idB\r\n" +
-	"\v_sale_priceB\x0e\n" +
-	"\f_supplier_idB\x06\n" +
+	"\v_sale_priceB\x06\n" +
 	"\x04_skuB\r\n" +
 	"\v_updated_at\"`\n" +
 	"\x1aCreateGlobalProductRequest\x12B\n" +

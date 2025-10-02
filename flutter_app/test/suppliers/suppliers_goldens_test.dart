@@ -192,7 +192,6 @@ final userFakeTransport = FakeTransportBuilder()
         storeProduct: StoreProduct()
           ..refId = request.storeProductId
           ..storeId = 'store_1'
-          ..supplierId = 'supplier_1'
           ..globalProductId = 'gp_${request.storeProductId.substring(3)}'
           ..salePrice =
               10000 + int.parse(request.storeProductId.substring(3)) * 5000

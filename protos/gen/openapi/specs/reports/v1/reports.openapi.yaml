@@ -930,11 +930,6 @@ components:
             type: string
           title: images_links_ids
           description: The media ids of the images of the product.
-        supplierId:
-          type: string
-          title: supplier_id
-          description: The supplier.
-          nullable: true
         status:
           title: status
           description: The status of the product.

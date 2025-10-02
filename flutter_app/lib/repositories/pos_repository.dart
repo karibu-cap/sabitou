@@ -7,8 +7,8 @@ import '../services/rpc/connect_rpc.dart';
 import '../utils/logger.dart';
 
 /// The pos of repository.
-class PosOfRepository {
-  final _logger = LoggerApp('PosOfRepository');
+class PosRepository {
+  final _logger = LoggerApp('PosRepository');
 
   /// The pos of service client.
   final CashReceiptServiceClient cashReceiptServiceClient;
@@ -16,11 +16,11 @@ class PosOfRepository {
   /// The network status provider.
   final NetworkStatusProvider networkStatusProvider;
 
-  /// The instance of [PosOfRepository].
-  static final instance = GetIt.I.get<PosOfRepository>();
+  /// The instance of [PosRepository].
+  static final instance = GetIt.I.get<PosRepository>();
 
-  /// Constructs a new [PosOfRepository].
-  PosOfRepository({
+  /// Constructs a new [PosRepository].
+  PosRepository({
     connect.Transport? transport,
     NetworkStatusProvider? networkStatusProvider,
   }) : cashReceiptServiceClient = CashReceiptServiceClient(

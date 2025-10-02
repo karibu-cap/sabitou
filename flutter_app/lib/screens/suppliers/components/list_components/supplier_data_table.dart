@@ -14,22 +14,11 @@ class SupplierDataTable extends StatelessWidget {
   /// List of suppliers to display.
   final List<Supplier> suppliers;
 
-  /// List of all products for calculations.
-  final List<InventoryLevelWithProduct> products;
-
   /// Creates a new [SupplierDataTable].
-  const SupplierDataTable({
-    super.key,
-    required this.suppliers,
-    required this.products,
-  });
+  const SupplierDataTable({super.key, required this.suppliers});
 
   /// Shows delete confirmation dialog.
-  void _showDeleteDialog(
-    BuildContext context,
-    Supplier supplier,
-    int productCount,
-  ) {
+  void _showDeleteDialog(BuildContext context, Supplier supplier) {
     // Get the controller from the current context before showing the dialog
     final controller = Provider.of<SuppliersController>(context, listen: false);
 
@@ -37,10 +26,7 @@ class SupplierDataTable extends StatelessWidget {
       context: context,
       builder: (dialogContext) => ChangeNotifierProvider.value(
         value: controller,
-        child: SupplierDeleteDialog(
-          supplier: supplier,
-          productCount: productCount,
-        ),
+        child: SupplierDeleteDialog(supplier: supplier),
       ),
     );
   }
@@ -48,7 +34,6 @@ class SupplierDataTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final intl = AppInternationalizationService.to;
-    final controller = Provider.of<SuppliersController>(context, listen: false);
     final theme = ShadTheme.of(context);
     final ScrollController scrollController = ScrollController();
 
@@ -75,21 +60,11 @@ class SupplierDataTable extends StatelessWidget {
                   const DataColumn(label: Text('')),
                   DataColumn(label: Text(intl.supplier)),
                   DataColumn(label: Text(intl.contactInfoText)),
-                  DataColumn(label: Text(intl.productsText)),
-                  DataColumn(label: Text(intl.totalValueText)),
                   DataColumn(label: Text(intl.statusText)),
                   DataColumn(label: Text(intl.notes)),
                   DataColumn(label: Text(intl.actions)),
                 ],
                 rows: suppliers.map((supplier) {
-                  final supplierProducts = products
-                      .where(
-                        (product) =>
-                            product.product.supplierId == supplier.refId,
-                      )
-                      .toList();
-                  final productCount = supplierProducts.length;
-
                   return DataRow(
                     cells: [
                       DataCell(
@@ -104,16 +79,6 @@ class SupplierDataTable extends StatelessWidget {
                       DataCell(
                         SupplierCellBuilders.buildContactCell(supplier, theme),
                       ),
-                      DataCell(
-                        SupplierCellBuilders.buildProductsCell(productCount),
-                      ),
-                      DataCell(
-                        SupplierCellBuilders.buildTotalValueCell(
-                          supplierProducts,
-                          controller,
-                          theme,
-                        ),
-                      ),
                       DataCell(SupplierCellBuilders.buildStatusCell(supplier)),
                       DataCell(
                         SupplierCellBuilders.buildNotesCell(supplier, theme),
@@ -124,11 +89,7 @@ class SupplierDataTable extends StatelessWidget {
                             context,
                             supplier: supplier,
                           ),
-                          onDelete: () => _showDeleteDialog(
-                            context,
-                            supplier,
-                            productCount,
-                          ),
+                          onDelete: () => _showDeleteDialog(context, supplier),
                           theme: theme,
                         ),
                       ),

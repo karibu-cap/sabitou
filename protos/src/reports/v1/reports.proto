@@ -1,4 +1,3 @@
-
 syntax = "proto3";
 
 package reports.v1;
@@ -49,7 +48,7 @@ message GetSalesReportRequest {
   google.protobuf.Timestamp start_date = 1;
   google.protobuf.Timestamp end_date = 2;
   optional string supplier_id = 3; // Optional
-optional  string store_id = 4; // Optional
+  optional string store_id = 4; // Optional
   string category = 5; // Product category filter
   ReportGroupBy group_by = 6; // Daily, weekly, monthly
 }
@@ -113,8 +112,8 @@ message GetInventoryMovementReportResponse {
 message GetBestSellingProductsRequest {
   google.protobuf.Timestamp start_date = 1;
   google.protobuf.Timestamp end_date = 2;
- optional string store_id = 3; // Optional
- optional string category = 4; // Optional
+  optional string store_id = 3; // Optional
+  optional string category = 4; // Optional
   int32 top_n = 5; // Top 10, 20, etc. Default 20
 }
 
@@ -167,7 +166,7 @@ message GetSupplierPerformanceReportResponse {
 message GetProfitLossReportRequest {
   google.protobuf.Timestamp start_date = 1;
   google.protobuf.Timestamp end_date = 2;
-optional  string store_id = 3; // Optional
+  optional string store_id = 3; // Optional
 }
 
 message GetProfitLossReportResponse {
@@ -181,8 +180,8 @@ message GetProfitLossReportResponse {
 }
 
 message GetStockAgingReportRequest {
-optional string store_id = 1; // Optional
-optional string category = 2; // Optional
+  optional string store_id = 1; // Optional
+  optional string category = 2; // Optional
 }
 
 message GetStockAgingReportResponse {
@@ -214,46 +213,46 @@ message InventoryMovementSummary {
 }
 
 message GetInventoryReportResponse {
-   int32 total_products = 1;
-   double total_value = 2; // Sum of (quantity * cost_price)
-   int32 low_stock_count = 3;
-   repeated StockAgingItem aging_items = 4;
-   InventoryMovementSummary movement_summary = 5;
-   repeated BestSellingProduct best_sellers = 6;
-   repeated StockMovementDataPoint stock_movement_data = 7;
-   InventoryComparisonData previous_year_comparison = 8;
+  int32 total_products = 1;
+  double total_value = 2; // Sum of (quantity * cost_price)
+  int32 low_stock_count = 3;
+  repeated StockAgingItem aging_items = 4;
+  InventoryMovementSummary movement_summary = 5;
+  repeated BestSellingProduct best_sellers = 6;
+  repeated StockMovementDataPoint stock_movement_data = 7;
+  InventoryComparisonData previous_year_comparison = 8;
 }
 
 message StockMovementDataPoint {
-   google.protobuf.Timestamp date = 1;
-   double stock_level = 2;
-   double movement_quantity = 3;
-   string movement_type = 4; // "IN", "OUT", "ADJUSTMENT"
+  google.protobuf.Timestamp date = 1;
+  double stock_level = 2;
+  double movement_quantity = 3;
+  string movement_type = 4; // "IN", "OUT", "ADJUSTMENT"
 }
 
 message GetSalesReportFullResponse {
-   repeated SalesSummary summaries = 1;
-   double total_sales_amount = 2;
-   int32 total_transactions = 3;
-   int32 total_units_sold = 4;
-   double average_transaction_value = 5;
-   repeated BestSellingProduct best_products = 6;
-   repeated CategorySalesData category_sales_data = 7;
-   SalesComparisonData previous_year_comparison = 8;
+  repeated SalesSummary summaries = 1;
+  double total_sales_amount = 2;
+  int32 total_transactions = 3;
+  int32 total_units_sold = 4;
+  double average_transaction_value = 5;
+  repeated BestSellingProduct best_products = 6;
+  repeated CategorySalesData category_sales_data = 7;
+  SalesComparisonData previous_year_comparison = 8;
 }
 
 message CategorySalesData {
-   string category_name = 1;
-   double total_sales_amount = 2;
-   int32 total_units_sold = 3;
-   int32 transaction_count = 4;
-   double percentage_of_total = 5;
+  string category_name = 1;
+  double total_sales_amount = 2;
+  int32 total_units_sold = 3;
+  int32 transaction_count = 4;
+  double percentage_of_total = 5;
 }
 
 message SalesComparisonData {
-   double previous_year_total_sales = 1;
-   int32 previous_year_total_transactions = 2;
-   double previous_year_average_transaction_value = 3;
+  double previous_year_total_sales = 1;
+  int32 previous_year_total_transactions = 2;
+  double previous_year_average_transaction_value = 3;
 }
 
 message GetFinancialReportRequest {
@@ -263,104 +262,104 @@ message GetFinancialReportRequest {
 }
 
 message GetFinancialReportResponse {
-   double total_revenue = 1; // Sales
-   double cost_of_goods_sold = 2; // Purchases
-   double gross_profit = 3;
-   double gross_profit_margin = 4;
-   double returns_value = 5;
-   double adjustments_value = 6;
-   double net_profit = 7;
-   double total_purchases = 8;
-   double outstanding_balance = 9;
-   repeated SupplierPerformanceSummary supplier_performances = 10;
-   repeated RevenueExpenseDataPoint revenue_vs_expenses_data = 11;
-   FinancialComparisonData previous_year_comparison = 12;
+  double total_revenue = 1; // Sales
+  double cost_of_goods_sold = 2; // Purchases
+  double gross_profit = 3;
+  double gross_profit_margin = 4;
+  double returns_value = 5;
+  double adjustments_value = 6;
+  double net_profit = 7;
+  double total_purchases = 8;
+  double outstanding_balance = 9;
+  repeated SupplierPerformanceSummary supplier_performances = 10;
+  repeated RevenueExpenseDataPoint revenue_vs_expenses_data = 11;
+  FinancialComparisonData previous_year_comparison = 12;
 }
 
 message RevenueExpenseDataPoint {
-   google.protobuf.Timestamp period_start = 1;
-   google.protobuf.Timestamp period_end = 2;
-   double revenue = 3;
-   double expenses = 4;
-   double net_amount = 5;
+  google.protobuf.Timestamp period_start = 1;
+  google.protobuf.Timestamp period_end = 2;
+  double revenue = 3;
+  double expenses = 4;
+  double net_amount = 5;
 }
 
 message SupplierPerformanceSummary {
-   string supplier_id = 1;
-   string supplier_name = 2;
-   double total_purchase_value = 3;
-   double on_time_percentage = 4;
-   int32 total_orders = 5;
+  string supplier_id = 1;
+  string supplier_name = 2;
+  double total_purchase_value = 3;
+  double on_time_percentage = 4;
+  int32 total_orders = 5;
 }
 
 message FinancialComparisonData {
-   double previous_year_total_revenue = 1;
-   double previous_year_net_profit = 2;
-   double previous_year_gross_profit_margin = 3;
-   double previous_year_total_purchases = 4;
+  double previous_year_total_revenue = 1;
+  double previous_year_net_profit = 2;
+  double previous_year_gross_profit_margin = 3;
+  double previous_year_total_purchases = 4;
 }
 
 message InventoryComparisonData {
-   int32 previous_year_total_products = 1;
-   double previous_year_total_value = 2;
-   int32 previous_year_low_stock_count = 3;
-   double previous_year_movement_total_in = 4;
-   double previous_year_movement_total_out = 5;
+  int32 previous_year_total_products = 1;
+  double previous_year_total_value = 2;
+  int32 previous_year_low_stock_count = 3;
+  double previous_year_movement_total_in = 4;
+  double previous_year_movement_total_out = 5;
 }
 
 // Comprehensive dashboard data service for aggregated calculations
 service DashboardReportingService {
-   // Get comprehensive dashboard data with all calculated fields
-   rpc GetDashboardReport(GetDashboardReportRequest) returns (GetDashboardReportResponse);
+  // Get comprehensive dashboard data with all calculated fields
+  rpc GetDashboardReport(GetDashboardReportRequest) returns (GetDashboardReportResponse);
 }
 
 message GetDashboardReportRequest {
-   optional string store_id = 1;
-   google.protobuf.Timestamp start_date = 2;
-   google.protobuf.Timestamp end_date = 3;
+  optional string store_id = 1;
+  google.protobuf.Timestamp start_date = 2;
+  google.protobuf.Timestamp end_date = 3;
 }
 
 message GetDashboardReportResponse {
-   // Sales metrics
-   double total_sales_amount = 1;
-   int32 total_transactions = 2;
-   double average_transaction_value = 3;
-   int32 total_units_sold = 4;
+  // Sales metrics
+  double total_sales_amount = 1;
+  int32 total_transactions = 2;
+  double average_transaction_value = 3;
+  int32 total_units_sold = 4;
 
-   // Financial metrics
-   double total_revenue = 5;
-   double net_profit = 6;
-   double gross_profit_margin = 7;
-   double total_purchases = 8;
+  // Financial metrics
+  double total_revenue = 5;
+  double net_profit = 6;
+  double gross_profit_margin = 7;
+  double total_purchases = 8;
 
-   // Inventory metrics
-   int32 total_products = 9;
-   double total_inventory_value = 10;
-   int32 low_stock_count = 11;
+  // Inventory metrics
+  int32 total_products = 9;
+  double total_inventory_value = 10;
+  int32 low_stock_count = 11;
 
-   // Trend and comparison data
-   repeated TrendDataPoint sales_and_profit_trend = 12;
-   repeated CategorySalesData category_sales_breakdown = 13;
-   repeated RevenueExpenseDataPoint revenue_vs_expenses = 14;
-   repeated StockMovementDataPoint inventory_movement = 15;
+  // Trend and comparison data
+  repeated TrendDataPoint sales_and_profit_trend = 12;
+  repeated CategorySalesData category_sales_breakdown = 13;
+  repeated RevenueExpenseDataPoint revenue_vs_expenses = 14;
+  repeated StockMovementDataPoint inventory_movement = 15;
 
-   // Previous year comparisons
-   SalesComparisonData sales_comparison = 16;
-   FinancialComparisonData financial_comparison = 17;
-   InventoryComparisonData inventory_comparison = 18;
+  // Previous year comparisons
+  SalesComparisonData sales_comparison = 16;
+  FinancialComparisonData financial_comparison = 17;
+  InventoryComparisonData inventory_comparison = 18;
 
-   // Top performers
-   repeated BestSellingProduct top_performing_products = 19;
-   repeated SupplierPerformanceSummary supplier_performances = 20;
+  // Top performers
+  repeated BestSellingProduct top_performing_products = 19;
+  repeated SupplierPerformanceSummary supplier_performances = 20;
 
-   // Stock aging
-   repeated StockAgingItem stock_aging_items = 21;
+  // Stock aging
+  repeated StockAgingItem stock_aging_items = 21;
 }
 
 message TrendDataPoint {
-   google.protobuf.Timestamp date = 1;
-   double sales_value = 2;
-   double profit_value = 3;
+  google.protobuf.Timestamp date = 1;
+  double sales_value = 2;
+  double profit_value = 3;
 }
 
 enum StockMovementCategory {

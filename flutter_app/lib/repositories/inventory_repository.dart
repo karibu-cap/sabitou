@@ -193,4 +193,25 @@ class InventoryRepository {
       return GetInventoryTransactionHistoryResponse();
     }
   }
+
+  /// Gets products for a specific supplier.
+  Future<List<ProductBySupplier>> getProductsForSupplier(
+    String supplierRefId,
+    String? storeId,
+  ) async {
+    try {
+      final request = ListProductsBySupplierRequest(
+        supplierId: supplierRefId,
+        storeId: storeId,
+      );
+      final response = await inventoryServiceClient.listProductsBySupplier(
+        request,
+      );
+
+      return response.products;
+    } catch (e) {
+      _logger.severe('Error getting products for supplier: $e');
+      rethrow;
+    }
+  }
 }

@@ -83,9 +83,6 @@ func (ReceivingNoteStatus) EnumDescriptor() ([]byte, []int) {
 // Created when YOU receive goods from a supplier.
 // THIS IS WHAT INCREASES YOUR INVENTORY.
 //
-// Fix: ReceivingLineItem now includes batch_id (system-generated or from supplier).
-// When creating, new Batches are added to InventoryLevel.
-//
 // Flow: Goods arrive → Inspect → Create ReceivingNote → Update inventory
 //
 // Example:
@@ -209,8 +206,6 @@ func (x *ReceivingNote) GetNotes() string {
 // *
 // ReceivingLineItem shows what was actually received vs expected.
 //
-// Fix: Added batch_id and expiration_date for creating new batches on reception.
-//
 // Example:
 //
 //	product_id: "PRD-001"
@@ -227,8 +222,9 @@ type ReceivingLineItem struct {
 	QuantityReceived float64                `protobuf:"fixed64,3,opt,name=quantity_received,json=quantityReceived,proto3" json:"quantity_received,omitempty"` // Actually got
 	QuantityRejected float64                `protobuf:"fixed64,4,opt,name=quantity_rejected,json=quantityRejected,proto3" json:"quantity_rejected,omitempty"` // Damaged/wrong items
 	RejectionReason  string                 `protobuf:"bytes,5,opt,name=rejection_reason,json=rejectionReason,proto3" json:"rejection_reason,omitempty"`
-	BatchId          string                 `protobuf:"bytes,6,opt,name=batch_id,json=batchId,proto3" json:"batch_id,omitempty"`                      // Generated batch ID for received items
+	BatchId          *string                `protobuf:"bytes,6,opt,name=batch_id,json=batchId,proto3,oneof" json:"batch_id,omitempty"`                // Generated batch ID for received items
 	ExpirationDate   *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=expiration_date,json=expirationDate,proto3" json:"expiration_date,omitempty"` // Provided by supplier or calculated
+	PurchasePrice    int32                  `protobuf:"varint,8,opt,name=purchase_price,json=purchasePrice,proto3" json:"purchase_price,omitempty"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
@@ -299,8 +295,8 @@ func (x *ReceivingLineItem) GetRejectionReason() string {
 }
 
 func (x *ReceivingLineItem) GetBatchId() string {
-	if x != nil {
-		return x.BatchId
+	if x != nil && x.BatchId != nil {
+		return *x.BatchId
 	}
 	return ""
 }
@@ -310,6 +306,101 @@ func (x *ReceivingLineItem) GetExpirationDate() *timestamppb.Timestamp {
 		return x.ExpirationDate
 	}
 	return nil
+}
+
+func (x *ReceivingLineItem) GetPurchasePrice() int32 {
+	if x != nil {
+		return x.PurchasePrice
+	}
+	return 0
+}
+
+type CreateReceivingNoteRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ReceivingNote *ReceivingNote         `protobuf:"bytes,1,opt,name=receiving_note,json=receivingNote,proto3" json:"receiving_note,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateReceivingNoteRequest) Reset() {
+	*x = CreateReceivingNoteRequest{}
+	mi := &file_logistic_v1_receiving_notes_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateReceivingNoteRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateReceivingNoteRequest) ProtoMessage() {}
+
+func (x *CreateReceivingNoteRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_logistic_v1_receiving_notes_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateReceivingNoteRequest.ProtoReflect.Descriptor instead.
+func (*CreateReceivingNoteRequest) Descriptor() ([]byte, []int) {
+	return file_logistic_v1_receiving_notes_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *CreateReceivingNoteRequest) GetReceivingNote() *ReceivingNote {
+	if x != nil {
+		return x.ReceivingNote
+	}
+	return nil
+}
+
+type CreateReceivingNoteResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateReceivingNoteResponse) Reset() {
+	*x = CreateReceivingNoteResponse{}
+	mi := &file_logistic_v1_receiving_notes_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateReceivingNoteResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateReceivingNoteResponse) ProtoMessage() {}
+
+func (x *CreateReceivingNoteResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_logistic_v1_receiving_notes_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateReceivingNoteResponse.ProtoReflect.Descriptor instead.
+func (*CreateReceivingNoteResponse) Descriptor() ([]byte, []int) {
+	return file_logistic_v1_receiving_notes_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *CreateReceivingNoteResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
 }
 
 var File_logistic_v1_receiving_notes_proto protoreflect.FileDescriptor
@@ -329,22 +420,30 @@ const file_logistic_v1_receiving_notes_proto_rawDesc = "" +
 	"\x13received_by_user_id\x18\a \x01(\tR\x10receivedByUserId\x12;\n" +
 	"\vreceived_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\n" +
 	"receivedAt\x12\x14\n" +
-	"\x05notes\x18\t \x01(\tR\x05notes\"\xc4\x02\n" +
+	"\x05notes\x18\t \x01(\tR\x05notes\"\xfd\x02\n" +
 	"\x11ReceivingLineItem\x12\x1d\n" +
 	"\n" +
 	"product_id\x18\x01 \x01(\tR\tproductId\x12+\n" +
 	"\x11quantity_expected\x18\x02 \x01(\x01R\x10quantityExpected\x12+\n" +
 	"\x11quantity_received\x18\x03 \x01(\x01R\x10quantityReceived\x12+\n" +
 	"\x11quantity_rejected\x18\x04 \x01(\x01R\x10quantityRejected\x12)\n" +
-	"\x10rejection_reason\x18\x05 \x01(\tR\x0frejectionReason\x12\x19\n" +
-	"\bbatch_id\x18\x06 \x01(\tR\abatchId\x12C\n" +
-	"\x0fexpiration_date\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\x0eexpirationDate*\x92\x01\n" +
+	"\x10rejection_reason\x18\x05 \x01(\tR\x0frejectionReason\x12\x1e\n" +
+	"\bbatch_id\x18\x06 \x01(\tH\x00R\abatchId\x88\x01\x01\x12C\n" +
+	"\x0fexpiration_date\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\x0eexpirationDate\x12%\n" +
+	"\x0epurchase_price\x18\b \x01(\x05R\rpurchasePriceB\v\n" +
+	"\t_batch_id\"_\n" +
+	"\x1aCreateReceivingNoteRequest\x12A\n" +
+	"\x0ereceiving_note\x18\x01 \x01(\v2\x1a.logistic.v1.ReceivingNoteR\rreceivingNote\"7\n" +
+	"\x1bCreateReceivingNoteResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess*\x92\x01\n" +
 	"\x13ReceivingNoteStatus\x12\x19\n" +
 	"\x15RN_STATUS_UNSPECIFIED\x10\x00\x12\x15\n" +
 	"\x11RN_STATUS_PENDING\x10\x01\x12\x18\n" +
 	"\x14RN_STATUS_INSPECTING\x10\x02\x12\x17\n" +
 	"\x13RN_STATUS_COMPLETED\x10\x03\x12\x16\n" +
-	"\x12RN_STATUS_REJECTED\x10\x04B\xbb\x01\n" +
+	"\x12RN_STATUS_REJECTED\x10\x042\x82\x01\n" +
+	"\x14ReceivingNoteService\x12j\n" +
+	"\x13CreateReceivingNote\x12'.logistic.v1.CreateReceivingNoteRequest\x1a(.logistic.v1.CreateReceivingNoteResponse\"\x00B\xbb\x01\n" +
 	"\x0fcom.logistic.v1B\x13ReceivingNotesProtoP\x01ZFgithub.com/karibu-cap/sabitou/protos/gen/go/rpc/logistic/v1;logisticv1\xa2\x02\x03LXX\xaa\x02\vLogistic.V1\xca\x02\vLogistic\\V1\xe2\x02\x17Logistic\\V1\\GPBMetadata\xea\x02\fLogistic::V1b\x06proto3"
 
 var (
@@ -360,23 +459,28 @@ func file_logistic_v1_receiving_notes_proto_rawDescGZIP() []byte {
 }
 
 var file_logistic_v1_receiving_notes_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_logistic_v1_receiving_notes_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_logistic_v1_receiving_notes_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_logistic_v1_receiving_notes_proto_goTypes = []any{
-	(ReceivingNoteStatus)(0),      // 0: logistic.v1.ReceivingNoteStatus
-	(*ReceivingNote)(nil),         // 1: logistic.v1.ReceivingNote
-	(*ReceivingLineItem)(nil),     // 2: logistic.v1.ReceivingLineItem
-	(*timestamppb.Timestamp)(nil), // 3: google.protobuf.Timestamp
+	(ReceivingNoteStatus)(0),            // 0: logistic.v1.ReceivingNoteStatus
+	(*ReceivingNote)(nil),               // 1: logistic.v1.ReceivingNote
+	(*ReceivingLineItem)(nil),           // 2: logistic.v1.ReceivingLineItem
+	(*CreateReceivingNoteRequest)(nil),  // 3: logistic.v1.CreateReceivingNoteRequest
+	(*CreateReceivingNoteResponse)(nil), // 4: logistic.v1.CreateReceivingNoteResponse
+	(*timestamppb.Timestamp)(nil),       // 5: google.protobuf.Timestamp
 }
 var file_logistic_v1_receiving_notes_proto_depIdxs = []int32{
 	0, // 0: logistic.v1.ReceivingNote.status:type_name -> logistic.v1.ReceivingNoteStatus
 	2, // 1: logistic.v1.ReceivingNote.items:type_name -> logistic.v1.ReceivingLineItem
-	3, // 2: logistic.v1.ReceivingNote.received_at:type_name -> google.protobuf.Timestamp
-	3, // 3: logistic.v1.ReceivingLineItem.expiration_date:type_name -> google.protobuf.Timestamp
-	4, // [4:4] is the sub-list for method output_type
-	4, // [4:4] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	5, // 2: logistic.v1.ReceivingNote.received_at:type_name -> google.protobuf.Timestamp
+	5, // 3: logistic.v1.ReceivingLineItem.expiration_date:type_name -> google.protobuf.Timestamp
+	1, // 4: logistic.v1.CreateReceivingNoteRequest.receiving_note:type_name -> logistic.v1.ReceivingNote
+	3, // 5: logistic.v1.ReceivingNoteService.CreateReceivingNote:input_type -> logistic.v1.CreateReceivingNoteRequest
+	4, // 6: logistic.v1.ReceivingNoteService.CreateReceivingNote:output_type -> logistic.v1.CreateReceivingNoteResponse
+	6, // [6:7] is the sub-list for method output_type
+	5, // [5:6] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_logistic_v1_receiving_notes_proto_init() }
@@ -384,15 +488,16 @@ func file_logistic_v1_receiving_notes_proto_init() {
 	if File_logistic_v1_receiving_notes_proto != nil {
 		return
 	}
+	file_logistic_v1_receiving_notes_proto_msgTypes[1].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_logistic_v1_receiving_notes_proto_rawDesc), len(file_logistic_v1_receiving_notes_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   2,
+			NumMessages:   4,
 			NumExtensions: 0,
-			NumServices:   0,
+			NumServices:   1,
 		},
 		GoTypes:           file_logistic_v1_receiving_notes_proto_goTypes,
 		DependencyIndexes: file_logistic_v1_receiving_notes_proto_depIdxs,

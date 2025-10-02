@@ -10,9 +10,6 @@ import "google/protobuf/timestamp.proto";
  * Created when YOU receive goods from a supplier.
  * THIS IS WHAT INCREASES YOUR INVENTORY.
  *
- * Fix: ReceivingLineItem now includes batch_id (system-generated or from supplier).
- * When creating, new Batches are added to InventoryLevel.
- *
  * Flow: Goods arrive → Inspect → Create ReceivingNote → Update inventory
  *
  * Example:
@@ -48,8 +45,6 @@ enum ReceivingNoteStatus {
 /**
  * ReceivingLineItem shows what was actually received vs expected.
  *
- * Fix: Added batch_id and expiration_date for creating new batches on reception.
- *
  * Example:
  *   product_id: "PRD-001"
  *   quantity_expected: 50
@@ -65,6 +60,19 @@ message ReceivingLineItem {
   double quantity_received = 3; // Actually got
   double quantity_rejected = 4; // Damaged/wrong items
   string rejection_reason = 5;
-  string batch_id = 6; // Generated batch ID for received items
+  optional string batch_id = 6; // Generated batch ID for received items
   google.protobuf.Timestamp expiration_date = 7; // Provided by supplier or calculated
+  int32 purchase_price = 8;
+}
+
+service ReceivingNoteService {
+  rpc CreateReceivingNote(CreateReceivingNoteRequest) returns (CreateReceivingNoteResponse) {}
+}
+
+message CreateReceivingNoteRequest {
+  ReceivingNote receiving_note = 1;
+}
+
+message CreateReceivingNoteResponse {
+  bool success = 1;
 }

@@ -36,10 +36,6 @@ class SuppliersViewModel {
   Stream<List<Supplier>> get suppliersStream => _suppliersRepository
       .streamStoreSuppliers(StreamStoreSuppliersRequest(storeId: storeId));
 
-  /// Stream of products for reactive UI updates.
-  Stream<List<InventoryLevelWithProduct>> get productsStream =>
-      InventoryRepository.instance.getStoreInventory(storeId).asStream();
-
   /// Constructors a new SuppliersViewModel.
   SuppliersViewModel({required this.storeId});
 
@@ -103,5 +99,18 @@ class SuppliersViewModel {
   void dispose() {
     _searchQuerySubject.close();
     _selectedStatusSubject.close();
+  }
+
+  /// Gets products for a specific supplier.
+  Future<List<ProductBySupplier>> getProductsForSupplier(
+    String supplierRefId,
+    String? storeId,
+  ) async {
+    final response = await InventoryRepository.instance.getProductsForSupplier(
+      supplierRefId,
+      storeId,
+    );
+
+    return response;
   }
 }

@@ -67,23 +67,20 @@ message StoreProduct {
   // The media ids of the images of the product.
   repeated string images_links_ids = 5;
 
-  // The supplier.
-  optional string supplier_id = 6;
-
   // The status of the product.
-  ProductStatus status = 7;
+  ProductStatus status = 6;
 
   // The stock keeping unit.
-  optional string sku = 8;
+  optional string sku = 7;
 
   // The type of expiration of the product.
-  ExpirationType expiration_type = 9;
+  ExpirationType expiration_type = 8;
 
   // The creation date of the product.
-  google.protobuf.Timestamp created_at = 10;
+  google.protobuf.Timestamp created_at = 9;
 
   // The last update date of the product.
-  optional google.protobuf.Timestamp updated_at = 11;
+  optional google.protobuf.Timestamp updated_at = 10;
 }
 
 message CreateGlobalProductRequest {
@@ -279,11 +276,11 @@ message StreamGlobalProductsResponse {
 
 message SearchStoreProductsRequest {
   string store_id = 1 [(buf.validate.field).required = true];
-  optional string search_query = 2;  // Name/SKU search
+  optional string search_query = 2; // Name/SKU search
   repeated string category_ids = 3;
   optional inventory.v1.ProductStatus status = 4;
   int32 page_size = 5;
-  string page_token = 6;  // For pagination
+  string page_token = 6; // For pagination
 }
 
 message SearchStoreProductsResponse {

@@ -22,47 +22,37 @@ class SuppliersList extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Provider.of<SuppliersController>(context, listen: false);
 
-    return StreamBuilder<List<InventoryLevelWithProduct>>(
-      stream: controller.invStream,
-      builder: (context, productsSnapshot) {
-        final invList = productsSnapshot.data ?? [];
-
-        return ShadCard(
-          padding: EdgeInsets.zero,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: SupplierListHeader(),
-              ),
-              const SizedBox(height: 16),
-
-              StreamBuilder<List<Supplier>>(
-                stream: controller.filteredSuppliersStream,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return SupplierShimmerWidgets.buildTableShimmer();
-                  }
-                  final error = snapshot.error;
-                  if (snapshot.hasError && error != null) {
-                    return LoadingFailedWidget(error: error);
-                  }
-                  final suppliers = snapshot.data ?? [];
-                  if (suppliers.isEmpty) {
-                    return const SuppliersEmptyState();
-                  }
-
-                  return SupplierDataTable(
-                    suppliers: suppliers,
-                    products: invList,
-                  );
-                },
-              ),
-            ],
+    return ShadCard(
+      padding: EdgeInsets.zero,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Padding(
+            padding: EdgeInsets.all(16.0),
+            child: SupplierListHeader(),
           ),
-        );
-      },
+          const SizedBox(height: 16),
+
+          StreamBuilder<List<Supplier>>(
+            stream: controller.filteredSuppliersStream,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return SupplierShimmerWidgets.buildTableShimmer();
+              }
+              final error = snapshot.error;
+              if (snapshot.hasError && error != null) {
+                return LoadingFailedWidget(error: error);
+              }
+              final suppliers = snapshot.data ?? [];
+              if (suppliers.isEmpty) {
+                return const SuppliersEmptyState();
+              }
+
+              return SupplierDataTable(suppliers: suppliers);
+            },
+          ),
+        ],
+      ),
     );
   }
 }

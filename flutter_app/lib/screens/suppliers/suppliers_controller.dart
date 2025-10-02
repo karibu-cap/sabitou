@@ -58,10 +58,6 @@ class SuppliersController extends ChangeNotifier {
   /// Gets suppliers stream for reactive UI updates
   Stream<List<Supplier>> get suppliersStream => _viewModel.suppliersStream;
 
-  /// Gets products stream for reactive UI updates
-  Stream<List<InventoryLevelWithProduct>> get invStream =>
-      _viewModel.productsStream;
-
   /// Deletes a supplier from the system.
   Future<bool> deleteSupplier(String supplierId) async {
     _isLoading = true;
@@ -82,11 +78,11 @@ class SuppliersController extends ChangeNotifier {
   }
 
   /// Gets products for a specific supplier
-  List<StoreProduct> getProductsForSupplier(
+  Future<List<ProductBySupplier>> getProductsForSupplier(
     String supplierRefId,
-    List<StoreProduct> allProducts,
-  ) {
-    return allProducts.where((p) => p.supplierId == supplierRefId).toList();
+    String? storeId,
+  ) async {
+    return _viewModel.getProductsForSupplier(supplierRefId, storeId);
   }
 
   /// Calculates total products count

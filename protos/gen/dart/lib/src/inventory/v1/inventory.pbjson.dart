@@ -16,6 +16,8 @@ import 'dart:typed_data' as $typed_data;
 
 import '../../audits/v1/inventory_transaction.pbjson.dart' as $2;
 import '../../google/protobuf/timestamp.pbjson.dart' as $0;
+import 'category.pbjson.dart' as $3;
+import 'store_product.pbjson.dart' as $1;
 
 @$core.Deprecated('Use batchStatusDescriptor instead')
 const BatchStatus$json = {
@@ -83,15 +85,17 @@ const Batch$json = {
       '5': 9,
       '10': 'supplierBatchNumber'
     },
+    {'1': 'supplier_id', '3': 8, '4': 1, '5': 9, '10': 'supplierId'},
+    {'1': 'purchase_price', '3': 9, '4': 1, '5': 5, '10': 'purchasePrice'},
     {
       '1': 'status',
-      '3': 8,
+      '3': 10,
       '4': 1,
       '5': 14,
       '6': '.inventory.v1.BatchStatus',
       '10': 'status'
     },
-    {'1': 'notes', '3': 9, '4': 1, '5': 9, '10': 'notes'},
+    {'1': 'notes', '3': 11, '4': 1, '5': 9, '10': 'notes'},
   ],
 };
 
@@ -102,9 +106,10 @@ final $typed_data.Uint8List batchDescriptor = $convert.base64Decode(
     'ZUlkEhoKCHF1YW50aXR5GAQgASgFUghxdWFudGl0eRJDCg9leHBpcmF0aW9uX2RhdGUYBSABKA'
     'syGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUg5leHBpcmF0aW9uRGF0ZRI7CgtyZWNlaXZl'
     'ZF9hdBgGIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSCnJlY2VpdmVkQXQSMgoVc3'
-    'VwcGxpZXJfYmF0Y2hfbnVtYmVyGAcgASgJUhNzdXBwbGllckJhdGNoTnVtYmVyEjEKBnN0YXR1'
-    'cxgIIAEoDjIZLmludmVudG9yeS52MS5CYXRjaFN0YXR1c1IGc3RhdHVzEhQKBW5vdGVzGAkgAS'
-    'gJUgVub3Rlcw==');
+    'VwcGxpZXJfYmF0Y2hfbnVtYmVyGAcgASgJUhNzdXBwbGllckJhdGNoTnVtYmVyEh8KC3N1cHBs'
+    'aWVyX2lkGAggASgJUgpzdXBwbGllcklkEiUKDnB1cmNoYXNlX3ByaWNlGAkgASgFUg1wdXJjaG'
+    'FzZVByaWNlEjEKBnN0YXR1cxgKIAEoDjIZLmludmVudG9yeS52MS5CYXRjaFN0YXR1c1IGc3Rh'
+    'dHVzEhQKBW5vdGVzGAsgASgJUgVub3Rlcw==');
 
 @$core.Deprecated('Use inventoryLevelDescriptor instead')
 const InventoryLevel$json = {
@@ -624,6 +629,82 @@ final $typed_data.Uint8List getProductTransactionHistoryResponseDescriptor =
         'EgAygLMh8uYXVkaXRzLnYxLkludmVudG9yeVRyYW5zYWN0aW9uUgx0cmFuc2FjdGlvbnMSHwoL'
         'dG90YWxfY291bnQYAiABKAVSCnRvdGFsQ291bnQ=');
 
+@$core.Deprecated('Use listProductsBySupplierRequestDescriptor instead')
+const ListProductsBySupplierRequest$json = {
+  '1': 'ListProductsBySupplierRequest',
+  '2': [
+    {'1': 'supplier_id', '3': 1, '4': 1, '5': 9, '10': 'supplierId'},
+    {
+      '1': 'store_id',
+      '3': 2,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'storeId',
+      '17': true
+    },
+  ],
+  '8': [
+    {'1': '_store_id'},
+  ],
+};
+
+/// Descriptor for `ListProductsBySupplierRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List listProductsBySupplierRequestDescriptor =
+    $convert.base64Decode(
+        'Ch1MaXN0UHJvZHVjdHNCeVN1cHBsaWVyUmVxdWVzdBIfCgtzdXBwbGllcl9pZBgBIAEoCVIKc3'
+        'VwcGxpZXJJZBIeCghzdG9yZV9pZBgCIAEoCUgAUgdzdG9yZUlkiAEBQgsKCV9zdG9yZV9pZA==');
+
+@$core.Deprecated('Use listProductsBySupplierResponseDescriptor instead')
+const ListProductsBySupplierResponse$json = {
+  '1': 'ListProductsBySupplierResponse',
+  '2': [
+    {
+      '1': 'products',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.inventory.v1.ProductBySupplier',
+      '10': 'products'
+    },
+  ],
+};
+
+/// Descriptor for `ListProductsBySupplierResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List listProductsBySupplierResponseDescriptor =
+    $convert.base64Decode(
+        'Ch5MaXN0UHJvZHVjdHNCeVN1cHBsaWVyUmVzcG9uc2USOwoIcHJvZHVjdHMYASADKAsyHy5pbn'
+        'ZlbnRvcnkudjEuUHJvZHVjdEJ5U3VwcGxpZXJSCHByb2R1Y3Rz');
+
+@$core.Deprecated('Use productBySupplierDescriptor instead')
+const ProductBySupplier$json = {
+  '1': 'ProductBySupplier',
+  '2': [
+    {
+      '1': 'store_product',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.inventory.v1.StoreProduct',
+      '10': 'storeProduct'
+    },
+    {
+      '1': 'global_product',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.inventory.v1.GlobalProduct',
+      '10': 'globalProduct'
+    },
+  ],
+};
+
+/// Descriptor for `ProductBySupplier`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List productBySupplierDescriptor = $convert.base64Decode(
+    'ChFQcm9kdWN0QnlTdXBwbGllchI/Cg1zdG9yZV9wcm9kdWN0GAEgASgLMhouaW52ZW50b3J5Ln'
+    'YxLlN0b3JlUHJvZHVjdFIMc3RvcmVQcm9kdWN0EkIKDmdsb2JhbF9wcm9kdWN0GAIgASgLMhsu'
+    'aW52ZW50b3J5LnYxLkdsb2JhbFByb2R1Y3RSDWdsb2JhbFByb2R1Y3Q=');
+
 const $core.Map<$core.String, $core.dynamic> InventoryServiceBase$json = {
   '1': 'InventoryService',
   '2': [
@@ -657,6 +738,11 @@ const $core.Map<$core.String, $core.dynamic> InventoryServiceBase$json = {
       '2': '.inventory.v1.GetProductTransactionHistoryRequest',
       '3': '.inventory.v1.GetProductTransactionHistoryResponse'
     },
+    {
+      '1': 'ListProductsBySupplier',
+      '2': '.inventory.v1.ListProductsBySupplierRequest',
+      '3': '.inventory.v1.ListProductsBySupplierResponse'
+    },
   ],
 };
 
@@ -688,6 +774,15 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
       GetProductTransactionHistoryRequest$json,
   '.inventory.v1.GetProductTransactionHistoryResponse':
       GetProductTransactionHistoryResponse$json,
+  '.inventory.v1.ListProductsBySupplierRequest':
+      ListProductsBySupplierRequest$json,
+  '.inventory.v1.ListProductsBySupplierResponse':
+      ListProductsBySupplierResponse$json,
+  '.inventory.v1.ProductBySupplier': ProductBySupplier$json,
+  '.inventory.v1.StoreProduct': $1.StoreProduct$json,
+  '.inventory.v1.GlobalProduct': $1.GlobalProduct$json,
+  '.inventory.v1.Internationalized': $3.Internationalized$json,
+  '.inventory.v1.Category': $3.Category$json,
 };
 
 /// Descriptor for `InventoryService`. Decode as a `google.protobuf.ServiceDescriptorProto`.
@@ -705,4 +800,6 @@ final $typed_data.Uint8List inventoryServiceDescriptor = $convert.base64Decode(
     'b3J5UmVxdWVzdBo0LmludmVudG9yeS52MS5HZXRJbnZlbnRvcnlUcmFuc2FjdGlvbkhpc3Rvcn'
     'lSZXNwb25zZRKFAQocR2V0UHJvZHVjdFRyYW5zYWN0aW9uSGlzdG9yeRIxLmludmVudG9yeS52'
     'MS5HZXRQcm9kdWN0VHJhbnNhY3Rpb25IaXN0b3J5UmVxdWVzdBoyLmludmVudG9yeS52MS5HZX'
-    'RQcm9kdWN0VHJhbnNhY3Rpb25IaXN0b3J5UmVzcG9uc2U=');
+    'RQcm9kdWN0VHJhbnNhY3Rpb25IaXN0b3J5UmVzcG9uc2UScwoWTGlzdFByb2R1Y3RzQnlTdXBw'
+    'bGllchIrLmludmVudG9yeS52MS5MaXN0UHJvZHVjdHNCeVN1cHBsaWVyUmVxdWVzdBosLmludm'
+    'VudG9yeS52MS5MaXN0UHJvZHVjdHNCeVN1cHBsaWVyUmVzcG9uc2U=');
