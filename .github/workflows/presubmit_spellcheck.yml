@@ -30,6 +30,7 @@ jobs:
             **/package-lock.json
             **/app_internationalization.dart
             **/remote_config.json
+            **/protos/gen/**
 
   languagetool:
     needs: changes

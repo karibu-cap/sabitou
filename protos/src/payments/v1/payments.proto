@@ -5,7 +5,6 @@ package payments.v1;
 import "buf/validate/validate.proto";
 import "financial/v1/invoice.proto";
 import "google/protobuf/timestamp.proto";
-import "payments/v1/payment_utils.proto";
 
 /**
  * Payment represents money transfer between parties.
@@ -14,32 +13,33 @@ import "payments/v1/payment_utils.proto";
  * Example:
  *   payment_id: "PAY-2025-001"
  *   payer_id: "CMP-003" (customer)
- *   payee_id: "CMP-001" (your company)
+ *   receiver: "CMP-001" (your company)
  *   amount: 5400000
  *   payment_method: PAYMENT_METHOD_BANK_TRANSFER
- *   related_invoice_id: "INV-2025-001"
  *   status: PAYMENT_STATUS_COMPLETED
  */
 message Payment {
   string document_id = 1 [(buf.validate.field).required = true]; // "PAY-2025-001"
-  string payer_id = 2; // Who pays
-  string payee_id = 3; // Who receives
-  double amount = 4; // Amount in smallest currency unit
+  string payer_id = 2;
+  // Can be a customer phone number or account number.
+  string receiver = 3;
+  double amount = 4;
   string currency = 5;
-  payments.v1.PaymentMethod payment_method = 6;
-  PaymentStatus status = 7;
-  string related_invoice_id = 8; // Which invoice this pays
+  // The warehouse id. in general it's the warehouse of the store.
+  string warehouse_id = 6;
+  payments.v1.PaymentMethod payment_method = 7;
+  PaymentStatus status = 8;
   google.protobuf.Timestamp payment_date = 9;
-  string reference_number = 10; // Bank reference, check number, etc.
+  optional string reference_number = 10;
   string created_by_user_id = 11;
-  string notes = 12;
+  optional string notes = 12;
 }
 
 enum PaymentStatus {
   PAYMENT_STATUS_UNSPECIFIED = 0;
-  PAYMENT_STATUS_PENDING = 1; // Initiated but not confirmed
-  PAYMENT_STATUS_COMPLETED = 2; // Money received
-  PAYMENT_STATUS_FAILED = 3; // Payment didn't go through
+  PAYMENT_STATUS_PENDING = 1;
+  PAYMENT_STATUS_COMPLETED = 2;
+  PAYMENT_STATUS_FAILED = 3;
 }
 
 enum PaymentMethod {
@@ -61,26 +61,20 @@ service PaymentService {
 
   // List payments with filtering
   rpc ListPayments(ListPaymentsRequest) returns (ListPaymentsResponse);
-
-  // Process refund
-  rpc CreateRefund(CreateRefundRequest) returns (CreateRefundResponse);
 }
 
 message CreatePaymentRequest {
-  string payer_id = 1; // Company making payment
-  string payee_id = 2; // Company receiving payment
+  string payer_id = 1;
+  string receiver = 2;
   double amount = 3;
   string currency = 4;
   PaymentMethod payment_method = 5;
-  optional string reference_number = 7; // Bank ref, check number, etc.
-  optional string notes = 8;
+  optional string reference_number = 6;
+  optional string notes = 7;
 }
 
 message CreatePaymentResponse {
-  string payment_id = 1;
-  Payment payment = 2;
-  financial.v1.Invoice updated_invoice = 3; // Updated status
-  string message = 4;
+  Payment payment = 1;
 }
 
 message GetPaymentRequest {
@@ -93,31 +87,15 @@ message GetPaymentResponse {
 }
 
 message ListPaymentsRequest {
-  string store_id = 1; // Payments involving this company
-  PaymentMethod method = 2; // Filter by method
-  PaymentStatus status = 3; // Filter by status
-  google.protobuf.Timestamp start_date = 4;
-  google.protobuf.Timestamp end_date = 5;
-  int32 page_size = 6;
-  int32 page_number = 7;
+  string warehouse_id = 1;
+  google.protobuf.Timestamp start_date = 2;
+  google.protobuf.Timestamp end_date = 3;
+  int32 page_size = 4;
+  int32 page_number = 5;
 }
 
 message ListPaymentsResponse {
   repeated Payment payments = 1;
   int32 total_count = 2;
   double total_amount = 3;
-}
-
-message CreateRefundRequest {
-  string original_payment_id = 1;
-  string credit_note_id = 2; // Reason for refund
-  double refund_amount = 3;
-  string refunded_by_user_id = 4;
-  string notes = 5;
-}
-
-message CreateRefundResponse {
-  string refund_payment_id = 1;
-  Payment refund_payment = 2;
-  string message = 3;
 }

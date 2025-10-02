@@ -20,17 +20,9 @@ import "inventory/v1/category.proto";
  */
 message OrderLineItem {
   string product_id = 1; // Which product
-  double quantity = 2; // How many units
+  int32 quantity = 2; // How many units
   inventory.v1.Internationalized product_name = 3; // Product name
   double unit_price = 4; // Price per unit (in smallest currency)
   double total = 5; // quantity * unit_price
-  string notes = 6; // Special notes for this line
-  string batch_id = 7; // Optional: Specific batch/lot requested
-}
-
-message OrderPrices {
-  int32 subtotal = 1;
-  int32 discounts = 2;
-  int32 total_vat_amount = 3;
-  int32 grand_total = 4;
+ optional string batch_id = 6; // Optional: Specific batch/lot requested
 }

@@ -51,11 +51,11 @@ const SalesOrder$json = {
     {'1': 'customer_id', '3': 2, '4': 1, '5': 9, '10': 'customerId'},
     {'1': 'seller_id', '3': 3, '4': 1, '5': 9, '10': 'sellerId'},
     {
-      '1': 'source_warehouse_id',
+      '1': 'source_warehouse_address',
       '3': 4,
       '4': 1,
       '5': 9,
-      '10': 'sourceWarehouseId'
+      '10': 'sourceWarehouseAddress'
     },
     {
       '1': 'status',
@@ -73,14 +73,7 @@ const SalesOrder$json = {
       '6': '.order.v1.OrderLineItem',
       '10': 'items'
     },
-    {
-      '1': 'order_prices',
-      '3': 7,
-      '4': 1,
-      '5': 11,
-      '6': '.order.v1.OrderPrices',
-      '10': 'orderPrices'
-    },
+    {'1': 'total_amount', '3': 7, '4': 1, '5': 1, '10': 'totalAmount'},
     {
       '1': 'currency',
       '3': 8,
@@ -111,12 +104,15 @@ const SalesOrder$json = {
       '4': 1,
       '5': 11,
       '6': '.google.protobuf.Timestamp',
-      '10': 'deliveryDate'
+      '9': 1,
+      '10': 'deliveryDate',
+      '17': true
     },
-    {'1': 'notes', '3': 12, '4': 1, '5': 9, '9': 1, '10': 'notes', '17': true},
+    {'1': 'notes', '3': 12, '4': 1, '5': 9, '9': 2, '10': 'notes', '17': true},
   ],
   '8': [
     {'1': '_currency'},
+    {'1': '_delivery_date'},
     {'1': '_notes'},
   ],
 };
@@ -125,15 +121,15 @@ const SalesOrder$json = {
 final $typed_data.Uint8List salesOrderDescriptor = $convert.base64Decode(
     'CgpTYWxlc09yZGVyEicKC2RvY3VtZW50X2lkGAEgASgJQga6SAPIAQFSCmRvY3VtZW50SWQSHw'
     'oLY3VzdG9tZXJfaWQYAiABKAlSCmN1c3RvbWVySWQSGwoJc2VsbGVyX2lkGAMgASgJUghzZWxs'
-    'ZXJJZBIuChNzb3VyY2Vfd2FyZWhvdXNlX2lkGAQgASgJUhFzb3VyY2VXYXJlaG91c2VJZBIyCg'
-    'ZzdGF0dXMYBSABKA4yGi5vcmRlci52MS5TYWxlc09yZGVyU3RhdHVzUgZzdGF0dXMSLQoFaXRl'
-    'bXMYBiADKAsyFy5vcmRlci52MS5PcmRlckxpbmVJdGVtUgVpdGVtcxI4CgxvcmRlcl9wcmljZX'
-    'MYByABKAsyFS5vcmRlci52MS5PcmRlclByaWNlc1ILb3JkZXJQcmljZXMSHwoIY3VycmVuY3kY'
-    'CCABKAlIAFIIY3VycmVuY3mIAQESKwoSY3JlYXRlZF9ieV91c2VyX2lkGAkgASgJUg9jcmVhdG'
-    'VkQnlVc2VySWQSOQoKY3JlYXRlZF9hdBgKIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3Rh'
-    'bXBSCWNyZWF0ZWRBdBI/Cg1kZWxpdmVyeV9kYXRlGAsgASgLMhouZ29vZ2xlLnByb3RvYnVmLl'
-    'RpbWVzdGFtcFIMZGVsaXZlcnlEYXRlEhkKBW5vdGVzGAwgASgJSAFSBW5vdGVziAEBQgsKCV9j'
-    'dXJyZW5jeUIICgZfbm90ZXM=');
+    'ZXJJZBI4Chhzb3VyY2Vfd2FyZWhvdXNlX2FkZHJlc3MYBCABKAlSFnNvdXJjZVdhcmVob3VzZU'
+    'FkZHJlc3MSMgoGc3RhdHVzGAUgASgOMhoub3JkZXIudjEuU2FsZXNPcmRlclN0YXR1c1IGc3Rh'
+    'dHVzEi0KBWl0ZW1zGAYgAygLMhcub3JkZXIudjEuT3JkZXJMaW5lSXRlbVIFaXRlbXMSIQoMdG'
+    '90YWxfYW1vdW50GAcgASgBUgt0b3RhbEFtb3VudBIfCghjdXJyZW5jeRgIIAEoCUgAUghjdXJy'
+    'ZW5jeYgBARIrChJjcmVhdGVkX2J5X3VzZXJfaWQYCSABKAlSD2NyZWF0ZWRCeVVzZXJJZBI5Cg'
+    'pjcmVhdGVkX2F0GAogASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIJY3JlYXRlZEF0'
+    'EkQKDWRlbGl2ZXJ5X2RhdGUYCyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wSAFSDG'
+    'RlbGl2ZXJ5RGF0ZYgBARIZCgVub3RlcxgMIAEoCUgCUgVub3Rlc4gBAUILCglfY3VycmVuY3lC'
+    'EAoOX2RlbGl2ZXJ5X2RhdGVCCAoGX25vdGVz');
 
 @$core.Deprecated('Use createSalesOrderRequestDescriptor instead')
 const CreateSalesOrderRequest$json = {
@@ -142,11 +138,11 @@ const CreateSalesOrderRequest$json = {
     {'1': 'customer_id', '3': 1, '4': 1, '5': 9, '10': 'customerId'},
     {'1': 'seller_id', '3': 2, '4': 1, '5': 9, '10': 'sellerId'},
     {
-      '1': 'source_warehouse_id',
+      '1': 'source_warehouse_address',
       '3': 3,
       '4': 1,
       '5': 9,
-      '10': 'sourceWarehouseId'
+      '10': 'sourceWarehouseAddress'
     },
     {
       '1': 'items',
@@ -171,24 +167,28 @@ const CreateSalesOrderRequest$json = {
       '5': 9,
       '10': 'createdByUserId'
     },
-    {'1': 'notes', '3': 7, '4': 1, '5': 9, '10': 'notes'},
+    {'1': 'notes', '3': 7, '4': 1, '5': 9, '9': 0, '10': 'notes', '17': true},
+  ],
+  '8': [
+    {'1': '_notes'},
   ],
 };
 
 /// Descriptor for `CreateSalesOrderRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List createSalesOrderRequestDescriptor = $convert.base64Decode(
     'ChdDcmVhdGVTYWxlc09yZGVyUmVxdWVzdBIfCgtjdXN0b21lcl9pZBgBIAEoCVIKY3VzdG9tZX'
-    'JJZBIbCglzZWxsZXJfaWQYAiABKAlSCHNlbGxlcklkEi4KE3NvdXJjZV93YXJlaG91c2VfaWQY'
-    'AyABKAlSEXNvdXJjZVdhcmVob3VzZUlkEi0KBWl0ZW1zGAQgAygLMhcub3JkZXIudjEuT3JkZX'
-    'JMaW5lSXRlbVIFaXRlbXMSPwoNZGVsaXZlcnlfZGF0ZRgFIAEoCzIaLmdvb2dsZS5wcm90b2J1'
-    'Zi5UaW1lc3RhbXBSDGRlbGl2ZXJ5RGF0ZRIrChJjcmVhdGVkX2J5X3VzZXJfaWQYBiABKAlSD2'
-    'NyZWF0ZWRCeVVzZXJJZBIUCgVub3RlcxgHIAEoCVIFbm90ZXM=');
+    'JJZBIbCglzZWxsZXJfaWQYAiABKAlSCHNlbGxlcklkEjgKGHNvdXJjZV93YXJlaG91c2VfYWRk'
+    'cmVzcxgDIAEoCVIWc291cmNlV2FyZWhvdXNlQWRkcmVzcxItCgVpdGVtcxgEIAMoCzIXLm9yZG'
+    'VyLnYxLk9yZGVyTGluZUl0ZW1SBWl0ZW1zEj8KDWRlbGl2ZXJ5X2RhdGUYBSABKAsyGi5nb29n'
+    'bGUucHJvdG9idWYuVGltZXN0YW1wUgxkZWxpdmVyeURhdGUSKwoSY3JlYXRlZF9ieV91c2VyX2'
+    'lkGAYgASgJUg9jcmVhdGVkQnlVc2VySWQSGQoFbm90ZXMYByABKAlIAFIFbm90ZXOIAQFCCAoG'
+    'X25vdGVz');
 
 @$core.Deprecated('Use createSalesOrderResponseDescriptor instead')
 const CreateSalesOrderResponse$json = {
   '1': 'CreateSalesOrderResponse',
   '2': [
-    {'1': 'so_id', '3': 1, '4': 1, '5': 9, '10': 'soId'},
+    {'1': 'sales_order_id', '3': 1, '4': 1, '5': 9, '10': 'salesOrderId'},
     {
       '1': 'sales_order',
       '3': 2,
@@ -217,24 +217,24 @@ const CreateSalesOrderResponse$json = {
 
 /// Descriptor for `CreateSalesOrderResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List createSalesOrderResponseDescriptor = $convert.base64Decode(
-    'ChhDcmVhdGVTYWxlc09yZGVyUmVzcG9uc2USEwoFc29faWQYASABKAlSBHNvSWQSNQoLc2FsZX'
-    'Nfb3JkZXIYAiABKAsyFC5vcmRlci52MS5TYWxlc09yZGVyUgpzYWxlc09yZGVyEi4KE2FsbF9p'
-    'dGVtc19hdmFpbGFibGUYAyABKAhSEWFsbEl0ZW1zQXZhaWxhYmxlEjYKF3VuYXZhaWxhYmxlX3'
-    'Byb2R1Y3RfaWRzGAQgAygJUhV1bmF2YWlsYWJsZVByb2R1Y3RJZHMSGAoHbWVzc2FnZRgFIAEo'
-    'CVIHbWVzc2FnZQ==');
+    'ChhDcmVhdGVTYWxlc09yZGVyUmVzcG9uc2USJAoOc2FsZXNfb3JkZXJfaWQYASABKAlSDHNhbG'
+    'VzT3JkZXJJZBI1CgtzYWxlc19vcmRlchgCIAEoCzIULm9yZGVyLnYxLlNhbGVzT3JkZXJSCnNh'
+    'bGVzT3JkZXISLgoTYWxsX2l0ZW1zX2F2YWlsYWJsZRgDIAEoCFIRYWxsSXRlbXNBdmFpbGFibG'
+    'USNgoXdW5hdmFpbGFibGVfcHJvZHVjdF9pZHMYBCADKAlSFXVuYXZhaWxhYmxlUHJvZHVjdElk'
+    'cxIYCgdtZXNzYWdlGAUgASgJUgdtZXNzYWdl');
 
 @$core.Deprecated('Use getSalesOrderRequestDescriptor instead')
 const GetSalesOrderRequest$json = {
   '1': 'GetSalesOrderRequest',
   '2': [
-    {'1': 'so_id', '3': 1, '4': 1, '5': 9, '10': 'soId'},
+    {'1': 'sales_order_id', '3': 1, '4': 1, '5': 9, '10': 'salesOrderId'},
   ],
 };
 
 /// Descriptor for `GetSalesOrderRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List getSalesOrderRequestDescriptor =
-    $convert.base64Decode(
-        'ChRHZXRTYWxlc09yZGVyUmVxdWVzdBITCgVzb19pZBgBIAEoCVIEc29JZA==');
+final $typed_data.Uint8List getSalesOrderRequestDescriptor = $convert.base64Decode(
+    'ChRHZXRTYWxlc09yZGVyUmVxdWVzdBIkCg5zYWxlc19vcmRlcl9pZBgBIAEoCVIMc2FsZXNPcm'
+    'Rlcklk');
 
 @$core.Deprecated('Use getSalesOrderResponseDescriptor instead')
 const GetSalesOrderResponse$json = {
@@ -353,7 +353,7 @@ final $typed_data.Uint8List listSalesOrdersResponseDescriptor = $convert.base64D
 const UpdateSalesOrderStatusRequest$json = {
   '1': 'UpdateSalesOrderStatusRequest',
   '2': [
-    {'1': 'so_id', '3': 1, '4': 1, '5': 9, '10': 'soId'},
+    {'1': 'sales_order_id', '3': 1, '4': 1, '5': 9, '10': 'salesOrderId'},
     {
       '1': 'new_status',
       '3': 2,
@@ -375,10 +375,10 @@ const UpdateSalesOrderStatusRequest$json = {
 
 /// Descriptor for `UpdateSalesOrderStatusRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List updateSalesOrderStatusRequestDescriptor = $convert.base64Decode(
-    'Ch1VcGRhdGVTYWxlc09yZGVyU3RhdHVzUmVxdWVzdBITCgVzb19pZBgBIAEoCVIEc29JZBI5Cg'
-    'puZXdfc3RhdHVzGAIgASgOMhoub3JkZXIudjEuU2FsZXNPcmRlclN0YXR1c1IJbmV3U3RhdHVz'
-    'EisKEnVwZGF0ZWRfYnlfdXNlcl9pZBgDIAEoCVIPdXBkYXRlZEJ5VXNlcklkEhQKBW5vdGVzGA'
-    'QgASgJUgVub3Rlcw==');
+    'Ch1VcGRhdGVTYWxlc09yZGVyU3RhdHVzUmVxdWVzdBIkCg5zYWxlc19vcmRlcl9pZBgBIAEoCV'
+    'IMc2FsZXNPcmRlcklkEjkKCm5ld19zdGF0dXMYAiABKA4yGi5vcmRlci52MS5TYWxlc09yZGVy'
+    'U3RhdHVzUgluZXdTdGF0dXMSKwoSdXBkYXRlZF9ieV91c2VyX2lkGAMgASgJUg91cGRhdGVkQn'
+    'lVc2VySWQSFAoFbm90ZXMYBCABKAlSBW5vdGVz');
 
 @$core.Deprecated('Use updateSalesOrderStatusResponseDescriptor instead')
 const UpdateSalesOrderStatusResponse$json = {
@@ -407,7 +407,7 @@ final $typed_data.Uint8List updateSalesOrderStatusResponseDescriptor =
 const CancelSalesOrderRequest$json = {
   '1': 'CancelSalesOrderRequest',
   '2': [
-    {'1': 'document_id', '3': 1, '4': 1, '5': 9, '10': 'documentId'},
+    {'1': 'sales_order_id', '3': 1, '4': 1, '5': 9, '10': 'salesOrderId'},
     {'1': 'reason', '3': 2, '4': 1, '5': 9, '10': 'reason'},
     {
       '1': 'cancelled_by_user_id',
@@ -421,9 +421,9 @@ const CancelSalesOrderRequest$json = {
 
 /// Descriptor for `CancelSalesOrderRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List cancelSalesOrderRequestDescriptor = $convert.base64Decode(
-    'ChdDYW5jZWxTYWxlc09yZGVyUmVxdWVzdBIfCgtkb2N1bWVudF9pZBgBIAEoCVIKZG9jdW1lbn'
-    'RJZBIWCgZyZWFzb24YAiABKAlSBnJlYXNvbhIvChRjYW5jZWxsZWRfYnlfdXNlcl9pZBgDIAEo'
-    'CVIRY2FuY2VsbGVkQnlVc2VySWQ=');
+    'ChdDYW5jZWxTYWxlc09yZGVyUmVxdWVzdBIkCg5zYWxlc19vcmRlcl9pZBgBIAEoCVIMc2FsZX'
+    'NPcmRlcklkEhYKBnJlYXNvbhgCIAEoCVIGcmVhc29uEi8KFGNhbmNlbGxlZF9ieV91c2VyX2lk'
+    'GAMgASgJUhFjYW5jZWxsZWRCeVVzZXJJZA==');
 
 @$core.Deprecated('Use cancelSalesOrderResponseDescriptor instead')
 const CancelSalesOrderResponse$json = {
@@ -478,7 +478,7 @@ final $typed_data.Uint8List createDeliveryNoteRequestDescriptor = $convert.base6
 const CreateDeliveryNoteResponse$json = {
   '1': 'CreateDeliveryNoteResponse',
   '2': [
-    {'1': 'document_id', '3': 1, '4': 1, '5': 9, '10': 'documentId'},
+    {'1': 'delivery_note_id', '3': 1, '4': 1, '5': 9, '10': 'deliveryNoteId'},
     {
       '1': 'delivery_note',
       '3': 2,
@@ -500,10 +500,10 @@ const CreateDeliveryNoteResponse$json = {
 
 /// Descriptor for `CreateDeliveryNoteResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List createDeliveryNoteResponseDescriptor = $convert.base64Decode(
-    'ChpDcmVhdGVEZWxpdmVyeU5vdGVSZXNwb25zZRIfCgtkb2N1bWVudF9pZBgBIAEoCVIKZG9jdW'
-    '1lbnRJZBI+Cg1kZWxpdmVyeV9ub3RlGAIgASgLMhkubG9naXN0aWMudjEuRGVsaXZlcnlOb3Rl'
-    'UgxkZWxpdmVyeU5vdGUSOgoZaW52ZW50b3J5X3RyYW5zYWN0aW9uX2lkcxgDIAMoCVIXaW52ZW'
-    '50b3J5VHJhbnNhY3Rpb25JZHMSGAoHbWVzc2FnZRgEIAEoCVIHbWVzc2FnZQ==');
+    'ChpDcmVhdGVEZWxpdmVyeU5vdGVSZXNwb25zZRIoChBkZWxpdmVyeV9ub3RlX2lkGAEgASgJUg'
+    '5kZWxpdmVyeU5vdGVJZBI+Cg1kZWxpdmVyeV9ub3RlGAIgASgLMhkubG9naXN0aWMudjEuRGVs'
+    'aXZlcnlOb3RlUgxkZWxpdmVyeU5vdGUSOgoZaW52ZW50b3J5X3RyYW5zYWN0aW9uX2lkcxgDIA'
+    'MoCVIXaW52ZW50b3J5VHJhbnNhY3Rpb25JZHMSGAoHbWVzc2FnZRgEIAEoCVIHbWVzc2FnZQ==');
 
 @$core.Deprecated('Use createInvoiceFromSalesOrderRequestDescriptor instead')
 const CreateInvoiceFromSalesOrderRequest$json = {
@@ -519,7 +519,6 @@ const CreateInvoiceFromSalesOrderRequest$json = {
       '6': '.google.protobuf.Timestamp',
       '10': 'dueDate'
     },
-    {'1': 'payment_terms', '3': 4, '4': 1, '5': 9, '10': 'paymentTerms'},
     {
       '1': 'created_by_user_id',
       '3': 5,
@@ -536,14 +535,13 @@ final $typed_data.Uint8List createInvoiceFromSalesOrderRequestDescriptor =
         'CiJDcmVhdGVJbnZvaWNlRnJvbVNhbGVzT3JkZXJSZXF1ZXN0EiQKDnNhbGVzX29yZGVyX2lkGA'
         'EgASgJUgxzYWxlc09yZGVySWQSKAoQZGVsaXZlcnlfbm90ZV9pZBgCIAEoCVIOZGVsaXZlcnlO'
         'b3RlSWQSNQoIZHVlX2RhdGUYAyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUgdkdW'
-        'VEYXRlEiMKDXBheW1lbnRfdGVybXMYBCABKAlSDHBheW1lbnRUZXJtcxIrChJjcmVhdGVkX2J5'
-        'X3VzZXJfaWQYBSABKAlSD2NyZWF0ZWRCeVVzZXJJZA==');
+        'VEYXRlEisKEmNyZWF0ZWRfYnlfdXNlcl9pZBgFIAEoCVIPY3JlYXRlZEJ5VXNlcklk');
 
 @$core.Deprecated('Use createInvoiceFromSalesOrderResponseDescriptor instead')
 const CreateInvoiceFromSalesOrderResponse$json = {
   '1': 'CreateInvoiceFromSalesOrderResponse',
   '2': [
-    {'1': 'document_id', '3': 1, '4': 1, '5': 9, '10': 'documentId'},
+    {'1': 'invoice_id', '3': 1, '4': 1, '5': 9, '10': 'invoiceId'},
     {
       '1': 'invoice',
       '3': 2,
@@ -559,9 +557,9 @@ const CreateInvoiceFromSalesOrderResponse$json = {
 /// Descriptor for `CreateInvoiceFromSalesOrderResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List createInvoiceFromSalesOrderResponseDescriptor =
     $convert.base64Decode(
-        'CiNDcmVhdGVJbnZvaWNlRnJvbVNhbGVzT3JkZXJSZXNwb25zZRIfCgtkb2N1bWVudF9pZBgBIA'
-        'EoCVIKZG9jdW1lbnRJZBIvCgdpbnZvaWNlGAIgASgLMhUuZmluYW5jaWFsLnYxLkludm9pY2VS'
-        'B2ludm9pY2USGAoHbWVzc2FnZRgDIAEoCVIHbWVzc2FnZQ==');
+        'CiNDcmVhdGVJbnZvaWNlRnJvbVNhbGVzT3JkZXJSZXNwb25zZRIdCgppbnZvaWNlX2lkGAEgAS'
+        'gJUglpbnZvaWNlSWQSLwoHaW52b2ljZRgCIAEoCzIVLmZpbmFuY2lhbC52MS5JbnZvaWNlUgdp'
+        'bnZvaWNlEhgKB21lc3NhZ2UYAyABKAlSB21lc3NhZ2U=');
 
 const $core.Map<$core.String, $core.dynamic> SalesOrderServiceBase$json = {
   '1': 'SalesOrderService',
@@ -613,7 +611,6 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
   '.google.protobuf.Timestamp': $1.Timestamp$json,
   '.order.v1.CreateSalesOrderResponse': CreateSalesOrderResponse$json,
   '.order.v1.SalesOrder': SalesOrder$json,
-  '.order.v1.OrderPrices': $0.OrderPrices$json,
   '.order.v1.GetSalesOrderRequest': GetSalesOrderRequest$json,
   '.order.v1.GetSalesOrderResponse': GetSalesOrderResponse$json,
   '.logistic.v1.DeliveryNote': $2.DeliveryNote$json,

@@ -102,21 +102,24 @@ func (SalesOrderStatus) EnumDescriptor() ([]byte, []int) {
 //	status: SO_STATUS_CONFIRMED
 //	items: [10x PRD-001 @ 450000 each]
 type SalesOrder struct {
-	state             protoimpl.MessageState `protogen:"open.v1"`
-	DocumentId        string                 `protobuf:"bytes,1,opt,name=document_id,json=documentId,proto3" json:"document_id,omitempty"`                        // "SO-2025-001"
-	CustomerId        string                 `protobuf:"bytes,2,opt,name=customer_id,json=customerId,proto3" json:"customer_id,omitempty"`                        // Company buying from you
-	SellerId          string                 `protobuf:"bytes,3,opt,name=seller_id,json=sellerId,proto3" json:"seller_id,omitempty"`                              // Your company
-	SourceWarehouseId string                 `protobuf:"bytes,4,opt,name=source_warehouse_id,json=sourceWarehouseId,proto3" json:"source_warehouse_id,omitempty"` // Where to pick items
-	Status            SalesOrderStatus       `protobuf:"varint,5,opt,name=status,proto3,enum=order.v1.SalesOrderStatus" json:"status,omitempty"`
-	Items             []*OrderLineItem       `protobuf:"bytes,6,rep,name=items,proto3" json:"items,omitempty"`
-	OrderPrices       *OrderPrices           `protobuf:"bytes,7,opt,name=order_prices,json=orderPrices,proto3" json:"order_prices,omitempty"`
-	Currency          *string                `protobuf:"bytes,8,opt,name=currency,proto3,oneof" json:"currency,omitempty"`
-	CreatedByUserId   string                 `protobuf:"bytes,9,opt,name=created_by_user_id,json=createdByUserId,proto3" json:"created_by_user_id,omitempty"`
-	CreatedAt         *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	DeliveryDate      *timestamppb.Timestamp `protobuf:"bytes,11,opt,name=delivery_date,json=deliveryDate,proto3" json:"delivery_date,omitempty"`
-	Notes             *string                `protobuf:"bytes,12,opt,name=notes,proto3,oneof" json:"notes,omitempty"`
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
+	state      protoimpl.MessageState `protogen:"open.v1"`
+	DocumentId string                 `protobuf:"bytes,1,opt,name=document_id,json=documentId,proto3" json:"document_id,omitempty"` // "SO-2025-001"
+	// Company buying from you
+	CustomerId string `protobuf:"bytes,2,opt,name=customer_id,json=customerId,proto3" json:"customer_id,omitempty"`
+	// Your company
+	SellerId string `protobuf:"bytes,3,opt,name=seller_id,json=sellerId,proto3" json:"seller_id,omitempty"`
+	// Where to pick items
+	SourceWarehouseAddress string                 `protobuf:"bytes,4,opt,name=source_warehouse_address,json=sourceWarehouseAddress,proto3" json:"source_warehouse_address,omitempty"`
+	Status                 SalesOrderStatus       `protobuf:"varint,5,opt,name=status,proto3,enum=order.v1.SalesOrderStatus" json:"status,omitempty"`
+	Items                  []*OrderLineItem       `protobuf:"bytes,6,rep,name=items,proto3" json:"items,omitempty"`
+	TotalAmount            float64                `protobuf:"fixed64,7,opt,name=total_amount,json=totalAmount,proto3" json:"total_amount,omitempty"`
+	Currency               *string                `protobuf:"bytes,8,opt,name=currency,proto3,oneof" json:"currency,omitempty"`
+	CreatedByUserId        string                 `protobuf:"bytes,9,opt,name=created_by_user_id,json=createdByUserId,proto3" json:"created_by_user_id,omitempty"`
+	CreatedAt              *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	DeliveryDate           *timestamppb.Timestamp `protobuf:"bytes,11,opt,name=delivery_date,json=deliveryDate,proto3,oneof" json:"delivery_date,omitempty"`
+	Notes                  *string                `protobuf:"bytes,12,opt,name=notes,proto3,oneof" json:"notes,omitempty"`
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
 }
 
 func (x *SalesOrder) Reset() {
@@ -170,9 +173,9 @@ func (x *SalesOrder) GetSellerId() string {
 	return ""
 }
 
-func (x *SalesOrder) GetSourceWarehouseId() string {
+func (x *SalesOrder) GetSourceWarehouseAddress() string {
 	if x != nil {
-		return x.SourceWarehouseId
+		return x.SourceWarehouseAddress
 	}
 	return ""
 }
@@ -191,11 +194,11 @@ func (x *SalesOrder) GetItems() []*OrderLineItem {
 	return nil
 }
 
-func (x *SalesOrder) GetOrderPrices() *OrderPrices {
+func (x *SalesOrder) GetTotalAmount() float64 {
 	if x != nil {
-		return x.OrderPrices
+		return x.TotalAmount
 	}
-	return nil
+	return 0
 }
 
 func (x *SalesOrder) GetCurrency() string {
@@ -234,16 +237,16 @@ func (x *SalesOrder) GetNotes() string {
 }
 
 type CreateSalesOrderRequest struct {
-	state             protoimpl.MessageState `protogen:"open.v1"`
-	CustomerId        string                 `protobuf:"bytes,1,opt,name=customer_id,json=customerId,proto3" json:"customer_id,omitempty"`
-	SellerId          string                 `protobuf:"bytes,2,opt,name=seller_id,json=sellerId,proto3" json:"seller_id,omitempty"` // Your company
-	SourceWarehouseId string                 `protobuf:"bytes,3,opt,name=source_warehouse_id,json=sourceWarehouseId,proto3" json:"source_warehouse_id,omitempty"`
-	Items             []*OrderLineItem       `protobuf:"bytes,4,rep,name=items,proto3" json:"items,omitempty"`
-	DeliveryDate      *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=delivery_date,json=deliveryDate,proto3" json:"delivery_date,omitempty"`
-	CreatedByUserId   string                 `protobuf:"bytes,6,opt,name=created_by_user_id,json=createdByUserId,proto3" json:"created_by_user_id,omitempty"`
-	Notes             string                 `protobuf:"bytes,7,opt,name=notes,proto3" json:"notes,omitempty"`
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
+	state                  protoimpl.MessageState `protogen:"open.v1"`
+	CustomerId             string                 `protobuf:"bytes,1,opt,name=customer_id,json=customerId,proto3" json:"customer_id,omitempty"`
+	SellerId               string                 `protobuf:"bytes,2,opt,name=seller_id,json=sellerId,proto3" json:"seller_id,omitempty"` // Your company
+	SourceWarehouseAddress string                 `protobuf:"bytes,3,opt,name=source_warehouse_address,json=sourceWarehouseAddress,proto3" json:"source_warehouse_address,omitempty"`
+	Items                  []*OrderLineItem       `protobuf:"bytes,4,rep,name=items,proto3" json:"items,omitempty"`
+	DeliveryDate           *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=delivery_date,json=deliveryDate,proto3" json:"delivery_date,omitempty"`
+	CreatedByUserId        string                 `protobuf:"bytes,6,opt,name=created_by_user_id,json=createdByUserId,proto3" json:"created_by_user_id,omitempty"`
+	Notes                  *string                `protobuf:"bytes,7,opt,name=notes,proto3,oneof" json:"notes,omitempty"`
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
 }
 
 func (x *CreateSalesOrderRequest) Reset() {
@@ -290,9 +293,9 @@ func (x *CreateSalesOrderRequest) GetSellerId() string {
 	return ""
 }
 
-func (x *CreateSalesOrderRequest) GetSourceWarehouseId() string {
+func (x *CreateSalesOrderRequest) GetSourceWarehouseAddress() string {
 	if x != nil {
-		return x.SourceWarehouseId
+		return x.SourceWarehouseAddress
 	}
 	return ""
 }
@@ -319,15 +322,15 @@ func (x *CreateSalesOrderRequest) GetCreatedByUserId() string {
 }
 
 func (x *CreateSalesOrderRequest) GetNotes() string {
-	if x != nil {
-		return x.Notes
+	if x != nil && x.Notes != nil {
+		return *x.Notes
 	}
 	return ""
 }
 
 type CreateSalesOrderResponse struct {
 	state                 protoimpl.MessageState `protogen:"open.v1"`
-	SoId                  string                 `protobuf:"bytes,1,opt,name=so_id,json=soId,proto3" json:"so_id,omitempty"`
+	SalesOrderId          string                 `protobuf:"bytes,1,opt,name=sales_order_id,json=salesOrderId,proto3" json:"sales_order_id,omitempty"`
 	SalesOrder            *SalesOrder            `protobuf:"bytes,2,opt,name=sales_order,json=salesOrder,proto3" json:"sales_order,omitempty"`
 	AllItemsAvailable     bool                   `protobuf:"varint,3,opt,name=all_items_available,json=allItemsAvailable,proto3" json:"all_items_available,omitempty"`
 	UnavailableProductIds []string               `protobuf:"bytes,4,rep,name=unavailable_product_ids,json=unavailableProductIds,proto3" json:"unavailable_product_ids,omitempty"`
@@ -366,9 +369,9 @@ func (*CreateSalesOrderResponse) Descriptor() ([]byte, []int) {
 	return file_order_v1_sales_order_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *CreateSalesOrderResponse) GetSoId() string {
+func (x *CreateSalesOrderResponse) GetSalesOrderId() string {
 	if x != nil {
-		return x.SoId
+		return x.SalesOrderId
 	}
 	return ""
 }
@@ -403,7 +406,7 @@ func (x *CreateSalesOrderResponse) GetMessage() string {
 
 type GetSalesOrderRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	SoId          string                 `protobuf:"bytes,1,opt,name=so_id,json=soId,proto3" json:"so_id,omitempty"`
+	SalesOrderId  string                 `protobuf:"bytes,1,opt,name=sales_order_id,json=salesOrderId,proto3" json:"sales_order_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -438,9 +441,9 @@ func (*GetSalesOrderRequest) Descriptor() ([]byte, []int) {
 	return file_order_v1_sales_order_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *GetSalesOrderRequest) GetSoId() string {
+func (x *GetSalesOrderRequest) GetSalesOrderId() string {
 	if x != nil {
-		return x.SoId
+		return x.SalesOrderId
 	}
 	return ""
 }
@@ -659,7 +662,7 @@ func (x *ListSalesOrdersResponse) GetTotalValue() float64 {
 
 type UpdateSalesOrderStatusRequest struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
-	SoId            string                 `protobuf:"bytes,1,opt,name=so_id,json=soId,proto3" json:"so_id,omitempty"`
+	SalesOrderId    string                 `protobuf:"bytes,1,opt,name=sales_order_id,json=salesOrderId,proto3" json:"sales_order_id,omitempty"`
 	NewStatus       SalesOrderStatus       `protobuf:"varint,2,opt,name=new_status,json=newStatus,proto3,enum=order.v1.SalesOrderStatus" json:"new_status,omitempty"`
 	UpdatedByUserId string                 `protobuf:"bytes,3,opt,name=updated_by_user_id,json=updatedByUserId,proto3" json:"updated_by_user_id,omitempty"`
 	Notes           string                 `protobuf:"bytes,4,opt,name=notes,proto3" json:"notes,omitempty"`
@@ -697,9 +700,9 @@ func (*UpdateSalesOrderStatusRequest) Descriptor() ([]byte, []int) {
 	return file_order_v1_sales_order_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *UpdateSalesOrderStatusRequest) GetSoId() string {
+func (x *UpdateSalesOrderStatusRequest) GetSalesOrderId() string {
 	if x != nil {
-		return x.SoId
+		return x.SalesOrderId
 	}
 	return ""
 }
@@ -779,7 +782,7 @@ func (x *UpdateSalesOrderStatusResponse) GetMessage() string {
 
 type CancelSalesOrderRequest struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
-	DocumentId        string                 `protobuf:"bytes,1,opt,name=document_id,json=documentId,proto3" json:"document_id,omitempty"`
+	SalesOrderId      string                 `protobuf:"bytes,1,opt,name=sales_order_id,json=salesOrderId,proto3" json:"sales_order_id,omitempty"`
 	Reason            string                 `protobuf:"bytes,2,opt,name=reason,proto3" json:"reason,omitempty"`
 	CancelledByUserId string                 `protobuf:"bytes,3,opt,name=cancelled_by_user_id,json=cancelledByUserId,proto3" json:"cancelled_by_user_id,omitempty"`
 	unknownFields     protoimpl.UnknownFields
@@ -816,9 +819,9 @@ func (*CancelSalesOrderRequest) Descriptor() ([]byte, []int) {
 	return file_order_v1_sales_order_proto_rawDescGZIP(), []int{9}
 }
 
-func (x *CancelSalesOrderRequest) GetDocumentId() string {
+func (x *CancelSalesOrderRequest) GetSalesOrderId() string {
 	if x != nil {
-		return x.DocumentId
+		return x.SalesOrderId
 	}
 	return ""
 }
@@ -975,7 +978,7 @@ func (x *CreateDeliveryNoteRequest) GetNotes() string {
 
 type CreateDeliveryNoteResponse struct {
 	state                   protoimpl.MessageState `protogen:"open.v1"`
-	DocumentId              string                 `protobuf:"bytes,1,opt,name=document_id,json=documentId,proto3" json:"document_id,omitempty"`
+	DeliveryNoteId          string                 `protobuf:"bytes,1,opt,name=delivery_note_id,json=deliveryNoteId,proto3" json:"delivery_note_id,omitempty"`
 	DeliveryNote            *v1.DeliveryNote       `protobuf:"bytes,2,opt,name=delivery_note,json=deliveryNote,proto3" json:"delivery_note,omitempty"`
 	InventoryTransactionIds []string               `protobuf:"bytes,3,rep,name=inventory_transaction_ids,json=inventoryTransactionIds,proto3" json:"inventory_transaction_ids,omitempty"`
 	Message                 string                 `protobuf:"bytes,4,opt,name=message,proto3" json:"message,omitempty"`
@@ -1013,9 +1016,9 @@ func (*CreateDeliveryNoteResponse) Descriptor() ([]byte, []int) {
 	return file_order_v1_sales_order_proto_rawDescGZIP(), []int{12}
 }
 
-func (x *CreateDeliveryNoteResponse) GetDocumentId() string {
+func (x *CreateDeliveryNoteResponse) GetDeliveryNoteId() string {
 	if x != nil {
-		return x.DocumentId
+		return x.DeliveryNoteId
 	}
 	return ""
 }
@@ -1046,7 +1049,6 @@ type CreateInvoiceFromSalesOrderRequest struct {
 	SalesOrderId    string                 `protobuf:"bytes,1,opt,name=sales_order_id,json=salesOrderId,proto3" json:"sales_order_id,omitempty"`
 	DeliveryNoteId  string                 `protobuf:"bytes,2,opt,name=delivery_note_id,json=deliveryNoteId,proto3" json:"delivery_note_id,omitempty"` // Optional - link to delivery
 	DueDate         *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=due_date,json=dueDate,proto3" json:"due_date,omitempty"`
-	PaymentTerms    string                 `protobuf:"bytes,4,opt,name=payment_terms,json=paymentTerms,proto3" json:"payment_terms,omitempty"` // "Net 30", "COD", etc.
 	CreatedByUserId string                 `protobuf:"bytes,5,opt,name=created_by_user_id,json=createdByUserId,proto3" json:"created_by_user_id,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
@@ -1103,13 +1105,6 @@ func (x *CreateInvoiceFromSalesOrderRequest) GetDueDate() *timestamppb.Timestamp
 	return nil
 }
 
-func (x *CreateInvoiceFromSalesOrderRequest) GetPaymentTerms() string {
-	if x != nil {
-		return x.PaymentTerms
-	}
-	return ""
-}
-
 func (x *CreateInvoiceFromSalesOrderRequest) GetCreatedByUserId() string {
 	if x != nil {
 		return x.CreatedByUserId
@@ -1119,7 +1114,7 @@ func (x *CreateInvoiceFromSalesOrderRequest) GetCreatedByUserId() string {
 
 type CreateInvoiceFromSalesOrderResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	DocumentId    string                 `protobuf:"bytes,1,opt,name=document_id,json=documentId,proto3" json:"document_id,omitempty"` // The invoice id
+	InvoiceId     string                 `protobuf:"bytes,1,opt,name=invoice_id,json=invoiceId,proto3" json:"invoice_id,omitempty"` // The invoice id
 	Invoice       *v11.Invoice           `protobuf:"bytes,2,opt,name=invoice,proto3" json:"invoice,omitempty"`
 	Message       string                 `protobuf:"bytes,3,opt,name=message,proto3" json:"message,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -1156,9 +1151,9 @@ func (*CreateInvoiceFromSalesOrderResponse) Descriptor() ([]byte, []int) {
 	return file_order_v1_sales_order_proto_rawDescGZIP(), []int{14}
 }
 
-func (x *CreateInvoiceFromSalesOrderResponse) GetDocumentId() string {
+func (x *CreateInvoiceFromSalesOrderResponse) GetInvoiceId() string {
 	if x != nil {
-		return x.DocumentId
+		return x.InvoiceId
 	}
 	return ""
 }
@@ -1181,45 +1176,47 @@ var File_order_v1_sales_order_proto protoreflect.FileDescriptor
 
 const file_order_v1_sales_order_proto_rawDesc = "" +
 	"\n" +
-	"\x1aorder/v1/sales_order.proto\x12\border.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1afinancial/v1/invoice.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a logistic/v1/delivery_notes.proto\x1a\x1aorder/v1/order_utils.proto\x1a\x1apayments/v1/payments.proto\"\xbc\x04\n" +
+	"\x1aorder/v1/sales_order.proto\x12\border.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1afinancial/v1/invoice.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a logistic/v1/delivery_notes.proto\x1a\x1aorder/v1/order_utils.proto\x1a\x1apayments/v1/payments.proto\"\xc6\x04\n" +
 	"\n" +
 	"SalesOrder\x12'\n" +
 	"\vdocument_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\n" +
 	"documentId\x12\x1f\n" +
 	"\vcustomer_id\x18\x02 \x01(\tR\n" +
 	"customerId\x12\x1b\n" +
-	"\tseller_id\x18\x03 \x01(\tR\bsellerId\x12.\n" +
-	"\x13source_warehouse_id\x18\x04 \x01(\tR\x11sourceWarehouseId\x122\n" +
+	"\tseller_id\x18\x03 \x01(\tR\bsellerId\x128\n" +
+	"\x18source_warehouse_address\x18\x04 \x01(\tR\x16sourceWarehouseAddress\x122\n" +
 	"\x06status\x18\x05 \x01(\x0e2\x1a.order.v1.SalesOrderStatusR\x06status\x12-\n" +
-	"\x05items\x18\x06 \x03(\v2\x17.order.v1.OrderLineItemR\x05items\x128\n" +
-	"\forder_prices\x18\a \x01(\v2\x15.order.v1.OrderPricesR\vorderPrices\x12\x1f\n" +
+	"\x05items\x18\x06 \x03(\v2\x17.order.v1.OrderLineItemR\x05items\x12!\n" +
+	"\ftotal_amount\x18\a \x01(\x01R\vtotalAmount\x12\x1f\n" +
 	"\bcurrency\x18\b \x01(\tH\x00R\bcurrency\x88\x01\x01\x12+\n" +
 	"\x12created_by_user_id\x18\t \x01(\tR\x0fcreatedByUserId\x129\n" +
 	"\n" +
 	"created_at\x18\n" +
-	" \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12?\n" +
-	"\rdelivery_date\x18\v \x01(\v2\x1a.google.protobuf.TimestampR\fdeliveryDate\x12\x19\n" +
-	"\x05notes\x18\f \x01(\tH\x01R\x05notes\x88\x01\x01B\v\n" +
-	"\t_currencyB\b\n" +
-	"\x06_notes\"\xba\x02\n" +
+	" \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12D\n" +
+	"\rdelivery_date\x18\v \x01(\v2\x1a.google.protobuf.TimestampH\x01R\fdeliveryDate\x88\x01\x01\x12\x19\n" +
+	"\x05notes\x18\f \x01(\tH\x02R\x05notes\x88\x01\x01B\v\n" +
+	"\t_currencyB\x10\n" +
+	"\x0e_delivery_dateB\b\n" +
+	"\x06_notes\"\xd3\x02\n" +
 	"\x17CreateSalesOrderRequest\x12\x1f\n" +
 	"\vcustomer_id\x18\x01 \x01(\tR\n" +
 	"customerId\x12\x1b\n" +
-	"\tseller_id\x18\x02 \x01(\tR\bsellerId\x12.\n" +
-	"\x13source_warehouse_id\x18\x03 \x01(\tR\x11sourceWarehouseId\x12-\n" +
+	"\tseller_id\x18\x02 \x01(\tR\bsellerId\x128\n" +
+	"\x18source_warehouse_address\x18\x03 \x01(\tR\x16sourceWarehouseAddress\x12-\n" +
 	"\x05items\x18\x04 \x03(\v2\x17.order.v1.OrderLineItemR\x05items\x12?\n" +
 	"\rdelivery_date\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\fdeliveryDate\x12+\n" +
-	"\x12created_by_user_id\x18\x06 \x01(\tR\x0fcreatedByUserId\x12\x14\n" +
-	"\x05notes\x18\a \x01(\tR\x05notes\"\xe8\x01\n" +
-	"\x18CreateSalesOrderResponse\x12\x13\n" +
-	"\x05so_id\x18\x01 \x01(\tR\x04soId\x125\n" +
+	"\x12created_by_user_id\x18\x06 \x01(\tR\x0fcreatedByUserId\x12\x19\n" +
+	"\x05notes\x18\a \x01(\tH\x00R\x05notes\x88\x01\x01B\b\n" +
+	"\x06_notes\"\xf9\x01\n" +
+	"\x18CreateSalesOrderResponse\x12$\n" +
+	"\x0esales_order_id\x18\x01 \x01(\tR\fsalesOrderId\x125\n" +
 	"\vsales_order\x18\x02 \x01(\v2\x14.order.v1.SalesOrderR\n" +
 	"salesOrder\x12.\n" +
 	"\x13all_items_available\x18\x03 \x01(\bR\x11allItemsAvailable\x126\n" +
 	"\x17unavailable_product_ids\x18\x04 \x03(\tR\x15unavailableProductIds\x12\x18\n" +
-	"\amessage\x18\x05 \x01(\tR\amessage\"+\n" +
-	"\x14GetSalesOrderRequest\x12\x13\n" +
-	"\x05so_id\x18\x01 \x01(\tR\x04soId\"\xf5\x01\n" +
+	"\amessage\x18\x05 \x01(\tR\amessage\"<\n" +
+	"\x14GetSalesOrderRequest\x12$\n" +
+	"\x0esales_order_id\x18\x01 \x01(\tR\fsalesOrderId\"\xf5\x01\n" +
 	"\x15GetSalesOrderResponse\x125\n" +
 	"\vsales_order\x18\x01 \x01(\v2\x14.order.v1.SalesOrderR\n" +
 	"salesOrder\x12@\n" +
@@ -1241,9 +1238,9 @@ const file_order_v1_sales_order_proto_rawDesc = "" +
 	"\vtotal_count\x18\x02 \x01(\x05R\n" +
 	"totalCount\x12\x1f\n" +
 	"\vtotal_value\x18\x03 \x01(\x01R\n" +
-	"totalValue\"\xb2\x01\n" +
-	"\x1dUpdateSalesOrderStatusRequest\x12\x13\n" +
-	"\x05so_id\x18\x01 \x01(\tR\x04soId\x129\n" +
+	"totalValue\"\xc3\x01\n" +
+	"\x1dUpdateSalesOrderStatusRequest\x12$\n" +
+	"\x0esales_order_id\x18\x01 \x01(\tR\fsalesOrderId\x129\n" +
 	"\n" +
 	"new_status\x18\x02 \x01(\x0e2\x1a.order.v1.SalesOrderStatusR\tnewStatus\x12+\n" +
 	"\x12updated_by_user_id\x18\x03 \x01(\tR\x0fupdatedByUserId\x12\x14\n" +
@@ -1251,10 +1248,9 @@ const file_order_v1_sales_order_proto_rawDesc = "" +
 	"\x1eUpdateSalesOrderStatusResponse\x125\n" +
 	"\vsales_order\x18\x01 \x01(\v2\x14.order.v1.SalesOrderR\n" +
 	"salesOrder\x12\x18\n" +
-	"\amessage\x18\x02 \x01(\tR\amessage\"\x83\x01\n" +
-	"\x17CancelSalesOrderRequest\x12\x1f\n" +
-	"\vdocument_id\x18\x01 \x01(\tR\n" +
-	"documentId\x12\x16\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\"\x88\x01\n" +
+	"\x17CancelSalesOrderRequest\x12$\n" +
+	"\x0esales_order_id\x18\x01 \x01(\tR\fsalesOrderId\x12\x16\n" +
 	"\x06reason\x18\x02 \x01(\tR\x06reason\x12/\n" +
 	"\x14cancelled_by_user_id\x18\x03 \x01(\tR\x11cancelledByUserId\"N\n" +
 	"\x18CancelSalesOrderResponse\x12\x18\n" +
@@ -1266,22 +1262,20 @@ const file_order_v1_sales_order_proto_rawDesc = "" +
 	"\x0ftracking_number\x18\x03 \x01(\tR\x0etrackingNumber\x12+\n" +
 	"\x12created_by_user_id\x18\x04 \x01(\tR\x0fcreatedByUserId\x123\n" +
 	"\x05items\x18\x05 \x03(\v2\x1d.logistic.v1.DeliveryLineItemR\x05items\x12\x14\n" +
-	"\x05notes\x18\x06 \x01(\tR\x05notes\"\xd3\x01\n" +
-	"\x1aCreateDeliveryNoteResponse\x12\x1f\n" +
-	"\vdocument_id\x18\x01 \x01(\tR\n" +
-	"documentId\x12>\n" +
+	"\x05notes\x18\x06 \x01(\tR\x05notes\"\xdc\x01\n" +
+	"\x1aCreateDeliveryNoteResponse\x12(\n" +
+	"\x10delivery_note_id\x18\x01 \x01(\tR\x0edeliveryNoteId\x12>\n" +
 	"\rdelivery_note\x18\x02 \x01(\v2\x19.logistic.v1.DeliveryNoteR\fdeliveryNote\x12:\n" +
 	"\x19inventory_transaction_ids\x18\x03 \x03(\tR\x17inventoryTransactionIds\x12\x18\n" +
-	"\amessage\x18\x04 \x01(\tR\amessage\"\xfd\x01\n" +
+	"\amessage\x18\x04 \x01(\tR\amessage\"\xd8\x01\n" +
 	"\"CreateInvoiceFromSalesOrderRequest\x12$\n" +
 	"\x0esales_order_id\x18\x01 \x01(\tR\fsalesOrderId\x12(\n" +
 	"\x10delivery_note_id\x18\x02 \x01(\tR\x0edeliveryNoteId\x125\n" +
-	"\bdue_date\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\adueDate\x12#\n" +
-	"\rpayment_terms\x18\x04 \x01(\tR\fpaymentTerms\x12+\n" +
-	"\x12created_by_user_id\x18\x05 \x01(\tR\x0fcreatedByUserId\"\x91\x01\n" +
-	"#CreateInvoiceFromSalesOrderResponse\x12\x1f\n" +
-	"\vdocument_id\x18\x01 \x01(\tR\n" +
-	"documentId\x12/\n" +
+	"\bdue_date\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\adueDate\x12+\n" +
+	"\x12created_by_user_id\x18\x05 \x01(\tR\x0fcreatedByUserId\"\x8f\x01\n" +
+	"#CreateInvoiceFromSalesOrderResponse\x12\x1d\n" +
+	"\n" +
+	"invoice_id\x18\x01 \x01(\tR\tinvoiceId\x12/\n" +
 	"\ainvoice\x18\x02 \x01(\v2\x15.financial.v1.InvoiceR\ainvoice\x12\x18\n" +
 	"\amessage\x18\x03 \x01(\tR\amessage*\xbe\x01\n" +
 	"\x10SalesOrderStatus\x12\x19\n" +
@@ -1334,55 +1328,53 @@ var file_order_v1_sales_order_proto_goTypes = []any{
 	(*CreateInvoiceFromSalesOrderRequest)(nil),  // 14: order.v1.CreateInvoiceFromSalesOrderRequest
 	(*CreateInvoiceFromSalesOrderResponse)(nil), // 15: order.v1.CreateInvoiceFromSalesOrderResponse
 	(*OrderLineItem)(nil),                       // 16: order.v1.OrderLineItem
-	(*OrderPrices)(nil),                         // 17: order.v1.OrderPrices
-	(*timestamppb.Timestamp)(nil),               // 18: google.protobuf.Timestamp
-	(*v1.DeliveryNote)(nil),                     // 19: logistic.v1.DeliveryNote
-	(*v11.Invoice)(nil),                         // 20: financial.v1.Invoice
-	(*v12.Payment)(nil),                         // 21: payments.v1.Payment
-	(*v1.DeliveryLineItem)(nil),                 // 22: logistic.v1.DeliveryLineItem
+	(*timestamppb.Timestamp)(nil),               // 17: google.protobuf.Timestamp
+	(*v1.DeliveryNote)(nil),                     // 18: logistic.v1.DeliveryNote
+	(*v11.Invoice)(nil),                         // 19: financial.v1.Invoice
+	(*v12.Payment)(nil),                         // 20: payments.v1.Payment
+	(*v1.DeliveryLineItem)(nil),                 // 21: logistic.v1.DeliveryLineItem
 }
 var file_order_v1_sales_order_proto_depIdxs = []int32{
 	0,  // 0: order.v1.SalesOrder.status:type_name -> order.v1.SalesOrderStatus
 	16, // 1: order.v1.SalesOrder.items:type_name -> order.v1.OrderLineItem
-	17, // 2: order.v1.SalesOrder.order_prices:type_name -> order.v1.OrderPrices
-	18, // 3: order.v1.SalesOrder.created_at:type_name -> google.protobuf.Timestamp
-	18, // 4: order.v1.SalesOrder.delivery_date:type_name -> google.protobuf.Timestamp
-	16, // 5: order.v1.CreateSalesOrderRequest.items:type_name -> order.v1.OrderLineItem
-	18, // 6: order.v1.CreateSalesOrderRequest.delivery_date:type_name -> google.protobuf.Timestamp
-	1,  // 7: order.v1.CreateSalesOrderResponse.sales_order:type_name -> order.v1.SalesOrder
-	1,  // 8: order.v1.GetSalesOrderResponse.sales_order:type_name -> order.v1.SalesOrder
-	19, // 9: order.v1.GetSalesOrderResponse.delivery_notes:type_name -> logistic.v1.DeliveryNote
-	20, // 10: order.v1.GetSalesOrderResponse.invoices:type_name -> financial.v1.Invoice
-	21, // 11: order.v1.GetSalesOrderResponse.payments:type_name -> payments.v1.Payment
-	0,  // 12: order.v1.ListSalesOrdersRequest.status:type_name -> order.v1.SalesOrderStatus
-	18, // 13: order.v1.ListSalesOrdersRequest.start_date:type_name -> google.protobuf.Timestamp
-	18, // 14: order.v1.ListSalesOrdersRequest.end_date:type_name -> google.protobuf.Timestamp
-	1,  // 15: order.v1.ListSalesOrdersResponse.sales_orders:type_name -> order.v1.SalesOrder
-	0,  // 16: order.v1.UpdateSalesOrderStatusRequest.new_status:type_name -> order.v1.SalesOrderStatus
-	1,  // 17: order.v1.UpdateSalesOrderStatusResponse.sales_order:type_name -> order.v1.SalesOrder
-	22, // 18: order.v1.CreateDeliveryNoteRequest.items:type_name -> logistic.v1.DeliveryLineItem
-	19, // 19: order.v1.CreateDeliveryNoteResponse.delivery_note:type_name -> logistic.v1.DeliveryNote
-	18, // 20: order.v1.CreateInvoiceFromSalesOrderRequest.due_date:type_name -> google.protobuf.Timestamp
-	20, // 21: order.v1.CreateInvoiceFromSalesOrderResponse.invoice:type_name -> financial.v1.Invoice
-	2,  // 22: order.v1.SalesOrderService.CreateSalesOrder:input_type -> order.v1.CreateSalesOrderRequest
-	4,  // 23: order.v1.SalesOrderService.GetSalesOrder:input_type -> order.v1.GetSalesOrderRequest
-	6,  // 24: order.v1.SalesOrderService.ListSalesOrders:input_type -> order.v1.ListSalesOrdersRequest
-	8,  // 25: order.v1.SalesOrderService.UpdateSalesOrderStatus:input_type -> order.v1.UpdateSalesOrderStatusRequest
-	10, // 26: order.v1.SalesOrderService.CancelSalesOrder:input_type -> order.v1.CancelSalesOrderRequest
-	12, // 27: order.v1.SalesOrderService.CreateDeliveryNote:input_type -> order.v1.CreateDeliveryNoteRequest
-	14, // 28: order.v1.SalesOrderService.CreateInvoiceFromSalesOrder:input_type -> order.v1.CreateInvoiceFromSalesOrderRequest
-	3,  // 29: order.v1.SalesOrderService.CreateSalesOrder:output_type -> order.v1.CreateSalesOrderResponse
-	5,  // 30: order.v1.SalesOrderService.GetSalesOrder:output_type -> order.v1.GetSalesOrderResponse
-	7,  // 31: order.v1.SalesOrderService.ListSalesOrders:output_type -> order.v1.ListSalesOrdersResponse
-	9,  // 32: order.v1.SalesOrderService.UpdateSalesOrderStatus:output_type -> order.v1.UpdateSalesOrderStatusResponse
-	11, // 33: order.v1.SalesOrderService.CancelSalesOrder:output_type -> order.v1.CancelSalesOrderResponse
-	13, // 34: order.v1.SalesOrderService.CreateDeliveryNote:output_type -> order.v1.CreateDeliveryNoteResponse
-	15, // 35: order.v1.SalesOrderService.CreateInvoiceFromSalesOrder:output_type -> order.v1.CreateInvoiceFromSalesOrderResponse
-	29, // [29:36] is the sub-list for method output_type
-	22, // [22:29] is the sub-list for method input_type
-	22, // [22:22] is the sub-list for extension type_name
-	22, // [22:22] is the sub-list for extension extendee
-	0,  // [0:22] is the sub-list for field type_name
+	17, // 2: order.v1.SalesOrder.created_at:type_name -> google.protobuf.Timestamp
+	17, // 3: order.v1.SalesOrder.delivery_date:type_name -> google.protobuf.Timestamp
+	16, // 4: order.v1.CreateSalesOrderRequest.items:type_name -> order.v1.OrderLineItem
+	17, // 5: order.v1.CreateSalesOrderRequest.delivery_date:type_name -> google.protobuf.Timestamp
+	1,  // 6: order.v1.CreateSalesOrderResponse.sales_order:type_name -> order.v1.SalesOrder
+	1,  // 7: order.v1.GetSalesOrderResponse.sales_order:type_name -> order.v1.SalesOrder
+	18, // 8: order.v1.GetSalesOrderResponse.delivery_notes:type_name -> logistic.v1.DeliveryNote
+	19, // 9: order.v1.GetSalesOrderResponse.invoices:type_name -> financial.v1.Invoice
+	20, // 10: order.v1.GetSalesOrderResponse.payments:type_name -> payments.v1.Payment
+	0,  // 11: order.v1.ListSalesOrdersRequest.status:type_name -> order.v1.SalesOrderStatus
+	17, // 12: order.v1.ListSalesOrdersRequest.start_date:type_name -> google.protobuf.Timestamp
+	17, // 13: order.v1.ListSalesOrdersRequest.end_date:type_name -> google.protobuf.Timestamp
+	1,  // 14: order.v1.ListSalesOrdersResponse.sales_orders:type_name -> order.v1.SalesOrder
+	0,  // 15: order.v1.UpdateSalesOrderStatusRequest.new_status:type_name -> order.v1.SalesOrderStatus
+	1,  // 16: order.v1.UpdateSalesOrderStatusResponse.sales_order:type_name -> order.v1.SalesOrder
+	21, // 17: order.v1.CreateDeliveryNoteRequest.items:type_name -> logistic.v1.DeliveryLineItem
+	18, // 18: order.v1.CreateDeliveryNoteResponse.delivery_note:type_name -> logistic.v1.DeliveryNote
+	17, // 19: order.v1.CreateInvoiceFromSalesOrderRequest.due_date:type_name -> google.protobuf.Timestamp
+	19, // 20: order.v1.CreateInvoiceFromSalesOrderResponse.invoice:type_name -> financial.v1.Invoice
+	2,  // 21: order.v1.SalesOrderService.CreateSalesOrder:input_type -> order.v1.CreateSalesOrderRequest
+	4,  // 22: order.v1.SalesOrderService.GetSalesOrder:input_type -> order.v1.GetSalesOrderRequest
+	6,  // 23: order.v1.SalesOrderService.ListSalesOrders:input_type -> order.v1.ListSalesOrdersRequest
+	8,  // 24: order.v1.SalesOrderService.UpdateSalesOrderStatus:input_type -> order.v1.UpdateSalesOrderStatusRequest
+	10, // 25: order.v1.SalesOrderService.CancelSalesOrder:input_type -> order.v1.CancelSalesOrderRequest
+	12, // 26: order.v1.SalesOrderService.CreateDeliveryNote:input_type -> order.v1.CreateDeliveryNoteRequest
+	14, // 27: order.v1.SalesOrderService.CreateInvoiceFromSalesOrder:input_type -> order.v1.CreateInvoiceFromSalesOrderRequest
+	3,  // 28: order.v1.SalesOrderService.CreateSalesOrder:output_type -> order.v1.CreateSalesOrderResponse
+	5,  // 29: order.v1.SalesOrderService.GetSalesOrder:output_type -> order.v1.GetSalesOrderResponse
+	7,  // 30: order.v1.SalesOrderService.ListSalesOrders:output_type -> order.v1.ListSalesOrdersResponse
+	9,  // 31: order.v1.SalesOrderService.UpdateSalesOrderStatus:output_type -> order.v1.UpdateSalesOrderStatusResponse
+	11, // 32: order.v1.SalesOrderService.CancelSalesOrder:output_type -> order.v1.CancelSalesOrderResponse
+	13, // 33: order.v1.SalesOrderService.CreateDeliveryNote:output_type -> order.v1.CreateDeliveryNoteResponse
+	15, // 34: order.v1.SalesOrderService.CreateInvoiceFromSalesOrder:output_type -> order.v1.CreateInvoiceFromSalesOrderResponse
+	28, // [28:35] is the sub-list for method output_type
+	21, // [21:28] is the sub-list for method input_type
+	21, // [21:21] is the sub-list for extension type_name
+	21, // [21:21] is the sub-list for extension extendee
+	0,  // [0:21] is the sub-list for field type_name
 }
 
 func init() { file_order_v1_sales_order_proto_init() }
@@ -1392,6 +1384,7 @@ func file_order_v1_sales_order_proto_init() {
 	}
 	file_order_v1_order_utils_proto_init()
 	file_order_v1_sales_order_proto_msgTypes[0].OneofWrappers = []any{}
+	file_order_v1_sales_order_proto_msgTypes[1].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

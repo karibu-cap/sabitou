@@ -950,7 +950,6 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
   '.inventory.v1.Category': $1.Category$json,
   '.order.v1.SalesOrder': $2.SalesOrder$json,
   '.order.v1.OrderLineItem': $4.OrderLineItem$json,
-  '.order.v1.OrderPrices': $4.OrderPrices$json,
   '.sync.v1.SyncOperation.MetadataEntry': SyncOperation_MetadataEntry$json,
   '.sync.v1.SubmitSyncOperationsResponse': SubmitSyncOperationsResponse$json,
   '.sync.v1.SyncOperationResult': SyncOperationResult$json,

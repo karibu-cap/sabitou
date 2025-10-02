@@ -25,9 +25,9 @@ components:
           title: product_id
           description: Which product
         quantity:
-          type: number
+          type: integer
           title: quantity
-          format: double
+          format: int32
           description: How many units
         productName:
           title: product_name
@@ -43,14 +43,11 @@ components:
           title: total
           format: double
           description: quantity * unit_price
-        notes:
-          type: string
-          title: notes
-          description: Special notes for this line
         batchId:
           type: string
           title: batch_id
           description: 'Optional: Specific batch/lot requested'
+          nullable: true
       title: OrderLineItem
       additionalProperties: false
       description: |-
@@ -67,25 +64,4 @@ components:
            unit_price: 450000
            total: 4500000
            batch_id: "BATCH-2025-001" (optional)
-    order.v1.OrderPrices:
-      type: object
-      properties:
-        subtotal:
-          type: integer
-          title: subtotal
-          format: int32
-        discounts:
-          type: integer
-          title: discounts
-          format: int32
-        totalVatAmount:
-          type: integer
-          title: total_vat_amount
-          format: int32
-        grandTotal:
-          type: integer
-          title: grand_total
-          format: int32
-      title: OrderPrices
-      additionalProperties: false
 security: []

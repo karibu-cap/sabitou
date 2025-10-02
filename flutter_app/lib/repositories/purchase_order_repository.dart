@@ -129,20 +129,4 @@ class PurchaseOrderRepository {
       return null;
     }
   }
-
-  /// Gets suggested purchase orders.
-  Future<GetSuggestedPurchaseOrdersResponse?> getSuggestedPurchaseOrders(
-    GetSuggestedPurchaseOrdersRequest request,
-  ) async {
-    try {
-      final response = await purchaseOrderServiceClient
-          .getSuggestedPurchaseOrders(request);
-
-      return response;
-    } on Exception catch (e) {
-      _logger.severe('getSuggestedPurchaseOrders Error: $e');
-
-      return null;
-    }
-  }
 }

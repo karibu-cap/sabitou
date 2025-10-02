@@ -93,7 +93,7 @@ func (ReceivingNoteStatus) EnumDescriptor() ([]byte, []int) {
 //	rn_id: "RN-2025-001"
 //	related_purchase_order_id: "PO-2025-001"
 //	supplier_id: "CMP-002"
-//	warehouse_id: "WH-001"
+//	buyer_id: "WH-001"
 //	items: [48x PRD-001] (expected 50, but 2 damaged)
 //	status: RN_STATUS_COMPLETED
 //
@@ -103,7 +103,7 @@ type ReceivingNote struct {
 	DocumentId             string                 `protobuf:"bytes,1,opt,name=document_id,json=documentId,proto3" json:"document_id,omitempty"`                                         // "RN-2025-001"
 	RelatedPurchaseOrderId string                 `protobuf:"bytes,2,opt,name=related_purchase_order_id,json=relatedPurchaseOrderId,proto3" json:"related_purchase_order_id,omitempty"` // Which PO this fulfills
 	SupplierId             string                 `protobuf:"bytes,3,opt,name=supplier_id,json=supplierId,proto3" json:"supplier_id,omitempty"`                                         // Who sent the goods
-	WarehouseId            string                 `protobuf:"bytes,4,opt,name=warehouse_id,json=warehouseId,proto3" json:"warehouse_id,omitempty"`                                      // Where goods are stored
+	BuyerId                string                 `protobuf:"bytes,4,opt,name=buyer_id,json=buyerId,proto3" json:"buyer_id,omitempty"`                                                  // Where goods are stored
 	Status                 ReceivingNoteStatus    `protobuf:"varint,5,opt,name=status,proto3,enum=logistic.v1.ReceivingNoteStatus" json:"status,omitempty"`
 	Items                  []*ReceivingLineItem   `protobuf:"bytes,6,rep,name=items,proto3" json:"items,omitempty"`
 	ReceivedByUserId       string                 `protobuf:"bytes,7,opt,name=received_by_user_id,json=receivedByUserId,proto3" json:"received_by_user_id,omitempty"` // Who accepted delivery
@@ -164,9 +164,9 @@ func (x *ReceivingNote) GetSupplierId() string {
 	return ""
 }
 
-func (x *ReceivingNote) GetWarehouseId() string {
+func (x *ReceivingNote) GetBuyerId() string {
 	if x != nil {
-		return x.WarehouseId
+		return x.BuyerId
 	}
 	return ""
 }
@@ -316,14 +316,14 @@ var File_logistic_v1_receiving_notes_proto protoreflect.FileDescriptor
 
 const file_logistic_v1_receiving_notes_proto_rawDesc = "" +
 	"\n" +
-	"!logistic/v1/receiving_notes.proto\x12\vlogistic.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xa9\x03\n" +
+	"!logistic/v1/receiving_notes.proto\x12\vlogistic.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xa1\x03\n" +
 	"\rReceivingNote\x12'\n" +
 	"\vdocument_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\n" +
 	"documentId\x129\n" +
 	"\x19related_purchase_order_id\x18\x02 \x01(\tR\x16relatedPurchaseOrderId\x12\x1f\n" +
 	"\vsupplier_id\x18\x03 \x01(\tR\n" +
-	"supplierId\x12!\n" +
-	"\fwarehouse_id\x18\x04 \x01(\tR\vwarehouseId\x128\n" +
+	"supplierId\x12\x19\n" +
+	"\bbuyer_id\x18\x04 \x01(\tR\abuyerId\x128\n" +
 	"\x06status\x18\x05 \x01(\x0e2 .logistic.v1.ReceivingNoteStatusR\x06status\x124\n" +
 	"\x05items\x18\x06 \x03(\v2\x1e.logistic.v1.ReceivingLineItemR\x05items\x12-\n" +
 	"\x13received_by_user_id\x18\a \x01(\tR\x10receivedByUserId\x12;\n" +

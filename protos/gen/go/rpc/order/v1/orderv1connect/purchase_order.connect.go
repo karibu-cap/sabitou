@@ -51,9 +51,6 @@ const (
 	// PurchaseOrderServiceCreateReceivingNoteProcedure is the fully-qualified name of the
 	// PurchaseOrderService's CreateReceivingNote RPC.
 	PurchaseOrderServiceCreateReceivingNoteProcedure = "/order.v1.PurchaseOrderService/CreateReceivingNote"
-	// PurchaseOrderServiceGetSuggestedPurchaseOrdersProcedure is the fully-qualified name of the
-	// PurchaseOrderService's GetSuggestedPurchaseOrders RPC.
-	PurchaseOrderServiceGetSuggestedPurchaseOrdersProcedure = "/order.v1.PurchaseOrderService/GetSuggestedPurchaseOrders"
 )
 
 // PurchaseOrderServiceClient is a client for the order.v1.PurchaseOrderService service.
@@ -70,8 +67,6 @@ type PurchaseOrderServiceClient interface {
 	CancelPurchaseOrder(context.Context, *connect.Request[v1.CancelPurchaseOrderRequest]) (*connect.Response[v1.CancelPurchaseOrderResponse], error)
 	// Create receiving note when goods arrive
 	CreateReceivingNote(context.Context, *connect.Request[v1.CreateReceivingNoteRequest]) (*connect.Response[v1.CreateReceivingNoteResponse], error)
-	// Get suggested purchase orders (low stock items)
-	GetSuggestedPurchaseOrders(context.Context, *connect.Request[v1.GetSuggestedPurchaseOrdersRequest]) (*connect.Response[v1.GetSuggestedPurchaseOrdersResponse], error)
 }
 
 // NewPurchaseOrderServiceClient constructs a client for the order.v1.PurchaseOrderService service.
@@ -121,24 +116,17 @@ func NewPurchaseOrderServiceClient(httpClient connect.HTTPClient, baseURL string
 			connect.WithSchema(purchaseOrderServiceMethods.ByName("CreateReceivingNote")),
 			connect.WithClientOptions(opts...),
 		),
-		getSuggestedPurchaseOrders: connect.NewClient[v1.GetSuggestedPurchaseOrdersRequest, v1.GetSuggestedPurchaseOrdersResponse](
-			httpClient,
-			baseURL+PurchaseOrderServiceGetSuggestedPurchaseOrdersProcedure,
-			connect.WithSchema(purchaseOrderServiceMethods.ByName("GetSuggestedPurchaseOrders")),
-			connect.WithClientOptions(opts...),
-		),
 	}
 }
 
 // purchaseOrderServiceClient implements PurchaseOrderServiceClient.
 type purchaseOrderServiceClient struct {
-	createPurchaseOrder        *connect.Client[v1.CreatePurchaseOrderRequest, v1.CreatePurchaseOrderResponse]
-	getPurchaseOrder           *connect.Client[v1.GetPurchaseOrderRequest, v1.GetPurchaseOrderResponse]
-	listPurchaseOrders         *connect.Client[v1.ListPurchaseOrdersRequest, v1.ListPurchaseOrdersResponse]
-	updatePurchaseOrderStatus  *connect.Client[v1.UpdatePurchaseOrderStatusRequest, v1.UpdatePurchaseOrderStatusResponse]
-	cancelPurchaseOrder        *connect.Client[v1.CancelPurchaseOrderRequest, v1.CancelPurchaseOrderResponse]
-	createReceivingNote        *connect.Client[v1.CreateReceivingNoteRequest, v1.CreateReceivingNoteResponse]
-	getSuggestedPurchaseOrders *connect.Client[v1.GetSuggestedPurchaseOrdersRequest, v1.GetSuggestedPurchaseOrdersResponse]
+	createPurchaseOrder       *connect.Client[v1.CreatePurchaseOrderRequest, v1.CreatePurchaseOrderResponse]
+	getPurchaseOrder          *connect.Client[v1.GetPurchaseOrderRequest, v1.GetPurchaseOrderResponse]
+	listPurchaseOrders        *connect.Client[v1.ListPurchaseOrdersRequest, v1.ListPurchaseOrdersResponse]
+	updatePurchaseOrderStatus *connect.Client[v1.UpdatePurchaseOrderStatusRequest, v1.UpdatePurchaseOrderStatusResponse]
+	cancelPurchaseOrder       *connect.Client[v1.CancelPurchaseOrderRequest, v1.CancelPurchaseOrderResponse]
+	createReceivingNote       *connect.Client[v1.CreateReceivingNoteRequest, v1.CreateReceivingNoteResponse]
 }
 
 // CreatePurchaseOrder calls order.v1.PurchaseOrderService.CreatePurchaseOrder.
@@ -171,11 +159,6 @@ func (c *purchaseOrderServiceClient) CreateReceivingNote(ctx context.Context, re
 	return c.createReceivingNote.CallUnary(ctx, req)
 }
 
-// GetSuggestedPurchaseOrders calls order.v1.PurchaseOrderService.GetSuggestedPurchaseOrders.
-func (c *purchaseOrderServiceClient) GetSuggestedPurchaseOrders(ctx context.Context, req *connect.Request[v1.GetSuggestedPurchaseOrdersRequest]) (*connect.Response[v1.GetSuggestedPurchaseOrdersResponse], error) {
-	return c.getSuggestedPurchaseOrders.CallUnary(ctx, req)
-}
-
 // PurchaseOrderServiceHandler is an implementation of the order.v1.PurchaseOrderService service.
 type PurchaseOrderServiceHandler interface {
 	// Create a purchase order to supplier
@@ -190,8 +173,6 @@ type PurchaseOrderServiceHandler interface {
 	CancelPurchaseOrder(context.Context, *connect.Request[v1.CancelPurchaseOrderRequest]) (*connect.Response[v1.CancelPurchaseOrderResponse], error)
 	// Create receiving note when goods arrive
 	CreateReceivingNote(context.Context, *connect.Request[v1.CreateReceivingNoteRequest]) (*connect.Response[v1.CreateReceivingNoteResponse], error)
-	// Get suggested purchase orders (low stock items)
-	GetSuggestedPurchaseOrders(context.Context, *connect.Request[v1.GetSuggestedPurchaseOrdersRequest]) (*connect.Response[v1.GetSuggestedPurchaseOrdersResponse], error)
 }
 
 // NewPurchaseOrderServiceHandler builds an HTTP handler from the service implementation. It returns
@@ -237,12 +218,6 @@ func NewPurchaseOrderServiceHandler(svc PurchaseOrderServiceHandler, opts ...con
 		connect.WithSchema(purchaseOrderServiceMethods.ByName("CreateReceivingNote")),
 		connect.WithHandlerOptions(opts...),
 	)
-	purchaseOrderServiceGetSuggestedPurchaseOrdersHandler := connect.NewUnaryHandler(
-		PurchaseOrderServiceGetSuggestedPurchaseOrdersProcedure,
-		svc.GetSuggestedPurchaseOrders,
-		connect.WithSchema(purchaseOrderServiceMethods.ByName("GetSuggestedPurchaseOrders")),
-		connect.WithHandlerOptions(opts...),
-	)
 	return "/order.v1.PurchaseOrderService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case PurchaseOrderServiceCreatePurchaseOrderProcedure:
@@ -257,8 +232,6 @@ func NewPurchaseOrderServiceHandler(svc PurchaseOrderServiceHandler, opts ...con
 			purchaseOrderServiceCancelPurchaseOrderHandler.ServeHTTP(w, r)
 		case PurchaseOrderServiceCreateReceivingNoteProcedure:
 			purchaseOrderServiceCreateReceivingNoteHandler.ServeHTTP(w, r)
-		case PurchaseOrderServiceGetSuggestedPurchaseOrdersProcedure:
-			purchaseOrderServiceGetSuggestedPurchaseOrdersHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -290,8 +263,4 @@ func (UnimplementedPurchaseOrderServiceHandler) CancelPurchaseOrder(context.Cont
 
 func (UnimplementedPurchaseOrderServiceHandler) CreateReceivingNote(context.Context, *connect.Request[v1.CreateReceivingNoteRequest]) (*connect.Response[v1.CreateReceivingNoteResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("order.v1.PurchaseOrderService.CreateReceivingNote is not implemented"))
-}
-
-func (UnimplementedPurchaseOrderServiceHandler) GetSuggestedPurchaseOrders(context.Context, *connect.Request[v1.GetSuggestedPurchaseOrdersRequest]) (*connect.Response[v1.GetSuggestedPurchaseOrdersResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("order.v1.PurchaseOrderService.GetSuggestedPurchaseOrders is not implemented"))
 }

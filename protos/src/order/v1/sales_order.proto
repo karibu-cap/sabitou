@@ -25,16 +25,19 @@ import "payments/v1/payments.proto";
  */
 message SalesOrder {
   string document_id = 1 [(buf.validate.field).required = true]; // "SO-2025-001"
-  string customer_id = 2; // Company buying from you
-  string seller_id = 3; // Your company
-  string source_warehouse_id = 4; // Where to pick items
+  // Company buying from you
+  string customer_id = 2; 
+  // Your company
+  string seller_id = 3; 
+  // Where to pick items
+  string source_warehouse_address = 4; 
   SalesOrderStatus status = 5;
   repeated order.v1.OrderLineItem items = 6;
-  OrderPrices order_prices = 7;
+  double total_amount = 7;
   optional string currency = 8;
   string created_by_user_id = 9;
   google.protobuf.Timestamp created_at = 10;
-  google.protobuf.Timestamp delivery_date = 11;
+  optional google.protobuf.Timestamp delivery_date = 11;
   optional string notes = 12;
 }
 
@@ -74,15 +77,15 @@ service SalesOrderService {
 message CreateSalesOrderRequest {
   string customer_id = 1;
   string seller_id = 2; // Your company
-  string source_warehouse_id = 3;
+  string source_warehouse_address = 3;
   repeated OrderLineItem items = 4;
   google.protobuf.Timestamp delivery_date = 5;
   string created_by_user_id = 6;
-  string notes = 7;
+  optional string notes = 7;
 }
 
 message CreateSalesOrderResponse {
-  string so_id = 1;
+  string sales_order_id = 1;
   SalesOrder sales_order = 2;
   bool all_items_available = 3;
   repeated string unavailable_product_ids = 4;
@@ -90,7 +93,7 @@ message CreateSalesOrderResponse {
 }
 
 message GetSalesOrderRequest {
-  string so_id = 1;
+  string sales_order_id = 1;
 }
 
 message GetSalesOrderResponse {
@@ -116,7 +119,7 @@ message ListSalesOrdersResponse {
 }
 
 message UpdateSalesOrderStatusRequest {
-  string so_id = 1;
+  string sales_order_id = 1;
   SalesOrderStatus new_status = 2;
   string updated_by_user_id = 3;
   string notes = 4;
@@ -128,7 +131,7 @@ message UpdateSalesOrderStatusResponse {
 }
 
 message CancelSalesOrderRequest {
-  string document_id = 1;
+  string sales_order_id = 1;
   string reason = 2;
   string cancelled_by_user_id = 3;
 }
@@ -148,7 +151,7 @@ message CreateDeliveryNoteRequest {
 }
 
 message CreateDeliveryNoteResponse {
-  string document_id = 1;
+  string delivery_note_id = 1;
   logistic.v1.DeliveryNote delivery_note = 2;
   repeated string inventory_transaction_ids = 3;
   string message = 4;
@@ -158,12 +161,11 @@ message CreateInvoiceFromSalesOrderRequest {
   string sales_order_id = 1;
   string delivery_note_id = 2; // Optional - link to delivery
   google.protobuf.Timestamp due_date = 3;
-  string payment_terms = 4; // "Net 30", "COD", etc.
   string created_by_user_id = 5;
 }
 
 message CreateInvoiceFromSalesOrderResponse {
-  string document_id = 1; // The invoice id
+  string invoice_id = 1; // The invoice id
   financial.v1.Invoice invoice = 2;
   string message = 3;
 }

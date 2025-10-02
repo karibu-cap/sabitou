@@ -112,6 +112,52 @@ paths:
                 $ref: '#/components/schemas/payments.v1.ValidateVoucherResponse'
 components:
   schemas:
+    audits.v1.VoucherTransaction:
+      type: object
+      properties:
+        documentId:
+          type: string
+          title: document_id
+        voucherId:
+          type: string
+          title: voucher_id
+          description: Which voucher used
+        relatedInvoiceId:
+          type: string
+          title: related_invoice_id
+          description: Which purchase
+        relatedReceiptId:
+          type: string
+          title: related_receipt_id
+          description: Or cash receipt
+        amountUsed:
+          type: number
+          title: amount_used
+          format: double
+        remainingAfter:
+          type: number
+          title: remaining_after
+          format: double
+        usedAt:
+          title: used_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        usedByUserId:
+          type: string
+          title: used_by_user_id
+      title: VoucherTransaction
+      required:
+        - documentId
+      additionalProperties: false
+      description: |-
+        *
+         VoucherTransaction tracks each time a voucher is used.
+
+         Example:
+           transaction_id: "VT-001"
+           voucher_id: "GV-2025-001"
+           related_invoice_id: "INV-2025-005"
+           amount_used: 50000
+           remaining_after: 50000
     connect-protocol-version:
       type: number
       title: Connect-Protocol-Version
@@ -305,9 +351,9 @@ components:
         transactions:
           type: array
           items:
-            $ref: '#/components/schemas/payments.v1.VoucherTransaction'
+            $ref: '#/components/schemas/audits.v1.VoucherTransaction'
           title: transactions
-          description: Usage history
+          description: Usage history.
       title: GetVoucherResponse
       additionalProperties: false
     payments.v1.GiftVoucher:
@@ -338,9 +384,14 @@ components:
           type: string
           title: issued_to_customer_id
           description: Optional - can be transferred
+          nullable: true
         issuedByUserId:
           type: string
           title: issued_by_user_id
+        warehouseId:
+          type: string
+          title: warehouse_id
+          description: Warehouse where the voucher was issued
         status:
           title: status
           $ref: '#/components/schemas/payments.v1.VoucherStatus'
@@ -349,18 +400,18 @@ components:
           $ref: '#/components/schemas/google.protobuf.Timestamp'
         validUntil:
           title: valid_until
-          description: Expiration
           $ref: '#/components/schemas/google.protobuf.Timestamp'
         notes:
           type: string
           title: notes
+          nullable: true
       title: GiftVoucher
       required:
         - documentId
       additionalProperties: false
       description: |-
         *
-         GiftVoucher (Bon Cadeau / Bon d'Achat)
+         GiftVoucher (Bon d'Achat)
          Prepaid credit that can be used for future purchases.
          Like a gift card or store credit.
 
@@ -375,20 +426,16 @@ components:
     payments.v1.ListVouchersRequest:
       type: object
       properties:
+        warehouseId:
+          type: string
+          title: warehouse_id
         customerId:
           type: string
           title: customer_id
-          description: Optional
-        status:
-          title: status
-          description: Optional
-          $ref: '#/components/schemas/payments.v1.VoucherStatus'
-        expiringSoon:
-          type: boolean
-          title: expiring_soon
-          description: Expiring within 30 days
+          nullable: true
         issuedAfter:
           title: issued_after
+          nullable: true
           $ref: '#/components/schemas/google.protobuf.Timestamp'
         pageSize:
           type: integer
@@ -416,7 +463,6 @@ components:
           type: number
           title: total_value
           format: double
-          description: Sum of remaining values
       title: ListVouchersResponse
       additionalProperties: false
     payments.v1.ValidateVoucherRequest:
@@ -449,7 +495,6 @@ components:
         message:
           type: string
           title: message
-          description: Error message if invalid
       title: ValidateVoucherResponse
       additionalProperties: false
     payments.v1.VoucherStatus:
@@ -462,52 +507,6 @@ components:
         - VOUCHER_STATUS_FULLY_USED
         - VOUCHER_STATUS_EXPIRED
         - VOUCHER_STATUS_CANCELLED
-    payments.v1.VoucherTransaction:
-      type: object
-      properties:
-        documentId:
-          type: string
-          title: document_id
-        voucherId:
-          type: string
-          title: voucher_id
-          description: Which voucher used
-        relatedInvoiceId:
-          type: string
-          title: related_invoice_id
-          description: Which purchase
-        relatedReceiptId:
-          type: string
-          title: related_receipt_id
-          description: Or cash receipt
-        amountUsed:
-          type: number
-          title: amount_used
-          format: double
-        remainingAfter:
-          type: number
-          title: remaining_after
-          format: double
-        usedAt:
-          title: used_at
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-        usedByUserId:
-          type: string
-          title: used_by_user_id
-      title: VoucherTransaction
-      required:
-        - documentId
-      additionalProperties: false
-      description: |-
-        *
-         VoucherTransaction tracks each time a voucher is used.
-
-         Example:
-           transaction_id: "VT-001"
-           voucher_id: "GV-2025-001"
-           related_invoice_id: "INV-2025-005"
-           amount_used: 50000
-           remaining_after: 50000
 security: []
 tags:
   - name: payments.v1.GiftVoucherService

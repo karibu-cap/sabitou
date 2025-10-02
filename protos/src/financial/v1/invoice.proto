@@ -11,8 +11,6 @@ import "google/protobuf/timestamp.proto";
  * The official accounting document for a sale or purchase.
  * Created AFTER goods are delivered (usually).
  *
- * Fix: InvoiceLineItem now includes optional batch_id for traceability.
- *
  * For SALES: You issue to customer
  * For PURCHASES: You receive from supplier
  *
@@ -36,9 +34,9 @@ message Invoice {
   InvoiceType invoice_type = 2; // Sales or Purchase
   string issuer_id = 3; // Company issuing invoice
   string recipient_id = 4; // Company receiving invoice
-  string related_sales_order_id = 5; // Optional link
-  string related_purchase_order_id = 6; // Optional link
-  string related_delivery_note_id = 7; // Optional link
+  optional string related_sales_order_id = 5; // Optional link
+  optional string related_purchase_order_id = 6; // Optional link
+  optional string related_delivery_note_id = 7; // Optional link
   InvoiceStatus status = 8;
   repeated financial.v1.InvoiceLineItem items = 9;
   double subtotal = 10; // Before tax

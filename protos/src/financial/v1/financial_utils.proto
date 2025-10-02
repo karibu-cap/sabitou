@@ -6,7 +6,6 @@ import "inventory/v1/category.proto";
 /**
  * InvoiceLineItem represents one product on an invoice.
  *
- * Fix: Added optional batch_id for lot traceability in accounting.
  */
 message InvoiceLineItem {
   string product_id = 1;

@@ -57,12 +57,4 @@ abstract final class PurchaseOrderService {
     orderv1purchase_order.CreateReceivingNoteRequest.new,
     orderv1purchase_order.CreateReceivingNoteResponse.new,
   );
-
-  /// Get suggested purchase orders (low stock items)
-  static const getSuggestedPurchaseOrders = connect.Spec(
-    '/$name/GetSuggestedPurchaseOrders',
-    connect.StreamType.unary,
-    orderv1purchase_order.GetSuggestedPurchaseOrdersRequest.new,
-    orderv1purchase_order.GetSuggestedPurchaseOrdersResponse.new,
-  );
 }

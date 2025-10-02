@@ -27,8 +27,6 @@ export 'invoice.pbenum.dart';
 ///  The official accounting document for a sale or purchase.
 ///  Created AFTER goods are delivered (usually).
 ///
-///  Fix: InvoiceLineItem now includes optional batch_id for traceability.
-///
 ///  For SALES: You issue to customer
 ///  For PURCHASES: You receive from supplier
 ///

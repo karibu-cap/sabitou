@@ -20,8 +20,6 @@ export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 
 /// *
 ///  InvoiceLineItem represents one product on an invoice.
-///
-///  Fix: Added optional batch_id for lot traceability in accounting.
 class InvoiceLineItem extends $pb.GeneratedMessage {
   factory InvoiceLineItem({
     $core.String? productId,

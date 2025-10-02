@@ -1,9 +1,55 @@
 openapi: 3.1.0
 info:
-  title: logistic.v1
+  title: audits.v1
 paths: {}
 components:
   schemas:
+    audits.v1.VoucherTransaction:
+      type: object
+      properties:
+        documentId:
+          type: string
+          title: document_id
+        voucherId:
+          type: string
+          title: voucher_id
+          description: Which voucher used
+        relatedInvoiceId:
+          type: string
+          title: related_invoice_id
+          description: Which purchase
+        relatedReceiptId:
+          type: string
+          title: related_receipt_id
+          description: Or cash receipt
+        amountUsed:
+          type: number
+          title: amount_used
+          format: double
+        remainingAfter:
+          type: number
+          title: remaining_after
+          format: double
+        usedAt:
+          title: used_at
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        usedByUserId:
+          type: string
+          title: used_by_user_id
+      title: VoucherTransaction
+      required:
+        - documentId
+      additionalProperties: false
+      description: |-
+        *
+         VoucherTransaction tracks each time a voucher is used.
+
+         Example:
+           transaction_id: "VT-001"
+           voucher_id: "GV-2025-001"
+           related_invoice_id: "INV-2025-005"
+           amount_used: 50000
+           remaining_after: 50000
     google.protobuf.Timestamp:
       type: string
       examples:
@@ -100,123 +146,4 @@ components:
          the Joda Time's [`ISODateTimeFormat.dateTime()`](
          http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()
          ) to obtain a formatter capable of generating timestamps in this format.
-    logistic.v1.ReceivingLineItem:
-      type: object
-      properties:
-        productId:
-          type: string
-          title: product_id
-        quantityExpected:
-          type: number
-          title: quantity_expected
-          format: double
-          description: From PO
-        quantityReceived:
-          type: number
-          title: quantity_received
-          format: double
-          description: Actually got
-        quantityRejected:
-          type: number
-          title: quantity_rejected
-          format: double
-          description: Damaged/wrong items
-        rejectionReason:
-          type: string
-          title: rejection_reason
-        batchId:
-          type: string
-          title: batch_id
-          description: Generated batch ID for received items
-        expirationDate:
-          title: expiration_date
-          description: Provided by supplier or calculated
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-      title: ReceivingLineItem
-      additionalProperties: false
-      description: |-
-        *
-         ReceivingLineItem shows what was actually received vs expected.
-
-         Fix: Added batch_id and expiration_date for creating new batches on reception.
-
-         Example:
-           product_id: "PRD-001"
-           quantity_expected: 50
-           quantity_received: 48
-           quantity_rejected: 2 (damaged)
-           rejection_reason: "Damaged packaging"
-           batch_id: "BATCH-2025-001" (generated)
-           expiration_date: 2026-09-29T00:00:00Z
-    logistic.v1.ReceivingNote:
-      type: object
-      properties:
-        documentId:
-          type: string
-          title: document_id
-          description: '"RN-2025-001"'
-        relatedPurchaseOrderId:
-          type: string
-          title: related_purchase_order_id
-          description: Which PO this fulfills
-        supplierId:
-          type: string
-          title: supplier_id
-          description: Who sent the goods
-        buyerId:
-          type: string
-          title: buyer_id
-          description: Where goods are stored
-        status:
-          title: status
-          $ref: '#/components/schemas/logistic.v1.ReceivingNoteStatus'
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/logistic.v1.ReceivingLineItem'
-          title: items
-        receivedByUserId:
-          type: string
-          title: received_by_user_id
-          description: Who accepted delivery
-        receivedAt:
-          title: received_at
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-        notes:
-          type: string
-          title: notes
-          description: Condition notes, damages, etc.
-      title: ReceivingNote
-      required:
-        - documentId
-      additionalProperties: false
-      description: |-
-        *
-         ReceivingNote (Bon de Réception)
-         Created when YOU receive goods from a supplier.
-         THIS IS WHAT INCREASES YOUR INVENTORY.
-
-         Fix: ReceivingLineItem now includes batch_id (system-generated or from supplier).
-         When creating, new Batches are added to InventoryLevel.
-
-         Flow: Goods arrive → Inspect → Create ReceivingNote → Update inventory
-
-         Example:
-           rn_id: "RN-2025-001"
-           related_purchase_order_id: "PO-2025-001"
-           supplier_id: "CMP-002"
-           buyer_id: "WH-001"
-           items: [48x PRD-001] (expected 50, but 2 damaged)
-           status: RN_STATUS_COMPLETED
-
-         INVENTORY IMPACT: +48 PRD-001 in WH-001
-    logistic.v1.ReceivingNoteStatus:
-      type: string
-      title: ReceivingNoteStatus
-      enum:
-        - RN_STATUS_UNSPECIFIED
-        - RN_STATUS_PENDING
-        - RN_STATUS_INSPECTING
-        - RN_STATUS_COMPLETED
-        - RN_STATUS_REJECTED
 security: []

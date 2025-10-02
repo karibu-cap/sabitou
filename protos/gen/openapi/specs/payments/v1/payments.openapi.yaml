@@ -38,42 +38,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/payments.v1.CreatePaymentResponse'
-  /payments.v1.PaymentService/CreateRefund:
-    post:
-      tags:
-        - payments.v1.PaymentService
-      summary: Process refund
-      description: Process refund
-      operationId: payments.v1.PaymentService.CreateRefund
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/payments.v1.CreateRefundRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/payments.v1.CreateRefundResponse'
   /payments.v1.PaymentService/GetPayment:
     post:
       tags:
@@ -240,14 +204,17 @@ components:
           type: string
           title: related_sales_order_id
           description: Optional link
+          nullable: true
         relatedPurchaseOrderId:
           type: string
           title: related_purchase_order_id
           description: Optional link
+          nullable: true
         relatedDeliveryNoteId:
           type: string
           title: related_delivery_note_id
           description: Optional link
+          nullable: true
         status:
           title: status
           $ref: '#/components/schemas/financial.v1.InvoiceStatus'
@@ -308,8 +275,6 @@ components:
          Invoice (Facture)
          The official accounting document for a sale or purchase.
          Created AFTER goods are delivered (usually).
-
-         Fix: InvoiceLineItem now includes optional batch_id for traceability.
 
          For SALES: You issue to customer
          For PURCHASES: You receive from supplier
@@ -374,8 +339,6 @@ components:
       description: |-
         *
          InvoiceLineItem represents one product on an invoice.
-
-         Fix: Added optional batch_id for lot traceability in accounting.
     financial.v1.InvoiceStatus:
       type: string
       title: InvoiceStatus
@@ -511,11 +474,9 @@ components:
         payerId:
           type: string
           title: payer_id
-          description: Company making payment
-        payeeId:
+        receiver:
           type: string
-          title: payee_id
-          description: Company receiving payment
+          title: receiver
         amount:
           type: number
           title: amount
@@ -529,7 +490,6 @@ components:
         referenceNumber:
           type: string
           title: reference_number
-          description: Bank ref, check number, etc.
           nullable: true
         notes:
           type: string
@@ -540,56 +500,10 @@ components:
     payments.v1.CreatePaymentResponse:
       type: object
       properties:
-        paymentId:
-          type: string
-          title: payment_id
         payment:
           title: payment
           $ref: '#/components/schemas/payments.v1.Payment'
-        updatedInvoice:
-          title: updated_invoice
-          description: Updated status
-          $ref: '#/components/schemas/financial.v1.Invoice'
-        message:
-          type: string
-          title: message
       title: CreatePaymentResponse
-      additionalProperties: false
-    payments.v1.CreateRefundRequest:
-      type: object
-      properties:
-        originalPaymentId:
-          type: string
-          title: original_payment_id
-        creditNoteId:
-          type: string
-          title: credit_note_id
-          description: Reason for refund
-        refundAmount:
-          type: number
-          title: refund_amount
-          format: double
-        refundedByUserId:
-          type: string
-          title: refunded_by_user_id
-        notes:
-          type: string
-          title: notes
-      title: CreateRefundRequest
-      additionalProperties: false
-    payments.v1.CreateRefundResponse:
-      type: object
-      properties:
-        refundPaymentId:
-          type: string
-          title: refund_payment_id
-        refundPayment:
-          title: refund_payment
-          $ref: '#/components/schemas/payments.v1.Payment'
-        message:
-          type: string
-          title: message
-      title: CreateRefundResponse
       additionalProperties: false
     payments.v1.GetPaymentRequest:
       type: object
@@ -613,18 +527,9 @@ components:
     payments.v1.ListPaymentsRequest:
       type: object
       properties:
-        storeId:
+        warehouseId:
           type: string
-          title: store_id
-          description: Payments involving this company
-        method:
-          title: method
-          description: Filter by method
-          $ref: '#/components/schemas/payments.v1.PaymentMethod'
-        status:
-          title: status
-          description: Filter by status
-          $ref: '#/components/schemas/payments.v1.PaymentStatus'
+          title: warehouse_id
         startDate:
           title: start_date
           $ref: '#/components/schemas/google.protobuf.Timestamp'
@@ -669,42 +574,41 @@ components:
         payerId:
           type: string
           title: payer_id
-          description: Who pays
-        payeeId:
+        receiver:
           type: string
-          title: payee_id
-          description: Who receives
+          title: receiver
+          description: Can be a customer phone number or account number.
         amount:
           type: number
           title: amount
           format: double
-          description: Amount in smallest currency unit
         currency:
           type: string
           title: currency
+        warehouseId:
+          type: string
+          title: warehouse_id
+          description: The warehouse id. in general it's the warehouse of the store.
         paymentMethod:
           title: payment_method
           $ref: '#/components/schemas/payments.v1.PaymentMethod'
         status:
           title: status
           $ref: '#/components/schemas/payments.v1.PaymentStatus'
-        relatedInvoiceId:
-          type: string
-          title: related_invoice_id
-          description: Which invoice this pays
         paymentDate:
           title: payment_date
           $ref: '#/components/schemas/google.protobuf.Timestamp'
         referenceNumber:
           type: string
           title: reference_number
-          description: Bank reference, check number, etc.
+          nullable: true
         createdByUserId:
           type: string
           title: created_by_user_id
         notes:
           type: string
           title: notes
+          nullable: true
       title: Payment
       required:
         - documentId
@@ -717,10 +621,9 @@ components:
          Example:
            payment_id: "PAY-2025-001"
            payer_id: "CMP-003" (customer)
-           payee_id: "CMP-001" (your company)
+           receiver: "CMP-001" (your company)
            amount: 5400000
            payment_method: PAYMENT_METHOD_BANK_TRANSFER
-           related_invoice_id: "INV-2025-001"
            status: PAYMENT_STATUS_COMPLETED
     payments.v1.PaymentMethod:
       type: string

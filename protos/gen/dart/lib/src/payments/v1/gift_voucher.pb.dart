@@ -15,6 +15,7 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
+import '../../audits/v1/voucher_transaction.pb.dart' as $1;
 import '../../google/protobuf/timestamp.pb.dart' as $0;
 import 'gift_voucher.pbenum.dart';
 
@@ -23,7 +24,7 @@ export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 export 'gift_voucher.pbenum.dart';
 
 /// *
-///  GiftVoucher (Bon Cadeau / Bon d'Achat)
+///  GiftVoucher (Bon d'Achat)
 ///  Prepaid credit that can be used for future purchases.
 ///  Like a gift card or store credit.
 ///
@@ -44,6 +45,7 @@ class GiftVoucher extends $pb.GeneratedMessage {
     $core.String? currency,
     $core.String? issuedToCustomerId,
     $core.String? issuedByUserId,
+    $core.String? warehouseId,
     VoucherStatus? status,
     $0.Timestamp? issuedAt,
     $0.Timestamp? validUntil,
@@ -58,6 +60,7 @@ class GiftVoucher extends $pb.GeneratedMessage {
     if (issuedToCustomerId != null)
       result.issuedToCustomerId = issuedToCustomerId;
     if (issuedByUserId != null) result.issuedByUserId = issuedByUserId;
+    if (warehouseId != null) result.warehouseId = warehouseId;
     if (status != null) result.status = status;
     if (issuedAt != null) result.issuedAt = issuedAt;
     if (validUntil != null) result.validUntil = validUntil;
@@ -87,15 +90,16 @@ class GiftVoucher extends $pb.GeneratedMessage {
     ..aOS(5, _omitFieldNames ? '' : 'currency')
     ..aOS(6, _omitFieldNames ? '' : 'issuedToCustomerId')
     ..aOS(7, _omitFieldNames ? '' : 'issuedByUserId')
-    ..e<VoucherStatus>(8, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
+    ..aOS(8, _omitFieldNames ? '' : 'warehouseId')
+    ..e<VoucherStatus>(9, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
         defaultOrMaker: VoucherStatus.VOUCHER_STATUS_UNSPECIFIED,
         valueOf: VoucherStatus.valueOf,
         enumValues: VoucherStatus.values)
-    ..aOM<$0.Timestamp>(9, _omitFieldNames ? '' : 'issuedAt',
+    ..aOM<$0.Timestamp>(10, _omitFieldNames ? '' : 'issuedAt',
         subBuilder: $0.Timestamp.create)
-    ..aOM<$0.Timestamp>(10, _omitFieldNames ? '' : 'validUntil',
+    ..aOM<$0.Timestamp>(11, _omitFieldNames ? '' : 'validUntil',
         subBuilder: $0.Timestamp.create)
-    ..aOS(11, _omitFieldNames ? '' : 'notes')
+    ..aOS(12, _omitFieldNames ? '' : 'notes')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -118,6 +122,7 @@ class GiftVoucher extends $pb.GeneratedMessage {
       $pb.GeneratedMessage.$_defaultFor<GiftVoucher>(create);
   static GiftVoucher? _defaultInstance;
 
+  /// "GV-2025-001"
   @$pb.TagNumber(1)
   $core.String get documentId => $_getSZ(0);
   @$pb.TagNumber(1)
@@ -127,6 +132,7 @@ class GiftVoucher extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   void clearDocumentId() => $_clearField(1);
 
+  /// "GIFT-XMAS-12345" - what customer uses
   @$pb.TagNumber(2)
   $core.String get voucherCode => $_getSZ(1);
   @$pb.TagNumber(2)
@@ -136,6 +142,7 @@ class GiftVoucher extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   void clearVoucherCode() => $_clearField(2);
 
+  /// Original amount
   @$pb.TagNumber(3)
   $core.double get initialValue => $_getN(2);
   @$pb.TagNumber(3)
@@ -145,6 +152,7 @@ class GiftVoucher extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   void clearInitialValue() => $_clearField(3);
 
+  /// What's left
   @$pb.TagNumber(4)
   $core.double get remainingValue => $_getN(3);
   @$pb.TagNumber(4)
@@ -163,6 +171,7 @@ class GiftVoucher extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   void clearCurrency() => $_clearField(5);
 
+  /// Optional - can be transferred
   @$pb.TagNumber(6)
   $core.String get issuedToCustomerId => $_getSZ(5);
   @$pb.TagNumber(6)
@@ -181,199 +190,55 @@ class GiftVoucher extends $pb.GeneratedMessage {
   @$pb.TagNumber(7)
   void clearIssuedByUserId() => $_clearField(7);
 
+  /// Warehouse where the voucher was issued
   @$pb.TagNumber(8)
-  VoucherStatus get status => $_getN(7);
+  $core.String get warehouseId => $_getSZ(7);
   @$pb.TagNumber(8)
-  set status(VoucherStatus value) => $_setField(8, value);
+  set warehouseId($core.String value) => $_setString(7, value);
   @$pb.TagNumber(8)
-  $core.bool hasStatus() => $_has(7);
+  $core.bool hasWarehouseId() => $_has(7);
   @$pb.TagNumber(8)
-  void clearStatus() => $_clearField(8);
+  void clearWarehouseId() => $_clearField(8);
 
   @$pb.TagNumber(9)
-  $0.Timestamp get issuedAt => $_getN(8);
+  VoucherStatus get status => $_getN(8);
   @$pb.TagNumber(9)
-  set issuedAt($0.Timestamp value) => $_setField(9, value);
+  set status(VoucherStatus value) => $_setField(9, value);
   @$pb.TagNumber(9)
-  $core.bool hasIssuedAt() => $_has(8);
+  $core.bool hasStatus() => $_has(8);
   @$pb.TagNumber(9)
-  void clearIssuedAt() => $_clearField(9);
-  @$pb.TagNumber(9)
-  $0.Timestamp ensureIssuedAt() => $_ensure(8);
+  void clearStatus() => $_clearField(9);
 
   @$pb.TagNumber(10)
-  $0.Timestamp get validUntil => $_getN(9);
+  $0.Timestamp get issuedAt => $_getN(9);
   @$pb.TagNumber(10)
-  set validUntil($0.Timestamp value) => $_setField(10, value);
+  set issuedAt($0.Timestamp value) => $_setField(10, value);
   @$pb.TagNumber(10)
-  $core.bool hasValidUntil() => $_has(9);
+  $core.bool hasIssuedAt() => $_has(9);
   @$pb.TagNumber(10)
-  void clearValidUntil() => $_clearField(10);
+  void clearIssuedAt() => $_clearField(10);
   @$pb.TagNumber(10)
-  $0.Timestamp ensureValidUntil() => $_ensure(9);
+  $0.Timestamp ensureIssuedAt() => $_ensure(9);
 
   @$pb.TagNumber(11)
-  $core.String get notes => $_getSZ(10);
+  $0.Timestamp get validUntil => $_getN(10);
   @$pb.TagNumber(11)
-  set notes($core.String value) => $_setString(10, value);
+  set validUntil($0.Timestamp value) => $_setField(11, value);
   @$pb.TagNumber(11)
-  $core.bool hasNotes() => $_has(10);
+  $core.bool hasValidUntil() => $_has(10);
   @$pb.TagNumber(11)
-  void clearNotes() => $_clearField(11);
-}
+  void clearValidUntil() => $_clearField(11);
+  @$pb.TagNumber(11)
+  $0.Timestamp ensureValidUntil() => $_ensure(10);
 
-/// *
-///  VoucherTransaction tracks each time a voucher is used.
-///
-///  Example:
-///    transaction_id: "VT-001"
-///    voucher_id: "GV-2025-001"
-///    related_invoice_id: "INV-2025-005"
-///    amount_used: 50000
-///    remaining_after: 50000
-class VoucherTransaction extends $pb.GeneratedMessage {
-  factory VoucherTransaction({
-    $core.String? documentId,
-    $core.String? voucherId,
-    $core.String? relatedInvoiceId,
-    $core.String? relatedReceiptId,
-    $core.double? amountUsed,
-    $core.double? remainingAfter,
-    $0.Timestamp? usedAt,
-    $core.String? usedByUserId,
-  }) {
-    final result = create();
-    if (documentId != null) result.documentId = documentId;
-    if (voucherId != null) result.voucherId = voucherId;
-    if (relatedInvoiceId != null) result.relatedInvoiceId = relatedInvoiceId;
-    if (relatedReceiptId != null) result.relatedReceiptId = relatedReceiptId;
-    if (amountUsed != null) result.amountUsed = amountUsed;
-    if (remainingAfter != null) result.remainingAfter = remainingAfter;
-    if (usedAt != null) result.usedAt = usedAt;
-    if (usedByUserId != null) result.usedByUserId = usedByUserId;
-    return result;
-  }
-
-  VoucherTransaction._();
-
-  factory VoucherTransaction.fromBuffer($core.List<$core.int> data,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
-  factory VoucherTransaction.fromJson($core.String json,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'VoucherTransaction',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'payments.v1'),
-      createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'documentId')
-    ..aOS(2, _omitFieldNames ? '' : 'voucherId')
-    ..aOS(3, _omitFieldNames ? '' : 'relatedInvoiceId')
-    ..aOS(4, _omitFieldNames ? '' : 'relatedReceiptId')
-    ..a<$core.double>(
-        5, _omitFieldNames ? '' : 'amountUsed', $pb.PbFieldType.OD)
-    ..a<$core.double>(
-        6, _omitFieldNames ? '' : 'remainingAfter', $pb.PbFieldType.OD)
-    ..aOM<$0.Timestamp>(7, _omitFieldNames ? '' : 'usedAt',
-        subBuilder: $0.Timestamp.create)
-    ..aOS(8, _omitFieldNames ? '' : 'usedByUserId')
-    ..hasRequiredFields = false;
-
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  VoucherTransaction clone() => VoucherTransaction()..mergeFromMessage(this);
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  VoucherTransaction copyWith(void Function(VoucherTransaction) updates) =>
-      super.copyWith((message) => updates(message as VoucherTransaction))
-          as VoucherTransaction;
-
-  @$core.override
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static VoucherTransaction create() => VoucherTransaction._();
-  @$core.override
-  VoucherTransaction createEmptyInstance() => create();
-  static $pb.PbList<VoucherTransaction> createRepeated() =>
-      $pb.PbList<VoucherTransaction>();
-  @$core.pragma('dart2js:noInline')
-  static VoucherTransaction getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<VoucherTransaction>(create);
-  static VoucherTransaction? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $core.String get documentId => $_getSZ(0);
-  @$pb.TagNumber(1)
-  set documentId($core.String value) => $_setString(0, value);
-  @$pb.TagNumber(1)
-  $core.bool hasDocumentId() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearDocumentId() => $_clearField(1);
-
-  @$pb.TagNumber(2)
-  $core.String get voucherId => $_getSZ(1);
-  @$pb.TagNumber(2)
-  set voucherId($core.String value) => $_setString(1, value);
-  @$pb.TagNumber(2)
-  $core.bool hasVoucherId() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearVoucherId() => $_clearField(2);
-
-  @$pb.TagNumber(3)
-  $core.String get relatedInvoiceId => $_getSZ(2);
-  @$pb.TagNumber(3)
-  set relatedInvoiceId($core.String value) => $_setString(2, value);
-  @$pb.TagNumber(3)
-  $core.bool hasRelatedInvoiceId() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearRelatedInvoiceId() => $_clearField(3);
-
-  @$pb.TagNumber(4)
-  $core.String get relatedReceiptId => $_getSZ(3);
-  @$pb.TagNumber(4)
-  set relatedReceiptId($core.String value) => $_setString(3, value);
-  @$pb.TagNumber(4)
-  $core.bool hasRelatedReceiptId() => $_has(3);
-  @$pb.TagNumber(4)
-  void clearRelatedReceiptId() => $_clearField(4);
-
-  @$pb.TagNumber(5)
-  $core.double get amountUsed => $_getN(4);
-  @$pb.TagNumber(5)
-  set amountUsed($core.double value) => $_setDouble(4, value);
-  @$pb.TagNumber(5)
-  $core.bool hasAmountUsed() => $_has(4);
-  @$pb.TagNumber(5)
-  void clearAmountUsed() => $_clearField(5);
-
-  @$pb.TagNumber(6)
-  $core.double get remainingAfter => $_getN(5);
-  @$pb.TagNumber(6)
-  set remainingAfter($core.double value) => $_setDouble(5, value);
-  @$pb.TagNumber(6)
-  $core.bool hasRemainingAfter() => $_has(5);
-  @$pb.TagNumber(6)
-  void clearRemainingAfter() => $_clearField(6);
-
-  @$pb.TagNumber(7)
-  $0.Timestamp get usedAt => $_getN(6);
-  @$pb.TagNumber(7)
-  set usedAt($0.Timestamp value) => $_setField(7, value);
-  @$pb.TagNumber(7)
-  $core.bool hasUsedAt() => $_has(6);
-  @$pb.TagNumber(7)
-  void clearUsedAt() => $_clearField(7);
-  @$pb.TagNumber(7)
-  $0.Timestamp ensureUsedAt() => $_ensure(6);
-
-  @$pb.TagNumber(8)
-  $core.String get usedByUserId => $_getSZ(7);
-  @$pb.TagNumber(8)
-  set usedByUserId($core.String value) => $_setString(7, value);
-  @$pb.TagNumber(8)
-  $core.bool hasUsedByUserId() => $_has(7);
-  @$pb.TagNumber(8)
-  void clearUsedByUserId() => $_clearField(8);
+  @$pb.TagNumber(12)
+  $core.String get notes => $_getSZ(11);
+  @$pb.TagNumber(12)
+  set notes($core.String value) => $_setString(11, value);
+  @$pb.TagNumber(12)
+  $core.bool hasNotes() => $_has(11);
+  @$pb.TagNumber(12)
+  void clearNotes() => $_clearField(12);
 }
 
 class ValidateVoucherRequest extends $pb.GeneratedMessage {
@@ -643,7 +508,7 @@ class GetVoucherRequest extends $pb.GeneratedMessage {
 class GetVoucherResponse extends $pb.GeneratedMessage {
   factory GetVoucherResponse({
     GiftVoucher? voucher,
-    $core.Iterable<VoucherTransaction>? transactions,
+    $core.Iterable<$1.VoucherTransaction>? transactions,
   }) {
     final result = create();
     if (voucher != null) result.voucher = voucher;
@@ -666,9 +531,9 @@ class GetVoucherResponse extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOM<GiftVoucher>(1, _omitFieldNames ? '' : 'voucher',
         subBuilder: GiftVoucher.create)
-    ..pc<VoucherTransaction>(
+    ..pc<$1.VoucherTransaction>(
         2, _omitFieldNames ? '' : 'transactions', $pb.PbFieldType.PM,
-        subBuilder: VoucherTransaction.create)
+        subBuilder: $1.VoucherTransaction.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -703,23 +568,22 @@ class GetVoucherResponse extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   GiftVoucher ensureVoucher() => $_ensure(0);
 
+  /// Usage history.
   @$pb.TagNumber(2)
-  $pb.PbList<VoucherTransaction> get transactions => $_getList(1);
+  $pb.PbList<$1.VoucherTransaction> get transactions => $_getList(1);
 }
 
 class ListVouchersRequest extends $pb.GeneratedMessage {
   factory ListVouchersRequest({
+    $core.String? warehouseId,
     $core.String? customerId,
-    VoucherStatus? status,
-    $core.bool? expiringSoon,
     $0.Timestamp? issuedAfter,
     $core.int? pageSize,
     $core.int? pageNumber,
   }) {
     final result = create();
+    if (warehouseId != null) result.warehouseId = warehouseId;
     if (customerId != null) result.customerId = customerId;
-    if (status != null) result.status = status;
-    if (expiringSoon != null) result.expiringSoon = expiringSoon;
     if (issuedAfter != null) result.issuedAfter = issuedAfter;
     if (pageSize != null) result.pageSize = pageSize;
     if (pageNumber != null) result.pageNumber = pageNumber;
@@ -739,16 +603,12 @@ class ListVouchersRequest extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'ListVouchersRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'payments.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'customerId')
-    ..e<VoucherStatus>(2, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
-        defaultOrMaker: VoucherStatus.VOUCHER_STATUS_UNSPECIFIED,
-        valueOf: VoucherStatus.valueOf,
-        enumValues: VoucherStatus.values)
-    ..aOB(3, _omitFieldNames ? '' : 'expiringSoon')
-    ..aOM<$0.Timestamp>(4, _omitFieldNames ? '' : 'issuedAfter',
+    ..aOS(1, _omitFieldNames ? '' : 'warehouseId')
+    ..aOS(2, _omitFieldNames ? '' : 'customerId')
+    ..aOM<$0.Timestamp>(3, _omitFieldNames ? '' : 'issuedAfter',
         subBuilder: $0.Timestamp.create)
-    ..a<$core.int>(5, _omitFieldNames ? '' : 'pageSize', $pb.PbFieldType.O3)
-    ..a<$core.int>(6, _omitFieldNames ? '' : 'pageNumber', $pb.PbFieldType.O3)
+    ..a<$core.int>(4, _omitFieldNames ? '' : 'pageSize', $pb.PbFieldType.O3)
+    ..a<$core.int>(5, _omitFieldNames ? '' : 'pageNumber', $pb.PbFieldType.O3)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -773,60 +633,51 @@ class ListVouchersRequest extends $pb.GeneratedMessage {
   static ListVouchersRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get customerId => $_getSZ(0);
+  $core.String get warehouseId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set customerId($core.String value) => $_setString(0, value);
+  set warehouseId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasCustomerId() => $_has(0);
+  $core.bool hasWarehouseId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearCustomerId() => $_clearField(1);
+  void clearWarehouseId() => $_clearField(1);
 
   @$pb.TagNumber(2)
-  VoucherStatus get status => $_getN(1);
+  $core.String get customerId => $_getSZ(1);
   @$pb.TagNumber(2)
-  set status(VoucherStatus value) => $_setField(2, value);
+  set customerId($core.String value) => $_setString(1, value);
   @$pb.TagNumber(2)
-  $core.bool hasStatus() => $_has(1);
+  $core.bool hasCustomerId() => $_has(1);
   @$pb.TagNumber(2)
-  void clearStatus() => $_clearField(2);
+  void clearCustomerId() => $_clearField(2);
 
   @$pb.TagNumber(3)
-  $core.bool get expiringSoon => $_getBF(2);
+  $0.Timestamp get issuedAfter => $_getN(2);
   @$pb.TagNumber(3)
-  set expiringSoon($core.bool value) => $_setBool(2, value);
+  set issuedAfter($0.Timestamp value) => $_setField(3, value);
   @$pb.TagNumber(3)
-  $core.bool hasExpiringSoon() => $_has(2);
+  $core.bool hasIssuedAfter() => $_has(2);
   @$pb.TagNumber(3)
-  void clearExpiringSoon() => $_clearField(3);
+  void clearIssuedAfter() => $_clearField(3);
+  @$pb.TagNumber(3)
+  $0.Timestamp ensureIssuedAfter() => $_ensure(2);
 
   @$pb.TagNumber(4)
-  $0.Timestamp get issuedAfter => $_getN(3);
+  $core.int get pageSize => $_getIZ(3);
   @$pb.TagNumber(4)
-  set issuedAfter($0.Timestamp value) => $_setField(4, value);
+  set pageSize($core.int value) => $_setSignedInt32(3, value);
   @$pb.TagNumber(4)
-  $core.bool hasIssuedAfter() => $_has(3);
+  $core.bool hasPageSize() => $_has(3);
   @$pb.TagNumber(4)
-  void clearIssuedAfter() => $_clearField(4);
-  @$pb.TagNumber(4)
-  $0.Timestamp ensureIssuedAfter() => $_ensure(3);
+  void clearPageSize() => $_clearField(4);
 
   @$pb.TagNumber(5)
-  $core.int get pageSize => $_getIZ(4);
+  $core.int get pageNumber => $_getIZ(4);
   @$pb.TagNumber(5)
-  set pageSize($core.int value) => $_setSignedInt32(4, value);
+  set pageNumber($core.int value) => $_setSignedInt32(4, value);
   @$pb.TagNumber(5)
-  $core.bool hasPageSize() => $_has(4);
+  $core.bool hasPageNumber() => $_has(4);
   @$pb.TagNumber(5)
-  void clearPageSize() => $_clearField(5);
-
-  @$pb.TagNumber(6)
-  $core.int get pageNumber => $_getIZ(5);
-  @$pb.TagNumber(6)
-  set pageNumber($core.int value) => $_setSignedInt32(5, value);
-  @$pb.TagNumber(6)
-  $core.bool hasPageNumber() => $_has(5);
-  @$pb.TagNumber(6)
-  void clearPageNumber() => $_clearField(6);
+  void clearPageNumber() => $_clearField(5);
 }
 
 class ListVouchersResponse extends $pb.GeneratedMessage {

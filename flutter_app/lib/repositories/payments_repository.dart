@@ -71,19 +71,4 @@ class PaymentsRepository {
       return null;
     }
   }
-
-  /// Creates a refund.
-  Future<CreateRefundResponse?> createRefund(
-    CreateRefundRequest request,
-  ) async {
-    try {
-      final response = await paymentServiceClient.createRefund(request);
-
-      return response;
-    } on Exception catch (e) {
-      _logger.severe('createRefund Error: $e');
-
-      return null;
-    }
-  }
 }

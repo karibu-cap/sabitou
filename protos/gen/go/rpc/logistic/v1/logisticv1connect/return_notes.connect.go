@@ -33,39 +33,15 @@ const (
 // reflection-formatted method names, remove the leading slash and convert the remaining slash to a
 // period.
 const (
-	// ReturnServiceCreateCustomerReturnProcedure is the fully-qualified name of the ReturnService's
-	// CreateCustomerReturn RPC.
-	ReturnServiceCreateCustomerReturnProcedure = "/logistic.v1.ReturnService/CreateCustomerReturn"
-	// ReturnServiceProcessReturnRequestProcedure is the fully-qualified name of the ReturnService's
-	// ProcessReturnRequest RPC.
-	ReturnServiceProcessReturnRequestProcedure = "/logistic.v1.ReturnService/ProcessReturnRequest"
-	// ReturnServiceCreateCreditNoteFromReturnProcedure is the fully-qualified name of the
-	// ReturnService's CreateCreditNoteFromReturn RPC.
-	ReturnServiceCreateCreditNoteFromReturnProcedure = "/logistic.v1.ReturnService/CreateCreditNoteFromReturn"
-	// ReturnServiceCreateDebitNoteFromReturnProcedure is the fully-qualified name of the
-	// ReturnService's CreateDebitNoteFromReturn RPC.
-	ReturnServiceCreateDebitNoteFromReturnProcedure = "/logistic.v1.ReturnService/CreateDebitNoteFromReturn"
-	// ReturnServiceGetReturnProcedure is the fully-qualified name of the ReturnService's GetReturn RPC.
-	ReturnServiceGetReturnProcedure = "/logistic.v1.ReturnService/GetReturn"
-	// ReturnServiceListReturnsProcedure is the fully-qualified name of the ReturnService's ListReturns
-	// RPC.
-	ReturnServiceListReturnsProcedure = "/logistic.v1.ReturnService/ListReturns"
+	// ReturnServiceCreateReturnProcedure is the fully-qualified name of the ReturnService's
+	// CreateReturn RPC.
+	ReturnServiceCreateReturnProcedure = "/logistic.v1.ReturnService/CreateReturn"
 )
 
 // ReturnServiceClient is a client for the logistic.v1.ReturnService service.
 type ReturnServiceClient interface {
 	// Create a return note (customer returning to you)
-	CreateCustomerReturn(context.Context, *connect.Request[v1.CreateCustomerReturnRequest]) (*connect.Response[v1.CreateCustomerReturnResponse], error)
-	// Approve/reject a return request
-	ProcessReturnRequest(context.Context, *connect.Request[v1.ProcessReturnRequestRequest]) (*connect.Response[v1.ProcessReturnRequestResponse], error)
-	// Create credit note from return
-	CreateCreditNoteFromReturn(context.Context, *connect.Request[v1.CreateCreditNoteFromReturnRequest]) (*connect.Response[v1.CreateCreditNoteFromReturnResponse], error)
-	// Create debit note for supplier return
-	CreateDebitNoteFromReturn(context.Context, *connect.Request[v1.CreateDebitNoteFromReturnRequest]) (*connect.Response[v1.CreateDebitNoteFromReturnResponse], error)
-	// Get return details
-	GetReturn(context.Context, *connect.Request[v1.GetReturnRequest]) (*connect.Response[v1.GetReturnResponse], error)
-	// List returns
-	ListReturns(context.Context, *connect.Request[v1.ListReturnsRequest]) (*connect.Response[v1.ListReturnsResponse], error)
+	CreateReturn(context.Context, *connect.Request[v1.CreateReturnRequest]) (*connect.Response[v1.CreateReturnResponse], error)
 }
 
 // NewReturnServiceClient constructs a client for the logistic.v1.ReturnService service. By default,
@@ -79,40 +55,10 @@ func NewReturnServiceClient(httpClient connect.HTTPClient, baseURL string, opts 
 	baseURL = strings.TrimRight(baseURL, "/")
 	returnServiceMethods := v1.File_logistic_v1_return_notes_proto.Services().ByName("ReturnService").Methods()
 	return &returnServiceClient{
-		createCustomerReturn: connect.NewClient[v1.CreateCustomerReturnRequest, v1.CreateCustomerReturnResponse](
+		createReturn: connect.NewClient[v1.CreateReturnRequest, v1.CreateReturnResponse](
 			httpClient,
-			baseURL+ReturnServiceCreateCustomerReturnProcedure,
-			connect.WithSchema(returnServiceMethods.ByName("CreateCustomerReturn")),
-			connect.WithClientOptions(opts...),
-		),
-		processReturnRequest: connect.NewClient[v1.ProcessReturnRequestRequest, v1.ProcessReturnRequestResponse](
-			httpClient,
-			baseURL+ReturnServiceProcessReturnRequestProcedure,
-			connect.WithSchema(returnServiceMethods.ByName("ProcessReturnRequest")),
-			connect.WithClientOptions(opts...),
-		),
-		createCreditNoteFromReturn: connect.NewClient[v1.CreateCreditNoteFromReturnRequest, v1.CreateCreditNoteFromReturnResponse](
-			httpClient,
-			baseURL+ReturnServiceCreateCreditNoteFromReturnProcedure,
-			connect.WithSchema(returnServiceMethods.ByName("CreateCreditNoteFromReturn")),
-			connect.WithClientOptions(opts...),
-		),
-		createDebitNoteFromReturn: connect.NewClient[v1.CreateDebitNoteFromReturnRequest, v1.CreateDebitNoteFromReturnResponse](
-			httpClient,
-			baseURL+ReturnServiceCreateDebitNoteFromReturnProcedure,
-			connect.WithSchema(returnServiceMethods.ByName("CreateDebitNoteFromReturn")),
-			connect.WithClientOptions(opts...),
-		),
-		getReturn: connect.NewClient[v1.GetReturnRequest, v1.GetReturnResponse](
-			httpClient,
-			baseURL+ReturnServiceGetReturnProcedure,
-			connect.WithSchema(returnServiceMethods.ByName("GetReturn")),
-			connect.WithClientOptions(opts...),
-		),
-		listReturns: connect.NewClient[v1.ListReturnsRequest, v1.ListReturnsResponse](
-			httpClient,
-			baseURL+ReturnServiceListReturnsProcedure,
-			connect.WithSchema(returnServiceMethods.ByName("ListReturns")),
+			baseURL+ReturnServiceCreateReturnProcedure,
+			connect.WithSchema(returnServiceMethods.ByName("CreateReturn")),
 			connect.WithClientOptions(opts...),
 		),
 	}
@@ -120,58 +66,18 @@ func NewReturnServiceClient(httpClient connect.HTTPClient, baseURL string, opts 
 
 // returnServiceClient implements ReturnServiceClient.
 type returnServiceClient struct {
-	createCustomerReturn       *connect.Client[v1.CreateCustomerReturnRequest, v1.CreateCustomerReturnResponse]
-	processReturnRequest       *connect.Client[v1.ProcessReturnRequestRequest, v1.ProcessReturnRequestResponse]
-	createCreditNoteFromReturn *connect.Client[v1.CreateCreditNoteFromReturnRequest, v1.CreateCreditNoteFromReturnResponse]
-	createDebitNoteFromReturn  *connect.Client[v1.CreateDebitNoteFromReturnRequest, v1.CreateDebitNoteFromReturnResponse]
-	getReturn                  *connect.Client[v1.GetReturnRequest, v1.GetReturnResponse]
-	listReturns                *connect.Client[v1.ListReturnsRequest, v1.ListReturnsResponse]
+	createReturn *connect.Client[v1.CreateReturnRequest, v1.CreateReturnResponse]
 }
 
-// CreateCustomerReturn calls logistic.v1.ReturnService.CreateCustomerReturn.
-func (c *returnServiceClient) CreateCustomerReturn(ctx context.Context, req *connect.Request[v1.CreateCustomerReturnRequest]) (*connect.Response[v1.CreateCustomerReturnResponse], error) {
-	return c.createCustomerReturn.CallUnary(ctx, req)
-}
-
-// ProcessReturnRequest calls logistic.v1.ReturnService.ProcessReturnRequest.
-func (c *returnServiceClient) ProcessReturnRequest(ctx context.Context, req *connect.Request[v1.ProcessReturnRequestRequest]) (*connect.Response[v1.ProcessReturnRequestResponse], error) {
-	return c.processReturnRequest.CallUnary(ctx, req)
-}
-
-// CreateCreditNoteFromReturn calls logistic.v1.ReturnService.CreateCreditNoteFromReturn.
-func (c *returnServiceClient) CreateCreditNoteFromReturn(ctx context.Context, req *connect.Request[v1.CreateCreditNoteFromReturnRequest]) (*connect.Response[v1.CreateCreditNoteFromReturnResponse], error) {
-	return c.createCreditNoteFromReturn.CallUnary(ctx, req)
-}
-
-// CreateDebitNoteFromReturn calls logistic.v1.ReturnService.CreateDebitNoteFromReturn.
-func (c *returnServiceClient) CreateDebitNoteFromReturn(ctx context.Context, req *connect.Request[v1.CreateDebitNoteFromReturnRequest]) (*connect.Response[v1.CreateDebitNoteFromReturnResponse], error) {
-	return c.createDebitNoteFromReturn.CallUnary(ctx, req)
-}
-
-// GetReturn calls logistic.v1.ReturnService.GetReturn.
-func (c *returnServiceClient) GetReturn(ctx context.Context, req *connect.Request[v1.GetReturnRequest]) (*connect.Response[v1.GetReturnResponse], error) {
-	return c.getReturn.CallUnary(ctx, req)
-}
-
-// ListReturns calls logistic.v1.ReturnService.ListReturns.
-func (c *returnServiceClient) ListReturns(ctx context.Context, req *connect.Request[v1.ListReturnsRequest]) (*connect.Response[v1.ListReturnsResponse], error) {
-	return c.listReturns.CallUnary(ctx, req)
+// CreateReturn calls logistic.v1.ReturnService.CreateReturn.
+func (c *returnServiceClient) CreateReturn(ctx context.Context, req *connect.Request[v1.CreateReturnRequest]) (*connect.Response[v1.CreateReturnResponse], error) {
+	return c.createReturn.CallUnary(ctx, req)
 }
 
 // ReturnServiceHandler is an implementation of the logistic.v1.ReturnService service.
 type ReturnServiceHandler interface {
 	// Create a return note (customer returning to you)
-	CreateCustomerReturn(context.Context, *connect.Request[v1.CreateCustomerReturnRequest]) (*connect.Response[v1.CreateCustomerReturnResponse], error)
-	// Approve/reject a return request
-	ProcessReturnRequest(context.Context, *connect.Request[v1.ProcessReturnRequestRequest]) (*connect.Response[v1.ProcessReturnRequestResponse], error)
-	// Create credit note from return
-	CreateCreditNoteFromReturn(context.Context, *connect.Request[v1.CreateCreditNoteFromReturnRequest]) (*connect.Response[v1.CreateCreditNoteFromReturnResponse], error)
-	// Create debit note for supplier return
-	CreateDebitNoteFromReturn(context.Context, *connect.Request[v1.CreateDebitNoteFromReturnRequest]) (*connect.Response[v1.CreateDebitNoteFromReturnResponse], error)
-	// Get return details
-	GetReturn(context.Context, *connect.Request[v1.GetReturnRequest]) (*connect.Response[v1.GetReturnResponse], error)
-	// List returns
-	ListReturns(context.Context, *connect.Request[v1.ListReturnsRequest]) (*connect.Response[v1.ListReturnsResponse], error)
+	CreateReturn(context.Context, *connect.Request[v1.CreateReturnRequest]) (*connect.Response[v1.CreateReturnResponse], error)
 }
 
 // NewReturnServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -181,56 +87,16 @@ type ReturnServiceHandler interface {
 // and JSON codecs. They also support gzip compression.
 func NewReturnServiceHandler(svc ReturnServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
 	returnServiceMethods := v1.File_logistic_v1_return_notes_proto.Services().ByName("ReturnService").Methods()
-	returnServiceCreateCustomerReturnHandler := connect.NewUnaryHandler(
-		ReturnServiceCreateCustomerReturnProcedure,
-		svc.CreateCustomerReturn,
-		connect.WithSchema(returnServiceMethods.ByName("CreateCustomerReturn")),
-		connect.WithHandlerOptions(opts...),
-	)
-	returnServiceProcessReturnRequestHandler := connect.NewUnaryHandler(
-		ReturnServiceProcessReturnRequestProcedure,
-		svc.ProcessReturnRequest,
-		connect.WithSchema(returnServiceMethods.ByName("ProcessReturnRequest")),
-		connect.WithHandlerOptions(opts...),
-	)
-	returnServiceCreateCreditNoteFromReturnHandler := connect.NewUnaryHandler(
-		ReturnServiceCreateCreditNoteFromReturnProcedure,
-		svc.CreateCreditNoteFromReturn,
-		connect.WithSchema(returnServiceMethods.ByName("CreateCreditNoteFromReturn")),
-		connect.WithHandlerOptions(opts...),
-	)
-	returnServiceCreateDebitNoteFromReturnHandler := connect.NewUnaryHandler(
-		ReturnServiceCreateDebitNoteFromReturnProcedure,
-		svc.CreateDebitNoteFromReturn,
-		connect.WithSchema(returnServiceMethods.ByName("CreateDebitNoteFromReturn")),
-		connect.WithHandlerOptions(opts...),
-	)
-	returnServiceGetReturnHandler := connect.NewUnaryHandler(
-		ReturnServiceGetReturnProcedure,
-		svc.GetReturn,
-		connect.WithSchema(returnServiceMethods.ByName("GetReturn")),
-		connect.WithHandlerOptions(opts...),
-	)
-	returnServiceListReturnsHandler := connect.NewUnaryHandler(
-		ReturnServiceListReturnsProcedure,
-		svc.ListReturns,
-		connect.WithSchema(returnServiceMethods.ByName("ListReturns")),
+	returnServiceCreateReturnHandler := connect.NewUnaryHandler(
+		ReturnServiceCreateReturnProcedure,
+		svc.CreateReturn,
+		connect.WithSchema(returnServiceMethods.ByName("CreateReturn")),
 		connect.WithHandlerOptions(opts...),
 	)
 	return "/logistic.v1.ReturnService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
-		case ReturnServiceCreateCustomerReturnProcedure:
-			returnServiceCreateCustomerReturnHandler.ServeHTTP(w, r)
-		case ReturnServiceProcessReturnRequestProcedure:
-			returnServiceProcessReturnRequestHandler.ServeHTTP(w, r)
-		case ReturnServiceCreateCreditNoteFromReturnProcedure:
-			returnServiceCreateCreditNoteFromReturnHandler.ServeHTTP(w, r)
-		case ReturnServiceCreateDebitNoteFromReturnProcedure:
-			returnServiceCreateDebitNoteFromReturnHandler.ServeHTTP(w, r)
-		case ReturnServiceGetReturnProcedure:
-			returnServiceGetReturnHandler.ServeHTTP(w, r)
-		case ReturnServiceListReturnsProcedure:
-			returnServiceListReturnsHandler.ServeHTTP(w, r)
+		case ReturnServiceCreateReturnProcedure:
+			returnServiceCreateReturnHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -240,26 +106,6 @@ func NewReturnServiceHandler(svc ReturnServiceHandler, opts ...connect.HandlerOp
 // UnimplementedReturnServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedReturnServiceHandler struct{}
 
-func (UnimplementedReturnServiceHandler) CreateCustomerReturn(context.Context, *connect.Request[v1.CreateCustomerReturnRequest]) (*connect.Response[v1.CreateCustomerReturnResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("logistic.v1.ReturnService.CreateCustomerReturn is not implemented"))
-}
-
-func (UnimplementedReturnServiceHandler) ProcessReturnRequest(context.Context, *connect.Request[v1.ProcessReturnRequestRequest]) (*connect.Response[v1.ProcessReturnRequestResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("logistic.v1.ReturnService.ProcessReturnRequest is not implemented"))
-}
-
-func (UnimplementedReturnServiceHandler) CreateCreditNoteFromReturn(context.Context, *connect.Request[v1.CreateCreditNoteFromReturnRequest]) (*connect.Response[v1.CreateCreditNoteFromReturnResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("logistic.v1.ReturnService.CreateCreditNoteFromReturn is not implemented"))
-}
-
-func (UnimplementedReturnServiceHandler) CreateDebitNoteFromReturn(context.Context, *connect.Request[v1.CreateDebitNoteFromReturnRequest]) (*connect.Response[v1.CreateDebitNoteFromReturnResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("logistic.v1.ReturnService.CreateDebitNoteFromReturn is not implemented"))
-}
-
-func (UnimplementedReturnServiceHandler) GetReturn(context.Context, *connect.Request[v1.GetReturnRequest]) (*connect.Response[v1.GetReturnResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("logistic.v1.ReturnService.GetReturn is not implemented"))
-}
-
-func (UnimplementedReturnServiceHandler) ListReturns(context.Context, *connect.Request[v1.ListReturnsRequest]) (*connect.Response[v1.ListReturnsResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("logistic.v1.ReturnService.ListReturns is not implemented"))
+func (UnimplementedReturnServiceHandler) CreateReturn(context.Context, *connect.Request[v1.CreateReturnRequest]) (*connect.Response[v1.CreateReturnResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("logistic.v1.ReturnService.CreateReturn is not implemented"))
 }

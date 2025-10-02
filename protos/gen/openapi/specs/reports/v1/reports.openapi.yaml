@@ -621,14 +621,17 @@ components:
           type: string
           title: related_sales_order_id
           description: Optional link
+          nullable: true
         relatedPurchaseOrderId:
           type: string
           title: related_purchase_order_id
           description: Optional link
+          nullable: true
         relatedDeliveryNoteId:
           type: string
           title: related_delivery_note_id
           description: Optional link
+          nullable: true
         status:
           title: status
           $ref: '#/components/schemas/financial.v1.InvoiceStatus'
@@ -689,8 +692,6 @@ components:
          Invoice (Facture)
          The official accounting document for a sale or purchase.
          Created AFTER goods are delivered (usually).
-
-         Fix: InvoiceLineItem now includes optional batch_id for traceability.
 
          For SALES: You issue to customer
          For PURCHASES: You receive from supplier
@@ -755,8 +756,6 @@ components:
       description: |-
         *
          InvoiceLineItem represents one product on an invoice.
-
-         Fix: Added optional batch_id for lot traceability in accounting.
     financial.v1.InvoiceStatus:
       type: string
       title: InvoiceStatus

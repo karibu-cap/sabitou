@@ -17,7 +17,6 @@ import 'package:protobuf/protobuf.dart' as $pb;
 
 import '../../financial/v1/invoice.pb.dart' as $3;
 import '../../google/protobuf/timestamp.pb.dart' as $1;
-import '../../inventory/v1/store_product.pb.dart' as $5;
 import '../../logistic/v1/receiving_notes.pb.dart' as $2;
 import '../../payments/v1/payments.pb.dart' as $4;
 import 'order_utils.pb.dart' as $0;
@@ -35,7 +34,7 @@ export 'purchase_order.pbenum.dart';
 ///  Flow: Create PO → Send to supplier → Wait for delivery
 ///
 ///  Example:
-///    po_id: "PO-2025-001"
+///    purchase_order_id: "PO-2025-001"
 ///    supplier_id: "CMP-002" (supplier company)
 ///    buyer_id: "CMP-001" (your company)
 ///    status: PO_STATUS_PENDING
@@ -45,7 +44,7 @@ class PurchaseOrder extends $pb.GeneratedMessage {
   factory PurchaseOrder({
     $core.String? documentId,
     $core.String? supplierId,
-    $core.String? buyerIdId,
+    $core.String? buyerId,
     PurchaseOrderStatus? status,
     $core.Iterable<$0.OrderLineItem>? items,
     $core.double? totalAmount,
@@ -58,7 +57,7 @@ class PurchaseOrder extends $pb.GeneratedMessage {
     final result = create();
     if (documentId != null) result.documentId = documentId;
     if (supplierId != null) result.supplierId = supplierId;
-    if (buyerIdId != null) result.buyerIdId = buyerIdId;
+    if (buyerId != null) result.buyerId = buyerId;
     if (status != null) result.status = status;
     if (items != null) result.items.addAll(items);
     if (totalAmount != null) result.totalAmount = totalAmount;
@@ -86,7 +85,7 @@ class PurchaseOrder extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'documentId')
     ..aOS(2, _omitFieldNames ? '' : 'supplierId')
-    ..aOS(3, _omitFieldNames ? '' : 'buyerIdId')
+    ..aOS(3, _omitFieldNames ? '' : 'buyerId')
     ..e<PurchaseOrderStatus>(
         5, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
         defaultOrMaker: PurchaseOrderStatus.PO_STATUS_UNSPECIFIED,
@@ -127,6 +126,7 @@ class PurchaseOrder extends $pb.GeneratedMessage {
       $pb.GeneratedMessage.$_defaultFor<PurchaseOrder>(create);
   static PurchaseOrder? _defaultInstance;
 
+  /// "PO-2025-001"
   @$pb.TagNumber(1)
   $core.String get documentId => $_getSZ(0);
   @$pb.TagNumber(1)
@@ -136,6 +136,7 @@ class PurchaseOrder extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   void clearDocumentId() => $_clearField(1);
 
+  /// Company selling to you
   @$pb.TagNumber(2)
   $core.String get supplierId => $_getSZ(1);
   @$pb.TagNumber(2)
@@ -145,14 +146,15 @@ class PurchaseOrder extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   void clearSupplierId() => $_clearField(2);
 
+  /// Your company
   @$pb.TagNumber(3)
-  $core.String get buyerIdId => $_getSZ(2);
+  $core.String get buyerId => $_getSZ(2);
   @$pb.TagNumber(3)
-  set buyerIdId($core.String value) => $_setString(2, value);
+  set buyerId($core.String value) => $_setString(2, value);
   @$pb.TagNumber(3)
-  $core.bool hasBuyerIdId() => $_has(2);
+  $core.bool hasBuyerId() => $_has(2);
   @$pb.TagNumber(3)
-  void clearBuyerIdId() => $_clearField(3);
+  void clearBuyerId() => $_clearField(3);
 
   @$pb.TagNumber(5)
   PurchaseOrderStatus get status => $_getN(3);
@@ -304,7 +306,7 @@ class CreatePurchaseOrderRequest extends $pb.GeneratedMessage {
   factory CreatePurchaseOrderRequest({
     $core.String? supplierId,
     $core.String? buyerId,
-    $core.String? destinationId,
+    $core.String? destinationAddress,
     $core.Iterable<$0.OrderLineItem>? items,
     $1.Timestamp? expectedDeliveryDate,
     $core.String? createdByUserId,
@@ -313,7 +315,8 @@ class CreatePurchaseOrderRequest extends $pb.GeneratedMessage {
     final result = create();
     if (supplierId != null) result.supplierId = supplierId;
     if (buyerId != null) result.buyerId = buyerId;
-    if (destinationId != null) result.destinationId = destinationId;
+    if (destinationAddress != null)
+      result.destinationAddress = destinationAddress;
     if (items != null) result.items.addAll(items);
     if (expectedDeliveryDate != null)
       result.expectedDeliveryDate = expectedDeliveryDate;
@@ -337,7 +340,7 @@ class CreatePurchaseOrderRequest extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'supplierId')
     ..aOS(2, _omitFieldNames ? '' : 'buyerId')
-    ..aOS(3, _omitFieldNames ? '' : 'destinationId')
+    ..aOS(3, _omitFieldNames ? '' : 'destinationAddress')
     ..pc<$0.OrderLineItem>(
         4, _omitFieldNames ? '' : 'items', $pb.PbFieldType.PM,
         subBuilder: $0.OrderLineItem.create)
@@ -389,14 +392,15 @@ class CreatePurchaseOrderRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   void clearBuyerId() => $_clearField(2);
 
+  /// Where to receive items by default is the buyer's warehouse.
   @$pb.TagNumber(3)
-  $core.String get destinationId => $_getSZ(2);
+  $core.String get destinationAddress => $_getSZ(2);
   @$pb.TagNumber(3)
-  set destinationId($core.String value) => $_setString(2, value);
+  set destinationAddress($core.String value) => $_setString(2, value);
   @$pb.TagNumber(3)
-  $core.bool hasDestinationId() => $_has(2);
+  $core.bool hasDestinationAddress() => $_has(2);
   @$pb.TagNumber(3)
-  void clearDestinationId() => $_clearField(3);
+  void clearDestinationAddress() => $_clearField(3);
 
   @$pb.TagNumber(4)
   $pb.PbList<$0.OrderLineItem> get items => $_getList(3);
@@ -433,12 +437,12 @@ class CreatePurchaseOrderRequest extends $pb.GeneratedMessage {
 
 class CreatePurchaseOrderResponse extends $pb.GeneratedMessage {
   factory CreatePurchaseOrderResponse({
-    $core.String? poId,
+    $core.String? purchaseOrderId,
     PurchaseOrder? purchaseOrder,
     $core.String? message,
   }) {
     final result = create();
-    if (poId != null) result.poId = poId;
+    if (purchaseOrderId != null) result.purchaseOrderId = purchaseOrderId;
     if (purchaseOrder != null) result.purchaseOrder = purchaseOrder;
     if (message != null) result.message = message;
     return result;
@@ -457,7 +461,7 @@ class CreatePurchaseOrderResponse extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'CreatePurchaseOrderResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'poId')
+    ..aOS(1, _omitFieldNames ? '' : 'purchaseOrderId')
     ..aOM<PurchaseOrder>(2, _omitFieldNames ? '' : 'purchaseOrder',
         subBuilder: PurchaseOrder.create)
     ..aOS(3, _omitFieldNames ? '' : 'message')
@@ -489,13 +493,13 @@ class CreatePurchaseOrderResponse extends $pb.GeneratedMessage {
   static CreatePurchaseOrderResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get poId => $_getSZ(0);
+  $core.String get purchaseOrderId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set poId($core.String value) => $_setString(0, value);
+  set purchaseOrderId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasPoId() => $_has(0);
+  $core.bool hasPurchaseOrderId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearPoId() => $_clearField(1);
+  void clearPurchaseOrderId() => $_clearField(1);
 
   @$pb.TagNumber(2)
   PurchaseOrder get purchaseOrder => $_getN(1);
@@ -520,10 +524,10 @@ class CreatePurchaseOrderResponse extends $pb.GeneratedMessage {
 
 class GetPurchaseOrderRequest extends $pb.GeneratedMessage {
   factory GetPurchaseOrderRequest({
-    $core.String? poId,
+    $core.String? purchaseOrderId,
   }) {
     final result = create();
-    if (poId != null) result.poId = poId;
+    if (purchaseOrderId != null) result.purchaseOrderId = purchaseOrderId;
     return result;
   }
 
@@ -540,7 +544,7 @@ class GetPurchaseOrderRequest extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'GetPurchaseOrderRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'poId')
+    ..aOS(1, _omitFieldNames ? '' : 'purchaseOrderId')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -567,13 +571,13 @@ class GetPurchaseOrderRequest extends $pb.GeneratedMessage {
   static GetPurchaseOrderRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get poId => $_getSZ(0);
+  $core.String get purchaseOrderId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set poId($core.String value) => $_setString(0, value);
+  set purchaseOrderId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasPoId() => $_has(0);
+  $core.bool hasPurchaseOrderId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearPoId() => $_clearField(1);
+  void clearPurchaseOrderId() => $_clearField(1);
 }
 
 class GetPurchaseOrderResponse extends $pb.GeneratedMessage {
@@ -662,7 +666,7 @@ class GetPurchaseOrderResponse extends $pb.GeneratedMessage {
 class ListPurchaseOrdersRequest extends $pb.GeneratedMessage {
   factory ListPurchaseOrdersRequest({
     $core.String? supplierId,
-    PurchaseOrderStatus? status,
+    $core.String? buyerId,
     $1.Timestamp? startDate,
     $1.Timestamp? endDate,
     $core.int? pageSize,
@@ -670,7 +674,7 @@ class ListPurchaseOrdersRequest extends $pb.GeneratedMessage {
   }) {
     final result = create();
     if (supplierId != null) result.supplierId = supplierId;
-    if (status != null) result.status = status;
+    if (buyerId != null) result.buyerId = buyerId;
     if (startDate != null) result.startDate = startDate;
     if (endDate != null) result.endDate = endDate;
     if (pageSize != null) result.pageSize = pageSize;
@@ -692,11 +696,7 @@ class ListPurchaseOrdersRequest extends $pb.GeneratedMessage {
       package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'supplierId')
-    ..e<PurchaseOrderStatus>(
-        2, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
-        defaultOrMaker: PurchaseOrderStatus.PO_STATUS_UNSPECIFIED,
-        valueOf: PurchaseOrderStatus.valueOf,
-        enumValues: PurchaseOrderStatus.values)
+    ..aOS(2, _omitFieldNames ? '' : 'buyerId')
     ..aOM<$1.Timestamp>(3, _omitFieldNames ? '' : 'startDate',
         subBuilder: $1.Timestamp.create)
     ..aOM<$1.Timestamp>(4, _omitFieldNames ? '' : 'endDate',
@@ -738,13 +738,13 @@ class ListPurchaseOrdersRequest extends $pb.GeneratedMessage {
   void clearSupplierId() => $_clearField(1);
 
   @$pb.TagNumber(2)
-  PurchaseOrderStatus get status => $_getN(1);
+  $core.String get buyerId => $_getSZ(1);
   @$pb.TagNumber(2)
-  set status(PurchaseOrderStatus value) => $_setField(2, value);
+  set buyerId($core.String value) => $_setString(1, value);
   @$pb.TagNumber(2)
-  $core.bool hasStatus() => $_has(1);
+  $core.bool hasBuyerId() => $_has(1);
   @$pb.TagNumber(2)
-  void clearStatus() => $_clearField(2);
+  void clearBuyerId() => $_clearField(2);
 
   @$pb.TagNumber(3)
   $1.Timestamp get startDate => $_getN(2);
@@ -869,13 +869,13 @@ class ListPurchaseOrdersResponse extends $pb.GeneratedMessage {
 
 class UpdatePurchaseOrderStatusRequest extends $pb.GeneratedMessage {
   factory UpdatePurchaseOrderStatusRequest({
-    $core.String? poId,
+    $core.String? purchaseOrderId,
     PurchaseOrderStatus? newStatus,
     $core.String? updatedByUserId,
     $core.String? notes,
   }) {
     final result = create();
-    if (poId != null) result.poId = poId;
+    if (purchaseOrderId != null) result.purchaseOrderId = purchaseOrderId;
     if (newStatus != null) result.newStatus = newStatus;
     if (updatedByUserId != null) result.updatedByUserId = updatedByUserId;
     if (notes != null) result.notes = notes;
@@ -896,7 +896,7 @@ class UpdatePurchaseOrderStatusRequest extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'UpdatePurchaseOrderStatusRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'poId')
+    ..aOS(1, _omitFieldNames ? '' : 'purchaseOrderId')
     ..e<PurchaseOrderStatus>(
         2, _omitFieldNames ? '' : 'newStatus', $pb.PbFieldType.OE,
         defaultOrMaker: PurchaseOrderStatus.PO_STATUS_UNSPECIFIED,
@@ -933,13 +933,13 @@ class UpdatePurchaseOrderStatusRequest extends $pb.GeneratedMessage {
   static UpdatePurchaseOrderStatusRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get poId => $_getSZ(0);
+  $core.String get purchaseOrderId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set poId($core.String value) => $_setString(0, value);
+  set purchaseOrderId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasPoId() => $_has(0);
+  $core.bool hasPurchaseOrderId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearPoId() => $_clearField(1);
+  void clearPurchaseOrderId() => $_clearField(1);
 
   @$pb.TagNumber(2)
   PurchaseOrderStatus get newStatus => $_getN(1);
@@ -1048,12 +1048,12 @@ class UpdatePurchaseOrderStatusResponse extends $pb.GeneratedMessage {
 
 class CancelPurchaseOrderRequest extends $pb.GeneratedMessage {
   factory CancelPurchaseOrderRequest({
-    $core.String? poId,
+    $core.String? purchaseOrderId,
     $core.String? reason,
     $core.String? cancelledByUserId,
   }) {
     final result = create();
-    if (poId != null) result.poId = poId;
+    if (purchaseOrderId != null) result.purchaseOrderId = purchaseOrderId;
     if (reason != null) result.reason = reason;
     if (cancelledByUserId != null) result.cancelledByUserId = cancelledByUserId;
     return result;
@@ -1072,7 +1072,7 @@ class CancelPurchaseOrderRequest extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'CancelPurchaseOrderRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'poId')
+    ..aOS(1, _omitFieldNames ? '' : 'purchaseOrderId')
     ..aOS(2, _omitFieldNames ? '' : 'reason')
     ..aOS(3, _omitFieldNames ? '' : 'cancelledByUserId')
     ..hasRequiredFields = false;
@@ -1102,13 +1102,13 @@ class CancelPurchaseOrderRequest extends $pb.GeneratedMessage {
   static CancelPurchaseOrderRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get poId => $_getSZ(0);
+  $core.String get purchaseOrderId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set poId($core.String value) => $_setString(0, value);
+  set purchaseOrderId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasPoId() => $_has(0);
+  $core.bool hasPurchaseOrderId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearPoId() => $_clearField(1);
+  void clearPurchaseOrderId() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get reason => $_getSZ(1);
@@ -1133,7 +1133,7 @@ class CreateReceivingNoteRequest extends $pb.GeneratedMessage {
   factory CreateReceivingNoteRequest({
     $core.String? purchaseOrderId,
     $core.String? supplierId,
-    $core.String? storeId,
+    $core.String? buyerId,
     $core.Iterable<$2.ReceivingLineItem>? items,
     $core.String? receivedByUserId,
     $core.String? notes,
@@ -1141,7 +1141,7 @@ class CreateReceivingNoteRequest extends $pb.GeneratedMessage {
     final result = create();
     if (purchaseOrderId != null) result.purchaseOrderId = purchaseOrderId;
     if (supplierId != null) result.supplierId = supplierId;
-    if (storeId != null) result.storeId = storeId;
+    if (buyerId != null) result.buyerId = buyerId;
     if (items != null) result.items.addAll(items);
     if (receivedByUserId != null) result.receivedByUserId = receivedByUserId;
     if (notes != null) result.notes = notes;
@@ -1163,7 +1163,7 @@ class CreateReceivingNoteRequest extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'purchaseOrderId')
     ..aOS(2, _omitFieldNames ? '' : 'supplierId')
-    ..aOS(3, _omitFieldNames ? '' : 'storeId')
+    ..aOS(3, _omitFieldNames ? '' : 'buyerId')
     ..pc<$2.ReceivingLineItem>(
         4, _omitFieldNames ? '' : 'items', $pb.PbFieldType.PM,
         subBuilder: $2.ReceivingLineItem.create)
@@ -1214,13 +1214,13 @@ class CreateReceivingNoteRequest extends $pb.GeneratedMessage {
   void clearSupplierId() => $_clearField(2);
 
   @$pb.TagNumber(3)
-  $core.String get storeId => $_getSZ(2);
+  $core.String get buyerId => $_getSZ(2);
   @$pb.TagNumber(3)
-  set storeId($core.String value) => $_setString(2, value);
+  set buyerId($core.String value) => $_setString(2, value);
   @$pb.TagNumber(3)
-  $core.bool hasStoreId() => $_has(2);
+  $core.bool hasBuyerId() => $_has(2);
   @$pb.TagNumber(3)
-  void clearStoreId() => $_clearField(3);
+  void clearBuyerId() => $_clearField(3);
 
   @$pb.TagNumber(4)
   $pb.PbList<$2.ReceivingLineItem> get items => $_getList(3);
@@ -1357,260 +1357,6 @@ class CreateReceivingNoteResponse extends $pb.GeneratedMessage {
   void clearMessage() => $_clearField(6);
 }
 
-class GetSuggestedPurchaseOrdersRequest extends $pb.GeneratedMessage {
-  factory GetSuggestedPurchaseOrdersRequest({
-    $core.String? storeId,
-  }) {
-    final result = create();
-    if (storeId != null) result.storeId = storeId;
-    return result;
-  }
-
-  GetSuggestedPurchaseOrdersRequest._();
-
-  factory GetSuggestedPurchaseOrdersRequest.fromBuffer(
-          $core.List<$core.int> data,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
-  factory GetSuggestedPurchaseOrdersRequest.fromJson($core.String json,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'GetSuggestedPurchaseOrdersRequest',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'),
-      createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'storeId')
-    ..hasRequiredFields = false;
-
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetSuggestedPurchaseOrdersRequest clone() =>
-      GetSuggestedPurchaseOrdersRequest()..mergeFromMessage(this);
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetSuggestedPurchaseOrdersRequest copyWith(
-          void Function(GetSuggestedPurchaseOrdersRequest) updates) =>
-      super.copyWith((message) =>
-              updates(message as GetSuggestedPurchaseOrdersRequest))
-          as GetSuggestedPurchaseOrdersRequest;
-
-  @$core.override
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static GetSuggestedPurchaseOrdersRequest create() =>
-      GetSuggestedPurchaseOrdersRequest._();
-  @$core.override
-  GetSuggestedPurchaseOrdersRequest createEmptyInstance() => create();
-  static $pb.PbList<GetSuggestedPurchaseOrdersRequest> createRepeated() =>
-      $pb.PbList<GetSuggestedPurchaseOrdersRequest>();
-  @$core.pragma('dart2js:noInline')
-  static GetSuggestedPurchaseOrdersRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<GetSuggestedPurchaseOrdersRequest>(
-          create);
-  static GetSuggestedPurchaseOrdersRequest? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $core.String get storeId => $_getSZ(0);
-  @$pb.TagNumber(1)
-  set storeId($core.String value) => $_setString(0, value);
-  @$pb.TagNumber(1)
-  $core.bool hasStoreId() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearStoreId() => $_clearField(1);
-}
-
-class GetSuggestedPurchaseOrdersResponse extends $pb.GeneratedMessage {
-  factory GetSuggestedPurchaseOrdersResponse({
-    $core.Iterable<SuggestedPurchase>? suggestions,
-    $core.int? totalItems,
-  }) {
-    final result = create();
-    if (suggestions != null) result.suggestions.addAll(suggestions);
-    if (totalItems != null) result.totalItems = totalItems;
-    return result;
-  }
-
-  GetSuggestedPurchaseOrdersResponse._();
-
-  factory GetSuggestedPurchaseOrdersResponse.fromBuffer(
-          $core.List<$core.int> data,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
-  factory GetSuggestedPurchaseOrdersResponse.fromJson($core.String json,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'GetSuggestedPurchaseOrdersResponse',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'),
-      createEmptyInstance: create)
-    ..pc<SuggestedPurchase>(
-        1, _omitFieldNames ? '' : 'suggestions', $pb.PbFieldType.PM,
-        subBuilder: SuggestedPurchase.create)
-    ..a<$core.int>(2, _omitFieldNames ? '' : 'totalItems', $pb.PbFieldType.O3)
-    ..hasRequiredFields = false;
-
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetSuggestedPurchaseOrdersResponse clone() =>
-      GetSuggestedPurchaseOrdersResponse()..mergeFromMessage(this);
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetSuggestedPurchaseOrdersResponse copyWith(
-          void Function(GetSuggestedPurchaseOrdersResponse) updates) =>
-      super.copyWith((message) =>
-              updates(message as GetSuggestedPurchaseOrdersResponse))
-          as GetSuggestedPurchaseOrdersResponse;
-
-  @$core.override
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static GetSuggestedPurchaseOrdersResponse create() =>
-      GetSuggestedPurchaseOrdersResponse._();
-  @$core.override
-  GetSuggestedPurchaseOrdersResponse createEmptyInstance() => create();
-  static $pb.PbList<GetSuggestedPurchaseOrdersResponse> createRepeated() =>
-      $pb.PbList<GetSuggestedPurchaseOrdersResponse>();
-  @$core.pragma('dart2js:noInline')
-  static GetSuggestedPurchaseOrdersResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<GetSuggestedPurchaseOrdersResponse>(
-          create);
-  static GetSuggestedPurchaseOrdersResponse? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $pb.PbList<SuggestedPurchase> get suggestions => $_getList(0);
-
-  @$pb.TagNumber(2)
-  $core.int get totalItems => $_getIZ(1);
-  @$pb.TagNumber(2)
-  set totalItems($core.int value) => $_setSignedInt32(1, value);
-  @$pb.TagNumber(2)
-  $core.bool hasTotalItems() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearTotalItems() => $_clearField(2);
-}
-
-class SuggestedPurchase extends $pb.GeneratedMessage {
-  factory SuggestedPurchase({
-    $5.StoreProduct? product,
-    $core.String? preferredSupplierId,
-    $core.int? currentStock,
-    $core.int? reorderLevel,
-    $core.int? suggestedQuantity,
-    $core.int? estimatedCost,
-  }) {
-    final result = create();
-    if (product != null) result.product = product;
-    if (preferredSupplierId != null)
-      result.preferredSupplierId = preferredSupplierId;
-    if (currentStock != null) result.currentStock = currentStock;
-    if (reorderLevel != null) result.reorderLevel = reorderLevel;
-    if (suggestedQuantity != null) result.suggestedQuantity = suggestedQuantity;
-    if (estimatedCost != null) result.estimatedCost = estimatedCost;
-    return result;
-  }
-
-  SuggestedPurchase._();
-
-  factory SuggestedPurchase.fromBuffer($core.List<$core.int> data,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
-  factory SuggestedPurchase.fromJson($core.String json,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'SuggestedPurchase',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'),
-      createEmptyInstance: create)
-    ..aOM<$5.StoreProduct>(1, _omitFieldNames ? '' : 'product',
-        subBuilder: $5.StoreProduct.create)
-    ..aOS(2, _omitFieldNames ? '' : 'preferredSupplierId')
-    ..a<$core.int>(3, _omitFieldNames ? '' : 'currentStock', $pb.PbFieldType.O3)
-    ..a<$core.int>(4, _omitFieldNames ? '' : 'reorderLevel', $pb.PbFieldType.O3)
-    ..a<$core.int>(
-        5, _omitFieldNames ? '' : 'suggestedQuantity', $pb.PbFieldType.O3)
-    ..a<$core.int>(
-        6, _omitFieldNames ? '' : 'estimatedCost', $pb.PbFieldType.O3)
-    ..hasRequiredFields = false;
-
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  SuggestedPurchase clone() => SuggestedPurchase()..mergeFromMessage(this);
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  SuggestedPurchase copyWith(void Function(SuggestedPurchase) updates) =>
-      super.copyWith((message) => updates(message as SuggestedPurchase))
-          as SuggestedPurchase;
-
-  @$core.override
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static SuggestedPurchase create() => SuggestedPurchase._();
-  @$core.override
-  SuggestedPurchase createEmptyInstance() => create();
-  static $pb.PbList<SuggestedPurchase> createRepeated() =>
-      $pb.PbList<SuggestedPurchase>();
-  @$core.pragma('dart2js:noInline')
-  static SuggestedPurchase getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<SuggestedPurchase>(create);
-  static SuggestedPurchase? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $5.StoreProduct get product => $_getN(0);
-  @$pb.TagNumber(1)
-  set product($5.StoreProduct value) => $_setField(1, value);
-  @$pb.TagNumber(1)
-  $core.bool hasProduct() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearProduct() => $_clearField(1);
-  @$pb.TagNumber(1)
-  $5.StoreProduct ensureProduct() => $_ensure(0);
-
-  @$pb.TagNumber(2)
-  $core.String get preferredSupplierId => $_getSZ(1);
-  @$pb.TagNumber(2)
-  set preferredSupplierId($core.String value) => $_setString(1, value);
-  @$pb.TagNumber(2)
-  $core.bool hasPreferredSupplierId() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearPreferredSupplierId() => $_clearField(2);
-
-  @$pb.TagNumber(3)
-  $core.int get currentStock => $_getIZ(2);
-  @$pb.TagNumber(3)
-  set currentStock($core.int value) => $_setSignedInt32(2, value);
-  @$pb.TagNumber(3)
-  $core.bool hasCurrentStock() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearCurrentStock() => $_clearField(3);
-
-  @$pb.TagNumber(4)
-  $core.int get reorderLevel => $_getIZ(3);
-  @$pb.TagNumber(4)
-  set reorderLevel($core.int value) => $_setSignedInt32(3, value);
-  @$pb.TagNumber(4)
-  $core.bool hasReorderLevel() => $_has(3);
-  @$pb.TagNumber(4)
-  void clearReorderLevel() => $_clearField(4);
-
-  @$pb.TagNumber(5)
-  $core.int get suggestedQuantity => $_getIZ(4);
-  @$pb.TagNumber(5)
-  set suggestedQuantity($core.int value) => $_setSignedInt32(4, value);
-  @$pb.TagNumber(5)
-  $core.bool hasSuggestedQuantity() => $_has(4);
-  @$pb.TagNumber(5)
-  void clearSuggestedQuantity() => $_clearField(5);
-
-  @$pb.TagNumber(6)
-  $core.int get estimatedCost => $_getIZ(5);
-  @$pb.TagNumber(6)
-  set estimatedCost($core.int value) => $_setSignedInt32(5, value);
-  @$pb.TagNumber(6)
-  $core.bool hasEstimatedCost() => $_has(5);
-  @$pb.TagNumber(6)
-  void clearEstimatedCost() => $_clearField(6);
-}
-
 class PurchaseOrderServiceApi {
   final $pb.RpcClient _client;
 
@@ -1655,16 +1401,6 @@ class PurchaseOrderServiceApi {
           $pb.ClientContext? ctx, CreateReceivingNoteRequest request) =>
       _client.invoke<CreateReceivingNoteResponse>(ctx, 'PurchaseOrderService',
           'CreateReceivingNote', request, CreateReceivingNoteResponse());
-
-  /// Get suggested purchase orders (low stock items)
-  $async.Future<GetSuggestedPurchaseOrdersResponse> getSuggestedPurchaseOrders(
-          $pb.ClientContext? ctx, GetSuggestedPurchaseOrdersRequest request) =>
-      _client.invoke<GetSuggestedPurchaseOrdersResponse>(
-          ctx,
-          'PurchaseOrderService',
-          'GetSuggestedPurchaseOrders',
-          request,
-          GetSuggestedPurchaseOrdersResponse());
 }
 
 const $core.bool _omitFieldNames =

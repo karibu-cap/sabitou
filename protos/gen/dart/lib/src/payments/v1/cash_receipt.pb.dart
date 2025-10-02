@@ -60,7 +60,7 @@ class CashReceipt extends $pb.GeneratedMessage {
     $core.Iterable<$core.String>? paymentIds,
     $1.Timestamp? transactionTime,
     $core.String? notes,
-    $core.String? voucherIssued,
+    $core.String? voucherIssuedCode,
     $core.double? owedToCustomer,
   }) {
     final result = create();
@@ -78,7 +78,7 @@ class CashReceipt extends $pb.GeneratedMessage {
     if (paymentIds != null) result.paymentIds.addAll(paymentIds);
     if (transactionTime != null) result.transactionTime = transactionTime;
     if (notes != null) result.notes = notes;
-    if (voucherIssued != null) result.voucherIssued = voucherIssued;
+    if (voucherIssuedCode != null) result.voucherIssuedCode = voucherIssuedCode;
     if (owedToCustomer != null) result.owedToCustomer = owedToCustomer;
     return result;
   }
@@ -116,7 +116,7 @@ class CashReceipt extends $pb.GeneratedMessage {
     ..aOM<$1.Timestamp>(13, _omitFieldNames ? '' : 'transactionTime',
         subBuilder: $1.Timestamp.create)
     ..aOS(14, _omitFieldNames ? '' : 'notes')
-    ..aOS(15, _omitFieldNames ? '' : 'voucherIssued')
+    ..aOS(15, _omitFieldNames ? '' : 'voucherIssuedCode')
     ..a<$core.double>(
         16, _omitFieldNames ? '' : 'owedToCustomer', $pb.PbFieldType.OD)
     ..hasRequiredFields = false;
@@ -141,6 +141,7 @@ class CashReceipt extends $pb.GeneratedMessage {
       $pb.GeneratedMessage.$_defaultFor<CashReceipt>(create);
   static CashReceipt? _defaultInstance;
 
+  /// "CASH-2025-001"
   @$pb.TagNumber(1)
   $core.String get documentId => $_getSZ(0);
   @$pb.TagNumber(1)
@@ -150,6 +151,7 @@ class CashReceipt extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   void clearDocumentId() => $_clearField(1);
 
+  /// Who processed sale
   @$pb.TagNumber(2)
   $core.String get cashierUserId => $_getSZ(1);
   @$pb.TagNumber(2)
@@ -159,6 +161,7 @@ class CashReceipt extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   void clearCashierUserId() => $_clearField(2);
 
+  /// Can be null for anonymous
   @$pb.TagNumber(3)
   $core.String get customerId => $_getSZ(2);
   @$pb.TagNumber(3)
@@ -168,6 +171,7 @@ class CashReceipt extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   void clearCustomerId() => $_clearField(3);
 
+  /// Which location/store
   @$pb.TagNumber(4)
   $core.String get storeId => $_getSZ(3);
   @$pb.TagNumber(4)
@@ -207,6 +211,7 @@ class CashReceipt extends $pb.GeneratedMessage {
   @$pb.TagNumber(8)
   void clearTotalAmount() => $_clearField(8);
 
+  /// What customer gave.
   @$pb.TagNumber(9)
   $core.double get amountPaid => $_getN(8);
   @$pb.TagNumber(9)
@@ -216,6 +221,7 @@ class CashReceipt extends $pb.GeneratedMessage {
   @$pb.TagNumber(9)
   void clearAmountPaid() => $_clearField(9);
 
+  /// Change given to customer.
   @$pb.TagNumber(10)
   $core.double get changeGiven => $_getN(9);
   @$pb.TagNumber(10)
@@ -257,15 +263,17 @@ class CashReceipt extends $pb.GeneratedMessage {
   @$pb.TagNumber(14)
   void clearNotes() => $_clearField(14);
 
+  /// Voucher issued if owed_to_customer > 0.
   @$pb.TagNumber(15)
-  $core.String get voucherIssued => $_getSZ(14);
+  $core.String get voucherIssuedCode => $_getSZ(14);
   @$pb.TagNumber(15)
-  set voucherIssued($core.String value) => $_setString(14, value);
+  set voucherIssuedCode($core.String value) => $_setString(14, value);
   @$pb.TagNumber(15)
-  $core.bool hasVoucherIssued() => $_has(14);
+  $core.bool hasVoucherIssuedCode() => $_has(14);
   @$pb.TagNumber(15)
-  void clearVoucherIssued() => $_clearField(15);
+  void clearVoucherIssuedCode() => $_clearField(15);
 
+  /// Amount owed to customer.
   @$pb.TagNumber(16)
   $core.double get owedToCustomer => $_getN(15);
   @$pb.TagNumber(16)
@@ -350,7 +358,7 @@ class CreateCashReceiptRequest extends $pb.GeneratedMessage {
   $pb.PbList<$2.Payment> get payments => $_getList(1);
 
   /// Issue voucher on change
-  /// If true and change_given > 0, issue a voucher instead of cash
+  /// If true and owed_to_customer > 0, issue a voucher instead of cash
   @$pb.TagNumber(3)
   $core.bool get issueVoucherOnChange => $_getBF(2);
   @$pb.TagNumber(3)
@@ -423,6 +431,7 @@ class CreateCashReceiptResponse extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   void clearSuccess() => $_clearField(1);
 
+  /// If a voucher was issued.
   @$pb.TagNumber(2)
   $3.GiftVoucher get voucher => $_getN(1);
   @$pb.TagNumber(2)

@@ -61,22 +61,4 @@ extension type PaymentServiceClient (connect.Transport _transport) {
       onTrailer: onTrailer,
     );
   }
-
-  /// Process refund
-  Future<paymentsv1payments.CreateRefundResponse> createRefund(
-    paymentsv1payments.CreateRefundRequest input, {
-    connect.Headers? headers,
-    connect.AbortSignal? signal,
-    Function(connect.Headers)? onHeader,
-    Function(connect.Headers)? onTrailer,
-  }) {
-    return connect.Client(_transport).unary(
-      specs.PaymentService.createRefund,
-      input,
-      signal: signal,
-      headers: headers,
-      onHeader: onHeader,
-      onTrailer: onTrailer,
-    );
-  }
 }

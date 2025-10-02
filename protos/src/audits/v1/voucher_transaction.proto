@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package audits.v1;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+
+/**
+ * VoucherTransaction tracks each time a voucher is used.
+ *
+ * Example:
+ *   transaction_id: "VT-001"
+ *   voucher_id: "GV-2025-001"
+ *   related_invoice_id: "INV-2025-005"
+ *   amount_used: 50000
+ *   remaining_after: 50000
+ */
+message VoucherTransaction {
+  string document_id = 1 [(buf.validate.field).required = true];
+  string voucher_id = 2; // Which voucher used
+  string related_invoice_id = 3; // Which purchase
+  string related_receipt_id = 4; // Or cash receipt
+  double amount_used = 5;
+  double remaining_after = 6;
+  google.protobuf.Timestamp used_at = 7;
+  string used_by_user_id = 8;
+}

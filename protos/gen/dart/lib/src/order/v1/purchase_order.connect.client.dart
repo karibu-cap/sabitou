@@ -115,22 +115,4 @@ extension type PurchaseOrderServiceClient (connect.Transport _transport) {
       onTrailer: onTrailer,
     );
   }
-
-  /// Get suggested purchase orders (low stock items)
-  Future<orderv1purchase_order.GetSuggestedPurchaseOrdersResponse> getSuggestedPurchaseOrders(
-    orderv1purchase_order.GetSuggestedPurchaseOrdersRequest input, {
-    connect.Headers? headers,
-    connect.AbortSignal? signal,
-    Function(connect.Headers)? onHeader,
-    Function(connect.Headers)? onTrailer,
-  }) {
-    return connect.Client(_transport).unary(
-      specs.PurchaseOrderService.getSuggestedPurchaseOrders,
-      input,
-      signal: signal,
-      headers: headers,
-      onHeader: onHeader,
-      onTrailer: onTrailer,
-    );
-  }
 }

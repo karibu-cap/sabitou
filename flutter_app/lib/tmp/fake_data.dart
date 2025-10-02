@@ -195,12 +195,11 @@ final fakeData = <String, List<dynamic>>{
     Payment()
       ..documentId = 'PAY-2025-001'
       ..payerId = 'user-001'
-      ..payeeId = 'business-001'
+      ..warehouseId = 'business-001'
       ..amount = 10000
       ..currency = 'USD'
       ..paymentMethod = PaymentMethod.PAYMENT_METHOD_CASH
       ..status = PaymentStatus.PAYMENT_STATUS_COMPLETED
-      ..relatedInvoiceId = 'INV-001'
       ..paymentDate = Timestamp.fromDateTime(DateTime.now())
       ..referenceNumber = 'REF-001'
       ..createdByUserId = 'user-001'

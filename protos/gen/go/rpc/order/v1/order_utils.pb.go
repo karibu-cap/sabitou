@@ -39,12 +39,11 @@ const (
 type OrderLineItem struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ProductId     string                 `protobuf:"bytes,1,opt,name=product_id,json=productId,proto3" json:"product_id,omitempty"`       // Which product
-	Quantity      float64                `protobuf:"fixed64,2,opt,name=quantity,proto3" json:"quantity,omitempty"`                        // How many units
+	Quantity      int32                  `protobuf:"varint,2,opt,name=quantity,proto3" json:"quantity,omitempty"`                         // How many units
 	ProductName   *v1.Internationalized  `protobuf:"bytes,3,opt,name=product_name,json=productName,proto3" json:"product_name,omitempty"` // Product name
 	UnitPrice     float64                `protobuf:"fixed64,4,opt,name=unit_price,json=unitPrice,proto3" json:"unit_price,omitempty"`     // Price per unit (in smallest currency)
 	Total         float64                `protobuf:"fixed64,5,opt,name=total,proto3" json:"total,omitempty"`                              // quantity * unit_price
-	Notes         string                 `protobuf:"bytes,6,opt,name=notes,proto3" json:"notes,omitempty"`                                // Special notes for this line
-	BatchId       string                 `protobuf:"bytes,7,opt,name=batch_id,json=batchId,proto3" json:"batch_id,omitempty"`             // Optional: Specific batch/lot requested
+	BatchId       *string                `protobuf:"bytes,6,opt,name=batch_id,json=batchId,proto3,oneof" json:"batch_id,omitempty"`       // Optional: Specific batch/lot requested
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -86,7 +85,7 @@ func (x *OrderLineItem) GetProductId() string {
 	return ""
 }
 
-func (x *OrderLineItem) GetQuantity() float64 {
+func (x *OrderLineItem) GetQuantity() int32 {
 	if x != nil {
 		return x.Quantity
 	}
@@ -114,109 +113,28 @@ func (x *OrderLineItem) GetTotal() float64 {
 	return 0
 }
 
-func (x *OrderLineItem) GetNotes() string {
-	if x != nil {
-		return x.Notes
-	}
-	return ""
-}
-
 func (x *OrderLineItem) GetBatchId() string {
-	if x != nil {
-		return x.BatchId
+	if x != nil && x.BatchId != nil {
+		return *x.BatchId
 	}
 	return ""
-}
-
-type OrderPrices struct {
-	state          protoimpl.MessageState `protogen:"open.v1"`
-	Subtotal       int32                  `protobuf:"varint,1,opt,name=subtotal,proto3" json:"subtotal,omitempty"`
-	Discounts      int32                  `protobuf:"varint,2,opt,name=discounts,proto3" json:"discounts,omitempty"`
-	TotalVatAmount int32                  `protobuf:"varint,3,opt,name=total_vat_amount,json=totalVatAmount,proto3" json:"total_vat_amount,omitempty"`
-	GrandTotal     int32                  `protobuf:"varint,4,opt,name=grand_total,json=grandTotal,proto3" json:"grand_total,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
-}
-
-func (x *OrderPrices) Reset() {
-	*x = OrderPrices{}
-	mi := &file_order_v1_order_utils_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *OrderPrices) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*OrderPrices) ProtoMessage() {}
-
-func (x *OrderPrices) ProtoReflect() protoreflect.Message {
-	mi := &file_order_v1_order_utils_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use OrderPrices.ProtoReflect.Descriptor instead.
-func (*OrderPrices) Descriptor() ([]byte, []int) {
-	return file_order_v1_order_utils_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *OrderPrices) GetSubtotal() int32 {
-	if x != nil {
-		return x.Subtotal
-	}
-	return 0
-}
-
-func (x *OrderPrices) GetDiscounts() int32 {
-	if x != nil {
-		return x.Discounts
-	}
-	return 0
-}
-
-func (x *OrderPrices) GetTotalVatAmount() int32 {
-	if x != nil {
-		return x.TotalVatAmount
-	}
-	return 0
-}
-
-func (x *OrderPrices) GetGrandTotal() int32 {
-	if x != nil {
-		return x.GrandTotal
-	}
-	return 0
 }
 
 var File_order_v1_order_utils_proto protoreflect.FileDescriptor
 
 const file_order_v1_order_utils_proto_rawDesc = "" +
 	"\n" +
-	"\x1aorder/v1/order_utils.proto\x12\border.v1\x1a\x1binventory/v1/category.proto\"\xf4\x01\n" +
+	"\x1aorder/v1/order_utils.proto\x12\border.v1\x1a\x1binventory/v1/category.proto\"\xf0\x01\n" +
 	"\rOrderLineItem\x12\x1d\n" +
 	"\n" +
 	"product_id\x18\x01 \x01(\tR\tproductId\x12\x1a\n" +
-	"\bquantity\x18\x02 \x01(\x01R\bquantity\x12B\n" +
+	"\bquantity\x18\x02 \x01(\x05R\bquantity\x12B\n" +
 	"\fproduct_name\x18\x03 \x01(\v2\x1f.inventory.v1.InternationalizedR\vproductName\x12\x1d\n" +
 	"\n" +
 	"unit_price\x18\x04 \x01(\x01R\tunitPrice\x12\x14\n" +
-	"\x05total\x18\x05 \x01(\x01R\x05total\x12\x14\n" +
-	"\x05notes\x18\x06 \x01(\tR\x05notes\x12\x19\n" +
-	"\bbatch_id\x18\a \x01(\tR\abatchId\"\x92\x01\n" +
-	"\vOrderPrices\x12\x1a\n" +
-	"\bsubtotal\x18\x01 \x01(\x05R\bsubtotal\x12\x1c\n" +
-	"\tdiscounts\x18\x02 \x01(\x05R\tdiscounts\x12(\n" +
-	"\x10total_vat_amount\x18\x03 \x01(\x05R\x0etotalVatAmount\x12\x1f\n" +
-	"\vgrand_total\x18\x04 \x01(\x05R\n" +
-	"grandTotalB\xa2\x01\n" +
+	"\x05total\x18\x05 \x01(\x01R\x05total\x12\x1e\n" +
+	"\bbatch_id\x18\x06 \x01(\tH\x00R\abatchId\x88\x01\x01B\v\n" +
+	"\t_batch_idB\xa2\x01\n" +
 	"\fcom.order.v1B\x0fOrderUtilsProtoP\x01Z@github.com/karibu-cap/sabitou/protos/gen/go/rpc/order/v1;orderv1\xa2\x02\x03OXX\xaa\x02\bOrder.V1\xca\x02\bOrder\\V1\xe2\x02\x14Order\\V1\\GPBMetadata\xea\x02\tOrder::V1b\x06proto3"
 
 var (
@@ -231,14 +149,13 @@ func file_order_v1_order_utils_proto_rawDescGZIP() []byte {
 	return file_order_v1_order_utils_proto_rawDescData
 }
 
-var file_order_v1_order_utils_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_order_v1_order_utils_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_order_v1_order_utils_proto_goTypes = []any{
 	(*OrderLineItem)(nil),        // 0: order.v1.OrderLineItem
-	(*OrderPrices)(nil),          // 1: order.v1.OrderPrices
-	(*v1.Internationalized)(nil), // 2: inventory.v1.Internationalized
+	(*v1.Internationalized)(nil), // 1: inventory.v1.Internationalized
 }
 var file_order_v1_order_utils_proto_depIdxs = []int32{
-	2, // 0: order.v1.OrderLineItem.product_name:type_name -> inventory.v1.Internationalized
+	1, // 0: order.v1.OrderLineItem.product_name:type_name -> inventory.v1.Internationalized
 	1, // [1:1] is the sub-list for method output_type
 	1, // [1:1] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name
@@ -251,13 +168,14 @@ func file_order_v1_order_utils_proto_init() {
 	if File_order_v1_order_utils_proto != nil {
 		return
 	}
+	file_order_v1_order_utils_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_order_v1_order_utils_proto_rawDesc), len(file_order_v1_order_utils_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   1,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

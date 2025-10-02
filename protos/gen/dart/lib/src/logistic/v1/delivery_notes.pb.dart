@@ -191,6 +191,7 @@ class DeliveryNote extends $pb.GeneratedMessage {
   @$pb.TagNumber(7)
   $pb.PbList<DeliveryLineItem> get items => $_getList(6);
 
+  /// "DHL", "Local Delivery", etc.
   @$pb.TagNumber(8)
   $core.String get carrier => $_getSZ(7);
   @$pb.TagNumber(8)

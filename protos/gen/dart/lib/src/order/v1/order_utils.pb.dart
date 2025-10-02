@@ -34,11 +34,10 @@ export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 class OrderLineItem extends $pb.GeneratedMessage {
   factory OrderLineItem({
     $core.String? productId,
-    $core.double? quantity,
+    $core.int? quantity,
     $0.Internationalized? productName,
     $core.double? unitPrice,
     $core.double? total,
-    $core.String? notes,
     $core.String? batchId,
   }) {
     final result = create();
@@ -47,7 +46,6 @@ class OrderLineItem extends $pb.GeneratedMessage {
     if (productName != null) result.productName = productName;
     if (unitPrice != null) result.unitPrice = unitPrice;
     if (total != null) result.total = total;
-    if (notes != null) result.notes = notes;
     if (batchId != null) result.batchId = batchId;
     return result;
   }
@@ -66,13 +64,12 @@ class OrderLineItem extends $pb.GeneratedMessage {
       package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'productId')
-    ..a<$core.double>(2, _omitFieldNames ? '' : 'quantity', $pb.PbFieldType.OD)
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'quantity', $pb.PbFieldType.O3)
     ..aOM<$0.Internationalized>(3, _omitFieldNames ? '' : 'productName',
         subBuilder: $0.Internationalized.create)
     ..a<$core.double>(4, _omitFieldNames ? '' : 'unitPrice', $pb.PbFieldType.OD)
     ..a<$core.double>(5, _omitFieldNames ? '' : 'total', $pb.PbFieldType.OD)
-    ..aOS(6, _omitFieldNames ? '' : 'notes')
-    ..aOS(7, _omitFieldNames ? '' : 'batchId')
+    ..aOS(6, _omitFieldNames ? '' : 'batchId')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -106,9 +103,9 @@ class OrderLineItem extends $pb.GeneratedMessage {
   void clearProductId() => $_clearField(1);
 
   @$pb.TagNumber(2)
-  $core.double get quantity => $_getN(1);
+  $core.int get quantity => $_getIZ(1);
   @$pb.TagNumber(2)
-  set quantity($core.double value) => $_setDouble(1, value);
+  set quantity($core.int value) => $_setSignedInt32(1, value);
   @$pb.TagNumber(2)
   $core.bool hasQuantity() => $_has(1);
   @$pb.TagNumber(2)
@@ -144,114 +141,13 @@ class OrderLineItem extends $pb.GeneratedMessage {
   void clearTotal() => $_clearField(5);
 
   @$pb.TagNumber(6)
-  $core.String get notes => $_getSZ(5);
+  $core.String get batchId => $_getSZ(5);
   @$pb.TagNumber(6)
-  set notes($core.String value) => $_setString(5, value);
+  set batchId($core.String value) => $_setString(5, value);
   @$pb.TagNumber(6)
-  $core.bool hasNotes() => $_has(5);
+  $core.bool hasBatchId() => $_has(5);
   @$pb.TagNumber(6)
-  void clearNotes() => $_clearField(6);
-
-  @$pb.TagNumber(7)
-  $core.String get batchId => $_getSZ(6);
-  @$pb.TagNumber(7)
-  set batchId($core.String value) => $_setString(6, value);
-  @$pb.TagNumber(7)
-  $core.bool hasBatchId() => $_has(6);
-  @$pb.TagNumber(7)
-  void clearBatchId() => $_clearField(7);
-}
-
-class OrderPrices extends $pb.GeneratedMessage {
-  factory OrderPrices({
-    $core.int? subtotal,
-    $core.int? discounts,
-    $core.int? totalVatAmount,
-    $core.int? grandTotal,
-  }) {
-    final result = create();
-    if (subtotal != null) result.subtotal = subtotal;
-    if (discounts != null) result.discounts = discounts;
-    if (totalVatAmount != null) result.totalVatAmount = totalVatAmount;
-    if (grandTotal != null) result.grandTotal = grandTotal;
-    return result;
-  }
-
-  OrderPrices._();
-
-  factory OrderPrices.fromBuffer($core.List<$core.int> data,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
-  factory OrderPrices.fromJson($core.String json,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'OrderPrices',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'),
-      createEmptyInstance: create)
-    ..a<$core.int>(1, _omitFieldNames ? '' : 'subtotal', $pb.PbFieldType.O3)
-    ..a<$core.int>(2, _omitFieldNames ? '' : 'discounts', $pb.PbFieldType.O3)
-    ..a<$core.int>(
-        3, _omitFieldNames ? '' : 'totalVatAmount', $pb.PbFieldType.O3)
-    ..a<$core.int>(4, _omitFieldNames ? '' : 'grandTotal', $pb.PbFieldType.O3)
-    ..hasRequiredFields = false;
-
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  OrderPrices clone() => OrderPrices()..mergeFromMessage(this);
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  OrderPrices copyWith(void Function(OrderPrices) updates) =>
-      super.copyWith((message) => updates(message as OrderPrices))
-          as OrderPrices;
-
-  @$core.override
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static OrderPrices create() => OrderPrices._();
-  @$core.override
-  OrderPrices createEmptyInstance() => create();
-  static $pb.PbList<OrderPrices> createRepeated() => $pb.PbList<OrderPrices>();
-  @$core.pragma('dart2js:noInline')
-  static OrderPrices getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<OrderPrices>(create);
-  static OrderPrices? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $core.int get subtotal => $_getIZ(0);
-  @$pb.TagNumber(1)
-  set subtotal($core.int value) => $_setSignedInt32(0, value);
-  @$pb.TagNumber(1)
-  $core.bool hasSubtotal() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearSubtotal() => $_clearField(1);
-
-  @$pb.TagNumber(2)
-  $core.int get discounts => $_getIZ(1);
-  @$pb.TagNumber(2)
-  set discounts($core.int value) => $_setSignedInt32(1, value);
-  @$pb.TagNumber(2)
-  $core.bool hasDiscounts() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearDiscounts() => $_clearField(2);
-
-  @$pb.TagNumber(3)
-  $core.int get totalVatAmount => $_getIZ(2);
-  @$pb.TagNumber(3)
-  set totalVatAmount($core.int value) => $_setSignedInt32(2, value);
-  @$pb.TagNumber(3)
-  $core.bool hasTotalVatAmount() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearTotalVatAmount() => $_clearField(3);
-
-  @$pb.TagNumber(4)
-  $core.int get grandTotal => $_getIZ(3);
-  @$pb.TagNumber(4)
-  set grandTotal($core.int value) => $_setSignedInt32(3, value);
-  @$pb.TagNumber(4)
-  $core.bool hasGrandTotal() => $_has(3);
-  @$pb.TagNumber(4)
-  void clearGrandTotal() => $_clearField(4);
+  void clearBatchId() => $_clearField(6);
 }
 
 const $core.bool _omitFieldNames =
