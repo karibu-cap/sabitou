@@ -92,8 +92,8 @@ final syncFakeTransport = FakeTransportBuilder()
       ];
       yield StreamStoreProductsResponse()..products.addAll(products);
     })
-    .unary(StoreProductService.findProducts, (req, _) {
-      return FindProductsResponse()
+    .unary(StoreProductService.findStoreProducts, (req, _) {
+      return FindStoreProductsResponse()
         ..products.addAll([
           StoreProductWithGlobalProduct(
             storeProduct: StoreProduct()

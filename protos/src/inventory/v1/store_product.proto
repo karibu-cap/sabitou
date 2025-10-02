@@ -211,7 +211,7 @@ message GetStoreProductRequest {
 
 message GetStoreProductResponse {
   // The retrieved store product data.
-  StoreProduct store_product = 1;
+  StoreProductWithGlobalProduct product = 1;
 }
 
 message UpdateStoreProductRequest {
@@ -277,7 +277,7 @@ message StreamGlobalProductsResponse {
   repeated GlobalProduct products = 1;
 }
 
-message SearchProductsRequest {
+message SearchStoreProductsRequest {
   string store_id = 1 [(buf.validate.field).required = true];
   optional string search_query = 2;  // Name/SKU search
   repeated string category_ids = 3;
@@ -286,7 +286,7 @@ message SearchProductsRequest {
   string page_token = 6;  // For pagination
 }
 
-message SearchProductsResponse {
+message SearchStoreProductsResponse {
   repeated StoreProductWithGlobalProduct products = 1;
   int32 total_count = 2;
   string next_page_token = 3;
@@ -312,14 +312,14 @@ service StoreProductService {
   rpc AddProduct(AddStoreProductRequest) returns (AddStoreProductResponse);
 
   // Gets a store product by id.
-  rpc GetProduct(GetStoreProductRequest) returns (GetStoreProductResponse);
+  rpc GetStoreProduct(GetStoreProductRequest) returns (GetStoreProductResponse);
 
   // Updates a store product.
-  rpc UpdateProduct(UpdateStoreProductRequest) returns (UpdateStoreProductResponse);
+  rpc UpdateStoreProduct(UpdateStoreProductRequest) returns (UpdateStoreProductResponse);
 
   // Deletes a store product.
   // Only store products that are not in any orders can be deleted.
-  rpc DeleteProduct(DeleteStoreProductRequest) returns (DeleteStoreProductResponse);
+  rpc DeleteStoreProduct(DeleteStoreProductRequest) returns (DeleteStoreProductResponse);
 
   // Finds products by name.
   rpc FindStoreProducts(FindStoreProductsRequest) returns (FindStoreProductsResponse);
@@ -331,5 +331,5 @@ service StoreProductService {
   rpc StreamGlobalProducts(StreamGlobalProductsRequest) returns (stream StreamGlobalProductsResponse);
 
   // Search products with pagination and filters.
-  rpc SearchProducts(SearchProductsRequest) returns (SearchProductsResponse);
+  rpc SearchStoreProducts(SearchStoreProductsRequest) returns (SearchStoreProductsResponse);
 }

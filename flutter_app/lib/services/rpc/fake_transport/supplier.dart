@@ -78,10 +78,10 @@ final supplierFakeTransport = FakeTransportBuilder()
         ]);
     })
     // Product Service fakes
-    .unary(StoreProductService.findProducts, (req, _) async {
+    .unary(StoreProductService.findStoreProducts, (req, _) async {
       final request = req;
 
-      return FindProductsResponse(
+      return FindStoreProductsResponse(
         products: [
           StoreProductWithGlobalProduct(
             storeProduct: StoreProduct()

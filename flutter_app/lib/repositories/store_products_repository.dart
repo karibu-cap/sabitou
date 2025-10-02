@@ -35,8 +35,8 @@ class StoreProductsRepository {
        );
 
   /// Gets all products base on store Id.
-  Future<List<StoreProductWithGlobalProduct>?> findProducts(
-    FindProductsRequest request,
+  Future<List<StoreProductWithGlobalProduct>?> findStoreProducts(
+    FindStoreProductsRequest request,
   ) async {
     try {
       final connection = await _network.checkConnectivity();
@@ -84,15 +84,17 @@ class StoreProductsRepository {
   }
 
   /// Gets a business product by its ID.
-  Future<StoreProduct?> getProduct(GetStoreProductRequest request) async {
+  Future<StoreProductWithGlobalProduct?> getStoreProduct(
+    GetStoreProductRequest request,
+  ) async {
     try {
       final connection = await _network.checkConnectivity();
 
       if (connection) {
-        return await remoteProductsRepository.getProduct(request);
+        return await remoteProductsRepository.getStoreProduct(request);
       }
 
-      return localProductsRepository.getProduct(request);
+      return localProductsRepository.getStoreProduct(request);
     } on Exception catch (e) {
       _logger.severe('getProduct Error: $e');
 
@@ -103,7 +105,7 @@ class StoreProductsRepository {
   /// Updates a business product.
   Future<bool> updateProduct(UpdateStoreProductRequest request) async {
     try {
-      return await remoteProductsRepository.updateProduct(request);
+      return await remoteProductsRepository.updateStoreProduct(request);
     } on Exception catch (e) {
       _logger.severe('updateProduct Error: $e');
 
@@ -114,7 +116,7 @@ class StoreProductsRepository {
   /// Deletes a business product.
   Future<bool> deleteProduct(DeleteStoreProductRequest request) async {
     try {
-      return await remoteProductsRepository.deleteProduct(request);
+      return await remoteProductsRepository.deleteStoreProduct(request);
     } on Exception catch (e) {
       _logger.severe('deleteProduct Error: $e');
 
@@ -166,15 +168,15 @@ class StoreProductsRepository {
   }
 
   /// Searches product .
-  Future<SearchProductsResponse> searchProducts(
-    SearchProductsRequest request,
+  Future<SearchStoreProductsResponse> searchProducts(
+    SearchStoreProductsRequest request,
   ) async {
     try {
-      return await remoteProductsRepository.searchProducts(request);
+      return await remoteProductsRepository.searchStoreProducts(request);
     } on Exception catch (e) {
       _logger.severe('searchProducts Error: $e');
 
-      return SearchProductsResponse();
+      return SearchStoreProductsResponse();
     }
   }
 }

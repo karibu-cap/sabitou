@@ -29,7 +29,7 @@ final class PointOfSaleViewModel {
           try {
             final response = await StoreProductsRepository.instance
                 .searchProducts(
-                  SearchProductsRequest(
+                  SearchStoreProductsRequest(
                     searchQuery: searchQuery,
                     storeId: currentStore.refId,
                   ),

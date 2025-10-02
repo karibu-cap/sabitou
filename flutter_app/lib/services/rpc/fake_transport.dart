@@ -121,12 +121,22 @@ final _fakeTransport =
                 ..status = SupplierStatus.SUPPLIER_STATUS_ACTIVE,
             ]);
         })
-        .unary(StoreProductService.getProduct, (req, _) async {
+        .unary(StoreProductService.getStoreProduct, (req, _) async {
           final storeProduct =
               (_fakeData[CollectionName.storeProducts] as List<StoreProduct>)
                   .firstWhere((gp) => gp.refId == req.storeProductId);
 
-          return GetStoreProductResponse(storeProduct: storeProduct);
+          return GetStoreProductResponse(
+            product: StoreProductWithGlobalProduct(
+              storeProduct: storeProduct,
+              globalProduct:
+                  (_fakeData[CollectionName.globalProducts]
+                          as List<GlobalProduct>)
+                      .firstWhere(
+                        (gp) => gp.refId == storeProduct.globalProductId,
+                      ),
+            ),
+          );
         })
         .server(StoreProductService.streamStoreProducts, (req, _) async* {
           final request = req;
@@ -281,7 +291,7 @@ final _fakeTransport =
                     .firstWhereOrNull((bm) => bm.user.refId == req.userId),
           );
         })
-        .unary(StoreProductService.findProducts, (req, __) async {
+        .unary(StoreProductService.findStoreProducts, (req, __) async {
           final storeProducts =
               (_fakeData[CollectionName.storeProducts] as List<StoreProduct>)
                   .where((bp) => bp.storeId == req.storeId)
@@ -307,9 +317,11 @@ final _fakeTransport =
               )
               .toSet();
 
-          return FindProductsResponse(products: storeProductWithGlobalProducts);
+          return FindStoreProductsResponse(
+            products: storeProductWithGlobalProducts,
+          );
         })
-        .unary(StoreProductService.searchProducts, (req, __) async {
+        .unary(StoreProductService.searchStoreProducts, (req, __) async {
           final storeProducts =
               (_fakeData[CollectionName.storeProducts] as List<StoreProduct>)
                   .where((bp) => bp.storeId == req.storeId)
@@ -352,7 +364,7 @@ final _fakeTransport =
               )
               .toList();
 
-          return SearchProductsResponse(
+          return SearchStoreProductsResponse(
             products: storeProductWithGlobalProducts,
             totalCount: storeProductWithGlobalProducts.length,
           );
@@ -533,17 +545,28 @@ final _fakeTransport =
 
           return DeleteStoreProductResponse()..success = true;
         })
-      ..unary(StoreProductService.getProduct, (req, _) async {
+      ..unary(StoreProductService.getStoreProduct, (req, _) async {
         final request = req;
 
         return GetStoreProductResponse(
-          storeProduct: StoreProduct()
-            ..refId = request.storeProductId
-            ..storeId = 'store_1'
-            ..globalProductId = 'gp_${request.storeProductId.substring(3)}'
-            ..salePrice =
-                10000 + int.parse(request.storeProductId.substring(3)) * 5000
-            ..status = ProductStatus.PRODUCT_STATUS_ACTIVE,
+          product: StoreProductWithGlobalProduct(
+            storeProduct: StoreProduct()
+              ..refId = request.storeProductId
+              ..storeId = 'store_1'
+              ..globalProductId = 'gp_${request.storeProductId.substring(3)}'
+              ..salePrice =
+                  10000 + int.parse(request.storeProductId.substring(3)) * 5000
+              ..status = ProductStatus.PRODUCT_STATUS_ACTIVE,
+            globalProduct: GlobalProduct()
+              ..refId = 'gp_${request.storeProductId.substring(3)}'
+              ..name = (Internationalized()
+                ..en = 'Product ${request.storeProductId.substring(3)}'
+                ..fr = 'Produit ${request.storeProductId.substring(3)}')
+              ..description = (Internationalized()
+                ..en = 'Description ${request.storeProductId.substring(3)}'
+                ..fr = 'Description ${request.storeProductId.substring(3)}')
+              ..status = GlobalProductStatus.GLOBAL_PRODUCT_STATUS_ACTIVE,
+          ),
         );
       })
       ..unary(InventoryService.getLowStockItems, (req, _) async {

@@ -345,6 +345,7 @@ class CreateCashReceiptRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   CashReceipt ensureReceipt() => $_ensure(0);
 
+  /// The partial payment use by the client.
   @$pb.TagNumber(2)
   $pb.PbList<$2.Payment> get payments => $_getList(1);
 

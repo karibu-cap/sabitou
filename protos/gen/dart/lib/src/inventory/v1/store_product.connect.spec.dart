@@ -4,7 +4,6 @@
 //
 
 import "package:connectrpc/connect.dart" as connect;
-
 import "store_product.pb.dart" as inventoryv1store_product;
 
 abstract final class StoreProductService {
@@ -17,6 +16,14 @@ abstract final class StoreProductService {
     connect.StreamType.unary,
     inventoryv1store_product.FindGlobalProductsRequest.new,
     inventoryv1store_product.FindGlobalProductsResponse.new,
+  );
+
+  /// Finds categories by name.
+  static const findProductCategory = connect.Spec(
+    '/$name/FindProductCategory',
+    connect.StreamType.unary,
+    inventoryv1store_product.FindProductCategoryRequest.new,
+    inventoryv1store_product.FindProductCategoryResponse.new,
   );
 
   /// Creates a global product.
@@ -77,11 +84,11 @@ abstract final class StoreProductService {
   );
 
   /// Finds products by name.
-  static const findProducts = connect.Spec(
-    '/$name/FindProducts',
+  static const findStoreProducts = connect.Spec(
+    '/$name/FindStoreProducts',
     connect.StreamType.unary,
-    inventoryv1store_product.FindProductsRequest.new,
-    inventoryv1store_product.FindProductsResponse.new,
+    inventoryv1store_product.FindStoreProductsRequest.new,
+    inventoryv1store_product.FindStoreProductsResponse.new,
   );
 
   /// Streams all products for a store for real-time updates.
@@ -100,11 +107,11 @@ abstract final class StoreProductService {
     inventoryv1store_product.StreamGlobalProductsResponse.new,
   );
 
-  /// Lists products with pagination and filters.
-  static const listStoreProducts = connect.Spec(
-    '/$name/ListStoreProducts',
+  /// Search products with pagination and filters.
+  static const searchStoreProducts = connect.Spec(
+    '/$name/SearchStoreProducts',
     connect.StreamType.unary,
-    inventoryv1store_product.ListStoreProductsRequest.new,
-    inventoryv1store_product.ListStoreProductsResponse.new,
+    inventoryv1store_product.SearchStoreProductsRequest.new,
+    inventoryv1store_product.SearchStoreProductsResponse.new,
   );
 }

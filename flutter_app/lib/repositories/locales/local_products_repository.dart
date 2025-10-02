@@ -54,7 +54,7 @@ class LocalProductsRepository {
 
   /// Gets all products base on business Id.
   Future<List<StoreProductWithGlobalProduct>?> findStoreProducts(
-    FindProductsRequest request,
+    FindStoreProductsRequest request,
   ) async {
     try {
       final storeProducts = hiveDb.storeProducts.values
@@ -104,14 +104,28 @@ class LocalProductsRepository {
   }
 
   /// Gets a business product by its ID.
-  Future<StoreProduct?> getStoreProduct(GetStoreProductRequest request) async {
+  Future<StoreProductWithGlobalProduct?> getStoreProduct(
+    GetStoreProductRequest request,
+  ) async {
     try {
       final box = hiveDb.storeProducts;
       final hiveProduct = box.values
           .where((product) => product.refId == request.storeProductId)
           .firstOrNull;
+      if (hiveProduct == null) {
+        return null;
+      }
 
-      return hiveProduct;
+      final globalProductIds = hiveProduct.globalProductId;
+      final globalProducts = hiveDb.globalProducts.values.firstWhereOrNull(
+        (gp) => gp.refId == globalProductIds,
+      );
+
+      final storeProductWithGlobalProducts = StoreProductWithGlobalProduct()
+        ..storeProduct = hiveProduct
+        ..globalProduct = globalProducts ?? GlobalProduct();
+
+      return storeProductWithGlobalProducts;
     } on Exception catch (e) {
       _logger.severe('getProduct Error: $e');
 

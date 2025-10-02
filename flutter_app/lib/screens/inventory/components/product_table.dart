@@ -28,6 +28,10 @@ class ProductsTable extends StatelessWidget {
 
     return ShadCard(
       padding: EdgeInsets.zero,
+      radius: const BorderRadius.only(
+        topLeft: Radius.circular(12),
+        topRight: Radius.circular(12),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

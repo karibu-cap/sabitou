@@ -77,29 +77,18 @@ class InventoryRepository {
           productReq,
         );
 
-        if (!productResp.hasStoreProduct()) {
+        if (!productResp.hasProduct()) {
           continue;
         }
-
-        final globalProduct = await storeProductService.findGlobalProducts(
-          FindGlobalProductsRequest(
-            refId: productResp.storeProduct.globalProductId,
-          ),
-        );
-
-        if (globalProduct.products.isEmpty) {
-          continue;
-        }
-
-        final globalProductResp = globalProduct.products.first;
 
         items.add(
           InventoryLevelWithProduct(
             level: level,
-            product: productResp.storeProduct,
-            globalProduct: globalProductResp,
+            product: productResp.product.storeProduct,
+            globalProduct: productResp.product.globalProduct,
             stockValue:
-                (level.quantityAvailable * productResp.storeProduct.salePrice)
+                (level.quantityAvailable *
+                        productResp.product.storeProduct.salePrice)
                     .truncate(),
           ),
         );
@@ -131,34 +120,23 @@ class InventoryRepository {
           productReq,
         );
 
-        if (!productResp.hasStoreProduct()) {
+        if (!productResp.hasProduct()) {
           continue;
         }
-
-        final globalProduct = await storeProductService.findGlobalProducts(
-          FindGlobalProductsRequest(
-            refId: productResp.storeProduct.globalProductId,
-          ),
-        );
-
-        if (globalProduct.products.isEmpty) {
-          continue;
-        }
-
-        final globalProductResp = globalProduct.products.first;
 
         items.add(
           InventoryLevelWithProduct(
             level: level,
-            product: productResp.storeProduct,
-            globalProduct: globalProductResp,
+            product: productResp.product.storeProduct,
+            globalProduct: productResp.product.globalProduct,
             stockStatus: level.quantityAvailable == 0
                 ? StockStatus.STOCK_STATUS_OUT_OF_STOCK
                 : level.quantityAvailable > level.minThreshold
                 ? StockStatus.STOCK_STATUS_OK
                 : StockStatus.STOCK_STATUS_LOW,
             stockValue:
-                (level.quantityAvailable * productResp.storeProduct.salePrice)
+                (level.quantityAvailable *
+                        productResp.product.storeProduct.salePrice)
                     .truncate(),
           ),
         );

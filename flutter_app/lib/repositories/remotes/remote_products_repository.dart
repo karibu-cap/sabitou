@@ -32,10 +32,10 @@ class RemoteProductsRepository {
 
   /// Gets all products base on business Id.
   Future<List<StoreProductWithGlobalProduct>> findStoreProducts(
-    FindProductsRequest request,
+    FindStoreProductsRequest request,
   ) async {
     try {
-      final response = await productServiceClient.findProducts(request);
+      final response = await productServiceClient.findStoreProducts(request);
 
       return response.products;
     } on Exception catch (e) {
@@ -59,11 +59,13 @@ class RemoteProductsRepository {
   }
 
   /// Gets a business product by its ID.
-  Future<StoreProduct?> getStoreProduct(GetStoreProductRequest request) async {
+  Future<StoreProductWithGlobalProduct?> getStoreProduct(
+    GetStoreProductRequest request,
+  ) async {
     try {
       final response = await productServiceClient.getStoreProduct(request);
 
-      return response.storeProduct;
+      return response.product;
     } on Exception catch (e) {
       _logger.severe('getProduct Error: $e');
 
@@ -175,15 +177,15 @@ class RemoteProductsRepository {
   }
 
   /// Searches product .
-  Future<SearchProductsResponse> searchProducts(
-    SearchProductsRequest request,
+  Future<SearchStoreProductsResponse> searchStoreProducts(
+    SearchStoreProductsRequest request,
   ) async {
     try {
-      return await productServiceClient.searchProducts(request);
+      return await productServiceClient.searchStoreProducts(request);
     } on Exception catch (e) {
       _logger.severe('searchProducts Error: $e');
 
-      return SearchProductsResponse();
+      return SearchStoreProductsResponse();
     }
   }
 }

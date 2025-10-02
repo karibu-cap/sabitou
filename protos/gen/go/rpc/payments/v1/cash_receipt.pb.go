@@ -214,8 +214,9 @@ func (x *CashReceipt) GetOwedToCustomer() float64 {
 type CreateCashReceiptRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The partial cash receipt to create.
-	Receipt  *CashReceipt `protobuf:"bytes,1,opt,name=receipt,proto3" json:"receipt,omitempty"`
-	Payments []*Payment   `protobuf:"bytes,2,rep,name=payments,proto3" json:"payments,omitempty"`
+	Receipt *CashReceipt `protobuf:"bytes,1,opt,name=receipt,proto3" json:"receipt,omitempty"`
+	// The partial payment use by the client.
+	Payments []*Payment `protobuf:"bytes,2,rep,name=payments,proto3" json:"payments,omitempty"`
 	// Issue voucher on change
 	// If true and change_given > 0, issue a voucher instead of cash
 	IssueVoucherOnChange bool `protobuf:"varint,3,opt,name=issue_voucher_on_change,json=issueVoucherOnChange,proto3" json:"issue_voucher_on_change,omitempty"`

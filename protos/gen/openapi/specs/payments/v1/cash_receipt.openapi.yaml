@@ -371,6 +371,7 @@ components:
           items:
             $ref: '#/components/schemas/payments.v1.Payment'
           title: payments
+          description: The partial payment use by the client.
         issueVoucherOnChange:
           type: boolean
           title: issue_voucher_on_change

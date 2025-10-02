@@ -184,13 +184,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inventory.v1.FindGlobalProductsResponse'
-  /inventory.v1.StoreProductService/FindStoreProducts:
+  /inventory.v1.StoreProductService/FindProductCategory:
     post:
       tags:
         - inventory.v1.StoreProductService
-      summary: Finds products by name.
-      description: Finds products by name.
-      operationId: inventory.v1.StoreProductService.FindProducts
+      summary: Finds categories by name.
+      description: Finds categories by name.
+      operationId: inventory.v1.StoreProductService.FindProductCategory
       parameters:
         - name: Connect-Protocol-Version
           in: header
@@ -205,7 +205,43 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/inventory.v1.FindProductsRequest'
+              $ref: '#/components/schemas/inventory.v1.FindProductCategoryRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inventory.v1.FindProductCategoryResponse'
+  /inventory.v1.StoreProductService/FindStoreProducts:
+    post:
+      tags:
+        - inventory.v1.StoreProductService
+      summary: Finds products by name.
+      description: Finds products by name.
+      operationId: inventory.v1.StoreProductService.FindStoreProducts
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inventory.v1.FindStoreProductsRequest'
         required: true
       responses:
         default:
@@ -256,13 +292,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inventory.v1.GetStoreProductResponse'
-  /inventory.v1.StoreProductService/ListStoreProducts:
+  /inventory.v1.StoreProductService/SearchStoreProducts:
     post:
       tags:
         - inventory.v1.StoreProductService
-      summary: Lists products with pagination and filters.
-      description: Lists products with pagination and filters.
-      operationId: inventory.v1.StoreProductService.ListStoreProducts
+      summary: Search products with pagination and filters.
+      description: Search products with pagination and filters.
+      operationId: inventory.v1.StoreProductService.SearchStoreProducts
       parameters:
         - name: Connect-Protocol-Version
           in: header
@@ -277,7 +313,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/inventory.v1.ListStoreProductsRequest'
+              $ref: '#/components/schemas/inventory.v1.SearchStoreProductsRequest'
         required: true
       responses:
         default:
@@ -291,7 +327,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inventory.v1.ListStoreProductsResponse'
+                $ref: '#/components/schemas/inventory.v1.SearchStoreProductsResponse'
   /inventory.v1.StoreProductService/StreamGlobalProducts: {}
   /inventory.v1.StoreProductService/StreamStoreProducts: {}
   /inventory.v1.StoreProductService/UpdateGlobalProduct:
@@ -725,6 +761,28 @@ components:
              WARN: all returned products will only have their id and name.
       title: FindGlobalProductsResponse
       additionalProperties: false
+    inventory.v1.FindProductCategoryRequest:
+      type: object
+      properties:
+        query:
+          type: string
+          title: query
+          description: The query to search for product categories.
+      title: FindProductCategoryRequest
+      additionalProperties: false
+    inventory.v1.FindProductCategoryResponse:
+      type: object
+      properties:
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/inventory.v1.Category'
+          title: categories
+          description: |-
+            The unique identifiers of the product categories.
+             WARN: all returned product categories will only have their id and name.
+      title: FindProductCategoryResponse
+      additionalProperties: false
     inventory.v1.FindStoreProductsRequest:
       type: object
       properties:
@@ -732,15 +790,10 @@ components:
           type: string
           title: store_id
           description: The query to search for store products.
-        refId:
+        storeProductId:
           type: string
-          title: ref_id
+          title: store_product_id
           description: The unique identifier of the product.
-          nullable: true
-        globalProductId:
-          type: string
-          title: global_product_id
-          description: The unique identifier of the global product.
           nullable: true
         pageSize:
           type: integer
@@ -753,9 +806,9 @@ components:
           title: page_token
           description: The page token.
           nullable: true
-      title: FindProductsRequest
+      title: FindStoreProductsRequest
       additionalProperties: false
-    inventory.v1.FindProductsResponse:
+    inventory.v1.FindStoreProductsResponse:
       type: object
       properties:
         products:
@@ -776,7 +829,7 @@ components:
           title: next_page_token
           description: The next page token.
           nullable: true
-      title: FindProductsResponse
+      title: FindStoreProductsResponse
       additionalProperties: false
     inventory.v1.GetStoreProductRequest:
       type: object
@@ -793,10 +846,10 @@ components:
     inventory.v1.GetStoreProductResponse:
       type: object
       properties:
-        storeProduct:
-          title: store_product
+        product:
+          title: product
           description: The retrieved store product data.
-          $ref: '#/components/schemas/inventory.v1.StoreProduct'
+          $ref: '#/components/schemas/inventory.v1.StoreProductWithGlobalProduct'
       title: GetStoreProductResponse
       additionalProperties: false
     inventory.v1.GlobalProduct:
@@ -859,7 +912,14 @@ components:
           description: The French name of the product category.
       title: Internationalized
       additionalProperties: false
-    inventory.v1.ListStoreProductsRequest:
+    inventory.v1.ProductStatus:
+      type: string
+      title: ProductStatus
+      enum:
+        - PRODUCT_STATUS_UNSPECIFIED
+        - PRODUCT_STATUS_ACTIVE
+        - PRODUCT_STATUS_INACTIVE
+    inventory.v1.SearchStoreProductsRequest:
       type: object
       properties:
         storeId:
@@ -887,11 +947,11 @@ components:
           type: string
           title: page_token
           description: For pagination
-      title: ListStoreProductsRequest
+      title: SearchStoreProductsRequest
       required:
         - storeId
       additionalProperties: false
-    inventory.v1.ListStoreProductsResponse:
+    inventory.v1.SearchStoreProductsResponse:
       type: object
       properties:
         products:
@@ -906,7 +966,7 @@ components:
         nextPageToken:
           type: string
           title: next_page_token
-      title: ListStoreProductsResponse
+      title: SearchStoreProductsResponse
       additionalProperties: false
     inventory.v1.StoreProduct:
       type: object

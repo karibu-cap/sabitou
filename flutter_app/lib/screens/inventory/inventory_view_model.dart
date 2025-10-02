@@ -161,8 +161,8 @@ class InventoryViewModel {
 
       // Execute all calls in parallel for better performance
       final results = await Future.wait([
-        StoreProductsRepository.instance.findProducts(
-          FindProductsRequest(storeId: store.refId),
+        StoreProductsRepository.instance.findStoreProducts(
+          FindStoreProductsRequest(storeId: store.refId),
         ),
         InventoryRepository.instance.getLowStockItems(store.refId),
         ReportsRepository.instance.getSalesByPeriod(

@@ -188,14 +188,25 @@ final userFakeTransport = FakeTransportBuilder()
     final request = req;
 
     return GetStoreProductResponse(
-      storeProduct: StoreProduct()
-        ..refId = request.storeProductId
-        ..storeId = 'store_1'
-        ..supplierId = 'supplier_1'
-        ..globalProductId = 'gp_${request.storeProductId.substring(3)}'
-        ..salePrice =
-            10000 + int.parse(request.storeProductId.substring(3)) * 5000
-        ..status = ProductStatus.PRODUCT_STATUS_ACTIVE,
+      product: StoreProductWithGlobalProduct(
+        storeProduct: StoreProduct()
+          ..refId = request.storeProductId
+          ..storeId = 'store_1'
+          ..supplierId = 'supplier_1'
+          ..globalProductId = 'gp_${request.storeProductId.substring(3)}'
+          ..salePrice =
+              10000 + int.parse(request.storeProductId.substring(3)) * 5000
+          ..status = ProductStatus.PRODUCT_STATUS_ACTIVE,
+        globalProduct: GlobalProduct()
+          ..refId = 'gp_${request.storeProductId.substring(3)}'
+          ..name = (Internationalized()
+            ..en = 'Product ${request.storeProductId.substring(3)}'
+            ..fr = 'Produit ${request.storeProductId.substring(3)}')
+          ..description = (Internationalized()
+            ..en = 'Description ${request.storeProductId.substring(3)}'
+            ..fr = 'Description ${request.storeProductId.substring(3)}')
+          ..status = GlobalProductStatus.GLOBAL_PRODUCT_STATUS_ACTIVE,
+      ),
     );
   })
   // Streaming store members
