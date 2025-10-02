@@ -85,7 +85,7 @@ class LocalProductsRepository {
   }
 
   /// Gets a business product by its ID.
-  Future<StoreProduct?> getProduct(GetStoreProductRequest request) async {
+  Future<StoreProduct?> getStoreProduct(GetStoreProductRequest request) async {
     try {
       final box = hiveDb.storeProducts;
       final hiveProduct = box.values
@@ -101,7 +101,7 @@ class LocalProductsRepository {
   }
 
   /// Updates a business product.
-  Future<bool> updateProduct(UpdateStoreProductRequest request) async {
+  Future<bool> updateStoreProduct(UpdateStoreProductRequest request) async {
     try {
       final storeProduct = hiveDb.storeProducts.values
           .where((product) => product.refId == request.storeProduct.refId)
@@ -127,7 +127,7 @@ class LocalProductsRepository {
   }
 
   /// Deletes a business product.
-  Future<bool> deleteProduct(DeleteStoreProductRequest request) async {
+  Future<bool> deleteStoreProduct(DeleteStoreProductRequest request) async {
     try {
       final box = hiveDb.storeProducts;
       await box.delete(request.storeProductId);

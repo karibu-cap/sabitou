@@ -83,33 +83,6 @@ class Edition extends $pb.ProtobufEnum {
   const Edition._(super.value, super.name);
 }
 
-/// Describes the 'visibility' of a symbol with respect to the proto import
-/// system. Symbols can only be imported when the visibility rules do not prevent
-/// it (ex: local symbols cannot be imported).  Visibility modifiers can only set
-/// on `message` and `enum` as they are the only types available to be referenced
-/// from other files.
-class SymbolVisibility extends $pb.ProtobufEnum {
-  static const SymbolVisibility VISIBILITY_UNSET =
-      SymbolVisibility._(0, _omitEnumNames ? '' : 'VISIBILITY_UNSET');
-  static const SymbolVisibility VISIBILITY_LOCAL =
-      SymbolVisibility._(1, _omitEnumNames ? '' : 'VISIBILITY_LOCAL');
-  static const SymbolVisibility VISIBILITY_EXPORT =
-      SymbolVisibility._(2, _omitEnumNames ? '' : 'VISIBILITY_EXPORT');
-
-  static const $core.List<SymbolVisibility> values = <SymbolVisibility>[
-    VISIBILITY_UNSET,
-    VISIBILITY_LOCAL,
-    VISIBILITY_EXPORT,
-  ];
-
-  static final $core.List<SymbolVisibility?> _byValue =
-      $pb.ProtobufEnum.$_initByValueList(values, 2);
-  static SymbolVisibility? valueOf($core.int value) =>
-      value < 0 || value >= _byValue.length ? null : _byValue[value];
-
-  const SymbolVisibility._(super.value, super.name);
-}
-
 /// The verification state of the extension range.
 class ExtensionRangeOptions_VerificationState extends $pb.ProtobufEnum {
   /// All the extensions of the range must be declared.
@@ -583,78 +556,6 @@ class FeatureSet_JsonFormat extends $pb.ProtobufEnum {
       value < 0 || value >= _byValue.length ? null : _byValue[value];
 
   const FeatureSet_JsonFormat._(super.value, super.name);
-}
-
-class FeatureSet_EnforceNamingStyle extends $pb.ProtobufEnum {
-  static const FeatureSet_EnforceNamingStyle ENFORCE_NAMING_STYLE_UNKNOWN =
-      FeatureSet_EnforceNamingStyle._(
-          0, _omitEnumNames ? '' : 'ENFORCE_NAMING_STYLE_UNKNOWN');
-  static const FeatureSet_EnforceNamingStyle STYLE2024 =
-      FeatureSet_EnforceNamingStyle._(1, _omitEnumNames ? '' : 'STYLE2024');
-  static const FeatureSet_EnforceNamingStyle STYLE_LEGACY =
-      FeatureSet_EnforceNamingStyle._(2, _omitEnumNames ? '' : 'STYLE_LEGACY');
-
-  static const $core.List<FeatureSet_EnforceNamingStyle> values =
-      <FeatureSet_EnforceNamingStyle>[
-    ENFORCE_NAMING_STYLE_UNKNOWN,
-    STYLE2024,
-    STYLE_LEGACY,
-  ];
-
-  static final $core.List<FeatureSet_EnforceNamingStyle?> _byValue =
-      $pb.ProtobufEnum.$_initByValueList(values, 2);
-  static FeatureSet_EnforceNamingStyle? valueOf($core.int value) =>
-      value < 0 || value >= _byValue.length ? null : _byValue[value];
-
-  const FeatureSet_EnforceNamingStyle._(super.value, super.name);
-}
-
-class FeatureSet_VisibilityFeature_DefaultSymbolVisibility
-    extends $pb.ProtobufEnum {
-  static const FeatureSet_VisibilityFeature_DefaultSymbolVisibility
-      DEFAULT_SYMBOL_VISIBILITY_UNKNOWN =
-      FeatureSet_VisibilityFeature_DefaultSymbolVisibility._(
-          0, _omitEnumNames ? '' : 'DEFAULT_SYMBOL_VISIBILITY_UNKNOWN');
-
-  /// Default pre-EDITION_2024, all UNSET visibility are export.
-  static const FeatureSet_VisibilityFeature_DefaultSymbolVisibility EXPORT_ALL =
-      FeatureSet_VisibilityFeature_DefaultSymbolVisibility._(
-          1, _omitEnumNames ? '' : 'EXPORT_ALL');
-
-  /// All top-level symbols default to export, nested default to local.
-  static const FeatureSet_VisibilityFeature_DefaultSymbolVisibility
-      EXPORT_TOP_LEVEL = FeatureSet_VisibilityFeature_DefaultSymbolVisibility._(
-          2, _omitEnumNames ? '' : 'EXPORT_TOP_LEVEL');
-
-  /// All symbols default to local.
-  static const FeatureSet_VisibilityFeature_DefaultSymbolVisibility LOCAL_ALL =
-      FeatureSet_VisibilityFeature_DefaultSymbolVisibility._(
-          3, _omitEnumNames ? '' : 'LOCAL_ALL');
-
-  /// All symbols local by default. Nested types cannot be exported.
-  /// With special case caveat for message { enum {} reserved 1 to max; }
-  /// This is the recommended setting for new protos.
-  static const FeatureSet_VisibilityFeature_DefaultSymbolVisibility STRICT =
-      FeatureSet_VisibilityFeature_DefaultSymbolVisibility._(
-          4, _omitEnumNames ? '' : 'STRICT');
-
-  static const $core.List<FeatureSet_VisibilityFeature_DefaultSymbolVisibility>
-      values = <FeatureSet_VisibilityFeature_DefaultSymbolVisibility>[
-    DEFAULT_SYMBOL_VISIBILITY_UNKNOWN,
-    EXPORT_ALL,
-    EXPORT_TOP_LEVEL,
-    LOCAL_ALL,
-    STRICT,
-  ];
-
-  static final $core.List<FeatureSet_VisibilityFeature_DefaultSymbolVisibility?>
-      _byValue = $pb.ProtobufEnum.$_initByValueList(values, 4);
-  static FeatureSet_VisibilityFeature_DefaultSymbolVisibility? valueOf(
-          $core.int value) =>
-      value < 0 || value >= _byValue.length ? null : _byValue[value];
-
-  const FeatureSet_VisibilityFeature_DefaultSymbolVisibility._(
-      super.value, super.name);
 }
 
 /// Represents the identified object's effect on the element in the original

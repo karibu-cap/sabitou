@@ -49,8 +49,8 @@ final class DashboardViewModel {
 
       // Execute all calls in parallel for better performance
       final results = await Future.wait([
-        StoreProductsRepository.instance.listProducts(
-          ListProductsRequest(storeId: store.refId),
+        StoreProductsRepository.instance.listStoreProducts(
+          ListStoreProductsRequest(storeId: store.refId),
         ),
         InventoryRepository.instance.getLowStockItems(store.refId),
         InventoryRepository.instance.getExpiringItems(store.refId),
@@ -67,7 +67,7 @@ final class DashboardViewModel {
         ),
       ]);
 
-      final totalProducts = results.first as ListProductsResponse;
+      final totalProducts = results.first as ListStoreProductsResponse;
       final lowStockItems = results[1] as List<InventoryLevelWithProduct>;
       final expiringItems = results[2] as List<InventoryLevelWithProduct>;
       final salesReport = results[3] as GetSalesReportResponse;

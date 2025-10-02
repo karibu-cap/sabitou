@@ -69,63 +69,6 @@ message StorePermissions {
   StoreTransactionPermission transaction = 7;
 }
 
-//
-// ==========================
-//   REQUESTS
-// ==========================
-//
-
-message CreateStorePermissionRequest {
-  StorePermissions permissions = 1;
-  string store_id = 2 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).string.min_len = 3
-  ];
-}
-
-message UpdateStorePermissionRequest {
-  StorePermissions permissions = 1;
-  string store_permission_id = 2 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).string.min_len = 3
-  ];
-}
-
-message DeleteStorePermissionRequest {
-  string store_permission_id = 1 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).string.min_len = 3
-  ];
-}
-
-message CheckStorePermissionRequest {
-  string user_id = 1 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).string.min_len = 3
-  ];
-
-  string store_id = 2 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).string.min_len = 3
-  ];
-
-  // Example: "product.create_product_in_inventory"
-  string permission_field = 3;
-}
-
-//
-// ==========================
-//   RESPONSES
-// ==========================
-//
-
-message SuccessResponse {
-  bool success = 1;
-}
-
-message CheckStorePermissionResponse {
-  bool has_permission = 1;
-}
 
 //
 // ==========================
@@ -134,15 +77,4 @@ message CheckStorePermissionResponse {
 //
 
 service PermissionService {
-  // Create store permission
-  rpc CreateStorePermission(CreateStorePermissionRequest) returns (SuccessResponse) {}
-
-  // Update store permission
-  rpc UpdateStorePermission(UpdateStorePermissionRequest) returns (SuccessResponse) {}
-
-  // Delete store permission
-  rpc DeleteStorePermission(DeleteStorePermissionRequest) returns (SuccessResponse) {}
-
-  // Check if a user has a store permission
-  rpc CheckStorePermission(CheckStorePermissionRequest) returns (CheckStorePermissionResponse) {}
 }

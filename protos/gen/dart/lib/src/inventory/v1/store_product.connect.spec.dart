@@ -18,14 +18,6 @@ abstract final class StoreProductService {
     inventoryv1store_product.FindGlobalProductsResponse.new,
   );
 
-  /// Finds categories by name.
-  static const findProductCategory = connect.Spec(
-    '/$name/FindProductCategory',
-    connect.StreamType.unary,
-    inventoryv1store_product.FindProductCategoryRequest.new,
-    inventoryv1store_product.FindProductCategoryResponse.new,
-  );
-
   /// Creates a global product.
   static const createGlobalProduct = connect.Spec(
     '/$name/CreateGlobalProduct',
@@ -59,16 +51,16 @@ abstract final class StoreProductService {
   );
 
   /// Gets a store product by id.
-  static const getProduct = connect.Spec(
-    '/$name/GetProduct',
+  static const getStoreProduct = connect.Spec(
+    '/$name/GetStoreProduct',
     connect.StreamType.unary,
     inventoryv1store_product.GetStoreProductRequest.new,
     inventoryv1store_product.GetStoreProductResponse.new,
   );
 
   /// Updates a store product.
-  static const updateProduct = connect.Spec(
-    '/$name/UpdateProduct',
+  static const updateStoreProduct = connect.Spec(
+    '/$name/UpdateStoreProduct',
     connect.StreamType.unary,
     inventoryv1store_product.UpdateStoreProductRequest.new,
     inventoryv1store_product.UpdateStoreProductResponse.new,
@@ -76,8 +68,8 @@ abstract final class StoreProductService {
 
   /// Deletes a store product.
   /// Only store products that are not in any orders can be deleted.
-  static const deleteProduct = connect.Spec(
-    '/$name/DeleteProduct',
+  static const deleteStoreProduct = connect.Spec(
+    '/$name/DeleteStoreProduct',
     connect.StreamType.unary,
     inventoryv1store_product.DeleteStoreProductRequest.new,
     inventoryv1store_product.DeleteStoreProductResponse.new,
@@ -108,10 +100,10 @@ abstract final class StoreProductService {
   );
 
   /// Lists products with pagination and filters.
-  static const listProducts = connect.Spec(
-    '/$name/ListProducts',
+  static const listStoreProducts = connect.Spec(
+    '/$name/ListStoreProducts',
     connect.StreamType.unary,
-    inventoryv1store_product.ListProductsRequest.new,
-    inventoryv1store_product.ListProductsResponse.new,
+    inventoryv1store_product.ListStoreProductsRequest.new,
+    inventoryv1store_product.ListStoreProductsResponse.new,
   );
 }

@@ -162,8 +162,8 @@ class InventoryViewModel {
 
       // Execute all calls in parallel for better performance
       final results = await Future.wait([
-        StoreProductsRepository.instance.listProducts(
-          ListProductsRequest(storeId: store.refId),
+        StoreProductsRepository.instance.listStoreProducts(
+          ListStoreProductsRequest(storeId: store.refId),
         ),
         InventoryRepository.instance.getLowStockItems(store.refId),
         ReportsRepository.instance.getSalesByPeriod(
@@ -176,7 +176,7 @@ class InventoryViewModel {
         InventoryRepository.instance.getStoreInventory(store.refId),
       ]);
 
-      final totalProducts = results.first as ListProductsResponse;
+      final totalProducts = results.first as ListStoreProductsResponse;
       final lowStockItems = results[1] as List<InventoryLevelWithProduct>;
       final inventoryLevels = results[3] as List<InventoryLevelWithProduct>;
       final sales = results[2] as GetSalesReportResponse;
@@ -205,7 +205,7 @@ class InventoryViewModel {
 
   /// Deletes a product.
   Future<bool> deleteProduct(String storeProductId) async {
-    final result = await ProductsRepository.instance.deleteProduct(
+    final result = await ProductsRepository.instance.deleteStoreProduct(
       DeleteStoreProductRequest(storeProductId: storeProductId),
     );
     if (result) {

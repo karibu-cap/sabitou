@@ -184,7 +184,7 @@ final userFakeTransport = FakeTransportBuilder()
       snapshotDate: Timestamp.fromDateTime(clock.now()),
     );
   })
-  ..unary(StoreProductService.getProduct, (req, _) async {
+  ..unary(StoreProductService.getStoreProduct, (req, _) async {
     final request = req;
 
     return GetStoreProductResponse(

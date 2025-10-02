@@ -74,9 +74,9 @@ class RemoteProductsRepository {
   }
 
   /// Gets a business product by its ID.
-  Future<StoreProduct?> getProduct(GetStoreProductRequest request) async {
+  Future<StoreProduct?> getStoreProduct(GetStoreProductRequest request) async {
     try {
-      final response = await productServiceClient.getProduct(request);
+      final response = await productServiceClient.getStoreProduct(request);
 
       return response.storeProduct;
     } on Exception catch (e) {
@@ -87,9 +87,9 @@ class RemoteProductsRepository {
   }
 
   /// Updates a business product.
-  Future<bool> updateProduct(UpdateStoreProductRequest request) async {
+  Future<bool> updateStoreProduct(UpdateStoreProductRequest request) async {
     try {
-      final response = await productServiceClient.updateProduct(request);
+      final response = await productServiceClient.updateStoreProduct(request);
 
       return response.success;
     } on Exception catch (e) {
@@ -100,9 +100,9 @@ class RemoteProductsRepository {
   }
 
   /// Deletes a business product.
-  Future<bool> deleteProduct(DeleteStoreProductRequest request) async {
+  Future<bool> deleteStoreProduct(DeleteStoreProductRequest request) async {
     try {
-      final response = await productServiceClient.deleteProduct(request);
+      final response = await productServiceClient.deleteStoreProduct(request);
 
       return response.success;
     } on Exception catch (e) {

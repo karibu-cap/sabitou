@@ -101,15 +101,15 @@ class ProductsRepository {
   }
 
   /// Gets a business product by its ID.
-  Future<StoreProduct?> getProduct(GetStoreProductRequest request) async {
+  Future<StoreProduct?> getStoreProduct(GetStoreProductRequest request) async {
     try {
       final connection = await _network.checkConnectivity();
 
       if (connection) {
-        return await remoteProductsRepository.getProduct(request);
+        return await remoteProductsRepository.getStoreProduct(request);
       }
 
-      return localProductsRepository.getProduct(request);
+      return localProductsRepository.getStoreProduct(request);
     } on Exception catch (e) {
       _logger.severe('getProduct Error: $e');
 
@@ -118,9 +118,9 @@ class ProductsRepository {
   }
 
   /// Updates a business product.
-  Future<bool> updateProduct(UpdateStoreProductRequest request) async {
+  Future<bool> updateStoreProduct(UpdateStoreProductRequest request) async {
     try {
-      return await remoteProductsRepository.updateProduct(request);
+      return await remoteProductsRepository.updateStoreProduct(request);
     } on Exception catch (e) {
       _logger.severe('updateProduct Error: $e');
 
@@ -129,9 +129,9 @@ class ProductsRepository {
   }
 
   /// Deletes a business product.
-  Future<bool> deleteProduct(DeleteStoreProductRequest request) async {
+  Future<bool> deleteStoreProduct(DeleteStoreProductRequest request) async {
     try {
-      return await remoteProductsRepository.deleteProduct(request);
+      return await remoteProductsRepository.deleteStoreProduct(request);
     } on Exception catch (e) {
       _logger.severe('deleteProduct Error: $e');
 

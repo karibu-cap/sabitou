@@ -165,17 +165,6 @@ message FindGlobalProductsResponse {
   repeated GlobalProduct products = 1;
 }
 
-message FindProductCategoryRequest {
-  // The query to search for product categories.
-  string query = 1;
-}
-
-message FindProductCategoryResponse {
-  // The unique identifiers of the product categories.
-  // WARN: all returned product categories will only have their id and name.
-  repeated inventory.v1.Category categories = 1;
-}
-
 message AddStoreProductRequest {
   // The product to add.
   // If the product does not exist, it will be created.
@@ -268,7 +257,7 @@ message StreamGlobalProductsResponse {
 
 
 
-message ListProductsRequest {
+message ListStoreProductsRequest {
   string store_id = 1 [(buf.validate.field).required = true];
   optional string search_query = 2;  // Name/SKU search
   repeated string category_ids = 3;
@@ -277,7 +266,7 @@ message ListProductsRequest {
   string page_token = 6;  // For pagination
 }
 
-message ListProductsResponse {
+message ListStoreProductsResponse {
   repeated inventory.v1.StoreProduct products = 1;
   int32 total_count = 2;
   string next_page_token = 3;
@@ -286,9 +275,6 @@ message ListProductsResponse {
 service StoreProductService {
   // Finds products by name.
   rpc FindGlobalProducts(FindGlobalProductsRequest) returns (FindGlobalProductsResponse);
-
-  // Finds categories by name.
-  rpc FindProductCategory(FindProductCategoryRequest) returns (FindProductCategoryResponse);
 
   // Creates a global product.
   rpc CreateGlobalProduct(CreateGlobalProductRequest) returns (CreateGlobalProductResponse);
@@ -303,14 +289,14 @@ service StoreProductService {
   rpc AddProduct(AddStoreProductRequest) returns (AddStoreProductResponse);
 
   // Gets a store product by id.
-  rpc GetProduct(GetStoreProductRequest) returns (GetStoreProductResponse);
+  rpc GetStoreProduct(GetStoreProductRequest) returns (GetStoreProductResponse);
 
   // Updates a store product.
-  rpc UpdateProduct(UpdateStoreProductRequest) returns (UpdateStoreProductResponse);
+  rpc UpdateStoreProduct(UpdateStoreProductRequest) returns (UpdateStoreProductResponse);
 
   // Deletes a store product.
   // Only store products that are not in any orders can be deleted.
-  rpc DeleteProduct(DeleteStoreProductRequest) returns (DeleteStoreProductResponse);
+  rpc DeleteStoreProduct(DeleteStoreProductRequest) returns (DeleteStoreProductResponse);
 
   // Finds products by name.
   rpc FindStoreProducts(FindStoreProductsRequest) returns (FindStoreProductsResponse);
@@ -321,7 +307,6 @@ service StoreProductService {
   // Streams all global products for real-time updates.
   rpc StreamGlobalProducts(StreamGlobalProductsRequest) returns (stream StreamGlobalProductsResponse);
 
-
     // Lists products with pagination and filters.
-  rpc ListProducts(ListProductsRequest) returns (ListProductsResponse);
+  rpc ListStoreProducts(ListStoreProductsRequest) returns (ListStoreProductsResponse);
 }

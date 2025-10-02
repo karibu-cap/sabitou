@@ -143,7 +143,7 @@ final _fakeTransport =
             ],
           );
         })
-        .unary(StoreProductService.getProduct, (req, _) async {
+        .unary(StoreProductService.getStoreProduct, (req, _) async {
           final storeProduct =
               (_fakeData[CollectionName.storeProducts] as List<StoreProduct>)
                   .firstWhere((gp) => gp.refId == req.storeProductId);
@@ -412,7 +412,7 @@ final _fakeTransport =
 
           return AddStoreProductResponse()..success = true;
         })
-        .unary(StoreProductService.updateProduct, (req, __) async {
+        .unary(StoreProductService.updateStoreProduct, (req, __) async {
           final newGlobalProduct = req.globalProduct;
           final businessProduct = req.storeProduct;
           String? globalProductId = newGlobalProduct.refId;
@@ -483,16 +483,16 @@ final _fakeTransport =
 
           return UpdateStoreProductResponse()..success = true;
         })
-        .unary(StoreProductService.deleteProduct, (req, _) async {
+        .unary(StoreProductService.deleteStoreProduct, (req, _) async {
           (_fakeData[CollectionName.storeProducts] as List<StoreProduct>)
               .removeWhere((gp) => gp.refId == req.storeProductId);
 
           return DeleteStoreProductResponse()..success = true;
         })
-      ..unary(StoreProductService.listProducts, (req, _) async {
+      ..unary(StoreProductService.listStoreProducts, (req, _) async {
         final request = req;
 
-        return ListProductsResponse(
+        return ListStoreProductsResponse(
           products: [
             StoreProduct()
               ..refId = 'sp_1'
@@ -516,7 +516,7 @@ final _fakeTransport =
           totalCount: 3,
         );
       })
-      ..unary(StoreProductService.getProduct, (req, _) async {
+      ..unary(StoreProductService.getStoreProduct, (req, _) async {
         final request = req;
 
         return GetStoreProductResponse(

@@ -74,7 +74,9 @@ class InventoryRepository {
         final productReq = GetStoreProductRequest(
           storeProductId: level.storeProductId,
         );
-        final productResp = await storeProductService.getProduct(productReq);
+        final productResp = await storeProductService.getStoreProduct(
+          productReq,
+        );
 
         if (!productResp.hasStoreProduct()) {
           continue;
@@ -127,7 +129,9 @@ class InventoryRepository {
         final productReq = GetStoreProductRequest(
           storeProductId: level.storeProductId,
         );
-        final productResp = await storeProductService.getProduct(productReq);
+        final productResp = await storeProductService.getStoreProduct(
+          productReq,
+        );
 
         if (!productResp.hasStoreProduct()) {
           continue;

@@ -1072,124 +1072,6 @@ class FindGlobalProductsResponse extends $pb.GeneratedMessage {
   $pb.PbList<GlobalProduct> get products => $_getList(0);
 }
 
-class FindProductCategoryRequest extends $pb.GeneratedMessage {
-  factory FindProductCategoryRequest({
-    $core.String? query,
-  }) {
-    final result = create();
-    if (query != null) result.query = query;
-    return result;
-  }
-
-  FindProductCategoryRequest._();
-
-  factory FindProductCategoryRequest.fromBuffer($core.List<$core.int> data,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
-  factory FindProductCategoryRequest.fromJson($core.String json,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'FindProductCategoryRequest',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'),
-      createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'query')
-    ..hasRequiredFields = false;
-
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  FindProductCategoryRequest clone() =>
-      FindProductCategoryRequest()..mergeFromMessage(this);
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  FindProductCategoryRequest copyWith(
-          void Function(FindProductCategoryRequest) updates) =>
-      super.copyWith(
-              (message) => updates(message as FindProductCategoryRequest))
-          as FindProductCategoryRequest;
-
-  @$core.override
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static FindProductCategoryRequest create() => FindProductCategoryRequest._();
-  @$core.override
-  FindProductCategoryRequest createEmptyInstance() => create();
-  static $pb.PbList<FindProductCategoryRequest> createRepeated() =>
-      $pb.PbList<FindProductCategoryRequest>();
-  @$core.pragma('dart2js:noInline')
-  static FindProductCategoryRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<FindProductCategoryRequest>(create);
-  static FindProductCategoryRequest? _defaultInstance;
-
-  /// The query to search for product categories.
-  @$pb.TagNumber(1)
-  $core.String get query => $_getSZ(0);
-  @$pb.TagNumber(1)
-  set query($core.String value) => $_setString(0, value);
-  @$pb.TagNumber(1)
-  $core.bool hasQuery() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearQuery() => $_clearField(1);
-}
-
-class FindProductCategoryResponse extends $pb.GeneratedMessage {
-  factory FindProductCategoryResponse({
-    $core.Iterable<$0.Category>? categories,
-  }) {
-    final result = create();
-    if (categories != null) result.categories.addAll(categories);
-    return result;
-  }
-
-  FindProductCategoryResponse._();
-
-  factory FindProductCategoryResponse.fromBuffer($core.List<$core.int> data,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
-  factory FindProductCategoryResponse.fromJson($core.String json,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'FindProductCategoryResponse',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'),
-      createEmptyInstance: create)
-    ..pc<$0.Category>(
-        1, _omitFieldNames ? '' : 'categories', $pb.PbFieldType.PM,
-        subBuilder: $0.Category.create)
-    ..hasRequiredFields = false;
-
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  FindProductCategoryResponse clone() =>
-      FindProductCategoryResponse()..mergeFromMessage(this);
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  FindProductCategoryResponse copyWith(
-          void Function(FindProductCategoryResponse) updates) =>
-      super.copyWith(
-              (message) => updates(message as FindProductCategoryResponse))
-          as FindProductCategoryResponse;
-
-  @$core.override
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static FindProductCategoryResponse create() =>
-      FindProductCategoryResponse._();
-  @$core.override
-  FindProductCategoryResponse createEmptyInstance() => create();
-  static $pb.PbList<FindProductCategoryResponse> createRepeated() =>
-      $pb.PbList<FindProductCategoryResponse>();
-  @$core.pragma('dart2js:noInline')
-  static FindProductCategoryResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<FindProductCategoryResponse>(create);
-  static FindProductCategoryResponse? _defaultInstance;
-
-  /// The unique identifiers of the product categories.
-  /// WARN: all returned product categories will only have their id and name.
-  @$pb.TagNumber(1)
-  $pb.PbList<$0.Category> get categories => $_getList(0);
-}
-
 class AddStoreProductRequest extends $pb.GeneratedMessage {
   factory AddStoreProductRequest({
     GlobalProduct? globalProduct,
@@ -1979,8 +1861,8 @@ class StreamGlobalProductsResponse extends $pb.GeneratedMessage {
   $pb.PbList<GlobalProduct> get products => $_getList(0);
 }
 
-class ListProductsRequest extends $pb.GeneratedMessage {
-  factory ListProductsRequest({
+class ListStoreProductsRequest extends $pb.GeneratedMessage {
+  factory ListStoreProductsRequest({
     $core.String? storeId,
     $core.String? searchQuery,
     $core.Iterable<$core.String>? categoryIds,
@@ -1998,17 +1880,17 @@ class ListProductsRequest extends $pb.GeneratedMessage {
     return result;
   }
 
-  ListProductsRequest._();
+  ListStoreProductsRequest._();
 
-  factory ListProductsRequest.fromBuffer($core.List<$core.int> data,
+  factory ListStoreProductsRequest.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(data, registry);
-  factory ListProductsRequest.fromJson($core.String json,
+  factory ListStoreProductsRequest.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'ListProductsRequest',
+      _omitMessageNames ? '' : 'ListStoreProductsRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'storeId')
@@ -2023,25 +1905,27 @@ class ListProductsRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ListProductsRequest clone() => ListProductsRequest()..mergeFromMessage(this);
+  ListStoreProductsRequest clone() =>
+      ListStoreProductsRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ListProductsRequest copyWith(void Function(ListProductsRequest) updates) =>
-      super.copyWith((message) => updates(message as ListProductsRequest))
-          as ListProductsRequest;
+  ListStoreProductsRequest copyWith(
+          void Function(ListStoreProductsRequest) updates) =>
+      super.copyWith((message) => updates(message as ListStoreProductsRequest))
+          as ListStoreProductsRequest;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static ListProductsRequest create() => ListProductsRequest._();
+  static ListStoreProductsRequest create() => ListStoreProductsRequest._();
   @$core.override
-  ListProductsRequest createEmptyInstance() => create();
-  static $pb.PbList<ListProductsRequest> createRepeated() =>
-      $pb.PbList<ListProductsRequest>();
+  ListStoreProductsRequest createEmptyInstance() => create();
+  static $pb.PbList<ListStoreProductsRequest> createRepeated() =>
+      $pb.PbList<ListStoreProductsRequest>();
   @$core.pragma('dart2js:noInline')
-  static ListProductsRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<ListProductsRequest>(create);
-  static ListProductsRequest? _defaultInstance;
+  static ListStoreProductsRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ListStoreProductsRequest>(create);
+  static ListStoreProductsRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get storeId => $_getSZ(0);
@@ -2092,8 +1976,8 @@ class ListProductsRequest extends $pb.GeneratedMessage {
   void clearPageToken() => $_clearField(6);
 }
 
-class ListProductsResponse extends $pb.GeneratedMessage {
-  factory ListProductsResponse({
+class ListStoreProductsResponse extends $pb.GeneratedMessage {
+  factory ListStoreProductsResponse({
     $core.Iterable<StoreProduct>? products,
     $core.int? totalCount,
     $core.String? nextPageToken,
@@ -2105,17 +1989,17 @@ class ListProductsResponse extends $pb.GeneratedMessage {
     return result;
   }
 
-  ListProductsResponse._();
+  ListStoreProductsResponse._();
 
-  factory ListProductsResponse.fromBuffer($core.List<$core.int> data,
+  factory ListStoreProductsResponse.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(data, registry);
-  factory ListProductsResponse.fromJson($core.String json,
+  factory ListStoreProductsResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'ListProductsResponse',
+      _omitMessageNames ? '' : 'ListStoreProductsResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'),
       createEmptyInstance: create)
     ..pc<StoreProduct>(1, _omitFieldNames ? '' : 'products', $pb.PbFieldType.PM,
@@ -2125,26 +2009,27 @@ class ListProductsResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ListProductsResponse clone() =>
-      ListProductsResponse()..mergeFromMessage(this);
+  ListStoreProductsResponse clone() =>
+      ListStoreProductsResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ListProductsResponse copyWith(void Function(ListProductsResponse) updates) =>
-      super.copyWith((message) => updates(message as ListProductsResponse))
-          as ListProductsResponse;
+  ListStoreProductsResponse copyWith(
+          void Function(ListStoreProductsResponse) updates) =>
+      super.copyWith((message) => updates(message as ListStoreProductsResponse))
+          as ListStoreProductsResponse;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static ListProductsResponse create() => ListProductsResponse._();
+  static ListStoreProductsResponse create() => ListStoreProductsResponse._();
   @$core.override
-  ListProductsResponse createEmptyInstance() => create();
-  static $pb.PbList<ListProductsResponse> createRepeated() =>
-      $pb.PbList<ListProductsResponse>();
+  ListStoreProductsResponse createEmptyInstance() => create();
+  static $pb.PbList<ListStoreProductsResponse> createRepeated() =>
+      $pb.PbList<ListStoreProductsResponse>();
   @$core.pragma('dart2js:noInline')
-  static ListProductsResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<ListProductsResponse>(create);
-  static ListProductsResponse? _defaultInstance;
+  static ListStoreProductsResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ListStoreProductsResponse>(create);
+  static ListStoreProductsResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
   $pb.PbList<StoreProduct> get products => $_getList(0);
@@ -2179,12 +2064,6 @@ class StoreProductServiceApi {
       _client.invoke<FindGlobalProductsResponse>(ctx, 'StoreProductService',
           'FindGlobalProducts', request, FindGlobalProductsResponse());
 
-  /// Finds categories by name.
-  $async.Future<FindProductCategoryResponse> findProductCategory(
-          $pb.ClientContext? ctx, FindProductCategoryRequest request) =>
-      _client.invoke<FindProductCategoryResponse>(ctx, 'StoreProductService',
-          'FindProductCategory', request, FindProductCategoryResponse());
-
   /// Creates a global product.
   $async.Future<CreateGlobalProductResponse> createGlobalProduct(
           $pb.ClientContext? ctx, CreateGlobalProductRequest request) =>
@@ -2210,23 +2089,23 @@ class StoreProductServiceApi {
           'AddProduct', request, AddStoreProductResponse());
 
   /// Gets a store product by id.
-  $async.Future<GetStoreProductResponse> getProduct(
+  $async.Future<GetStoreProductResponse> getStoreProduct(
           $pb.ClientContext? ctx, GetStoreProductRequest request) =>
       _client.invoke<GetStoreProductResponse>(ctx, 'StoreProductService',
-          'GetProduct', request, GetStoreProductResponse());
+          'GetStoreProduct', request, GetStoreProductResponse());
 
   /// Updates a store product.
-  $async.Future<UpdateStoreProductResponse> updateProduct(
+  $async.Future<UpdateStoreProductResponse> updateStoreProduct(
           $pb.ClientContext? ctx, UpdateStoreProductRequest request) =>
       _client.invoke<UpdateStoreProductResponse>(ctx, 'StoreProductService',
-          'UpdateProduct', request, UpdateStoreProductResponse());
+          'UpdateStoreProduct', request, UpdateStoreProductResponse());
 
   /// Deletes a store product.
   /// Only store products that are not in any orders can be deleted.
-  $async.Future<DeleteStoreProductResponse> deleteProduct(
+  $async.Future<DeleteStoreProductResponse> deleteStoreProduct(
           $pb.ClientContext? ctx, DeleteStoreProductRequest request) =>
       _client.invoke<DeleteStoreProductResponse>(ctx, 'StoreProductService',
-          'DeleteProduct', request, DeleteStoreProductResponse());
+          'DeleteStoreProduct', request, DeleteStoreProductResponse());
 
   /// Finds products by name.
   $async.Future<FindStoreProductsResponse> findStoreProducts(
@@ -2247,10 +2126,10 @@ class StoreProductServiceApi {
           'StreamGlobalProducts', request, StreamGlobalProductsResponse());
 
   /// Lists products with pagination and filters.
-  $async.Future<ListProductsResponse> listProducts(
-          $pb.ClientContext? ctx, ListProductsRequest request) =>
-      _client.invoke<ListProductsResponse>(ctx, 'StoreProductService',
-          'ListProducts', request, ListProductsResponse());
+  $async.Future<ListStoreProductsResponse> listStoreProducts(
+          $pb.ClientContext? ctx, ListStoreProductsRequest request) =>
+      _client.invoke<ListStoreProductsResponse>(ctx, 'StoreProductService',
+          'ListStoreProducts', request, ListStoreProductsResponse());
 }
 
 const $core.bool _omitFieldNames =
