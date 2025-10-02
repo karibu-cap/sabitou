@@ -106,15 +106,9 @@ class SyncOperation extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..oo(0, [10, 11, 12, 13, 40])
     ..aOS(1, _omitFieldNames ? '' : 'refId')
-    ..e<SyncOperationType>(
-        2, _omitFieldNames ? '' : 'operationType', $pb.PbFieldType.OE,
-        defaultOrMaker: SyncOperationType.SYNC_OPERATION_TYPE_UNSPECIFIED,
-        valueOf: SyncOperationType.valueOf,
+    ..aE<SyncOperationType>(2, _omitFieldNames ? '' : 'operationType',
         enumValues: SyncOperationType.values)
-    ..e<SyncEntityType>(
-        3, _omitFieldNames ? '' : 'entityType', $pb.PbFieldType.OE,
-        defaultOrMaker: SyncEntityType.SYNC_ENTITY_TYPE_UNSPECIFIED,
-        valueOf: SyncEntityType.valueOf,
+    ..aE<SyncEntityType>(3, _omitFieldNames ? '' : 'entityType',
         enumValues: SyncEntityType.values)
     ..aOS(4, _omitFieldNames ? '' : 'entityId')
     ..aOS(5, _omitFieldNames ? '' : 'storeId')
@@ -133,13 +127,10 @@ class SyncOperation extends $pb.GeneratedMessage {
         subBuilder: $3.Timestamp.create)
     ..aOM<$3.Timestamp>(42, _omitFieldNames ? '' : 'updatedAt',
         subBuilder: $3.Timestamp.create)
-    ..e<SyncOperationStatus>(
-        43, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
-        defaultOrMaker: SyncOperationStatus.SYNC_OPERATION_STATUS_UNSPECIFIED,
-        valueOf: SyncOperationStatus.valueOf,
+    ..aE<SyncOperationStatus>(43, _omitFieldNames ? '' : 'status',
         enumValues: SyncOperationStatus.values)
-    ..a<$core.int>(44, _omitFieldNames ? '' : 'retryCount', $pb.PbFieldType.O3)
-    ..a<$core.int>(45, _omitFieldNames ? '' : 'maxRetries', $pb.PbFieldType.O3)
+    ..aI(44, _omitFieldNames ? '' : 'retryCount')
+    ..aI(45, _omitFieldNames ? '' : 'maxRetries')
     ..aOM<$3.Timestamp>(46, _omitFieldNames ? '' : 'nextRetryAt',
         subBuilder: $3.Timestamp.create)
     ..aOS(47, _omitFieldNames ? '' : 'errorMessage')
@@ -151,7 +142,7 @@ class SyncOperation extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  SyncOperation clone() => SyncOperation()..mergeFromMessage(this);
+  SyncOperation clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   SyncOperation copyWith(void Function(SyncOperation) updates) =>
       super.copyWith((message) => updates(message as SyncOperation))
@@ -171,8 +162,18 @@ class SyncOperation extends $pb.GeneratedMessage {
       $pb.GeneratedMessage.$_defaultFor<SyncOperation>(create);
   static SyncOperation? _defaultInstance;
 
+  @$pb.TagNumber(10)
+  @$pb.TagNumber(11)
+  @$pb.TagNumber(12)
+  @$pb.TagNumber(13)
+  @$pb.TagNumber(40)
   SyncOperation_OperationData whichOperationData() =>
       _SyncOperation_OperationDataByTag[$_whichOneof(0)]!;
+  @$pb.TagNumber(10)
+  @$pb.TagNumber(11)
+  @$pb.TagNumber(12)
+  @$pb.TagNumber(13)
+  @$pb.TagNumber(40)
   void clearOperationData() => $_clearField($_whichOneof(0));
 
   /// Unique identifier for the operation
@@ -427,20 +428,16 @@ class SyncOperationBatch extends $pb.GeneratedMessage {
       package: const $pb.PackageName(_omitMessageNames ? '' : 'sync.v1'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'batchId')
-    ..pc<SyncOperation>(
-        2, _omitFieldNames ? '' : 'operations', $pb.PbFieldType.PM,
+    ..pPM<SyncOperation>(2, _omitFieldNames ? '' : 'operations',
         subBuilder: SyncOperation.create)
     ..aOS(3, _omitFieldNames ? '' : 'storeId')
     ..aOS(4, _omitFieldNames ? '' : 'businessId')
     ..aOS(5, _omitFieldNames ? '' : 'userId')
     ..aOM<$3.Timestamp>(6, _omitFieldNames ? '' : 'createdAt',
         subBuilder: $3.Timestamp.create)
-    ..a<$core.int>(
-        7, _omitFieldNames ? '' : 'totalOperations', $pb.PbFieldType.O3)
-    ..a<$core.int>(
-        8, _omitFieldNames ? '' : 'successfulOperations', $pb.PbFieldType.O3)
-    ..a<$core.int>(
-        9, _omitFieldNames ? '' : 'failedOperations', $pb.PbFieldType.O3)
+    ..aI(7, _omitFieldNames ? '' : 'totalOperations')
+    ..aI(8, _omitFieldNames ? '' : 'successfulOperations')
+    ..aI(9, _omitFieldNames ? '' : 'failedOperations')
     ..m<$core.String, $core.String>(10, _omitFieldNames ? '' : 'metadata',
         entryClassName: 'SyncOperationBatch.MetadataEntry',
         keyFieldType: $pb.PbFieldType.OS,
@@ -449,7 +446,7 @@ class SyncOperationBatch extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  SyncOperationBatch clone() => SyncOperationBatch()..mergeFromMessage(this);
+  SyncOperationBatch clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   SyncOperationBatch copyWith(void Function(SyncOperationBatch) updates) =>
       super.copyWith((message) => updates(message as SyncOperationBatch))
@@ -596,16 +593,14 @@ class SubmitSyncOperationsRequest extends $pb.GeneratedMessage {
     ..aOS(1, _omitFieldNames ? '' : 'storeId')
     ..aOS(2, _omitFieldNames ? '' : 'businessId')
     ..aOS(3, _omitFieldNames ? '' : 'userId')
-    ..pc<SyncOperation>(
-        4, _omitFieldNames ? '' : 'operations', $pb.PbFieldType.PM,
+    ..pPM<SyncOperation>(4, _omitFieldNames ? '' : 'operations',
         subBuilder: SyncOperation.create)
     ..aOS(5, _omitFieldNames ? '' : 'deviceId')
     ..aOS(6, _omitFieldNames ? '' : 'appVersion')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  SubmitSyncOperationsRequest clone() =>
-      SubmitSyncOperationsRequest()..mergeFromMessage(this);
+  SubmitSyncOperationsRequest clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   SubmitSyncOperationsRequest copyWith(
           void Function(SubmitSyncOperationsRequest) updates) =>
@@ -714,21 +709,16 @@ class SubmitSyncOperationsResponse extends $pb.GeneratedMessage {
       package: const $pb.PackageName(_omitMessageNames ? '' : 'sync.v1'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'batchId')
-    ..pc<SyncOperationResult>(
-        2, _omitFieldNames ? '' : 'operationResults', $pb.PbFieldType.PM,
+    ..pPM<SyncOperationResult>(2, _omitFieldNames ? '' : 'operationResults',
         subBuilder: SyncOperationResult.create)
-    ..e<SyncOperationStatus>(
-        3, _omitFieldNames ? '' : 'batchStatus', $pb.PbFieldType.OE,
-        defaultOrMaker: SyncOperationStatus.SYNC_OPERATION_STATUS_UNSPECIFIED,
-        valueOf: SyncOperationStatus.valueOf,
+    ..aE<SyncOperationStatus>(3, _omitFieldNames ? '' : 'batchStatus',
         enumValues: SyncOperationStatus.values)
     ..aOM<$3.Timestamp>(4, _omitFieldNames ? '' : 'processedAt',
         subBuilder: $3.Timestamp.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  SubmitSyncOperationsResponse clone() =>
-      SubmitSyncOperationsResponse()..mergeFromMessage(this);
+  SubmitSyncOperationsResponse clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   SubmitSyncOperationsResponse copyWith(
           void Function(SubmitSyncOperationsResponse) updates) =>
@@ -820,10 +810,7 @@ class SyncOperationResult extends $pb.GeneratedMessage {
       package: const $pb.PackageName(_omitMessageNames ? '' : 'sync.v1'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'operationId')
-    ..e<SyncOperationStatus>(
-        2, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
-        defaultOrMaker: SyncOperationStatus.SYNC_OPERATION_STATUS_UNSPECIFIED,
-        valueOf: SyncOperationStatus.valueOf,
+    ..aE<SyncOperationStatus>(2, _omitFieldNames ? '' : 'status',
         enumValues: SyncOperationStatus.values)
     ..aOS(3, _omitFieldNames ? '' : 'errorMessage')
     ..aOS(4, _omitFieldNames ? '' : 'serverEntityId')
@@ -832,7 +819,7 @@ class SyncOperationResult extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  SyncOperationResult clone() => SyncOperationResult()..mergeFromMessage(this);
+  SyncOperationResult clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   SyncOperationResult copyWith(void Function(SyncOperationResult) updates) =>
       super.copyWith((message) => updates(message as SyncOperationResult))
@@ -960,13 +947,12 @@ class GetSyncOperationsStatusRequest extends $pb.GeneratedMessage {
         valueOf: SyncEntityType.valueOf,
         enumValues: SyncEntityType.values,
         defaultEnumValue: SyncEntityType.SYNC_ENTITY_TYPE_UNSPECIFIED)
-    ..a<$core.int>(8, _omitFieldNames ? '' : 'limit', $pb.PbFieldType.O3)
-    ..a<$core.int>(9, _omitFieldNames ? '' : 'offset', $pb.PbFieldType.O3)
+    ..aI(8, _omitFieldNames ? '' : 'limit')
+    ..aI(9, _omitFieldNames ? '' : 'offset')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetSyncOperationsStatusRequest clone() =>
-      GetSyncOperationsStatusRequest()..mergeFromMessage(this);
+  GetSyncOperationsStatusRequest clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetSyncOperationsStatusRequest copyWith(
           void Function(GetSyncOperationsStatusRequest) updates) =>
@@ -1089,17 +1075,15 @@ class GetSyncOperationsStatusResponse extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'GetSyncOperationsStatusResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'sync.v1'),
       createEmptyInstance: create)
-    ..pc<SyncOperation>(
-        1, _omitFieldNames ? '' : 'operations', $pb.PbFieldType.PM,
+    ..pPM<SyncOperation>(1, _omitFieldNames ? '' : 'operations',
         subBuilder: SyncOperation.create)
-    ..a<$core.int>(2, _omitFieldNames ? '' : 'totalCount', $pb.PbFieldType.O3)
+    ..aI(2, _omitFieldNames ? '' : 'totalCount')
     ..aOM<SyncOperationsSummary>(3, _omitFieldNames ? '' : 'summary',
         subBuilder: SyncOperationsSummary.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetSyncOperationsStatusResponse clone() =>
-      GetSyncOperationsStatusResponse()..mergeFromMessage(this);
+  GetSyncOperationsStatusResponse clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetSyncOperationsStatusResponse copyWith(
           void Function(GetSyncOperationsStatusResponse) updates) =>
@@ -1189,25 +1173,17 @@ class SyncOperationsSummary extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'SyncOperationsSummary',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'sync.v1'),
       createEmptyInstance: create)
-    ..a<$core.int>(
-        1, _omitFieldNames ? '' : 'totalOperations', $pb.PbFieldType.O3)
-    ..a<$core.int>(
-        2, _omitFieldNames ? '' : 'pendingOperations', $pb.PbFieldType.O3)
-    ..a<$core.int>(
-        3, _omitFieldNames ? '' : 'inProgressOperations', $pb.PbFieldType.O3)
-    ..a<$core.int>(
-        4, _omitFieldNames ? '' : 'successfulOperations', $pb.PbFieldType.O3)
-    ..a<$core.int>(
-        5, _omitFieldNames ? '' : 'failedOperations', $pb.PbFieldType.O3)
-    ..a<$core.int>(
-        6, _omitFieldNames ? '' : 'retryingOperations', $pb.PbFieldType.O3)
-    ..a<$core.int>(
-        7, _omitFieldNames ? '' : 'abandonedOperations', $pb.PbFieldType.O3)
+    ..aI(1, _omitFieldNames ? '' : 'totalOperations')
+    ..aI(2, _omitFieldNames ? '' : 'pendingOperations')
+    ..aI(3, _omitFieldNames ? '' : 'inProgressOperations')
+    ..aI(4, _omitFieldNames ? '' : 'successfulOperations')
+    ..aI(5, _omitFieldNames ? '' : 'failedOperations')
+    ..aI(6, _omitFieldNames ? '' : 'retryingOperations')
+    ..aI(7, _omitFieldNames ? '' : 'abandonedOperations')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  SyncOperationsSummary clone() =>
-      SyncOperationsSummary()..mergeFromMessage(this);
+  SyncOperationsSummary clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   SyncOperationsSummary copyWith(
           void Function(SyncOperationsSummary) updates) =>
@@ -1348,8 +1324,7 @@ class StreamSyncOperationsRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  StreamSyncOperationsRequest clone() =>
-      StreamSyncOperationsRequest()..mergeFromMessage(this);
+  StreamSyncOperationsRequest clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   StreamSyncOperationsRequest copyWith(
           void Function(StreamSyncOperationsRequest) updates) =>
@@ -1446,8 +1421,7 @@ class StreamSyncOperationsResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  StreamSyncOperationsResponse clone() =>
-      StreamSyncOperationsResponse()..mergeFromMessage(this);
+  StreamSyncOperationsResponse clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   StreamSyncOperationsResponse copyWith(
           void Function(StreamSyncOperationsResponse) updates) =>
@@ -1547,8 +1521,7 @@ class RetrySyncOperationsRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  RetrySyncOperationsRequest clone() =>
-      RetrySyncOperationsRequest()..mergeFromMessage(this);
+  RetrySyncOperationsRequest clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   RetrySyncOperationsRequest copyWith(
           void Function(RetrySyncOperationsRequest) updates) =>
@@ -1654,15 +1627,13 @@ class RetrySyncOperationsResponse extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'RetrySyncOperationsResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'sync.v1'),
       createEmptyInstance: create)
-    ..a<$core.int>(
-        1, _omitFieldNames ? '' : 'operationsQueued', $pb.PbFieldType.O3)
+    ..aI(1, _omitFieldNames ? '' : 'operationsQueued')
     ..pPS(2, _omitFieldNames ? '' : 'queuedOperationIds')
     ..pPS(3, _omitFieldNames ? '' : 'failedToQueueIds')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  RetrySyncOperationsResponse clone() =>
-      RetrySyncOperationsResponse()..mergeFromMessage(this);
+  RetrySyncOperationsResponse clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   RetrySyncOperationsResponse copyWith(
           void Function(RetrySyncOperationsResponse) updates) =>

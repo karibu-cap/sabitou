@@ -94,8 +94,7 @@ class CashReceipt extends $pb.GeneratedMessage {
     ..aOS(2, _omitFieldNames ? '' : 'cashierUserId')
     ..aOS(3, _omitFieldNames ? '' : 'customerId')
     ..aOS(4, _omitFieldNames ? '' : 'storeId')
-    ..pc<$0.InvoiceLineItem>(
-        5, _omitFieldNames ? '' : 'items', $pb.PbFieldType.PM,
+    ..pPM<$0.InvoiceLineItem>(5, _omitFieldNames ? '' : 'items',
         subBuilder: $0.InvoiceLineItem.create)
     ..aInt64(6, _omitFieldNames ? '' : 'subtotal')
     ..aInt64(7, _omitFieldNames ? '' : 'taxAmount')
@@ -110,7 +109,7 @@ class CashReceipt extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CashReceipt clone() => CashReceipt()..mergeFromMessage(this);
+  CashReceipt clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CashReceipt copyWith(void Function(CashReceipt) updates) =>
       super.copyWith((message) => updates(message as CashReceipt))

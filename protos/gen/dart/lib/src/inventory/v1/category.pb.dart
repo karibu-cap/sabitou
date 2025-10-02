@@ -51,7 +51,7 @@ class Internationalized extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  Internationalized clone() => Internationalized()..mergeFromMessage(this);
+  Internationalized clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Internationalized copyWith(void Function(Internationalized) updates) =>
       super.copyWith((message) => updates(message as Internationalized))
@@ -132,13 +132,9 @@ class Category extends $pb.GeneratedMessage {
     ..aOM<Internationalized>(2, _omitFieldNames ? '' : 'name',
         subBuilder: Internationalized.create)
     ..aOS(3, _omitFieldNames ? '' : 'parentCategoryId')
-    ..e<CategoryStatus>(4, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
-        defaultOrMaker: CategoryStatus.CATEGORY_STATUS_UNSPECIFIED,
-        valueOf: CategoryStatus.valueOf,
+    ..aE<CategoryStatus>(4, _omitFieldNames ? '' : 'status',
         enumValues: CategoryStatus.values)
-    ..e<CategoryType>(5, _omitFieldNames ? '' : 'type', $pb.PbFieldType.OE,
-        defaultOrMaker: CategoryType.CATEGORY_TYPE_UNSPECIFIED,
-        valueOf: CategoryType.valueOf,
+    ..aE<CategoryType>(5, _omitFieldNames ? '' : 'type',
         enumValues: CategoryType.values)
     ..aOS(6, _omitFieldNames ? '' : 'businessId')
     ..aOM<$0.Timestamp>(7, _omitFieldNames ? '' : 'createdAt',
@@ -148,7 +144,7 @@ class Category extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  Category clone() => Category()..mergeFromMessage(this);
+  Category clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Category copyWith(void Function(Category) updates) =>
       super.copyWith((message) => updates(message as Category)) as Category;
@@ -289,19 +285,14 @@ class FindCategoriesRequest extends $pb.GeneratedMessage {
     ..aOS(2, _omitFieldNames ? '' : 'refId')
     ..aOS(3, _omitFieldNames ? '' : 'name')
     ..aOS(4, _omitFieldNames ? '' : 'parentCategoryId')
-    ..e<CategoryStatus>(5, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
-        defaultOrMaker: CategoryStatus.CATEGORY_STATUS_UNSPECIFIED,
-        valueOf: CategoryStatus.valueOf,
+    ..aE<CategoryStatus>(5, _omitFieldNames ? '' : 'status',
         enumValues: CategoryStatus.values)
-    ..e<CategoryType>(6, _omitFieldNames ? '' : 'type', $pb.PbFieldType.OE,
-        defaultOrMaker: CategoryType.CATEGORY_TYPE_UNSPECIFIED,
-        valueOf: CategoryType.valueOf,
+    ..aE<CategoryType>(6, _omitFieldNames ? '' : 'type',
         enumValues: CategoryType.values)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  FindCategoriesRequest clone() =>
-      FindCategoriesRequest()..mergeFromMessage(this);
+  FindCategoriesRequest clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   FindCategoriesRequest copyWith(
           void Function(FindCategoriesRequest) updates) =>
@@ -405,13 +396,12 @@ class FindCategoriesResponse extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'FindCategoriesResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'),
       createEmptyInstance: create)
-    ..pc<Category>(1, _omitFieldNames ? '' : 'categories', $pb.PbFieldType.PM,
+    ..pPM<Category>(1, _omitFieldNames ? '' : 'categories',
         subBuilder: Category.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  FindCategoriesResponse clone() =>
-      FindCategoriesResponse()..mergeFromMessage(this);
+  FindCategoriesResponse clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   FindCategoriesResponse copyWith(
           void Function(FindCategoriesResponse) updates) =>
@@ -463,8 +453,7 @@ class CreateCategoryRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreateCategoryRequest clone() =>
-      CreateCategoryRequest()..mergeFromMessage(this);
+  CreateCategoryRequest clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CreateCategoryRequest copyWith(
           void Function(CreateCategoryRequest) updates) =>
@@ -524,8 +513,7 @@ class CreateCategoryResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreateCategoryResponse clone() =>
-      CreateCategoryResponse()..mergeFromMessage(this);
+  CreateCategoryResponse clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CreateCategoryResponse copyWith(
           void Function(CreateCategoryResponse) updates) =>
@@ -587,8 +575,7 @@ class UpdateCategoryRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  UpdateCategoryRequest clone() =>
-      UpdateCategoryRequest()..mergeFromMessage(this);
+  UpdateCategoryRequest clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   UpdateCategoryRequest copyWith(
           void Function(UpdateCategoryRequest) updates) =>
@@ -658,8 +645,7 @@ class UpdateCategoryResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  UpdateCategoryResponse clone() =>
-      UpdateCategoryResponse()..mergeFromMessage(this);
+  UpdateCategoryResponse clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   UpdateCategoryResponse copyWith(
           void Function(UpdateCategoryResponse) updates) =>
@@ -717,8 +703,7 @@ class DeleteCategoryRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  DeleteCategoryRequest clone() =>
-      DeleteCategoryRequest()..mergeFromMessage(this);
+  DeleteCategoryRequest clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   DeleteCategoryRequest copyWith(
           void Function(DeleteCategoryRequest) updates) =>
@@ -776,8 +761,7 @@ class DeleteCategoryResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  DeleteCategoryResponse clone() =>
-      DeleteCategoryResponse()..mergeFromMessage(this);
+  DeleteCategoryResponse clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   DeleteCategoryResponse copyWith(
           void Function(DeleteCategoryResponse) updates) =>
@@ -835,7 +819,7 @@ class GetCategoryRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetCategoryRequest clone() => GetCategoryRequest()..mergeFromMessage(this);
+  GetCategoryRequest clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetCategoryRequest copyWith(void Function(GetCategoryRequest) updates) =>
       super.copyWith((message) => updates(message as GetCategoryRequest))
@@ -893,7 +877,7 @@ class GetCategoryResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetCategoryResponse clone() => GetCategoryResponse()..mergeFromMessage(this);
+  GetCategoryResponse clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetCategoryResponse copyWith(void Function(GetCategoryResponse) updates) =>
       super.copyWith((message) => updates(message as GetCategoryResponse))

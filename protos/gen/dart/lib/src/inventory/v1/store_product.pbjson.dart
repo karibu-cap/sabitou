@@ -463,40 +463,6 @@ final $typed_data.Uint8List findGlobalProductsResponseDescriptor =
         'ChpGaW5kR2xvYmFsUHJvZHVjdHNSZXNwb25zZRI3Cghwcm9kdWN0cxgBIAMoCzIbLmludmVudG'
         '9yeS52MS5HbG9iYWxQcm9kdWN0Ughwcm9kdWN0cw==');
 
-@$core.Deprecated('Use findProductCategoryRequestDescriptor instead')
-const FindProductCategoryRequest$json = {
-  '1': 'FindProductCategoryRequest',
-  '2': [
-    {'1': 'query', '3': 1, '4': 1, '5': 9, '10': 'query'},
-  ],
-};
-
-/// Descriptor for `FindProductCategoryRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List findProductCategoryRequestDescriptor =
-    $convert.base64Decode(
-        'ChpGaW5kUHJvZHVjdENhdGVnb3J5UmVxdWVzdBIUCgVxdWVyeRgBIAEoCVIFcXVlcnk=');
-
-@$core.Deprecated('Use findProductCategoryResponseDescriptor instead')
-const FindProductCategoryResponse$json = {
-  '1': 'FindProductCategoryResponse',
-  '2': [
-    {
-      '1': 'categories',
-      '3': 1,
-      '4': 3,
-      '5': 11,
-      '6': '.inventory.v1.Category',
-      '10': 'categories'
-    },
-  ],
-};
-
-/// Descriptor for `FindProductCategoryResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List findProductCategoryResponseDescriptor =
-    $convert.base64Decode(
-        'ChtGaW5kUHJvZHVjdENhdGVnb3J5UmVzcG9uc2USNgoKY2F0ZWdvcmllcxgBIAMoCzIWLmludm'
-        'VudG9yeS52MS5DYXRlZ29yeVIKY2F0ZWdvcmllcw==');
-
 @$core.Deprecated('Use addStoreProductRequestDescriptor instead')
 const AddStoreProductRequest$json = {
   '1': 'AddStoreProductRequest',
@@ -764,9 +730,9 @@ final $typed_data.Uint8List streamGlobalProductsResponseDescriptor =
         'ChxTdHJlYW1HbG9iYWxQcm9kdWN0c1Jlc3BvbnNlEjcKCHByb2R1Y3RzGAEgAygLMhsuaW52ZW'
         '50b3J5LnYxLkdsb2JhbFByb2R1Y3RSCHByb2R1Y3Rz');
 
-@$core.Deprecated('Use listProductsRequestDescriptor instead')
-const ListProductsRequest$json = {
-  '1': 'ListProductsRequest',
+@$core.Deprecated('Use listStoreProductsRequestDescriptor instead')
+const ListStoreProductsRequest$json = {
+  '1': 'ListStoreProductsRequest',
   '2': [
     {'1': 'store_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'storeId'},
     {
@@ -798,18 +764,18 @@ const ListProductsRequest$json = {
   ],
 };
 
-/// Descriptor for `ListProductsRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List listProductsRequestDescriptor = $convert.base64Decode(
-    'ChNMaXN0UHJvZHVjdHNSZXF1ZXN0EiEKCHN0b3JlX2lkGAEgASgJQga6SAPIAQFSB3N0b3JlSW'
-    'QSJgoMc2VhcmNoX3F1ZXJ5GAIgASgJSABSC3NlYXJjaFF1ZXJ5iAEBEiEKDGNhdGVnb3J5X2lk'
-    'cxgDIAMoCVILY2F0ZWdvcnlJZHMSOAoGc3RhdHVzGAQgASgOMhsuaW52ZW50b3J5LnYxLlByb2'
-    'R1Y3RTdGF0dXNIAVIGc3RhdHVziAEBEhsKCXBhZ2Vfc2l6ZRgFIAEoBVIIcGFnZVNpemUSHQoK'
-    'cGFnZV90b2tlbhgGIAEoCVIJcGFnZVRva2VuQg8KDV9zZWFyY2hfcXVlcnlCCQoHX3N0YXR1cw'
-    '==');
+/// Descriptor for `ListStoreProductsRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List listStoreProductsRequestDescriptor = $convert.base64Decode(
+    'ChhMaXN0U3RvcmVQcm9kdWN0c1JlcXVlc3QSIQoIc3RvcmVfaWQYASABKAlCBrpIA8gBAVIHc3'
+    'RvcmVJZBImCgxzZWFyY2hfcXVlcnkYAiABKAlIAFILc2VhcmNoUXVlcnmIAQESIQoMY2F0ZWdv'
+    'cnlfaWRzGAMgAygJUgtjYXRlZ29yeUlkcxI4CgZzdGF0dXMYBCABKA4yGy5pbnZlbnRvcnkudj'
+    'EuUHJvZHVjdFN0YXR1c0gBUgZzdGF0dXOIAQESGwoJcGFnZV9zaXplGAUgASgFUghwYWdlU2l6'
+    'ZRIdCgpwYWdlX3Rva2VuGAYgASgJUglwYWdlVG9rZW5CDwoNX3NlYXJjaF9xdWVyeUIJCgdfc3'
+    'RhdHVz');
 
-@$core.Deprecated('Use listProductsResponseDescriptor instead')
-const ListProductsResponse$json = {
-  '1': 'ListProductsResponse',
+@$core.Deprecated('Use listStoreProductsResponseDescriptor instead')
+const ListStoreProductsResponse$json = {
+  '1': 'ListStoreProductsResponse',
   '2': [
     {
       '1': 'products',
@@ -824,11 +790,11 @@ const ListProductsResponse$json = {
   ],
 };
 
-/// Descriptor for `ListProductsResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List listProductsResponseDescriptor = $convert.base64Decode(
-    'ChRMaXN0UHJvZHVjdHNSZXNwb25zZRI2Cghwcm9kdWN0cxgBIAMoCzIaLmludmVudG9yeS52MS'
-    '5TdG9yZVByb2R1Y3RSCHByb2R1Y3RzEh8KC3RvdGFsX2NvdW50GAIgASgFUgp0b3RhbENvdW50'
-    'EiYKD25leHRfcGFnZV90b2tlbhgDIAEoCVINbmV4dFBhZ2VUb2tlbg==');
+/// Descriptor for `ListStoreProductsResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List listStoreProductsResponseDescriptor = $convert.base64Decode(
+    'ChlMaXN0U3RvcmVQcm9kdWN0c1Jlc3BvbnNlEjYKCHByb2R1Y3RzGAEgAygLMhouaW52ZW50b3'
+    'J5LnYxLlN0b3JlUHJvZHVjdFIIcHJvZHVjdHMSHwoLdG90YWxfY291bnQYAiABKAVSCnRvdGFs'
+    'Q291bnQSJgoPbmV4dF9wYWdlX3Rva2VuGAMgASgJUg1uZXh0UGFnZVRva2Vu');
 
 const $core.Map<$core.String, $core.dynamic> StoreProductServiceBase$json = {
   '1': 'StoreProductService',
@@ -837,11 +803,6 @@ const $core.Map<$core.String, $core.dynamic> StoreProductServiceBase$json = {
       '1': 'FindGlobalProducts',
       '2': '.inventory.v1.FindGlobalProductsRequest',
       '3': '.inventory.v1.FindGlobalProductsResponse'
-    },
-    {
-      '1': 'FindProductCategory',
-      '2': '.inventory.v1.FindProductCategoryRequest',
-      '3': '.inventory.v1.FindProductCategoryResponse'
     },
     {
       '1': 'CreateGlobalProduct',
@@ -864,17 +825,17 @@ const $core.Map<$core.String, $core.dynamic> StoreProductServiceBase$json = {
       '3': '.inventory.v1.AddStoreProductResponse'
     },
     {
-      '1': 'GetProduct',
+      '1': 'GetStoreProduct',
       '2': '.inventory.v1.GetStoreProductRequest',
       '3': '.inventory.v1.GetStoreProductResponse'
     },
     {
-      '1': 'UpdateProduct',
+      '1': 'UpdateStoreProduct',
       '2': '.inventory.v1.UpdateStoreProductRequest',
       '3': '.inventory.v1.UpdateStoreProductResponse'
     },
     {
-      '1': 'DeleteProduct',
+      '1': 'DeleteStoreProduct',
       '2': '.inventory.v1.DeleteStoreProductRequest',
       '3': '.inventory.v1.DeleteStoreProductResponse'
     },
@@ -896,9 +857,9 @@ const $core.Map<$core.String, $core.dynamic> StoreProductServiceBase$json = {
       '6': true
     },
     {
-      '1': 'ListProducts',
-      '2': '.inventory.v1.ListProductsRequest',
-      '3': '.inventory.v1.ListProductsResponse'
+      '1': 'ListStoreProducts',
+      '2': '.inventory.v1.ListStoreProductsRequest',
+      '3': '.inventory.v1.ListStoreProductsResponse'
     },
   ],
 };
@@ -912,8 +873,6 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
   '.google.protobuf.Timestamp': $1.Timestamp$json,
   '.inventory.v1.FindGlobalProductsResponse': FindGlobalProductsResponse$json,
   '.inventory.v1.GlobalProduct': GlobalProduct$json,
-  '.inventory.v1.FindProductCategoryRequest': FindProductCategoryRequest$json,
-  '.inventory.v1.FindProductCategoryResponse': FindProductCategoryResponse$json,
   '.inventory.v1.CreateGlobalProductRequest': CreateGlobalProductRequest$json,
   '.inventory.v1.CreateGlobalProductResponse': CreateGlobalProductResponse$json,
   '.inventory.v1.UpdateGlobalProductRequest': UpdateGlobalProductRequest$json,
@@ -936,34 +895,32 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
   '.inventory.v1.StreamGlobalProductsRequest': StreamGlobalProductsRequest$json,
   '.inventory.v1.StreamGlobalProductsResponse':
       StreamGlobalProductsResponse$json,
-  '.inventory.v1.ListProductsRequest': ListProductsRequest$json,
-  '.inventory.v1.ListProductsResponse': ListProductsResponse$json,
+  '.inventory.v1.ListStoreProductsRequest': ListStoreProductsRequest$json,
+  '.inventory.v1.ListStoreProductsResponse': ListStoreProductsResponse$json,
 };
 
 /// Descriptor for `StoreProductService`. Decode as a `google.protobuf.ServiceDescriptorProto`.
 final $typed_data.Uint8List storeProductServiceDescriptor = $convert.base64Decode(
     'ChNTdG9yZVByb2R1Y3RTZXJ2aWNlEmcKEkZpbmRHbG9iYWxQcm9kdWN0cxInLmludmVudG9yeS'
     '52MS5GaW5kR2xvYmFsUHJvZHVjdHNSZXF1ZXN0GiguaW52ZW50b3J5LnYxLkZpbmRHbG9iYWxQ'
-    'cm9kdWN0c1Jlc3BvbnNlEmoKE0ZpbmRQcm9kdWN0Q2F0ZWdvcnkSKC5pbnZlbnRvcnkudjEuRm'
-    'luZFByb2R1Y3RDYXRlZ29yeVJlcXVlc3QaKS5pbnZlbnRvcnkudjEuRmluZFByb2R1Y3RDYXRl'
-    'Z29yeVJlc3BvbnNlEmoKE0NyZWF0ZUdsb2JhbFByb2R1Y3QSKC5pbnZlbnRvcnkudjEuQ3JlYX'
-    'RlR2xvYmFsUHJvZHVjdFJlcXVlc3QaKS5pbnZlbnRvcnkudjEuQ3JlYXRlR2xvYmFsUHJvZHVj'
-    'dFJlc3BvbnNlEmoKE1VwZGF0ZUdsb2JhbFByb2R1Y3QSKC5pbnZlbnRvcnkudjEuVXBkYXRlR2'
-    'xvYmFsUHJvZHVjdFJlcXVlc3QaKS5pbnZlbnRvcnkudjEuVXBkYXRlR2xvYmFsUHJvZHVjdFJl'
-    'c3BvbnNlEmoKE0RlbGV0ZUdsb2JhbFByb2R1Y3QSKC5pbnZlbnRvcnkudjEuRGVsZXRlR2xvYm'
-    'FsUHJvZHVjdFJlcXVlc3QaKS5pbnZlbnRvcnkudjEuRGVsZXRlR2xvYmFsUHJvZHVjdFJlc3Bv'
-    'bnNlElkKCkFkZFByb2R1Y3QSJC5pbnZlbnRvcnkudjEuQWRkU3RvcmVQcm9kdWN0UmVxdWVzdB'
-    'olLmludmVudG9yeS52MS5BZGRTdG9yZVByb2R1Y3RSZXNwb25zZRJZCgpHZXRQcm9kdWN0EiQu'
-    'aW52ZW50b3J5LnYxLkdldFN0b3JlUHJvZHVjdFJlcXVlc3QaJS5pbnZlbnRvcnkudjEuR2V0U3'
-    'RvcmVQcm9kdWN0UmVzcG9uc2USYgoNVXBkYXRlUHJvZHVjdBInLmludmVudG9yeS52MS5VcGRh'
-    'dGVTdG9yZVByb2R1Y3RSZXF1ZXN0GiguaW52ZW50b3J5LnYxLlVwZGF0ZVN0b3JlUHJvZHVjdF'
-    'Jlc3BvbnNlEmIKDURlbGV0ZVByb2R1Y3QSJy5pbnZlbnRvcnkudjEuRGVsZXRlU3RvcmVQcm9k'
-    'dWN0UmVxdWVzdBooLmludmVudG9yeS52MS5EZWxldGVTdG9yZVByb2R1Y3RSZXNwb25zZRJkCh'
-    'FGaW5kU3RvcmVQcm9kdWN0cxImLmludmVudG9yeS52MS5GaW5kU3RvcmVQcm9kdWN0c1JlcXVl'
-    'c3QaJy5pbnZlbnRvcnkudjEuRmluZFN0b3JlUHJvZHVjdHNSZXNwb25zZRJsChNTdHJlYW1TdG'
-    '9yZVByb2R1Y3RzEiguaW52ZW50b3J5LnYxLlN0cmVhbVN0b3JlUHJvZHVjdHNSZXF1ZXN0Giku'
-    'aW52ZW50b3J5LnYxLlN0cmVhbVN0b3JlUHJvZHVjdHNSZXNwb25zZTABEm8KFFN0cmVhbUdsb2'
-    'JhbFByb2R1Y3RzEikuaW52ZW50b3J5LnYxLlN0cmVhbUdsb2JhbFByb2R1Y3RzUmVxdWVzdBoq'
-    'LmludmVudG9yeS52MS5TdHJlYW1HbG9iYWxQcm9kdWN0c1Jlc3BvbnNlMAESVQoMTGlzdFByb2'
-    'R1Y3RzEiEuaW52ZW50b3J5LnYxLkxpc3RQcm9kdWN0c1JlcXVlc3QaIi5pbnZlbnRvcnkudjEu'
-    'TGlzdFByb2R1Y3RzUmVzcG9uc2U=');
+    'cm9kdWN0c1Jlc3BvbnNlEmoKE0NyZWF0ZUdsb2JhbFByb2R1Y3QSKC5pbnZlbnRvcnkudjEuQ3'
+    'JlYXRlR2xvYmFsUHJvZHVjdFJlcXVlc3QaKS5pbnZlbnRvcnkudjEuQ3JlYXRlR2xvYmFsUHJv'
+    'ZHVjdFJlc3BvbnNlEmoKE1VwZGF0ZUdsb2JhbFByb2R1Y3QSKC5pbnZlbnRvcnkudjEuVXBkYX'
+    'RlR2xvYmFsUHJvZHVjdFJlcXVlc3QaKS5pbnZlbnRvcnkudjEuVXBkYXRlR2xvYmFsUHJvZHVj'
+    'dFJlc3BvbnNlEmoKE0RlbGV0ZUdsb2JhbFByb2R1Y3QSKC5pbnZlbnRvcnkudjEuRGVsZXRlR2'
+    'xvYmFsUHJvZHVjdFJlcXVlc3QaKS5pbnZlbnRvcnkudjEuRGVsZXRlR2xvYmFsUHJvZHVjdFJl'
+    'c3BvbnNlElkKCkFkZFByb2R1Y3QSJC5pbnZlbnRvcnkudjEuQWRkU3RvcmVQcm9kdWN0UmVxdW'
+    'VzdBolLmludmVudG9yeS52MS5BZGRTdG9yZVByb2R1Y3RSZXNwb25zZRJeCg9HZXRTdG9yZVBy'
+    'b2R1Y3QSJC5pbnZlbnRvcnkudjEuR2V0U3RvcmVQcm9kdWN0UmVxdWVzdBolLmludmVudG9yeS'
+    '52MS5HZXRTdG9yZVByb2R1Y3RSZXNwb25zZRJnChJVcGRhdGVTdG9yZVByb2R1Y3QSJy5pbnZl'
+    'bnRvcnkudjEuVXBkYXRlU3RvcmVQcm9kdWN0UmVxdWVzdBooLmludmVudG9yeS52MS5VcGRhdG'
+    'VTdG9yZVByb2R1Y3RSZXNwb25zZRJnChJEZWxldGVTdG9yZVByb2R1Y3QSJy5pbnZlbnRvcnku'
+    'djEuRGVsZXRlU3RvcmVQcm9kdWN0UmVxdWVzdBooLmludmVudG9yeS52MS5EZWxldGVTdG9yZV'
+    'Byb2R1Y3RSZXNwb25zZRJkChFGaW5kU3RvcmVQcm9kdWN0cxImLmludmVudG9yeS52MS5GaW5k'
+    'U3RvcmVQcm9kdWN0c1JlcXVlc3QaJy5pbnZlbnRvcnkudjEuRmluZFN0b3JlUHJvZHVjdHNSZX'
+    'Nwb25zZRJsChNTdHJlYW1TdG9yZVByb2R1Y3RzEiguaW52ZW50b3J5LnYxLlN0cmVhbVN0b3Jl'
+    'UHJvZHVjdHNSZXF1ZXN0GikuaW52ZW50b3J5LnYxLlN0cmVhbVN0b3JlUHJvZHVjdHNSZXNwb2'
+    '5zZTABEm8KFFN0cmVhbUdsb2JhbFByb2R1Y3RzEikuaW52ZW50b3J5LnYxLlN0cmVhbUdsb2Jh'
+    'bFByb2R1Y3RzUmVxdWVzdBoqLmludmVudG9yeS52MS5TdHJlYW1HbG9iYWxQcm9kdWN0c1Jlc3'
+    'BvbnNlMAESZAoRTGlzdFN0b3JlUHJvZHVjdHMSJi5pbnZlbnRvcnkudjEuTGlzdFN0b3JlUHJv'
+    'ZHVjdHNSZXF1ZXN0GicuaW52ZW50b3J5LnYxLkxpc3RTdG9yZVByb2R1Y3RzUmVzcG9uc2U=');

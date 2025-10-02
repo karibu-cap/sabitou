@@ -46,15 +46,13 @@ class ConnectedAccount extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'ConnectedAccount',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'identity.v1'),
       createEmptyInstance: create)
-    ..e<ProviderType>(1, _omitFieldNames ? '' : 'provider', $pb.PbFieldType.OE,
-        defaultOrMaker: ProviderType.PROVIDER_TYPE_UNSPECIFIED,
-        valueOf: ProviderType.valueOf,
+    ..aE<ProviderType>(1, _omitFieldNames ? '' : 'provider',
         enumValues: ProviderType.values)
     ..aOS(3, _omitFieldNames ? '' : 'rawData')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ConnectedAccount clone() => ConnectedAccount()..mergeFromMessage(this);
+  ConnectedAccount clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ConnectedAccount copyWith(void Function(ConnectedAccount) updates) =>
       super.copyWith((message) => updates(message as ConnectedAccount))
@@ -141,8 +139,7 @@ class User extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..aOS(2, _omitFieldNames ? '' : 'userName')
-    ..pc<ConnectedAccount>(
-        3, _omitFieldNames ? '' : 'connectedAccounts', $pb.PbFieldType.PM,
+    ..pPM<ConnectedAccount>(3, _omitFieldNames ? '' : 'connectedAccounts',
         subBuilder: ConnectedAccount.create)
     ..aOS(4, _omitFieldNames ? '' : 'email')
     ..aOS(5, _omitFieldNames ? '' : 'phoneNumber')
@@ -150,10 +147,7 @@ class User extends $pb.GeneratedMessage {
     ..aOS(7, _omitFieldNames ? '' : 'lastName')
     ..aOM<$0.ResourceLink>(8, _omitFieldNames ? '' : 'profileLink',
         subBuilder: $0.ResourceLink.create)
-    ..e<AccountStatusType>(
-        9, _omitFieldNames ? '' : 'accountStatus', $pb.PbFieldType.OE,
-        defaultOrMaker: AccountStatusType.ACCOUNT_STATUS_TYPE_UNSPECIFIED,
-        valueOf: AccountStatusType.valueOf,
+    ..aE<AccountStatusType>(9, _omitFieldNames ? '' : 'accountStatus',
         enumValues: AccountStatusType.values)
     ..pc<AuthActionType>(
         10, _omitFieldNames ? '' : 'requiredActions', $pb.PbFieldType.KE,
@@ -163,7 +157,7 @@ class User extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  User clone() => User()..mergeFromMessage(this);
+  User clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   User copyWith(void Function(User) updates) =>
       super.copyWith((message) => updates(message as User)) as User;
@@ -291,8 +285,7 @@ class GetCurrentUserRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetCurrentUserRequest clone() =>
-      GetCurrentUserRequest()..mergeFromMessage(this);
+  GetCurrentUserRequest clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetCurrentUserRequest copyWith(
           void Function(GetCurrentUserRequest) updates) =>
@@ -340,8 +333,7 @@ class GetCurrentUserResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetCurrentUserResponse clone() =>
-      GetCurrentUserResponse()..mergeFromMessage(this);
+  GetCurrentUserResponse clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetCurrentUserResponse copyWith(
           void Function(GetCurrentUserResponse) updates) =>
@@ -394,7 +386,7 @@ class GetMeRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetMeRequest clone() => GetMeRequest()..mergeFromMessage(this);
+  GetMeRequest clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetMeRequest copyWith(void Function(GetMeRequest) updates) =>
       super.copyWith((message) => updates(message as GetMeRequest))
@@ -441,7 +433,7 @@ class GetMeResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetMeResponse clone() => GetMeResponse()..mergeFromMessage(this);
+  GetMeResponse clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetMeResponse copyWith(void Function(GetMeResponse) updates) =>
       super.copyWith((message) => updates(message as GetMeResponse))
@@ -500,7 +492,7 @@ class GetUserRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetUserRequest clone() => GetUserRequest()..mergeFromMessage(this);
+  GetUserRequest clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetUserRequest copyWith(void Function(GetUserRequest) updates) =>
       super.copyWith((message) => updates(message as GetUserRequest))
@@ -557,7 +549,7 @@ class GetUserResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetUserResponse clone() => GetUserResponse()..mergeFromMessage(this);
+  GetUserResponse clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetUserResponse copyWith(void Function(GetUserResponse) updates) =>
       super.copyWith((message) => updates(message as GetUserResponse))
@@ -616,7 +608,7 @@ class StreamUserRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  StreamUserRequest clone() => StreamUserRequest()..mergeFromMessage(this);
+  StreamUserRequest clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   StreamUserRequest copyWith(void Function(StreamUserRequest) updates) =>
       super.copyWith((message) => updates(message as StreamUserRequest))
@@ -673,7 +665,7 @@ class StreamUserResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  StreamUserResponse clone() => StreamUserResponse()..mergeFromMessage(this);
+  StreamUserResponse clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   StreamUserResponse copyWith(void Function(StreamUserResponse) updates) =>
       super.copyWith((message) => updates(message as StreamUserResponse))
@@ -732,7 +724,7 @@ class UpdateMeRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  UpdateMeRequest clone() => UpdateMeRequest()..mergeFromMessage(this);
+  UpdateMeRequest clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   UpdateMeRequest copyWith(void Function(UpdateMeRequest) updates) =>
       super.copyWith((message) => updates(message as UpdateMeRequest))
@@ -795,7 +787,7 @@ class UpdateMeResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  UpdateMeResponse clone() => UpdateMeResponse()..mergeFromMessage(this);
+  UpdateMeResponse clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   UpdateMeResponse copyWith(void Function(UpdateMeResponse) updates) =>
       super.copyWith((message) => updates(message as UpdateMeResponse))
@@ -854,7 +846,7 @@ class UpdateRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  UpdateRequest clone() => UpdateRequest()..mergeFromMessage(this);
+  UpdateRequest clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   UpdateRequest copyWith(void Function(UpdateRequest) updates) =>
       super.copyWith((message) => updates(message as UpdateRequest))
@@ -917,7 +909,7 @@ class UpdateResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  UpdateResponse clone() => UpdateResponse()..mergeFromMessage(this);
+  UpdateResponse clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   UpdateResponse copyWith(void Function(UpdateResponse) updates) =>
       super.copyWith((message) => updates(message as UpdateResponse))
@@ -979,8 +971,7 @@ class RequestDeleteUserRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  RequestDeleteUserRequest clone() =>
-      RequestDeleteUserRequest()..mergeFromMessage(this);
+  RequestDeleteUserRequest clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   RequestDeleteUserRequest copyWith(
           void Function(RequestDeleteUserRequest) updates) =>
@@ -1048,8 +1039,7 @@ class RequestDeleteUserResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  RequestDeleteUserResponse clone() =>
-      RequestDeleteUserResponse()..mergeFromMessage(this);
+  RequestDeleteUserResponse clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   RequestDeleteUserResponse copyWith(
           void Function(RequestDeleteUserResponse) updates) =>
@@ -1111,7 +1101,7 @@ class DeleteUserRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  DeleteUserRequest clone() => DeleteUserRequest()..mergeFromMessage(this);
+  DeleteUserRequest clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   DeleteUserRequest copyWith(void Function(DeleteUserRequest) updates) =>
       super.copyWith((message) => updates(message as DeleteUserRequest))
@@ -1178,7 +1168,7 @@ class DeleteUserResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  DeleteUserResponse clone() => DeleteUserResponse()..mergeFromMessage(this);
+  DeleteUserResponse clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   DeleteUserResponse copyWith(void Function(DeleteUserResponse) updates) =>
       super.copyWith((message) => updates(message as DeleteUserResponse))
@@ -1238,8 +1228,7 @@ class ChangePasswordRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ChangePasswordRequest clone() =>
-      ChangePasswordRequest()..mergeFromMessage(this);
+  ChangePasswordRequest clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ChangePasswordRequest copyWith(
           void Function(ChangePasswordRequest) updates) =>
@@ -1309,8 +1298,7 @@ class ChangePasswordResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ChangePasswordResponse clone() =>
-      ChangePasswordResponse()..mergeFromMessage(this);
+  ChangePasswordResponse clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ChangePasswordResponse copyWith(
           void Function(ChangePasswordResponse) updates) =>

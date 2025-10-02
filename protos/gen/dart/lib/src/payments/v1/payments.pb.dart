@@ -86,14 +86,9 @@ class Payment extends $pb.GeneratedMessage {
     ..aOS(3, _omitFieldNames ? '' : 'payeeId')
     ..aInt64(4, _omitFieldNames ? '' : 'amount')
     ..aOS(5, _omitFieldNames ? '' : 'currency')
-    ..e<$2.PaymentMethod>(
-        6, _omitFieldNames ? '' : 'paymentMethod', $pb.PbFieldType.OE,
-        defaultOrMaker: $2.PaymentMethod.PAYMENT_METHOD_UNSPECIFIED,
-        valueOf: $2.PaymentMethod.valueOf,
+    ..aE<$2.PaymentMethod>(6, _omitFieldNames ? '' : 'paymentMethod',
         enumValues: $2.PaymentMethod.values)
-    ..e<PaymentStatus>(7, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
-        defaultOrMaker: PaymentStatus.PAYMENT_STATUS_UNSPECIFIED,
-        valueOf: PaymentStatus.valueOf,
+    ..aE<PaymentStatus>(7, _omitFieldNames ? '' : 'status',
         enumValues: PaymentStatus.values)
     ..aOS(8, _omitFieldNames ? '' : 'relatedInvoiceId')
     ..aOM<$0.Timestamp>(9, _omitFieldNames ? '' : 'paymentDate',
@@ -104,7 +99,7 @@ class Payment extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  Payment clone() => Payment()..mergeFromMessage(this);
+  Payment clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Payment copyWith(void Function(Payment) updates) =>
       super.copyWith((message) => updates(message as Payment)) as Payment;
@@ -271,18 +266,14 @@ class CreatePaymentRequest extends $pb.GeneratedMessage {
     ..aOS(2, _omitFieldNames ? '' : 'payeeId')
     ..aInt64(3, _omitFieldNames ? '' : 'amount')
     ..aOS(4, _omitFieldNames ? '' : 'currency')
-    ..e<$2.PaymentMethod>(
-        5, _omitFieldNames ? '' : 'paymentMethod', $pb.PbFieldType.OE,
-        defaultOrMaker: $2.PaymentMethod.PAYMENT_METHOD_UNSPECIFIED,
-        valueOf: $2.PaymentMethod.valueOf,
+    ..aE<$2.PaymentMethod>(5, _omitFieldNames ? '' : 'paymentMethod',
         enumValues: $2.PaymentMethod.values)
     ..aOS(7, _omitFieldNames ? '' : 'referenceNumber')
     ..aOS(8, _omitFieldNames ? '' : 'notes')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreatePaymentRequest clone() =>
-      CreatePaymentRequest()..mergeFromMessage(this);
+  CreatePaymentRequest clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CreatePaymentRequest copyWith(void Function(CreatePaymentRequest) updates) =>
       super.copyWith((message) => updates(message as CreatePaymentRequest))
@@ -403,8 +394,7 @@ class CreatePaymentResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreatePaymentResponse clone() =>
-      CreatePaymentResponse()..mergeFromMessage(this);
+  CreatePaymentResponse clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CreatePaymentResponse copyWith(
           void Function(CreatePaymentResponse) updates) =>
@@ -492,7 +482,7 @@ class GetPaymentRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetPaymentRequest clone() => GetPaymentRequest()..mergeFromMessage(this);
+  GetPaymentRequest clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetPaymentRequest copyWith(void Function(GetPaymentRequest) updates) =>
       super.copyWith((message) => updates(message as GetPaymentRequest))
@@ -553,7 +543,7 @@ class GetPaymentResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetPaymentResponse clone() => GetPaymentResponse()..mergeFromMessage(this);
+  GetPaymentResponse clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetPaymentResponse copyWith(void Function(GetPaymentResponse) updates) =>
       super.copyWith((message) => updates(message as GetPaymentResponse))
@@ -631,25 +621,20 @@ class ListPaymentsRequest extends $pb.GeneratedMessage {
       package: const $pb.PackageName(_omitMessageNames ? '' : 'payments.v1'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'storeId')
-    ..e<$2.PaymentMethod>(
-        2, _omitFieldNames ? '' : 'method', $pb.PbFieldType.OE,
-        defaultOrMaker: $2.PaymentMethod.PAYMENT_METHOD_UNSPECIFIED,
-        valueOf: $2.PaymentMethod.valueOf,
+    ..aE<$2.PaymentMethod>(2, _omitFieldNames ? '' : 'method',
         enumValues: $2.PaymentMethod.values)
-    ..e<PaymentStatus>(3, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
-        defaultOrMaker: PaymentStatus.PAYMENT_STATUS_UNSPECIFIED,
-        valueOf: PaymentStatus.valueOf,
+    ..aE<PaymentStatus>(3, _omitFieldNames ? '' : 'status',
         enumValues: PaymentStatus.values)
     ..aOM<$0.Timestamp>(4, _omitFieldNames ? '' : 'startDate',
         subBuilder: $0.Timestamp.create)
     ..aOM<$0.Timestamp>(5, _omitFieldNames ? '' : 'endDate',
         subBuilder: $0.Timestamp.create)
-    ..a<$core.int>(6, _omitFieldNames ? '' : 'pageSize', $pb.PbFieldType.O3)
-    ..a<$core.int>(7, _omitFieldNames ? '' : 'pageNumber', $pb.PbFieldType.O3)
+    ..aI(6, _omitFieldNames ? '' : 'pageSize')
+    ..aI(7, _omitFieldNames ? '' : 'pageNumber')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ListPaymentsRequest clone() => ListPaymentsRequest()..mergeFromMessage(this);
+  ListPaymentsRequest clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ListPaymentsRequest copyWith(void Function(ListPaymentsRequest) updates) =>
       super.copyWith((message) => updates(message as ListPaymentsRequest))
@@ -763,15 +748,14 @@ class ListPaymentsResponse extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'ListPaymentsResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'payments.v1'),
       createEmptyInstance: create)
-    ..pc<Payment>(1, _omitFieldNames ? '' : 'payments', $pb.PbFieldType.PM,
+    ..pPM<Payment>(1, _omitFieldNames ? '' : 'payments',
         subBuilder: Payment.create)
-    ..a<$core.int>(2, _omitFieldNames ? '' : 'totalCount', $pb.PbFieldType.O3)
+    ..aI(2, _omitFieldNames ? '' : 'totalCount')
     ..aInt64(3, _omitFieldNames ? '' : 'totalAmount')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ListPaymentsResponse clone() =>
-      ListPaymentsResponse()..mergeFromMessage(this);
+  ListPaymentsResponse clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ListPaymentsResponse copyWith(void Function(ListPaymentsResponse) updates) =>
       super.copyWith((message) => updates(message as ListPaymentsResponse))
@@ -851,7 +835,7 @@ class CreateRefundRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreateRefundRequest clone() => CreateRefundRequest()..mergeFromMessage(this);
+  CreateRefundRequest clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CreateRefundRequest copyWith(void Function(CreateRefundRequest) updates) =>
       super.copyWith((message) => updates(message as CreateRefundRequest))
@@ -950,8 +934,7 @@ class CreateRefundResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreateRefundResponse clone() =>
-      CreateRefundResponse()..mergeFromMessage(this);
+  CreateRefundResponse clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CreateRefundResponse copyWith(void Function(CreateRefundResponse) updates) =>
       super.copyWith((message) => updates(message as CreateRefundResponse))

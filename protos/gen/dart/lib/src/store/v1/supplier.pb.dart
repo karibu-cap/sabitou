@@ -51,7 +51,7 @@ class Link extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  Link clone() => Link()..mergeFromMessage(this);
+  Link clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Link copyWith(void Function(Link) updates) =>
       super.copyWith((message) => updates(message as Link)) as Link;
@@ -140,15 +140,13 @@ class Supplier extends $pb.GeneratedMessage {
     ..aOS(6, _omitFieldNames ? '' : 'contactPhone')
     ..aOS(7, _omitFieldNames ? '' : 'contactEmail')
     ..aOS(8, _omitFieldNames ? '' : 'contactAddress')
-    ..e<SupplierStatus>(9, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
-        defaultOrMaker: SupplierStatus.SUPPLIER_STATUS_UNSPECIFIED,
-        valueOf: SupplierStatus.valueOf,
+    ..aE<SupplierStatus>(9, _omitFieldNames ? '' : 'status',
         enumValues: SupplierStatus.values)
     ..pPS(10, _omitFieldNames ? '' : 'storeIds')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  Supplier clone() => Supplier()..mergeFromMessage(this);
+  Supplier clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Supplier copyWith(void Function(Supplier) updates) =>
       super.copyWith((message) => updates(message as Supplier)) as Supplier;
@@ -285,14 +283,12 @@ class CreateSupplierRequest extends $pb.GeneratedMessage {
         subBuilder: Supplier.create)
     ..a<$core.List<$core.int>>(
         2, _omitFieldNames ? '' : 'logoRawImage', $pb.PbFieldType.OY)
-    ..pc<$0.ResourceLink>(
-        3, _omitFieldNames ? '' : 'externalLinks', $pb.PbFieldType.PM,
+    ..pPM<$0.ResourceLink>(3, _omitFieldNames ? '' : 'externalLinks',
         subBuilder: $0.ResourceLink.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreateSupplierRequest clone() =>
-      CreateSupplierRequest()..mergeFromMessage(this);
+  CreateSupplierRequest clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CreateSupplierRequest copyWith(
           void Function(CreateSupplierRequest) updates) =>
@@ -366,8 +362,7 @@ class CreateSupplierResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreateSupplierResponse clone() =>
-      CreateSupplierResponse()..mergeFromMessage(this);
+  CreateSupplierResponse clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CreateSupplierResponse copyWith(
           void Function(CreateSupplierResponse) updates) =>
@@ -425,7 +420,7 @@ class GetSupplierRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetSupplierRequest clone() => GetSupplierRequest()..mergeFromMessage(this);
+  GetSupplierRequest clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetSupplierRequest copyWith(void Function(GetSupplierRequest) updates) =>
       super.copyWith((message) => updates(message as GetSupplierRequest))
@@ -483,7 +478,7 @@ class GetSupplierResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetSupplierResponse clone() => GetSupplierResponse()..mergeFromMessage(this);
+  GetSupplierResponse clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetSupplierResponse copyWith(void Function(GetSupplierResponse) updates) =>
       super.copyWith((message) => updates(message as GetSupplierResponse))
@@ -542,8 +537,7 @@ class GetStoreSuppliersRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetStoreSuppliersRequest clone() =>
-      GetStoreSuppliersRequest()..mergeFromMessage(this);
+  GetStoreSuppliersRequest clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetStoreSuppliersRequest copyWith(
           void Function(GetStoreSuppliersRequest) updates) =>
@@ -597,13 +591,12 @@ class GetStoreSuppliersResponse extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'GetStoreSuppliersResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'store.v1'),
       createEmptyInstance: create)
-    ..pc<Supplier>(1, _omitFieldNames ? '' : 'suppliers', $pb.PbFieldType.PM,
+    ..pPM<Supplier>(1, _omitFieldNames ? '' : 'suppliers',
         subBuilder: Supplier.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetStoreSuppliersResponse clone() =>
-      GetStoreSuppliersResponse()..mergeFromMessage(this);
+  GetStoreSuppliersResponse clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetStoreSuppliersResponse copyWith(
           void Function(GetStoreSuppliersResponse) updates) =>
@@ -656,8 +649,7 @@ class StreamStoreSuppliersRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  StreamStoreSuppliersRequest clone() =>
-      StreamStoreSuppliersRequest()..mergeFromMessage(this);
+  StreamStoreSuppliersRequest clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   StreamStoreSuppliersRequest copyWith(
           void Function(StreamStoreSuppliersRequest) updates) =>
@@ -713,13 +705,12 @@ class StreamStoreSuppliersResponse extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'StreamStoreSuppliersResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'store.v1'),
       createEmptyInstance: create)
-    ..pc<Supplier>(1, _omitFieldNames ? '' : 'suppliers', $pb.PbFieldType.PM,
+    ..pPM<Supplier>(1, _omitFieldNames ? '' : 'suppliers',
         subBuilder: Supplier.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  StreamStoreSuppliersResponse clone() =>
-      StreamStoreSuppliersResponse()..mergeFromMessage(this);
+  StreamStoreSuppliersResponse clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   StreamStoreSuppliersResponse copyWith(
           void Function(StreamStoreSuppliersResponse) updates) =>
@@ -778,14 +769,12 @@ class UpdateSupplierRequest extends $pb.GeneratedMessage {
         subBuilder: Supplier.create)
     ..a<$core.List<$core.int>>(
         2, _omitFieldNames ? '' : 'logoRawImage', $pb.PbFieldType.OY)
-    ..pc<$0.ResourceLink>(
-        3, _omitFieldNames ? '' : 'externalLinks', $pb.PbFieldType.PM,
+    ..pPM<$0.ResourceLink>(3, _omitFieldNames ? '' : 'externalLinks',
         subBuilder: $0.ResourceLink.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  UpdateSupplierRequest clone() =>
-      UpdateSupplierRequest()..mergeFromMessage(this);
+  UpdateSupplierRequest clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   UpdateSupplierRequest copyWith(
           void Function(UpdateSupplierRequest) updates) =>
@@ -861,8 +850,7 @@ class UpdateSupplierResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  UpdateSupplierResponse clone() =>
-      UpdateSupplierResponse()..mergeFromMessage(this);
+  UpdateSupplierResponse clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   UpdateSupplierResponse copyWith(
           void Function(UpdateSupplierResponse) updates) =>
@@ -922,8 +910,7 @@ class DeleteSupplierRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  DeleteSupplierRequest clone() =>
-      DeleteSupplierRequest()..mergeFromMessage(this);
+  DeleteSupplierRequest clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   DeleteSupplierRequest copyWith(
           void Function(DeleteSupplierRequest) updates) =>
@@ -981,8 +968,7 @@ class DeleteSupplierResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  DeleteSupplierResponse clone() =>
-      DeleteSupplierResponse()..mergeFromMessage(this);
+  DeleteSupplierResponse clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   DeleteSupplierResponse copyWith(
           void Function(DeleteSupplierResponse) updates) =>

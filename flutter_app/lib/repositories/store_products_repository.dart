@@ -45,13 +45,15 @@ class StoreProductsRepository {
   }
 
   /// Lists products with pagination and filters.
-  Future<ListProductsResponse> listProducts(ListProductsRequest request) async {
+  Future<ListStoreProductsResponse> listStoreProducts(
+    ListStoreProductsRequest request,
+  ) async {
     try {
-      return await storeProductsServiceClient.listProducts(request);
+      return await storeProductsServiceClient.listStoreProducts(request);
     } on Exception catch (e) {
       _logger.severe('listProducts Error: $e');
 
-      return ListProductsResponse();
+      return ListStoreProductsResponse();
     }
   }
 }

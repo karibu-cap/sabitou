@@ -12,10 +12,10 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 import '../goldens.dart';
 
 final dashboardFakeTransport = FakeTransportBuilder()
-  ..unary(StoreProductService.listProducts, (req, _) async {
+  ..unary(StoreProductService.listStoreProducts, (req, _) async {
     final request = req;
 
-    return ListProductsResponse(
+    return ListStoreProductsResponse(
       products: [
         StoreProduct()
           ..refId = 'sp_1'
@@ -39,7 +39,7 @@ final dashboardFakeTransport = FakeTransportBuilder()
       totalCount: 3,
     );
   })
-  ..unary(StoreProductService.getProduct, (req, _) async {
+  ..unary(StoreProductService.getStoreProduct, (req, _) async {
     final request = req;
 
     return GetStoreProductResponse(

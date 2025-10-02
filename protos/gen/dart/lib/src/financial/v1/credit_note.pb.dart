@@ -98,20 +98,13 @@ class CreditNote extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'documentId')
     ..aOS(2, _omitFieldNames ? '' : 'relatedInvoiceId')
-    ..e<CreditNoteType>(
-        3, _omitFieldNames ? '' : 'creditType', $pb.PbFieldType.OE,
-        defaultOrMaker: CreditNoteType.CREDIT_TYPE_UNSPECIFIED,
-        valueOf: CreditNoteType.valueOf,
+    ..aE<CreditNoteType>(3, _omitFieldNames ? '' : 'creditType',
         enumValues: CreditNoteType.values)
     ..aOS(4, _omitFieldNames ? '' : 'issuerId')
     ..aOS(5, _omitFieldNames ? '' : 'recipientId')
-    ..e<CreditNoteStatus>(
-        6, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
-        defaultOrMaker: CreditNoteStatus.CN_STATUS_UNSPECIFIED,
-        valueOf: CreditNoteStatus.valueOf,
+    ..aE<CreditNoteStatus>(6, _omitFieldNames ? '' : 'status',
         enumValues: CreditNoteStatus.values)
-    ..pc<$0.InvoiceLineItem>(
-        7, _omitFieldNames ? '' : 'items', $pb.PbFieldType.PM,
+    ..pPM<$0.InvoiceLineItem>(7, _omitFieldNames ? '' : 'items',
         subBuilder: $0.InvoiceLineItem.create)
     ..aInt64(8, _omitFieldNames ? '' : 'totalAmount')
     ..aOS(9, _omitFieldNames ? '' : 'currency')
@@ -125,7 +118,7 @@ class CreditNote extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreditNote clone() => CreditNote()..mergeFromMessage(this);
+  CreditNote clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CreditNote copyWith(void Function(CreditNote) updates) =>
       super.copyWith((message) => updates(message as CreditNote)) as CreditNote;

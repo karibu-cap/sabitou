@@ -111,22 +111,16 @@ class Invoice extends $pb.GeneratedMessage {
       package: const $pb.PackageName(_omitMessageNames ? '' : 'financial.v1'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'documentId')
-    ..e<InvoiceType>(
-        2, _omitFieldNames ? '' : 'invoiceType', $pb.PbFieldType.OE,
-        defaultOrMaker: InvoiceType.INVOICE_TYPE_UNSPECIFIED,
-        valueOf: InvoiceType.valueOf,
+    ..aE<InvoiceType>(2, _omitFieldNames ? '' : 'invoiceType',
         enumValues: InvoiceType.values)
     ..aOS(3, _omitFieldNames ? '' : 'issuerId')
     ..aOS(4, _omitFieldNames ? '' : 'recipientId')
     ..aOS(5, _omitFieldNames ? '' : 'relatedSalesOrderId')
     ..aOS(6, _omitFieldNames ? '' : 'relatedPurchaseOrderId')
     ..aOS(7, _omitFieldNames ? '' : 'relatedDeliveryNoteId')
-    ..e<InvoiceStatus>(8, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
-        defaultOrMaker: InvoiceStatus.INVOICE_STATUS_UNSPECIFIED,
-        valueOf: InvoiceStatus.valueOf,
+    ..aE<InvoiceStatus>(8, _omitFieldNames ? '' : 'status',
         enumValues: InvoiceStatus.values)
-    ..pc<$0.InvoiceLineItem>(
-        9, _omitFieldNames ? '' : 'items', $pb.PbFieldType.PM,
+    ..pPM<$0.InvoiceLineItem>(9, _omitFieldNames ? '' : 'items',
         subBuilder: $0.InvoiceLineItem.create)
     ..aInt64(10, _omitFieldNames ? '' : 'subtotal')
     ..aInt64(11, _omitFieldNames ? '' : 'taxAmount')
@@ -145,7 +139,7 @@ class Invoice extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  Invoice clone() => Invoice()..mergeFromMessage(this);
+  Invoice clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Invoice copyWith(void Function(Invoice) updates) =>
       super.copyWith((message) => updates(message as Invoice)) as Invoice;

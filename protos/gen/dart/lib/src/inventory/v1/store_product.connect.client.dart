@@ -26,24 +26,6 @@ extension type StoreProductServiceClient (connect.Transport _transport) {
     );
   }
 
-  /// Finds categories by name.
-  Future<inventoryv1store_product.FindProductCategoryResponse> findProductCategory(
-    inventoryv1store_product.FindProductCategoryRequest input, {
-    connect.Headers? headers,
-    connect.AbortSignal? signal,
-    Function(connect.Headers)? onHeader,
-    Function(connect.Headers)? onTrailer,
-  }) {
-    return connect.Client(_transport).unary(
-      specs.StoreProductService.findProductCategory,
-      input,
-      signal: signal,
-      headers: headers,
-      onHeader: onHeader,
-      onTrailer: onTrailer,
-    );
-  }
-
   /// Creates a global product.
   Future<inventoryv1store_product.CreateGlobalProductResponse> createGlobalProduct(
     inventoryv1store_product.CreateGlobalProductRequest input, {
@@ -117,7 +99,7 @@ extension type StoreProductServiceClient (connect.Transport _transport) {
   }
 
   /// Gets a store product by id.
-  Future<inventoryv1store_product.GetStoreProductResponse> getProduct(
+  Future<inventoryv1store_product.GetStoreProductResponse> getStoreProduct(
     inventoryv1store_product.GetStoreProductRequest input, {
     connect.Headers? headers,
     connect.AbortSignal? signal,
@@ -125,7 +107,7 @@ extension type StoreProductServiceClient (connect.Transport _transport) {
     Function(connect.Headers)? onTrailer,
   }) {
     return connect.Client(_transport).unary(
-      specs.StoreProductService.getProduct,
+      specs.StoreProductService.getStoreProduct,
       input,
       signal: signal,
       headers: headers,
@@ -135,7 +117,7 @@ extension type StoreProductServiceClient (connect.Transport _transport) {
   }
 
   /// Updates a store product.
-  Future<inventoryv1store_product.UpdateStoreProductResponse> updateProduct(
+  Future<inventoryv1store_product.UpdateStoreProductResponse> updateStoreProduct(
     inventoryv1store_product.UpdateStoreProductRequest input, {
     connect.Headers? headers,
     connect.AbortSignal? signal,
@@ -143,7 +125,7 @@ extension type StoreProductServiceClient (connect.Transport _transport) {
     Function(connect.Headers)? onTrailer,
   }) {
     return connect.Client(_transport).unary(
-      specs.StoreProductService.updateProduct,
+      specs.StoreProductService.updateStoreProduct,
       input,
       signal: signal,
       headers: headers,
@@ -154,7 +136,7 @@ extension type StoreProductServiceClient (connect.Transport _transport) {
 
   /// Deletes a store product.
   /// Only store products that are not in any orders can be deleted.
-  Future<inventoryv1store_product.DeleteStoreProductResponse> deleteProduct(
+  Future<inventoryv1store_product.DeleteStoreProductResponse> deleteStoreProduct(
     inventoryv1store_product.DeleteStoreProductRequest input, {
     connect.Headers? headers,
     connect.AbortSignal? signal,
@@ -162,7 +144,7 @@ extension type StoreProductServiceClient (connect.Transport _transport) {
     Function(connect.Headers)? onTrailer,
   }) {
     return connect.Client(_transport).unary(
-      specs.StoreProductService.deleteProduct,
+      specs.StoreProductService.deleteStoreProduct,
       input,
       signal: signal,
       headers: headers,
@@ -226,15 +208,15 @@ extension type StoreProductServiceClient (connect.Transport _transport) {
   }
 
   /// Lists products with pagination and filters.
-  Future<inventoryv1store_product.ListProductsResponse> listProducts(
-    inventoryv1store_product.ListProductsRequest input, {
+  Future<inventoryv1store_product.ListStoreProductsResponse> listStoreProducts(
+    inventoryv1store_product.ListStoreProductsRequest input, {
     connect.Headers? headers,
     connect.AbortSignal? signal,
     Function(connect.Headers)? onHeader,
     Function(connect.Headers)? onTrailer,
   }) {
     return connect.Client(_transport).unary(
-      specs.StoreProductService.listProducts,
+      specs.StoreProductService.listStoreProducts,
       input,
       signal: signal,
       headers: headers,

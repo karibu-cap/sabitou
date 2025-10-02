@@ -93,13 +93,9 @@ class DeliveryNote extends $pb.GeneratedMessage {
     ..aOS(3, _omitFieldNames ? '' : 'fromWarehouseId')
     ..aOS(4, _omitFieldNames ? '' : 'toCompanyId')
     ..aOS(5, _omitFieldNames ? '' : 'toAddress')
-    ..e<DeliveryNoteStatus>(
-        6, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
-        defaultOrMaker: DeliveryNoteStatus.DN_STATUS_UNSPECIFIED,
-        valueOf: DeliveryNoteStatus.valueOf,
+    ..aE<DeliveryNoteStatus>(6, _omitFieldNames ? '' : 'status',
         enumValues: DeliveryNoteStatus.values)
-    ..pc<DeliveryLineItem>(
-        7, _omitFieldNames ? '' : 'items', $pb.PbFieldType.PM,
+    ..pPM<DeliveryLineItem>(7, _omitFieldNames ? '' : 'items',
         subBuilder: DeliveryLineItem.create)
     ..aOS(8, _omitFieldNames ? '' : 'carrier')
     ..aOS(9, _omitFieldNames ? '' : 'trackingNumber')
@@ -114,7 +110,7 @@ class DeliveryNote extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  DeliveryNote clone() => DeliveryNote()..mergeFromMessage(this);
+  DeliveryNote clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   DeliveryNote copyWith(void Function(DeliveryNote) updates) =>
       super.copyWith((message) => updates(message as DeliveryNote))
@@ -294,13 +290,13 @@ class DeliveryLineItem extends $pb.GeneratedMessage {
       package: const $pb.PackageName(_omitMessageNames ? '' : 'logistic.v1'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'productId')
-    ..a<$core.double>(2, _omitFieldNames ? '' : 'quantity', $pb.PbFieldType.OD)
+    ..aD(2, _omitFieldNames ? '' : 'quantity')
     ..aOS(3, _omitFieldNames ? '' : 'serialNumbers')
     ..aOS(4, _omitFieldNames ? '' : 'batchId')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  DeliveryLineItem clone() => DeliveryLineItem()..mergeFromMessage(this);
+  DeliveryLineItem clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   DeliveryLineItem copyWith(void Function(DeliveryLineItem) updates) =>
       super.copyWith((message) => updates(message as DeliveryLineItem))

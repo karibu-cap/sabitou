@@ -6,11 +6,8 @@ package identityv1connect
 
 import (
 	connect "connectrpc.com/connect"
-	context "context"
-	errors "errors"
-	v1 "github.com/karibu-cap/sabitou/protos/gen/go/rpc/identity/v1"
+	_ "github.com/karibu-cap/sabitou/protos/gen/go/rpc/identity/v1"
 	http "net/http"
-	strings "strings"
 )
 
 // This is a compile-time assertion to ensure that this generated file and the connect package are
@@ -25,38 +22,8 @@ const (
 	PermissionServiceName = "identity.v1.PermissionService"
 )
 
-// These constants are the fully-qualified names of the RPCs defined in this package. They're
-// exposed at runtime as Spec.Procedure and as the final two segments of the HTTP route.
-//
-// Note that these are different from the fully-qualified method names used by
-// google.golang.org/protobuf/reflect/protoreflect. To convert from these constants to
-// reflection-formatted method names, remove the leading slash and convert the remaining slash to a
-// period.
-const (
-	// PermissionServiceCreateStorePermissionProcedure is the fully-qualified name of the
-	// PermissionService's CreateStorePermission RPC.
-	PermissionServiceCreateStorePermissionProcedure = "/identity.v1.PermissionService/CreateStorePermission"
-	// PermissionServiceUpdateStorePermissionProcedure is the fully-qualified name of the
-	// PermissionService's UpdateStorePermission RPC.
-	PermissionServiceUpdateStorePermissionProcedure = "/identity.v1.PermissionService/UpdateStorePermission"
-	// PermissionServiceDeleteStorePermissionProcedure is the fully-qualified name of the
-	// PermissionService's DeleteStorePermission RPC.
-	PermissionServiceDeleteStorePermissionProcedure = "/identity.v1.PermissionService/DeleteStorePermission"
-	// PermissionServiceCheckStorePermissionProcedure is the fully-qualified name of the
-	// PermissionService's CheckStorePermission RPC.
-	PermissionServiceCheckStorePermissionProcedure = "/identity.v1.PermissionService/CheckStorePermission"
-)
-
 // PermissionServiceClient is a client for the identity.v1.PermissionService service.
 type PermissionServiceClient interface {
-	// Create store permission
-	CreateStorePermission(context.Context, *connect.Request[v1.CreateStorePermissionRequest]) (*connect.Response[v1.SuccessResponse], error)
-	// Update store permission
-	UpdateStorePermission(context.Context, *connect.Request[v1.UpdateStorePermissionRequest]) (*connect.Response[v1.SuccessResponse], error)
-	// Delete store permission
-	DeleteStorePermission(context.Context, *connect.Request[v1.DeleteStorePermissionRequest]) (*connect.Response[v1.SuccessResponse], error)
-	// Check if a user has a store permission
-	CheckStorePermission(context.Context, *connect.Request[v1.CheckStorePermissionRequest]) (*connect.Response[v1.CheckStorePermissionResponse], error)
 }
 
 // NewPermissionServiceClient constructs a client for the identity.v1.PermissionService service. By
@@ -67,74 +34,15 @@ type PermissionServiceClient interface {
 // The URL supplied here should be the base URL for the Connect or gRPC server (for example,
 // http://api.acme.com or https://acme.com/grpc).
 func NewPermissionServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) PermissionServiceClient {
-	baseURL = strings.TrimRight(baseURL, "/")
-	permissionServiceMethods := v1.File_identity_v1_permission_proto.Services().ByName("PermissionService").Methods()
-	return &permissionServiceClient{
-		createStorePermission: connect.NewClient[v1.CreateStorePermissionRequest, v1.SuccessResponse](
-			httpClient,
-			baseURL+PermissionServiceCreateStorePermissionProcedure,
-			connect.WithSchema(permissionServiceMethods.ByName("CreateStorePermission")),
-			connect.WithClientOptions(opts...),
-		),
-		updateStorePermission: connect.NewClient[v1.UpdateStorePermissionRequest, v1.SuccessResponse](
-			httpClient,
-			baseURL+PermissionServiceUpdateStorePermissionProcedure,
-			connect.WithSchema(permissionServiceMethods.ByName("UpdateStorePermission")),
-			connect.WithClientOptions(opts...),
-		),
-		deleteStorePermission: connect.NewClient[v1.DeleteStorePermissionRequest, v1.SuccessResponse](
-			httpClient,
-			baseURL+PermissionServiceDeleteStorePermissionProcedure,
-			connect.WithSchema(permissionServiceMethods.ByName("DeleteStorePermission")),
-			connect.WithClientOptions(opts...),
-		),
-		checkStorePermission: connect.NewClient[v1.CheckStorePermissionRequest, v1.CheckStorePermissionResponse](
-			httpClient,
-			baseURL+PermissionServiceCheckStorePermissionProcedure,
-			connect.WithSchema(permissionServiceMethods.ByName("CheckStorePermission")),
-			connect.WithClientOptions(opts...),
-		),
-	}
+	return &permissionServiceClient{}
 }
 
 // permissionServiceClient implements PermissionServiceClient.
 type permissionServiceClient struct {
-	createStorePermission *connect.Client[v1.CreateStorePermissionRequest, v1.SuccessResponse]
-	updateStorePermission *connect.Client[v1.UpdateStorePermissionRequest, v1.SuccessResponse]
-	deleteStorePermission *connect.Client[v1.DeleteStorePermissionRequest, v1.SuccessResponse]
-	checkStorePermission  *connect.Client[v1.CheckStorePermissionRequest, v1.CheckStorePermissionResponse]
-}
-
-// CreateStorePermission calls identity.v1.PermissionService.CreateStorePermission.
-func (c *permissionServiceClient) CreateStorePermission(ctx context.Context, req *connect.Request[v1.CreateStorePermissionRequest]) (*connect.Response[v1.SuccessResponse], error) {
-	return c.createStorePermission.CallUnary(ctx, req)
-}
-
-// UpdateStorePermission calls identity.v1.PermissionService.UpdateStorePermission.
-func (c *permissionServiceClient) UpdateStorePermission(ctx context.Context, req *connect.Request[v1.UpdateStorePermissionRequest]) (*connect.Response[v1.SuccessResponse], error) {
-	return c.updateStorePermission.CallUnary(ctx, req)
-}
-
-// DeleteStorePermission calls identity.v1.PermissionService.DeleteStorePermission.
-func (c *permissionServiceClient) DeleteStorePermission(ctx context.Context, req *connect.Request[v1.DeleteStorePermissionRequest]) (*connect.Response[v1.SuccessResponse], error) {
-	return c.deleteStorePermission.CallUnary(ctx, req)
-}
-
-// CheckStorePermission calls identity.v1.PermissionService.CheckStorePermission.
-func (c *permissionServiceClient) CheckStorePermission(ctx context.Context, req *connect.Request[v1.CheckStorePermissionRequest]) (*connect.Response[v1.CheckStorePermissionResponse], error) {
-	return c.checkStorePermission.CallUnary(ctx, req)
 }
 
 // PermissionServiceHandler is an implementation of the identity.v1.PermissionService service.
 type PermissionServiceHandler interface {
-	// Create store permission
-	CreateStorePermission(context.Context, *connect.Request[v1.CreateStorePermissionRequest]) (*connect.Response[v1.SuccessResponse], error)
-	// Update store permission
-	UpdateStorePermission(context.Context, *connect.Request[v1.UpdateStorePermissionRequest]) (*connect.Response[v1.SuccessResponse], error)
-	// Delete store permission
-	DeleteStorePermission(context.Context, *connect.Request[v1.DeleteStorePermissionRequest]) (*connect.Response[v1.SuccessResponse], error)
-	// Check if a user has a store permission
-	CheckStorePermission(context.Context, *connect.Request[v1.CheckStorePermissionRequest]) (*connect.Response[v1.CheckStorePermissionResponse], error)
 }
 
 // NewPermissionServiceHandler builds an HTTP handler from the service implementation. It returns
@@ -143,41 +51,8 @@ type PermissionServiceHandler interface {
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
 func NewPermissionServiceHandler(svc PermissionServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
-	permissionServiceMethods := v1.File_identity_v1_permission_proto.Services().ByName("PermissionService").Methods()
-	permissionServiceCreateStorePermissionHandler := connect.NewUnaryHandler(
-		PermissionServiceCreateStorePermissionProcedure,
-		svc.CreateStorePermission,
-		connect.WithSchema(permissionServiceMethods.ByName("CreateStorePermission")),
-		connect.WithHandlerOptions(opts...),
-	)
-	permissionServiceUpdateStorePermissionHandler := connect.NewUnaryHandler(
-		PermissionServiceUpdateStorePermissionProcedure,
-		svc.UpdateStorePermission,
-		connect.WithSchema(permissionServiceMethods.ByName("UpdateStorePermission")),
-		connect.WithHandlerOptions(opts...),
-	)
-	permissionServiceDeleteStorePermissionHandler := connect.NewUnaryHandler(
-		PermissionServiceDeleteStorePermissionProcedure,
-		svc.DeleteStorePermission,
-		connect.WithSchema(permissionServiceMethods.ByName("DeleteStorePermission")),
-		connect.WithHandlerOptions(opts...),
-	)
-	permissionServiceCheckStorePermissionHandler := connect.NewUnaryHandler(
-		PermissionServiceCheckStorePermissionProcedure,
-		svc.CheckStorePermission,
-		connect.WithSchema(permissionServiceMethods.ByName("CheckStorePermission")),
-		connect.WithHandlerOptions(opts...),
-	)
 	return "/identity.v1.PermissionService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
-		case PermissionServiceCreateStorePermissionProcedure:
-			permissionServiceCreateStorePermissionHandler.ServeHTTP(w, r)
-		case PermissionServiceUpdateStorePermissionProcedure:
-			permissionServiceUpdateStorePermissionHandler.ServeHTTP(w, r)
-		case PermissionServiceDeleteStorePermissionProcedure:
-			permissionServiceDeleteStorePermissionHandler.ServeHTTP(w, r)
-		case PermissionServiceCheckStorePermissionProcedure:
-			permissionServiceCheckStorePermissionHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -186,19 +61,3 @@ func NewPermissionServiceHandler(svc PermissionServiceHandler, opts ...connect.H
 
 // UnimplementedPermissionServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedPermissionServiceHandler struct{}
-
-func (UnimplementedPermissionServiceHandler) CreateStorePermission(context.Context, *connect.Request[v1.CreateStorePermissionRequest]) (*connect.Response[v1.SuccessResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("identity.v1.PermissionService.CreateStorePermission is not implemented"))
-}
-
-func (UnimplementedPermissionServiceHandler) UpdateStorePermission(context.Context, *connect.Request[v1.UpdateStorePermissionRequest]) (*connect.Response[v1.SuccessResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("identity.v1.PermissionService.UpdateStorePermission is not implemented"))
-}
-
-func (UnimplementedPermissionServiceHandler) DeleteStorePermission(context.Context, *connect.Request[v1.DeleteStorePermissionRequest]) (*connect.Response[v1.SuccessResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("identity.v1.PermissionService.DeleteStorePermission is not implemented"))
-}
-
-func (UnimplementedPermissionServiceHandler) CheckStorePermission(context.Context, *connect.Request[v1.CheckStorePermissionRequest]) (*connect.Response[v1.CheckStorePermissionResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("identity.v1.PermissionService.CheckStorePermission is not implemented"))
-}
