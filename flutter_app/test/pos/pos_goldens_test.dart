@@ -21,14 +21,14 @@ void main() {
         () => ConnectRPCService.new(clientChannel: fakeTransport),
       );
     });
-    testGoldens('New order view', (tester) async {
+    testGoldens('POS view', (tester) async {
       return withClock(
         Clock.fixed(DateTime.parse('2025-09-01 15:30:00Z').toUtc()),
         () async {
           await multiScreenMultiLocaleGolden(
             tester,
             const PointOfSaleScreen(),
-            'new_order_view',
+            'pos_view',
           );
         },
       );

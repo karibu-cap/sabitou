@@ -21,12 +21,6 @@ class PdfPreviewExtents {
 
     final posTemplate = PosTemplate(cashReceipt: cashReceipt, store: store);
 
-    final double cellHeight = 20;
-
-    // if (pdfMode == PdfMode.PAYSAGE) {
-    //   return posTemplate.buildInvoice(pdfPageFormat, cellHeight);
-    // }
-
     return posTemplate.buildPdfInvoiceMini(pdfPageFormat);
   }
 }

@@ -961,6 +961,12 @@ final _fakeTransport =
           ],
         );
       })
+      ..unary(InventoryService.checkProductAvailability, (req, _) async {
+        return CheckProductAvailabilityResponse(
+          isAvailable: true,
+          quantityAvailable: 10,
+        );
+      })
       // Point of Sale Service mocks for testing
       ..unary(CashReceiptService.createCashReceipt, (req, _) async {
         final request = req;

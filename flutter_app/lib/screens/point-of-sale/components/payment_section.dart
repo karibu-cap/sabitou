@@ -17,6 +17,7 @@ import 'payment_controller.dart';
 
 /// The payment section - Now a StatelessWidget
 class PaymentSection extends StatelessWidget {
+  /// Constructor of new [PaymentSection].
   const PaymentSection({super.key});
 
   @override
@@ -38,17 +39,14 @@ class _PaymentSectionContent extends StatelessWidget {
         return Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
+          spacing: 5,
           children: [
-            const SizedBox(height: 5),
             _PaymentSummary(state: state),
-            const SizedBox(height: 5),
             Divider(
               thickness: 1,
               color: ShadTheme.of(context).colorScheme.background,
             ),
-            const SizedBox(height: 5),
             _PaymentForm(state: state),
-            const SizedBox(height: 8),
             _CompleteButton(state: state),
           ],
         );
@@ -66,26 +64,27 @@ class _PaymentSummary extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: 8,
       children: [
-        Row(
-          children: [
-            Expanded(
-              child: Text(
-                '${Intls.to.totalPaid}: ',
-                style: ShadTheme.of(context).textTheme.list,
+        if (state.amountReceived > 0)
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  '${Intls.to.totalPaid}: ',
+                  style: ShadTheme.of(context).textTheme.list,
+                ),
               ),
-            ),
-            Text(
-              Formatters.formatCurrency(state.amountReceived),
-              style: ShadTheme.of(context).textTheme.list.copyWith(
-                color: state.amountReceived > 0
-                    ? AppColors.lightGreen
-                    : AppColors.grey400,
+              Text(
+                Formatters.formatCurrency(state.amountReceived),
+                style: ShadTheme.of(context).textTheme.list.copyWith(
+                  color: state.amountReceived > 0
+                      ? AppColors.lightGreen
+                      : AppColors.grey400,
+                ),
               ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 8),
+            ],
+          ),
         if (state.remainingAmount > 0) ...[
           Row(
             children: [
@@ -105,23 +104,63 @@ class _PaymentSummary extends StatelessWidget {
             ],
           ),
         ] else if (state.amountToBePaidBack > 0) ...[
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  '${Intls.to.amountToBePaidBack}: ',
-                  style: ShadTheme.of(context).textTheme.list,
+          // Row(
+          //   children: [
+          //     Expanded(
+          //       child: Text(
+          //         '${Intls.to.amountToBePaidBack}: ',
+          //         style: ShadTheme.of(context).textTheme.list,
+          //       ),
+          //     ),
+          //     Text(
+          //       Formatters.formatCurrency(state.amountToBePaidBack),
+          //       style: ShadTheme.of(context).textTheme.list.copyWith(
+          //         color: AppColors.cobalt,
+          //         fontWeight: FontWeight.w600,
+          //       ),
+          //     ),
+          //   ],
+          // ),
+          if (state.changeGiven > 0)
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    '${Intls.to.changeGiven}: ',
+                    style: ShadTheme.of(context).textTheme.list,
+                  ),
                 ),
-              ),
-              Text(
-                Formatters.formatCurrency(state.amountToBePaidBack),
-                style: ShadTheme.of(context).textTheme.list.copyWith(
-                  color: AppColors.cobalt,
-                  fontWeight: FontWeight.w600,
+                Text(
+                  Formatters.formatCurrency(state.changeGiven),
+                  style: ShadTheme.of(context).textTheme.list.copyWith(
+                    color: AppColors.lightGreen,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-              ),
-            ],
-          ),
+              ],
+            ),
+          if ((state.amountToBePaidBack - state.changeGiven) > 0)
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    '${Intls.to.balance}: ',
+                    style: ShadTheme.of(
+                      context,
+                    ).textTheme.list.copyWith(color: AppColors.orange500),
+                  ),
+                ),
+                Text(
+                  Formatters.formatCurrency(
+                    state.amountToBePaidBack - state.changeGiven,
+                  ),
+                  style: ShadTheme.of(context).textTheme.list.copyWith(
+                    color: AppColors.orange500,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
         ],
       ],
     );
@@ -172,22 +211,13 @@ class _ChangeInputField extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            state.changeValidationError ??
-                Intls.to.leaveEmptyIfYouDontWantToGiveChange,
-            style: TextStyle(
-              color: state.changeAmountExceedsMaximum
-                  ? AppColors.red
-                  : ShadTheme.of(context).textTheme.muted.color,
-            ),
-          ),
-          if (state.amountToBePaidBack > 0 && !state.changeAmountExceedsMaximum)
+          if (state.changeValidationError != null)
             Text(
-              'Montant maximum remboursable: ${Formatters.formatCurrency(state.amountToBePaidBack)}',
-              style: const TextStyle(
-                color: AppColors.cobalt,
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
+              state.changeValidationError ?? '',
+              style: TextStyle(
+                color: state.changeAmountExceedsMaximum
+                    ? AppColors.red
+                    : ShadTheme.of(context).textTheme.muted.color,
               ),
             ),
         ],
@@ -196,7 +226,8 @@ class _ChangeInputField extends StatelessWidget {
       keyboardType: TextInputType.number,
       leading: const Icon(Icons.attach_money),
       inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.]'))],
-      onChanged: state.onChangeAmountChanged,
+      onEditingComplete: () =>
+          state.onChangeAmountChanged(state.changeController.text),
     );
   }
 }
@@ -215,7 +246,8 @@ class _CompleteButton extends StatelessWidget {
         enabled:
             CartManager.instance.getCartItems().isNotEmpty &&
             state.cart.payments.isNotEmpty &&
-            state.canComplete,
+            state.remainingAmount <= 0 &&
+            state.changeGiven <= state.amountToBePaidBack,
         text: Intls.to.completeOrder,
       ),
     );
@@ -234,13 +266,6 @@ class _PaymentBody extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          Intls.to.paymentMethod,
-          style: ShadTheme.of(
-            context,
-          ).textTheme.list.copyWith(fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 8),
         if (state.cart.payments.isNotEmpty)
           ShadButton.link(
             padding: EdgeInsets.zero,
@@ -269,7 +294,7 @@ class _PaymentBody extends StatelessWidget {
               child: ShadSelect<PaymentMethod?>(
                 initialValue: state.selectedPaymentMethod,
                 padding: const EdgeInsets.all(12),
-                decoration: ShadTheme.of(context).selectTheme.decoration
+                decoration: ShadTheme.of(context).inputTheme.decoration
                     ?.copyWith(
                       color: ShadTheme.of(context).colorScheme.background,
                     ),
@@ -312,6 +337,10 @@ class _PaymentBody extends StatelessWidget {
               child: ShadInputFormField(
                 id: 'payment_amount',
                 controller: state.amountController,
+                decoration: ShadTheme.of(context).inputTheme.decoration
+                    ?.copyWith(
+                      color: ShadTheme.of(context).colorScheme.background,
+                    ),
                 placeholder: Text(
                   '${Intls.to.amount} (Max: ${Formatters.formatCurrency(state.remainingAmount)})',
                 ),
@@ -336,6 +365,9 @@ class _PaymentBody extends StatelessWidget {
 
                   return null;
                 },
+                onEditingComplete: state.isProcessing
+                    ? null
+                    : () => state.addPayment(context),
               ),
             ),
             if (state.selectedPaymentMethod ==
@@ -360,8 +392,9 @@ class _PaymentBody extends StatelessWidget {
                         ? Intls.to.enterVoucherCode
                         : Intls.to.enterReference,
                   ),
-                  onSubmitted: (value) =>
-                      state.isProcessing ? null : state.addPayment(context),
+                  onEditingComplete: state.isProcessing
+                      ? null
+                      : () => state.addPayment(context),
                   leading: const Icon(LucideIcons.hash),
                 ),
               ),

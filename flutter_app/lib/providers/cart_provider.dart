@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:clock/clock.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -5,11 +7,16 @@ import 'package:get_it/get_it.dart';
 import 'package:sabitou_rpc/models.dart';
 import 'package:uuid/uuid.dart';
 
+import '../services/storage/app_storage.dart';
+import '../utils/app_constants.dart';
 import '../utils/user_preference.dart';
 
 /// The cart manager for POS system
 class CartManager extends ChangeNotifier {
   final Uuid _uuid = const Uuid();
+
+  /// The list of CashReceipt store.
+  final List<CashReceipt> saveCashReceipts = [];
 
   CashReceipt? _currentCashReceipt;
   final List<Payment> _payments = [];
@@ -32,7 +39,10 @@ class CartManager extends ChangeNotifier {
     if (cashReceipt == null) return false;
     if (cashReceipt.items.isEmpty) return false;
 
-    return cashReceipt.amountPaid >= cashReceipt.totalAmount;
+    final remaining = cashReceipt.totalAmount - cashReceipt.amountPaid;
+    final owedToCustomer = cashReceipt.owedToCustomer;
+
+    return remaining <= 0 && owedToCustomer <= 0;
   }
 
   /// Constructor of new [CartManager].
@@ -55,6 +65,28 @@ class CartManager extends ChangeNotifier {
       items: [],
       transactionTime: Timestamp.fromDateTime(clock.now()),
     );
+
+    final _saveCashReceipts = AppStorageService.to.read<List<CashReceipt>?>(
+      '${CollectionName.cashReceipts}-${UserPreferences.instance.store?.refId}',
+    );
+
+    if (_saveCashReceipts != null && _saveCashReceipts.isNotEmpty) {
+      saveCashReceipts.addAll(_saveCashReceipts);
+    }
+    notifyListeners();
+  }
+
+  /// Resumes the cash receipt save.
+  Future<void> resumeCashReceipt(CashReceipt cashReceipt) async {
+    if (_currentCashReceipt?.items.isNotEmpty == true) {
+      await saveCurrentCashReceipt();
+    }
+
+    _currentCashReceipt = CashReceipt()..mergeFromMessage(cashReceipt);
+    _payments.clear();
+    unawaited(removeCurrentCashReceipt(cashReceipt: cashReceipt));
+
+    notifyListeners();
   }
 
   /// Add item to cart
@@ -110,6 +142,7 @@ class CartManager extends ChangeNotifier {
       ..total =
           (newQuantity * currentCart.items[itemIndex].unitPrice) +
           (currentCart.items[itemIndex].taxAmount);
+    currentCart.changeGiven = 0;
     _updatePaymentCalculations();
 
     notifyListeners();
@@ -179,29 +212,82 @@ class CartManager extends ChangeNotifier {
       (sum, payment) => sum + payment.amount.toDouble(),
     );
 
-    _currentCashReceipt?.amountPaid = paidAmount;
     _currentCashReceipt?.totalAmount = totalAmount;
-    _currentCashReceipt?.owedToCustomer = paidAmount > totalAmount
-        ? totalAmount - paidAmount - (_currentCashReceipt?.changeGiven ?? 0)
-        : 0;
+    _currentCashReceipt?.amountPaid = paidAmount;
+
+    final overpayment = paidAmount - totalAmount;
+    final amountToBePaidBack = overpayment > 0 ? overpayment : 0.0;
+    final changeGiven = _currentCashReceipt?.changeGiven ?? 0.0;
+    final owedToCustomer = amountToBePaidBack > changeGiven
+        ? amountToBePaidBack - changeGiven
+        : 0.0;
+
+    _currentCashReceipt?.owedToCustomer = owedToCustomer;
+
     notifyListeners();
   }
 
-  /// Set customer for current cart
+  /// Set change given for current cart
   void setChangeGiven(double changeGiven) {
     final currentCashReceipt = _currentCashReceipt;
     if (currentCashReceipt != null) {
       _currentCashReceipt?.changeGiven = changeGiven;
-      _currentCashReceipt?.owedToCustomer =
-          currentCashReceipt.amountPaid -
-          currentCashReceipt.totalAmount -
-          changeGiven;
-      notifyListeners();
+      _updatePaymentCalculations();
     }
   }
 
   /// Get cart items for display
   List<InvoiceLineItem> getCartItems() {
     return _currentCashReceipt?.items ?? [];
+  }
+
+  /// Save current cash receipt.
+  Future<void> saveCurrentCashReceipt() async {
+    final currentCashReceipt = _currentCashReceipt;
+    if (currentCashReceipt == null) {
+      return;
+    }
+    final storeId = UserPreferences.instance.store?.refId;
+    if (storeId == null) {
+      return;
+    }
+
+    // Update or add the current order
+    final index = saveCashReceipts.indexWhere(
+      (order) => order.documentId == currentCashReceipt.documentId,
+    );
+    if (index >= 0) {
+      saveCashReceipts[index] = currentCashReceipt;
+    } else {
+      saveCashReceipts.add(currentCashReceipt);
+    }
+
+    unawaited(
+      AppStorageService.to.write(
+        '${CollectionName.cashReceipts}-$storeId',
+        saveCashReceipts,
+      ),
+    );
+    clearCart();
+  }
+
+  /// Remove current cash receipt.
+  Future<void> removeCurrentCashReceipt({CashReceipt? cashReceipt}) async {
+    final currentCashReceipt = cashReceipt ?? _currentCashReceipt;
+    if (currentCashReceipt == null) {
+      return;
+    }
+    final storeId = UserPreferences.instance.store?.refId;
+    if (storeId == null) {
+      return;
+    }
+
+    saveCashReceipts.removeWhere(
+      (order) => order.documentId == currentCashReceipt.documentId,
+    );
+    await AppStorageService.to.write(
+      '${CollectionName.cashReceipts}-$storeId',
+      saveCashReceipts,
+    );
   }
 }

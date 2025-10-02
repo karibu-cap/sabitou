@@ -133,7 +133,8 @@ class _CartItemCard extends StatelessWidget {
         _CartItemControls(item: item),
         ShadButton.outline(
           size: ShadButtonSize.sm,
-          onPressed: () => CartManager.to.removeItem(item.productId),
+          onPressed: () =>
+              CartManager.to.removeItem(item.productId, batchId: item.batchId),
           child: const Icon(LucideIcons.trash, size: 12),
         ),
       ],
@@ -155,6 +156,7 @@ class _CartItemControls extends StatelessWidget {
           children: [
             ShadButton.outline(
               size: ShadButtonSize.sm,
+              enabled: item.quantity > 1,
               onPressed: () => CartManager.to.updateQuantity(
                 item.productId,
                 item.quantity - 1,

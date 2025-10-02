@@ -23,7 +23,7 @@ final class CartFooter extends StatelessWidget {
       listenable: cart,
       builder: (context, value) {
         return Column(
-          spacing: 12,
+          spacing: 5,
           children: [
             Divider(
               thickness: 1,
@@ -61,10 +61,10 @@ final class CartFooter extends StatelessWidget {
                     child: CustomShadButton(
                       buttonType: ShadButtonVariant.outline,
                       leading: const Icon(LucideIcons.pause400),
-                      // onPressed: CartManager.to.onHoldCurrentOrder,
-                      // enabled:
-                      //     CartManager.to.currentOrder?.orderItems.isNotEmpty ??
-                      //     false,
+                      onPressed: CartManager.to.saveCurrentCashReceipt,
+                      enabled:
+                          CartManager.to.currentCashReceipt?.items.isNotEmpty ??
+                          false,
                       text: Intls.to.holdOrder,
                     ),
                   ),

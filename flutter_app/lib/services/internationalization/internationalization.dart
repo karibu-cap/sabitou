@@ -1614,7 +1614,6 @@ class AppInternationalizationService extends ChangeNotifier {
     'refunded': {'en': 'Refunded', 'fr': 'Remboursé'},
     'id': {'en': 'ID', 'fr': 'ID'},
     'paymentMethod': {'en': 'Payment Method', 'fr': 'Méthode de paiement'},
-    'balance': {'en': 'Balance', 'fr': 'Solde'},
     'issued': {'en': 'Issued', 'fr': 'Émis'},
     'redeemed': {'en': 'Redeemed', 'fr': 'Remboursé'},
     'vouchersHistory': {
@@ -1644,7 +1643,7 @@ class AppInternationalizationService extends ChangeNotifier {
     'taxPayerNumber': {'en': 'Tax Payer Number', 'fr': 'Numéro de TVA'},
     'nui': {'en': 'NUI', 'fr': 'NUI'},
     'tax': {'en': 'Tax', 'fr': 'Taxe'},
-    'balanceDue': {'en': 'Balance Due', 'fr': 'Solde dû'},
+    'balance': {'en': 'Change', 'fr': 'Reste'},
     'changeGiven': {'en': 'Rendering', 'fr': 'Rendu'},
     'amountReceiced': {'en': 'Amount received', 'fr': 'Montant reçu'},
     'totalVat': {'en': 'Total VAT', 'fr': 'Total TVA'},
@@ -1824,9 +1823,11 @@ class AppInternationalizationService extends ChangeNotifier {
     },
     'amountChangeGiven': {'en': 'Change given', 'fr': 'Monnaie rendue'},
     'changeGivenMustBeLessThan': {
-      'en': 'Change given must be less than or equal to',
+      'en': 'Change given must be less or equal to',
       'fr': 'La monnaie rendue doit être inférieure ou égale à',
     },
+    'received': {'en': 'Received', 'fr': 'Reçue'},
+    'given': {'en': 'Given', 'fr': 'Rendue'},
   };
 
   /// Direct access to the internationalization service.
@@ -1845,6 +1846,12 @@ class AppInternationalizationService extends ChangeNotifier {
     const Locale('en'),
     const Locale('fr'),
   ];
+
+  /// The amount change given.
+  String get received => _stringOfLocalizedValue('received');
+
+  /// The amount change given.
+  String get given => _stringOfLocalizedValue('given');
 
   /// The amount change given.
   String get changeGivenMustBeLessThan =>
@@ -2105,7 +2112,7 @@ class AppInternationalizationService extends ChangeNotifier {
   String get changeGiven => _stringOfLocalizedValue('changeGiven');
 
   /// The balance due.
-  String get balanceDue => _stringOfLocalizedValue('balanceDue');
+  String get balance => _stringOfLocalizedValue('balance');
 
   /// The tax.
   String get tax => _stringOfLocalizedValue('tax');
@@ -2174,9 +2181,6 @@ class AppInternationalizationService extends ChangeNotifier {
 
   /// The payment method.
   String get paymentMethod => _stringOfLocalizedValue('paymentMethod');
-
-  /// The balance.
-  String get balance => _stringOfLocalizedValue('balance');
 
   /// The invoice status extension.
   String get paid => _stringOfLocalizedValue('paid');

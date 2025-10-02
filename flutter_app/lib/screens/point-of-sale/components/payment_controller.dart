@@ -30,95 +30,93 @@ class PaymentStateManager extends ChangeNotifier {
   final _referenceController = TextEditingController();
   final _changeController = TextEditingController();
 
-  PaymentStateManager() {
-    _changeController.addListener(_onChangeControllerChanged);
-    _updateCalculations();
-  }
-
-  // Getters
+  /// The total amount of money received from the customer.
   double get amountReceived => _amountReceived;
+
+  /// The remaining amount that the customer needs to pay.
   double get remainingAmount => _remainingAmount;
+
+  /// The amount that the cashier needs to pay back to the customer.
   double get amountToBePaidBack => _amountToBePaidBack;
+
+  /// The amount that the cashier has given back to the customer.
   double get changeGiven => _changeGiven;
+
+  /// Whether the amount given back exceeds the maximum amount that can be given back.
   bool get changeAmountExceedsMaximum => _changeAmountExceedsMaximum;
+
+  /// The error message when the amount given back exceeds the maximum amount.
   String? get changeValidationError => _changeValidationError;
+
+  /// Whether the payment process is currently in progress.
   bool get isProcessing => _isProcessing;
+
+  /// The currently selected payment method.
   PaymentMethod? get selectedPaymentMethod => _selectedPaymentMethod;
+
+  /// The text controller for the amount text field.
   TextEditingController get amountController => _amountController;
+
+  /// The text controller for the reference text field.
   TextEditingController get referenceController => _referenceController;
+
+  /// The text controller for the change text field.
   TextEditingController get changeController => _changeController;
 
-  bool get canComplete {
-    if (cart.payments.isEmpty) return false;
-    if (_remainingAmount > 0) return false;
+  /// Whether the payment can be completed.
+  bool get canComplete => cart.canComplete;
 
-    // CORRECTION: Le caissier ne peut pas rembourser plus que la dette
-    if (_amountToBePaidBack > 0 && _changeGiven > _amountToBePaidBack) {
-      return false;
-    }
-
-    return true;
+  /// Constructor of new [PaymentStateManager].
+  PaymentStateManager() {
+    cart.addListener(_onCartChanged);
   }
 
-  void _onChangeControllerChanged() {
-    final value = double.tryParse(_changeController.text) ?? 0.0;
-    _changeGiven = value;
-    _validateChangeAmount();
+  void _onCartChanged() {
     _updateCalculations();
     notifyListeners();
   }
 
   void _updateCalculations() {
-    // Calculer le montant total reçu
-    _amountReceived = cart.payments.fold(
-      0.0,
-      (sum, payment) => sum + payment.amount.toDouble(),
-    );
+    final receipt = cart.currentCashReceipt;
+    if (receipt == null) return;
 
-    // CORRECTION: Le montant restant doit tenir compte du changeGiven
-    // Si changeGiven > 0, cela signifie qu'on rembourse moins que prévu
-    // donc le client doit encore ce montant non rembours
-    _remainingAmount =
-        (cart.currentCashReceipt?.totalAmount ?? 0) - _amountReceived;
-
-    // Si le client a trop payé, calculer le montant à rembourser
+    _amountReceived = receipt.amountPaid;
+    _remainingAmount = _amountReceived > 0
+        ? receipt.totalAmount - _amountReceived
+        : 0;
     _amountToBePaidBack = _remainingAmount < 0 ? -_remainingAmount : 0.0;
+    _changeGiven = receipt.changeGiven;
 
-    // Valider le montant de change en temps réel
-    _validateChangeAmount();
+    if (_amountToBePaidBack == 0) {
+      _changeGiven = 0;
+      _changeController.clear();
+    }
 
-    // CORRECTION: Gérer le champ de change automatiquement
-    if (_amountToBePaidBack > 0) {
-      // Si le champ est vide, proposer le remboursement total
-      if (_changeController.text.isEmpty) {
-        _changeController.text = _amountToBePaidBack.toStringAsFixed(0);
-        _changeGiven = _amountToBePaidBack;
-      }
-    } else {
-      // Si pas de remboursement nécessaire, réinitialiser
-      if (_changeController.text.isNotEmpty) {
-        _changeController.clear();
-      }
-      _changeGiven = 0.0;
-      _changeAmountExceedsMaximum = false;
-      _changeValidationError = null;
+    if (_amountToBePaidBack > 0 && _changeController.text.isEmpty) {
+      final changeText = _amountToBePaidBack.toString();
+      _changeController.text = changeText;
+      cart.setChangeGiven(_amountToBePaidBack);
     }
 
     notifyListeners();
   }
 
-  void _validateChangeAmount() {
-    // EXIGENCE 5: La somme que le caissier peut rembourser ne doit pas être supérieure à la dette
-    if (_amountToBePaidBack > 0 && _changeGiven > _amountToBePaidBack) {
+  bool _validateChangeAmount(double change) {
+    if (_amountToBePaidBack > 0 && change > _amountToBePaidBack) {
       _changeAmountExceedsMaximum = true;
       _changeValidationError =
           '${Intls.to.changeGivenMustBeLessThan} ${Formatters.formatCurrency(_amountToBePaidBack)}';
-    } else {
-      _changeAmountExceedsMaximum = false;
-      _changeValidationError = null;
+      notifyListeners();
+
+      return false;
     }
+    _changeAmountExceedsMaximum = false;
+    _changeValidationError = null;
+
+    return true;
   }
 
+  /// Called when the payment method is changed.
   void onMethodChanged(PaymentMethod? value) {
     if (value == null) return;
     _selectedPaymentMethod = value;
@@ -153,6 +151,7 @@ class PaymentStateManager extends ChangeNotifier {
     notifyListeners();
 
     try {
+      Payment payment;
       if (_selectedPaymentMethod == PaymentMethod.PAYMENT_METHOD_VOUCHER) {
         final voucherCode = _referenceController.text.trim();
         if (voucherCode.isEmpty) {
@@ -177,14 +176,7 @@ class PaymentStateManager extends ChangeNotifier {
         }
 
         final voucherAvailable = voucher.remainingValue.toDouble();
-        final amountToPay = _remainingAmount;
 
-        double paymentAmount;
-        paymentAmount = voucherAvailable >= amountToPay
-            ? amountToPay
-            : voucherAvailable;
-
-        // CORRECTION: Vérifier que le montant saisi ne dépasse pas le montant disponible
         if (amount > voucherAvailable) {
           showErrorToast(
             context: context,
@@ -196,27 +188,23 @@ class PaymentStateManager extends ChangeNotifier {
           return;
         }
 
-        // Enregistrer le paiement avec le bon
-        cart.payments.add(
-          Payment(
-            paymentMethod: _selectedPaymentMethod,
-            amount: amount,
-            referenceNumber: voucherCode,
-          ),
+        payment = Payment(
+          paymentMethod: _selectedPaymentMethod,
+          amount: amount,
+          referenceNumber: voucherCode,
         );
       } else {
-        final payment = Payment(
+        payment = Payment(
           paymentMethod: _selectedPaymentMethod,
           amount: amount,
           referenceNumber: _referenceController.text.trim().isEmpty
               ? null
               : _referenceController.text.trim(),
         );
-
-        cart.payments.add(payment);
       }
 
-      _updateCalculations();
+      cart.addPayment(payment);
+
       _amountController.clear();
       _referenceController.clear();
       _selectedPaymentMethod = PaymentMethod.PAYMENT_METHOD_CASH;
@@ -233,32 +221,28 @@ class PaymentStateManager extends ChangeNotifier {
     }
   }
 
+  /// Removes payment.
   void removePayment(int index) {
     if (index >= 0 && index < cart.payments.length) {
-      cart.payments.removeAt(index);
-      // EXIGENCE 7: Mettre à jour les différents totaux
-      _updateCalculations();
+      cart.removePayment(index);
     }
   }
 
+  /// Called when the change amount is changed.
   void onChangeAmountChanged(String value) {
     final parsedValue = double.tryParse(value) ?? 0.0;
 
-    // EXIGENCE 5: Valider que le montant ne dépasse pas le maximum remboursable
-    if (_amountToBePaidBack > 0 && parsedValue > _amountToBePaidBack) {
-      _changeAmountExceedsMaximum = true;
-      _changeValidationError =
-          'Le montant de remboursement ne peut pas dépasser ${Formatters.formatCurrency(_amountToBePaidBack)}';
-    } else {
-      _changeGiven = parsedValue;
-      _changeAmountExceedsMaximum = false;
-      _changeValidationError = null;
+    final result = _validateChangeAmount(parsedValue);
+
+    if (!result) {
+      return;
     }
 
-    // EXIGENCE 7: Mettre à jour les totaux
-    _updateCalculations();
+    _changeGiven = parsedValue;
+    cart.setChangeGiven(parsedValue);
   }
 
+  /// Completes the payment.
   Future<bool> completePayment(BuildContext context) async {
     if (!canComplete) return false;
 
@@ -267,21 +251,7 @@ class PaymentStateManager extends ChangeNotifier {
       listen: false,
     );
 
-    // EXIGENCE 4: Gérer le remboursement
     final isOverpayment = _amountToBePaidBack > 0;
-
-    // Si c'est un remboursement, enregistrer le montant que le caissier peut rembourser
-    if (isOverpayment) {
-      // Le montant réellement remboursé est _changeGiven
-      // Si _changeGiven < _amountToBePaidBack, la différence reste en dette client
-      final debtRemaining = _amountToBePaidBack - _changeGiven;
-
-      if (debtRemaining > 0) {
-        // TODO: Enregistrer la dette client ici si nécessaire
-        // Cette partie dépend de votre logique métier
-        print('Dette restante du client: $debtRemaining');
-      }
-    }
 
     final success = await controller.completeSimpleSale(
       context,
@@ -295,6 +265,7 @@ class PaymentStateManager extends ChangeNotifier {
     return success;
   }
 
+  /// Resets the payment state.
   void reset() {
     cart.payments.clear();
     _amountReceived = 0.0;
@@ -312,7 +283,7 @@ class PaymentStateManager extends ChangeNotifier {
 
   @override
   void dispose() {
-    _changeController.removeListener(_onChangeControllerChanged);
+    cart.removeListener(_onCartChanged);
     _amountController.dispose();
     _referenceController.dispose();
     _changeController.dispose();

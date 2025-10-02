@@ -7,6 +7,7 @@ import '../../utils/user_preference.dart';
 import '../../widgets/loading.dart';
 import 'components/cart_footer.dart';
 import 'components/header.dart';
+import 'components/hold_orders.dart';
 import 'components/order_selected.dart';
 import 'components/preview_invoice.dart';
 import 'components/search_and_scan.dart';
@@ -69,7 +70,7 @@ class _SalesScreenContent extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 16),
-            // const HoldOrders(),
+            const HoldOrders(),
           ],
         );
       },
