@@ -90,11 +90,17 @@ class InventoryTransaction extends $pb.GeneratedMessage {
     ..aOS(1, _omitFieldNames ? '' : 'documentId')
     ..aOS(2, _omitFieldNames ? '' : 'storeId')
     ..aOS(3, _omitFieldNames ? '' : 'productId')
-    ..aE<TransactionType>(4, _omitFieldNames ? '' : 'transactionType',
+    ..e<TransactionType>(
+        4, _omitFieldNames ? '' : 'transactionType', $pb.PbFieldType.OE,
+        defaultOrMaker: TransactionType.TXN_TYPE_UNSPECIFIED,
+        valueOf: TransactionType.valueOf,
         enumValues: TransactionType.values)
-    ..aD(5, _omitFieldNames ? '' : 'quantityChange')
-    ..aD(6, _omitFieldNames ? '' : 'quantityBefore')
-    ..aD(7, _omitFieldNames ? '' : 'quantityAfter')
+    ..a<$core.double>(
+        5, _omitFieldNames ? '' : 'quantityChange', $pb.PbFieldType.OD)
+    ..a<$core.double>(
+        6, _omitFieldNames ? '' : 'quantityBefore', $pb.PbFieldType.OD)
+    ..a<$core.double>(
+        7, _omitFieldNames ? '' : 'quantityAfter', $pb.PbFieldType.OD)
     ..aOS(8, _omitFieldNames ? '' : 'relatedDocumentType')
     ..aOS(9, _omitFieldNames ? '' : 'relatedDocumentId')
     ..aOS(10, _omitFieldNames ? '' : 'performedByUserId')
@@ -105,7 +111,8 @@ class InventoryTransaction extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  InventoryTransaction clone() => deepCopy();
+  InventoryTransaction clone() =>
+      InventoryTransaction()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   InventoryTransaction copyWith(void Function(InventoryTransaction) updates) =>
       super.copyWith((message) => updates(message as InventoryTransaction))

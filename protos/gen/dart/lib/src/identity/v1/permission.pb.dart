@@ -57,7 +57,8 @@ class StoreProductPermission extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  StoreProductPermission clone() => deepCopy();
+  StoreProductPermission clone() =>
+      StoreProductPermission()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   StoreProductPermission copyWith(
           void Function(StoreProductPermission) updates) =>
@@ -151,7 +152,8 @@ class StoreMemberPermission extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  StoreMemberPermission clone() => deepCopy();
+  StoreMemberPermission clone() =>
+      StoreMemberPermission()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   StoreMemberPermission copyWith(
           void Function(StoreMemberPermission) updates) =>
@@ -236,7 +238,8 @@ class StoreReportPermission extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  StoreReportPermission clone() => deepCopy();
+  StoreReportPermission clone() =>
+      StoreReportPermission()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   StoreReportPermission copyWith(
           void Function(StoreReportPermission) updates) =>
@@ -297,7 +300,8 @@ class StoreOrderPermission extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  StoreOrderPermission clone() => deepCopy();
+  StoreOrderPermission clone() =>
+      StoreOrderPermission()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   StoreOrderPermission copyWith(void Function(StoreOrderPermission) updates) =>
       super.copyWith((message) => updates(message as StoreOrderPermission))
@@ -366,7 +370,8 @@ class StoreInvoicePermission extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  StoreInvoicePermission clone() => deepCopy();
+  StoreInvoicePermission clone() =>
+      StoreInvoicePermission()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   StoreInvoicePermission copyWith(
           void Function(StoreInvoicePermission) updates) =>
@@ -442,7 +447,8 @@ class StoreSupplierPermission extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  StoreSupplierPermission clone() => deepCopy();
+  StoreSupplierPermission clone() =>
+      StoreSupplierPermission()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   StoreSupplierPermission copyWith(
           void Function(StoreSupplierPermission) updates) =>
@@ -533,7 +539,8 @@ class StoreTransactionPermission extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  StoreTransactionPermission clone() => deepCopy();
+  StoreTransactionPermission clone() =>
+      StoreTransactionPermission()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   StoreTransactionPermission copyWith(
           void Function(StoreTransactionPermission) updates) =>
@@ -635,7 +642,7 @@ class StorePermissions extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  StorePermissions clone() => deepCopy();
+  StorePermissions clone() => StorePermissions()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   StorePermissions copyWith(void Function(StorePermissions) updates) =>
       super.copyWith((message) => updates(message as StorePermissions))

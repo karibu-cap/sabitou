@@ -80,19 +80,21 @@ class Batch extends $pb.GeneratedMessage {
     ..aOS(1, _omitFieldNames ? '' : 'documentId')
     ..aOS(2, _omitFieldNames ? '' : 'productId')
     ..aOS(3, _omitFieldNames ? '' : 'warehouseId')
-    ..aD(4, _omitFieldNames ? '' : 'quantity')
+    ..a<$core.double>(4, _omitFieldNames ? '' : 'quantity', $pb.PbFieldType.OD)
     ..aOM<$0.Timestamp>(5, _omitFieldNames ? '' : 'expirationDate',
         subBuilder: $0.Timestamp.create)
     ..aOM<$0.Timestamp>(6, _omitFieldNames ? '' : 'receivedAt',
         subBuilder: $0.Timestamp.create)
     ..aOS(7, _omitFieldNames ? '' : 'supplierBatchNumber')
-    ..aE<BatchStatus>(8, _omitFieldNames ? '' : 'status',
+    ..e<BatchStatus>(8, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
+        defaultOrMaker: BatchStatus.BATCH_STATUS_UNSPECIFIED,
+        valueOf: BatchStatus.valueOf,
         enumValues: BatchStatus.values)
     ..aOS(9, _omitFieldNames ? '' : 'notes')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  Batch clone() => deepCopy();
+  Batch clone() => Batch()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Batch copyWith(void Function(Batch) updates) =>
       super.copyWith((message) => updates(message as Batch)) as Batch;
@@ -257,18 +259,23 @@ class InventoryLevel extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'storeProductId')
     ..aOS(2, _omitFieldNames ? '' : 'storeId')
-    ..aD(3, _omitFieldNames ? '' : 'quantityAvailable')
-    ..aD(4, _omitFieldNames ? '' : 'quantityReserved')
-    ..aD(5, _omitFieldNames ? '' : 'quantityInTransit')
+    ..a<$core.double>(
+        3, _omitFieldNames ? '' : 'quantityAvailable', $pb.PbFieldType.OD)
+    ..a<$core.double>(
+        4, _omitFieldNames ? '' : 'quantityReserved', $pb.PbFieldType.OD)
+    ..a<$core.double>(
+        5, _omitFieldNames ? '' : 'quantityInTransit', $pb.PbFieldType.OD)
     ..aOM<$0.Timestamp>(6, _omitFieldNames ? '' : 'lastUpdated',
         subBuilder: $0.Timestamp.create)
     ..aOS(7, _omitFieldNames ? '' : 'lastUpdatedByUserId')
-    ..aD(8, _omitFieldNames ? '' : 'minThreshold')
-    ..pPM<Batch>(9, _omitFieldNames ? '' : 'batches', subBuilder: Batch.create)
+    ..a<$core.double>(
+        8, _omitFieldNames ? '' : 'minThreshold', $pb.PbFieldType.OD)
+    ..pc<Batch>(9, _omitFieldNames ? '' : 'batches', $pb.PbFieldType.PM,
+        subBuilder: Batch.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  InventoryLevel clone() => deepCopy();
+  InventoryLevel clone() => InventoryLevel()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   InventoryLevel copyWith(void Function(InventoryLevel) updates) =>
       super.copyWith((message) => updates(message as InventoryLevel))
@@ -411,12 +418,17 @@ class InventoryLevelWithProduct extends $pb.GeneratedMessage {
     ..aOM<$1.GlobalProduct>(3, _omitFieldNames ? '' : 'globalProduct',
         protoName: 'globalProduct', subBuilder: $1.GlobalProduct.create)
     ..aInt64(4, _omitFieldNames ? '' : 'stockValue')
-    ..aE<StockStatus>(5, _omitFieldNames ? '' : 'stockStatus',
-        protoName: 'stockStatus', enumValues: StockStatus.values)
+    ..e<StockStatus>(
+        5, _omitFieldNames ? '' : 'stockStatus', $pb.PbFieldType.OE,
+        protoName: 'stockStatus',
+        defaultOrMaker: StockStatus.STOCK_STATUS_UNSPECIFIED,
+        valueOf: StockStatus.valueOf,
+        enumValues: StockStatus.values)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  InventoryLevelWithProduct clone() => deepCopy();
+  InventoryLevelWithProduct clone() =>
+      InventoryLevelWithProduct()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   InventoryLevelWithProduct copyWith(
           void Function(InventoryLevelWithProduct) updates) =>
@@ -526,18 +538,22 @@ class GetInventoryTransactionHistoryRequest extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'storeId')
     ..aOS(2, _omitFieldNames ? '' : 'productId')
-    ..aE<$2.TransactionType>(3, _omitFieldNames ? '' : 'transactionType',
+    ..e<$2.TransactionType>(
+        3, _omitFieldNames ? '' : 'transactionType', $pb.PbFieldType.OE,
+        defaultOrMaker: $2.TransactionType.TXN_TYPE_UNSPECIFIED,
+        valueOf: $2.TransactionType.valueOf,
         enumValues: $2.TransactionType.values)
     ..aOM<$0.Timestamp>(4, _omitFieldNames ? '' : 'startDate',
         subBuilder: $0.Timestamp.create)
     ..aOM<$0.Timestamp>(5, _omitFieldNames ? '' : 'endDate',
         subBuilder: $0.Timestamp.create)
-    ..aI(6, _omitFieldNames ? '' : 'pageSize')
-    ..aI(7, _omitFieldNames ? '' : 'pageNumber')
+    ..a<$core.int>(6, _omitFieldNames ? '' : 'pageSize', $pb.PbFieldType.O3)
+    ..a<$core.int>(7, _omitFieldNames ? '' : 'pageNumber', $pb.PbFieldType.O3)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetInventoryTransactionHistoryRequest clone() => deepCopy();
+  GetInventoryTransactionHistoryRequest clone() =>
+      GetInventoryTransactionHistoryRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetInventoryTransactionHistoryRequest copyWith(
           void Function(GetInventoryTransactionHistoryRequest) updates) =>
@@ -658,15 +674,19 @@ class GetInventoryTransactionHistoryResponse extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'GetInventoryTransactionHistoryResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'),
       createEmptyInstance: create)
-    ..pPM<$2.InventoryTransaction>(1, _omitFieldNames ? '' : 'transactions',
+    ..pc<$2.InventoryTransaction>(
+        1, _omitFieldNames ? '' : 'transactions', $pb.PbFieldType.PM,
         subBuilder: $2.InventoryTransaction.create)
-    ..aI(2, _omitFieldNames ? '' : 'totalCount')
-    ..aD(3, _omitFieldNames ? '' : 'totalQuantityIn')
-    ..aD(4, _omitFieldNames ? '' : 'totalQuantityOut')
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'totalCount', $pb.PbFieldType.O3)
+    ..a<$core.double>(
+        3, _omitFieldNames ? '' : 'totalQuantityIn', $pb.PbFieldType.OD)
+    ..a<$core.double>(
+        4, _omitFieldNames ? '' : 'totalQuantityOut', $pb.PbFieldType.OD)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetInventoryTransactionHistoryResponse clone() => deepCopy();
+  GetInventoryTransactionHistoryResponse clone() =>
+      GetInventoryTransactionHistoryResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetInventoryTransactionHistoryResponse copyWith(
           void Function(GetInventoryTransactionHistoryResponse) updates) =>
@@ -748,7 +768,8 @@ class GetProductInventoryLevelsRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetProductInventoryLevelsRequest clone() => deepCopy();
+  GetProductInventoryLevelsRequest clone() =>
+      GetProductInventoryLevelsRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetProductInventoryLevelsRequest copyWith(
           void Function(GetProductInventoryLevelsRequest) updates) =>
@@ -811,7 +832,7 @@ class GetProductInventoryLevelsResponse extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'GetProductInventoryLevelsResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'),
       createEmptyInstance: create)
-    ..pPM<InventoryLevel>(1, _omitFieldNames ? '' : 'levels',
+    ..pc<InventoryLevel>(1, _omitFieldNames ? '' : 'levels', $pb.PbFieldType.PM,
         subBuilder: InventoryLevel.create)
     ..aInt64(2, _omitFieldNames ? '' : 'totalAvailable')
     ..aInt64(3, _omitFieldNames ? '' : 'totalReserved')
@@ -819,7 +840,8 @@ class GetProductInventoryLevelsResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetProductInventoryLevelsResponse clone() => deepCopy();
+  GetProductInventoryLevelsResponse clone() =>
+      GetProductInventoryLevelsResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetProductInventoryLevelsResponse copyWith(
           void Function(GetProductInventoryLevelsResponse) updates) =>
@@ -902,11 +924,13 @@ class CheckProductAvailabilityRequest extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'productId')
     ..aOS(2, _omitFieldNames ? '' : 'storeId')
-    ..aD(3, _omitFieldNames ? '' : 'quantityNeeded')
+    ..a<$core.double>(
+        3, _omitFieldNames ? '' : 'quantityNeeded', $pb.PbFieldType.OD)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CheckProductAvailabilityRequest clone() => deepCopy();
+  CheckProductAvailabilityRequest clone() =>
+      CheckProductAvailabilityRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CheckProductAvailabilityRequest copyWith(
           void Function(CheckProductAvailabilityRequest) updates) =>
@@ -988,13 +1012,16 @@ class CheckProductAvailabilityResponse extends $pb.GeneratedMessage {
       package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'),
       createEmptyInstance: create)
     ..aOB(1, _omitFieldNames ? '' : 'isAvailable')
-    ..aD(2, _omitFieldNames ? '' : 'quantityAvailable')
-    ..aD(3, _omitFieldNames ? '' : 'quantityNeeded')
-    ..aD(4, _omitFieldNames ? '' : 'shortage')
+    ..a<$core.double>(
+        2, _omitFieldNames ? '' : 'quantityAvailable', $pb.PbFieldType.OD)
+    ..a<$core.double>(
+        3, _omitFieldNames ? '' : 'quantityNeeded', $pb.PbFieldType.OD)
+    ..a<$core.double>(4, _omitFieldNames ? '' : 'shortage', $pb.PbFieldType.OD)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CheckProductAvailabilityResponse clone() => deepCopy();
+  CheckProductAvailabilityResponse clone() =>
+      CheckProductAvailabilityResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CheckProductAvailabilityResponse copyWith(
           void Function(CheckProductAvailabilityResponse) updates) =>
@@ -1084,13 +1111,14 @@ class GetLowStockItemsRequest extends $pb.GeneratedMessage {
       package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'storeId')
-    ..aI(2, _omitFieldNames ? '' : 'threshold')
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'threshold', $pb.PbFieldType.O3)
     ..aOS(3, _omitFieldNames ? '' : 'categoryId')
     ..aOS(4, _omitFieldNames ? '' : 'supplierId')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetLowStockItemsRequest clone() => deepCopy();
+  GetLowStockItemsRequest clone() =>
+      GetLowStockItemsRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetLowStockItemsRequest copyWith(
           void Function(GetLowStockItemsRequest) updates) =>
@@ -1173,13 +1201,15 @@ class GetLowStockItemsResponse extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'GetLowStockItemsResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'),
       createEmptyInstance: create)
-    ..pPM<InventoryLevel>(1, _omitFieldNames ? '' : 'lowStockItems',
+    ..pc<InventoryLevel>(
+        1, _omitFieldNames ? '' : 'lowStockItems', $pb.PbFieldType.PM,
         subBuilder: InventoryLevel.create)
-    ..aI(2, _omitFieldNames ? '' : 'totalCount')
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'totalCount', $pb.PbFieldType.O3)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetLowStockItemsResponse clone() => deepCopy();
+  GetLowStockItemsResponse clone() =>
+      GetLowStockItemsResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetLowStockItemsResponse copyWith(
           void Function(GetLowStockItemsResponse) updates) =>
@@ -1249,7 +1279,8 @@ class GetResourceInventoryRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetResourceInventoryRequest clone() => deepCopy();
+  GetResourceInventoryRequest clone() =>
+      GetResourceInventoryRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetResourceInventoryRequest copyWith(
           void Function(GetResourceInventoryRequest) updates) =>
@@ -1339,15 +1370,17 @@ class GetResourceInventoryResponse extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'GetResourceInventoryResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'),
       createEmptyInstance: create)
-    ..pPM<InventoryLevel>(1, _omitFieldNames ? '' : 'items',
+    ..pc<InventoryLevel>(1, _omitFieldNames ? '' : 'items', $pb.PbFieldType.PM,
         subBuilder: InventoryLevel.create)
-    ..aD(2, _omitFieldNames ? '' : 'totalQuantity')
+    ..a<$core.double>(
+        2, _omitFieldNames ? '' : 'totalQuantity', $pb.PbFieldType.OD)
     ..aOM<$0.Timestamp>(3, _omitFieldNames ? '' : 'snapshotDate',
         subBuilder: $0.Timestamp.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetResourceInventoryResponse clone() => deepCopy();
+  GetResourceInventoryResponse clone() =>
+      GetResourceInventoryResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetResourceInventoryResponse copyWith(
           void Function(GetResourceInventoryResponse) updates) =>
@@ -1433,12 +1466,13 @@ class GetProductTransactionHistoryRequest extends $pb.GeneratedMessage {
         subBuilder: $0.Timestamp.create)
     ..aOM<$0.Timestamp>(4, _omitFieldNames ? '' : 'endDate',
         subBuilder: $0.Timestamp.create)
-    ..aI(5, _omitFieldNames ? '' : 'pageSize')
-    ..aI(6, _omitFieldNames ? '' : 'pageNumber')
+    ..a<$core.int>(5, _omitFieldNames ? '' : 'pageSize', $pb.PbFieldType.O3)
+    ..a<$core.int>(6, _omitFieldNames ? '' : 'pageNumber', $pb.PbFieldType.O3)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetProductTransactionHistoryRequest clone() => deepCopy();
+  GetProductTransactionHistoryRequest clone() =>
+      GetProductTransactionHistoryRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetProductTransactionHistoryRequest copyWith(
           void Function(GetProductTransactionHistoryRequest) updates) =>
@@ -1546,13 +1580,15 @@ class GetProductTransactionHistoryResponse extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'GetProductTransactionHistoryResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'),
       createEmptyInstance: create)
-    ..pPM<$2.InventoryTransaction>(1, _omitFieldNames ? '' : 'transactions',
+    ..pc<$2.InventoryTransaction>(
+        1, _omitFieldNames ? '' : 'transactions', $pb.PbFieldType.PM,
         subBuilder: $2.InventoryTransaction.create)
-    ..aI(2, _omitFieldNames ? '' : 'totalCount')
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'totalCount', $pb.PbFieldType.O3)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetProductTransactionHistoryResponse clone() => deepCopy();
+  GetProductTransactionHistoryResponse clone() =>
+      GetProductTransactionHistoryResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetProductTransactionHistoryResponse copyWith(
           void Function(GetProductTransactionHistoryResponse) updates) =>

@@ -56,7 +56,7 @@ class ResourceLink extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ResourceLink clone() => deepCopy();
+  ResourceLink clone() => ResourceLink()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ResourceLink copyWith(void Function(ResourceLink) updates) =>
       super.copyWith((message) => updates(message as ResourceLink))
@@ -154,7 +154,8 @@ class GetResourceLinksRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetResourceLinksRequest clone() => deepCopy();
+  GetResourceLinksRequest clone() =>
+      GetResourceLinksRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetResourceLinksRequest copyWith(
           void Function(GetResourceLinksRequest) updates) =>
@@ -212,7 +213,8 @@ class GetResourceLinksResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetResourceLinksResponse clone() => deepCopy();
+  GetResourceLinksResponse clone() =>
+      GetResourceLinksResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetResourceLinksResponse copyWith(
           void Function(GetResourceLinksResponse) updates) =>

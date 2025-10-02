@@ -52,7 +52,7 @@ class LoginRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  LoginRequest clone() => deepCopy();
+  LoginRequest clone() => LoginRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   LoginRequest copyWith(void Function(LoginRequest) updates) =>
       super.copyWith((message) => updates(message as LoginRequest))
@@ -145,7 +145,7 @@ class LoginResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  LoginResponse clone() => deepCopy();
+  LoginResponse clone() => LoginResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   LoginResponse copyWith(void Function(LoginResponse) updates) =>
       super.copyWith((message) => updates(message as LoginResponse))
@@ -221,7 +221,7 @@ class RegisterRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  RegisterRequest clone() => deepCopy();
+  RegisterRequest clone() => RegisterRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   RegisterRequest copyWith(void Function(RegisterRequest) updates) =>
       super.copyWith((message) => updates(message as RegisterRequest))
@@ -301,7 +301,7 @@ class RegisterResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  RegisterResponse clone() => deepCopy();
+  RegisterResponse clone() => RegisterResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   RegisterResponse copyWith(void Function(RegisterResponse) updates) =>
       super.copyWith((message) => updates(message as RegisterResponse))
@@ -368,7 +368,8 @@ class RequestPasswordResetRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  RequestPasswordResetRequest clone() => deepCopy();
+  RequestPasswordResetRequest clone() =>
+      RequestPasswordResetRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   RequestPasswordResetRequest copyWith(
           void Function(RequestPasswordResetRequest) updates) =>
@@ -432,7 +433,8 @@ class RequestPasswordResetResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  RequestPasswordResetResponse clone() => deepCopy();
+  RequestPasswordResetResponse clone() =>
+      RequestPasswordResetResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   RequestPasswordResetResponse copyWith(
           void Function(RequestPasswordResetResponse) updates) =>
@@ -509,7 +511,8 @@ class ResetPasswordRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ResetPasswordRequest clone() => deepCopy();
+  ResetPasswordRequest clone() =>
+      ResetPasswordRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ResetPasswordRequest copyWith(void Function(ResetPasswordRequest) updates) =>
       super.copyWith((message) => updates(message as ResetPasswordRequest))
@@ -586,7 +589,8 @@ class ResetPasswordResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ResetPasswordResponse clone() => deepCopy();
+  ResetPasswordResponse clone() =>
+      ResetPasswordResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ResetPasswordResponse copyWith(
           void Function(ResetPasswordResponse) updates) =>

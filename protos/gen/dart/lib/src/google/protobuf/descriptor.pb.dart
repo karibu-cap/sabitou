@@ -46,12 +46,13 @@ class FileDescriptorSet extends $pb.GeneratedMessage {
       package:
           const $pb.PackageName(_omitMessageNames ? '' : 'google.protobuf'),
       createEmptyInstance: create)
-    ..pPM<FileDescriptorProto>(1, _omitFieldNames ? '' : 'file',
+    ..pc<FileDescriptorProto>(
+        1, _omitFieldNames ? '' : 'file', $pb.PbFieldType.PM,
         subBuilder: FileDescriptorProto.create)
     ..hasExtensions = true;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  FileDescriptorSet clone() => deepCopy();
+  FileDescriptorSet clone() => FileDescriptorSet()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   FileDescriptorSet copyWith(void Function(FileDescriptorSet) updates) =>
       super.copyWith((message) => updates(message as FileDescriptorSet))
@@ -91,7 +92,6 @@ class FileDescriptorProto extends $pb.GeneratedMessage {
     $core.Iterable<$core.int>? weakDependency,
     $core.String? syntax,
     Edition? edition,
-    $core.Iterable<$core.String>? optionDependency,
   }) {
     final result = create();
     if (name != null) result.name = name;
@@ -108,8 +108,6 @@ class FileDescriptorProto extends $pb.GeneratedMessage {
     if (weakDependency != null) result.weakDependency.addAll(weakDependency);
     if (syntax != null) result.syntax = syntax;
     if (edition != null) result.edition = edition;
-    if (optionDependency != null)
-      result.optionDependency.addAll(optionDependency);
     return result;
   }
 
@@ -130,13 +128,17 @@ class FileDescriptorProto extends $pb.GeneratedMessage {
     ..aOS(1, _omitFieldNames ? '' : 'name')
     ..aOS(2, _omitFieldNames ? '' : 'package')
     ..pPS(3, _omitFieldNames ? '' : 'dependency')
-    ..pPM<DescriptorProto>(4, _omitFieldNames ? '' : 'messageType',
+    ..pc<DescriptorProto>(
+        4, _omitFieldNames ? '' : 'messageType', $pb.PbFieldType.PM,
         subBuilder: DescriptorProto.create)
-    ..pPM<EnumDescriptorProto>(5, _omitFieldNames ? '' : 'enumType',
+    ..pc<EnumDescriptorProto>(
+        5, _omitFieldNames ? '' : 'enumType', $pb.PbFieldType.PM,
         subBuilder: EnumDescriptorProto.create)
-    ..pPM<ServiceDescriptorProto>(6, _omitFieldNames ? '' : 'service',
+    ..pc<ServiceDescriptorProto>(
+        6, _omitFieldNames ? '' : 'service', $pb.PbFieldType.PM,
         subBuilder: ServiceDescriptorProto.create)
-    ..pPM<FieldDescriptorProto>(7, _omitFieldNames ? '' : 'extension',
+    ..pc<FieldDescriptorProto>(
+        7, _omitFieldNames ? '' : 'extension', $pb.PbFieldType.PM,
         subBuilder: FieldDescriptorProto.create)
     ..aOM<FileOptions>(8, _omitFieldNames ? '' : 'options',
         subBuilder: FileOptions.create)
@@ -150,11 +152,10 @@ class FileDescriptorProto extends $pb.GeneratedMessage {
     ..e<Edition>(14, _omitFieldNames ? '' : 'edition', $pb.PbFieldType.OE,
         defaultOrMaker: Edition.EDITION_UNKNOWN,
         valueOf: Edition.valueOf,
-        enumValues: Edition.values)
-    ..pPS(15, _omitFieldNames ? '' : 'optionDependency');
+        enumValues: Edition.values);
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  FileDescriptorProto clone() => deepCopy();
+  FileDescriptorProto clone() => FileDescriptorProto()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   FileDescriptorProto copyWith(void Function(FileDescriptorProto) updates) =>
       super.copyWith((message) => updates(message as FileDescriptorProto))
@@ -248,9 +249,6 @@ class FileDescriptorProto extends $pb.GeneratedMessage {
   /// The supported values are "proto2", "proto3", and "editions".
   ///
   /// If `edition` is present, this value must be "editions".
-  /// WARNING: This field should only be used by protobuf plugins or special
-  /// cases like the proto compiler. Other uses are discouraged and
-  /// developers should rely on the protoreflect APIs for their client language.
   @$pb.TagNumber(12)
   $core.String get syntax => $_getSZ(11);
   @$pb.TagNumber(12)
@@ -261,9 +259,6 @@ class FileDescriptorProto extends $pb.GeneratedMessage {
   void clearSyntax() => $_clearField(12);
 
   /// The edition of the proto file.
-  /// WARNING: This field should only be used by protobuf plugins or special
-  /// cases like the proto compiler. Other uses are discouraged and
-  /// developers should rely on the protoreflect APIs for their client language.
   @$pb.TagNumber(14)
   Edition get edition => $_getN(12);
   @$pb.TagNumber(14)
@@ -272,11 +267,6 @@ class FileDescriptorProto extends $pb.GeneratedMessage {
   $core.bool hasEdition() => $_has(12);
   @$pb.TagNumber(14)
   void clearEdition() => $_clearField(14);
-
-  /// Names of files imported by this file purely for the purpose of providing
-  /// option extensions. These are excluded from the dependency list above.
-  @$pb.TagNumber(15)
-  $pb.PbList<$core.String> get optionDependency => $_getList(13);
 }
 
 class DescriptorProto_ExtensionRange extends $pb.GeneratedMessage {
@@ -306,13 +296,14 @@ class DescriptorProto_ExtensionRange extends $pb.GeneratedMessage {
       package:
           const $pb.PackageName(_omitMessageNames ? '' : 'google.protobuf'),
       createEmptyInstance: create)
-    ..aI(1, _omitFieldNames ? '' : 'start')
-    ..aI(2, _omitFieldNames ? '' : 'end')
+    ..a<$core.int>(1, _omitFieldNames ? '' : 'start', $pb.PbFieldType.O3)
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'end', $pb.PbFieldType.O3)
     ..aOM<ExtensionRangeOptions>(3, _omitFieldNames ? '' : 'options',
         subBuilder: ExtensionRangeOptions.create);
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  DescriptorProto_ExtensionRange clone() => deepCopy();
+  DescriptorProto_ExtensionRange clone() =>
+      DescriptorProto_ExtensionRange()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   DescriptorProto_ExtensionRange copyWith(
           void Function(DescriptorProto_ExtensionRange) updates) =>
@@ -393,12 +384,13 @@ class DescriptorProto_ReservedRange extends $pb.GeneratedMessage {
       package:
           const $pb.PackageName(_omitMessageNames ? '' : 'google.protobuf'),
       createEmptyInstance: create)
-    ..aI(1, _omitFieldNames ? '' : 'start')
-    ..aI(2, _omitFieldNames ? '' : 'end')
+    ..a<$core.int>(1, _omitFieldNames ? '' : 'start', $pb.PbFieldType.O3)
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'end', $pb.PbFieldType.O3)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  DescriptorProto_ReservedRange clone() => deepCopy();
+  DescriptorProto_ReservedRange clone() =>
+      DescriptorProto_ReservedRange()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   DescriptorProto_ReservedRange copyWith(
           void Function(DescriptorProto_ReservedRange) updates) =>
@@ -453,7 +445,6 @@ class DescriptorProto extends $pb.GeneratedMessage {
     $core.Iterable<OneofDescriptorProto>? oneofDecl,
     $core.Iterable<DescriptorProto_ReservedRange>? reservedRange,
     $core.Iterable<$core.String>? reservedName,
-    SymbolVisibility? visibility,
   }) {
     final result = create();
     if (name != null) result.name = name;
@@ -466,7 +457,6 @@ class DescriptorProto extends $pb.GeneratedMessage {
     if (oneofDecl != null) result.oneofDecl.addAll(oneofDecl);
     if (reservedRange != null) result.reservedRange.addAll(reservedRange);
     if (reservedName != null) result.reservedName.addAll(reservedName);
-    if (visibility != null) result.visibility = visibility;
     return result;
   }
 
@@ -485,33 +475,33 @@ class DescriptorProto extends $pb.GeneratedMessage {
           const $pb.PackageName(_omitMessageNames ? '' : 'google.protobuf'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'name')
-    ..pPM<FieldDescriptorProto>(2, _omitFieldNames ? '' : 'field',
+    ..pc<FieldDescriptorProto>(
+        2, _omitFieldNames ? '' : 'field', $pb.PbFieldType.PM,
         subBuilder: FieldDescriptorProto.create)
-    ..pPM<DescriptorProto>(3, _omitFieldNames ? '' : 'nestedType',
+    ..pc<DescriptorProto>(
+        3, _omitFieldNames ? '' : 'nestedType', $pb.PbFieldType.PM,
         subBuilder: DescriptorProto.create)
-    ..pPM<EnumDescriptorProto>(4, _omitFieldNames ? '' : 'enumType',
+    ..pc<EnumDescriptorProto>(
+        4, _omitFieldNames ? '' : 'enumType', $pb.PbFieldType.PM,
         subBuilder: EnumDescriptorProto.create)
-    ..pPM<DescriptorProto_ExtensionRange>(
-        5, _omitFieldNames ? '' : 'extensionRange',
+    ..pc<DescriptorProto_ExtensionRange>(
+        5, _omitFieldNames ? '' : 'extensionRange', $pb.PbFieldType.PM,
         subBuilder: DescriptorProto_ExtensionRange.create)
-    ..pPM<FieldDescriptorProto>(6, _omitFieldNames ? '' : 'extension',
+    ..pc<FieldDescriptorProto>(
+        6, _omitFieldNames ? '' : 'extension', $pb.PbFieldType.PM,
         subBuilder: FieldDescriptorProto.create)
     ..aOM<MessageOptions>(7, _omitFieldNames ? '' : 'options',
         subBuilder: MessageOptions.create)
-    ..pPM<OneofDescriptorProto>(8, _omitFieldNames ? '' : 'oneofDecl',
+    ..pc<OneofDescriptorProto>(
+        8, _omitFieldNames ? '' : 'oneofDecl', $pb.PbFieldType.PM,
         subBuilder: OneofDescriptorProto.create)
-    ..pPM<DescriptorProto_ReservedRange>(
-        9, _omitFieldNames ? '' : 'reservedRange',
+    ..pc<DescriptorProto_ReservedRange>(
+        9, _omitFieldNames ? '' : 'reservedRange', $pb.PbFieldType.PM,
         subBuilder: DescriptorProto_ReservedRange.create)
-    ..pPS(10, _omitFieldNames ? '' : 'reservedName')
-    ..e<SymbolVisibility>(
-        11, _omitFieldNames ? '' : 'visibility', $pb.PbFieldType.OE,
-        defaultOrMaker: SymbolVisibility.VISIBILITY_UNSET,
-        valueOf: SymbolVisibility.valueOf,
-        enumValues: SymbolVisibility.values);
+    ..pPS(10, _omitFieldNames ? '' : 'reservedName');
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  DescriptorProto clone() => deepCopy();
+  DescriptorProto clone() => DescriptorProto()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   DescriptorProto copyWith(void Function(DescriptorProto) updates) =>
       super.copyWith((message) => updates(message as DescriptorProto))
@@ -576,16 +566,6 @@ class DescriptorProto extends $pb.GeneratedMessage {
   /// A given name may only be reserved once.
   @$pb.TagNumber(10)
   $pb.PbList<$core.String> get reservedName => $_getList(9);
-
-  /// Support for `export` and `local` keywords on enums.
-  @$pb.TagNumber(11)
-  SymbolVisibility get visibility => $_getN(10);
-  @$pb.TagNumber(11)
-  set visibility(SymbolVisibility value) => $_setField(11, value);
-  @$pb.TagNumber(11)
-  $core.bool hasVisibility() => $_has(10);
-  @$pb.TagNumber(11)
-  void clearVisibility() => $_clearField(11);
 }
 
 class ExtensionRangeOptions_Declaration extends $pb.GeneratedMessage {
@@ -620,7 +600,7 @@ class ExtensionRangeOptions_Declaration extends $pb.GeneratedMessage {
       package:
           const $pb.PackageName(_omitMessageNames ? '' : 'google.protobuf'),
       createEmptyInstance: create)
-    ..aI(1, _omitFieldNames ? '' : 'number')
+    ..a<$core.int>(1, _omitFieldNames ? '' : 'number', $pb.PbFieldType.O3)
     ..aOS(2, _omitFieldNames ? '' : 'fullName')
     ..aOS(3, _omitFieldNames ? '' : 'type')
     ..aOB(5, _omitFieldNames ? '' : 'reserved')
@@ -628,7 +608,8 @@ class ExtensionRangeOptions_Declaration extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ExtensionRangeOptions_Declaration clone() => deepCopy();
+  ExtensionRangeOptions_Declaration clone() =>
+      ExtensionRangeOptions_Declaration()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ExtensionRangeOptions_Declaration copyWith(
           void Function(ExtensionRangeOptions_Declaration) updates) =>
@@ -739,22 +720,24 @@ class ExtensionRangeOptions extends $pb.GeneratedMessage {
       package:
           const $pb.PackageName(_omitMessageNames ? '' : 'google.protobuf'),
       createEmptyInstance: create)
-    ..pPM<ExtensionRangeOptions_Declaration>(
-        2, _omitFieldNames ? '' : 'declaration',
+    ..pc<ExtensionRangeOptions_Declaration>(
+        2, _omitFieldNames ? '' : 'declaration', $pb.PbFieldType.PM,
         subBuilder: ExtensionRangeOptions_Declaration.create)
-    ..aE<ExtensionRangeOptions_VerificationState>(
-        3, _omitFieldNames ? '' : 'verification',
+    ..e<ExtensionRangeOptions_VerificationState>(
+        3, _omitFieldNames ? '' : 'verification', $pb.PbFieldType.OE,
         defaultOrMaker: ExtensionRangeOptions_VerificationState.UNVERIFIED,
+        valueOf: ExtensionRangeOptions_VerificationState.valueOf,
         enumValues: ExtensionRangeOptions_VerificationState.values)
     ..aOM<FeatureSet>(50, _omitFieldNames ? '' : 'features',
         subBuilder: FeatureSet.create)
-    ..pPM<UninterpretedOption>(
-        999, _omitFieldNames ? '' : 'uninterpretedOption',
+    ..pc<UninterpretedOption>(
+        999, _omitFieldNames ? '' : 'uninterpretedOption', $pb.PbFieldType.PM,
         subBuilder: UninterpretedOption.create)
     ..hasExtensions = true;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ExtensionRangeOptions clone() => deepCopy();
+  ExtensionRangeOptions clone() =>
+      ExtensionRangeOptions()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ExtensionRangeOptions copyWith(
           void Function(ExtensionRangeOptions) updates) =>
@@ -857,21 +840,28 @@ class FieldDescriptorProto extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'name')
     ..aOS(2, _omitFieldNames ? '' : 'extendee')
-    ..aI(3, _omitFieldNames ? '' : 'number')
-    ..aE<FieldDescriptorProto_Label>(4, _omitFieldNames ? '' : 'label',
+    ..a<$core.int>(3, _omitFieldNames ? '' : 'number', $pb.PbFieldType.O3)
+    ..e<FieldDescriptorProto_Label>(
+        4, _omitFieldNames ? '' : 'label', $pb.PbFieldType.OE,
+        defaultOrMaker: FieldDescriptorProto_Label.LABEL_OPTIONAL,
+        valueOf: FieldDescriptorProto_Label.valueOf,
         enumValues: FieldDescriptorProto_Label.values)
-    ..aE<FieldDescriptorProto_Type>(5, _omitFieldNames ? '' : 'type',
+    ..e<FieldDescriptorProto_Type>(
+        5, _omitFieldNames ? '' : 'type', $pb.PbFieldType.OE,
+        defaultOrMaker: FieldDescriptorProto_Type.TYPE_DOUBLE,
+        valueOf: FieldDescriptorProto_Type.valueOf,
         enumValues: FieldDescriptorProto_Type.values)
     ..aOS(6, _omitFieldNames ? '' : 'typeName')
     ..aOS(7, _omitFieldNames ? '' : 'defaultValue')
     ..aOM<FieldOptions>(8, _omitFieldNames ? '' : 'options',
         subBuilder: FieldOptions.create)
-    ..aI(9, _omitFieldNames ? '' : 'oneofIndex')
+    ..a<$core.int>(9, _omitFieldNames ? '' : 'oneofIndex', $pb.PbFieldType.O3)
     ..aOS(10, _omitFieldNames ? '' : 'jsonName')
     ..aOB(17, _omitFieldNames ? '' : 'proto3Optional');
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  FieldDescriptorProto clone() => deepCopy();
+  FieldDescriptorProto clone() =>
+      FieldDescriptorProto()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   FieldDescriptorProto copyWith(void Function(FieldDescriptorProto) updates) =>
       super.copyWith((message) => updates(message as FieldDescriptorProto))
@@ -1064,7 +1054,8 @@ class OneofDescriptorProto extends $pb.GeneratedMessage {
         subBuilder: OneofOptions.create);
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  OneofDescriptorProto clone() => deepCopy();
+  OneofDescriptorProto clone() =>
+      OneofDescriptorProto()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   OneofDescriptorProto copyWith(void Function(OneofDescriptorProto) updates) =>
       super.copyWith((message) => updates(message as OneofDescriptorProto))
@@ -1137,12 +1128,13 @@ class EnumDescriptorProto_EnumReservedRange extends $pb.GeneratedMessage {
       package:
           const $pb.PackageName(_omitMessageNames ? '' : 'google.protobuf'),
       createEmptyInstance: create)
-    ..aI(1, _omitFieldNames ? '' : 'start')
-    ..aI(2, _omitFieldNames ? '' : 'end')
+    ..a<$core.int>(1, _omitFieldNames ? '' : 'start', $pb.PbFieldType.O3)
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'end', $pb.PbFieldType.O3)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  EnumDescriptorProto_EnumReservedRange clone() => deepCopy();
+  EnumDescriptorProto_EnumReservedRange clone() =>
+      EnumDescriptorProto_EnumReservedRange()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   EnumDescriptorProto_EnumReservedRange copyWith(
           void Function(EnumDescriptorProto_EnumReservedRange) updates) =>
@@ -1193,7 +1185,6 @@ class EnumDescriptorProto extends $pb.GeneratedMessage {
     EnumOptions? options,
     $core.Iterable<EnumDescriptorProto_EnumReservedRange>? reservedRange,
     $core.Iterable<$core.String>? reservedName,
-    SymbolVisibility? visibility,
   }) {
     final result = create();
     if (name != null) result.name = name;
@@ -1201,7 +1192,6 @@ class EnumDescriptorProto extends $pb.GeneratedMessage {
     if (options != null) result.options = options;
     if (reservedRange != null) result.reservedRange.addAll(reservedRange);
     if (reservedName != null) result.reservedName.addAll(reservedName);
-    if (visibility != null) result.visibility = visibility;
     return result;
   }
 
@@ -1220,22 +1210,18 @@ class EnumDescriptorProto extends $pb.GeneratedMessage {
           const $pb.PackageName(_omitMessageNames ? '' : 'google.protobuf'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'name')
-    ..pPM<EnumValueDescriptorProto>(2, _omitFieldNames ? '' : 'value',
+    ..pc<EnumValueDescriptorProto>(
+        2, _omitFieldNames ? '' : 'value', $pb.PbFieldType.PM,
         subBuilder: EnumValueDescriptorProto.create)
     ..aOM<EnumOptions>(3, _omitFieldNames ? '' : 'options',
         subBuilder: EnumOptions.create)
-    ..pPM<EnumDescriptorProto_EnumReservedRange>(
-        4, _omitFieldNames ? '' : 'reservedRange',
+    ..pc<EnumDescriptorProto_EnumReservedRange>(
+        4, _omitFieldNames ? '' : 'reservedRange', $pb.PbFieldType.PM,
         subBuilder: EnumDescriptorProto_EnumReservedRange.create)
-    ..pPS(5, _omitFieldNames ? '' : 'reservedName')
-    ..e<SymbolVisibility>(
-        6, _omitFieldNames ? '' : 'visibility', $pb.PbFieldType.OE,
-        defaultOrMaker: SymbolVisibility.VISIBILITY_UNSET,
-        valueOf: SymbolVisibility.valueOf,
-        enumValues: SymbolVisibility.values);
+    ..pPS(5, _omitFieldNames ? '' : 'reservedName');
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  EnumDescriptorProto clone() => deepCopy();
+  EnumDescriptorProto clone() => EnumDescriptorProto()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   EnumDescriptorProto copyWith(void Function(EnumDescriptorProto) updates) =>
       super.copyWith((message) => updates(message as EnumDescriptorProto))
@@ -1289,16 +1275,6 @@ class EnumDescriptorProto extends $pb.GeneratedMessage {
   /// be reserved once.
   @$pb.TagNumber(5)
   $pb.PbList<$core.String> get reservedName => $_getList(4);
-
-  /// Support for `export` and `local` keywords on enums.
-  @$pb.TagNumber(6)
-  SymbolVisibility get visibility => $_getN(5);
-  @$pb.TagNumber(6)
-  set visibility(SymbolVisibility value) => $_setField(6, value);
-  @$pb.TagNumber(6)
-  $core.bool hasVisibility() => $_has(5);
-  @$pb.TagNumber(6)
-  void clearVisibility() => $_clearField(6);
 }
 
 /// Describes a value within an enum.
@@ -1330,12 +1306,13 @@ class EnumValueDescriptorProto extends $pb.GeneratedMessage {
           const $pb.PackageName(_omitMessageNames ? '' : 'google.protobuf'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'name')
-    ..aI(2, _omitFieldNames ? '' : 'number')
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'number', $pb.PbFieldType.O3)
     ..aOM<EnumValueOptions>(3, _omitFieldNames ? '' : 'options',
         subBuilder: EnumValueOptions.create);
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  EnumValueDescriptorProto clone() => deepCopy();
+  EnumValueDescriptorProto clone() =>
+      EnumValueDescriptorProto()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   EnumValueDescriptorProto copyWith(
           void Function(EnumValueDescriptorProto) updates) =>
@@ -1415,13 +1392,15 @@ class ServiceDescriptorProto extends $pb.GeneratedMessage {
           const $pb.PackageName(_omitMessageNames ? '' : 'google.protobuf'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'name')
-    ..pPM<MethodDescriptorProto>(2, _omitFieldNames ? '' : 'method',
+    ..pc<MethodDescriptorProto>(
+        2, _omitFieldNames ? '' : 'method', $pb.PbFieldType.PM,
         subBuilder: MethodDescriptorProto.create)
     ..aOM<ServiceOptions>(3, _omitFieldNames ? '' : 'options',
         subBuilder: ServiceOptions.create);
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ServiceDescriptorProto clone() => deepCopy();
+  ServiceDescriptorProto clone() =>
+      ServiceDescriptorProto()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ServiceDescriptorProto copyWith(
           void Function(ServiceDescriptorProto) updates) =>
@@ -1509,7 +1488,8 @@ class MethodDescriptorProto extends $pb.GeneratedMessage {
     ..aOB(6, _omitFieldNames ? '' : 'serverStreaming');
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  MethodDescriptorProto clone() => deepCopy();
+  MethodDescriptorProto clone() =>
+      MethodDescriptorProto()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   MethodDescriptorProto copyWith(
           void Function(MethodDescriptorProto) updates) =>
@@ -1663,8 +1643,10 @@ class FileOptions extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'javaPackage')
     ..aOS(8, _omitFieldNames ? '' : 'javaOuterClassname')
-    ..aE<FileOptions_OptimizeMode>(9, _omitFieldNames ? '' : 'optimizeFor',
+    ..e<FileOptions_OptimizeMode>(
+        9, _omitFieldNames ? '' : 'optimizeFor', $pb.PbFieldType.OE,
         defaultOrMaker: FileOptions_OptimizeMode.SPEED,
+        valueOf: FileOptions_OptimizeMode.valueOf,
         enumValues: FileOptions_OptimizeMode.values)
     ..aOB(10, _omitFieldNames ? '' : 'javaMultipleFiles')
     ..aOS(11, _omitFieldNames ? '' : 'goPackage')
@@ -1686,13 +1668,13 @@ class FileOptions extends $pb.GeneratedMessage {
     ..aOS(45, _omitFieldNames ? '' : 'rubyPackage')
     ..aOM<FeatureSet>(50, _omitFieldNames ? '' : 'features',
         subBuilder: FeatureSet.create)
-    ..pPM<UninterpretedOption>(
-        999, _omitFieldNames ? '' : 'uninterpretedOption',
+    ..pc<UninterpretedOption>(
+        999, _omitFieldNames ? '' : 'uninterpretedOption', $pb.PbFieldType.PM,
         subBuilder: UninterpretedOption.create)
     ..hasExtensions = true;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  FileOptions clone() => deepCopy();
+  FileOptions clone() => FileOptions()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   FileOptions copyWith(void Function(FileOptions) updates) =>
       super.copyWith((message) => updates(message as FileOptions))
@@ -1952,9 +1934,6 @@ class FileOptions extends $pb.GeneratedMessage {
   void clearRubyPackage() => $_clearField(45);
 
   /// Any features defined in the specific edition.
-  /// WARNING: This field should only be used by protobuf plugins or special
-  /// cases like the proto compiler. Other uses are discouraged and
-  /// developers should rely on the protoreflect APIs for their client language.
   @$pb.TagNumber(50)
   FeatureSet get features => $_getN(19);
   @$pb.TagNumber(50)
@@ -2020,13 +1999,13 @@ class MessageOptions extends $pb.GeneratedMessage {
     ..aOB(11, _omitFieldNames ? '' : 'deprecatedLegacyJsonFieldConflicts')
     ..aOM<FeatureSet>(12, _omitFieldNames ? '' : 'features',
         subBuilder: FeatureSet.create)
-    ..pPM<UninterpretedOption>(
-        999, _omitFieldNames ? '' : 'uninterpretedOption',
+    ..pc<UninterpretedOption>(
+        999, _omitFieldNames ? '' : 'uninterpretedOption', $pb.PbFieldType.PM,
         subBuilder: UninterpretedOption.create)
     ..hasExtensions = true;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  MessageOptions clone() => deepCopy();
+  MessageOptions clone() => MessageOptions()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   MessageOptions copyWith(void Function(MessageOptions) updates) =>
       super.copyWith((message) => updates(message as MessageOptions))
@@ -2153,9 +2132,6 @@ class MessageOptions extends $pb.GeneratedMessage {
   void clearDeprecatedLegacyJsonFieldConflicts() => $_clearField(11);
 
   /// Any features defined in the specific edition.
-  /// WARNING: This field should only be used by protobuf plugins or special
-  /// cases like the proto compiler. Other uses are discouraged and
-  /// developers should rely on the protoreflect APIs for their client language.
   @$pb.TagNumber(12)
   FeatureSet get features => $_getN(5);
   @$pb.TagNumber(12)
@@ -2198,12 +2174,15 @@ class FieldOptions_EditionDefault extends $pb.GeneratedMessage {
           const $pb.PackageName(_omitMessageNames ? '' : 'google.protobuf'),
       createEmptyInstance: create)
     ..aOS(2, _omitFieldNames ? '' : 'value')
-    ..aE<Edition>(3, _omitFieldNames ? '' : 'edition',
+    ..e<Edition>(3, _omitFieldNames ? '' : 'edition', $pb.PbFieldType.OE,
+        defaultOrMaker: Edition.EDITION_UNKNOWN,
+        valueOf: Edition.valueOf,
         enumValues: Edition.values)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  FieldOptions_EditionDefault clone() => deepCopy();
+  FieldOptions_EditionDefault clone() =>
+      FieldOptions_EditionDefault()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   FieldOptions_EditionDefault copyWith(
           void Function(FieldOptions_EditionDefault) updates) =>
@@ -2276,17 +2255,26 @@ class FieldOptions_FeatureSupport extends $pb.GeneratedMessage {
       package:
           const $pb.PackageName(_omitMessageNames ? '' : 'google.protobuf'),
       createEmptyInstance: create)
-    ..aE<Edition>(1, _omitFieldNames ? '' : 'editionIntroduced',
+    ..e<Edition>(
+        1, _omitFieldNames ? '' : 'editionIntroduced', $pb.PbFieldType.OE,
+        defaultOrMaker: Edition.EDITION_UNKNOWN,
+        valueOf: Edition.valueOf,
         enumValues: Edition.values)
-    ..aE<Edition>(2, _omitFieldNames ? '' : 'editionDeprecated',
+    ..e<Edition>(
+        2, _omitFieldNames ? '' : 'editionDeprecated', $pb.PbFieldType.OE,
+        defaultOrMaker: Edition.EDITION_UNKNOWN,
+        valueOf: Edition.valueOf,
         enumValues: Edition.values)
     ..aOS(3, _omitFieldNames ? '' : 'deprecationWarning')
-    ..aE<Edition>(4, _omitFieldNames ? '' : 'editionRemoved',
+    ..e<Edition>(4, _omitFieldNames ? '' : 'editionRemoved', $pb.PbFieldType.OE,
+        defaultOrMaker: Edition.EDITION_UNKNOWN,
+        valueOf: Edition.valueOf,
         enumValues: Edition.values)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  FieldOptions_FeatureSupport clone() => deepCopy();
+  FieldOptions_FeatureSupport clone() =>
+      FieldOptions_FeatureSupport()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   FieldOptions_FeatureSupport copyWith(
           void Function(FieldOptions_FeatureSupport) updates) =>
@@ -2406,37 +2394,47 @@ class FieldOptions extends $pb.GeneratedMessage {
       package:
           const $pb.PackageName(_omitMessageNames ? '' : 'google.protobuf'),
       createEmptyInstance: create)
-    ..aE<FieldOptions_CType>(1, _omitFieldNames ? '' : 'ctype',
+    ..e<FieldOptions_CType>(
+        1, _omitFieldNames ? '' : 'ctype', $pb.PbFieldType.OE,
         defaultOrMaker: FieldOptions_CType.STRING,
+        valueOf: FieldOptions_CType.valueOf,
         enumValues: FieldOptions_CType.values)
     ..aOB(2, _omitFieldNames ? '' : 'packed')
     ..aOB(3, _omitFieldNames ? '' : 'deprecated')
     ..aOB(5, _omitFieldNames ? '' : 'lazy')
-    ..aE<FieldOptions_JSType>(6, _omitFieldNames ? '' : 'jstype',
+    ..e<FieldOptions_JSType>(
+        6, _omitFieldNames ? '' : 'jstype', $pb.PbFieldType.OE,
         defaultOrMaker: FieldOptions_JSType.JS_NORMAL,
+        valueOf: FieldOptions_JSType.valueOf,
         enumValues: FieldOptions_JSType.values)
     ..aOB(10, _omitFieldNames ? '' : 'weak')
     ..aOB(15, _omitFieldNames ? '' : 'unverifiedLazy')
     ..aOB(16, _omitFieldNames ? '' : 'debugRedact')
-    ..aE<FieldOptions_OptionRetention>(17, _omitFieldNames ? '' : 'retention',
+    ..e<FieldOptions_OptionRetention>(
+        17, _omitFieldNames ? '' : 'retention', $pb.PbFieldType.OE,
+        defaultOrMaker: FieldOptions_OptionRetention.RETENTION_UNKNOWN,
+        valueOf: FieldOptions_OptionRetention.valueOf,
         enumValues: FieldOptions_OptionRetention.values)
-    ..pPE<FieldOptions_OptionTargetType>(19, _omitFieldNames ? '' : 'targets',
-        enumValues: FieldOptions_OptionTargetType.values)
-    ..pPM<FieldOptions_EditionDefault>(
-        20, _omitFieldNames ? '' : 'editionDefaults',
+    ..pc<FieldOptions_OptionTargetType>(
+        19, _omitFieldNames ? '' : 'targets', $pb.PbFieldType.PE,
+        valueOf: FieldOptions_OptionTargetType.valueOf,
+        enumValues: FieldOptions_OptionTargetType.values,
+        defaultEnumValue: FieldOptions_OptionTargetType.TARGET_TYPE_UNKNOWN)
+    ..pc<FieldOptions_EditionDefault>(
+        20, _omitFieldNames ? '' : 'editionDefaults', $pb.PbFieldType.PM,
         subBuilder: FieldOptions_EditionDefault.create)
     ..aOM<FeatureSet>(21, _omitFieldNames ? '' : 'features',
         subBuilder: FeatureSet.create)
     ..aOM<FieldOptions_FeatureSupport>(
         22, _omitFieldNames ? '' : 'featureSupport',
         subBuilder: FieldOptions_FeatureSupport.create)
-    ..pPM<UninterpretedOption>(
-        999, _omitFieldNames ? '' : 'uninterpretedOption',
+    ..pc<UninterpretedOption>(
+        999, _omitFieldNames ? '' : 'uninterpretedOption', $pb.PbFieldType.PM,
         subBuilder: UninterpretedOption.create)
     ..hasExtensions = true;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  FieldOptions clone() => deepCopy();
+  FieldOptions clone() => FieldOptions()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   FieldOptions copyWith(void Function(FieldOptions) updates) =>
       super.copyWith((message) => updates(message as FieldOptions))
@@ -2601,9 +2599,6 @@ class FieldOptions extends $pb.GeneratedMessage {
   $pb.PbList<FieldOptions_EditionDefault> get editionDefaults => $_getList(10);
 
   /// Any features defined in the specific edition.
-  /// WARNING: This field should only be used by protobuf plugins or special
-  /// cases like the proto compiler. Other uses are discouraged and
-  /// developers should rely on the protoreflect APIs for their client language.
   @$pb.TagNumber(21)
   FeatureSet get features => $_getN(11);
   @$pb.TagNumber(21)
@@ -2660,13 +2655,13 @@ class OneofOptions extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOM<FeatureSet>(1, _omitFieldNames ? '' : 'features',
         subBuilder: FeatureSet.create)
-    ..pPM<UninterpretedOption>(
-        999, _omitFieldNames ? '' : 'uninterpretedOption',
+    ..pc<UninterpretedOption>(
+        999, _omitFieldNames ? '' : 'uninterpretedOption', $pb.PbFieldType.PM,
         subBuilder: UninterpretedOption.create)
     ..hasExtensions = true;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  OneofOptions clone() => deepCopy();
+  OneofOptions clone() => OneofOptions()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   OneofOptions copyWith(void Function(OneofOptions) updates) =>
       super.copyWith((message) => updates(message as OneofOptions))
@@ -2687,9 +2682,6 @@ class OneofOptions extends $pb.GeneratedMessage {
   static OneofOptions? _defaultInstance;
 
   /// Any features defined in the specific edition.
-  /// WARNING: This field should only be used by protobuf plugins or special
-  /// cases like the proto compiler. Other uses are discouraged and
-  /// developers should rely on the protoreflect APIs for their client language.
   @$pb.TagNumber(1)
   FeatureSet get features => $_getN(0);
   @$pb.TagNumber(1)
@@ -2746,13 +2738,13 @@ class EnumOptions extends $pb.GeneratedMessage {
     ..aOB(6, _omitFieldNames ? '' : 'deprecatedLegacyJsonFieldConflicts')
     ..aOM<FeatureSet>(7, _omitFieldNames ? '' : 'features',
         subBuilder: FeatureSet.create)
-    ..pPM<UninterpretedOption>(
-        999, _omitFieldNames ? '' : 'uninterpretedOption',
+    ..pc<UninterpretedOption>(
+        999, _omitFieldNames ? '' : 'uninterpretedOption', $pb.PbFieldType.PM,
         subBuilder: UninterpretedOption.create)
     ..hasExtensions = true;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  EnumOptions clone() => deepCopy();
+  EnumOptions clone() => EnumOptions()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   EnumOptions copyWith(void Function(EnumOptions) updates) =>
       super.copyWith((message) => updates(message as EnumOptions))
@@ -2816,9 +2808,6 @@ class EnumOptions extends $pb.GeneratedMessage {
   void clearDeprecatedLegacyJsonFieldConflicts() => $_clearField(6);
 
   /// Any features defined in the specific edition.
-  /// WARNING: This field should only be used by protobuf plugins or special
-  /// cases like the proto compiler. Other uses are discouraged and
-  /// developers should rely on the protoreflect APIs for their client language.
   @$pb.TagNumber(7)
   FeatureSet get features => $_getN(3);
   @$pb.TagNumber(7)
@@ -2874,13 +2863,13 @@ class EnumValueOptions extends $pb.GeneratedMessage {
     ..aOM<FieldOptions_FeatureSupport>(
         4, _omitFieldNames ? '' : 'featureSupport',
         subBuilder: FieldOptions_FeatureSupport.create)
-    ..pPM<UninterpretedOption>(
-        999, _omitFieldNames ? '' : 'uninterpretedOption',
+    ..pc<UninterpretedOption>(
+        999, _omitFieldNames ? '' : 'uninterpretedOption', $pb.PbFieldType.PM,
         subBuilder: UninterpretedOption.create)
     ..hasExtensions = true;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  EnumValueOptions clone() => deepCopy();
+  EnumValueOptions clone() => EnumValueOptions()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   EnumValueOptions copyWith(void Function(EnumValueOptions) updates) =>
       super.copyWith((message) => updates(message as EnumValueOptions))
@@ -2914,9 +2903,6 @@ class EnumValueOptions extends $pb.GeneratedMessage {
   void clearDeprecated() => $_clearField(1);
 
   /// Any features defined in the specific edition.
-  /// WARNING: This field should only be used by protobuf plugins or special
-  /// cases like the proto compiler. Other uses are discouraged and
-  /// developers should rely on the protoreflect APIs for their client language.
   @$pb.TagNumber(2)
   FeatureSet get features => $_getN(1);
   @$pb.TagNumber(2)
@@ -2988,13 +2974,13 @@ class ServiceOptions extends $pb.GeneratedMessage {
     ..aOB(33, _omitFieldNames ? '' : 'deprecated')
     ..aOM<FeatureSet>(34, _omitFieldNames ? '' : 'features',
         subBuilder: FeatureSet.create)
-    ..pPM<UninterpretedOption>(
-        999, _omitFieldNames ? '' : 'uninterpretedOption',
+    ..pc<UninterpretedOption>(
+        999, _omitFieldNames ? '' : 'uninterpretedOption', $pb.PbFieldType.PM,
         subBuilder: UninterpretedOption.create)
     ..hasExtensions = true;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ServiceOptions clone() => deepCopy();
+  ServiceOptions clone() => ServiceOptions()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ServiceOptions copyWith(void Function(ServiceOptions) updates) =>
       super.copyWith((message) => updates(message as ServiceOptions))
@@ -3028,9 +3014,6 @@ class ServiceOptions extends $pb.GeneratedMessage {
   void clearDeprecated() => $_clearField(33);
 
   /// Any features defined in the specific edition.
-  /// WARNING: This field should only be used by protobuf plugins or special
-  /// cases like the proto compiler. Other uses are discouraged and
-  /// developers should rely on the protoreflect APIs for their client language.
   @$pb.TagNumber(34)
   FeatureSet get features => $_getN(1);
   @$pb.TagNumber(34)
@@ -3078,19 +3061,20 @@ class MethodOptions extends $pb.GeneratedMessage {
           const $pb.PackageName(_omitMessageNames ? '' : 'google.protobuf'),
       createEmptyInstance: create)
     ..aOB(33, _omitFieldNames ? '' : 'deprecated')
-    ..aE<MethodOptions_IdempotencyLevel>(
-        34, _omitFieldNames ? '' : 'idempotencyLevel',
+    ..e<MethodOptions_IdempotencyLevel>(
+        34, _omitFieldNames ? '' : 'idempotencyLevel', $pb.PbFieldType.OE,
         defaultOrMaker: MethodOptions_IdempotencyLevel.IDEMPOTENCY_UNKNOWN,
+        valueOf: MethodOptions_IdempotencyLevel.valueOf,
         enumValues: MethodOptions_IdempotencyLevel.values)
     ..aOM<FeatureSet>(35, _omitFieldNames ? '' : 'features',
         subBuilder: FeatureSet.create)
-    ..pPM<UninterpretedOption>(
-        999, _omitFieldNames ? '' : 'uninterpretedOption',
+    ..pc<UninterpretedOption>(
+        999, _omitFieldNames ? '' : 'uninterpretedOption', $pb.PbFieldType.PM,
         subBuilder: UninterpretedOption.create)
     ..hasExtensions = true;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  MethodOptions clone() => deepCopy();
+  MethodOptions clone() => MethodOptions()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   MethodOptions copyWith(void Function(MethodOptions) updates) =>
       super.copyWith((message) => updates(message as MethodOptions))
@@ -3134,9 +3118,6 @@ class MethodOptions extends $pb.GeneratedMessage {
   void clearIdempotencyLevel() => $_clearField(34);
 
   /// Any features defined in the specific edition.
-  /// WARNING: This field should only be used by protobuf plugins or special
-  /// cases like the proto compiler. Other uses are discouraged and
-  /// developers should rely on the protoreflect APIs for their client language.
   @$pb.TagNumber(35)
   FeatureSet get features => $_getN(2);
   @$pb.TagNumber(35)
@@ -3188,7 +3169,8 @@ class UninterpretedOption_NamePart extends $pb.GeneratedMessage {
         2, _omitFieldNames ? '' : 'isExtension', $pb.PbFieldType.QB);
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  UninterpretedOption_NamePart clone() => deepCopy();
+  UninterpretedOption_NamePart clone() =>
+      UninterpretedOption_NamePart()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   UninterpretedOption_NamePart copyWith(
           void Function(UninterpretedOption_NamePart) updates) =>
@@ -3271,20 +3253,22 @@ class UninterpretedOption extends $pb.GeneratedMessage {
       package:
           const $pb.PackageName(_omitMessageNames ? '' : 'google.protobuf'),
       createEmptyInstance: create)
-    ..pPM<UninterpretedOption_NamePart>(2, _omitFieldNames ? '' : 'name',
+    ..pc<UninterpretedOption_NamePart>(
+        2, _omitFieldNames ? '' : 'name', $pb.PbFieldType.PM,
         subBuilder: UninterpretedOption_NamePart.create)
     ..aOS(3, _omitFieldNames ? '' : 'identifierValue')
     ..a<$fixnum.Int64>(
         4, _omitFieldNames ? '' : 'positiveIntValue', $pb.PbFieldType.OU6,
         defaultOrMaker: $fixnum.Int64.ZERO)
     ..aInt64(5, _omitFieldNames ? '' : 'negativeIntValue')
-    ..aD(6, _omitFieldNames ? '' : 'doubleValue')
+    ..a<$core.double>(
+        6, _omitFieldNames ? '' : 'doubleValue', $pb.PbFieldType.OD)
     ..a<$core.List<$core.int>>(
         7, _omitFieldNames ? '' : 'stringValue', $pb.PbFieldType.OY)
     ..aOS(8, _omitFieldNames ? '' : 'aggregateValue');
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  UninterpretedOption clone() => deepCopy();
+  UninterpretedOption clone() => UninterpretedOption()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   UninterpretedOption copyWith(void Function(UninterpretedOption) updates) =>
       super.copyWith((message) => updates(message as UninterpretedOption))
@@ -3364,51 +3348,6 @@ class UninterpretedOption extends $pb.GeneratedMessage {
   void clearAggregateValue() => $_clearField(8);
 }
 
-class FeatureSet_VisibilityFeature extends $pb.GeneratedMessage {
-  factory FeatureSet_VisibilityFeature() => create();
-
-  FeatureSet_VisibilityFeature._();
-
-  factory FeatureSet_VisibilityFeature.fromBuffer($core.List<$core.int> data,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
-  factory FeatureSet_VisibilityFeature.fromJson($core.String json,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'FeatureSet.VisibilityFeature',
-      package:
-          const $pb.PackageName(_omitMessageNames ? '' : 'google.protobuf'),
-      createEmptyInstance: create)
-    ..hasRequiredFields = false;
-
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  FeatureSet_VisibilityFeature clone() =>
-      FeatureSet_VisibilityFeature()..mergeFromMessage(this);
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  FeatureSet_VisibilityFeature copyWith(
-          void Function(FeatureSet_VisibilityFeature) updates) =>
-      super.copyWith(
-              (message) => updates(message as FeatureSet_VisibilityFeature))
-          as FeatureSet_VisibilityFeature;
-
-  @$core.override
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static FeatureSet_VisibilityFeature create() =>
-      FeatureSet_VisibilityFeature._();
-  @$core.override
-  FeatureSet_VisibilityFeature createEmptyInstance() => create();
-  static $pb.PbList<FeatureSet_VisibilityFeature> createRepeated() =>
-      $pb.PbList<FeatureSet_VisibilityFeature>();
-  @$core.pragma('dart2js:noInline')
-  static FeatureSet_VisibilityFeature getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<FeatureSet_VisibilityFeature>(create);
-  static FeatureSet_VisibilityFeature? _defaultInstance;
-}
-
 /// TODO Enums in C++ gencode (and potentially other languages) are
 /// not well scoped.  This means that each of the feature enums below can clash
 /// with each other.  The short names we've chosen maximize call-site
@@ -3423,9 +3362,6 @@ class FeatureSet extends $pb.GeneratedMessage {
     FeatureSet_Utf8Validation? utf8Validation,
     FeatureSet_MessageEncoding? messageEncoding,
     FeatureSet_JsonFormat? jsonFormat,
-    FeatureSet_EnforceNamingStyle? enforceNamingStyle,
-    FeatureSet_VisibilityFeature_DefaultSymbolVisibility?
-        defaultSymbolVisibility,
   }) {
     final result = create();
     if (fieldPresence != null) result.fieldPresence = fieldPresence;
@@ -3435,10 +3371,6 @@ class FeatureSet extends $pb.GeneratedMessage {
     if (utf8Validation != null) result.utf8Validation = utf8Validation;
     if (messageEncoding != null) result.messageEncoding = messageEncoding;
     if (jsonFormat != null) result.jsonFormat = jsonFormat;
-    if (enforceNamingStyle != null)
-      result.enforceNamingStyle = enforceNamingStyle;
-    if (defaultSymbolVisibility != null)
-      result.defaultSymbolVisibility = defaultSymbolVisibility;
     return result;
   }
 
@@ -3456,36 +3388,41 @@ class FeatureSet extends $pb.GeneratedMessage {
       package:
           const $pb.PackageName(_omitMessageNames ? '' : 'google.protobuf'),
       createEmptyInstance: create)
-    ..aE<FeatureSet_FieldPresence>(1, _omitFieldNames ? '' : 'fieldPresence',
+    ..e<FeatureSet_FieldPresence>(
+        1, _omitFieldNames ? '' : 'fieldPresence', $pb.PbFieldType.OE,
+        defaultOrMaker: FeatureSet_FieldPresence.FIELD_PRESENCE_UNKNOWN,
+        valueOf: FeatureSet_FieldPresence.valueOf,
         enumValues: FeatureSet_FieldPresence.values)
-    ..aE<FeatureSet_EnumType>(2, _omitFieldNames ? '' : 'enumType',
+    ..e<FeatureSet_EnumType>(
+        2, _omitFieldNames ? '' : 'enumType', $pb.PbFieldType.OE,
+        defaultOrMaker: FeatureSet_EnumType.ENUM_TYPE_UNKNOWN,
+        valueOf: FeatureSet_EnumType.valueOf,
         enumValues: FeatureSet_EnumType.values)
-    ..aE<FeatureSet_RepeatedFieldEncoding>(
-        3, _omitFieldNames ? '' : 'repeatedFieldEncoding',
-        enumValues: FeatureSet_RepeatedFieldEncoding.values)
-    ..aE<FeatureSet_Utf8Validation>(4, _omitFieldNames ? '' : 'utf8Validation',
-        enumValues: FeatureSet_Utf8Validation.values)
-    ..aE<FeatureSet_MessageEncoding>(
-        5, _omitFieldNames ? '' : 'messageEncoding',
-        enumValues: FeatureSet_MessageEncoding.values)
-    ..aE<FeatureSet_JsonFormat>(6, _omitFieldNames ? '' : 'jsonFormat',
-        enumValues: FeatureSet_JsonFormat.values)
-    ..e<FeatureSet_EnforceNamingStyle>(
-        7, _omitFieldNames ? '' : 'enforceNamingStyle', $pb.PbFieldType.OE,
+    ..e<FeatureSet_RepeatedFieldEncoding>(
+        3, _omitFieldNames ? '' : 'repeatedFieldEncoding', $pb.PbFieldType.OE,
         defaultOrMaker:
-            FeatureSet_EnforceNamingStyle.ENFORCE_NAMING_STYLE_UNKNOWN,
-        valueOf: FeatureSet_EnforceNamingStyle.valueOf,
-        enumValues: FeatureSet_EnforceNamingStyle.values)
-    ..e<FeatureSet_VisibilityFeature_DefaultSymbolVisibility>(
-        8, _omitFieldNames ? '' : 'defaultSymbolVisibility', $pb.PbFieldType.OE,
-        defaultOrMaker: FeatureSet_VisibilityFeature_DefaultSymbolVisibility
-            .DEFAULT_SYMBOL_VISIBILITY_UNKNOWN,
-        valueOf: FeatureSet_VisibilityFeature_DefaultSymbolVisibility.valueOf,
-        enumValues: FeatureSet_VisibilityFeature_DefaultSymbolVisibility.values)
+            FeatureSet_RepeatedFieldEncoding.REPEATED_FIELD_ENCODING_UNKNOWN,
+        valueOf: FeatureSet_RepeatedFieldEncoding.valueOf,
+        enumValues: FeatureSet_RepeatedFieldEncoding.values)
+    ..e<FeatureSet_Utf8Validation>(
+        4, _omitFieldNames ? '' : 'utf8Validation', $pb.PbFieldType.OE,
+        defaultOrMaker: FeatureSet_Utf8Validation.UTF8_VALIDATION_UNKNOWN,
+        valueOf: FeatureSet_Utf8Validation.valueOf,
+        enumValues: FeatureSet_Utf8Validation.values)
+    ..e<FeatureSet_MessageEncoding>(
+        5, _omitFieldNames ? '' : 'messageEncoding', $pb.PbFieldType.OE,
+        defaultOrMaker: FeatureSet_MessageEncoding.MESSAGE_ENCODING_UNKNOWN,
+        valueOf: FeatureSet_MessageEncoding.valueOf,
+        enumValues: FeatureSet_MessageEncoding.values)
+    ..e<FeatureSet_JsonFormat>(
+        6, _omitFieldNames ? '' : 'jsonFormat', $pb.PbFieldType.OE,
+        defaultOrMaker: FeatureSet_JsonFormat.JSON_FORMAT_UNKNOWN,
+        valueOf: FeatureSet_JsonFormat.valueOf,
+        enumValues: FeatureSet_JsonFormat.values)
     ..hasExtensions = true;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  FeatureSet clone() => deepCopy();
+  FeatureSet clone() => FeatureSet()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   FeatureSet copyWith(void Function(FeatureSet) updates) =>
       super.copyWith((message) => updates(message as FeatureSet)) as FeatureSet;
@@ -3557,28 +3494,6 @@ class FeatureSet extends $pb.GeneratedMessage {
   $core.bool hasJsonFormat() => $_has(5);
   @$pb.TagNumber(6)
   void clearJsonFormat() => $_clearField(6);
-
-  @$pb.TagNumber(7)
-  FeatureSet_EnforceNamingStyle get enforceNamingStyle => $_getN(6);
-  @$pb.TagNumber(7)
-  set enforceNamingStyle(FeatureSet_EnforceNamingStyle value) =>
-      $_setField(7, value);
-  @$pb.TagNumber(7)
-  $core.bool hasEnforceNamingStyle() => $_has(6);
-  @$pb.TagNumber(7)
-  void clearEnforceNamingStyle() => $_clearField(7);
-
-  @$pb.TagNumber(8)
-  FeatureSet_VisibilityFeature_DefaultSymbolVisibility
-      get defaultSymbolVisibility => $_getN(7);
-  @$pb.TagNumber(8)
-  set defaultSymbolVisibility(
-          FeatureSet_VisibilityFeature_DefaultSymbolVisibility value) =>
-      $_setField(8, value);
-  @$pb.TagNumber(8)
-  $core.bool hasDefaultSymbolVisibility() => $_has(7);
-  @$pb.TagNumber(8)
-  void clearDefaultSymbolVisibility() => $_clearField(8);
 }
 
 /// A map from every known edition with a unique set of defaults to its
@@ -3615,7 +3530,9 @@ class FeatureSetDefaults_FeatureSetEditionDefault extends $pb.GeneratedMessage {
       package:
           const $pb.PackageName(_omitMessageNames ? '' : 'google.protobuf'),
       createEmptyInstance: create)
-    ..aE<Edition>(3, _omitFieldNames ? '' : 'edition',
+    ..e<Edition>(3, _omitFieldNames ? '' : 'edition', $pb.PbFieldType.OE,
+        defaultOrMaker: Edition.EDITION_UNKNOWN,
+        valueOf: Edition.valueOf,
         enumValues: Edition.values)
     ..aOM<FeatureSet>(4, _omitFieldNames ? '' : 'overridableFeatures',
         subBuilder: FeatureSet.create)
@@ -3623,7 +3540,8 @@ class FeatureSetDefaults_FeatureSetEditionDefault extends $pb.GeneratedMessage {
         subBuilder: FeatureSet.create);
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  FeatureSetDefaults_FeatureSetEditionDefault clone() => deepCopy();
+  FeatureSetDefaults_FeatureSetEditionDefault clone() =>
+      FeatureSetDefaults_FeatureSetEditionDefault()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   FeatureSetDefaults_FeatureSetEditionDefault copyWith(
           void Function(FeatureSetDefaults_FeatureSetEditionDefault) updates) =>
@@ -3713,16 +3631,20 @@ class FeatureSetDefaults extends $pb.GeneratedMessage {
       package:
           const $pb.PackageName(_omitMessageNames ? '' : 'google.protobuf'),
       createEmptyInstance: create)
-    ..pPM<FeatureSetDefaults_FeatureSetEditionDefault>(
-        1, _omitFieldNames ? '' : 'defaults',
+    ..pc<FeatureSetDefaults_FeatureSetEditionDefault>(
+        1, _omitFieldNames ? '' : 'defaults', $pb.PbFieldType.PM,
         subBuilder: FeatureSetDefaults_FeatureSetEditionDefault.create)
-    ..aE<Edition>(4, _omitFieldNames ? '' : 'minimumEdition',
+    ..e<Edition>(4, _omitFieldNames ? '' : 'minimumEdition', $pb.PbFieldType.OE,
+        defaultOrMaker: Edition.EDITION_UNKNOWN,
+        valueOf: Edition.valueOf,
         enumValues: Edition.values)
-    ..aE<Edition>(5, _omitFieldNames ? '' : 'maximumEdition',
+    ..e<Edition>(5, _omitFieldNames ? '' : 'maximumEdition', $pb.PbFieldType.OE,
+        defaultOrMaker: Edition.EDITION_UNKNOWN,
+        valueOf: Edition.valueOf,
         enumValues: Edition.values);
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  FeatureSetDefaults clone() => deepCopy();
+  FeatureSetDefaults clone() => FeatureSetDefaults()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   FeatureSetDefaults copyWith(void Function(FeatureSetDefaults) updates) =>
       super.copyWith((message) => updates(message as FeatureSetDefaults))
@@ -3809,7 +3731,8 @@ class SourceCodeInfo_Location extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  SourceCodeInfo_Location clone() => deepCopy();
+  SourceCodeInfo_Location clone() =>
+      SourceCodeInfo_Location()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   SourceCodeInfo_Location copyWith(
           void Function(SourceCodeInfo_Location) updates) =>
@@ -3958,12 +3881,13 @@ class SourceCodeInfo extends $pb.GeneratedMessage {
       package:
           const $pb.PackageName(_omitMessageNames ? '' : 'google.protobuf'),
       createEmptyInstance: create)
-    ..pPM<SourceCodeInfo_Location>(1, _omitFieldNames ? '' : 'location',
+    ..pc<SourceCodeInfo_Location>(
+        1, _omitFieldNames ? '' : 'location', $pb.PbFieldType.PM,
         subBuilder: SourceCodeInfo_Location.create)
     ..hasExtensions = true;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  SourceCodeInfo clone() => deepCopy();
+  SourceCodeInfo clone() => SourceCodeInfo()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   SourceCodeInfo copyWith(void Function(SourceCodeInfo) updates) =>
       super.copyWith((message) => updates(message as SourceCodeInfo))
@@ -4063,15 +3987,18 @@ class GeneratedCodeInfo_Annotation extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..p<$core.int>(1, _omitFieldNames ? '' : 'path', $pb.PbFieldType.K3)
     ..aOS(2, _omitFieldNames ? '' : 'sourceFile')
-    ..aI(3, _omitFieldNames ? '' : 'begin')
-    ..aI(4, _omitFieldNames ? '' : 'end')
-    ..aE<GeneratedCodeInfo_Annotation_Semantic>(
-        5, _omitFieldNames ? '' : 'semantic',
+    ..a<$core.int>(3, _omitFieldNames ? '' : 'begin', $pb.PbFieldType.O3)
+    ..a<$core.int>(4, _omitFieldNames ? '' : 'end', $pb.PbFieldType.O3)
+    ..e<GeneratedCodeInfo_Annotation_Semantic>(
+        5, _omitFieldNames ? '' : 'semantic', $pb.PbFieldType.OE,
+        defaultOrMaker: GeneratedCodeInfo_Annotation_Semantic.NONE,
+        valueOf: GeneratedCodeInfo_Annotation_Semantic.valueOf,
         enumValues: GeneratedCodeInfo_Annotation_Semantic.values)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GeneratedCodeInfo_Annotation clone() => deepCopy();
+  GeneratedCodeInfo_Annotation clone() =>
+      GeneratedCodeInfo_Annotation()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GeneratedCodeInfo_Annotation copyWith(
           void Function(GeneratedCodeInfo_Annotation) updates) =>
@@ -4169,12 +4096,13 @@ class GeneratedCodeInfo extends $pb.GeneratedMessage {
       package:
           const $pb.PackageName(_omitMessageNames ? '' : 'google.protobuf'),
       createEmptyInstance: create)
-    ..pPM<GeneratedCodeInfo_Annotation>(1, _omitFieldNames ? '' : 'annotation',
+    ..pc<GeneratedCodeInfo_Annotation>(
+        1, _omitFieldNames ? '' : 'annotation', $pb.PbFieldType.PM,
         subBuilder: GeneratedCodeInfo_Annotation.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GeneratedCodeInfo clone() => deepCopy();
+  GeneratedCodeInfo clone() => GeneratedCodeInfo()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GeneratedCodeInfo copyWith(void Function(GeneratedCodeInfo) updates) =>
       super.copyWith((message) => updates(message as GeneratedCodeInfo))

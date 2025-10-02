@@ -62,10 +62,10 @@ class InvoiceLineItem extends $pb.GeneratedMessage {
       package: const $pb.PackageName(_omitMessageNames ? '' : 'financial.v1'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'productId')
-    ..aD(2, _omitFieldNames ? '' : 'quantity')
+    ..a<$core.double>(2, _omitFieldNames ? '' : 'quantity', $pb.PbFieldType.OD)
     ..aInt64(3, _omitFieldNames ? '' : 'unitPrice')
     ..aInt64(4, _omitFieldNames ? '' : 'subtotal')
-    ..aD(5, _omitFieldNames ? '' : 'taxRate')
+    ..a<$core.double>(5, _omitFieldNames ? '' : 'taxRate', $pb.PbFieldType.OD)
     ..aInt64(6, _omitFieldNames ? '' : 'taxAmount')
     ..aInt64(7, _omitFieldNames ? '' : 'total')
     ..aOS(8, _omitFieldNames ? '' : 'batchId')
@@ -74,7 +74,7 @@ class InvoiceLineItem extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  InvoiceLineItem clone() => deepCopy();
+  InvoiceLineItem clone() => InvoiceLineItem()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   InvoiceLineItem copyWith(void Function(InvoiceLineItem) updates) =>
       super.copyWith((message) => updates(message as InvoiceLineItem))

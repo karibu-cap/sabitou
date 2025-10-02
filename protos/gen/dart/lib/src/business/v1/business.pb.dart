@@ -72,7 +72,10 @@ class Business extends $pb.GeneratedMessage {
     ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..aOS(2, _omitFieldNames ? '' : 'name')
     ..aOS(3, _omitFieldNames ? '' : 'description')
-    ..aE<BusinessStatusType>(4, _omitFieldNames ? '' : 'status',
+    ..e<BusinessStatusType>(
+        4, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
+        defaultOrMaker: BusinessStatusType.BUSINESS_STATUS_TYPE_UNSPECIFIED,
+        valueOf: BusinessStatusType.valueOf,
         enumValues: BusinessStatusType.values)
     ..aOS(5, _omitFieldNames ? '' : 'ownerId')
     ..aOS(6, _omitFieldNames ? '' : 'logoLinkId')
@@ -85,7 +88,7 @@ class Business extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  Business clone() => deepCopy();
+  Business clone() => Business()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Business copyWith(void Function(Business) updates) =>
       super.copyWith((message) => updates(message as Business)) as Business;
@@ -254,12 +257,15 @@ class BusinessMember extends $pb.GeneratedMessage {
     ..aOS(2, _omitFieldNames ? '' : 'businessId')
     ..aOM<$1.Timestamp>(4, _omitFieldNames ? '' : 'memberSince',
         subBuilder: $1.Timestamp.create)
-    ..aE<BusinessMemberStatus>(5, _omitFieldNames ? '' : 'status',
+    ..e<BusinessMemberStatus>(
+        5, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
+        defaultOrMaker: BusinessMemberStatus.BUSINESS_MEMBER_STATUS_UNSPECIFIED,
+        valueOf: BusinessMemberStatus.valueOf,
         enumValues: BusinessMemberStatus.values)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  BusinessMember clone() => deepCopy();
+  BusinessMember clone() => BusinessMember()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   BusinessMember copyWith(void Function(BusinessMember) updates) =>
       super.copyWith((message) => updates(message as BusinessMember))
@@ -354,12 +360,14 @@ class CreateBusinessRequest extends $pb.GeneratedMessage {
         subBuilder: Business.create)
     ..a<$core.List<$core.int>>(
         2, _omitFieldNames ? '' : 'logoRawImage', $pb.PbFieldType.OY)
-    ..pPM<$2.ResourceLink>(3, _omitFieldNames ? '' : 'externalLinks',
+    ..pc<$2.ResourceLink>(
+        3, _omitFieldNames ? '' : 'externalLinks', $pb.PbFieldType.PM,
         subBuilder: $2.ResourceLink.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreateBusinessRequest clone() => deepCopy();
+  CreateBusinessRequest clone() =>
+      CreateBusinessRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CreateBusinessRequest copyWith(
           void Function(CreateBusinessRequest) updates) =>
@@ -434,7 +442,8 @@ class CreateBusinessResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreateBusinessResponse clone() => deepCopy();
+  CreateBusinessResponse clone() =>
+      CreateBusinessResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CreateBusinessResponse copyWith(
           void Function(CreateBusinessResponse) updates) =>
@@ -493,15 +502,19 @@ class ChangeBusinessCurrencyRequest extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'ChangeBusinessCurrencyRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'),
       createEmptyInstance: create)
-    ..aE<CurrencyChangePolicyType>(
-        1, _omitFieldNames ? '' : 'currencyChangePolicy',
+    ..e<CurrencyChangePolicyType>(
+        1, _omitFieldNames ? '' : 'currencyChangePolicy', $pb.PbFieldType.OE,
+        defaultOrMaker:
+            CurrencyChangePolicyType.CURRENCY_CHANGE_POLICY_TYPE_UNSPECIFIED,
+        valueOf: CurrencyChangePolicyType.valueOf,
         enumValues: CurrencyChangePolicyType.values)
     ..aOS(2, _omitFieldNames ? '' : 'businessId')
     ..aOS(3, _omitFieldNames ? '' : 'countryCode')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ChangeBusinessCurrencyRequest clone() => deepCopy();
+  ChangeBusinessCurrencyRequest clone() =>
+      ChangeBusinessCurrencyRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ChangeBusinessCurrencyRequest copyWith(
           void Function(ChangeBusinessCurrencyRequest) updates) =>
@@ -584,7 +597,8 @@ class ChangeBusinessCurrencyResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ChangeBusinessCurrencyResponse clone() => deepCopy();
+  ChangeBusinessCurrencyResponse clone() =>
+      ChangeBusinessCurrencyResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ChangeBusinessCurrencyResponse copyWith(
           void Function(ChangeBusinessCurrencyResponse) updates) =>
@@ -643,7 +657,8 @@ class GetMyBusinessesRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetMyBusinessesRequest clone() => deepCopy();
+  GetMyBusinessesRequest clone() =>
+      GetMyBusinessesRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetMyBusinessesRequest copyWith(
           void Function(GetMyBusinessesRequest) updates) =>
@@ -697,12 +712,13 @@ class GetMyBusinessesResponse extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'GetMyBusinessesResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'),
       createEmptyInstance: create)
-    ..pPM<Business>(1, _omitFieldNames ? '' : 'businesses',
+    ..pc<Business>(1, _omitFieldNames ? '' : 'businesses', $pb.PbFieldType.PM,
         subBuilder: Business.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetMyBusinessesResponse clone() => deepCopy();
+  GetMyBusinessesResponse clone() =>
+      GetMyBusinessesResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetMyBusinessesResponse copyWith(
           void Function(GetMyBusinessesResponse) updates) =>
@@ -753,7 +769,8 @@ class GetBusinessDetailsRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetBusinessDetailsRequest clone() => deepCopy();
+  GetBusinessDetailsRequest clone() =>
+      GetBusinessDetailsRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetBusinessDetailsRequest copyWith(
           void Function(GetBusinessDetailsRequest) updates) =>
@@ -812,7 +829,8 @@ class GetBusinessDetailsResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetBusinessDetailsResponse clone() => deepCopy();
+  GetBusinessDetailsResponse clone() =>
+      GetBusinessDetailsResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetBusinessDetailsResponse copyWith(
           void Function(GetBusinessDetailsResponse) updates) =>
@@ -877,12 +895,14 @@ class UpdateBusinessRequest extends $pb.GeneratedMessage {
         subBuilder: Business.create)
     ..a<$core.List<$core.int>>(
         2, _omitFieldNames ? '' : 'logoRawImage', $pb.PbFieldType.OY)
-    ..pPM<$2.ResourceLink>(3, _omitFieldNames ? '' : 'externalLinks',
+    ..pc<$2.ResourceLink>(
+        3, _omitFieldNames ? '' : 'externalLinks', $pb.PbFieldType.PM,
         subBuilder: $2.ResourceLink.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  UpdateBusinessRequest clone() => deepCopy();
+  UpdateBusinessRequest clone() =>
+      UpdateBusinessRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   UpdateBusinessRequest copyWith(
           void Function(UpdateBusinessRequest) updates) =>
@@ -957,7 +977,8 @@ class UpdateBusinessResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  UpdateBusinessResponse clone() => deepCopy();
+  UpdateBusinessResponse clone() =>
+      UpdateBusinessResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   UpdateBusinessResponse copyWith(
           void Function(UpdateBusinessResponse) updates) =>
@@ -1018,7 +1039,8 @@ class RequestDeleteBusinessRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  RequestDeleteBusinessRequest clone() => deepCopy();
+  RequestDeleteBusinessRequest clone() =>
+      RequestDeleteBusinessRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   RequestDeleteBusinessRequest copyWith(
           void Function(RequestDeleteBusinessRequest) updates) =>
@@ -1092,7 +1114,8 @@ class RequestDeleteBusinessResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  RequestDeleteBusinessResponse clone() => deepCopy();
+  RequestDeleteBusinessResponse clone() =>
+      RequestDeleteBusinessResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   RequestDeleteBusinessResponse copyWith(
           void Function(RequestDeleteBusinessResponse) updates) =>
@@ -1180,7 +1203,8 @@ class CreateUserToBusinessRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreateUserToBusinessRequest clone() => deepCopy();
+  CreateUserToBusinessRequest clone() =>
+      CreateUserToBusinessRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CreateUserToBusinessRequest copyWith(
           void Function(CreateUserToBusinessRequest) updates) =>
@@ -1301,7 +1325,8 @@ class CreateUserToBusinessResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreateUserToBusinessResponse clone() => deepCopy();
+  CreateUserToBusinessResponse clone() =>
+      CreateUserToBusinessResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CreateUserToBusinessResponse copyWith(
           void Function(CreateUserToBusinessResponse) updates) =>
@@ -1366,7 +1391,8 @@ class AssociateUserToBusinessRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  AssociateUserToBusinessRequest clone() => deepCopy();
+  AssociateUserToBusinessRequest clone() =>
+      AssociateUserToBusinessRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   AssociateUserToBusinessRequest copyWith(
           void Function(AssociateUserToBusinessRequest) updates) =>
@@ -1437,7 +1463,8 @@ class AssociateUserToBusinessResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  AssociateUserToBusinessResponse clone() => deepCopy();
+  AssociateUserToBusinessResponse clone() =>
+      AssociateUserToBusinessResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   AssociateUserToBusinessResponse copyWith(
           void Function(AssociateUserToBusinessResponse) updates) =>
@@ -1503,7 +1530,8 @@ class RemoveUserFromBusinessRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  RemoveUserFromBusinessRequest clone() => deepCopy();
+  RemoveUserFromBusinessRequest clone() =>
+      RemoveUserFromBusinessRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   RemoveUserFromBusinessRequest copyWith(
           void Function(RemoveUserFromBusinessRequest) updates) =>
@@ -1572,7 +1600,8 @@ class RemoveUserFromBusinessResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  RemoveUserFromBusinessResponse clone() => deepCopy();
+  RemoveUserFromBusinessResponse clone() =>
+      RemoveUserFromBusinessResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   RemoveUserFromBusinessResponse copyWith(
           void Function(RemoveUserFromBusinessResponse) updates) =>
@@ -1632,7 +1661,8 @@ class GetBusinessMembersRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetBusinessMembersRequest clone() => deepCopy();
+  GetBusinessMembersRequest clone() =>
+      GetBusinessMembersRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetBusinessMembersRequest copyWith(
           void Function(GetBusinessMembersRequest) updates) =>
@@ -1686,12 +1716,14 @@ class GetBusinessMembersResponse extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'GetBusinessMembersResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'),
       createEmptyInstance: create)
-    ..pPM<BusinessMember>(1, _omitFieldNames ? '' : 'businessMembers',
+    ..pc<BusinessMember>(
+        1, _omitFieldNames ? '' : 'businessMembers', $pb.PbFieldType.PM,
         subBuilder: BusinessMember.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetBusinessMembersResponse clone() => deepCopy();
+  GetBusinessMembersResponse clone() =>
+      GetBusinessMembersResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetBusinessMembersResponse copyWith(
           void Function(GetBusinessMembersResponse) updates) =>
@@ -1747,7 +1779,8 @@ class UpdateBusinessMemberRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  UpdateBusinessMemberRequest clone() => deepCopy();
+  UpdateBusinessMemberRequest clone() =>
+      UpdateBusinessMemberRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   UpdateBusinessMemberRequest copyWith(
           void Function(UpdateBusinessMemberRequest) updates) =>
@@ -1821,7 +1854,8 @@ class UpdateBusinessMemberResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  UpdateBusinessMemberResponse clone() => deepCopy();
+  UpdateBusinessMemberResponse clone() =>
+      UpdateBusinessMemberResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   UpdateBusinessMemberResponse copyWith(
           void Function(UpdateBusinessMemberResponse) updates) =>
@@ -1896,7 +1930,8 @@ class GetBusinessMemberRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetBusinessMemberRequest clone() => deepCopy();
+  GetBusinessMemberRequest clone() =>
+      GetBusinessMemberRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetBusinessMemberRequest copyWith(
           void Function(GetBusinessMemberRequest) updates) =>
@@ -1965,7 +2000,8 @@ class GetBusinessMemberResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetBusinessMemberResponse clone() => deepCopy();
+  GetBusinessMemberResponse clone() =>
+      GetBusinessMemberResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetBusinessMemberResponse copyWith(
           void Function(GetBusinessMemberResponse) updates) =>
@@ -2025,7 +2061,8 @@ class StreamBusinessMembersRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  StreamBusinessMembersRequest clone() => deepCopy();
+  StreamBusinessMembersRequest clone() =>
+      StreamBusinessMembersRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   StreamBusinessMembersRequest copyWith(
           void Function(StreamBusinessMembersRequest) updates) =>
@@ -2081,12 +2118,14 @@ class StreamBusinessMembersResponse extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'StreamBusinessMembersResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'),
       createEmptyInstance: create)
-    ..pPM<BusinessMember>(1, _omitFieldNames ? '' : 'businessMembers',
+    ..pc<BusinessMember>(
+        1, _omitFieldNames ? '' : 'businessMembers', $pb.PbFieldType.PM,
         subBuilder: BusinessMember.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  StreamBusinessMembersResponse clone() => deepCopy();
+  StreamBusinessMembersResponse clone() =>
+      StreamBusinessMembersResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   StreamBusinessMembersResponse copyWith(
           void Function(StreamBusinessMembersResponse) updates) =>

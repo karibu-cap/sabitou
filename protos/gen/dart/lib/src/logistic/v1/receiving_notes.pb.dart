@@ -83,9 +83,13 @@ class ReceivingNote extends $pb.GeneratedMessage {
     ..aOS(2, _omitFieldNames ? '' : 'relatedPurchaseOrderId')
     ..aOS(3, _omitFieldNames ? '' : 'supplierId')
     ..aOS(4, _omitFieldNames ? '' : 'warehouseId')
-    ..aE<ReceivingNoteStatus>(5, _omitFieldNames ? '' : 'status',
+    ..e<ReceivingNoteStatus>(
+        5, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
+        defaultOrMaker: ReceivingNoteStatus.RN_STATUS_UNSPECIFIED,
+        valueOf: ReceivingNoteStatus.valueOf,
         enumValues: ReceivingNoteStatus.values)
-    ..pPM<ReceivingLineItem>(6, _omitFieldNames ? '' : 'items',
+    ..pc<ReceivingLineItem>(
+        6, _omitFieldNames ? '' : 'items', $pb.PbFieldType.PM,
         subBuilder: ReceivingLineItem.create)
     ..aOS(7, _omitFieldNames ? '' : 'receivedByUserId')
     ..aOM<$0.Timestamp>(8, _omitFieldNames ? '' : 'receivedAt',
@@ -94,7 +98,7 @@ class ReceivingNote extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ReceivingNote clone() => deepCopy();
+  ReceivingNote clone() => ReceivingNote()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ReceivingNote copyWith(void Function(ReceivingNote) updates) =>
       super.copyWith((message) => updates(message as ReceivingNote))
@@ -240,9 +244,12 @@ class ReceivingLineItem extends $pb.GeneratedMessage {
       package: const $pb.PackageName(_omitMessageNames ? '' : 'logistic.v1'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'productId')
-    ..aD(2, _omitFieldNames ? '' : 'quantityExpected')
-    ..aD(3, _omitFieldNames ? '' : 'quantityReceived')
-    ..aD(4, _omitFieldNames ? '' : 'quantityRejected')
+    ..a<$core.double>(
+        2, _omitFieldNames ? '' : 'quantityExpected', $pb.PbFieldType.OD)
+    ..a<$core.double>(
+        3, _omitFieldNames ? '' : 'quantityReceived', $pb.PbFieldType.OD)
+    ..a<$core.double>(
+        4, _omitFieldNames ? '' : 'quantityRejected', $pb.PbFieldType.OD)
     ..aOS(5, _omitFieldNames ? '' : 'rejectionReason')
     ..aOS(6, _omitFieldNames ? '' : 'batchId')
     ..aOM<$0.Timestamp>(7, _omitFieldNames ? '' : 'expirationDate',
@@ -250,7 +257,7 @@ class ReceivingLineItem extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ReceivingLineItem clone() => deepCopy();
+  ReceivingLineItem clone() => ReceivingLineItem()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ReceivingLineItem copyWith(void Function(ReceivingLineItem) updates) =>
       super.copyWith((message) => updates(message as ReceivingLineItem))

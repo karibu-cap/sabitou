@@ -40,7 +40,7 @@ environment:
 
 dependencies:
   connectrpc: ^1.0.0
-  protobuf: 4.1.1
+  protobuf: ^4.1.1
 
 EOF
 

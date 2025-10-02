@@ -62,16 +62,20 @@ class CreateCashReceiptRequest extends $pb.GeneratedMessage {
     ..aOS(1, _omitFieldNames ? '' : 'cashierUserId')
     ..aOS(2, _omitFieldNames ? '' : 'storeId')
     ..aOS(3, _omitFieldNames ? '' : 'customerId')
-    ..pPM<SaleLineItem>(4, _omitFieldNames ? '' : 'items',
+    ..pc<SaleLineItem>(4, _omitFieldNames ? '' : 'items', $pb.PbFieldType.PM,
         subBuilder: SaleLineItem.create)
     ..aInt64(5, _omitFieldNames ? '' : 'amountPaid')
-    ..aE<$5.PaymentMethod>(6, _omitFieldNames ? '' : 'paymentMethod',
+    ..e<$5.PaymentMethod>(
+        6, _omitFieldNames ? '' : 'paymentMethod', $pb.PbFieldType.OE,
+        defaultOrMaker: $5.PaymentMethod.PAYMENT_METHOD_UNSPECIFIED,
+        valueOf: $5.PaymentMethod.valueOf,
         enumValues: $5.PaymentMethod.values)
     ..aOS(7, _omitFieldNames ? '' : 'notes')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreateCashReceiptRequest clone() => deepCopy();
+  CreateCashReceiptRequest clone() =>
+      CreateCashReceiptRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CreateCashReceiptRequest copyWith(
           void Function(CreateCashReceiptRequest) updates) =>
@@ -177,12 +181,12 @@ class SaleLineItem extends $pb.GeneratedMessage {
       package: const $pb.PackageName(_omitMessageNames ? '' : 'payments.v1'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'productId')
-    ..aD(2, _omitFieldNames ? '' : 'quantity')
+    ..a<$core.double>(2, _omitFieldNames ? '' : 'quantity', $pb.PbFieldType.OD)
     ..aInt64(3, _omitFieldNames ? '' : 'unitPrice')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  SaleLineItem clone() => deepCopy();
+  SaleLineItem clone() => SaleLineItem()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   SaleLineItem copyWith(void Function(SaleLineItem) updates) =>
       super.copyWith((message) => updates(message as SaleLineItem))
@@ -270,7 +274,8 @@ class CreateCashReceiptResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreateCashReceiptResponse clone() => deepCopy();
+  CreateCashReceiptResponse clone() =>
+      CreateCashReceiptResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CreateCashReceiptResponse copyWith(
           void Function(CreateCashReceiptResponse) updates) =>
@@ -372,17 +377,21 @@ class ProcessSaleWithVoucherRequest extends $pb.GeneratedMessage {
     ..aOS(1, _omitFieldNames ? '' : 'cashierUserId')
     ..aOS(2, _omitFieldNames ? '' : 'storeId')
     ..aOS(3, _omitFieldNames ? '' : 'customerId')
-    ..pPM<SaleLineItem>(4, _omitFieldNames ? '' : 'items',
+    ..pc<SaleLineItem>(4, _omitFieldNames ? '' : 'items', $pb.PbFieldType.PM,
         subBuilder: SaleLineItem.create)
     ..aInt64(5, _omitFieldNames ? '' : 'amountPaid')
-    ..aE<$5.PaymentMethod>(6, _omitFieldNames ? '' : 'paymentMethod',
+    ..e<$5.PaymentMethod>(
+        6, _omitFieldNames ? '' : 'paymentMethod', $pb.PbFieldType.OE,
+        defaultOrMaker: $5.PaymentMethod.PAYMENT_METHOD_UNSPECIFIED,
+        valueOf: $5.PaymentMethod.valueOf,
         enumValues: $5.PaymentMethod.values)
     ..aInt64(7, _omitFieldNames ? '' : 'changeShortage')
     ..aOS(8, _omitFieldNames ? '' : 'notes')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ProcessSaleWithVoucherRequest clone() => deepCopy();
+  ProcessSaleWithVoucherRequest clone() =>
+      ProcessSaleWithVoucherRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ProcessSaleWithVoucherRequest copyWith(
           void Function(ProcessSaleWithVoucherRequest) updates) =>
@@ -526,7 +535,8 @@ class ProcessSaleWithVoucherResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ProcessSaleWithVoucherResponse clone() => deepCopy();
+  ProcessSaleWithVoucherResponse clone() =>
+      ProcessSaleWithVoucherResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ProcessSaleWithVoucherResponse copyWith(
           void Function(ProcessSaleWithVoucherResponse) updates) =>
@@ -668,15 +678,19 @@ class PayWithVoucherRequest extends $pb.GeneratedMessage {
     ..aOS(1, _omitFieldNames ? '' : 'cashierUserId')
     ..aOS(2, _omitFieldNames ? '' : 'storeId')
     ..aOS(3, _omitFieldNames ? '' : 'voucherCode')
-    ..pPM<SaleLineItem>(4, _omitFieldNames ? '' : 'items',
+    ..pc<SaleLineItem>(4, _omitFieldNames ? '' : 'items', $pb.PbFieldType.PM,
         subBuilder: SaleLineItem.create)
     ..aInt64(5, _omitFieldNames ? '' : 'additionalCashPayment')
-    ..aE<$5.PaymentMethod>(6, _omitFieldNames ? '' : 'additionalPaymentMethod',
+    ..e<$5.PaymentMethod>(
+        6, _omitFieldNames ? '' : 'additionalPaymentMethod', $pb.PbFieldType.OE,
+        defaultOrMaker: $5.PaymentMethod.PAYMENT_METHOD_UNSPECIFIED,
+        valueOf: $5.PaymentMethod.valueOf,
         enumValues: $5.PaymentMethod.values)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  PayWithVoucherRequest clone() => deepCopy();
+  PayWithVoucherRequest clone() =>
+      PayWithVoucherRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   PayWithVoucherRequest copyWith(
           void Function(PayWithVoucherRequest) updates) =>
@@ -797,7 +811,8 @@ class PayWithVoucherResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  PayWithVoucherResponse clone() => deepCopy();
+  PayWithVoucherResponse clone() =>
+      PayWithVoucherResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   PayWithVoucherResponse copyWith(
           void Function(PayWithVoucherResponse) updates) =>
@@ -925,7 +940,8 @@ class GetCashierDailySummaryRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetCashierDailySummaryRequest clone() => deepCopy();
+  GetCashierDailySummaryRequest clone() =>
+      GetCashierDailySummaryRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetCashierDailySummaryRequest copyWith(
           void Function(GetCashierDailySummaryRequest) updates) =>
@@ -1015,19 +1031,22 @@ class GetCashierDailySummaryResponse extends $pb.GeneratedMessage {
     ..aOS(1, _omitFieldNames ? '' : 'cashierUserId')
     ..aOM<$4.Timestamp>(2, _omitFieldNames ? '' : 'date',
         subBuilder: $4.Timestamp.create)
-    ..aI(3, _omitFieldNames ? '' : 'totalTransactions')
+    ..a<$core.int>(
+        3, _omitFieldNames ? '' : 'totalTransactions', $pb.PbFieldType.O3)
     ..aInt64(4, _omitFieldNames ? '' : 'totalSalesAmount')
     ..aInt64(5, _omitFieldNames ? '' : 'totalCashCollected')
     ..aInt64(6, _omitFieldNames ? '' : 'totalCardPayments')
     ..aInt64(7, _omitFieldNames ? '' : 'totalMobileMoney')
     ..aInt64(8, _omitFieldNames ? '' : 'totalVouchersIssued')
     ..aInt64(9, _omitFieldNames ? '' : 'totalVouchersRedeemed')
-    ..pPM<$0.CashReceipt>(10, _omitFieldNames ? '' : 'receipts',
+    ..pc<$0.CashReceipt>(
+        10, _omitFieldNames ? '' : 'receipts', $pb.PbFieldType.PM,
         subBuilder: $0.CashReceipt.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetCashierDailySummaryResponse clone() => deepCopy();
+  GetCashierDailySummaryResponse clone() =>
+      GetCashierDailySummaryResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetCashierDailySummaryResponse copyWith(
           void Function(GetCashierDailySummaryResponse) updates) =>

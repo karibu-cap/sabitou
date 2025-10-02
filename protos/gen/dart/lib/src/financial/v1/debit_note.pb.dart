@@ -95,13 +95,19 @@ class DebitNote extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'documentId')
     ..aOS(2, _omitFieldNames ? '' : 'relatedInvoiceId')
-    ..aE<DebitNoteType>(3, _omitFieldNames ? '' : 'debitType',
+    ..e<DebitNoteType>(
+        3, _omitFieldNames ? '' : 'debitType', $pb.PbFieldType.OE,
+        defaultOrMaker: DebitNoteType.DEBIT_TYPE_UNSPECIFIED,
+        valueOf: DebitNoteType.valueOf,
         enumValues: DebitNoteType.values)
     ..aOS(4, _omitFieldNames ? '' : 'issuerId')
     ..aOS(5, _omitFieldNames ? '' : 'recipientId')
-    ..aE<DebitNoteStatus>(6, _omitFieldNames ? '' : 'status',
+    ..e<DebitNoteStatus>(6, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
+        defaultOrMaker: DebitNoteStatus.DEBIT_STATUS_UNSPECIFIED,
+        valueOf: DebitNoteStatus.valueOf,
         enumValues: DebitNoteStatus.values)
-    ..pPM<$0.InvoiceLineItem>(7, _omitFieldNames ? '' : 'items',
+    ..pc<$0.InvoiceLineItem>(
+        7, _omitFieldNames ? '' : 'items', $pb.PbFieldType.PM,
         subBuilder: $0.InvoiceLineItem.create)
     ..aInt64(8, _omitFieldNames ? '' : 'totalAmount')
     ..aOS(9, _omitFieldNames ? '' : 'currency')
@@ -115,7 +121,7 @@ class DebitNote extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  DebitNote clone() => deepCopy();
+  DebitNote clone() => DebitNote()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   DebitNote copyWith(void Function(DebitNote) updates) =>
       super.copyWith((message) => updates(message as DebitNote)) as DebitNote;

@@ -89,15 +89,20 @@ class ReturnNote extends $pb.GeneratedMessage {
       package: const $pb.PackageName(_omitMessageNames ? '' : 'logistic.v1'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'documentId')
-    ..aE<ReturnType>(2, _omitFieldNames ? '' : 'returnType',
+    ..e<ReturnType>(2, _omitFieldNames ? '' : 'returnType', $pb.PbFieldType.OE,
+        defaultOrMaker: ReturnType.RETURN_TYPE_UNSPECIFIED,
+        valueOf: ReturnType.valueOf,
         enumValues: ReturnType.values)
     ..aOS(3, _omitFieldNames ? '' : 'fromId')
     ..aOS(4, _omitFieldNames ? '' : 'toId')
     ..aOS(5, _omitFieldNames ? '' : 'relatedDeliveryNoteId')
     ..aOS(6, _omitFieldNames ? '' : 'relatedInvoiceId')
-    ..aE<ReturnNoteStatus>(7, _omitFieldNames ? '' : 'status',
+    ..e<ReturnNoteStatus>(
+        7, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
+        defaultOrMaker: ReturnNoteStatus.RETURN_STATUS_UNSPECIFIED,
+        valueOf: ReturnNoteStatus.valueOf,
         enumValues: ReturnNoteStatus.values)
-    ..pPM<ReturnLineItem>(8, _omitFieldNames ? '' : 'items',
+    ..pc<ReturnLineItem>(8, _omitFieldNames ? '' : 'items', $pb.PbFieldType.PM,
         subBuilder: ReturnLineItem.create)
     ..aOS(9, _omitFieldNames ? '' : 'reason')
     ..aOM<$0.Timestamp>(10, _omitFieldNames ? '' : 'receivedAt',
@@ -107,7 +112,7 @@ class ReturnNote extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ReturnNote clone() => deepCopy();
+  ReturnNote clone() => ReturnNote()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ReturnNote copyWith(void Function(ReturnNote) updates) =>
       super.copyWith((message) => updates(message as ReturnNote)) as ReturnNote;
@@ -265,15 +270,18 @@ class ReturnLineItem extends $pb.GeneratedMessage {
       package: const $pb.PackageName(_omitMessageNames ? '' : 'logistic.v1'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'productId')
-    ..aD(2, _omitFieldNames ? '' : 'quantity')
-    ..aE<ReturnCondition>(3, _omitFieldNames ? '' : 'condition',
+    ..a<$core.double>(2, _omitFieldNames ? '' : 'quantity', $pb.PbFieldType.OD)
+    ..e<ReturnCondition>(
+        3, _omitFieldNames ? '' : 'condition', $pb.PbFieldType.OE,
+        defaultOrMaker: ReturnCondition.RETURN_CONDITION_UNSPECIFIED,
+        valueOf: ReturnCondition.valueOf,
         enumValues: ReturnCondition.values)
     ..aOS(4, _omitFieldNames ? '' : 'conditionNotes')
     ..aOS(5, _omitFieldNames ? '' : 'batchId')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ReturnLineItem clone() => deepCopy();
+  ReturnLineItem clone() => ReturnLineItem()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ReturnLineItem copyWith(void Function(ReturnLineItem) updates) =>
       super.copyWith((message) => updates(message as ReturnLineItem))
@@ -378,14 +386,15 @@ class CreateCustomerReturnRequest extends $pb.GeneratedMessage {
     ..aOS(2, _omitFieldNames ? '' : 'toWarehouseId')
     ..aOS(3, _omitFieldNames ? '' : 'relatedDeliveryNoteId')
     ..aOS(4, _omitFieldNames ? '' : 'relatedInvoiceId')
-    ..pPM<ReturnLineItem>(5, _omitFieldNames ? '' : 'items',
+    ..pc<ReturnLineItem>(5, _omitFieldNames ? '' : 'items', $pb.PbFieldType.PM,
         subBuilder: ReturnLineItem.create)
     ..aOS(6, _omitFieldNames ? '' : 'reason')
     ..aOS(7, _omitFieldNames ? '' : 'receivedByUserId')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreateCustomerReturnRequest clone() => deepCopy();
+  CreateCustomerReturnRequest clone() =>
+      CreateCustomerReturnRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CreateCustomerReturnRequest copyWith(
           void Function(CreateCustomerReturnRequest) updates) =>
@@ -507,7 +516,8 @@ class CreateCustomerReturnResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreateCustomerReturnResponse clone() => deepCopy();
+  CreateCustomerReturnResponse clone() =>
+      CreateCustomerReturnResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CreateCustomerReturnResponse copyWith(
           void Function(CreateCustomerReturnResponse) updates) =>
@@ -601,14 +611,18 @@ class ProcessReturnRequestRequest extends $pb.GeneratedMessage {
       package: const $pb.PackageName(_omitMessageNames ? '' : 'logistic.v1'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'returnId')
-    ..aE<ReturnNoteStatus>(2, _omitFieldNames ? '' : 'newStatus',
+    ..e<ReturnNoteStatus>(
+        2, _omitFieldNames ? '' : 'newStatus', $pb.PbFieldType.OE,
+        defaultOrMaker: ReturnNoteStatus.RETURN_STATUS_UNSPECIFIED,
+        valueOf: ReturnNoteStatus.valueOf,
         enumValues: ReturnNoteStatus.values)
     ..aOS(3, _omitFieldNames ? '' : 'processedByUserId')
     ..aOS(4, _omitFieldNames ? '' : 'notes')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ProcessReturnRequestRequest clone() => deepCopy();
+  ProcessReturnRequestRequest clone() =>
+      ProcessReturnRequestRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ProcessReturnRequestRequest copyWith(
           void Function(ProcessReturnRequestRequest) updates) =>
@@ -698,7 +712,8 @@ class ProcessReturnRequestResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ProcessReturnRequestResponse clone() => deepCopy();
+  ProcessReturnRequestResponse clone() =>
+      ProcessReturnRequestResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ProcessReturnRequestResponse copyWith(
           void Function(ProcessReturnRequestResponse) updates) =>
@@ -775,7 +790,8 @@ class CreateCreditNoteFromReturnRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreateCreditNoteFromReturnRequest clone() => deepCopy();
+  CreateCreditNoteFromReturnRequest clone() =>
+      CreateCreditNoteFromReturnRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CreateCreditNoteFromReturnRequest copyWith(
           void Function(CreateCreditNoteFromReturnRequest) updates) =>
@@ -861,7 +877,8 @@ class CreateCreditNoteFromReturnResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreateCreditNoteFromReturnResponse clone() => deepCopy();
+  CreateCreditNoteFromReturnResponse clone() =>
+      CreateCreditNoteFromReturnResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CreateCreditNoteFromReturnResponse copyWith(
           void Function(CreateCreditNoteFromReturnResponse) updates) =>
@@ -948,7 +965,8 @@ class CreateDebitNoteFromReturnRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreateDebitNoteFromReturnRequest clone() => deepCopy();
+  CreateDebitNoteFromReturnRequest clone() =>
+      CreateDebitNoteFromReturnRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CreateDebitNoteFromReturnRequest copyWith(
           void Function(CreateDebitNoteFromReturnRequest) updates) =>
@@ -1034,7 +1052,8 @@ class CreateDebitNoteFromReturnResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreateDebitNoteFromReturnResponse clone() => deepCopy();
+  CreateDebitNoteFromReturnResponse clone() =>
+      CreateDebitNoteFromReturnResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CreateDebitNoteFromReturnResponse copyWith(
           void Function(CreateDebitNoteFromReturnResponse) updates) =>
@@ -1114,7 +1133,7 @@ class GetReturnRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetReturnRequest clone() => deepCopy();
+  GetReturnRequest clone() => GetReturnRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetReturnRequest copyWith(void Function(GetReturnRequest) updates) =>
       super.copyWith((message) => updates(message as GetReturnRequest))
@@ -1183,7 +1202,7 @@ class GetReturnResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetReturnResponse clone() => deepCopy();
+  GetReturnResponse clone() => GetReturnResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetReturnResponse copyWith(void Function(GetReturnResponse) updates) =>
       super.copyWith((message) => updates(message as GetReturnResponse))
@@ -1280,20 +1299,25 @@ class ListReturnsRequest extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'ListReturnsRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'logistic.v1'),
       createEmptyInstance: create)
-    ..aE<ReturnType>(1, _omitFieldNames ? '' : 'returnType',
+    ..e<ReturnType>(1, _omitFieldNames ? '' : 'returnType', $pb.PbFieldType.OE,
+        defaultOrMaker: ReturnType.RETURN_TYPE_UNSPECIFIED,
+        valueOf: ReturnType.valueOf,
         enumValues: ReturnType.values)
-    ..aE<ReturnNoteStatus>(2, _omitFieldNames ? '' : 'status',
+    ..e<ReturnNoteStatus>(
+        2, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
+        defaultOrMaker: ReturnNoteStatus.RETURN_STATUS_UNSPECIFIED,
+        valueOf: ReturnNoteStatus.valueOf,
         enumValues: ReturnNoteStatus.values)
     ..aOM<$0.Timestamp>(3, _omitFieldNames ? '' : 'startDate',
         subBuilder: $0.Timestamp.create)
     ..aOM<$0.Timestamp>(4, _omitFieldNames ? '' : 'endDate',
         subBuilder: $0.Timestamp.create)
-    ..aI(5, _omitFieldNames ? '' : 'pageSize')
-    ..aI(6, _omitFieldNames ? '' : 'pageNumber')
+    ..a<$core.int>(5, _omitFieldNames ? '' : 'pageSize', $pb.PbFieldType.O3)
+    ..a<$core.int>(6, _omitFieldNames ? '' : 'pageNumber', $pb.PbFieldType.O3)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ListReturnsRequest clone() => deepCopy();
+  ListReturnsRequest clone() => ListReturnsRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ListReturnsRequest copyWith(void Function(ListReturnsRequest) updates) =>
       super.copyWith((message) => updates(message as ListReturnsRequest))
@@ -1398,14 +1422,14 @@ class ListReturnsResponse extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'ListReturnsResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'logistic.v1'),
       createEmptyInstance: create)
-    ..pPM<ReturnNote>(1, _omitFieldNames ? '' : 'returns',
+    ..pc<ReturnNote>(1, _omitFieldNames ? '' : 'returns', $pb.PbFieldType.PM,
         subBuilder: ReturnNote.create)
-    ..aI(2, _omitFieldNames ? '' : 'totalCount')
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'totalCount', $pb.PbFieldType.O3)
     ..aInt64(3, _omitFieldNames ? '' : 'totalValue')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ListReturnsResponse clone() => deepCopy();
+  ListReturnsResponse clone() => ListReturnsResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ListReturnsResponse copyWith(void Function(ListReturnsResponse) updates) =>
       super.copyWith((message) => updates(message as ListReturnsResponse))

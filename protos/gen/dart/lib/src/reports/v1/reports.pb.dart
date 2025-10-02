@@ -67,12 +67,15 @@ class GetSalesReportRequest extends $pb.GeneratedMessage {
     ..aOS(3, _omitFieldNames ? '' : 'supplierId')
     ..aOS(4, _omitFieldNames ? '' : 'storeId')
     ..aOS(5, _omitFieldNames ? '' : 'category')
-    ..aE<ReportGroupBy>(6, _omitFieldNames ? '' : 'groupBy',
+    ..e<ReportGroupBy>(6, _omitFieldNames ? '' : 'groupBy', $pb.PbFieldType.OE,
+        defaultOrMaker: ReportGroupBy.REPORT_GROUP_BY_UNSPECIFIED,
+        valueOf: ReportGroupBy.valueOf,
         enumValues: ReportGroupBy.values)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetSalesReportRequest clone() => deepCopy();
+  GetSalesReportRequest clone() =>
+      GetSalesReportRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetSalesReportRequest copyWith(
           void Function(GetSalesReportRequest) updates) =>
@@ -183,16 +186,20 @@ class GetSalesReportResponse extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'GetSalesReportResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'reports.v1'),
       createEmptyInstance: create)
-    ..pPM<SalesSummary>(1, _omitFieldNames ? '' : 'summaries',
+    ..pc<SalesSummary>(
+        1, _omitFieldNames ? '' : 'summaries', $pb.PbFieldType.PM,
         subBuilder: SalesSummary.create)
     ..aInt64(2, _omitFieldNames ? '' : 'totalSalesAmount')
-    ..aI(3, _omitFieldNames ? '' : 'totalTransactions')
-    ..aI(4, _omitFieldNames ? '' : 'totalUnitsSold')
+    ..a<$core.int>(
+        3, _omitFieldNames ? '' : 'totalTransactions', $pb.PbFieldType.O3)
+    ..a<$core.int>(
+        4, _omitFieldNames ? '' : 'totalUnitsSold', $pb.PbFieldType.O3)
     ..aInt64(5, _omitFieldNames ? '' : 'averageTransactionValue')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetSalesReportResponse clone() => deepCopy();
+  GetSalesReportResponse clone() =>
+      GetSalesReportResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetSalesReportResponse copyWith(
           void Function(GetSalesReportResponse) updates) =>
@@ -288,12 +295,13 @@ class SalesSummary extends $pb.GeneratedMessage {
     ..aOM<$0.Timestamp>(2, _omitFieldNames ? '' : 'periodEnd',
         subBuilder: $0.Timestamp.create)
     ..aInt64(3, _omitFieldNames ? '' : 'salesAmount')
-    ..aI(4, _omitFieldNames ? '' : 'transactionCount')
-    ..aI(5, _omitFieldNames ? '' : 'unitsSold')
+    ..a<$core.int>(
+        4, _omitFieldNames ? '' : 'transactionCount', $pb.PbFieldType.O3)
+    ..a<$core.int>(5, _omitFieldNames ? '' : 'unitsSold', $pb.PbFieldType.O3)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  SalesSummary clone() => deepCopy();
+  SalesSummary clone() => SalesSummary()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   SalesSummary copyWith(void Function(SalesSummary) updates) =>
       super.copyWith((message) => updates(message as SalesSummary))
@@ -402,12 +410,15 @@ class GetPurchaseReportRequest extends $pb.GeneratedMessage {
     ..aOS(3, _omitFieldNames ? '' : 'storeId')
     ..aOS(4, _omitFieldNames ? '' : 'supplierId')
     ..aOS(5, _omitFieldNames ? '' : 'category')
-    ..aE<ReportGroupBy>(6, _omitFieldNames ? '' : 'groupBy',
+    ..e<ReportGroupBy>(6, _omitFieldNames ? '' : 'groupBy', $pb.PbFieldType.OE,
+        defaultOrMaker: ReportGroupBy.REPORT_GROUP_BY_UNSPECIFIED,
+        valueOf: ReportGroupBy.valueOf,
         enumValues: ReportGroupBy.values)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetPurchaseReportRequest clone() => deepCopy();
+  GetPurchaseReportRequest clone() =>
+      GetPurchaseReportRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetPurchaseReportRequest copyWith(
           void Function(GetPurchaseReportRequest) updates) =>
@@ -518,15 +529,19 @@ class GetPurchaseReportResponse extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'GetPurchaseReportResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'reports.v1'),
       createEmptyInstance: create)
-    ..pPM<PurchaseSummary>(1, _omitFieldNames ? '' : 'summaries',
+    ..pc<PurchaseSummary>(
+        1, _omitFieldNames ? '' : 'summaries', $pb.PbFieldType.PM,
         subBuilder: PurchaseSummary.create)
     ..aInt64(2, _omitFieldNames ? '' : 'totalPurchaseAmount')
-    ..aI(3, _omitFieldNames ? '' : 'totalPurchaseOrders')
-    ..aI(4, _omitFieldNames ? '' : 'totalUnitsPurchased')
+    ..a<$core.int>(
+        3, _omitFieldNames ? '' : 'totalPurchaseOrders', $pb.PbFieldType.O3)
+    ..a<$core.int>(
+        4, _omitFieldNames ? '' : 'totalUnitsPurchased', $pb.PbFieldType.O3)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetPurchaseReportResponse clone() => deepCopy();
+  GetPurchaseReportResponse clone() =>
+      GetPurchaseReportResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetPurchaseReportResponse copyWith(
           void Function(GetPurchaseReportResponse) updates) =>
@@ -614,12 +629,14 @@ class PurchaseSummary extends $pb.GeneratedMessage {
     ..aOM<$0.Timestamp>(2, _omitFieldNames ? '' : 'periodEnd',
         subBuilder: $0.Timestamp.create)
     ..aInt64(3, _omitFieldNames ? '' : 'purchaseAmount')
-    ..aI(4, _omitFieldNames ? '' : 'purchaseOrderCount')
-    ..aI(5, _omitFieldNames ? '' : 'unitsPurchased')
+    ..a<$core.int>(
+        4, _omitFieldNames ? '' : 'purchaseOrderCount', $pb.PbFieldType.O3)
+    ..a<$core.int>(
+        5, _omitFieldNames ? '' : 'unitsPurchased', $pb.PbFieldType.O3)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  PurchaseSummary clone() => deepCopy();
+  PurchaseSummary clone() => PurchaseSummary()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   PurchaseSummary copyWith(void Function(PurchaseSummary) updates) =>
       super.copyWith((message) => updates(message as PurchaseSummary))
@@ -727,7 +744,8 @@ class GetInventoryMovementReportRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetInventoryMovementReportRequest clone() => deepCopy();
+  GetInventoryMovementReportRequest clone() =>
+      GetInventoryMovementReportRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetInventoryMovementReportRequest copyWith(
           void Function(GetInventoryMovementReportRequest) updates) =>
@@ -827,16 +845,20 @@ class GetInventoryMovementReportResponse extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOM<$1.StoreProduct>(1, _omitFieldNames ? '' : 'product',
         subBuilder: $1.StoreProduct.create)
-    ..aD(2, _omitFieldNames ? '' : 'openingBalance')
-    ..aD(3, _omitFieldNames ? '' : 'totalIn')
-    ..aD(4, _omitFieldNames ? '' : 'totalOut')
-    ..aD(5, _omitFieldNames ? '' : 'closingBalance')
-    ..pPM<$2.InventoryTransaction>(6, _omitFieldNames ? '' : 'transactions',
+    ..a<$core.double>(
+        2, _omitFieldNames ? '' : 'openingBalance', $pb.PbFieldType.OD)
+    ..a<$core.double>(3, _omitFieldNames ? '' : 'totalIn', $pb.PbFieldType.OD)
+    ..a<$core.double>(4, _omitFieldNames ? '' : 'totalOut', $pb.PbFieldType.OD)
+    ..a<$core.double>(
+        5, _omitFieldNames ? '' : 'closingBalance', $pb.PbFieldType.OD)
+    ..pc<$2.InventoryTransaction>(
+        6, _omitFieldNames ? '' : 'transactions', $pb.PbFieldType.PM,
         subBuilder: $2.InventoryTransaction.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetInventoryMovementReportResponse clone() => deepCopy();
+  GetInventoryMovementReportResponse clone() =>
+      GetInventoryMovementReportResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetInventoryMovementReportResponse copyWith(
           void Function(GetInventoryMovementReportResponse) updates) =>
@@ -947,11 +969,12 @@ class GetBestSellingProductsRequest extends $pb.GeneratedMessage {
         subBuilder: $0.Timestamp.create)
     ..aOS(3, _omitFieldNames ? '' : 'storeId')
     ..aOS(4, _omitFieldNames ? '' : 'category')
-    ..aI(5, _omitFieldNames ? '' : 'topN')
+    ..a<$core.int>(5, _omitFieldNames ? '' : 'topN', $pb.PbFieldType.O3)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetBestSellingProductsRequest clone() => deepCopy();
+  GetBestSellingProductsRequest clone() =>
+      GetBestSellingProductsRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetBestSellingProductsRequest copyWith(
           void Function(GetBestSellingProductsRequest) updates) =>
@@ -1046,12 +1069,14 @@ class GetBestSellingProductsResponse extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'GetBestSellingProductsResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'reports.v1'),
       createEmptyInstance: create)
-    ..pPM<BestSellingProduct>(1, _omitFieldNames ? '' : 'products',
+    ..pc<BestSellingProduct>(
+        1, _omitFieldNames ? '' : 'products', $pb.PbFieldType.PM,
         subBuilder: BestSellingProduct.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetBestSellingProductsResponse clone() => deepCopy();
+  GetBestSellingProductsResponse clone() =>
+      GetBestSellingProductsResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetBestSellingProductsResponse copyWith(
           void Function(GetBestSellingProductsResponse) updates) =>
@@ -1112,15 +1137,16 @@ class BestSellingProduct extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOM<$1.StoreProduct>(1, _omitFieldNames ? '' : 'product',
         subBuilder: $1.StoreProduct.create)
-    ..aI(2, _omitFieldNames ? '' : 'unitsSold')
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'unitsSold', $pb.PbFieldType.O3)
     ..aInt64(3, _omitFieldNames ? '' : 'totalRevenue')
-    ..aI(4, _omitFieldNames ? '' : 'transactionCount')
+    ..a<$core.int>(
+        4, _omitFieldNames ? '' : 'transactionCount', $pb.PbFieldType.O3)
     ..aOS(5, _omitFieldNames ? '' : 'productName', protoName: 'productName')
-    ..aI(6, _omitFieldNames ? '' : 'rank')
+    ..a<$core.int>(6, _omitFieldNames ? '' : 'rank', $pb.PbFieldType.O3)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  BestSellingProduct clone() => deepCopy();
+  BestSellingProduct clone() => BestSellingProduct()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   BestSellingProduct copyWith(void Function(BestSellingProduct) updates) =>
       super.copyWith((message) => updates(message as BestSellingProduct))
@@ -1231,7 +1257,8 @@ class GetStorePurchaseHistoryRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetStorePurchaseHistoryRequest clone() => deepCopy();
+  GetStorePurchaseHistoryRequest clone() =>
+      GetStorePurchaseHistoryRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetStorePurchaseHistoryRequest copyWith(
           void Function(GetStorePurchaseHistoryRequest) updates) =>
@@ -1323,18 +1350,20 @@ class GetStorePurchaseHistoryResponse extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOM<$3.Store>(1, _omitFieldNames ? '' : 'store',
         subBuilder: $3.Store.create)
-    ..pPM<$4.Invoice>(2, _omitFieldNames ? '' : 'invoices',
+    ..pc<$4.Invoice>(2, _omitFieldNames ? '' : 'invoices', $pb.PbFieldType.PM,
         subBuilder: $4.Invoice.create)
     ..aInt64(3, _omitFieldNames ? '' : 'totalPurchases')
     ..aInt64(4, _omitFieldNames ? '' : 'totalPaid')
     ..aInt64(5, _omitFieldNames ? '' : 'outstandingBalance')
-    ..aI(6, _omitFieldNames ? '' : 'transactionCount')
+    ..a<$core.int>(
+        6, _omitFieldNames ? '' : 'transactionCount', $pb.PbFieldType.O3)
     ..aOM<$0.Timestamp>(7, _omitFieldNames ? '' : 'lastPurchaseDate',
         subBuilder: $0.Timestamp.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetStorePurchaseHistoryResponse clone() => deepCopy();
+  GetStorePurchaseHistoryResponse clone() =>
+      GetStorePurchaseHistoryResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetStorePurchaseHistoryResponse copyWith(
           void Function(GetStorePurchaseHistoryResponse) updates) =>
@@ -1455,7 +1484,8 @@ class GetSupplierPerformanceReportRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetSupplierPerformanceReportRequest clone() => deepCopy();
+  GetSupplierPerformanceReportRequest clone() =>
+      GetSupplierPerformanceReportRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetSupplierPerformanceReportRequest copyWith(
           void Function(GetSupplierPerformanceReportRequest) updates) =>
@@ -1553,17 +1583,24 @@ class GetSupplierPerformanceReportResponse extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOM<$5.Supplier>(1, _omitFieldNames ? '' : 'supplier',
         subBuilder: $5.Supplier.create)
-    ..aI(2, _omitFieldNames ? '' : 'totalPurchaseOrders')
+    ..a<$core.int>(
+        2, _omitFieldNames ? '' : 'totalPurchaseOrders', $pb.PbFieldType.O3)
     ..aInt64(3, _omitFieldNames ? '' : 'totalPurchaseValue')
-    ..aI(4, _omitFieldNames ? '' : 'onTimeDeliveries')
-    ..aI(5, _omitFieldNames ? '' : 'lateDeliveries')
-    ..aD(6, _omitFieldNames ? '' : 'onTimePercentage')
-    ..aI(7, _omitFieldNames ? '' : 'qualityIssues')
-    ..aD(8, _omitFieldNames ? '' : 'averageDeliveryTimeDays')
+    ..a<$core.int>(
+        4, _omitFieldNames ? '' : 'onTimeDeliveries', $pb.PbFieldType.O3)
+    ..a<$core.int>(
+        5, _omitFieldNames ? '' : 'lateDeliveries', $pb.PbFieldType.O3)
+    ..a<$core.double>(
+        6, _omitFieldNames ? '' : 'onTimePercentage', $pb.PbFieldType.OD)
+    ..a<$core.int>(
+        7, _omitFieldNames ? '' : 'qualityIssues', $pb.PbFieldType.O3)
+    ..a<$core.double>(
+        8, _omitFieldNames ? '' : 'averageDeliveryTimeDays', $pb.PbFieldType.OD)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetSupplierPerformanceReportResponse clone() => deepCopy();
+  GetSupplierPerformanceReportResponse clone() =>
+      GetSupplierPerformanceReportResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetSupplierPerformanceReportResponse copyWith(
           void Function(GetSupplierPerformanceReportResponse) updates) =>
@@ -1696,7 +1733,8 @@ class GetProfitLossReportRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetProfitLossReportRequest clone() => deepCopy();
+  GetProfitLossReportRequest clone() =>
+      GetProfitLossReportRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetProfitLossReportRequest copyWith(
           void Function(GetProfitLossReportRequest) updates) =>
@@ -1787,14 +1825,16 @@ class GetProfitLossReportResponse extends $pb.GeneratedMessage {
     ..aInt64(1, _omitFieldNames ? '' : 'totalRevenue')
     ..aInt64(2, _omitFieldNames ? '' : 'costOfGoodsSold')
     ..aInt64(3, _omitFieldNames ? '' : 'grossProfit')
-    ..aD(4, _omitFieldNames ? '' : 'grossProfitMargin')
+    ..a<$core.double>(
+        4, _omitFieldNames ? '' : 'grossProfitMargin', $pb.PbFieldType.OD)
     ..aInt64(5, _omitFieldNames ? '' : 'returnsValue')
     ..aInt64(6, _omitFieldNames ? '' : 'adjustmentsValue')
     ..aInt64(7, _omitFieldNames ? '' : 'netProfit')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetProfitLossReportResponse clone() => deepCopy();
+  GetProfitLossReportResponse clone() =>
+      GetProfitLossReportResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetProfitLossReportResponse copyWith(
           void Function(GetProfitLossReportResponse) updates) =>
@@ -1910,7 +1950,8 @@ class GetStockAgingReportRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetStockAgingReportRequest clone() => deepCopy();
+  GetStockAgingReportRequest clone() =>
+      GetStockAgingReportRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetStockAgingReportRequest copyWith(
           void Function(GetStockAgingReportRequest) updates) =>
@@ -1978,14 +2019,15 @@ class GetStockAgingReportResponse extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'GetStockAgingReportResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'reports.v1'),
       createEmptyInstance: create)
-    ..pPM<StockAgingItem>(1, _omitFieldNames ? '' : 'items',
+    ..pc<StockAgingItem>(1, _omitFieldNames ? '' : 'items', $pb.PbFieldType.PM,
         subBuilder: StockAgingItem.create)
     ..aInt64(2, _omitFieldNames ? '' : 'totalStockValue')
     ..aInt64(3, _omitFieldNames ? '' : 'slowMovingStockValue')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetStockAgingReportResponse clone() => deepCopy();
+  GetStockAgingReportResponse clone() =>
+      GetStockAgingReportResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetStockAgingReportResponse copyWith(
           void Function(GetStockAgingReportResponse) updates) =>
@@ -2065,17 +2107,22 @@ class StockAgingItem extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOM<$1.StoreProduct>(1, _omitFieldNames ? '' : 'product',
         subBuilder: $1.StoreProduct.create)
-    ..aD(2, _omitFieldNames ? '' : 'quantity')
+    ..a<$core.double>(2, _omitFieldNames ? '' : 'quantity', $pb.PbFieldType.OD)
     ..aInt64(3, _omitFieldNames ? '' : 'stockValue')
     ..aOM<$0.Timestamp>(4, _omitFieldNames ? '' : 'lastMovementDate',
         subBuilder: $0.Timestamp.create)
-    ..aI(5, _omitFieldNames ? '' : 'daysSinceLastMovement')
-    ..aE<StockMovementCategory>(6, _omitFieldNames ? '' : 'movementCategory',
+    ..a<$core.int>(
+        5, _omitFieldNames ? '' : 'daysSinceLastMovement', $pb.PbFieldType.O3)
+    ..e<StockMovementCategory>(
+        6, _omitFieldNames ? '' : 'movementCategory', $pb.PbFieldType.OE,
+        defaultOrMaker:
+            StockMovementCategory.STOCK_MOVEMENT_CATEGORY_UNSPECIFIED,
+        valueOf: StockMovementCategory.valueOf,
         enumValues: StockMovementCategory.values)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  StockAgingItem clone() => deepCopy();
+  StockAgingItem clone() => StockAgingItem()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   StockAgingItem copyWith(void Function(StockAgingItem) updates) =>
       super.copyWith((message) => updates(message as StockAgingItem))
@@ -2191,7 +2238,8 @@ class GetInventoryReportRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetInventoryReportRequest clone() => deepCopy();
+  GetInventoryReportRequest clone() =>
+      GetInventoryReportRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetInventoryReportRequest copyWith(
           void Function(GetInventoryReportRequest) updates) =>
@@ -2279,13 +2327,14 @@ class InventoryMovementSummary extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'InventoryMovementSummary',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'reports.v1'),
       createEmptyInstance: create)
-    ..aD(1, _omitFieldNames ? '' : 'totalIn')
-    ..aD(2, _omitFieldNames ? '' : 'totalOut')
-    ..aD(3, _omitFieldNames ? '' : 'netChange')
+    ..a<$core.double>(1, _omitFieldNames ? '' : 'totalIn', $pb.PbFieldType.OD)
+    ..a<$core.double>(2, _omitFieldNames ? '' : 'totalOut', $pb.PbFieldType.OD)
+    ..a<$core.double>(3, _omitFieldNames ? '' : 'netChange', $pb.PbFieldType.OD)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  InventoryMovementSummary clone() => deepCopy();
+  InventoryMovementSummary clone() =>
+      InventoryMovementSummary()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   InventoryMovementSummary copyWith(
           void Function(InventoryMovementSummary) updates) =>
@@ -2372,16 +2421,21 @@ class GetInventoryReportResponse extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'GetInventoryReportResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'reports.v1'),
       createEmptyInstance: create)
-    ..aI(1, _omitFieldNames ? '' : 'totalProducts')
+    ..a<$core.int>(
+        1, _omitFieldNames ? '' : 'totalProducts', $pb.PbFieldType.O3)
     ..aInt64(2, _omitFieldNames ? '' : 'totalValue')
-    ..aI(3, _omitFieldNames ? '' : 'lowStockCount')
-    ..pPM<StockAgingItem>(4, _omitFieldNames ? '' : 'agingItems',
+    ..a<$core.int>(
+        3, _omitFieldNames ? '' : 'lowStockCount', $pb.PbFieldType.O3)
+    ..pc<StockAgingItem>(
+        4, _omitFieldNames ? '' : 'agingItems', $pb.PbFieldType.PM,
         subBuilder: StockAgingItem.create)
     ..aOM<InventoryMovementSummary>(5, _omitFieldNames ? '' : 'movementSummary',
         subBuilder: InventoryMovementSummary.create)
-    ..pPM<BestSellingProduct>(6, _omitFieldNames ? '' : 'bestSellers',
+    ..pc<BestSellingProduct>(
+        6, _omitFieldNames ? '' : 'bestSellers', $pb.PbFieldType.PM,
         subBuilder: BestSellingProduct.create)
-    ..pPM<StockMovementDataPoint>(7, _omitFieldNames ? '' : 'stockMovementData',
+    ..pc<StockMovementDataPoint>(
+        7, _omitFieldNames ? '' : 'stockMovementData', $pb.PbFieldType.PM,
         subBuilder: StockMovementDataPoint.create)
     ..aOM<InventoryComparisonData>(
         8, _omitFieldNames ? '' : 'previousYearComparison',
@@ -2389,7 +2443,8 @@ class GetInventoryReportResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetInventoryReportResponse clone() => deepCopy();
+  GetInventoryReportResponse clone() =>
+      GetInventoryReportResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetInventoryReportResponse copyWith(
           void Function(GetInventoryReportResponse) updates) =>
@@ -2501,13 +2556,16 @@ class StockMovementDataPoint extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOM<$0.Timestamp>(1, _omitFieldNames ? '' : 'date',
         subBuilder: $0.Timestamp.create)
-    ..aD(2, _omitFieldNames ? '' : 'stockLevel')
-    ..aD(3, _omitFieldNames ? '' : 'movementQuantity')
+    ..a<$core.double>(
+        2, _omitFieldNames ? '' : 'stockLevel', $pb.PbFieldType.OD)
+    ..a<$core.double>(
+        3, _omitFieldNames ? '' : 'movementQuantity', $pb.PbFieldType.OD)
     ..aOS(4, _omitFieldNames ? '' : 'movementType')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  StockMovementDataPoint clone() => deepCopy();
+  StockMovementDataPoint clone() =>
+      StockMovementDataPoint()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   StockMovementDataPoint copyWith(
           void Function(StockMovementDataPoint) updates) =>
@@ -2606,15 +2664,20 @@ class GetSalesReportFullResponse extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'GetSalesReportFullResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'reports.v1'),
       createEmptyInstance: create)
-    ..pPM<SalesSummary>(1, _omitFieldNames ? '' : 'summaries',
+    ..pc<SalesSummary>(
+        1, _omitFieldNames ? '' : 'summaries', $pb.PbFieldType.PM,
         subBuilder: SalesSummary.create)
     ..aInt64(2, _omitFieldNames ? '' : 'totalSalesAmount')
-    ..aI(3, _omitFieldNames ? '' : 'totalTransactions')
-    ..aI(4, _omitFieldNames ? '' : 'totalUnitsSold')
+    ..a<$core.int>(
+        3, _omitFieldNames ? '' : 'totalTransactions', $pb.PbFieldType.O3)
+    ..a<$core.int>(
+        4, _omitFieldNames ? '' : 'totalUnitsSold', $pb.PbFieldType.O3)
     ..aInt64(5, _omitFieldNames ? '' : 'averageTransactionValue')
-    ..pPM<BestSellingProduct>(6, _omitFieldNames ? '' : 'bestProducts',
+    ..pc<BestSellingProduct>(
+        6, _omitFieldNames ? '' : 'bestProducts', $pb.PbFieldType.PM,
         subBuilder: BestSellingProduct.create)
-    ..pPM<CategorySalesData>(7, _omitFieldNames ? '' : 'categorySalesData',
+    ..pc<CategorySalesData>(
+        7, _omitFieldNames ? '' : 'categorySalesData', $pb.PbFieldType.PM,
         subBuilder: CategorySalesData.create)
     ..aOM<SalesComparisonData>(
         8, _omitFieldNames ? '' : 'previousYearComparison',
@@ -2622,7 +2685,8 @@ class GetSalesReportFullResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetSalesReportFullResponse clone() => deepCopy();
+  GetSalesReportFullResponse clone() =>
+      GetSalesReportFullResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetSalesReportFullResponse copyWith(
           void Function(GetSalesReportFullResponse) updates) =>
@@ -2732,14 +2796,18 @@ class CategorySalesData extends $pb.GeneratedMessage {
       package: const $pb.PackageName(_omitMessageNames ? '' : 'reports.v1'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'categoryName')
-    ..aD(2, _omitFieldNames ? '' : 'totalSalesAmount')
-    ..aI(3, _omitFieldNames ? '' : 'totalUnitsSold')
-    ..aI(4, _omitFieldNames ? '' : 'transactionCount')
-    ..aD(5, _omitFieldNames ? '' : 'percentageOfTotal')
+    ..a<$core.double>(
+        2, _omitFieldNames ? '' : 'totalSalesAmount', $pb.PbFieldType.OD)
+    ..a<$core.int>(
+        3, _omitFieldNames ? '' : 'totalUnitsSold', $pb.PbFieldType.O3)
+    ..a<$core.int>(
+        4, _omitFieldNames ? '' : 'transactionCount', $pb.PbFieldType.O3)
+    ..a<$core.double>(
+        5, _omitFieldNames ? '' : 'percentageOfTotal', $pb.PbFieldType.OD)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CategorySalesData clone() => deepCopy();
+  CategorySalesData clone() => CategorySalesData()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CategorySalesData copyWith(void Function(CategorySalesData) updates) =>
       super.copyWith((message) => updates(message as CategorySalesData))
@@ -2836,12 +2904,16 @@ class SalesComparisonData extends $pb.GeneratedMessage {
       package: const $pb.PackageName(_omitMessageNames ? '' : 'reports.v1'),
       createEmptyInstance: create)
     ..aInt64(1, _omitFieldNames ? '' : 'previousYearTotalSales')
-    ..aI(2, _omitFieldNames ? '' : 'previousYearTotalTransactions')
-    ..aD(3, _omitFieldNames ? '' : 'previousYearAverageTransactionValue')
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'previousYearTotalTransactions',
+        $pb.PbFieldType.O3)
+    ..a<$core.double>(
+        3,
+        _omitFieldNames ? '' : 'previousYearAverageTransactionValue',
+        $pb.PbFieldType.OD)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  SalesComparisonData clone() => deepCopy();
+  SalesComparisonData clone() => SalesComparisonData()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   SalesComparisonData copyWith(void Function(SalesComparisonData) updates) =>
       super.copyWith((message) => updates(message as SalesComparisonData))
@@ -2925,7 +2997,8 @@ class GetFinancialReportRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetFinancialReportRequest clone() => deepCopy();
+  GetFinancialReportRequest clone() =>
+      GetFinancialReportRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetFinancialReportRequest copyWith(
           void Function(GetFinancialReportRequest) updates) =>
@@ -3029,17 +3102,18 @@ class GetFinancialReportResponse extends $pb.GeneratedMessage {
     ..aInt64(1, _omitFieldNames ? '' : 'totalRevenue')
     ..aInt64(2, _omitFieldNames ? '' : 'costOfGoodsSold')
     ..aInt64(3, _omitFieldNames ? '' : 'grossProfit')
-    ..aD(4, _omitFieldNames ? '' : 'grossProfitMargin')
+    ..a<$core.double>(
+        4, _omitFieldNames ? '' : 'grossProfitMargin', $pb.PbFieldType.OD)
     ..aInt64(5, _omitFieldNames ? '' : 'returnsValue')
     ..aInt64(6, _omitFieldNames ? '' : 'adjustmentsValue')
     ..aInt64(7, _omitFieldNames ? '' : 'netProfit')
     ..aInt64(8, _omitFieldNames ? '' : 'totalPurchases')
     ..aInt64(9, _omitFieldNames ? '' : 'outstandingBalance')
-    ..pPM<SupplierPerformanceSummary>(
-        10, _omitFieldNames ? '' : 'supplierPerformances',
+    ..pc<SupplierPerformanceSummary>(
+        10, _omitFieldNames ? '' : 'supplierPerformances', $pb.PbFieldType.PM,
         subBuilder: SupplierPerformanceSummary.create)
-    ..pPM<RevenueExpenseDataPoint>(
-        11, _omitFieldNames ? '' : 'revenueVsExpensesData',
+    ..pc<RevenueExpenseDataPoint>(
+        11, _omitFieldNames ? '' : 'revenueVsExpensesData', $pb.PbFieldType.PM,
         subBuilder: RevenueExpenseDataPoint.create)
     ..aOM<FinancialComparisonData>(
         12, _omitFieldNames ? '' : 'previousYearComparison',
@@ -3047,7 +3121,8 @@ class GetFinancialReportResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetFinancialReportResponse clone() => deepCopy();
+  GetFinancialReportResponse clone() =>
+      GetFinancialReportResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetFinancialReportResponse copyWith(
           void Function(GetFinancialReportResponse) updates) =>
@@ -3205,13 +3280,14 @@ class RevenueExpenseDataPoint extends $pb.GeneratedMessage {
         subBuilder: $0.Timestamp.create)
     ..aOM<$0.Timestamp>(2, _omitFieldNames ? '' : 'periodEnd',
         subBuilder: $0.Timestamp.create)
-    ..aD(3, _omitFieldNames ? '' : 'revenue')
-    ..aD(4, _omitFieldNames ? '' : 'expenses')
-    ..aD(5, _omitFieldNames ? '' : 'netAmount')
+    ..a<$core.double>(3, _omitFieldNames ? '' : 'revenue', $pb.PbFieldType.OD)
+    ..a<$core.double>(4, _omitFieldNames ? '' : 'expenses', $pb.PbFieldType.OD)
+    ..a<$core.double>(5, _omitFieldNames ? '' : 'netAmount', $pb.PbFieldType.OD)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  RevenueExpenseDataPoint clone() => deepCopy();
+  RevenueExpenseDataPoint clone() =>
+      RevenueExpenseDataPoint()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   RevenueExpenseDataPoint copyWith(
           void Function(RevenueExpenseDataPoint) updates) =>
@@ -3316,12 +3392,14 @@ class SupplierPerformanceSummary extends $pb.GeneratedMessage {
     ..aOS(1, _omitFieldNames ? '' : 'supplierId')
     ..aOS(2, _omitFieldNames ? '' : 'supplierName')
     ..aInt64(3, _omitFieldNames ? '' : 'totalPurchaseValue')
-    ..aD(4, _omitFieldNames ? '' : 'onTimePercentage')
-    ..aI(5, _omitFieldNames ? '' : 'totalOrders')
+    ..a<$core.double>(
+        4, _omitFieldNames ? '' : 'onTimePercentage', $pb.PbFieldType.OD)
+    ..a<$core.int>(5, _omitFieldNames ? '' : 'totalOrders', $pb.PbFieldType.O3)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  SupplierPerformanceSummary clone() => deepCopy();
+  SupplierPerformanceSummary clone() =>
+      SupplierPerformanceSummary()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   SupplierPerformanceSummary copyWith(
           void Function(SupplierPerformanceSummary) updates) =>
@@ -3423,12 +3501,14 @@ class FinancialComparisonData extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aInt64(1, _omitFieldNames ? '' : 'previousYearTotalRevenue')
     ..aInt64(2, _omitFieldNames ? '' : 'previousYearNetProfit')
-    ..aD(3, _omitFieldNames ? '' : 'previousYearGrossProfitMargin')
+    ..a<$core.double>(3, _omitFieldNames ? '' : 'previousYearGrossProfitMargin',
+        $pb.PbFieldType.OD)
     ..aInt64(4, _omitFieldNames ? '' : 'previousYearTotalPurchases')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  FinancialComparisonData clone() => deepCopy();
+  FinancialComparisonData clone() =>
+      FinancialComparisonData()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   FinancialComparisonData copyWith(
           void Function(FinancialComparisonData) updates) =>
@@ -3522,15 +3602,20 @@ class InventoryComparisonData extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'InventoryComparisonData',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'reports.v1'),
       createEmptyInstance: create)
-    ..aI(1, _omitFieldNames ? '' : 'previousYearTotalProducts')
+    ..a<$core.int>(1, _omitFieldNames ? '' : 'previousYearTotalProducts',
+        $pb.PbFieldType.O3)
     ..aInt64(2, _omitFieldNames ? '' : 'previousYearTotalValue')
-    ..aI(3, _omitFieldNames ? '' : 'previousYearLowStockCount')
-    ..aD(4, _omitFieldNames ? '' : 'previousYearMovementTotalIn')
-    ..aD(5, _omitFieldNames ? '' : 'previousYearMovementTotalOut')
+    ..a<$core.int>(3, _omitFieldNames ? '' : 'previousYearLowStockCount',
+        $pb.PbFieldType.O3)
+    ..a<$core.double>(4, _omitFieldNames ? '' : 'previousYearMovementTotalIn',
+        $pb.PbFieldType.OD)
+    ..a<$core.double>(5, _omitFieldNames ? '' : 'previousYearMovementTotalOut',
+        $pb.PbFieldType.OD)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  InventoryComparisonData clone() => deepCopy();
+  InventoryComparisonData clone() =>
+      InventoryComparisonData()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   InventoryComparisonData copyWith(
           void Function(InventoryComparisonData) updates) =>
@@ -3631,7 +3716,8 @@ class GetDashboardReportRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetDashboardReportRequest clone() => deepCopy();
+  GetDashboardReportRequest clone() =>
+      GetDashboardReportRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetDashboardReportRequest copyWith(
           void Function(GetDashboardReportRequest) updates) =>
@@ -3757,26 +3843,33 @@ class GetDashboardReportResponse extends $pb.GeneratedMessage {
       package: const $pb.PackageName(_omitMessageNames ? '' : 'reports.v1'),
       createEmptyInstance: create)
     ..aInt64(1, _omitFieldNames ? '' : 'totalSalesAmount')
-    ..aI(2, _omitFieldNames ? '' : 'totalTransactions')
-    ..aD(3, _omitFieldNames ? '' : 'averageTransactionValue')
-    ..aI(4, _omitFieldNames ? '' : 'totalUnitsSold')
+    ..a<$core.int>(
+        2, _omitFieldNames ? '' : 'totalTransactions', $pb.PbFieldType.O3)
+    ..a<$core.double>(
+        3, _omitFieldNames ? '' : 'averageTransactionValue', $pb.PbFieldType.OD)
+    ..a<$core.int>(
+        4, _omitFieldNames ? '' : 'totalUnitsSold', $pb.PbFieldType.O3)
     ..aInt64(5, _omitFieldNames ? '' : 'totalRevenue')
     ..aInt64(6, _omitFieldNames ? '' : 'netProfit')
-    ..aD(7, _omitFieldNames ? '' : 'grossProfitMargin')
+    ..a<$core.double>(
+        7, _omitFieldNames ? '' : 'grossProfitMargin', $pb.PbFieldType.OD)
     ..aInt64(8, _omitFieldNames ? '' : 'totalPurchases')
-    ..aI(9, _omitFieldNames ? '' : 'totalProducts')
+    ..a<$core.int>(
+        9, _omitFieldNames ? '' : 'totalProducts', $pb.PbFieldType.O3)
     ..aInt64(10, _omitFieldNames ? '' : 'totalInventoryValue')
-    ..aI(11, _omitFieldNames ? '' : 'lowStockCount')
-    ..pPM<TrendDataPoint>(12, _omitFieldNames ? '' : 'salesAndProfitTrend',
+    ..a<$core.int>(
+        11, _omitFieldNames ? '' : 'lowStockCount', $pb.PbFieldType.O3)
+    ..pc<TrendDataPoint>(
+        12, _omitFieldNames ? '' : 'salesAndProfitTrend', $pb.PbFieldType.PM,
         subBuilder: TrendDataPoint.create)
-    ..pPM<CategorySalesData>(
-        13, _omitFieldNames ? '' : 'categorySalesBreakdown',
+    ..pc<CategorySalesData>(
+        13, _omitFieldNames ? '' : 'categorySalesBreakdown', $pb.PbFieldType.PM,
         subBuilder: CategorySalesData.create)
-    ..pPM<RevenueExpenseDataPoint>(
-        14, _omitFieldNames ? '' : 'revenueVsExpenses',
+    ..pc<RevenueExpenseDataPoint>(
+        14, _omitFieldNames ? '' : 'revenueVsExpenses', $pb.PbFieldType.PM,
         subBuilder: RevenueExpenseDataPoint.create)
-    ..pPM<StockMovementDataPoint>(
-        15, _omitFieldNames ? '' : 'inventoryMovement',
+    ..pc<StockMovementDataPoint>(
+        15, _omitFieldNames ? '' : 'inventoryMovement', $pb.PbFieldType.PM,
         subBuilder: StockMovementDataPoint.create)
     ..aOM<SalesComparisonData>(16, _omitFieldNames ? '' : 'salesComparison',
         subBuilder: SalesComparisonData.create)
@@ -3786,18 +3879,20 @@ class GetDashboardReportResponse extends $pb.GeneratedMessage {
     ..aOM<InventoryComparisonData>(
         18, _omitFieldNames ? '' : 'inventoryComparison',
         subBuilder: InventoryComparisonData.create)
-    ..pPM<BestSellingProduct>(
-        19, _omitFieldNames ? '' : 'topPerformingProducts',
+    ..pc<BestSellingProduct>(
+        19, _omitFieldNames ? '' : 'topPerformingProducts', $pb.PbFieldType.PM,
         subBuilder: BestSellingProduct.create)
-    ..pPM<SupplierPerformanceSummary>(
-        20, _omitFieldNames ? '' : 'supplierPerformances',
+    ..pc<SupplierPerformanceSummary>(
+        20, _omitFieldNames ? '' : 'supplierPerformances', $pb.PbFieldType.PM,
         subBuilder: SupplierPerformanceSummary.create)
-    ..pPM<StockAgingItem>(21, _omitFieldNames ? '' : 'stockAgingItems',
+    ..pc<StockAgingItem>(
+        21, _omitFieldNames ? '' : 'stockAgingItems', $pb.PbFieldType.PM,
         subBuilder: StockAgingItem.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetDashboardReportResponse clone() => deepCopy();
+  GetDashboardReportResponse clone() =>
+      GetDashboardReportResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetDashboardReportResponse copyWith(
           void Function(GetDashboardReportResponse) updates) =>
@@ -4011,12 +4106,14 @@ class TrendDataPoint extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOM<$0.Timestamp>(1, _omitFieldNames ? '' : 'date',
         subBuilder: $0.Timestamp.create)
-    ..aD(2, _omitFieldNames ? '' : 'salesValue')
-    ..aD(3, _omitFieldNames ? '' : 'profitValue')
+    ..a<$core.double>(
+        2, _omitFieldNames ? '' : 'salesValue', $pb.PbFieldType.OD)
+    ..a<$core.double>(
+        3, _omitFieldNames ? '' : 'profitValue', $pb.PbFieldType.OD)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  TrendDataPoint clone() => deepCopy();
+  TrendDataPoint clone() => TrendDataPoint()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   TrendDataPoint copyWith(void Function(TrendDataPoint) updates) =>
       super.copyWith((message) => updates(message as TrendDataPoint))

@@ -86,7 +86,9 @@ class GiftVoucher extends $pb.GeneratedMessage {
     ..aOS(5, _omitFieldNames ? '' : 'currency')
     ..aOS(6, _omitFieldNames ? '' : 'issuedToCustomerId')
     ..aOS(7, _omitFieldNames ? '' : 'issuedByUserId')
-    ..aE<VoucherStatus>(8, _omitFieldNames ? '' : 'status',
+    ..e<VoucherStatus>(8, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
+        defaultOrMaker: VoucherStatus.VOUCHER_STATUS_UNSPECIFIED,
+        valueOf: VoucherStatus.valueOf,
         enumValues: VoucherStatus.values)
     ..aOM<$0.Timestamp>(9, _omitFieldNames ? '' : 'issuedAt',
         subBuilder: $0.Timestamp.create)
@@ -96,7 +98,7 @@ class GiftVoucher extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GiftVoucher clone() => deepCopy();
+  GiftVoucher clone() => GiftVoucher()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GiftVoucher copyWith(void Function(GiftVoucher) updates) =>
       super.copyWith((message) => updates(message as GiftVoucher))
@@ -276,7 +278,7 @@ class VoucherTransaction extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  VoucherTransaction clone() => deepCopy();
+  VoucherTransaction clone() => VoucherTransaction()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   VoucherTransaction copyWith(void Function(VoucherTransaction) updates) =>
       super.copyWith((message) => updates(message as VoucherTransaction))
@@ -397,7 +399,8 @@ class ValidateVoucherRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ValidateVoucherRequest clone() => deepCopy();
+  ValidateVoucherRequest clone() =>
+      ValidateVoucherRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ValidateVoucherRequest copyWith(
           void Function(ValidateVoucherRequest) updates) =>
@@ -465,13 +468,16 @@ class ValidateVoucherResponse extends $pb.GeneratedMessage {
     ..aInt64(3, _omitFieldNames ? '' : 'remainingValue')
     ..aOM<$0.Timestamp>(4, _omitFieldNames ? '' : 'validUntil',
         subBuilder: $0.Timestamp.create)
-    ..aE<VoucherStatus>(5, _omitFieldNames ? '' : 'status',
+    ..e<VoucherStatus>(5, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
+        defaultOrMaker: VoucherStatus.VOUCHER_STATUS_UNSPECIFIED,
+        valueOf: VoucherStatus.valueOf,
         enumValues: VoucherStatus.values)
     ..aOS(6, _omitFieldNames ? '' : 'message')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ValidateVoucherResponse clone() => deepCopy();
+  ValidateVoucherResponse clone() =>
+      ValidateVoucherResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ValidateVoucherResponse copyWith(
           void Function(ValidateVoucherResponse) updates) =>
@@ -595,7 +601,8 @@ class CreateGiftVoucherRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreateGiftVoucherRequest clone() => deepCopy();
+  CreateGiftVoucherRequest clone() =>
+      CreateGiftVoucherRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CreateGiftVoucherRequest copyWith(
           void Function(CreateGiftVoucherRequest) updates) =>
@@ -718,7 +725,8 @@ class CreateGiftVoucherResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreateGiftVoucherResponse clone() => deepCopy();
+  CreateGiftVoucherResponse clone() =>
+      CreateGiftVoucherResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CreateGiftVoucherResponse copyWith(
           void Function(CreateGiftVoucherResponse) updates) =>
@@ -813,7 +821,7 @@ class UseVoucherRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  UseVoucherRequest clone() => deepCopy();
+  UseVoucherRequest clone() => UseVoucherRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   UseVoucherRequest copyWith(void Function(UseVoucherRequest) updates) =>
       super.copyWith((message) => updates(message as UseVoucherRequest))
@@ -913,7 +921,7 @@ class UseVoucherResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  UseVoucherResponse clone() => deepCopy();
+  UseVoucherResponse clone() => UseVoucherResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   UseVoucherResponse copyWith(void Function(UseVoucherResponse) updates) =>
       super.copyWith((message) => updates(message as UseVoucherResponse))
@@ -1030,7 +1038,7 @@ class GetVoucherRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetVoucherRequest clone() => deepCopy();
+  GetVoucherRequest clone() => GetVoucherRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetVoucherRequest copyWith(void Function(GetVoucherRequest) updates) =>
       super.copyWith((message) => updates(message as GetVoucherRequest))
@@ -1050,12 +1058,8 @@ class GetVoucherRequest extends $pb.GeneratedMessage {
       $pb.GeneratedMessage.$_defaultFor<GetVoucherRequest>(create);
   static GetVoucherRequest? _defaultInstance;
 
-  @$pb.TagNumber(1)
-  @$pb.TagNumber(2)
   GetVoucherRequest_Identifier whichIdentifier() =>
       _GetVoucherRequest_IdentifierByTag[$_whichOneof(0)]!;
-  @$pb.TagNumber(1)
-  @$pb.TagNumber(2)
   void clearIdentifier() => $_clearField($_whichOneof(0));
 
   @$pb.TagNumber(1)
@@ -1103,12 +1107,13 @@ class GetVoucherResponse extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOM<GiftVoucher>(1, _omitFieldNames ? '' : 'voucher',
         subBuilder: GiftVoucher.create)
-    ..pPM<VoucherTransaction>(2, _omitFieldNames ? '' : 'transactions',
+    ..pc<VoucherTransaction>(
+        2, _omitFieldNames ? '' : 'transactions', $pb.PbFieldType.PM,
         subBuilder: VoucherTransaction.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetVoucherResponse clone() => deepCopy();
+  GetVoucherResponse clone() => GetVoucherResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetVoucherResponse copyWith(void Function(GetVoucherResponse) updates) =>
       super.copyWith((message) => updates(message as GetVoucherResponse))
@@ -1176,17 +1181,19 @@ class ListVouchersRequest extends $pb.GeneratedMessage {
       package: const $pb.PackageName(_omitMessageNames ? '' : 'payments.v1'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'customerId')
-    ..aE<VoucherStatus>(2, _omitFieldNames ? '' : 'status',
+    ..e<VoucherStatus>(2, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
+        defaultOrMaker: VoucherStatus.VOUCHER_STATUS_UNSPECIFIED,
+        valueOf: VoucherStatus.valueOf,
         enumValues: VoucherStatus.values)
     ..aOB(3, _omitFieldNames ? '' : 'expiringSoon')
     ..aOM<$0.Timestamp>(4, _omitFieldNames ? '' : 'issuedAfter',
         subBuilder: $0.Timestamp.create)
-    ..aI(5, _omitFieldNames ? '' : 'pageSize')
-    ..aI(6, _omitFieldNames ? '' : 'pageNumber')
+    ..a<$core.int>(5, _omitFieldNames ? '' : 'pageSize', $pb.PbFieldType.O3)
+    ..a<$core.int>(6, _omitFieldNames ? '' : 'pageNumber', $pb.PbFieldType.O3)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ListVouchersRequest clone() => deepCopy();
+  ListVouchersRequest clone() => ListVouchersRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ListVouchersRequest copyWith(void Function(ListVouchersRequest) updates) =>
       super.copyWith((message) => updates(message as ListVouchersRequest))
@@ -1289,14 +1296,15 @@ class ListVouchersResponse extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'ListVouchersResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'payments.v1'),
       createEmptyInstance: create)
-    ..pPM<GiftVoucher>(1, _omitFieldNames ? '' : 'vouchers',
+    ..pc<GiftVoucher>(1, _omitFieldNames ? '' : 'vouchers', $pb.PbFieldType.PM,
         subBuilder: GiftVoucher.create)
-    ..aI(2, _omitFieldNames ? '' : 'totalCount')
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'totalCount', $pb.PbFieldType.O3)
     ..aInt64(3, _omitFieldNames ? '' : 'totalValue')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ListVouchersResponse clone() => deepCopy();
+  ListVouchersResponse clone() =>
+      ListVouchersResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ListVouchersResponse copyWith(void Function(ListVouchersResponse) updates) =>
       super.copyWith((message) => updates(message as ListVouchersResponse))
@@ -1370,7 +1378,8 @@ class CancelVoucherRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CancelVoucherRequest clone() => deepCopy();
+  CancelVoucherRequest clone() =>
+      CancelVoucherRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CancelVoucherRequest copyWith(void Function(CancelVoucherRequest) updates) =>
       super.copyWith((message) => updates(message as CancelVoucherRequest))
@@ -1447,7 +1456,8 @@ class CancelVoucherResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CancelVoucherResponse clone() => deepCopy();
+  CancelVoucherResponse clone() =>
+      CancelVoucherResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CancelVoucherResponse copyWith(
           void Function(CancelVoucherResponse) updates) =>
@@ -1513,7 +1523,8 @@ class GetVoucherHistoryRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetVoucherHistoryRequest clone() => deepCopy();
+  GetVoucherHistoryRequest clone() =>
+      GetVoucherHistoryRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetVoucherHistoryRequest copyWith(
           void Function(GetVoucherHistoryRequest) updates) =>
@@ -1574,14 +1585,16 @@ class GetVoucherHistoryResponse extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOM<GiftVoucher>(1, _omitFieldNames ? '' : 'voucher',
         subBuilder: GiftVoucher.create)
-    ..pPM<VoucherTransaction>(2, _omitFieldNames ? '' : 'transactions',
+    ..pc<VoucherTransaction>(
+        2, _omitFieldNames ? '' : 'transactions', $pb.PbFieldType.PM,
         subBuilder: VoucherTransaction.create)
     ..aInt64(3, _omitFieldNames ? '' : 'totalUsed')
-    ..aI(4, _omitFieldNames ? '' : 'usageCount')
+    ..a<$core.int>(4, _omitFieldNames ? '' : 'usageCount', $pb.PbFieldType.O3)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetVoucherHistoryResponse clone() => deepCopy();
+  GetVoucherHistoryResponse clone() =>
+      GetVoucherHistoryResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetVoucherHistoryResponse copyWith(
           void Function(GetVoucherHistoryResponse) updates) =>

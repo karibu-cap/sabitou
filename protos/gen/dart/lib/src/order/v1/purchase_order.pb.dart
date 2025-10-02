@@ -88,9 +88,13 @@ class PurchaseOrder extends $pb.GeneratedMessage {
     ..aOS(1, _omitFieldNames ? '' : 'documentId')
     ..aOS(2, _omitFieldNames ? '' : 'supplierId')
     ..aOS(3, _omitFieldNames ? '' : 'buyerIdId')
-    ..aE<PurchaseOrderStatus>(5, _omitFieldNames ? '' : 'status',
+    ..e<PurchaseOrderStatus>(
+        5, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
+        defaultOrMaker: PurchaseOrderStatus.PO_STATUS_UNSPECIFIED,
+        valueOf: PurchaseOrderStatus.valueOf,
         enumValues: PurchaseOrderStatus.values)
-    ..pPM<$0.OrderLineItem>(6, _omitFieldNames ? '' : 'items',
+    ..pc<$0.OrderLineItem>(
+        6, _omitFieldNames ? '' : 'items', $pb.PbFieldType.PM,
         subBuilder: $0.OrderLineItem.create)
     ..aInt64(7, _omitFieldNames ? '' : 'totalAmount')
     ..aOS(8, _omitFieldNames ? '' : 'currency')
@@ -103,7 +107,7 @@ class PurchaseOrder extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  PurchaseOrder clone() => deepCopy();
+  PurchaseOrder clone() => PurchaseOrder()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   PurchaseOrder copyWith(void Function(PurchaseOrder) updates) =>
       super.copyWith((message) => updates(message as PurchaseOrder))
@@ -251,7 +255,8 @@ class CancelPurchaseOrderResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CancelPurchaseOrderResponse clone() => deepCopy();
+  CancelPurchaseOrderResponse clone() =>
+      CancelPurchaseOrderResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CancelPurchaseOrderResponse copyWith(
           void Function(CancelPurchaseOrderResponse) updates) =>
@@ -333,7 +338,8 @@ class CreatePurchaseOrderRequest extends $pb.GeneratedMessage {
     ..aOS(1, _omitFieldNames ? '' : 'supplierId')
     ..aOS(2, _omitFieldNames ? '' : 'buyerId')
     ..aOS(3, _omitFieldNames ? '' : 'destinationId')
-    ..pPM<$0.OrderLineItem>(4, _omitFieldNames ? '' : 'items',
+    ..pc<$0.OrderLineItem>(
+        4, _omitFieldNames ? '' : 'items', $pb.PbFieldType.PM,
         subBuilder: $0.OrderLineItem.create)
     ..aOM<$1.Timestamp>(5, _omitFieldNames ? '' : 'expectedDeliveryDate',
         subBuilder: $1.Timestamp.create)
@@ -342,7 +348,8 @@ class CreatePurchaseOrderRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreatePurchaseOrderRequest clone() => deepCopy();
+  CreatePurchaseOrderRequest clone() =>
+      CreatePurchaseOrderRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CreatePurchaseOrderRequest copyWith(
           void Function(CreatePurchaseOrderRequest) updates) =>
@@ -457,7 +464,8 @@ class CreatePurchaseOrderResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreatePurchaseOrderResponse clone() => deepCopy();
+  CreatePurchaseOrderResponse clone() =>
+      CreatePurchaseOrderResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CreatePurchaseOrderResponse copyWith(
           void Function(CreatePurchaseOrderResponse) updates) =>
@@ -536,7 +544,8 @@ class GetPurchaseOrderRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetPurchaseOrderRequest clone() => deepCopy();
+  GetPurchaseOrderRequest clone() =>
+      GetPurchaseOrderRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetPurchaseOrderRequest copyWith(
           void Function(GetPurchaseOrderRequest) updates) =>
@@ -597,16 +606,18 @@ class GetPurchaseOrderResponse extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOM<PurchaseOrder>(1, _omitFieldNames ? '' : 'purchaseOrder',
         subBuilder: PurchaseOrder.create)
-    ..pPM<$2.ReceivingNote>(2, _omitFieldNames ? '' : 'receivingNotes',
+    ..pc<$2.ReceivingNote>(
+        2, _omitFieldNames ? '' : 'receivingNotes', $pb.PbFieldType.PM,
         subBuilder: $2.ReceivingNote.create)
-    ..pPM<$3.Invoice>(3, _omitFieldNames ? '' : 'invoices',
+    ..pc<$3.Invoice>(3, _omitFieldNames ? '' : 'invoices', $pb.PbFieldType.PM,
         subBuilder: $3.Invoice.create)
-    ..pPM<$4.Payment>(4, _omitFieldNames ? '' : 'payments',
+    ..pc<$4.Payment>(4, _omitFieldNames ? '' : 'payments', $pb.PbFieldType.PM,
         subBuilder: $4.Payment.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetPurchaseOrderResponse clone() => deepCopy();
+  GetPurchaseOrderResponse clone() =>
+      GetPurchaseOrderResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetPurchaseOrderResponse copyWith(
           void Function(GetPurchaseOrderResponse) updates) =>
@@ -681,18 +692,22 @@ class ListPurchaseOrdersRequest extends $pb.GeneratedMessage {
       package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'supplierId')
-    ..aE<PurchaseOrderStatus>(2, _omitFieldNames ? '' : 'status',
+    ..e<PurchaseOrderStatus>(
+        2, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
+        defaultOrMaker: PurchaseOrderStatus.PO_STATUS_UNSPECIFIED,
+        valueOf: PurchaseOrderStatus.valueOf,
         enumValues: PurchaseOrderStatus.values)
     ..aOM<$1.Timestamp>(3, _omitFieldNames ? '' : 'startDate',
         subBuilder: $1.Timestamp.create)
     ..aOM<$1.Timestamp>(4, _omitFieldNames ? '' : 'endDate',
         subBuilder: $1.Timestamp.create)
-    ..aI(5, _omitFieldNames ? '' : 'pageSize')
-    ..aI(6, _omitFieldNames ? '' : 'pageNumber')
+    ..a<$core.int>(5, _omitFieldNames ? '' : 'pageSize', $pb.PbFieldType.O3)
+    ..a<$core.int>(6, _omitFieldNames ? '' : 'pageNumber', $pb.PbFieldType.O3)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ListPurchaseOrdersRequest clone() => deepCopy();
+  ListPurchaseOrdersRequest clone() =>
+      ListPurchaseOrdersRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ListPurchaseOrdersRequest copyWith(
           void Function(ListPurchaseOrdersRequest) updates) =>
@@ -798,14 +813,16 @@ class ListPurchaseOrdersResponse extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'ListPurchaseOrdersResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'),
       createEmptyInstance: create)
-    ..pPM<PurchaseOrder>(1, _omitFieldNames ? '' : 'purchaseOrders',
+    ..pc<PurchaseOrder>(
+        1, _omitFieldNames ? '' : 'purchaseOrders', $pb.PbFieldType.PM,
         subBuilder: PurchaseOrder.create)
-    ..aI(2, _omitFieldNames ? '' : 'totalCount')
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'totalCount', $pb.PbFieldType.O3)
     ..aInt64(3, _omitFieldNames ? '' : 'totalValue')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ListPurchaseOrdersResponse clone() => deepCopy();
+  ListPurchaseOrdersResponse clone() =>
+      ListPurchaseOrdersResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ListPurchaseOrdersResponse copyWith(
           void Function(ListPurchaseOrdersResponse) updates) =>
@@ -879,14 +896,18 @@ class UpdatePurchaseOrderStatusRequest extends $pb.GeneratedMessage {
       package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'poId')
-    ..aE<PurchaseOrderStatus>(2, _omitFieldNames ? '' : 'newStatus',
+    ..e<PurchaseOrderStatus>(
+        2, _omitFieldNames ? '' : 'newStatus', $pb.PbFieldType.OE,
+        defaultOrMaker: PurchaseOrderStatus.PO_STATUS_UNSPECIFIED,
+        valueOf: PurchaseOrderStatus.valueOf,
         enumValues: PurchaseOrderStatus.values)
     ..aOS(3, _omitFieldNames ? '' : 'updatedByUserId')
     ..aOS(4, _omitFieldNames ? '' : 'notes')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  UpdatePurchaseOrderStatusRequest clone() => deepCopy();
+  UpdatePurchaseOrderStatusRequest clone() =>
+      UpdatePurchaseOrderStatusRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   UpdatePurchaseOrderStatusRequest copyWith(
           void Function(UpdatePurchaseOrderStatusRequest) updates) =>
@@ -978,7 +999,8 @@ class UpdatePurchaseOrderStatusResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  UpdatePurchaseOrderStatusResponse clone() => deepCopy();
+  UpdatePurchaseOrderStatusResponse clone() =>
+      UpdatePurchaseOrderStatusResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   UpdatePurchaseOrderStatusResponse copyWith(
           void Function(UpdatePurchaseOrderStatusResponse) updates) =>
@@ -1055,7 +1077,8 @@ class CancelPurchaseOrderRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CancelPurchaseOrderRequest clone() => deepCopy();
+  CancelPurchaseOrderRequest clone() =>
+      CancelPurchaseOrderRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CancelPurchaseOrderRequest copyWith(
           void Function(CancelPurchaseOrderRequest) updates) =>
@@ -1140,14 +1163,16 @@ class CreateReceivingNoteRequest extends $pb.GeneratedMessage {
     ..aOS(1, _omitFieldNames ? '' : 'purchaseOrderId')
     ..aOS(2, _omitFieldNames ? '' : 'supplierId')
     ..aOS(3, _omitFieldNames ? '' : 'storeId')
-    ..pPM<$2.ReceivingLineItem>(4, _omitFieldNames ? '' : 'items',
+    ..pc<$2.ReceivingLineItem>(
+        4, _omitFieldNames ? '' : 'items', $pb.PbFieldType.PM,
         subBuilder: $2.ReceivingLineItem.create)
     ..aOS(5, _omitFieldNames ? '' : 'receivedByUserId')
     ..aOS(6, _omitFieldNames ? '' : 'notes')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreateReceivingNoteRequest clone() => deepCopy();
+  CreateReceivingNoteRequest clone() =>
+      CreateReceivingNoteRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CreateReceivingNoteRequest copyWith(
           void Function(CreateReceivingNoteRequest) updates) =>
@@ -1262,7 +1287,8 @@ class CreateReceivingNoteResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreateReceivingNoteResponse clone() => deepCopy();
+  CreateReceivingNoteResponse clone() =>
+      CreateReceivingNoteResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CreateReceivingNoteResponse copyWith(
           void Function(CreateReceivingNoteResponse) updates) =>
@@ -1357,7 +1383,8 @@ class GetSuggestedPurchaseOrdersRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetSuggestedPurchaseOrdersRequest clone() => deepCopy();
+  GetSuggestedPurchaseOrdersRequest clone() =>
+      GetSuggestedPurchaseOrdersRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetSuggestedPurchaseOrdersRequest copyWith(
           void Function(GetSuggestedPurchaseOrdersRequest) updates) =>
@@ -1416,13 +1443,15 @@ class GetSuggestedPurchaseOrdersResponse extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'GetSuggestedPurchaseOrdersResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'),
       createEmptyInstance: create)
-    ..pPM<SuggestedPurchase>(1, _omitFieldNames ? '' : 'suggestions',
+    ..pc<SuggestedPurchase>(
+        1, _omitFieldNames ? '' : 'suggestions', $pb.PbFieldType.PM,
         subBuilder: SuggestedPurchase.create)
-    ..aI(2, _omitFieldNames ? '' : 'totalItems')
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'totalItems', $pb.PbFieldType.O3)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetSuggestedPurchaseOrdersResponse clone() => deepCopy();
+  GetSuggestedPurchaseOrdersResponse clone() =>
+      GetSuggestedPurchaseOrdersResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetSuggestedPurchaseOrdersResponse copyWith(
           void Function(GetSuggestedPurchaseOrdersResponse) updates) =>
@@ -1502,7 +1531,7 @@ class SuggestedPurchase extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  SuggestedPurchase clone() => deepCopy();
+  SuggestedPurchase clone() => SuggestedPurchase()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   SuggestedPurchase copyWith(void Function(SuggestedPurchase) updates) =>
       super.copyWith((message) => updates(message as SuggestedPurchase))

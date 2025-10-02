@@ -67,7 +67,7 @@ class OrderLineItem extends $pb.GeneratedMessage {
       package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'productId')
-    ..aD(2, _omitFieldNames ? '' : 'quantity')
+    ..a<$core.double>(2, _omitFieldNames ? '' : 'quantity', $pb.PbFieldType.OD)
     ..aOM<$0.Internationalized>(3, _omitFieldNames ? '' : 'productName',
         subBuilder: $0.Internationalized.create)
     ..aInt64(4, _omitFieldNames ? '' : 'unitPrice')
@@ -77,7 +77,7 @@ class OrderLineItem extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  OrderLineItem clone() => deepCopy();
+  OrderLineItem clone() => OrderLineItem()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   OrderLineItem copyWith(void Function(OrderLineItem) updates) =>
       super.copyWith((message) => updates(message as OrderLineItem))
@@ -191,14 +191,15 @@ class OrderPrices extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'OrderPrices',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'),
       createEmptyInstance: create)
-    ..aI(1, _omitFieldNames ? '' : 'subtotal')
-    ..aI(2, _omitFieldNames ? '' : 'discounts')
-    ..aI(3, _omitFieldNames ? '' : 'totalVatAmount')
-    ..aI(4, _omitFieldNames ? '' : 'grandTotal')
+    ..a<$core.int>(1, _omitFieldNames ? '' : 'subtotal', $pb.PbFieldType.O3)
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'discounts', $pb.PbFieldType.O3)
+    ..a<$core.int>(
+        3, _omitFieldNames ? '' : 'totalVatAmount', $pb.PbFieldType.O3)
+    ..a<$core.int>(4, _omitFieldNames ? '' : 'grandTotal', $pb.PbFieldType.O3)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  OrderPrices clone() => deepCopy();
+  OrderPrices clone() => OrderPrices()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   OrderPrices copyWith(void Function(OrderPrices) updates) =>
       super.copyWith((message) => updates(message as OrderPrices))
