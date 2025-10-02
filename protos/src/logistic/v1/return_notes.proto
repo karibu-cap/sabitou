@@ -83,7 +83,7 @@ service ReturnService {
 
 message CreateReturnRequest {
   string from_company_id = 1; // Customer or your company
-  string to_warehouse_id = 2; // Your warehouse 
+  string to_warehouse_id = 2; // Your warehouse
   string related_delivery_note_id = 3;
   string related_invoice_id = 4;
   repeated ReturnLineItem items = 5;

@@ -27,11 +27,11 @@ import "payments/v1/payments.proto";
  */
 message PurchaseOrder {
   // "PO-2025-001"
-  string document_id = 1 [(buf.validate.field).required = true]; 
+  string document_id = 1 [(buf.validate.field).required = true];
   // Company selling to you
-  string supplier_id = 2; 
+  string supplier_id = 2;
   // Your company
-  string buyer_id = 3; 
+  string buyer_id = 3;
   PurchaseOrderStatus status = 5;
   repeated order.v1.OrderLineItem items = 6;
   double total_amount = 7; // Total cost in smallest currency unit

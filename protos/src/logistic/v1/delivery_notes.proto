@@ -33,7 +33,7 @@ message DeliveryNote {
   DeliveryNoteStatus status = 6;
   repeated DeliveryLineItem items = 7;
   // "DHL", "Local Delivery", etc.
-  string carrier = 8; 
+  string carrier = 8;
   string tracking_number = 9;
   string created_by_user_id = 10;
   google.protobuf.Timestamp created_at = 11;

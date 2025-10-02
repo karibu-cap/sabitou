@@ -57,4 +57,12 @@ abstract final class InventoryService {
     inventoryv1inventory.GetProductTransactionHistoryRequest.new,
     inventoryv1inventory.GetProductTransactionHistoryResponse.new,
   );
+
+  /// Gets the products by supplier.
+  static const listProductsBySupplier = connect.Spec(
+    '/$name/ListProductsBySupplier',
+    connect.StreamType.unary,
+    inventoryv1inventory.ListProductsBySupplierRequest.new,
+    inventoryv1inventory.ListProductsBySupplierResponse.new,
+  );
 }

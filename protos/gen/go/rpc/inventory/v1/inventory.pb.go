@@ -134,9 +134,6 @@ func (StockStatus) EnumDescriptor() ([]byte, []int) {
 // *
 // Batch represents a lot of products with specific attributes like expiration.
 //
-// Fix: New message added for lot tracking. Each batch can have its own quantity, expiration date, and is linked to a product and warehouse.
-// InventoryLevel now aggregates from batches, but batches provide detailed quantity per lot.
-//
 // Example:
 //
 //	batch_id: "BATCH-2025-001"
@@ -154,8 +151,10 @@ type Batch struct {
 	ExpirationDate      *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=expiration_date,json=expirationDate,proto3" json:"expiration_date,omitempty"`                  // Expiration date for this batch
 	ReceivedAt          *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=received_at,json=receivedAt,proto3" json:"received_at,omitempty"`                              // When the batch was received
 	SupplierBatchNumber string                 `protobuf:"bytes,7,opt,name=supplier_batch_number,json=supplierBatchNumber,proto3" json:"supplier_batch_number,omitempty"` // Supplier's reference number
-	Status              BatchStatus            `protobuf:"varint,8,opt,name=status,proto3,enum=inventory.v1.BatchStatus" json:"status,omitempty"`                         // e.g., Active, Expired
-	Notes               string                 `protobuf:"bytes,9,opt,name=notes,proto3" json:"notes,omitempty"`                                                          // Additional details
+	SupplierId          string                 `protobuf:"bytes,8,opt,name=supplier_id,json=supplierId,proto3" json:"supplier_id,omitempty"`                              // Supplier's reference number
+	PurchasePrice       int32                  `protobuf:"varint,9,opt,name=purchase_price,json=purchasePrice,proto3" json:"purchase_price,omitempty"`                    // Purchase price
+	Status              BatchStatus            `protobuf:"varint,10,opt,name=status,proto3,enum=inventory.v1.BatchStatus" json:"status,omitempty"`                        // e.g., Active, Expired
+	Notes               string                 `protobuf:"bytes,11,opt,name=notes,proto3" json:"notes,omitempty"`                                                         // Additional details
 	unknownFields       protoimpl.UnknownFields
 	sizeCache           protoimpl.SizeCache
 }
@@ -239,6 +238,20 @@ func (x *Batch) GetSupplierBatchNumber() string {
 	return ""
 }
 
+func (x *Batch) GetSupplierId() string {
+	if x != nil {
+		return x.SupplierId
+	}
+	return ""
+}
+
+func (x *Batch) GetPurchasePrice() int32 {
+	if x != nil {
+		return x.PurchasePrice
+	}
+	return 0
+}
+
 func (x *Batch) GetStatus() BatchStatus {
 	if x != nil {
 		return x.Status
@@ -257,10 +270,6 @@ func (x *Batch) GetNotes() string {
 // InventoryLevel tracks how much stock exists in each warehouse.
 // This is the current state, updated by various documents.
 //
-// Fixes: Added repeated batches for lot-level details (quantity per lot, expiration).
-// The quantity_available is now the sum of batch quantities (computed).
-// Added min_threshold per warehouse for the product.
-//
 // Example:
 //
 //	product_id: "PRD-001"
@@ -272,9 +281,7 @@ func (x *Batch) GetNotes() string {
 //	last_updated: 2025-09-29T10:30:00Z
 //	batches: [Batch1 with qty 30 exp 2026-01-01, Batch2 with qty 20 exp 2026-06-01]
 //
-// Note we can only have one InventoryLevel per (product_id, supplier_id).
-// Reason why we don't add it directly to Storeproduct is because the Storeproduct can be handler by multiple supplier.
-// Example: On product Coffee can be provide by 2 different supplier.
+// Note we can only have one InventoryLevel per (product_id).
 type InventoryLevel struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The product id to get level.
@@ -1254,11 +1261,159 @@ func (x *GetProductTransactionHistoryResponse) GetTotalCount() int32 {
 	return 0
 }
 
+type ListProductsBySupplierRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SupplierId    string                 `protobuf:"bytes,1,opt,name=supplier_id,json=supplierId,proto3" json:"supplier_id,omitempty"` // ex. : "CMP-SUPPLIER-001"
+	StoreId       *string                `protobuf:"bytes,2,opt,name=store_id,json=storeId,proto3,oneof" json:"store_id,omitempty"`    // Optional filter
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListProductsBySupplierRequest) Reset() {
+	*x = ListProductsBySupplierRequest{}
+	mi := &file_inventory_v1_inventory_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListProductsBySupplierRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListProductsBySupplierRequest) ProtoMessage() {}
+
+func (x *ListProductsBySupplierRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_inventory_v1_inventory_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListProductsBySupplierRequest.ProtoReflect.Descriptor instead.
+func (*ListProductsBySupplierRequest) Descriptor() ([]byte, []int) {
+	return file_inventory_v1_inventory_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *ListProductsBySupplierRequest) GetSupplierId() string {
+	if x != nil {
+		return x.SupplierId
+	}
+	return ""
+}
+
+func (x *ListProductsBySupplierRequest) GetStoreId() string {
+	if x != nil && x.StoreId != nil {
+		return *x.StoreId
+	}
+	return ""
+}
+
+type ListProductsBySupplierResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Products      []*ProductBySupplier   `protobuf:"bytes,1,rep,name=products,proto3" json:"products,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListProductsBySupplierResponse) Reset() {
+	*x = ListProductsBySupplierResponse{}
+	mi := &file_inventory_v1_inventory_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListProductsBySupplierResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListProductsBySupplierResponse) ProtoMessage() {}
+
+func (x *ListProductsBySupplierResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_inventory_v1_inventory_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListProductsBySupplierResponse.ProtoReflect.Descriptor instead.
+func (*ListProductsBySupplierResponse) Descriptor() ([]byte, []int) {
+	return file_inventory_v1_inventory_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *ListProductsBySupplierResponse) GetProducts() []*ProductBySupplier {
+	if x != nil {
+		return x.Products
+	}
+	return nil
+}
+
+type ProductBySupplier struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	StoreProduct  *StoreProduct          `protobuf:"bytes,1,opt,name=store_product,json=storeProduct,proto3" json:"store_product,omitempty"`    // StoreProduct details
+	GlobalProduct *GlobalProduct         `protobuf:"bytes,2,opt,name=global_product,json=globalProduct,proto3" json:"global_product,omitempty"` // GlobalProduct details
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ProductBySupplier) Reset() {
+	*x = ProductBySupplier{}
+	mi := &file_inventory_v1_inventory_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ProductBySupplier) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ProductBySupplier) ProtoMessage() {}
+
+func (x *ProductBySupplier) ProtoReflect() protoreflect.Message {
+	mi := &file_inventory_v1_inventory_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ProductBySupplier.ProtoReflect.Descriptor instead.
+func (*ProductBySupplier) Descriptor() ([]byte, []int) {
+	return file_inventory_v1_inventory_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *ProductBySupplier) GetStoreProduct() *StoreProduct {
+	if x != nil {
+		return x.StoreProduct
+	}
+	return nil
+}
+
+func (x *ProductBySupplier) GetGlobalProduct() *GlobalProduct {
+	if x != nil {
+		return x.GlobalProduct
+	}
+	return nil
+}
+
 var File_inventory_v1_inventory_proto protoreflect.FileDescriptor
 
 const file_inventory_v1_inventory_proto_rawDesc = "" +
 	"\n" +
-	"\x1cinventory/v1/inventory.proto\x12\finventory.v1\x1a%audits/v1/inventory_transaction.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a inventory/v1/store_product.proto\"\x8d\x03\n" +
+	"\x1cinventory/v1/inventory.proto\x12\finventory.v1\x1a%audits/v1/inventory_transaction.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a inventory/v1/store_product.proto\"\xd5\x03\n" +
 	"\x05Batch\x12'\n" +
 	"\vdocument_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\n" +
 	"documentId\x12\x1d\n" +
@@ -1269,9 +1424,13 @@ const file_inventory_v1_inventory_proto_rawDesc = "" +
 	"\x0fexpiration_date\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\x0eexpirationDate\x12;\n" +
 	"\vreceived_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
 	"receivedAt\x122\n" +
-	"\x15supplier_batch_number\x18\a \x01(\tR\x13supplierBatchNumber\x121\n" +
-	"\x06status\x18\b \x01(\x0e2\x19.inventory.v1.BatchStatusR\x06status\x12\x14\n" +
-	"\x05notes\x18\t \x01(\tR\x05notes\"\xaa\x03\n" +
+	"\x15supplier_batch_number\x18\a \x01(\tR\x13supplierBatchNumber\x12\x1f\n" +
+	"\vsupplier_id\x18\b \x01(\tR\n" +
+	"supplierId\x12%\n" +
+	"\x0epurchase_price\x18\t \x01(\x05R\rpurchasePrice\x121\n" +
+	"\x06status\x18\n" +
+	" \x01(\x0e2\x19.inventory.v1.BatchStatusR\x06status\x12\x14\n" +
+	"\x05notes\x18\v \x01(\tR\x05notes\"\xaa\x03\n" +
 	"\x0eInventoryLevel\x12(\n" +
 	"\x10store_product_id\x18\x01 \x01(\tR\x0estoreProductId\x12\x19\n" +
 	"\bstore_id\x18\x02 \x01(\tR\astoreId\x12-\n" +
@@ -1371,7 +1530,17 @@ const file_inventory_v1_inventory_proto_rawDesc = "" +
 	"$GetProductTransactionHistoryResponse\x12C\n" +
 	"\ftransactions\x18\x01 \x03(\v2\x1f.audits.v1.InventoryTransactionR\ftransactions\x12\x1f\n" +
 	"\vtotal_count\x18\x02 \x01(\x05R\n" +
-	"totalCount*\x96\x01\n" +
+	"totalCount\"m\n" +
+	"\x1dListProductsBySupplierRequest\x12\x1f\n" +
+	"\vsupplier_id\x18\x01 \x01(\tR\n" +
+	"supplierId\x12\x1e\n" +
+	"\bstore_id\x18\x02 \x01(\tH\x00R\astoreId\x88\x01\x01B\v\n" +
+	"\t_store_id\"]\n" +
+	"\x1eListProductsBySupplierResponse\x12;\n" +
+	"\bproducts\x18\x01 \x03(\v2\x1f.inventory.v1.ProductBySupplierR\bproducts\"\x98\x01\n" +
+	"\x11ProductBySupplier\x12?\n" +
+	"\rstore_product\x18\x01 \x01(\v2\x1a.inventory.v1.StoreProductR\fstoreProduct\x12B\n" +
+	"\x0eglobal_product\x18\x02 \x01(\v2\x1b.inventory.v1.GlobalProductR\rglobalProduct*\x96\x01\n" +
 	"\vBatchStatus\x12\x1c\n" +
 	"\x18BATCH_STATUS_UNSPECIFIED\x10\x00\x12\x17\n" +
 	"\x13BATCH_STATUS_ACTIVE\x10\x01\x12\x1b\n" +
@@ -1382,14 +1551,15 @@ const file_inventory_v1_inventory_proto_rawDesc = "" +
 	"\x18STOCK_STATUS_UNSPECIFIED\x10\x00\x12\x14\n" +
 	"\x10STOCK_STATUS_LOW\x10\x01\x12\x13\n" +
 	"\x0fSTOCK_STATUS_OK\x10\x02\x12\x1d\n" +
-	"\x19STOCK_STATUS_OUT_OF_STOCK\x10\x032\xf3\x05\n" +
+	"\x19STOCK_STATUS_OUT_OF_STOCK\x10\x032\xe8\x06\n" +
 	"\x10InventoryService\x12|\n" +
 	"\x19GetProductInventoryLevels\x12..inventory.v1.GetProductInventoryLevelsRequest\x1a/.inventory.v1.GetProductInventoryLevelsResponse\x12y\n" +
 	"\x18CheckProductAvailability\x12-.inventory.v1.CheckProductAvailabilityRequest\x1a..inventory.v1.CheckProductAvailabilityResponse\x12a\n" +
 	"\x10GetLowStockItems\x12%.inventory.v1.GetLowStockItemsRequest\x1a&.inventory.v1.GetLowStockItemsResponse\x12m\n" +
 	"\x14GetResourceInventory\x12).inventory.v1.GetResourceInventoryRequest\x1a*.inventory.v1.GetResourceInventoryResponse\x12\x8b\x01\n" +
 	"\x1eGetRecentInventoryTransactions\x123.inventory.v1.GetInventoryTransactionHistoryRequest\x1a4.inventory.v1.GetInventoryTransactionHistoryResponse\x12\x85\x01\n" +
-	"\x1cGetProductTransactionHistory\x121.inventory.v1.GetProductTransactionHistoryRequest\x1a2.inventory.v1.GetProductTransactionHistoryResponseB\xbd\x01\n" +
+	"\x1cGetProductTransactionHistory\x121.inventory.v1.GetProductTransactionHistoryRequest\x1a2.inventory.v1.GetProductTransactionHistoryResponse\x12s\n" +
+	"\x16ListProductsBySupplier\x12+.inventory.v1.ListProductsBySupplierRequest\x1a,.inventory.v1.ListProductsBySupplierResponseB\xbd\x01\n" +
 	"\x10com.inventory.v1B\x0eInventoryProtoP\x01ZHgithub.com/karibu-cap/sabitou/protos/gen/go/rpc/inventory/v1;inventoryv1\xa2\x02\x03IXX\xaa\x02\fInventory.V1\xca\x02\fInventory\\V1\xe2\x02\x18Inventory\\V1\\GPBMetadata\xea\x02\rInventory::V1b\x06proto3"
 
 var (
@@ -1405,7 +1575,7 @@ func file_inventory_v1_inventory_proto_rawDescGZIP() []byte {
 }
 
 var file_inventory_v1_inventory_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_inventory_v1_inventory_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
+var file_inventory_v1_inventory_proto_msgTypes = make([]protoimpl.MessageInfo, 18)
 var file_inventory_v1_inventory_proto_goTypes = []any{
 	(BatchStatus)(0),                               // 0: inventory.v1.BatchStatus
 	(StockStatus)(0),                               // 1: inventory.v1.StockStatus
@@ -1424,51 +1594,59 @@ var file_inventory_v1_inventory_proto_goTypes = []any{
 	(*GetResourceInventoryResponse)(nil),           // 14: inventory.v1.GetResourceInventoryResponse
 	(*GetProductTransactionHistoryRequest)(nil),    // 15: inventory.v1.GetProductTransactionHistoryRequest
 	(*GetProductTransactionHistoryResponse)(nil),   // 16: inventory.v1.GetProductTransactionHistoryResponse
-	(*timestamppb.Timestamp)(nil),                  // 17: google.protobuf.Timestamp
-	(*StoreProduct)(nil),                           // 18: inventory.v1.StoreProduct
-	(*GlobalProduct)(nil),                          // 19: inventory.v1.GlobalProduct
-	(v1.TransactionType)(0),                        // 20: audits.v1.TransactionType
-	(*v1.InventoryTransaction)(nil),                // 21: audits.v1.InventoryTransaction
+	(*ListProductsBySupplierRequest)(nil),          // 17: inventory.v1.ListProductsBySupplierRequest
+	(*ListProductsBySupplierResponse)(nil),         // 18: inventory.v1.ListProductsBySupplierResponse
+	(*ProductBySupplier)(nil),                      // 19: inventory.v1.ProductBySupplier
+	(*timestamppb.Timestamp)(nil),                  // 20: google.protobuf.Timestamp
+	(*StoreProduct)(nil),                           // 21: inventory.v1.StoreProduct
+	(*GlobalProduct)(nil),                          // 22: inventory.v1.GlobalProduct
+	(v1.TransactionType)(0),                        // 23: audits.v1.TransactionType
+	(*v1.InventoryTransaction)(nil),                // 24: audits.v1.InventoryTransaction
 }
 var file_inventory_v1_inventory_proto_depIdxs = []int32{
-	17, // 0: inventory.v1.Batch.expiration_date:type_name -> google.protobuf.Timestamp
-	17, // 1: inventory.v1.Batch.received_at:type_name -> google.protobuf.Timestamp
+	20, // 0: inventory.v1.Batch.expiration_date:type_name -> google.protobuf.Timestamp
+	20, // 1: inventory.v1.Batch.received_at:type_name -> google.protobuf.Timestamp
 	0,  // 2: inventory.v1.Batch.status:type_name -> inventory.v1.BatchStatus
-	17, // 3: inventory.v1.InventoryLevel.last_updated:type_name -> google.protobuf.Timestamp
+	20, // 3: inventory.v1.InventoryLevel.last_updated:type_name -> google.protobuf.Timestamp
 	2,  // 4: inventory.v1.InventoryLevel.batches:type_name -> inventory.v1.Batch
 	3,  // 5: inventory.v1.InventoryLevelWithProduct.level:type_name -> inventory.v1.InventoryLevel
-	18, // 6: inventory.v1.InventoryLevelWithProduct.product:type_name -> inventory.v1.StoreProduct
-	19, // 7: inventory.v1.InventoryLevelWithProduct.globalProduct:type_name -> inventory.v1.GlobalProduct
+	21, // 6: inventory.v1.InventoryLevelWithProduct.product:type_name -> inventory.v1.StoreProduct
+	22, // 7: inventory.v1.InventoryLevelWithProduct.globalProduct:type_name -> inventory.v1.GlobalProduct
 	1,  // 8: inventory.v1.InventoryLevelWithProduct.stockStatus:type_name -> inventory.v1.StockStatus
-	20, // 9: inventory.v1.GetInventoryTransactionHistoryRequest.transaction_type:type_name -> audits.v1.TransactionType
-	17, // 10: inventory.v1.GetInventoryTransactionHistoryRequest.start_date:type_name -> google.protobuf.Timestamp
-	17, // 11: inventory.v1.GetInventoryTransactionHistoryRequest.end_date:type_name -> google.protobuf.Timestamp
-	21, // 12: inventory.v1.GetInventoryTransactionHistoryResponse.transactions:type_name -> audits.v1.InventoryTransaction
+	23, // 9: inventory.v1.GetInventoryTransactionHistoryRequest.transaction_type:type_name -> audits.v1.TransactionType
+	20, // 10: inventory.v1.GetInventoryTransactionHistoryRequest.start_date:type_name -> google.protobuf.Timestamp
+	20, // 11: inventory.v1.GetInventoryTransactionHistoryRequest.end_date:type_name -> google.protobuf.Timestamp
+	24, // 12: inventory.v1.GetInventoryTransactionHistoryResponse.transactions:type_name -> audits.v1.InventoryTransaction
 	3,  // 13: inventory.v1.GetProductInventoryLevelsResponse.levels:type_name -> inventory.v1.InventoryLevel
 	3,  // 14: inventory.v1.GetLowStockItemsResponse.low_stock_items:type_name -> inventory.v1.InventoryLevel
-	17, // 15: inventory.v1.GetResourceInventoryRequest.as_of_date:type_name -> google.protobuf.Timestamp
+	20, // 15: inventory.v1.GetResourceInventoryRequest.as_of_date:type_name -> google.protobuf.Timestamp
 	3,  // 16: inventory.v1.GetResourceInventoryResponse.items:type_name -> inventory.v1.InventoryLevel
-	17, // 17: inventory.v1.GetResourceInventoryResponse.snapshot_date:type_name -> google.protobuf.Timestamp
-	17, // 18: inventory.v1.GetProductTransactionHistoryRequest.start_date:type_name -> google.protobuf.Timestamp
-	17, // 19: inventory.v1.GetProductTransactionHistoryRequest.end_date:type_name -> google.protobuf.Timestamp
-	21, // 20: inventory.v1.GetProductTransactionHistoryResponse.transactions:type_name -> audits.v1.InventoryTransaction
-	7,  // 21: inventory.v1.InventoryService.GetProductInventoryLevels:input_type -> inventory.v1.GetProductInventoryLevelsRequest
-	9,  // 22: inventory.v1.InventoryService.CheckProductAvailability:input_type -> inventory.v1.CheckProductAvailabilityRequest
-	11, // 23: inventory.v1.InventoryService.GetLowStockItems:input_type -> inventory.v1.GetLowStockItemsRequest
-	13, // 24: inventory.v1.InventoryService.GetResourceInventory:input_type -> inventory.v1.GetResourceInventoryRequest
-	5,  // 25: inventory.v1.InventoryService.GetRecentInventoryTransactions:input_type -> inventory.v1.GetInventoryTransactionHistoryRequest
-	15, // 26: inventory.v1.InventoryService.GetProductTransactionHistory:input_type -> inventory.v1.GetProductTransactionHistoryRequest
-	8,  // 27: inventory.v1.InventoryService.GetProductInventoryLevels:output_type -> inventory.v1.GetProductInventoryLevelsResponse
-	10, // 28: inventory.v1.InventoryService.CheckProductAvailability:output_type -> inventory.v1.CheckProductAvailabilityResponse
-	12, // 29: inventory.v1.InventoryService.GetLowStockItems:output_type -> inventory.v1.GetLowStockItemsResponse
-	14, // 30: inventory.v1.InventoryService.GetResourceInventory:output_type -> inventory.v1.GetResourceInventoryResponse
-	6,  // 31: inventory.v1.InventoryService.GetRecentInventoryTransactions:output_type -> inventory.v1.GetInventoryTransactionHistoryResponse
-	16, // 32: inventory.v1.InventoryService.GetProductTransactionHistory:output_type -> inventory.v1.GetProductTransactionHistoryResponse
-	27, // [27:33] is the sub-list for method output_type
-	21, // [21:27] is the sub-list for method input_type
-	21, // [21:21] is the sub-list for extension type_name
-	21, // [21:21] is the sub-list for extension extendee
-	0,  // [0:21] is the sub-list for field type_name
+	20, // 17: inventory.v1.GetResourceInventoryResponse.snapshot_date:type_name -> google.protobuf.Timestamp
+	20, // 18: inventory.v1.GetProductTransactionHistoryRequest.start_date:type_name -> google.protobuf.Timestamp
+	20, // 19: inventory.v1.GetProductTransactionHistoryRequest.end_date:type_name -> google.protobuf.Timestamp
+	24, // 20: inventory.v1.GetProductTransactionHistoryResponse.transactions:type_name -> audits.v1.InventoryTransaction
+	19, // 21: inventory.v1.ListProductsBySupplierResponse.products:type_name -> inventory.v1.ProductBySupplier
+	21, // 22: inventory.v1.ProductBySupplier.store_product:type_name -> inventory.v1.StoreProduct
+	22, // 23: inventory.v1.ProductBySupplier.global_product:type_name -> inventory.v1.GlobalProduct
+	7,  // 24: inventory.v1.InventoryService.GetProductInventoryLevels:input_type -> inventory.v1.GetProductInventoryLevelsRequest
+	9,  // 25: inventory.v1.InventoryService.CheckProductAvailability:input_type -> inventory.v1.CheckProductAvailabilityRequest
+	11, // 26: inventory.v1.InventoryService.GetLowStockItems:input_type -> inventory.v1.GetLowStockItemsRequest
+	13, // 27: inventory.v1.InventoryService.GetResourceInventory:input_type -> inventory.v1.GetResourceInventoryRequest
+	5,  // 28: inventory.v1.InventoryService.GetRecentInventoryTransactions:input_type -> inventory.v1.GetInventoryTransactionHistoryRequest
+	15, // 29: inventory.v1.InventoryService.GetProductTransactionHistory:input_type -> inventory.v1.GetProductTransactionHistoryRequest
+	17, // 30: inventory.v1.InventoryService.ListProductsBySupplier:input_type -> inventory.v1.ListProductsBySupplierRequest
+	8,  // 31: inventory.v1.InventoryService.GetProductInventoryLevels:output_type -> inventory.v1.GetProductInventoryLevelsResponse
+	10, // 32: inventory.v1.InventoryService.CheckProductAvailability:output_type -> inventory.v1.CheckProductAvailabilityResponse
+	12, // 33: inventory.v1.InventoryService.GetLowStockItems:output_type -> inventory.v1.GetLowStockItemsResponse
+	14, // 34: inventory.v1.InventoryService.GetResourceInventory:output_type -> inventory.v1.GetResourceInventoryResponse
+	6,  // 35: inventory.v1.InventoryService.GetRecentInventoryTransactions:output_type -> inventory.v1.GetInventoryTransactionHistoryResponse
+	16, // 36: inventory.v1.InventoryService.GetProductTransactionHistory:output_type -> inventory.v1.GetProductTransactionHistoryResponse
+	18, // 37: inventory.v1.InventoryService.ListProductsBySupplier:output_type -> inventory.v1.ListProductsBySupplierResponse
+	31, // [31:38] is the sub-list for method output_type
+	24, // [24:31] is the sub-list for method input_type
+	24, // [24:24] is the sub-list for extension type_name
+	24, // [24:24] is the sub-list for extension extendee
+	0,  // [0:24] is the sub-list for field type_name
 }
 
 func init() { file_inventory_v1_inventory_proto_init() }
@@ -1481,13 +1659,14 @@ func file_inventory_v1_inventory_proto_init() {
 	file_inventory_v1_inventory_proto_msgTypes[9].OneofWrappers = []any{}
 	file_inventory_v1_inventory_proto_msgTypes[11].OneofWrappers = []any{}
 	file_inventory_v1_inventory_proto_msgTypes[13].OneofWrappers = []any{}
+	file_inventory_v1_inventory_proto_msgTypes[15].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_inventory_v1_inventory_proto_rawDesc), len(file_inventory_v1_inventory_proto_rawDesc)),
 			NumEnums:      2,
-			NumMessages:   15,
+			NumMessages:   18,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

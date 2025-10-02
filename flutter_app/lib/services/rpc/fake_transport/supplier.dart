@@ -87,7 +87,6 @@ final supplierFakeTransport = FakeTransportBuilder()
             storeProduct: StoreProduct()
               ..refId = 'product_1'
               ..globalProductId = 'global_product_1'
-              ..supplierId = 'supplier_1'
               ..storeId = request.storeId,
             globalProduct: GlobalProduct()
               ..refId = 'global_product_1'
@@ -99,7 +98,6 @@ final supplierFakeTransport = FakeTransportBuilder()
             storeProduct: StoreProduct()
               ..refId = 'product_2'
               ..globalProductId = 'global_product_2'
-              ..supplierId = 'supplier_1'
               ..storeId = request.storeId,
             globalProduct: GlobalProduct()
               ..refId = 'global_product_2'
@@ -111,7 +109,6 @@ final supplierFakeTransport = FakeTransportBuilder()
             storeProduct: StoreProduct()
               ..refId = 'product_3'
               ..globalProductId = 'global_product_3'
-              ..supplierId = 'supplier_2'
               ..storeId = request.storeId,
             globalProduct: GlobalProduct()
               ..refId = 'global_product_3'
@@ -129,7 +126,6 @@ final supplierFakeTransport = FakeTransportBuilder()
           StoreProduct(
             refId: 'product_1',
             globalProductId: 'global_product_1',
-            supplierId: 'supplier_1',
             storeId: request.storeId,
             salePrice: 10000,
             imagesLinksIds: ['image_1', 'image_2'],
@@ -137,7 +133,6 @@ final supplierFakeTransport = FakeTransportBuilder()
           StoreProduct(
             refId: 'product_2',
             globalProductId: 'global_product_2',
-            supplierId: 'supplier_1',
             storeId: request.storeId,
             salePrice: 15000,
             imagesLinksIds: ['image_1', 'image_2'],
@@ -145,7 +140,6 @@ final supplierFakeTransport = FakeTransportBuilder()
           StoreProduct(
             refId: 'product_3',
             globalProductId: 'global_product_3',
-            supplierId: 'supplier_2',
             storeId: request.storeId,
             salePrice: 2000,
             imagesLinksIds: ['image_1', 'image_2'],
@@ -153,7 +147,6 @@ final supplierFakeTransport = FakeTransportBuilder()
           StoreProduct(
             refId: 'product_4',
             globalProductId: 'global_product_4',
-            supplierId: 'supplier_3',
             storeId: request.storeId,
             salePrice: 400,
             imagesLinksIds: ['image_1', 'image_2'],

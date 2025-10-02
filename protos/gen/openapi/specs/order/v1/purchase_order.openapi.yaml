@@ -604,17 +604,20 @@ components:
           type: string
           title: batch_id
           description: Generated batch ID for received items
+          nullable: true
         expirationDate:
           title: expiration_date
           description: Provided by supplier or calculated
           $ref: '#/components/schemas/google.protobuf.Timestamp'
+        purchasePrice:
+          type: integer
+          title: purchase_price
+          format: int32
       title: ReceivingLineItem
       additionalProperties: false
       description: |-
         *
          ReceivingLineItem shows what was actually received vs expected.
-
-         Fix: Added batch_id and expiration_date for creating new batches on reception.
 
          Example:
            product_id: "PRD-001"
@@ -671,9 +674,6 @@ components:
          ReceivingNote (Bon de Réception)
          Created when YOU receive goods from a supplier.
          THIS IS WHAT INCREASES YOUR INVENTORY.
-
-         Fix: ReceivingLineItem now includes batch_id (system-generated or from supplier).
-         When creating, new Batches are added to InventoryLevel.
 
          Flow: Goods arrive → Inspect → Create ReceivingNote → Update inventory
 

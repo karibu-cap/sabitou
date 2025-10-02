@@ -32,20 +32,20 @@ import "payments/v1/payments.proto";
  * ACCOUNTING IMPACT: Immediate revenue + payment
  */
 message CashReceipt {
-// "CASH-2025-001"
-  string document_id = 1 [(buf.validate.field).required = true]; 
+  // "CASH-2025-001"
+  string document_id = 1 [(buf.validate.field).required = true];
   // Who processed sale
-  string cashier_user_id = 2; 
+  string cashier_user_id = 2;
   // Can be null for anonymous
-  string customer_id = 3; 
+  string customer_id = 3;
   // Which location/store
-  string store_id = 4; 
+  string store_id = 4;
   repeated financial.v1.InvoiceLineItem items = 5;
   double subtotal = 6;
   double tax_amount = 7;
   double total_amount = 8;
   // What customer gave.
-  double amount_paid = 9; 
+  double amount_paid = 9;
   // Change given to customer.
   double change_given = 10;
   string currency = 11;
@@ -75,13 +75,10 @@ message CreateCashReceiptResponse {
   bool success = 1;
 
   // If a voucher was issued.
-  optional payments.v1.GiftVoucher voucher = 2; 
+  optional payments.v1.GiftVoucher voucher = 2;
 }
-
-
 
 service CashReceiptService {
   // Create a cash receipt (most common - 95% of transactions)
   rpc CreateCashReceipt(CreateCashReceiptRequest) returns (CreateCashReceiptResponse);
-
 }

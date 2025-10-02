@@ -65,7 +65,6 @@ message Store {
 
   // The tax payer number of the store.
   optional string tax_payer_number = 18;
-  
 }
 
 enum StoreCostingMethod {
@@ -302,7 +301,6 @@ message RemoveUserFromStoreResponse {
   bool success = 1;
 }
 
-
 service StoreService {
   // Creates a new store.
   rpc CreateStore(CreateStoreRequest) returns (CreateStoreResponse) {}
@@ -340,5 +338,4 @@ service StoreService {
 
   // Remove user from store.
   rpc RemoveUserFromStore(RemoveUserFromStoreRequest) returns (RemoveUserFromStoreResponse);
-
 }

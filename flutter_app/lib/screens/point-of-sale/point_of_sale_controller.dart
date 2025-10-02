@@ -7,7 +7,7 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 import '../../providers/cart_provider.dart';
 import '../../repositories/gift_voucher_repository.dart';
 import '../../repositories/inventory_repository.dart';
-import '../../repositories/pos_of_repository.dart';
+import '../../repositories/pos_repository.dart';
 import '../../services/internationalization/internationalization.dart';
 import '../../utils/button_state.dart';
 import '../../utils/common_functions.dart';
@@ -180,9 +180,7 @@ class PointOfSaleController extends ChangeNotifier {
       );
 
       // Make actual backend call
-      final response = await PosOfRepository.instance.createCashReceipt(
-        request,
-      );
+      final response = await PosRepository.instance.createCashReceipt(request);
 
       if (response == null) {
         _setErrorState(

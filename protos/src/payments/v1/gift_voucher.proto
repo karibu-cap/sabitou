@@ -2,9 +2,9 @@ syntax = "proto3";
 
 package payments.v1;
 
+import "audits/v1/voucher_transaction.proto";
 import "buf/validate/validate.proto";
 import "google/protobuf/timestamp.proto";
-import "audits/v1/voucher_transaction.proto";
 
 /**
  * GiftVoucher (Bon d'Achat)
@@ -21,23 +21,23 @@ import "audits/v1/voucher_transaction.proto";
  *   status: VOUCHER_STATUS_ACTIVE
  */
 message GiftVoucher {
- // "GV-2025-001"
+  // "GV-2025-001"
   string document_id = 1 [(buf.validate.field).required = true];
   // "GIFT-XMAS-12345" - what customer uses
-  string voucher_code = 2; 
+  string voucher_code = 2;
   // Original amount
-  double initial_value = 3; 
+  double initial_value = 3;
   // What's left
-  double remaining_value = 4; 
+  double remaining_value = 4;
   string currency = 5;
   // Optional - can be transferred
-  optional string issued_to_customer_id = 6; 
+  optional string issued_to_customer_id = 6;
   string issued_by_user_id = 7;
   // Warehouse where the voucher was issued
-  string warehouse_id = 8; 
+  string warehouse_id = 8;
   VoucherStatus status = 9;
   google.protobuf.Timestamp issued_at = 10;
-  google.protobuf.Timestamp valid_until = 11; 
+  google.protobuf.Timestamp valid_until = 11;
   optional string notes = 12;
 }
 
@@ -50,10 +50,7 @@ enum VoucherStatus {
   VOUCHER_STATUS_CANCELLED = 5; // Voided
 }
 
-
-
 service GiftVoucherService {
-
   // Validate voucher before use
   rpc ValidateVoucher(ValidateVoucherRequest) returns (ValidateVoucherResponse);
 
@@ -87,7 +84,7 @@ message GetVoucherRequest {
 message GetVoucherResponse {
   GiftVoucher voucher = 1;
   // Usage history.
-  repeated audits.v1.VoucherTransaction transactions = 2; 
+  repeated audits.v1.VoucherTransaction transactions = 2;
 }
 
 message ListVouchersRequest {

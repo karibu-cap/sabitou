@@ -9,6 +9,7 @@ export 'src/inventory/v1/category.connect.spec.dart';
 export 'src/inventory/v1/inventory.connect.spec.dart';
 export 'src/inventory/v1/store_product.connect.spec.dart';
 export 'src/link/v1/link.connect.spec.dart';
+export 'src/logistic/v1/receiving_notes.connect.spec.dart';
 export 'src/logistic/v1/return_notes.connect.spec.dart';
 export 'src/order/v1/purchase_order.connect.spec.dart';
 export 'src/order/v1/sales_order.connect.spec.dart';

@@ -165,7 +165,6 @@ class StoreProduct extends $pb.GeneratedMessage {
     $core.String? globalProductId,
     $core.int? salePrice,
     $core.Iterable<$core.String>? imagesLinksIds,
-    $core.String? supplierId,
     ProductStatus? status,
     $core.String? sku,
     ExpirationType? expirationType,
@@ -178,7 +177,6 @@ class StoreProduct extends $pb.GeneratedMessage {
     if (globalProductId != null) result.globalProductId = globalProductId;
     if (salePrice != null) result.salePrice = salePrice;
     if (imagesLinksIds != null) result.imagesLinksIds.addAll(imagesLinksIds);
-    if (supplierId != null) result.supplierId = supplierId;
     if (status != null) result.status = status;
     if (sku != null) result.sku = sku;
     if (expirationType != null) result.expirationType = expirationType;
@@ -205,20 +203,19 @@ class StoreProduct extends $pb.GeneratedMessage {
     ..aOS(3, _omitFieldNames ? '' : 'globalProductId')
     ..a<$core.int>(4, _omitFieldNames ? '' : 'salePrice', $pb.PbFieldType.O3)
     ..pPS(5, _omitFieldNames ? '' : 'imagesLinksIds')
-    ..aOS(6, _omitFieldNames ? '' : 'supplierId')
-    ..e<ProductStatus>(7, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
+    ..e<ProductStatus>(6, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
         defaultOrMaker: ProductStatus.PRODUCT_STATUS_UNSPECIFIED,
         valueOf: ProductStatus.valueOf,
         enumValues: ProductStatus.values)
-    ..aOS(8, _omitFieldNames ? '' : 'sku')
+    ..aOS(7, _omitFieldNames ? '' : 'sku')
     ..e<ExpirationType>(
-        9, _omitFieldNames ? '' : 'expirationType', $pb.PbFieldType.OE,
+        8, _omitFieldNames ? '' : 'expirationType', $pb.PbFieldType.OE,
         defaultOrMaker: ExpirationType.EXPIRATION_TYPE_UNSPECIFIED,
         valueOf: ExpirationType.valueOf,
         enumValues: ExpirationType.values)
-    ..aOM<$1.Timestamp>(10, _omitFieldNames ? '' : 'createdAt',
+    ..aOM<$1.Timestamp>(9, _omitFieldNames ? '' : 'createdAt',
         subBuilder: $1.Timestamp.create)
-    ..aOM<$1.Timestamp>(11, _omitFieldNames ? '' : 'updatedAt',
+    ..aOM<$1.Timestamp>(10, _omitFieldNames ? '' : 'updatedAt',
         subBuilder: $1.Timestamp.create)
     ..hasRequiredFields = false;
 
@@ -288,69 +285,59 @@ class StoreProduct extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   $pb.PbList<$core.String> get imagesLinksIds => $_getList(4);
 
-  /// The supplier.
-  @$pb.TagNumber(6)
-  $core.String get supplierId => $_getSZ(5);
-  @$pb.TagNumber(6)
-  set supplierId($core.String value) => $_setString(5, value);
-  @$pb.TagNumber(6)
-  $core.bool hasSupplierId() => $_has(5);
-  @$pb.TagNumber(6)
-  void clearSupplierId() => $_clearField(6);
-
   /// The status of the product.
-  @$pb.TagNumber(7)
-  ProductStatus get status => $_getN(6);
-  @$pb.TagNumber(7)
-  set status(ProductStatus value) => $_setField(7, value);
-  @$pb.TagNumber(7)
-  $core.bool hasStatus() => $_has(6);
-  @$pb.TagNumber(7)
-  void clearStatus() => $_clearField(7);
+  @$pb.TagNumber(6)
+  ProductStatus get status => $_getN(5);
+  @$pb.TagNumber(6)
+  set status(ProductStatus value) => $_setField(6, value);
+  @$pb.TagNumber(6)
+  $core.bool hasStatus() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearStatus() => $_clearField(6);
 
   /// The stock keeping unit.
-  @$pb.TagNumber(8)
-  $core.String get sku => $_getSZ(7);
-  @$pb.TagNumber(8)
-  set sku($core.String value) => $_setString(7, value);
-  @$pb.TagNumber(8)
-  $core.bool hasSku() => $_has(7);
-  @$pb.TagNumber(8)
-  void clearSku() => $_clearField(8);
+  @$pb.TagNumber(7)
+  $core.String get sku => $_getSZ(6);
+  @$pb.TagNumber(7)
+  set sku($core.String value) => $_setString(6, value);
+  @$pb.TagNumber(7)
+  $core.bool hasSku() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearSku() => $_clearField(7);
 
   /// The type of expiration of the product.
-  @$pb.TagNumber(9)
-  ExpirationType get expirationType => $_getN(8);
-  @$pb.TagNumber(9)
-  set expirationType(ExpirationType value) => $_setField(9, value);
-  @$pb.TagNumber(9)
-  $core.bool hasExpirationType() => $_has(8);
-  @$pb.TagNumber(9)
-  void clearExpirationType() => $_clearField(9);
+  @$pb.TagNumber(8)
+  ExpirationType get expirationType => $_getN(7);
+  @$pb.TagNumber(8)
+  set expirationType(ExpirationType value) => $_setField(8, value);
+  @$pb.TagNumber(8)
+  $core.bool hasExpirationType() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearExpirationType() => $_clearField(8);
 
   /// The creation date of the product.
-  @$pb.TagNumber(10)
-  $1.Timestamp get createdAt => $_getN(9);
-  @$pb.TagNumber(10)
-  set createdAt($1.Timestamp value) => $_setField(10, value);
-  @$pb.TagNumber(10)
-  $core.bool hasCreatedAt() => $_has(9);
-  @$pb.TagNumber(10)
-  void clearCreatedAt() => $_clearField(10);
-  @$pb.TagNumber(10)
-  $1.Timestamp ensureCreatedAt() => $_ensure(9);
+  @$pb.TagNumber(9)
+  $1.Timestamp get createdAt => $_getN(8);
+  @$pb.TagNumber(9)
+  set createdAt($1.Timestamp value) => $_setField(9, value);
+  @$pb.TagNumber(9)
+  $core.bool hasCreatedAt() => $_has(8);
+  @$pb.TagNumber(9)
+  void clearCreatedAt() => $_clearField(9);
+  @$pb.TagNumber(9)
+  $1.Timestamp ensureCreatedAt() => $_ensure(8);
 
   /// The last update date of the product.
-  @$pb.TagNumber(11)
-  $1.Timestamp get updatedAt => $_getN(10);
-  @$pb.TagNumber(11)
-  set updatedAt($1.Timestamp value) => $_setField(11, value);
-  @$pb.TagNumber(11)
-  $core.bool hasUpdatedAt() => $_has(10);
-  @$pb.TagNumber(11)
-  void clearUpdatedAt() => $_clearField(11);
-  @$pb.TagNumber(11)
-  $1.Timestamp ensureUpdatedAt() => $_ensure(10);
+  @$pb.TagNumber(10)
+  $1.Timestamp get updatedAt => $_getN(9);
+  @$pb.TagNumber(10)
+  set updatedAt($1.Timestamp value) => $_setField(10, value);
+  @$pb.TagNumber(10)
+  $core.bool hasUpdatedAt() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearUpdatedAt() => $_clearField(10);
+  @$pb.TagNumber(10)
+  $1.Timestamp ensureUpdatedAt() => $_ensure(9);
 }
 
 class CreateGlobalProductRequest extends $pb.GeneratedMessage {

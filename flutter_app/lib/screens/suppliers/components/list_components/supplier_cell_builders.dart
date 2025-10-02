@@ -4,8 +4,6 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../../services/internationalization/internationalization.dart';
 import '../../../../themes/app_colors.dart';
-import '../../../../utils/formatters.dart';
-import '../../suppliers_controller.dart';
 
 /// Utility class for building supplier table cells.
 ///
@@ -80,42 +78,6 @@ class SupplierCellBuilders {
             ],
           ),
       ],
-    );
-  }
-
-  /// Builds products count cell with badge style.
-  static Widget buildProductsCell(int productCount) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: Colors.blue.withValues(alpha: 0.1),
-        borderRadius: const BorderRadius.all(Radius.circular(12)),
-      ),
-      child: Text(
-        '$productCount ${AppInternationalizationService.to.productsText.toLowerCase()}',
-        style: const TextStyle(
-          fontSize: 12,
-          color: Colors.blue,
-          fontWeight: FontWeight.w600,
-        ),
-      ),
-    );
-  }
-
-  /// Builds total value cell with formatted currency.
-  static Widget buildTotalValueCell(
-    List<InventoryLevelWithProduct> supplierProducts,
-    SuppliersController controller,
-    ShadThemeData theme,
-  ) {
-    final totalValue = controller.calculateTotalValue(supplierProducts);
-
-    return Text(
-      Formatters.formatCurrency(totalValue),
-      style: theme.textTheme.p.copyWith(
-        fontWeight: FontWeight.w600,
-        fontSize: 14,
-      ),
     );
   }
 

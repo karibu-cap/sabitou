@@ -27,9 +27,6 @@ export 'inventory.pbenum.dart';
 /// *
 ///  Batch represents a lot of products with specific attributes like expiration.
 ///
-///  Fix: New message added for lot tracking. Each batch can have its own quantity, expiration date, and is linked to a product and warehouse.
-///  InventoryLevel now aggregates from batches, but batches provide detailed quantity per lot.
-///
 ///  Example:
 ///    batch_id: "BATCH-2025-001"
 ///    product_id: "PRD-001"
@@ -46,6 +43,8 @@ class Batch extends $pb.GeneratedMessage {
     $0.Timestamp? expirationDate,
     $0.Timestamp? receivedAt,
     $core.String? supplierBatchNumber,
+    $core.String? supplierId,
+    $core.int? purchasePrice,
     BatchStatus? status,
     $core.String? notes,
   }) {
@@ -58,6 +57,8 @@ class Batch extends $pb.GeneratedMessage {
     if (receivedAt != null) result.receivedAt = receivedAt;
     if (supplierBatchNumber != null)
       result.supplierBatchNumber = supplierBatchNumber;
+    if (supplierId != null) result.supplierId = supplierId;
+    if (purchasePrice != null) result.purchasePrice = purchasePrice;
     if (status != null) result.status = status;
     if (notes != null) result.notes = notes;
     return result;
@@ -85,11 +86,14 @@ class Batch extends $pb.GeneratedMessage {
     ..aOM<$0.Timestamp>(6, _omitFieldNames ? '' : 'receivedAt',
         subBuilder: $0.Timestamp.create)
     ..aOS(7, _omitFieldNames ? '' : 'supplierBatchNumber')
-    ..e<BatchStatus>(8, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
+    ..aOS(8, _omitFieldNames ? '' : 'supplierId')
+    ..a<$core.int>(
+        9, _omitFieldNames ? '' : 'purchasePrice', $pb.PbFieldType.O3)
+    ..e<BatchStatus>(10, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
         defaultOrMaker: BatchStatus.BATCH_STATUS_UNSPECIFIED,
         valueOf: BatchStatus.valueOf,
         enumValues: BatchStatus.values)
-    ..aOS(9, _omitFieldNames ? '' : 'notes')
+    ..aOS(11, _omitFieldNames ? '' : 'notes')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -179,31 +183,45 @@ class Batch extends $pb.GeneratedMessage {
   void clearSupplierBatchNumber() => $_clearField(7);
 
   @$pb.TagNumber(8)
-  BatchStatus get status => $_getN(7);
+  $core.String get supplierId => $_getSZ(7);
   @$pb.TagNumber(8)
-  set status(BatchStatus value) => $_setField(8, value);
+  set supplierId($core.String value) => $_setString(7, value);
   @$pb.TagNumber(8)
-  $core.bool hasStatus() => $_has(7);
+  $core.bool hasSupplierId() => $_has(7);
   @$pb.TagNumber(8)
-  void clearStatus() => $_clearField(8);
+  void clearSupplierId() => $_clearField(8);
 
   @$pb.TagNumber(9)
-  $core.String get notes => $_getSZ(8);
+  $core.int get purchasePrice => $_getIZ(8);
   @$pb.TagNumber(9)
-  set notes($core.String value) => $_setString(8, value);
+  set purchasePrice($core.int value) => $_setSignedInt32(8, value);
   @$pb.TagNumber(9)
-  $core.bool hasNotes() => $_has(8);
+  $core.bool hasPurchasePrice() => $_has(8);
   @$pb.TagNumber(9)
-  void clearNotes() => $_clearField(9);
+  void clearPurchasePrice() => $_clearField(9);
+
+  @$pb.TagNumber(10)
+  BatchStatus get status => $_getN(9);
+  @$pb.TagNumber(10)
+  set status(BatchStatus value) => $_setField(10, value);
+  @$pb.TagNumber(10)
+  $core.bool hasStatus() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearStatus() => $_clearField(10);
+
+  @$pb.TagNumber(11)
+  $core.String get notes => $_getSZ(10);
+  @$pb.TagNumber(11)
+  set notes($core.String value) => $_setString(10, value);
+  @$pb.TagNumber(11)
+  $core.bool hasNotes() => $_has(10);
+  @$pb.TagNumber(11)
+  void clearNotes() => $_clearField(11);
 }
 
 /// *
 ///  InventoryLevel tracks how much stock exists in each warehouse.
 ///  This is the current state, updated by various documents.
-///
-///  Fixes: Added repeated batches for lot-level details (quantity per lot, expiration).
-///  The quantity_available is now the sum of batch quantities (computed).
-///  Added min_threshold per warehouse for the product.
 ///
 ///  Example:
 ///    product_id: "PRD-001"
@@ -214,9 +232,7 @@ class Batch extends $pb.GeneratedMessage {
 ///    min_threshold: 15.0
 ///    last_updated: 2025-09-29T10:30:00Z
 ///    batches: [Batch1 with qty 30 exp 2026-01-01, Batch2 with qty 20 exp 2026-06-01]
-///  Note we can only have one InventoryLevel per (product_id, supplier_id).
-///  Reason why we don't add it directly to Storeproduct is because the Storeproduct can be handler by multiple supplier.
-///  Example: On product Coffee can be provide by 2 different supplier.
+///  Note we can only have one InventoryLevel per (product_id).
 class InventoryLevel extends $pb.GeneratedMessage {
   factory InventoryLevel({
     $core.String? storeProductId,
@@ -1626,6 +1642,208 @@ class GetProductTransactionHistoryResponse extends $pb.GeneratedMessage {
   void clearTotalCount() => $_clearField(2);
 }
 
+class ListProductsBySupplierRequest extends $pb.GeneratedMessage {
+  factory ListProductsBySupplierRequest({
+    $core.String? supplierId,
+    $core.String? storeId,
+  }) {
+    final result = create();
+    if (supplierId != null) result.supplierId = supplierId;
+    if (storeId != null) result.storeId = storeId;
+    return result;
+  }
+
+  ListProductsBySupplierRequest._();
+
+  factory ListProductsBySupplierRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ListProductsBySupplierRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ListProductsBySupplierRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'supplierId')
+    ..aOS(2, _omitFieldNames ? '' : 'storeId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ListProductsBySupplierRequest clone() =>
+      ListProductsBySupplierRequest()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ListProductsBySupplierRequest copyWith(
+          void Function(ListProductsBySupplierRequest) updates) =>
+      super.copyWith(
+              (message) => updates(message as ListProductsBySupplierRequest))
+          as ListProductsBySupplierRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ListProductsBySupplierRequest create() =>
+      ListProductsBySupplierRequest._();
+  @$core.override
+  ListProductsBySupplierRequest createEmptyInstance() => create();
+  static $pb.PbList<ListProductsBySupplierRequest> createRepeated() =>
+      $pb.PbList<ListProductsBySupplierRequest>();
+  @$core.pragma('dart2js:noInline')
+  static ListProductsBySupplierRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ListProductsBySupplierRequest>(create);
+  static ListProductsBySupplierRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get supplierId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set supplierId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasSupplierId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSupplierId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get storeId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set storeId($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasStoreId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearStoreId() => $_clearField(2);
+}
+
+class ListProductsBySupplierResponse extends $pb.GeneratedMessage {
+  factory ListProductsBySupplierResponse({
+    $core.Iterable<ProductBySupplier>? products,
+  }) {
+    final result = create();
+    if (products != null) result.products.addAll(products);
+    return result;
+  }
+
+  ListProductsBySupplierResponse._();
+
+  factory ListProductsBySupplierResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ListProductsBySupplierResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ListProductsBySupplierResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'),
+      createEmptyInstance: create)
+    ..pc<ProductBySupplier>(
+        1, _omitFieldNames ? '' : 'products', $pb.PbFieldType.PM,
+        subBuilder: ProductBySupplier.create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ListProductsBySupplierResponse clone() =>
+      ListProductsBySupplierResponse()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ListProductsBySupplierResponse copyWith(
+          void Function(ListProductsBySupplierResponse) updates) =>
+      super.copyWith(
+              (message) => updates(message as ListProductsBySupplierResponse))
+          as ListProductsBySupplierResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ListProductsBySupplierResponse create() =>
+      ListProductsBySupplierResponse._();
+  @$core.override
+  ListProductsBySupplierResponse createEmptyInstance() => create();
+  static $pb.PbList<ListProductsBySupplierResponse> createRepeated() =>
+      $pb.PbList<ListProductsBySupplierResponse>();
+  @$core.pragma('dart2js:noInline')
+  static ListProductsBySupplierResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ListProductsBySupplierResponse>(create);
+  static ListProductsBySupplierResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $pb.PbList<ProductBySupplier> get products => $_getList(0);
+}
+
+class ProductBySupplier extends $pb.GeneratedMessage {
+  factory ProductBySupplier({
+    $1.StoreProduct? storeProduct,
+    $1.GlobalProduct? globalProduct,
+  }) {
+    final result = create();
+    if (storeProduct != null) result.storeProduct = storeProduct;
+    if (globalProduct != null) result.globalProduct = globalProduct;
+    return result;
+  }
+
+  ProductBySupplier._();
+
+  factory ProductBySupplier.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ProductBySupplier.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ProductBySupplier',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'),
+      createEmptyInstance: create)
+    ..aOM<$1.StoreProduct>(1, _omitFieldNames ? '' : 'storeProduct',
+        subBuilder: $1.StoreProduct.create)
+    ..aOM<$1.GlobalProduct>(2, _omitFieldNames ? '' : 'globalProduct',
+        subBuilder: $1.GlobalProduct.create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ProductBySupplier clone() => ProductBySupplier()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ProductBySupplier copyWith(void Function(ProductBySupplier) updates) =>
+      super.copyWith((message) => updates(message as ProductBySupplier))
+          as ProductBySupplier;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ProductBySupplier create() => ProductBySupplier._();
+  @$core.override
+  ProductBySupplier createEmptyInstance() => create();
+  static $pb.PbList<ProductBySupplier> createRepeated() =>
+      $pb.PbList<ProductBySupplier>();
+  @$core.pragma('dart2js:noInline')
+  static ProductBySupplier getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ProductBySupplier>(create);
+  static ProductBySupplier? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $1.StoreProduct get storeProduct => $_getN(0);
+  @$pb.TagNumber(1)
+  set storeProduct($1.StoreProduct value) => $_setField(1, value);
+  @$pb.TagNumber(1)
+  $core.bool hasStoreProduct() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearStoreProduct() => $_clearField(1);
+  @$pb.TagNumber(1)
+  $1.StoreProduct ensureStoreProduct() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $1.GlobalProduct get globalProduct => $_getN(1);
+  @$pb.TagNumber(2)
+  set globalProduct($1.GlobalProduct value) => $_setField(2, value);
+  @$pb.TagNumber(2)
+  $core.bool hasGlobalProduct() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearGlobalProduct() => $_clearField(2);
+  @$pb.TagNumber(2)
+  $1.GlobalProduct ensureGlobalProduct() => $_ensure(1);
+}
+
 class InventoryServiceApi {
   final $pb.RpcClient _client;
 
@@ -1684,6 +1902,12 @@ class InventoryServiceApi {
               'GetProductTransactionHistory',
               request,
               GetProductTransactionHistoryResponse());
+
+  /// Gets the products by supplier.
+  $async.Future<ListProductsBySupplierResponse> listProductsBySupplier(
+          $pb.ClientContext? ctx, ListProductsBySupplierRequest request) =>
+      _client.invoke<ListProductsBySupplierResponse>(ctx, 'InventoryService',
+          'ListProductsBySupplier', request, ListProductsBySupplierResponse());
 }
 
 const $core.bool _omitFieldNames =

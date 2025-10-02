@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 package financial.v1;
+
 import "inventory/v1/category.proto";
 
 /**
