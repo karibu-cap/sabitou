@@ -28,9 +28,9 @@ type PaymentStatus int32
 
 const (
 	PaymentStatus_PAYMENT_STATUS_UNSPECIFIED PaymentStatus = 0
-	PaymentStatus_PAYMENT_STATUS_PENDING     PaymentStatus = 1 // Initiated but not confirmed
-	PaymentStatus_PAYMENT_STATUS_COMPLETED   PaymentStatus = 2 // Money received
-	PaymentStatus_PAYMENT_STATUS_FAILED      PaymentStatus = 3 // Payment didn't go through
+	PaymentStatus_PAYMENT_STATUS_PENDING     PaymentStatus = 1
+	PaymentStatus_PAYMENT_STATUS_COMPLETED   PaymentStatus = 2
+	PaymentStatus_PAYMENT_STATUS_FAILED      PaymentStatus = 3
 )
 
 // Enum value maps for PaymentStatus.
@@ -145,27 +145,28 @@ func (PaymentMethod) EnumDescriptor() ([]byte, []int) {
 //
 //	payment_id: "PAY-2025-001"
 //	payer_id: "CMP-003" (customer)
-//	payee_id: "CMP-001" (your company)
+//	receiver: "CMP-001" (your company)
 //	amount: 5400000
 //	payment_method: PAYMENT_METHOD_BANK_TRANSFER
-//	related_invoice_id: "INV-2025-001"
 //	status: PAYMENT_STATUS_COMPLETED
 type Payment struct {
-	state            protoimpl.MessageState `protogen:"open.v1"`
-	DocumentId       string                 `protobuf:"bytes,1,opt,name=document_id,json=documentId,proto3" json:"document_id,omitempty"` // "PAY-2025-001"
-	PayerId          string                 `protobuf:"bytes,2,opt,name=payer_id,json=payerId,proto3" json:"payer_id,omitempty"`          // Who pays
-	PayeeId          string                 `protobuf:"bytes,3,opt,name=payee_id,json=payeeId,proto3" json:"payee_id,omitempty"`          // Who receives
-	Amount           float64                `protobuf:"fixed64,4,opt,name=amount,proto3" json:"amount,omitempty"`                         // Amount in smallest currency unit
-	Currency         string                 `protobuf:"bytes,5,opt,name=currency,proto3" json:"currency,omitempty"`
-	PaymentMethod    PaymentMethod          `protobuf:"varint,6,opt,name=payment_method,json=paymentMethod,proto3,enum=payments.v1.PaymentMethod" json:"payment_method,omitempty"`
-	Status           PaymentStatus          `protobuf:"varint,7,opt,name=status,proto3,enum=payments.v1.PaymentStatus" json:"status,omitempty"`
-	RelatedInvoiceId string                 `protobuf:"bytes,8,opt,name=related_invoice_id,json=relatedInvoiceId,proto3" json:"related_invoice_id,omitempty"` // Which invoice this pays
-	PaymentDate      *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=payment_date,json=paymentDate,proto3" json:"payment_date,omitempty"`
-	ReferenceNumber  string                 `protobuf:"bytes,10,opt,name=reference_number,json=referenceNumber,proto3" json:"reference_number,omitempty"` // Bank reference, check number, etc.
-	CreatedByUserId  string                 `protobuf:"bytes,11,opt,name=created_by_user_id,json=createdByUserId,proto3" json:"created_by_user_id,omitempty"`
-	Notes            string                 `protobuf:"bytes,12,opt,name=notes,proto3" json:"notes,omitempty"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
+	state      protoimpl.MessageState `protogen:"open.v1"`
+	DocumentId string                 `protobuf:"bytes,1,opt,name=document_id,json=documentId,proto3" json:"document_id,omitempty"` // "PAY-2025-001"
+	PayerId    string                 `protobuf:"bytes,2,opt,name=payer_id,json=payerId,proto3" json:"payer_id,omitempty"`
+	// Can be a customer phone number or account number.
+	Receiver string  `protobuf:"bytes,3,opt,name=receiver,proto3" json:"receiver,omitempty"`
+	Amount   float64 `protobuf:"fixed64,4,opt,name=amount,proto3" json:"amount,omitempty"`
+	Currency string  `protobuf:"bytes,5,opt,name=currency,proto3" json:"currency,omitempty"`
+	// The warehouse id. in general it's the warehouse of the store.
+	WarehouseId     string                 `protobuf:"bytes,6,opt,name=warehouse_id,json=warehouseId,proto3" json:"warehouse_id,omitempty"`
+	PaymentMethod   PaymentMethod          `protobuf:"varint,7,opt,name=payment_method,json=paymentMethod,proto3,enum=payments.v1.PaymentMethod" json:"payment_method,omitempty"`
+	Status          PaymentStatus          `protobuf:"varint,8,opt,name=status,proto3,enum=payments.v1.PaymentStatus" json:"status,omitempty"`
+	PaymentDate     *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=payment_date,json=paymentDate,proto3" json:"payment_date,omitempty"`
+	ReferenceNumber *string                `protobuf:"bytes,10,opt,name=reference_number,json=referenceNumber,proto3,oneof" json:"reference_number,omitempty"`
+	CreatedByUserId string                 `protobuf:"bytes,11,opt,name=created_by_user_id,json=createdByUserId,proto3" json:"created_by_user_id,omitempty"`
+	Notes           *string                `protobuf:"bytes,12,opt,name=notes,proto3,oneof" json:"notes,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *Payment) Reset() {
@@ -212,9 +213,9 @@ func (x *Payment) GetPayerId() string {
 	return ""
 }
 
-func (x *Payment) GetPayeeId() string {
+func (x *Payment) GetReceiver() string {
 	if x != nil {
-		return x.PayeeId
+		return x.Receiver
 	}
 	return ""
 }
@@ -233,6 +234,13 @@ func (x *Payment) GetCurrency() string {
 	return ""
 }
 
+func (x *Payment) GetWarehouseId() string {
+	if x != nil {
+		return x.WarehouseId
+	}
+	return ""
+}
+
 func (x *Payment) GetPaymentMethod() PaymentMethod {
 	if x != nil {
 		return x.PaymentMethod
@@ -247,13 +255,6 @@ func (x *Payment) GetStatus() PaymentStatus {
 	return PaymentStatus_PAYMENT_STATUS_UNSPECIFIED
 }
 
-func (x *Payment) GetRelatedInvoiceId() string {
-	if x != nil {
-		return x.RelatedInvoiceId
-	}
-	return ""
-}
-
 func (x *Payment) GetPaymentDate() *timestamppb.Timestamp {
 	if x != nil {
 		return x.PaymentDate
@@ -262,8 +263,8 @@ func (x *Payment) GetPaymentDate() *timestamppb.Timestamp {
 }
 
 func (x *Payment) GetReferenceNumber() string {
-	if x != nil {
-		return x.ReferenceNumber
+	if x != nil && x.ReferenceNumber != nil {
+		return *x.ReferenceNumber
 	}
 	return ""
 }
@@ -276,21 +277,21 @@ func (x *Payment) GetCreatedByUserId() string {
 }
 
 func (x *Payment) GetNotes() string {
-	if x != nil {
-		return x.Notes
+	if x != nil && x.Notes != nil {
+		return *x.Notes
 	}
 	return ""
 }
 
 type CreatePaymentRequest struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
-	PayerId         string                 `protobuf:"bytes,1,opt,name=payer_id,json=payerId,proto3" json:"payer_id,omitempty"` // Company making payment
-	PayeeId         string                 `protobuf:"bytes,2,opt,name=payee_id,json=payeeId,proto3" json:"payee_id,omitempty"` // Company receiving payment
+	PayerId         string                 `protobuf:"bytes,1,opt,name=payer_id,json=payerId,proto3" json:"payer_id,omitempty"`
+	Receiver        string                 `protobuf:"bytes,2,opt,name=receiver,proto3" json:"receiver,omitempty"`
 	Amount          float64                `protobuf:"fixed64,3,opt,name=amount,proto3" json:"amount,omitempty"`
 	Currency        string                 `protobuf:"bytes,4,opt,name=currency,proto3" json:"currency,omitempty"`
 	PaymentMethod   PaymentMethod          `protobuf:"varint,5,opt,name=payment_method,json=paymentMethod,proto3,enum=payments.v1.PaymentMethod" json:"payment_method,omitempty"`
-	ReferenceNumber *string                `protobuf:"bytes,7,opt,name=reference_number,json=referenceNumber,proto3,oneof" json:"reference_number,omitempty"` // Bank ref, check number, etc.
-	Notes           *string                `protobuf:"bytes,8,opt,name=notes,proto3,oneof" json:"notes,omitempty"`
+	ReferenceNumber *string                `protobuf:"bytes,6,opt,name=reference_number,json=referenceNumber,proto3,oneof" json:"reference_number,omitempty"`
+	Notes           *string                `protobuf:"bytes,7,opt,name=notes,proto3,oneof" json:"notes,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -332,9 +333,9 @@ func (x *CreatePaymentRequest) GetPayerId() string {
 	return ""
 }
 
-func (x *CreatePaymentRequest) GetPayeeId() string {
+func (x *CreatePaymentRequest) GetReceiver() string {
 	if x != nil {
-		return x.PayeeId
+		return x.Receiver
 	}
 	return ""
 }
@@ -375,13 +376,10 @@ func (x *CreatePaymentRequest) GetNotes() string {
 }
 
 type CreatePaymentResponse struct {
-	state          protoimpl.MessageState `protogen:"open.v1"`
-	PaymentId      string                 `protobuf:"bytes,1,opt,name=payment_id,json=paymentId,proto3" json:"payment_id,omitempty"`
-	Payment        *Payment               `protobuf:"bytes,2,opt,name=payment,proto3" json:"payment,omitempty"`
-	UpdatedInvoice *v1.Invoice            `protobuf:"bytes,3,opt,name=updated_invoice,json=updatedInvoice,proto3" json:"updated_invoice,omitempty"` // Updated status
-	Message        string                 `protobuf:"bytes,4,opt,name=message,proto3" json:"message,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Payment       *Payment               `protobuf:"bytes,1,opt,name=payment,proto3" json:"payment,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *CreatePaymentResponse) Reset() {
@@ -414,32 +412,11 @@ func (*CreatePaymentResponse) Descriptor() ([]byte, []int) {
 	return file_payments_v1_payments_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *CreatePaymentResponse) GetPaymentId() string {
-	if x != nil {
-		return x.PaymentId
-	}
-	return ""
-}
-
 func (x *CreatePaymentResponse) GetPayment() *Payment {
 	if x != nil {
 		return x.Payment
 	}
 	return nil
-}
-
-func (x *CreatePaymentResponse) GetUpdatedInvoice() *v1.Invoice {
-	if x != nil {
-		return x.UpdatedInvoice
-	}
-	return nil
-}
-
-func (x *CreatePaymentResponse) GetMessage() string {
-	if x != nil {
-		return x.Message
-	}
-	return ""
 }
 
 type GetPaymentRequest struct {
@@ -540,13 +517,11 @@ func (x *GetPaymentResponse) GetRelatedInvoice() *v1.Invoice {
 
 type ListPaymentsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	StoreId       string                 `protobuf:"bytes,1,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`                // Payments involving this company
-	Method        PaymentMethod          `protobuf:"varint,2,opt,name=method,proto3,enum=payments.v1.PaymentMethod" json:"method,omitempty"` // Filter by method
-	Status        PaymentStatus          `protobuf:"varint,3,opt,name=status,proto3,enum=payments.v1.PaymentStatus" json:"status,omitempty"` // Filter by status
-	StartDate     *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=start_date,json=startDate,proto3" json:"start_date,omitempty"`
-	EndDate       *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=end_date,json=endDate,proto3" json:"end_date,omitempty"`
-	PageSize      int32                  `protobuf:"varint,6,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	PageNumber    int32                  `protobuf:"varint,7,opt,name=page_number,json=pageNumber,proto3" json:"page_number,omitempty"`
+	WarehouseId   string                 `protobuf:"bytes,1,opt,name=warehouse_id,json=warehouseId,proto3" json:"warehouse_id,omitempty"`
+	StartDate     *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=start_date,json=startDate,proto3" json:"start_date,omitempty"`
+	EndDate       *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=end_date,json=endDate,proto3" json:"end_date,omitempty"`
+	PageSize      int32                  `protobuf:"varint,4,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageNumber    int32                  `protobuf:"varint,5,opt,name=page_number,json=pageNumber,proto3" json:"page_number,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -581,25 +556,11 @@ func (*ListPaymentsRequest) Descriptor() ([]byte, []int) {
 	return file_payments_v1_payments_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *ListPaymentsRequest) GetStoreId() string {
+func (x *ListPaymentsRequest) GetWarehouseId() string {
 	if x != nil {
-		return x.StoreId
+		return x.WarehouseId
 	}
 	return ""
-}
-
-func (x *ListPaymentsRequest) GetMethod() PaymentMethod {
-	if x != nil {
-		return x.Method
-	}
-	return PaymentMethod_PAYMENT_METHOD_UNSPECIFIED
-}
-
-func (x *ListPaymentsRequest) GetStatus() PaymentStatus {
-	if x != nil {
-		return x.Status
-	}
-	return PaymentStatus_PAYMENT_STATUS_UNSPECIFIED
 }
 
 func (x *ListPaymentsRequest) GetStartDate() *timestamppb.Timestamp {
@@ -690,209 +651,59 @@ func (x *ListPaymentsResponse) GetTotalAmount() float64 {
 	return 0
 }
 
-type CreateRefundRequest struct {
-	state             protoimpl.MessageState `protogen:"open.v1"`
-	OriginalPaymentId string                 `protobuf:"bytes,1,opt,name=original_payment_id,json=originalPaymentId,proto3" json:"original_payment_id,omitempty"`
-	CreditNoteId      string                 `protobuf:"bytes,2,opt,name=credit_note_id,json=creditNoteId,proto3" json:"credit_note_id,omitempty"` // Reason for refund
-	RefundAmount      float64                `protobuf:"fixed64,3,opt,name=refund_amount,json=refundAmount,proto3" json:"refund_amount,omitempty"`
-	RefundedByUserId  string                 `protobuf:"bytes,4,opt,name=refunded_by_user_id,json=refundedByUserId,proto3" json:"refunded_by_user_id,omitempty"`
-	Notes             string                 `protobuf:"bytes,5,opt,name=notes,proto3" json:"notes,omitempty"`
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
-}
-
-func (x *CreateRefundRequest) Reset() {
-	*x = CreateRefundRequest{}
-	mi := &file_payments_v1_payments_proto_msgTypes[7]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateRefundRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateRefundRequest) ProtoMessage() {}
-
-func (x *CreateRefundRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_payments_v1_payments_proto_msgTypes[7]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateRefundRequest.ProtoReflect.Descriptor instead.
-func (*CreateRefundRequest) Descriptor() ([]byte, []int) {
-	return file_payments_v1_payments_proto_rawDescGZIP(), []int{7}
-}
-
-func (x *CreateRefundRequest) GetOriginalPaymentId() string {
-	if x != nil {
-		return x.OriginalPaymentId
-	}
-	return ""
-}
-
-func (x *CreateRefundRequest) GetCreditNoteId() string {
-	if x != nil {
-		return x.CreditNoteId
-	}
-	return ""
-}
-
-func (x *CreateRefundRequest) GetRefundAmount() float64 {
-	if x != nil {
-		return x.RefundAmount
-	}
-	return 0
-}
-
-func (x *CreateRefundRequest) GetRefundedByUserId() string {
-	if x != nil {
-		return x.RefundedByUserId
-	}
-	return ""
-}
-
-func (x *CreateRefundRequest) GetNotes() string {
-	if x != nil {
-		return x.Notes
-	}
-	return ""
-}
-
-type CreateRefundResponse struct {
-	state           protoimpl.MessageState `protogen:"open.v1"`
-	RefundPaymentId string                 `protobuf:"bytes,1,opt,name=refund_payment_id,json=refundPaymentId,proto3" json:"refund_payment_id,omitempty"`
-	RefundPayment   *Payment               `protobuf:"bytes,2,opt,name=refund_payment,json=refundPayment,proto3" json:"refund_payment,omitempty"`
-	Message         string                 `protobuf:"bytes,3,opt,name=message,proto3" json:"message,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
-}
-
-func (x *CreateRefundResponse) Reset() {
-	*x = CreateRefundResponse{}
-	mi := &file_payments_v1_payments_proto_msgTypes[8]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateRefundResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateRefundResponse) ProtoMessage() {}
-
-func (x *CreateRefundResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_payments_v1_payments_proto_msgTypes[8]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateRefundResponse.ProtoReflect.Descriptor instead.
-func (*CreateRefundResponse) Descriptor() ([]byte, []int) {
-	return file_payments_v1_payments_proto_rawDescGZIP(), []int{8}
-}
-
-func (x *CreateRefundResponse) GetRefundPaymentId() string {
-	if x != nil {
-		return x.RefundPaymentId
-	}
-	return ""
-}
-
-func (x *CreateRefundResponse) GetRefundPayment() *Payment {
-	if x != nil {
-		return x.RefundPayment
-	}
-	return nil
-}
-
-func (x *CreateRefundResponse) GetMessage() string {
-	if x != nil {
-		return x.Message
-	}
-	return ""
-}
-
 var File_payments_v1_payments_proto protoreflect.FileDescriptor
 
 const file_payments_v1_payments_proto_rawDesc = "" +
 	"\n" +
-	"\x1apayments/v1/payments.proto\x12\vpayments.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1afinancial/v1/invoice.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1fpayments/v1/payment_utils.proto\"\xee\x03\n" +
+	"\x1apayments/v1/payments.proto\x12\vpayments.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1afinancial/v1/invoice.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x8d\x04\n" +
 	"\aPayment\x12'\n" +
 	"\vdocument_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\n" +
 	"documentId\x12\x19\n" +
-	"\bpayer_id\x18\x02 \x01(\tR\apayerId\x12\x19\n" +
-	"\bpayee_id\x18\x03 \x01(\tR\apayeeId\x12\x16\n" +
+	"\bpayer_id\x18\x02 \x01(\tR\apayerId\x12\x1a\n" +
+	"\breceiver\x18\x03 \x01(\tR\breceiver\x12\x16\n" +
 	"\x06amount\x18\x04 \x01(\x01R\x06amount\x12\x1a\n" +
-	"\bcurrency\x18\x05 \x01(\tR\bcurrency\x12A\n" +
-	"\x0epayment_method\x18\x06 \x01(\x0e2\x1a.payments.v1.PaymentMethodR\rpaymentMethod\x122\n" +
-	"\x06status\x18\a \x01(\x0e2\x1a.payments.v1.PaymentStatusR\x06status\x12,\n" +
-	"\x12related_invoice_id\x18\b \x01(\tR\x10relatedInvoiceId\x12=\n" +
-	"\fpayment_date\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\vpaymentDate\x12)\n" +
+	"\bcurrency\x18\x05 \x01(\tR\bcurrency\x12!\n" +
+	"\fwarehouse_id\x18\x06 \x01(\tR\vwarehouseId\x12A\n" +
+	"\x0epayment_method\x18\a \x01(\x0e2\x1a.payments.v1.PaymentMethodR\rpaymentMethod\x122\n" +
+	"\x06status\x18\b \x01(\x0e2\x1a.payments.v1.PaymentStatusR\x06status\x12=\n" +
+	"\fpayment_date\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\vpaymentDate\x12.\n" +
 	"\x10reference_number\x18\n" +
-	" \x01(\tR\x0freferenceNumber\x12+\n" +
-	"\x12created_by_user_id\x18\v \x01(\tR\x0fcreatedByUserId\x12\x14\n" +
-	"\x05notes\x18\f \x01(\tR\x05notes\"\xad\x02\n" +
+	" \x01(\tH\x00R\x0freferenceNumber\x88\x01\x01\x12+\n" +
+	"\x12created_by_user_id\x18\v \x01(\tR\x0fcreatedByUserId\x12\x19\n" +
+	"\x05notes\x18\f \x01(\tH\x01R\x05notes\x88\x01\x01B\x13\n" +
+	"\x11_reference_numberB\b\n" +
+	"\x06_notes\"\xae\x02\n" +
 	"\x14CreatePaymentRequest\x12\x19\n" +
-	"\bpayer_id\x18\x01 \x01(\tR\apayerId\x12\x19\n" +
-	"\bpayee_id\x18\x02 \x01(\tR\apayeeId\x12\x16\n" +
+	"\bpayer_id\x18\x01 \x01(\tR\apayerId\x12\x1a\n" +
+	"\breceiver\x18\x02 \x01(\tR\breceiver\x12\x16\n" +
 	"\x06amount\x18\x03 \x01(\x01R\x06amount\x12\x1a\n" +
 	"\bcurrency\x18\x04 \x01(\tR\bcurrency\x12A\n" +
 	"\x0epayment_method\x18\x05 \x01(\x0e2\x1a.payments.v1.PaymentMethodR\rpaymentMethod\x12.\n" +
-	"\x10reference_number\x18\a \x01(\tH\x00R\x0freferenceNumber\x88\x01\x01\x12\x19\n" +
-	"\x05notes\x18\b \x01(\tH\x01R\x05notes\x88\x01\x01B\x13\n" +
+	"\x10reference_number\x18\x06 \x01(\tH\x00R\x0freferenceNumber\x88\x01\x01\x12\x19\n" +
+	"\x05notes\x18\a \x01(\tH\x01R\x05notes\x88\x01\x01B\x13\n" +
 	"\x11_reference_numberB\b\n" +
-	"\x06_notes\"\xc0\x01\n" +
-	"\x15CreatePaymentResponse\x12\x1d\n" +
-	"\n" +
-	"payment_id\x18\x01 \x01(\tR\tpaymentId\x12.\n" +
-	"\apayment\x18\x02 \x01(\v2\x14.payments.v1.PaymentR\apayment\x12>\n" +
-	"\x0fupdated_invoice\x18\x03 \x01(\v2\x15.financial.v1.InvoiceR\x0eupdatedInvoice\x12\x18\n" +
-	"\amessage\x18\x04 \x01(\tR\amessage\"2\n" +
+	"\x06_notes\"G\n" +
+	"\x15CreatePaymentResponse\x12.\n" +
+	"\apayment\x18\x01 \x01(\v2\x14.payments.v1.PaymentR\apayment\"2\n" +
 	"\x11GetPaymentRequest\x12\x1d\n" +
 	"\n" +
 	"payment_id\x18\x01 \x01(\tR\tpaymentId\"\x84\x01\n" +
 	"\x12GetPaymentResponse\x12.\n" +
 	"\apayment\x18\x01 \x01(\v2\x14.payments.v1.PaymentR\apayment\x12>\n" +
-	"\x0frelated_invoice\x18\x02 \x01(\v2\x15.financial.v1.InvoiceR\x0erelatedInvoice\"\xc8\x02\n" +
-	"\x13ListPaymentsRequest\x12\x19\n" +
-	"\bstore_id\x18\x01 \x01(\tR\astoreId\x122\n" +
-	"\x06method\x18\x02 \x01(\x0e2\x1a.payments.v1.PaymentMethodR\x06method\x122\n" +
-	"\x06status\x18\x03 \x01(\x0e2\x1a.payments.v1.PaymentStatusR\x06status\x129\n" +
+	"\x0frelated_invoice\x18\x02 \x01(\v2\x15.financial.v1.InvoiceR\x0erelatedInvoice\"\xe8\x01\n" +
+	"\x13ListPaymentsRequest\x12!\n" +
+	"\fwarehouse_id\x18\x01 \x01(\tR\vwarehouseId\x129\n" +
 	"\n" +
-	"start_date\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\tstartDate\x125\n" +
-	"\bend_date\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\aendDate\x12\x1b\n" +
-	"\tpage_size\x18\x06 \x01(\x05R\bpageSize\x12\x1f\n" +
-	"\vpage_number\x18\a \x01(\x05R\n" +
+	"start_date\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tstartDate\x125\n" +
+	"\bend_date\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\aendDate\x12\x1b\n" +
+	"\tpage_size\x18\x04 \x01(\x05R\bpageSize\x12\x1f\n" +
+	"\vpage_number\x18\x05 \x01(\x05R\n" +
 	"pageNumber\"\x8c\x01\n" +
 	"\x14ListPaymentsResponse\x120\n" +
 	"\bpayments\x18\x01 \x03(\v2\x14.payments.v1.PaymentR\bpayments\x12\x1f\n" +
 	"\vtotal_count\x18\x02 \x01(\x05R\n" +
 	"totalCount\x12!\n" +
-	"\ftotal_amount\x18\x03 \x01(\x01R\vtotalAmount\"\xd5\x01\n" +
-	"\x13CreateRefundRequest\x12.\n" +
-	"\x13original_payment_id\x18\x01 \x01(\tR\x11originalPaymentId\x12$\n" +
-	"\x0ecredit_note_id\x18\x02 \x01(\tR\fcreditNoteId\x12#\n" +
-	"\rrefund_amount\x18\x03 \x01(\x01R\frefundAmount\x12-\n" +
-	"\x13refunded_by_user_id\x18\x04 \x01(\tR\x10refundedByUserId\x12\x14\n" +
-	"\x05notes\x18\x05 \x01(\tR\x05notes\"\x99\x01\n" +
-	"\x14CreateRefundResponse\x12*\n" +
-	"\x11refund_payment_id\x18\x01 \x01(\tR\x0frefundPaymentId\x12;\n" +
-	"\x0erefund_payment\x18\x02 \x01(\v2\x14.payments.v1.PaymentR\rrefundPayment\x12\x18\n" +
-	"\amessage\x18\x03 \x01(\tR\amessage*\x84\x01\n" +
+	"\ftotal_amount\x18\x03 \x01(\x01R\vtotalAmount*\x84\x01\n" +
 	"\rPaymentStatus\x12\x1e\n" +
 	"\x1aPAYMENT_STATUS_UNSPECIFIED\x10\x00\x12\x1a\n" +
 	"\x16PAYMENT_STATUS_PENDING\x10\x01\x12\x1c\n" +
@@ -905,13 +716,12 @@ const file_payments_v1_payments_proto_rawDesc = "" +
 	"\x1bPAYMENT_METHOD_MOBILE_MONEY\x10\x03\x12\x1a\n" +
 	"\x16PAYMENT_METHOD_VOUCHER\x10\x04\x12\x1f\n" +
 	"\x1bPAYMENT_METHOD_ORANGE_MONEY\x10\x05\x12\x1c\n" +
-	"\x18PAYMENT_METHOD_MTN_MONEY\x10\x062\xe1\x02\n" +
+	"\x18PAYMENT_METHOD_MTN_MONEY\x10\x062\x8c\x02\n" +
 	"\x0ePaymentService\x12V\n" +
 	"\rCreatePayment\x12!.payments.v1.CreatePaymentRequest\x1a\".payments.v1.CreatePaymentResponse\x12M\n" +
 	"\n" +
 	"GetPayment\x12\x1e.payments.v1.GetPaymentRequest\x1a\x1f.payments.v1.GetPaymentResponse\x12S\n" +
-	"\fListPayments\x12 .payments.v1.ListPaymentsRequest\x1a!.payments.v1.ListPaymentsResponse\x12S\n" +
-	"\fCreateRefund\x12 .payments.v1.CreateRefundRequest\x1a!.payments.v1.CreateRefundResponseB\xb5\x01\n" +
+	"\fListPayments\x12 .payments.v1.ListPaymentsRequest\x1a!.payments.v1.ListPaymentsResponseB\xb5\x01\n" +
 	"\x0fcom.payments.v1B\rPaymentsProtoP\x01ZFgithub.com/karibu-cap/sabitou/protos/gen/go/rpc/payments/v1;paymentsv1\xa2\x02\x03PXX\xaa\x02\vPayments.V1\xca\x02\vPayments\\V1\xe2\x02\x17Payments\\V1\\GPBMetadata\xea\x02\fPayments::V1b\x06proto3"
 
 var (
@@ -927,7 +737,7 @@ func file_payments_v1_payments_proto_rawDescGZIP() []byte {
 }
 
 var file_payments_v1_payments_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_payments_v1_payments_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_payments_v1_payments_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_payments_v1_payments_proto_goTypes = []any{
 	(PaymentStatus)(0),            // 0: payments.v1.PaymentStatus
 	(PaymentMethod)(0),            // 1: payments.v1.PaymentMethod
@@ -938,39 +748,31 @@ var file_payments_v1_payments_proto_goTypes = []any{
 	(*GetPaymentResponse)(nil),    // 6: payments.v1.GetPaymentResponse
 	(*ListPaymentsRequest)(nil),   // 7: payments.v1.ListPaymentsRequest
 	(*ListPaymentsResponse)(nil),  // 8: payments.v1.ListPaymentsResponse
-	(*CreateRefundRequest)(nil),   // 9: payments.v1.CreateRefundRequest
-	(*CreateRefundResponse)(nil),  // 10: payments.v1.CreateRefundResponse
-	(*timestamppb.Timestamp)(nil), // 11: google.protobuf.Timestamp
-	(*v1.Invoice)(nil),            // 12: financial.v1.Invoice
+	(*timestamppb.Timestamp)(nil), // 9: google.protobuf.Timestamp
+	(*v1.Invoice)(nil),            // 10: financial.v1.Invoice
 }
 var file_payments_v1_payments_proto_depIdxs = []int32{
 	1,  // 0: payments.v1.Payment.payment_method:type_name -> payments.v1.PaymentMethod
 	0,  // 1: payments.v1.Payment.status:type_name -> payments.v1.PaymentStatus
-	11, // 2: payments.v1.Payment.payment_date:type_name -> google.protobuf.Timestamp
+	9,  // 2: payments.v1.Payment.payment_date:type_name -> google.protobuf.Timestamp
 	1,  // 3: payments.v1.CreatePaymentRequest.payment_method:type_name -> payments.v1.PaymentMethod
 	2,  // 4: payments.v1.CreatePaymentResponse.payment:type_name -> payments.v1.Payment
-	12, // 5: payments.v1.CreatePaymentResponse.updated_invoice:type_name -> financial.v1.Invoice
-	2,  // 6: payments.v1.GetPaymentResponse.payment:type_name -> payments.v1.Payment
-	12, // 7: payments.v1.GetPaymentResponse.related_invoice:type_name -> financial.v1.Invoice
-	1,  // 8: payments.v1.ListPaymentsRequest.method:type_name -> payments.v1.PaymentMethod
-	0,  // 9: payments.v1.ListPaymentsRequest.status:type_name -> payments.v1.PaymentStatus
-	11, // 10: payments.v1.ListPaymentsRequest.start_date:type_name -> google.protobuf.Timestamp
-	11, // 11: payments.v1.ListPaymentsRequest.end_date:type_name -> google.protobuf.Timestamp
-	2,  // 12: payments.v1.ListPaymentsResponse.payments:type_name -> payments.v1.Payment
-	2,  // 13: payments.v1.CreateRefundResponse.refund_payment:type_name -> payments.v1.Payment
-	3,  // 14: payments.v1.PaymentService.CreatePayment:input_type -> payments.v1.CreatePaymentRequest
-	5,  // 15: payments.v1.PaymentService.GetPayment:input_type -> payments.v1.GetPaymentRequest
-	7,  // 16: payments.v1.PaymentService.ListPayments:input_type -> payments.v1.ListPaymentsRequest
-	9,  // 17: payments.v1.PaymentService.CreateRefund:input_type -> payments.v1.CreateRefundRequest
-	4,  // 18: payments.v1.PaymentService.CreatePayment:output_type -> payments.v1.CreatePaymentResponse
-	6,  // 19: payments.v1.PaymentService.GetPayment:output_type -> payments.v1.GetPaymentResponse
-	8,  // 20: payments.v1.PaymentService.ListPayments:output_type -> payments.v1.ListPaymentsResponse
-	10, // 21: payments.v1.PaymentService.CreateRefund:output_type -> payments.v1.CreateRefundResponse
-	18, // [18:22] is the sub-list for method output_type
-	14, // [14:18] is the sub-list for method input_type
-	14, // [14:14] is the sub-list for extension type_name
-	14, // [14:14] is the sub-list for extension extendee
-	0,  // [0:14] is the sub-list for field type_name
+	2,  // 5: payments.v1.GetPaymentResponse.payment:type_name -> payments.v1.Payment
+	10, // 6: payments.v1.GetPaymentResponse.related_invoice:type_name -> financial.v1.Invoice
+	9,  // 7: payments.v1.ListPaymentsRequest.start_date:type_name -> google.protobuf.Timestamp
+	9,  // 8: payments.v1.ListPaymentsRequest.end_date:type_name -> google.protobuf.Timestamp
+	2,  // 9: payments.v1.ListPaymentsResponse.payments:type_name -> payments.v1.Payment
+	3,  // 10: payments.v1.PaymentService.CreatePayment:input_type -> payments.v1.CreatePaymentRequest
+	5,  // 11: payments.v1.PaymentService.GetPayment:input_type -> payments.v1.GetPaymentRequest
+	7,  // 12: payments.v1.PaymentService.ListPayments:input_type -> payments.v1.ListPaymentsRequest
+	4,  // 13: payments.v1.PaymentService.CreatePayment:output_type -> payments.v1.CreatePaymentResponse
+	6,  // 14: payments.v1.PaymentService.GetPayment:output_type -> payments.v1.GetPaymentResponse
+	8,  // 15: payments.v1.PaymentService.ListPayments:output_type -> payments.v1.ListPaymentsResponse
+	13, // [13:16] is the sub-list for method output_type
+	10, // [10:13] is the sub-list for method input_type
+	10, // [10:10] is the sub-list for extension type_name
+	10, // [10:10] is the sub-list for extension extendee
+	0,  // [0:10] is the sub-list for field type_name
 }
 
 func init() { file_payments_v1_payments_proto_init() }
@@ -978,7 +780,7 @@ func file_payments_v1_payments_proto_init() {
 	if File_payments_v1_payments_proto != nil {
 		return
 	}
-	file_payments_v1_payment_utils_proto_init()
+	file_payments_v1_payments_proto_msgTypes[0].OneofWrappers = []any{}
 	file_payments_v1_payments_proto_msgTypes[1].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -986,7 +788,7 @@ func file_payments_v1_payments_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_payments_v1_payments_proto_rawDesc), len(file_payments_v1_payments_proto_rawDesc)),
 			NumEnums:      2,
-			NumMessages:   9,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -146,42 +146,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/order.v1.GetPurchaseOrderResponse'
-  /order.v1.PurchaseOrderService/GetSuggestedPurchaseOrders:
-    post:
-      tags:
-        - order.v1.PurchaseOrderService
-      summary: Get suggested purchase orders (low stock items)
-      description: Get suggested purchase orders (low stock items)
-      operationId: order.v1.PurchaseOrderService.GetSuggestedPurchaseOrders
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/order.v1.GetSuggestedPurchaseOrdersRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/order.v1.GetSuggestedPurchaseOrdersResponse'
   /order.v1.PurchaseOrderService/ListPurchaseOrders:
     post:
       tags:
@@ -348,14 +312,17 @@ components:
           type: string
           title: related_sales_order_id
           description: Optional link
+          nullable: true
         relatedPurchaseOrderId:
           type: string
           title: related_purchase_order_id
           description: Optional link
+          nullable: true
         relatedDeliveryNoteId:
           type: string
           title: related_delivery_note_id
           description: Optional link
+          nullable: true
         status:
           title: status
           $ref: '#/components/schemas/financial.v1.InvoiceStatus'
@@ -416,8 +383,6 @@ components:
          Invoice (Facture)
          The official accounting document for a sale or purchase.
          Created AFTER goods are delivered (usually).
-
-         Fix: InvoiceLineItem now includes optional batch_id for traceability.
 
          For SALES: You issue to customer
          For PURCHASES: You receive from supplier
@@ -482,8 +447,6 @@ components:
       description: |-
         *
          InvoiceLineItem represents one product on an invoice.
-
-         Fix: Added optional batch_id for lot traceability in accounting.
     financial.v1.InvoiceStatus:
       type: string
       title: InvoiceStatus
@@ -600,14 +563,6 @@ components:
          the Joda Time's [`ISODateTimeFormat.dateTime()`](
          http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()
          ) to obtain a formatter capable of generating timestamps in this format.
-    inventory.v1.ExpirationType:
-      type: string
-      title: ExpirationType
-      enum:
-        - EXPIRATION_TYPE_UNSPECIFIED
-        - EXPIRATION_TYPE_NONE
-        - EXPIRATION_TYPE_PRODUCT_LEVEL
-        - EXPIRATION_TYPE_LOT_LEVEL
     inventory.v1.Internationalized:
       type: object
       properties:
@@ -620,72 +575,6 @@ components:
           title: fr
           description: The French name of the product category.
       title: Internationalized
-      additionalProperties: false
-    inventory.v1.ProductStatus:
-      type: string
-      title: ProductStatus
-      enum:
-        - PRODUCT_STATUS_UNSPECIFIED
-        - PRODUCT_STATUS_ACTIVE
-        - PRODUCT_STATUS_INACTIVE
-    inventory.v1.StoreProduct:
-      type: object
-      properties:
-        refId:
-          type: string
-          title: ref_id
-          description: The unique identifier of the business product.
-          nullable: true
-        storeId:
-          type: string
-          title: store_id
-          description: The unique identifier of the store.
-        globalProductId:
-          type: string
-          title: global_product_id
-          description: The unique identifier of the global product.
-        salePrice:
-          type: integer
-          title: sale_price
-          format: int32
-          description: |-
-            The sale price in XAF of the product.
-             The currency is determined by the business.
-          nullable: true
-        imagesLinksIds:
-          type: array
-          items:
-            type: string
-          title: images_links_ids
-          description: The media ids of the images of the product.
-        supplierId:
-          type: string
-          title: supplier_id
-          description: The supplier.
-          nullable: true
-        status:
-          title: status
-          description: The status of the product.
-          $ref: '#/components/schemas/inventory.v1.ProductStatus'
-        sku:
-          type: string
-          title: sku
-          description: The stock keeping unit.
-          nullable: true
-        expirationType:
-          title: expiration_type
-          description: The type of expiration of the product.
-          $ref: '#/components/schemas/inventory.v1.ExpirationType'
-        createdAt:
-          title: created_at
-          description: The creation date of the product.
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-        updatedAt:
-          title: updated_at
-          description: The last update date of the product.
-          nullable: true
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-      title: StoreProduct
       additionalProperties: false
     logistic.v1.ReceivingLineItem:
       type: object
@@ -750,9 +639,9 @@ components:
           type: string
           title: supplier_id
           description: Who sent the goods
-        warehouseId:
+        buyerId:
           type: string
-          title: warehouse_id
+          title: buyer_id
           description: Where goods are stored
         status:
           title: status
@@ -792,7 +681,7 @@ components:
            rn_id: "RN-2025-001"
            related_purchase_order_id: "PO-2025-001"
            supplier_id: "CMP-002"
-           warehouse_id: "WH-001"
+           buyer_id: "WH-001"
            items: [48x PRD-001] (expected 50, but 2 damaged)
            status: RN_STATUS_COMPLETED
 
@@ -809,9 +698,9 @@ components:
     order.v1.CancelPurchaseOrderRequest:
       type: object
       properties:
-        poId:
+        purchaseOrderId:
           type: string
-          title: po_id
+          title: purchase_order_id
         reason:
           type: string
           title: reason
@@ -841,9 +730,11 @@ components:
           type: string
           title: buyer_id
           description: Your company
-        destinationId:
+        destinationAddress:
           type: string
-          title: destination_id
+          title: destination_address
+          description: Where to receive items by default is the buyer's warehouse.
+          nullable: true
         items:
           type: array
           items:
@@ -863,9 +754,9 @@ components:
     order.v1.CreatePurchaseOrderResponse:
       type: object
       properties:
-        poId:
+        purchaseOrderId:
           type: string
-          title: po_id
+          title: purchase_order_id
         purchaseOrder:
           title: purchase_order
           $ref: '#/components/schemas/order.v1.PurchaseOrder'
@@ -883,9 +774,9 @@ components:
         supplierId:
           type: string
           title: supplier_id
-        storeId:
+        buyerId:
           type: string
-          title: store_id
+          title: buyer_id
         items:
           type: array
           items:
@@ -932,9 +823,9 @@ components:
     order.v1.GetPurchaseOrderRequest:
       type: object
       properties:
-        poId:
+        purchaseOrderId:
           type: string
-          title: po_id
+          title: purchase_order_id
       title: GetPurchaseOrderRequest
       additionalProperties: false
     order.v1.GetPurchaseOrderResponse:
@@ -961,29 +852,6 @@ components:
           title: payments
       title: GetPurchaseOrderResponse
       additionalProperties: false
-    order.v1.GetSuggestedPurchaseOrdersRequest:
-      type: object
-      properties:
-        storeId:
-          type: string
-          title: store_id
-          description: Optional - all stores if not specified
-      title: GetSuggestedPurchaseOrdersRequest
-      additionalProperties: false
-    order.v1.GetSuggestedPurchaseOrdersResponse:
-      type: object
-      properties:
-        suggestions:
-          type: array
-          items:
-            $ref: '#/components/schemas/order.v1.SuggestedPurchase'
-          title: suggestions
-        totalItems:
-          type: integer
-          title: total_items
-          format: int32
-      title: GetSuggestedPurchaseOrdersResponse
-      additionalProperties: false
     order.v1.ListPurchaseOrdersRequest:
       type: object
       properties:
@@ -991,9 +859,10 @@ components:
           type: string
           title: supplier_id
           description: Filter by supplier
-        status:
-          title: status
-          $ref: '#/components/schemas/order.v1.PurchaseOrderStatus'
+        buyerId:
+          type: string
+          title: buyer_id
+          description: Filter by buyer
         startDate:
           title: start_date
           $ref: '#/components/schemas/google.protobuf.Timestamp'
@@ -1036,9 +905,9 @@ components:
           title: product_id
           description: Which product
         quantity:
-          type: number
+          type: integer
           title: quantity
-          format: double
+          format: int32
           description: How many units
         productName:
           title: product_name
@@ -1054,14 +923,11 @@ components:
           title: total
           format: double
           description: quantity * unit_price
-        notes:
-          type: string
-          title: notes
-          description: Special notes for this line
         batchId:
           type: string
           title: batch_id
           description: 'Optional: Specific batch/lot requested'
+          nullable: true
       title: OrderLineItem
       additionalProperties: false
       description: |-
@@ -1089,10 +955,10 @@ components:
           type: string
           title: supplier_id
           description: Company selling to you
-        buyerIdId:
+        buyerId:
           type: string
-          title: buyer_id_id
-          description: The store company
+          title: buyer_id
+          description: Your company
         status:
           title: status
           $ref: '#/components/schemas/order.v1.PurchaseOrderStatus'
@@ -1138,7 +1004,7 @@ components:
          Flow: Create PO → Send to supplier → Wait for delivery
 
          Example:
-           po_id: "PO-2025-001"
+           purchase_order_id: "PO-2025-001"
            supplier_id: "CMP-002" (supplier company)
            buyer_id: "CMP-001" (your company)
            status: PO_STATUS_PENDING
@@ -1154,39 +1020,12 @@ components:
         - PO_STATUS_PARTIALLY_RECEIVED
         - PO_STATUS_RECEIVED
         - PO_STATUS_CANCELLED
-    order.v1.SuggestedPurchase:
-      type: object
-      properties:
-        product:
-          title: product
-          $ref: '#/components/schemas/inventory.v1.StoreProduct'
-        preferredSupplierId:
-          type: string
-          title: preferred_supplier_id
-        currentStock:
-          type: integer
-          title: current_stock
-          format: int32
-        reorderLevel:
-          type: integer
-          title: reorder_level
-          format: int32
-        suggestedQuantity:
-          type: integer
-          title: suggested_quantity
-          format: int32
-        estimatedCost:
-          type: integer
-          title: estimated_cost
-          format: int32
-      title: SuggestedPurchase
-      additionalProperties: false
     order.v1.UpdatePurchaseOrderStatusRequest:
       type: object
       properties:
-        poId:
+        purchaseOrderId:
           type: string
-          title: po_id
+          title: purchase_order_id
         newStatus:
           title: new_status
           $ref: '#/components/schemas/order.v1.PurchaseOrderStatus'
@@ -1219,42 +1058,41 @@ components:
         payerId:
           type: string
           title: payer_id
-          description: Who pays
-        payeeId:
+        receiver:
           type: string
-          title: payee_id
-          description: Who receives
+          title: receiver
+          description: Can be a customer phone number or account number.
         amount:
           type: number
           title: amount
           format: double
-          description: Amount in smallest currency unit
         currency:
           type: string
           title: currency
+        warehouseId:
+          type: string
+          title: warehouse_id
+          description: The warehouse id. in general it's the warehouse of the store.
         paymentMethod:
           title: payment_method
           $ref: '#/components/schemas/payments.v1.PaymentMethod'
         status:
           title: status
           $ref: '#/components/schemas/payments.v1.PaymentStatus'
-        relatedInvoiceId:
-          type: string
-          title: related_invoice_id
-          description: Which invoice this pays
         paymentDate:
           title: payment_date
           $ref: '#/components/schemas/google.protobuf.Timestamp'
         referenceNumber:
           type: string
           title: reference_number
-          description: Bank reference, check number, etc.
+          nullable: true
         createdByUserId:
           type: string
           title: created_by_user_id
         notes:
           type: string
           title: notes
+          nullable: true
       title: Payment
       required:
         - documentId
@@ -1267,10 +1105,9 @@ components:
          Example:
            payment_id: "PAY-2025-001"
            payer_id: "CMP-003" (customer)
-           payee_id: "CMP-001" (your company)
+           receiver: "CMP-001" (your company)
            amount: 5400000
            payment_method: PAYMENT_METHOD_BANK_TRANSFER
-           related_invoice_id: "INV-2025-001"
            status: PAYMENT_STATUS_COMPLETED
     payments.v1.PaymentMethod:
       type: string

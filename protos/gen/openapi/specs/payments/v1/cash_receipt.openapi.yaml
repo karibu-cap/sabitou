@@ -155,8 +155,6 @@ components:
       description: |-
         *
          InvoiceLineItem represents one product on an invoice.
-
-         Fix: Added optional batch_id for lot traceability in accounting.
     google.protobuf.Timestamp:
       type: string
       examples:
@@ -306,11 +304,12 @@ components:
           type: number
           title: amount_paid
           format: double
-          description: What customer gave
+          description: What customer gave.
         changeGiven:
           type: number
           title: change_given
           format: double
+          description: Change given to customer.
         currency:
           type: string
           title: currency
@@ -325,13 +324,16 @@ components:
         notes:
           type: string
           title: notes
-        voucherIssued:
+        voucherIssuedCode:
           type: string
-          title: voucher_issued
+          title: voucher_issued_code
+          description: Voucher issued if owed_to_customer > 0.
+          nullable: true
         owedToCustomer:
           type: number
           title: owed_to_customer
           format: double
+          description: Amount owed to customer.
       title: CashReceipt
       required:
         - documentId
@@ -377,7 +379,7 @@ components:
           title: issue_voucher_on_change
           description: |-
             Issue voucher on change
-             If true and change_given > 0, issue a voucher instead of cash
+             If true and owed_to_customer > 0, issue a voucher instead of cash
       title: CreateCashReceiptRequest
       additionalProperties: false
     payments.v1.CreateCashReceiptResponse:
@@ -389,7 +391,7 @@ components:
           description: The created cash receipt.
         voucher:
           title: voucher
-          description: If a voucher was issued
+          description: If a voucher was issued.
           nullable: true
           $ref: '#/components/schemas/payments.v1.GiftVoucher'
       title: CreateCashReceiptResponse
@@ -422,9 +424,14 @@ components:
           type: string
           title: issued_to_customer_id
           description: Optional - can be transferred
+          nullable: true
         issuedByUserId:
           type: string
           title: issued_by_user_id
+        warehouseId:
+          type: string
+          title: warehouse_id
+          description: Warehouse where the voucher was issued
         status:
           title: status
           $ref: '#/components/schemas/payments.v1.VoucherStatus'
@@ -433,18 +440,18 @@ components:
           $ref: '#/components/schemas/google.protobuf.Timestamp'
         validUntil:
           title: valid_until
-          description: Expiration
           $ref: '#/components/schemas/google.protobuf.Timestamp'
         notes:
           type: string
           title: notes
+          nullable: true
       title: GiftVoucher
       required:
         - documentId
       additionalProperties: false
       description: |-
         *
-         GiftVoucher (Bon Cadeau / Bon d'Achat)
+         GiftVoucher (Bon d'Achat)
          Prepaid credit that can be used for future purchases.
          Like a gift card or store credit.
 
@@ -466,42 +473,41 @@ components:
         payerId:
           type: string
           title: payer_id
-          description: Who pays
-        payeeId:
+        receiver:
           type: string
-          title: payee_id
-          description: Who receives
+          title: receiver
+          description: Can be a customer phone number or account number.
         amount:
           type: number
           title: amount
           format: double
-          description: Amount in smallest currency unit
         currency:
           type: string
           title: currency
+        warehouseId:
+          type: string
+          title: warehouse_id
+          description: The warehouse id. in general it's the warehouse of the store.
         paymentMethod:
           title: payment_method
           $ref: '#/components/schemas/payments.v1.PaymentMethod'
         status:
           title: status
           $ref: '#/components/schemas/payments.v1.PaymentStatus'
-        relatedInvoiceId:
-          type: string
-          title: related_invoice_id
-          description: Which invoice this pays
         paymentDate:
           title: payment_date
           $ref: '#/components/schemas/google.protobuf.Timestamp'
         referenceNumber:
           type: string
           title: reference_number
-          description: Bank reference, check number, etc.
+          nullable: true
         createdByUserId:
           type: string
           title: created_by_user_id
         notes:
           type: string
           title: notes
+          nullable: true
       title: Payment
       required:
         - documentId
@@ -514,10 +520,9 @@ components:
          Example:
            payment_id: "PAY-2025-001"
            payer_id: "CMP-003" (customer)
-           payee_id: "CMP-001" (your company)
+           receiver: "CMP-001" (your company)
            amount: 5400000
            payment_method: PAYMENT_METHOD_BANK_TRANSFER
-           related_invoice_id: "INV-2025-001"
            status: PAYMENT_STATUS_COMPLETED
     payments.v1.PaymentMethod:
       type: string

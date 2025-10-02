@@ -45,7 +45,7 @@ const ReceivingNote$json = {
       '10': 'relatedPurchaseOrderId'
     },
     {'1': 'supplier_id', '3': 3, '4': 1, '5': 9, '10': 'supplierId'},
-    {'1': 'warehouse_id', '3': 4, '4': 1, '5': 9, '10': 'warehouseId'},
+    {'1': 'buyer_id', '3': 4, '4': 1, '5': 9, '10': 'buyerId'},
     {
       '1': 'status',
       '3': 5,
@@ -85,12 +85,12 @@ const ReceivingNote$json = {
 final $typed_data.Uint8List receivingNoteDescriptor = $convert.base64Decode(
     'Cg1SZWNlaXZpbmdOb3RlEicKC2RvY3VtZW50X2lkGAEgASgJQga6SAPIAQFSCmRvY3VtZW50SW'
     'QSOQoZcmVsYXRlZF9wdXJjaGFzZV9vcmRlcl9pZBgCIAEoCVIWcmVsYXRlZFB1cmNoYXNlT3Jk'
-    'ZXJJZBIfCgtzdXBwbGllcl9pZBgDIAEoCVIKc3VwcGxpZXJJZBIhCgx3YXJlaG91c2VfaWQYBC'
-    'ABKAlSC3dhcmVob3VzZUlkEjgKBnN0YXR1cxgFIAEoDjIgLmxvZ2lzdGljLnYxLlJlY2Vpdmlu'
-    'Z05vdGVTdGF0dXNSBnN0YXR1cxI0CgVpdGVtcxgGIAMoCzIeLmxvZ2lzdGljLnYxLlJlY2Vpdm'
-    'luZ0xpbmVJdGVtUgVpdGVtcxItChNyZWNlaXZlZF9ieV91c2VyX2lkGAcgASgJUhByZWNlaXZl'
-    'ZEJ5VXNlcklkEjsKC3JlY2VpdmVkX2F0GAggASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdG'
-    'FtcFIKcmVjZWl2ZWRBdBIUCgVub3RlcxgJIAEoCVIFbm90ZXM=');
+    'ZXJJZBIfCgtzdXBwbGllcl9pZBgDIAEoCVIKc3VwcGxpZXJJZBIZCghidXllcl9pZBgEIAEoCV'
+    'IHYnV5ZXJJZBI4CgZzdGF0dXMYBSABKA4yIC5sb2dpc3RpYy52MS5SZWNlaXZpbmdOb3RlU3Rh'
+    'dHVzUgZzdGF0dXMSNAoFaXRlbXMYBiADKAsyHi5sb2dpc3RpYy52MS5SZWNlaXZpbmdMaW5lSX'
+    'RlbVIFaXRlbXMSLQoTcmVjZWl2ZWRfYnlfdXNlcl9pZBgHIAEoCVIQcmVjZWl2ZWRCeVVzZXJJ'
+    'ZBI7CgtyZWNlaXZlZF9hdBgIIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSCnJlY2'
+    'VpdmVkQXQSFAoFbm90ZXMYCSABKAlSBW5vdGVz');
 
 @$core.Deprecated('Use receivingLineItemDescriptor instead')
 const ReceivingLineItem$json = {

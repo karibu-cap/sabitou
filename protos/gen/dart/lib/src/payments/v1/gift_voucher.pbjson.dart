@@ -14,6 +14,7 @@ import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
+import '../../audits/v1/voucher_transaction.pbjson.dart' as $1;
 import '../../google/protobuf/timestamp.pbjson.dart' as $0;
 
 @$core.Deprecated('Use voucherStatusDescriptor instead')
@@ -50,12 +51,15 @@ const GiftVoucher$json = {
       '3': 6,
       '4': 1,
       '5': 9,
-      '10': 'issuedToCustomerId'
+      '9': 0,
+      '10': 'issuedToCustomerId',
+      '17': true
     },
     {'1': 'issued_by_user_id', '3': 7, '4': 1, '5': 9, '10': 'issuedByUserId'},
+    {'1': 'warehouse_id', '3': 8, '4': 1, '5': 9, '10': 'warehouseId'},
     {
       '1': 'status',
-      '3': 8,
+      '3': 9,
       '4': 1,
       '5': 14,
       '6': '.payments.v1.VoucherStatus',
@@ -63,7 +67,7 @@ const GiftVoucher$json = {
     },
     {
       '1': 'issued_at',
-      '3': 9,
+      '3': 10,
       '4': 1,
       '5': 11,
       '6': '.google.protobuf.Timestamp',
@@ -71,13 +75,17 @@ const GiftVoucher$json = {
     },
     {
       '1': 'valid_until',
-      '3': 10,
+      '3': 11,
       '4': 1,
       '5': 11,
       '6': '.google.protobuf.Timestamp',
       '10': 'validUntil'
     },
-    {'1': 'notes', '3': 11, '4': 1, '5': 9, '10': 'notes'},
+    {'1': 'notes', '3': 12, '4': 1, '5': 9, '9': 1, '10': 'notes', '17': true},
+  ],
+  '8': [
+    {'1': '_issued_to_customer_id'},
+    {'1': '_notes'},
   ],
 };
 
@@ -86,56 +94,14 @@ final $typed_data.Uint8List giftVoucherDescriptor = $convert.base64Decode(
     'CgtHaWZ0Vm91Y2hlchInCgtkb2N1bWVudF9pZBgBIAEoCUIGukgDyAEBUgpkb2N1bWVudElkEi'
     'EKDHZvdWNoZXJfY29kZRgCIAEoCVILdm91Y2hlckNvZGUSIwoNaW5pdGlhbF92YWx1ZRgDIAEo'
     'AVIMaW5pdGlhbFZhbHVlEicKD3JlbWFpbmluZ192YWx1ZRgEIAEoAVIOcmVtYWluaW5nVmFsdW'
-    'USGgoIY3VycmVuY3kYBSABKAlSCGN1cnJlbmN5EjEKFWlzc3VlZF90b19jdXN0b21lcl9pZBgG'
-    'IAEoCVISaXNzdWVkVG9DdXN0b21lcklkEikKEWlzc3VlZF9ieV91c2VyX2lkGAcgASgJUg5pc3'
-    'N1ZWRCeVVzZXJJZBIyCgZzdGF0dXMYCCABKA4yGi5wYXltZW50cy52MS5Wb3VjaGVyU3RhdHVz'
-    'UgZzdGF0dXMSNwoJaXNzdWVkX2F0GAkgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcF'
-    'IIaXNzdWVkQXQSOwoLdmFsaWRfdW50aWwYCiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0'
-    'YW1wUgp2YWxpZFVudGlsEhQKBW5vdGVzGAsgASgJUgVub3Rlcw==');
-
-@$core.Deprecated('Use voucherTransactionDescriptor instead')
-const VoucherTransaction$json = {
-  '1': 'VoucherTransaction',
-  '2': [
-    {'1': 'document_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'documentId'},
-    {'1': 'voucher_id', '3': 2, '4': 1, '5': 9, '10': 'voucherId'},
-    {
-      '1': 'related_invoice_id',
-      '3': 3,
-      '4': 1,
-      '5': 9,
-      '10': 'relatedInvoiceId'
-    },
-    {
-      '1': 'related_receipt_id',
-      '3': 4,
-      '4': 1,
-      '5': 9,
-      '10': 'relatedReceiptId'
-    },
-    {'1': 'amount_used', '3': 5, '4': 1, '5': 1, '10': 'amountUsed'},
-    {'1': 'remaining_after', '3': 6, '4': 1, '5': 1, '10': 'remainingAfter'},
-    {
-      '1': 'used_at',
-      '3': 7,
-      '4': 1,
-      '5': 11,
-      '6': '.google.protobuf.Timestamp',
-      '10': 'usedAt'
-    },
-    {'1': 'used_by_user_id', '3': 8, '4': 1, '5': 9, '10': 'usedByUserId'},
-  ],
-};
-
-/// Descriptor for `VoucherTransaction`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List voucherTransactionDescriptor = $convert.base64Decode(
-    'ChJWb3VjaGVyVHJhbnNhY3Rpb24SJwoLZG9jdW1lbnRfaWQYASABKAlCBrpIA8gBAVIKZG9jdW'
-    '1lbnRJZBIdCgp2b3VjaGVyX2lkGAIgASgJUgl2b3VjaGVySWQSLAoScmVsYXRlZF9pbnZvaWNl'
-    'X2lkGAMgASgJUhByZWxhdGVkSW52b2ljZUlkEiwKEnJlbGF0ZWRfcmVjZWlwdF9pZBgEIAEoCV'
-    'IQcmVsYXRlZFJlY2VpcHRJZBIfCgthbW91bnRfdXNlZBgFIAEoAVIKYW1vdW50VXNlZBInCg9y'
-    'ZW1haW5pbmdfYWZ0ZXIYBiABKAFSDnJlbWFpbmluZ0FmdGVyEjMKB3VzZWRfYXQYByABKAsyGi'
-    '5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUgZ1c2VkQXQSJQoPdXNlZF9ieV91c2VyX2lkGAgg'
-    'ASgJUgx1c2VkQnlVc2VySWQ=');
+    'USGgoIY3VycmVuY3kYBSABKAlSCGN1cnJlbmN5EjYKFWlzc3VlZF90b19jdXN0b21lcl9pZBgG'
+    'IAEoCUgAUhJpc3N1ZWRUb0N1c3RvbWVySWSIAQESKQoRaXNzdWVkX2J5X3VzZXJfaWQYByABKA'
+    'lSDmlzc3VlZEJ5VXNlcklkEiEKDHdhcmVob3VzZV9pZBgIIAEoCVILd2FyZWhvdXNlSWQSMgoG'
+    'c3RhdHVzGAkgASgOMhoucGF5bWVudHMudjEuVm91Y2hlclN0YXR1c1IGc3RhdHVzEjcKCWlzc3'
+    'VlZF9hdBgKIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSCGlzc3VlZEF0EjsKC3Zh'
+    'bGlkX3VudGlsGAsgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIKdmFsaWRVbnRpbB'
+    'IZCgVub3RlcxgMIAEoCUgBUgVub3Rlc4gBAUIYChZfaXNzdWVkX3RvX2N1c3RvbWVyX2lkQggK'
+    'Bl9ub3Rlcw==');
 
 @$core.Deprecated('Use validateVoucherRequestDescriptor instead')
 const ValidateVoucherRequest$json = {
@@ -220,7 +186,7 @@ const GetVoucherResponse$json = {
       '3': 2,
       '4': 3,
       '5': 11,
-      '6': '.payments.v1.VoucherTransaction',
+      '6': '.audits.v1.VoucherTransaction',
       '10': 'transactions'
     },
   ],
@@ -229,43 +195,49 @@ const GetVoucherResponse$json = {
 /// Descriptor for `GetVoucherResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List getVoucherResponseDescriptor = $convert.base64Decode(
     'ChJHZXRWb3VjaGVyUmVzcG9uc2USMgoHdm91Y2hlchgBIAEoCzIYLnBheW1lbnRzLnYxLkdpZn'
-    'RWb3VjaGVyUgd2b3VjaGVyEkMKDHRyYW5zYWN0aW9ucxgCIAMoCzIfLnBheW1lbnRzLnYxLlZv'
-    'dWNoZXJUcmFuc2FjdGlvblIMdHJhbnNhY3Rpb25z');
+    'RWb3VjaGVyUgd2b3VjaGVyEkEKDHRyYW5zYWN0aW9ucxgCIAMoCzIdLmF1ZGl0cy52MS5Wb3Vj'
+    'aGVyVHJhbnNhY3Rpb25SDHRyYW5zYWN0aW9ucw==');
 
 @$core.Deprecated('Use listVouchersRequestDescriptor instead')
 const ListVouchersRequest$json = {
   '1': 'ListVouchersRequest',
   '2': [
-    {'1': 'customer_id', '3': 1, '4': 1, '5': 9, '10': 'customerId'},
+    {'1': 'warehouse_id', '3': 1, '4': 1, '5': 9, '10': 'warehouseId'},
     {
-      '1': 'status',
+      '1': 'customer_id',
       '3': 2,
       '4': 1,
-      '5': 14,
-      '6': '.payments.v1.VoucherStatus',
-      '10': 'status'
+      '5': 9,
+      '9': 0,
+      '10': 'customerId',
+      '17': true
     },
-    {'1': 'expiring_soon', '3': 3, '4': 1, '5': 8, '10': 'expiringSoon'},
     {
       '1': 'issued_after',
-      '3': 4,
+      '3': 3,
       '4': 1,
       '5': 11,
       '6': '.google.protobuf.Timestamp',
-      '10': 'issuedAfter'
+      '9': 1,
+      '10': 'issuedAfter',
+      '17': true
     },
-    {'1': 'page_size', '3': 5, '4': 1, '5': 5, '10': 'pageSize'},
-    {'1': 'page_number', '3': 6, '4': 1, '5': 5, '10': 'pageNumber'},
+    {'1': 'page_size', '3': 4, '4': 1, '5': 5, '10': 'pageSize'},
+    {'1': 'page_number', '3': 5, '4': 1, '5': 5, '10': 'pageNumber'},
+  ],
+  '8': [
+    {'1': '_customer_id'},
+    {'1': '_issued_after'},
   ],
 };
 
 /// Descriptor for `ListVouchersRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List listVouchersRequestDescriptor = $convert.base64Decode(
-    'ChNMaXN0Vm91Y2hlcnNSZXF1ZXN0Eh8KC2N1c3RvbWVyX2lkGAEgASgJUgpjdXN0b21lcklkEj'
-    'IKBnN0YXR1cxgCIAEoDjIaLnBheW1lbnRzLnYxLlZvdWNoZXJTdGF0dXNSBnN0YXR1cxIjCg1l'
-    'eHBpcmluZ19zb29uGAMgASgIUgxleHBpcmluZ1Nvb24SPQoMaXNzdWVkX2FmdGVyGAQgASgLMh'
-    'ouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFILaXNzdWVkQWZ0ZXISGwoJcGFnZV9zaXplGAUg'
-    'ASgFUghwYWdlU2l6ZRIfCgtwYWdlX251bWJlchgGIAEoBVIKcGFnZU51bWJlcg==');
+    'ChNMaXN0Vm91Y2hlcnNSZXF1ZXN0EiEKDHdhcmVob3VzZV9pZBgBIAEoCVILd2FyZWhvdXNlSW'
+    'QSJAoLY3VzdG9tZXJfaWQYAiABKAlIAFIKY3VzdG9tZXJJZIgBARJCCgxpc3N1ZWRfYWZ0ZXIY'
+    'AyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wSAFSC2lzc3VlZEFmdGVyiAEBEhsKCX'
+    'BhZ2Vfc2l6ZRgEIAEoBVIIcGFnZVNpemUSHwoLcGFnZV9udW1iZXIYBSABKAVSCnBhZ2VOdW1i'
+    'ZXJCDgoMX2N1c3RvbWVyX2lkQg8KDV9pc3N1ZWRfYWZ0ZXI=');
 
 @$core.Deprecated('Use listVouchersResponseDescriptor instead')
 const ListVouchersResponse$json = {
@@ -320,7 +292,7 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
   '.payments.v1.GetVoucherRequest': GetVoucherRequest$json,
   '.payments.v1.GetVoucherResponse': GetVoucherResponse$json,
   '.payments.v1.GiftVoucher': GiftVoucher$json,
-  '.payments.v1.VoucherTransaction': VoucherTransaction$json,
+  '.audits.v1.VoucherTransaction': $1.VoucherTransaction$json,
   '.payments.v1.ListVouchersRequest': ListVouchersRequest$json,
   '.payments.v1.ListVouchersResponse': ListVouchersResponse$json,
 };

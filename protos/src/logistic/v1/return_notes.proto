@@ -3,10 +3,8 @@ syntax = "proto3";
 package logistic.v1;
 
 import "buf/validate/validate.proto";
-import "financial/v1/credit_note.proto";
-import "financial/v1/debit_note.proto";
 import "google/protobuf/timestamp.proto";
-import "payments/v1/payments.proto";
+import "inventory/v1/category.proto";
 
 /**
  * ReturnNote (Bon de Retour)
@@ -63,10 +61,11 @@ enum ReturnNoteStatus {
  */
 message ReturnLineItem {
   string product_id = 1;
-  double quantity = 2;
-  ReturnCondition condition = 3;
-  string condition_notes = 4; // Detailed state description
-  string batch_id = 5; // Specific batch/lot returned
+  inventory.v1.Internationalized product_name = 2;
+  double quantity = 3;
+  ReturnCondition condition = 4;
+  string condition_notes = 5; // Detailed state description
+  string batch_id = 6; // Specific batch/lot returned
 }
 
 enum ReturnCondition {
@@ -79,27 +78,12 @@ enum ReturnCondition {
 
 service ReturnService {
   // Create a return note (customer returning to you)
-  rpc CreateCustomerReturn(CreateCustomerReturnRequest) returns (CreateCustomerReturnResponse);
-
-  // Approve/reject a return request
-  rpc ProcessReturnRequest(ProcessReturnRequestRequest) returns (ProcessReturnRequestResponse);
-
-  // Create credit note from return
-  rpc CreateCreditNoteFromReturn(CreateCreditNoteFromReturnRequest) returns (CreateCreditNoteFromReturnResponse);
-
-  // Create debit note for supplier return
-  rpc CreateDebitNoteFromReturn(CreateDebitNoteFromReturnRequest) returns (CreateDebitNoteFromReturnResponse);
-
-  // Get return details
-  rpc GetReturn(GetReturnRequest) returns (GetReturnResponse);
-
-  // List returns
-  rpc ListReturns(ListReturnsRequest) returns (ListReturnsResponse);
+  rpc CreateReturn(CreateReturnRequest) returns (CreateReturnResponse);
 }
 
-message CreateCustomerReturnRequest {
-  string from_company_id = 1; // Customer
-  string to_warehouse_id = 2; // Your warehouse
+message CreateReturnRequest {
+  string from_company_id = 1; // Customer or your company
+  string to_warehouse_id = 2; // Your warehouse 
   string related_delivery_note_id = 3;
   string related_invoice_id = 4;
   repeated ReturnLineItem items = 5;
@@ -107,72 +91,10 @@ message CreateCustomerReturnRequest {
   string received_by_user_id = 7;
 }
 
-message CreateCustomerReturnResponse {
+message CreateReturnResponse {
   string return_id = 1;
   ReturnNote return_note = 2;
   repeated string inventory_transaction_ids = 3;
   bool requires_credit_note = 4;
   string message = 5;
-}
-
-message ProcessReturnRequestRequest {
-  string return_id = 1;
-  ReturnNoteStatus new_status = 2; // APPROVED or REJECTED
-  string processed_by_user_id = 3;
-  string notes = 4;
-}
-
-message ProcessReturnRequestResponse {
-  ReturnNote return_note = 1;
-  string message = 2;
-}
-
-message CreateCreditNoteFromReturnRequest {
-  string return_id = 1;
-  string related_invoice_id = 2;
-  string issued_by_user_id = 3;
-}
-
-message CreateCreditNoteFromReturnResponse {
-  string cn_id = 1;
-  financial.v1.CreditNote credit_note = 2;
-  string message = 3;
-}
-
-message CreateDebitNoteFromReturnRequest {
-  string return_id = 1;
-  string related_invoice_id = 2;
-  string issued_by_user_id = 3;
-}
-
-message CreateDebitNoteFromReturnResponse {
-  string dn_id = 1;
-  financial.v1.DebitNote debit_note = 2;
-  string message = 3;
-}
-
-message GetReturnRequest {
-  string return_id = 1;
-}
-
-message GetReturnResponse {
-  ReturnNote return_note = 1;
-  financial.v1.CreditNote credit_note = 2; // If issued
-  financial.v1.DebitNote debit_note = 3; // If issued
-  payments.v1.Payment refund_payment = 4; // If refund given
-}
-
-message ListReturnsRequest {
-  ReturnType return_type = 1; // Customer or supplier
-  ReturnNoteStatus status = 2;
-  google.protobuf.Timestamp start_date = 3;
-  google.protobuf.Timestamp end_date = 4;
-  int32 page_size = 5;
-  int32 page_number = 6;
-}
-
-message ListReturnsResponse {
-  repeated ReturnNote returns = 1;
-  int32 total_count = 2;
-  double total_value = 3;
 }

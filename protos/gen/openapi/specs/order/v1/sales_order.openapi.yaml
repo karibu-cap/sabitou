@@ -348,14 +348,17 @@ components:
           type: string
           title: related_sales_order_id
           description: Optional link
+          nullable: true
         relatedPurchaseOrderId:
           type: string
           title: related_purchase_order_id
           description: Optional link
+          nullable: true
         relatedDeliveryNoteId:
           type: string
           title: related_delivery_note_id
           description: Optional link
+          nullable: true
         status:
           title: status
           $ref: '#/components/schemas/financial.v1.InvoiceStatus'
@@ -416,8 +419,6 @@ components:
          Invoice (Facture)
          The official accounting document for a sale or purchase.
          Created AFTER goods are delivered (usually).
-
-         Fix: InvoiceLineItem now includes optional batch_id for traceability.
 
          For SALES: You issue to customer
          For PURCHASES: You receive from supplier
@@ -482,8 +483,6 @@ components:
       description: |-
         *
          InvoiceLineItem represents one product on an invoice.
-
-         Fix: Added optional batch_id for lot traceability in accounting.
     financial.v1.InvoiceStatus:
       type: string
       title: InvoiceStatus
@@ -726,9 +725,9 @@ components:
     order.v1.CancelSalesOrderRequest:
       type: object
       properties:
-        documentId:
+        salesOrderId:
           type: string
-          title: document_id
+          title: sales_order_id
         reason:
           type: string
           title: reason
@@ -778,9 +777,9 @@ components:
     order.v1.CreateDeliveryNoteResponse:
       type: object
       properties:
-        documentId:
+        deliveryNoteId:
           type: string
-          title: document_id
+          title: delivery_note_id
         deliveryNote:
           title: delivery_note
           $ref: '#/components/schemas/logistic.v1.DeliveryNote'
@@ -807,10 +806,6 @@ components:
         dueDate:
           title: due_date
           $ref: '#/components/schemas/google.protobuf.Timestamp'
-        paymentTerms:
-          type: string
-          title: payment_terms
-          description: '"Net 30", "COD", etc.'
         createdByUserId:
           type: string
           title: created_by_user_id
@@ -819,9 +814,9 @@ components:
     order.v1.CreateInvoiceFromSalesOrderResponse:
       type: object
       properties:
-        documentId:
+        invoiceId:
           type: string
-          title: document_id
+          title: invoice_id
           description: The invoice id
         invoice:
           title: invoice
@@ -841,9 +836,9 @@ components:
           type: string
           title: seller_id
           description: Your company
-        sourceWarehouseId:
+        sourceWarehouseAddress:
           type: string
-          title: source_warehouse_id
+          title: source_warehouse_address
         items:
           type: array
           items:
@@ -858,14 +853,15 @@ components:
         notes:
           type: string
           title: notes
+          nullable: true
       title: CreateSalesOrderRequest
       additionalProperties: false
     order.v1.CreateSalesOrderResponse:
       type: object
       properties:
-        soId:
+        salesOrderId:
           type: string
-          title: so_id
+          title: sales_order_id
         salesOrder:
           title: sales_order
           $ref: '#/components/schemas/order.v1.SalesOrder'
@@ -885,9 +881,9 @@ components:
     order.v1.GetSalesOrderRequest:
       type: object
       properties:
-        soId:
+        salesOrderId:
           type: string
-          title: so_id
+          title: sales_order_id
       title: GetSalesOrderRequest
       additionalProperties: false
     order.v1.GetSalesOrderResponse:
@@ -970,9 +966,9 @@ components:
           title: product_id
           description: Which product
         quantity:
-          type: number
+          type: integer
           title: quantity
-          format: double
+          format: int32
           description: How many units
         productName:
           title: product_name
@@ -988,14 +984,11 @@ components:
           title: total
           format: double
           description: quantity * unit_price
-        notes:
-          type: string
-          title: notes
-          description: Special notes for this line
         batchId:
           type: string
           title: batch_id
           description: 'Optional: Specific batch/lot requested'
+          nullable: true
       title: OrderLineItem
       additionalProperties: false
       description: |-
@@ -1012,27 +1005,6 @@ components:
            unit_price: 450000
            total: 4500000
            batch_id: "BATCH-2025-001" (optional)
-    order.v1.OrderPrices:
-      type: object
-      properties:
-        subtotal:
-          type: integer
-          title: subtotal
-          format: int32
-        discounts:
-          type: integer
-          title: discounts
-          format: int32
-        totalVatAmount:
-          type: integer
-          title: total_vat_amount
-          format: int32
-        grandTotal:
-          type: integer
-          title: grand_total
-          format: int32
-      title: OrderPrices
-      additionalProperties: false
     order.v1.SalesOrder:
       type: object
       properties:
@@ -1048,9 +1020,9 @@ components:
           type: string
           title: seller_id
           description: Your company
-        sourceWarehouseId:
+        sourceWarehouseAddress:
           type: string
-          title: source_warehouse_id
+          title: source_warehouse_address
           description: Where to pick items
         status:
           title: status
@@ -1060,9 +1032,10 @@ components:
           items:
             $ref: '#/components/schemas/order.v1.OrderLineItem'
           title: items
-        orderPrices:
-          title: order_prices
-          $ref: '#/components/schemas/order.v1.OrderPrices'
+        totalAmount:
+          type: number
+          title: total_amount
+          format: double
         currency:
           type: string
           title: currency
@@ -1075,6 +1048,7 @@ components:
           $ref: '#/components/schemas/google.protobuf.Timestamp'
         deliveryDate:
           title: delivery_date
+          nullable: true
           $ref: '#/components/schemas/google.protobuf.Timestamp'
         notes:
           type: string
@@ -1112,9 +1086,9 @@ components:
     order.v1.UpdateSalesOrderStatusRequest:
       type: object
       properties:
-        soId:
+        salesOrderId:
           type: string
-          title: so_id
+          title: sales_order_id
         newStatus:
           title: new_status
           $ref: '#/components/schemas/order.v1.SalesOrderStatus'
@@ -1147,42 +1121,41 @@ components:
         payerId:
           type: string
           title: payer_id
-          description: Who pays
-        payeeId:
+        receiver:
           type: string
-          title: payee_id
-          description: Who receives
+          title: receiver
+          description: Can be a customer phone number or account number.
         amount:
           type: number
           title: amount
           format: double
-          description: Amount in smallest currency unit
         currency:
           type: string
           title: currency
+        warehouseId:
+          type: string
+          title: warehouse_id
+          description: The warehouse id. in general it's the warehouse of the store.
         paymentMethod:
           title: payment_method
           $ref: '#/components/schemas/payments.v1.PaymentMethod'
         status:
           title: status
           $ref: '#/components/schemas/payments.v1.PaymentStatus'
-        relatedInvoiceId:
-          type: string
-          title: related_invoice_id
-          description: Which invoice this pays
         paymentDate:
           title: payment_date
           $ref: '#/components/schemas/google.protobuf.Timestamp'
         referenceNumber:
           type: string
           title: reference_number
-          description: Bank reference, check number, etc.
+          nullable: true
         createdByUserId:
           type: string
           title: created_by_user_id
         notes:
           type: string
           title: notes
+          nullable: true
       title: Payment
       required:
         - documentId
@@ -1195,10 +1168,9 @@ components:
          Example:
            payment_id: "PAY-2025-001"
            payer_id: "CMP-003" (customer)
-           payee_id: "CMP-001" (your company)
+           receiver: "CMP-001" (your company)
            amount: 5400000
            payment_method: PAYMENT_METHOD_BANK_TRANSFER
-           related_invoice_id: "INV-2025-001"
            status: PAYMENT_STATUS_COMPLETED
     payments.v1.PaymentMethod:
       type: string

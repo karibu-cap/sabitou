@@ -44,10 +44,10 @@ class SalesOrder extends $pb.GeneratedMessage {
     $core.String? documentId,
     $core.String? customerId,
     $core.String? sellerId,
-    $core.String? sourceWarehouseId,
+    $core.String? sourceWarehouseAddress,
     SalesOrderStatus? status,
     $core.Iterable<$0.OrderLineItem>? items,
-    $0.OrderPrices? orderPrices,
+    $core.double? totalAmount,
     $core.String? currency,
     $core.String? createdByUserId,
     $1.Timestamp? createdAt,
@@ -58,10 +58,11 @@ class SalesOrder extends $pb.GeneratedMessage {
     if (documentId != null) result.documentId = documentId;
     if (customerId != null) result.customerId = customerId;
     if (sellerId != null) result.sellerId = sellerId;
-    if (sourceWarehouseId != null) result.sourceWarehouseId = sourceWarehouseId;
+    if (sourceWarehouseAddress != null)
+      result.sourceWarehouseAddress = sourceWarehouseAddress;
     if (status != null) result.status = status;
     if (items != null) result.items.addAll(items);
-    if (orderPrices != null) result.orderPrices = orderPrices;
+    if (totalAmount != null) result.totalAmount = totalAmount;
     if (currency != null) result.currency = currency;
     if (createdByUserId != null) result.createdByUserId = createdByUserId;
     if (createdAt != null) result.createdAt = createdAt;
@@ -86,7 +87,7 @@ class SalesOrder extends $pb.GeneratedMessage {
     ..aOS(1, _omitFieldNames ? '' : 'documentId')
     ..aOS(2, _omitFieldNames ? '' : 'customerId')
     ..aOS(3, _omitFieldNames ? '' : 'sellerId')
-    ..aOS(4, _omitFieldNames ? '' : 'sourceWarehouseId')
+    ..aOS(4, _omitFieldNames ? '' : 'sourceWarehouseAddress')
     ..e<SalesOrderStatus>(
         5, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
         defaultOrMaker: SalesOrderStatus.SO_STATUS_UNSPECIFIED,
@@ -95,8 +96,8 @@ class SalesOrder extends $pb.GeneratedMessage {
     ..pc<$0.OrderLineItem>(
         6, _omitFieldNames ? '' : 'items', $pb.PbFieldType.PM,
         subBuilder: $0.OrderLineItem.create)
-    ..aOM<$0.OrderPrices>(7, _omitFieldNames ? '' : 'orderPrices',
-        subBuilder: $0.OrderPrices.create)
+    ..a<$core.double>(
+        7, _omitFieldNames ? '' : 'totalAmount', $pb.PbFieldType.OD)
     ..aOS(8, _omitFieldNames ? '' : 'currency')
     ..aOS(9, _omitFieldNames ? '' : 'createdByUserId')
     ..aOM<$1.Timestamp>(10, _omitFieldNames ? '' : 'createdAt',
@@ -134,6 +135,7 @@ class SalesOrder extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   void clearDocumentId() => $_clearField(1);
 
+  /// Company buying from you
   @$pb.TagNumber(2)
   $core.String get customerId => $_getSZ(1);
   @$pb.TagNumber(2)
@@ -143,6 +145,7 @@ class SalesOrder extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   void clearCustomerId() => $_clearField(2);
 
+  /// Your company
   @$pb.TagNumber(3)
   $core.String get sellerId => $_getSZ(2);
   @$pb.TagNumber(3)
@@ -152,14 +155,15 @@ class SalesOrder extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   void clearSellerId() => $_clearField(3);
 
+  /// Where to pick items
   @$pb.TagNumber(4)
-  $core.String get sourceWarehouseId => $_getSZ(3);
+  $core.String get sourceWarehouseAddress => $_getSZ(3);
   @$pb.TagNumber(4)
-  set sourceWarehouseId($core.String value) => $_setString(3, value);
+  set sourceWarehouseAddress($core.String value) => $_setString(3, value);
   @$pb.TagNumber(4)
-  $core.bool hasSourceWarehouseId() => $_has(3);
+  $core.bool hasSourceWarehouseAddress() => $_has(3);
   @$pb.TagNumber(4)
-  void clearSourceWarehouseId() => $_clearField(4);
+  void clearSourceWarehouseAddress() => $_clearField(4);
 
   @$pb.TagNumber(5)
   SalesOrderStatus get status => $_getN(4);
@@ -174,15 +178,13 @@ class SalesOrder extends $pb.GeneratedMessage {
   $pb.PbList<$0.OrderLineItem> get items => $_getList(5);
 
   @$pb.TagNumber(7)
-  $0.OrderPrices get orderPrices => $_getN(6);
+  $core.double get totalAmount => $_getN(6);
   @$pb.TagNumber(7)
-  set orderPrices($0.OrderPrices value) => $_setField(7, value);
+  set totalAmount($core.double value) => $_setDouble(6, value);
   @$pb.TagNumber(7)
-  $core.bool hasOrderPrices() => $_has(6);
+  $core.bool hasTotalAmount() => $_has(6);
   @$pb.TagNumber(7)
-  void clearOrderPrices() => $_clearField(7);
-  @$pb.TagNumber(7)
-  $0.OrderPrices ensureOrderPrices() => $_ensure(6);
+  void clearTotalAmount() => $_clearField(7);
 
   @$pb.TagNumber(8)
   $core.String get currency => $_getSZ(7);
@@ -238,7 +240,7 @@ class CreateSalesOrderRequest extends $pb.GeneratedMessage {
   factory CreateSalesOrderRequest({
     $core.String? customerId,
     $core.String? sellerId,
-    $core.String? sourceWarehouseId,
+    $core.String? sourceWarehouseAddress,
     $core.Iterable<$0.OrderLineItem>? items,
     $1.Timestamp? deliveryDate,
     $core.String? createdByUserId,
@@ -247,7 +249,8 @@ class CreateSalesOrderRequest extends $pb.GeneratedMessage {
     final result = create();
     if (customerId != null) result.customerId = customerId;
     if (sellerId != null) result.sellerId = sellerId;
-    if (sourceWarehouseId != null) result.sourceWarehouseId = sourceWarehouseId;
+    if (sourceWarehouseAddress != null)
+      result.sourceWarehouseAddress = sourceWarehouseAddress;
     if (items != null) result.items.addAll(items);
     if (deliveryDate != null) result.deliveryDate = deliveryDate;
     if (createdByUserId != null) result.createdByUserId = createdByUserId;
@@ -270,7 +273,7 @@ class CreateSalesOrderRequest extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'customerId')
     ..aOS(2, _omitFieldNames ? '' : 'sellerId')
-    ..aOS(3, _omitFieldNames ? '' : 'sourceWarehouseId')
+    ..aOS(3, _omitFieldNames ? '' : 'sourceWarehouseAddress')
     ..pc<$0.OrderLineItem>(
         4, _omitFieldNames ? '' : 'items', $pb.PbFieldType.PM,
         subBuilder: $0.OrderLineItem.create)
@@ -322,13 +325,13 @@ class CreateSalesOrderRequest extends $pb.GeneratedMessage {
   void clearSellerId() => $_clearField(2);
 
   @$pb.TagNumber(3)
-  $core.String get sourceWarehouseId => $_getSZ(2);
+  $core.String get sourceWarehouseAddress => $_getSZ(2);
   @$pb.TagNumber(3)
-  set sourceWarehouseId($core.String value) => $_setString(2, value);
+  set sourceWarehouseAddress($core.String value) => $_setString(2, value);
   @$pb.TagNumber(3)
-  $core.bool hasSourceWarehouseId() => $_has(2);
+  $core.bool hasSourceWarehouseAddress() => $_has(2);
   @$pb.TagNumber(3)
-  void clearSourceWarehouseId() => $_clearField(3);
+  void clearSourceWarehouseAddress() => $_clearField(3);
 
   @$pb.TagNumber(4)
   $pb.PbList<$0.OrderLineItem> get items => $_getList(3);
@@ -365,14 +368,14 @@ class CreateSalesOrderRequest extends $pb.GeneratedMessage {
 
 class CreateSalesOrderResponse extends $pb.GeneratedMessage {
   factory CreateSalesOrderResponse({
-    $core.String? soId,
+    $core.String? salesOrderId,
     SalesOrder? salesOrder,
     $core.bool? allItemsAvailable,
     $core.Iterable<$core.String>? unavailableProductIds,
     $core.String? message,
   }) {
     final result = create();
-    if (soId != null) result.soId = soId;
+    if (salesOrderId != null) result.salesOrderId = salesOrderId;
     if (salesOrder != null) result.salesOrder = salesOrder;
     if (allItemsAvailable != null) result.allItemsAvailable = allItemsAvailable;
     if (unavailableProductIds != null)
@@ -394,7 +397,7 @@ class CreateSalesOrderResponse extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'CreateSalesOrderResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'soId')
+    ..aOS(1, _omitFieldNames ? '' : 'salesOrderId')
     ..aOM<SalesOrder>(2, _omitFieldNames ? '' : 'salesOrder',
         subBuilder: SalesOrder.create)
     ..aOB(3, _omitFieldNames ? '' : 'allItemsAvailable')
@@ -426,13 +429,13 @@ class CreateSalesOrderResponse extends $pb.GeneratedMessage {
   static CreateSalesOrderResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get soId => $_getSZ(0);
+  $core.String get salesOrderId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set soId($core.String value) => $_setString(0, value);
+  set salesOrderId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasSoId() => $_has(0);
+  $core.bool hasSalesOrderId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearSoId() => $_clearField(1);
+  void clearSalesOrderId() => $_clearField(1);
 
   @$pb.TagNumber(2)
   SalesOrder get salesOrder => $_getN(1);
@@ -469,10 +472,10 @@ class CreateSalesOrderResponse extends $pb.GeneratedMessage {
 
 class GetSalesOrderRequest extends $pb.GeneratedMessage {
   factory GetSalesOrderRequest({
-    $core.String? soId,
+    $core.String? salesOrderId,
   }) {
     final result = create();
-    if (soId != null) result.soId = soId;
+    if (salesOrderId != null) result.salesOrderId = salesOrderId;
     return result;
   }
 
@@ -489,7 +492,7 @@ class GetSalesOrderRequest extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'GetSalesOrderRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'soId')
+    ..aOS(1, _omitFieldNames ? '' : 'salesOrderId')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -515,13 +518,13 @@ class GetSalesOrderRequest extends $pb.GeneratedMessage {
   static GetSalesOrderRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get soId => $_getSZ(0);
+  $core.String get salesOrderId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set soId($core.String value) => $_setString(0, value);
+  set salesOrderId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasSoId() => $_has(0);
+  $core.bool hasSalesOrderId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearSoId() => $_clearField(1);
+  void clearSalesOrderId() => $_clearField(1);
 }
 
 class GetSalesOrderResponse extends $pb.GeneratedMessage {
@@ -816,13 +819,13 @@ class ListSalesOrdersResponse extends $pb.GeneratedMessage {
 
 class UpdateSalesOrderStatusRequest extends $pb.GeneratedMessage {
   factory UpdateSalesOrderStatusRequest({
-    $core.String? soId,
+    $core.String? salesOrderId,
     SalesOrderStatus? newStatus,
     $core.String? updatedByUserId,
     $core.String? notes,
   }) {
     final result = create();
-    if (soId != null) result.soId = soId;
+    if (salesOrderId != null) result.salesOrderId = salesOrderId;
     if (newStatus != null) result.newStatus = newStatus;
     if (updatedByUserId != null) result.updatedByUserId = updatedByUserId;
     if (notes != null) result.notes = notes;
@@ -842,7 +845,7 @@ class UpdateSalesOrderStatusRequest extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'UpdateSalesOrderStatusRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'soId')
+    ..aOS(1, _omitFieldNames ? '' : 'salesOrderId')
     ..e<SalesOrderStatus>(
         2, _omitFieldNames ? '' : 'newStatus', $pb.PbFieldType.OE,
         defaultOrMaker: SalesOrderStatus.SO_STATUS_UNSPECIFIED,
@@ -878,13 +881,13 @@ class UpdateSalesOrderStatusRequest extends $pb.GeneratedMessage {
   static UpdateSalesOrderStatusRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get soId => $_getSZ(0);
+  $core.String get salesOrderId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set soId($core.String value) => $_setString(0, value);
+  set salesOrderId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasSoId() => $_has(0);
+  $core.bool hasSalesOrderId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearSoId() => $_clearField(1);
+  void clearSalesOrderId() => $_clearField(1);
 
   @$pb.TagNumber(2)
   SalesOrderStatus get newStatus => $_getN(1);
@@ -991,12 +994,12 @@ class UpdateSalesOrderStatusResponse extends $pb.GeneratedMessage {
 
 class CancelSalesOrderRequest extends $pb.GeneratedMessage {
   factory CancelSalesOrderRequest({
-    $core.String? documentId,
+    $core.String? salesOrderId,
     $core.String? reason,
     $core.String? cancelledByUserId,
   }) {
     final result = create();
-    if (documentId != null) result.documentId = documentId;
+    if (salesOrderId != null) result.salesOrderId = salesOrderId;
     if (reason != null) result.reason = reason;
     if (cancelledByUserId != null) result.cancelledByUserId = cancelledByUserId;
     return result;
@@ -1015,7 +1018,7 @@ class CancelSalesOrderRequest extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'CancelSalesOrderRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'documentId')
+    ..aOS(1, _omitFieldNames ? '' : 'salesOrderId')
     ..aOS(2, _omitFieldNames ? '' : 'reason')
     ..aOS(3, _omitFieldNames ? '' : 'cancelledByUserId')
     ..hasRequiredFields = false;
@@ -1044,13 +1047,13 @@ class CancelSalesOrderRequest extends $pb.GeneratedMessage {
   static CancelSalesOrderRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get documentId => $_getSZ(0);
+  $core.String get salesOrderId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set documentId($core.String value) => $_setString(0, value);
+  set salesOrderId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasDocumentId() => $_has(0);
+  $core.bool hasSalesOrderId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearDocumentId() => $_clearField(1);
+  void clearSalesOrderId() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get reason => $_getSZ(1);
@@ -1257,13 +1260,13 @@ class CreateDeliveryNoteRequest extends $pb.GeneratedMessage {
 
 class CreateDeliveryNoteResponse extends $pb.GeneratedMessage {
   factory CreateDeliveryNoteResponse({
-    $core.String? documentId,
+    $core.String? deliveryNoteId,
     $2.DeliveryNote? deliveryNote,
     $core.Iterable<$core.String>? inventoryTransactionIds,
     $core.String? message,
   }) {
     final result = create();
-    if (documentId != null) result.documentId = documentId;
+    if (deliveryNoteId != null) result.deliveryNoteId = deliveryNoteId;
     if (deliveryNote != null) result.deliveryNote = deliveryNote;
     if (inventoryTransactionIds != null)
       result.inventoryTransactionIds.addAll(inventoryTransactionIds);
@@ -1284,7 +1287,7 @@ class CreateDeliveryNoteResponse extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'CreateDeliveryNoteResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'documentId')
+    ..aOS(1, _omitFieldNames ? '' : 'deliveryNoteId')
     ..aOM<$2.DeliveryNote>(2, _omitFieldNames ? '' : 'deliveryNote',
         subBuilder: $2.DeliveryNote.create)
     ..pPS(3, _omitFieldNames ? '' : 'inventoryTransactionIds')
@@ -1316,13 +1319,13 @@ class CreateDeliveryNoteResponse extends $pb.GeneratedMessage {
   static CreateDeliveryNoteResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get documentId => $_getSZ(0);
+  $core.String get deliveryNoteId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set documentId($core.String value) => $_setString(0, value);
+  set deliveryNoteId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasDocumentId() => $_has(0);
+  $core.bool hasDeliveryNoteId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearDocumentId() => $_clearField(1);
+  void clearDeliveryNoteId() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $2.DeliveryNote get deliveryNote => $_getN(1);
@@ -1353,14 +1356,12 @@ class CreateInvoiceFromSalesOrderRequest extends $pb.GeneratedMessage {
     $core.String? salesOrderId,
     $core.String? deliveryNoteId,
     $1.Timestamp? dueDate,
-    $core.String? paymentTerms,
     $core.String? createdByUserId,
   }) {
     final result = create();
     if (salesOrderId != null) result.salesOrderId = salesOrderId;
     if (deliveryNoteId != null) result.deliveryNoteId = deliveryNoteId;
     if (dueDate != null) result.dueDate = dueDate;
-    if (paymentTerms != null) result.paymentTerms = paymentTerms;
     if (createdByUserId != null) result.createdByUserId = createdByUserId;
     return result;
   }
@@ -1383,7 +1384,6 @@ class CreateInvoiceFromSalesOrderRequest extends $pb.GeneratedMessage {
     ..aOS(2, _omitFieldNames ? '' : 'deliveryNoteId')
     ..aOM<$1.Timestamp>(3, _omitFieldNames ? '' : 'dueDate',
         subBuilder: $1.Timestamp.create)
-    ..aOS(4, _omitFieldNames ? '' : 'paymentTerms')
     ..aOS(5, _omitFieldNames ? '' : 'createdByUserId')
     ..hasRequiredFields = false;
 
@@ -1442,33 +1442,24 @@ class CreateInvoiceFromSalesOrderRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $1.Timestamp ensureDueDate() => $_ensure(2);
 
-  @$pb.TagNumber(4)
-  $core.String get paymentTerms => $_getSZ(3);
-  @$pb.TagNumber(4)
-  set paymentTerms($core.String value) => $_setString(3, value);
-  @$pb.TagNumber(4)
-  $core.bool hasPaymentTerms() => $_has(3);
-  @$pb.TagNumber(4)
-  void clearPaymentTerms() => $_clearField(4);
-
   @$pb.TagNumber(5)
-  $core.String get createdByUserId => $_getSZ(4);
+  $core.String get createdByUserId => $_getSZ(3);
   @$pb.TagNumber(5)
-  set createdByUserId($core.String value) => $_setString(4, value);
+  set createdByUserId($core.String value) => $_setString(3, value);
   @$pb.TagNumber(5)
-  $core.bool hasCreatedByUserId() => $_has(4);
+  $core.bool hasCreatedByUserId() => $_has(3);
   @$pb.TagNumber(5)
   void clearCreatedByUserId() => $_clearField(5);
 }
 
 class CreateInvoiceFromSalesOrderResponse extends $pb.GeneratedMessage {
   factory CreateInvoiceFromSalesOrderResponse({
-    $core.String? documentId,
+    $core.String? invoiceId,
     $3.Invoice? invoice,
     $core.String? message,
   }) {
     final result = create();
-    if (documentId != null) result.documentId = documentId;
+    if (invoiceId != null) result.invoiceId = invoiceId;
     if (invoice != null) result.invoice = invoice;
     if (message != null) result.message = message;
     return result;
@@ -1488,7 +1479,7 @@ class CreateInvoiceFromSalesOrderResponse extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'CreateInvoiceFromSalesOrderResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'documentId')
+    ..aOS(1, _omitFieldNames ? '' : 'invoiceId')
     ..aOM<$3.Invoice>(2, _omitFieldNames ? '' : 'invoice',
         subBuilder: $3.Invoice.create)
     ..aOS(3, _omitFieldNames ? '' : 'message')
@@ -1521,13 +1512,13 @@ class CreateInvoiceFromSalesOrderResponse extends $pb.GeneratedMessage {
   static CreateInvoiceFromSalesOrderResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get documentId => $_getSZ(0);
+  $core.String get invoiceId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set documentId($core.String value) => $_setString(0, value);
+  set invoiceId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasDocumentId() => $_has(0);
+  $core.bool hasInvoiceId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearDocumentId() => $_clearField(1);
+  void clearInvoiceId() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $3.Invoice get invoice => $_getN(1);

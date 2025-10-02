@@ -1,8 +1,7 @@
 export 'src/audits/v1/inventory_transaction.pb.dart';
+export 'src/audits/v1/voucher_transaction.pb.dart';
 export 'src/business/v1/business.pb.dart';
 export 'src/business/v1/client.pb.dart';
-export 'src/financial/v1/credit_note.pb.dart';
-export 'src/financial/v1/debit_note.pb.dart';
 export 'src/financial/v1/financial_utils.pb.dart';
 export 'src/financial/v1/invoice.pb.dart';
 export 'src/google/protobuf/timestamp.pb.dart';
@@ -20,7 +19,6 @@ export 'src/order/v1/purchase_order.pb.dart';
 export 'src/order/v1/sales_order.pb.dart';
 export 'src/payments/v1/cash_receipt.pb.dart';
 export 'src/payments/v1/gift_voucher.pb.dart';
-export 'src/payments/v1/payment_utils.pb.dart';
 export 'src/payments/v1/payments.pb.dart';
 export 'src/reports/v1/reports.pb.dart';
 export 'src/store/v1/store.pb.dart';

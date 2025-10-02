@@ -33,12 +33,4 @@ abstract final class PaymentService {
     paymentsv1payments.ListPaymentsRequest.new,
     paymentsv1payments.ListPaymentsResponse.new,
   );
-
-  /// Process refund
-  static const createRefund = connect.Spec(
-    '/$name/CreateRefund',
-    connect.StreamType.unary,
-    paymentsv1payments.CreateRefundRequest.new,
-    paymentsv1payments.CreateRefundResponse.new,
-  );
 }

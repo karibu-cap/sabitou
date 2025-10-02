@@ -19,7 +19,7 @@ import "google/protobuf/timestamp.proto";
  *   rn_id: "RN-2025-001"
  *   related_purchase_order_id: "PO-2025-001"
  *   supplier_id: "CMP-002"
- *   warehouse_id: "WH-001"
+ *   buyer_id: "WH-001"
  *   items: [48x PRD-001] (expected 50, but 2 damaged)
  *   status: RN_STATUS_COMPLETED
  *
@@ -29,7 +29,7 @@ message ReceivingNote {
   string document_id = 1 [(buf.validate.field).required = true]; // "RN-2025-001"
   string related_purchase_order_id = 2; // Which PO this fulfills
   string supplier_id = 3; // Who sent the goods
-  string warehouse_id = 4; // Where goods are stored
+  string buyer_id = 4; // Where goods are stored
   ReceivingNoteStatus status = 5;
   repeated ReceivingLineItem items = 6;
   string received_by_user_id = 7; // Who accepted delivery

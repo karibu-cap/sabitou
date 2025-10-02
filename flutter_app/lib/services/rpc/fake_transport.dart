@@ -1032,7 +1032,7 @@ final _fakeTransport =
             issuedByUserId: request.receipt.cashierUserId,
           );
           _fakeData[CollectionName.giftVouchers]?.add(voucher);
-          cashReceipt.voucherIssued = voucherId;
+          cashReceipt.voucherIssuedCode = voucherId;
         }
 
         /// Gets the inventory level for each item in the receipt and update the quantity.

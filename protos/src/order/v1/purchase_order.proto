@@ -18,7 +18,7 @@ import "payments/v1/payments.proto";
  * Flow: Create PO → Send to supplier → Wait for delivery
  *
  * Example:
- *   po_id: "PO-2025-001"
+ *   purchase_order_id: "PO-2025-001"
  *   supplier_id: "CMP-002" (supplier company)
  *   buyer_id: "CMP-001" (your company)
  *   status: PO_STATUS_PENDING
@@ -26,9 +26,12 @@ import "payments/v1/payments.proto";
  *   total_amount: 20000000 (centimes)
  */
 message PurchaseOrder {
-  string document_id = 1 [(buf.validate.field).required = true]; // "PO-2025-001"
-  string supplier_id = 2; // Company selling to you
-  string buyer_id_id = 3; // The store company
+  // "PO-2025-001"
+  string document_id = 1 [(buf.validate.field).required = true]; 
+  // Company selling to you
+  string supplier_id = 2; 
+  // Your company
+  string buyer_id = 3; 
   PurchaseOrderStatus status = 5;
   repeated order.v1.OrderLineItem items = 6;
   double total_amount = 7; // Total cost in smallest currency unit
@@ -66,9 +69,6 @@ service PurchaseOrderService {
 
   // Create receiving note when goods arrive
   rpc CreateReceivingNote(CreateReceivingNoteRequest) returns (CreateReceivingNoteResponse);
-
-  // Get suggested purchase orders (low stock items)
-  rpc GetSuggestedPurchaseOrders(GetSuggestedPurchaseOrdersRequest) returns (GetSuggestedPurchaseOrdersResponse);
 }
 
 message CancelPurchaseOrderResponse {
@@ -79,7 +79,8 @@ message CancelPurchaseOrderResponse {
 message CreatePurchaseOrderRequest {
   string supplier_id = 1;
   string buyer_id = 2; // Your company
-  string destination_id = 3;
+  // Where to receive items by default is the buyer's warehouse.
+  optional string destination_address = 3;
   repeated order.v1.OrderLineItem items = 4;
   google.protobuf.Timestamp expected_delivery_date = 5;
   string created_by_user_id = 6;
@@ -87,13 +88,13 @@ message CreatePurchaseOrderRequest {
 }
 
 message CreatePurchaseOrderResponse {
-  string po_id = 1;
+  string purchase_order_id = 1;
   PurchaseOrder purchase_order = 2;
   string message = 3;
 }
 
 message GetPurchaseOrderRequest {
-  string po_id = 1;
+  string purchase_order_id = 1;
 }
 
 message GetPurchaseOrderResponse {
@@ -105,7 +106,7 @@ message GetPurchaseOrderResponse {
 
 message ListPurchaseOrdersRequest {
   string supplier_id = 1; // Filter by supplier
-  PurchaseOrderStatus status = 2;
+  string buyer_id = 2; // Filter by buyer
   google.protobuf.Timestamp start_date = 3;
   google.protobuf.Timestamp end_date = 4;
   int32 page_size = 5;
@@ -119,7 +120,7 @@ message ListPurchaseOrdersResponse {
 }
 
 message UpdatePurchaseOrderStatusRequest {
-  string po_id = 1;
+  string purchase_order_id = 1;
   PurchaseOrderStatus new_status = 2;
   string updated_by_user_id = 3;
   string notes = 4;
@@ -131,7 +132,7 @@ message UpdatePurchaseOrderStatusResponse {
 }
 
 message CancelPurchaseOrderRequest {
-  string po_id = 1;
+  string purchase_order_id = 1;
   string reason = 2;
   string cancelled_by_user_id = 3;
 }
@@ -139,7 +140,7 @@ message CancelPurchaseOrderRequest {
 message CreateReceivingNoteRequest {
   string purchase_order_id = 1;
   string supplier_id = 2;
-  string store_id = 3;
+  string buyer_id = 3;
   repeated logistic.v1.ReceivingLineItem items = 4; // What actually arrived
   string received_by_user_id = 5;
   string notes = 6; // Condition notes
@@ -152,22 +153,4 @@ message CreateReceivingNoteResponse {
   bool has_discrepancies = 4; // If received != expected
   repeated string discrepancy_product_ids = 5;
   string message = 6;
-}
-
-message GetSuggestedPurchaseOrdersRequest {
-  string store_id = 1; // Optional - all stores if not specified
-}
-
-message GetSuggestedPurchaseOrdersResponse {
-  repeated SuggestedPurchase suggestions = 1;
-  int32 total_items = 2;
-}
-
-message SuggestedPurchase {
-  inventory.v1.StoreProduct product = 1;
-  string preferred_supplier_id = 2;
-  int32 current_stock = 3;
-  int32 reorder_level = 4;
-  int32 suggested_quantity = 5;
-  int32 estimated_cost = 6;
 }

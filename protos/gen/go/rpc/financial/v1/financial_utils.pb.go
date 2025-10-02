@@ -24,8 +24,6 @@ const (
 
 // *
 // InvoiceLineItem represents one product on an invoice.
-//
-// Fix: Added optional batch_id for lot traceability in accounting.
 type InvoiceLineItem struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ProductId     string                 `protobuf:"bytes,1,opt,name=product_id,json=productId,proto3" json:"product_id,omitempty"`

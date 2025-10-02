@@ -32,21 +32,29 @@ import "payments/v1/payments.proto";
  * ACCOUNTING IMPACT: Immediate revenue + payment
  */
 message CashReceipt {
-  string document_id = 1 [(buf.validate.field).required = true]; // "CASH-2025-001"
-  string cashier_user_id = 2; // Who processed sale
-  string customer_id = 3; // Can be null for anonymous
-  string store_id = 4; // Which location/store
+// "CASH-2025-001"
+  string document_id = 1 [(buf.validate.field).required = true]; 
+  // Who processed sale
+  string cashier_user_id = 2; 
+  // Can be null for anonymous
+  string customer_id = 3; 
+  // Which location/store
+  string store_id = 4; 
   repeated financial.v1.InvoiceLineItem items = 5;
   double subtotal = 6;
   double tax_amount = 7;
   double total_amount = 8;
-  double amount_paid = 9; // What customer gave
+  // What customer gave.
+  double amount_paid = 9; 
+  // Change given to customer.
   double change_given = 10;
   string currency = 11;
   repeated string payment_ids = 12;
   google.protobuf.Timestamp transaction_time = 13;
   string notes = 14;
-  string voucher_issued = 15;
+  // Voucher issued if owed_to_customer > 0.
+  optional string voucher_issued_code = 15;
+  // Amount owed to customer.
   double owed_to_customer = 16;
 }
 
@@ -58,7 +66,7 @@ message CreateCashReceiptRequest {
   repeated payments.v1.Payment payments = 2;
 
   // Issue voucher on change
-  // If true and change_given > 0, issue a voucher instead of cash
+  // If true and owed_to_customer > 0, issue a voucher instead of cash
   bool issue_voucher_on_change = 3;
 }
 
@@ -66,7 +74,8 @@ message CreateCashReceiptResponse {
   // The created cash receipt.
   bool success = 1;
 
-  optional payments.v1.GiftVoucher voucher = 2; // If a voucher was issued
+  // If a voucher was issued.
+  optional payments.v1.GiftVoucher voucher = 2; 
 }
 
 

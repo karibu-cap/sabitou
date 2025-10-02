@@ -2,49 +2,13 @@ openapi: 3.1.0
 info:
   title: logistic.v1
 paths:
-  /logistic.v1.ReturnService/CreateCreditNoteFromReturn:
-    post:
-      tags:
-        - logistic.v1.ReturnService
-      summary: Create credit note from return
-      description: Create credit note from return
-      operationId: logistic.v1.ReturnService.CreateCreditNoteFromReturn
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/logistic.v1.CreateCreditNoteFromReturnRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/logistic.v1.CreateCreditNoteFromReturnResponse'
-  /logistic.v1.ReturnService/CreateCustomerReturn:
+  /logistic.v1.ReturnService/CreateReturn:
     post:
       tags:
         - logistic.v1.ReturnService
       summary: Create a return note (customer returning to you)
       description: Create a return note (customer returning to you)
-      operationId: logistic.v1.ReturnService.CreateCustomerReturn
+      operationId: logistic.v1.ReturnService.CreateReturn
       parameters:
         - name: Connect-Protocol-Version
           in: header
@@ -59,7 +23,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/logistic.v1.CreateCustomerReturnRequest'
+              $ref: '#/components/schemas/logistic.v1.CreateReturnRequest'
         required: true
       responses:
         default:
@@ -73,151 +37,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/logistic.v1.CreateCustomerReturnResponse'
-  /logistic.v1.ReturnService/CreateDebitNoteFromReturn:
-    post:
-      tags:
-        - logistic.v1.ReturnService
-      summary: Create debit note for supplier return
-      description: Create debit note for supplier return
-      operationId: logistic.v1.ReturnService.CreateDebitNoteFromReturn
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/logistic.v1.CreateDebitNoteFromReturnRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/logistic.v1.CreateDebitNoteFromReturnResponse'
-  /logistic.v1.ReturnService/GetReturn:
-    post:
-      tags:
-        - logistic.v1.ReturnService
-      summary: Get return details
-      description: Get return details
-      operationId: logistic.v1.ReturnService.GetReturn
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/logistic.v1.GetReturnRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/logistic.v1.GetReturnResponse'
-  /logistic.v1.ReturnService/ListReturns:
-    post:
-      tags:
-        - logistic.v1.ReturnService
-      summary: List returns
-      description: List returns
-      operationId: logistic.v1.ReturnService.ListReturns
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/logistic.v1.ListReturnsRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/logistic.v1.ListReturnsResponse'
-  /logistic.v1.ReturnService/ProcessReturnRequest:
-    post:
-      tags:
-        - logistic.v1.ReturnService
-      summary: Approve/reject a return request
-      description: Approve/reject a return request
-      operationId: logistic.v1.ReturnService.ProcessReturnRequest
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/logistic.v1.ProcessReturnRequestRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/logistic.v1.ProcessReturnRequestResponse'
+                $ref: '#/components/schemas/logistic.v1.CreateReturnResponse'
 components:
   schemas:
     connect-protocol-version:
@@ -289,256 +109,6 @@ components:
           description: Deserialized error detail payload. The 'type' field indicates the schema. This field is for easier debugging and should not be relied upon for application logic.
       additionalProperties: true
       description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message, with an additional debug field for ConnectRPC error details.
-    financial.v1.CreditNote:
-      type: object
-      properties:
-        documentId:
-          type: string
-          title: document_id
-          description: '"CN-2025-001"'
-        relatedInvoiceId:
-          type: string
-          title: related_invoice_id
-          description: Which invoice this corrects
-        creditType:
-          title: credit_type
-          description: Why credit is issued
-          $ref: '#/components/schemas/financial.v1.CreditNoteType'
-        issuerId:
-          type: string
-          title: issuer_id
-          description: Who issues the credit
-        recipientId:
-          type: string
-          title: recipient_id
-          description: Who receives the credit
-        status:
-          title: status
-          $ref: '#/components/schemas/financial.v1.CreditNoteStatus'
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/financial.v1.InvoiceLineItem'
-          title: items
-          description: What's being credited
-        totalAmount:
-          type: number
-          title: total_amount
-          format: double
-          description: Negative value
-        currency:
-          type: string
-          title: currency
-        hasInventoryImpact:
-          type: boolean
-          title: has_inventory_impact
-          description: Does stock come back?
-        relatedReturnNoteId:
-          type: string
-          title: related_return_note_id
-          description: If goods returned
-        issueDate:
-          title: issue_date
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-        createdByUserId:
-          type: string
-          title: created_by_user_id
-        reason:
-          type: string
-          title: reason
-          description: Detailed explanation
-        notes:
-          type: string
-          title: notes
-      title: CreditNote
-      required:
-        - documentId
-      additionalProperties: false
-      description: |-
-        *
-         CreditNote (Avoir / Bon d'Avoir)
-         Issued to cancel or reduce a previous invoice.
-         Can be for returns, errors, discounts, etc.
-
-         Fix: Items include batch_id if inventory impact involves specific lots.
-
-         Example - Customer returns damaged goods:
-           cn_id: "CN-2025-001"
-           related_invoice_id: "INV-2025-001"
-           credit_type: CREDIT_TYPE_RETURN
-           recipient_id: "CMP-003" (customer)
-           items: [2x PRD-001 @ 450000]
-           total_amount: -900000 (negative = credit)
-           has_inventory_impact: true
-
-         INVENTORY IMPACT (if has_inventory_impact = true):
-           +2 PRD-001 back to warehouse
-
-         ACCOUNTING IMPACT:
-           Customer now owes: 5400000 - 900000 = 4500000
-    financial.v1.CreditNoteStatus:
-      type: string
-      title: CreditNoteStatus
-      enum:
-        - CN_STATUS_UNSPECIFIED
-        - CN_STATUS_DRAFT
-        - CN_STATUS_ISSUED
-        - CN_STATUS_APPLIED
-    financial.v1.CreditNoteType:
-      type: string
-      title: CreditNoteType
-      enum:
-        - CREDIT_TYPE_UNSPECIFIED
-        - CREDIT_TYPE_RETURN
-        - CREDIT_TYPE_PRICE_ERROR
-        - CREDIT_TYPE_DISCOUNT
-        - CREDIT_TYPE_CANCELLATION
-        - CREDIT_TYPE_DAMAGED_GOODS
-    financial.v1.DebitNote:
-      type: object
-      properties:
-        documentId:
-          type: string
-          title: document_id
-          description: '"DEBIT-2025-001"'
-        relatedInvoiceId:
-          type: string
-          title: related_invoice_id
-          description: Purchase invoice being adjusted
-        debitType:
-          title: debit_type
-          $ref: '#/components/schemas/financial.v1.DebitNoteType'
-        issuerId:
-          type: string
-          title: issuer_id
-          description: You (buyer)
-        recipientId:
-          type: string
-          title: recipient_id
-          description: Supplier
-        status:
-          title: status
-          $ref: '#/components/schemas/financial.v1.DebitNoteStatus'
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/financial.v1.InvoiceLineItem'
-          title: items
-        totalAmount:
-          type: number
-          title: total_amount
-          format: double
-          description: Negative value
-        currency:
-          type: string
-          title: currency
-        hasInventoryImpact:
-          type: boolean
-          title: has_inventory_impact
-        relatedReturnNoteId:
-          type: string
-          title: related_return_note_id
-        issueDate:
-          title: issue_date
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-        createdByUserId:
-          type: string
-          title: created_by_user_id
-        reason:
-          type: string
-          title: reason
-        notes:
-          type: string
-          title: notes
-      title: DebitNote
-      required:
-        - documentId
-      additionalProperties: false
-      description: |-
-        *
-         DebitNote (Note de Débit)
-         Like a CreditNote but in reverse - YOU issue it TO supplier.
-         Used when returning goods to supplier or correcting purchase invoice.
-
-         Fix: Items include batch_id.
-
-         Example - You return defective goods to supplier:
-           dn_id: "DEBIT-2025-001"
-           related_invoice_id: "PINV-2025-001" (purchase invoice)
-           debit_type: DEBIT_TYPE_RETURN
-           issuer_id: "CMP-001" (your company)
-           recipient_id: "CMP-002" (supplier)
-           items: [5x PRD-001 @ 400000]
-           total_amount: -2000000
-
-         INVENTORY IMPACT: -5 PRD-001 (returned to supplier)
-         ACCOUNTING IMPACT: You owe supplier 2000000 less
-    financial.v1.DebitNoteStatus:
-      type: string
-      title: DebitNoteStatus
-      enum:
-        - DEBIT_STATUS_UNSPECIFIED
-        - DEBIT_STATUS_DRAFT
-        - DEBIT_STATUS_ISSUED
-        - DEBIT_STATUS_ACCEPTED
-        - DEBIT_STATUS_DISPUTED
-    financial.v1.DebitNoteType:
-      type: string
-      title: DebitNoteType
-      enum:
-        - DEBIT_TYPE_UNSPECIFIED
-        - DEBIT_TYPE_RETURN
-        - DEBIT_TYPE_PRICE_DISPUTE
-        - DEBIT_TYPE_QUALITY_ISSUE
-        - DEBIT_TYPE_SHORTAGE
-    financial.v1.InvoiceLineItem:
-      type: object
-      properties:
-        productId:
-          type: string
-          title: product_id
-        quantity:
-          type: integer
-          title: quantity
-          format: int32
-        unitPrice:
-          type: number
-          title: unit_price
-          format: double
-        subtotal:
-          type: number
-          title: subtotal
-          format: double
-          description: quantity * unit_price
-        taxRate:
-          type: number
-          title: tax_rate
-          format: double
-          description: 0.20 for 20% VAT
-        taxAmount:
-          type: number
-          title: tax_amount
-          format: double
-        total:
-          type: number
-          title: total
-          format: double
-          description: subtotal + tax_amount
-        batchId:
-          type: string
-          title: batch_id
-          description: 'Optional: Batch/lot referenced'
-        productName:
-          title: product_name
-          description: The name of the item
-          $ref: '#/components/schemas/inventory.v1.Internationalized'
-      title: InvoiceLineItem
-      additionalProperties: false
-      description: |-
-        *
-         InvoiceLineItem represents one product on an invoice.
-
-         Fix: Added optional batch_id for lot traceability in accounting.
     google.protobuf.Timestamp:
       type: string
       examples:
@@ -648,41 +218,13 @@ components:
           description: The French name of the product category.
       title: Internationalized
       additionalProperties: false
-    logistic.v1.CreateCreditNoteFromReturnRequest:
-      type: object
-      properties:
-        returnId:
-          type: string
-          title: return_id
-        relatedInvoiceId:
-          type: string
-          title: related_invoice_id
-        issuedByUserId:
-          type: string
-          title: issued_by_user_id
-      title: CreateCreditNoteFromReturnRequest
-      additionalProperties: false
-    logistic.v1.CreateCreditNoteFromReturnResponse:
-      type: object
-      properties:
-        cnId:
-          type: string
-          title: cn_id
-        creditNote:
-          title: credit_note
-          $ref: '#/components/schemas/financial.v1.CreditNote'
-        message:
-          type: string
-          title: message
-      title: CreateCreditNoteFromReturnResponse
-      additionalProperties: false
-    logistic.v1.CreateCustomerReturnRequest:
+    logistic.v1.CreateReturnRequest:
       type: object
       properties:
         fromCompanyId:
           type: string
           title: from_company_id
-          description: Customer
+          description: Customer or your company
         toWarehouseId:
           type: string
           title: to_warehouse_id
@@ -704,9 +246,9 @@ components:
         receivedByUserId:
           type: string
           title: received_by_user_id
-      title: CreateCustomerReturnRequest
+      title: CreateReturnRequest
       additionalProperties: false
-    logistic.v1.CreateCustomerReturnResponse:
+    logistic.v1.CreateReturnResponse:
       type: object
       properties:
         returnId:
@@ -726,136 +268,7 @@ components:
         message:
           type: string
           title: message
-      title: CreateCustomerReturnResponse
-      additionalProperties: false
-    logistic.v1.CreateDebitNoteFromReturnRequest:
-      type: object
-      properties:
-        returnId:
-          type: string
-          title: return_id
-        relatedInvoiceId:
-          type: string
-          title: related_invoice_id
-        issuedByUserId:
-          type: string
-          title: issued_by_user_id
-      title: CreateDebitNoteFromReturnRequest
-      additionalProperties: false
-    logistic.v1.CreateDebitNoteFromReturnResponse:
-      type: object
-      properties:
-        dnId:
-          type: string
-          title: dn_id
-        debitNote:
-          title: debit_note
-          $ref: '#/components/schemas/financial.v1.DebitNote'
-        message:
-          type: string
-          title: message
-      title: CreateDebitNoteFromReturnResponse
-      additionalProperties: false
-    logistic.v1.GetReturnRequest:
-      type: object
-      properties:
-        returnId:
-          type: string
-          title: return_id
-      title: GetReturnRequest
-      additionalProperties: false
-    logistic.v1.GetReturnResponse:
-      type: object
-      properties:
-        returnNote:
-          title: return_note
-          $ref: '#/components/schemas/logistic.v1.ReturnNote'
-        creditNote:
-          title: credit_note
-          description: If issued
-          $ref: '#/components/schemas/financial.v1.CreditNote'
-        debitNote:
-          title: debit_note
-          description: If issued
-          $ref: '#/components/schemas/financial.v1.DebitNote'
-        refundPayment:
-          title: refund_payment
-          description: If refund given
-          $ref: '#/components/schemas/payments.v1.Payment'
-      title: GetReturnResponse
-      additionalProperties: false
-    logistic.v1.ListReturnsRequest:
-      type: object
-      properties:
-        returnType:
-          title: return_type
-          description: Customer or supplier
-          $ref: '#/components/schemas/logistic.v1.ReturnType'
-        status:
-          title: status
-          $ref: '#/components/schemas/logistic.v1.ReturnNoteStatus'
-        startDate:
-          title: start_date
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-        endDate:
-          title: end_date
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-        pageSize:
-          type: integer
-          title: page_size
-          format: int32
-        pageNumber:
-          type: integer
-          title: page_number
-          format: int32
-      title: ListReturnsRequest
-      additionalProperties: false
-    logistic.v1.ListReturnsResponse:
-      type: object
-      properties:
-        returns:
-          type: array
-          items:
-            $ref: '#/components/schemas/logistic.v1.ReturnNote'
-          title: returns
-        totalCount:
-          type: integer
-          title: total_count
-          format: int32
-        totalValue:
-          type: number
-          title: total_value
-          format: double
-      title: ListReturnsResponse
-      additionalProperties: false
-    logistic.v1.ProcessReturnRequestRequest:
-      type: object
-      properties:
-        returnId:
-          type: string
-          title: return_id
-        newStatus:
-          title: new_status
-          description: APPROVED or REJECTED
-          $ref: '#/components/schemas/logistic.v1.ReturnNoteStatus'
-        processedByUserId:
-          type: string
-          title: processed_by_user_id
-        notes:
-          type: string
-          title: notes
-      title: ProcessReturnRequestRequest
-      additionalProperties: false
-    logistic.v1.ProcessReturnRequestResponse:
-      type: object
-      properties:
-        returnNote:
-          title: return_note
-          $ref: '#/components/schemas/logistic.v1.ReturnNote'
-        message:
-          type: string
-          title: message
-      title: ProcessReturnRequestResponse
+      title: CreateReturnResponse
       additionalProperties: false
     logistic.v1.ReturnCondition:
       type: string
@@ -872,6 +285,9 @@ components:
         productId:
           type: string
           title: product_id
+        productName:
+          title: product_name
+          $ref: '#/components/schemas/inventory.v1.Internationalized'
         quantity:
           type: number
           title: quantity
@@ -980,88 +396,6 @@ components:
         - RETURN_TYPE_UNSPECIFIED
         - RETURN_TYPE_CUSTOMER_TO_SELLER
         - RETURN_TYPE_SELLER_TO_SUPPLIER
-    payments.v1.Payment:
-      type: object
-      properties:
-        documentId:
-          type: string
-          title: document_id
-          description: '"PAY-2025-001"'
-        payerId:
-          type: string
-          title: payer_id
-          description: Who pays
-        payeeId:
-          type: string
-          title: payee_id
-          description: Who receives
-        amount:
-          type: number
-          title: amount
-          format: double
-          description: Amount in smallest currency unit
-        currency:
-          type: string
-          title: currency
-        paymentMethod:
-          title: payment_method
-          $ref: '#/components/schemas/payments.v1.PaymentMethod'
-        status:
-          title: status
-          $ref: '#/components/schemas/payments.v1.PaymentStatus'
-        relatedInvoiceId:
-          type: string
-          title: related_invoice_id
-          description: Which invoice this pays
-        paymentDate:
-          title: payment_date
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
-        referenceNumber:
-          type: string
-          title: reference_number
-          description: Bank reference, check number, etc.
-        createdByUserId:
-          type: string
-          title: created_by_user_id
-        notes:
-          type: string
-          title: notes
-      title: Payment
-      required:
-        - documentId
-      additionalProperties: false
-      description: |-
-        *
-         Payment represents money transfer between parties.
-         Links to invoices to track what's been paid.
-
-         Example:
-           payment_id: "PAY-2025-001"
-           payer_id: "CMP-003" (customer)
-           payee_id: "CMP-001" (your company)
-           amount: 5400000
-           payment_method: PAYMENT_METHOD_BANK_TRANSFER
-           related_invoice_id: "INV-2025-001"
-           status: PAYMENT_STATUS_COMPLETED
-    payments.v1.PaymentMethod:
-      type: string
-      title: PaymentMethod
-      enum:
-        - PAYMENT_METHOD_UNSPECIFIED
-        - PAYMENT_METHOD_CASH
-        - PAYMENT_METHOD_CREDIT_CARD
-        - PAYMENT_METHOD_MOBILE_MONEY
-        - PAYMENT_METHOD_VOUCHER
-        - PAYMENT_METHOD_ORANGE_MONEY
-        - PAYMENT_METHOD_MTN_MONEY
-    payments.v1.PaymentStatus:
-      type: string
-      title: PaymentStatus
-      enum:
-        - PAYMENT_STATUS_UNSPECIFIED
-        - PAYMENT_STATUS_PENDING
-        - PAYMENT_STATUS_COMPLETED
-        - PAYMENT_STATUS_FAILED
 security: []
 tags:
   - name: logistic.v1.ReturnService

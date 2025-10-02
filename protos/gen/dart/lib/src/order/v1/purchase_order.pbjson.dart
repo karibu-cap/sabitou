@@ -14,11 +14,10 @@ import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
-import '../../financial/v1/financial_utils.pbjson.dart' as $7;
+import '../../financial/v1/financial_utils.pbjson.dart' as $6;
 import '../../financial/v1/invoice.pbjson.dart' as $3;
 import '../../google/protobuf/timestamp.pbjson.dart' as $1;
-import '../../inventory/v1/category.pbjson.dart' as $6;
-import '../../inventory/v1/store_product.pbjson.dart' as $5;
+import '../../inventory/v1/category.pbjson.dart' as $5;
 import '../../logistic/v1/receiving_notes.pbjson.dart' as $2;
 import '../../payments/v1/payments.pbjson.dart' as $4;
 import 'order_utils.pbjson.dart' as $0;
@@ -49,7 +48,7 @@ const PurchaseOrder$json = {
   '2': [
     {'1': 'document_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'documentId'},
     {'1': 'supplier_id', '3': 2, '4': 1, '5': 9, '10': 'supplierId'},
-    {'1': 'buyer_id_id', '3': 3, '4': 1, '5': 9, '10': 'buyerIdId'},
+    {'1': 'buyer_id', '3': 3, '4': 1, '5': 9, '10': 'buyerId'},
     {
       '1': 'status',
       '3': 5,
@@ -113,16 +112,15 @@ const PurchaseOrder$json = {
 /// Descriptor for `PurchaseOrder`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List purchaseOrderDescriptor = $convert.base64Decode(
     'Cg1QdXJjaGFzZU9yZGVyEicKC2RvY3VtZW50X2lkGAEgASgJQga6SAPIAQFSCmRvY3VtZW50SW'
-    'QSHwoLc3VwcGxpZXJfaWQYAiABKAlSCnN1cHBsaWVySWQSHgoLYnV5ZXJfaWRfaWQYAyABKAlS'
-    'CWJ1eWVySWRJZBI1CgZzdGF0dXMYBSABKA4yHS5vcmRlci52MS5QdXJjaGFzZU9yZGVyU3RhdH'
-    'VzUgZzdGF0dXMSLQoFaXRlbXMYBiADKAsyFy5vcmRlci52MS5PcmRlckxpbmVJdGVtUgVpdGVt'
-    'cxIhCgx0b3RhbF9hbW91bnQYByABKAFSC3RvdGFsQW1vdW50Eh8KCGN1cnJlbmN5GAggASgJSA'
-    'BSCGN1cnJlbmN5iAEBEisKEmNyZWF0ZWRfYnlfdXNlcl9pZBgJIAEoCVIPY3JlYXRlZEJ5VXNl'
-    'cklkEjkKCmNyZWF0ZWRfYXQYCiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUgljcm'
-    'VhdGVkQXQSVQoWZXhwZWN0ZWRfZGVsaXZlcnlfZGF0ZRgLIAEoCzIaLmdvb2dsZS5wcm90b2J1'
-    'Zi5UaW1lc3RhbXBIAVIUZXhwZWN0ZWREZWxpdmVyeURhdGWIAQESGQoFbm90ZXMYDCABKAlIAl'
-    'IFbm90ZXOIAQFCCwoJX2N1cnJlbmN5QhkKF19leHBlY3RlZF9kZWxpdmVyeV9kYXRlQggKBl9u'
-    'b3Rlcw==');
+    'QSHwoLc3VwcGxpZXJfaWQYAiABKAlSCnN1cHBsaWVySWQSGQoIYnV5ZXJfaWQYAyABKAlSB2J1'
+    'eWVySWQSNQoGc3RhdHVzGAUgASgOMh0ub3JkZXIudjEuUHVyY2hhc2VPcmRlclN0YXR1c1IGc3'
+    'RhdHVzEi0KBWl0ZW1zGAYgAygLMhcub3JkZXIudjEuT3JkZXJMaW5lSXRlbVIFaXRlbXMSIQoM'
+    'dG90YWxfYW1vdW50GAcgASgBUgt0b3RhbEFtb3VudBIfCghjdXJyZW5jeRgIIAEoCUgAUghjdX'
+    'JyZW5jeYgBARIrChJjcmVhdGVkX2J5X3VzZXJfaWQYCSABKAlSD2NyZWF0ZWRCeVVzZXJJZBI5'
+    'CgpjcmVhdGVkX2F0GAogASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIJY3JlYXRlZE'
+    'F0ElUKFmV4cGVjdGVkX2RlbGl2ZXJ5X2RhdGUYCyABKAsyGi5nb29nbGUucHJvdG9idWYuVGlt'
+    'ZXN0YW1wSAFSFGV4cGVjdGVkRGVsaXZlcnlEYXRliAEBEhkKBW5vdGVzGAwgASgJSAJSBW5vdG'
+    'VziAEBQgsKCV9jdXJyZW5jeUIZChdfZXhwZWN0ZWRfZGVsaXZlcnlfZGF0ZUIICgZfbm90ZXM=');
 
 @$core.Deprecated('Use cancelPurchaseOrderResponseDescriptor instead')
 const CancelPurchaseOrderResponse$json = {
@@ -153,7 +151,15 @@ const CreatePurchaseOrderRequest$json = {
   '2': [
     {'1': 'supplier_id', '3': 1, '4': 1, '5': 9, '10': 'supplierId'},
     {'1': 'buyer_id', '3': 2, '4': 1, '5': 9, '10': 'buyerId'},
-    {'1': 'destination_id', '3': 3, '4': 1, '5': 9, '10': 'destinationId'},
+    {
+      '1': 'destination_address',
+      '3': 3,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'destinationAddress',
+      '17': true
+    },
     {
       '1': 'items',
       '3': 4,
@@ -179,22 +185,26 @@ const CreatePurchaseOrderRequest$json = {
     },
     {'1': 'notes', '3': 7, '4': 1, '5': 9, '10': 'notes'},
   ],
+  '8': [
+    {'1': '_destination_address'},
+  ],
 };
 
 /// Descriptor for `CreatePurchaseOrderRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List createPurchaseOrderRequestDescriptor = $convert.base64Decode(
     'ChpDcmVhdGVQdXJjaGFzZU9yZGVyUmVxdWVzdBIfCgtzdXBwbGllcl9pZBgBIAEoCVIKc3VwcG'
-    'xpZXJJZBIZCghidXllcl9pZBgCIAEoCVIHYnV5ZXJJZBIlCg5kZXN0aW5hdGlvbl9pZBgDIAEo'
-    'CVINZGVzdGluYXRpb25JZBItCgVpdGVtcxgEIAMoCzIXLm9yZGVyLnYxLk9yZGVyTGluZUl0ZW'
-    '1SBWl0ZW1zElAKFmV4cGVjdGVkX2RlbGl2ZXJ5X2RhdGUYBSABKAsyGi5nb29nbGUucHJvdG9i'
-    'dWYuVGltZXN0YW1wUhRleHBlY3RlZERlbGl2ZXJ5RGF0ZRIrChJjcmVhdGVkX2J5X3VzZXJfaW'
-    'QYBiABKAlSD2NyZWF0ZWRCeVVzZXJJZBIUCgVub3RlcxgHIAEoCVIFbm90ZXM=');
+    'xpZXJJZBIZCghidXllcl9pZBgCIAEoCVIHYnV5ZXJJZBI0ChNkZXN0aW5hdGlvbl9hZGRyZXNz'
+    'GAMgASgJSABSEmRlc3RpbmF0aW9uQWRkcmVzc4gBARItCgVpdGVtcxgEIAMoCzIXLm9yZGVyLn'
+    'YxLk9yZGVyTGluZUl0ZW1SBWl0ZW1zElAKFmV4cGVjdGVkX2RlbGl2ZXJ5X2RhdGUYBSABKAsy'
+    'Gi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUhRleHBlY3RlZERlbGl2ZXJ5RGF0ZRIrChJjcm'
+    'VhdGVkX2J5X3VzZXJfaWQYBiABKAlSD2NyZWF0ZWRCeVVzZXJJZBIUCgVub3RlcxgHIAEoCVIF'
+    'bm90ZXNCFgoUX2Rlc3RpbmF0aW9uX2FkZHJlc3M=');
 
 @$core.Deprecated('Use createPurchaseOrderResponseDescriptor instead')
 const CreatePurchaseOrderResponse$json = {
   '1': 'CreatePurchaseOrderResponse',
   '2': [
-    {'1': 'po_id', '3': 1, '4': 1, '5': 9, '10': 'poId'},
+    {'1': 'purchase_order_id', '3': 1, '4': 1, '5': 9, '10': 'purchaseOrderId'},
     {
       '1': 'purchase_order',
       '3': 2,
@@ -208,24 +218,24 @@ const CreatePurchaseOrderResponse$json = {
 };
 
 /// Descriptor for `CreatePurchaseOrderResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List createPurchaseOrderResponseDescriptor =
-    $convert.base64Decode(
-        'ChtDcmVhdGVQdXJjaGFzZU9yZGVyUmVzcG9uc2USEwoFcG9faWQYASABKAlSBHBvSWQSPgoOcH'
-        'VyY2hhc2Vfb3JkZXIYAiABKAsyFy5vcmRlci52MS5QdXJjaGFzZU9yZGVyUg1wdXJjaGFzZU9y'
-        'ZGVyEhgKB21lc3NhZ2UYAyABKAlSB21lc3NhZ2U=');
+final $typed_data.Uint8List createPurchaseOrderResponseDescriptor = $convert.base64Decode(
+    'ChtDcmVhdGVQdXJjaGFzZU9yZGVyUmVzcG9uc2USKgoRcHVyY2hhc2Vfb3JkZXJfaWQYASABKA'
+    'lSD3B1cmNoYXNlT3JkZXJJZBI+Cg5wdXJjaGFzZV9vcmRlchgCIAEoCzIXLm9yZGVyLnYxLlB1'
+    'cmNoYXNlT3JkZXJSDXB1cmNoYXNlT3JkZXISGAoHbWVzc2FnZRgDIAEoCVIHbWVzc2FnZQ==');
 
 @$core.Deprecated('Use getPurchaseOrderRequestDescriptor instead')
 const GetPurchaseOrderRequest$json = {
   '1': 'GetPurchaseOrderRequest',
   '2': [
-    {'1': 'po_id', '3': 1, '4': 1, '5': 9, '10': 'poId'},
+    {'1': 'purchase_order_id', '3': 1, '4': 1, '5': 9, '10': 'purchaseOrderId'},
   ],
 };
 
 /// Descriptor for `GetPurchaseOrderRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List getPurchaseOrderRequestDescriptor =
     $convert.base64Decode(
-        'ChdHZXRQdXJjaGFzZU9yZGVyUmVxdWVzdBITCgVwb19pZBgBIAEoCVIEcG9JZA==');
+        'ChdHZXRQdXJjaGFzZU9yZGVyUmVxdWVzdBIqChFwdXJjaGFzZV9vcmRlcl9pZBgBIAEoCVIPcH'
+        'VyY2hhc2VPcmRlcklk');
 
 @$core.Deprecated('Use getPurchaseOrderResponseDescriptor instead')
 const GetPurchaseOrderResponse$json = {
@@ -279,14 +289,7 @@ const ListPurchaseOrdersRequest$json = {
   '1': 'ListPurchaseOrdersRequest',
   '2': [
     {'1': 'supplier_id', '3': 1, '4': 1, '5': 9, '10': 'supplierId'},
-    {
-      '1': 'status',
-      '3': 2,
-      '4': 1,
-      '5': 14,
-      '6': '.order.v1.PurchaseOrderStatus',
-      '10': 'status'
-    },
+    {'1': 'buyer_id', '3': 2, '4': 1, '5': 9, '10': 'buyerId'},
     {
       '1': 'start_date',
       '3': 3,
@@ -311,11 +314,10 @@ const ListPurchaseOrdersRequest$json = {
 /// Descriptor for `ListPurchaseOrdersRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List listPurchaseOrdersRequestDescriptor = $convert.base64Decode(
     'ChlMaXN0UHVyY2hhc2VPcmRlcnNSZXF1ZXN0Eh8KC3N1cHBsaWVyX2lkGAEgASgJUgpzdXBwbG'
-    'llcklkEjUKBnN0YXR1cxgCIAEoDjIdLm9yZGVyLnYxLlB1cmNoYXNlT3JkZXJTdGF0dXNSBnN0'
-    'YXR1cxI5CgpzdGFydF9kYXRlGAMgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIJc3'
-    'RhcnREYXRlEjUKCGVuZF9kYXRlGAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIH'
-    'ZW5kRGF0ZRIbCglwYWdlX3NpemUYBSABKAVSCHBhZ2VTaXplEh8KC3BhZ2VfbnVtYmVyGAYgAS'
-    'gFUgpwYWdlTnVtYmVy');
+    'llcklkEhkKCGJ1eWVyX2lkGAIgASgJUgdidXllcklkEjkKCnN0YXJ0X2RhdGUYAyABKAsyGi5n'
+    'b29nbGUucHJvdG9idWYuVGltZXN0YW1wUglzdGFydERhdGUSNQoIZW5kX2RhdGUYBCABKAsyGi'
+    '5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUgdlbmREYXRlEhsKCXBhZ2Vfc2l6ZRgFIAEoBVII'
+    'cGFnZVNpemUSHwoLcGFnZV9udW1iZXIYBiABKAVSCnBhZ2VOdW1iZXI=');
 
 @$core.Deprecated('Use listPurchaseOrdersResponseDescriptor instead')
 const ListPurchaseOrdersResponse$json = {
@@ -345,7 +347,7 @@ final $typed_data.Uint8List listPurchaseOrdersResponseDescriptor =
 const UpdatePurchaseOrderStatusRequest$json = {
   '1': 'UpdatePurchaseOrderStatusRequest',
   '2': [
-    {'1': 'po_id', '3': 1, '4': 1, '5': 9, '10': 'poId'},
+    {'1': 'purchase_order_id', '3': 1, '4': 1, '5': 9, '10': 'purchaseOrderId'},
     {
       '1': 'new_status',
       '3': 2,
@@ -368,10 +370,10 @@ const UpdatePurchaseOrderStatusRequest$json = {
 /// Descriptor for `UpdatePurchaseOrderStatusRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List updatePurchaseOrderStatusRequestDescriptor =
     $convert.base64Decode(
-        'CiBVcGRhdGVQdXJjaGFzZU9yZGVyU3RhdHVzUmVxdWVzdBITCgVwb19pZBgBIAEoCVIEcG9JZB'
-        'I8CgpuZXdfc3RhdHVzGAIgASgOMh0ub3JkZXIudjEuUHVyY2hhc2VPcmRlclN0YXR1c1IJbmV3'
-        'U3RhdHVzEisKEnVwZGF0ZWRfYnlfdXNlcl9pZBgDIAEoCVIPdXBkYXRlZEJ5VXNlcklkEhQKBW'
-        '5vdGVzGAQgASgJUgVub3Rlcw==');
+        'CiBVcGRhdGVQdXJjaGFzZU9yZGVyU3RhdHVzUmVxdWVzdBIqChFwdXJjaGFzZV9vcmRlcl9pZB'
+        'gBIAEoCVIPcHVyY2hhc2VPcmRlcklkEjwKCm5ld19zdGF0dXMYAiABKA4yHS5vcmRlci52MS5Q'
+        'dXJjaGFzZU9yZGVyU3RhdHVzUgluZXdTdGF0dXMSKwoSdXBkYXRlZF9ieV91c2VyX2lkGAMgAS'
+        'gJUg91cGRhdGVkQnlVc2VySWQSFAoFbm90ZXMYBCABKAlSBW5vdGVz');
 
 @$core.Deprecated('Use updatePurchaseOrderStatusResponseDescriptor instead')
 const UpdatePurchaseOrderStatusResponse$json = {
@@ -400,7 +402,7 @@ final $typed_data.Uint8List updatePurchaseOrderStatusResponseDescriptor =
 const CancelPurchaseOrderRequest$json = {
   '1': 'CancelPurchaseOrderRequest',
   '2': [
-    {'1': 'po_id', '3': 1, '4': 1, '5': 9, '10': 'poId'},
+    {'1': 'purchase_order_id', '3': 1, '4': 1, '5': 9, '10': 'purchaseOrderId'},
     {'1': 'reason', '3': 2, '4': 1, '5': 9, '10': 'reason'},
     {
       '1': 'cancelled_by_user_id',
@@ -415,9 +417,9 @@ const CancelPurchaseOrderRequest$json = {
 /// Descriptor for `CancelPurchaseOrderRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List cancelPurchaseOrderRequestDescriptor =
     $convert.base64Decode(
-        'ChpDYW5jZWxQdXJjaGFzZU9yZGVyUmVxdWVzdBITCgVwb19pZBgBIAEoCVIEcG9JZBIWCgZyZW'
-        'Fzb24YAiABKAlSBnJlYXNvbhIvChRjYW5jZWxsZWRfYnlfdXNlcl9pZBgDIAEoCVIRY2FuY2Vs'
-        'bGVkQnlVc2VySWQ=');
+        'ChpDYW5jZWxQdXJjaGFzZU9yZGVyUmVxdWVzdBIqChFwdXJjaGFzZV9vcmRlcl9pZBgBIAEoCV'
+        'IPcHVyY2hhc2VPcmRlcklkEhYKBnJlYXNvbhgCIAEoCVIGcmVhc29uEi8KFGNhbmNlbGxlZF9i'
+        'eV91c2VyX2lkGAMgASgJUhFjYW5jZWxsZWRCeVVzZXJJZA==');
 
 @$core.Deprecated('Use createReceivingNoteRequestDescriptor instead')
 const CreateReceivingNoteRequest$json = {
@@ -425,7 +427,7 @@ const CreateReceivingNoteRequest$json = {
   '2': [
     {'1': 'purchase_order_id', '3': 1, '4': 1, '5': 9, '10': 'purchaseOrderId'},
     {'1': 'supplier_id', '3': 2, '4': 1, '5': 9, '10': 'supplierId'},
-    {'1': 'store_id', '3': 3, '4': 1, '5': 9, '10': 'storeId'},
+    {'1': 'buyer_id', '3': 3, '4': 1, '5': 9, '10': 'buyerId'},
     {
       '1': 'items',
       '3': 4,
@@ -448,8 +450,8 @@ const CreateReceivingNoteRequest$json = {
 /// Descriptor for `CreateReceivingNoteRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List createReceivingNoteRequestDescriptor = $convert.base64Decode(
     'ChpDcmVhdGVSZWNlaXZpbmdOb3RlUmVxdWVzdBIqChFwdXJjaGFzZV9vcmRlcl9pZBgBIAEoCV'
-    'IPcHVyY2hhc2VPcmRlcklkEh8KC3N1cHBsaWVyX2lkGAIgASgJUgpzdXBwbGllcklkEhkKCHN0'
-    'b3JlX2lkGAMgASgJUgdzdG9yZUlkEjQKBWl0ZW1zGAQgAygLMh4ubG9naXN0aWMudjEuUmVjZW'
+    'IPcHVyY2hhc2VPcmRlcklkEh8KC3N1cHBsaWVyX2lkGAIgASgJUgpzdXBwbGllcklkEhkKCGJ1'
+    'eWVyX2lkGAMgASgJUgdidXllcklkEjQKBWl0ZW1zGAQgAygLMh4ubG9naXN0aWMudjEuUmVjZW'
     'l2aW5nTGluZUl0ZW1SBWl0ZW1zEi0KE3JlY2VpdmVkX2J5X3VzZXJfaWQYBSABKAlSEHJlY2Vp'
     'dmVkQnlVc2VySWQSFAoFbm90ZXMYBiABKAlSBW5vdGVz');
 
@@ -500,84 +502,6 @@ final $typed_data.Uint8List createReceivingNoteResponseDescriptor = $convert.bas
     'EjYKF2Rpc2NyZXBhbmN5X3Byb2R1Y3RfaWRzGAUgAygJUhVkaXNjcmVwYW5jeVByb2R1Y3RJZH'
     'MSGAoHbWVzc2FnZRgGIAEoCVIHbWVzc2FnZQ==');
 
-@$core.Deprecated('Use getSuggestedPurchaseOrdersRequestDescriptor instead')
-const GetSuggestedPurchaseOrdersRequest$json = {
-  '1': 'GetSuggestedPurchaseOrdersRequest',
-  '2': [
-    {'1': 'store_id', '3': 1, '4': 1, '5': 9, '10': 'storeId'},
-  ],
-};
-
-/// Descriptor for `GetSuggestedPurchaseOrdersRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List getSuggestedPurchaseOrdersRequestDescriptor =
-    $convert.base64Decode(
-        'CiFHZXRTdWdnZXN0ZWRQdXJjaGFzZU9yZGVyc1JlcXVlc3QSGQoIc3RvcmVfaWQYASABKAlSB3'
-        'N0b3JlSWQ=');
-
-@$core.Deprecated('Use getSuggestedPurchaseOrdersResponseDescriptor instead')
-const GetSuggestedPurchaseOrdersResponse$json = {
-  '1': 'GetSuggestedPurchaseOrdersResponse',
-  '2': [
-    {
-      '1': 'suggestions',
-      '3': 1,
-      '4': 3,
-      '5': 11,
-      '6': '.order.v1.SuggestedPurchase',
-      '10': 'suggestions'
-    },
-    {'1': 'total_items', '3': 2, '4': 1, '5': 5, '10': 'totalItems'},
-  ],
-};
-
-/// Descriptor for `GetSuggestedPurchaseOrdersResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List getSuggestedPurchaseOrdersResponseDescriptor =
-    $convert.base64Decode(
-        'CiJHZXRTdWdnZXN0ZWRQdXJjaGFzZU9yZGVyc1Jlc3BvbnNlEj0KC3N1Z2dlc3Rpb25zGAEgAy'
-        'gLMhsub3JkZXIudjEuU3VnZ2VzdGVkUHVyY2hhc2VSC3N1Z2dlc3Rpb25zEh8KC3RvdGFsX2l0'
-        'ZW1zGAIgASgFUgp0b3RhbEl0ZW1z');
-
-@$core.Deprecated('Use suggestedPurchaseDescriptor instead')
-const SuggestedPurchase$json = {
-  '1': 'SuggestedPurchase',
-  '2': [
-    {
-      '1': 'product',
-      '3': 1,
-      '4': 1,
-      '5': 11,
-      '6': '.inventory.v1.StoreProduct',
-      '10': 'product'
-    },
-    {
-      '1': 'preferred_supplier_id',
-      '3': 2,
-      '4': 1,
-      '5': 9,
-      '10': 'preferredSupplierId'
-    },
-    {'1': 'current_stock', '3': 3, '4': 1, '5': 5, '10': 'currentStock'},
-    {'1': 'reorder_level', '3': 4, '4': 1, '5': 5, '10': 'reorderLevel'},
-    {
-      '1': 'suggested_quantity',
-      '3': 5,
-      '4': 1,
-      '5': 5,
-      '10': 'suggestedQuantity'
-    },
-    {'1': 'estimated_cost', '3': 6, '4': 1, '5': 5, '10': 'estimatedCost'},
-  ],
-};
-
-/// Descriptor for `SuggestedPurchase`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List suggestedPurchaseDescriptor = $convert.base64Decode(
-    'ChFTdWdnZXN0ZWRQdXJjaGFzZRI0Cgdwcm9kdWN0GAEgASgLMhouaW52ZW50b3J5LnYxLlN0b3'
-    'JlUHJvZHVjdFIHcHJvZHVjdBIyChVwcmVmZXJyZWRfc3VwcGxpZXJfaWQYAiABKAlSE3ByZWZl'
-    'cnJlZFN1cHBsaWVySWQSIwoNY3VycmVudF9zdG9jaxgDIAEoBVIMY3VycmVudFN0b2NrEiMKDX'
-    'Jlb3JkZXJfbGV2ZWwYBCABKAVSDHJlb3JkZXJMZXZlbBItChJzdWdnZXN0ZWRfcXVhbnRpdHkY'
-    'BSABKAVSEXN1Z2dlc3RlZFF1YW50aXR5EiUKDmVzdGltYXRlZF9jb3N0GAYgASgFUg1lc3RpbW'
-    'F0ZWRDb3N0');
-
 const $core.Map<$core.String, $core.dynamic> PurchaseOrderServiceBase$json = {
   '1': 'PurchaseOrderService',
   '2': [
@@ -611,11 +535,6 @@ const $core.Map<$core.String, $core.dynamic> PurchaseOrderServiceBase$json = {
       '2': '.order.v1.CreateReceivingNoteRequest',
       '3': '.order.v1.CreateReceivingNoteResponse'
     },
-    {
-      '1': 'GetSuggestedPurchaseOrders',
-      '2': '.order.v1.GetSuggestedPurchaseOrdersRequest',
-      '3': '.order.v1.GetSuggestedPurchaseOrdersResponse'
-    },
   ],
 };
 
@@ -624,7 +543,7 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
     PurchaseOrderServiceBase$messageJson = {
   '.order.v1.CreatePurchaseOrderRequest': CreatePurchaseOrderRequest$json,
   '.order.v1.OrderLineItem': $0.OrderLineItem$json,
-  '.inventory.v1.Internationalized': $6.Internationalized$json,
+  '.inventory.v1.Internationalized': $5.Internationalized$json,
   '.google.protobuf.Timestamp': $1.Timestamp$json,
   '.order.v1.CreatePurchaseOrderResponse': CreatePurchaseOrderResponse$json,
   '.order.v1.PurchaseOrder': PurchaseOrder$json,
@@ -633,7 +552,7 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
   '.logistic.v1.ReceivingNote': $2.ReceivingNote$json,
   '.logistic.v1.ReceivingLineItem': $2.ReceivingLineItem$json,
   '.financial.v1.Invoice': $3.Invoice$json,
-  '.financial.v1.InvoiceLineItem': $7.InvoiceLineItem$json,
+  '.financial.v1.InvoiceLineItem': $6.InvoiceLineItem$json,
   '.payments.v1.Payment': $4.Payment$json,
   '.order.v1.ListPurchaseOrdersRequest': ListPurchaseOrdersRequest$json,
   '.order.v1.ListPurchaseOrdersResponse': ListPurchaseOrdersResponse$json,
@@ -645,12 +564,6 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
   '.order.v1.CancelPurchaseOrderResponse': CancelPurchaseOrderResponse$json,
   '.order.v1.CreateReceivingNoteRequest': CreateReceivingNoteRequest$json,
   '.order.v1.CreateReceivingNoteResponse': CreateReceivingNoteResponse$json,
-  '.order.v1.GetSuggestedPurchaseOrdersRequest':
-      GetSuggestedPurchaseOrdersRequest$json,
-  '.order.v1.GetSuggestedPurchaseOrdersResponse':
-      GetSuggestedPurchaseOrdersResponse$json,
-  '.order.v1.SuggestedPurchase': SuggestedPurchase$json,
-  '.inventory.v1.StoreProduct': $5.StoreProduct$json,
 };
 
 /// Descriptor for `PurchaseOrderService`. Decode as a `google.protobuf.ServiceDescriptorProto`.
@@ -666,6 +579,4 @@ final $typed_data.Uint8List purchaseOrderServiceDescriptor = $convert.base64Deco
     'c2VPcmRlchIkLm9yZGVyLnYxLkNhbmNlbFB1cmNoYXNlT3JkZXJSZXF1ZXN0GiUub3JkZXIudj'
     'EuQ2FuY2VsUHVyY2hhc2VPcmRlclJlc3BvbnNlEmIKE0NyZWF0ZVJlY2VpdmluZ05vdGUSJC5v'
     'cmRlci52MS5DcmVhdGVSZWNlaXZpbmdOb3RlUmVxdWVzdBolLm9yZGVyLnYxLkNyZWF0ZVJlY2'
-    'VpdmluZ05vdGVSZXNwb25zZRJ3ChpHZXRTdWdnZXN0ZWRQdXJjaGFzZU9yZGVycxIrLm9yZGVy'
-    'LnYxLkdldFN1Z2dlc3RlZFB1cmNoYXNlT3JkZXJzUmVxdWVzdBosLm9yZGVyLnYxLkdldFN1Z2'
-    'dlc3RlZFB1cmNoYXNlT3JkZXJzUmVzcG9uc2U=');
+    'VpdmluZ05vdGVSZXNwb25zZQ==');

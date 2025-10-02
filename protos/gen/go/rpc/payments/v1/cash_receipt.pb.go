@@ -48,25 +48,33 @@ const (
 // INVENTORY IMPACT: -1 PRD-001 from WH-002
 // ACCOUNTING IMPACT: Immediate revenue + payment
 type CashReceipt struct {
-	state           protoimpl.MessageState `protogen:"open.v1"`
-	DocumentId      string                 `protobuf:"bytes,1,opt,name=document_id,json=documentId,proto3" json:"document_id,omitempty"`            // "CASH-2025-001"
-	CashierUserId   string                 `protobuf:"bytes,2,opt,name=cashier_user_id,json=cashierUserId,proto3" json:"cashier_user_id,omitempty"` // Who processed sale
-	CustomerId      string                 `protobuf:"bytes,3,opt,name=customer_id,json=customerId,proto3" json:"customer_id,omitempty"`            // Can be null for anonymous
-	StoreId         string                 `protobuf:"bytes,4,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`                     // Which location/store
-	Items           []*v1.InvoiceLineItem  `protobuf:"bytes,5,rep,name=items,proto3" json:"items,omitempty"`
-	Subtotal        float64                `protobuf:"fixed64,6,opt,name=subtotal,proto3" json:"subtotal,omitempty"`
-	TaxAmount       float64                `protobuf:"fixed64,7,opt,name=tax_amount,json=taxAmount,proto3" json:"tax_amount,omitempty"`
-	TotalAmount     float64                `protobuf:"fixed64,8,opt,name=total_amount,json=totalAmount,proto3" json:"total_amount,omitempty"`
-	AmountPaid      float64                `protobuf:"fixed64,9,opt,name=amount_paid,json=amountPaid,proto3" json:"amount_paid,omitempty"` // What customer gave
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// "CASH-2025-001"
+	DocumentId string `protobuf:"bytes,1,opt,name=document_id,json=documentId,proto3" json:"document_id,omitempty"`
+	// Who processed sale
+	CashierUserId string `protobuf:"bytes,2,opt,name=cashier_user_id,json=cashierUserId,proto3" json:"cashier_user_id,omitempty"`
+	// Can be null for anonymous
+	CustomerId string `protobuf:"bytes,3,opt,name=customer_id,json=customerId,proto3" json:"customer_id,omitempty"`
+	// Which location/store
+	StoreId     string                `protobuf:"bytes,4,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
+	Items       []*v1.InvoiceLineItem `protobuf:"bytes,5,rep,name=items,proto3" json:"items,omitempty"`
+	Subtotal    float64               `protobuf:"fixed64,6,opt,name=subtotal,proto3" json:"subtotal,omitempty"`
+	TaxAmount   float64               `protobuf:"fixed64,7,opt,name=tax_amount,json=taxAmount,proto3" json:"tax_amount,omitempty"`
+	TotalAmount float64               `protobuf:"fixed64,8,opt,name=total_amount,json=totalAmount,proto3" json:"total_amount,omitempty"`
+	// What customer gave.
+	AmountPaid float64 `protobuf:"fixed64,9,opt,name=amount_paid,json=amountPaid,proto3" json:"amount_paid,omitempty"`
+	// Change given to customer.
 	ChangeGiven     float64                `protobuf:"fixed64,10,opt,name=change_given,json=changeGiven,proto3" json:"change_given,omitempty"`
 	Currency        string                 `protobuf:"bytes,11,opt,name=currency,proto3" json:"currency,omitempty"`
 	PaymentIds      []string               `protobuf:"bytes,12,rep,name=payment_ids,json=paymentIds,proto3" json:"payment_ids,omitempty"`
 	TransactionTime *timestamppb.Timestamp `protobuf:"bytes,13,opt,name=transaction_time,json=transactionTime,proto3" json:"transaction_time,omitempty"`
 	Notes           string                 `protobuf:"bytes,14,opt,name=notes,proto3" json:"notes,omitempty"`
-	VoucherIssued   string                 `protobuf:"bytes,15,opt,name=voucher_issued,json=voucherIssued,proto3" json:"voucher_issued,omitempty"`
-	OwedToCustomer  float64                `protobuf:"fixed64,16,opt,name=owed_to_customer,json=owedToCustomer,proto3" json:"owed_to_customer,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	// Voucher issued if owed_to_customer > 0.
+	VoucherIssuedCode *string `protobuf:"bytes,15,opt,name=voucher_issued_code,json=voucherIssuedCode,proto3,oneof" json:"voucher_issued_code,omitempty"`
+	// Amount owed to customer.
+	OwedToCustomer float64 `protobuf:"fixed64,16,opt,name=owed_to_customer,json=owedToCustomer,proto3" json:"owed_to_customer,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *CashReceipt) Reset() {
@@ -197,9 +205,9 @@ func (x *CashReceipt) GetNotes() string {
 	return ""
 }
 
-func (x *CashReceipt) GetVoucherIssued() string {
-	if x != nil {
-		return x.VoucherIssued
+func (x *CashReceipt) GetVoucherIssuedCode() string {
+	if x != nil && x.VoucherIssuedCode != nil {
+		return *x.VoucherIssuedCode
 	}
 	return ""
 }
@@ -218,7 +226,7 @@ type CreateCashReceiptRequest struct {
 	// The partial payment use by the client.
 	Payments []*Payment `protobuf:"bytes,2,rep,name=payments,proto3" json:"payments,omitempty"`
 	// Issue voucher on change
-	// If true and change_given > 0, issue a voucher instead of cash
+	// If true and owed_to_customer > 0, issue a voucher instead of cash
 	IssueVoucherOnChange bool `protobuf:"varint,3,opt,name=issue_voucher_on_change,json=issueVoucherOnChange,proto3" json:"issue_voucher_on_change,omitempty"`
 	unknownFields        protoimpl.UnknownFields
 	sizeCache            protoimpl.SizeCache
@@ -278,8 +286,9 @@ func (x *CreateCashReceiptRequest) GetIssueVoucherOnChange() bool {
 type CreateCashReceiptResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The created cash receipt.
-	Success       bool         `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
-	Voucher       *GiftVoucher `protobuf:"bytes,2,opt,name=voucher,proto3,oneof" json:"voucher,omitempty"` // If a voucher was issued
+	Success bool `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	// If a voucher was issued.
+	Voucher       *GiftVoucher `protobuf:"bytes,2,opt,name=voucher,proto3,oneof" json:"voucher,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -332,7 +341,7 @@ var File_payments_v1_cash_receipt_proto protoreflect.FileDescriptor
 
 const file_payments_v1_cash_receipt_proto_rawDesc = "" +
 	"\n" +
-	"\x1epayments/v1/cash_receipt.proto\x12\vpayments.v1\x1a\x1bbuf/validate/validate.proto\x1a\"financial/v1/financial_utils.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1epayments/v1/gift_voucher.proto\x1a\x1apayments/v1/payments.proto\"\xdc\x04\n" +
+	"\x1epayments/v1/cash_receipt.proto\x12\vpayments.v1\x1a\x1bbuf/validate/validate.proto\x1a\"financial/v1/financial_utils.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1epayments/v1/gift_voucher.proto\x1a\x1apayments/v1/payments.proto\"\x82\x05\n" +
 	"\vCashReceipt\x12'\n" +
 	"\vdocument_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\n" +
 	"documentId\x12&\n" +
@@ -353,9 +362,10 @@ const file_payments_v1_cash_receipt_proto_rawDesc = "" +
 	"\vpayment_ids\x18\f \x03(\tR\n" +
 	"paymentIds\x12E\n" +
 	"\x10transaction_time\x18\r \x01(\v2\x1a.google.protobuf.TimestampR\x0ftransactionTime\x12\x14\n" +
-	"\x05notes\x18\x0e \x01(\tR\x05notes\x12%\n" +
-	"\x0evoucher_issued\x18\x0f \x01(\tR\rvoucherIssued\x12(\n" +
-	"\x10owed_to_customer\x18\x10 \x01(\x01R\x0eowedToCustomer\"\xb7\x01\n" +
+	"\x05notes\x18\x0e \x01(\tR\x05notes\x123\n" +
+	"\x13voucher_issued_code\x18\x0f \x01(\tH\x00R\x11voucherIssuedCode\x88\x01\x01\x12(\n" +
+	"\x10owed_to_customer\x18\x10 \x01(\x01R\x0eowedToCustomerB\x16\n" +
+	"\x14_voucher_issued_code\"\xb7\x01\n" +
 	"\x18CreateCashReceiptRequest\x122\n" +
 	"\areceipt\x18\x01 \x01(\v2\x18.payments.v1.CashReceiptR\areceipt\x120\n" +
 	"\bpayments\x18\x02 \x03(\v2\x14.payments.v1.PaymentR\bpayments\x125\n" +
@@ -413,6 +423,7 @@ func file_payments_v1_cash_receipt_proto_init() {
 	}
 	file_payments_v1_gift_voucher_proto_init()
 	file_payments_v1_payments_proto_init()
+	file_payments_v1_cash_receipt_proto_msgTypes[0].OneofWrappers = []any{}
 	file_payments_v1_cash_receipt_proto_msgTypes[2].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{

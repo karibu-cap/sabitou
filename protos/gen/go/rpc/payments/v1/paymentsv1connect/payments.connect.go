@@ -42,9 +42,6 @@ const (
 	// PaymentServiceListPaymentsProcedure is the fully-qualified name of the PaymentService's
 	// ListPayments RPC.
 	PaymentServiceListPaymentsProcedure = "/payments.v1.PaymentService/ListPayments"
-	// PaymentServiceCreateRefundProcedure is the fully-qualified name of the PaymentService's
-	// CreateRefund RPC.
-	PaymentServiceCreateRefundProcedure = "/payments.v1.PaymentService/CreateRefund"
 )
 
 // PaymentServiceClient is a client for the payments.v1.PaymentService service.
@@ -55,8 +52,6 @@ type PaymentServiceClient interface {
 	GetPayment(context.Context, *connect.Request[v1.GetPaymentRequest]) (*connect.Response[v1.GetPaymentResponse], error)
 	// List payments with filtering
 	ListPayments(context.Context, *connect.Request[v1.ListPaymentsRequest]) (*connect.Response[v1.ListPaymentsResponse], error)
-	// Process refund
-	CreateRefund(context.Context, *connect.Request[v1.CreateRefundRequest]) (*connect.Response[v1.CreateRefundResponse], error)
 }
 
 // NewPaymentServiceClient constructs a client for the payments.v1.PaymentService service. By
@@ -88,12 +83,6 @@ func NewPaymentServiceClient(httpClient connect.HTTPClient, baseURL string, opts
 			connect.WithSchema(paymentServiceMethods.ByName("ListPayments")),
 			connect.WithClientOptions(opts...),
 		),
-		createRefund: connect.NewClient[v1.CreateRefundRequest, v1.CreateRefundResponse](
-			httpClient,
-			baseURL+PaymentServiceCreateRefundProcedure,
-			connect.WithSchema(paymentServiceMethods.ByName("CreateRefund")),
-			connect.WithClientOptions(opts...),
-		),
 	}
 }
 
@@ -102,7 +91,6 @@ type paymentServiceClient struct {
 	createPayment *connect.Client[v1.CreatePaymentRequest, v1.CreatePaymentResponse]
 	getPayment    *connect.Client[v1.GetPaymentRequest, v1.GetPaymentResponse]
 	listPayments  *connect.Client[v1.ListPaymentsRequest, v1.ListPaymentsResponse]
-	createRefund  *connect.Client[v1.CreateRefundRequest, v1.CreateRefundResponse]
 }
 
 // CreatePayment calls payments.v1.PaymentService.CreatePayment.
@@ -120,11 +108,6 @@ func (c *paymentServiceClient) ListPayments(ctx context.Context, req *connect.Re
 	return c.listPayments.CallUnary(ctx, req)
 }
 
-// CreateRefund calls payments.v1.PaymentService.CreateRefund.
-func (c *paymentServiceClient) CreateRefund(ctx context.Context, req *connect.Request[v1.CreateRefundRequest]) (*connect.Response[v1.CreateRefundResponse], error) {
-	return c.createRefund.CallUnary(ctx, req)
-}
-
 // PaymentServiceHandler is an implementation of the payments.v1.PaymentService service.
 type PaymentServiceHandler interface {
 	// Record a payment
@@ -133,8 +116,6 @@ type PaymentServiceHandler interface {
 	GetPayment(context.Context, *connect.Request[v1.GetPaymentRequest]) (*connect.Response[v1.GetPaymentResponse], error)
 	// List payments with filtering
 	ListPayments(context.Context, *connect.Request[v1.ListPaymentsRequest]) (*connect.Response[v1.ListPaymentsResponse], error)
-	// Process refund
-	CreateRefund(context.Context, *connect.Request[v1.CreateRefundRequest]) (*connect.Response[v1.CreateRefundResponse], error)
 }
 
 // NewPaymentServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -162,12 +143,6 @@ func NewPaymentServiceHandler(svc PaymentServiceHandler, opts ...connect.Handler
 		connect.WithSchema(paymentServiceMethods.ByName("ListPayments")),
 		connect.WithHandlerOptions(opts...),
 	)
-	paymentServiceCreateRefundHandler := connect.NewUnaryHandler(
-		PaymentServiceCreateRefundProcedure,
-		svc.CreateRefund,
-		connect.WithSchema(paymentServiceMethods.ByName("CreateRefund")),
-		connect.WithHandlerOptions(opts...),
-	)
 	return "/payments.v1.PaymentService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case PaymentServiceCreatePaymentProcedure:
@@ -176,8 +151,6 @@ func NewPaymentServiceHandler(svc PaymentServiceHandler, opts ...connect.Handler
 			paymentServiceGetPaymentHandler.ServeHTTP(w, r)
 		case PaymentServiceListPaymentsProcedure:
 			paymentServiceListPaymentsHandler.ServeHTTP(w, r)
-		case PaymentServiceCreateRefundProcedure:
-			paymentServiceCreateRefundHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -197,8 +170,4 @@ func (UnimplementedPaymentServiceHandler) GetPayment(context.Context, *connect.R
 
 func (UnimplementedPaymentServiceHandler) ListPayments(context.Context, *connect.Request[v1.ListPaymentsRequest]) (*connect.Response[v1.ListPaymentsResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("payments.v1.PaymentService.ListPayments is not implemented"))
-}
-
-func (UnimplementedPaymentServiceHandler) CreateRefund(context.Context, *connect.Request[v1.CreateRefundRequest]) (*connect.Response[v1.CreateRefundResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("payments.v1.PaymentService.CreateRefund is not implemented"))
 }

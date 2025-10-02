@@ -19,7 +19,7 @@ const OrderLineItem$json = {
   '1': 'OrderLineItem',
   '2': [
     {'1': 'product_id', '3': 1, '4': 1, '5': 9, '10': 'productId'},
-    {'1': 'quantity', '3': 2, '4': 1, '5': 1, '10': 'quantity'},
+    {'1': 'quantity', '3': 2, '4': 1, '5': 5, '10': 'quantity'},
     {
       '1': 'product_name',
       '3': 3,
@@ -30,32 +30,25 @@ const OrderLineItem$json = {
     },
     {'1': 'unit_price', '3': 4, '4': 1, '5': 1, '10': 'unitPrice'},
     {'1': 'total', '3': 5, '4': 1, '5': 1, '10': 'total'},
-    {'1': 'notes', '3': 6, '4': 1, '5': 9, '10': 'notes'},
-    {'1': 'batch_id', '3': 7, '4': 1, '5': 9, '10': 'batchId'},
+    {
+      '1': 'batch_id',
+      '3': 6,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'batchId',
+      '17': true
+    },
+  ],
+  '8': [
+    {'1': '_batch_id'},
   ],
 };
 
 /// Descriptor for `OrderLineItem`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List orderLineItemDescriptor = $convert.base64Decode(
     'Cg1PcmRlckxpbmVJdGVtEh0KCnByb2R1Y3RfaWQYASABKAlSCXByb2R1Y3RJZBIaCghxdWFudG'
-    'l0eRgCIAEoAVIIcXVhbnRpdHkSQgoMcHJvZHVjdF9uYW1lGAMgASgLMh8uaW52ZW50b3J5LnYx'
+    'l0eRgCIAEoBVIIcXVhbnRpdHkSQgoMcHJvZHVjdF9uYW1lGAMgASgLMh8uaW52ZW50b3J5LnYx'
     'LkludGVybmF0aW9uYWxpemVkUgtwcm9kdWN0TmFtZRIdCgp1bml0X3ByaWNlGAQgASgBUgl1bm'
-    'l0UHJpY2USFAoFdG90YWwYBSABKAFSBXRvdGFsEhQKBW5vdGVzGAYgASgJUgVub3RlcxIZCghi'
-    'YXRjaF9pZBgHIAEoCVIHYmF0Y2hJZA==');
-
-@$core.Deprecated('Use orderPricesDescriptor instead')
-const OrderPrices$json = {
-  '1': 'OrderPrices',
-  '2': [
-    {'1': 'subtotal', '3': 1, '4': 1, '5': 5, '10': 'subtotal'},
-    {'1': 'discounts', '3': 2, '4': 1, '5': 5, '10': 'discounts'},
-    {'1': 'total_vat_amount', '3': 3, '4': 1, '5': 5, '10': 'totalVatAmount'},
-    {'1': 'grand_total', '3': 4, '4': 1, '5': 5, '10': 'grandTotal'},
-  ],
-};
-
-/// Descriptor for `OrderPrices`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List orderPricesDescriptor = $convert.base64Decode(
-    'CgtPcmRlclByaWNlcxIaCghzdWJ0b3RhbBgBIAEoBVIIc3VidG90YWwSHAoJZGlzY291bnRzGA'
-    'IgASgFUglkaXNjb3VudHMSKAoQdG90YWxfdmF0X2Ftb3VudBgDIAEoBVIOdG90YWxWYXRBbW91'
-    'bnQSHwoLZ3JhbmRfdG90YWwYBCABKAVSCmdyYW5kVG90YWw=');
+    'l0UHJpY2USFAoFdG90YWwYBSABKAFSBXRvdGFsEh4KCGJhdGNoX2lkGAYgASgJSABSB2JhdGNo'
+    'SWSIAQFCCwoJX2JhdGNoX2lk');

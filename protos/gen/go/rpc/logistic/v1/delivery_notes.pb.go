@@ -106,15 +106,16 @@ type DeliveryNote struct {
 	ToAddress           string                 `protobuf:"bytes,5,opt,name=to_address,json=toAddress,proto3" json:"to_address,omitempty"`                                   // Delivery address
 	Status              DeliveryNoteStatus     `protobuf:"varint,6,opt,name=status,proto3,enum=logistic.v1.DeliveryNoteStatus" json:"status,omitempty"`
 	Items               []*DeliveryLineItem    `protobuf:"bytes,7,rep,name=items,proto3" json:"items,omitempty"`
-	Carrier             string                 `protobuf:"bytes,8,opt,name=carrier,proto3" json:"carrier,omitempty"` // "DHL", "Local Delivery", etc.
-	TrackingNumber      string                 `protobuf:"bytes,9,opt,name=tracking_number,json=trackingNumber,proto3" json:"tracking_number,omitempty"`
-	CreatedByUserId     string                 `protobuf:"bytes,10,opt,name=created_by_user_id,json=createdByUserId,proto3" json:"created_by_user_id,omitempty"`
-	CreatedAt           *timestamppb.Timestamp `protobuf:"bytes,11,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	ShippedAt           *timestamppb.Timestamp `protobuf:"bytes,12,opt,name=shipped_at,json=shippedAt,proto3" json:"shipped_at,omitempty"`
-	DeliveredAt         *timestamppb.Timestamp `protobuf:"bytes,13,opt,name=delivered_at,json=deliveredAt,proto3" json:"delivered_at,omitempty"`
-	Notes               string                 `protobuf:"bytes,14,opt,name=notes,proto3" json:"notes,omitempty"`
-	unknownFields       protoimpl.UnknownFields
-	sizeCache           protoimpl.SizeCache
+	// "DHL", "Local Delivery", etc.
+	Carrier         string                 `protobuf:"bytes,8,opt,name=carrier,proto3" json:"carrier,omitempty"`
+	TrackingNumber  string                 `protobuf:"bytes,9,opt,name=tracking_number,json=trackingNumber,proto3" json:"tracking_number,omitempty"`
+	CreatedByUserId string                 `protobuf:"bytes,10,opt,name=created_by_user_id,json=createdByUserId,proto3" json:"created_by_user_id,omitempty"`
+	CreatedAt       *timestamppb.Timestamp `protobuf:"bytes,11,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	ShippedAt       *timestamppb.Timestamp `protobuf:"bytes,12,opt,name=shipped_at,json=shippedAt,proto3" json:"shipped_at,omitempty"`
+	DeliveredAt     *timestamppb.Timestamp `protobuf:"bytes,13,opt,name=delivered_at,json=deliveredAt,proto3" json:"delivered_at,omitempty"`
+	Notes           string                 `protobuf:"bytes,14,opt,name=notes,proto3" json:"notes,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *DeliveryNote) Reset() {

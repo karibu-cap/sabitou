@@ -35,7 +35,7 @@ export 'receiving_notes.pbenum.dart';
 ///    rn_id: "RN-2025-001"
 ///    related_purchase_order_id: "PO-2025-001"
 ///    supplier_id: "CMP-002"
-///    warehouse_id: "WH-001"
+///    buyer_id: "WH-001"
 ///    items: [48x PRD-001] (expected 50, but 2 damaged)
 ///    status: RN_STATUS_COMPLETED
 ///
@@ -45,7 +45,7 @@ class ReceivingNote extends $pb.GeneratedMessage {
     $core.String? documentId,
     $core.String? relatedPurchaseOrderId,
     $core.String? supplierId,
-    $core.String? warehouseId,
+    $core.String? buyerId,
     ReceivingNoteStatus? status,
     $core.Iterable<ReceivingLineItem>? items,
     $core.String? receivedByUserId,
@@ -57,7 +57,7 @@ class ReceivingNote extends $pb.GeneratedMessage {
     if (relatedPurchaseOrderId != null)
       result.relatedPurchaseOrderId = relatedPurchaseOrderId;
     if (supplierId != null) result.supplierId = supplierId;
-    if (warehouseId != null) result.warehouseId = warehouseId;
+    if (buyerId != null) result.buyerId = buyerId;
     if (status != null) result.status = status;
     if (items != null) result.items.addAll(items);
     if (receivedByUserId != null) result.receivedByUserId = receivedByUserId;
@@ -82,7 +82,7 @@ class ReceivingNote extends $pb.GeneratedMessage {
     ..aOS(1, _omitFieldNames ? '' : 'documentId')
     ..aOS(2, _omitFieldNames ? '' : 'relatedPurchaseOrderId')
     ..aOS(3, _omitFieldNames ? '' : 'supplierId')
-    ..aOS(4, _omitFieldNames ? '' : 'warehouseId')
+    ..aOS(4, _omitFieldNames ? '' : 'buyerId')
     ..e<ReceivingNoteStatus>(
         5, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
         defaultOrMaker: ReceivingNoteStatus.RN_STATUS_UNSPECIFIED,
@@ -146,13 +146,13 @@ class ReceivingNote extends $pb.GeneratedMessage {
   void clearSupplierId() => $_clearField(3);
 
   @$pb.TagNumber(4)
-  $core.String get warehouseId => $_getSZ(3);
+  $core.String get buyerId => $_getSZ(3);
   @$pb.TagNumber(4)
-  set warehouseId($core.String value) => $_setString(3, value);
+  set buyerId($core.String value) => $_setString(3, value);
   @$pb.TagNumber(4)
-  $core.bool hasWarehouseId() => $_has(3);
+  $core.bool hasBuyerId() => $_has(3);
   @$pb.TagNumber(4)
-  void clearWarehouseId() => $_clearField(4);
+  void clearBuyerId() => $_clearField(4);
 
   @$pb.TagNumber(5)
   ReceivingNoteStatus get status => $_getN(4);

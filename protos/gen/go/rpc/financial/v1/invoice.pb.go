@@ -144,8 +144,6 @@ func (InvoiceStatus) EnumDescriptor() ([]byte, []int) {
 // The official accounting document for a sale or purchase.
 // Created AFTER goods are delivered (usually).
 //
-// Fix: InvoiceLineItem now includes optional batch_id for traceability.
-//
 // For SALES: You issue to customer
 // For PURCHASES: You receive from supplier
 //
@@ -166,13 +164,13 @@ func (InvoiceStatus) EnumDescriptor() ([]byte, []int) {
 // INVENTORY IMPACT: None (already moved by DeliveryNote)
 type Invoice struct {
 	state                  protoimpl.MessageState `protogen:"open.v1"`
-	DocumentId             string                 `protobuf:"bytes,1,opt,name=document_id,json=documentId,proto3" json:"document_id,omitempty"`                                         // "INV-2025-001"
-	InvoiceType            InvoiceType            `protobuf:"varint,2,opt,name=invoice_type,json=invoiceType,proto3,enum=financial.v1.InvoiceType" json:"invoice_type,omitempty"`       // Sales or Purchase
-	IssuerId               string                 `protobuf:"bytes,3,opt,name=issuer_id,json=issuerId,proto3" json:"issuer_id,omitempty"`                                               // Company issuing invoice
-	RecipientId            string                 `protobuf:"bytes,4,opt,name=recipient_id,json=recipientId,proto3" json:"recipient_id,omitempty"`                                      // Company receiving invoice
-	RelatedSalesOrderId    string                 `protobuf:"bytes,5,opt,name=related_sales_order_id,json=relatedSalesOrderId,proto3" json:"related_sales_order_id,omitempty"`          // Optional link
-	RelatedPurchaseOrderId string                 `protobuf:"bytes,6,opt,name=related_purchase_order_id,json=relatedPurchaseOrderId,proto3" json:"related_purchase_order_id,omitempty"` // Optional link
-	RelatedDeliveryNoteId  string                 `protobuf:"bytes,7,opt,name=related_delivery_note_id,json=relatedDeliveryNoteId,proto3" json:"related_delivery_note_id,omitempty"`    // Optional link
+	DocumentId             string                 `protobuf:"bytes,1,opt,name=document_id,json=documentId,proto3" json:"document_id,omitempty"`                                               // "INV-2025-001"
+	InvoiceType            InvoiceType            `protobuf:"varint,2,opt,name=invoice_type,json=invoiceType,proto3,enum=financial.v1.InvoiceType" json:"invoice_type,omitempty"`             // Sales or Purchase
+	IssuerId               string                 `protobuf:"bytes,3,opt,name=issuer_id,json=issuerId,proto3" json:"issuer_id,omitempty"`                                                     // Company issuing invoice
+	RecipientId            string                 `protobuf:"bytes,4,opt,name=recipient_id,json=recipientId,proto3" json:"recipient_id,omitempty"`                                            // Company receiving invoice
+	RelatedSalesOrderId    *string                `protobuf:"bytes,5,opt,name=related_sales_order_id,json=relatedSalesOrderId,proto3,oneof" json:"related_sales_order_id,omitempty"`          // Optional link
+	RelatedPurchaseOrderId *string                `protobuf:"bytes,6,opt,name=related_purchase_order_id,json=relatedPurchaseOrderId,proto3,oneof" json:"related_purchase_order_id,omitempty"` // Optional link
+	RelatedDeliveryNoteId  *string                `protobuf:"bytes,7,opt,name=related_delivery_note_id,json=relatedDeliveryNoteId,proto3,oneof" json:"related_delivery_note_id,omitempty"`    // Optional link
 	Status                 InvoiceStatus          `protobuf:"varint,8,opt,name=status,proto3,enum=financial.v1.InvoiceStatus" json:"status,omitempty"`
 	Items                  []*InvoiceLineItem     `protobuf:"bytes,9,rep,name=items,proto3" json:"items,omitempty"`
 	Subtotal               float64                `protobuf:"fixed64,10,opt,name=subtotal,proto3" json:"subtotal,omitempty"`                          // Before tax
@@ -249,22 +247,22 @@ func (x *Invoice) GetRecipientId() string {
 }
 
 func (x *Invoice) GetRelatedSalesOrderId() string {
-	if x != nil {
-		return x.RelatedSalesOrderId
+	if x != nil && x.RelatedSalesOrderId != nil {
+		return *x.RelatedSalesOrderId
 	}
 	return ""
 }
 
 func (x *Invoice) GetRelatedPurchaseOrderId() string {
-	if x != nil {
-		return x.RelatedPurchaseOrderId
+	if x != nil && x.RelatedPurchaseOrderId != nil {
+		return *x.RelatedPurchaseOrderId
 	}
 	return ""
 }
 
 func (x *Invoice) GetRelatedDeliveryNoteId() string {
-	if x != nil {
-		return x.RelatedDeliveryNoteId
+	if x != nil && x.RelatedDeliveryNoteId != nil {
+		return *x.RelatedDeliveryNoteId
 	}
 	return ""
 }
@@ -364,16 +362,16 @@ var File_financial_v1_invoice_proto protoreflect.FileDescriptor
 
 const file_financial_v1_invoice_proto_rawDesc = "" +
 	"\n" +
-	"\x1afinancial/v1/invoice.proto\x12\ffinancial.v1\x1a\x1bbuf/validate/validate.proto\x1a\"financial/v1/financial_utils.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xf3\x06\n" +
+	"\x1afinancial/v1/invoice.proto\x12\ffinancial.v1\x1a\x1bbuf/validate/validate.proto\x1a\"financial/v1/financial_utils.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xd8\a\n" +
 	"\aInvoice\x12'\n" +
 	"\vdocument_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\n" +
 	"documentId\x12<\n" +
 	"\finvoice_type\x18\x02 \x01(\x0e2\x19.financial.v1.InvoiceTypeR\vinvoiceType\x12\x1b\n" +
 	"\tissuer_id\x18\x03 \x01(\tR\bissuerId\x12!\n" +
-	"\frecipient_id\x18\x04 \x01(\tR\vrecipientId\x123\n" +
-	"\x16related_sales_order_id\x18\x05 \x01(\tR\x13relatedSalesOrderId\x129\n" +
-	"\x19related_purchase_order_id\x18\x06 \x01(\tR\x16relatedPurchaseOrderId\x127\n" +
-	"\x18related_delivery_note_id\x18\a \x01(\tR\x15relatedDeliveryNoteId\x123\n" +
+	"\frecipient_id\x18\x04 \x01(\tR\vrecipientId\x128\n" +
+	"\x16related_sales_order_id\x18\x05 \x01(\tH\x00R\x13relatedSalesOrderId\x88\x01\x01\x12>\n" +
+	"\x19related_purchase_order_id\x18\x06 \x01(\tH\x01R\x16relatedPurchaseOrderId\x88\x01\x01\x12<\n" +
+	"\x18related_delivery_note_id\x18\a \x01(\tH\x02R\x15relatedDeliveryNoteId\x88\x01\x01\x123\n" +
 	"\x06status\x18\b \x01(\x0e2\x1b.financial.v1.InvoiceStatusR\x06status\x123\n" +
 	"\x05items\x18\t \x03(\v2\x1d.financial.v1.InvoiceLineItemR\x05items\x12\x1a\n" +
 	"\bsubtotal\x18\n" +
@@ -391,7 +389,10 @@ const file_financial_v1_invoice_proto_rawDesc = "" +
 	"\vpayment_ids\x18\x12 \x03(\tR\n" +
 	"paymentIds\x12\x14\n" +
 	"\x05notes\x18\x13 \x01(\tR\x05notes\x12#\n" +
-	"\rpayment_terms\x18\x14 \x01(\tR\fpaymentTerms*^\n" +
+	"\rpayment_terms\x18\x14 \x01(\tR\fpaymentTermsB\x19\n" +
+	"\x17_related_sales_order_idB\x1c\n" +
+	"\x1a_related_purchase_order_idB\x1b\n" +
+	"\x19_related_delivery_note_id*^\n" +
 	"\vInvoiceType\x12\x1c\n" +
 	"\x18INVOICE_TYPE_UNSPECIFIED\x10\x00\x12\x16\n" +
 	"\x12INVOICE_TYPE_SALES\x10\x01\x12\x19\n" +
@@ -449,6 +450,7 @@ func file_financial_v1_invoice_proto_init() {
 		return
 	}
 	file_financial_v1_financial_utils_proto_init()
+	file_financial_v1_invoice_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

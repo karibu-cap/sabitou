@@ -52,8 +52,19 @@ const CashReceipt$json = {
       '10': 'transactionTime'
     },
     {'1': 'notes', '3': 14, '4': 1, '5': 9, '10': 'notes'},
-    {'1': 'voucher_issued', '3': 15, '4': 1, '5': 9, '10': 'voucherIssued'},
+    {
+      '1': 'voucher_issued_code',
+      '3': 15,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'voucherIssuedCode',
+      '17': true
+    },
     {'1': 'owed_to_customer', '3': 16, '4': 1, '5': 1, '10': 'owedToCustomer'},
+  ],
+  '8': [
+    {'1': '_voucher_issued_code'},
   ],
 };
 
@@ -68,8 +79,9 @@ final $typed_data.Uint8List cashReceiptDescriptor = $convert.base64Decode(
     'ZBIhCgxjaGFuZ2VfZ2l2ZW4YCiABKAFSC2NoYW5nZUdpdmVuEhoKCGN1cnJlbmN5GAsgASgJUg'
     'hjdXJyZW5jeRIfCgtwYXltZW50X2lkcxgMIAMoCVIKcGF5bWVudElkcxJFChB0cmFuc2FjdGlv'
     'bl90aW1lGA0gASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIPdHJhbnNhY3Rpb25UaW'
-    '1lEhQKBW5vdGVzGA4gASgJUgVub3RlcxIlCg52b3VjaGVyX2lzc3VlZBgPIAEoCVINdm91Y2hl'
-    'cklzc3VlZBIoChBvd2VkX3RvX2N1c3RvbWVyGBAgASgBUg5vd2VkVG9DdXN0b21lcg==');
+    '1lEhQKBW5vdGVzGA4gASgJUgVub3RlcxIzChN2b3VjaGVyX2lzc3VlZF9jb2RlGA8gASgJSABS'
+    'EXZvdWNoZXJJc3N1ZWRDb2RliAEBEigKEG93ZWRfdG9fY3VzdG9tZXIYECABKAFSDm93ZWRUb0'
+    'N1c3RvbWVyQhYKFF92b3VjaGVyX2lzc3VlZF9jb2Rl');
 
 @$core.Deprecated('Use createCashReceiptRequestDescriptor instead')
 const CreateCashReceiptRequest$json = {
