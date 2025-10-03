@@ -51,26 +51,6 @@ enum PurchaseOrderStatus {
   PO_STATUS_CANCELLED = 5; // Order cancelled
 }
 
-service PurchaseOrderService {
-  // Create a purchase order to supplier
-  rpc CreatePurchaseOrder(CreatePurchaseOrderRequest) returns (CreatePurchaseOrderResponse);
-
-  // Get purchase order details
-  rpc GetPurchaseOrder(GetPurchaseOrderRequest) returns (GetPurchaseOrderResponse);
-
-  // List purchase orders
-  rpc ListPurchaseOrders(ListPurchaseOrdersRequest) returns (ListPurchaseOrdersResponse);
-
-  // Update purchase order status
-  rpc UpdatePurchaseOrderStatus(UpdatePurchaseOrderStatusRequest) returns (UpdatePurchaseOrderStatusResponse);
-
-  // Cancel purchase order
-  rpc CancelPurchaseOrder(CancelPurchaseOrderRequest) returns (CancelPurchaseOrderResponse);
-
-  // Create receiving note when goods arrive
-  rpc CreateReceivingNote(CreateReceivingNoteRequest) returns (CreateReceivingNoteResponse);
-}
-
 message CancelPurchaseOrderResponse {
   PurchaseOrder purchase_order = 1;
   string message = 2;
@@ -153,4 +133,24 @@ message CreateReceivingNoteResponse {
   bool has_discrepancies = 4; // If received != expected
   repeated string discrepancy_product_ids = 5;
   string message = 6;
+}
+
+service PurchaseOrderService {
+  // Create a purchase order to supplier
+  rpc CreatePurchaseOrder(CreatePurchaseOrderRequest) returns (CreatePurchaseOrderResponse);
+
+  // Get purchase order details
+  rpc GetPurchaseOrder(GetPurchaseOrderRequest) returns (GetPurchaseOrderResponse);
+
+  // List purchase orders
+  rpc ListPurchaseOrders(ListPurchaseOrdersRequest) returns (ListPurchaseOrdersResponse);
+
+  // Update purchase order status
+  rpc UpdatePurchaseOrderStatus(UpdatePurchaseOrderStatusRequest) returns (UpdatePurchaseOrderStatusResponse);
+
+  // Cancel purchase order
+  rpc CancelPurchaseOrder(CancelPurchaseOrderRequest) returns (CancelPurchaseOrderResponse);
+
+  // Create receiving note when goods arrive
+  rpc CreateReceivingNote(CreateReceivingNoteRequest) returns (CreateReceivingNoteResponse);
 }

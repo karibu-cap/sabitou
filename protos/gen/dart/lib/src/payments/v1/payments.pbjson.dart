@@ -289,8 +289,8 @@ final $typed_data.Uint8List listPaymentsResponseDescriptor = $convert.base64Deco
     'BheW1lbnRSCHBheW1lbnRzEh8KC3RvdGFsX2NvdW50GAIgASgFUgp0b3RhbENvdW50EiEKDHRv'
     'dGFsX2Ftb3VudBgDIAEoAVILdG90YWxBbW91bnQ=');
 
-const $core.Map<$core.String, $core.dynamic> PaymentServiceBase$json = {
-  '1': 'PaymentService',
+const $core.Map<$core.String, $core.dynamic> PaymentsServiceBase$json = {
+  '1': 'PaymentsService',
   '2': [
     {
       '1': 'CreatePayment',
@@ -310,9 +310,9 @@ const $core.Map<$core.String, $core.dynamic> PaymentServiceBase$json = {
   ],
 };
 
-@$core.Deprecated('Use paymentServiceDescriptor instead')
+@$core.Deprecated('Use paymentsServiceDescriptor instead')
 const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
-    PaymentServiceBase$messageJson = {
+    PaymentsServiceBase$messageJson = {
   '.payments.v1.CreatePaymentRequest': CreatePaymentRequest$json,
   '.payments.v1.CreatePaymentResponse': CreatePaymentResponse$json,
   '.payments.v1.Payment': Payment$json,
@@ -326,10 +326,10 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
   '.payments.v1.ListPaymentsResponse': ListPaymentsResponse$json,
 };
 
-/// Descriptor for `PaymentService`. Decode as a `google.protobuf.ServiceDescriptorProto`.
-final $typed_data.Uint8List paymentServiceDescriptor = $convert.base64Decode(
-    'Cg5QYXltZW50U2VydmljZRJWCg1DcmVhdGVQYXltZW50EiEucGF5bWVudHMudjEuQ3JlYXRlUG'
-    'F5bWVudFJlcXVlc3QaIi5wYXltZW50cy52MS5DcmVhdGVQYXltZW50UmVzcG9uc2USTQoKR2V0'
-    'UGF5bWVudBIeLnBheW1lbnRzLnYxLkdldFBheW1lbnRSZXF1ZXN0Gh8ucGF5bWVudHMudjEuR2'
-    'V0UGF5bWVudFJlc3BvbnNlElMKDExpc3RQYXltZW50cxIgLnBheW1lbnRzLnYxLkxpc3RQYXlt'
-    'ZW50c1JlcXVlc3QaIS5wYXltZW50cy52MS5MaXN0UGF5bWVudHNSZXNwb25zZQ==');
+/// Descriptor for `PaymentsService`. Decode as a `google.protobuf.ServiceDescriptorProto`.
+final $typed_data.Uint8List paymentsServiceDescriptor = $convert.base64Decode(
+    'Cg9QYXltZW50c1NlcnZpY2USVgoNQ3JlYXRlUGF5bWVudBIhLnBheW1lbnRzLnYxLkNyZWF0ZV'
+    'BheW1lbnRSZXF1ZXN0GiIucGF5bWVudHMudjEuQ3JlYXRlUGF5bWVudFJlc3BvbnNlEk0KCkdl'
+    'dFBheW1lbnQSHi5wYXltZW50cy52MS5HZXRQYXltZW50UmVxdWVzdBofLnBheW1lbnRzLnYxLk'
+    'dldFBheW1lbnRSZXNwb25zZRJTCgxMaXN0UGF5bWVudHMSIC5wYXltZW50cy52MS5MaXN0UGF5'
+    'bWVudHNSZXF1ZXN0GiEucGF5bWVudHMudjEuTGlzdFBheW1lbnRzUmVzcG9uc2U=');

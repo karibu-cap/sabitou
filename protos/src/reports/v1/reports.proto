@@ -307,12 +307,6 @@ message InventoryComparisonData {
   double previous_year_movement_total_out = 5;
 }
 
-// Comprehensive dashboard data service for aggregated calculations
-service DashboardReportingService {
-  // Get comprehensive dashboard data with all calculated fields
-  rpc GetDashboardReport(GetDashboardReportRequest) returns (GetDashboardReportResponse);
-}
-
 message GetDashboardReportRequest {
   optional string store_id = 1;
   google.protobuf.Timestamp start_date = 2;
@@ -377,4 +371,10 @@ enum ReportGroupBy {
   REPORT_GROUP_BY_MONTHLY = 3;
   REPORT_GROUP_BY_QUARTERLY = 4;
   REPORT_GROUP_BY_YEARLY = 5;
+}
+
+// Comprehensive dashboard data service for aggregated calculations
+service ReportsService {
+  // Get comprehensive dashboard data with all calculated fields
+  rpc GetDashboardReport(GetDashboardReportRequest) returns (GetDashboardReportResponse);
 }

@@ -2,13 +2,13 @@ openapi: 3.1.0
 info:
   title: payments.v1
 paths:
-  /payments.v1.PaymentService/CreatePayment:
+  /payments.v1.PaymentsService/CreatePayment:
     post:
       tags:
-        - payments.v1.PaymentService
+        - payments.v1.PaymentsService
       summary: Record a payment
       description: Record a payment
-      operationId: payments.v1.PaymentService.CreatePayment
+      operationId: payments.v1.PaymentsService.CreatePayment
       parameters:
         - name: Connect-Protocol-Version
           in: header
@@ -38,13 +38,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/payments.v1.CreatePaymentResponse'
-  /payments.v1.PaymentService/GetPayment:
+  /payments.v1.PaymentsService/GetPayment:
     post:
       tags:
-        - payments.v1.PaymentService
+        - payments.v1.PaymentsService
       summary: Get payment details
       description: Get payment details
-      operationId: payments.v1.PaymentService.GetPayment
+      operationId: payments.v1.PaymentsService.GetPayment
       parameters:
         - name: Connect-Protocol-Version
           in: header
@@ -74,13 +74,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/payments.v1.GetPaymentResponse'
-  /payments.v1.PaymentService/ListPayments:
+  /payments.v1.PaymentsService/ListPayments:
     post:
       tags:
-        - payments.v1.PaymentService
+        - payments.v1.PaymentsService
       summary: List payments with filtering
       description: List payments with filtering
-      operationId: payments.v1.PaymentService.ListPayments
+      operationId: payments.v1.PaymentsService.ListPayments
       parameters:
         - name: Connect-Protocol-Version
           in: header
@@ -646,4 +646,4 @@ components:
         - PAYMENT_STATUS_FAILED
 security: []
 tags:
-  - name: payments.v1.PaymentService
+  - name: payments.v1.PaymentsService

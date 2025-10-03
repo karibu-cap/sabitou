@@ -11,7 +11,7 @@ class PaymentsRepository {
   final _logger = LoggerApp('PaymentsRepository');
 
   /// The payment service client.
-  final PaymentServiceClient paymentServiceClient;
+  final PaymentsServiceClient paymentServiceClient;
 
   /// The network status provider.
   final NetworkStatusProvider networkStatusProvider;
@@ -23,7 +23,7 @@ class PaymentsRepository {
   PaymentsRepository({
     connect.Transport? transport,
     NetworkStatusProvider? networkStatusProvider,
-  }) : paymentServiceClient = PaymentServiceClient(
+  }) : paymentServiceClient = PaymentsServiceClient(
          transport ?? ConnectRPCService.to.clientChannel,
        ),
        networkStatusProvider =

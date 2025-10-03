@@ -99,9 +99,9 @@ abstract final class ReportingService {
   );
 }
 /// Comprehensive dashboard data service for aggregated calculations
-abstract final class DashboardReportingService {
-  /// Fully-qualified name of the DashboardReportingService service.
-  static const name = 'reports.v1.DashboardReportingService';
+abstract final class ReportsService {
+  /// Fully-qualified name of the ReportsService service.
+  static const name = 'reports.v1.ReportsService';
 
   /// Get comprehensive dashboard data with all calculated fields
   static const getDashboardReport = connect.Spec(

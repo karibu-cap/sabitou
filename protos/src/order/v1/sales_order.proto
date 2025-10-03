@@ -51,29 +51,6 @@ enum SalesOrderStatus {
   SO_STATUS_CANCELLED = 6; // Order cancelled
 }
 
-service SalesOrderService {
-  // Create a sales order (customer order)
-  rpc CreateSalesOrder(CreateSalesOrderRequest) returns (CreateSalesOrderResponse);
-
-  // Get sales order details
-  rpc GetSalesOrder(GetSalesOrderRequest) returns (GetSalesOrderResponse);
-
-  // List sales orders with filtering
-  rpc ListSalesOrders(ListSalesOrdersRequest) returns (ListSalesOrdersResponse);
-
-  // Update sales order status
-  rpc UpdateSalesOrderStatus(UpdateSalesOrderStatusRequest) returns (UpdateSalesOrderStatusResponse);
-
-  // Cancel a sales order
-  rpc CancelSalesOrder(CancelSalesOrderRequest) returns (CancelSalesOrderResponse);
-
-  // Create delivery note from sales order
-  rpc CreateDeliveryNote(CreateDeliveryNoteRequest) returns (CreateDeliveryNoteResponse);
-
-  // Create invoice from sales order
-  rpc CreateInvoiceFromSalesOrder(CreateInvoiceFromSalesOrderRequest) returns (CreateInvoiceFromSalesOrderResponse);
-}
-
 message CreateSalesOrderRequest {
   string customer_id = 1;
   string seller_id = 2; // Your company
@@ -168,4 +145,27 @@ message CreateInvoiceFromSalesOrderResponse {
   string invoice_id = 1; // The invoice id
   financial.v1.Invoice invoice = 2;
   string message = 3;
+}
+
+service SalesOrderService {
+  // Create a sales order (customer order)
+  rpc CreateSalesOrder(CreateSalesOrderRequest) returns (CreateSalesOrderResponse);
+
+  // Get sales order details
+  rpc GetSalesOrder(GetSalesOrderRequest) returns (GetSalesOrderResponse);
+
+  // List sales orders with filtering
+  rpc ListSalesOrders(ListSalesOrdersRequest) returns (ListSalesOrdersResponse);
+
+  // Update sales order status
+  rpc UpdateSalesOrderStatus(UpdateSalesOrderStatusRequest) returns (UpdateSalesOrderStatusResponse);
+
+  // Cancel a sales order
+  rpc CancelSalesOrder(CancelSalesOrderRequest) returns (CancelSalesOrderResponse);
+
+  // Create delivery note from sales order
+  rpc CreateDeliveryNote(CreateDeliveryNoteRequest) returns (CreateDeliveryNoteResponse);
+
+  // Create invoice from sales order
+  rpc CreateInvoiceFromSalesOrder(CreateInvoiceFromSalesOrderRequest) returns (CreateInvoiceFromSalesOrderResponse);
 }

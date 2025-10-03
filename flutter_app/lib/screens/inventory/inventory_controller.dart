@@ -47,6 +47,7 @@ class InventoryController extends ChangeNotifier {
   /// Refreshes products.
   Future<void> refreshProducts() async {
     await _viewModel.refreshProducts();
+    notifyListeners();
   }
 
   /// Deletes product.

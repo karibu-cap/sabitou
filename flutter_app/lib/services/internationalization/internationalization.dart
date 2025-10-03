@@ -1828,6 +1828,109 @@ class AppInternationalizationService extends ChangeNotifier {
     },
     'received': {'en': 'Received', 'fr': 'Reçue'},
     'given': {'en': 'Given', 'fr': 'Rendue'},
+    'purchaseOrders': {'en': 'Purchase Orders', 'fr': 'Commandes fournisseurs'},
+    'expirationType': {'en': 'Expiration Type', 'fr': 'Type d\'expiration'},
+    'selectExpirationType': {
+      'en': 'Select expiration type',
+      'fr': 'Sélectionner un type d\'expiration',
+    },
+    'productsList': {'en': 'Products List', 'fr': 'Liste des produits'},
+    'sku': {'en': 'SKU', 'fr': 'SKU'},
+    'productsListManagement': {
+      'en': 'Products List Management',
+      'fr': 'Gestion des produits',
+    },
+    'expectedDeliveryDate': {
+      'en': 'Expected Delivery Date',
+      'fr': 'Date de livraison prévue',
+    },
+    'invalidDate': {'en': 'Invalid Date', 'fr': 'Date invalide'},
+    'noProductsAddedYet': {
+      'en': 'No products added yet',
+      'fr': 'Aucun produit ajouté',
+    },
+    'clickAddProduct': {
+      'en': 'Click "Add Product" to start adding products',
+      'fr':
+          'Cliquez sur "Ajouter un produit" pour commencer à ajouter des produits',
+    },
+    'addSpecialInstructionsOrNotes': {
+      'en': 'Add special instructions or notes...',
+      'fr': 'Ajoutez des instructions ou des notes...',
+    },
+    'totalAmount': {'en': 'Total Amount', 'fr': 'Montant total'},
+    'createPurchaseOrder': {
+      'en': 'Create Purchase Order',
+      'fr': 'Créer une commande fournisseur',
+    },
+    'pleaseAddAtLeastOneItem': {
+      'en': 'Please add at least one item',
+      'fr': 'Veuillez ajouter au moins un produit',
+    },
+    'pleaseSelectAProductForItem': {
+      'en': 'Please select a product for item @item',
+      'fr': 'Veuillez sélectionner un produit pour l\'article @item',
+    },
+    'quantityMustBeGreaterThanZeroForItem': {
+      'en': 'Quantity must be greater than 0 for product @item',
+      'fr': 'La quantité doit être supérieure à 0 pour le produit @item',
+    },
+    'amountMustBeGreaterThanZeroForItem': {
+      'en': 'Amount must be greater than 0 for product @item',
+      'fr': 'Le montant doit être supérieure à 0 pour le produit @item',
+    },
+    'purchaseOrderCreatedSuccessfully': {
+      'en': 'Purchase order created successfully',
+      'fr': 'Commande fournisseur créée avec succès',
+    },
+    'failedToCreatePurchaseOrder': {
+      'en': 'Failed to create purchase order, please try again',
+      'fr':
+          'Erreur lors de la création de la commande fournisseur, veuillez reessayer',
+    },
+    'purchaseOrdersDescription': {
+      'en': 'Manage your purchase orders from suppliers',
+      'fr': 'Gestion des commandes fournisseur',
+    },
+    'purchaseOrdersNotFound': {
+      'en': 'No purchase orders found',
+      'fr': 'Aucune commande fournisseur trouvée',
+    },
+    'cancelPurchaseOrder': {
+      'en': 'Cancel Purchase Order',
+      'fr': 'Annuler la commande fournisseur',
+    },
+    'cancelOrderConfirmation': {
+      'en': 'Are you sure you want to cancel "@order"?',
+      'fr': 'Voulez-vous vraiment annuler "@order"?',
+    },
+    'reasonForCancellation': {
+      'en': 'Reason for cancellation',
+      'fr': 'Motif de l\'annulation',
+    },
+    'noKeepOrder': {'en': 'No, Keep Order', 'fr': 'Non, garder la commande'},
+    'yesCancelOrder': {
+      'en': 'Yes, Cancel Order',
+      'fr': 'Oui, annuler la commande',
+    },
+    'partial': {'en': 'Partial', 'fr': 'Partiel'},
+    'receivePurchaseOrder': {
+      'en': 'Receive Purchase Order',
+      'fr': 'Recevoir la commande',
+    },
+    'purchaseOrderCancelledSuccessfully': {
+      'en': 'Purchase order cancelled successfully',
+      'fr': 'Commande fournisseur annulée avec succès',
+    },
+    'failedToCancelPurchaseOrder': {
+      'en': 'Failed to cancel purchase order, please try again',
+      'fr':
+          'Erreur lors de l\'annulation de la commande fournisseur, veuillez reessayer',
+    },
+    'createReceiveNote': {
+      'en': 'Create Receive Note',
+      'fr': 'Créer une note de réception',
+    },
   };
 
   /// Direct access to the internationalization service.
@@ -1846,6 +1949,119 @@ class AppInternationalizationService extends ChangeNotifier {
     const Locale('en'),
     const Locale('fr'),
   ];
+
+  /// The create receive note.
+  String get createReceiveNote => _stringOfLocalizedValue('createReceiveNote');
+
+  /// The purchase order cancelled successfully.
+  String get purchaseOrderCancelledSuccessfully =>
+      _stringOfLocalizedValue('purchaseOrderCancelledSuccessfully');
+
+  /// The failed to cancel purchase order.
+  String get failedToCancelPurchaseOrder =>
+      _stringOfLocalizedValue('failedToCancelPurchaseOrder');
+
+  /// The receive purchase order.
+  String get receivePurchaseOrder =>
+      _stringOfLocalizedValue('receivePurchaseOrder');
+
+  /// The partial.
+  String get partial => _stringOfLocalizedValue('partial');
+
+  /// The reason for cancellation.
+  String get reasonForCancellation =>
+      _stringOfLocalizedValue('reasonForCancellation');
+
+  /// The no keep order.
+  String get noKeepOrder => _stringOfLocalizedValue('noKeepOrder');
+
+  /// The yes cancel order.
+  String get yesCancelOrder => _stringOfLocalizedValue('yesCancelOrder');
+
+  /// The cancel order confirmation.
+  String get cancelOrderConfirmation =>
+      _stringOfLocalizedValue('cancelOrderConfirmation');
+
+  /// The cancel purchase order.
+  String get cancelPurchaseOrder =>
+      _stringOfLocalizedValue('cancelPurchaseOrder');
+
+  /// The purchase orders description.
+  String get purchaseOrdersNotFound =>
+      _stringOfLocalizedValue('purchaseOrdersNotFound');
+
+  /// The purchase orders description.
+  String get purchaseOrdersDescription =>
+      _stringOfLocalizedValue('purchaseOrdersDescription');
+
+  /// The purchase order created successfully.
+  String get purchaseOrderCreatedSuccessfully =>
+      _stringOfLocalizedValue('purchaseOrderCreatedSuccessfully');
+
+  /// The failed to create purchase order.
+  String get failedToCreatePurchaseOrder =>
+      _stringOfLocalizedValue('failedToCreatePurchaseOrder');
+
+  /// The please add at least one item.
+  String get pleaseAddAtLeastOneItem =>
+      _stringOfLocalizedValue('pleaseAddAtLeastOneItem');
+
+  /// The please select a product for item.
+  String get pleaseSelectAProductForItem =>
+      _stringOfLocalizedValue('pleaseSelectAProductForItem');
+
+  /// The quantity must be greater than zero for item.
+  String get quantityMustBeGreaterThanZeroForItem =>
+      _stringOfLocalizedValue('quantityMustBeGreaterThanZeroForItem');
+
+  /// The amount must be greater than zero for item.
+  String get amountMustBeGreaterThanZeroForItem =>
+      _stringOfLocalizedValue('amountMustBeGreaterThanZeroForItem');
+
+  /// The create purchase order.
+  String get createPurchaseOrder =>
+      _stringOfLocalizedValue('createPurchaseOrder');
+
+  /// The total amount.
+  String get totalAmount => _stringOfLocalizedValue('totalAmount');
+
+  /// The add special instructions or notes.
+  String get addSpecialInstructionsOrNotes =>
+      _stringOfLocalizedValue('addSpecialInstructionsOrNotes');
+
+  /// The no products added yet.
+  String get noProductsAddedYet =>
+      _stringOfLocalizedValue('noProductsAddedYet');
+
+  /// The click add product.
+  String get clickAddProduct => _stringOfLocalizedValue('clickAddProduct');
+
+  /// The invalid date.
+  String get invalidDate => _stringOfLocalizedValue('invalidDate');
+
+  /// The expected delivery date.
+  String get expectedDeliveryDate =>
+      _stringOfLocalizedValue('expectedDeliveryDate');
+
+  /// The products list management.
+  String get productsListManagement =>
+      _stringOfLocalizedValue('productsListManagement');
+
+  /// The sku.
+  String get sku => _stringOfLocalizedValue('sku');
+
+  /// The products list.
+  String get productsList => _stringOfLocalizedValue('productsList');
+
+  /// The select expiration type.
+  String get selectExpirationType =>
+      _stringOfLocalizedValue('selectExpirationType');
+
+  /// The expiration type.
+  String get expirationType => _stringOfLocalizedValue('expirationType');
+
+  /// The purchase orders.
+  String get purchaseOrders => _stringOfLocalizedValue('purchaseOrders');
 
   /// The amount change given.
   String get received => _stringOfLocalizedValue('received');

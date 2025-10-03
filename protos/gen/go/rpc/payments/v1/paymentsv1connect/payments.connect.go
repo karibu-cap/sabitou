@@ -21,8 +21,8 @@ import (
 const _ = connect.IsAtLeastVersion1_13_0
 
 const (
-	// PaymentServiceName is the fully-qualified name of the PaymentService service.
-	PaymentServiceName = "payments.v1.PaymentService"
+	// PaymentsServiceName is the fully-qualified name of the PaymentsService service.
+	PaymentsServiceName = "payments.v1.PaymentsService"
 )
 
 // These constants are the fully-qualified names of the RPCs defined in this package. They're
@@ -33,19 +33,19 @@ const (
 // reflection-formatted method names, remove the leading slash and convert the remaining slash to a
 // period.
 const (
-	// PaymentServiceCreatePaymentProcedure is the fully-qualified name of the PaymentService's
+	// PaymentsServiceCreatePaymentProcedure is the fully-qualified name of the PaymentsService's
 	// CreatePayment RPC.
-	PaymentServiceCreatePaymentProcedure = "/payments.v1.PaymentService/CreatePayment"
-	// PaymentServiceGetPaymentProcedure is the fully-qualified name of the PaymentService's GetPayment
-	// RPC.
-	PaymentServiceGetPaymentProcedure = "/payments.v1.PaymentService/GetPayment"
-	// PaymentServiceListPaymentsProcedure is the fully-qualified name of the PaymentService's
+	PaymentsServiceCreatePaymentProcedure = "/payments.v1.PaymentsService/CreatePayment"
+	// PaymentsServiceGetPaymentProcedure is the fully-qualified name of the PaymentsService's
+	// GetPayment RPC.
+	PaymentsServiceGetPaymentProcedure = "/payments.v1.PaymentsService/GetPayment"
+	// PaymentsServiceListPaymentsProcedure is the fully-qualified name of the PaymentsService's
 	// ListPayments RPC.
-	PaymentServiceListPaymentsProcedure = "/payments.v1.PaymentService/ListPayments"
+	PaymentsServiceListPaymentsProcedure = "/payments.v1.PaymentsService/ListPayments"
 )
 
-// PaymentServiceClient is a client for the payments.v1.PaymentService service.
-type PaymentServiceClient interface {
+// PaymentsServiceClient is a client for the payments.v1.PaymentsService service.
+type PaymentsServiceClient interface {
 	// Record a payment
 	CreatePayment(context.Context, *connect.Request[v1.CreatePaymentRequest]) (*connect.Response[v1.CreatePaymentResponse], error)
 	// Get payment details
@@ -54,62 +54,62 @@ type PaymentServiceClient interface {
 	ListPayments(context.Context, *connect.Request[v1.ListPaymentsRequest]) (*connect.Response[v1.ListPaymentsResponse], error)
 }
 
-// NewPaymentServiceClient constructs a client for the payments.v1.PaymentService service. By
+// NewPaymentsServiceClient constructs a client for the payments.v1.PaymentsService service. By
 // default, it uses the Connect protocol with the binary Protobuf Codec, asks for gzipped responses,
 // and sends uncompressed requests. To use the gRPC or gRPC-Web protocols, supply the
 // connect.WithGRPC() or connect.WithGRPCWeb() options.
 //
 // The URL supplied here should be the base URL for the Connect or gRPC server (for example,
 // http://api.acme.com or https://acme.com/grpc).
-func NewPaymentServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) PaymentServiceClient {
+func NewPaymentsServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) PaymentsServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
-	paymentServiceMethods := v1.File_payments_v1_payments_proto.Services().ByName("PaymentService").Methods()
-	return &paymentServiceClient{
+	paymentsServiceMethods := v1.File_payments_v1_payments_proto.Services().ByName("PaymentsService").Methods()
+	return &paymentsServiceClient{
 		createPayment: connect.NewClient[v1.CreatePaymentRequest, v1.CreatePaymentResponse](
 			httpClient,
-			baseURL+PaymentServiceCreatePaymentProcedure,
-			connect.WithSchema(paymentServiceMethods.ByName("CreatePayment")),
+			baseURL+PaymentsServiceCreatePaymentProcedure,
+			connect.WithSchema(paymentsServiceMethods.ByName("CreatePayment")),
 			connect.WithClientOptions(opts...),
 		),
 		getPayment: connect.NewClient[v1.GetPaymentRequest, v1.GetPaymentResponse](
 			httpClient,
-			baseURL+PaymentServiceGetPaymentProcedure,
-			connect.WithSchema(paymentServiceMethods.ByName("GetPayment")),
+			baseURL+PaymentsServiceGetPaymentProcedure,
+			connect.WithSchema(paymentsServiceMethods.ByName("GetPayment")),
 			connect.WithClientOptions(opts...),
 		),
 		listPayments: connect.NewClient[v1.ListPaymentsRequest, v1.ListPaymentsResponse](
 			httpClient,
-			baseURL+PaymentServiceListPaymentsProcedure,
-			connect.WithSchema(paymentServiceMethods.ByName("ListPayments")),
+			baseURL+PaymentsServiceListPaymentsProcedure,
+			connect.WithSchema(paymentsServiceMethods.ByName("ListPayments")),
 			connect.WithClientOptions(opts...),
 		),
 	}
 }
 
-// paymentServiceClient implements PaymentServiceClient.
-type paymentServiceClient struct {
+// paymentsServiceClient implements PaymentsServiceClient.
+type paymentsServiceClient struct {
 	createPayment *connect.Client[v1.CreatePaymentRequest, v1.CreatePaymentResponse]
 	getPayment    *connect.Client[v1.GetPaymentRequest, v1.GetPaymentResponse]
 	listPayments  *connect.Client[v1.ListPaymentsRequest, v1.ListPaymentsResponse]
 }
 
-// CreatePayment calls payments.v1.PaymentService.CreatePayment.
-func (c *paymentServiceClient) CreatePayment(ctx context.Context, req *connect.Request[v1.CreatePaymentRequest]) (*connect.Response[v1.CreatePaymentResponse], error) {
+// CreatePayment calls payments.v1.PaymentsService.CreatePayment.
+func (c *paymentsServiceClient) CreatePayment(ctx context.Context, req *connect.Request[v1.CreatePaymentRequest]) (*connect.Response[v1.CreatePaymentResponse], error) {
 	return c.createPayment.CallUnary(ctx, req)
 }
 
-// GetPayment calls payments.v1.PaymentService.GetPayment.
-func (c *paymentServiceClient) GetPayment(ctx context.Context, req *connect.Request[v1.GetPaymentRequest]) (*connect.Response[v1.GetPaymentResponse], error) {
+// GetPayment calls payments.v1.PaymentsService.GetPayment.
+func (c *paymentsServiceClient) GetPayment(ctx context.Context, req *connect.Request[v1.GetPaymentRequest]) (*connect.Response[v1.GetPaymentResponse], error) {
 	return c.getPayment.CallUnary(ctx, req)
 }
 
-// ListPayments calls payments.v1.PaymentService.ListPayments.
-func (c *paymentServiceClient) ListPayments(ctx context.Context, req *connect.Request[v1.ListPaymentsRequest]) (*connect.Response[v1.ListPaymentsResponse], error) {
+// ListPayments calls payments.v1.PaymentsService.ListPayments.
+func (c *paymentsServiceClient) ListPayments(ctx context.Context, req *connect.Request[v1.ListPaymentsRequest]) (*connect.Response[v1.ListPaymentsResponse], error) {
 	return c.listPayments.CallUnary(ctx, req)
 }
 
-// PaymentServiceHandler is an implementation of the payments.v1.PaymentService service.
-type PaymentServiceHandler interface {
+// PaymentsServiceHandler is an implementation of the payments.v1.PaymentsService service.
+type PaymentsServiceHandler interface {
 	// Record a payment
 	CreatePayment(context.Context, *connect.Request[v1.CreatePaymentRequest]) (*connect.Response[v1.CreatePaymentResponse], error)
 	// Get payment details
@@ -118,56 +118,56 @@ type PaymentServiceHandler interface {
 	ListPayments(context.Context, *connect.Request[v1.ListPaymentsRequest]) (*connect.Response[v1.ListPaymentsResponse], error)
 }
 
-// NewPaymentServiceHandler builds an HTTP handler from the service implementation. It returns the
+// NewPaymentsServiceHandler builds an HTTP handler from the service implementation. It returns the
 // path on which to mount the handler and the handler itself.
 //
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
-func NewPaymentServiceHandler(svc PaymentServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
-	paymentServiceMethods := v1.File_payments_v1_payments_proto.Services().ByName("PaymentService").Methods()
-	paymentServiceCreatePaymentHandler := connect.NewUnaryHandler(
-		PaymentServiceCreatePaymentProcedure,
+func NewPaymentsServiceHandler(svc PaymentsServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	paymentsServiceMethods := v1.File_payments_v1_payments_proto.Services().ByName("PaymentsService").Methods()
+	paymentsServiceCreatePaymentHandler := connect.NewUnaryHandler(
+		PaymentsServiceCreatePaymentProcedure,
 		svc.CreatePayment,
-		connect.WithSchema(paymentServiceMethods.ByName("CreatePayment")),
+		connect.WithSchema(paymentsServiceMethods.ByName("CreatePayment")),
 		connect.WithHandlerOptions(opts...),
 	)
-	paymentServiceGetPaymentHandler := connect.NewUnaryHandler(
-		PaymentServiceGetPaymentProcedure,
+	paymentsServiceGetPaymentHandler := connect.NewUnaryHandler(
+		PaymentsServiceGetPaymentProcedure,
 		svc.GetPayment,
-		connect.WithSchema(paymentServiceMethods.ByName("GetPayment")),
+		connect.WithSchema(paymentsServiceMethods.ByName("GetPayment")),
 		connect.WithHandlerOptions(opts...),
 	)
-	paymentServiceListPaymentsHandler := connect.NewUnaryHandler(
-		PaymentServiceListPaymentsProcedure,
+	paymentsServiceListPaymentsHandler := connect.NewUnaryHandler(
+		PaymentsServiceListPaymentsProcedure,
 		svc.ListPayments,
-		connect.WithSchema(paymentServiceMethods.ByName("ListPayments")),
+		connect.WithSchema(paymentsServiceMethods.ByName("ListPayments")),
 		connect.WithHandlerOptions(opts...),
 	)
-	return "/payments.v1.PaymentService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	return "/payments.v1.PaymentsService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
-		case PaymentServiceCreatePaymentProcedure:
-			paymentServiceCreatePaymentHandler.ServeHTTP(w, r)
-		case PaymentServiceGetPaymentProcedure:
-			paymentServiceGetPaymentHandler.ServeHTTP(w, r)
-		case PaymentServiceListPaymentsProcedure:
-			paymentServiceListPaymentsHandler.ServeHTTP(w, r)
+		case PaymentsServiceCreatePaymentProcedure:
+			paymentsServiceCreatePaymentHandler.ServeHTTP(w, r)
+		case PaymentsServiceGetPaymentProcedure:
+			paymentsServiceGetPaymentHandler.ServeHTTP(w, r)
+		case PaymentsServiceListPaymentsProcedure:
+			paymentsServiceListPaymentsHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
 	})
 }
 
-// UnimplementedPaymentServiceHandler returns CodeUnimplemented from all methods.
-type UnimplementedPaymentServiceHandler struct{}
+// UnimplementedPaymentsServiceHandler returns CodeUnimplemented from all methods.
+type UnimplementedPaymentsServiceHandler struct{}
 
-func (UnimplementedPaymentServiceHandler) CreatePayment(context.Context, *connect.Request[v1.CreatePaymentRequest]) (*connect.Response[v1.CreatePaymentResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("payments.v1.PaymentService.CreatePayment is not implemented"))
+func (UnimplementedPaymentsServiceHandler) CreatePayment(context.Context, *connect.Request[v1.CreatePaymentRequest]) (*connect.Response[v1.CreatePaymentResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("payments.v1.PaymentsService.CreatePayment is not implemented"))
 }
 
-func (UnimplementedPaymentServiceHandler) GetPayment(context.Context, *connect.Request[v1.GetPaymentRequest]) (*connect.Response[v1.GetPaymentResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("payments.v1.PaymentService.GetPayment is not implemented"))
+func (UnimplementedPaymentsServiceHandler) GetPayment(context.Context, *connect.Request[v1.GetPaymentRequest]) (*connect.Response[v1.GetPaymentResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("payments.v1.PaymentsService.GetPayment is not implemented"))
 }
 
-func (UnimplementedPaymentServiceHandler) ListPayments(context.Context, *connect.Request[v1.ListPaymentsRequest]) (*connect.Response[v1.ListPaymentsResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("payments.v1.PaymentService.ListPayments is not implemented"))
+func (UnimplementedPaymentsServiceHandler) ListPayments(context.Context, *connect.Request[v1.ListPaymentsRequest]) (*connect.Response[v1.ListPaymentsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("payments.v1.PaymentsService.ListPayments is not implemented"))
 }

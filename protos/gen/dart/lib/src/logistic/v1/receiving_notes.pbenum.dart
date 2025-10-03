@@ -19,23 +19,20 @@ class ReceivingNoteStatus extends $pb.ProtobufEnum {
       ReceivingNoteStatus._(0, _omitEnumNames ? '' : 'RN_STATUS_UNSPECIFIED');
   static const ReceivingNoteStatus RN_STATUS_PENDING =
       ReceivingNoteStatus._(1, _omitEnumNames ? '' : 'RN_STATUS_PENDING');
-  static const ReceivingNoteStatus RN_STATUS_INSPECTING =
-      ReceivingNoteStatus._(2, _omitEnumNames ? '' : 'RN_STATUS_INSPECTING');
   static const ReceivingNoteStatus RN_STATUS_COMPLETED =
-      ReceivingNoteStatus._(3, _omitEnumNames ? '' : 'RN_STATUS_COMPLETED');
+      ReceivingNoteStatus._(2, _omitEnumNames ? '' : 'RN_STATUS_COMPLETED');
   static const ReceivingNoteStatus RN_STATUS_REJECTED =
-      ReceivingNoteStatus._(4, _omitEnumNames ? '' : 'RN_STATUS_REJECTED');
+      ReceivingNoteStatus._(3, _omitEnumNames ? '' : 'RN_STATUS_REJECTED');
 
   static const $core.List<ReceivingNoteStatus> values = <ReceivingNoteStatus>[
     RN_STATUS_UNSPECIFIED,
     RN_STATUS_PENDING,
-    RN_STATUS_INSPECTING,
     RN_STATUS_COMPLETED,
     RN_STATUS_REJECTED,
   ];
 
   static final $core.List<ReceivingNoteStatus?> _byValue =
-      $pb.ProtobufEnum.$_initByValueList(values, 4);
+      $pb.ProtobufEnum.$_initByValueList(values, 3);
   static ReceivingNoteStatus? valueOf($core.int value) =>
       value < 0 || value >= _byValue.length ? null : _byValue[value];
 

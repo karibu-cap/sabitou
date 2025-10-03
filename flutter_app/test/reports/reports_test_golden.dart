@@ -409,7 +409,7 @@ final reportsFakeTransport = FakeTransportBuilder()
       // totalCount: 2,
     );
   })
-  ..unary(DashboardReportingService.getDashboardReport, (req, _) async {
+  ..unary(ReportsService.getDashboardReport, (req, _) async {
     return GetDashboardReportResponse(
       totalSalesAmount: 500000,
       totalTransactions: 15,

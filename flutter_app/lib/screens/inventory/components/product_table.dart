@@ -61,16 +61,19 @@ class ProductsTable extends StatelessWidget {
               }
 
               return invLevels.isEmpty
-                  ? Column(
+                  ? Row(
                       children: [
-                        Icon(
-                          LucideIcons.box,
-                          size: 48,
-                          color: ShadTheme.of(context).colorScheme.muted,
-                        ),
-                        Text(
-                          Intls.to.noProductsFoundAddNewProduct,
-                          style: ShadTheme.of(context).textTheme.muted,
+                        Expanded(
+                          child: Column(
+                            children: [
+                              const Icon(LucideIcons.box),
+                              Text(
+                                Intls.to.noDataFound,
+                                style: ShadTheme.of(context).textTheme.muted,
+                              ),
+                              const SizedBox(height: 16),
+                            ],
+                          ),
                         ),
                       ],
                     )

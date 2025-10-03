@@ -50,17 +50,6 @@ enum VoucherStatus {
   VOUCHER_STATUS_CANCELLED = 5; // Voided
 }
 
-service GiftVoucherService {
-  // Validate voucher before use
-  rpc ValidateVoucher(ValidateVoucherRequest) returns (ValidateVoucherResponse);
-
-  // Get voucher details
-  rpc GetVoucher(GetVoucherRequest) returns (GetVoucherResponse);
-
-  // List vouchers with filtering
-  rpc ListVouchers(ListVouchersRequest) returns (ListVouchersResponse);
-}
-
 message ValidateVoucherRequest {
   string voucher_code = 1;
 }
@@ -99,4 +88,15 @@ message ListVouchersResponse {
   repeated GiftVoucher vouchers = 1;
   int32 total_count = 2;
   double total_value = 3;
+}
+
+service GiftVoucherService {
+  // Validate voucher before use
+  rpc ValidateVoucher(ValidateVoucherRequest) returns (ValidateVoucherResponse);
+
+  // Get voucher details
+  rpc GetVoucher(GetVoucherRequest) returns (GetVoucherResponse);
+
+  // List vouchers with filtering
+  rpc ListVouchers(ListVouchersRequest) returns (ListVouchersResponse);
 }

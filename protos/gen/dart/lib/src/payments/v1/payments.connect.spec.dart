@@ -6,9 +6,9 @@
 import "package:connectrpc/connect.dart" as connect;
 import "payments.pb.dart" as paymentsv1payments;
 
-abstract final class PaymentService {
-  /// Fully-qualified name of the PaymentService service.
-  static const name = 'payments.v1.PaymentService';
+abstract final class PaymentsService {
+  /// Fully-qualified name of the PaymentsService service.
+  static const name = 'payments.v1.PaymentsService';
 
   /// Record a payment
   static const createPayment = connect.Spec(

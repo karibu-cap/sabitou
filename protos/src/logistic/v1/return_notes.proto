@@ -76,12 +76,7 @@ enum ReturnCondition {
   RETURN_CONDITION_DEFECTIVE = 4; // Manufacturing defect
 }
 
-service ReturnService {
-  // Create a return note (customer returning to you)
-  rpc CreateReturn(CreateReturnRequest) returns (CreateReturnResponse);
-}
-
-message CreateReturnRequest {
+message CreateReturnNotesRequest {
   string from_company_id = 1; // Customer or your company
   string to_warehouse_id = 2; // Your warehouse
   string related_delivery_note_id = 3;
@@ -91,10 +86,15 @@ message CreateReturnRequest {
   string received_by_user_id = 7;
 }
 
-message CreateReturnResponse {
+message CreateReturnNotesResponse {
   string return_id = 1;
   ReturnNote return_note = 2;
   repeated string inventory_transaction_ids = 3;
   bool requires_credit_note = 4;
   string message = 5;
+}
+
+service ReturnNotesService {
+  // Create a return note (customer returning to you)
+  rpc CreateReturnNotes(CreateReturnNotesRequest) returns (CreateReturnNotesResponse);
 }

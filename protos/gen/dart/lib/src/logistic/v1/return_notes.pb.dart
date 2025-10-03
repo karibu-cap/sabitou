@@ -359,8 +359,8 @@ class ReturnLineItem extends $pb.GeneratedMessage {
   void clearBatchId() => $_clearField(6);
 }
 
-class CreateReturnRequest extends $pb.GeneratedMessage {
-  factory CreateReturnRequest({
+class CreateReturnNotesRequest extends $pb.GeneratedMessage {
+  factory CreateReturnNotesRequest({
     $core.String? fromCompanyId,
     $core.String? toWarehouseId,
     $core.String? relatedDeliveryNoteId,
@@ -381,17 +381,17 @@ class CreateReturnRequest extends $pb.GeneratedMessage {
     return result;
   }
 
-  CreateReturnRequest._();
+  CreateReturnNotesRequest._();
 
-  factory CreateReturnRequest.fromBuffer($core.List<$core.int> data,
+  factory CreateReturnNotesRequest.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(data, registry);
-  factory CreateReturnRequest.fromJson($core.String json,
+  factory CreateReturnNotesRequest.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'CreateReturnRequest',
+      _omitMessageNames ? '' : 'CreateReturnNotesRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'logistic.v1'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'fromCompanyId')
@@ -405,25 +405,27 @@ class CreateReturnRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreateReturnRequest clone() => CreateReturnRequest()..mergeFromMessage(this);
+  CreateReturnNotesRequest clone() =>
+      CreateReturnNotesRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreateReturnRequest copyWith(void Function(CreateReturnRequest) updates) =>
-      super.copyWith((message) => updates(message as CreateReturnRequest))
-          as CreateReturnRequest;
+  CreateReturnNotesRequest copyWith(
+          void Function(CreateReturnNotesRequest) updates) =>
+      super.copyWith((message) => updates(message as CreateReturnNotesRequest))
+          as CreateReturnNotesRequest;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static CreateReturnRequest create() => CreateReturnRequest._();
+  static CreateReturnNotesRequest create() => CreateReturnNotesRequest._();
   @$core.override
-  CreateReturnRequest createEmptyInstance() => create();
-  static $pb.PbList<CreateReturnRequest> createRepeated() =>
-      $pb.PbList<CreateReturnRequest>();
+  CreateReturnNotesRequest createEmptyInstance() => create();
+  static $pb.PbList<CreateReturnNotesRequest> createRepeated() =>
+      $pb.PbList<CreateReturnNotesRequest>();
   @$core.pragma('dart2js:noInline')
-  static CreateReturnRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<CreateReturnRequest>(create);
-  static CreateReturnRequest? _defaultInstance;
+  static CreateReturnNotesRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<CreateReturnNotesRequest>(create);
+  static CreateReturnNotesRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get fromCompanyId => $_getSZ(0);
@@ -483,8 +485,8 @@ class CreateReturnRequest extends $pb.GeneratedMessage {
   void clearReceivedByUserId() => $_clearField(7);
 }
 
-class CreateReturnResponse extends $pb.GeneratedMessage {
-  factory CreateReturnResponse({
+class CreateReturnNotesResponse extends $pb.GeneratedMessage {
+  factory CreateReturnNotesResponse({
     $core.String? returnId,
     ReturnNote? returnNote,
     $core.Iterable<$core.String>? inventoryTransactionIds,
@@ -502,17 +504,17 @@ class CreateReturnResponse extends $pb.GeneratedMessage {
     return result;
   }
 
-  CreateReturnResponse._();
+  CreateReturnNotesResponse._();
 
-  factory CreateReturnResponse.fromBuffer($core.List<$core.int> data,
+  factory CreateReturnNotesResponse.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(data, registry);
-  factory CreateReturnResponse.fromJson($core.String json,
+  factory CreateReturnNotesResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'CreateReturnResponse',
+      _omitMessageNames ? '' : 'CreateReturnNotesResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'logistic.v1'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'returnId')
@@ -524,26 +526,27 @@ class CreateReturnResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreateReturnResponse clone() =>
-      CreateReturnResponse()..mergeFromMessage(this);
+  CreateReturnNotesResponse clone() =>
+      CreateReturnNotesResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreateReturnResponse copyWith(void Function(CreateReturnResponse) updates) =>
-      super.copyWith((message) => updates(message as CreateReturnResponse))
-          as CreateReturnResponse;
+  CreateReturnNotesResponse copyWith(
+          void Function(CreateReturnNotesResponse) updates) =>
+      super.copyWith((message) => updates(message as CreateReturnNotesResponse))
+          as CreateReturnNotesResponse;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static CreateReturnResponse create() => CreateReturnResponse._();
+  static CreateReturnNotesResponse create() => CreateReturnNotesResponse._();
   @$core.override
-  CreateReturnResponse createEmptyInstance() => create();
-  static $pb.PbList<CreateReturnResponse> createRepeated() =>
-      $pb.PbList<CreateReturnResponse>();
+  CreateReturnNotesResponse createEmptyInstance() => create();
+  static $pb.PbList<CreateReturnNotesResponse> createRepeated() =>
+      $pb.PbList<CreateReturnNotesResponse>();
   @$core.pragma('dart2js:noInline')
-  static CreateReturnResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<CreateReturnResponse>(create);
-  static CreateReturnResponse? _defaultInstance;
+  static CreateReturnNotesResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<CreateReturnNotesResponse>(create);
+  static CreateReturnNotesResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get returnId => $_getSZ(0);
@@ -587,16 +590,16 @@ class CreateReturnResponse extends $pb.GeneratedMessage {
   void clearMessage() => $_clearField(5);
 }
 
-class ReturnServiceApi {
+class ReturnNotesServiceApi {
   final $pb.RpcClient _client;
 
-  ReturnServiceApi(this._client);
+  ReturnNotesServiceApi(this._client);
 
   /// Create a return note (customer returning to you)
-  $async.Future<CreateReturnResponse> createReturn(
-          $pb.ClientContext? ctx, CreateReturnRequest request) =>
-      _client.invoke<CreateReturnResponse>(ctx, 'ReturnService', 'CreateReturn',
-          request, CreateReturnResponse());
+  $async.Future<CreateReturnNotesResponse> createReturnNotes(
+          $pb.ClientContext? ctx, CreateReturnNotesRequest request) =>
+      _client.invoke<CreateReturnNotesResponse>(ctx, 'ReturnNotesService',
+          'CreateReturnNotes', request, CreateReturnNotesResponse());
 }
 
 const $core.bool _omitFieldNames =

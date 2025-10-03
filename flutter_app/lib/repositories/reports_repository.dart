@@ -53,7 +53,7 @@ class ReportsRepository {
   }) async {
     try {
       // Using DashboardReportingService instead of ReportingService
-      final dashboardService = DashboardReportingServiceClient(
+      final reportingService = ReportsServiceClient(
         ConnectRPCService.to.clientChannel,
       );
 
@@ -62,7 +62,7 @@ class ReportsRepository {
         startDate: Timestamp.fromDateTime(startDate),
         endDate: Timestamp.fromDateTime(endDate),
       );
-      final response = await dashboardService.getDashboardReport(request);
+      final response = await reportingService.getDashboardReport(request);
 
       return response;
     } catch (e) {
