@@ -255,4 +255,45 @@ final fakeData = <String, List<dynamic>>{
       ..transactionTime = Timestamp.fromDateTime(DateTime.now())
       ..notes = 'Test receipt',
   ],
+  CollectionName.purchaseOrders: <PurchaseOrder>[
+    PurchaseOrder()
+      ..documentId = 'PO-2025-001'
+      ..supplierId = 'supplier-001'
+      ..buyerId = 'store-001'
+      ..status = PurchaseOrderStatus.PO_STATUS_PENDING
+      ..totalAmount = 25000
+      ..items.addAll([
+        OrderLineItem()
+          ..productId = 'product-001'
+          ..quantity = 1
+          ..unitPrice = 10000
+          ..total = 10000,
+        OrderLineItem()
+          ..productId = 'product-002'
+          ..quantity = 1
+          ..unitPrice = 15000
+          ..total = 15000,
+      ])
+      ..createdAt = Timestamp.fromDateTime(DateTime.now())
+      ..createdByUserId = 'user-001'
+      ..notes = 'Initial purchase order',
+    PurchaseOrder()
+      ..documentId = 'PO-2025-002'
+      ..supplierId = 'supplier-001'
+      ..buyerId = 'store-001'
+      ..status = PurchaseOrderStatus.PO_STATUS_RECEIVED
+      ..totalAmount = 5000
+      ..items.addAll([
+        OrderLineItem()
+          ..productId = 'product-003'
+          ..quantity = 1
+          ..unitPrice = 5000
+          ..total = 5000,
+      ])
+      ..createdAt = Timestamp.fromDateTime(
+        DateTime.now().subtract(const Duration(days: 5)),
+      )
+      ..createdByUserId = 'user-001'
+      ..notes = 'Received order',
+  ],
 };

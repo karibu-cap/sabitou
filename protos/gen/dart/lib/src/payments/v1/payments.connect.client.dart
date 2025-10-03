@@ -7,7 +7,7 @@ import "package:connectrpc/connect.dart" as connect;
 import "payments.pb.dart" as paymentsv1payments;
 import "payments.connect.spec.dart" as specs;
 
-extension type PaymentServiceClient (connect.Transport _transport) {
+extension type PaymentsServiceClient (connect.Transport _transport) {
   /// Record a payment
   Future<paymentsv1payments.CreatePaymentResponse> createPayment(
     paymentsv1payments.CreatePaymentRequest input, {
@@ -17,7 +17,7 @@ extension type PaymentServiceClient (connect.Transport _transport) {
     Function(connect.Headers)? onTrailer,
   }) {
     return connect.Client(_transport).unary(
-      specs.PaymentService.createPayment,
+      specs.PaymentsService.createPayment,
       input,
       signal: signal,
       headers: headers,
@@ -35,7 +35,7 @@ extension type PaymentServiceClient (connect.Transport _transport) {
     Function(connect.Headers)? onTrailer,
   }) {
     return connect.Client(_transport).unary(
-      specs.PaymentService.getPayment,
+      specs.PaymentsService.getPayment,
       input,
       signal: signal,
       headers: headers,
@@ -53,7 +53,7 @@ extension type PaymentServiceClient (connect.Transport _transport) {
     Function(connect.Headers)? onTrailer,
   }) {
     return connect.Client(_transport).unary(
-      specs.PaymentService.listPayments,
+      specs.PaymentsService.listPayments,
       input,
       signal: signal,
       headers: headers,

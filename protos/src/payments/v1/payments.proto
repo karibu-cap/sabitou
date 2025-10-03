@@ -52,17 +52,6 @@ enum PaymentMethod {
   PAYMENT_METHOD_MTN_MONEY = 6; // MTN Money
 }
 
-service PaymentService {
-  // Record a payment
-  rpc CreatePayment(CreatePaymentRequest) returns (CreatePaymentResponse);
-
-  // Get payment details
-  rpc GetPayment(GetPaymentRequest) returns (GetPaymentResponse);
-
-  // List payments with filtering
-  rpc ListPayments(ListPaymentsRequest) returns (ListPaymentsResponse);
-}
-
 message CreatePaymentRequest {
   string payer_id = 1;
   string receiver = 2;
@@ -98,4 +87,15 @@ message ListPaymentsResponse {
   repeated Payment payments = 1;
   int32 total_count = 2;
   double total_amount = 3;
+}
+
+service PaymentsService {
+  // Record a payment
+  rpc CreatePayment(CreatePaymentRequest) returns (CreatePaymentResponse);
+
+  // Get payment details
+  rpc GetPayment(GetPaymentRequest) returns (GetPaymentResponse);
+
+  // List payments with filtering
+  rpc ListPayments(ListPaymentsRequest) returns (ListPaymentsResponse);
 }

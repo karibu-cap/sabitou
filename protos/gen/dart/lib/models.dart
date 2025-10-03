@@ -13,6 +13,7 @@ export 'src/inventory/v1/inventory.pb.dart';
 export 'src/inventory/v1/store_product.pb.dart';
 export 'src/link/v1/link.pb.dart';
 export 'src/logistic/v1/delivery_notes.pb.dart';
+export 'src/logistic/v1/receiving_notes.pb.dart';
 export 'src/logistic/v1/return_notes.pb.dart';
 export 'src/order/v1/order_utils.pb.dart';
 export 'src/order/v1/purchase_order.pb.dart';

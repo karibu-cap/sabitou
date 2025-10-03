@@ -743,27 +743,27 @@ class ListPaymentsResponse extends $pb.GeneratedMessage {
   void clearTotalAmount() => $_clearField(3);
 }
 
-class PaymentServiceApi {
+class PaymentsServiceApi {
   final $pb.RpcClient _client;
 
-  PaymentServiceApi(this._client);
+  PaymentsServiceApi(this._client);
 
   /// Record a payment
   $async.Future<CreatePaymentResponse> createPayment(
           $pb.ClientContext? ctx, CreatePaymentRequest request) =>
-      _client.invoke<CreatePaymentResponse>(ctx, 'PaymentService',
+      _client.invoke<CreatePaymentResponse>(ctx, 'PaymentsService',
           'CreatePayment', request, CreatePaymentResponse());
 
   /// Get payment details
   $async.Future<GetPaymentResponse> getPayment(
           $pb.ClientContext? ctx, GetPaymentRequest request) =>
       _client.invoke<GetPaymentResponse>(
-          ctx, 'PaymentService', 'GetPayment', request, GetPaymentResponse());
+          ctx, 'PaymentsService', 'GetPayment', request, GetPaymentResponse());
 
   /// List payments with filtering
   $async.Future<ListPaymentsResponse> listPayments(
           $pb.ClientContext? ctx, ListPaymentsRequest request) =>
-      _client.invoke<ListPaymentsResponse>(ctx, 'PaymentService',
+      _client.invoke<ListPaymentsResponse>(ctx, 'PaymentsService',
           'ListPayments', request, ListPaymentsResponse());
 }
 

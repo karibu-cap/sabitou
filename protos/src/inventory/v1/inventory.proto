@@ -90,29 +90,6 @@ enum StockStatus {
   STOCK_STATUS_OUT_OF_STOCK = 3;
 }
 
-service InventoryService {
-  // Gets the inventory levels of a product.
-  rpc GetProductInventoryLevels(GetProductInventoryLevelsRequest) returns (GetProductInventoryLevelsResponse);
-
-  // Checks if a product is available in a warehouse.
-  rpc CheckProductAvailability(CheckProductAvailabilityRequest) returns (CheckProductAvailabilityResponse);
-
-  // Gets low stock items for a store.
-  rpc GetLowStockItems(GetLowStockItemsRequest) returns (GetLowStockItemsResponse);
-
-  // Gets a snapshot of store inventory.
-  rpc GetResourceInventory(GetResourceInventoryRequest) returns (GetResourceInventoryResponse);
-
-  // Gets recent inventory transactions for a store (for dashboard activity).
-  rpc GetRecentInventoryTransactions(GetInventoryTransactionHistoryRequest) returns (GetInventoryTransactionHistoryResponse);
-
-  // Gets the transaction history of a product.
-  rpc GetProductTransactionHistory(GetProductTransactionHistoryRequest) returns (GetProductTransactionHistoryResponse);
-
-  // Gets the products by supplier.
-  rpc ListProductsBySupplier(ListProductsBySupplierRequest) returns (ListProductsBySupplierResponse);
-}
-
 message GetInventoryTransactionHistoryRequest {
   optional string store_id = 1; // Optional
   optional string product_id = 2; // Optional
@@ -196,10 +173,9 @@ message GetProductTransactionHistoryResponse {
   int32 total_count = 2;
 }
 
-
 message ListProductsBySupplierRequest {
-  string supplier_id = 1;  // ex. : "CMP-SUPPLIER-001"
-  optional string store_id = 2;  // Optional filter
+  string supplier_id = 1; // ex. : "CMP-SUPPLIER-001"
+  optional string store_id = 2; // Optional filter
 }
 
 message ListProductsBySupplierResponse {
@@ -207,6 +183,29 @@ message ListProductsBySupplierResponse {
 }
 
 message ProductBySupplier {
-  StoreProduct store_product = 1;  // StoreProduct details
-  GlobalProduct global_product = 2;  // GlobalProduct details
+  StoreProduct store_product = 1; // StoreProduct details
+  GlobalProduct global_product = 2; // GlobalProduct details
+}
+
+service InventoryService {
+  // Gets the inventory levels of a product.
+  rpc GetProductInventoryLevels(GetProductInventoryLevelsRequest) returns (GetProductInventoryLevelsResponse);
+
+  // Checks if a product is available in a warehouse.
+  rpc CheckProductAvailability(CheckProductAvailabilityRequest) returns (CheckProductAvailabilityResponse);
+
+  // Gets low stock items for a store.
+  rpc GetLowStockItems(GetLowStockItemsRequest) returns (GetLowStockItemsResponse);
+
+  // Gets a snapshot of store inventory.
+  rpc GetResourceInventory(GetResourceInventoryRequest) returns (GetResourceInventoryResponse);
+
+  // Gets recent inventory transactions for a store (for dashboard activity).
+  rpc GetRecentInventoryTransactions(GetInventoryTransactionHistoryRequest) returns (GetInventoryTransactionHistoryResponse);
+
+  // Gets the transaction history of a product.
+  rpc GetProductTransactionHistory(GetProductTransactionHistoryRequest) returns (GetProductTransactionHistoryResponse);
+
+  // Gets the products by supplier.
+  rpc ListProductsBySupplier(ListProductsBySupplierRequest) returns (ListProductsBySupplierResponse);
 }

@@ -6,15 +6,15 @@
 import "package:connectrpc/connect.dart" as connect;
 import "return_notes.pb.dart" as logisticv1return_notes;
 
-abstract final class ReturnService {
-  /// Fully-qualified name of the ReturnService service.
-  static const name = 'logistic.v1.ReturnService';
+abstract final class ReturnNotesService {
+  /// Fully-qualified name of the ReturnNotesService service.
+  static const name = 'logistic.v1.ReturnNotesService';
 
   /// Create a return note (customer returning to you)
-  static const createReturn = connect.Spec(
-    '/$name/CreateReturn',
+  static const createReturnNotes = connect.Spec(
+    '/$name/CreateReturnNotes',
     connect.StreamType.unary,
-    logisticv1return_notes.CreateReturnRequest.new,
-    logisticv1return_notes.CreateReturnResponse.new,
+    logisticv1return_notes.CreateReturnNotesRequest.new,
+    logisticv1return_notes.CreateReturnNotesResponse.new,
   );
 }

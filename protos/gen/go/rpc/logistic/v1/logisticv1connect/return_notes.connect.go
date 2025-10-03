@@ -21,8 +21,8 @@ import (
 const _ = connect.IsAtLeastVersion1_13_0
 
 const (
-	// ReturnServiceName is the fully-qualified name of the ReturnService service.
-	ReturnServiceName = "logistic.v1.ReturnService"
+	// ReturnNotesServiceName is the fully-qualified name of the ReturnNotesService service.
+	ReturnNotesServiceName = "logistic.v1.ReturnNotesService"
 )
 
 // These constants are the fully-qualified names of the RPCs defined in this package. They're
@@ -33,79 +33,79 @@ const (
 // reflection-formatted method names, remove the leading slash and convert the remaining slash to a
 // period.
 const (
-	// ReturnServiceCreateReturnProcedure is the fully-qualified name of the ReturnService's
-	// CreateReturn RPC.
-	ReturnServiceCreateReturnProcedure = "/logistic.v1.ReturnService/CreateReturn"
+	// ReturnNotesServiceCreateReturnNotesProcedure is the fully-qualified name of the
+	// ReturnNotesService's CreateReturnNotes RPC.
+	ReturnNotesServiceCreateReturnNotesProcedure = "/logistic.v1.ReturnNotesService/CreateReturnNotes"
 )
 
-// ReturnServiceClient is a client for the logistic.v1.ReturnService service.
-type ReturnServiceClient interface {
+// ReturnNotesServiceClient is a client for the logistic.v1.ReturnNotesService service.
+type ReturnNotesServiceClient interface {
 	// Create a return note (customer returning to you)
-	CreateReturn(context.Context, *connect.Request[v1.CreateReturnRequest]) (*connect.Response[v1.CreateReturnResponse], error)
+	CreateReturnNotes(context.Context, *connect.Request[v1.CreateReturnNotesRequest]) (*connect.Response[v1.CreateReturnNotesResponse], error)
 }
 
-// NewReturnServiceClient constructs a client for the logistic.v1.ReturnService service. By default,
-// it uses the Connect protocol with the binary Protobuf Codec, asks for gzipped responses, and
-// sends uncompressed requests. To use the gRPC or gRPC-Web protocols, supply the connect.WithGRPC()
-// or connect.WithGRPCWeb() options.
+// NewReturnNotesServiceClient constructs a client for the logistic.v1.ReturnNotesService service.
+// By default, it uses the Connect protocol with the binary Protobuf Codec, asks for gzipped
+// responses, and sends uncompressed requests. To use the gRPC or gRPC-Web protocols, supply the
+// connect.WithGRPC() or connect.WithGRPCWeb() options.
 //
 // The URL supplied here should be the base URL for the Connect or gRPC server (for example,
 // http://api.acme.com or https://acme.com/grpc).
-func NewReturnServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) ReturnServiceClient {
+func NewReturnNotesServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) ReturnNotesServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
-	returnServiceMethods := v1.File_logistic_v1_return_notes_proto.Services().ByName("ReturnService").Methods()
-	return &returnServiceClient{
-		createReturn: connect.NewClient[v1.CreateReturnRequest, v1.CreateReturnResponse](
+	returnNotesServiceMethods := v1.File_logistic_v1_return_notes_proto.Services().ByName("ReturnNotesService").Methods()
+	return &returnNotesServiceClient{
+		createReturnNotes: connect.NewClient[v1.CreateReturnNotesRequest, v1.CreateReturnNotesResponse](
 			httpClient,
-			baseURL+ReturnServiceCreateReturnProcedure,
-			connect.WithSchema(returnServiceMethods.ByName("CreateReturn")),
+			baseURL+ReturnNotesServiceCreateReturnNotesProcedure,
+			connect.WithSchema(returnNotesServiceMethods.ByName("CreateReturnNotes")),
 			connect.WithClientOptions(opts...),
 		),
 	}
 }
 
-// returnServiceClient implements ReturnServiceClient.
-type returnServiceClient struct {
-	createReturn *connect.Client[v1.CreateReturnRequest, v1.CreateReturnResponse]
+// returnNotesServiceClient implements ReturnNotesServiceClient.
+type returnNotesServiceClient struct {
+	createReturnNotes *connect.Client[v1.CreateReturnNotesRequest, v1.CreateReturnNotesResponse]
 }
 
-// CreateReturn calls logistic.v1.ReturnService.CreateReturn.
-func (c *returnServiceClient) CreateReturn(ctx context.Context, req *connect.Request[v1.CreateReturnRequest]) (*connect.Response[v1.CreateReturnResponse], error) {
-	return c.createReturn.CallUnary(ctx, req)
+// CreateReturnNotes calls logistic.v1.ReturnNotesService.CreateReturnNotes.
+func (c *returnNotesServiceClient) CreateReturnNotes(ctx context.Context, req *connect.Request[v1.CreateReturnNotesRequest]) (*connect.Response[v1.CreateReturnNotesResponse], error) {
+	return c.createReturnNotes.CallUnary(ctx, req)
 }
 
-// ReturnServiceHandler is an implementation of the logistic.v1.ReturnService service.
-type ReturnServiceHandler interface {
+// ReturnNotesServiceHandler is an implementation of the logistic.v1.ReturnNotesService service.
+type ReturnNotesServiceHandler interface {
 	// Create a return note (customer returning to you)
-	CreateReturn(context.Context, *connect.Request[v1.CreateReturnRequest]) (*connect.Response[v1.CreateReturnResponse], error)
+	CreateReturnNotes(context.Context, *connect.Request[v1.CreateReturnNotesRequest]) (*connect.Response[v1.CreateReturnNotesResponse], error)
 }
 
-// NewReturnServiceHandler builds an HTTP handler from the service implementation. It returns the
-// path on which to mount the handler and the handler itself.
+// NewReturnNotesServiceHandler builds an HTTP handler from the service implementation. It returns
+// the path on which to mount the handler and the handler itself.
 //
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
-func NewReturnServiceHandler(svc ReturnServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
-	returnServiceMethods := v1.File_logistic_v1_return_notes_proto.Services().ByName("ReturnService").Methods()
-	returnServiceCreateReturnHandler := connect.NewUnaryHandler(
-		ReturnServiceCreateReturnProcedure,
-		svc.CreateReturn,
-		connect.WithSchema(returnServiceMethods.ByName("CreateReturn")),
+func NewReturnNotesServiceHandler(svc ReturnNotesServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	returnNotesServiceMethods := v1.File_logistic_v1_return_notes_proto.Services().ByName("ReturnNotesService").Methods()
+	returnNotesServiceCreateReturnNotesHandler := connect.NewUnaryHandler(
+		ReturnNotesServiceCreateReturnNotesProcedure,
+		svc.CreateReturnNotes,
+		connect.WithSchema(returnNotesServiceMethods.ByName("CreateReturnNotes")),
 		connect.WithHandlerOptions(opts...),
 	)
-	return "/logistic.v1.ReturnService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	return "/logistic.v1.ReturnNotesService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
-		case ReturnServiceCreateReturnProcedure:
-			returnServiceCreateReturnHandler.ServeHTTP(w, r)
+		case ReturnNotesServiceCreateReturnNotesProcedure:
+			returnNotesServiceCreateReturnNotesHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
 	})
 }
 
-// UnimplementedReturnServiceHandler returns CodeUnimplemented from all methods.
-type UnimplementedReturnServiceHandler struct{}
+// UnimplementedReturnNotesServiceHandler returns CodeUnimplemented from all methods.
+type UnimplementedReturnNotesServiceHandler struct{}
 
-func (UnimplementedReturnServiceHandler) CreateReturn(context.Context, *connect.Request[v1.CreateReturnRequest]) (*connect.Response[v1.CreateReturnResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("logistic.v1.ReturnService.CreateReturn is not implemented"))
+func (UnimplementedReturnNotesServiceHandler) CreateReturnNotes(context.Context, *connect.Request[v1.CreateReturnNotesRequest]) (*connect.Response[v1.CreateReturnNotesResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("logistic.v1.ReturnNotesService.CreateReturnNotes is not implemented"))
 }

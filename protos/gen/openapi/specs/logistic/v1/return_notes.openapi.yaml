@@ -2,13 +2,13 @@ openapi: 3.1.0
 info:
   title: logistic.v1
 paths:
-  /logistic.v1.ReturnService/CreateReturn:
+  /logistic.v1.ReturnNotesService/CreateReturnNotes:
     post:
       tags:
-        - logistic.v1.ReturnService
+        - logistic.v1.ReturnNotesService
       summary: Create a return note (customer returning to you)
       description: Create a return note (customer returning to you)
-      operationId: logistic.v1.ReturnService.CreateReturn
+      operationId: logistic.v1.ReturnNotesService.CreateReturnNotes
       parameters:
         - name: Connect-Protocol-Version
           in: header
@@ -23,7 +23,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/logistic.v1.CreateReturnRequest'
+              $ref: '#/components/schemas/logistic.v1.CreateReturnNotesRequest'
         required: true
       responses:
         default:
@@ -37,7 +37,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/logistic.v1.CreateReturnResponse'
+                $ref: '#/components/schemas/logistic.v1.CreateReturnNotesResponse'
 components:
   schemas:
     connect-protocol-version:
@@ -218,7 +218,7 @@ components:
           description: The French name of the product category.
       title: Internationalized
       additionalProperties: false
-    logistic.v1.CreateReturnRequest:
+    logistic.v1.CreateReturnNotesRequest:
       type: object
       properties:
         fromCompanyId:
@@ -246,9 +246,9 @@ components:
         receivedByUserId:
           type: string
           title: received_by_user_id
-      title: CreateReturnRequest
+      title: CreateReturnNotesRequest
       additionalProperties: false
-    logistic.v1.CreateReturnResponse:
+    logistic.v1.CreateReturnNotesResponse:
       type: object
       properties:
         returnId:
@@ -268,7 +268,7 @@ components:
         message:
           type: string
           title: message
-      title: CreateReturnResponse
+      title: CreateReturnNotesResponse
       additionalProperties: false
     logistic.v1.ReturnCondition:
       type: string
@@ -398,4 +398,4 @@ components:
         - RETURN_TYPE_SELLER_TO_SUPPLIER
 security: []
 tags:
-  - name: logistic.v1.ReturnService
+  - name: logistic.v1.ReturnNotesService

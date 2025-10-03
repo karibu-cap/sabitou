@@ -185,9 +185,9 @@ final $typed_data.Uint8List returnLineItemDescriptor = $convert.base64Decode(
     '9naXN0aWMudjEuUmV0dXJuQ29uZGl0aW9uUgljb25kaXRpb24SJwoPY29uZGl0aW9uX25vdGVz'
     'GAUgASgJUg5jb25kaXRpb25Ob3RlcxIZCghiYXRjaF9pZBgGIAEoCVIHYmF0Y2hJZA==');
 
-@$core.Deprecated('Use createReturnRequestDescriptor instead')
-const CreateReturnRequest$json = {
-  '1': 'CreateReturnRequest',
+@$core.Deprecated('Use createReturnNotesRequestDescriptor instead')
+const CreateReturnNotesRequest$json = {
+  '1': 'CreateReturnNotesRequest',
   '2': [
     {'1': 'from_company_id', '3': 1, '4': 1, '5': 9, '10': 'fromCompanyId'},
     {'1': 'to_warehouse_id', '3': 2, '4': 1, '5': 9, '10': 'toWarehouseId'},
@@ -224,18 +224,18 @@ const CreateReturnRequest$json = {
   ],
 };
 
-/// Descriptor for `CreateReturnRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List createReturnRequestDescriptor = $convert.base64Decode(
-    'ChNDcmVhdGVSZXR1cm5SZXF1ZXN0EiYKD2Zyb21fY29tcGFueV9pZBgBIAEoCVINZnJvbUNvbX'
-    'BhbnlJZBImCg90b193YXJlaG91c2VfaWQYAiABKAlSDXRvV2FyZWhvdXNlSWQSNwoYcmVsYXRl'
-    'ZF9kZWxpdmVyeV9ub3RlX2lkGAMgASgJUhVyZWxhdGVkRGVsaXZlcnlOb3RlSWQSLAoScmVsYX'
-    'RlZF9pbnZvaWNlX2lkGAQgASgJUhByZWxhdGVkSW52b2ljZUlkEjEKBWl0ZW1zGAUgAygLMhsu'
-    'bG9naXN0aWMudjEuUmV0dXJuTGluZUl0ZW1SBWl0ZW1zEhYKBnJlYXNvbhgGIAEoCVIGcmVhc2'
-    '9uEi0KE3JlY2VpdmVkX2J5X3VzZXJfaWQYByABKAlSEHJlY2VpdmVkQnlVc2VySWQ=');
+/// Descriptor for `CreateReturnNotesRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List createReturnNotesRequestDescriptor = $convert.base64Decode(
+    'ChhDcmVhdGVSZXR1cm5Ob3Rlc1JlcXVlc3QSJgoPZnJvbV9jb21wYW55X2lkGAEgASgJUg1mcm'
+    '9tQ29tcGFueUlkEiYKD3RvX3dhcmVob3VzZV9pZBgCIAEoCVINdG9XYXJlaG91c2VJZBI3Chhy'
+    'ZWxhdGVkX2RlbGl2ZXJ5X25vdGVfaWQYAyABKAlSFXJlbGF0ZWREZWxpdmVyeU5vdGVJZBIsCh'
+    'JyZWxhdGVkX2ludm9pY2VfaWQYBCABKAlSEHJlbGF0ZWRJbnZvaWNlSWQSMQoFaXRlbXMYBSAD'
+    'KAsyGy5sb2dpc3RpYy52MS5SZXR1cm5MaW5lSXRlbVIFaXRlbXMSFgoGcmVhc29uGAYgASgJUg'
+    'ZyZWFzb24SLQoTcmVjZWl2ZWRfYnlfdXNlcl9pZBgHIAEoCVIQcmVjZWl2ZWRCeVVzZXJJZA==');
 
-@$core.Deprecated('Use createReturnResponseDescriptor instead')
-const CreateReturnResponse$json = {
-  '1': 'CreateReturnResponse',
+@$core.Deprecated('Use createReturnNotesResponseDescriptor instead')
+const CreateReturnNotesResponse$json = {
+  '1': 'CreateReturnNotesResponse',
   '2': [
     {'1': 'return_id', '3': 1, '4': 1, '5': 9, '10': 'returnId'},
     {
@@ -264,37 +264,38 @@ const CreateReturnResponse$json = {
   ],
 };
 
-/// Descriptor for `CreateReturnResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List createReturnResponseDescriptor = $convert.base64Decode(
-    'ChRDcmVhdGVSZXR1cm5SZXNwb25zZRIbCglyZXR1cm5faWQYASABKAlSCHJldHVybklkEjgKC3'
-    'JldHVybl9ub3RlGAIgASgLMhcubG9naXN0aWMudjEuUmV0dXJuTm90ZVIKcmV0dXJuTm90ZRI6'
-    'ChlpbnZlbnRvcnlfdHJhbnNhY3Rpb25faWRzGAMgAygJUhdpbnZlbnRvcnlUcmFuc2FjdGlvbk'
-    'lkcxIwChRyZXF1aXJlc19jcmVkaXRfbm90ZRgEIAEoCFIScmVxdWlyZXNDcmVkaXROb3RlEhgK'
-    'B21lc3NhZ2UYBSABKAlSB21lc3NhZ2U=');
+/// Descriptor for `CreateReturnNotesResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List createReturnNotesResponseDescriptor = $convert.base64Decode(
+    'ChlDcmVhdGVSZXR1cm5Ob3Rlc1Jlc3BvbnNlEhsKCXJldHVybl9pZBgBIAEoCVIIcmV0dXJuSW'
+    'QSOAoLcmV0dXJuX25vdGUYAiABKAsyFy5sb2dpc3RpYy52MS5SZXR1cm5Ob3RlUgpyZXR1cm5O'
+    'b3RlEjoKGWludmVudG9yeV90cmFuc2FjdGlvbl9pZHMYAyADKAlSF2ludmVudG9yeVRyYW5zYW'
+    'N0aW9uSWRzEjAKFHJlcXVpcmVzX2NyZWRpdF9ub3RlGAQgASgIUhJyZXF1aXJlc0NyZWRpdE5v'
+    'dGUSGAoHbWVzc2FnZRgFIAEoCVIHbWVzc2FnZQ==');
 
-const $core.Map<$core.String, $core.dynamic> ReturnServiceBase$json = {
-  '1': 'ReturnService',
+const $core.Map<$core.String, $core.dynamic> ReturnNotesServiceBase$json = {
+  '1': 'ReturnNotesService',
   '2': [
     {
-      '1': 'CreateReturn',
-      '2': '.logistic.v1.CreateReturnRequest',
-      '3': '.logistic.v1.CreateReturnResponse'
+      '1': 'CreateReturnNotes',
+      '2': '.logistic.v1.CreateReturnNotesRequest',
+      '3': '.logistic.v1.CreateReturnNotesResponse'
     },
   ],
 };
 
-@$core.Deprecated('Use returnServiceDescriptor instead')
+@$core.Deprecated('Use returnNotesServiceDescriptor instead')
 const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
-    ReturnServiceBase$messageJson = {
-  '.logistic.v1.CreateReturnRequest': CreateReturnRequest$json,
+    ReturnNotesServiceBase$messageJson = {
+  '.logistic.v1.CreateReturnNotesRequest': CreateReturnNotesRequest$json,
   '.logistic.v1.ReturnLineItem': ReturnLineItem$json,
   '.inventory.v1.Internationalized': $1.Internationalized$json,
-  '.logistic.v1.CreateReturnResponse': CreateReturnResponse$json,
+  '.logistic.v1.CreateReturnNotesResponse': CreateReturnNotesResponse$json,
   '.logistic.v1.ReturnNote': ReturnNote$json,
   '.google.protobuf.Timestamp': $0.Timestamp$json,
 };
 
-/// Descriptor for `ReturnService`. Decode as a `google.protobuf.ServiceDescriptorProto`.
-final $typed_data.Uint8List returnServiceDescriptor = $convert.base64Decode(
-    'Cg1SZXR1cm5TZXJ2aWNlElMKDENyZWF0ZVJldHVybhIgLmxvZ2lzdGljLnYxLkNyZWF0ZVJldH'
-    'VyblJlcXVlc3QaIS5sb2dpc3RpYy52MS5DcmVhdGVSZXR1cm5SZXNwb25zZQ==');
+/// Descriptor for `ReturnNotesService`. Decode as a `google.protobuf.ServiceDescriptorProto`.
+final $typed_data.Uint8List returnNotesServiceDescriptor = $convert.base64Decode(
+    'ChJSZXR1cm5Ob3Rlc1NlcnZpY2USYgoRQ3JlYXRlUmV0dXJuTm90ZXMSJS5sb2dpc3RpYy52MS'
+    '5DcmVhdGVSZXR1cm5Ob3Rlc1JlcXVlc3QaJi5sb2dpc3RpYy52MS5DcmVhdGVSZXR1cm5Ob3Rl'
+    'c1Jlc3BvbnNl');

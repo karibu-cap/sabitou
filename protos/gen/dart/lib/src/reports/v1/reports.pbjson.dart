@@ -1855,9 +1855,8 @@ final $typed_data.Uint8List reportingServiceDescriptor = $convert.base64Decode(
     'aWFsUmVwb3J0EiUucmVwb3J0cy52MS5HZXRGaW5hbmNpYWxSZXBvcnRSZXF1ZXN0GiYucmVwb3'
     'J0cy52MS5HZXRGaW5hbmNpYWxSZXBvcnRSZXNwb25zZQ==');
 
-const $core.Map<$core.String, $core.dynamic>
-    DashboardReportingServiceBase$json = {
-  '1': 'DashboardReportingService',
+const $core.Map<$core.String, $core.dynamic> ReportsServiceBase$json = {
+  '1': 'ReportsService',
   '2': [
     {
       '1': 'GetDashboardReport',
@@ -1867,9 +1866,9 @@ const $core.Map<$core.String, $core.dynamic>
   ],
 };
 
-@$core.Deprecated('Use dashboardReportingServiceDescriptor instead')
+@$core.Deprecated('Use reportsServiceDescriptor instead')
 const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
-    DashboardReportingServiceBase$messageJson = {
+    ReportsServiceBase$messageJson = {
   '.reports.v1.GetDashboardReportRequest': GetDashboardReportRequest$json,
   '.google.protobuf.Timestamp': $0.Timestamp$json,
   '.reports.v1.GetDashboardReportResponse': GetDashboardReportResponse$json,
@@ -1886,8 +1885,8 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
   '.reports.v1.StockAgingItem': StockAgingItem$json,
 };
 
-/// Descriptor for `DashboardReportingService`. Decode as a `google.protobuf.ServiceDescriptorProto`.
-final $typed_data.Uint8List dashboardReportingServiceDescriptor = $convert.base64Decode(
-    'ChlEYXNoYm9hcmRSZXBvcnRpbmdTZXJ2aWNlEmMKEkdldERhc2hib2FyZFJlcG9ydBIlLnJlcG'
-    '9ydHMudjEuR2V0RGFzaGJvYXJkUmVwb3J0UmVxdWVzdBomLnJlcG9ydHMudjEuR2V0RGFzaGJv'
-    'YXJkUmVwb3J0UmVzcG9uc2U=');
+/// Descriptor for `ReportsService`. Decode as a `google.protobuf.ServiceDescriptorProto`.
+final $typed_data.Uint8List reportsServiceDescriptor = $convert.base64Decode(
+    'Cg5SZXBvcnRzU2VydmljZRJjChJHZXREYXNoYm9hcmRSZXBvcnQSJS5yZXBvcnRzLnYxLkdldE'
+    'Rhc2hib2FyZFJlcG9ydFJlcXVlc3QaJi5yZXBvcnRzLnYxLkdldERhc2hib2FyZFJlcG9ydFJl'
+    'c3BvbnNl');

@@ -153,17 +153,13 @@ class InventoryViewModel {
   Future<InventoryData> initTheData() async {
     try {
       _logger.info('initTheData is called');
-      final businessId = userPreferences.business?.refId;
       final store = userPreferences.store;
-      if (businessId == null || store == null) {
-        throw Exception('Business or store not found');
+      if (store == null) {
+        throw Exception('Store not found');
       }
 
       // Execute all calls in parallel for better performance
       final results = await Future.wait([
-        StoreProductsRepository.instance.findStoreProducts(
-          FindStoreProductsRequest(storeId: store.refId),
-        ),
         InventoryRepository.instance.getLowStockItems(store.refId),
         ReportsRepository.instance.getSalesByPeriod(
           storeId: store.refId,
@@ -175,14 +171,13 @@ class InventoryViewModel {
         InventoryRepository.instance.getStoreInventory(store.refId),
       ]);
 
-      final totalProducts =
-          results.first as List<StoreProductWithGlobalProduct>;
-      final lowStockItems = results[1] as List<InventoryLevelWithProduct>;
-      final inventoryLevels = results[3] as List<InventoryLevelWithProduct>;
-      final sales = results[2] as GetSalesReportResponse;
+      final lowStockItems = results.first as List<InventoryLevelWithProduct>;
+      final sales = results[1] as GetSalesReportResponse;
+      final inventoryLevels = results[2] as List<InventoryLevelWithProduct>;
 
+      print('inventoryLevels: ${inventoryLevels.length}');
       final newStats = InventoryData(
-        totalProducts: totalProducts.length,
+        totalProducts: inventoryLevels.length,
         lowStockItemsCount: lowStockItems.length,
         inventoryLevels: inventoryLevels,
         totalSales: sales.totalSalesAmount.toDouble(),

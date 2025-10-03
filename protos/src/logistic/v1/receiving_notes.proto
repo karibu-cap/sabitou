@@ -7,7 +7,7 @@ import "google/protobuf/timestamp.proto";
 
 /**
  * ReceivingNote (Bon de Réception)
- * Created when YOU receive goods from a supplier.
+ * Created when we receive goods from a supplier.
  * THIS IS WHAT INCREASES YOUR INVENTORY.
  *
  * Flow: Goods arrive → Inspect → Create ReceivingNote → Update inventory
@@ -27,19 +27,17 @@ message ReceivingNote {
   string related_purchase_order_id = 2; // Which PO this fulfills
   string supplier_id = 3; // Who sent the goods
   string buyer_id = 4; // Where goods are stored
-  ReceivingNoteStatus status = 5;
-  repeated ReceivingLineItem items = 6;
-  string received_by_user_id = 7; // Who accepted delivery
-  google.protobuf.Timestamp received_at = 8;
-  string notes = 9; // Condition notes, damages, etc.
+  repeated ReceivingLineItem items = 5;
+  string received_by_user_id = 6; // Who accepted delivery
+  google.protobuf.Timestamp received_at = 7;
+  string notes = 8; // Condition notes, damages, etc.
 }
 
 enum ReceivingNoteStatus {
   RN_STATUS_UNSPECIFIED = 0;
   RN_STATUS_PENDING = 1; // Expected but not yet arrived
-  RN_STATUS_INSPECTING = 2; // Goods arrived, being checked
-  RN_STATUS_COMPLETED = 3; // Accepted and stored
-  RN_STATUS_REJECTED = 4; // Quality issues, sent back
+  RN_STATUS_COMPLETED = 2; // Accepted and stored
+  RN_STATUS_REJECTED = 3; // Quality issues, sent back
 }
 
 /**
@@ -63,16 +61,4 @@ message ReceivingLineItem {
   optional string batch_id = 6; // Generated batch ID for received items
   google.protobuf.Timestamp expiration_date = 7; // Provided by supplier or calculated
   int32 purchase_price = 8;
-}
-
-service ReceivingNoteService {
-  rpc CreateReceivingNote(CreateReceivingNoteRequest) returns (CreateReceivingNoteResponse) {}
-}
-
-message CreateReceivingNoteRequest {
-  ReceivingNote receiving_note = 1;
-}
-
-message CreateReceivingNoteResponse {
-  bool success = 1;
 }

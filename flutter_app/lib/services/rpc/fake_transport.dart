@@ -385,6 +385,10 @@ final _fakeTransport =
                                 ));
                       } else if (req.refId.isNotEmpty) {
                         return gp.refId == req.refId;
+                      } else if (req.barCodeValue.isNotEmpty) {
+                        return gp.barCodeValue.toLowerCase().contains(
+                          req.barCodeValue.toLowerCase(),
+                        );
                       } else if (req.name.isNotEmpty) {
                         return (gp.name.en.toLowerCase().contains(
                               req.name.toLowerCase(),
@@ -442,15 +446,13 @@ final _fakeTransport =
           return CreateGlobalProductResponse()..success = true;
         })
         .unary(StoreProductService.addProduct, (req, __) async {
-          // verify is the global product with the name and qrcode exit if not create one.
-          final globalProduct = _fakeData[CollectionName.globalProducts]
-              ?.firstWhereOrNull(
-                (gp) =>
-                    gp['name'] == req.globalProduct.name &&
-                    gp['bar_code_value'] == req.globalProduct.barCodeValue,
-              );
+          final globalProduct =
+              (_fakeData[CollectionName.globalProducts] as List<GlobalProduct>)
+                  .firstWhereOrNull(
+                    (gp) => gp.refId == req.globalProduct.refId,
+                  );
           final globalProductRefId =
-              globalProduct?['ref_id'] as String? ??
+              globalProduct?.refId ??
               'global-product-${Random().nextInt(1000000)}';
           if (globalProduct == null) {
             _fakeData[CollectionName.globalProducts]?.add({
@@ -460,11 +462,17 @@ final _fakeTransport =
             });
           }
 
-          _fakeData[CollectionName.storeProducts]?.add({
-            'ref_id': 'store-product-${Random().nextInt(1000000)}',
-            'global_product_id': globalProductRefId,
-            ...req.storeProduct.toProto3Json() as Map<String, dynamic>,
-          });
+          (_fakeData[CollectionName.storeProducts] as List<StoreProduct>).add(
+            StoreProduct(
+              refId: 'store-product-${Random().nextInt(1000000)}',
+              globalProductId: globalProductRefId,
+              storeId: req.storeProduct.storeId,
+              salePrice: req.storeProduct.salePrice,
+              createdAt: Timestamp.fromDateTime(clock.now()),
+              sku: req.storeProduct.sku,
+              status: ProductStatus.PRODUCT_STATUS_ACTIVE,
+            ),
+          );
 
           return AddStoreProductResponse()..success = true;
         })
@@ -827,41 +835,7 @@ final _fakeTransport =
           totalQuantityIn: 10.0,
           totalQuantityOut: 5.0,
         );
-      })
-      ..unary(StoreProductService.findGlobalProducts, (req, _) async {
-        return FindGlobalProductsResponse(
-          products: [
-            GlobalProduct()
-              ..refId = 'gp_1'
-              ..name = (Internationalized()
-                ..en = 'Product One'
-                ..fr = 'Produit Un')
-              ..description = (Internationalized()
-                ..en = 'Description One'
-                ..fr = 'Description Un')
-              ..status = GlobalProductStatus.GLOBAL_PRODUCT_STATUS_ACTIVE,
-            GlobalProduct()
-              ..refId = 'gp_2'
-              ..name = (Internationalized()
-                ..en = 'Product Two'
-                ..fr = 'Produit Deux')
-              ..description = (Internationalized()
-                ..en = 'Description Two'
-                ..fr = 'Description Deux')
-              ..status = GlobalProductStatus.GLOBAL_PRODUCT_STATUS_ACTIVE,
-            GlobalProduct()
-              ..refId = 'gp_3'
-              ..name = (Internationalized()
-                ..en = 'Product Three'
-                ..fr = 'Produit Trois')
-              ..description = (Internationalized()
-                ..en = 'Description Three'
-                ..fr = 'Description Trois')
-              ..status = GlobalProductStatus.GLOBAL_PRODUCT_STATUS_ACTIVE,
-          ],
-        );
-      })
-      // Moc CategoryService.findCategories for product categories
+      }) // Moc CategoryService.findCategories for product categories
       ..unary(CategoryService.findCategories, (req, _) async {
         return FindCategoriesResponse(
           categories: [
@@ -883,7 +857,7 @@ final _fakeTransport =
           // totalCount: 2,
         );
       })
-      ..unary(DashboardReportingService.getDashboardReport, (req, _) async {
+      ..unary(ReportsService.getDashboardReport, (req, _) async {
         return GetDashboardReportResponse(
           totalSalesAmount: 500000,
           totalTransactions: 15,
@@ -989,6 +963,203 @@ final _fakeTransport =
           isAvailable: true,
           quantityAvailable: 10,
         );
+      })
+      // Purchase Order Service mocks
+      ..unary(PurchaseOrderService.createPurchaseOrder, (req, _) async {
+        final purchaseOrderId =
+            'PO-${clock.now().year}-${Random().nextInt(1000000)}';
+        final purchaseOrder = PurchaseOrder()
+          ..documentId = purchaseOrderId
+          ..supplierId = req.supplierId
+          ..buyerId = req.buyerId
+          ..status = PurchaseOrderStatus.PO_STATUS_PENDING
+          ..totalAmount = req.items.fold<double>(
+            0.0,
+            (sum, item) => sum + (item.total),
+          )
+          ..items.addAll(req.items)
+          ..createdAt = Timestamp.fromDateTime(clock.now())
+          ..createdByUserId = req.createdByUserId
+          ..notes = req.notes;
+
+        // Add to fake data for persistence
+        (_fakeData[CollectionName.purchaseOrders] as List<PurchaseOrder>).add(
+          purchaseOrder,
+        );
+
+        return CreatePurchaseOrderResponse()..purchaseOrderId = purchaseOrderId;
+      })
+      ..unary(PurchaseOrderService.getPurchaseOrder, (req, _) async {
+        final purchaseOrder =
+            (_fakeData[CollectionName.purchaseOrders] as List<PurchaseOrder>)
+                .firstWhere((po) => po.documentId == req.purchaseOrderId);
+
+        return GetPurchaseOrderResponse()..purchaseOrder = purchaseOrder;
+      })
+      ..unary(PurchaseOrderService.listPurchaseOrders, (req, _) async {
+        final purchaseOrders =
+            (_fakeData[CollectionName.purchaseOrders] as List<PurchaseOrder>)
+                .where((po) => po.buyerId == req.buyerId)
+                .toList();
+
+        return ListPurchaseOrdersResponse()
+          ..purchaseOrders.addAll(purchaseOrders);
+      })
+      ..unary(PurchaseOrderService.updatePurchaseOrderStatus, (req, _) async {
+        final purchaseOrders =
+            _fakeData[CollectionName.purchaseOrders] as List<PurchaseOrder>;
+        final index = purchaseOrders.indexWhere(
+          (po) => po.documentId == req.purchaseOrderId,
+        );
+
+        if (index != -1) {
+          purchaseOrders[index] = purchaseOrders[index].rebuild(
+            (b) => b..status = req.newStatus,
+          );
+        }
+
+        return UpdatePurchaseOrderStatusResponse();
+      })
+      ..unary(PurchaseOrderService.cancelPurchaseOrder, (req, _) async {
+        final purchaseOrders =
+            _fakeData[CollectionName.purchaseOrders] as List<PurchaseOrder>;
+        final index = purchaseOrders.indexWhere(
+          (po) => po.documentId == req.purchaseOrderId,
+        );
+
+        if (index != -1) {
+          purchaseOrders[index] = purchaseOrders[index].rebuild(
+            (b) => b..status = PurchaseOrderStatus.PO_STATUS_CANCELLED,
+          );
+        }
+
+        return CancelPurchaseOrderResponse();
+      })
+      ..unary(PurchaseOrderService.createReceivingNote, (req, _) async {
+        final receivingNoteId =
+            'RN-${clock.now().year}-${Random().nextInt(1000000)}';
+
+        final receivingNote = ReceivingNote()
+          ..documentId = receivingNoteId
+          ..supplierId = req.supplierId
+          ..buyerId = req.buyerId
+          ..receivedByUserId = req.receivedByUserId
+          ..relatedPurchaseOrderId = req.purchaseOrderId
+          ..items.addAll(req.items)
+          ..receivedAt = Timestamp.fromDateTime(clock.now())
+          ..notes = req.notes;
+
+        // Add to fake data for persistence
+        if (!_fakeData.containsKey(CollectionName.receivingNotes)) {
+          _fakeData[CollectionName.receivingNotes] = <ReceivingNote>[];
+        }
+        (_fakeData[CollectionName.receivingNotes] as List<ReceivingNote>).add(
+          receivingNote,
+        );
+
+        // Process inventory updates for each item
+        for (var item in req.items) {
+          // Ensure inventory levels collection exists
+          if (!_fakeData.containsKey(CollectionName.inventoryLevels)) {
+            _fakeData[CollectionName.inventoryLevels] = <InventoryLevel>[];
+          }
+
+          final inventoryLevels =
+              _fakeData[CollectionName.inventoryLevels] as List<InventoryLevel>;
+
+          InventoryLevel? inventoryLevel;
+
+          // Find existing inventory level or create new one
+          inventoryLevel = inventoryLevels.firstWhereOrNull(
+            (il) =>
+                il.storeProductId == item.productId &&
+                il.storeId == req.buyerId,
+          );
+
+          inventoryLevel ??= InventoryLevel()
+            ..storeProductId = item.productId
+            ..storeId = req.buyerId
+            ..lastUpdated = Timestamp.fromDateTime(DateTime.now())
+            ..lastUpdatedByUserId = receivingNote.receivedByUserId;
+
+          final String batchId = item.batchId.isNotEmpty
+              ? item.batchId
+              : 'BATCH-${clock.now().year}-${Random().nextInt(999).toString().padLeft(3, '0')}';
+          Batch? existingBatch =
+              (_fakeData[CollectionName.batches] as List<Batch>)
+                  .firstWhereOrNull((b) => b.documentId == batchId);
+
+          if (existingBatch == null) {
+            existingBatch = Batch()
+              ..documentId = batchId
+              ..productId = item.productId
+              ..warehouseId = receivingNote.buyerId
+              ..quantity = item.quantityReceived.toInt()
+              ..expirationDate = item.expirationDate
+              ..receivedAt = receivingNote.receivedAt
+              ..supplierId = receivingNote.supplierId
+              ..purchasePrice = item.purchasePrice
+              ..status = BatchStatus.BATCH_STATUS_ACTIVE;
+            (_fakeData[CollectionName.batches] as List<Batch>).add(
+              existingBatch,
+            );
+          } else {
+            final originalQuantity = existingBatch.quantity.toInt();
+            final newQuantity =
+                originalQuantity + item.quantityReceived.toInt();
+            existingBatch..quantity = newQuantity;
+            (_fakeData[CollectionName.batches] as List<Batch>).removeWhere(
+              (b) => b.documentId == batchId,
+            );
+            (_fakeData[CollectionName.batches] as List<Batch>).add(
+              existingBatch,
+            );
+          }
+
+          // 2.3 - Update InventoryLeveL.
+          inventoryLevel = inventoryLevel.rebuild(
+            (il) => il
+              ..quantityAvailable += item.quantityReceived.toInt()
+              ..lastUpdated = Timestamp.fromDateTime(clock.now())
+              ..lastUpdatedByUserId = req.receivedByUserId,
+          );
+          inventoryLevel.batches.removeWhere((b) => b.documentId == batchId);
+          inventoryLevel.batches.add(existingBatch);
+
+          (_fakeData[CollectionName.inventoryLevels] as List<InventoryLevel>)
+              .removeWhere(
+                (il) =>
+                    il.storeProductId == item.productId &&
+                    il.storeId == req.buyerId,
+              );
+          (_fakeData[CollectionName.inventoryLevels] as List<InventoryLevel>)
+              .add(inventoryLevel);
+
+          // 2.4 - Record InventoryTransaction
+
+          final transaction = InventoryTransaction()
+            ..documentId = 'TXN-${Random().nextInt(1000000)}'
+            ..storeId = req.buyerId
+            ..productId = item.productId
+            ..transactionType = TransactionType.TXN_TYPE_PURCHASE
+            ..quantityChange = item.quantityReceived.toInt()
+            ..quantityBefore = inventoryLevel.quantityAvailable
+            ..quantityAfter =
+                inventoryLevel.quantityAvailable + item.quantityReceived.toInt()
+            ..relatedDocumentType = 'ReceivingNote'
+            ..relatedDocumentId = receivingNoteId
+            ..performedByUserId = req.receivedByUserId
+            ..transactionTime = Timestamp.fromDateTime(clock.now())
+            ..notes =
+                'Received items from purchase order ${req.purchaseOrderId}'
+            ..batchId = existingBatch.documentId;
+
+          (_fakeData[CollectionName.inventoryTransactions]
+                  as List<InventoryTransaction>)
+              .add(transaction);
+        }
+
+        return CreateReceivingNoteResponse();
       })
       // Point of Sale Service mocks for testing
       ..unary(CashReceiptService.createCashReceipt, (req, _) async {

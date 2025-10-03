@@ -207,7 +207,7 @@ extension type ReportingServiceClient (connect.Transport _transport) {
   }
 }
 /// Comprehensive dashboard data service for aggregated calculations
-extension type DashboardReportingServiceClient (connect.Transport _transport) {
+extension type ReportsServiceClient (connect.Transport _transport) {
   /// Get comprehensive dashboard data with all calculated fields
   Future<reportsv1reports.GetDashboardReportResponse> getDashboardReport(
     reportsv1reports.GetDashboardReportRequest input, {
@@ -217,7 +217,7 @@ extension type DashboardReportingServiceClient (connect.Transport _transport) {
     Function(connect.Headers)? onTrailer,
   }) {
     return connect.Client(_transport).unary(
-      specs.DashboardReportingService.getDashboardReport,
+      specs.ReportsService.getDashboardReport,
       input,
       signal: signal,
       headers: headers,

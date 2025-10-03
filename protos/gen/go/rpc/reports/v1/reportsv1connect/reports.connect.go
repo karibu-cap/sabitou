@@ -23,9 +23,8 @@ const _ = connect.IsAtLeastVersion1_13_0
 const (
 	// ReportingServiceName is the fully-qualified name of the ReportingService service.
 	ReportingServiceName = "reports.v1.ReportingService"
-	// DashboardReportingServiceName is the fully-qualified name of the DashboardReportingService
-	// service.
-	DashboardReportingServiceName = "reports.v1.DashboardReportingService"
+	// ReportsServiceName is the fully-qualified name of the ReportsService service.
+	ReportsServiceName = "reports.v1.ReportsService"
 )
 
 // These constants are the fully-qualified names of the RPCs defined in this package. They're
@@ -69,9 +68,9 @@ const (
 	// ReportingServiceGetFinancialReportProcedure is the fully-qualified name of the ReportingService's
 	// GetFinancialReport RPC.
 	ReportingServiceGetFinancialReportProcedure = "/reports.v1.ReportingService/GetFinancialReport"
-	// DashboardReportingServiceGetDashboardReportProcedure is the fully-qualified name of the
-	// DashboardReportingService's GetDashboardReport RPC.
-	DashboardReportingServiceGetDashboardReportProcedure = "/reports.v1.DashboardReportingService/GetDashboardReport"
+	// ReportsServiceGetDashboardReportProcedure is the fully-qualified name of the ReportsService's
+	// GetDashboardReport RPC.
+	ReportsServiceGetDashboardReportProcedure = "/reports.v1.ReportsService/GetDashboardReport"
 )
 
 // ReportingServiceClient is a client for the reports.v1.ReportingService service.
@@ -426,75 +425,74 @@ func (UnimplementedReportingServiceHandler) GetFinancialReport(context.Context, 
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("reports.v1.ReportingService.GetFinancialReport is not implemented"))
 }
 
-// DashboardReportingServiceClient is a client for the reports.v1.DashboardReportingService service.
-type DashboardReportingServiceClient interface {
+// ReportsServiceClient is a client for the reports.v1.ReportsService service.
+type ReportsServiceClient interface {
 	// Get comprehensive dashboard data with all calculated fields
 	GetDashboardReport(context.Context, *connect.Request[v1.GetDashboardReportRequest]) (*connect.Response[v1.GetDashboardReportResponse], error)
 }
 
-// NewDashboardReportingServiceClient constructs a client for the
-// reports.v1.DashboardReportingService service. By default, it uses the Connect protocol with the
-// binary Protobuf Codec, asks for gzipped responses, and sends uncompressed requests. To use the
-// gRPC or gRPC-Web protocols, supply the connect.WithGRPC() or connect.WithGRPCWeb() options.
+// NewReportsServiceClient constructs a client for the reports.v1.ReportsService service. By
+// default, it uses the Connect protocol with the binary Protobuf Codec, asks for gzipped responses,
+// and sends uncompressed requests. To use the gRPC or gRPC-Web protocols, supply the
+// connect.WithGRPC() or connect.WithGRPCWeb() options.
 //
 // The URL supplied here should be the base URL for the Connect or gRPC server (for example,
 // http://api.acme.com or https://acme.com/grpc).
-func NewDashboardReportingServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) DashboardReportingServiceClient {
+func NewReportsServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) ReportsServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
-	dashboardReportingServiceMethods := v1.File_reports_v1_reports_proto.Services().ByName("DashboardReportingService").Methods()
-	return &dashboardReportingServiceClient{
+	reportsServiceMethods := v1.File_reports_v1_reports_proto.Services().ByName("ReportsService").Methods()
+	return &reportsServiceClient{
 		getDashboardReport: connect.NewClient[v1.GetDashboardReportRequest, v1.GetDashboardReportResponse](
 			httpClient,
-			baseURL+DashboardReportingServiceGetDashboardReportProcedure,
-			connect.WithSchema(dashboardReportingServiceMethods.ByName("GetDashboardReport")),
+			baseURL+ReportsServiceGetDashboardReportProcedure,
+			connect.WithSchema(reportsServiceMethods.ByName("GetDashboardReport")),
 			connect.WithClientOptions(opts...),
 		),
 	}
 }
 
-// dashboardReportingServiceClient implements DashboardReportingServiceClient.
-type dashboardReportingServiceClient struct {
+// reportsServiceClient implements ReportsServiceClient.
+type reportsServiceClient struct {
 	getDashboardReport *connect.Client[v1.GetDashboardReportRequest, v1.GetDashboardReportResponse]
 }
 
-// GetDashboardReport calls reports.v1.DashboardReportingService.GetDashboardReport.
-func (c *dashboardReportingServiceClient) GetDashboardReport(ctx context.Context, req *connect.Request[v1.GetDashboardReportRequest]) (*connect.Response[v1.GetDashboardReportResponse], error) {
+// GetDashboardReport calls reports.v1.ReportsService.GetDashboardReport.
+func (c *reportsServiceClient) GetDashboardReport(ctx context.Context, req *connect.Request[v1.GetDashboardReportRequest]) (*connect.Response[v1.GetDashboardReportResponse], error) {
 	return c.getDashboardReport.CallUnary(ctx, req)
 }
 
-// DashboardReportingServiceHandler is an implementation of the reports.v1.DashboardReportingService
-// service.
-type DashboardReportingServiceHandler interface {
+// ReportsServiceHandler is an implementation of the reports.v1.ReportsService service.
+type ReportsServiceHandler interface {
 	// Get comprehensive dashboard data with all calculated fields
 	GetDashboardReport(context.Context, *connect.Request[v1.GetDashboardReportRequest]) (*connect.Response[v1.GetDashboardReportResponse], error)
 }
 
-// NewDashboardReportingServiceHandler builds an HTTP handler from the service implementation. It
-// returns the path on which to mount the handler and the handler itself.
+// NewReportsServiceHandler builds an HTTP handler from the service implementation. It returns the
+// path on which to mount the handler and the handler itself.
 //
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
-func NewDashboardReportingServiceHandler(svc DashboardReportingServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
-	dashboardReportingServiceMethods := v1.File_reports_v1_reports_proto.Services().ByName("DashboardReportingService").Methods()
-	dashboardReportingServiceGetDashboardReportHandler := connect.NewUnaryHandler(
-		DashboardReportingServiceGetDashboardReportProcedure,
+func NewReportsServiceHandler(svc ReportsServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	reportsServiceMethods := v1.File_reports_v1_reports_proto.Services().ByName("ReportsService").Methods()
+	reportsServiceGetDashboardReportHandler := connect.NewUnaryHandler(
+		ReportsServiceGetDashboardReportProcedure,
 		svc.GetDashboardReport,
-		connect.WithSchema(dashboardReportingServiceMethods.ByName("GetDashboardReport")),
+		connect.WithSchema(reportsServiceMethods.ByName("GetDashboardReport")),
 		connect.WithHandlerOptions(opts...),
 	)
-	return "/reports.v1.DashboardReportingService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	return "/reports.v1.ReportsService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
-		case DashboardReportingServiceGetDashboardReportProcedure:
-			dashboardReportingServiceGetDashboardReportHandler.ServeHTTP(w, r)
+		case ReportsServiceGetDashboardReportProcedure:
+			reportsServiceGetDashboardReportHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
 	})
 }
 
-// UnimplementedDashboardReportingServiceHandler returns CodeUnimplemented from all methods.
-type UnimplementedDashboardReportingServiceHandler struct{}
+// UnimplementedReportsServiceHandler returns CodeUnimplemented from all methods.
+type UnimplementedReportsServiceHandler struct{}
 
-func (UnimplementedDashboardReportingServiceHandler) GetDashboardReport(context.Context, *connect.Request[v1.GetDashboardReportRequest]) (*connect.Response[v1.GetDashboardReportResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("reports.v1.DashboardReportingService.GetDashboardReport is not implemented"))
+func (UnimplementedReportsServiceHandler) GetDashboardReport(context.Context, *connect.Request[v1.GetDashboardReportRequest]) (*connect.Response[v1.GetDashboardReportResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("reports.v1.ReportsService.GetDashboardReport is not implemented"))
 }

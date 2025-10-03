@@ -77,6 +77,18 @@ final class CollectionName {
 
   /// The inventory level collection.
   static const String inventoryLevels = 'inventory_levels';
+
+  /// The purchase orders collection.
+  static const String purchaseOrders = 'purchase_orders';
+
+  /// The receiving notes collection.
+  static const String receivingNotes = 'receiving_notes';
+
+  /// The inventory transactions collection.
+  static const String inventoryTransactions = 'inventory_transactions';
+
+  /// The batches collection.
+  static const String batches = 'batches';
 }
 
 /// The static images.
@@ -132,14 +144,14 @@ enum DashboardItem {
   /// The inventory item.
   inventory,
 
+  /// The inventory children item.
+  inventoryChildren,
+
   /// The products item.
   products,
 
   /// The sales item.
   salesReports,
-
-  /// Add sales.
-  salesOrders,
 
   /// The great sale item.
   sales,
@@ -165,9 +177,12 @@ enum DashboardItem {
   /// The cash receipts item.
   cashReceipts,
 
-  /// The sales item.
-  salesOrder,
-
   /// The pos item.
   pos,
+
+  /// The purchase orders item.
+  purchaseOrders,
+
+  /// The products list item.
+  productsList,
 }

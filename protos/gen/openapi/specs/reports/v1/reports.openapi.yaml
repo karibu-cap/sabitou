@@ -2,42 +2,6 @@ openapi: 3.1.0
 info:
   title: reports.v1
 paths:
-  /reports.v1.DashboardReportingService/GetDashboardReport:
-    post:
-      tags:
-        - reports.v1.DashboardReportingService
-      summary: Get comprehensive dashboard data with all calculated fields
-      description: Get comprehensive dashboard data with all calculated fields
-      operationId: reports.v1.DashboardReportingService.GetDashboardReport
-      parameters:
-        - name: Connect-Protocol-Version
-          in: header
-          required: true
-          schema:
-            $ref: '#/components/schemas/connect-protocol-version'
-        - name: Connect-Timeout-Ms
-          in: header
-          schema:
-            $ref: '#/components/schemas/connect-timeout-header'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/reports.v1.GetDashboardReportRequest'
-        required: true
-      responses:
-        default:
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/connect.error'
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/reports.v1.GetDashboardReportResponse'
   /reports.v1.ReportingService/GetBestSellingProducts:
     post:
       tags:
@@ -434,6 +398,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/reports.v1.GetSupplierPerformanceReportResponse'
+  /reports.v1.ReportsService/GetDashboardReport:
+    post:
+      tags:
+        - reports.v1.ReportsService
+      summary: Get comprehensive dashboard data with all calculated fields
+      description: Get comprehensive dashboard data with all calculated fields
+      operationId: reports.v1.ReportsService.GetDashboardReport
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reports.v1.GetDashboardReportRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/reports.v1.GetDashboardReportResponse'
 components:
   schemas:
     audits.v1.InventoryTransaction:
@@ -2090,5 +2090,5 @@ components:
 security: []
 tags:
   - name: reports.v1.ReportingService
-  - name: reports.v1.DashboardReportingService
+  - name: reports.v1.ReportsService
     description: Comprehensive dashboard data service for aggregated calculations

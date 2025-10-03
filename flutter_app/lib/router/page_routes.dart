@@ -39,9 +39,6 @@ abstract class PagesRoutes {
   /// The inventory route, for example, http:localhost:8080/inventory.
   static final inventory = _InventoryRoute();
 
-  /// The sales route, for example, http:localhost:8080/sales/sales-orders.
-  static final salesOrders = _SalesOrderRoute();
-
   /// The sales route, for example, http:localhost:8080/sales.
   static final sales = _SalesRoute();
 
@@ -74,6 +71,31 @@ abstract class PagesRoutes {
 
   /// The vouchers invoices route, for example, http:localhost:8080/vouchers-invoices.
   static final vouchersInvoices = _VouchersInvoicesRoute();
+
+  /// The purchase orders route, for example, http:localhost:8080/purchase-orders.
+  static final purchaseOrders = _PurchaseOrdersRoute();
+
+  /// The sales orders route, for example, http:localhost:8080/sales-orders.
+  static final salesOrders = _SalesOrdersRoute();
+
+  /// The sales orders route, for example, http:localhost:8080/products-list.
+  static final productsList = _ProductsListRoute();
+}
+
+class _ProductsListRoute extends PagesRoutesWithNoParams {
+  @override
+  String get pattern => '/products-list';
+
+  @override
+  String get name => 'products-list';
+}
+
+class _PurchaseOrdersRoute extends PagesRoutesWithNoParams {
+  @override
+  String get pattern => '/purchase-orders';
+
+  @override
+  String get name => 'purchase-orders';
 }
 
 class _CashReceiptsRoute extends PagesRoutesWithNoParams {
@@ -84,12 +106,12 @@ class _CashReceiptsRoute extends PagesRoutesWithNoParams {
   String get name => 'sales/cash-receipts';
 }
 
-class _SalesOrderRoute extends PagesRoutesWithNoParams {
+class _SalesOrdersRoute extends PagesRoutesWithNoParams {
   @override
-  String get pattern => '/sales/sales-order';
+  String get pattern => '/sales-orders';
 
   @override
-  String get name => 'sales/sales-order';
+  String get name => 'sales-orders';
 }
 
 class _InventoryRoute extends PagesRoutesWithNoParams {

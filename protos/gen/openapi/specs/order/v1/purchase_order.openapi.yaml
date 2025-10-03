@@ -646,9 +646,6 @@ components:
           type: string
           title: buyer_id
           description: Where goods are stored
-        status:
-          title: status
-          $ref: '#/components/schemas/logistic.v1.ReceivingNoteStatus'
         items:
           type: array
           items:
@@ -672,7 +669,7 @@ components:
       description: |-
         *
          ReceivingNote (Bon de Réception)
-         Created when YOU receive goods from a supplier.
+         Created when we receive goods from a supplier.
          THIS IS WHAT INCREASES YOUR INVENTORY.
 
          Flow: Goods arrive → Inspect → Create ReceivingNote → Update inventory
@@ -686,15 +683,6 @@ components:
            status: RN_STATUS_COMPLETED
 
          INVENTORY IMPACT: +48 PRD-001 in WH-001
-    logistic.v1.ReceivingNoteStatus:
-      type: string
-      title: ReceivingNoteStatus
-      enum:
-        - RN_STATUS_UNSPECIFIED
-        - RN_STATUS_PENDING
-        - RN_STATUS_INSPECTING
-        - RN_STATUS_COMPLETED
-        - RN_STATUS_REJECTED
     order.v1.CancelPurchaseOrderRequest:
       type: object
       properties:

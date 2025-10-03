@@ -4285,20 +4285,16 @@ class ReportingServiceApi {
 }
 
 /// Comprehensive dashboard data service for aggregated calculations
-class DashboardReportingServiceApi {
+class ReportsServiceApi {
   final $pb.RpcClient _client;
 
-  DashboardReportingServiceApi(this._client);
+  ReportsServiceApi(this._client);
 
   /// Get comprehensive dashboard data with all calculated fields
   $async.Future<GetDashboardReportResponse> getDashboardReport(
           $pb.ClientContext? ctx, GetDashboardReportRequest request) =>
-      _client.invoke<GetDashboardReportResponse>(
-          ctx,
-          'DashboardReportingService',
-          'GetDashboardReport',
-          request,
-          GetDashboardReportResponse());
+      _client.invoke<GetDashboardReportResponse>(ctx, 'ReportsService',
+          'GetDashboardReport', request, GetDashboardReportResponse());
 }
 
 const $core.bool _omitFieldNames =
