@@ -1931,6 +1931,119 @@ class AppInternationalizationService extends ChangeNotifier {
       'en': 'Create Receive Note',
       'fr': 'Créer une note de réception',
     },
+    'createAt': {'en': 'Created At', 'fr': 'Créé le'},
+    'selectPurchaseOrder': {
+      'en': 'Select Purchase Order',
+      'fr': 'Sélectionner une commande fournisseur',
+    },
+    'receiveDate': {'en': 'Receive Date', 'fr': 'Date de réception'},
+
+    'createReceivingNote': {
+      'en': 'Create Receiving Note',
+      'fr': 'Créer une note de réception',
+    },
+    'addNotesAboutTheDeliveryConditionDamagesEtc': {
+      'en': 'Add notes about the delivery condition, damages etc...',
+      'fr':
+          'Ajoutez des notes sur la condition de livraison, les dommages etc...',
+    },
+    'rejectedQuantity': {'en': 'Rejected Quantity', 'fr': 'Quantité rejetée'},
+    'receivedQuantity': {'en': 'Received Quantity', 'fr': 'Quantité reçue'},
+    'purchasePrice': {'en': 'Purchase Price', 'fr': 'Prix dachat'},
+    'expectedQuantity': {'en': 'Expected Quantity', 'fr': 'Quantité attendue'},
+    'batch': {'en': 'Batch', 'fr': 'Lot'},
+    'pleaseSelectAPurchaseOrder': {
+      'en': 'Please select a purchase order',
+      'fr': 'Veuillez sélectionner une commande fournisseur',
+    },
+    'expectedQuantityMustBeGreaterThanZeroForItem': {
+      'en': 'Expected quantity must be greater than 0 for item @item',
+      'fr':
+          'La quantité attendue doit être supérieure à 0 pour le produit @item',
+    },
+    'receivedQuantityCannotBeNegativeForItem': {
+      'en': 'Received quantity cannot be negative for item @item',
+      'fr': 'La quantité reçue ne peut pas être negative pour le produit @item',
+    },
+    'purchasePriceMustBeGreaterThanZeroForItem': {
+      'en': 'Purchase price must be greater than 0 for item @item',
+      'fr': 'Le prix dachat doit être supérieure à 0 pour le produit @item',
+    },
+    'receivingNoteCreatedSuccessfully': {
+      'en': 'Receiving note created successfully',
+      'fr': 'Note de réception créée avec succès',
+    },
+    'failedToCreateReceivingNote': {
+      'en': 'Failed to create receiving note, please try again',
+      'fr':
+          'Erreur lors de la création de la note de réception, veuillez reessayer',
+    },
+    'createOrder': {'en': 'Create Order', 'fr': 'Créer une commande'},
+    'unitPurchasePrice': {
+      'en': 'Unit purchase price',
+      'fr': 'Prix unitaire dachat',
+    },
+    'noCashReceiptsFound': {
+      'en': 'No cash receipts found',
+      'fr': 'Aucune réception trouvée',
+    },
+    'cashReceiptsWillAppearHereOnceTheyAreCreated': {
+      'en': 'Cash receipts will appear here once they are created',
+      'fr': 'Les réceptions apparaîtront ici une fois qu\'elles seront créées',
+    },
+    'refresh': {'en': 'Refresh', 'fr': 'Actualiser'},
+    'errorLoadingCashReceipts': {
+      'en': 'Error loading cash receipts',
+      'fr': 'Erreur lors du chargement des réceptions',
+    },
+    'retry': {'en': 'Retry', 'fr': 'Reessayer'},
+    'audits': {'en': 'Audits', 'fr': 'Audits'},
+    'noTransactionsFound': {
+      'en': 'No transactions found',
+      'fr': 'Aucune transaction trouvée',
+    },
+    'viewAndManageInventoryAndVoucherTransactions': {
+      'en': 'View and manage inventory and voucher transactions',
+      'fr': 'Voir et gérer les transactions d\'inventaire et de vouchers',
+    },
+    'searchTransactions': {
+      'en': 'Search transactions...',
+      'fr': 'Rechercher des transactions...',
+    },
+    'today': {'en': 'Today', 'fr': 'Aujourd\'hui'},
+    'thisWeek': {'en': 'This Week', 'fr': 'Cette semaine'},
+    'thisMonth': {'en': 'This Month', 'fr': 'Ce mois'},
+    'inventoryOnly': {'en': 'Inventory Only', 'fr': 'Inventaire seulement'},
+    'vouchersOnly': {'en': 'Vouchers Only', 'fr': 'Vouchers seulement'},
+    'vouchers': {'en': 'Vouchers', 'fr': 'Vouchers'},
+    'noInventoryTransactionsFound': {
+      'en': 'No inventory transactions found',
+      'fr': 'Aucune transaction d\'inventaire trouvée',
+    },
+    'noVoucherTransactionsFound': {
+      'en': 'No voucher transactions found',
+      'fr': 'Aucune transaction de voucher trouvée',
+    },
+    'noTransactionsMatchFilters': {
+      'en': 'No transactions match your current filters.',
+      'fr': 'Aucune transaction ne correspond à vos filtres actuels.',
+    },
+    'transactionId': {'en': 'Transaction ID', 'fr': 'ID de transaction'},
+    'documentId': {'en': 'Document ID', 'fr': 'ID du document'},
+    'productId': {'en': 'Product ID', 'fr': 'ID du produit'},
+    'batchId': {'en': 'Batch ID', 'fr': 'ID du lot'},
+    'usedBy': {'en': 'Used By', 'fr': 'Utilisé par'},
+    'exportInitiated': {'en': 'Export initiated', 'fr': 'Exportation initiée'},
+    'exportFailed': {'en': 'Export failed', 'fr': 'Échec de l\'exportation'},
+    'transactionTapped': {
+      'en': 'Transaction tapped',
+      'fr': 'Transaction sélectionnée',
+    },
+    'searchCashReceipts': {
+      'en': 'Search cash receipts...',
+      'fr': 'Rechercher des cash receipts...',
+    },
+    'filter': {'en': 'Filter', 'fr': 'Filtrer'},
   };
 
   /// Direct access to the internationalization service.
@@ -1949,6 +2062,205 @@ class AppInternationalizationService extends ChangeNotifier {
     const Locale('en'),
     const Locale('fr'),
   ];
+
+  /// The search cash receipts.
+  String get searchCashReceipts =>
+      _stringOfLocalizedValue('searchCashReceipts');
+
+  /// The filter.
+  String get filter => _stringOfLocalizedValue('filter');
+
+  /// The view and manage inventory and voucher transactions.
+  String get viewAndManageInventoryAndVoucherTransactions =>
+      _stringOfLocalizedValue('viewAndManageInventoryAndVoucherTransactions');
+
+  /// The audits.
+  String get audits => _stringOfLocalizedValue('audits');
+
+  /// The search and filter.
+  String get searchAndFilter => _stringOfLocalizedValue('searchAndFilter');
+
+  /// The search transactions.
+  String get searchTransactions =>
+      _stringOfLocalizedValue('searchTransactions');
+
+  /// The today.
+  String get today => _stringOfLocalizedValue('today');
+
+  /// The this week.
+  String get thisWeek => _stringOfLocalizedValue('thisWeek');
+
+  /// The this month.
+  String get thisMonth => _stringOfLocalizedValue('thisMonth');
+
+  /// The inventory only.
+  String get inventoryOnly => _stringOfLocalizedValue('inventoryOnly');
+
+  /// The vouchers only.
+  String get vouchersOnly => _stringOfLocalizedValue('vouchersOnly');
+
+  /// The inventory.
+  String get inventory => _stringOfLocalizedValue('inventory');
+
+  /// The vouchers.
+  String get vouchers => _stringOfLocalizedValue('vouchers');
+
+  /// The export.
+  String get export => _stringOfLocalizedValue('export');
+
+  /// The refresh.
+  String get refresh => _stringOfLocalizedValue('refresh');
+
+  /// The no inventory transactions found.
+  String get noInventoryTransactionsFound =>
+      _stringOfLocalizedValue('noInventoryTransactionsFound');
+
+  /// The no voucher transactions found.
+  String get noVoucherTransactionsFound =>
+      _stringOfLocalizedValue('noVoucherTransactionsFound');
+
+  /// The no transactions match filters.
+  String get noTransactionsMatchFilters =>
+      _stringOfLocalizedValue('noTransactionsMatchFilters');
+
+  /// The transaction id.
+  String get transactionId => _stringOfLocalizedValue('transactionId');
+
+  /// The type.
+  String get type => _stringOfLocalizedValue('type');
+
+  /// The amount.
+  String get amount => _stringOfLocalizedValue('amount');
+
+  /// The date.
+  String get date => _stringOfLocalizedValue('date');
+
+  /// The voucher.
+  String get voucher => _stringOfLocalizedValue('voucher');
+
+  /// The purchase.
+  String get purchase => _stringOfLocalizedValue('purchase');
+
+  /// The sale.
+  String get sale => _stringOfLocalizedValue('sale');
+
+  /// The adjustment.
+  String get adjustment => _stringOfLocalizedValue('adjustment');
+
+  /// The refund.
+  String get refund => _stringOfLocalizedValue('refund');
+
+  /// The transfer.
+  String get transfer => _stringOfLocalizedValue('transfer');
+
+  /// The quantity.
+  String get quantity => _stringOfLocalizedValue('quantity');
+
+  /// The document id.
+  String get documentId => _stringOfLocalizedValue('documentId');
+
+  /// The product id.
+  String get productId => _stringOfLocalizedValue('productId');
+
+  /// The batch id.
+  String get batchId => _stringOfLocalizedValue('batchId');
+
+  /// The voucher id.
+  String get voucherId => _stringOfLocalizedValue('voucherId');
+
+  /// The used by.
+  String get usedBy => _stringOfLocalizedValue('usedBy');
+
+  /// The export initiated.
+  String get exportInitiated => _stringOfLocalizedValue('exportInitiated');
+
+  /// The export failed.
+  String get exportFailed => _stringOfLocalizedValue('exportFailed');
+
+  /// The transaction tapped.
+  String get transactionTapped => _stringOfLocalizedValue('transactionTapped');
+
+  /// The retry.
+  String get retry => _stringOfLocalizedValue('retry');
+
+  /// The error loading cash receipts.
+  String get errorLoadingCashReceipts =>
+      _stringOfLocalizedValue('errorLoadingCashReceipts');
+
+  /// The no cash receipts found.
+  String get noCashReceiptsFound =>
+      _stringOfLocalizedValue('noCashReceiptsFound');
+
+  /// The cash receipts will appear here once they are created.
+  String get cashReceiptsWillAppearHereOnceTheyAreCreated =>
+      _stringOfLocalizedValue('cashReceiptsWillAppearHereOnceTheyAreCreated');
+
+  /// The unit purchase price.
+  String get unitPurchasePrice => _stringOfLocalizedValue('unitPurchasePrice');
+
+  /// The create order.
+  String get createOrder => _stringOfLocalizedValue('createOrder');
+
+  /// The please select a purchase order.
+  String get expectedQuantityMustBeGreaterThanZeroForItem =>
+      _stringOfLocalizedValue('expectedQuantityMustBeGreaterThanZeroForItem');
+
+  /// The please select a purchase order.
+  String get receivedQuantityCannotBeNegativeForItem =>
+      _stringOfLocalizedValue('receivedQuantityCannotBeNegativeForItem');
+
+  /// The please select a purchase order.
+  String get purchasePriceMustBeGreaterThanZeroForItem =>
+      _stringOfLocalizedValue('purchasePriceMustBeGreaterThanZeroForItem');
+
+  /// The please select a purchase order.
+  String get pleaseSelectAPurchaseOrder =>
+      _stringOfLocalizedValue('pleaseSelectAPurchaseOrder');
+
+  /// The receiving note created successfully.
+  String get receivingNoteCreatedSuccessfully =>
+      _stringOfLocalizedValue('receivingNoteCreatedSuccessfully');
+
+  /// The failed to create receiving note.
+  String get failedToCreateReceivingNote =>
+      _stringOfLocalizedValue('failedToCreateReceivingNote');
+
+  /// The receiving note description.
+  String get receivingNoteDescription =>
+      _stringOfLocalizedValue('receivingNoteDescription');
+
+  /// The batch.
+  String get batch => _stringOfLocalizedValue('batch');
+
+  /// The expected quantity.
+  String get expectedQuantity => _stringOfLocalizedValue('expectedQuantity');
+
+  /// The purchase price.
+  String get purchasePrice => _stringOfLocalizedValue('purchasePrice');
+
+  /// The received quantity.
+  String get receivedQuantity => _stringOfLocalizedValue('receivedQuantity');
+
+  /// The rejected quantity.
+  String get rejectedQuantity => _stringOfLocalizedValue('rejectedQuantity');
+
+  /// The add notes about the delivery condition damages etc.
+  String get addNotesAboutTheDeliveryConditionDamagesEtc =>
+      _stringOfLocalizedValue('addNotesAboutTheDeliveryConditionDamagesEtc');
+
+  /// The createReceivingNote.
+  String get createReceivingNote =>
+      _stringOfLocalizedValue('createReceivingNote');
+
+  /// The receive date.
+  String get receiveDate => _stringOfLocalizedValue('receiveDate');
+
+  /// The select purchase order.
+  String get selectPurchaseOrder =>
+      _stringOfLocalizedValue('selectPurchaseOrder');
+
+  /// The create at.
+  String get createAt => _stringOfLocalizedValue('createAt');
 
   /// The create receive note.
   String get createReceiveNote => _stringOfLocalizedValue('createReceiveNote');
@@ -2285,9 +2597,6 @@ class AppInternationalizationService extends ChangeNotifier {
   /// The [referenceId].
   String get referenceId => _stringOfLocalizedValue('referenceId');
 
-  /// The [voucherId].
-  String get voucherId => _stringOfLocalizedValue('voucherId');
-
   /// The [processPayment].
   String get processPayment => _stringOfLocalizedValue('processPayment');
 
@@ -2419,12 +2728,6 @@ class AppInternationalizationService extends ChangeNotifier {
   /// The mtn money.
   String get mtnMoney => _stringOfLocalizedValue('mtnMoney');
 
-  /// The voucher.
-  String get voucher => _stringOfLocalizedValue('voucher');
-
-  /// The mobile.
-  String get mobile => _stringOfLocalizedValue('mobile');
-
   /// The unknown.
   String get unknown => _stringOfLocalizedValue('unknown');
 
@@ -2549,9 +2852,6 @@ class AppInternationalizationService extends ChangeNotifier {
   /// The order.
   String get order => _stringOfLocalizedValue('order');
 
-  /// The amount.
-  String get amount => _stringOfLocalizedValue('amount');
-
   /// The transactions history.
   String get transactionsHistory =>
       _stringOfLocalizedValue('transactionsHistory');
@@ -2564,9 +2864,6 @@ class AppInternationalizationService extends ChangeNotifier {
   String get searchForTransaction =>
       _stringOfLocalizedValue('searchForTransaction');
 
-  /// The type.
-  String get type => _stringOfLocalizedValue('type');
-
   /// The total refunds.
   String get totalRefunds => _stringOfLocalizedValue('totalRefunds');
 
@@ -2576,9 +2873,6 @@ class AppInternationalizationService extends ChangeNotifier {
   /// The pending transactions.
   String get pendingTransactions =>
       _stringOfLocalizedValue('pendingTransactions');
-
-  /// The export.
-  String get export => _stringOfLocalizedValue('export');
 
   /// The pdf.
   String get pdf => _stringOfLocalizedValue('pdf');
@@ -3063,9 +3357,6 @@ class AppInternationalizationService extends ChangeNotifier {
   /// Returns the localized value of text 'allCategories'.
   String get allCategories => _stringOfLocalizedValue('allCategories');
 
-  /// Returns the localized value of text 'searchAndFilter'.
-  String get searchAndFilter => _stringOfLocalizedValue('searchAndFilter');
-
   /// Returns the localized value of text 'productManagement'.
   String get productManagement => _stringOfLocalizedValue('productManagement');
 
@@ -3110,23 +3401,8 @@ class AppInternationalizationService extends ChangeNotifier {
   /// Returns the localized value of text 'months'.
   String get months => _stringOfLocalizedValue('months');
 
-  /// Returns the localized value of text 'purchase'.
-  String get purchase => _stringOfLocalizedValue('purchase');
-
-  /// Returns the localized value of text 'sale'.
-  String get sale => _stringOfLocalizedValue('sale');
-
-  /// Returns the localized value of text 'adjustment'.
-  String get adjustment => _stringOfLocalizedValue('adjustment');
-
-  /// Returns the localized value of text 'refund'.
-  String get refund => _stringOfLocalizedValue('refund');
-
   /// Returns the localized value of text 'transaction'.
   String get transaction => _stringOfLocalizedValue('transaction');
-
-  /// Returns the localized value of text 'transfer'.
-  String get transfer => _stringOfLocalizedValue('transfer');
 
   /// Returns the localized value of text 'now'.
   String get now => _stringOfLocalizedValue('now');
@@ -3210,9 +3486,6 @@ class AppInternationalizationService extends ChangeNotifier {
 
   /// Returns the localized value of text 'products'.
   String get products => _stringOfLocalizedValue('products');
-
-  /// Returns the localized value of text 'inventory'.
-  String get inventory => _stringOfLocalizedValue('inventory');
 
   /// Returns the localized value of text 'categories'.
   String get categories => _stringOfLocalizedValue('categories');
@@ -3304,17 +3577,11 @@ class AppInternationalizationService extends ChangeNotifier {
   /// Returns the localized value of text 'description'.
   String get description => _stringOfLocalizedValue('description');
 
-  /// Returns the localized value of text 'quantity'.
-  String get quantity => _stringOfLocalizedValue('quantity');
-
   /// Returns the localized value of text 'price'.
   String get price => _stringOfLocalizedValue('price');
 
   /// Returns the localized value of text 'supplier'.
   String get supplier => _stringOfLocalizedValue('supplier');
-
-  /// Returns the localized value of text 'date'.
-  String get date => _stringOfLocalizedValue('date');
 
   /// Returns the localized value of text 'actions'.
   String get actions => _stringOfLocalizedValue('actions');

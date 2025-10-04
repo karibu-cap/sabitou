@@ -25,4 +25,21 @@ extension type CashReceiptServiceClient (connect.Transport _transport) {
       onTrailer: onTrailer,
     );
   }
+
+  Future<paymentsv1cash_receipt.FindCashReceiptResponse> findCashReceipt(
+    paymentsv1cash_receipt.FindCashReceiptRequest input, {
+    connect.Headers? headers,
+    connect.AbortSignal? signal,
+    Function(connect.Headers)? onHeader,
+    Function(connect.Headers)? onTrailer,
+  }) {
+    return connect.Client(_transport).unary(
+      specs.CashReceiptService.findCashReceipt,
+      input,
+      signal: signal,
+      headers: headers,
+      onHeader: onHeader,
+      onTrailer: onTrailer,
+    );
+  }
 }

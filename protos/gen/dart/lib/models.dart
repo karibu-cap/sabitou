@@ -1,3 +1,4 @@
+export 'src/audits/v1/audits.pb.dart';
 export 'src/audits/v1/inventory_transaction.pb.dart';
 export 'src/audits/v1/voucher_transaction.pb.dart';
 export 'src/business/v1/business.pb.dart';

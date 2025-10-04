@@ -71,6 +71,60 @@ final fakeData = <String, List<dynamic>>{
         DateTime.parse('2023-01-01T00:00:00Z'),
       ),
   ],
+  CollectionName.batches: <Batch>[],
+  CollectionName.inventoryLevels: <InventoryLevel>[],
+  CollectionName.inventoryTransactions: <InventoryTransaction>[
+    InventoryTransaction()
+      ..documentId = 'TXN-2025-001'
+      ..storeId = 'store-001'
+      ..productId = 'product-001'
+      ..transactionType = TransactionType.TXN_TYPE_PURCHASE
+      ..quantityChange = 10
+      ..quantityBefore = 0
+      ..quantityAfter = 10
+      ..relatedDocumentType = 'PurchaseOrder'
+      ..relatedDocumentId = 'PO-2025-001'
+      ..performedByUserId = 'user-001'
+      ..transactionTime = Timestamp.fromDateTime(DateTime.now())
+      ..notes = 'Initial stock from purchase order',
+    InventoryTransaction()
+      ..documentId = 'TXN-2025-002'
+      ..storeId = 'store-001'
+      ..productId = 'product-002'
+      ..transactionType = TransactionType.TXN_TYPE_PURCHASE
+      ..quantityChange = 5
+      ..quantityBefore = 0
+      ..quantityAfter = 5
+      ..relatedDocumentType = 'PurchaseOrder'
+      ..relatedDocumentId = 'PO-2025-002'
+      ..performedByUserId = 'user-001'
+      ..transactionTime = Timestamp.fromDateTime(DateTime.now())
+      ..notes = 'Received laptop stock',
+    InventoryTransaction()
+      ..documentId = 'TXN-2025-003'
+      ..storeId = 'store-001'
+      ..productId = 'product-001'
+      ..transactionType = TransactionType.TXN_TYPE_SALE
+      ..quantityChange = -2
+      ..quantityBefore = 10
+      ..quantityAfter = 8
+      ..relatedDocumentType = 'CashReceipt'
+      ..relatedDocumentId = 'CASH-2025-001'
+      ..performedByUserId = 'user-001'
+      ..transactionTime = Timestamp.fromDateTime(DateTime.now())
+      ..notes = 'Sale of 2 smartphones',
+    InventoryTransaction()
+      ..documentId = 'TXN-2025-004'
+      ..storeId = 'store-001'
+      ..productId = 'product-003'
+      ..transactionType = TransactionType.TXN_TYPE_ADJUSTMENT
+      ..quantityChange = -1
+      ..quantityBefore = 1
+      ..quantityAfter = 0
+      ..performedByUserId = 'user-001'
+      ..transactionTime = Timestamp.fromDateTime(DateTime.now())
+      ..notes = 'Tablet damaged during handling',
+  ],
   CollectionName.storeMembers: <StoreMember>[
     StoreMember()
       ..user = fakeUsers.first

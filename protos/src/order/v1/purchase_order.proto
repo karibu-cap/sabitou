@@ -153,4 +153,5 @@ service PurchaseOrderService {
 
   // Create receiving note when goods arrive
   rpc CreateReceivingNote(CreateReceivingNoteRequest) returns (CreateReceivingNoteResponse);
+
 }

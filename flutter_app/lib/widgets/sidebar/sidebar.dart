@@ -158,6 +158,12 @@ class SidebarWidget extends StatelessWidget {
         path: PagesRoutes.reports.pattern,
       ),
       SideBarItem(
+        id: DashboardItem.audits,
+        label: Intls.to.audits,
+        icon: LucideIcons.fileClock400,
+        path: PagesRoutes.audits.pattern,
+      ),
+      SideBarItem(
         id: DashboardItem.suppliers,
         label: Intls.to.suppliers,
         icon: LucideIcons.truck400,

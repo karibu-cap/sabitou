@@ -45,4 +45,19 @@ class PosRepository {
       return null;
     }
   }
+
+  /// Find a cash receipt.
+  Future<List<CashReceipt>?> findCashReceipt(
+    FindCashReceiptRequest request,
+  ) async {
+    try {
+      final response = await cashReceiptServiceClient.findCashReceipt(request);
+
+      return response.receipts;
+    } on Exception catch (e) {
+      _logger.severe('findCashReceipt Error: $e');
+
+      return null;
+    }
+  }
 }

@@ -8,6 +8,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import 'providers/auth/auth_provider.dart';
 import 'providers/cart_provider.dart';
+import 'repositories/audits_repository.dart';
 import 'repositories/auth_repository.dart';
 import 'repositories/business_repository.dart';
 import 'repositories/categories_repository.dart';
@@ -15,6 +16,7 @@ import 'repositories/gift_voucher_repository.dart';
 import 'repositories/inventory_repository.dart';
 import 'repositories/permissions_repository.dart';
 import 'repositories/pos_repository.dart';
+import 'repositories/purchase_order_repository.dart';
 import 'repositories/reports_repository.dart';
 import 'repositories/store_products_repository.dart';
 import 'repositories/stores_repository.dart';
@@ -30,6 +32,7 @@ import 'services/rpc/connect_rpc.dart';
 import 'services/rpc/fake_transport.dart';
 import 'services/rpc/fake_transport/data_sync.dart';
 import 'services/storage/app_storage.dart';
+import 'themes/app_colors.dart';
 import 'utils/app_constants.dart';
 import 'utils/user_preference.dart';
 
@@ -78,6 +81,10 @@ Future<void> _initServices() async {
     ..registerLazySingleton<InventoryRepository>(InventoryRepository.new)
     ..registerLazySingleton<GiftVoucherRepository>(GiftVoucherRepository.new)
     ..registerLazySingleton<PosRepository>(PosRepository.new)
+    ..registerLazySingleton<AuditsRepository>(AuditsRepository.new)
+    ..registerLazySingleton<PurchaseOrderRepository>(
+      PurchaseOrderRepository.new,
+    )
     ..registerLazySingleton<CategoriesRepository>(CategoriesRepository.new)
     ..registerLazySingleton<DataSyncService>(
       () => DataSyncService(transport: syncFakeTransport),
@@ -139,6 +146,20 @@ class MyApp extends StatelessWidget {
                         supportedLocales:
                             AppInternationalizationService.supportedLocales,
                         locale: intls.locale,
+                        theme: ThemeData(
+                          iconTheme: IconThemeData(
+                            color: themeService.isDarkMode
+                                ? AppColors.grey0
+                                : AppColors.darkBorder,
+                          ),
+                          textTheme: TextTheme(
+                            bodyMedium: TextStyle(
+                              color: themeService.isDarkMode
+                                  ? AppColors.grey100
+                                  : AppColors.black,
+                            ),
+                          ),
+                        ),
                         routerConfig: AppRouter.getRouterConfig(),
                         localizationsDelegates: const [
                           GlobalMaterialLocalizations.delegate,

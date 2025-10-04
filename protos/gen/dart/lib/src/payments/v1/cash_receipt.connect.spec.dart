@@ -17,4 +17,11 @@ abstract final class CashReceiptService {
     paymentsv1cash_receipt.CreateCashReceiptRequest.new,
     paymentsv1cash_receipt.CreateCashReceiptResponse.new,
   );
+
+  static const findCashReceipt = connect.Spec(
+    '/$name/FindCashReceipt',
+    connect.StreamType.unary,
+    paymentsv1cash_receipt.FindCashReceiptRequest.new,
+    paymentsv1cash_receipt.FindCashReceiptResponse.new,
+  );
 }

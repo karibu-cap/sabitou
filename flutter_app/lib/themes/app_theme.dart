@@ -15,7 +15,7 @@ class AppTheme {
   static const Color _destructiveLight = Color(0xFFDC2626);
   static const Color _destructiveForegroundLight = Color(0xFFFFFFFF);
   static const Color _borderLight = Color(0xFFE2E4E9);
-  static const Color _inputLight = Color(0xFFF3F4F6);
+  static const Color _inputLight = Color.fromARGB(255, 255, 255, 255);
   static const Color _ringLight = Color(0xFF5533FF);
 
   /// Dark theme colors.
@@ -30,7 +30,7 @@ class AppTheme {
   static const Color _accentDark = Color(0xFF6A4DFF);
   static const Color _destructiveForegroundDark = Color(0xFF000000);
   static const Color _borderDark = Color(0xFF272A35);
-  static const Color _inputDark = Color(0xFF1A1C23);
+  static const Color _inputDark = Color(0xFF272A35);
   static const Color _ringDark = Color(0xFF6A4DFF);
 
   /// Danger color.
@@ -184,6 +184,9 @@ class AppTheme {
       small: _geistTextTheme.bodySmall?.copyWith(fontWeight: FontWeight.w600),
       muted: _geistTextTheme.bodySmall?.copyWith(color: _mutedForegroundLight),
     ),
+    inputTheme: const ShadInputTheme(
+      decoration: ShadDecoration(color: _inputLight),
+    ),
     cardTheme: const ShadCardTheme(
       backgroundColor: _cardLight,
       border: Border.fromBorderSide(BorderSide(color: _borderLight)),
@@ -198,6 +201,7 @@ class AppTheme {
         end: Alignment.bottomRight,
       ),
     ),
+    datePickerTheme: const ShadDatePickerTheme(height: 32),
     ghostButtonTheme: ShadButtonTheme(
       hoverBackgroundColor: _primaryLight.withValues(alpha: 0.05),
     ),
@@ -258,10 +262,13 @@ class AppTheme {
       small: _geistTextTheme.bodySmall?.copyWith(fontWeight: FontWeight.w600),
       muted: _geistTextTheme.bodySmall?.copyWith(color: _mutedForegroundLight),
     ),
+    inputTheme: const ShadInputTheme(
+      decoration: ShadDecoration(color: _backgroundDark),
+    ),
     cardTheme: const ShadCardTheme(
       backgroundColor: _cardDark,
       border: Border.fromBorderSide(BorderSide(color: _borderDark)),
-      radius: BorderRadius.all(Radius.circular(16)),
+      radius: BorderRadius.all(Radius.circular(8)),
       padding: EdgeInsets.all(16),
     ),
     primaryButtonTheme: const ShadButtonTheme(

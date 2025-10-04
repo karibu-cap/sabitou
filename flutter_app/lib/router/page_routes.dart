@@ -51,8 +51,8 @@ abstract class PagesRoutes {
   /// The reports route, for example, http:localhost:8080/sales/cash-receipts.
   static final cashReceipts = _CashReceiptsRoute();
 
-  /// The transactions route, for example, http:localhost:8080/transactions.
-  static final transactions = _TransactionsRoute();
+  /// The audits route, for example, http:localhost:8080/audits.
+  static final audits = _AuditsRoute();
 
   /// The users route, for example, http:localhost:8080/users.
   static final users = _UsersRoute();
@@ -146,12 +146,12 @@ class _ReportsRoute extends PagesRoutesWithNoParams {
   String get name => 'reports';
 }
 
-class _TransactionsRoute extends PagesRoutesWithNoParams {
+class _AuditsRoute extends PagesRoutesWithNoParams {
   @override
-  String get pattern => '/transactions';
+  String get pattern => '/audits';
 
   @override
-  String get name => 'transactions';
+  String get name => 'audits';
 }
 
 class _UsersRoute extends PagesRoutesWithNoParams {

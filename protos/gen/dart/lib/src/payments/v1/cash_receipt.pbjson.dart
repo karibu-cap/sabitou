@@ -147,6 +147,52 @@ final $typed_data.Uint8List createCashReceiptResponseDescriptor = $convert.base6
     'oHdm91Y2hlchgCIAEoCzIYLnBheW1lbnRzLnYxLkdpZnRWb3VjaGVySABSB3ZvdWNoZXKIAQFC'
     'CgoIX3ZvdWNoZXI=');
 
+@$core.Deprecated('Use findCashReceiptRequestDescriptor instead')
+const FindCashReceiptRequest$json = {
+  '1': 'FindCashReceiptRequest',
+  '2': [
+    {
+      '1': 'receipt_id',
+      '3': 1,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'receiptId',
+      '17': true
+    },
+    {'1': 'store_id', '3': 2, '4': 1, '5': 9, '8': {}, '10': 'storeId'},
+  ],
+  '8': [
+    {'1': '_receipt_id'},
+  ],
+};
+
+/// Descriptor for `FindCashReceiptRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List findCashReceiptRequestDescriptor = $convert.base64Decode(
+    'ChZGaW5kQ2FzaFJlY2VpcHRSZXF1ZXN0EiIKCnJlY2VpcHRfaWQYASABKAlIAFIJcmVjZWlwdE'
+    'lkiAEBEiEKCHN0b3JlX2lkGAIgASgJQga6SAPIAQFSB3N0b3JlSWRCDQoLX3JlY2VpcHRfaWQ=');
+
+@$core.Deprecated('Use findCashReceiptResponseDescriptor instead')
+const FindCashReceiptResponse$json = {
+  '1': 'FindCashReceiptResponse',
+  '2': [
+    {
+      '1': 'receipts',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.payments.v1.CashReceipt',
+      '10': 'receipts'
+    },
+  ],
+};
+
+/// Descriptor for `FindCashReceiptResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List findCashReceiptResponseDescriptor =
+    $convert.base64Decode(
+        'ChdGaW5kQ2FzaFJlY2VpcHRSZXNwb25zZRI0CghyZWNlaXB0cxgBIAMoCzIYLnBheW1lbnRzLn'
+        'YxLkNhc2hSZWNlaXB0UghyZWNlaXB0cw==');
+
 const $core.Map<$core.String, $core.dynamic> CashReceiptServiceBase$json = {
   '1': 'CashReceiptService',
   '2': [
@@ -154,6 +200,11 @@ const $core.Map<$core.String, $core.dynamic> CashReceiptServiceBase$json = {
       '1': 'CreateCashReceipt',
       '2': '.payments.v1.CreateCashReceiptRequest',
       '3': '.payments.v1.CreateCashReceiptResponse'
+    },
+    {
+      '1': 'FindCashReceipt',
+      '2': '.payments.v1.FindCashReceiptRequest',
+      '3': '.payments.v1.FindCashReceiptResponse'
     },
   ],
 };
@@ -169,10 +220,13 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
   '.payments.v1.Payment': $2.Payment$json,
   '.payments.v1.CreateCashReceiptResponse': CreateCashReceiptResponse$json,
   '.payments.v1.GiftVoucher': $3.GiftVoucher$json,
+  '.payments.v1.FindCashReceiptRequest': FindCashReceiptRequest$json,
+  '.payments.v1.FindCashReceiptResponse': FindCashReceiptResponse$json,
 };
 
 /// Descriptor for `CashReceiptService`. Decode as a `google.protobuf.ServiceDescriptorProto`.
 final $typed_data.Uint8List cashReceiptServiceDescriptor = $convert.base64Decode(
     'ChJDYXNoUmVjZWlwdFNlcnZpY2USYgoRQ3JlYXRlQ2FzaFJlY2VpcHQSJS5wYXltZW50cy52MS'
     '5DcmVhdGVDYXNoUmVjZWlwdFJlcXVlc3QaJi5wYXltZW50cy52MS5DcmVhdGVDYXNoUmVjZWlw'
-    'dFJlc3BvbnNl');
+    'dFJlc3BvbnNlElwKD0ZpbmRDYXNoUmVjZWlwdBIjLnBheW1lbnRzLnYxLkZpbmRDYXNoUmVjZW'
+    'lwdFJlcXVlc3QaJC5wYXltZW50cy52MS5GaW5kQ2FzaFJlY2VpcHRSZXNwb25zZQ==');

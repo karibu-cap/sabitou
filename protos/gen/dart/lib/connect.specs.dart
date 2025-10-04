@@ -1,5 +1,6 @@
 export 'package:connectrpc/test.dart';
 
+export 'src/audits/v1/audits.connect.spec.dart';
 export 'src/business/v1/business.connect.spec.dart';
 export 'src/business/v1/client.connect.spec.dart';
 export 'src/identity/v1/authentication.connect.spec.dart';

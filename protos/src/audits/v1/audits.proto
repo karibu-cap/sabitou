@@ -1,0 +1,32 @@
+
+
+syntax = "proto3";
+
+package audits.v1;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+import "audits/v1/inventory_transaction.proto";
+import "audits/v1/voucher_transaction.proto";
+
+message GetInventoryTransactionAuditLogsRequest {
+    string store_id = 1 [(buf.validate.field).required = true];
+}
+
+message GetInventoryTransactionAuditLogsResponse {
+    repeated audits.v1.InventoryTransaction inventory_transactions = 1;
+}
+
+message GetVoucherTransactionAuditLogsRequest {
+    string store_id = 1 [(buf.validate.field).required = true];
+}
+
+message GetVoucherTransactionAuditLogsResponse {
+    repeated audits.v1.VoucherTransaction voucher_transactions = 1;
+}
+
+
+service AuditsService {
+    rpc GetInventoryTransactionAuditLogs(GetInventoryTransactionAuditLogsRequest) returns (GetInventoryTransactionAuditLogsResponse);
+    rpc GetVoucherTransactionAuditLogs(GetVoucherTransactionAuditLogsRequest) returns (GetVoucherTransactionAuditLogsResponse);
+}

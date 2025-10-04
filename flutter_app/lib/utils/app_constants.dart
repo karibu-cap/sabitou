@@ -185,4 +185,7 @@ enum DashboardItem {
 
   /// The products list item.
   productsList,
+
+  /// The audits item.
+  audits,
 }
