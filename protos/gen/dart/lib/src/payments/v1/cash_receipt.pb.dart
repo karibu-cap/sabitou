@@ -444,6 +444,132 @@ class CreateCashReceiptResponse extends $pb.GeneratedMessage {
   $3.GiftVoucher ensureVoucher() => $_ensure(1);
 }
 
+class FindCashReceiptRequest extends $pb.GeneratedMessage {
+  factory FindCashReceiptRequest({
+    $core.String? receiptId,
+    $core.String? storeId,
+  }) {
+    final result = create();
+    if (receiptId != null) result.receiptId = receiptId;
+    if (storeId != null) result.storeId = storeId;
+    return result;
+  }
+
+  FindCashReceiptRequest._();
+
+  factory FindCashReceiptRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory FindCashReceiptRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FindCashReceiptRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'payments.v1'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'receiptId')
+    ..aOS(2, _omitFieldNames ? '' : 'storeId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FindCashReceiptRequest clone() =>
+      FindCashReceiptRequest()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FindCashReceiptRequest copyWith(
+          void Function(FindCashReceiptRequest) updates) =>
+      super.copyWith((message) => updates(message as FindCashReceiptRequest))
+          as FindCashReceiptRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static FindCashReceiptRequest create() => FindCashReceiptRequest._();
+  @$core.override
+  FindCashReceiptRequest createEmptyInstance() => create();
+  static $pb.PbList<FindCashReceiptRequest> createRepeated() =>
+      $pb.PbList<FindCashReceiptRequest>();
+  @$core.pragma('dart2js:noInline')
+  static FindCashReceiptRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FindCashReceiptRequest>(create);
+  static FindCashReceiptRequest? _defaultInstance;
+
+  /// The document id of the cash receipt.
+  @$pb.TagNumber(1)
+  $core.String get receiptId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set receiptId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasReceiptId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearReceiptId() => $_clearField(1);
+
+  /// The store id of the cash receipt.
+  @$pb.TagNumber(2)
+  $core.String get storeId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set storeId($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasStoreId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearStoreId() => $_clearField(2);
+}
+
+class FindCashReceiptResponse extends $pb.GeneratedMessage {
+  factory FindCashReceiptResponse({
+    $core.Iterable<CashReceipt>? receipts,
+  }) {
+    final result = create();
+    if (receipts != null) result.receipts.addAll(receipts);
+    return result;
+  }
+
+  FindCashReceiptResponse._();
+
+  factory FindCashReceiptResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory FindCashReceiptResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FindCashReceiptResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'payments.v1'),
+      createEmptyInstance: create)
+    ..pc<CashReceipt>(1, _omitFieldNames ? '' : 'receipts', $pb.PbFieldType.PM,
+        subBuilder: CashReceipt.create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FindCashReceiptResponse clone() =>
+      FindCashReceiptResponse()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FindCashReceiptResponse copyWith(
+          void Function(FindCashReceiptResponse) updates) =>
+      super.copyWith((message) => updates(message as FindCashReceiptResponse))
+          as FindCashReceiptResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static FindCashReceiptResponse create() => FindCashReceiptResponse._();
+  @$core.override
+  FindCashReceiptResponse createEmptyInstance() => create();
+  static $pb.PbList<FindCashReceiptResponse> createRepeated() =>
+      $pb.PbList<FindCashReceiptResponse>();
+  @$core.pragma('dart2js:noInline')
+  static FindCashReceiptResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FindCashReceiptResponse>(create);
+  static FindCashReceiptResponse? _defaultInstance;
+
+  /// The cash receipt.
+  @$pb.TagNumber(1)
+  $pb.PbList<CashReceipt> get receipts => $_getList(0);
+}
+
 class CashReceiptServiceApi {
   final $pb.RpcClient _client;
 
@@ -454,6 +580,10 @@ class CashReceiptServiceApi {
           $pb.ClientContext? ctx, CreateCashReceiptRequest request) =>
       _client.invoke<CreateCashReceiptResponse>(ctx, 'CashReceiptService',
           'CreateCashReceipt', request, CreateCashReceiptResponse());
+  $async.Future<FindCashReceiptResponse> findCashReceipt(
+          $pb.ClientContext? ctx, FindCashReceiptRequest request) =>
+      _client.invoke<FindCashReceiptResponse>(ctx, 'CashReceiptService',
+          'FindCashReceipt', request, FindCashReceiptResponse());
 }
 
 const $core.bool _omitFieldNames =

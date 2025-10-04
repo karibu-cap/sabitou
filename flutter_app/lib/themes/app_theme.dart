@@ -30,7 +30,7 @@ class AppTheme {
   static const Color _accentDark = Color(0xFF6A4DFF);
   static const Color _destructiveForegroundDark = Color(0xFF000000);
   static const Color _borderDark = Color(0xFF272A35);
-  static const Color _inputDark = Color(0xFF1A1C23);
+  static const Color _inputDark = Color(0xFF272A35);
   static const Color _ringDark = Color(0xFF6A4DFF);
 
   /// Danger color.
@@ -198,6 +198,7 @@ class AppTheme {
         end: Alignment.bottomRight,
       ),
     ),
+    datePickerTheme: const ShadDatePickerTheme(height: 32),
     ghostButtonTheme: ShadButtonTheme(
       hoverBackgroundColor: _primaryLight.withValues(alpha: 0.05),
     ),
@@ -261,7 +262,7 @@ class AppTheme {
     cardTheme: const ShadCardTheme(
       backgroundColor: _cardDark,
       border: Border.fromBorderSide(BorderSide(color: _borderDark)),
-      radius: BorderRadius.all(Radius.circular(16)),
+      radius: BorderRadius.all(Radius.circular(8)),
       padding: EdgeInsets.all(16),
     ),
     primaryButtonTheme: const ShadButtonTheme(

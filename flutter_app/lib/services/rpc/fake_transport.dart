@@ -972,6 +972,7 @@ final _fakeTransport =
           ..documentId = purchaseOrderId
           ..supplierId = req.supplierId
           ..buyerId = req.buyerId
+          ..expectedDeliveryDate = req.expectedDeliveryDate
           ..status = PurchaseOrderStatus.PO_STATUS_PENDING
           ..totalAmount = req.items.fold<double>(
             0.0,
@@ -1013,9 +1014,7 @@ final _fakeTransport =
         );
 
         if (index != -1) {
-          purchaseOrders[index] = purchaseOrders[index].rebuild(
-            (b) => b..status = req.newStatus,
-          );
+          purchaseOrders[index] = purchaseOrders[index]..status = req.newStatus;
         }
 
         return UpdatePurchaseOrderStatusResponse();
@@ -1028,9 +1027,8 @@ final _fakeTransport =
         );
 
         if (index != -1) {
-          purchaseOrders[index] = purchaseOrders[index].rebuild(
-            (b) => b..status = PurchaseOrderStatus.PO_STATUS_CANCELLED,
-          );
+          purchaseOrders[index] = purchaseOrders[index]
+            ..status = PurchaseOrderStatus.PO_STATUS_CANCELLED;
         }
 
         return CancelPurchaseOrderResponse();
@@ -1117,12 +1115,11 @@ final _fakeTransport =
           }
 
           // 2.3 - Update InventoryLeveL.
-          inventoryLevel = inventoryLevel.rebuild(
-            (il) => il
-              ..quantityAvailable += item.quantityReceived.toInt()
-              ..lastUpdated = Timestamp.fromDateTime(clock.now())
-              ..lastUpdatedByUserId = req.receivedByUserId,
-          );
+          inventoryLevel = inventoryLevel
+            ..quantityAvailable += item.quantityReceived.toInt()
+            ..lastUpdated = Timestamp.fromDateTime(clock.now())
+            ..lastUpdatedByUserId = req.receivedByUserId;
+
           inventoryLevel.batches.removeWhere((b) => b.documentId == batchId);
           inventoryLevel.batches.add(existingBatch);
 
@@ -1159,9 +1156,30 @@ final _fakeTransport =
               .add(transaction);
         }
 
-        return CreateReceivingNoteResponse();
+        return CreateReceivingNoteResponse()
+          ..rnId = receivingNoteId
+          ..receivingNote = receivingNote;
       })
       // Point of Sale Service mocks for testing
+      ..unary(CashReceiptService.findCashReceipt, (req, _) async {
+        final request = req;
+
+        final results =
+            (_fakeData[CollectionName.cashReceipts] as List<CashReceipt>).where(
+              (cr) {
+                if (request.hasStoreId()) {
+                  return cr.storeId == request.storeId;
+                }
+                if (request.hasReceiptId()) {
+                  return cr.documentId == request.receiptId;
+                }
+
+                return true;
+              },
+            ).toList();
+
+        return FindCashReceiptResponse(receipts: results);
+      })
       ..unary(CashReceiptService.createCashReceipt, (req, _) async {
         final request = req;
         GiftVoucher voucher;
@@ -1206,6 +1224,10 @@ final _fakeTransport =
           cashReceipt.voucherIssuedCode = voucherId;
         }
 
+        (_fakeData[CollectionName.cashReceipts] as List<CashReceipt>).add(
+          cashReceipt,
+        );
+
         /// Gets the inventory level for each item in the receipt and update the quantity.
         for (var item in request.receipt.items) {
           for (var inventoryLevel
@@ -1223,7 +1245,7 @@ final _fakeTransport =
 
         // Create a inventory transaction for each item in the receipt.
         for (var item in request.receipt.items) {
-          (_fakeData[CollectionName.inventoryLevels]
+          (_fakeData[CollectionName.inventoryTransactions]
                   as List<InventoryTransaction>)
               .add(
                 InventoryTransaction()
@@ -1235,22 +1257,23 @@ final _fakeTransport =
                   ..quantityBefore =
                       (_fakeData[CollectionName.inventoryLevels]
                               as List<InventoryLevel>)
-                          .firstWhere(
+                          .firstWhereOrNull(
                             (level) =>
                                 level.storeProductId == item.productId &&
                                 level.storeId == request.receipt.storeId,
                           )
-                          .quantityAvailable +
-                      item.quantity
+                          ?.quantityAvailable ??
+                      0 + item.quantity
                   ..quantityAfter =
                       (_fakeData[CollectionName.inventoryLevels]
                               as List<InventoryLevel>)
-                          .firstWhere(
+                          .firstWhereOrNull(
                             (level) =>
                                 level.storeProductId == item.productId &&
                                 level.storeId == request.receipt.storeId,
                           )
-                          .quantityAvailable
+                          ?.quantityAvailable ??
+                      0
                   ..relatedDocumentType = 'CashReceipt'
                   ..relatedDocumentId = receiptId
                   ..performedByUserId = request.receipt.cashierUserId
@@ -1259,22 +1282,23 @@ final _fakeTransport =
                   ..batchId =
                       (_fakeData[CollectionName.inventoryLevels]
                               as List<InventoryLevel>)
-                          .firstWhere(
+                          .firstWhereOrNull(
                             (level) =>
                                 level.storeProductId == item.productId &&
                                 level.storeId == request.receipt.storeId,
                           )
-                          .batches
-                          .firstWhere(
+                          ?.batches
+                          .firstWhereOrNull(
                             (e) =>
                                 e.documentId == item.batchId ||
                                 e.productId == item.productId,
                           )
-                          .documentId,
+                          ?.documentId ??
+                      '',
               );
         }
 
-        return CreateCashReceiptResponse();
+        return CreateCashReceiptResponse(success: true);
       }).build();
 
 final fakeTransport = _fakeTransport.build();

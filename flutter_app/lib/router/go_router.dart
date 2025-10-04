@@ -6,12 +6,15 @@ import '../providers/auth/auth_provider.dart';
 import '../screens/auth/forgot_password/forgot_password_view.dart';
 import '../screens/auth/login/login_view.dart';
 import '../screens/auth/registration/registration_view.dart';
+import '../screens/cash_recipe/cash_recipe_screen.dart';
 import '../screens/categories/categories_view.dart';
 import '../screens/dashboard/dashboard_screen.dart';
 import '../screens/global_products/global_products_view.dart';
 import '../screens/home/home.dart';
 import '../screens/inventory/inventory_screen.dart';
 import '../screens/point-of-sale/point_of_sale_screen.dart';
+import '../screens/products_list/products_list_screen.dart';
+import '../screens/purchase_orders/purchase_orders_screen.dart';
 import '../screens/reports/reports_screen.dart';
 import '../screens/settings/settings_screen.dart';
 import '../screens/suppliers/suppliers_view.dart';
@@ -93,6 +96,13 @@ class GoRouterRoutesProvider {
                   return const MaterialPage(child: InventoryScreen());
                 },
               ),
+              GoRoute(
+                name: PagesRoutes.productsList.name,
+                path: PagesRoutes.productsList.pattern,
+                pageBuilder: (context, state) {
+                  return const MaterialPage(child: ProductsListScreen());
+                },
+              ),
             ],
           ),
           StatefulShellBranch(
@@ -101,14 +111,7 @@ class GoRouterRoutesProvider {
                 name: PagesRoutes.cashReceipts.name,
                 path: PagesRoutes.cashReceipts.pattern,
                 pageBuilder: (context, state) {
-                  return const MaterialPage(child: SizedBox());
-                },
-              ),
-              GoRoute(
-                name: PagesRoutes.salesOrders.name,
-                path: PagesRoutes.salesOrders.pattern,
-                pageBuilder: (context, state) {
-                  return const MaterialPage(child: PointOfSaleScreen());
+                  return const MaterialPage(child: CashRecipeScreen());
                 },
               ),
               GoRoute(
@@ -182,6 +185,17 @@ class GoRouterRoutesProvider {
                 path: PagesRoutes.settings.pattern,
                 pageBuilder: (context, state) {
                   return const MaterialPage(child: SettingsScreen());
+                },
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                name: PagesRoutes.purchaseOrders.name,
+                path: PagesRoutes.purchaseOrders.pattern,
+                pageBuilder: (context, state) {
+                  return const MaterialPage(child: PurchaseOrdersScreen());
                 },
               ),
             ],

@@ -210,4 +210,14 @@ class ValidationFormUtils {
 
     return null;
   }
+
+  /// Validates simple string field.
+  static String? validateString([String? value, String? field]) {
+    final string = value?.trim() ?? '';
+    if (string.isEmpty) {
+      return _intl.isRequiredField.trParams({'field': field ?? ''});
+    }
+
+    return null;
+  }
 }

@@ -38,6 +38,41 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/payments.v1.CreateCashReceiptResponse'
+  /payments.v1.CashReceiptService/FindCashReceipt:
+    post:
+      tags:
+        - payments.v1.CashReceiptService
+      summary: FindCashReceipt
+      operationId: payments.v1.CashReceiptService.FindCashReceipt
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/payments.v1.FindCashReceiptRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/payments.v1.FindCashReceiptResponse'
 components:
   schemas:
     connect-protocol-version:
@@ -395,6 +430,33 @@ components:
           nullable: true
           $ref: '#/components/schemas/payments.v1.GiftVoucher'
       title: CreateCashReceiptResponse
+      additionalProperties: false
+    payments.v1.FindCashReceiptRequest:
+      type: object
+      properties:
+        receiptId:
+          type: string
+          title: receipt_id
+          description: The document id of the cash receipt.
+          nullable: true
+        storeId:
+          type: string
+          title: store_id
+          description: The store id of the cash receipt.
+      title: FindCashReceiptRequest
+      required:
+        - storeId
+      additionalProperties: false
+    payments.v1.FindCashReceiptResponse:
+      type: object
+      properties:
+        receipts:
+          type: array
+          items:
+            $ref: '#/components/schemas/payments.v1.CashReceipt'
+          title: receipts
+          description: The cash receipt.
+      title: FindCashReceiptResponse
       additionalProperties: false
     payments.v1.GiftVoucher:
       type: object

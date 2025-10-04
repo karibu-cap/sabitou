@@ -1931,6 +1931,72 @@ class AppInternationalizationService extends ChangeNotifier {
       'en': 'Create Receive Note',
       'fr': 'Créer une note de réception',
     },
+    'createAt': {'en': 'Created At', 'fr': 'Créé le'},
+    'selectPurchaseOrder': {
+      'en': 'Select Purchase Order',
+      'fr': 'Sélectionner une commande fournisseur',
+    },
+    'receiveDate': {'en': 'Receive Date', 'fr': 'Date de réception'},
+
+    'createReceivingNote': {
+      'en': 'Create Receiving Note',
+      'fr': 'Créer une note de réception',
+    },
+    'addNotesAboutTheDeliveryConditionDamagesEtc': {
+      'en': 'Add notes about the delivery condition, damages etc...',
+      'fr':
+          'Ajoutez des notes sur la condition de livraison, les dommages etc...',
+    },
+    'rejectedQuantity': {'en': 'Rejected Quantity', 'fr': 'Quantité rejetée'},
+    'receivedQuantity': {'en': 'Received Quantity', 'fr': 'Quantité reçue'},
+    'purchasePrice': {'en': 'Purchase Price', 'fr': 'Prix dachat'},
+    'expectedQuantity': {'en': 'Expected Quantity', 'fr': 'Quantité attendue'},
+    'batch': {'en': 'Batch', 'fr': 'Lot'},
+    'pleaseSelectAPurchaseOrder': {
+      'en': 'Please select a purchase order',
+      'fr': 'Veuillez sélectionner une commande fournisseur',
+    },
+    'expectedQuantityMustBeGreaterThanZeroForItem': {
+      'en': 'Expected quantity must be greater than 0 for item @item',
+      'fr':
+          'La quantité attendue doit être supérieure à 0 pour le produit @item',
+    },
+    'receivedQuantityCannotBeNegativeForItem': {
+      'en': 'Received quantity cannot be negative for item @item',
+      'fr': 'La quantité reçue ne peut pas être negative pour le produit @item',
+    },
+    'purchasePriceMustBeGreaterThanZeroForItem': {
+      'en': 'Purchase price must be greater than 0 for item @item',
+      'fr': 'Le prix dachat doit être supérieure à 0 pour le produit @item',
+    },
+    'receivingNoteCreatedSuccessfully': {
+      'en': 'Receiving note created successfully',
+      'fr': 'Note de réception créée avec succès',
+    },
+    'failedToCreateReceivingNote': {
+      'en': 'Failed to create receiving note, please try again',
+      'fr':
+          'Erreur lors de la création de la note de réception, veuillez reessayer',
+    },
+    'createOrder': {'en': 'Create Order', 'fr': 'Créer une commande'},
+    'unitPurchasePrice': {
+      'en': 'Unit purchase price',
+      'fr': 'Prix unitaire dachat',
+    },
+    'noCashReceiptsFound': {
+      'en': 'No cash receipts found',
+      'fr': 'Aucune réception trouvée',
+    },
+    'cashReceiptsWillAppearHereOnceTheyAreCreated': {
+      'en': 'Cash receipts will appear here once they are created',
+      'fr': 'Les réceptions apparaîtront ici une fois qu\'elles seront créées',
+    },
+    'refresh': {'en': 'Refresh', 'fr': 'Actualiser'},
+    'errorLoadingCashReceipts': {
+      'en': 'Error loading cash receipts',
+      'fr': 'Erreur lors du chargement des réceptions',
+    },
+    'retry': {'en': 'Retry', 'fr': 'Reessayer'},
   };
 
   /// Direct access to the internationalization service.
@@ -1949,6 +2015,91 @@ class AppInternationalizationService extends ChangeNotifier {
     const Locale('en'),
     const Locale('fr'),
   ];
+
+  /// The retry.
+  String get retry => _stringOfLocalizedValue('retry');
+
+  /// The error loading cash receipts.
+  String get errorLoadingCashReceipts =>
+      _stringOfLocalizedValue('errorLoadingCashReceipts');
+
+  /// The refresh.
+  String get refresh => _stringOfLocalizedValue('refresh');
+
+  /// The no cash receipts found.
+  String get noCashReceiptsFound =>
+      _stringOfLocalizedValue('noCashReceiptsFound');
+
+  /// The cash receipts will appear here once they are created.
+  String get cashReceiptsWillAppearHereOnceTheyAreCreated =>
+      _stringOfLocalizedValue('cashReceiptsWillAppearHereOnceTheyAreCreated');
+
+  /// The unit purchase price.
+  String get unitPurchasePrice => _stringOfLocalizedValue('unitPurchasePrice');
+
+  /// The create order.
+  String get createOrder => _stringOfLocalizedValue('createOrder');
+
+  /// The please select a purchase order.
+  String get expectedQuantityMustBeGreaterThanZeroForItem =>
+      _stringOfLocalizedValue('expectedQuantityMustBeGreaterThanZeroForItem');
+
+  /// The please select a purchase order.
+  String get receivedQuantityCannotBeNegativeForItem =>
+      _stringOfLocalizedValue('receivedQuantityCannotBeNegativeForItem');
+
+  /// The please select a purchase order.
+  String get purchasePriceMustBeGreaterThanZeroForItem =>
+      _stringOfLocalizedValue('purchasePriceMustBeGreaterThanZeroForItem');
+
+  /// The please select a purchase order.
+  String get pleaseSelectAPurchaseOrder =>
+      _stringOfLocalizedValue('pleaseSelectAPurchaseOrder');
+
+  /// The receiving note created successfully.
+  String get receivingNoteCreatedSuccessfully =>
+      _stringOfLocalizedValue('receivingNoteCreatedSuccessfully');
+
+  /// The failed to create receiving note.
+  String get failedToCreateReceivingNote =>
+      _stringOfLocalizedValue('failedToCreateReceivingNote');
+
+  /// The receiving note description.
+  String get receivingNoteDescription =>
+      _stringOfLocalizedValue('receivingNoteDescription');
+
+  /// The batch.
+  String get batch => _stringOfLocalizedValue('batch');
+
+  /// The expected quantity.
+  String get expectedQuantity => _stringOfLocalizedValue('expectedQuantity');
+
+  /// The purchase price.
+  String get purchasePrice => _stringOfLocalizedValue('purchasePrice');
+
+  /// The received quantity.
+  String get receivedQuantity => _stringOfLocalizedValue('receivedQuantity');
+
+  /// The rejected quantity.
+  String get rejectedQuantity => _stringOfLocalizedValue('rejectedQuantity');
+
+  /// The add notes about the delivery condition damages etc.
+  String get addNotesAboutTheDeliveryConditionDamagesEtc =>
+      _stringOfLocalizedValue('addNotesAboutTheDeliveryConditionDamagesEtc');
+
+  /// The createReceivingNote.
+  String get createReceivingNote =>
+      _stringOfLocalizedValue('createReceivingNote');
+
+  /// The receive date.
+  String get receiveDate => _stringOfLocalizedValue('receiveDate');
+
+  /// The select purchase order.
+  String get selectPurchaseOrder =>
+      _stringOfLocalizedValue('selectPurchaseOrder');
+
+  /// The create at.
+  String get createAt => _stringOfLocalizedValue('createAt');
 
   /// The create receive note.
   String get createReceiveNote => _stringOfLocalizedValue('createReceiveNote');

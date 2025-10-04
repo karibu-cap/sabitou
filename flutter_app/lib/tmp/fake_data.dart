@@ -71,6 +71,9 @@ final fakeData = <String, List<dynamic>>{
         DateTime.parse('2023-01-01T00:00:00Z'),
       ),
   ],
+  CollectionName.batches: <Batch>[],
+  CollectionName.inventoryLevels: <InventoryLevel>[],
+  CollectionName.inventoryTransactions: <InventoryTransaction>[],
   CollectionName.storeMembers: <StoreMember>[
     StoreMember()
       ..user = fakeUsers.first

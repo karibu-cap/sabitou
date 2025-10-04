@@ -6,7 +6,6 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import '../../../services/internationalization/internationalization.dart';
 import '../../../themes/app_colors.dart';
 import '../../../utils/app_constants.dart';
-import '../../../utils/common_functions.dart';
 import '../../../utils/extensions/category_extension.dart';
 import '../../../utils/extensions/global_product_extension.dart';
 import '../../../utils/extensions/inventory_extenxions.dart';
@@ -127,7 +126,6 @@ class _InventoryDataTable extends StatelessWidget {
                   DataColumn(label: Text(Intls.to.price)),
                   DataColumn(label: Text(Intls.to.stock)),
                   DataColumn(label: Text(Intls.to.status)),
-                  DataColumn(label: Text(Intls.to.actions)),
                 ],
                 rows: inv.map((inv) {
                   return DataRow(
@@ -151,7 +149,6 @@ class _InventoryDataTable extends StatelessWidget {
                       ),
                       DataCell(_StockCell(inventoryLevel: inv.level)),
                       DataCell(_StatusCell(inventory: inv)),
-                      DataCell(_ActionsCell(inventory: inv)),
                     ],
                   );
                 }).toList(),
@@ -229,7 +226,6 @@ class _InventoryCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                _ActionsCell(inventory: inv),
               ],
             ),
             const SizedBox(height: 12),
@@ -443,134 +439,6 @@ class _StatusCell extends StatelessWidget {
           color: AppColors.grey0,
           fontWeight: FontWeight.w600,
         ),
-      ),
-    );
-  }
-}
-
-class _ActionsCell extends StatelessWidget {
-  const _ActionsCell({required this.inventory});
-
-  final InventoryLevelWithProduct inventory;
-
-  @override
-  Widget build(BuildContext context) {
-    void _showProductDialog(BuildContext context) async {
-      final controller = context.read<InventoryController>();
-      // final result = await showShadDialog<bool?>(
-      //   context: context,
-      //   builder: (context) => AdjustmentStockForm(
-      //     product: product,
-      //     inventoryController: controller,
-      //   ),
-      // );
-      // if (result == true) {
-      //   await controller.refreshProducts();
-      // }
-    }
-
-    void _showDeleteDialog(BuildContext context) {
-      final controller = context.read<InventoryController>();
-      showShadDialog(
-        context: context,
-        builder: (context) =>
-            _DeleteProductDialog(inventory: inventory, controller: controller),
-      );
-    }
-
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      spacing: 8,
-      children: [
-        ShadButton.ghost(
-          child: Icon(
-            LucideIcons.squarePen400,
-            color: ShadTheme.of(context).colorScheme.primary,
-            size: 15,
-          ),
-          onPressed: () => _showProductDialog(context),
-        ),
-        ShadButton.ghost(
-          child: Icon(
-            LucideIcons.trash2400,
-            color: ShadTheme.of(context).colorScheme.destructive,
-            size: 15,
-          ),
-          onPressed: () => _showDeleteDialog(context),
-        ),
-      ],
-    );
-  }
-}
-
-class _DeleteProductDialog extends StatelessWidget {
-  _DeleteProductDialog({required this.inventory, required this.controller});
-
-  final InventoryLevelWithProduct inventory;
-  final InventoryController controller;
-  final ValueNotifier<bool> isLoading = ValueNotifier(false);
-
-  @override
-  Widget build(BuildContext context) {
-    Future<void> _deleteProduct() async {
-      if (!context.mounted) {
-        return;
-      }
-      isLoading.value = true;
-      final result = await controller.deleteProduct(inventory.product.refId);
-      if (result) {
-        showSuccessToast(
-          context: context,
-          message: Intls.to.productDeletedSuccessfully,
-        );
-      } else {
-        showErrorToast(
-          context: context,
-          message: Intls.to.failedToDeleteProduct.trParams({
-            'name': inventory.globalProduct.label,
-          }),
-        );
-      }
-      isLoading.value = false;
-
-      Navigator.of(context).pop();
-    }
-
-    return ShadDialog(
-      title: Text(Intls.to.deleteProduct),
-      child: ValueListenableBuilder(
-        valueListenable: isLoading,
-        builder: (context, value, child) {
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                Intls.to.areYouSureYouWantToDelete.trParams({
-                  'name': inventory.globalProduct.label,
-                }),
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  ShadButton.raw(
-                    variant: ShadButtonVariant.outline,
-                    enabled: !value,
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: Text(Intls.to.cancel),
-                  ),
-                  const SizedBox(width: 12),
-                  ShadButton.destructive(
-                    enabled: !value,
-                    trailing: value ? const Loading.button() : null,
-                    onPressed: _deleteProduct,
-                    child: Text(Intls.to.delete),
-                  ),
-                ],
-              ),
-            ],
-          );
-        },
       ),
     );
   }

@@ -36,12 +36,16 @@ const (
 	// CashReceiptServiceCreateCashReceiptProcedure is the fully-qualified name of the
 	// CashReceiptService's CreateCashReceipt RPC.
 	CashReceiptServiceCreateCashReceiptProcedure = "/payments.v1.CashReceiptService/CreateCashReceipt"
+	// CashReceiptServiceFindCashReceiptProcedure is the fully-qualified name of the
+	// CashReceiptService's FindCashReceipt RPC.
+	CashReceiptServiceFindCashReceiptProcedure = "/payments.v1.CashReceiptService/FindCashReceipt"
 )
 
 // CashReceiptServiceClient is a client for the payments.v1.CashReceiptService service.
 type CashReceiptServiceClient interface {
 	// Create a cash receipt (most common - 95% of transactions)
 	CreateCashReceipt(context.Context, *connect.Request[v1.CreateCashReceiptRequest]) (*connect.Response[v1.CreateCashReceiptResponse], error)
+	FindCashReceipt(context.Context, *connect.Request[v1.FindCashReceiptRequest]) (*connect.Response[v1.FindCashReceiptResponse], error)
 }
 
 // NewCashReceiptServiceClient constructs a client for the payments.v1.CashReceiptService service.
@@ -61,12 +65,19 @@ func NewCashReceiptServiceClient(httpClient connect.HTTPClient, baseURL string, 
 			connect.WithSchema(cashReceiptServiceMethods.ByName("CreateCashReceipt")),
 			connect.WithClientOptions(opts...),
 		),
+		findCashReceipt: connect.NewClient[v1.FindCashReceiptRequest, v1.FindCashReceiptResponse](
+			httpClient,
+			baseURL+CashReceiptServiceFindCashReceiptProcedure,
+			connect.WithSchema(cashReceiptServiceMethods.ByName("FindCashReceipt")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // cashReceiptServiceClient implements CashReceiptServiceClient.
 type cashReceiptServiceClient struct {
 	createCashReceipt *connect.Client[v1.CreateCashReceiptRequest, v1.CreateCashReceiptResponse]
+	findCashReceipt   *connect.Client[v1.FindCashReceiptRequest, v1.FindCashReceiptResponse]
 }
 
 // CreateCashReceipt calls payments.v1.CashReceiptService.CreateCashReceipt.
@@ -74,10 +85,16 @@ func (c *cashReceiptServiceClient) CreateCashReceipt(ctx context.Context, req *c
 	return c.createCashReceipt.CallUnary(ctx, req)
 }
 
+// FindCashReceipt calls payments.v1.CashReceiptService.FindCashReceipt.
+func (c *cashReceiptServiceClient) FindCashReceipt(ctx context.Context, req *connect.Request[v1.FindCashReceiptRequest]) (*connect.Response[v1.FindCashReceiptResponse], error) {
+	return c.findCashReceipt.CallUnary(ctx, req)
+}
+
 // CashReceiptServiceHandler is an implementation of the payments.v1.CashReceiptService service.
 type CashReceiptServiceHandler interface {
 	// Create a cash receipt (most common - 95% of transactions)
 	CreateCashReceipt(context.Context, *connect.Request[v1.CreateCashReceiptRequest]) (*connect.Response[v1.CreateCashReceiptResponse], error)
+	FindCashReceipt(context.Context, *connect.Request[v1.FindCashReceiptRequest]) (*connect.Response[v1.FindCashReceiptResponse], error)
 }
 
 // NewCashReceiptServiceHandler builds an HTTP handler from the service implementation. It returns
@@ -93,10 +110,18 @@ func NewCashReceiptServiceHandler(svc CashReceiptServiceHandler, opts ...connect
 		connect.WithSchema(cashReceiptServiceMethods.ByName("CreateCashReceipt")),
 		connect.WithHandlerOptions(opts...),
 	)
+	cashReceiptServiceFindCashReceiptHandler := connect.NewUnaryHandler(
+		CashReceiptServiceFindCashReceiptProcedure,
+		svc.FindCashReceipt,
+		connect.WithSchema(cashReceiptServiceMethods.ByName("FindCashReceipt")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/payments.v1.CashReceiptService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case CashReceiptServiceCreateCashReceiptProcedure:
 			cashReceiptServiceCreateCashReceiptHandler.ServeHTTP(w, r)
+		case CashReceiptServiceFindCashReceiptProcedure:
+			cashReceiptServiceFindCashReceiptHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -108,4 +133,8 @@ type UnimplementedCashReceiptServiceHandler struct{}
 
 func (UnimplementedCashReceiptServiceHandler) CreateCashReceipt(context.Context, *connect.Request[v1.CreateCashReceiptRequest]) (*connect.Response[v1.CreateCashReceiptResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("payments.v1.CashReceiptService.CreateCashReceipt is not implemented"))
+}
+
+func (UnimplementedCashReceiptServiceHandler) FindCashReceipt(context.Context, *connect.Request[v1.FindCashReceiptRequest]) (*connect.Response[v1.FindCashReceiptResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("payments.v1.CashReceiptService.FindCashReceipt is not implemented"))
 }

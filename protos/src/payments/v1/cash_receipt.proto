@@ -78,7 +78,23 @@ message CreateCashReceiptResponse {
   optional payments.v1.GiftVoucher voucher = 2;
 }
 
+message FindCashReceiptRequest {
+  // The document id of the cash receipt.
+  optional string receipt_id = 1;
+
+  // The store id of the cash receipt.
+  string store_id = 2 [(buf.validate.field).required = true];
+}
+
+message FindCashReceiptResponse {
+  // The cash receipt.
+ repeated CashReceipt receipts = 1;
+}
+
+
 service CashReceiptService {
   // Create a cash receipt (most common - 95% of transactions)
   rpc CreateCashReceipt(CreateCashReceiptRequest) returns (CreateCashReceiptResponse);
+
+  rpc FindCashReceipt(FindCashReceiptRequest) returns (FindCashReceiptResponse);
 }

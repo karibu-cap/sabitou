@@ -182,7 +182,7 @@ class PointOfSaleController extends ChangeNotifier {
       // Make actual backend call
       final response = await PosRepository.instance.createCashReceipt(request);
 
-      if (response == null) {
+      if (response?.success == false) {
         _setErrorState(
           PosOperationResult.failure(
             Intls.to.failedToCreateCashReceipt,
