@@ -2,7 +2,7 @@ import 'package:clock/clock.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
-import 'package:sabitou_clients/screens/point-of-sale/point_of_sale_screen.dart';
+import 'package:sabitou_clients/screens/point_of_sale/point_of_sale_screen.dart';
 import 'package:sabitou_clients/services/rpc/connect_rpc.dart';
 import 'package:sabitou_clients/services/rpc/fake_transport.dart';
 import 'package:sabitou_clients/services/storage/app_storage.dart';

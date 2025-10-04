@@ -29,9 +29,6 @@ class SearchAndScanView extends StatelessWidget {
           controller: popoverController,
           child: ShadInput(
             controller: controller.searchQueryController,
-            decoration: ShadDecoration(
-              color: ShadTheme.of(context).colorScheme.background,
-            ),
             placeholder: Text(Intls.to.scanOrSearchProduct),
             leading: const Icon(LucideIcons.search, size: 16),
             trailing: kIsWeb

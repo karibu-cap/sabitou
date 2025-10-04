@@ -2,6 +2,7 @@ export 'package:connectrpc/http2.dart';
 export 'package:connectrpc/protobuf.dart';
 export 'package:connectrpc/protocol/connect.dart';
 
+export 'src/audits/v1/audits.connect.client.dart';
 export 'src/business/v1/business.connect.client.dart';
 export 'src/business/v1/client.connect.client.dart';
 export 'src/identity/v1/authentication.connect.client.dart';

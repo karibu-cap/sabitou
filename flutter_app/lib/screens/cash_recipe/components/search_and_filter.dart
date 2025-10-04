@@ -1,44 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+import '../../../services/internationalization/internationalization.dart';
 import '../cash_recipe_controller.dart';
 
 /// Search and filter component for cash receipts
-class CashRecipeSearchAndFilter extends StatefulWidget {
+class CashRecipeSearchAndFilter extends StatelessWidget {
   /// Constructor for CashRecipeSearchAndFilter
   const CashRecipeSearchAndFilter({super.key});
 
   @override
-  State<CashRecipeSearchAndFilter> createState() =>
-      _CashRecipeSearchAndFilterState();
-}
-
-class _CashRecipeSearchAndFilterState extends State<CashRecipeSearchAndFilter> {
-  late final TextEditingController _searchController;
-
-  @override
-  void initState() {
-    super.initState();
-    _searchController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final controller = CashRecipeController.watch(context);
+    final TextEditingController _searchController = TextEditingController();
+
+    final controller = context.watch<CashRecipeController>();
 
     return Row(
       children: [
-        // Search field
         Expanded(
           child: ShadInput(
             controller: _searchController,
-            placeholder: const Text('Search cash receipts...'),
+            placeholder: Text(Intls.to.searchCashReceipts),
             leading: const Icon(LucideIcons.search, size: 16),
             onChanged: controller.updateSearchQuery,
           ),
@@ -46,23 +29,18 @@ class _CashRecipeSearchAndFilterState extends State<CashRecipeSearchAndFilter> {
 
         const SizedBox(width: 16),
 
-        // Filter dropdown (placeholder for future implementation)
         ShadButton.outline(
-          child: const Row(
+          child: Row(
             children: [
-              Icon(Icons.filter_list, size: 16),
-              SizedBox(width: 8),
-              Text('Filter'),
+              const Icon(Icons.filter_list, size: 16),
+              const SizedBox(width: 8),
+              Text(Intls.to.filter),
             ],
           ),
-          onPressed: () {
-            // TODO: Show filter options
-          },
+          onPressed: () {},
         ),
 
         const SizedBox(width: 8),
-
-        // Clear search button
         StreamBuilder<String>(
           stream: controller.viewModel.searchQueryStream,
           builder: (context, snapshot) {

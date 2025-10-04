@@ -8,6 +8,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import 'providers/auth/auth_provider.dart';
 import 'providers/cart_provider.dart';
+import 'repositories/audits_repository.dart';
 import 'repositories/auth_repository.dart';
 import 'repositories/business_repository.dart';
 import 'repositories/categories_repository.dart';
@@ -80,6 +81,7 @@ Future<void> _initServices() async {
     ..registerLazySingleton<InventoryRepository>(InventoryRepository.new)
     ..registerLazySingleton<GiftVoucherRepository>(GiftVoucherRepository.new)
     ..registerLazySingleton<PosRepository>(PosRepository.new)
+    ..registerLazySingleton<AuditsRepository>(AuditsRepository.new)
     ..registerLazySingleton<PurchaseOrderRepository>(
       PurchaseOrderRepository.new,
     )

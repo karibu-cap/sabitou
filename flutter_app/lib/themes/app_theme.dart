@@ -15,7 +15,7 @@ class AppTheme {
   static const Color _destructiveLight = Color(0xFFDC2626);
   static const Color _destructiveForegroundLight = Color(0xFFFFFFFF);
   static const Color _borderLight = Color(0xFFE2E4E9);
-  static const Color _inputLight = Color(0xFFF3F4F6);
+  static const Color _inputLight = Color.fromARGB(255, 255, 255, 255);
   static const Color _ringLight = Color(0xFF5533FF);
 
   /// Dark theme colors.
@@ -184,6 +184,9 @@ class AppTheme {
       small: _geistTextTheme.bodySmall?.copyWith(fontWeight: FontWeight.w600),
       muted: _geistTextTheme.bodySmall?.copyWith(color: _mutedForegroundLight),
     ),
+    inputTheme: const ShadInputTheme(
+      decoration: ShadDecoration(color: _inputLight),
+    ),
     cardTheme: const ShadCardTheme(
       backgroundColor: _cardLight,
       border: Border.fromBorderSide(BorderSide(color: _borderLight)),
@@ -258,6 +261,9 @@ class AppTheme {
       large: _geistTextTheme.titleMedium,
       small: _geistTextTheme.bodySmall?.copyWith(fontWeight: FontWeight.w600),
       muted: _geistTextTheme.bodySmall?.copyWith(color: _mutedForegroundLight),
+    ),
+    inputTheme: const ShadInputTheme(
+      decoration: ShadDecoration(color: _backgroundDark),
     ),
     cardTheme: const ShadCardTheme(
       backgroundColor: _cardDark,

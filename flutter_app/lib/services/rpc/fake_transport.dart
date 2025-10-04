@@ -1180,6 +1180,20 @@ final _fakeTransport =
 
         return FindCashReceiptResponse(receipts: results);
       })
+      ..unary(AuditsService.getInventoryTransactionAuditLogs, (req, _) async {
+        return GetInventoryTransactionAuditLogsResponse(
+          inventoryTransactions:
+              (_fakeData[CollectionName.inventoryTransactions]
+                  as List<InventoryTransaction>),
+        );
+      })
+      ..unary(AuditsService.getVoucherTransactionAuditLogs, (req, _) async {
+        return GetVoucherTransactionAuditLogsResponse(
+          voucherTransactions:
+              (_fakeData[CollectionName.voucherTransactions]
+                  as List<VoucherTransaction>),
+        );
+      })
       ..unary(CashReceiptService.createCashReceipt, (req, _) async {
         final request = req;
         GiftVoucher voucher;

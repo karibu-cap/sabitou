@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:sabitou_rpc/models.dart';
 
 import '../../utils/common_functions.dart';
@@ -29,29 +28,11 @@ final class CashRecipeController extends ChangeNotifier {
   /// Current loading state
   bool get isLoading => _viewModel.isLoading;
 
-  /// Current error state
-  String? get error => _viewModel.error;
-
   /// Current cash receipts list
   List<CashReceipt> get cashReceipts => _viewModel.cashReceipts;
 
   /// Current filtered cash receipts list
   List<CashReceipt> get filteredCashReceipts => _viewModel.filteredCashReceipts;
-
-  /// Constructor of new [CashRecipeController].
-  CashRecipeController() {
-    initialize();
-  }
-
-  /// Initialize the controller
-  void initialize() {
-    // Listen to error stream to show error toasts
-    _viewModel.errorStream.listen((error) {
-      if (error != null && error.isNotEmpty) {
-        // The error will be handled by the UI listening to the stream
-      }
-    });
-  }
 
   /// Load cash receipts
   Future<void> loadCashReceipts() async {
@@ -75,7 +56,6 @@ final class CashRecipeController extends ChangeNotifier {
 
   /// Handle cash receipt tap
   void onCashReceiptTap(BuildContext context, CashReceipt receipt) {
-    // TODO: Navigate to receipt details or show options
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Receipt ${receipt.documentId} tapped')),
     );
@@ -106,15 +86,5 @@ final class CashRecipeController extends ChangeNotifier {
   void dispose() {
     _viewModel.dispose();
     super.dispose();
-  }
-
-  /// Static method to get the controller from context
-  static CashRecipeController of(BuildContext context) {
-    return Provider.of<CashRecipeController>(context, listen: false);
-  }
-
-  /// Static method to watch the controller from context
-  static CashRecipeController watch(BuildContext context) {
-    return Provider.of<CashRecipeController>(context);
   }
 }

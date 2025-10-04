@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../providers/auth/auth_provider.dart';
+import '../screens/audits/audits_screen.dart';
 import '../screens/auth/forgot_password/forgot_password_view.dart';
 import '../screens/auth/login/login_view.dart';
 import '../screens/auth/registration/registration_view.dart';
@@ -12,7 +13,7 @@ import '../screens/dashboard/dashboard_screen.dart';
 import '../screens/global_products/global_products_view.dart';
 import '../screens/home/home.dart';
 import '../screens/inventory/inventory_screen.dart';
-import '../screens/point-of-sale/point_of_sale_screen.dart';
+import '../screens/point_of_sale/point_of_sale_screen.dart';
 import '../screens/products_list/products_list_screen.dart';
 import '../screens/purchase_orders/purchase_orders_screen.dart';
 import '../screens/reports/reports_screen.dart';
@@ -83,6 +84,17 @@ class GoRouterRoutesProvider {
                 path: PagesRoutes.home.pattern,
                 pageBuilder: (context, state) {
                   return const MaterialPage(child: DashboardScreen());
+                },
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                name: PagesRoutes.audits.name,
+                path: PagesRoutes.audits.pattern,
+                pageBuilder: (context, state) {
+                  return const MaterialPage(child: AuditsScreen());
                 },
               ),
             ],
