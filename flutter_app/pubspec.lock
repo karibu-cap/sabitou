@@ -1208,10 +1208,10 @@ packages:
     dependency: "direct main"
     description:
       name: shadcn_ui
-      sha256: "17b4d311fc9b8775a06d489716dce6848319b4a37093a5addf2197ec0073b24a"
+      sha256: "46b1311e5759879762184e0ed34e82c6c77b04140350d5dafed651af0af091fc"
       url: "https://pub.dev"
     source: hosted
-    version: "0.39.14"
+    version: "0.45.1"
   shelf:
     dependency: transitive
     description:
@@ -1381,10 +1381,18 @@ packages:
     dependency: transitive
     description:
       name: theme_extensions_builder_annotation
-      sha256: "84069dfd7be08a34e4b3cf87cdb9ad56d7570974f67eaff7c867bc8ccd12d3f8"
+      sha256: e14648a3318842992f14b207cb811df48a1d6f0bd742b77bcbf1b74557493c00
       url: "https://pub.dev"
     source: hosted
-    version: "7.0.0"
+    version: "7.1.0"
+  timelines_plus:
+    dependency: "direct main"
+    description:
+      name: timelines_plus
+      sha256: d621d8724bc8f64957127c1195436996548e166296682d081bedcdb0abe1b638
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.8"
   timing:
     dependency: transitive
     description:

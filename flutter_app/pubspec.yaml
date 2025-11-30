@@ -167,6 +167,9 @@ dev_dependencies:
 
   # Dart code linter.
   dart_code_linter: any
+  
+  # Command-line tool which simplifies the task of updating your Flutter app's launcher icon.
+  flutter_launcher_icons: ^0.14.3
 
   # Command-line tool which simplifies the task of updating your Flutter app's launcher icon.
   flutter_launcher_icons: ^0.14.3

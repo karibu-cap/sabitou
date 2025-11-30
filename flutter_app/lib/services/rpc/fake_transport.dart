@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:clock/clock.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../../tmp/fake_data.dart';
@@ -211,6 +212,9 @@ final _fakeTransport =
           return UpdateStoreResponse(store: store);
         })
         .unary(BusinessService.getMyBusinesses, (req, __) async {
+          debugPrint('req $req');
+          debugPrint('req ${req.ownerId}');
+
           return GetMyBusinessesResponse(
             businesses: (_fakeData[CollectionName.businesses] as List<Business>)
                 .where((bm) => bm.ownerId == req.ownerId)
