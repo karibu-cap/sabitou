@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
@@ -9,7 +10,7 @@ import '../../../services/internationalization/internationalization.dart';
 import '../../../themes/app_colors.dart';
 import '../../../utils/extensions/inventory_extenxions.dart';
 import '../../../utils/formatters.dart';
-import '../../../widgets/app_table.dart';
+import '../../../widgets/shad_data_grid.dart';
 import '../purchase_orders_controller.dart';
 import 'cancel_order_form.dart';
 import 'receive_note_form.dart';
@@ -79,55 +80,85 @@ class _PurchaseOrderDataTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = context.read<PurchaseOrdersController>();
+    final theme = ShadTheme.of(context);
 
-    return AppTable(
-      child: DataTable(
-        columns: [
-          DataColumn(label: Text(Intls.to.orderId)),
-          DataColumn(label: Text(Intls.to.supplier)),
-          DataColumn(label: Text(Intls.to.status)),
-          DataColumn(label: Text(Intls.to.total)),
-          DataColumn(label: Text(Intls.to.expectedDeliveryDate)),
-          DataColumn(label: Text(Intls.to.createAt)),
-          DataColumn(label: Text(Intls.to.actions)),
-        ],
-        rows: orders.map((order) {
-          return DataRow(
-            cells: [
-              DataCell(
-                Text(
-                  order.documentId,
-                  style: ShadTheme.of(
-                    context,
-                  ).textTheme.list.copyWith(fontWeight: FontWeight.bold),
-                ),
+    return ShadDataGrid<PurchaseOrder>(
+      data: orders,
+      rowsPerPage: 2,
+      footerFrozenColumnsCount: 1,
+      columns: [
+        ShadDataGridColumn(label: Intls.to.orderId, width: 180),
+        ShadDataGridColumn(label: Intls.to.supplier, width: 150),
+        ShadDataGridColumn(label: Intls.to.status, width: 120),
+        ShadDataGridColumn(label: Intls.to.total, width: 120),
+        ShadDataGridColumn(label: Intls.to.expectedDeliveryDate, width: 180),
+        ShadDataGridColumn(label: Intls.to.createAt, width: 160),
+        ShadDataGridColumn(label: Intls.to.actions, width: 180),
+      ],
+      rowBuilder: (order) {
+        return [
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              order.documentId,
+              style: theme.textTheme.small.copyWith(
+                fontWeight: FontWeight.w600,
               ),
-              DataCell(_SupplierCell(order: order)),
-              DataCell(_StatusCell(order: order)),
-              DataCell(
-                Text(
-                  Formatters.formatCurrency(order.totalAmount),
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            alignment: Alignment.centerLeft,
+            child: _SupplierCell(order: order),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            alignment: Alignment.centerLeft,
+            child: _StatusCell(order: order),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            alignment: Alignment.centerRight,
+            child: Text(
+              Formatters.formatCurrency(order.totalAmount),
+              style: theme.textTheme.small.copyWith(
+                fontWeight: FontWeight.w600,
               ),
-              DataCell(
-                Text(
-                  order.hasExpectedDeliveryDate()
-                      ? Formatters.formatDate(
-                          order.expectedDeliveryDate.toDateTime(),
-                        )
-                      : 'N/A',
-                ),
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              order.hasExpectedDeliveryDate()
+                  ? Formatters.formatDate(
+                      order.expectedDeliveryDate.toDateTime(),
+                    )
+                  : 'N/A',
+              style: theme.textTheme.small.copyWith(
+                color: theme.colorScheme.mutedForeground,
               ),
-              DataCell(
-                Text(Formatters.formatDate(order.createdAt.toDateTime())),
-              ),
-              DataCell(_ActionsCell(order: order, controller: controller)),
-            ],
-          );
-        }).toList(),
-      ),
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              Formatters.formatDate(order.createdAt.toDateTime()),
+              style: theme.textTheme.small,
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            alignment: Alignment.centerLeft,
+            child: _ActionsCell(
+              order: order,
+              controller: context.read<PurchaseOrdersController>(),
+            ),
+          ),
+        ];
+      },
     );
   }
 }
@@ -152,7 +183,9 @@ class _SupplierCell extends StatelessWidget {
 
             return Text(
               supplier.name.isNotEmpty ? supplier.name : 'Unknown Supplier',
-              style: const TextStyle(fontSize: 14),
+              style: ShadTheme.of(context).textTheme.small,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
             );
           },
         );
@@ -168,14 +201,19 @@ class _StatusCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
+
     return ShadBadge(
-      backgroundColor: order.status.color.withValues(alpha: 0.05),
-      hoverBackgroundColor: order.status.color.withValues(alpha: 0.1),
+      backgroundColor: order.status.color.withValues(alpha: 0.1),
+      hoverBackgroundColor: order.status.color.withValues(alpha: 0.15),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      shape: const StadiumBorder(),
       child: Text(
         order.status.label ?? '',
-        style: ShadTheme.of(context).textTheme.list.copyWith(
+        style: theme.textTheme.small.copyWith(
           color: order.status.color,
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.w600,
+          fontSize: 11,
         ),
       ),
     );
@@ -210,25 +248,34 @@ class _ActionsCell extends StatelessWidget {
 
     return Row(
       mainAxisSize: MainAxisSize.min,
-      spacing: 8,
+      spacing: 12,
       children: [
         if ([
           PurchaseOrderStatus.PO_STATUS_PENDING,
           PurchaseOrderStatus.PO_STATUS_PARTIALLY_RECEIVED,
         ].contains(order.status))
-          Tooltip(
-            message: Intls.to.receivePurchaseOrder,
-            child: IconButton(
+          Flexible(
+            child: ShadButton(
+              padding: const EdgeInsets.all(2),
               onPressed: () => _showReceiveDialog(context),
-              icon: const Icon(Icons.local_shipping, color: AppColors.cobalt),
+              child: Expanded(
+                child: AutoSizeText(Intls.to.save, maxLines: 1, minFontSize: 8),
+              ),
             ),
           ),
+
         if (order.status != PurchaseOrderStatus.PO_STATUS_CANCELLED)
-          Tooltip(
-            message: Intls.to.cancelPurchaseOrder,
-            child: IconButton(
+          Flexible(
+            child: ShadButton.destructive(
+              padding: const EdgeInsets.all(2),
               onPressed: () => _showCancelDialog(context),
-              icon: const Icon(LucideIcons.x400, color: AppColors.red),
+              child: Expanded(
+                child: AutoSizeText(
+                  Intls.to.cancel,
+                  maxLines: 1,
+                  minFontSize: 8,
+                ),
+              ),
             ),
           ),
       ],

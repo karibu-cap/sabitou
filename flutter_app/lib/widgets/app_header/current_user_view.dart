@@ -32,15 +32,9 @@ class CurrentUserView extends StatelessWidget {
                 border: Border.fromBorderSide(
                   BorderSide(color: theme.colorScheme.accent),
                 ),
-                color: ShadTheme.of(
-                  context,
-                ).colorScheme.accent.withValues(alpha: 0.05),
+                color: ShadTheme.of(context).colorScheme.accent,
               ),
-              child: Icon(
-                LucideIcons.user400,
-                size: 20,
-                color: theme.colorScheme.accent,
-              ),
+              child: const Icon(LucideIcons.user400, size: 20),
             ),
             const SizedBox(width: 8),
             Expanded(

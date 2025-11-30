@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
-import '../../../../router/page_routes.dart';
 import '../../../../router/app_router.dart';
+import '../../../../router/page_routes.dart';
 import '../../../../services/internationalization/internationalization.dart';
 
 /// Auth links.
@@ -25,7 +26,7 @@ class AuthLinks extends StatelessWidget {
 
     return Column(
       children: [
-        TextButton(
+        ShadButton.link(
           onPressed: () => navigateToForgotPassword(context),
           child: Text(appIntl.forgotPassword),
         ),
@@ -34,7 +35,7 @@ class AuthLinks extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(appIntl.dontHaveAnAccount),
-            TextButton(
+            ShadButton.link(
               onPressed: () => navigateToRegisterScreen(context),
               child: Text(appIntl.signUp),
             ),

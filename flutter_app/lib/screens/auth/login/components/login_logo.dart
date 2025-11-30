@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../themes/app_colors.dart';
+
 /// Widget for the login logo/icon
 class LoginLogo extends StatelessWidget {
   /// Constructs a [LoginLogo] widget
@@ -12,7 +14,7 @@ class LoginLogo extends StatelessWidget {
       height: 80,
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          colors: [Color(0xFF10B981), Color(0xFF059669)],
+          colors: [AppColors.success800, AppColors.success600],
         ),
         borderRadius: BorderRadius.all(Radius.circular(20)),
       ),

@@ -18,7 +18,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tabletBreakpoint = ResponsiveUtils.isTablet(context);
+    final tabletBreakpoint = ResponsiveUtils.isMobile(context);
     final isMobile = ResponsiveUtils.isMobile(context);
 
     return Scaffold(
@@ -53,6 +53,7 @@ class HomeScreen extends StatelessWidget {
                                 child: Padding(
                                   padding: EdgeInsets.symmetric(
                                     horizontal: isMobile ? 16.0 : 24.0,
+                                    vertical: 18,
                                   ),
                                   child: navigationShell,
                                 ),

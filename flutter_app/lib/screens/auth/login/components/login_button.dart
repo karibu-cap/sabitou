@@ -7,6 +7,7 @@ import '../../../../router/page_routes.dart';
 import '../../../../services/internationalization/internationalization.dart';
 import '../../../../utils/button_state.dart';
 import '../../../../utils/common_functions.dart';
+import '../../../../widgets/loading.dart';
 import '../login_controller.dart';
 
 /// Custom login button widget with loading state
@@ -38,7 +39,7 @@ class LoginButton extends StatelessWidget {
         return;
       }
       if (loginResult) {
-        showSuccessToast(
+        showNeutralToast(
           context: context,
           title: appIntl.success,
           message: appIntl.loginSuccess,
@@ -61,13 +62,7 @@ class LoginButton extends StatelessWidget {
         onPressed: () => onLoginPressed(controller),
         width: double.infinity,
         trailing: controller.buttonState.value == ButtonState.loading
-            ? SizedBox.square(
-                dimension: 16,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  color: ShadTheme.of(context).colorScheme.primaryForeground,
-                ),
-              )
+            ? const Loading.button()
             : null,
         enabled: controller.buttonState.value != ButtonState.loading,
         child: Text(appIntl.signIn),

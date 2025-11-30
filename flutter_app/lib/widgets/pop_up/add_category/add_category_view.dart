@@ -4,6 +4,7 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../../services/internationalization/internationalization.dart';
+import '../../../themes/app_colors.dart';
 import '../../../utils/common_functions.dart';
 import '../../../utils/form/validation.dart';
 import '../../input/form_fields.dart';
@@ -170,22 +171,7 @@ class _CategoryFormDialogContent extends StatelessWidget {
 
                   InkWell(
                     onTap: controller.setIsActive,
-                    child: Container(
-                      margin: const EdgeInsets.only(bottom: 8),
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: theme.colorScheme.secondary.withValues(
-                          alpha: 0.1,
-                        ),
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(8),
-                        ),
-                        border: Border.all(
-                          color: theme.colorScheme.primary.withValues(
-                            alpha: 0.1,
-                          ),
-                        ),
-                      ),
+                    child: ShadCard(
                       child: Row(
                         children: [
                           Icon(
@@ -194,7 +180,7 @@ class _CategoryFormDialogContent extends StatelessWidget {
                                 : Icons.circle_outlined,
                             size: 20,
                             color: controller.isActive
-                                ? theme.colorScheme.accent
+                                ? AppColors.purple
                                 : theme.colorScheme.primary,
                           ),
                           const SizedBox(width: 12),
@@ -204,7 +190,7 @@ class _CategoryFormDialogContent extends StatelessWidget {
                               style: theme.textTheme.p.copyWith(fontSize: 12),
                             ),
                           ),
-                          Switch(
+                          ShadSwitch(
                             value: controller.isActive,
                             onChanged: (_) => controller.setIsActive(),
                           ),

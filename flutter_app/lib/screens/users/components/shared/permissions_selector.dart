@@ -3,6 +3,7 @@ import 'package:sabitou_rpc/sabitou_rpc.dart'; // contient StorePermissions
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../../services/internationalization/internationalization.dart';
+import '../../../../themes/app_colors.dart';
 
 /// Reusable permissions selector component for user invitation and permissions modals
 class PermissionsSelector extends StatelessWidget {
@@ -17,14 +18,11 @@ class PermissionsSelector extends StatelessWidget {
   )
   onTogglePermission;
 
-  /// Maximum height for the scroll view.
-  final double? maxHeight;
-
+  /// Creates a new PermissionsSelector.
   const PermissionsSelector({
     super.key,
     required this.isPermissionSelected,
     required this.onTogglePermission,
-    this.maxHeight,
   });
 
   @override
@@ -32,8 +30,7 @@ class PermissionsSelector extends StatelessWidget {
     final groups = [
       PermissionGroup(
         title: Intls.to.products,
-        icon: Icons.inventory,
-        color: const Color(0xFFF59E0B),
+        icon: LucideIcons.package400,
         items: [
           PermissionItem(
             title: Intls.to.viewProducts,
@@ -75,8 +72,7 @@ class PermissionsSelector extends StatelessWidget {
       ),
       PermissionGroup(
         title: Intls.to.members,
-        icon: Icons.group,
-        color: const Color(0xFF3B82F6),
+        icon: LucideIcons.users400,
         items: [
           PermissionItem(
             title: Intls.to.consultSupplierListContactInfo,
@@ -119,8 +115,7 @@ class PermissionsSelector extends StatelessWidget {
 
       PermissionGroup(
         title: Intls.to.reports,
-        icon: Icons.bar_chart,
-        color: const Color(0xFF10B981),
+        icon: LucideIcons.chartColumn400,
         items: [
           PermissionItem(
             title: Intls.to.consultMetricsHistoryAnalytics,
@@ -134,8 +129,7 @@ class PermissionsSelector extends StatelessWidget {
       ),
       PermissionGroup(
         title: Intls.to.orders,
-        icon: Icons.shopping_cart,
-        color: const Color(0xFF8B5CF6),
+        icon: LucideIcons.shoppingBag400,
         items: [
           PermissionItem(
             title: Intls.to.viewOrders,
@@ -158,8 +152,7 @@ class PermissionsSelector extends StatelessWidget {
 
       PermissionGroup(
         title: Intls.to.invoices,
-        icon: Icons.receipt_long,
-        color: const Color(0xFFF59E0B),
+        icon: LucideIcons.receipt400,
         items: [
           PermissionItem(
             title: Intls.to.viewInvoices,
@@ -184,7 +177,6 @@ class PermissionsSelector extends StatelessWidget {
       PermissionGroup(
         title: Intls.to.suppliers,
         icon: Icons.local_shipping,
-        color: const Color(0xFF0EA5E9),
         items: [
           PermissionItem(
             title: Intls.to.consultSupplierListContactInfo,
@@ -226,8 +218,7 @@ class PermissionsSelector extends StatelessWidget {
       ),
       PermissionGroup(
         title: Intls.to.transactions,
-        icon: Icons.attach_money,
-        color: const Color(0xFF9333EA),
+        icon: LucideIcons.dollarSign400,
         items: [
           PermissionItem(
             title: Intls.to.viewTransactions,
@@ -262,11 +253,13 @@ class PermissionsSelector extends StatelessWidget {
 
     final content = ListView.separated(
       itemCount: groups.length,
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
       separatorBuilder: (_, __) => const SizedBox(height: 16),
       itemBuilder: (_, i) => groups[i],
     );
 
-    return SizedBox(height: maxHeight, child: content);
+    return content;
   }
 }
 
@@ -278,9 +271,6 @@ class PermissionGroup extends StatelessWidget {
   /// The icon.
   final IconData icon;
 
-  /// The color.
-  final Color color;
-
   /// The Permissions items.
   final List<PermissionItem> items;
 
@@ -289,7 +279,6 @@ class PermissionGroup extends StatelessWidget {
     super.key,
     required this.title,
     required this.icon,
-    required this.color,
     required this.items,
   });
 
@@ -299,23 +288,20 @@ class PermissionGroup extends StatelessWidget {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: 12,
       children: [
+        const SizedBox(height: 12),
         Row(
           children: [
-            Icon(icon, color: color, size: 20),
+            Icon(icon, size: 20),
             const SizedBox(width: 8),
             Text(
               title,
-              style: theme.textTheme.h4.copyWith(
-                fontWeight: FontWeight.w600,
-                color: color,
-                fontSize: 18,
-              ),
+              style: theme.textTheme.h4.copyWith(fontWeight: FontWeight.w600),
             ),
           ],
         ),
-        const SizedBox(height: 8),
-        ...items.map((item) => PermissionTile(item: item, color: color)),
+        ...items.map((item) => PermissionTile(item: item)),
       ],
     );
   }
@@ -345,56 +331,41 @@ class PermissionTile extends StatelessWidget {
   /// The item.
   final PermissionItem item;
 
-  /// The color.
-  final Color color;
-
   /// Creates a new PermissionTile.
-  const PermissionTile({super.key, required this.item, required this.color});
+  const PermissionTile({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
     final value = item.isSelected();
 
-    return Container(
-      margin: const EdgeInsets.only(bottom: 8),
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: value
-            ? color.withValues(alpha: 0.1)
-            : theme.colorScheme.secondary.withValues(alpha: 0.1),
-        borderRadius: const BorderRadius.all(Radius.circular(8)),
-        border: Border.all(
-          color: value
-              ? color
-              : theme.colorScheme.primary.withValues(alpha: 0.3),
-          width: 1.2,
-        ),
-      ),
-      child: InkWell(
-        onTap: item.toggle,
+    return InkWell(
+      onTap: item.toggle,
+
+      child: ShadCard(
+        backgroundColor: value
+            ? AppColors.success100.withValues(alpha: 0.1)
+            : null,
         child: Row(
           children: [
             Icon(
               value ? Icons.check_circle : Icons.circle_outlined,
-              color: value ? color : theme.colorScheme.primary,
+              color: value ? AppColors.success700 : null,
               size: 20,
             ),
             const SizedBox(width: 12),
             Expanded(
               child: Text(
                 item.title,
-                style: theme.textTheme.p.copyWith(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14,
-                  color: value ? color : theme.colorScheme.primary,
+                style: theme.textTheme.small.copyWith(
+                  color: value ? AppColors.success700 : null,
                 ),
               ),
             ),
-            Switch(
+            ShadSwitch(
               value: value,
               onChanged: (_) => item.toggle(),
-              activeColor: color,
+              checkedTrackColor: AppColors.success700,
             ),
           ],
         ),

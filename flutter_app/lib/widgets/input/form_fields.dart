@@ -53,20 +53,13 @@ class InputField extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
 
-    final style = theme.textTheme.p.copyWith(
-      color: theme.colorScheme.primary,
-      fontWeight: FontWeight.bold,
-      fontSize: 14,
-    );
-    final stylePlaceholder = theme.textTheme.p.copyWith(
-      color: theme.colorScheme.primary,
-      fontSize: 14,
-    );
+    final style = theme.textTheme.h4;
+    final stylePlaceholder = theme.textTheme.muted;
 
     return ShadInputFormField(
       controller: controller,
       placeholder: Text(placeholder, style: stylePlaceholder),
-      trailing: Icon(icon, color: theme.colorScheme.primary),
+      trailing: Icon(icon, color: theme.colorScheme.primary, size: 16),
       keyboardType: keyboardType,
       inputFormatters: inputFormatters,
       id: id,
@@ -126,11 +119,12 @@ class PasswordField extends StatelessWidget {
         controller: controller,
         placeholder: Text(placeholder),
         obscureText: !isVisible.value,
-        leading: const Icon(LucideIcons.lock),
+        leading: const Icon(LucideIcons.lock, size: 16),
         trailing: GestureDetector(
           onTap: onToggle,
           child: Icon(
             isVisible.value ? LucideIcons.eye400 : LucideIcons.eyeOff400,
+            size: 16,
           ),
         ),
         id: id,
@@ -142,7 +136,7 @@ class PasswordField extends StatelessWidget {
               )
             : null,
         label: label != null
-            ? Text(label ?? '', style: Theme.of(context).textTheme.bodyLarge)
+            ? Text(label ?? '', style: ShadTheme.of(context).textTheme.h4)
             : null,
       ),
     );

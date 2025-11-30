@@ -39,7 +39,7 @@ class RegistrationButton extends StatelessWidget {
         return;
       }
       if (registrationResult) {
-        showSuccessToast(
+        showNeutralToast(
           context: context,
           title: appIntl.success,
           message: appIntl.registrationSuccess,

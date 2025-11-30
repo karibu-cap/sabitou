@@ -7,7 +7,6 @@ import 'storage/app_storage.dart';
 
 /// The theme service.
 class AppThemeService extends ChangeNotifier {
-  final AppStorageService _box;
   final _key = PreferencesKey.isDartMode;
   bool _isDarkMode = false;
 
@@ -27,15 +26,21 @@ class AppThemeService extends ChangeNotifier {
   static ShadThemeData get darkTheme => _darkTheme;
 
   /// Constructor of new theme service.
-  AppThemeService(this._box) {
+  AppThemeService() {
     init();
   }
 
-  Future<void> _saveThemeToBox(bool isDarkMode) => _box.write(_key, isDarkMode);
+  Future<void> _saveThemeToBox(bool isDarkMode) => AppStorage.of<bool>(
+    boxKey: PreferencesKey.isDartMode,
+  ).write(_key, isDarkMode);
 
   /// Initializes the theme service.
   Future<AppThemeService> init() async {
-    _isDarkMode = _box.read(_key) ?? false;
+    _isDarkMode =
+        await AppStorage.of<bool>(
+          boxKey: PreferencesKey.isDartMode,
+        ).read(_key) ??
+        false;
     notifyListeners();
 
     return this;

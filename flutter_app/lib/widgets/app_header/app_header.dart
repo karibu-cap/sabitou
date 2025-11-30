@@ -21,7 +21,7 @@ class HeaderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isTablet = ResponsiveUtils.isTablet(context);
+    final isTablet = ResponsiveUtils.isMobile(context);
     final theme = ShadTheme.of(context);
 
     return Container(

@@ -175,7 +175,6 @@ class InventoryViewModel {
       final sales = results[1] as GetSalesReportResponse;
       final inventoryLevels = results[2] as List<InventoryLevelWithProduct>;
 
-      print('inventoryLevels: ${inventoryLevels.length}');
       final newStats = InventoryData(
         totalProducts: inventoryLevels.length,
         lowStockItemsCount: lowStockItems.length,
@@ -188,7 +187,7 @@ class InventoryViewModel {
 
       return stats;
     } catch (e) {
-      print('Error loading inventory data: $e');
+      _logger.severe('Error loading inventory data: $e');
 
       return stats;
     } finally {

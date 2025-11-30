@@ -76,6 +76,7 @@ class SidebarMenuItem<T> extends StatelessWidget {
           theme: ShadTheme.of(context),
           minHeight: minHeight,
           variant: variant,
+          hasAChild: item.children?.isNotEmpty == true,
         ),
         if (item.children != null) ...[
           const SizedBox(height: 4),
@@ -101,12 +102,14 @@ class _ItemWidget<T> extends StatelessWidget {
     required this.isActive,
     required this.theme,
     this.minHeight,
+    this.hasAChild = false,
     required this.variant,
   });
 
   final Function(SideBarItem<T>)? onTabChange;
   final SideBarItem<T> item;
   final bool isChild;
+  final bool hasAChild;
   final bool isActive;
   final ShadThemeData theme;
   final double? minHeight;
@@ -127,7 +130,8 @@ class _ItemWidget<T> extends StatelessWidget {
             horizontal: isChild ? 32 : 16,
             vertical: 12,
           ),
-          leading: Icon(item.icon, size: 15),
+          leading: !hasAChild ? Icon(item.icon, size: 15) : const SizedBox(),
+          enabled: !hasAChild,
 
           child: Flexible(
             child: SingleChildScrollView(
@@ -139,6 +143,7 @@ class _ItemWidget<T> extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                     minFontSize: 8,
+                    style: const TextStyle(fontSize: 10),
                   ),
                   if (!isActive &&
                       (item.description != null ||

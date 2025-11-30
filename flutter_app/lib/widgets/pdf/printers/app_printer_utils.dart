@@ -59,10 +59,9 @@ class AppPrinterUtils {
                   child: ShadButton(
                     child: Text(Intls.to.save),
                     onPressed: () async {
-                      await AppStorageService.to.write<List<String>>(
-                        PreferencesKey.printsList,
-                        printerURLs,
-                      );
+                      await AppStorage.of<List<String>>(
+                        boxKey: PreferencesKey.printsList,
+                      ).write(PreferencesKey.printsList, printerURLs);
                       Navigator.pop(context);
                     },
                   ),

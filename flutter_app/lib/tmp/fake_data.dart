@@ -215,6 +215,8 @@ final fakeData = <String, List<dynamic>>{
       ..refId = 'product-001'
       ..storeId = 'store-001'
       ..globalProductId = 'global-product-001'
+      ..status = ProductStatus.PRODUCT_STATUS_ACTIVE
+      ..refId
       ..salePrice = 10000
       ..createdAt = Timestamp.fromDateTime(
         DateTime.parse('2024-09-01T08:00:00Z'),
@@ -223,6 +225,7 @@ final fakeData = <String, List<dynamic>>{
       ..refId = 'product-002'
       ..storeId = 'store-001'
       ..globalProductId = 'global-product-002'
+      ..status = ProductStatus.PRODUCT_STATUS_INACTIVE
       ..salePrice = 7500
       ..createdAt = Timestamp.fromDateTime(
         DateTime.parse('2024-09-01T08:00:00Z'),
@@ -231,6 +234,7 @@ final fakeData = <String, List<dynamic>>{
       ..refId = 'product-002'
       ..storeId = 'store-001'
       ..globalProductId = 'global-product-003'
+      ..status = ProductStatus.PRODUCT_STATUS_ACTIVE
       ..salePrice = 1500
       ..createdAt = Timestamp.fromDateTime(
         DateTime.parse('2024-09-01T08:00:00Z'),
@@ -239,6 +243,7 @@ final fakeData = <String, List<dynamic>>{
       ..refId = 'product-003'
       ..storeId = 'store-001'
       ..globalProductId = 'global-product-004'
+      ..status = ProductStatus.PRODUCT_STATUS_ACTIVE
       ..salePrice = 12500
       ..createdAt = Timestamp.fromDateTime(
         DateTime.parse('2024-09-01T08:00:00Z'),

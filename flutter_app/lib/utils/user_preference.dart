@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sabitou_rpc/models.dart';
 
+import '../repositories/business_repository.dart';
+import '../repositories/stores_repository.dart';
+import '../repositories/users_repository.dart';
 import '../services/storage/app_storage.dart';
 import 'app_constants.dart';
 
@@ -9,6 +12,11 @@ import 'app_constants.dart';
 class UserPreferences extends ChangeNotifier {
   /// The current user.
   User? _user;
+
+  /// The user id.
+  final String? userId;
+
+  bool _isLoading = false;
 
   /// Currents user business.
   Business? business;
@@ -28,35 +36,127 @@ class UserPreferences extends ChangeNotifier {
   /// The current user.
   User? get user => _user;
 
+  /// Whether we load a data.
+  bool get isLoading => _isLoading;
+
   /// Currents user business.
-  UserPreferences() {
-    loadUserPreferences();
+  UserPreferences(this.userId) {
+    loadUserPreferences(userId);
   }
 
   /// Load user preferences.
-  Future<void> loadUserPreferences() async {
-    final storage = AppStorageService.to;
-    _user = storage.read<User>(CollectionName.users);
-    business = storage.read<Business>(CollectionName.businesses);
-    businessMember = storage.read<BusinessMember>(
+  Future<void> loadUserPreferences(String? userId) async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      if (userId == null) {
+        await _loadSavePrefreferences();
+
+        return;
+      }
+
+      final newUser = await UserRepository.instance.getUser(
+        GetUserRequest(userId: userId),
+      );
+
+      if (newUser == null) {
+        await _loadSavePrefreferences();
+
+        return;
+      }
+
+      _user = newUser;
+      userId = newUser.refId;
+      await AppStorage.of<User>().write(CollectionName.users, newUser);
+
+      final userBusiness = await BusinessRepository.instance.getMyBusinesses(
+        newUser.refId,
+      );
+      final newBusiness = userBusiness.firstOrNull;
+
+      if (newBusiness == null) {
+        return;
+      }
+
+      await AppStorage.of<Business>().write(
+        CollectionName.businesses,
+        newBusiness,
+      );
+
+      final [
+        newBusinessMember as BusinessMember?,
+        storeByBusiness as List<Store>,
+      ] = await Future.wait([
+        BusinessRepository.instance.getBusinessMember(
+          newBusiness.refId,
+          newUser.refId,
+        ),
+        StoresRepository.instance.getStoresByBusinessId(newBusiness.refId),
+      ]);
+
+      final newStore = storeByBusiness.firstOrNull;
+
+      if (newStore == null || newBusinessMember == null) {
+        return;
+      }
+
+      businessMember = newBusinessMember;
+      business = newBusiness;
+
+      await AppStorage.of<BusinessMember>().write(
+        CollectionName.businessMembers,
+        newBusinessMember,
+      );
+      await AppStorage.of<Store>().write(CollectionName.stores, newStore);
+
+      final newStoreMember = await StoresRepository.instance.getStoreMember(
+        GetStoreMemberRequest(storeId: newStore.refId, userId: newUser.refId),
+      );
+
+      if (newStoreMember == null) {
+        return;
+      }
+
+      store = newStore;
+      storeMember = newStoreMember;
+
+      await AppStorage.of<StoreMember>().write(
+        CollectionName.storeMembers,
+        newStoreMember,
+      );
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> _loadSavePrefreferences() async {
+    _user = await AppStorage.of<User?>().read(CollectionName.users);
+    business = await AppStorage.of<Business>().read(CollectionName.businesses);
+    businessMember = await AppStorage.of<BusinessMember>().read(
       CollectionName.businessMembers,
     );
-    store = storage.read<Store>(CollectionName.stores);
-    storeMember = storage.read<StoreMember>(CollectionName.storeMembers);
+    store = await AppStorage.of<Store>().read(CollectionName.stores);
+    storeMember = await AppStorage.of<StoreMember>().read(
+      CollectionName.storeMembers,
+    );
   }
 
   /// Save user preferences.
   Future<void> saveUserPreferences({required User user}) async {
-    final storage = AppStorageService.to;
-    await storage.write<User>(CollectionName.users, user);
+    await AppStorage.of<User>().write(CollectionName.users, user);
 
     _user = user;
+    notifyListeners();
   }
 
   /// Save business preferences.
   Future<void> saveBusinessPreferences({required Business newBusiness}) async {
-    final storage = AppStorageService.to;
-    await storage.write<Business>(CollectionName.businesses, newBusiness);
+    await AppStorage.of<Business>().write(
+      CollectionName.businesses,
+      newBusiness,
+    );
 
     business = newBusiness;
     notifyListeners();
@@ -66,8 +166,7 @@ class UserPreferences extends ChangeNotifier {
   Future<void> saveBusinessMemberPreferences({
     required BusinessMember newBusinessMember,
   }) async {
-    final storage = AppStorageService.to;
-    await storage.write<BusinessMember>(
+    await AppStorage.of<BusinessMember>().write(
       CollectionName.businessMembers,
       newBusinessMember,
     );
@@ -78,8 +177,7 @@ class UserPreferences extends ChangeNotifier {
 
   /// Save store preferences.
   Future<void> saveStorePreferences({required Store newStore}) async {
-    final storage = AppStorageService.to;
-    await storage.write<Store>(CollectionName.stores, newStore);
+    await AppStorage.of<Store>().write(CollectionName.stores, newStore);
 
     store = newStore;
     notifyListeners();
@@ -89,8 +187,7 @@ class UserPreferences extends ChangeNotifier {
   Future<void> saveStoreMemberPreferences({
     required StoreMember newStoreMember,
   }) async {
-    final storage = AppStorageService.to;
-    await storage.write<StoreMember>(
+    await AppStorage.of<StoreMember>().write(
       CollectionName.storeMembers,
       newStoreMember,
     );
@@ -101,10 +198,9 @@ class UserPreferences extends ChangeNotifier {
 
   /// Clear user preferences.
   Future<void> clearUserPreferences() async {
-    final storage = AppStorageService.to;
-    await storage.remove(CollectionName.users);
-    await storage.remove(CollectionName.businesses);
-    await storage.remove(CollectionName.stores);
+    await AppStorage.of<User>().remove(CollectionName.users);
+    await AppStorage.of<Business>().remove(CollectionName.businesses);
+    await AppStorage.of<Store>().remove(CollectionName.stores);
 
     _user = null;
     business = null;

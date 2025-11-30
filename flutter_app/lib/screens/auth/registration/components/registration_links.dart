@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../../router/app_router.dart';
 import '../../../../router/page_routes.dart';
@@ -22,7 +23,7 @@ class RegistrationLinks extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(appIntl.alreadyHaveAnAccount),
-        TextButton(
+        ShadButton.link(
           onPressed: () => navigateToLoginScreen(context),
           child: Text(appIntl.signIn),
         ),

@@ -13,6 +13,7 @@ import '../../../utils/formatters.dart';
 import '../../../utils/responsive_utils.dart';
 import '../../../utils/utils.dart';
 import '../../../widgets/loading.dart';
+import '../../../widgets/shad_data_grid.dart';
 import '../inventory_controller.dart';
 
 /// The products table view.
@@ -100,62 +101,56 @@ class _InventoryDataTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ScrollController scrollController = ScrollController();
+    final theme = ShadTheme.of(context);
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return Scrollbar(
-          controller: scrollController,
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            controller: scrollController,
-            child: Container(
-              constraints: BoxConstraints(minWidth: constraints.maxWidth),
-              child: DataTable(
-                horizontalMargin: 12,
-                dataRowMaxHeight: 80,
-                headingTextStyle: ShadTheme.of(
-                  context,
-                ).textTheme.lead.copyWith(fontWeight: FontWeight.w500),
-                headingRowColor: WidgetStateProperty.all(
-                  ShadTheme.of(context).colorScheme.secondary,
-                ),
-                columns: [
-                  DataColumn(label: Text(Intls.to.product)),
-                  DataColumn(label: Text(Intls.to.barcode)),
-                  DataColumn(label: Text(Intls.to.price)),
-                  DataColumn(label: Text(Intls.to.stock)),
-                  DataColumn(label: Text(Intls.to.status)),
-                ],
-                rows: inv.map((inv) {
-                  return DataRow(
-                    cells: [
-                      DataCell(_ProductNameCell(product: inv.globalProduct)),
-                      DataCell(
-                        Text(
-                          inv.globalProduct.barCodeValue,
-                          style: ShadTheme.of(context).textTheme.list,
-                        ),
-                      ),
-                      DataCell(
-                        Text(
-                          Formatters.formatCurrency(
-                            inv.product.salePrice.toDouble(),
-                          ),
-                          style: ShadTheme.of(context).textTheme.list.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      DataCell(_StockCell(inventoryLevel: inv.level)),
-                      DataCell(_StatusCell(inventory: inv)),
-                    ],
-                  );
-                }).toList(),
+    return ShadDataGrid<InventoryLevelWithProduct>(
+      data: inv,
+      columns: [
+        ShadDataGridColumn(label: Intls.to.product, width: 280),
+        ShadDataGridColumn(label: Intls.to.barcode, width: 180),
+        ShadDataGridColumn(label: Intls.to.status, width: 120),
+        ShadDataGridColumn(label: Intls.to.price, width: 120),
+        ShadDataGridColumn(label: Intls.to.stock, width: 120),
+      ],
+      rowBuilder: (product) {
+        return [
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            alignment: Alignment.centerLeft,
+            child: _ProductNameCell(product: product.globalProduct),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              product.globalProduct.hasBarCodeValue() &&
+                      product.globalProduct.barCodeValue.isNotEmpty
+                  ? product.globalProduct.barCodeValue
+                  : 'N/A',
+              style: theme.textTheme.small,
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            alignment: Alignment.centerLeft,
+            child: _StatusCell(inventory: product),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              Formatters.formatCurrency(product.product.salePrice.toDouble()),
+              style: theme.textTheme.small.copyWith(
+                fontWeight: FontWeight.w600,
               ),
             ),
           ),
-        );
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            alignment: Alignment.centerLeft,
+            child: _StockCell(inventoryLevel: product.level),
+          ),
+        ];
       },
     );
   }
@@ -320,9 +315,7 @@ class _ProductNameCell extends StatelessWidget {
           width: 50,
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(Radius.circular(8)),
-            color: ShadTheme.of(
-              context,
-            ).colorScheme.accent.withValues(alpha: 0.05),
+            color: ShadTheme.of(context).colorScheme.accent,
           ),
           child:
               product.imagesLinksIds.isNotEmpty &&
@@ -343,34 +336,18 @@ class _ProductNameCell extends StatelessWidget {
                         image: product.imagesLinksIds.first,
                         fit: BoxFit.contain,
                         imageErrorBuilder: (context, error, stackTrace) {
-                          return Icon(
-                            LucideIcons.package,
-                            size: 20,
-                            color: ShadTheme.of(context).colorScheme.accent,
-                          );
+                          return const Icon(LucideIcons.package, size: 20);
                         },
                         placeholderErrorBuilder: (context, error, stackTrace) {
-                          return Icon(
-                            LucideIcons.package,
-                            size: 20,
-                            color: ShadTheme.of(context).colorScheme.accent,
-                          );
+                          return const Icon(LucideIcons.package, size: 20);
                         },
                       );
                     }
 
-                    return Icon(
-                      LucideIcons.package,
-                      size: 20,
-                      color: ShadTheme.of(context).colorScheme.accent,
-                    );
+                    return const Icon(LucideIcons.package, size: 20);
                   },
                 )
-              : Icon(
-                  LucideIcons.package,
-                  size: 20,
-                  color: ShadTheme.of(context).colorScheme.accent,
-                ),
+              : const Icon(LucideIcons.package, size: 20),
         ),
         const SizedBox(width: 8),
         Flexible(
@@ -380,19 +357,21 @@ class _ProductNameCell extends StatelessWidget {
             children: [
               Text(
                 product.label,
-                style: theme.textTheme.large.copyWith(
+                style: theme.textTheme.small.copyWith(
                   fontWeight: FontWeight.w600,
+                  color: theme.colorScheme.foreground,
                 ),
-              ),
-              Text(
-                product.categories
-                    .map((c) => c.name)
-                    .take(2)
-                    .join(' > ')
-                    .toString(),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: theme.textTheme.muted,
+              ),
+              const SizedBox(height: 2),
+              Text(
+                product.categories.map((c) => c.name).take(2).join(' > '),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.small.copyWith(
+                  color: theme.colorScheme.mutedForeground,
+                ),
               ),
             ],
           ),

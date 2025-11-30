@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:get_it/get_it.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
@@ -25,13 +24,13 @@ import 'repositories/users_repository.dart';
 import 'router/app_router.dart';
 import 'services/app_theme_service.dart';
 import 'services/data_sync/data_sync_service.dart';
-import 'services/hive_database/hive_database.dart';
 import 'services/internationalization/internationalization.dart';
 import 'services/network_status_provider/network_status_provider.dart';
 import 'services/rpc/connect_rpc.dart';
 import 'services/rpc/fake_transport.dart';
 import 'services/rpc/fake_transport/data_sync.dart';
 import 'services/storage/app_storage.dart';
+import 'services/storage/hive_ce/hive_adapters.dart';
 import 'themes/app_colors.dart';
 import 'utils/app_constants.dart';
 import 'utils/user_preference.dart';
@@ -39,35 +38,33 @@ import 'utils/user_preference.dart';
 /// The logger configuration.
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await AppStorage.initialize(AppStorageType.hiveStorage);
+  initStorageBoxes();
   await _initServices();
   usePathUrlStrategy();
   runApp(const MyApp());
 }
 
 Future<void> _initServices() async {
-  final hiveDatabase = await HiveDatabase.create(HiveDatabaseType.real);
-  await hiveDatabase.initBoxes();
-  await GetStorage.init();
-  await AppRouter.init(AppRouterType.gorouter);
-  final appStorage = AppStorageService(AppStorageType.fake, fakeStorage);
   final networkStatusProvider = NetworkStatusProvider.create(
     type: NetworkProviderType.real,
   );
-  final languageCode = appStorage.read<String>(PreferencesKey.language);
+  final languageCode = await AppStorage.of<Locale>().read(
+    PreferencesKey.language,
+  );
   GetIt.I
-    ..registerLazySingleton<AppStorageService>(() => appStorage)
     ..registerLazySingleton<ConnectRPCService>(
       () => ConnectRPCService(clientChannel: fakeTransport),
     )
     ..registerLazySingleton<NetworkStatusProvider>(() => networkStatusProvider)
-    ..registerLazySingleton<HiveDatabase>(() => hiveDatabase)
     ..registerLazySingleton<AppInternationalizationService>(
       () => AppInternationalizationService(
-        languageCode != null ? Locale(languageCode) : const Locale('en'),
-        appStorage,
+        languageCode != null
+            ? Locale(languageCode.languageCode)
+            : const Locale('en'),
       ),
     )
-    ..registerLazySingleton<UserPreferences>(UserPreferences.new)
+    ..registerLazySingleton<UserPreferences>(() => UserPreferences(null))
     ..registerLazySingleton<ReportsRepository>(ReportsRepository.new)
     ..registerLazySingleton<AuthRepository>(AuthRepository.new)
     ..registerLazySingleton<StoreProductsRepository>(
@@ -78,6 +75,7 @@ Future<void> _initServices() async {
     ..registerLazySingleton<BusinessRepository>(BusinessRepository.new)
     ..registerLazySingleton<StoresRepository>(StoresRepository.new)
     ..registerLazySingleton<UserRepository>(UserRepository.new)
+    ..registerSingleton<AuthProvider>(AuthProvider())
     ..registerLazySingleton<InventoryRepository>(InventoryRepository.new)
     ..registerLazySingleton<GiftVoucherRepository>(GiftVoucherRepository.new)
     ..registerLazySingleton<PosRepository>(PosRepository.new)
@@ -89,10 +87,15 @@ Future<void> _initServices() async {
     ..registerLazySingleton<DataSyncService>(
       () => DataSyncService(transport: syncFakeTransport),
     )
-    ..registerLazySingleton<AuthProvider>(AuthProvider.new)
     ..registerLazySingleton<CartManager>(CartManager.new);
 
+  // Wait for AuthProvider to initialize from storage
+  GetIt.I.get<AuthProvider>();
+
   /// Initialize the get storage service.
+  await AppRouter.init(AppRouterType.gorouter);
+
+  ///
 }
 
 /// The main application widget.
@@ -102,21 +105,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appStorage = GetIt.I.get<AppStorageService>();
-
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
+          create: (context) => GetIt.I.get<AuthProvider>(),
+        ),
+        ChangeNotifierProvider(
           create: (context) => GetIt.I.get<AppInternationalizationService>(),
         ),
-        ChangeNotifierProvider(
-          create: (context) => AppThemeService(appStorage),
-        ),
-        ChangeNotifierProvider(
+        ChangeNotifierProvider(create: (context) => AppThemeService()),
+        ChangeNotifierProvider<UserPreferences>(
           create: (context) => GetIt.I.get<UserPreferences>(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => GetIt.I.get<AuthProvider>(),
         ),
       ],
       child:

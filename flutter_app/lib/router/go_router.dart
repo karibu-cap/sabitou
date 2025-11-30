@@ -20,6 +20,7 @@ import '../screens/reports/reports_screen.dart';
 import '../screens/settings/settings_screen.dart';
 import '../screens/suppliers/suppliers_view.dart';
 import '../screens/users/users_view.dart';
+import '../screens/welcome/welcome.dart';
 import '../utils/user_preference.dart';
 import 'app_router.dart';
 import 'page_routes.dart';
@@ -34,7 +35,7 @@ class GoRouterRoutesProvider {
   /// The routes provider.
   static final GoRouter routes = GoRouter(
     navigatorKey: rootNavigatorKey,
-    initialLocation: PagesRoutes.login.pattern,
+    initialLocation: PagesRoutes.welcome.pattern,
     errorPageBuilder: (context, state) {
       return MaterialPage(
         child: Scaffold(
@@ -63,11 +64,40 @@ class GoRouterRoutesProvider {
         builder: (context, state, navigationShell) {
           return HomeScreen(navigationShell: navigationShell);
         },
-        redirect: (context, state) {
-          final bool isUserRegistered = UserPreferences.instance.user != null;
-          debugPrint('isUserRegistered: $isUserRegistered');
+        redirect: (context, state) async {
+          final authProvider = AuthProvider.instance;
+          final userPreferences = UserPreferences.instance;
 
-          return isUserRegistered ? null : PagesRoutes.login.pattern;
+          // Show splash while initializing
+          if (authProvider.isAuthenticated) {
+            return null;
+          }
+
+          final bool isUserRegistered = authProvider.currentUser != null;
+          final bool isLoadingPreferences =
+              authProvider.isAuthenticated || userPreferences.isLoading;
+
+          // Redirect away from splash once loaded
+          if (state.uri.path == PagesRoutes.welcome.pattern) {
+            return isUserRegistered
+                ? PagesRoutes.dashboard.pattern
+                : PagesRoutes.welcome.pattern;
+          }
+
+          if (isLoadingPreferences && isUserRegistered) {
+            return PagesRoutes.welcome.pattern;
+          }
+
+          return isUserRegistered ? null : PagesRoutes.welcome.pattern;
+          // final bool isUserRegistered =
+          //     UserPreferences.instance.user != null &&
+          //     AuthProvider.instance.isAuthenticated;
+
+          // debugPrint('isUserRegistered: $isUserRegistered');
+
+          // return isUserRegistered ? null : PagesRoutes.login.pattern;
+
+          // return null;
         },
         branches: [
           StatefulShellBranch(
@@ -247,6 +277,13 @@ class GoRouterRoutesProvider {
         path: PagesRoutes.forgotPassword.pattern,
         pageBuilder: (context, state) {
           return const MaterialPage(child: ForgotPasswordView());
+        },
+      ),
+      GoRoute(
+        name: PagesRoutes.welcome.name,
+        path: PagesRoutes.welcome.pattern,
+        pageBuilder: (context, state) {
+          return const MaterialPage(child: WelcomeScreen());
         },
       ),
     ],

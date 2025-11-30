@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:clock/clock.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../../tmp/fake_data.dart';
@@ -24,21 +25,9 @@ final _fakeTransport =
             ..refreshToken = 'mock_refresh_token';
         })
         .unary(UserService.getCurrentUser, (req, _) async {
-          return GetCurrentUserResponse()
-            ..me = User()
-            ..me.accountStatus = AccountStatusType.ACCOUNT_STATUS_TYPE_ACTIVE
-            ..me.refId = 'mock_id'
-            ..me.firstName = 'mock_first_name'
-            ..me.lastName = 'mock_last_name'
-            ..me.email = 'mock_email@gmail.com'
-            ..me.phoneNumber = '696526541'
-            ..me.profileLink = ResourceLink()
-            ..me.profileLink.targetUri = 'src/poror.jpg'
-            ..me.profileLink.iconUri = 'src/icon_uri.jpg'
-            ..me.profileLink.label = 'mock_label'
-            ..me.profileLink.info = 'mock_info'
-            ..me.profileLink.refId = 'mock_id'
-            ..me.userName = 'mock_user_name';
+          return GetCurrentUserResponse(
+            me: (_fakeData[CollectionName.users] as List<User>).first,
+          );
         })
         .unary(SupplierService.getStoreSuppliers, (req, _) async {
           return GetStoreSuppliersResponse(
@@ -223,6 +212,9 @@ final _fakeTransport =
           return UpdateStoreResponse(store: store);
         })
         .unary(BusinessService.getMyBusinesses, (req, __) async {
+          debugPrint('req $req');
+          debugPrint('req ${req.ownerId}');
+
           return GetMyBusinessesResponse(
             businesses: (_fakeData[CollectionName.businesses] as List<Business>)
                 .where((bm) => bm.ownerId == req.ownerId)
@@ -455,11 +447,8 @@ final _fakeTransport =
               globalProduct?.refId ??
               'global-product-${Random().nextInt(1000000)}';
           if (globalProduct == null) {
-            _fakeData[CollectionName.globalProducts]?.add({
-              'ref_id': globalProductRefId,
-              'name': req.globalProduct.name,
-              ...req.globalProduct.toProto3Json() as Map<String, dynamic>,
-            });
+            (_fakeData[CollectionName.globalProducts] as List<GlobalProduct>)
+                .add(req.globalProduct..refId = globalProductRefId);
           }
 
           (_fakeData[CollectionName.storeProducts] as List<StoreProduct>).add(
