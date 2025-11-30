@@ -134,11 +134,7 @@ class SupplierCellBuilders {
       children: [
         Expanded(
           child: ShadIconButton.ghost(
-            icon: Icon(
-              LucideIcons.squarePen400,
-              size: 16,
-              color: theme.colorScheme.primary,
-            ),
+            icon: const Icon(LucideIcons.squarePen400, size: 16),
             onPressed: onEdit,
           ),
         ),

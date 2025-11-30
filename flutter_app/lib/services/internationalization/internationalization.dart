@@ -2061,6 +2061,7 @@ class AppInternationalizationService extends ChangeNotifier {
       'fr':
           'Bienvenue chez Sabitou, votre solution tout-en-un de gestion des stocks et des ventes.',
     },
+    'new': {'en': 'New', 'fr': 'Nouvelle'},
   };
 
   /// Direct access to the internationalization service.
@@ -2079,6 +2080,9 @@ class AppInternationalizationService extends ChangeNotifier {
     const Locale('en'),
     const Locale('fr'),
   ];
+
+  /// The new screen first message.
+  String get newText => _stringOfLocalizedValue('new');
 
   /// The welcome screen first message.
   String get welcomeScreenFirstMessage =>

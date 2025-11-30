@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/foundation.dart';
 
@@ -18,9 +19,6 @@ class RealNetworkStatusProvider implements NetworkStatusProvider {
     try {
       final connectivityResults = await _connectivity.checkConnectivity();
       final isConnected = _isConnected(connectivityResults);
-      debugPrint(
-        'Connectivity check result: $isConnected (results: $connectivityResults)',
-      );
 
       return isConnected;
     } on Exception catch (e) {

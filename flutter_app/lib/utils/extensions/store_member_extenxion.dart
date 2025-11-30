@@ -27,13 +27,13 @@ extension StoreMemberExtenxion on StoreMemberStatus {
   Color get color {
     switch (this) {
       case StoreMemberStatus.STORE_MEMBER_STATUS_ACTIVE:
-        return AppColors.dartGreen;
+        return AppColors.success500;
       case StoreMemberStatus.STORE_MEMBER_STATUS_PENDING:
         return AppColors.warning500;
       case StoreMemberStatus.STORE_MEMBER_STATUS_INACTIVE:
         return AppColors.grey500;
       case StoreMemberStatus.STORE_MEMBER_STATUS_BANNED:
-        return AppColors.red;
+        return AppColors.error500;
       default:
         return AppColors.grey300;
     }

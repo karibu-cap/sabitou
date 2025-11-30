@@ -58,7 +58,7 @@ extension InvoiceStatusExtension on InvoiceStatus {
       InvoiceStatus.INVOICE_STATUS_ISSUED => AppColors.orange500,
       InvoiceStatus.INVOICE_STATUS_UNPAID => AppColors.orange500,
       InvoiceStatus.INVOICE_STATUS_PARTIALLY_PAID => AppColors.orange500,
-      InvoiceStatus.INVOICE_STATUS_PAID => AppColors.dartGreen,
+      InvoiceStatus.INVOICE_STATUS_PAID => AppColors.success500,
       InvoiceStatus.INVOICE_STATUS_OVERDUE => AppColors.orange500,
       InvoiceStatus.INVOICE_STATUS_CANCELLED => AppColors.orange500,
       InvoiceStatus.INVOICE_STATUS_CREDITED => AppColors.orange500,

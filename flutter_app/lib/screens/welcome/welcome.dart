@@ -229,11 +229,6 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
             auth.currentUser != null &&
             auth.isAuthenticated;
 
-        debugPrint('isAuthCompleted: $isAuthCompleted');
-        debugPrint('auth.currentUser: ${auth.currentUser != null}');
-        debugPrint('auth.isAuthenticated: ${auth.isAuthenticated}');
-        debugPrint('_isFirstOpen: $_isFirstOpen');
-
         // Show loading while checking initial state
         if (_isLoading || isAuthCompleted == null) {
           return const _Loading();

@@ -1,4 +1,5 @@
 import 'package:clock/clock.dart';
+import 'package:flutter/src/widgets/basic.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
@@ -11,9 +12,8 @@ import '../goldens.dart';
 
 void main() {
   group('Goldens', () {
-    setUpAll(() {
-      final storage = AppStorageService(AppStorageType.fake, fakeStorage);
-      GetIt.I.registerSingletonIfAbsent<AppStorageService>(() => storage);
+    setUpAll(() async {
+      await AppStorage.initialize(AppStorageType.fake, fakeStorage);
     });
 
     setUp(() {
@@ -27,7 +27,10 @@ void main() {
         () async {
           await multiScreenMultiLocaleGolden(
             tester,
-            const SettingsScreen(),
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: SettingsScreen(),
+            ),
             'settings_view',
           );
         },

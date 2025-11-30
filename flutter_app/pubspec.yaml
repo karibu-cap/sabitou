@@ -214,12 +214,14 @@ flutter:
           weight: 600
         - asset: assets/fonts/Geist-Bold.ttf
           weight: 700
-    - family: CustomFont
+
+    - family: Inter
       fonts:
-        - asset: assets/fonts/CustomFont-Regular.otf
+        - asset: assets/fonts/inter_24pt-Regular.ttf
+        - asset: assets/fonts/inter_24pt-Medium.ttf
           weight: 500
-        - asset: assets/fonts/CustomFont-Medium.otf
-          weight: 400
+        - asset: assets/fonts/inter_24pt-Bold.ttf
+          weight: 700
        
     - family: GeistMono
       fonts:

@@ -16,10 +16,8 @@ import 'package:sabitou_clients/repositories/suppliers_repository.dart';
 import 'package:sabitou_clients/repositories/users_repository.dart';
 import 'package:sabitou_clients/services/app_theme_service.dart';
 import 'package:sabitou_clients/services/data_sync/data_sync_service.dart';
-import 'package:sabitou_clients/services/hive_database/hive_database.dart';
 import 'package:sabitou_clients/services/internationalization/internationalization.dart';
 import 'package:sabitou_clients/services/network_status_provider/network_status_provider.dart';
-import 'package:sabitou_clients/services/rpc/fake_transport.dart';
 import 'package:sabitou_clients/services/storage/app_storage.dart';
 import 'package:sabitou_clients/utils/user_preference.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
@@ -30,14 +28,9 @@ Future<void> multiScreenMultiLocaleGolden(
   String name,
 ) async {
   TestWidgetsFlutterBinding.ensureInitialized();
-  final storage = AppStorageService(AppStorageType.fake, fakeStorage);
 
-  final AppInternationalizationService appInternationalization =
-      AppInternationalizationService(const Locale('en'), storage);
-  final themeService = AppThemeService(storage);
   await tester.pumpAndSettle();
-  await _initGetIt(storage, appInternationalization, themeService);
-
+  await _initGetIt();
   await tester.pumpWidgetBuilder(
     MultiProvider(
       providers: [
@@ -82,6 +75,7 @@ Future<void> multiScreenMultiLocaleGolden(
                       GlobalWidgetsLocalizations.delegate,
                       GlobalCupertinoLocalizations.delegate,
                     ],
+
                     supportedLocales:
                         AppInternationalizationService.supportedLocales,
                     home: widget,
@@ -90,42 +84,41 @@ Future<void> multiScreenMultiLocaleGolden(
           ),
     ),
   );
+  await tester.pumpAndSettle();
   // Screenshot the widget in each supported locale.
   for (final locale in AppInternationalizationService.supportedLocales) {
-    appInternationalization.changeLocale(locale);
-    await themeService.switchTheme();
+    GetIt.I.get<AppInternationalizationService>().changeLocale(locale);
+    await GetIt.I.get<AppThemeService>().switchTheme();
 
-    await tester.pumpAndSettle();
+    await tester.pumpAndSettle(const Duration(seconds: 1));
     await multiScreenGolden(
       tester,
-      '$name.${locale.languageCode}.${themeService.isDarkMode ? 'dark' : 'light'}',
+      '$name.${locale.languageCode}.${GetIt.I.get<AppThemeService>().isDarkMode ? 'dark' : 'light'}',
       devices: [
         const Device(name: '1080p', size: Size(1920, 1080)),
         const Device(name: '480p', size: Size(720, 480)),
         const Device(name: 'standard', size: Size(375, 740)),
       ],
     );
+
+    await tester.pump(const Duration(milliseconds: 800));
   }
+  await tester.pumpAndSettle();
 }
 
-Future<void> _initGetIt(
-  AppStorageService storage,
-  AppInternationalizationService appInternationalization,
-  AppThemeService themeService,
-) async {
-  final hiveDatabase = await HiveDatabase.create(HiveDatabaseType.fake);
-  await hiveDatabase.initBoxes();
+Future<void> _initGetIt() async {
+  await AppStorage.initialize(AppStorageType.fake);
   GetIt.I
-    ..registerSingletonIfAbsent<AppStorageService>(() => storage)
     ..registerSingletonIfAbsent<AppInternationalizationService>(
-      () => appInternationalization,
+      () => AppInternationalizationService(const Locale('en')),
     )
-    ..registerLazySingleton<NetworkStatusProvider>(
+    ..registerSingletonIfAbsent<NetworkStatusProvider>(
       () => NetworkStatusProvider.create(type: NetworkProviderType.fake),
     )
-    ..registerSingleton<HiveDatabase>(hiveDatabase)
-    ..registerSingletonIfAbsent<AppThemeService>(() => themeService)
-    ..registerSingletonIfAbsent<UserPreferences>(UserPreferences.new)
+    ..registerSingletonIfAbsent<AppThemeService>(AppThemeService.new)
+    ..registerSingletonIfAbsent<UserPreferences>(
+      () => UserPreferences.new(null),
+    )
     ..registerSingletonIfAbsent<UserRepository>(UserRepository.new)
     ..registerSingletonIfAbsent<StoreProductsRepository>(
       StoreProductsRepository.new,
@@ -140,6 +133,6 @@ Future<void> _initGetIt(
     )
     ..registerSingletonIfAbsent<StoresRepository>(StoresRepository.new)
     ..registerSingletonIfAbsent<CartManager>(CartManager.new)
-    ..registerLazySingleton<DataSyncService>(DataSyncService.new)
+    ..registerSingletonIfAbsent<DataSyncService>(DataSyncService.new)
     ..registerSingletonIfAbsent<AuthProvider>(AuthProvider.new);
 }

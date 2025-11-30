@@ -1,9 +1,12 @@
 import 'package:clock/clock.dart';
+import 'package:flutter/src/widgets/basic.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:sabitou_clients/screens/users/users_view.dart';
 import 'package:sabitou_clients/services/rpc/connect_rpc.dart';
+import 'package:sabitou_clients/services/rpc/fake_transport.dart';
+import 'package:sabitou_clients/services/storage/app_storage.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../goldens.dart';
@@ -181,6 +184,9 @@ final supplierFakeTransport = FakeTransportBuilder()
 
 void main() {
   group('Goldens', () {
+    setUpAll(() async {
+      await AppStorage.initialize(AppStorageType.fake, fakeStorage);
+    });
     setUp(() {
       GetIt.I.registerSingletonIfAbsent<ConnectRPCService>(
         () => ConnectRPCService.new(clientChannel: supplierFakeTransport),
@@ -189,7 +195,7 @@ void main() {
     testGoldens('Members view', (tester) async {
       return await multiScreenMultiLocaleGolden(
         tester,
-        const UsersView(),
+        const Padding(padding: EdgeInsets.all(8.0), child: UsersView()),
         'members_view',
       );
     });

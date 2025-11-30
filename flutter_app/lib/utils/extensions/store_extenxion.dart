@@ -38,7 +38,7 @@ extension ProductStatusExtension on ProductStatus {
   Color get color {
     switch (this) {
       case ProductStatus.PRODUCT_STATUS_ACTIVE:
-        return AppColors.dartGreen;
+        return AppColors.success500;
       case ProductStatus.PRODUCT_STATUS_INACTIVE:
         return AppColors.error500;
       default:

@@ -89,15 +89,6 @@ class GoRouterRoutesProvider {
           }
 
           return isUserRegistered ? null : PagesRoutes.welcome.pattern;
-          // final bool isUserRegistered =
-          //     UserPreferences.instance.user != null &&
-          //     AuthProvider.instance.isAuthenticated;
-
-          // debugPrint('isUserRegistered: $isUserRegistered');
-
-          // return isUserRegistered ? null : PagesRoutes.login.pattern;
-
-          // return null;
         },
         branches: [
           StatefulShellBranch(
@@ -260,7 +251,6 @@ class GoRouterRoutesProvider {
           final authProvider = AuthProvider();
           await authProvider.saveBusinessAndStore(user);
           await authProvider.initializeDataSync();
-          debugPrint('isUserRegistered: true');
 
           return PagesRoutes.dashboard.pattern;
         },

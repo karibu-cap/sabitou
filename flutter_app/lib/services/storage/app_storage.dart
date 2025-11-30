@@ -47,9 +47,13 @@ class AppStorage {
   static final Map<Type, AppStorageService> _instances = {};
   static AppStorageType? _storageType;
   static bool _isInitialized = false;
+  static Map<String, dynamic> _fakeStorage = {};
 
   /// Initializes the app storage.
-  static Future<void> initialize(AppStorageType type) async {
+  static Future<void> initialize(
+    AppStorageType type, [
+    Map<String, dynamic>? fakeStorage,
+  ]) async {
     if (_isInitialized) {
       _logger.info('AppStorage already initialized');
 
@@ -62,6 +66,9 @@ class AppStorage {
     if (type == AppStorageType.hiveStorage) {
       await Hive.initFlutter();
       registerProtobufAdapters();
+    }
+    if (fakeStorage != null) {
+      _fakeStorage = fakeStorage;
     }
 
     _isInitialized = true;
@@ -89,7 +96,7 @@ class AppStorage {
 
     switch (storageType) {
       case AppStorageType.fake:
-        instance = FakeStorageService<T>();
+        instance = FakeStorageService<T>(initialStorage: _fakeStorage);
         break;
       case AppStorageType.hiveStorage:
         instance = HiveStorageService<T>(boxKey: key);
@@ -109,5 +116,6 @@ class AppStorage {
     _instances.clear();
     _isInitialized = false;
     _storageType = null;
+    _fakeStorage = {};
   }
 }

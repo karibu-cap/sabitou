@@ -42,7 +42,7 @@ class CategoriesHeader extends StatelessWidget {
             children: [
               const Icon(Icons.add, size: 16),
               const SizedBox(width: 8),
-              Text(AppInternationalizationService.to.addCategory),
+              Text(AppInternationalizationService.to.newText),
             ],
           ),
         ),

@@ -22,10 +22,15 @@ class SuppliersView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final storeId = UserPreferences.instance.store?.refId;
+    final theme = ShadTheme.of(context);
 
     if (storeId == null) {
       return Center(
-        child: Text(AppInternationalizationService.to.noStoreSelected),
+        child: Text(
+          AppInternationalizationService.to.noStoreSelected,
+          style: theme.textTheme.p,
+          textAlign: TextAlign.center,
+        ),
       );
     }
 
@@ -106,7 +111,7 @@ class SuppliersHeader extends StatelessWidget {
                 children: [
                   const Icon(Icons.add, size: 16),
                   const SizedBox(width: 8),
-                  Text(AppInternationalizationService.to.addSupplierBtn),
+                  Text(AppInternationalizationService.to.newText),
                 ],
               ),
             ),

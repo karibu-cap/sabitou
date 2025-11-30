@@ -7,11 +7,10 @@ import 'package:sabitou_clients/services/storage/app_storage.dart';
 void main() {
   group('AppInternationalization', () {
     late AppInternationalizationService appInt;
-    setUp(() {
-      final storage = AppStorageService(AppStorageType.fake);
-      GetIt.I.registerSingletonIfAbsent<AppStorageService>(() => storage);
+    setUp(() async {
+      await AppStorage.initialize(AppStorageType.fake);
 
-      appInt = AppInternationalizationService(const Locale('en'), storage);
+      appInt = AppInternationalizationService(const Locale('en'));
       GetIt.I.registerSingletonIfAbsent<AppInternationalizationService>(
         () => appInt,
       );
@@ -24,10 +23,7 @@ void main() {
     test('Translate should return correct translation for existing key', () {
       expect(appInt.translate('cancel'), equals('Cancel'));
       expect(
-        AppInternationalizationService(
-          const Locale('fr'),
-          AppStorageService.to,
-        ).translate('cancel'),
+        AppInternationalizationService(const Locale('fr')).translate('cancel'),
         equals('Annuler'),
       );
     });
@@ -51,10 +47,7 @@ void main() {
         equals('Hello, Alice!'),
       );
 
-      final appIn = AppInternationalizationService(
-        const Locale('fr'),
-        AppStorageService.to,
-      );
+      final appIn = AppInternationalizationService(const Locale('fr'));
       appIn.translations['greeting'] = {
         'en': 'Hello, @name!',
         'fr': 'Bonjour, @name!',

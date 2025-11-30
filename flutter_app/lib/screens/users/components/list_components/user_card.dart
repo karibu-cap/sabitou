@@ -29,9 +29,9 @@ class UsersDataGridView extends StatelessWidget {
       footerFrozenColumnsCount: 1,
       columns: [
         ShadDataGridColumn(label: Intls.to.members, width: 280),
-        ShadDataGridColumn(label: Intls.to.contactInfoText, width: 250),
-        ShadDataGridColumn(label: Intls.to.status, width: 140),
-        ShadDataGridColumn(label: Intls.to.permissions, width: 200),
+        ShadDataGridColumn(label: Intls.to.contactInfoText, width: 280),
+        ShadDataGridColumn(label: Intls.to.status, width: 280),
+        ShadDataGridColumn(label: Intls.to.permissions, width: 280),
         ShadDataGridColumn(label: Intls.to.joined, width: 150),
         ShadDataGridColumn(
           label: Intls.to.actions,
@@ -441,20 +441,9 @@ class _StatusBadge extends StatelessWidget {
       backgroundColor: status.color.withValues(alpha: 0.1),
       foregroundColor: status.color,
       hoverBackgroundColor: status.color.withValues(alpha: 0.1),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(status.icon, size: 14, color: status.color),
-          const SizedBox(width: 6),
-          Text(
-            status.label,
-            style: theme.textTheme.small.copyWith(
-              color: status.color,
-              fontWeight: FontWeight.w600,
-              fontSize: 12,
-            ),
-          ),
-        ],
+      child: Text(
+        status.label,
+        style: theme.textTheme.small.copyWith(fontSize: 12),
       ),
     );
   }

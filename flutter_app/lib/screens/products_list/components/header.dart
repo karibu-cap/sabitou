@@ -51,7 +51,7 @@ class ProductsListHeader extends StatelessWidget {
         ShadButton(
           onPressed: () => _showProductDialog(context, null),
           leading: const Icon(LucideIcons.plus, size: 16),
-          child: Text(Intls.to.addProduct),
+          child: Text(Intls.to.newText),
         ),
       ],
     );

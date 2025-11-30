@@ -70,10 +70,8 @@ class AuthProvider extends ChangeNotifier {
 
   Future<void> _initializeFromStorage() async {
     try {
-      debugPrint('Initializing AuthProvider from storage...');
       // Load saved user from storage
       final savedUser = await AppStorage.of<User?>().read(CollectionName.users);
-      debugPrint('Saved user from storage: $savedUser');
       if (savedUser != null) {
         await UserPreferences.instance.loadUserPreferences(null);
         _currentUser = savedUser;

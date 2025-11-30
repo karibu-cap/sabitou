@@ -1,4 +1,5 @@
 import 'package:clock/clock.dart';
+import 'package:flutter/src/widgets/basic.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
@@ -254,8 +255,8 @@ final dashboardFakeTransport = FakeTransportBuilder()
 
 void main() {
   group('Goldens', () {
-    setUpAll(() {
-      final storage = AppStorageService(AppStorageType.fake, {
+    setUpAll(() async {
+      await AppStorage.initialize(AppStorageType.fake, {
         CollectionName.users: User()
           ..refId = 'user_1'
           ..email = 'test@example.com'
@@ -269,7 +270,6 @@ void main() {
           ..name = 'Test Store'
           ..businessId = 'business_1',
       });
-      GetIt.I.registerSingletonIfAbsent<AppStorageService>(() => storage);
     });
 
     setUp(() {
@@ -283,7 +283,10 @@ void main() {
         () async {
           await multiScreenMultiLocaleGolden(
             tester,
-            const DashboardScreen(),
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: DashboardScreen(),
+            ),
             'dashboard_view',
           );
         },

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -342,21 +343,26 @@ class _BusinessLogo extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 16),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  Intls.to.uploadYourBusinessLogo,
-                  style: ShadTheme.of(context).textTheme.muted,
-                ),
-                const SizedBox(height: 8),
-                ShadButton.ghost(
-                  onPressed: uploadNewMedia,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  leading: const Icon(LucideIcons.camera400),
-                  child: Text(Intls.to.changeLogo),
-                ),
-              ],
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  AutoSizeText(
+                    Intls.to.uploadYourBusinessLogo,
+                    style: ShadTheme.of(context).textTheme.muted,
+                    minFontSize: 8,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 8),
+                  ShadButton.ghost(
+                    onPressed: uploadNewMedia,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    leading: const Icon(LucideIcons.camera400),
+                    child: Text(Intls.to.changeLogo),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

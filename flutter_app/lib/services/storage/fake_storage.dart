@@ -2,7 +2,11 @@ import 'app_storage.dart';
 
 /// The fake storage service.
 class FakeStorageService<T> implements AppStorageService<T> {
-  final Map<String, T> _storage = {};
+  final Map<String, dynamic> _storage;
+
+  /// Constructor of new [FakeStorageService].
+  FakeStorageService({required Map<String, dynamic> initialStorage})
+    : _storage = initialStorage;
 
   @override
   Future<void> write(String key, T value) async {
@@ -11,7 +15,7 @@ class FakeStorageService<T> implements AppStorageService<T> {
 
   @override
   Future<T?> read(String key) async {
-    return _storage[key];
+    return _storage[key] as T?;
   }
 
   @override
@@ -26,7 +30,7 @@ class FakeStorageService<T> implements AppStorageService<T> {
 
   @override
   Future<List<T>> getAll() async {
-    return _storage.values.toList();
+    return _storage.values.cast<T>().toList();
   }
 
   @override
@@ -36,7 +40,7 @@ class FakeStorageService<T> implements AppStorageService<T> {
 
   @override
   Future<Map<dynamic, T>> getAllMap() async {
-    return _storage;
+    return _storage.cast<dynamic, T>();
   }
 
   @override

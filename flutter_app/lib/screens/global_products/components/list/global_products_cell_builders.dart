@@ -143,11 +143,7 @@ class GlobalProductCellBuilders {
       mainAxisSize: MainAxisSize.min,
       children: [
         IconButton(
-          icon: Icon(
-            LucideIcons.squarePen400,
-            size: 16,
-            color: theme.colorScheme.primary,
-          ),
+          icon: const Icon(LucideIcons.squarePen400, size: 16),
           onPressed: onEdit,
         ),
         IconButton(

@@ -114,10 +114,8 @@ class AddSupplierController extends ChangeNotifier {
     var result;
     if (_supplier == null) {
       result = await _viewModel.addSupplier(newSupplier);
-      debugPrint('Would add new supplier: ${newSupplier.name}');
     } else {
       result = await _viewModel.updateSupplier(newSupplier);
-      debugPrint('Would update supplier: ${newSupplier.name}');
     }
 
     if (result == false) {
