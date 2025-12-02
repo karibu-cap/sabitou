@@ -21,6 +21,8 @@ do
 
     if [ "$field" == "APP_ENVIRONMENT" ]; then
         APP_ENVIRONMENT=${value}
+    elif [ "$field" == "APP_NAME" ]; then
+        APP_NAME=${value}
     fi
 done
 

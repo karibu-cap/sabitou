@@ -10,7 +10,10 @@ final class PreferencesKey {
   static const String language = 'language';
 
   /// The prints list key.
-  static const String printsList = 'printsList';
+  static const String printer = 'printer';
+
+  /// Printer configuration key
+  static const String printerConfiguration = 'printer_configuration';
 }
 
 /// The app collection names.

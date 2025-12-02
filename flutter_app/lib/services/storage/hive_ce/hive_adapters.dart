@@ -1,7 +1,11 @@
 import 'package:hive_ce/hive.dart';
 import 'package:sabitou_rpc/models.dart';
 
+import '../../../utils/extends_models.dart';
 import '../app_storage.dart';
+
+@GenerateAdapters([AdapterSpec<AppPrinter>()], firstTypeId: 12)
+part 'hive_adapters.g.dart';
 
 /// Hive TypeAdapter for StoreProduct protobuf
 class StoreProductAdapter extends TypeAdapter<StoreProduct> {
@@ -215,6 +219,9 @@ void registerProtobufAdapters() {
   if (!Hive.isAdapterRegistered(9)) {
     Hive.registerAdapter(BusinessMemberAdapter());
   }
+  if (!Hive.isAdapterRegistered(10)) {
+    Hive.registerAdapter(AppPrinterAdapter());
+  }
 }
 
 /// Initializes all boxes.
@@ -229,4 +236,5 @@ void initStorageBoxes() {
   AppStorage.of<Store>();
   AppStorage.of<StoreMember>();
   AppStorage.of<BusinessMember>();
+  AppStorage.of<AppPrinter>();
 }

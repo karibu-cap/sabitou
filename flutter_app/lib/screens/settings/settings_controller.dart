@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -6,7 +7,11 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../../repositories/business_repository.dart';
 import '../../repositories/stores_repository.dart';
+import '../../services/storage/app_storage.dart';
+import '../../utils/app_constants.dart';
+import '../../utils/extends_models.dart';
 import '../../utils/user_preference.dart';
+import '../../widgets/pdf/printers/printer_configuration.dart';
 import '../../widgets/sidebar/sidebar_menu_item.dart';
 import 'settings_view_model.dart';
 
@@ -50,6 +55,9 @@ class SettingsController extends ChangeNotifier {
   /// The store temp logo.
   XFile? _storeTempLogo;
 
+  /// The printer configuration
+  PrinterConfiguration _printerConfiguration = const PrinterConfiguration();
+
   /// The business temp logo.
   XFile? get businessTempLogo => _businessTempLogo;
 
@@ -71,9 +79,33 @@ class SettingsController extends ChangeNotifier {
   /// The init completer.
   Completer<void> get initCompleter => _viewModel.initCompleter;
 
+  /// The printer configuration
+  PrinterConfiguration get printerConfiguration => _printerConfiguration;
+
   /// Constructs a new [SettingsController].
   SettingsController({required SettingsViewModel viewModel})
-    : _viewModel = viewModel;
+    : _viewModel = viewModel {
+    _loadPrinterConfiguration();
+  }
+
+  /// Load printer configuration from storage
+  Future<void> _loadPrinterConfiguration() async {
+    try {
+      final String? configJson = await AppStorage.of<String>(
+        boxKey: PreferencesKey.printerConfiguration,
+      ).read(PreferencesKey.printerConfiguration);
+
+      if (configJson != null) {
+        final Map<String, dynamic> json =
+            jsonDecode(configJson) as Map<String, dynamic>;
+        _printerConfiguration = PrinterConfiguration.fromJson(json);
+        notifyListeners();
+      }
+    } catch (e) {
+      // If error, keep default configuration
+      _printerConfiguration = const PrinterConfiguration();
+    }
+  }
 
   /// Sets the business temp logo.
   void setBusinessTempLogo(XFile? logo) {
@@ -104,6 +136,34 @@ class SettingsController extends ChangeNotifier {
   void setSelectedStore(Store? store) {
     _viewModel.selectedStore = store;
     notifyListeners();
+  }
+
+  /// Sets the default printer
+  void setDefaultPrinter(AppPrinter? printer) {
+    _printerConfiguration = _printerConfiguration.copyWith(
+      defaultPrinter: printer,
+    );
+    notifyListeners();
+  }
+
+  /// Sets auto-print enabled
+  void setAutoPrintEnabled(bool enabled) {
+    _printerConfiguration = _printerConfiguration.copyWith(
+      autoPrintEnabled: enabled,
+    );
+    notifyListeners();
+  }
+
+  /// Saves the printer configuration
+  Future<void> savePrinterConfiguration() async {
+    try {
+      final String configJson = jsonEncode(_printerConfiguration.toJson());
+      await AppStorage.of<String>(
+        boxKey: PreferencesKey.printerConfiguration,
+      ).write(PreferencesKey.printerConfiguration, configJson);
+    } catch (e) {
+      // Handle error silently or show a message
+    }
   }
 
   /// Saves the business info.

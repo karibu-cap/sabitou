@@ -48,7 +48,7 @@ dependencies:
 
   sabitou_rpc:
     path: ../protos/gen/dart
-    
+
   # Hive Community Edition - A spiritual continuation of Hive v2
   hive_ce: ^2.10.1
 
@@ -118,9 +118,6 @@ dependencies:
   # Package to connect to a Sunmi printer.
   sunmi_printer_plus: ^4.1.1
 
-  # Package to connect to a bluetooth thermal printer.
-  blue_thermal_printer: ^1.2.3
-
   # Package to render PDF as image.
   pdf_image_renderer: ^1.0.1
 
@@ -132,6 +129,10 @@ dependencies:
 
   # Package for change the syncfucsion data style.
   syncfusion_flutter_core: ^28.2.12
+  simple_barcode_scanner: ^0.4.0
+  flutter_blue_plus: ^2.0.2
+  flutter_blue_plus_windows: ^1.16.0
+  permission_handler: ^12.0.1
 
 dev_dependencies:
   flutter_test:
@@ -161,20 +162,12 @@ dev_dependencies:
 
   # Dart code linter.
   dart_code_linter: any
-  
+
   # Command-line tool which simplifies the task of updating your Flutter app's launcher icon.
   flutter_launcher_icons: ^0.14.3
 
   flutter_native_splash: ^2.4.4
 
-  # The following section is specific to Flutter.
-flutter_icons:
-  android: true
-  ios: true
-  remove_alpha_ios: true
-  image_path: "assets/images/logo.png"
-  adaptive_icon_background: "assets/images/splash-background.png"
-  adaptive_icon_foreground: "assets/images/splash-background.png"
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -218,11 +211,12 @@ flutter:
     - family: Inter
       fonts:
         - asset: assets/fonts/inter_24pt-Regular.ttf
+          weight: 400
         - asset: assets/fonts/inter_24pt-Medium.ttf
           weight: 500
         - asset: assets/fonts/inter_24pt-Bold.ttf
           weight: 700
-       
+
     - family: GeistMono
       fonts:
         - asset: assets/fonts/GeistMono-Regular.ttf

@@ -39,6 +39,21 @@ class CustomAutoComplete<T> extends StatefulWidget {
   /// The initial value of the input field.
   final String? initialValue;
 
+  /// Custom onSelected callback that receives the selected option and the input controller.
+  final void Function(T, TextEditingController)? onSelected;
+
+  /// Whether to set the input text to the display string when an option is selected.
+  final bool setTextOnSelection;
+
+  /// A trailing widget to display in the input field (when not loading).
+  final Widget? trailing;
+
+  /// A leading widget to display in the input field.
+  final Widget? leading;
+
+  /// Callback when the input text changes.
+  final void Function(String)? onChanged;
+
   /// Constructor for [CustomAutoComplete].
   const CustomAutoComplete({
     super.key,
@@ -50,6 +65,11 @@ class CustomAutoComplete<T> extends StatefulWidget {
     this.inputValidator,
     this.initialValue,
     this.enabled = true,
+    this.onSelected,
+    this.setTextOnSelection = true,
+    this.trailing,
+    this.leading,
+    this.onChanged,
   });
 
   @override
@@ -107,6 +127,8 @@ class _CustomAutoCompleteState<T> extends State<CustomAutoComplete<T>> {
     _hideOverlayEntry();
     _options.dispose();
     _isLoading.dispose();
+    _inputController.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 
@@ -138,7 +160,19 @@ class _CustomAutoCompleteState<T> extends State<CustomAutoComplete<T>> {
 
   /// Handles changes to the input controller with debouncing.
   void _onControllerChanged() {
-    if (!_isUserInput || _inputController.text.isEmpty) return;
+    final text = _inputController.text;
+
+    // Call the onChanged callback if provided
+    widget.onChanged?.call(text);
+
+    if (!_isUserInput || text.isEmpty) {
+      if (text.isEmpty) {
+        _options.value = [];
+        _hideOverlayEntry();
+      }
+
+      return;
+    }
 
     _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 300), _fetchOptions);
@@ -175,7 +209,7 @@ class _CustomAutoCompleteState<T> extends State<CustomAutoComplete<T>> {
         child: CompositedTransformFollower(
           link: _layerLink,
           showWhenUnlinked: false,
-          offset: const Offset(0.0, 65),
+          offset: Offset(0.0, size.height + 4),
           child: ConstrainedBox(
             constraints: BoxConstraints(
               maxHeight: MediaQuery.sizeOf(context).height * 0.4,
@@ -191,13 +225,19 @@ class _CustomAutoCompleteState<T> extends State<CustomAutoComplete<T>> {
                 child: widget.optionsViewBuilder(
                   context: context,
                   onSelected: (value) {
-                    _isUserInput = false;
-                    _inputController.text = widget.displayStringForOption(
-                      value,
-                    );
-                    _isUserInput = true;
+                    if (widget.setTextOnSelection) {
+                      _isUserInput = false;
+                      _inputController.text = widget.displayStringForOption(
+                        value,
+                      );
+                      _isUserInput = true;
+                    }
                     _hideOverlayEntry();
-                    _focusNode.unfocus();
+                    if (widget.onSelected != null) {
+                      widget.onSelected?.call(value, _inputController);
+                    } else {
+                      _focusNode.unfocus();
+                    }
                   },
                   options: _options.value,
                 ),
@@ -226,11 +266,12 @@ class _CustomAutoCompleteState<T> extends State<CustomAutoComplete<T>> {
             focusNode: _focusNode,
             validator: widget.inputValidator,
             enabled: widget.enabled,
+            leading: widget.leading ?? const Icon(LucideIcons.search, size: 16),
             trailing: isLoading
                 ? Loading.button(
                     color: ShadTheme.of(context).colorScheme.primary,
                   )
-                : null,
+                : widget.trailing,
           );
         },
       ),

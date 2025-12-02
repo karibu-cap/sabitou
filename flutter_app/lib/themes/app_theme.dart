@@ -169,7 +169,7 @@ class AppTheme {
       list: _geistTextTheme.bodyMedium,
       lead: _geistTextTheme.titleSmall,
       large: _geistTextTheme.titleMedium,
-      small: _geistTextTheme.bodySmall?.copyWith(fontWeight: FontWeight.w600),
+      small: _geistTextTheme.bodySmall?.copyWith(fontWeight: FontWeight.w400),
       muted: _geistTextTheme.bodySmall?.copyWith(color: _mutedForegroundLight),
     ),
     inputTheme: ShadInputTheme(
@@ -198,11 +198,6 @@ class AppTheme {
     ghostButtonTheme: ShadButtonTheme(
       hoverBackgroundColor: _primaryLight.withValues(alpha: 0.05),
     ),
-    outlineButtonTheme: ShadButtonTheme(
-      hoverBackgroundColor: _primaryLight.withValues(alpha: 0.05),
-      backgroundColor: _primaryForegroundLight,
-      decoration: ShadDecoration(border: ShadBorder.all(color: _borderLight)),
-    ),
     destructiveButtonTheme: ShadButtonTheme(
       gradient: LinearGradient(
         colors: [_destructiveLight, _destructiveLight.withValues(alpha: 0.8)],
@@ -227,28 +222,29 @@ class AppTheme {
       primaryForeground: _primaryForegroundDark,
       secondary: _secondaryDark,
       secondaryForeground: _foregroundDark,
-      muted: _mutedDark,
       mutedForeground: _mutedForegroundDark,
       accentForeground: _foregroundDark,
-      destructiveForeground: _destructiveForegroundDark,
     ),
     radius: const BorderRadius.all(Radius.circular(8.0)),
     textTheme: ShadTextTheme(
       family: 'Inter',
-      h1Large: _geistTextTheme.displayLarge,
-      h1: _geistTextTheme.displayMedium,
-      h2: _geistTextTheme.displaySmall,
-      h3: _geistTextTheme.headlineLarge,
-      h4: _geistTextTheme.labelLarge,
-      p: _geistTextTheme.bodyLarge,
+      h1Large: _geistTextTheme.displayLarge?.copyWith(color: _foregroundDark),
+      h1: _geistTextTheme.displayMedium?.copyWith(color: _foregroundDark),
+      h2: _geistTextTheme.displaySmall?.copyWith(color: _foregroundDark),
+      h3: _geistTextTheme.headlineLarge?.copyWith(color: _foregroundDark),
+      h4: _geistTextTheme.labelLarge?.copyWith(color: _foregroundDark),
+      p: _geistTextTheme.bodyLarge?.copyWith(color: _foregroundDark),
       blockquote: _geistTextTheme.bodyLarge?.copyWith(
         fontStyle: FontStyle.italic,
       ),
-      table: _geistTextTheme.bodyMedium,
-      list: _geistTextTheme.bodyMedium,
-      lead: _geistTextTheme.titleSmall,
-      large: _geistTextTheme.titleMedium,
-      small: _geistTextTheme.bodySmall?.copyWith(fontWeight: FontWeight.w600),
+      table: _geistTextTheme.bodyMedium?.copyWith(color: _foregroundDark),
+      list: _geistTextTheme.bodyMedium?.copyWith(color: _foregroundDark),
+      lead: _geistTextTheme.titleSmall?.copyWith(color: _foregroundDark),
+      large: _geistTextTheme.titleMedium?.copyWith(color: _foregroundDark),
+      small: _geistTextTheme.bodySmall?.copyWith(
+        fontWeight: FontWeight.w400,
+        color: _foregroundDark,
+      ),
       muted: _geistTextTheme.bodySmall?.copyWith(color: _mutedForegroundLight),
     ),
     inputTheme: ShadInputTheme(
@@ -273,9 +269,6 @@ class AppTheme {
       ),
     ),
     linkButtonTheme: const ShadButtonTheme(foregroundColor: _primaryDark),
-    ghostButtonTheme: ShadButtonTheme(
-      hoverBackgroundColor: _primaryDark.withValues(alpha: 0.05),
-    ),
     outlineButtonTheme: ShadButtonTheme(
       hoverBackgroundColor: _primaryDark.withValues(alpha: 0.05),
       decoration: ShadDecoration(border: ShadBorder.all(color: _borderDark)),

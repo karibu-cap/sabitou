@@ -126,36 +126,32 @@ class _ItemWidget<T> extends StatelessWidget {
               minHeight ?? (!isActive && item.description != null ? 70 : null),
           variant: isActive ? ShadButtonVariant.primary : variant,
           onPressed: () => onTabChange?.call(item),
-          padding: EdgeInsets.symmetric(
-            horizontal: isChild ? 32 : 16,
-            vertical: 12,
-          ),
+          padding: EdgeInsets.symmetric(horizontal: isChild ? 40 : 16),
           leading: !hasAChild ? Icon(item.icon, size: 15) : const SizedBox(),
           enabled: !hasAChild,
 
           child: Flexible(
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                AutoSizeText(
+                  item.label,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  minFontSize: 8,
+                  style: theme.textTheme.table,
+                ),
+                if (!isActive &&
+                    (item.description != null ||
+                        item.description?.isNotEmpty == true))
                   AutoSizeText(
-                    item.label,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
+                    item.description ?? '',
                     minFontSize: 8,
-                    style: const TextStyle(fontSize: 10),
+                    style: theme.textTheme.muted,
+                    textAlign: TextAlign.left,
                   ),
-                  if (!isActive &&
-                      (item.description != null ||
-                          item.description?.isNotEmpty == true))
-                    AutoSizeText(
-                      item.description ?? '',
-                      minFontSize: 8,
-                      style: theme.textTheme.muted,
-                      textAlign: TextAlign.left,
-                    ),
-                ],
-              ),
+              ],
             ),
           ),
         );

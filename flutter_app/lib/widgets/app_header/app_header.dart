@@ -28,9 +28,10 @@ class HeaderWidget extends StatelessWidget {
       height: 56,
       decoration: BoxDecoration(
         color: theme.colorScheme.background,
+        border: Border(bottom: BorderSide(color: theme.colorScheme.border)),
         boxShadow: [
           BoxShadow(
-            color: theme.colorScheme.secondary.withValues(alpha: 0.1),
+            color: theme.colorScheme.foreground.withValues(alpha: 0.1),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
