@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../utils/user_preference.dart';
 import '../../widgets/loading.dart';
+import '../../widgets/pdf/printers/test_3.dart';
 import 'components/cart_footer.dart';
 import 'components/header.dart';
 import 'components/hold_orders.dart';
@@ -25,7 +26,7 @@ class PointOfSaleScreen extends StatelessWidget {
 
     return ChangeNotifierProvider(
       create: (_) => PointOfSaleController(viewModel),
-      child: const _SalesScreenContent(),
+      child: const PrinterHomePage(),
     );
   }
 }
