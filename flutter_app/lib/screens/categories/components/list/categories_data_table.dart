@@ -4,7 +4,6 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../../services/internationalization/internationalization.dart';
-import '../../../../themes/app_colors.dart';
 import '../../../../utils/extensions/category_extension.dart';
 import '../../../../widgets/pop_up/add_category/add_category_view.dart';
 import '../../../../widgets/shad_data_grid.dart';
@@ -91,19 +90,10 @@ class CategoriesDataTable extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             alignment: Alignment.centerLeft,
             child: ShadBadge(
-              backgroundColor:
-                  category.status == CategoryStatus.CATEGORY_STATUS_ACTIVE
-                  ? AppColors.success100
-                  : AppColors.error100,
-              hoverBackgroundColor:
-                  category.status == CategoryStatus.CATEGORY_STATUS_ACTIVE
-                  ? AppColors.success100
-                  : AppColors.error100,
-              foregroundColor:
-                  category.status == CategoryStatus.CATEGORY_STATUS_ACTIVE
-                  ? AppColors.success500
-                  : AppColors.error500,
-              child: Text(category.label.toUpperCase()),
+              backgroundColor: category.status.backgroundColor,
+              hoverBackgroundColor: category.status.backgroundColor,
+              foregroundColor: category.status.color,
+              child: Text(category.status.label.toUpperCase()),
             ),
           ),
           Container(

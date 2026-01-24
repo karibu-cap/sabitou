@@ -4,9 +4,6 @@ import 'package:sabitou_rpc/models.dart';
 import '../../../utils/extends_models.dart';
 import '../app_storage.dart';
 
-@GenerateAdapters([AdapterSpec<AppPrinter>()], firstTypeId: 12)
-part 'hive_adapters.g.dart';
-
 /// Hive TypeAdapter for StoreProduct protobuf
 class StoreProductAdapter extends TypeAdapter<StoreProduct> {
   @override
@@ -187,6 +184,67 @@ class BusinessMemberAdapter extends TypeAdapter<BusinessMember> {
   }
 }
 
+/// Hive TypeAdapter for CashReceipt protobuf
+class CashReceiptAdapter extends TypeAdapter<CashReceipt> {
+  @override
+  final int typeId = 13;
+
+  @override
+  CashReceipt read(BinaryReader reader) {
+    final bytes = reader.readByteList();
+
+    return CashReceipt.fromBuffer(bytes);
+  }
+
+  @override
+  void write(BinaryWriter writer, CashReceipt obj) {
+    writer.writeByteList(obj.writeToBuffer());
+  }
+}
+
+class AppPrinterAdapter extends TypeAdapter<AppPrinter> {
+  @override
+  final typeId = 12;
+
+  @override
+  AppPrinter read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+
+    return AppPrinter(
+      url: fields[0] as String,
+      name: fields[1] as String?,
+      model: fields[2] as String?,
+      location: fields[3] as String?,
+      comment: fields[4] as String?,
+      isDefault: fields[5] as bool?,
+      isAvailable: fields[6] as bool?,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, AppPrinter obj) {
+    writer
+      ..writeByte(7)
+      ..writeByte(0)
+      ..write(obj.url)
+      ..writeByte(1)
+      ..write(obj.name)
+      ..writeByte(2)
+      ..write(obj.model)
+      ..writeByte(3)
+      ..write(obj.location)
+      ..writeByte(4)
+      ..write(obj.comment)
+      ..writeByte(5)
+      ..write(obj.isDefault)
+      ..writeByte(6)
+      ..write(obj.isAvailable);
+  }
+}
+
 /// Registers all protobuf Hive adapters
 void registerProtobufAdapters() {
   if (!Hive.isAdapterRegistered(0)) {
@@ -219,8 +277,11 @@ void registerProtobufAdapters() {
   if (!Hive.isAdapterRegistered(9)) {
     Hive.registerAdapter(BusinessMemberAdapter());
   }
-  if (!Hive.isAdapterRegistered(10)) {
+  if (!Hive.isAdapterRegistered(12)) {
     Hive.registerAdapter(AppPrinterAdapter());
+  }
+  if (!Hive.isAdapterRegistered(13)) {
+    Hive.registerAdapter(CashReceiptAdapter());
   }
 }
 
@@ -237,4 +298,5 @@ void initStorageBoxes() {
   AppStorage.of<StoreMember>();
   AppStorage.of<BusinessMember>();
   AppStorage.of<AppPrinter>();
+  AppStorage.of<CashReceipt>();
 }

@@ -9,7 +9,7 @@ import '../../repositories/business_repository.dart';
 import '../../repositories/stores_repository.dart';
 import '../../services/storage/app_storage.dart';
 import '../../utils/app_constants.dart';
-import '../../utils/extends_models.dart';
+import '../../utils/printer_management.dart';
 import '../../utils/user_preference.dart';
 import '../../widgets/pdf/printers/printer_configuration.dart';
 import '../../widgets/sidebar/sidebar_menu_item.dart';
@@ -139,7 +139,7 @@ class SettingsController extends ChangeNotifier {
   }
 
   /// Sets the default printer
-  void setDefaultPrinter(AppPrinter? printer) {
+  void setDefaultPrinter(Printer? printer) {
     _printerConfiguration = _printerConfiguration.copyWith(
       defaultPrinter: printer,
     );

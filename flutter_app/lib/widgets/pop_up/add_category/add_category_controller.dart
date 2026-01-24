@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../services/internationalization/internationalization.dart';
-
+import '../../../utils/user_preference.dart';
 import 'add_category_view_model.dart';
 
 /// Controller for category add/edit dialog.
@@ -115,10 +115,12 @@ class CategoryAddController extends ChangeNotifier {
     );
 
     final category = Category(
-      refId: this.category?.refId,
+      refId: this.category?.refId ?? const Uuid().v4(),
       name: name,
       status: status ?? CategoryStatus.CATEGORY_STATUS_ACTIVE,
       type: type ?? CategoryType.CATEGORY_TYPE_PRODUCT,
+      businessId: UserPreferences.instance.business?.refId,
+      createdAt: Timestamp.fromDateTime(DateTime.now()),
     );
 
     var result;

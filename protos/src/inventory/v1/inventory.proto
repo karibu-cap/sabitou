@@ -78,9 +78,9 @@ message InventoryLevel {
 message InventoryLevelWithProduct {
   InventoryLevel level = 1;
   StoreProduct product = 2;
-  GlobalProduct globalProduct = 3;
+  GlobalProduct global_product = 3;
   int32 stock_value = 4; // quantity * product.unit_price
-  StockStatus stockStatus = 5;
+  StockStatus stock_status = 5;
 }
 
 enum StockStatus {
@@ -183,8 +183,8 @@ message ListProductsBySupplierResponse {
 }
 
 message ProductBySupplier {
-  StoreProduct store_product = 1; // StoreProduct details
-  GlobalProduct global_product = 2; // GlobalProduct details
+  inventory.v1.StoreProduct store_product = 1; // StoreProduct details
+  inventory.v1.GlobalProduct global_product = 2; // GlobalProduct details
 }
 
 service InventoryService {
@@ -208,4 +208,21 @@ service InventoryService {
 
   // Gets the products by supplier.
   rpc ListProductsBySupplier(ListProductsBySupplierRequest) returns (ListProductsBySupplierResponse);
+
+  // Adjusts the inventory.
+  rpc AdjustInventory(AdjustInventoryRequest) returns (AdjustInventoryResponse);
+}
+
+message AdjustInventoryRequest {
+  string store_id = 1 [(buf.validate.field).required = true];
+  string product_id = 2 [(buf.validate.field).required = true];
+  int32 quantity_change = 3; // Positive or negative change
+  string reason = 4;
+  string notes = 5;
+  string batch_id = 6; // Optional, if adjusting specific batch
+}
+
+message AdjustInventoryResponse {
+  bool success = 1;
+  InventoryLevel updated_level = 2; // Return the updated level
 }

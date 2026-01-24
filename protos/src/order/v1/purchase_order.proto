@@ -5,7 +5,6 @@ package order.v1;
 import "buf/validate/validate.proto";
 import "financial/v1/invoice.proto";
 import "google/protobuf/timestamp.proto";
-import "inventory/v1/store_product.proto";
 import "logistic/v1/receiving_notes.proto";
 import "order/v1/order_utils.proto";
 import "payments/v1/payments.proto";

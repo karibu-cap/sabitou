@@ -94,7 +94,7 @@ type ReportingServiceClient interface {
 	// Comprehensive inventory report with aggregates
 	GetInventoryReport(context.Context, *connect.Request[v1.GetInventoryReportRequest]) (*connect.Response[v1.GetInventoryReportResponse], error)
 	// Full sales report including best sellers
-	GetSalesReportFull(context.Context, *connect.Request[v1.GetSalesReportRequest]) (*connect.Response[v1.GetSalesReportFullResponse], error)
+	GetSalesReportFull(context.Context, *connect.Request[v1.GetSalesReportRequestFull]) (*connect.Response[v1.GetSalesReportFullResponse], error)
 	// Comprehensive financial report with purchases and balances
 	GetFinancialReport(context.Context, *connect.Request[v1.GetFinancialReportRequest]) (*connect.Response[v1.GetFinancialReportResponse], error)
 }
@@ -164,7 +164,7 @@ func NewReportingServiceClient(httpClient connect.HTTPClient, baseURL string, op
 			connect.WithSchema(reportingServiceMethods.ByName("GetInventoryReport")),
 			connect.WithClientOptions(opts...),
 		),
-		getSalesReportFull: connect.NewClient[v1.GetSalesReportRequest, v1.GetSalesReportFullResponse](
+		getSalesReportFull: connect.NewClient[v1.GetSalesReportRequestFull, v1.GetSalesReportFullResponse](
 			httpClient,
 			baseURL+ReportingServiceGetSalesReportFullProcedure,
 			connect.WithSchema(reportingServiceMethods.ByName("GetSalesReportFull")),
@@ -190,7 +190,7 @@ type reportingServiceClient struct {
 	getProfitLossReport          *connect.Client[v1.GetProfitLossReportRequest, v1.GetProfitLossReportResponse]
 	getStockAgingReport          *connect.Client[v1.GetStockAgingReportRequest, v1.GetStockAgingReportResponse]
 	getInventoryReport           *connect.Client[v1.GetInventoryReportRequest, v1.GetInventoryReportResponse]
-	getSalesReportFull           *connect.Client[v1.GetSalesReportRequest, v1.GetSalesReportFullResponse]
+	getSalesReportFull           *connect.Client[v1.GetSalesReportRequestFull, v1.GetSalesReportFullResponse]
 	getFinancialReport           *connect.Client[v1.GetFinancialReportRequest, v1.GetFinancialReportResponse]
 }
 
@@ -240,7 +240,7 @@ func (c *reportingServiceClient) GetInventoryReport(ctx context.Context, req *co
 }
 
 // GetSalesReportFull calls reports.v1.ReportingService.GetSalesReportFull.
-func (c *reportingServiceClient) GetSalesReportFull(ctx context.Context, req *connect.Request[v1.GetSalesReportRequest]) (*connect.Response[v1.GetSalesReportFullResponse], error) {
+func (c *reportingServiceClient) GetSalesReportFull(ctx context.Context, req *connect.Request[v1.GetSalesReportRequestFull]) (*connect.Response[v1.GetSalesReportFullResponse], error) {
 	return c.getSalesReportFull.CallUnary(ctx, req)
 }
 
@@ -270,7 +270,7 @@ type ReportingServiceHandler interface {
 	// Comprehensive inventory report with aggregates
 	GetInventoryReport(context.Context, *connect.Request[v1.GetInventoryReportRequest]) (*connect.Response[v1.GetInventoryReportResponse], error)
 	// Full sales report including best sellers
-	GetSalesReportFull(context.Context, *connect.Request[v1.GetSalesReportRequest]) (*connect.Response[v1.GetSalesReportFullResponse], error)
+	GetSalesReportFull(context.Context, *connect.Request[v1.GetSalesReportRequestFull]) (*connect.Response[v1.GetSalesReportFullResponse], error)
 	// Comprehensive financial report with purchases and balances
 	GetFinancialReport(context.Context, *connect.Request[v1.GetFinancialReportRequest]) (*connect.Response[v1.GetFinancialReportResponse], error)
 }
@@ -417,7 +417,7 @@ func (UnimplementedReportingServiceHandler) GetInventoryReport(context.Context, 
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("reports.v1.ReportingService.GetInventoryReport is not implemented"))
 }
 
-func (UnimplementedReportingServiceHandler) GetSalesReportFull(context.Context, *connect.Request[v1.GetSalesReportRequest]) (*connect.Response[v1.GetSalesReportFullResponse], error) {
+func (UnimplementedReportingServiceHandler) GetSalesReportFull(context.Context, *connect.Request[v1.GetSalesReportRequestFull]) (*connect.Response[v1.GetSalesReportFullResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("reports.v1.ReportingService.GetSalesReportFull is not implemented"))
 }
 

@@ -14,6 +14,7 @@ import '../../../utils/responsive_utils.dart';
 import '../../../utils/utils.dart';
 import '../../../widgets/loading.dart';
 import '../../../widgets/shad_data_grid.dart';
+import '../dialogs/inventory_adjustment_dialog.dart';
 import '../inventory_controller.dart';
 
 /// The products table view.
@@ -102,6 +103,7 @@ class _InventoryDataTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
+    final controller = context.read<InventoryController>();
 
     return ShadDataGrid<InventoryLevelWithProduct>(
       data: inv,
@@ -111,6 +113,7 @@ class _InventoryDataTable extends StatelessWidget {
         ShadDataGridColumn(label: Intls.to.status, width: 120),
         ShadDataGridColumn(label: Intls.to.price, width: 120),
         ShadDataGridColumn(label: Intls.to.stock, width: 120),
+        const ShadDataGridColumn(label: '', width: 80),
       ],
       rowBuilder: (product) {
         return [
@@ -150,6 +153,22 @@ class _InventoryDataTable extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: _StockCell(inventoryLevel: product.level),
           ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            alignment: Alignment.center,
+            child: ShadIconButton.ghost(
+              icon: const Icon(LucideIcons.pencil, size: 16),
+              onPressed: () {
+                showShadDialog(
+                  context: context,
+                  builder: (context) => InventoryAdjustmentDialog(
+                    inventory: product,
+                    inventoryController: controller,
+                  ),
+                );
+              },
+            ),
+          ),
         ];
       },
     );
@@ -186,6 +205,7 @@ class _InventoryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
     final category = inv.globalProduct.categories.map((c) => c.label).toList();
+    final controller = context.read<InventoryController>();
 
     return ShadCard(
       child: Padding(
@@ -264,6 +284,19 @@ class _InventoryCard extends StatelessWidget {
                       : AppColors.dartGreen,
                 ),
               ],
+            ),
+            const SizedBox(height: 12),
+            ShadButton.outline(
+              child: const Text('Adjust Stock'),
+              onPressed: () {
+                showShadDialog(
+                  context: context,
+                  builder: (context) => InventoryAdjustmentDialog(
+                    inventory: inv,
+                    inventoryController: controller,
+                  ),
+                );
+              },
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

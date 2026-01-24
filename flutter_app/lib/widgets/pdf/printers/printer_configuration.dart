@@ -1,9 +1,9 @@
-import '../../../utils/extends_models.dart';
+import '../../../utils/printer_management.dart';
 
 /// Printer configuration stored in preferences
 class PrinterConfiguration {
   /// The default printer for receipts
-  final AppPrinter? defaultPrinter;
+  final Printer? defaultPrinter;
 
   /// Whether auto-print is enabled
   final bool autoPrintEnabled;
@@ -18,15 +18,7 @@ class PrinterConfiguration {
   factory PrinterConfiguration.fromJson(Map<String, dynamic> json) {
     return PrinterConfiguration(
       defaultPrinter: json['defaultPrinter'] != null
-          ? AppPrinter(
-              url: json['defaultPrinter']['url'] as String,
-              name: json['defaultPrinter']['name'] as String?,
-              model: json['defaultPrinter']['model'] as String?,
-              location: json['defaultPrinter']['location'] as String?,
-              comment: json['defaultPrinter']['comment'] as String?,
-              isDefault: json['defaultPrinter']['isDefault'] as bool?,
-              isAvailable: json['defaultPrinter']['isAvailable'] as bool?,
-            )
+          ? Printer.fromJson(json)
           : null,
       autoPrintEnabled: json['autoPrintEnabled'] as bool? ?? true,
     );
@@ -36,15 +28,7 @@ class PrinterConfiguration {
   Map<String, dynamic> toJson() {
     return {
       'defaultPrinter': defaultPrinter != null
-          ? {
-              'url': defaultPrinter?.url,
-              'name': defaultPrinter?.name,
-              'model': defaultPrinter?.model,
-              'location': defaultPrinter?.location,
-              'comment': defaultPrinter?.comment,
-              'isDefault': defaultPrinter?.isDefault,
-              'isAvailable': defaultPrinter?.isAvailable,
-            }
+          ? defaultPrinter?.toJson()
           : null,
       'autoPrintEnabled': autoPrintEnabled,
     };
@@ -52,7 +36,7 @@ class PrinterConfiguration {
 
   /// Copy with
   PrinterConfiguration copyWith({
-    AppPrinter? defaultPrinter,
+    Printer? defaultPrinter,
     bool? autoPrintEnabled,
   }) {
     return PrinterConfiguration(

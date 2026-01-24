@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
-import '../../utils/responsive_utils.dart';
 import '../../utils/user_preference.dart';
 import '../../widgets/loading.dart';
+import '../../widgets/pdf/printers/test_3.dart';
 import 'components/cart_footer.dart';
 import 'components/header.dart';
 import 'components/hold_orders.dart';
@@ -26,7 +26,7 @@ class PointOfSaleScreen extends StatelessWidget {
 
     return ChangeNotifierProvider(
       create: (_) => PointOfSaleController(viewModel),
-      child: const _SalesScreenContent(),
+      child: const PrinterHomePage(),
     );
   }
 }
@@ -37,7 +37,6 @@ class _SalesScreenContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final store = UserPreferences.instance.store;
-    final isDesktop = ResponsiveUtils.isDesktop(context);
 
     if (store == null) {
       return const Center(child: Loading());

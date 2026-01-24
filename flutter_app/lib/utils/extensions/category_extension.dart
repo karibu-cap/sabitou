@@ -1,6 +1,9 @@
+import 'dart:ui';
+
 import 'package:sabitou_rpc/models.dart';
 
 import '../../services/internationalization/internationalization.dart';
+import '../../themes/app_colors.dart';
 
 /// The extension for the [ProductCategory] enum.
 extension CategoryExtension on Category {
@@ -30,5 +33,44 @@ extension CategoryExtension on Category {
     }
 
     return '';
+  }
+}
+
+/// The extension for the [CategoryStatus] enum.
+extension CategoryStatusExtension on CategoryStatus {
+  /// Gets the label for the product status.
+  String get label {
+    switch (this) {
+      case CategoryStatus.CATEGORY_STATUS_ACTIVE:
+        return Intls.to.active;
+      case CategoryStatus.CATEGORY_STATUS_INACTIVE:
+        return Intls.to.inactive;
+      default:
+        return Intls.to.status;
+    }
+  }
+
+  /// Gets the color for the product status.
+  Color get color {
+    switch (this) {
+      case CategoryStatus.CATEGORY_STATUS_ACTIVE:
+        return AppColors.success500;
+      case CategoryStatus.CATEGORY_STATUS_INACTIVE:
+        return AppColors.error500;
+      default:
+        return AppColors.grey400;
+    }
+  }
+
+  /// Gets the color for the product status.
+  Color get backgroundColor {
+    switch (this) {
+      case CategoryStatus.CATEGORY_STATUS_ACTIVE:
+        return AppColors.success100;
+      case CategoryStatus.CATEGORY_STATUS_INACTIVE:
+        return AppColors.error100;
+      default:
+        return AppColors.grey100;
+    }
   }
 }

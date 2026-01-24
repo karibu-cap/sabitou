@@ -117,7 +117,8 @@ class _ShadDataGridState<T> extends State<ShadDataGrid<T>> {
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
 
-    return _AppTable(
+    return SizedBox(
+      width: MediaQuery.sizeOf(context).width,
       child: Column(
         children: [
           if (widget.showPagination) ...[
@@ -129,48 +130,47 @@ class _ShadDataGridState<T> extends State<ShadDataGrid<T>> {
               onPageChanged: _goToPage,
             ),
           ],
-          Expanded(
-            child: SfDataGridTheme(
-              data: SfDataGridThemeData(
-                headerColor: theme.colorScheme.accent,
-                rowHoverColor: theme.colorScheme.accent,
-                gridLineColor: theme.colorScheme.border,
-              ),
-              child: SfDataGrid(
-                source:
-                    _dataSource ??
-                    _GenericDataSource<T>(
-                      data: [],
-                      columns: widget.columns,
-                      rowBuilder: widget.rowBuilder,
-                      context: context,
-                    ),
-                isScrollbarAlwaysShown: true,
-                footerFrozenColumnsCount: widget.footerFrozenColumnsCount,
-                frozenColumnsCount: widget.frozenColumnsCount,
-                headerGridLinesVisibility: GridLinesVisibility.none,
-                rowHeight: widget.rowHeight,
-                headerRowHeight: widget.headerRowHeight,
-                selectionMode: SelectionMode.single,
-                navigationMode: GridNavigationMode.cell,
-                allowSorting: widget.enableSorting,
-                columns: widget.columns.map((col) {
-                  return GridColumn(
-                    columnName: col.label,
-                    width: col.width,
-                    label: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      alignment: col.alignment ?? Alignment.centerLeft,
-                      child: Text(
-                        col.label,
-                        style: theme.textTheme.small.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
+          SfDataGridTheme(
+            data: SfDataGridThemeData(
+              headerColor: theme.colorScheme.accent,
+              rowHoverColor: theme.colorScheme.accent,
+              gridLineColor: theme.colorScheme.border,
+            ),
+            child: SfDataGrid(
+              source:
+                  _dataSource ??
+                  _GenericDataSource<T>(
+                    data: [],
+                    columns: widget.columns,
+                    rowBuilder: widget.rowBuilder,
+                    context: context,
+                  ),
+              isScrollbarAlwaysShown: true,
+              shrinkWrapRows: true,
+              footerFrozenColumnsCount: widget.footerFrozenColumnsCount,
+              frozenColumnsCount: widget.frozenColumnsCount,
+              headerGridLinesVisibility: GridLinesVisibility.none,
+              rowHeight: widget.rowHeight,
+              headerRowHeight: widget.headerRowHeight,
+              selectionMode: SelectionMode.single,
+              navigationMode: GridNavigationMode.cell,
+              allowSorting: widget.enableSorting,
+              columns: widget.columns.map((col) {
+                return GridColumn(
+                  columnName: col.label,
+                  width: col.width,
+                  label: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    alignment: col.alignment ?? Alignment.centerLeft,
+                    child: Text(
+                      col.label,
+                      style: theme.textTheme.small.copyWith(
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-                  );
-                }).toList(),
-              ),
+                  ),
+                );
+              }).toList(),
             ),
           ),
         ],
@@ -179,10 +179,7 @@ class _ShadDataGridState<T> extends State<ShadDataGrid<T>> {
   }
 }
 
-/// ============================================================================
 /// COLUMN CONFIGURATION
-/// ============================================================================
-
 class ShadDataGridColumn {
   /// The Constructor of [ShadDataGridColumn].
   const ShadDataGridColumn({
@@ -336,28 +333,6 @@ class _PaginationControls extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-/// The [_AppTable].
-class _AppTable extends StatelessWidget {
-  /// The child widget.
-  final Widget child;
-
-  /// Constructs of new [_AppTable].
-  const _AppTable({required this.child});
-
-  @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return SizedBox(
-          width: constraints.maxWidth,
-          height: constraints.maxHeight.isFinite ? constraints.maxHeight : 600,
-          child: child,
-        );
-      },
     );
   }
 }

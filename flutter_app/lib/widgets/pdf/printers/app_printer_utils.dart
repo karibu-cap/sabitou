@@ -2,168 +2,105 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
+import 'package:esc_pos_utils_plus/esc_pos_utils_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image/image.dart' as img;
 import 'package:pdf/pdf.dart';
-import 'package:printing/printing.dart';
+import 'package:printing/printing.dart' as pr;
+import 'package:screenshot/screenshot.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
-import 'package:sunmi_printer_plus/sunmi_printer_plus.dart';
 
 import '../../../services/internationalization/internationalization.dart';
 import '../../../services/storage/app_storage.dart';
 import '../../../utils/app_constants.dart';
-import '../../../utils/bluetooth/bluetooth_manager.dart';
 import '../../../utils/common_functions.dart';
-import '../../../utils/extends_models.dart';
 import '../../../utils/logger.dart';
+import '../../../utils/printer_management.dart' hide PaperSize;
 // Platform-specific Bluetooth imports
 
 /// The printing mixin.
 class AppPrinterUtils {
+  static final ScreenshotController _screenshotController =
+      ScreenshotController();
   static final logger = LoggerApp('MyPrinting');
 
   // Keep track of connected device
-  static BluetoothDeviceWrapper? _connectedDevice;
-  static StreamSubscription? _connectionSubscription;
+  static final PrinterManagement printerManagement = PrinterManagement();
 
   /// Pick a printer.
-  static Future<AppPrinter?> pickPrinter(BuildContext context) async {
-    AppPrinter? printer;
-
-    final getListOfPrinters = await listPrinters(context);
+  static Future<Printer?> pickPrinter(BuildContext context) async {
+    Printer? selectedPrinter;
 
     await showShadDialog(
       context: context,
-      builder: (context) => ShadDialog(
-        child: Material(
-          color: ShadTheme.of(context).colorScheme.card,
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxHeight: 350),
-            child: Column(
-              children: [
-                const SizedBox(height: 10),
-                Expanded(
-                  child: SelectPrinterWidget(
-                    existentPrinters: getListOfPrinters,
-                    builder: (selectedPrinter) {
-                      printer = selectedPrinter;
-                    },
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: ShadButton.outline(
-                        child: Text(Intls.to.cancel),
-                        onPressed: () => Navigator.pop(context),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: ShadButton(
-                        child: Text(Intls.to.save),
-                        onPressed: () async {
-                          final _printer = printer;
-                          if (_printer == null) return;
-                          await AppStorage.of<AppPrinter>().write(
-                            PreferencesKey.printer,
-                            _printer,
-                          );
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
+      builder: (context) => _PrinterSelectionDialog(
+        printerManagement: printerManagement,
+        onPrinterSelected: (printer) async {
+          selectedPrinter = printer;
+          await AppStorage.of<Printer>().write(PreferencesKey.printer, printer);
+          if (context.mounted) {
+            Navigator.pop(context);
+          }
+        },
       ),
     );
 
-    return printer;
+    return selectedPrinter;
   }
 
   /// Direct print pdf.
   static FutureOr<bool> directPrintPdf({
-    required AppPrinter printer,
-    required FutureOr<Uint8List> onLayout,
+    required Printer printer,
     required BuildContext context,
     String name = 'Document',
     PdfPageFormat format = PdfPageFormat.standard,
     bool dynamicLayout = true,
     bool usePrinterSettings = false,
+    Widget? widget,
+    FutureOr<Uint8List>? onLayout,
   }) async {
-    if (!printer.url.contains('#6663#')) {
-      if (printer.url == 'suiite-epdf-preview') {
-        showPdfPreview(
-          fileName: name,
-          pdfData: await onLayout,
-          pdfPageFormat: format,
-          context: context,
-        );
-
-        return true;
-      } else if (printer.url.contains(PrinterModel.bluetoothDevice.name)) {
+    if (printer.connectionType != ConnectionType.NETWORK) {
+      if (printer.connectionType == ConnectionType.BLE && widget != null) {
         try {
-          final BluetoothDeviceWrapper device =
-              await BluetoothManager.createDeviceFromAppPrinter(printer);
-
-          // Check if already connected
-          final bool isConnected = await BluetoothManager.isDeviceConnected(
-            device,
+          final bool isConnected = await printerManagement.isPrinterConnected(
+            printer,
+          );
+          if (!isConnected) {
+            await printerManagement.connect(printer);
+          }
+          final int widthPx = _getPrinterWidthPx(PaperSize.mm58);
+          final imageBytes = await _screenshotController.captureFromLongWidget(
+            Material(
+              color: Colors.white,
+              child: Container(
+                color: Colors.white,
+                width: widthPx.toDouble(),
+                child: widget,
+              ),
+            ),
+            pixelRatio: 1.0,
+            delay: const Duration(milliseconds: 100),
           );
 
-          if (!isConnected) {
-            await _connectToDevice(device, context);
-          }
+          final optimiseChunk = _optimizeImageBytes(
+            imageBytes,
+            targetWidth: widthPx,
+          );
 
-          await for (PdfRaster page in Printing.raster(
-            await onLayout,
-            dpi: format.width,
-          )) {
-            final int chunkHeight = 50; // Height of each band
-            final int chunkWidth = page.width; // Total width of the image
+          final chunkWidget = await _printChunkedWidget(image: optimiseChunk);
 
-            final img.Image? image = img.decodePng(
-              cropWhiteAreas(
-                img.encodePng(setWhiteBackground(await page.toPng())),
-              ),
-            );
+          // Send data in small chunks to avoid Bluetooth write size limits (245 bytes)
+          const int maxChunkSize = 200;
+          for (int i = 0; i < chunkWidget.length; i += maxChunkSize) {
+            final int end = (i + maxChunkSize < chunkWidget.length)
+                ? i + maxChunkSize
+                : chunkWidget.length;
+            final List<int> chunk = chunkWidget.sublist(i, end);
+            await printerManagement.writeData(printer, chunk);
 
-            if (image == null) {
-              return false;
-            }
-
-            // Iterate through the image in horizontal bands
-            for (int y = 0; y < image.height; y += chunkHeight) {
-              // Calculate chunk height
-              final int height = (y + chunkHeight > image.height)
-                  ? image.height - y
-                  : chunkHeight;
-
-              // Cut the horizontal band
-              final img.Image chunk = img.copyCrop(
-                image,
-                x: 0,
-                y: y,
-                width: chunkWidth,
-                height: height,
-              );
-
-              // Encode the band in PNG
-              final Uint8List chunkBytes = img.encodePng(chunk);
-
-              // Print the band
-              await _printImageBytes(device, chunkBytes);
-            }
+            // Small delay between chunks to allow printer to process
+            await Future.delayed(const Duration(milliseconds: 100));
           }
 
           return true;
@@ -178,36 +115,11 @@ class AppPrinterUtils {
 
           return false;
         }
-      } else if (printer.url == 'suiite-sunmi-printer') {
-        try {
-          await for (PdfRaster page in Printing.raster(
-            await onLayout,
-            dpi: format.width,
-          )) {
-            final Uint8List imageBytes = cropWhiteAreas(
-              img.encodePng(setWhiteBackground(await page.toPng())),
-            );
-            await SunmiPrinter.printImage(
-              imageBytes,
-              align: SunmiPrintAlign.CENTER,
-            );
-            SunmiPrinter.printText('');
-          }
-        } catch (e) {
-          showErrorToast(
-            context: context,
-            message: Intls.to.printerNotConnected.trParams({
-              'printer': printer.name ?? Intls.to.theDevice,
-            }),
-          );
-        }
-
-        return true;
       } else {
-        return Printing.directPrintPdf(
-          printer: printer.toPrinter(),
+        return pr.Printing.directPrintPdf(
+          printer: pr.Printer(url: printer.address ?? '', name: printer.name),
           onLayout: (format) {
-            return onLayout;
+            return onLayout ?? Future.value(Uint8List.fromList([]));
           },
           name: name,
           dynamicLayout: dynamicLayout,
@@ -230,172 +142,42 @@ class AppPrinterUtils {
   }
 
   /// Connect to bluetooth device
-  static Future<void> _connectToDevice(
-    BluetoothDeviceWrapper device,
-    BuildContext context,
-  ) async {
-    try {
-      // Cancel previous subscription if exists
-      await _connectionSubscription?.cancel();
+  // static Future<void> _connectToDevice(BluetoothDeviceWrapper device) async {
+  //   try {
+  //     // Cancel previous subscription if exists
+  //     await _connectionSubscription?.cancel();
 
-      final connectedDevice = _connectedDevice;
+  //     final connectedDevice = _connectedDevice;
 
-      // Disconnect from previous device if exists
-      if (connectedDevice != null && connectedDevice != device) {
-        try {
-          await BluetoothManager.disconnect(connectedDevice);
-        } catch (e) {
-          logger.warning('Error disconnecting previous device: $e');
-        }
-      }
+  //     // Disconnect from previous device if exists
+  //     if (connectedDevice != null && connectedDevice != device) {
+  //       try {
+  //         await BluetoothManager.disconnect(connectedDevice);
+  //       } catch (e) {
+  //         logger.warning('Error disconnecting previous device: $e');
+  //       }
+  //     }
 
-      // Connect to new device
-      await BluetoothManager.connect(device);
+  //     // Connect to new device
+  //     await BluetoothManager.connect(device);
 
-      // Listen to connection state
-      _connectionSubscription = BluetoothManager.listenToConnectionState(
-        device,
-        (state) {
-          logger.info('Bluetooth device state: $state');
-          if (state == BluetoothConnectionState.disconnected) {
-            _connectedDevice = null;
-          }
-        },
-      );
+  //     // Listen to connection state
+  //     _connectionSubscription = BluetoothManager.listenToConnectionState(
+  //       device,
+  //       (state) {
+  //         logger.info('Bluetooth device state: $state');
+  //         if (state == BluetoothConnectionState.disconnected) {
+  //           _connectedDevice = null;
+  //         }
+  //       },
+  //     );
 
-      _connectedDevice = device;
-    } catch (e) {
-      logger.severe('Connection error: $e');
-      throw Exception('Failed to connect to device');
-    }
-  }
-
-  /// Print image bytes to bluetooth printer
-  static Future<void> _printImageBytes(
-    BluetoothDeviceWrapper device,
-    Uint8List imageBytes,
-  ) async {
-    try {
-      // Convert image to ESC/POS commands (simplified version)
-      final List<int> commands = _convertImageToEscPos(imageBytes);
-
-      // Send data via bluetooth manager
-      await BluetoothManager.writeData(device, commands);
-    } catch (e) {
-      logger.severe('Error printing image: $e');
-      throw Exception('Failed to print image');
-    }
-  }
-
-  /// Convert image to ESC/POS commands (basic implementation)
-  /// You may need to adjust this based on your printer's specifications
-  static List<int> _convertImageToEscPos(Uint8List imageBytes) {
-    final img.Image? image = img.decodeImage(imageBytes);
-    if (image == null) return [];
-
-    final List<int> commands = [];
-
-    // ESC @ - Initialize printer
-    commands.addAll([27, 64]);
-
-    // Image printing command (simplified - may need adjustment)
-    // This is a basic implementation - you might need ESC * or GS v 0 commands
-    // depending on your printer model
-
-    commands.addAll(imageBytes);
-
-    // Line feed
-    commands.addAll([10]);
-
-    return commands;
-  }
-
-  /// Disconnect from bluetooth device
-  static Future<void> disconnectBluetooth() async {
-    try {
-      await _connectionSubscription?.cancel();
-      final connectedDevice = _connectedDevice;
-      if (connectedDevice != null) {
-        await BluetoothManager.disconnect(connectedDevice);
-        _connectedDevice = null;
-      }
-    } catch (e) {
-      logger.severe('Error disconnecting: $e');
-    }
-  }
-
-  /// List the printers.
-  static Future<List<AppPrinter>> listPrinters(BuildContext context) async {
-    final List<AppPrinter> listPrinters = [];
-    if (Platform.isMacOS || Platform.isWindows || Platform.isLinux) {
-      final List<Printer> defaultPrinters = await Printing.listPrinters();
-      for (Printer printer in defaultPrinters) {
-        listPrinters.add(AppPrinter.fromPrinter(printer));
-      }
-    }
-
-    listPrinters
-      ..add(AppPrinter(url: 'suiite-epdf-preview', name: Intls.to.preview))
-      ..add(AppPrinter(url: 'suiite-sunmi-printer', name: 'Sunmi printer'));
-
-    if (Platform.isAndroid || Platform.isIOS || kIsWeb) {
-      listPrinters.addAll(await listOfBluetoothDevice(context));
-    }
-
-    return listPrinters;
-  }
-
-  /// List the bluetooth device.
-  static Future<List<AppPrinter>> listOfBluetoothDevice(
-    BuildContext context,
-  ) async {
-    final List<AppPrinter> listPrinters = [];
-
-    try {
-      // Check if bluetooth is supported
-      if (!await BluetoothManager.isBluetoothSupported()) {
-        showErrorToast(
-          context: context,
-          message: 'Bluetooth not supported on this device',
-        );
-
-        return [];
-      }
-
-      // Check bluetooth adapter state
-      if (!await BluetoothManager.isBluetoothEnabled()) {
-        showErrorToast(
-          context: context,
-          message: Intls.to.printerConfigurationError,
-        );
-
-        return [];
-      }
-
-      // Get bonded/connected devices
-      final List<BluetoothDeviceWrapper> devices =
-          await BluetoothManager.getBondedDevices();
-
-      for (BluetoothDeviceWrapper device in devices) {
-        listPrinters.add(
-          await BluetoothManager.createAppPrinterFromDevice(device),
-        );
-      }
-
-      // Listen to adapter state changes
-      BluetoothManager.listenToAdapterState((state) {
-        logger.info('Bluetooth adapter state: $state');
-      });
-    } catch (e) {
-      showErrorToast(
-        context: context,
-        message: Intls.to.printerConfigurationError,
-      );
-      logger.severe('Error listing bluetooth devices: $e');
-    }
-
-    return listPrinters;
-  }
+  //     _connectedDevice = device;
+  //   } catch (e) {
+  //     logger.severe('Connection error: $e');
+  //     throw Exception('Failed to connect to device');
+  //   }
+  // }
 
   /// Show the pdf preview.
   static void showPdfPreview({
@@ -426,7 +208,7 @@ class AppPrinterUtils {
                 ],
               ),
               Expanded(
-                child: PdfPreview(
+                child: pr.PdfPreview(
                   build: (format) => pdfData,
                   canDebug: false,
                   dynamicLayout: false,
@@ -442,205 +224,362 @@ class AppPrinterUtils {
     );
   }
 
-  /// Crop the white areas from the image.
-  static Uint8List cropWhiteAreas(Uint8List imageBytes) {
-    // Decode the image from bytes
-    final img.Image image =
-        img.decodeImage(imageBytes) ?? img.Image(width: 0, height: 0);
+  static Future<List<int>> _printChunkedWidget({
+    required Uint8List image,
+    PaperSize paperSize = PaperSize.mm58,
+    bool cutAfterPrinted = true,
+  }) async {
+    final profile0 = await CapabilityProfile.load();
+    final ticket = Generator(paperSize, profile0);
 
-    // Detect non-white limits
-    int top = image.height;
-    int bottom = 0;
-    int left = image.width;
-    int right = 0;
-
-    for (int y = 0; y < image.height; y++) {
-      for (int x = 0; x < image.width; x++) {
-        final img.Pixel pixel = image.getPixel(x, y);
-        final num r = pixel.r;
-        final num g = pixel.g;
-        final num b = pixel.b;
-
-        // If the pixel is not white, update the limits
-        if (r != 255 || g != 255 || b != 255) {
-          if (x < left) left = x;
-          if (x > right) right = x;
-          if (y < top) top = y;
-          if (y > bottom) bottom = y;
-        }
-      }
+    var imagebytes = img.decodeImage(image);
+    if (imagebytes == null) {
+      throw Exception('Failed to decode image for chunked printing');
     }
 
-    // Crop the image
-    final img.Image croppedImage = img.copyCrop(
-      image,
-      x: left,
-      y: top,
-      width: right - left,
-      height: bottom - top,
-    );
+    imagebytes = _buildImageRasterAvailable(imagebytes);
 
-    // Encode the cropped image in Uint8List
-    final Uint8List croppedImageBytes = Uint8List.fromList(
-      img.encodePng(croppedImage),
-    );
+    if ((Platform.isMacOS || Platform.isWindows)) {
+      List<int> raster;
+      raster = ticket.imageRaster(imagebytes);
+      if (cutAfterPrinted) {
+        raster += ticket.cut();
+      }
 
-    return croppedImageBytes;
+      return raster;
+    } else {
+      // For Android/iOS Bluetooth devices, use smaller chunk height to stay within 245 byte limit
+      const chunkHeight =
+          15; // Reduced from 30 to fit within Bluetooth write limit
+      final totalHeight = imagebytes.height;
+      final totalWidth = imagebytes.width;
+      final chunksCount = (totalHeight / chunkHeight).ceil();
+      var raster = <int>[];
+
+      // Print image in chunks
+      for (var i = 0; i < chunksCount; i++) {
+        final startY = i * chunkHeight;
+        final endY = (startY + chunkHeight > totalHeight)
+            ? totalHeight
+            : startY + chunkHeight;
+        final actualHeight = endY - startY;
+
+        final croppedImage = img.copyCrop(
+          imagebytes,
+          x: 0,
+          y: startY,
+          width: totalWidth,
+          height: actualHeight,
+        );
+
+        raster += ticket.imageRaster(croppedImage);
+      }
+
+      if (cutAfterPrinted) {
+        raster += ticket.cut();
+      }
+
+      return raster;
+    }
   }
 
-  /// Set a white background while preserving pixels close to black.
-  static img.Image setWhiteBackground(Uint8List imageBytes) {
-    // Decode the image from bytes
-    final img.Image? image = img.decodeImage(imageBytes);
-
-    if (image == null) {
-      throw Exception('Failed to decode image');
+  static img.Image _buildImageRasterAvailable(img.Image image) {
+    if (image.width % 8 == 0) {
+      return image;
     }
+    final newWidth = _makeDivisibleBy8(image.width);
 
-    // Threshold to determine if a pixel is "close to black"
-    final int blackThreshold = 255;
-
-    // Iterate through each pixel of the image
-    for (int y = 0; y < image.height; y++) {
-      for (int x = 0; x < image.width; x++) {
-        final img.Pixel pixel = image.getPixel(x, y);
-
-        // Get the color components and alpha channel
-        final int r = pixel.r.toInt();
-        final int g = pixel.g.toInt();
-        final int b = pixel.b.toInt();
-        final int a = pixel.a.toInt();
-
-        // Calculate the pixel luminance (luminance method)
-        final int luminance = ((r * 0.299) + (g * 0.587) + (b * 0.114)).toInt();
-
-        // If the pixel is transparent OR (not white AND not close to black), replace it with white
-        if (a < 155 ||
-            (luminance > blackThreshold &&
-                (r != 255 || g != 255 || b != 255))) {
-          image.setPixel(x, y, img.ColorRgb8(255, 255, 255)); // White
-        }
-      }
-    }
-
-    // Return the modified image
-    return image;
+    return img.copyResize(image, width: newWidth);
   }
 
-  /// Process the image.
-  static img.Image processImage(
-    Uint8List imageBytes, {
-    int blackThreshold = 50,
-    int alphaThreshold = 155,
-  }) {
-    // Decode the image from bytes
-    final img.Image? image = img.decodeImage(imageBytes);
-
-    if (image == null) {
-      throw Exception('Failed to decode image');
+  /// Make number divisible by 8 for printer compatibility
+  static int _makeDivisibleBy8(int number) {
+    if (number % 8 == 0) {
+      return number;
     }
 
-    // Variables to detect non-white limits
-    int top = image.height;
-    int bottom = 0;
-    int left = image.width;
-    int right = 0;
-
-    // Iterate through each pixel of the image
-    for (int y = 0; y < image.height; y++) {
-      for (int x = 0; x < image.width; x++) {
-        final img.Pixel pixel = image.getPixel(x, y);
-
-        // Gets the color components and alpha channel
-        final int r = pixel.r.toInt();
-        final int g = pixel.g.toInt();
-        final int b = pixel.b.toInt();
-        final int a = pixel.a.toInt();
-
-        // Calculate the pixel luminance (luminance method)
-        final int luminance = ((r * 0.299) + (g * 0.587) + (b * 0.114)).toInt();
-
-        // Verify if the pixel is not white
-        if (r != 255 || g != 255 || b != 255) {
-          // Update non-white limits
-          if (x < left) left = x;
-          if (x > right) right = x;
-          if (y < top) top = y;
-          if (y > bottom) bottom = y;
-        }
-
-        // Apply a white background while preserving pixels close to black
-        if (a < alphaThreshold ||
-            (luminance > blackThreshold &&
-                (r != 255 || g != 255 || b != 255))) {
-          image.setPixel(x, y, img.ColorRgb8(255, 255, 255)); // White
-        }
-      }
-    }
-
-    // Crop the image to remove white zones
-    final img.Image croppedImage = img.copyCrop(
-      image,
-      x: left,
-      y: top,
-      width: right - left,
-      height: bottom - top,
-    );
-
-    // Encode the cropped image in PNG and return the bytes
-    return croppedImage;
+    return number + (8 - (number % 8));
   }
 }
 
-/// Widget to select one or more printers.
-class SelectPrinterWidget extends StatelessWidget {
-  /// The existent printers.
-  final List<AppPrinter> existentPrinters;
+/////
+int _getPrinterWidthPx(PaperSize paperSize) {
+  switch (paperSize) {
+    case PaperSize.mm58:
+      return 384; // 58mm = ~384px
+    case PaperSize.mm80:
+      return 576; // 80mm = ~576px
+    default:
+      return 384;
+  }
+}
 
-  /// The selected printers.
-  final Function(AppPrinter selectedPrinter) builder;
+/// Capture widget as optimized image
+Future<Uint8List> _captureOptimizedImage(
+  Widget widget, {
+  required double widthPx,
+  double pixelRatio = 1.0, // Reduced from 2.0
+}) async {
+  final controller = ScreenshotController();
 
-  /// Constructor of new SelectPrinterWidget.
-  SelectPrinterWidget({
-    super.key,
-    required this.existentPrinters,
-    required this.builder,
+  return await controller.captureFromLongWidget(
+    Material(
+      color: Colors.white,
+      child: Container(color: Colors.white, width: widthPx, child: widget),
+    ),
+    pixelRatio: pixelRatio,
+    delay: const Duration(milliseconds: 100),
+  );
+}
+
+/// Further optimize image: compress, dither, resize
+Uint8List _optimizeImageBytes(
+  Uint8List imageBytes, {
+  int? targetWidth,
+  bool applyDithering = true,
+}) {
+  // Decode image
+  img.Image? image = img.decodeImage(imageBytes);
+  if (image == null) return imageBytes;
+
+  // Resize if needed
+  if (targetWidth != null && image.width != targetWidth) {
+    image = img.copyResize(
+      image,
+      width: targetWidth,
+      interpolation: img.Interpolation.linear,
+    );
+  }
+
+  // Convert to grayscale for better thermal printing
+  image = img.grayscale(image);
+
+  // Apply Floyd-Steinberg dithering for better print quality
+  if (applyDithering) {
+    // Increase contrast
+    image = img.adjustColor(image, contrast: 1.2);
+
+    // Simple threshold dithering (thermal printers are black/white)
+    for (int y = 0; y < image.height; y++) {
+      for (int x = 0; x < image.width; x++) {
+        final pixel = image.getPixel(x, y);
+        final luminance = img.getLuminance(pixel);
+
+        // Apply threshold
+        final newColor = luminance > 128 ? 255 : 0;
+        image.setPixel(x, y, img.ColorRgb8(newColor, newColor, newColor));
+      }
+    }
+  }
+
+  // Encode back to PNG (smallest format for B&W images)
+  return Uint8List.fromList(img.encodePng(image, level: 9));
+}
+
+class _PrinterSelectionDialog extends StatefulWidget {
+  final PrinterManagement printerManagement;
+  final Function(Printer) onPrinterSelected;
+
+  const _PrinterSelectionDialog({
+    required this.printerManagement,
+    required this.onPrinterSelected,
   });
 
   @override
+  State<_PrinterSelectionDialog> createState() =>
+      _PrinterSelectionDialogState();
+}
+
+class _PrinterSelectionDialogState extends State<_PrinterSelectionDialog> {
+  List<Printer> _printers = [];
+  Printer? _selectedPrinter;
+  bool _isScanning = true;
+  bool _isConnecting = false;
+  bool _isConnected = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _startScan();
+  }
+
+  Future<void> _startScan() async {
+    if (mounted) setState(() => _isScanning = true);
+
+    // Clear previous results, but keep selected if valid
+    await widget.printerManagement.startScan(
+      onDevicesFound: (printers) {
+        if (mounted) {
+          setState(() {
+            _printers = printers;
+            if (_selectedPrinter != null) {
+              final found = _printers.any(
+                (p) => p.address == _selectedPrinter?.address,
+              );
+              if (!found) {
+                // Device no longer in scan results
+              }
+            }
+          });
+        }
+      },
+    );
+
+    Future.delayed(const Duration(seconds: 4), () {
+      if (mounted) setState(() => _isScanning = false);
+    });
+  }
+
+  Future<void> _connectToPrinter(Printer printer) async {
+    setState(() {
+      _selectedPrinter = printer;
+      _isConnecting = true;
+      _isConnected = false;
+    });
+
+    try {
+      await widget.printerManagement.connect(printer);
+      if (mounted) {
+        setState(() => _isConnected = true);
+      }
+    } catch (e) {
+      if (mounted) {
+        print('Connection failed: $e');
+        // Optionally reset selection if connection fails
+        // setState(() => _selectedPrinter = null);
+      }
+    } finally {
+      if (mounted) setState(() => _isConnecting = false);
+    }
+  }
+
+  @override
+  void dispose() {
+    widget.printerManagement.stopScan();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          spacing: 12,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(Intls.to.selectOnOrMorePrinter),
-            ),
-            ShadRadioGroup<AppPrinter>(
-              spacing: 8,
-              items: existentPrinters.map(
-                (e) => ShadRadio(
-                  label: Text(e.name ?? ''),
-                  value: e,
-                  sublabel: Text(e.url),
+    return ShadDialog(
+      actionsMainAxisAlignment: MainAxisAlignment.end,
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      actionsGap: 8,
+      actionsAxis: Axis.horizontal,
+      expandActionsWhenTiny: false,
+      child: Material(
+        color: ShadTheme.of(context).colorScheme.card,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxHeight: 350, minWidth: 700),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(Intls.to.selectOnOrMorePrinter),
+                    if (_isScanning)
+                      const SizedBox(
+                        width: 16,
+                        height: 16,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    else
+                      IconButton(
+                        icon: const Icon(Icons.refresh),
+                        onPressed: _startScan,
+                        tooltip: 'Rescan',
+                      ),
+                  ],
                 ),
               ),
-              onChanged: (value) {
-                if (value == null) {
-                  return;
-                }
-
-                builder(value);
-              },
-            ),
-          ],
+              const Divider(),
+              Flexible(
+                child: SingleChildScrollView(
+                  child: _printers.isEmpty
+                      ? Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Center(
+                            child: Text(
+                              _isScanning
+                                  ? 'Scanning for printers...'
+                                  : 'No printers found. Try rescanning.',
+                              style: ShadTheme.of(context).textTheme.muted,
+                            ),
+                          ),
+                        )
+                      : ShadRadioGroup<Printer>(
+                          spacing: 8,
+                          items: _printers
+                              .map(
+                                (e) => ShadRadio(
+                                  label: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(e.name ?? 'Unknown Device'),
+                                      if (_selectedPrinter == e &&
+                                          _isConnecting)
+                                        const Padding(
+                                          padding: EdgeInsets.only(left: 8.0),
+                                          child: SizedBox(
+                                            width: 12,
+                                            height: 12,
+                                            child: CircularProgressIndicator(
+                                              strokeWidth: 2,
+                                            ),
+                                          ),
+                                        )
+                                      else if (_selectedPrinter == e &&
+                                          _isConnected)
+                                        const Padding(
+                                          padding: EdgeInsets.only(left: 8.0),
+                                          child: Icon(
+                                            Icons.check_circle,
+                                            size: 16,
+                                            color: Colors.green,
+                                          ),
+                                        ),
+                                    ],
+                                  ),
+                                  value: e,
+                                  sublabel: Text(e.deviceId ?? e.address ?? ''),
+                                ),
+                              )
+                              .toList(),
+                          initialValue: _selectedPrinter,
+                          onChanged: (value) {
+                            if (value != null) {
+                              _connectToPrinter(value);
+                            }
+                          },
+                        ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
+      actions: [
+        ShadButton.outline(
+          child: Text(Intls.to.cancel),
+          onPressed: () => Navigator.pop(context),
+        ),
+        ShadButton(
+          enabled: _selectedPrinter != null && _isConnected,
+          onPressed: () {
+            final printer = _selectedPrinter;
+            if (printer != null) {
+              widget.onPrinterSelected(printer);
+              Navigator.pop(context);
+            }
+          },
+          child: Text(Intls.to.save),
+        ),
+      ],
     );
   }
 }

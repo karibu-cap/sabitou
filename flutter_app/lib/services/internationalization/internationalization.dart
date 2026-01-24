@@ -2062,6 +2062,10 @@ class AppInternationalizationService extends ChangeNotifier {
           'Bienvenue chez Sabitou, votre solution tout-en-un de gestion des stocks et des ventes.',
     },
     'new': {'en': 'New', 'fr': 'Nouvelle'},
+    'noPrinterConnected': {
+      'en': 'No printer connect.',
+      'fr': 'Aucune imprimante connecte.',
+    },
   };
 
   /// Direct access to the internationalization service.
@@ -2080,6 +2084,10 @@ class AppInternationalizationService extends ChangeNotifier {
     const Locale('en'),
     const Locale('fr'),
   ];
+
+  /// The string for noPrinterConnected.
+  String get noPrinterConnected =>
+      _stringOfLocalizedValue('noPrinterConnected');
 
   /// The new screen first message.
   String get newText => _stringOfLocalizedValue('new');

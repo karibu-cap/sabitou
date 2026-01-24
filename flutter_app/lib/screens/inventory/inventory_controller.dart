@@ -57,6 +57,25 @@ class InventoryController extends ChangeNotifier {
     return result;
   }
 
+  /// Adjusts the inventory.
+  Future<bool> adjustInventory(
+    String storeId,
+    String productId,
+    int quantityChange,
+    String reason,
+    String notes,
+  ) async {
+    final result = await _viewModel.adjustInventory(
+      storeId,
+      productId,
+      quantityChange,
+      reason,
+      notes,
+    );
+
+    return result;
+  }
+
   @override
   void dispose() {
     _viewModel.dispose();

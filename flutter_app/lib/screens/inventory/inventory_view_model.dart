@@ -209,6 +209,37 @@ class InventoryViewModel {
     return result;
   }
 
+  /// Adjusts the inventory.
+  Future<bool> adjustInventory(
+    String storeId,
+    String productId,
+    int quantityChange,
+    String reason,
+    String notes,
+  ) async {
+    try {
+      final response = await InventoryRepository.instance.adjustInventory(
+        AdjustInventoryRequest(
+          storeId: storeId,
+          productId: productId,
+          quantityChange: quantityChange,
+          reason: reason,
+          notes: notes,
+        ),
+      );
+
+      if (response.success) {
+        unawaited(initTheData());
+      }
+
+      return response.success;
+    } catch (e) {
+      _logger.severe('Error adjusting inventory: $e');
+
+      return false;
+    }
+  }
+
   /// Updates the search query.
   void updateSearchQuery(String query) {
     _searchQuerySubject.add(query);

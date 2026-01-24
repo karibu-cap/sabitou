@@ -243,15 +243,16 @@ class CartManager extends ChangeNotifier {
   }
 
   /// Save current cash receipt.
-  Future<void> saveCurrentCashReceipt() async {
+  Future<bool> saveCurrentCashReceipt() async {
     final currentCashReceipt = _currentCashReceipt;
     if (currentCashReceipt == null) {
-      return;
+      return false;
     }
-    final storeId = UserPreferences.instance.store?.refId;
-    if (storeId == null) {
-      return;
+    final store = UserPreferences.instance.store;
+    if (store == null) {
+      return false;
     }
+    final storeId = store.refId;
 
     // Update or add the current order
     final index = saveCashReceipts.indexWhere(
@@ -268,7 +269,8 @@ class CartManager extends ChangeNotifier {
         boxKey: '${CollectionName.cashReceipts}-$storeId',
       ).write('${CollectionName.cashReceipts}-$storeId', saveCashReceipts),
     );
-    clearCart();
+
+    return true;
   }
 
   /// Remove current cash receipt.

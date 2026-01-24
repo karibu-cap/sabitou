@@ -32,6 +32,6 @@ class PdfFormat {
       marginRight: 5,
     );
 
-    return format;
+    return PdfPageFormat.a3;
   }
 }

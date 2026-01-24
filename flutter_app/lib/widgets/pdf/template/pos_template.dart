@@ -6,12 +6,14 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 import 'package:printing/printing.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../services/internationalization/internationalization.dart';
 import '../../../utils/app_constants.dart';
 import '../../../utils/extensions/global_product_extension.dart';
 import '../../../utils/formatters.dart';
 import '../common/pdf_build.dart';
+import '../common/pdf_format.dart';
 
 /// The pos client order.
 class PosTemplate {
@@ -25,14 +27,19 @@ class PosTemplate {
   PosTemplate({required this.cashReceipt, required this.store});
 
   /// Builds PDF cashReceipt mini.
-  Future<Uint8List> buildPdfInvoiceMini(PdfPageFormat format) async {
+  Future<Uint8List> buildPdfInvoiceMini(PdfMode pdfMode) async {
+    final PdfPageFormat pdfPageFormat = PdfFormat.buildPreviewInvoiceFormat(
+      pdfMode,
+      itemsLength: cashReceipt.items.length,
+    );
+
     final accountLogo = await imageFromAssetBundle(StaticImages.placeholder);
     final logoSuite = await imageFromAssetBundle(StaticImages.placeholder);
 
     final List<InvoiceLineItem> orderItems = cashReceipt.items;
 
     return PdfBuildShared.buildSimplePdf(
-      pageFormat: format,
+      pageFormat: pdfPageFormat,
       titleDoc:
           '${Intls.to.store}_${Intls.to.invoice}_${cashReceipt.documentId}',
       source: store.name,

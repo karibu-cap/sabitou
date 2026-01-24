@@ -14,19 +14,11 @@ class PdfBuildShared {
     required List<Widget> children,
     required String source,
   }) async {
-    final doc =
-        Document(
-          pageMode: PdfPageMode.outlines,
-          author: source,
-          creator: Intls.to.sabitu,
-          title: titleDoc,
-        )..addPage(
-          MultiPage(
-            maxPages: 5000,
-            build: (context) => children,
-            pageFormat: pageFormat,
-          ),
-        );
+    final doc = Document(
+      author: source,
+      creator: Intls.to.sabitu,
+      title: titleDoc,
+    )..addPage(MultiPage(build: (context) => children, pageFormat: pageFormat));
 
     return doc.save();
   }

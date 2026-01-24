@@ -86,7 +86,7 @@ abstract final class ReportingService {
   static const getSalesReportFull = connect.Spec(
     '/$name/GetSalesReportFull',
     connect.StreamType.unary,
-    reportsv1reports.GetSalesReportRequest.new,
+    reportsv1reports.GetSalesReportRequestFull.new,
     reportsv1reports.GetSalesReportFullResponse.new,
   );
 

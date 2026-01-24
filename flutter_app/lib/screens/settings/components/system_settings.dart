@@ -5,7 +5,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../services/app_theme_service.dart';
 import '../../../services/internationalization/internationalization.dart';
-import '../../../utils/extends_models.dart';
+import '../../../utils/printer_management.dart';
 import '../../../widgets/pdf/printers/app_printer_utils.dart';
 import '../settings_controller.dart';
 
@@ -228,7 +228,7 @@ class _PrinterSettings extends StatelessWidget {
           trailing: ShadButton.outline(
             child: const Text('Select Printer'),
             onPressed: () async {
-              final AppPrinter? printer = await AppPrinterUtils.pickPrinter(
+              final Printer? printer = await AppPrinterUtils.pickPrinter(
                 context,
               );
 

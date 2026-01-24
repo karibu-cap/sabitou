@@ -133,4 +133,22 @@ extension type InventoryServiceClient (connect.Transport _transport) {
       onTrailer: onTrailer,
     );
   }
+
+  /// Adjusts the inventory.
+  Future<inventoryv1inventory.AdjustInventoryResponse> adjustInventory(
+    inventoryv1inventory.AdjustInventoryRequest input, {
+    connect.Headers? headers,
+    connect.AbortSignal? signal,
+    Function(connect.Headers)? onHeader,
+    Function(connect.Headers)? onTrailer,
+  }) {
+    return connect.Client(_transport).unary(
+      specs.InventoryService.adjustInventory,
+      input,
+      signal: signal,
+      headers: headers,
+      onHeader: onHeader,
+      onTrailer: onTrailer,
+    );
+  }
 }
