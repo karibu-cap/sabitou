@@ -79,6 +79,7 @@ class CreateEditProductFormView extends StatelessWidget {
                                   ],
                                 ),
                                 const _StoreProductFields(),
+                                const _StockFields(),
                               ],
                             ),
                           ),
@@ -93,6 +94,65 @@ class CreateEditProductFormView extends StatelessWidget {
           },
         ),
       ),
+    );
+  }
+}
+
+class _StockFields extends StatelessWidget {
+  const _StockFields();
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = context.watch<CreateEditProductFormController>();
+    if (!controller.isCreatingNewProduct) {
+      return const SizedBox.shrink();
+    }
+
+    return Column(
+      spacing: 16,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(Intls.to.stock, style: ShadTheme.of(context).textTheme.large),
+        const AdjustFlexDisplay(
+          children: [_InitialStockField(), _ReorderPointField()],
+        ),
+      ],
+    );
+  }
+}
+
+class _InitialStockField extends StatelessWidget {
+  const _InitialStockField();
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = context.watch<CreateEditProductFormController>();
+
+    return ShadInputFormField(
+      id: 'initial_stock',
+      label: Text(Intls.to.initialStock),
+      controller: controller.initialStockController,
+      enabled: !controller.onSaveProduct,
+      placeholder: const Text('0'),
+      keyboardType: TextInputType.number,
+    );
+  }
+}
+
+class _ReorderPointField extends StatelessWidget {
+  const _ReorderPointField();
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = context.watch<CreateEditProductFormController>();
+
+    return ShadInputFormField(
+      id: 'reorder_point',
+      label: Text(Intls.to.reorderPoint),
+      controller: controller.reorderPointController,
+      enabled: !controller.onSaveProduct,
+      placeholder: const Text('0'),
+      keyboardType: TextInputType.number,
     );
   }
 }

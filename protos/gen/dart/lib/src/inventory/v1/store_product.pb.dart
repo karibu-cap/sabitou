@@ -170,6 +170,7 @@ class StoreProduct extends $pb.GeneratedMessage {
     ExpirationType? expirationType,
     $1.Timestamp? createdAt,
     $1.Timestamp? updatedAt,
+    $core.int? reorderPoint,
   }) {
     final result = create();
     if (refId != null) result.refId = refId;
@@ -182,6 +183,7 @@ class StoreProduct extends $pb.GeneratedMessage {
     if (expirationType != null) result.expirationType = expirationType;
     if (createdAt != null) result.createdAt = createdAt;
     if (updatedAt != null) result.updatedAt = updatedAt;
+    if (reorderPoint != null) result.reorderPoint = reorderPoint;
     return result;
   }
 
@@ -217,6 +219,8 @@ class StoreProduct extends $pb.GeneratedMessage {
         subBuilder: $1.Timestamp.create)
     ..aOM<$1.Timestamp>(10, _omitFieldNames ? '' : 'updatedAt',
         subBuilder: $1.Timestamp.create)
+    ..a<$core.int>(
+        11, _omitFieldNames ? '' : 'reorderPoint', $pb.PbFieldType.O3)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -338,6 +342,16 @@ class StoreProduct extends $pb.GeneratedMessage {
   void clearUpdatedAt() => $_clearField(10);
   @$pb.TagNumber(10)
   $1.Timestamp ensureUpdatedAt() => $_ensure(9);
+
+  /// The reorder point.
+  @$pb.TagNumber(11)
+  $core.int get reorderPoint => $_getIZ(10);
+  @$pb.TagNumber(11)
+  set reorderPoint($core.int value) => $_setSignedInt32(10, value);
+  @$pb.TagNumber(11)
+  $core.bool hasReorderPoint() => $_has(10);
+  @$pb.TagNumber(11)
+  void clearReorderPoint() => $_clearField(11);
 }
 
 class CreateGlobalProductRequest extends $pb.GeneratedMessage {
@@ -1272,10 +1286,12 @@ class AddStoreProductRequest extends $pb.GeneratedMessage {
   factory AddStoreProductRequest({
     GlobalProduct? globalProduct,
     StoreProduct? storeProduct,
+    $core.int? initialStock,
   }) {
     final result = create();
     if (globalProduct != null) result.globalProduct = globalProduct;
     if (storeProduct != null) result.storeProduct = storeProduct;
+    if (initialStock != null) result.initialStock = initialStock;
     return result;
   }
 
@@ -1296,6 +1312,7 @@ class AddStoreProductRequest extends $pb.GeneratedMessage {
         subBuilder: GlobalProduct.create)
     ..aOM<StoreProduct>(2, _omitFieldNames ? '' : 'storeProduct',
         subBuilder: StoreProduct.create)
+    ..a<$core.int>(3, _omitFieldNames ? '' : 'initialStock', $pb.PbFieldType.O3)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -1345,6 +1362,16 @@ class AddStoreProductRequest extends $pb.GeneratedMessage {
   void clearStoreProduct() => $_clearField(2);
   @$pb.TagNumber(2)
   StoreProduct ensureStoreProduct() => $_ensure(1);
+
+  /// The initial stock.
+  @$pb.TagNumber(3)
+  $core.int get initialStock => $_getIZ(2);
+  @$pb.TagNumber(3)
+  set initialStock($core.int value) => $_setSignedInt32(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasInitialStock() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearInitialStock() => $_clearField(3);
 }
 
 class AddStoreProductResponse extends $pb.GeneratedMessage {

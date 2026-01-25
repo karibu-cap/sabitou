@@ -134,6 +134,9 @@ type InventoryTransaction struct {
 	TransactionTime     *timestamppb.Timestamp `protobuf:"bytes,11,opt,name=transaction_time,json=transactionTime,proto3" json:"transaction_time,omitempty"`
 	Notes               string                 `protobuf:"bytes,12,opt,name=notes,proto3" json:"notes,omitempty"`
 	BatchId             string                 `protobuf:"bytes,13,opt,name=batch_id,json=batchId,proto3" json:"batch_id,omitempty"` // Specific batch affected
+	UnitPrice           float64                `protobuf:"fixed64,14,opt,name=unit_price,json=unitPrice,proto3" json:"unit_price,omitempty"`
+	TotalAmount         float64                `protobuf:"fixed64,15,opt,name=total_amount,json=totalAmount,proto3" json:"total_amount,omitempty"`
+	Currency            string                 `protobuf:"bytes,16,opt,name=currency,proto3" json:"currency,omitempty"`
 	unknownFields       protoimpl.UnknownFields
 	sizeCache           protoimpl.SizeCache
 }
@@ -259,11 +262,32 @@ func (x *InventoryTransaction) GetBatchId() string {
 	return ""
 }
 
+func (x *InventoryTransaction) GetUnitPrice() float64 {
+	if x != nil {
+		return x.UnitPrice
+	}
+	return 0
+}
+
+func (x *InventoryTransaction) GetTotalAmount() float64 {
+	if x != nil {
+		return x.TotalAmount
+	}
+	return 0
+}
+
+func (x *InventoryTransaction) GetCurrency() string {
+	if x != nil {
+		return x.Currency
+	}
+	return ""
+}
+
 var File_audits_v1_inventory_transaction_proto protoreflect.FileDescriptor
 
 const file_audits_v1_inventory_transaction_proto_rawDesc = "" +
 	"\n" +
-	"%audits/v1/inventory_transaction.proto\x12\taudits.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xdb\x04\n" +
+	"%audits/v1/inventory_transaction.proto\x12\taudits.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xb9\x05\n" +
 	"\x14InventoryTransaction\x12,\n" +
 	"\vdocument_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01H\x00R\n" +
 	"documentId\x88\x01\x01\x12\x19\n" +
@@ -280,7 +304,11 @@ const file_audits_v1_inventory_transaction_proto_rawDesc = "" +
 	" \x01(\tR\x11performedByUserId\x12E\n" +
 	"\x10transaction_time\x18\v \x01(\v2\x1a.google.protobuf.TimestampR\x0ftransactionTime\x12\x14\n" +
 	"\x05notes\x18\f \x01(\tR\x05notes\x12\x19\n" +
-	"\bbatch_id\x18\r \x01(\tR\abatchIdB\x0e\n" +
+	"\bbatch_id\x18\r \x01(\tR\abatchId\x12\x1d\n" +
+	"\n" +
+	"unit_price\x18\x0e \x01(\x01R\tunitPrice\x12!\n" +
+	"\ftotal_amount\x18\x0f \x01(\x01R\vtotalAmount\x12\x1a\n" +
+	"\bcurrency\x18\x10 \x01(\tR\bcurrencyB\x0e\n" +
 	"\f_document_id*\xac\x02\n" +
 	"\x0fTransactionType\x12\x18\n" +
 	"\x14TXN_TYPE_UNSPECIFIED\x10\x00\x12\x15\n" +

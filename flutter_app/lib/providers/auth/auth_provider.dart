@@ -8,8 +8,6 @@ import '../../repositories/auth_repository.dart';
 import '../../repositories/business_repository.dart';
 import '../../repositories/stores_repository.dart';
 import '../../services/data_sync/data_sync_service.dart';
-import '../../services/rpc/fake_transport/auth.dart';
-import '../../services/rpc/fake_transport/data_sync.dart';
 import '../../services/storage/app_storage.dart';
 import '../../utils/app_constants.dart';
 import '../../utils/user_preference.dart';
@@ -35,12 +33,10 @@ class AuthProvider extends ChangeNotifier {
   AuthStatus _status = AuthStatus.unauthenticated;
   String? _errorMessage;
   final Completer<bool> _authInitComplete = Completer<bool>();
-  final AuthRepository _authRepository = AuthRepository(
-    transport: authFakeTransport,
-  );
-  final _dataSyncService = DataSyncService(transport: syncFakeTransport);
-  final _businessRepository = BusinessRepository(transport: authFakeTransport);
-  final _storesRepository = StoresRepository(transport: authFakeTransport);
+  final AuthRepository _authRepository = AuthRepository();
+  final _dataSyncService = DataSyncService();
+  final _businessRepository = BusinessRepository();
+  final _storesRepository = StoresRepository();
 
   /// Singleton access.
   static AuthProvider get instance => GetIt.I.get<AuthProvider>();
@@ -101,10 +97,10 @@ class AuthProvider extends ChangeNotifier {
       _setStatus(AuthStatus.authenticated);
 
       // Save business and store after successful login
-      // await saveBusinessAndStore(response);
+      await saveBusinessAndStore(response);
 
       /// Initialize data sync after successful login.
-      // await initializeDataSync();
+      await initializeDataSync();
 
       return true;
     }
@@ -146,14 +142,14 @@ class AuthProvider extends ChangeNotifier {
 
     _currentUser = response;
     if (response != null) {
-      // await UserPreferences.instance.saveUserPreferences(user: response);
+      await UserPreferences.instance.saveUserPreferences(user: response);
       _setStatus(AuthStatus.authenticated);
 
       // Save business and store after successful register
-      // await saveBusinessAndStore(response);
+      await saveBusinessAndStore(response);
 
       /// Initialize data sync after successful register.
-      // await initializeDataSync();
+      await initializeDataSync();
 
       return true;
     }
@@ -207,6 +203,10 @@ class AuthProvider extends ChangeNotifier {
     final businesses = await _businessRepository.getMyBusinesses(
       currentUser.refId,
     );
+
+    if (businesses.isEmpty) {
+      return;
+    }
 
     // Take first business
     final firstBusiness = businesses.first;

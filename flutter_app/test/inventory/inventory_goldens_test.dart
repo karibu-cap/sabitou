@@ -105,14 +105,12 @@ final inventoryFakeTransport = FakeTransportBuilder()
           ..storeProductId = 'sp_1'
           ..storeId = request.storeId
           ..quantityAvailable = 5
-          ..quantityReserved = 0
           ..minThreshold = 10
           ..lastUpdated = Timestamp.fromDateTime(clock.now()),
         InventoryLevel()
           ..storeProductId = 'sp_2'
           ..storeId = request.storeId
           ..quantityAvailable = 8
-          ..quantityReserved = 2
           ..minThreshold = 15
           ..lastUpdated = Timestamp.fromDateTime(clock.now()),
       ],
@@ -128,7 +126,6 @@ final inventoryFakeTransport = FakeTransportBuilder()
           ..storeProductId = 'sp_3'
           ..storeId = request.storeId
           ..quantityAvailable = 20
-          ..quantityReserved = 0
           ..batches.add(
             Batch()
               ..documentId = 'batch_1'

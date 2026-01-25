@@ -109,23 +109,6 @@ final _fakeTransport =
                 ..status = SupplierStatus.SUPPLIER_STATUS_ACTIVE,
             ]);
         })
-        .unary(StoreProductService.getStoreProduct, (req, _) async {
-          final storeProduct =
-              (_fakeData[CollectionName.storeProducts] as List<StoreProduct>)
-                  .firstWhere((gp) => gp.refId == req.storeProductId);
-
-          return GetStoreProductResponse(
-            product: StoreProductWithGlobalProduct(
-              storeProduct: storeProduct,
-              globalProduct:
-                  (_fakeData[CollectionName.globalProducts]
-                          as List<GlobalProduct>)
-                      .firstWhere(
-                        (gp) => gp.refId == storeProduct.globalProductId,
-                      ),
-            ),
-          );
-        })
         .server(StoreProductService.streamStoreProducts, (req, _) async* {
           final request = req;
 
@@ -344,11 +327,12 @@ final _fakeTransport =
                     globalProducts.any((gp) => gp.refId == sp.globalProductId),
               )
               .map(
-                (bp) => StoreProductWithGlobalProduct()
-                  ..storeProduct = bp
-                  ..globalProduct = globalProducts.firstWhere(
+                (bp) => StoreProductWithGlobalProduct(
+                  storeProduct: bp,
+                  globalProduct: globalProducts.firstWhereOrNull(
                     (gp) => gp.refId == bp.globalProductId,
                   ),
+                ),
               )
               .toList();
 
@@ -447,17 +431,36 @@ final _fakeTransport =
                 .add(req.globalProduct..refId = globalProductRefId);
           }
 
+          final storeProductRefId =
+              'store-product-${Random().nextInt(1000000)}';
+
           (_fakeData[CollectionName.storeProducts] as List<StoreProduct>).add(
             StoreProduct(
-              refId: 'store-product-${Random().nextInt(1000000)}',
+              refId: storeProductRefId,
               globalProductId: globalProductRefId,
               storeId: req.storeProduct.storeId,
               salePrice: req.storeProduct.salePrice,
               createdAt: Timestamp.fromDateTime(clock.now()),
               sku: req.storeProduct.sku,
               status: ProductStatus.PRODUCT_STATUS_ACTIVE,
+              reorderPoint: req.storeProduct.reorderPoint,
             ),
           );
+
+          if (req.initialStock > 0) {
+            (_fakeData[CollectionName.inventoryLevels] as List<InventoryLevel>)
+                .add(
+                  InventoryLevel(
+                    storeProductId: storeProductRefId,
+                    quantityAvailable: req.initialStock,
+                    quantityOnHand: req.initialStock,
+                    quantityCommitted: 0,
+                    storeId: req.storeProduct.storeId,
+                    batches: [],
+                    lastUpdated: Timestamp.fromDateTime(clock.now()),
+                  ),
+                );
+          }
 
           return AddStoreProductResponse()..success = true;
         })
@@ -541,29 +544,25 @@ final _fakeTransport =
       ..unary(StoreProductService.getStoreProduct, (req, _) async {
         final request = req;
 
-        return GetStoreProductResponse(
+        final storeProduct =
+            (_fakeData[CollectionName.storeProducts] as List<StoreProduct>)
+                .firstWhereOrNull((sp) => sp.refId == request.storeProductId);
+
+        final res = GetStoreProductResponse(
           product: StoreProductWithGlobalProduct(
-            storeProduct: StoreProduct()
-              ..refId = request.storeProductId
-              ..storeId = 'store_1'
-              ..globalProductId = 'gp_${request.storeProductId.substring(3)}'
-              ..salePrice =
-                  10000 + int.parse(request.storeProductId.substring(3)) * 5000
-              ..status = ProductStatus.PRODUCT_STATUS_ACTIVE,
-            globalProduct: GlobalProduct()
-              ..refId = 'gp_${request.storeProductId.substring(3)}'
-              ..name = (Internationalized()
-                ..en = 'Product ${request.storeProductId.substring(3)}'
-                ..fr = 'Produit ${request.storeProductId.substring(3)}')
-              ..description = (Internationalized()
-                ..en = 'Description ${request.storeProductId.substring(3)}'
-                ..fr = 'Description ${request.storeProductId.substring(3)}')
-              ..status = GlobalProductStatus.GLOBAL_PRODUCT_STATUS_ACTIVE,
+            storeProduct: storeProduct,
+            globalProduct:
+                (_fakeData[CollectionName.globalProducts]
+                        as List<GlobalProduct>)
+                    .firstWhereOrNull(
+                      (gp) => gp.refId == storeProduct?.globalProductId,
+                    ),
           ),
         );
+
+        return res;
       })
       ..unary(InventoryService.adjustInventory, (req, _) async {
-        _ensureFakeInventory(req.storeId);
         final levels =
             _fakeData[CollectionName.inventoryLevels] as List<InventoryLevel>;
         final level = levels.firstWhereOrNull(
@@ -571,9 +570,6 @@ final _fakeTransport =
         );
 
         if (level != null) {
-          level.quantityAvailable += req.quantityChange;
-          level.lastUpdated = Timestamp.fromDateTime(clock.now());
-
           // Optionally add transaction
           (_fakeData[CollectionName.inventoryTransactions]
                   as List<InventoryTransaction>)
@@ -583,10 +579,16 @@ final _fakeTransport =
                   ..storeId = req.storeId
                   ..productId = req.productId
                   ..transactionType = TransactionType.TXN_TYPE_ADJUSTMENT
-                  ..quantityChange = req.quantityChange
+                  ..quantityChange = req.newQuantity - level.quantityAvailable
+                  ..quantityAfter = req.newQuantity
+                  ..quantityBefore = level.quantityAvailable
                   ..transactionTime = Timestamp.fromDateTime(clock.now())
                   ..notes = req.reason,
               );
+
+          level.quantityOnHand = req.newQuantity;
+          level.quantityAvailable = req.newQuantity - level.quantityCommitted;
+          level.lastUpdated = Timestamp.fromDateTime(clock.now());
 
           return AdjustInventoryResponse(success: true, updatedLevel: level);
         }
@@ -594,7 +596,6 @@ final _fakeTransport =
         return AdjustInventoryResponse(success: false);
       })
       ..unary(InventoryService.getLowStockItems, (req, _) async {
-        _ensureFakeInventory(req.storeId);
         final levels =
             _fakeData[CollectionName.inventoryLevels] as List<InventoryLevel>;
 
@@ -612,7 +613,6 @@ final _fakeTransport =
         );
       })
       ..unary(InventoryService.getResourceInventory, (req, _) async {
-        _ensureFakeInventory(req.storeId);
         final levels =
             _fakeData[CollectionName.inventoryLevels] as List<InventoryLevel>;
 
@@ -783,8 +783,139 @@ final _fakeTransport =
       ..unary(InventoryService.getRecentInventoryTransactions, (req, _) async {
         final request = req;
 
-        return GetInventoryTransactionHistoryResponse(
-          transactions: [
+        // Generate product-specific transactions
+        final transactions = <InventoryTransaction>[];
+
+        // If product_id is specified, return transactions for that product
+        if (request.hasProductId() && request.productId.isNotEmpty) {
+          // Sales Order transactions
+          transactions.addAll([
+            InventoryTransaction()
+              ..documentId = 'SO-00'
+              ..storeId = request.storeId
+              ..productId = request.productId
+              ..transactionType = TransactionType.TXN_TYPE_SALE
+              ..quantityChange = 2
+              ..quantityBefore = 206
+              ..quantityAfter = 206
+              ..unitPrice = 15000
+              ..totalAmount = 0
+              ..currency = 'XAF'
+              ..relatedDocumentType = 'Sales Order'
+              ..relatedDocumentId = 'SO-00'
+              ..performedByUserId = 'user_1'
+              ..transactionTime = Timestamp.fromDateTime(DateTime(2025, 5, 21))
+              ..notes = 'Jane Ratke - Draft',
+            InventoryTransaction()
+              ..documentId = 'SO-01'
+              ..storeId = request.storeId
+              ..productId = request.productId
+              ..transactionType = TransactionType.TXN_TYPE_SALE
+              ..quantityChange = 1
+              ..quantityBefore = 206
+              ..quantityAfter = 206
+              ..unitPrice = 15000
+              ..totalAmount = 50000
+              ..currency = 'XAF'
+              ..relatedDocumentType = 'Sales Order'
+              ..relatedDocumentId = 'SO-01'
+              ..performedByUserId = 'user_2'
+              ..transactionTime = Timestamp.fromDateTime(DateTime(2025, 5, 21))
+              ..notes = 'Jorge Raynor - Closed',
+            InventoryTransaction()
+              ..documentId = 'SO-02'
+              ..storeId = request.storeId
+              ..productId = request.productId
+              ..transactionType = TransactionType.TXN_TYPE_SALE
+              ..quantityChange = 8
+              ..quantityBefore = 206
+              ..quantityAfter = 206
+              ..unitPrice = 15000
+              ..totalAmount = 50000
+              ..currency = 'XAF'
+              ..relatedDocumentType = 'Sales Order'
+              ..relatedDocumentId = 'SO-02'
+              ..performedByUserId = 'user_3'
+              ..transactionTime = Timestamp.fromDateTime(DateTime(2025, 5, 21))
+              ..notes = 'Tami Mosciski - Approval Overdue',
+          ]);
+
+          // Purchase Order transactions
+          transactions.addAll([
+            InventoryTransaction()
+              ..documentId = 'PO-001'
+              ..storeId = request.storeId
+              ..productId = request.productId
+              ..transactionType = TransactionType.TXN_TYPE_PURCHASE
+              ..quantityChange = 161
+              ..quantityBefore = 45
+              ..quantityAfter = 206
+              ..unitPrice = 8000
+              ..totalAmount = 1288000
+              ..currency = 'XAF'
+              ..relatedDocumentType = 'Purchase Order'
+              ..relatedDocumentId = 'PO-001'
+              ..performedByUserId = 'user_1'
+              ..transactionTime = Timestamp.fromDateTime(
+                clock.now().subtract(const Duration(days: 45)),
+              )
+              ..notes = 'Received from Supplier Alpha',
+            InventoryTransaction()
+              ..documentId = 'PO-002'
+              ..storeId = request.storeId
+              ..productId = request.productId
+              ..transactionType = TransactionType.TXN_TYPE_PURCHASE
+              ..quantityChange = 45
+              ..quantityBefore = 0
+              ..quantityAfter = 45
+              ..unitPrice = 8000
+              ..totalAmount = 360000
+              ..currency = 'XAF'
+              ..relatedDocumentType = 'Purchase Order'
+              ..relatedDocumentId = 'PO-002'
+              ..performedByUserId = 'user_2'
+              ..transactionTime = Timestamp.fromDateTime(
+                clock.now().subtract(const Duration(days: 60)),
+              )
+              ..notes = 'Initial stock from Supplier Beta',
+          ]);
+
+          // Adjustment transactions
+          transactions.addAll([
+            InventoryTransaction()
+              ..documentId = 'ADJ-001'
+              ..storeId = request.storeId
+              ..productId = request.productId
+              ..transactionType = TransactionType.TXN_TYPE_ADJUSTMENT
+              ..quantityChange = -5
+              ..quantityBefore = 211
+              ..quantityAfter = 206
+              ..relatedDocumentType = 'Adjustment'
+              ..relatedDocumentId = 'ADJ-001'
+              ..performedByUserId = 'user_1'
+              ..transactionTime = Timestamp.fromDateTime(
+                clock.now().subtract(const Duration(days: 10)),
+              )
+              ..notes = 'Damaged items removed',
+            InventoryTransaction()
+              ..documentId = 'ADJ-002'
+              ..storeId = request.storeId
+              ..productId = request.productId
+              ..transactionType = TransactionType.TXN_TYPE_ADJUSTMENT
+              ..quantityChange = 3
+              ..quantityBefore = 208
+              ..quantityAfter = 211
+              ..relatedDocumentType = 'Adjustment'
+              ..relatedDocumentId = 'ADJ-002'
+              ..performedByUserId = 'user_2'
+              ..transactionTime = Timestamp.fromDateTime(
+                clock.now().subtract(const Duration(days: 20)),
+              )
+              ..notes = 'Found additional stock during inventory count',
+          ]);
+        } else {
+          // Return general transactions for the store
+          transactions.addAll([
             InventoryTransaction()
               ..documentId = 'txn_1'
               ..storeId = request.storeId
@@ -793,6 +924,9 @@ final _fakeTransport =
               ..quantityChange = 10
               ..quantityBefore = 0
               ..quantityAfter = 10
+              ..unitPrice = 5000
+              ..totalAmount = 50000
+              ..currency = 'XAF'
               ..relatedDocumentType = 'Purchase Order'
               ..relatedDocumentId = 'po_1'
               ..performedByUserId = 'user_1'
@@ -808,6 +942,9 @@ final _fakeTransport =
               ..quantityChange = -5
               ..quantityBefore = 15
               ..quantityAfter = 10
+              ..unitPrice = 10000
+              ..totalAmount = 50000
+              ..currency = 'XAF'
               ..relatedDocumentType = 'Sales Order'
               ..relatedDocumentId = 'so_1'
               ..performedByUserId = 'user_2'
@@ -815,12 +952,31 @@ final _fakeTransport =
                 clock.now().subtract(const Duration(hours: 1)),
               )
               ..notes = 'Customer sale',
-          ],
-          totalCount: 2,
-          totalQuantityIn: 10.0,
-          totalQuantityOut: 5.0,
+          ]);
+        }
+
+        return GetInventoryTransactionHistoryResponse(
+          transactions: transactions,
+          totalCount: transactions.length,
+          totalQuantityIn: transactions
+              .where((t) => t.quantityChange > 0)
+              .fold<double>(0.0, (sum, t) => sum + t.quantityChange),
+          totalQuantityOut: transactions
+              .where((t) => t.quantityChange < 0)
+              .fold<double>(0.0, (sum, t) => sum + t.quantityChange.abs()),
         );
       }) // Moc CategoryService.findCategories for product categories
+      ..unary(InventoryService.getProductInventoryLevels, (req, _) async {
+        final level =
+            (_fakeData[CollectionName.inventoryLevels] as List<InventoryLevel>)
+                .firstWhereOrNull(
+                  (po) =>
+                      po.storeProductId == req.productId &&
+                      po.storeId == req.storeId,
+                );
+
+        return GetProductInventoryLevelsResponse(level: level);
+      })
       ..unary(CategoryService.findCategories, (req, _) async {
         return FindCategoriesResponse(
           categories: [
@@ -978,9 +1134,9 @@ final _fakeTransport =
       ..unary(PurchaseOrderService.getPurchaseOrder, (req, _) async {
         final purchaseOrder =
             (_fakeData[CollectionName.purchaseOrders] as List<PurchaseOrder>)
-                .firstWhere((po) => po.documentId == req.purchaseOrderId);
+                .firstWhereOrNull((po) => po.documentId == req.purchaseOrderId);
 
-        return GetPurchaseOrderResponse()..purchaseOrder = purchaseOrder;
+        return GetPurchaseOrderResponse(purchaseOrder: purchaseOrder);
       })
       ..unary(PurchaseOrderService.listPurchaseOrders, (req, _) async {
         final purchaseOrders =
@@ -1101,9 +1257,11 @@ final _fakeTransport =
 
           // 2.3 - Update InventoryLeveL.
           inventoryLevel = inventoryLevel
-            ..quantityAvailable += item.quantityReceived.toInt()
+            ..quantityOnHand += item.quantityReceived.toInt()
             ..lastUpdated = Timestamp.fromDateTime(clock.now())
             ..lastUpdatedByUserId = req.receivedByUserId;
+          inventoryLevel.quantityAvailable =
+              inventoryLevel.quantityOnHand - inventoryLevel.quantityCommitted;
 
           inventoryLevel.batches.removeWhere((b) => b.documentId == batchId);
           inventoryLevel.batches.add(existingBatch);
@@ -1125,6 +1283,10 @@ final _fakeTransport =
             ..productId = item.productId
             ..transactionType = TransactionType.TXN_TYPE_PURCHASE
             ..quantityChange = item.quantityReceived.toInt()
+            ..unitPrice = item.purchasePrice.toDouble()
+            ..totalAmount =
+                item.purchasePrice.toDouble() * item.quantityReceived
+            ..currency = 'XAF'
             ..quantityBefore = inventoryLevel.quantityAvailable
             ..quantityAfter =
                 inventoryLevel.quantityAvailable + item.quantityReceived.toInt()
@@ -1235,7 +1397,11 @@ final _fakeTransport =
             if (inventoryLevel.storeProductId == item.productId &&
                 inventoryLevel.storeId == request.receipt.storeId) {
               inventoryLevel
-                ..quantityAvailable -= item.quantity
+                ..quantityAvailable =
+                    inventoryLevel.quantityOnHand -
+                    inventoryLevel.quantityCommitted +
+                    item.quantity
+                ..quantityCommitted += item.quantity
                 ..lastUpdated = Timestamp.fromDateTime(clock.now())
                 ..lastUpdatedByUserId = request.receipt.cashierUserId;
             }
@@ -1253,6 +1419,9 @@ final _fakeTransport =
                   ..productId = item.productId
                   ..transactionType = TransactionType.TXN_TYPE_SALE
                   ..quantityChange = -item.quantity
+                  ..unitPrice = item.unitPrice
+                  ..totalAmount = item.total
+                  ..currency = request.receipt.currency
                   ..quantityBefore =
                       (_fakeData[CollectionName.inventoryLevels]
                               as List<InventoryLevel>)
@@ -1309,56 +1478,3 @@ final Map<String, dynamic> fakeStorage = {
   CollectionName.stores:
       (_fakeData[CollectionName.stores] as List<Store>).first,
 };
-
-void _ensureFakeInventory(String storeId) {
-  final levels =
-      _fakeData[CollectionName.inventoryLevels] as List<InventoryLevel>;
-  if (levels.isEmpty) {
-    levels.addAll([
-      InventoryLevel()
-        ..storeProductId = 'sp_1'
-        ..storeId = storeId
-        ..quantityAvailable = 5
-        ..quantityReserved = 0
-        ..minThreshold = 10
-        ..lastUpdated = Timestamp.fromDateTime(clock.now()),
-      InventoryLevel()
-        ..storeProductId = 'sp_2'
-        ..storeId = storeId
-        ..quantityAvailable = 8
-        ..quantityReserved = 2
-        ..minThreshold = 15
-        ..lastUpdated = Timestamp.fromDateTime(clock.now()),
-      InventoryLevel()
-        ..storeProductId = 'sp_3'
-        ..storeId = storeId
-        ..quantityAvailable = 20
-        ..quantityReserved = 0
-        ..lastUpdated = Timestamp.fromDateTime(clock.now())
-        ..batches.add(
-          Batch()
-            ..documentId = 'batch_1'
-            ..productId = 'sp_3'
-            ..warehouseId = storeId
-            ..quantity = 20
-            ..expirationDate = Timestamp.fromDateTime(
-              clock.now().add(const Duration(days: 45)),
-            )
-            ..receivedAt = Timestamp.fromDateTime(
-              clock.now().subtract(const Duration(days: 30)),
-            ),
-        )
-        ..batches.add(
-          Batch()
-            ..documentId = 'batch_2'
-            ..productId = 'sp_3'
-            ..warehouseId = storeId
-            ..quantity = 0
-            ..expirationDate = Timestamp.fromDateTime(
-              clock.now().subtract(const Duration(days: 1)),
-            )
-            ..status = BatchStatus.BATCH_STATUS_EXPIRED,
-        ),
-    ]);
-  }
-}

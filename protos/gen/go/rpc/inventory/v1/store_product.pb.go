@@ -296,7 +296,9 @@ type StoreProduct struct {
 	// The creation date of the product.
 	CreatedAt *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	// The last update date of the product.
-	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=updated_at,json=updatedAt,proto3,oneof" json:"updated_at,omitempty"`
+	UpdatedAt *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=updated_at,json=updatedAt,proto3,oneof" json:"updated_at,omitempty"`
+	// The reorder point.
+	ReorderPoint  *int32 `protobuf:"varint,11,opt,name=reorder_point,json=reorderPoint,proto3,oneof" json:"reorder_point,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -399,6 +401,13 @@ func (x *StoreProduct) GetUpdatedAt() *timestamppb.Timestamp {
 		return x.UpdatedAt
 	}
 	return nil
+}
+
+func (x *StoreProduct) GetReorderPoint() int32 {
+	if x != nil && x.ReorderPoint != nil {
+		return *x.ReorderPoint
+	}
+	return 0
 }
 
 type CreateGlobalProductRequest struct {
@@ -1094,7 +1103,9 @@ type AddStoreProductRequest struct {
 	// If the product does not exist, it will be created.
 	GlobalProduct *GlobalProduct `protobuf:"bytes,1,opt,name=global_product,json=globalProduct,proto3" json:"global_product,omitempty"`
 	// The store product to add.
-	StoreProduct  *StoreProduct `protobuf:"bytes,2,opt,name=store_product,json=storeProduct,proto3" json:"store_product,omitempty"`
+	StoreProduct *StoreProduct `protobuf:"bytes,2,opt,name=store_product,json=storeProduct,proto3" json:"store_product,omitempty"`
+	// The initial stock.
+	InitialStock  *int32 `protobuf:"varint,3,opt,name=initial_stock,json=initialStock,proto3,oneof" json:"initial_stock,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1141,6 +1152,13 @@ func (x *AddStoreProductRequest) GetStoreProduct() *StoreProduct {
 		return x.StoreProduct
 	}
 	return nil
+}
+
+func (x *AddStoreProductRequest) GetInitialStock() int32 {
+	if x != nil && x.InitialStock != nil {
+		return *x.InitialStock
+	}
+	return 0
 }
 
 type AddStoreProductResponse struct {
@@ -1840,7 +1858,7 @@ const file_inventory_v1_store_product_proto_rawDesc = "" +
 	"\x06status\x18\a \x01(\x0e2!.inventory.v1.GlobalProductStatusR\x06statusB\t\n" +
 	"\a_ref_idB\x0e\n" +
 	"\f_descriptionB\x11\n" +
-	"\x0f_bar_code_value\"\xfe\x03\n" +
+	"\x0f_bar_code_value\"\xba\x04\n" +
 	"\fStoreProduct\x12\x1a\n" +
 	"\x06ref_id\x18\x01 \x01(\tH\x00R\x05refId\x88\x01\x01\x12\x19\n" +
 	"\bstore_id\x18\x02 \x01(\tR\astoreId\x12*\n" +
@@ -1855,11 +1873,13 @@ const file_inventory_v1_store_product_proto_rawDesc = "" +
 	"created_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12>\n" +
 	"\n" +
 	"updated_at\x18\n" +
-	" \x01(\v2\x1a.google.protobuf.TimestampH\x03R\tupdatedAt\x88\x01\x01B\t\n" +
+	" \x01(\v2\x1a.google.protobuf.TimestampH\x03R\tupdatedAt\x88\x01\x01\x12(\n" +
+	"\rreorder_point\x18\v \x01(\x05H\x04R\freorderPoint\x88\x01\x01B\t\n" +
 	"\a_ref_idB\r\n" +
 	"\v_sale_priceB\x06\n" +
 	"\x04_skuB\r\n" +
-	"\v_updated_at\"`\n" +
+	"\v_updated_atB\x10\n" +
+	"\x0e_reorder_point\"`\n" +
 	"\x1aCreateGlobalProductRequest\x12B\n" +
 	"\x0eglobal_product\x18\x01 \x01(\v2\x1b.inventory.v1.GlobalProductR\rglobalProduct\"7\n" +
 	"\x1bCreateGlobalProductResponse\x12\x18\n" +
@@ -1911,10 +1931,12 @@ const file_inventory_v1_store_product_proto_rawDesc = "" +
 	"\x1bFindProductCategoryResponse\x126\n" +
 	"\n" +
 	"categories\x18\x01 \x03(\v2\x16.inventory.v1.CategoryR\n" +
-	"categories\"\x9d\x01\n" +
+	"categories\"\xd9\x01\n" +
 	"\x16AddStoreProductRequest\x12B\n" +
 	"\x0eglobal_product\x18\x01 \x01(\v2\x1b.inventory.v1.GlobalProductR\rglobalProduct\x12?\n" +
-	"\rstore_product\x18\x02 \x01(\v2\x1a.inventory.v1.StoreProductR\fstoreProduct\"3\n" +
+	"\rstore_product\x18\x02 \x01(\v2\x1a.inventory.v1.StoreProductR\fstoreProduct\x12(\n" +
+	"\rinitial_stock\x18\x03 \x01(\x05H\x00R\finitialStock\x88\x01\x01B\x10\n" +
+	"\x0e_initial_stock\"3\n" +
 	"\x17AddStoreProductResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\"N\n" +
 	"\x16GetStoreProductRequest\x124\n" +
@@ -2116,6 +2138,7 @@ func file_inventory_v1_store_product_proto_init() {
 	file_inventory_v1_store_product_proto_msgTypes[8].OneofWrappers = []any{}
 	file_inventory_v1_store_product_proto_msgTypes[9].OneofWrappers = []any{}
 	file_inventory_v1_store_product_proto_msgTypes[11].OneofWrappers = []any{}
+	file_inventory_v1_store_product_proto_msgTypes[15].OneofWrappers = []any{}
 	file_inventory_v1_store_product_proto_msgTypes[19].OneofWrappers = []any{}
 	file_inventory_v1_store_product_proto_msgTypes[23].OneofWrappers = []any{}
 	file_inventory_v1_store_product_proto_msgTypes[27].OneofWrappers = []any{}

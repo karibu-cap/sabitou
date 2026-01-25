@@ -39,6 +39,9 @@ message InventoryTransaction {
   google.protobuf.Timestamp transaction_time = 11;
   string notes = 12;
   string batch_id = 13; // Specific batch affected
+  double unit_price = 14;
+  double total_amount = 15;
+  string currency = 16;
 }
 
 enum TransactionType {

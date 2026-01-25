@@ -39,20 +39,25 @@ class InventoryViewModel {
   /// Gets the selected status subject.
   final _selectedStatusSubject = BehaviorSubject<StockStatus?>.seeded(null);
 
+  /// Gets the selected item subject.
+  final _selectedItemSubject =
+      BehaviorSubject<InventoryLevelWithProduct?>.seeded(null);
+
+  /// Gets the transactions subject for the selected item.
+  final _transactionsSubject =
+      BehaviorSubject<List<InventoryTransaction>>.seeded([]);
+
+  /// Gets the transaction filter subject.
+  final _transactionFilterSubject = BehaviorSubject<TransactionType>.seeded(
+    TransactionType.TXN_TYPE_SALE,
+  );
+
   /// Gets the business categories.
   UnmodifiableListView<Category> businessCategories =
       UnmodifiableListView<Category>([]);
 
   /// Gets the completer.
   final Completer<bool> completer = Completer<bool>();
-
-  /// InventoryData data.
-  InventoryData stats = InventoryData(
-    totalProducts: 0,
-    lowStockItemsCount: 0,
-    inventoryLevels: [],
-    totalSales: 0,
-  );
 
   /// Gets the search query.
   BehaviorSubject<String> get searchQuery => _searchQuerySubject;
@@ -66,6 +71,18 @@ class InventoryViewModel {
 
   /// Gets the selected status.
   BehaviorSubject<StockStatus?> get selectedStatus => _selectedStatusSubject;
+
+  /// Gets the selected item stream.
+  Stream<InventoryLevelWithProduct?> get selectedItemStream =>
+      _selectedItemSubject.stream;
+
+  /// Gets the transactions stream.
+  Stream<List<InventoryTransaction>> get transactionsStream =>
+      _transactionsSubject.stream;
+
+  /// Gets the transaction filter stream.
+  Stream<TransactionType?> get transactionFilterStream =>
+      _transactionFilterSubject.stream;
 
   /// Gets the error stream.
   Stream<String> get errorStream => _errorSubject.stream;
@@ -150,7 +167,7 @@ class InventoryViewModel {
   }
 
   /// Fetches global products.
-  Future<InventoryData> initTheData() async {
+  Future<void> initTheData() async {
     try {
       _logger.info('initTheData is called');
       final store = userPreferences.store;
@@ -171,25 +188,11 @@ class InventoryViewModel {
         InventoryRepository.instance.getStoreInventory(store.refId),
       ]);
 
-      final lowStockItems = results.first as List<InventoryLevelWithProduct>;
-      final sales = results[1] as GetSalesReportResponse;
       final inventoryLevels = results[2] as List<InventoryLevelWithProduct>;
 
-      final newStats = InventoryData(
-        totalProducts: inventoryLevels.length,
-        lowStockItemsCount: lowStockItems.length,
-        inventoryLevels: inventoryLevels,
-        totalSales: sales.totalSalesAmount.toDouble(),
-      );
-      stats = newStats;
-
       _invLevelSubject.add(UnmodifiableListView(inventoryLevels));
-
-      return stats;
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.severe('Error loading inventory data: $e');
-
-      return stats;
     } finally {
       if (!completer.isCompleted) {
         completer.complete(true);
@@ -222,7 +225,7 @@ class InventoryViewModel {
         AdjustInventoryRequest(
           storeId: storeId,
           productId: productId,
-          quantityChange: quantityChange,
+          newQuantity: quantityChange,
           reason: reason,
           notes: notes,
         ),
@@ -233,7 +236,7 @@ class InventoryViewModel {
       }
 
       return response.success;
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.severe('Error adjusting inventory: $e');
 
       return false;
@@ -250,6 +253,67 @@ class InventoryViewModel {
     _selectedCategorySubject.add(category);
   }
 
+  /// Selects an inventory item and fetches its transaction history.
+  Future<void> selectItem(InventoryLevelWithProduct item) async {
+    _selectedItemSubject.add(item);
+    await _fetchTransactions(item);
+  }
+
+  /// Clears the selected item.
+  void clearSelection() {
+    _selectedItemSubject.add(null);
+    _transactionsSubject.add([]);
+    _transactionFilterSubject.add(TransactionType.TXN_TYPE_SALE);
+  }
+
+  /// Updates the transaction filter.
+  void updateTransactionFilter(TransactionType filter) {
+    _transactionFilterSubject.add(filter);
+  }
+
+  /// Fetches transaction history for the selected item.
+  Future<void> _fetchTransactions(InventoryLevelWithProduct item) async {
+    try {
+      final store = userPreferences.store;
+      if (store == null) {
+        _logger.warning('Store not found when fetching transactions');
+
+        return;
+      }
+
+      final response = await InventoryRepository.instance
+          .getInventoryTransactionHistory(
+            GetInventoryTransactionHistoryRequest(
+              storeId: store.refId,
+              productId: item.product.refId,
+              startDate: Timestamp.fromDateTime(
+                clock.now().subtract(const Duration(days: 365)),
+              ),
+              endDate: Timestamp.fromDateTime(
+                clock.now().add(const Duration(days: 1)),
+              ),
+              pageSize: 100,
+              pageNumber: 1,
+            ),
+          );
+
+      _transactionsSubject.add(response.transactions);
+    } on Exception catch (e) {
+      _logger.severe('Error fetching transactions: $e');
+      _transactionsSubject.add([]);
+    }
+  }
+
+  /// Selects an inventory item by product ID.
+  Future<void> selectItemById(String productId) async {
+    final products = _invLevelSubject.value;
+    final item = products.firstWhere(
+      (p) => p.product.refId == productId,
+      orElse: () => throw Exception('Product not found: $productId'),
+    );
+    await selectItem(item);
+  }
+
   /// Refreshes the products.
   Future<void> refreshProducts() async {
     await initTheData();
@@ -262,6 +326,9 @@ class InventoryViewModel {
     _searchQuerySubject.close();
     _selectedCategorySubject.close();
     _selectedStatusSubject.close();
+    _selectedItemSubject.close();
+    _transactionsSubject.close();
+    _transactionFilterSubject.close();
   }
 }
 

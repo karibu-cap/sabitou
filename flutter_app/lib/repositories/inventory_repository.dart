@@ -25,19 +25,23 @@ class InventoryRepository {
     connect.Transport? transport,
     NetworkStatusProvider? networkStatusProvider,
   }) : inventoryServiceClient = InventoryServiceClient(
-         transport ?? ConnectRPCService.to.clientChannel,
+         ConnectRPCService.to.clientChannel,
        ),
        storeProductService = StoreProductServiceClient(
-         transport ?? ConnectRPCService.to.clientChannel,
+         ConnectRPCService.to.clientChannel,
        );
 
   /// Gets the inventory levels of a product.
   Future<GetProductInventoryLevelsResponse> getProductInventoryLevels(
     String productId,
+    String storeId,
   ) async {
     try {
       return await inventoryServiceClient.getProductInventoryLevels(
-        GetProductInventoryLevelsRequest(productId: productId),
+        GetProductInventoryLevelsRequest(
+          productId: productId,
+          storeId: storeId,
+        ),
       );
     } on Exception catch (e) {
       _logger.severe('getProductInventoryLevels Error: $e');
@@ -67,15 +71,14 @@ class InventoryRepository {
     try {
       final request = GetLowStockItemsRequest(storeId: storeId);
       final response = await inventoryServiceClient.getLowStockItems(request);
-
       final items = <InventoryLevelWithProduct>[];
       for (final level in response.lowStockItems) {
         final productReq = GetStoreProductRequest(
           storeProductId: level.storeProductId,
         );
-        final productResp = await storeProductService.getStoreProduct(
-          productReq,
-        );
+
+        GetStoreProductResponse productResp;
+        productResp = await storeProductService.getStoreProduct(productReq);
 
         if (!productResp.hasProduct()) {
           continue;
@@ -131,7 +134,10 @@ class InventoryRepository {
             globalProduct: productResp.product.globalProduct,
             stockStatus: level.quantityAvailable == 0
                 ? StockStatus.STOCK_STATUS_OUT_OF_STOCK
-                : level.quantityAvailable > level.minThreshold
+                : level.quantityAvailable >
+                      (productResp.product.storeProduct.reorderPoint > 0
+                          ? productResp.product.storeProduct.reorderPoint
+                          : level.minThreshold)
                 ? StockStatus.STOCK_STATUS_OK
                 : StockStatus.STOCK_STATUS_LOW,
             stockValue:

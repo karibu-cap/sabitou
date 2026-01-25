@@ -21,10 +21,15 @@ class ShadDataGrid<T> extends StatefulWidget {
     this.onRowTap,
     this.footerFrozenColumnsCount = 0,
     this.frozenColumnsCount = 0,
+    this.expanded = false,
+    this.canSelectRows = false,
   });
 
   /// The data to display.
   final List<T> data;
+
+  /// Whether to expand the grid to fill the available space.
+  final bool expanded;
 
   /// The columns configuration.
   final List<ShadDataGridColumn> columns;
@@ -56,6 +61,9 @@ class ShadDataGrid<T> extends StatefulWidget {
   /// The number of frozen columns.
   final int frozenColumnsCount;
 
+  /// Can select rows.
+  final bool canSelectRows;
+
   @override
   State<ShadDataGrid<T>> createState() => _ShadDataGridState<T>();
 }
@@ -63,10 +71,12 @@ class ShadDataGrid<T> extends StatefulWidget {
 class _ShadDataGridState<T> extends State<ShadDataGrid<T>> {
   _GenericDataSource<T>? _dataSource;
   int _currentPageIndex = 0;
+  final DataGridController _dataGridController = DataGridController();
 
   @override
   void initState() {
     super.initState();
+
     _updateDataSource();
   }
 
@@ -117,65 +127,98 @@ class _ShadDataGridState<T> extends State<ShadDataGrid<T>> {
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
 
-    return SizedBox(
-      width: MediaQuery.sizeOf(context).width,
-      child: Column(
-        children: [
-          if (widget.showPagination) ...[
-            _PaginationControls(
-              currentPage: _currentPageIndex + 1,
-              totalPages: _totalPages,
-              totalItems: widget.data.length,
-              itemsPerPage: widget.rowsPerPage,
-              onPageChanged: _goToPage,
-            ),
-          ],
-          SfDataGridTheme(
-            data: SfDataGridThemeData(
-              headerColor: theme.colorScheme.accent,
-              rowHoverColor: theme.colorScheme.accent,
-              gridLineColor: theme.colorScheme.border,
-            ),
-            child: SfDataGrid(
-              source:
-                  _dataSource ??
-                  _GenericDataSource<T>(
-                    data: [],
-                    columns: widget.columns,
-                    rowBuilder: widget.rowBuilder,
-                    context: context,
-                  ),
-              isScrollbarAlwaysShown: true,
-              shrinkWrapRows: true,
-              footerFrozenColumnsCount: widget.footerFrozenColumnsCount,
-              frozenColumnsCount: widget.frozenColumnsCount,
-              headerGridLinesVisibility: GridLinesVisibility.none,
-              rowHeight: widget.rowHeight,
-              headerRowHeight: widget.headerRowHeight,
-              selectionMode: SelectionMode.single,
-              navigationMode: GridNavigationMode.cell,
-              allowSorting: widget.enableSorting,
-              columns: widget.columns.map((col) {
-                return GridColumn(
-                  columnName: col.label,
-                  width: col.width,
-                  label: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    alignment: col.alignment ?? Alignment.centerLeft,
-                    child: Text(
-                      col.label,
-                      style: theme.textTheme.small.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                );
-              }).toList(),
+    final dataGrid = SfDataGrid(
+      source:
+          _dataSource ??
+          _GenericDataSource<T>(
+            data: [],
+            columns: widget.columns,
+            rowBuilder: widget.rowBuilder,
+            context: context,
+          ),
+      isScrollbarAlwaysShown: true,
+      shrinkWrapRows: !widget.expanded,
+      footerFrozenColumnsCount: widget.footerFrozenColumnsCount,
+      frozenColumnsCount: widget.frozenColumnsCount,
+      headerGridLinesVisibility: GridLinesVisibility.none,
+      rowHeight: widget.rowHeight,
+      headerRowHeight: widget.headerRowHeight,
+      selectionMode: widget.canSelectRows
+          ? SelectionMode.single
+          : SelectionMode.none,
+      allowSorting: widget.enableSorting,
+      controller: _dataGridController,
+      onSelectionChanged: (value, remove) {
+        if (value.isEmpty) return;
+        widget.onRowTap?.call(widget.data[_dataGridController.selectedIndex]);
+      },
+      columnWidthMode: ColumnWidthMode.fill,
+      columns: widget.columns.map((col) {
+        return GridColumn(
+          columnName: col.label,
+          width: col.width,
+          label: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            alignment: col.alignment ?? Alignment.centerLeft,
+            child: Text(
+              col.label,
+              style: theme.textTheme.small.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
-        ],
-      ),
+        );
+      }).toList(),
     );
+
+    final themedDataGrid = LayoutBuilder(
+      builder: (context, constraints) {
+        return SfDataGridTheme(
+          data: SfDataGridThemeData(
+            headerColor: theme.colorScheme.accent,
+            rowHoverColor: theme.colorScheme.accent,
+            gridLineColor: theme.colorScheme.border,
+          ),
+          child: dataGrid,
+        );
+      },
+    );
+
+    // Build the content based on expanded state
+    Widget content;
+    content = widget.expanded
+        ? Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (widget.showPagination) ...[
+                _PaginationControls(
+                  currentPage: _currentPageIndex + 1,
+                  totalPages: _totalPages,
+                  totalItems: widget.data.length,
+                  itemsPerPage: widget.rowsPerPage,
+                  onPageChanged: _goToPage,
+                ),
+              ],
+              Flexible(child: themedDataGrid),
+            ],
+          )
+        : Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (widget.showPagination) ...[
+                _PaginationControls(
+                  currentPage: _currentPageIndex + 1,
+                  totalPages: _totalPages,
+                  totalItems: widget.data.length,
+                  itemsPerPage: widget.rowsPerPage,
+                  onPageChanged: _goToPage,
+                ),
+              ],
+              themedDataGrid,
+            ],
+          );
+
+    return content;
   }
 }
 

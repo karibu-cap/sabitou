@@ -185,12 +185,22 @@ const StoreProduct$json = {
       '10': 'updatedAt',
       '17': true
     },
+    {
+      '1': 'reorder_point',
+      '3': 11,
+      '4': 1,
+      '5': 5,
+      '9': 4,
+      '10': 'reorderPoint',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_ref_id'},
     {'1': '_sale_price'},
     {'1': '_sku'},
     {'1': '_updated_at'},
+    {'1': '_reorder_point'},
   ],
 };
 
@@ -204,8 +214,9 @@ final $typed_data.Uint8List storeProductDescriptor = $convert.base64Decode(
     'Rpb25fdHlwZRgIIAEoDjIcLmludmVudG9yeS52MS5FeHBpcmF0aW9uVHlwZVIOZXhwaXJhdGlv'
     'blR5cGUSOQoKY3JlYXRlZF9hdBgJIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSCW'
     'NyZWF0ZWRBdBI+Cgp1cGRhdGVkX2F0GAogASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFt'
-    'cEgDUgl1cGRhdGVkQXSIAQFCCQoHX3JlZl9pZEINCgtfc2FsZV9wcmljZUIGCgRfc2t1Qg0KC1'
-    '91cGRhdGVkX2F0');
+    'cEgDUgl1cGRhdGVkQXSIAQESKAoNcmVvcmRlcl9wb2ludBgLIAEoBUgEUgxyZW9yZGVyUG9pbn'
+    'SIAQFCCQoHX3JlZl9pZEINCgtfc2FsZV9wcmljZUIGCgRfc2t1Qg0KC191cGRhdGVkX2F0QhAK'
+    'Dl9yZW9yZGVyX3BvaW50');
 
 @$core.Deprecated('Use createGlobalProductRequestDescriptor instead')
 const CreateGlobalProductRequest$json = {
@@ -544,6 +555,18 @@ const AddStoreProductRequest$json = {
       '6': '.inventory.v1.StoreProduct',
       '10': 'storeProduct'
     },
+    {
+      '1': 'initial_stock',
+      '3': 3,
+      '4': 1,
+      '5': 5,
+      '9': 0,
+      '10': 'initialStock',
+      '17': true
+    },
+  ],
+  '8': [
+    {'1': '_initial_stock'},
   ],
 };
 
@@ -551,7 +574,8 @@ const AddStoreProductRequest$json = {
 final $typed_data.Uint8List addStoreProductRequestDescriptor = $convert.base64Decode(
     'ChZBZGRTdG9yZVByb2R1Y3RSZXF1ZXN0EkIKDmdsb2JhbF9wcm9kdWN0GAEgASgLMhsuaW52ZW'
     '50b3J5LnYxLkdsb2JhbFByb2R1Y3RSDWdsb2JhbFByb2R1Y3QSPwoNc3RvcmVfcHJvZHVjdBgC'
-    'IAEoCzIaLmludmVudG9yeS52MS5TdG9yZVByb2R1Y3RSDHN0b3JlUHJvZHVjdA==');
+    'IAEoCzIaLmludmVudG9yeS52MS5TdG9yZVByb2R1Y3RSDHN0b3JlUHJvZHVjdBIoCg1pbml0aW'
+    'FsX3N0b2NrGAMgASgFSABSDGluaXRpYWxTdG9ja4gBAUIQCg5faW5pdGlhbF9zdG9jaw==');
 
 @$core.Deprecated('Use addStoreProductResponseDescriptor instead')
 const AddStoreProductResponse$json = {

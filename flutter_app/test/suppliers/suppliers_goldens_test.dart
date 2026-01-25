@@ -156,7 +156,6 @@ final userFakeTransport = FakeTransportBuilder()
           ..storeProductId = 'sp_3'
           ..storeId = request.storeId
           ..quantityAvailable = 20
-          ..quantityReserved = 0
           ..batches.add(
             Batch()
               ..documentId = 'batch_1'

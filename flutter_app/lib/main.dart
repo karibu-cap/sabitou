@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
@@ -41,7 +40,6 @@ Future<void> main() async {
   await AppStorage.initialize(AppStorageType.hiveStorage);
   initStorageBoxes();
   await _initServices();
-  usePathUrlStrategy();
   runApp(const MyApp());
 }
 

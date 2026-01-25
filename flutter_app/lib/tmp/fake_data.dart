@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../utils/app_constants.dart';
@@ -72,7 +73,104 @@ final fakeData = <String, List<dynamic>>{
       ),
   ],
   CollectionName.batches: <Batch>[],
-  CollectionName.inventoryLevels: <InventoryLevel>[],
+  CollectionName.inventoryLevels: <InventoryLevel>[
+    InventoryLevel()
+      ..storeProductId = 'product-001'
+      ..storeId = 'store-001'
+      ..quantityAvailable = 189
+      ..quantityCommitted = 17
+      ..quantityOnHand = 206
+      ..minThreshold = 10
+      ..lastUpdated = Timestamp.fromDateTime(clock.now())
+      ..batches.addAll([
+        Batch()
+          ..documentId = 'batch_sp1_1'
+          ..productId = 'product-001'
+          ..warehouseId = 'store-001'
+          ..quantity = 161
+          ..purchasePrice = 29400
+          ..supplierId = 'supplier_1'
+          ..expirationDate = Timestamp.fromDateTime(
+            clock.now().add(const Duration(days: 180)),
+          )
+          ..receivedAt = Timestamp.fromDateTime(
+            clock.now().subtract(const Duration(days: 45)),
+          )
+          ..status = BatchStatus.BATCH_STATUS_ACTIVE,
+        Batch()
+          ..documentId = 'batch_sp1_2'
+          ..productId = 'product-001'
+          ..warehouseId = 'store-001'
+          ..quantity = 45
+          ..purchasePrice = 29000
+          ..supplierId = 'supplier_2'
+          ..expirationDate = Timestamp.fromDateTime(
+            clock.now().add(const Duration(days: 90)),
+          )
+          ..receivedAt = Timestamp.fromDateTime(
+            clock.now().subtract(const Duration(days: 15)),
+          )
+          ..status = BatchStatus.BATCH_STATUS_ACTIVE,
+      ]),
+    InventoryLevel()
+      ..storeProductId = 'product-002'
+      ..storeId = 'store-001'
+      ..quantityAvailable = 8
+      ..quantityCommitted = 2
+      ..quantityOnHand = 10
+      ..minThreshold = 15
+      ..lastUpdated = Timestamp.fromDateTime(clock.now())
+      ..batches.add(
+        Batch()
+          ..documentId = 'batch_sp2_1'
+          ..productId = 'product-002'
+          ..warehouseId = 'store-001'
+          ..quantity = 10
+          ..purchasePrice = 15000
+          ..supplierId = 'supplier_1'
+          ..expirationDate = Timestamp.fromDateTime(
+            clock.now().add(const Duration(days: 120)),
+          )
+          ..receivedAt = Timestamp.fromDateTime(
+            clock.now().subtract(const Duration(days: 20)),
+          )
+          ..status = BatchStatus.BATCH_STATUS_ACTIVE,
+      ),
+    InventoryLevel()
+      ..storeProductId = 'product-003'
+      ..storeId = 'store-001'
+      ..quantityAvailable = 20
+      ..quantityCommitted = 0
+      ..quantityOnHand = 20
+      ..lastUpdated = Timestamp.fromDateTime(clock.now())
+      ..batches.addAll([
+        Batch()
+          ..documentId = 'batch_sp3_1'
+          ..productId = 'product-003'
+          ..warehouseId = 'store-001'
+          ..quantity = 20
+          ..purchasePrice = 8000
+          ..supplierId = 'supplier_2'
+          ..expirationDate = Timestamp.fromDateTime(
+            clock.now().add(const Duration(days: 45)),
+          )
+          ..receivedAt = Timestamp.fromDateTime(
+            clock.now().subtract(const Duration(days: 30)),
+          )
+          ..status = BatchStatus.BATCH_STATUS_ACTIVE,
+        Batch()
+          ..documentId = 'batch_sp3_2'
+          ..productId = 'product-003'
+          ..warehouseId = 'store-001'
+          ..quantity = 0
+          ..purchasePrice = 7500
+          ..supplierId = 'supplier_1'
+          ..expirationDate = Timestamp.fromDateTime(
+            clock.now().subtract(const Duration(days: 1)),
+          )
+          ..status = BatchStatus.BATCH_STATUS_EXPIRED,
+      ]),
+  ],
   CollectionName.inventoryTransactions: <InventoryTransaction>[
     InventoryTransaction()
       ..documentId = 'TXN-2025-001'

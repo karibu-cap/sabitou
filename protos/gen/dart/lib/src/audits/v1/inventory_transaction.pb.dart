@@ -55,6 +55,9 @@ class InventoryTransaction extends $pb.GeneratedMessage {
     $0.Timestamp? transactionTime,
     $core.String? notes,
     $core.String? batchId,
+    $core.double? unitPrice,
+    $core.double? totalAmount,
+    $core.String? currency,
   }) {
     final result = create();
     if (documentId != null) result.documentId = documentId;
@@ -71,6 +74,9 @@ class InventoryTransaction extends $pb.GeneratedMessage {
     if (transactionTime != null) result.transactionTime = transactionTime;
     if (notes != null) result.notes = notes;
     if (batchId != null) result.batchId = batchId;
+    if (unitPrice != null) result.unitPrice = unitPrice;
+    if (totalAmount != null) result.totalAmount = totalAmount;
+    if (currency != null) result.currency = currency;
     return result;
   }
 
@@ -108,6 +114,11 @@ class InventoryTransaction extends $pb.GeneratedMessage {
         subBuilder: $0.Timestamp.create)
     ..aOS(12, _omitFieldNames ? '' : 'notes')
     ..aOS(13, _omitFieldNames ? '' : 'batchId')
+    ..a<$core.double>(
+        14, _omitFieldNames ? '' : 'unitPrice', $pb.PbFieldType.OD)
+    ..a<$core.double>(
+        15, _omitFieldNames ? '' : 'totalAmount', $pb.PbFieldType.OD)
+    ..aOS(16, _omitFieldNames ? '' : 'currency')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -250,6 +261,33 @@ class InventoryTransaction extends $pb.GeneratedMessage {
   $core.bool hasBatchId() => $_has(12);
   @$pb.TagNumber(13)
   void clearBatchId() => $_clearField(13);
+
+  @$pb.TagNumber(14)
+  $core.double get unitPrice => $_getN(13);
+  @$pb.TagNumber(14)
+  set unitPrice($core.double value) => $_setDouble(13, value);
+  @$pb.TagNumber(14)
+  $core.bool hasUnitPrice() => $_has(13);
+  @$pb.TagNumber(14)
+  void clearUnitPrice() => $_clearField(14);
+
+  @$pb.TagNumber(15)
+  $core.double get totalAmount => $_getN(14);
+  @$pb.TagNumber(15)
+  set totalAmount($core.double value) => $_setDouble(14, value);
+  @$pb.TagNumber(15)
+  $core.bool hasTotalAmount() => $_has(14);
+  @$pb.TagNumber(15)
+  void clearTotalAmount() => $_clearField(15);
+
+  @$pb.TagNumber(16)
+  $core.String get currency => $_getSZ(15);
+  @$pb.TagNumber(16)
+  set currency($core.String value) => $_setString(15, value);
+  @$pb.TagNumber(16)
+  $core.bool hasCurrency() => $_has(15);
+  @$pb.TagNumber(16)
+  void clearCurrency() => $_clearField(16);
 }
 
 const $core.bool _omitFieldNames =

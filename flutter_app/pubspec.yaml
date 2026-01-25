@@ -59,7 +59,7 @@ dependencies:
   auto_size_text: ^3.0.0
 
   # Shadcn UI
-  shadcn_ui: ^0.39.14
+  shadcn_ui: ^0.45.1
 
   # Clock package to handle time.
   clock: ^1.1.2
@@ -138,6 +138,7 @@ dependencies:
   screenshot: ^3.0.0
   syncfusion_flutter_pdf: ^28.2.12
   barcode_widget: ^2.0.4
+  timelines_plus: ^1.0.8
 
 dev_dependencies:
   flutter_test:
@@ -167,9 +168,6 @@ dev_dependencies:
 
   # Dart code linter.
   dart_code_linter: any
-
-  # Command-line tool which simplifies the task of updating your Flutter app's launcher icon.
-  flutter_launcher_icons: ^0.14.3
 
   # Command-line tool which simplifies the task of updating your Flutter app's launcher icon.
   flutter_launcher_icons: ^0.14.3
