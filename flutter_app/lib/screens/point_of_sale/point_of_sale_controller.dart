@@ -1,6 +1,9 @@
 // ignore_for_file: long-method
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:pdf/pdf.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
@@ -9,11 +12,16 @@ import '../../repositories/gift_voucher_repository.dart';
 import '../../repositories/inventory_repository.dart';
 import '../../repositories/pos_repository.dart';
 import '../../services/internationalization/internationalization.dart';
+import '../../services/storage/app_storage.dart';
+import '../../utils/app_constants.dart';
 import '../../utils/button_state.dart';
 import '../../utils/common_functions.dart';
 import '../../utils/extensions/global_product_extension.dart';
 import '../../utils/logger.dart';
+import '../../utils/printer_management.dart';
 import '../../utils/user_preference.dart';
+import '../../widgets/pdf/printers/app_printer_utils.dart';
+import '../../widgets/pdf/template/pos_widget.dart';
 import 'point_of_sale_view_model.dart';
 
 /// Button state enum for POS operations
@@ -102,7 +110,18 @@ class PointOfSaleController extends ChangeNotifier {
   PosOperationResult? get currentSuccess => _currentSuccess;
 
   /// Constructor of [PointOfSaleController].
-  PointOfSaleController(this._viewModel);
+  PointOfSaleController(this._viewModel) {
+    startScan();
+  }
+
+  final _flutterThermalPrinterPlugin = FlutterThermalPrinter.instance;
+
+  final String _ip = '192.168.0.100';
+  final String _port = '9100';
+
+  List<Printer> printers = [];
+
+  StreamSubscription<List<Printer>>? _devicesStreamSubscription;
 
   /// Clears error state.
   void clearError() {
@@ -138,8 +157,17 @@ class PointOfSaleController extends ChangeNotifier {
 
         return false;
       }
+      final printer = await AppStorage.of<Printer>().read(
+        PreferencesKey.printer,
+      );
 
-      _showLoadingState();
+      if (printer == null) {
+        showErrorToast(context: context, message: Intls.to.noPrinterConnected);
+
+        return false;
+      }
+
+      // _showLoadingState();
 
       final currentCashReceipt = CartManager.instance.currentCashReceipt;
       final cartItems = currentCashReceipt?.items ?? [];
@@ -155,6 +183,8 @@ class PointOfSaleController extends ChangeNotifier {
 
         return false;
       }
+
+      return await printTheReceipt(currentCashReceipt, store, printer, context);
 
       final cartValidation = _isCartValid();
       if (!cartValidation.success) {
@@ -234,6 +264,59 @@ class PointOfSaleController extends ChangeNotifier {
     } finally {
       _resetButtonState();
     }
+  }
+
+  void startScan() async {
+    _devicesStreamSubscription?.cancel();
+    await _flutterThermalPrinterPlugin.getPrinters(
+      connectionTypes: [ConnectionType.USB, ConnectionType.BLE],
+    );
+    _devicesStreamSubscription = _flutterThermalPrinterPlugin.devicesStream
+        .listen((event) {
+          printers = event;
+          printers.removeWhere(
+            (element) =>
+                element.name == null ||
+                element.name == '' ||
+                element.name?.toLowerCase().contains('print') == false,
+          );
+          for (var i in event) {
+            debugPrint('${i.name}, ${i.address} ${i.connectionType}');
+          }
+        });
+  }
+
+  Future<bool> printTheReceipt(
+    CashReceipt cashReceipt,
+    Store store,
+    Printer printer,
+    BuildContext context,
+  ) async {
+    debugPrint('-----');
+
+    final posTemplate = PosWidget(cashReceipt: cashReceipt, store: store);
+    final widget = await posTemplate.buildInvoiceWidget();
+
+    // showShadDialog(
+    //   context: context,
+    //   builder: (_) => ShadDialog.alert(child: PreviewInvoice(store: store)),
+    // );
+
+    return await AppPrinterUtils.directPrintPdf(
+      context: context,
+      printer: printer,
+      name: 'receipe',
+      format: PdfPageFormat.roll80,
+      widget: widget,
+    );
+    // await _flutterThermalPrinterPlugin.printWidget(
+    //   context,
+    //   printOnBle: true,
+    //   printer: printers[0],
+    //   widget: const Text('bonjour comment allé vous'),
+    // );
+
+    // return false;
   }
 
   /// Validate if cart is ready for simple sale

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 
+import '../../../../themes/app_colors.dart';
+
 /// Collection of shimmer loading widgets for the users/team management module.
 ///
 /// Provides consistent shimmer animations for different loading states
@@ -11,7 +13,6 @@ class UserShimmerWidgets {
     return Shimmer(
       duration: const Duration(seconds: 2),
       interval: const Duration(milliseconds: 500),
-      color: Colors.grey[300] ?? Colors.grey,
       child: Column(
         children: [
           // Search and filters shimmer
@@ -30,7 +31,6 @@ class UserShimmerWidgets {
     return Shimmer(
       duration: const Duration(seconds: 2),
       interval: const Duration(milliseconds: 500),
-      color: Colors.grey[300] ?? Colors.grey,
       child: GridView.count(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
@@ -48,7 +48,7 @@ class UserShimmerWidgets {
     return Shimmer(
       duration: const Duration(seconds: 2),
       interval: const Duration(milliseconds: 500),
-      color: Colors.grey[300] ?? Colors.grey,
+      color: AppColors.primary100,
       child: Card(
         margin: const EdgeInsets.only(bottom: 16),
         child: Padding(
@@ -73,7 +73,7 @@ class UserShimmerWidgets {
     return Shimmer(
       duration: const Duration(seconds: 2),
       interval: const Duration(milliseconds: 500),
-      color: Colors.grey[300] ?? Colors.grey,
+      color: AppColors.primary100,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -83,18 +83,18 @@ class UserShimmerWidgets {
               Container(
                 height: 32,
                 width: 250,
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: const BorderRadius.all(Radius.circular(4)),
+                decoration: const BoxDecoration(
+                  color: AppColors.primary100,
+                  borderRadius: BorderRadius.all(Radius.circular(4)),
                 ),
               ),
               const SizedBox(height: 8),
               Container(
                 height: 16,
                 width: 300,
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: const BorderRadius.all(Radius.circular(4)),
+                decoration: const BoxDecoration(
+                  color: AppColors.primary100,
+                  borderRadius: BorderRadius.all(Radius.circular(4)),
                 ),
               ),
             ],
@@ -104,18 +104,18 @@ class UserShimmerWidgets {
               Container(
                 height: 36,
                 width: 120,
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: const BorderRadius.all(Radius.circular(8)),
+                decoration: const BoxDecoration(
+                  color: AppColors.primary100,
+                  borderRadius: BorderRadius.all(Radius.circular(8)),
                 ),
               ),
               const SizedBox(width: 12),
               Container(
                 height: 36,
                 width: 140,
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: const BorderRadius.all(Radius.circular(8)),
+                decoration: const BoxDecoration(
+                  color: AppColors.primary100,
+                  borderRadius: BorderRadius.all(Radius.circular(8)),
                 ),
               ),
             ],
@@ -130,16 +130,16 @@ class UserShimmerWidgets {
     return Shimmer(
       duration: const Duration(seconds: 2),
       interval: const Duration(milliseconds: 500),
-      color: Colors.grey[300] ?? Colors.grey,
+      color: AppColors.primary100,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             height: 24,
             width: 180,
-            decoration: BoxDecoration(
-              color: Colors.grey[300],
-              borderRadius: const BorderRadius.all(Radius.circular(4)),
+            decoration: const BoxDecoration(
+              color: AppColors.primary100,
+              borderRadius: BorderRadius.all(Radius.circular(4)),
             ),
           ),
           const SizedBox(height: 16),
@@ -165,9 +165,9 @@ class UserShimmerWidgets {
         Expanded(
           child: Container(
             height: 48,
-            decoration: BoxDecoration(
-              color: Colors.grey[300],
-              borderRadius: const BorderRadius.all(Radius.circular(24)),
+            decoration: const BoxDecoration(
+              color: AppColors.primary100,
+              borderRadius: BorderRadius.all(Radius.circular(24)),
             ),
           ),
         ),
@@ -177,18 +177,18 @@ class UserShimmerWidgets {
         Container(
           height: 48,
           width: 120,
-          decoration: BoxDecoration(
-            color: Colors.grey[300],
-            borderRadius: const BorderRadius.all(Radius.circular(8)),
+          decoration: const BoxDecoration(
+            color: AppColors.primary100,
+            borderRadius: BorderRadius.all(Radius.circular(8)),
           ),
         ),
         const SizedBox(width: 12),
         Container(
           height: 48,
           width: 120,
-          decoration: BoxDecoration(
-            color: Colors.grey[300],
-            borderRadius: const BorderRadius.all(Radius.circular(8)),
+          decoration: const BoxDecoration(
+            color: AppColors.primary100,
+            borderRadius: BorderRadius.all(Radius.circular(8)),
           ),
         ),
         const SizedBox(width: 12),
@@ -197,9 +197,9 @@ class UserShimmerWidgets {
         Container(
           height: 48,
           width: 100,
-          decoration: BoxDecoration(
-            color: Colors.grey[300],
-            borderRadius: const BorderRadius.all(Radius.circular(8)),
+          decoration: const BoxDecoration(
+            color: AppColors.primary100,
+            borderRadius: BorderRadius.all(Radius.circular(8)),
           ),
         ),
       ],
@@ -218,8 +218,8 @@ class UserShimmerWidgets {
             Container(
               width: 48,
               height: 48,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
+              decoration: const BoxDecoration(
+                color: AppColors.primary100,
                 shape: BoxShape.circle,
               ),
             ),
@@ -233,27 +233,27 @@ class UserShimmerWidgets {
                   Container(
                     height: 18,
                     width: 150,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: const BorderRadius.all(Radius.circular(4)),
+                    decoration: const BoxDecoration(
+                      color: AppColors.primary100,
+                      borderRadius: BorderRadius.all(Radius.circular(4)),
                     ),
                   ),
                   const SizedBox(height: 8),
                   Container(
                     height: 14,
                     width: 200,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: const BorderRadius.all(Radius.circular(4)),
+                    decoration: const BoxDecoration(
+                      color: AppColors.primary100,
+                      borderRadius: BorderRadius.all(Radius.circular(4)),
                     ),
                   ),
                   const SizedBox(height: 8),
                   Container(
                     height: 14,
                     width: 120,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: const BorderRadius.all(Radius.circular(4)),
+                    decoration: const BoxDecoration(
+                      color: AppColors.primary100,
+                      borderRadius: BorderRadius.all(Radius.circular(4)),
                     ),
                   ),
                 ],
@@ -267,18 +267,18 @@ class UserShimmerWidgets {
                 Container(
                   height: 24,
                   width: 80,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: const BorderRadius.all(Radius.circular(12)),
+                  decoration: const BoxDecoration(
+                    color: AppColors.primary100,
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
                   ),
                 ),
                 const SizedBox(height: 8),
                 Container(
                   height: 24,
                   width: 60,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: const BorderRadius.all(Radius.circular(12)),
+                  decoration: const BoxDecoration(
+                    color: AppColors.primary100,
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
                   ),
                 ),
               ],
@@ -305,16 +305,16 @@ class UserShimmerWidgets {
                   Container(
                     height: 16,
                     width: 80,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: const BorderRadius.all(Radius.circular(4)),
+                    decoration: const BoxDecoration(
+                      color: AppColors.grey0,
+                      borderRadius: BorderRadius.all(Radius.circular(4)),
                     ),
                   ),
                   Container(
                     width: 24,
                     height: 24,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
+                    decoration: const BoxDecoration(
+                      color: AppColors.grey0,
                       shape: BoxShape.circle,
                     ),
                   ),
@@ -324,18 +324,18 @@ class UserShimmerWidgets {
               Container(
                 height: 24,
                 width: 40,
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: const BorderRadius.all(Radius.circular(4)),
+                decoration: const BoxDecoration(
+                  color: AppColors.grey0,
+                  borderRadius: BorderRadius.all(Radius.circular(4)),
                 ),
               ),
               const SizedBox(height: 4),
               Container(
                 height: 12,
                 width: 60,
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: const BorderRadius.all(Radius.circular(4)),
+                decoration: const BoxDecoration(
+                  color: AppColors.primary100,
+                  borderRadius: BorderRadius.all(Radius.circular(4)),
                 ),
               ),
             ],
@@ -355,8 +355,8 @@ class UserShimmerWidgets {
             Container(
               width: 32,
               height: 32,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
+              decoration: const BoxDecoration(
+                color: AppColors.primary100,
                 shape: BoxShape.circle,
               ),
             ),
@@ -368,18 +368,18 @@ class UserShimmerWidgets {
                   Container(
                     height: 16,
                     width: 100,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: const BorderRadius.all(Radius.circular(4)),
+                    decoration: const BoxDecoration(
+                      color: AppColors.primary100,
+                      borderRadius: BorderRadius.all(Radius.circular(4)),
                     ),
                   ),
                   const SizedBox(height: 4),
                   Container(
                     height: 12,
                     width: 150,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: const BorderRadius.all(Radius.circular(4)),
+                    decoration: const BoxDecoration(
+                      color: AppColors.primary100,
+                      borderRadius: BorderRadius.all(Radius.circular(4)),
                     ),
                   ),
                 ],
@@ -396,8 +396,8 @@ class UserShimmerWidgets {
     return Container(
       width: 48,
       height: 48,
-      decoration: BoxDecoration(
-        color: Colors.grey[300],
+      decoration: const BoxDecoration(
+        color: AppColors.primary100,
         shape: BoxShape.circle,
       ),
     );
@@ -412,27 +412,27 @@ class UserShimmerWidgets {
           Container(
             height: 18,
             width: 150,
-            decoration: BoxDecoration(
-              color: Colors.grey[300],
-              borderRadius: const BorderRadius.all(Radius.circular(4)),
+            decoration: const BoxDecoration(
+              color: AppColors.primary100,
+              borderRadius: BorderRadius.all(Radius.circular(4)),
             ),
           ),
           const SizedBox(height: 8),
           Container(
             height: 14,
             width: 200,
-            decoration: BoxDecoration(
-              color: Colors.grey[300],
-              borderRadius: const BorderRadius.all(Radius.circular(4)),
+            decoration: const BoxDecoration(
+              color: AppColors.primary100,
+              borderRadius: BorderRadius.all(Radius.circular(4)),
             ),
           ),
           const SizedBox(height: 8),
           Container(
             height: 14,
             width: 120,
-            decoration: BoxDecoration(
-              color: Colors.grey[300],
-              borderRadius: const BorderRadius.all(Radius.circular(4)),
+            decoration: const BoxDecoration(
+              color: AppColors.primary100,
+              borderRadius: BorderRadius.all(Radius.circular(4)),
             ),
           ),
         ],
@@ -448,18 +448,18 @@ class UserShimmerWidgets {
         Container(
           height: 24,
           width: 80,
-          decoration: BoxDecoration(
-            color: Colors.grey[300],
-            borderRadius: const BorderRadius.all(Radius.circular(12)),
+          decoration: const BoxDecoration(
+            color: AppColors.primary100,
+            borderRadius: BorderRadius.all(Radius.circular(12)),
           ),
         ),
         const SizedBox(height: 8),
         Container(
           height: 24,
           width: 60,
-          decoration: BoxDecoration(
-            color: Colors.grey[300],
-            borderRadius: const BorderRadius.all(Radius.circular(12)),
+          decoration: const BoxDecoration(
+            color: AppColors.primary100,
+            borderRadius: BorderRadius.all(Radius.circular(12)),
           ),
         ),
       ],
@@ -473,8 +473,8 @@ class UserShimmerWidgets {
         Container(
           width: 32,
           height: 32,
-          decoration: BoxDecoration(
-            color: Colors.grey[300],
+          decoration: const BoxDecoration(
+            color: AppColors.primary100,
             shape: BoxShape.circle,
           ),
         ),
@@ -482,8 +482,8 @@ class UserShimmerWidgets {
         Container(
           width: 32,
           height: 32,
-          decoration: BoxDecoration(
-            color: Colors.grey[300],
+          decoration: const BoxDecoration(
+            color: AppColors.primary100,
             shape: BoxShape.circle,
           ),
         ),
@@ -491,8 +491,8 @@ class UserShimmerWidgets {
         Container(
           width: 32,
           height: 32,
-          decoration: BoxDecoration(
-            color: Colors.grey[300],
+          decoration: const BoxDecoration(
+            color: AppColors.primary100,
             shape: BoxShape.circle,
           ),
         ),

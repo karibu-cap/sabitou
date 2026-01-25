@@ -98,4 +98,3 @@ Breaking down complex screens into atomic components is crucial for maintainable
    - Organisms (at `lib/widgets/views`): with a suffix **WView**, it represent connected features (complete navigation drawer, product grid with filters)
    - Template (at `lib/widgets/layouts`): with a suffix **WLay**, it represent layout blueprints (how organisms are positioned and aligned)
    - Page (ast `lib/router/routes/**`): concrete implementations with real data and business logic
-

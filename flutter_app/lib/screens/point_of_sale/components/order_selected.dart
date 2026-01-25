@@ -45,6 +45,9 @@ class OrderSelected extends StatelessWidget {
                         ),
                         ShadBadge(
                           child: Text('${items.length} ${Intls.to.items}'),
+                          backgroundColor: ShadTheme.of(
+                            context,
+                          ).colorScheme.primary,
                         ),
                       ],
                     ),

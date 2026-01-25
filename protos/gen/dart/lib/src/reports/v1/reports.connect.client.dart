@@ -172,7 +172,7 @@ extension type ReportingServiceClient (connect.Transport _transport) {
 
   /// Full sales report including best sellers
   Future<reportsv1reports.GetSalesReportFullResponse> getSalesReportFull(
-    reportsv1reports.GetSalesReportRequest input, {
+    reportsv1reports.GetSalesReportRequestFull input, {
     connect.Headers? headers,
     connect.AbortSignal? signal,
     Function(connect.Headers)? onHeader,

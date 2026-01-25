@@ -37,58 +37,61 @@ class CreateEditProductFormView extends StatelessWidget {
 
     return ShadDialog(
       title: Text(Intls.to.addProduct),
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          final dialogWidth = isDesktop ? 600.0 : constraints.maxWidth * 0.9;
+      child: Material(
+        color: ShadTheme.of(context).colorScheme.card,
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final dialogWidth = isDesktop ? 600.0 : constraints.maxWidth * 0.9;
 
-          return MultiProvider(
-            providers: [
-              ChangeNotifierProvider.value(value: productsListController),
-              ChangeNotifierProvider(
-                create: (context) =>
-                    CreateEditProductFormController(product: product),
-              ),
-            ],
-            child: Consumer<CreateEditProductFormController>(
-              builder: (context, controller, child) {
-                return ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxWidth: dialogWidth,
-                    maxHeight: MediaQuery.sizeOf(context).height * 0.8,
-                  ),
-                  child: Column(
-                    spacing: 16,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SingleChildScrollView(
-                        child: ShadForm(
-                          key: controller.formKey,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            spacing: 16,
-                            children: [
-                              _ProductNameField(),
-                              _ProductDescription(),
-                              AdjustFlexDisplay(
-                                children: [
-                                  _BarcodeField(),
-                                  _CategoryDropdown(),
-                                ],
-                              ),
-                              const _StoreProductFields(),
-                            ],
+            return MultiProvider(
+              providers: [
+                ChangeNotifierProvider.value(value: productsListController),
+                ChangeNotifierProvider(
+                  create: (context) =>
+                      CreateEditProductFormController(product: product),
+                ),
+              ],
+              child: Consumer<CreateEditProductFormController>(
+                builder: (context, controller, child) {
+                  return ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxWidth: dialogWidth,
+                      maxHeight: MediaQuery.sizeOf(context).height * 0.8,
+                    ),
+                    child: Column(
+                      spacing: 16,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SingleChildScrollView(
+                          child: ShadForm(
+                            key: controller.formKey,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              spacing: 16,
+                              children: [
+                                _ProductNameField(),
+                                _ProductDescription(),
+                                AdjustFlexDisplay(
+                                  children: [
+                                    _BarcodeField(),
+                                    _CategoryDropdown(),
+                                  ],
+                                ),
+                                const _StoreProductFields(),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      const _FormActions(),
-                    ],
-                  ),
-                );
-              },
-            ),
-          );
-        },
+                        const _FormActions(),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            );
+          },
+        ),
       ),
     );
   }

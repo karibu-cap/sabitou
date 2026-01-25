@@ -71,7 +71,7 @@ final class CashRecipeController extends ChangeNotifier {
     );
   }
 
-  /// Print receipt
+  /// Print receipt.
   Future<void> printReceipt(BuildContext context, CashReceipt receipt) async {
     try {
       // TODO: Implement receipt printing

@@ -18,10 +18,12 @@ class SupplierCellBuilders {
       children: [
         Text(
           supplier.name,
-          style: theme.textTheme.p.copyWith(
+          style: theme.textTheme.small.copyWith(
             fontWeight: FontWeight.w600,
-            fontSize: 14,
+            color: theme.colorScheme.foreground,
           ),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
         if (supplier.contactAddress.isNotEmpty)
           Row(
@@ -31,8 +33,10 @@ class SupplierCellBuilders {
               Flexible(
                 child: Text(
                   supplier.contactAddress,
-                  style: theme.textTheme.muted.copyWith(fontSize: 12),
                   overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.small.copyWith(
+                    color: theme.colorScheme.mutedForeground,
+                  ),
                 ),
               ),
             ],
@@ -60,9 +64,13 @@ class SupplierCellBuilders {
             children: [
               const Icon(LucideIcons.phone400, size: 12),
               const SizedBox(width: 4),
-              Text(
-                supplier.contactPhone,
-                style: theme.textTheme.muted.copyWith(fontSize: 12),
+              Flexible(
+                child: Text(
+                  supplier.contactPhone,
+                  style: theme.textTheme.muted.copyWith(fontSize: 12),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ],
           ),
@@ -71,9 +79,13 @@ class SupplierCellBuilders {
             children: [
               const Icon(LucideIcons.mail400, size: 12),
               const SizedBox(width: 4),
-              Text(
-                supplier.contactEmail,
-                style: theme.textTheme.muted.copyWith(fontSize: 12),
+              Flexible(
+                child: Text(
+                  supplier.contactEmail,
+                  style: theme.textTheme.muted.copyWith(fontSize: 12),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ],
           ),
@@ -85,25 +97,19 @@ class SupplierCellBuilders {
   static Widget buildStatusCell(Supplier supplier) {
     final intl = AppInternationalizationService.to;
 
-    return Container(
+    return ShadBadge(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: supplier.status == SupplierStatus.SUPPLIER_STATUS_ACTIVE
-            ? AppColors.dartGreen.withValues(alpha: 0.1)
-            : AppColors.red.withValues(alpha: 0.1),
-        borderRadius: const BorderRadius.all(Radius.circular(12)),
-      ),
+      backgroundColor: supplier.status == SupplierStatus.SUPPLIER_STATUS_ACTIVE
+          ? AppColors.dartGreen.withValues(alpha: 0.1)
+          : AppColors.red.withValues(alpha: 0.1),
+      foregroundColor: supplier.status == SupplierStatus.SUPPLIER_STATUS_ACTIVE
+          ? AppColors.dartGreen
+          : AppColors.red,
+
       child: Text(
         supplier.status == SupplierStatus.SUPPLIER_STATUS_ACTIVE
             ? intl.activeText
             : intl.inactiveText,
-        style: TextStyle(
-          fontSize: 12,
-          color: supplier.status == SupplierStatus.SUPPLIER_STATUS_ACTIVE
-              ? AppColors.dartGreen
-              : AppColors.red,
-          fontWeight: FontWeight.w600,
-        ),
       ),
     );
   }
@@ -124,22 +130,23 @@ class SupplierCellBuilders {
   }) {
     return Row(
       mainAxisSize: MainAxisSize.min,
+      spacing: 8,
       children: [
-        IconButton(
-          icon: Icon(
-            LucideIcons.squarePen400,
-            size: 16,
-            color: theme.colorScheme.primary,
+        Expanded(
+          child: ShadIconButton.ghost(
+            icon: const Icon(LucideIcons.squarePen400, size: 16),
+            onPressed: onEdit,
           ),
-          onPressed: onEdit,
         ),
-        IconButton(
-          icon: Icon(
-            LucideIcons.trash2400,
-            size: 16,
-            color: theme.colorScheme.primary,
+        Expanded(
+          child: ShadIconButton.ghost(
+            icon: Icon(
+              LucideIcons.trash2400,
+              size: 16,
+              color: theme.colorScheme.destructive,
+            ),
+            onPressed: onDelete,
           ),
-          onPressed: onDelete,
         ),
       ],
     );

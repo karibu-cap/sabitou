@@ -24,21 +24,9 @@ final _fakeTransport =
             ..refreshToken = 'mock_refresh_token';
         })
         .unary(UserService.getCurrentUser, (req, _) async {
-          return GetCurrentUserResponse()
-            ..me = User()
-            ..me.accountStatus = AccountStatusType.ACCOUNT_STATUS_TYPE_ACTIVE
-            ..me.refId = 'mock_id'
-            ..me.firstName = 'mock_first_name'
-            ..me.lastName = 'mock_last_name'
-            ..me.email = 'mock_email@gmail.com'
-            ..me.phoneNumber = '696526541'
-            ..me.profileLink = ResourceLink()
-            ..me.profileLink.targetUri = 'src/poror.jpg'
-            ..me.profileLink.iconUri = 'src/icon_uri.jpg'
-            ..me.profileLink.label = 'mock_label'
-            ..me.profileLink.info = 'mock_info'
-            ..me.profileLink.refId = 'mock_id'
-            ..me.userName = 'mock_user_name';
+          return GetCurrentUserResponse(
+            me: (_fakeData[CollectionName.users] as List<User>).first,
+          );
         })
         .unary(SupplierService.getStoreSuppliers, (req, _) async {
           return GetStoreSuppliersResponse(
@@ -455,11 +443,8 @@ final _fakeTransport =
               globalProduct?.refId ??
               'global-product-${Random().nextInt(1000000)}';
           if (globalProduct == null) {
-            _fakeData[CollectionName.globalProducts]?.add({
-              'ref_id': globalProductRefId,
-              'name': req.globalProduct.name,
-              ...req.globalProduct.toProto3Json() as Map<String, dynamic>,
-            });
+            (_fakeData[CollectionName.globalProducts] as List<GlobalProduct>)
+                .add(req.globalProduct..refId = globalProductRefId);
           }
 
           (_fakeData[CollectionName.storeProducts] as List<StoreProduct>).add(
@@ -577,66 +562,66 @@ final _fakeTransport =
           ),
         );
       })
+      ..unary(InventoryService.adjustInventory, (req, _) async {
+        _ensureFakeInventory(req.storeId);
+        final levels =
+            _fakeData[CollectionName.inventoryLevels] as List<InventoryLevel>;
+        final level = levels.firstWhereOrNull(
+          (l) => l.storeProductId == req.productId,
+        );
+
+        if (level != null) {
+          level.quantityAvailable += req.quantityChange;
+          level.lastUpdated = Timestamp.fromDateTime(clock.now());
+
+          // Optionally add transaction
+          (_fakeData[CollectionName.inventoryTransactions]
+                  as List<InventoryTransaction>)
+              .add(
+                InventoryTransaction()
+                  ..documentId = 'txn_${Random().nextInt(100000)}'
+                  ..storeId = req.storeId
+                  ..productId = req.productId
+                  ..transactionType = TransactionType.TXN_TYPE_ADJUSTMENT
+                  ..quantityChange = req.quantityChange
+                  ..transactionTime = Timestamp.fromDateTime(clock.now())
+                  ..notes = req.reason,
+              );
+
+          return AdjustInventoryResponse(success: true, updatedLevel: level);
+        }
+
+        return AdjustInventoryResponse(success: false);
+      })
       ..unary(InventoryService.getLowStockItems, (req, _) async {
-        final request = req;
+        _ensureFakeInventory(req.storeId);
+        final levels =
+            _fakeData[CollectionName.inventoryLevels] as List<InventoryLevel>;
 
         return GetLowStockItemsResponse(
-          lowStockItems: [
-            InventoryLevel()
-              ..storeProductId = 'sp_1'
-              ..storeId = request.storeId
-              ..quantityAvailable = 5
-              ..quantityReserved = 0
-              ..minThreshold = 10
-              ..lastUpdated = Timestamp.fromDateTime(clock.now()),
-            InventoryLevel()
-              ..storeProductId = 'sp_2'
-              ..storeId = request.storeId
-              ..quantityAvailable = 8
-              ..quantityReserved = 2
-              ..minThreshold = 15
-              ..lastUpdated = Timestamp.fromDateTime(clock.now()),
-          ],
-          totalCount: 2,
+          lowStockItems: levels
+              .where(
+                (l) =>
+                    l.quantityAvailable <= l.minThreshold &&
+                    l.quantityAvailable > 0,
+              )
+              .toList(),
+          totalCount: levels
+              .where((l) => l.quantityAvailable <= l.minThreshold)
+              .length,
         );
       })
       ..unary(InventoryService.getResourceInventory, (req, _) async {
-        final request = req;
+        _ensureFakeInventory(req.storeId);
+        final levels =
+            _fakeData[CollectionName.inventoryLevels] as List<InventoryLevel>;
 
         return GetResourceInventoryResponse(
-          items: [
-            InventoryLevel()
-              ..storeProductId = 'sp_3'
-              ..storeId = request.storeId
-              ..quantityAvailable = 20
-              ..quantityReserved = 0
-              ..batches.add(
-                Batch()
-                  ..documentId = 'batch_1'
-                  ..productId = 'sp_3'
-                  ..warehouseId = request.storeId
-                  ..quantity = 20
-                  ..expirationDate = Timestamp.fromDateTime(
-                    clock.now().add(const Duration(days: 45)),
-                  )
-                  ..receivedAt = Timestamp.fromDateTime(
-                    clock.now().subtract(const Duration(days: 30)),
-                  ),
-              )
-              ..batches.add(
-                Batch()
-                  ..documentId = 'batch_2'
-                  ..productId = 'sp_3'
-                  ..warehouseId = request.storeId
-                  ..quantity = 0
-                  ..expirationDate = Timestamp.fromDateTime(
-                    clock.now().subtract(const Duration(days: 1)),
-                  )
-                  ..status = BatchStatus.BATCH_STATUS_EXPIRED,
-              )
-              ..lastUpdated = Timestamp.fromDateTime(clock.now()),
-          ],
-          totalQuantity: 20,
+          items: levels,
+          totalQuantity: levels.fold(
+            0,
+            (sum, l) => (sum ?? 0) + l.quantityAvailable,
+          ),
           snapshotDate: Timestamp.fromDateTime(clock.now()),
         );
       })
@@ -1324,3 +1309,56 @@ final Map<String, dynamic> fakeStorage = {
   CollectionName.stores:
       (_fakeData[CollectionName.stores] as List<Store>).first,
 };
+
+void _ensureFakeInventory(String storeId) {
+  final levels =
+      _fakeData[CollectionName.inventoryLevels] as List<InventoryLevel>;
+  if (levels.isEmpty) {
+    levels.addAll([
+      InventoryLevel()
+        ..storeProductId = 'sp_1'
+        ..storeId = storeId
+        ..quantityAvailable = 5
+        ..quantityReserved = 0
+        ..minThreshold = 10
+        ..lastUpdated = Timestamp.fromDateTime(clock.now()),
+      InventoryLevel()
+        ..storeProductId = 'sp_2'
+        ..storeId = storeId
+        ..quantityAvailable = 8
+        ..quantityReserved = 2
+        ..minThreshold = 15
+        ..lastUpdated = Timestamp.fromDateTime(clock.now()),
+      InventoryLevel()
+        ..storeProductId = 'sp_3'
+        ..storeId = storeId
+        ..quantityAvailable = 20
+        ..quantityReserved = 0
+        ..lastUpdated = Timestamp.fromDateTime(clock.now())
+        ..batches.add(
+          Batch()
+            ..documentId = 'batch_1'
+            ..productId = 'sp_3'
+            ..warehouseId = storeId
+            ..quantity = 20
+            ..expirationDate = Timestamp.fromDateTime(
+              clock.now().add(const Duration(days: 45)),
+            )
+            ..receivedAt = Timestamp.fromDateTime(
+              clock.now().subtract(const Duration(days: 30)),
+            ),
+        )
+        ..batches.add(
+          Batch()
+            ..documentId = 'batch_2'
+            ..productId = 'sp_3'
+            ..warehouseId = storeId
+            ..quantity = 0
+            ..expirationDate = Timestamp.fromDateTime(
+              clock.now().subtract(const Duration(days: 1)),
+            )
+            ..status = BatchStatus.BATCH_STATUS_EXPIRED,
+        ),
+    ]);
+  }
+}

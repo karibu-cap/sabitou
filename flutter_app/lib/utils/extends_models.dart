@@ -1,4 +1,5 @@
-import 'package:blue_thermal_printer/blue_thermal_printer.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart' as fbp;
+import 'package:hive_ce/hive.dart';
 import 'package:printing/printing.dart';
 
 /// Alert model.
@@ -60,27 +61,35 @@ enum SeverityType {
   high,
 }
 
-/// The app printer model.
+/// Change typeId to a unique value for your app
+@HiveType(typeId: 15)
 class AppPrinter {
   /// The printer url.
+  @HiveField(0)
   final String url;
 
   /// The printer name.
+  @HiveField(1)
   final String? name;
 
   /// The printer model.
+  @HiveField(2)
   final String? model;
 
   /// The printer location.
+  @HiveField(3)
   final String? location;
 
   /// The printer comment.
+  @HiveField(4)
   final String? comment;
 
   /// Whether the printer is default.
+  @HiveField(5)
   final bool? isDefault;
 
   /// Whether the printer is available.
+  @HiveField(6)
   final bool? isAvailable;
 
   /// Constructs a new [AppPrinter].
@@ -107,6 +116,16 @@ class AppPrinter {
           isDefault == other.isDefault &&
           isAvailable == other.isAvailable);
 
+  @override
+  int get hashCode =>
+      url.hashCode ^
+      name.hashCode ^
+      model.hashCode ^
+      location.hashCode ^
+      comment.hashCode ^
+      isDefault.hashCode ^
+      isAvailable.hashCode;
+
   /// Copy the [AppPrinter] with the given properties.
   AppPrinter copyWith({
     String? url,
@@ -128,27 +147,35 @@ class AppPrinter {
     );
   }
 
-  /// Create a [AppPrinter] from a [BluetoothDevice].
-  factory AppPrinter.fromBluetoothDevice(BluetoothDevice device) {
+  /// Create a [AppPrinter] from a Flutter Blue Plus [BluetoothDevice].
+  factory AppPrinter.fromFlutterBluePlusDevice(fbp.BluetoothDevice device) {
     final String url =
-        '${device.address}#U#${device.name}#U#${PrinterModel.bluetoothDevice.name}';
+        '${device.remoteId.str}#U#${device.platformName}#U#${PrinterModel.bluetoothDevice.name}';
 
     return AppPrinter(
       url: url,
-      name: device.name,
+      name: device.platformName.isNotEmpty
+          ? device.platformName
+          : device.remoteId.str,
       model: PrinterModel.bluetoothDevice.name,
-      location: device.address ?? '',
-      comment: device.type.toString(),
+      location: device.remoteId.str,
+      comment: 'Flutter Blue Plus Device',
       isDefault: false,
     );
   }
 
-  /// Create a [BluetoothDevice] from the [url].
-  BluetoothDevice toBluetoothDevice() {
+  /// Create a Flutter Blue Plus [BluetoothDevice] from the [url].
+  fbp.BluetoothDevice toFlutterBluePlusDevice() {
     final List<String> deviceUrl = url.split('#U#');
-    final BluetoothDevice device = BluetoothDevice(deviceUrl[1], deviceUrl[0]);
 
-    return device;
+    // deviceUrl[0] = MAC address/remote ID
+    // deviceUrl[1] = device name
+    // deviceUrl[2] = printer model
+
+    final String remoteId = deviceUrl[0];
+
+    // Create BluetoothDevice from remote ID
+    return fbp.BluetoothDevice.fromId(remoteId);
   }
 
   /// Create a [AppPrinter] from a [Printer].
@@ -176,6 +203,12 @@ class AppPrinter {
       isAvailable: isAvailable,
     );
   }
+
+  @override
+  String toString() {
+    return 'AppPrinter(url: $url, name: $name, model: $model, '
+        'location: $location, isDefault: $isDefault, isAvailable: $isAvailable)';
+  }
 }
 
 /// Printer model.
@@ -188,4 +221,18 @@ enum PrinterModel {
 
   /// Sunmi device.
   sunmiDevice,
+}
+
+/// Extension to get the name of the printer model.
+extension PrinterModelExtension on PrinterModel {
+  String get name {
+    switch (this) {
+      case PrinterModel.bluetoothDevice:
+        return 'bluetooth-device';
+      case PrinterModel.networkDevice:
+        return 'network-device';
+      case PrinterModel.sunmiDevice:
+        return 'sunmi-device';
+    }
+  }
 }

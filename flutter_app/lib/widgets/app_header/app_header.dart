@@ -21,16 +21,17 @@ class HeaderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isTablet = ResponsiveUtils.isTablet(context);
+    final isTablet = ResponsiveUtils.isMobile(context);
     final theme = ShadTheme.of(context);
 
     return Container(
       height: 56,
       decoration: BoxDecoration(
         color: theme.colorScheme.background,
+        border: Border(bottom: BorderSide(color: theme.colorScheme.border)),
         boxShadow: [
           BoxShadow(
-            color: theme.colorScheme.secondary.withValues(alpha: 0.1),
+            color: theme.colorScheme.foreground.withValues(alpha: 0.1),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),

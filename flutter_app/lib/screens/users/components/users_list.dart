@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-import '../../../widgets/custom_grid.dart';
 import '../users_controller.dart';
 import 'list_components/user_card.dart';
 import 'list_components/user_empty_state.dart';
@@ -26,41 +25,35 @@ class UsersList extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Search and filters
         const ShadCard(child: UserSearchFilters()),
         const SizedBox(height: 16),
 
-        // Users content
-        StreamBuilder<List<StoreMember>>(
-          stream: controller.filteredStoreMembersStream,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return UserShimmerWidgets.buildTableShimmer();
-            }
+        ShadCard(
+          padding: EdgeInsets.zero,
+          radius: const BorderRadius.only(
+            topLeft: Radius.circular(12),
+            topRight: Radius.circular(12),
+          ),
+          child: StreamBuilder<List<StoreMember>>(
+            stream: controller.filteredStoreMembersStream,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return UserShimmerWidgets.buildTableShimmer();
+              }
 
-            final error = snapshot.error;
-            if (snapshot.hasError && error != null) {
-              return UserErrorWidget(error: error);
-            }
+              final error = snapshot.error;
+              if (snapshot.hasError && error != null) {
+                return UserErrorWidget(error: error);
+              }
 
-            final storeMembers = snapshot.data ?? [];
-            if (storeMembers.isEmpty) {
-              return const UserEmptyState();
-            }
+              final storeMembers = snapshot.data ?? [];
+              if (storeMembers.isEmpty) {
+                return const UserEmptyState();
+              }
 
-            return LayoutBuilder(
-              builder: (context, constraints) {
-                return CustomGrid(
-                  minItemWidth: 260,
-                  mainAxisExtent: 500,
-                  crossSpacing: 20,
-                  children: storeMembers
-                      .map((storeMember) => UserCard(storeMember: storeMember))
-                      .toList(),
-                );
-              },
-            );
-          },
+              return UsersDataGridView(storeMembers: storeMembers);
+            },
+          ),
         ),
       ],
     );

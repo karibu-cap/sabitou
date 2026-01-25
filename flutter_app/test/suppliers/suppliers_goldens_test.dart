@@ -1,9 +1,12 @@
 import 'package:clock/clock.dart';
+import 'package:flutter/src/widgets/basic.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:sabitou_clients/screens/suppliers/suppliers_view.dart';
 import 'package:sabitou_clients/services/rpc/connect_rpc.dart';
+import 'package:sabitou_clients/services/rpc/fake_transport.dart';
+import 'package:sabitou_clients/services/storage/app_storage.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../goldens.dart';
@@ -366,15 +369,32 @@ final userFakeTransport = FakeTransportBuilder()
 
 void main() {
   group('Goldens', () {
-    setUp(() {
+    setUp(() async {
+      await AppStorage.reset();
+      await GetIt.I.reset();
       GetIt.I.registerSingletonIfAbsent<ConnectRPCService>(
         () => ConnectRPCService.new(clientChannel: userFakeTransport.build()),
       );
     });
-    testGoldens('Suppliers view', (tester) async {
+    tearDown(() async {
+      await GetIt.I.reset();
+      await AppStorage.reset();
+    });
+    testGoldens('Empty Suppliers view', (tester) async {
+      await AppStorage.initialize(AppStorageType.fake, {});
+
       return await multiScreenMultiLocaleGolden(
         tester,
-        const SuppliersView(),
+        const Padding(padding: EdgeInsets.all(8.0), child: SuppliersView()),
+        'empty_suppliers_view',
+      );
+    });
+    testGoldens('Suppliers view', (tester) async {
+      await AppStorage.initialize(AppStorageType.fake, fakeStorage);
+
+      return await multiScreenMultiLocaleGolden(
+        tester,
+        const Padding(padding: EdgeInsets.all(8.0), child: SuppliersView()),
         'suppliers_view',
       );
     });

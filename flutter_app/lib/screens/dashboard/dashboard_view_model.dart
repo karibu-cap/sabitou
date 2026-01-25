@@ -6,10 +6,13 @@ import 'package:sabitou_rpc/models.dart';
 import '../../repositories/inventory_repository.dart';
 import '../../repositories/reports_repository.dart';
 import '../../repositories/store_products_repository.dart';
+import '../../utils/logger.dart';
 import '../../utils/user_preference.dart';
 
 /// The [DashboardViewModel].
 final class DashboardViewModel {
+  final logger = LoggerApp('DashboardViewModel');
+
   /// The user preferences.
   final UserPreferences userPreferences = UserPreferences.instance;
 
@@ -89,7 +92,7 @@ final class DashboardViewModel {
 
       return stats;
     } catch (e) {
-      print('Error loading dashboard data: $e');
+      logger.severe('Error loading dashboard data: $e');
 
       error = e.toString();
 

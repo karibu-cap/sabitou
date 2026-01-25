@@ -18,7 +18,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tabletBreakpoint = ResponsiveUtils.isTablet(context);
+    final tabletBreakpoint = ResponsiveUtils.isMobile(context);
     final isMobile = ResponsiveUtils.isMobile(context);
 
     return Scaffold(
@@ -50,11 +50,17 @@ class HomeScreen extends StatelessWidget {
                                 constraints: const BoxConstraints(
                                   maxWidth: 1280,
                                 ),
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: isMobile ? 16.0 : 24.0,
+                                child: Container(
+                                  color: ShadTheme.of(
+                                    context,
+                                  ).colorScheme.background,
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: isMobile ? 16.0 : 24.0,
+                                      vertical: 18,
+                                    ),
+                                    child: navigationShell,
                                   ),
-                                  child: navigationShell,
                                 ),
                               ),
                             ),

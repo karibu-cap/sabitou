@@ -26,73 +26,6 @@ class SidebarWidget extends StatelessWidget {
   /// Constructs the new [SidebarWidget].
   SidebarWidget({super.key, required this.navigationShell});
 
-  int? findBranchIndexForPath(List<StatefulShellBranch> branches, String path) {
-    print('=== DEBUG: Finding branch for path: $path ===');
-
-    for (var i = 0; i < branches.length; i++) {
-      final branch = branches[i];
-      print('Branch $i:');
-      print('  - defaultRoute: ${branch.defaultRoute?.path}');
-
-      for (var route in branch.routes) {
-        print('  - route: ${route.runtimeType}');
-        if (route is GoRoute) {
-          print('    path: ${route.path}');
-          print('    name: ${route.name}');
-        }
-      }
-
-      if (_branchContainsPath(branch, path)) {
-        print('✓ MATCH FOUND at branch $i');
-
-        return i;
-      }
-    }
-
-    print('✗ NO MATCH FOUND');
-
-    return null;
-  }
-
-  bool _branchContainsPath(StatefulShellBranch branch, String targetPath) {
-    for (var route in branch.routes) {
-      if (_routeMatchesPath(route, targetPath)) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-  bool _routeMatchesPath(RouteBase route, String targetPath) {
-    if (route is GoRoute) {
-      print('    Checking route: ${route.path} against $targetPath');
-
-      // Try exact match
-      if (route.path == targetPath) {
-        print('      ✓ Exact match!');
-
-        return true;
-      }
-
-      // Try with/without leading slash
-      if ('/${route.path}' == targetPath || route.path == '/$targetPath') {
-        print('      ✓ Slash-adjusted match!');
-
-        return true;
-      }
-
-      // Check child routes
-      for (var child in route.routes) {
-        if (_routeMatchesPath(child, targetPath)) {
-          return true;
-        }
-      }
-    }
-
-    return false;
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
@@ -292,11 +225,9 @@ final class _BusinessInfo extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.all(Radius.circular(8)),
               border: Border.fromBorderSide(
-                BorderSide(color: ShadTheme.of(context).colorScheme.accent),
+                BorderSide(color: ShadTheme.of(context).colorScheme.primary),
               ),
-              color: ShadTheme.of(
-                context,
-              ).colorScheme.accent.withValues(alpha: 0.05),
+              color: ShadTheme.of(context).colorScheme.accent,
             ),
             child:
                 business.hasLogoLinkId() && AppUtils.isURL(business.logoLinkId)
@@ -316,37 +247,22 @@ final class _BusinessInfo extends StatelessWidget {
                           image: business.logoLinkId,
                           fit: BoxFit.contain,
                           imageErrorBuilder: (context, error, stackTrace) {
-                            return Icon(
-                              LucideIcons.store400,
-                              size: 24,
-                              color: ShadTheme.of(context).colorScheme.accent,
-                            );
+                            return const Icon(LucideIcons.store400, size: 12);
                           },
                           placeholderErrorBuilder:
                               (context, error, stackTrace) {
-                                return Icon(
+                                return const Icon(
                                   LucideIcons.store400,
-                                  color: ShadTheme.of(
-                                    context,
-                                  ).colorScheme.accent,
                                   size: 24,
                                 );
                               },
                         );
                       }
 
-                      return Icon(
-                        LucideIcons.store400,
-                        size: 24,
-                        color: ShadTheme.of(context).colorScheme.accent,
-                      );
+                      return const Icon(LucideIcons.store400, size: 25);
                     },
                   )
-                : Icon(
-                    LucideIcons.store400,
-                    size: 24,
-                    color: ShadTheme.of(context).colorScheme.accent,
-                  ),
+                : const Icon(LucideIcons.store400, size: 24),
           ),
 
           const SizedBox(width: 12),

@@ -6,9 +6,13 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 import '../../../repositories/categories_repository.dart';
 import '../../services/rpc/fake_transport/category.dart';
 import '../../utils/extensions/category_extension.dart';
+import '../../utils/logger.dart';
+import '../../utils/user_preference.dart';
 
 /// ViewModel for categories management.
 class CategoriesViewModel {
+  final LoggerApp _logger = LoggerApp('CategoriesViewModel');
+
   /// The   categories repository instance.
   final CategoriesRepository _categoriesRepository = CategoriesRepository(
     transport: categoryFakeTransport,
@@ -80,30 +84,17 @@ class CategoriesViewModel {
 
   /// Loads categories from repository.
   Future<void> _loadCategories() async {
-    final categories = await _categoriesRepository.getCategories(
-      FindCategoriesRequest(),
+    final businessId = UserPreferences.instance.business?.refId;
+    _logger.info('-----');
+    if (businessId == null) {
+      _logger.warning('Empty business');
+
+      return;
+    }
+    final result = await _categoriesRepository.getCategoriesByBusinessId(
+      businessId,
     );
-    _categoriesSubject.add(categories);
-  }
-
-  /// Creates a new category.
-  Future<bool> createCategory(CreateCategoryRequest request) async {
-    final success = await _categoriesRepository.createCategory(request);
-    if (success) {
-      await _loadCategories();
-    }
-
-    return success;
-  }
-
-  /// Updates an existing category.
-  Future<bool> updateCategory(UpdateCategoryRequest request) async {
-    final success = await _categoriesRepository.updateCategory(request);
-    if (success) {
-      await _loadCategories();
-    }
-
-    return success;
+    _categoriesSubject.add(result);
   }
 
   /// Deletes a category by ID.

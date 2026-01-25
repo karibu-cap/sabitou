@@ -88,7 +88,7 @@ class _CategoryFilter extends StatelessWidget {
     final controller = context.read<InventoryController>();
 
     return ShadSelect<String>(
-      placeholder: Text(Intls.to.allCategories),
+      placeholder: Text(Intls.to.categories),
       options: [
         ...categories.map(
           (category) => ShadOption(value: category, child: Text(category)),

@@ -51,7 +51,7 @@ class CartManager extends ChangeNotifier {
   }
 
   /// Initialize the cart.
-  void _initializeCart() {
+  Future<void> _initializeCart() async {
     final store = UserPreferences.instance.store;
     final user = UserPreferences.instance.user;
     if (store == null || user == null) {
@@ -66,9 +66,10 @@ class CartManager extends ChangeNotifier {
       transactionTime: Timestamp.fromDateTime(clock.now()),
     );
 
-    final _saveCashReceipts = AppStorageService.to.read<List<CashReceipt>?>(
-      '${CollectionName.cashReceipts}-${UserPreferences.instance.store?.refId}',
-    );
+    final _saveCashReceipts = await AppStorage.of<List<CashReceipt>>(
+      boxKey:
+          '${CollectionName.cashReceipts}-${UserPreferences.instance.store?.refId}',
+    ).read('${CollectionName.cashReceipts}-${UserPreferences.instance.store?.refId}');
 
     if (_saveCashReceipts != null && _saveCashReceipts.isNotEmpty) {
       saveCashReceipts.addAll(_saveCashReceipts);
@@ -242,15 +243,16 @@ class CartManager extends ChangeNotifier {
   }
 
   /// Save current cash receipt.
-  Future<void> saveCurrentCashReceipt() async {
+  Future<bool> saveCurrentCashReceipt() async {
     final currentCashReceipt = _currentCashReceipt;
     if (currentCashReceipt == null) {
-      return;
+      return false;
     }
-    final storeId = UserPreferences.instance.store?.refId;
-    if (storeId == null) {
-      return;
+    final store = UserPreferences.instance.store;
+    if (store == null) {
+      return false;
     }
+    final storeId = store.refId;
 
     // Update or add the current order
     final index = saveCashReceipts.indexWhere(
@@ -263,12 +265,12 @@ class CartManager extends ChangeNotifier {
     }
 
     unawaited(
-      AppStorageService.to.write(
-        '${CollectionName.cashReceipts}-$storeId',
-        saveCashReceipts,
-      ),
+      AppStorage.of<List<CashReceipt>>(
+        boxKey: '${CollectionName.cashReceipts}-$storeId',
+      ).write('${CollectionName.cashReceipts}-$storeId', saveCashReceipts),
     );
-    clearCart();
+
+    return true;
   }
 
   /// Remove current cash receipt.
@@ -285,9 +287,8 @@ class CartManager extends ChangeNotifier {
     saveCashReceipts.removeWhere(
       (order) => order.documentId == currentCashReceipt.documentId,
     );
-    await AppStorageService.to.write(
-      '${CollectionName.cashReceipts}-$storeId',
-      saveCashReceipts,
-    );
+    await AppStorage.of<List<CashReceipt>>(
+      boxKey: '${CollectionName.cashReceipts}-$storeId',
+    ).write('${CollectionName.cashReceipts}-$storeId', saveCashReceipts);
   }
 }

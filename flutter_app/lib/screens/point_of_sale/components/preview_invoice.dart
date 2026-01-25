@@ -2,14 +2,12 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
 import 'package:sabitou_rpc/models.dart';
 
 import '../../../providers/cart_provider.dart';
 import '../../../services/internationalization/internationalization.dart';
 import '../../../widgets/pdf/common/pdf_format.dart';
-import '../../../widgets/pdf/pdf_preview.dart';
 import '../../../widgets/pdf/template/pos_template.dart';
 
 /// Preview invoice.
@@ -20,7 +18,7 @@ class PreviewInvoice extends StatelessWidget {
   /// Constructors of new [PreviewInvoice].
   const PreviewInvoice({super.key, required this.store});
 
-  Future<Uint8List> _buildInvoicePdf(PdfPageFormat format) async {
+  Future<Uint8List> _buildInvoicePdf(PdfMode format) async {
     final cartData = CartManager.instance.currentCashReceipt;
     if (cartData == null) {
       return Uint8List.fromList([]);
@@ -46,12 +44,10 @@ class PreviewInvoice extends StatelessWidget {
             return Center(child: Text(Intls.to.addProductToCart));
           }
 
+          final posTemplate = PosTemplate(cashReceipt: cartData, store: store);
+
           return PdfPreview(
-            build: (format) => PdfPreviewExtents.previewInvoice(
-              cashReceipt: cartData,
-              store: store,
-              pdfMode: PdfMode.TICKET,
-            ),
+            build: (format) => posTemplate.buildPdfInvoiceMini(PdfMode.TICKET),
             canChangeOrientation: false,
             canDebug: false,
             dynamicLayout: false,
@@ -63,7 +59,7 @@ class PreviewInvoice extends StatelessWidget {
             ),
             maxPageWidth: 300,
             onShared: (context) async {
-              final pdf = await _buildInvoicePdf(PdfPageFormat.roll80);
+              final pdf = await _buildInvoicePdf(PdfMode.TICKET);
               if (pdf.isNotEmpty) {
                 await Printing.sharePdf(
                   bytes: pdf,

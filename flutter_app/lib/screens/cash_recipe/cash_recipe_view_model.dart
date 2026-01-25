@@ -90,7 +90,6 @@ final class CashRecipeViewModel {
       final response = await PosRepository.instance.findCashReceipt(
         FindCashReceiptRequest(storeId: store.refId),
       );
-      _logger.info('Cash receipts response: $response');
 
       if (response != null && response.isNotEmpty) {
         final receipts = response;

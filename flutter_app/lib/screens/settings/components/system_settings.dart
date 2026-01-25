@@ -5,6 +5,8 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../services/app_theme_service.dart';
 import '../../../services/internationalization/internationalization.dart';
+import '../../../utils/printer_management.dart';
+import '../../../widgets/pdf/printers/app_printer_utils.dart';
 import '../settings_controller.dart';
 
 /// The [SystemSettings] widget.
@@ -24,6 +26,8 @@ class SystemSettings extends StatelessWidget {
         Divider(color: ShadTheme.of(context).colorScheme.border, thickness: 1),
         const _ApplicationSettings(),
         Divider(color: ShadTheme.of(context).colorScheme.border, thickness: 1),
+        const _PrinterSettings(),
+        Divider(color: ShadTheme.of(context).colorScheme.border, thickness: 1),
         Row(
           spacing: 12,
           children: [
@@ -32,6 +36,7 @@ class SystemSettings extends StatelessWidget {
                 onPressed: () async {
                   await controller.switchBusiness();
                   await controller.switchStore();
+                  await controller.savePrinterConfiguration();
                 },
                 leading: const Icon(LucideIcons.save400),
                 child: Flexible(
@@ -102,7 +107,6 @@ class _SystemSettings extends StatelessWidget {
             style: ShadTheme.of(context).textTheme.p,
           ),
           trailing: ShadSelect<Locale>(
-            placeholder: Text(Intls.to.allCategories),
             initialValue: internationalizationService.locale,
             options: Intls.supportedLocales.map(
               (e) => ShadOption(value: e, child: Text(e.languageCode)),
@@ -181,6 +185,75 @@ class _ApplicationSettings extends StatelessWidget {
                 .map((e) => ShadOption<Store>(value: e, child: Text(e.name))),
             selectedOptionBuilder: (context, value) => Text(value.name),
             onChanged: controller.setSelectedStore,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _PrinterSettings extends StatelessWidget {
+  const _PrinterSettings();
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = context.watch<SettingsController>();
+    final printerConfig = controller.printerConfiguration;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: 12,
+      children: [
+        Text(
+          'Printer Settings',
+          style: ShadTheme.of(
+            context,
+          ).textTheme.p.copyWith(fontWeight: FontWeight.bold),
+        ),
+        ListTile(
+          leading: Icon(
+            LucideIcons.printer400,
+            color: ShadTheme.of(context).colorScheme.primary,
+          ),
+          subtitle: Text(
+            printerConfig.defaultPrinter != null
+                ? printerConfig.defaultPrinter?.name ?? 'Unknown'
+                : 'No printer selected',
+            style: ShadTheme.of(context).textTheme.muted,
+          ),
+          title: Text(
+            'Default Printer',
+            style: ShadTheme.of(context).textTheme.p,
+          ),
+          trailing: ShadButton.outline(
+            child: const Text('Select Printer'),
+            onPressed: () async {
+              final Printer? printer = await AppPrinterUtils.pickPrinter(
+                context,
+              );
+
+              if (printer != null) {
+                controller.setDefaultPrinter(printer);
+              }
+            },
+          ),
+        ),
+        ListTile(
+          leading: Icon(
+            LucideIcons.printer400,
+            color: ShadTheme.of(context).colorScheme.primary,
+          ),
+          subtitle: Text(
+            'Automatically print receipts after completing a sale',
+            style: ShadTheme.of(context).textTheme.muted,
+          ),
+          title: Text(
+            'Auto-Print Receipts',
+            style: ShadTheme.of(context).textTheme.p,
+          ),
+          trailing: ShadSwitch(
+            value: printerConfig.autoPrintEnabled,
+            onChanged: controller.setAutoPrintEnabled,
           ),
         ),
       ],

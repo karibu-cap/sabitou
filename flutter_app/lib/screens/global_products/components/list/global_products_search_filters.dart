@@ -19,7 +19,7 @@ class GlobalProductsSearchFilters extends StatelessWidget {
     final theme = ShadTheme.of(context);
     final isMobile = ResponsiveUtils.isMobile(context);
 
-    final communStyle = theme.textTheme.muted.copyWith(
+    final commonStyle = theme.textTheme.muted.copyWith(
       fontWeight: FontWeight.bold,
       fontSize: 12,
     );
@@ -56,27 +56,27 @@ class GlobalProductsSearchFilters extends StatelessWidget {
             controller: controller.statusFilterController,
             placeholder: Text(
               AppInternationalizationService.to.allStatus,
-              style: communStyle,
+              style: commonStyle,
             ),
             options: [
               ShadOption(
                 value: GlobalProductStatus.GLOBAL_PRODUCT_STATUS_ACTIVE,
                 child: Text(
                   AppInternationalizationService.to.active,
-                  style: communStyle,
+                  style: commonStyle,
                 ),
               ),
               ShadOption(
                 value: GlobalProductStatus.GLOBAL_PRODUCT_STATUS_INACTIVE,
                 child: Text(
                   AppInternationalizationService.to.inactive,
-                  style: communStyle,
+                  style: commonStyle,
                 ),
               ),
             ],
             selectedOptionBuilder: (context, value) => Row(
               mainAxisSize: MainAxisSize.min,
-              children: [Text(getStatusLabel(value), style: communStyle)],
+              children: [Text(getStatusLabel(value), style: commonStyle)],
             ),
             allowDeselection: true,
             onChanged: (value) {
@@ -88,18 +88,18 @@ class GlobalProductsSearchFilters extends StatelessWidget {
             ShadSelect<Category>(
               controller: controller.categoryFilterController,
               placeholder: Text(
-                AppInternationalizationService.to.allCategories,
-                style: communStyle,
+                AppInternationalizationService.to.categories,
+                style: commonStyle,
               ),
               options: controller.categories.map(
                 (category) => ShadOption(
                   value: category,
-                  child: Text(category?.label ?? '', style: communStyle),
+                  child: Text(category?.label ?? '', style: commonStyle),
                 ),
               ),
               selectedOptionBuilder: (context, value) => Row(
                 mainAxisSize: MainAxisSize.min,
-                children: [Text(value.label, style: communStyle)],
+                children: [Text(value.label, style: commonStyle)],
               ),
               allowDeselection: true,
               onChanged: (value) {

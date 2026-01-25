@@ -197,7 +197,7 @@ const InventoryLevelWithProduct$json = {
       '10': 'product'
     },
     {
-      '1': 'globalProduct',
+      '1': 'global_product',
       '3': 3,
       '4': 1,
       '5': 11,
@@ -206,7 +206,7 @@ const InventoryLevelWithProduct$json = {
     },
     {'1': 'stock_value', '3': 4, '4': 1, '5': 5, '10': 'stockValue'},
     {
-      '1': 'stockStatus',
+      '1': 'stock_status',
       '3': 5,
       '4': 1,
       '5': 14,
@@ -220,10 +220,10 @@ const InventoryLevelWithProduct$json = {
 final $typed_data.Uint8List inventoryLevelWithProductDescriptor = $convert.base64Decode(
     'ChlJbnZlbnRvcnlMZXZlbFdpdGhQcm9kdWN0EjIKBWxldmVsGAEgASgLMhwuaW52ZW50b3J5Ln'
     'YxLkludmVudG9yeUxldmVsUgVsZXZlbBI0Cgdwcm9kdWN0GAIgASgLMhouaW52ZW50b3J5LnYx'
-    'LlN0b3JlUHJvZHVjdFIHcHJvZHVjdBJBCg1nbG9iYWxQcm9kdWN0GAMgASgLMhsuaW52ZW50b3'
-    'J5LnYxLkdsb2JhbFByb2R1Y3RSDWdsb2JhbFByb2R1Y3QSHwoLc3RvY2tfdmFsdWUYBCABKAVS'
-    'CnN0b2NrVmFsdWUSOwoLc3RvY2tTdGF0dXMYBSABKA4yGS5pbnZlbnRvcnkudjEuU3RvY2tTdG'
-    'F0dXNSC3N0b2NrU3RhdHVz');
+    'LlN0b3JlUHJvZHVjdFIHcHJvZHVjdBJCCg5nbG9iYWxfcHJvZHVjdBgDIAEoCzIbLmludmVudG'
+    '9yeS52MS5HbG9iYWxQcm9kdWN0Ug1nbG9iYWxQcm9kdWN0Eh8KC3N0b2NrX3ZhbHVlGAQgASgF'
+    'UgpzdG9ja1ZhbHVlEjwKDHN0b2NrX3N0YXR1cxgFIAEoDjIZLmludmVudG9yeS52MS5TdG9ja1'
+    'N0YXR1c1ILc3RvY2tTdGF0dXM=');
 
 @$core.Deprecated('Use getInventoryTransactionHistoryRequestDescriptor instead')
 const GetInventoryTransactionHistoryRequest$json = {
@@ -705,6 +705,48 @@ final $typed_data.Uint8List productBySupplierDescriptor = $convert.base64Decode(
     'YxLlN0b3JlUHJvZHVjdFIMc3RvcmVQcm9kdWN0EkIKDmdsb2JhbF9wcm9kdWN0GAIgASgLMhsu'
     'aW52ZW50b3J5LnYxLkdsb2JhbFByb2R1Y3RSDWdsb2JhbFByb2R1Y3Q=');
 
+@$core.Deprecated('Use adjustInventoryRequestDescriptor instead')
+const AdjustInventoryRequest$json = {
+  '1': 'AdjustInventoryRequest',
+  '2': [
+    {'1': 'store_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'storeId'},
+    {'1': 'product_id', '3': 2, '4': 1, '5': 9, '8': {}, '10': 'productId'},
+    {'1': 'quantity_change', '3': 3, '4': 1, '5': 5, '10': 'quantityChange'},
+    {'1': 'reason', '3': 4, '4': 1, '5': 9, '10': 'reason'},
+    {'1': 'notes', '3': 5, '4': 1, '5': 9, '10': 'notes'},
+    {'1': 'batch_id', '3': 6, '4': 1, '5': 9, '10': 'batchId'},
+  ],
+};
+
+/// Descriptor for `AdjustInventoryRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List adjustInventoryRequestDescriptor = $convert.base64Decode(
+    'ChZBZGp1c3RJbnZlbnRvcnlSZXF1ZXN0EiEKCHN0b3JlX2lkGAEgASgJQga6SAPIAQFSB3N0b3'
+    'JlSWQSJQoKcHJvZHVjdF9pZBgCIAEoCUIGukgDyAEBUglwcm9kdWN0SWQSJwoPcXVhbnRpdHlf'
+    'Y2hhbmdlGAMgASgFUg5xdWFudGl0eUNoYW5nZRIWCgZyZWFzb24YBCABKAlSBnJlYXNvbhIUCg'
+    'Vub3RlcxgFIAEoCVIFbm90ZXMSGQoIYmF0Y2hfaWQYBiABKAlSB2JhdGNoSWQ=');
+
+@$core.Deprecated('Use adjustInventoryResponseDescriptor instead')
+const AdjustInventoryResponse$json = {
+  '1': 'AdjustInventoryResponse',
+  '2': [
+    {'1': 'success', '3': 1, '4': 1, '5': 8, '10': 'success'},
+    {
+      '1': 'updated_level',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.inventory.v1.InventoryLevel',
+      '10': 'updatedLevel'
+    },
+  ],
+};
+
+/// Descriptor for `AdjustInventoryResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List adjustInventoryResponseDescriptor = $convert.base64Decode(
+    'ChdBZGp1c3RJbnZlbnRvcnlSZXNwb25zZRIYCgdzdWNjZXNzGAEgASgIUgdzdWNjZXNzEkEKDX'
+    'VwZGF0ZWRfbGV2ZWwYAiABKAsyHC5pbnZlbnRvcnkudjEuSW52ZW50b3J5TGV2ZWxSDHVwZGF0'
+    'ZWRMZXZlbA==');
+
 const $core.Map<$core.String, $core.dynamic> InventoryServiceBase$json = {
   '1': 'InventoryService',
   '2': [
@@ -742,6 +784,11 @@ const $core.Map<$core.String, $core.dynamic> InventoryServiceBase$json = {
       '1': 'ListProductsBySupplier',
       '2': '.inventory.v1.ListProductsBySupplierRequest',
       '3': '.inventory.v1.ListProductsBySupplierResponse'
+    },
+    {
+      '1': 'AdjustInventory',
+      '2': '.inventory.v1.AdjustInventoryRequest',
+      '3': '.inventory.v1.AdjustInventoryResponse'
     },
   ],
 };
@@ -783,6 +830,8 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
   '.inventory.v1.GlobalProduct': $1.GlobalProduct$json,
   '.inventory.v1.Internationalized': $3.Internationalized$json,
   '.inventory.v1.Category': $3.Category$json,
+  '.inventory.v1.AdjustInventoryRequest': AdjustInventoryRequest$json,
+  '.inventory.v1.AdjustInventoryResponse': AdjustInventoryResponse$json,
 };
 
 /// Descriptor for `InventoryService`. Decode as a `google.protobuf.ServiceDescriptorProto`.
@@ -802,4 +851,6 @@ final $typed_data.Uint8List inventoryServiceDescriptor = $convert.base64Decode(
     'MS5HZXRQcm9kdWN0VHJhbnNhY3Rpb25IaXN0b3J5UmVxdWVzdBoyLmludmVudG9yeS52MS5HZX'
     'RQcm9kdWN0VHJhbnNhY3Rpb25IaXN0b3J5UmVzcG9uc2UScwoWTGlzdFByb2R1Y3RzQnlTdXBw'
     'bGllchIrLmludmVudG9yeS52MS5MaXN0UHJvZHVjdHNCeVN1cHBsaWVyUmVxdWVzdBosLmludm'
-    'VudG9yeS52MS5MaXN0UHJvZHVjdHNCeVN1cHBsaWVyUmVzcG9uc2U=');
+    'VudG9yeS52MS5MaXN0UHJvZHVjdHNCeVN1cHBsaWVyUmVzcG9uc2USXgoPQWRqdXN0SW52ZW50'
+    'b3J5EiQuaW52ZW50b3J5LnYxLkFkanVzdEludmVudG9yeVJlcXVlc3QaJS5pbnZlbnRvcnkudj'
+    'EuQWRqdXN0SW52ZW50b3J5UmVzcG9uc2U=');

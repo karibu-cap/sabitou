@@ -281,7 +281,6 @@ class _PermissionsList extends StatelessWidget {
     return PermissionsSelector(
       isPermissionSelected: controller.isPermissionSelected,
       onTogglePermission: controller.togglePermission,
-      maxHeight: 450,
     );
   }
 }

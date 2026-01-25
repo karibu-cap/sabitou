@@ -4,7 +4,6 @@ package business.v1;
 
 import "buf/validate/validate.proto";
 import "google/protobuf/timestamp.proto";
-import "identity/v1/permission.proto";
 import "identity/v1/user.proto";
 import "link/v1/link.proto";
 

@@ -10,7 +10,6 @@ typedef Intls = AppInternationalizationService;
 /// AppInternalization defines all the 'local' strings displayed to.
 class AppInternationalizationService extends ChangeNotifier {
   final _key = PreferencesKey.language;
-  final AppStorageService _box;
   Locale _locale;
 
   /// The translations map key.
@@ -2044,6 +2043,29 @@ class AppInternationalizationService extends ChangeNotifier {
       'fr': 'Rechercher des cash receipts...',
     },
     'filter': {'en': 'Filter', 'fr': 'Filtrer'},
+    'welcomeScreenThirdMessage': {
+      'en':
+          'Manage your inventory, sales, purchases, and cash receipts all in one place.',
+      'fr':
+          'Gérez votre inventaire, vos ventes, vos achats et vos reçus de caisse en un seul endroit.',
+    },
+    'welcomeScreenSecondMessage': {
+      'en':
+          'Track your stock levels, sales, and purchases with ease using Sabitou.',
+      'fr':
+          'Suivez facilement vos niveaux de stock, vos ventes et vos achats avec Sabitou.',
+    },
+    'welcomeScreenFirstMessage': {
+      'en':
+          'Welcome to Sabitou, your all-in-one inventory and sales management solution.',
+      'fr':
+          'Bienvenue chez Sabitou, votre solution tout-en-un de gestion des stocks et des ventes.',
+    },
+    'new': {'en': 'New', 'fr': 'Nouvelle'},
+    'noPrinterConnected': {
+      'en': 'No printer connect.',
+      'fr': 'Aucune imprimante connecte.',
+    },
   };
 
   /// Direct access to the internationalization service.
@@ -2051,7 +2073,7 @@ class AppInternationalizationService extends ChangeNotifier {
       GetIt.I<AppInternationalizationService>();
 
   /// Constructors for internationalization.
-  AppInternationalizationService(Locale initialLocale, this._box)
+  AppInternationalizationService(Locale initialLocale)
     : _locale = initialLocale;
 
   /// The current locale.
@@ -2062,6 +2084,25 @@ class AppInternationalizationService extends ChangeNotifier {
     const Locale('en'),
     const Locale('fr'),
   ];
+
+  /// The string for noPrinterConnected.
+  String get noPrinterConnected =>
+      _stringOfLocalizedValue('noPrinterConnected');
+
+  /// The new screen first message.
+  String get newText => _stringOfLocalizedValue('new');
+
+  /// The welcome screen first message.
+  String get welcomeScreenFirstMessage =>
+      _stringOfLocalizedValue('welcomeScreenFirstMessage');
+
+  /// The welcome screen second message.
+  String get welcomeScreenSecondMessage =>
+      _stringOfLocalizedValue('welcomeScreenSecondMessage');
+
+  /// The welcome screen third message.
+  String get welcomeScreenThirdMessage =>
+      _stringOfLocalizedValue('welcomeScreenThirdMessage');
 
   /// The search cash receipts.
   String get searchCashReceipts =>
@@ -4841,7 +4882,7 @@ class AppInternationalizationService extends ChangeNotifier {
     }
     _locale = local;
 
-    _box.write(_key, local.languageCode);
+    AppStorage.of<Locale>().write(_key, local);
     notifyListeners();
   }
 

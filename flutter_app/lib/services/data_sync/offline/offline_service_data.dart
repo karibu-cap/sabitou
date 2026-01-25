@@ -3,13 +3,12 @@ import 'dart:async';
 import 'package:connectrpc/connect.dart' as connect;
 import 'package:get_it/get_it.dart';
 import 'package:rxdart/rxdart.dart';
-
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../../../repositories/sync_repository.dart';
 import '../../../utils/logger.dart';
-import '../../hive_database/hive_database.dart';
 import '../../network_status_provider/network_status_provider.dart';
+import '../../storage/app_storage.dart';
 
 /// Offline operations management service
 ///
@@ -18,9 +17,6 @@ import '../../network_status_provider/network_status_provider.dart';
 /// exponential backoff, and synchronization via connectRPC.
 class OfflineServiceData {
   final _logger = LoggerApp('OfflineServiceData');
-
-  ///  database
-  final HiveDatabase _hiveDatabase = GetIt.instance<HiveDatabase>();
 
   /// Network status provider
   final NetworkStatusProvider _networkStatusProvider =
@@ -119,8 +115,7 @@ class OfflineServiceData {
   /// Loads pending operations from
   Future<void> _loadPendingOperations() async {
     try {
-      final box = _hiveDatabase.syncOperations;
-      final allOperations = box.values.toList();
+      final allOperations = await AppStorage.of<SyncOperation>().getAll();
 
       // Filter operations by status (pending, retrying, or failed)
       final operations = allOperations.where((op) {
@@ -320,16 +315,16 @@ class OfflineServiceData {
 
   /// Saves an operation to Isar
   Future<void> _saveOperation(SyncOperation operation) async {
-    await _hiveDatabase.syncOperations.put(operation.refId, operation);
+    await AppStorage.of<SyncOperation>().write(operation.refId, operation);
   }
 
   /// Clears all completed operations (SUCCESS)
   Future<void> clearCompletedOperations() async {
-    final box = _hiveDatabase.syncOperations;
+    final box = await AppStorage.of<SyncOperation>().getAllMap();
     final completedKeys = <String>[];
 
     // Find all completed operations
-    for (final entry in box.toMap().entries) {
+    for (final entry in box.entries) {
       if (entry.value.status ==
           SyncOperationStatus.SYNC_OPERATION_STATUS_SUCCESS) {
         completedKeys.add(entry.key as String);
@@ -337,7 +332,7 @@ class OfflineServiceData {
     }
 
     // Delete completed operations
-    await box.deleteAll(completedKeys);
+    await AppStorage.of<SyncOperation>().deleteAll(completedKeys);
 
     await _loadPendingOperations();
     _logger.info('Completed operations cleared');
@@ -345,11 +340,11 @@ class OfflineServiceData {
 
   /// Clears all abandoned operations (ABANDONED)
   Future<void> clearAbandonedOperations() async {
-    final box = _hiveDatabase.syncOperations;
+    final box = await AppStorage.of<SyncOperation>().getAllMap();
     final abandonedKeys = <String>[];
 
     // Find all abandoned operations
-    for (final entry in box.toMap().entries) {
+    for (final entry in box.entries) {
       if (entry.value.status ==
           SyncOperationStatus.SYNC_OPERATION_STATUS_ABANDONED) {
         abandonedKeys.add(entry.key as String);
@@ -357,7 +352,7 @@ class OfflineServiceData {
     }
 
     // Delete abandoned operations
-    await box.deleteAll(abandonedKeys);
+    await AppStorage.of<SyncOperation>().deleteAll(abandonedKeys);
 
     await _loadPendingOperations();
     _logger.info('Abandoned operations cleared');
@@ -367,11 +362,11 @@ class OfflineServiceData {
   Future<void> clearOldOperations({int olderThanDays = 7}) async {
     final cutoffDate = DateTime.now().subtract(Duration(days: olderThanDays));
 
-    final box = _hiveDatabase.syncOperations;
+    final box = await AppStorage.of<SyncOperation>().getAllMap();
     final oldKeys = <String>[];
 
     // Find old operations that are completed or abandoned
-    for (final entry in box.toMap().entries) {
+    for (final entry in box.entries) {
       final operation = entry.value;
       final isOld = operation.createdAt.toDateTime().isBefore(cutoffDate);
       final isCompletedOrAbandoned =
@@ -386,7 +381,7 @@ class OfflineServiceData {
     }
 
     // Delete old operations
-    await box.deleteAll(oldKeys);
+    await AppStorage.of<SyncOperation>().deleteAll(oldKeys);
 
     await _loadPendingOperations();
     _logger.info('Old operations (>$olderThanDays days) cleared');
@@ -394,7 +389,7 @@ class OfflineServiceData {
 
   /// Gets operations statistics
   Future<Map<String, int>> getOperationsStats() async {
-    final box = _hiveDatabase.syncOperations;
+    final box = await AppStorage.of<SyncOperation>().getAllMap();
     final allOperations = box.values.toList();
 
     final stats = <String, int>{

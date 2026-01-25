@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 
+import '../../../../themes/app_colors.dart';
+
 /// Collection of shimmer loading widgets for the categories module.
 ///
 /// Provides consistent shimmer animations for different loading states
@@ -11,7 +13,7 @@ class CategorieShimmerWidgets {
     return Shimmer(
       duration: const Duration(seconds: 2),
       interval: const Duration(milliseconds: 500),
-      color: Colors.grey[300] ?? Colors.transparent,
+      color: AppColors.primary100,
       child: Column(
         children: [
           // Table header shimmer
@@ -30,7 +32,7 @@ class CategorieShimmerWidgets {
     return Shimmer(
       duration: const Duration(seconds: 2),
       interval: const Duration(milliseconds: 500),
-      color: Colors.grey[300] ?? Colors.transparent,
+      color: AppColors.primary100,
       child: GridView.count(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
@@ -48,7 +50,7 @@ class CategorieShimmerWidgets {
     return Shimmer(
       duration: const Duration(seconds: 2),
       interval: const Duration(milliseconds: 500),
-      color: Colors.grey[300] ?? Colors.transparent,
+      color: AppColors.primary100,
       child: Card(
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -58,27 +60,27 @@ class CategorieShimmerWidgets {
               Container(
                 height: 20,
                 width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: const BorderRadius.all(Radius.circular(4)),
+                decoration: const BoxDecoration(
+                  color: AppColors.primary100,
+                  borderRadius: BorderRadius.all(Radius.circular(4)),
                 ),
               ),
               const SizedBox(height: 8),
               Container(
                 height: 16,
                 width: 150,
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: const BorderRadius.all(Radius.circular(4)),
+                decoration: const BoxDecoration(
+                  color: AppColors.primary100,
+                  borderRadius: BorderRadius.all(Radius.circular(4)),
                 ),
               ),
               const SizedBox(height: 8),
               Container(
                 height: 16,
                 width: 100,
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: const BorderRadius.all(Radius.circular(4)),
+                decoration: const BoxDecoration(
+                  color: AppColors.primary100,
+                  borderRadius: BorderRadius.all(Radius.circular(4)),
                 ),
               ),
             ],
@@ -93,7 +95,7 @@ class CategorieShimmerWidgets {
     return Shimmer(
       duration: const Duration(seconds: 2),
       interval: const Duration(milliseconds: 500),
-      color: Colors.grey[300] ?? Colors.transparent,
+      color: AppColors.primary100,
       child: Flex(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         direction: isMobile ? Axis.vertical : Axis.horizontal,
@@ -103,17 +105,17 @@ class CategorieShimmerWidgets {
           Container(
             height: 24,
             width: 200,
-            decoration: BoxDecoration(
-              color: Colors.grey[300],
-              borderRadius: const BorderRadius.all(Radius.circular(4)),
+            decoration: const BoxDecoration(
+              color: AppColors.primary100,
+              borderRadius: BorderRadius.all(Radius.circular(4)),
             ),
           ),
           Container(
             height: 36,
             width: 120,
-            decoration: BoxDecoration(
-              color: Colors.grey[300],
-              borderRadius: const BorderRadius.all(Radius.circular(8)),
+            decoration: const BoxDecoration(
+              color: AppColors.primary100,
+              borderRadius: BorderRadius.all(Radius.circular(8)),
             ),
           ),
         ],
@@ -135,9 +137,9 @@ class CategorieShimmerWidgets {
             flex: 3,
             child: Container(
               height: 16,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: const BorderRadius.all(Radius.circular(4)),
+              decoration: const BoxDecoration(
+                color: AppColors.primary100,
+                borderRadius: BorderRadius.all(Radius.circular(4)),
               ),
             ),
           ),
@@ -146,9 +148,9 @@ class CategorieShimmerWidgets {
             flex: 2,
             child: Container(
               height: 16,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: const BorderRadius.all(Radius.circular(4)),
+              decoration: const BoxDecoration(
+                color: AppColors.primary100,
+                borderRadius: BorderRadius.all(Radius.circular(4)),
               ),
             ),
           ),
@@ -157,9 +159,9 @@ class CategorieShimmerWidgets {
             flex: 2,
             child: Container(
               height: 16,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: const BorderRadius.all(Radius.circular(4)),
+              decoration: const BoxDecoration(
+                color: AppColors.primary100,
+                borderRadius: BorderRadius.all(Radius.circular(4)),
               ),
             ),
           ),
@@ -167,9 +169,9 @@ class CategorieShimmerWidgets {
           Container(
             width: 80,
             height: 16,
-            decoration: BoxDecoration(
-              color: Colors.grey[300],
-              borderRadius: const BorderRadius.all(Radius.circular(4)),
+            decoration: const BoxDecoration(
+              color: AppColors.primary100,
+              borderRadius: BorderRadius.all(Radius.circular(4)),
             ),
           ),
         ],
@@ -182,11 +184,9 @@ class CategorieShimmerWidgets {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
       margin: const EdgeInsets.only(bottom: 1),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Colors.white,
-        border: Border(
-          bottom: BorderSide(color: Colors.grey[200] ?? Colors.transparent),
-        ),
+        border: Border(bottom: BorderSide(color: AppColors.primary50)),
       ),
       child: Row(
         children: [
@@ -198,18 +198,18 @@ class CategorieShimmerWidgets {
                 Container(
                   height: 16,
                   width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: const BorderRadius.all(Radius.circular(4)),
+                  decoration: const BoxDecoration(
+                    color: AppColors.primary100,
+                    borderRadius: BorderRadius.all(Radius.circular(4)),
                   ),
                 ),
                 const SizedBox(height: 4),
                 Container(
                   height: 12,
                   width: 120,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: const BorderRadius.all(Radius.circular(4)),
+                  decoration: const BoxDecoration(
+                    color: AppColors.primary100,
+                    borderRadius: BorderRadius.all(Radius.circular(4)),
                   ),
                 ),
               ],
@@ -220,9 +220,9 @@ class CategorieShimmerWidgets {
             flex: 2,
             child: Container(
               height: 16,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: const BorderRadius.all(Radius.circular(4)),
+              decoration: const BoxDecoration(
+                color: AppColors.primary100,
+                borderRadius: BorderRadius.all(Radius.circular(4)),
               ),
             ),
           ),
@@ -231,9 +231,9 @@ class CategorieShimmerWidgets {
             flex: 2,
             child: Container(
               height: 16,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: const BorderRadius.all(Radius.circular(4)),
+              decoration: const BoxDecoration(
+                color: AppColors.primary100,
+                borderRadius: BorderRadius.all(Radius.circular(4)),
               ),
             ),
           ),
@@ -241,9 +241,9 @@ class CategorieShimmerWidgets {
           Container(
             width: 80,
             height: 32,
-            decoration: BoxDecoration(
-              color: Colors.grey[300],
-              borderRadius: const BorderRadius.all(Radius.circular(16)),
+            decoration: const BoxDecoration(
+              color: AppColors.primary100,
+              borderRadius: BorderRadius.all(Radius.circular(16)),
             ),
           ),
         ],
@@ -263,18 +263,18 @@ class CategorieShimmerWidgets {
             Container(
               height: 24,
               width: 60,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: const BorderRadius.all(Radius.circular(4)),
+              decoration: const BoxDecoration(
+                color: AppColors.primary100,
+                borderRadius: BorderRadius.all(Radius.circular(4)),
               ),
             ),
             const SizedBox(height: 8),
             Container(
               height: 16,
               width: 100,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: const BorderRadius.all(Radius.circular(4)),
+              decoration: const BoxDecoration(
+                color: AppColors.primary100,
+                borderRadius: BorderRadius.all(Radius.circular(4)),
               ),
             ),
           ],

@@ -65,4 +65,12 @@ abstract final class InventoryService {
     inventoryv1inventory.ListProductsBySupplierRequest.new,
     inventoryv1inventory.ListProductsBySupplierResponse.new,
   );
+
+  /// Adjusts the inventory.
+  static const adjustInventory = connect.Spec(
+    '/$name/AdjustInventory',
+    connect.StreamType.unary,
+    inventoryv1inventory.AdjustInventoryRequest.new,
+    inventoryv1inventory.AdjustInventoryResponse.new,
+  );
 }

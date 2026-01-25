@@ -7,6 +7,7 @@ import '../../../services/internationalization/internationalization.dart';
 import '../../../utils/extensions/global_product_extension.dart';
 import '../../../utils/formatters.dart';
 import '../../../utils/user_preference.dart';
+import '../../../widgets/pdf/common/pdf_format.dart';
 import '../../../widgets/pdf/template/pos_template.dart';
 
 /// A beautiful card widget to display cash receipt information in a grid layout
@@ -336,7 +337,7 @@ class CashReceiptCard extends StatelessWidget {
                 store: store,
               );
 
-              return posTemplate.buildPdfInvoiceMini(format);
+              return posTemplate.buildPdfInvoiceMini(PdfMode.TICKET);
             },
           ),
         ),

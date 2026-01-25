@@ -1,8 +1,11 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../services/internationalization/internationalization.dart';
+import '../../../themes/app_colors.dart';
 import '../../../utils/common_scaffold.dart';
 import '../../../utils/responsive_utils.dart';
 import 'components/registration_button.dart';
@@ -19,7 +22,7 @@ class RegistrationView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Provider<RegistrationController>(
+    return ChangeNotifierProvider<RegistrationController>(
       create: (context) =>
           RegistrationController(viewModel: RegistrationViewModel()),
       child: const CommonScaffold(
@@ -39,66 +42,80 @@ class RegistrationContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final appIntl = AppInternationalizationService.to;
 
+    final theme = ShadTheme.of(context);
+
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topRight,
           end: Alignment.bottomLeft,
-          colors: [Color(0xFF10B981), Color(0xFF059669), Color(0xFF047857)],
+          colors: [
+            AppColors.success800,
+            AppColors.success700,
+            AppColors.success600,
+            AppColors.success600,
+          ],
         ),
       ),
       child: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24),
+            padding: EdgeInsets.all(ResponsiveUtils.isMobile(context) ? 0 : 24),
             child: Flex(
-              direction: ResponsiveUtils.isDesktop(context)
+              direction:
+                  ResponsiveUtils.isTablet(context) ||
+                      ResponsiveUtils.isDesktop(context)
                   ? Axis.horizontal
                   : Axis.vertical,
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
+              spacing: ResponsiveUtils.isMobile(context) ? 0 : 24,
               children: [
-                if (ResponsiveUtils.isDesktop(context))
-                  Flexible(
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 32),
-                      child: Image.asset(
-                        'assets/images/signup.png',
-                        fit: BoxFit.contain,
-                        height: 400,
-                      ),
-                    ),
-                  ),
+                ShadResponsiveBuilder(
+                  builder: (context, breakpoint) {
+                    final sm =
+                        context.breakpoint >=
+                        ShadTheme.of(context).breakpoints.md;
+
+                    if (sm) {
+                      return Flexible(
+                        child: Image.asset(
+                          'assets/images/signup.png',
+                          fit: BoxFit.contain,
+                          height: clampDouble(
+                            MediaQuery.sizeOf(context).width * 0.25,
+                            250,
+                            400,
+                          ),
+                        ),
+                      );
+                    }
+
+                    return const SizedBox();
+                  },
+                ),
                 Flexible(
                   child: ShadCard(
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.all(32),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const RegistrationLogo(),
-                          const SizedBox(height: 24),
-                          Text(
-                            appIntl.registrationTitle,
-                            style: Theme.of(context).textTheme.headlineSmall,
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            appIntl.registrationSubtitle,
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.grey[600],
-                            ),
-                          ),
-                          const SizedBox(height: 32),
-                          const RegistrationForm(),
-                          const SizedBox(height: 24),
-                          const RegistrationButton(),
-                          const SizedBox(height: 24),
-                          const RegistrationLinks(),
-                        ],
+                    width: double.infinity.clamp(0, 500),
+                    padding: const EdgeInsets.all(18),
+                    radius: BorderRadius.all(
+                      Radius.circular(
+                        ResponsiveUtils.isMobile(context) ? 0 : 18,
                       ),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      spacing: 24,
+                      children: [
+                        const RegistrationLogo(),
+                        Text(
+                          appIntl.registrationTitle,
+                          style: theme.textTheme.h3,
+                        ),
+                        const RegistrationForm(),
+                        const RegistrationButton(),
+                        const RegistrationLinks(),
+                      ],
                     ),
                   ),
                 ),

@@ -8,15 +8,12 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../../../repositories/store_products_repository.dart';
 import '../../../utils/logger.dart';
-import '../../hive_database/hive_database.dart';
 import '../../network_status_provider/network_status_provider.dart';
+import '../../storage/app_storage.dart';
 
 /// Fetch all data operation with continuous stream support.
 class OnlineServiceData {
   final _logger = LoggerApp('OnlineServiceData');
-
-  /// The hive database.
-  final hiveDatabase = GetIt.I.get<HiveDatabase>();
 
   /// The network status provider.
   final networkStatusProvider = GetIt.I.get<NetworkStatusProvider>();
@@ -57,7 +54,7 @@ class OnlineServiceData {
         StreamGlobalProductsRequest()..storeId = storeId,
       )) {
         for (final product in products) {
-          await hiveDatabase.globalProducts.put(product.refId, product);
+          await AppStorage.of<GlobalProduct>().write(product.refId, product);
         }
         totalFetched += products.length;
       }
@@ -75,7 +72,7 @@ class OnlineServiceData {
         StreamStoreProductsRequest()..storeId = storeId,
       )) {
         for (final product in products) {
-          await hiveDatabase.storeProducts.put(product.refId, product);
+          await AppStorage.of<StoreProduct>().write(product.refId, product);
         }
         totalFetched += products.length;
       }

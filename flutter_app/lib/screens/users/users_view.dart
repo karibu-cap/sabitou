@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../services/internationalization/internationalization.dart';
 import '../../utils/user_preference.dart';
@@ -17,10 +18,15 @@ class UsersView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final storeId = UserPreferences.instance.store?.refId;
+    final theme = ShadTheme.of(context);
 
     if (storeId == null) {
       return Center(
-        child: Text(AppInternationalizationService.to.noStoreSelected),
+        child: Text(
+          AppInternationalizationService.to.noStoreSelected,
+          style: theme.textTheme.p,
+          textAlign: TextAlign.center,
+        ),
       );
     }
 

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sabitou_rpc/models.dart';
@@ -8,6 +10,8 @@ import '../../repositories/stores_repository.dart';
 import '../../services/data_sync/data_sync_service.dart';
 import '../../services/rpc/fake_transport/auth.dart';
 import '../../services/rpc/fake_transport/data_sync.dart';
+import '../../services/storage/app_storage.dart';
+import '../../utils/app_constants.dart';
 import '../../utils/user_preference.dart';
 
 /// Auth status.
@@ -27,10 +31,10 @@ enum AuthStatus {
 
 /// Auth provider.
 class AuthProvider extends ChangeNotifier {
-  /// Reactive state.
   User? _currentUser;
   AuthStatus _status = AuthStatus.unauthenticated;
   String? _errorMessage;
+  final Completer<bool> _authInitComplete = Completer<bool>();
   final AuthRepository _authRepository = AuthRepository(
     transport: authFakeTransport,
   );
@@ -56,6 +60,31 @@ class AuthProvider extends ChangeNotifier {
   /// Whether user is authenticated.
   bool get isAuthenticated => _status == AuthStatus.authenticated;
 
+  /// Returns true when auth initialization completes.
+  Future<bool> get authComplete => _authInitComplete.future;
+
+  /// Connstructor of new [AuthProvider].
+  AuthProvider() {
+    _initializeFromStorage();
+  }
+
+  Future<void> _initializeFromStorage() async {
+    try {
+      // Load saved user from storage
+      final savedUser = await AppStorage.of<User?>().read(CollectionName.users);
+      if (savedUser != null) {
+        await UserPreferences.instance.loadUserPreferences(null);
+        _currentUser = savedUser;
+        _status = AuthStatus.authenticated;
+      }
+    } catch (e) {
+      debugPrint('Error loading user from storage: $e');
+    } finally {
+      _authInitComplete.complete(true);
+      notifyListeners();
+    }
+  }
+
   /// Login logic.
   Future<bool> login(String email, String password) async {
     _setStatus(AuthStatus.authenticating);
@@ -68,14 +97,14 @@ class AuthProvider extends ChangeNotifier {
     final response = await _authRepository.login(request: loginRequest);
     _currentUser = response;
     if (response != null) {
-      await UserPreferences.instance.saveUserPreferences(user: response);
+      await UserPreferences.instance.loadUserPreferences(response.refId);
       _setStatus(AuthStatus.authenticated);
 
       // Save business and store after successful login
-      await saveBusinessAndStore(response);
+      // await saveBusinessAndStore(response);
 
       /// Initialize data sync after successful login.
-      await initializeDataSync();
+      // await initializeDataSync();
 
       return true;
     }
@@ -117,14 +146,14 @@ class AuthProvider extends ChangeNotifier {
 
     _currentUser = response;
     if (response != null) {
-      await UserPreferences.instance.saveUserPreferences(user: response);
+      // await UserPreferences.instance.saveUserPreferences(user: response);
       _setStatus(AuthStatus.authenticated);
 
       // Save business and store after successful register
-      await saveBusinessAndStore(response);
+      // await saveBusinessAndStore(response);
 
       /// Initialize data sync after successful register.
-      await initializeDataSync();
+      // await initializeDataSync();
 
       return true;
     }

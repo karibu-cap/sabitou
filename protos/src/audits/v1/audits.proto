@@ -5,7 +5,6 @@ syntax = "proto3";
 package audits.v1;
 
 import "buf/validate/validate.proto";
-import "google/protobuf/timestamp.proto";
 import "audits/v1/inventory_transaction.proto";
 import "audits/v1/voucher_transaction.proto";
 

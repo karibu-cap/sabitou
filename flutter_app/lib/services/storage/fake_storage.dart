@@ -1,20 +1,20 @@
 import 'app_storage.dart';
 
 /// The fake storage service.
-class FakeStorageService implements AppStorageService {
+class FakeStorageService<T> implements AppStorageService<T> {
   final Map<String, dynamic> _storage;
 
-  /// The fake storage service.
-  FakeStorageService({Map<String, dynamic>? storage})
-    : _storage = storage ?? {};
+  /// Constructor of new [FakeStorageService].
+  FakeStorageService({required Map<String, dynamic> initialStorage})
+    : _storage = initialStorage;
 
   @override
-  Future<void> write<T>(String key, T value) async {
+  Future<void> write(String key, T value) async {
     _storage[key] = value;
   }
 
   @override
-  T? read<T>(String key) {
+  Future<T?> read(String key) async {
     return _storage[key] as T?;
   }
 
@@ -29,17 +29,22 @@ class FakeStorageService implements AppStorageService {
   }
 
   @override
-  T getKeys<T>() {
-    return _storage.keys.toList() as T;
+  Future<List<T>> getAll() async {
+    return _storage.values.cast<T>().toList();
   }
 
   @override
-  T getValues<T>() {
-    return _storage.values.toList() as T;
-  }
-
-  @override
-  bool hasData(String key) {
+  Future<bool> hasData(String key) async {
     return _storage.containsKey(key);
+  }
+
+  @override
+  Future<Map<dynamic, T>> getAllMap() async {
+    return _storage.cast<dynamic, T>();
+  }
+
+  @override
+  Future<void> deleteAll(List<String> keys) async {
+    _storage.removeWhere((key, value) => keys.contains(key));
   }
 }

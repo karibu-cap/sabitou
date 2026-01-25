@@ -63,7 +63,7 @@ class UsersHeader extends StatelessWidget {
             children: [
               const Icon(LucideIcons.plus, size: 16),
               const SizedBox(width: 8),
-              Text(AppInternationalizationService.to.addUser),
+              Text(AppInternationalizationService.to.newText),
             ],
           ),
         ),

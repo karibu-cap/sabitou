@@ -8,7 +8,7 @@ on:
         description: "The GitHub token for create new workflow runs"
 
 env:
-  FLUTTER_SDK_VERSION: 3.32.5
+  FLUTTER_SDK_VERSION: 3.35.6
 
 jobs:
   changes:

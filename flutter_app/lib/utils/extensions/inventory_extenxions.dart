@@ -24,7 +24,7 @@ extension StockStatusExtension on StockStatus {
   Color get color {
     switch (this) {
       case StockStatus.STOCK_STATUS_OK:
-        return AppColors.lightGreen;
+        return AppColors.success500;
       case StockStatus.STOCK_STATUS_OUT_OF_STOCK:
         return AppColors.error500;
       case StockStatus.STOCK_STATUS_LOW:

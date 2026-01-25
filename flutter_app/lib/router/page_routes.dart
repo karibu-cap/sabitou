@@ -80,6 +80,17 @@ abstract class PagesRoutes {
 
   /// The sales orders route, for example, http:localhost:8080/products-list.
   static final productsList = _ProductsListRoute();
+
+  /// The sales orders route, for example, http:localhost:8080.
+  static final welcome = _WelcomeRoute();
+}
+
+class _WelcomeRoute extends PagesRoutesWithNoParams {
+  @override
+  String get pattern => '/welcome';
+
+  @override
+  String get name => 'welcome';
 }
 
 class _ProductsListRoute extends PagesRoutesWithNoParams {

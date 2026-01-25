@@ -76,6 +76,7 @@ class SidebarMenuItem<T> extends StatelessWidget {
           theme: ShadTheme.of(context),
           minHeight: minHeight,
           variant: variant,
+          hasAChild: item.children?.isNotEmpty == true,
         ),
         if (item.children != null) ...[
           const SizedBox(height: 4),
@@ -101,12 +102,14 @@ class _ItemWidget<T> extends StatelessWidget {
     required this.isActive,
     required this.theme,
     this.minHeight,
+    this.hasAChild = false,
     required this.variant,
   });
 
   final Function(SideBarItem<T>)? onTabChange;
   final SideBarItem<T> item;
   final bool isChild;
+  final bool hasAChild;
   final bool isActive;
   final ShadThemeData theme;
   final double? minHeight;
@@ -123,34 +126,32 @@ class _ItemWidget<T> extends StatelessWidget {
               minHeight ?? (!isActive && item.description != null ? 70 : null),
           variant: isActive ? ShadButtonVariant.primary : variant,
           onPressed: () => onTabChange?.call(item),
-          padding: EdgeInsets.symmetric(
-            horizontal: isChild ? 32 : 16,
-            vertical: 12,
-          ),
-          leading: Icon(item.icon, size: 15),
+          padding: EdgeInsets.symmetric(horizontal: isChild ? 40 : 16),
+          leading: !hasAChild ? Icon(item.icon, size: 15) : const SizedBox(),
+          enabled: !hasAChild,
 
           child: Flexible(
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                AutoSizeText(
+                  item.label,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  minFontSize: 8,
+                  style: theme.textTheme.table,
+                ),
+                if (!isActive &&
+                    (item.description != null ||
+                        item.description?.isNotEmpty == true))
                   AutoSizeText(
-                    item.label,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
+                    item.description ?? '',
                     minFontSize: 8,
+                    style: theme.textTheme.muted,
+                    textAlign: TextAlign.left,
                   ),
-                  if (!isActive &&
-                      (item.description != null ||
-                          item.description?.isNotEmpty == true))
-                    AutoSizeText(
-                      item.description ?? '',
-                      minFontSize: 8,
-                      style: theme.textTheme.muted,
-                      textAlign: TextAlign.left,
-                    ),
-                ],
-              ),
+              ],
             ),
           ),
         );

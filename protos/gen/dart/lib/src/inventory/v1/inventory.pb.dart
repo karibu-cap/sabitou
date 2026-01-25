@@ -430,11 +430,10 @@ class InventoryLevelWithProduct extends $pb.GeneratedMessage {
     ..aOM<$1.StoreProduct>(2, _omitFieldNames ? '' : 'product',
         subBuilder: $1.StoreProduct.create)
     ..aOM<$1.GlobalProduct>(3, _omitFieldNames ? '' : 'globalProduct',
-        protoName: 'globalProduct', subBuilder: $1.GlobalProduct.create)
+        subBuilder: $1.GlobalProduct.create)
     ..a<$core.int>(4, _omitFieldNames ? '' : 'stockValue', $pb.PbFieldType.O3)
     ..e<StockStatus>(
         5, _omitFieldNames ? '' : 'stockStatus', $pb.PbFieldType.OE,
-        protoName: 'stockStatus',
         defaultOrMaker: StockStatus.STOCK_STATUS_UNSPECIFIED,
         valueOf: StockStatus.valueOf,
         enumValues: StockStatus.values)
@@ -1844,6 +1843,198 @@ class ProductBySupplier extends $pb.GeneratedMessage {
   $1.GlobalProduct ensureGlobalProduct() => $_ensure(1);
 }
 
+class AdjustInventoryRequest extends $pb.GeneratedMessage {
+  factory AdjustInventoryRequest({
+    $core.String? storeId,
+    $core.String? productId,
+    $core.int? quantityChange,
+    $core.String? reason,
+    $core.String? notes,
+    $core.String? batchId,
+  }) {
+    final result = create();
+    if (storeId != null) result.storeId = storeId;
+    if (productId != null) result.productId = productId;
+    if (quantityChange != null) result.quantityChange = quantityChange;
+    if (reason != null) result.reason = reason;
+    if (notes != null) result.notes = notes;
+    if (batchId != null) result.batchId = batchId;
+    return result;
+  }
+
+  AdjustInventoryRequest._();
+
+  factory AdjustInventoryRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory AdjustInventoryRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'AdjustInventoryRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'storeId')
+    ..aOS(2, _omitFieldNames ? '' : 'productId')
+    ..a<$core.int>(
+        3, _omitFieldNames ? '' : 'quantityChange', $pb.PbFieldType.O3)
+    ..aOS(4, _omitFieldNames ? '' : 'reason')
+    ..aOS(5, _omitFieldNames ? '' : 'notes')
+    ..aOS(6, _omitFieldNames ? '' : 'batchId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  AdjustInventoryRequest clone() =>
+      AdjustInventoryRequest()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  AdjustInventoryRequest copyWith(
+          void Function(AdjustInventoryRequest) updates) =>
+      super.copyWith((message) => updates(message as AdjustInventoryRequest))
+          as AdjustInventoryRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static AdjustInventoryRequest create() => AdjustInventoryRequest._();
+  @$core.override
+  AdjustInventoryRequest createEmptyInstance() => create();
+  static $pb.PbList<AdjustInventoryRequest> createRepeated() =>
+      $pb.PbList<AdjustInventoryRequest>();
+  @$core.pragma('dart2js:noInline')
+  static AdjustInventoryRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<AdjustInventoryRequest>(create);
+  static AdjustInventoryRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get storeId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set storeId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasStoreId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearStoreId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get productId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set productId($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasProductId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearProductId() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.int get quantityChange => $_getIZ(2);
+  @$pb.TagNumber(3)
+  set quantityChange($core.int value) => $_setSignedInt32(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasQuantityChange() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearQuantityChange() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get reason => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set reason($core.String value) => $_setString(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasReason() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearReason() => $_clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.String get notes => $_getSZ(4);
+  @$pb.TagNumber(5)
+  set notes($core.String value) => $_setString(4, value);
+  @$pb.TagNumber(5)
+  $core.bool hasNotes() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearNotes() => $_clearField(5);
+
+  @$pb.TagNumber(6)
+  $core.String get batchId => $_getSZ(5);
+  @$pb.TagNumber(6)
+  set batchId($core.String value) => $_setString(5, value);
+  @$pb.TagNumber(6)
+  $core.bool hasBatchId() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearBatchId() => $_clearField(6);
+}
+
+class AdjustInventoryResponse extends $pb.GeneratedMessage {
+  factory AdjustInventoryResponse({
+    $core.bool? success,
+    InventoryLevel? updatedLevel,
+  }) {
+    final result = create();
+    if (success != null) result.success = success;
+    if (updatedLevel != null) result.updatedLevel = updatedLevel;
+    return result;
+  }
+
+  AdjustInventoryResponse._();
+
+  factory AdjustInventoryResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory AdjustInventoryResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'AdjustInventoryResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'),
+      createEmptyInstance: create)
+    ..aOB(1, _omitFieldNames ? '' : 'success')
+    ..aOM<InventoryLevel>(2, _omitFieldNames ? '' : 'updatedLevel',
+        subBuilder: InventoryLevel.create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  AdjustInventoryResponse clone() =>
+      AdjustInventoryResponse()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  AdjustInventoryResponse copyWith(
+          void Function(AdjustInventoryResponse) updates) =>
+      super.copyWith((message) => updates(message as AdjustInventoryResponse))
+          as AdjustInventoryResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static AdjustInventoryResponse create() => AdjustInventoryResponse._();
+  @$core.override
+  AdjustInventoryResponse createEmptyInstance() => create();
+  static $pb.PbList<AdjustInventoryResponse> createRepeated() =>
+      $pb.PbList<AdjustInventoryResponse>();
+  @$core.pragma('dart2js:noInline')
+  static AdjustInventoryResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<AdjustInventoryResponse>(create);
+  static AdjustInventoryResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.bool get success => $_getBF(0);
+  @$pb.TagNumber(1)
+  set success($core.bool value) => $_setBool(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasSuccess() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSuccess() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  InventoryLevel get updatedLevel => $_getN(1);
+  @$pb.TagNumber(2)
+  set updatedLevel(InventoryLevel value) => $_setField(2, value);
+  @$pb.TagNumber(2)
+  $core.bool hasUpdatedLevel() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearUpdatedLevel() => $_clearField(2);
+  @$pb.TagNumber(2)
+  InventoryLevel ensureUpdatedLevel() => $_ensure(1);
+}
+
 class InventoryServiceApi {
   final $pb.RpcClient _client;
 
@@ -1908,6 +2099,12 @@ class InventoryServiceApi {
           $pb.ClientContext? ctx, ListProductsBySupplierRequest request) =>
       _client.invoke<ListProductsBySupplierResponse>(ctx, 'InventoryService',
           'ListProductsBySupplier', request, ListProductsBySupplierResponse());
+
+  /// Adjusts the inventory.
+  $async.Future<AdjustInventoryResponse> adjustInventory(
+          $pb.ClientContext? ctx, AdjustInventoryRequest request) =>
+      _client.invoke<AdjustInventoryResponse>(ctx, 'InventoryService',
+          'AdjustInventory', request, AdjustInventoryResponse());
 }
 
 const $core.bool _omitFieldNames =

@@ -4,6 +4,7 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../../../services/internationalization/internationalization.dart';
+import '../../../../../themes/app_colors.dart' show AppColors;
 import '../../../../../utils/extensions/category_extension.dart';
 import '../../../add_category/add_category_view.dart';
 import '../../add_global_product_controller.dart';
@@ -54,9 +55,9 @@ class SelectCategoriesSheet extends StatelessWidget {
             Container(
               width: 40,
               height: 4,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: const BorderRadius.all(Radius.circular(4)),
+              decoration: const BoxDecoration(
+                color: AppColors.primary100,
+                borderRadius: BorderRadius.all(Radius.circular(4)),
               ),
             ),
             const SizedBox(height: 12),

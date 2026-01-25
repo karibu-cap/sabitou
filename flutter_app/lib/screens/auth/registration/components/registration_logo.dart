@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../themes/app_colors.dart';
+
 /// Widget for registration logo/icon
 class RegistrationLogo extends StatelessWidget {
   /// Constructs a [RegistrationLogo] widget
@@ -12,7 +14,7 @@ class RegistrationLogo extends StatelessWidget {
       height: 80,
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          colors: [Color(0xFF10B981), Color(0xFF059669)],
+          colors: [AppColors.success800, AppColors.success600],
         ),
         borderRadius: BorderRadius.all(Radius.circular(20)),
       ),

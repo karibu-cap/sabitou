@@ -27,6 +27,133 @@ export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 
 export 'reports.pbenum.dart';
 
+class GetSalesReportRequestFull extends $pb.GeneratedMessage {
+  factory GetSalesReportRequestFull({
+    $0.Timestamp? startDate,
+    $0.Timestamp? endDate,
+    $core.String? supplierId,
+    $core.String? storeId,
+    $core.String? category,
+    ReportGroupBy? groupBy,
+  }) {
+    final result = create();
+    if (startDate != null) result.startDate = startDate;
+    if (endDate != null) result.endDate = endDate;
+    if (supplierId != null) result.supplierId = supplierId;
+    if (storeId != null) result.storeId = storeId;
+    if (category != null) result.category = category;
+    if (groupBy != null) result.groupBy = groupBy;
+    return result;
+  }
+
+  GetSalesReportRequestFull._();
+
+  factory GetSalesReportRequestFull.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory GetSalesReportRequestFull.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetSalesReportRequestFull',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'reports.v1'),
+      createEmptyInstance: create)
+    ..aOM<$0.Timestamp>(1, _omitFieldNames ? '' : 'startDate',
+        subBuilder: $0.Timestamp.create)
+    ..aOM<$0.Timestamp>(2, _omitFieldNames ? '' : 'endDate',
+        subBuilder: $0.Timestamp.create)
+    ..aOS(3, _omitFieldNames ? '' : 'supplierId')
+    ..aOS(4, _omitFieldNames ? '' : 'storeId')
+    ..aOS(5, _omitFieldNames ? '' : 'category')
+    ..e<ReportGroupBy>(6, _omitFieldNames ? '' : 'groupBy', $pb.PbFieldType.OE,
+        defaultOrMaker: ReportGroupBy.REPORT_GROUP_BY_UNSPECIFIED,
+        valueOf: ReportGroupBy.valueOf,
+        enumValues: ReportGroupBy.values)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetSalesReportRequestFull clone() =>
+      GetSalesReportRequestFull()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetSalesReportRequestFull copyWith(
+          void Function(GetSalesReportRequestFull) updates) =>
+      super.copyWith((message) => updates(message as GetSalesReportRequestFull))
+          as GetSalesReportRequestFull;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static GetSalesReportRequestFull create() => GetSalesReportRequestFull._();
+  @$core.override
+  GetSalesReportRequestFull createEmptyInstance() => create();
+  static $pb.PbList<GetSalesReportRequestFull> createRepeated() =>
+      $pb.PbList<GetSalesReportRequestFull>();
+  @$core.pragma('dart2js:noInline')
+  static GetSalesReportRequestFull getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetSalesReportRequestFull>(create);
+  static GetSalesReportRequestFull? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $0.Timestamp get startDate => $_getN(0);
+  @$pb.TagNumber(1)
+  set startDate($0.Timestamp value) => $_setField(1, value);
+  @$pb.TagNumber(1)
+  $core.bool hasStartDate() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearStartDate() => $_clearField(1);
+  @$pb.TagNumber(1)
+  $0.Timestamp ensureStartDate() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $0.Timestamp get endDate => $_getN(1);
+  @$pb.TagNumber(2)
+  set endDate($0.Timestamp value) => $_setField(2, value);
+  @$pb.TagNumber(2)
+  $core.bool hasEndDate() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearEndDate() => $_clearField(2);
+  @$pb.TagNumber(2)
+  $0.Timestamp ensureEndDate() => $_ensure(1);
+
+  @$pb.TagNumber(3)
+  $core.String get supplierId => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set supplierId($core.String value) => $_setString(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasSupplierId() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearSupplierId() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get storeId => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set storeId($core.String value) => $_setString(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasStoreId() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearStoreId() => $_clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.String get category => $_getSZ(4);
+  @$pb.TagNumber(5)
+  set category($core.String value) => $_setString(4, value);
+  @$pb.TagNumber(5)
+  $core.bool hasCategory() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearCategory() => $_clearField(5);
+
+  @$pb.TagNumber(6)
+  ReportGroupBy get groupBy => $_getN(5);
+  @$pb.TagNumber(6)
+  set groupBy(ReportGroupBy value) => $_setField(6, value);
+  @$pb.TagNumber(6)
+  $core.bool hasGroupBy() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearGroupBy() => $_clearField(6);
+}
+
 class GetSalesReportRequest extends $pb.GeneratedMessage {
   factory GetSalesReportRequest({
     $0.Timestamp? startDate,
@@ -1146,7 +1273,7 @@ class BestSellingProduct extends $pb.GeneratedMessage {
         3, _omitFieldNames ? '' : 'totalRevenue', $pb.PbFieldType.OD)
     ..a<$core.int>(
         4, _omitFieldNames ? '' : 'transactionCount', $pb.PbFieldType.O3)
-    ..aOS(5, _omitFieldNames ? '' : 'productName', protoName: 'productName')
+    ..aOS(5, _omitFieldNames ? '' : 'productName')
     ..a<$core.int>(6, _omitFieldNames ? '' : 'rank', $pb.PbFieldType.O3)
     ..hasRequiredFields = false;
 
@@ -4273,7 +4400,7 @@ class ReportingServiceApi {
 
   /// Full sales report including best sellers
   $async.Future<GetSalesReportFullResponse> getSalesReportFull(
-          $pb.ClientContext? ctx, GetSalesReportRequest request) =>
+          $pb.ClientContext? ctx, GetSalesReportRequestFull request) =>
       _client.invoke<GetSalesReportFullResponse>(ctx, 'ReportingService',
           'GetSalesReportFull', request, GetSalesReportFullResponse());
 

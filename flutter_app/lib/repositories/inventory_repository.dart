@@ -194,6 +194,19 @@ class InventoryRepository {
     }
   }
 
+  /// Adjusts the inventory.
+  Future<AdjustInventoryResponse> adjustInventory(
+    AdjustInventoryRequest request,
+  ) async {
+    try {
+      return await inventoryServiceClient.adjustInventory(request);
+    } on Exception catch (e) {
+      _logger.severe('adjustInventory Error: $e');
+
+      return AdjustInventoryResponse();
+    }
+  }
+
   /// Gets products for a specific supplier.
   Future<List<ProductBySupplier>> getProductsForSupplier(
     String supplierRefId,

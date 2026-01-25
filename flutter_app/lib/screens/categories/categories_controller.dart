@@ -54,16 +54,6 @@ class CategoriesController extends ChangeNotifier {
     return await _viewModel.deleteCategory(request);
   }
 
-  /// Creates a category in the system.
-  Future<bool> createCategory(CreateCategoryRequest request) async {
-    return await _viewModel.createCategory(request);
-  }
-
-  /// Updates a category in the system.
-  Future<bool> updateCategory(UpdateCategoryRequest request) async {
-    return await _viewModel.updateCategory(request);
-  }
-
   /// Calculates total categories count
   int calculateTotalCategories(List<Category> categories) {
     return categories.length;

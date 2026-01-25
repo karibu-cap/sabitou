@@ -10,8 +10,8 @@ import '../../../utils/extensions/global_product_extension.dart';
 import '../../../utils/extensions/store_extenxion.dart';
 import '../../../utils/formatters.dart';
 import '../../../utils/utils.dart';
-import '../../../widgets/app_table.dart';
 import '../../../widgets/loading.dart';
+import '../../../widgets/shad_data_grid.dart';
 import '../products_list_controller.dart';
 
 /// The products table view.
@@ -90,82 +90,105 @@ class _ProductsListDataTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppTable(
-      child: DataTable(
-        horizontalMargin: 12,
-        dataRowMaxHeight: 80,
-        headingTextStyle: ShadTheme.of(
-          context,
-        ).textTheme.lead.copyWith(fontWeight: FontWeight.w500),
-        headingRowColor: WidgetStateProperty.all(
-          ShadTheme.of(context).colorScheme.secondary,
-        ),
-        columns: [
-          DataColumn(label: Text(Intls.to.product)),
-          DataColumn(label: Text(Intls.to.barcode)),
-          DataColumn(label: Text(Intls.to.sku)),
-          DataColumn(label: Text(Intls.to.category)),
-          DataColumn(label: Text(Intls.to.description)),
-          DataColumn(label: Text(Intls.to.price)),
-          DataColumn(label: Text(Intls.to.status)),
-        ],
-        rows: products.map((product) {
-          return DataRow(
-            cells: [
-              DataCell(_ProductNameCell(product: product.globalProduct)),
-              DataCell(
-                Text(
-                  product.globalProduct.barCodeValue,
-                  style: ShadTheme.of(context).textTheme.list,
-                ),
+    final theme = ShadTheme.of(context);
+
+    return ShadDataGrid<StoreProductWithGlobalProduct>(
+      data: products,
+      columns: [
+        ShadDataGridColumn(label: Intls.to.product, width: 280),
+        ShadDataGridColumn(label: Intls.to.barcode, width: 150),
+        ShadDataGridColumn(label: Intls.to.price, width: 120),
+        ShadDataGridColumn(label: Intls.to.category, width: 180),
+        ShadDataGridColumn(label: Intls.to.status, width: 110),
+        ShadDataGridColumn(label: Intls.to.sku, width: 100),
+        ShadDataGridColumn(label: Intls.to.description, width: 180),
+      ],
+      rowBuilder: (product) {
+        return [
+          // Product Name Cell
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+            alignment: Alignment.centerLeft,
+            child: _ProductNameCell(product: product.globalProduct),
+          ),
+          // Barcode Cell
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              product.globalProduct.barCodeValue,
+              style: theme.textTheme.small,
+            ),
+          ),
+          // Price Cell
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              Formatters.formatCurrency(
+                product.storeProduct.salePrice.toDouble(),
               ),
-              DataCell(
-                Text(
-                  product.storeProduct.hasSku()
-                      ? product.storeProduct.sku
-                      : 'N/A',
-                  style: ShadTheme.of(context).textTheme.list,
-                ),
+              style: theme.textTheme.small.copyWith(
+                fontWeight: FontWeight.w600,
               ),
-              DataCell(
-                ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 200),
-                  child: Wrap(
-                    children:
-                        product.globalProduct.categories
-                            .map(
-                              (c) => Text(
-                                c.label,
-                                style: ShadTheme.of(context).textTheme.muted,
-                              ),
-                            )
-                            .expand((c) => [c, const Text(', ')])
-                            .toList()
-                          ..removeLast(),
-                  ),
-                ),
+            ),
+          ),
+          // Category Cell
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            alignment: Alignment.centerLeft,
+            child: Wrap(
+              spacing: 2,
+              children:
+                  product.globalProduct.categories
+                      .map(
+                        (c) => Text(
+                          c.label,
+                          style: theme.textTheme.small.copyWith(
+                            color: theme.colorScheme.mutedForeground,
+                          ),
+                        ),
+                      )
+                      .expand((c) => [c, const Text(', ')])
+                      .toList()
+                    ..removeLast(),
+            ),
+          ),
+          // Status Cell
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            alignment: Alignment.centerLeft,
+            child: _StatusCell(status: product.storeProduct.status),
+          ),
+          // SKU Cell
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              product.storeProduct.hasSku() &&
+                      product.storeProduct.sku.isNotEmpty
+                  ? product.storeProduct.sku
+                  : 'N/A',
+              style: theme.textTheme.small.copyWith(
+                color: theme.colorScheme.mutedForeground,
               ),
-              DataCell(
-                Text(
-                  product.globalProduct.descriptionIntl,
-                  style: ShadTheme.of(context).textTheme.muted,
-                ),
+            ),
+          ),
+          // Description Cell
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              product.globalProduct.descriptionIntl,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: theme.textTheme.small.copyWith(
+                color: theme.colorScheme.mutedForeground,
               ),
-              DataCell(
-                Text(
-                  Formatters.formatCurrency(
-                    product.storeProduct.salePrice.toDouble(),
-                  ),
-                  style: ShadTheme.of(
-                    context,
-                  ).textTheme.list.copyWith(fontWeight: FontWeight.bold),
-                ),
-              ),
-              DataCell(_StatusCell(status: product.storeProduct.status)),
-            ],
-          );
-        }).toList(),
-      ),
+            ),
+          ),
+        ];
+      },
     );
   }
 }
@@ -180,17 +203,16 @@ class _ProductNameCell extends StatelessWidget {
     final theme = ShadTheme.of(context);
 
     return Row(
-      spacing: 5,
       children: [
         Container(
-          height: 50,
-          width: 50,
+          height: 48,
+          width: 48,
           decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(Radius.circular(8)),
-            color: ShadTheme.of(
-              context,
-            ).colorScheme.accent.withValues(alpha: 0.05),
+            borderRadius: const BorderRadius.all(Radius.circular(6)),
+            color: theme.colorScheme.muted,
+            border: Border.all(color: theme.colorScheme.border),
           ),
+          clipBehavior: Clip.antiAlias,
           child:
               product.imagesLinksIds.isNotEmpty &&
                   AppUtils.isURL(product.imagesLinksIds.first)
@@ -198,9 +220,7 @@ class _ProductNameCell extends StatelessWidget {
                   future: precacheImage(
                     NetworkImage(product.imagesLinksIds.first),
                     context,
-                    onError: (error, stackTrace) {
-                      return null;
-                    },
+                    onError: (error, stackTrace) => null,
                   ),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.done &&
@@ -208,19 +228,19 @@ class _ProductNameCell extends StatelessWidget {
                       return FadeInImage.assetNetwork(
                         placeholder: StaticImages.placeholder,
                         image: product.imagesLinksIds.first,
-                        fit: BoxFit.contain,
+                        fit: BoxFit.cover,
                         imageErrorBuilder: (context, error, stackTrace) {
                           return Icon(
                             LucideIcons.package,
                             size: 20,
-                            color: ShadTheme.of(context).colorScheme.accent,
+                            color: theme.colorScheme.mutedForeground,
                           );
                         },
                         placeholderErrorBuilder: (context, error, stackTrace) {
                           return Icon(
                             LucideIcons.package,
                             size: 20,
-                            color: ShadTheme.of(context).colorScheme.accent,
+                            color: theme.colorScheme.mutedForeground,
                           );
                         },
                       );
@@ -229,17 +249,17 @@ class _ProductNameCell extends StatelessWidget {
                     return Icon(
                       LucideIcons.package,
                       size: 20,
-                      color: ShadTheme.of(context).colorScheme.accent,
+                      color: theme.colorScheme.mutedForeground,
                     );
                   },
                 )
               : Icon(
                   LucideIcons.package,
                   size: 20,
-                  color: ShadTheme.of(context).colorScheme.accent,
+                  color: theme.colorScheme.mutedForeground,
                 ),
         ),
-        const SizedBox(width: 8),
+        const SizedBox(width: 12),
         Flexible(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -247,19 +267,21 @@ class _ProductNameCell extends StatelessWidget {
             children: [
               Text(
                 product.label,
-                style: theme.textTheme.large.copyWith(
+                style: theme.textTheme.small.copyWith(
                   fontWeight: FontWeight.w600,
+                  color: theme.colorScheme.foreground,
                 ),
-              ),
-              Text(
-                product.categories
-                    .map((c) => c.name)
-                    .take(2)
-                    .join(' > ')
-                    .toString(),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: theme.textTheme.muted,
+              ),
+              const SizedBox(height: 2),
+              Text(
+                product.categories.map((c) => c.name).take(2).join(' > '),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.small.copyWith(
+                  color: theme.colorScheme.mutedForeground,
+                ),
               ),
             ],
           ),
@@ -280,13 +302,15 @@ class _StatusCell extends StatelessWidget {
 
     return ShadBadge(
       backgroundColor: status.color.withValues(alpha: 0.1),
-      hoverBackgroundColor: status.color.withValues(alpha: 0.1),
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      hoverBackgroundColor: status.color.withValues(alpha: 0.15),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      shape: const StadiumBorder(),
       child: Text(
         status.label.toUpperCase(),
-        style: theme.textTheme.muted.copyWith(
+        style: theme.textTheme.small.copyWith(
           color: status.color,
           fontWeight: FontWeight.w600,
+          fontSize: 11,
         ),
       ),
     );

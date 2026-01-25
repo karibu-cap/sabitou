@@ -175,7 +175,6 @@ class InventoryViewModel {
       final sales = results[1] as GetSalesReportResponse;
       final inventoryLevels = results[2] as List<InventoryLevelWithProduct>;
 
-      print('inventoryLevels: ${inventoryLevels.length}');
       final newStats = InventoryData(
         totalProducts: inventoryLevels.length,
         lowStockItemsCount: lowStockItems.length,
@@ -188,7 +187,7 @@ class InventoryViewModel {
 
       return stats;
     } catch (e) {
-      print('Error loading inventory data: $e');
+      _logger.severe('Error loading inventory data: $e');
 
       return stats;
     } finally {
@@ -208,6 +207,37 @@ class InventoryViewModel {
     }
 
     return result;
+  }
+
+  /// Adjusts the inventory.
+  Future<bool> adjustInventory(
+    String storeId,
+    String productId,
+    int quantityChange,
+    String reason,
+    String notes,
+  ) async {
+    try {
+      final response = await InventoryRepository.instance.adjustInventory(
+        AdjustInventoryRequest(
+          storeId: storeId,
+          productId: productId,
+          quantityChange: quantityChange,
+          reason: reason,
+          notes: notes,
+        ),
+      );
+
+      if (response.success) {
+        unawaited(initTheData());
+      }
+
+      return response.success;
+    } catch (e) {
+      _logger.severe('Error adjusting inventory: $e');
+
+      return false;
+    }
   }
 
   /// Updates the search query.

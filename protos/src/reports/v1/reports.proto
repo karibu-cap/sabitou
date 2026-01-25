@@ -38,12 +38,20 @@ service ReportingService {
   rpc GetInventoryReport(GetInventoryReportRequest) returns (GetInventoryReportResponse);
 
   // Full sales report including best sellers
-  rpc GetSalesReportFull(GetSalesReportRequest) returns (GetSalesReportFullResponse);
+  rpc GetSalesReportFull(GetSalesReportRequestFull) returns (GetSalesReportFullResponse);
 
   // Comprehensive financial report with purchases and balances
   rpc GetFinancialReport(GetFinancialReportRequest) returns (GetFinancialReportResponse);
 }
 
+message GetSalesReportRequestFull {
+  google.protobuf.Timestamp start_date = 1;
+  google.protobuf.Timestamp end_date = 2;
+  optional string supplier_id = 3; // Optional
+  optional string store_id = 4; // Optional
+  string category = 5; // Product category filter
+  ReportGroupBy group_by = 6; // Daily, weekly, monthly
+}
 message GetSalesReportRequest {
   google.protobuf.Timestamp start_date = 1;
   google.protobuf.Timestamp end_date = 2;
@@ -126,7 +134,7 @@ message BestSellingProduct {
   int32 units_sold = 2;
   double total_revenue = 3;
   int32 transaction_count = 4;
-  string productName = 5;
+  string product_name = 5;
   int32 rank = 6;
 }
 

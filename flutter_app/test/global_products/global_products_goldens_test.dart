@@ -1,8 +1,10 @@
+import 'package:flutter/src/widgets/basic.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:sabitou_clients/screens/global_products/global_products_view.dart';
 import 'package:sabitou_clients/services/rpc/connect_rpc.dart';
+import 'package:sabitou_clients/services/storage/app_storage.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../goldens.dart';
@@ -128,6 +130,9 @@ final globalProductFakeTransport = FakeTransportBuilder()
 
 void main() {
   group('Goldens', () {
+    setUpAll(() async {
+      await AppStorage.initialize(AppStorageType.fake, {});
+    });
     setUp(() {
       GetIt.I.registerSingletonIfAbsent<ConnectRPCService>(
         () => ConnectRPCService.new(clientChannel: globalProductFakeTransport),
@@ -136,7 +141,10 @@ void main() {
     testGoldens('Global products view', (tester) async {
       return await multiScreenMultiLocaleGolden(
         tester,
-        const GlobalProductsView(),
+        const Padding(
+          padding: EdgeInsets.all(8.0),
+          child: GlobalProductsView(),
+        ),
         'global_products_view',
       );
     });

@@ -2,8 +2,6 @@ syntax = "proto3";
 
 package identity.v1;
 
-import "buf/validate/validate.proto";
-
 //
 // ==========================
 //   STORE PERMISSIONS

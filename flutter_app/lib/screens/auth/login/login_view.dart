@@ -1,8 +1,11 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../services/internationalization/internationalization.dart';
+import '../../../themes/app_colors.dart';
 import '../../../utils/common_scaffold.dart';
 import '../../../utils/responsive_utils.dart';
 import 'components/auth_links.dart';
@@ -41,7 +44,12 @@ class LoginContent extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topRight,
           end: Alignment.bottomLeft,
-          colors: [Color(0xFF10B981), Color(0xFF059669), Color(0xFF047857)],
+          colors: [
+            AppColors.success800,
+            AppColors.success700,
+            AppColors.success600,
+            AppColors.success600,
+          ],
         ),
       ),
       child: SafeArea(
@@ -49,58 +57,60 @@ class LoginContent extends StatelessWidget {
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(24),
             child: Flex(
-              direction: ResponsiveUtils.isDesktop(context)
+              direction:
+                  ResponsiveUtils.isTablet(context) ||
+                      ResponsiveUtils.isDesktop(context)
                   ? Axis.horizontal
                   : Axis.vertical,
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
+              spacing: 24,
               children: [
-                if (ResponsiveUtils.isDesktop(context))
-                  Flexible(
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 32),
-                      child: Image.asset(
-                        'assets/images/login.png',
-                        fit: BoxFit.contain,
-                        height: 400,
-                      ),
-                    ),
-                  ),
+                ShadResponsiveBuilder(
+                  builder: (context, breakpoint) {
+                    final sm =
+                        context.breakpoint >=
+                        ShadTheme.of(context).breakpoints.md;
+
+                    if (sm) {
+                      return Flexible(
+                        child: Image.asset(
+                          'assets/images/login.png',
+                          fit: BoxFit.contain,
+                          height: clampDouble(
+                            MediaQuery.sizeOf(context).width * 0.25,
+                            250,
+                            400,
+                          ),
+                        ),
+                      );
+                    }
+
+                    return const SizedBox();
+                  },
+                ),
                 Flexible(
                   child: ShadCard(
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.all(32),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          // Logo/Icon
-                          const LoginLogo(),
+                    width: double.infinity.clamp(0, 500),
+                    padding: const EdgeInsets.all(18),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const LoginLogo(),
 
-                          const SizedBox(height: 24),
-                          Text(
-                            appIntl.welcomeBack,
-                            style: Theme.of(context).textTheme.headlineSmall,
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            appIntl.signInToYourAccount,
-                            style: theme.textTheme.p,
-                          ),
-                          const SizedBox(height: 32),
-
-                          // Login Form
-                          const LoginForm(),
-
-                          const SizedBox(height: 24),
-
-                          // Login Button
-                          const LoginButton(),
-
-                          // Auth Links
-                          const AuthLinks(),
-                        ],
-                      ),
+                        const SizedBox(height: 24),
+                        Text(appIntl.welcomeBack, style: theme.textTheme.h3),
+                        const SizedBox(height: 8),
+                        Text(
+                          appIntl.signInToYourAccount,
+                          style: theme.textTheme.p,
+                        ),
+                        const SizedBox(height: 32),
+                        const LoginForm(),
+                        const SizedBox(height: 24),
+                        const LoginButton(),
+                        const AuthLinks(),
+                      ],
                     ),
                   ),
                 ),

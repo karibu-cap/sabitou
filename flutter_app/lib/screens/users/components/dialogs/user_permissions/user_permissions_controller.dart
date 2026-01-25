@@ -7,24 +7,23 @@ import '../../../users_controller.dart';
 
 /// Controller for managing user permissions modal state and operations.
 class UserPermissionsModalController extends ChangeNotifier {
-  final UsersController _usersController;
+  final UsersController usersController;
   final StoreMember _originalStoreMember;
 
   /// Snapshot of the permissions when the modal was opened.
   StorePermissions _baselinePermissions;
 
   /// The editable permissions object.
-  StorePermissions _permissions;
+  final StorePermissions _permissions;
 
   bool _isLoading = false;
   String _errorMessage = '';
 
   /// Constructs a new UserPermissionsModalController.
   UserPermissionsModalController({
-    required UsersController usersController,
+    required this.usersController,
     required StoreMember storeMember,
-  }) : _usersController = usersController,
-       _baselinePermissions = _clonePermissions(
+  }) : _baselinePermissions = _clonePermissions(
          storeMember.hasPermissions()
              ? storeMember.permissions
              : StorePermissions(),
@@ -85,7 +84,7 @@ class UserPermissionsModalController extends ChangeNotifier {
     _errorMessage = '';
     notifyListeners();
 
-    final result = await _usersController.updateUserPermissions(
+    final result = await usersController.updateUserPermissions(
       userId: _originalStoreMember.user.refId,
       permissions: _permissions,
     );
@@ -115,7 +114,7 @@ class UserPermissionsModalController extends ChangeNotifier {
     _errorMessage = '';
     notifyListeners();
 
-    final result = await _usersController.updateUserStatus(
+    final result = await usersController.updateUserStatus(
       userId: _originalStoreMember.user.refId,
       newStatus: newStatus,
     );

@@ -4,7 +4,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import '../../../services/internationalization/internationalization.dart';
 import '../../../utils/responsive_utils.dart';
 
-/// The inventory header
+/// The inventory header.
 class InventoryHeader extends StatelessWidget {
   /// Constructs of new [InventoryHeader].
   const InventoryHeader({super.key});

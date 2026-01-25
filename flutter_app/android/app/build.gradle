@@ -94,7 +94,7 @@ android {
         // com.karibu.sabitou.dev
         applicationId "com.karibu.sabitou"
         applicationIdSuffix "." + dartEnvironmentVariables.APP_ENVIRONMENT
-        minSdkVersion 23
+        minSdkVersion flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName

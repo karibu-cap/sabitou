@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 
 // Breakpoints.
-const double _mobileBreakpoint = 600.0;
-const double _tabletBreakpoint = 800.0;
-const double _desktopBreakpoint = 1200.0;
+const double _tabletBreakpoint = 768.0;
+const double _desktopBreakpoint = 1024.0;
 
 /// The responsive utils.
 class ResponsiveUtils {
   /// Whether the device is a mobile.
   static bool isMobile(BuildContext context) {
-    return MediaQuery.of(context).size.width < _mobileBreakpoint;
+    return MediaQuery.of(context).size.width < _tabletBreakpoint;
   }
 
   /// Whether the device is a tablet.
   static bool isTablet(BuildContext context) {
-    return MediaQuery.of(context).size.width < _tabletBreakpoint;
+    return _tabletBreakpoint <= MediaQuery.of(context).size.width &&
+        MediaQuery.of(context).size.width < _desktopBreakpoint;
   }
 
   /// Whether the device is a desktop.

@@ -62,6 +62,69 @@ final $typed_data.Uint8List reportGroupByDescriptor = $convert.base64Decode(
     'UlRfR1JPVVBfQllfTU9OVEhMWRADEh0KGVJFUE9SVF9HUk9VUF9CWV9RVUFSVEVSTFkQBBIaCh'
     'ZSRVBPUlRfR1JPVVBfQllfWUVBUkxZEAU=');
 
+@$core.Deprecated('Use getSalesReportRequestFullDescriptor instead')
+const GetSalesReportRequestFull$json = {
+  '1': 'GetSalesReportRequestFull',
+  '2': [
+    {
+      '1': 'start_date',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '10': 'startDate'
+    },
+    {
+      '1': 'end_date',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '10': 'endDate'
+    },
+    {
+      '1': 'supplier_id',
+      '3': 3,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'supplierId',
+      '17': true
+    },
+    {
+      '1': 'store_id',
+      '3': 4,
+      '4': 1,
+      '5': 9,
+      '9': 1,
+      '10': 'storeId',
+      '17': true
+    },
+    {'1': 'category', '3': 5, '4': 1, '5': 9, '10': 'category'},
+    {
+      '1': 'group_by',
+      '3': 6,
+      '4': 1,
+      '5': 14,
+      '6': '.reports.v1.ReportGroupBy',
+      '10': 'groupBy'
+    },
+  ],
+  '8': [
+    {'1': '_supplier_id'},
+    {'1': '_store_id'},
+  ],
+};
+
+/// Descriptor for `GetSalesReportRequestFull`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getSalesReportRequestFullDescriptor = $convert.base64Decode(
+    'ChlHZXRTYWxlc1JlcG9ydFJlcXVlc3RGdWxsEjkKCnN0YXJ0X2RhdGUYASABKAsyGi5nb29nbG'
+    'UucHJvdG9idWYuVGltZXN0YW1wUglzdGFydERhdGUSNQoIZW5kX2RhdGUYAiABKAsyGi5nb29n'
+    'bGUucHJvdG9idWYuVGltZXN0YW1wUgdlbmREYXRlEiQKC3N1cHBsaWVyX2lkGAMgASgJSABSCn'
+    'N1cHBsaWVySWSIAQESHgoIc3RvcmVfaWQYBCABKAlIAVIHc3RvcmVJZIgBARIaCghjYXRlZ29y'
+    'eRgFIAEoCVIIY2F0ZWdvcnkSNAoIZ3JvdXBfYnkYBiABKA4yGS5yZXBvcnRzLnYxLlJlcG9ydE'
+    'dyb3VwQnlSB2dyb3VwQnlCDgoMX3N1cHBsaWVyX2lkQgsKCV9zdG9yZV9pZA==');
+
 @$core.Deprecated('Use getSalesReportRequestDescriptor instead')
 const GetSalesReportRequest$json = {
   '1': 'GetSalesReportRequest',
@@ -502,7 +565,7 @@ const BestSellingProduct$json = {
       '5': 5,
       '10': 'transactionCount'
     },
-    {'1': 'productName', '3': 5, '4': 1, '5': 9, '10': 'productName'},
+    {'1': 'product_name', '3': 5, '4': 1, '5': 9, '10': 'productName'},
     {'1': 'rank', '3': 6, '4': 1, '5': 5, '10': 'rank'},
   ],
 };
@@ -512,8 +575,8 @@ final $typed_data.Uint8List bestSellingProductDescriptor = $convert.base64Decode
     'ChJCZXN0U2VsbGluZ1Byb2R1Y3QSNAoHcHJvZHVjdBgBIAEoCzIaLmludmVudG9yeS52MS5TdG'
     '9yZVByb2R1Y3RSB3Byb2R1Y3QSHQoKdW5pdHNfc29sZBgCIAEoBVIJdW5pdHNTb2xkEiMKDXRv'
     'dGFsX3JldmVudWUYAyABKAFSDHRvdGFsUmV2ZW51ZRIrChF0cmFuc2FjdGlvbl9jb3VudBgEIA'
-    'EoBVIQdHJhbnNhY3Rpb25Db3VudBIgCgtwcm9kdWN0TmFtZRgFIAEoCVILcHJvZHVjdE5hbWUS'
-    'EgoEcmFuaxgGIAEoBVIEcmFuaw==');
+    'EoBVIQdHJhbnNhY3Rpb25Db3VudBIhCgxwcm9kdWN0X25hbWUYBSABKAlSC3Byb2R1Y3ROYW1l'
+    'EhIKBHJhbmsYBiABKAVSBHJhbms=');
 
 @$core.Deprecated('Use getStorePurchaseHistoryRequestDescriptor instead')
 const GetStorePurchaseHistoryRequest$json = {
@@ -1764,7 +1827,7 @@ const $core.Map<$core.String, $core.dynamic> ReportingServiceBase$json = {
     },
     {
       '1': 'GetSalesReportFull',
-      '2': '.reports.v1.GetSalesReportRequest',
+      '2': '.reports.v1.GetSalesReportRequestFull',
       '3': '.reports.v1.GetSalesReportFullResponse'
     },
     {
@@ -1820,6 +1883,7 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
   '.reports.v1.InventoryMovementSummary': InventoryMovementSummary$json,
   '.reports.v1.StockMovementDataPoint': StockMovementDataPoint$json,
   '.reports.v1.InventoryComparisonData': InventoryComparisonData$json,
+  '.reports.v1.GetSalesReportRequestFull': GetSalesReportRequestFull$json,
   '.reports.v1.GetSalesReportFullResponse': GetSalesReportFullResponse$json,
   '.reports.v1.CategorySalesData': CategorySalesData$json,
   '.reports.v1.SalesComparisonData': SalesComparisonData$json,
@@ -1850,10 +1914,10 @@ final $typed_data.Uint8List reportingServiceDescriptor = $convert.base64Decode(
     'dldFN0b2NrQWdpbmdSZXBvcnRSZXF1ZXN0GicucmVwb3J0cy52MS5HZXRTdG9ja0FnaW5nUmVw'
     'b3J0UmVzcG9uc2USYwoSR2V0SW52ZW50b3J5UmVwb3J0EiUucmVwb3J0cy52MS5HZXRJbnZlbn'
     'RvcnlSZXBvcnRSZXF1ZXN0GiYucmVwb3J0cy52MS5HZXRJbnZlbnRvcnlSZXBvcnRSZXNwb25z'
-    'ZRJfChJHZXRTYWxlc1JlcG9ydEZ1bGwSIS5yZXBvcnRzLnYxLkdldFNhbGVzUmVwb3J0UmVxdW'
-    'VzdBomLnJlcG9ydHMudjEuR2V0U2FsZXNSZXBvcnRGdWxsUmVzcG9uc2USYwoSR2V0RmluYW5j'
-    'aWFsUmVwb3J0EiUucmVwb3J0cy52MS5HZXRGaW5hbmNpYWxSZXBvcnRSZXF1ZXN0GiYucmVwb3'
-    'J0cy52MS5HZXRGaW5hbmNpYWxSZXBvcnRSZXNwb25zZQ==');
+    'ZRJjChJHZXRTYWxlc1JlcG9ydEZ1bGwSJS5yZXBvcnRzLnYxLkdldFNhbGVzUmVwb3J0UmVxdW'
+    'VzdEZ1bGwaJi5yZXBvcnRzLnYxLkdldFNhbGVzUmVwb3J0RnVsbFJlc3BvbnNlEmMKEkdldEZp'
+    'bmFuY2lhbFJlcG9ydBIlLnJlcG9ydHMudjEuR2V0RmluYW5jaWFsUmVwb3J0UmVxdWVzdBomLn'
+    'JlcG9ydHMudjEuR2V0RmluYW5jaWFsUmVwb3J0UmVzcG9uc2U=');
 
 const $core.Map<$core.String, $core.dynamic> ReportsServiceBase$json = {
   '1': 'ReportsService',
