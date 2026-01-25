@@ -215,11 +215,11 @@ flutter:
 
     - family: Inter
       fonts:
-        - asset: assets/fonts/inter_24pt-Regular.ttf
+        - asset: assets/fonts/Inter_24pt-Regular.ttf
           weight: 400
-        - asset: assets/fonts/inter_24pt-Medium.ttf
+        - asset: assets/fonts/Inter_24pt-Medium.ttf
           weight: 500
-        - asset: assets/fonts/inter_24pt-Bold.ttf
+        - asset: assets/fonts/Inter_24pt-Bold.ttf
           weight: 700
 
     - family: GeistMono
