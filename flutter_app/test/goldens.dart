@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
@@ -107,6 +108,30 @@ Future<void> multiScreenMultiLocaleGolden(
 }
 
 Future<void> _initGetIt() async {
+  final messenger =
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+  const codec = StandardMessageCodec();
+
+  messenger.setMockMessageHandler(
+    'dev.flutter.pigeon.universal_ble.UniversalBlePlatformChannel.getBluetoothAvailabilityState',
+    (message) async => codec.encodeMessage([0]),
+  );
+
+  messenger.setMockMessageHandler(
+    'dev.flutter.pigeon.universal_ble.UniversalBlePlatformChannel.getPrinters',
+    (message) async => codec.encodeMessage([null]),
+  );
+
+  messenger.setMockMessageHandler(
+    'dev.flutter.pigeon.universal_ble.UniversalBlePlatformChannel.startScan',
+    (message) async => codec.encodeMessage([null]),
+  );
+
+  messenger.setMockMessageHandler(
+    'dev.flutter.pigeon.universal_ble.UniversalBlePlatformChannel.stopScan',
+    (message) async => codec.encodeMessage([null]),
+  );
+
   await AppStorage.initialize(AppStorageType.fake);
   GetIt.I
     ..registerSingletonIfAbsent<AppInternationalizationService>(
