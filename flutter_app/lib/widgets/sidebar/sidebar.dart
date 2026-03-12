@@ -6,6 +6,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../utils/app_constants.dart';
 import '../../providers/auth/auth_provider.dart';
+import '../../router/app_router.dart';
 import '../../router/page_routes.dart';
 import '../../services/internationalization/internationalization.dart';
 import '../../utils/user_preference.dart';
@@ -173,7 +174,7 @@ class SidebarWidget extends StatelessWidget {
 
                                 if (tab.path != null &&
                                     tab.path?.isNotEmpty == true) {
-                                  context.go(tab.path ?? '');
+                                  AppRouter.go(context, tab.path ?? '');
                                 }
 
                                 if (Scaffold.of(context).isDrawerOpen) {

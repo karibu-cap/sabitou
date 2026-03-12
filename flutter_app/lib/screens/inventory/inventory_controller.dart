@@ -38,8 +38,17 @@ class InventoryController extends ChangeNotifier {
   /// Gets the completer.
   Completer<bool> get completer => _viewModel.completer;
 
-  /// Gets the stats.
-  InventoryData get stats => _viewModel.stats;
+  /// Gets the selected item stream.
+  Stream<InventoryLevelWithProduct?> get selectedItemStream =>
+      _viewModel.selectedItemStream;
+
+  /// Gets the transactions stream.
+  Stream<List<InventoryTransaction>> get transactionsStream =>
+      _viewModel.transactionsStream;
+
+  /// Gets the transaction filter stream.
+  Stream<TransactionType?> get transactionFilterStream =>
+      _viewModel.transactionFilterStream;
 
   /// Constructor of [InventoryController].
   InventoryController(this._viewModel);
@@ -74,6 +83,29 @@ class InventoryController extends ChangeNotifier {
     );
 
     return result;
+  }
+
+  /// Selects an inventory item.
+  Future<void> selectItem(InventoryLevelWithProduct item) async {
+    await _viewModel.selectItem(item);
+    notifyListeners();
+  }
+
+  /// Selects an inventory item by product ID.
+  Future<void> selectItemById(String productId) async {
+    await _viewModel.selectItemById(productId);
+    notifyListeners();
+  }
+
+  /// Clears the selected item.
+  void clearSelection() {
+    _viewModel.clearSelection();
+    notifyListeners();
+  }
+
+  /// Updates the transaction filter.
+  void updateTransactionFilter(TransactionType filter) {
+    _viewModel.updateTransactionFilter(filter);
   }
 
   @override

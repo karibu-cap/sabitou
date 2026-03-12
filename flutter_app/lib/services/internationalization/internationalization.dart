@@ -2066,7 +2066,234 @@ class AppInternationalizationService extends ChangeNotifier {
       'en': 'No printer connect.',
       'fr': 'Aucune imprimante connecte.',
     },
+    'initialStock': {'en': 'Initial Stock', 'fr': 'Stock initial'},
+    'reorderPoint': {'en': 'Reorder Point', 'fr': 'Point de commande'},
+    'adjustInventory': {
+      'en': 'Adjust Inventory',
+      'fr': 'Ajuster l\'inventaire',
+    },
+    'currentStock': {
+      'en': 'Current Stock: @quantity',
+      'fr': 'Stock actuel : @quantity',
+    },
+    'inventoryAdjustedSuccessfully': {
+      'en': 'Inventory adjusted successfully',
+      'fr': 'Inventaire ajusté avec succès',
+    },
+    'failedToAdjustInventory': {
+      'en': 'Failed to adjust inventory',
+      'fr': 'Échec de l\'ajustement de l\'inventaire',
+    },
+    'newQuantityOnHand': {
+      'en': 'New Quantity on hand',
+      'fr': 'Nouvelle quantité en main',
+    },
+    'quantityAdjusted': {'en': 'Quantity Adjusted', 'fr': 'Quantité ajustée'},
+    'selectAReason': {'en': 'Select a reason', 'fr': 'Choisir une raison'},
+    'otherReason': {'en': 'Other', 'fr': 'Autre'},
+    'customReason': {'en': 'Custom Reason', 'fr': 'Raison personnalisée'},
+    'stockOnFire': {'en': 'Stock on fire', 'fr': 'Stock incendié'},
+    'markAsInactiveReason': {
+      'en': 'Mark as Inactive',
+      'fr': 'Marquer comme inactif',
+    },
+    'stolenGoods': {'en': 'Stolen goods', 'fr': 'Marchandise volée'},
+    'damagedGoods': {'en': 'Damaged goods', 'fr': 'Marchandise endommagée'},
+    'stockWrittenOff': {
+      'en': 'Stock Written off',
+      'fr': 'Stock passé en pertes',
+    },
+    'stocktakingResults': {
+      'en': 'Stocktaking results',
+      'fr': 'Résultats d\'inventaire',
+    },
+    'inventoryRevaluation': {
+      'en': 'Inventory Revaluation',
+      'fr': 'Réévaluation des stocks',
+    },
+    'user': {'en': 'User', 'fr': 'Utilisateur'},
+    'created': {'en': 'Created', 'fr': 'Créé'},
+    'noHistoryAvailable': {
+      'en': 'No history available',
+      'fr': 'Aucune historique disponible',
+    },
+    'overview': {'en': 'Overview', 'fr': 'Aperçu'},
+    'history': {'en': 'History', 'fr': 'Historique'},
+    'adjustments': {'en': 'Adjustments', 'fr': 'Ajustements'},
+    'all': {'en': 'All', 'fr': 'Tout'},
+    'returnIn': {'en': 'Return In', 'fr': 'Retourner'},
+    'returnOut': {'en': 'Return Out', 'fr': 'Retourner'},
+    'salesOrder': {'en': 'Sales Order', 'fr': 'Commande de vente'},
+    'customerName': {'en': 'Customer Name', 'fr': 'Nom du client'},
+    'quantitySold': {'en': 'Quantity Sold', 'fr': 'Quantité vendue'},
+    'purchaseOrder': {'en': 'Purchase Order', 'fr': 'Commande d\'achat'},
+    'quantityReceived': {'en': 'Quantity Received', 'fr': 'Quantité reçue'},
+    'costPrice': {'en': 'Cost Price', 'fr': 'Prix de revient'},
+    'adjustmentId': {'en': 'Adjustment ID', 'fr': 'ID d\'ajustement'},
+    'quantityChange': {'en': 'Quantity Change', 'fr': 'Quantité modifiée'},
+    'notAvailable': {'en': 'Not Available', 'fr': 'Non disponible'},
+    'primaryDetails': {'en': 'Primary Details', 'fr': 'Détails primaires'},
+    'availableForSale': {
+      'en': 'Available for Sale',
+      'fr': 'Disponible pour la vente',
+    },
+    'committedStock': {'en': 'Committed Stock', 'fr': 'Stock engagé'},
+    'stockOnHand': {'en': 'Stock on Hand', 'fr': 'Stock en main'},
+    'accountingStock': {'en': 'Accounting Stock', 'fr': 'Stock comptable'},
+    'purchaseInformation': {
+      'en': 'Purchase Information',
+      'fr': 'Information d\'achat',
+    },
+    'physicalStock': {'en': 'Physical Stock', 'fr': 'Stock physique'},
+    'openingStock': {'en': 'Opening Stock', 'fr': 'Stock initial'},
+    'inventoryDetails': {'en': 'Inventory Details', 'fr': 'Détails des stocks'},
   };
+
+  /// Returns the localized value of text 'availableForSale'.
+  String get availableForSale => _stringOfLocalizedValue('availableForSale');
+
+  /// Returns the localized value of text 'availableForSale'.
+  String get inventoryDetails => _stringOfLocalizedValue('inventoryDetails');
+
+  /// Returns the localized value of text 'committedStock'.
+  String get committedStock => _stringOfLocalizedValue('committedStock');
+
+  /// Returns the localized value of text 'stockOnHand'.
+  String get stockOnHand => _stringOfLocalizedValue('stockOnHand');
+
+  /// Returns the localized value of text 'accountingStock'.
+  String get accountingStock => _stringOfLocalizedValue('accountingStock');
+
+  /// Returns the localized value of text 'purchaseInformation'.
+  String get purchaseInformation =>
+      _stringOfLocalizedValue('purchaseInformation');
+
+  /// Returns the localized value of text 'physicalStock'.
+  String get physicalStock => _stringOfLocalizedValue('physicalStock');
+
+  /// Returns the localized value of text 'openingStock'.
+  String get openingStock => _stringOfLocalizedValue('openingStock');
+
+  /// Returns the localized value of text 'notAvailable'.
+  String get notAvailable => _stringOfLocalizedValue('notAvailable');
+
+  /// Returns the localized value of text 'primaryDetails'.
+  String get primaryDetails => _stringOfLocalizedValue('primaryDetails');
+
+  /// Returns the localized value of text 'returnIn'.
+  String get returnIn => _stringOfLocalizedValue('returnIn');
+
+  /// Returns the localized value of text 'returnOut'.
+  String get returnOut => _stringOfLocalizedValue('returnOut');
+
+  /// Returns the localized value of text 'salesOrder'.
+  String get salesOrder => _stringOfLocalizedValue('salesOrder');
+
+  /// Returns the localized value of text 'customerName'.
+  String get customerName => _stringOfLocalizedValue('customerName');
+
+  /// Returns the localized value of text 'quantitySold'.
+  String get quantitySold => _stringOfLocalizedValue('quantitySold');
+
+  /// Returns the localized value of text 'purchaseOrder'.
+  String get purchaseOrder => _stringOfLocalizedValue('purchaseOrder');
+
+  /// Returns the localized value of text 'quantityReceived'.
+  String get quantityReceived => _stringOfLocalizedValue('quantityReceived');
+
+  /// Returns the localized value of text 'costPrice'.
+  String get costPrice => _stringOfLocalizedValue('costPrice');
+
+  /// Returns the localized value of text 'adjustmentId'.
+  String get adjustmentId => _stringOfLocalizedValue('adjustmentId');
+
+  /// Returns the localized value of text 'quantityChange'.
+  String get quantityChange => _stringOfLocalizedValue('quantityChange');
+
+  /// Returns the localized value of text 'all'.
+  String get all => _stringOfLocalizedValue('all');
+
+  /// Returns the localized value of text 'adjustments'.
+  String get adjustments => _stringOfLocalizedValue('adjustments');
+
+  /// Returns the localized value of text 'noTransactionsFound'.
+  String get noTransactionsFound =>
+      _stringOfLocalizedValue('noTransactionsFound');
+
+  /// Returns the localized value of text 'user'.
+  String get user => _stringOfLocalizedValue('user');
+
+  /// Returns the localized value of text 'created'.
+  String get created => _stringOfLocalizedValue('created');
+
+  /// Returns the localized value of text 'noHistoryAvailable'.
+  String get noHistoryAvailable =>
+      _stringOfLocalizedValue('noHistoryAvailable');
+
+  /// Returns the localized value of text 'overview'.
+  String get overview => _stringOfLocalizedValue('overview');
+
+  /// Returns the localized value of text 'history'.
+  String get history => _stringOfLocalizedValue('history');
+
+  /// Returns the localized value of text 'adjustInventory'.
+  String get adjustInventory => _stringOfLocalizedValue('adjustInventory');
+
+  /// Returns the localized value of text 'currentStock'.
+  String get currentStock => _stringOfLocalizedValue('currentStock');
+
+  /// Returns the localized value of text 'newQuantityOnHand'.
+  String get newQuantityOnHand => _stringOfLocalizedValue('newQuantityOnHand');
+
+  /// Returns the localized value of text 'quantityAdjusted'.
+  String get quantityAdjusted => _stringOfLocalizedValue('quantityAdjusted');
+
+  /// Returns the localized value of text 'selectAReason'.
+  String get selectAReason => _stringOfLocalizedValue('selectAReason');
+
+  /// Returns the localized value of text 'otherReason'.
+  String get otherReason => _stringOfLocalizedValue('otherReason');
+
+  /// Returns the localized value of text 'customReason'.
+  String get customReason => _stringOfLocalizedValue('customReason');
+
+  /// Returns the localized value of text 'stockOnFire'.
+  String get stockOnFire => _stringOfLocalizedValue('stockOnFire');
+
+  /// Returns the localized value of text 'markAsInactiveReason'.
+  String get markAsInactiveReason =>
+      _stringOfLocalizedValue('markAsInactiveReason');
+
+  /// Returns the localized value of text 'stolenGoods'.
+  String get stolenGoods => _stringOfLocalizedValue('stolenGoods');
+
+  /// Returns the localized value of text 'damagedGoods'.
+  String get damagedGoods => _stringOfLocalizedValue('damagedGoods');
+
+  /// Returns the localized value of text 'stockWrittenOff'.
+  String get stockWrittenOff => _stringOfLocalizedValue('stockWrittenOff');
+
+  /// Returns the localized value of text 'stocktakingResults'.
+  String get stocktakingResults =>
+      _stringOfLocalizedValue('stocktakingResults');
+
+  /// Returns the localized value of text 'inventoryRevaluation'.
+  String get inventoryRevaluation =>
+      _stringOfLocalizedValue('inventoryRevaluation');
+
+  /// Returns the localized value of text 'inventoryAdjustedSuccessfully'.
+  String get inventoryAdjustedSuccessfully =>
+      _stringOfLocalizedValue('inventoryAdjustedSuccessfully');
+
+  /// Returns the localized value of text 'failedToAdjustInventory'.
+  String get failedToAdjustInventory =>
+      _stringOfLocalizedValue('failedToAdjustInventory');
+
+  /// The initial stock.
+  String get initialStock => _stringOfLocalizedValue('initialStock');
+
+  /// The reorder point.
+  String get reorderPoint => _stringOfLocalizedValue('reorderPoint');
 
   /// Direct access to the internationalization service.
   static AppInternationalizationService get to =>

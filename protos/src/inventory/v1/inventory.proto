@@ -62,10 +62,8 @@ message InventoryLevel {
   string store_id = 2;
   // Ready to sell/use (sum of batch quantities)
   int32 quantity_available = 3;
-  // Allocated to orders not yet fulfilled
-  int32 quantity_reserved = 4;
-  // Being delivered here
-  int32 quantity_in_transit = 5;
+  int32 quantity_committed = 4;
+  int32 quantity_on_hand = 5;
   // Minimum stock threshold for this product in this warehouse
   int32 min_threshold = 8;
   google.protobuf.Timestamp last_updated = 6;
@@ -109,13 +107,11 @@ message GetInventoryTransactionHistoryResponse {
 
 message GetProductInventoryLevelsRequest {
   string product_id = 1;
+  string store_id = 2;
 }
 
 message GetProductInventoryLevelsResponse {
-  repeated InventoryLevel levels = 1;
-  int32 total_available = 2;
-  int32 total_reserved = 3;
-  int32 total_in_transit = 4;
+  InventoryLevel level = 1;
 }
 
 message CheckProductAvailabilityRequest {
@@ -216,7 +212,7 @@ service InventoryService {
 message AdjustInventoryRequest {
   string store_id = 1 [(buf.validate.field).required = true];
   string product_id = 2 [(buf.validate.field).required = true];
-  int32 quantity_change = 3; // Positive or negative change
+  int32 new_quantity = 3; // Positive or negative change
   string reason = 4;
   string notes = 5;
   string batch_id = 6; // Optional, if adjusting specific batch

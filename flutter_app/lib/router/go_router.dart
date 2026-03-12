@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../providers/auth/auth_provider.dart';
 import '../screens/audits/audits_screen.dart';
@@ -12,6 +12,8 @@ import '../screens/categories/categories_view.dart';
 import '../screens/dashboard/dashboard_screen.dart';
 import '../screens/global_products/global_products_view.dart';
 import '../screens/home/home.dart';
+import '../screens/inventory/ajustment/inventory_ajustement_screen.dart';
+import '../screens/inventory/detail/inventory_detail_screen.dart'; // Added import
 import '../screens/inventory/inventory_screen.dart';
 import '../screens/point_of_sale/point_of_sale_screen.dart';
 import '../screens/products_list/products_list_screen.dart';
@@ -21,7 +23,6 @@ import '../screens/settings/settings_screen.dart';
 import '../screens/suppliers/suppliers_view.dart';
 import '../screens/users/users_view.dart';
 import '../screens/welcome/welcome.dart';
-import '../utils/user_preference.dart';
 import 'app_router.dart';
 import 'page_routes.dart';
 
@@ -33,226 +34,255 @@ final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>(
 /// The routes representation.
 class GoRouterRoutesProvider {
   /// The routes provider.
-  static final GoRouter routes = GoRouter(
-    navigatorKey: rootNavigatorKey,
-    initialLocation: PagesRoutes.welcome.pattern,
-    errorPageBuilder: (context, state) {
-      return MaterialPage(
-        child: Scaffold(
-          body: SafeArea(
-            child: SizedBox(
-              height: double.infinity,
-              width: double.infinity,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                spacing: 12,
-                children: [
-                  Text('Unknown router path ${state.fullPath}'),
-                  ShadButton(
-                    onPressed: () => context.go(PagesRoutes.dashboard.pattern),
-                    child: const Text('Go to Dashboard'),
-                  ),
-                ],
-              ),
-            ),
-          ),
+  static late final GoRouter routes;
+
+  static bool _urlStrategyInitialized = false;
+
+  /// The list of [StatefulShellBranch] for the logged in shell.
+  static final loggedInShellBranches = <StatefulShellBranch>[
+    StatefulShellBranch(
+      routes: [
+        GoRoute(
+          name: PagesRoutes.dashboard.name,
+          path: PagesRoutes.dashboard.pattern,
+          pageBuilder: (context, state) {
+            return const MaterialPage(child: DashboardScreen());
+          },
         ),
-      );
-    },
-    routes: [
+        GoRoute(
+          name: PagesRoutes.home.name,
+          path: PagesRoutes.home.pattern,
+          pageBuilder: (context, state) {
+            return const MaterialPage(child: DashboardScreen());
+          },
+        ),
+      ],
+    ),
+    StatefulShellBranch(
+      routes: [
+        GoRoute(
+          name: PagesRoutes.audits.name,
+          path: PagesRoutes.audits.pattern,
+          pageBuilder: (context, state) {
+            return const MaterialPage(child: AuditsScreen());
+          },
+        ),
+      ],
+    ),
+    StatefulShellBranch(
+      routes: [
+        GoRoute(
+          name: PagesRoutes.inventory.name,
+          path: PagesRoutes.inventory.pattern,
+          pageBuilder: (context, state) {
+            return const MaterialPage(child: InventoryScreen());
+          },
+        ),
+        GoRoute(
+          name: PagesRoutes.productsList.name,
+          path: PagesRoutes.productsList.pattern,
+          pageBuilder: (context, state) {
+            return const MaterialPage(child: ProductsListScreen());
+          },
+        ),
+      ],
+    ),
+    StatefulShellBranch(
+      routes: [
+        GoRoute(
+          name: PagesRoutes.cashReceipts.name,
+          path: PagesRoutes.cashReceipts.pattern,
+          pageBuilder: (context, state) {
+            return const MaterialPage(child: CashRecipeScreen());
+          },
+        ),
+        GoRoute(
+          name: PagesRoutes.pos.name,
+          path: PagesRoutes.pos.pattern,
+          pageBuilder: (context, state) {
+            return const MaterialPage(child: PointOfSaleScreen());
+          },
+        ),
+      ],
+    ),
+    StatefulShellBranch(
+      routes: [
+        GoRoute(
+          name: PagesRoutes.reports.name,
+          path: PagesRoutes.reports.pattern,
+          pageBuilder: (context, state) {
+            return const MaterialPage(child: ReportsScreen());
+          },
+        ),
+      ],
+    ),
+    StatefulShellBranch(
+      routes: [
+        GoRoute(
+          name: PagesRoutes.suppliers.name,
+          path: PagesRoutes.suppliers.pattern,
+          pageBuilder: (context, state) {
+            return const MaterialPage(child: SuppliersView());
+          },
+        ),
+      ],
+    ),
+    StatefulShellBranch(
+      routes: [
+        GoRoute(
+          name: PagesRoutes.users.name,
+          path: PagesRoutes.users.pattern,
+          pageBuilder: (context, state) {
+            return const MaterialPage(child: UsersView());
+          },
+        ),
+      ],
+    ),
+    StatefulShellBranch(
+      routes: [
+        GoRoute(
+          name: PagesRoutes.categories.name,
+          path: PagesRoutes.categories.pattern,
+          pageBuilder: (context, state) {
+            return const MaterialPage(child: CategoriesView());
+          },
+        ),
+      ],
+    ),
+    StatefulShellBranch(
+      routes: [
+        GoRoute(
+          name: PagesRoutes.globalProducts.name,
+          path: PagesRoutes.globalProducts.pattern,
+          pageBuilder: (context, state) {
+            return const MaterialPage(child: GlobalProductsView());
+          },
+        ),
+      ],
+    ),
+    StatefulShellBranch(
+      routes: [
+        GoRoute(
+          name: PagesRoutes.settings.name,
+          path: PagesRoutes.settings.pattern,
+          pageBuilder: (context, state) {
+            return const MaterialPage(child: SettingsScreen());
+          },
+        ),
+      ],
+    ),
+    StatefulShellBranch(
+      routes: [
+        GoRoute(
+          name: PagesRoutes.purchaseOrders.name,
+          path: PagesRoutes.purchaseOrders.pattern,
+          pageBuilder: (context, state) {
+            return const MaterialPage(child: PurchaseOrdersScreen());
+          },
+        ),
+      ],
+    ),
+  ];
+
+  /// Determines if the use opens the application for the first time.
+  static Future<void> init() async {
+    if (!_urlStrategyInitialized) {
+      usePathUrlStrategy();
+      GoRouter.optionURLReflectsImperativeAPIs = true;
+      _urlStrategyInitialized = true;
+    }
+
+    final auth = AuthProvider.instance;
+
+    // Initialize router with auth listener
+    routes = GoRouter(
+      navigatorKey: rootNavigatorKey,
+      debugLogDiagnostics: true,
+      initialLocation: PagesRoutes.welcome.pattern,
+      refreshListenable: auth, // Listen to auth changes
+      redirect: (context, state) {
+        final isLoggedIn = auth.isAuthenticated;
+        final currentPath = state.uri.path;
+
+        // Define auth pages
+        final isOnAuthPage =
+            currentPath == PagesRoutes.welcome.pattern ||
+            currentPath == PagesRoutes.login.pattern ||
+            currentPath == PagesRoutes.registration.pattern ||
+            currentPath == PagesRoutes.forgotPassword.pattern ||
+            currentPath == '/';
+
+        // Redirect logic
+        if (!isLoggedIn && !isOnAuthPage) {
+          // Not logged in, trying to access protected route
+          return PagesRoutes.login.pattern;
+        }
+
+        if (isLoggedIn && isOnAuthPage) {
+          // Logged in, on auth page
+          return PagesRoutes.dashboard.pattern;
+        }
+
+        // No redirect needed
+        return null;
+      },
+      routes: _getAllRoutes(),
+      onException: (context, state, router) {
+        debugPrint('Unknown router path: ${state.fullPath} ');
+      },
+    );
+  }
+
+  /// Returns all application routes.
+  static List<RouteBase> _getAllRoutes() {
+    return [
+      // Logged-in shell routes (protected by global redirect)
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
           return HomeScreen(navigationShell: navigationShell);
         },
-        redirect: (context, state) async {
-          final authProvider = AuthProvider.instance;
-          final userPreferences = UserPreferences.instance;
+        branches: loggedInShellBranches,
+      ),
+      // Standalone protected routes
+      GoRoute(
+        name: PagesRoutes.inventoryDetail.name,
+        path: PagesRoutes.inventoryDetail.pattern,
+        parentNavigatorKey: rootNavigatorKey,
+        pageBuilder: (context, state) {
+          final productId =
+              state.pathParameters[InventoryDetailParameters.keyProductId];
 
-          // Show splash while initializing
-          if (authProvider.isAuthenticated) {
-            return null;
-          }
-
-          final bool isUserRegistered = authProvider.currentUser != null;
-          final bool isLoadingPreferences =
-              authProvider.isAuthenticated || userPreferences.isLoading;
-
-          // Redirect away from splash once loaded
-          if (state.uri.path == PagesRoutes.welcome.pattern) {
-            return isUserRegistered
-                ? PagesRoutes.dashboard.pattern
-                : PagesRoutes.welcome.pattern;
-          }
-
-          if (isLoadingPreferences && isUserRegistered) {
-            return PagesRoutes.welcome.pattern;
-          }
-
-          return isUserRegistered ? null : PagesRoutes.welcome.pattern;
+          return MaterialPage(
+            child: InventoryDetailScreen(productId: productId ?? ''),
+          );
         },
-        branches: [
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                name: PagesRoutes.dashboard.name,
-                path: PagesRoutes.dashboard.pattern,
-                pageBuilder: (context, state) {
-                  return const MaterialPage(child: DashboardScreen());
-                },
-              ),
-              GoRoute(
-                name: PagesRoutes.home.name,
-                path: PagesRoutes.home.pattern,
-                pageBuilder: (context, state) {
-                  return const MaterialPage(child: DashboardScreen());
-                },
-              ),
-            ],
-          ),
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                name: PagesRoutes.audits.name,
-                path: PagesRoutes.audits.pattern,
-                pageBuilder: (context, state) {
-                  return const MaterialPage(child: AuditsScreen());
-                },
-              ),
-            ],
-          ),
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                name: PagesRoutes.inventory.name,
-                path: PagesRoutes.inventory.pattern,
-                pageBuilder: (context, state) {
-                  return const MaterialPage(child: InventoryScreen());
-                },
-              ),
-              GoRoute(
-                name: PagesRoutes.productsList.name,
-                path: PagesRoutes.productsList.pattern,
-                pageBuilder: (context, state) {
-                  return const MaterialPage(child: ProductsListScreen());
-                },
-              ),
-            ],
-          ),
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                name: PagesRoutes.cashReceipts.name,
-                path: PagesRoutes.cashReceipts.pattern,
-                pageBuilder: (context, state) {
-                  return const MaterialPage(child: CashRecipeScreen());
-                },
-              ),
-              GoRoute(
-                name: PagesRoutes.pos.name,
-                path: PagesRoutes.pos.pattern,
-                pageBuilder: (context, state) {
-                  return const MaterialPage(child: PointOfSaleScreen());
-                },
-              ),
-            ],
-          ),
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                name: PagesRoutes.reports.name,
-                path: PagesRoutes.reports.pattern,
-                pageBuilder: (context, state) {
-                  return const MaterialPage(child: ReportsScreen());
-                },
-              ),
-            ],
-          ),
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                name: PagesRoutes.suppliers.name,
-                path: PagesRoutes.suppliers.pattern,
-                pageBuilder: (context, state) {
-                  return const MaterialPage(child: SuppliersView());
-                },
-              ),
-            ],
-          ),
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                name: PagesRoutes.users.name,
-                path: PagesRoutes.users.pattern,
-                pageBuilder: (context, state) {
-                  return const MaterialPage(child: UsersView());
-                },
-              ),
-            ],
-          ),
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                name: PagesRoutes.categories.name,
-                path: PagesRoutes.categories.pattern,
-                pageBuilder: (context, state) {
-                  return const MaterialPage(child: CategoriesView());
-                },
-              ),
-            ],
-          ),
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                name: PagesRoutes.globalProducts.name,
-                path: PagesRoutes.globalProducts.pattern,
-                pageBuilder: (context, state) {
-                  return const MaterialPage(child: GlobalProductsView());
-                },
-              ),
-            ],
-          ),
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                name: PagesRoutes.settings.name,
-                path: PagesRoutes.settings.pattern,
-                pageBuilder: (context, state) {
-                  return const MaterialPage(child: SettingsScreen());
-                },
-              ),
-            ],
-          ),
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                name: PagesRoutes.purchaseOrders.name,
-                path: PagesRoutes.purchaseOrders.pattern,
-                pageBuilder: (context, state) {
-                  return const MaterialPage(child: PurchaseOrdersScreen());
-                },
-              ),
-            ],
-          ),
-        ],
+      ),
+      GoRoute(
+        name: PagesRoutes.inventoryAjustment.name,
+        path: PagesRoutes.inventoryAjustment.pattern,
+        parentNavigatorKey: rootNavigatorKey,
+        pageBuilder: (context, state) {
+          final productId =
+              state.pathParameters[InventoryDetailParameters.keyProductId];
+
+          return MaterialPage(
+            child: InventoryAjustmentScreen(productId: productId ?? ''),
+          );
+        },
+      ),
+      // Auth routes (public)
+      GoRoute(
+        name: PagesRoutes.welcome.name,
+        path: PagesRoutes.welcome.pattern,
+        pageBuilder: (context, state) {
+          return const MaterialPage(child: WelcomeScreen());
+        },
       ),
       GoRoute(
         name: PagesRoutes.login.name,
         path: PagesRoutes.login.pattern,
         pageBuilder: (context, state) {
           return const MaterialPage(child: LoginView());
-        },
-        redirect: (context, state) async {
-          final user = UserPreferences.instance.user;
-
-          if (user == null) {
-            return PagesRoutes.login.pattern;
-          }
-
-          final authProvider = AuthProvider();
-          await authProvider.saveBusinessAndStore(user);
-          await authProvider.initializeDataSync();
-
-          return PagesRoutes.dashboard.pattern;
         },
       ),
       GoRoute(
@@ -269,18 +299,8 @@ class GoRouterRoutesProvider {
           return const MaterialPage(child: ForgotPasswordView());
         },
       ),
-      GoRoute(
-        name: PagesRoutes.welcome.name,
-        path: PagesRoutes.welcome.pattern,
-        pageBuilder: (context, state) {
-          return const MaterialPage(child: WelcomeScreen());
-        },
-      ),
-    ],
-  );
-
-  /// Determines if the use opens the application for the first time.
-  static Future<void> init() async {}
+    ];
+  }
 }
 
 /// AppRouter implementation using GoRouter.

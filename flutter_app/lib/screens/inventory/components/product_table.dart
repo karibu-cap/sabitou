@@ -3,18 +3,19 @@ import 'package:provider/provider.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+import '../../../router/app_router.dart';
+import '../../../router/page_routes.dart';
 import '../../../services/internationalization/internationalization.dart';
 import '../../../themes/app_colors.dart';
 import '../../../utils/app_constants.dart';
-import '../../../utils/extensions/category_extension.dart';
 import '../../../utils/extensions/global_product_extension.dart';
 import '../../../utils/extensions/inventory_extenxions.dart';
 import '../../../utils/formatters.dart';
 import '../../../utils/responsive_utils.dart';
 import '../../../utils/utils.dart';
+import '../../../widgets/custom_grid.dart';
 import '../../../widgets/loading.dart';
-import '../../../widgets/shad_data_grid.dart';
-import '../dialogs/inventory_adjustment_dialog.dart';
+import '../ajustment/inventory_adjustment_dialog.dart';
 import '../inventory_controller.dart';
 
 /// The products table view.
@@ -24,287 +25,203 @@ class ProductsTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isMobile = ResponsiveUtils.isMobile(context);
     final controller = context.read<InventoryController>();
 
-    return ShadCard(
-      padding: EdgeInsets.zero,
-      radius: const BorderRadius.only(
-        topLeft: Radius.circular(12),
-        topRight: Radius.circular(12),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  Intls.to.product,
-                  style: ShadTheme.of(context).textTheme.h4,
-                ),
-                Text(
-                  Intls.to.productManagementDescription,
-                  style: ShadTheme.of(context).textTheme.muted,
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 16),
-          StreamBuilder<List<InventoryLevelWithProduct>>(
-            stream: controller.filteredProductsStream,
-            builder: (context, snapshot) {
-              final invLevels = snapshot.data;
-              if (!snapshot.hasData || invLevels == null) {
-                return const Loading();
-              }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        StreamBuilder<List<InventoryLevelWithProduct>>(
+          stream: controller.filteredProductsStream,
+          builder: (context, snapshot) {
+            final invLevels = snapshot.data;
+            if (!snapshot.hasData || invLevels == null) {
+              return const Loading();
+            }
 
-              return invLevels.isEmpty
-                  ? Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            children: [
-                              const Icon(LucideIcons.box),
-                              Text(
-                                Intls.to.noDataFound,
-                                style: ShadTheme.of(context).textTheme.muted,
-                              ),
-                              const SizedBox(height: 16),
-                            ],
+            return invLevels.isEmpty
+                ? Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          children: [
+                            const Icon(LucideIcons.box),
+                            Text(
+                              Intls.to.noDataFound,
+                              style: ShadTheme.of(context).textTheme.muted,
+                            ),
+                            const SizedBox(height: 16),
+                          ],
+                        ),
+                      ),
+                    ],
+                  )
+                : _InventoryGridView(inv: invLevels);
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class _InventoryGridView extends StatelessWidget {
+  const _InventoryGridView({required this.inv});
+
+  final List<InventoryLevelWithProduct> inv;
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = context.read<InventoryController>();
+    final isMobile = ResponsiveUtils.isMobile(context);
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Column(
+          children: [
+            CustomGrid(
+              minItemWidth: 270,
+              mainAxisExtent: 250,
+              crossSpacing: 20,
+              children: inv.map((inv) {
+                return _InventoryCard(
+                  product: inv,
+                  onTap: () {
+                    if (isMobile) {
+                      AppRouter.push(
+                        context,
+                        PagesRoutes.inventoryDetail.create(
+                          InventoryDetailParameters(
+                            productId: inv.product.refId,
                           ),
                         ),
-                      ],
-                    )
-                  : Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (!isMobile)
-                          _InventoryDataTable(inv: invLevels)
-                        else
-                          _InventoryCardList(inv: invLevels),
-                      ],
+                      );
+
+                      return;
+                    }
+                    controller.selectItem(inv);
+                  },
+                  onEdit: () {
+                    if (isMobile) {
+                      AppRouter.push(
+                        context,
+                        PagesRoutes.inventoryAjustment.create(
+                          InventoryDetailParameters(
+                            productId: inv.product.refId,
+                          ),
+                        ),
+                      );
+
+                      return;
+                    }
+                    showShadDialog(
+                      context: context,
+                      builder: (context) => InventoryAdjustmentDialog(
+                        productId: inv.product.refId,
+                      ),
                     );
-            },
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _InventoryDataTable extends StatelessWidget {
-  const _InventoryDataTable({required this.inv});
-
-  final List<InventoryLevelWithProduct> inv;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = ShadTheme.of(context);
-    final controller = context.read<InventoryController>();
-
-    return ShadDataGrid<InventoryLevelWithProduct>(
-      data: inv,
-      columns: [
-        ShadDataGridColumn(label: Intls.to.product, width: 280),
-        ShadDataGridColumn(label: Intls.to.barcode, width: 180),
-        ShadDataGridColumn(label: Intls.to.status, width: 120),
-        ShadDataGridColumn(label: Intls.to.price, width: 120),
-        ShadDataGridColumn(label: Intls.to.stock, width: 120),
-        const ShadDataGridColumn(label: '', width: 80),
-      ],
-      rowBuilder: (product) {
-        return [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            alignment: Alignment.centerLeft,
-            child: _ProductNameCell(product: product.globalProduct),
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            alignment: Alignment.centerLeft,
-            child: Text(
-              product.globalProduct.hasBarCodeValue() &&
-                      product.globalProduct.barCodeValue.isNotEmpty
-                  ? product.globalProduct.barCodeValue
-                  : 'N/A',
-              style: theme.textTheme.small,
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            alignment: Alignment.centerLeft,
-            child: _StatusCell(inventory: product),
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            alignment: Alignment.centerLeft,
-            child: Text(
-              Formatters.formatCurrency(product.product.salePrice.toDouble()),
-              style: theme.textTheme.small.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            alignment: Alignment.centerLeft,
-            child: _StockCell(inventoryLevel: product.level),
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            alignment: Alignment.center,
-            child: ShadIconButton.ghost(
-              icon: const Icon(LucideIcons.pencil, size: 16),
-              onPressed: () {
-                showShadDialog(
-                  context: context,
-                  builder: (context) => InventoryAdjustmentDialog(
-                    inventory: product,
-                    inventoryController: controller,
-                  ),
+                  },
                 );
-              },
+              }).toList(),
             ),
-          ),
-        ];
-      },
-    );
-  }
-}
-
-class _InventoryCardList extends StatelessWidget {
-  const _InventoryCardList({required this.inv});
-
-  final List<InventoryLevelWithProduct> inv;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.separated(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: inv.length,
-      separatorBuilder: (context, index) => const SizedBox(height: 12),
-      itemBuilder: (context, index) {
-        final invLevel = inv[index];
-
-        return _InventoryCard(inv: invLevel);
+          ],
+        );
       },
     );
   }
 }
 
 class _InventoryCard extends StatelessWidget {
-  const _InventoryCard({required this.inv});
+  const _InventoryCard({
+    required this.product,
+    required this.onTap,
+    required this.onEdit,
+  });
 
-  final InventoryLevelWithProduct inv;
+  final InventoryLevelWithProduct product;
+  final VoidCallback onTap;
+  final VoidCallback onEdit;
 
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    final category = inv.globalProduct.categories.map((c) => c.label).toList();
-    final controller = context.read<InventoryController>();
 
-    return ShadCard(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
+    return InkWell(
+      onTap: onTap,
+      borderRadius: const BorderRadius.all(Radius.circular(8)),
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: theme.colorScheme.border),
+          borderRadius: const BorderRadius.all(Radius.circular(8)),
+          color: theme.colorScheme.background,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          spacing: 8,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        inv.globalProduct.label,
-                        style: theme.textTheme.large,
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        switch (inv.globalProduct.barCodeValue.length) {
-                          > 0 && > 5 =>
-                            '#${inv.globalProduct.barCodeValue.substring(0, 5)}',
-                          > 0 && < 5 => '#${inv.globalProduct.barCodeValue}',
-                          _ => '',
-                        },
-                        style: theme.textTheme.muted.copyWith(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            if (category.isNotEmpty)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            // Header with product name and edit button
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Row(
                 children: [
-                  Text(Intls.to.category, style: theme.textTheme.p),
-                  Flexible(
-                    child: Wrap(
-                      children:
-                          category
-                              .map((c) => Text(c, style: theme.textTheme.muted))
-                              .expand((c) => [c, const Text(', ')])
-                              .toList()
-                            ..removeLast(),
-                    ),
+                  Expanded(
+                    child: _ProductNameCell(product: product.globalProduct),
+                  ),
+                  ShadIconButton.ghost(
+                    icon: const Icon(LucideIcons.pencil, size: 16),
+                    onPressed: onEdit,
                   ),
                 ],
               ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(Intls.to.price, style: theme.textTheme.p),
-                Flexible(
-                  child: Text(
-                    Formatters.formatCurrency(inv.product.salePrice.toDouble()),
-                    style: theme.textTheme.muted,
-                  ),
-                ),
-              ],
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(Intls.to.stock, style: theme.textTheme.p),
-                _InfoChip(
-                  value: '${inv.level.quantityAvailable} units',
-                  color: inv.stockStatus == StockStatus.STOCK_STATUS_LOW
-                      ? AppColors.orange500
-                      : AppColors.dartGreen,
+
+            const Divider(height: 1),
+
+            // Content
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    // Barcode
+                    _InfoRow(
+                      label: Intls.to.barcode,
+                      child: Text(
+                        product.globalProduct.hasBarCodeValue() &&
+                                product.globalProduct.barCodeValue.isNotEmpty
+                            ? product.globalProduct.barCodeValue
+                            : 'N/A',
+                        style: theme.textTheme.small,
+                      ),
+                    ),
+
+                    // Status
+                    _InfoRow(
+                      label: Intls.to.status,
+                      expandedChild: false,
+                      child: _StatusCell(inventory: product),
+                    ),
+
+                    // Price
+                    _InfoRow(
+                      label: Intls.to.price,
+                      child: Text(
+                        Formatters.formatCurrency(
+                          product.product.salePrice.toDouble(),
+                        ),
+                        style: theme.textTheme.small.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+
+                    // Stock
+                    _InfoRow(
+                      label: Intls.to.stock,
+                      child: _StockCell(inventoryLevel: product.level),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            ShadButton.outline(
-              child: const Text('Adjust Stock'),
-              onPressed: () {
-                showShadDialog(
-                  context: context,
-                  builder: (context) => InventoryAdjustmentDialog(
-                    inventory: inv,
-                    inventoryController: controller,
-                  ),
-                );
-              },
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Text(Intls.to.expiry, style: theme.textTheme.p),
-                ),
-              ],
+              ),
             ),
           ],
         ),
@@ -313,20 +230,37 @@ class _InventoryCard extends StatelessWidget {
   }
 }
 
-class _InfoChip extends StatelessWidget {
-  const _InfoChip({required this.value, required this.color});
+class _InfoRow extends StatelessWidget {
+  const _InfoRow({
+    required this.label,
+    required this.child,
+    this.expandedChild = true,
+  });
 
-  final String value;
-  final Color color;
+  final String label;
+  final Widget child;
+  final bool expandedChild;
 
   @override
   Widget build(BuildContext context) {
-    return ShadBadge(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      backgroundColor: color,
-      hoverBackgroundColor: color.withValues(alpha: 0.8),
-      foregroundColor: AppColors.grey0,
-      child: Text(value),
+    final theme = ShadTheme.of(context);
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: 80,
+          child: Text(
+            label,
+            style: theme.textTheme.small.copyWith(
+              color: theme.colorScheme.mutedForeground,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        const SizedBox(width: 12),
+        expandedChild ? Expanded(child: child) : child,
+      ],
     );
   }
 }

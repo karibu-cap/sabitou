@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:animation_wrappers/animation_wrappers.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -65,7 +66,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       default:
         return SlideData(
           title: AppInternationalizationService.to.welcomeScreenFirstMessage,
-          imagePath: 'assets/image/inventory_mangement.png',
+          imagePath: 'assets/images/inventory_mangement.png',
         );
     }
   }
@@ -92,95 +93,116 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     final slideData = _getSlideData(_currentIndex);
 
     return Scaffold(
-      backgroundColor: AppColors.primary50,
-      body: Stack(
-        children: [
-          AnimatedSwitcher(
-            duration: const Duration(milliseconds: 500),
-            child: Container(
-              key: ValueKey(_currentIndex),
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(slideData.imagePath),
-                  fit: BoxFit.contain,
-                ),
-              ),
-              child: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      AppColors.black.withValues(alpha: 0.01),
-                      AppColors.black.withValues(alpha: 0.01),
-                      AppColors.black.withValues(alpha: 0.01),
-                      AppColors.black.withValues(alpha: 0.1),
-                      AppColors.black.withValues(alpha: 0.5),
-                      AppColors.black.withValues(alpha: 0.8),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(24.0),
+      backgroundColor: AppColors.white,
+      body: SafeArea(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return ConstrainedBox(
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Spacer(),
-
-                  // Title with animation
-                  AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 500),
-                    child: Text(
-                      slideData.title,
-                      key: ValueKey(_currentIndex),
-                      style: theme.textTheme.h4.copyWith(
-                        color: AppColors.primary50,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-
-                  const SizedBox(height: 10),
-
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(
-                      3,
-                      (index) => InkWell(
-                        onTap: () => _changeSlide(index),
-                        child: AnimatedContainer(
-                          duration: const Duration(milliseconds: 300),
-                          margin: const EdgeInsets.symmetric(horizontal: 4),
-                          width: index == _currentIndex ? 24 : 8,
-                          height: 8,
-                          decoration: BoxDecoration(
-                            color: index == _currentIndex
-                                ? theme.colorScheme.primary
-                                : theme.colorScheme.secondary,
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(4),
+                  Flexible(
+                    flex: 5,
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 600),
+                      transitionBuilder: (child, animation) {
+                        return FadeTransition(
+                          opacity: animation,
+                          child: ScaleTransition(
+                            scale: Tween<double>(begin: 0.95, end: 1.0).animate(
+                              CurvedAnimation(
+                                parent: animation,
+                                curve: Curves.easeOut,
+                              ),
                             ),
+                            child: child,
                           ),
+                        );
+                      },
+                      child: Container(
+                        key: ValueKey(_currentIndex),
+                        width: double.infinity,
+                        alignment: Alignment.bottomCenter,
+                        child: Image.asset(
+                          slideData.imagePath,
+                          fit: BoxFit.contain,
                         ),
                       ),
                     ),
                   ),
 
-                  const SizedBox(height: 10),
+                  // Bottom Section: Content
+                  Flexible(
+                    flex: 4,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 24),
 
-                  const _BottomSheetView(),
+                          // Title
+                          FadedSlideAnimation(
+                            beginOffset: const Offset(0, 0.2),
+                            endOffset: const Offset(0, 0),
+                            child: AnimatedSwitcher(
+                              duration: const Duration(milliseconds: 500),
+                              child: Text(
+                                slideData.title,
+                                key: ValueKey(_currentIndex),
+                                style: theme.textTheme.h3.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+                          // Indicators
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: List.generate(
+                              3,
+                              (index) => InkWell(
+                                onTap: () => _changeSlide(index),
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                                child: AnimatedContainer(
+                                  duration: const Duration(milliseconds: 300),
+                                  margin: const EdgeInsets.symmetric(
+                                    horizontal: 4,
+                                  ),
+                                  width: index == _currentIndex ? 32 : 8,
+                                  height: 8,
+                                  decoration: BoxDecoration(
+                                    color: index == _currentIndex
+                                        ? theme.colorScheme.primary
+                                        : AppColors.grey200,
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(10),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
 
-                  const SizedBox(height: 10),
+                          const SizedBox(height: 32),
+
+                          const _BottomSheetView(),
+
+                          const SizedBox(height: 16),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
-            ),
-          ),
-        ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -286,26 +308,31 @@ final class _UnauthenticatedView extends StatelessWidget {
     return Column(
       children: [
         ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 500),
+          constraints: const BoxConstraints(maxWidth: 400),
           child: ShadButton(
             expands: true,
+            size: ShadButtonSize.lg,
             onPressed: () {
               confirmFirstOpen();
               AppRouter.pushReplacement(context, PagesRoutes.login.create());
             },
-            child: Text(intl.signIn),
+            child: Text(
+              intl.signIn,
+              style: theme.textTheme.p.copyWith(
+                color: theme.colorScheme.primaryForeground,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
           ),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 16),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           spacing: 4,
           children: [
             Text(
               intl.dontHaveAnAccount,
-              style: theme.textTheme.muted.copyWith(
-                color: AppColors.primary100,
-              ),
+              style: theme.textTheme.muted.copyWith(color: AppColors.grey600),
             ),
             ShadButton.link(
               padding: EdgeInsets.zero,
@@ -324,6 +351,7 @@ final class _UnauthenticatedView extends StatelessWidget {
                 style: theme.textTheme.muted.copyWith(
                   color: theme.colorScheme.primary,
                   fontWeight: FontWeight.w700,
+                  decoration: TextDecoration.underline,
                 ),
               ),
             ),

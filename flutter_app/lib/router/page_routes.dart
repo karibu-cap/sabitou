@@ -3,6 +3,9 @@ abstract class PagesRoutesWithParams<T> {
   /// Returns the pattern URL associated with the route.
   String get pattern;
 
+  /// The name of the route.
+  String get name;
+
   /// Creates the route URL.
   String create(T parameters);
 }
@@ -38,6 +41,12 @@ abstract class PagesRoutes {
 
   /// The inventory route, for example, http:localhost:8080/inventory.
   static final inventory = _InventoryRoute();
+
+  /// The inventory detail route, for example, http:localhost:8080/inventory?product=product_id.
+  static final inventoryDetail = _InventoryDetailRoute();
+
+  /// The inventory ajustment
+  static final inventoryAjustment = _InventoryAjustmentRoute();
 
   /// The sales route, for example, http:localhost:8080/sales.
   static final sales = _SalesRoute();
@@ -131,6 +140,47 @@ class _InventoryRoute extends PagesRoutesWithNoParams {
 
   @override
   String get name => 'inventory';
+}
+
+class _InventoryAjustmentRoute
+    extends PagesRoutesWithParams<InventoryDetailParameters> {
+  @override
+  String get pattern =>
+      '/inventory/:${InventoryDetailParameters.keyProductId}/ajustment';
+
+  @override
+  String get name => 'inventory-ajustment';
+
+  @override
+  String create(InventoryDetailParameters parameters) {
+    return '/inventory/${parameters.productId}/ajustment';
+  }
+}
+
+class _InventoryDetailRoute
+    extends PagesRoutesWithParams<InventoryDetailParameters> {
+  @override
+  String get pattern => '/inventory/:${InventoryDetailParameters.keyProductId}';
+
+  @override
+  String get name => 'inventory-detail';
+
+  @override
+  String create(InventoryDetailParameters parameters) {
+    return '/inventory/${parameters.productId}';
+  }
+}
+
+/// The inventory detail parameters.
+class InventoryDetailParameters {
+  /// The product ID parameter key.
+  static const String keyProductId = 'productId';
+
+  /// The product ID.
+  final String productId;
+
+  /// Constructs a new [InventoryDetailParameters].
+  InventoryDetailParameters({required this.productId});
 }
 
 class _SalesRoute extends PagesRoutesWithNoParams {

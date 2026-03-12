@@ -45,7 +45,7 @@ class LoginButton extends StatelessWidget {
           message: appIntl.loginSuccess,
         );
         controller.buttonState.value = ButtonState.initial;
-        AppRouter.pushReplacement(context, PagesRoutes.dashboard.create());
+        AppRouter.go(context, PagesRoutes.home.pattern);
       } else {
         showErrorToast(
           context: context,

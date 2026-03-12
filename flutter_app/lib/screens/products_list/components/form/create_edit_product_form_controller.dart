@@ -29,7 +29,7 @@ class CreateEditProductFormController extends ChangeNotifier {
   GlobalProduct _product;
   final StoreProduct _storeProduct;
   bool _onSaveProduct = false;
-  final bool _isCreatingNewProduct = true;
+  final bool _isCreatingNewProduct;
 
   /// Gets the selected global product.
   GlobalProduct? selectedGlobalProduct;
@@ -58,6 +58,12 @@ class CreateEditProductFormController extends ChangeNotifier {
   /// The sale price controller.
   final TextEditingController salePriceController;
 
+  /// The initial stock controller.
+  final TextEditingController initialStockController;
+
+  /// The reorder point controller.
+  final TextEditingController reorderPointController;
+
   /// Gets the loading state.
   bool get onSaveProduct => _onSaveProduct;
 
@@ -76,6 +82,7 @@ class CreateEditProductFormController extends ChangeNotifier {
     StoreProduct? storeProduct,
   }) : _product = product ?? GlobalProduct(),
        _storeProduct = storeProduct ?? StoreProduct(),
+       _isCreatingNewProduct = product == null,
        nameController = TextEditingController(text: product?.label),
        descriptionController = TextEditingController(
          text: product?.descriptionIntl,
@@ -84,6 +91,10 @@ class CreateEditProductFormController extends ChangeNotifier {
        skuController = TextEditingController(text: storeProduct?.sku ?? ''),
        salePriceController = TextEditingController(
          text: storeProduct?.salePrice.toString() ?? '',
+       ),
+       initialStockController = TextEditingController(),
+       reorderPointController = TextEditingController(
+         text: storeProduct?.reorderPoint.toString() ?? '',
        ),
        categoryController = ShadSelectController<String?>(
          initialValue: product?.categories.map((e) => e.refId).toSet(),
@@ -145,7 +156,8 @@ class CreateEditProductFormController extends ChangeNotifier {
       _storeProduct
         ..storeId = storeId
         ..sku = skuController.text
-        ..salePrice = int.tryParse(salePriceController.text) ?? 0;
+        ..salePrice = int.tryParse(salePriceController.text) ?? 0
+        ..reorderPoint = int.tryParse(reorderPointController.text) ?? 0;
 
       if (_isCreatingNewProduct) {
         _storeProduct.globalProductId = _product.refId;
@@ -160,6 +172,7 @@ class CreateEditProductFormController extends ChangeNotifier {
           AddStoreProductRequest(
             globalProduct: _product,
             storeProduct: _storeProduct,
+            initialStock: int.tryParse(initialStockController.text) ?? 0,
           ),
         );
 

@@ -81,6 +81,9 @@ message StoreProduct {
 
   // The last update date of the product.
   optional google.protobuf.Timestamp updated_at = 10;
+
+  // The reorder point.
+  optional int32 reorder_point = 11;
 }
 
 message CreateGlobalProductRequest {
@@ -191,6 +194,9 @@ message AddStoreProductRequest {
 
   // The store product to add.
   StoreProduct store_product = 2;
+
+  // The initial stock.
+  optional int32 initial_stock = 3;
 }
 
 message AddStoreProductResponse {

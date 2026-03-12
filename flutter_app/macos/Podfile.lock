@@ -9,6 +9,7 @@ PODS:
   - FlutterMacOS (1.0.0)
   - isar_community_flutter_libs (1.0.0):
     - FlutterMacOS
+  - FlutterMacOS (1.0.0)
   - mobile_scanner (7.0.0):
     - Flutter
     - FlutterMacOS

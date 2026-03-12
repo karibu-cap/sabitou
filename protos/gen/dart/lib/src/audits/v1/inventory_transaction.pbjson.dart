@@ -100,6 +100,9 @@ const InventoryTransaction$json = {
     },
     {'1': 'notes', '3': 12, '4': 1, '5': 9, '10': 'notes'},
     {'1': 'batch_id', '3': 13, '4': 1, '5': 9, '10': 'batchId'},
+    {'1': 'unit_price', '3': 14, '4': 1, '5': 1, '10': 'unitPrice'},
+    {'1': 'total_amount', '3': 15, '4': 1, '5': 1, '10': 'totalAmount'},
+    {'1': 'currency', '3': 16, '4': 1, '5': 9, '10': 'currency'},
   ],
   '8': [
     {'1': '_document_id'},
@@ -118,4 +121,6 @@ final $typed_data.Uint8List inventoryTransactionDescriptor = $convert.base64Deco
     '50X2lkGAkgASgJUhFyZWxhdGVkRG9jdW1lbnRJZBIvChRwZXJmb3JtZWRfYnlfdXNlcl9pZBgK'
     'IAEoCVIRcGVyZm9ybWVkQnlVc2VySWQSRQoQdHJhbnNhY3Rpb25fdGltZRgLIAEoCzIaLmdvb2'
     'dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSD3RyYW5zYWN0aW9uVGltZRIUCgVub3RlcxgMIAEoCVIF'
-    'bm90ZXMSGQoIYmF0Y2hfaWQYDSABKAlSB2JhdGNoSWRCDgoMX2RvY3VtZW50X2lk');
+    'bm90ZXMSGQoIYmF0Y2hfaWQYDSABKAlSB2JhdGNoSWQSHQoKdW5pdF9wcmljZRgOIAEoAVIJdW'
+    '5pdFByaWNlEiEKDHRvdGFsX2Ftb3VudBgPIAEoAVILdG90YWxBbW91bnQSGgoIY3VycmVuY3kY'
+    'ECABKAlSCGN1cnJlbmN5Qg4KDF9kb2N1bWVudF9pZA==');

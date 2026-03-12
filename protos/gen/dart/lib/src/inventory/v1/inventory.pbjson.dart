@@ -125,19 +125,13 @@ const InventoryLevel$json = {
       '10': 'quantityAvailable'
     },
     {
-      '1': 'quantity_reserved',
+      '1': 'quantity_committed',
       '3': 4,
       '4': 1,
       '5': 5,
-      '10': 'quantityReserved'
+      '10': 'quantityCommitted'
     },
-    {
-      '1': 'quantity_in_transit',
-      '3': 5,
-      '4': 1,
-      '5': 5,
-      '10': 'quantityInTransit'
-    },
+    {'1': 'quantity_on_hand', '3': 5, '4': 1, '5': 5, '10': 'quantityOnHand'},
     {'1': 'min_threshold', '3': 8, '4': 1, '5': 5, '10': 'minThreshold'},
     {
       '1': 'last_updated',
@@ -169,12 +163,12 @@ const InventoryLevel$json = {
 final $typed_data.Uint8List inventoryLevelDescriptor = $convert.base64Decode(
     'Cg5JbnZlbnRvcnlMZXZlbBIoChBzdG9yZV9wcm9kdWN0X2lkGAEgASgJUg5zdG9yZVByb2R1Y3'
     'RJZBIZCghzdG9yZV9pZBgCIAEoCVIHc3RvcmVJZBItChJxdWFudGl0eV9hdmFpbGFibGUYAyAB'
-    'KAVSEXF1YW50aXR5QXZhaWxhYmxlEisKEXF1YW50aXR5X3Jlc2VydmVkGAQgASgFUhBxdWFudG'
-    'l0eVJlc2VydmVkEi4KE3F1YW50aXR5X2luX3RyYW5zaXQYBSABKAVSEXF1YW50aXR5SW5UcmFu'
-    'c2l0EiMKDW1pbl90aHJlc2hvbGQYCCABKAVSDG1pblRocmVzaG9sZBI9CgxsYXN0X3VwZGF0ZW'
-    'QYBiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUgtsYXN0VXBkYXRlZBI0ChdsYXN0'
-    'X3VwZGF0ZWRfYnlfdXNlcl9pZBgHIAEoCVITbGFzdFVwZGF0ZWRCeVVzZXJJZBItCgdiYXRjaG'
-    'VzGAkgAygLMhMuaW52ZW50b3J5LnYxLkJhdGNoUgdiYXRjaGVz');
+    'KAVSEXF1YW50aXR5QXZhaWxhYmxlEi0KEnF1YW50aXR5X2NvbW1pdHRlZBgEIAEoBVIRcXVhbn'
+    'RpdHlDb21taXR0ZWQSKAoQcXVhbnRpdHlfb25faGFuZBgFIAEoBVIOcXVhbnRpdHlPbkhhbmQS'
+    'IwoNbWluX3RocmVzaG9sZBgIIAEoBVIMbWluVGhyZXNob2xkEj0KDGxhc3RfdXBkYXRlZBgGIA'
+    'EoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSC2xhc3RVcGRhdGVkEjQKF2xhc3RfdXBk'
+    'YXRlZF9ieV91c2VyX2lkGAcgASgJUhNsYXN0VXBkYXRlZEJ5VXNlcklkEi0KB2JhdGNoZXMYCS'
+    'ADKAsyEy5pbnZlbnRvcnkudjEuQmF0Y2hSB2JhdGNoZXM=');
 
 @$core.Deprecated('Use inventoryLevelWithProductDescriptor instead')
 const InventoryLevelWithProduct$json = {
@@ -333,6 +327,7 @@ const GetProductInventoryLevelsRequest$json = {
   '1': 'GetProductInventoryLevelsRequest',
   '2': [
     {'1': 'product_id', '3': 1, '4': 1, '5': 9, '10': 'productId'},
+    {'1': 'store_id', '3': 2, '4': 1, '5': 9, '10': 'storeId'},
   ],
 };
 
@@ -340,33 +335,28 @@ const GetProductInventoryLevelsRequest$json = {
 final $typed_data.Uint8List getProductInventoryLevelsRequestDescriptor =
     $convert.base64Decode(
         'CiBHZXRQcm9kdWN0SW52ZW50b3J5TGV2ZWxzUmVxdWVzdBIdCgpwcm9kdWN0X2lkGAEgASgJUg'
-        'lwcm9kdWN0SWQ=');
+        'lwcm9kdWN0SWQSGQoIc3RvcmVfaWQYAiABKAlSB3N0b3JlSWQ=');
 
 @$core.Deprecated('Use getProductInventoryLevelsResponseDescriptor instead')
 const GetProductInventoryLevelsResponse$json = {
   '1': 'GetProductInventoryLevelsResponse',
   '2': [
     {
-      '1': 'levels',
+      '1': 'level',
       '3': 1,
-      '4': 3,
+      '4': 1,
       '5': 11,
       '6': '.inventory.v1.InventoryLevel',
-      '10': 'levels'
+      '10': 'level'
     },
-    {'1': 'total_available', '3': 2, '4': 1, '5': 5, '10': 'totalAvailable'},
-    {'1': 'total_reserved', '3': 3, '4': 1, '5': 5, '10': 'totalReserved'},
-    {'1': 'total_in_transit', '3': 4, '4': 1, '5': 5, '10': 'totalInTransit'},
   ],
 };
 
 /// Descriptor for `GetProductInventoryLevelsResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List getProductInventoryLevelsResponseDescriptor =
     $convert.base64Decode(
-        'CiFHZXRQcm9kdWN0SW52ZW50b3J5TGV2ZWxzUmVzcG9uc2USNAoGbGV2ZWxzGAEgAygLMhwuaW'
-        '52ZW50b3J5LnYxLkludmVudG9yeUxldmVsUgZsZXZlbHMSJwoPdG90YWxfYXZhaWxhYmxlGAIg'
-        'ASgFUg50b3RhbEF2YWlsYWJsZRIlCg50b3RhbF9yZXNlcnZlZBgDIAEoBVINdG90YWxSZXNlcn'
-        'ZlZBIoChB0b3RhbF9pbl90cmFuc2l0GAQgASgFUg50b3RhbEluVHJhbnNpdA==');
+        'CiFHZXRQcm9kdWN0SW52ZW50b3J5TGV2ZWxzUmVzcG9uc2USMgoFbGV2ZWwYASABKAsyHC5pbn'
+        'ZlbnRvcnkudjEuSW52ZW50b3J5TGV2ZWxSBWxldmVs');
 
 @$core.Deprecated('Use checkProductAvailabilityRequestDescriptor instead')
 const CheckProductAvailabilityRequest$json = {
@@ -711,7 +701,7 @@ const AdjustInventoryRequest$json = {
   '2': [
     {'1': 'store_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'storeId'},
     {'1': 'product_id', '3': 2, '4': 1, '5': 9, '8': {}, '10': 'productId'},
-    {'1': 'quantity_change', '3': 3, '4': 1, '5': 5, '10': 'quantityChange'},
+    {'1': 'new_quantity', '3': 3, '4': 1, '5': 5, '10': 'newQuantity'},
     {'1': 'reason', '3': 4, '4': 1, '5': 9, '10': 'reason'},
     {'1': 'notes', '3': 5, '4': 1, '5': 9, '10': 'notes'},
     {'1': 'batch_id', '3': 6, '4': 1, '5': 9, '10': 'batchId'},
@@ -721,9 +711,9 @@ const AdjustInventoryRequest$json = {
 /// Descriptor for `AdjustInventoryRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List adjustInventoryRequestDescriptor = $convert.base64Decode(
     'ChZBZGp1c3RJbnZlbnRvcnlSZXF1ZXN0EiEKCHN0b3JlX2lkGAEgASgJQga6SAPIAQFSB3N0b3'
-    'JlSWQSJQoKcHJvZHVjdF9pZBgCIAEoCUIGukgDyAEBUglwcm9kdWN0SWQSJwoPcXVhbnRpdHlf'
-    'Y2hhbmdlGAMgASgFUg5xdWFudGl0eUNoYW5nZRIWCgZyZWFzb24YBCABKAlSBnJlYXNvbhIUCg'
-    'Vub3RlcxgFIAEoCVIFbm90ZXMSGQoIYmF0Y2hfaWQYBiABKAlSB2JhdGNoSWQ=');
+    'JlSWQSJQoKcHJvZHVjdF9pZBgCIAEoCUIGukgDyAEBUglwcm9kdWN0SWQSIQoMbmV3X3F1YW50'
+    'aXR5GAMgASgFUgtuZXdRdWFudGl0eRIWCgZyZWFzb24YBCABKAlSBnJlYXNvbhIUCgVub3Rlcx'
+    'gFIAEoCVIFbm90ZXMSGQoIYmF0Y2hfaWQYBiABKAlSB2JhdGNoSWQ=');
 
 @$core.Deprecated('Use adjustInventoryResponseDescriptor instead')
 const AdjustInventoryResponse$json = {
