@@ -2147,7 +2147,19 @@ class AppInternationalizationService extends ChangeNotifier {
     'physicalStock': {'en': 'Physical Stock', 'fr': 'Stock physique'},
     'openingStock': {'en': 'Opening Stock', 'fr': 'Stock initial'},
     'inventoryDetails': {'en': 'Inventory Details', 'fr': 'Détails des stocks'},
+    'nonPerishable': {'en': 'No perishable', 'fr': 'Non perisable'},
+    'productLevel': {'en': 'Product level', 'fr': 'Niveau de produit'},
+    'lotLevel': {'en': 'Lot level', 'fr': 'Niveau de lot'},
   };
+
+  /// Returns the localized value of text 'nonPerishable'.
+  String get nonPerishable => _stringOfLocalizedValue('nonPerishable');
+
+  /// Returns the localized value of text 'productLevel'.
+  String get productLevel => _stringOfLocalizedValue('productLevel');
+
+  /// Returns the localized value of text 'lotLevel'.
+  String get lotLevel => _stringOfLocalizedValue('lotLevel');
 
   /// Returns the localized value of text 'availableForSale'.
   String get availableForSale => _stringOfLocalizedValue('availableForSale');

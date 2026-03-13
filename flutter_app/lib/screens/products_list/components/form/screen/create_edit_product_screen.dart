@@ -1,90 +1,190 @@
-import 'package:collection/collection.dart';
-import 'package:flutter/foundation.dart' hide Category;
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
-import 'package:sabitou_rpc/models.dart';
+import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-import '../../../../services/internationalization/internationalization.dart';
-import '../../../../utils/extensions/category_extension.dart';
-import '../../../../utils/extensions/global_product_extension.dart';
-import '../../../../utils/responsive_utils.dart';
-import '../../../../widgets/adjust_flex_display.dart';
-import '../../../../widgets/input/auto_complete.dart';
-import '../../../../widgets/loading.dart';
-import '../../../../widgets/mobile_scanner_view.dart';
-import 'create_edit_product_form_controller.dart';
+import '../../../../../../repositories/store_products_repository.dart';
+import '../../../../../../router/app_router.dart';
+import '../../../../../../services/internationalization/internationalization.dart';
+import '../../../../../../utils/extensions/category_extension.dart';
+import '../../../../../../utils/extensions/global_product_extension.dart';
+import '../../../../../../widgets/adjust_flex_display.dart';
+import '../../../../../../widgets/input/auto_complete.dart';
+import '../../../../../../widgets/loading.dart';
+import '../../../../../../widgets/mobile_scanner_view.dart';
+import '../../../../../../widgets/shad_scaffold.dart';
+import '../../../products_list_controller.dart';
+import '../../../products_list_view_model.dart';
+import '../create_edit_product_form_controller.dart';
 
-/// Product form dialog
-class CreateEditProductFormView extends StatelessWidget {
-  /// Constructs of new [CreateEditProductFormView].
-  CreateEditProductFormView({super.key, this.product, this.onProductSaved});
+/// Screen for creating or editing a product.
+class CreateEditProductScreen extends StatefulWidget {
+  /// The product ID.
+  final String? productId;
 
-  /// The product to edit.
-  final StoreProductWithGlobalProduct? product;
+  /// Constructs a new [CreateEditProductScreen].
+  const CreateEditProductScreen({this.productId, super.key});
 
-  /// Callback when a product is saved successfully.
-  final VoidCallback? onProductSaved;
+  @override
+  State<CreateEditProductScreen> createState() =>
+      _CreateEditProductScreenState();
+}
+
+class _CreateEditProductScreenState extends State<CreateEditProductScreen> {
+  late Future<GlobalProduct?> _productFuture;
+  late ProductsListViewModel _viewModel;
+
+  @override
+  void initState() {
+    super.initState();
+    _viewModel = GetIt.I.registerSingletonIfAbsent<ProductsListViewModel>(
+      ProductsListViewModel.new,
+    );
+    _productFuture = _loadProduct();
+  }
+
+  Future<GlobalProduct?> _loadProduct() async {
+    if (widget.productId == null) return null;
+
+    try {
+      final response = await StoreProductsRepository.instance.getStoreProduct(
+        GetStoreProductRequest(storeProductId: widget.productId),
+      );
+
+      return response?.globalProduct;
+    } on Exception {
+      return null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final isDesktop = ResponsiveUtils.isDesktop(context);
+    return FutureBuilder<GlobalProduct?>(
+      future: _productFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return ShadScaffold(
+            title: Text(
+              widget.productId == null
+                  ? Intls.to.addProduct
+                  : Intls.to.editProduct,
+            ),
+            body: const Center(child: Loading()),
+          );
+        }
 
-    return ShadDialog(
-      title: Text(product == null ? Intls.to.addProduct : Intls.to.editProduct),
-      child: Material(
-        color: ShadTheme.of(context).colorScheme.card,
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final dialogWidth = isDesktop ? 600.0 : constraints.maxWidth * 0.9;
-
-            return ChangeNotifierProvider(
-              create: (context) => CreateEditProductFormController(
-                product: product?.globalProduct,
-                storeProduct: product?.storeProduct,
-              ),
-              child: Consumer<CreateEditProductFormController>(
-                builder: (context, controller, child) {
-                  return ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxWidth: dialogWidth,
-                      maxHeight: MediaQuery.sizeOf(context).height * 0.8,
-                    ),
-                    child: Column(
-                      spacing: 16,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SingleChildScrollView(
-                          child: ShadForm(
-                            key: controller.formKey,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              spacing: 16,
-                              children: [
-                                _ProductNameField(),
-                                _ProductDescription(),
-                                AdjustFlexDisplay(
-                                  children: [
-                                    _BarcodeField(),
-                                    _CategoryDropdown(),
-                                  ],
-                                ),
-                                const _StoreProductFields(),
-                                const _StockFields(),
-                              ],
+        return ChangeNotifierProvider(
+          create: (_) => ProductsListController(_viewModel),
+          child: Consumer<ProductsListController>(
+            builder: (context, productsController, _) {
+              return ShadScaffold(
+                title: Text(
+                  widget.productId == null
+                      ? Intls.to.addProduct
+                      : Intls.to.editProduct,
+                ),
+                body: ChangeNotifierProvider(
+                  create: (_) =>
+                      CreateEditProductFormController(product: snapshot.data),
+                  child: Consumer<CreateEditProductFormController>(
+                    builder: (context, controller, child) {
+                      return Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          children: [
+                            Expanded(
+                              child: SingleChildScrollView(
+                                child: _CreateEditProductFormContent(),
+                              ),
                             ),
-                          ),
+                            Container(
+                              padding: const EdgeInsets.only(top: 16),
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  top: BorderSide(
+                                    color: ShadTheme.of(
+                                      context,
+                                    ).colorScheme.border,
+                                  ),
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Expanded(
+                                    child: ShadButton.outline(
+                                      enabled: !controller.onSaveProduct,
+                                      onPressed: () => AppRouter.onPop(context),
+                                      child: Text(Intls.to.cancel),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 16),
+                                  Expanded(
+                                    child: ShadButton(
+                                      enabled: !controller.onSaveProduct,
+                                      onPressed: controller.onSaveProduct
+                                          ? null
+                                          : () async {
+                                              final result = await controller
+                                                  .saveProduct(context);
+                                              if (result) {
+                                                if (context.mounted) {
+                                                  AppRouter.onPop(context);
+                                                  unawaited(
+                                                    context
+                                                        .read<
+                                                          ProductsListController
+                                                        >()
+                                                        .refreshProducts(),
+                                                  );
+                                                }
+                                              }
+                                            },
+                                      trailing: controller.onSaveProduct
+                                          ? const Loading.button()
+                                          : null,
+                                      child: Text(Intls.to.save),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                        _FormActions(onProductSaved: onProductSaved),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            );
-          },
-        ),
+                      );
+                    },
+                  ),
+                ),
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _CreateEditProductFormContent extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final controller = context.watch<CreateEditProductFormController>();
+
+    return ShadForm(
+      key: controller.formKey,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        spacing: 16,
+        children: [
+          _ProductNameField(),
+          _ProductDescriptionField(),
+          AdjustFlexDisplay(children: [_BarcodeField(), _CategoryDropdown()]),
+          const _StoreProductFields(),
+          const _StockFields(),
+        ],
       ),
     );
   }
@@ -149,7 +249,7 @@ class _ReorderPointField extends StatelessWidget {
   }
 }
 
-class _ProductDescription extends StatelessWidget {
+class _ProductDescriptionField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = context.read<CreateEditProductFormController>();
@@ -245,13 +345,11 @@ class _BarcodeField extends StatelessWidget {
       controller: controller.barcodeController,
       enabled: !controller.onSaveProduct,
       placeholder: Text(Intls.to.scanOrEnterBarcode),
-      trailing: kIsWeb
-          ? null
-          : MobileScannerView(
-              onResult: (result) {
-                controller.barcodeController.text = result;
-              },
-            ),
+      trailing: MobileScannerView(
+        onResult: (result) {
+          controller.barcodeController.text = result;
+        },
+      ),
       validator: (value) {
         if (value.isEmpty) {
           return Intls.to.isRequiredField.trParams({'field': Intls.to.barcode});
@@ -271,9 +369,10 @@ class _CategoryDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final categories = context
+        .read<ProductsListController>()
+        .businessCategories;
     final controller = context.watch<CreateEditProductFormController>();
-    final categories = controller.businessCategories;
-
     if (categories.isEmpty) {
       return const SizedBox.shrink();
     }
@@ -309,8 +408,8 @@ class _CategoryDropdown extends StatelessWidget {
                           values
                               .map(
                                 (v) => categories
-                                    .firstWhereOrNull((e) => e.refId == v)
-                                    ?.label,
+                                    .firstWhere((e) => e.refId == v)
+                                    .label,
                               )
                               .join(', '),
                         ),
@@ -343,9 +442,14 @@ class _CategoryDropdown extends StatelessWidget {
                               value.map(
                                 (e) => Category(
                                   refId: e,
-                                  name: categories
-                                      .firstWhereOrNull((c) => c.refId == e)
-                                      ?.name,
+                                  name: Internationalized(
+                                    en: categories
+                                        .firstWhere((c) => c.refId == e)
+                                        .label,
+                                    fr: categories
+                                        .firstWhere((c) => c.refId == e)
+                                        .label,
+                                  ),
                                 ),
                               ),
                             );
@@ -401,10 +505,9 @@ class _SkuField extends StatelessWidget {
 
     return ShadInputFormField(
       id: 'sku',
-      label: const Text('SKU (Optional)'),
+      label: Text('${Intls.to.sku} (${Intls.to.optional})'),
       controller: controller.skuController,
       enabled: !controller.onSaveProduct,
-      placeholder: const Text('Enter SKU'),
       onChanged: (value) => controller.storeProduct.sku = value,
     );
   }
@@ -431,48 +534,6 @@ class _SalePriceField extends StatelessWidget {
 
         return null;
       },
-    );
-  }
-}
-
-class _FormActions extends StatelessWidget {
-  const _FormActions({this.onProductSaved});
-
-  final VoidCallback? onProductSaved;
-
-  @override
-  Widget build(BuildContext context) {
-    final controller = context.watch<CreateEditProductFormController>();
-
-    void _saveProduct() async {
-      final result = await controller.saveProduct(context);
-      if (result) {
-        if (!context.mounted) return;
-        Navigator.of(context).pop();
-        onProductSaved?.call();
-      }
-    }
-
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        ShadButton.outline(
-          enabled: !controller.onSaveProduct,
-          onPressed: () => Navigator.of(context).pop(),
-          child: Text(Intls.to.cancel),
-        ),
-        const SizedBox(width: 12),
-        ShadButton(
-          enabled: !controller.onSaveProduct,
-          onPressed: controller.onSaveProduct ? null : _saveProduct,
-          trailing: controller.onSaveProduct ? const Loading.button() : null,
-          child: Text(
-            controller.isCreatingNewProduct
-                ? Intls.to.addProduct
-                : Intls.to.editProduct,
-          ),
-        ),
-      ],
     );
   }
 }

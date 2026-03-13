@@ -22,13 +22,13 @@ class ProductsListScreen extends StatelessWidget {
       ProductsListViewModel.new,
     );
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final isMobile = ResponsiveUtils.isMobile(context);
+    return ChangeNotifierProvider(
+      create: (context) => ProductsListController(viewModel),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final isMobile = ResponsiveUtils.isMobile(context);
 
-        return ChangeNotifierProvider(
-          create: (context) => ProductsListController(viewModel),
-          child: Consumer<ProductsListController>(
+          return Consumer<ProductsListController>(
             builder: (context, controller, child) {
               return FutureBuilder<bool>(
                 future: controller.completer.future,
@@ -53,9 +53,9 @@ class ProductsListScreen extends StatelessWidget {
                 },
               );
             },
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

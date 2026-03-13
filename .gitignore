@@ -14,7 +14,9 @@ migrate_working_dir/
 .history
 *.db
 .env**
-.agent
+.agent**
+AGENT**
+.cline**
 
 # IntelliJ related
 *.iml

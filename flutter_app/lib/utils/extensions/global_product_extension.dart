@@ -1,5 +1,6 @@
 import 'package:sabitou_rpc/models.dart';
 
+import '../../repositories/resource_link_repository.dart';
 import '../../services/internationalization/internationalization.dart';
 
 /// The extension for the [ProductCategory] enum.
@@ -41,6 +42,40 @@ extension GlobalProductExtension on GlobalProduct {
     }
 
     return description.en;
+  }
+
+  /// Get the primary image URL for the global product.
+  Future<String?> getPrimaryImageUrl() async {
+    if (imagesLinksIds.isEmpty) {
+      return null;
+    }
+
+    try {
+      final repository = ResourceLinkRepository.instance;
+      final imageUrl = await repository.getPrimaryImageUrl(
+        imagesLinksIds.first,
+      );
+
+      return imageUrl;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /// Get all image URLs for the global product.
+  Future<List<String>> getAllImageUrls() async {
+    if (imagesLinksIds.isEmpty) {
+      return [];
+    }
+
+    try {
+      final repository = ResourceLinkRepository.instance;
+      final imageUrls = await repository.getImageUrls(imagesLinksIds);
+
+      return imageUrls;
+    } catch (e) {
+      return [];
+    }
   }
 }
 

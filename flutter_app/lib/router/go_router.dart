@@ -1,3 +1,4 @@
+// ignore_for_file: long-method
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:go_router/go_router.dart';
@@ -16,6 +17,8 @@ import '../screens/inventory/ajustment/inventory_ajustement_screen.dart';
 import '../screens/inventory/detail/inventory_detail_screen.dart'; // Added import
 import '../screens/inventory/inventory_screen.dart';
 import '../screens/point_of_sale/point_of_sale_screen.dart';
+import '../screens/products_list/components/form/screen/create_edit_product_screen.dart';
+import '../screens/products_list/detail/product_detail_screen.dart';
 import '../screens/products_list/products_list_screen.dart';
 import '../screens/purchase_orders/purchase_orders_screen.dart';
 import '../screens/reports/reports_screen.dart';
@@ -270,6 +273,40 @@ class GoRouterRoutesProvider {
           );
         },
       ),
+      GoRoute(
+        name: PagesRoutes.productNew.name,
+        path: PagesRoutes.productNew.pattern,
+        parentNavigatorKey: rootNavigatorKey,
+        pageBuilder: (context, state) {
+          return const MaterialPage(child: CreateEditProductScreen());
+        },
+      ),
+      GoRoute(
+        name: PagesRoutes.productEdit.name,
+        path: PagesRoutes.productEdit.pattern,
+        parentNavigatorKey: rootNavigatorKey,
+        pageBuilder: (context, state) {
+          final productId =
+              state.pathParameters[ProductDetailParameters.keyProductId];
+
+          return MaterialPage(
+            child: CreateEditProductScreen(productId: productId),
+          );
+        },
+      ),
+      GoRoute(
+        name: PagesRoutes.productDetail.name,
+        path: PagesRoutes.productDetail.pattern,
+        parentNavigatorKey: rootNavigatorKey,
+        pageBuilder: (context, state) {
+          final productId =
+              state.pathParameters[ProductDetailParameters.keyProductId];
+
+          return MaterialPage(
+            child: ProductDetailScreen(productId: productId ?? ''),
+          );
+        },
+      ),
       // Auth routes (public)
       GoRoute(
         name: PagesRoutes.welcome.name,
@@ -330,8 +367,8 @@ class AppRouterGoRouter extends AppRouterSubsystem {
   }
 
   @override
-  void push(BuildContext context, String uri, {Object? extra}) {
-    context.push(uri, extra: extra);
+  Future<T?> push<T>(BuildContext context, String uri, {Object? extra}) async {
+    return await context.push<T>(uri, extra: extra);
   }
 
   @override
@@ -352,6 +389,11 @@ class AppRouterGoRouter extends AppRouterSubsystem {
   @override
   String getCurrentLocation(BuildContext context) {
     return GoRouterState.of(context).uri.path;
+  }
+
+  @override
+  void refresh(BuildContext context) {
+    return GoRouter.of(context).refresh();
   }
 
   @override

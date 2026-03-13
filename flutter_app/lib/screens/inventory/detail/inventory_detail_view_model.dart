@@ -143,7 +143,6 @@ class InventoryDetailViewModel {
               pageNumber: 1,
             ),
           );
-
       _transactionsSubject.add(response.transactions);
     } on Exception catch (e) {
       _logger.severe('Error fetching transactions: $e');

@@ -3,6 +3,7 @@ import 'package:sabitou_rpc/models.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+import '../../../../repositories/categories_repository.dart';
 import '../../../../repositories/store_products_repository.dart';
 import '../../../../services/internationalization/internationalization.dart';
 import '../../../../utils/common_functions.dart';
@@ -39,6 +40,9 @@ class CreateEditProductFormController extends ChangeNotifier {
 
   /// The form key.
   final formKey = GlobalKey<ShadFormState>();
+
+  /// Gets the business categories for the current store.
+  List<Category> businessCategories = [];
 
   /// The name controller.
   final TextEditingController nameController;
@@ -98,7 +102,17 @@ class CreateEditProductFormController extends ChangeNotifier {
        ),
        categoryController = ShadSelectController<String?>(
          initialValue: product?.categories.map((e) => e.refId).toSet(),
-       );
+       ) {
+    _loadCategories();
+  }
+
+  Future<void> _loadCategories() async {
+    final businessId = UserPreferences.instance.business?.refId;
+    if (businessId == null) return;
+    businessCategories = await CategoriesRepository.to
+        .getCategoriesByBusinessId(businessId);
+    notifyListeners();
+  }
 
   /// Validates the form.
   bool validateForm() {
@@ -189,10 +203,30 @@ class CreateEditProductFormController extends ChangeNotifier {
         } else {
           throw Exception(Intls.to.error);
         }
-      }
-      _onSaveProduct = false;
+      } else {
+        // Update product
+        final result = await StoreProductsRepository.instance.updateProduct(
+          UpdateStoreProductRequest(
+            globalProduct: _product,
+            storeProduct: _storeProduct,
+          ),
+        );
 
-      return true;
+        if (!context.mounted) {
+          return false;
+        }
+
+        if (result) {
+          showSuccessToast(
+            context: context,
+            message: Intls.to.productSavedSuccessfully,
+          );
+
+          return true;
+        } else {
+          throw Exception(Intls.to.error);
+        }
+      }
     } on Exception catch (e) {
       if (!context.mounted) {
         return false;

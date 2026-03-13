@@ -90,6 +90,15 @@ abstract class PagesRoutes {
   /// The sales orders route, for example, http:localhost:8080/products-list.
   static final productsList = _ProductsListRoute();
 
+  /// The product new route
+  static final productNew = _ProductNewRoute();
+
+  /// The product detail route
+  static final productDetail = _ProductDetailRoute();
+
+  /// The product edit route
+  static final productEdit = _ProductEditRoute();
+
   /// The sales orders route, for example, http:localhost:8080.
   static final welcome = _WelcomeRoute();
 }
@@ -108,6 +117,55 @@ class _ProductsListRoute extends PagesRoutesWithNoParams {
 
   @override
   String get name => 'products-list';
+}
+
+class _ProductNewRoute extends PagesRoutesWithNoParams {
+  @override
+  String get pattern => '/products-list/new';
+
+  @override
+  String get name => 'product-new';
+}
+
+/// The product detail parameters.
+class ProductDetailParameters {
+  /// The product ID parameter key.
+  static const String keyProductId = 'productId';
+
+  /// The product ID.
+  final String productId;
+
+  /// Constructs a new [ProductDetailParameters].
+  ProductDetailParameters({required this.productId});
+}
+
+class _ProductDetailRoute
+    extends PagesRoutesWithParams<ProductDetailParameters> {
+  @override
+  String get pattern =>
+      '/products-list/:${ProductDetailParameters.keyProductId}';
+
+  @override
+  String get name => 'product-detail';
+
+  @override
+  String create(ProductDetailParameters parameters) {
+    return '/products-list/${parameters.productId}';
+  }
+}
+
+class _ProductEditRoute extends PagesRoutesWithParams<ProductDetailParameters> {
+  @override
+  String get pattern =>
+      '/products-list/:${ProductDetailParameters.keyProductId}/edit';
+
+  @override
+  String get name => 'product-edit';
+
+  @override
+  String create(ProductDetailParameters parameters) {
+    return '/products-list/${parameters.productId}/edit';
+  }
 }
 
 class _PurchaseOrdersRoute extends PagesRoutesWithNoParams {
