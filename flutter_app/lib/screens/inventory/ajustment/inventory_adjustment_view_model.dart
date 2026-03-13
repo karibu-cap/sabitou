@@ -112,10 +112,10 @@ class InventoryAdjustmentViewModel {
       );
 
       // Refresh data after adjustment
-      await _initData();
+      unawaited(_initData());
 
       return true;
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.severe('Error adjusting inventory: $e');
       _errorSubject.add(e.toString());
 

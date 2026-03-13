@@ -4,16 +4,40 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:sabitou_rpc/models.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
+import '../../services/internationalization/internationalization.dart';
 import 'inventory_view_model.dart';
 
 /// Controller for inventory screen
 class InventoryController extends ChangeNotifier {
   final InventoryViewModel _viewModel;
 
-  /// Gets the filtered products stream.
-  Stream<List<InventoryLevelWithProduct>> get filteredProductsStream =>
-      _viewModel.filteredProductsStream;
+  /// Persists the selected tab in the detail panel across rebuilds.
+  final ShadTabsController<String> tabsController = ShadTabsController<String>(
+    value: Intls.to.overview,
+  );
+
+  /// The category select for filter.
+  final ShadSelectController<String> selectedCategory = ShadSelectController();
+
+  /// The status select for filter.
+  final ShadSelectController<StockStatus?> selectedStatus =
+      ShadSelectController();
+
+  /// Constructor of [InventoryController].
+  InventoryController(this._viewModel) {
+    _viewModel.initPartialData(onLoaded: notifyListeners);
+    _viewModel.invLevelSubject.listen((_) => notifyListeners());
+    searchQueryController.addListener(notifyListeners);
+    selectedCategory.addListener(notifyListeners);
+    selectedStatus.addListener(notifyListeners);
+  }
+
+  /// The search query controller.
+  final TextEditingController searchQueryController = TextEditingController(
+    text: '',
+  );
 
   /// Gets the products stream.
   BehaviorSubject<UnmodifiableListView<InventoryLevelWithProduct>>
@@ -22,18 +46,17 @@ class InventoryController extends ChangeNotifier {
   /// Gets the error stream.
   Stream<String> get errorStream => _viewModel.errorStream;
 
-  /// Gets the search query.
-  BehaviorSubject<String> get searchQuery => _viewModel.searchQuery;
-
-  /// Gets the selected category.
-  BehaviorSubject<String> get selectedCategory => _viewModel.selectedCategory;
+  /// Gets the filtered products synchronously.
+  List<InventoryLevelWithProduct> get filteredProducts =>
+      _viewModel.getFilteredProducts(
+        searchQuery: searchQueryController.value.text,
+        selectedCategory: selectedCategory.value.firstOrNull ?? '',
+        selectedStatus: selectedStatus.value.lastOrNull,
+      );
 
   /// Gets the business categories.
   UnmodifiableListView<Category> get businessCategories =>
       _viewModel.businessCategories;
-
-  /// Gets the selected status.
-  BehaviorSubject<StockStatus?> get selectedStatus => _viewModel.selectedStatus;
 
   /// Gets the completer.
   Completer<bool> get completer => _viewModel.completer;
@@ -50,20 +73,25 @@ class InventoryController extends ChangeNotifier {
   Stream<TransactionType?> get transactionFilterStream =>
       _viewModel.transactionFilterStream;
 
-  /// Constructor of [InventoryController].
-  InventoryController(this._viewModel);
+  /// Clears all filters.
+  void clearFilters() {
+    searchQueryController.clear();
+    selectedCategory.value.clear();
+    selectedStatus.value.clear();
+    notifyListeners();
+  }
 
   /// Refreshes products.
   Future<void> refreshProducts() async {
-    await _viewModel.refreshProducts();
-    notifyListeners();
+    await _viewModel.refreshProducts(onLoaded: notifyListeners);
   }
 
   /// Deletes product.
   Future<bool> deleteProduct(String storeProductId) async {
-    final result = await _viewModel.deleteProduct(storeProductId);
-
-    return result;
+    return await _viewModel.deleteProduct(
+      storeProductId,
+      onLoaded: notifyListeners,
+    );
   }
 
   /// Adjusts the inventory.
@@ -80,19 +108,28 @@ class InventoryController extends ChangeNotifier {
       quantityChange,
       reason,
       notes,
+      onLoaded: notifyListeners,
     );
+
+    // If we have a selected item, refresh its transaction history
+    final selectedItem = _viewModel.currentSelectedItem;
+    if (selectedItem != null && selectedItem.product.refId == productId) {
+      await _viewModel.selectItem(selectedItem);
+    }
 
     return result;
   }
 
   /// Selects an inventory item.
   Future<void> selectItem(InventoryLevelWithProduct item) async {
+    tabsController.select(Intls.to.overview);
     await _viewModel.selectItem(item);
     notifyListeners();
   }
 
   /// Selects an inventory item by product ID.
   Future<void> selectItemById(String productId) async {
+    tabsController.select(Intls.to.overview);
     await _viewModel.selectItemById(productId);
     notifyListeners();
   }
@@ -110,6 +147,7 @@ class InventoryController extends ChangeNotifier {
 
   @override
   void dispose() {
+    tabsController.dispose();
     _viewModel.dispose();
     super.dispose();
   }

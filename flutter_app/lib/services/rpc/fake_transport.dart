@@ -193,6 +193,12 @@ final _fakeTransport =
 
           return UpdateStoreResponse(store: store);
         })
+        .unary(StoreService.getStore, (req, _) async {
+          final store = (_fakeData[CollectionName.stores] as List<Store>?)
+              ?.firstWhereOrNull((e) => e.refId == req.storeId);
+
+          return GetStoreResponse(store: store);
+        })
         .unary(BusinessService.getMyBusinesses, (req, __) async {
           return GetMyBusinessesResponse(
             businesses: (_fakeData[CollectionName.businesses] as List<Business>)
@@ -501,43 +507,35 @@ final _fakeTransport =
             if (otherBusinessWithTheGlobalProduct != null) {
               globalProductId = 'global-product-${Random().nextInt(1000000)}';
               listOfGlobalProduct.add(
-                GlobalProduct(
-                  refId: globalProductId,
-                  name: newGlobalProduct.name,
-                  barCodeValue: newGlobalProduct.barCodeValue,
-                  categories: newGlobalProduct.categories,
-                ),
+                newGlobalProduct.deepCopy()..refId = globalProductId,
               );
             } else {
               listOfGlobalProduct
                 ..removeWhere((gp) => gp.refId == globalProductId)
                 ..add(
-                  GlobalProduct(
-                    refId: globalProductId,
-                    name: newGlobalProduct.name,
-                    barCodeValue: newGlobalProduct.barCodeValue,
-                    categories: newGlobalProduct.categories,
-                  ),
+                  newGlobalProduct.deepCopy()..refId = globalProductId ?? '',
                 );
             }
           }
 
           listOfStoreProduct
             ..removeWhere((gp) => gp.refId == businessProduct.refId)
-            ..add(
-              StoreProduct(
-                refId: businessProduct.refId,
-                storeId: businessProduct.storeId,
-                globalProductId: globalProductId,
-                salePrice: businessProduct.salePrice,
-              ),
-            );
+            ..add(businessProduct..globalProductId = globalProductId ?? '');
 
           return UpdateStoreProductResponse()..success = true;
         })
         .unary(StoreProductService.deleteStoreProduct, (req, _) async {
           (_fakeData[CollectionName.storeProducts] as List<StoreProduct>)
               .removeWhere((gp) => gp.refId == req.storeProductId);
+
+          /// Also delete all the transaction link to the product.
+          (_fakeData[CollectionName.inventoryTransactions]
+                  as List<InventoryTransaction>)
+              .removeWhere((it) => it.productId == req.storeProductId);
+
+          /// Also remove the inventory level.
+          (_fakeData[CollectionName.inventoryLevels] as List<InventoryLevel>)
+              .removeWhere((it) => it.storeProductId == req.storeProductId);
 
           return DeleteStoreProductResponse()..success = true;
         })
@@ -780,180 +778,34 @@ final _fakeTransport =
           slowMovingStockValue: 75000,
         );
       })
+      ..unary(ResourceLinkService.getResourceLinks, (req, _) async {
+        final requestedIds = req.ids;
+        final links = <String, ResourceLink>{};
+
+        for (final id in requestedIds) {
+          final link =
+              (_fakeData[CollectionName.resourceLinks] as List<ResourceLink>)
+                  .firstWhereOrNull((link) => link.refId == id);
+
+          if (link != null) {
+            links[id] = link;
+          }
+        }
+
+        return GetResourceLinksResponse()..link.addAll(links);
+      })
       ..unary(InventoryService.getRecentInventoryTransactions, (req, _) async {
         final request = req;
 
-        // Generate product-specific transactions
-        final transactions = <InventoryTransaction>[];
-
         // If product_id is specified, return transactions for that product
-        if (request.hasProductId() && request.productId.isNotEmpty) {
-          // Sales Order transactions
-          transactions.addAll([
-            InventoryTransaction()
-              ..documentId = 'SO-00'
-              ..storeId = request.storeId
-              ..productId = request.productId
-              ..transactionType = TransactionType.TXN_TYPE_SALE
-              ..quantityChange = 2
-              ..quantityBefore = 206
-              ..quantityAfter = 206
-              ..unitPrice = 15000
-              ..totalAmount = 0
-              ..currency = 'XAF'
-              ..relatedDocumentType = 'Sales Order'
-              ..relatedDocumentId = 'SO-00'
-              ..performedByUserId = 'user_1'
-              ..transactionTime = Timestamp.fromDateTime(DateTime(2025, 5, 21))
-              ..notes = 'Jane Ratke - Draft',
-            InventoryTransaction()
-              ..documentId = 'SO-01'
-              ..storeId = request.storeId
-              ..productId = request.productId
-              ..transactionType = TransactionType.TXN_TYPE_SALE
-              ..quantityChange = 1
-              ..quantityBefore = 206
-              ..quantityAfter = 206
-              ..unitPrice = 15000
-              ..totalAmount = 50000
-              ..currency = 'XAF'
-              ..relatedDocumentType = 'Sales Order'
-              ..relatedDocumentId = 'SO-01'
-              ..performedByUserId = 'user_2'
-              ..transactionTime = Timestamp.fromDateTime(DateTime(2025, 5, 21))
-              ..notes = 'Jorge Raynor - Closed',
-            InventoryTransaction()
-              ..documentId = 'SO-02'
-              ..storeId = request.storeId
-              ..productId = request.productId
-              ..transactionType = TransactionType.TXN_TYPE_SALE
-              ..quantityChange = 8
-              ..quantityBefore = 206
-              ..quantityAfter = 206
-              ..unitPrice = 15000
-              ..totalAmount = 50000
-              ..currency = 'XAF'
-              ..relatedDocumentType = 'Sales Order'
-              ..relatedDocumentId = 'SO-02'
-              ..performedByUserId = 'user_3'
-              ..transactionTime = Timestamp.fromDateTime(DateTime(2025, 5, 21))
-              ..notes = 'Tami Mosciski - Approval Overdue',
-          ]);
-
-          // Purchase Order transactions
-          transactions.addAll([
-            InventoryTransaction()
-              ..documentId = 'PO-001'
-              ..storeId = request.storeId
-              ..productId = request.productId
-              ..transactionType = TransactionType.TXN_TYPE_PURCHASE
-              ..quantityChange = 161
-              ..quantityBefore = 45
-              ..quantityAfter = 206
-              ..unitPrice = 8000
-              ..totalAmount = 1288000
-              ..currency = 'XAF'
-              ..relatedDocumentType = 'Purchase Order'
-              ..relatedDocumentId = 'PO-001'
-              ..performedByUserId = 'user_1'
-              ..transactionTime = Timestamp.fromDateTime(
-                clock.now().subtract(const Duration(days: 45)),
-              )
-              ..notes = 'Received from Supplier Alpha',
-            InventoryTransaction()
-              ..documentId = 'PO-002'
-              ..storeId = request.storeId
-              ..productId = request.productId
-              ..transactionType = TransactionType.TXN_TYPE_PURCHASE
-              ..quantityChange = 45
-              ..quantityBefore = 0
-              ..quantityAfter = 45
-              ..unitPrice = 8000
-              ..totalAmount = 360000
-              ..currency = 'XAF'
-              ..relatedDocumentType = 'Purchase Order'
-              ..relatedDocumentId = 'PO-002'
-              ..performedByUserId = 'user_2'
-              ..transactionTime = Timestamp.fromDateTime(
-                clock.now().subtract(const Duration(days: 60)),
-              )
-              ..notes = 'Initial stock from Supplier Beta',
-          ]);
-
-          // Adjustment transactions
-          transactions.addAll([
-            InventoryTransaction()
-              ..documentId = 'ADJ-001'
-              ..storeId = request.storeId
-              ..productId = request.productId
-              ..transactionType = TransactionType.TXN_TYPE_ADJUSTMENT
-              ..quantityChange = -5
-              ..quantityBefore = 211
-              ..quantityAfter = 206
-              ..relatedDocumentType = 'Adjustment'
-              ..relatedDocumentId = 'ADJ-001'
-              ..performedByUserId = 'user_1'
-              ..transactionTime = Timestamp.fromDateTime(
-                clock.now().subtract(const Duration(days: 10)),
-              )
-              ..notes = 'Damaged items removed',
-            InventoryTransaction()
-              ..documentId = 'ADJ-002'
-              ..storeId = request.storeId
-              ..productId = request.productId
-              ..transactionType = TransactionType.TXN_TYPE_ADJUSTMENT
-              ..quantityChange = 3
-              ..quantityBefore = 208
-              ..quantityAfter = 211
-              ..relatedDocumentType = 'Adjustment'
-              ..relatedDocumentId = 'ADJ-002'
-              ..performedByUserId = 'user_2'
-              ..transactionTime = Timestamp.fromDateTime(
-                clock.now().subtract(const Duration(days: 20)),
-              )
-              ..notes = 'Found additional stock during inventory count',
-          ]);
-        } else {
-          // Return general transactions for the store
-          transactions.addAll([
-            InventoryTransaction()
-              ..documentId = 'txn_1'
-              ..storeId = request.storeId
-              ..productId = 'sp_1'
-              ..transactionType = TransactionType.TXN_TYPE_PURCHASE
-              ..quantityChange = 10
-              ..quantityBefore = 0
-              ..quantityAfter = 10
-              ..unitPrice = 5000
-              ..totalAmount = 50000
-              ..currency = 'XAF'
-              ..relatedDocumentType = 'Purchase Order'
-              ..relatedDocumentId = 'po_1'
-              ..performedByUserId = 'user_1'
-              ..transactionTime = Timestamp.fromDateTime(
-                clock.now().subtract(const Duration(hours: 2)),
-              )
-              ..notes = 'Initial stock',
-            InventoryTransaction()
-              ..documentId = 'txn_2'
-              ..storeId = request.storeId
-              ..productId = 'sp_2'
-              ..transactionType = TransactionType.TXN_TYPE_SALE
-              ..quantityChange = -5
-              ..quantityBefore = 15
-              ..quantityAfter = 10
-              ..unitPrice = 10000
-              ..totalAmount = 50000
-              ..currency = 'XAF'
-              ..relatedDocumentType = 'Sales Order'
-              ..relatedDocumentId = 'so_1'
-              ..performedByUserId = 'user_2'
-              ..transactionTime = Timestamp.fromDateTime(
-                clock.now().subtract(const Duration(hours: 1)),
-              )
-              ..notes = 'Customer sale',
-          ]);
-        }
+        final transactions =
+            (_fakeData[CollectionName.inventoryTransactions]
+                    as List<InventoryTransaction>)
+                .where(
+                  (t) =>
+                      t.productId == request.productId &&
+                      t.storeId == request.storeId,
+                );
 
         return GetInventoryTransactionHistoryResponse(
           transactions: transactions,
@@ -976,27 +828,6 @@ final _fakeTransport =
                 );
 
         return GetProductInventoryLevelsResponse(level: level);
-      })
-      ..unary(CategoryService.findCategories, (req, _) async {
-        return FindCategoriesResponse(
-          categories: [
-            Category()
-              ..refId = 'cat_1'
-              ..name = (Internationalized()
-                ..en = 'Electronics'
-                ..fr = 'Électronique')
-              ..status = CategoryStatus.CATEGORY_STATUS_ACTIVE
-              ..businessId = 'business_1',
-            Category()
-              ..refId = 'cat_2'
-              ..name = (Internationalized()
-                ..en = 'Clothing'
-                ..fr = 'Vêtements')
-              ..status = CategoryStatus.CATEGORY_STATUS_ACTIVE
-              ..businessId = 'business_1',
-          ],
-          // totalCount: 2,
-        );
       })
       ..unary(ReportsService.getDashboardReport, (req, _) async {
         return GetDashboardReportResponse(

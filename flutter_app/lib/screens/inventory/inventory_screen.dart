@@ -5,10 +5,12 @@ import 'package:provider/provider.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+import '../../router/app_router.dart';
 import '../../router/page_routes.dart';
 import '../../utils/app_constants.dart';
 import '../../utils/responsive_utils.dart';
 import '../../widgets/loading.dart';
+import 'ajustment/inventory_adjustment_dialog.dart';
 import 'components/header.dart';
 import 'components/product_table.dart';
 import 'components/search_and_filter.dart';
@@ -109,33 +111,54 @@ class InventoryScreen extends StatelessWidget {
                                       padding: const EdgeInsets.symmetric(
                                         horizontal: AppConstants.spacingM,
                                       ),
-                                      child:
-                                          StreamBuilder<
-                                            List<InventoryTransaction>
-                                          >(
-                                            stream:
-                                                controller.transactionsStream,
-                                            builder: (context, transactionsSnapshot) {
-                                              final transactions =
-                                                  transactionsSnapshot.data ??
-                                                  [];
+                                      child: StreamBuilder<List<InventoryTransaction>>(
+                                        stream: controller.transactionsStream,
+                                        builder: (context, transactionsSnapshot) {
+                                          final transactions =
+                                              transactionsSnapshot.data ?? [];
 
-                                              return InventoryDetailView(
-                                                item: selectedItem,
-                                                transactions: transactions,
-                                                onAdjustStock: () {},
-                                                transactionFilterStream:
-                                                    controller
-                                                        .transactionFilterStream,
-                                                updateTransactionFilter:
-                                                    controller
-                                                        .updateTransactionFilter,
-                                                onClose: () {
-                                                  controller.clearSelection();
-                                                },
+                                          return InventoryDetailView(
+                                            item: selectedItem,
+                                            transactions: transactions,
+                                            tabsController:
+                                                controller.tabsController,
+                                            onAdjustStock: () {
+                                              if (isMobile) {
+                                                AppRouter.push(
+                                                  context,
+                                                  PagesRoutes.inventoryAjustment
+                                                      .create(
+                                                        InventoryDetailParameters(
+                                                          productId:
+                                                              selectedItem
+                                                                  .product
+                                                                  .refId,
+                                                        ),
+                                                      ),
+                                                );
+
+                                                return;
+                                              }
+                                              showShadDialog(
+                                                context: context,
+                                                builder: (context) =>
+                                                    InventoryAdjustmentDialog(
+                                                      productId: selectedItem
+                                                          .product
+                                                          .refId,
+                                                    ),
                                               );
                                             },
-                                          ),
+                                            transactionFilterStream: controller
+                                                .transactionFilterStream,
+                                            updateTransactionFilter: controller
+                                                .updateTransactionFilter,
+                                            onClose: () {
+                                              controller.clearSelection();
+                                            },
+                                          );
+                                        },
+                                      ),
                                     ),
                                   ),
                               ],

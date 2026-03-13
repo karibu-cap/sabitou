@@ -78,6 +78,7 @@ class InventoryDetailScreen extends StatelessWidget {
                         return InventoryDetailView(
                           item: item,
                           transactions: transactions,
+                          tabsController: controller.tabsController,
                           onAdjustStock: () {
                             if (ResponsiveUtils.isMobile(context)) {
                               AppRouter.push(

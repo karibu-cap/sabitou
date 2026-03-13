@@ -12,9 +12,7 @@ import '../../../utils/extensions/global_product_extension.dart';
 import '../../../utils/extensions/inventory_extenxions.dart';
 import '../../../utils/formatters.dart';
 import '../../../utils/responsive_utils.dart';
-import '../../../utils/utils.dart';
 import '../../../widgets/custom_grid.dart';
-import '../../../widgets/loading.dart';
 import '../ajustment/inventory_adjustment_dialog.dart';
 import '../inventory_controller.dart';
 
@@ -25,39 +23,31 @@ class ProductsTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = context.read<InventoryController>();
+    final controller = context.watch<InventoryController>();
+    final invLevels = controller.filteredProducts;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        StreamBuilder<List<InventoryLevelWithProduct>>(
-          stream: controller.filteredProductsStream,
-          builder: (context, snapshot) {
-            final invLevels = snapshot.data;
-            if (!snapshot.hasData || invLevels == null) {
-              return const Loading();
-            }
-
-            return invLevels.isEmpty
-                ? Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          children: [
-                            const Icon(LucideIcons.box),
-                            Text(
-                              Intls.to.noDataFound,
-                              style: ShadTheme.of(context).textTheme.muted,
-                            ),
-                            const SizedBox(height: 16),
-                          ],
-                        ),
-                      ),
-                    ],
-                  )
-                : _InventoryGridView(inv: invLevels);
-          },
-        ),
+        if (invLevels.isEmpty)
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  children: [
+                    const Icon(LucideIcons.box),
+                    Text(
+                      Intls.to.noDataFound,
+                      style: ShadTheme.of(context).textTheme.muted,
+                    ),
+                    const SizedBox(height: 16),
+                  ],
+                ),
+              ),
+            ],
+          )
+        else
+          _InventoryGridView(inv: invLevels),
       ],
     );
   }
@@ -284,37 +274,32 @@ class _ProductNameCell extends StatelessWidget {
             borderRadius: const BorderRadius.all(Radius.circular(8)),
             color: ShadTheme.of(context).colorScheme.accent,
           ),
-          child:
-              product.imagesLinksIds.isNotEmpty &&
-                  AppUtils.isURL(product.imagesLinksIds.first)
-              ? FutureBuilder(
-                  future: precacheImage(
-                    NetworkImage(product.imagesLinksIds.first),
-                    context,
-                    onError: (error, stackTrace) {
-                      return null;
+          child: FutureBuilder<String?>(
+            future: product.getPrimaryImageUrl(),
+            builder: (context, snapshot) {
+              final data = snapshot.data;
+              if (snapshot.connectionState == ConnectionState.done &&
+                  snapshot.hasData &&
+                  data != null) {
+                return ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(8)),
+                  child: FadeInImage.assetNetwork(
+                    placeholder: StaticImages.placeholder,
+                    image: data,
+                    fit: BoxFit.cover,
+                    imageErrorBuilder: (context, error, stackTrace) {
+                      return const Icon(LucideIcons.package, size: 20);
+                    },
+                    placeholderErrorBuilder: (context, error, stackTrace) {
+                      return const Icon(LucideIcons.package, size: 20);
                     },
                   ),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done &&
-                        snapshot.error == null) {
-                      return FadeInImage.assetNetwork(
-                        placeholder: StaticImages.placeholder,
-                        image: product.imagesLinksIds.first,
-                        fit: BoxFit.contain,
-                        imageErrorBuilder: (context, error, stackTrace) {
-                          return const Icon(LucideIcons.package, size: 20);
-                        },
-                        placeholderErrorBuilder: (context, error, stackTrace) {
-                          return const Icon(LucideIcons.package, size: 20);
-                        },
-                      );
-                    }
+                );
+              }
 
-                    return const Icon(LucideIcons.package, size: 20);
-                  },
-                )
-              : const Icon(LucideIcons.package, size: 20),
+              return const Icon(LucideIcons.package, size: 20);
+            },
+          ),
         ),
         const SizedBox(width: 8),
         Flexible(
@@ -358,7 +343,7 @@ class _StockCell extends StatelessWidget {
     final theme = ShadTheme.of(context);
 
     return Text(
-      '${inventoryLevel.quantityAvailable} ${Intls.to.units}',
+      '${inventoryLevel.quantityOnHand} ${Intls.to.units}',
       style: theme.textTheme.list,
     );
   }

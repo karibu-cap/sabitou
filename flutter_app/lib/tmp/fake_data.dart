@@ -3,6 +3,29 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../utils/app_constants.dart';
 
+const unsplashImages = [
+  'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&h=300&fit=crop',
+  'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop',
+  'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400&h=300&fit=crop',
+  'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=300&fit=crop',
+  'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop',
+  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop',
+  'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=300&fit=crop',
+  'https://images.unsplash.com/photo-1583394838336-acd977736f90?w=400&h=300&fit=crop',
+  'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop',
+  'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop',
+  'https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=400&h=300&fit=crop',
+  'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=400&h=300&fit=crop',
+  'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop',
+  'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=300&fit=crop',
+  'https://images.unsplash.com/photo-1583394838336-acd977736f90?w=400&h=300&fit=crop',
+  'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400&h=300&fit=crop',
+  'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=300&fit=crop',
+  'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop',
+  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop',
+  'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop',
+];
+
 final fakeUsers = <User>[
   User()
     ..refId = 'user-001'
@@ -27,10 +50,73 @@ final fakeUsers = <User>[
     ..requiredActions.addAll([AuthActionType.AUTH_ACTION_TYPE_VERIFY_EMAIL]),
 ];
 
+/// Fake ResourceLink data for images and other resources
+final fakeResourceLinks = <ResourceLink>[
+  ResourceLink()
+    ..refId = 'media-image-001'
+    ..targetUri = unsplashImages.first
+    ..iconUri = unsplashImages.first
+    ..info = 'Smartphone product image'
+    ..label = 'Product Image',
+  ResourceLink()
+    ..refId = 'media-image-002'
+    ..targetUri = unsplashImages[1]
+    ..iconUri = unsplashImages[1]
+    ..info = 'Laptop product image'
+    ..label = 'Product Image',
+  ResourceLink()
+    ..refId = 'media-image-003'
+    ..targetUri = unsplashImages[2]
+    ..iconUri = unsplashImages[2]
+    ..info = 'Tablet product image'
+    ..label = 'Product Image',
+  ResourceLink()
+    ..refId = 'media-image-004'
+    ..targetUri = unsplashImages[3]
+    ..iconUri = unsplashImages[3]
+    ..info = 'TV product image'
+    ..label = 'Product Image',
+  ResourceLink()
+    ..refId = 'media-logo-001'
+    ..targetUri = unsplashImages[4]
+    ..iconUri = unsplashImages[4]
+    ..info = 'Store logo'
+    ..label = 'Store Logo',
+  ResourceLink()
+    ..refId = 'media-logo-006'
+    ..targetUri = unsplashImages[5]
+    ..iconUri = unsplashImages[5]
+    ..info = 'Business logo'
+    ..label = 'Business Logo',
+  ResourceLink()
+    ..refId = 'media-logo-013'
+    ..targetUri = unsplashImages[7]
+    ..iconUri = unsplashImages[7]
+    ..info = 'Supplier logo'
+    ..label = 'Supplier Logo',
+];
+
 final fakeCategories = <Category>[
   Category()
     ..refId = 'category-001'
     ..name = Internationalized(fr: 'Electronics', en: 'Electronics')
+    ..businessId = 'business-001'
+    ..createdAt = Timestamp.fromDateTime(DateTime.parse('2025-09-01T10:00:00Z'))
+    ..updatedAt = Timestamp.fromDateTime(
+      DateTime.parse('2025-09-01T10:00:00Z'),
+    ),
+
+  Category()
+    ..refId = 'category-002'
+    ..name = Internationalized(fr: 'Habit', en: 'Clothes')
+    ..businessId = 'business-001'
+    ..createdAt = Timestamp.fromDateTime(DateTime.parse('2025-09-01T10:00:00Z'))
+    ..updatedAt = Timestamp.fromDateTime(
+      DateTime.parse('2025-09-01T10:00:00Z'),
+    ),
+  Category()
+    ..refId = 'category-003'
+    ..name = Internationalized(fr: 'Voiture', en: 'Car')
     ..businessId = 'business-001'
     ..createdAt = Timestamp.fromDateTime(DateTime.parse('2025-09-01T10:00:00Z'))
     ..updatedAt = Timestamp.fromDateTime(
@@ -286,7 +372,7 @@ final fakeData = <String, List<dynamic>>{
       )
       ..barCodeValue = '1234567890123'
       ..categories.addAll(<Category>[fakeCategories.first])
-      ..imagesLinksIds.addAll(['media-image-001']),
+      ..imagesLinksIds.addAll(['media-image-002']),
     GlobalProduct()
       ..refId = 'global-product-003'
       ..name = Internationalized(fr: 'Tablette', en: 'Tablet')
@@ -296,7 +382,7 @@ final fakeData = <String, List<dynamic>>{
       )
       ..barCodeValue = '1234567890123'
       ..categories.addAll(<Category>[fakeCategories.first])
-      ..imagesLinksIds.addAll(['media-image-001']),
+      ..imagesLinksIds.addAll(['media-image-003']),
     GlobalProduct()
       ..refId = 'global-product-004'
       ..name = Internationalized(fr: 'TV', en: 'TV')
@@ -306,7 +392,7 @@ final fakeData = <String, List<dynamic>>{
       )
       ..barCodeValue = '1234567890123'
       ..categories.addAll(<Category>[fakeCategories.first])
-      ..imagesLinksIds.addAll(['media-image-001']),
+      ..imagesLinksIds.addAll(['media-image-004']),
   ],
   CollectionName.storeProducts: <StoreProduct>[
     StoreProduct()
@@ -314,7 +400,6 @@ final fakeData = <String, List<dynamic>>{
       ..storeId = 'store-001'
       ..globalProductId = 'global-product-001'
       ..status = ProductStatus.PRODUCT_STATUS_ACTIVE
-      ..refId
       ..salePrice = 10000
       ..createdAt = Timestamp.fromDateTime(
         DateTime.parse('2024-09-01T08:00:00Z'),
@@ -329,7 +414,7 @@ final fakeData = <String, List<dynamic>>{
         DateTime.parse('2024-09-01T08:00:00Z'),
       ),
     StoreProduct()
-      ..refId = 'product-002'
+      ..refId = 'product-004'
       ..storeId = 'store-001'
       ..globalProductId = 'global-product-003'
       ..status = ProductStatus.PRODUCT_STATUS_ACTIVE
@@ -453,4 +538,5 @@ final fakeData = <String, List<dynamic>>{
       ..createdByUserId = 'user-001'
       ..notes = 'Received order',
   ],
+  CollectionName.resourceLinks: fakeResourceLinks,
 };
