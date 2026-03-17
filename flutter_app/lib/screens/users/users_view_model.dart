@@ -15,9 +15,7 @@ class UsersViewModel {
   final String storeId;
 
   /// The users repository instance.
-  final UserRepository _usersRepository = UserRepository(
-    transport: userFakeTransport,
-  );
+  final UserRepository _usersRepository = UserRepository.instance;
 
   /// The store repository instance.
   final StoresRepository _storeRepository = StoresRepository(

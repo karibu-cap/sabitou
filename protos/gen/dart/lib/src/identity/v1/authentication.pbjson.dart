@@ -187,6 +187,33 @@ final $typed_data.Uint8List resetPasswordResponseDescriptor =
     $convert.base64Decode(
         'ChVSZXNldFBhc3N3b3JkUmVzcG9uc2USGAoHc3VjY2VzcxgBIAEoCVIHc3VjY2Vzcw==');
 
+@$core.Deprecated('Use refreshTokenRequestDescriptor instead')
+const RefreshTokenRequest$json = {
+  '1': 'RefreshTokenRequest',
+  '2': [
+    {'1': 'refresh_token', '3': 1, '4': 1, '5': 9, '10': 'refreshToken'},
+  ],
+};
+
+/// Descriptor for `RefreshTokenRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List refreshTokenRequestDescriptor = $convert.base64Decode(
+    'ChNSZWZyZXNoVG9rZW5SZXF1ZXN0EiMKDXJlZnJlc2hfdG9rZW4YASABKAlSDHJlZnJlc2hUb2'
+    'tlbg==');
+
+@$core.Deprecated('Use refreshTokenResponseDescriptor instead')
+const RefreshTokenResponse$json = {
+  '1': 'RefreshTokenResponse',
+  '2': [
+    {'1': 'token', '3': 1, '4': 1, '5': 9, '10': 'token'},
+    {'1': 'refresh_token', '3': 2, '4': 1, '5': 9, '10': 'refreshToken'},
+  ],
+};
+
+/// Descriptor for `RefreshTokenResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List refreshTokenResponseDescriptor = $convert.base64Decode(
+    'ChRSZWZyZXNoVG9rZW5SZXNwb25zZRIUCgV0b2tlbhgBIAEoCVIFdG9rZW4SIwoNcmVmcmVzaF'
+    '90b2tlbhgCIAEoCVIMcmVmcmVzaFRva2Vu');
+
 const $core.Map<$core.String, $core.dynamic> AuthServiceBase$json = {
   '1': 'AuthService',
   '2': [
@@ -214,6 +241,12 @@ const $core.Map<$core.String, $core.dynamic> AuthServiceBase$json = {
       '3': '.identity.v1.ResetPasswordResponse',
       '4': {}
     },
+    {
+      '1': 'RefreshToken',
+      '2': '.identity.v1.RefreshTokenRequest',
+      '3': '.identity.v1.RefreshTokenResponse',
+      '4': {}
+    },
   ],
 };
 
@@ -229,6 +262,8 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
       RequestPasswordResetResponse$json,
   '.identity.v1.ResetPasswordRequest': ResetPasswordRequest$json,
   '.identity.v1.ResetPasswordResponse': ResetPasswordResponse$json,
+  '.identity.v1.RefreshTokenRequest': RefreshTokenRequest$json,
+  '.identity.v1.RefreshTokenResponse': RefreshTokenResponse$json,
 };
 
 /// Descriptor for `AuthService`. Decode as a `google.protobuf.ServiceDescriptorProto`.
@@ -239,4 +274,5 @@ final $typed_data.Uint8List authServiceDescriptor = $convert.base64Decode(
     'Fzc3dvcmRSZXNldBIoLmlkZW50aXR5LnYxLlJlcXVlc3RQYXNzd29yZFJlc2V0UmVxdWVzdBop'
     'LmlkZW50aXR5LnYxLlJlcXVlc3RQYXNzd29yZFJlc2V0UmVzcG9uc2UiABJYCg1SZXNldFBhc3'
     'N3b3JkEiEuaWRlbnRpdHkudjEuUmVzZXRQYXNzd29yZFJlcXVlc3QaIi5pZGVudGl0eS52MS5S'
-    'ZXNldFBhc3N3b3JkUmVzcG9uc2UiAA==');
+    'ZXNldFBhc3N3b3JkUmVzcG9uc2UiABJVCgxSZWZyZXNoVG9rZW4SIC5pZGVudGl0eS52MS5SZW'
+    'ZyZXNoVG9rZW5SZXF1ZXN0GiEuaWRlbnRpdHkudjEuUmVmcmVzaFRva2VuUmVzcG9uc2UiAA==');

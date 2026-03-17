@@ -150,9 +150,9 @@ func (PaymentMethod) EnumDescriptor() ([]byte, []int) {
 //	payment_method: PAYMENT_METHOD_BANK_TRANSFER
 //	status: PAYMENT_STATUS_COMPLETED
 type Payment struct {
-	state      protoimpl.MessageState `protogen:"open.v1"`
-	DocumentId string                 `protobuf:"bytes,1,opt,name=document_id,json=documentId,proto3" json:"document_id,omitempty"` // "PAY-2025-001"
-	PayerId    string                 `protobuf:"bytes,2,opt,name=payer_id,json=payerId,proto3" json:"payer_id,omitempty"`
+	state   protoimpl.MessageState `protogen:"open.v1"`
+	RefId   string                 `protobuf:"bytes,1,opt,name=ref_id,json=refId,proto3" json:"ref_id,omitempty"` // "PAY-2025-001"
+	PayerId string                 `protobuf:"bytes,2,opt,name=payer_id,json=payerId,proto3" json:"payer_id,omitempty"`
 	// Can be a customer phone number or account number.
 	Receiver string  `protobuf:"bytes,3,opt,name=receiver,proto3" json:"receiver,omitempty"`
 	Amount   float64 `protobuf:"fixed64,4,opt,name=amount,proto3" json:"amount,omitempty"`
@@ -199,9 +199,9 @@ func (*Payment) Descriptor() ([]byte, []int) {
 	return file_payments_v1_payments_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *Payment) GetDocumentId() string {
+func (x *Payment) GetRefId() string {
 	if x != nil {
-		return x.DocumentId
+		return x.RefId
 	}
 	return ""
 }
@@ -655,10 +655,9 @@ var File_payments_v1_payments_proto protoreflect.FileDescriptor
 
 const file_payments_v1_payments_proto_rawDesc = "" +
 	"\n" +
-	"\x1apayments/v1/payments.proto\x12\vpayments.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1afinancial/v1/invoice.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x8d\x04\n" +
-	"\aPayment\x12'\n" +
-	"\vdocument_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\n" +
-	"documentId\x12\x19\n" +
+	"\x1apayments/v1/payments.proto\x12\vpayments.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1afinancial/v1/invoice.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x83\x04\n" +
+	"\aPayment\x12\x1d\n" +
+	"\x06ref_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x05refId\x12\x19\n" +
 	"\bpayer_id\x18\x02 \x01(\tR\apayerId\x12\x1a\n" +
 	"\breceiver\x18\x03 \x01(\tR\breceiver\x12\x16\n" +
 	"\x06amount\x18\x04 \x01(\x01R\x06amount\x12\x1a\n" +

@@ -144,7 +144,7 @@ func (StockStatus) EnumDescriptor() ([]byte, []int) {
 //	received_at: 2025-09-29T10:30:00Z
 type Batch struct {
 	state               protoimpl.MessageState `protogen:"open.v1"`
-	DocumentId          string                 `protobuf:"bytes,1,opt,name=document_id,json=documentId,proto3" json:"document_id,omitempty"`                              // Unique batch/lot ID: "BATCH-2025-001"
+	RefId               string                 `protobuf:"bytes,1,opt,name=ref_id,json=refId,proto3" json:"ref_id,omitempty"`                                             // Unique batch/lot ID: "BATCH-2025-001"
 	ProductId           string                 `protobuf:"bytes,2,opt,name=product_id,json=productId,proto3" json:"product_id,omitempty"`                                 // Which product this batch is for
 	WarehouseId         string                 `protobuf:"bytes,3,opt,name=warehouse_id,json=warehouseId,proto3" json:"warehouse_id,omitempty"`                           // Which warehouse stores this batch
 	Quantity            int32                  `protobuf:"varint,4,opt,name=quantity,proto3" json:"quantity,omitempty"`                                                   // Quantity in this specific batch
@@ -189,9 +189,9 @@ func (*Batch) Descriptor() ([]byte, []int) {
 	return file_inventory_v1_inventory_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *Batch) GetDocumentId() string {
+func (x *Batch) GetRefId() string {
 	if x != nil {
-		return x.DocumentId
+		return x.RefId
 	}
 	return ""
 }
@@ -1531,10 +1531,9 @@ var File_inventory_v1_inventory_proto protoreflect.FileDescriptor
 
 const file_inventory_v1_inventory_proto_rawDesc = "" +
 	"\n" +
-	"\x1cinventory/v1/inventory.proto\x12\finventory.v1\x1a%audits/v1/inventory_transaction.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a inventory/v1/store_product.proto\"\xd5\x03\n" +
-	"\x05Batch\x12'\n" +
-	"\vdocument_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\n" +
-	"documentId\x12\x1d\n" +
+	"\x1cinventory/v1/inventory.proto\x12\finventory.v1\x1a%audits/v1/inventory_transaction.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a inventory/v1/store_product.proto\"\xcb\x03\n" +
+	"\x05Batch\x12\x1d\n" +
+	"\x06ref_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x05refId\x12\x1d\n" +
 	"\n" +
 	"product_id\x18\x02 \x01(\tR\tproductId\x12!\n" +
 	"\fwarehouse_id\x18\x03 \x01(\tR\vwarehouseId\x12\x1a\n" +

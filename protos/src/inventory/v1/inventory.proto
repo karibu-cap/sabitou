@@ -19,7 +19,7 @@ import "inventory/v1/store_product.proto";
  *   received_at: 2025-09-29T10:30:00Z
  */
 message Batch {
-  string document_id = 1 [(buf.validate.field).required = true]; // Unique batch/lot ID: "BATCH-2025-001"
+  string ref_id = 1 [(buf.validate.field).required = true]; // Unique batch/lot ID: "BATCH-2025-001"
   string product_id = 2; // Which product this batch is for
   string warehouse_id = 3; // Which warehouse stores this batch
   int32 quantity = 4; // Quantity in this specific batch

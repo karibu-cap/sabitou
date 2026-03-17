@@ -2028,7 +2028,7 @@ class AppInternationalizationService extends ChangeNotifier {
       'fr': 'Aucune transaction ne correspond à vos filtres actuels.',
     },
     'transactionId': {'en': 'Transaction ID', 'fr': 'ID de transaction'},
-    'documentId': {'en': 'Document ID', 'fr': 'ID du document'},
+    'refId': {'en': 'Document ID', 'fr': 'ID du document'},
     'productId': {'en': 'Product ID', 'fr': 'ID du produit'},
     'batchId': {'en': 'Batch ID', 'fr': 'ID du lot'},
     'usedBy': {'en': 'Used By', 'fr': 'Utilisé par'},
@@ -2437,7 +2437,7 @@ class AppInternationalizationService extends ChangeNotifier {
   String get quantity => _stringOfLocalizedValue('quantity');
 
   /// The document id.
-  String get documentId => _stringOfLocalizedValue('documentId');
+  String get refId => _stringOfLocalizedValue('refId');
 
   /// The product id.
   String get productId => _stringOfLocalizedValue('productId');

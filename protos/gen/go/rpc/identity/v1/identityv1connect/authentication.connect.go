@@ -43,6 +43,9 @@ const (
 	// AuthServiceResetPasswordProcedure is the fully-qualified name of the AuthService's ResetPassword
 	// RPC.
 	AuthServiceResetPasswordProcedure = "/identity.v1.AuthService/ResetPassword"
+	// AuthServiceRefreshTokenProcedure is the fully-qualified name of the AuthService's RefreshToken
+	// RPC.
+	AuthServiceRefreshTokenProcedure = "/identity.v1.AuthService/RefreshToken"
 )
 
 // AuthServiceClient is a client for the identity.v1.AuthService service.
@@ -55,6 +58,8 @@ type AuthServiceClient interface {
 	RequestPasswordReset(context.Context, *connect.Request[v1.RequestPasswordResetRequest]) (*connect.Response[v1.RequestPasswordResetResponse], error)
 	// Process the password reset request.
 	ResetPassword(context.Context, *connect.Request[v1.ResetPasswordRequest]) (*connect.Response[v1.ResetPasswordResponse], error)
+	// Refresh the authentication token.
+	RefreshToken(context.Context, *connect.Request[v1.RefreshTokenRequest]) (*connect.Response[v1.RefreshTokenResponse], error)
 }
 
 // NewAuthServiceClient constructs a client for the identity.v1.AuthService service. By default, it
@@ -92,6 +97,12 @@ func NewAuthServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(authServiceMethods.ByName("ResetPassword")),
 			connect.WithClientOptions(opts...),
 		),
+		refreshToken: connect.NewClient[v1.RefreshTokenRequest, v1.RefreshTokenResponse](
+			httpClient,
+			baseURL+AuthServiceRefreshTokenProcedure,
+			connect.WithSchema(authServiceMethods.ByName("RefreshToken")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -101,6 +112,7 @@ type authServiceClient struct {
 	register             *connect.Client[v1.RegisterRequest, v1.RegisterResponse]
 	requestPasswordReset *connect.Client[v1.RequestPasswordResetRequest, v1.RequestPasswordResetResponse]
 	resetPassword        *connect.Client[v1.ResetPasswordRequest, v1.ResetPasswordResponse]
+	refreshToken         *connect.Client[v1.RefreshTokenRequest, v1.RefreshTokenResponse]
 }
 
 // Login calls identity.v1.AuthService.Login.
@@ -123,6 +135,11 @@ func (c *authServiceClient) ResetPassword(ctx context.Context, req *connect.Requ
 	return c.resetPassword.CallUnary(ctx, req)
 }
 
+// RefreshToken calls identity.v1.AuthService.RefreshToken.
+func (c *authServiceClient) RefreshToken(ctx context.Context, req *connect.Request[v1.RefreshTokenRequest]) (*connect.Response[v1.RefreshTokenResponse], error) {
+	return c.refreshToken.CallUnary(ctx, req)
+}
+
 // AuthServiceHandler is an implementation of the identity.v1.AuthService service.
 type AuthServiceHandler interface {
 	// Authenticate the user with the given credentials.
@@ -133,6 +150,8 @@ type AuthServiceHandler interface {
 	RequestPasswordReset(context.Context, *connect.Request[v1.RequestPasswordResetRequest]) (*connect.Response[v1.RequestPasswordResetResponse], error)
 	// Process the password reset request.
 	ResetPassword(context.Context, *connect.Request[v1.ResetPasswordRequest]) (*connect.Response[v1.ResetPasswordResponse], error)
+	// Refresh the authentication token.
+	RefreshToken(context.Context, *connect.Request[v1.RefreshTokenRequest]) (*connect.Response[v1.RefreshTokenResponse], error)
 }
 
 // NewAuthServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -166,6 +185,12 @@ func NewAuthServiceHandler(svc AuthServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(authServiceMethods.ByName("ResetPassword")),
 		connect.WithHandlerOptions(opts...),
 	)
+	authServiceRefreshTokenHandler := connect.NewUnaryHandler(
+		AuthServiceRefreshTokenProcedure,
+		svc.RefreshToken,
+		connect.WithSchema(authServiceMethods.ByName("RefreshToken")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/identity.v1.AuthService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case AuthServiceLoginProcedure:
@@ -176,6 +201,8 @@ func NewAuthServiceHandler(svc AuthServiceHandler, opts ...connect.HandlerOption
 			authServiceRequestPasswordResetHandler.ServeHTTP(w, r)
 		case AuthServiceResetPasswordProcedure:
 			authServiceResetPasswordHandler.ServeHTTP(w, r)
+		case AuthServiceRefreshTokenProcedure:
+			authServiceRefreshTokenHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -199,4 +226,8 @@ func (UnimplementedAuthServiceHandler) RequestPasswordReset(context.Context, *co
 
 func (UnimplementedAuthServiceHandler) ResetPassword(context.Context, *connect.Request[v1.ResetPasswordRequest]) (*connect.Response[v1.ResetPasswordResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("identity.v1.AuthService.ResetPassword is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) RefreshToken(context.Context, *connect.Request[v1.RefreshTokenRequest]) (*connect.Response[v1.RefreshTokenResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("identity.v1.AuthService.RefreshToken is not implemented"))
 }

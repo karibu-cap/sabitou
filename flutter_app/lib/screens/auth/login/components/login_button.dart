@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+import '../../../../providers/auth/auth_provider.dart';
 import '../../../../router/app_router.dart';
 import '../../../../router/page_routes.dart';
 import '../../../../services/internationalization/internationalization.dart';
@@ -30,14 +31,10 @@ class LoginButton extends StatelessWidget {
       }
 
       final loginResult = await controller.loginUser();
-      if (!loginResult) {
-        controller.buttonState.value = ButtonState.initial;
-
-        return;
-      }
       if (!context.mounted) {
         return;
       }
+
       if (loginResult) {
         showNeutralToast(
           context: context,
@@ -47,10 +44,11 @@ class LoginButton extends StatelessWidget {
         controller.buttonState.value = ButtonState.initial;
         AppRouter.go(context, PagesRoutes.home.pattern);
       } else {
+        final auth = context.read<AuthProvider>();
         showErrorToast(
           context: context,
           title: appIntl.failed,
-          message: appIntl.loginFailed,
+          message: auth.errorMessage ?? appIntl.loginFailed,
         );
       }
       controller.buttonState.value = ButtonState.initial;

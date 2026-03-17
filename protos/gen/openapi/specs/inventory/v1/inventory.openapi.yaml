@@ -259,9 +259,9 @@ components:
     audits.v1.InventoryTransaction:
       type: object
       properties:
-        documentId:
+        refId:
           type: string
-          title: document_id
+          title: ref_id
           description: '"TXN-2025-00123"'
           nullable: true
         storeId:
@@ -311,7 +311,7 @@ components:
           description: Specific batch affected
       title: InventoryTransaction
       required:
-        - documentId
+        - refId
       additionalProperties: false
       description: |-
         *
@@ -517,9 +517,9 @@ components:
     inventory.v1.Batch:
       type: object
       properties:
-        documentId:
+        refId:
           type: string
-          title: document_id
+          title: ref_id
           description: 'Unique batch/lot ID: "BATCH-2025-001"'
         productId:
           type: string
@@ -565,7 +565,7 @@ components:
           description: Additional details
       title: Batch
       required:
-        - documentId
+        - refId
       additionalProperties: false
       description: |-
         *

@@ -76,7 +76,7 @@ final $typed_data.Uint8List returnConditionDescriptor = $convert.base64Decode(
 const ReturnNote$json = {
   '1': 'ReturnNote',
   '2': [
-    {'1': 'document_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'documentId'},
+    {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'refId'},
     {
       '1': 'return_type',
       '3': 2,
@@ -139,16 +139,16 @@ const ReturnNote$json = {
 
 /// Descriptor for `ReturnNote`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List returnNoteDescriptor = $convert.base64Decode(
-    'CgpSZXR1cm5Ob3RlEicKC2RvY3VtZW50X2lkGAEgASgJQga6SAPIAQFSCmRvY3VtZW50SWQSOA'
-    'oLcmV0dXJuX3R5cGUYAiABKA4yFy5sb2dpc3RpYy52MS5SZXR1cm5UeXBlUgpyZXR1cm5UeXBl'
-    'EhcKB2Zyb21faWQYAyABKAlSBmZyb21JZBITCgV0b19pZBgEIAEoCVIEdG9JZBI3ChhyZWxhdG'
-    'VkX2RlbGl2ZXJ5X25vdGVfaWQYBSABKAlSFXJlbGF0ZWREZWxpdmVyeU5vdGVJZBIsChJyZWxh'
-    'dGVkX2ludm9pY2VfaWQYBiABKAlSEHJlbGF0ZWRJbnZvaWNlSWQSNQoGc3RhdHVzGAcgASgOMh'
-    '0ubG9naXN0aWMudjEuUmV0dXJuTm90ZVN0YXR1c1IGc3RhdHVzEjEKBWl0ZW1zGAggAygLMhsu'
-    'bG9naXN0aWMudjEuUmV0dXJuTGluZUl0ZW1SBWl0ZW1zEhYKBnJlYXNvbhgJIAEoCVIGcmVhc2'
-    '9uEjsKC3JlY2VpdmVkX2F0GAogASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIKcmVj'
-    'ZWl2ZWRBdBItChNyZWNlaXZlZF9ieV91c2VyX2lkGAsgASgJUhByZWNlaXZlZEJ5VXNlcklkEh'
-    'QKBW5vdGVzGAwgASgJUgVub3Rlcw==');
+    'CgpSZXR1cm5Ob3RlEh0KBnJlZl9pZBgBIAEoCUIGukgDyAEBUgVyZWZJZBI4CgtyZXR1cm5fdH'
+    'lwZRgCIAEoDjIXLmxvZ2lzdGljLnYxLlJldHVyblR5cGVSCnJldHVyblR5cGUSFwoHZnJvbV9p'
+    'ZBgDIAEoCVIGZnJvbUlkEhMKBXRvX2lkGAQgASgJUgR0b0lkEjcKGHJlbGF0ZWRfZGVsaXZlcn'
+    'lfbm90ZV9pZBgFIAEoCVIVcmVsYXRlZERlbGl2ZXJ5Tm90ZUlkEiwKEnJlbGF0ZWRfaW52b2lj'
+    'ZV9pZBgGIAEoCVIQcmVsYXRlZEludm9pY2VJZBI1CgZzdGF0dXMYByABKA4yHS5sb2dpc3RpYy'
+    '52MS5SZXR1cm5Ob3RlU3RhdHVzUgZzdGF0dXMSMQoFaXRlbXMYCCADKAsyGy5sb2dpc3RpYy52'
+    'MS5SZXR1cm5MaW5lSXRlbVIFaXRlbXMSFgoGcmVhc29uGAkgASgJUgZyZWFzb24SOwoLcmVjZW'
+    'l2ZWRfYXQYCiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUgpyZWNlaXZlZEF0Ei0K'
+    'E3JlY2VpdmVkX2J5X3VzZXJfaWQYCyABKAlSEHJlY2VpdmVkQnlVc2VySWQSFAoFbm90ZXMYDC'
+    'ABKAlSBW5vdGVz');
 
 @$core.Deprecated('Use returnLineItemDescriptor instead')
 const ReturnLineItem$json = {

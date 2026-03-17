@@ -62,7 +62,7 @@ final $typed_data.Uint8List paymentMethodDescriptor = $convert.base64Decode(
 const Payment$json = {
   '1': 'Payment',
   '2': [
-    {'1': 'document_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'documentId'},
+    {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'refId'},
     {'1': 'payer_id', '3': 2, '4': 1, '5': 9, '10': 'payerId'},
     {'1': 'receiver', '3': 3, '4': 1, '5': 9, '10': 'receiver'},
     {'1': 'amount', '3': 4, '4': 1, '5': 1, '10': 'amount'},
@@ -118,16 +118,16 @@ const Payment$json = {
 
 /// Descriptor for `Payment`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List paymentDescriptor = $convert.base64Decode(
-    'CgdQYXltZW50EicKC2RvY3VtZW50X2lkGAEgASgJQga6SAPIAQFSCmRvY3VtZW50SWQSGQoIcG'
-    'F5ZXJfaWQYAiABKAlSB3BheWVySWQSGgoIcmVjZWl2ZXIYAyABKAlSCHJlY2VpdmVyEhYKBmFt'
-    'b3VudBgEIAEoAVIGYW1vdW50EhoKCGN1cnJlbmN5GAUgASgJUghjdXJyZW5jeRIhCgx3YXJlaG'
-    '91c2VfaWQYBiABKAlSC3dhcmVob3VzZUlkEkEKDnBheW1lbnRfbWV0aG9kGAcgASgOMhoucGF5'
-    'bWVudHMudjEuUGF5bWVudE1ldGhvZFINcGF5bWVudE1ldGhvZBIyCgZzdGF0dXMYCCABKA4yGi'
-    '5wYXltZW50cy52MS5QYXltZW50U3RhdHVzUgZzdGF0dXMSPQoMcGF5bWVudF9kYXRlGAkgASgL'
-    'MhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFILcGF5bWVudERhdGUSLgoQcmVmZXJlbmNlX2'
-    '51bWJlchgKIAEoCUgAUg9yZWZlcmVuY2VOdW1iZXKIAQESKwoSY3JlYXRlZF9ieV91c2VyX2lk'
-    'GAsgASgJUg9jcmVhdGVkQnlVc2VySWQSGQoFbm90ZXMYDCABKAlIAVIFbm90ZXOIAQFCEwoRX3'
-    'JlZmVyZW5jZV9udW1iZXJCCAoGX25vdGVz');
+    'CgdQYXltZW50Eh0KBnJlZl9pZBgBIAEoCUIGukgDyAEBUgVyZWZJZBIZCghwYXllcl9pZBgCIA'
+    'EoCVIHcGF5ZXJJZBIaCghyZWNlaXZlchgDIAEoCVIIcmVjZWl2ZXISFgoGYW1vdW50GAQgASgB'
+    'UgZhbW91bnQSGgoIY3VycmVuY3kYBSABKAlSCGN1cnJlbmN5EiEKDHdhcmVob3VzZV9pZBgGIA'
+    'EoCVILd2FyZWhvdXNlSWQSQQoOcGF5bWVudF9tZXRob2QYByABKA4yGi5wYXltZW50cy52MS5Q'
+    'YXltZW50TWV0aG9kUg1wYXltZW50TWV0aG9kEjIKBnN0YXR1cxgIIAEoDjIaLnBheW1lbnRzLn'
+    'YxLlBheW1lbnRTdGF0dXNSBnN0YXR1cxI9CgxwYXltZW50X2RhdGUYCSABKAsyGi5nb29nbGUu'
+    'cHJvdG9idWYuVGltZXN0YW1wUgtwYXltZW50RGF0ZRIuChByZWZlcmVuY2VfbnVtYmVyGAogAS'
+    'gJSABSD3JlZmVyZW5jZU51bWJlcogBARIrChJjcmVhdGVkX2J5X3VzZXJfaWQYCyABKAlSD2Ny'
+    'ZWF0ZWRCeVVzZXJJZBIZCgVub3RlcxgMIAEoCUgBUgVub3Rlc4gBAUITChFfcmVmZXJlbmNlX2'
+    '51bWJlckIICgZfbm90ZXM=');
 
 @$core.Deprecated('Use createPaymentRequestDescriptor instead')
 const CreatePaymentRequest$json = {

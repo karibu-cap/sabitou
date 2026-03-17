@@ -100,7 +100,7 @@ class PurchaseOrdersViewModel {
 
           if (searchQuery.isNotEmpty) {
             filtered = filtered.where((order) {
-              return order.documentId.toLowerCase().contains(
+              return order.refId.toLowerCase().contains(
                 searchQuery.toLowerCase(),
               );
             }).toList();

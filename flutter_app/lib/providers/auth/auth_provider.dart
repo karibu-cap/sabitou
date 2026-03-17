@@ -1,191 +1,271 @@
+// flutter_app/lib/providers/auth/auth_provider.dart
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:sabitou_rpc/models.dart';
+import 'package:sabitou_rpc/models.dart' show User;
 
 import '../../repositories/auth_repository.dart';
-import '../../repositories/business_repository.dart';
-import '../../repositories/stores_repository.dart';
-import '../../services/data_sync/data_sync_service.dart';
-import '../../services/storage/app_storage.dart';
-import '../../utils/app_constants.dart';
-import '../../utils/user_preference.dart';
+import '../../services/auth/auth_api_client.dart';
+import '../../services/auth/token_service.dart';
+import '../../services/powersync/powersync_service.dart';
+import '../../utils/logger.dart';
 
-/// Auth status.
+// ---------------------------------------------------------------------------
+// Auth state
+// ---------------------------------------------------------------------------
+
+/// The possible authentication states of the application.
 enum AuthStatus {
-  /// Unauthenticated status.
+  /// Initial state — not yet determined (checking stored session).
+  initializing,
+
+  /// No authenticated session.
   unauthenticated,
 
-  /// Authenticating status.
+  /// A login (or restore) is in progress.
   authenticating,
 
-  /// Authenticated status.
+  /// The user is authenticated.
   authenticated,
 
-  /// Authentication failed status.
+  /// The last authentication attempt failed.
   authenticationFailed,
 }
 
-/// Auth provider.
-class AuthProvider extends ChangeNotifier {
-  User? _currentUser;
-  AuthStatus _status = AuthStatus.unauthenticated;
-  String? _errorMessage;
-  final Completer<bool> _authInitComplete = Completer<bool>();
-  final AuthRepository _authRepository = AuthRepository();
-  final _dataSyncService = DataSyncService();
-  final _businessRepository = BusinessRepository();
-  final _storesRepository = StoresRepository();
+// ---------------------------------------------------------------------------
+// Provider
+// ---------------------------------------------------------------------------
 
-  /// Singleton access.
+/// Central authentication state manager.
+///
+/// Lifecycle:
+///   1. On construction, [_restoreSession] checks for a stored user ID in
+///      flutter_secure_storage and, if found, opens the PowerSync database
+///      and sets status to [AuthStatus.authenticated] — skipping the login
+///      screen on warm restarts.
+///   2. [login] delegates to [AuthRepository], then opens the PowerSync DB.
+///   3. [logout] closes the PowerSync DB, clears tokens, resets state.
+///
+/// The [currentUser] is a proto [User] message populated from:
+///   - The local PowerSync `users` table (session restore and offline login)
+///   - [AuthRepository._buildUserFromLocalCache] (online login, after sync)
+class AuthProvider extends ChangeNotifier {
+  final _logger = LoggerApp('AuthProvider');
+
+  // Dependencies.
+  final AuthRepository _authRepository;
+  final TokenService _tokenService;
+  final PowerSyncService _powerSync;
+  final AuthApiClient _authApiClient;
+
+  // State.
+  User? _currentUser;
+  AuthStatus _status = AuthStatus.initializing;
+  String? _errorMessage;
+
+  /// Completes when session-restore finishes. Await in the router to avoid
+  /// flashing the login screen before we know if the user is already logged in.
+  final Completer<void> _initCompleter = Completer<void>();
+
+  // ---------------------------------------------------------------------------
+  // Construction
+  // ---------------------------------------------------------------------------
+
+  AuthProvider({
+    AuthRepository? authRepository,
+    TokenService? tokenService,
+    PowerSyncService? powerSync,
+    AuthApiClient? authApiClient,
+  }) : _authRepository = authRepository ?? AuthRepository.instance,
+       _tokenService = tokenService ?? TokenService.instance,
+       _powerSync = powerSync ?? PowerSyncService.instance,
+       _authApiClient = authApiClient ?? GetIt.I.get<AuthApiClient>() {
+    // When the Connect RPC interceptor cannot refresh a token, it calls this
+    // to force the user back to the login screen.
+    _authApiClient.onUnauthorized = () {
+      _logger.log('Token refresh failed — forcing logout');
+      logout();
+    };
+    _restoreSession();
+  }
+
+  /// Singleton accessor.
   static AuthProvider get instance => GetIt.I.get<AuthProvider>();
 
-  /// Current user.
+  // ---------------------------------------------------------------------------
+  // Getters
+  // ---------------------------------------------------------------------------
+
+  /// The currently authenticated user (proto User), or null when not logged in.
   User? get currentUser => _currentUser;
-
-  /// The status.
   AuthStatus get status => _status;
-
-  /// The error message (for direct value access).
   String? get errorMessage => _errorMessage;
-
-  /// The error message as an observable (for Obx).
-  String? get errorMessageRx => _errorMessage;
-
-  /// Whether user is authenticated.
   bool get isAuthenticated => _status == AuthStatus.authenticated;
 
-  /// Returns true when auth initialization completes.
-  Future<bool> get authComplete => _authInitComplete.future;
+  Future<void> get initializationComplete => _initCompleter.future;
 
-  /// Connstructor of new [AuthProvider].
-  AuthProvider() {
-    _initializeFromStorage();
-  }
+  // ---------------------------------------------------------------------------
+  // Session restore (called once on construction)
+  // ---------------------------------------------------------------------------
 
-  Future<void> _initializeFromStorage() async {
+  Future<void> _restoreSession() async {
     try {
-      // Load saved user from storage
-      final savedUser = await AppStorage.of<User?>().read(CollectionName.users);
-      if (savedUser != null) {
-        await UserPreferences.instance.loadUserPreferences(null);
-        _currentUser = savedUser;
-        _status = AuthStatus.authenticated;
+      final userId = await _tokenService.getUserId();
+      if (userId == null || userId.isEmpty) {
+        _setStatus(AuthStatus.unauthenticated);
+
+        return;
+      }
+
+      // Open the per-user PowerSync database.
+      // connectSync = true: PowerSyncConnector handles token refresh internally.
+      await _powerSync.open(userId: userId, authApiClient: _authApiClient);
+
+      // Read the user profile from the local SQLite `users` table.
+      final rows = await _powerSync.db.getAll(
+        '''
+        SELECT ref_id, user_name, email, first_name, last_name,
+               phone_number, account_status
+        FROM users WHERE ref_id = ? LIMIT 1
+        ''',
+        [userId],
+      );
+
+      if (rows.isNotEmpty) {
+        _currentUser = _userFromRow(rows.first);
+        _setStatus(AuthStatus.authenticated);
+        _logger.log('Session restored for user $userId');
+      } else {
+        // User ID in storage but no local record yet (first boot / fresh DB).
+        // If a token exists, stay authenticated and wait for the sync to
+        // deliver the user record.
+        final hasToken = await _tokenService.hasStoredSession;
+        _setStatus(
+          hasToken ? AuthStatus.authenticated : AuthStatus.unauthenticated,
+        );
+        if (hasToken) {
+          _logger.log('Token present but user not yet synced for $userId');
+        }
       }
     } catch (e) {
-      debugPrint('Error loading user from storage: $e');
+      _logger.severe('Session restore error: $e');
+      _setStatus(AuthStatus.unauthenticated);
     } finally {
-      _authInitComplete.complete(true);
-      notifyListeners();
+      if (!_initCompleter.isCompleted) _initCompleter.complete();
     }
   }
 
-  /// Login logic.
+  // ---------------------------------------------------------------------------
+  // Login
+  // ---------------------------------------------------------------------------
+
   Future<bool> login(String email, String password) async {
-    _setStatus(AuthStatus.authenticating);
     _errorMessage = null;
-
     _setStatus(AuthStatus.authenticating);
-    final loginRequest = LoginRequest()
-      ..email = email
-      ..password = password;
-    final response = await _authRepository.login(request: loginRequest);
-    _currentUser = response;
-    if (response != null) {
-      await UserPreferences.instance.loadUserPreferences(response.refId);
-      _setStatus(AuthStatus.authenticated);
 
-      // Save business and store after successful login
-      await saveBusinessAndStore(response);
+    final result = await _authRepository.login(
+      email: email,
+      password: password,
+    );
 
-      /// Initialize data sync after successful login.
-      await initializeDataSync();
-
-      return true;
-    }
-    _setStatus(AuthStatus.authenticationFailed);
-
-    return false;
+    return switch (result) {
+      AuthSuccess(:final user) => await _onAuthSuccess(user),
+      AuthFailure(:final reason, :final message) => _onAuthFailure(
+        reason,
+        message,
+      ),
+    };
   }
 
-  /// Logout logic.
-  Future<void> logout() async {
-    // Stop and dispose data sync on logout.
-    _dataSyncService
-      ..stopSync()
-      ..dispose();
+  // ---------------------------------------------------------------------------
+  // Register
+  // ---------------------------------------------------------------------------
 
-    _currentUser = null;
-    _errorMessage = null;
-
-    await UserPreferences.instance.clearUserPreferences();
-
-    _setStatus(AuthStatus.unauthenticated);
-  }
-
-  /// Register logic.
   Future<bool> register({
     required String userName,
     required String email,
     required String password,
-    required String phoneNumber,
-    required String firstName,
-    required String lastName,
   }) async {
+    _errorMessage = null;
     _setStatus(AuthStatus.authenticating);
-    final registerRequest = RegisterRequest()
-      ..userName = userName
-      ..password = password
-      ..email = email;
-    final response = await _authRepository.register(request: registerRequest);
 
-    _currentUser = response;
-    if (response != null) {
-      await UserPreferences.instance.saveUserPreferences(user: response);
+    final result = await _authRepository.register(
+      userName: userName,
+      email: email,
+      password: password,
+    );
+
+    return switch (result) {
+      AuthSuccess(:final user) => await _onAuthSuccess(user),
+      AuthFailure(:final reason, :final message) => _onAuthFailure(
+        reason,
+        message,
+      ),
+    };
+  }
+
+  // ---------------------------------------------------------------------------
+  // Logout
+  // ---------------------------------------------------------------------------
+
+  Future<void> logout() async {
+    await _authRepository.logout();
+    await _powerSync.close();
+
+    _currentUser = null;
+    _errorMessage = null;
+    _setStatus(AuthStatus.unauthenticated);
+  }
+
+  // ---------------------------------------------------------------------------
+  // Internal helpers
+  // ---------------------------------------------------------------------------
+
+  Future<bool> _onAuthSuccess(User user) async {
+    try {
+      // Open (or reuse) the per-user PowerSync database and connect sync.
+      // AuthRepository._loginOnline already calls open() before returning,
+      // so this is a no-op for online login — it only acts when called from
+      // session restore (where the repository was not involved).
+      if (!_powerSync.isOpenFor(user.refId)) {
+        await _powerSync.open(
+          userId: user.refId,
+          authApiClient: _authApiClient,
+        );
+      }
+
+      _currentUser = user;
       _setStatus(AuthStatus.authenticated);
 
-      // Save business and store after successful register
-      await saveBusinessAndStore(response);
-
-      /// Initialize data sync after successful register.
-      await initializeDataSync();
-
       return true;
+    } catch (e) {
+      _logger.severe('Post-auth PowerSync setup error: $e');
+      _setError('Failed to initialise local database.');
+
+      return false;
     }
-    _setStatus(AuthStatus.authenticationFailed);
+  }
+
+  bool _onAuthFailure(AuthFailureReason reason, String? message) {
+    _setError(message ?? _defaultMessage(reason));
 
     return false;
   }
 
-  /// Forgot password logic.
-  Future<bool> forgetPassword(String email) async {
-    try {
-      await Future.delayed(const Duration(seconds: 1));
-      // Simulate always success; replace with real API call.
-
-      return true;
-    } catch (e) {
-      _setError('Forgot password failed: $e');
-
-      return false;
-    }
+  /// Builds a proto [User] from a PowerSync SQLite row.
+  User _userFromRow(Map<String, dynamic> row) {
+    return User(
+      refId: row['ref_id'] as String?,
+      userName: row['user_name'] as String? ?? '',
+      email: row['email'] as String?,
+      firstName: row['first_name'] as String?,
+      lastName: row['last_name'] as String?,
+      phoneNumber: row['phone_number'] as String?,
+    );
   }
 
-  /// Change password.
-  Future<bool> changePassword(String oldPassword, String newPassword) async {
-    try {
-      await Future.delayed(const Duration(seconds: 1));
-
-      return true;
-    } catch (e) {
-      _setError('Password change failed: $e');
-
-      return false;
-    }
-  }
-
-  /// Internal helpers.
   void _setStatus(AuthStatus status) {
     _status = status;
     notifyListeners();
@@ -197,63 +277,14 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Saves business and store in user preference.
-  Future<void> saveBusinessAndStore(User currentUser) async {
-    // Fetch user's businesses
-    final businesses = await _businessRepository.getMyBusinesses(
-      currentUser.refId,
-    );
-
-    if (businesses.isEmpty) {
-      return;
-    }
-
-    // Take first business
-    final firstBusiness = businesses.first;
-    await UserPreferences.instance.saveBusinessPreferences(
-      newBusiness: firstBusiness,
-    );
-
-    final businessMember = await _businessRepository.getBusinessMember(
-      firstBusiness.refId,
-      currentUser.refId,
-    );
-
-    if (businessMember != null) {
-      await UserPreferences.instance.saveBusinessMemberPreferences(
-        newBusinessMember: businessMember,
-      );
-    }
-
-    // Fetch stores for the first business
-    final stores = await _storesRepository.getStoresByBusinessId(
-      firstBusiness.refId,
-    );
-    if (stores.isEmpty) {
-      // No stores, skip sync init
-      return;
-    }
-
-    await UserPreferences.instance.saveStorePreferences(newStore: stores.first);
-
-    final storeMember = await _storesRepository.getStoreMember(
-      GetStoreMemberRequest(
-        storeId: stores.first.refId,
-        userId: currentUser.refId,
-      ),
-    );
-    if (storeMember != null) {
-      await UserPreferences.instance.saveStoreMemberPreferences(
-        newStoreMember: storeMember,
-      );
-    }
-  }
-
-  /// Initializes data sync by fetching businesses and stores
-  Future<void> initializeDataSync() async {
-    final currentStore = UserPreferences.instance.store;
-
-    // Start sync with initial store
-    _dataSyncService.startSync(initialStoreId: currentStore?.refId);
-  }
+  String _defaultMessage(AuthFailureReason reason) => switch (reason) {
+    AuthFailureReason.invalidCredentials => 'Invalid email or password.',
+    AuthFailureReason.networkUnavailable =>
+      'No connection. Please connect to the network.',
+    AuthFailureReason.accountDisabled => 'This account has been disabled.',
+    AuthFailureReason.serverError =>
+      'A server error occurred. Please try again.',
+    AuthFailureReason.offlineUserNotFound =>
+      'Offline login unavailable. Please connect to the network for your first login on this device.',
+  };
 }

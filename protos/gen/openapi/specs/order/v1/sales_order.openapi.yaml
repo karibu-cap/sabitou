@@ -328,9 +328,9 @@ components:
     financial.v1.Invoice:
       type: object
       properties:
-        documentId:
+        refId:
           type: string
-          title: document_id
+          title: ref_id
           description: '"INV-2025-001"'
         invoiceType:
           title: invoice_type
@@ -412,7 +412,7 @@ components:
           description: '"Net 30", "Cash on delivery", etc.'
       title: Invoice
       required:
-        - documentId
+        - refId
       additionalProperties: false
       description: |-
         *
@@ -640,9 +640,9 @@ components:
     logistic.v1.DeliveryNote:
       type: object
       properties:
-        documentId:
+        refId:
           type: string
-          title: document_id
+          title: ref_id
           description: '"DN-2025-001"'
         relatedSalesOrderId:
           type: string
@@ -692,7 +692,7 @@ components:
           title: notes
       title: DeliveryNote
       required:
-        - documentId
+        - refId
       additionalProperties: false
       description: |-
         *
@@ -1008,9 +1008,9 @@ components:
     order.v1.SalesOrder:
       type: object
       properties:
-        documentId:
+        refId:
           type: string
-          title: document_id
+          title: ref_id
           description: '"SO-2025-001"'
         customerId:
           type: string
@@ -1056,7 +1056,7 @@ components:
           nullable: true
       title: SalesOrder
       required:
-        - documentId
+        - refId
       additionalProperties: false
       description: |-
         *
@@ -1114,9 +1114,9 @@ components:
     payments.v1.Payment:
       type: object
       properties:
-        documentId:
+        refId:
           type: string
-          title: document_id
+          title: ref_id
           description: '"PAY-2025-001"'
         payerId:
           type: string
@@ -1158,7 +1158,7 @@ components:
           nullable: true
       title: Payment
       required:
-        - documentId
+        - refId
       additionalProperties: false
       description: |-
         *

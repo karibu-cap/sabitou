@@ -7,9 +7,9 @@ components:
     audits.v1.VoucherTransaction:
       type: object
       properties:
-        documentId:
+        refId:
           type: string
-          title: document_id
+          title: ref_id
         voucherId:
           type: string
           title: voucher_id
@@ -38,7 +38,7 @@ components:
           title: used_by_user_id
       title: VoucherTransaction
       required:
-        - documentId
+        - refId
       additionalProperties: false
       description: |-
         *

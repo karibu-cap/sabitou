@@ -292,9 +292,9 @@ components:
     financial.v1.Invoice:
       type: object
       properties:
-        documentId:
+        refId:
           type: string
-          title: document_id
+          title: ref_id
           description: '"INV-2025-001"'
         invoiceType:
           title: invoice_type
@@ -376,7 +376,7 @@ components:
           description: '"Net 30", "Cash on delivery", etc.'
       title: Invoice
       required:
-        - documentId
+        - refId
       additionalProperties: false
       description: |-
         *
@@ -630,9 +630,9 @@ components:
     logistic.v1.ReceivingNote:
       type: object
       properties:
-        documentId:
+        refId:
           type: string
-          title: document_id
+          title: ref_id
           description: '"RN-2025-001"'
         relatedPurchaseOrderId:
           type: string
@@ -664,7 +664,7 @@ components:
           description: Condition notes, damages, etc.
       title: ReceivingNote
       required:
-        - documentId
+        - refId
       additionalProperties: false
       description: |-
         *
@@ -935,9 +935,9 @@ components:
     order.v1.PurchaseOrder:
       type: object
       properties:
-        documentId:
+        refId:
           type: string
-          title: document_id
+          title: ref_id
           description: '"PO-2025-001"'
         supplierId:
           type: string
@@ -981,7 +981,7 @@ components:
           nullable: true
       title: PurchaseOrder
       required:
-        - documentId
+        - refId
       additionalProperties: false
       description: |-
         *
@@ -1039,9 +1039,9 @@ components:
     payments.v1.Payment:
       type: object
       properties:
-        documentId:
+        refId:
           type: string
-          title: document_id
+          title: ref_id
           description: '"PAY-2025-001"'
         payerId:
           type: string
@@ -1083,7 +1083,7 @@ components:
           nullable: true
       title: Payment
       required:
-        - documentId
+        - refId
       additionalProperties: false
       description: |-
         *

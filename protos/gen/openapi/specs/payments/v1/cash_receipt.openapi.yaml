@@ -302,9 +302,9 @@ components:
     payments.v1.CashReceipt:
       type: object
       properties:
-        documentId:
+        refId:
           type: string
-          title: document_id
+          title: ref_id
           description: '"CASH-2025-001"'
         cashierUserId:
           type: string
@@ -371,7 +371,7 @@ components:
           description: Amount owed to customer.
       title: CashReceipt
       required:
-        - documentId
+        - refId
       additionalProperties: false
       description: |-
         *
@@ -461,9 +461,9 @@ components:
     payments.v1.GiftVoucher:
       type: object
       properties:
-        documentId:
+        refId:
           type: string
-          title: document_id
+          title: ref_id
           description: '"GV-2025-001"'
         voucherCode:
           type: string
@@ -509,7 +509,7 @@ components:
           nullable: true
       title: GiftVoucher
       required:
-        - documentId
+        - refId
       additionalProperties: false
       description: |-
         *
@@ -528,9 +528,9 @@ components:
     payments.v1.Payment:
       type: object
       properties:
-        documentId:
+        refId:
           type: string
-          title: document_id
+          title: ref_id
           description: '"PAY-2025-001"'
         payerId:
           type: string
@@ -572,7 +572,7 @@ components:
           nullable: true
       title: Payment
       required:
-        - documentId
+        - refId
       additionalProperties: false
       description: |-
         *

@@ -59,7 +59,7 @@ class CartManager extends ChangeNotifier {
     }
 
     _currentCashReceipt = CashReceipt(
-      documentId: _uuid.v4(),
+      refId: _uuid.v4(),
       storeId: store.refId,
       cashierUserId: user.refId,
       items: [],
@@ -177,7 +177,7 @@ class CartManager extends ChangeNotifier {
     if (currentCart == null) return;
 
     _currentCashReceipt = CashReceipt(
-      documentId: _uuid.v4(),
+      refId: _uuid.v4(),
       storeId: currentCart.storeId,
       cashierUserId: currentCart.cashierUserId,
       items: [],
@@ -256,7 +256,7 @@ class CartManager extends ChangeNotifier {
 
     // Update or add the current order
     final index = saveCashReceipts.indexWhere(
-      (order) => order.documentId == currentCashReceipt.documentId,
+      (order) => order.refId == currentCashReceipt.refId,
     );
     if (index >= 0) {
       saveCashReceipts[index] = currentCashReceipt;
@@ -285,7 +285,7 @@ class CartManager extends ChangeNotifier {
     }
 
     saveCashReceipts.removeWhere(
-      (order) => order.documentId == currentCashReceipt.documentId,
+      (order) => order.refId == currentCashReceipt.refId,
     );
     await AppStorage.of<List<CashReceipt>>(
       boxKey: '${CollectionName.cashReceipts}-$storeId',

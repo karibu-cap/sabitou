@@ -46,7 +46,7 @@ final $typed_data.Uint8List purchaseOrderStatusDescriptor = $convert.base64Decod
 const PurchaseOrder$json = {
   '1': 'PurchaseOrder',
   '2': [
-    {'1': 'document_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'documentId'},
+    {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'refId'},
     {'1': 'supplier_id', '3': 2, '4': 1, '5': 9, '10': 'supplierId'},
     {'1': 'buyer_id', '3': 3, '4': 1, '5': 9, '10': 'buyerId'},
     {
@@ -111,16 +111,16 @@ const PurchaseOrder$json = {
 
 /// Descriptor for `PurchaseOrder`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List purchaseOrderDescriptor = $convert.base64Decode(
-    'Cg1QdXJjaGFzZU9yZGVyEicKC2RvY3VtZW50X2lkGAEgASgJQga6SAPIAQFSCmRvY3VtZW50SW'
-    'QSHwoLc3VwcGxpZXJfaWQYAiABKAlSCnN1cHBsaWVySWQSGQoIYnV5ZXJfaWQYAyABKAlSB2J1'
-    'eWVySWQSNQoGc3RhdHVzGAUgASgOMh0ub3JkZXIudjEuUHVyY2hhc2VPcmRlclN0YXR1c1IGc3'
-    'RhdHVzEi0KBWl0ZW1zGAYgAygLMhcub3JkZXIudjEuT3JkZXJMaW5lSXRlbVIFaXRlbXMSIQoM'
-    'dG90YWxfYW1vdW50GAcgASgBUgt0b3RhbEFtb3VudBIfCghjdXJyZW5jeRgIIAEoCUgAUghjdX'
-    'JyZW5jeYgBARIrChJjcmVhdGVkX2J5X3VzZXJfaWQYCSABKAlSD2NyZWF0ZWRCeVVzZXJJZBI5'
-    'CgpjcmVhdGVkX2F0GAogASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIJY3JlYXRlZE'
-    'F0ElUKFmV4cGVjdGVkX2RlbGl2ZXJ5X2RhdGUYCyABKAsyGi5nb29nbGUucHJvdG9idWYuVGlt'
-    'ZXN0YW1wSAFSFGV4cGVjdGVkRGVsaXZlcnlEYXRliAEBEhkKBW5vdGVzGAwgASgJSAJSBW5vdG'
-    'VziAEBQgsKCV9jdXJyZW5jeUIZChdfZXhwZWN0ZWRfZGVsaXZlcnlfZGF0ZUIICgZfbm90ZXM=');
+    'Cg1QdXJjaGFzZU9yZGVyEh0KBnJlZl9pZBgBIAEoCUIGukgDyAEBUgVyZWZJZBIfCgtzdXBwbG'
+    'llcl9pZBgCIAEoCVIKc3VwcGxpZXJJZBIZCghidXllcl9pZBgDIAEoCVIHYnV5ZXJJZBI1CgZz'
+    'dGF0dXMYBSABKA4yHS5vcmRlci52MS5QdXJjaGFzZU9yZGVyU3RhdHVzUgZzdGF0dXMSLQoFaX'
+    'RlbXMYBiADKAsyFy5vcmRlci52MS5PcmRlckxpbmVJdGVtUgVpdGVtcxIhCgx0b3RhbF9hbW91'
+    'bnQYByABKAFSC3RvdGFsQW1vdW50Eh8KCGN1cnJlbmN5GAggASgJSABSCGN1cnJlbmN5iAEBEi'
+    'sKEmNyZWF0ZWRfYnlfdXNlcl9pZBgJIAEoCVIPY3JlYXRlZEJ5VXNlcklkEjkKCmNyZWF0ZWRf'
+    'YXQYCiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUgljcmVhdGVkQXQSVQoWZXhwZW'
+    'N0ZWRfZGVsaXZlcnlfZGF0ZRgLIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBIAVIU'
+    'ZXhwZWN0ZWREZWxpdmVyeURhdGWIAQESGQoFbm90ZXMYDCABKAlIAlIFbm90ZXOIAQFCCwoJX2'
+    'N1cnJlbmN5QhkKF19leHBlY3RlZF9kZWxpdmVyeV9kYXRlQggKBl9ub3Rlcw==');
 
 @$core.Deprecated('Use cancelPurchaseOrderResponseDescriptor instead')
 const CancelPurchaseOrderResponse$json = {

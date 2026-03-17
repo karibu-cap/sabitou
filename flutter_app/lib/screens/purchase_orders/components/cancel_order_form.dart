@@ -33,7 +33,7 @@ final class CancelOrderForm extends StatelessWidget {
       }
 
       final success = await controller.cancelPurchaseOrder(
-        order.documentId,
+        order.refId,
         _reasonController.text.trim(),
       );
 
@@ -59,9 +59,7 @@ final class CancelOrderForm extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              Intls.to.cancelOrderConfirmation.trParams({
-                'order': order.documentId,
-              }),
+              Intls.to.cancelOrderConfirmation.trParams({'order': order.refId}),
             ),
             const SizedBox(height: 16),
             ShadTextareaFormField(

@@ -41,7 +41,7 @@ export 'sales_order.pbenum.dart';
 ///    items: [10x PRD-001 @ 450000 each]
 class SalesOrder extends $pb.GeneratedMessage {
   factory SalesOrder({
-    $core.String? documentId,
+    $core.String? refId,
     $core.String? customerId,
     $core.String? sellerId,
     $core.String? sourceWarehouseAddress,
@@ -55,7 +55,7 @@ class SalesOrder extends $pb.GeneratedMessage {
     $core.String? notes,
   }) {
     final result = create();
-    if (documentId != null) result.documentId = documentId;
+    if (refId != null) result.refId = refId;
     if (customerId != null) result.customerId = customerId;
     if (sellerId != null) result.sellerId = sellerId;
     if (sourceWarehouseAddress != null)
@@ -84,7 +84,7 @@ class SalesOrder extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'SalesOrder',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'order.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'documentId')
+    ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..aOS(2, _omitFieldNames ? '' : 'customerId')
     ..aOS(3, _omitFieldNames ? '' : 'sellerId')
     ..aOS(4, _omitFieldNames ? '' : 'sourceWarehouseAddress')
@@ -127,13 +127,13 @@ class SalesOrder extends $pb.GeneratedMessage {
   static SalesOrder? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get documentId => $_getSZ(0);
+  $core.String get refId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set documentId($core.String value) => $_setString(0, value);
+  set refId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasDocumentId() => $_has(0);
+  $core.bool hasRefId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearDocumentId() => $_clearField(1);
+  void clearRefId() => $_clearField(1);
 
   /// Company buying from you
   @$pb.TagNumber(2)

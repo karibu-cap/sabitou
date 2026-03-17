@@ -313,9 +313,9 @@ components:
     logistic.v1.ReturnNote:
       type: object
       properties:
-        documentId:
+        refId:
           type: string
-          title: document_id
+          title: ref_id
           description: '"RET-2025-001"'
         returnType:
           title: return_type
@@ -359,7 +359,7 @@ components:
           title: notes
       title: ReturnNote
       required:
-        - documentId
+        - refId
       additionalProperties: false
       description: |-
         *

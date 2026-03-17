@@ -108,7 +108,7 @@ class _TransactionItem extends StatelessWidget {
               const SizedBox(width: 8),
               Flexible(
                 child: AutoSizeText(
-                  '#${transaction.documentId}',
+                  '#${transaction.refId}',
                   style: ShadTheme.of(context).textTheme.muted,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -141,7 +141,7 @@ class _TransactionItem extends StatelessWidget {
 
                     AutoSizeText(
                       transaction.notes.isEmpty
-                          ? 'Transaction ${transaction.documentId}'
+                          ? 'Transaction ${transaction.refId}'
                           : transaction.notes,
                       style: ShadTheme.of(context).textTheme.small,
                       maxLines: 2,

@@ -19,7 +19,7 @@ import "google/protobuf/timestamp.proto";
  *   status: PAYMENT_STATUS_COMPLETED
  */
 message Payment {
-  string document_id = 1 [(buf.validate.field).required = true]; // "PAY-2025-001"
+  string ref_id = 1 [(buf.validate.field).required = true]; // "PAY-2025-001"
   string payer_id = 2;
   // Can be a customer phone number or account number.
   string receiver = 3;

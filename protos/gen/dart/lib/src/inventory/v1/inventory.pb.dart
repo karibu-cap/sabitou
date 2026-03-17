@@ -36,7 +36,7 @@ export 'inventory.pbenum.dart';
 ///    received_at: 2025-09-29T10:30:00Z
 class Batch extends $pb.GeneratedMessage {
   factory Batch({
-    $core.String? documentId,
+    $core.String? refId,
     $core.String? productId,
     $core.String? warehouseId,
     $core.int? quantity,
@@ -49,7 +49,7 @@ class Batch extends $pb.GeneratedMessage {
     $core.String? notes,
   }) {
     final result = create();
-    if (documentId != null) result.documentId = documentId;
+    if (refId != null) result.refId = refId;
     if (productId != null) result.productId = productId;
     if (warehouseId != null) result.warehouseId = warehouseId;
     if (quantity != null) result.quantity = quantity;
@@ -77,7 +77,7 @@ class Batch extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'Batch',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'documentId')
+    ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..aOS(2, _omitFieldNames ? '' : 'productId')
     ..aOS(3, _omitFieldNames ? '' : 'warehouseId')
     ..a<$core.int>(4, _omitFieldNames ? '' : 'quantity', $pb.PbFieldType.O3)
@@ -116,13 +116,13 @@ class Batch extends $pb.GeneratedMessage {
   static Batch? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get documentId => $_getSZ(0);
+  $core.String get refId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set documentId($core.String value) => $_setString(0, value);
+  set refId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasDocumentId() => $_has(0);
+  $core.bool hasRefId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearDocumentId() => $_clearField(1);
+  void clearRefId() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get productId => $_getSZ(1);

@@ -573,7 +573,7 @@ final _fakeTransport =
                   as List<InventoryTransaction>)
               .add(
                 InventoryTransaction()
-                  ..documentId = 'txn_${Random().nextInt(100000)}'
+                  ..refId = 'txn_${Random().nextInt(100000)}'
                   ..storeId = req.storeId
                   ..productId = req.productId
                   ..transactionType = TransactionType.TXN_TYPE_ADJUSTMENT
@@ -702,11 +702,11 @@ final _fakeTransport =
             ..name = 'Test Store',
           invoices: [
             Invoice()
-              ..documentId = 'inv_1'
+              ..refId = 'inv_1'
               ..issueDate = Timestamp.fromDateTime(clock.now())
               ..totalAmount = 100000,
             Invoice()
-              ..documentId = 'inv_2'
+              ..refId = 'inv_2'
               ..issueDate = Timestamp.fromDateTime(
                 clock.now().subtract(const Duration(days: 1)),
               )
@@ -941,7 +941,7 @@ final _fakeTransport =
         final purchaseOrderId =
             'PO-${clock.now().year}-${Random().nextInt(1000000)}';
         final purchaseOrder = PurchaseOrder()
-          ..documentId = purchaseOrderId
+          ..refId = purchaseOrderId
           ..supplierId = req.supplierId
           ..buyerId = req.buyerId
           ..expectedDeliveryDate = req.expectedDeliveryDate
@@ -965,7 +965,7 @@ final _fakeTransport =
       ..unary(PurchaseOrderService.getPurchaseOrder, (req, _) async {
         final purchaseOrder =
             (_fakeData[CollectionName.purchaseOrders] as List<PurchaseOrder>)
-                .firstWhereOrNull((po) => po.documentId == req.purchaseOrderId);
+                .firstWhereOrNull((po) => po.refId == req.purchaseOrderId);
 
         return GetPurchaseOrderResponse(purchaseOrder: purchaseOrder);
       })
@@ -982,7 +982,7 @@ final _fakeTransport =
         final purchaseOrders =
             _fakeData[CollectionName.purchaseOrders] as List<PurchaseOrder>;
         final index = purchaseOrders.indexWhere(
-          (po) => po.documentId == req.purchaseOrderId,
+          (po) => po.refId == req.purchaseOrderId,
         );
 
         if (index != -1) {
@@ -995,7 +995,7 @@ final _fakeTransport =
         final purchaseOrders =
             _fakeData[CollectionName.purchaseOrders] as List<PurchaseOrder>;
         final index = purchaseOrders.indexWhere(
-          (po) => po.documentId == req.purchaseOrderId,
+          (po) => po.refId == req.purchaseOrderId,
         );
 
         if (index != -1) {
@@ -1010,7 +1010,7 @@ final _fakeTransport =
             'RN-${clock.now().year}-${Random().nextInt(1000000)}';
 
         final receivingNote = ReceivingNote()
-          ..documentId = receivingNoteId
+          ..refId = receivingNoteId
           ..supplierId = req.supplierId
           ..buyerId = req.buyerId
           ..receivedByUserId = req.receivedByUserId
@@ -1057,11 +1057,11 @@ final _fakeTransport =
               : 'BATCH-${clock.now().year}-${Random().nextInt(999).toString().padLeft(3, '0')}';
           Batch? existingBatch =
               (_fakeData[CollectionName.batches] as List<Batch>)
-                  .firstWhereOrNull((b) => b.documentId == batchId);
+                  .firstWhereOrNull((b) => b.refId == batchId);
 
           if (existingBatch == null) {
             existingBatch = Batch()
-              ..documentId = batchId
+              ..refId = batchId
               ..productId = item.productId
               ..warehouseId = receivingNote.buyerId
               ..quantity = item.quantityReceived.toInt()
@@ -1079,7 +1079,7 @@ final _fakeTransport =
                 originalQuantity + item.quantityReceived.toInt();
             existingBatch..quantity = newQuantity;
             (_fakeData[CollectionName.batches] as List<Batch>).removeWhere(
-              (b) => b.documentId == batchId,
+              (b) => b.refId == batchId,
             );
             (_fakeData[CollectionName.batches] as List<Batch>).add(
               existingBatch,
@@ -1094,7 +1094,7 @@ final _fakeTransport =
           inventoryLevel.quantityAvailable =
               inventoryLevel.quantityOnHand - inventoryLevel.quantityCommitted;
 
-          inventoryLevel.batches.removeWhere((b) => b.documentId == batchId);
+          inventoryLevel.batches.removeWhere((b) => b.refId == batchId);
           inventoryLevel.batches.add(existingBatch);
 
           (_fakeData[CollectionName.inventoryLevels] as List<InventoryLevel>)
@@ -1109,7 +1109,7 @@ final _fakeTransport =
           // 2.4 - Record InventoryTransaction
 
           final transaction = InventoryTransaction()
-            ..documentId = 'TXN-${Random().nextInt(1000000)}'
+            ..refId = 'TXN-${Random().nextInt(1000000)}'
             ..storeId = req.buyerId
             ..productId = item.productId
             ..transactionType = TransactionType.TXN_TYPE_PURCHASE
@@ -1127,7 +1127,7 @@ final _fakeTransport =
             ..transactionTime = Timestamp.fromDateTime(clock.now())
             ..notes =
                 'Received items from purchase order ${req.purchaseOrderId}'
-            ..batchId = existingBatch.documentId;
+            ..batchId = existingBatch.refId;
 
           (_fakeData[CollectionName.inventoryTransactions]
                   as List<InventoryTransaction>)
@@ -1149,7 +1149,7 @@ final _fakeTransport =
                   return cr.storeId == request.storeId;
                 }
                 if (request.hasReceiptId()) {
-                  return cr.documentId == request.receiptId;
+                  return cr.refId == request.receiptId;
                 }
 
                 return true;
@@ -1179,7 +1179,7 @@ final _fakeTransport =
         // Create a mock cash receipt
         final cashReceipt = request.receipt
           ..transactionTime = Timestamp.fromDateTime(clock.now())
-          ..documentId = receiptId
+          ..refId = receiptId
           ..currency = 'XAF';
 
         final paymentRef = <String>[];
@@ -1189,7 +1189,7 @@ final _fakeTransport =
           final paymentId = 'PAY-${Random().nextInt(1000000)}';
           paymentRef.add(paymentId);
           (_fakeData[CollectionName.payments] as List<Payment>).add(
-            payment..documentId = paymentId,
+            payment..refId = paymentId,
           );
         }
 
@@ -1200,7 +1200,7 @@ final _fakeTransport =
           final voucherId = 'GV-${Random().nextInt(1000000)}';
 
           voucher = GiftVoucher(
-            documentId: voucherId,
+            refId: voucherId,
             voucherCode: voucherId,
             initialValue: request.receipt.owedToCustomer,
             remainingValue: request.receipt.owedToCustomer,
@@ -1245,7 +1245,7 @@ final _fakeTransport =
                   as List<InventoryTransaction>)
               .add(
                 InventoryTransaction()
-                  ..documentId = receiptId
+                  ..refId = receiptId
                   ..storeId = request.receipt.storeId
                   ..productId = item.productId
                   ..transactionType = TransactionType.TXN_TYPE_SALE
@@ -1289,10 +1289,10 @@ final _fakeTransport =
                           ?.batches
                           .firstWhereOrNull(
                             (e) =>
-                                e.documentId == item.batchId ||
+                                e.refId == item.batchId ||
                                 e.productId == item.productId,
                           )
-                          ?.documentId ??
+                          ?.refId ??
                       '',
               );
         }

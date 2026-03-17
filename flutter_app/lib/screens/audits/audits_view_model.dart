@@ -218,9 +218,8 @@ final class AuditsViewModel {
       filtered = filtered.where((transaction) {
         final searchQuery = query.toLowerCase();
 
-        // Search through document_id
-        if (transaction.documentId.toLowerCase().contains(searchQuery) ==
-            true) {
+        // Search through ref_id
+        if (transaction.refId.toLowerCase().contains(searchQuery) == true) {
           return true;
         }
 
@@ -289,9 +288,8 @@ final class AuditsViewModel {
       filtered = filtered.where((transaction) {
         final searchQuery = query.toLowerCase();
 
-        // Search through document_id
-        if (transaction.documentId.toLowerCase().contains(searchQuery) ==
-            true) {
+        // Search through ref_id
+        if (transaction.refId.toLowerCase().contains(searchQuery) == true) {
           return true;
         }
 

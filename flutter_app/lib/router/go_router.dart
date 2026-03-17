@@ -48,16 +48,12 @@ class GoRouterRoutesProvider {
         GoRoute(
           name: PagesRoutes.dashboard.name,
           path: PagesRoutes.dashboard.pattern,
-          pageBuilder: (context, state) {
-            return const MaterialPage(child: DashboardScreen());
-          },
+          pageBuilder: (_, __) => const MaterialPage(child: DashboardScreen()),
         ),
         GoRoute(
           name: PagesRoutes.home.name,
           path: PagesRoutes.home.pattern,
-          pageBuilder: (context, state) {
-            return const MaterialPage(child: DashboardScreen());
-          },
+          pageBuilder: (_, __) => const MaterialPage(child: DashboardScreen()),
         ),
       ],
     ),
@@ -66,9 +62,7 @@ class GoRouterRoutesProvider {
         GoRoute(
           name: PagesRoutes.audits.name,
           path: PagesRoutes.audits.pattern,
-          pageBuilder: (context, state) {
-            return const MaterialPage(child: AuditsScreen());
-          },
+          pageBuilder: (_, __) => const MaterialPage(child: AuditsScreen()),
         ),
       ],
     ),
@@ -77,16 +71,13 @@ class GoRouterRoutesProvider {
         GoRoute(
           name: PagesRoutes.inventory.name,
           path: PagesRoutes.inventory.pattern,
-          pageBuilder: (context, state) {
-            return const MaterialPage(child: InventoryScreen());
-          },
+          pageBuilder: (_, __) => const MaterialPage(child: InventoryScreen()),
         ),
         GoRoute(
           name: PagesRoutes.productsList.name,
           path: PagesRoutes.productsList.pattern,
-          pageBuilder: (context, state) {
-            return const MaterialPage(child: ProductsListScreen());
-          },
+          pageBuilder: (_, __) =>
+              const MaterialPage(child: ProductsListScreen()),
         ),
       ],
     ),
@@ -95,16 +86,13 @@ class GoRouterRoutesProvider {
         GoRoute(
           name: PagesRoutes.cashReceipts.name,
           path: PagesRoutes.cashReceipts.pattern,
-          pageBuilder: (context, state) {
-            return const MaterialPage(child: CashRecipeScreen());
-          },
+          pageBuilder: (_, __) => const MaterialPage(child: CashRecipeScreen()),
         ),
         GoRoute(
           name: PagesRoutes.pos.name,
           path: PagesRoutes.pos.pattern,
-          pageBuilder: (context, state) {
-            return const MaterialPage(child: PointOfSaleScreen());
-          },
+          pageBuilder: (_, __) =>
+              const MaterialPage(child: PointOfSaleScreen()),
         ),
       ],
     ),
@@ -113,9 +101,7 @@ class GoRouterRoutesProvider {
         GoRoute(
           name: PagesRoutes.reports.name,
           path: PagesRoutes.reports.pattern,
-          pageBuilder: (context, state) {
-            return const MaterialPage(child: ReportsScreen());
-          },
+          pageBuilder: (_, __) => const MaterialPage(child: ReportsScreen()),
         ),
       ],
     ),
@@ -124,9 +110,7 @@ class GoRouterRoutesProvider {
         GoRoute(
           name: PagesRoutes.suppliers.name,
           path: PagesRoutes.suppliers.pattern,
-          pageBuilder: (context, state) {
-            return const MaterialPage(child: SuppliersView());
-          },
+          pageBuilder: (_, __) => const MaterialPage(child: SuppliersView()),
         ),
       ],
     ),
@@ -135,9 +119,7 @@ class GoRouterRoutesProvider {
         GoRoute(
           name: PagesRoutes.users.name,
           path: PagesRoutes.users.pattern,
-          pageBuilder: (context, state) {
-            return const MaterialPage(child: UsersView());
-          },
+          pageBuilder: (_, __) => const MaterialPage(child: UsersView()),
         ),
       ],
     ),
@@ -146,9 +128,7 @@ class GoRouterRoutesProvider {
         GoRoute(
           name: PagesRoutes.categories.name,
           path: PagesRoutes.categories.pattern,
-          pageBuilder: (context, state) {
-            return const MaterialPage(child: CategoriesView());
-          },
+          pageBuilder: (_, __) => const MaterialPage(child: CategoriesView()),
         ),
       ],
     ),
@@ -157,9 +137,8 @@ class GoRouterRoutesProvider {
         GoRoute(
           name: PagesRoutes.globalProducts.name,
           path: PagesRoutes.globalProducts.pattern,
-          pageBuilder: (context, state) {
-            return const MaterialPage(child: GlobalProductsView());
-          },
+          pageBuilder: (_, __) =>
+              const MaterialPage(child: GlobalProductsView()),
         ),
       ],
     ),
@@ -168,9 +147,7 @@ class GoRouterRoutesProvider {
         GoRoute(
           name: PagesRoutes.settings.name,
           path: PagesRoutes.settings.pattern,
-          pageBuilder: (context, state) {
-            return const MaterialPage(child: SettingsScreen());
-          },
+          pageBuilder: (_, __) => const MaterialPage(child: SettingsScreen()),
         ),
       ],
     ),
@@ -179,9 +156,8 @@ class GoRouterRoutesProvider {
         GoRoute(
           name: PagesRoutes.purchaseOrders.name,
           path: PagesRoutes.purchaseOrders.pattern,
-          pageBuilder: (context, state) {
-            return const MaterialPage(child: PurchaseOrdersScreen());
-          },
+          pageBuilder: (_, __) =>
+              const MaterialPage(child: PurchaseOrdersScreen()),
         ),
       ],
     ),
@@ -202,31 +178,30 @@ class GoRouterRoutesProvider {
       navigatorKey: rootNavigatorKey,
       debugLogDiagnostics: true,
       initialLocation: PagesRoutes.welcome.pattern,
-      refreshListenable: auth, // Listen to auth changes
+      // GoRouter re-evaluates redirect whenever AuthProvider notifies.
+      refreshListenable: auth,
       redirect: (context, state) {
-        final isLoggedIn = auth.isAuthenticated;
-        final currentPath = state.uri.path;
+        final authStatus = auth.status;
+        final path = state.uri.path;
 
-        // Define auth pages
+        // While initialising, show a blank screen / splash — do not redirect.
+        if (authStatus == AuthStatus.initializing) return null;
+
         final isOnAuthPage =
-            currentPath == PagesRoutes.welcome.pattern ||
-            currentPath == PagesRoutes.login.pattern ||
-            currentPath == PagesRoutes.registration.pattern ||
-            currentPath == PagesRoutes.forgotPassword.pattern ||
-            currentPath == '/';
+            path == PagesRoutes.welcome.pattern ||
+            path == PagesRoutes.login.pattern ||
+            path == PagesRoutes.registration.pattern ||
+            path == PagesRoutes.forgotPassword.pattern ||
+            path == '/';
 
-        // Redirect logic
-        if (!isLoggedIn && !isOnAuthPage) {
-          // Not logged in, trying to access protected route
+        if (!auth.isAuthenticated && !isOnAuthPage) {
           return PagesRoutes.login.pattern;
         }
 
-        if (isLoggedIn && isOnAuthPage) {
-          // Logged in, on auth page
+        if (auth.isAuthenticated && isOnAuthPage) {
           return PagesRoutes.dashboard.pattern;
         }
 
-        // No redirect needed
         return null;
       },
       routes: _getAllRoutes(),
@@ -362,30 +337,24 @@ class AppRouterGoRouter extends AppRouterSubsystem {
       GoRouterRoutesProvider.routes.routeInformationProvider;
 
   @override
-  Future<void> init() {
-    return GoRouterRoutesProvider.init();
-  }
-
+  Future<void> init() => GoRouterRoutesProvider.init();
   @override
   Future<T?> push<T>(BuildContext context, String uri, {Object? extra}) async {
     return await context.push<T>(uri, extra: extra);
   }
 
   @override
-  void pushReplacement(BuildContext context, String uri, {Object? extra}) {
-    context.pushReplacement(uri, extra: extra);
-  }
-
+  void pushReplacement(BuildContext context, String uri, {Object? extra}) =>
+      context.pushReplacement(uri, extra: extra);
   @override
-  void go(BuildContext context, String uri, {Object? extra}) {
-    context.go(uri, extra: extra);
-  }
-
+  void go(BuildContext context, String uri, {Object? extra}) =>
+      context.go(uri, extra: extra);
   @override
-  void pushReplacementNamed(BuildContext context, String uri, {Object? extra}) {
-    context.pushReplacementNamed(uri, extra: extra);
-  }
-
+  void pushReplacementNamed(
+    BuildContext context,
+    String uri, {
+    Object? extra,
+  }) => context.pushReplacementNamed(uri, extra: extra);
   @override
   String getCurrentLocation(BuildContext context) {
     return GoRouterState.of(context).uri.path;
@@ -402,14 +371,8 @@ class AppRouterGoRouter extends AppRouterSubsystem {
     String uri, {
     Object? extra,
   }) => context.replace(uri, extra: extra);
-
   @override
-  bool canPop(BuildContext context) {
-    return GoRouter.of(context).canPop();
-  }
-
+  bool canPop(BuildContext context) => GoRouter.of(context).canPop();
   @override
-  void onPop(BuildContext context) {
-    GoRouter.of(context).pop();
-  }
+  void onPop(BuildContext context) => GoRouter.of(context).pop();
 }

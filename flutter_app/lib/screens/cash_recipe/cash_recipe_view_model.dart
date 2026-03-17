@@ -141,8 +141,8 @@ final class CashRecipeViewModel {
 
     final filtered = allReceipts.where((receipt) {
       // Search in document ID
-      if (receipt.hasDocumentId() &&
-          receipt.documentId.toLowerCase().contains(query.toLowerCase())) {
+      if (receipt.hasRefId() &&
+          receipt.refId.toLowerCase().contains(query.toLowerCase())) {
         return true;
       }
 

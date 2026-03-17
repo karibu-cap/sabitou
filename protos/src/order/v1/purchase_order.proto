@@ -26,7 +26,7 @@ import "payments/v1/payments.proto";
  */
 message PurchaseOrder {
   // "PO-2025-001"
-  string document_id = 1 [(buf.validate.field).required = true];
+  string ref_id = 1 [(buf.validate.field).required = true];
   // Company selling to you
   string supplier_id = 2;
   // Your company

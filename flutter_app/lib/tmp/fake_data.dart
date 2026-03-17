@@ -28,7 +28,7 @@ const unsplashImages = [
 
 final fakeUsers = <User>[
   User()
-    ..refId = 'user-001'
+    ..refId = 'USR-001'
     ..userName = 'admin_user'
     ..connectedAccounts.addAll([
       ConnectedAccount()
@@ -53,43 +53,43 @@ final fakeUsers = <User>[
 /// Fake ResourceLink data for images and other resources
 final fakeResourceLinks = <ResourceLink>[
   ResourceLink()
-    ..refId = 'media-image-001'
+    ..refId = 'MDI-001'
     ..targetUri = unsplashImages.first
     ..iconUri = unsplashImages.first
     ..info = 'Smartphone product image'
     ..label = 'Product Image',
   ResourceLink()
-    ..refId = 'media-image-002'
+    ..refId = 'MDI-002'
     ..targetUri = unsplashImages[1]
     ..iconUri = unsplashImages[1]
     ..info = 'Laptop product image'
     ..label = 'Product Image',
   ResourceLink()
-    ..refId = 'media-image-003'
+    ..refId = 'MDI-003'
     ..targetUri = unsplashImages[2]
     ..iconUri = unsplashImages[2]
     ..info = 'Tablet product image'
     ..label = 'Product Image',
   ResourceLink()
-    ..refId = 'media-image-004'
+    ..refId = 'MDI-004'
     ..targetUri = unsplashImages[3]
     ..iconUri = unsplashImages[3]
     ..info = 'TV product image'
     ..label = 'Product Image',
   ResourceLink()
-    ..refId = 'media-logo-001'
+    ..refId = 'MDI-005'
     ..targetUri = unsplashImages[4]
     ..iconUri = unsplashImages[4]
     ..info = 'Store logo'
     ..label = 'Store Logo',
   ResourceLink()
-    ..refId = 'media-logo-006'
+    ..refId = 'MDI-006'
     ..targetUri = unsplashImages[5]
     ..iconUri = unsplashImages[5]
     ..info = 'Business logo'
     ..label = 'Business Logo',
   ResourceLink()
-    ..refId = 'media-logo-013'
+    ..refId = 'MDI-013'
     ..targetUri = unsplashImages[7]
     ..iconUri = unsplashImages[7]
     ..info = 'Supplier logo'
@@ -98,26 +98,26 @@ final fakeResourceLinks = <ResourceLink>[
 
 final fakeCategories = <Category>[
   Category()
-    ..refId = 'category-001'
+    ..refId = 'CTG-001'
     ..name = Internationalized(fr: 'Electronics', en: 'Electronics')
-    ..businessId = 'business-001'
+    ..businessId = 'BSN-001'
     ..createdAt = Timestamp.fromDateTime(DateTime.parse('2025-09-01T10:00:00Z'))
     ..updatedAt = Timestamp.fromDateTime(
       DateTime.parse('2025-09-01T10:00:00Z'),
     ),
 
   Category()
-    ..refId = 'category-002'
+    ..refId = 'CTG-002'
     ..name = Internationalized(fr: 'Habit', en: 'Clothes')
-    ..businessId = 'business-001'
+    ..businessId = 'BSN-001'
     ..createdAt = Timestamp.fromDateTime(DateTime.parse('2025-09-01T10:00:00Z'))
     ..updatedAt = Timestamp.fromDateTime(
       DateTime.parse('2025-09-01T10:00:00Z'),
     ),
   Category()
-    ..refId = 'category-003'
+    ..refId = 'CTG-003'
     ..name = Internationalized(fr: 'Voiture', en: 'Car')
-    ..businessId = 'business-001'
+    ..businessId = 'BSN-001'
     ..createdAt = Timestamp.fromDateTime(DateTime.parse('2025-09-01T10:00:00Z'))
     ..updatedAt = Timestamp.fromDateTime(
       DateTime.parse('2025-09-01T10:00:00Z'),
@@ -128,20 +128,20 @@ final fakeCategories = <Category>[
 final fakeData = <String, List<dynamic>>{
   CollectionName.stores: <Store>[
     Store()
-      ..refId = 'store-001'
+      ..refId = 'STR-001'
       ..name = 'Main Store'
       ..description = 'Primary retail location for electronics and home goods'
       ..logoLinkId = 'media-logo-001'
       ..externalLinksIds = 'link-001,link-002'
-      ..businessId = 'business-001',
+      ..businessId = 'BSN-001',
   ],
   CollectionName.businesses: <Business>[
     Business()
-      ..refId = 'business-001'
+      ..refId = 'BSN-001'
       ..name = 'Tech Corp'
       ..description = 'Technology solutions provider'
       ..status = BusinessStatusType.BUSINESS_STATUS_TYPE_ACTIVE
-      ..ownerId = 'user-001'
+      ..ownerId = 'USR-001'
       ..logoLinkId = 'media-logo-006'
       ..countryCode = 'US'
       ..currencyCode = 'USD'
@@ -153,7 +153,7 @@ final fakeData = <String, List<dynamic>>{
   CollectionName.businessMembers: <BusinessMember>[
     BusinessMember()
       ..user = fakeUsers.first
-      ..businessId = 'business-001'
+      ..businessId = 'BSN-001'
       ..memberSince = Timestamp.fromDateTime(
         DateTime.parse('2023-01-01T00:00:00Z'),
       ),
@@ -161,8 +161,8 @@ final fakeData = <String, List<dynamic>>{
   CollectionName.batches: <Batch>[],
   CollectionName.inventoryLevels: <InventoryLevel>[
     InventoryLevel()
-      ..storeProductId = 'product-001'
-      ..storeId = 'store-001'
+      ..storeProductId = 'PRD-001'
+      ..storeId = 'STR-001'
       ..quantityAvailable = 189
       ..quantityCommitted = 17
       ..quantityOnHand = 206
@@ -170,12 +170,12 @@ final fakeData = <String, List<dynamic>>{
       ..lastUpdated = Timestamp.fromDateTime(clock.now())
       ..batches.addAll([
         Batch()
-          ..documentId = 'batch_sp1_1'
-          ..productId = 'product-001'
-          ..warehouseId = 'store-001'
+          ..refId = 'batch_sp1_1'
+          ..productId = 'PRD-001'
+          ..warehouseId = 'STR-001'
           ..quantity = 161
           ..purchasePrice = 29400
-          ..supplierId = 'supplier_1'
+          ..supplierId = 'SUP-001'
           ..expirationDate = Timestamp.fromDateTime(
             clock.now().add(const Duration(days: 180)),
           )
@@ -184,9 +184,9 @@ final fakeData = <String, List<dynamic>>{
           )
           ..status = BatchStatus.BATCH_STATUS_ACTIVE,
         Batch()
-          ..documentId = 'batch_sp1_2'
-          ..productId = 'product-001'
-          ..warehouseId = 'store-001'
+          ..refId = 'batch_sp1_2'
+          ..productId = 'PRD-001'
+          ..warehouseId = 'STR-001'
           ..quantity = 45
           ..purchasePrice = 29000
           ..supplierId = 'supplier_2'
@@ -199,8 +199,8 @@ final fakeData = <String, List<dynamic>>{
           ..status = BatchStatus.BATCH_STATUS_ACTIVE,
       ]),
     InventoryLevel()
-      ..storeProductId = 'product-002'
-      ..storeId = 'store-001'
+      ..storeProductId = 'PRD-002'
+      ..storeId = 'STR-001'
       ..quantityAvailable = 8
       ..quantityCommitted = 2
       ..quantityOnHand = 10
@@ -208,12 +208,12 @@ final fakeData = <String, List<dynamic>>{
       ..lastUpdated = Timestamp.fromDateTime(clock.now())
       ..batches.add(
         Batch()
-          ..documentId = 'batch_sp2_1'
-          ..productId = 'product-002'
-          ..warehouseId = 'store-001'
+          ..refId = 'batch_sp2_1'
+          ..productId = 'PRD-002'
+          ..warehouseId = 'STR-001'
           ..quantity = 10
           ..purchasePrice = 15000
-          ..supplierId = 'supplier_1'
+          ..supplierId = 'SUP-001'
           ..expirationDate = Timestamp.fromDateTime(
             clock.now().add(const Duration(days: 120)),
           )
@@ -224,16 +224,16 @@ final fakeData = <String, List<dynamic>>{
       ),
     InventoryLevel()
       ..storeProductId = 'product-003'
-      ..storeId = 'store-001'
+      ..storeId = 'STR-001'
       ..quantityAvailable = 20
       ..quantityCommitted = 0
       ..quantityOnHand = 20
       ..lastUpdated = Timestamp.fromDateTime(clock.now())
       ..batches.addAll([
         Batch()
-          ..documentId = 'batch_sp3_1'
+          ..refId = 'batch_sp3_1'
           ..productId = 'product-003'
-          ..warehouseId = 'store-001'
+          ..warehouseId = 'STR-001'
           ..quantity = 20
           ..purchasePrice = 8000
           ..supplierId = 'supplier_2'
@@ -245,12 +245,12 @@ final fakeData = <String, List<dynamic>>{
           )
           ..status = BatchStatus.BATCH_STATUS_ACTIVE,
         Batch()
-          ..documentId = 'batch_sp3_2'
+          ..refId = 'batch_sp3_2'
           ..productId = 'product-003'
-          ..warehouseId = 'store-001'
+          ..warehouseId = 'STR-001'
           ..quantity = 0
           ..purchasePrice = 7500
-          ..supplierId = 'supplier_1'
+          ..supplierId = 'SUP-001'
           ..expirationDate = Timestamp.fromDateTime(
             clock.now().subtract(const Duration(days: 1)),
           )
@@ -259,60 +259,60 @@ final fakeData = <String, List<dynamic>>{
   ],
   CollectionName.inventoryTransactions: <InventoryTransaction>[
     InventoryTransaction()
-      ..documentId = 'TXN-2025-001'
-      ..storeId = 'store-001'
-      ..productId = 'product-001'
+      ..refId = 'TXN-2025-001'
+      ..storeId = 'STR-001'
+      ..productId = 'PRD-001'
       ..transactionType = TransactionType.TXN_TYPE_PURCHASE
       ..quantityChange = 10
       ..quantityBefore = 0
       ..quantityAfter = 10
       ..relatedDocumentType = 'PurchaseOrder'
       ..relatedDocumentId = 'PO-2025-001'
-      ..performedByUserId = 'user-001'
+      ..performedByUserId = 'USR-001'
       ..transactionTime = Timestamp.fromDateTime(DateTime.now())
       ..notes = 'Initial stock from purchase order',
     InventoryTransaction()
-      ..documentId = 'TXN-2025-002'
-      ..storeId = 'store-001'
-      ..productId = 'product-002'
+      ..refId = 'TXN-2025-002'
+      ..storeId = 'STR-001'
+      ..productId = 'PRD-002'
       ..transactionType = TransactionType.TXN_TYPE_PURCHASE
       ..quantityChange = 5
       ..quantityBefore = 0
       ..quantityAfter = 5
       ..relatedDocumentType = 'PurchaseOrder'
       ..relatedDocumentId = 'PO-2025-002'
-      ..performedByUserId = 'user-001'
+      ..performedByUserId = 'USR-001'
       ..transactionTime = Timestamp.fromDateTime(DateTime.now())
       ..notes = 'Received laptop stock',
     InventoryTransaction()
-      ..documentId = 'TXN-2025-003'
-      ..storeId = 'store-001'
-      ..productId = 'product-001'
+      ..refId = 'TXN-2025-003'
+      ..storeId = 'STR-001'
+      ..productId = 'PRD-001'
       ..transactionType = TransactionType.TXN_TYPE_SALE
       ..quantityChange = -2
       ..quantityBefore = 10
       ..quantityAfter = 8
       ..relatedDocumentType = 'CashReceipt'
       ..relatedDocumentId = 'CASH-2025-001'
-      ..performedByUserId = 'user-001'
+      ..performedByUserId = 'USR-001'
       ..transactionTime = Timestamp.fromDateTime(DateTime.now())
       ..notes = 'Sale of 2 smartphones',
     InventoryTransaction()
-      ..documentId = 'TXN-2025-004'
-      ..storeId = 'store-001'
+      ..refId = 'TXN-2025-004'
+      ..storeId = 'STR-001'
       ..productId = 'product-003'
       ..transactionType = TransactionType.TXN_TYPE_ADJUSTMENT
       ..quantityChange = -1
       ..quantityBefore = 1
       ..quantityAfter = 0
-      ..performedByUserId = 'user-001'
+      ..performedByUserId = 'USR-001'
       ..transactionTime = Timestamp.fromDateTime(DateTime.now())
       ..notes = 'Tablet damaged during handling',
   ],
   CollectionName.storeMembers: <StoreMember>[
     StoreMember()
       ..user = fakeUsers.first
-      ..storeId = 'store-001'
+      ..storeId = 'STR-001'
       ..memberSince = Timestamp.fromDateTime(
         DateTime.parse('2023-01-01T00:00:00Z'),
       )
@@ -344,17 +344,17 @@ final fakeData = <String, List<dynamic>>{
   ],
   CollectionName.suppliers: <Supplier>[
     Supplier()
-      ..refId = 'supplier-001'
+      ..refId = 'SUP-001'
       ..name = 'Supply Co'
       ..description = 'Wholesale supplier for electronics'
       ..logoLinkId = 'media-logo-013'
       ..externalLinksIds.addAll(['link-021'])
-      ..storeIds.addAll(['store-001']),
+      ..storeIds.addAll(['STR-001']),
   ],
   CollectionName.users: fakeUsers,
   CollectionName.globalProducts: <GlobalProduct>[
     GlobalProduct()
-      ..refId = 'global-product-001'
+      ..refId = 'global-PRD-001'
       ..name = Internationalized(fr: 'Telephone', en: 'Smartphone')
       ..description = Internationalized(
         en: 'Latest model smartphone',
@@ -364,7 +364,7 @@ final fakeData = <String, List<dynamic>>{
       ..categories.addAll(<Category>[fakeCategories.first])
       ..imagesLinksIds.addAll(['media-image-001']),
     GlobalProduct()
-      ..refId = 'global-product-002'
+      ..refId = 'global-PRD-002'
       ..name = Internationalized(fr: 'Laptop', en: 'Laptop')
       ..description = Internationalized(
         en: 'Latest model laptop',
@@ -396,18 +396,18 @@ final fakeData = <String, List<dynamic>>{
   ],
   CollectionName.storeProducts: <StoreProduct>[
     StoreProduct()
-      ..refId = 'product-001'
-      ..storeId = 'store-001'
-      ..globalProductId = 'global-product-001'
+      ..refId = 'PRD-001'
+      ..storeId = 'STR-001'
+      ..globalProductId = 'global-PRD-001'
       ..status = ProductStatus.PRODUCT_STATUS_ACTIVE
       ..salePrice = 10000
       ..createdAt = Timestamp.fromDateTime(
         DateTime.parse('2024-09-01T08:00:00Z'),
       ),
     StoreProduct()
-      ..refId = 'product-002'
-      ..storeId = 'store-001'
-      ..globalProductId = 'global-product-002'
+      ..refId = 'PRD-002'
+      ..storeId = 'STR-001'
+      ..globalProductId = 'global-PRD-002'
       ..status = ProductStatus.PRODUCT_STATUS_INACTIVE
       ..salePrice = 7500
       ..createdAt = Timestamp.fromDateTime(
@@ -415,7 +415,7 @@ final fakeData = <String, List<dynamic>>{
       ),
     StoreProduct()
       ..refId = 'product-004'
-      ..storeId = 'store-001'
+      ..storeId = 'STR-001'
       ..globalProductId = 'global-product-003'
       ..status = ProductStatus.PRODUCT_STATUS_ACTIVE
       ..salePrice = 1500
@@ -424,7 +424,7 @@ final fakeData = <String, List<dynamic>>{
       ),
     StoreProduct()
       ..refId = 'product-003'
-      ..storeId = 'store-001'
+      ..storeId = 'STR-001'
       ..globalProductId = 'global-product-004'
       ..status = ProductStatus.PRODUCT_STATUS_ACTIVE
       ..salePrice = 12500
@@ -435,27 +435,27 @@ final fakeData = <String, List<dynamic>>{
   CollectionName.categories: fakeCategories,
   CollectionName.payments: <Payment>[
     Payment()
-      ..documentId = 'PAY-2025-001'
-      ..payerId = 'user-001'
-      ..warehouseId = 'business-001'
+      ..refId = 'PAY-2025-001'
+      ..payerId = 'USR-001'
+      ..warehouseId = 'BSN-001'
       ..amount = 10000
       ..currency = 'USD'
       ..paymentMethod = PaymentMethod.PAYMENT_METHOD_CASH
       ..status = PaymentStatus.PAYMENT_STATUS_COMPLETED
       ..paymentDate = Timestamp.fromDateTime(DateTime.now())
       ..referenceNumber = 'REF-001'
-      ..createdByUserId = 'user-001'
+      ..createdByUserId = 'USR-001'
       ..notes = 'Test payment',
   ],
   CollectionName.giftVouchers: <GiftVoucher>[
     GiftVoucher()
-      ..documentId = 'GV-2025-001'
+      ..refId = 'GV-2025-001'
       ..voucherCode = 'GIFT-001'
       ..initialValue = 5000
       ..remainingValue = 5000
       ..currency = 'USD'
-      ..issuedToCustomerId = 'user-001'
-      ..issuedByUserId = 'user-001'
+      ..issuedToCustomerId = 'USR-001'
+      ..issuedByUserId = 'USR-001'
       ..status = VoucherStatus.VOUCHER_STATUS_ACTIVE
       ..issuedAt = Timestamp.fromDateTime(DateTime.now())
       ..validUntil = Timestamp.fromDateTime(
@@ -465,24 +465,24 @@ final fakeData = <String, List<dynamic>>{
   ],
   CollectionName.voucherTransactions: <VoucherTransaction>[
     VoucherTransaction()
-      ..documentId = 'VT-001'
+      ..refId = 'VT-001'
       ..voucherId = 'GV-2025-001'
       ..relatedInvoiceId = 'INV-001'
       ..relatedReceiptId = ''
       ..amountUsed = 5000
       ..remainingAfter = 5000
       ..usedAt = Timestamp.fromDateTime(DateTime.now())
-      ..usedByUserId = 'user-001',
+      ..usedByUserId = 'USR-001',
   ],
   CollectionName.cashReceipts: <CashReceipt>[
     CashReceipt()
-      ..documentId = 'CASH-2025-001'
-      ..cashierUserId = 'user-001'
+      ..refId = 'CASH-2025-001'
+      ..cashierUserId = 'USR-001'
       ..customerId = 'user-002'
-      ..storeId = 'store-001'
+      ..storeId = 'STR-001'
       ..items.addAll(<InvoiceLineItem>[
         InvoiceLineItem()
-          ..productId = 'product-001'
+          ..productId = 'PRD-001'
           ..quantity = 1
           ..unitPrice = 10000
           ..productName = Internationalized(en: 'Test Item', fr: 'Test Item'),
@@ -499,30 +499,30 @@ final fakeData = <String, List<dynamic>>{
   ],
   CollectionName.purchaseOrders: <PurchaseOrder>[
     PurchaseOrder()
-      ..documentId = 'PO-2025-001'
-      ..supplierId = 'supplier-001'
-      ..buyerId = 'store-001'
+      ..refId = 'PO-2025-001'
+      ..supplierId = 'SUP-001'
+      ..buyerId = 'STR-001'
       ..status = PurchaseOrderStatus.PO_STATUS_PENDING
       ..totalAmount = 25000
       ..items.addAll([
         OrderLineItem()
-          ..productId = 'product-001'
+          ..productId = 'PRD-001'
           ..quantity = 1
           ..unitPrice = 10000
           ..total = 10000,
         OrderLineItem()
-          ..productId = 'product-002'
+          ..productId = 'PRD-002'
           ..quantity = 1
           ..unitPrice = 15000
           ..total = 15000,
       ])
       ..createdAt = Timestamp.fromDateTime(DateTime.now())
-      ..createdByUserId = 'user-001'
+      ..createdByUserId = 'USR-001'
       ..notes = 'Initial purchase order',
     PurchaseOrder()
-      ..documentId = 'PO-2025-002'
-      ..supplierId = 'supplier-001'
-      ..buyerId = 'store-001'
+      ..refId = 'PO-2025-002'
+      ..supplierId = 'SUP-001'
+      ..buyerId = 'STR-001'
       ..status = PurchaseOrderStatus.PO_STATUS_RECEIVED
       ..totalAmount = 5000
       ..items.addAll([
@@ -535,7 +535,7 @@ final fakeData = <String, List<dynamic>>{
       ..createdAt = Timestamp.fromDateTime(
         DateTime.now().subtract(const Duration(days: 5)),
       )
-      ..createdByUserId = 'user-001'
+      ..createdByUserId = 'USR-001'
       ..notes = 'Received order',
   ],
   CollectionName.resourceLinks: fakeResourceLinks,

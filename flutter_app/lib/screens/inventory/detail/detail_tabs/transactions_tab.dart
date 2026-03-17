@@ -166,7 +166,7 @@ class _TransactionTable extends StatelessWidget {
       columns = [
         dateColumn,
         ShadDataGridColumn(label: Intls.to.type),
-        ShadDataGridColumn(label: Intls.to.documentId),
+        ShadDataGridColumn(label: Intls.to.refId),
         ShadDataGridColumn(label: Intls.to.quantityChange),
         ShadDataGridColumn(label: Intls.to.notes),
       ];
@@ -244,10 +244,7 @@ class _TransactionTable extends StatelessWidget {
               Formatters.formatDate(transaction.transactionTime.toDateTime()),
               style: theme.textTheme.small,
             ),
-            _TransactionCell(
-              transaction.documentId,
-              style: theme.textTheme.small,
-            ),
+            _TransactionCell(transaction.refId, style: theme.textTheme.small),
             _TransactionCell(
               transaction.quantityChange.toString(),
               style: theme.textTheme.small.copyWith(
@@ -270,10 +267,7 @@ class _TransactionTable extends StatelessWidget {
             _getTransactionTypeLabel(transaction.transactionType),
             style: theme.textTheme.small,
           ),
-          _TransactionCell(
-            transaction.documentId,
-            style: theme.textTheme.small,
-          ),
+          _TransactionCell(transaction.refId, style: theme.textTheme.small),
           _TransactionCell(
             transaction.quantityChange.toString(),
             style: theme.textTheme.small.copyWith(

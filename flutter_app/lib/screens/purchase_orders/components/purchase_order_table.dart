@@ -101,7 +101,7 @@ class _PurchaseOrderDataTable extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             alignment: Alignment.centerLeft,
             child: Text(
-              order.documentId,
+              order.refId,
               style: theme.textTheme.small.copyWith(
                 fontWeight: FontWeight.w600,
               ),

@@ -430,7 +430,7 @@ class PointOfSaleController extends ChangeNotifier {
             voucherCode: voucherCode,
             initialValue: response?.remainingValue ?? 0,
             remainingValue: response?.remainingValue ?? 0,
-            documentId: response?.voucherId ?? '',
+            refId: response?.voucherId ?? '',
             validUntil: response?.validUntil,
             status: response?.status,
           )

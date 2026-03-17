@@ -69,9 +69,9 @@ class _TransactionCard<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     String _getTransactionDocumentId() {
       if (transaction is InventoryTransaction) {
-        return (transaction as InventoryTransaction).documentId;
+        return (transaction as InventoryTransaction).refId;
       } else if (transaction is VoucherTransaction) {
-        return (transaction as VoucherTransaction).documentId;
+        return (transaction as VoucherTransaction).refId;
       }
 
       return 'N/A';

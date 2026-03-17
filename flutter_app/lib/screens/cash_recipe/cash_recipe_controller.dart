@@ -56,9 +56,9 @@ final class CashRecipeController extends ChangeNotifier {
 
   /// Handle cash receipt tap
   void onCashReceiptTap(BuildContext context, CashReceipt receipt) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Receipt ${receipt.documentId} tapped')),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text('Receipt ${receipt.refId} tapped')));
   }
 
   /// Show receipt preview
@@ -66,9 +66,9 @@ final class CashRecipeController extends ChangeNotifier {
     BuildContext context,
     CashReceipt receipt,
   ) async {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Preview for ${receipt.documentId}')),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text('Preview for ${receipt.refId}')));
   }
 
   /// Print receipt.

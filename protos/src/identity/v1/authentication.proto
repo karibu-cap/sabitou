@@ -102,4 +102,16 @@ service AuthService {
 
   // Process the password reset request.
   rpc ResetPassword(ResetPasswordRequest) returns (ResetPasswordResponse) {}
+
+  // Refresh the authentication token.
+  rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse) {}
+}
+
+message RefreshTokenRequest {
+  string refresh_token = 1;
+}
+
+message RefreshTokenResponse {
+  string token = 1;
+  string refresh_token = 2;
 }

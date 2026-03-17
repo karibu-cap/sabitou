@@ -102,7 +102,7 @@ func (PurchaseOrderStatus) EnumDescriptor() ([]byte, []int) {
 type PurchaseOrder struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// "PO-2025-001"
-	DocumentId string `protobuf:"bytes,1,opt,name=document_id,json=documentId,proto3" json:"document_id,omitempty"`
+	RefId string `protobuf:"bytes,1,opt,name=ref_id,json=refId,proto3" json:"ref_id,omitempty"`
 	// Company selling to you
 	SupplierId string `protobuf:"bytes,2,opt,name=supplier_id,json=supplierId,proto3" json:"supplier_id,omitempty"`
 	// Your company
@@ -149,9 +149,9 @@ func (*PurchaseOrder) Descriptor() ([]byte, []int) {
 	return file_order_v1_purchase_order_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *PurchaseOrder) GetDocumentId() string {
+func (x *PurchaseOrder) GetRefId() string {
 	if x != nil {
-		return x.DocumentId
+		return x.RefId
 	}
 	return ""
 }
@@ -1039,10 +1039,9 @@ var File_order_v1_purchase_order_proto protoreflect.FileDescriptor
 
 const file_order_v1_purchase_order_proto_rawDesc = "" +
 	"\n" +
-	"\x1dorder/v1/purchase_order.proto\x12\border.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1afinancial/v1/invoice.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a!logistic/v1/receiving_notes.proto\x1a\x1aorder/v1/order_utils.proto\x1a\x1apayments/v1/payments.proto\"\xaa\x04\n" +
-	"\rPurchaseOrder\x12'\n" +
-	"\vdocument_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\n" +
-	"documentId\x12\x1f\n" +
+	"\x1dorder/v1/purchase_order.proto\x12\border.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1afinancial/v1/invoice.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a!logistic/v1/receiving_notes.proto\x1a\x1aorder/v1/order_utils.proto\x1a\x1apayments/v1/payments.proto\"\xa0\x04\n" +
+	"\rPurchaseOrder\x12\x1d\n" +
+	"\x06ref_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x05refId\x12\x1f\n" +
 	"\vsupplier_id\x18\x02 \x01(\tR\n" +
 	"supplierId\x12\x19\n" +
 	"\bbuyer_id\x18\x03 \x01(\tR\abuyerId\x125\n" +

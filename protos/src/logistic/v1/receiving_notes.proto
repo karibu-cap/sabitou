@@ -23,7 +23,7 @@ import "google/protobuf/timestamp.proto";
  * INVENTORY IMPACT: +48 PRD-001 in WH-001
  */
 message ReceivingNote {
-  string document_id = 1 [(buf.validate.field).required = true]; // "RN-2025-001"
+  string ref_id = 1 [(buf.validate.field).required = true]; // "RN-2025-001"
   string related_purchase_order_id = 2; // Which PO this fulfills
   string supplier_id = 3; // Who sent the goods
   string buyer_id = 4; // Where goods are stored

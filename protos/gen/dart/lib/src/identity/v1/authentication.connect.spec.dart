@@ -41,4 +41,12 @@ abstract final class AuthService {
     identityv1authentication.ResetPasswordRequest.new,
     identityv1authentication.ResetPasswordResponse.new,
   );
+
+  /// Refresh the authentication token.
+  static const refreshToken = connect.Spec(
+    '/$name/RefreshToken',
+    connect.StreamType.unary,
+    identityv1authentication.RefreshTokenRequest.new,
+    identityv1authentication.RefreshTokenResponse.new,
+  );
 }

@@ -36,7 +36,7 @@ export 'payments.pbenum.dart';
 ///    status: PAYMENT_STATUS_COMPLETED
 class Payment extends $pb.GeneratedMessage {
   factory Payment({
-    $core.String? documentId,
+    $core.String? refId,
     $core.String? payerId,
     $core.String? receiver,
     $core.double? amount,
@@ -50,7 +50,7 @@ class Payment extends $pb.GeneratedMessage {
     $core.String? notes,
   }) {
     final result = create();
-    if (documentId != null) result.documentId = documentId;
+    if (refId != null) result.refId = refId;
     if (payerId != null) result.payerId = payerId;
     if (receiver != null) result.receiver = receiver;
     if (amount != null) result.amount = amount;
@@ -78,7 +78,7 @@ class Payment extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'Payment',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'payments.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'documentId')
+    ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..aOS(2, _omitFieldNames ? '' : 'payerId')
     ..aOS(3, _omitFieldNames ? '' : 'receiver')
     ..a<$core.double>(4, _omitFieldNames ? '' : 'amount', $pb.PbFieldType.OD)
@@ -120,13 +120,13 @@ class Payment extends $pb.GeneratedMessage {
   static Payment? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get documentId => $_getSZ(0);
+  $core.String get refId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set documentId($core.String value) => $_setString(0, value);
+  set refId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasDocumentId() => $_has(0);
+  $core.bool hasRefId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearDocumentId() => $_clearField(1);
+  void clearRefId() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get payerId => $_getSZ(1);

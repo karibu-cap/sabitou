@@ -48,7 +48,7 @@ class ReceiveNoteFormController extends ChangeNotifier {
 
   /// Constructors of new [ReceiveNoteFormController].
   ReceiveNoteFormController({required this.purchaseOrder})
-    : relatedPurchaseOrderId = purchaseOrder.documentId,
+    : relatedPurchaseOrderId = purchaseOrder.refId,
       buyerId = purchaseOrder.buyerId,
       selectedSupplierId = purchaseOrder.supplierId,
       receivedAt = clock.now(),

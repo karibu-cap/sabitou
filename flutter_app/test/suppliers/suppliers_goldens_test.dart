@@ -158,7 +158,7 @@ final userFakeTransport = FakeTransportBuilder()
           ..quantityAvailable = 20
           ..batches.add(
             Batch()
-              ..documentId = 'batch_1'
+              ..refId = 'batch_1'
               ..productId = 'sp_3'
               ..warehouseId = request.storeId
               ..quantity = 20
@@ -171,7 +171,7 @@ final userFakeTransport = FakeTransportBuilder()
           )
           ..batches.add(
             Batch()
-              ..documentId = 'batch_2'
+              ..refId = 'batch_2'
               ..productId = 'sp_3'
               ..warehouseId = request.storeId
               ..quantity = 0

@@ -23,11 +23,13 @@ import 'repositories/suppliers_repository.dart';
 import 'repositories/users_repository.dart';
 import 'router/app_router.dart';
 import 'services/app_theme_service.dart';
+import 'services/auth/auth_api_client.dart';
+import 'services/auth/token_service.dart';
 import 'services/data_sync/data_sync_service.dart';
 import 'services/internationalization/internationalization.dart';
 import 'services/network_status_provider/network_status_provider.dart';
+import 'services/powersync/powersync_service.dart';
 import 'services/rpc/connect_rpc.dart';
-import 'services/rpc/fake_transport.dart';
 import 'services/rpc/fake_transport/data_sync.dart';
 import 'services/storage/app_storage.dart';
 import 'services/storage/hive_ce/hive_adapters.dart';
@@ -48,13 +50,15 @@ Future<void> _initServices() async {
   final networkStatusProvider = NetworkStatusProvider.create(
     type: NetworkProviderType.real,
   );
+  GetIt.I.registerSingleton<ConnectRPCService>(ConnectRPCService());
+
+  final authApiClient = GetIt.I.registerSingleton<AuthApiClient>(
+    AuthApiClient(),
+  );
   final languageCode = await AppStorage.of<Locale>().read(
     PreferencesKey.language,
   );
   GetIt.I
-    ..registerLazySingleton<ConnectRPCService>(
-      () => ConnectRPCService(clientChannel: fakeTransport),
-    )
     ..registerLazySingleton<NetworkStatusProvider>(() => networkStatusProvider)
     ..registerLazySingleton<AppInternationalizationService>(
       () => AppInternationalizationService(
@@ -63,19 +67,23 @@ Future<void> _initServices() async {
             : const Locale('en'),
       ),
     )
-    ..registerLazySingleton<UserPreferences>(() => UserPreferences(null))
-    ..registerLazySingleton<ReportsRepository>(ReportsRepository.new)
-    ..registerLazySingleton<AuthRepository>(AuthRepository.new)
+    ..registerLazySingleton<AuthRepository>(
+      () => AuthRepository(
+        apiClient: authApiClient,
+        tokenService: TokenService.instance,
+      ),
+    )
     ..registerLazySingleton<StoreProductsRepository>(
       StoreProductsRepository.new,
     )
+    ..registerLazySingleton<UserPreferences>(() => UserPreferences(null))
+    ..registerLazySingleton<ReportsRepository>(ReportsRepository.new)
     ..registerLazySingleton<SuppliersRepository>(SuppliersRepository.new)
     ..registerLazySingleton<ResourceLinkRepository>(ResourceLinkRepository.new)
     ..registerLazySingleton<PermissionsRepository>(PermissionsRepository.new)
     ..registerLazySingleton<BusinessRepository>(BusinessRepository.new)
     ..registerLazySingleton<StoresRepository>(StoresRepository.new)
     ..registerLazySingleton<UserRepository>(UserRepository.new)
-    ..registerSingleton<AuthProvider>(AuthProvider())
     ..registerLazySingleton<InventoryRepository>(InventoryRepository.new)
     ..registerLazySingleton<GiftVoucherRepository>(GiftVoucherRepository.new)
     ..registerLazySingleton<PosRepository>(PosRepository.new)
@@ -90,12 +98,24 @@ Future<void> _initServices() async {
     ..registerLazySingleton<CartManager>(CartManager.new);
 
   // Wait for AuthProvider to initialize from storage
-  GetIt.I.get<AuthProvider>();
+  GetIt.I.registerSingleton<AuthProvider>(
+    AuthProvider(
+      authRepository: GetIt.I.get<AuthRepository>(),
+      tokenService: TokenService.instance,
+      powerSync: PowerSyncService.instance,
+      authApiClient: GetIt.I.get<AuthApiClient>(),
+    ),
+  );
 
   /// Initialize the get storage service.
   await AppRouter.init(AppRouterType.gorouter);
 
-  ///
+  // Wire the Dio logout callback now that AuthProvider is in the container.
+  // When a 401 is received and token refresh also fails, Dio will call this
+  // to force the user back to the login screen.
+  GetIt.I.get<AuthApiClient>().onUnauthorized = () {
+    GetIt.I.get<AuthProvider>().logout();
+  };
 }
 
 /// The main application widget.

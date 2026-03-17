@@ -5,9 +5,12 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   connectivity_plus
   file_selector_windows
+  flutter_secure_storage_windows
   flutter_thermal_printer
   permission_handler_windows
+  powersync_flutter_libs
   printing
+  sqlite3_flutter_libs
   universal_ble
   webview_windows
 )

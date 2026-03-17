@@ -99,7 +99,7 @@ func (VoucherStatus) EnumDescriptor() ([]byte, []int) {
 type GiftVoucher struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// "GV-2025-001"
-	DocumentId string `protobuf:"bytes,1,opt,name=document_id,json=documentId,proto3" json:"document_id,omitempty"`
+	RefId string `protobuf:"bytes,1,opt,name=ref_id,json=refId,proto3" json:"ref_id,omitempty"`
 	// "GIFT-XMAS-12345" - what customer uses
 	VoucherCode string `protobuf:"bytes,2,opt,name=voucher_code,json=voucherCode,proto3" json:"voucher_code,omitempty"`
 	// Original amount
@@ -150,9 +150,9 @@ func (*GiftVoucher) Descriptor() ([]byte, []int) {
 	return file_payments_v1_gift_voucher_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *GiftVoucher) GetDocumentId() string {
+func (x *GiftVoucher) GetRefId() string {
 	if x != nil {
-		return x.DocumentId
+		return x.RefId
 	}
 	return ""
 }
@@ -637,10 +637,9 @@ var File_payments_v1_gift_voucher_proto protoreflect.FileDescriptor
 
 const file_payments_v1_gift_voucher_proto_rawDesc = "" +
 	"\n" +
-	"\x1epayments/v1/gift_voucher.proto\x12\vpayments.v1\x1a#audits/v1/voucher_transaction.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xb2\x04\n" +
-	"\vGiftVoucher\x12'\n" +
-	"\vdocument_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\n" +
-	"documentId\x12!\n" +
+	"\x1epayments/v1/gift_voucher.proto\x12\vpayments.v1\x1a#audits/v1/voucher_transaction.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xa8\x04\n" +
+	"\vGiftVoucher\x12\x1d\n" +
+	"\x06ref_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x05refId\x12!\n" +
 	"\fvoucher_code\x18\x02 \x01(\tR\vvoucherCode\x12#\n" +
 	"\rinitial_value\x18\x03 \x01(\x01R\finitialValue\x12'\n" +
 	"\x0fremaining_value\x18\x04 \x01(\x01R\x0eremainingValue\x12\x1a\n" +

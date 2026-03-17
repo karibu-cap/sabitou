@@ -35,7 +35,7 @@ final $typed_data.Uint8List receivingNoteStatusDescriptor = $convert.base64Decod
 const ReceivingNote$json = {
   '1': 'ReceivingNote',
   '2': [
-    {'1': 'document_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'documentId'},
+    {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'refId'},
     {
       '1': 'related_purchase_order_id',
       '3': 2,
@@ -74,13 +74,13 @@ const ReceivingNote$json = {
 
 /// Descriptor for `ReceivingNote`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List receivingNoteDescriptor = $convert.base64Decode(
-    'Cg1SZWNlaXZpbmdOb3RlEicKC2RvY3VtZW50X2lkGAEgASgJQga6SAPIAQFSCmRvY3VtZW50SW'
-    'QSOQoZcmVsYXRlZF9wdXJjaGFzZV9vcmRlcl9pZBgCIAEoCVIWcmVsYXRlZFB1cmNoYXNlT3Jk'
-    'ZXJJZBIfCgtzdXBwbGllcl9pZBgDIAEoCVIKc3VwcGxpZXJJZBIZCghidXllcl9pZBgEIAEoCV'
-    'IHYnV5ZXJJZBI0CgVpdGVtcxgFIAMoCzIeLmxvZ2lzdGljLnYxLlJlY2VpdmluZ0xpbmVJdGVt'
-    'UgVpdGVtcxItChNyZWNlaXZlZF9ieV91c2VyX2lkGAYgASgJUhByZWNlaXZlZEJ5VXNlcklkEj'
-    'sKC3JlY2VpdmVkX2F0GAcgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIKcmVjZWl2'
-    'ZWRBdBIUCgVub3RlcxgIIAEoCVIFbm90ZXM=');
+    'Cg1SZWNlaXZpbmdOb3RlEh0KBnJlZl9pZBgBIAEoCUIGukgDyAEBUgVyZWZJZBI5ChlyZWxhdG'
+    'VkX3B1cmNoYXNlX29yZGVyX2lkGAIgASgJUhZyZWxhdGVkUHVyY2hhc2VPcmRlcklkEh8KC3N1'
+    'cHBsaWVyX2lkGAMgASgJUgpzdXBwbGllcklkEhkKCGJ1eWVyX2lkGAQgASgJUgdidXllcklkEj'
+    'QKBWl0ZW1zGAUgAygLMh4ubG9naXN0aWMudjEuUmVjZWl2aW5nTGluZUl0ZW1SBWl0ZW1zEi0K'
+    'E3JlY2VpdmVkX2J5X3VzZXJfaWQYBiABKAlSEHJlY2VpdmVkQnlVc2VySWQSOwoLcmVjZWl2ZW'
+    'RfYXQYByABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUgpyZWNlaXZlZEF0EhQKBW5v'
+    'dGVzGAggASgJUgVub3Rlcw==');
 
 @$core.Deprecated('Use receivingLineItemDescriptor instead')
 const ReceivingLineItem$json = {

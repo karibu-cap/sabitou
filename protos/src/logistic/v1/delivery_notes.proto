@@ -25,7 +25,7 @@ import "google/protobuf/timestamp.proto";
  * INVENTORY IMPACT: -10 PRD-001 from WH-001
  */
 message DeliveryNote {
-  string document_id = 1 [(buf.validate.field).required = true]; // "DN-2025-001"
+  string ref_id = 1 [(buf.validate.field).required = true]; // "DN-2025-001"
   string related_sales_order_id = 2; // Optional link to order
   string from_warehouse_id = 3; // Where goods leave
   string to_company_id = 4; // Customer receiving

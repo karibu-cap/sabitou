@@ -107,20 +107,18 @@ class _PurchaseOrderField extends StatelessWidget {
           enabled: !formController.isSubmitting,
           options: purchaseOrders.map((po) {
             return ShadOption(
-              value: po.documentId,
-              child: Text('${po.documentId} - ${po.supplierId}'),
+              value: po.refId,
+              child: Text('${po.refId} - ${po.supplierId}'),
             );
           }).toList(),
           selectedOptionBuilder: (context, value) {
             final po = purchaseOrders.firstWhere(
-              (p) => p.documentId == value,
+              (p) => p.refId == value,
               orElse: PurchaseOrder.new,
             );
 
             return Text(
-              po.documentId.isNotEmpty
-                  ? '${po.documentId} - ${po.supplierId}'
-                  : value,
+              po.refId.isNotEmpty ? '${po.refId} - ${po.supplierId}' : value,
             );
           },
           validator: (value) => ValidationFormUtils.validateString(
@@ -131,7 +129,7 @@ class _PurchaseOrderField extends StatelessWidget {
             formController.relatedPurchaseOrderId = value;
             if (value != null && value.isNotEmpty) {
               final po = purchaseOrders.firstWhere(
-                (p) => p.documentId == value,
+                (p) => p.refId == value,
                 orElse: PurchaseOrder.new,
               );
               if (po.supplierId.isNotEmpty) {

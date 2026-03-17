@@ -30,7 +30,7 @@ import "google/protobuf/timestamp.proto";
  * INVENTORY IMPACT: None (already moved by DeliveryNote)
  */
 message Invoice {
-  string document_id = 1 [(buf.validate.field).required = true]; // "INV-2025-001"
+  string ref_id = 1 [(buf.validate.field).required = true]; // "INV-2025-001"
   InvoiceType invoice_type = 2; // Sales or Purchase
   string issuer_id = 3; // Company issuing invoice
   string recipient_id = 4; // Company receiving invoice

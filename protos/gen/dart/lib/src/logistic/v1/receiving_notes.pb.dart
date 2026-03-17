@@ -38,7 +38,7 @@ export 'receiving_notes.pbenum.dart';
 ///  INVENTORY IMPACT: +48 PRD-001 in WH-001
 class ReceivingNote extends $pb.GeneratedMessage {
   factory ReceivingNote({
-    $core.String? documentId,
+    $core.String? refId,
     $core.String? relatedPurchaseOrderId,
     $core.String? supplierId,
     $core.String? buyerId,
@@ -48,7 +48,7 @@ class ReceivingNote extends $pb.GeneratedMessage {
     $core.String? notes,
   }) {
     final result = create();
-    if (documentId != null) result.documentId = documentId;
+    if (refId != null) result.refId = refId;
     if (relatedPurchaseOrderId != null)
       result.relatedPurchaseOrderId = relatedPurchaseOrderId;
     if (supplierId != null) result.supplierId = supplierId;
@@ -73,7 +73,7 @@ class ReceivingNote extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'ReceivingNote',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'logistic.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'documentId')
+    ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..aOS(2, _omitFieldNames ? '' : 'relatedPurchaseOrderId')
     ..aOS(3, _omitFieldNames ? '' : 'supplierId')
     ..aOS(4, _omitFieldNames ? '' : 'buyerId')
@@ -108,13 +108,13 @@ class ReceivingNote extends $pb.GeneratedMessage {
   static ReceivingNote? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get documentId => $_getSZ(0);
+  $core.String get refId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set documentId($core.String value) => $_setString(0, value);
+  set refId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasDocumentId() => $_has(0);
+  $core.bool hasRefId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearDocumentId() => $_clearField(1);
+  void clearRefId() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get relatedPurchaseOrderId => $_getSZ(1);

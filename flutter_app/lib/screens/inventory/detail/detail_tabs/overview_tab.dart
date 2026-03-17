@@ -79,7 +79,7 @@ class OverviewTab extends StatelessWidget {
                       )
                       .map(
                         (batch) => _BuildDetailRow(
-                          label: '${Intls.to.costPrice} (${batch.documentId})',
+                          label: '${Intls.to.costPrice} (${batch.refId})',
                           value: Formatters.formatCurrency(
                             batch.purchasePrice.toDouble(),
                           ),

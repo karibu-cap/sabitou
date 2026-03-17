@@ -33,7 +33,7 @@ import "payments/v1/payments.proto";
  */
 message CashReceipt {
   // "CASH-2025-001"
-  string document_id = 1 [(buf.validate.field).required = true];
+  string ref_id = 1 [(buf.validate.field).required = true];
   // Who processed sale
   string cashier_user_id = 2;
   // Can be null for anonymous

@@ -121,7 +121,7 @@ func (TransactionType) EnumDescriptor() ([]byte, []int) {
 //	batch_id: "BATCH-2025-001"
 type InventoryTransaction struct {
 	state               protoimpl.MessageState `protogen:"open.v1"`
-	DocumentId          *string                `protobuf:"bytes,1,opt,name=document_id,json=documentId,proto3,oneof" json:"document_id,omitempty"` // "TXN-2025-00123"
+	RefId               *string                `protobuf:"bytes,1,opt,name=ref_id,json=refId,proto3,oneof" json:"ref_id,omitempty"` // "TXN-2025-00123"
 	StoreId             string                 `protobuf:"bytes,2,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
 	ProductId           string                 `protobuf:"bytes,3,opt,name=product_id,json=productId,proto3" json:"product_id,omitempty"`
 	TransactionType     TransactionType        `protobuf:"varint,4,opt,name=transaction_type,json=transactionType,proto3,enum=audits.v1.TransactionType" json:"transaction_type,omitempty"`
@@ -171,9 +171,9 @@ func (*InventoryTransaction) Descriptor() ([]byte, []int) {
 	return file_audits_v1_inventory_transaction_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *InventoryTransaction) GetDocumentId() string {
-	if x != nil && x.DocumentId != nil {
-		return *x.DocumentId
+func (x *InventoryTransaction) GetRefId() string {
+	if x != nil && x.RefId != nil {
+		return *x.RefId
 	}
 	return ""
 }
@@ -287,10 +287,9 @@ var File_audits_v1_inventory_transaction_proto protoreflect.FileDescriptor
 
 const file_audits_v1_inventory_transaction_proto_rawDesc = "" +
 	"\n" +
-	"%audits/v1/inventory_transaction.proto\x12\taudits.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xb9\x05\n" +
-	"\x14InventoryTransaction\x12,\n" +
-	"\vdocument_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01H\x00R\n" +
-	"documentId\x88\x01\x01\x12\x19\n" +
+	"%audits/v1/inventory_transaction.proto\x12\taudits.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xaa\x05\n" +
+	"\x14InventoryTransaction\x12\"\n" +
+	"\x06ref_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01H\x00R\x05refId\x88\x01\x01\x12\x19\n" +
 	"\bstore_id\x18\x02 \x01(\tR\astoreId\x12\x1d\n" +
 	"\n" +
 	"product_id\x18\x03 \x01(\tR\tproductId\x12E\n" +
@@ -308,8 +307,8 @@ const file_audits_v1_inventory_transaction_proto_rawDesc = "" +
 	"\n" +
 	"unit_price\x18\x0e \x01(\x01R\tunitPrice\x12!\n" +
 	"\ftotal_amount\x18\x0f \x01(\x01R\vtotalAmount\x12\x1a\n" +
-	"\bcurrency\x18\x10 \x01(\tR\bcurrencyB\x0e\n" +
-	"\f_document_id*\xac\x02\n" +
+	"\bcurrency\x18\x10 \x01(\tR\bcurrencyB\t\n" +
+	"\a_ref_id*\xac\x02\n" +
 	"\x0fTransactionType\x12\x18\n" +
 	"\x14TXN_TYPE_UNSPECIFIED\x10\x00\x12\x15\n" +
 	"\x11TXN_TYPE_PURCHASE\x10\x01\x12\x11\n" +

@@ -94,7 +94,7 @@ func (ReceivingNoteStatus) EnumDescriptor() ([]byte, []int) {
 // INVENTORY IMPACT: +48 PRD-001 in WH-001
 type ReceivingNote struct {
 	state                  protoimpl.MessageState `protogen:"open.v1"`
-	DocumentId             string                 `protobuf:"bytes,1,opt,name=document_id,json=documentId,proto3" json:"document_id,omitempty"`                                         // "RN-2025-001"
+	RefId                  string                 `protobuf:"bytes,1,opt,name=ref_id,json=refId,proto3" json:"ref_id,omitempty"`                                                        // "RN-2025-001"
 	RelatedPurchaseOrderId string                 `protobuf:"bytes,2,opt,name=related_purchase_order_id,json=relatedPurchaseOrderId,proto3" json:"related_purchase_order_id,omitempty"` // Which PO this fulfills
 	SupplierId             string                 `protobuf:"bytes,3,opt,name=supplier_id,json=supplierId,proto3" json:"supplier_id,omitempty"`                                         // Who sent the goods
 	BuyerId                string                 `protobuf:"bytes,4,opt,name=buyer_id,json=buyerId,proto3" json:"buyer_id,omitempty"`                                                  // Where goods are stored
@@ -136,9 +136,9 @@ func (*ReceivingNote) Descriptor() ([]byte, []int) {
 	return file_logistic_v1_receiving_notes_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *ReceivingNote) GetDocumentId() string {
+func (x *ReceivingNote) GetRefId() string {
 	if x != nil {
-		return x.DocumentId
+		return x.RefId
 	}
 	return ""
 }
@@ -308,10 +308,9 @@ var File_logistic_v1_receiving_notes_proto protoreflect.FileDescriptor
 
 const file_logistic_v1_receiving_notes_proto_rawDesc = "" +
 	"\n" +
-	"!logistic/v1/receiving_notes.proto\x12\vlogistic.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xe7\x02\n" +
-	"\rReceivingNote\x12'\n" +
-	"\vdocument_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\n" +
-	"documentId\x129\n" +
+	"!logistic/v1/receiving_notes.proto\x12\vlogistic.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xdd\x02\n" +
+	"\rReceivingNote\x12\x1d\n" +
+	"\x06ref_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x05refId\x129\n" +
 	"\x19related_purchase_order_id\x18\x02 \x01(\tR\x16relatedPurchaseOrderId\x12\x1f\n" +
 	"\vsupplier_id\x18\x03 \x01(\tR\n" +
 	"supplierId\x12\x19\n" +

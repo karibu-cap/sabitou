@@ -18,7 +18,7 @@ import 'dart:typed_data' as $typed_data;
 const VoucherTransaction$json = {
   '1': 'VoucherTransaction',
   '2': [
-    {'1': 'document_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'documentId'},
+    {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'refId'},
     {'1': 'voucher_id', '3': 2, '4': 1, '5': 9, '10': 'voucherId'},
     {
       '1': 'related_invoice_id',
@@ -50,10 +50,10 @@ const VoucherTransaction$json = {
 
 /// Descriptor for `VoucherTransaction`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List voucherTransactionDescriptor = $convert.base64Decode(
-    'ChJWb3VjaGVyVHJhbnNhY3Rpb24SJwoLZG9jdW1lbnRfaWQYASABKAlCBrpIA8gBAVIKZG9jdW'
-    '1lbnRJZBIdCgp2b3VjaGVyX2lkGAIgASgJUgl2b3VjaGVySWQSLAoScmVsYXRlZF9pbnZvaWNl'
-    'X2lkGAMgASgJUhByZWxhdGVkSW52b2ljZUlkEiwKEnJlbGF0ZWRfcmVjZWlwdF9pZBgEIAEoCV'
-    'IQcmVsYXRlZFJlY2VpcHRJZBIfCgthbW91bnRfdXNlZBgFIAEoAVIKYW1vdW50VXNlZBInCg9y'
-    'ZW1haW5pbmdfYWZ0ZXIYBiABKAFSDnJlbWFpbmluZ0FmdGVyEjMKB3VzZWRfYXQYByABKAsyGi'
-    '5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUgZ1c2VkQXQSJQoPdXNlZF9ieV91c2VyX2lkGAgg'
-    'ASgJUgx1c2VkQnlVc2VySWQ=');
+    'ChJWb3VjaGVyVHJhbnNhY3Rpb24SHQoGcmVmX2lkGAEgASgJQga6SAPIAQFSBXJlZklkEh0KCn'
+    'ZvdWNoZXJfaWQYAiABKAlSCXZvdWNoZXJJZBIsChJyZWxhdGVkX2ludm9pY2VfaWQYAyABKAlS'
+    'EHJlbGF0ZWRJbnZvaWNlSWQSLAoScmVsYXRlZF9yZWNlaXB0X2lkGAQgASgJUhByZWxhdGVkUm'
+    'VjZWlwdElkEh8KC2Ftb3VudF91c2VkGAUgASgBUgphbW91bnRVc2VkEicKD3JlbWFpbmluZ19h'
+    'ZnRlchgGIAEoAVIOcmVtYWluaW5nQWZ0ZXISMwoHdXNlZF9hdBgHIAEoCzIaLmdvb2dsZS5wcm'
+    '90b2J1Zi5UaW1lc3RhbXBSBnVzZWRBdBIlCg91c2VkX2J5X3VzZXJfaWQYCCABKAlSDHVzZWRC'
+    'eVVzZXJJZA==');

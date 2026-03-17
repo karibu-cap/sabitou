@@ -46,7 +46,7 @@ export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 ///  ACCOUNTING IMPACT: Immediate revenue + payment
 class CashReceipt extends $pb.GeneratedMessage {
   factory CashReceipt({
-    $core.String? documentId,
+    $core.String? refId,
     $core.String? cashierUserId,
     $core.String? customerId,
     $core.String? storeId,
@@ -64,7 +64,7 @@ class CashReceipt extends $pb.GeneratedMessage {
     $core.double? owedToCustomer,
   }) {
     final result = create();
-    if (documentId != null) result.documentId = documentId;
+    if (refId != null) result.refId = refId;
     if (cashierUserId != null) result.cashierUserId = cashierUserId;
     if (customerId != null) result.customerId = customerId;
     if (storeId != null) result.storeId = storeId;
@@ -96,7 +96,7 @@ class CashReceipt extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'CashReceipt',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'payments.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'documentId')
+    ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..aOS(2, _omitFieldNames ? '' : 'cashierUserId')
     ..aOS(3, _omitFieldNames ? '' : 'customerId')
     ..aOS(4, _omitFieldNames ? '' : 'storeId')
@@ -143,13 +143,13 @@ class CashReceipt extends $pb.GeneratedMessage {
 
   /// "CASH-2025-001"
   @$pb.TagNumber(1)
-  $core.String get documentId => $_getSZ(0);
+  $core.String get refId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set documentId($core.String value) => $_setString(0, value);
+  set refId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasDocumentId() => $_has(0);
+  $core.bool hasRefId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearDocumentId() => $_clearField(1);
+  void clearRefId() => $_clearField(1);
 
   /// Who processed sale
   @$pb.TagNumber(2)

@@ -58,7 +58,7 @@ final $typed_data.Uint8List stockStatusDescriptor = $convert.base64Decode(
 const Batch$json = {
   '1': 'Batch',
   '2': [
-    {'1': 'document_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'documentId'},
+    {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'refId'},
     {'1': 'product_id', '3': 2, '4': 1, '5': 9, '10': 'productId'},
     {'1': 'warehouse_id', '3': 3, '4': 1, '5': 9, '10': 'warehouseId'},
     {'1': 'quantity', '3': 4, '4': 1, '5': 5, '10': 'quantity'},
@@ -101,15 +101,15 @@ const Batch$json = {
 
 /// Descriptor for `Batch`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List batchDescriptor = $convert.base64Decode(
-    'CgVCYXRjaBInCgtkb2N1bWVudF9pZBgBIAEoCUIGukgDyAEBUgpkb2N1bWVudElkEh0KCnByb2'
-    'R1Y3RfaWQYAiABKAlSCXByb2R1Y3RJZBIhCgx3YXJlaG91c2VfaWQYAyABKAlSC3dhcmVob3Vz'
-    'ZUlkEhoKCHF1YW50aXR5GAQgASgFUghxdWFudGl0eRJDCg9leHBpcmF0aW9uX2RhdGUYBSABKA'
-    'syGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUg5leHBpcmF0aW9uRGF0ZRI7CgtyZWNlaXZl'
-    'ZF9hdBgGIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSCnJlY2VpdmVkQXQSMgoVc3'
-    'VwcGxpZXJfYmF0Y2hfbnVtYmVyGAcgASgJUhNzdXBwbGllckJhdGNoTnVtYmVyEh8KC3N1cHBs'
-    'aWVyX2lkGAggASgJUgpzdXBwbGllcklkEiUKDnB1cmNoYXNlX3ByaWNlGAkgASgFUg1wdXJjaG'
-    'FzZVByaWNlEjEKBnN0YXR1cxgKIAEoDjIZLmludmVudG9yeS52MS5CYXRjaFN0YXR1c1IGc3Rh'
-    'dHVzEhQKBW5vdGVzGAsgASgJUgVub3Rlcw==');
+    'CgVCYXRjaBIdCgZyZWZfaWQYASABKAlCBrpIA8gBAVIFcmVmSWQSHQoKcHJvZHVjdF9pZBgCIA'
+    'EoCVIJcHJvZHVjdElkEiEKDHdhcmVob3VzZV9pZBgDIAEoCVILd2FyZWhvdXNlSWQSGgoIcXVh'
+    'bnRpdHkYBCABKAVSCHF1YW50aXR5EkMKD2V4cGlyYXRpb25fZGF0ZRgFIAEoCzIaLmdvb2dsZS'
+    '5wcm90b2J1Zi5UaW1lc3RhbXBSDmV4cGlyYXRpb25EYXRlEjsKC3JlY2VpdmVkX2F0GAYgASgL'
+    'MhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIKcmVjZWl2ZWRBdBIyChVzdXBwbGllcl9iYX'
+    'RjaF9udW1iZXIYByABKAlSE3N1cHBsaWVyQmF0Y2hOdW1iZXISHwoLc3VwcGxpZXJfaWQYCCAB'
+    'KAlSCnN1cHBsaWVySWQSJQoOcHVyY2hhc2VfcHJpY2UYCSABKAVSDXB1cmNoYXNlUHJpY2USMQ'
+    'oGc3RhdHVzGAogASgOMhkuaW52ZW50b3J5LnYxLkJhdGNoU3RhdHVzUgZzdGF0dXMSFAoFbm90'
+    'ZXMYCyABKAlSBW5vdGVz');
 
 @$core.Deprecated('Use inventoryLevelDescriptor instead')
 const InventoryLevel$json = {

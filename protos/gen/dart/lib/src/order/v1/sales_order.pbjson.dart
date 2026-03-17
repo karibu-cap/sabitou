@@ -47,7 +47,7 @@ final $typed_data.Uint8List salesOrderStatusDescriptor = $convert.base64Decode(
 const SalesOrder$json = {
   '1': 'SalesOrder',
   '2': [
-    {'1': 'document_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'documentId'},
+    {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'refId'},
     {'1': 'customer_id', '3': 2, '4': 1, '5': 9, '10': 'customerId'},
     {'1': 'seller_id', '3': 3, '4': 1, '5': 9, '10': 'sellerId'},
     {
@@ -119,17 +119,17 @@ const SalesOrder$json = {
 
 /// Descriptor for `SalesOrder`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List salesOrderDescriptor = $convert.base64Decode(
-    'CgpTYWxlc09yZGVyEicKC2RvY3VtZW50X2lkGAEgASgJQga6SAPIAQFSCmRvY3VtZW50SWQSHw'
-    'oLY3VzdG9tZXJfaWQYAiABKAlSCmN1c3RvbWVySWQSGwoJc2VsbGVyX2lkGAMgASgJUghzZWxs'
-    'ZXJJZBI4Chhzb3VyY2Vfd2FyZWhvdXNlX2FkZHJlc3MYBCABKAlSFnNvdXJjZVdhcmVob3VzZU'
-    'FkZHJlc3MSMgoGc3RhdHVzGAUgASgOMhoub3JkZXIudjEuU2FsZXNPcmRlclN0YXR1c1IGc3Rh'
-    'dHVzEi0KBWl0ZW1zGAYgAygLMhcub3JkZXIudjEuT3JkZXJMaW5lSXRlbVIFaXRlbXMSIQoMdG'
-    '90YWxfYW1vdW50GAcgASgBUgt0b3RhbEFtb3VudBIfCghjdXJyZW5jeRgIIAEoCUgAUghjdXJy'
-    'ZW5jeYgBARIrChJjcmVhdGVkX2J5X3VzZXJfaWQYCSABKAlSD2NyZWF0ZWRCeVVzZXJJZBI5Cg'
-    'pjcmVhdGVkX2F0GAogASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIJY3JlYXRlZEF0'
-    'EkQKDWRlbGl2ZXJ5X2RhdGUYCyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wSAFSDG'
-    'RlbGl2ZXJ5RGF0ZYgBARIZCgVub3RlcxgMIAEoCUgCUgVub3Rlc4gBAUILCglfY3VycmVuY3lC'
-    'EAoOX2RlbGl2ZXJ5X2RhdGVCCAoGX25vdGVz');
+    'CgpTYWxlc09yZGVyEh0KBnJlZl9pZBgBIAEoCUIGukgDyAEBUgVyZWZJZBIfCgtjdXN0b21lcl'
+    '9pZBgCIAEoCVIKY3VzdG9tZXJJZBIbCglzZWxsZXJfaWQYAyABKAlSCHNlbGxlcklkEjgKGHNv'
+    'dXJjZV93YXJlaG91c2VfYWRkcmVzcxgEIAEoCVIWc291cmNlV2FyZWhvdXNlQWRkcmVzcxIyCg'
+    'ZzdGF0dXMYBSABKA4yGi5vcmRlci52MS5TYWxlc09yZGVyU3RhdHVzUgZzdGF0dXMSLQoFaXRl'
+    'bXMYBiADKAsyFy5vcmRlci52MS5PcmRlckxpbmVJdGVtUgVpdGVtcxIhCgx0b3RhbF9hbW91bn'
+    'QYByABKAFSC3RvdGFsQW1vdW50Eh8KCGN1cnJlbmN5GAggASgJSABSCGN1cnJlbmN5iAEBEisK'
+    'EmNyZWF0ZWRfYnlfdXNlcl9pZBgJIAEoCVIPY3JlYXRlZEJ5VXNlcklkEjkKCmNyZWF0ZWRfYX'
+    'QYCiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUgljcmVhdGVkQXQSRAoNZGVsaXZl'
+    'cnlfZGF0ZRgLIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBIAVIMZGVsaXZlcnlEYX'
+    'RliAEBEhkKBW5vdGVzGAwgASgJSAJSBW5vdGVziAEBQgsKCV9jdXJyZW5jeUIQCg5fZGVsaXZl'
+    'cnlfZGF0ZUIICgZfbm90ZXM=');
 
 @$core.Deprecated('Use createSalesOrderRequestDescriptor instead')
 const CreateSalesOrderRequest$json = {

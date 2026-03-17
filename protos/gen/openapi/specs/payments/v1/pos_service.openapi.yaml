@@ -220,9 +220,9 @@ components:
     financial.v1.Invoice:
       type: object
       properties:
-        documentId:
+        refId:
           type: string
-          title: document_id
+          title: ref_id
           description: '"INV-2025-001"'
         invoiceType:
           title: invoice_type
@@ -301,7 +301,7 @@ components:
           description: '"Net 30", "Cash on delivery", etc.'
       title: Invoice
       required:
-        - documentId
+        - refId
       additionalProperties: false
       description: |-
         *
@@ -508,9 +508,9 @@ components:
     payments.v1.CashReceipt:
       type: object
       properties:
-        documentId:
+        refId:
           type: string
-          title: document_id
+          title: ref_id
           description: '"CASH-2025-001"'
         cashierUserId:
           type: string
@@ -567,7 +567,7 @@ components:
           title: notes
       title: CashReceipt
       required:
-        - documentId
+        - refId
       additionalProperties: false
       description: |-
         *
@@ -706,9 +706,9 @@ components:
     payments.v1.GiftVoucher:
       type: object
       properties:
-        documentId:
+        refId:
           type: string
-          title: document_id
+          title: ref_id
           description: '"GV-2025-001"'
         voucherCode:
           type: string
@@ -749,7 +749,7 @@ components:
           title: notes
       title: GiftVoucher
       required:
-        - documentId
+        - refId
       additionalProperties: false
       description: |-
         *
@@ -827,9 +827,9 @@ components:
     payments.v1.Payment:
       type: object
       properties:
-        documentId:
+        refId:
           type: string
-          title: document_id
+          title: ref_id
           description: '"PAY-2025-001"'
         payerId:
           type: string
@@ -872,7 +872,7 @@ components:
           title: notes
       title: Payment
       required:
-        - documentId
+        - refId
       additionalProperties: false
       description: |-
         *
@@ -1010,9 +1010,9 @@ components:
     payments.v1.VoucherTransaction:
       type: object
       properties:
-        documentId:
+        refId:
           type: string
-          title: document_id
+          title: ref_id
         voucherId:
           type: string
           title: voucher_id
@@ -1041,7 +1041,7 @@ components:
           title: used_by_user_id
       title: VoucherTransaction
       required:
-        - documentId
+        - refId
       additionalProperties: false
       description: |-
         *

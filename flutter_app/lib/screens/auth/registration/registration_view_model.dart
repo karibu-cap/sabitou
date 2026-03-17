@@ -15,9 +15,6 @@ class RegistrationViewModel {
       userName: userName,
       email: email,
       password: password,
-      phoneNumber: phoneNumber,
-      firstName: firstName,
-      lastName: lastName,
     );
 
     return success;

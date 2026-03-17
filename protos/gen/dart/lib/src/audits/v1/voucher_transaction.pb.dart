@@ -29,7 +29,7 @@ export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 ///    remaining_after: 50000
 class VoucherTransaction extends $pb.GeneratedMessage {
   factory VoucherTransaction({
-    $core.String? documentId,
+    $core.String? refId,
     $core.String? voucherId,
     $core.String? relatedInvoiceId,
     $core.String? relatedReceiptId,
@@ -39,7 +39,7 @@ class VoucherTransaction extends $pb.GeneratedMessage {
     $core.String? usedByUserId,
   }) {
     final result = create();
-    if (documentId != null) result.documentId = documentId;
+    if (refId != null) result.refId = refId;
     if (voucherId != null) result.voucherId = voucherId;
     if (relatedInvoiceId != null) result.relatedInvoiceId = relatedInvoiceId;
     if (relatedReceiptId != null) result.relatedReceiptId = relatedReceiptId;
@@ -63,7 +63,7 @@ class VoucherTransaction extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'VoucherTransaction',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'audits.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'documentId')
+    ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..aOS(2, _omitFieldNames ? '' : 'voucherId')
     ..aOS(3, _omitFieldNames ? '' : 'relatedInvoiceId')
     ..aOS(4, _omitFieldNames ? '' : 'relatedReceiptId')
@@ -98,13 +98,13 @@ class VoucherTransaction extends $pb.GeneratedMessage {
   static VoucherTransaction? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get documentId => $_getSZ(0);
+  $core.String get refId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set documentId($core.String value) => $_setString(0, value);
+  set refId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasDocumentId() => $_has(0);
+  $core.bool hasRefId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearDocumentId() => $_clearField(1);
+  void clearRefId() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get voucherId => $_getSZ(1);

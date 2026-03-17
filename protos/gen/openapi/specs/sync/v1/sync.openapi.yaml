@@ -516,9 +516,9 @@ components:
     order.v1.SalesOrder:
       type: object
       properties:
-        documentId:
+        refId:
           type: string
-          title: document_id
+          title: ref_id
           description: '"SO-2025-001"'
         customerId:
           type: string
@@ -564,7 +564,7 @@ components:
           nullable: true
       title: SalesOrder
       required:
-        - documentId
+        - refId
       additionalProperties: false
       description: |-
         *

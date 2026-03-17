@@ -42,7 +42,7 @@ export 'return_notes.pbenum.dart';
 ///  INVENTORY IMPACT: +2 PRD-001 in WH-001
 class ReturnNote extends $pb.GeneratedMessage {
   factory ReturnNote({
-    $core.String? documentId,
+    $core.String? refId,
     ReturnType? returnType,
     $core.String? fromId,
     $core.String? toId,
@@ -56,7 +56,7 @@ class ReturnNote extends $pb.GeneratedMessage {
     $core.String? notes,
   }) {
     final result = create();
-    if (documentId != null) result.documentId = documentId;
+    if (refId != null) result.refId = refId;
     if (returnType != null) result.returnType = returnType;
     if (fromId != null) result.fromId = fromId;
     if (toId != null) result.toId = toId;
@@ -85,7 +85,7 @@ class ReturnNote extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'ReturnNote',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'logistic.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'documentId')
+    ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..e<ReturnType>(2, _omitFieldNames ? '' : 'returnType', $pb.PbFieldType.OE,
         defaultOrMaker: ReturnType.RETURN_TYPE_UNSPECIFIED,
         valueOf: ReturnType.valueOf,
@@ -128,13 +128,13 @@ class ReturnNote extends $pb.GeneratedMessage {
   static ReturnNote? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get documentId => $_getSZ(0);
+  $core.String get refId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set documentId($core.String value) => $_setString(0, value);
+  set refId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasDocumentId() => $_has(0);
+  $core.bool hasRefId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearDocumentId() => $_clearField(1);
+  void clearRefId() => $_clearField(1);
 
   @$pb.TagNumber(2)
   ReturnType get returnType => $_getN(1);
