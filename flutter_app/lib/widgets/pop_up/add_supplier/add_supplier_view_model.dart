@@ -3,14 +3,11 @@ import 'dart:async';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../../../repositories/suppliers_repository.dart';
-import '../../../services/rpc/fake_transport/supplier.dart';
 
 /// ViewModel for add supplier management.
 class AddSupplierViewModel {
   /// The suppliers repository instance.
-  final SuppliersRepository _suppliersRepository = SuppliersRepository(
-    transport: supplierFakeTransport,
-  );
+  final SuppliersRepository _suppliersRepository = SuppliersRepository.instance;
 
   /// Constructors a new AddSupplierViewModel.
   AddSupplierViewModel();
@@ -30,9 +27,6 @@ class AddSupplierViewModel {
   Future<bool> updateSupplier(Supplier supplier) async {
     final request = UpdateSupplierRequest(supplier: supplier);
     final updatedSupplier = await _suppliersRepository.updateSupplier(request);
-    if (updatedSupplier == null) {
-      return false;
-    }
 
     return true;
   }

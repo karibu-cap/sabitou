@@ -34,6 +34,7 @@ const VoucherTransaction$json = {
       '5': 9,
       '10': 'relatedReceiptId'
     },
+    {'1': 'store_id', '3': 9, '4': 1, '5': 9, '10': 'storeId'},
     {'1': 'amount_used', '3': 5, '4': 1, '5': 1, '10': 'amountUsed'},
     {'1': 'remaining_after', '3': 6, '4': 1, '5': 1, '10': 'remainingAfter'},
     {
@@ -53,7 +54,7 @@ final $typed_data.Uint8List voucherTransactionDescriptor = $convert.base64Decode
     'ChJWb3VjaGVyVHJhbnNhY3Rpb24SHQoGcmVmX2lkGAEgASgJQga6SAPIAQFSBXJlZklkEh0KCn'
     'ZvdWNoZXJfaWQYAiABKAlSCXZvdWNoZXJJZBIsChJyZWxhdGVkX2ludm9pY2VfaWQYAyABKAlS'
     'EHJlbGF0ZWRJbnZvaWNlSWQSLAoScmVsYXRlZF9yZWNlaXB0X2lkGAQgASgJUhByZWxhdGVkUm'
-    'VjZWlwdElkEh8KC2Ftb3VudF91c2VkGAUgASgBUgphbW91bnRVc2VkEicKD3JlbWFpbmluZ19h'
-    'ZnRlchgGIAEoAVIOcmVtYWluaW5nQWZ0ZXISMwoHdXNlZF9hdBgHIAEoCzIaLmdvb2dsZS5wcm'
-    '90b2J1Zi5UaW1lc3RhbXBSBnVzZWRBdBIlCg91c2VkX2J5X3VzZXJfaWQYCCABKAlSDHVzZWRC'
-    'eVVzZXJJZA==');
+    'VjZWlwdElkEhkKCHN0b3JlX2lkGAkgASgJUgdzdG9yZUlkEh8KC2Ftb3VudF91c2VkGAUgASgB'
+    'UgphbW91bnRVc2VkEicKD3JlbWFpbmluZ19hZnRlchgGIAEoAVIOcmVtYWluaW5nQWZ0ZXISMw'
+    'oHdXNlZF9hdBgHIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSBnVzZWRBdBIlCg91'
+    'c2VkX2J5X3VzZXJfaWQYCCABKAlSDHVzZWRCeVVzZXJJZA==');

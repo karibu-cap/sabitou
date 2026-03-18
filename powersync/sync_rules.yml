@@ -179,7 +179,7 @@ bucket_definitions:
 
       - >
         SELECT id, ref_id, name, description, logo_link_id, external_links_ids,
-               contact_phone, contact_email, contact_address, status, business_id, store_ids
+               contact_phone, contact_email, contact_address, status, store_ids
         FROM suppliers
         WHERE business_id = bucket.business_id
 
@@ -197,6 +197,6 @@ bucket_definitions:
     data:
       - >
         SELECT id, ref_id, user_name, email, phone_number, first_name, last_name,
-               connected_accounts, account_status, profile_link_id, required_actions
+               connected_accounts, account_status, profile_link_id, required_actions, active_business_id, active_store_id
         FROM users
         WHERE ref_id = bucket.sub

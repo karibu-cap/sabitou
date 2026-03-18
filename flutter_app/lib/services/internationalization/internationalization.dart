@@ -2150,7 +2150,211 @@ class AppInternationalizationService extends ChangeNotifier {
     'nonPerishable': {'en': 'No perishable', 'fr': 'Non perisable'},
     'productLevel': {'en': 'Product level', 'fr': 'Niveau de produit'},
     'lotLevel': {'en': 'Lot level', 'fr': 'Niveau de lot'},
+    'invalidEmailOrPassword': {
+      'en': 'Invalid email or password.',
+      'fr': 'Email ou mot de passe invalide.',
+    },
+    'noConnection': {
+      'en': 'No connection. Please connect to the network.',
+      'fr': 'Aucune connexion. Veuillez vous connecter à la réseau.',
+    },
+    'accountDisabled': {
+      'en': 'This account has been disabled.',
+      'fr': 'Ce compte a été désactivé.',
+    },
+    'serverError': {
+      'en': 'A server error occurred. Please try again later.',
+      'fr': 'Une erreur serveur s\'est produite. Veuillez réessayer plus tard.',
+    },
+    'offlineUserNotFound': {
+      'en':
+          'Offline login unavailable. Please connect to the network for your first login on this device.',
+      'fr':
+          'Connexion hors ligne non disponible. Veuillez vous connecter au réseau pour votre première connexion sur cet appareil.',
+    },
+    'yourAreNotAssociatedWithAnyBusinessMessage': {
+      'en':
+          'Your account is not associated with any business.\n Contact your administrator to get access.',
+      'fr':
+          "Votre compte n'est pas encore lié à un commerce.\n Contactez votre administrateur pour obtenir l'accès.",
+    },
+    'support': {'en': 'Support', 'fr': 'Support'},
+    'phone': {'en': 'Phone', 'fr': 'Téléphone'},
+    'contactAdmin': {'en': 'Contact Admin', 'fr': 'Contacter l\'admin'},
+    'loadingProlile': {'en': 'Loading profile…', 'fr': 'Chargement du profil…'},
+    'morning': {'en': 'Good morning', 'fr': 'Bonjour'},
+    'evening': {'en': 'Good evening', 'fr': 'Bonsoir'},
+    'afternoon': {'en': 'Good afternoon', 'fr': 'Bon après-midi'},
+    'monday': {'en': 'Monday', 'fr': 'Lundi'},
+    'tuesday': {'en': 'Tuesday', 'fr': 'Mardi'},
+    'wednesday': {'en': 'Wednesday', 'fr': 'Mercredi'},
+    'thursday': {'en': 'Thursday', 'fr': 'Jeudi'},
+    'friday': {'en': 'Friday', 'fr': 'Vendredi'},
+    'saturday': {'en': 'Saturday', 'fr': 'Samedi'},
+    'sunday': {'en': 'Sunday', 'fr': 'Dimanche'},
+    'january': {'en': 'January', 'fr': 'Janvier'},
+    'february': {'en': 'February', 'fr': 'Février'},
+    'march': {'en': 'March', 'fr': 'Mars'},
+    'april': {'en': 'April', 'fr': 'Avril'},
+    'may': {'en': 'May', 'fr': 'Mai'},
+    'june': {'en': 'June', 'fr': 'Juin'},
+    'july': {'en': 'July', 'fr': 'Juillet'},
+    'august': {'en': 'August', 'fr': 'Août'},
+    'september': {'en': 'September', 'fr': 'Septembre'},
+    'october': {'en': 'October', 'fr': 'Octobre'},
+    'november': {'en': 'November', 'fr': 'Novembre'},
+    'december': {'en': 'December', 'fr': 'Décembre'},
+    'nonLue': {'en': 'non lue @count', 'fr': 'non lue @count'},
+    'justNow': {'en': 'just now', 'fr': 'à l\'instant'},
+    'minutesAgo': {'en': '@count minutes ago', 'fr': 'il y a @count minutes'},
+    'hoursAgo': {'en': '@count hours ago', 'fr': 'il y a @count heures'},
+    'daysAgo': {'en': '@count days ago', 'fr': 'il y a @count jours'},
+    'online': {'en': 'Online', 'fr': 'En Line'},
+    'allProductsAreWellStockedMessage': {
+      'en': 'All products are well stocked.',
+      'fr': 'Tous les niveaux de stock sont suffisants.',
+    },
+    'reorderThreshold': {
+      'en': 'Reorder Threshold',
+      'fr': 'Seuil de réapprovisionnement',
+    },
+    'movement': {'en': 'Movement', 'fr': 'Mouvement'},
+    'expiration': {'en': 'Expiration', 'fr': 'Expiration'},
+    'buy': {'en': 'Buy', 'fr': 'Achat'},
   };
+
+  /// Returns the localized value of text 'movement'.
+  String get movement => _stringOfLocalizedValue('movement');
+
+  /// Returns the localized value of text 'sale'.
+  String get expiration => _stringOfLocalizedValue('expiration');
+
+  /// Returns the localized value of text 'buy'.
+  String get buy => _stringOfLocalizedValue('buy');
+
+  /// Returns the localized value of text 'reorderThreshold'.
+  String get reorderThreshold => _stringOfLocalizedValue('reorderThreshold');
+
+  /// Returns the localized value of text 'allProductsAreWellStockedMessage'.
+  String get allProductsAreWellStockedMessage =>
+      _stringOfLocalizedValue('allProductsAreWellStockedMessage');
+
+  /// Returns the localized value of text 'online'.
+  String get online => _stringOfLocalizedValue('online');
+
+  /// Returns the localized value of text 'justNow'.
+  String get justNow => _stringOfLocalizedValue('justNow');
+
+  /// Returns the localized value of text 'minutesAgo'.
+  String get minutesAgo => _stringOfLocalizedValue('minutesAgo');
+
+  /// Returns the localized value of text 'hoursAgo'.
+  String get hoursAgo => _stringOfLocalizedValue('hoursAgo');
+
+  /// Returns the localized value of text 'daysAgo'.
+  String get daysAgo => _stringOfLocalizedValue('daysAgo');
+
+  /// Returns the localized value of text 'nonLue'.
+  String get nonLue => _stringOfLocalizedValue('nonLue');
+
+  /// Returns the localized value of text 'monday'.
+  String get monday => _stringOfLocalizedValue('monday');
+
+  /// Returns the localized value of text 'tuesday'.
+  String get tuesday => _stringOfLocalizedValue('tuesday');
+
+  /// Returns the localized value of text 'wednesday'.
+  String get wednesday => _stringOfLocalizedValue('wednesday');
+
+  /// Returns the localized value of text 'thursday'.
+  String get thursday => _stringOfLocalizedValue('thursday');
+
+  /// Returns the localized value of text 'friday'.
+  String get friday => _stringOfLocalizedValue('friday');
+
+  /// Returns the localized value of text 'saturday'.
+  String get saturday => _stringOfLocalizedValue('saturday');
+
+  /// Returns the localized value of text 'sunday'.
+  String get sunday => _stringOfLocalizedValue('sunday');
+
+  /// Returns the localized value of text 'january'.
+  String get january => _stringOfLocalizedValue('january');
+
+  /// Returns the localized value of text 'february'.
+  String get february => _stringOfLocalizedValue('february');
+
+  /// Returns the localized value of text 'march'.
+  String get march => _stringOfLocalizedValue('march');
+
+  /// Returns the localized value of text 'april'.
+  String get april => _stringOfLocalizedValue('april');
+
+  /// Returns the localized value of text 'may'.
+  String get may => _stringOfLocalizedValue('may');
+
+  /// Returns the localized value of text 'june'.
+  String get june => _stringOfLocalizedValue('june');
+
+  /// Returns the localized value of text 'july'.
+  String get july => _stringOfLocalizedValue('july');
+
+  /// Returns the localized value of text 'august'.
+  String get august => _stringOfLocalizedValue('august');
+
+  /// Returns the localized value of text 'september'.
+  String get september => _stringOfLocalizedValue('september');
+
+  /// Returns the localized value of text 'october'.
+  String get october => _stringOfLocalizedValue('october');
+
+  /// Returns the localized value of text 'november'.
+  String get november => _stringOfLocalizedValue('november');
+
+  /// Returns the localized value of text 'december'.
+  String get december => _stringOfLocalizedValue('december');
+
+  /// Returns the localized value of text 'morning'.
+  String get morning => _stringOfLocalizedValue('morning');
+
+  /// Returns the localized value of text 'evening'.
+  String get evening => _stringOfLocalizedValue('evening');
+
+  /// Returns the localized value of text 'afternoon'.
+  String get afternoon => _stringOfLocalizedValue('afternoon');
+
+  /// Returns the localized value of text 'loadingProlile'.
+  String get loadingProlile => _stringOfLocalizedValue('loadingProlile');
+
+  /// Returns the localized value of text 'contactAdmin'.
+  String get contactAdmin => _stringOfLocalizedValue('contactAdmin');
+
+  /// Returns the localized value of text 'support'.
+  String get support => _stringOfLocalizedValue('support');
+
+  /// Returns the localized value of text 'phone'.
+  String get phone => _stringOfLocalizedValue('phone');
+
+  /// Returns the localized value of text 'yourAreNotAssociatedWithAnyBusinessMessage'.
+  String get yourAreNotAssociatedWithAnyBusinessMessage =>
+      _stringOfLocalizedValue('yourAreNotAssociatedWithAnyBusinessMessage');
+
+  /// Returns the localized value of text 'offlineUserNotFound'.
+  String get offlineUserNotFound =>
+      _stringOfLocalizedValue('offlineUserNotFound');
+
+  /// Returns the localized value of text 'noConnection'.
+  String get noConnection => _stringOfLocalizedValue('noConnection');
+
+  /// Returns the localized value of text 'accountDisabled'.
+  String get accountDisabled => _stringOfLocalizedValue('accountDisabled');
+
+  /// Returns the localized value of text 'serverError'.
+  String get serverError => _stringOfLocalizedValue('serverError');
+
+  /// Returns the localized value of text 'invalidEmailOrPassword'.
+  String get invalidEmailOrPassword =>
+      _stringOfLocalizedValue('invalidEmailOrPassword');
 
   /// Returns the localized value of text 'nonPerishable'.
   String get nonPerishable => _stringOfLocalizedValue('nonPerishable');

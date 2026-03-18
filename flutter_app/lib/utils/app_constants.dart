@@ -92,6 +92,36 @@ final class CollectionName {
 
   /// The batches collection.
   static const String batches = 'batches';
+
+  /// The sales orders collection.
+  static const String salesOrders = 'sales_orders';
+
+  /// The sales orders itme collection.
+  static const String salesOrdersItemss = 'sales_order_line_items';
+
+  /// The purchase order items collection.
+  static const String purchaseOrderItems = 'purchase_order_items';
+
+  /// The delivery notes collection.
+  static const String deliveryNotes = 'delivery_notes';
+
+  /// The delivery notes items collection.
+  static const String deliveryNotesItems = 'delivery_note_line_items';
+
+  /// The receiving notes items collection.
+  static const String receivingNoteLineItems = 'receiving_note_line_items';
+
+  /// The return notes collection.
+  static const String returnNotes = 'return_notes';
+
+  /// The return notes items collection.
+  static const String returnNoteLineItems = 'return_note_line_items';
+
+  /// The invoice line items collection.
+  static const String invoiceLineItems = 'invoice_line_items';
+
+  /// The local auth collection.
+  static const String localAuth = 'local_auth';
 }
 
 /// The static images.

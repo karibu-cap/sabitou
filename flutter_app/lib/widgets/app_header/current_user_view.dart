@@ -5,52 +5,82 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../services/internationalization/internationalization.dart';
 
-/// The user menu dropdown widget.
+/// User info + logout at the bottom of the sidebar.
 class CurrentUserView extends StatelessWidget {
   /// The user.
   final User user;
 
-  /// The callback function to be called when the logout button is clicked.
+  /// The on logout callback.
   final VoidCallback onLogout;
 
-  /// Creates a new instance of [CurrentUserView].
-  CurrentUserView({super.key, required this.user, required this.onLogout});
+  /// Constructs the new [CurrentUserView].
+  const CurrentUserView({
+    super.key,
+    required this.user,
+    required this.onLogout,
+  });
+
+  String _initials(String name) {
+    final parts = name.trim().split(RegExp(r'\s+'));
+    if (parts.length >= 2) {
+      return '${parts.first[0]}${parts.last[0]}'.toUpperCase();
+    }
+
+    return name.substring(0, name.length.clamp(0, 2)).toUpperCase();
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
+    final cs = theme.colorScheme;
 
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Row(
           children: [
             Container(
-              height: 40,
-              width: 40,
+              width: 36,
+              height: 36,
               decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(8)),
-                border: Border.fromBorderSide(
-                  BorderSide(color: theme.colorScheme.accent),
-                ),
-                color: ShadTheme.of(context).colorScheme.accent,
+                color: cs.accent,
+                borderRadius: const BorderRadius.all(Radius.circular(9)),
+                border: Border.fromBorderSide(BorderSide(color: cs.border)),
               ),
-              child: const Icon(LucideIcons.user400, size: 20),
+              child: Center(
+                child: Text(
+                  _initials(user.userName),
+                  style: const TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w700,
+                    color: Color(
+                      0xFF7A4F00,
+                    ), // dark amber — readable on accentSoft
+                    letterSpacing: 0.4,
+                  ),
+                ),
+              ),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: 10),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   AutoSizeText(
-                    user.firstName,
-                    style: theme.textTheme.large,
+                    user.userName,
+                    style: theme.textTheme.small.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: cs.foreground,
+                    ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     minFontSize: 8,
                   ),
+                  const SizedBox(height: 1),
                   AutoSizeText(
                     user.email,
-                    style: theme.textTheme.muted,
+                    style: theme.textTheme.muted.copyWith(fontSize: 11),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     minFontSize: 8,
@@ -60,16 +90,21 @@ class CurrentUserView extends StatelessWidget {
             ),
           ],
         ),
+
         const SizedBox(height: 8),
-        SizedBox(
+        ShadButton.ghost(
           width: double.infinity,
-          child: ShadButton.ghost(
-            onPressed: onLogout,
-            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 2),
-            leading: const Icon(LucideIcons.logOut400, size: 18),
-            child: Text(Intls.to.logout),
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.start,
+          onPressed: onLogout,
+          mainAxisAlignment: MainAxisAlignment.start,
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 9),
+          leading: Icon(
+            LucideIcons.logOut,
+            size: 14,
+            color: cs.mutedForeground,
+          ),
+          child: Text(
+            Intls.to.logout,
+            style: theme.textTheme.small.copyWith(color: cs.mutedForeground),
           ),
         ),
       ],

@@ -186,8 +186,6 @@ class ReceiveNoteFormController extends ChangeNotifier {
 
     final success = await purchaseOrdersController.createReceivingNote(request);
 
-    print('success: $success');
-
     if (success) {
       showSuccessToast(
         context: context,

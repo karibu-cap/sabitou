@@ -4,15 +4,13 @@ import 'package:rxdart/rxdart.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../../repositories/store_products_repository.dart';
-import '../../services/rpc/fake_transport/global_product.dart';
 import '../../utils/extensions/global_product_extension.dart';
 
 /// ViewModel for global products management.
 class GlobalProductsViewModel {
   /// The products repository instance.
-  final StoreProductsRepository _productsRepository = StoreProductsRepository(
-    transport: globalProductFakeTransport,
-  );
+  final StoreProductsRepository _productsRepository =
+      StoreProductsRepository.instance;
 
   /// The categories set.
   final Set<Category?> _categories = <Category?>{};

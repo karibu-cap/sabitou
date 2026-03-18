@@ -10,7 +10,6 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 import '../../providers/cart_provider.dart';
 import '../../repositories/gift_voucher_repository.dart';
 import '../../repositories/inventory_repository.dart';
-import '../../repositories/pos_repository.dart';
 import '../../services/internationalization/internationalization.dart';
 import '../../services/storage/app_storage.dart';
 import '../../utils/app_constants.dart';
@@ -186,67 +185,67 @@ class PointOfSaleController extends ChangeNotifier {
 
       return await printTheReceipt(currentCashReceipt, store, printer, context);
 
-      final cartValidation = _isCartValid();
-      if (!cartValidation.success) {
-        _setErrorState(cartValidation);
-        showErrorToast(context: context, message: cartValidation.message);
+      // final cartValidation = _isCartValid();
+      // if (!cartValidation.success) {
+      //   _setErrorState(cartValidation);
+      //   showErrorToast(context: context, message: cartValidation.message);
 
-        return false;
-      }
+      //   return false;
+      // }
 
-      // Validate inventory availability
-      final inventoryValidation = await _validateInventoryAvailability();
-      if (!inventoryValidation.success) {
-        _setErrorState(inventoryValidation);
-        showErrorToast(context: context, message: inventoryValidation.message);
+      // // Validate inventory availability
+      // final inventoryValidation = await _validateInventoryAvailability();
+      // if (!inventoryValidation.success) {
+      //   _setErrorState(inventoryValidation);
+      //   showErrorToast(context: context, message: inventoryValidation.message);
 
-        return false;
-      }
+      //   return false;
+      // }
 
-      final request = CreateCashReceiptRequest(
-        receipt: currentCashReceipt,
-        payments: CartManager.instance.payments,
-        issueVoucherOnChange: isOverpayment,
-      );
+      // final request = CreateCashReceiptRequest(
+      //   receipt: currentCashReceipt,
+      //   payments: CartManager.instance.payments,
+      //   issueVoucherOnChange: isOverpayment,
+      // );
 
-      // Make actual backend call
-      final response = await PosRepository.instance.createCashReceipt(request);
+      // // Make actual backend call
+      // final response = await PosRepository.instance.createCashReceipt(request);
 
-      if (response?.success == false) {
-        _setErrorState(
-          PosOperationResult.failure(
-            Intls.to.failedToCreateCashReceipt,
-            PosErrorType.network,
-          ),
-        );
-        if (context.mounted) {
-          showErrorToast(
-            context: context,
-            message: Intls.to.failedToCreateCashReceipt,
-          );
-        }
+      // if (response?.success == false) {
+      //   _setErrorState(
+      //     PosOperationResult.failure(
+      //       Intls.to.failedToCreateCashReceipt,
+      //       PosErrorType.network,
+      //     ),
+      //   );
+      //   if (context.mounted) {
+      //     showErrorToast(
+      //       context: context,
+      //       message: Intls.to.failedToCreateCashReceipt,
+      //     );
+      //   }
 
-        return false;
-      }
+      //   return false;
+      // }
 
-      // Success
-      _setSuccessState(
-        PosOperationResult.success(Intls.to.saleCompletedSuccessfully),
-      );
+      // // Success
+      // _setSuccessState(
+      //   PosOperationResult.success(Intls.to.saleCompletedSuccessfully),
+      // );
 
-      if (context.mounted) {
-        showSuccessToast(
-          context: context,
-          message: Intls.to.saleCompletedSuccessfully,
-        );
-      }
+      // if (context.mounted) {
+      //   showSuccessToast(
+      //     context: context,
+      //     message: Intls.to.saleCompletedSuccessfully,
+      //   );
+      // }
 
-      // Clear cart after successful sale
-      CartManager.instance.clearCart();
+      // // Clear cart after successful sale
+      // CartManager.instance.clearCart();
 
-      _logger.info('Simple sale completed successfully: $response');
+      // _logger.info('Simple sale completed successfully: $response');
 
-      return true;
+      // return true;
     } on Exception catch (e) {
       _logger.severe('Error completing simple sale: $e');
       _setErrorState(
@@ -292,8 +291,6 @@ class PointOfSaleController extends ChangeNotifier {
     Printer printer,
     BuildContext context,
   ) async {
-    debugPrint('-----');
-
     final posTemplate = PosWidget(cashReceipt: cashReceipt, store: store);
     final widget = await posTemplate.buildInvoiceWidget();
 
@@ -382,7 +379,7 @@ class PointOfSaleController extends ChangeNotifier {
 
       for (final item in cartItems) {
         try {
-          final availabilityResponse = await InventoryRepository.instance
+          final result = await InventoryRepository.instance
               .checkProductAvailability(
                 CheckProductAvailabilityRequest(
                   productId: item.productId,
@@ -391,10 +388,10 @@ class PointOfSaleController extends ChangeNotifier {
                 ),
               );
 
-          if (!availabilityResponse.isAvailable) {
+          if (!result.isAvailable) {
             return PosOperationResult.failure(
               '${Intls.to.insufficientStockFor.trParams({'product': item.label})}'
-              '${Intls.to.available}: ${availabilityResponse.quantityAvailable}, '
+              '${Intls.to.available}: ${result.quantityAvailable}, '
               '${Intls.to.requested}: ${item.quantity}',
               PosErrorType.inventory,
             );

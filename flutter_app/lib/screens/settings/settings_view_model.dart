@@ -4,7 +4,6 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../../repositories/business_repository.dart';
 import '../../repositories/stores_repository.dart';
-import '../../utils/user_preference.dart';
 
 /// The settings view model.
 class SettingsViewModel {
@@ -17,25 +16,27 @@ class SettingsViewModel {
   /// The selected store.
   Store? selectedStore;
 
+  /// The current user.
+  User user;
+
   /// Completer for the initialization.
   final Completer<void> initCompleter = Completer<void>();
 
   /// Initializes the view model.
-  SettingsViewModel() {
+  SettingsViewModel({
+    this.selectedBusiness,
+    this.selectedStore,
+    required this.user,
+  }) {
     _init();
   }
 
   /// Initializes the view model.
   Future<void> _init() async {
-    final userPreference = UserPreferences.instance;
-    final userId = userPreference.user?.refId;
     final _businessStore = <BusinessStore>[];
-    if (userId == null) {
-      return;
-    }
 
     final userBusinesses = await BusinessRepository.instance.getMyBusinesses(
-      userId,
+      user.refId,
     );
 
     for (final business in userBusinesses) {
@@ -46,8 +47,6 @@ class SettingsViewModel {
     }
 
     userBusinessesStore = _businessStore;
-    selectedBusiness = userPreference.business;
-    selectedStore = userPreference.store;
     initCompleter.complete();
   }
 }

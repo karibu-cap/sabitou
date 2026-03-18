@@ -14,7 +14,7 @@ import 'user_permissions_controller.dart';
 /// Modal for viewing and modifying user permissions.
 class UserPermissionsModal extends StatelessWidget {
   /// The store member whose permissions are being modified.
-  final StoreMember storeMember;
+  final ({StoreMember storeMember, User user}) storeMember;
 
   /// The users controller.
   final UsersController usersController;
@@ -208,7 +208,9 @@ class _UserInfoCard extends StatelessWidget {
             ),
           ),
           // Current status badge
-          _CurrentStatusBadge(status: controller.originalStoreMember.status),
+          _CurrentStatusBadge(
+            status: controller.originalStoreMember.storeMember.status,
+          ),
         ],
       ),
     );
@@ -260,7 +262,7 @@ class _StatusChangeSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    final currentStatus = controller.originalStoreMember.status;
+    final currentStatus = controller.originalStoreMember.storeMember.status;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

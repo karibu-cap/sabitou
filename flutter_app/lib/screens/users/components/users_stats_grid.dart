@@ -22,7 +22,7 @@ class UsersStatsGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Provider.of<UsersController>(context, listen: false);
 
-    return StreamBuilder<List<StoreMember>>(
+    return StreamBuilder<List<({StoreMember storeMember, User user})>>(
       stream: controller.storeMembersStream,
       builder: (context, usersSnapshot) {
         if (usersSnapshot.connectionState == ConnectionState.waiting) {
@@ -30,7 +30,9 @@ class UsersStatsGrid extends StatelessWidget {
         }
 
         final storeMembers = usersSnapshot.data ?? [];
-        final stats = controller.calculateUserStats(storeMembers);
+        final stats = controller.calculateUserStats(
+          storeMembers.map((e) => e.storeMember).toList(),
+        );
 
         final statsCards = [
           StatCard(

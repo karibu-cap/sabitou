@@ -14,7 +14,7 @@ class UserDeletionModal extends StatelessWidget {
   final UsersController usersController;
 
   /// The store member.
-  final StoreMember storeMember;
+  final ({StoreMember storeMember, User user}) storeMember;
 
   /// Construts a new UserDeletionModal.
   const UserDeletionModal({
@@ -290,15 +290,19 @@ class _UserInfoSection extends StatelessWidget {
                     Row(
                       children: [
                         Icon(
-                          _getStatusIcon(storeMember.status),
+                          _getStatusIcon(storeMember.storeMember.status),
                           size: 12,
-                          color: _getStatusColor(storeMember.status),
+                          color: _getStatusColor(
+                            storeMember.storeMember.status,
+                          ),
                         ),
                         const SizedBox(width: 4),
                         Text(
-                          _getStatusLabel(storeMember.status),
+                          _getStatusLabel(storeMember.storeMember.status),
                           style: theme.textTheme.small.copyWith(
-                            color: _getStatusColor(storeMember.status),
+                            color: _getStatusColor(
+                              storeMember.storeMember.status,
+                            ),
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -480,7 +484,7 @@ class _ActionButtons extends StatelessWidget {
           backgroundColor: Colors.red,
           child: Text(
             AppInternationalizationService.to.deletePermanently,
-            style: TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.white),
           ),
         ),
       ],

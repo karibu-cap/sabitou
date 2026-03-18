@@ -9,9 +9,8 @@ import '../../../services/rpc/fake_transport/global_product.dart';
 /// ViewModel for add global product management.
 class AddGlobalProductViewModel {
   /// The products repository instance.
-  final StoreProductsRepository _productsRepository = StoreProductsRepository(
-    transport: globalProductFakeTransport,
-  );
+  final StoreProductsRepository _productsRepository =
+      StoreProductsRepository.instance;
 
   /// The categories repository instance.
   final CategoriesRepository _categoriesRepository = CategoriesRepository(

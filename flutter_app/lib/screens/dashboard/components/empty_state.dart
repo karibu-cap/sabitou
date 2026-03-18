@@ -1,30 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-import '../../../utils/app_constants.dart';
-
-/// A reusable empty state widget for displaying when there's no data.
+/// Generic empty state shown when a section has no data.
 class EmptyState extends StatelessWidget {
-  /// Constructor of new [EmptyState].
-  const EmptyState({super.key, required this.icon, required this.message});
+  const EmptyState({
+    super.key,
+    required this.icon,
+    required this.message,
+    this.subtitle,
+  });
 
-  /// The icon.
   final IconData icon;
-
-  /// The message.
   final String message;
+
+  /// Optional second line of text.
+  final String? subtitle;
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(AppConstants.largePadding),
+    final theme = ShadTheme.of(context);
+    final cs = theme.colorScheme;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 28),
+      child: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: AppConstants.largeIconSize),
-            const SizedBox(height: AppConstants.smallPadding),
-            Text(message, style: ShadTheme.of(context).textTheme.muted),
+            Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                color: cs.muted,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(icon, size: 22, color: cs.mutedForeground),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              message,
+              textAlign: TextAlign.center,
+              style: theme.textTheme.small.copyWith(
+                fontWeight: FontWeight.w600,
+                color: cs.foreground,
+              ),
+            ),
+            if (subtitle != null) ...[
+              const SizedBox(height: 4),
+              Text(
+                subtitle.toString(),
+                textAlign: TextAlign.center,
+                style: theme.textTheme.muted.copyWith(fontSize: 12),
+              ),
+            ],
           ],
         ),
       ),

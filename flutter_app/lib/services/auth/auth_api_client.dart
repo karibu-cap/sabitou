@@ -11,12 +11,9 @@ class AuthTokens {
   /// The opaque refresh token.
   final String refreshToken;
 
+  /// Constructs an [AuthTokens] pair.
   const AuthTokens({required this.accessToken, required this.refreshToken});
 }
-
-// ---------------------------------------------------------------------------
-// Connect RPC client
-// ---------------------------------------------------------------------------
 
 /// Connect RPC client wrapping [AuthServiceClient].
 ///
@@ -33,6 +30,7 @@ class AuthApiClient {
 
   final AuthServiceClient _client;
 
+  /// Constructs a new [AuthApiClient].
   AuthApiClient()
     : _client = AuthServiceClient(ConnectRPCService.to.clientChannel);
 
@@ -62,11 +60,15 @@ class AuthApiClient {
     required String userName,
     required String email,
     required String password,
+    String? phoneNumber,
+    String? firstName,
+    String? lastName,
   }) async {
     final req = RegisterRequest(
       userName: userName,
       email: email,
       password: password,
+      phoneNumber: phoneNumber,
     );
     final resp = await _client.register(req);
 
@@ -93,8 +95,4 @@ class AuthApiClient {
       _logger.severe('Logout failed (ignoring): $e');
     }
   }
-
-  // ---------------------------------------------------------------------------
-  // Interceptor
-  // ---------------------------------------------------------------------------
 }

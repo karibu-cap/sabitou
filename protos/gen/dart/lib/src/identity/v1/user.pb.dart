@@ -110,6 +110,8 @@ class User extends $pb.GeneratedMessage {
     $0.ResourceLink? profileLink,
     AccountStatusType? accountStatus,
     $core.Iterable<AuthActionType>? requiredActions,
+    $core.String? activeBusinessId,
+    $core.String? activeStoreId,
   }) {
     final result = create();
     if (refId != null) result.refId = refId;
@@ -123,6 +125,8 @@ class User extends $pb.GeneratedMessage {
     if (profileLink != null) result.profileLink = profileLink;
     if (accountStatus != null) result.accountStatus = accountStatus;
     if (requiredActions != null) result.requiredActions.addAll(requiredActions);
+    if (activeBusinessId != null) result.activeBusinessId = activeBusinessId;
+    if (activeStoreId != null) result.activeStoreId = activeStoreId;
     return result;
   }
 
@@ -160,6 +164,8 @@ class User extends $pb.GeneratedMessage {
         valueOf: AuthActionType.valueOf,
         enumValues: AuthActionType.values,
         defaultEnumValue: AuthActionType.AUTH_ACTION_TYPE_UNSPECIFIED)
+    ..aOS(11, _omitFieldNames ? '' : 'activeBusinessId')
+    ..aOS(12, _omitFieldNames ? '' : 'activeStoreId')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -270,6 +276,26 @@ class User extends $pb.GeneratedMessage {
   /// The actions that the user must complete to authenticate.
   @$pb.TagNumber(10)
   $pb.PbList<AuthActionType> get requiredActions => $_getList(9);
+
+  /// / The active buisness id.
+  @$pb.TagNumber(11)
+  $core.String get activeBusinessId => $_getSZ(10);
+  @$pb.TagNumber(11)
+  set activeBusinessId($core.String value) => $_setString(10, value);
+  @$pb.TagNumber(11)
+  $core.bool hasActiveBusinessId() => $_has(10);
+  @$pb.TagNumber(11)
+  void clearActiveBusinessId() => $_clearField(11);
+
+  /// / The active store id.
+  @$pb.TagNumber(12)
+  $core.String get activeStoreId => $_getSZ(11);
+  @$pb.TagNumber(12)
+  set activeStoreId($core.String value) => $_setString(11, value);
+  @$pb.TagNumber(12)
+  $core.bool hasActiveStoreId() => $_has(11);
+  @$pb.TagNumber(12)
+  void clearActiveStoreId() => $_clearField(12);
 }
 
 class GetCurrentUserRequest extends $pb.GeneratedMessage {

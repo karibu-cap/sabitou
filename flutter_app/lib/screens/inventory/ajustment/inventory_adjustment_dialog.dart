@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sabitou_rpc/models.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../services/internationalization/internationalization.dart';
@@ -14,14 +15,24 @@ class InventoryAdjustmentDialog extends StatelessWidget {
   /// The product ID.
   final String productId;
 
+  /// The curren store.
+  final Store store;
+
   /// Constructs an [InventoryAdjustmentDialog].
-  const InventoryAdjustmentDialog({super.key, required this.productId});
+  const InventoryAdjustmentDialog({
+    super.key,
+    required this.productId,
+    required this.store,
+  });
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<InventoryAdjustmentController>(
       create: (_) => InventoryAdjustmentController(
-        viewModel: InventoryAdjustmentViewModel(productId: productId),
+        viewModel: InventoryAdjustmentViewModel(
+          productId: productId,
+          store: store,
+        ),
       ),
       child: Consumer<InventoryAdjustmentController>(
         builder: (context, controller, _) {

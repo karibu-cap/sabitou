@@ -6,7 +6,6 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../../tmp/fake_data.dart';
 import '../../utils/app_constants.dart';
-import '../../utils/user_preference.dart';
 
 final _fakeData = fakeData;
 
@@ -189,7 +188,7 @@ final _fakeTransport =
             'ref_id': store.refId,
             ...store.toProto3Json() as Map<String, dynamic>,
           });
-          await UserPreferences.instance.saveStorePreferences(newStore: store);
+          // await UserPreferences.instance.saveStorePreferences(newStore: store);
 
           return UpdateStoreResponse(store: store);
         })
@@ -238,9 +237,9 @@ final _fakeTransport =
             ...business.toProto3Json() as Map<String, dynamic>,
           });
 
-          await UserPreferences.instance.saveBusinessPreferences(
-            newBusiness: business,
-          );
+          // await UserPreferences.instance.saveBusinessPreferences(
+          //   newBusiness: business,
+          // );
 
           return UpdateBusinessResponse(success: true);
         })
@@ -253,21 +252,21 @@ final _fakeTransport =
                     .toList(),
           );
         })
-        .unary(BusinessService.getBusinessMember, (req, __) async {
-          return GetBusinessMemberResponse(
-            businessMember:
-                (_fakeData[CollectionName.businessMembers]
-                        as List<BusinessMember>)
-                    .firstWhereOrNull((bm) => bm.user.refId == req.userId),
-          );
-        })
-        .unary(StoreService.getStoreMember, (req, __) async {
-          return GetStoreMemberResponse(
-            storeMember:
-                (_fakeData[CollectionName.storeMembers] as List<StoreMember>)
-                    .firstWhereOrNull((bm) => bm.user.refId == req.userId),
-          );
-        })
+        // .unary(BusinessService.getBusinessMember, (req, __) async {
+        //   return GetBusinessMemberResponse(
+        //     businessMember:
+        //         (_fakeData[CollectionName.businessMembers]
+        //                 as List<BusinessMember>)
+        //             .firstWhereOrNull((bm) => bm.user.refId == req.userId),
+        //   );
+        // })
+        // .unary(StoreService.getStoreMember, (req, __) async {
+        //   return GetStoreMemberResponse(
+        //     storeMember:
+        //         (_fakeData[CollectionName.storeMembers] as List<StoreMember>)
+        //             .firstWhereOrNull((bm) => bm.user.refId == req.userId),
+        //   );
+        // })
         .unary(StoreProductService.findStoreProducts, (req, __) async {
           final storeProducts =
               (_fakeData[CollectionName.storeProducts] as List<StoreProduct>)

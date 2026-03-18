@@ -25,9 +25,6 @@ abstract final class _Field {
   static const String accessToken = 'access_token';
   static const String refreshToken = 'refresh_token';
   static const String userId = 'user_id';
-  static const String storeId = 'store_id';
-  static const String businessId = 'business_id';
-  static const String role = 'role';
 }
 
 /// Persists and manages JWT tokens using the platform's secure keystore.
@@ -45,74 +42,16 @@ abstract final class _Field {
 class TokenService {
   TokenService._();
 
+  /// The singleton instance.
   static final TokenService instance = TokenService._();
 
   static const FlutterSecureStorage _storage = FlutterSecureStorage(
-    aOptions: AndroidOptions(encryptedSharedPreferences: true),
     iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock),
   );
 
   // In-memory session cache. Populated by saveTokens() / _loadCache().
   // Cleared by clearAll().
   Map<String, String> _cache = {};
-
-  // ---------------------------------------------------------------------------
-  // Write
-  // ---------------------------------------------------------------------------
-
-  /// Persists a new token pair and the JWT claims under a single storage key.
-  ///
-  /// The in-memory [_cache] is updated synchronously so subsequent reads
-  /// (including the PowerSync credentials callback that fires milliseconds
-  /// after login) are served from memory without an IndexedDB round-trip.
-  Future<void> saveTokens({
-    required String accessToken,
-    required String refreshToken,
-  }) async {
-    final claims = _decodePayload(accessToken);
-
-    final session = <String, String>{
-      _Field.accessToken: accessToken,
-      _Field.refreshToken: refreshToken,
-      _Field.userId: claims?['sub'] as String? ?? '',
-      _Field.storeId: claims?['store_id'] as String? ?? '',
-      _Field.businessId: claims?['business_id'] as String? ?? '',
-      _Field.role: claims?['role'] as String? ?? '',
-    };
-
-    // Update in-memory cache immediately.
-    _cache = Map.of(session);
-
-    // Persist as a single JSON blob — ONE write, ONE encryption key.
-    try {
-      await _storage.write(key: _kSessionKey, value: jsonEncode(session));
-    } catch (e) {
-      // Write failure is non-fatal for the current session (_cache is set).
-      // The user will need to re-login after a cold start if storage is broken.
-      debugPrint('[TokenService] saveTokens storage write error (ignored): $e');
-    }
-  }
-
-  // ---------------------------------------------------------------------------
-  // Read — cache first, then load blob from storage on cache miss
-  // ---------------------------------------------------------------------------
-
-  Future<String?> getAccessToken() => _cachedField(_Field.accessToken);
-  Future<String?> getRefreshToken() => _cachedField(_Field.refreshToken);
-  Future<String?> getUserId() => _cachedField(_Field.userId);
-  Future<String?> getStoreId() => _cachedField(_Field.storeId);
-  Future<String?> getBusinessId() => _cachedField(_Field.businessId);
-  Future<String?> getRole() => _cachedField(_Field.role);
-
-  bool debugIsExpired(String token) => _isExpired(token);
-
-  /// Returns the stored access token only if it exists AND has not expired.
-  Future<String?> getValidAccessToken() async {
-    final token = await getAccessToken();
-    if (token == null) return null;
-
-    return _isExpired(token) ? null : token;
-  }
 
   /// True if a non-expired access token is stored.
   Future<bool> get isAccessTokenValid async {
@@ -129,10 +68,57 @@ class TokenService {
     return token != null;
   }
 
-  // ---------------------------------------------------------------------------
-  // Clear
-  // ---------------------------------------------------------------------------
+  /// Persists a new token pair and the JWT claims under a single storage key.
+  ///
+  /// The in-memory [_cache] is updated synchronously so subsequent reads
+  /// (including the PowerSync credentials callback that fires milliseconds
+  /// after login) are served from memory without an IndexedDB round-trip.
+  Future<void> saveTokens({
+    required String accessToken,
+    required String refreshToken,
+  }) async {
+    final claims = _decodePayload(accessToken);
 
+    final session = <String, String>{
+      _Field.accessToken: accessToken,
+      _Field.refreshToken: refreshToken,
+      _Field.userId: claims?['sub'] as String? ?? '',
+    };
+
+    // Update in-memory cache immediately.
+    _cache = Map.of(session);
+
+    // Persist as a single JSON blob — ONE write, ONE encryption key.
+    try {
+      await _storage.write(key: _kSessionKey, value: jsonEncode(session));
+    } catch (e) {
+      // Write failure is non-fatal for the current session (_cache is set).
+      // The user will need to re-login after a cold start if storage is broken.
+      debugPrint('[TokenService] saveTokens storage write error (ignored): $e');
+    }
+  }
+
+  /// Gets the access token from the cache.
+  Future<String?> getAccessToken() => _cachedField(_Field.accessToken);
+
+  /// Gets the refresh token from the cache.
+  Future<String?> getRefreshToken() => _cachedField(_Field.refreshToken);
+
+  /// Gets the user id from the cache.
+  Future<String?> getUserId() => _cachedField(_Field.userId);
+
+  /// Whether the token is expired.
+  bool isExpired(String token) => _isExpired(token);
+
+  /// Returns the stored access token only if it exists AND has not expired.
+  Future<String?> getValidAccessToken() async {
+    final token = await getAccessToken();
+    if (token == null) return null;
+
+    return _isExpired(token) ? null : token;
+  }
+
+  /// Clears the cache.
   Future<void> clearAll() async {
     _cache = {};
     try {
@@ -141,10 +127,6 @@ class TokenService {
       debugPrint('[TokenService] clearAll error (ignored): $e');
     }
   }
-
-  // ---------------------------------------------------------------------------
-  // Internals
-  // ---------------------------------------------------------------------------
 
   /// Returns the cached value for [field], loading from storage on first miss.
   Future<String?> _cachedField(String field) async {
@@ -184,10 +166,6 @@ class TokenService {
       _cache = {};
     }
   }
-
-  // ---------------------------------------------------------------------------
-  // JWT helpers
-  // ---------------------------------------------------------------------------
 
   /// Decodes a JWT payload without signature verification.
   static Map<String, dynamic>? _decodePayload(String token) {

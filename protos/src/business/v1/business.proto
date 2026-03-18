@@ -73,7 +73,7 @@ enum BusinessMemberStatus {
 
 message BusinessMember {
   // The user.
-  identity.v1.User user = 1;
+  string user_id = 1;
 
   // The unique identifier of the business.
   string business_id = 2;

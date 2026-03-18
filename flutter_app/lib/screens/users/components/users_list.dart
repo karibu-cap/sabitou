@@ -34,7 +34,7 @@ class UsersList extends StatelessWidget {
             topLeft: Radius.circular(12),
             topRight: Radius.circular(12),
           ),
-          child: StreamBuilder<List<StoreMember>>(
+          child: StreamBuilder<List<({StoreMember storeMember, User user})>>(
             stream: controller.filteredStoreMembersStream,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {

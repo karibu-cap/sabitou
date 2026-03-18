@@ -1,78 +1,112 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-import '../../../themes/app_colors.dart';
-import '../../../utils/app_constants.dart';
-
-/// A reusable product item card widget for displaying product information.
+/// A single product row inside LowStockAlert or ExpiryAlert.
 class ProductItemCard extends StatelessWidget {
-  /// Constructor of new [ProductItemCard].
+  final String productName;
+  final String subtitle;
+  final String badgeText;
+
+  /// Semantic color of the badge background (pass a "soft" tint color).
+  final Color badgeColor;
+
+  /// Foreground text color for the badge.
+  final Color badgeForeground;
+
+  final String additionalInfo;
+
+  /// Convenience constructor — derives foreground from background automatically.
   const ProductItemCard({
     super.key,
     required this.productName,
     required this.subtitle,
     required this.badgeText,
     required this.badgeColor,
+    this.badgeForeground = const Color(0xFF374151),
     required this.additionalInfo,
   });
 
-  /// The product name.
-  final String productName;
-
-  /// The subtitle.
-  final String subtitle;
-
-  /// The badge text.
-  final String badgeText;
-
-  /// The badge color.
-  final Color badgeColor;
-
-  /// The additional info.
-  final String additionalInfo;
-
   @override
   Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
+    final cs = theme.colorScheme;
+
     return Container(
-      padding: const EdgeInsets.all(AppConstants.contentPadding),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       decoration: BoxDecoration(
-        color: AppColors.cobalt.withValues(alpha: 0.02),
-        borderRadius: const BorderRadius.all(
-          Radius.circular(AppConstants.borderRadius),
-        ),
+        color: cs.background,
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
+        border: Border.fromBorderSide(BorderSide(color: cs.border)),
       ),
       child: Row(
         children: [
+          Container(
+            width: 34,
+            height: 34,
+            decoration: BoxDecoration(
+              color: cs.muted,
+              borderRadius: const BorderRadius.all(Radius.circular(8)),
+            ),
+            child: Icon(
+              LucideIcons.package,
+              size: 15,
+              color: cs.mutedForeground,
+            ),
+          ),
+          const SizedBox(width: 12),
+
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(productName, style: ShadTheme.of(context).textTheme.large),
+                AutoSizeText(
+                  productName,
+                  style: theme.textTheme.small.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: cs.foreground,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  minFontSize: 8,
+                ),
                 const SizedBox(height: 2),
-                Text(subtitle, style: ShadTheme.of(context).textTheme.muted),
+                AutoSizeText(
+                  subtitle,
+                  style: theme.textTheme.muted.copyWith(fontSize: 11),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  minFontSize: 8,
+                ),
               ],
             ),
           ),
+          const SizedBox(width: 10),
+
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                 decoration: BoxDecoration(
                   color: badgeColor,
-                  borderRadius: const BorderRadius.all(Radius.circular(12)),
+                  borderRadius: const BorderRadius.all(Radius.circular(20)),
                 ),
                 child: Text(
                   badgeText,
-                  style: ShadTheme.of(
-                    context,
-                  ).textTheme.small.copyWith(color: AppColors.grey0),
+                  style: TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w700,
+                    color: badgeForeground,
+                    letterSpacing: 0.2,
+                  ),
                 ),
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: 3),
               Text(
                 additionalInfo,
-                style: ShadTheme.of(context).textTheme.muted,
+                style: theme.textTheme.muted.copyWith(fontSize: 11),
               ),
             ],
           ),

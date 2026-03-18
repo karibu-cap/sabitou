@@ -8,14 +8,16 @@ import 'query/sql_join.dart';
 
 /// The [PowerSyncDataSource].
 class PowerSyncDataSource implements LocalDataSource {
-  final PowerSyncDatabase _db;
+  final PowerSyncDatabase Function() _dbProvider;
+
+  PowerSyncDatabase get _db => _dbProvider();
 
   /// Constructor of new [PowerSyncDataSource].
-  const PowerSyncDataSource(this._db);
+  const PowerSyncDataSource(this._dbProvider);
 
   /// Compile une liste de SqlQuery → (whereClause, args)
   (String, List<Object?>) _buildWhere(
-    List<SqlQuery> filters, [
+    List<dynamic> filters, [ // SqlQuery | SqlOrGroup
     String? tableAlias,
   ]) {
     if (filters.isEmpty) return ('', []);
@@ -23,10 +25,16 @@ class PowerSyncDataSource implements LocalDataSource {
     final clauses = <String>[];
     final args = <Object?>[];
 
-    for (final f in filters) {
-      final (clause, fArgs) = f.toSql(tableAlias);
-      clauses.add(clause);
-      args.addAll(fArgs);
+    for (final filter in filters) {
+      if (filter is SqlQuery) {
+        final (clause, fArgs) = filter.toSql(tableAlias);
+        clauses.add(clause);
+        args.addAll(fArgs);
+      } else if (filter is SqlOrGroup) {
+        final (clause, fArgs) = filter.toSql(tableAlias);
+        clauses.add(clause);
+        args.addAll(fArgs);
+      }
     }
 
     return ('WHERE ${clauses.join(' AND ')}', args);
@@ -35,7 +43,7 @@ class PowerSyncDataSource implements LocalDataSource {
   @override
   Future<List<RawRow>> getCollection(
     String table, {
-    List<SqlQuery> filters = const [],
+    List<dynamic> filters = const [],
     SqlOrderBy? orderBy,
     int? limit,
     int? offset,
@@ -74,7 +82,7 @@ class PowerSyncDataSource implements LocalDataSource {
     required String table,
     required String tableAlias,
     required List<SqlJoin> joins,
-    List<SqlQuery> filters = const [],
+    List<dynamic> filters = const [],
     List<String> extraColumns = const [],
     SqlOrderBy? orderBy,
     String? groupBy,
@@ -105,7 +113,7 @@ class PowerSyncDataSource implements LocalDataSource {
   @override
   Future<int> count(
     String table, {
-    List<SqlQuery> filters = const [],
+    List<dynamic> filters = const [],
     String? countColumn,
   }) async {
     final col = countColumn != null ? 'COUNT($countColumn)' : 'COUNT(*)';
@@ -122,7 +130,7 @@ class PowerSyncDataSource implements LocalDataSource {
   Future<Map<String, int>> countGroupedBy(
     String table,
     String groupColumn, {
-    List<SqlQuery> filters = const [],
+    List<dynamic> filters = const [],
   }) async {
     final (where, args) = _buildWhere(filters);
     final rows = await _db.getAll(
@@ -140,7 +148,7 @@ class PowerSyncDataSource implements LocalDataSource {
   @override
   Stream<List<RawRow>> watchCollection(
     String table, {
-    List<SqlQuery> filters = const [],
+    List<dynamic> filters = const [],
     SqlOrderBy? orderBy,
     int? limit,
     List<String>? columns,
@@ -175,7 +183,7 @@ class PowerSyncDataSource implements LocalDataSource {
     required String table,
     required String tableAlias,
     required List<SqlJoin> joins,
-    List<SqlQuery> filters = const [],
+    List<dynamic> filters = const [],
     List<String> extraColumns = const [],
     SqlOrderBy? orderBy,
     String? groupBy,
@@ -201,15 +209,26 @@ class PowerSyncDataSource implements LocalDataSource {
   Future<void> setRecord({
     required String table,
     required Map<String, dynamic> record,
-    bool replace = true,
+    List<String> conflictColumns = const ['id'],
   }) async {
-    final verb = replace ? 'INSERT OR REPLACE' : 'INSERT OR IGNORE';
+    if (record.isEmpty) return;
+
     final cols = record.keys.join(', ');
     final placeholders = List.filled(record.length, '?').join(', ');
-    await _db.execute(
-      '$verb INTO $table ($cols) VALUES ($placeholders)',
-      record.values.toList(),
-    );
+    final conflictTarget = conflictColumns.join(', ');
+
+    final updateSet = record.keys
+        .where((key) => !conflictColumns.contains(key))
+        .map((key) => '$key = excluded.$key')
+        .join(', ');
+
+    final sql =
+        '''
+    INSERT INTO $table ($cols) 
+    VALUES ($placeholders)
+    ON CONFLICT($conflictTarget) DO UPDATE SET $updateSet
+  ''';
+    await _db.execute(sql, record.values.toList());
   }
 
   @override
@@ -274,7 +293,7 @@ class PowerSyncDataSource implements LocalDataSource {
   @override
   Future<void> deleteWhere({
     required String table,
-    required List<SqlQuery> filters,
+    required List<dynamic> filters,
   }) async {
     final (where, args) = _buildWhere(filters);
     await _db.execute('DELETE FROM $table $where'.trim(), args);
@@ -288,7 +307,7 @@ class PowerSyncDataSource implements LocalDataSource {
     required String table,
     required String tableAlias,
     required List<SqlJoin> joins,
-    List<SqlQuery> filters = const [],
+    List<dynamic> filters = const [],
     List<String> extraColumns = const [],
     SqlOrderBy? orderBy,
     String? groupBy,
@@ -329,15 +348,26 @@ class _TransactionDataSource implements LocalDataSource {
   Future<void> setRecord({
     required String table,
     required Map<String, dynamic> record,
-    bool replace = true,
+    List<String> conflictColumns = const ['id'],
   }) async {
-    final verb = replace ? 'INSERT OR REPLACE' : 'INSERT OR IGNORE';
+    if (record.isEmpty) return;
+
     final cols = record.keys.join(', ');
     final placeholders = List.filled(record.length, '?').join(', ');
-    await _tx.execute(
-      '$verb INTO $table ($cols) VALUES ($placeholders)',
-      record.values.toList(),
-    );
+    final conflictTarget = conflictColumns.join(', ');
+
+    final updateSet = record.keys
+        .where((key) => !conflictColumns.contains(key))
+        .map((key) => '$key = excluded.$key')
+        .join(', ');
+
+    final sql =
+        '''
+    INSERT INTO $table ($cols) 
+    VALUES ($placeholders)
+    ON CONFLICT($conflictTarget) DO UPDATE SET $updateSet
+  ''';
+    await _tx.execute(sql, record.values.toList());
   }
 
   // The other read methods are not available in a transaction
@@ -345,7 +375,7 @@ class _TransactionDataSource implements LocalDataSource {
   @override
   Future<List<RawRow>> getCollection(
     String table, {
-    List<SqlQuery> filters = const [],
+    List<dynamic> filters = const [],
     SqlOrderBy? orderBy,
     int? limit,
     int? offset,

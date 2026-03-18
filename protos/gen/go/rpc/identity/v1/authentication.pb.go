@@ -161,7 +161,9 @@ type RegisterRequest struct {
 	// The email address of the user.
 	Email string `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
 	// The password of the user.
-	Password      string `protobuf:"bytes,3,opt,name=password,proto3" json:"password,omitempty"`
+	Password string `protobuf:"bytes,3,opt,name=password,proto3" json:"password,omitempty"`
+	// The phone number of the user.
+	PhoneNumber   *string `protobuf:"bytes,4,opt,name=phone_number,json=phoneNumber,proto3,oneof" json:"phone_number,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -213,6 +215,13 @@ func (x *RegisterRequest) GetEmail() string {
 func (x *RegisterRequest) GetPassword() string {
 	if x != nil {
 		return x.Password
+	}
+	return ""
+}
+
+func (x *RegisterRequest) GetPhoneNumber() string {
+	if x != nil && x.PhoneNumber != nil {
+		return *x.PhoneNumber
 	}
 	return ""
 }
@@ -592,11 +601,13 @@ const file_identity_v1_authentication_proto_rawDesc = "" +
 	"_user_name\"J\n" +
 	"\rLoginResponse\x12\x14\n" +
 	"\x05token\x18\x01 \x01(\tR\x05token\x12#\n" +
-	"\rrefresh_token\x18\x02 \x01(\tR\frefreshToken\"w\n" +
+	"\rrefresh_token\x18\x02 \x01(\tR\frefreshToken\"\xb0\x01\n" +
 	"\x0fRegisterRequest\x12\x1b\n" +
 	"\tuser_name\x18\x01 \x01(\tR\buserName\x12\x1d\n" +
 	"\x05email\x18\x02 \x01(\tB\a\xbaH\x04r\x02`\x01R\x05email\x12(\n" +
-	"\bpassword\x18\x03 \x01(\tB\f\xbaH\t\xc8\x01\x01r\x04\x10\x05\x18HR\bpassword\"M\n" +
+	"\bpassword\x18\x03 \x01(\tB\f\xbaH\t\xc8\x01\x01r\x04\x10\x05\x18HR\bpassword\x12&\n" +
+	"\fphone_number\x18\x04 \x01(\tH\x00R\vphoneNumber\x88\x01\x01B\x0f\n" +
+	"\r_phone_number\"M\n" +
 	"\x10RegisterResponse\x12\x14\n" +
 	"\x05token\x18\x01 \x01(\tR\x05token\x12#\n" +
 	"\rrefresh_token\x18\x02 \x01(\tR\frefreshToken\"\x83\x02\n" +
@@ -675,6 +686,7 @@ func file_identity_v1_authentication_proto_init() {
 		return
 	}
 	file_identity_v1_authentication_proto_msgTypes[0].OneofWrappers = []any{}
+	file_identity_v1_authentication_proto_msgTypes[2].OneofWrappers = []any{}
 	file_identity_v1_authentication_proto_msgTypes[5].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{

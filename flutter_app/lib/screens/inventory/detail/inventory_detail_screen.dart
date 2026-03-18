@@ -7,6 +7,7 @@ import '../../../router/app_router.dart';
 import '../../../router/page_routes.dart';
 import '../../../services/internationalization/internationalization.dart';
 import '../../../utils/responsive_utils.dart';
+import '../../../utils/user_preference.dart';
 import '../../../widgets/loading.dart';
 import '../../../widgets/shad_scaffold.dart';
 import '../ajustment/inventory_adjustment_dialog.dart';
@@ -24,6 +25,12 @@ class InventoryDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userPreferences = context.watch<UserPreferences>();
+    final currentStore = userPreferences.store;
+    if (currentStore == null) {
+      return const SizedBox.shrink();
+    }
+
     return ChangeNotifierProvider(
       create: (context) => InventoryDetailController(
         InventoryDetailViewModel(productId: productId),
@@ -94,6 +101,7 @@ class InventoryDetailScreen extends StatelessWidget {
                                 context: context,
                                 builder: (context) => InventoryAdjustmentDialog(
                                   productId: item.product.refId,
+                                  store: currentStore,
                                 ),
                               );
                             }

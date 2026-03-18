@@ -75,6 +75,21 @@ class Formatters {
     }
   }
 
+  static String timeAgo(DateTime dt) {
+    final diff = DateTime.now().toUtc().difference(dt.toUtc());
+    if (diff.inMinutes < 1) {
+      return Intls.to.justNow;
+    }
+    if (diff.inMinutes < 60) {
+      return Intls.to.minutesAgo.trParams({'count': diff.inMinutes.toString()});
+    }
+    if (diff.inHours < 24) {
+      return Intls.to.hoursAgo.trParams({'count': diff.inHours.toString()});
+    }
+
+    return Intls.to.daysAgo.trParams({'count': diff.inDays.toString()});
+  }
+
   /// Format the duration to now.
   static String? formatDurationToNow(DateTime date) {
     final now = clock.now();
@@ -91,5 +106,44 @@ class Formatters {
     } else {
       return null;
     }
+  }
+
+  static String greeting() {
+    final h = DateTime.now().hour;
+    if (h < 12) return Intls.to.morning;
+    if (h < 18) return Intls.to.afternoon;
+
+    return Intls.to.evening;
+  }
+
+  static String hummainFormattedDate() {
+    final now = DateTime.now();
+    final days = [
+      Intls.to.monday,
+      Intls.to.tuesday,
+      Intls.to.wednesday,
+      Intls.to.thursday,
+      Intls.to.friday,
+      Intls.to.saturday,
+      Intls.to.sunday,
+    ];
+    final months = [
+      Intls.to.january,
+      Intls.to.february,
+      Intls.to.march,
+      Intls.to.april,
+      Intls.to.may,
+      Intls.to.june,
+      Intls.to.july,
+      Intls.to.august,
+      Intls.to.september,
+      Intls.to.october,
+      Intls.to.november,
+      Intls.to.december,
+    ];
+    final day = days[now.weekday - 1];
+    final month = months[now.month - 1];
+
+    return '$day ${now.day} $month ${now.year}';
   }
 }

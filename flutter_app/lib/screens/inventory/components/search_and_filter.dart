@@ -147,7 +147,7 @@ class _StatusFilter extends StatelessWidget {
         ].map(
           (status) => ShadOption<StockStatus?>(
             value: status,
-            child: AutoSizeText(status.label ?? Intls.to.status, maxLines: 1),
+            child: Text(status.label ?? Intls.to.status, maxLines: 1),
           ),
         ),
       ],

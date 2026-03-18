@@ -18,6 +18,9 @@ class InventoryAdjustmentViewModel {
   /// The product ID to fetch.
   final String productId;
 
+  /// The current store.
+  final Store store;
+
   /// Gets the inventory item subject.
   InventoryLevelWithProduct? _inventoryItemSubject;
 
@@ -34,7 +37,7 @@ class InventoryAdjustmentViewModel {
   Stream<String> get errorStream => _errorSubject.stream;
 
   /// Constructor of [InventoryAdjustmentViewModel].
-  InventoryAdjustmentViewModel({required this.productId}) {
+  InventoryAdjustmentViewModel({required this.productId, required this.store}) {
     _initData();
   }
 
@@ -42,11 +45,6 @@ class InventoryAdjustmentViewModel {
   Future<void> _initData() async {
     try {
       _logger.info('Fetching product details for: $productId');
-
-      final store = userPreferences.store;
-      if (store == null) {
-        throw Exception('Store not found');
-      }
 
       final inventoryLevels = await InventoryRepository.instance
           .getProductInventoryLevels(productId, store.refId);
@@ -60,19 +58,19 @@ class InventoryAdjustmentViewModel {
       final productResp = storeProduct;
 
       final item = InventoryLevelWithProduct(
-        level: levelReps.level,
+        level: levelReps,
         product: productResp?.storeProduct,
         globalProduct: productResp?.globalProduct,
-        stockStatus: levelReps.level.quantityAvailable == 0
+        stockStatus: levelReps?.quantityAvailable == 0
             ? StockStatus.STOCK_STATUS_OUT_OF_STOCK
-            : levelReps.level.quantityAvailable >
+            : (levelReps?.quantityAvailable ?? 0) >
                   ((productResp?.storeProduct.reorderPoint ?? 0) > 0
                       ? (productResp?.storeProduct.reorderPoint ?? 0)
-                      : levelReps.level.minThreshold)
+                      : (levelReps?.minThreshold ?? 0))
             ? StockStatus.STOCK_STATUS_OK
             : StockStatus.STOCK_STATUS_LOW,
         stockValue:
-            (levelReps.level.quantityAvailable *
+            ((levelReps?.quantityAvailable ?? 0) *
                     (productResp?.storeProduct.salePrice ?? 0))
                 .truncate(),
       );

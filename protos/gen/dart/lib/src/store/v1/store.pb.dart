@@ -16,8 +16,7 @@ import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import '../../google/protobuf/timestamp.pb.dart' as $0;
-import '../../identity/v1/permission.pb.dart' as $2;
-import '../../identity/v1/user.pb.dart' as $1;
+import '../../identity/v1/permission.pb.dart' as $1;
 import 'store.pbenum.dart';
 
 export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
@@ -393,14 +392,14 @@ class Store extends $pb.GeneratedMessage {
 
 class StoreMember extends $pb.GeneratedMessage {
   factory StoreMember({
-    $1.User? user,
+    $core.String? userId,
     $core.String? storeId,
-    $2.StorePermissions? permissions,
+    $1.StorePermissions? permissions,
     $0.Timestamp? memberSince,
     StoreMemberStatus? status,
   }) {
     final result = create();
-    if (user != null) result.user = user;
+    if (userId != null) result.userId = userId;
     if (storeId != null) result.storeId = storeId;
     if (permissions != null) result.permissions = permissions;
     if (memberSince != null) result.memberSince = memberSince;
@@ -421,10 +420,10 @@ class StoreMember extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'StoreMember',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'store.v1'),
       createEmptyInstance: create)
-    ..aOM<$1.User>(1, _omitFieldNames ? '' : 'user', subBuilder: $1.User.create)
+    ..aOS(1, _omitFieldNames ? '' : 'userId')
     ..aOS(2, _omitFieldNames ? '' : 'storeId')
-    ..aOM<$2.StorePermissions>(3, _omitFieldNames ? '' : 'permissions',
-        subBuilder: $2.StorePermissions.create)
+    ..aOM<$1.StorePermissions>(3, _omitFieldNames ? '' : 'permissions',
+        subBuilder: $1.StorePermissions.create)
     ..aOM<$0.Timestamp>(4, _omitFieldNames ? '' : 'memberSince',
         subBuilder: $0.Timestamp.create)
     ..e<StoreMemberStatus>(
@@ -456,15 +455,13 @@ class StoreMember extends $pb.GeneratedMessage {
 
   /// The user.
   @$pb.TagNumber(1)
-  $1.User get user => $_getN(0);
+  $core.String get userId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set user($1.User value) => $_setField(1, value);
+  set userId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasUser() => $_has(0);
+  $core.bool hasUserId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearUser() => $_clearField(1);
-  @$pb.TagNumber(1)
-  $1.User ensureUser() => $_ensure(0);
+  void clearUserId() => $_clearField(1);
 
   /// The unique identifier of the store.
   @$pb.TagNumber(2)
@@ -478,15 +475,15 @@ class StoreMember extends $pb.GeneratedMessage {
 
   /// The permissions that the user has.
   @$pb.TagNumber(3)
-  $2.StorePermissions get permissions => $_getN(2);
+  $1.StorePermissions get permissions => $_getN(2);
   @$pb.TagNumber(3)
-  set permissions($2.StorePermissions value) => $_setField(3, value);
+  set permissions($1.StorePermissions value) => $_setField(3, value);
   @$pb.TagNumber(3)
   $core.bool hasPermissions() => $_has(2);
   @$pb.TagNumber(3)
   void clearPermissions() => $_clearField(3);
   @$pb.TagNumber(3)
-  $2.StorePermissions ensurePermissions() => $_ensure(2);
+  $1.StorePermissions ensurePermissions() => $_ensure(2);
 
   /// The date since when the user became a member.
   @$pb.TagNumber(4)
@@ -1120,12 +1117,12 @@ class DeleteStoreResponse extends $pb.GeneratedMessage {
 
 class AddUserToStoreRequest extends $pb.GeneratedMessage {
   factory AddUserToStoreRequest({
-    $core.String? email,
-    $2.StorePermissions? permissions,
+    $core.String? userId,
+    $1.StorePermissions? permissions,
     $core.String? storeId,
   }) {
     final result = create();
-    if (email != null) result.email = email;
+    if (userId != null) result.userId = userId;
     if (permissions != null) result.permissions = permissions;
     if (storeId != null) result.storeId = storeId;
     return result;
@@ -1144,9 +1141,9 @@ class AddUserToStoreRequest extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'AddUserToStoreRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'store.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'email')
-    ..aOM<$2.StorePermissions>(2, _omitFieldNames ? '' : 'permissions',
-        subBuilder: $2.StorePermissions.create)
+    ..aOS(1, _omitFieldNames ? '' : 'userId')
+    ..aOM<$1.StorePermissions>(2, _omitFieldNames ? '' : 'permissions',
+        subBuilder: $1.StorePermissions.create)
     ..aOS(3, _omitFieldNames ? '' : 'storeId')
     ..hasRequiredFields = false;
 
@@ -1175,25 +1172,25 @@ class AddUserToStoreRequest extends $pb.GeneratedMessage {
 
   /// The email of the user.
   @$pb.TagNumber(1)
-  $core.String get email => $_getSZ(0);
+  $core.String get userId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set email($core.String value) => $_setString(0, value);
+  set userId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasEmail() => $_has(0);
+  $core.bool hasUserId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearEmail() => $_clearField(1);
+  void clearUserId() => $_clearField(1);
 
   /// The permissions that the user has.
   @$pb.TagNumber(2)
-  $2.StorePermissions get permissions => $_getN(1);
+  $1.StorePermissions get permissions => $_getN(1);
   @$pb.TagNumber(2)
-  set permissions($2.StorePermissions value) => $_setField(2, value);
+  set permissions($1.StorePermissions value) => $_setField(2, value);
   @$pb.TagNumber(2)
   $core.bool hasPermissions() => $_has(1);
   @$pb.TagNumber(2)
   void clearPermissions() => $_clearField(2);
   @$pb.TagNumber(2)
-  $2.StorePermissions ensurePermissions() => $_ensure(1);
+  $1.StorePermissions ensurePermissions() => $_ensure(1);
 
   /// The store id.
   @$pb.TagNumber(3)
@@ -1285,12 +1282,14 @@ class UpdateStoreMemberRequest extends $pb.GeneratedMessage {
   factory UpdateStoreMemberRequest({
     $core.String? userId,
     $core.String? storeId,
-    $2.StorePermissions? permissions,
+    $1.StorePermissions? permissions,
+    StoreMemberStatus? status,
   }) {
     final result = create();
     if (userId != null) result.userId = userId;
     if (storeId != null) result.storeId = storeId;
     if (permissions != null) result.permissions = permissions;
+    if (status != null) result.status = status;
     return result;
   }
 
@@ -1309,8 +1308,13 @@ class UpdateStoreMemberRequest extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'userId')
     ..aOS(2, _omitFieldNames ? '' : 'storeId')
-    ..aOM<$2.StorePermissions>(5, _omitFieldNames ? '' : 'permissions',
-        subBuilder: $2.StorePermissions.create)
+    ..aOM<$1.StorePermissions>(5, _omitFieldNames ? '' : 'permissions',
+        subBuilder: $1.StorePermissions.create)
+    ..e<StoreMemberStatus>(
+        6, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
+        defaultOrMaker: StoreMemberStatus.STORE_MEMBER_STATUS_UNSPECIFIED,
+        valueOf: StoreMemberStatus.valueOf,
+        enumValues: StoreMemberStatus.values)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -1358,15 +1362,25 @@ class UpdateStoreMemberRequest extends $pb.GeneratedMessage {
 
   /// The new permissions to add (optional).
   @$pb.TagNumber(5)
-  $2.StorePermissions get permissions => $_getN(2);
+  $1.StorePermissions get permissions => $_getN(2);
   @$pb.TagNumber(5)
-  set permissions($2.StorePermissions value) => $_setField(5, value);
+  set permissions($1.StorePermissions value) => $_setField(5, value);
   @$pb.TagNumber(5)
   $core.bool hasPermissions() => $_has(2);
   @$pb.TagNumber(5)
   void clearPermissions() => $_clearField(5);
   @$pb.TagNumber(5)
-  $2.StorePermissions ensurePermissions() => $_ensure(2);
+  $1.StorePermissions ensurePermissions() => $_ensure(2);
+
+  /// The status of the user.
+  @$pb.TagNumber(6)
+  StoreMemberStatus get status => $_getN(3);
+  @$pb.TagNumber(6)
+  set status(StoreMemberStatus value) => $_setField(6, value);
+  @$pb.TagNumber(6)
+  $core.bool hasStatus() => $_has(3);
+  @$pb.TagNumber(6)
+  void clearStatus() => $_clearField(6);
 }
 
 class UpdateStoreMemberResponse extends $pb.GeneratedMessage {
@@ -1557,158 +1571,6 @@ class StreamStoreMembersResponse extends $pb.GeneratedMessage {
   /// The store members.
   @$pb.TagNumber(1)
   $pb.PbList<StoreMember> get storeMembers => $_getList(0);
-}
-
-class SetStoreMemberStatusRequest extends $pb.GeneratedMessage {
-  factory SetStoreMemberStatusRequest({
-    $core.String? storeId,
-    $core.String? userId,
-    StoreMemberStatus? status,
-  }) {
-    final result = create();
-    if (storeId != null) result.storeId = storeId;
-    if (userId != null) result.userId = userId;
-    if (status != null) result.status = status;
-    return result;
-  }
-
-  SetStoreMemberStatusRequest._();
-
-  factory SetStoreMemberStatusRequest.fromBuffer($core.List<$core.int> data,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
-  factory SetStoreMemberStatusRequest.fromJson($core.String json,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'SetStoreMemberStatusRequest',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'store.v1'),
-      createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'storeId')
-    ..aOS(2, _omitFieldNames ? '' : 'userId')
-    ..e<StoreMemberStatus>(
-        3, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
-        defaultOrMaker: StoreMemberStatus.STORE_MEMBER_STATUS_UNSPECIFIED,
-        valueOf: StoreMemberStatus.valueOf,
-        enumValues: StoreMemberStatus.values)
-    ..hasRequiredFields = false;
-
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  SetStoreMemberStatusRequest clone() =>
-      SetStoreMemberStatusRequest()..mergeFromMessage(this);
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  SetStoreMemberStatusRequest copyWith(
-          void Function(SetStoreMemberStatusRequest) updates) =>
-      super.copyWith(
-              (message) => updates(message as SetStoreMemberStatusRequest))
-          as SetStoreMemberStatusRequest;
-
-  @$core.override
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static SetStoreMemberStatusRequest create() =>
-      SetStoreMemberStatusRequest._();
-  @$core.override
-  SetStoreMemberStatusRequest createEmptyInstance() => create();
-  static $pb.PbList<SetStoreMemberStatusRequest> createRepeated() =>
-      $pb.PbList<SetStoreMemberStatusRequest>();
-  @$core.pragma('dart2js:noInline')
-  static SetStoreMemberStatusRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<SetStoreMemberStatusRequest>(create);
-  static SetStoreMemberStatusRequest? _defaultInstance;
-
-  /// The unique identifier of the store.
-  @$pb.TagNumber(1)
-  $core.String get storeId => $_getSZ(0);
-  @$pb.TagNumber(1)
-  set storeId($core.String value) => $_setString(0, value);
-  @$pb.TagNumber(1)
-  $core.bool hasStoreId() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearStoreId() => $_clearField(1);
-
-  /// The unique identifier of the user.
-  @$pb.TagNumber(2)
-  $core.String get userId => $_getSZ(1);
-  @$pb.TagNumber(2)
-  set userId($core.String value) => $_setString(1, value);
-  @$pb.TagNumber(2)
-  $core.bool hasUserId() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearUserId() => $_clearField(2);
-
-  /// The status of the user.
-  @$pb.TagNumber(3)
-  StoreMemberStatus get status => $_getN(2);
-  @$pb.TagNumber(3)
-  set status(StoreMemberStatus value) => $_setField(3, value);
-  @$pb.TagNumber(3)
-  $core.bool hasStatus() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearStatus() => $_clearField(3);
-}
-
-class SetStoreMemberStatusResponse extends $pb.GeneratedMessage {
-  factory SetStoreMemberStatusResponse({
-    $core.bool? success,
-  }) {
-    final result = create();
-    if (success != null) result.success = success;
-    return result;
-  }
-
-  SetStoreMemberStatusResponse._();
-
-  factory SetStoreMemberStatusResponse.fromBuffer($core.List<$core.int> data,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
-  factory SetStoreMemberStatusResponse.fromJson($core.String json,
-          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'SetStoreMemberStatusResponse',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'store.v1'),
-      createEmptyInstance: create)
-    ..aOB(1, _omitFieldNames ? '' : 'success')
-    ..hasRequiredFields = false;
-
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  SetStoreMemberStatusResponse clone() =>
-      SetStoreMemberStatusResponse()..mergeFromMessage(this);
-  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  SetStoreMemberStatusResponse copyWith(
-          void Function(SetStoreMemberStatusResponse) updates) =>
-      super.copyWith(
-              (message) => updates(message as SetStoreMemberStatusResponse))
-          as SetStoreMemberStatusResponse;
-
-  @$core.override
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static SetStoreMemberStatusResponse create() =>
-      SetStoreMemberStatusResponse._();
-  @$core.override
-  SetStoreMemberStatusResponse createEmptyInstance() => create();
-  static $pb.PbList<SetStoreMemberStatusResponse> createRepeated() =>
-      $pb.PbList<SetStoreMemberStatusResponse>();
-  @$core.pragma('dart2js:noInline')
-  static SetStoreMemberStatusResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<SetStoreMemberStatusResponse>(create);
-  static SetStoreMemberStatusResponse? _defaultInstance;
-
-  /// Whether the member was successfully updated.
-  @$pb.TagNumber(1)
-  $core.bool get success => $_getBF(0);
-  @$pb.TagNumber(1)
-  set success($core.bool value) => $_setBool(0, value);
-  @$pb.TagNumber(1)
-  $core.bool hasSuccess() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearSuccess() => $_clearField(1);
 }
 
 class GetStoreMembersRequest extends $pb.GeneratedMessage {
@@ -2157,12 +2019,6 @@ class StoreServiceApi {
           $pb.ClientContext? ctx, GetStoreMemberRequest request) =>
       _client.invoke<GetStoreMemberResponse>(ctx, 'StoreService',
           'GetStoreMember', request, GetStoreMemberResponse());
-
-  /// Set store member status.
-  $async.Future<SetStoreMemberStatusResponse> setStoreMemberStatus(
-          $pb.ClientContext? ctx, SetStoreMemberStatusRequest request) =>
-      _client.invoke<SetStoreMemberStatusResponse>(ctx, 'StoreService',
-          'SetStoreMemberStatus', request, SetStoreMemberStatusResponse());
 
   /// Remove user from store.
   $async.Future<RemoveUserFromStoreResponse> removeUserFromStore(

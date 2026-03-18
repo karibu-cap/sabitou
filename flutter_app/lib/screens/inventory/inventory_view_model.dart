@@ -8,19 +8,20 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../../repositories/categories_repository.dart';
 import '../../repositories/inventory_repository.dart';
-import '../../repositories/reports_repository.dart';
 import '../../repositories/store_products_repository.dart';
 import '../../utils/extensions/category_extension.dart';
 import '../../utils/extensions/global_product_extension.dart';
 import '../../utils/logger.dart';
-import '../../utils/user_preference.dart';
 
 /// View model for inventory screen
 class InventoryViewModel {
   final LoggerApp _logger = LoggerApp('InventoryViewModel');
 
-  /// Gets the user preferences.
-  final UserPreferences userPreferences = UserPreferences.instance;
+  /// The store.
+  final Store store;
+
+  /// The business.
+  final Business business;
 
   /// Gets the products subject.
   final _invLevelSubject =
@@ -132,17 +133,14 @@ class InventoryViewModel {
   }
 
   /// Constructor of [InventoryViewModel].
-  InventoryViewModel() {
+  InventoryViewModel({required this.store, required this.business}) {
     initTheData();
   }
 
   /// Initiates the partial data.
   Future<void> initPartialData({VoidCallback? onLoaded}) async {
     _logger.info('initPartialData is called');
-    final businessId = userPreferences.business?.refId;
-    if (businessId == null) {
-      return;
-    }
+    final businessId = business.refId;
 
     final categories = await CategoriesRepository.to.getCategoriesByBusinessId(
       businessId,
@@ -156,25 +154,9 @@ class InventoryViewModel {
   Future<void> initTheData({VoidCallback? onLoaded}) async {
     try {
       _logger.info('initTheData is called');
-      final store = userPreferences.store;
-      if (store == null) {
-        throw Exception('Store not found');
-      }
 
-      // Execute all calls in parallel for better performance
-      final results = await Future.wait([
-        InventoryRepository.instance.getLowStockItems(store.refId),
-        ReportsRepository.instance.getSalesByPeriod(
-          storeId: store.refId,
-          startDate: store.hasCreatedAt()
-              ? store.createdAt.toDateTime()
-              : clock.now(),
-          endDate: clock.now().add(const Duration(days: 1)),
-        ),
-        InventoryRepository.instance.getStoreInventory(store.refId),
-      ]);
-
-      final inventoryLevels = results[2] as List<InventoryLevelWithProduct>;
+      final inventoryLevels = await InventoryRepository.instance
+          .getStoreInventory(store.refId);
 
       if (!_invLevelSubject.isClosed) {
         _invLevelSubject.add(UnmodifiableListView(inventoryLevels));
@@ -214,7 +196,7 @@ class InventoryViewModel {
     VoidCallback? onLoaded,
   }) async {
     try {
-      final response = await InventoryRepository.instance.adjustInventory(
+      final isSucceeded = await InventoryRepository.instance.adjustInventory(
         AdjustInventoryRequest(
           storeId: storeId,
           productId: productId,
@@ -224,11 +206,11 @@ class InventoryViewModel {
         ),
       );
 
-      if (response.success) {
+      if (isSucceeded) {
         unawaited(initTheData(onLoaded: onLoaded));
       }
 
-      return response.success;
+      return isSucceeded;
     } on Exception catch (e) {
       _logger.severe('Error adjusting inventory: $e');
 
@@ -265,13 +247,6 @@ class InventoryViewModel {
   /// Fetches transaction history for the selected item.
   Future<void> _fetchTransactions(InventoryLevelWithProduct item) async {
     try {
-      final store = userPreferences.store;
-      if (store == null) {
-        _logger.warning('Store not found when fetching transactions');
-
-        return;
-      }
-
       final response = await InventoryRepository.instance
           .getInventoryTransactionHistory(
             GetInventoryTransactionHistoryRequest(
@@ -288,7 +263,7 @@ class InventoryViewModel {
             ),
           );
       if (!_transactionsSubject.isClosed) {
-        _transactionsSubject.add(response.transactions);
+        _transactionsSubject.add(response);
       }
     } on Exception catch (e) {
       _logger.severe('Error fetching transactions: $e');

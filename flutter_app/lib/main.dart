@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+import 'core/database/powersync_data_source.dart';
 import 'providers/auth/auth_provider.dart';
 import 'providers/cart_provider.dart';
 import 'repositories/audits_repository.dart';
@@ -25,12 +26,10 @@ import 'router/app_router.dart';
 import 'services/app_theme_service.dart';
 import 'services/auth/auth_api_client.dart';
 import 'services/auth/token_service.dart';
-import 'services/data_sync/data_sync_service.dart';
 import 'services/internationalization/internationalization.dart';
 import 'services/network_status_provider/network_status_provider.dart';
 import 'services/powersync/powersync_service.dart';
 import 'services/rpc/connect_rpc.dart';
-import 'services/rpc/fake_transport/data_sync.dart';
 import 'services/storage/app_storage.dart';
 import 'services/storage/hive_ce/hive_adapters.dart';
 import 'themes/app_colors.dart';
@@ -42,19 +41,28 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AppStorage.initialize(AppStorageType.hiveStorage);
   initStorageBoxes();
+  await _initPowersyncDbServices();
   await _initServices();
   runApp(const MyApp());
+}
+
+Future<void> _initPowersyncDbServices() async {
+  GetIt.I.registerSingleton<ConnectRPCService>(ConnectRPCService());
+
+  final authApiClient = GetIt.I.registerSingleton<AuthApiClient>(
+    AuthApiClient(),
+  );
+  final service = GetIt.I.registerSingleton<PowerSyncService>(
+    PowerSyncService(authApiClient: authApiClient),
+  );
+  await service.initialize();
 }
 
 Future<void> _initServices() async {
   final networkStatusProvider = NetworkStatusProvider.create(
     type: NetworkProviderType.real,
   );
-  GetIt.I.registerSingleton<ConnectRPCService>(ConnectRPCService());
 
-  final authApiClient = GetIt.I.registerSingleton<AuthApiClient>(
-    AuthApiClient(),
-  );
   final languageCode = await AppStorage.of<Locale>().read(
     PreferencesKey.language,
   );
@@ -69,22 +77,49 @@ Future<void> _initServices() async {
     )
     ..registerLazySingleton<AuthRepository>(
       () => AuthRepository(
-        apiClient: authApiClient,
+        apiClient: GetIt.I.get<AuthApiClient>(),
         tokenService: TokenService.instance,
+        dataSource: PowerSyncDataSource(() => PowerSyncService.instance.db),
       ),
     )
     ..registerLazySingleton<StoreProductsRepository>(
-      StoreProductsRepository.new,
+      () => StoreProductsRepository(
+        dataSource: PowerSyncDataSource(() => PowerSyncService.instance.db),
+      ),
     )
     ..registerLazySingleton<UserPreferences>(() => UserPreferences(null))
-    ..registerLazySingleton<ReportsRepository>(ReportsRepository.new)
-    ..registerLazySingleton<SuppliersRepository>(SuppliersRepository.new)
+    ..registerLazySingleton<ReportsRepository>(
+      () => ReportsRepository(
+        dataSource: PowerSyncDataSource(() => PowerSyncService.instance.db),
+      ),
+    )
+    ..registerLazySingleton<SuppliersRepository>(
+      () => SuppliersRepository(
+        dataSource: PowerSyncDataSource(() => PowerSyncService.instance.db),
+      ),
+    )
     ..registerLazySingleton<ResourceLinkRepository>(ResourceLinkRepository.new)
     ..registerLazySingleton<PermissionsRepository>(PermissionsRepository.new)
-    ..registerLazySingleton<BusinessRepository>(BusinessRepository.new)
-    ..registerLazySingleton<StoresRepository>(StoresRepository.new)
-    ..registerLazySingleton<UserRepository>(UserRepository.new)
-    ..registerLazySingleton<InventoryRepository>(InventoryRepository.new)
+    ..registerLazySingleton<BusinessRepository>(
+      () => BusinessRepository(
+        dataSource: PowerSyncDataSource(() => PowerSyncService.instance.db),
+      ),
+    )
+    ..registerLazySingleton<StoresRepository>(
+      () => StoresRepository(
+        dataSource: PowerSyncDataSource(() => PowerSyncService.instance.db),
+      ),
+    )
+    ..registerLazySingleton<UserRepository>(
+      () => UserRepository(
+        dataSource: PowerSyncDataSource(() => PowerSyncService.instance.db),
+      ),
+    )
+    ..registerLazySingleton<InventoryRepository>(
+      () => InventoryRepository(
+        dataSource: PowerSyncDataSource(() => PowerSyncService.instance.db),
+      ),
+    )
     ..registerLazySingleton<GiftVoucherRepository>(GiftVoucherRepository.new)
     ..registerLazySingleton<PosRepository>(PosRepository.new)
     ..registerLazySingleton<AuditsRepository>(AuditsRepository.new)
@@ -92,9 +127,6 @@ Future<void> _initServices() async {
       PurchaseOrderRepository.new,
     )
     ..registerLazySingleton<CategoriesRepository>(CategoriesRepository.new)
-    ..registerLazySingleton<DataSyncService>(
-      () => DataSyncService(transport: syncFakeTransport),
-    )
     ..registerLazySingleton<CartManager>(CartManager.new);
 
   // Wait for AuthProvider to initialize from storage
@@ -134,8 +166,11 @@ class MyApp extends StatelessWidget {
           create: (context) => GetIt.I.get<AppInternationalizationService>(),
         ),
         ChangeNotifierProvider(create: (context) => AppThemeService()),
-        ChangeNotifierProvider<UserPreferences>(
-          create: (context) => GetIt.I.get<UserPreferences>(),
+        ChangeNotifierProxyProvider<AuthProvider, UserPreferences>(
+          create: (context) =>
+              UserPreferences(context.read<AuthProvider>().currentUser?.refId),
+          update: (context, value, previous) =>
+              UserPreferences(value.currentUser?.refId),
         ),
       ],
       child:

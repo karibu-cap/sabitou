@@ -84,19 +84,19 @@ class InventoryDetailViewModel {
       final productResp = storeProduct;
 
       final item = InventoryLevelWithProduct(
-        level: levelReps.level,
+        level: levelReps,
         product: productResp?.storeProduct,
         globalProduct: productResp?.globalProduct,
-        stockStatus: levelReps.level.quantityAvailable == 0
+        stockStatus: (levelReps?.quantityAvailable ?? 0) == 0
             ? StockStatus.STOCK_STATUS_OUT_OF_STOCK
-            : levelReps.level.quantityAvailable >
+            : (levelReps?.quantityAvailable ?? 0) >
                   ((productResp?.storeProduct.reorderPoint ?? 0) > 0
                       ? (productResp?.storeProduct.reorderPoint ?? 0)
-                      : levelReps.level.minThreshold)
+                      : levelReps?.minThreshold ?? 0)
             ? StockStatus.STOCK_STATUS_OK
             : StockStatus.STOCK_STATUS_LOW,
         stockValue:
-            (levelReps.level.quantityAvailable *
+            ((levelReps?.quantityAvailable ?? 0) *
                     (productResp?.storeProduct.salePrice ?? 0))
                 .truncate(),
       );
@@ -143,7 +143,7 @@ class InventoryDetailViewModel {
               pageNumber: 1,
             ),
           );
-      _transactionsSubject.add(response.transactions);
+      _transactionsSubject.add(response);
     } on Exception catch (e) {
       _logger.severe('Error fetching transactions: $e');
       _transactionsSubject.add([]);

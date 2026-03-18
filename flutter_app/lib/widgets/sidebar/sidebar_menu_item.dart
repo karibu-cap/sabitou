@@ -120,15 +120,27 @@ class _ItemWidget<T> extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         return ShadButton.raw(
-          mainAxisAlignment: MainAxisAlignment.start,
           width: constraints.maxWidth,
-          height:
-              minHeight ?? (!isActive && item.description != null ? 70 : null),
+          mainAxisAlignment: MainAxisAlignment.start,
           variant: isActive ? ShadButtonVariant.primary : variant,
           onPressed: () => onTabChange?.call(item),
-          padding: EdgeInsets.symmetric(horizontal: isChild ? 40 : 16),
-          leading: !hasAChild ? Icon(item.icon, size: 15) : const SizedBox(),
           enabled: !hasAChild,
+
+          padding: EdgeInsets.symmetric(
+            horizontal: isChild ? 28.0 : 12.0,
+            vertical: 10.0,
+          ),
+
+          height:
+              minHeight ?? (!isActive && item.description != null ? 64 : 40),
+
+          leading: hasAChild
+              ? Icon(
+                  LucideIcons.chevronRight,
+                  size: 13,
+                  color: theme.colorScheme.mutedForeground,
+                )
+              : Icon(item.icon, size: 16),
 
           child: Flexible(
             child: Column(
@@ -137,14 +149,16 @@ class _ItemWidget<T> extends StatelessWidget {
               children: [
                 AutoSizeText(
                   item.label,
-                  overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                   minFontSize: 8,
-                  style: theme.textTheme.table,
+                  overflow: TextOverflow.ellipsis,
+                  style: hasAChild
+                      ? theme.textTheme.h4.copyWith(
+                          color: theme.colorScheme.mutedForeground,
+                        )
+                      : theme.textTheme.small,
                 ),
-                if (!isActive &&
-                    (item.description != null ||
-                        item.description?.isNotEmpty == true))
+                if (!isActive && item.description?.isNotEmpty == true)
                   AutoSizeText(
                     item.description ?? '',
                     minFontSize: 8,

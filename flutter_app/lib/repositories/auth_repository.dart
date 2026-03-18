@@ -7,15 +7,16 @@ import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
+import '../core/database/base_repository.dart';
+import '../core/database/local_data_source.dart';
+import '../core/database/query/sql_condition.dart';
+import '../core/database/row_mapper.dart';
 import '../services/auth/auth_api_client.dart';
 import '../services/auth/token_service.dart';
-import '../services/powersync/powersync_service.dart';
+import '../services/powersync/schema.dart';
+import '../utils/app_constants.dart';
 import '../utils/logger.dart';
 import '../utils/network_utils.dart';
-
-// ---------------------------------------------------------------------------
-// Result types
-// ---------------------------------------------------------------------------
 
 /// The outcome of an authentication attempt.
 sealed class AuthResult {
@@ -25,33 +26,43 @@ sealed class AuthResult {
 /// Authentication succeeded — carries the proto [User] from the identity service.
 final class AuthSuccess extends AuthResult {
   /// The authenticated user.
-  ///
   /// Online login: populated from the JWT claims stored in [TokenService].
   /// Offline login: reconstructed from the local PowerSync `users` table.
   final User user;
 
+  /// Constructs an [AuthSuccess] result.
   const AuthSuccess(this.user);
 }
 
 /// Authentication failed with a user-visible reason.
 final class AuthFailure extends AuthResult {
+  /// The reason for the failure.
   final AuthFailureReason reason;
+
+  /// An optional message.
   final String? message;
 
+  /// Constructs an [AuthFailure] result.
   const AuthFailure(this.reason, {this.message});
 }
 
+/// The possible failure reasons.
 enum AuthFailureReason {
+  /// Invalid credentials.
   invalidCredentials,
+
+  /// Network unavailable.
   networkUnavailable,
+
+  /// Account disabled.
   accountDisabled,
+
+  /// Server error.
   serverError,
+
+  /// Offline user not found.
   offlineUserNotFound,
 }
-
-// ---------------------------------------------------------------------------
-// Repository
-// ---------------------------------------------------------------------------
 
 /// Handles all authentication operations: online login, offline login,
 /// registration, token refresh, and logout.
@@ -65,22 +76,37 @@ enum AuthFailureReason {
 ///   1. Look up the user's `local_auth` row by email.
 ///   2. Verify password against the stored bcrypt hash.
 ///   3. Reconstruct a [User] from the synced `users` PowerSync table.
-class AuthRepository {
+class AuthRepository extends BaseRepository<User> {
   final _logger = LoggerApp('AuthRepository');
+
+  /// The [AuthApiClient] implementation.
+  final AuthApiClient _apiClient;
+
+  /// The [TokenService] implementation.
+  final TokenService _tokenService;
+
+  @override
+  final LocalDataSource dataSource;
+
+  @override
+  String get tableName => CollectionName.users;
 
   /// Singleton accessor.
   static AuthRepository get instance => GetIt.I.get<AuthRepository>();
 
-  final AuthApiClient _apiClient;
-  final TokenService _tokenService;
+  /// Constructs an [AuthRepository].
+  AuthRepository({
+    required this.dataSource,
+    AuthApiClient? apiClient,
+    TokenService? tokenService,
+  }) : _apiClient = apiClient ?? GetIt.I.get<AuthApiClient>(),
+       _tokenService = tokenService ?? TokenService.instance;
 
-  AuthRepository({AuthApiClient? apiClient, TokenService? tokenService})
-    : _apiClient = apiClient ?? GetIt.I.get<AuthApiClient>(),
-      _tokenService = tokenService ?? TokenService.instance;
+  @override
+  User fromRow(RawRow row) => fromRowToUser(row);
 
-  // ---------------------------------------------------------------------------
-  // Login
-  // ---------------------------------------------------------------------------
+  @override
+  RawRow toRow(User entity) => fromUsertoRaw(entity);
 
   /// Attempts login. Automatically selects online or offline strategy based on
   /// network reachability.
@@ -96,6 +122,21 @@ class AuthRepository {
       _logger.log('No server reachable — attempting offline login');
 
       return _loginOffline(email: email, password: password);
+    }
+  }
+
+  /// Restores the session from the local SQLite `users` table.
+  Future<User?> restoreSession(String userId) async {
+    try {
+      // Read the user profile from the local SQLite `users` table.
+
+      final rows = await findById(userId);
+
+      return rows;
+    } catch (e) {
+      _logger.severe('Session restore error: $e');
+
+      return null;
     }
   }
 
@@ -119,25 +160,11 @@ class AuthRepository {
       //    Web Crypto AES-GCM is async and may not be committed yet).
       final userId = _extractUserIdFromToken(tokens.accessToken);
 
-      // 4. Open PowerSync DB NOW — _cacheLocalAuth and _buildUserFromLocalCache
-      //    both require the database to be open. We open it here rather than
-      //    leaving it to AuthProvider._onAuthSuccess so the DB is ready before
-      //    we try to write to it.
-      await PowerSyncService.instance.open(
-        userId: userId,
-        authApiClient: _apiClient,
-      );
-
-      // 5. Cache credentials for offline use (non-blocking, best-effort).
-      unawaited(
-        _cacheLocalAuth(userId: userId, email: email, password: password),
-      );
-
-      // 6. Build a User object — from local cache if already synced,
-      //    or a minimal stub (just refId) that gets filled in after sync.
-      final user = await _buildUserFromLocalCache(userId);
-
-      return AuthSuccess(user);
+      // We don't write to the DB here because the PowerSync scoped file
+      // might not be open yet for this specific user.
+      // We return a User stub containing only the ID so the provider
+      // can open the DB and then call cache/fetch methods.
+      return AuthSuccess(User(refId: userId));
     } on connect.ConnectException catch (e) {
       _logger.severe('Online login Connect error: ${e.code} — ${e.message}');
 
@@ -184,21 +211,12 @@ class AuthRepository {
     required String password,
   }) async {
     try {
-      final storedUserId = await _tokenService.getUserId();
-      if (storedUserId == null ||
-          !PowerSyncService.instance.isOpenFor(storedUserId)) {
-        return const AuthFailure(
-          AuthFailureReason.offlineUserNotFound,
-          message:
-              'No cached session found. Please connect to the server for first login.',
-        );
-      }
-
-      final db = PowerSyncService.instance.db;
-
-      final rows = await db.getAll(
-        'SELECT user_id, password_hash FROM local_auth WHERE email = ? LIMIT 1',
-        [email.toLowerCase().trim()],
+      final rows = await dataSource.getCollection(
+        CollectionName.localAuth,
+        filters: [
+          SqlQuery.equals(LocalAuthFields.email, email.toLowerCase().trim()),
+        ],
+        limit: 1,
       );
 
       if (rows.isEmpty) {
@@ -209,8 +227,8 @@ class AuthRepository {
         );
       }
 
-      final storedHash = rows.first['password_hash'] as String;
-      final userId = rows.first['user_id'] as String;
+      final storedHash = rows.first[LocalAuthFields.passwordHash] as String;
+      final userId = rows.first[LocalAuthFields.userId] as String;
 
       final matches = await compute(
         (args) => BCrypt.checkpw(args.$1, args.$2),
@@ -221,10 +239,8 @@ class AuthRepository {
         return const AuthFailure(AuthFailureReason.invalidCredentials);
       }
 
-      final user = await _buildUserFromLocalCache(userId);
-      _logger.log('Offline login successful for user $userId');
-
-      return AuthSuccess(user);
+      // 4. Return identity only. The provider will handle DB re-init and profile fetch.
+      return AuthSuccess(User(refId: userId));
     } catch (e) {
       _logger.severe('Offline login error: $e');
 
@@ -232,15 +248,14 @@ class AuthRepository {
     }
   }
 
-  // ---------------------------------------------------------------------------
-  // Register
-  // ---------------------------------------------------------------------------
-
   /// Registers a new user account. Requires a server connection.
   Future<AuthResult> register({
     required String userName,
     required String email,
     required String password,
+    String? phoneNumber,
+    String? firstName,
+    String? lastName,
   }) async {
     final isOnline = await NetworkUtils.isServerReachable();
     if (!isOnline) {
@@ -255,6 +270,9 @@ class AuthRepository {
         userName: userName,
         email: email,
         password: password,
+        phoneNumber: phoneNumber,
+        firstName: firstName,
+        lastName: lastName,
       );
 
       await _tokenService.saveTokens(
@@ -263,11 +281,8 @@ class AuthRepository {
       );
 
       final userId = await _tokenService.getUserId() ?? '';
-      await _cacheLocalAuth(userId: userId, email: email, password: password);
 
-      final user = await _buildUserFromLocalCache(userId);
-
-      return AuthSuccess(user);
+      return AuthSuccess(User(refId: userId));
     } on connect.ConnectException catch (e) {
       _logger.severe('Register Connect error: $e');
       if (e.code == connect.Code.alreadyExists) {
@@ -285,10 +300,7 @@ class AuthRepository {
     }
   }
 
-  // ---------------------------------------------------------------------------
-  // Logout
-  // ---------------------------------------------------------------------------
-
+  /// Logs out the current user.
   Future<void> logout() async {
     try {
       await _apiClient.logout();
@@ -297,10 +309,6 @@ class AuthRepository {
     }
     await _tokenService.clearAll();
   }
-
-  // ---------------------------------------------------------------------------
-  // Session helpers
-  // ---------------------------------------------------------------------------
 
   /// Returns true if a valid (non-expired) session token exists.
   Future<bool> hasValidSession() => _tokenService.isAccessTokenValid;
@@ -311,57 +319,41 @@ class AuthRepository {
   /// Returns the stored user ID from the last successful login.
   Future<String?> getStoredUserId() => _tokenService.getUserId();
 
-  // ---------------------------------------------------------------------------
-  // Internals
-  // ---------------------------------------------------------------------------
-
   /// Builds a proto [User] from the local `users` PowerSync table.
   ///
   /// Falls back to a minimal [User] with only the ref_id when the DB row is
   /// not yet available (e.g. right after registration, before first sync).
-  Future<User> _buildUserFromLocalCache(String userId) async {
+  Future<User?> fetchProfile(String userId) async {
     try {
-      final db = PowerSyncService.instance.db;
-      final rows = await db.getAll(
-        '''
-        SELECT ref_id, user_name, email, first_name, last_name,
-               phone_number, account_status
-        FROM users WHERE ref_id = ? LIMIT 1
-        ''',
-        [userId],
-      );
+      // 1. Try immediate lookup from local SQLite.
+      final immediate = await findById(userId);
+      if (immediate != null && immediate.email.isNotEmpty) return immediate;
 
-      if (rows.isEmpty) {
-        return User(refId: userId);
-      }
+      // 2. If not found or incomplete, wait for PowerSync to deliver the record.
+      _logger.log('User $userId not in local cache, waiting for sync...');
 
-      final row = rows.first;
+      return await watchOne(userId)
+          .where((user) => user != null && user.email.isNotEmpty)
+          .first
+          .timeout(
+            const Duration(seconds: 15),
+            onTimeout: () {
+              _logger.warning(
+                'Timeout waiting for user $userId sync. Proceeding with stub.',
+              );
 
-      return User(
-        refId: row['ref_id'] as String?,
-        userName: row['user_name'] as String? ?? '',
-        email: row['email'] as String?,
-        firstName: row['first_name'] as String?,
-        lastName: row['last_name'] as String?,
-        phoneNumber: row['phone_number'] as String?,
-      );
+              return User(refId: userId);
+            },
+          );
     } catch (e) {
-      _logger.severe('_buildUserFromLocalCache error: $e');
+      _logger.severe('fetchProfile error: $e');
 
       return User(refId: userId);
     }
   }
 
   /// Stores a bcrypt hash of [password] in the local `local_auth` table.
-  /// Device-local only — never synced to the server.
-  ///
-  /// PowerSync `Table.localOnly(...)` creates a view with `INSTEAD OF INSERT`
-  /// and `INSTEAD OF UPDATE` triggers over `ps_data_local__local_auth`.
-  /// The view supports simple `INSERT OR REPLACE` (routed through the trigger)
-  /// but NOT `ON CONFLICT(column) DO UPDATE` (which requires a real table).
-  /// We use `INSERT OR REPLACE` with `id = 'local_' + userId` so repeated
-  /// logins overwrite the previous cached hash.
-  Future<void> _cacheLocalAuth({
+  Future<bool> cacheCredentials({
     required String userId,
     required String email,
     required String password,
@@ -372,26 +364,35 @@ class AuthRepository {
         password,
       );
 
-      final id = 'local_$userId';
-      final db = PowerSyncService.instance.db;
+      final emailNormalized = email.toLowerCase().trim();
 
-      await db.execute(
-        '''
-        INSERT OR REPLACE INTO local_auth
-              (id, user_id, email, password_hash, stored_at)
-        VALUES (?, ?, ?, ?, ?)
-        ''',
-        [
-          id,
-          userId,
-          email.toLowerCase().trim(),
-          hash,
-          DateTime.now().millisecondsSinceEpoch ~/ 1000,
+      await dataSource.deleteWhere(
+        table: CollectionName.localAuth,
+        filters: [
+          SqlQuery.equals(LocalAuthFields.userId, userId),
+          SqlQuery.equals(LocalAuthFields.email, emailNormalized),
         ],
       );
+
+      await dataSource.createRecord(
+        table: CollectionName.localAuth,
+        record: {
+          LocalAuthFields.id: 'local_$userId',
+          LocalAuthFields.userId: userId,
+          LocalAuthFields.email: emailNormalized,
+          LocalAuthFields.passwordHash: hash,
+          LocalAuthFields.storedAt:
+              DateTime.now().millisecondsSinceEpoch ~/ 1000,
+        },
+      );
+
       _logger.log('local_auth cached for user $userId');
+
+      return true;
     } catch (e) {
       _logger.severe('Failed to cache local_auth: $e');
+
+      return false;
     }
   }
 }

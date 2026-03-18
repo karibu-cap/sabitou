@@ -28,7 +28,7 @@ abstract interface class LocalDataSource {
   /// Get a collection of rows.
   Future<List<RawRow>> getCollection(
     String table, {
-    List<SqlQuery> filters = const [],
+    List<dynamic> filters = const [],
     SqlOrderBy? orderBy,
     int? limit,
     int? offset,
@@ -48,7 +48,7 @@ abstract interface class LocalDataSource {
     required String table,
     required String tableAlias,
     required List<SqlJoin> joins,
-    List<SqlQuery> filters = const [],
+    List<dynamic> filters = const [],
     List<String> extraColumns = const [],
     SqlOrderBy? orderBy,
     String? groupBy,
@@ -62,7 +62,7 @@ abstract interface class LocalDataSource {
   /// Count rows in a table.
   Future<int> count(
     String table, {
-    List<SqlQuery> filters = const [],
+    List<dynamic> filters = const [],
     String? countColumn, // null = COUNT(*)
   });
 
@@ -70,13 +70,13 @@ abstract interface class LocalDataSource {
   Future<Map<String, int>> countGroupedBy(
     String table,
     String groupColumn, {
-    List<SqlQuery> filters = const [],
+    List<dynamic> filters = const [],
   });
 
   /// Streams reactive.
   Stream<List<RawRow>> watchCollection(
     String table, {
-    List<SqlQuery> filters = const [],
+    List<dynamic> filters = const [],
     SqlOrderBy? orderBy,
     int? limit,
     List<String>? columns,
@@ -94,7 +94,7 @@ abstract interface class LocalDataSource {
     required String table,
     required String tableAlias,
     required List<SqlJoin> joins,
-    List<SqlQuery> filters = const [],
+    List<dynamic> filters = const [],
     List<String> extraColumns = const [],
     SqlOrderBy? orderBy,
     String? groupBy,
@@ -107,7 +107,7 @@ abstract interface class LocalDataSource {
   Future<void> setRecord({
     required String table,
     required Map<String, dynamic> record,
-    bool replace = true, // INSERT OR REPLACE vs INSERT OR IGNORE
+    List<String> conflictColumns = const ['id'],
   });
 
   /// Writes lust of data to the database.
@@ -142,7 +142,7 @@ abstract interface class LocalDataSource {
   /// Deletes records.
   Future<void> deleteWhere({
     required String table,
-    required List<SqlQuery> filters,
+    required List<dynamic> filters,
   });
 
   /// The [LocalDataSource] implementation.

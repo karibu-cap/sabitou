@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../services/internationalization/internationalization.dart';
 import '../../utils/responsive_utils.dart';
+import '../../utils/user_preference.dart';
 import '../../widgets/loading.dart';
 import 'components/settings_contents.dart';
 import 'components/settings_tabs_view.dart';
@@ -19,8 +19,19 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDesktop = ResponsiveUtils.isDesktop(context);
-    final viewModel = GetIt.I.registerSingletonIfAbsent<SettingsViewModel>(
-      SettingsViewModel.new,
+    final userPreferences = context.watch<UserPreferences>();
+    final currentStore = userPreferences.store;
+    final currenBusiness = userPreferences.business;
+    final user = userPreferences.user;
+
+    if (currentStore == null || currenBusiness == null || user == null) {
+      return const SizedBox.shrink();
+    }
+
+    final viewModel = SettingsViewModel(
+      selectedBusiness: currenBusiness,
+      selectedStore: currentStore,
+      user: user,
     );
 
     return ChangeNotifierProvider(

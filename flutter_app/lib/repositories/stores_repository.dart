@@ -1,13 +1,19 @@
-import 'package:connectrpc/connect.dart' as connect;
 import 'package:get_it/get_it.dart';
-import 'package:sabitou_rpc/sabitou_rpc.dart';
+import 'package:sabitou_rpc/connect_servers.dart';
+import 'package:sabitou_rpc/models.dart';
 
+import '../core/database/base_repository.dart';
+import '../core/database/local_data_source.dart';
+import '../core/database/query/sql_condition.dart';
+import '../core/database/row_mapper.dart';
 import '../services/network_status_provider/network_status_provider.dart';
+import '../services/powersync/schema.dart';
 import '../services/rpc/connect_rpc.dart';
+import '../utils/app_constants.dart';
 import '../utils/logger.dart';
 
-/// The stores repository.
-class StoresRepository {
+/// Repository for store operations and member management
+final class StoresRepository extends BaseRepository<Store> {
   final _logger = LoggerApp('StoresRepository');
 
   /// The store service client.
@@ -16,15 +22,27 @@ class StoresRepository {
   /// The network status provider.
   final NetworkStatusProvider networkStatusProvider;
 
+  @override
+  final LocalDataSource dataSource;
+
+  @override
+  String get tableName => CollectionName.stores;
+
   /// The instance of [StoresRepository].
-  static final instance = GetIt.I.get<StoresRepository>();
+  static StoresRepository get instance => GetIt.I.get<StoresRepository>();
+
+  @override
+  Store fromRow(RawRow row) => fromRowToStore(row);
+
+  @override
+  RawRow toRow(Store entity) => fromStoreToRaw(entity);
 
   /// Constructs a new [StoresRepository].
   StoresRepository({
-    connect.Transport? transport,
+    required this.dataSource,
     NetworkStatusProvider? networkStatusProvider,
   }) : storeServiceClient = StoreServiceClient(
-         transport ?? ConnectRPCService.to.clientChannel,
+         ConnectRPCService.to.clientChannel,
        ),
        networkStatusProvider =
            networkStatusProvider ?? GetIt.I.get<NetworkStatusProvider>();
@@ -32,11 +50,11 @@ class StoresRepository {
   /// Gets all stores base on business Id.
   Future<List<Store>> getStoresByBusinessId(String businessId) async {
     try {
-      final response = await storeServiceClient.getBusinessStores(
-        GetBusinessStoresRequest(businessId: businessId),
-      );
+      final response = await findWhere([
+        SqlQuery.equals(StoresFields.businessId, businessId),
+      ]);
 
-      return response.stores;
+      return response;
     } on Exception catch (e) {
       _logger.severe('getStoresByBusinessId Error: $e');
 
@@ -47,11 +65,9 @@ class StoresRepository {
   /// Get the store by ref.
   Future<Store?> getStoreByRefId(String refId) async {
     try {
-      final response = await storeServiceClient.getStore(
-        GetStoreRequest(storeId: refId),
-      );
+      final response = await findById(refId);
 
-      return response.store;
+      return response;
     } on Exception catch (e) {
       _logger.severe('getStoreByRefId Error: $e');
 
@@ -60,11 +76,25 @@ class StoresRepository {
   }
 
   /// Updates an user from a store.
-  Future<bool> updateStoreMember(UpdateStoreMemberRequest request) async {
+  Future<bool> updateOrAddStoreMember(UpdateStoreMemberRequest request) async {
     try {
-      final response = await storeServiceClient.updateStoreMember(request);
+      await dataSource.setRecord(
+        table: CollectionName.storeMembers,
+        record: fromStoreMembersToRaw(
+          StoreMember(
+            userId: request.userId,
+            storeId: request.storeId,
+            permissions: request.permissions,
+            status: request.status,
+          ),
+        ),
+        conflictColumns: [
+          StoreMembersFields.userId,
+          StoreMembersFields.storeId,
+        ],
+      );
 
-      return response.success;
+      return true;
     } on Exception catch (e) {
       _logger.severe('updateStoreMember Error: $e');
 
@@ -72,38 +102,19 @@ class StoresRepository {
     }
   }
 
-  /// Adds an user to a store.
-  Future<bool> addUserToStore(AddUserToStoreRequest request) async {
-    try {
-      final response = await storeServiceClient.addUserToStore(request);
-
-      return response.success;
-    } on Exception catch (e) {
-      _logger.severe('addUserToStore Error: $e');
-
-      return false;
-    }
-  }
-
-  /// Adds an user to a store.
-  Future<bool> setStoreMemberStatus(SetStoreMemberStatusRequest request) async {
-    try {
-      final response = await storeServiceClient.setStoreMemberStatus(request);
-
-      return response.success;
-    } on Exception catch (e) {
-      _logger.severe('setStoreMemberStatus Error: $e');
-
-      return false;
-    }
-  }
-
   /// Removes an user from a business.
+  /// NOTE: This action can be perform with [storeServiceClient].
   Future<bool> removeUserFromStore(RemoveUserFromStoreRequest request) async {
     try {
-      final response = await storeServiceClient.removeUserFromStore(request);
+      await dataSource.deleteWhere(
+        table: CollectionName.storeMembers,
+        filters: [
+          SqlQuery.equals(StoreMembersFields.userId, request.userId),
+          SqlQuery.equals(StoreMembersFields.storeId, request.storeId),
+        ],
+      );
 
-      return response.success;
+      return true;
     } on Exception catch (e) {
       _logger.severe('removeUserFromStore Error: $e');
 
@@ -116,26 +127,16 @@ class StoresRepository {
     GetStoreMembersRequest request,
   ) async {
     try {
-      final response = await storeServiceClient.getStoreMembers(request);
+      final rows = await dataSource.getCollection(
+        CollectionName.storeMembers,
+        filters: [SqlQuery.equals(StoreMembersFields.storeId, request.storeId)],
+      );
 
-      return response.storeMembers;
+      return rows.map(fromRowToStoreMembers).toList();
     } on Exception catch (e) {
       _logger.severe('getStoreMembers Error: $e');
 
       return [];
-    }
-  }
-
-  /// Gets the member of a store.
-  Future<StoreMember?> getStoreMember(GetStoreMemberRequest request) async {
-    try {
-      final response = await storeServiceClient.getStoreMember(request);
-
-      return response.storeMember;
-    } on Exception catch (e) {
-      _logger.severe('getStoreMember Error: $e');
-
-      return null;
     }
   }
 
@@ -144,15 +145,18 @@ class StoresRepository {
     StreamStoreMembersRequest request,
   ) {
     try {
-      // Use the native gRPC streaming service
-      final grpcStream = storeServiceClient.streamStoreMembers(request);
-
-      // Transform the gRPC stream to return List<User>
-      return grpcStream.map((response) => response.storeMembers);
+      return dataSource
+          .watchCollection(
+            CollectionName.storeMembers,
+            filters: [
+              SqlQuery.equals(StoreMembersFields.storeId, request.storeId),
+            ],
+          )
+          .map((rows) => rows.map(fromRowToStoreMembers).toList());
     } on Exception catch (e) {
       _logger.severe('streamStoreMembers Error: $e');
-
       // Return null stream on error
+
       return Stream.value([]);
     }
   }
@@ -160,11 +164,9 @@ class StoresRepository {
   /// Updates a store.
   Future<bool> updateStore(Store store) async {
     try {
-      final response = await storeServiceClient.updateStore(
-        UpdateStoreRequest()..store = store,
-      );
+      await save(store);
 
-      return response.hasStore();
+      return true;
     } on Exception catch (e) {
       _logger.severe('updateStore Error: $e');
 

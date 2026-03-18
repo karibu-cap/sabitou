@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS users (
     phone_number TEXT,
     account_status TEXT NOT NULL DEFAULT 'ACCOUNT_STATUS_TYPE_ACTIVE',
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 );
 
 -- Businesses
@@ -63,7 +63,8 @@ CREATE TABLE IF NOT EXISTS stores (
     costing_method TEXT DEFAULT 'STORE_COSTING_METHOD_FIFO',
     tax NUMERIC(5, 4) DEFAULT 0.1925, -- 19.25% example
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    UNIQUE (ref_id, business_id)
 );
 
 -- Global products (catalog shared across stores)
@@ -105,7 +106,8 @@ CREATE TABLE IF NOT EXISTS store_products (
     reorder_point INTEGER NOT NULL DEFAULT 10,
     expiration_type TEXT DEFAULT 'EXPIRATION_TYPE_NONE',
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    UNIQUE (ref_id, store_id)
 );
 
 -- Inventory levels (current stock per store product per store)
@@ -208,7 +210,6 @@ CREATE TABLE IF NOT EXISTS suppliers (
     contact_email TEXT,
     contact_address TEXT,
     status TEXT NOT NULL DEFAULT 'SUPPLIER_STATUS_ACTIVE',
-    business_id TEXT NOT NULL,
     store_ids TEXT [] NOT NULL DEFAULT '{}'
 );
 
@@ -516,7 +517,7 @@ VALUES (
         'STR-001',
         'Sabitu Yaoundé Central',
         'BIZ-001',
-        '{"city":"Yaoundé","quarter":"Mvan","street":"Carrefour EMANA"}'::jsonb,
+        '{"city":"Yaoundé","street":"Carrefour EMANA"}'::jsonb,
         '+237 699 00 11 22',
         'MDI-001'
     ),
@@ -524,7 +525,7 @@ VALUES (
         'STR-002',
         'Sabitu Douala Akwa',
         'BIZ-001',
-        '{"city":"Douala","quarter":"Akwa","street":"Rue Joss"}'::jsonb,
+        '{"city":"Douala","street":"Rue Joss"}'::jsonb,
         '+237 677 88 99 00',
         'MDI-001'
     );
@@ -537,7 +538,9 @@ INSERT INTO
         password_hash,
         first_name,
         last_name,
-        account_status
+        account_status,
+        active_business_id,
+        active_store_id
     )
 VALUES (
         'USR-001',
@@ -547,7 +550,9 @@ VALUES (
         '$2a$12$ovAfhfr3fvev0OB61Vysvu.0Yw4XvMTNAPcyD.bAUZeCjFpNOFBrO',
         'Admin',
         'User',
-        'ACCOUNT_STATUS_TYPE_ACTIVE'
+        'ACCOUNT_STATUS_TYPE_ACTIVE',
+        'BIZ-001',
+        'STR-001'
     );
 
 INSERT INTO
@@ -808,7 +813,6 @@ INSERT INTO
         ref_id,
         name,
         contact_phone,
-        business_id,
         store_ids,
         logo_link_id
     )
@@ -816,7 +820,6 @@ VALUES (
         'SUP-001',
         'Cerealis Cameroun',
         '+237 222 30 40 50',
-        'BIZ-001',
         ARRAY['STR-001', 'STR-002'],
         'MDI-001'
     ),
@@ -824,7 +827,6 @@ VALUES (
         'SUP-002',
         'Huilerie du Wouri',
         '+237 233 41 25 78',
-        'BIZ-001',
         ARRAY['STR-002'],
         'MDI-001'
     ),
@@ -832,7 +834,6 @@ VALUES (
         'SUP-003',
         'Sucreries du Cameroun',
         '+237 699 55 66 77',
-        'BIZ-001',
         ARRAY['STR-001'],
         NULL
     );

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
@@ -9,6 +8,7 @@ import '../../router/app_router.dart';
 import '../../router/page_routes.dart';
 import '../../utils/app_constants.dart';
 import '../../utils/responsive_utils.dart';
+import '../../utils/user_preference.dart';
 import '../../widgets/loading.dart';
 import 'ajustment/inventory_adjustment_dialog.dart';
 import 'components/header.dart';
@@ -25,152 +25,176 @@ class InventoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = GetIt.I.registerSingletonIfAbsent<InventoryViewModel>(
-      InventoryViewModel.new,
+    final userPreferences = context.watch<UserPreferences>();
+    final currentStore = userPreferences.store;
+    final business = userPreferences.business;
+    final cs = ShadTheme.of(context).colorScheme;
+    if (currentStore == null || business == null) {
+      return const SizedBox.shrink();
+    }
+
+    final viewModel = InventoryViewModel(
+      store: currentStore,
+      business: business,
     );
     final productId = GoRouterState.of(
       context,
     ).uri.queryParameters[InventoryDetailParameters.keyProductId];
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final isMobile = ResponsiveUtils.isMobile(context);
+    return Scaffold(
+      backgroundColor: cs.background,
+      body: SafeArea(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final isMobile = ResponsiveUtils.isMobile(context);
 
-        return ChangeNotifierProvider(
-          create: (context) => InventoryController(viewModel),
-          child: Consumer<InventoryController>(
-            builder: (context, controller, child) {
-              return FutureBuilder<bool>(
-                future: controller.completer.future,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState != ConnectionState.done) {
-                    return const Loading();
-                  }
+            return ChangeNotifierProvider(
+              create: (context) => InventoryController(viewModel),
+              child: Consumer<InventoryController>(
+                builder: (context, controller, child) {
+                  return FutureBuilder<bool>(
+                    future: controller.completer.future,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState != ConnectionState.done) {
+                        return const Loading();
+                      }
 
-                  // Auto-select product on desktop if query parameter is present
-                  if (productId != null && productId.isNotEmpty && !isMobile) {
-                    // Use a post-frame callback to avoid calling setState during build
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      controller.selectItemById(productId).catchError((error) {
-                        // Silently handle error if product not found
-                      });
-                    });
-                  }
+                      if (productId != null &&
+                          productId.isNotEmpty &&
+                          !isMobile) {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          controller
+                              .selectItemById(productId)
+                              .catchError((error) {});
+                        });
+                      }
 
-                  return StreamBuilder<InventoryLevelWithProduct?>(
-                    stream: controller.selectedItemStream,
-                    builder: (context, selectedSnapshot) {
-                      final selectedItem = selectedSnapshot.data;
+                      return StreamBuilder<InventoryLevelWithProduct?>(
+                        stream: controller.selectedItemStream,
+                        builder: (context, selectedSnapshot) {
+                          final selectedItem = selectedSnapshot.data;
 
-                      return isMobile
-                          ? const SingleChildScrollView(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                spacing: AppConstants.spacingM,
-                                children: [
-                                  InventoryHeader(),
-                                  SearchAndFilterCard(),
-                                  ProductsTable(),
-                                ],
-                              ),
-                            )
-                          : ShadResizablePanelGroup(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                const ShadResizablePanel(
-                                  id: 0,
-                                  defaultSize: 0.4,
+                          return isMobile
+                              ? const SingleChildScrollView(
                                   child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    spacing: AppConstants.spacingM,
                                     children: [
-                                      Expanded(
-                                        child: SingleChildScrollView(
-                                          padding: EdgeInsets.symmetric(
-                                            horizontal: AppConstants.spacingM,
-                                          ),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            spacing: AppConstants.spacingL,
-                                            children: [
-                                              InventoryHeader(),
-                                              SearchAndFilterCard(),
-                                              ProductsTable(),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
+                                      InventoryHeader(),
+                                      SearchAndFilterCard(),
+                                      ProductsTable(),
                                     ],
                                   ),
-                                ),
-                                if (selectedItem != null)
-                                  ShadResizablePanel(
-                                    id: 1,
-                                    defaultSize: 0.6,
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: AppConstants.spacingM,
+                                )
+                              : ShadResizablePanelGroup(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    const ShadResizablePanel(
+                                      id: 0,
+                                      defaultSize: 0.4,
+                                      child: Column(
+                                        children: [
+                                          Expanded(
+                                            child: SingleChildScrollView(
+                                              padding: EdgeInsets.symmetric(
+                                                horizontal:
+                                                    AppConstants.spacingM,
+                                              ),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                spacing: AppConstants.spacingL,
+                                                children: [
+                                                  InventoryHeader(),
+                                                  SearchAndFilterCard(),
+                                                  ProductsTable(),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      child: StreamBuilder<List<InventoryTransaction>>(
-                                        stream: controller.transactionsStream,
-                                        builder: (context, transactionsSnapshot) {
-                                          final transactions =
-                                              transactionsSnapshot.data ?? [];
+                                    ),
+                                    if (selectedItem != null)
+                                      ShadResizablePanel(
+                                        id: 1,
+                                        defaultSize: 0.6,
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: AppConstants.spacingM,
+                                          ),
+                                          child: StreamBuilder<List<InventoryTransaction>>(
+                                            stream:
+                                                controller.transactionsStream,
+                                            builder: (context, transactionsSnapshot) {
+                                              final transactions =
+                                                  transactionsSnapshot.data ??
+                                                  [];
 
-                                          return InventoryDetailView(
-                                            item: selectedItem,
-                                            transactions: transactions,
-                                            tabsController:
-                                                controller.tabsController,
-                                            onAdjustStock: () {
-                                              if (isMobile) {
-                                                AppRouter.push(
-                                                  context,
-                                                  PagesRoutes.inventoryAjustment
-                                                      .create(
-                                                        InventoryDetailParameters(
+                                              return InventoryDetailView(
+                                                item: selectedItem,
+                                                transactions: transactions,
+                                                tabsController:
+                                                    controller.tabsController,
+                                                onAdjustStock: () {
+                                                  if (isMobile) {
+                                                    AppRouter.push(
+                                                      context,
+                                                      PagesRoutes
+                                                          .inventoryAjustment
+                                                          .create(
+                                                            InventoryDetailParameters(
+                                                              productId:
+                                                                  selectedItem
+                                                                      .product
+                                                                      .refId,
+                                                            ),
+                                                          ),
+                                                    );
+
+                                                    return;
+                                                  }
+                                                  showShadDialog(
+                                                    context: context,
+                                                    builder: (context) =>
+                                                        InventoryAdjustmentDialog(
                                                           productId:
                                                               selectedItem
                                                                   .product
                                                                   .refId,
+                                                          store:
+                                                              controller.store,
                                                         ),
-                                                      ),
-                                                );
-
-                                                return;
-                                              }
-                                              showShadDialog(
-                                                context: context,
-                                                builder: (context) =>
-                                                    InventoryAdjustmentDialog(
-                                                      productId: selectedItem
-                                                          .product
-                                                          .refId,
-                                                    ),
+                                                  );
+                                                },
+                                                transactionFilterStream:
+                                                    controller
+                                                        .transactionFilterStream,
+                                                updateTransactionFilter:
+                                                    controller
+                                                        .updateTransactionFilter,
+                                                onClose: () {
+                                                  controller.clearSelection();
+                                                },
                                               );
                                             },
-                                            transactionFilterStream: controller
-                                                .transactionFilterStream,
-                                            updateTransactionFilter: controller
-                                                .updateTransactionFilter,
-                                            onClose: () {
-                                              controller.clearSelection();
-                                            },
-                                          );
-                                        },
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                              ],
-                            );
+                                  ],
+                                );
+                        },
+                      );
                     },
                   );
                 },
-              );
-            },
-          ),
-        );
-      },
+              ),
+            );
+          },
+        ),
+      ),
     );
   }
 }

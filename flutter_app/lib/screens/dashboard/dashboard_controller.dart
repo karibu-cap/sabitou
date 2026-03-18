@@ -8,16 +8,19 @@ import 'dashboard_view_model.dart';
 /// The dashboard controller.
 class DashboardController extends ChangeNotifier {
   /// The dashboard view model.
-  final DashboardViewModel viewModel = DashboardViewModel();
+  final DashboardViewModel viewModel;
 
   /// Error message if any.
-  String get error => viewModel.error;
+  String get initErrorMessage => viewModel.initErrorMessage;
 
   /// Dashboard stats.
   DashboardData get stats => viewModel.stats;
 
   /// Completer for loading state.
   Completer<bool> get completer => viewModel.completer;
+
+  /// Constructs a new [DashboardController].
+  DashboardController(this.viewModel);
 
   /// Calculates the percentage change.
   /// Takes into account Int64 values for monetary amounts.

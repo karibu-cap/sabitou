@@ -1,18 +1,21 @@
-import 'package:clock/clock.dart';
-import 'package:connectrpc/connect.dart' as connect;
 import 'package:get_it/get_it.dart';
-import 'package:sabitou_rpc/sabitou_rpc.dart';
+import 'package:sabitou_rpc/connect_servers.dart';
+import 'package:sabitou_rpc/models.dart';
+import 'package:uuid/uuid.dart';
 
-import '../services/network_status_provider/network_status_provider.dart';
+import '../core/database/base_repository.dart';
+import '../core/database/local_data_source.dart';
+import '../core/database/query/sql_condition.dart';
+import '../core/database/query/sql_join.dart';
+import '../core/database/row_mapper.dart';
+import '../services/powersync/schema.dart';
 import '../services/rpc/connect_rpc.dart';
+import '../utils/app_constants.dart';
 import '../utils/logger.dart';
 
-/// The inventory repository.
-class InventoryRepository {
+/// Repository for inventory management
+final class InventoryRepository extends BaseRepository<InventoryLevel> {
   final _logger = LoggerApp('InventoryRepository');
-
-  /// The instance of [InventoryRepository].
-  static final instance = GetIt.I.get<InventoryRepository>();
 
   /// The inventory service client.
   final InventoryServiceClient inventoryServiceClient;
@@ -20,87 +23,49 @@ class InventoryRepository {
   /// The Store product service client for product-related operations.
   final StoreProductServiceClient storeProductService;
 
-  /// Constructs a new [InventoryRepository].
-  InventoryRepository({
-    connect.Transport? transport,
-    NetworkStatusProvider? networkStatusProvider,
-  }) : inventoryServiceClient = InventoryServiceClient(
-         ConnectRPCService.to.clientChannel,
-       ),
-       storeProductService = StoreProductServiceClient(
-         ConnectRPCService.to.clientChannel,
-       );
+  @override
+  final LocalDataSource dataSource;
+
+  @override
+  String get tableName => CollectionName.inventoryLevels;
+
+  @override
+  String get primaryKey => InventoryLevelsFields.storeProductId;
+
+  /// The instance of [InventoryRepository].
+  static InventoryRepository get instance => GetIt.I.get<InventoryRepository>();
+
+  @override
+  InventoryLevel fromRow(RawRow row) => fromRowToInventoryLevel(row);
+
+  @override
+  RawRow toRow(InventoryLevel entity) => fromInventoryLevelToRaw(entity);
+
+  /// Constructs an [InventoryRepository].
+  InventoryRepository({required this.dataSource})
+    : inventoryServiceClient = InventoryServiceClient(
+        ConnectRPCService.to.clientChannel,
+      ),
+      storeProductService = StoreProductServiceClient(
+        ConnectRPCService.to.clientChannel,
+      );
 
   /// Gets the inventory levels of a product.
-  Future<GetProductInventoryLevelsResponse> getProductInventoryLevels(
+  Future<InventoryLevel?> getProductInventoryLevels(
     String productId,
     String storeId,
   ) async {
     try {
-      return await inventoryServiceClient.getProductInventoryLevels(
-        GetProductInventoryLevelsRequest(
-          productId: productId,
-          storeId: storeId,
-        ),
-      );
+      final results = await findWhere(limit: 1, [
+        SqlQuery.equals(InventoryLevelsFields.storeProductId, productId),
+        SqlQuery.equals(InventoryLevelsFields.storeId, storeId),
+      ]);
+
+      return results.isNotEmpty ? results.first : null;
     } on Exception catch (e) {
       _logger.severe('getProductInventoryLevels Error: $e');
 
-      return GetProductInventoryLevelsResponse();
-    }
-  }
-
-  /// Checks if a product is available in a warehouse.
-  Future<CheckProductAvailabilityResponse> checkProductAvailability(
-    CheckProductAvailabilityRequest request,
-  ) async {
-    try {
-      return await inventoryServiceClient.checkProductAvailability(request);
-    } on Exception catch (e) {
-      _logger.severe('checkProductAvailability Error: $e');
-
-      return CheckProductAvailabilityResponse();
-    }
-  }
-
-  /// Gets low stock items for a store.
-  /// Get low stock items for a store.
-  Future<List<InventoryLevelWithProduct>> getLowStockItems(
-    String storeId,
-  ) async {
-    try {
-      final request = GetLowStockItemsRequest(storeId: storeId);
-      final response = await inventoryServiceClient.getLowStockItems(request);
-      final items = <InventoryLevelWithProduct>[];
-      for (final level in response.lowStockItems) {
-        final productReq = GetStoreProductRequest(
-          storeProductId: level.storeProductId,
-        );
-
-        GetStoreProductResponse productResp;
-        productResp = await storeProductService.getStoreProduct(productReq);
-
-        if (!productResp.hasProduct()) {
-          continue;
-        }
-
-        items.add(
-          InventoryLevelWithProduct(
-            level: level,
-            product: productResp.product.storeProduct,
-            globalProduct: productResp.product.globalProduct,
-            stockValue:
-                (level.quantityAvailable *
-                        productResp.product.storeProduct.salePrice)
-                    .truncate(),
-          ),
-        );
-      }
-
-      return items;
-    } catch (e) {
-      _logger.severe('Error getting low stock items: $e');
-      rethrow;
+      return null;
     }
   }
 
@@ -109,128 +74,167 @@ class InventoryRepository {
     String storeId,
   ) async {
     try {
-      final request = GetResourceInventoryRequest(storeId: storeId);
-      final response = await inventoryServiceClient.getResourceInventory(
-        request,
-      );
-
-      final items = <InventoryLevelWithProduct>[];
-      for (final level in response.items) {
-        final productReq = GetStoreProductRequest(
-          storeProductId: level.storeProductId,
-        );
-        final productResp = await storeProductService.getStoreProduct(
-          productReq,
-        );
-
-        if (!productResp.hasProduct()) {
-          continue;
-        }
-
-        items.add(
-          InventoryLevelWithProduct(
-            level: level,
-            product: productResp.product.storeProduct,
-            globalProduct: productResp.product.globalProduct,
-            stockStatus: level.quantityAvailable == 0
-                ? StockStatus.STOCK_STATUS_OUT_OF_STOCK
-                : level.quantityAvailable >
-                      (productResp.product.storeProduct.reorderPoint > 0
-                          ? productResp.product.storeProduct.reorderPoint
-                          : level.minThreshold)
-                ? StockStatus.STOCK_STATUS_OK
-                : StockStatus.STOCK_STATUS_LOW,
-            stockValue:
-                (level.quantityAvailable *
-                        productResp.product.storeProduct.salePrice)
-                    .truncate(),
-          ),
-        );
-      }
-
-      return items;
+      return await _getJoinedInventory(storeId);
     } catch (e) {
       _logger.severe('Error getting store inventory: $e');
       rethrow;
     }
   }
 
-  /// Get expiring items for a store.
-  Future<List<InventoryLevelWithProduct>> getExpiringItems(
-    String storeId, {
-    int numberOfDays = 60,
-  }) async {
+  /// Checks if the product is available in the store.
+  Future<({bool isAvailable, int quantityAvailable})> checkProductAvailability(
+    CheckProductAvailabilityRequest request,
+  ) async {
     try {
-      final response = await getStoreInventory(storeId);
+      final level = await getProductInventoryLevels(
+        request.productId,
+        request.storeId,
+      );
 
-      final items = <InventoryLevelWithProduct>[];
-      for (final inv in response) {
-        // Check if any batch is expiring
-        final hasExpiringBatch = inv.level.batches.any((batch) {
-          final now = clock.now();
-          final expiry = batch.expirationDate.toDateTime();
+      return (
+        isAvailable:
+            level != null &&
+            level.quantityAvailable > 0 &&
+            level.quantityAvailable > request.quantityNeeded,
+        quantityAvailable: level?.quantityAvailable ?? 0,
+      );
+    } on Exception catch (e) {
+      _logger.severe('Error checking product availability: $e');
 
-          return expiry.difference(now).inDays <= numberOfDays;
-        });
-
-        if (hasExpiringBatch) {
-          items.add(inv);
-        }
-      }
-
-      return items;
-    } catch (e) {
-      _logger.severe('Error getting expiring items: $e');
-      rethrow;
+      return (isAvailable: false, quantityAvailable: 0);
     }
   }
 
-  /// Gets recent inventory transactions history  .
-  Future<GetInventoryTransactionHistoryResponse> getInventoryTransactionHistory(
+  Future<List<InventoryLevelWithProduct>> _getJoinedInventory(
+    String storeId, {
+    List<SqlQuery> filters = const [],
+  }) async {
+    final rows = await dataSource.getJoinedCollection(
+      table: CollectionName.inventoryLevels,
+      tableAlias: 'il',
+      joins: [
+        const SqlJoin(
+          type: JoinType.inner,
+          table: CollectionName.storeProducts,
+          alias: 'sp',
+          on: 'il.${InventoryLevelsFields.storeProductId} = sp.${StoreProductsFields.refId}',
+          selectColumns: ['*'],
+        ),
+        const SqlJoin(
+          type: JoinType.inner,
+          table: CollectionName.globalProducts,
+          alias: 'gp',
+          on: 'sp.${StoreProductsFields.globalProductId} = gp.${GlobalProductsFields.refId}',
+          selectColumns: ['*'],
+        ),
+      ],
+      filters: [
+        SqlQuery.equals(InventoryLevelsFields.storeId, storeId),
+        ...filters,
+      ],
+    );
+
+    return rows.map((row) {
+      final level = fromRowToInventoryLevel(row);
+      final product = fromRowToStoreProduct(row);
+      final globalProduct = fromRowToGlobalProduct(row);
+
+      return InventoryLevelWithProduct(
+        level: level,
+        product: product,
+        globalProduct: globalProduct,
+        stockStatus: level.quantityAvailable == 0
+            ? StockStatus.STOCK_STATUS_OUT_OF_STOCK
+            : level.quantityAvailable >
+                  (product.reorderPoint > 0
+                      ? product.reorderPoint
+                      : level.minThreshold)
+            ? StockStatus.STOCK_STATUS_OK
+            : StockStatus.STOCK_STATUS_LOW,
+        stockValue: (level.quantityAvailable * product.salePrice).truncate(),
+      );
+    }).toList();
+  }
+
+  /// Gets recent inventory transactions history.
+  Future<List<InventoryTransaction>> getInventoryTransactionHistory(
     GetInventoryTransactionHistoryRequest request,
   ) async {
     try {
-      return await inventoryServiceClient.getRecentInventoryTransactions(
-        request,
+      final rows = await dataSource.getCollection(
+        CollectionName.inventoryTransactions,
+        filters: [
+          SqlQuery.equals(InventoryTransactionsFields.storeId, request.storeId),
+          SqlQuery.equals(
+            InventoryTransactionsFields.productId,
+            request.productId,
+          ),
+        ],
       );
+
+      return rows.map(fromRowToInventoryTransaction).toList();
     } on Exception catch (e) {
       _logger.severe('getInventoryTransactionHistory Error: $e');
 
-      return GetInventoryTransactionHistoryResponse();
+      return [];
     }
   }
 
+  /// Gets the inventory levels for a product.
+
   /// Adjusts the inventory.
-  Future<AdjustInventoryResponse> adjustInventory(
-    AdjustInventoryRequest request,
-  ) async {
+  Future<bool> adjustInventory(AdjustInventoryRequest request) async {
     try {
-      return await inventoryServiceClient.adjustInventory(request);
+      // 1. Get current level
+      final level = await getProductInventoryLevels(
+        request.productId,
+        request.storeId,
+      );
+      if (level == null) return false;
+
+      final now = DateTime.now();
+      final quantityChange = request.newQuantity - level.quantityAvailable;
+
+      // 2. Create transaction record
+      final transaction = InventoryTransaction(
+        refId: const Uuid().v4(),
+        storeId: request.storeId,
+        productId: request.productId,
+        transactionType: TransactionType.TXN_TYPE_ADJUSTMENT,
+        quantityChange: quantityChange,
+        quantityBefore: level.quantityAvailable,
+        quantityAfter: request.newQuantity,
+        transactionTime: Timestamp.fromDateTime(now),
+        notes: request.reason,
+        performedByUserId: level.lastUpdatedByUserId,
+      );
+
+      // 3. Update level record locally
+      level.quantityOnHand = request.newQuantity;
+      level.quantityAvailable = request.newQuantity - level.quantityCommitted;
+      level.lastUpdated = Timestamp.fromDateTime(now);
+
+      await dataSource.runTransaction((tx) async {
+        await tx.setRecord(
+          table: CollectionName.inventoryTransactions,
+          record: fromInventoryTransactionToRaw(transaction),
+        );
+
+        await tx.setRecord(
+          table: CollectionName.inventoryLevels,
+          record: fromInventoryLevelToRaw(level),
+          conflictColumns: [
+            InventoryLevelsFields.storeProductId,
+            InventoryLevelsFields.storeId,
+          ],
+        );
+      });
+
+      return true;
     } on Exception catch (e) {
       _logger.severe('adjustInventory Error: $e');
 
-      return AdjustInventoryResponse();
-    }
-  }
-
-  /// Gets products for a specific supplier.
-  Future<List<ProductBySupplier>> getProductsForSupplier(
-    String supplierRefId,
-    String? storeId,
-  ) async {
-    try {
-      final request = ListProductsBySupplierRequest(
-        supplierId: supplierRefId,
-        storeId: storeId,
-      );
-      final response = await inventoryServiceClient.listProductsBySupplier(
-        request,
-      );
-
-      return response.products;
-    } catch (e) {
-      _logger.severe('Error getting products for supplier: $e');
-      rethrow;
+      return false;
     }
   }
 }

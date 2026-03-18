@@ -169,9 +169,6 @@ dart_code_linter:
     source-lines-of-code: 90
     min-identifier-length: 2
 
-  anti-patterns:
-    - long-method:
-        severity: error
   rules:
     # Dart rules.
     - avoid-collection-methods-with-unrelated-types:

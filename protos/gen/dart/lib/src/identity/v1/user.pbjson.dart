@@ -168,6 +168,24 @@ const User$json = {
       '6': '.identity.v1.AuthActionType',
       '10': 'requiredActions'
     },
+    {
+      '1': 'active_business_id',
+      '3': 11,
+      '4': 1,
+      '5': 9,
+      '9': 7,
+      '10': 'activeBusinessId',
+      '17': true
+    },
+    {
+      '1': 'active_store_id',
+      '3': 12,
+      '4': 1,
+      '5': 9,
+      '9': 8,
+      '10': 'activeStoreId',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_ref_id'},
@@ -177,6 +195,8 @@ const User$json = {
     {'1': '_last_name'},
     {'1': '_profile_link'},
     {'1': '_account_status'},
+    {'1': '_active_business_id'},
+    {'1': '_active_store_id'},
   ],
 };
 
@@ -191,8 +211,11 @@ final $typed_data.Uint8List userDescriptor = $convert.base64Decode(
     'bmtIBVILcHJvZmlsZUxpbmuIAQESSgoOYWNjb3VudF9zdGF0dXMYCSABKA4yHi5pZGVudGl0eS'
     '52MS5BY2NvdW50U3RhdHVzVHlwZUgGUg1hY2NvdW50U3RhdHVziAEBEkYKEHJlcXVpcmVkX2Fj'
     'dGlvbnMYCiADKA4yGy5pZGVudGl0eS52MS5BdXRoQWN0aW9uVHlwZVIPcmVxdWlyZWRBY3Rpb2'
-    '5zQgkKB19yZWZfaWRCCAoGX2VtYWlsQg8KDV9waG9uZV9udW1iZXJCDQoLX2ZpcnN0X25hbWVC'
-    'DAoKX2xhc3RfbmFtZUIPCg1fcHJvZmlsZV9saW5rQhEKD19hY2NvdW50X3N0YXR1cw==');
+    '5zEjEKEmFjdGl2ZV9idXNpbmVzc19pZBgLIAEoCUgHUhBhY3RpdmVCdXNpbmVzc0lkiAEBEisK'
+    'D2FjdGl2ZV9zdG9yZV9pZBgMIAEoCUgIUg1hY3RpdmVTdG9yZUlkiAEBQgkKB19yZWZfaWRCCA'
+    'oGX2VtYWlsQg8KDV9waG9uZV9udW1iZXJCDQoLX2ZpcnN0X25hbWVCDAoKX2xhc3RfbmFtZUIP'
+    'Cg1fcHJvZmlsZV9saW5rQhEKD19hY2NvdW50X3N0YXR1c0IVChNfYWN0aXZlX2J1c2luZXNzX2'
+    'lkQhIKEF9hY3RpdmVfc3RvcmVfaWQ=');
 
 @$core.Deprecated('Use getCurrentUserRequestDescriptor instead')
 const GetCurrentUserRequest$json = {

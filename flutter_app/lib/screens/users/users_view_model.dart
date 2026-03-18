@@ -5,7 +5,6 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../../repositories/stores_repository.dart';
 import '../../repositories/users_repository.dart';
-import '../../services/rpc/fake_transport/user.dart';
 
 /// ViewModel for users management.
 /// Handles business logic for user operations including CRUD operations,
@@ -18,9 +17,7 @@ class UsersViewModel {
   final UserRepository _usersRepository = UserRepository.instance;
 
   /// The store repository instance.
-  final StoresRepository _storeRepository = StoresRepository(
-    transport: userFakeTransport,
-  );
+  final StoresRepository _storeRepository = StoresRepository.instance;
 
   /// Gets the search query subject.
   final _searchQuerySubject = BehaviorSubject<String>.seeded('');
@@ -41,7 +38,8 @@ class UsersViewModel {
       _selectedStatusSubject;
 
   /// Gets the filtered products stream.
-  Stream<List<StoreMember>> get filteredStoreMembersStream => Rx.combineLatest3(
+  Stream<List<({StoreMember storeMember, User user})>>
+  get filteredStoreMembersStream => Rx.combineLatest3(
     storeMembersStream,
     _searchQuerySubject.stream,
     _selectedStatusSubject.stream,
@@ -73,13 +71,17 @@ class UsersViewModel {
             .where(
               (s) => switch (status) {
                 StoreMemberStatus.STORE_MEMBER_STATUS_ACTIVE =>
-                  s.status == StoreMemberStatus.STORE_MEMBER_STATUS_ACTIVE,
+                  s.storeMember.status ==
+                      StoreMemberStatus.STORE_MEMBER_STATUS_ACTIVE,
                 StoreMemberStatus.STORE_MEMBER_STATUS_PENDING =>
-                  s.status == StoreMemberStatus.STORE_MEMBER_STATUS_PENDING,
+                  s.storeMember.status ==
+                      StoreMemberStatus.STORE_MEMBER_STATUS_PENDING,
                 StoreMemberStatus.STORE_MEMBER_STATUS_BANNED =>
-                  s.status == StoreMemberStatus.STORE_MEMBER_STATUS_BANNED,
+                  s.storeMember.status ==
+                      StoreMemberStatus.STORE_MEMBER_STATUS_BANNED,
                 StoreMemberStatus.STORE_MEMBER_STATUS_INACTIVE =>
-                  s.status == StoreMemberStatus.STORE_MEMBER_STATUS_INACTIVE,
+                  s.storeMember.status ==
+                      StoreMemberStatus.STORE_MEMBER_STATUS_INACTIVE,
                 _ => false,
               },
             )
@@ -94,8 +96,26 @@ class UsersViewModel {
   );
 
   /// Stream of store members for reactive UI updates
-  Stream<List<StoreMember>> get storeMembersStream => _storeRepository
-      .streamStoreMembers(StreamStoreMembersRequest(storeId: storeId));
+  Stream<List<({StoreMember storeMember, User user})>> get storeMembersStream =>
+      _storeRepository
+          .streamStoreMembers(StreamStoreMembersRequest(storeId: storeId))
+          .asyncMap((members) async {
+            final memberFutures = members.map((member) async {
+              final user = await _usersRepository.getUser(
+                GetUserRequest(userId: member.userId),
+              );
+
+              if (user == null) return null;
+
+              return (storeMember: member, user: user);
+            });
+
+            final resolvedMembers = await Future.wait(memberFutures);
+
+            return resolvedMembers
+                .whereType<({StoreMember storeMember, User user})>()
+                .toList();
+          });
 
   /// Stream of user for reactive UI updates
   Stream<User?> userStream(String userId) =>
@@ -135,7 +155,7 @@ class UsersViewModel {
       permissions: permissions,
     );
 
-    return await _storeRepository.updateStoreMember(request);
+    return await _storeRepository.updateOrAddStoreMember(request);
   }
 
   /// Removes an user from the store.
@@ -150,8 +170,8 @@ class UsersViewModel {
     String userId,
     StoreMemberStatus status,
   ) async {
-    return await _storeRepository.setStoreMemberStatus(
-      SetStoreMemberStatusRequest(
+    return await _storeRepository.updateOrAddStoreMember(
+      UpdateStoreMemberRequest(
         userId: userId,
         storeId: storeId,
         status: status,
@@ -161,16 +181,16 @@ class UsersViewModel {
 
   /// Invites a user to join the store.
   Future<bool> addUserToStore(
-    String email,
+    String userId,
     StorePermissions permissions,
   ) async {
-    final request = AddUserToStoreRequest(
-      email: email,
-      storeId: storeId,
-      permissions: permissions,
+    return await _storeRepository.updateOrAddStoreMember(
+      UpdateStoreMemberRequest(
+        userId: userId,
+        storeId: storeId,
+        permissions: permissions,
+      ),
     );
-
-    return await _storeRepository.addUserToStore(request);
   }
 
   /// Disposes the view model.

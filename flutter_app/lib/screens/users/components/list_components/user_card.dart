@@ -18,13 +18,13 @@ class UsersDataGridView extends StatelessWidget {
   const UsersDataGridView({super.key, required this.storeMembers});
 
   /// List of store members to display
-  final List<StoreMember> storeMembers;
+  final List<({StoreMember storeMember, User user})> storeMembers;
 
   @override
   Widget build(BuildContext context) {
     final controller = Provider.of<UsersController>(context, listen: false);
 
-    return ShadDataGrid<StoreMember>(
+    return ShadDataGrid<({StoreMember storeMember, User user})>(
       data: storeMembers,
       footerFrozenColumnsCount: 1,
       columns: [
@@ -41,11 +41,11 @@ class UsersDataGridView extends StatelessWidget {
       ],
       rowBuilder: (storeMember) {
         return [
-          _UserCell(storeMember: storeMember, controller: controller),
-          _ContactCell(storeMember: storeMember),
-          _StatusCell(storeMember: storeMember),
-          _PermissionsCell(storeMember: storeMember),
-          _JoinedCell(storeMember: storeMember),
+          _UserCell(user: storeMember.user, controller: controller),
+          _ContactCell(user: storeMember.user),
+          _StatusCell(storeMember: storeMember.storeMember),
+          _PermissionsCell(storeMember: storeMember.storeMember),
+          _JoinedCell(storeMember: storeMember.storeMember),
           _ActionsCell(storeMember: storeMember, controller: controller),
         ];
       },
@@ -54,83 +54,70 @@ class UsersDataGridView extends StatelessWidget {
 }
 
 class _ContactCell extends StatelessWidget {
-  const _ContactCell({required this.storeMember});
+  const _ContactCell({required this.user});
 
-  final StoreMember storeMember;
+  final User user;
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<User?>(
-      stream: Provider.of<UsersController>(
-        context,
-        listen: false,
-      ).userStream(storeMember.user.refId),
-      builder: (context, snapshot) {
-        final user = snapshot.data;
-        if (user == null) {
-          return const SizedBox.shrink();
-        }
+    final theme = ShadTheme.of(context);
 
-        final theme = ShadTheme.of(context);
-
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Row(
           children: [
-            Row(
-              children: [
-                Icon(
-                  LucideIcons.mail,
-                  size: 14,
-                  color: theme.colorScheme.mutedForeground,
-                ),
-                const SizedBox(width: 6),
-                Expanded(
-                  child: Text(
-                    user.email,
-                    style: theme.textTheme.small.copyWith(
-                      fontSize: 12,
-                      color: theme.colorScheme.foreground,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
+            Icon(
+              LucideIcons.mail,
+              size: 14,
+              color: theme.colorScheme.mutedForeground,
             ),
-            const SizedBox(height: 4),
-            Row(
-              children: [
-                Icon(
-                  LucideIcons.phone,
-                  size: 14,
-                  color: theme.colorScheme.mutedForeground,
+            const SizedBox(width: 6),
+            Expanded(
+              child: Text(
+                user.email,
+                style: theme.textTheme.small.copyWith(
+                  fontSize: 12,
+                  color: theme.colorScheme.foreground,
                 ),
-                const SizedBox(width: 6),
-                Expanded(
-                  child: Text(
-                    user.phoneNumber,
-                    style: theme.textTheme.small.copyWith(
-                      fontSize: 12,
-                      color: theme.colorScheme.foreground,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
           ],
-        );
-      },
+        ),
+        const SizedBox(height: 4),
+        Row(
+          children: [
+            Icon(
+              LucideIcons.phone,
+              size: 14,
+              color: theme.colorScheme.mutedForeground,
+            ),
+            const SizedBox(width: 6),
+            Expanded(
+              child: Text(
+                user.phoneNumber,
+                style: theme.textTheme.small.copyWith(
+                  fontSize: 12,
+                  color: theme.colorScheme.foreground,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
 
 class _UserCell extends StatelessWidget {
-  const _UserCell({required this.storeMember, required this.controller});
+  const _UserCell({required this.user, required this.controller});
 
-  final StoreMember storeMember;
+  final User user;
   final UsersController controller;
 
   @override
@@ -140,72 +127,62 @@ class _UserCell extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       alignment: Alignment.centerLeft,
-      child: StreamBuilder<User?>(
-        stream: controller.userStream(storeMember.user.refId),
-        builder: (context, snapshot) {
-          final user = snapshot.data;
-          if (user == null) {
-            return const SizedBox.shrink();
-          }
-
-          return Row(
-            children: [
-              Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: LinearGradient(
-                    colors: [
-                      AppColors.purple,
-                      AppColors.purple.withValues(alpha: 0.7),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                ),
-                child: Center(
-                  child: Text(
-                    controller.getInitials(user),
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+      child: Row(
+        children: [
+          Container(
+            width: 48,
+            height: 48,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: LinearGradient(
+                colors: [
+                  AppColors.purple,
+                  AppColors.purple.withValues(alpha: 0.7),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
+            child: Center(
+              child: Text(
+                controller.getInitials(user),
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      '${user.firstName} ${user.lastName}',
-                      style: theme.textTheme.small.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: theme.colorScheme.foreground,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      user.email,
-                      style: theme.textTheme.small.copyWith(
-                        fontSize: 12,
-                        color: theme.colorScheme.mutedForeground,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  '${user.firstName} ${user.lastName}',
+                  style: theme.textTheme.small.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: theme.colorScheme.foreground,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
-              ),
-            ],
-          );
-        },
+                const SizedBox(height: 2),
+                Text(
+                  user.email,
+                  style: theme.textTheme.small.copyWith(
+                    fontSize: 12,
+                    color: theme.colorScheme.mutedForeground,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -363,7 +340,7 @@ class _JoinedCell extends StatelessWidget {
 class _ActionsCell extends StatelessWidget {
   const _ActionsCell({required this.storeMember, required this.controller});
 
-  final StoreMember storeMember;
+  final ({StoreMember storeMember, User user}) storeMember;
   final UsersController controller;
 
   @override

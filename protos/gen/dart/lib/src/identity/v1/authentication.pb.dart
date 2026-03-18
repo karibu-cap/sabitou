@@ -194,11 +194,13 @@ class RegisterRequest extends $pb.GeneratedMessage {
     $core.String? userName,
     $core.String? email,
     $core.String? password,
+    $core.String? phoneNumber,
   }) {
     final result = create();
     if (userName != null) result.userName = userName;
     if (email != null) result.email = email;
     if (password != null) result.password = password;
+    if (phoneNumber != null) result.phoneNumber = phoneNumber;
     return result;
   }
 
@@ -218,6 +220,7 @@ class RegisterRequest extends $pb.GeneratedMessage {
     ..aOS(1, _omitFieldNames ? '' : 'userName')
     ..aOS(2, _omitFieldNames ? '' : 'email')
     ..aOS(3, _omitFieldNames ? '' : 'password')
+    ..aOS(4, _omitFieldNames ? '' : 'phoneNumber')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -270,6 +273,16 @@ class RegisterRequest extends $pb.GeneratedMessage {
   $core.bool hasPassword() => $_has(2);
   @$pb.TagNumber(3)
   void clearPassword() => $_clearField(3);
+
+  /// The phone number of the user.
+  @$pb.TagNumber(4)
+  $core.String get phoneNumber => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set phoneNumber($core.String value) => $_setString(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasPhoneNumber() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearPhoneNumber() => $_clearField(4);
 }
 
 class RegisterResponse extends $pb.GeneratedMessage {

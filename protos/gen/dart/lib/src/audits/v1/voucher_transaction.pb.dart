@@ -37,6 +37,7 @@ class VoucherTransaction extends $pb.GeneratedMessage {
     $core.double? remainingAfter,
     $0.Timestamp? usedAt,
     $core.String? usedByUserId,
+    $core.String? storeId,
   }) {
     final result = create();
     if (refId != null) result.refId = refId;
@@ -47,6 +48,7 @@ class VoucherTransaction extends $pb.GeneratedMessage {
     if (remainingAfter != null) result.remainingAfter = remainingAfter;
     if (usedAt != null) result.usedAt = usedAt;
     if (usedByUserId != null) result.usedByUserId = usedByUserId;
+    if (storeId != null) result.storeId = storeId;
     return result;
   }
 
@@ -74,6 +76,7 @@ class VoucherTransaction extends $pb.GeneratedMessage {
     ..aOM<$0.Timestamp>(7, _omitFieldNames ? '' : 'usedAt',
         subBuilder: $0.Timestamp.create)
     ..aOS(8, _omitFieldNames ? '' : 'usedByUserId')
+    ..aOS(9, _omitFieldNames ? '' : 'storeId')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -170,6 +173,15 @@ class VoucherTransaction extends $pb.GeneratedMessage {
   $core.bool hasUsedByUserId() => $_has(7);
   @$pb.TagNumber(8)
   void clearUsedByUserId() => $_clearField(8);
+
+  @$pb.TagNumber(9)
+  $core.String get storeId => $_getSZ(8);
+  @$pb.TagNumber(9)
+  set storeId($core.String value) => $_setString(8, value);
+  @$pb.TagNumber(9)
+  $core.bool hasStoreId() => $_has(8);
+  @$pb.TagNumber(9)
+  void clearStoreId() => $_clearField(9);
 }
 
 const $core.bool _omitFieldNames =

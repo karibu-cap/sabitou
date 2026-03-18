@@ -77,6 +77,12 @@ message User {
 
   // The actions that the user must complete to authenticate.
   repeated AuthActionType required_actions = 10;
+
+  /// The active buisness id.
+  optional string active_business_id = 11;
+
+  /// The active store id.
+  optional string active_store_id = 12;
 }
 
 message GetCurrentUserRequest {

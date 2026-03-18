@@ -6,6 +6,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import '../../../services/app_theme_service.dart';
 import '../../../services/internationalization/internationalization.dart';
 import '../../../utils/printer_management.dart';
+import '../../../widgets/loading.dart';
 import '../../../widgets/pdf/printers/app_printer_utils.dart';
 import '../settings_controller.dart';
 
@@ -33,12 +34,10 @@ class SystemSettings extends StatelessWidget {
           children: [
             Flexible(
               child: ShadButton(
-                onPressed: () async {
-                  await controller.switchBusiness();
-                  await controller.switchStore();
-                  await controller.savePrinterConfiguration();
-                },
-                leading: const Icon(LucideIcons.save400),
+                onPressed: controller.saveSettings,
+                leading: controller.isSaving
+                    ? const Loading.button()
+                    : const Icon(LucideIcons.save400),
                 child: Flexible(
                   child: Text(
                     Intls.to.saveChanges,

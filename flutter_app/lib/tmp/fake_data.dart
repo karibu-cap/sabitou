@@ -152,7 +152,7 @@ final fakeData = <String, List<dynamic>>{
   ],
   CollectionName.businessMembers: <BusinessMember>[
     BusinessMember()
-      ..user = fakeUsers.first
+      ..userId = fakeUsers.first.refId
       ..businessId = 'BSN-001'
       ..memberSince = Timestamp.fromDateTime(
         DateTime.parse('2023-01-01T00:00:00Z'),
@@ -311,7 +311,7 @@ final fakeData = <String, List<dynamic>>{
   ],
   CollectionName.storeMembers: <StoreMember>[
     StoreMember()
-      ..user = fakeUsers.first
+      ..userId = fakeUsers.first.refId
       ..storeId = 'STR-001'
       ..memberSince = Timestamp.fromDateTime(
         DateTime.parse('2023-01-01T00:00:00Z'),

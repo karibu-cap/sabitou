@@ -13,7 +13,6 @@ type RegisterRequest struct {
 	Email       string `json:"email"`
 	Password    string `json:"password"`
 	UserName    string `json:"user_name"`
-	Role        string `json:"role,omitempty"`
 	FirstName   string `json:"first_name,omitempty"`
 	LastName    string `json:"last_name,omitempty"`
 	PhoneNumber string `json:"phone_number,omitempty"`
@@ -50,9 +49,6 @@ type User struct {
 	LastName      string    `json:"last_name"`
 	PhoneNumber   string    `json:"phone_number"`
 	AccountStatus string    `json:"account_status"`
-	BusinessID    string    `json:"business_id"`
-	StoreID       string    `json:"store_id"`
-	Role          string    `json:"role"`
 	CreatedAt     time.Time `json:"created_at"`
 }
 

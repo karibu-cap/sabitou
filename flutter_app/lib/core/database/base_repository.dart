@@ -10,7 +10,7 @@ abstract class BaseRepository<T> {
   String get tableName;
 
   /// The primary key.
-  String get primaryKey => 'id';
+  String get primaryKey => 'ref_id';
 
   /// The columns.
   List<String>? get columns => null;
@@ -83,8 +83,12 @@ abstract class BaseRepository<T> {
   }
 
   /// Save an entity.
-  Future<void> save(T entity) =>
-      dataSource.setRecord(table: tableName, record: toRow(entity));
+  Future<void> save(T entity, {List<String>? conflictColumn}) =>
+      dataSource.setRecord(
+        table: tableName,
+        record: toRow(entity),
+        conflictColumns: conflictColumn ?? ['ref_id'],
+      );
 
   /// Save a list of entities.
   Future<void> saveAll(List<T> entities) => dataSource.setRecords(

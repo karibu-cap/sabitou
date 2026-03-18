@@ -262,8 +262,12 @@ type User struct {
 	AccountStatus *AccountStatusType `protobuf:"varint,9,opt,name=account_status,json=accountStatus,proto3,enum=identity.v1.AccountStatusType,oneof" json:"account_status,omitempty"`
 	// The actions that the user must complete to authenticate.
 	RequiredActions []AuthActionType `protobuf:"varint,10,rep,packed,name=required_actions,json=requiredActions,proto3,enum=identity.v1.AuthActionType" json:"required_actions,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	// / The active buisness id.
+	ActiveBusinessId *string `protobuf:"bytes,11,opt,name=active_business_id,json=activeBusinessId,proto3,oneof" json:"active_business_id,omitempty"`
+	// / The active store id.
+	ActiveStoreId *string `protobuf:"bytes,12,opt,name=active_store_id,json=activeStoreId,proto3,oneof" json:"active_store_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *User) Reset() {
@@ -364,6 +368,20 @@ func (x *User) GetRequiredActions() []AuthActionType {
 		return x.RequiredActions
 	}
 	return nil
+}
+
+func (x *User) GetActiveBusinessId() string {
+	if x != nil && x.ActiveBusinessId != nil {
+		return *x.ActiveBusinessId
+	}
+	return ""
+}
+
+func (x *User) GetActiveStoreId() string {
+	if x != nil && x.ActiveStoreId != nil {
+		return *x.ActiveStoreId
+	}
+	return ""
 }
 
 type GetCurrentUserRequest struct {
@@ -1203,7 +1221,7 @@ const file_identity_v1_user_proto_rawDesc = "" +
 	"\x16identity/v1/user.proto\x12\videntity.v1\x1a\x1bbuf/validate/validate.proto\x1a\x12link/v1/link.proto\"d\n" +
 	"\x10ConnectedAccount\x125\n" +
 	"\bprovider\x18\x01 \x01(\x0e2\x19.identity.v1.ProviderTypeR\bprovider\x12\x19\n" +
-	"\braw_data\x18\x03 \x01(\tR\arawData\"\xdc\x04\n" +
+	"\braw_data\x18\x03 \x01(\tR\arawData\"\xe7\x05\n" +
 	"\x04User\x12\x1a\n" +
 	"\x06ref_id\x18\x01 \x01(\tH\x00R\x05refId\x88\x01\x01\x12\x1b\n" +
 	"\tuser_name\x18\x02 \x01(\tR\buserName\x12L\n" +
@@ -1217,7 +1235,9 @@ const file_identity_v1_user_proto_rawDesc = "" +
 	"\fprofile_link\x18\b \x01(\v2\x15.link.v1.ResourceLinkH\x05R\vprofileLink\x88\x01\x01\x12J\n" +
 	"\x0eaccount_status\x18\t \x01(\x0e2\x1e.identity.v1.AccountStatusTypeH\x06R\raccountStatus\x88\x01\x01\x12F\n" +
 	"\x10required_actions\x18\n" +
-	" \x03(\x0e2\x1b.identity.v1.AuthActionTypeR\x0frequiredActionsB\t\n" +
+	" \x03(\x0e2\x1b.identity.v1.AuthActionTypeR\x0frequiredActions\x121\n" +
+	"\x12active_business_id\x18\v \x01(\tH\aR\x10activeBusinessId\x88\x01\x01\x12+\n" +
+	"\x0factive_store_id\x18\f \x01(\tH\bR\ractiveStoreId\x88\x01\x01B\t\n" +
 	"\a_ref_idB\b\n" +
 	"\x06_emailB\x0f\n" +
 	"\r_phone_numberB\r\n" +
@@ -1225,7 +1245,9 @@ const file_identity_v1_user_proto_rawDesc = "" +
 	"\n" +
 	"_last_nameB\x0f\n" +
 	"\r_profile_linkB\x11\n" +
-	"\x0f_account_status\"\x17\n" +
+	"\x0f_account_statusB\x15\n" +
+	"\x13_active_business_idB\x12\n" +
+	"\x10_active_store_id\"\x17\n" +
 	"\x15GetCurrentUserRequest\";\n" +
 	"\x16GetCurrentUserResponse\x12!\n" +
 	"\x02me\x18\x01 \x01(\v2\x11.identity.v1.UserR\x02me\"\x0e\n" +

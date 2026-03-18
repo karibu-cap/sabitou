@@ -1,13 +1,37 @@
-enum JoinType { inner, left, right }
+/// Request join type.
+enum JoinType {
+  /// Inner join.
+  inner,
 
+  /// Left join.
+  left,
+
+  /// Right join.
+  right,
+}
+
+/// Sql Join request.
 class SqlJoin {
+  /// Table name.
   final String table;
+
+  /// The alias of the table.
   final String alias;
+
+  /// The join condition.
   final String on;
+
+  /// Join type.
   final JoinType type;
-  // Colonnes à sélectionner depuis cette table jointe
+
+  /// The columns to select.
   final List<String> selectColumns;
 
+  /// Qualified columns.
+  List<String> get qualifiedColumns =>
+      selectColumns.map((c) => '$alias.$c').toList();
+
+  /// Constructor of new [SqlJoin].
   const SqlJoin({
     required this.table,
     required this.alias,
@@ -16,6 +40,7 @@ class SqlJoin {
     this.selectColumns = const [],
   });
 
+  /// Convert to SQL.
   String toSql() {
     final joinKeyword = switch (type) {
       JoinType.inner => 'INNER JOIN',
@@ -25,7 +50,4 @@ class SqlJoin {
 
     return '$joinKeyword $table $alias ON $on';
   }
-
-  List<String> get qualifiedColumns =>
-      selectColumns.map((c) => '$alias.$c').toList();
 }

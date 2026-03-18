@@ -13,6 +13,9 @@ import 'inventory_view_model.dart';
 class InventoryController extends ChangeNotifier {
   final InventoryViewModel _viewModel;
 
+  /// The current store.
+  Store get store => _viewModel.store;
+
   /// Persists the selected tab in the detail panel across rebuilds.
   final ShadTabsController<String> tabsController = ShadTabsController<String>(
     value: Intls.to.overview,

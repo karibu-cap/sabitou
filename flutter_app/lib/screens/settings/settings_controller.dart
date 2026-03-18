@@ -7,10 +7,10 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../../repositories/business_repository.dart';
 import '../../repositories/stores_repository.dart';
+import '../../repositories/users_repository.dart';
 import '../../services/storage/app_storage.dart';
 import '../../utils/app_constants.dart';
 import '../../utils/printer_management.dart';
-import '../../utils/user_preference.dart';
 import '../../widgets/pdf/printers/printer_configuration.dart';
 import '../../widgets/sidebar/sidebar_menu_item.dart';
 import 'settings_view_model.dart';
@@ -46,6 +46,9 @@ enum Currency {
 class SettingsController extends ChangeNotifier {
   final SettingsViewModel _viewModel;
 
+  /// Whether the data is saving.
+  bool _isSaving = false;
+
   /// The selected tab.
   SettingsTab _selectedTab = SettingsTab.businessInfo;
 
@@ -57,6 +60,9 @@ class SettingsController extends ChangeNotifier {
 
   /// The printer configuration
   PrinterConfiguration _printerConfiguration = const PrinterConfiguration();
+
+  /// The current user.
+  User get user => _viewModel.user;
 
   /// The business temp logo.
   XFile? get businessTempLogo => _businessTempLogo;
@@ -81,6 +87,9 @@ class SettingsController extends ChangeNotifier {
 
   /// The printer configuration
   PrinterConfiguration get printerConfiguration => _printerConfiguration;
+
+  /// Whether the data is saving.
+  bool get isSaving => _isSaving;
 
   /// Constructs a new [SettingsController].
   SettingsController({required SettingsViewModel viewModel})
@@ -188,10 +197,8 @@ class SettingsController extends ChangeNotifier {
     if (selectedBusiness == null) {
       return;
     }
-
-    await UserPreferences.instance.saveBusinessPreferences(
-      newBusiness: selectedBusiness,
-    );
+    final user = this.user..activeBusinessId = selectedBusiness.refId;
+    await UserRepository.instance.update(UpdateRequest(user: user));
   }
 
   /// Switches the store.
@@ -202,9 +209,22 @@ class SettingsController extends ChangeNotifier {
       return;
     }
 
-    await UserPreferences.instance.saveStorePreferences(
-      newStore: selectedStore,
-    );
+    final user = this.user..activeStoreId = selectedStore.refId;
+    await UserRepository.instance.update(UpdateRequest(user: user));
+  }
+
+  /// Saves the settings.
+  Future<void> saveSettings() async {
+    _isSaving = true;
+    notifyListeners();
+    try {
+      await switchBusiness();
+      await switchStore();
+      await savePrinterConfiguration();
+    } finally {
+      _isSaving = false;
+      notifyListeners();
+    }
   }
 
   /// Rebuild the controller.

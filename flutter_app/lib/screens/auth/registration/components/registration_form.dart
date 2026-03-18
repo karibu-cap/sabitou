@@ -44,22 +44,6 @@ class RegistrationForm extends StatelessWidget {
             mainAxisExtent: 80,
             children: [
               InputField(
-                id: appIntl.firstName,
-                label: appIntl.firstName,
-                controller: controller.firstNameController,
-                placeholder: appIntl.firstName,
-                icon: LucideIcons.user400,
-                validator: ValidationFormUtils.validateFirstName,
-              ),
-              InputField(
-                id: appIntl.lastName,
-                label: appIntl.lastName,
-                controller: controller.lastNameController,
-                placeholder: appIntl.lastName,
-                icon: LucideIcons.user400,
-                validator: ValidationFormUtils.validateLastName,
-              ),
-              InputField(
                 id: appIntl.email,
                 label: appIntl.email,
                 controller: controller.emailController,

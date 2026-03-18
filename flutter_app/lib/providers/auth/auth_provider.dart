@@ -1,5 +1,3 @@
-// flutter_app/lib/providers/auth/auth_provider.dart
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -9,12 +7,9 @@ import 'package:sabitou_rpc/models.dart' show User;
 import '../../repositories/auth_repository.dart';
 import '../../services/auth/auth_api_client.dart';
 import '../../services/auth/token_service.dart';
+import '../../services/internationalization/internationalization.dart';
 import '../../services/powersync/powersync_service.dart';
 import '../../utils/logger.dart';
-
-// ---------------------------------------------------------------------------
-// Auth state
-// ---------------------------------------------------------------------------
 
 /// The possible authentication states of the application.
 enum AuthStatus {
@@ -33,10 +28,6 @@ enum AuthStatus {
   /// The last authentication attempt failed.
   authenticationFailed,
 }
-
-// ---------------------------------------------------------------------------
-// Provider
-// ---------------------------------------------------------------------------
 
 /// Central authentication state manager.
 ///
@@ -69,10 +60,7 @@ class AuthProvider extends ChangeNotifier {
   /// flashing the login screen before we know if the user is already logged in.
   final Completer<void> _initCompleter = Completer<void>();
 
-  // ---------------------------------------------------------------------------
-  // Construction
-  // ---------------------------------------------------------------------------
-
+  /// Constructs the new [AuthProvider].
   AuthProvider({
     AuthRepository? authRepository,
     TokenService? tokenService,
@@ -94,21 +82,20 @@ class AuthProvider extends ChangeNotifier {
   /// Singleton accessor.
   static AuthProvider get instance => GetIt.I.get<AuthProvider>();
 
-  // ---------------------------------------------------------------------------
-  // Getters
-  // ---------------------------------------------------------------------------
-
   /// The currently authenticated user (proto User), or null when not logged in.
   User? get currentUser => _currentUser;
+
+  /// The current authentication status.
   AuthStatus get status => _status;
+
+  /// The current error message, if any.
   String? get errorMessage => _errorMessage;
+
+  /// Whether the user is authenticated.
   bool get isAuthenticated => _status == AuthStatus.authenticated;
 
+  /// A future that completes when the session restore is complete.
   Future<void> get initializationComplete => _initCompleter.future;
-
-  // ---------------------------------------------------------------------------
-  // Session restore (called once on construction)
-  // ---------------------------------------------------------------------------
 
   Future<void> _restoreSession() async {
     try {
@@ -119,22 +106,12 @@ class AuthProvider extends ChangeNotifier {
         return;
       }
 
-      // Open the per-user PowerSync database.
-      // connectSync = true: PowerSyncConnector handles token refresh internally.
-      await _powerSync.open(userId: userId, authApiClient: _authApiClient);
+      // Initialize DB for this specific user session
+      await _powerSync.initialize(userId: userId);
 
-      // Read the user profile from the local SQLite `users` table.
-      final rows = await _powerSync.db.getAll(
-        '''
-        SELECT ref_id, user_name, email, first_name, last_name,
-               phone_number, account_status
-        FROM users WHERE ref_id = ? LIMIT 1
-        ''',
-        [userId],
-      );
-
-      if (rows.isNotEmpty) {
-        _currentUser = _userFromRow(rows.first);
+      final user = await _authRepository.restoreSession(userId);
+      if (user != null) {
+        _currentUser = user;
         _setStatus(AuthStatus.authenticated);
         _logger.log('Session restored for user $userId');
       } else {
@@ -157,10 +134,7 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  // ---------------------------------------------------------------------------
-  // Login
-  // ---------------------------------------------------------------------------
-
+  /// Logs in the user with the given credentials.
   Future<bool> login(String email, String password) async {
     _errorMessage = null;
     _setStatus(AuthStatus.authenticating);
@@ -171,7 +145,11 @@ class AuthProvider extends ChangeNotifier {
     );
 
     return switch (result) {
-      AuthSuccess(:final user) => await _onAuthSuccess(user),
+      AuthSuccess(:final user) => await _onAuthSuccess(
+        user,
+        email: email,
+        password: password,
+      ),
       AuthFailure(:final reason, :final message) => _onAuthFailure(
         reason,
         message,
@@ -179,14 +157,14 @@ class AuthProvider extends ChangeNotifier {
     };
   }
 
-  // ---------------------------------------------------------------------------
-  // Register
-  // ---------------------------------------------------------------------------
-
+  /// Registers a new user account.
   Future<bool> register({
     required String userName,
     required String email,
     required String password,
+    String? phoneNumber,
+    String? firstName,
+    String? lastName,
   }) async {
     _errorMessage = null;
     _setStatus(AuthStatus.authenticating);
@@ -195,10 +173,17 @@ class AuthProvider extends ChangeNotifier {
       userName: userName,
       email: email,
       password: password,
+      phoneNumber: phoneNumber,
+      firstName: firstName,
+      lastName: lastName,
     );
 
     return switch (result) {
-      AuthSuccess(:final user) => await _onAuthSuccess(user),
+      AuthSuccess(:final user) => await _onAuthSuccess(
+        user,
+        email: email,
+        password: password,
+      ),
       AuthFailure(:final reason, :final message) => _onAuthFailure(
         reason,
         message,
@@ -206,10 +191,7 @@ class AuthProvider extends ChangeNotifier {
     };
   }
 
-  // ---------------------------------------------------------------------------
-  // Logout
-  // ---------------------------------------------------------------------------
-
+  /// Logs out the current user.
   Future<void> logout() async {
     await _authRepository.logout();
     await _powerSync.close();
@@ -219,29 +201,36 @@ class AuthProvider extends ChangeNotifier {
     _setStatus(AuthStatus.unauthenticated);
   }
 
-  // ---------------------------------------------------------------------------
-  // Internal helpers
-  // ---------------------------------------------------------------------------
-
-  Future<bool> _onAuthSuccess(User user) async {
+  Future<bool> _onAuthSuccess(
+    User user, {
+    String? email,
+    String? password,
+  }) async {
     try {
-      // Open (or reuse) the per-user PowerSync database and connect sync.
-      // AuthRepository._loginOnline already calls open() before returning,
-      // so this is a no-op for online login — it only acts when called from
-      // session restore (where the repository was not involved).
-      if (!_powerSync.isOpenFor(user.refId)) {
-        await _powerSync.open(
+      await _powerSync.initialize(userId: user.refId);
+
+      if (email != null && password != null) {
+        final cacheResult = await _authRepository.cacheCredentials(
           userId: user.refId,
-          authApiClient: _authApiClient,
+          email: email,
+          password: password,
         );
+
+        if (!cacheResult) {
+          _setStatus(AuthStatus.authenticationFailed);
+
+          return false;
+        }
       }
 
-      _currentUser = user;
+      _currentUser = await _authRepository.fetchProfile(user.refId);
+      print("current user: ${_currentUser}");
+
       _setStatus(AuthStatus.authenticated);
 
       return true;
     } catch (e) {
-      _logger.severe('Post-auth PowerSync setup error: $e');
+      _logger.severe('Post-auth setup error: $e');
       _setError('Failed to initialise local database.');
 
       return false;
@@ -252,18 +241,6 @@ class AuthProvider extends ChangeNotifier {
     _setError(message ?? _defaultMessage(reason));
 
     return false;
-  }
-
-  /// Builds a proto [User] from a PowerSync SQLite row.
-  User _userFromRow(Map<String, dynamic> row) {
-    return User(
-      refId: row['ref_id'] as String?,
-      userName: row['user_name'] as String? ?? '',
-      email: row['email'] as String?,
-      firstName: row['first_name'] as String?,
-      lastName: row['last_name'] as String?,
-      phoneNumber: row['phone_number'] as String?,
-    );
   }
 
   void _setStatus(AuthStatus status) {
@@ -278,13 +255,10 @@ class AuthProvider extends ChangeNotifier {
   }
 
   String _defaultMessage(AuthFailureReason reason) => switch (reason) {
-    AuthFailureReason.invalidCredentials => 'Invalid email or password.',
-    AuthFailureReason.networkUnavailable =>
-      'No connection. Please connect to the network.',
-    AuthFailureReason.accountDisabled => 'This account has been disabled.',
-    AuthFailureReason.serverError =>
-      'A server error occurred. Please try again.',
-    AuthFailureReason.offlineUserNotFound =>
-      'Offline login unavailable. Please connect to the network for your first login on this device.',
+    AuthFailureReason.invalidCredentials => Intls.to.invalidEmailOrPassword,
+    AuthFailureReason.networkUnavailable => Intls.to.noConnection,
+    AuthFailureReason.accountDisabled => Intls.to.accountDisabled,
+    AuthFailureReason.serverError => Intls.to.serverError,
+    AuthFailureReason.offlineUserNotFound => Intls.to.offlineUserNotFound,
   };
 }

@@ -106,6 +106,7 @@ class _InventoryGridView extends StatelessWidget {
                       context: context,
                       builder: (context) => InventoryAdjustmentDialog(
                         productId: inv.product.refId,
+                        store: controller.store,
                       ),
                     );
                   },
@@ -141,7 +142,7 @@ class _InventoryCard extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border.all(color: theme.colorScheme.border),
           borderRadius: const BorderRadius.all(Radius.circular(8)),
-          color: theme.colorScheme.background,
+          color: theme.colorScheme.card,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
