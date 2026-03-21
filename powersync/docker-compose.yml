@@ -23,7 +23,7 @@ services:
         -c max_wal_senders=10
         -c shared_preload_libraries=''
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U postgres -d sabitou" ]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d sabitou"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -34,7 +34,7 @@ services:
   connector:
     build:
       context: ..
-      dockerfile: powersync/connector/Dockerfile
+      dockerfile: powersync/connector/Dockerfile.dev
     restart: unless-stopped
     ports:
       - "8080:8080"
@@ -48,12 +48,14 @@ services:
       # Refresh token TTL
       REFRESH_TOKEN_TTL_DAYS: "30"
     volumes:
+      - ../powersync/connector:/build/powersync/connector # ← aligné avec WORKDIR
+      - ../protos/gen/go:/build/protos/gen/go
       - jwt_keys:/keys
     depends_on:
       postgres:
         condition: service_healthy
     healthcheck:
-      test: [ "CMD-SHELL", "wget -qO- http://localhost:8080/health || exit 1" ]
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/health || exit 1"]
       interval: 5s
       timeout: 5s
       retries: 10

@@ -44,13 +44,13 @@ const ReceivingNote$json = {
       '10': 'relatedPurchaseOrderId'
     },
     {'1': 'supplier_id', '3': 3, '4': 1, '5': 9, '10': 'supplierId'},
-    {'1': 'buyer_id', '3': 4, '4': 1, '5': 9, '10': 'buyerId'},
+    {'1': 'store_id', '3': 4, '4': 1, '5': 9, '10': 'storeId'},
     {
       '1': 'items',
       '3': 5,
       '4': 3,
       '5': 11,
-      '6': '.logistic.v1.ReceivingLineItem',
+      '6': '.logistic.v1.ReceivingNoteLineItem',
       '10': 'items'
     },
     {
@@ -69,6 +69,14 @@ const ReceivingNote$json = {
       '10': 'receivedAt'
     },
     {'1': 'notes', '3': 8, '4': 1, '5': 9, '10': 'notes'},
+    {
+      '1': 'created_at',
+      '3': 9,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '10': 'createdAt'
+    },
   ],
 };
 
@@ -76,15 +84,16 @@ const ReceivingNote$json = {
 final $typed_data.Uint8List receivingNoteDescriptor = $convert.base64Decode(
     'Cg1SZWNlaXZpbmdOb3RlEh0KBnJlZl9pZBgBIAEoCUIGukgDyAEBUgVyZWZJZBI5ChlyZWxhdG'
     'VkX3B1cmNoYXNlX29yZGVyX2lkGAIgASgJUhZyZWxhdGVkUHVyY2hhc2VPcmRlcklkEh8KC3N1'
-    'cHBsaWVyX2lkGAMgASgJUgpzdXBwbGllcklkEhkKCGJ1eWVyX2lkGAQgASgJUgdidXllcklkEj'
-    'QKBWl0ZW1zGAUgAygLMh4ubG9naXN0aWMudjEuUmVjZWl2aW5nTGluZUl0ZW1SBWl0ZW1zEi0K'
-    'E3JlY2VpdmVkX2J5X3VzZXJfaWQYBiABKAlSEHJlY2VpdmVkQnlVc2VySWQSOwoLcmVjZWl2ZW'
-    'RfYXQYByABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUgpyZWNlaXZlZEF0EhQKBW5v'
-    'dGVzGAggASgJUgVub3Rlcw==');
+    'cHBsaWVyX2lkGAMgASgJUgpzdXBwbGllcklkEhkKCHN0b3JlX2lkGAQgASgJUgdzdG9yZUlkEj'
+    'gKBWl0ZW1zGAUgAygLMiIubG9naXN0aWMudjEuUmVjZWl2aW5nTm90ZUxpbmVJdGVtUgVpdGVt'
+    'cxItChNyZWNlaXZlZF9ieV91c2VyX2lkGAYgASgJUhByZWNlaXZlZEJ5VXNlcklkEjsKC3JlY2'
+    'VpdmVkX2F0GAcgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIKcmVjZWl2ZWRBdBIU'
+    'CgVub3RlcxgIIAEoCVIFbm90ZXMSOQoKY3JlYXRlZF9hdBgJIAEoCzIaLmdvb2dsZS5wcm90b2'
+    'J1Zi5UaW1lc3RhbXBSCWNyZWF0ZWRBdA==');
 
-@$core.Deprecated('Use receivingLineItemDescriptor instead')
-const ReceivingLineItem$json = {
-  '1': 'ReceivingLineItem',
+@$core.Deprecated('Use receivingNoteLineItemDescriptor instead')
+const ReceivingNoteLineItem$json = {
+  '1': 'ReceivingNoteLineItem',
   '2': [
     {'1': 'product_id', '3': 1, '4': 1, '5': 9, '10': 'productId'},
     {
@@ -126,19 +135,22 @@ const ReceivingLineItem$json = {
       '6': '.google.protobuf.Timestamp',
       '10': 'expirationDate'
     },
-    {'1': 'purchase_price', '3': 8, '4': 1, '5': 5, '10': 'purchasePrice'},
+    {'1': 'purchase_price', '3': 8, '4': 1, '5': 1, '10': 'purchasePrice'},
+    {'1': 'store_id', '3': 9, '4': 1, '5': 9, '10': 'storeId'},
+    {'1': 'line_index', '3': 10, '4': 1, '5': 5, '10': 'lineIndex'},
   ],
   '8': [
     {'1': '_batch_id'},
   ],
 };
 
-/// Descriptor for `ReceivingLineItem`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List receivingLineItemDescriptor = $convert.base64Decode(
-    'ChFSZWNlaXZpbmdMaW5lSXRlbRIdCgpwcm9kdWN0X2lkGAEgASgJUglwcm9kdWN0SWQSKwoRcX'
-    'VhbnRpdHlfZXhwZWN0ZWQYAiABKAFSEHF1YW50aXR5RXhwZWN0ZWQSKwoRcXVhbnRpdHlfcmVj'
-    'ZWl2ZWQYAyABKAFSEHF1YW50aXR5UmVjZWl2ZWQSKwoRcXVhbnRpdHlfcmVqZWN0ZWQYBCABKA'
-    'FSEHF1YW50aXR5UmVqZWN0ZWQSKQoQcmVqZWN0aW9uX3JlYXNvbhgFIAEoCVIPcmVqZWN0aW9u'
-    'UmVhc29uEh4KCGJhdGNoX2lkGAYgASgJSABSB2JhdGNoSWSIAQESQwoPZXhwaXJhdGlvbl9kYX'
-    'RlGAcgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIOZXhwaXJhdGlvbkRhdGUSJQoO'
-    'cHVyY2hhc2VfcHJpY2UYCCABKAVSDXB1cmNoYXNlUHJpY2VCCwoJX2JhdGNoX2lk');
+/// Descriptor for `ReceivingNoteLineItem`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List receivingNoteLineItemDescriptor = $convert.base64Decode(
+    'ChVSZWNlaXZpbmdOb3RlTGluZUl0ZW0SHQoKcHJvZHVjdF9pZBgBIAEoCVIJcHJvZHVjdElkEi'
+    'sKEXF1YW50aXR5X2V4cGVjdGVkGAIgASgBUhBxdWFudGl0eUV4cGVjdGVkEisKEXF1YW50aXR5'
+    'X3JlY2VpdmVkGAMgASgBUhBxdWFudGl0eVJlY2VpdmVkEisKEXF1YW50aXR5X3JlamVjdGVkGA'
+    'QgASgBUhBxdWFudGl0eVJlamVjdGVkEikKEHJlamVjdGlvbl9yZWFzb24YBSABKAlSD3JlamVj'
+    'dGlvblJlYXNvbhIeCghiYXRjaF9pZBgGIAEoCUgAUgdiYXRjaElkiAEBEkMKD2V4cGlyYXRpb2'
+    '5fZGF0ZRgHIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSDmV4cGlyYXRpb25EYXRl'
+    'EiUKDnB1cmNoYXNlX3ByaWNlGAggASgBUg1wdXJjaGFzZVByaWNlEhkKCHN0b3JlX2lkGAkgAS'
+    'gJUgdzdG9yZUlkEh0KCmxpbmVfaW5kZXgYCiABKAVSCWxpbmVJbmRleEILCglfYmF0Y2hfaWQ=');

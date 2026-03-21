@@ -94,7 +94,7 @@ class InventoryAdjustmentViewModel {
     required String productId,
     required int quantityChange,
     required String reason,
-    String? notes,
+    required String performUserId,
     String? batchId,
   }) async {
     try {
@@ -105,8 +105,8 @@ class InventoryAdjustmentViewModel {
           newQuantity: quantityChange,
           batchId: batchId,
           reason: reason,
-          notes: notes,
         ),
+        performUserId,
       );
 
       // Refresh data after adjustment

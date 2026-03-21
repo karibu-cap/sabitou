@@ -26,7 +26,6 @@ class ConnectRPCService {
             baseUrl: AppConfig.connectorUrl,
             codec: const ProtoCodec(),
             httpClient: createHttpClient(),
-            interceptors: [_bearerTokenInterceptor()],
           );
 
   static connect.Interceptor _bearerTokenInterceptor() {

@@ -1,4 +1,5 @@
 version: v2
+clean: true
 managed:
   enabled: true
   disable:
@@ -20,7 +21,7 @@ plugins:
   #   out: gen/go/rpc
   #   opt:
   #     - paths=source_relative
-  # Generate Go client and server stubs for Connect framework. 
+  # Generate Go client and server stubs for Connect framework.
   - remote: buf.build/connectrpc/go
     out: gen/go/rpc
     opt:

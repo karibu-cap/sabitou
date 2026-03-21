@@ -41,22 +41,24 @@ class ReceivingNote extends $pb.GeneratedMessage {
     $core.String? refId,
     $core.String? relatedPurchaseOrderId,
     $core.String? supplierId,
-    $core.String? buyerId,
-    $core.Iterable<ReceivingLineItem>? items,
+    $core.String? storeId,
+    $core.Iterable<ReceivingNoteLineItem>? items,
     $core.String? receivedByUserId,
     $0.Timestamp? receivedAt,
     $core.String? notes,
+    $0.Timestamp? createdAt,
   }) {
     final result = create();
     if (refId != null) result.refId = refId;
     if (relatedPurchaseOrderId != null)
       result.relatedPurchaseOrderId = relatedPurchaseOrderId;
     if (supplierId != null) result.supplierId = supplierId;
-    if (buyerId != null) result.buyerId = buyerId;
+    if (storeId != null) result.storeId = storeId;
     if (items != null) result.items.addAll(items);
     if (receivedByUserId != null) result.receivedByUserId = receivedByUserId;
     if (receivedAt != null) result.receivedAt = receivedAt;
     if (notes != null) result.notes = notes;
+    if (createdAt != null) result.createdAt = createdAt;
     return result;
   }
 
@@ -76,14 +78,16 @@ class ReceivingNote extends $pb.GeneratedMessage {
     ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..aOS(2, _omitFieldNames ? '' : 'relatedPurchaseOrderId')
     ..aOS(3, _omitFieldNames ? '' : 'supplierId')
-    ..aOS(4, _omitFieldNames ? '' : 'buyerId')
-    ..pc<ReceivingLineItem>(
+    ..aOS(4, _omitFieldNames ? '' : 'storeId')
+    ..pc<ReceivingNoteLineItem>(
         5, _omitFieldNames ? '' : 'items', $pb.PbFieldType.PM,
-        subBuilder: ReceivingLineItem.create)
+        subBuilder: ReceivingNoteLineItem.create)
     ..aOS(6, _omitFieldNames ? '' : 'receivedByUserId')
     ..aOM<$0.Timestamp>(7, _omitFieldNames ? '' : 'receivedAt',
         subBuilder: $0.Timestamp.create)
     ..aOS(8, _omitFieldNames ? '' : 'notes')
+    ..aOM<$0.Timestamp>(9, _omitFieldNames ? '' : 'createdAt',
+        subBuilder: $0.Timestamp.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -135,16 +139,16 @@ class ReceivingNote extends $pb.GeneratedMessage {
   void clearSupplierId() => $_clearField(3);
 
   @$pb.TagNumber(4)
-  $core.String get buyerId => $_getSZ(3);
+  $core.String get storeId => $_getSZ(3);
   @$pb.TagNumber(4)
-  set buyerId($core.String value) => $_setString(3, value);
+  set storeId($core.String value) => $_setString(3, value);
   @$pb.TagNumber(4)
-  $core.bool hasBuyerId() => $_has(3);
+  $core.bool hasStoreId() => $_has(3);
   @$pb.TagNumber(4)
-  void clearBuyerId() => $_clearField(4);
+  void clearStoreId() => $_clearField(4);
 
   @$pb.TagNumber(5)
-  $pb.PbList<ReceivingLineItem> get items => $_getList(4);
+  $pb.PbList<ReceivingNoteLineItem> get items => $_getList(4);
 
   @$pb.TagNumber(6)
   $core.String get receivedByUserId => $_getSZ(5);
@@ -174,6 +178,17 @@ class ReceivingNote extends $pb.GeneratedMessage {
   $core.bool hasNotes() => $_has(7);
   @$pb.TagNumber(8)
   void clearNotes() => $_clearField(8);
+
+  @$pb.TagNumber(9)
+  $0.Timestamp get createdAt => $_getN(8);
+  @$pb.TagNumber(9)
+  set createdAt($0.Timestamp value) => $_setField(9, value);
+  @$pb.TagNumber(9)
+  $core.bool hasCreatedAt() => $_has(8);
+  @$pb.TagNumber(9)
+  void clearCreatedAt() => $_clearField(9);
+  @$pb.TagNumber(9)
+  $0.Timestamp ensureCreatedAt() => $_ensure(8);
 }
 
 /// *
@@ -187,8 +202,8 @@ class ReceivingNote extends $pb.GeneratedMessage {
 ///    rejection_reason: "Damaged packaging"
 ///    batch_id: "BATCH-2025-001" (generated)
 ///    expiration_date: 2026-09-29T00:00:00Z
-class ReceivingLineItem extends $pb.GeneratedMessage {
-  factory ReceivingLineItem({
+class ReceivingNoteLineItem extends $pb.GeneratedMessage {
+  factory ReceivingNoteLineItem({
     $core.String? productId,
     $core.double? quantityExpected,
     $core.double? quantityReceived,
@@ -196,7 +211,9 @@ class ReceivingLineItem extends $pb.GeneratedMessage {
     $core.String? rejectionReason,
     $core.String? batchId,
     $0.Timestamp? expirationDate,
-    $core.int? purchasePrice,
+    $core.double? purchasePrice,
+    $core.String? storeId,
+    $core.int? lineIndex,
   }) {
     final result = create();
     if (productId != null) result.productId = productId;
@@ -207,20 +224,22 @@ class ReceivingLineItem extends $pb.GeneratedMessage {
     if (batchId != null) result.batchId = batchId;
     if (expirationDate != null) result.expirationDate = expirationDate;
     if (purchasePrice != null) result.purchasePrice = purchasePrice;
+    if (storeId != null) result.storeId = storeId;
+    if (lineIndex != null) result.lineIndex = lineIndex;
     return result;
   }
 
-  ReceivingLineItem._();
+  ReceivingNoteLineItem._();
 
-  factory ReceivingLineItem.fromBuffer($core.List<$core.int> data,
+  factory ReceivingNoteLineItem.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(data, registry);
-  factory ReceivingLineItem.fromJson($core.String json,
+  factory ReceivingNoteLineItem.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'ReceivingLineItem',
+      _omitMessageNames ? '' : 'ReceivingNoteLineItem',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'logistic.v1'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'productId')
@@ -234,30 +253,34 @@ class ReceivingLineItem extends $pb.GeneratedMessage {
     ..aOS(6, _omitFieldNames ? '' : 'batchId')
     ..aOM<$0.Timestamp>(7, _omitFieldNames ? '' : 'expirationDate',
         subBuilder: $0.Timestamp.create)
-    ..a<$core.int>(
-        8, _omitFieldNames ? '' : 'purchasePrice', $pb.PbFieldType.O3)
+    ..a<$core.double>(
+        8, _omitFieldNames ? '' : 'purchasePrice', $pb.PbFieldType.OD)
+    ..aOS(9, _omitFieldNames ? '' : 'storeId')
+    ..a<$core.int>(10, _omitFieldNames ? '' : 'lineIndex', $pb.PbFieldType.O3)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ReceivingLineItem clone() => ReceivingLineItem()..mergeFromMessage(this);
+  ReceivingNoteLineItem clone() =>
+      ReceivingNoteLineItem()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ReceivingLineItem copyWith(void Function(ReceivingLineItem) updates) =>
-      super.copyWith((message) => updates(message as ReceivingLineItem))
-          as ReceivingLineItem;
+  ReceivingNoteLineItem copyWith(
+          void Function(ReceivingNoteLineItem) updates) =>
+      super.copyWith((message) => updates(message as ReceivingNoteLineItem))
+          as ReceivingNoteLineItem;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static ReceivingLineItem create() => ReceivingLineItem._();
+  static ReceivingNoteLineItem create() => ReceivingNoteLineItem._();
   @$core.override
-  ReceivingLineItem createEmptyInstance() => create();
-  static $pb.PbList<ReceivingLineItem> createRepeated() =>
-      $pb.PbList<ReceivingLineItem>();
+  ReceivingNoteLineItem createEmptyInstance() => create();
+  static $pb.PbList<ReceivingNoteLineItem> createRepeated() =>
+      $pb.PbList<ReceivingNoteLineItem>();
   @$core.pragma('dart2js:noInline')
-  static ReceivingLineItem getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<ReceivingLineItem>(create);
-  static ReceivingLineItem? _defaultInstance;
+  static ReceivingNoteLineItem getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ReceivingNoteLineItem>(create);
+  static ReceivingNoteLineItem? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get productId => $_getSZ(0);
@@ -325,13 +348,31 @@ class ReceivingLineItem extends $pb.GeneratedMessage {
   $0.Timestamp ensureExpirationDate() => $_ensure(6);
 
   @$pb.TagNumber(8)
-  $core.int get purchasePrice => $_getIZ(7);
+  $core.double get purchasePrice => $_getN(7);
   @$pb.TagNumber(8)
-  set purchasePrice($core.int value) => $_setSignedInt32(7, value);
+  set purchasePrice($core.double value) => $_setDouble(7, value);
   @$pb.TagNumber(8)
   $core.bool hasPurchasePrice() => $_has(7);
   @$pb.TagNumber(8)
   void clearPurchasePrice() => $_clearField(8);
+
+  @$pb.TagNumber(9)
+  $core.String get storeId => $_getSZ(8);
+  @$pb.TagNumber(9)
+  set storeId($core.String value) => $_setString(8, value);
+  @$pb.TagNumber(9)
+  $core.bool hasStoreId() => $_has(8);
+  @$pb.TagNumber(9)
+  void clearStoreId() => $_clearField(9);
+
+  @$pb.TagNumber(10)
+  $core.int get lineIndex => $_getIZ(9);
+  @$pb.TagNumber(10)
+  set lineIndex($core.int value) => $_setSignedInt32(9, value);
+  @$pb.TagNumber(10)
+  $core.bool hasLineIndex() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearLineIndex() => $_clearField(10);
 }
 
 const $core.bool _omitFieldNames =

@@ -155,7 +155,7 @@ class UsersViewModel {
       permissions: permissions,
     );
 
-    return await _storeRepository.updateOrAddStoreMember(request);
+    return await _storeRepository.updateStoreMember(request);
   }
 
   /// Removes an user from the store.
@@ -170,7 +170,7 @@ class UsersViewModel {
     String userId,
     StoreMemberStatus status,
   ) async {
-    return await _storeRepository.updateOrAddStoreMember(
+    return await _storeRepository.updateStoreMember(
       UpdateStoreMemberRequest(
         userId: userId,
         storeId: storeId,
@@ -184,8 +184,8 @@ class UsersViewModel {
     String userId,
     StorePermissions permissions,
   ) async {
-    return await _storeRepository.updateOrAddStoreMember(
-      UpdateStoreMemberRequest(
+    return await _storeRepository.addStoreMember(
+      AddUserToStoreRequest(
         userId: userId,
         storeId: storeId,
         permissions: permissions,

@@ -6,9 +6,11 @@ import 'package:sabitou_rpc/models.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../../services/internationalization/internationalization.dart';
+import '../../../../utils/common_functions.dart';
 import '../../../../utils/extensions/category_extension.dart';
 import '../../../../utils/extensions/global_product_extension.dart';
 import '../../../../utils/responsive_utils.dart';
+import '../../../../utils/user_preference.dart';
 import '../../../../widgets/adjust_flex_display.dart';
 import '../../../../widgets/input/auto_complete.dart';
 import '../../../../widgets/loading.dart';
@@ -29,11 +31,17 @@ class CreateEditProductFormView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDesktop = ResponsiveUtils.isDesktop(context);
+    final userPreferences = context.watch<UserPreferences>();
+    final business = userPreferences.business;
+    final store = userPreferences.store;
+    if (business == null || store == null) {
+      return const SizedBox.shrink();
+    }
 
     return ShadDialog(
       title: Text(product == null ? Intls.to.addProduct : Intls.to.editProduct),
       child: Material(
-        color: ShadTheme.of(context).colorScheme.card,
+        color: Colors.transparent,
         child: LayoutBuilder(
           builder: (context, constraints) {
             final dialogWidth = isDesktop ? 600.0 : constraints.maxWidth * 0.9;
@@ -42,6 +50,8 @@ class CreateEditProductFormView extends StatelessWidget {
               create: (context) => CreateEditProductFormController(
                 product: product?.globalProduct,
                 storeProduct: product?.storeProduct,
+                businessId: business.refId,
+                storeId: store.refId,
               ),
               child: Consumer<CreateEditProductFormController>(
                 builder: (context, controller, child) {
@@ -54,25 +64,27 @@ class CreateEditProductFormView extends StatelessWidget {
                       spacing: 16,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        SingleChildScrollView(
+                        Expanded(
                           child: ShadForm(
                             key: controller.formKey,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              spacing: 16,
-                              children: [
-                                _ProductNameField(),
-                                _ProductDescription(),
-                                AdjustFlexDisplay(
-                                  children: [
-                                    _BarcodeField(),
-                                    _CategoryDropdown(),
-                                  ],
-                                ),
-                                const _StoreProductFields(),
-                                const _StockFields(),
-                              ],
+                            child: ListView(
+                              children:
+                                  [
+                                        _ProductNameField(),
+                                        _ProductDescription(),
+                                        AdjustFlexDisplay(
+                                          children: [
+                                            _BarcodeField(),
+                                            _CategoryDropdown(),
+                                          ],
+                                        ),
+                                        const _StoreProductFields(),
+                                        const _StockFields(),
+                                      ]
+                                      .expand(
+                                        (e) => [e, const SizedBox(height: 16)],
+                                      )
+                                      .toList(),
                             ),
                           ),
                         ),
@@ -95,38 +107,79 @@ class _StockFields extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = context.watch<CreateEditProductFormController>();
-    if (!controller.isCreatingNewProduct) {
-      return const SizedBox.shrink();
-    }
-
     return Column(
       spacing: 16,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(Intls.to.stock, style: ShadTheme.of(context).textTheme.large),
         const AdjustFlexDisplay(
-          children: [_InitialStockField(), _ReorderPointField()],
+          children: [_OpeningStockField(), _OpeningStockPerUnitField()],
         ),
+        const AdjustFlexDisplay(children: [_ReorderPointField()]),
       ],
     );
   }
 }
 
-class _InitialStockField extends StatelessWidget {
-  const _InitialStockField();
+class _OpeningStockField extends StatelessWidget {
+  const _OpeningStockField();
 
   @override
   Widget build(BuildContext context) {
     final controller = context.watch<CreateEditProductFormController>();
 
     return ShadInputFormField(
-      id: 'initial_stock',
-      label: Text(Intls.to.initialStock),
-      controller: controller.initialStockController,
+      id: 'opening_stock',
+      label: Text(Intls.to.openingStock),
+      controller: controller.openingStockController,
       enabled: !controller.onSaveProduct,
       placeholder: const Text('0'),
       keyboardType: TextInputType.number,
+      validator: (value) {
+        final openingStockPerUnitStr =
+            controller.openingStockPerUnitController.text;
+        final openingStockPerUnit =
+            double.tryParse(openingStockPerUnitStr) ?? 0;
+
+        if (openingStockPerUnit > 0 &&
+            (value.isEmpty || (double.tryParse(value) ?? 0) == 0)) {
+          return Intls.to.isRequiredField.trParams({
+            'field': Intls.to.openingStockPerUnit,
+          });
+        }
+
+        return null;
+      },
+    );
+  }
+}
+
+class _OpeningStockPerUnitField extends StatelessWidget {
+  const _OpeningStockPerUnitField();
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = context.watch<CreateEditProductFormController>();
+
+    return ShadInputFormField(
+      id: 'opening_stock_per_unit',
+      label: Text(Intls.to.openingStockPerUnit),
+      controller: controller.openingStockPerUnitController,
+      enabled: !controller.onSaveProduct,
+      placeholder: const Text('0.0'),
+      keyboardType: const TextInputType.numberWithOptions(decimal: true),
+      validator: (value) {
+        final openingStockStr = controller.openingStockController.text;
+        final openingStock = double.tryParse(openingStockStr) ?? 0;
+
+        if (openingStock > 0 && value.isEmpty) {
+          return Intls.to.isRequiredField.trParams({
+            'field': Intls.to.openingStockPerUnit,
+          });
+        }
+
+        return null;
+      },
     );
   }
 }
@@ -140,7 +193,7 @@ class _ReorderPointField extends StatelessWidget {
 
     return ShadInputFormField(
       id: 'reorder_point',
-      label: Text(Intls.to.reorderPoint),
+      label: Text('${Intls.to.reorderPoint} (${Intls.to.optional})'),
       controller: controller.reorderPointController,
       enabled: !controller.onSaveProduct,
       placeholder: const Text('0'),
@@ -187,18 +240,13 @@ class _ProductNameField extends StatelessWidget {
       enabled: !controller.onSaveProduct,
       initialValue: controller.nameController.text,
       placeholder: Intls.to.enterProductName,
-      optionsBuilder: (textController) async {
-        controller.product.name = Internationalized(
-          en: textController.text,
-          fr: textController.text,
-        );
-        if (textController.text.isEmpty) {
+      optionsBuilder: (text) async {
+        controller.product.name = Internationalized(en: text, fr: text);
+        if (text.isEmpty) {
           return [];
         }
 
-        final result = await controller.filterGlobalProduct(
-          name: textController.text,
-        );
+        final result = await controller.filterGlobalProduct(name: text);
 
         return result;
       },
@@ -301,7 +349,7 @@ class _CategoryDropdown extends StatelessWidget {
                         );
                       });
 
-                      return ShadSelect<String?>.multipleWithSearch(
+                      return ShadSelect<Category?>.multipleWithSearch(
                         closeOnSelect: false,
                         placeholder: Text(Intls.to.selectCategory),
                         enabled: !controller.onSaveProduct,
@@ -309,7 +357,9 @@ class _CategoryDropdown extends StatelessWidget {
                           values
                               .map(
                                 (v) => categories
-                                    .firstWhereOrNull((e) => e.refId == v)
+                                    .firstWhereOrNull(
+                                      (e) => e.refId == v?.refId,
+                                    )
                                     ?.label,
                               )
                               .join(', '),
@@ -328,8 +378,8 @@ class _CategoryDropdown extends StatelessWidget {
                                       .contains(
                                         searchValue.value?.toLowerCase() ?? '',
                                       ),
-                                  child: ShadOption<String?>(
-                                    value: category.refId,
+                                  child: ShadOption<Category?>(
+                                    value: category,
                                     child: Text(category.label),
                                   ),
                                 ),
@@ -342,10 +392,23 @@ class _CategoryDropdown extends StatelessWidget {
                             ..addAll(
                               value.map(
                                 (e) => Category(
-                                  refId: e,
-                                  name: categories
-                                      .firstWhereOrNull((c) => c.refId == e)
-                                      ?.name,
+                                  refId: e?.refId ?? '',
+                                  name: Internationalized(
+                                    en:
+                                        categories
+                                            .firstWhereOrNull(
+                                              (c) => c.refId == e?.refId,
+                                            )
+                                            ?.label ??
+                                        '',
+                                    fr:
+                                        categories
+                                            .firstWhereOrNull(
+                                              (c) => c.refId == e?.refId,
+                                            )
+                                            ?.label ??
+                                        '',
+                                  ),
                                 ),
                               ),
                             );
@@ -389,6 +452,7 @@ class _StoreProductFields extends StatelessWidget {
       spacing: 16,
       children: [
         AdjustFlexDisplay(children: [_SkuField(), _SalePriceField()]),
+        const AdjustFlexDisplay(children: [_DefaultPurchasePriceField()]),
       ],
     );
   }
@@ -435,6 +499,24 @@ class _SalePriceField extends StatelessWidget {
   }
 }
 
+class _DefaultPurchasePriceField extends StatelessWidget {
+  const _DefaultPurchasePriceField();
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = context.watch<CreateEditProductFormController>();
+
+    return ShadInputFormField(
+      id: 'default_purchase_price',
+      label: Text('${Intls.to.defaultPurchasePrice} (${Intls.to.optional})'),
+      controller: controller.defaultPurchasePriceController,
+      enabled: !controller.onSaveProduct,
+      placeholder: const Text('0.0'),
+      keyboardType: const TextInputType.numberWithOptions(decimal: true),
+    );
+  }
+}
+
 class _FormActions extends StatelessWidget {
   const _FormActions({this.onProductSaved});
 
@@ -450,7 +532,11 @@ class _FormActions extends StatelessWidget {
         if (!context.mounted) return;
         Navigator.of(context).pop();
         onProductSaved?.call();
+
+        return;
       }
+
+      showErrorToast(context: context, message: Intls.to.invalidFormFields);
     }
 
     return Row(

@@ -33,7 +33,7 @@ class SearchAndScanView extends StatelessWidget {
                 controller.searchQuery.add(result);
               },
             ),
-      optionsBuilder: (textController) async {
+      optionsBuilder: (text) async {
         return await controller.filteredProductsStream.first;
       },
       displayStringForOption: (product) => product.globalProduct.label,

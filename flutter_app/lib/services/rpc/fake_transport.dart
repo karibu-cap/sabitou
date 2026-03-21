@@ -22,6 +22,17 @@ final _fakeTransport =
             ..token = 'mock_token'
             ..refreshToken = 'mock_refresh_token';
         })
+        // Fake refresh token handler.
+        // The access token in mock_token never truly expires (FakeTransport has
+        // no JWT clock), but PowerSync may still call invalidateCredentials()
+        // which triggers fetchCredentials() → refreshTokens().
+        // Without this handler FakeTransport returns null, causing:
+        //   JSNoSuchMethodError: tried to call a non-function, such as null: 'T[_eval]'
+        .unary(AuthService.refreshToken, (req, _) async {
+          return RefreshTokenResponse()
+            ..token = 'mock_token'
+            ..refreshToken = 'mock_refresh_token';
+        })
         .unary(UserService.getCurrentUser, (req, _) async {
           return GetCurrentUserResponse(
             me: (_fakeData[CollectionName.users] as List<User>).first,

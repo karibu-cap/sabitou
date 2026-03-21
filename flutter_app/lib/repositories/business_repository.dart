@@ -92,7 +92,10 @@ final class BusinessRepository extends BaseRepository<Business> {
   /// Updates a business
   Future<bool> updateBusiness(Business business) async {
     try {
-      await save(business);
+      await updateWhere(
+        fields: fromBusinessToRaw(business),
+        filters: [SqlQuery.equals(BusinessesFields.refId, business.refId)],
+      );
 
       return true;
     } on Exception catch (e) {

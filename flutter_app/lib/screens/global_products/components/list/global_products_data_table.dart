@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+import '../../../../repositories/resource_link_repository.dart';
 import '../../../../services/internationalization/internationalization.dart';
 import '../../../../themes/app_colors.dart';
 import '../../../../utils/app_constants.dart';
@@ -89,6 +90,7 @@ class _ImageCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
+    final imageUrl = globalProduct.imagesLinksIds.firstOrNull;
 
     return Container(
       width: 40,
@@ -97,15 +99,19 @@ class _ImageCell extends StatelessWidget {
         borderRadius: const BorderRadius.all(Radius.circular(8)),
         color: theme.colorScheme.accent,
       ),
-      child: FutureBuilder<String?>(
-        future: globalProduct.getPrimaryImageUrl(),
+      child: FutureBuilder<ResourceLink?>(
+        future: imageUrl == null
+            ? Future.value()
+            : ResourceLinkRepository.instance.getResourceLink(imageUrl),
         builder: (context, snapshot) {
-          final data = snapshot.data;
+          final data = snapshot.data?.targetUri;
           if (snapshot.connectionState == ConnectionState.done &&
               snapshot.hasData &&
               data != null) {
             return FadeInImage.assetNetwork(
               placeholder: StaticImages.placeholder,
+              placeholderCacheHeight: 30,
+              placeholderCacheWidth: 30,
               image: data,
               fit: BoxFit.cover,
               imageErrorBuilder: (context, error, stackTrace) {

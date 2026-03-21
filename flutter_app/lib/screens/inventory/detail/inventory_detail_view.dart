@@ -1,7 +1,9 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+import '../../../repositories/resource_link_repository.dart';
 import '../../../services/internationalization/internationalization.dart';
 import '../../../utils/app_constants.dart';
 import '../../../utils/extensions/global_product_extension.dart';
@@ -48,6 +50,9 @@ class InventoryDetailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
+    final imageUrl = item.product.imagesLinksIds.isNotEmpty
+        ? item.product.imagesLinksIds.first
+        : item.globalProduct.imagesLinksIds.firstOrNull;
 
     return Column(
       children: [
@@ -60,19 +65,10 @@ class InventoryDetailView extends StatelessWidget {
               Row(
                 children: [
                   Expanded(
-                    child: Row(
-                      spacing: 8,
-                      children: [
-                        Text(
-                          item.globalProduct.label,
-                          style: theme.textTheme.table.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          '( ${Formatters.formatCurrency(item.product.salePrice.toDouble())} )',
-                        ),
-                      ],
+                    child: AutoSizeText(
+                      item.globalProduct.label,
+                      style: theme.textTheme.h1,
+                      maxFontSize: 18,
                     ),
                   ),
                   if (onAdjustStock != null)
@@ -89,46 +85,90 @@ class InventoryDetailView extends StatelessWidget {
                     ),
                 ],
               ),
-              Container(
-                height: 70,
-                width: 70,
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(8)),
-                  color: ShadTheme.of(context).colorScheme.accent,
-                ),
-                child: FutureBuilder<String?>(
-                  future: item.globalProduct.getPrimaryImageUrl(),
-                  builder: (context, snapshot) {
-                    final data = snapshot.data;
-                    if (snapshot.connectionState == ConnectionState.done &&
-                        snapshot.hasData &&
-                        data != null) {
-                      return ClipRRect(
+              Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      spacing: 8,
+                      children: [
+                        ListTile(
+                          title: Text(Intls.to.sellingPrince),
+                          contentPadding: EdgeInsets.zero,
+                          subtitle: Text(
+                            Formatters.formatCurrency(
+                              item.product.salePrice.toDouble(),
+                            ),
+                            style: theme.textTheme.h3,
+                          ),
+                        ),
+                        if (item.product.hasDefaultPurchasePrice())
+                          ListTile(
+                            title: Text(Intls.to.pruchaseCost),
+                            contentPadding: EdgeInsets.zero,
+                            subtitle: Text(
+                              Formatters.formatCurrency(
+                                item.product.defaultPurchasePrice.toDouble(),
+                              ),
+                              style: theme.textTheme.h3,
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                  if (imageUrl != null)
+                    Container(
+                      height: 70,
+                      width: 70,
+                      decoration: BoxDecoration(
                         borderRadius: const BorderRadius.all(
                           Radius.circular(8),
                         ),
-                        child: FadeInImage.assetNetwork(
-                          placeholder: StaticImages.placeholder,
-                          image: data,
-                          fit: BoxFit.cover,
-                          width: 70,
-                          imageErrorBuilder: (context, error, stackTrace) {
-                            return const Icon(LucideIcons.package, size: 20);
-                          },
-                          placeholderErrorBuilder:
-                              (context, error, stackTrace) {
-                                return const Icon(
-                                  LucideIcons.package,
-                                  size: 20,
-                                );
-                              },
+                        color: ShadTheme.of(context).colorScheme.accent,
+                      ),
+                      child: FutureBuilder<ResourceLink?>(
+                        future: ResourceLinkRepository.instance.getResourceLink(
+                          imageUrl,
                         ),
-                      );
-                    }
+                        builder: (context, snapshot) {
+                          final data = snapshot.data?.targetUri;
+                          if (snapshot.connectionState ==
+                                  ConnectionState.done &&
+                              snapshot.hasData &&
+                              data != null) {
+                            return ClipRRect(
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(8),
+                              ),
+                              child: FadeInImage.assetNetwork(
+                                placeholder: StaticImages.placeholder,
+                                image: data,
+                                placeholderCacheHeight: 30,
+                                placeholderCacheWidth: 30,
+                                fit: BoxFit.cover,
+                                width: 70,
+                                imageErrorBuilder:
+                                    (context, error, stackTrace) {
+                                      return const Icon(
+                                        LucideIcons.package,
+                                        size: 20,
+                                      );
+                                    },
+                                placeholderErrorBuilder:
+                                    (context, error, stackTrace) {
+                                      return const Icon(
+                                        LucideIcons.package,
+                                        size: 20,
+                                      );
+                                    },
+                              ),
+                            );
+                          }
 
-                    return const SizedBox.shrink();
-                  },
-                ),
+                          return const SizedBox.shrink();
+                        },
+                      ),
+                    ),
+                ],
               ),
             ],
           ),

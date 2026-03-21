@@ -35,7 +35,7 @@ class ReceiveNoteFormController extends ChangeNotifier {
   DateTime? receivedAt;
 
   /// List of receiving line items.
-  final List<ReceivingLineItem> lineItems;
+  final List<ReceivingNoteLineItem> lineItems;
 
   /// Notes text controller.
   final TextEditingController notesController = TextEditingController();
@@ -49,16 +49,16 @@ class ReceiveNoteFormController extends ChangeNotifier {
   /// Constructors of new [ReceiveNoteFormController].
   ReceiveNoteFormController({required this.purchaseOrder})
     : relatedPurchaseOrderId = purchaseOrder.refId,
-      buyerId = purchaseOrder.buyerId,
+      buyerId = purchaseOrder.storeId,
       selectedSupplierId = purchaseOrder.supplierId,
       receivedAt = clock.now(),
       lineItems = purchaseOrder.items
           .map(
-            (item) => ReceivingLineItem()
+            (item) => ReceivingNoteLineItem()
               ..productId = item.productId
-              ..purchasePrice = item.unitPrice.toInt()
-              ..quantityExpected = item.quantity.toDouble()
-              ..quantityReceived = item.quantity.toDouble(),
+              ..purchasePrice = item.unitPrice.toDouble()
+              ..quantityExpected = item.quantityOrdered.toDouble()
+              ..quantityReceived = item.quantityReceived.toDouble(),
           )
           .toList();
 
@@ -209,7 +209,7 @@ class ReceiveNoteFormController extends ChangeNotifier {
 
   /// Adds a new line item.
   void addLineItem() {
-    lineItems.add(ReceivingLineItem());
+    lineItems.add(ReceivingNoteLineItem());
     notifyListeners();
   }
 
@@ -222,7 +222,7 @@ class ReceiveNoteFormController extends ChangeNotifier {
   }
 
   /// Updates a line item.
-  void updateLineItem(int index, ReceivingLineItem item) {
+  void updateLineItem(int index, ReceivingNoteLineItem item) {
     if (index >= 0 && index < lineItems.length) {
       lineItems[index] = item;
       notifyListeners();
@@ -238,7 +238,9 @@ class ReceiveNoteFormController extends ChangeNotifier {
   /// Sets order item selection with product details.
   void setOrderItem(int index, StoreProductWithGlobalProduct item) {
     if (index >= 0 && index < lineItems.length) {
-      lineItems[index] = ReceivingLineItem(productId: item.storeProduct.refId);
+      lineItems[index] = ReceivingNoteLineItem(
+        productId: item.storeProduct.refId,
+      );
       notifyListeners();
     }
   }

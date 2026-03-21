@@ -82,6 +82,20 @@ abstract class BaseRepository<T> {
         .map((row) => row != null ? fromRow(row) : null);
   }
 
+  /// Update an entity.
+  Future<void> updateWhere({
+    required Map<String, dynamic> fields,
+    required List<dynamic> filters,
+  }) => dataSource.updateWhere(
+    table: tableName,
+    fields: fields,
+    filters: filters,
+  );
+
+  /// Create an entity.
+  Future<String> create(T data) =>
+      dataSource.createRecord(table: tableName, record: toRow(data));
+
   /// Save an entity.
   Future<void> save(T entity, {List<String>? conflictColumn}) =>
       dataSource.setRecord(

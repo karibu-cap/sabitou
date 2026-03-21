@@ -3,11 +3,13 @@ import 'package:provider/provider.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+import '../../../repositories/resource_link_repository.dart';
 import '../../../router/app_router.dart';
 import '../../../router/page_routes.dart';
 import '../../../services/internationalization/internationalization.dart';
 import '../../../themes/app_colors.dart';
 import '../../../utils/app_constants.dart';
+import '../../../utils/extensions/category_extension.dart';
 import '../../../utils/extensions/global_product_extension.dart';
 import '../../../utils/extensions/store_extenxion.dart';
 import '../../../utils/formatters.dart';
@@ -150,7 +152,10 @@ class _ProductCard extends StatelessWidget {
               child: Text(Intls.to.delete),
               onPressed: () {
                 Navigator.of(context).pop(true);
-                controller.deleteProduct(product.storeProduct.refId);
+                controller.updateProductStatus(
+                  product.storeProduct.refId,
+                  ProductStatus.PRODUCT_STATUS_DELETE,
+                );
               },
             ),
           ],
@@ -175,19 +180,16 @@ class _ProductCard extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border.all(color: theme.colorScheme.border),
           borderRadius: const BorderRadius.all(Radius.circular(8)),
-          color: theme.colorScheme.background,
+          color: theme.colorScheme.card,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header with product name and edit menu
             Padding(
               padding: const EdgeInsets.all(16),
               child: Row(
                 children: [
-                  Expanded(
-                    child: _ProductNameCell(product: product.globalProduct),
-                  ),
+                  Expanded(child: _ProductNameCell(product: product)),
                   ShadPopover(
                     controller: popoverController,
                     child: ShadButton.ghost(
@@ -341,11 +343,15 @@ class _InfoRow extends StatelessWidget {
 class _ProductNameCell extends StatelessWidget {
   const _ProductNameCell({required this.product});
 
-  final GlobalProduct product;
+  final StoreProductWithGlobalProduct product;
 
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
+
+    final imageUrl = product.storeProduct.imagesLinksIds.isNotEmpty
+        ? product.storeProduct.imagesLinksIds.first
+        : product.globalProduct.imagesLinksIds.firstOrNull;
 
     return Row(
       spacing: 5,
@@ -357,10 +363,12 @@ class _ProductNameCell extends StatelessWidget {
             borderRadius: const BorderRadius.all(Radius.circular(8)),
             color: ShadTheme.of(context).colorScheme.accent,
           ),
-          child: FutureBuilder<String?>(
-            future: product.getPrimaryImageUrl(),
+          child: FutureBuilder<ResourceLink?>(
+            future: imageUrl == null
+                ? Future.value()
+                : ResourceLinkRepository.instance.getResourceLink(imageUrl),
             builder: (context, snapshot) {
-              final data = snapshot.data;
+              final data = snapshot.data?.targetUri;
               if (snapshot.connectionState == ConnectionState.done &&
                   snapshot.hasData &&
                   data != null) {
@@ -368,6 +376,8 @@ class _ProductNameCell extends StatelessWidget {
                   borderRadius: const BorderRadius.all(Radius.circular(8)),
                   child: FadeInImage.assetNetwork(
                     placeholder: StaticImages.placeholder,
+                    placeholderCacheHeight: 20,
+                    placeholderCacheWidth: 20,
                     image: data,
                     fit: BoxFit.cover,
                     imageErrorBuilder: (context, error, stackTrace) {
@@ -391,7 +401,7 @@ class _ProductNameCell extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                product.label,
+                product.globalProduct.label,
                 style: theme.textTheme.small.copyWith(
                   fontWeight: FontWeight.w600,
                   color: theme.colorScheme.foreground,
@@ -401,7 +411,10 @@ class _ProductNameCell extends StatelessWidget {
               ),
               const SizedBox(height: 2),
               Text(
-                product.categories.map((c) => c.name).take(2).join(' > '),
+                product.globalProduct.categories
+                    .map((c) => c.label)
+                    .take(2)
+                    .join(', '),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: theme.textTheme.small.copyWith(

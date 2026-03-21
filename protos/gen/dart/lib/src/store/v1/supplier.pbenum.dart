@@ -25,15 +25,18 @@ class SupplierStatus extends $pb.ProtobufEnum {
   /// / The product category is inactive.
   static const SupplierStatus SUPPLIER_STATUS_INACTIVE =
       SupplierStatus._(2, _omitEnumNames ? '' : 'SUPPLIER_STATUS_INACTIVE');
+  static const SupplierStatus SUPPLIER_STATUS_DELETE =
+      SupplierStatus._(3, _omitEnumNames ? '' : 'SUPPLIER_STATUS_DELETE');
 
   static const $core.List<SupplierStatus> values = <SupplierStatus>[
     SUPPLIER_STATUS_UNSPECIFIED,
     SUPPLIER_STATUS_ACTIVE,
     SUPPLIER_STATUS_INACTIVE,
+    SUPPLIER_STATUS_DELETE,
   ];
 
   static final $core.List<SupplierStatus?> _byValue =
-      $pb.ProtobufEnum.$_initByValueList(values, 2);
+      $pb.ProtobufEnum.$_initByValueList(values, 3);
   static SupplierStatus? valueOf($core.int value) =>
       value < 0 || value >= _byValue.length ? null : _byValue[value];
 

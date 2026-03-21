@@ -23,13 +23,15 @@ const SupplierStatus$json = {
     {'1': 'SUPPLIER_STATUS_UNSPECIFIED', '2': 0},
     {'1': 'SUPPLIER_STATUS_ACTIVE', '2': 1},
     {'1': 'SUPPLIER_STATUS_INACTIVE', '2': 2},
+    {'1': 'SUPPLIER_STATUS_DELETE', '2': 3},
   ],
 };
 
 /// Descriptor for `SupplierStatus`. Decode as a `google.protobuf.EnumDescriptorProto`.
 final $typed_data.Uint8List supplierStatusDescriptor = $convert.base64Decode(
     'Cg5TdXBwbGllclN0YXR1cxIfChtTVVBQTElFUl9TVEFUVVNfVU5TUEVDSUZJRUQQABIaChZTVV'
-    'BQTElFUl9TVEFUVVNfQUNUSVZFEAESHAoYU1VQUExJRVJfU1RBVFVTX0lOQUNUSVZFEAI=');
+    'BQTElFUl9TVEFUVVNfQUNUSVZFEAESHAoYU1VQUExJRVJfU1RBVFVTX0lOQUNUSVZFEAISGgoW'
+    'U1VQUExJRVJfU1RBVFVTX0RFTEVURRAD');
 
 @$core.Deprecated('Use linkDescriptor instead')
 const Link$json = {

@@ -26,7 +26,6 @@ class ProductsListController extends ChangeNotifier {
 
   /// Constructor of [ProductsListController].
   ProductsListController(this._viewModel) {
-    _viewModel.initPartialData(onCategoriesLoaded: notifyListeners);
     _viewModel.productsSubject.listen((_) => notifyListeners());
     searchQueryController.addListener(notifyListeners);
     selectedCategory.addListener(notifyListeners);
@@ -64,14 +63,6 @@ class ProductsListController extends ChangeNotifier {
   /// Refreshes products.
   Future<void> refreshProducts() async {
     await _viewModel.refreshProducts(onLoaded: notifyListeners);
-  }
-
-  /// Deletes product.
-  Future<bool> deleteProduct(String storeProductId) async {
-    return await _viewModel.deleteProduct(
-      storeProductId,
-      onLoaded: notifyListeners,
-    );
   }
 
   /// Updates product status.

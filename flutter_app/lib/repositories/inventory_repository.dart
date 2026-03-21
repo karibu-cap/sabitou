@@ -1,7 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:sabitou_rpc/connect_servers.dart';
 import 'package:sabitou_rpc/models.dart';
-import 'package:uuid/uuid.dart';
 
 import '../core/database/base_repository.dart';
 import '../core/database/local_data_source.dart';
@@ -12,6 +11,7 @@ import '../services/powersync/schema.dart';
 import '../services/rpc/connect_rpc.dart';
 import '../utils/app_constants.dart';
 import '../utils/logger.dart';
+import '../utils/utils.dart';
 
 /// Repository for inventory management
 final class InventoryRepository extends BaseRepository<InventoryLevel> {
@@ -69,6 +69,17 @@ final class InventoryRepository extends BaseRepository<InventoryLevel> {
     }
   }
 
+  /// Watchs specific product inventory.
+  Stream<InventoryLevel?> watchProductInventory(
+    String productId,
+    String storeId,
+  ) {
+    return watchWhere([
+      SqlQuery.equals(InventoryLevelsFields.storeProductId, productId),
+      SqlQuery.equals(InventoryLevelsFields.storeId, storeId),
+    ]).map((items) => items.isNotEmpty ? items.first : null);
+  }
+
   /// Gets the store inventory.
   Future<List<InventoryLevelWithProduct>> getStoreInventory(
     String storeId,
@@ -118,14 +129,29 @@ final class InventoryRepository extends BaseRepository<InventoryLevel> {
           table: CollectionName.storeProducts,
           alias: 'sp',
           on: 'il.${InventoryLevelsFields.storeProductId} = sp.${StoreProductsFields.refId}',
-          selectColumns: ['*'],
+          selectColumns: [
+            StoreProductsFields.refId,
+            StoreProductsFields.salePrice,
+            StoreProductsFields.sku,
+            StoreProductsFields.status,
+            StoreProductsFields.storeId,
+            StoreProductsFields.imagesLinksIds,
+            StoreProductsFields.globalProductId,
+            StoreProductsFields.expirationType,
+          ],
         ),
         const SqlJoin(
           type: JoinType.inner,
           table: CollectionName.globalProducts,
           alias: 'gp',
           on: 'sp.${StoreProductsFields.globalProductId} = gp.${GlobalProductsFields.refId}',
-          selectColumns: ['*'],
+          selectColumns: [
+            GlobalProductsFields.refId,
+            GlobalProductsFields.barCodeValue,
+            GlobalProductsFields.name,
+            GlobalProductsFields.status,
+            GlobalProductsFields.categories,
+          ],
         ),
       ],
       filters: [
@@ -136,8 +162,8 @@ final class InventoryRepository extends BaseRepository<InventoryLevel> {
 
     return rows.map((row) {
       final level = fromRowToInventoryLevel(row);
-      final product = fromRowToStoreProduct(row);
-      final globalProduct = fromRowToGlobalProduct(row);
+      final product = fromRowToStoreProduct(extractTable(row, 'sp'));
+      final globalProduct = fromRowToGlobalProduct(extractTable(row, 'gp'));
 
       return InventoryLevelWithProduct(
         level: level,
@@ -183,7 +209,10 @@ final class InventoryRepository extends BaseRepository<InventoryLevel> {
   /// Gets the inventory levels for a product.
 
   /// Adjusts the inventory.
-  Future<bool> adjustInventory(AdjustInventoryRequest request) async {
+  Future<bool> adjustInventory(
+    AdjustInventoryRequest request,
+    String permformBy,
+  ) async {
     try {
       // 1. Get current level
       final level = await getProductInventoryLevels(
@@ -193,39 +222,44 @@ final class InventoryRepository extends BaseRepository<InventoryLevel> {
       if (level == null) return false;
 
       final now = DateTime.now();
-      final quantityChange = request.newQuantity - level.quantityAvailable;
+      final quantityChange = request.newQuantity - level.quantityOnHand;
 
       // 2. Create transaction record
       final transaction = InventoryTransaction(
-        refId: const Uuid().v4(),
+        refId: AppUtils.generateSmartDatabaseId('TXN'),
         storeId: request.storeId,
         productId: request.productId,
         transactionType: TransactionType.TXN_TYPE_ADJUSTMENT,
         quantityChange: quantityChange,
-        quantityBefore: level.quantityAvailable,
+        quantityBefore: level.quantityOnHand,
         quantityAfter: request.newQuantity,
         transactionTime: Timestamp.fromDateTime(now),
         notes: request.reason,
-        performedByUserId: level.lastUpdatedByUserId,
+        performedByUserId: permformBy,
       );
 
       // 3. Update level record locally
-      level.quantityOnHand = request.newQuantity;
-      level.quantityAvailable = request.newQuantity - level.quantityCommitted;
-      level.lastUpdated = Timestamp.fromDateTime(now);
+      level
+        ..quantityOnHand = request.newQuantity
+        ..quantityAvailable = request.newQuantity - level.quantityCommitted
+        ..lastUpdated = Timestamp.fromDateTime(now)
+        ..lastUpdatedByUserId = permformBy;
 
       await dataSource.runTransaction((tx) async {
-        await tx.setRecord(
+        await tx.createRecord(
           table: CollectionName.inventoryTransactions,
           record: fromInventoryTransactionToRaw(transaction),
         );
 
-        await tx.setRecord(
+        await tx.updateWhere(
           table: CollectionName.inventoryLevels,
-          record: fromInventoryLevelToRaw(level),
-          conflictColumns: [
-            InventoryLevelsFields.storeProductId,
-            InventoryLevelsFields.storeId,
+          fields: fromInventoryLevelToRaw(level),
+          filters: [
+            SqlQuery.equals(
+              InventoryLevelsFields.storeProductId,
+              level.storeProductId,
+            ),
+            SqlQuery.equals(InventoryLevelsFields.storeId, level.storeId),
           ],
         );
       });

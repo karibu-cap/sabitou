@@ -2067,6 +2067,15 @@ class AppInternationalizationService extends ChangeNotifier {
       'fr': 'Aucune imprimante connecte.',
     },
     'initialStock': {'en': 'Initial Stock', 'fr': 'Stock initial'},
+    'openingStock': {'en': 'Opening Stock', 'fr': 'Stock d\'ouverture'},
+    'openingStockPerUnit': {
+      'en': 'Opening Stock Per Unit',
+      'fr': 'Stock d\'ouverture par unité',
+    },
+    'defaultPurchasePrice': {
+      'en': 'Default Purchase Price',
+      'fr': 'Prix d\'achat par défaut',
+    },
     'reorderPoint': {'en': 'Reorder Point', 'fr': 'Point de commande'},
     'adjustInventory': {
       'en': 'Adjust Inventory',
@@ -2132,7 +2141,6 @@ class AppInternationalizationService extends ChangeNotifier {
     'adjustmentId': {'en': 'Adjustment ID', 'fr': 'ID d\'ajustement'},
     'quantityChange': {'en': 'Quantity Change', 'fr': 'Quantité modifiée'},
     'notAvailable': {'en': 'Not Available', 'fr': 'Non disponible'},
-    'primaryDetails': {'en': 'Primary Details', 'fr': 'Détails primaires'},
     'availableForSale': {
       'en': 'Available for Sale',
       'fr': 'Disponible pour la vente',
@@ -2221,7 +2229,38 @@ class AppInternationalizationService extends ChangeNotifier {
     'movement': {'en': 'Movement', 'fr': 'Mouvement'},
     'expiration': {'en': 'Expiration', 'fr': 'Expiration'},
     'buy': {'en': 'Buy', 'fr': 'Achat'},
+    'sellingPrince': {'en': 'Selling Price', 'fr': 'Prix de vente'},
+    'pruchaseCost': {'en': 'Purchase Cost', 'fr': 'Coût d\'achat'},
+    'stockSummary': {'en': 'Stock Summary', 'fr': 'Résumé de stock'},
+    'moreInformation': {'en': 'More Information', 'fr': 'Plus d\'informations'},
+    'salesAndPurchaseInformation': {
+      'en': 'Sales and Purchase Information',
+      'fr': 'Informations de vente et d\'achat',
+    },
+    'invalidFormFields': {
+      'en': 'Invalid form fields',
+      'fr': 'Champs du formulaire invalide',
+    },
   };
+
+  /// Returns the localized value of text 'invalidFormFields'.
+  String get invalidFormFields => _stringOfLocalizedValue('invalidFormFields');
+
+  /// Returns the localized value of text 'salesAndPurchaseInformation'.
+  String get salesAndPurchaseInformation =>
+      _stringOfLocalizedValue('salesAndPurchaseInformation');
+
+  /// Returns the localized value of text 'moreInformation'.
+  String get moreInformation => _stringOfLocalizedValue('moreInformation');
+
+  /// Returns the localized value of text 'stockSummary'.
+  String get stockSummary => _stringOfLocalizedValue('stockSummary');
+
+  /// Returns the localized value of text 'sellingPrince'.
+  String get sellingPrince => _stringOfLocalizedValue('sellingPrince');
+
+  /// Returns the localized value of text 'pruchaseCost'.
+  String get pruchaseCost => _stringOfLocalizedValue('pruchaseCost');
 
   /// Returns the localized value of text 'movement'.
   String get movement => _stringOfLocalizedValue('movement');
@@ -2393,9 +2432,6 @@ class AppInternationalizationService extends ChangeNotifier {
   /// Returns the localized value of text 'notAvailable'.
   String get notAvailable => _stringOfLocalizedValue('notAvailable');
 
-  /// Returns the localized value of text 'primaryDetails'.
-  String get primaryDetails => _stringOfLocalizedValue('primaryDetails');
-
   /// Returns the localized value of text 'returnIn'.
   String get returnIn => _stringOfLocalizedValue('returnIn');
 
@@ -2507,6 +2543,14 @@ class AppInternationalizationService extends ChangeNotifier {
 
   /// The initial stock.
   String get initialStock => _stringOfLocalizedValue('initialStock');
+
+  /// The opening stock per unit text.
+  String get openingStockPerUnit =>
+      _stringOfLocalizedValue('openingStockPerUnit');
+
+  /// The default purchase price text.
+  String get defaultPurchasePrice =>
+      _stringOfLocalizedValue('defaultPurchasePrice');
 
   /// The reorder point.
   String get reorderPoint => _stringOfLocalizedValue('reorderPoint');

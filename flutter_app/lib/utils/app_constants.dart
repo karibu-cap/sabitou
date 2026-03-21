@@ -63,6 +63,9 @@ final class CollectionName {
   /// The invoice collection.
   static const String invoices = 'invoices';
 
+  /// The bills collection.
+  static const String bills = 'bills';
+
   /// The category collection.
   static const String categories = 'categories';
 
@@ -119,6 +122,9 @@ final class CollectionName {
 
   /// The invoice line items collection.
   static const String invoiceLineItems = 'invoice_line_items';
+
+  /// The bill line items collection.
+  static const String billLineItems = 'bill_line_items';
 
   /// The local auth collection.
   static const String localAuth = 'local_auth';

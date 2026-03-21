@@ -24,6 +24,10 @@ class InventoryAjustmentScreen extends StatelessWidget {
     final userPreferences = context.watch<UserPreferences>();
     final currentStore = userPreferences.store;
     final business = userPreferences.business;
+    final userId = userPreferences.user?.refId;
+    if (userId == null) {
+      return const SizedBox.shrink();
+    }
     if (currentStore == null || business == null) {
       return const SizedBox.shrink();
     }
@@ -97,7 +101,7 @@ class InventoryAjustmentScreen extends StatelessWidget {
                                   ? null
                                   : () async {
                                       final bool success = await controller
-                                          .submit();
+                                          .submit(userId);
                                       if (success && context.mounted) {
                                         Navigator.of(context).pop();
                                         ShadToaster.of(context).show(

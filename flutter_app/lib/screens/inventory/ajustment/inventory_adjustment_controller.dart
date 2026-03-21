@@ -27,9 +27,6 @@ class InventoryAdjustmentController extends ChangeNotifier {
   /// The controller for the custom reason field.
   final TextEditingController customReasonController = TextEditingController();
 
-  /// The controller for the notes field.
-  final TextEditingController notesController = TextEditingController();
-
   /// The currently selected reason.
   String? _selectedReason;
 
@@ -98,7 +95,7 @@ class InventoryAdjustmentController extends ChangeNotifier {
     final int? adjusted = int.tryParse(quantityAdjustedController.text);
     if (adjusted != null) {
       final int newVal =
-          (inventoryItemStream?.level.quantityAvailable ?? 0) + adjusted;
+          (inventoryItemStream?.level.quantityOnHand ?? 0) + adjusted;
       final String newValStr = newVal.toString();
       if (newQuantityOnHandController.text != newValStr) {
         newQuantityOnHandController
@@ -114,7 +111,7 @@ class InventoryAdjustmentController extends ChangeNotifier {
     final int? newVal = int.tryParse(newQuantityOnHandController.text);
     if (newVal != null) {
       final int adjusted =
-          newVal - (inventoryItemStream?.level.quantityAvailable ?? 0);
+          newVal - (inventoryItemStream?.level.quantityOnHand ?? 0);
       final String adjustedStr = adjusted.toString();
       if (quantityAdjustedController.text != adjustedStr) {
         quantityAdjustedController
@@ -138,7 +135,7 @@ class InventoryAdjustmentController extends ChangeNotifier {
   }
 
   /// Submits the inventory adjustment.
-  Future<bool> submit() async {
+  Future<bool> submit(String performUserId) async {
     if (!isValid) return false;
 
     _isLoading = true;
@@ -149,7 +146,7 @@ class InventoryAdjustmentController extends ChangeNotifier {
       storeId: inventoryItemStream?.level.storeId ?? '',
       quantityChange: int.tryParse(newQuantityOnHandController.text) ?? 0,
       reason: effectiveReason,
-      notes: notesController.text,
+      performUserId: performUserId,
     );
 
     _isLoading = false;
@@ -165,7 +162,6 @@ class InventoryAdjustmentController extends ChangeNotifier {
     quantityAdjustedController.dispose();
     newQuantityOnHandController.dispose();
     customReasonController.dispose();
-    notesController.dispose();
     super.dispose();
   }
 }

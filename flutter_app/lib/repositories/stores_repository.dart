@@ -6,7 +6,6 @@ import '../core/database/base_repository.dart';
 import '../core/database/local_data_source.dart';
 import '../core/database/query/sql_condition.dart';
 import '../core/database/row_mapper.dart';
-import '../services/network_status_provider/network_status_provider.dart';
 import '../services/powersync/schema.dart';
 import '../services/rpc/connect_rpc.dart';
 import '../utils/app_constants.dart';
@@ -18,9 +17,6 @@ final class StoresRepository extends BaseRepository<Store> {
 
   /// The store service client.
   final StoreServiceClient storeServiceClient;
-
-  /// The network status provider.
-  final NetworkStatusProvider networkStatusProvider;
 
   @override
   final LocalDataSource dataSource;
@@ -38,14 +34,10 @@ final class StoresRepository extends BaseRepository<Store> {
   RawRow toRow(Store entity) => fromStoreToRaw(entity);
 
   /// Constructs a new [StoresRepository].
-  StoresRepository({
-    required this.dataSource,
-    NetworkStatusProvider? networkStatusProvider,
-  }) : storeServiceClient = StoreServiceClient(
-         ConnectRPCService.to.clientChannel,
-       ),
-       networkStatusProvider =
-           networkStatusProvider ?? GetIt.I.get<NetworkStatusProvider>();
+  StoresRepository({required this.dataSource})
+    : storeServiceClient = StoreServiceClient(
+        ConnectRPCService.to.clientChannel,
+      );
 
   /// Gets all stores base on business Id.
   Future<List<Store>> getStoresByBusinessId(String businessId) async {
@@ -75,12 +67,35 @@ final class StoresRepository extends BaseRepository<Store> {
     }
   }
 
-  /// Updates an user from a store.
-  Future<bool> updateOrAddStoreMember(UpdateStoreMemberRequest request) async {
+  /// Adds a new store member.
+  Future<bool> addStoreMember(AddUserToStoreRequest request) async {
     try {
-      await dataSource.setRecord(
+      await dataSource.createRecord(
         table: CollectionName.storeMembers,
         record: fromStoreMembersToRaw(
+          StoreMember(
+            userId: request.userId,
+            storeId: request.storeId,
+            permissions: request.permissions,
+            memberSince: Timestamp.fromDateTime(DateTime.now()),
+          ),
+        ),
+      );
+
+      return true;
+    } on Exception catch (e) {
+      _logger.severe('addStoreMember Error: $e');
+
+      return false;
+    }
+  }
+
+  /// Updates an user from a store.
+  Future<bool> updateStoreMember(UpdateStoreMemberRequest request) async {
+    try {
+      await dataSource.updateWhere(
+        table: CollectionName.storeMembers,
+        fields: fromStoreMembersToRaw(
           StoreMember(
             userId: request.userId,
             storeId: request.storeId,
@@ -88,9 +103,9 @@ final class StoresRepository extends BaseRepository<Store> {
             status: request.status,
           ),
         ),
-        conflictColumns: [
-          StoreMembersFields.userId,
-          StoreMembersFields.storeId,
+        filters: [
+          SqlQuery.equals(StoreMembersFields.userId, request.userId),
+          SqlQuery.equals(StoreMembersFields.storeId, request.storeId),
         ],
       );
 
@@ -164,7 +179,10 @@ final class StoresRepository extends BaseRepository<Store> {
   /// Updates a store.
   Future<bool> updateStore(Store store) async {
     try {
-      await save(store);
+      await updateWhere(
+        fields: fromStoreToRaw(store),
+        filters: [SqlQuery.equals(StoresFields.refId, store.refId)],
+      );
 
       return true;
     } on Exception catch (e) {

@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
@@ -16,6 +15,7 @@ import '../../../../../../widgets/input/auto_complete.dart';
 import '../../../../../../widgets/loading.dart';
 import '../../../../../../widgets/mobile_scanner_view.dart';
 import '../../../../../../widgets/shad_scaffold.dart';
+import '../../../../../utils/user_preference.dart';
 import '../../../products_list_controller.dart';
 import '../../../products_list_view_model.dart';
 import '../create_edit_product_form_controller.dart';
@@ -35,14 +35,11 @@ class CreateEditProductScreen extends StatefulWidget {
 
 class _CreateEditProductScreenState extends State<CreateEditProductScreen> {
   late Future<GlobalProduct?> _productFuture;
-  late ProductsListViewModel _viewModel;
 
   @override
   void initState() {
     super.initState();
-    _viewModel = GetIt.I.registerSingletonIfAbsent<ProductsListViewModel>(
-      ProductsListViewModel.new,
-    );
+
     _productFuture = _loadProduct();
   }
 
@@ -62,6 +59,17 @@ class _CreateEditProductScreenState extends State<CreateEditProductScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final userPreferences = context.watch<UserPreferences>();
+    final currentStore = userPreferences.store;
+    final business = userPreferences.business;
+    if (currentStore == null || business == null) {
+      return const SizedBox.shrink();
+    }
+    final _viewModel = ProductsListViewModel(
+      buisiness: business,
+      store: currentStore,
+    );
+
     return FutureBuilder<GlobalProduct?>(
       future: _productFuture,
       builder: (context, snapshot) {
@@ -87,8 +95,11 @@ class _CreateEditProductScreenState extends State<CreateEditProductScreen> {
                       : Intls.to.editProduct,
                 ),
                 body: ChangeNotifierProvider(
-                  create: (_) =>
-                      CreateEditProductFormController(product: snapshot.data),
+                  create: (_) => CreateEditProductFormController(
+                    product: snapshot.data,
+                    businessId: business.refId,
+                    storeId: currentStore.refId,
+                  ),
                   child: Consumer<CreateEditProductFormController>(
                     builder: (context, controller, child) {
                       return Padding(
@@ -195,38 +206,80 @@ class _StockFields extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = context.watch<CreateEditProductFormController>();
-    if (!controller.isCreatingNewProduct) {
-      return const SizedBox.shrink();
-    }
-
     return Column(
       spacing: 16,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(Intls.to.stock, style: ShadTheme.of(context).textTheme.large),
         const AdjustFlexDisplay(
-          children: [_InitialStockField(), _ReorderPointField()],
+          children: [_OpeningStockField(), _OpeningStockPerUnitField()],
         ),
+        const AdjustFlexDisplay(children: [_ReorderPointField()]),
       ],
     );
   }
 }
 
-class _InitialStockField extends StatelessWidget {
-  const _InitialStockField();
+class _OpeningStockField extends StatelessWidget {
+  const _OpeningStockField();
 
   @override
   Widget build(BuildContext context) {
     final controller = context.watch<CreateEditProductFormController>();
 
     return ShadInputFormField(
-      id: 'initial_stock',
-      label: Text(Intls.to.initialStock),
-      controller: controller.initialStockController,
+      id: 'opening_stock',
+      label: Text(Intls.to.openingStock),
+      controller: controller.openingStockController,
       enabled: !controller.onSaveProduct,
       placeholder: const Text('0'),
       keyboardType: TextInputType.number,
+      validator: (value) {
+        final openingStockPerUnitStr =
+            controller.openingStockPerUnitController.text;
+        final openingStockPerUnit =
+            double.tryParse(openingStockPerUnitStr) ?? 0;
+
+        if (openingStockPerUnit > 0 &&
+            (value.isEmpty || (double.tryParse(value) ?? 0) == 0)) {
+          return Intls.to.isRequiredField.trParams({
+            'field': Intls.to.openingStockPerUnit,
+          });
+        }
+
+        return null;
+      },
+    );
+  }
+}
+
+class _OpeningStockPerUnitField extends StatelessWidget {
+  const _OpeningStockPerUnitField();
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = context.watch<CreateEditProductFormController>();
+
+    return ShadInputFormField(
+      id: 'opening_stock_per_unit',
+      label: Text(Intls.to.openingStockPerUnit),
+      controller: controller.openingStockPerUnitController,
+      enabled: !controller.onSaveProduct,
+      placeholder: const Text('0.0'),
+      keyboardType: const TextInputType.numberWithOptions(decimal: true),
+      validator: (value) {
+        final openingStockStr = controller.openingStockController.text;
+        final openingStock = double.tryParse(openingStockStr) ?? 0;
+
+        if (openingStock > 0 &&
+            (value.isEmpty || (double.tryParse(value) ?? 0) == 0)) {
+          return Intls.to.isRequiredField.trParams({
+            'field': Intls.to.openingStockPerUnit,
+          });
+        }
+
+        return null;
+      },
     );
   }
 }
@@ -287,18 +340,13 @@ class _ProductNameField extends StatelessWidget {
       enabled: !controller.onSaveProduct,
       initialValue: controller.nameController.text,
       placeholder: Intls.to.enterProductName,
-      optionsBuilder: (textController) async {
-        controller.product.name = Internationalized(
-          en: textController.text,
-          fr: textController.text,
-        );
-        if (textController.text.isEmpty) {
+      optionsBuilder: (text) async {
+        controller.product.name = Internationalized(en: text, fr: text);
+        if (text.isEmpty) {
           return [];
         }
 
-        final result = await controller.filterGlobalProduct(
-          name: textController.text,
-        );
+        final result = await controller.filterGlobalProduct(name: text);
 
         return result;
       },
@@ -400,7 +448,7 @@ class _CategoryDropdown extends StatelessWidget {
                         );
                       });
 
-                      return ShadSelect<String?>.multipleWithSearch(
+                      return ShadSelect<Category?>.multipleWithSearch(
                         closeOnSelect: false,
                         placeholder: Text(Intls.to.selectCategory),
                         enabled: !controller.onSaveProduct,
@@ -408,7 +456,7 @@ class _CategoryDropdown extends StatelessWidget {
                           values
                               .map(
                                 (v) => categories
-                                    .firstWhere((e) => e.refId == v)
+                                    .firstWhere((e) => e.refId == v?.refId)
                                     .label,
                               )
                               .join(', '),
@@ -427,8 +475,8 @@ class _CategoryDropdown extends StatelessWidget {
                                       .contains(
                                         searchValue.value?.toLowerCase() ?? '',
                                       ),
-                                  child: ShadOption<String?>(
-                                    value: category.refId,
+                                  child: ShadOption<Category?>(
+                                    value: category,
                                     child: Text(category.label),
                                   ),
                                 ),
@@ -441,13 +489,13 @@ class _CategoryDropdown extends StatelessWidget {
                             ..addAll(
                               value.map(
                                 (e) => Category(
-                                  refId: e,
+                                  refId: e?.refId ?? '',
                                   name: Internationalized(
                                     en: categories
-                                        .firstWhere((c) => c.refId == e)
+                                        .firstWhere((c) => c.refId == e?.refId)
                                         .label,
                                     fr: categories
-                                        .firstWhere((c) => c.refId == e)
+                                        .firstWhere((c) => c.refId == e?.refId)
                                         .label,
                                   ),
                                 ),
@@ -493,6 +541,7 @@ class _StoreProductFields extends StatelessWidget {
       spacing: 16,
       children: [
         AdjustFlexDisplay(children: [_SkuField(), _SalePriceField()]),
+        const AdjustFlexDisplay(children: [_DefaultPurchasePriceField()]),
       ],
     );
   }
@@ -534,6 +583,24 @@ class _SalePriceField extends StatelessWidget {
 
         return null;
       },
+    );
+  }
+}
+
+class _DefaultPurchasePriceField extends StatelessWidget {
+  const _DefaultPurchasePriceField();
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = context.watch<CreateEditProductFormController>();
+
+    return ShadInputFormField(
+      id: 'default_purchase_price',
+      label: Text(Intls.to.defaultPurchasePrice),
+      controller: controller.defaultPurchasePriceController,
+      enabled: !controller.onSaveProduct,
+      placeholder: const Text('0.0'),
+      keyboardType: const TextInputType.numberWithOptions(decimal: true),
     );
   }
 }

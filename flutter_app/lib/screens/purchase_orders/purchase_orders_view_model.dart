@@ -230,7 +230,7 @@ class PurchaseOrdersViewModel {
 
       final storeProducts = await StoreProductsRepository.instance
           .findStoreProducts(FindStoreProductsRequest(storeId: store.refId));
-      _storeProducts = UnmodifiableListView(storeProducts?.toList() ?? []);
+      _storeProducts = UnmodifiableListView(storeProducts.toList());
     } on Exception catch (e) {
       _logger.severe('Error loading stores: $e');
     }

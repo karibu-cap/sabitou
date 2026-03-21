@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../utils/app_constants.dart';
 import '../../utils/responsive_utils.dart';
+import '../../utils/user_preference.dart';
 import '../../widgets/loading.dart';
 import 'components/header.dart';
 import 'components/product_table.dart';
@@ -18,8 +19,14 @@ class ProductsListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userPreferences = context.watch<UserPreferences>();
+    final currentStore = userPreferences.store;
+    final business = userPreferences.business;
+    if (currentStore == null || business == null) {
+      return const SizedBox.shrink();
+    }
     final viewModel = GetIt.I.registerSingletonIfAbsent<ProductsListViewModel>(
-      ProductsListViewModel.new,
+      () => ProductsListViewModel(buisiness: business, store: currentStore),
     );
 
     return ChangeNotifierProvider(

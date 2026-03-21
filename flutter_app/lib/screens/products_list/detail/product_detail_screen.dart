@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+import '../../../repositories/resource_link_repository.dart';
 import '../../../repositories/stores_repository.dart';
 import '../../../router/app_router.dart';
 import '../../../router/page_routes.dart';
@@ -228,7 +229,7 @@ class _DesktopLayout extends StatelessWidget {
             width: 300,
             child: Column(
               children: [
-                _ProductImageCard(product: product, size: 300),
+                _ProductImageCard(product: product, size: 100),
                 const SizedBox(height: 16),
                 _QuickStatsCard(product: product),
                 const SizedBox(height: 16),
@@ -316,10 +317,6 @@ class _MobileLayout extends StatelessWidget {
   }
 }
 
-// ──────────────────────────────────────────────────────────────
-//  MOBILE HERO BANNER
-// ──────────────────────────────────────────────────────────────
-
 class _MobileHeroBanner extends StatelessWidget {
   final StoreProductWithGlobalProduct product;
 
@@ -328,16 +325,21 @@ class _MobileHeroBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
+    final imageUrl = product.storeProduct.imagesLinksIds.isNotEmpty
+        ? product.storeProduct.imagesLinksIds.first
+        : product.globalProduct.imagesLinksIds.firstOrNull;
 
     return Stack(
       children: [
         SizedBox(
           height: 240,
           width: double.infinity,
-          child: FutureBuilder<String?>(
-            future: product.globalProduct.getPrimaryImageUrl(),
+          child: FutureBuilder<ResourceLink?>(
+            future: imageUrl == null
+                ? Future.value()
+                : ResourceLinkRepository.instance.getResourceLink(imageUrl),
             builder: (context, snapshot) {
-              final data = snapshot.data;
+              final data = snapshot.data?.targetUri;
               if (snapshot.connectionState == ConnectionState.done &&
                   snapshot.hasData &&
                   data != null) {
@@ -345,6 +347,8 @@ class _MobileHeroBanner extends StatelessWidget {
                   borderRadius: theme.radius,
                   child: FadeInImage.assetNetwork(
                     placeholder: StaticImages.placeholder,
+                    placeholderCacheHeight: 20,
+                    placeholderCacheWidth: 20,
                     image: data,
                     fit: BoxFit.cover,
                     imageErrorBuilder: (_, __, ___) => Container(
@@ -395,7 +399,7 @@ class _MobileHeroBanner extends StatelessWidget {
         Positioned(
           top: 16,
           right: 16,
-          child: _StatusBadge(status: product.storeProduct.status),
+          child: _StatusBadge(storeProduct: product.storeProduct),
         ),
       ],
     );
@@ -415,20 +419,25 @@ class _ProductImageCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
+    final imageUrl = product.storeProduct.imagesLinksIds.isNotEmpty
+        ? product.storeProduct.imagesLinksIds.first
+        : product.globalProduct.imagesLinksIds.firstOrNull;
 
     return ShadCard(
       padding: EdgeInsets.zero,
-      child: FutureBuilder<String?>(
-        future: product.globalProduct.getPrimaryImageUrl(),
+      child: FutureBuilder<ResourceLink?>(
+        future: imageUrl == null
+            ? Future.value()
+            : ResourceLinkRepository.instance.getResourceLink(imageUrl),
         builder: (context, snapshot) {
-          final data = snapshot.data;
+          final data = snapshot.data?.targetUri;
           if (snapshot.connectionState == ConnectionState.done &&
               snapshot.hasData &&
               data != null) {
             return ClipRRect(
               borderRadius: theme.radius,
               child: AspectRatio(
-                aspectRatio: 1,
+                aspectRatio: 1.5,
                 child: FadeInImage.assetNetwork(
                   placeholder: StaticImages.placeholder,
                   image: data,
@@ -491,7 +500,7 @@ class _ProductHeaderCard extends StatelessWidget {
           Row(
             children: [
               Expanded(child: Text(gp.label, style: theme.textTheme.h3)),
-              _StatusBadge(status: sp.status),
+              _StatusBadge(storeProduct: sp),
             ],
           ),
           if (categories.isNotEmpty) ...[
@@ -793,24 +802,20 @@ class _ActionCard extends StatelessWidget {
 // ──────────────────────────────────────────────────────────────
 
 class _StatusBadge extends StatelessWidget {
-  final ProductStatus status;
+  final StoreProduct storeProduct;
 
-  const _StatusBadge({required this.status});
+  const _StatusBadge({required this.storeProduct});
 
   @override
   Widget build(BuildContext context) {
-    final isActive = status == ProductStatus.PRODUCT_STATUS_ACTIVE;
-    final color = isActive ? const Color(0xFF16A34A) : const Color(0xFFDC2626);
-    final bgColor = isActive
-        ? const Color(0xFFDCFCE7)
-        : const Color(0xFFFFE4E6);
-
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: bgColor,
+        color: storeProduct.status.color.withValues(alpha: 0.1),
         borderRadius: const BorderRadius.all(Radius.circular(20)),
-        border: Border.all(color: color.withValues(alpha: 0.3)),
+        border: Border.all(
+          color: storeProduct.status.color.withValues(alpha: 0.3),
+        ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -818,13 +823,16 @@ class _StatusBadge extends StatelessWidget {
           Container(
             width: 6,
             height: 6,
-            decoration: BoxDecoration(shape: BoxShape.circle, color: color),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: storeProduct.status.color,
+            ),
           ),
           const SizedBox(width: 5),
           Text(
-            status.label,
+            storeProduct.status.label,
             style: TextStyle(
-              color: color,
+              color: storeProduct.status.color,
               fontSize: 11,
               fontWeight: FontWeight.w600,
               letterSpacing: 0.3,

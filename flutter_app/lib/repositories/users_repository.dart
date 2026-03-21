@@ -100,13 +100,16 @@ final class UserRepository extends BaseRepository<User> {
   Future<User?> updateMe(UpdateMeRequest request) async {
     try {
       // Écriture optimiste locale
-      await save(request.user);
+      await updateWhere(
+        fields: fromUsertoRaw(request.user),
+        filters: [SqlQuery.equals(UsersFields.refId, request.user.refId)],
+      );
+
       _logger.log('Updated me locally: ${request.user.writeToJson()}.');
 
       if (await NetworkUtils.isServerReachable()) {
         final result = await userClientService.updateMe(request);
         // Réconciliation : on écrase avec la réponse serveur
-        await save(result.user);
 
         return result.user;
       }
@@ -122,12 +125,14 @@ final class UserRepository extends BaseRepository<User> {
   /// Update any user (admin).
   Future<User?> update(UpdateRequest request) async {
     try {
-      await save(request.user);
+      await updateWhere(
+        fields: fromUsertoRaw(request.user),
+        filters: [SqlQuery.equals(UsersFields.refId, request.user.refId)],
+      );
       _logger.log('Updated user locally: ${request.user.writeToJson()}.');
 
       if (await NetworkUtils.isServerReachable()) {
         final result = await userClientService.update(request);
-        await save(result.user);
 
         return result.user;
       }
@@ -146,7 +151,6 @@ final class UserRepository extends BaseRepository<User> {
   ) async {
     try {
       final result = await userClientService.getCurrentUser(request);
-      await save(result.me);
 
       return result.me;
     } on Exception catch (e) {

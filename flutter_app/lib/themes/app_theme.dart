@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-// ─────────────────────────────────────────────────────────────────────────────
-// SABITOU BRAND CONSTANTS
-//
 // Only colors that live OUTSIDE the ShadColorScheme semantic slots belong here.
 // Everything with a theme slot (background, foreground, card, border, muted…)
 // is defined once in AppTheme below and accessed via ShadTheme.of(context).
-// ─────────────────────────────────────────────────────────────────────────────
 
 abstract final class SabitouColors {
   // ── Amber accent — the Sabitou brand color ──

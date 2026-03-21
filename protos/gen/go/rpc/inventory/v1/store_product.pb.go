@@ -31,6 +31,7 @@ const (
 	GlobalProductStatus_GLOBAL_PRODUCT_STATUS_ACTIVE GlobalProductStatus = 1
 	// / The product category is inactive.
 	GlobalProductStatus_GLOBAL_PRODUCT_STATUS_INACTIVE GlobalProductStatus = 2
+	GlobalProductStatus_GLOBAL_PRODUCT_STATUS_DELETE   GlobalProductStatus = 3
 )
 
 // Enum value maps for GlobalProductStatus.
@@ -39,11 +40,13 @@ var (
 		0: "GLOBAL_PRODUCT_STATUS_UNSPECIFIED",
 		1: "GLOBAL_PRODUCT_STATUS_ACTIVE",
 		2: "GLOBAL_PRODUCT_STATUS_INACTIVE",
+		3: "GLOBAL_PRODUCT_STATUS_DELETE",
 	}
 	GlobalProductStatus_value = map[string]int32{
 		"GLOBAL_PRODUCT_STATUS_UNSPECIFIED": 0,
 		"GLOBAL_PRODUCT_STATUS_ACTIVE":      1,
 		"GLOBAL_PRODUCT_STATUS_INACTIVE":    2,
+		"GLOBAL_PRODUCT_STATUS_DELETE":      3,
 	}
 )
 
@@ -80,6 +83,7 @@ const (
 	ProductStatus_PRODUCT_STATUS_UNSPECIFIED ProductStatus = 0
 	ProductStatus_PRODUCT_STATUS_ACTIVE      ProductStatus = 1
 	ProductStatus_PRODUCT_STATUS_INACTIVE    ProductStatus = 2
+	ProductStatus_PRODUCT_STATUS_DELETE      ProductStatus = 3
 )
 
 // Enum value maps for ProductStatus.
@@ -88,11 +92,13 @@ var (
 		0: "PRODUCT_STATUS_UNSPECIFIED",
 		1: "PRODUCT_STATUS_ACTIVE",
 		2: "PRODUCT_STATUS_INACTIVE",
+		3: "PRODUCT_STATUS_DELETE",
 	}
 	ProductStatus_value = map[string]int32{
 		"PRODUCT_STATUS_UNSPECIFIED": 0,
 		"PRODUCT_STATUS_ACTIVE":      1,
 		"PRODUCT_STATUS_INACTIVE":    2,
+		"PRODUCT_STATUS_DELETE":      3,
 	}
 )
 
@@ -298,9 +304,16 @@ type StoreProduct struct {
 	// The last update date of the product.
 	UpdatedAt *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=updated_at,json=updatedAt,proto3,oneof" json:"updated_at,omitempty"`
 	// The reorder point.
-	ReorderPoint  *int32 `protobuf:"varint,11,opt,name=reorder_point,json=reorderPoint,proto3,oneof" json:"reorder_point,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	ReorderPoint *int32 `protobuf:"varint,11,opt,name=reorder_point,json=reorderPoint,proto3,oneof" json:"reorder_point,omitempty"`
+	// The open stock.
+	OpeningStock *int32 `protobuf:"varint,12,opt,name=opening_stock,json=openingStock,proto3,oneof" json:"opening_stock,omitempty"`
+	// The open stock per unit.
+	// How much per unit the product is cost during the creation.
+	OpeningStockPerUnit *float64 `protobuf:"fixed64,13,opt,name=opening_stock_per_unit,json=openingStockPerUnit,proto3,oneof" json:"opening_stock_per_unit,omitempty"`
+	// The default purchase price.
+	DefaultPurchasePrice *float64 `protobuf:"fixed64,14,opt,name=default_purchase_price,json=defaultPurchasePrice,proto3,oneof" json:"default_purchase_price,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
 }
 
 func (x *StoreProduct) Reset() {
@@ -406,6 +419,27 @@ func (x *StoreProduct) GetUpdatedAt() *timestamppb.Timestamp {
 func (x *StoreProduct) GetReorderPoint() int32 {
 	if x != nil && x.ReorderPoint != nil {
 		return *x.ReorderPoint
+	}
+	return 0
+}
+
+func (x *StoreProduct) GetOpeningStock() int32 {
+	if x != nil && x.OpeningStock != nil {
+		return *x.OpeningStock
+	}
+	return 0
+}
+
+func (x *StoreProduct) GetOpeningStockPerUnit() float64 {
+	if x != nil && x.OpeningStockPerUnit != nil {
+		return *x.OpeningStockPerUnit
+	}
+	return 0
+}
+
+func (x *StoreProduct) GetDefaultPurchasePrice() float64 {
+	if x != nil && x.DefaultPurchasePrice != nil {
+		return *x.DefaultPurchasePrice
 	}
 	return 0
 }
@@ -1858,7 +1892,7 @@ const file_inventory_v1_store_product_proto_rawDesc = "" +
 	"\x06status\x18\a \x01(\x0e2!.inventory.v1.GlobalProductStatusR\x06statusB\t\n" +
 	"\a_ref_idB\x0e\n" +
 	"\f_descriptionB\x11\n" +
-	"\x0f_bar_code_value\"\xba\x04\n" +
+	"\x0f_bar_code_value\"\xa1\x06\n" +
 	"\fStoreProduct\x12\x1a\n" +
 	"\x06ref_id\x18\x01 \x01(\tH\x00R\x05refId\x88\x01\x01\x12\x19\n" +
 	"\bstore_id\x18\x02 \x01(\tR\astoreId\x12*\n" +
@@ -1874,12 +1908,18 @@ const file_inventory_v1_store_product_proto_rawDesc = "" +
 	"\n" +
 	"updated_at\x18\n" +
 	" \x01(\v2\x1a.google.protobuf.TimestampH\x03R\tupdatedAt\x88\x01\x01\x12(\n" +
-	"\rreorder_point\x18\v \x01(\x05H\x04R\freorderPoint\x88\x01\x01B\t\n" +
+	"\rreorder_point\x18\v \x01(\x05H\x04R\freorderPoint\x88\x01\x01\x12(\n" +
+	"\ropening_stock\x18\f \x01(\x05H\x05R\fopeningStock\x88\x01\x01\x128\n" +
+	"\x16opening_stock_per_unit\x18\r \x01(\x01H\x06R\x13openingStockPerUnit\x88\x01\x01\x129\n" +
+	"\x16default_purchase_price\x18\x0e \x01(\x01H\aR\x14defaultPurchasePrice\x88\x01\x01B\t\n" +
 	"\a_ref_idB\r\n" +
 	"\v_sale_priceB\x06\n" +
 	"\x04_skuB\r\n" +
 	"\v_updated_atB\x10\n" +
-	"\x0e_reorder_point\"`\n" +
+	"\x0e_reorder_pointB\x10\n" +
+	"\x0e_opening_stockB\x19\n" +
+	"\x17_opening_stock_per_unitB\x19\n" +
+	"\x17_default_purchase_price\"`\n" +
 	"\x1aCreateGlobalProductRequest\x12B\n" +
 	"\x0eglobal_product\x18\x01 \x01(\v2\x1b.inventory.v1.GlobalProductR\rglobalProduct\"7\n" +
 	"\x1bCreateGlobalProductResponse\x12\x18\n" +
@@ -1984,15 +2024,17 @@ const file_inventory_v1_store_product_proto_rawDesc = "" +
 	"\bproducts\x18\x01 \x03(\v2+.inventory.v1.StoreProductWithGlobalProductR\bproducts\x12\x1f\n" +
 	"\vtotal_count\x18\x02 \x01(\x05R\n" +
 	"totalCount\x12&\n" +
-	"\x0fnext_page_token\x18\x03 \x01(\tR\rnextPageToken*\x82\x01\n" +
+	"\x0fnext_page_token\x18\x03 \x01(\tR\rnextPageToken*\xa4\x01\n" +
 	"\x13GlobalProductStatus\x12%\n" +
 	"!GLOBAL_PRODUCT_STATUS_UNSPECIFIED\x10\x00\x12 \n" +
 	"\x1cGLOBAL_PRODUCT_STATUS_ACTIVE\x10\x01\x12\"\n" +
-	"\x1eGLOBAL_PRODUCT_STATUS_INACTIVE\x10\x02*g\n" +
+	"\x1eGLOBAL_PRODUCT_STATUS_INACTIVE\x10\x02\x12 \n" +
+	"\x1cGLOBAL_PRODUCT_STATUS_DELETE\x10\x03*\x82\x01\n" +
 	"\rProductStatus\x12\x1e\n" +
 	"\x1aPRODUCT_STATUS_UNSPECIFIED\x10\x00\x12\x19\n" +
 	"\x15PRODUCT_STATUS_ACTIVE\x10\x01\x12\x1b\n" +
-	"\x17PRODUCT_STATUS_INACTIVE\x10\x02*\x8d\x01\n" +
+	"\x17PRODUCT_STATUS_INACTIVE\x10\x02\x12\x19\n" +
+	"\x15PRODUCT_STATUS_DELETE\x10\x03*\x8d\x01\n" +
 	"\x0eExpirationType\x12\x1f\n" +
 	"\x1bEXPIRATION_TYPE_UNSPECIFIED\x10\x00\x12\x18\n" +
 	"\x14EXPIRATION_TYPE_NONE\x10\x01\x12!\n" +

@@ -98,7 +98,11 @@ Future<void> _initServices() async {
         dataSource: PowerSyncDataSource(() => PowerSyncService.instance.db),
       ),
     )
-    ..registerLazySingleton<ResourceLinkRepository>(ResourceLinkRepository.new)
+    ..registerLazySingleton<ResourceLinkRepository>(
+      () => ResourceLinkRepository(
+        dataSource: PowerSyncDataSource(() => PowerSyncService.instance.db),
+      ),
+    )
     ..registerLazySingleton<PermissionsRepository>(PermissionsRepository.new)
     ..registerLazySingleton<BusinessRepository>(
       () => BusinessRepository(
@@ -126,7 +130,11 @@ Future<void> _initServices() async {
     ..registerLazySingleton<PurchaseOrderRepository>(
       PurchaseOrderRepository.new,
     )
-    ..registerLazySingleton<CategoriesRepository>(CategoriesRepository.new)
+    ..registerLazySingleton<CategoriesRepository>(
+      () => CategoriesRepository(
+        dataSource: PowerSyncDataSource(() => PowerSyncService.instance.db),
+      ),
+    )
     ..registerLazySingleton<CartManager>(CartManager.new);
 
   // Wait for AuthProvider to initialize from storage

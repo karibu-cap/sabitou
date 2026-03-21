@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+import '../../../repositories/resource_link_repository.dart';
 import '../../../router/app_router.dart';
 import '../../../router/page_routes.dart';
 import '../../../services/internationalization/internationalization.dart';
@@ -134,6 +135,7 @@ class _InventoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
+    final controller = context.read<InventoryController>();
 
     return InkWell(
       onTap: onTap,
@@ -152,9 +154,7 @@ class _InventoryCard extends StatelessWidget {
               padding: const EdgeInsets.all(16),
               child: Row(
                 children: [
-                  Expanded(
-                    child: _ProductNameCell(product: product.globalProduct),
-                  ),
+                  Expanded(child: _ProductNameCell(product: product)),
                   ShadIconButton.ghost(
                     icon: const Icon(LucideIcons.pencil, size: 16),
                     onPressed: onEdit,
@@ -205,10 +205,21 @@ class _InventoryCard extends StatelessWidget {
                       ),
                     ),
 
-                    // Stock
-                    _InfoRow(
-                      label: Intls.to.stock,
-                      child: _StockCell(inventoryLevel: product.level),
+                    StreamBuilder(
+                      stream: controller.watchProductInventory(
+                        productId: product.product.refId,
+                        storeId: product.level.storeId,
+                      ),
+                      builder: (context, asyncSnapshot) {
+                        final inventory = asyncSnapshot.data;
+
+                        return _InfoRow(
+                          label: Intls.to.stock,
+                          child: _StockCell(
+                            inventoryLevel: inventory ?? product.level,
+                          ),
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -259,11 +270,14 @@ class _InfoRow extends StatelessWidget {
 class _ProductNameCell extends StatelessWidget {
   const _ProductNameCell({required this.product});
 
-  final GlobalProduct product;
+  final InventoryLevelWithProduct product;
 
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
+    final imageUrl = product.product.imagesLinksIds.isNotEmpty
+        ? product.product.imagesLinksIds.first
+        : product.globalProduct.imagesLinksIds.firstOrNull;
 
     return Row(
       spacing: 5,
@@ -275,10 +289,13 @@ class _ProductNameCell extends StatelessWidget {
             borderRadius: const BorderRadius.all(Radius.circular(8)),
             color: ShadTheme.of(context).colorScheme.accent,
           ),
-          child: FutureBuilder<String?>(
-            future: product.getPrimaryImageUrl(),
+          child: FutureBuilder<ResourceLink?>(
+            future: imageUrl == null
+                ? Future.value()
+                : ResourceLinkRepository.instance.getResourceLink(imageUrl),
             builder: (context, snapshot) {
-              final data = snapshot.data;
+              final data = snapshot.data?.targetUri;
+
               if (snapshot.connectionState == ConnectionState.done &&
                   snapshot.hasData &&
                   data != null) {
@@ -286,6 +303,8 @@ class _ProductNameCell extends StatelessWidget {
                   borderRadius: const BorderRadius.all(Radius.circular(8)),
                   child: FadeInImage.assetNetwork(
                     placeholder: StaticImages.placeholder,
+                    placeholderCacheHeight: 30,
+                    placeholderCacheWidth: 30,
                     image: data,
                     fit: BoxFit.cover,
                     imageErrorBuilder: (context, error, stackTrace) {
@@ -309,7 +328,7 @@ class _ProductNameCell extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                product.label,
+                product.globalProduct.label,
                 style: theme.textTheme.small.copyWith(
                   fontWeight: FontWeight.w600,
                   color: theme.colorScheme.foreground,
@@ -319,7 +338,10 @@ class _ProductNameCell extends StatelessWidget {
               ),
               const SizedBox(height: 2),
               Text(
-                product.categories.map((c) => c.name).take(2).join(' > '),
+                product.globalProduct.categories
+                    .map((c) => c.name)
+                    .take(2)
+                    .join(' > '),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: theme.textTheme.small.copyWith(

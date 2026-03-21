@@ -123,7 +123,7 @@ final class ReportsRepository {
       final purchasesRaw = await dataSource.executeRaw(
         'SELECT SUM(${PurchaseOrdersFields.totalAmount}) as total '
         'FROM ${CollectionName.purchaseOrders} '
-        'WHERE ${PurchaseOrdersFields.buyerId} = ? '
+        'WHERE ${PurchaseOrdersFields.storeId} = ? '
         'AND ${PurchaseOrdersFields.createdAt} BETWEEN ? AND ?',
         [storeId, startStr, endStr],
       );

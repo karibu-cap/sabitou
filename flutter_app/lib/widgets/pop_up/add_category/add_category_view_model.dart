@@ -3,18 +3,16 @@ import 'dart:async';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../../../repositories/categories_repository.dart';
-import '../../../services/rpc/fake_transport/category.dart';
 
 /// ViewModel for add category management.
 class AddCategoryViewModel {
   /// The   categories repository instance.
-  final CategoriesRepository _categoriesRepository = CategoriesRepository(
-    transport: categoryFakeTransport,
-  );
+  final CategoriesRepository _categoriesRepository =
+      CategoriesRepository.instance;
 
   /// Creates a new category.
-  Future<bool> createCategory(CreateCategoryRequest request) async {
-    final success = await _categoriesRepository.createCategory(request);
+  Future<bool> createCategory(Category category) async {
+    final success = await _categoriesRepository.createCategory(category);
 
     return success;
   }

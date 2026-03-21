@@ -53,11 +53,11 @@ final class ProductDetailViewModel {
 
     try {
       final current = _product.storeProduct.status;
-      final next = current == ProductStatus.PRODUCT_STATUS_ACTIVE
+      final newStatus = current == ProductStatus.PRODUCT_STATUS_ACTIVE
           ? ProductStatus.PRODUCT_STATUS_INACTIVE
           : ProductStatus.PRODUCT_STATUS_ACTIVE;
 
-      final updated = _product.storeProduct.deepCopy()..status = next;
+      final updated = _product.storeProduct.deepCopy()..status = newStatus;
 
       final success = await StoreProductsRepository.instance.updateProduct(
         UpdateStoreProductRequest(
@@ -79,49 +79,20 @@ final class ProductDetailViewModel {
     }
   }
 
-  /// Deletes the current product.
-  /// Returns `true` on success.
-  Future<bool> deleteProduct() async {
-    final _product = this._product;
-    if (_product == null) return false;
-    _error = null;
-
-    try {
-      final success = await StoreProductsRepository.instance.deleteProduct(
-        DeleteStoreProductRequest(storeProductId: _product.storeProduct.refId),
-      );
-
-      return success;
-    } on Exception catch (e) {
-      _logger.severe('Error deleting product: $e');
-      _error = e.toString();
-
-      return false;
-    }
-  }
-
   /// Updates the product after an edit form save (called by the controller
   /// after the form completes).
-  Future<bool> updateProduct({
-    required StoreProduct storeProduct,
-    required GlobalProduct globalProduct,
-  }) async {
+  Future<bool> deleteProduct() async {
     _error = null;
 
     try {
-      final success = await StoreProductsRepository.instance.updateProduct(
-        UpdateStoreProductRequest(
-          storeProduct: storeProduct,
-          globalProduct: globalProduct,
-        ),
-      );
+      final current = _product?.storeProduct;
+      current?.status = ProductStatus.PRODUCT_STATUS_DELETE;
 
-      if (success) {
-        _product = StoreProductWithGlobalProduct(
-          storeProduct: storeProduct,
-          globalProduct: globalProduct,
-        );
-      }
+      if (current == null) return false;
+
+      final success = await StoreProductsRepository.instance.updateProduct(
+        UpdateStoreProductRequest(storeProduct: current),
+      );
 
       return success;
     } on Exception catch (e) {

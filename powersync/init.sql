@@ -31,6 +31,8 @@ CREATE TABLE IF NOT EXISTS users (
     account_status TEXT NOT NULL DEFAULT 'ACCOUNT_STATUS_TYPE_ACTIVE',
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    active_business_id TEXT NOT NULL,
+    active_store_id TEXT NOT NULL
 );
 
 -- Businesses
@@ -75,6 +77,8 @@ CREATE TABLE IF NOT EXISTS global_products (
     name JSONB NOT NULL, -- {"en":"...", "fr":"..."}
     description JSONB,
     bar_code_value TEXT,
+    images_links_ids TEXT [] NOT NULL DEFAULT '{}',
+    categories JSONB NOT NULL DEFAULT '[]'::jsonb,
     status TEXT NOT NULL DEFAULT 'GLOBAL_PRODUCT_STATUS_ACTIVE',
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
@@ -107,6 +111,9 @@ CREATE TABLE IF NOT EXISTS store_products (
     expiration_type TEXT DEFAULT 'EXPIRATION_TYPE_NONE',
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    opening_stock INTEGER NOT NULL DEFAULT 0,
+    opening_stock_per_unit NUMERIC(10, 3),
+    default_purchase_price INTEGER NOT NULL DEFAULT 0,
     UNIQUE (ref_id, store_id)
 );
 
@@ -287,14 +294,21 @@ CREATE TABLE IF NOT EXISTS purchase_orders (
     id TEXT PRIMARY KEY DEFAULT gen_random_uuid ()::text,
     ref_id TEXT UNIQUE NOT NULL DEFAULT gen_random_uuid ()::text,
     supplier_id TEXT NOT NULL,
-    buyer_id TEXT NOT NULL, -- store ref_id
+    store_id TEXT NOT NULL, -- store ref_id
     status TEXT NOT NULL DEFAULT 'PO_STATUS_DRAFT',
     total_amount NUMERIC NOT NULL,
     currency TEXT DEFAULT 'XAF',
     created_by_user_id TEXT NOT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    order_date TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     expected_delivery_date DATE,
-    notes TEXT
+    destination_address TEXT,
+    store_name TEXT,
+    supplier_name TEXT,
+    notes TEXT,
+    payment_id TEXT,
+    sub_total NUMERIC,
+    tax_total NUMERIC
 );
 
 CREATE TABLE IF NOT EXISTS sales_order_line_items (
@@ -316,10 +330,13 @@ CREATE TABLE IF NOT EXISTS purchase_order_line_items (
     store_id TEXT NOT NULL,
     line_index INTEGER NOT NULL,
     product_id TEXT NOT NULL,
-    quantity INTEGER NOT NULL,
+    quantity_ordered INTEGER NOT NULL,
+    product_name JSONB,
     unit_price NUMERIC(12, 2) NOT NULL,
     total NUMERIC(14, 2) NOT NULL,
     batch_id TEXT,
+    quantity_received INTEGER DEFAULT 0,
+    tax_amount NUMERIC(12, 2) DEFAULT 0,
     UNIQUE (purchase_order_id, line_index)
 );
 
@@ -350,6 +367,18 @@ CREATE TABLE IF NOT EXISTS delivery_note_line_items (
     UNIQUE (delivery_note_id, line_index)
 );
 
+CREATE TABLE IF NOT EXISTS receiving_notes (
+    id TEXT PRIMARY KEY DEFAULT gen_random_uuid ()::text,
+    ref_id TEXT UNIQUE NOT NULL DEFAULT gen_random_uuid ()::text,
+    related_purchase_order_id TEXT,
+    supplier_id TEXT NOT NULL,
+    store_id TEXT NOT NULL,
+    received_by_user_id TEXT,
+    received_at TIMESTAMPTZ,
+    notes TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
 CREATE TABLE IF NOT EXISTS receiving_note_line_items (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid (),
     receiving_note_id TEXT NOT NULL,
@@ -359,8 +388,25 @@ CREATE TABLE IF NOT EXISTS receiving_note_line_items (
     quantity_expected NUMERIC(10, 3) NOT NULL,
     quantity_received NUMERIC(10, 3) NOT NULL,
     quantity_rejected NUMERIC(10, 3) DEFAULT 0,
+    rejection_reason TEXT,
     batch_id TEXT,
+    expiration_date TIMESTAMPTZ,
+    purchase_price NUMERIC(12, 2),
     UNIQUE (receiving_note_id, line_index)
+);
+
+CREATE TABLE IF NOT EXISTS bill_line_items (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid (),
+    bill_id VARCHAR(50) REFERENCES bills (ref_id) ON DELETE CASCADE,
+    store_id TEXT NOT NULL,
+    line_index INTEGER NOT NULL,
+    product_id TEXT NOT NULL,
+    description TEXT,
+    quantity INTEGER NOT NULL,
+    unit_price NUMERIC(12, 2) NOT NULL,
+    tax_amount NUMERIC(12, 2) DEFAULT 0,
+    total NUMERIC(14, 2) NOT NULL,
+    UNIQUE (bill_id, line_index)
 );
 
 CREATE TABLE IF NOT EXISTS invoices (
@@ -379,6 +425,26 @@ CREATE TABLE IF NOT EXISTS invoices (
     created_by_user_id TEXT NOT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     notes TEXT
+);
+
+-- Bills
+CREATE TABLE IF NOT EXISTS bills (
+    id TEXT PRIMARY KEY DEFAULT gen_random_uuid ()::text,
+    ref_id TEXT UNIQUE NOT NULL DEFAULT gen_random_uuid ()::text,
+    related_purchase_order_id VARCHAR(50) REFERENCES purchase_orders (ref_id),
+    supplier_id TEXT NOT NULL,
+    store_id TEXT NOT NULL,
+    status TEXT NOT NULL DEFAULT 'BILL_STATUS_DRAFT',
+    payment_id TEXT,
+    bill_date DATE NOT NULL DEFAULT CURRENT_DATE,
+    due_date DATE,
+    sub_total NUMERIC NOT NULL DEFAULT 0,
+    tax_total NUMERIC NOT NULL DEFAULT 0,
+    total_amount NUMERIC NOT NULL DEFAULT 0,
+    balance_due NUMERIC NOT NULL DEFAULT 0,
+    currency TEXT DEFAULT 'XAF',
+    notes TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 -- Resource Links
@@ -418,6 +484,17 @@ CREATE INDEX IF NOT EXISTS idx_store_members_user_id ON store_members (user_id);
 
 CREATE INDEX IF NOT EXISTS idx_refresh_tokens_user_id ON refresh_tokens (user_id);
 
+CREATE INDEX IF NOT EXISTS idx_po_supplier ON purchase_orders (supplier_id);
+
+CREATE INDEX IF NOT EXISTS idx_po_items_product ON purchase_order_items (product_id);
+
+CREATE INDEX IF NOT EXISTS idx_inv_txn_product ON inventory_transactions (product_id);
+
+CREATE INDEX IF NOT EXISTS idx_receiving_po ON receiving_notes (related_purchase_order_id);
+
+CREATE INDEX IF NOT EXISTS idx_bill_supplier ON bills (supplier_id);
+
+CREATE INDEX IF NOT EXISTS idx_bill_status ON bills (status);
 -- DROP TABLE IF EXISTS users,
 -- businesses,
 -- stores,
@@ -475,10 +552,13 @@ users,
       purchase_orders,
       sales_orders,
       invoices,
+      bills,
       sales_order_line_items,
       purchase_order_line_items,
       invoice_line_items,
+      bill_line_items,
       delivery_note_line_items,
+      receiving_notes,
       receiving_note_line_items,
       resource_links;
 
@@ -563,7 +643,9 @@ INSERT INTO
         password_hash,
         first_name,
         last_name,
-        account_status
+        account_status,
+        active_business_id,
+        active_store_id
     )
 VALUES (
         'USR-002',
@@ -573,7 +655,9 @@ VALUES (
         '$2a$12$AvPmQEfJq7s.IzT9VfaVZuN8YcqFuF0YzxMPaKHKSulMqFqP3sAH2',
         'Jean',
         'Kamga',
-        'ACCOUNT_STATUS_TYPE_ACTIVE'
+        'ACCOUNT_STATUS_TYPE_ACTIVE',
+        'BIZ-001',
+        'STR-001'
     );
 -- Store memberships for seed users.
 -- Both the admin and cashier are members of store_1.
@@ -1199,5 +1283,112 @@ VALUES (
         0.1925,
         1540,
         9540
+    )
+ON CONFLICT DO NOTHING;
+
+-- Bills + lines
+INSERT INTO
+    bills (
+        ref_id,
+        related_purchase_order_id,
+        supplier_id,
+        store_id,
+        status,
+        bill_date,
+        due_date,
+        sub_total,
+        tax_total,
+        total_amount,
+        balance_due,
+        currency,
+        notes
+    )
+VALUES (
+        'BILL-2026-001',
+        'PO-202503-015',
+        'SUP-001',
+        'STR-001',
+        'BILL_STATUS_OPEN',
+        '2026-03-20',
+        '2026-04-20',
+        5600000,
+        1078000,
+        6678000,
+        6678000,
+        'XAF',
+        'Bill for rice and oil supplies from Cerealis Cameroun'
+    ),
+    (
+        'BILL-2026-002',
+        NULL,
+        'SUP-002',
+        'STR-002',
+        'BILL_STATUS_PAID',
+        '2026-03-15',
+        '2026-04-15',
+        850000,
+        163625,
+        1013625,
+        0,
+        'XAF',
+        'Payment completed for palm oil supplies'
+    )
+ON CONFLICT DO NOTHING;
+
+INSERT INTO
+    bill_line_items (
+        bill_id,
+        store_id,
+        line_index,
+        product_id,
+        description,
+        quantity,
+        unit_price,
+        tax_amount,
+        total
+    )
+VALUES (
+        'BILL-2026-001',
+        'STR-001',
+        1,
+        'SP-YDE-001',
+        'Riz Uncle Ben''s 25kg',
+        200,
+        23800,
+        916800,
+        4760000
+    ),
+    (
+        'BILL-2026-001',
+        'STR-001',
+        2,
+        'SP-YDE-002',
+        'Huile de palme 5L',
+        80,
+        10500,
+        161200,
+        840000
+    ),
+    (
+        'BILL-2026-002',
+        'STR-002',
+        1,
+        'SP-DLA-001',
+        'Sucre en poudre 1kg',
+        500,
+        1500,
+        143750,
+        750000
+    ),
+    (
+        'BILL-2026-002',
+        'STR-002',
+        2,
+        'SP-DLA-002',
+        'Tomate concentrée 800g',
+        100,
+        1000,
+        19875,
+        100000
     )
 ON CONFLICT DO NOTHING;

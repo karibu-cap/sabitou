@@ -17,7 +17,7 @@ class CustomAutoComplete<T> extends StatefulWidget {
   final String? placeholder;
 
   /// A callback that fetches selectable options based on the current input.
-  final Future<Iterable<T>> Function(TextEditingController) optionsBuilder;
+  final Future<Iterable<T>> Function(String) optionsBuilder;
 
   /// A callback to validate the input text. Returns an error message if invalid, or null if valid.
   final String? Function(String)? inputValidator;
@@ -99,7 +99,11 @@ class _CustomAutoCompleteState<T> extends State<CustomAutoComplete<T>> {
   Timer? _debounce;
 
   /// Flag to track programmatic text changes.
+  /// Flag to track programmatic text changes.
   bool _isUserInput = true;
+
+  /// Tracks the current fetch operation to prevent async race conditions.
+  int _fetchId = 0;
 
   @override
   void initState() {
@@ -136,10 +140,12 @@ class _CustomAutoCompleteState<T> extends State<CustomAutoComplete<T>> {
   Future<void> _fetchOptions() async {
     if (!mounted) return;
 
+    final currentFetchId = ++_fetchId;
     _isLoading.value = true;
     try {
-      final result = await widget.optionsBuilder(_inputController);
-      if (!mounted) return;
+      final result = await widget.optionsBuilder(_inputController.text);
+      if (!mounted || _fetchId != currentFetchId) return;
+
       _options.value = result;
 
       if (result.isNotEmpty && _focusNode.hasFocus) {
@@ -147,7 +153,7 @@ class _CustomAutoCompleteState<T> extends State<CustomAutoComplete<T>> {
       } else {
         _hideOverlayEntry();
       }
-    } on Exception catch (e) {
+    } catch (e) {
       if (!mounted) return;
       _options.value = [];
       _hideOverlayEntry();
@@ -180,8 +186,12 @@ class _CustomAutoCompleteState<T> extends State<CustomAutoComplete<T>> {
 
   /// Handles focus changes to show/hide the dropdown.
   void _onFocusChanged() {
-    if (_focusNode.hasFocus && _options.value.isNotEmpty) {
-      _showOverlay();
+    if (_focusNode.hasFocus) {
+      if (_options.value.isNotEmpty) {
+        _showOverlay();
+      }
+    } else {
+      _hideOverlayEntry();
     }
   }
 
@@ -195,7 +205,7 @@ class _CustomAutoCompleteState<T> extends State<CustomAutoComplete<T>> {
 
   /// Shows the dropdown overlay with the suggestions.
   void _showOverlay() {
-    _hideOverlayEntry();
+    if (_overlayEntry != null) return;
 
     final overlayState = Overlay.of(context);
     if (!mounted) return;
@@ -214,34 +224,41 @@ class _CustomAutoCompleteState<T> extends State<CustomAutoComplete<T>> {
             constraints: BoxConstraints(
               maxHeight: MediaQuery.sizeOf(context).height * 0.4,
             ),
-            child: Material(
-              color: AppColors.grey0,
-              elevation: 5,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-              ),
-              child: ShadDecorator(
-                decoration: ShadTheme.of(context).inputTheme.decoration,
-                child: widget.optionsViewBuilder(
-                  context: context,
-                  onSelected: (value) {
-                    if (widget.setTextOnSelection) {
-                      _isUserInput = false;
-                      _inputController.text = widget.displayStringForOption(
-                        value,
-                      );
-                      _isUserInput = true;
-                    }
-                    _hideOverlayEntry();
-                    if (widget.onSelected != null) {
-                      widget.onSelected?.call(value, _inputController);
-                    } else {
-                      _focusNode.unfocus();
-                    }
-                  },
-                  options: _options.value,
-                ),
-              ),
+            child: ValueListenableBuilder<Iterable<T>>(
+              valueListenable: _options,
+              builder: (context, optionsList, _) {
+                if (optionsList.isEmpty) return const SizedBox.shrink();
+
+                return Material(
+                  color: AppColors.grey0,
+                  elevation: 5,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                  ),
+                  child: ShadDecorator(
+                    decoration: ShadTheme.of(context).inputTheme.decoration,
+                    child: widget.optionsViewBuilder(
+                      context: context,
+                      onSelected: (value) {
+                        if (widget.setTextOnSelection) {
+                          _isUserInput = false;
+                          _inputController.text = widget.displayStringForOption(
+                            value,
+                          );
+                          _isUserInput = true;
+                        }
+                        _hideOverlayEntry();
+                        if (widget.onSelected != null) {
+                          widget.onSelected?.call(value, _inputController);
+                        } else {
+                          _focusNode.unfocus();
+                        }
+                      },
+                      options: optionsList,
+                    ),
+                  ),
+                );
+              },
             ),
           ),
         ),
@@ -259,7 +276,6 @@ class _CustomAutoCompleteState<T> extends State<CustomAutoComplete<T>> {
         valueListenable: _isLoading,
         builder: (context, isLoading, _) {
           return ShadInputFormField(
-            id: widget.label.toString(),
             label: widget.label,
             placeholder: Text(widget.placeholder ?? ''),
             controller: _inputController,

@@ -31,6 +31,14 @@ class SqlJoin {
   List<String> get qualifiedColumns =>
       selectColumns.map((c) => '$alias.$c').toList();
 
+  List<String> get aliasedColumns {
+    return selectColumns.map((col) {
+      if (col == '*') return '$alias.*';
+
+      return '$alias.$col AS ${alias}_$col';
+    }).toList();
+  }
+
   /// Constructor of new [SqlJoin].
   const SqlJoin({
     required this.table,

@@ -76,6 +76,17 @@ class InventoryController extends ChangeNotifier {
   Stream<TransactionType?> get transactionFilterStream =>
       _viewModel.transactionFilterStream;
 
+  /// Watchs the inventory item.
+  Stream<InventoryLevel?> watchProductInventory({
+    required String productId,
+    required String storeId,
+  }) {
+    return _viewModel.watchProductInventory(
+      productId: productId,
+      storeId: storeId,
+    );
+  }
+
   /// Clears all filters.
   void clearFilters() {
     searchQueryController.clear();
@@ -89,16 +100,9 @@ class InventoryController extends ChangeNotifier {
     await _viewModel.refreshProducts(onLoaded: notifyListeners);
   }
 
-  /// Deletes product.
-  Future<bool> deleteProduct(String storeProductId) async {
-    return await _viewModel.deleteProduct(
-      storeProductId,
-      onLoaded: notifyListeners,
-    );
-  }
-
   /// Adjusts the inventory.
   Future<bool> adjustInventory(
+    String userId,
     String storeId,
     String productId,
     int quantityChange,
@@ -106,6 +110,7 @@ class InventoryController extends ChangeNotifier {
     String notes,
   ) async {
     final result = await _viewModel.adjustInventory(
+      userId,
       storeId,
       productId,
       quantityChange,
@@ -125,9 +130,12 @@ class InventoryController extends ChangeNotifier {
 
   /// Selects an inventory item.
   Future<void> selectItem(InventoryLevelWithProduct item) async {
+    if (item.product.refId ==
+        _viewModel.selectedItemStream.value?.product.refId) {
+      return;
+    }
     tabsController.select(Intls.to.overview);
     await _viewModel.selectItem(item);
-    notifyListeners();
   }
 
   /// Selects an inventory item by product ID.

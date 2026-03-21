@@ -137,7 +137,9 @@ class SqlQuery {
   /// Compile the condition to sql.
   (String clause, List<Object?> args) toSql([String? rootAlias]) {
     final activeAlias = tableAlias ?? rootAlias;
-    final col = (activeAlias != null && !key.contains('.')) ? '$activeAlias.$key' : key;
+    final col = (activeAlias != null && !key.contains('.'))
+        ? '$activeAlias.$key'
+        : key;
 
     return switch (condition) {
       SqlCondition.isEqualTo => ('$col = ?', [value]),
@@ -183,7 +185,9 @@ class SqlOrderBy {
 
   /// Compile the order by to sql.
   String toSql([String? tableAlias]) {
-    final col = (tableAlias != null && !field.contains('.')) ? '$tableAlias.$field' : field;
+    final col = (tableAlias != null && !field.contains('.'))
+        ? '$tableAlias.$field'
+        : field;
 
     return '$col ${descending ? 'DESC' : 'ASC'}';
   }

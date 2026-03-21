@@ -224,7 +224,6 @@ class AuthProvider extends ChangeNotifier {
       }
 
       _currentUser = await _authRepository.fetchProfile(user.refId);
-      print("current user: ${_currentUser}");
 
       _setStatus(AuthStatus.authenticated);
 

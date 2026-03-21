@@ -26,11 +26,12 @@ message ReceivingNote {
   string ref_id = 1 [(buf.validate.field).required = true]; // "RN-2025-001"
   string related_purchase_order_id = 2; // Which PO this fulfills
   string supplier_id = 3; // Who sent the goods
-  string buyer_id = 4; // Where goods are stored
-  repeated ReceivingLineItem items = 5;
+  string store_id = 4; // Where goods are stored
+  repeated ReceivingNoteLineItem items = 5;
   string received_by_user_id = 6; // Who accepted delivery
   google.protobuf.Timestamp received_at = 7;
   string notes = 8; // Condition notes, damages, etc.
+  google.protobuf.Timestamp created_at = 9;
 }
 
 enum ReceivingNoteStatus {
@@ -52,7 +53,7 @@ enum ReceivingNoteStatus {
  *   batch_id: "BATCH-2025-001" (generated)
  *   expiration_date: 2026-09-29T00:00:00Z
  */
-message ReceivingLineItem {
+message ReceivingNoteLineItem {
   string product_id = 1;
   double quantity_expected = 2; // From PO
   double quantity_received = 3; // Actually got
@@ -60,5 +61,7 @@ message ReceivingLineItem {
   string rejection_reason = 5;
   optional string batch_id = 6; // Generated batch ID for received items
   google.protobuf.Timestamp expiration_date = 7; // Provided by supplier or calculated
-  int32 purchase_price = 8;
+  double purchase_price = 8;
+  string store_id = 9;
+  int32 line_index= 10;
 }

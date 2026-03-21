@@ -125,11 +125,10 @@ abstract interface class LocalDataSource {
   });
 
   /// Updates a record.
-  Future<void> updateRecord({
+  Future<void> updateWhere({
     required String table,
-    required String id,
     required Map<String, dynamic> fields,
-    String primaryKey = 'id',
+    required List<dynamic> filters,
   });
 
   /// Deletes a record.

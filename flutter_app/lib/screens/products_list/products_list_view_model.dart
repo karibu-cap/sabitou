@@ -18,6 +18,12 @@ class ProductsListViewModel {
 
   bool _isDisposed = false;
 
+  /// The current buisiness.
+  final Business buisiness;
+
+  /// The current store.
+  final Store store;
+
   /// Gets the user preferences.
   final UserPreferences userPreferences = UserPreferences.instance;
 
@@ -87,45 +93,27 @@ class ProductsListViewModel {
   }
 
   /// Constructor of [ProductsListViewModel].
-  ProductsListViewModel() {
+  ProductsListViewModel({required this.store, required this.buisiness}) {
     initTheData();
-  }
-
-  /// Initiates the partial data.
-  /// Calls [onCategoriesLoaded] when categories have been fetched so that
-  /// the controller can call [ChangeNotifier.notifyListeners].
-  Future<void> initPartialData({VoidCallback? onCategoriesLoaded}) async {
-    _logger.info('initPartialData is called');
-    final businessId = userPreferences.business?.refId;
-    if (businessId == null) {
-      return;
-    }
-
-    final categories = await CategoriesRepository.to.getCategoriesByBusinessId(
-      businessId,
-    );
-    businessCategories = UnmodifiableListView(categories);
-    _logger.info('initPartialData is done');
-    onCategoriesLoaded?.call();
   }
 
   /// Fetches global products.
   Future<void> initTheData({VoidCallback? onLoaded}) async {
     try {
       _logger.info('initTheData is called');
-      final store = userPreferences.store;
-      if (store == null) {
-        throw Exception('Store not found');
-      }
 
-      final results = await StoreProductsRepository.instance.findStoreProducts(
-        FindStoreProductsRequest(storeId: store.refId),
-      );
+      StoreProductsRepository.instance
+          .streamStoreProducts(StreamStoreProductsRequest(storeId: store.refId))
+          .listen((products) {
+            if (_isDisposed) return;
+            _productsSubject.add(UnmodifiableListView(products));
+          });
 
-      final products = results as List<StoreProductWithGlobalProduct>;
+      final categories = await CategoriesRepository.instance
+          .getCategoriesByBusinessId(buisiness.refId);
+      businessCategories = UnmodifiableListView(categories);
 
       if (_isDisposed) return;
-      _productsSubject.add(UnmodifiableListView(products));
     } on Exception catch (e) {
       _logger.severe('Error loading inventory data: $e');
     } finally {
@@ -134,21 +122,6 @@ class ProductsListViewModel {
       }
       onLoaded?.call();
     }
-  }
-
-  /// Deletes a product.
-  Future<bool> deleteProduct(
-    String storeProductId, {
-    VoidCallback? onLoaded,
-  }) async {
-    final result = await StoreProductsRepository.instance.deleteProduct(
-      DeleteStoreProductRequest(storeProductId: storeProductId),
-    );
-    if (result) {
-      unawaited(initTheData(onLoaded: onLoaded));
-    }
-
-    return result;
   }
 
   /// Updates the product status.
@@ -160,14 +133,13 @@ class ProductsListViewModel {
     final product = await StoreProductsRepository.instance.getStoreProduct(
       GetStoreProductRequest(storeProductId: storeProductId),
     );
-    if (product == null) return false;
+    if (product == null) {
+      return false;
+    }
     product.storeProduct.status = status;
 
     final result = await StoreProductsRepository.instance.updateProduct(
-      UpdateStoreProductRequest(
-        storeProduct: product.storeProduct,
-        globalProduct: product.globalProduct,
-      ),
+      UpdateStoreProductRequest(storeProduct: product.storeProduct),
     );
     if (result) {
       unawaited(initTheData(onLoaded: onLoaded));

@@ -1,3 +1,5 @@
+// flutter_app/lib/services/powersync/powersync_data_source.dart
+
 import 'package:powersync/powersync.dart';
 import 'package:powersync/sqlite_async.dart';
 import 'package:uuid/uuid.dart';
@@ -15,30 +17,9 @@ class PowerSyncDataSource implements LocalDataSource {
   /// Constructor of new [PowerSyncDataSource].
   const PowerSyncDataSource(this._dbProvider);
 
-  /// Compile une liste de SqlQuery → (whereClause, args)
-  (String, List<Object?>) _buildWhere(
-    List<dynamic> filters, [ // SqlQuery | SqlOrGroup
-    String? tableAlias,
-  ]) {
-    if (filters.isEmpty) return ('', []);
-
-    final clauses = <String>[];
-    final args = <Object?>[];
-
-    for (final filter in filters) {
-      if (filter is SqlQuery) {
-        final (clause, fArgs) = filter.toSql(tableAlias);
-        clauses.add(clause);
-        args.addAll(fArgs);
-      } else if (filter is SqlOrGroup) {
-        final (clause, fArgs) = filter.toSql(tableAlias);
-        clauses.add(clause);
-        args.addAll(fArgs);
-      }
-    }
-
-    return ('WHERE ${clauses.join(' AND ')}', args);
-  }
+  // ---------------------------------------------------------------------------
+  // Reads
+  // ---------------------------------------------------------------------------
 
   @override
   Future<List<RawRow>> getCollection(
@@ -270,16 +251,33 @@ class PowerSyncDataSource implements LocalDataSource {
   }
 
   @override
-  Future<void> updateRecord({
+  Future<void> updateWhere({
     required String table,
-    required String id,
     required Map<String, dynamic> fields,
-    String primaryKey = 'id',
+    required List<dynamic> filters,
   }) async {
-    final sets = fields.keys.map((k) => '$k = ?').join(', ');
-    await _db.execute('UPDATE $table SET $sets WHERE $primaryKey = ?', [
-      ...fields.values,
-      id,
+    if (filters.isEmpty) {
+      throw Exception(
+        'updateWhere called without any filters — refusing to UPDATE entire table',
+      );
+    }
+    if (fields.isEmpty) return;
+
+    // Remove PowerSync's internal `id` column from the SET clause.
+    // PowerSync manages `id` — attempting to set it causes a constraint error.
+    // Also remove any field whose value is null to avoid overwriting existing
+    // data with nulls when only partial updates are intended.
+    final safeFields = Map<String, dynamic>.fromEntries(
+      fields.entries.where((e) => e.key != 'id' && e.value != null),
+    );
+    if (safeFields.isEmpty) return;
+
+    final sets = safeFields.keys.map((k) => '$k = ?').join(', ');
+    final (where, whereArgs) = _buildWhere(filters);
+
+    await _db.execute('UPDATE $table SET $sets $where'.trim(), [
+      ...safeFields.values,
+      ...whereArgs,
     ]);
   }
 
@@ -295,6 +293,11 @@ class PowerSyncDataSource implements LocalDataSource {
     required String table,
     required List<dynamic> filters,
   }) async {
+    if (filters.isEmpty) {
+      throw Exception(
+        'deleteWhere called without any filters — refusing to DELETE entire table',
+      );
+    }
     final (where, args) = _buildWhere(filters);
     await _db.execute('DELETE FROM $table $where'.trim(), args);
   }
@@ -314,13 +317,12 @@ class PowerSyncDataSource implements LocalDataSource {
     String? having,
     int? limit,
   }) {
-    // Colonnes : table principale + colonnes des joins
     final allColumns = [
       if (extraColumns.isEmpty)
         '$tableAlias.*'
       else
         ...extraColumns.map((c) => '$tableAlias.$c'),
-      ...joins.expand((j) => j.qualifiedColumns),
+      ...joins.expand((j) => j.aliasedColumns),
     ];
 
     final select = allColumns.join(', ');
@@ -345,45 +347,109 @@ class _TransactionDataSource implements LocalDataSource {
   const _TransactionDataSource(this._tx);
 
   @override
+  Future<String> createRecord({
+    required String table,
+    required Map<String, dynamic> record,
+    String primaryKey = 'id',
+  }) async {
+    final id = record[primaryKey] as String? ?? const Uuid().v4();
+    final withId = {...record, primaryKey: id};
+    final cols = withId.keys.join(', ');
+    final placeholders = List.filled(withId.length, '?').join(', ');
+    await _tx.execute(
+      'INSERT INTO $table ($cols) VALUES ($placeholders)',
+      withId.values.toList(),
+    );
+
+    return id;
+  }
+
+  @override
+  Future<void> updateWhere({
+    required String table,
+    required Map<String, dynamic> fields,
+    required List<dynamic> filters,
+  }) async {
+    if (filters.isEmpty) {
+      throw Exception('updateWhere called without filters inside transaction');
+    }
+    if (fields.isEmpty) return;
+
+    // Strip PowerSync-managed `id` and null values from SET clause.
+    final safeFields = Map<String, dynamic>.fromEntries(
+      fields.entries.where((e) => e.key != 'id' && e.value != null),
+    );
+    if (safeFields.isEmpty) return;
+
+    final sets = safeFields.keys.map((k) => '$k = ?').join(', ');
+    final (where, whereArgs) = _buildWhere(filters);
+    await _tx.execute('UPDATE $table SET $sets $where'.trim(), [
+      ...safeFields.values,
+      ...whereArgs,
+    ]);
+  }
+
+  @override
+  Future<void> deleteRecord({
+    required String table,
+    required String id,
+    String primaryKey = 'id',
+  }) => _tx.execute('DELETE FROM $table WHERE $primaryKey = ?', [id]);
+
+  @override
   Future<void> setRecord({
     required String table,
     required Map<String, dynamic> record,
     List<String> conflictColumns = const ['id'],
   }) async {
     if (record.isEmpty) return;
-
     final cols = record.keys.join(', ');
     final placeholders = List.filled(record.length, '?').join(', ');
     final conflictTarget = conflictColumns.join(', ');
-
     final updateSet = record.keys
         .where((key) => !conflictColumns.contains(key))
         .map((key) => '$key = excluded.$key')
         .join(', ');
-
     final sql =
         '''
-    INSERT INTO $table ($cols) 
-    VALUES ($placeholders)
-    ON CONFLICT($conflictTarget) DO UPDATE SET $updateSet
-  ''';
+        INSERT INTO $table ($cols)
+        VALUES ($placeholders)
+        ON CONFLICT($conflictTarget) DO UPDATE SET $updateSet
+      ''';
     await _tx.execute(sql, record.values.toList());
   }
 
-  // The other read methods are not available in a transaction
-  // → throw UnsupportedError or minimal implementation based on needs
+  // Reads and streaming are not available inside a write transaction.
   @override
-  Future<List<RawRow>> getCollection(
-    String table, {
-    List<dynamic> filters = const [],
-    SqlOrderBy? orderBy,
-    int? limit,
-    int? offset,
-    List<String>? columns,
-  }) =>
-      throw UnsupportedError('Use setRecord/updateRecord inside a transaction');
+  Never noSuchMethod(Invocation i) => throw UnsupportedError(
+    '${i.memberName} is not supported inside a write transaction',
+  );
+}
 
-  @override
-  Never noSuchMethod(Invocation i) =>
-      throw UnsupportedError('${i.memberName} not supported in transaction');
+// ---------------------------------------------------------------------------
+// WHERE clause builder
+// ---------------------------------------------------------------------------
+
+(String, List<Object?>) _buildWhere(
+  List<dynamic> filters, [
+  String? tableAlias,
+]) {
+  if (filters.isEmpty) return ('', []);
+
+  final clauses = <String>[];
+  final args = <Object?>[];
+
+  for (final filter in filters) {
+    if (filter is SqlQuery) {
+      final (clause, fArgs) = filter.toSql(tableAlias);
+      clauses.add(clause);
+      args.addAll(fArgs);
+    } else if (filter is SqlOrGroup) {
+      final (clause, fArgs) = filter.toSql(tableAlias);
+      clauses.add(clause);
+      args.addAll(fArgs);
+    }
+  }
+
+  return ('WHERE ${clauses.join(' AND ')}', args);
 }

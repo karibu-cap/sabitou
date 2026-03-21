@@ -93,15 +93,16 @@ func (ReceivingNoteStatus) EnumDescriptor() ([]byte, []int) {
 //
 // INVENTORY IMPACT: +48 PRD-001 in WH-001
 type ReceivingNote struct {
-	state                  protoimpl.MessageState `protogen:"open.v1"`
-	RefId                  string                 `protobuf:"bytes,1,opt,name=ref_id,json=refId,proto3" json:"ref_id,omitempty"`                                                        // "RN-2025-001"
-	RelatedPurchaseOrderId string                 `protobuf:"bytes,2,opt,name=related_purchase_order_id,json=relatedPurchaseOrderId,proto3" json:"related_purchase_order_id,omitempty"` // Which PO this fulfills
-	SupplierId             string                 `protobuf:"bytes,3,opt,name=supplier_id,json=supplierId,proto3" json:"supplier_id,omitempty"`                                         // Who sent the goods
-	BuyerId                string                 `protobuf:"bytes,4,opt,name=buyer_id,json=buyerId,proto3" json:"buyer_id,omitempty"`                                                  // Where goods are stored
-	Items                  []*ReceivingLineItem   `protobuf:"bytes,5,rep,name=items,proto3" json:"items,omitempty"`
-	ReceivedByUserId       string                 `protobuf:"bytes,6,opt,name=received_by_user_id,json=receivedByUserId,proto3" json:"received_by_user_id,omitempty"` // Who accepted delivery
-	ReceivedAt             *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=received_at,json=receivedAt,proto3" json:"received_at,omitempty"`
-	Notes                  string                 `protobuf:"bytes,8,opt,name=notes,proto3" json:"notes,omitempty"` // Condition notes, damages, etc.
+	state                  protoimpl.MessageState   `protogen:"open.v1"`
+	RefId                  string                   `protobuf:"bytes,1,opt,name=ref_id,json=refId,proto3" json:"ref_id,omitempty"`                                                        // "RN-2025-001"
+	RelatedPurchaseOrderId string                   `protobuf:"bytes,2,opt,name=related_purchase_order_id,json=relatedPurchaseOrderId,proto3" json:"related_purchase_order_id,omitempty"` // Which PO this fulfills
+	SupplierId             string                   `protobuf:"bytes,3,opt,name=supplier_id,json=supplierId,proto3" json:"supplier_id,omitempty"`                                         // Who sent the goods
+	StoreId                string                   `protobuf:"bytes,4,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`                                                  // Where goods are stored
+	Items                  []*ReceivingNoteLineItem `protobuf:"bytes,5,rep,name=items,proto3" json:"items,omitempty"`
+	ReceivedByUserId       string                   `protobuf:"bytes,6,opt,name=received_by_user_id,json=receivedByUserId,proto3" json:"received_by_user_id,omitempty"` // Who accepted delivery
+	ReceivedAt             *timestamppb.Timestamp   `protobuf:"bytes,7,opt,name=received_at,json=receivedAt,proto3" json:"received_at,omitempty"`
+	Notes                  string                   `protobuf:"bytes,8,opt,name=notes,proto3" json:"notes,omitempty"` // Condition notes, damages, etc.
+	CreatedAt              *timestamppb.Timestamp   `protobuf:"bytes,9,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	unknownFields          protoimpl.UnknownFields
 	sizeCache              protoimpl.SizeCache
 }
@@ -157,14 +158,14 @@ func (x *ReceivingNote) GetSupplierId() string {
 	return ""
 }
 
-func (x *ReceivingNote) GetBuyerId() string {
+func (x *ReceivingNote) GetStoreId() string {
 	if x != nil {
-		return x.BuyerId
+		return x.StoreId
 	}
 	return ""
 }
 
-func (x *ReceivingNote) GetItems() []*ReceivingLineItem {
+func (x *ReceivingNote) GetItems() []*ReceivingNoteLineItem {
 	if x != nil {
 		return x.Items
 	}
@@ -192,6 +193,13 @@ func (x *ReceivingNote) GetNotes() string {
 	return ""
 }
 
+func (x *ReceivingNote) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
+}
+
 // *
 // ReceivingLineItem shows what was actually received vs expected.
 //
@@ -204,7 +212,7 @@ func (x *ReceivingNote) GetNotes() string {
 //	rejection_reason: "Damaged packaging"
 //	batch_id: "BATCH-2025-001" (generated)
 //	expiration_date: 2026-09-29T00:00:00Z
-type ReceivingLineItem struct {
+type ReceivingNoteLineItem struct {
 	state            protoimpl.MessageState `protogen:"open.v1"`
 	ProductId        string                 `protobuf:"bytes,1,opt,name=product_id,json=productId,proto3" json:"product_id,omitempty"`
 	QuantityExpected float64                `protobuf:"fixed64,2,opt,name=quantity_expected,json=quantityExpected,proto3" json:"quantity_expected,omitempty"` // From PO
@@ -213,25 +221,27 @@ type ReceivingLineItem struct {
 	RejectionReason  string                 `protobuf:"bytes,5,opt,name=rejection_reason,json=rejectionReason,proto3" json:"rejection_reason,omitempty"`
 	BatchId          *string                `protobuf:"bytes,6,opt,name=batch_id,json=batchId,proto3,oneof" json:"batch_id,omitempty"`                // Generated batch ID for received items
 	ExpirationDate   *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=expiration_date,json=expirationDate,proto3" json:"expiration_date,omitempty"` // Provided by supplier or calculated
-	PurchasePrice    int32                  `protobuf:"varint,8,opt,name=purchase_price,json=purchasePrice,proto3" json:"purchase_price,omitempty"`
+	PurchasePrice    float64                `protobuf:"fixed64,8,opt,name=purchase_price,json=purchasePrice,proto3" json:"purchase_price,omitempty"`
+	StoreId          string                 `protobuf:"bytes,9,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
+	LineIndex        int32                  `protobuf:"varint,10,opt,name=line_index,json=lineIndex,proto3" json:"line_index,omitempty"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
 
-func (x *ReceivingLineItem) Reset() {
-	*x = ReceivingLineItem{}
+func (x *ReceivingNoteLineItem) Reset() {
+	*x = ReceivingNoteLineItem{}
 	mi := &file_logistic_v1_receiving_notes_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ReceivingLineItem) String() string {
+func (x *ReceivingNoteLineItem) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ReceivingLineItem) ProtoMessage() {}
+func (*ReceivingNoteLineItem) ProtoMessage() {}
 
-func (x *ReceivingLineItem) ProtoReflect() protoreflect.Message {
+func (x *ReceivingNoteLineItem) ProtoReflect() protoreflect.Message {
 	mi := &file_logistic_v1_receiving_notes_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -243,63 +253,77 @@ func (x *ReceivingLineItem) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ReceivingLineItem.ProtoReflect.Descriptor instead.
-func (*ReceivingLineItem) Descriptor() ([]byte, []int) {
+// Deprecated: Use ReceivingNoteLineItem.ProtoReflect.Descriptor instead.
+func (*ReceivingNoteLineItem) Descriptor() ([]byte, []int) {
 	return file_logistic_v1_receiving_notes_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *ReceivingLineItem) GetProductId() string {
+func (x *ReceivingNoteLineItem) GetProductId() string {
 	if x != nil {
 		return x.ProductId
 	}
 	return ""
 }
 
-func (x *ReceivingLineItem) GetQuantityExpected() float64 {
+func (x *ReceivingNoteLineItem) GetQuantityExpected() float64 {
 	if x != nil {
 		return x.QuantityExpected
 	}
 	return 0
 }
 
-func (x *ReceivingLineItem) GetQuantityReceived() float64 {
+func (x *ReceivingNoteLineItem) GetQuantityReceived() float64 {
 	if x != nil {
 		return x.QuantityReceived
 	}
 	return 0
 }
 
-func (x *ReceivingLineItem) GetQuantityRejected() float64 {
+func (x *ReceivingNoteLineItem) GetQuantityRejected() float64 {
 	if x != nil {
 		return x.QuantityRejected
 	}
 	return 0
 }
 
-func (x *ReceivingLineItem) GetRejectionReason() string {
+func (x *ReceivingNoteLineItem) GetRejectionReason() string {
 	if x != nil {
 		return x.RejectionReason
 	}
 	return ""
 }
 
-func (x *ReceivingLineItem) GetBatchId() string {
+func (x *ReceivingNoteLineItem) GetBatchId() string {
 	if x != nil && x.BatchId != nil {
 		return *x.BatchId
 	}
 	return ""
 }
 
-func (x *ReceivingLineItem) GetExpirationDate() *timestamppb.Timestamp {
+func (x *ReceivingNoteLineItem) GetExpirationDate() *timestamppb.Timestamp {
 	if x != nil {
 		return x.ExpirationDate
 	}
 	return nil
 }
 
-func (x *ReceivingLineItem) GetPurchasePrice() int32 {
+func (x *ReceivingNoteLineItem) GetPurchasePrice() float64 {
 	if x != nil {
 		return x.PurchasePrice
+	}
+	return 0
+}
+
+func (x *ReceivingNoteLineItem) GetStoreId() string {
+	if x != nil {
+		return x.StoreId
+	}
+	return ""
+}
+
+func (x *ReceivingNoteLineItem) GetLineIndex() int32 {
+	if x != nil {
+		return x.LineIndex
 	}
 	return 0
 }
@@ -308,19 +332,21 @@ var File_logistic_v1_receiving_notes_proto protoreflect.FileDescriptor
 
 const file_logistic_v1_receiving_notes_proto_rawDesc = "" +
 	"\n" +
-	"!logistic/v1/receiving_notes.proto\x12\vlogistic.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xdd\x02\n" +
+	"!logistic/v1/receiving_notes.proto\x12\vlogistic.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x9c\x03\n" +
 	"\rReceivingNote\x12\x1d\n" +
 	"\x06ref_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x05refId\x129\n" +
 	"\x19related_purchase_order_id\x18\x02 \x01(\tR\x16relatedPurchaseOrderId\x12\x1f\n" +
 	"\vsupplier_id\x18\x03 \x01(\tR\n" +
 	"supplierId\x12\x19\n" +
-	"\bbuyer_id\x18\x04 \x01(\tR\abuyerId\x124\n" +
-	"\x05items\x18\x05 \x03(\v2\x1e.logistic.v1.ReceivingLineItemR\x05items\x12-\n" +
+	"\bstore_id\x18\x04 \x01(\tR\astoreId\x128\n" +
+	"\x05items\x18\x05 \x03(\v2\".logistic.v1.ReceivingNoteLineItemR\x05items\x12-\n" +
 	"\x13received_by_user_id\x18\x06 \x01(\tR\x10receivedByUserId\x12;\n" +
 	"\vreceived_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\n" +
 	"receivedAt\x12\x14\n" +
-	"\x05notes\x18\b \x01(\tR\x05notes\"\xfd\x02\n" +
-	"\x11ReceivingLineItem\x12\x1d\n" +
+	"\x05notes\x18\b \x01(\tR\x05notes\x129\n" +
+	"\n" +
+	"created_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"\xbb\x03\n" +
+	"\x15ReceivingNoteLineItem\x12\x1d\n" +
 	"\n" +
 	"product_id\x18\x01 \x01(\tR\tproductId\x12+\n" +
 	"\x11quantity_expected\x18\x02 \x01(\x01R\x10quantityExpected\x12+\n" +
@@ -329,7 +355,11 @@ const file_logistic_v1_receiving_notes_proto_rawDesc = "" +
 	"\x10rejection_reason\x18\x05 \x01(\tR\x0frejectionReason\x12\x1e\n" +
 	"\bbatch_id\x18\x06 \x01(\tH\x00R\abatchId\x88\x01\x01\x12C\n" +
 	"\x0fexpiration_date\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\x0eexpirationDate\x12%\n" +
-	"\x0epurchase_price\x18\b \x01(\x05R\rpurchasePriceB\v\n" +
+	"\x0epurchase_price\x18\b \x01(\x01R\rpurchasePrice\x12\x19\n" +
+	"\bstore_id\x18\t \x01(\tR\astoreId\x12\x1d\n" +
+	"\n" +
+	"line_index\x18\n" +
+	" \x01(\x05R\tlineIndexB\v\n" +
 	"\t_batch_id*x\n" +
 	"\x13ReceivingNoteStatus\x12\x19\n" +
 	"\x15RN_STATUS_UNSPECIFIED\x10\x00\x12\x15\n" +
@@ -355,18 +385,19 @@ var file_logistic_v1_receiving_notes_proto_msgTypes = make([]protoimpl.MessageIn
 var file_logistic_v1_receiving_notes_proto_goTypes = []any{
 	(ReceivingNoteStatus)(0),      // 0: logistic.v1.ReceivingNoteStatus
 	(*ReceivingNote)(nil),         // 1: logistic.v1.ReceivingNote
-	(*ReceivingLineItem)(nil),     // 2: logistic.v1.ReceivingLineItem
+	(*ReceivingNoteLineItem)(nil), // 2: logistic.v1.ReceivingNoteLineItem
 	(*timestamppb.Timestamp)(nil), // 3: google.protobuf.Timestamp
 }
 var file_logistic_v1_receiving_notes_proto_depIdxs = []int32{
-	2, // 0: logistic.v1.ReceivingNote.items:type_name -> logistic.v1.ReceivingLineItem
+	2, // 0: logistic.v1.ReceivingNote.items:type_name -> logistic.v1.ReceivingNoteLineItem
 	3, // 1: logistic.v1.ReceivingNote.received_at:type_name -> google.protobuf.Timestamp
-	3, // 2: logistic.v1.ReceivingLineItem.expiration_date:type_name -> google.protobuf.Timestamp
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	3, // 2: logistic.v1.ReceivingNote.created_at:type_name -> google.protobuf.Timestamp
+	3, // 3: logistic.v1.ReceivingNoteLineItem.expiration_date:type_name -> google.protobuf.Timestamp
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_logistic_v1_receiving_notes_proto_init() }

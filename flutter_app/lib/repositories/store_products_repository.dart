@@ -57,22 +57,33 @@ final class StoreProductsRepository extends BaseRepository<StoreProduct> {
             table: CollectionName.globalProducts,
             alias: 'gp',
             on: 'sp.${StoreProductsFields.globalProductId} = gp.${GlobalProductsFields.refId}',
-            selectColumns: ['*'],
+            selectColumns: [
+              GlobalProductsFields.refId,
+              GlobalProductsFields.barCodeValue,
+              GlobalProductsFields.name,
+              GlobalProductsFields.status,
+              GlobalProductsFields.categories,
+            ],
           ),
         ],
         filters: [
           if (request.hasStoreId())
-            SqlQuery.equals(
-              StoreProductsFields.storeId,
-              request.storeId,
-            ),
+            SqlQuery.equals(StoreProductsFields.storeId, request.storeId),
+          SqlQuery.notEquals(
+            StoreProductsFields.status,
+            ProductStatus.PRODUCT_STATUS_DELETE.name,
+          ),
+          SqlQuery.notEquals(
+            StoreProductsFields.status,
+            ProductStatus.PRODUCT_STATUS_UNSPECIFIED.name,
+          ),
         ],
       );
 
       return rows.map((row) {
         return StoreProductWithGlobalProduct(
           storeProduct: fromRowToStoreProduct(row),
-          globalProduct: fromRowToGlobalProduct(row),
+          globalProduct: fromRowToGlobalProduct(extractTable(row, 'gp')),
         );
       }).toList();
     } on Exception catch (e) {
@@ -116,7 +127,7 @@ final class StoreProductsRepository extends BaseRepository<StoreProduct> {
         product.refId = AppUtils.generateSmartDatabaseId('SP');
       }
 
-      await save(product);
+      await create(product);
 
       return true;
     } on Exception catch (e) {
@@ -140,25 +151,31 @@ final class StoreProductsRepository extends BaseRepository<StoreProduct> {
             table: CollectionName.globalProducts,
             alias: 'gp',
             on: 'sp.${StoreProductsFields.globalProductId} = gp.${GlobalProductsFields.refId}',
-            selectColumns: ['*'],
+            selectColumns: [
+              GlobalProductsFields.refId,
+              GlobalProductsFields.barCodeValue,
+              GlobalProductsFields.description,
+              GlobalProductsFields.name,
+              GlobalProductsFields.status,
+              GlobalProductsFields.categories,
+              GlobalProductsFields.imagesLinksIds,
+            ],
           ),
         ],
         filters: [
-          SqlQuery.equals(
-            StoreProductsFields.refId,
-            request.storeProductId,
-          ),
+          SqlQuery.equals(StoreProductsFields.refId, request.storeProductId),
         ],
         limit: 1,
       );
 
       if (rows.isEmpty) return null;
 
-      final row = rows.first;
+      /// Applatir la list.
+      final Map<String, dynamic> combined = {for (var m in rows) ...m};
 
       return StoreProductWithGlobalProduct(
-        storeProduct: fromRowToStoreProduct(row),
-        globalProduct: fromRowToGlobalProduct(row),
+        storeProduct: fromRowToStoreProduct(combined),
+        globalProduct: fromRowToGlobalProduct(extractTable(combined, 'gp')),
       );
     } on Exception catch (e) {
       _logger.severe('getStoreProduct Error: $e');
@@ -169,25 +186,34 @@ final class StoreProductsRepository extends BaseRepository<StoreProduct> {
 
   /// Updates a store product.
   Future<bool> updateProduct(UpdateStoreProductRequest request) async {
+    print(fromGlobalProductToRaw(request.globalProduct));
     try {
-      await save(request.storeProduct);
+      await dataSource.runTransaction((tx) async {
+        await tx.updateWhere(
+          table: CollectionName.globalProducts,
+          fields: fromGlobalProductToRaw(request.globalProduct),
+          filters: [
+            SqlQuery.equals(
+              GlobalProductsFields.refId,
+              request.globalProduct.refId,
+            ),
+          ],
+        );
+        await tx.updateWhere(
+          table: CollectionName.storeProducts,
+          fields: fromStoreProductToRaw(request.storeProduct),
+          filters: [
+            SqlQuery.equals(
+              StoreProductsFields.refId,
+              request.storeProduct.refId,
+            ),
+          ],
+        );
+      });
 
       return true;
     } on Exception catch (e) {
       _logger.severe('updateProduct Error: $e');
-
-      return false;
-    }
-  }
-
-  /// Deletes a store product.
-  Future<bool> deleteProduct(DeleteStoreProductRequest request) async {
-    try {
-      await delete(request.storeProductId);
-
-      return true;
-    } on Exception catch (e) {
-      _logger.severe('deleteProduct Error: $e');
 
       return false;
     }
@@ -201,10 +227,9 @@ final class StoreProductsRepository extends BaseRepository<StoreProduct> {
         product.refId = AppUtils.generateSmartDatabaseId('GP');
       }
 
-      await dataSource.setRecord(
+      await dataSource.createRecord(
         table: CollectionName.globalProducts,
         record: fromGlobalProductToRaw(product),
-        conflictColumns: [GlobalProductsFields.refId],
       );
 
       return true;
@@ -218,10 +243,12 @@ final class StoreProductsRepository extends BaseRepository<StoreProduct> {
   /// Updates a global product.
   Future<bool> updateGlobalProduct(UpdateGlobalProductRequest request) async {
     try {
-      await dataSource.setRecord(
+      await dataSource.updateWhere(
         table: CollectionName.globalProducts,
-        record: fromGlobalProductToRaw(request.globalProduct),
-        conflictColumns: [GlobalProductsFields.refId],
+        fields: fromGlobalProductToRaw(request.globalProduct),
+        filters: [
+          SqlQuery.equals(GlobalProductsFields.refId, request.globalProductId),
+        ],
       );
 
       return true;
@@ -263,13 +290,24 @@ final class StoreProductsRepository extends BaseRepository<StoreProduct> {
               table: CollectionName.globalProducts,
               alias: 'gp',
               on: 'sp.${StoreProductsFields.globalProductId} = gp.${GlobalProductsFields.refId}',
-              selectColumns: ['*'],
+              selectColumns: [
+                GlobalProductsFields.refId,
+                GlobalProductsFields.barCodeValue,
+                GlobalProductsFields.name,
+                GlobalProductsFields.status,
+                GlobalProductsFields.categories,
+              ],
             ),
           ],
           filters: [
-            SqlQuery.equals(
-              StoreProductsFields.storeId,
-              request.storeId,
+            SqlQuery.equals(StoreProductsFields.storeId, request.storeId),
+            SqlQuery.notEquals(
+              StoreProductsFields.status,
+              ProductStatus.PRODUCT_STATUS_DELETE.name,
+            ),
+            SqlQuery.notEquals(
+              StoreProductsFields.status,
+              ProductStatus.PRODUCT_STATUS_UNSPECIFIED.name,
             ),
           ],
         )
@@ -277,7 +315,7 @@ final class StoreProductsRepository extends BaseRepository<StoreProduct> {
           return rows.map((row) {
             return StoreProductWithGlobalProduct(
               storeProduct: fromRowToStoreProduct(row),
-              globalProduct: fromRowToGlobalProduct(row),
+              globalProduct: fromRowToGlobalProduct(extractTable(row, 'gp')),
             );
           }).toList();
         });
@@ -298,7 +336,13 @@ final class StoreProductsRepository extends BaseRepository<StoreProduct> {
             table: CollectionName.globalProducts,
             alias: 'gp',
             on: 'sp.${StoreProductsFields.globalProductId} = gp.${GlobalProductsFields.refId}',
-            selectColumns: ['*'],
+            selectColumns: [
+              GlobalProductsFields.refId,
+              GlobalProductsFields.barCodeValue,
+              GlobalProductsFields.name,
+              GlobalProductsFields.status,
+              GlobalProductsFields.categories,
+            ],
           ),
         ],
         filters: [
@@ -329,7 +373,7 @@ final class StoreProductsRepository extends BaseRepository<StoreProduct> {
       final products = rows.map((row) {
         return StoreProductWithGlobalProduct(
           storeProduct: fromRowToStoreProduct(row),
-          globalProduct: fromRowToGlobalProduct(row),
+          globalProduct: fromRowToGlobalProduct(extractTable(row, 'gp')),
         );
       }).toList();
 

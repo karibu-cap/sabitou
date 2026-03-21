@@ -8,7 +8,6 @@ import '../../../../repositories/store_products_repository.dart';
 import '../../../../services/internationalization/internationalization.dart';
 import '../../../../utils/common_functions.dart';
 import '../../../../utils/extensions/global_product_extension.dart';
-import '../../../../utils/user_preference.dart';
 
 /// The type of the product form.
 enum ProductFormType {
@@ -31,6 +30,7 @@ class CreateEditProductFormController extends ChangeNotifier {
   final StoreProduct _storeProduct;
   bool _onSaveProduct = false;
   final bool _isCreatingNewProduct;
+  final String _storeId;
 
   /// Gets the selected global product.
   GlobalProduct? selectedGlobalProduct;
@@ -51,7 +51,7 @@ class CreateEditProductFormController extends ChangeNotifier {
   final TextEditingController descriptionController;
 
   /// The category controller.
-  ShadSelectController<String?> categoryController;
+  ShadSelectController<Category?> categoryController;
 
   /// The barcode controller.
   final TextEditingController barcodeController;
@@ -62,8 +62,14 @@ class CreateEditProductFormController extends ChangeNotifier {
   /// The sale price controller.
   final TextEditingController salePriceController;
 
-  /// The initial stock controller.
-  final TextEditingController initialStockController;
+  /// The opening stock controller.
+  final TextEditingController openingStockController;
+
+  /// The opening stock per unit controller.
+  final TextEditingController openingStockPerUnitController;
+
+  /// The default purchase price controller.
+  final TextEditingController defaultPurchasePriceController;
 
   /// The reorder point controller.
   final TextEditingController reorderPointController;
@@ -82,9 +88,12 @@ class CreateEditProductFormController extends ChangeNotifier {
 
   /// Constructs of new [CreateEditProductFormController].
   CreateEditProductFormController({
+    required String businessId,
+    required String storeId,
     GlobalProduct? product,
     StoreProduct? storeProduct,
   }) : _product = product ?? GlobalProduct(),
+       _storeId = storeId,
        _storeProduct = storeProduct ?? StoreProduct(),
        _isCreatingNewProduct = product == null,
        nameController = TextEditingController(text: product?.label),
@@ -96,20 +105,32 @@ class CreateEditProductFormController extends ChangeNotifier {
        salePriceController = TextEditingController(
          text: storeProduct?.salePrice.toString() ?? '',
        ),
-       initialStockController = TextEditingController(),
+       openingStockController = TextEditingController(
+         text: storeProduct?.hasOpeningStock() == true
+             ? storeProduct?.openingStock.toString()
+             : '',
+       ),
+       openingStockPerUnitController = TextEditingController(
+         text: storeProduct?.hasOpeningStockPerUnit() == true
+             ? storeProduct?.openingStockPerUnit.toString()
+             : '',
+       ),
+       defaultPurchasePriceController = TextEditingController(
+         text: storeProduct?.hasDefaultPurchasePrice() == true
+             ? storeProduct?.defaultPurchasePrice.toString()
+             : '',
+       ),
        reorderPointController = TextEditingController(
          text: storeProduct?.reorderPoint.toString() ?? '',
        ),
-       categoryController = ShadSelectController<String?>(
-         initialValue: product?.categories.map((e) => e.refId).toSet(),
+       categoryController = ShadSelectController<Category?>(
+         initialValue: product?.categories.toSet(),
        ) {
-    _loadCategories();
+    _loadCategories(businessId);
   }
 
-  Future<void> _loadCategories() async {
-    final businessId = UserPreferences.instance.business?.refId;
-    if (businessId == null) return;
-    businessCategories = await CategoriesRepository.to
+  Future<void> _loadCategories(String businessId) async {
+    businessCategories = await CategoriesRepository.instance
         .getCategoriesByBusinessId(businessId);
     notifyListeners();
   }
@@ -118,6 +139,7 @@ class CreateEditProductFormController extends ChangeNotifier {
   bool validateForm() {
     final isValid = formKey.currentState?.saveAndValidate() == true;
     final isNotEmptyCategory = categoryController.value.isNotEmpty;
+
     if (!isNotEmptyCategory) {
       errors.value = {
         ErrorType.category: Intls.to.isRequiredField.trParams({
@@ -144,9 +166,7 @@ class CreateEditProductFormController extends ChangeNotifier {
     nameController.text = globalProduct.label;
     barcodeController.text = globalProduct.barCodeValue;
     descriptionController.text = globalProduct.descriptionIntl;
-    categoryController.value = globalProduct.categories
-        .map((e) => e.refId)
-        .toSet();
+    categoryController.value = globalProduct.categories.toSet();
     selectedGlobalProduct = GlobalProduct()..mergeFromMessage(globalProduct);
     _product = GlobalProduct()..mergeFromMessage(globalProduct);
     notifyListeners();
@@ -161,17 +181,17 @@ class CreateEditProductFormController extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final storeId = UserPreferences.instance.store?.refId;
-      if (storeId == null) {
-        throw Exception(Intls.to.error);
-      }
-
       // Update store product with form data
       _storeProduct
-        ..storeId = storeId
+        ..storeId = _storeId
         ..sku = skuController.text
         ..salePrice = int.tryParse(salePriceController.text) ?? 0
-        ..reorderPoint = int.tryParse(reorderPointController.text) ?? 0;
+        ..reorderPoint = int.tryParse(reorderPointController.text) ?? 0
+        ..openingStock = int.tryParse(openingStockController.text) ?? 0
+        ..openingStockPerUnit =
+            double.tryParse(openingStockPerUnitController.text) ?? 0.0
+        ..defaultPurchasePrice =
+            double.tryParse(defaultPurchasePriceController.text) ?? 0.0;
 
       if (_isCreatingNewProduct) {
         _storeProduct.globalProductId = _product.refId;
@@ -186,7 +206,6 @@ class CreateEditProductFormController extends ChangeNotifier {
           AddStoreProductRequest(
             globalProduct: _product,
             storeProduct: _storeProduct,
-            initialStock: int.tryParse(initialStockController.text) ?? 0,
           ),
         );
 
@@ -204,7 +223,6 @@ class CreateEditProductFormController extends ChangeNotifier {
           throw Exception(Intls.to.error);
         }
       } else {
-        // Update product
         final result = await StoreProductsRepository.instance.updateProduct(
           UpdateStoreProductRequest(
             globalProduct: _product,

@@ -4,7 +4,6 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../../../repositories/categories_repository.dart';
 import '../../../repositories/store_products_repository.dart';
-import '../../../services/rpc/fake_transport/global_product.dart';
 
 /// ViewModel for add global product management.
 class AddGlobalProductViewModel {
@@ -13,9 +12,8 @@ class AddGlobalProductViewModel {
       StoreProductsRepository.instance;
 
   /// The categories repository instance.
-  final CategoriesRepository _categoriesRepository = CategoriesRepository(
-    transport: globalProductFakeTransport,
-  );
+  final CategoriesRepository _categoriesRepository =
+      CategoriesRepository.instance;
 
   /// The categories list.
   List<Category> categories = [];

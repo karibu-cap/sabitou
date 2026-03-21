@@ -101,6 +101,9 @@ final class StoreProductsFields {
   static const String sku = 'sku';
   static const String reorderPoint = 'reorder_point';
   static const String createdAt = 'created_at';
+  static const String openingStock = 'opening_stock';
+  static const String openingStockPerUnit = 'opening_stock_per_unit';
+  static const String defaultPurchasePrice = 'default_purchase_price';
 }
 
 final class InventoryLevelsFields {
@@ -251,7 +254,7 @@ final class SalesOrdersItems {
 final class PurchaseOrdersFields {
   static const String refId = 'ref_id';
   static const String supplierId = 'supplier_id';
-  static const String buyerId = 'buyer_id';
+  static const String storeId = 'store_id';
   static const String status = 'status';
   static const String totalAmount = 'total_amount';
   static const String currency = 'currency';
@@ -259,17 +262,26 @@ final class PurchaseOrdersFields {
   static const String createdAt = 'created_at';
   static const String expectedDeliveryDate = 'expected_delivery_date';
   static const String notes = 'notes';
+  static const String orderDate = 'order_date';
+  static const String supplierName = 'supplier_name';
+  static const String storeName = 'store_name';
+  static const String destinationAddress = 'destination_address';
+  static const String paymentId = 'payment_id';
+  static const String subTotal = 'sub_total';
+  static const String taxTotal = 'tax_total';
 }
 
 final class PurchaseOrderItemsFields {
   static const String purchaseOrderId = 'purchase_order_id';
   static const String storeId = 'store_id';
   static const String productId = 'product_id';
-  static const String quantity = 'quantity';
+  static const String quantityOrdered = 'quantity_ordered';
   static const String productName = 'product_name';
   static const String unitPrice = 'unit_price';
   static const String total = 'total';
   static const String batchId = 'batch_id';
+  static const String quantityReceived = 'quantity_received';
+  static const String taxAmount = 'tax_amount';
 }
 
 final class DeliveryNotesFields {
@@ -315,6 +327,8 @@ final class ReceivingNotesFields {
   static const String receivedAt = 'received_at';
   static const String notes = 'notes';
   static const String status = 'status';
+  static const String storeId = 'store_id';
+  static const String createdAt = 'created_at';
 }
 
 final class ReceivingNoteLineItemsFields {
@@ -393,6 +407,34 @@ final class InvoiceLineItemsFields {
   static const String total = 'total';
   static const String batchId = 'batch_id';
   static const String productName = 'product_name';
+}
+
+final class BillsFields {
+  static const String refId = 'ref_id';
+  static const String relatedPurchaseOrderId = 'related_purchase_order_id';
+  static const String supplierId = 'supplier_id';
+  static const String storeId = 'store_id';
+  static const String status = 'status';
+  static const String paymentId = 'payment_id';
+  static const String billDate = 'bill_date';
+  static const String dueDate = 'due_date';
+  static const String subTotal = 'sub_total';
+  static const String taxTotal = 'tax_total';
+  static const String totalAmount = 'total_amount';
+  static const String balanceDue = 'balance_due';
+  static const String currency = 'currency';
+  static const String notes = 'notes';
+  static const String createdAt = 'created_at';
+}
+
+final class BillLineItemsFields {
+  static const String billId = 'bill_id';
+  static const String productId = 'product_id';
+  static const String description = 'description';
+  static const String quantity = 'quantity';
+  static const String unitPrice = 'unit_price';
+  static const String taxAmount = 'tax_amount';
+  static const String total = 'total';
 }
 
 final class LocalAuthFields {
@@ -481,18 +523,31 @@ final schema = const Schema([
     Column.text(CategoriesFields.type),
   ]),
 
-  Table(CollectionName.storeProducts, [
-    Column.text(StoreProductsFields.refId),
-    Column.text(StoreProductsFields.storeId),
-    Column.text(StoreProductsFields.globalProductId),
-    Column.integer(StoreProductsFields.salePrice),
-    Column.text(StoreProductsFields.imagesLinksIds),
-    Column.text(StoreProductsFields.status),
-    Column.text(StoreProductsFields.expirationType),
-    Column.text(StoreProductsFields.sku),
-    Column.integer(StoreProductsFields.reorderPoint),
-    Column.text(StoreProductsFields.createdAt),
-  ]),
+  Table(
+    CollectionName.storeProducts,
+    [
+      Column.text(StoreProductsFields.refId),
+      Column.text(StoreProductsFields.storeId),
+      Column.text(StoreProductsFields.globalProductId),
+      Column.integer(StoreProductsFields.salePrice),
+      Column.text(StoreProductsFields.imagesLinksIds),
+      Column.text(StoreProductsFields.status),
+      Column.text(StoreProductsFields.expirationType),
+      Column.text(StoreProductsFields.sku),
+      Column.integer(StoreProductsFields.reorderPoint),
+      Column.text(StoreProductsFields.createdAt),
+      Column.integer(StoreProductsFields.openingStock),
+      Column.real(StoreProductsFields.openingStockPerUnit),
+      Column.real(StoreProductsFields.defaultPurchasePrice),
+    ],
+    indexes: [
+      Index('idx_sp_store', [IndexedColumn(StoreProductsFields.storeId)]),
+      Index('idx_sp_global', [
+        IndexedColumn(StoreProductsFields.globalProductId),
+      ]),
+      Index('idx_sp_sku', [IndexedColumn(StoreProductsFields.sku)]),
+    ],
+  ),
 
   Table(CollectionName.inventoryLevels, [
     Column.text(InventoryLevelsFields.storeProductId),
@@ -527,24 +582,35 @@ final schema = const Schema([
     Column.text(BatchesFields.notes),
   ]),
 
-  Table(CollectionName.inventoryTransactions, [
-    Column.text(InventoryTransactionsFields.refId),
-    Column.text(InventoryTransactionsFields.storeId),
-    Column.text(InventoryTransactionsFields.productId),
-    Column.text(InventoryTransactionsFields.transactionType),
-    Column.integer(InventoryTransactionsFields.quantityChange),
-    Column.integer(InventoryTransactionsFields.quantityBefore),
-    Column.integer(InventoryTransactionsFields.quantityAfter),
-    Column.text(InventoryTransactionsFields.relatedDocumentType),
-    Column.text(InventoryTransactionsFields.relatedDocumentId),
-    Column.text(InventoryTransactionsFields.performedByUserId),
-    Column.text(InventoryTransactionsFields.transactionTime),
-    Column.text(InventoryTransactionsFields.notes),
-    Column.text(InventoryTransactionsFields.batchId),
-    Column.real(InventoryTransactionsFields.unitPrice),
-    Column.real(InventoryTransactionsFields.totalAmount),
-    Column.text(InventoryTransactionsFields.currency),
-  ]),
+  Table(
+    CollectionName.inventoryTransactions,
+    [
+      Column.text(InventoryTransactionsFields.refId),
+      Column.text(InventoryTransactionsFields.storeId),
+      Column.text(InventoryTransactionsFields.productId),
+      Column.text(InventoryTransactionsFields.transactionType),
+      Column.integer(InventoryTransactionsFields.quantityChange),
+      Column.integer(InventoryTransactionsFields.quantityBefore),
+      Column.integer(InventoryTransactionsFields.quantityAfter),
+      Column.text(InventoryTransactionsFields.relatedDocumentType),
+      Column.text(InventoryTransactionsFields.relatedDocumentId),
+      Column.text(InventoryTransactionsFields.performedByUserId),
+      Column.text(InventoryTransactionsFields.transactionTime),
+      Column.text(InventoryTransactionsFields.notes),
+      Column.text(InventoryTransactionsFields.batchId),
+      Column.real(InventoryTransactionsFields.unitPrice),
+      Column.real(InventoryTransactionsFields.totalAmount),
+      Column.text(InventoryTransactionsFields.currency),
+    ],
+    indexes: [
+      Index('idx_it_product', [
+        IndexedColumn(InventoryTransactionsFields.productId),
+      ]),
+      Index('idx_it_store', [
+        IndexedColumn(InventoryTransactionsFields.storeId),
+      ]),
+    ],
+  ),
 
   Table(CollectionName.suppliers, [
     Column.text(SuppliersFields.refId),
@@ -652,11 +718,13 @@ final schema = const Schema([
       Column.text(PurchaseOrderItemsFields.purchaseOrderId),
       Column.text(PurchaseOrderItemsFields.storeId),
       Column.text(PurchaseOrderItemsFields.productId),
-      Column.integer(PurchaseOrderItemsFields.quantity),
+      Column.integer(PurchaseOrderItemsFields.quantityOrdered),
       Column.text(PurchaseOrderItemsFields.productName),
       Column.real(PurchaseOrderItemsFields.unitPrice),
       Column.real(PurchaseOrderItemsFields.total),
       Column.text(PurchaseOrderItemsFields.batchId),
+      Column.integer(PurchaseOrderItemsFields.quantityReceived),
+      Column.real(PurchaseOrderItemsFields.taxAmount),
     ],
     indexes: [
       Index('idx_poi_order', [
@@ -668,7 +736,7 @@ final schema = const Schema([
   Table(CollectionName.purchaseOrders, [
     Column.text(PurchaseOrdersFields.refId),
     Column.text(PurchaseOrdersFields.supplierId),
-    Column.text(PurchaseOrdersFields.buyerId),
+    Column.text(PurchaseOrdersFields.storeId),
     Column.text(PurchaseOrdersFields.status),
     Column.real(PurchaseOrdersFields.totalAmount),
     Column.text(PurchaseOrdersFields.currency),
@@ -676,6 +744,13 @@ final schema = const Schema([
     Column.text(PurchaseOrdersFields.createdAt),
     Column.text(PurchaseOrdersFields.expectedDeliveryDate),
     Column.text(PurchaseOrdersFields.notes),
+    Column.text(PurchaseOrdersFields.storeName),
+    Column.text(PurchaseOrdersFields.supplierName),
+    Column.text(PurchaseOrdersFields.orderDate),
+    Column.text(PurchaseOrdersFields.destinationAddress),
+    Column.text(PurchaseOrdersFields.paymentId),
+    Column.real(PurchaseOrdersFields.subTotal),
+    Column.real(PurchaseOrdersFields.taxTotal),
   ]),
 
   Table(CollectionName.deliveryNotes, [
@@ -729,6 +804,7 @@ final schema = const Schema([
     Column.text(ReceivingNotesFields.receivedAt),
     Column.text(ReceivingNotesFields.notes),
     Column.text(ReceivingNotesFields.status),
+    Column.text(ReceivingNotesFields.storeId),
   ]),
 
   Table(
@@ -744,7 +820,7 @@ final schema = const Schema([
       Column.text(ReceivingNoteLineItemsFields.rejectionReason),
       Column.text(ReceivingNoteLineItemsFields.batchId),
       Column.text(ReceivingNoteLineItemsFields.expirationDate),
-      Column.integer(ReceivingNoteLineItemsFields.purchasePrice),
+      Column.real(ReceivingNoteLineItemsFields.purchasePrice),
     ],
     indexes: [
       Index('idx_rni_order', [
@@ -809,6 +885,32 @@ final schema = const Schema([
   ]),
 
   Table(
+    CollectionName.bills,
+    [
+      Column.text(BillsFields.refId),
+      Column.text(BillsFields.relatedPurchaseOrderId),
+      Column.text(BillsFields.supplierId),
+      Column.text(BillsFields.storeId),
+      Column.text(BillsFields.status),
+      Column.text(BillsFields.paymentId),
+      Column.text(BillsFields.billDate),
+      Column.text(BillsFields.dueDate),
+      Column.real(BillsFields.subTotal),
+      Column.real(BillsFields.taxTotal),
+      Column.real(BillsFields.totalAmount),
+      Column.real(BillsFields.balanceDue),
+      Column.text(BillsFields.currency),
+      Column.text(BillsFields.notes),
+      Column.text(BillsFields.createdAt),
+    ],
+    indexes: [
+      Index('idx_bills_store', [IndexedColumn(BillsFields.storeId)]),
+      Index('idx_bills_status', [IndexedColumn(BillsFields.status)]),
+      Index('idx_bills_supplier', [IndexedColumn(BillsFields.supplierId)]),
+    ],
+  ),
+
+  Table(
     CollectionName.invoiceLineItems,
     [
       Column.text(InvoiceLineItemsFields.invoiceId),
@@ -828,6 +930,22 @@ final schema = const Schema([
     ],
     indexes: [
       Index('idx_ili_order', [IndexedColumn(InvoiceLineItemsFields.invoiceId)]),
+    ],
+  ),
+
+  Table(
+    CollectionName.billLineItems,
+    [
+      Column.text(BillLineItemsFields.billId),
+      Column.text(BillLineItemsFields.productId),
+      Column.text(BillLineItemsFields.description),
+      Column.integer(BillLineItemsFields.quantity),
+      Column.real(BillLineItemsFields.unitPrice),
+      Column.real(BillLineItemsFields.taxAmount),
+      Column.real(BillLineItemsFields.total),
+    ],
+    indexes: [
+      Index('idx_bli_order', [IndexedColumn(BillLineItemsFields.billId)]),
     ],
   ),
 

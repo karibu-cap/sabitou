@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:get_it/get_it.dart';
+import 'package:path/path.dart' as SqlQuery;
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../core/database/base_repository.dart';
@@ -69,7 +70,7 @@ final class SuppliersRepository extends BaseRepository<Supplier> {
         supplier.refId = AppUtils.generateSmartDatabaseId('SUP');
       }
 
-      await save(supplier);
+      await create(supplier);
 
       return supplier.refId;
     } on Exception catch (e) {
@@ -82,7 +83,12 @@ final class SuppliersRepository extends BaseRepository<Supplier> {
   /// Updates an existing supplier.
   Future<bool> updateSupplier(UpdateSupplierRequest request) async {
     try {
-      await save(request.supplier);
+      await updateWhere(
+        fields: fromSupplierToRaw(request.supplier),
+        filters: [
+          SqlQuery.equals(SuppliersFields.refId, request.supplier.refId),
+        ],
+      );
 
       return true;
     } on Exception catch (e) {

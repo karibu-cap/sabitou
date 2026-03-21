@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package logistic.v1;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+
+message Bill {
+  // "BILL-2026-0001"
+  string ref_id = 1 [(buf.validate.field).required = true];
+  optional string related_purchase_order_id = 2;
+  string supplier_id = 3;
+  string store_id = 4;
+  BillStatus status = 5;
+  string payment_id = 6;
+  google.protobuf.Timestamp bill_date = 7; // Date of bill
+  google.protobuf.Timestamp due_date = 8; // Date of payment
+  double sub_total = 9; // HT
+  double tax_total = 10; // TVA
+  double total_amount = 11; // TTC
+  double balance_due = 12; // Rest amount to pay
+  string currency = 13; // Ex: "XAF"
+  repeated BillLineItem items = 14;
+  string notes = 15;
+  google.protobuf.Timestamp created_at = 16;
+}
+
+message BillLineItem {
+  string product_id = 1;
+  string description = 2;
+  int32 quantity = 3;
+  double unit_price = 4;
+  double tax_amount = 5;
+  double total = 6;
+}
+
+enum BillStatus {
+  BILL_STATUS_UNSPECIFIED = 0;
+  BILL_STATUS_DRAFT = 1; // Draft
+  BILL_STATUS_OPEN = 2; // Open
+  BILL_STATUS_PAID = 3; // Paid
+  BILL_STATUS_VOID = 4; // Void
+  BILL_STATUS_OVERDUE = 5; // Overdue
+}

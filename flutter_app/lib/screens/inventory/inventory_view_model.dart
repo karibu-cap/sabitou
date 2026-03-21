@@ -8,7 +8,6 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../../repositories/categories_repository.dart';
 import '../../repositories/inventory_repository.dart';
-import '../../repositories/store_products_repository.dart';
 import '../../utils/extensions/category_extension.dart';
 import '../../utils/extensions/global_product_extension.dart';
 import '../../utils/logger.dart';
@@ -57,8 +56,8 @@ class InventoryViewModel {
   get invLevelSubject => _invLevelSubject;
 
   /// Gets the selected item stream.
-  Stream<InventoryLevelWithProduct?> get selectedItemStream =>
-      _selectedItemSubject.stream;
+  BehaviorSubject<InventoryLevelWithProduct?> get selectedItemStream =>
+      _selectedItemSubject;
 
   /// Gets the current selected item value.
   InventoryLevelWithProduct? get currentSelectedItem =>
@@ -142,9 +141,8 @@ class InventoryViewModel {
     _logger.info('initPartialData is called');
     final businessId = business.refId;
 
-    final categories = await CategoriesRepository.to.getCategoriesByBusinessId(
-      businessId,
-    );
+    final categories = await CategoriesRepository.instance
+        .getCategoriesByBusinessId(businessId);
     businessCategories = UnmodifiableListView(categories);
     _logger.info('initPartialData is done');
     onLoaded?.call();
@@ -171,23 +169,9 @@ class InventoryViewModel {
     }
   }
 
-  /// Deletes a product.
-  Future<bool> deleteProduct(
-    String storeProductId, {
-    VoidCallback? onLoaded,
-  }) async {
-    final result = await StoreProductsRepository.instance.deleteProduct(
-      DeleteStoreProductRequest(storeProductId: storeProductId),
-    );
-    if (result) {
-      unawaited(initTheData(onLoaded: onLoaded));
-    }
-
-    return result;
-  }
-
   /// Adjusts the inventory.
   Future<bool> adjustInventory(
+    String userId,
     String storeId,
     String productId,
     int quantityChange,
@@ -204,6 +188,7 @@ class InventoryViewModel {
           reason: reason,
           notes: notes,
         ),
+        userId,
       );
 
       if (isSucceeded) {
@@ -218,6 +203,17 @@ class InventoryViewModel {
     }
   }
 
+  /// Watchs the inventory item.
+  Stream<InventoryLevel?> watchProductInventory({
+    required String productId,
+    required String storeId,
+  }) {
+    return InventoryRepository.instance.watchProductInventory(
+      productId,
+      storeId,
+    );
+  }
+
   /// Selects an inventory item and fetches its transaction history.
   Future<void> selectItem(InventoryLevelWithProduct item) async {
     _selectedItemSubject.add(item);
@@ -228,12 +224,6 @@ class InventoryViewModel {
   void clearSelection() {
     if (!_selectedItemSubject.isClosed) {
       _selectedItemSubject.add(null);
-    }
-    if (!_transactionsSubject.isClosed) {
-      _transactionsSubject.add([]);
-    }
-    if (!_transactionFilterSubject.isClosed) {
-      _transactionFilterSubject.add(TransactionType.TXN_TYPE_SALE);
     }
   }
 

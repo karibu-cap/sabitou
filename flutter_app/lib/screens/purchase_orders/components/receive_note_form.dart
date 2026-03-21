@@ -312,7 +312,7 @@ class _EmptyLineItemsState extends StatelessWidget {
 class _LineItemCard extends StatelessWidget {
   const _LineItemCard({required this.item, required this.index});
 
-  final ReceivingLineItem item;
+  final ReceivingNoteLineItem item;
   final int index;
 
   @override
@@ -405,7 +405,7 @@ class _LineItemCard extends StatelessWidget {
                     ? item.purchasePrice.toString()
                     : '0',
                 onChanged: (value) {
-                  final purchasePrice = int.tryParse(value) ?? 0;
+                  final purchasePrice = double.tryParse(value) ?? 0;
                   formController.updateLineItem(
                     index,
                     item..purchasePrice = purchasePrice,
