@@ -9,6 +9,7 @@ import 'providers/auth/auth_provider.dart';
 import 'providers/cart_provider.dart';
 import 'repositories/audits_repository.dart';
 import 'repositories/auth_repository.dart';
+import 'repositories/bill_repository.dart';
 import 'repositories/business_repository.dart';
 import 'repositories/categories_repository.dart';
 import 'repositories/gift_voucher_repository.dart';
@@ -16,6 +17,7 @@ import 'repositories/inventory_repository.dart';
 import 'repositories/permissions_repository.dart';
 import 'repositories/pos_repository.dart';
 import 'repositories/purchase_order_repository.dart';
+import 'repositories/receiving_note_repository.dart';
 import 'repositories/reports_repository.dart';
 import 'repositories/resource_link_repository.dart';
 import 'repositories/store_products_repository.dart';
@@ -128,7 +130,19 @@ Future<void> _initServices() async {
     ..registerLazySingleton<PosRepository>(PosRepository.new)
     ..registerLazySingleton<AuditsRepository>(AuditsRepository.new)
     ..registerLazySingleton<PurchaseOrderRepository>(
-      PurchaseOrderRepository.new,
+      () => PurchaseOrderRepository(
+        dataSource: PowerSyncDataSource(() => PowerSyncService.instance.db),
+      ),
+    )
+    ..registerLazySingleton<BillRepository>(
+      () => BillRepository(
+        dataSource: PowerSyncDataSource(() => PowerSyncService.instance.db),
+      ),
+    )
+    ..registerLazySingleton<ReceivingNoteRepository>(
+      () => ReceivingNoteRepository(
+        dataSource: PowerSyncDataSource(() => PowerSyncService.instance.db),
+      ),
     )
     ..registerLazySingleton<CategoriesRepository>(
       () => CategoriesRepository(

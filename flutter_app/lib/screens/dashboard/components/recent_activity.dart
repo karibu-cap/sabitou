@@ -61,7 +61,7 @@ class _TransactionItem extends StatelessWidget {
       case TransactionType.TXN_TYPE_SALE:
         return _TxnStyle(
           bg: SabitouColors.dangerSoft,
-          color: SabitouColors.dangerText,
+          color: SabitouColors.dangerForeground,
           icon: LucideIcons.shoppingCart,
           accentBar: SabitouColors.danger,
           label: Intls.to.sale,
@@ -231,7 +231,7 @@ class _TransactionItem extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                   color: isPositive
                       ? SabitouColors.successForeground
-                      : SabitouColors.dangerText,
+                      : SabitouColors.dangerForeground,
                 ),
               ),
             ),

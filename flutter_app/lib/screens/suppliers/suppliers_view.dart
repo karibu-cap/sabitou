@@ -4,6 +4,7 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../services/internationalization/internationalization.dart';
+import '../../themes/app_theme.dart';
 import '../../utils/responsive_utils.dart';
 import '../../utils/user_preference.dart';
 import '../../widgets/pop_up/add_supplier/add_supplier_view.dart';
@@ -14,17 +15,18 @@ import 'components/suppliers_stats_grid.dart';
 import 'suppliers_controller.dart';
 import 'suppliers_view_model.dart';
 
-/// Suppliers view.
+/// Suppliers view — entry point.
 class SuppliersView extends StatelessWidget {
-  /// Constructs the SuppliersView view.
   const SuppliersView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final storeId = UserPreferences.instance.store?.refId;
+    final userPreferences = context.watch<UserPreferences>();
+    final currentStore = userPreferences.store;
+    final business = userPreferences.business;
     final theme = ShadTheme.of(context);
 
-    if (storeId == null) {
+    if (currentStore == null || business == null) {
       return Center(
         child: Text(
           AppInternationalizationService.to.noStoreSelected,
@@ -36,7 +38,7 @@ class SuppliersView extends StatelessWidget {
 
     return ChangeNotifierProvider<SuppliersController>(
       create: (_) => SuppliersController(
-        SuppliersViewModel(storeId: storeId),
+        SuppliersViewModel(storeId: currentStore.refId),
         AppInternationalizationService.to,
       ),
       child: const SuppliersContent(),
@@ -44,36 +46,38 @@ class SuppliersView extends StatelessWidget {
   }
 }
 
-/// Suppliers content.
+/// Full page content.
 class SuppliersContent extends StatelessWidget {
-  /// Constructs the suppliers content.
   const SuppliersContent({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const SingleChildScrollView(
+      padding: EdgeInsets.zero,
       child: Column(
-        spacing: 32,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SuppliersHeader(),
+          SizedBox(height: 24),
           SuppliersStatsGrid(),
+          SizedBox(height: 20),
           SuppliersSearchFilters(),
+          SizedBox(height: 20),
           SuppliersList(),
+          SizedBox(height: 32),
         ],
       ),
     );
   }
 }
 
-/// Header widget for suppliers view.
+/// Page header — title block + "New supplier" CTA.
 class SuppliersHeader extends StatelessWidget {
-  /// Constructs a new SuppliersHeader.
   const SuppliersHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Provider.of<SuppliersController>(context);
+    final controller = Provider.of<SuppliersController>(context, listen: false);
     final theme = ShadTheme.of(context);
     final isMobile = ResponsiveUtils.isMobile(context);
 
@@ -84,40 +88,91 @@ class SuppliersHeader extends StatelessWidget {
           return SupplierShimmerWidgets.buildHeaderShimmer(isMobile);
         }
 
-        return Flex(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          direction: isMobile ? Axis.vertical : Axis.horizontal,
-          spacing: 12,
-          crossAxisAlignment: CrossAxisAlignment.start,
+        final count = snapshot.data?.length ?? 0;
+
+        return Row(
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  AppInternationalizationService.to.supplierManagement,
-                  style: theme.textTheme.h4,
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  AppInternationalizationService.to.manageSupplierRelationships,
-                  style: theme.textTheme.muted,
-                ),
-              ],
+            // Amber accent bar
+            Container(
+              width: 3,
+              height: 32,
+              decoration: const BoxDecoration(
+                color: SabitouColors.accent,
+                borderRadius: BorderRadius.all(Radius.circular(2)),
+              ),
             ),
+            const SizedBox(width: 12),
+
+            // Title + subtitle
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        AppInternationalizationService.to.supplierManagement,
+                        style: theme.textTheme.h4.copyWith(
+                          fontSize: 19,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: -0.3,
+                        ),
+                      ),
+                      if (count > 0) ...[
+                        const SizedBox(width: 8),
+                        _CountBadge(count: count),
+                      ],
+                    ],
+                  ),
+                  const SizedBox(height: 3),
+                  Text(
+                    AppInternationalizationService
+                        .to
+                        .manageSupplierRelationships,
+                    style: theme.textTheme.muted.copyWith(fontSize: 12.5),
+                  ),
+                ],
+              ),
+            ),
+
+            // CTA button
             ShadButton(
               onPressed: () => showAddSupplierDialog(context),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(Icons.add, size: 16),
-                  const SizedBox(width: 8),
-                  Text(AppInternationalizationService.to.newText),
-                ],
+              leading: const Icon(LucideIcons.plus, size: 15),
+              child: Text(
+                isMobile
+                    ? AppInternationalizationService.to.newText
+                    : AppInternationalizationService.to.addNewSupplier,
               ),
             ),
           ],
         );
       },
+    );
+  }
+}
+
+class _CountBadge extends StatelessWidget {
+  const _CountBadge({required this.count});
+  final int count;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 2),
+      decoration: const BoxDecoration(
+        color: SabitouColors.accentSoft,
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+        border: Border.fromBorderSide(BorderSide(color: SabitouColors.accent)),
+      ),
+      child: Text(
+        '$count',
+        style: const TextStyle(
+          fontSize: 11,
+          fontWeight: FontWeight.w500,
+          color: SabitouColors.accentForeground,
+        ),
+      ),
     );
   }
 }

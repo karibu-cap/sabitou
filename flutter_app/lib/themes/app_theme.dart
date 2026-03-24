@@ -10,6 +10,7 @@ abstract final class SabitouColors {
   static const accent = Color(0xFFF4A826);
   static const accentSoft = Color(0xFFFFF3D6);
   static const accentForeground = Color(0xFF7A4F00); // text on accentSoft bg
+  static const accentBorder = Color(0xFFFADA8E);
 
   // ── Semantic status (used on badges, stat cards, etc.) ──
   static const success = Color(0xFF10B981);
@@ -26,17 +27,21 @@ abstract final class SabitouColors {
 
   // ── Semantic colors — no AppColors dependency ──────────────────────────────────
   static const dangerSoft = Color(0xFFFFF1F0);
-  static const dangerText = Color(0xFF9B1C1C);
+  static const dangerForeground = Color(0xFF9B1C1C);
 
   static const danger = Color(0xFFE53E3E);
   static const orange = Color(0xFFF97316);
   static const orangeSoft = Color(0xFFFFF7ED);
-  static const orangeText = Color(0xFF9A3412);
+  static const orangeForeground = Color(0xFF9A3412);
   static const infoSoft = Color(0xFFEFF6FF);
   static const infoText = Color(0xFF1E40AF);
 
   static const purpleSoft = Color(0xFFF5F3FF);
-  static const purpleText = Color(0xFF4C1D95);
+  static const purpleForeground = Color(0xFF4C1D95);
+
+  static const Color neutralSoft = Color(0xFFF1F1F4);
+  static const Color neutralForeground = Color(0xFF6B7080);
+  static const Color neutral = Color(0xFFBDC0CC);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

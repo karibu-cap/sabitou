@@ -33,7 +33,7 @@ class InventoryDetailScreen extends StatelessWidget {
 
     return ChangeNotifierProvider(
       create: (context) => InventoryDetailController(
-        InventoryDetailViewModel(productId: productId),
+        InventoryDetailViewModel(productId: productId, store: currentStore),
       ),
       child: Consumer<InventoryDetailController>(
         builder: (context, controller, child) {

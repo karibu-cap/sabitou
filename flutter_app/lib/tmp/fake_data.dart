@@ -501,18 +501,18 @@ final fakeData = <String, List<dynamic>>{
     PurchaseOrder()
       ..refId = 'PO-2025-001'
       ..supplierId = 'SUP-001'
-      ..buyerId = 'STR-001'
+      ..storeId = 'STR-001'
       ..status = PurchaseOrderStatus.PO_STATUS_PENDING
       ..totalAmount = 25000
       ..items.addAll([
-        OrderLineItem()
+        PurchaseOrderLineItems()
           ..productId = 'PRD-001'
-          ..quantity = 1
+          ..quantityOrdered = 1
           ..unitPrice = 10000
           ..total = 10000,
-        OrderLineItem()
+        PurchaseOrderLineItems()
           ..productId = 'PRD-002'
-          ..quantity = 1
+          ..quantityOrdered = 1
           ..unitPrice = 15000
           ..total = 15000,
       ])
@@ -522,13 +522,13 @@ final fakeData = <String, List<dynamic>>{
     PurchaseOrder()
       ..refId = 'PO-2025-002'
       ..supplierId = 'SUP-001'
-      ..buyerId = 'STR-001'
+      ..storeId = 'STR-001'
       ..status = PurchaseOrderStatus.PO_STATUS_RECEIVED
       ..totalAmount = 5000
       ..items.addAll([
-        OrderLineItem()
+        PurchaseOrderLineItems()
           ..productId = 'product-003'
-          ..quantity = 1
+          ..quantityOrdered = 1
           ..unitPrice = 5000
           ..total = 5000,
       ])

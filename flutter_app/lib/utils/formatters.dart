@@ -3,6 +3,7 @@ import 'package:geo_currencies/geo_currencies.dart';
 import 'package:intl/intl.dart';
 
 import '../services/internationalization/internationalization.dart';
+import 'app_constants.dart';
 
 /// The formatters.
 class Formatters {
@@ -145,5 +146,9 @@ class Formatters {
     final month = months[now.month - 1];
 
     return '$day ${now.day} $month ${now.year}';
+  }
+
+  static String fmtDate(DateTime d) {
+    return '${d.day.toString().padLeft(2, '0')} ${months[d.month].substring(0, 2)} ${d.year}';
   }
 }

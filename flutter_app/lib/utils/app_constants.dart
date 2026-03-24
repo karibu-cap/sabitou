@@ -1,3 +1,5 @@
+import '../services/internationalization/internationalization.dart';
+
 /// The preferences keys.
 final class PreferencesKey {
   /// Whether the user has opened the app for the first time.
@@ -136,6 +138,32 @@ final class StaticImages {
   static const String placeholder = 'assets/images/placeholder.png';
 }
 
+final months = [
+  '',
+  Intls.to.january,
+  Intls.to.february,
+  Intls.to.march,
+  Intls.to.april,
+  Intls.to.may,
+  Intls.to.june,
+  Intls.to.july,
+  Intls.to.august,
+  Intls.to.september,
+  Intls.to.october,
+  Intls.to.november,
+  Intls.to.december,
+];
+
+final days = [
+  Intls.to.monday,
+  Intls.to.tuesday,
+  Intls.to.wednesday,
+  Intls.to.thursday,
+  Intls.to.friday,
+  Intls.to.saturday,
+  Intls.to.sunday,
+];
+
 /// The app constants.
 class AppConstants {
   /// The UI constants.
@@ -219,8 +247,17 @@ enum DashboardItem {
   /// The pos item.
   pos,
 
+  /// The purchase orders parent (expandable section).
+  purchaseOrdersParent,
+
   /// The purchase orders item.
   purchaseOrders,
+
+  /// The purchase receives item.
+  purchaseReceives,
+
+  /// The bills item.
+  bills,
 
   /// The products list item.
   productsList,

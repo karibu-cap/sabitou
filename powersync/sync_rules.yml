@@ -30,6 +30,11 @@ bucket_definitions:
         SELECT id, ref_id, target_uri, icon_uri, info, label
         FROM resource_links
 
+      - >
+        SELECT id, ref_id, name, description, logo_link_id, external_links_ids,
+               contact_phone, contact_email, contact_address, status, store_ids
+        FROM suppliers
+
   # -------------------------------------------------------------------------
   # Store-scoped data — products and inventory for the stores the employee works at.
   # We dynamically find all stores the user is a member of, or owns via a business.
@@ -97,7 +102,7 @@ bucket_definitions:
         SELECT id, ref_id, supplier_id, store_id, status, total_amount, currency, order_date, payment_id, sub_total, tax_total,
                created_by_user_id, created_at, expected_delivery_date, notes, destination_address, store_name, supplier_name
         FROM purchase_orders
-        WHERE buyer_id = bucket.store_id
+        WHERE store_id = bucket.store_id
 
       - >
         SELECT id, purchase_order_id, line_index, product_id, quantity_ordered,
@@ -109,7 +114,7 @@ bucket_definitions:
         SELECT id, ref_id, related_purchase_order_id, supplier_id, store_id,
                received_by_user_id, received_at, notes, created_at
         FROM receiving_notes
-        WHERE buyer_id = bucket.store_id
+        WHERE store_id = bucket.store_id
 
       - >
         SELECT id, delivery_note_id, line_index, product_id, quantity, batch_id, store_id
@@ -189,12 +194,6 @@ bucket_definitions:
       - >
         SELECT id, business_id, user_id, status, member_since
         FROM business_members
-        WHERE business_id = bucket.business_id
-
-      - >
-        SELECT id, ref_id, name, description, logo_link_id, external_links_ids,
-               contact_phone, contact_email, contact_address, status, store_ids
-        FROM suppliers
         WHERE business_id = bucket.business_id
 
   # -------------------------------------------------------------------------

@@ -2,30 +2,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../providers/auth/auth_provider.dart';
 import '../screens/audits/audits_screen.dart';
 import '../screens/auth/forgot_password/forgot_password_view.dart';
 import '../screens/auth/login/login_view.dart';
 import '../screens/auth/registration/registration_view.dart';
+import '../screens/bills/bills_screen.dart';
+import '../screens/bills/detail/bill_screen.dart';
 import '../screens/cash_recipe/cash_recipe_screen.dart';
 import '../screens/categories/categories_view.dart';
 import '../screens/dashboard/dashboard_screen.dart';
 import '../screens/global_products/global_products_view.dart';
 import '../screens/home/home.dart';
 import '../screens/inventory/ajustment/inventory_ajustement_screen.dart';
-import '../screens/inventory/detail/inventory_detail_screen.dart'; // Added import
+import '../screens/inventory/detail/inventory_detail_screen.dart';
 import '../screens/inventory/inventory_screen.dart';
 import '../screens/point_of_sale/point_of_sale_screen.dart';
 import '../screens/products_list/components/form/screen/create_edit_product_screen.dart';
 import '../screens/products_list/detail/product_detail_screen.dart';
 import '../screens/products_list/products_list_screen.dart';
-import '../screens/purchase_orders/purchase_orders_screen.dart';
+import '../screens/purchase_orders/detail/purchase_order_detail_screen.dart';
+import '../screens/purchase_orders/purchase_orders_view.dart';
+import '../screens/purchase_receives/purchase_receives_screen.dart';
 import '../screens/reports/reports_screen.dart';
 import '../screens/settings/settings_screen.dart';
 import '../screens/suppliers/suppliers_view.dart';
 import '../screens/users/users_view.dart';
 import '../screens/welcome/welcome.dart';
+import '../widgets/error/error_page_builder.dart';
 import 'app_router.dart';
 import 'page_routes.dart';
 
@@ -157,7 +163,26 @@ class GoRouterRoutesProvider {
           name: PagesRoutes.purchaseOrders.name,
           path: PagesRoutes.purchaseOrders.pattern,
           pageBuilder: (_, __) =>
-              const MaterialPage(child: PurchaseOrdersScreen()),
+              const MaterialPage(child: PurchaseOrdersView()),
+        ),
+      ],
+    ),
+    StatefulShellBranch(
+      routes: [
+        GoRoute(
+          name: PagesRoutes.purchaseReceives.name,
+          path: PagesRoutes.purchaseReceives.pattern,
+          pageBuilder: (_, __) =>
+              const MaterialPage(child: PurchaseReceivesScreen()),
+        ),
+      ],
+    ),
+    StatefulShellBranch(
+      routes: [
+        GoRoute(
+          name: PagesRoutes.bills.name,
+          path: PagesRoutes.bills.pattern,
+          pageBuilder: (_, __) => const MaterialPage(child: BillsScreen()),
         ),
       ],
     ),
@@ -205,9 +230,8 @@ class GoRouterRoutesProvider {
         return null;
       },
       routes: _getAllRoutes(),
-      onException: (context, state, router) {
-        debugPrint('Unknown router path: ${state.fullPath} ');
-      },
+      errorPageBuilder: (context, state) =>
+          const MaterialPage(child: ErrorPageBuilder.notFound()),
     );
   }
 
@@ -282,6 +306,36 @@ class GoRouterRoutesProvider {
           );
         },
       ),
+      GoRoute(
+        name: PagesRoutes.purchaseOrderDetail.name,
+        path: PagesRoutes.purchaseOrderDetail.pattern,
+        parentNavigatorKey: rootNavigatorKey,
+        pageBuilder: (context, state) {
+          final purchaseOrderId = state
+              .pathParameters[PurchaseOrderDetailParameters.keyPurchaseOrderId];
+
+          if (purchaseOrderId == null ||
+              !purchaseOrderId.toLowerCase().startsWith('po')) {
+            return MaterialPage(
+              child: ErrorPageBuilder.notFound(
+                title: 'Invalid Purchase Order',
+                onPrimaryAction: () =>
+                    AppRouter.go(context, PagesRoutes.home.pattern),
+                primaryActionText: 'Back to Home',
+                onSecondaryAction: () =>
+                    AppRouter.go(context, PagesRoutes.purchaseOrders.pattern),
+                secondaryActionText: 'View Purchase Orders',
+                showBackgroundGradient: false,
+                customIcon: const Icon(LucideIcons.clipboardList400),
+              ),
+            );
+          }
+
+          return MaterialPage(
+            child: PurchaseOrderDetailScreen(purchaseOrderId: purchaseOrderId),
+          );
+        },
+      ),
       // Auth routes (public)
       GoRoute(
         name: PagesRoutes.welcome.name,
@@ -309,6 +363,16 @@ class GoRouterRoutesProvider {
         path: PagesRoutes.forgotPassword.pattern,
         pageBuilder: (context, state) {
           return const MaterialPage(child: ForgotPasswordView());
+        },
+      ),
+      GoRoute(
+        name: PagesRoutes.billDetail.name,
+        path: PagesRoutes.billDetail.pattern,
+        parentNavigatorKey: rootNavigatorKey,
+        pageBuilder: (context, state) {
+          final billId = state.pathParameters[BillDetailParameters.keyBillId];
+
+          return MaterialPage(child: BillDetailScreen(billRefId: billId ?? ''));
         },
       ),
     ];

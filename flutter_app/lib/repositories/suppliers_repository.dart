@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:get_it/get_it.dart';
-import 'package:path/path.dart' as SqlQuery;
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../core/database/base_repository.dart';
 import '../core/database/local_data_source.dart';
+import '../core/database/query/sql_condition.dart';
 import '../core/database/row_mapper.dart';
 import '../services/powersync/schema.dart';
 import '../services/rpc/connect_rpc.dart';
@@ -44,12 +44,11 @@ final class SuppliersRepository extends BaseRepository<Supplier> {
   /// Gets all suppliers based on store Id.
   Future<List<Supplier>> getSuppliersByStore(String storeId) async {
     try {
-      final rows = await dataSource.executeRaw(
-        'SELECT * FROM $tableName WHERE ${SuppliersFields.storeIds} LIKE ?',
-        ['%$storeId%'],
-      );
+      final rows = await findWhere([
+        SqlQuery.like(SuppliersFields.storeIds, '%"$storeId"%'),
+      ]);
 
-      return rows.map(fromRowToSupplier).toList();
+      return rows;
     } on Exception catch (e) {
       _logger.severe('getSuppliersByStore Error: $e');
 
@@ -115,14 +114,9 @@ final class SuppliersRepository extends BaseRepository<Supplier> {
   Stream<List<Supplier>> streamStoreSuppliers(
     StreamStoreSuppliersRequest request,
   ) {
-    // Note: storeIds is a JSON array in SQLite, so we use LIKE for streaming.
-    // It's better to use watchRaw if filters are complex.
-    return dataSource
-        .watchRaw(
-          'SELECT * FROM $tableName WHERE ${SuppliersFields.storeIds} LIKE ?',
-          ['%${request.storeId}%'],
-        )
-        .map((rows) => rows.map(fromRowToSupplier).toList());
+    return watchWhere([
+      SqlQuery.like(SuppliersFields.storeIds, '%"${request.storeId}"%'),
+    ]);
   }
 
   /// Gets products for a specific supplier.

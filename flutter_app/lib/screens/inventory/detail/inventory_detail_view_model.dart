@@ -7,14 +7,13 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 import '../../../repositories/inventory_repository.dart';
 import '../../../repositories/store_products_repository.dart';
 import '../../../utils/logger.dart';
-import '../../../utils/user_preference.dart';
 
 /// View model for inventory detail screen.
 class InventoryDetailViewModel {
   final LoggerApp _logger = LoggerApp('InventoryDetailViewModel');
 
-  /// Gets the user preferences.
-  final UserPreferences userPreferences = UserPreferences.instance;
+  /// The current store.
+  final Store store;
 
   /// The product ID to fetch.
   final String productId;
@@ -57,7 +56,7 @@ class InventoryDetailViewModel {
   Stream<String> get errorStream => _errorSubject.stream;
 
   /// Constructor of [InventoryDetailViewModel].
-  InventoryDetailViewModel({required this.productId}) {
+  InventoryDetailViewModel({required this.productId, required this.store}) {
     _initData();
   }
 
@@ -66,11 +65,6 @@ class InventoryDetailViewModel {
     try {
       _loadingSubject.add(true);
       _logger.info('Fetching product details for: $productId');
-
-      final store = userPreferences.store;
-      if (store == null) {
-        throw Exception('Store not found');
-      }
 
       final inventoryLevels = await InventoryRepository.instance
           .getProductInventoryLevels(productId, store.refId);
@@ -121,13 +115,6 @@ class InventoryDetailViewModel {
   /// Fetches transaction history for the item.
   Future<void> _fetchTransactions(InventoryLevelWithProduct item) async {
     try {
-      final store = userPreferences.store;
-      if (store == null) {
-        _logger.warning('Store not found when fetching transactions');
-
-        return;
-      }
-
       final response = await InventoryRepository.instance
           .getInventoryTransactionHistory(
             GetInventoryTransactionHistoryRequest(

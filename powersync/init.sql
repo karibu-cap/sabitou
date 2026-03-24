@@ -395,6 +395,26 @@ CREATE TABLE IF NOT EXISTS receiving_note_line_items (
     UNIQUE (receiving_note_id, line_index)
 );
 
+-- Bills
+CREATE TABLE IF NOT EXISTS bills (
+    id TEXT PRIMARY KEY DEFAULT gen_random_uuid ()::text,
+    ref_id TEXT UNIQUE NOT NULL DEFAULT gen_random_uuid ()::text,
+    related_purchase_order_id VARCHAR(50) REFERENCES purchase_orders (ref_id),
+    supplier_id TEXT NOT NULL,
+    store_id TEXT NOT NULL,
+    status TEXT NOT NULL DEFAULT 'BILL_STATUS_DRAFT',
+    payment_id TEXT,
+    bill_date DATE NOT NULL DEFAULT CURRENT_DATE,
+    due_date DATE,
+    sub_total NUMERIC NOT NULL DEFAULT 0,
+    tax_total NUMERIC NOT NULL DEFAULT 0,
+    total_amount NUMERIC NOT NULL DEFAULT 0,
+    balance_due NUMERIC NOT NULL DEFAULT 0,
+    currency TEXT DEFAULT 'XAF',
+    notes TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
 CREATE TABLE IF NOT EXISTS bill_line_items (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid (),
     bill_id VARCHAR(50) REFERENCES bills (ref_id) ON DELETE CASCADE,
@@ -425,26 +445,6 @@ CREATE TABLE IF NOT EXISTS invoices (
     created_by_user_id TEXT NOT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     notes TEXT
-);
-
--- Bills
-CREATE TABLE IF NOT EXISTS bills (
-    id TEXT PRIMARY KEY DEFAULT gen_random_uuid ()::text,
-    ref_id TEXT UNIQUE NOT NULL DEFAULT gen_random_uuid ()::text,
-    related_purchase_order_id VARCHAR(50) REFERENCES purchase_orders (ref_id),
-    supplier_id TEXT NOT NULL,
-    store_id TEXT NOT NULL,
-    status TEXT NOT NULL DEFAULT 'BILL_STATUS_DRAFT',
-    payment_id TEXT,
-    bill_date DATE NOT NULL DEFAULT CURRENT_DATE,
-    due_date DATE,
-    sub_total NUMERIC NOT NULL DEFAULT 0,
-    tax_total NUMERIC NOT NULL DEFAULT 0,
-    total_amount NUMERIC NOT NULL DEFAULT 0,
-    balance_due NUMERIC NOT NULL DEFAULT 0,
-    currency TEXT DEFAULT 'XAF',
-    notes TEXT,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 -- Resource Links
@@ -486,7 +486,7 @@ CREATE INDEX IF NOT EXISTS idx_refresh_tokens_user_id ON refresh_tokens (user_id
 
 CREATE INDEX IF NOT EXISTS idx_po_supplier ON purchase_orders (supplier_id);
 
-CREATE INDEX IF NOT EXISTS idx_po_items_product ON purchase_order_items (product_id);
+CREATE INDEX IF NOT EXISTS idx_po_items_product ON purchase_order_line_items (product_id);
 
 CREATE INDEX IF NOT EXISTS idx_inv_txn_product ON inventory_transactions (product_id);
 
@@ -1176,7 +1176,7 @@ INSERT INTO
     purchase_orders (
         ref_id,
         supplier_id,
-        buyer_id,
+        store_id,
         status,
         total_amount,
         created_by_user_id
@@ -1197,7 +1197,7 @@ INSERT INTO
         store_id,
         line_index,
         product_id,
-        quantity,
+        quantity_ordered,
         unit_price,
         total
     )

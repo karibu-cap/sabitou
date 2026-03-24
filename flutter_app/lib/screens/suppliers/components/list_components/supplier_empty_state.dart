@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../../services/internationalization/internationalization.dart';
-import '../../../../widgets/pop_up/add_category/add_category_view.dart';
+import '../../../../widgets/pop_up/add_supplier/add_supplier_view.dart';
 import '../../suppliers_controller.dart';
 
 /// Widget displayed when there are no supplier to show.
@@ -17,6 +17,7 @@ class SuppliersEmptyState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Provider.of<SuppliersController>(context);
+    final theme = ShadTheme.of(context);
 
     return Container(
       width: double.infinity,
@@ -26,9 +27,9 @@ class SuppliersEmptyState extends StatelessWidget {
         children: [
           // Icon
           Icon(
-            controller.isFiltered ? LucideIcons.truck400 : Icons.category,
-            size: 64,
-            color: Colors.grey[400],
+            controller.isFiltered ? LucideIcons.truck : LucideIcons.store,
+            size: 48,
+            color: theme.colorScheme.mutedForeground,
           ),
 
           const SizedBox(height: 16),
@@ -38,11 +39,7 @@ class SuppliersEmptyState extends StatelessWidget {
             controller.isFiltered
                 ? AppInternationalizationService.to.noSuppliersMatchFilters
                 : AppInternationalizationService.to.noSuppliersYet,
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-              color: Colors.grey,
-            ),
+            style: theme.textTheme.h4,
             textAlign: TextAlign.center,
           ),
 
@@ -53,7 +50,7 @@ class SuppliersEmptyState extends StatelessWidget {
             controller.isFiltered
                 ? AppInternationalizationService.to.tryAdjustingFilters
                 : AppInternationalizationService.to.addFirstSupplier,
-            style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+            style: theme.textTheme.muted,
             textAlign: TextAlign.center,
           ),
 
@@ -62,27 +59,15 @@ class SuppliersEmptyState extends StatelessWidget {
           // Action button
           if (!controller.isFiltered) ...[
             ShadButton(
-              onPressed: () => showAddCategoryDialog(context),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(LucideIcons.userPlus, size: 16),
-                  const SizedBox(width: 8),
-                  Text(AppInternationalizationService.to.addCategory),
-                ],
-              ),
+              onPressed: () => showAddSupplierDialog(context),
+              leading: const Icon(LucideIcons.userPlus, size: 16),
+              child: Text(AppInternationalizationService.to.addSupplier),
             ),
           ] else ...[
             ShadButton.outline(
               onPressed: controller.clearFilters,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(LucideIcons.x, size: 16),
-                  const SizedBox(width: 8),
-                  Text(AppInternationalizationService.to.clearFilters),
-                ],
-              ),
+              leading: const Icon(LucideIcons.x, size: 16),
+              child: Text(AppInternationalizationService.to.clearFilters),
             ),
           ],
         ],

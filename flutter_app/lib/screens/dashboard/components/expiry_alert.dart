@@ -64,7 +64,7 @@ class ExpiryAlert extends StatelessWidget {
                                 ? SabitouColors.dangerSoft
                                 : SabitouColors.warningSoft,
                             badgeForeground: isExpired
-                                ? SabitouColors.dangerText
+                                ? SabitouColors.dangerForeground
                                 : SabitouColors.warningForeground,
                             additionalInfo: Intls.to.inStock.trParams({
                               'quantity': product.level.quantityAvailable

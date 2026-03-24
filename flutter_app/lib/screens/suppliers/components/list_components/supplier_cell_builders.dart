@@ -3,7 +3,6 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../../services/internationalization/internationalization.dart';
-import '../../../../themes/app_colors.dart';
 
 /// Utility class for building supplier table cells.
 ///
@@ -28,7 +27,11 @@ class SupplierCellBuilders {
         if (supplier.contactAddress.isNotEmpty)
           Row(
             children: [
-              const Icon(LucideIcons.mapPin400, size: 12),
+              Icon(
+                LucideIcons.mapPin,
+                size: 12,
+                color: theme.colorScheme.mutedForeground,
+              ),
               const SizedBox(width: 4),
               Flexible(
                 child: Text(
@@ -62,7 +65,11 @@ class SupplierCellBuilders {
         if (supplier.contactPhone.isNotEmpty)
           Row(
             children: [
-              const Icon(LucideIcons.phone400, size: 12),
+              Icon(
+                LucideIcons.phone,
+                size: 12,
+                color: theme.colorScheme.mutedForeground,
+              ),
               const SizedBox(width: 4),
               Flexible(
                 child: Text(
@@ -77,7 +84,11 @@ class SupplierCellBuilders {
         if (supplier.contactEmail.isNotEmpty)
           Row(
             children: [
-              const Icon(LucideIcons.mail400, size: 12),
+              Icon(
+                LucideIcons.mail,
+                size: 12,
+                color: theme.colorScheme.mutedForeground,
+              ),
               const SizedBox(width: 4),
               Flexible(
                 child: Text(
@@ -94,23 +105,20 @@ class SupplierCellBuilders {
   }
 
   /// Builds status cell with colored badge.
-  static Widget buildStatusCell(Supplier supplier) {
+  static Widget buildStatusCell(Supplier supplier, ShadThemeData theme) {
     final intl = AppInternationalizationService.to;
+
+    final isActive = supplier.status == SupplierStatus.SUPPLIER_STATUS_ACTIVE;
 
     return ShadBadge(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      backgroundColor: supplier.status == SupplierStatus.SUPPLIER_STATUS_ACTIVE
-          ? AppColors.dartGreen.withValues(alpha: 0.1)
-          : AppColors.red.withValues(alpha: 0.1),
-      foregroundColor: supplier.status == SupplierStatus.SUPPLIER_STATUS_ACTIVE
-          ? AppColors.dartGreen
-          : AppColors.red,
-
-      child: Text(
-        supplier.status == SupplierStatus.SUPPLIER_STATUS_ACTIVE
-            ? intl.activeText
-            : intl.inactiveText,
-      ),
+      backgroundColor: isActive
+          ? theme.colorScheme.primary.withValues(alpha: 0.1)
+          : theme.colorScheme.destructive.withValues(alpha: 0.1),
+      foregroundColor: isActive
+          ? theme.colorScheme.primary
+          : theme.colorScheme.destructive,
+      child: Text(isActive ? intl.activeText : intl.inactiveText),
     );
   }
 
@@ -132,21 +140,21 @@ class SupplierCellBuilders {
       mainAxisSize: MainAxisSize.min,
       spacing: 8,
       children: [
-        Expanded(
-          child: ShadIconButton.ghost(
-            icon: const Icon(LucideIcons.squarePen400, size: 16),
-            onPressed: onEdit,
+        ShadIconButton.ghost(
+          icon: Icon(
+            LucideIcons.pencil,
+            size: 16,
+            color: theme.colorScheme.foreground,
           ),
+          onPressed: onEdit,
         ),
-        Expanded(
-          child: ShadIconButton.ghost(
-            icon: Icon(
-              LucideIcons.trash2400,
-              size: 16,
-              color: theme.colorScheme.destructive,
-            ),
-            onPressed: onDelete,
+        ShadIconButton.ghost(
+          icon: Icon(
+            LucideIcons.trash2,
+            size: 16,
+            color: theme.colorScheme.destructive,
           ),
+          onPressed: onDelete,
         ),
       ],
     );

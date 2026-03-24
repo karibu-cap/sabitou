@@ -18,10 +18,16 @@ class LowStockAlert extends StatelessWidget {
   ({Color bg, Color text}) _criticality(double qty, double threshold) {
     final ratio = qty / threshold.clamp(1, double.infinity);
     if (ratio <= 0.5) {
-      return (bg: SabitouColors.dangerSoft, text: SabitouColors.dangerText);
+      return (
+        bg: SabitouColors.dangerSoft,
+        text: SabitouColors.dangerForeground,
+      );
     }
     if (ratio <= 0.8) {
-      return (bg: SabitouColors.orangeSoft, text: SabitouColors.orangeText);
+      return (
+        bg: SabitouColors.orangeSoft,
+        text: SabitouColors.orangeForeground,
+      );
     }
 
     return (
@@ -39,7 +45,7 @@ class LowStockAlert extends StatelessWidget {
         return AlertCard(
           title: Intls.to.lowStockAlert,
           icon: LucideIcons.triangleAlert,
-          iconColor: SabitouColors.dangerText,
+          iconColor: SabitouColors.dangerForeground,
           iconBg: SabitouColors.dangerSoft,
           count: lowStock.isNotEmpty ? lowStock.length : null,
           child: lowStock.isEmpty

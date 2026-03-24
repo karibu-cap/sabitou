@@ -953,14 +953,13 @@ final _fakeTransport =
         final purchaseOrder = PurchaseOrder()
           ..refId = purchaseOrderId
           ..supplierId = req.supplierId
-          ..buyerId = req.buyerId
+          ..storeId = req.buyerId
           ..expectedDeliveryDate = req.expectedDeliveryDate
           ..status = PurchaseOrderStatus.PO_STATUS_PENDING
           ..totalAmount = req.items.fold<double>(
             0.0,
             (sum, item) => sum + (item.total),
           )
-          ..items.addAll(req.items)
           ..createdAt = Timestamp.fromDateTime(clock.now())
           ..createdByUserId = req.createdByUserId
           ..notes = req.notes;
@@ -982,7 +981,7 @@ final _fakeTransport =
       ..unary(PurchaseOrderService.listPurchaseOrders, (req, _) async {
         final purchaseOrders =
             (_fakeData[CollectionName.purchaseOrders] as List<PurchaseOrder>)
-                .where((po) => po.buyerId == req.buyerId)
+                .where((po) => po.storeId == req.buyerId)
                 .toList();
 
         return ListPurchaseOrdersResponse()
@@ -1022,7 +1021,7 @@ final _fakeTransport =
         final receivingNote = ReceivingNote()
           ..refId = receivingNoteId
           ..supplierId = req.supplierId
-          ..buyerId = req.buyerId
+          ..storeId = req.buyerId
           ..receivedByUserId = req.receivedByUserId
           ..relatedPurchaseOrderId = req.purchaseOrderId
           ..items.addAll(req.items)
@@ -1073,12 +1072,11 @@ final _fakeTransport =
             existingBatch = Batch()
               ..refId = batchId
               ..productId = item.productId
-              ..warehouseId = receivingNote.buyerId
+              ..warehouseId = receivingNote.storeId
               ..quantity = item.quantityReceived.toInt()
               ..expirationDate = item.expirationDate
               ..receivedAt = receivingNote.receivedAt
               ..supplierId = receivingNote.supplierId
-              ..purchasePrice = item.purchasePrice
               ..status = BatchStatus.BATCH_STATUS_ACTIVE;
             (_fakeData[CollectionName.batches] as List<Batch>).add(
               existingBatch,

@@ -82,10 +82,35 @@ class SidebarWidget extends StatelessWidget {
         ],
       ),
       SideBarItem(
-        id: DashboardItem.purchaseOrders,
-        label: Intls.to.purchaseOrders,
+        id: DashboardItem.purchaseOrdersParent,
+        label: Intls.to.purchases,
         icon: LucideIcons.baggageClaim400,
-        path: PagesRoutes.purchaseOrders.pattern,
+        children: [
+          SideBarItem(
+            id: DashboardItem.suppliers,
+            label: Intls.to.suppliers,
+            icon: LucideIcons.truck400,
+            path: PagesRoutes.suppliers.pattern,
+          ),
+          SideBarItem(
+            id: DashboardItem.purchaseOrders,
+            label: Intls.to.purchaseOrders,
+            icon: LucideIcons.clipboardList400,
+            path: PagesRoutes.purchaseOrders.pattern,
+          ),
+          SideBarItem(
+            id: DashboardItem.purchaseReceives,
+            label: Intls.to.purchaseReceives,
+            icon: LucideIcons.packageCheck400,
+            path: PagesRoutes.purchaseReceives.pattern,
+          ),
+          SideBarItem(
+            id: DashboardItem.bills,
+            label: Intls.to.bills,
+            icon: LucideIcons.receipt400,
+            path: PagesRoutes.bills.pattern,
+          ),
+        ],
       ),
       SideBarItem(
         id: DashboardItem.reports,
@@ -98,12 +123,6 @@ class SidebarWidget extends StatelessWidget {
         label: Intls.to.audits,
         icon: LucideIcons.fileClock400,
         path: PagesRoutes.audits.pattern,
-      ),
-      SideBarItem(
-        id: DashboardItem.suppliers,
-        label: Intls.to.suppliers,
-        icon: LucideIcons.truck400,
-        path: PagesRoutes.suppliers.pattern,
       ),
       SideBarItem(
         id: DashboardItem.members,

@@ -432,12 +432,12 @@ func (h *Handler) applyPurchaseOrder(r *http.Request, op models.UploadOperation,
 	case "PUT":
 		_, err := h.db.Exec(ctx, `
 			INSERT INTO purchase_orders
-				(id, ref_id, supplier_id, buyer_id, status, total_amount, currency,
+				(id, ref_id, supplier_id, store_id, status, total_amount, currency,
 				 created_by_user_id, expected_delivery_date, destination_address,
-				 buyer_name, supplier_name, notes)
+				 store_name, supplier_name, notes, payment_id, sub_total, tax_total, order_date)
 			VALUES ($1,$2,$3,$4,$5,$6,$7,$8,
 			        NULLIF($9,'')::date,
-			        $10,$11,$12,$13)
+			        $10,$11,$12,$13,$14,$15,$16,$17)
 			ON CONFLICT (ref_id) DO UPDATE SET
 				status                 = EXCLUDED.status,
 				total_amount           = EXCLUDED.total_amount,
@@ -447,16 +447,20 @@ func (h *Handler) applyPurchaseOrder(r *http.Request, op models.UploadOperation,
 			op.ID,
 			strField(d, "ref_id"),
 			strField(d, "supplier_id"),
-			strField(d, "buyer_id"),
+			strField(d, "store_id"),
 			strFieldOr(d, "status", "PO_STATUS_DRAFT"),
 			numericField(d, "total_amount"),
 			strFieldOr(d, "currency", "XAF"),
 			claims.UserID,
 			strField(d, "expected_delivery_date"),
 			strField(d, "destination_address"),
-			strField(d, "buyer_name"),
+			strField(d, "store_name"),
 			strField(d, "supplier_name"),
 			strField(d, "notes"),
+			strField(d, "payment_id"),
+			numericField(d, "sub_total"),
+			numericField(d, "tax_total"),
+			strField(d, "order_date"),
 		)
 		return err
 
@@ -495,8 +499,8 @@ func (h *Handler) applyPurchaseOrderLineItem(r *http.Request, op models.UploadOp
 		_, err := h.db.Exec(ctx, `
 			INSERT INTO purchase_order_line_items
 				(id, purchase_order_id, store_id, line_index, product_id,
-				 quantity, unit_price, total, batch_id)
-			VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
+				 quantity, unit_price, total, batch_id, quantity_received, tax_amount)
+			VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)
 			ON CONFLICT (purchase_order_id, line_index) DO UPDATE SET
 				quantity   = EXCLUDED.quantity,
 				unit_price = EXCLUDED.unit_price,
@@ -512,6 +516,8 @@ func (h *Handler) applyPurchaseOrderLineItem(r *http.Request, op models.UploadOp
 			numericField(d, "unit_price"),
 			numericField(d, "total"),
 			strField(d, "batch_id"),
+			numericField(d, "quantity_received"),
+			numericField(d, "tax_amount"),
 		)
 		return err
 
@@ -536,7 +542,7 @@ func (h *Handler) applyReceivingNote(r *http.Request, op models.UploadOperation,
 	case "PUT":
 		_, err := h.db.Exec(ctx, `
 			INSERT INTO receiving_notes
-				(id, ref_id, related_purchase_order_id, supplier_id, buyer_id,
+				(id, ref_id, related_purchase_order_id, supplier_id, store_id,
 				 received_by_user_id, notes, status)
 			VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
 			ON CONFLICT (ref_id) DO NOTHING
@@ -545,7 +551,7 @@ func (h *Handler) applyReceivingNote(r *http.Request, op models.UploadOperation,
 			strField(d, "ref_id"),
 			strField(d, "related_purchase_order_id"),
 			strField(d, "supplier_id"),
-			strField(d, "buyer_id"),
+			strField(d, "store_id"),
 			claims.UserID,
 			strField(d, "notes"),
 			strFieldOr(d, "status", "RECEIVING_NOTE_STATUS_DRAFT"),
@@ -581,8 +587,8 @@ func (h *Handler) applyReceivingNoteLineItem(r *http.Request, op models.UploadOp
 		_, err := h.db.Exec(ctx, `
 			INSERT INTO receiving_note_line_items
 				(id, receiving_note_id, store_id, line_index, product_id,
-				 quantity_expected, quantity_received, quantity_rejected, batch_id)
-			VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
+				 quantity_expected, quantity_received, quantity_rejected, batch_id, purchase_price, store_id)
+			VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)
 			ON CONFLICT (receiving_note_id, line_index) DO UPDATE SET
 				quantity_received = EXCLUDED.quantity_received,
 				quantity_rejected = EXCLUDED.quantity_rejected,
@@ -597,6 +603,8 @@ func (h *Handler) applyReceivingNoteLineItem(r *http.Request, op models.UploadOp
 			numericField(d, "quantity_received"),
 			numericField(d, "quantity_rejected"),
 			strField(d, "batch_id"),
+			numericField(d, "purchase_price"),
+			strField(d, "store_id"),
 		)
 		return err
 

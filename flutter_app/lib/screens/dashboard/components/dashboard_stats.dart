@@ -45,7 +45,7 @@ class DashboardStats extends StatelessWidget {
                 ? SabitouColors.dangerSoft
                 : SabitouColors.successSoft,
             iconColor: stats.lowStockItemsCount > 0
-                ? SabitouColors.dangerText
+                ? SabitouColors.dangerForeground
                 : SabitouColors.successForeground,
             badge: stats.lowStockItemsCount > 0
                 ? Intls.to.requiresAttention
@@ -86,7 +86,7 @@ class DashboardStats extends StatelessWidget {
             value: stats.todayTransactions.toString(),
             icon: LucideIcons.shoppingCart,
             iconBg: SabitouColors.purpleSoft,
-            iconColor: SabitouColors.purpleText,
+            iconColor: SabitouColors.purpleForeground,
             badge: pctTxn != 0
                 ? '${pctTxn > 0 ? '+' : ''}${pctTxn.toStringAsFixed(1)}%'
                 : null,
@@ -223,7 +223,7 @@ class _StatCard extends StatelessWidget {
                         size: 11,
                         color: data.trend == TrendType.up
                             ? SabitouColors.successForeground
-                            : SabitouColors.dangerText,
+                            : SabitouColors.dangerForeground,
                       ),
                     ],
                   ),
@@ -263,7 +263,7 @@ class _StatCard extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                   color: data.badgeIsGood
                       ? SabitouColors.successForeground
-                      : SabitouColors.dangerText,
+                      : SabitouColors.dangerForeground,
                   letterSpacing: 0.2,
                 ),
               ),
