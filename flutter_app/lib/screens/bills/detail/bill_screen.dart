@@ -47,18 +47,24 @@ class BillDetailScreen extends StatelessWidget {
                 if (snapshot.connectionState != ConnectionState.done) {
                   return const Loading();
                 }
-                final bill = controller.billItemStream.valueOrNull;
 
-                if (bill == null) {
-                  return const EmptyDetailState();
-                }
+                return StreamBuilder(
+                  stream: controller.billItemStream.stream,
+                  builder: (context, asyncSnapshot) {
+                    final bill = asyncSnapshot.data;
 
-                return BillDetail(
-                  bill: bill,
-                  onDeleted: () => onDeleted == null
-                      ? AppRouter.go(context, PagesRoutes.bills.pattern)
-                      : onDeleted?.call(),
-                  onMarkedPaid: onMarkedPaid,
+                    if (bill == null) {
+                      return const EmptyDetailState();
+                    }
+
+                    return BillDetail(
+                      bill: bill,
+                      onDeleted: () => onDeleted == null
+                          ? AppRouter.go(context, PagesRoutes.bills.pattern)
+                          : onDeleted?.call(),
+                      onMarkedPaid: onMarkedPaid,
+                    );
+                  },
                 );
               },
             ),

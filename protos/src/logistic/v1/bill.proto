@@ -12,7 +12,7 @@ message Bill {
   string supplier_id = 3;
   string store_id = 4;
   BillStatus status = 5;
-  string payment_id = 6;
+  repeated string payment_ids = 6;
   google.protobuf.Timestamp bill_date = 7; // Date of bill
   google.protobuf.Timestamp due_date = 8; // Date of payment
   double sub_total = 9; // HT
@@ -41,4 +41,5 @@ enum BillStatus {
   BILL_STATUS_PAID = 3; // Paid
   BILL_STATUS_VOID = 4; // Void
   BILL_STATUS_OVERDUE = 5; // Overdue
+  BILL_STATUS_PARTIALLY_PAID = 6; // Paid
 }

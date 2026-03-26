@@ -9,9 +9,10 @@ import '../../../widgets/error/loading_failed.dart';
 import '../../router/app_router.dart';
 import '../../router/page_routes.dart';
 import '../../themes/app_theme.dart';
+import '../../widgets/bills/bill_card.dart';
+import '../../widgets/bills/form/bill_form.dart';
 import 'bills_controller.dart';
 import 'bills_view_model.dart';
-import 'components/bill_card.dart';
 import 'components/empty_detail.dart';
 import 'detail/bill_screen.dart';
 
@@ -96,6 +97,7 @@ class _DesktopSplitView extends StatelessWidget {
                   children: [
                     Positioned.fill(
                       child: BillDetailScreen(
+                        key: Key(selectedBill),
                         billRefId: selectedBill,
                         onDeleted: () => controller.selectBill(null),
                       ),
@@ -105,7 +107,7 @@ class _DesktopSplitView extends StatelessWidget {
                       top: 10,
                       right: 10,
                       child: IconButton(
-                        icon: const Icon(Icons.close),
+                        icon: const Icon(LucideIcons.x400),
                         onPressed: () => controller.selectBill(null),
                       ),
                     ),
@@ -137,19 +139,6 @@ class _BillsListHeader extends StatelessWidget {
   const _BillsListHeader({required this.showNewButton});
   final bool showNewButton;
 
-  void _openCreateDialog(BuildContext context) {
-    // Bill creation dialog — opened from BillsView directly.
-    // In full flow, bills are usually created from a PO.
-    // This allows manual creation.
-    showShadDialog(
-      context: context,
-      builder: (_) => ChangeNotifierProvider.value(
-        value: Provider.of<BillsController>(context, listen: false),
-        child: const _BillCreateDialog(),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final controller = Provider.of<BillsController>(context, listen: false);
@@ -157,8 +146,8 @@ class _BillsListHeader extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 20, 16, 12),
-      child: StreamBuilder<List<Bill>>(
-        stream: controller.billsStream,
+      child: FutureBuilder<List<Bill>>(
+        future: controller.billsFuture,
         builder: (context, snapshot) {
           final count = snapshot.data?.length ?? 0;
 
@@ -195,7 +184,7 @@ class _BillsListHeader extends StatelessWidget {
               if (showNewButton)
                 ShadButton(
                   size: ShadButtonSize.sm,
-                  onPressed: () => _openCreateDialog(context),
+                  onPressed: () => showBillForm(context),
                   leading: const Icon(LucideIcons.plus, size: 14),
                   child: Text(Intls.to.newText),
                 ),
@@ -220,39 +209,8 @@ class _SearchAndFilters extends StatelessWidget {
       padding: const EdgeInsets.only(left: 12, right: 12, bottom: 10),
       child: Column(
         children: [
-          // Search input
-          Container(
-            decoration: BoxDecoration(
-              color: cs.background,
-              border: Border.fromBorderSide(BorderSide(color: cs.border)),
-              borderRadius: const BorderRadius.all(Radius.circular(9)),
-            ),
-            child: Row(
-              children: [
-                const SizedBox(width: 12),
-                Icon(LucideIcons.search, size: 14, color: cs.mutedForeground),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: TextField(
-                    controller: controller.searchController,
-                    onChanged: (v) => controller.searchQuery.add(v),
-                    style: theme.textTheme.p.copyWith(fontSize: 13),
-                    decoration: InputDecoration(
-                      hintText: Intls.to.searchBill,
-                      hintStyle: theme.textTheme.muted.copyWith(fontSize: 13),
-                      border: InputBorder.none,
-                      isDense: true,
-                      contentPadding: const EdgeInsets.symmetric(vertical: 10),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 12),
-              ],
-            ),
-          ),
+          const _SearchInput(),
           const SizedBox(height: 8),
-
-          // Status chips
           StreamBuilder<BillStatus?>(
             stream: controller.statusFilter.stream,
             builder: (context, snapshot) {
@@ -322,6 +280,28 @@ class _SearchAndFilters extends StatelessWidget {
             },
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _SearchInput extends StatelessWidget {
+  const _SearchInput();
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = Provider.of<BillsController>(
+      context,
+      listen: false,
+    );
+
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ShadInput(
+        controller: controller.searchController,
+        placeholder: Text(Intls.to.searchPurchaseOrder),
+        leading: const Icon(LucideIcons.search, size: 16),
+        onChanged: (v) => controller.searchQuery.add(v),
       ),
     );
   }
@@ -441,6 +421,7 @@ class _BillsList extends StatelessWidget {
                   );
                 }
               },
+              onDelete: () => controller.deleteBill(bills[i].refId),
             );
           },
         );
@@ -532,24 +513,6 @@ class _CountBadge extends StatelessWidget {
           color: SabitouColors.accentForeground,
         ),
       ),
-    );
-  }
-}
-
-class _BillCreateDialog extends StatelessWidget {
-  const _BillCreateDialog();
-
-  @override
-  Widget build(BuildContext context) {
-    return ShadDialog(
-      title: Text(Intls.to.newBill),
-      description: Text(Intls.to.newBillMessage),
-      actions: [
-        ShadButton.outline(
-          onPressed: () => Navigator.pop(context),
-          child: Text(Intls.to.close),
-        ),
-      ],
     );
   }
 }

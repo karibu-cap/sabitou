@@ -3,20 +3,22 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../../../repositories/bill_repository.dart';
 import '../../../repositories/purchase_order_repository.dart';
+import '../components/po_utils.dart';
 
 /// ViewModel scoped to ONE purchase order.
-///
-/// Unlike [PurchaseOrderDetailViewModel] which handles the full list,
-/// this one only cares about a single [purchaseOrderId].
-/// Provides reactive streams for the PO itself, its linked bills,
-/// and its linked receiving notes.
 class PurchaseOrderDetailViewModel {
+  /// A ViewModel scoped to ONE purchase order.
+  /// [purchaseOrderId] The ID of the purchase order to manage.
+  /// [storeId] The ID of the store this purchase order is related to.
   PurchaseOrderDetailViewModel({
     required this.purchaseOrderId,
     required this.storeId,
   });
 
+  /// The ID of the purchase order to manage.
   final String purchaseOrderId;
+
+  /// The ID of the store this purchase order is related to.
   final String storeId;
 
   final _poRepo = PurchaseOrderRepository.instance;
@@ -39,7 +41,7 @@ class PurchaseOrderDetailViewModel {
             .toList(),
       );
 
-  // Merges all reactive streams into one snapshot used by the detail screen.
+  /// Merges all reactive streams into one snapshot used by the detail screen.
   Stream<PurchaseOrderDetailSnapshot> get detailStream => Rx.combineLatest3(
     purchaseOrderStream,
     billsStream,
@@ -51,12 +53,15 @@ class PurchaseOrderDetailViewModel {
     ),
   );
 
+  /// Records goods received against this PO.
   Future<String?> createReceivingNote(ReceivingNote request) =>
       _poRepo.createReceivingNote(request);
 
+  /// Cancels the purchase order with the given [poId].
   Future<bool> cancelPurchaseOrder(String poId) =>
       _poRepo.cancelPurchaseOrder(poId);
 
+  /// Updates the status of a purchase order.
   Future<bool> updateStatus({
     required String purchaseOrderId,
     required PurchaseOrderStatus status,
@@ -65,21 +70,6 @@ class PurchaseOrderDetailViewModel {
     status: status,
   );
 
+  /// Creates a new bill.
   Future<bool> createBill(Bill request) => _billsRepo.createBill(request);
-}
-
-/// Snapshot of a PO and its linked documents — emitted by [PurchaseOrderDetailSnapshot.detailStream].
-/// Snapshot of a PO and its linked documents — emitted by [PurchaseOrderDetailSnapshot.detailStream].
-class PurchaseOrderDetailSnapshot {
-  const PurchaseOrderDetailSnapshot({
-    required this.po,
-    required this.bills,
-    required this.receivingNotes,
-  });
-
-  final PurchaseOrder? po;
-  final List<Bill> bills;
-  final List<ReceivingNote> receivingNotes;
-
-  bool get hasPo => po != null;
 }

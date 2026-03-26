@@ -5,17 +5,24 @@ import 'package:provider/provider.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+import '../../../router/app_router.dart';
+import '../../../router/page_routes.dart';
 import '../../../services/internationalization/internationalization.dart';
 import '../../../themes/app_theme.dart';
 import '../../../utils/formatters.dart';
+import '../../../utils/responsive_utils.dart';
 import '../../../utils/user_preference.dart';
-import '../../bills/components/bill_card.dart';
+import '../../../widgets/bills/bill_card.dart';
+import '../../../widgets/bills/form/bill_form.dart';
+import '../../../widgets/custom_grid.dart';
+import '../components/convert_to_bill_sheet.dart';
 import '../components/po_receive_form.dart';
 import '../components/po_utils.dart';
 import 'purchase_order_detail_controller.dart';
 
 /// The [PurchaseOrderDetail].
 class PurchaseOrderDetail extends StatefulWidget {
+  /// Creates a new instance of [PurchaseOrderDetail].
   const PurchaseOrderDetail({
     super.key,
     required this.po,
@@ -27,12 +34,25 @@ class PurchaseOrderDetail extends StatefulWidget {
     this.onBack,
   });
 
+  /// The [PurchaseOrder] object.
   final PurchaseOrder po;
+
+  /// The list of [Bill]s.
   final List<Bill> bills;
+
+  /// The list of [ReceivingNote]s.
   final List<ReceivingNote> receivingNotes;
+
+  /// The list of [Payment]s.
   final List<Payment> payments;
+
+  /// The ID of the store.
   final String storeId;
+
+  /// The ID of the current user.
   final String currentUserId;
+
+  /// The callback function to be called when the back button is pressed.
   final VoidCallback? onBack;
 
   @override
@@ -88,7 +108,6 @@ class _PurchaseOrderDetailState extends State<PurchaseOrderDetail>
           ),
         ),
 
-        // ── Loading overlay for mutations ──
         if (ctrl.isLoading)
           LinearProgressIndicator(
             minHeight: 2,
@@ -96,7 +115,6 @@ class _PurchaseOrderDetailState extends State<PurchaseOrderDetail>
             color: SabitouColors.accent,
           ),
 
-        // ── Tab body ──
         Expanded(
           child: TabBarView(
             controller: _tabs,
@@ -107,9 +125,13 @@ class _PurchaseOrderDetailState extends State<PurchaseOrderDetail>
                 bills: widget.bills,
                 payments: widget.payments,
               ),
-              _BillsTab(po: widget.po, bills: widget.bills),
               _ReceivesTab(
                 po: widget.po,
+                receivingNotes: widget.receivingNotes,
+              ),
+              _BillsTab(
+                po: widget.po,
+                bills: widget.bills,
                 receivingNotes: widget.receivingNotes,
               ),
             ],
@@ -131,125 +153,19 @@ class _DetailTopRow extends StatelessWidget {
   final ShadThemeData theme;
   final ShadColorScheme cs;
 
-  Future<void> _confirmGenerateBill(
-    BuildContext context,
-    PurchaseOrderDetailController ctrl,
-  ) async {
-    final ok = await showShadDialog<bool>(
-      context: context,
-      builder: (_) => ShadDialog(
-        title: Text(Intls.to.generateBillQuestion),
-        description: Text(
-          Intls.to.billWillBeCreated.trParams({
-            'refId': po.refId,
-            'amount': Formatters.formatCurrency(po.totalAmount),
-          }),
-        ),
-        actions: [
-          ShadButton.outline(
-            onPressed: () => Navigator.pop(context, false),
-            child: Text(Intls.to.cancel),
-          ),
-          ShadButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: Text(Intls.to.save),
-          ),
-        ],
-      ),
-    );
-    final userId = context.read<UserPreferences>().userId;
-    if (ok == true && context.mounted && userId != null) {
-      await ctrl.generateBill(
-        purchaseOrder: po,
-        dueDate: DateTime.now().add(const Duration(days: 30)),
-      );
-    }
-  }
-
-  Future<void> _showMoreMenu(
-    BuildContext context,
-    PurchaseOrderDetailController ctrl,
-  ) async {
-    await showShadDialog(
-      context: context,
-      builder: (_) => ShadDialog(
-        title: Text(po.refId),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _MenuTile(
-              icon: LucideIcons.download,
-              label: Intls.to.downloadPDF,
-              onTap: () => Navigator.pop(context),
-            ),
-            _MenuTile(
-              icon: LucideIcons.printer,
-              label: Intls.to.print,
-              onTap: () => Navigator.pop(context),
-            ),
-            _MenuTile(
-              icon: LucideIcons.copy,
-              label: Intls.to.clone,
-              onTap: () => Navigator.pop(context),
-            ),
-            if (ctrl.canCancel(po.status))
-              _MenuTile(
-                icon: LucideIcons.ban,
-                label: Intls.to.cancelOrder,
-                isDestructive: true,
-                onTap: () {
-                  Navigator.pop(context);
-                  _confirmCancel(context, ctrl);
-                },
-              ),
-          ],
-        ),
-        actions: [
-          ShadButton.outline(
-            onPressed: () => Navigator.pop(context),
-            child: Text(Intls.to.close),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Future<void> _confirmCancel(
-    BuildContext context,
-    PurchaseOrderDetailController ctrl,
-  ) async {
-    final ok = await showShadDialog<bool>(
-      context: context,
-      builder: (_) => ShadDialog.alert(
-        title: Text(Intls.to.cancelPurchaseOrderQuestion),
-        description: Text(Intls.to.thisActionIsIrreversible),
-        actions: [
-          ShadButton.outline(
-            onPressed: () => Navigator.pop(context, false),
-            child: Text(Intls.to.no),
-          ),
-          ShadButton.destructive(
-            onPressed: () => Navigator.pop(context, true),
-            child: Text(Intls.to.confirmCancellation),
-          ),
-        ],
-      ),
-    );
-    final userId = context.read<UserPreferences>().userId;
-    if (ok == true && context.mounted && userId != null) {
-      await ctrl.cancelPurchaseOrder(userId: userId);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final ctrl = context.watch<PurchaseOrderDetailController>();
     final userId = context.select<UserPreferences, String?>((e) => e.userId);
+    final isMobile = ResponsiveUtils.isMobile(context);
 
-    return Row(
+    return Flex(
+      direction: isMobile ? Axis.vertical : Axis.horizontal,
+      spacing: 12,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
+          flex: isMobile ? 0 : 2,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -276,7 +192,9 @@ class _DetailTopRow extends StatelessWidget {
           runSpacing: 8,
           alignment: WrapAlignment.end,
           children: [
-            if (ctrl.canReceive(po.status) && userId != null)
+            if (ctrl.canReceive(po.status) &&
+                userId != null &&
+                PoStatusUtils.receiveProgress(po) < 1.0)
               ShadButton(
                 size: ShadButtonSize.sm,
                 onPressed: () => showReceiveForm(
@@ -292,20 +210,96 @@ class _DetailTopRow extends StatelessWidget {
             if (ctrl.canGenerateBill(po.status))
               ShadButton.outline(
                 size: ShadButtonSize.sm,
-                onPressed: () => _confirmGenerateBill(context, ctrl),
+                onPressed: () => showBillForm(context, purchaseOrder: po),
                 leading: const Icon(LucideIcons.fileText, size: 14),
                 child: Text(Intls.to.generateBill),
               ),
 
-            ShadButton.ghost(
-              size: ShadButtonSize.sm,
-              onPressed: () => _showMoreMenu(context, ctrl),
-              leading: const Icon(LucideIcons.ellipsisVertical, size: 14),
-              child: const SizedBox.shrink(),
-            ),
+            _Menu(po: po),
           ],
         ),
       ],
+    );
+  }
+}
+
+class _Menu extends StatelessWidget {
+  final PurchaseOrder po;
+
+  final popoverController = ShadPopoverController();
+
+  _Menu({required this.po});
+
+  Future<void> _confirmCancel(
+    BuildContext context,
+    PurchaseOrderDetailController ctrl,
+  ) async {
+    final ok = await showShadDialog<bool>(
+      context: context,
+      builder: (context) => ShadDialog.alert(
+        title: Text(Intls.to.cancelPurchaseOrderQuestion),
+        description: Text(Intls.to.thisActionIsIrreversible),
+        actions: [
+          ShadButton.outline(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(Intls.to.no),
+          ),
+          ShadButton.destructive(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(Intls.to.confirmCancellation),
+          ),
+        ],
+      ),
+    );
+    final userId = context.read<UserPreferences>().userId;
+    if (ok == true && context.mounted && userId != null) {
+      await ctrl.cancelPurchaseOrder(userId: userId);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final ctrl = context.watch<PurchaseOrderDetailController>();
+
+    return ShadPopover(
+      controller: popoverController,
+      child: ShadButton.ghost(
+        size: ShadButtonSize.sm,
+        onPressed: popoverController.toggle,
+        leading: const Icon(LucideIcons.ellipsisVertical),
+        child: const SizedBox.shrink(),
+      ),
+      popover: (context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _MenuTile(
+            icon: LucideIcons.download,
+            label: Intls.to.downloadPDF,
+            onTap: () => Navigator.pop(context),
+          ),
+          _MenuTile(
+            icon: LucideIcons.printer,
+            label: Intls.to.print,
+            onTap: () => Navigator.pop(context),
+          ),
+          _MenuTile(
+            icon: LucideIcons.copy,
+            label: Intls.to.clone,
+            onTap: () => Navigator.pop(context),
+          ),
+          if (ctrl.canCancel(po.status))
+            _MenuTile(
+              icon: LucideIcons.ban,
+              label: Intls.to.cancelOrder,
+              isDestructive: true,
+              onTap: () {
+                Navigator.pop(context);
+                _confirmCancel(context, ctrl);
+              },
+            ),
+        ],
+      ),
     );
   }
 }
@@ -328,19 +322,10 @@ class _MenuTile extends StatelessWidget {
     final cs = ShadTheme.of(context).colorScheme;
     final color = isDestructive ? cs.destructive : cs.foreground;
 
-    return InkWell(
-      onTap: onTap,
-      borderRadius: const BorderRadius.all(Radius.circular(8)),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
-        child: Row(
-          children: [
-            Icon(icon, size: 15, color: color),
-            const SizedBox(width: 12),
-            Text(label, style: TextStyle(fontSize: 13.5, color: color)),
-          ],
-        ),
-      ),
+    return ShadButton.link(
+      child: Text(label),
+      leading: Icon(icon, size: 15, color: color),
+      onPressed: onTap,
     );
   }
 }
@@ -460,10 +445,10 @@ class _DetailTabBar extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(Intls.to.bills),
-              if (billCount > 0) ...[
+              Text(Intls.to.receive),
+              if (receiveCount > 0) ...[
                 const SizedBox(width: 6),
-                _TabBadge(count: billCount),
+                _TabBadge(count: receiveCount),
               ],
             ],
           ),
@@ -472,10 +457,10 @@ class _DetailTabBar extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(Intls.to.receivals),
-              if (receiveCount > 0) ...[
+              Text(Intls.to.bills),
+              if (billCount > 0) ...[
                 const SizedBox(width: 6),
-                _TabBadge(count: receiveCount),
+                _TabBadge(count: billCount),
               ],
             ],
           ),
@@ -534,23 +519,21 @@ class _DetailsTab extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          GridView.count(
-            crossAxisCount: 2,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-            childAspectRatio: 3.0,
+          CustomGrid(
+            minItemWidth: 200,
+            mainAxisExtent: 100,
+            mainAxisSpacing: 16,
+            crossSpacing: 16,
             children: [
               _MetaTile(
                 label: Intls.to.supplier,
-                value: po.supplierName ?? po.supplierId,
+                value: po.hasSupplierName() ? po.supplierName : po.supplierId,
               ),
               _MetaTile(
                 label: Intls.to.deliveryTo,
                 value: po.destinationAddress.isNotEmpty
                     ? po.destinationAddress
-                    : po.storeName ?? '—',
+                    : po.storeName,
               ),
               _MetaTile(
                 label: Intls.to.subtotalHT,
@@ -837,10 +820,15 @@ class _TotalRow extends StatelessWidget {
 }
 
 class _BillsTab extends StatelessWidget {
-  const _BillsTab({required this.po, required this.bills});
+  const _BillsTab({
+    required this.po,
+    required this.bills,
+    required this.receivingNotes,
+  });
 
   final PurchaseOrder po;
   final List<Bill> bills;
+  final List<ReceivingNote> receivingNotes;
 
   @override
   Widget build(BuildContext context) {
@@ -858,12 +846,14 @@ class _BillsTab extends StatelessWidget {
               if (ctrl.canGenerateBill(po.status))
                 ShadButton(
                   size: ShadButtonSize.sm,
-                  onPressed: () => ctrl.generateBill(
-                    purchaseOrder: po,
-                    dueDate: DateTime.now().add(const Duration(days: 30)),
+                  onPressed: () => showConvertToBillSheet(
+                    context,
+                    po: po,
+                    receivingNotes: receivingNotes,
+                    existingBills: bills,
                   ),
                   leading: const Icon(LucideIcons.plus, size: 14),
-                  child: const Text('Générer'),
+                  child: Text(Intls.to.add),
                 ),
             ],
           ),
@@ -878,7 +868,17 @@ class _BillsTab extends StatelessWidget {
               children: [
                 for (int i = 0; i < bills.length; i++) ...[
                   if (i > 0) const SizedBox(height: 8),
-                  BillCard(bill: bills[i], isSelected: false, onTap: () {}),
+                  BillCard(
+                    bill: bills[i],
+                    isSelected: false,
+                    onTap: () => AppRouter.push(
+                      context,
+                      PagesRoutes.billDetail.create(
+                        BillDetailParameters(billId: bills[i].refId),
+                      ),
+                    ),
+                    onDelete: () => ctrl.deleteBill(bills[i].refId),
+                  ),
                 ],
               ],
             ),
@@ -908,7 +908,9 @@ class _ReceivesTab extends StatelessWidget {
             children: [
               _SectionLabel(label: Intls.to.receivingNotes),
               const Spacer(),
-              if (ctrl.canReceive(po.status) && userId != null)
+              if (ctrl.canReceive(po.status) &&
+                  userId != null &&
+                  PoStatusUtils.receiveProgress(po) < 1.0)
                 ShadButton(
                   size: ShadButtonSize.sm,
                   onPressed: () => showReceiveForm(
@@ -1127,7 +1129,6 @@ class _MetaTile extends StatelessWidget {
     final theme = ShadTheme.of(context);
 
     return ShadCard(
-      padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,

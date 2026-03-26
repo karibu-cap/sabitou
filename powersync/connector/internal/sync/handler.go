@@ -96,6 +96,10 @@ func (h *Handler) applyOperation(r *http.Request, op models.UploadOperation, cla
 		return h.applyInvoice(r, op, claims)
 	case "invoice_line_items":
 		return h.applyInvoiceLineItem(r, op, claims)
+	case "bills":
+		return h.applyBill(r, op, claims)
+	case "bill_line_items":
+		return h.applyBillLineItem(r, op, claims)
 	case "delivery_note_line_items":
 		return h.applyDeliveryNoteLineItem(r, op, claims)
 	case "suppliers":
@@ -498,26 +502,30 @@ func (h *Handler) applyPurchaseOrderLineItem(r *http.Request, op models.UploadOp
 	case "PUT":
 		_, err := h.db.Exec(ctx, `
 			INSERT INTO purchase_order_line_items
-				(id, purchase_order_id, store_id, line_index, product_id,
-				 quantity, unit_price, total, batch_id, quantity_received, tax_amount)
-			VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)
-			ON CONFLICT (purchase_order_id, line_index) DO UPDATE SET
-				quantity   = EXCLUDED.quantity,
+				(id, purchase_order_id, store_id, product_id,
+				 quantity_ordered, unit_price, total, batch_id, quantity_received, tax_amount,
+				 product_name)
+			VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11::jsonb)
+			ON CONFLICT (purchase_order_id) DO UPDATE SET
+				quantity_ordered = EXCLUDED.quantity_ordered,
 				unit_price = EXCLUDED.unit_price,
 				total      = EXCLUDED.total,
-				batch_id   = EXCLUDED.batch_id
+				batch_id   = EXCLUDED.batch_id,
+				quantity_received = EXCLUDED.quantity_received,
+				tax_amount = EXCLUDED.tax_amount,
+				product_name = EXCLUDED.product_name
 		`,
 			op.ID,
 			strField(d, "purchase_order_id"),
 			strField(d, "store_id"),
-			intField(d, "line_index"),
 			strField(d, "product_id"),
-			intField(d, "quantity"),
+			intField(d, "quantity_ordered"),
 			numericField(d, "unit_price"),
 			numericField(d, "total"),
 			strField(d, "batch_id"),
 			numericField(d, "quantity_received"),
 			numericField(d, "tax_amount"),
+			strField(d, "product_name"),
 		)
 		return err
 
@@ -543,8 +551,8 @@ func (h *Handler) applyReceivingNote(r *http.Request, op models.UploadOperation,
 		_, err := h.db.Exec(ctx, `
 			INSERT INTO receiving_notes
 				(id, ref_id, related_purchase_order_id, supplier_id, store_id,
-				 received_by_user_id, notes, status)
-			VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
+               received_by_user_id, received_at, notes, created_at)
+			VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
 			ON CONFLICT (ref_id) DO NOTHING
 		`,
 			op.ID,
@@ -553,8 +561,9 @@ func (h *Handler) applyReceivingNote(r *http.Request, op models.UploadOperation,
 			strField(d, "supplier_id"),
 			strField(d, "store_id"),
 			claims.UserID,
+			strField(d, "received_at"),
 			strField(d, "notes"),
-			strFieldOr(d, "status", "RECEIVING_NOTE_STATUS_DRAFT"),
+			strField(d, "created_at"),
 		)
 		return err
 
@@ -586,10 +595,10 @@ func (h *Handler) applyReceivingNoteLineItem(r *http.Request, op models.UploadOp
 	case "PUT":
 		_, err := h.db.Exec(ctx, `
 			INSERT INTO receiving_note_line_items
-				(id, receiving_note_id, store_id, line_index, product_id,
-				 quantity_expected, quantity_received, quantity_rejected, batch_id, purchase_price, store_id)
-			VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)
-			ON CONFLICT (receiving_note_id, line_index) DO UPDATE SET
+				(id, receiving_note_id, store_id, product_id,
+				 quantity_expected, quantity_received, quantity_rejected, batch_id, purchase_price)
+			VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
+			ON CONFLICT (receiving_note_id) DO UPDATE SET
 				quantity_received = EXCLUDED.quantity_received,
 				quantity_rejected = EXCLUDED.quantity_rejected,
 				batch_id          = EXCLUDED.batch_id
@@ -597,14 +606,12 @@ func (h *Handler) applyReceivingNoteLineItem(r *http.Request, op models.UploadOp
 			op.ID,
 			strField(d, "receiving_note_id"),
 			strField(d, "store_id"),
-			intField(d, "line_index"),
 			strField(d, "product_id"),
 			numericField(d, "quantity_expected"),
 			numericField(d, "quantity_received"),
 			numericField(d, "quantity_rejected"),
 			strField(d, "batch_id"),
 			numericField(d, "purchase_price"),
-			strField(d, "store_id"),
 		)
 		return err
 
@@ -755,10 +762,10 @@ func (h *Handler) applySalesOrderLineItem(r *http.Request, op models.UploadOpera
 	case "PUT":
 		_, err := h.db.Exec(ctx, `
 			INSERT INTO sales_order_line_items
-				(id, sales_order_id, store_id, line_index, product_id,
+				(id, sales_order_id, store_id, product_id,
 				 quantity, unit_price, total, batch_id)
-			VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
-			ON CONFLICT (sales_order_id, line_index) DO UPDATE SET
+			VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
+			ON CONFLICT (sales_order_id) DO UPDATE SET
 				quantity   = EXCLUDED.quantity,
 				unit_price = EXCLUDED.unit_price,
 				total      = EXCLUDED.total,
@@ -767,7 +774,6 @@ func (h *Handler) applySalesOrderLineItem(r *http.Request, op models.UploadOpera
 			op.ID,
 			strField(d, "sales_order_id"),
 			strField(d, "store_id"),
-			intField(d, "line_index"),
 			strField(d, "product_id"),
 			intField(d, "quantity"),
 			numericField(d, "unit_price"),
@@ -855,10 +861,10 @@ func (h *Handler) applyInvoiceLineItem(r *http.Request, op models.UploadOperatio
 	case "PUT":
 		_, err := h.db.Exec(ctx, `
 			INSERT INTO invoice_line_items
-				(id, invoice_id, store_id, line_index, product_id,
+				(id, invoice_id, store_id, product_id,
 				 quantity, unit_price, subtotal, tax_rate, tax_amount, total, batch_id)
-			VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)
-			ON CONFLICT (invoice_id, line_index) DO UPDATE SET
+			VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)
+			ON CONFLICT (invoice_id) DO UPDATE SET
 				quantity   = EXCLUDED.quantity,
 				unit_price = EXCLUDED.unit_price,
 				subtotal   = EXCLUDED.subtotal,
@@ -869,7 +875,6 @@ func (h *Handler) applyInvoiceLineItem(r *http.Request, op models.UploadOperatio
 			op.ID,
 			strField(d, "invoice_id"),
 			strField(d, "store_id"),
-			intField(d, "line_index"),
 			strField(d, "product_id"),
 			intField(d, "quantity"),
 			numericField(d, "unit_price"),
@@ -891,6 +896,113 @@ func (h *Handler) applyInvoiceLineItem(r *http.Request, op models.UploadOperatio
 }
 
 // =========================================================================
+// bills
+// =========================================================================
+
+func (h *Handler) applyBill(r *http.Request, op models.UploadOperation, _ *auth.Claims) error {
+	ctx := r.Context()
+	d := op.Data
+
+	switch op.Op {
+	case "PUT":
+		_, err := h.db.Exec(ctx, `
+			INSERT INTO bills
+				(id, ref_id, related_purchase_order_id, supplier_id, store_id, status,
+				 payment_ids, bill_date, due_date, sub_total, tax_total, total_amount, balance_due, currency, notes)
+			VALUES ($1,$2,$3,$4,$5,$6,$7,
+			        COALESCE(NULLIF($8,'')::date, CURRENT_DATE),
+			        NULLIF($9,'')::date,
+			        $10,$11,$12,$13,$14,$15)
+			ON CONFLICT (ref_id) DO UPDATE SET
+				status       = EXCLUDED.status,
+				total_amount = EXCLUDED.total_amount,
+				tax_total    = EXCLUDED.tax_total,
+				balance_due  = EXCLUDED.balance_due,
+				payment_ids  = EXCLUDED.payment_ids,
+				notes        = EXCLUDED.notes
+		`,
+			op.ID,
+			strField(d, "ref_id"),
+			strField(d, "related_purchase_order_id"),
+			strField(d, "supplier_id"),
+			strField(d, "store_id"),
+			strFieldOr(d, "status", "BILL_STATUS_DRAFT"),
+			strField(d, "payment_ids"),
+			strField(d, "bill_date"),
+			strField(d, "due_date"),
+			numericField(d, "sub_total"),
+			numericField(d, "tax_total"),
+			numericField(d, "total_amount"),
+			numericField(d, "balance_due"),
+			strFieldOr(d, "currency", "XAF"),
+			strField(d, "notes"),
+		)
+		return err
+
+	case "PATCH":
+		_, err := h.db.Exec(ctx, `
+			UPDATE bills SET
+				status = COALESCE(NULLIF($2, ''), status)
+			WHERE id = $1
+		`,
+			op.ID,
+			strField(d, "status"),
+		)
+		return err
+
+	case "DELETE":
+		_, err := h.db.Exec(ctx, `DELETE FROM bills WHERE id = $1`, op.ID)
+		return err
+
+	default:
+		return nil
+	}
+}
+
+// =========================================================================
+// bill_line_items
+// =========================================================================
+
+func (h *Handler) applyBillLineItem(r *http.Request, op models.UploadOperation, _ *auth.Claims) error {
+	ctx := r.Context()
+	d := op.Data
+
+	switch op.Op {
+	case "PUT":
+		_, err := h.db.Exec(ctx, `
+			INSERT INTO bill_line_items
+				(id, bill_id, store_id, product_id,
+				 description, quantity, unit_price, tax_amount, total)
+			VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
+			ON CONFLICT (bill_id) DO UPDATE SET
+				quantity    = EXCLUDED.quantity,
+				unit_price  = EXCLUDED.unit_price,
+				tax_amount  = EXCLUDED.tax_amount,
+				total       = EXCLUDED.total,
+				description = EXCLUDED.description
+		`,
+			op.ID,
+			strField(d, "bill_id"),
+			strField(d, "store_id"),
+			strField(d, "product_id"),
+			strField(d, "description"),
+			intField(d, "quantity"),
+			numericField(d, "unit_price"),
+			numericField(d, "tax_amount"),
+			numericField(d, "total"),
+		)
+		return err
+
+	case "DELETE":
+		_, err := h.db.Exec(ctx, `DELETE FROM bill_line_items WHERE id = $1`, op.ID)
+		return err
+
+	default:
+		return nil
+	}
+}
+
+// =========================================================================
 // delivery_note_line_items
 // =========================================================================
 
@@ -902,16 +1014,15 @@ func (h *Handler) applyDeliveryNoteLineItem(r *http.Request, op models.UploadOpe
 	case "PUT":
 		_, err := h.db.Exec(ctx, `
 			INSERT INTO delivery_note_line_items
-				(id, delivery_note_id, store_id, line_index, product_id, quantity, batch_id)
+				(id, delivery_note_id, store_id, product_id, quantity, batch_id)
 			VALUES ($1,$2,$3,$4,$5,$6,$7)
-			ON CONFLICT (delivery_note_id, line_index) DO UPDATE SET
+			ON CONFLICT (delivery_note_id) DO UPDATE SET
 				quantity = EXCLUDED.quantity,
 				batch_id = EXCLUDED.batch_id
 		`,
 			op.ID,
 			strField(d, "delivery_note_id"),
 			strField(d, "store_id"),
-			intField(d, "line_index"),
 			strField(d, "product_id"),
 			numericField(d, "quantity"),
 			strField(d, "batch_id"),

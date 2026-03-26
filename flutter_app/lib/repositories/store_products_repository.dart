@@ -186,7 +186,6 @@ final class StoreProductsRepository extends BaseRepository<StoreProduct> {
 
   /// Updates a store product.
   Future<bool> updateProduct(UpdateStoreProductRequest request) async {
-    print(fromGlobalProductToRaw(request.globalProduct));
     try {
       await dataSource.runTransaction((tx) async {
         await tx.updateWhere(

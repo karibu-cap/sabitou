@@ -1396,6 +1396,7 @@ class CreateReceivingNoteRequest extends $pb.GeneratedMessage {
     $core.Iterable<$3.ReceivingNoteLineItem>? items,
     $core.String? receivedByUserId,
     $core.String? notes,
+    $0.Timestamp? receivedAt,
   }) {
     final result = create();
     if (purchaseOrderId != null) result.purchaseOrderId = purchaseOrderId;
@@ -1404,6 +1405,7 @@ class CreateReceivingNoteRequest extends $pb.GeneratedMessage {
     if (items != null) result.items.addAll(items);
     if (receivedByUserId != null) result.receivedByUserId = receivedByUserId;
     if (notes != null) result.notes = notes;
+    if (receivedAt != null) result.receivedAt = receivedAt;
     return result;
   }
 
@@ -1428,6 +1430,8 @@ class CreateReceivingNoteRequest extends $pb.GeneratedMessage {
         subBuilder: $3.ReceivingNoteLineItem.create)
     ..aOS(5, _omitFieldNames ? '' : 'receivedByUserId')
     ..aOS(6, _omitFieldNames ? '' : 'notes')
+    ..aOM<$0.Timestamp>(7, _omitFieldNames ? '' : 'receivedAt',
+        subBuilder: $0.Timestamp.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -1501,6 +1505,17 @@ class CreateReceivingNoteRequest extends $pb.GeneratedMessage {
   $core.bool hasNotes() => $_has(5);
   @$pb.TagNumber(6)
   void clearNotes() => $_clearField(6);
+
+  @$pb.TagNumber(7)
+  $0.Timestamp get receivedAt => $_getN(6);
+  @$pb.TagNumber(7)
+  set receivedAt($0.Timestamp value) => $_setField(7, value);
+  @$pb.TagNumber(7)
+  $core.bool hasReceivedAt() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearReceivedAt() => $_clearField(7);
+  @$pb.TagNumber(7)
+  $0.Timestamp ensureReceivedAt() => $_ensure(6);
 }
 
 class CreateReceivingNoteResponse extends $pb.GeneratedMessage {

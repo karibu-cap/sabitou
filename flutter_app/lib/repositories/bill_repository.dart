@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../core/database/base_repository.dart';
@@ -8,8 +9,8 @@ import '../core/database/row_mapper.dart';
 import '../services/powersync/schema.dart';
 import '../utils/app_constants.dart';
 import '../utils/logger.dart';
-import '../utils/user_preference.dart';
 import '../utils/utils.dart';
+import 'purchase_order_repository.dart';
 
 /// Repository for bill management.
 final class BillRepository extends BaseRepository<Bill> {
@@ -42,11 +43,21 @@ final class BillRepository extends BaseRepository<Bill> {
     String? purchaseOrderId,
   }) async {
     try {
-      return await findWhere([
+      final result =  await findWhere([
         SqlQuery.equals(BillsFields.storeId, storeId),
         if (purchaseOrderId != null)
           SqlQuery.equals(BillsFields.relatedPurchaseOrderId, purchaseOrderId),
       ]);
+
+       for (final item in result) {
+        final result = await findItemsByBillId(item.refId, item.storeId);
+        item.items.clear();
+        item.items.addAll(result);
+        
+      }
+
+      return result;
+      
     } on Exception catch (e) {
       _logger.severe('listBills Error: $e');
 
@@ -57,15 +68,43 @@ final class BillRepository extends BaseRepository<Bill> {
   /// Gets a single bill by [billId].
   Future<Bill?> getBill(String billId) async {
     try {
-      final results = await findWhere(limit: 1, [
-        SqlQuery.equals(BillsFields.refId, billId),
-      ]);
+      final results = await findById(billId);
+      final items = await findItemsByBillId(billId, results?.storeId ?? '');
 
-      return results.isNotEmpty ? results.first : null;
+      return results?..items.addAll(items);
     } on Exception catch (e) {
       _logger.severe('getBill Error: $e');
 
       return null;
+    }
+  }
+
+  /// Watches a single bill by [billId] with its line items.
+  Stream<Bill?> watchBill(String billId) {
+    try {
+      // Watch both the bill and its items, then combine them
+      final billStream = watchOne(billId);
+      final itemsStream = dataSource.watchCollection(
+        CollectionName.billLineItems,
+        filters: [SqlQuery.equals(BillLineItemsFields.billId, billId)],
+      );
+      
+      return Rx.combineLatest2(
+        billStream,
+        itemsStream,
+        (bill, itemsRows) async {
+          if (bill == null) return null;
+          final items = itemsRows.map(fromRowToBillLineItem).toList();
+          bill.items.clear();
+          bill.items.addAll(items);
+
+          return bill;
+        },
+      ).asyncMap((future) => future);
+    } on Exception catch (e) {
+      _logger.severe('watchBill Error: $e');
+
+      return Stream.value(null);
     }
   }
 
@@ -76,78 +115,28 @@ final class BillRepository extends BaseRepository<Bill> {
 
       await create(bill);
 
+      for (final lineItem in bill.items) {
+        final lineRaw = fromBillLineItemToRaw(
+          lineItem,
+          bill.refId,
+          bill.storeId,
+        );
+        await dataSource.createRecord(
+          table: CollectionName.billLineItems,
+          record: {...lineRaw},
+        );
+      }
+
+      await PurchaseOrderRepository.instance.syncPOStatusFromBills(
+        purchaseOrderId: bill.relatedPurchaseOrderId,
+        storeId: bill.storeId,
+      );
+
       return true;
     } on Exception catch (e) {
       _logger.severe('createBill Error: $e');
 
       return false;
-    }
-  }
-
-  /// Creates a new bill from a [PurchaseOrder].
-  /// Freezes amounts from the PO and sets status to OPEN.
-  Future<Bill?> createBillFromPurchaseOrder({
-    required PurchaseOrder purchaseOrder,
-    required DateTime dueDate,
-    String? notes,
-  }) async {
-    try {
-      if (UserPreferences.instance.store == null) return null;
-
-      final now = DateTime.now();
-      final billId = AppUtils.generateSmartDatabaseId('BILL');
-
-      final bill = Bill(
-        refId: billId,
-        relatedPurchaseOrderId: purchaseOrder.refId,
-        supplierId: purchaseOrder.supplierId,
-        storeId: purchaseOrder.storeId,
-        status: BillStatus.BILL_STATUS_OPEN,
-        billDate: Timestamp.fromDateTime(now),
-        dueDate: Timestamp.fromDateTime(dueDate),
-        subTotal: purchaseOrder.subTotal,
-        taxTotal: purchaseOrder.taxTotal,
-        totalAmount: purchaseOrder.totalAmount,
-        balanceDue: purchaseOrder.totalAmount,
-        currency: purchaseOrder.hasCurrency() ? purchaseOrder.currency : 'XAF',
-        notes: notes,
-        createdAt: Timestamp.fromDateTime(now),
-        items: purchaseOrder.items
-            .map(
-              (item) => BillLineItem(
-                productId: item.productId,
-                description: item.productId, // no display name on PO item
-                quantity: item.quantityOrdered.toInt(),
-                unitPrice: item.unitPrice,
-                taxAmount: item.taxAmount,
-                total: item.total,
-              ),
-            )
-            .toList(),
-      );
-
-      final raw = fromBillToRaw(bill);
-      await dataSource.createRecord(
-        table: CollectionName.bills,
-        record: {...raw, 'id': billId},
-      );
-
-      // Save bill line items
-      for (final lineItem in bill.items) {
-        final lineRaw = fromBillLineItemToRaw(lineItem, billId);
-        await dataSource.createRecord(
-          table: CollectionName.billLineItems,
-          record: {...lineRaw, 'id': AppUtils.generateSmartDatabaseId('BILI')},
-        );
-      }
-
-      _logger.info('Bill created: $billId for PO ${purchaseOrder.refId}');
-
-      return bill;
-    } on Exception catch (e) {
-      _logger.severe('createBillFromPurchaseOrder Error: $e');
-
-      return null;
     }
   }
 
@@ -163,6 +152,34 @@ final class BillRepository extends BaseRepository<Bill> {
       return true;
     } on Exception catch (e) {
       _logger.severe('updateBillStatus Error: $e');
+
+      return false;
+    }
+  }
+
+  /// Update the bill.
+  Future<bool> updateBill(Bill bill) async {
+    try {
+      final items = bill.items;
+      await dataSource.setRecords(
+        table: CollectionName.billLineItems,
+        records: items
+            .asMap()
+            .entries
+            .map(
+              (e) => fromBillLineItemToRaw(e.value, bill.refId, bill.storeId),
+            )
+            .toList(),
+      );
+
+      await updateWhere(
+        fields: fromBillToRaw(bill),
+        filters: [SqlQuery.equals(BillsFields.refId, bill.refId)],
+      );
+
+      return true;
+    } on Exception catch (e) {
+      _logger.severe('updateBill Error: $e');
 
       return false;
     }
@@ -195,10 +212,69 @@ final class BillRepository extends BaseRepository<Bill> {
     required String storeId,
     String? purchaseOrderId,
   }) {
-    return watchWhere([
+    final result = watchWhere([
       SqlQuery.equals(BillsFields.storeId, storeId),
       if (purchaseOrderId != null)
         SqlQuery.equals(BillsFields.relatedPurchaseOrderId, purchaseOrderId),
     ]);
+
+    return result.asyncMap((po) async {
+      for (final item in po) {
+        final result = await findItemsByBillId(item.refId, item.storeId);
+        item.items.clear();
+        item.items.addAll(result);
+        
+      }
+      
+      return po;
+    });
+  }
+
+  /// Returns all line items for the given purchase order.
+  Future<List<BillLineItem>> findItemsByBillId(
+    String billId,
+    String storeId,
+  ) async {
+    try {
+      final result = await dataSource.getCollection(
+        CollectionName.billLineItems,
+        filters: [
+          SqlQuery.equals(BillLineItemsFields.billId, billId),
+          SqlQuery.equals(BillLineItemsFields.storeId, storeId),
+        ],
+      );
+
+      return result.map(fromRowToBillLineItem).toList();
+    } on Exception catch (e) {
+      _logger.severe('findItemsByBillId Error: $e');
+
+      return [];
+    }
+  }
+
+  /// Applies a given payment to the bill, updating the balance due and status.
+  Future<bool> applyPayment(String billId, Payment payment) async {
+    try {
+      final bill = await getBill(billId);
+      if (bill == null){ return false;}
+
+      final double currentBalance = bill.balanceDue;
+      final double paymentAmount = payment.amount;
+
+      final double newBalance = currentBalance - paymentAmount;
+      bill.balanceDue = newBalance < 0 ? 0 : newBalance;
+      bill.paymentIds.add(payment.refId);
+
+      if (bill.balanceDue <= 0) {
+        bill.status = BillStatus.BILL_STATUS_PAID;
+      } else {
+        bill.status = BillStatus.BILL_STATUS_PARTIALLY_PAID;
+      }
+
+      return await updateBill(bill);
+    } on Exception catch (e) {
+      _logger.severe('applyPayment Error: $e');
+      return false;
+    }
   }
 }

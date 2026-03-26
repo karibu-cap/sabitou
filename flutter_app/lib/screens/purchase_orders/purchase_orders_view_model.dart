@@ -1,14 +1,18 @@
 import 'package:rxdart/rxdart.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
+import '../../repositories/bill_repository.dart';
 import '../../repositories/purchase_order_repository.dart';
+import 'components/po_utils.dart';
 
 /// ViewModel for Purchase Orders module.
 class PurchaseOrdersViewModel {
+  /// Constructor of new [PurchaseOrdersViewModel].
   PurchaseOrdersViewModel({required this.storeId}) {
     _init();
   }
 
+  /// The current store id.
   final String storeId;
 
   final _repo = PurchaseOrderRepository.instance;
@@ -18,17 +22,25 @@ class PurchaseOrdersViewModel {
   final _statusFilterSubject = BehaviorSubject<PurchaseOrderStatus?>.seeded(
     null,
   );
+  final _poRepo = PurchaseOrderRepository.instance;
+  final _billsRepo = BillRepository.instance;
 
+  /// The [searchQuery].
   BehaviorSubject<String> get searchQuery => _searchSubject;
+
+  ///  The [statusFilter].
   BehaviorSubject<PurchaseOrderStatus?> get statusFilter =>
       _statusFilterSubject;
 
+  /// Whether we are filtered.
   bool get isFiltered =>
       _searchSubject.value.isNotEmpty || _statusFilterSubject.value != null;
 
+  /// Stream the purchase order.
   BehaviorSubject<List<PurchaseOrder>> get purchaseOrdersStream =>
       _purchaseOrdersStream;
 
+  /// Filter the purchases order.
   Stream<List<PurchaseOrder>> get filteredPurchaseOrdersStream =>
       Rx.combineLatest3(
         purchaseOrdersStream,
@@ -65,25 +77,36 @@ class PurchaseOrdersViewModel {
         .listen(_purchaseOrdersStream.add);
   }
 
-  Future<String?> createPurchaseOrder(PurchaseOrder request) =>
-      _repo.createPurchaseOrder(request);
+  /// The list of bill link to the purchase.
+  Stream<List<Bill>> billsStream(String purchaseOrderId) =>
+      _billsRepo.watchBills(storeId: storeId, purchaseOrderId: purchaseOrderId);
 
-  Future<bool> updateStatus({
-    required String purchaseOrderId,
-    required PurchaseOrderStatus status,
-  }) => _repo.updatePurchaseOrderStatus(
-    status: status,
-    purchaseOrderId: purchaseOrderId,
-  );
+  ///The list of bill link to the purchase.
+  Stream<List<ReceivingNote>> receivingNotesStream(String purchaseOrderId) =>
+      _poRepo
+          .streamPurchaseReceivingNotes(storeId, purchaseOrderId)
+          .map(
+            (notes) => notes
+                .where((n) => n.relatedPurchaseOrderId == purchaseOrderId)
+                .toList(),
+          );
 
-  Future<bool> cancelPurchaseOrder(String purchaseOrderId) =>
-      _repo.cancelPurchaseOrder(purchaseOrderId);
+  /// Merges all reactive streams into one snapshot used by the detail screen.
+  Stream<PurchaseOrderDetailSnapshot> detailStream(String purchaseOrderId) =>
+      Rx.combineLatest3(
+        Stream.value(null),
+        billsStream(purchaseOrderId),
+        receivingNotesStream(purchaseOrderId),
+        (po, bills, notes) => PurchaseOrderDetailSnapshot(
+          bills: bills,
+          receivingNotes: notes,
+        ),
+      );
 
-  Future<String?> createReceivingNote(ReceivingNote request) =>
-      _repo.createReceivingNote(request);
-
+  /// Disposes and close the stream.
   void dispose() {
     _searchSubject.close();
     _statusFilterSubject.close();
+    _purchaseOrdersStream.close();
   }
 }

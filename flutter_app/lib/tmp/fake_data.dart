@@ -523,7 +523,7 @@ final fakeData = <String, List<dynamic>>{
       ..refId = 'PO-2025-002'
       ..supplierId = 'SUP-001'
       ..storeId = 'STR-001'
-      ..status = PurchaseOrderStatus.PO_STATUS_RECEIVED
+      ..status = PurchaseOrderStatus.PO_STATUS_CLOSED
       ..totalAmount = 5000
       ..items.addAll([
         PurchaseOrderLineItems()

@@ -27,6 +27,7 @@ const PaymentStatus$json = {
     {'1': 'PAYMENT_STATUS_PENDING', '2': 1},
     {'1': 'PAYMENT_STATUS_COMPLETED', '2': 2},
     {'1': 'PAYMENT_STATUS_FAILED', '2': 3},
+    {'1': 'PAYMENT_STATUS_INITIALIZE', '2': 4},
   ],
 };
 
@@ -34,7 +35,7 @@ const PaymentStatus$json = {
 final $typed_data.Uint8List paymentStatusDescriptor = $convert.base64Decode(
     'Cg1QYXltZW50U3RhdHVzEh4KGlBBWU1FTlRfU1RBVFVTX1VOU1BFQ0lGSUVEEAASGgoWUEFZTU'
     'VOVF9TVEFUVVNfUEVORElORxABEhwKGFBBWU1FTlRfU1RBVFVTX0NPTVBMRVRFRBACEhkKFVBB'
-    'WU1FTlRfU1RBVFVTX0ZBSUxFRBAD');
+    'WU1FTlRfU1RBVFVTX0ZBSUxFRBADEh0KGVBBWU1FTlRfU1RBVFVTX0lOSVRJQUxJWkUQBA==');
 
 @$core.Deprecated('Use paymentMethodDescriptor instead')
 const PaymentMethod$json = {

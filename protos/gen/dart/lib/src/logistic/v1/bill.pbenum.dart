@@ -27,6 +27,8 @@ class BillStatus extends $pb.ProtobufEnum {
       BillStatus._(4, _omitEnumNames ? '' : 'BILL_STATUS_VOID');
   static const BillStatus BILL_STATUS_OVERDUE =
       BillStatus._(5, _omitEnumNames ? '' : 'BILL_STATUS_OVERDUE');
+  static const BillStatus BILL_STATUS_PARTIALLY_PAID =
+      BillStatus._(6, _omitEnumNames ? '' : 'BILL_STATUS_PARTIALLY_PAID');
 
   static const $core.List<BillStatus> values = <BillStatus>[
     BILL_STATUS_UNSPECIFIED,
@@ -35,10 +37,11 @@ class BillStatus extends $pb.ProtobufEnum {
     BILL_STATUS_PAID,
     BILL_STATUS_VOID,
     BILL_STATUS_OVERDUE,
+    BILL_STATUS_PARTIALLY_PAID,
   ];
 
   static final $core.List<BillStatus?> _byValue =
-      $pb.ProtobufEnum.$_initByValueList(values, 5);
+      $pb.ProtobufEnum.$_initByValueList(values, 6);
   static BillStatus? valueOf($core.int value) =>
       value < 0 || value >= _byValue.length ? null : _byValue[value];
 

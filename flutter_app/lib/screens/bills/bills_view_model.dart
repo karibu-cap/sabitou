@@ -9,8 +9,10 @@ import 'components/bill_status.dart';
 /// ViewModel for the Bills list screen.
 /// Handles streams, filtering, and data access — no UI state.
 class BillsViewModel {
+  /// ViewModel for the Bills list screen.
   BillsViewModel({required this.storeId});
 
+  /// The ID of the store.
   final String storeId;
 
   final BillRepository _repo = BillRepository.instance;
@@ -18,16 +20,22 @@ class BillsViewModel {
   final _searchSubject = BehaviorSubject<String>.seeded('');
   final _statusFilterSubject = BehaviorSubject<BillStatus?>.seeded(null);
 
+  /// The search query subject.
   BehaviorSubject<String> get searchQuery => _searchSubject;
+
+  /// The status filter subject.
   BehaviorSubject<BillStatus?> get statusFilter => _statusFilterSubject;
 
+  /// Whether the bills are filtered.
   bool get isFiltered =>
       _searchSubject.value.isNotEmpty || _statusFilterSubject.value != null;
 
-  Stream<List<Bill>> get billsStream => _repo.watchBills(storeId: storeId);
+  /// The future of the bills.
+  Future<List<Bill>> get billsFuture => _repo.listBills(storeId: storeId);
 
+  /// The stream of the filtered bills.
   Stream<List<Bill>> get filteredBillsStream => Rx.combineLatest3(
-    billsStream,
+    Stream.fromFuture(billsFuture),
     _searchSubject.stream,
     _statusFilterSubject.stream,
     (bills, search, status) {
@@ -53,13 +61,14 @@ class BillsViewModel {
     },
   );
 
-  // ── Stream for a single PO's bills ──
+  /// Stream for a single PO's bills.
   Stream<List<Bill>> billsForPurchaseOrder(String purchaseOrderId) =>
       _repo.watchBills(storeId: storeId, purchaseOrderId: purchaseOrderId);
 
-  // ── CRUD ──
+  /// Create a bill.
   Future<bool> createBill(Bill bill) => _repo.createBill(bill);
 
+/// Dispose data.
   void dispose() {
     _searchSubject.close();
     _statusFilterSubject.close();

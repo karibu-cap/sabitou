@@ -222,7 +222,7 @@ class _NotificationItem extends StatelessWidget {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: alert.read ? Colors.transparent : cs.muted.withOpacity(0.5),
+          color: alert.read ? Colors.transparent : cs.muted.withValues(alpha:0.5),
           borderRadius: const BorderRadius.all(Radius.circular(10)),
           border: Border.fromBorderSide(BorderSide(color: cs.border)),
         ),

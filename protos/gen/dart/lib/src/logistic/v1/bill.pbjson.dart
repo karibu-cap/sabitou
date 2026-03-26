@@ -24,6 +24,7 @@ const BillStatus$json = {
     {'1': 'BILL_STATUS_PAID', '2': 3},
     {'1': 'BILL_STATUS_VOID', '2': 4},
     {'1': 'BILL_STATUS_OVERDUE', '2': 5},
+    {'1': 'BILL_STATUS_PARTIALLY_PAID', '2': 6},
   ],
 };
 
@@ -31,7 +32,8 @@ const BillStatus$json = {
 final $typed_data.Uint8List billStatusDescriptor = $convert.base64Decode(
     'CgpCaWxsU3RhdHVzEhsKF0JJTExfU1RBVFVTX1VOU1BFQ0lGSUVEEAASFQoRQklMTF9TVEFUVV'
     'NfRFJBRlQQARIUChBCSUxMX1NUQVRVU19PUEVOEAISFAoQQklMTF9TVEFUVVNfUEFJRBADEhQK'
-    'EEJJTExfU1RBVFVTX1ZPSUQQBBIXChNCSUxMX1NUQVRVU19PVkVSRFVFEAU=');
+    'EEJJTExfU1RBVFVTX1ZPSUQQBBIXChNCSUxMX1NUQVRVU19PVkVSRFVFEAUSHgoaQklMTF9TVE'
+    'FUVVNfUEFSVElBTExZX1BBSUQQBg==');
 
 @$core.Deprecated('Use billDescriptor instead')
 const Bill$json = {
@@ -57,7 +59,7 @@ const Bill$json = {
       '6': '.logistic.v1.BillStatus',
       '10': 'status'
     },
-    {'1': 'payment_id', '3': 6, '4': 1, '5': 9, '10': 'paymentId'},
+    {'1': 'payment_ids', '3': 6, '4': 3, '5': 9, '10': 'paymentIds'},
     {
       '1': 'bill_date',
       '3': 7,
@@ -107,16 +109,16 @@ final $typed_data.Uint8List billDescriptor = $convert.base64Decode(
     'CgRCaWxsEh0KBnJlZl9pZBgBIAEoCUIGukgDyAEBUgVyZWZJZBI+ChlyZWxhdGVkX3B1cmNoYX'
     'NlX29yZGVyX2lkGAIgASgJSABSFnJlbGF0ZWRQdXJjaGFzZU9yZGVySWSIAQESHwoLc3VwcGxp'
     'ZXJfaWQYAyABKAlSCnN1cHBsaWVySWQSGQoIc3RvcmVfaWQYBCABKAlSB3N0b3JlSWQSLwoGc3'
-    'RhdHVzGAUgASgOMhcubG9naXN0aWMudjEuQmlsbFN0YXR1c1IGc3RhdHVzEh0KCnBheW1lbnRf'
-    'aWQYBiABKAlSCXBheW1lbnRJZBI3CgliaWxsX2RhdGUYByABKAsyGi5nb29nbGUucHJvdG9idW'
-    'YuVGltZXN0YW1wUghiaWxsRGF0ZRI1CghkdWVfZGF0ZRgIIAEoCzIaLmdvb2dsZS5wcm90b2J1'
-    'Zi5UaW1lc3RhbXBSB2R1ZURhdGUSGwoJc3ViX3RvdGFsGAkgASgBUghzdWJUb3RhbBIbCgl0YX'
-    'hfdG90YWwYCiABKAFSCHRheFRvdGFsEiEKDHRvdGFsX2Ftb3VudBgLIAEoAVILdG90YWxBbW91'
-    'bnQSHwoLYmFsYW5jZV9kdWUYDCABKAFSCmJhbGFuY2VEdWUSGgoIY3VycmVuY3kYDSABKAlSCG'
-    'N1cnJlbmN5Ei8KBWl0ZW1zGA4gAygLMhkubG9naXN0aWMudjEuQmlsbExpbmVJdGVtUgVpdGVt'
-    'cxIUCgVub3RlcxgPIAEoCVIFbm90ZXMSOQoKY3JlYXRlZF9hdBgQIAEoCzIaLmdvb2dsZS5wcm'
-    '90b2J1Zi5UaW1lc3RhbXBSCWNyZWF0ZWRBdEIcChpfcmVsYXRlZF9wdXJjaGFzZV9vcmRlcl9p'
-    'ZA==');
+    'RhdHVzGAUgASgOMhcubG9naXN0aWMudjEuQmlsbFN0YXR1c1IGc3RhdHVzEh8KC3BheW1lbnRf'
+    'aWRzGAYgAygJUgpwYXltZW50SWRzEjcKCWJpbGxfZGF0ZRgHIAEoCzIaLmdvb2dsZS5wcm90b2'
+    'J1Zi5UaW1lc3RhbXBSCGJpbGxEYXRlEjUKCGR1ZV9kYXRlGAggASgLMhouZ29vZ2xlLnByb3Rv'
+    'YnVmLlRpbWVzdGFtcFIHZHVlRGF0ZRIbCglzdWJfdG90YWwYCSABKAFSCHN1YlRvdGFsEhsKCX'
+    'RheF90b3RhbBgKIAEoAVIIdGF4VG90YWwSIQoMdG90YWxfYW1vdW50GAsgASgBUgt0b3RhbEFt'
+    'b3VudBIfCgtiYWxhbmNlX2R1ZRgMIAEoAVIKYmFsYW5jZUR1ZRIaCghjdXJyZW5jeRgNIAEoCV'
+    'IIY3VycmVuY3kSLwoFaXRlbXMYDiADKAsyGS5sb2dpc3RpYy52MS5CaWxsTGluZUl0ZW1SBWl0'
+    'ZW1zEhQKBW5vdGVzGA8gASgJUgVub3RlcxI5CgpjcmVhdGVkX2F0GBAgASgLMhouZ29vZ2xlLn'
+    'Byb3RvYnVmLlRpbWVzdGFtcFIJY3JlYXRlZEF0QhwKGl9yZWxhdGVkX3B1cmNoYXNlX29yZGVy'
+    'X2lk');
 
 @$core.Deprecated('Use billLineItemDescriptor instead')
 const BillLineItem$json = {

@@ -21,11 +21,10 @@ class PurchaseOrderStatus extends $pb.ProtobufEnum {
       PurchaseOrderStatus._(1, _omitEnumNames ? '' : 'PO_STATUS_DRAFT');
   static const PurchaseOrderStatus PO_STATUS_PENDING =
       PurchaseOrderStatus._(2, _omitEnumNames ? '' : 'PO_STATUS_PENDING');
-  static const PurchaseOrderStatus PO_STATUS_PARTIALLY_RECEIVED =
-      PurchaseOrderStatus._(
-          3, _omitEnumNames ? '' : 'PO_STATUS_PARTIALLY_RECEIVED');
-  static const PurchaseOrderStatus PO_STATUS_RECEIVED =
-      PurchaseOrderStatus._(4, _omitEnumNames ? '' : 'PO_STATUS_RECEIVED');
+  static const PurchaseOrderStatus PO_STATUS_ISSUED =
+      PurchaseOrderStatus._(3, _omitEnumNames ? '' : 'PO_STATUS_ISSUED');
+  static const PurchaseOrderStatus PO_STATUS_CLOSED =
+      PurchaseOrderStatus._(4, _omitEnumNames ? '' : 'PO_STATUS_CLOSED');
   static const PurchaseOrderStatus PO_STATUS_CANCELLED =
       PurchaseOrderStatus._(5, _omitEnumNames ? '' : 'PO_STATUS_CANCELLED');
 
@@ -33,8 +32,8 @@ class PurchaseOrderStatus extends $pb.ProtobufEnum {
     PO_STATUS_UNSPECIFIED,
     PO_STATUS_DRAFT,
     PO_STATUS_PENDING,
-    PO_STATUS_PARTIALLY_RECEIVED,
-    PO_STATUS_RECEIVED,
+    PO_STATUS_ISSUED,
+    PO_STATUS_CLOSED,
     PO_STATUS_CANCELLED,
   ];
 

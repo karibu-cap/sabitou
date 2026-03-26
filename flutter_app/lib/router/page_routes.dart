@@ -90,6 +90,9 @@ abstract class PagesRoutes {
   /// The purchase receives route, for example, http:localhost:8080/purchase-receives.
   static final purchaseReceives = _PurchaseReceivesRoute();
 
+  /// The receiving note detail route, for example, http:localhost:8080/purchase-receives/:id.
+  static final receivingNoteDetail = _ReceivingNoteDetailRoute();
+
   /// The bills route, for example, http:localhost:8080/bills.
   static final bills = _BillsRoute();
 
@@ -111,8 +114,19 @@ abstract class PagesRoutes {
   /// The product edit route
   static final productEdit = _ProductEditRoute();
 
-  /// The sales orders route, for example, http:localhost:8080.
+  /// The payments made route, for example, http:localhost:8080/payments.
+  static final payments = _PaymentsRoute();
+
+  /// The welcome route, for example, http:localhost:8080.
   static final welcome = _WelcomeRoute();
+}
+
+class _PaymentsRoute extends PagesRoutesWithNoParams {
+  @override
+  String get pattern => '/payments';
+
+  @override
+  String get name => 'payments';
 }
 
 class _WelcomeRoute extends PagesRoutesWithNoParams {
@@ -165,7 +179,7 @@ class ProductDetailParameters {
 
 class _BillDetailRoute extends PagesRoutesWithParams<BillDetailParameters> {
   @override
-  String get pattern => '/bills/:${ProductDetailParameters.keyProductId}';
+  String get pattern => '/bills/:${BillDetailParameters.keyBillId}';
 
   @override
   String get name => 'bill-detail';
@@ -246,6 +260,33 @@ class _PurchaseReceivesRoute extends PagesRoutesWithNoParams {
 
   @override
   String get name => 'purchase-receives';
+}
+
+/// The receiving note detail parameters.
+class ReceivingNoteDetailParameters {
+  /// The receiving note ID parameter key.
+  static const String keyReceivingNoteId = 'receivingNoteId';
+
+  /// The receiving note ID.
+  final String receivingNoteId;
+
+  /// Constructs a new [ReceivingNoteDetailParameters].
+  ReceivingNoteDetailParameters({required this.receivingNoteId});
+}
+
+class _ReceivingNoteDetailRoute
+    extends PagesRoutesWithParams<ReceivingNoteDetailParameters> {
+  @override
+  String get pattern =>
+      '/purchase-receives/:${ReceivingNoteDetailParameters.keyReceivingNoteId}';
+
+  @override
+  String get name => 'receiving-note-detail';
+
+  @override
+  String create(ReceivingNoteDetailParameters parameters) {
+    return '/purchase-receives/${parameters.receivingNoteId}';
+  }
 }
 
 class _BillsRoute extends PagesRoutesWithNoParams {

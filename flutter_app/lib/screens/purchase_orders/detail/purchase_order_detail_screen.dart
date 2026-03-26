@@ -2,32 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+import '../../../services/internationalization/internationalization.dart';
 import '../../../utils/user_preference.dart';
 import '../../../widgets/loading.dart';
+import '../../../widgets/no_business_view.dart';
 import '../../../widgets/shad_scaffold.dart';
+import '../components/po_utils.dart';
 import 'purchase_order_detail.dart';
 import 'purchase_order_detail_controller.dart';
-import 'purchase_order_detail_view_model.dart';
 
 /// Standalone screen for a single purchase order.
 class PurchaseOrderDetailScreen extends StatelessWidget {
   /// Creates a [PurchaseOrderDetailScreen] for displaying details of a specific purchase order.
   const PurchaseOrderDetailScreen({super.key, required this.purchaseOrderId});
 
+  /// The current purchase id.
   final String purchaseOrderId;
 
   @override
   Widget build(BuildContext context) {
     final prefs = context.watch<UserPreferences>();
     final store = prefs.store;
-    final theme = ShadTheme.of(context);
 
     if (store == null) {
-      return Scaffold(
-        body: Center(
-          child: Text('Aucun magasin sélectionné.', style: theme.textTheme.p),
-        ),
-      );
+      return const Scaffold(body: Center(child: NoBusinessView()));
     }
 
     return ChangeNotifierProvider<PurchaseOrderDetailController>(
@@ -59,7 +57,8 @@ class _PurchaseOrderScreenBody extends StatelessWidget {
       body: StreamBuilder<PurchaseOrderDetailSnapshot>(
         stream: detailController.detailStream,
         builder: (context, snapshot) {
-          if (detailController.isLoading && !snapshot.hasData) {
+          if (snapshot.connectionState == ConnectionState.waiting ||
+              detailController.isLoading && !snapshot.hasData) {
             return const Center(child: Loading());
           }
 
@@ -80,7 +79,7 @@ class _PurchaseOrderScreenBody extends StatelessWidget {
             po: po,
             bills: snapshot_.bills,
             receivingNotes: snapshot_.receivingNotes,
-            payments: detailController.payments,
+            payments: const [],
             storeId: prefs.store?.refId ?? '',
             currentUserId: prefs.userId ?? '',
           );
@@ -118,7 +117,7 @@ class _ErrorBody extends StatelessWidget {
             ShadButton.outline(
               onPressed: onRetry,
               leading: const Icon(LucideIcons.refreshCw, size: 14),
-              child: const Text('Réessayer'),
+              child: Text(Intls.to.tryAgain),
             ),
           ],
         ),

@@ -28,7 +28,7 @@ class Bill extends $pb.GeneratedMessage {
     $core.String? supplierId,
     $core.String? storeId,
     BillStatus? status,
-    $core.String? paymentId,
+    $core.Iterable<$core.String>? paymentIds,
     $0.Timestamp? billDate,
     $0.Timestamp? dueDate,
     $core.double? subTotal,
@@ -47,7 +47,7 @@ class Bill extends $pb.GeneratedMessage {
     if (supplierId != null) result.supplierId = supplierId;
     if (storeId != null) result.storeId = storeId;
     if (status != null) result.status = status;
-    if (paymentId != null) result.paymentId = paymentId;
+    if (paymentIds != null) result.paymentIds.addAll(paymentIds);
     if (billDate != null) result.billDate = billDate;
     if (dueDate != null) result.dueDate = dueDate;
     if (subTotal != null) result.subTotal = subTotal;
@@ -82,7 +82,7 @@ class Bill extends $pb.GeneratedMessage {
         defaultOrMaker: BillStatus.BILL_STATUS_UNSPECIFIED,
         valueOf: BillStatus.valueOf,
         enumValues: BillStatus.values)
-    ..aOS(6, _omitFieldNames ? '' : 'paymentId')
+    ..pPS(6, _omitFieldNames ? '' : 'paymentIds')
     ..aOM<$0.Timestamp>(7, _omitFieldNames ? '' : 'billDate',
         subBuilder: $0.Timestamp.create)
     ..aOM<$0.Timestamp>(8, _omitFieldNames ? '' : 'dueDate',
@@ -167,13 +167,7 @@ class Bill extends $pb.GeneratedMessage {
   void clearStatus() => $_clearField(5);
 
   @$pb.TagNumber(6)
-  $core.String get paymentId => $_getSZ(5);
-  @$pb.TagNumber(6)
-  set paymentId($core.String value) => $_setString(5, value);
-  @$pb.TagNumber(6)
-  $core.bool hasPaymentId() => $_has(5);
-  @$pb.TagNumber(6)
-  void clearPaymentId() => $_clearField(6);
+  $pb.PbList<$core.String> get paymentIds => $_getList(5);
 
   @$pb.TagNumber(7)
   $0.Timestamp get billDate => $_getN(6);

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
@@ -57,7 +58,20 @@ Future<void> _initPowersyncDbServices() async {
   final service = GetIt.I.registerSingleton<PowerSyncService>(
     PowerSyncService(authApiClient: authApiClient),
   );
-  await service.initialize();
+  try {
+    await service.initialize();
+  } catch (e) {
+    if (kIsWeb && e.toString().contains('LegacyJavaScriptObject')) {
+      debugPrint('PowerSync web worker state mismatch, reinitializing...');
+      await service.close();
+      final _service = GetIt.I.registerSingletonIfAbsent<PowerSyncService>(
+        () => PowerSyncService(authApiClient: authApiClient),
+      );
+      await _service.initialize();
+    } else {
+      rethrow;
+    }
+  }
 }
 
 Future<void> _initServices() async {

@@ -7,29 +7,40 @@ import '../../../themes/app_theme.dart';
 import '../../../utils/formatters.dart';
 import 'po_utils.dart';
 
-/// Single purchase order card — used in both desktop list panel and mobile list.
+/// Single purchase order card — used in both desktop
+///  list panel and mobile list.
 class PurchaseOrderCard extends StatelessWidget {
+  /// A single purchase order card
   const PurchaseOrderCard({
     super.key,
     required this.po,
     required this.isSelected,
     required this.onTap,
-    this.billCount = 0,
-    this.receiveNoteCount = 0,
+    required this.bills,
+    required this.receivingNotes,
   });
 
+  /// The purchase order.
   final PurchaseOrder po;
+
+  /// Whether the card is selected or not.
   final bool isSelected;
+
+  /// The callback function to execute when the card is tapped.
   final VoidCallback onTap;
-  final int billCount;
-  final int receiveNoteCount;
+
+  /// The list of bills related to the purchase order.
+  final List<Bill> bills;
+
+  /// The list of receiving notes related to the purchase order.
+  final List<ReceivingNote> receivingNotes;
 
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
     final cs = theme.colorScheme;
     final receiveProg = PoStatusUtils.receiveProgress(po);
-    final isBilled = billCount > 0;
+    final billProg = PoStatusUtils.billProgress(po, bills);
 
     return GestureDetector(
       onTap: onTap,
@@ -107,7 +118,7 @@ class PurchaseOrderCard extends StatelessWidget {
                 const SizedBox(width: 10),
                 PoProgressIndicator(
                   label: Intls.to.invoice,
-                  progress: isBilled ? 1.0 : 0.0,
+                  progress: billProg,
                   activeColor: SabitouColors.success,
                 ),
                 const Spacer(),

@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../core/database/base_repository.dart';
@@ -44,7 +45,7 @@ final class ReceivingNoteRepository extends BaseRepository<ReceivingNote> {
     String? purchaseOrderId,
   }) async {
     try {
-      return await findWhere([
+      final result =  await findWhere([
         SqlQuery.equals(ReceivingNotesFields.storeId, storeId),
         if (purchaseOrderId != null)
           SqlQuery.equals(
@@ -52,6 +53,16 @@ final class ReceivingNoteRepository extends BaseRepository<ReceivingNote> {
             purchaseOrderId,
           ),
       ]);
+
+      for (final item in result) {
+        final result = await findItemsByReceiveNoteId(item.refId, item.storeId);
+        item.items.clear();
+        item.items.addAll(result);
+        
+      }
+
+      return result;
+
     } on Exception catch (e) {
       _logger.severe('listReceivingNotes Error: $e');
 
@@ -73,6 +84,40 @@ final class ReceivingNoteRepository extends BaseRepository<ReceivingNote> {
       _logger.severe('getReceivingNote Error: $e');
 
       return null;
+    }
+  }
+
+  /// Watches a single receiving note by [refId] with its line items.
+  Stream<ReceivingNote?> watchReceivingNote(String refId) {
+    try {
+      // Watch both the receiving note and its items, then combine them
+      final noteStream = dataSource.watchDocument(
+        CollectionName.receivingNotes,
+        refId,
+        primaryKey: ReceivingNotesFields.refId,
+      ).map((row) => row != null ? fromRow(row) : null);
+      
+      final itemsStream = dataSource.watchCollection(
+        CollectionName.receivingNoteLineItems,
+        filters: [SqlQuery.equals(ReceivingNoteLineItemsFields.receivingNoteId, refId)],
+      );
+      
+      return Rx.combineLatest2(
+        noteStream,
+        itemsStream,
+        (note, itemsRows) async {
+          if (note == null) return null;
+          final items = itemsRows.map(fromRowToReceivingNoteLineItem).toList();
+          note.items.clear();
+          note.items.addAll(items);
+
+          return note;
+        },
+      ).asyncMap((future) => future);
+    } on Exception catch (e) {
+      _logger.severe('watchReceivingNote Error: $e');
+
+      return Stream.value(null);
     }
   }
 
@@ -105,13 +150,46 @@ final class ReceivingNoteRepository extends BaseRepository<ReceivingNote> {
     required String storeId,
     String? purchaseOrderId,
   }) {
-    return watchWhere([
+
+     final result = watchWhere([
       SqlQuery.equals(ReceivingNotesFields.storeId, storeId),
       if (purchaseOrderId != null)
-        SqlQuery.equals(
-          ReceivingNotesFields.relatedPurchaseOrderId,
-          purchaseOrderId,
-        ),
+        SqlQuery.equals(ReceivingNotesFields.relatedPurchaseOrderId, purchaseOrderId),
     ]);
+
+    return result.asyncMap((po) async {
+      for (final item in po) {
+        final result = await findItemsByReceiveNoteId(item.refId, item.storeId);
+        item.items.clear();
+        item.items.addAll(result);
+        
+      }
+
+      return po;
+    });
+
+  }
+
+
+  /// Returns all line items for the given receive note order.
+  Future<List<ReceivingNoteLineItem>> findItemsByReceiveNoteId(
+    String receivingNoteId,
+    String storeId,
+  ) async {
+    try {
+      final result = await dataSource.getCollection(
+        CollectionName.receivingNoteLineItems,
+        filters: [
+          SqlQuery.equals(ReceivingNoteLineItemsFields.receivingNoteId, receivingNoteId),
+          SqlQuery.equals(BillLineItemsFields.storeId, storeId),
+        ],
+      );
+
+      return result.map(fromRowToReceivingNoteLineItem).toList();
+    } on Exception catch (e) {
+      _logger.severe('findItemsByReceiveNoteId Error: $e');
+
+      return [];
+    }
   }
 }

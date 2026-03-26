@@ -862,12 +862,10 @@ ReceivingNote fromRowToReceivingNote(RawRow row) {
 RawRow fromReceivingNoteLineItemToRaw(
   ReceivingNoteLineItem lineItem,
   String receivingNoteId,
-  int lineIndex,
 ) {
   return {
     ReceivingNoteLineItemsFields.receivingNoteId: receivingNoteId,
     ReceivingNoteLineItemsFields.storeId: lineItem.storeId,
-    ReceivingNoteLineItemsFields.lineIndex: lineIndex,
     ReceivingNoteLineItemsFields.productId: lineItem.productId,
     ReceivingNoteLineItemsFields.quantityExpected: lineItem.quantityExpected,
     ReceivingNoteLineItemsFields.quantityReceived: lineItem.quantityReceived,
@@ -892,7 +890,6 @@ RawRow fromReceivingNoteLineItemToRaw(
 ReceivingNoteLineItem fromRowToReceivingNoteLineItem(RawRow row) {
   final lineItem = ReceivingNoteLineItem(
     storeId: row.requireString(ReceivingNoteLineItemsFields.storeId),
-    lineIndex: row.requireInt(ReceivingNoteLineItemsFields.lineIndex),
     productId: row.requireString(ReceivingNoteLineItemsFields.productId),
     quantityExpected: row.requireDouble(
       ReceivingNoteLineItemsFields.quantityExpected,
@@ -950,7 +947,9 @@ RawRow fromBillToRaw(Bill bill) {
     BillsFields.supplierId: bill.supplierId,
     BillsFields.storeId: bill.storeId,
     BillsFields.status: bill.hasStatus() ? bill.status.name : null,
-    BillsFields.paymentId: bill.hasPaymentId() ? bill.paymentId : null,
+    BillsFields.paymentIds: bill.paymentIds.isNotEmpty
+        ? jsonEncode(bill.paymentIds)
+        : null,
     BillsFields.billDate: bill.hasBillDate()
         ? bill.billDate.toDateTime().toIso8601String()
         : null,
@@ -981,7 +980,11 @@ Bill fromRowToBill(RawRow row) {
           (e) => e.name == row.optString(BillsFields.status),
         ) ??
         BillStatus.BILL_STATUS_UNSPECIFIED,
-    paymentId: row.optString(BillsFields.paymentId),
+    paymentIds: row.optString(BillsFields.paymentIds) != null
+        ? (jsonDecode(row.optString(BillsFields.paymentIds) ?? '[]') as List)
+              .map((e) => e.toString())
+              .toList()
+        : [],
     billDate: row.optDateTime(BillsFields.billDate) == null
         ? null
         : Timestamp.fromDateTime(row.requireDateTime(BillsFields.billDate)),
@@ -1001,9 +1004,14 @@ Bill fromRowToBill(RawRow row) {
 }
 
 /// Converts a [BillLineItem] to a [RawRow].
-RawRow fromBillLineItemToRaw(BillLineItem item, String billId) {
+RawRow fromBillLineItemToRaw(
+  BillLineItem item,
+  String billId,
+  String storeId,
+) {
   return {
     BillLineItemsFields.billId: billId,
+    BillLineItemsFields.storeId: storeId,
     BillLineItemsFields.productId: item.productId,
     BillLineItemsFields.description: item.hasDescription()
         ? item.description
@@ -1024,5 +1032,98 @@ BillLineItem fromRowToBillLineItem(RawRow row) {
     unitPrice: row.requireDouble(BillLineItemsFields.unitPrice),
     taxAmount: row.optDouble(BillLineItemsFields.taxAmount) ?? 0.0,
     total: row.requireDouble(BillLineItemsFields.total),
+  );
+}
+
+/// Converts a [RawRow] to a [PurchaseOrderLineItems].
+PurchaseOrderLineItems fromRowToPurchaseOrderItems(RawRow row) {
+  return PurchaseOrderLineItems(
+    storeId: row.requireString(PurchaseOrderItemsFields.storeId),
+    productId: row.requireString(PurchaseOrderItemsFields.productId),
+    quantityOrdered: row.requireInt(PurchaseOrderItemsFields.quantityOrdered),
+    productName: row.optString(PurchaseOrderItemsFields.productName) != null
+        ? (Internationalized.create()..mergeFromProto3Json(
+            jsonDecode(row.optString(PurchaseOrderItemsFields.productName) ?? ''),
+          ))
+        : null,
+    unitPrice: row.optDouble(PurchaseOrderItemsFields.unitPrice) ?? 0.0,
+    total: row.optDouble(PurchaseOrderItemsFields.total) ?? 0.0,
+    batchId: row.optString(PurchaseOrderItemsFields.batchId),
+    quantityReceived:
+        row.optInt(PurchaseOrderItemsFields.quantityReceived) ?? 0,
+    taxAmount: row.optDouble(PurchaseOrderItemsFields.taxAmount) ?? 0.0,
+  );
+}
+
+/// Converts a [PurchaseOrderLineItems] to a [RawRow].
+RawRow fromPurchaseOrderItemsToRow(
+  PurchaseOrderLineItems item,
+  String purchaseOrderId,
+) {
+  return {
+    PurchaseOrderItemsFields.purchaseOrderId: purchaseOrderId,
+    PurchaseOrderItemsFields.storeId: item.storeId,
+    PurchaseOrderItemsFields.productId: item.productId,
+    PurchaseOrderItemsFields.quantityOrdered: item.quantityOrdered,
+    PurchaseOrderItemsFields.productName: jsonEncode(
+      item.productName.toProto3Json(),
+    ),
+    PurchaseOrderItemsFields.unitPrice: item.unitPrice,
+    PurchaseOrderItemsFields.total: item.total,
+    PurchaseOrderItemsFields.batchId: item.batchId,
+    PurchaseOrderItemsFields.quantityReceived: item.quantityReceived,
+    PurchaseOrderItemsFields.taxAmount: item.taxAmount,
+  };
+}
+
+/// Converts a [Payment] to a [RawRow].
+RawRow fromPaymentToRaw(Payment payment) {
+  return {
+    PaymentsFields.refId: payment.hasRefId() ? payment.refId : null,
+    PaymentsFields.payerId: payment.hasPayerId() ? payment.payerId : null,
+    PaymentsFields.receiver: payment.hasReceiver() ? payment.receiver : null,
+    PaymentsFields.amount: payment.hasAmount() ? payment.amount : null,
+    PaymentsFields.currency: payment.hasCurrency() ? payment.currency : null,
+    PaymentsFields.warehouseId: payment.hasWarehouseId() ? payment.warehouseId : null,
+    PaymentsFields.paymentMethod: payment.hasPaymentMethod()
+        ? payment.paymentMethod.name
+        : null,
+    PaymentsFields.status: payment.hasStatus() ? payment.status.name : null,
+    PaymentsFields.paymentDate: payment.hasPaymentDate()
+        ? payment.paymentDate.toDateTime().toIso8601String()
+        : null,
+    PaymentsFields.referenceNumber: payment.hasReferenceNumber()
+        ? payment.referenceNumber
+        : null,
+    PaymentsFields.createdByUserId: payment.hasCreatedByUserId()
+        ? payment.createdByUserId
+        : null,
+    PaymentsFields.notes: payment.hasNotes() ? payment.notes : null,
+  };
+}
+
+/// Converts a [RawRow] to a [Payment].
+Payment fromRowToPayment(RawRow row) {
+  return Payment(
+    refId: row.optString(PaymentsFields.refId) ?? '',
+    payerId: row.optString(PaymentsFields.payerId),
+    receiver: row.optString(PaymentsFields.receiver),
+    amount: row.optDouble(PaymentsFields.amount) ?? 0.0,
+    currency: row.optString(PaymentsFields.currency) ?? 'XAF',
+    warehouseId: row.optString(PaymentsFields.warehouseId),
+    paymentMethod: PaymentMethod.values.firstWhereOrNull(
+      (e) => e.name == row.optString(PaymentsFields.paymentMethod),
+    ) ?? PaymentMethod.PAYMENT_METHOD_UNSPECIFIED,
+    status: PaymentStatus.values.firstWhereOrNull(
+      (e) => e.name == row.optString(PaymentsFields.status),
+    ) ?? PaymentStatus.PAYMENT_STATUS_UNSPECIFIED,
+    paymentDate: row.optDateTime(PaymentsFields.paymentDate) == null
+        ? null
+        : Timestamp.fromDateTime(
+            row.requireDateTime(PaymentsFields.paymentDate),
+          ),
+    referenceNumber: row.optString(PaymentsFields.referenceNumber),
+    createdByUserId: row.optString(PaymentsFields.createdByUserId),
+    notes: row.optString(PaymentsFields.notes),
   );
 }

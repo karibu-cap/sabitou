@@ -44,10 +44,10 @@ extension PurchaseOrderStatusExtension on PurchaseOrderStatus {
         return Intls.to.draft;
       case PurchaseOrderStatus.PO_STATUS_PENDING:
         return Intls.to.pending;
-      case PurchaseOrderStatus.PO_STATUS_PARTIALLY_RECEIVED:
-        return Intls.to.partial;
-      case PurchaseOrderStatus.PO_STATUS_RECEIVED:
-        return Intls.to.received;
+      case PurchaseOrderStatus.PO_STATUS_ISSUED:
+        return Intls.to.issued;
+      case PurchaseOrderStatus.PO_STATUS_CLOSED:
+        return Intls.to.closed;
       case PurchaseOrderStatus.PO_STATUS_CANCELLED:
         return Intls.to.cancelled;
       default:
@@ -62,9 +62,9 @@ extension PurchaseOrderStatusExtension on PurchaseOrderStatus {
         return AppColors.grey400;
       case PurchaseOrderStatus.PO_STATUS_PENDING:
         return AppColors.orange500;
-      case PurchaseOrderStatus.PO_STATUS_PARTIALLY_RECEIVED:
+      case PurchaseOrderStatus.PO_STATUS_ISSUED:
         return AppColors.cobalt;
-      case PurchaseOrderStatus.PO_STATUS_RECEIVED:
+      case PurchaseOrderStatus.PO_STATUS_CLOSED:
         return AppColors.dartGreen;
       case PurchaseOrderStatus.PO_STATUS_CANCELLED:
         return AppColors.error500;

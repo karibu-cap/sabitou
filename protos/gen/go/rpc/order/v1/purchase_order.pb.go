@@ -30,12 +30,12 @@ const (
 type PurchaseOrderStatus int32
 
 const (
-	PurchaseOrderStatus_PO_STATUS_UNSPECIFIED        PurchaseOrderStatus = 0
-	PurchaseOrderStatus_PO_STATUS_DRAFT              PurchaseOrderStatus = 1 // Being prepared
-	PurchaseOrderStatus_PO_STATUS_PENDING            PurchaseOrderStatus = 2 // Sent to supplier, awaiting delivery
-	PurchaseOrderStatus_PO_STATUS_PARTIALLY_RECEIVED PurchaseOrderStatus = 3 // Some items delivered
-	PurchaseOrderStatus_PO_STATUS_RECEIVED           PurchaseOrderStatus = 4 // All items delivered
-	PurchaseOrderStatus_PO_STATUS_CANCELLED          PurchaseOrderStatus = 5 // Order cancelled
+	PurchaseOrderStatus_PO_STATUS_UNSPECIFIED PurchaseOrderStatus = 0
+	PurchaseOrderStatus_PO_STATUS_DRAFT       PurchaseOrderStatus = 1 // Being prepared
+	PurchaseOrderStatus_PO_STATUS_PENDING     PurchaseOrderStatus = 2 // Sent to supplier, awaiting delivery
+	PurchaseOrderStatus_PO_STATUS_ISSUED      PurchaseOrderStatus = 3 // Some items delivered
+	PurchaseOrderStatus_PO_STATUS_CLOSED      PurchaseOrderStatus = 4 // All items delivered
+	PurchaseOrderStatus_PO_STATUS_CANCELLED   PurchaseOrderStatus = 5 // Order cancelled
 )
 
 // Enum value maps for PurchaseOrderStatus.
@@ -44,17 +44,17 @@ var (
 		0: "PO_STATUS_UNSPECIFIED",
 		1: "PO_STATUS_DRAFT",
 		2: "PO_STATUS_PENDING",
-		3: "PO_STATUS_PARTIALLY_RECEIVED",
-		4: "PO_STATUS_RECEIVED",
+		3: "PO_STATUS_ISSUED",
+		4: "PO_STATUS_CLOSED",
 		5: "PO_STATUS_CANCELLED",
 	}
 	PurchaseOrderStatus_value = map[string]int32{
-		"PO_STATUS_UNSPECIFIED":        0,
-		"PO_STATUS_DRAFT":              1,
-		"PO_STATUS_PENDING":            2,
-		"PO_STATUS_PARTIALLY_RECEIVED": 3,
-		"PO_STATUS_RECEIVED":           4,
-		"PO_STATUS_CANCELLED":          5,
+		"PO_STATUS_UNSPECIFIED": 0,
+		"PO_STATUS_DRAFT":       1,
+		"PO_STATUS_PENDING":     2,
+		"PO_STATUS_ISSUED":      3,
+		"PO_STATUS_CLOSED":      4,
+		"PO_STATUS_CANCELLED":   5,
 	}
 )
 
@@ -1046,7 +1046,8 @@ type CreateReceivingNoteRequest struct {
 	BuyerId          string                       `protobuf:"bytes,3,opt,name=buyer_id,json=buyerId,proto3" json:"buyer_id,omitempty"`
 	Items            []*v11.ReceivingNoteLineItem `protobuf:"bytes,4,rep,name=items,proto3" json:"items,omitempty"` // What actually arrived
 	ReceivedByUserId string                       `protobuf:"bytes,5,opt,name=received_by_user_id,json=receivedByUserId,proto3" json:"received_by_user_id,omitempty"`
-	Notes            string                       `protobuf:"bytes,6,opt,name=notes,proto3" json:"notes,omitempty"` // Condition notes
+	Notes            string                       `protobuf:"bytes,6,opt,name=notes,proto3" json:"notes,omitempty"`                             // Condition notes
+	ReceivedAt       *timestamppb.Timestamp       `protobuf:"bytes,7,opt,name=received_at,json=receivedAt,proto3" json:"received_at,omitempty"` // User specified receive date
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
@@ -1121,6 +1122,13 @@ func (x *CreateReceivingNoteRequest) GetNotes() string {
 		return x.Notes
 	}
 	return ""
+}
+
+func (x *CreateReceivingNoteRequest) GetReceivedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.ReceivedAt
+	}
+	return nil
 }
 
 type CreateReceivingNoteResponse struct {
@@ -1312,7 +1320,7 @@ const file_order_v1_purchase_order_proto_rawDesc = "" +
 	"\x1aCancelPurchaseOrderRequest\x12*\n" +
 	"\x11purchase_order_id\x18\x01 \x01(\tR\x0fpurchaseOrderId\x12\x16\n" +
 	"\x06reason\x18\x02 \x01(\tR\x06reason\x12/\n" +
-	"\x14cancelled_by_user_id\x18\x03 \x01(\tR\x11cancelledByUserId\"\x83\x02\n" +
+	"\x14cancelled_by_user_id\x18\x03 \x01(\tR\x11cancelledByUserId\"\xc0\x02\n" +
 	"\x1aCreateReceivingNoteRequest\x12*\n" +
 	"\x11purchase_order_id\x18\x01 \x01(\tR\x0fpurchaseOrderId\x12\x1f\n" +
 	"\vsupplier_id\x18\x02 \x01(\tR\n" +
@@ -1320,20 +1328,22 @@ const file_order_v1_purchase_order_proto_rawDesc = "" +
 	"\bbuyer_id\x18\x03 \x01(\tR\abuyerId\x128\n" +
 	"\x05items\x18\x04 \x03(\v2\".logistic.v1.ReceivingNoteLineItemR\x05items\x12-\n" +
 	"\x13received_by_user_id\x18\x05 \x01(\tR\x10receivedByUserId\x12\x14\n" +
-	"\x05notes\x18\x06 \x01(\tR\x05notes\"\xb0\x02\n" +
+	"\x05notes\x18\x06 \x01(\tR\x05notes\x12;\n" +
+	"\vreceived_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\n" +
+	"receivedAt\"\xb0\x02\n" +
 	"\x1bCreateReceivingNoteResponse\x12\x13\n" +
 	"\x05rn_id\x18\x01 \x01(\tR\x04rnId\x12A\n" +
 	"\x0ereceiving_note\x18\x02 \x01(\v2\x1a.logistic.v1.ReceivingNoteR\rreceivingNote\x12:\n" +
 	"\x19inventory_transaction_ids\x18\x03 \x03(\tR\x17inventoryTransactionIds\x12+\n" +
 	"\x11has_discrepancies\x18\x04 \x01(\bR\x10hasDiscrepancies\x126\n" +
 	"\x17discrepancy_product_ids\x18\x05 \x03(\tR\x15discrepancyProductIds\x12\x18\n" +
-	"\amessage\x18\x06 \x01(\tR\amessage*\xaf\x01\n" +
+	"\amessage\x18\x06 \x01(\tR\amessage*\xa1\x01\n" +
 	"\x13PurchaseOrderStatus\x12\x19\n" +
 	"\x15PO_STATUS_UNSPECIFIED\x10\x00\x12\x13\n" +
 	"\x0fPO_STATUS_DRAFT\x10\x01\x12\x15\n" +
-	"\x11PO_STATUS_PENDING\x10\x02\x12 \n" +
-	"\x1cPO_STATUS_PARTIALLY_RECEIVED\x10\x03\x12\x16\n" +
-	"\x12PO_STATUS_RECEIVED\x10\x04\x12\x17\n" +
+	"\x11PO_STATUS_PENDING\x10\x02\x12\x14\n" +
+	"\x10PO_STATUS_ISSUED\x10\x03\x12\x14\n" +
+	"\x10PO_STATUS_CLOSED\x10\x04\x12\x17\n" +
 	"\x13PO_STATUS_CANCELLED\x10\x052\xf4\x04\n" +
 	"\x14PurchaseOrderService\x12b\n" +
 	"\x13CreatePurchaseOrder\x12$.order.v1.CreatePurchaseOrderRequest\x1a%.order.v1.CreatePurchaseOrderResponse\x12Y\n" +
@@ -1403,24 +1413,25 @@ var file_order_v1_purchase_order_proto_depIdxs = []int32{
 	0,  // 17: order.v1.UpdatePurchaseOrderStatusRequest.new_status:type_name -> order.v1.PurchaseOrderStatus
 	1,  // 18: order.v1.UpdatePurchaseOrderStatusResponse.purchase_order:type_name -> order.v1.PurchaseOrder
 	21, // 19: order.v1.CreateReceivingNoteRequest.items:type_name -> logistic.v1.ReceivingNoteLineItem
-	18, // 20: order.v1.CreateReceivingNoteResponse.receiving_note:type_name -> logistic.v1.ReceivingNote
-	4,  // 21: order.v1.PurchaseOrderService.CreatePurchaseOrder:input_type -> order.v1.CreatePurchaseOrderRequest
-	6,  // 22: order.v1.PurchaseOrderService.GetPurchaseOrder:input_type -> order.v1.GetPurchaseOrderRequest
-	8,  // 23: order.v1.PurchaseOrderService.ListPurchaseOrders:input_type -> order.v1.ListPurchaseOrdersRequest
-	10, // 24: order.v1.PurchaseOrderService.UpdatePurchaseOrderStatus:input_type -> order.v1.UpdatePurchaseOrderStatusRequest
-	12, // 25: order.v1.PurchaseOrderService.CancelPurchaseOrder:input_type -> order.v1.CancelPurchaseOrderRequest
-	13, // 26: order.v1.PurchaseOrderService.CreateReceivingNote:input_type -> order.v1.CreateReceivingNoteRequest
-	5,  // 27: order.v1.PurchaseOrderService.CreatePurchaseOrder:output_type -> order.v1.CreatePurchaseOrderResponse
-	7,  // 28: order.v1.PurchaseOrderService.GetPurchaseOrder:output_type -> order.v1.GetPurchaseOrderResponse
-	9,  // 29: order.v1.PurchaseOrderService.ListPurchaseOrders:output_type -> order.v1.ListPurchaseOrdersResponse
-	11, // 30: order.v1.PurchaseOrderService.UpdatePurchaseOrderStatus:output_type -> order.v1.UpdatePurchaseOrderStatusResponse
-	3,  // 31: order.v1.PurchaseOrderService.CancelPurchaseOrder:output_type -> order.v1.CancelPurchaseOrderResponse
-	14, // 32: order.v1.PurchaseOrderService.CreateReceivingNote:output_type -> order.v1.CreateReceivingNoteResponse
-	27, // [27:33] is the sub-list for method output_type
-	21, // [21:27] is the sub-list for method input_type
-	21, // [21:21] is the sub-list for extension type_name
-	21, // [21:21] is the sub-list for extension extendee
-	0,  // [0:21] is the sub-list for field type_name
+	15, // 20: order.v1.CreateReceivingNoteRequest.received_at:type_name -> google.protobuf.Timestamp
+	18, // 21: order.v1.CreateReceivingNoteResponse.receiving_note:type_name -> logistic.v1.ReceivingNote
+	4,  // 22: order.v1.PurchaseOrderService.CreatePurchaseOrder:input_type -> order.v1.CreatePurchaseOrderRequest
+	6,  // 23: order.v1.PurchaseOrderService.GetPurchaseOrder:input_type -> order.v1.GetPurchaseOrderRequest
+	8,  // 24: order.v1.PurchaseOrderService.ListPurchaseOrders:input_type -> order.v1.ListPurchaseOrdersRequest
+	10, // 25: order.v1.PurchaseOrderService.UpdatePurchaseOrderStatus:input_type -> order.v1.UpdatePurchaseOrderStatusRequest
+	12, // 26: order.v1.PurchaseOrderService.CancelPurchaseOrder:input_type -> order.v1.CancelPurchaseOrderRequest
+	13, // 27: order.v1.PurchaseOrderService.CreateReceivingNote:input_type -> order.v1.CreateReceivingNoteRequest
+	5,  // 28: order.v1.PurchaseOrderService.CreatePurchaseOrder:output_type -> order.v1.CreatePurchaseOrderResponse
+	7,  // 29: order.v1.PurchaseOrderService.GetPurchaseOrder:output_type -> order.v1.GetPurchaseOrderResponse
+	9,  // 30: order.v1.PurchaseOrderService.ListPurchaseOrders:output_type -> order.v1.ListPurchaseOrdersResponse
+	11, // 31: order.v1.PurchaseOrderService.UpdatePurchaseOrderStatus:output_type -> order.v1.UpdatePurchaseOrderStatusResponse
+	3,  // 32: order.v1.PurchaseOrderService.CancelPurchaseOrder:output_type -> order.v1.CancelPurchaseOrderResponse
+	14, // 33: order.v1.PurchaseOrderService.CreateReceivingNote:output_type -> order.v1.CreateReceivingNoteResponse
+	28, // [28:34] is the sub-list for method output_type
+	22, // [22:28] is the sub-list for method input_type
+	22, // [22:22] is the sub-list for extension type_name
+	22, // [22:22] is the sub-list for extension extendee
+	0,  // [0:22] is the sub-list for field type_name
 }
 
 func init() { file_order_v1_purchase_order_proto_init() }

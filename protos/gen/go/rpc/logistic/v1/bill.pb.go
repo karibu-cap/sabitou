@@ -26,12 +26,13 @@ const (
 type BillStatus int32
 
 const (
-	BillStatus_BILL_STATUS_UNSPECIFIED BillStatus = 0
-	BillStatus_BILL_STATUS_DRAFT       BillStatus = 1 // Draft
-	BillStatus_BILL_STATUS_OPEN        BillStatus = 2 // Open
-	BillStatus_BILL_STATUS_PAID        BillStatus = 3 // Paid
-	BillStatus_BILL_STATUS_VOID        BillStatus = 4 // Void
-	BillStatus_BILL_STATUS_OVERDUE     BillStatus = 5 // Overdue
+	BillStatus_BILL_STATUS_UNSPECIFIED    BillStatus = 0
+	BillStatus_BILL_STATUS_DRAFT          BillStatus = 1 // Draft
+	BillStatus_BILL_STATUS_OPEN           BillStatus = 2 // Open
+	BillStatus_BILL_STATUS_PAID           BillStatus = 3 // Paid
+	BillStatus_BILL_STATUS_VOID           BillStatus = 4 // Void
+	BillStatus_BILL_STATUS_OVERDUE        BillStatus = 5 // Overdue
+	BillStatus_BILL_STATUS_PARTIALLY_PAID BillStatus = 6 // Paid
 )
 
 // Enum value maps for BillStatus.
@@ -43,14 +44,16 @@ var (
 		3: "BILL_STATUS_PAID",
 		4: "BILL_STATUS_VOID",
 		5: "BILL_STATUS_OVERDUE",
+		6: "BILL_STATUS_PARTIALLY_PAID",
 	}
 	BillStatus_value = map[string]int32{
-		"BILL_STATUS_UNSPECIFIED": 0,
-		"BILL_STATUS_DRAFT":       1,
-		"BILL_STATUS_OPEN":        2,
-		"BILL_STATUS_PAID":        3,
-		"BILL_STATUS_VOID":        4,
-		"BILL_STATUS_OVERDUE":     5,
+		"BILL_STATUS_UNSPECIFIED":    0,
+		"BILL_STATUS_DRAFT":          1,
+		"BILL_STATUS_OPEN":           2,
+		"BILL_STATUS_PAID":           3,
+		"BILL_STATUS_VOID":           4,
+		"BILL_STATUS_OVERDUE":        5,
+		"BILL_STATUS_PARTIALLY_PAID": 6,
 	}
 )
 
@@ -89,7 +92,7 @@ type Bill struct {
 	SupplierId             string                 `protobuf:"bytes,3,opt,name=supplier_id,json=supplierId,proto3" json:"supplier_id,omitempty"`
 	StoreId                string                 `protobuf:"bytes,4,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
 	Status                 BillStatus             `protobuf:"varint,5,opt,name=status,proto3,enum=logistic.v1.BillStatus" json:"status,omitempty"`
-	PaymentId              string                 `protobuf:"bytes,6,opt,name=payment_id,json=paymentId,proto3" json:"payment_id,omitempty"`
+	PaymentIds             []string               `protobuf:"bytes,6,rep,name=payment_ids,json=paymentIds,proto3" json:"payment_ids,omitempty"`
 	BillDate               *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=bill_date,json=billDate,proto3" json:"bill_date,omitempty"`             // Date of bill
 	DueDate                *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=due_date,json=dueDate,proto3" json:"due_date,omitempty"`                // Date of payment
 	SubTotal               float64                `protobuf:"fixed64,9,opt,name=sub_total,json=subTotal,proto3" json:"sub_total,omitempty"`           // HT
@@ -169,11 +172,11 @@ func (x *Bill) GetStatus() BillStatus {
 	return BillStatus_BILL_STATUS_UNSPECIFIED
 }
 
-func (x *Bill) GetPaymentId() string {
+func (x *Bill) GetPaymentIds() []string {
 	if x != nil {
-		return x.PaymentId
+		return x.PaymentIds
 	}
-	return ""
+	return nil
 }
 
 func (x *Bill) GetBillDate() *timestamppb.Timestamp {
@@ -334,16 +337,16 @@ var File_logistic_v1_bill_proto protoreflect.FileDescriptor
 
 const file_logistic_v1_bill_proto_rawDesc = "" +
 	"\n" +
-	"\x16logistic/v1/bill.proto\x12\vlogistic.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x9b\x05\n" +
+	"\x16logistic/v1/bill.proto\x12\vlogistic.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x9d\x05\n" +
 	"\x04Bill\x12\x1d\n" +
 	"\x06ref_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x05refId\x12>\n" +
 	"\x19related_purchase_order_id\x18\x02 \x01(\tH\x00R\x16relatedPurchaseOrderId\x88\x01\x01\x12\x1f\n" +
 	"\vsupplier_id\x18\x03 \x01(\tR\n" +
 	"supplierId\x12\x19\n" +
 	"\bstore_id\x18\x04 \x01(\tR\astoreId\x12/\n" +
-	"\x06status\x18\x05 \x01(\x0e2\x17.logistic.v1.BillStatusR\x06status\x12\x1d\n" +
-	"\n" +
-	"payment_id\x18\x06 \x01(\tR\tpaymentId\x127\n" +
+	"\x06status\x18\x05 \x01(\x0e2\x17.logistic.v1.BillStatusR\x06status\x12\x1f\n" +
+	"\vpayment_ids\x18\x06 \x03(\tR\n" +
+	"paymentIds\x127\n" +
 	"\tbill_date\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\bbillDate\x125\n" +
 	"\bdue_date\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\adueDate\x12\x1b\n" +
 	"\tsub_total\x18\t \x01(\x01R\bsubTotal\x12\x1b\n" +
@@ -367,7 +370,7 @@ const file_logistic_v1_bill_proto_rawDesc = "" +
 	"unit_price\x18\x04 \x01(\x01R\tunitPrice\x12\x1d\n" +
 	"\n" +
 	"tax_amount\x18\x05 \x01(\x01R\ttaxAmount\x12\x14\n" +
-	"\x05total\x18\x06 \x01(\x01R\x05total*\x9b\x01\n" +
+	"\x05total\x18\x06 \x01(\x01R\x05total*\xbb\x01\n" +
 	"\n" +
 	"BillStatus\x12\x1b\n" +
 	"\x17BILL_STATUS_UNSPECIFIED\x10\x00\x12\x15\n" +
@@ -375,7 +378,8 @@ const file_logistic_v1_bill_proto_rawDesc = "" +
 	"\x10BILL_STATUS_OPEN\x10\x02\x12\x14\n" +
 	"\x10BILL_STATUS_PAID\x10\x03\x12\x14\n" +
 	"\x10BILL_STATUS_VOID\x10\x04\x12\x17\n" +
-	"\x13BILL_STATUS_OVERDUE\x10\x05B\xb1\x01\n" +
+	"\x13BILL_STATUS_OVERDUE\x10\x05\x12\x1e\n" +
+	"\x1aBILL_STATUS_PARTIALLY_PAID\x10\x06B\xb1\x01\n" +
 	"\x0fcom.logistic.v1B\tBillProtoP\x01ZFgithub.com/karibu-cap/sabitou/protos/gen/go/rpc/logistic/v1;logisticv1\xa2\x02\x03LXX\xaa\x02\vLogistic.V1\xca\x02\vLogistic\\V1\xe2\x02\x17Logistic\\V1\\GPBMetadata\xea\x02\fLogistic::V1b\x06proto3"
 
 var (

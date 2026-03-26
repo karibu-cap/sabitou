@@ -63,5 +63,4 @@ message ReceivingNoteLineItem {
   google.protobuf.Timestamp expiration_date = 7; // Provided by supplier or calculated
   double purchase_price = 8;
   string store_id = 9;
-  int32 line_index= 10;
 }

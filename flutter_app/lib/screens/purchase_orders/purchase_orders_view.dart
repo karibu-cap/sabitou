@@ -6,12 +6,11 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import '../../../services/internationalization/internationalization.dart';
 import '../../../utils/user_preference.dart';
 import '../../../widgets/error/loading_failed.dart';
+import '../../../widgets/purchase_orders/form/purchase_order_form.dart';
 import '../../router/app_router.dart';
 import '../../router/page_routes.dart';
 import '../../themes/app_theme.dart';
 import '../../utils/responsive_utils.dart';
-import '../bills/bills_controller.dart';
-import '../bills/bills_view_model.dart';
 import 'components/po_utils.dart';
 import 'components/purchase_order_card.dart';
 import 'detail/purchase_order_detail_screen.dart';
@@ -38,18 +37,9 @@ class PurchaseOrdersView extends StatelessWidget {
       );
     }
 
-    // BillsController is needed for bill creation inside PO detail.
-    // We reuse the one already in context (provided higher up) or create one.
-    final billsController = BillsController(
-      BillsViewModel(storeId: store.refId),
-      Intls.to,
-    );
-
     return ChangeNotifierProvider<PurchaseOrdersController>(
       create: (_) => PurchaseOrdersController(
         PurchaseOrdersViewModel(storeId: store.refId),
-        AppInternationalizationService.to,
-        billsController,
       ),
       child: const _PurchaseOrdersAdaptiveLayout(),
     );
@@ -63,9 +53,9 @@ class _PurchaseOrdersAdaptiveLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final isMobile = ResponsiveUtils.isMobile(context);
+        final isTablet = ResponsiveUtils.isTablet(context);
 
-        return !isMobile ? const _DesktopSplitView() : const _MobileListView();
+        return !isTablet ? const _DesktopSplitView() : const _MobileListView();
       },
     );
   }
@@ -100,7 +90,25 @@ class _DesktopSplitView extends StatelessWidget {
 
         Expanded(
           child: selectedPo != null
-              ? PurchaseOrderDetailScreen(purchaseOrderId: selectedPo)
+              ? Stack(
+                  children: [
+                    Positioned.fill(
+                      child: PurchaseOrderDetailScreen(
+                        purchaseOrderId: selectedPo,
+                        key: Key(selectedPo),
+                      ),
+                    ),
+
+                    Positioned(
+                      top: 10,
+                      right: 10,
+                      child: IconButton(
+                        icon: const Icon(LucideIcons.x400),
+                        onPressed: controller.clearSelection,
+                      ),
+                    ),
+                  ],
+                )
               : _EmptyDetailState(),
         ),
       ],
@@ -129,30 +137,11 @@ class _PoListHeader extends StatelessWidget {
   final bool showNewButton;
 
   void _openCreateDialog(BuildContext context) {
-    final isMobile = ResponsiveUtils.isMobile(context);
-
-    if (isMobile) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => ChangeNotifierProvider.value(
-            value: Provider.of<PurchaseOrdersController>(
-              context,
-              listen: false,
-            ),
-            child: const _PurchaseOrderFormPage(),
-          ),
-        ),
-      );
-    } else {
-      showShadDialog(
-        context: context,
-        builder: (_) => ChangeNotifierProvider.value(
-          value: Provider.of<PurchaseOrdersController>(context, listen: false),
-          child: const _PurchaseOrderFormDialog(),
-        ),
-      );
-    }
+    final controller = Provider.of<PurchaseOrdersController>(
+      context,
+      listen: false,
+    );
+    showPurchaseOrderForm(context, purchaseOrdersController: controller);
   }
 
   @override
@@ -261,25 +250,23 @@ class _StatusFilterChips extends StatelessWidget {
               const SizedBox(width: 6),
               _StatusChip(
                 label: Intls.to.partial,
-                isSelected:
-                    selected ==
-                    PurchaseOrderStatus.PO_STATUS_PARTIALLY_RECEIVED,
+                isSelected: selected == PurchaseOrderStatus.PO_STATUS_ISSUED,
                 onTap: () => controller.statusFilter.add(
-                  PurchaseOrderStatus.PO_STATUS_PARTIALLY_RECEIVED,
+                  PurchaseOrderStatus.PO_STATUS_ISSUED,
                 ),
                 activeStyle: PoStatusUtils.styleFor(
-                  PurchaseOrderStatus.PO_STATUS_PARTIALLY_RECEIVED,
+                  PurchaseOrderStatus.PO_STATUS_ISSUED,
                 ),
               ),
               const SizedBox(width: 6),
               _StatusChip(
                 label: Intls.to.received,
-                isSelected: selected == PurchaseOrderStatus.PO_STATUS_RECEIVED,
+                isSelected: selected == PurchaseOrderStatus.PO_STATUS_CLOSED,
                 onTap: () => controller.statusFilter.add(
-                  PurchaseOrderStatus.PO_STATUS_RECEIVED,
+                  PurchaseOrderStatus.PO_STATUS_CLOSED,
                 ),
                 activeStyle: PoStatusUtils.styleFor(
-                  PurchaseOrderStatus.PO_STATUS_RECEIVED,
+                  PurchaseOrderStatus.PO_STATUS_CLOSED,
                 ),
               ),
               const SizedBox(width: 6),
@@ -321,7 +308,7 @@ class _StatusChip extends StatelessWidget {
         ? (activeStyle?.bg ?? SabitouColors.accentSoft)
         : cs.card;
     final border = isSelected
-        ? (activeStyle?.dot.withOpacity(.5) ?? SabitouColors.accentBorder)
+        ? (activeStyle?.dot.withValues(alpha:.5) ?? SabitouColors.accentBorder)
         : cs.border;
     final fg = isSelected
         ? (activeStyle?.fg ?? SabitouColors.accentForeground)
@@ -359,16 +346,16 @@ class _SearchInput extends StatelessWidget {
       context,
       listen: false,
     );
-    final theme = ShadTheme.of(context);
-    final cs = theme.colorScheme;
 
-    return ShadInput(
-      controller: controller.searchController,
-      placeholder: Text(Intls.to.searchPurchaseOrder),
-      leading: const Icon(LucideIcons.search, size: 16),
-      onChanged: (v) => controller.searchQuery.add(v),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ShadInput(
+        controller: controller.searchController,
+        placeholder: Text(Intls.to.searchPurchaseOrder),
+        leading: const Icon(LucideIcons.search, size: 16),
+        onChanged: (v) => controller.searchQuery.add(v),
+      ),
     );
-    ;
   }
 }
 
@@ -378,46 +365,93 @@ class _PoList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Provider.of<PurchaseOrdersController>(context);
+    return Selector<PurchaseOrdersController, String?>(
+      selector: (_, controller) => controller.selectedPo,
+      builder: (context, selectedPo, _) {
+        final controller = Provider.of<PurchaseOrdersController>(
+          context,
+          listen: false,
+        );
 
-    return StreamBuilder<List<PurchaseOrder>>(
-      stream: controller.filteredPurchaseOrdersStream,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const _PoListShimmer();
-        }
-        if (snapshot.hasError) {
-          return LoadingFailedWidget(error: snapshot.error);
-        }
-        final orders = snapshot.data ?? [];
-        if (orders.isEmpty) {
-          return _PoEmptyState(hasFilters: controller.isFiltered);
-        }
+        return StreamBuilder<List<PurchaseOrder>>(
+          stream: controller.filteredPurchaseOrdersStream,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const _PoListShimmer();
+            }
+            if (snapshot.hasError) {
+              return LoadingFailedWidget(error: snapshot.error);
+            }
+            final orders = snapshot.data ?? [];
+            if (orders.isEmpty) {
+              return _PoEmptyState(hasFilters: controller.isFiltered);
+            }
 
-        return ListView.separated(
-          padding: const EdgeInsets.fromLTRB(12, 4, 12, 24),
-          itemCount: orders.length,
-          separatorBuilder: (_, __) => const SizedBox(height: 8),
-          itemBuilder: (context, i) {
-            final po = orders[i];
-            final isSelected = isDesktop && controller.selectedPo == po.refId;
+            return ListView.separated(
+              padding: const EdgeInsets.fromLTRB(12, 4, 12, 24),
+              itemCount: orders.length,
+              separatorBuilder: (_, __) => const SizedBox(height: 8),
+              itemBuilder: (context, i) {
+                final po = orders[i];
+                final isSelected = isDesktop && selectedPo == po.refId;
 
-            return PurchaseOrderCard(
-              po: po,
-              isSelected: isSelected,
-              onTap: () {
-                if (isDesktop) {
-                  controller.selectPurchaseOrder(po.refId);
-                } else {
-                  AppRouter.push(
-                    context,
-                    PagesRoutes.purchaseOrderDetail.create(
-                      PurchaseOrderDetailParameters(purchaseOrderId: po.refId),
-                    ),
-                  );
-                }
+                return _PoListItem(
+                  po: po,
+                  isSelected: isSelected,
+                  isDesktop: isDesktop,
+                );
               },
             );
+          },
+        );
+      },
+    );
+  }
+}
+
+class _PoListItem extends StatelessWidget {
+  const _PoListItem({
+    required this.po,
+    required this.isSelected,
+    required this.isDesktop,
+  });
+
+  final PurchaseOrder po;
+  final bool isSelected;
+  final bool isDesktop;
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = Provider.of<PurchaseOrdersController>(
+      context,
+      listen: false,
+    );
+
+    return StreamBuilder<PurchaseOrderDetailSnapshot>(
+      stream: controller.detailStream(po.refId),
+      builder: (context, snapshot) {
+        final snapshot_ = snapshot.data;
+        final bills = snapshot_?.bills ?? [];
+        final receivingNotes = snapshot_?.receivingNotes ?? [];
+
+        return PurchaseOrderCard(
+          po: po,
+          isSelected: isSelected,
+          bills: bills,
+          receivingNotes: receivingNotes,
+          onTap: () {
+            if (isDesktop) {
+              controller.selectPurchaseOrder(po.refId);
+            } else {
+              AppRouter.push(
+                context,
+                PagesRoutes.purchaseOrderDetail.create(
+                  PurchaseOrderDetailParameters(
+                    purchaseOrderId: po.refId,
+                  ),
+                ),
+              );
+            }
           },
         );
       },
@@ -554,104 +588,6 @@ class _CountBadge extends StatelessWidget {
           color: SabitouColors.accentForeground,
         ),
       ),
-    );
-  }
-}
-
-class _PurchaseOrderFormDialog extends StatelessWidget {
-  const _PurchaseOrderFormDialog();
-
-  @override
-  Widget build(BuildContext context) {
-    return ShadDialog(
-      constraints: const BoxConstraints(maxWidth: 560),
-      title: Text(Intls.to.newPurchaseOrder),
-      child: const _PurchaseOrderFormContent(),
-      actions: [
-        ShadButton.outline(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('Annuler'),
-        ),
-      ],
-    );
-  }
-}
-
-class _PurchaseOrderFormPage extends StatelessWidget {
-  const _PurchaseOrderFormPage();
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = ShadTheme.of(context);
-
-    return Scaffold(
-      backgroundColor: theme.colorScheme.background,
-      appBar: AppBar(
-        backgroundColor: theme.colorScheme.card,
-        elevation: 0,
-        surfaceTintColor: Colors.transparent,
-        leading: IconButton(
-          icon: Icon(
-            LucideIcons.arrowLeft,
-            size: 20,
-            color: theme.colorScheme.foreground,
-          ),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Text(Intls.to.newPurchaseOrder),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1),
-          child: Divider(color: theme.colorScheme.border, height: 1),
-        ),
-      ),
-      body: const SingleChildScrollView(
-        padding: EdgeInsets.all(16),
-        child: _PurchaseOrderFormContent(),
-      ),
-    );
-  }
-}
-
-class _PurchaseOrderFormContent extends StatelessWidget {
-  const _PurchaseOrderFormContent();
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ShadInput(
-          placeholder: Text(Intls.to.supplierPlaceholder),
-          leading: const Icon(LucideIcons.building2, size: 14),
-        ),
-        const SizedBox(height: 10),
-        ShadInput(
-          placeholder: Text(Intls.to.deliveryAddress),
-          leading: const Icon(LucideIcons.mapPin, size: 14),
-        ),
-        const SizedBox(height: 10),
-        ShadInput(
-          placeholder: Text(Intls.to.expectedDeliveryDate),
-          leading: const Icon(LucideIcons.calendarDays, size: 14),
-        ),
-        const SizedBox(height: 10),
-        ShadInput(placeholder: Text(Intls.to.notes), maxLines: 2),
-        const SizedBox(height: 16),
-        Text(Intls.to.items),
-        const SizedBox(height: 8),
-        ShadButton.outline(
-          width: double.infinity,
-          onPressed: () {},
-          leading: const Icon(LucideIcons.plus, size: 14),
-          child: Text(Intls.to.addItem),
-        ),
-        const SizedBox(height: 16),
-        ShadButton(
-          width: double.infinity,
-          onPressed: () => Navigator.pop(context),
-          child: Text(Intls.to.createPurchaseOrder),
-        ),
-      ],
     );
   }
 }

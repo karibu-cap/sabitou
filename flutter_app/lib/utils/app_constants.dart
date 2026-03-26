@@ -105,7 +105,7 @@ final class CollectionName {
   static const String salesOrdersItemss = 'sales_order_line_items';
 
   /// The purchase order items collection.
-  static const String purchaseOrderItems = 'purchase_order_items';
+  static const String purchaseOrderItems = 'purchase_order_line_items';
 
   /// The delivery notes collection.
   static const String deliveryNotes = 'delivery_notes';
@@ -258,6 +258,9 @@ enum DashboardItem {
 
   /// The bills item.
   bills,
+
+  /// The payments made item.
+  paymentsMade,
 
   /// The products list item.
   productsList,

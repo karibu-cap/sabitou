@@ -66,8 +66,8 @@ enum PurchaseOrderStatus {
   PO_STATUS_UNSPECIFIED        = 0;
   PO_STATUS_DRAFT              = 1; // Being prepared
   PO_STATUS_PENDING            = 2; // Sent to supplier, awaiting delivery
-  PO_STATUS_PARTIALLY_RECEIVED = 3; // Some items delivered
-  PO_STATUS_RECEIVED           = 4; // All items delivered
+  PO_STATUS_ISSUED = 3; // Some items delivered
+  PO_STATUS_CLOSED           = 4; // All items delivered
   PO_STATUS_CANCELLED          = 5; // Order cancelled
 }
 
@@ -144,6 +144,7 @@ message CreateReceivingNoteRequest {
   repeated logistic.v1.ReceivingNoteLineItem items               = 4; // What actually arrived
   string                                 received_by_user_id = 5;
   string                                 notes               = 6; // Condition notes
+  google.protobuf.Timestamp              received_at         = 7; // User specified receive date
 }
 
 message CreateReceivingNoteResponse {

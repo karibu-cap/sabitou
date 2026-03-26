@@ -31,6 +31,7 @@ const (
 	PaymentStatus_PAYMENT_STATUS_PENDING     PaymentStatus = 1
 	PaymentStatus_PAYMENT_STATUS_COMPLETED   PaymentStatus = 2
 	PaymentStatus_PAYMENT_STATUS_FAILED      PaymentStatus = 3
+	PaymentStatus_PAYMENT_STATUS_INITIALIZE  PaymentStatus = 4
 )
 
 // Enum value maps for PaymentStatus.
@@ -40,12 +41,14 @@ var (
 		1: "PAYMENT_STATUS_PENDING",
 		2: "PAYMENT_STATUS_COMPLETED",
 		3: "PAYMENT_STATUS_FAILED",
+		4: "PAYMENT_STATUS_INITIALIZE",
 	}
 	PaymentStatus_value = map[string]int32{
 		"PAYMENT_STATUS_UNSPECIFIED": 0,
 		"PAYMENT_STATUS_PENDING":     1,
 		"PAYMENT_STATUS_COMPLETED":   2,
 		"PAYMENT_STATUS_FAILED":      3,
+		"PAYMENT_STATUS_INITIALIZE":  4,
 	}
 )
 
@@ -702,12 +705,13 @@ const file_payments_v1_payments_proto_rawDesc = "" +
 	"\bpayments\x18\x01 \x03(\v2\x14.payments.v1.PaymentR\bpayments\x12\x1f\n" +
 	"\vtotal_count\x18\x02 \x01(\x05R\n" +
 	"totalCount\x12!\n" +
-	"\ftotal_amount\x18\x03 \x01(\x01R\vtotalAmount*\x84\x01\n" +
+	"\ftotal_amount\x18\x03 \x01(\x01R\vtotalAmount*\xa3\x01\n" +
 	"\rPaymentStatus\x12\x1e\n" +
 	"\x1aPAYMENT_STATUS_UNSPECIFIED\x10\x00\x12\x1a\n" +
 	"\x16PAYMENT_STATUS_PENDING\x10\x01\x12\x1c\n" +
 	"\x18PAYMENT_STATUS_COMPLETED\x10\x02\x12\x19\n" +
-	"\x15PAYMENT_STATUS_FAILED\x10\x03*\xe4\x01\n" +
+	"\x15PAYMENT_STATUS_FAILED\x10\x03\x12\x1d\n" +
+	"\x19PAYMENT_STATUS_INITIALIZE\x10\x04*\xe4\x01\n" +
 	"\rPaymentMethod\x12\x1e\n" +
 	"\x1aPAYMENT_METHOD_UNSPECIFIED\x10\x00\x12\x17\n" +
 	"\x13PAYMENT_METHOD_CASH\x10\x01\x12\x1e\n" +

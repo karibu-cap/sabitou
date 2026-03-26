@@ -1025,7 +1025,9 @@ final _fakeTransport =
           ..receivedByUserId = req.receivedByUserId
           ..relatedPurchaseOrderId = req.purchaseOrderId
           ..items.addAll(req.items)
-          ..receivedAt = Timestamp.fromDateTime(clock.now())
+          ..receivedAt = req.hasReceivedAt()
+              ? req.receivedAt
+              : Timestamp.fromDateTime(clock.now())
           ..notes = req.notes;
 
         // Add to fake data for persistence
@@ -1140,6 +1142,32 @@ final _fakeTransport =
           (_fakeData[CollectionName.inventoryTransactions]
                   as List<InventoryTransaction>)
               .add(transaction);
+        }
+
+        // Update the parent PurchaseOrder
+        final po =
+            (_fakeData[CollectionName.purchaseOrders] as List<PurchaseOrder>?)
+                ?.firstWhereOrNull((p) => p.refId == req.purchaseOrderId);
+        if (po != null) {
+          for (var item in req.items) {
+            final poItem = po.items.firstWhereOrNull(
+              (i) => i.productId == item.productId,
+            );
+            if (poItem != null) {
+              poItem.quantityReceived += 0;
+            }
+          }
+          final allReceived = po.items.every(
+            (i) => i.quantityReceived >= i.quantityOrdered,
+          );
+          final completelyUnreceived = po.items.every(
+            (i) => i.quantityReceived == 0,
+          );
+          if (allReceived) {
+            po.status = PurchaseOrderStatus.PO_STATUS_ISSUED;
+          } else if (!completelyUnreceived) {
+            po.status = PurchaseOrderStatus.PO_STATUS_ISSUED;
+          }
         }
 
         return CreateReceivingNoteResponse()

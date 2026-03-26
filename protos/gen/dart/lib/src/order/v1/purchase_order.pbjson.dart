@@ -29,8 +29,8 @@ const PurchaseOrderStatus$json = {
     {'1': 'PO_STATUS_UNSPECIFIED', '2': 0},
     {'1': 'PO_STATUS_DRAFT', '2': 1},
     {'1': 'PO_STATUS_PENDING', '2': 2},
-    {'1': 'PO_STATUS_PARTIALLY_RECEIVED', '2': 3},
-    {'1': 'PO_STATUS_RECEIVED', '2': 4},
+    {'1': 'PO_STATUS_ISSUED', '2': 3},
+    {'1': 'PO_STATUS_CLOSED', '2': 4},
     {'1': 'PO_STATUS_CANCELLED', '2': 5},
   ],
 };
@@ -38,9 +38,8 @@ const PurchaseOrderStatus$json = {
 /// Descriptor for `PurchaseOrderStatus`. Decode as a `google.protobuf.EnumDescriptorProto`.
 final $typed_data.Uint8List purchaseOrderStatusDescriptor = $convert.base64Decode(
     'ChNQdXJjaGFzZU9yZGVyU3RhdHVzEhkKFVBPX1NUQVRVU19VTlNQRUNJRklFRBAAEhMKD1BPX1'
-    'NUQVRVU19EUkFGVBABEhUKEVBPX1NUQVRVU19QRU5ESU5HEAISIAocUE9fU1RBVFVTX1BBUlRJ'
-    'QUxMWV9SRUNFSVZFRBADEhYKElBPX1NUQVRVU19SRUNFSVZFRBAEEhcKE1BPX1NUQVRVU19DQU'
-    '5DRUxMRUQQBQ==');
+    'NUQVRVU19EUkFGVBABEhUKEVBPX1NUQVRVU19QRU5ESU5HEAISFAoQUE9fU1RBVFVTX0lTU1VF'
+    'RBADEhQKEFBPX1NUQVRVU19DTE9TRUQQBBIXChNQT19TVEFUVVNfQ0FOQ0VMTEVEEAU=');
 
 @$core.Deprecated('Use purchaseOrderDescriptor instead')
 const PurchaseOrder$json = {
@@ -549,6 +548,14 @@ const CreateReceivingNoteRequest$json = {
       '10': 'receivedByUserId'
     },
     {'1': 'notes', '3': 6, '4': 1, '5': 9, '10': 'notes'},
+    {
+      '1': 'received_at',
+      '3': 7,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '10': 'receivedAt'
+    },
   ],
 };
 
@@ -558,7 +565,8 @@ final $typed_data.Uint8List createReceivingNoteRequestDescriptor = $convert.base
     'IPcHVyY2hhc2VPcmRlcklkEh8KC3N1cHBsaWVyX2lkGAIgASgJUgpzdXBwbGllcklkEhkKCGJ1'
     'eWVyX2lkGAMgASgJUgdidXllcklkEjgKBWl0ZW1zGAQgAygLMiIubG9naXN0aWMudjEuUmVjZW'
     'l2aW5nTm90ZUxpbmVJdGVtUgVpdGVtcxItChNyZWNlaXZlZF9ieV91c2VyX2lkGAUgASgJUhBy'
-    'ZWNlaXZlZEJ5VXNlcklkEhQKBW5vdGVzGAYgASgJUgVub3Rlcw==');
+    'ZWNlaXZlZEJ5VXNlcklkEhQKBW5vdGVzGAYgASgJUgVub3RlcxI7CgtyZWNlaXZlZF9hdBgHIA'
+    'EoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSCnJlY2VpdmVkQXQ=');
 
 @$core.Deprecated('Use createReceivingNoteResponseDescriptor instead')
 const CreateReceivingNoteResponse$json = {

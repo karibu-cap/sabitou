@@ -93,7 +93,7 @@ bucket_definitions:
         WHERE seller_id = bucket.store_id  -- Assuming seller_id = store_id
 
       - >
-        SELECT id, sales_order_id, line_index, product_id,
+        SELECT id, sales_order_id,  product_id,
                unit_price, quantity, total, batch_id, store_id
         FROM sales_order_line_items
         WHERE store_id = bucket.store_id
@@ -105,7 +105,7 @@ bucket_definitions:
         WHERE store_id = bucket.store_id
 
       - >
-        SELECT id, purchase_order_id, line_index, product_id, quantity_ordered,
+        SELECT id, purchase_order_id,  product_id, quantity_ordered,
                product_name, unit_price, total, batch_id, quantity_received, tax_amount, store_id
         FROM purchase_order_line_items
         WHERE store_id = bucket.store_id
@@ -117,12 +117,12 @@ bucket_definitions:
         WHERE store_id = bucket.store_id
 
       - >
-        SELECT id, delivery_note_id, line_index, product_id, quantity, batch_id, store_id
+        SELECT id, delivery_note_id, product_id, quantity, batch_id, store_id
         FROM delivery_note_line_items
         WHERE store_id = bucket.store_id
 
       - >
-        SELECT id, receiving_note_id, line_index, product_id, quantity_expected,
+        SELECT id, receiving_note_id, product_id, quantity_expected,
                quantity_received, quantity_rejected, rejection_reason, batch_id,
                expiration_date, purchase_price, store_id
         FROM receiving_note_line_items
@@ -138,19 +138,19 @@ bucket_definitions:
 
       - >
         SELECT id, ref_id, related_purchase_order_id, supplier_id, store_id, status,
-               payment_id, bill_date, due_date, sub_total, tax_total, total_amount,
+               payment_ids, bill_date, due_date, sub_total, tax_total, total_amount,
                balance_due, currency, notes, created_at
         FROM bills
         WHERE store_id = bucket.store_id
 
       - >
-        SELECT id, invoice_id, line_index, product_id, quantity, unit_price, subtotal,
+        SELECT id, invoice_id, product_id, quantity, unit_price, subtotal,
                tax_rate, tax_amount, total, batch_id, store_id
         FROM invoice_line_items
         WHERE store_id = bucket.store_id
 
       - >
-        SELECT id, bill_id, store_id, line_index, product_id, description,
+        SELECT id, bill_id, store_id, product_id, description,
                quantity, unit_price, tax_amount, total
         FROM bill_line_items
         WHERE store_id = bucket.store_id

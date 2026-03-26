@@ -2,39 +2,60 @@ import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
+import '../../repositories/bill_repository.dart';
 import '../../services/internationalization/internationalization.dart';
 import 'bills_view_model.dart';
 
 /// Controller for the Bills screen.
 /// Bridges ViewModel → UI; holds loading/error state and selected bill.
 class BillsController extends ChangeNotifier {
-  BillsController(this._viewModel, this._intl) {
-    searchController = TextEditingController();
-  }
+  /// Controller for the Bills screen.
+  BillsController(this._viewModel, this._intl);
 
+  /// ViewModel for the Bills screen.
   final BillsViewModel _viewModel;
 
+  /// Service for internationalization.
   final AppInternationalizationService _intl;
 
-  late final TextEditingController searchController;
+  /// Text editing controller for the search bar.
+  final TextEditingController searchController = TextEditingController();
 
+  /// Whether the screen is currently loading data.
   bool _isLoading = false;
+
+  /// Error message to display to the user.
   String _errorMessage = '';
 
   /// Currently selected bill (for desktop split view).
   String? _selectedBill;
 
+  /// Whether the screen is currently loading data.
   bool get isLoading => _isLoading;
+
+  /// Error message to display to the user.
   String get errorMessage => _errorMessage;
+
+  /// Currently selected bill (for desktop split view).
   String? get selectedBill => _selectedBill;
+
+  /// Whether the screen is currently filtered.
   bool get isFiltered => _viewModel.isFiltered;
 
+  /// Stream of search queries.
   BehaviorSubject<String> get searchQuery => _viewModel.searchQuery;
+
+  /// Stream of status filters.
   BehaviorSubject<BillStatus?> get statusFilter => _viewModel.statusFilter;
 
-  Stream<List<Bill>> get billsStream => _viewModel.billsStream;
-  Stream<List<Bill>> get filteredBillsStream => _viewModel.filteredBillsStream;
+  /// Future of all bills.
+  Future<List<Bill>> get billsFuture => _viewModel.billsFuture;
 
+  /// Stream of filtered bills.
+  Stream<List<Bill>> get filteredBillsStream =>
+      _viewModel.filteredBillsStream;
+
+  /// Stream of bills for a given purchase order.
   Stream<List<Bill>> billsForPurchaseOrder(String purchaseOrderId) =>
       _viewModel.billsForPurchaseOrder(purchaseOrderId);
 
@@ -44,7 +65,7 @@ class BillsController extends ChangeNotifier {
     notifyListeners();
   }
 
-  // ── Create Bill from a PurchaseOrder ──
+  /// Create Bill from a PurchaseOrder.
   Future<bool> createBillFromPurchaseOrder({
     required PurchaseOrder po,
     required String storeId,
@@ -90,6 +111,17 @@ class BillsController extends ChangeNotifier {
       _errorMessage = _intl.impossibleToCreateBill;
     }
     _setLoading(false);
+
+    return result;
+  }
+
+  /// Deletes the bill.
+  Future<bool> deleteBill(String refIf) async {
+    final result = await BillRepository.instance.deleteBill(refIf);
+
+    if (result) {
+      notifyListeners();
+    }
 
     return result;
   }

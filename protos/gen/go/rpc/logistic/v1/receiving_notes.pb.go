@@ -223,7 +223,6 @@ type ReceivingNoteLineItem struct {
 	ExpirationDate   *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=expiration_date,json=expirationDate,proto3" json:"expiration_date,omitempty"` // Provided by supplier or calculated
 	PurchasePrice    float64                `protobuf:"fixed64,8,opt,name=purchase_price,json=purchasePrice,proto3" json:"purchase_price,omitempty"`
 	StoreId          string                 `protobuf:"bytes,9,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
-	LineIndex        int32                  `protobuf:"varint,10,opt,name=line_index,json=lineIndex,proto3" json:"line_index,omitempty"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
@@ -321,13 +320,6 @@ func (x *ReceivingNoteLineItem) GetStoreId() string {
 	return ""
 }
 
-func (x *ReceivingNoteLineItem) GetLineIndex() int32 {
-	if x != nil {
-		return x.LineIndex
-	}
-	return 0
-}
-
 var File_logistic_v1_receiving_notes_proto protoreflect.FileDescriptor
 
 const file_logistic_v1_receiving_notes_proto_rawDesc = "" +
@@ -345,7 +337,7 @@ const file_logistic_v1_receiving_notes_proto_rawDesc = "" +
 	"receivedAt\x12\x14\n" +
 	"\x05notes\x18\b \x01(\tR\x05notes\x129\n" +
 	"\n" +
-	"created_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"\xbb\x03\n" +
+	"created_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"\x9c\x03\n" +
 	"\x15ReceivingNoteLineItem\x12\x1d\n" +
 	"\n" +
 	"product_id\x18\x01 \x01(\tR\tproductId\x12+\n" +
@@ -356,10 +348,7 @@ const file_logistic_v1_receiving_notes_proto_rawDesc = "" +
 	"\bbatch_id\x18\x06 \x01(\tH\x00R\abatchId\x88\x01\x01\x12C\n" +
 	"\x0fexpiration_date\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\x0eexpirationDate\x12%\n" +
 	"\x0epurchase_price\x18\b \x01(\x01R\rpurchasePrice\x12\x19\n" +
-	"\bstore_id\x18\t \x01(\tR\astoreId\x12\x1d\n" +
-	"\n" +
-	"line_index\x18\n" +
-	" \x01(\x05R\tlineIndexB\v\n" +
+	"\bstore_id\x18\t \x01(\tR\astoreIdB\v\n" +
 	"\t_batch_id*x\n" +
 	"\x13ReceivingNoteStatus\x12\x19\n" +
 	"\x15RN_STATUS_UNSPECIFIED\x10\x00\x12\x15\n" +

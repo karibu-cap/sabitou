@@ -321,7 +321,7 @@ abstract final class AppTheme {
 
     // ── Outline button — clean border, no background ──
     outlineButtonTheme: ShadButtonTheme(
-      hoverBackgroundColor: _Palette.primary.withOpacity(0.04),
+      hoverBackgroundColor: _Palette.primary.withValues(alpha:0.04),
       decoration: ShadDecoration(
         border: ShadBorder.all(color: _Palette.border),
       ),
@@ -329,7 +329,7 @@ abstract final class AppTheme {
 
     // ── Ghost button — minimal, used for logout / secondary actions ──
     ghostButtonTheme: ShadButtonTheme(
-      hoverBackgroundColor: _Palette.primary.withOpacity(0.05),
+      hoverBackgroundColor: _Palette.primary.withValues(alpha:0.05),
       foregroundColor: _Palette.mutedForeground,
     ),
 
@@ -344,7 +344,7 @@ abstract final class AppTheme {
       backgroundColor: _Palette.destructive,
       foregroundColor: _Palette.destructiveFg,
       gradient: LinearGradient(
-        colors: [_Palette.destructive, _Palette.destructive.withOpacity(0.85)],
+        colors: [_Palette.destructive, _Palette.destructive.withValues(alpha:0.85)],
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
       ),
@@ -443,12 +443,12 @@ abstract final class AppTheme {
     ),
 
     outlineButtonTheme: ShadButtonTheme(
-      hoverBackgroundColor: _darkForeground.withOpacity(0.06),
+      hoverBackgroundColor: _darkForeground.withValues(alpha:0.06),
       decoration: ShadDecoration(border: ShadBorder.all(color: _darkBorder)),
     ),
 
     ghostButtonTheme: ShadButtonTheme(
-      hoverBackgroundColor: _darkForeground.withOpacity(0.07),
+      hoverBackgroundColor: _darkForeground.withValues(alpha:0.07),
       foregroundColor: _darkMutedFg,
     ),
 

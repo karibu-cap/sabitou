@@ -17,10 +17,6 @@ class PowerSyncDataSource implements LocalDataSource {
   /// Constructor of new [PowerSyncDataSource].
   const PowerSyncDataSource(this._dbProvider);
 
-  // ---------------------------------------------------------------------------
-  // Reads
-  // ---------------------------------------------------------------------------
-
   @override
   Future<List<RawRow>> getCollection(
     String table, {
@@ -345,6 +341,43 @@ class PowerSyncDataSource implements LocalDataSource {
 class _TransactionDataSource implements LocalDataSource {
   final SqliteWriteContext _tx;
   const _TransactionDataSource(this._tx);
+
+  @override
+  Future<List<RawRow>> getCollection(
+    String table, {
+    List<dynamic> filters = const [],
+    SqlOrderBy? orderBy,
+    int? limit,
+    int? offset,
+    List<String>? columns,
+  }) async {
+    final select = columns != null ? columns.join(', ') : '*';
+    final (where, args) = _buildWhere(filters);
+    final order = orderBy != null ? 'ORDER BY ${orderBy.toSql()}' : '';
+    final lim = limit != null ? 'LIMIT $limit' : '';
+    final off = offset != null ? 'OFFSET $offset' : '';
+
+    return _tx.getAll(
+      'SELECT $select FROM $table $where $order $lim $off'.trim(),
+      args,
+    );
+  }
+
+  @override
+  Future<RawRow?> getDocument(
+    String table,
+    String id, {
+    String primaryKey = 'id',
+    List<String>? columns,
+  }) async {
+    final select = columns != null ? columns.join(', ') : '*';
+    final rows = await _tx.getAll(
+      'SELECT $select FROM $table WHERE $primaryKey = ? LIMIT 1',
+      [id],
+    );
+
+    return rows.firstOrNull;
+  }
 
   @override
   Future<String> createRecord({

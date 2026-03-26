@@ -213,7 +213,6 @@ class ReceivingNoteLineItem extends $pb.GeneratedMessage {
     $0.Timestamp? expirationDate,
     $core.double? purchasePrice,
     $core.String? storeId,
-    $core.int? lineIndex,
   }) {
     final result = create();
     if (productId != null) result.productId = productId;
@@ -225,7 +224,6 @@ class ReceivingNoteLineItem extends $pb.GeneratedMessage {
     if (expirationDate != null) result.expirationDate = expirationDate;
     if (purchasePrice != null) result.purchasePrice = purchasePrice;
     if (storeId != null) result.storeId = storeId;
-    if (lineIndex != null) result.lineIndex = lineIndex;
     return result;
   }
 
@@ -256,7 +254,6 @@ class ReceivingNoteLineItem extends $pb.GeneratedMessage {
     ..a<$core.double>(
         8, _omitFieldNames ? '' : 'purchasePrice', $pb.PbFieldType.OD)
     ..aOS(9, _omitFieldNames ? '' : 'storeId')
-    ..a<$core.int>(10, _omitFieldNames ? '' : 'lineIndex', $pb.PbFieldType.O3)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -364,15 +361,6 @@ class ReceivingNoteLineItem extends $pb.GeneratedMessage {
   $core.bool hasStoreId() => $_has(8);
   @$pb.TagNumber(9)
   void clearStoreId() => $_clearField(9);
-
-  @$pb.TagNumber(10)
-  $core.int get lineIndex => $_getIZ(9);
-  @$pb.TagNumber(10)
-  set lineIndex($core.int value) => $_setSignedInt32(9, value);
-  @$pb.TagNumber(10)
-  $core.bool hasLineIndex() => $_has(9);
-  @$pb.TagNumber(10)
-  void clearLineIndex() => $_clearField(10);
 }
 
 const $core.bool _omitFieldNames =

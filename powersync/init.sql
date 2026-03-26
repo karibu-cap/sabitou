@@ -315,20 +315,18 @@ CREATE TABLE IF NOT EXISTS sales_order_line_items (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid (),
     sales_order_id TEXT NOT NULL,
     store_id TEXT NOT NULL,
-    line_index INTEGER NOT NULL,
     product_id TEXT NOT NULL,
     quantity INTEGER NOT NULL,
     unit_price NUMERIC(12, 2) NOT NULL,
     total NUMERIC(14, 2) NOT NULL,
     batch_id TEXT,
-    UNIQUE (sales_order_id, line_index)
+    UNIQUE (sales_order_id)
 );
 
 CREATE TABLE IF NOT EXISTS purchase_order_line_items (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid (),
     purchase_order_id TEXT NOT NULL,
     store_id TEXT NOT NULL,
-    line_index INTEGER NOT NULL,
     product_id TEXT NOT NULL,
     quantity_ordered INTEGER NOT NULL,
     product_name JSONB,
@@ -337,14 +335,13 @@ CREATE TABLE IF NOT EXISTS purchase_order_line_items (
     batch_id TEXT,
     quantity_received INTEGER DEFAULT 0,
     tax_amount NUMERIC(12, 2) DEFAULT 0,
-    UNIQUE (purchase_order_id, line_index)
+    UNIQUE (purchase_order_id)
 );
 
 CREATE TABLE IF NOT EXISTS invoice_line_items (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid (),
     invoice_id TEXT NOT NULL,
     store_id TEXT NOT NULL,
-    line_index INTEGER NOT NULL,
     product_id TEXT NOT NULL,
     quantity INTEGER NOT NULL,
     unit_price NUMERIC(12, 2) NOT NULL,
@@ -353,18 +350,17 @@ CREATE TABLE IF NOT EXISTS invoice_line_items (
     tax_amount NUMERIC(12, 2),
     total NUMERIC(14, 2) NOT NULL,
     batch_id TEXT,
-    UNIQUE (invoice_id, line_index)
+    UNIQUE (invoice_id)
 );
 
 CREATE TABLE IF NOT EXISTS delivery_note_line_items (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid (),
     delivery_note_id TEXT NOT NULL,
     store_id TEXT NOT NULL,
-    line_index INTEGER NOT NULL,
     product_id TEXT NOT NULL,
     quantity NUMERIC(10, 3) NOT NULL,
     batch_id TEXT,
-    UNIQUE (delivery_note_id, line_index)
+    UNIQUE (delivery_note_id)
 );
 
 CREATE TABLE IF NOT EXISTS receiving_notes (
@@ -383,7 +379,6 @@ CREATE TABLE IF NOT EXISTS receiving_note_line_items (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid (),
     receiving_note_id TEXT NOT NULL,
     store_id TEXT NOT NULL,
-    line_index INTEGER NOT NULL,
     product_id TEXT NOT NULL,
     quantity_expected NUMERIC(10, 3) NOT NULL,
     quantity_received NUMERIC(10, 3) NOT NULL,
@@ -392,7 +387,7 @@ CREATE TABLE IF NOT EXISTS receiving_note_line_items (
     batch_id TEXT,
     expiration_date TIMESTAMPTZ,
     purchase_price NUMERIC(12, 2),
-    UNIQUE (receiving_note_id, line_index)
+    UNIQUE (receiving_note_id)
 );
 
 -- Bills
@@ -403,7 +398,7 @@ CREATE TABLE IF NOT EXISTS bills (
     supplier_id TEXT NOT NULL,
     store_id TEXT NOT NULL,
     status TEXT NOT NULL DEFAULT 'BILL_STATUS_DRAFT',
-    payment_id TEXT,
+    payment_ids TEXT,
     bill_date DATE NOT NULL DEFAULT CURRENT_DATE,
     due_date DATE,
     sub_total NUMERIC NOT NULL DEFAULT 0,
@@ -419,14 +414,13 @@ CREATE TABLE IF NOT EXISTS bill_line_items (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid (),
     bill_id VARCHAR(50) REFERENCES bills (ref_id) ON DELETE CASCADE,
     store_id TEXT NOT NULL,
-    line_index INTEGER NOT NULL,
     product_id TEXT NOT NULL,
     description TEXT,
     quantity INTEGER NOT NULL,
     unit_price NUMERIC(12, 2) NOT NULL,
     tax_amount NUMERIC(12, 2) DEFAULT 0,
     total NUMERIC(14, 2) NOT NULL,
-    UNIQUE (bill_id, line_index)
+    UNIQUE (bill_id)
 );
 
 CREATE TABLE IF NOT EXISTS invoices (
@@ -1136,7 +1130,6 @@ INSERT INTO
     sales_order_line_items (
         sales_order_id,
         store_id,
-        line_index,
         product_id,
         quantity,
         unit_price,
@@ -1145,7 +1138,6 @@ INSERT INTO
 VALUES (
         'SO-202503-001',
         'STR-001',
-        1,
         'SP-YDE-001',
         2,
         28500,
@@ -1154,7 +1146,6 @@ VALUES (
     (
         'SO-202503-001',
         'STR-001',
-        2,
         'SP-YDE-002',
         1,
         12500,
@@ -1163,7 +1154,6 @@ VALUES (
     (
         'SO-202503-001',
         'STR-001',
-        3,
         'SP-YDE-002',
         1,
         9000,
@@ -1195,29 +1185,29 @@ INSERT INTO
     purchase_order_line_items (
         purchase_order_id,
         store_id,
-        line_index,
         product_id,
         quantity_ordered,
         unit_price,
-        total
+        total,
+        product_name
     )
 VALUES (
         'PO-202503-015',
         'STR-001',
-        1,
         'SP-YDE-001',
         200,
         23800,
-        4760000
+        4760000,
+        '{"en":"Riz Uncle Ben''s 25kg","fr":"Riz Uncle Ben''s 25 kg"}'::jsonb
     ),
     (
         'PO-202503-015',
         'STR-001',
-        2,
         'SP-YDE-002',
         80,
         10500,
-        840000
+        840000,
+        '{"en":"Huile de palme 5L","fr":"Huile de palme 5 litres"}'::jsonb
     )
 ON CONFLICT DO NOTHING;
 
@@ -1251,7 +1241,6 @@ INSERT INTO
     invoice_line_items (
         invoice_id,
         store_id,
-        line_index,
         product_id,
         quantity,
         unit_price,
@@ -1263,7 +1252,6 @@ INSERT INTO
 VALUES (
         'INV-202503-042',
         'STR-001',
-        1,
         'SP-YDE-001',
         2,
         28500,
@@ -1275,7 +1263,6 @@ VALUES (
     (
         'INV-202503-042',
         'STR-001',
-        2,
         'SP-YDE-002',
         1,
         8000,
@@ -1339,7 +1326,6 @@ INSERT INTO
     bill_line_items (
         bill_id,
         store_id,
-        line_index,
         product_id,
         description,
         quantity,
@@ -1350,7 +1336,6 @@ INSERT INTO
 VALUES (
         'BILL-2026-001',
         'STR-001',
-        1,
         'SP-YDE-001',
         'Riz Uncle Ben''s 25kg',
         200,
@@ -1361,7 +1346,6 @@ VALUES (
     (
         'BILL-2026-001',
         'STR-001',
-        2,
         'SP-YDE-002',
         'Huile de palme 5L',
         80,
@@ -1372,7 +1356,6 @@ VALUES (
     (
         'BILL-2026-002',
         'STR-002',
-        1,
         'SP-DLA-001',
         'Sucre en poudre 1kg',
         500,
@@ -1383,7 +1366,6 @@ VALUES (
     (
         'BILL-2026-002',
         'STR-002',
-        2,
         'SP-DLA-002',
         'Tomate concentrée 800g',
         100,

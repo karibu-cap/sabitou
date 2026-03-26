@@ -33,10 +33,6 @@ class PowerSyncService {
 
   String? _activeUserId;
 
-  /// Returns the current [SyncStatus] stream for UI listeners.
-  Stream<SyncStatus> get statusStream =>
-      _db?.statusStream ?? const Stream.empty();
-
   /// The currently open database. Throws if [open] has not been called.
   PowerSyncDatabase get db {
     final db = _db;
@@ -109,17 +105,6 @@ class PowerSyncService {
       _db = null;
       _activeUserId = null;
     }
-  }
-
-  /// Returns a single [SqliteTable] watch stream — re-executes [sql] whenever
-  /// any of the listed [tables] change. This is the primary way to build
-  /// reactive UI in this app.
-  Stream<List<Map<String, dynamic>>> watch(
-    String sql, {
-    List<Object?> parameters = const [],
-    required List<String> tables,
-  }) {
-    return db.watch(sql, parameters: parameters, triggerOnTables: tables);
   }
 
   /// Returns the per-user database file path.

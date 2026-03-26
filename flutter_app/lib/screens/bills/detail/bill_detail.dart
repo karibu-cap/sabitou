@@ -9,6 +9,8 @@ import '../../../router/page_routes.dart';
 import '../../../services/internationalization/internationalization.dart';
 import '../../../themes/app_theme.dart';
 import '../../../utils/formatters.dart';
+import '../../../utils/responsive_utils.dart';
+import '../../../widgets/custom_grid.dart';
 import '../components/bill_status.dart';
 import 'bill_detail_controller.dart';
 
@@ -95,10 +97,7 @@ class _DetailHeader extends StatelessWidget {
       builder: (_) => ShadDialog(
         title: Text(Intls.to.confirmPayment),
         description: Text(
-          Intls.to.markAsPaid.trParams({
-            'bill': bill.refId,
-            'amount': Formatters.formatCurrency(bill.balanceDue),
-          }),
+          Intls.to.markAsPaid,
         ),
         actions: [
           ShadButton.outline(
@@ -151,11 +150,15 @@ class _DetailHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
     final cs = theme.colorScheme;
+    final isMobile = ResponsiveUtils.isMobile(context);
 
-    return Row(
+    return Flex(
+      direction: isMobile ? Axis.vertical : Axis.horizontal,
+      spacing: 12,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
+          flex: isMobile ? 0 : 2,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -207,10 +210,7 @@ class _DetailHeader extends StatelessWidget {
                 onPressed: () => _confirmMarkPaid(context),
                 leading: const Icon(LucideIcons.circleCheck, size: 13),
                 child: AutoSizeText(
-                  Intls.to.markAsPaid.trParams({
-                    'bill': bill.refId,
-                    'amount': Formatters.formatCurrency(bill.balanceDue),
-                  }),
+                  Intls.to.markAsPaid,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(fontSize: 12.5),
@@ -335,17 +335,15 @@ class _MetaGrid extends StatelessWidget {
         dueDate.isBefore(DateTime.now()) &&
         bill.status != BillStatus.BILL_STATUS_PAID;
 
-    return GridView.count(
-      crossAxisCount: 2,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      crossAxisSpacing: 10,
-      mainAxisSpacing: 10,
-      childAspectRatio: 2.8,
+    return CustomGrid(
+      minItemWidth: 200,
+      mainAxisExtent: 100,
+      mainAxisSpacing: 16,
+      crossSpacing: 16,
       children: [
         _MetaTile(label: Intls.to.date, value: Formatters.fmtDate(billDate)),
         _MetaTile(
-          label: 'Échéance',
+          label: Intls.to.dueDate,
           value: Formatters.fmtDate(dueDate),
           valueColor: isOverdue ? SabitouColors.danger : null,
         ),

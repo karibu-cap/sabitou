@@ -23,16 +23,19 @@ class PaymentStatus extends $pb.ProtobufEnum {
       PaymentStatus._(2, _omitEnumNames ? '' : 'PAYMENT_STATUS_COMPLETED');
   static const PaymentStatus PAYMENT_STATUS_FAILED =
       PaymentStatus._(3, _omitEnumNames ? '' : 'PAYMENT_STATUS_FAILED');
+  static const PaymentStatus PAYMENT_STATUS_INITIALIZE =
+      PaymentStatus._(4, _omitEnumNames ? '' : 'PAYMENT_STATUS_INITIALIZE');
 
   static const $core.List<PaymentStatus> values = <PaymentStatus>[
     PAYMENT_STATUS_UNSPECIFIED,
     PAYMENT_STATUS_PENDING,
     PAYMENT_STATUS_COMPLETED,
     PAYMENT_STATUS_FAILED,
+    PAYMENT_STATUS_INITIALIZE,
   ];
 
   static final $core.List<PaymentStatus?> _byValue =
-      $pb.ProtobufEnum.$_initByValueList(values, 3);
+      $pb.ProtobufEnum.$_initByValueList(values, 4);
   static PaymentStatus? valueOf($core.int value) =>
       value < 0 || value >= _byValue.length ? null : _byValue[value];
 

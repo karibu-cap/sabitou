@@ -7,6 +7,7 @@ import '../../../themes/app_theme.dart';
 
 /// Style bundle for a given PurchaseOrderStatus.
 class PoStatusStyle {
+  /// Purchase order status style bundle.
   const PoStatusStyle({
     required this.label,
     required this.bg,
@@ -16,14 +17,26 @@ class PoStatusStyle {
     required this.topBarColor,
   });
 
+  /// The text to display for the status.
   final String label;
+
+  /// The background color of the status.
   final Color bg;
+
+  /// The foreground color of the status.
   final Color fg;
+
+  /// The dot color of the status.
   final Color dot;
+
+  /// The icon to display for the status.
   final IconData icon;
+
+  /// The top bar color of the status.
   final Color topBarColor;
 }
 
+/// The [PoStatusUtils].
 abstract class PoStatusUtils {
   static const Color _infoSoft = SabitouColors.infoSoft;
   static const Color _infoText = Color(0xFF1E40AF);
@@ -42,10 +55,11 @@ abstract class PoStatusUtils {
   static const Color _neutralText = SabitouColors.infoText;
   static const Color _neutralDot = SabitouColors.infoSoft;
 
+  /// Returns the style for a given purchase order status.
   static PoStatusStyle styleFor(PurchaseOrderStatus status) {
     return switch (status) {
-      PurchaseOrderStatus.PO_STATUS_DRAFT => const PoStatusStyle(
-        label: 'Brouillon',
+      PurchaseOrderStatus.PO_STATUS_DRAFT => PoStatusStyle(
+        label: Intls.to.draft,
         bg: _neutralBg,
         fg: _neutralText,
         dot: _neutralDot,
@@ -60,7 +74,7 @@ abstract class PoStatusUtils {
         icon: LucideIcons.clock,
         topBarColor: _amberDot,
       ),
-      PurchaseOrderStatus.PO_STATUS_PARTIALLY_RECEIVED => PoStatusStyle(
+      PurchaseOrderStatus.PO_STATUS_ISSUED => PoStatusStyle(
         label: Intls.to.partial,
         bg: _infoSoft,
         fg: _infoText,
@@ -68,7 +82,7 @@ abstract class PoStatusUtils {
         icon: LucideIcons.packageSearch,
         topBarColor: _infoDot,
       ),
-      PurchaseOrderStatus.PO_STATUS_RECEIVED => PoStatusStyle(
+      PurchaseOrderStatus.PO_STATUS_CLOSED => PoStatusStyle(
         label: Intls.to.received,
         bg: _successSoft,
         fg: _successText,
@@ -98,11 +112,12 @@ abstract class PoStatusUtils {
   /// Whether a PO can accept new receiving notes.
   static bool canReceive(PurchaseOrderStatus status) =>
       status == PurchaseOrderStatus.PO_STATUS_PENDING ||
-      status == PurchaseOrderStatus.PO_STATUS_PARTIALLY_RECEIVED;
+      status == PurchaseOrderStatus.PO_STATUS_ISSUED ||
+      status == PurchaseOrderStatus.PO_STATUS_CLOSED;
 
   /// Whether a PO can generate a bill.
   static bool canGenerateBill(PurchaseOrderStatus status) =>
-      status != PurchaseOrderStatus.PO_STATUS_DRAFT &&
+      status != PurchaseOrderStatus.PO_STATUS_CLOSED &&
       status != PurchaseOrderStatus.PO_STATUS_CANCELLED;
 
   /// Whether a PO can be cancelled.
@@ -125,12 +140,45 @@ abstract class PoStatusUtils {
 
     return (totalReceived / totalOrdered).clamp(0.0, 1.0);
   }
+
+  /// Progress fraction of billed items across all received items.
+  /// Returns 0.0 when no items are received yet.
+  /// Returns 1.0 when all received items have been billed.
+  static double billProgress(PurchaseOrder po, List<Bill> bills) {
+    if (po.items.isEmpty) {
+      return 0;
+    }
+    // Calculate total received quantity
+    final totalOrdered = po.items.fold<int>(
+      0,
+      (sum, i) => sum + i.quantityOrdered,
+    );
+
+    if (totalOrdered == 0) {
+      return 0;
+    }
+
+    // Calculate total billed quantity from all bills related to this PO
+    final totalBilled = bills.fold<int>(
+      0,
+      (sum, bill) =>
+          sum +
+          bill.items.fold<int>(0, (itemSum, item) => itemSum + item.quantity),
+    );
+
+    return (totalBilled / totalOrdered).clamp(0.0, 1.0);
+  }
 }
 
+/// A widget displaying the status of a [PurchaseOrder].
 class PoStatusPill extends StatelessWidget {
+  /// Creates a [PoStatusPill].
   const PoStatusPill({super.key, required this.status, this.large = false});
 
+  /// The status of the [PurchaseOrder].
   final PurchaseOrderStatus status;
+
+  /// Determines if the widget should be larger.
   final bool large;
 
   @override
@@ -169,7 +217,9 @@ class PoStatusPill extends StatelessWidget {
   }
 }
 
+/// A widget displaying a progress indicator.
 class PoProgressIndicator extends StatelessWidget {
+  /// Creates a [PoProgressIndicator].
   const PoProgressIndicator({
     super.key,
     required this.label,
@@ -177,8 +227,13 @@ class PoProgressIndicator extends StatelessWidget {
     required this.activeColor,
   });
 
+  /// The label of the progress indicator.
   final String label;
+
+  /// The progress of the indicator, between 0.0 and 1.0.
   final double progress;
+
+  /// The color of the active portion of the indicator.
   final Color activeColor;
 
   @override
@@ -267,4 +322,26 @@ class _ProgressCirclePainter extends CustomPainter {
   @override
   bool shouldRepaint(_ProgressCirclePainter old) =>
       old.progress != progress || old.color != color;
+}
+
+/// Snapshot of a PO and its linked documents.
+class PurchaseOrderDetailSnapshot {
+  /// Constructor of new [PurchaseOrderDetailSnapshot].
+  const PurchaseOrderDetailSnapshot({
+    this.po,
+    required this.bills,
+    required this.receivingNotes,
+  });
+
+  /// The purchase order. `null` if not available.
+  final PurchaseOrder? po;
+
+  /// The bills associated with the PO.
+  final List<Bill> bills;
+
+  /// The receiving notes associated with the PO.
+  final List<ReceivingNote> receivingNotes;
+
+  /// Returns whether the snapshot contains a purchase order.
+  bool get hasPo => po != null;
 }

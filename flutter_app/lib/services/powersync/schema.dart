@@ -242,7 +242,6 @@ final class SalesOrders {
 final class SalesOrdersItems {
   static const String salesOrderId = 'sales_order_id';
   static const String storeId = 'store_id';
-  static const String lineIndex = 'line_index';
   static const String productId = 'product_id';
   static const String productName = 'product_name';
   static const String unitPrice = 'unit_price';
@@ -303,7 +302,6 @@ final class DeliveryNotesFields {
 final class DeliveryNotesItemsFields {
   static const String deliveryNoteId = 'delivery_note_id';
   static const String storeId = 'store_id';
-  static const String lineIndex = 'line_index';
   static const String productId = 'product_id';
   static const String quantity = 'quantity';
   static const String batchId = 'batch_id';
@@ -326,7 +324,6 @@ final class ReceivingNotesFields {
   static const String receivedByUserId = 'received_by_user_id';
   static const String receivedAt = 'received_at';
   static const String notes = 'notes';
-  static const String status = 'status';
   static const String storeId = 'store_id';
   static const String createdAt = 'created_at';
 }
@@ -335,7 +332,6 @@ final class ReceivingNoteLineItemsFields {
   static const String id = 'id';
   static const String receivingNoteId = 'receiving_note_id';
   static const String storeId = 'store_id';
-  static const String lineIndex = 'line_index';
   static const String productId = 'product_id';
   static const String quantityExpected = 'quantity_expected';
   static const String quantityReceived = 'quantity_received';
@@ -363,7 +359,6 @@ final class ReturnNotesFields {
 final class ReturnNoteLineItemsFields {
   static const String id = 'id';
   static const String returnNoteId = 'return_note_id';
-  static const String lineIndex = 'line_index';
   static const String productId = 'product_id';
   static const String productName = 'product_name';
   static const String quantity = 'quantity';
@@ -397,7 +392,6 @@ final class InvoicesFields {
 final class InvoiceLineItemsFields {
   static const String invoiceId = 'invoice_id';
   static const String storeId = 'store_id';
-  static const String lineIndex = 'line_index';
   static const String productId = 'product_id';
   static const String quantity = 'quantity';
   static const String unitPrice = 'unit_price';
@@ -415,7 +409,7 @@ final class BillsFields {
   static const String supplierId = 'supplier_id';
   static const String storeId = 'store_id';
   static const String status = 'status';
-  static const String paymentId = 'payment_id';
+  static const String paymentIds = 'payment_ids';
   static const String billDate = 'bill_date';
   static const String dueDate = 'due_date';
   static const String subTotal = 'sub_total';
@@ -429,6 +423,7 @@ final class BillsFields {
 
 final class BillLineItemsFields {
   static const String billId = 'bill_id';
+  static const String storeId = 'store_id';
   static const String productId = 'product_id';
   static const String description = 'description';
   static const String quantity = 'quantity';
@@ -703,7 +698,6 @@ final schema = const Schema([
   Table(CollectionName.salesOrdersItemss, [
     Column.text(SalesOrdersItems.salesOrderId),
     Column.text(SalesOrdersItems.storeId),
-    Column.integer(SalesOrdersItems.lineIndex),
     Column.text(SalesOrdersItems.productId),
     Column.text(SalesOrdersItems.productName), // JSON {en,fr}
     Column.real(SalesOrdersItems.unitPrice),
@@ -774,7 +768,6 @@ final schema = const Schema([
     [
       Column.text(DeliveryNotesItemsFields.deliveryNoteId),
       Column.text(DeliveryNotesItemsFields.storeId),
-      Column.integer(DeliveryNotesItemsFields.lineIndex),
       Column.text(DeliveryNotesItemsFields.productId),
       Column.real(DeliveryNotesItemsFields.quantity),
       Column.text(DeliveryNotesItemsFields.batchId),
@@ -803,8 +796,8 @@ final schema = const Schema([
     Column.text(ReceivingNotesFields.receivedByUserId),
     Column.text(ReceivingNotesFields.receivedAt),
     Column.text(ReceivingNotesFields.notes),
-    Column.text(ReceivingNotesFields.status),
     Column.text(ReceivingNotesFields.storeId),
+    Column.text(ReceivingNotesFields.createdAt),
   ]),
 
   Table(
@@ -812,7 +805,6 @@ final schema = const Schema([
     [
       Column.text(ReceivingNoteLineItemsFields.receivingNoteId),
       Column.text(ReceivingNoteLineItemsFields.storeId),
-      Column.integer(ReceivingNoteLineItemsFields.lineIndex),
       Column.text(ReceivingNoteLineItemsFields.productId),
       Column.real(ReceivingNoteLineItemsFields.quantityExpected),
       Column.real(ReceivingNoteLineItemsFields.quantityReceived),
@@ -847,7 +839,6 @@ final schema = const Schema([
     CollectionName.returnNoteLineItems,
     [
       Column.text(ReturnNoteLineItemsFields.returnNoteId),
-      Column.integer(ReturnNoteLineItemsFields.lineIndex),
       Column.text(ReturnNoteLineItemsFields.productId),
       Column.text(ReturnNoteLineItemsFields.productName), // JSON {en, fr}
       Column.real(ReturnNoteLineItemsFields.quantity),
@@ -892,7 +883,7 @@ final schema = const Schema([
       Column.text(BillsFields.supplierId),
       Column.text(BillsFields.storeId),
       Column.text(BillsFields.status),
-      Column.text(BillsFields.paymentId),
+      Column.text(BillsFields.paymentIds),
       Column.text(BillsFields.billDate),
       Column.text(BillsFields.dueDate),
       Column.real(BillsFields.subTotal),
@@ -915,7 +906,6 @@ final schema = const Schema([
     [
       Column.text(InvoiceLineItemsFields.invoiceId),
       Column.text(InvoiceLineItemsFields.storeId),
-      Column.integer(InvoiceLineItemsFields.lineIndex),
       Column.text(InvoiceLineItemsFields.productId),
       Column.integer(InvoiceLineItemsFields.quantity),
       Column.real(InvoiceLineItemsFields.unitPrice),
@@ -937,6 +927,7 @@ final schema = const Schema([
     CollectionName.billLineItems,
     [
       Column.text(BillLineItemsFields.billId),
+      Column.text(BillLineItemsFields.storeId),
       Column.text(BillLineItemsFields.productId),
       Column.text(BillLineItemsFields.description),
       Column.integer(BillLineItemsFields.quantity),

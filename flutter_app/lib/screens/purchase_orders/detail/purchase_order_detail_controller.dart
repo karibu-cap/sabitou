@@ -9,93 +9,66 @@ import '../../../services/internationalization/internationalization.dart';
 import '../components/po_utils.dart';
 import 'purchase_order_detail_view_model.dart';
 
-/// Controller scoped to the detail view of ONE purchase order.
-///
-/// - A reactive [detailStream] (PO + bills + receiving notes, live updates)
-/// - One-time [payments] from the full RPC response
-/// - Loading / error state
-///
-/// Created and provided by [PurchaseOrderDetailController].
+/// Controller for the purchase order detail screen.
 class PurchaseOrderDetailController extends ChangeNotifier {
+  /// Creates a new [PurchaseOrderDetailController].
   PurchaseOrderDetailController({
     required this.purchaseOrderId,
     required this.storeId,
   }) : _viewModel = PurchaseOrderDetailViewModel(
          purchaseOrderId: purchaseOrderId,
          storeId: storeId,
-       ) {
-    _init();
-  }
+       );
 
   final PurchaseOrderDetailViewModel _viewModel;
+
+  /// The ID of the store to which this PO belongs.
   final String storeId;
+
+  /// The ID of the purchase order being viewed.
   final String purchaseOrderId;
+
   String _errorMessage = '';
   bool _isLoading = false;
   String _successMessage = '';
-  final List<Payment> _payments = [];
 
+  /// `true` while an async operation is in progress.
   bool get isLoading => _isLoading;
+
+  /// Non-empty when the last action produced an error.
   String get errorMessage => _errorMessage;
+
+  /// Non-empty when the last action produced a success notification.
   String get successMessage => _successMessage;
 
+  /// Returns `true` if [status] allows creating new receiving notes.
+  ///
+  /// Receiving is allowed on PENDING, ISSUED and CLOSED POs.  On a CLOSED PO
+  /// (created via a direct bill) the receive form pre-fills and locks the
+  /// quantities to match what was billed.
   bool canReceive(PurchaseOrderStatus status) =>
       PoStatusUtils.canReceive(status);
+
+  /// Returns `true` if [status] allows generating a bill.
   bool canGenerateBill(PurchaseOrderStatus status) =>
       PoStatusUtils.canGenerateBill(status);
+
+  /// Returns `true` if [status] allows cancellation.
   bool canCancel(PurchaseOrderStatus status) => PoStatusUtils.canCancel(status);
 
-  List<Payment> get payments => _payments;
-
-  /// Live stream: PO + bills + receiving notes updated reactively.
+  /// Reactive stream combining the PO, its bills, and its receiving notes.
   Stream<PurchaseOrderDetailSnapshot> get detailStream =>
       _viewModel.detailStream;
 
-  Future<void> _init() async {
-    await _fetchPayments();
-  }
-
-  /// Fetches the one-time data (payments) from the full RPC response.
-  /// The PO / bills / receiving notes are handled reactively via [detailStream].
-  Future<void> _fetchPayments() async {
-    // _isLoading = true;
-    // _errorMessage = '';
-    // notifyListeners();
-
-    // final response = await _viewModel.fetchDetail();
-    // if (response == null) {
-    //   _errorMessage = Intls.to.impossibleToLoadPurchaseOrderData;
-    // } else {
-    //   _payments = response.payments.toList();
-    // }
-
-    // _isLoading = false;
-    // notifyListeners();
-  }
-
-  /// Called by [CommonPurchaseDetailController] after a mutation
-  /// that requires refreshing the payments list (e.g. after marking a bill paid).
-  Future<void> reload() => _fetchPayments();
-
-  @override
-  void dispose() {
-    _viewModel; // no streams to close here — owned by ViewModel
-    super.dispose();
-  }
-
   /// Records goods received against this PO.
   ///
-  /// The backend:
-  /// 1. Creates the [ReceivingNote]
-  /// 2. Increments [PurchaseOrderLineItems.quantityReceived]
-  /// 3. Sets PO status → PARTIALLY_RECEIVED or RECEIVED
-  /// 4. Updates [InventoryLevel.quantityOnHand] and [quantityAvailable]
-  /// 5. Creates [Batch] entries with purchase price + expiration
-  /// 6. Creates [InventoryTransaction] of type PURCHASE
+  /// Returns the generated [ReceivingNote.refId] on success, or `null` on
+  /// failure.
   Future<String?> createReceivingNote({
     required PurchaseOrder po,
     required String storeId,
     required String receivedByUserId,
+    required DateTime receivedAt,
     required List<ReceivingNoteLineItem> items,
     String notes = '',
   }) async {
@@ -107,7 +80,9 @@ class PurchaseOrderDetailController extends ChangeNotifier {
       storeId: storeId,
       items: items,
       receivedByUserId: receivedByUserId,
+      receivedAt: Timestamp.fromDateTime(receivedAt),
       notes: notes,
+      createdAt: Timestamp.fromDateTime(DateTime.now()),
     );
 
     final response = await _viewModel.createReceivingNote(request);
@@ -123,11 +98,12 @@ class PurchaseOrderDetailController extends ChangeNotifier {
     return response;
   }
 
-  /// Generates a bill from this PO.
+  /// Generates a bill directly from [purchaseOrder] (the "full PO" path).
   ///
-  /// Freezes sub_total, tax_total, total_amount from the PO.
-  /// Created with [BillStatus.BILL_STATUS_OPEN].
-  /// Due date defaults to 30 days from today if not specified.
+  /// This is called when the admin skips the receive step and bills the
+  /// entire PO at once (Scenario 1).  Moving to
+  /// [PurchaseOrderStatus.PO_STATUS_CLOSED] is triggered by
+  /// [_syncPOStatus] after a successful save.
   Future<bool?> generateBill({
     DateTime? dueDate,
     String notes = '',
@@ -161,23 +137,70 @@ class PurchaseOrderDetailController extends ChangeNotifier {
       taxTotal: purchaseOrder.taxTotal,
       totalAmount: purchaseOrder.totalAmount,
       balanceDue: purchaseOrder.totalAmount,
-      currency: purchaseOrder.currency ?? 'XAF',
+      currency: purchaseOrder.currency,
       dueDate: Timestamp.fromDateTime(due),
       notes: notes,
       status: BillStatus.BILL_STATUS_OPEN,
     );
 
-    final bill = await BillRepository.instance.createBill(request);
-    if (!bill) {
+    final ok = await BillRepository.instance.createBill(request);
+    if (!ok) {
       _errorMessage = Intls.to.impossibleToGenerateBill;
     } else {
       _successMessage = Intls.to.billGenerated;
+      unawaited(_syncPOStatus());
     }
     _setLoading(false);
 
-    return bill;
+    return ok;
   }
 
+  /// Deletes the bill identified by [billRefId] and re-evaluates PO status.
+  ///
+  /// If the deleted bill was the only one covering all items the PO reverts
+  /// to [PurchaseOrderStatus.PO_STATUS_ISSUED] (receives still exist) or
+  /// [PurchaseOrderStatus.PO_STATUS_PENDING].
+  Future<bool> deleteBill(String billRefId) async {
+    final result = await BillRepository.instance.deleteBill(billRefId);
+    if (result) {
+      // Re-sync PO status now that a bill has been removed.
+      unawaited(_syncPOStatus());
+      notifyListeners();
+    }
+
+    return result;
+  }
+
+  /// Asks [PurchaseOrderRepository] to re-evaluate and persist the correct
+  /// PO status based on the current bills and receiving notes.
+  Future<void> _syncPOStatus() async {
+    await PurchaseOrderRepository.instance.syncPOStatusFromBills(
+      purchaseOrderId: purchaseOrderId,
+      storeId: storeId,
+    );
+  }
+
+  /// Explicitly updates the status of the purchase order.
+  Future<bool> updateStatus({
+    required PurchaseOrderStatus newStatus,
+    String notes = '',
+  }) async {
+    _setLoading(true);
+
+    final ok = await PurchaseOrderRepository.instance.updatePurchaseOrderStatus(
+      purchaseOrderId: purchaseOrderId,
+      status: newStatus,
+    );
+
+    if (!ok) {
+      _errorMessage = Intls.to.impossibleToUpdateStatus;
+    }
+    _setLoading(false);
+
+    return ok;
+  }
+
+  /// Cancels the purchase order.
   Future<bool> cancelPurchaseOrder({
     String reason = '',
     required String userId,
@@ -198,33 +221,28 @@ class PurchaseOrderDetailController extends ChangeNotifier {
     return ok;
   }
 
-  Future<bool> updateStatus({
-    required PurchaseOrderStatus newStatus,
-    String notes = '',
-  }) async {
-    _setLoading(true);
-
-    final ok = await PurchaseOrderRepository.instance.updatePurchaseOrderStatus(
-      purchaseOrderId: purchaseOrderId,
-      status: newStatus,
-    );
-
-    if (!ok) {
-      _errorMessage = Intls.to.impossibleToUpdateStatus;
-    }
-    _setLoading(false);
-
-    return ok;
+  /// Re-fetches ancillary data (e.g. payments) that are not driven by the
+  /// reactive [detailStream].
+  Future<void> reload() async {
+    // Reserved for future one-shot data (payments, attachments, etc.).
   }
 
+  /// Clears the current error message.
   void clearError() {
     _errorMessage = '';
     notifyListeners();
   }
 
+  /// Clears the current success message.
   void clearSuccess() {
     _successMessage = '';
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    // ViewModel holds no closeable streams; nothing to close here.
+    super.dispose();
   }
 
   void _setLoading(bool v) {

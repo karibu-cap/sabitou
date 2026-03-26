@@ -110,6 +110,27 @@ final class SuppliersRepository extends BaseRepository<Supplier> {
     }
   }
 
+  /// Find the supllier by query.
+  Future<List<Supplier>> searchSuppliers({
+    required String query,
+    required String storeId,
+  }) async {
+    try {
+      final rows = await findWhere([
+        SqlQuery.like(SuppliersFields.storeIds, '%"$storeId"%'),
+        if (query.isNotEmpty) ...[
+          SqlQuery.like(SuppliersFields.name, '%$query%'),
+        ],
+      ]);
+
+      return rows;
+    } on Exception catch (e) {
+      _logger.severe('searchSupplier Error: $e');
+
+      return [];
+    }
+  }
+
   /// Stream suppliers for a specific store.
   Stream<List<Supplier>> streamStoreSuppliers(
     StreamStoreSuppliersRequest request,

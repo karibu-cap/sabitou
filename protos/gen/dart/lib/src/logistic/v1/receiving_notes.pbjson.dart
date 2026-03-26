@@ -137,7 +137,6 @@ const ReceivingNoteLineItem$json = {
     },
     {'1': 'purchase_price', '3': 8, '4': 1, '5': 1, '10': 'purchasePrice'},
     {'1': 'store_id', '3': 9, '4': 1, '5': 9, '10': 'storeId'},
-    {'1': 'line_index', '3': 10, '4': 1, '5': 5, '10': 'lineIndex'},
   ],
   '8': [
     {'1': '_batch_id'},
@@ -153,4 +152,4 @@ final $typed_data.Uint8List receivingNoteLineItemDescriptor = $convert.base64Dec
     'dGlvblJlYXNvbhIeCghiYXRjaF9pZBgGIAEoCUgAUgdiYXRjaElkiAEBEkMKD2V4cGlyYXRpb2'
     '5fZGF0ZRgHIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSDmV4cGlyYXRpb25EYXRl'
     'EiUKDnB1cmNoYXNlX3ByaWNlGAggASgBUg1wdXJjaGFzZVByaWNlEhkKCHN0b3JlX2lkGAkgAS'
-    'gJUgdzdG9yZUlkEh0KCmxpbmVfaW5kZXgYCiABKAVSCWxpbmVJbmRleEILCglfYmF0Y2hfaWQ=');
+    'gJUgdzdG9yZUlkQgsKCV9iYXRjaF9pZA==');

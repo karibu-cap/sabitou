@@ -19,13 +19,15 @@ import '../screens/home/home.dart';
 import '../screens/inventory/ajustment/inventory_ajustement_screen.dart';
 import '../screens/inventory/detail/inventory_detail_screen.dart';
 import '../screens/inventory/inventory_screen.dart';
+import '../screens/payments/payments_screen.dart';
 import '../screens/point_of_sale/point_of_sale_screen.dart';
 import '../screens/products_list/components/form/screen/create_edit_product_screen.dart';
 import '../screens/products_list/detail/product_detail_screen.dart';
 import '../screens/products_list/products_list_screen.dart';
 import '../screens/purchase_orders/detail/purchase_order_detail_screen.dart';
 import '../screens/purchase_orders/purchase_orders_view.dart';
-import '../screens/purchase_receives/purchase_receives_screen.dart';
+import '../screens/purchase_receives/detail/receiving_note_detail_screen.dart';
+import '../screens/purchase_receives/purchase_receives_view.dart';
 import '../screens/reports/reports_screen.dart';
 import '../screens/settings/settings_screen.dart';
 import '../screens/suppliers/suppliers_view.dart';
@@ -173,7 +175,7 @@ class GoRouterRoutesProvider {
           name: PagesRoutes.purchaseReceives.name,
           path: PagesRoutes.purchaseReceives.pattern,
           pageBuilder: (_, __) =>
-              const MaterialPage(child: PurchaseReceivesScreen()),
+              const MaterialPage(child: PurchaseReceivesView()),
         ),
       ],
     ),
@@ -183,6 +185,15 @@ class GoRouterRoutesProvider {
           name: PagesRoutes.bills.name,
           path: PagesRoutes.bills.pattern,
           pageBuilder: (_, __) => const MaterialPage(child: BillsScreen()),
+        ),
+      ],
+    ),
+    StatefulShellBranch(
+      routes: [
+        GoRoute(
+          name: PagesRoutes.payments.name,
+          path: PagesRoutes.payments.pattern,
+          pageBuilder: (_, __) => const MaterialPage(child: PaymentsScreen()),
         ),
       ],
     ),
@@ -336,6 +347,36 @@ class GoRouterRoutesProvider {
           );
         },
       ),
+      GoRoute(
+        name: PagesRoutes.receivingNoteDetail.name,
+        path: PagesRoutes.receivingNoteDetail.pattern,
+        parentNavigatorKey: rootNavigatorKey,
+        pageBuilder: (context, state) {
+          final receivingNoteId = state
+              .pathParameters[ReceivingNoteDetailParameters.keyReceivingNoteId];
+
+          if (receivingNoteId == null ||
+              !receivingNoteId.toLowerCase().startsWith('rn')) {
+            return MaterialPage(
+              child: ErrorPageBuilder.notFound(
+                title: 'Invalid Receiving Note',
+                onPrimaryAction: () =>
+                    AppRouter.go(context, PagesRoutes.home.pattern),
+                primaryActionText: 'Back to Home',
+                onSecondaryAction: () =>
+                    AppRouter.go(context, PagesRoutes.purchaseReceives.pattern),
+                secondaryActionText: 'View Purchase Receives',
+                showBackgroundGradient: false,
+                customIcon: const Icon(LucideIcons.packageSearch),
+              ),
+            );
+          }
+
+          return MaterialPage(
+            child: ReceivingNoteDetailScreen(receivingNoteId: receivingNoteId),
+          );
+        },
+      ),
       // Auth routes (public)
       GoRoute(
         name: PagesRoutes.welcome.name,
@@ -372,7 +413,23 @@ class GoRouterRoutesProvider {
         pageBuilder: (context, state) {
           final billId = state.pathParameters[BillDetailParameters.keyBillId];
 
-          return MaterialPage(child: BillDetailScreen(billRefId: billId ?? ''));
+          if (billId == null || !billId.toLowerCase().startsWith('bill')) {
+            return MaterialPage(
+              child: ErrorPageBuilder.notFound(
+                title: 'Invalid Bill',
+                onPrimaryAction: () =>
+                    AppRouter.go(context, PagesRoutes.home.pattern),
+                primaryActionText: 'Back to Home',
+                onSecondaryAction: () =>
+                    AppRouter.go(context, PagesRoutes.purchaseOrders.pattern),
+                secondaryActionText: 'View Bills',
+                showBackgroundGradient: false,
+                customIcon: const Icon(LucideIcons.clipboardList400),
+              ),
+            );
+          }
+
+          return MaterialPage(child: BillDetailScreen(billRefId: billId));
         },
       ),
     ];

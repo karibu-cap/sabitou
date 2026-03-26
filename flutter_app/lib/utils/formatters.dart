@@ -76,6 +76,8 @@ class Formatters {
     }
   }
 
+  /// Format the duration to now.
+  /// Example: "5 minutes ago", "2 hours ago", "1 day ago"
   static String timeAgo(DateTime dt) {
     final diff = DateTime.now().toUtc().difference(dt.toUtc());
     if (diff.inMinutes < 1) {
@@ -109,6 +111,8 @@ class Formatters {
     }
   }
 
+  /// Get the greeting based on the current time.
+  /// Example: "Good morning", "Good afternoon", "Good evening"
   static String greeting() {
     final h = DateTime.now().hour;
     if (h < 12) return Intls.to.morning;
@@ -117,6 +121,8 @@ class Formatters {
     return Intls.to.evening;
   }
 
+  /// Format the current date to a human-readable string.
+  /// Example: "Monday 1 January 2025"
   static String hummainFormattedDate() {
     final now = DateTime.now();
     final days = [
@@ -148,7 +154,9 @@ class Formatters {
     return '$day ${now.day} $month ${now.year}';
   }
 
+  /// Format a date to a human-readable string.
+  /// Example: "01 Jan 2025"
   static String fmtDate(DateTime d) {
-    return '${d.day.toString().padLeft(2, '0')} ${months[d.month].substring(0, 2)} ${d.year}';
+    return '${d.day.toString().padLeft(2, '0')} ${months[d.month].substring(0, 3)} ${d.year}';
   }
 }
