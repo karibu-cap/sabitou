@@ -7,7 +7,7 @@ import '../../../users_controller.dart';
 /// Controller for managing user deletion confirmation modal state and operations.
 class UserDeletionModalController extends ChangeNotifier {
   final UsersController _usersController;
-  final StoreMember _storeMember;
+  final ({StoreMember storeMember, User user}) _storeMember;
 
   bool _isLoading = false;
   String _errorMessage = '';
@@ -16,7 +16,7 @@ class UserDeletionModalController extends ChangeNotifier {
   /// Constructs a new UserDeletionModalController.
   UserDeletionModalController({
     required UsersController usersController,
-    required StoreMember storeMember,
+    required ({StoreMember storeMember, User user}) storeMember,
   }) : _usersController = usersController,
        _storeMember = storeMember;
 
@@ -27,7 +27,7 @@ class UserDeletionModalController extends ChangeNotifier {
   String get errorMessage => _errorMessage;
 
   /// Store member to be deleted
-  StoreMember get storeMember => _storeMember;
+  ({StoreMember storeMember, User user}) get storeMember => _storeMember;
 
   /// Confirmation text entered by user
   String get confirmationText => _confirmationText;
@@ -58,7 +58,7 @@ class UserDeletionModalController extends ChangeNotifier {
     notifyListeners();
 
     final success = await _usersController.removeUserFromStore(
-      _storeMember.user.refId,
+      _storeMember.storeMember.userId,
     );
 
     if (!success) {

@@ -7,9 +7,9 @@ components:
     financial.v1.CreditNote:
       type: object
       properties:
-        documentId:
+        refId:
           type: string
-          title: document_id
+          title: ref_id
           description: '"CN-2025-001"'
         relatedInvoiceId:
           type: string
@@ -67,7 +67,7 @@ components:
           title: notes
       title: CreditNote
       required:
-        - documentId
+        - refId
       additionalProperties: false
       description: |-
         *

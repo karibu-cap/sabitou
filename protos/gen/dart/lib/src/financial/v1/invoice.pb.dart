@@ -46,7 +46,7 @@ export 'invoice.pbenum.dart';
 ///  INVENTORY IMPACT: None (already moved by DeliveryNote)
 class Invoice extends $pb.GeneratedMessage {
   factory Invoice({
-    $core.String? documentId,
+    $core.String? refId,
     InvoiceType? invoiceType,
     $core.String? issuerId,
     $core.String? recipientId,
@@ -68,7 +68,7 @@ class Invoice extends $pb.GeneratedMessage {
     $core.String? paymentTerms,
   }) {
     final result = create();
-    if (documentId != null) result.documentId = documentId;
+    if (refId != null) result.refId = refId;
     if (invoiceType != null) result.invoiceType = invoiceType;
     if (issuerId != null) result.issuerId = issuerId;
     if (recipientId != null) result.recipientId = recipientId;
@@ -107,7 +107,7 @@ class Invoice extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'Invoice',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'financial.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'documentId')
+    ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..e<InvoiceType>(
         2, _omitFieldNames ? '' : 'invoiceType', $pb.PbFieldType.OE,
         defaultOrMaker: InvoiceType.INVOICE_TYPE_UNSPECIFIED,
@@ -163,13 +163,13 @@ class Invoice extends $pb.GeneratedMessage {
   static Invoice? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get documentId => $_getSZ(0);
+  $core.String get refId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set documentId($core.String value) => $_setString(0, value);
+  set refId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasDocumentId() => $_has(0);
+  $core.bool hasRefId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearDocumentId() => $_clearField(1);
+  void clearRefId() => $_clearField(1);
 
   @$pb.TagNumber(2)
   InvoiceType get invoiceType => $_getN(1);

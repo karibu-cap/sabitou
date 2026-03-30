@@ -125,9 +125,7 @@ class CategoryAddController extends ChangeNotifier {
 
     var result;
     if (this.category == null) {
-      final request = CreateCategoryRequest(category: category);
-
-      result = await viewModel.createCategory(request);
+      result = await viewModel.createCategory(category);
     } else {
       final request = UpdateCategoryRequest(category: category);
 

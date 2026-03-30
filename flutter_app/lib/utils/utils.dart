@@ -1,3 +1,5 @@
+import 'dart:math';
+
 /// Utility class for common functions.
 class AppUtils {
   AppUtils._();
@@ -305,5 +307,19 @@ class AppUtils {
     }
 
     return false;
+  }
+
+  /// Generate a smart user ID.
+  static String generateSmartDatabaseId(String prefix) {
+    final now = DateTime.now();
+    final int year = now.year;
+    final String day = now.day.toString().padLeft(2, '0');
+    final String month = now.month.toString().padLeft(2, '0');
+    final String dayMonth = '$day$month';
+    final random = Random();
+    final int randomNumber = random.nextInt(1000);
+    final String randomPart = randomNumber.toString().padLeft(3, '0');
+
+    return '$prefix-$year-$dayMonth-$randomPart';
   }
 }

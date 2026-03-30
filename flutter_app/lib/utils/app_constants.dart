@@ -1,3 +1,5 @@
+import '../services/internationalization/internationalization.dart';
+
 /// The preferences keys.
 final class PreferencesKey {
   /// Whether the user has opened the app for the first time.
@@ -63,6 +65,9 @@ final class CollectionName {
   /// The invoice collection.
   static const String invoices = 'invoices';
 
+  /// The bills collection.
+  static const String bills = 'bills';
+
   /// The category collection.
   static const String categories = 'categories';
 
@@ -78,6 +83,9 @@ final class CollectionName {
   /// The cash receipts collection.
   static const String cashReceipts = 'cash_receipts';
 
+  /// The cash receipt items collection.
+  static const String cashReceiptItems = 'cash_receipt_items';
+
   /// The inventory level collection.
   static const String inventoryLevels = 'inventory_levels';
 
@@ -92,6 +100,39 @@ final class CollectionName {
 
   /// The batches collection.
   static const String batches = 'batches';
+
+  /// The sales orders collection.
+  static const String salesOrders = 'sales_orders';
+
+  /// The sales orders itme collection.
+  static const String salesOrdersItemss = 'sales_order_line_items';
+
+  /// The purchase order items collection.
+  static const String purchaseOrderItems = 'purchase_order_line_items';
+
+  /// The delivery notes collection.
+  static const String deliveryNotes = 'delivery_notes';
+
+  /// The delivery notes items collection.
+  static const String deliveryNotesItems = 'delivery_note_line_items';
+
+  /// The receiving notes items collection.
+  static const String receivingNoteLineItems = 'receiving_note_line_items';
+
+  /// The return notes collection.
+  static const String returnNotes = 'return_notes';
+
+  /// The return notes items collection.
+  static const String returnNoteLineItems = 'return_note_line_items';
+
+  /// The invoice line items collection.
+  static const String invoiceLineItems = 'invoice_line_items';
+
+  /// The bill line items collection.
+  static const String billLineItems = 'bill_line_items';
+
+  /// The local auth collection.
+  static const String localAuth = 'local_auth';
 }
 
 /// The static images.
@@ -99,6 +140,32 @@ final class StaticImages {
   /// The placeholder image.
   static const String placeholder = 'assets/images/placeholder.png';
 }
+
+final months = [
+  '',
+  Intls.to.january,
+  Intls.to.february,
+  Intls.to.march,
+  Intls.to.april,
+  Intls.to.may,
+  Intls.to.june,
+  Intls.to.july,
+  Intls.to.august,
+  Intls.to.september,
+  Intls.to.october,
+  Intls.to.november,
+  Intls.to.december,
+];
+
+final days = [
+  Intls.to.monday,
+  Intls.to.tuesday,
+  Intls.to.wednesday,
+  Intls.to.thursday,
+  Intls.to.friday,
+  Intls.to.saturday,
+  Intls.to.sunday,
+];
 
 /// The app constants.
 class AppConstants {
@@ -183,8 +250,20 @@ enum DashboardItem {
   /// The pos item.
   pos,
 
+  /// The purchase orders parent (expandable section).
+  purchaseOrdersParent,
+
   /// The purchase orders item.
   purchaseOrders,
+
+  /// The purchase receives item.
+  purchaseReceives,
+
+  /// The bills item.
+  bills,
+
+  /// The payments made item.
+  paymentsMade,
 
   /// The products list item.
   productsList,

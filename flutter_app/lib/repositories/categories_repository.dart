@@ -1,43 +1,53 @@
-import 'package:connectrpc/connect.dart' as connect;
 import 'package:get_it/get_it.dart';
 import 'package:sabitou_rpc/connect_servers.dart';
 import 'package:sabitou_rpc/models.dart';
 
-import '../services/network_status_provider/network_status_provider.dart';
+import '../core/database/base_repository.dart';
+import '../core/database/local_data_source.dart';
+import '../core/database/query/sql_condition.dart';
+import '../core/database/row_mapper.dart';
+import '../services/powersync/schema.dart';
 import '../services/rpc/connect_rpc.dart';
+import '../utils/app_constants.dart';
 import '../utils/logger.dart';
+import '../utils/utils.dart';
 
 /// The categories repository.
-class CategoriesRepository {
+class CategoriesRepository extends BaseRepository<Category> {
   final _logger = LoggerApp('CategoriesRepository');
 
   /// The category service client.
   final CategoryServiceClient categoryServiceClient;
 
   /// The instance of [CategoriesRepository].
-  static final to = GetIt.I.get<CategoriesRepository>();
+  static final instance = GetIt.I.get<CategoriesRepository>();
 
-  /// The network status provider.
-  final NetworkStatusProvider networkStatusProvider;
+  @override
+  final LocalDataSource dataSource;
+
+  @override
+  String get tableName => CollectionName.categories;
+
+  @override
+  Category fromRow(RawRow row) => fromRowToCategory(row);
+
+  @override
+  RawRow toRow(Category entity) => fromCategoryToRaw(entity);
 
   /// Constructs a new [CategoriesRepository].
-  CategoriesRepository({
-    connect.Transport? transport,
-    NetworkStatusProvider? networkStatusProvider,
-  }) : categoryServiceClient = CategoryServiceClient(
-         transport ?? ConnectRPCService.to.clientChannel,
-       ),
-       networkStatusProvider =
-           networkStatusProvider ?? GetIt.I.get<NetworkStatusProvider>();
+  CategoriesRepository({required this.dataSource})
+    : categoryServiceClient = CategoryServiceClient(
+        ConnectRPCService.to.clientChannel,
+      );
 
   /// Gets all categories base on business Id.
   Future<List<Category>> getCategoriesByBusinessId(String businessId) async {
     try {
-      final response = await categoryServiceClient.findCategories(
-        FindCategoriesRequest(businessId: businessId),
-      );
+      final response = await findWhere([
+        SqlQuery.equals(CategoriesFields.businessId, businessId),
+      ]);
 
-      return response.categories;
+      return response;
     } on Exception catch (e) {
       _logger.severe('getCategoriesByBusinessId Error: $e');
 
@@ -48,9 +58,25 @@ class CategoriesRepository {
   /// Gets all categories.
   Future<List<Category>> getCategories(FindCategoriesRequest request) async {
     try {
-      final response = await categoryServiceClient.findCategories(request);
+      final response = await findWhere([
+        if (request.businessId.isNotEmpty)
+          SqlQuery.equals(CategoriesFields.businessId, request.businessId),
+        if (request.refId.isNotEmpty)
+          SqlQuery.equals(CategoriesFields.refId, request.refId),
+        if (request.name.isNotEmpty)
+          SqlQuery.equals(CategoriesFields.name, request.name),
+        if (request.parentCategoryId.isNotEmpty)
+          SqlQuery.equals(
+            CategoriesFields.parentCategoryId,
+            request.parentCategoryId,
+          ),
+        if (request.hasStatus())
+          SqlQuery.equals(CategoriesFields.status, request.status.name),
+        if (request.hasType())
+          SqlQuery.equals(CategoriesFields.type, request.type.name),
+      ]);
 
-      return response.categories;
+      return response;
     } on Exception catch (e) {
       _logger.severe('getCategories Error: $e');
 
@@ -61,11 +87,9 @@ class CategoriesRepository {
   /// Gets a category by ref.
   Future<Category?> getCategoryByRefId(String refId) async {
     try {
-      final response = await categoryServiceClient.getCategory(
-        GetCategoryRequest(categoryId: refId),
-      );
+      final response = await findById(refId);
 
-      return response.category;
+      return response;
     } on Exception catch (e) {
       _logger.severe('getCategoryByRefId Error: $e');
 
@@ -74,11 +98,15 @@ class CategoriesRepository {
   }
 
   /// Adds a new product category.
-  Future<bool> createCategory(CreateCategoryRequest request) async {
+  Future<bool> createCategory(Category category) async {
     try {
-      final response = await categoryServiceClient.createCategory(request);
+      if (category.refId.isEmpty) {
+        category.refId = AppUtils.generateSmartDatabaseId('CTG');
+      }
 
-      return response.success;
+      await create(category);
+
+      return true;
     } on Exception catch (e) {
       _logger.severe('CreateCategoryRequest Error: $e');
 
@@ -102,9 +130,9 @@ class CategoriesRepository {
   /// Deletes a product category.
   Future<bool> deleteProductCategory(DeleteCategoryRequest request) async {
     try {
-      final response = await categoryServiceClient.deleteCategory(request);
+      await delete(request.categoryId);
 
-      return response.success;
+      return true;
     } on Exception catch (e) {
       _logger.severe('deleteProductCategory Error: $e');
 

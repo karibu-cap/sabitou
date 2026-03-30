@@ -1,0 +1,230 @@
+# ---------------------------------------------------------------------------
+# Sync rules define which rows are synced to which user.
+# Parameters come from JWT claims (token_parameters() function).
+# The JWT must contain: sub (=user ref_id), store_id, business_id.
+# ---------------------------------------------------------------------------
+#
+# PowerSync SQL reference:
+#   token_parameters() — returns a table with one row containing JWT claims.
+#   bucket.* — refers to the parameter row from the `parameters` query.
+# ---------------------------------------------------------------------------
+
+bucket_definitions:
+  # -------------------------------------------------------------------------
+  # Global catalog — same for ALL authenticated users (no filtering).
+  # Products and categories are shared across the whole platform.
+  # -------------------------------------------------------------------------
+  global_catalog:
+    data:
+      - >
+        SELECT id, ref_id, name, description,
+               bar_code_value, status, categories, images_links_ids
+        FROM global_products
+
+      - >
+        SELECT id, ref_id, name, business_id,
+               parent_category_id, status, type
+        FROM categories
+
+      - >
+        SELECT id, ref_id, target_uri, icon_uri, info, label
+        FROM resource_links
+
+      - >
+        SELECT id, ref_id, name, description, logo_link_id, external_links_ids,
+               contact_phone, contact_email, contact_address, status, store_ids
+        FROM suppliers
+
+  # -------------------------------------------------------------------------
+  # Store-scoped data — products and inventory for the stores the employee works at.
+  # We dynamically find all stores the user is a member of, or owns via a business.
+  # -------------------------------------------------------------------------
+  store_data:
+    parameters:
+      - >
+        SELECT store_id FROM store_members WHERE user_id = request.user_id() AND status = 'STORE_MEMBER_STATUS_ACTIVE'
+
+    data:
+      - >
+        SELECT id, ref_id, store_id, global_product_id, sale_price,
+               images_links_ids, status, sku, expiration_type, created_at,
+               updated_at, reorder_point, opening_stock, opening_stock_per_unit, default_purchase_price
+        FROM store_products
+        WHERE store_id = bucket.store_id
+
+      - >
+        SELECT id, store_product_id, store_id, quantity_available,
+               quantity_committed, quantity_on_hand, min_threshold,
+               last_updated, last_updated_by_user_id, batches
+        FROM inventory_levels
+        WHERE store_id = bucket.store_id
+
+      - >
+        SELECT id, ref_id, product_id, warehouse_id, quantity, expiration_date,
+               received_at, supplier_batch_number, supplier_id, purchase_price,
+               status, notes
+        FROM batches
+        WHERE warehouse_id = bucket.store_id  -- Assuming warehouse_id = store_id
+
+      - >
+        SELECT id, ref_id, name, description, logo_link_id, external_links_ids,
+               business_id, created_at, updated_at, phone, address, email,
+               costing_method, tax, postal_box, nui, tax_payer_number
+        FROM stores
+        WHERE ref_id = bucket.store_id
+
+      - >
+        SELECT id, store_id, user_id, status, member_since, permissions
+        FROM store_members
+        WHERE store_id = bucket.store_id
+
+      - >
+        SELECT id, ref_id, ref_id, store_id, product_id, transaction_type,
+               quantity_change, quantity_before, quantity_after, related_document_type,
+               related_document_id, performed_by_user_id, transaction_time, notes,
+               batch_id, unit_price, total_amount, currency
+        FROM inventory_transactions
+        WHERE store_id = bucket.store_id
+
+      - >
+        SELECT id, ref_id, customer_id, seller_id, source_warehouse_address, status,
+               total_amount, currency, created_by_user_id, created_at, delivery_date, notes
+        FROM sales_orders
+        WHERE seller_id = bucket.store_id  -- Assuming seller_id = store_id
+
+      - >
+        SELECT id, sales_order_id,  product_id,
+               unit_price, quantity, total, batch_id, store_id
+        FROM sales_order_line_items
+        WHERE store_id = bucket.store_id
+
+      - >
+        SELECT id, ref_id, supplier_id, store_id, status, total_amount, currency, order_date, payment_id, sub_total, tax_total,
+               created_by_user_id, created_at, expected_delivery_date, notes, destination_address, store_name, supplier_name
+        FROM purchase_orders
+        WHERE store_id = bucket.store_id
+
+      - >
+        SELECT id, purchase_order_id,  product_id, quantity_ordered,
+               product_name, unit_price, total, batch_id, quantity_received, tax_amount, store_id
+        FROM purchase_order_line_items
+        WHERE store_id = bucket.store_id
+
+      - >
+        SELECT id, ref_id, related_purchase_order_id, supplier_id, store_id,
+               received_by_user_id, received_at, notes, created_at
+        FROM receiving_notes
+        WHERE store_id = bucket.store_id
+
+      - >
+        SELECT id, delivery_note_id, product_id, quantity, batch_id, store_id
+        FROM delivery_note_line_items
+        WHERE store_id = bucket.store_id
+
+      - >
+        SELECT id, receiving_note_id, product_id, quantity_expected,
+               quantity_received, quantity_rejected, rejection_reason, batch_id,
+               expiration_date, purchase_price, store_id
+        FROM receiving_note_line_items
+        WHERE store_id = bucket.store_id
+
+      - >
+        SELECT id, ref_id, invoice_type, issuer_id, recipient_id, related_sales_order_id,
+               related_purchase_order_id, related_delivery_note_id, status, subtotal,
+               tax_amount, total_amount, currency, issue_date, due_date, created_by_user_id,
+               created_at, payment_ids, notes, payment_terms
+        FROM invoices
+        WHERE issuer_id = bucket.store_id OR recipient_id = bucket.store_id
+
+      - >
+        SELECT id, ref_id, related_purchase_order_id, supplier_id, store_id, status,
+               payment_ids, bill_date, due_date, sub_total, tax_total, total_amount,
+               balance_due, currency, notes, created_at
+        FROM bills
+        WHERE store_id = bucket.store_id
+
+      - >
+        SELECT id, invoice_id, product_id, quantity, unit_price, subtotal,
+               tax_rate, tax_amount, total, batch_id, store_id
+        FROM invoice_line_items
+        WHERE store_id = bucket.store_id
+
+      - >
+        SELECT id, bill_id, store_id, product_id, description,
+               quantity, unit_price, tax_amount, total
+        FROM bill_line_items
+        WHERE store_id = bucket.store_id
+
+      - >
+        SELECT id, ref_id, voucher_id, store_id, related_invoice_id, related_receipt_id,
+               amount_used, remaining_after, used_at, used_by_user_id
+        FROM voucher_transactions
+        WHERE store_id = bucket.store_id
+
+      - >
+        SELECT id, ref_id, cashier_user_id, customer_id, store_id, subtotal,
+               tax_amount, total_amount, amount_paid, change_given, currency,
+               payment_ids, transaction_time, notes, voucher_issued_code,
+               owed_to_customer, status
+        FROM cash_receipts
+        WHERE store_id = bucket.store_id
+
+      - >
+        SELECT id, receipt_id, store_id, product_id, quantity, unit_price, subtotal,
+               tax_rate, tax_amount, total, batch_id
+        FROM cash_receipt_items
+        WHERE store_id = bucket.store_id
+
+      - >
+        SELECT id, ref_id, payer_id, receiver_ref, amount, currency, warehouse_id, payment_method,
+               status, payment_date, reference_number, created_by_user_id, notes,
+               related_docs
+        FROM payments
+        WHERE warehouse_id = bucket.store_id
+
+      - >
+        SELECT id, ref_id, voucher_code, initial_value, remaining_value, currency,
+               issued_to_customer_id, issued_by_user_id, warehouse_id, status,
+               issued_at, valid_until, notes
+        FROM gift_vouchers
+        WHERE warehouse_id = bucket.store_id
+
+  # -------------------------------------------------------------------------
+  # Business-scoped data — the business record for the user's business.
+  # We dynamically find all businesses the user is a member of.
+  # -------------------------------------------------------------------------
+  business_data:
+    parameters:
+      - >
+        SELECT business_id FROM business_members WHERE user_id = request.user_id() AND status = 'BUSINESS_MEMBER_STATUS_ACTIVE'
+
+    data:
+      - >
+        SELECT id, ref_id, name, description, status, owner_id, logo_link_id,
+               country_code, currency_code, external_links_ids, contact_info,
+               address, email
+        FROM businesses
+        WHERE ref_id = bucket.business_id
+
+      - >
+        SELECT id, business_id, user_id, status, member_since
+        FROM business_members
+        WHERE business_id = bucket.business_id
+
+  # -------------------------------------------------------------------------
+  # User profile — only the authenticated user's own record.
+  # sub == user ref_id (standard JWT claim).
+  # NOTE: password_hash is intentionally excluded from sync.
+  # -------------------------------------------------------------------------
+  user_profile:
+    parameters:
+      - >
+        SELECT request.user_id() as sub
+        WHERE request.user_id() IS NOT NULL
+
+    data:
+      - >
+        SELECT id, ref_id, user_name, email, phone_number, first_name, last_name,
+               connected_accounts, account_status, profile_link_id, required_actions, active_business_id, active_store_id
+        FROM users
+        WHERE ref_id = bucket.sub

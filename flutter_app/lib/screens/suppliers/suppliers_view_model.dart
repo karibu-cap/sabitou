@@ -4,8 +4,6 @@ import 'package:rxdart/rxdart.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../../../repositories/suppliers_repository.dart';
-import '../../repositories/inventory_repository.dart';
-import '../../services/rpc/fake_transport/supplier.dart';
 
 /// ViewModel for suppliers management.
 class SuppliersViewModel {
@@ -21,10 +19,11 @@ class SuppliersViewModel {
   /// Gets the selected status subject.
   final _selectedStatusSubject = BehaviorSubject<SupplierStatus?>.seeded(null);
 
+  /// Gets the completer.
+  final Completer<bool> completer = Completer<bool>();
+
   /// The suppliers repository instance.
-  final SuppliersRepository _suppliersRepository = SuppliersRepository(
-    transport: supplierFakeTransport,
-  );
+  final SuppliersRepository _suppliersRepository = SuppliersRepository.instance;
 
   /// Gets the search query.
   BehaviorSubject<String> get searchQuery => _searchQuerySubject;
@@ -80,10 +79,7 @@ class SuppliersViewModel {
   /// Updates an existing supplier.
   Future<bool> updateSupplier(Supplier supplier) async {
     final request = UpdateSupplierRequest(supplier: supplier);
-    final updatedSupplier = await _suppliersRepository.updateSupplier(request);
-    if (updatedSupplier == null) {
-      return false;
-    }
+    await _suppliersRepository.updateSupplier(request);
 
     return true;
   }
@@ -106,7 +102,7 @@ class SuppliersViewModel {
     String supplierRefId,
     String? storeId,
   ) async {
-    final response = await InventoryRepository.instance.getProductsForSupplier(
+    final response = await _suppliersRepository.getProductsForSupplier(
       supplierRefId,
       storeId,
     );

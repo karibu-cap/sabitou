@@ -24,6 +24,7 @@ const GlobalProductStatus$json = {
     {'1': 'GLOBAL_PRODUCT_STATUS_UNSPECIFIED', '2': 0},
     {'1': 'GLOBAL_PRODUCT_STATUS_ACTIVE', '2': 1},
     {'1': 'GLOBAL_PRODUCT_STATUS_INACTIVE', '2': 2},
+    {'1': 'GLOBAL_PRODUCT_STATUS_DELETE', '2': 3},
   ],
 };
 
@@ -31,7 +32,7 @@ const GlobalProductStatus$json = {
 final $typed_data.Uint8List globalProductStatusDescriptor = $convert.base64Decode(
     'ChNHbG9iYWxQcm9kdWN0U3RhdHVzEiUKIUdMT0JBTF9QUk9EVUNUX1NUQVRVU19VTlNQRUNJRk'
     'lFRBAAEiAKHEdMT0JBTF9QUk9EVUNUX1NUQVRVU19BQ1RJVkUQARIiCh5HTE9CQUxfUFJPRFVD'
-    'VF9TVEFUVVNfSU5BQ1RJVkUQAg==');
+    'VF9TVEFUVVNfSU5BQ1RJVkUQAhIgChxHTE9CQUxfUFJPRFVDVF9TVEFUVVNfREVMRVRFEAM=');
 
 @$core.Deprecated('Use productStatusDescriptor instead')
 const ProductStatus$json = {
@@ -40,13 +41,15 @@ const ProductStatus$json = {
     {'1': 'PRODUCT_STATUS_UNSPECIFIED', '2': 0},
     {'1': 'PRODUCT_STATUS_ACTIVE', '2': 1},
     {'1': 'PRODUCT_STATUS_INACTIVE', '2': 2},
+    {'1': 'PRODUCT_STATUS_DELETE', '2': 3},
   ],
 };
 
 /// Descriptor for `ProductStatus`. Decode as a `google.protobuf.EnumDescriptorProto`.
 final $typed_data.Uint8List productStatusDescriptor = $convert.base64Decode(
     'Cg1Qcm9kdWN0U3RhdHVzEh4KGlBST0RVQ1RfU1RBVFVTX1VOU1BFQ0lGSUVEEAASGQoVUFJPRF'
-    'VDVF9TVEFUVVNfQUNUSVZFEAESGwoXUFJPRFVDVF9TVEFUVVNfSU5BQ1RJVkUQAg==');
+    'VDVF9TVEFUVVNfQUNUSVZFEAESGwoXUFJPRFVDVF9TVEFUVVNfSU5BQ1RJVkUQAhIZChVQUk9E'
+    'VUNUX1NUQVRVU19ERUxFVEUQAw==');
 
 @$core.Deprecated('Use expirationTypeDescriptor instead')
 const ExpirationType$json = {
@@ -194,6 +197,33 @@ const StoreProduct$json = {
       '10': 'reorderPoint',
       '17': true
     },
+    {
+      '1': 'opening_stock',
+      '3': 12,
+      '4': 1,
+      '5': 5,
+      '9': 5,
+      '10': 'openingStock',
+      '17': true
+    },
+    {
+      '1': 'opening_stock_per_unit',
+      '3': 13,
+      '4': 1,
+      '5': 1,
+      '9': 6,
+      '10': 'openingStockPerUnit',
+      '17': true
+    },
+    {
+      '1': 'default_purchase_price',
+      '3': 14,
+      '4': 1,
+      '5': 1,
+      '9': 7,
+      '10': 'defaultPurchasePrice',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_ref_id'},
@@ -201,6 +231,9 @@ const StoreProduct$json = {
     {'1': '_sku'},
     {'1': '_updated_at'},
     {'1': '_reorder_point'},
+    {'1': '_opening_stock'},
+    {'1': '_opening_stock_per_unit'},
+    {'1': '_default_purchase_price'},
   ],
 };
 
@@ -215,8 +248,12 @@ final $typed_data.Uint8List storeProductDescriptor = $convert.base64Decode(
     'blR5cGUSOQoKY3JlYXRlZF9hdBgJIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSCW'
     'NyZWF0ZWRBdBI+Cgp1cGRhdGVkX2F0GAogASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFt'
     'cEgDUgl1cGRhdGVkQXSIAQESKAoNcmVvcmRlcl9wb2ludBgLIAEoBUgEUgxyZW9yZGVyUG9pbn'
-    'SIAQFCCQoHX3JlZl9pZEINCgtfc2FsZV9wcmljZUIGCgRfc2t1Qg0KC191cGRhdGVkX2F0QhAK'
-    'Dl9yZW9yZGVyX3BvaW50');
+    'SIAQESKAoNb3BlbmluZ19zdG9jaxgMIAEoBUgFUgxvcGVuaW5nU3RvY2uIAQESOAoWb3Blbmlu'
+    'Z19zdG9ja19wZXJfdW5pdBgNIAEoAUgGUhNvcGVuaW5nU3RvY2tQZXJVbml0iAEBEjkKFmRlZm'
+    'F1bHRfcHVyY2hhc2VfcHJpY2UYDiABKAFIB1IUZGVmYXVsdFB1cmNoYXNlUHJpY2WIAQFCCQoH'
+    'X3JlZl9pZEINCgtfc2FsZV9wcmljZUIGCgRfc2t1Qg0KC191cGRhdGVkX2F0QhAKDl9yZW9yZG'
+    'VyX3BvaW50QhAKDl9vcGVuaW5nX3N0b2NrQhkKF19vcGVuaW5nX3N0b2NrX3Blcl91bml0QhkK'
+    'F19kZWZhdWx0X3B1cmNoYXNlX3ByaWNl');
 
 @$core.Deprecated('Use createGlobalProductRequestDescriptor instead')
 const CreateGlobalProductRequest$json = {

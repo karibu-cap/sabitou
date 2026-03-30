@@ -31,6 +31,7 @@ const (
 	SupplierStatus_SUPPLIER_STATUS_ACTIVE SupplierStatus = 1
 	// / The product category is inactive.
 	SupplierStatus_SUPPLIER_STATUS_INACTIVE SupplierStatus = 2
+	SupplierStatus_SUPPLIER_STATUS_DELETE   SupplierStatus = 3
 )
 
 // Enum value maps for SupplierStatus.
@@ -39,11 +40,13 @@ var (
 		0: "SUPPLIER_STATUS_UNSPECIFIED",
 		1: "SUPPLIER_STATUS_ACTIVE",
 		2: "SUPPLIER_STATUS_INACTIVE",
+		3: "SUPPLIER_STATUS_DELETE",
 	}
 	SupplierStatus_value = map[string]int32{
 		"SUPPLIER_STATUS_UNSPECIFIED": 0,
 		"SUPPLIER_STATUS_ACTIVE":      1,
 		"SUPPLIER_STATUS_INACTIVE":    2,
+		"SUPPLIER_STATUS_DELETE":      3,
 	}
 )
 
@@ -898,11 +901,12 @@ const file_store_v1_supplier_proto_rawDesc = "" +
 	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\n" +
 	"supplierId\"2\n" +
 	"\x16DeleteSupplierResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess*k\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess*\x87\x01\n" +
 	"\x0eSupplierStatus\x12\x1f\n" +
 	"\x1bSUPPLIER_STATUS_UNSPECIFIED\x10\x00\x12\x1a\n" +
 	"\x16SUPPLIER_STATUS_ACTIVE\x10\x01\x12\x1c\n" +
-	"\x18SUPPLIER_STATUS_INACTIVE\x10\x022\xa3\x04\n" +
+	"\x18SUPPLIER_STATUS_INACTIVE\x10\x02\x12\x1a\n" +
+	"\x16SUPPLIER_STATUS_DELETE\x10\x032\xa3\x04\n" +
 	"\x0fSupplierService\x12S\n" +
 	"\x0eCreateSupplier\x12\x1f.store.v1.CreateSupplierRequest\x1a .store.v1.CreateSupplierResponse\x12J\n" +
 	"\vGetSupplier\x12\x1c.store.v1.GetSupplierRequest\x1a\x1d.store.v1.GetSupplierResponse\x12\\\n" +

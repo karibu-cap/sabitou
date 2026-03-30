@@ -3,21 +3,33 @@ import 'dart:async';
 import 'package:clock/clock.dart';
 import 'package:sabitou_rpc/models.dart';
 
+import '../../repositories/business_repository.dart';
 import '../../repositories/inventory_repository.dart';
 import '../../repositories/reports_repository.dart';
 import '../../repositories/store_products_repository.dart';
+import '../../repositories/stores_repository.dart';
+import '../../repositories/users_repository.dart';
+import '../../services/internationalization/internationalization.dart';
 import '../../utils/logger.dart';
-import '../../utils/user_preference.dart';
 
 /// The [DashboardViewModel].
 final class DashboardViewModel {
   final logger = LoggerApp('DashboardViewModel');
 
-  /// The user preferences.
-  final UserPreferences userPreferences = UserPreferences.instance;
+  /// The store.
+  final Store store;
+
+  /// The  buisiness repository instance.
+  final BusinessRepository businessRepository = BusinessRepository.instance;
+
+  /// The store repository instance.
+  final StoresRepository storesRepository = StoresRepository.instance;
+
+  /// the user repository.
+  final UserRepository usersRepository = UserRepository.instance;
 
   /// Error message if any.
-  String error = '';
+  String initErrorMessage = '';
 
   /// Completer for loading state.
   final Completer<bool> completer = Completer<bool>();
@@ -36,26 +48,19 @@ final class DashboardViewModel {
   );
 
   /// Constructs of new [DashboardViewModel].
-  DashboardViewModel() {
+  DashboardViewModel({required this.store}) {
     fetchDashboardData();
   }
 
   /// Fetches all dashboard data in one go to avoid duplicate fetches.
-  Future<DashboardData> fetchDashboardData() async {
+  Future<DashboardData?> fetchDashboardData() async {
     try {
-      final businessId = userPreferences.business?.refId;
-      final store = userPreferences.store;
-      if (businessId == null || store == null) {
-        throw Exception('Business or store not found');
-      }
-
       // Execute all calls in parallel for better performance
       final results = await Future.wait([
         StoreProductsRepository.instance.findStoreProducts(
           FindStoreProductsRequest(storeId: store.refId),
         ),
-        InventoryRepository.instance.getLowStockItems(store.refId),
-        InventoryRepository.instance.getExpiringItems(store.refId),
+        InventoryRepository.instance.getStoreInventory(store.refId),
         ReportsRepository.instance.getSalesByPeriod(
           storeId: store.refId,
           startDate: clock.now(),
@@ -71,11 +76,23 @@ final class DashboardViewModel {
 
       final totalProducts =
           results.first as List<StoreProductWithGlobalProduct>;
-      final lowStockItems = results[1] as List<InventoryLevelWithProduct>;
-      final expiringItems = results[2] as List<InventoryLevelWithProduct>;
-      final salesReport = results[3] as GetSalesReportResponse;
-      final recentActivities =
-          results[4] as GetInventoryTransactionHistoryResponse;
+      final storeInventory = results[1] as List<InventoryLevelWithProduct>;
+      final lowStockItems = storeInventory.where(
+        (l) =>
+            l.level.quantityAvailable <= l.level.minThreshold &&
+            l.level.quantityAvailable > 0,
+      );
+      final expiringItems = storeInventory.where(
+        (e) => e.level.batches.any((batch) {
+          final now = clock.now();
+          final expiry = batch.expirationDate.toDateTime();
+
+          return expiry.difference(now).inDays <= 60;
+        }),
+      );
+
+      final salesReport = results[2] as GetSalesReportResponse;
+      final recentActivities = results[3] as List<InventoryTransaction>;
 
       final newStats = DashboardData(
         totalProducts: totalProducts.length,
@@ -84,9 +101,9 @@ final class DashboardViewModel {
         expiringTimeframe: 'Next 60 days',
         todaySales: salesReport.totalSalesAmount,
         todayTransactions: salesReport.totalTransactions,
-        recentActivities: recentActivities.transactions,
-        lowStockAlerts: lowStockItems,
-        expirationAlerts: expiringItems,
+        recentActivities: recentActivities,
+        lowStockAlerts: lowStockItems.toList(),
+        expirationAlerts: expiringItems.toList(),
       );
       stats = newStats;
 
@@ -94,7 +111,7 @@ final class DashboardViewModel {
     } catch (e) {
       logger.severe('Error loading dashboard data: $e');
 
-      error = e.toString();
+      initErrorMessage = Intls.to.genericErrorMessage;
 
       return stats;
     } finally {

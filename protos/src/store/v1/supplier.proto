@@ -20,6 +20,9 @@ enum SupplierStatus {
   SUPPLIER_STATUS_ACTIVE = 1;
   /// The product category is inactive.
   SUPPLIER_STATUS_INACTIVE = 2;
+
+  SUPPLIER_STATUS_DELETE = 3;
+
 }
 
 message Supplier {

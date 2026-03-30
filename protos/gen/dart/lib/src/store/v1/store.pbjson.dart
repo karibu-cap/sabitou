@@ -15,9 +15,7 @@ import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
 import '../../google/protobuf/timestamp.pbjson.dart' as $0;
-import '../../identity/v1/permission.pbjson.dart' as $2;
-import '../../identity/v1/user.pbjson.dart' as $1;
-import '../../link/v1/link.pbjson.dart' as $3;
+import '../../identity/v1/permission.pbjson.dart' as $1;
 
 @$core.Deprecated('Use storeCostingMethodDescriptor instead')
 const StoreCostingMethod$json = {
@@ -207,14 +205,7 @@ final $typed_data.Uint8List storeDescriptor = $convert.base64Decode(
 const StoreMember$json = {
   '1': 'StoreMember',
   '2': [
-    {
-      '1': 'user',
-      '3': 1,
-      '4': 1,
-      '5': 11,
-      '6': '.identity.v1.User',
-      '10': 'user'
-    },
+    {'1': 'user_id', '3': 1, '4': 1, '5': 9, '10': 'userId'},
     {'1': 'store_id', '3': 2, '4': 1, '5': 9, '10': 'storeId'},
     {
       '1': 'permissions',
@@ -245,11 +236,11 @@ const StoreMember$json = {
 
 /// Descriptor for `StoreMember`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List storeMemberDescriptor = $convert.base64Decode(
-    'CgtTdG9yZU1lbWJlchIlCgR1c2VyGAEgASgLMhEuaWRlbnRpdHkudjEuVXNlclIEdXNlchIZCg'
-    'hzdG9yZV9pZBgCIAEoCVIHc3RvcmVJZBI/CgtwZXJtaXNzaW9ucxgDIAEoCzIdLmlkZW50aXR5'
-    'LnYxLlN0b3JlUGVybWlzc2lvbnNSC3Blcm1pc3Npb25zEj0KDG1lbWJlcl9zaW5jZRgEIAEoCz'
-    'IaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSC21lbWJlclNpbmNlEjMKBnN0YXR1cxgFIAEo'
-    'DjIbLnN0b3JlLnYxLlN0b3JlTWVtYmVyU3RhdHVzUgZzdGF0dXM=');
+    'CgtTdG9yZU1lbWJlchIXCgd1c2VyX2lkGAEgASgJUgZ1c2VySWQSGQoIc3RvcmVfaWQYAiABKA'
+    'lSB3N0b3JlSWQSPwoLcGVybWlzc2lvbnMYAyABKAsyHS5pZGVudGl0eS52MS5TdG9yZVBlcm1p'
+    'c3Npb25zUgtwZXJtaXNzaW9ucxI9CgxtZW1iZXJfc2luY2UYBCABKAsyGi5nb29nbGUucHJvdG'
+    '9idWYuVGltZXN0YW1wUgttZW1iZXJTaW5jZRIzCgZzdGF0dXMYBSABKA4yGy5zdG9yZS52MS5T'
+    'dG9yZU1lbWJlclN0YXR1c1IGc3RhdHVz');
 
 @$core.Deprecated('Use createStoreRequestDescriptor instead')
 const CreateStoreRequest$json = {
@@ -448,7 +439,7 @@ final $typed_data.Uint8List deleteStoreResponseDescriptor =
 const AddUserToStoreRequest$json = {
   '1': 'AddUserToStoreRequest',
   '2': [
-    {'1': 'email', '3': 1, '4': 1, '5': 9, '10': 'email'},
+    {'1': 'user_id', '3': 1, '4': 1, '5': 9, '10': 'userId'},
     {
       '1': 'permissions',
       '3': 2,
@@ -463,9 +454,9 @@ const AddUserToStoreRequest$json = {
 
 /// Descriptor for `AddUserToStoreRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List addUserToStoreRequestDescriptor = $convert.base64Decode(
-    'ChVBZGRVc2VyVG9TdG9yZVJlcXVlc3QSFAoFZW1haWwYASABKAlSBWVtYWlsEj8KC3Blcm1pc3'
-    'Npb25zGAIgASgLMh0uaWRlbnRpdHkudjEuU3RvcmVQZXJtaXNzaW9uc1ILcGVybWlzc2lvbnMS'
-    'GQoIc3RvcmVfaWQYAyABKAlSB3N0b3JlSWQ=');
+    'ChVBZGRVc2VyVG9TdG9yZVJlcXVlc3QSFwoHdXNlcl9pZBgBIAEoCVIGdXNlcklkEj8KC3Blcm'
+    '1pc3Npb25zGAIgASgLMh0uaWRlbnRpdHkudjEuU3RvcmVQZXJtaXNzaW9uc1ILcGVybWlzc2lv'
+    'bnMSGQoIc3RvcmVfaWQYAyABKAlSB3N0b3JlSWQ=');
 
 @$core.Deprecated('Use addUserToStoreResponseDescriptor instead')
 const AddUserToStoreResponse$json = {
@@ -502,6 +493,19 @@ const UpdateStoreMemberRequest$json = {
       '6': '.identity.v1.StorePermissions',
       '10': 'permissions'
     },
+    {
+      '1': 'status',
+      '3': 6,
+      '4': 1,
+      '5': 14,
+      '6': '.store.v1.StoreMemberStatus',
+      '9': 0,
+      '10': 'status',
+      '17': true
+    },
+  ],
+  '8': [
+    {'1': '_status'},
   ],
 };
 
@@ -510,7 +514,8 @@ final $typed_data.Uint8List updateStoreMemberRequestDescriptor = $convert.base64
     'ChhVcGRhdGVTdG9yZU1lbWJlclJlcXVlc3QSIwoHdXNlcl9pZBgBIAEoCUIKukgHyAEBcgIQA1'
     'IGdXNlcklkEiUKCHN0b3JlX2lkGAIgASgJQgq6SAfIAQFyAhADUgdzdG9yZUlkEj8KC3Blcm1p'
     'c3Npb25zGAUgASgLMh0uaWRlbnRpdHkudjEuU3RvcmVQZXJtaXNzaW9uc1ILcGVybWlzc2lvbn'
-    'M=');
+    'MSOAoGc3RhdHVzGAYgASgOMhsuc3RvcmUudjEuU3RvcmVNZW1iZXJTdGF0dXNIAFIGc3RhdHVz'
+    'iAEBQgkKB19zdGF0dXM=');
 
 @$core.Deprecated('Use updateStoreMemberResponseDescriptor instead')
 const UpdateStoreMemberResponse$json = {
@@ -567,44 +572,6 @@ final $typed_data.Uint8List streamStoreMembersResponseDescriptor =
     $convert.base64Decode(
         'ChpTdHJlYW1TdG9yZU1lbWJlcnNSZXNwb25zZRI6Cg1zdG9yZV9tZW1iZXJzGAEgAygLMhUuc3'
         'RvcmUudjEuU3RvcmVNZW1iZXJSDHN0b3JlTWVtYmVycw==');
-
-@$core.Deprecated('Use setStoreMemberStatusRequestDescriptor instead')
-const SetStoreMemberStatusRequest$json = {
-  '1': 'SetStoreMemberStatusRequest',
-  '2': [
-    {'1': 'store_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'storeId'},
-    {'1': 'user_id', '3': 2, '4': 1, '5': 9, '8': {}, '10': 'userId'},
-    {
-      '1': 'status',
-      '3': 3,
-      '4': 1,
-      '5': 14,
-      '6': '.store.v1.StoreMemberStatus',
-      '10': 'status'
-    },
-  ],
-};
-
-/// Descriptor for `SetStoreMemberStatusRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List setStoreMemberStatusRequestDescriptor =
-    $convert.base64Decode(
-        'ChtTZXRTdG9yZU1lbWJlclN0YXR1c1JlcXVlc3QSJQoIc3RvcmVfaWQYASABKAlCCrpIB8gBAX'
-        'ICEANSB3N0b3JlSWQSIwoHdXNlcl9pZBgCIAEoCUIKukgHyAEBcgIQA1IGdXNlcklkEjMKBnN0'
-        'YXR1cxgDIAEoDjIbLnN0b3JlLnYxLlN0b3JlTWVtYmVyU3RhdHVzUgZzdGF0dXM=');
-
-@$core.Deprecated('Use setStoreMemberStatusResponseDescriptor instead')
-const SetStoreMemberStatusResponse$json = {
-  '1': 'SetStoreMemberStatusResponse',
-  '2': [
-    {'1': 'success', '3': 1, '4': 1, '5': 8, '10': 'success'},
-  ],
-};
-
-/// Descriptor for `SetStoreMemberStatusResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List setStoreMemberStatusResponseDescriptor =
-    $convert.base64Decode(
-        'ChxTZXRTdG9yZU1lbWJlclN0YXR1c1Jlc3BvbnNlEhgKB3N1Y2Nlc3MYASABKAhSB3N1Y2Nlc3'
-        'M=');
 
 @$core.Deprecated('Use getStoreMembersRequestDescriptor instead')
 const GetStoreMembersRequest$json = {
@@ -765,11 +732,6 @@ const $core.Map<$core.String, $core.dynamic> StoreServiceBase$json = {
       '3': '.store.v1.GetStoreMemberResponse'
     },
     {
-      '1': 'SetStoreMemberStatus',
-      '2': '.store.v1.SetStoreMemberStatusRequest',
-      '3': '.store.v1.SetStoreMemberStatusResponse'
-    },
-    {
       '1': 'RemoveUserFromStore',
       '2': '.store.v1.RemoveUserFromStoreRequest',
       '3': '.store.v1.RemoveUserFromStoreResponse'
@@ -794,19 +756,16 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
   '.store.v1.GetBusinessStoresRequest': GetBusinessStoresRequest$json,
   '.store.v1.GetBusinessStoresResponse': GetBusinessStoresResponse$json,
   '.store.v1.AddUserToStoreRequest': AddUserToStoreRequest$json,
-  '.identity.v1.StorePermissions': $2.StorePermissions$json,
-  '.identity.v1.StoreProductPermission': $2.StoreProductPermission$json,
-  '.identity.v1.StoreMemberPermission': $2.StoreMemberPermission$json,
-  '.identity.v1.StoreReportPermission': $2.StoreReportPermission$json,
-  '.identity.v1.StoreOrderPermission': $2.StoreOrderPermission$json,
-  '.identity.v1.StoreInvoicePermission': $2.StoreInvoicePermission$json,
-  '.identity.v1.StoreSupplierPermission': $2.StoreSupplierPermission$json,
-  '.identity.v1.StoreTransactionPermission': $2.StoreTransactionPermission$json,
+  '.identity.v1.StorePermissions': $1.StorePermissions$json,
+  '.identity.v1.StoreProductPermission': $1.StoreProductPermission$json,
+  '.identity.v1.StoreMemberPermission': $1.StoreMemberPermission$json,
+  '.identity.v1.StoreReportPermission': $1.StoreReportPermission$json,
+  '.identity.v1.StoreOrderPermission': $1.StoreOrderPermission$json,
+  '.identity.v1.StoreInvoicePermission': $1.StoreInvoicePermission$json,
+  '.identity.v1.StoreSupplierPermission': $1.StoreSupplierPermission$json,
+  '.identity.v1.StoreTransactionPermission': $1.StoreTransactionPermission$json,
   '.store.v1.AddUserToStoreResponse': AddUserToStoreResponse$json,
   '.store.v1.StoreMember': StoreMember$json,
-  '.identity.v1.User': $1.User$json,
-  '.identity.v1.ConnectedAccount': $1.ConnectedAccount$json,
-  '.link.v1.ResourceLink': $3.ResourceLink$json,
   '.store.v1.UpdateStoreMemberRequest': UpdateStoreMemberRequest$json,
   '.store.v1.UpdateStoreMemberResponse': UpdateStoreMemberResponse$json,
   '.store.v1.StreamStoreMembersRequest': StreamStoreMembersRequest$json,
@@ -815,8 +774,6 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
   '.store.v1.GetStoreMembersResponse': GetStoreMembersResponse$json,
   '.store.v1.GetStoreMemberRequest': GetStoreMemberRequest$json,
   '.store.v1.GetStoreMemberResponse': GetStoreMemberResponse$json,
-  '.store.v1.SetStoreMemberStatusRequest': SetStoreMemberStatusRequest$json,
-  '.store.v1.SetStoreMemberStatusResponse': SetStoreMemberStatusResponse$json,
   '.store.v1.RemoveUserFromStoreRequest': RemoveUserFromStoreRequest$json,
   '.store.v1.RemoveUserFromStoreResponse': RemoveUserFromStoreResponse$json,
 };
@@ -838,8 +795,6 @@ final $typed_data.Uint8List storeServiceDescriptor = $convert.base64Decode(
     'ZWFtU3RvcmVNZW1iZXJzUmVzcG9uc2UwARJWCg9HZXRTdG9yZU1lbWJlcnMSIC5zdG9yZS52MS'
     '5HZXRTdG9yZU1lbWJlcnNSZXF1ZXN0GiEuc3RvcmUudjEuR2V0U3RvcmVNZW1iZXJzUmVzcG9u'
     'c2USUwoOR2V0U3RvcmVNZW1iZXISHy5zdG9yZS52MS5HZXRTdG9yZU1lbWJlclJlcXVlc3QaIC'
-    '5zdG9yZS52MS5HZXRTdG9yZU1lbWJlclJlc3BvbnNlEmUKFFNldFN0b3JlTWVtYmVyU3RhdHVz'
-    'EiUuc3RvcmUudjEuU2V0U3RvcmVNZW1iZXJTdGF0dXNSZXF1ZXN0GiYuc3RvcmUudjEuU2V0U3'
-    'RvcmVNZW1iZXJTdGF0dXNSZXNwb25zZRJiChNSZW1vdmVVc2VyRnJvbVN0b3JlEiQuc3RvcmUu'
-    'djEuUmVtb3ZlVXNlckZyb21TdG9yZVJlcXVlc3QaJS5zdG9yZS52MS5SZW1vdmVVc2VyRnJvbV'
-    'N0b3JlUmVzcG9uc2U=');
+    '5zdG9yZS52MS5HZXRTdG9yZU1lbWJlclJlc3BvbnNlEmIKE1JlbW92ZVVzZXJGcm9tU3RvcmUS'
+    'JC5zdG9yZS52MS5SZW1vdmVVc2VyRnJvbVN0b3JlUmVxdWVzdBolLnN0b3JlLnYxLlJlbW92ZV'
+    'VzZXJGcm9tU3RvcmVSZXNwb25zZQ==');

@@ -4,7 +4,6 @@ import 'package:rxdart/rxdart.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../../../repositories/categories_repository.dart';
-import '../../services/rpc/fake_transport/category.dart';
 import '../../utils/extensions/category_extension.dart';
 import '../../utils/logger.dart';
 import '../../utils/user_preference.dart';
@@ -14,9 +13,8 @@ class CategoriesViewModel {
   final LoggerApp _logger = LoggerApp('CategoriesViewModel');
 
   /// The   categories repository instance.
-  final CategoriesRepository _categoriesRepository = CategoriesRepository(
-    transport: categoryFakeTransport,
-  );
+  final CategoriesRepository _categoriesRepository =
+      CategoriesRepository.instance;
 
   /// Subject for categories stream.
   final _categoriesSubject = BehaviorSubject<List<Category>>.seeded([]);

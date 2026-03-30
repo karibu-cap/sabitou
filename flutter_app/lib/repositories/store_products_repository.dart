@@ -1,73 +1,91 @@
-import 'package:collection/collection.dart';
-import 'package:connectrpc/connect.dart' as connect;
+import 'dart:async';
+
 import 'package:get_it/get_it.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
-import '../services/network_status_provider/network_status_provider.dart';
+import '../core/database/base_repository.dart';
+import '../core/database/local_data_source.dart';
+import '../core/database/query/sql_condition.dart';
+import '../core/database/query/sql_join.dart';
+import '../core/database/row_mapper.dart';
+import '../services/powersync/schema.dart';
 import '../services/rpc/connect_rpc.dart';
-import '../services/storage/app_storage.dart';
+import '../utils/app_constants.dart';
 import '../utils/logger.dart';
+import '../utils/utils.dart';
 
 /// The products repository.
-class StoreProductsRepository {
+final class StoreProductsRepository extends BaseRepository<StoreProduct> {
   final _logger = LoggerApp('StoreProductsRepository');
-
-  /// The instance of [StoreProductsRepository].
-  static final instance = GetIt.I.get<StoreProductsRepository>();
 
   /// The product service client.
   final StoreProductServiceClient storeProductServiceClient;
 
-  /// The network status provider.
-  final NetworkStatusProvider _network;
+  @override
+  final LocalDataSource dataSource;
+
+  @override
+  String get tableName => CollectionName.storeProducts;
+
+  /// The instance of [StoreProductsRepository].
+  static StoreProductsRepository get instance =>
+      GetIt.I.get<StoreProductsRepository>();
+
+  @override
+  StoreProduct fromRow(RawRow row) => fromRowToStoreProduct(row);
+
+  @override
+  RawRow toRow(StoreProduct entity) => fromStoreProductToRaw(entity);
 
   /// Constructs a new [StoreProductsRepository].
-  StoreProductsRepository({
-    connect.Transport? transport,
-    NetworkStatusProvider? networkStatusProvider,
-  }) : _network = networkStatusProvider ?? GetIt.I.get<NetworkStatusProvider>(),
-       storeProductServiceClient = StoreProductServiceClient(
-         transport ?? ConnectRPCService.to.clientChannel,
-       );
+  StoreProductsRepository({required this.dataSource})
+    : storeProductServiceClient = StoreProductServiceClient(
+        ConnectRPCService.to.clientChannel,
+      );
 
-  /// Gets all products base on store Id.
-  Future<List<StoreProductWithGlobalProduct>?> findStoreProducts(
+  /// Gets all products based on store Id.
+  Future<List<StoreProductWithGlobalProduct>> findStoreProducts(
     FindStoreProductsRequest request,
   ) async {
     try {
-      final connection = await _network.checkConnectivity();
+      final rows = await dataSource.getJoinedCollection(
+        table: CollectionName.storeProducts,
+        tableAlias: 'sp',
+        joins: [
+          const SqlJoin(
+            type: JoinType.inner,
+            table: CollectionName.globalProducts,
+            alias: 'gp',
+            on: 'sp.${StoreProductsFields.globalProductId} = gp.${GlobalProductsFields.refId}',
+            selectColumns: [
+              GlobalProductsFields.refId,
+              GlobalProductsFields.barCodeValue,
+              GlobalProductsFields.name,
+              GlobalProductsFields.status,
+              GlobalProductsFields.categories,
+            ],
+          ),
+        ],
+        filters: [
+          if (request.hasStoreId())
+            SqlQuery.equals(StoreProductsFields.storeId, request.storeId),
+          SqlQuery.notEquals(
+            StoreProductsFields.status,
+            ProductStatus.PRODUCT_STATUS_DELETE.name,
+          ),
+          SqlQuery.notEquals(
+            StoreProductsFields.status,
+            ProductStatus.PRODUCT_STATUS_UNSPECIFIED.name,
+          ),
+        ],
+      );
 
-      if (connection) {
-        final result = await storeProductServiceClient.findStoreProducts(
-          request,
+      return rows.map((row) {
+        return StoreProductWithGlobalProduct(
+          storeProduct: fromRowToStoreProduct(row),
+          globalProduct: fromRowToGlobalProduct(extractTable(row, 'gp')),
         );
-
-        return result.products;
-      }
-
-      final storeProducts = (await AppStorage.of<StoreProduct>().getAll())
-          .where((bp) => bp.storeId == request.storeId);
-
-      final globalProductIds = storeProducts
-          .map((bp) => bp.globalProductId)
-          .toList();
-
-      final globalProducts = (await AppStorage.of<GlobalProduct>().getAll())
-          .where((gp) => globalProductIds.contains(gp.refId));
-
-      final storeProductWithGlobalProducts = storeProducts
-          .map(
-            (bp) => StoreProductWithGlobalProduct()
-              ..storeProduct = bp
-              ..globalProduct =
-                  globalProducts.firstWhereOrNull(
-                    (gp) => gp.refId == bp.globalProductId,
-                  ) ??
-                  GlobalProduct(),
-          )
-          .toSet();
-
-      return storeProductWithGlobalProducts.toList();
+      }).toList();
     } on Exception catch (e) {
       _logger.severe('findStoreProducts Error: $e');
 
@@ -80,22 +98,20 @@ class StoreProductsRepository {
     FindGlobalProductsRequest request,
   ) async {
     try {
-      final connection = await _network.checkConnectivity();
+      final rows = await dataSource.getCollection(
+        CollectionName.globalProducts,
+        filters: [
+          if (request.hasRefId())
+            SqlQuery.equals(GlobalProductsFields.refId, request.refId),
+          if (request.hasBarCodeValue())
+            SqlQuery.equals(
+              GlobalProductsFields.barCodeValue,
+              request.barCodeValue,
+            ),
+        ],
+      );
 
-      if (connection) {
-        final result = await storeProductServiceClient.findGlobalProducts(
-          request,
-        );
-
-        return result.products;
-      }
-
-      final values = await AppStorage.of<GlobalProduct>().getAll();
-      final response = values
-          .where((product) => product.refId == request.refId)
-          .toList();
-
-      return response;
+      return rows.map(fromRowToGlobalProduct).toList();
     } on Exception catch (e) {
       _logger.severe('findGlobalProducts Error: $e');
 
@@ -103,12 +119,17 @@ class StoreProductsRepository {
     }
   }
 
-  /// Adds a new product to a business.
+  /// Adds a new product to a store.
   Future<bool> addProduct(AddStoreProductRequest request) async {
     try {
-      final result = await storeProductServiceClient.addProduct(request);
+      final product = request.storeProduct;
+      if (product.refId.isEmpty) {
+        product.refId = AppUtils.generateSmartDatabaseId('SP');
+      }
 
-      return result.success;
+      await create(product);
+
+      return true;
     } on Exception catch (e) {
       _logger.severe('addProduct Error: $e');
 
@@ -116,51 +137,80 @@ class StoreProductsRepository {
     }
   }
 
-  /// Gets a business product by its ID.
+  /// Gets a store product by its ID with its global product.
   Future<StoreProductWithGlobalProduct?> getStoreProduct(
     GetStoreProductRequest request,
   ) async {
     try {
-      final connection = await _network.checkConnectivity();
+      final rows = await dataSource.getJoinedCollection(
+        table: CollectionName.storeProducts,
+        tableAlias: 'sp',
+        joins: [
+          const SqlJoin(
+            type: JoinType.inner,
+            table: CollectionName.globalProducts,
+            alias: 'gp',
+            on: 'sp.${StoreProductsFields.globalProductId} = gp.${GlobalProductsFields.refId}',
+            selectColumns: [
+              GlobalProductsFields.refId,
+              GlobalProductsFields.barCodeValue,
+              GlobalProductsFields.description,
+              GlobalProductsFields.name,
+              GlobalProductsFields.status,
+              GlobalProductsFields.categories,
+              GlobalProductsFields.imagesLinksIds,
+            ],
+          ),
+        ],
+        filters: [
+          SqlQuery.equals(StoreProductsFields.refId, request.storeProductId),
+        ],
+        limit: 1,
+      );
 
-      if (connection) {
-        final result = await storeProductServiceClient.getStoreProduct(request);
+      if (rows.isEmpty) return null;
 
-        return result.product;
-      }
+      /// Applatir la list.
+      final Map<String, dynamic> combined = {for (var m in rows) ...m};
 
-      final values = await AppStorage.of<StoreProduct>().getAll();
-      final hiveProduct = values
-          .where((product) => product.refId == request.storeProductId)
-          .firstOrNull;
-      if (hiveProduct == null) {
-        return null;
-      }
-
-      final globalProductIds = hiveProduct.globalProductId;
-      final globalProducts = (await AppStorage.of<GlobalProduct>().getAll())
-          .firstWhereOrNull((gp) => gp.refId == globalProductIds);
-
-      final storeProductWithGlobalProducts = StoreProductWithGlobalProduct()
-        ..storeProduct = hiveProduct
-        ..globalProduct = globalProducts ?? GlobalProduct();
-
-      return storeProductWithGlobalProducts;
+      return StoreProductWithGlobalProduct(
+        storeProduct: fromRowToStoreProduct(combined),
+        globalProduct: fromRowToGlobalProduct(extractTable(combined, 'gp')),
+      );
     } on Exception catch (e) {
-      _logger.severe('getProduct Error: $e');
+      _logger.severe('getStoreProduct Error: $e');
 
       return null;
     }
   }
 
-  /// Updates a business product.
+  /// Updates a store product.
   Future<bool> updateProduct(UpdateStoreProductRequest request) async {
     try {
-      final result = await storeProductServiceClient.updateStoreProduct(
-        request,
-      );
+      await dataSource.runTransaction((tx) async {
+        await tx.updateWhere(
+          table: CollectionName.globalProducts,
+          fields: fromGlobalProductToRaw(request.globalProduct),
+          filters: [
+            SqlQuery.equals(
+              GlobalProductsFields.refId,
+              request.globalProduct.refId,
+            ),
+          ],
+        );
+        await tx.updateWhere(
+          table: CollectionName.storeProducts,
+          fields: fromStoreProductToRaw(request.storeProduct),
+          filters: [
+            SqlQuery.equals(
+              StoreProductsFields.refId,
+              request.storeProduct.refId,
+            ),
+          ],
+        );
+      });
 
-      return result.success;
+      return true;
     } on Exception catch (e) {
       _logger.severe('updateProduct Error: $e');
 
@@ -168,84 +218,169 @@ class StoreProductsRepository {
     }
   }
 
-  /// Deletes a business product.
-  Future<bool> deleteProduct(DeleteStoreProductRequest request) async {
+  /// Adds a new global product.
+  Future<bool> createGlobalProduct(CreateGlobalProductRequest request) async {
     try {
-      final result = await storeProductServiceClient.deleteStoreProduct(
-        request,
+      final product = request.globalProduct;
+      if (product.refId.isEmpty) {
+        product.refId = AppUtils.generateSmartDatabaseId('GP');
+      }
+
+      await dataSource.createRecord(
+        table: CollectionName.globalProducts,
+        record: fromGlobalProductToRaw(product),
       );
 
-      return result.success;
-    } on Exception catch (e) {
-      _logger.severe('deleteProduct Error: $e');
+      return true;
+    } catch (e) {
+      _logger.severe('createGlobalProduct Error: $e');
 
       return false;
     }
   }
 
-  /// Adds a new global product.
-  Future<bool> createGlobalProduct(CreateGlobalProductRequest request) async {
-    final result = await storeProductServiceClient.createGlobalProduct(request);
-
-    return result.success;
-  }
-
   /// Updates a global product.
   Future<bool> updateGlobalProduct(UpdateGlobalProductRequest request) async {
-    final result = await storeProductServiceClient.updateGlobalProduct(request);
+    try {
+      await dataSource.updateWhere(
+        table: CollectionName.globalProducts,
+        fields: fromGlobalProductToRaw(request.globalProduct),
+        filters: [
+          SqlQuery.equals(GlobalProductsFields.refId, request.globalProductId),
+        ],
+      );
 
-    return result.success;
+      return true;
+    } catch (e) {
+      _logger.severe('updateGlobalProduct Error: $e');
+
+      return false;
+    }
   }
 
   /// Deletes a global product.
   Future<bool> deleteGlobalProduct(DeleteGlobalProductRequest request) async {
-    final result = await storeProductServiceClient.deleteGlobalProduct(request);
+    try {
+      await dataSource.deleteRecord(
+        table: CollectionName.globalProducts,
+        id: request.globalProductId,
+        primaryKey: GlobalProductsFields.refId,
+      );
 
-    return result.success;
+      return true;
+    } catch (e) {
+      _logger.severe('deleteGlobalProduct Error: $e');
+
+      return false;
+    }
   }
 
-  /// Streams all products for a business for real-time updates.
-  Stream<List<StoreProduct>> streamStoreProducts(
+  /// Streams products for a store for real-time updates.
+  Stream<List<StoreProductWithGlobalProduct>> streamStoreProducts(
     StreamStoreProductsRequest request,
-  ) async* {
-    try {
-      yield* storeProductServiceClient
-          .streamStoreProducts(request)
-          .map((response) => response.products);
-    } on Exception catch (e) {
-      _logger.severe('streamStoreProducts Error: $e');
-      // Return empty stream on error
-
-      yield* const Stream.empty();
-    }
+  ) {
+    return dataSource
+        .watchJoinedCollection(
+          table: CollectionName.storeProducts,
+          tableAlias: 'sp',
+          joins: [
+            const SqlJoin(
+              type: JoinType.inner,
+              table: CollectionName.globalProducts,
+              alias: 'gp',
+              on: 'sp.${StoreProductsFields.globalProductId} = gp.${GlobalProductsFields.refId}',
+              selectColumns: [
+                GlobalProductsFields.refId,
+                GlobalProductsFields.barCodeValue,
+                GlobalProductsFields.name,
+                GlobalProductsFields.status,
+                GlobalProductsFields.categories,
+              ],
+            ),
+          ],
+          filters: [
+            SqlQuery.equals(StoreProductsFields.storeId, request.storeId),
+            SqlQuery.notEquals(
+              StoreProductsFields.status,
+              ProductStatus.PRODUCT_STATUS_DELETE.name,
+            ),
+            SqlQuery.notEquals(
+              StoreProductsFields.status,
+              ProductStatus.PRODUCT_STATUS_UNSPECIFIED.name,
+            ),
+          ],
+        )
+        .map((rows) {
+          return rows.map((row) {
+            return StoreProductWithGlobalProduct(
+              storeProduct: fromRowToStoreProduct(row),
+              globalProduct: fromRowToGlobalProduct(extractTable(row, 'gp')),
+            );
+          }).toList();
+        });
   }
 
-  /// Streams global products based on store Id for real-time updates.
-  Stream<List<GlobalProduct>> streamGlobalProducts(
-    StreamGlobalProductsRequest request,
-  ) async* {
-    try {
-      yield* storeProductServiceClient
-          .streamGlobalProducts(request)
-          .map((response) => response.products);
-    } on Exception catch (e) {
-      _logger.severe('streamGlobalProducts Error: $e');
-      // Return empty stream on error
-
-      yield* const Stream.empty();
-    }
-  }
-
-  /// Searches product .
-  Future<SearchStoreProductsResponse> searchProducts(
+  /// Searches products locally with joins.
+  Future<List<StoreProductWithGlobalProduct>> searchProducts(
     SearchStoreProductsRequest request,
   ) async {
     try {
-      return await storeProductServiceClient.searchStoreProducts(request);
+      final query = '%${request.searchQuery}%';
+      final rows = await dataSource.getJoinedCollection(
+        table: CollectionName.storeProducts,
+        tableAlias: 'sp',
+        joins: [
+          const SqlJoin(
+            type: JoinType.inner,
+            table: CollectionName.globalProducts,
+            alias: 'gp',
+            on: 'sp.${StoreProductsFields.globalProductId} = gp.${GlobalProductsFields.refId}',
+            selectColumns: [
+              GlobalProductsFields.refId,
+              GlobalProductsFields.barCodeValue,
+              GlobalProductsFields.name,
+              GlobalProductsFields.status,
+              GlobalProductsFields.categories,
+            ],
+          ),
+        ],
+        filters: [
+          SqlQuery.equals(StoreProductsFields.storeId, request.storeId),
+          SqlOrGroup([
+            SqlQuery(
+              GlobalProductsFields.name,
+              query,
+              SqlCondition.like,
+              tableAlias: 'gp',
+            ),
+            SqlQuery(
+              GlobalProductsFields.barCodeValue,
+              query,
+              SqlCondition.like,
+              tableAlias: 'gp',
+            ),
+            SqlQuery(
+              StoreProductsFields.sku,
+              query,
+              SqlCondition.like,
+              tableAlias: 'sp',
+            ),
+          ]),
+        ],
+      );
+
+      final products = rows.map((row) {
+        return StoreProductWithGlobalProduct(
+          storeProduct: fromRowToStoreProduct(row),
+          globalProduct: fromRowToGlobalProduct(extractTable(row, 'gp')),
+        );
+      }).toList();
+
+      return products;
     } on Exception catch (e) {
       _logger.severe('searchProducts Error: $e');
 
-      return SearchStoreProductsResponse();
+      return Future.value([]);
     }
   }
 }

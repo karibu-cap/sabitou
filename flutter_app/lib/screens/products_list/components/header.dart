@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+import '../../../router/app_router.dart';
+import '../../../router/page_routes.dart';
 import '../../../services/internationalization/internationalization.dart';
 import '../../../utils/responsive_utils.dart';
 import '../products_list_controller.dart';
@@ -16,6 +18,7 @@ class ProductsListHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDesktop = ResponsiveUtils.isDesktop(context);
+    final isMobile = ResponsiveUtils.isMobile(context);
     final theme = ShadTheme.of(context);
 
     void _showProductDialog(
@@ -24,13 +27,26 @@ class ProductsListHeader extends StatelessWidget {
     ) async {
       final controller = context.read<ProductsListController>();
 
-      await showShadDialog<bool?>(
-        context: context,
-        builder: (context) => CreateEditProductFormView(
-          product: product?.globalProduct,
-          productsListController: controller,
-        ),
-      );
+      if (isMobile) {
+        if (product == null) {
+          await AppRouter.push(context, PagesRoutes.productNew.create());
+        } else {
+          await AppRouter.push(
+            context,
+            PagesRoutes.productEdit.create(
+              ProductDetailParameters(productId: product.storeProduct.refId),
+            ),
+          );
+        }
+      } else {
+        await showShadDialog<bool?>(
+          context: context,
+          builder: (context) => CreateEditProductFormView(
+            product: product,
+            onProductSaved: controller.refreshProducts,
+          ),
+        );
+      }
     }
 
     return Flex(

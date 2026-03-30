@@ -2,7 +2,7 @@ import 'package:sabitou_rpc/models.dart';
 
 import '../../services/internationalization/internationalization.dart';
 
-/// The extension for the [ProductCategory] enum.
+/// The extension for the [GlobalProduct] enum.
 extension GlobalProductExtension on GlobalProduct {
   /// Get the label for the global product.
   String get label {

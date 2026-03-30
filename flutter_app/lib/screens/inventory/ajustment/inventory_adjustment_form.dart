@@ -17,7 +17,7 @@ class InventoryAdjustmentForm extends StatelessWidget {
     final controller = context.watch<InventoryAdjustmentController>();
     final inventory = controller.inventoryItemStream;
     final theme = ShadTheme.of(context);
-    final int currentStockValue = inventory?.level.quantityAvailable ?? 0;
+    final int currentStockValue = inventory?.level.quantityOnHand ?? 0;
 
     return ShadForm(
       key: controller.formKey,
@@ -25,11 +25,14 @@ class InventoryAdjustmentForm extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            Intls.to.currentStock.trParams({
-              'quantity': currentStockValue.toString(),
-            }),
-            style: theme.textTheme.p.copyWith(fontWeight: FontWeight.bold),
+          ShadCard(
+            padding: const EdgeInsets.all(7),
+            child: Text(
+              Intls.to.currentStock.trParams({
+                'quantity': currentStockValue.toString(),
+              }),
+              style: theme.textTheme.p.copyWith(fontWeight: FontWeight.bold),
+            ),
           ),
           const SizedBox(height: 16.0),
           ShadInputFormField(
@@ -77,13 +80,6 @@ class InventoryAdjustmentForm extends StatelessWidget {
               onChanged: (_) => controller.notifier(),
             ),
           ],
-          const SizedBox(height: 12.0),
-          ShadTextareaFormField(
-            controller: controller.notesController,
-            label: Text(Intls.to.notes),
-            placeholder: Text(Intls.to.notes),
-            onChanged: (_) => controller.notifier(),
-          ),
         ],
       ),
     );

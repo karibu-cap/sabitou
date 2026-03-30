@@ -4,6 +4,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../services/internationalization/internationalization.dart';
 import '../../../utils/extensions/global_product_extension.dart';
+import '../../../utils/user_preference.dart';
 import '../../../widgets/loading.dart';
 import '../../../widgets/shad_scaffold.dart';
 import 'inventory_adjustment_controller.dart';
@@ -20,9 +21,23 @@ class InventoryAjustmentScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userPreferences = context.watch<UserPreferences>();
+    final currentStore = userPreferences.store;
+    final business = userPreferences.business;
+    final userId = userPreferences.user?.refId;
+    if (userId == null) {
+      return const SizedBox.shrink();
+    }
+    if (currentStore == null || business == null) {
+      return const SizedBox.shrink();
+    }
+
     return ChangeNotifierProvider(
       create: (context) => InventoryAdjustmentController(
-        viewModel: InventoryAdjustmentViewModel(productId: productId),
+        viewModel: InventoryAdjustmentViewModel(
+          productId: productId,
+          store: currentStore,
+        ),
       ),
       child: Consumer<InventoryAdjustmentController>(
         builder: (context, controller, child) {
@@ -86,7 +101,7 @@ class InventoryAjustmentScreen extends StatelessWidget {
                                   ? null
                                   : () async {
                                       final bool success = await controller
-                                          .submit();
+                                          .submit(userId);
                                       if (success && context.mounted) {
                                         Navigator.of(context).pop();
                                         ShadToaster.of(context).show(
@@ -111,12 +126,7 @@ class InventoryAjustmentScreen extends StatelessWidget {
                                       }
                                     },
                               child: controller.isLoading
-                                  ? const SizedBox.square(
-                                      dimension: 16,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                      ),
-                                    )
+                                  ? const Loading.button()
                                   : Text(Intls.to.save),
                             ),
                           ),

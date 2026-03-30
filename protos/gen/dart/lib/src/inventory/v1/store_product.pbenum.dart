@@ -28,15 +28,19 @@ class GlobalProductStatus extends $pb.ProtobufEnum {
   static const GlobalProductStatus GLOBAL_PRODUCT_STATUS_INACTIVE =
       GlobalProductStatus._(
           2, _omitEnumNames ? '' : 'GLOBAL_PRODUCT_STATUS_INACTIVE');
+  static const GlobalProductStatus GLOBAL_PRODUCT_STATUS_DELETE =
+      GlobalProductStatus._(
+          3, _omitEnumNames ? '' : 'GLOBAL_PRODUCT_STATUS_DELETE');
 
   static const $core.List<GlobalProductStatus> values = <GlobalProductStatus>[
     GLOBAL_PRODUCT_STATUS_UNSPECIFIED,
     GLOBAL_PRODUCT_STATUS_ACTIVE,
     GLOBAL_PRODUCT_STATUS_INACTIVE,
+    GLOBAL_PRODUCT_STATUS_DELETE,
   ];
 
   static final $core.List<GlobalProductStatus?> _byValue =
-      $pb.ProtobufEnum.$_initByValueList(values, 2);
+      $pb.ProtobufEnum.$_initByValueList(values, 3);
   static GlobalProductStatus? valueOf($core.int value) =>
       value < 0 || value >= _byValue.length ? null : _byValue[value];
 
@@ -50,15 +54,18 @@ class ProductStatus extends $pb.ProtobufEnum {
       ProductStatus._(1, _omitEnumNames ? '' : 'PRODUCT_STATUS_ACTIVE');
   static const ProductStatus PRODUCT_STATUS_INACTIVE =
       ProductStatus._(2, _omitEnumNames ? '' : 'PRODUCT_STATUS_INACTIVE');
+  static const ProductStatus PRODUCT_STATUS_DELETE =
+      ProductStatus._(3, _omitEnumNames ? '' : 'PRODUCT_STATUS_DELETE');
 
   static const $core.List<ProductStatus> values = <ProductStatus>[
     PRODUCT_STATUS_UNSPECIFIED,
     PRODUCT_STATUS_ACTIVE,
     PRODUCT_STATUS_INACTIVE,
+    PRODUCT_STATUS_DELETE,
   ];
 
   static final $core.List<ProductStatus?> _byValue =
-      $pb.ProtobufEnum.$_initByValueList(values, 2);
+      $pb.ProtobufEnum.$_initByValueList(values, 3);
   static ProductStatus? valueOf($core.int value) =>
       value < 0 || value >= _byValue.length ? null : _byValue[value];
 

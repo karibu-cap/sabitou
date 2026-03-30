@@ -24,7 +24,7 @@ import "payments/v1/payments.proto";
  *   items: [10x PRD-001 @ 450000 each]
  */
 message SalesOrder {
-  string document_id = 1 [(buf.validate.field).required = true]; // "SO-2025-001"
+  string ref_id = 1 [(buf.validate.field).required = true]; // "SO-2025-001"
   // Company buying from you
   string customer_id = 2;
   // Your company

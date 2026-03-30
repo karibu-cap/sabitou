@@ -360,7 +360,7 @@ class PosWidget {
             //           alignment: Alignment.center,
             //           child: BarcodeWidget(
             //             barcode: Barcode.code128(),
-            //             data: cashReceipt.documentId,
+            //             data: cashReceipt.refId,
             //             drawText: false,
             //           ),
             //         ),

@@ -24,12 +24,12 @@ class UsersController extends ChangeNotifier {
       ShadSelectController<StoreMemberStatus>();
 
   /// Gets store members stream for reactive UI updates
-  Stream<List<StoreMember>> get storeMembersStream =>
+  Stream<List<({StoreMember storeMember, User user})>> get storeMembersStream =>
       _viewModel.storeMembersStream;
 
   /// Gets filtered store members stream for reactive UI updates
-  Stream<List<StoreMember>> get filteredStoreMembersStream =>
-      _viewModel.filteredStoreMembersStream;
+  Stream<List<({StoreMember storeMember, User user})>>
+  get filteredStoreMembersStream => _viewModel.filteredStoreMembersStream;
 
   /// Gets the search query.
   BehaviorSubject<String> get searchQuery => _viewModel.searchQuery;
@@ -73,17 +73,12 @@ class UsersController extends ChangeNotifier {
     return result;
   }
 
-  /// Gets store members stream.
-  Stream<List<StoreMember>> getStoreMembersStream() {
-    return _viewModel.storeMembersStream;
-  }
-
   /// Invites a user to join the store.
   Future<bool> addUserToStore(
-    String email,
+    String userId,
     StorePermissions permissions,
   ) async {
-    return await _viewModel.addUserToStore(email, permissions);
+    return await _viewModel.addUserToStore(userId, permissions);
   }
 
   /// Removes a user from the store.

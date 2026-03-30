@@ -5,50 +5,46 @@ import 'package:sabitou_rpc/models.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../services/internationalization/internationalization.dart';
-import '../../../themes/app_colors.dart';
-import '../../../utils/app_constants.dart';
+import '../../../themes/app_theme.dart';
 import '../../../utils/formatters.dart';
 import '../dashboard_controller.dart';
 import 'alert_card.dart';
+import 'empty_state.dart';
 
 /// Widget that displays recent transaction activities.
 class RecentActivity extends StatelessWidget {
-  /// Constructors of new [RecentActivity].
   const RecentActivity({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Consumer<DashboardController>(
-      builder: (context, controller, child) {
-        if (controller.error.isNotEmpty) {
-          return const SizedBox.shrink();
-        }
-
-        final limitedTransactions = controller.stats.recentActivities
+      builder: (context, controller, _) {
+        final transactions = controller.stats.recentActivities
             .take(10)
             .toList();
 
         return AlertCard(
           title: Intls.to.recentActivity,
-          icon: LucideIcons.activity400,
-          iconColor: AppColors.cobalt,
-          child: limitedTransactions.isEmpty
-              ? Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(32),
-                    child: Text(
-                      Intls.to.noRecentActivity,
-                      style: ShadTheme.of(context).textTheme.muted,
-                    ),
-                  ),
+          icon: LucideIcons.activity,
+          iconColor: const Color(0xFF1E40AF),
+          iconBg: const Color(0xFFEFF6FF),
+          count: transactions.isNotEmpty ? transactions.length : null,
+          child: transactions.isEmpty
+              ? EmptyState(
+                  icon: LucideIcons.clipboardList,
+                  message: Intls.to.noRecentActivity,
                 )
               : Column(
-                  children: limitedTransactions.map((transaction) {
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 16),
-                      child: _TransactionItem(transaction: transaction),
-                    );
-                  }).toList(),
+                  children: [
+                    for (var i = 0; i < transactions.length; i++) ...[
+                      _TransactionItem(transaction: transactions[i]),
+                      if (i < transactions.length - 1)
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 6),
+                          child: ShadSeparator.horizontal(),
+                        ),
+                    ],
+                  ],
                 ),
         );
       },
@@ -56,168 +52,208 @@ class RecentActivity extends StatelessWidget {
   }
 }
 
-/// Individual transaction item widget.
 class _TransactionItem extends StatelessWidget {
   final InventoryTransaction transaction;
+  const _TransactionItem({required this.transaction});
 
-  const _TransactionItem({Key? key, required this.transaction})
-    : super(key: key);
-
-  Color _getTransactionColor(TransactionType type) {
+  _TxnStyle _styleFor(TransactionType type) {
     switch (type) {
       case TransactionType.TXN_TYPE_SALE:
-        return AppColors.red;
+        return _TxnStyle(
+          bg: SabitouColors.dangerSoft,
+          color: SabitouColors.dangerForeground,
+          icon: LucideIcons.shoppingCart,
+          accentBar: SabitouColors.danger,
+          label: Intls.to.sale,
+        );
       case TransactionType.TXN_TYPE_PURCHASE:
-        return AppColors.dartGreen;
+        return _TxnStyle(
+          bg: SabitouColors.successSoft,
+          color: SabitouColors.successForeground,
+          icon: LucideIcons.packagePlus,
+          accentBar: SabitouColors.success,
+          label: Intls.to.buy,
+        );
       case TransactionType.TXN_TYPE_EXPIRATION:
-        return AppColors.warningColor;
+        return _TxnStyle(
+          bg: SabitouColors.warningSoft,
+          color: SabitouColors.warningForeground,
+          icon: LucideIcons.calendarX2,
+          accentBar: SabitouColors.warning,
+          label: Intls.to.expiration,
+        );
       default:
-        return AppColors.grey500;
-    }
-  }
-
-  IconData _getTransactionIcon(TransactionType type) {
-    switch (type) {
-      case TransactionType.TXN_TYPE_SALE:
-        return Icons.shopping_cart;
-      case TransactionType.TXN_TYPE_PURCHASE:
-        return Icons.inventory;
-      case TransactionType.TXN_TYPE_EXPIRATION:
-        return Icons.warning;
-      default:
-        return Icons.swap_horiz;
+        return _TxnStyle(
+          bg: const Color(0xFFF1EFE8),
+          color: const Color(0xFF44444),
+          icon: LucideIcons.arrowLeftRight,
+          accentBar: const Color(0xFFADB2C0),
+          label: Intls.to.movement,
+        );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(AppConstants.contentPadding),
-      decoration: BoxDecoration(
-        color: AppColors.cobalt.withValues(alpha: 0.02),
-        borderRadius: const BorderRadius.all(
-          Radius.circular(AppConstants.borderRadius),
+    final theme = ShadTheme.of(context);
+    final cs = theme.colorScheme;
+    final style = _styleFor(transaction.transactionType);
+    final isPositive = transaction.quantityChange >= 0;
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Container(
+              width: 3,
+              height: 44,
+              decoration: BoxDecoration(
+                color: style.accentBar,
+                borderRadius: const BorderRadius.all(Radius.circular(3)),
+              ),
+            ),
+            const SizedBox(width: 10),
+            Container(
+              width: 36,
+              height: 36,
+              decoration: BoxDecoration(
+                color: style.bg,
+                borderRadius: const BorderRadius.all(Radius.circular(9)),
+              ),
+              child: Icon(style.icon, size: 15, color: style.color),
+            ),
+          ],
         ),
-      ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              const SizedBox(width: 42),
-              ShadBadge(child: Text(transaction.transactionType.toString())),
-              const SizedBox(width: 8),
-              Flexible(
-                child: AutoSizeText(
-                  '#${transaction.documentId}',
-                  style: ShadTheme.of(context).textTheme.muted,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  minFontSize: 6,
-                ),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: _getTransactionColor(transaction.transactionType),
-                  borderRadius: const BorderRadius.all(Radius.circular(20)),
-                ),
-                child: Icon(
-                  _getTransactionIcon(transaction.transactionType),
-                  size: 20,
-                  color: AppColors.grey0,
-                ),
-              ),
-              const SizedBox(width: 16),
+        const SizedBox(width: 12),
 
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 4),
-
-                    AutoSizeText(
-                      transaction.notes.isEmpty
-                          ? 'Transaction ${transaction.documentId}'
-                          : transaction.notes,
-                      style: ShadTheme.of(context).textTheme.small,
-                      maxLines: 2,
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 7,
+                      vertical: 2,
+                    ),
+                    decoration: BoxDecoration(
+                      color: style.bg,
+                      borderRadius: const BorderRadius.all(Radius.circular(20)),
+                    ),
+                    child: Text(
+                      style.label,
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w700,
+                        color: style.color,
+                        letterSpacing: 0.3,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 6),
+                  Flexible(
+                    child: AutoSizeText(
+                      '#${transaction.refId}',
+                      style: theme.textTheme.muted.copyWith(fontSize: 11),
+                      maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       minFontSize: 8,
                     ),
-                    const SizedBox(height: 4),
-
-                    Row(
-                      children: [
-                        const Icon(LucideIcons.calendar400, size: 12),
-                        const SizedBox(width: 4),
-                        Flexible(
-                          child: AutoSizeText(
-                            Formatters.formatDistanceToNow(
-                              transaction.transactionTime.toDateTime(),
-                            ),
-                            style: ShadTheme.of(context).textTheme.muted,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            minFontSize: 8,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    if (transaction.quantityChange > 0)
-                      AutoSizeText(
-                        Formatters.formatCurrency(
-                          transaction.quantityChange.toDouble(),
-                        ),
-                        style: ShadTheme.of(
-                          context,
-                        ).textTheme.small.copyWith(fontWeight: FontWeight.bold),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        minFontSize: 8,
-                      ),
-                    const SizedBox(height: 4),
-
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(Icons.inventory, size: 12),
-                        const SizedBox(width: 4),
-                        Flexible(
-                          child: AutoSizeText(
-                            '${transaction.quantityChange >= 0 ? '+' : ''}${transaction.quantityChange} unités',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            minFontSize: 8,
-                            style: ShadTheme.of(context).textTheme.small
-                                .copyWith(
-                                  fontSize: 14,
-                                  color: transaction.quantityChange >= 0
-                                      ? AppColors.dartGreen
-                                      : AppColors.red,
-                                ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+              const SizedBox(height: 4),
+              AutoSizeText(
+                transaction.notes.isEmpty
+                    ? '${Intls.to.transaction} ${transaction.refId}'
+                    : transaction.notes,
+                style: theme.textTheme.small.copyWith(
+                  color: cs.foreground,
+                  fontWeight: FontWeight.w500,
                 ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                minFontSize: 8,
+              ),
+              const SizedBox(height: 3),
+              Row(
+                children: [
+                  Icon(LucideIcons.clock, size: 11, color: cs.mutedForeground),
+                  const SizedBox(width: 4),
+                  Flexible(
+                    child: AutoSizeText(
+                      Formatters.formatDistanceToNow(
+                        transaction.transactionTime.toDateTime(),
+                      ),
+                      style: theme.textTheme.muted.copyWith(fontSize: 11),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      minFontSize: 8,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
-        ],
-      ),
+        ),
+        const SizedBox(width: 12),
+
+        // ── Right: amount + qty ──────────────────────────────────────
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (transaction.quantityChange > 0)
+              Text(
+                Formatters.formatCurrency(
+                  transaction.quantityChange.toDouble(),
+                ),
+                style: theme.textTheme.small.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: cs.foreground,
+                ),
+              ),
+            const SizedBox(height: 2),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+              decoration: BoxDecoration(
+                color: isPositive
+                    ? SabitouColors.successSoft
+                    : SabitouColors.dangerSoft,
+                borderRadius: const BorderRadius.all(Radius.circular(20)),
+              ),
+              child: Text(
+                '${isPositive ? '+' : ''}${transaction.quantityChange} u.',
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w700,
+                  color: isPositive
+                      ? SabitouColors.successForeground
+                      : SabitouColors.dangerForeground,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
+}
+
+class _TxnStyle {
+  final Color bg;
+  final Color color;
+  final IconData icon;
+  final Color accentBar;
+  final String label;
+
+  const _TxnStyle({
+    required this.bg,
+    required this.color,
+    required this.icon,
+    required this.accentBar,
+    required this.label,
+  });
 }

@@ -3,8 +3,10 @@ import 'package:provider/provider.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+import '../../../../repositories/resource_link_repository.dart';
 import '../../../../services/internationalization/internationalization.dart';
 import '../../../../themes/app_colors.dart';
+import '../../../../utils/app_constants.dart';
 import '../../../../utils/extensions/category_extension.dart';
 import '../../../../utils/extensions/global_product_extension.dart';
 import '../../../../widgets/pop_up/add_global_product/add_global_product_view.dart';
@@ -46,6 +48,11 @@ class GlobalProductDataTable extends StatelessWidget {
         return [
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16),
+            alignment: Alignment.center,
+            child: _ImageCell(globalProduct: globalProduct),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             alignment: Alignment.centerLeft,
             child: _GlobalProductNameCell(globalProduct: globalProduct),
           ),
@@ -70,6 +77,54 @@ class GlobalProductDataTable extends StatelessWidget {
           ),
         ];
       },
+    );
+  }
+}
+
+/// Image cell widget with product image
+class _ImageCell extends StatelessWidget {
+  const _ImageCell({required this.globalProduct});
+
+  final GlobalProduct globalProduct;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
+    final imageUrl = globalProduct.imagesLinksIds.firstOrNull;
+
+    return Container(
+      width: 40,
+      height: 40,
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
+        color: theme.colorScheme.accent,
+      ),
+      child: FutureBuilder<ResourceLink?>(
+        future: imageUrl == null
+            ? Future.value()
+            : ResourceLinkRepository.instance.getResourceLink(imageUrl),
+        builder: (context, snapshot) {
+          final data = snapshot.data?.targetUri;
+          if (snapshot.connectionState == ConnectionState.done &&
+              snapshot.hasData &&
+              data != null) {
+            return FadeInImage.assetNetwork(
+              placeholder: StaticImages.placeholder,
+              placeholderFit: BoxFit.none,
+              image: data,
+              fit: BoxFit.cover,
+              imageErrorBuilder: (context, error, stackTrace) {
+                return const Icon(LucideIcons.package, size: 20);
+              },
+              placeholderErrorBuilder: (context, error, stackTrace) {
+                return const Icon(LucideIcons.package, size: 20);
+              },
+            );
+          }
+
+          return const Icon(LucideIcons.package, size: 20);
+        },
+      ),
     );
   }
 }

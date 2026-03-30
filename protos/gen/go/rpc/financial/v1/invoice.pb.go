@@ -164,7 +164,7 @@ func (InvoiceStatus) EnumDescriptor() ([]byte, []int) {
 // INVENTORY IMPACT: None (already moved by DeliveryNote)
 type Invoice struct {
 	state                  protoimpl.MessageState `protogen:"open.v1"`
-	DocumentId             string                 `protobuf:"bytes,1,opt,name=document_id,json=documentId,proto3" json:"document_id,omitempty"`                                               // "INV-2025-001"
+	RefId                  string                 `protobuf:"bytes,1,opt,name=ref_id,json=refId,proto3" json:"ref_id,omitempty"`                                                              // "INV-2025-001"
 	InvoiceType            InvoiceType            `protobuf:"varint,2,opt,name=invoice_type,json=invoiceType,proto3,enum=financial.v1.InvoiceType" json:"invoice_type,omitempty"`             // Sales or Purchase
 	IssuerId               string                 `protobuf:"bytes,3,opt,name=issuer_id,json=issuerId,proto3" json:"issuer_id,omitempty"`                                                     // Company issuing invoice
 	RecipientId            string                 `protobuf:"bytes,4,opt,name=recipient_id,json=recipientId,proto3" json:"recipient_id,omitempty"`                                            // Company receiving invoice
@@ -218,9 +218,9 @@ func (*Invoice) Descriptor() ([]byte, []int) {
 	return file_financial_v1_invoice_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *Invoice) GetDocumentId() string {
+func (x *Invoice) GetRefId() string {
 	if x != nil {
-		return x.DocumentId
+		return x.RefId
 	}
 	return ""
 }
@@ -362,10 +362,9 @@ var File_financial_v1_invoice_proto protoreflect.FileDescriptor
 
 const file_financial_v1_invoice_proto_rawDesc = "" +
 	"\n" +
-	"\x1afinancial/v1/invoice.proto\x12\ffinancial.v1\x1a\x1bbuf/validate/validate.proto\x1a\"financial/v1/financial_utils.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xd8\a\n" +
-	"\aInvoice\x12'\n" +
-	"\vdocument_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\n" +
-	"documentId\x12<\n" +
+	"\x1afinancial/v1/invoice.proto\x12\ffinancial.v1\x1a\x1bbuf/validate/validate.proto\x1a\"financial/v1/financial_utils.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xce\a\n" +
+	"\aInvoice\x12\x1d\n" +
+	"\x06ref_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x05refId\x12<\n" +
 	"\finvoice_type\x18\x02 \x01(\x0e2\x19.financial.v1.InvoiceTypeR\vinvoiceType\x12\x1b\n" +
 	"\tissuer_id\x18\x03 \x01(\tR\bissuerId\x12!\n" +
 	"\frecipient_id\x18\x04 \x01(\tR\vrecipientId\x128\n" +

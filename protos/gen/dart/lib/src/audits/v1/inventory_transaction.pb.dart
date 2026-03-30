@@ -42,7 +42,7 @@ export 'inventory_transaction.pbenum.dart';
 ///    batch_id: "BATCH-2025-001"
 class InventoryTransaction extends $pb.GeneratedMessage {
   factory InventoryTransaction({
-    $core.String? documentId,
+    $core.String? refId,
     $core.String? storeId,
     $core.String? productId,
     TransactionType? transactionType,
@@ -60,7 +60,7 @@ class InventoryTransaction extends $pb.GeneratedMessage {
     $core.String? currency,
   }) {
     final result = create();
-    if (documentId != null) result.documentId = documentId;
+    if (refId != null) result.refId = refId;
     if (storeId != null) result.storeId = storeId;
     if (productId != null) result.productId = productId;
     if (transactionType != null) result.transactionType = transactionType;
@@ -93,7 +93,7 @@ class InventoryTransaction extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'InventoryTransaction',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'audits.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'documentId')
+    ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..aOS(2, _omitFieldNames ? '' : 'storeId')
     ..aOS(3, _omitFieldNames ? '' : 'productId')
     ..e<TransactionType>(
@@ -144,13 +144,13 @@ class InventoryTransaction extends $pb.GeneratedMessage {
   static InventoryTransaction? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get documentId => $_getSZ(0);
+  $core.String get refId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set documentId($core.String value) => $_setString(0, value);
+  set refId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasDocumentId() => $_has(0);
+  $core.bool hasRefId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearDocumentId() => $_clearField(1);
+  void clearRefId() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get storeId => $_getSZ(1);

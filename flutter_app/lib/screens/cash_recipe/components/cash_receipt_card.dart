@@ -43,7 +43,7 @@ class CashReceiptCard extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                cashReceipt.documentId,
+                                cashReceipt.refId,
                                 style: ShadTheme.of(context).textTheme.p
                                     .copyWith(fontWeight: FontWeight.bold),
                                 maxLines: 1,

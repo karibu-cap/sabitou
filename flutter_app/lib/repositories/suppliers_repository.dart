@@ -1,46 +1,56 @@
 import 'dart:async';
 
-import 'package:connectrpc/connect.dart' as connect;
 import 'package:get_it/get_it.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
-import '../services/network_status_provider/network_status_provider.dart';
+import '../core/database/base_repository.dart';
+import '../core/database/local_data_source.dart';
+import '../core/database/query/sql_condition.dart';
+import '../core/database/row_mapper.dart';
+import '../services/powersync/schema.dart';
 import '../services/rpc/connect_rpc.dart';
+import '../utils/app_constants.dart';
 import '../utils/logger.dart';
+import '../utils/utils.dart';
 
 /// The suppliers repository.
-final class SuppliersRepository {
+final class SuppliersRepository extends BaseRepository<Supplier> {
   final _logger = LoggerApp('SuppliersRepository');
 
   /// The supplier service client.
   final SupplierServiceClient supplierServiceClient;
 
-  /// The network status provider.
-  final NetworkStatusProvider networkStatusProvider;
+  @override
+  final LocalDataSource dataSource;
+
+  @override
+  String get tableName => CollectionName.suppliers;
 
   /// The instance of [SuppliersRepository].
-  static final instance = GetIt.I.get<SuppliersRepository>();
+  static SuppliersRepository get instance => GetIt.I.get<SuppliersRepository>();
+
+  @override
+  Supplier fromRow(RawRow row) => fromRowToSupplier(row);
+
+  @override
+  RawRow toRow(Supplier entity) => fromSupplierToRaw(entity);
 
   /// Constructs a new [SuppliersRepository].
-  SuppliersRepository({
-    connect.Transport? transport,
-    NetworkStatusProvider? networkStatusProvider,
-  }) : supplierServiceClient = SupplierServiceClient(
-         transport ?? ConnectRPCService.to.clientChannel,
-       ),
-       networkStatusProvider =
-           networkStatusProvider ?? GetIt.I.get<NetworkStatusProvider>();
-
-  /// Gets all suppliers base on store Id.
-  Future<List<Supplier>> getSuppliersByStore(String storeId) async {
-    try {
-      final response = await supplierServiceClient.getStoreSuppliers(
-        GetStoreSuppliersRequest(storeId: storeId),
+  SuppliersRepository({required this.dataSource})
+    : supplierServiceClient = SupplierServiceClient(
+        ConnectRPCService.to.clientChannel,
       );
 
-      return response.suppliers;
+  /// Gets all suppliers based on store Id.
+  Future<List<Supplier>> getSuppliersByStore(String storeId) async {
+    try {
+      final rows = await findWhere([
+        SqlQuery.like(SuppliersFields.storeIds, '%"$storeId"%'),
+      ]);
+
+      return rows;
     } on Exception catch (e) {
-      _logger.severe('getSuppliersByStoreId Error: $e');
+      _logger.severe('getSuppliersByStore Error: $e');
 
       return [];
     }
@@ -48,53 +58,20 @@ final class SuppliersRepository {
 
   /// Gets a supplier by ref.
   Future<Supplier?> getSupplierBySupplierId(String supplierId) async {
-    try {
-      final response = await supplierServiceClient.getSupplier(
-        GetSupplierRequest(supplierId: supplierId),
-      );
-
-      return response.supplier;
-    } on Exception catch (e) {
-      _logger.severe('getSupplierBySupplierId Error: $e');
-
-      return null;
-    }
-  }
-
-  /// Gets all suppliers base on store.
-  Future<List<Supplier>> getStoreSuppliers(
-    GetStoreSuppliersRequest request,
-  ) async {
-    try {
-      final response = await supplierServiceClient.getStoreSuppliers(request);
-
-      return response.suppliers;
-    } on Exception catch (e) {
-      _logger.severe('getStoreSuppliers Error: $e');
-
-      return [];
-    }
-  }
-
-  /// Gets a supplier by ref.
-  Future<Supplier?> getSupplier(GetSupplierRequest request) async {
-    try {
-      final response = await supplierServiceClient.getSupplier(request);
-
-      return response.supplier;
-    } on Exception catch (e) {
-      _logger.severe('getSupplierBySupplierId Error: $e');
-
-      return null;
-    }
+    return findById(supplierId);
   }
 
   /// Creates a new supplier.
   Future<String?> createSupplier(CreateSupplierRequest request) async {
     try {
-      final response = await supplierServiceClient.createSupplier(request);
+      final supplier = request.supplier;
+      if (supplier.refId.isEmpty) {
+        supplier.refId = AppUtils.generateSmartDatabaseId('SUP');
+      }
 
-      return response.supplierId;
+      await create(supplier);
+
+      return supplier.refId;
     } on Exception catch (e) {
       _logger.severe('createSupplier Error: $e');
 
@@ -103,24 +80,29 @@ final class SuppliersRepository {
   }
 
   /// Updates an existing supplier.
-  Future<Supplier?> updateSupplier(UpdateSupplierRequest request) async {
+  Future<bool> updateSupplier(UpdateSupplierRequest request) async {
     try {
-      final response = await supplierServiceClient.updateSupplier(request);
+      await updateWhere(
+        fields: fromSupplierToRaw(request.supplier),
+        filters: [
+          SqlQuery.equals(SuppliersFields.refId, request.supplier.refId),
+        ],
+      );
 
-      return response.supplier;
+      return true;
     } on Exception catch (e) {
       _logger.severe('updateSupplier Error: $e');
 
-      return null;
+      return false;
     }
   }
 
   /// Deletes a supplier by ID.
   Future<bool> deleteSupplier(DeleteSupplierRequest request) async {
     try {
-      final response = await supplierServiceClient.deleteSupplier(request);
+      await delete(request.supplierId);
 
-      return response.success;
+      return true;
     } on Exception catch (e) {
       _logger.severe('deleteSupplier Error: $e');
 
@@ -128,21 +110,62 @@ final class SuppliersRepository {
     }
   }
 
+  /// Find the supllier by query.
+  Future<List<Supplier>> searchSuppliers({
+    required String query,
+    required String storeId,
+  }) async {
+    try {
+      final rows = await findWhere([
+        SqlQuery.like(SuppliersFields.storeIds, '%"$storeId"%'),
+        if (query.isNotEmpty) ...[
+          SqlQuery.like(SuppliersFields.name, '%$query%'),
+        ],
+      ]);
+
+      return rows;
+    } on Exception catch (e) {
+      _logger.severe('searchSupplier Error: $e');
+
+      return [];
+    }
+  }
+
   /// Stream suppliers for a specific store.
   Stream<List<Supplier>> streamStoreSuppliers(
     StreamStoreSuppliersRequest request,
   ) {
+    return watchWhere([
+      SqlQuery.like(SuppliersFields.storeIds, '%"${request.storeId}"%'),
+    ]);
+  }
+
+  /// Gets products for a specific supplier.
+  Future<List<ProductBySupplier>> getProductsForSupplier(
+    String supplierRefId,
+    String? storeId,
+  ) async {
     try {
-      // Use the native gRPC streaming service
-      final grpcStream = supplierServiceClient.streamStoreSuppliers(request);
+      final rows = await dataSource.executeRaw(
+        'SELECT DISTINCT sp.*, gp.* '
+        'FROM ${CollectionName.storeProducts} sp '
+        'JOIN ${CollectionName.globalProducts} gp ON sp.${StoreProductsFields.globalProductId} = gp.${GlobalProductsFields.refId} '
+        'JOIN ${CollectionName.inventoryLevels} il ON sp.${StoreProductsFields.refId} = il.${InventoryLevelsFields.storeProductId} '
+        'JOIN json_each(il.${InventoryLevelsFields.batches}) b ON json_extract(b.value, "\$.supplier_id") = ? '
+        'WHERE il.${InventoryLevelsFields.storeId} = ?',
+        [supplierRefId, storeId ?? ''],
+      );
 
-      // Transform the gRPC stream to return List<Supplier>
-      return grpcStream.map((response) => response.suppliers);
-    } on Exception catch (e) {
-      _logger.severe('streamStoreSuppliers Error: $e');
+      return rows.map((row) {
+        return ProductBySupplier(
+          storeProduct: fromRowToStoreProduct(row),
+          globalProduct: fromRowToGlobalProduct(row),
+        );
+      }).toList();
+    } catch (e) {
+      _logger.severe('getProductsForSupplier Error: $e');
 
-      // Return empty stream on error
-      return Stream.value([]);
+      return [];
     }
   }
 }

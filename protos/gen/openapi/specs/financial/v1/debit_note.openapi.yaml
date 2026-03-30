@@ -7,9 +7,9 @@ components:
     financial.v1.DebitNote:
       type: object
       properties:
-        documentId:
+        refId:
           type: string
-          title: document_id
+          title: ref_id
           description: '"DEBIT-2025-001"'
         relatedInvoiceId:
           type: string
@@ -62,7 +62,7 @@ components:
           title: notes
       title: DebitNote
       required:
-        - documentId
+        - refId
       additionalProperties: false
       description: |-
         *

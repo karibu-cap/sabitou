@@ -139,7 +139,16 @@ dependencies:
   syncfusion_flutter_pdf: ^28.2.12
   barcode_widget: ^2.0.4
   timelines_plus: ^1.0.8
+  dio: ^5.9.2
+  bcrypt: ^1.2.0
+  path: ^1.9.1
+  flutter_secure_storage: ^10.0.0
+  powersync: 1.17.0
+  synchronized: ^3.4.0
 
+  collection: any
+  protobuf: any
+  fixnum: any
 dev_dependencies:
   flutter_test:
     sdk: flutter

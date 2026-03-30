@@ -91,14 +91,6 @@ abstract final class StoreService {
     storev1store.GetStoreMemberResponse.new,
   );
 
-  /// Set store member status.
-  static const setStoreMemberStatus = connect.Spec(
-    '/$name/SetStoreMemberStatus',
-    connect.StreamType.unary,
-    storev1store.SetStoreMemberStatusRequest.new,
-    storev1store.SetStoreMemberStatusResponse.new,
-  );
-
   /// Remove user from store.
   static const removeUserFromStore = connect.Spec(
     '/$name/RemoveUserFromStore',

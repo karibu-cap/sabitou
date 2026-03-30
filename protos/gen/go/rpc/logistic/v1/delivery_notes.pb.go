@@ -99,7 +99,7 @@ func (DeliveryNoteStatus) EnumDescriptor() ([]byte, []int) {
 // INVENTORY IMPACT: -10 PRD-001 from WH-001
 type DeliveryNote struct {
 	state               protoimpl.MessageState `protogen:"open.v1"`
-	DocumentId          string                 `protobuf:"bytes,1,opt,name=document_id,json=documentId,proto3" json:"document_id,omitempty"`                                // "DN-2025-001"
+	RefId               string                 `protobuf:"bytes,1,opt,name=ref_id,json=refId,proto3" json:"ref_id,omitempty"`                                               // "DN-2025-001"
 	RelatedSalesOrderId string                 `protobuf:"bytes,2,opt,name=related_sales_order_id,json=relatedSalesOrderId,proto3" json:"related_sales_order_id,omitempty"` // Optional link to order
 	FromWarehouseId     string                 `protobuf:"bytes,3,opt,name=from_warehouse_id,json=fromWarehouseId,proto3" json:"from_warehouse_id,omitempty"`               // Where goods leave
 	ToCompanyId         string                 `protobuf:"bytes,4,opt,name=to_company_id,json=toCompanyId,proto3" json:"to_company_id,omitempty"`                           // Customer receiving
@@ -148,9 +148,9 @@ func (*DeliveryNote) Descriptor() ([]byte, []int) {
 	return file_logistic_v1_delivery_notes_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *DeliveryNote) GetDocumentId() string {
+func (x *DeliveryNote) GetRefId() string {
 	if x != nil {
-		return x.DocumentId
+		return x.RefId
 	}
 	return ""
 }
@@ -322,10 +322,9 @@ var File_logistic_v1_delivery_notes_proto protoreflect.FileDescriptor
 
 const file_logistic_v1_delivery_notes_proto_rawDesc = "" +
 	"\n" +
-	" logistic/v1/delivery_notes.proto\x12\vlogistic.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x84\x05\n" +
-	"\fDeliveryNote\x12'\n" +
-	"\vdocument_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\n" +
-	"documentId\x123\n" +
+	" logistic/v1/delivery_notes.proto\x12\vlogistic.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xfa\x04\n" +
+	"\fDeliveryNote\x12\x1d\n" +
+	"\x06ref_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x05refId\x123\n" +
 	"\x16related_sales_order_id\x18\x02 \x01(\tR\x13relatedSalesOrderId\x12*\n" +
 	"\x11from_warehouse_id\x18\x03 \x01(\tR\x0ffromWarehouseId\x12\"\n" +
 	"\rto_company_id\x18\x04 \x01(\tR\vtoCompanyId\x12\x1d\n" +

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
@@ -57,6 +59,9 @@ class SuppliersController extends ChangeNotifier {
 
   /// Gets suppliers stream for reactive UI updates
   Stream<List<Supplier>> get suppliersStream => _viewModel.suppliersStream;
+
+  /// Gets the completer.
+  Completer<bool> get completer => _viewModel.completer;
 
   /// Deletes a supplier from the system.
   Future<bool> deleteSupplier(String supplierId) async {

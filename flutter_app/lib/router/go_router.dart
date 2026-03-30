@@ -1,28 +1,40 @@
+// ignore_for_file: long-method
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../providers/auth/auth_provider.dart';
 import '../screens/audits/audits_screen.dart';
 import '../screens/auth/forgot_password/forgot_password_view.dart';
 import '../screens/auth/login/login_view.dart';
 import '../screens/auth/registration/registration_view.dart';
+import '../screens/bills/bills_screen.dart';
+import '../screens/bills/detail/bill_screen.dart';
 import '../screens/cash_recipe/cash_recipe_screen.dart';
 import '../screens/categories/categories_view.dart';
 import '../screens/dashboard/dashboard_screen.dart';
 import '../screens/global_products/global_products_view.dart';
 import '../screens/home/home.dart';
 import '../screens/inventory/ajustment/inventory_ajustement_screen.dart';
-import '../screens/inventory/detail/inventory_detail_screen.dart'; // Added import
+import '../screens/inventory/detail/inventory_detail_screen.dart';
 import '../screens/inventory/inventory_screen.dart';
+import '../screens/payments/detail/payment_screen.dart';
+import '../screens/payments/payments_screen.dart';
 import '../screens/point_of_sale/point_of_sale_screen.dart';
+import '../screens/products_list/components/form/screen/create_edit_product_screen.dart';
+import '../screens/products_list/detail/product_detail_screen.dart';
 import '../screens/products_list/products_list_screen.dart';
-import '../screens/purchase_orders/purchase_orders_screen.dart';
+import '../screens/purchase_orders/detail/purchase_order_detail_screen.dart';
+import '../screens/purchase_orders/purchase_orders_view.dart';
+import '../screens/purchase_receives/detail/receiving_note_detail_screen.dart';
+import '../screens/purchase_receives/purchase_receives_view.dart';
 import '../screens/reports/reports_screen.dart';
 import '../screens/settings/settings_screen.dart';
 import '../screens/suppliers/suppliers_view.dart';
 import '../screens/users/users_view.dart';
 import '../screens/welcome/welcome.dart';
+import '../widgets/error/error_page_builder.dart';
 import 'app_router.dart';
 import 'page_routes.dart';
 
@@ -45,16 +57,12 @@ class GoRouterRoutesProvider {
         GoRoute(
           name: PagesRoutes.dashboard.name,
           path: PagesRoutes.dashboard.pattern,
-          pageBuilder: (context, state) {
-            return const MaterialPage(child: DashboardScreen());
-          },
+          pageBuilder: (_, __) => const MaterialPage(child: DashboardScreen()),
         ),
         GoRoute(
           name: PagesRoutes.home.name,
           path: PagesRoutes.home.pattern,
-          pageBuilder: (context, state) {
-            return const MaterialPage(child: DashboardScreen());
-          },
+          pageBuilder: (_, __) => const MaterialPage(child: DashboardScreen()),
         ),
       ],
     ),
@@ -63,9 +71,7 @@ class GoRouterRoutesProvider {
         GoRoute(
           name: PagesRoutes.audits.name,
           path: PagesRoutes.audits.pattern,
-          pageBuilder: (context, state) {
-            return const MaterialPage(child: AuditsScreen());
-          },
+          pageBuilder: (_, __) => const MaterialPage(child: AuditsScreen()),
         ),
       ],
     ),
@@ -74,16 +80,13 @@ class GoRouterRoutesProvider {
         GoRoute(
           name: PagesRoutes.inventory.name,
           path: PagesRoutes.inventory.pattern,
-          pageBuilder: (context, state) {
-            return const MaterialPage(child: InventoryScreen());
-          },
+          pageBuilder: (_, __) => const MaterialPage(child: InventoryScreen()),
         ),
         GoRoute(
           name: PagesRoutes.productsList.name,
           path: PagesRoutes.productsList.pattern,
-          pageBuilder: (context, state) {
-            return const MaterialPage(child: ProductsListScreen());
-          },
+          pageBuilder: (_, __) =>
+              const MaterialPage(child: ProductsListScreen()),
         ),
       ],
     ),
@@ -92,16 +95,13 @@ class GoRouterRoutesProvider {
         GoRoute(
           name: PagesRoutes.cashReceipts.name,
           path: PagesRoutes.cashReceipts.pattern,
-          pageBuilder: (context, state) {
-            return const MaterialPage(child: CashRecipeScreen());
-          },
+          pageBuilder: (_, __) => const MaterialPage(child: CashRecipeScreen()),
         ),
         GoRoute(
           name: PagesRoutes.pos.name,
           path: PagesRoutes.pos.pattern,
-          pageBuilder: (context, state) {
-            return const MaterialPage(child: PointOfSaleScreen());
-          },
+          pageBuilder: (_, __) =>
+              const MaterialPage(child: PointOfSaleScreen()),
         ),
       ],
     ),
@@ -110,9 +110,7 @@ class GoRouterRoutesProvider {
         GoRoute(
           name: PagesRoutes.reports.name,
           path: PagesRoutes.reports.pattern,
-          pageBuilder: (context, state) {
-            return const MaterialPage(child: ReportsScreen());
-          },
+          pageBuilder: (_, __) => const MaterialPage(child: ReportsScreen()),
         ),
       ],
     ),
@@ -121,9 +119,7 @@ class GoRouterRoutesProvider {
         GoRoute(
           name: PagesRoutes.suppliers.name,
           path: PagesRoutes.suppliers.pattern,
-          pageBuilder: (context, state) {
-            return const MaterialPage(child: SuppliersView());
-          },
+          pageBuilder: (_, __) => const MaterialPage(child: SuppliersView()),
         ),
       ],
     ),
@@ -132,9 +128,7 @@ class GoRouterRoutesProvider {
         GoRoute(
           name: PagesRoutes.users.name,
           path: PagesRoutes.users.pattern,
-          pageBuilder: (context, state) {
-            return const MaterialPage(child: UsersView());
-          },
+          pageBuilder: (_, __) => const MaterialPage(child: UsersView()),
         ),
       ],
     ),
@@ -143,9 +137,7 @@ class GoRouterRoutesProvider {
         GoRoute(
           name: PagesRoutes.categories.name,
           path: PagesRoutes.categories.pattern,
-          pageBuilder: (context, state) {
-            return const MaterialPage(child: CategoriesView());
-          },
+          pageBuilder: (_, __) => const MaterialPage(child: CategoriesView()),
         ),
       ],
     ),
@@ -154,9 +146,8 @@ class GoRouterRoutesProvider {
         GoRoute(
           name: PagesRoutes.globalProducts.name,
           path: PagesRoutes.globalProducts.pattern,
-          pageBuilder: (context, state) {
-            return const MaterialPage(child: GlobalProductsView());
-          },
+          pageBuilder: (_, __) =>
+              const MaterialPage(child: GlobalProductsView()),
         ),
       ],
     ),
@@ -165,9 +156,7 @@ class GoRouterRoutesProvider {
         GoRoute(
           name: PagesRoutes.settings.name,
           path: PagesRoutes.settings.pattern,
-          pageBuilder: (context, state) {
-            return const MaterialPage(child: SettingsScreen());
-          },
+          pageBuilder: (_, __) => const MaterialPage(child: SettingsScreen()),
         ),
       ],
     ),
@@ -176,9 +165,36 @@ class GoRouterRoutesProvider {
         GoRoute(
           name: PagesRoutes.purchaseOrders.name,
           path: PagesRoutes.purchaseOrders.pattern,
-          pageBuilder: (context, state) {
-            return const MaterialPage(child: PurchaseOrdersScreen());
-          },
+          pageBuilder: (_, __) =>
+              const MaterialPage(child: PurchaseOrdersView()),
+        ),
+      ],
+    ),
+    StatefulShellBranch(
+      routes: [
+        GoRoute(
+          name: PagesRoutes.purchaseReceives.name,
+          path: PagesRoutes.purchaseReceives.pattern,
+          pageBuilder: (_, __) =>
+              const MaterialPage(child: PurchaseReceivesView()),
+        ),
+      ],
+    ),
+    StatefulShellBranch(
+      routes: [
+        GoRoute(
+          name: PagesRoutes.bills.name,
+          path: PagesRoutes.bills.pattern,
+          pageBuilder: (_, __) => const MaterialPage(child: BillsScreen()),
+        ),
+      ],
+    ),
+    StatefulShellBranch(
+      routes: [
+        GoRoute(
+          name: PagesRoutes.payments.name,
+          path: PagesRoutes.payments.pattern,
+          pageBuilder: (_, __) => const MaterialPage(child: PaymentsScreen()),
         ),
       ],
     ),
@@ -199,37 +215,35 @@ class GoRouterRoutesProvider {
       navigatorKey: rootNavigatorKey,
       debugLogDiagnostics: true,
       initialLocation: PagesRoutes.welcome.pattern,
-      refreshListenable: auth, // Listen to auth changes
+      // GoRouter re-evaluates redirect whenever AuthProvider notifies.
+      refreshListenable: auth,
       redirect: (context, state) {
-        final isLoggedIn = auth.isAuthenticated;
-        final currentPath = state.uri.path;
+        final authStatus = auth.status;
+        final path = state.uri.path;
 
-        // Define auth pages
+        // While initialising, show a blank screen / splash — do not redirect.
+        if (authStatus == AuthStatus.initializing) return null;
+
         final isOnAuthPage =
-            currentPath == PagesRoutes.welcome.pattern ||
-            currentPath == PagesRoutes.login.pattern ||
-            currentPath == PagesRoutes.registration.pattern ||
-            currentPath == PagesRoutes.forgotPassword.pattern ||
-            currentPath == '/';
+            path == PagesRoutes.welcome.pattern ||
+            path == PagesRoutes.login.pattern ||
+            path == PagesRoutes.registration.pattern ||
+            path == PagesRoutes.forgotPassword.pattern ||
+            path == '/';
 
-        // Redirect logic
-        if (!isLoggedIn && !isOnAuthPage) {
-          // Not logged in, trying to access protected route
+        if (!auth.isAuthenticated && !isOnAuthPage) {
           return PagesRoutes.login.pattern;
         }
 
-        if (isLoggedIn && isOnAuthPage) {
-          // Logged in, on auth page
+        if (auth.isAuthenticated && isOnAuthPage) {
           return PagesRoutes.dashboard.pattern;
         }
 
-        // No redirect needed
         return null;
       },
       routes: _getAllRoutes(),
-      onException: (context, state, router) {
-        debugPrint('Unknown router path: ${state.fullPath} ');
-      },
+      errorPageBuilder: (context, state) =>
+          const MaterialPage(child: ErrorPageBuilder.notFound()),
     );
   }
 
@@ -270,6 +284,129 @@ class GoRouterRoutesProvider {
           );
         },
       ),
+      GoRoute(
+        name: PagesRoutes.productNew.name,
+        path: PagesRoutes.productNew.pattern,
+        parentNavigatorKey: rootNavigatorKey,
+        pageBuilder: (context, state) {
+          return const MaterialPage(child: CreateEditProductScreen());
+        },
+      ),
+      GoRoute(
+        name: PagesRoutes.productEdit.name,
+        path: PagesRoutes.productEdit.pattern,
+        parentNavigatorKey: rootNavigatorKey,
+        pageBuilder: (context, state) {
+          final productId =
+              state.pathParameters[ProductDetailParameters.keyProductId];
+
+          return MaterialPage(
+            child: CreateEditProductScreen(productId: productId),
+          );
+        },
+      ),
+      GoRoute(
+        name: PagesRoutes.productDetail.name,
+        path: PagesRoutes.productDetail.pattern,
+        parentNavigatorKey: rootNavigatorKey,
+        pageBuilder: (context, state) {
+          final productId =
+              state.pathParameters[ProductDetailParameters.keyProductId];
+
+          return MaterialPage(
+            child: ProductDetailScreen(productId: productId ?? ''),
+          );
+        },
+      ),
+      GoRoute(
+        name: PagesRoutes.purchaseOrderDetail.name,
+        path: PagesRoutes.purchaseOrderDetail.pattern,
+        parentNavigatorKey: rootNavigatorKey,
+        pageBuilder: (context, state) {
+          final purchaseOrderId = state
+              .pathParameters[PurchaseOrderDetailParameters.keyPurchaseOrderId];
+
+          if (purchaseOrderId == null ||
+              !purchaseOrderId.toLowerCase().startsWith('po')) {
+            return MaterialPage(
+              child: ErrorPageBuilder.notFound(
+                title: 'Invalid Purchase Order',
+                onPrimaryAction: () =>
+                    AppRouter.go(context, PagesRoutes.home.pattern),
+                primaryActionText: 'Back to Home',
+                onSecondaryAction: () =>
+                    AppRouter.go(context, PagesRoutes.purchaseOrders.pattern),
+                secondaryActionText: 'View Purchase Orders',
+                showBackgroundGradient: false,
+                customIcon: const Icon(LucideIcons.clipboardList400),
+              ),
+            );
+          }
+
+          return MaterialPage(
+            child: PurchaseOrderDetailScreen(purchaseOrderId: purchaseOrderId),
+          );
+        },
+      ),
+      GoRoute(
+        name: PagesRoutes.paymentDetail.name,
+        path: PagesRoutes.paymentDetail.pattern,
+        parentNavigatorKey: rootNavigatorKey,
+        pageBuilder: (context, state) {
+          final paymentId =
+              state.pathParameters[PaymentDetailParameters.keyPaymentId];
+
+          if (paymentId == null || !paymentId.toLowerCase().startsWith('pay')) {
+            return MaterialPage(
+              child: ErrorPageBuilder.notFound(
+                title: 'Invalid Payment',
+                onPrimaryAction: () =>
+                    AppRouter.go(context, PagesRoutes.home.pattern),
+                primaryActionText: 'Back to Home',
+                onSecondaryAction: () =>
+                    AppRouter.go(context, PagesRoutes.payments.pattern),
+                secondaryActionText: 'View Payments',
+                showBackgroundGradient: false,
+                customIcon: const Icon(LucideIcons.clipboardList400),
+              ),
+            );
+          }
+
+          return MaterialPage(
+            child: PaymentDetailScreen(paymentRefId: paymentId),
+          );
+        },
+      ),
+      GoRoute(
+        name: PagesRoutes.receivingNoteDetail.name,
+        path: PagesRoutes.receivingNoteDetail.pattern,
+        parentNavigatorKey: rootNavigatorKey,
+        pageBuilder: (context, state) {
+          final receivingNoteId = state
+              .pathParameters[ReceivingNoteDetailParameters.keyReceivingNoteId];
+
+          if (receivingNoteId == null ||
+              !receivingNoteId.toLowerCase().startsWith('rn')) {
+            return MaterialPage(
+              child: ErrorPageBuilder.notFound(
+                title: 'Invalid Receiving Note',
+                onPrimaryAction: () =>
+                    AppRouter.go(context, PagesRoutes.home.pattern),
+                primaryActionText: 'Back to Home',
+                onSecondaryAction: () =>
+                    AppRouter.go(context, PagesRoutes.purchaseReceives.pattern),
+                secondaryActionText: 'View Purchase Receives',
+                showBackgroundGradient: false,
+                customIcon: const Icon(LucideIcons.packageSearch),
+              ),
+            );
+          }
+
+          return MaterialPage(
+            child: ReceivingNoteDetailScreen(receivingNoteId: receivingNoteId),
+          );
+        },
+      ),
       // Auth routes (public)
       GoRoute(
         name: PagesRoutes.welcome.name,
@@ -299,6 +436,34 @@ class GoRouterRoutesProvider {
           return const MaterialPage(child: ForgotPasswordView());
         },
       ),
+      GoRoute(
+        name: PagesRoutes.billDetail.name,
+        path: PagesRoutes.billDetail.pattern,
+        parentNavigatorKey: rootNavigatorKey,
+        pageBuilder: (context, state) {
+          final billId = state.pathParameters[BillDetailParameters.keyBillId];
+
+          if (billId == null || !billId.toLowerCase().startsWith('bill')) {
+            return MaterialPage(
+              child: ErrorPageBuilder.notFound(
+                title: 'Invalid Bill',
+                onPrimaryAction: () =>
+                    AppRouter.go(context, PagesRoutes.home.pattern),
+                primaryActionText: 'Back to Home',
+                onSecondaryAction: () =>
+                    AppRouter.go(context, PagesRoutes.purchaseOrders.pattern),
+                secondaryActionText: 'View Bills',
+                showBackgroundGradient: false,
+                customIcon: const Icon(LucideIcons.clipboardList400),
+              ),
+            );
+          }
+
+          return MaterialPage(
+            child: BillDetailScreen(billRefId: billId, canSplitTheScreen: true),
+          );
+        },
+      ),
     ];
   }
 }
@@ -325,33 +490,32 @@ class AppRouterGoRouter extends AppRouterSubsystem {
       GoRouterRoutesProvider.routes.routeInformationProvider;
 
   @override
-  Future<void> init() {
-    return GoRouterRoutesProvider.init();
+  Future<void> init() => GoRouterRoutesProvider.init();
+  @override
+  Future<T?> push<T>(BuildContext context, String uri, {Object? extra}) async {
+    return await context.push<T>(uri, extra: extra);
   }
 
   @override
-  void push(BuildContext context, String uri, {Object? extra}) {
-    context.push(uri, extra: extra);
-  }
-
+  void pushReplacement(BuildContext context, String uri, {Object? extra}) =>
+      context.pushReplacement(uri, extra: extra);
   @override
-  void pushReplacement(BuildContext context, String uri, {Object? extra}) {
-    context.pushReplacement(uri, extra: extra);
-  }
-
+  void go(BuildContext context, String uri, {Object? extra}) =>
+      context.go(uri, extra: extra);
   @override
-  void go(BuildContext context, String uri, {Object? extra}) {
-    context.go(uri, extra: extra);
-  }
-
-  @override
-  void pushReplacementNamed(BuildContext context, String uri, {Object? extra}) {
-    context.pushReplacementNamed(uri, extra: extra);
-  }
-
+  void pushReplacementNamed(
+    BuildContext context,
+    String uri, {
+    Object? extra,
+  }) => context.pushReplacementNamed(uri, extra: extra);
   @override
   String getCurrentLocation(BuildContext context) {
     return GoRouterState.of(context).uri.path;
+  }
+
+  @override
+  void refresh(BuildContext context) {
+    return GoRouter.of(context).refresh();
   }
 
   @override
@@ -360,14 +524,8 @@ class AppRouterGoRouter extends AppRouterSubsystem {
     String uri, {
     Object? extra,
   }) => context.replace(uri, extra: extra);
-
   @override
-  bool canPop(BuildContext context) {
-    return GoRouter.of(context).canPop();
-  }
-
+  bool canPop(BuildContext context) => GoRouter.of(context).canPop();
   @override
-  void onPop(BuildContext context) {
-    GoRouter.of(context).pop();
-  }
+  void onPop(BuildContext context) => GoRouter.of(context).pop();
 }

@@ -26,7 +26,7 @@ import "google/protobuf/timestamp.proto";
  *   batch_id: "BATCH-2025-001"
  */
 message InventoryTransaction {
-  optional string document_id = 1 [(buf.validate.field).required = true]; // "TXN-2025-00123"
+  optional string ref_id = 1 [(buf.validate.field).required = true]; // "TXN-2025-00123"
   string store_id = 2;
   string product_id = 3;
   TransactionType transaction_type = 4;

@@ -35,10 +35,11 @@ const (
 //	remaining_after: 50000
 type VoucherTransaction struct {
 	state            protoimpl.MessageState `protogen:"open.v1"`
-	DocumentId       string                 `protobuf:"bytes,1,opt,name=document_id,json=documentId,proto3" json:"document_id,omitempty"`
+	RefId            string                 `protobuf:"bytes,1,opt,name=ref_id,json=refId,proto3" json:"ref_id,omitempty"`
 	VoucherId        string                 `protobuf:"bytes,2,opt,name=voucher_id,json=voucherId,proto3" json:"voucher_id,omitempty"`                        // Which voucher used
 	RelatedInvoiceId string                 `protobuf:"bytes,3,opt,name=related_invoice_id,json=relatedInvoiceId,proto3" json:"related_invoice_id,omitempty"` // Which purchase
 	RelatedReceiptId string                 `protobuf:"bytes,4,opt,name=related_receipt_id,json=relatedReceiptId,proto3" json:"related_receipt_id,omitempty"` // Or cash receipt
+	StoreId          string                 `protobuf:"bytes,9,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
 	AmountUsed       float64                `protobuf:"fixed64,5,opt,name=amount_used,json=amountUsed,proto3" json:"amount_used,omitempty"`
 	RemainingAfter   float64                `protobuf:"fixed64,6,opt,name=remaining_after,json=remainingAfter,proto3" json:"remaining_after,omitempty"`
 	UsedAt           *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=used_at,json=usedAt,proto3" json:"used_at,omitempty"`
@@ -77,9 +78,9 @@ func (*VoucherTransaction) Descriptor() ([]byte, []int) {
 	return file_audits_v1_voucher_transaction_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *VoucherTransaction) GetDocumentId() string {
+func (x *VoucherTransaction) GetRefId() string {
 	if x != nil {
-		return x.DocumentId
+		return x.RefId
 	}
 	return ""
 }
@@ -101,6 +102,13 @@ func (x *VoucherTransaction) GetRelatedInvoiceId() string {
 func (x *VoucherTransaction) GetRelatedReceiptId() string {
 	if x != nil {
 		return x.RelatedReceiptId
+	}
+	return ""
+}
+
+func (x *VoucherTransaction) GetStoreId() string {
+	if x != nil {
+		return x.StoreId
 	}
 	return ""
 }
@@ -137,14 +145,14 @@ var File_audits_v1_voucher_transaction_proto protoreflect.FileDescriptor
 
 const file_audits_v1_voucher_transaction_proto_rawDesc = "" +
 	"\n" +
-	"#audits/v1/voucher_transaction.proto\x12\taudits.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xde\x02\n" +
-	"\x12VoucherTransaction\x12'\n" +
-	"\vdocument_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\n" +
-	"documentId\x12\x1d\n" +
+	"#audits/v1/voucher_transaction.proto\x12\taudits.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xef\x02\n" +
+	"\x12VoucherTransaction\x12\x1d\n" +
+	"\x06ref_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x05refId\x12\x1d\n" +
 	"\n" +
 	"voucher_id\x18\x02 \x01(\tR\tvoucherId\x12,\n" +
 	"\x12related_invoice_id\x18\x03 \x01(\tR\x10relatedInvoiceId\x12,\n" +
-	"\x12related_receipt_id\x18\x04 \x01(\tR\x10relatedReceiptId\x12\x1f\n" +
+	"\x12related_receipt_id\x18\x04 \x01(\tR\x10relatedReceiptId\x12\x19\n" +
+	"\bstore_id\x18\t \x01(\tR\astoreId\x12\x1f\n" +
 	"\vamount_used\x18\x05 \x01(\x01R\n" +
 	"amountUsed\x12'\n" +
 	"\x0fremaining_after\x18\x06 \x01(\x01R\x0eremainingAfter\x123\n" +

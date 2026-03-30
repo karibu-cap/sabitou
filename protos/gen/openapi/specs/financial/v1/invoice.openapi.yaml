@@ -7,9 +7,9 @@ components:
     financial.v1.Invoice:
       type: object
       properties:
-        documentId:
+        refId:
           type: string
-          title: document_id
+          title: ref_id
           description: '"INV-2025-001"'
         invoiceType:
           title: invoice_type
@@ -91,7 +91,7 @@ components:
           description: '"Net 30", "Cash on delivery", etc.'
       title: Invoice
       required:
-        - documentId
+        - refId
       additionalProperties: false
       description: |-
         *

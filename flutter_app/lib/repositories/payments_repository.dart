@@ -1,42 +1,43 @@
-import 'package:connectrpc/connect.dart' as connect;
 import 'package:get_it/get_it.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
-import '../services/network_status_provider/network_status_provider.dart';
-import '../services/rpc/connect_rpc.dart';
+import '../core/database/base_repository.dart';
+import '../core/database/local_data_source.dart';
+import '../core/database/query/sql_condition.dart';
+import '../core/database/row_mapper.dart';
+import '../utils/app_constants.dart';
 import '../utils/logger.dart';
+import '../utils/utils.dart';
 
 /// The payments repository.
-class PaymentsRepository {
+class PaymentsRepository extends BaseRepository<Payment> {
   final _logger = LoggerApp('PaymentsRepository');
-
-  /// The payment service client.
-  final PaymentsServiceClient paymentServiceClient;
-
-  /// The network status provider.
-  final NetworkStatusProvider networkStatusProvider;
 
   /// The instance of [PaymentsRepository].
   static final instance = GetIt.I.get<PaymentsRepository>();
 
+  @override
+  final LocalDataSource dataSource;
+
+  @override
+  String get tableName => CollectionName.payments;
+
+  @override
+  Payment fromRow(RawRow row) => fromRowToPayment(row);
+
+  @override
+  RawRow toRow(Payment entity) => fromPaymentToRaw(entity);
+
   /// Constructs a new [PaymentsRepository].
-  PaymentsRepository({
-    connect.Transport? transport,
-    NetworkStatusProvider? networkStatusProvider,
-  }) : paymentServiceClient = PaymentsServiceClient(
-         transport ?? ConnectRPCService.to.clientChannel,
-       ),
-       networkStatusProvider =
-           networkStatusProvider ?? GetIt.I.get<NetworkStatusProvider>();
+  PaymentsRepository({required this.dataSource});
 
-  /// Creates a payment.
-  Future<CreatePaymentResponse?> createPayment(
-    CreatePaymentRequest request,
-  ) async {
+  /// Creates a payment in the local database.
+  Future<Payment?> createPayment(Payment payment) async {
     try {
-      final response = await paymentServiceClient.createPayment(request);
+      payment.refId = AppUtils.generateSmartDatabaseId('PAY');
+      await create(payment);
 
-      return response;
+      return payment;
     } on Exception catch (e) {
       _logger.severe('createPayment Error: $e');
 
@@ -45,11 +46,9 @@ class PaymentsRepository {
   }
 
   /// Gets a payment.
-  Future<GetPaymentResponse?> getPayment(GetPaymentRequest request) async {
+  Future<Payment?> getPayment(String paymentId) async {
     try {
-      final response = await paymentServiceClient.getPayment(request);
-
-      return response;
+      return await findById(paymentId);
     } on Exception catch (e) {
       _logger.severe('getPayment Error: $e');
 
@@ -57,18 +56,27 @@ class PaymentsRepository {
     }
   }
 
-  /// Lists payments.
-  Future<ListPaymentsResponse?> listPayments(
-    ListPaymentsRequest request,
-  ) async {
+  /// Watch the payment collection.
+  Stream<List<Payment>> watchPayments(List<SqlQuery> filters) {
     try {
-      final response = await paymentServiceClient.listPayments(request);
-
-      return response;
+      return watchWhere(filters);
     } on Exception catch (e) {
-      _logger.severe('listPayments Error: $e');
+      _logger.severe('watchPayments Error: $e');
 
-      return null;
+      return Stream.value([]);
+    }
+  }
+
+  /// Deletes a payment.
+  Future<bool> deletePayment(String paymentId) async {
+    try {
+      await delete(paymentId);
+
+      return true;
+    } on Exception catch (e) {
+      _logger.severe('deletePayment Error: $e');
+
+      return false;
     }
   }
 }

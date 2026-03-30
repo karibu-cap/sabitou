@@ -29,7 +29,7 @@ export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 ///    remaining_after: 50000
 class VoucherTransaction extends $pb.GeneratedMessage {
   factory VoucherTransaction({
-    $core.String? documentId,
+    $core.String? refId,
     $core.String? voucherId,
     $core.String? relatedInvoiceId,
     $core.String? relatedReceiptId,
@@ -37,9 +37,10 @@ class VoucherTransaction extends $pb.GeneratedMessage {
     $core.double? remainingAfter,
     $0.Timestamp? usedAt,
     $core.String? usedByUserId,
+    $core.String? storeId,
   }) {
     final result = create();
-    if (documentId != null) result.documentId = documentId;
+    if (refId != null) result.refId = refId;
     if (voucherId != null) result.voucherId = voucherId;
     if (relatedInvoiceId != null) result.relatedInvoiceId = relatedInvoiceId;
     if (relatedReceiptId != null) result.relatedReceiptId = relatedReceiptId;
@@ -47,6 +48,7 @@ class VoucherTransaction extends $pb.GeneratedMessage {
     if (remainingAfter != null) result.remainingAfter = remainingAfter;
     if (usedAt != null) result.usedAt = usedAt;
     if (usedByUserId != null) result.usedByUserId = usedByUserId;
+    if (storeId != null) result.storeId = storeId;
     return result;
   }
 
@@ -63,7 +65,7 @@ class VoucherTransaction extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'VoucherTransaction',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'audits.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'documentId')
+    ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..aOS(2, _omitFieldNames ? '' : 'voucherId')
     ..aOS(3, _omitFieldNames ? '' : 'relatedInvoiceId')
     ..aOS(4, _omitFieldNames ? '' : 'relatedReceiptId')
@@ -74,6 +76,7 @@ class VoucherTransaction extends $pb.GeneratedMessage {
     ..aOM<$0.Timestamp>(7, _omitFieldNames ? '' : 'usedAt',
         subBuilder: $0.Timestamp.create)
     ..aOS(8, _omitFieldNames ? '' : 'usedByUserId')
+    ..aOS(9, _omitFieldNames ? '' : 'storeId')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -98,13 +101,13 @@ class VoucherTransaction extends $pb.GeneratedMessage {
   static VoucherTransaction? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get documentId => $_getSZ(0);
+  $core.String get refId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set documentId($core.String value) => $_setString(0, value);
+  set refId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasDocumentId() => $_has(0);
+  $core.bool hasRefId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearDocumentId() => $_clearField(1);
+  void clearRefId() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get voucherId => $_getSZ(1);
@@ -170,6 +173,15 @@ class VoucherTransaction extends $pb.GeneratedMessage {
   $core.bool hasUsedByUserId() => $_has(7);
   @$pb.TagNumber(8)
   void clearUsedByUserId() => $_clearField(8);
+
+  @$pb.TagNumber(9)
+  $core.String get storeId => $_getSZ(8);
+  @$pb.TagNumber(9)
+  set storeId($core.String value) => $_setString(8, value);
+  @$pb.TagNumber(9)
+  $core.bool hasStoreId() => $_has(8);
+  @$pb.TagNumber(9)
+  void clearStoreId() => $_clearField(9);
 }
 
 const $core.bool _omitFieldNames =

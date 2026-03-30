@@ -128,7 +128,7 @@ final dashboardFakeTransport = FakeTransportBuilder()
           ..quantityAvailable = 20
           ..batches.add(
             Batch()
-              ..documentId = 'batch_1'
+              ..refId = 'batch_1'
               ..productId = 'sp_3'
               ..warehouseId = request.storeId
               ..quantity = 20
@@ -141,7 +141,7 @@ final dashboardFakeTransport = FakeTransportBuilder()
           )
           ..batches.add(
             Batch()
-              ..documentId = 'batch_2'
+              ..refId = 'batch_2'
               ..productId = 'sp_3'
               ..warehouseId = request.storeId
               ..quantity = 0
@@ -180,7 +180,7 @@ final dashboardFakeTransport = FakeTransportBuilder()
     return GetInventoryTransactionHistoryResponse(
       transactions: [
         InventoryTransaction()
-          ..documentId = 'txn_1'
+          ..refId = 'txn_1'
           ..storeId = request.storeId
           ..productId = 'sp_1'
           ..transactionType = TransactionType.TXN_TYPE_PURCHASE
@@ -195,7 +195,7 @@ final dashboardFakeTransport = FakeTransportBuilder()
           )
           ..notes = 'Initial stock',
         InventoryTransaction()
-          ..documentId = 'txn_2'
+          ..refId = 'txn_2'
           ..storeId = request.storeId
           ..productId = 'sp_2'
           ..transactionType = TransactionType.TXN_TYPE_SALE

@@ -17,10 +17,13 @@ import 'package:protobuf/protobuf.dart' as $pb;
 
 import '../../financial/v1/financial_utils.pb.dart' as $0;
 import '../../google/protobuf/timestamp.pb.dart' as $1;
+import 'cash_receipt.pbenum.dart';
 import 'gift_voucher.pb.dart' as $3;
 import 'payments.pb.dart' as $2;
 
 export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
+
+export 'cash_receipt.pbenum.dart';
 
 /// *
 ///  CashReceipt (Bon de Caisse)
@@ -46,7 +49,7 @@ export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 ///  ACCOUNTING IMPACT: Immediate revenue + payment
 class CashReceipt extends $pb.GeneratedMessage {
   factory CashReceipt({
-    $core.String? documentId,
+    $core.String? refId,
     $core.String? cashierUserId,
     $core.String? customerId,
     $core.String? storeId,
@@ -62,9 +65,10 @@ class CashReceipt extends $pb.GeneratedMessage {
     $core.String? notes,
     $core.String? voucherIssuedCode,
     $core.double? owedToCustomer,
+    CashReceiptStatus? status,
   }) {
     final result = create();
-    if (documentId != null) result.documentId = documentId;
+    if (refId != null) result.refId = refId;
     if (cashierUserId != null) result.cashierUserId = cashierUserId;
     if (customerId != null) result.customerId = customerId;
     if (storeId != null) result.storeId = storeId;
@@ -80,6 +84,7 @@ class CashReceipt extends $pb.GeneratedMessage {
     if (notes != null) result.notes = notes;
     if (voucherIssuedCode != null) result.voucherIssuedCode = voucherIssuedCode;
     if (owedToCustomer != null) result.owedToCustomer = owedToCustomer;
+    if (status != null) result.status = status;
     return result;
   }
 
@@ -96,7 +101,7 @@ class CashReceipt extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'CashReceipt',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'payments.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'documentId')
+    ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..aOS(2, _omitFieldNames ? '' : 'cashierUserId')
     ..aOS(3, _omitFieldNames ? '' : 'customerId')
     ..aOS(4, _omitFieldNames ? '' : 'storeId')
@@ -119,6 +124,11 @@ class CashReceipt extends $pb.GeneratedMessage {
     ..aOS(15, _omitFieldNames ? '' : 'voucherIssuedCode')
     ..a<$core.double>(
         16, _omitFieldNames ? '' : 'owedToCustomer', $pb.PbFieldType.OD)
+    ..e<CashReceiptStatus>(
+        17, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
+        defaultOrMaker: CashReceiptStatus.CASH_RECEIPT_STATUS_UNSPECIFIED,
+        valueOf: CashReceiptStatus.valueOf,
+        enumValues: CashReceiptStatus.values)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -143,13 +153,13 @@ class CashReceipt extends $pb.GeneratedMessage {
 
   /// "CASH-2025-001"
   @$pb.TagNumber(1)
-  $core.String get documentId => $_getSZ(0);
+  $core.String get refId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set documentId($core.String value) => $_setString(0, value);
+  set refId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasDocumentId() => $_has(0);
+  $core.bool hasRefId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearDocumentId() => $_clearField(1);
+  void clearRefId() => $_clearField(1);
 
   /// Who processed sale
   @$pb.TagNumber(2)
@@ -282,6 +292,15 @@ class CashReceipt extends $pb.GeneratedMessage {
   $core.bool hasOwedToCustomer() => $_has(15);
   @$pb.TagNumber(16)
   void clearOwedToCustomer() => $_clearField(16);
+
+  @$pb.TagNumber(17)
+  CashReceiptStatus get status => $_getN(16);
+  @$pb.TagNumber(17)
+  set status(CashReceiptStatus value) => $_setField(17, value);
+  @$pb.TagNumber(17)
+  $core.bool hasStatus() => $_has(16);
+  @$pb.TagNumber(17)
+  void clearStatus() => $_clearField(17);
 }
 
 class CreateCashReceiptRequest extends $pb.GeneratedMessage {

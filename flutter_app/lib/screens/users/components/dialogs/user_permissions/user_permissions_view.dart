@@ -7,6 +7,7 @@ import '../../../../../services/internationalization/internationalization.dart';
 import '../../../../../themes/app_colors.dart';
 import '../../../../../utils/common_functions.dart';
 import '../../../../../utils/extensions/store_member_extenxion.dart';
+import '../../../../../widgets/loading.dart';
 import '../../../users_controller.dart';
 import '../../shared/permissions_selector.dart';
 import 'user_permissions_controller.dart';
@@ -14,7 +15,7 @@ import 'user_permissions_controller.dart';
 /// Modal for viewing and modifying user permissions.
 class UserPermissionsModal extends StatelessWidget {
   /// The store member whose permissions are being modified.
-  final StoreMember storeMember;
+  final ({StoreMember storeMember, User user}) storeMember;
 
   /// The users controller.
   final UsersController usersController;
@@ -208,7 +209,9 @@ class _UserInfoCard extends StatelessWidget {
             ),
           ),
           // Current status badge
-          _CurrentStatusBadge(status: controller.originalStoreMember.status),
+          _CurrentStatusBadge(
+            status: controller.originalStoreMember.storeMember.status,
+          ),
         ],
       ),
     );
@@ -260,7 +263,7 @@ class _StatusChangeSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    final currentStatus = controller.originalStoreMember.status;
+    final currentStatus = controller.originalStoreMember.storeMember.status;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -436,14 +439,7 @@ class _ActionButtons extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 if (controller.isLoading)
-                  const SizedBox(
-                    width: 16,
-                    height: 16,
-                    child: CircularProgressIndicator(
-                      color: AppColors.primary50,
-                      strokeWidth: 2,
-                    ),
-                  )
+                  const Loading.button()
                 else
                   const Icon(
                     LucideIcons.save,

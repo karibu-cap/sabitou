@@ -2,12 +2,19 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
+import '../../../services/internationalization/internationalization.dart';
 import 'inventory_detail_view_model.dart';
 
 /// Controller for inventory detail screen.
 class InventoryDetailController extends ChangeNotifier {
   final InventoryDetailViewModel _viewModel;
+
+  /// Persists the selected tab across rebuilds.
+  final ShadTabsController<String> tabsController = ShadTabsController<String>(
+    value: Intls.to.overview,
+  );
 
   /// Gets the inventory item stream.
   Stream<InventoryLevelWithProduct?> get inventoryItemStream =>
@@ -31,9 +38,12 @@ class InventoryDetailController extends ChangeNotifier {
   InventoryDetailController(this._viewModel);
 
   /// Updates the transaction filter.
+  ///
+  /// Delegates to the view model which pushes the new value into
+  /// [transactionFilterStream]. The [StreamBuilder] in [TransactionsTab]
+  /// reacts automatically — no [notifyListeners] needed here.
   void updateTransactionFilter(TransactionType filter) {
     _viewModel.updateTransactionFilter(filter);
-    notifyListeners();
   }
 
   /// Refreshes the product data.
@@ -44,6 +54,7 @@ class InventoryDetailController extends ChangeNotifier {
 
   @override
   void dispose() {
+    tabsController.dispose();
     _viewModel.dispose();
     super.dispose();
   }

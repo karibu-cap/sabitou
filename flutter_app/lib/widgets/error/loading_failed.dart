@@ -64,7 +64,7 @@ class _SuggestionItem extends StatelessWidget {
 /// and helpful suggestions for resolving the issue.
 class LoadingFailedWidget extends StatelessWidget {
   /// The error that occurred.
-  final Object error;
+  final Object? error;
 
   /// Callback function to retry loading data.
   final VoidCallback? onRetry;
@@ -74,7 +74,7 @@ class LoadingFailedWidget extends StatelessWidget {
 
   /// Converts technical error messages to user-friendly descriptions.
   String _getHumanReadableError(
-    Object error,
+    Object? error,
     AppInternationalizationService intl,
   ) {
     final errorString = error.toString().toLowerCase();

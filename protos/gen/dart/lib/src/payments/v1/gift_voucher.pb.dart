@@ -38,7 +38,7 @@ export 'gift_voucher.pbenum.dart';
 ///    status: VOUCHER_STATUS_ACTIVE
 class GiftVoucher extends $pb.GeneratedMessage {
   factory GiftVoucher({
-    $core.String? documentId,
+    $core.String? refId,
     $core.String? voucherCode,
     $core.double? initialValue,
     $core.double? remainingValue,
@@ -52,7 +52,7 @@ class GiftVoucher extends $pb.GeneratedMessage {
     $core.String? notes,
   }) {
     final result = create();
-    if (documentId != null) result.documentId = documentId;
+    if (refId != null) result.refId = refId;
     if (voucherCode != null) result.voucherCode = voucherCode;
     if (initialValue != null) result.initialValue = initialValue;
     if (remainingValue != null) result.remainingValue = remainingValue;
@@ -81,7 +81,7 @@ class GiftVoucher extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'GiftVoucher',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'payments.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'documentId')
+    ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..aOS(2, _omitFieldNames ? '' : 'voucherCode')
     ..a<$core.double>(
         3, _omitFieldNames ? '' : 'initialValue', $pb.PbFieldType.OD)
@@ -124,13 +124,13 @@ class GiftVoucher extends $pb.GeneratedMessage {
 
   /// "GV-2025-001"
   @$pb.TagNumber(1)
-  $core.String get documentId => $_getSZ(0);
+  $core.String get refId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set documentId($core.String value) => $_setString(0, value);
+  set refId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasDocumentId() => $_has(0);
+  $core.bool hasRefId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearDocumentId() => $_clearField(1);
+  void clearRefId() => $_clearField(1);
 
   /// "GIFT-XMAS-12345" - what customer uses
   @$pb.TagNumber(2)

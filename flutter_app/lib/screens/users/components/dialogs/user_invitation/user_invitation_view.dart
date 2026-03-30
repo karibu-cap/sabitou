@@ -6,6 +6,7 @@ import '../../../../../services/internationalization/internationalization.dart';
 import '../../../../../utils/common_functions.dart';
 import '../../../../../utils/form/validation.dart';
 import '../../../../../widgets/input/form_fields.dart';
+import '../../../../../widgets/loading.dart';
 import '../../../users_controller.dart';
 import '../../shared/permissions_selector.dart';
 import 'user_invitation_controller.dart';
@@ -304,16 +305,7 @@ class _ActionButtons extends StatelessWidget {
         ),
         const SizedBox(width: 12),
         ShadButton(
-          trailing: controller.isLoading
-              ? const SizedBox(
-                  width: 16,
-                  height: 16,
-                  child: CircularProgressIndicator(
-                    color: Colors.white,
-                    strokeWidth: 2,
-                  ),
-                )
-              : null,
+          trailing: controller.isLoading ? const Loading.button() : null,
           enabled: controller.canSubmit && !controller.isLoading,
           onPressed: controller.canSubmit
               ? () async {

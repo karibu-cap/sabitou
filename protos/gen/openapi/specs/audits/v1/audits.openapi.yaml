@@ -117,9 +117,9 @@ components:
     audits.v1.InventoryTransaction:
       type: object
       properties:
-        documentId:
+        refId:
           type: string
-          title: document_id
+          title: ref_id
           description: '"TXN-2025-00123"'
           nullable: true
         storeId:
@@ -169,7 +169,7 @@ components:
           description: Specific batch affected
       title: InventoryTransaction
       required:
-        - documentId
+        - refId
       additionalProperties: false
       description: |-
         *
@@ -210,9 +210,9 @@ components:
     audits.v1.VoucherTransaction:
       type: object
       properties:
-        documentId:
+        refId:
           type: string
-          title: document_id
+          title: ref_id
         voucherId:
           type: string
           title: voucher_id
@@ -241,7 +241,7 @@ components:
           title: used_by_user_id
       title: VoucherTransaction
       required:
-        - documentId
+        - refId
       additionalProperties: false
       description: |-
         *

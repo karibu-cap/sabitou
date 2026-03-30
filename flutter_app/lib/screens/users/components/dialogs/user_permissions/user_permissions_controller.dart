@@ -8,7 +8,7 @@ import '../../../users_controller.dart';
 /// Controller for managing user permissions modal state and operations.
 class UserPermissionsModalController extends ChangeNotifier {
   final UsersController usersController;
-  final StoreMember _originalStoreMember;
+  final ({StoreMember storeMember, User user}) _originalStoreMember;
 
   /// Snapshot of the permissions when the modal was opened.
   StorePermissions _baselinePermissions;
@@ -22,15 +22,15 @@ class UserPermissionsModalController extends ChangeNotifier {
   /// Constructs a new UserPermissionsModalController.
   UserPermissionsModalController({
     required this.usersController,
-    required StoreMember storeMember,
+    required ({StoreMember storeMember, User user}) storeMember,
   }) : _baselinePermissions = _clonePermissions(
-         storeMember.hasPermissions()
-             ? storeMember.permissions
+         storeMember.storeMember.hasPermissions()
+             ? storeMember.storeMember.permissions
              : StorePermissions(),
        ),
        _permissions = _clonePermissions(
-         storeMember.hasPermissions()
-             ? storeMember.permissions
+         storeMember.storeMember.hasPermissions()
+             ? storeMember.storeMember.permissions
              : StorePermissions(),
        ),
        _originalStoreMember = storeMember;
@@ -45,7 +45,8 @@ class UserPermissionsModalController extends ChangeNotifier {
   String get errorMessage => _errorMessage;
 
   /// Original store member data.
-  StoreMember get originalStoreMember => _originalStoreMember;
+  ({StoreMember storeMember, User user}) get originalStoreMember =>
+      _originalStoreMember;
 
   /// Whether there are unsaved changes.
   bool get hasChanges =>
@@ -85,7 +86,7 @@ class UserPermissionsModalController extends ChangeNotifier {
     notifyListeners();
 
     final result = await usersController.updateUserPermissions(
-      userId: _originalStoreMember.user.refId,
+      userId: _originalStoreMember.storeMember.userId,
       permissions: _permissions,
     );
 
@@ -106,7 +107,7 @@ class UserPermissionsModalController extends ChangeNotifier {
 
   /// Changes user status.
   Future<bool> changeUserStatus(StoreMemberStatus newStatus) async {
-    if (_originalStoreMember.status == newStatus) {
+    if (_originalStoreMember.storeMember.status == newStatus) {
       return true;
     }
 
@@ -115,7 +116,7 @@ class UserPermissionsModalController extends ChangeNotifier {
     notifyListeners();
 
     final result = await usersController.updateUserStatus(
-      userId: _originalStoreMember.user.refId,
+      userId: _originalStoreMember.storeMember.userId,
       newStatus: newStatus,
     );
 

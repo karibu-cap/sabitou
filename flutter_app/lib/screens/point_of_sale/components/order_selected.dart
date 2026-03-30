@@ -1,191 +1,250 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-import '../../../providers/cart_provider.dart';
 import '../../../services/internationalization/internationalization.dart';
 import '../../../utils/extensions/global_product_extension.dart';
 import '../../../utils/formatters.dart';
 import '../point_of_sale_controller.dart';
+import '../utils/cart_provider.dart';
 
-/// The order selected component
+/// Cart items list.
 class OrderSelected extends StatelessWidget {
-  /// Constructor of new [OrderSelected].
-  const OrderSelected({super.key});
+  /// Creates an [OrderSelected].
+  const OrderSelected({super.key, this.maxHeight = 400});
+
+  /// Maximum height of the scrollable item list in logical pixels.
+  final double maxHeight;
 
   @override
   Widget build(BuildContext context) {
-    final cart = GetIt.I.get<CartManager>();
+    final theme = ShadTheme.of(context);
 
-    return Consumer<PointOfSaleController>(
-      builder: (context, controller, child) {
-        return ListenableBuilder(
-          listenable: cart,
-          builder: (context, value) {
-            final items = cart.getCartItems();
+    return Consumer2<CartProvider, PointOfSaleController>(
+      builder: (context, cart, controller, _) {
+        final items = cart.getCartItems();
 
-            return Container(
-              constraints: const BoxConstraints(maxHeight: 400),
-              child: ShadCard(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Row(
-                      spacing: 8,
-                      children: [
-                        const Icon(LucideIcons.shoppingCart),
-                        Expanded(
-                          child: Text(
-                            Intls.to.cart,
-                            style: ShadTheme.of(context).textTheme.small,
-                          ),
-                        ),
-                        ShadBadge(
-                          child: Text('${items.length} ${Intls.to.items}'),
-                          backgroundColor: ShadTheme.of(
-                            context,
-                          ).colorScheme.primary,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    if (items.isEmpty)
-                      Expanded(
-                        child: Center(
-                          child: ListView(
-                            children: [
-                              const Icon(LucideIcons.shoppingCart, size: 20),
-                              const SizedBox(height: 12),
-                              Center(
-                                child: Text(
-                                  Intls.to.emptyCart,
-                                  style: ShadTheme.of(context).textTheme.small,
-                                ),
-                              ),
-                              Center(
-                                child: Text(
-                                  Intls.to.scanOrSearchForProducts,
-                                  style: ShadTheme.of(context).textTheme.small,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      )
-                    else
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: items.length,
-                          itemBuilder: (context, index) {
-                            final item = items[index];
-
-                            return Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: _CartItemCard(item: item),
-                            );
-                          },
-                        ),
+        return ShadCard(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const Icon(LucideIcons.shoppingCart, size: 16),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      Intls.to.cart,
+                      style: theme.textTheme.small.copyWith(
+                        fontWeight: FontWeight.w600,
                       ),
-                  ],
-                ),
+                    ),
+                  ),
+                  ShadBadge(
+                    backgroundColor: theme.colorScheme.primary,
+                    child: Text(
+                      '${items.length} ${Intls.to.items}',
+                      style: theme.textTheme.small.copyWith(
+                        color: theme.colorScheme.primaryForeground,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            );
-          },
+
+              const SizedBox(height: 16),
+
+              if (items.isEmpty)
+                _EmptyCartState()
+              else
+                ConstrainedBox(
+                  constraints: BoxConstraints(maxHeight: maxHeight),
+                  child: ListView.separated(
+                    itemCount: items.length,
+                    separatorBuilder: (_, __) =>
+                        Divider(height: 1, color: theme.colorScheme.border),
+                    itemBuilder: (context, index) {
+                      return _CartItemRow(item: items[index]);
+                    },
+                  ),
+                ),
+            ],
+          ),
         );
       },
     );
   }
 }
 
-class _CartItemCard extends StatelessWidget {
-  const _CartItemCard({required this.item});
+class _EmptyCartState extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 32),
+      child: Center(
+        child: Column(
+          children: [
+            Icon(
+              LucideIcons.shoppingCart,
+              size: 36,
+              color: theme.colorScheme.mutedForeground,
+            ),
+            const SizedBox(height: 12),
+            Text(
+              Intls.to.emptyCart,
+              style: theme.textTheme.p.copyWith(
+                color: theme.colorScheme.mutedForeground,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              Intls.to.scanOrSearchForProducts,
+              style: theme.textTheme.muted,
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// A single cart row: product info | quantity controls | line total | delete.
+class _CartItemRow extends StatelessWidget {
+  const _CartItemRow({required this.item});
 
   final InvoiceLineItem item;
 
   @override
   Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  item.label,
+                  style: theme.textTheme.small.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  '${Formatters.formatCurrency(item.unitPrice.toDouble())} / ${Intls.to.unit}',
+                  style: theme.textTheme.muted,
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 12),
+          _QuantityControl(item: item),
+          const SizedBox(width: 12),
+          SizedBox(
+            width: 90,
+            child: Text(
+              Formatters.formatCurrency(item.total.toDouble()),
+              style: theme.textTheme.small.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+              textAlign: TextAlign.end,
+            ),
+          ),
+
+          const SizedBox(width: 8),
+
+          ShadButton.ghost(
+            size: ShadButtonSize.sm,
+            onPressed: () => CartProvider.instance.removeItem(
+              item.productId,
+              batchId: item.batchId,
+            ),
+            child: Icon(
+              LucideIcons.trash2,
+              size: 14,
+              color: theme.colorScheme.destructive,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Minus / quantity number / Plus inline controls.
+class _QuantityControl extends StatelessWidget {
+  const _QuantityControl({required this.item});
+
+  final InvoiceLineItem item;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
+
     return Row(
-      spacing: 8,
+      mainAxisSize: MainAxisSize.min,
       children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                item.label,
-                style: ShadTheme.of(
-                  context,
-                ).textTheme.small.copyWith(fontWeight: FontWeight.w600),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                '${Formatters.formatCurrency(item.unitPrice.toDouble())} ${Intls.to.each}',
-                style: ShadTheme.of(context).textTheme.muted,
-              ),
-              const SizedBox(height: 4),
-              Text(
-                '${Intls.to.max}:',
-                style: ShadTheme.of(context).textTheme.muted,
-              ),
-            ],
+        _QtyButton(
+          icon: LucideIcons.minus,
+          enabled: item.quantity > 1,
+          onPressed: () => CartProvider.instance.updateQuantity(
+            item.productId,
+            item.quantity - 1,
+            batchId: item.batchId,
           ),
         ),
-        _CartItemControls(item: item),
-        ShadButton.outline(
-          size: ShadButtonSize.sm,
-          onPressed: () =>
-              CartManager.to.removeItem(item.productId, batchId: item.batchId),
-          child: const Icon(LucideIcons.trash, size: 12),
+        Container(
+          width: 36,
+          alignment: Alignment.center,
+          child: Text(
+            '${item.quantity}',
+            style: theme.textTheme.small.copyWith(fontWeight: FontWeight.w700),
+          ),
+        ),
+        _QtyButton(
+          icon: LucideIcons.plus,
+          enabled: true,
+          onPressed: () => CartProvider.instance.updateQuantity(
+            item.productId,
+            item.quantity + 1,
+            batchId: item.batchId,
+          ),
         ),
       ],
     );
   }
 }
 
-class _CartItemControls extends StatelessWidget {
-  const _CartItemControls({required this.item});
+/// Icon-only square button used inside [_QuantityControl].
+class _QtyButton extends StatelessWidget {
+  const _QtyButton({
+    required this.icon,
+    required this.enabled,
+    required this.onPressed,
+  });
 
-  final InvoiceLineItem item;
+  final IconData icon;
+  final bool enabled;
+  final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          children: [
-            ShadButton.outline(
-              size: ShadButtonSize.sm,
-              enabled: item.quantity > 1,
-              onPressed: () => CartManager.to.updateQuantity(
-                item.productId,
-                item.quantity - 1,
-                batchId: item.batchId,
-              ),
-              child: const Icon(LucideIcons.minus, size: 12),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: Text(
-                item.quantity.toString(),
-                style: const TextStyle(fontWeight: FontWeight.w600),
-              ),
-            ),
-            ShadButton.outline(
-              size: ShadButtonSize.sm,
-              onPressed: () => CartManager.to.updateQuantity(
-                item.productId,
-                item.quantity + 1,
-                batchId: item.batchId,
-              ),
-              child: const Icon(LucideIcons.plus, size: 12),
-            ),
-          ],
-        ),
-      ],
+    return ShadButton.outline(
+      size: ShadButtonSize.sm,
+      enabled: enabled,
+      onPressed: onPressed,
+      child: Icon(icon, size: 12),
     );
   }
 }

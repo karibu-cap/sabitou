@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:collection';
+import 'dart:ui';
 
 import 'package:clock/clock.dart';
 import 'package:rxdart/rxdart.dart';
@@ -7,19 +8,19 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../../repositories/categories_repository.dart';
 import '../../repositories/inventory_repository.dart';
-import '../../repositories/reports_repository.dart';
-import '../../repositories/store_products_repository.dart';
 import '../../utils/extensions/category_extension.dart';
 import '../../utils/extensions/global_product_extension.dart';
 import '../../utils/logger.dart';
-import '../../utils/user_preference.dart';
 
 /// View model for inventory screen
 class InventoryViewModel {
   final LoggerApp _logger = LoggerApp('InventoryViewModel');
 
-  /// Gets the user preferences.
-  final UserPreferences userPreferences = UserPreferences.instance;
+  /// The store.
+  final Store store;
+
+  /// The business.
+  final Business business;
 
   /// Gets the products subject.
   final _invLevelSubject =
@@ -29,15 +30,6 @@ class InventoryViewModel {
 
   /// Gets the error subject.
   final _errorSubject = BehaviorSubject<String>.seeded('');
-
-  /// Gets the search query subject.
-  final _searchQuerySubject = BehaviorSubject<String>.seeded('');
-
-  /// Gets the selected category subject.
-  final _selectedCategorySubject = BehaviorSubject<String>.seeded('');
-
-  /// Gets the selected status subject.
-  final _selectedStatusSubject = BehaviorSubject<StockStatus?>.seeded(null);
 
   /// Gets the selected item subject.
   final _selectedItemSubject =
@@ -59,22 +51,17 @@ class InventoryViewModel {
   /// Gets the completer.
   final Completer<bool> completer = Completer<bool>();
 
-  /// Gets the search query.
-  BehaviorSubject<String> get searchQuery => _searchQuerySubject;
-
-  /// Gets the selected category.
-  BehaviorSubject<String> get selectedCategory => _selectedCategorySubject;
-
   /// Gets the products stream.
   BehaviorSubject<UnmodifiableListView<InventoryLevelWithProduct>>
   get invLevelSubject => _invLevelSubject;
 
-  /// Gets the selected status.
-  BehaviorSubject<StockStatus?> get selectedStatus => _selectedStatusSubject;
-
   /// Gets the selected item stream.
-  Stream<InventoryLevelWithProduct?> get selectedItemStream =>
-      _selectedItemSubject.stream;
+  BehaviorSubject<InventoryLevelWithProduct?> get selectedItemStream =>
+      _selectedItemSubject;
+
+  /// Gets the current selected item value.
+  InventoryLevelWithProduct? get currentSelectedItem =>
+      _selectedItemSubject.value;
 
   /// Gets the transactions stream.
   Stream<List<InventoryTransaction>> get transactionsStream =>
@@ -87,141 +74,113 @@ class InventoryViewModel {
   /// Gets the error stream.
   Stream<String> get errorStream => _errorSubject.stream;
 
-  /// Gets the filtered products stream.
-  Stream<List<InventoryLevelWithProduct>> get filteredProductsStream =>
-      Rx.combineLatest4(
-        _invLevelSubject.stream,
-        _searchQuerySubject.stream,
-        _selectedCategorySubject.stream,
-        _selectedStatusSubject.stream,
-        (products, searchQuery, category, status) {
-          var filtered = products.toList();
-          if (searchQuery.isNotEmpty) {
-            filtered = filtered
-                .where(
-                  (p) =>
-                      p.globalProduct.label.toLowerCase().contains(
-                        searchQuery.toLowerCase(),
-                      ) ||
-                      p.globalProduct.barCodeValue.toLowerCase().contains(
-                        searchQuery.toLowerCase(),
-                      ),
-                )
-                .toList();
-          }
-          if (category.isNotEmpty) {
-            filtered = filtered
-                .where(
-                  (p) => p.globalProduct.categories.any(
-                    (c) => c.label.toLowerCase() == category.toLowerCase(),
-                  ),
-                )
-                .toList();
-          }
+  /// Computes the filtered products synchronously based on the provided params.
+  List<InventoryLevelWithProduct> getFilteredProducts({
+    required String searchQuery,
+    required String selectedCategory,
+    required StockStatus? selectedStatus,
+  }) {
+    var filtered = _invLevelSubject.value.toList();
 
-          if (status != null) {
-            filtered = filtered
-                .where(
-                  (p) => switch (status) {
-                    StockStatus.STOCK_STATUS_OK =>
-                      p.stockStatus == StockStatus.STOCK_STATUS_OK,
-                    StockStatus.STOCK_STATUS_OUT_OF_STOCK =>
-                      p.stockStatus == StockStatus.STOCK_STATUS_OUT_OF_STOCK,
-                    StockStatus.STOCK_STATUS_LOW =>
-                      p.stockStatus == StockStatus.STOCK_STATUS_LOW,
-                    _ => false,
-                  },
-                )
-                .toList();
-          }
+    if (searchQuery.isNotEmpty) {
+      filtered = filtered
+          .where(
+            (p) =>
+                p.globalProduct.label.toLowerCase().contains(
+                  searchQuery.toLowerCase(),
+                ) ||
+                p.globalProduct.barCodeValue.toLowerCase().contains(
+                  searchQuery.toLowerCase(),
+                ),
+          )
+          .toList();
+    }
 
-          filtered.sort(
-            (a, b) => b.product.createdAt.toDateTime().compareTo(
-              a.product.createdAt.toDateTime(),
+    if (selectedCategory.isNotEmpty) {
+      filtered = filtered
+          .where(
+            (p) => p.globalProduct.categories.any(
+              (c) => c.label.toLowerCase() == selectedCategory.toLowerCase(),
             ),
-          );
+          )
+          .toList();
+    }
 
-          return filtered;
-        },
-      );
+    if (selectedStatus != null) {
+      filtered = filtered
+          .where(
+            (p) => switch (selectedStatus) {
+              StockStatus.STOCK_STATUS_OK =>
+                p.stockStatus == StockStatus.STOCK_STATUS_OK,
+              StockStatus.STOCK_STATUS_OUT_OF_STOCK =>
+                p.stockStatus == StockStatus.STOCK_STATUS_OUT_OF_STOCK,
+              StockStatus.STOCK_STATUS_LOW =>
+                p.stockStatus == StockStatus.STOCK_STATUS_LOW,
+              _ => false,
+            },
+          )
+          .toList();
+    }
+
+    filtered.sort(
+      (a, b) => b.product.createdAt.toDateTime().compareTo(
+        a.product.createdAt.toDateTime(),
+      ),
+    );
+
+    return filtered;
+  }
 
   /// Constructor of [InventoryViewModel].
-  InventoryViewModel() {
+  InventoryViewModel({required this.store, required this.business}) {
     initTheData();
-    initPartialData();
   }
 
   /// Initiates the partial data.
-  Future<void> initPartialData() async {
+  Future<void> initPartialData({VoidCallback? onLoaded}) async {
     _logger.info('initPartialData is called');
-    final businessId = userPreferences.business?.refId;
-    if (businessId == null) {
-      return;
-    }
+    final businessId = business.refId;
 
-    final categories = await CategoriesRepository.to.getCategoriesByBusinessId(
-      businessId,
-    );
+    final categories = await CategoriesRepository.instance
+        .getCategoriesByBusinessId(businessId);
     businessCategories = UnmodifiableListView(categories);
     _logger.info('initPartialData is done');
+    onLoaded?.call();
   }
 
   /// Fetches global products.
-  Future<void> initTheData() async {
+  Future<void> initTheData({VoidCallback? onLoaded}) async {
     try {
       _logger.info('initTheData is called');
-      final store = userPreferences.store;
-      if (store == null) {
-        throw Exception('Store not found');
+
+      final inventoryLevels = await InventoryRepository.instance
+          .getStoreInventory(store.refId);
+
+      if (!_invLevelSubject.isClosed) {
+        _invLevelSubject.add(UnmodifiableListView(inventoryLevels));
       }
-
-      // Execute all calls in parallel for better performance
-      final results = await Future.wait([
-        InventoryRepository.instance.getLowStockItems(store.refId),
-        ReportsRepository.instance.getSalesByPeriod(
-          storeId: store.refId,
-          startDate: store.hasCreatedAt()
-              ? store.createdAt.toDateTime()
-              : clock.now(),
-          endDate: clock.now().add(const Duration(days: 1)),
-        ),
-        InventoryRepository.instance.getStoreInventory(store.refId),
-      ]);
-
-      final inventoryLevels = results[2] as List<InventoryLevelWithProduct>;
-
-      _invLevelSubject.add(UnmodifiableListView(inventoryLevels));
     } on Exception catch (e) {
       _logger.severe('Error loading inventory data: $e');
     } finally {
       if (!completer.isCompleted) {
         completer.complete(true);
       }
+      onLoaded?.call();
     }
-  }
-
-  /// Deletes a product.
-  Future<bool> deleteProduct(String storeProductId) async {
-    final result = await StoreProductsRepository.instance.deleteProduct(
-      DeleteStoreProductRequest(storeProductId: storeProductId),
-    );
-    if (result) {
-      unawaited(initTheData());
-    }
-
-    return result;
   }
 
   /// Adjusts the inventory.
   Future<bool> adjustInventory(
+    String userId,
     String storeId,
     String productId,
     int quantityChange,
     String reason,
-    String notes,
-  ) async {
+    String notes, {
+    VoidCallback? onLoaded,
+  }) async {
     try {
-      final response = await InventoryRepository.instance.adjustInventory(
+      final isSucceeded = await InventoryRepository.instance.adjustInventory(
         AdjustInventoryRequest(
           storeId: storeId,
           productId: productId,
@@ -229,13 +188,14 @@ class InventoryViewModel {
           reason: reason,
           notes: notes,
         ),
+        userId,
       );
 
-      if (response.success) {
-        unawaited(initTheData());
+      if (isSucceeded) {
+        unawaited(initTheData(onLoaded: onLoaded));
       }
 
-      return response.success;
+      return isSucceeded;
     } on Exception catch (e) {
       _logger.severe('Error adjusting inventory: $e');
 
@@ -243,14 +203,15 @@ class InventoryViewModel {
     }
   }
 
-  /// Updates the search query.
-  void updateSearchQuery(String query) {
-    _searchQuerySubject.add(query);
-  }
-
-  /// Updates the selected category.
-  void updateSelectedCategory(String category) {
-    _selectedCategorySubject.add(category);
+  /// Watchs the inventory item.
+  Stream<InventoryLevel?> watchProductInventory({
+    required String productId,
+    required String storeId,
+  }) {
+    return InventoryRepository.instance.watchProductInventory(
+      productId,
+      storeId,
+    );
   }
 
   /// Selects an inventory item and fetches its transaction history.
@@ -261,26 +222,21 @@ class InventoryViewModel {
 
   /// Clears the selected item.
   void clearSelection() {
-    _selectedItemSubject.add(null);
-    _transactionsSubject.add([]);
-    _transactionFilterSubject.add(TransactionType.TXN_TYPE_SALE);
+    if (!_selectedItemSubject.isClosed) {
+      _selectedItemSubject.add(null);
+    }
   }
 
   /// Updates the transaction filter.
   void updateTransactionFilter(TransactionType filter) {
-    _transactionFilterSubject.add(filter);
+    if (!_transactionFilterSubject.isClosed) {
+      _transactionFilterSubject.add(filter);
+    }
   }
 
   /// Fetches transaction history for the selected item.
   Future<void> _fetchTransactions(InventoryLevelWithProduct item) async {
     try {
-      final store = userPreferences.store;
-      if (store == null) {
-        _logger.warning('Store not found when fetching transactions');
-
-        return;
-      }
-
       final response = await InventoryRepository.instance
           .getInventoryTransactionHistory(
             GetInventoryTransactionHistoryRequest(
@@ -296,11 +252,14 @@ class InventoryViewModel {
               pageNumber: 1,
             ),
           );
-
-      _transactionsSubject.add(response.transactions);
+      if (!_transactionsSubject.isClosed) {
+        _transactionsSubject.add(response);
+      }
     } on Exception catch (e) {
       _logger.severe('Error fetching transactions: $e');
-      _transactionsSubject.add([]);
+      if (!_transactionsSubject.isClosed) {
+        _transactionsSubject.add([]);
+      }
     }
   }
 
@@ -315,17 +274,14 @@ class InventoryViewModel {
   }
 
   /// Refreshes the products.
-  Future<void> refreshProducts() async {
-    await initTheData();
+  Future<void> refreshProducts({VoidCallback? onLoaded}) async {
+    await initTheData(onLoaded: onLoaded);
   }
 
   /// Disposes the view model.
   void dispose() {
     _invLevelSubject.close();
     _errorSubject.close();
-    _searchQuerySubject.close();
-    _selectedCategorySubject.close();
-    _selectedStatusSubject.close();
     _selectedItemSubject.close();
     _transactionsSubject.close();
     _transactionFilterSubject.close();

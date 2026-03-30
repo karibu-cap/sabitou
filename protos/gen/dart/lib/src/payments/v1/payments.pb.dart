@@ -36,9 +36,9 @@ export 'payments.pbenum.dart';
 ///    status: PAYMENT_STATUS_COMPLETED
 class Payment extends $pb.GeneratedMessage {
   factory Payment({
-    $core.String? documentId,
+    $core.String? refId,
     $core.String? payerId,
-    $core.String? receiver,
+    $core.String? receiverRef,
     $core.double? amount,
     $core.String? currency,
     $core.String? warehouseId,
@@ -48,11 +48,12 @@ class Payment extends $pb.GeneratedMessage {
     $core.String? referenceNumber,
     $core.String? createdByUserId,
     $core.String? notes,
+    $core.Iterable<PaymentRelatedDoc>? relatedDocs,
   }) {
     final result = create();
-    if (documentId != null) result.documentId = documentId;
+    if (refId != null) result.refId = refId;
     if (payerId != null) result.payerId = payerId;
-    if (receiver != null) result.receiver = receiver;
+    if (receiverRef != null) result.receiverRef = receiverRef;
     if (amount != null) result.amount = amount;
     if (currency != null) result.currency = currency;
     if (warehouseId != null) result.warehouseId = warehouseId;
@@ -62,6 +63,7 @@ class Payment extends $pb.GeneratedMessage {
     if (referenceNumber != null) result.referenceNumber = referenceNumber;
     if (createdByUserId != null) result.createdByUserId = createdByUserId;
     if (notes != null) result.notes = notes;
+    if (relatedDocs != null) result.relatedDocs.addAll(relatedDocs);
     return result;
   }
 
@@ -78,9 +80,9 @@ class Payment extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'Payment',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'payments.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'documentId')
+    ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..aOS(2, _omitFieldNames ? '' : 'payerId')
-    ..aOS(3, _omitFieldNames ? '' : 'receiver')
+    ..aOS(3, _omitFieldNames ? '' : 'receiverRef')
     ..a<$core.double>(4, _omitFieldNames ? '' : 'amount', $pb.PbFieldType.OD)
     ..aOS(5, _omitFieldNames ? '' : 'currency')
     ..aOS(6, _omitFieldNames ? '' : 'warehouseId')
@@ -98,6 +100,9 @@ class Payment extends $pb.GeneratedMessage {
     ..aOS(10, _omitFieldNames ? '' : 'referenceNumber')
     ..aOS(11, _omitFieldNames ? '' : 'createdByUserId')
     ..aOS(12, _omitFieldNames ? '' : 'notes')
+    ..pc<PaymentRelatedDoc>(
+        13, _omitFieldNames ? '' : 'relatedDocs', $pb.PbFieldType.PM,
+        subBuilder: PaymentRelatedDoc.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -120,13 +125,13 @@ class Payment extends $pb.GeneratedMessage {
   static Payment? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get documentId => $_getSZ(0);
+  $core.String get refId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set documentId($core.String value) => $_setString(0, value);
+  set refId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasDocumentId() => $_has(0);
+  $core.bool hasRefId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearDocumentId() => $_clearField(1);
+  void clearRefId() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get payerId => $_getSZ(1);
@@ -139,13 +144,13 @@ class Payment extends $pb.GeneratedMessage {
 
   /// Can be a customer phone number or account number.
   @$pb.TagNumber(3)
-  $core.String get receiver => $_getSZ(2);
+  $core.String get receiverRef => $_getSZ(2);
   @$pb.TagNumber(3)
-  set receiver($core.String value) => $_setString(2, value);
+  set receiverRef($core.String value) => $_setString(2, value);
   @$pb.TagNumber(3)
-  $core.bool hasReceiver() => $_has(2);
+  $core.bool hasReceiverRef() => $_has(2);
   @$pb.TagNumber(3)
-  void clearReceiver() => $_clearField(3);
+  void clearReceiverRef() => $_clearField(3);
 
   @$pb.TagNumber(4)
   $core.double get amount => $_getN(3);
@@ -230,6 +235,77 @@ class Payment extends $pb.GeneratedMessage {
   $core.bool hasNotes() => $_has(11);
   @$pb.TagNumber(12)
   void clearNotes() => $_clearField(12);
+
+  @$pb.TagNumber(13)
+  $pb.PbList<PaymentRelatedDoc> get relatedDocs => $_getList(12);
+}
+
+class PaymentRelatedDoc extends $pb.GeneratedMessage {
+  factory PaymentRelatedDoc({
+    $core.String? docId,
+    $core.double? amount,
+  }) {
+    final result = create();
+    if (docId != null) result.docId = docId;
+    if (amount != null) result.amount = amount;
+    return result;
+  }
+
+  PaymentRelatedDoc._();
+
+  factory PaymentRelatedDoc.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory PaymentRelatedDoc.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'PaymentRelatedDoc',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'payments.v1'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'docId')
+    ..a<$core.double>(2, _omitFieldNames ? '' : 'amount', $pb.PbFieldType.OD)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  PaymentRelatedDoc clone() => PaymentRelatedDoc()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  PaymentRelatedDoc copyWith(void Function(PaymentRelatedDoc) updates) =>
+      super.copyWith((message) => updates(message as PaymentRelatedDoc))
+          as PaymentRelatedDoc;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static PaymentRelatedDoc create() => PaymentRelatedDoc._();
+  @$core.override
+  PaymentRelatedDoc createEmptyInstance() => create();
+  static $pb.PbList<PaymentRelatedDoc> createRepeated() =>
+      $pb.PbList<PaymentRelatedDoc>();
+  @$core.pragma('dart2js:noInline')
+  static PaymentRelatedDoc getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<PaymentRelatedDoc>(create);
+  static PaymentRelatedDoc? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get docId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set docId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasDocId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearDocId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.double get amount => $_getN(1);
+  @$pb.TagNumber(2)
+  set amount($core.double value) => $_setDouble(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasAmount() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearAmount() => $_clearField(2);
 }
 
 class CreatePaymentRequest extends $pb.GeneratedMessage {

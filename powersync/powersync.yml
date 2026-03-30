@@ -1,0 +1,39 @@
+# ---------------------------------------------------------------------------
+# PowerSync self-hosted service configuration
+# Docs: https://docs.powersync.com/self-hosting/configuration
+# ---------------------------------------------------------------------------
+
+port: 8457
+
+storage:
+  type: postgresql
+  uri: postgresql://postgres:postgres@postgres:5432/sabitou
+  sslmode: disable
+
+replication:
+  connections:
+    - type: postgresql
+      uri: postgresql://postgres:postgres@postgres:5432/sabitou
+      sslmode: disable
+      # PowerSync needs a replication slot and publication.
+      # Both are created by postgres/init.sql.
+      publication: powersync
+      slot_name: powersync
+
+# ---------------------------------------------------------------------------
+# Client authentication — Option 1: Asymmetric JWTs via JWKS URI (RS256)
+# The connector dynamically serves the JWKS at /.well-known/jwks.json.
+# PowerSync fetches public keys from this endpoint to verify client JWTs.
+# ---------------------------------------------------------------------------
+client_auth:
+  jwks_uri: http://connector:8080/.well-known/jwks.json
+  # JWT audience must match what the connector puts in the "aud" claim.
+  audience:
+    - powersync
+
+sync_rules:
+  path: /config/sync_rules.yml
+
+# Optional: telemetry (disable in dev to reduce noise)
+telemetry:
+  disable_telemetry_sharing: true

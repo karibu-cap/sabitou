@@ -7,7 +7,9 @@ import '../../../router/app_router.dart';
 import '../../../router/page_routes.dart';
 import '../../../services/internationalization/internationalization.dart';
 import '../../../utils/responsive_utils.dart';
+import '../../../utils/user_preference.dart';
 import '../../../widgets/loading.dart';
+import '../../../widgets/no_business_view.dart';
 import '../../../widgets/shad_scaffold.dart';
 import '../ajustment/inventory_adjustment_dialog.dart';
 import 'inventory_detail_controller.dart';
@@ -24,9 +26,15 @@ class InventoryDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userPreferences = context.watch<UserPreferences>();
+    final currentStore = userPreferences.store;
+    if (currentStore == null) {
+      return const Scaffold(body: Center(child: NoBusinessView()));
+    }
+
     return ChangeNotifierProvider(
       create: (context) => InventoryDetailController(
-        InventoryDetailViewModel(productId: productId),
+        InventoryDetailViewModel(productId: productId, store: currentStore),
       ),
       child: Consumer<InventoryDetailController>(
         builder: (context, controller, child) {
@@ -78,6 +86,7 @@ class InventoryDetailScreen extends StatelessWidget {
                         return InventoryDetailView(
                           item: item,
                           transactions: transactions,
+                          tabsController: controller.tabsController,
                           onAdjustStock: () {
                             if (ResponsiveUtils.isMobile(context)) {
                               AppRouter.push(
@@ -93,6 +102,7 @@ class InventoryDetailScreen extends StatelessWidget {
                                 context: context,
                                 builder: (context) => InventoryAdjustmentDialog(
                                   productId: item.product.refId,
+                                  store: currentStore,
                                 ),
                               );
                             }

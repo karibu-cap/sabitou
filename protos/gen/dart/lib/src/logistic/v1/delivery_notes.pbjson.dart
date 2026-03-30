@@ -36,7 +36,7 @@ final $typed_data.Uint8List deliveryNoteStatusDescriptor = $convert.base64Decode
 const DeliveryNote$json = {
   '1': 'DeliveryNote',
   '2': [
-    {'1': 'document_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'documentId'},
+    {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'refId'},
     {
       '1': 'related_sales_order_id',
       '3': 2,
@@ -102,18 +102,18 @@ const DeliveryNote$json = {
 
 /// Descriptor for `DeliveryNote`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List deliveryNoteDescriptor = $convert.base64Decode(
-    'CgxEZWxpdmVyeU5vdGUSJwoLZG9jdW1lbnRfaWQYASABKAlCBrpIA8gBAVIKZG9jdW1lbnRJZB'
-    'IzChZyZWxhdGVkX3NhbGVzX29yZGVyX2lkGAIgASgJUhNyZWxhdGVkU2FsZXNPcmRlcklkEioK'
-    'EWZyb21fd2FyZWhvdXNlX2lkGAMgASgJUg9mcm9tV2FyZWhvdXNlSWQSIgoNdG9fY29tcGFueV'
-    '9pZBgEIAEoCVILdG9Db21wYW55SWQSHQoKdG9fYWRkcmVzcxgFIAEoCVIJdG9BZGRyZXNzEjcK'
-    'BnN0YXR1cxgGIAEoDjIfLmxvZ2lzdGljLnYxLkRlbGl2ZXJ5Tm90ZVN0YXR1c1IGc3RhdHVzEj'
-    'MKBWl0ZW1zGAcgAygLMh0ubG9naXN0aWMudjEuRGVsaXZlcnlMaW5lSXRlbVIFaXRlbXMSGAoH'
-    'Y2FycmllchgIIAEoCVIHY2FycmllchInCg90cmFja2luZ19udW1iZXIYCSABKAlSDnRyYWNraW'
-    '5nTnVtYmVyEisKEmNyZWF0ZWRfYnlfdXNlcl9pZBgKIAEoCVIPY3JlYXRlZEJ5VXNlcklkEjkK'
-    'CmNyZWF0ZWRfYXQYCyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUgljcmVhdGVkQX'
-    'QSOQoKc2hpcHBlZF9hdBgMIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSCXNoaXBw'
-    'ZWRBdBI9CgxkZWxpdmVyZWRfYXQYDSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUg'
-    'tkZWxpdmVyZWRBdBIUCgVub3RlcxgOIAEoCVIFbm90ZXM=');
+    'CgxEZWxpdmVyeU5vdGUSHQoGcmVmX2lkGAEgASgJQga6SAPIAQFSBXJlZklkEjMKFnJlbGF0ZW'
+    'Rfc2FsZXNfb3JkZXJfaWQYAiABKAlSE3JlbGF0ZWRTYWxlc09yZGVySWQSKgoRZnJvbV93YXJl'
+    'aG91c2VfaWQYAyABKAlSD2Zyb21XYXJlaG91c2VJZBIiCg10b19jb21wYW55X2lkGAQgASgJUg'
+    't0b0NvbXBhbnlJZBIdCgp0b19hZGRyZXNzGAUgASgJUgl0b0FkZHJlc3MSNwoGc3RhdHVzGAYg'
+    'ASgOMh8ubG9naXN0aWMudjEuRGVsaXZlcnlOb3RlU3RhdHVzUgZzdGF0dXMSMwoFaXRlbXMYBy'
+    'ADKAsyHS5sb2dpc3RpYy52MS5EZWxpdmVyeUxpbmVJdGVtUgVpdGVtcxIYCgdjYXJyaWVyGAgg'
+    'ASgJUgdjYXJyaWVyEicKD3RyYWNraW5nX251bWJlchgJIAEoCVIOdHJhY2tpbmdOdW1iZXISKw'
+    'oSY3JlYXRlZF9ieV91c2VyX2lkGAogASgJUg9jcmVhdGVkQnlVc2VySWQSOQoKY3JlYXRlZF9h'
+    'dBgLIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSCWNyZWF0ZWRBdBI5CgpzaGlwcG'
+    'VkX2F0GAwgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIJc2hpcHBlZEF0Ej0KDGRl'
+    'bGl2ZXJlZF9hdBgNIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSC2RlbGl2ZXJlZE'
+    'F0EhQKBW5vdGVzGA4gASgJUgVub3Rlcw==');
 
 @$core.Deprecated('Use deliveryLineItemDescriptor instead')
 const DeliveryLineItem$json = {

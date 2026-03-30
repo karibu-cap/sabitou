@@ -41,7 +41,7 @@ final $typed_data.Uint8List voucherStatusDescriptor = $convert.base64Decode(
 const GiftVoucher$json = {
   '1': 'GiftVoucher',
   '2': [
-    {'1': 'document_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'documentId'},
+    {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'refId'},
     {'1': 'voucher_code', '3': 2, '4': 1, '5': 9, '10': 'voucherCode'},
     {'1': 'initial_value', '3': 3, '4': 1, '5': 1, '10': 'initialValue'},
     {'1': 'remaining_value', '3': 4, '4': 1, '5': 1, '10': 'remainingValue'},
@@ -91,17 +91,16 @@ const GiftVoucher$json = {
 
 /// Descriptor for `GiftVoucher`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List giftVoucherDescriptor = $convert.base64Decode(
-    'CgtHaWZ0Vm91Y2hlchInCgtkb2N1bWVudF9pZBgBIAEoCUIGukgDyAEBUgpkb2N1bWVudElkEi'
-    'EKDHZvdWNoZXJfY29kZRgCIAEoCVILdm91Y2hlckNvZGUSIwoNaW5pdGlhbF92YWx1ZRgDIAEo'
-    'AVIMaW5pdGlhbFZhbHVlEicKD3JlbWFpbmluZ192YWx1ZRgEIAEoAVIOcmVtYWluaW5nVmFsdW'
-    'USGgoIY3VycmVuY3kYBSABKAlSCGN1cnJlbmN5EjYKFWlzc3VlZF90b19jdXN0b21lcl9pZBgG'
-    'IAEoCUgAUhJpc3N1ZWRUb0N1c3RvbWVySWSIAQESKQoRaXNzdWVkX2J5X3VzZXJfaWQYByABKA'
-    'lSDmlzc3VlZEJ5VXNlcklkEiEKDHdhcmVob3VzZV9pZBgIIAEoCVILd2FyZWhvdXNlSWQSMgoG'
-    'c3RhdHVzGAkgASgOMhoucGF5bWVudHMudjEuVm91Y2hlclN0YXR1c1IGc3RhdHVzEjcKCWlzc3'
-    'VlZF9hdBgKIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSCGlzc3VlZEF0EjsKC3Zh'
-    'bGlkX3VudGlsGAsgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIKdmFsaWRVbnRpbB'
-    'IZCgVub3RlcxgMIAEoCUgBUgVub3Rlc4gBAUIYChZfaXNzdWVkX3RvX2N1c3RvbWVyX2lkQggK'
-    'Bl9ub3Rlcw==');
+    'CgtHaWZ0Vm91Y2hlchIdCgZyZWZfaWQYASABKAlCBrpIA8gBAVIFcmVmSWQSIQoMdm91Y2hlcl'
+    '9jb2RlGAIgASgJUgt2b3VjaGVyQ29kZRIjCg1pbml0aWFsX3ZhbHVlGAMgASgBUgxpbml0aWFs'
+    'VmFsdWUSJwoPcmVtYWluaW5nX3ZhbHVlGAQgASgBUg5yZW1haW5pbmdWYWx1ZRIaCghjdXJyZW'
+    '5jeRgFIAEoCVIIY3VycmVuY3kSNgoVaXNzdWVkX3RvX2N1c3RvbWVyX2lkGAYgASgJSABSEmlz'
+    'c3VlZFRvQ3VzdG9tZXJJZIgBARIpChFpc3N1ZWRfYnlfdXNlcl9pZBgHIAEoCVIOaXNzdWVkQn'
+    'lVc2VySWQSIQoMd2FyZWhvdXNlX2lkGAggASgJUgt3YXJlaG91c2VJZBIyCgZzdGF0dXMYCSAB'
+    'KA4yGi5wYXltZW50cy52MS5Wb3VjaGVyU3RhdHVzUgZzdGF0dXMSNwoJaXNzdWVkX2F0GAogAS'
+    'gLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIIaXNzdWVkQXQSOwoLdmFsaWRfdW50aWwY'
+    'CyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUgp2YWxpZFVudGlsEhkKBW5vdGVzGA'
+    'wgASgJSAFSBW5vdGVziAEBQhgKFl9pc3N1ZWRfdG9fY3VzdG9tZXJfaWRCCAoGX25vdGVz');
 
 @$core.Deprecated('Use validateVoucherRequestDescriptor instead')
 const ValidateVoucherRequest$json = {

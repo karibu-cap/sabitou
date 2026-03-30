@@ -171,6 +171,9 @@ class StoreProduct extends $pb.GeneratedMessage {
     $1.Timestamp? createdAt,
     $1.Timestamp? updatedAt,
     $core.int? reorderPoint,
+    $core.int? openingStock,
+    $core.double? openingStockPerUnit,
+    $core.double? defaultPurchasePrice,
   }) {
     final result = create();
     if (refId != null) result.refId = refId;
@@ -184,6 +187,11 @@ class StoreProduct extends $pb.GeneratedMessage {
     if (createdAt != null) result.createdAt = createdAt;
     if (updatedAt != null) result.updatedAt = updatedAt;
     if (reorderPoint != null) result.reorderPoint = reorderPoint;
+    if (openingStock != null) result.openingStock = openingStock;
+    if (openingStockPerUnit != null)
+      result.openingStockPerUnit = openingStockPerUnit;
+    if (defaultPurchasePrice != null)
+      result.defaultPurchasePrice = defaultPurchasePrice;
     return result;
   }
 
@@ -221,6 +229,12 @@ class StoreProduct extends $pb.GeneratedMessage {
         subBuilder: $1.Timestamp.create)
     ..a<$core.int>(
         11, _omitFieldNames ? '' : 'reorderPoint', $pb.PbFieldType.O3)
+    ..a<$core.int>(
+        12, _omitFieldNames ? '' : 'openingStock', $pb.PbFieldType.O3)
+    ..a<$core.double>(
+        13, _omitFieldNames ? '' : 'openingStockPerUnit', $pb.PbFieldType.OD)
+    ..a<$core.double>(
+        14, _omitFieldNames ? '' : 'defaultPurchasePrice', $pb.PbFieldType.OD)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -352,6 +366,37 @@ class StoreProduct extends $pb.GeneratedMessage {
   $core.bool hasReorderPoint() => $_has(10);
   @$pb.TagNumber(11)
   void clearReorderPoint() => $_clearField(11);
+
+  /// The open stock.
+  @$pb.TagNumber(12)
+  $core.int get openingStock => $_getIZ(11);
+  @$pb.TagNumber(12)
+  set openingStock($core.int value) => $_setSignedInt32(11, value);
+  @$pb.TagNumber(12)
+  $core.bool hasOpeningStock() => $_has(11);
+  @$pb.TagNumber(12)
+  void clearOpeningStock() => $_clearField(12);
+
+  /// The open stock per unit.
+  /// How much per unit the product is cost during the creation.
+  @$pb.TagNumber(13)
+  $core.double get openingStockPerUnit => $_getN(12);
+  @$pb.TagNumber(13)
+  set openingStockPerUnit($core.double value) => $_setDouble(12, value);
+  @$pb.TagNumber(13)
+  $core.bool hasOpeningStockPerUnit() => $_has(12);
+  @$pb.TagNumber(13)
+  void clearOpeningStockPerUnit() => $_clearField(13);
+
+  /// The default purchase price.
+  @$pb.TagNumber(14)
+  $core.double get defaultPurchasePrice => $_getN(13);
+  @$pb.TagNumber(14)
+  set defaultPurchasePrice($core.double value) => $_setDouble(13, value);
+  @$pb.TagNumber(14)
+  $core.bool hasDefaultPurchasePrice() => $_has(13);
+  @$pb.TagNumber(14)
+  void clearDefaultPurchasePrice() => $_clearField(14);
 }
 
 class CreateGlobalProductRequest extends $pb.GeneratedMessage {

@@ -25,7 +25,7 @@ import "inventory/v1/category.proto";
  * INVENTORY IMPACT: +2 PRD-001 in WH-001
  */
 message ReturnNote {
-  string document_id = 1 [(buf.validate.field).required = true]; // "RET-2025-001"
+  string ref_id = 1 [(buf.validate.field).required = true]; // "RET-2025-001"
   ReturnType return_type = 2;
   string from_id = 3; // Who's returning
   string to_id = 4; // Where it goes

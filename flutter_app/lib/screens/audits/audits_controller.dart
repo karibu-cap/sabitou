@@ -141,7 +141,7 @@ final class AuditsController extends ChangeNotifier {
   Future<void> exportTransactions(BuildContext context) async {
     try {
       showSuccessToast(context: context, message: Intls.to.exportInitiated);
-    } on Exception catch (e) {
+    } on Exception {
       showErrorToast(context: context, message: Intls.to.exportFailed);
     }
   }

@@ -1,126 +1,75 @@
-import 'dart:async';
-import 'dart:collection';
-
 import 'package:flutter/material.dart';
-import 'package:rxdart/subjects.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
+import 'components/po_utils.dart';
 import 'purchase_orders_view_model.dart';
 
-/// Controller for purchase orders screen
+/// Controller for the Purchase Orders module.
 class PurchaseOrdersController extends ChangeNotifier {
+  /// Controller for the Purchase Orders module.
+  PurchaseOrdersController(this._viewModel);
+
+  /// The view model associated with this controller.
   final PurchaseOrdersViewModel _viewModel;
 
-  /// Gets the filtered purchase orders stream.
+  /// The text editing controller for the search input field.
+  final TextEditingController searchController = TextEditingController();
+
+  /// The currently selected purchase order ID for desktop split view.
+  String? _selectedPo;
+
+  /// The currently selected purchase order ID for desktop split view.
+  String? get selectedPo => _selectedPo;
+
+  /// Whether the list is filtered.
+  bool get isFiltered => _viewModel.isFiltered;
+
+  /// The stream of search queries.
+  BehaviorSubject<String> get searchQuery => _viewModel.searchQuery;
+
+  /// The stream of selected status filters.
+  BehaviorSubject<PurchaseOrderStatus?> get statusFilter =>
+      _viewModel.statusFilter;
+
+  /// The stream of all purchase orders.
+  Stream<List<PurchaseOrder>> get purchaseOrdersStream =>
+      _viewModel.purchaseOrdersStream;
+
+  /// The stream of filtered purchase orders.
   Stream<List<PurchaseOrder>> get filteredPurchaseOrdersStream =>
       _viewModel.filteredPurchaseOrdersStream;
 
-  /// Gets the purchase orders stream.
-  BehaviorSubject<UnmodifiableListView<PurchaseOrder>>
-  get purchaseOrdersSubject => _viewModel.purchaseOrdersSubject;
+  /// The stream of purchase order details.
+  Stream<PurchaseOrderDetailSnapshot> detailStream(String purchaseOrderId) =>
+      _viewModel.detailStream(purchaseOrderId);
 
-  /// Gets the suppliers stream.
-  BehaviorSubject<UnmodifiableListView<Supplier>> get suppliersSubject =>
-      _viewModel.suppliersSubject;
-
-  /// Gets the stores stream.
-  UnmodifiableListView<StoreProductWithGlobalProduct> get storeProducts =>
-      _viewModel.storeProducts;
-
-  /// Gets the error stream.
-  Stream<String> get errorStream => _viewModel.errorStream;
-
-  /// Gets the loading stream.
-  Stream<bool> get loadingStream => _viewModel.loadingStream;
-
-  /// Gets the search query.
-  BehaviorSubject<String> get searchQuery => _viewModel.searchQuery;
-
-  /// Gets the selected supplier filter.
-  BehaviorSubject<String> get selectedSupplierFilter =>
-      _viewModel.selectedSupplierFilter;
-
-  /// Gets the selected status filter.
-  BehaviorSubject<PurchaseOrderStatus?> get selectedStatusFilter =>
-      _viewModel.selectedStatusFilter;
-
-  /// Gets the completer.
-  Completer<bool> get completer => _viewModel.completer;
-
-  /// Gets the purchase orders data.
-  PurchaseOrdersData get purchaseOrdersData => _viewModel.purchaseOrdersData;
-
-  /// Constructor of [PurchaseOrdersController].
-  PurchaseOrdersController(this._viewModel);
-
-  /// Refreshes purchase orders.
-  Future<void> refreshPurchaseOrders() async {
-    await _viewModel.refreshPurchaseOrders();
+  /// Selects a purchase order.
+  Future<void> selectPurchaseOrder(String poId) async {
+    if (_selectedPo == poId) {
+      return;
+    }
+    _selectedPo = poId;
     notifyListeners();
   }
 
-  /// Creates a new purchase order.
-  Future<bool> createPurchaseOrder(CreatePurchaseOrderRequest request) async {
-    final result = await _viewModel.createPurchaseOrder(request);
-
+  /// Clears the selected purchase order.
+  void clearSelection() {
+    _selectedPo = null;
     notifyListeners();
-
-    return result;
   }
 
-  /// Updates purchase order status.
-  Future<bool> updatePurchaseOrderStatus(
-    String purchaseOrderId,
-    PurchaseOrderStatus newStatus,
-  ) async {
-    final result = await _viewModel.updatePurchaseOrderStatus(
-      purchaseOrderId,
-      newStatus,
-    );
+  /// Clears the filters.
+  void clearFilters() {
+    searchQuery.add('');
+    statusFilter.add(null);
+    searchController.clear();
     notifyListeners();
-
-    return result;
-  }
-
-  /// Cancels a purchase order.
-  Future<bool> cancelPurchaseOrder(
-    String purchaseOrderId,
-    String reason,
-  ) async {
-    final result = await _viewModel.cancelPurchaseOrder(
-      purchaseOrderId,
-      reason,
-    );
-    notifyListeners();
-
-    return result;
-  }
-
-  /// Creates a receiving note.
-  Future<bool> createReceivingNote(CreateReceivingNoteRequest request) async {
-    final result = await _viewModel.createReceivingNote(request);
-    notifyListeners();
-
-    return result;
-  }
-
-  /// Updates the search query.
-  void updateSearchQuery(String query) {
-    _viewModel.updateSearchQuery(query);
-  }
-
-  /// Updates the selected supplier filter.
-  void updateSelectedSupplierFilter(String supplierId) {
-    _viewModel.updateSelectedSupplierFilter(supplierId);
-  }
-
-  /// Updates the selected status filter.
-  void updateSelectedStatusFilter(PurchaseOrderStatus? status) {
-    _viewModel.updateSelectedStatusFilter(status);
   }
 
   @override
   void dispose() {
+    searchController.dispose();
     _viewModel.dispose();
     super.dispose();
   }

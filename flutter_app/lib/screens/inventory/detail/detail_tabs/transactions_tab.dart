@@ -114,6 +114,20 @@ class _TransactionTable extends StatelessWidget {
   final List<InventoryTransaction> filteredTransactions;
   final TransactionType? selectedFilter;
 
+  String _getTransactionTypeLabel(TransactionType type) {
+    switch (type) {
+      case TransactionType.TXN_TYPE_SALE:
+        return Intls.to.salesOrders;
+      case TransactionType.TXN_TYPE_PURCHASE:
+        return Intls.to.purchaseOrders;
+      case TransactionType.TXN_TYPE_ADJUSTMENT:
+        return Intls.to.adjustments;
+      case TransactionType.TXN_TYPE_UNSPECIFIED:
+      default:
+        return Intls.to.unspecified;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
@@ -152,7 +166,7 @@ class _TransactionTable extends StatelessWidget {
       columns = [
         dateColumn,
         ShadDataGridColumn(label: Intls.to.type),
-        ShadDataGridColumn(label: Intls.to.documentId),
+        ShadDataGridColumn(label: Intls.to.refId),
         ShadDataGridColumn(label: Intls.to.quantityChange),
         ShadDataGridColumn(label: Intls.to.notes),
       ];
@@ -230,10 +244,7 @@ class _TransactionTable extends StatelessWidget {
               Formatters.formatDate(transaction.transactionTime.toDateTime()),
               style: theme.textTheme.small,
             ),
-            _TransactionCell(
-              transaction.documentId,
-              style: theme.textTheme.small,
-            ),
+            _TransactionCell(transaction.refId, style: theme.textTheme.small),
             _TransactionCell(
               transaction.quantityChange.toString(),
               style: theme.textTheme.small.copyWith(
@@ -246,7 +257,27 @@ class _TransactionTable extends StatelessWidget {
           ];
         }
 
-        return [];
+        // Default case for "All transactions" view
+        return [
+          _TransactionCell(
+            Formatters.formatDate(transaction.transactionTime.toDateTime()),
+            style: theme.textTheme.small,
+          ),
+          _TransactionCell(
+            _getTransactionTypeLabel(transaction.transactionType),
+            style: theme.textTheme.small,
+          ),
+          _TransactionCell(transaction.refId, style: theme.textTheme.small),
+          _TransactionCell(
+            transaction.quantityChange.toString(),
+            style: theme.textTheme.small.copyWith(
+              color: transaction.quantityChange > 0
+                  ? AppColors.dartGreen
+                  : AppColors.red,
+            ),
+          ),
+          _TransactionCell(transaction.notes, style: theme.textTheme.small),
+        ];
       },
     );
   }

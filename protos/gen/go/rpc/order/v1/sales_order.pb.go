@@ -102,8 +102,8 @@ func (SalesOrderStatus) EnumDescriptor() ([]byte, []int) {
 //	status: SO_STATUS_CONFIRMED
 //	items: [10x PRD-001 @ 450000 each]
 type SalesOrder struct {
-	state      protoimpl.MessageState `protogen:"open.v1"`
-	DocumentId string                 `protobuf:"bytes,1,opt,name=document_id,json=documentId,proto3" json:"document_id,omitempty"` // "SO-2025-001"
+	state protoimpl.MessageState `protogen:"open.v1"`
+	RefId string                 `protobuf:"bytes,1,opt,name=ref_id,json=refId,proto3" json:"ref_id,omitempty"` // "SO-2025-001"
 	// Company buying from you
 	CustomerId string `protobuf:"bytes,2,opt,name=customer_id,json=customerId,proto3" json:"customer_id,omitempty"`
 	// Your company
@@ -152,9 +152,9 @@ func (*SalesOrder) Descriptor() ([]byte, []int) {
 	return file_order_v1_sales_order_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *SalesOrder) GetDocumentId() string {
+func (x *SalesOrder) GetRefId() string {
 	if x != nil {
-		return x.DocumentId
+		return x.RefId
 	}
 	return ""
 }
@@ -1176,11 +1176,10 @@ var File_order_v1_sales_order_proto protoreflect.FileDescriptor
 
 const file_order_v1_sales_order_proto_rawDesc = "" +
 	"\n" +
-	"\x1aorder/v1/sales_order.proto\x12\border.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1afinancial/v1/invoice.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a logistic/v1/delivery_notes.proto\x1a\x1aorder/v1/order_utils.proto\x1a\x1apayments/v1/payments.proto\"\xc6\x04\n" +
+	"\x1aorder/v1/sales_order.proto\x12\border.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1afinancial/v1/invoice.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a logistic/v1/delivery_notes.proto\x1a\x1aorder/v1/order_utils.proto\x1a\x1apayments/v1/payments.proto\"\xbc\x04\n" +
 	"\n" +
-	"SalesOrder\x12'\n" +
-	"\vdocument_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\n" +
-	"documentId\x12\x1f\n" +
+	"SalesOrder\x12\x1d\n" +
+	"\x06ref_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x05refId\x12\x1f\n" +
 	"\vcustomer_id\x18\x02 \x01(\tR\n" +
 	"customerId\x12\x1b\n" +
 	"\tseller_id\x18\x03 \x01(\tR\bsellerId\x128\n" +

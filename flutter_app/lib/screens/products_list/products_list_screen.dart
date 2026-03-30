@@ -4,7 +4,9 @@ import 'package:provider/provider.dart';
 
 import '../../utils/app_constants.dart';
 import '../../utils/responsive_utils.dart';
+import '../../utils/user_preference.dart';
 import '../../widgets/loading.dart';
+import '../../widgets/no_business_view.dart';
 import 'components/header.dart';
 import 'components/product_table.dart';
 import 'components/search_and_filter.dart';
@@ -18,17 +20,23 @@ class ProductsListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userPreferences = context.watch<UserPreferences>();
+    final currentStore = userPreferences.store;
+    final business = userPreferences.business;
+    if (currentStore == null || business == null) {
+      return const Scaffold(body: Center(child: NoBusinessView()));
+    }
     final viewModel = GetIt.I.registerSingletonIfAbsent<ProductsListViewModel>(
-      ProductsListViewModel.new,
+      () => ProductsListViewModel(buisiness: business, store: currentStore),
     );
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final isMobile = ResponsiveUtils.isMobile(context);
+    return ChangeNotifierProvider(
+      create: (context) => ProductsListController(viewModel),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final isMobile = ResponsiveUtils.isMobile(context);
 
-        return ChangeNotifierProvider(
-          create: (context) => ProductsListController(viewModel),
-          child: Consumer<ProductsListController>(
+          return Consumer<ProductsListController>(
             builder: (context, controller, child) {
               return FutureBuilder<bool>(
                 future: controller.completer.future,
@@ -53,9 +61,9 @@ class ProductsListScreen extends StatelessWidget {
                 },
               );
             },
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

@@ -4,120 +4,181 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../services/internationalization/internationalization.dart';
+import '../../themes/app_theme.dart';
 import '../../utils/responsive_utils.dart';
 import '../../utils/user_preference.dart';
+import '../../widgets/loading.dart';
+import '../../widgets/no_business_view.dart';
 import '../../widgets/pop_up/add_supplier/add_supplier_view.dart';
+import 'components/list_components/supplier_empty_state.dart';
 import 'components/list_components/supplier_search_filters.dart';
-import 'components/list_components/supplier_shimmer_widgets.dart';
 import 'components/suppliers_list.dart';
 import 'components/suppliers_stats_grid.dart';
 import 'suppliers_controller.dart';
 import 'suppliers_view_model.dart';
 
-/// Suppliers view.
+/// Suppliers view — entry point.
 class SuppliersView extends StatelessWidget {
-  /// Constructs the SuppliersView view.
   const SuppliersView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final storeId = UserPreferences.instance.store?.refId;
-    final theme = ShadTheme.of(context);
+    final userPreferences = context.watch<UserPreferences>();
+    final currentStore = userPreferences.store;
+    final business = userPreferences.business;
 
-    if (storeId == null) {
-      return Center(
-        child: Text(
-          AppInternationalizationService.to.noStoreSelected,
-          style: theme.textTheme.p,
-          textAlign: TextAlign.center,
-        ),
-      );
+    if (currentStore == null || business == null) {
+      return const Scaffold(body: Center(child: NoBusinessView()));
     }
 
     return ChangeNotifierProvider<SuppliersController>(
       create: (_) => SuppliersController(
-        SuppliersViewModel(storeId: storeId),
+        SuppliersViewModel(storeId: currentStore.refId),
         AppInternationalizationService.to,
       ),
-      child: const SuppliersContent(),
+      builder: (context, child) {
+        final controller = context.read<SuppliersController>();
+
+        return StreamBuilder(
+          stream: controller.suppliersStream,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: Loading());
+            }
+
+            final data = snapshot.data ?? [];
+
+            if (data.isEmpty) {
+              return const SuppliersEmptyState();
+            }
+
+            return SuppliersContent(suppliers: data);
+          },
+        );
+      },
     );
   }
 }
 
-/// Suppliers content.
+/// Full page content.
 class SuppliersContent extends StatelessWidget {
-  /// Constructs the suppliers content.
-  const SuppliersContent({super.key});
+  /// Creates a new [SuppliersContent].
+  const SuppliersContent({super.key, required this.suppliers});
+
+  /// The suppliers list to display.
+  final List<Supplier> suppliers;
 
   @override
   Widget build(BuildContext context) {
-    return const SingleChildScrollView(
+    return SingleChildScrollView(
+      padding: EdgeInsets.zero,
       child: Column(
-        spacing: 32,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SuppliersHeader(),
-          SuppliersStatsGrid(),
-          SuppliersSearchFilters(),
-          SuppliersList(),
+          SuppliersHeader(suppliers: suppliers),
+          const SizedBox(height: 24),
+          SuppliersStatsGrid(suppliers: suppliers),
+          const SizedBox(height: 20),
+          const SuppliersSearchFilters(),
+          const SizedBox(height: 20),
+          const SuppliersList(),
+          const SizedBox(height: 32),
         ],
       ),
     );
   }
 }
 
-/// Header widget for suppliers view.
+/// Page header — title block + "New supplier" CTA.
 class SuppliersHeader extends StatelessWidget {
-  /// Constructs a new SuppliersHeader.
-  const SuppliersHeader({super.key});
+  /// Creates a new [SuppliersHeader].
+  const SuppliersHeader({super.key, required this.suppliers});
+
+  /// The suppliers list to display.
+  final List<Supplier> suppliers;
 
   @override
   Widget build(BuildContext context) {
-    final controller = Provider.of<SuppliersController>(context);
     final theme = ShadTheme.of(context);
     final isMobile = ResponsiveUtils.isMobile(context);
+    final count = suppliers.length;
 
-    return StreamBuilder<List<Supplier>>(
-      stream: controller.suppliersStream,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return SupplierShimmerWidgets.buildHeaderShimmer(isMobile);
-        }
+    return Row(
+      children: [
+        Container(
+          width: 3,
+          height: 32,
+          decoration: const BoxDecoration(
+            color: SabitouColors.accent,
+            borderRadius: BorderRadius.all(Radius.circular(2)),
+          ),
+        ),
+        const SizedBox(width: 12),
 
-        return Flex(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          direction: isMobile ? Axis.vertical : Axis.horizontal,
-          spacing: 12,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  AppInternationalizationService.to.supplierManagement,
-                  style: theme.textTheme.h4,
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  AppInternationalizationService.to.manageSupplierRelationships,
-                  style: theme.textTheme.muted,
-                ),
-              ],
-            ),
-            ShadButton(
-              onPressed: () => showAddSupplierDialog(context),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
                 children: [
-                  const Icon(Icons.add, size: 16),
-                  const SizedBox(width: 8),
-                  Text(AppInternationalizationService.to.newText),
+                  Text(
+                    AppInternationalizationService.to.supplierManagement,
+                    style: theme.textTheme.h4.copyWith(
+                      fontSize: 19,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: -0.3,
+                    ),
+                  ),
+                  if (count > 0) ...[
+                    const SizedBox(width: 8),
+                    _CountBadge(count: count),
+                  ],
                 ],
               ),
-            ),
-          ],
-        );
-      },
+              const SizedBox(height: 3),
+              Text(
+                AppInternationalizationService.to.manageSupplierRelationships,
+                style: theme.textTheme.muted.copyWith(fontSize: 12.5),
+              ),
+            ],
+          ),
+        ),
+
+        ShadButton(
+          onPressed: () => showAddSupplierDialog(context),
+          leading: const Icon(LucideIcons.plus, size: 15),
+          child: Text(
+            isMobile
+                ? AppInternationalizationService.to.newText
+                : AppInternationalizationService.to.addNewSupplier,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _CountBadge extends StatelessWidget {
+  const _CountBadge({required this.count});
+  final int count;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 2),
+      decoration: const BoxDecoration(
+        color: SabitouColors.accentSoft,
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+        border: Border.fromBorderSide(BorderSide(color: SabitouColors.accent)),
+      ),
+      child: Text(
+        '$count',
+        style: const TextStyle(
+          fontSize: 11,
+          fontWeight: FontWeight.w500,
+          color: SabitouColors.accentForeground,
+        ),
+      ),
     );
   }
 }

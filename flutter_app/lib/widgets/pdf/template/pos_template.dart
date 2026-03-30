@@ -40,8 +40,7 @@ class PosTemplate {
 
     return PdfBuildShared.buildSimplePdf(
       pageFormat: pdfPageFormat,
-      titleDoc:
-          '${Intls.to.store}_${Intls.to.invoice}_${cashReceipt.documentId}',
+      titleDoc: '${Intls.to.store}_${Intls.to.invoice}_${cashReceipt.refId}',
       source: store.name,
       children: [
         Row(
@@ -397,14 +396,14 @@ class PosTemplate {
               SizedBox(height: 5),
 
               // Barcode - Centered and prominent
-              if (cashReceipt.hasDocumentId()) ...[
+              if (cashReceipt.hasRefId()) ...[
                 Container(
                   height: 25,
                   width: 150,
                   alignment: Alignment.center,
                   child: BarcodeWidget(
                     barcode: Barcode.code128(),
-                    data: cashReceipt.documentId,
+                    data: cashReceipt.refId,
                     drawText: false,
                   ),
                 ),

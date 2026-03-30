@@ -5,6 +5,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../../../services/internationalization/internationalization.dart';
 import '../../../../../utils/common_functions.dart';
+import '../../../../../widgets/loading.dart';
 import '../../../users_controller.dart';
 import 'user_deletion_controller.dart';
 
@@ -14,7 +15,7 @@ class UserDeletionModal extends StatelessWidget {
   final UsersController usersController;
 
   /// The store member.
-  final StoreMember storeMember;
+  final ({StoreMember storeMember, User user}) storeMember;
 
   /// Construts a new UserDeletionModal.
   const UserDeletionModal({
@@ -290,15 +291,19 @@ class _UserInfoSection extends StatelessWidget {
                     Row(
                       children: [
                         Icon(
-                          _getStatusIcon(storeMember.status),
+                          _getStatusIcon(storeMember.storeMember.status),
                           size: 12,
-                          color: _getStatusColor(storeMember.status),
+                          color: _getStatusColor(
+                            storeMember.storeMember.status,
+                          ),
                         ),
                         const SizedBox(width: 4),
                         Text(
-                          _getStatusLabel(storeMember.status),
+                          _getStatusLabel(storeMember.storeMember.status),
                           style: theme.textTheme.small.copyWith(
-                            color: _getStatusColor(storeMember.status),
+                            color: _getStatusColor(
+                              storeMember.storeMember.status,
+                            ),
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -454,16 +459,7 @@ class _ActionButtons extends StatelessWidget {
         ),
         const SizedBox(width: 12),
         ShadButton(
-          trailing: controller.isLoading
-              ? const SizedBox(
-                  width: 16,
-                  height: 16,
-                  child: CircularProgressIndicator(
-                    color: Colors.white,
-                    strokeWidth: 2,
-                  ),
-                )
-              : null,
+          trailing: controller.isLoading ? const Loading.button() : null,
 
           enabled: controller.canDelete && !controller.isLoading,
           onPressed: () async {
@@ -480,7 +476,7 @@ class _ActionButtons extends StatelessWidget {
           backgroundColor: Colors.red,
           child: Text(
             AppInternationalizationService.to.deletePermanently,
-            style: TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.white),
           ),
         ),
       ],

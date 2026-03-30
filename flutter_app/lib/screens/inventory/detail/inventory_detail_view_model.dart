@@ -7,14 +7,13 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 import '../../../repositories/inventory_repository.dart';
 import '../../../repositories/store_products_repository.dart';
 import '../../../utils/logger.dart';
-import '../../../utils/user_preference.dart';
 
 /// View model for inventory detail screen.
 class InventoryDetailViewModel {
   final LoggerApp _logger = LoggerApp('InventoryDetailViewModel');
 
-  /// Gets the user preferences.
-  final UserPreferences userPreferences = UserPreferences.instance;
+  /// The current store.
+  final Store store;
 
   /// The product ID to fetch.
   final String productId;
@@ -57,7 +56,7 @@ class InventoryDetailViewModel {
   Stream<String> get errorStream => _errorSubject.stream;
 
   /// Constructor of [InventoryDetailViewModel].
-  InventoryDetailViewModel({required this.productId}) {
+  InventoryDetailViewModel({required this.productId, required this.store}) {
     _initData();
   }
 
@@ -66,11 +65,6 @@ class InventoryDetailViewModel {
     try {
       _loadingSubject.add(true);
       _logger.info('Fetching product details for: $productId');
-
-      final store = userPreferences.store;
-      if (store == null) {
-        throw Exception('Store not found');
-      }
 
       final inventoryLevels = await InventoryRepository.instance
           .getProductInventoryLevels(productId, store.refId);
@@ -84,19 +78,19 @@ class InventoryDetailViewModel {
       final productResp = storeProduct;
 
       final item = InventoryLevelWithProduct(
-        level: levelReps.level,
+        level: levelReps,
         product: productResp?.storeProduct,
         globalProduct: productResp?.globalProduct,
-        stockStatus: levelReps.level.quantityAvailable == 0
+        stockStatus: (levelReps?.quantityAvailable ?? 0) == 0
             ? StockStatus.STOCK_STATUS_OUT_OF_STOCK
-            : levelReps.level.quantityAvailable >
+            : (levelReps?.quantityAvailable ?? 0) >
                   ((productResp?.storeProduct.reorderPoint ?? 0) > 0
                       ? (productResp?.storeProduct.reorderPoint ?? 0)
-                      : levelReps.level.minThreshold)
+                      : levelReps?.minThreshold ?? 0)
             ? StockStatus.STOCK_STATUS_OK
             : StockStatus.STOCK_STATUS_LOW,
         stockValue:
-            (levelReps.level.quantityAvailable *
+            ((levelReps?.quantityAvailable ?? 0) *
                     (productResp?.storeProduct.salePrice ?? 0))
                 .truncate(),
       );
@@ -121,13 +115,6 @@ class InventoryDetailViewModel {
   /// Fetches transaction history for the item.
   Future<void> _fetchTransactions(InventoryLevelWithProduct item) async {
     try {
-      final store = userPreferences.store;
-      if (store == null) {
-        _logger.warning('Store not found when fetching transactions');
-
-        return;
-      }
-
       final response = await InventoryRepository.instance
           .getInventoryTransactionHistory(
             GetInventoryTransactionHistoryRequest(
@@ -143,8 +130,7 @@ class InventoryDetailViewModel {
               pageNumber: 1,
             ),
           );
-
-      _transactionsSubject.add(response.transactions);
+      _transactionsSubject.add(response);
     } on Exception catch (e) {
       _logger.severe('Error fetching transactions: $e');
       _transactionsSubject.add([]);

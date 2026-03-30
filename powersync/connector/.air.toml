@@ -1,0 +1,12 @@
+root = "."
+tmp_dir = "/tmp/air"
+
+[build]
+  cmd = "go build -o /tmp/air/connector ./cmd/server"
+  bin = "/tmp/air/connector"
+  include_ext = ["go"]
+  exclude_dir = ["vendor"]
+  delay = 500
+
+[log]
+  time = true

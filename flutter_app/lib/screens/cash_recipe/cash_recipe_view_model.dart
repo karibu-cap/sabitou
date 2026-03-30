@@ -5,11 +5,13 @@ import '../../repositories/pos_repository.dart';
 import '../../services/internationalization/internationalization.dart';
 import '../../utils/extensions/global_product_extension.dart';
 import '../../utils/logger.dart';
-import '../../utils/user_preference.dart';
 
 /// View model for cash recipe screen
 final class CashRecipeViewModel {
   final LoggerApp _logger = LoggerApp('CashRecipeViewModel');
+
+  /// The current store.
+  final Store store;
 
   /// Subject for loading state
   final _isLoadingSubject = BehaviorSubject<bool>.seeded(false);
@@ -61,7 +63,7 @@ final class CashRecipeViewModel {
   String get searchQuery => _searchQuerySubject.value;
 
   /// Constructor for CashRecipeViewModel
-  CashRecipeViewModel() {
+  CashRecipeViewModel({required this.store}) {
     _initialize();
   }
 
@@ -74,21 +76,14 @@ final class CashRecipeViewModel {
     await loadCashReceipts();
   }
 
-  /// Load cash receipts from repository
+  /// Load cash receipts from repository.
   Future<void> loadCashReceipts() async {
     try {
       _setLoading(true);
       _clearError();
 
-      final store = UserPreferences.instance.store;
-      if (store == null) {
-        _logger.severe('Store not found');
-
-        return;
-      }
-
-      final response = await PosRepository.instance.findCashReceipt(
-        FindCashReceiptRequest(storeId: store.refId),
+      final response = await PosRepository.instance.findCashReceiptsByStore(
+        store.refId,
       );
 
       if (response != null && response.isNotEmpty) {
@@ -141,8 +136,8 @@ final class CashRecipeViewModel {
 
     final filtered = allReceipts.where((receipt) {
       // Search in document ID
-      if (receipt.hasDocumentId() &&
-          receipt.documentId.toLowerCase().contains(query.toLowerCase())) {
+      if (receipt.hasRefId() &&
+          receipt.refId.toLowerCase().contains(query.toLowerCase())) {
         return true;
       }
 

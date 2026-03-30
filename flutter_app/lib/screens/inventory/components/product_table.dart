@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+import '../../../repositories/resource_link_repository.dart';
 import '../../../router/app_router.dart';
 import '../../../router/page_routes.dart';
 import '../../../services/internationalization/internationalization.dart';
@@ -12,9 +13,7 @@ import '../../../utils/extensions/global_product_extension.dart';
 import '../../../utils/extensions/inventory_extenxions.dart';
 import '../../../utils/formatters.dart';
 import '../../../utils/responsive_utils.dart';
-import '../../../utils/utils.dart';
 import '../../../widgets/custom_grid.dart';
-import '../../../widgets/loading.dart';
 import '../ajustment/inventory_adjustment_dialog.dart';
 import '../inventory_controller.dart';
 
@@ -25,39 +24,31 @@ class ProductsTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = context.read<InventoryController>();
+    final controller = context.watch<InventoryController>();
+    final invLevels = controller.filteredProducts;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        StreamBuilder<List<InventoryLevelWithProduct>>(
-          stream: controller.filteredProductsStream,
-          builder: (context, snapshot) {
-            final invLevels = snapshot.data;
-            if (!snapshot.hasData || invLevels == null) {
-              return const Loading();
-            }
-
-            return invLevels.isEmpty
-                ? Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          children: [
-                            const Icon(LucideIcons.box),
-                            Text(
-                              Intls.to.noDataFound,
-                              style: ShadTheme.of(context).textTheme.muted,
-                            ),
-                            const SizedBox(height: 16),
-                          ],
-                        ),
-                      ),
-                    ],
-                  )
-                : _InventoryGridView(inv: invLevels);
-          },
-        ),
+        if (invLevels.isEmpty)
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  children: [
+                    const Icon(LucideIcons.box),
+                    Text(
+                      Intls.to.noDataFound,
+                      style: ShadTheme.of(context).textTheme.muted,
+                    ),
+                    const SizedBox(height: 16),
+                  ],
+                ),
+              ),
+            ],
+          )
+        else
+          _InventoryGridView(inv: invLevels),
       ],
     );
   }
@@ -116,6 +107,7 @@ class _InventoryGridView extends StatelessWidget {
                       context: context,
                       builder: (context) => InventoryAdjustmentDialog(
                         productId: inv.product.refId,
+                        store: controller.store,
                       ),
                     );
                   },
@@ -143,6 +135,7 @@ class _InventoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
+    final controller = context.read<InventoryController>();
 
     return InkWell(
       onTap: onTap,
@@ -151,7 +144,7 @@ class _InventoryCard extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border.all(color: theme.colorScheme.border),
           borderRadius: const BorderRadius.all(Radius.circular(8)),
-          color: theme.colorScheme.background,
+          color: theme.colorScheme.card,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -161,9 +154,7 @@ class _InventoryCard extends StatelessWidget {
               padding: const EdgeInsets.all(16),
               child: Row(
                 children: [
-                  Expanded(
-                    child: _ProductNameCell(product: product.globalProduct),
-                  ),
+                  Expanded(child: _ProductNameCell(product: product)),
                   ShadIconButton.ghost(
                     icon: const Icon(LucideIcons.pencil, size: 16),
                     onPressed: onEdit,
@@ -214,10 +205,21 @@ class _InventoryCard extends StatelessWidget {
                       ),
                     ),
 
-                    // Stock
-                    _InfoRow(
-                      label: Intls.to.stock,
-                      child: _StockCell(inventoryLevel: product.level),
+                    StreamBuilder(
+                      stream: controller.watchProductInventory(
+                        productId: product.product.refId,
+                        storeId: product.level.storeId,
+                      ),
+                      builder: (context, asyncSnapshot) {
+                        final inventory = asyncSnapshot.data;
+
+                        return _InfoRow(
+                          label: Intls.to.stock,
+                          child: _StockCell(
+                            inventoryLevel: inventory ?? product.level,
+                          ),
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -268,11 +270,14 @@ class _InfoRow extends StatelessWidget {
 class _ProductNameCell extends StatelessWidget {
   const _ProductNameCell({required this.product});
 
-  final GlobalProduct product;
+  final InventoryLevelWithProduct product;
 
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
+    final imageUrl = product.product.imagesLinksIds.isNotEmpty
+        ? product.product.imagesLinksIds.first
+        : product.globalProduct.imagesLinksIds.firstOrNull;
 
     return Row(
       spacing: 5,
@@ -284,37 +289,36 @@ class _ProductNameCell extends StatelessWidget {
             borderRadius: const BorderRadius.all(Radius.circular(8)),
             color: ShadTheme.of(context).colorScheme.accent,
           ),
-          child:
-              product.imagesLinksIds.isNotEmpty &&
-                  AppUtils.isURL(product.imagesLinksIds.first)
-              ? FutureBuilder(
-                  future: precacheImage(
-                    NetworkImage(product.imagesLinksIds.first),
-                    context,
-                    onError: (error, stackTrace) {
-                      return null;
+          child: FutureBuilder<ResourceLink?>(
+            future: imageUrl == null
+                ? Future.value()
+                : ResourceLinkRepository.instance.getResourceLink(imageUrl),
+            builder: (context, snapshot) {
+              final data = snapshot.data?.targetUri;
+
+              if (snapshot.connectionState == ConnectionState.done &&
+                  snapshot.hasData &&
+                  data != null) {
+                return ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(8)),
+                  child: FadeInImage.assetNetwork(
+                    placeholder: StaticImages.placeholder,
+                    placeholderFit: BoxFit.none,
+                    image: data,
+                    fit: BoxFit.cover,
+                    imageErrorBuilder: (context, error, stackTrace) {
+                      return const Icon(LucideIcons.package, size: 20);
+                    },
+                    placeholderErrorBuilder: (context, error, stackTrace) {
+                      return const Icon(LucideIcons.package, size: 20);
                     },
                   ),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done &&
-                        snapshot.error == null) {
-                      return FadeInImage.assetNetwork(
-                        placeholder: StaticImages.placeholder,
-                        image: product.imagesLinksIds.first,
-                        fit: BoxFit.contain,
-                        imageErrorBuilder: (context, error, stackTrace) {
-                          return const Icon(LucideIcons.package, size: 20);
-                        },
-                        placeholderErrorBuilder: (context, error, stackTrace) {
-                          return const Icon(LucideIcons.package, size: 20);
-                        },
-                      );
-                    }
+                );
+              }
 
-                    return const Icon(LucideIcons.package, size: 20);
-                  },
-                )
-              : const Icon(LucideIcons.package, size: 20),
+              return const Icon(LucideIcons.package, size: 20);
+            },
+          ),
         ),
         const SizedBox(width: 8),
         Flexible(
@@ -323,7 +327,7 @@ class _ProductNameCell extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                product.label,
+                product.globalProduct.label,
                 style: theme.textTheme.small.copyWith(
                   fontWeight: FontWeight.w600,
                   color: theme.colorScheme.foreground,
@@ -333,7 +337,10 @@ class _ProductNameCell extends StatelessWidget {
               ),
               const SizedBox(height: 2),
               Text(
-                product.categories.map((c) => c.name).take(2).join(' > '),
+                product.globalProduct.categories
+                    .map((c) => c.name)
+                    .take(2)
+                    .join(' > '),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: theme.textTheme.small.copyWith(
@@ -358,7 +365,7 @@ class _StockCell extends StatelessWidget {
     final theme = ShadTheme.of(context);
 
     return Text(
-      '${inventoryLevel.quantityAvailable} ${Intls.to.units}',
+      '${inventoryLevel.quantityOnHand} ${Intls.to.units}',
       style: theme.textTheme.list,
     );
   }

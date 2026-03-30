@@ -27,6 +27,7 @@ const PaymentStatus$json = {
     {'1': 'PAYMENT_STATUS_PENDING', '2': 1},
     {'1': 'PAYMENT_STATUS_COMPLETED', '2': 2},
     {'1': 'PAYMENT_STATUS_FAILED', '2': 3},
+    {'1': 'PAYMENT_STATUS_INITIALIZE', '2': 4},
   ],
 };
 
@@ -34,7 +35,7 @@ const PaymentStatus$json = {
 final $typed_data.Uint8List paymentStatusDescriptor = $convert.base64Decode(
     'Cg1QYXltZW50U3RhdHVzEh4KGlBBWU1FTlRfU1RBVFVTX1VOU1BFQ0lGSUVEEAASGgoWUEFZTU'
     'VOVF9TVEFUVVNfUEVORElORxABEhwKGFBBWU1FTlRfU1RBVFVTX0NPTVBMRVRFRBACEhkKFVBB'
-    'WU1FTlRfU1RBVFVTX0ZBSUxFRBAD');
+    'WU1FTlRfU1RBVFVTX0ZBSUxFRBADEh0KGVBBWU1FTlRfU1RBVFVTX0lOSVRJQUxJWkUQBA==');
 
 @$core.Deprecated('Use paymentMethodDescriptor instead')
 const PaymentMethod$json = {
@@ -62,9 +63,9 @@ final $typed_data.Uint8List paymentMethodDescriptor = $convert.base64Decode(
 const Payment$json = {
   '1': 'Payment',
   '2': [
-    {'1': 'document_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'documentId'},
+    {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'refId'},
     {'1': 'payer_id', '3': 2, '4': 1, '5': 9, '10': 'payerId'},
-    {'1': 'receiver', '3': 3, '4': 1, '5': 9, '10': 'receiver'},
+    {'1': 'receiver_ref', '3': 3, '4': 1, '5': 9, '10': 'receiverRef'},
     {'1': 'amount', '3': 4, '4': 1, '5': 1, '10': 'amount'},
     {'1': 'currency', '3': 5, '4': 1, '5': 9, '10': 'currency'},
     {'1': 'warehouse_id', '3': 6, '4': 1, '5': 9, '10': 'warehouseId'},
@@ -109,6 +110,14 @@ const Payment$json = {
       '10': 'createdByUserId'
     },
     {'1': 'notes', '3': 12, '4': 1, '5': 9, '9': 1, '10': 'notes', '17': true},
+    {
+      '1': 'related_docs',
+      '3': 13,
+      '4': 3,
+      '5': 11,
+      '6': '.payments.v1.PaymentRelatedDoc',
+      '10': 'relatedDocs'
+    },
   ],
   '8': [
     {'1': '_reference_number'},
@@ -118,16 +127,31 @@ const Payment$json = {
 
 /// Descriptor for `Payment`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List paymentDescriptor = $convert.base64Decode(
-    'CgdQYXltZW50EicKC2RvY3VtZW50X2lkGAEgASgJQga6SAPIAQFSCmRvY3VtZW50SWQSGQoIcG'
-    'F5ZXJfaWQYAiABKAlSB3BheWVySWQSGgoIcmVjZWl2ZXIYAyABKAlSCHJlY2VpdmVyEhYKBmFt'
-    'b3VudBgEIAEoAVIGYW1vdW50EhoKCGN1cnJlbmN5GAUgASgJUghjdXJyZW5jeRIhCgx3YXJlaG'
-    '91c2VfaWQYBiABKAlSC3dhcmVob3VzZUlkEkEKDnBheW1lbnRfbWV0aG9kGAcgASgOMhoucGF5'
-    'bWVudHMudjEuUGF5bWVudE1ldGhvZFINcGF5bWVudE1ldGhvZBIyCgZzdGF0dXMYCCABKA4yGi'
-    '5wYXltZW50cy52MS5QYXltZW50U3RhdHVzUgZzdGF0dXMSPQoMcGF5bWVudF9kYXRlGAkgASgL'
-    'MhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFILcGF5bWVudERhdGUSLgoQcmVmZXJlbmNlX2'
-    '51bWJlchgKIAEoCUgAUg9yZWZlcmVuY2VOdW1iZXKIAQESKwoSY3JlYXRlZF9ieV91c2VyX2lk'
-    'GAsgASgJUg9jcmVhdGVkQnlVc2VySWQSGQoFbm90ZXMYDCABKAlIAVIFbm90ZXOIAQFCEwoRX3'
-    'JlZmVyZW5jZV9udW1iZXJCCAoGX25vdGVz');
+    'CgdQYXltZW50Eh0KBnJlZl9pZBgBIAEoCUIGukgDyAEBUgVyZWZJZBIZCghwYXllcl9pZBgCIA'
+    'EoCVIHcGF5ZXJJZBIhCgxyZWNlaXZlcl9yZWYYAyABKAlSC3JlY2VpdmVyUmVmEhYKBmFtb3Vu'
+    'dBgEIAEoAVIGYW1vdW50EhoKCGN1cnJlbmN5GAUgASgJUghjdXJyZW5jeRIhCgx3YXJlaG91c2'
+    'VfaWQYBiABKAlSC3dhcmVob3VzZUlkEkEKDnBheW1lbnRfbWV0aG9kGAcgASgOMhoucGF5bWVu'
+    'dHMudjEuUGF5bWVudE1ldGhvZFINcGF5bWVudE1ldGhvZBIyCgZzdGF0dXMYCCABKA4yGi5wYX'
+    'ltZW50cy52MS5QYXltZW50U3RhdHVzUgZzdGF0dXMSPQoMcGF5bWVudF9kYXRlGAkgASgLMhou'
+    'Z29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFILcGF5bWVudERhdGUSLgoQcmVmZXJlbmNlX251bW'
+    'JlchgKIAEoCUgAUg9yZWZlcmVuY2VOdW1iZXKIAQESKwoSY3JlYXRlZF9ieV91c2VyX2lkGAsg'
+    'ASgJUg9jcmVhdGVkQnlVc2VySWQSGQoFbm90ZXMYDCABKAlIAVIFbm90ZXOIAQESQQoMcmVsYX'
+    'RlZF9kb2NzGA0gAygLMh4ucGF5bWVudHMudjEuUGF5bWVudFJlbGF0ZWREb2NSC3JlbGF0ZWRE'
+    'b2NzQhMKEV9yZWZlcmVuY2VfbnVtYmVyQggKBl9ub3Rlcw==');
+
+@$core.Deprecated('Use paymentRelatedDocDescriptor instead')
+const PaymentRelatedDoc$json = {
+  '1': 'PaymentRelatedDoc',
+  '2': [
+    {'1': 'doc_id', '3': 1, '4': 1, '5': 9, '10': 'docId'},
+    {'1': 'amount', '3': 2, '4': 1, '5': 1, '10': 'amount'},
+  ],
+};
+
+/// Descriptor for `PaymentRelatedDoc`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List paymentRelatedDocDescriptor = $convert.base64Decode(
+    'ChFQYXltZW50UmVsYXRlZERvYxIVCgZkb2NfaWQYASABKAlSBWRvY0lkEhYKBmFtb3VudBgCIA'
+    'EoAVIGYW1vdW50');
 
 @$core.Deprecated('Use createPaymentRequestDescriptor instead')
 const CreatePaymentRequest$json = {
@@ -317,6 +341,7 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
   '.payments.v1.CreatePaymentResponse': CreatePaymentResponse$json,
   '.payments.v1.Payment': Payment$json,
   '.google.protobuf.Timestamp': $0.Timestamp$json,
+  '.payments.v1.PaymentRelatedDoc': PaymentRelatedDoc$json,
   '.payments.v1.GetPaymentRequest': GetPaymentRequest$json,
   '.payments.v1.GetPaymentResponse': GetPaymentResponse$json,
   '.financial.v1.Invoice': $1.Invoice$json,

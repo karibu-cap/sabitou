@@ -29,7 +29,7 @@ abstract class AppRouterSubsystem {
   Future<void> init();
 
   /// Adds a route to the navigator stack.
-  void push(BuildContext context, String uri, {Object? extra});
+  Future<T?> push<T>(BuildContext context, String uri, {Object? extra});
 
   /// Replaces the top route on the navigator stack.
   void pushReplacement(BuildContext context, String uri, {Object? extra});
@@ -51,6 +51,9 @@ abstract class AppRouterSubsystem {
 
   /// Removes the current route.
   void onPop(BuildContext context);
+
+  /// Refresh current route.
+  void refresh(BuildContext context);
 }
 
 /// Navigation system which the subsytem specified on init().
@@ -68,8 +71,12 @@ class AppRouter {
   }
 
   /// Adds a route to the navigator stack.
-  static void push(BuildContext context, String uri, {Object? extra}) {
-    return subsystem.push(context, uri, extra: extra);
+  static Future<T?> push<T>(
+    BuildContext context,
+    String uri, {
+    Object? extra,
+  }) async {
+    return await subsystem.push<T>(context, uri, extra: extra);
   }
 
   /// Replaces the top route on the navigator stack.
@@ -117,6 +124,11 @@ class AppRouter {
   /// Removes the current route.
   static void onPop(BuildContext context) {
     return subsystem.onPop(context);
+  }
+
+  /// Refresh the current route.
+  static void refresh(BuildContext context) {
+    return subsystem.refresh(context);
   }
 
   /// Returns the router config.

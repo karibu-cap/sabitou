@@ -6,17 +6,7 @@ import 'package:get_it/get_it.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:provider/provider.dart';
 import 'package:sabitou_clients/providers/auth/auth_provider.dart';
-import 'package:sabitou_clients/providers/cart_provider.dart';
-import 'package:sabitou_clients/repositories/business_repository.dart';
-import 'package:sabitou_clients/repositories/categories_repository.dart';
-import 'package:sabitou_clients/repositories/inventory_repository.dart';
-import 'package:sabitou_clients/repositories/reports_repository.dart';
-import 'package:sabitou_clients/repositories/store_products_repository.dart';
-import 'package:sabitou_clients/repositories/stores_repository.dart';
-import 'package:sabitou_clients/repositories/suppliers_repository.dart';
-import 'package:sabitou_clients/repositories/users_repository.dart';
 import 'package:sabitou_clients/services/app_theme_service.dart';
-import 'package:sabitou_clients/services/data_sync/data_sync_service.dart';
 import 'package:sabitou_clients/services/internationalization/internationalization.dart';
 import 'package:sabitou_clients/services/network_status_provider/network_status_provider.dart';
 import 'package:sabitou_clients/services/storage/app_storage.dart';
@@ -144,20 +134,5 @@ Future<void> _initGetIt() async {
     ..registerSingletonIfAbsent<UserPreferences>(
       () => UserPreferences.new(null),
     )
-    ..registerSingletonIfAbsent<UserRepository>(UserRepository.new)
-    ..registerSingletonIfAbsent<StoreProductsRepository>(
-      StoreProductsRepository.new,
-    )
-    ..registerSingletonIfAbsent<SuppliersRepository>(SuppliersRepository.new)
-    ..registerSingletonIfAbsent<CategoriesRepository>(CategoriesRepository.new)
-    ..registerSingletonIfAbsent<BusinessRepository>(BusinessRepository.new)
-    ..registerSingletonIfAbsent<ReportsRepository>(ReportsRepository.new)
-    ..registerSingletonIfAbsent<InventoryRepository>(InventoryRepository.new)
-    ..registerSingletonIfAbsent<StoreProductsRepository>(
-      StoreProductsRepository.new,
-    )
-    ..registerSingletonIfAbsent<StoresRepository>(StoresRepository.new)
-    ..registerSingletonIfAbsent<CartManager>(CartManager.new)
-    ..registerSingletonIfAbsent<DataSyncService>(DataSyncService.new)
     ..registerSingletonIfAbsent<AuthProvider>(AuthProvider.new);
 }

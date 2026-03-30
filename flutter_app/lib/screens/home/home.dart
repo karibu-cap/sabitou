@@ -6,6 +6,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import '../../../utils/responsive_utils.dart';
 import '../../widgets/app_header/app_header.dart';
 import '../../widgets/sidebar/sidebar.dart';
+import 'components/auth_gate_view.dart';
 import 'home_controller.dart';
 
 /// The home screen.
@@ -18,59 +19,51 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tabletBreakpoint = ResponsiveUtils.isMobile(context);
     final isMobile = ResponsiveUtils.isMobile(context);
+    final cs = ShadTheme.of(context).colorScheme;
 
     return Scaffold(
-      backgroundColor: ShadTheme.of(context).colorScheme.secondary,
+      backgroundColor: cs.background,
       drawer: SafeArea(child: SidebarWidget(navigationShell: navigationShell)),
       body: SafeArea(
         child: ChangeNotifierProvider(
-          create: (context) => HomeController(),
-          child: Consumer<HomeController>(
-            builder: (context, homeController, child) => Stack(
-              children: [
-                Row(
-                  children: [
-                    if (!tabletBreakpoint)
-                      SidebarWidget(navigationShell: navigationShell),
-                    Expanded(
-                      child: Column(
-                        children: [
-                          HeaderWidget(
-                            onMenuClick: () {
-                              Scaffold.of(context).openDrawer();
-                            },
-                            isSidebarOpen: homeController.isSidebarOpen,
-                          ),
-                          Expanded(
-                            child: SizedBox(
-                              width: double.infinity,
-                              child: ConstrainedBox(
-                                constraints: const BoxConstraints(
-                                  maxWidth: 1280,
-                                ),
-                                child: Container(
-                                  color: ShadTheme.of(
-                                    context,
-                                  ).colorScheme.background,
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: isMobile ? 16.0 : 24.0,
-                                      vertical: 18,
-                                    ),
-                                    child: navigationShell,
+          create: (_) => HomeController(),
+          child: UserAuthGatePage(
+            child: Consumer<HomeController>(
+              builder: (context, homeController, _) => Row(
+                children: [
+                  if (!isMobile)
+                    SidebarWidget(navigationShell: navigationShell),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        HeaderWidget(
+                          onMenuClick: Scaffold.of(context).openDrawer,
+                          isSidebarOpen: homeController.isSidebarOpen,
+                        ),
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.topCenter,
+                            child: ConstrainedBox(
+                              constraints: const BoxConstraints(maxWidth: 1280),
+                              child: ColoredBox(
+                                color: cs.background,
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: isMobile ? 16.0 : 24.0,
+                                    vertical: 18,
                                   ),
+                                  child: navigationShell,
                                 ),
                               ),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),

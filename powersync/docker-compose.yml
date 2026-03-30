@@ -1,0 +1,84 @@
+version: "3.8"
+
+services:
+  # ---------------------------------------------------------------------------
+  # PostgreSQL — source of truth, WAL logical replication enabled
+  # ---------------------------------------------------------------------------
+  postgres:
+    image: postgres:17
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: sabitou
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/01-init.sql
+    command: >
+      postgres
+        -c wal_level=logical
+        -c max_replication_slots=10
+        -c max_wal_senders=10
+        -c shared_preload_libraries=''
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d sabitou"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # ---------------------------------------------------------------------------
+  # Go connector — JWT auth, JWKS, sync upload endpoint
+  # ---------------------------------------------------------------------------
+  connector:
+    build:
+      context: ..
+      dockerfile: powersync/connector/Dockerfile.dev
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/sabitou?sslmode=disable"
+      PORT: "8080"
+      JWT_PRIVATE_KEY_PATH: "/keys/private.pem"
+      JWT_PUBLIC_KEY_PATH: "/keys/public.pem"
+      JWT_KEY_ID: "sabitou-key-1"
+      ACCESS_TOKEN_TTL_HOURS: "1"
+      # Refresh token TTL
+      REFRESH_TOKEN_TTL_DAYS: "30"
+    volumes:
+      - ../powersync/connector:/build/powersync/connector # ← aligné avec WORKDIR
+      - ../protos/gen/go:/build/protos/gen/go
+      - jwt_keys:/keys
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/health || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # ---------------------------------------------------------------------------
+  # PowerSync — sync service, reads from Postgres, streams to Flutter clients
+  # ---------------------------------------------------------------------------
+  powersync:
+    image: journeyapps/powersync-service:latest
+    restart: unless-stopped
+    ports:
+      - "8457:8457"
+    volumes:
+      - ./powersync.yml:/config/powersync.yml:ro
+      - ./sync_rules.yml:/config/sync_rules.yml:ro
+    environment:
+      POWERSYNC_CONFIG_PATH: /config/powersync.yml
+    depends_on:
+      postgres:
+        condition: service_healthy
+      connector:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
+  jwt_keys:

@@ -15,9 +15,8 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import '../../google/protobuf/timestamp.pb.dart' as $1;
-import '../../identity/v1/user.pb.dart' as $0;
-import '../../link/v1/link.pb.dart' as $2;
+import '../../google/protobuf/timestamp.pb.dart' as $0;
+import '../../link/v1/link.pb.dart' as $1;
 import 'business.pbenum.dart';
 
 export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
@@ -227,13 +226,13 @@ class Business extends $pb.GeneratedMessage {
 
 class BusinessMember extends $pb.GeneratedMessage {
   factory BusinessMember({
-    $0.User? user,
+    $core.String? userId,
     $core.String? businessId,
-    $1.Timestamp? memberSince,
+    $0.Timestamp? memberSince,
     BusinessMemberStatus? status,
   }) {
     final result = create();
-    if (user != null) result.user = user;
+    if (userId != null) result.userId = userId;
     if (businessId != null) result.businessId = businessId;
     if (memberSince != null) result.memberSince = memberSince;
     if (status != null) result.status = status;
@@ -253,10 +252,10 @@ class BusinessMember extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'BusinessMember',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'business.v1'),
       createEmptyInstance: create)
-    ..aOM<$0.User>(1, _omitFieldNames ? '' : 'user', subBuilder: $0.User.create)
+    ..aOS(1, _omitFieldNames ? '' : 'userId')
     ..aOS(2, _omitFieldNames ? '' : 'businessId')
-    ..aOM<$1.Timestamp>(4, _omitFieldNames ? '' : 'memberSince',
-        subBuilder: $1.Timestamp.create)
+    ..aOM<$0.Timestamp>(4, _omitFieldNames ? '' : 'memberSince',
+        subBuilder: $0.Timestamp.create)
     ..e<BusinessMemberStatus>(
         5, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
         defaultOrMaker: BusinessMemberStatus.BUSINESS_MEMBER_STATUS_UNSPECIFIED,
@@ -287,15 +286,13 @@ class BusinessMember extends $pb.GeneratedMessage {
 
   /// The user.
   @$pb.TagNumber(1)
-  $0.User get user => $_getN(0);
+  $core.String get userId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set user($0.User value) => $_setField(1, value);
+  set userId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasUser() => $_has(0);
+  $core.bool hasUserId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearUser() => $_clearField(1);
-  @$pb.TagNumber(1)
-  $0.User ensureUser() => $_ensure(0);
+  void clearUserId() => $_clearField(1);
 
   /// The unique identifier of the business.
   @$pb.TagNumber(2)
@@ -309,15 +306,15 @@ class BusinessMember extends $pb.GeneratedMessage {
 
   /// The date since when the user became a member.
   @$pb.TagNumber(4)
-  $1.Timestamp get memberSince => $_getN(2);
+  $0.Timestamp get memberSince => $_getN(2);
   @$pb.TagNumber(4)
-  set memberSince($1.Timestamp value) => $_setField(4, value);
+  set memberSince($0.Timestamp value) => $_setField(4, value);
   @$pb.TagNumber(4)
   $core.bool hasMemberSince() => $_has(2);
   @$pb.TagNumber(4)
   void clearMemberSince() => $_clearField(4);
   @$pb.TagNumber(4)
-  $1.Timestamp ensureMemberSince() => $_ensure(2);
+  $0.Timestamp ensureMemberSince() => $_ensure(2);
 
   /// The status of the user.
   @$pb.TagNumber(5)
@@ -334,7 +331,7 @@ class CreateBusinessRequest extends $pb.GeneratedMessage {
   factory CreateBusinessRequest({
     Business? business,
     $core.List<$core.int>? logoRawImage,
-    $core.Iterable<$2.ResourceLink>? externalLinks,
+    $core.Iterable<$1.ResourceLink>? externalLinks,
   }) {
     final result = create();
     if (business != null) result.business = business;
@@ -360,9 +357,9 @@ class CreateBusinessRequest extends $pb.GeneratedMessage {
         subBuilder: Business.create)
     ..a<$core.List<$core.int>>(
         2, _omitFieldNames ? '' : 'logoRawImage', $pb.PbFieldType.OY)
-    ..pc<$2.ResourceLink>(
+    ..pc<$1.ResourceLink>(
         3, _omitFieldNames ? '' : 'externalLinks', $pb.PbFieldType.PM,
-        subBuilder: $2.ResourceLink.create)
+        subBuilder: $1.ResourceLink.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -413,7 +410,7 @@ class CreateBusinessRequest extends $pb.GeneratedMessage {
 
   /// The links of the business.
   @$pb.TagNumber(3)
-  $pb.PbList<$2.ResourceLink> get externalLinks => $_getList(2);
+  $pb.PbList<$1.ResourceLink> get externalLinks => $_getList(2);
 }
 
 class CreateBusinessResponse extends $pb.GeneratedMessage {
@@ -869,7 +866,7 @@ class UpdateBusinessRequest extends $pb.GeneratedMessage {
   factory UpdateBusinessRequest({
     Business? business,
     $core.List<$core.int>? logoRawImage,
-    $core.Iterable<$2.ResourceLink>? externalLinks,
+    $core.Iterable<$1.ResourceLink>? externalLinks,
   }) {
     final result = create();
     if (business != null) result.business = business;
@@ -895,9 +892,9 @@ class UpdateBusinessRequest extends $pb.GeneratedMessage {
         subBuilder: Business.create)
     ..a<$core.List<$core.int>>(
         2, _omitFieldNames ? '' : 'logoRawImage', $pb.PbFieldType.OY)
-    ..pc<$2.ResourceLink>(
+    ..pc<$1.ResourceLink>(
         3, _omitFieldNames ? '' : 'externalLinks', $pb.PbFieldType.PM,
-        subBuilder: $2.ResourceLink.create)
+        subBuilder: $1.ResourceLink.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -948,7 +945,7 @@ class UpdateBusinessRequest extends $pb.GeneratedMessage {
 
   /// The links of the business.
   @$pb.TagNumber(3)
-  $pb.PbList<$2.ResourceLink> get externalLinks => $_getList(2);
+  $pb.PbList<$1.ResourceLink> get externalLinks => $_getList(2);
 }
 
 class UpdateBusinessResponse extends $pb.GeneratedMessage {

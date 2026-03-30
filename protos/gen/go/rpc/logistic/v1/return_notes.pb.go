@@ -206,7 +206,7 @@ func (ReturnCondition) EnumDescriptor() ([]byte, []int) {
 // INVENTORY IMPACT: +2 PRD-001 in WH-001
 type ReturnNote struct {
 	state                 protoimpl.MessageState `protogen:"open.v1"`
-	DocumentId            string                 `protobuf:"bytes,1,opt,name=document_id,json=documentId,proto3" json:"document_id,omitempty"` // "RET-2025-001"
+	RefId                 string                 `protobuf:"bytes,1,opt,name=ref_id,json=refId,proto3" json:"ref_id,omitempty"` // "RET-2025-001"
 	ReturnType            ReturnType             `protobuf:"varint,2,opt,name=return_type,json=returnType,proto3,enum=logistic.v1.ReturnType" json:"return_type,omitempty"`
 	FromId                string                 `protobuf:"bytes,3,opt,name=from_id,json=fromId,proto3" json:"from_id,omitempty"`                                                  // Who's returning
 	ToId                  string                 `protobuf:"bytes,4,opt,name=to_id,json=toId,proto3" json:"to_id,omitempty"`                                                        // Where it goes
@@ -252,9 +252,9 @@ func (*ReturnNote) Descriptor() ([]byte, []int) {
 	return file_logistic_v1_return_notes_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *ReturnNote) GetDocumentId() string {
+func (x *ReturnNote) GetRefId() string {
 	if x != nil {
-		return x.DocumentId
+		return x.RefId
 	}
 	return ""
 }
@@ -596,11 +596,10 @@ var File_logistic_v1_return_notes_proto protoreflect.FileDescriptor
 
 const file_logistic_v1_return_notes_proto_rawDesc = "" +
 	"\n" +
-	"\x1elogistic/v1/return_notes.proto\x12\vlogistic.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1binventory/v1/category.proto\"\x88\x04\n" +
+	"\x1elogistic/v1/return_notes.proto\x12\vlogistic.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1binventory/v1/category.proto\"\xfe\x03\n" +
 	"\n" +
-	"ReturnNote\x12'\n" +
-	"\vdocument_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\n" +
-	"documentId\x128\n" +
+	"ReturnNote\x12\x1d\n" +
+	"\x06ref_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x05refId\x128\n" +
 	"\vreturn_type\x18\x02 \x01(\x0e2\x17.logistic.v1.ReturnTypeR\n" +
 	"returnType\x12\x17\n" +
 	"\afrom_id\x18\x03 \x01(\tR\x06fromId\x12\x13\n" +

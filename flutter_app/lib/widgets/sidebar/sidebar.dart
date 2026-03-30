@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../utils/app_constants.dart';
@@ -29,8 +30,9 @@ class SidebarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final auth = context.watch<AuthProvider>();
     final theme = ShadTheme.of(context);
-    final user = UserPreferences.instance.user;
+    final user = auth.currentUser;
     final router = GoRouter.of(context);
     final path = router.routerDelegate.currentConfiguration.uri.toString();
 
@@ -80,10 +82,41 @@ class SidebarWidget extends StatelessWidget {
         ],
       ),
       SideBarItem(
-        id: DashboardItem.purchaseOrders,
-        label: Intls.to.purchaseOrders,
+        id: DashboardItem.purchaseOrdersParent,
+        label: Intls.to.purchases,
         icon: LucideIcons.baggageClaim400,
-        path: PagesRoutes.purchaseOrders.pattern,
+        children: [
+          SideBarItem(
+            id: DashboardItem.suppliers,
+            label: Intls.to.suppliers,
+            icon: LucideIcons.truck400,
+            path: PagesRoutes.suppliers.pattern,
+          ),
+          SideBarItem(
+            id: DashboardItem.purchaseOrders,
+            label: Intls.to.purchaseOrders,
+            icon: LucideIcons.clipboardList400,
+            path: PagesRoutes.purchaseOrders.pattern,
+          ),
+          SideBarItem(
+            id: DashboardItem.purchaseReceives,
+            label: Intls.to.purchaseReceives,
+            icon: LucideIcons.packageCheck400,
+            path: PagesRoutes.purchaseReceives.pattern,
+          ),
+          SideBarItem(
+            id: DashboardItem.bills,
+            label: Intls.to.bills,
+            icon: LucideIcons.receipt400,
+            path: PagesRoutes.bills.pattern,
+          ),
+          SideBarItem(
+            id: DashboardItem.paymentsMade,
+            label: Intls.to.paymentMade,
+            icon: LucideIcons.banknote,
+            path: PagesRoutes.payments.pattern,
+          ),
+        ],
       ),
       SideBarItem(
         id: DashboardItem.reports,
@@ -96,12 +129,6 @@ class SidebarWidget extends StatelessWidget {
         label: Intls.to.audits,
         icon: LucideIcons.fileClock400,
         path: PagesRoutes.audits.pattern,
-      ),
-      SideBarItem(
-        id: DashboardItem.suppliers,
-        label: Intls.to.suppliers,
-        icon: LucideIcons.truck400,
-        path: PagesRoutes.suppliers.pattern,
       ),
       SideBarItem(
         id: DashboardItem.members,
@@ -143,26 +170,26 @@ class SidebarWidget extends StatelessWidget {
       child: Container(
         width: AppConstants.sidebarWidth,
         decoration: BoxDecoration(
-          color: ShadTheme.of(context).colorScheme.background,
+          color: theme.colorScheme.card,
           border: Border(right: BorderSide(color: theme.colorScheme.border)),
           boxShadow: [
             BoxShadow(
-              color: theme.colorScheme.border,
-              blurRadius: 4,
-              offset: const Offset(2, 0),
+              color: theme.colorScheme.foreground.withValues(alpha: 0.04),
+              blurRadius: 16,
+              offset: const Offset(4, 0),
             ),
           ],
         ),
         child: Column(
           children: [
             _BusinessInfo(),
-            Divider(color: theme.colorScheme.border),
+            const ShadSeparator.horizontal(),
             Expanded(
-              child: Container(
-                padding: const EdgeInsets.all(16),
+              child: Padding(
+                padding: const EdgeInsets.all(12),
                 child: ValueListenableBuilder(
                   valueListenable: _selected,
-                  builder: (context, value, child) {
+                  builder: (context, value, _) {
                     return ListView(
                       children: menuItems
                           .map(
@@ -176,7 +203,6 @@ class SidebarWidget extends StatelessWidget {
                                     tab.path?.isNotEmpty == true) {
                                   AppRouter.go(context, tab.path ?? '');
                                 }
-
                                 if (Scaffold.of(context).isDrawerOpen) {
                                   Scaffold.of(context).closeDrawer();
                                 }
@@ -189,8 +215,7 @@ class SidebarWidget extends StatelessWidget {
                 ),
               ),
             ),
-            Divider(color: theme.colorScheme.border),
-
+            const ShadSeparator.horizontal(),
             if (user != null)
               Padding(
                 padding: const EdgeInsets.all(16),
@@ -209,26 +234,24 @@ class SidebarWidget extends StatelessWidget {
 final class _BusinessInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final business = UserPreferences.instance.business;
-    final store = UserPreferences.instance.store;
+    final userPreference = context.watch<UserPreferences>();
+    final store = userPreference.store;
+    final business = userPreference.business;
+    final theme = ShadTheme.of(context);
 
-    if (business == null) {
-      return const SizedBox.shrink();
-    }
+    if (business == null) return const SizedBox.shrink();
 
-    return Container(
-      padding: const EdgeInsets.all(24),
+    return Padding(
+      padding: const EdgeInsets.all(20),
       child: Row(
         children: [
           Container(
-            height: 50,
-            width: 50,
+            height: 44,
+            width: 44,
             decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(8)),
-              border: Border.fromBorderSide(
-                BorderSide(color: ShadTheme.of(context).colorScheme.primary),
-              ),
-              color: ShadTheme.of(context).colorScheme.accent,
+              borderRadius: const BorderRadius.all(Radius.circular(12)),
+              border: Border.all(color: theme.colorScheme.border),
+              color: theme.colorScheme.accent,
             ),
             child:
                 business.hasLogoLinkId() && AppUtils.isURL(business.logoLinkId)
@@ -236,56 +259,52 @@ final class _BusinessInfo extends StatelessWidget {
                     future: precacheImage(
                       NetworkImage(business.logoLinkId),
                       context,
-                      onError: (error, stackTrace) {
-                        throw error;
-                      },
+                      onError: (e, _) => throw e,
                     ),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.done &&
                           snapshot.error == null) {
                         return FadeInImage.assetNetwork(
                           placeholder: StaticImages.placeholder,
+                          placeholderFit: BoxFit.none,
                           image: business.logoLinkId,
                           fit: BoxFit.contain,
-                          imageErrorBuilder: (context, error, stackTrace) {
-                            return const Icon(LucideIcons.store400, size: 12);
-                          },
-                          placeholderErrorBuilder:
-                              (context, error, stackTrace) {
-                                return const Icon(
-                                  LucideIcons.store400,
-                                  size: 24,
-                                );
-                              },
+                          imageErrorBuilder: (_, __, ___) =>
+                              const Icon(LucideIcons.store400, size: 18),
+                          placeholderErrorBuilder: (_, __, ___) =>
+                              const Icon(LucideIcons.store400, size: 18),
                         );
                       }
 
-                      return const Icon(LucideIcons.store400, size: 25);
+                      return const Icon(LucideIcons.store400, size: 20);
                     },
                   )
-                : const Icon(LucideIcons.store400, size: 24),
+                : const Icon(LucideIcons.store400, size: 20),
           ),
 
           const SizedBox(width: 12),
+
           Flexible(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 AutoSizeText(
                   business.hasName() ? business.name : Intls.to.sabitu,
-                  style: ShadTheme.of(context).textTheme.h4,
+                  style: theme.textTheme.h4,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   minFontSize: 8,
                 ),
-                if (store != null)
+                if (store != null) ...[
+                  const SizedBox(height: 2),
                   AutoSizeText(
-                    '${Intls.to.store}: ${store.name}',
-                    style: ShadTheme.of(context).textTheme.muted,
+                    store.name,
+                    style: theme.textTheme.muted,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     minFontSize: 8,
                   ),
+                ],
               ],
             ),
           ),

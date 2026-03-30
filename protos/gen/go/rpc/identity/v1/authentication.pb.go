@@ -161,7 +161,9 @@ type RegisterRequest struct {
 	// The email address of the user.
 	Email string `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
 	// The password of the user.
-	Password      string `protobuf:"bytes,3,opt,name=password,proto3" json:"password,omitempty"`
+	Password string `protobuf:"bytes,3,opt,name=password,proto3" json:"password,omitempty"`
+	// The phone number of the user.
+	PhoneNumber   *string `protobuf:"bytes,4,opt,name=phone_number,json=phoneNumber,proto3,oneof" json:"phone_number,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -213,6 +215,13 @@ func (x *RegisterRequest) GetEmail() string {
 func (x *RegisterRequest) GetPassword() string {
 	if x != nil {
 		return x.Password
+	}
+	return ""
+}
+
+func (x *RegisterRequest) GetPhoneNumber() string {
+	if x != nil && x.PhoneNumber != nil {
+		return *x.PhoneNumber
 	}
 	return ""
 }
@@ -480,6 +489,102 @@ func (x *ResetPasswordResponse) GetSuccess() string {
 	return ""
 }
 
+type RefreshTokenRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RefreshToken  string                 `protobuf:"bytes,1,opt,name=refresh_token,json=refreshToken,proto3" json:"refresh_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RefreshTokenRequest) Reset() {
+	*x = RefreshTokenRequest{}
+	mi := &file_identity_v1_authentication_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RefreshTokenRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RefreshTokenRequest) ProtoMessage() {}
+
+func (x *RefreshTokenRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_identity_v1_authentication_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RefreshTokenRequest.ProtoReflect.Descriptor instead.
+func (*RefreshTokenRequest) Descriptor() ([]byte, []int) {
+	return file_identity_v1_authentication_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *RefreshTokenRequest) GetRefreshToken() string {
+	if x != nil {
+		return x.RefreshToken
+	}
+	return ""
+}
+
+type RefreshTokenResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Token         string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
+	RefreshToken  string                 `protobuf:"bytes,2,opt,name=refresh_token,json=refreshToken,proto3" json:"refresh_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RefreshTokenResponse) Reset() {
+	*x = RefreshTokenResponse{}
+	mi := &file_identity_v1_authentication_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RefreshTokenResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RefreshTokenResponse) ProtoMessage() {}
+
+func (x *RefreshTokenResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_identity_v1_authentication_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RefreshTokenResponse.ProtoReflect.Descriptor instead.
+func (*RefreshTokenResponse) Descriptor() ([]byte, []int) {
+	return file_identity_v1_authentication_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *RefreshTokenResponse) GetToken() string {
+	if x != nil {
+		return x.Token
+	}
+	return ""
+}
+
+func (x *RefreshTokenResponse) GetRefreshToken() string {
+	if x != nil {
+		return x.RefreshToken
+	}
+	return ""
+}
+
 var File_identity_v1_authentication_proto protoreflect.FileDescriptor
 
 const file_identity_v1_authentication_proto_rawDesc = "" +
@@ -496,11 +601,13 @@ const file_identity_v1_authentication_proto_rawDesc = "" +
 	"_user_name\"J\n" +
 	"\rLoginResponse\x12\x14\n" +
 	"\x05token\x18\x01 \x01(\tR\x05token\x12#\n" +
-	"\rrefresh_token\x18\x02 \x01(\tR\frefreshToken\"w\n" +
+	"\rrefresh_token\x18\x02 \x01(\tR\frefreshToken\"\xb0\x01\n" +
 	"\x0fRegisterRequest\x12\x1b\n" +
 	"\tuser_name\x18\x01 \x01(\tR\buserName\x12\x1d\n" +
 	"\x05email\x18\x02 \x01(\tB\a\xbaH\x04r\x02`\x01R\x05email\x12(\n" +
-	"\bpassword\x18\x03 \x01(\tB\f\xbaH\t\xc8\x01\x01r\x04\x10\x05\x18HR\bpassword\"M\n" +
+	"\bpassword\x18\x03 \x01(\tB\f\xbaH\t\xc8\x01\x01r\x04\x10\x05\x18HR\bpassword\x12&\n" +
+	"\fphone_number\x18\x04 \x01(\tH\x00R\vphoneNumber\x88\x01\x01B\x0f\n" +
+	"\r_phone_number\"M\n" +
 	"\x10RegisterResponse\x12\x14\n" +
 	"\x05token\x18\x01 \x01(\tR\x05token\x12#\n" +
 	"\rrefresh_token\x18\x02 \x01(\tR\frefreshToken\"\x83\x02\n" +
@@ -516,12 +623,18 @@ const file_identity_v1_authentication_proto_rawDesc = "" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword\x12+\n" +
 	"\x11verification_code\x18\x03 \x01(\tR\x10verificationCode\"1\n" +
 	"\x15ResetPasswordResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\tR\asuccess2\xe3\x02\n" +
+	"\asuccess\x18\x01 \x01(\tR\asuccess\":\n" +
+	"\x13RefreshTokenRequest\x12#\n" +
+	"\rrefresh_token\x18\x01 \x01(\tR\frefreshToken\"Q\n" +
+	"\x14RefreshTokenResponse\x12\x14\n" +
+	"\x05token\x18\x01 \x01(\tR\x05token\x12#\n" +
+	"\rrefresh_token\x18\x02 \x01(\tR\frefreshToken2\xba\x03\n" +
 	"\vAuthService\x12@\n" +
 	"\x05Login\x12\x19.identity.v1.LoginRequest\x1a\x1a.identity.v1.LoginResponse\"\x00\x12I\n" +
 	"\bRegister\x12\x1c.identity.v1.RegisterRequest\x1a\x1d.identity.v1.RegisterResponse\"\x00\x12m\n" +
 	"\x14RequestPasswordReset\x12(.identity.v1.RequestPasswordResetRequest\x1a).identity.v1.RequestPasswordResetResponse\"\x00\x12X\n" +
-	"\rResetPassword\x12!.identity.v1.ResetPasswordRequest\x1a\".identity.v1.ResetPasswordResponse\"\x00B\xbb\x01\n" +
+	"\rResetPassword\x12!.identity.v1.ResetPasswordRequest\x1a\".identity.v1.ResetPasswordResponse\"\x00\x12U\n" +
+	"\fRefreshToken\x12 .identity.v1.RefreshTokenRequest\x1a!.identity.v1.RefreshTokenResponse\"\x00B\xbb\x01\n" +
 	"\x0fcom.identity.v1B\x13AuthenticationProtoP\x01ZFgithub.com/karibu-cap/sabitou/protos/gen/go/rpc/identity/v1;identityv1\xa2\x02\x03IXX\xaa\x02\vIdentity.V1\xca\x02\vIdentity\\V1\xe2\x02\x17Identity\\V1\\GPBMetadata\xea\x02\fIdentity::V1b\x06proto3"
 
 var (
@@ -536,7 +649,7 @@ func file_identity_v1_authentication_proto_rawDescGZIP() []byte {
 	return file_identity_v1_authentication_proto_rawDescData
 }
 
-var file_identity_v1_authentication_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_identity_v1_authentication_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_identity_v1_authentication_proto_goTypes = []any{
 	(*LoginRequest)(nil),                 // 0: identity.v1.LoginRequest
 	(*LoginResponse)(nil),                // 1: identity.v1.LoginResponse
@@ -546,18 +659,22 @@ var file_identity_v1_authentication_proto_goTypes = []any{
 	(*RequestPasswordResetResponse)(nil), // 5: identity.v1.RequestPasswordResetResponse
 	(*ResetPasswordRequest)(nil),         // 6: identity.v1.ResetPasswordRequest
 	(*ResetPasswordResponse)(nil),        // 7: identity.v1.ResetPasswordResponse
+	(*RefreshTokenRequest)(nil),          // 8: identity.v1.RefreshTokenRequest
+	(*RefreshTokenResponse)(nil),         // 9: identity.v1.RefreshTokenResponse
 }
 var file_identity_v1_authentication_proto_depIdxs = []int32{
 	0, // 0: identity.v1.AuthService.Login:input_type -> identity.v1.LoginRequest
 	2, // 1: identity.v1.AuthService.Register:input_type -> identity.v1.RegisterRequest
 	4, // 2: identity.v1.AuthService.RequestPasswordReset:input_type -> identity.v1.RequestPasswordResetRequest
 	6, // 3: identity.v1.AuthService.ResetPassword:input_type -> identity.v1.ResetPasswordRequest
-	1, // 4: identity.v1.AuthService.Login:output_type -> identity.v1.LoginResponse
-	3, // 5: identity.v1.AuthService.Register:output_type -> identity.v1.RegisterResponse
-	5, // 6: identity.v1.AuthService.RequestPasswordReset:output_type -> identity.v1.RequestPasswordResetResponse
-	7, // 7: identity.v1.AuthService.ResetPassword:output_type -> identity.v1.ResetPasswordResponse
-	4, // [4:8] is the sub-list for method output_type
-	0, // [0:4] is the sub-list for method input_type
+	8, // 4: identity.v1.AuthService.RefreshToken:input_type -> identity.v1.RefreshTokenRequest
+	1, // 5: identity.v1.AuthService.Login:output_type -> identity.v1.LoginResponse
+	3, // 6: identity.v1.AuthService.Register:output_type -> identity.v1.RegisterResponse
+	5, // 7: identity.v1.AuthService.RequestPasswordReset:output_type -> identity.v1.RequestPasswordResetResponse
+	7, // 8: identity.v1.AuthService.ResetPassword:output_type -> identity.v1.ResetPasswordResponse
+	9, // 9: identity.v1.AuthService.RefreshToken:output_type -> identity.v1.RefreshTokenResponse
+	5, // [5:10] is the sub-list for method output_type
+	0, // [0:5] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
@@ -569,6 +686,7 @@ func file_identity_v1_authentication_proto_init() {
 		return
 	}
 	file_identity_v1_authentication_proto_msgTypes[0].OneofWrappers = []any{}
+	file_identity_v1_authentication_proto_msgTypes[2].OneofWrappers = []any{}
 	file_identity_v1_authentication_proto_msgTypes[5].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -576,7 +694,7 @@ func file_identity_v1_authentication_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_identity_v1_authentication_proto_rawDesc), len(file_identity_v1_authentication_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   8,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

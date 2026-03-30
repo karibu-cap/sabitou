@@ -4,9 +4,12 @@ import 'package:sabitou_rpc/models.dart';
 
 import '../../utils/app_constants.dart';
 import '../../utils/responsive_utils.dart';
+import '../../utils/user_preference.dart';
 import '../../widgets/custom_grid.dart';
 import '../../widgets/loading.dart';
+import '../../widgets/no_business_view.dart';
 import 'cash_recipe_controller.dart';
+import 'cash_recipe_view_model.dart';
 import 'components/cash_receipt_card.dart';
 import 'components/empty_cash_recipe.dart';
 import 'components/error_widget.dart';
@@ -20,7 +23,16 @@ class CashRecipeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CashRecipeController _controller = CashRecipeController();
+    final prefs = context.watch<UserPreferences>();
+    final store = prefs.store;
+    final business = prefs.business;
+
+    if (store == null || business == null) {
+      return const Scaffold(body: Center(child: NoBusinessView()));
+    }
+    final CashRecipeController _controller = CashRecipeController(
+      viewModel: CashRecipeViewModel(store: store),
+    );
     final isMobile = ResponsiveUtils.isMobile(context);
 
     return MultiProvider(

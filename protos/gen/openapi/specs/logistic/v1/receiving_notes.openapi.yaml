@@ -154,9 +154,9 @@ components:
     logistic.v1.ReceivingNote:
       type: object
       properties:
-        documentId:
+        refId:
           type: string
-          title: document_id
+          title: ref_id
           description: '"RN-2025-001"'
         relatedPurchaseOrderId:
           type: string
@@ -188,7 +188,7 @@ components:
           description: Condition notes, damages, etc.
       title: ReceivingNote
       required:
-        - documentId
+        - refId
       additionalProperties: false
       description: |-
         *

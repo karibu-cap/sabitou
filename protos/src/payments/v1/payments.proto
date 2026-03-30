@@ -19,10 +19,10 @@ import "google/protobuf/timestamp.proto";
  *   status: PAYMENT_STATUS_COMPLETED
  */
 message Payment {
-  string document_id = 1 [(buf.validate.field).required = true]; // "PAY-2025-001"
+  string ref_id = 1 [(buf.validate.field).required = true]; // "PAY-2025-001"
   string payer_id = 2;
   // Can be a customer phone number or account number.
-  string receiver = 3;
+  string receiver_ref = 3;
   double amount = 4;
   string currency = 5;
   // The warehouse id. in general it's the warehouse of the store.
@@ -33,6 +33,12 @@ message Payment {
   optional string reference_number = 10;
   string created_by_user_id = 11;
   optional string notes = 12;
+  repeated PaymentRelatedDoc related_docs = 13;
+}
+
+message PaymentRelatedDoc {
+  string doc_id = 1;
+  double amount = 2;
 }
 
 enum PaymentStatus {
@@ -40,6 +46,7 @@ enum PaymentStatus {
   PAYMENT_STATUS_PENDING = 1;
   PAYMENT_STATUS_COMPLETED = 2;
   PAYMENT_STATUS_FAILED = 3;
+  PAYMENT_STATUS_INITIALIZE = 4;
 }
 
 enum PaymentMethod {

@@ -243,16 +243,15 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
     final AuthProvider auth = context.watch<AuthProvider>();
 
     return FutureBuilder(
-      future: auth.authComplete,
+      future: auth.initializationComplete,
       builder: (context, snapshot) {
-        final isAuthCompleted = snapshot.data;
+        final isAuthCompleted =
+            snapshot.connectionState == ConnectionState.done;
         final isUserLogged =
-            isAuthCompleted == true &&
-            auth.currentUser != null &&
-            auth.isAuthenticated;
+            isAuthCompleted && auth.currentUser != null && auth.isAuthenticated;
 
         // Show loading while checking initial state
-        if (_isLoading || isAuthCompleted == null) {
+        if (_isLoading || !isAuthCompleted) {
           return const _Loading();
         }
 
@@ -263,7 +262,7 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
 
         // Not first time - check auth status
         // If authenticated, navigate to dashboard
-        if (isAuthCompleted && isUserLogged && !_hasNavigated) {
+        if (isUserLogged && !_hasNavigated) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             if (mounted && !_hasNavigated) {
               _hasNavigated = true;

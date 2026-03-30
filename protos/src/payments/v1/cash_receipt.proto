@@ -33,7 +33,7 @@ import "payments/v1/payments.proto";
  */
 message CashReceipt {
   // "CASH-2025-001"
-  string document_id = 1 [(buf.validate.field).required = true];
+  string ref_id = 1 [(buf.validate.field).required = true];
   // Who processed sale
   string cashier_user_id = 2;
   // Can be null for anonymous
@@ -56,7 +56,18 @@ message CashReceipt {
   optional string voucher_issued_code = 15;
   // Amount owed to customer.
   double owed_to_customer = 16;
+  CashReceiptStatus status = 17;
 }
+
+enum CashReceiptStatus {
+  CASH_RECEIPT_STATUS_UNSPECIFIED = 0;
+  CASH_RECEIPT_STATUS_DRAFT       = 1; // held / in progress
+  CASH_RECEIPT_STATUS_COMPLETED   = 2; // paid + printed
+  CASH_RECEIPT_STATUS_VOIDED      = 3; // cancelled by manager
+  CASH_RECEIPT_STATUS_REFUNDED    = 4; // refund issued
+}
+
+
 
 message CreateCashReceiptRequest {
   // The partial cash receipt to create.

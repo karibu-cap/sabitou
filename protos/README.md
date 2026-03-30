@@ -105,3 +105,27 @@ chmod +x ~/.local/bin/yq
 ```
 
 2. generate models `./scripts/generate.sh`
+
+
+
+here is the fetaure i want you to fix on this purchase orders fetaures:
+1- When we create a purchase order, the is PO_STATUS_PENDING by default. 
+2- The status move to PO_STATUS_ISSUED when: the bill is partial receive(quantity of each item not match the quantity order), the receive is create enven if it's partial receive or full receive.
+2-The status move to PO_STATUS_CLOASED when : all the bill have been created. 
+here is the simple schenario:
+
+user create a purchase order with item : table 10x5000/unit.:
+the status of purchase is pending.
+scenario 1- the admin create one bill for 10 items. the status of purchase direclty move to PO_STATUS_CLOSED because it suppose we have already receive all the item and paid the supplier.
+now the admind decide to create a receive, move to receive form, we disable the ability to update the quantity since the bill confirm that we already receive all.
+
+it's only if the bill is delet that we move to PO_STATUS_ISSUED and allow user to update the quantity on receive.
+
+scenario 2- the admin decide to create the receive first. he create one receive for the 10 item directly. after create he want to add a bill. when click to add instead of direclty naviguate to bill form, he must select  the receive so we convert  to bill first if nothing select, display and error. if select, navigate to bill form and display the items of receive select with the quantity (note in this case he could not update the quantity of unit of this items selected.) 
+#picture 1
+
+
+scenario 3- the admin decide to create the receive first. he create 2 receive (1 for 2 item and other one for 1 item). after create he want to add a bill. when click to add instead of direclty naviguate to bill form, he must choose bettewn create a bill for all the items in the purchase or create a bill for one or more receive. if second optioin is selected, we display the actual receive and he select the one he want to convert to bill.
+#picture 2, #picture 3.
+
+ensure the to always document the public member, the the adaptation on different devise

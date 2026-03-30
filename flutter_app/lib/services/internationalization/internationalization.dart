@@ -1372,12 +1372,12 @@ class AppInternationalizationService extends ChangeNotifier {
               | Date | Transaction | Qty | Unit Cost | | 1-4-2020 | Purchase | 10 | 100 | | 6-4-2020 | Purchase | 20 | 120 | | 10-4-2020 | Sale | 15 | ? |
               Calculating Valuation Rate at the time of sale:
               As per FIFO:
-              Since this is FIFO, we will consume quantities from the earliest transactions, therefore, to make a sale of 15 qty, we will take 10 qty from the first transaction and 5 qty from the second one. 
+              Since this is FIFO, we will consume quantities from the earliest transactions, therefore, to make a sale of 15 qty, we will take 10 qty from the first transaction and 5 qty from the second one.
               (10 * 100) + (5 * 120) = 1600, which leaves us 15 qty in stock at cost of 120 amounting to 1800.
               As per Moving Average:
-              In the Moving Average method, the value of an item is recalculated every time when an item is acquired. This is done by adding the cost of the newly acquired items to the existing inventory’s value and then dividing it by the total quantity available. 
+              In the Moving Average method, the value of an item is recalculated every time when an item is acquired. This is done by adding the cost of the newly acquired items to the existing inventory’s value and then dividing it by the total quantity available.
               ((10 * 100) + (20 * 120)) / 30 = 113.33
-              To make a sale of 15 qty, we will directly multiply it by the average value we received just now. 
+              To make a sale of 15 qty, we will directly multiply it by the average value we received just now.
               15 * 113.33 = 1700, which leaves us 15 qty in stock amounting to 1700.
               If you check, even though the quantity is same the stock value is different but both amounts to a total of 3400 only.''',
       'fr':
@@ -1385,12 +1385,12 @@ class AppInternationalizationService extends ChangeNotifier {
             | Date | Transaction | Quantité | Coût unitaire | | 1-4-2020 | Achat | 10 | 100 | | 6-4-2020 | Achat | 20 | 120 | | 10-4-2020 | Vente | 15 | ? |
             Calcul du taux d'évaluation au moment de la vente :
             Selon la méthode FIFO :
-            Comme il s'agit de la méthode FIFO, nous allons consommer les quantités des transactions les plus anciennes. Par conséquent, pour effectuer une vente de 15 quantités, nous allons prendre 10 quantités de la première transaction et 5 quantités de la deuxième. 
+            Comme il s'agit de la méthode FIFO, nous allons consommer les quantités des transactions les plus anciennes. Par conséquent, pour effectuer une vente de 15 quantités, nous allons prendre 10 quantités de la première transaction et 5 quantités de la deuxième.
             (10 * 100) + (5 * 120) = 1600, ce qui nous laisse 15 unités en stock au coût de 120, soit un total de 1800.
             Selon la méthode de la moyenne mobile :
-            Dans la méthode de la moyenne mobile, la valeur d'un article est recalculée à chaque fois qu'un article est acquis. Pour ce faire, on ajoute le coût des articles nouvellement acquis à la valeur du stock existant, puis on divise le tout par la quantité totale disponible. 
+            Dans la méthode de la moyenne mobile, la valeur d'un article est recalculée à chaque fois qu'un article est acquis. Pour ce faire, on ajoute le coût des articles nouvellement acquis à la valeur du stock existant, puis on divise le tout par la quantité totale disponible.
             ((10 * 100) + (20 * 120)) / 30 = 113,33
-            Pour réaliser une vente de 15 unités, nous la multiplierons directement par la valeur moyenne que nous venons d'obtenir. 
+            Pour réaliser une vente de 15 unités, nous la multiplierons directement par la valeur moyenne que nous venons d'obtenir.
             15 * 113,33 = 1 700, ce qui nous laisse 15 unités en stock pour un montant total de 1 700.
             Si vous vérifiez, même si la quantité est la même, la valeur du stock est différente, mais les deux montent à un total de 3 400 seulement.''',
     },
@@ -1557,8 +1557,8 @@ class AppInternationalizationService extends ChangeNotifier {
     },
     'globalProducts': {'en': 'Global Products', 'fr': 'Produits globaux'},
     'searchSuppliers': {
-      'en': 'Search suppliers by name or status...',
-      'fr': 'Rechercher des fournisseurs par nom ou statut...',
+      'en': 'Search suppliers by name...',
+      'fr': 'Rechercher des fournisseurs par nom...',
     },
     'noSuppliersMatchFilters': {
       'en': 'No suppliers match your filters',
@@ -1601,6 +1601,17 @@ class AppInternationalizationService extends ChangeNotifier {
     'cash': {'en': 'Cash', 'fr': 'Espèces'},
     'card': {'en': 'Card', 'fr': 'Carte'},
     'orangeMoney': {'en': 'Orange Money', 'fr': 'Orange Money'},
+    'mtnMoMo': {'en': 'MTN Mobile Money', 'fr': 'MTN Mobile Money'},
+    'creditCard': {'en': 'Credit Card', 'fr': 'Carte de crédit'},
+    'balanceDue': {'en': 'Balance Due', 'fr': 'Solde dû'},
+    'newPayment': {'en': 'New Payment', 'fr': 'Nouveau paiement'},
+    'createPayment': {'en': 'Create Payment', 'fr': 'Créer le paiement'},
+    'payments': {'en': 'Payments', 'fr': 'Paiements'},
+    'amountExceedsBalanceDue': {
+      'en': 'Amount exceeds balance due',
+      'fr': 'Le montant dépasse le solde dû',
+    },
+    'paymentMade': {'en': 'Payment Made', 'fr': 'Paiement effectué'},
     'mtnMoney': {'en': 'MTN Money', 'fr': 'MTN Money'},
     'voucher': {'en': 'Voucher', 'fr': 'Bon de commande'},
     'mobile': {'en': 'Mobile', 'fr': 'Mobile'},
@@ -1827,7 +1838,27 @@ class AppInternationalizationService extends ChangeNotifier {
     },
     'received': {'en': 'Received', 'fr': 'Reçue'},
     'given': {'en': 'Given', 'fr': 'Rendue'},
-    'purchaseOrders': {'en': 'Purchase Orders', 'fr': 'Commandes fournisseurs'},
+    'purchases': {'en': 'Purchases', 'fr': 'Achats'},
+    'purchaseReceives': {
+      'en': 'Purchase Receives',
+      'fr': 'Réceptions d\'achats',
+    },
+    'billDetail': {'en': 'Bill Detail', 'fr': 'Détail de la facture'},
+    'createBill': {'en': 'Create Bill', 'fr': 'Créer une facture'},
+    'dueDateLabel': {'en': 'Due Date', 'fr': 'Date d\'échéance'},
+    'billStatusOpen': {'en': 'Open', 'fr': 'Ouverte'},
+    'billStatusPaid': {'en': 'Paid', 'fr': 'Payée'},
+    'billStatusOverdue': {'en': 'Overdue', 'fr': 'En retard'},
+    'noBillsFound': {'en': 'No bills found', 'fr': 'Aucune facture trouvée'},
+    'noReceivingNotesFound': {
+      'en': 'No receiving notes found',
+      'fr': 'Aucune note de réception trouvée',
+    },
+    'convertToBill': {'en': 'Convert to Bill', 'fr': 'Convertir en facture'},
+    'receivingNoteDetail': {
+      'en': 'Receiving Note Detail',
+      'fr': 'Détail de la note de réception',
+    },
     'expirationType': {'en': 'Expiration Type', 'fr': 'Type d\'expiration'},
     'selectExpirationType': {
       'en': 'Select expiration type',
@@ -1858,10 +1889,6 @@ class AppInternationalizationService extends ChangeNotifier {
       'fr': 'Ajoutez des instructions ou des notes...',
     },
     'totalAmount': {'en': 'Total Amount', 'fr': 'Montant total'},
-    'createPurchaseOrder': {
-      'en': 'Create Purchase Order',
-      'fr': 'Créer une commande fournisseur',
-    },
     'pleaseAddAtLeastOneItem': {
       'en': 'Please add at least one item',
       'fr': 'Veuillez ajouter au moins un produit',
@@ -1931,10 +1958,6 @@ class AppInternationalizationService extends ChangeNotifier {
       'fr': 'Créer une note de réception',
     },
     'createAt': {'en': 'Created At', 'fr': 'Créé le'},
-    'selectPurchaseOrder': {
-      'en': 'Select Purchase Order',
-      'fr': 'Sélectionner une commande fournisseur',
-    },
     'receiveDate': {'en': 'Receive Date', 'fr': 'Date de réception'},
 
     'createReceivingNote': {
@@ -2028,7 +2051,7 @@ class AppInternationalizationService extends ChangeNotifier {
       'fr': 'Aucune transaction ne correspond à vos filtres actuels.',
     },
     'transactionId': {'en': 'Transaction ID', 'fr': 'ID de transaction'},
-    'documentId': {'en': 'Document ID', 'fr': 'ID du document'},
+    'refId': {'en': 'Document ID', 'fr': 'ID du document'},
     'productId': {'en': 'Product ID', 'fr': 'ID du produit'},
     'batchId': {'en': 'Batch ID', 'fr': 'ID du lot'},
     'usedBy': {'en': 'Used By', 'fr': 'Utilisé par'},
@@ -2067,6 +2090,15 @@ class AppInternationalizationService extends ChangeNotifier {
       'fr': 'Aucune imprimante connecte.',
     },
     'initialStock': {'en': 'Initial Stock', 'fr': 'Stock initial'},
+    'openingStock': {'en': 'Opening Stock', 'fr': 'Stock d\'ouverture'},
+    'openingStockPerUnit': {
+      'en': 'Opening Stock Per Unit',
+      'fr': 'Stock d\'ouverture par unité',
+    },
+    'defaultPurchasePrice': {
+      'en': 'Default Purchase Price',
+      'fr': 'Prix d\'achat par défaut',
+    },
     'reorderPoint': {'en': 'Reorder Point', 'fr': 'Point de commande'},
     'adjustInventory': {
       'en': 'Adjust Inventory',
@@ -2132,7 +2164,6 @@ class AppInternationalizationService extends ChangeNotifier {
     'adjustmentId': {'en': 'Adjustment ID', 'fr': 'ID d\'ajustement'},
     'quantityChange': {'en': 'Quantity Change', 'fr': 'Quantité modifiée'},
     'notAvailable': {'en': 'Not Available', 'fr': 'Non disponible'},
-    'primaryDetails': {'en': 'Primary Details', 'fr': 'Détails primaires'},
     'availableForSale': {
       'en': 'Available for Sale',
       'fr': 'Disponible pour la vente',
@@ -2145,9 +2176,871 @@ class AppInternationalizationService extends ChangeNotifier {
       'fr': 'Information d\'achat',
     },
     'physicalStock': {'en': 'Physical Stock', 'fr': 'Stock physique'},
-    'openingStock': {'en': 'Opening Stock', 'fr': 'Stock initial'},
     'inventoryDetails': {'en': 'Inventory Details', 'fr': 'Détails des stocks'},
+    'nonPerishable': {'en': 'No perishable', 'fr': 'Non perisable'},
+    'productLevel': {'en': 'Product level', 'fr': 'Niveau de produit'},
+    'lotLevel': {'en': 'Lot level', 'fr': 'Niveau de lot'},
+    'invalidEmailOrPassword': {
+      'en': 'Invalid email or password.',
+      'fr': 'Email ou mot de passe invalide.',
+    },
+    'noConnection': {
+      'en': 'No connection. Please connect to the network.',
+      'fr': 'Aucune connexion. Veuillez vous connecter à la réseau.',
+    },
+    'accountDisabled': {
+      'en': 'This account has been disabled.',
+      'fr': 'Ce compte a été désactivé.',
+    },
+    'serverError': {
+      'en': 'A server error occurred. Please try again later.',
+      'fr': 'Une erreur serveur s\'est produite. Veuillez réessayer plus tard.',
+    },
+    'offlineUserNotFound': {
+      'en':
+          'Offline login unavailable. Please connect to the network for your first login on this device.',
+      'fr':
+          'Connexion hors ligne non disponible. Veuillez vous connecter au réseau pour votre première connexion sur cet appareil.',
+    },
+    'yourAreNotAssociatedWithAnyBusinessMessage': {
+      'en':
+          'Your account is not associated with any business.\n Contact your administrator to get access.',
+      'fr':
+          "Votre compte n'est pas encore lié à un commerce.\n Contactez votre administrateur pour obtenir l'accès.",
+    },
+    'support': {'en': 'Support', 'fr': 'Support'},
+    'phone': {'en': 'Phone', 'fr': 'Téléphone'},
+    'contactAdmin': {'en': 'Contact Admin', 'fr': 'Contacter l\'admin'},
+    'loadingProlile': {'en': 'Loading profile…', 'fr': 'Chargement du profil…'},
+    'morning': {'en': 'Good morning', 'fr': 'Bonjour'},
+    'evening': {'en': 'Good evening', 'fr': 'Bonsoir'},
+    'afternoon': {'en': 'Good afternoon', 'fr': 'Bon après-midi'},
+    'monday': {'en': 'Monday', 'fr': 'Lundi'},
+    'tuesday': {'en': 'Tuesday', 'fr': 'Mardi'},
+    'wednesday': {'en': 'Wednesday', 'fr': 'Mercredi'},
+    'thursday': {'en': 'Thursday', 'fr': 'Jeudi'},
+    'friday': {'en': 'Friday', 'fr': 'Vendredi'},
+    'saturday': {'en': 'Saturday', 'fr': 'Samedi'},
+    'sunday': {'en': 'Sunday', 'fr': 'Dimanche'},
+    'january': {'en': 'January', 'fr': 'Janvier'},
+    'february': {'en': 'February', 'fr': 'Février'},
+    'march': {'en': 'March', 'fr': 'Mars'},
+    'april': {'en': 'April', 'fr': 'Avril'},
+    'may': {'en': 'May', 'fr': 'Mai'},
+    'june': {'en': 'June', 'fr': 'Juin'},
+    'july': {'en': 'July', 'fr': 'Juillet'},
+    'august': {'en': 'August', 'fr': 'Août'},
+    'september': {'en': 'September', 'fr': 'Septembre'},
+    'october': {'en': 'October', 'fr': 'Octobre'},
+    'november': {'en': 'November', 'fr': 'Novembre'},
+    'december': {'en': 'December', 'fr': 'Décembre'},
+    'nonLue': {'en': 'non lue @count', 'fr': 'non lue @count'},
+    'justNow': {'en': 'just now', 'fr': 'à l\'instant'},
+    'minutesAgo': {'en': '@count minutes ago', 'fr': 'il y a @count minutes'},
+    'hoursAgo': {'en': '@count hours ago', 'fr': 'il y a @count heures'},
+    'daysAgo': {'en': '@count days ago', 'fr': 'il y a @count jours'},
+    'online': {'en': 'Online', 'fr': 'En Line'},
+    'allProductsAreWellStockedMessage': {
+      'en': 'All products are well stocked.',
+      'fr': 'Tous les niveaux de stock sont suffisants.',
+    },
+    'reorderThreshold': {
+      'en': 'Reorder Threshold',
+      'fr': 'Seuil de réapprovisionnement',
+    },
+    'movement': {'en': 'Movement', 'fr': 'Mouvement'},
+    'expiration': {'en': 'Expiration', 'fr': 'Expiration'},
+    'buy': {'en': 'Buy', 'fr': 'Achat'},
+    'sellingPrince': {'en': 'Selling Price', 'fr': 'Prix de vente'},
+    'pruchaseCost': {'en': 'Purchase Cost', 'fr': 'Coût d\'achat'},
+    'stockSummary': {'en': 'Stock Summary', 'fr': 'Résumé de stock'},
+    'moreInformation': {'en': 'More Information', 'fr': 'Plus d\'informations'},
+    'salesAndPurchaseInformation': {
+      'en': 'Sales and Purchase Information',
+      'fr': 'Informations de vente et d\'achat',
+    },
+    'invalidFormFields': {
+      'en': 'Invalid form fields',
+      'fr': 'Champs du formulaire invalide',
+    },
+    'allSuppliersText': {'en': 'All Suppliers', 'fr': 'Tous les Fournisseurs'},
+    'result': {'en': 'result', 'fr': 'résultat'},
+    'noPaid': {'en': 'No Paid', 'fr': 'Non payée'},
+    'due': {'en': 'Due', 'fr': 'Dû'},
+    'deleteBill': {'en': 'Delete Bill', 'fr': 'Supprimer la facture'},
+    'confirmPayment': {'en': 'Confirm Payment', 'fr': 'Confirmer le paiement'},
+    'markAsPaid': {'en': 'Mark as Paid', 'fr': 'Marquer comme payée ?'},
+    'itemWillBeDelete': {
+      'en': '@item will definitively delete',
+      'fr': '@item sera supprimée définitivement',
+    },
+    'linkPurchaseOrder': {
+      'en': 'PURCHASE ORDER LINKED',
+      'fr': 'BON DE COMMANDE LIÉ',
+    },
+    'remainAmountDu': {'en': 'Remaining amount due', 'fr': 'Solde reste dû'},
+    'searchBill': {
+      'en': 'Search for a bill...',
+      'fr': 'Rechercher une facture…',
+    },
+    'selectBill': {'en': 'Select a bill', 'fr': 'Sélectionnez une facture'},
+    'clickBillToSeeDetails': {
+      'en': 'Click on a bill to see details.',
+      'fr': 'Cliquez sur une facture pour voir les détails.',
+    },
+    'purchaseOrders': {'en': 'Purchase Orders', 'fr': 'Bons de commande'},
+    'newPurchaseOrder': {
+      'en': 'New Purchase Order',
+      'fr': 'Nouveau bon de commande',
+    },
+    'searchPurchaseOrder': {
+      'en': 'Search for a PO...',
+      'fr': 'Rechercher un BC…',
+    },
+    'selectPurchaseOrder': {
+      'en': 'Select a purchase order',
+      'fr': 'Sélectionnez un bon de commande',
+    },
+    'clickPurchaseOrderToSeeDetails': {
+      'en': 'Click on a PO to see details.',
+      'fr': 'Cliquez sur un BC pour voir les détails.',
+    },
+    'noPurchaseOrders': {
+      'en': 'No purchase orders',
+      'fr': 'Aucun bon de commande',
+    },
+    'noResults': {'en': 'No results', 'fr': 'Aucun résultat'},
+    'modifyFilters': {
+      'en': 'Modify filters to see more results.',
+      'fr': 'Modifiez les filtres pour voir plus de résultats.',
+    },
+    'createFirstPurchaseOrder': {
+      'en': 'Create your first purchase order.',
+      'fr': 'Créez votre premier bon de commande.',
+    },
+    'supplierPlaceholder': {'en': 'Supplier', 'fr': 'Fournisseur'},
+    'deliveryAddress': {'en': 'Delivery Address', 'fr': 'Adresse de livraison'},
+    'orderedItems': {'en': 'Ordered Items', 'fr': 'Articles commandés'},
+    'addItem': {'en': 'Add Item', 'fr': 'Ajouter un article'},
+    'createPurchaseOrder': {
+      'en': 'Create Purchase Order',
+      'fr': 'Créer le bon de commande',
+    },
+    'generate': {'en': 'Generate', 'fr': 'Générer'},
+    'generateBillQuestion': {
+      'en': 'Generate Bill?',
+      'fr': 'Générer la facture ?',
+    },
+    'billWillBeCreated': {
+      'en': 'A bill will be created for @refId (@amount).',
+      'fr': 'Une facture sera créée pour @refId (@amount).',
+    },
+    'downloadPDF': {'en': 'Download PDF', 'fr': 'Télécharger PDF'},
+    'print': {'en': 'Print', 'fr': 'Imprimer'},
+    'clone': {'en': 'Clone', 'fr': 'Cloner'},
+    'cancelOrder': {'en': 'Cancel Order', 'fr': 'Annuler la commande'},
+    'cancelPurchaseOrderQuestion': {
+      'en': 'Cancel this purchase order?',
+      'fr': 'Annuler ce bon de commande ?',
+    },
+    'confirmCancellation': {
+      'en': 'Confirm Cancellation',
+      'fr': 'Confirmer l\'annulation',
+    },
+    'receive': {'en': 'Receive', 'fr': 'Réceptionner'},
+    'generateBill': {'en': 'Generate Bill', 'fr': 'Générer facture'},
+    'bills': {'en': 'Bills', 'fr': 'Factures'},
+    'receivals': {'en': 'Receivals', 'fr': 'Réceptions'},
+    'totalAmountIncludingTax': {
+      'en': 'Total amount incl. tax',
+      'fr': 'Montant total TTC',
+    },
+    'expectedDelivery': {'en': 'Expected Delivery', 'fr': 'Livraison prévue'},
+    'details': {'en': 'Details', 'fr': 'Détails'},
+    'deliveryTo': {'en': 'Delivery to', 'fr': 'Livraison à'},
+    'subtotalHT': {'en': 'Subtotal HT', 'fr': 'Sous-total HT'},
+    'productHeader': {'en': 'Product', 'fr': 'Produit'},
+    'amountHeader': {'en': 'Amount', 'fr': 'Montant'},
+    'totalTTC': {'en': 'Total TTC', 'fr': 'Total TTC'},
+    'receivedCount': {'en': '@count received', 'fr': '@count reçus'},
+    'rejectedCount': {'en': '@count rejected', 'fr': '@count rejetés'},
+    'differences': {'en': 'Differences', 'fr': 'Écarts'},
+    'linkedBills': {'en': 'Linked Bills', 'fr': 'Factures liées'},
+    'noBillForPurchaseOrder': {
+      'en': 'No bill for this purchase order.',
+      'fr': 'Aucune facture pour ce bon de commande.',
+    },
+    'receivingNotes': {'en': 'Receiving Notes', 'fr': 'Bons de réception'},
+    'noReceivingRecorded': {
+      'en': 'No receiving recorded.',
+      'fr': 'Aucune réception enregistrée.',
+    },
+    'impossibleToLoadPurchaseOrderData': {
+      'en': 'Impossible to load purchase order data.',
+      'fr': 'Impossible de charger les données du bon de commande.',
+    },
+    'impossibleToRecordReceiving': {
+      'en': 'Impossible to record receiving.',
+      'fr': 'Impossible d\'enregistrer la réception.',
+    },
+    'receivingRecorded': {
+      'en': 'Receiving @refId recorded.',
+      'fr': 'Réception @refId enregistrée.',
+    },
+    'impossibleToGenerateBill': {
+      'en': 'Impossible to generate bill.',
+      'fr': 'Impossible de générer la facture.',
+    },
+    'billGenerated': {'en': 'Bill generated.', 'fr': 'Facture générée.'},
+    'impossibleToCancelPurchaseOrder': {
+      'en': 'Impossible to cancel this purchase order.',
+      'fr': 'Impossible d\'annuler ce bon de commande.',
+    },
+    'purchaseOrderCancelled': {
+      'en': 'Purchase order cancelled.',
+      'fr': 'Bon de commande annulé.',
+    },
+    'impossibleToUpdateStatus': {
+      'en': 'Impossible to update status.',
+      'fr': 'Impossible de mettre à jour le statut.',
+    },
+    'noBill': {'en': 'No bill', 'fr': 'Aucune facture'},
+    'billsWillAppearHere': {
+      'en': 'Supplier bills will appear here.',
+      'fr': 'Les factures fournisseurs apparaîtront ici.',
+    },
+    'newBill': {'en': 'New Bill', 'fr': 'Nouvelle facture'},
+    'billCreationDescription': {
+      'en':
+          'Bills are usually created from a purchase order. Use "Generate Bill" in the purchase order details.',
+      'fr':
+          'Les factures sont généralement créées depuis un bon de commande. Utilisez "Générer la facture" dans le détail d\'un bon de commande.',
+    },
+    'unknownError': {'en': 'Unknown error', 'fr': 'Unknown error'},
+    'impossibleToCreateBill': {
+      'en': 'Impossible to create bill.',
+      'fr': 'Impossible de créer la facture.',
+    },
+    'impossibleToDeleteBill': {
+      'en': 'Impossible to delete bill.',
+      'fr': 'Impossible de supprimer la facture.',
+    },
+    'billWithPaymentsCannotBeDeleted': {
+      'en': 'Cannot delete a bill that has payments.',
+      'fr': 'Impossible de supprimer une facture ayant des paiements.',
+    },
+    'impossibleToMarkAsPaid': {
+      'en': 'Impossible to mark as paid.',
+      'fr': 'Impossible de marquer comme payée.',
+    },
+    'impossibleToVoidBill': {
+      'en': 'Impossible to void bill.',
+      'fr': 'Impossible d\'annuler la facture.',
+    },
+    'dueDate': {'en': 'Due Date', 'fr': 'Échéance'},
+    'tva': {'en': 'VAT', 'fr': 'TVA'},
+    'jan': {'en': 'Jan', 'fr': 'Jan'},
+    'feb': {'en': 'Feb', 'fr': 'Fév'},
+    'mar': {'en': 'Mar', 'fr': 'Mar'},
+    'apr': {'en': 'Apr', 'fr': 'Avr'},
+    'jun': {'en': 'Jun', 'fr': 'Juin'},
+    'jul': {'en': 'Jul', 'fr': 'Juil'},
+    'aug': {'en': 'Aug', 'fr': 'Aoû'},
+    'sep': {'en': 'Sep', 'fr': 'Sep'},
+    'oct': {'en': 'Oct', 'fr': 'Oct'},
+    'nov': {'en': 'Nov', 'fr': 'Nov'},
+    'dec': {'en': 'Dec', 'fr': 'Déc'},
+    'newBillMessage': {
+      'en':
+          'bills are usually created from a purchase order. Use "Generate bill" in the details of a purchase order.',
+      'fr':
+          'Les factures sont généralement créées depuis un bon de commande. Utilisez "Générer la facture" dans le détail d\'un bon de commande',
+    },
+    'failedToCreateThePurchaseOrder': {
+      'en': 'Failed to create the purchase order.',
+      'fr': 'Echec de creation du bon de commande.',
+    },
+    'purchaseOrderSuccessfullCreate': {
+      'en': 'Purchase order created successfully.',
+      'fr': 'Bon de commande créé avec succès.',
+    },
+    'receip': {'en': 'Receip', 'fr': 'Reçu'},
+    'editBill': {'en': 'Edit bill', 'fr': 'Modifier la facture'},
+    'fromPurchaseOrder': {
+      'en': 'From purchase order',
+      'fr': 'Depuis le bon de commande',
+    },
+    'generalInfo': {'en': 'General info', 'fr': 'Informations générales'},
+    'purchaseOrderRef': {'en': 'Purchase order', 'fr': 'Bon de commande'},
+    'purchaseOrderRefHint': {'en': 'e.g. PO-2026-001', 'fr': 'ex. PO-2026-001'},
+    'supplierIdHint': {'en': 'Supplier ID', 'fr': 'ID fournisseur'},
+    'supplierRequired': {
+      'en': 'Supplier is required.',
+      'fr': 'Le fournisseur est obligatoire.',
+    },
+    'lockedFromPO': {'en': 'Locked (PO)', 'fr': 'Verrouillé (BC)'},
+    'billDate': {'en': 'Bill date', 'fr': 'Date de facture'},
+    'atLeastOneItemRequired': {
+      'en': 'Add at least one item.',
+      'fr': 'Ajoutez au moins un article.',
+    },
+    'invalidQuantity': {
+      'en': 'Quantity must be greater than 0.',
+      'fr': 'La quantité doit être supérieure à 0.',
+    },
+    'invalidPrice': {
+      'en': 'Price cannot be negative.',
+      'fr': 'Le prix ne peut pas être négatif.',
+    },
+    'qty': {'en': 'Qty', 'fr': 'Qté'},
+    'unitPrice': {'en': 'Unit price', 'fr': 'Prix unitaire'},
+    'taxAbbr': {'en': 'Tax', 'fr': 'TVA'},
+    'subTotal': {'en': 'Sub-total (excl. tax)', 'fr': 'Sous-total HT'},
+    'taxTotal': {'en': 'Tax total', 'fr': 'Total TVA'},
+    'notesHint': {
+      'en': 'Payment terms, additional info…',
+      'fr': 'Conditions de paiement, informations complémentaires…',
+    },
+    'searchProductHint': {
+      'en': 'Search products…',
+      'fr': 'Rechercher un produit…',
+    },
+    'failedToCreateBill': {
+      'en': 'Failed to create the bill.',
+      'fr': 'Impossible de créer la facture.',
+    },
+    'failedToUpdateBill': {
+      'en': 'Failed to update the bill.',
+      'fr': 'Impossible de mettre à jour la facture.',
+    },
+
+    'receptions': {'en': 'Receives', 'fr': 'Réceptions'},
+    'readOnly': {'en': 'Read only', 'fr': 'Lecture seule'},
+    'conformes': {'en': 'Compliant', 'fr': 'Conformes'},
+    'ecarts': {'en': 'Issues', 'fr': 'Écarts'},
+    'compliant': {'en': 'Compliant', 'fr': 'Conforme'},
+    'withIssues': {'en': 'With issues', 'fr': 'Avec écarts'},
+    'searchReceivingNoteHint': {
+      'en': 'Ref, supplier, purchase order…',
+      'fr': 'Réf, fournisseur, bon de commande…',
+    },
+    'selectAReceivingNote': {
+      'en': 'Select a receiving note',
+      'fr': 'Sélectionnez une réception',
+    },
+    'clickOnReceivingNoteForDetails': {
+      'en': 'Click on a receiving note to view the details.',
+      'fr': 'Cliquez sur un bon de réception pour voir les détails.',
+    },
+    'modifyFiltersForMoreResults': {
+      'en': 'Adjust the filters to see more results.',
+      'fr': 'Modifiez les filtres pour voir plus de résultats.',
+    },
+    'receivingNotesCreatedFromPos': {
+      'en': 'Receives created from purchase orders will appear here.',
+      'fr':
+          'Les réceptions créées depuis les bons de commande apparaîtront ici.',
+    },
+    'receivedItems': {'en': 'Received items', 'fr': 'Articles réceptionnés'},
+    'receivedPlural': {'en': 'received', 'fr': 'reçus'},
+    'rejectedPlural': {'en': 'rejected', 'fr': 'rejetés'},
+    'lines': {'en': 'Lines', 'fr': 'Lignes'},
+    'receptionDate': {'en': 'Reception date', 'fr': 'Date de réception'},
+    'creationDate': {'en': 'Creation date', 'fr': 'Date de création'},
+    'receivedBy': {'en': 'Received by', 'fr': 'Reçu par'},
+    'linkedPurchaseOrder': {
+      'en': 'Linked purchase order',
+      'fr': 'Bon de commande lié',
+    },
+    'expected': {'en': 'Expected', 'fr': 'Attendu'},
+    'expirationAbbr': {'en': 'Exp.', 'fr': 'Exp.'},
+    'batchAbbr': {'en': 'Batch', 'fr': 'Lot'},
+    'percentReceived': {'en': '% received', 'fr': '% reçu'},
+    'receivingNoteNotFound': {
+      'en': 'Receiving note not found.',
+      'fr': 'Bon de commande introuvable.',
+    },
+
+    'rejected': {'en': 'Rejected', 'fr': 'Rejeté'},
+
+    'atLeastOneItemRequiredLabel': {
+      'en': 'At least one item is required',
+      'fr': 'Au moins un article est requis',
+    },
+    'receivedDate': {'en': 'Received date', 'fr': 'Date de réception'},
+    'saveTheReceiption': {
+      'en': 'Save the receiption',
+      'fr': 'Enregistrer la réception',
+    },
+    'ordered': {'en': 'Ordered', 'fr': 'Commandé'},
+    'rest': {'en': 'Rest', 'fr': 'Restant'},
+    'received_quantity_must_be_less_than_remaining': {
+      'en': 'Received quantity must be less than remaining',
+      'fr': 'La quantité reçue doit être inférieure au restant',
+    },
+    'rejected_quantity_must_be_less_than_remaining': {
+      'en': 'Rejected quantity must be less than remaining',
+      'fr': 'La quantité rejetée doit être inférieure au restant',
+    },
+    'closed': {'en': 'Closed', 'fr': 'Cloturé'},
+    'pleaseSelectAtLeastOneReceive': {
+      'en': 'Please select at least one receive',
+      'fr': 'Veuillez sélectionner au moins une option de réception',
+    },
+    'receives': {'en': 'Receives', 'fr': 'Reçoit'},
+    'receivesDescription': {
+      'en': 'Create a bill for one or more receives in this purchase order.',
+      'fr':
+          'Créer une facture pour un ou plusieurs articles de cette commande.',
+    },
+    'yetToReceive': {'en': 'Yet To Receive', 'fr': 'En attente de réception'},
+    'yetToReceiveDescription': {
+      'en':
+          'Create a bill for all the items in this purchase order that are yet to be received.',
+      'fr':
+          'Créez une facture pour tous les articles de ce bon de commande qui n\'ont pas encore été reçus.',
+    },
+    'allItemsReceivedChooseReceives': {
+      'en':
+          'You have received all the items from this purchase order. Choose one or more receives to create a bill.',
+      'fr':
+          'Vous avez reçu tous les articles de ce bon de commande. Sélectionnez une ou plusieurs entrées de stock pour créer une facture.',
+    },
+    'partialItemsReceivedChooseBillType': {
+      'en':
+          'You have received few items from this purchase order. You can choose to create a bill for either the received items or the yet to receive items.',
+      'fr':
+          'Vous n\'avez reçu que quelques articles de ce bon de commande. Vous pouvez choisir de créer une facture soit pour les articles déjà reçus, soit pour ceux qui restent à recevoir.',
+    },
+    'unselectAll': {'en': 'Unselect all', 'fr': 'Tout désélectionner'},
+
+    'selectAll': {'en': 'Select all', 'fr': 'Tout sélectionner'},
+    'quantityFromReceive': {
+      'en': 'Quantities since receipt',
+      'fr': 'Quantités depuis réception',
+    },
+    'fromReveice': {
+      'en': 'Since @nbr deliveries',
+      'fr': 'Depuis @nbr réception(s)',
+    },
+    'addPayment': {'en': 'Add payment', 'fr': 'Ajouter payment'},
+    'receiver': {'en': 'Receiver', 'fr': 'Destinataire'},
+    'deleteConfirmation': {
+      'en': 'Are you sure you want to delete this @item?',
+      'fr': 'Êtes-vous sûr de vouloir supprimer ce @item?',
+    },
+    'deleteConfirmationDescription': {
+      'en': 'This action cannot be undone.',
+      'fr': 'Cette action ne peut pas être annulée.',
+    },
+    'referenceNumber': {'en': 'Reference Number', 'fr': 'Numéro de référence'},
+    'validationFailed': {'en': 'Validation failed', 'fr': 'Validation échouée'},
+    'noPayment': {'en': 'No Payments', 'fr': 'Aucun payment'},
+    'noPaymentDescription': {
+      'en': 'Create a payment to see it here',
+      'fr': 'Creer un payment pour le vois ici',
+    },
+    'selectPaymentToSeeDetail': {
+      'en': 'Select payment to see the detail',
+      'fr': 'Selectionner un payment pour vois les details',
+    },
+    'payInFull': {'en': 'pay in full', 'fr': 'payer intégralement'},
+    'noUserFound': {'en': 'No user found', 'fr': 'Aucun utilisateur trouvé'},
+    'sessionExpired': {'en': 'Session expired', 'fr': 'Session expirée'},
+    'pleaseSignInAgain': {
+      'en': 'Please sign in again to continue',
+      'fr': 'Veuillez vous reconnecter pour continuer',
+    },
+    'backToSignIn': {'en': 'Back to Sign In', 'fr': 'Retour à la connexion'},
+    'verifyAmountWithCustomer': {
+      'en': 'Verify amount with customer',
+      'fr': 'Vérifier le montant avec le client',
+    },
+    'orderConfirmation': {
+      'en': 'Order confirmation',
+      'fr': 'Confirmation de commande',
+    },
+    'confirmAndCollect': {
+      'en': 'Confirm and collect',
+      'fr': 'Confirmer & collecter',
+    },
+    'changeToGive': {'en': 'Change to give', 'fr': 'Monnaie à rendre'},
+    'modify': {'en': 'Modify', 'fr': 'Modifier'},
+    'taxIncluded': {'en': 'Tax included', 'fr': 'Taux inclus'},
+    'unit': {'en': 'Unit', 'fr': 'Unité'},
+    'totalToPay': {'en': 'Total to pay', 'fr': 'Total à payer'},
+    'mobileMoneySubLabel': {
+      'en': 'Orange Money / MTN MoMo',
+      'fr': 'Orange Money / MTN MoMo',
+    },
+    'paymentComplete': {'en': 'Payment complete', 'fr': 'Paiement effectué'},
+    'payment': {'en': 'Payment', 'fr': 'Paiement'},
+    'noPaymentAdded': {'en': 'No payment added', 'fr': 'Aucun paiement ajouté'},
+    'printFailed': {'en': 'Print failed', 'fr': 'Échec de l\'impression'},
+    'incompletePayment': {
+      'en': 'Incomplete payment',
+      'fr': 'Paiement incomplet',
+    },
+    'saleError': {'en': 'Sale error', 'fr': 'Erreur de vente'},
   };
+
+  /// Returns the localized value of text 'noPaymentAdded'.
+  String get noPaymentAdded => _stringOfLocalizedValue('noPaymentAdded');
+
+  /// Returns the localized value of text 'printFailed'.
+  String get printFailed => _stringOfLocalizedValue('printFailed');
+
+  /// Returns the localized value of text 'incompletePayment'.
+  String get incompletePayment => _stringOfLocalizedValue('incompletePayment');
+
+  /// Returns the localized value of text 'saleError'.
+  String get saleError => _stringOfLocalizedValue('saleError');
+
+  /// Returns the localized value of text 'payment'.
+  String get payment => _stringOfLocalizedValue('payment');
+
+  /// Returns the localized value of text 'paymentComplete'.
+  String get paymentComplete => _stringOfLocalizedValue('paymentComplete');
+
+  /// Returns the localized value of text 'mobileMoneySubLabel'.
+  String get mobileMoneySubLabel =>
+      _stringOfLocalizedValue('mobileMoneySubLabel');
+
+  /// Returns the localized value of text 'totalToPay'.
+  String get totalToPay => _stringOfLocalizedValue('totalToPay');
+
+  /// Returns the localized value of text 'changeToGive'.
+  String get changeToGive => _stringOfLocalizedValue('changeToGive');
+
+  /// Returns the localized value of text 'modify'.
+  String get modify => _stringOfLocalizedValue('modify');
+
+  /// Returns the localized value of text 'taxIncluded'.
+  String get taxIncluded => _stringOfLocalizedValue('taxIncluded');
+
+  /// Returns the localized value of text 'unit'.
+  String get unit => _stringOfLocalizedValue('unit');
+
+  /// Returns the localized value of text 'confirmAndCollect'.
+  String get confirmAndCollect => _stringOfLocalizedValue('confirmAndCollect');
+
+  /// Returns the localized value of text 'verifyAmountWithCustomer'.
+  String get verifyAmountWithCustomer =>
+      _stringOfLocalizedValue('verifyAmountWithCustomer');
+
+  /// Returns the localized value of text 'orderConfirmation'.
+  String get orderConfirmation => _stringOfLocalizedValue('orderConfirmation');
+
+  /// Returns the localized value of text 'payInFull'.
+  String get payInFull => _stringOfLocalizedValue('payInFull');
+
+  /// Returns the localized value of text 'selectPaymentToSeeDetail'.
+  String get selectPaymentToSeeDetail =>
+      _stringOfLocalizedValue('selectPaymentToSeeDetail');
+
+  /// Returns the localized value of text 'noPaymentDescription'.
+  String get noPaymentDescription =>
+      _stringOfLocalizedValue('noPaymentDescription');
+
+  /// Returns the localized value of text 'noPayment'.
+  String get noPayment => _stringOfLocalizedValue('noPayment');
+
+  /// Returns the localized value of text 'validationFailed'.
+  String get validationFailed => _stringOfLocalizedValue('validationFailed');
+
+  /// Returns the localized value of text 'referenceNumber'.
+  String get referenceNumber => _stringOfLocalizedValue('referenceNumber');
+
+  /// Returns the localized value of text 'deleteConfirmationDescription'.
+  String get deleteConfirmationDescription =>
+      _stringOfLocalizedValue('deleteConfirmationDescription');
+
+  /// Returns the localized value of text 'deleteConfirmation'.
+  String get deleteConfirmation =>
+      _stringOfLocalizedValue('deleteConfirmation');
+
+  /// Returns the localized value of text 'receiver'.
+  String get receiver => _stringOfLocalizedValue('receiver');
+
+  /// Returns the localized value of text 'addPayment'.
+  String get addPayment => _stringOfLocalizedValue('addPayment');
+
+  /// Returns the localized value of text 'fromReveice'.
+  String get fromReveice => _stringOfLocalizedValue('fromReveice');
+
+  /// Returns the localized value of text 'quantityFromReceive'.
+  String get quantityFromReceive =>
+      _stringOfLocalizedValue('quantityFromReceive');
+
+  /// Returns the localized value of text 'unselectAll'.
+  String get unselectAll => _stringOfLocalizedValue('unselectAll');
+
+  /// Returns the localized value of text 'selectAll'.
+  String get selectAll => _stringOfLocalizedValue('selectAll');
+
+  /// Returns the localized value of text 'partialItemsReceivedChooseBillType'.
+  String get partialItemsReceivedChooseBillType =>
+      _stringOfLocalizedValue('partialItemsReceivedChooseBillType');
+
+  /// Returns the localized value of text 'allItemsReceivedChooseReceives'.
+  String get allItemsReceivedChooseReceives =>
+      _stringOfLocalizedValue('allItemsReceivedChooseReceives');
+
+  /// Returns the localized value of text 'convertToBill'.
+  String get yetToReceiveDescription =>
+      _stringOfLocalizedValue('yetToReceiveDescription');
+
+  /// Returns the localized value of text 'convertToBill'.
+  String get yetToReceive => _stringOfLocalizedValue('yetToReceive');
+
+  /// Returns the localized value of text 'convertToBill'.
+  String get receivesDescription =>
+      _stringOfLocalizedValue('receivesDescription');
+
+  /// Returns the localized value of text 'convertToBill'.
+  String get receives => _stringOfLocalizedValue('receives');
+
+  /// Returns the localized value of text 'pleaseSelectAtLeastOneReceive'.
+  String get pleaseSelectAtLeastOneReceive =>
+      _stringOfLocalizedValue('pleaseSelectAtLeastOneReceive');
+
+  /// Returns the localized value of text 'closed'.
+  String get closed => _stringOfLocalizedValue('closed');
+
+  /// Returns the localized value of text 'rejected_quantity_must_be_less_than_remaining'.
+  String get rejected_quantity_must_be_less_than_remaining =>
+      _stringOfLocalizedValue('rejected_quantity_must_be_less_than_remaining');
+
+  /// Returns the localized value of text 'received_quantity_must_be_less_than_remaining'.
+  String get received_quantity_must_be_less_than_remaining =>
+      _stringOfLocalizedValue('received_quantity_must_be_less_than_remaining');
+
+  /// Returns the localized value of text 'ordered'.
+  String get ordered => _stringOfLocalizedValue('ordered');
+
+  /// Returns the localized value of text 'rest'.
+  String get rest => _stringOfLocalizedValue('rest');
+
+  /// Returns the localized value of text 'saveTheReceiption'.
+  String get saveTheReceiption => _stringOfLocalizedValue('saveTheReceiption');
+
+  /// Returns the localized value of text 'receivedDate'.
+  String get receivedDate => _stringOfLocalizedValue('receivedDate');
+
+  /// Returns the localized value of text 'atLeastOneItemRequiredLabel'.
+  String get atLeastOneItemRequiredLabel =>
+      _stringOfLocalizedValue('atLeastOneItemRequiredLabel');
+
+  /// Returns the localized value of text 'rejected'.
+  String get rejected => _stringOfLocalizedValue('rejected');
+
+  /// Returns the localized value of text 'expected'.
+  String get expected => _stringOfLocalizedValue('expected');
+
+  /// Returns the localized value of text 'receip'.
+  String get receip => _stringOfLocalizedValue('receip');
+
+  /// Returns the localized value of text 'purchaseOrderSuccessfullCreate'.
+  String get purchaseOrderSuccessfullCreate =>
+      _stringOfLocalizedValue('purchaseOrderSuccessfullCreate');
+
+  /// Returns the localized value of text 'failedToCreateThePurchaseOrder'.
+  String get failedToCreateThePurchaseOrder =>
+      _stringOfLocalizedValue('failedToCreateThePurchaseOrder');
+
+  /// Returns the localized value of text 'newBillMessage'.
+  String get newBillMessage => _stringOfLocalizedValue('newBillMessage');
+
+  /// Returns the localized value of text 'remainAmountDu'.
+  String get remainAmountDu => _stringOfLocalizedValue('remainAmountDu');
+
+  /// Returns the localized value of text 'linkPurchaseOrder'.
+  String get linkPurchaseOrder => _stringOfLocalizedValue('linkPurchaseOrder');
+
+  /// Returns the localized value of text 'confirmPayment'.
+  String get confirmPayment => _stringOfLocalizedValue('confirmPayment');
+
+  /// Returns the localized value of text 'markAsPaid'.
+  String get markAsPaid => _stringOfLocalizedValue('markAsPaid');
+
+  /// Returns the localized value of text 'itemWillBeDelete'.
+  String get itemWillBeDelete => _stringOfLocalizedValue('itemWillBeDelete');
+
+  /// Returns the localized value of text 'deleteBill'.
+  String get deleteBill => _stringOfLocalizedValue('deleteBill');
+
+  /// Returns the localized value of text 'due'.
+  String get due => _stringOfLocalizedValue('due');
+
+  /// Returns the localized value of text 'noPaid'.
+  String get noPaid => _stringOfLocalizedValue('noPaid');
+
+  /// Returns the localized value of text 'result'.
+  String get result => _stringOfLocalizedValue('result');
+
+  /// Returns the localized value of text 'allSuppliersText'.
+  String get allSuppliersText => _stringOfLocalizedValue('allSuppliersText');
+
+  /// Returns the localized value of text 'invalidFormFields'.
+  String get invalidFormFields => _stringOfLocalizedValue('invalidFormFields');
+
+  /// Returns the localized value of text 'salesAndPurchaseInformation'.
+  String get salesAndPurchaseInformation =>
+      _stringOfLocalizedValue('salesAndPurchaseInformation');
+
+  /// Returns the localized value of text 'moreInformation'.
+  String get moreInformation => _stringOfLocalizedValue('moreInformation');
+
+  /// Returns the localized value of text 'stockSummary'.
+  String get stockSummary => _stringOfLocalizedValue('stockSummary');
+
+  /// Returns the localized value of text 'sellingPrince'.
+  String get sellingPrince => _stringOfLocalizedValue('sellingPrince');
+
+  /// Returns the localized value of text 'pruchaseCost'.
+  String get pruchaseCost => _stringOfLocalizedValue('pruchaseCost');
+
+  /// Returns the localized value of text 'movement'.
+  String get movement => _stringOfLocalizedValue('movement');
+
+  /// Returns the localized value of text 'sale'.
+  String get expiration => _stringOfLocalizedValue('expiration');
+
+  /// Returns the localized value of text 'buy'.
+  String get buy => _stringOfLocalizedValue('buy');
+
+  /// Returns the localized value of text 'reorderThreshold'.
+  String get reorderThreshold => _stringOfLocalizedValue('reorderThreshold');
+
+  /// Returns the localized value of text 'allProductsAreWellStockedMessage'.
+  String get allProductsAreWellStockedMessage =>
+      _stringOfLocalizedValue('allProductsAreWellStockedMessage');
+
+  /// Returns the localized value of text 'online'.
+  String get online => _stringOfLocalizedValue('online');
+
+  /// Returns the localized value of text 'justNow'.
+  String get justNow => _stringOfLocalizedValue('justNow');
+
+  /// Returns the localized value of text 'minutesAgo'.
+  String get minutesAgo => _stringOfLocalizedValue('minutesAgo');
+
+  /// Returns the localized value of text 'hoursAgo'.
+  String get hoursAgo => _stringOfLocalizedValue('hoursAgo');
+
+  /// Returns the localized value of text 'daysAgo'.
+  String get daysAgo => _stringOfLocalizedValue('daysAgo');
+
+  /// Returns the localized value of text 'nonLue'.
+  String get nonLue => _stringOfLocalizedValue('nonLue');
+
+  /// Returns the localized value of text 'monday'.
+  String get monday => _stringOfLocalizedValue('monday');
+
+  /// Returns the localized value of text 'tuesday'.
+  String get tuesday => _stringOfLocalizedValue('tuesday');
+
+  /// Returns the localized value of text 'wednesday'.
+  String get wednesday => _stringOfLocalizedValue('wednesday');
+
+  /// Returns the localized value of text 'thursday'.
+  String get thursday => _stringOfLocalizedValue('thursday');
+
+  /// Returns the localized value of text 'friday'.
+  String get friday => _stringOfLocalizedValue('friday');
+
+  /// Returns the localized value of text 'saturday'.
+  String get saturday => _stringOfLocalizedValue('saturday');
+
+  /// Returns the localized value of text 'sunday'.
+  String get sunday => _stringOfLocalizedValue('sunday');
+
+  /// Returns the localized value of text 'january'.
+  String get january => _stringOfLocalizedValue('january');
+
+  /// Returns the localized value of text 'february'.
+  String get february => _stringOfLocalizedValue('february');
+
+  /// Returns the localized value of text 'march'.
+  String get march => _stringOfLocalizedValue('march');
+
+  /// Returns the localized value of text 'april'.
+  String get april => _stringOfLocalizedValue('april');
+
+  /// Returns the localized value of text 'may'.
+  String get may => _stringOfLocalizedValue('may');
+
+  /// Returns the localized value of text 'june'.
+  String get june => _stringOfLocalizedValue('june');
+
+  /// Returns the localized value of text 'july'.
+  String get july => _stringOfLocalizedValue('july');
+
+  /// Returns the localized value of text 'august'.
+  String get august => _stringOfLocalizedValue('august');
+
+  /// Returns the localized value of text 'september'.
+  String get september => _stringOfLocalizedValue('september');
+
+  /// Returns the localized value of text 'october'.
+  String get october => _stringOfLocalizedValue('october');
+
+  /// Returns the localized value of text 'november'.
+  String get november => _stringOfLocalizedValue('november');
+
+  /// Returns the localized value of text 'december'.
+  String get december => _stringOfLocalizedValue('december');
+
+  /// Returns the localized value of text 'morning'.
+  String get morning => _stringOfLocalizedValue('morning');
+
+  /// Returns the localized value of text 'evening'.
+  String get evening => _stringOfLocalizedValue('evening');
+
+  /// Returns the localized value of text 'afternoon'.
+  String get afternoon => _stringOfLocalizedValue('afternoon');
+
+  /// Returns the localized value of text 'loadingProlile'.
+  String get loadingProlile => _stringOfLocalizedValue('loadingProlile');
+
+  /// Returns the localized value of text 'contactAdmin'.
+  String get contactAdmin => _stringOfLocalizedValue('contactAdmin');
+
+  /// Returns the localized value of text 'support'.
+  String get support => _stringOfLocalizedValue('support');
+
+  /// Returns the localized value of text 'phone'.
+  String get phone => _stringOfLocalizedValue('phone');
+
+  /// Returns the localized value of text 'yourAreNotAssociatedWithAnyBusinessMessage'.
+  String get yourAreNotAssociatedWithAnyBusinessMessage =>
+      _stringOfLocalizedValue('yourAreNotAssociatedWithAnyBusinessMessage');
+
+  /// Returns the localized value of text 'offlineUserNotFound'.
+  String get offlineUserNotFound =>
+      _stringOfLocalizedValue('offlineUserNotFound');
+
+  /// Returns the localized value of text 'noConnection'.
+  String get noConnection => _stringOfLocalizedValue('noConnection');
+
+  /// Returns the localized value of text 'accountDisabled'.
+  String get accountDisabled => _stringOfLocalizedValue('accountDisabled');
+
+  /// Returns the localized value of text 'serverError'.
+  String get serverError => _stringOfLocalizedValue('serverError');
+
+  /// Returns the localized value of text 'invalidEmailOrPassword'.
+  String get invalidEmailOrPassword =>
+      _stringOfLocalizedValue('invalidEmailOrPassword');
+
+  /// Returns the localized value of text 'nonPerishable'.
+  String get nonPerishable => _stringOfLocalizedValue('nonPerishable');
+
+  /// Returns the localized value of text 'productLevel'.
+  String get productLevel => _stringOfLocalizedValue('productLevel');
+
+  /// Returns the localized value of text 'lotLevel'.
+  String get lotLevel => _stringOfLocalizedValue('lotLevel');
 
   /// Returns the localized value of text 'availableForSale'.
   String get availableForSale => _stringOfLocalizedValue('availableForSale');
@@ -2176,9 +3069,6 @@ class AppInternationalizationService extends ChangeNotifier {
 
   /// Returns the localized value of text 'notAvailable'.
   String get notAvailable => _stringOfLocalizedValue('notAvailable');
-
-  /// Returns the localized value of text 'primaryDetails'.
-  String get primaryDetails => _stringOfLocalizedValue('primaryDetails');
 
   /// Returns the localized value of text 'returnIn'.
   String get returnIn => _stringOfLocalizedValue('returnIn');
@@ -2291,6 +3181,14 @@ class AppInternationalizationService extends ChangeNotifier {
 
   /// The initial stock.
   String get initialStock => _stringOfLocalizedValue('initialStock');
+
+  /// The opening stock per unit text.
+  String get openingStockPerUnit =>
+      _stringOfLocalizedValue('openingStockPerUnit');
+
+  /// The default purchase price text.
+  String get defaultPurchasePrice =>
+      _stringOfLocalizedValue('defaultPurchasePrice');
 
   /// The reorder point.
   String get reorderPoint => _stringOfLocalizedValue('reorderPoint');
@@ -2425,7 +3323,7 @@ class AppInternationalizationService extends ChangeNotifier {
   String get quantity => _stringOfLocalizedValue('quantity');
 
   /// The document id.
-  String get documentId => _stringOfLocalizedValue('documentId');
+  String get refId => _stringOfLocalizedValue('refId');
 
   /// The product id.
   String get productId => _stringOfLocalizedValue('productId');
@@ -2643,8 +3541,219 @@ class AppInternationalizationService extends ChangeNotifier {
   /// The purchase orders.
   String get purchaseOrders => _stringOfLocalizedValue('purchaseOrders');
 
-  /// The amount change given.
+  /// The purchases section label.
+  String get purchases => _stringOfLocalizedValue('purchases');
+
+  /// The purchase receives label.
+  String get purchaseReceives => _stringOfLocalizedValue('purchaseReceives');
+
+  /// The bills label.
+  String get bills => _stringOfLocalizedValue('bills');
+
+  /// The bill detail label.
+  String get billDetail => _stringOfLocalizedValue('billDetail');
+
+  /// Create bill label.
+  String get createBill => _stringOfLocalizedValue('createBill');
+
+  /// Generate bill label.
+  String get generateBill => _stringOfLocalizedValue('generateBill');
+
+  /// Due date label.
+  String get dueDateLabel => _stringOfLocalizedValue('dueDateLabel');
+
+  /// Bill status open label.
+  String get billStatusOpen => _stringOfLocalizedValue('billStatusOpen');
+
+  /// Returns the localized value of text 'newPurchaseOrder'.
+  String get newPurchaseOrder => _stringOfLocalizedValue('newPurchaseOrder');
+
+  /// Returns the localized value of text 'draft'.
+  String get draft => _stringOfLocalizedValue('draft');
+
+  /// Returns the localized value of text 'received'.
   String get received => _stringOfLocalizedValue('received');
+
+  /// Returns the localized value of text 'searchPurchaseOrder'.
+  String get searchPurchaseOrder =>
+      _stringOfLocalizedValue('searchPurchaseOrder');
+
+  /// Returns the localized value of text 'clickPurchaseOrderToSeeDetails'.
+  String get clickPurchaseOrderToSeeDetails =>
+      _stringOfLocalizedValue('clickPurchaseOrderToSeeDetails');
+
+  /// Returns the localized value of text 'noPurchaseOrders'.
+  String get noPurchaseOrders => _stringOfLocalizedValue('noPurchaseOrders');
+
+  /// Returns the localized value of text 'noResults'.
+  String get noResults => _stringOfLocalizedValue('noResults');
+
+  /// Returns the localized value of text 'modifyFilters'.
+  String get modifyFilters => _stringOfLocalizedValue('modifyFilters');
+
+  /// Returns the localized value of text 'createFirstPurchaseOrder'.
+  String get createFirstPurchaseOrder =>
+      _stringOfLocalizedValue('createFirstPurchaseOrder');
+
+  /// Returns the localized value of text 'supplierPlaceholder'.
+  String get supplierPlaceholder =>
+      _stringOfLocalizedValue('supplierPlaceholder');
+
+  /// Returns the localized value of text 'deliveryAddress'.
+  String get deliveryAddress => _stringOfLocalizedValue('deliveryAddress');
+
+  /// Returns the localized value of text 'items'.
+  String get items => _stringOfLocalizedValue('items');
+
+  /// Returns the localized value of text 'orderedItems'.
+  String get orderedItems => _stringOfLocalizedValue('orderedItems');
+
+  /// Returns the localized value of text 'addItem'.
+  String get addItem => _stringOfLocalizedValue('addItem');
+
+  /// Returns the localized value of text 'generate'.
+  String get generate => _stringOfLocalizedValue('generate');
+
+  /// Returns the localized value of text 'generateBillQuestion'.
+  String get generateBillQuestion =>
+      _stringOfLocalizedValue('generateBillQuestion');
+
+  /// Returns the localized value of text 'billWillBeCreated'.
+  String get billWillBeCreated => _stringOfLocalizedValue('billWillBeCreated');
+
+  /// Returns the localized value of text 'downloadPDF'.
+  String get downloadPDF => _stringOfLocalizedValue('downloadPDF');
+
+  /// Returns the localized value of text 'print'.
+  String get print => _stringOfLocalizedValue('print');
+
+  /// Returns the localized value of text 'clone'.
+  String get clone => _stringOfLocalizedValue('clone');
+
+  /// Returns the localized value of text 'cancelOrder'.
+  String get cancelOrder => _stringOfLocalizedValue('cancelOrder');
+
+  /// Returns the localized value of text 'cancelPurchaseOrderQuestion'.
+  String get cancelPurchaseOrderQuestion =>
+      _stringOfLocalizedValue('cancelPurchaseOrderQuestion');
+
+  /// Returns the localized value of text 'thisActionIsIrreversible'.
+  String get thisActionIsIrreversible =>
+      _stringOfLocalizedValue('thisActionIsIrreversible');
+
+  /// Returns the localized value of text 'no'.
+  String get no => _stringOfLocalizedValue('no');
+
+  /// Returns the localized value of text 'confirmCancellation'.
+  String get confirmCancellation =>
+      _stringOfLocalizedValue('confirmCancellation');
+
+  /// Returns the localized value of text 'receive'.
+  String get receive => _stringOfLocalizedValue('receive');
+
+  /// Returns the localized value of text 'receivals'.
+  String get receivals => _stringOfLocalizedValue('receivals');
+
+  /// Returns the localized value of text 'totalAmountIncludingTax'.
+  String get totalAmountIncludingTax =>
+      _stringOfLocalizedValue('totalAmountIncludingTax');
+
+  /// Returns the localized value of text 'order'.
+  String get order => _stringOfLocalizedValue('order');
+
+  /// Returns the localized value of text 'expectedDelivery'.
+  String get expectedDelivery => _stringOfLocalizedValue('expectedDelivery');
+
+  /// Returns the localized value of text 'details'.
+  String get details => _stringOfLocalizedValue('details');
+
+  /// Returns the localized value of text 'deliveryTo'.
+  String get deliveryTo => _stringOfLocalizedValue('deliveryTo');
+
+  /// Returns the localized value of text 'subtotalHT'.
+  String get subtotalHT => _stringOfLocalizedValue('subtotalHT');
+
+  /// Returns the localized value of text 'productHeader'.
+  String get productHeader => _stringOfLocalizedValue('productHeader');
+
+  /// Returns the localized value of text 'amountHeader'.
+  String get amountHeader => _stringOfLocalizedValue('amountHeader');
+
+  /// Returns the localized value of text 'totalTTC'.
+  String get totalTTC => _stringOfLocalizedValue('totalTTC');
+
+  /// Returns the localized value of text 'receivedCount'.
+  String get receivedCount => _stringOfLocalizedValue('receivedCount');
+
+  /// Returns the localized value of text 'rejectedCount'.
+  String get rejectedCount => _stringOfLocalizedValue('rejectedCount');
+
+  /// Returns the localized value of text 'differences'.
+  String get differences => _stringOfLocalizedValue('differences');
+
+  /// Returns the localized value of text 'linkedBills'.
+  String get linkedBills => _stringOfLocalizedValue('linkedBills');
+
+  /// Returns the localized value of text 'noBillForPurchaseOrder'.
+  String get noBillForPurchaseOrder =>
+      _stringOfLocalizedValue('noBillForPurchaseOrder');
+
+  /// Returns the localized value of text 'receivingNotes'.
+  String get receivingNotes => _stringOfLocalizedValue('receivingNotes');
+
+  /// Returns the localized value of text 'noReceivingRecorded'.
+  String get noReceivingRecorded =>
+      _stringOfLocalizedValue('noReceivingRecorded');
+
+  /// Returns the localized value of text 'impossibleToLoadPurchaseOrderData'.
+  String get impossibleToLoadPurchaseOrderData =>
+      _stringOfLocalizedValue('impossibleToLoadPurchaseOrderData');
+
+  /// Returns the localized value of text 'impossibleToRecordReceiving'.
+  String get impossibleToRecordReceiving =>
+      _stringOfLocalizedValue('impossibleToRecordReceiving');
+
+  /// Returns the localized value of text 'receivingRecorded'.
+  String get receivingRecorded => _stringOfLocalizedValue('receivingRecorded');
+
+  /// Returns the localized value of text 'impossibleToGenerateBill'.
+  String get impossibleToGenerateBill =>
+      _stringOfLocalizedValue('impossibleToGenerateBill');
+
+  /// Returns the localized value of text 'billGenerated'.
+  String get billGenerated => _stringOfLocalizedValue('billGenerated');
+
+  /// Returns the localized value of text 'impossibleToCancelPurchaseOrder'.
+  String get impossibleToCancelPurchaseOrder =>
+      _stringOfLocalizedValue('impossibleToCancelPurchaseOrder');
+
+  /// Returns the localized value of text 'purchaseOrderCancelled'.
+  String get purchaseOrderCancelled =>
+      _stringOfLocalizedValue('purchaseOrderCancelled');
+
+  /// Returns the localized value of text 'impossibleToUpdateStatus'.
+  String get impossibleToUpdateStatus =>
+      _stringOfLocalizedValue('impossibleToUpdateStatus');
+
+  /// Bill status paid label.
+  String get billStatusPaid => _stringOfLocalizedValue('billStatusPaid');
+
+  /// Bill status overdue label.
+  String get billStatusOverdue => _stringOfLocalizedValue('billStatusOverdue');
+
+  /// No bills found label.
+  String get noBillsFound => _stringOfLocalizedValue('noBillsFound');
+
+  /// No receiving notes found label.
+  String get noReceivingNotesFound =>
+      _stringOfLocalizedValue('noReceivingNotesFound');
+
+  /// Convert to bill label.
+  String get convertToBill => _stringOfLocalizedValue('convertToBill');
+
+  /// Receiving note detail label.
+  String get receivingNoteDetail =>
+      _stringOfLocalizedValue('receivingNoteDetail');
 
   /// The amount change given.
   String get given => _stringOfLocalizedValue('given');
@@ -2761,9 +3870,6 @@ class AppInternationalizationService extends ChangeNotifier {
 
   /// The fully used.
   String get fullyUsed => _stringOfLocalizedValue('fullyUsed');
-
-  /// The draft.
-  String get draft => _stringOfLocalizedValue('draft');
 
   /// The unpaid.
   String get unpaid => _stringOfLocalizedValue('unpaid');
@@ -2992,12 +4098,111 @@ class AppInternationalizationService extends ChangeNotifier {
 
   /// The orange money.
   String get orangeMoney => _stringOfLocalizedValue('orangeMoney');
+  String get mtnMoMo => _stringOfLocalizedValue('mtnMoMo');
+  String get creditCard => _stringOfLocalizedValue('creditCard');
+  String get balanceDue => _stringOfLocalizedValue('balanceDue');
+  String get newPayment => _stringOfLocalizedValue('newPayment');
+  String get createPayment => _stringOfLocalizedValue('createPayment');
+  String get payments => _stringOfLocalizedValue('payments');
+  String get amountExceedsBalanceDue =>
+      _stringOfLocalizedValue('amountExceedsBalanceDue');
+  String get paymentMade => _stringOfLocalizedValue('paymentMade');
 
   /// The mtn money.
   String get mtnMoney => _stringOfLocalizedValue('mtnMoney');
 
   /// The unknown.
   String get unknown => _stringOfLocalizedValue('unknown');
+
+  /// The search bill.
+  String get searchBill => _stringOfLocalizedValue('searchBill');
+
+  /// The select bill.
+  String get selectBill => _stringOfLocalizedValue('selectBill');
+
+  /// The click bill to see details.
+  String get clickBillToSeeDetails =>
+      _stringOfLocalizedValue('clickBillToSeeDetails');
+
+  /// The no bill.
+  String get noBill => _stringOfLocalizedValue('noBill');
+
+  /// The bills will appear here.
+  String get billsWillAppearHere =>
+      _stringOfLocalizedValue('billsWillAppearHere');
+
+  /// The new bill.
+  String get newBill => _stringOfLocalizedValue('newBill');
+
+  /// The bill creation description.
+  String get billCreationDescription =>
+      _stringOfLocalizedValue('billCreationDescription');
+
+  /// The close.
+  String get close => _stringOfLocalizedValue('close');
+
+  /// The unknown error.
+  String get unknownError => _stringOfLocalizedValue('unknownError');
+
+  /// The impossible to create bill.
+  String get impossibleToCreateBill =>
+      _stringOfLocalizedValue('impossibleToCreateBill');
+
+  /// The impossible to delete bill.
+  String get impossibleToDeleteBill =>
+      _stringOfLocalizedValue('impossibleToDeleteBill');
+
+  /// The bill with payments cannot be deleted.
+  String get billWithPaymentsCannotBeDeleted =>
+      _stringOfLocalizedValue('billWithPaymentsCannotBeDeleted');
+
+  /// The impossible to mark as paid.
+  String get impossibleToMarkAsPaid =>
+      _stringOfLocalizedValue('impossibleToMarkAsPaid');
+
+  /// The impossible to void bill.
+  String get impossibleToVoidBill =>
+      _stringOfLocalizedValue('impossibleToVoidBill');
+
+  /// The due date.
+  String get dueDate => _stringOfLocalizedValue('dueDate');
+
+  /// The TVA.
+  String get tva => _stringOfLocalizedValue('tva');
+
+  // Month getters
+  /// The jan.
+  String get jan => _stringOfLocalizedValue('jan');
+
+  /// The feb.
+  String get feb => _stringOfLocalizedValue('feb');
+
+  /// The mar.
+  String get mar => _stringOfLocalizedValue('mar');
+
+  /// The apr.
+  String get apr => _stringOfLocalizedValue('apr');
+
+  /// The jun.
+  String get jun => _stringOfLocalizedValue('jun');
+
+  /// The jul.
+  String get jul => _stringOfLocalizedValue('jul');
+
+  /// The aug.
+  String get aug => _stringOfLocalizedValue('aug');
+
+  /// The sep.
+  String get sep => _stringOfLocalizedValue('sep');
+
+  /// The oct.
+  String get oct => _stringOfLocalizedValue('oct');
+
+  /// The nov.
+  String get nov => _stringOfLocalizedValue('nov');
+
+  /// The dec.
+  String get dec => _stringOfLocalizedValue('dec');
 
   /// The invoices history.
   String get invoicesHistory => _stringOfLocalizedValue('invoicesHistory');
@@ -3116,9 +4321,6 @@ class AppInternationalizationService extends ChangeNotifier {
 
   /// The initiated by.
   String get initiatedBy => _stringOfLocalizedValue('initiatedBy');
-
-  /// The order.
-  String get order => _stringOfLocalizedValue('order');
 
   /// The transactions history.
   String get transactionsHistory =>
@@ -3469,9 +4671,6 @@ class AppInternationalizationService extends ChangeNotifier {
 
   /// Returns the localized value of text 'dateAndTime'.
   String get dateAndTime => _stringOfLocalizedValue('dateAndTime');
-
-  /// Returns the localized value of text 'items'.
-  String get items => _stringOfLocalizedValue('items');
 
   /// Returns the localized value of text 'total'.
   String get total => _stringOfLocalizedValue('total');
@@ -3839,9 +5038,6 @@ class AppInternationalizationService extends ChangeNotifier {
   /// Returns the localized value of text 'update'.
   String get update => _stringOfLocalizedValue('update');
 
-  /// Returns the localized value of text 'close'.
-  String get close => _stringOfLocalizedValue('close');
-
   /// Returns the localized value of text 'description'.
   String get description => _stringOfLocalizedValue('description');
 
@@ -3881,9 +5077,6 @@ class AppInternationalizationService extends ChangeNotifier {
 
   /// Returns the localized value of text 'yes'.
   String get yes => _stringOfLocalizedValue('yes');
-
-  /// Returns the localized value of text 'no'.
-  String get no => _stringOfLocalizedValue('no');
 
   /// Returns the localized value of text 'logoutMessage'.
   String get logoutMessage => _stringOfLocalizedValue('logoutMessage');
@@ -4632,10 +5825,6 @@ class AppInternationalizationService extends ChangeNotifier {
   /// Returns the localized value of deleteUser.
   String get deleteUser => _stringOfLocalizedValue('deleteUser');
 
-  /// Returns the localized value of thisActionIsIrreversible.
-  String get thisActionIsIrreversible =>
-      _stringOfLocalizedValue('thisActionIsIrreversible');
-
   /// Returns the localized value of userWillBeRemovedPermanently.
   String get userWillBeRemovedPermanently =>
       _stringOfLocalizedValue('userWillBeRemovedPermanently');
@@ -5089,12 +6278,167 @@ class AppInternationalizationService extends ChangeNotifier {
   /// Returns the localized value of viewTransactions.
   String get viewTransactions => _stringOfLocalizedValue('viewTransactions');
 
+  /// Returns the localized value of text 'editBill'.
+  String get editBill => _stringOfLocalizedValue('editBill');
+
+  /// Returns the localized value of text 'fromPurchaseOrder'.
+  String get fromPurchaseOrder => _stringOfLocalizedValue('fromPurchaseOrder');
+
+  /// Returns the localized value of text 'generalInfo'.
+  String get generalInfo => _stringOfLocalizedValue('generalInfo');
+
+  /// Returns the localized value of text 'purchaseOrderRef'.
+  String get purchaseOrderRef => _stringOfLocalizedValue('purchaseOrderRef');
+
+  /// Returns the localized value of text 'purchaseOrderRefHint'.
+  String get purchaseOrderRefHint =>
+      _stringOfLocalizedValue('purchaseOrderRefHint');
+
+  /// Returns the localized value of text 'supplierIdHint'.
+  String get supplierIdHint => _stringOfLocalizedValue('supplierIdHint');
+
+  /// Returns the localized value of text 'supplierRequired'.
+  String get supplierRequired => _stringOfLocalizedValue('supplierRequired');
+
+  /// Returns the localized value of text 'lockedFromPO'.
+  String get lockedFromPO => _stringOfLocalizedValue('lockedFromPO');
+
+  /// Returns the localized value of text 'billDate'.
+  String get billDate => _stringOfLocalizedValue('billDate');
+
+  /// Returns the localized value of text 'atLeastOneItemRequired'.
+  String get atLeastOneItemRequired =>
+      _stringOfLocalizedValue('atLeastOneItemRequired');
+
+  /// Returns the localized value of text 'invalidQuantity'.
+  String get invalidQuantity => _stringOfLocalizedValue('invalidQuantity');
+
+  /// Returns the localized value of text 'invalidPrice'.
+  String get invalidPrice => _stringOfLocalizedValue('invalidPrice');
+
+  /// Returns the localized value of text 'qty'.
+  String get qty => _stringOfLocalizedValue('qty');
+
+  /// Returns the localized value of text 'unitPrice'.
+  String get unitPrice => _stringOfLocalizedValue('unitPrice');
+
+  /// Returns the localized value of text 'taxAbbr'.
+  String get taxAbbr => _stringOfLocalizedValue('taxAbbr');
+
+  /// Returns the localized value of text 'subTotal'.
+  String get subTotal => _stringOfLocalizedValue('subTotal');
+
+  /// Returns the localized value of text 'taxTotal'.
+  String get taxTotal => _stringOfLocalizedValue('taxTotal');
+
+  /// Returns the localized value of text 'notesHint'.
+  String get notesHint => _stringOfLocalizedValue('notesHint');
+
+  /// Returns the localized value of text 'searchProductHint'.
+  String get searchProductHint => _stringOfLocalizedValue('searchProductHint');
+
+  /// Returns the localized value of text 'failedToCreateBill'.
+  String get failedToCreateBill =>
+      _stringOfLocalizedValue('failedToCreateBill');
+
+  /// Returns the localized value of text 'failedToUpdateBill'.
+  String get failedToUpdateBill =>
+      _stringOfLocalizedValue('failedToUpdateBill');
+
   /// Returns the localized value of createTransactions.
   String get createTransactions =>
       _stringOfLocalizedValue('createTransactions');
 
   /// Returns the localized value of editTransactions.
   String get editTransactions => _stringOfLocalizedValue('editTransactions');
+
+  /// Returns the localized value of text 'receptions'.
+  String get receptions => _stringOfLocalizedValue('receptions');
+
+  /// Returns the localized value of text 'readOnly'.
+  String get readOnly => _stringOfLocalizedValue('readOnly');
+
+  /// Returns the localized value of text 'conformes'.
+  String get conformes => _stringOfLocalizedValue('conformes');
+
+  /// Returns the localized value of text 'ecarts'.
+  String get ecarts => _stringOfLocalizedValue('ecarts');
+
+  /// Returns the localized value of text 'compliant'.
+  String get compliant => _stringOfLocalizedValue('compliant');
+
+  /// Returns the localized value of text 'withIssues'.
+  String get withIssues => _stringOfLocalizedValue('withIssues');
+
+  /// Returns the localized value of text 'searchReceivingNoteHint'.
+  String get searchReceivingNoteHint =>
+      _stringOfLocalizedValue('searchReceivingNoteHint');
+
+  /// Returns the localized value of text 'selectAReceivingNote'.
+  String get selectAReceivingNote =>
+      _stringOfLocalizedValue('selectAReceivingNote');
+
+  /// Returns the localized value of text 'clickOnReceivingNoteForDetails'.
+  String get clickOnReceivingNoteForDetails =>
+      _stringOfLocalizedValue('clickOnReceivingNoteForDetails');
+
+  /// Returns the localized value of text 'modifyFiltersForMoreResults'.
+  String get modifyFiltersForMoreResults =>
+      _stringOfLocalizedValue('modifyFiltersForMoreResults');
+
+  /// Returns the localized value of text 'receivingNotesCreatedFromPos'.
+  String get receivingNotesCreatedFromPos =>
+      _stringOfLocalizedValue('receivingNotesCreatedFromPos');
+
+  /// Returns the localized value of text 'receivedItems'.
+  String get receivedItems => _stringOfLocalizedValue('receivedItems');
+
+  /// Returns the localized value of text 'receivedPlural'.
+  String get receivedPlural => _stringOfLocalizedValue('receivedPlural');
+
+  /// Returns the localized value of text 'rejectedPlural'.
+  String get rejectedPlural => _stringOfLocalizedValue('rejectedPlural');
+
+  /// Returns the localized value of text 'lines'.
+  String get lines => _stringOfLocalizedValue('lines');
+
+  /// Returns the localized value of text 'receptionDate'.
+  String get receptionDate => _stringOfLocalizedValue('receptionDate');
+
+  /// Returns the localized value of text 'creationDate'.
+  String get creationDate => _stringOfLocalizedValue('creationDate');
+
+  /// Returns the localized value of text 'receivedBy'.
+  String get receivedBy => _stringOfLocalizedValue('receivedBy');
+
+  /// Returns the localized value of text 'linkedPurchaseOrder'.
+  String get linkedPurchaseOrder =>
+      _stringOfLocalizedValue('linkedPurchaseOrder');
+
+  /// Returns the localized value of text 'expirationAbbr'.
+  String get expirationAbbr => _stringOfLocalizedValue('expirationAbbr');
+
+  /// Returns the localized value of text 'batchAbbr'.
+  String get batchAbbr => _stringOfLocalizedValue('batchAbbr');
+
+  /// Returns the localized value of text 'percentReceived'.
+  String get percentReceived => _stringOfLocalizedValue('percentReceived');
+
+  /// Returns the localized value of text 'receivingNoteNotFound'.
+  String get receivingNoteNotFound =>
+      _stringOfLocalizedValue('receivingNoteNotFound');
+
+  /// Returns the localized value of text 'backToSignIn'.
+  String get backToSignIn => _stringOfLocalizedValue('backToSignIn');
+
+  /// Returns the localized value of text 'pleaseSignInAgain'.
+  String get pleaseSignInAgain => _stringOfLocalizedValue('pleaseSignInAgain');
+
+  /// Returns the localized value of text 'sessionExpired'.
+  String get sessionExpired => _stringOfLocalizedValue('sessionExpired');
+
+  /// Returns the localized value of text 'noUserFound'.
+  String get noUserFound => _stringOfLocalizedValue('noUserFound');
 
   /// Changes the locale.
   void changeLocale([Locale? newLocale]) {

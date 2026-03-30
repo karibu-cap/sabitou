@@ -128,9 +128,9 @@ components:
     logistic.v1.DeliveryNote:
       type: object
       properties:
-        documentId:
+        refId:
           type: string
-          title: document_id
+          title: ref_id
           description: '"DN-2025-001"'
         relatedSalesOrderId:
           type: string
@@ -180,7 +180,7 @@ components:
           title: notes
       title: DeliveryNote
       required:
-        - documentId
+        - refId
       additionalProperties: false
       description: |-
         *

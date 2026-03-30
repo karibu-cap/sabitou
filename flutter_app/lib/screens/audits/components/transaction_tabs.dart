@@ -13,9 +13,6 @@ class TransactionTabs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = context.watch<AuditsController>();
-    final activeTab = controller.activeTab;
-
     return const Expanded(child: ShadCard(child: _TransactionList()));
   }
 }
@@ -69,9 +66,9 @@ class _TransactionCard<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     String _getTransactionDocumentId() {
       if (transaction is InventoryTransaction) {
-        return (transaction as InventoryTransaction).documentId;
+        return (transaction as InventoryTransaction).refId;
       } else if (transaction is VoucherTransaction) {
-        return (transaction as VoucherTransaction).documentId;
+        return (transaction as VoucherTransaction).refId;
       }
 
       return 'N/A';
@@ -189,7 +186,7 @@ class _TransactionCard<T> extends StatelessWidget {
 
 /// Empty state widget when no transactions are found
 class _EmptyTransactionState extends StatelessWidget {
-  const _EmptyTransactionState({super.key});
+  const _EmptyTransactionState();
 
   @override
   Widget build(BuildContext context) {

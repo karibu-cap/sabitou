@@ -3,23 +3,23 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 /// Auth fake transport.
 final authFakeTransport = FakeTransportBuilder()
     .unary(BusinessService.getBusinessMember, (req, __) async {
-      return GetBusinessMemberResponse()
-        ..businessMember = BusinessMember()
-        ..businessMember.user = User()
-        ..businessMember.user.refId = 'user_1'
-        ..businessMember.user.firstName = 'Marie'
-        ..businessMember.user.lastName = 'Martin'
-        ..businessMember.user.email = 'marie.martin@sabitou.com'
-        ..businessMember.user.phoneNumber = '696234567'
-        ..businessMember.user.userName = 'marie.martin'
-        ..businessMember.user.accountStatus =
-            AccountStatusType.ACCOUNT_STATUS_TYPE_ACTIVE
-        ..businessMember.businessId = req.businessId
-        ..businessMember.memberSince = Timestamp.fromDateTime(
-          DateTime(2023, 3, 15),
-        )
-        ..businessMember.status =
-            BusinessMemberStatus.BUSINESS_MEMBER_STATUS_ACTIVE;
+      return GetBusinessMemberResponse();
+      //..businessMember = BusinessMember()
+      // ..businessMember.user = User()
+      // ..businessMember.user.refId = 'user_1'
+      // ..businessMember.user.firstName = 'Marie'
+      // ..businessMember.user.lastName = 'Martin'
+      // ..businessMember.user.email = 'marie.martin@sabitou.com'
+      // ..businessMember.user.phoneNumber = '696234567'
+      // ..businessMember.user.userName = 'marie.martin'
+      // ..businessMember.user.accountStatus =
+      //     AccountStatusType.ACCOUNT_STATUS_TYPE_ACTIVE
+      // ..businessMember.businessId = req.businessId
+      // ..businessMember.memberSince = Timestamp.fromDateTime(
+      //   DateTime(2023, 3, 15),
+      // )
+      // ..businessMember.status =
+      //     BusinessMemberStatus.BUSINESS_MEMBER_STATUS_ACTIVE;
     })
     .unary(AuthService.register, (req, _) async {
       return RegisterResponse()
@@ -70,20 +70,20 @@ final authFakeTransport = FakeTransportBuilder()
     })
     .unary(StoreService.getStoreMember, (req, __) async {
       return GetStoreMemberResponse()
-        ..storeMember = StoreMember()
-        ..storeMember.user = User()
-        ..storeMember.user.refId = 'user_1'
-        ..storeMember.user.firstName = 'Marie'
-        ..storeMember.user.lastName = 'Martin'
-        ..storeMember.user.email = 'marie.martin@sabitou.com'
-        ..storeMember.user.phoneNumber = '696234567'
-        ..storeMember.user.userName = 'marie.martin'
-        ..storeMember.user.accountStatus =
-            AccountStatusType.ACCOUNT_STATUS_TYPE_ACTIVE
-        ..storeMember.storeId = req.storeId
-        ..storeMember.memberSince = Timestamp.fromDateTime(
-          DateTime(2023, 3, 15),
-        )
+        // ..storeMember = StoreMember()
+        // ..storeMember.user = User()
+        // ..storeMember.user.refId = 'user_1'
+        // ..storeMember.user.firstName = 'Marie'
+        // ..storeMember.user.lastName = 'Martin'
+        // ..storeMember.user.email = 'marie.martin@sabitou.com'
+        // ..storeMember.user.phoneNumber = '696234567'
+        // ..storeMember.user.userName = 'marie.martin'
+        // ..storeMember.user.accountStatus =
+        //     AccountStatusType.ACCOUNT_STATUS_TYPE_ACTIVE
+        // ..storeMember.storeId = req.storeId
+        // ..storeMember.memberSince = Timestamp.fromDateTime(
+        //   DateTime(2023, 3, 15),
+        // )
         ..storeMember.status = StoreMemberStatus.STORE_MEMBER_STATUS_ACTIVE
         ..storeMember.permissions = StorePermissions()
         ..storeMember.permissions.member = StoreMemberPermission()
