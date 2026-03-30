@@ -83,6 +83,9 @@ final class CollectionName {
   /// The cash receipts collection.
   static const String cashReceipts = 'cash_receipts';
 
+  /// The cash receipt items collection.
+  static const String cashReceiptItems = 'cash_receipt_items';
+
   /// The inventory level collection.
   static const String inventoryLevels = 'inventory_levels';
 

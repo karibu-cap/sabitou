@@ -110,8 +110,7 @@ class _ImageCell extends StatelessWidget {
               data != null) {
             return FadeInImage.assetNetwork(
               placeholder: StaticImages.placeholder,
-              placeholderCacheHeight: 30,
-              placeholderCacheWidth: 30,
+              placeholderFit: BoxFit.none,
               image: data,
               fit: BoxFit.cover,
               imageErrorBuilder: (context, error, stackTrace) {

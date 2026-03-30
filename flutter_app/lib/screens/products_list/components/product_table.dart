@@ -376,8 +376,7 @@ class _ProductNameCell extends StatelessWidget {
                   borderRadius: const BorderRadius.all(Radius.circular(8)),
                   child: FadeInImage.assetNetwork(
                     placeholder: StaticImages.placeholder,
-                    placeholderCacheHeight: 20,
-                    placeholderCacheWidth: 20,
+                    placeholderFit: BoxFit.none,
                     image: data,
                     fit: BoxFit.cover,
                     imageErrorBuilder: (context, error, stackTrace) {

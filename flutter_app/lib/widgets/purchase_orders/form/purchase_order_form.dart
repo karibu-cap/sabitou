@@ -7,6 +7,7 @@ import '../../../screens/purchase_orders/purchase_orders_controller.dart';
 import '../../../services/internationalization/internationalization.dart';
 import '../../../themes/app_theme.dart';
 import '../../../utils/responsive_utils.dart';
+import '../../loading.dart';
 import '../../shad_scaffold.dart';
 import 'purchase_order_form_controller.dart';
 import 'purchase_order_form_sections.dart';
@@ -38,7 +39,7 @@ Future<bool?> showPurchaseOrderForm(
 
   return showShadDialog<bool>(
     context: context,
-    builder: (_) => PurchaseOrderFormDialog(
+    builder: (context) => PurchaseOrderFormDialog(
       storeId: storeId,
       userId: userId,
       purchaseOrdersController: purchaseOrdersController,
@@ -204,7 +205,7 @@ class _PurchaseOrderFormFooter extends StatelessWidget {
     final ctrl = context.watch<PurchaseOrderFormController>();
     final theme = ShadTheme.of(context);
     final cs = theme.colorScheme;
-    final isLoading =  ctrl.isLoading;
+    final isLoading = ctrl.isLoading;
 
     return Container(
       decoration: BoxDecoration(
@@ -231,14 +232,7 @@ class _PurchaseOrderFormFooter extends StatelessWidget {
               ShadButton(
                 onPressed: isLoading ? null : () => _save(context, ctrl),
                 leading: isLoading
-                    ? const SizedBox(
-                        width: 13,
-                        height: 13,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 1.5,
-                          color: Colors.white,
-                        ),
-                      )
+                    ? const Loading.button()
                     : const Icon(LucideIcons.fileText, size: 14),
                 child: Text(Intls.to.createPurchaseOrder),
               ),

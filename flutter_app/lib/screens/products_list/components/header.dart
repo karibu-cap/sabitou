@@ -29,9 +29,9 @@ class ProductsListHeader extends StatelessWidget {
 
       if (isMobile) {
         if (product == null) {
-          AppRouter.push(context, PagesRoutes.productNew.create());
+          await AppRouter.push(context, PagesRoutes.productNew.create());
         } else {
-          AppRouter.push(
+          await AppRouter.push(
             context,
             PagesRoutes.productEdit.create(
               ProductDetailParameters(productId: product.storeProduct.refId),

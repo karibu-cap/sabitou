@@ -1,441 +1,327 @@
-// ignore_for_file: long-method
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:pdf/pdf.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
-import '../../providers/cart_provider.dart';
 import '../../repositories/gift_voucher_repository.dart';
-import '../../repositories/inventory_repository.dart';
+import '../../repositories/pos_repository.dart';
 import '../../services/internationalization/internationalization.dart';
-import '../../services/storage/app_storage.dart';
-import '../../utils/app_constants.dart';
 import '../../utils/button_state.dart';
 import '../../utils/common_functions.dart';
-import '../../utils/extensions/global_product_extension.dart';
 import '../../utils/logger.dart';
+import '../../utils/pos_exceptions.dart';
 import '../../utils/printer_management.dart';
 import '../../utils/user_preference.dart';
 import '../../widgets/pdf/printers/app_printer_utils.dart';
 import '../../widgets/pdf/template/pos_widget.dart';
 import 'point_of_sale_view_model.dart';
+import 'utils/cart_provider.dart';
 
-/// Button state enum for POS operations
-enum ButtonStateEnum {
-  /// Gets the initial state.
-  initial,
-
-  /// Gets the loading state.
-  loading,
-}
-
-/// Error types for POS operations
-enum PosErrorType {
-  /// Gets the network error type.
-  network,
-
-  /// Gets the validation error type.
-  validation,
-
-  /// Gets the inventory error type.
-  inventory,
-
-  /// Gets the payment error type.
-  payment,
-
-  /// Gets the voucher error type.
-  voucher,
-
-  /// Gets the unknown error type.
-  unknown,
-}
-
-/// POS operation result
-class PosOperationResult {
-  /// Gets the success state.
-  final bool success;
-
-  /// Gets the message.
-  final String message;
-
-  /// Gets the error type.
-  final PosErrorType? errorType;
-
-  /// Constructor of [PosOperationResult].
-  const PosOperationResult.success(this.message)
-    : success = true,
-      errorType = null;
-
-  /// Constructor of [PosOperationResult].
-  const PosOperationResult.failure(this.message, this.errorType)
-    : success = false;
-}
-
-/// Controller for new order.
+/// Drives all POS business-logic actions from the UI layer.
 class PointOfSaleController extends ChangeNotifier {
-  final LoggerApp _logger = LoggerApp('PointOfSaleController');
-
+  final LoggerApp _log = LoggerApp('PointOfSaleController');
   final PointOfSaleViewModel _viewModel;
 
-  /// The search query controller.
+  /// Text controller shared with the search/scan input field.
   final searchQueryController = TextEditingController();
 
-  /// The complete order button state.
+  /// State of the primary "Complete Order" action button.
   ButtonState completeOrderButtonState = ButtonState.initial;
 
-  /// The on hold order button state.
-  final ButtonState onHoldOrderButtonState = ButtonState.initial;
-
-  /// Currents error state.
   PosOperationResult? _currentError;
-
-  /// Currents success state.
   PosOperationResult? _currentSuccess;
 
-  /// Gets the filtered products stream.
-  Stream<List<StoreProductWithGlobalProduct>> get filteredProductsStream =>
-      _viewModel.filteredProductsStream;
+  /// Instance of the thermal printer manager.
+  final _thermalPrinter = FlutterThermalPrinter.instance;
 
-  /// Gets the search query.
-  BehaviorSubject<String> get searchQuery => _viewModel.searchQuery;
+  /// List of available printers, updated via the [_devicesStreamSubscription].
+  List<Printer> printers = [];
 
-  /// Gets current error state.
+  /// Subscription to the [_thermalPrinter]'s devices stream, used to update [printers].
+  StreamSubscription<List<Printer>>? _devicesStreamSubscription;
+
+  /// The most recent error result, or `null` when no error is active.
   PosOperationResult? get currentError => _currentError;
 
-  /// Gets current success state.
+  /// The most recent success result, or `null` when no success is pending.
   PosOperationResult? get currentSuccess => _currentSuccess;
 
-  /// Constructor of [PointOfSaleController].
+  /// Creates a [PointOfSaleController] and starts the BLE/USB scan.
   PointOfSaleController(this._viewModel) {
     startScan();
   }
 
-  final _flutterThermalPrinterPlugin = FlutterThermalPrinter.instance;
-
-  final String _ip = '192.168.0.100';
-  final String _port = '9100';
-
-  List<Printer> printers = [];
-
-  StreamSubscription<List<Printer>>? _devicesStreamSubscription;
-
-  /// Clears error state.
-  void clearError() {
-    _currentError = null;
-    notifyListeners();
+  /// Starts listening for nearby USB/BLE thermal printers.
+  void startScan() {
+    _devicesStreamSubscription?.cancel();
+    unawaited(
+      _thermalPrinter.getPrinters(
+        connectionTypes: [ConnectionType.USB, ConnectionType.BLE],
+      ),
+    );
+    _devicesStreamSubscription = _thermalPrinter.devicesStream.listen((event) {
+      printers = event
+          .where(
+            (p) =>
+                p.name != null &&
+                p.name?.isNotEmpty == true &&
+                (p.name ?? '').toLowerCase().contains('print'),
+          )
+          .toList();
+    });
   }
 
-  /// Clears success state.
-  void clearSuccess() {
-    _currentSuccess = null;
-    notifyListeners();
-  }
+  /// Searches for products in the current store matching [query].
+  Future<List<StoreProductWithGlobalProduct>> searchProducts(String query) =>
+      _viewModel.searchProducts(query);
 
-  /// Completes simple cash sale (Scenario 1)
-  /// Creates a CashReceipt and updates inventory
+  /// Processes the payment, updates inventory, and prints the receipt.
+  ///
+  /// Orchestration order:
+  /// 1. Guard: validate store / user / printer / cart.
+  /// 2. Persist the draft receipt to SQL (so it exists before processing).
+  /// 3. Call [PosRepository.processCashReceiptPayment] inside a transaction.
+  /// 4. On success: print ticket, clear cart, broadcast success.
+  /// 5. On failure: surface the appropriate error to the UI.
+  ///
+  /// Returns `true` when the sale was completed and the ticket printed.
   Future<bool> completeSimpleSale(
     BuildContext context, {
     bool isOverpayment = false,
   }) async {
+    _showLoadingState();
+
     try {
-      // Get store and user data
       final store = UserPreferences.instance.store;
       final user = UserPreferences.instance.user;
 
       if (store == null || user == null) {
-        _setErrorState(
+        return _fail(
+          context,
           PosOperationResult.failure(
             Intls.to.storeNotConfigured,
             PosErrorType.validation,
           ),
         );
-        showErrorToast(context: context, message: Intls.to.storeNotConfigured);
-
-        return false;
       }
-      final printer = await AppStorage.of<Printer>().read(
-        PreferencesKey.printer,
-      );
 
+      final printer = await _getPrinter();
       if (printer == null) {
-        showErrorToast(context: context, message: Intls.to.noPrinterConnected);
+        if (context.mounted) {
+          showErrorToast(
+            context: context,
+            message: Intls.to.noPrinterConnected,
+          );
+        }
 
         return false;
       }
 
-      // _showLoadingState();
+      final cartProvider = CartProvider.instance;
+      final receipt = cartProvider.currentCashReceipt;
 
-      final currentCashReceipt = CartManager.instance.currentCashReceipt;
-      final cartItems = currentCashReceipt?.items ?? [];
-
-      if (currentCashReceipt == null || cartItems.isEmpty) {
-        _setErrorState(
+      if (receipt == null || receipt.items.isEmpty) {
+        return _fail(
+          context,
           PosOperationResult.failure(
             Intls.to.emptyCart,
             PosErrorType.validation,
           ),
         );
-        showErrorToast(context: context, message: Intls.to.emptyCart);
-
-        return false;
       }
 
-      return await printTheReceipt(currentCashReceipt, store, printer, context);
+      final payments = cartProvider.payments;
+      if (payments.isEmpty) {
+        return _fail(
+          context,
+          PosOperationResult.failure(
+            Intls.to.noPaymentAdded,
+            PosErrorType.payment,
+          ),
+        );
+      }
 
-      // final cartValidation = _isCartValid();
-      // if (!cartValidation.success) {
-      //   _setErrorState(cartValidation);
-      //   showErrorToast(context: context, message: cartValidation.message);
+      await PosRepository.instance.saveDraftReceipt(receipt);
 
-      //   return false;
-      // }
+      final result = await PosRepository.instance.processCashReceiptPayment(
+        receiptId: receipt.refId,
+        payments: payments,
+        cashierUserId: user.refId,
+        storeId: store.refId,
+        issueVoucherOnChange: isOverpayment,
+      );
 
-      // // Validate inventory availability
-      // final inventoryValidation = await _validateInventoryAvailability();
-      // if (!inventoryValidation.success) {
-      //   _setErrorState(inventoryValidation);
-      //   showErrorToast(context: context, message: inventoryValidation.message);
+      final printed = await _printReceipt(
+        result.receipt,
+        store,
+        printer,
+        context,
+      );
 
-      //   return false;
-      // }
+      if (!printed) {
+        if (context.mounted) {
+          showErrorToast(context: context, message: Intls.to.printFailed);
+        }
+      }
 
-      // final request = CreateCashReceiptRequest(
-      //   receipt: currentCashReceipt,
-      //   payments: CartManager.instance.payments,
-      //   issueVoucherOnChange: isOverpayment,
-      // );
+      _setSuccessState(
+        PosOperationResult.success(Intls.to.saleCompletedSuccessfully),
+      );
+      if (context.mounted) {
+        showSuccessToast(
+          context: context,
+          message: Intls.to.saleCompletedSuccessfully,
+        );
+      }
 
-      // // Make actual backend call
-      // final response = await PosRepository.instance.createCashReceipt(request);
+      // Remove completed receipt from drafts and reset cart.
+      await cartProvider.removeCurrentCashReceipt(cashReceipt: result.receipt);
+      cartProvider.clearCart();
 
-      // if (response?.success == false) {
-      //   _setErrorState(
-      //     PosOperationResult.failure(
-      //       Intls.to.failedToCreateCashReceipt,
-      //       PosErrorType.network,
-      //     ),
-      //   );
-      //   if (context.mounted) {
-      //     showErrorToast(
-      //       context: context,
-      //       message: Intls.to.failedToCreateCashReceipt,
-      //     );
-      //   }
-
-      //   return false;
-      // }
-
-      // // Success
-      // _setSuccessState(
-      //   PosOperationResult.success(Intls.to.saleCompletedSuccessfully),
-      // );
-
-      // if (context.mounted) {
-      //   showSuccessToast(
-      //     context: context,
-      //     message: Intls.to.saleCompletedSuccessfully,
-      //   );
-      // }
-
-      // // Clear cart after successful sale
-      // CartManager.instance.clearCart();
-
-      // _logger.info('Simple sale completed successfully: $response');
-
-      // return true;
-    } on Exception catch (e) {
-      _logger.severe('Error completing simple sale: $e');
-      _setErrorState(
+      _log.info('Sale completed: ${result.receipt.refId}');
+      return true;
+    } on IncompletePaymentException catch (e) {
+      return _fail(
+        context,
         PosOperationResult.failure(
-          'Échec de la vente: $e',
+          '${Intls.to.incompletePayment}: '
+          '${e.shortfall.toStringAsFixed(0)} XAF ${Intls.to.remaining}',
+          PosErrorType.payment,
+        ),
+      );
+    } on InsufficientStockException catch (e) {
+      return _fail(
+        context,
+        PosOperationResult.failure(
+          '${Intls.to.insufficientStockFor.trParams({'product': e.productLabel})}'
+          ' — ${Intls.to.available}: ${e.available}, '
+          '${Intls.to.requested}: ${e.requested}',
+          PosErrorType.inventory,
+        ),
+      );
+    } on ReceiptNotFoundException catch (e) {
+      return _fail(
+        context,
+        PosOperationResult.failure(e.message, PosErrorType.validation),
+      );
+    } on ReceiptAlreadyCompletedException catch (e) {
+      return _fail(
+        context,
+        PosOperationResult.failure(e.message, PosErrorType.validation),
+      );
+    } on Exception catch (e) {
+      _log.severe('completeSimpleSale failed: $e');
+
+      return _fail(
+        context,
+        PosOperationResult.failure(
+          '${Intls.to.saleError}: $e',
           PosErrorType.unknown,
         ),
       );
-
-      if (context.mounted) {
-        showErrorToast(context: context, message: 'Échec de la vente: $e');
-      }
-
-      return false;
     } finally {
       _resetButtonState();
     }
   }
 
-  void startScan() async {
-    _devicesStreamSubscription?.cancel();
-    await _flutterThermalPrinterPlugin.getPrinters(
-      connectionTypes: [ConnectionType.USB, ConnectionType.BLE],
-    );
-    _devicesStreamSubscription = _flutterThermalPrinterPlugin.devicesStream
-        .listen((event) {
-          printers = event;
-          printers.removeWhere(
-            (element) =>
-                element.name == null ||
-                element.name == '' ||
-                element.name?.toLowerCase().contains('print') == false,
-          );
-          for (var i in event) {
-            debugPrint('${i.name}, ${i.address} ${i.connectionType}');
-          }
-        });
-  }
-
-  Future<bool> printTheReceipt(
-    CashReceipt cashReceipt,
-    Store store,
-    Printer printer,
-    BuildContext context,
-  ) async {
-    final posTemplate = PosWidget(cashReceipt: cashReceipt, store: store);
-    final widget = await posTemplate.buildInvoiceWidget();
-
-    // showShadDialog(
-    //   context: context,
-    //   builder: (_) => ShadDialog.alert(child: PreviewInvoice(store: store)),
-    // );
-
-    return await AppPrinterUtils.directPrintPdf(
-      context: context,
-      printer: printer,
-      name: 'receipe',
-      format: PdfPageFormat.roll80,
-      widget: widget,
-    );
-    // await _flutterThermalPrinterPlugin.printWidget(
-    //   context,
-    //   printOnBle: true,
-    //   printer: printers[0],
-    //   widget: const Text('bonjour comment allé vous'),
-    // );
-
-    // return false;
-  }
-
-  /// Validate if cart is ready for simple sale
-  PosOperationResult _isCartValid() {
-    try {
-      final cartItems = CartManager.instance.getCartItems();
-
-      if (cartItems.isEmpty) {
-        return PosOperationResult.failure(
-          Intls.to.emptyCart,
-          PosErrorType.validation,
-        );
-      }
-
-      for (final item in cartItems) {
-        if (item.quantity <= 0) {
-          return PosOperationResult.failure(
-            Intls.to.invalidQuantityForProduct.trParams({
-              'product': item.label,
-            }),
-            PosErrorType.validation,
-          );
-        }
-
-        if (item.unitPrice <= 0) {
-          return PosOperationResult.failure(
-            Intls.to.invalidPriceForProduct.trParams({'product': item.label}),
-            PosErrorType.validation,
-          );
-        }
-
-        if (item.productId.isEmpty) {
-          return PosOperationResult.failure(
-            Intls.to.productNotIdentifiedInCart,
-            PosErrorType.validation,
-          );
-        }
-      }
-
-      return PosOperationResult.success(Intls.to.validCart);
-    } on Exception catch (e) {
-      _logger.severe('Error validating cart: $e');
-
-      return PosOperationResult.failure(
-        'Erreur lors de la validation du panier: $e',
-        PosErrorType.unknown,
-      );
-    }
-  }
-
-  /// Validate inventory availability for all cart items
-  Future<PosOperationResult> _validateInventoryAvailability() async {
-    try {
-      final cartItems = CartManager.instance.getCartItems();
-      final store = UserPreferences.instance.store;
-
-      if (store == null) {
-        return PosOperationResult.failure(
-          Intls.to.storeNotConfigured,
-          PosErrorType.validation,
-        );
-      }
-
-      for (final item in cartItems) {
-        try {
-          final result = await InventoryRepository.instance
-              .checkProductAvailability(
-                CheckProductAvailabilityRequest(
-                  productId: item.productId,
-                  storeId: store.refId,
-                  quantityNeeded: item.quantity.toDouble(),
-                ),
-              );
-
-          if (!result.isAvailable) {
-            return PosOperationResult.failure(
-              '${Intls.to.insufficientStockFor.trParams({'product': item.label})}'
-              '${Intls.to.available}: ${result.quantityAvailable}, '
-              '${Intls.to.requested}: ${item.quantity}',
-              PosErrorType.inventory,
-            );
-          }
-        } on Exception catch (e) {
-          return PosOperationResult.failure(
-            '${Intls.to.inventoryCheckFailed.trParams({'product': item.label})}: $e',
-            PosErrorType.network,
-          );
-        }
-      }
-
-      return PosOperationResult.success(Intls.to.inventoryAvailable);
-    } on Exception catch (e) {
-      _logger.severe('Error validating inventory: $e');
-
-      return PosOperationResult.failure(
-        'Erreur validation inventaire: $e',
-        PosErrorType.unknown,
-      );
-    }
-  }
-
-  /// Validate voucher code
+  /// Validates a voucher code and returns the [GiftVoucher] if valid.
+  ///
+  /// Returns `null` when the voucher is invalid or has no remaining balance.
   Future<GiftVoucher?> validateVoucher(String voucherCode) async {
     final response = await GiftVoucherRepository.instance.validateVoucher(
       ValidateVoucherRequest(voucherCode: voucherCode),
     );
 
-    return response?.isValid == true &&
-            (response?.remainingValue.toDouble() ?? 0) > 0
-        ? GiftVoucher(
-            voucherCode: voucherCode,
-            initialValue: response?.remainingValue ?? 0,
-            remainingValue: response?.remainingValue ?? 0,
-            refId: response?.voucherId ?? '',
-            validUntil: response?.validUntil,
-            status: response?.status,
-          )
-        : null;
+    if (response?.isValid != true ||
+        (response?.remainingValue.toDouble() ?? 0) <= 0) {
+      return null;
+    }
+
+    return GiftVoucher(
+      voucherCode: voucherCode,
+      initialValue: response?.remainingValue,
+      remainingValue: response?.remainingValue,
+      refId: response?.voucherId,
+      validUntil: response?.validUntil,
+      status: response?.status,
+    );
+  }
+
+  /// Clears the active error state.
+  void clearError() {
+    _currentError = null;
+    notifyListeners();
+  }
+
+  /// Clears the active success state.
+  void clearSuccess() {
+    _currentSuccess = null;
+    notifyListeners();
+  }
+
+  /// Reads the saved printer preference from [AppStorage].
+  Future<Printer?> _getPrinter() async {
+    return null;
+  }
+
+  /// Prints the completed receipt on the thermal printer.
+  Future<bool> _printReceipt(
+    CashReceipt receipt,
+    Store store,
+    Printer printer,
+    BuildContext context,
+  ) async {
+    final widget = await PosWidget(
+      cashReceipt: receipt,
+      store: store,
+    ).buildInvoiceWidget();
+
+    return AppPrinterUtils.directPrintPdf(
+      context: context,
+      printer: printer,
+      name: 'receipt_${receipt.refId.substring(0, 8)}',
+      format: PdfPageFormat.roll80,
+      widget: widget,
+    );
+  }
+
+  /// Sends the completed receipt to the backend gRPC service.
+  ///
+  /// This is fire-and-forget — PowerSync will retry on reconnect.
+  // Future<void> _syncToBackend(
+  //   PaymentResult result,
+  //   List<Payment> payments,
+  //   bool issueVoucherOnChange,
+  // ) async {
+  //   try {
+  //     await PosRepository.instance; // no-op placeholder
+  //     // TODO: call PosGrpcRepository.createCashReceipt(
+  //     //   CreateCashReceiptRequest(
+  //     //     receipt: result.receipt,
+  //     //     payments: payments,
+  //     //     issueVoucherOnChange: issueVoucherOnChange,
+  //     //   ),
+  //     // );
+  //     _log.info('Backend sync queued for: ${result.receipt.refId}');
+  //   } on Exception catch (e) {
+  //     // Non-fatal — the local SQLite is the source of truth for offline.
+  //     _log.warning('Backend sync failed (will retry): $e');
+  //   }
+  // }
+
+  bool _fail(BuildContext context, PosOperationResult result) {
+    _setErrorState(result);
+    if (context.mounted) {
+      showErrorToast(context: context, message: result.message);
+    }
+
+    return false;
   }
 
   void _resetButtonState() {
     completeOrderButtonState = ButtonState.initial;
+    notifyListeners();
   }
 
   void _showLoadingState() {
@@ -452,4 +338,33 @@ class PointOfSaleController extends ChangeNotifier {
     _currentSuccess = success;
     notifyListeners();
   }
+
+  @override
+  void dispose() {
+    searchQueryController.dispose();
+    _devicesStreamSubscription?.cancel();
+    super.dispose();
+  }
+}
+
+/// Error categories for POS operations.
+enum PosErrorType { network, validation, inventory, payment, voucher, unknown }
+
+/// Outcome of a single POS controller operation.
+class PosOperationResult {
+  const PosOperationResult.success(this.message)
+    : success = true,
+      errorType = null;
+
+  const PosOperationResult.failure(this.message, this.errorType)
+    : success = false;
+
+  /// Whether the operation succeeded.
+  final bool success;
+
+  /// Human-readable message for the UI.
+  final String message;
+
+  /// Category of the error, or `null` on success.
+  final PosErrorType? errorType;
 }

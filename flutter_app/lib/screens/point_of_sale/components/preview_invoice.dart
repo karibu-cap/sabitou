@@ -5,10 +5,10 @@ import 'package:get_it/get_it.dart';
 import 'package:printing/printing.dart';
 import 'package:sabitou_rpc/models.dart';
 
-import '../../../providers/cart_provider.dart';
 import '../../../services/internationalization/internationalization.dart';
 import '../../../widgets/pdf/common/pdf_format.dart';
 import '../../../widgets/pdf/template/pos_template.dart';
+import '../utils/cart_provider.dart';
 
 /// Preview invoice.
 class PreviewInvoice extends StatelessWidget {
@@ -19,7 +19,7 @@ class PreviewInvoice extends StatelessWidget {
   const PreviewInvoice({super.key, required this.store});
 
   Future<Uint8List> _buildInvoicePdf(PdfMode format) async {
-    final cartData = CartManager.instance.currentCashReceipt;
+    final cartData = CartProvider.instance.currentCashReceipt;
     if (cartData == null) {
       return Uint8List.fromList([]);
     }
@@ -35,11 +35,11 @@ class PreviewInvoice extends StatelessWidget {
         maxHeight: MediaQuery.sizeOf(context).height * 0.8,
       ),
       child: ListenableBuilder(
-        listenable: GetIt.I.get<CartManager>(),
+        listenable: GetIt.I.get<CartProvider>(),
         builder: (context, value) {
-          final cartData = CartManager.instance.currentCashReceipt;
+          final cartData = CartProvider.instance.currentCashReceipt;
 
-          final hasCartItems = CartManager.instance.getCartItems().isNotEmpty;
+          final hasCartItems = CartProvider.instance.getCartItems().isNotEmpty;
           if (!hasCartItems || cartData == null || cartData.items.isEmpty) {
             return Center(child: Text(Intls.to.addProductToCart));
           }
@@ -55,7 +55,7 @@ class PreviewInvoice extends StatelessWidget {
             useActions: false,
             initialPageFormat: PdfFormat.buildPreviewInvoiceFormat(
               PdfMode.TICKET,
-              itemsLength: CartManager.instance.getCartItems().length,
+              itemsLength: CartProvider.instance.getCartItems().length,
             ),
             maxPageWidth: 300,
             onShared: (context) async {

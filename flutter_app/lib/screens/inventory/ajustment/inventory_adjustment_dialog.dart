@@ -82,10 +82,7 @@ class InventoryAdjustmentDialog extends StatelessWidget {
                         }
                       },
                 child: controller.isLoading
-                    ? const SizedBox.square(
-                        dimension: 16,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
+                    ? const Loading.button()
                     : Text(Intls.to.save),
               ),
             ],

@@ -10,6 +10,7 @@ import '../../utils/app_constants.dart';
 import '../../utils/responsive_utils.dart';
 import '../../utils/user_preference.dart';
 import '../../widgets/loading.dart';
+import '../../widgets/no_business_view.dart';
 import 'ajustment/inventory_adjustment_dialog.dart';
 import 'components/header.dart';
 import 'components/product_table.dart';
@@ -30,7 +31,7 @@ class InventoryScreen extends StatelessWidget {
     final business = userPreferences.business;
     final cs = ShadTheme.of(context).colorScheme;
     if (currentStore == null || business == null) {
-      return const SizedBox.shrink();
+      return const Scaffold(body: Center(child: NoBusinessView()));
     }
 
     final viewModel = InventoryViewModel(

@@ -30,12 +30,12 @@ class BillsViewModel {
   bool get isFiltered =>
       _searchSubject.value.isNotEmpty || _statusFilterSubject.value != null;
 
-  /// The future of the bills.
-  Future<List<Bill>> get billsFuture => _repo.listBills(storeId: storeId);
+  /// The strema of the bills.
+  Stream<List<Bill>> get billsStream => _repo.watchBills(storeId: storeId);
 
   /// The stream of the filtered bills.
   Stream<List<Bill>> get filteredBillsStream => Rx.combineLatest3(
-    Stream.fromFuture(billsFuture),
+    billsStream,
     _searchSubject.stream,
     _statusFilterSubject.stream,
     (bills, search, status) {
@@ -68,7 +68,7 @@ class BillsViewModel {
   /// Create a bill.
   Future<bool> createBill(Bill bill) => _repo.createBill(bill);
 
-/// Dispose data.
+  /// Dispose data.
   void dispose() {
     _searchSubject.close();
     _statusFilterSubject.close();

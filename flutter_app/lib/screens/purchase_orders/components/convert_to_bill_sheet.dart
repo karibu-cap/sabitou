@@ -124,7 +124,7 @@ Future<bool?> showConvertToBillSheet(
   if (isDesktop) {
     return showShadDialog<bool?>(
       context: context,
-      builder: (_) => ChangeNotifierProvider.value(
+      builder: (context) => ChangeNotifierProvider.value(
         value: Provider.of<PurchaseOrderDetailController>(
           context,
           listen: false,
@@ -182,8 +182,8 @@ class _ConvertToBillSheet extends StatelessWidget {
         child: Column(
           children: [
             Container(
-            padding: const EdgeInsets.only(top: 10, bottom: 4),
-            
+              padding: const EdgeInsets.only(top: 10, bottom: 4),
+
               width: 36,
               height: 4,
               decoration: BoxDecoration(
@@ -598,7 +598,6 @@ class _NoteRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return GestureDetector(
       onTap: onToggle,
       child: Container(

@@ -321,7 +321,7 @@ final class StoreProductsRepository extends BaseRepository<StoreProduct> {
   }
 
   /// Searches products locally with joins.
-  Future<SearchStoreProductsResponse> searchProducts(
+  Future<List<StoreProductWithGlobalProduct>> searchProducts(
     SearchStoreProductsRequest request,
   ) async {
     try {
@@ -376,11 +376,11 @@ final class StoreProductsRepository extends BaseRepository<StoreProduct> {
         );
       }).toList();
 
-      return SearchStoreProductsResponse(products: products);
+      return products;
     } on Exception catch (e) {
       _logger.severe('searchProducts Error: $e');
 
-      return SearchStoreProductsResponse();
+      return Future.value([]);
     }
   }
 }

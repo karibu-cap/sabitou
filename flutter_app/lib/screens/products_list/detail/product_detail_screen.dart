@@ -103,7 +103,7 @@ class _ProductDetailView extends StatelessWidget {
     if (isDesktop) {
       await showShadDialog<bool?>(
         context: context,
-        builder: (_) => CreateEditProductFormView(
+        builder: (context) => CreateEditProductFormView(
           product: product,
           onProductSaved: () async {
             if (context.mounted) await ctrl.reload();
@@ -347,8 +347,7 @@ class _MobileHeroBanner extends StatelessWidget {
                   borderRadius: theme.radius,
                   child: FadeInImage.assetNetwork(
                     placeholder: StaticImages.placeholder,
-                    placeholderCacheHeight: 20,
-                    placeholderCacheWidth: 20,
+                    placeholderFit: BoxFit.none,
                     image: data,
                     fit: BoxFit.cover,
                     imageErrorBuilder: (_, __, ___) => Container(
@@ -440,6 +439,7 @@ class _ProductImageCard extends StatelessWidget {
                 aspectRatio: 1.5,
                 child: FadeInImage.assetNetwork(
                   placeholder: StaticImages.placeholder,
+                  placeholderFit: BoxFit.none,
                   image: data,
                   fit: BoxFit.cover,
                   imageErrorBuilder: (_, __, ___) => const _ImagePlaceholder(),

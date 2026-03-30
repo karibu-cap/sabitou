@@ -19,6 +19,7 @@ import '../screens/home/home.dart';
 import '../screens/inventory/ajustment/inventory_ajustement_screen.dart';
 import '../screens/inventory/detail/inventory_detail_screen.dart';
 import '../screens/inventory/inventory_screen.dart';
+import '../screens/payments/detail/payment_screen.dart';
 import '../screens/payments/payments_screen.dart';
 import '../screens/point_of_sale/point_of_sale_screen.dart';
 import '../screens/products_list/components/form/screen/create_edit_product_screen.dart';
@@ -348,6 +349,35 @@ class GoRouterRoutesProvider {
         },
       ),
       GoRoute(
+        name: PagesRoutes.paymentDetail.name,
+        path: PagesRoutes.paymentDetail.pattern,
+        parentNavigatorKey: rootNavigatorKey,
+        pageBuilder: (context, state) {
+          final paymentId =
+              state.pathParameters[PaymentDetailParameters.keyPaymentId];
+
+          if (paymentId == null || !paymentId.toLowerCase().startsWith('pay')) {
+            return MaterialPage(
+              child: ErrorPageBuilder.notFound(
+                title: 'Invalid Payment',
+                onPrimaryAction: () =>
+                    AppRouter.go(context, PagesRoutes.home.pattern),
+                primaryActionText: 'Back to Home',
+                onSecondaryAction: () =>
+                    AppRouter.go(context, PagesRoutes.payments.pattern),
+                secondaryActionText: 'View Payments',
+                showBackgroundGradient: false,
+                customIcon: const Icon(LucideIcons.clipboardList400),
+              ),
+            );
+          }
+
+          return MaterialPage(
+            child: PaymentDetailScreen(paymentRefId: paymentId),
+          );
+        },
+      ),
+      GoRoute(
         name: PagesRoutes.receivingNoteDetail.name,
         path: PagesRoutes.receivingNoteDetail.pattern,
         parentNavigatorKey: rootNavigatorKey,
@@ -429,7 +459,9 @@ class GoRouterRoutesProvider {
             );
           }
 
-          return MaterialPage(child: BillDetailScreen(billRefId: billId));
+          return MaterialPage(
+            child: BillDetailScreen(billRefId: billId, canSplitTheScreen: true),
+          );
         },
       ),
     ];

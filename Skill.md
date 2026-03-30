@@ -1,4 +1,3 @@
-
 ---
 name: frontend-design
 description: Create distinctive, production-grade frontend interfaces with high design quality. Use this skill when the user asks to build web components, pages, artifacts, posters, or applications (examples include websites, landing pages, dashboards, React components, flutter/CSS layouts, or when styling/beautifying any web UI). Generates creative, polished code and UI design that avoids generic AI aesthetics.
@@ -12,6 +11,7 @@ The user provides frontend requirements: a component, page, application, or inte
 ## Design Thinking
 
 Before coding, understand the context and commit to a BOLD aesthetic direction:
+
 - **Purpose**: What problem does this interface solve? Who uses it?
 - **Tone**: Pick an extreme: brutally minimal, maximalist chaos, retro-futuristic, organic/natural, luxury/refined, playful/toy-like, editorial/magazine, brutalist/raw, art deco/geometric, soft/pastel, industrial/utilitarian, etc. There are so many flavors to choose from. Use these for inspiration but design one that is true to the aesthetic direction.
 - **Constraints**: Technical requirements (framework, performance, accessibility).
@@ -20,6 +20,7 @@ Before coding, understand the context and commit to a BOLD aesthetic direction:
 **CRITICAL**: Choose a clear conceptual direction and execute it with precision. Bold maximalism and refined minimalism both work - the key is intentionality, not intensity.
 
 Then implement working code (flutter/CSS/JS, React, Vue, etc.) that is:
+
 - Production-grade and functional
 - Visually striking and memorable
 - Cohesive with a clear aesthetic point-of-view
@@ -28,6 +29,7 @@ Then implement working code (flutter/CSS/JS, React, Vue, etc.) that is:
 ## Frontend Aesthetics Guidelines
 
 Focus on:
+
 - **Typography**: Choose fonts that are beautiful, unique, and interesting. Avoid generic fonts like Arial and Inter; opt instead for distinctive choices that elevate the frontend's aesthetics; unexpected, characterful font choices. Pair a distinctive display font with a refined body font.
 - **Color & Theme**: Commit to a cohesive aesthetic. Use CSS variables for consistency. Dominant colors with sharp accents outperform timid, evenly-distributed palettes.
 - **Motion**: Use animations for effects and micro-interactions. Prioritize CSS-only solutions for flutter. Use Motion library for React when available. Focus on high-impact moments: one well-orchestrated page load with staggered reveals (animation-delay) creates more delight than scattered micro-interactions. Use scroll-triggering and hover states that surprise.
@@ -43,8 +45,6 @@ Interpret creatively and make unexpected choices that feel genuinely designed fo
 Remember: Claude is capable of extraordinary creative work. Don't hold back, show what can truly be created when thinking outside the box and committing fully to a distinctive vision.
 
 **Stack UI:** Flutter + `shadcn_ui` (mariuti.com)
-
-
 
 **Architecture des tokens:**
 
@@ -99,7 +99,7 @@ Never hardcode colors that have a semantic slot. Reference this mapping:
   Border               → colorScheme.border            (#E8E6E1)
   Primary action color → colorScheme.primary           (#1C1F36)
   Destructive / error  → colorScheme.destructive       (#E53E3E)
-  Error soft bg        → colorScheme.destructive.withOpacity(0.08)
+  Error soft bg        → colorScheme.destructive.withValues(alpha:0.08)
   Amber brand accent   → _T.accent                     (#F4A826)
   Amber soft bg        → _T.accentSoft                 (#FFF3D6)
   Success              → colorScheme.brandSuccess      (#10B981)
@@ -123,15 +123,12 @@ Shimmer skeleton only:
   Icon          → LucideIcons.<name> (always size 16–22px in Icon widget)
 ```
 
-
-
-
-
 ## Résumé du système de design Sabitou
 
 **Stack UI:** Flutter + `shadcn_ui` (mariuti.com)
 
 **Architecture des tokens:**
+
 - `AppTheme` — source unique de vérité. Contient `lightTheme`, `darkTheme`, les couleurs sémantiques, la typographie, et les thèmes de composants.
 - `SabitouColors` — constantes de marque pures (amber accent, success, warning, shimmer) qui n'ont pas d'équivalent dans `ShadColorScheme`.
 - `SabitouColorSchemeX` — extension sur `ShadColorScheme` pour accéder aux couleurs custom via `cs.brandAccent`, `cs.brandSuccessSoft`, etc.
@@ -139,17 +136,17 @@ Shimmer skeleton only:
 
 **Palette lumière:**
 
-| Rôle | Valeur |
-|---|---|
-| Background | `#F5F4F2` — warm off-white |
-| Surface / Card | `#FFFFFF` / `#FCFCFD` |
-| Primary (navy) | `#1C1F36` |
-| Foreground | `#1C1F36` |
-| Muted foreground | `#6B7080` |
-| Border | `#E8E6E1` |
-| Brand accent | `#F4A826` amber |
-| Success | `#10B981` |
-| Destructive | `#E53E3E` |
+| Rôle             | Valeur                     |
+| ---------------- | -------------------------- |
+| Background       | `#F5F4F2` — warm off-white |
+| Surface / Card   | `#FFFFFF` / `#FCFCFD`      |
+| Primary (navy)   | `#1C1F36`                  |
+| Foreground       | `#1C1F36`                  |
+| Muted foreground | `#6B7080`                  |
+| Border           | `#E8E6E1`                  |
+| Brand accent     | `#F4A826` amber            |
+| Success          | `#10B981`                  |
+| Destructive      | `#E53E3E`                  |
 
 **Typographie:** Inter, échelle compacte — `h2=20px`, `h3=16px`, `p=14px`, `small/muted=12px`.
 

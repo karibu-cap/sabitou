@@ -131,7 +131,6 @@ class _TopBar extends StatelessWidget {
   }
 }
 
-
 class _NoBusinessMobile extends StatelessWidget {
   const _NoBusinessMobile();
 

@@ -19,6 +19,9 @@ class SuppliersViewModel {
   /// Gets the selected status subject.
   final _selectedStatusSubject = BehaviorSubject<SupplierStatus?>.seeded(null);
 
+  /// Gets the completer.
+  final Completer<bool> completer = Completer<bool>();
+
   /// The suppliers repository instance.
   final SuppliersRepository _suppliersRepository = SuppliersRepository.instance;
 

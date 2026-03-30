@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
+import '../../../repositories/bill_repository.dart';
 import '../../../repositories/payments_repository.dart';
 import 'payments_view_model.dart';
 
@@ -13,7 +14,9 @@ class PaymentsController extends ChangeNotifier {
   final PaymentsViewModel _viewModel;
 
   /// The search query subject.
-  final BehaviorSubject<String> searchQuery = BehaviorSubject<String>.seeded('');
+  final BehaviorSubject<String> searchQuery = BehaviorSubject<String>.seeded(
+    '',
+  );
 
   /// The status filter subject.
   final BehaviorSubject<PaymentStatus?> statusFilter =
@@ -21,21 +24,17 @@ class PaymentsController extends ChangeNotifier {
 
   /// The currently selected payment ID (for desktop split view).
   String? _selectedPayment;
-  String? get selectedPayment => _selectedPayment;
-
-  /// Selects a payment.
-  void selectPayment(String? paymentId) {
-    _selectedPayment = paymentId;
-    notifyListeners();
-  }
 
   /// The filtered payments stream.
-  late final Stream<List<Payment>> filteredPaymentsStream;
+  Stream<List<Payment>> filteredPaymentsStream = Stream.value([]);
+
+  /// The selected payment.
+  String? get selectedPayment => _selectedPayment;
 
   /// Constructs a new [PaymentsController].
   PaymentsController(this._viewModel) {
     filteredPaymentsStream = Rx.combineLatest3(
-      _viewModel.paymentsStream,
+      Stream.fromFuture(_viewModel.paymentsFuture),
       searchQuery.stream,
       statusFilter.stream,
       (payments, query, status) {
@@ -49,22 +48,45 @@ class PaymentsController extends ChangeNotifier {
           final q = query.toLowerCase();
           filtered = filtered.where((p) {
             return p.refId.toLowerCase().contains(q) ||
-                   p.referenceNumber.toLowerCase().contains(q) ||
-                   p.receiver.toLowerCase().contains(q);
+                p.referenceNumber.toLowerCase().contains(q) ||
+                p.receiverRef.toLowerCase().contains(q);
           }).toList();
         }
-        
+
         // Sort by date descending
-        filtered.sort((a, b) => b.paymentDate.compareTo(a.paymentDate));
+        filtered.sort(
+          (a, b) =>
+              b.paymentDate.toDateTime().compareTo(a.paymentDate.toDateTime()),
+        );
 
         return filtered;
       },
     ).asBroadcastStream();
   }
 
-  /// Deletes a payment.
+  /// Selects a payment.
+  void selectPayment(String? paymentId) {
+    if (_selectedPayment == paymentId) {
+      return;
+    }
+    _selectedPayment = paymentId;
+    notifyListeners();
+  }
+
+  /// Deletes a payment and reverts all linked bills.
   Future<void> deletePayment(String paymentId) async {
-    await PaymentsRepository.instance.delete(paymentId);
+    // Fetch the payment first so we can read its relatedDocs.
+    final payment = await PaymentsRepository.instance.findById(paymentId);
+
+    if (payment != null) {
+      // Revert each bill that this payment partially/fully covered.
+      for (final doc in payment.relatedDocs) {
+        await BillRepository.instance.revertPayment(doc.docId, payment);
+      }
+    }
+
+    await PaymentsRepository.instance.deletePayment(paymentId);
+
     if (_selectedPayment == paymentId) {
       _selectedPayment = null;
       notifyListeners();

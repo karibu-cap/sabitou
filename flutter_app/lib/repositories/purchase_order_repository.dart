@@ -27,6 +27,9 @@ final class PurchaseOrderRepository extends BaseRepository<PurchaseOrder> {
   @override
   String get tableName => CollectionName.purchaseOrders;
 
+  @override
+  String get primaryKey => PurchaseOrdersFields.refId;
+
   /// The instance of [PurchaseOrderRepository].
   static PurchaseOrderRepository get instance =>
       GetIt.I.get<PurchaseOrderRepository>();
@@ -174,25 +177,32 @@ final class PurchaseOrderRepository extends BaseRepository<PurchaseOrder> {
   /// items loaded).
   Stream<PurchaseOrder?> watchPurchaseOrder(String id) {
     try {
+      _logger.info('watchPurchaseOrder: Starting watch for PO ID: $id');
+
       // Watch both the PO and its items, then combine them
       final poStream = watchOne(id);
       final itemsStream = dataSource.watchCollection(
         CollectionName.purchaseOrderItems,
-        filters: [SqlQuery.equals(PurchaseOrderItemsFields.purchaseOrderId, id)],
+        filters: [
+          SqlQuery.equals(PurchaseOrderItemsFields.purchaseOrderId, id),
+        ],
       );
-      
-      return Rx.combineLatest2(
-        poStream,
-        itemsStream,
-        (po, itemsRows) async {
-          if (po == null) return null;
-          final items = itemsRows.map(fromRowToPurchaseOrderItems).toList();
-          po.items.clear();
-          po.items.addAll(items);
-          
-          return po;
-        },
-      ).asyncMap((future) => future);
+
+      return Rx.combineLatest2(poStream, itemsStream, (po, itemsRows) async {
+        _logger.info(
+          'watchPurchaseOrder: PO stream emitted: po=${po?.refId}, itemsCount=${itemsRows.length}',
+        );
+        if (po == null) {
+          _logger.warning('watchPurchaseOrder: PO is null for ID: $id');
+
+          return null;
+        }
+        final items = itemsRows.map(fromRowToPurchaseOrderItems).toList();
+        po.items.clear();
+        po.items.addAll(items);
+
+        return po;
+      }).asyncMap((future) => future);
     } on Exception catch (e) {
       _logger.severe('watchPurchaseOrder Error: $e');
 
@@ -261,10 +271,25 @@ final class PurchaseOrderRepository extends BaseRepository<PurchaseOrder> {
 
           await tx.createRecord(
             table: CollectionName.receivingNoteLineItems,
-            record: fromReceivingNoteLineItemToRaw(
-              item,
-              receivingNote.refId,
-            ),
+            record: fromReceivingNoteLineItemToRaw(item, receivingNote.refId),
+          );
+
+          // Get current inventory level for transaction audit
+          final quantityBefore = await _getCurrentQuantityOnHand(
+            tx,
+            receivingNote.storeId,
+            item.productId,
+          );
+
+          // Update inventory levels
+          await _updateInventoryLevel(tx, receivingNote, item);
+
+          // Create inventory transaction audit
+          await _createInventoryTransaction(
+            tx,
+            receivingNote,
+            item,
+            quantityBefore,
           );
 
           // Update the matching PO item's quantityReceived.
@@ -284,11 +309,16 @@ final class PurchaseOrderRepository extends BaseRepository<PurchaseOrder> {
 
           if (poItemsResult.isNotEmpty) {
             final poItem = fromRowToPurchaseOrderItems(poItemsResult.first);
-            final newQuantity = poItem.quantityReceived + item.quantityReceived;
+            final newQuantity =
+                poItem.quantityReceived + item.quantityReceived.toInt();
+            poItem..quantityReceived = newQuantity;
 
             await tx.updateWhere(
               table: CollectionName.purchaseOrderItems,
-              fields: {PurchaseOrderItemsFields.quantityReceived: newQuantity},
+              fields: fromPurchaseOrderItemsToRow(
+                poItem,
+                receivingNote.relatedPurchaseOrderId,
+              ),
               filters: [
                 SqlQuery.equals(
                   PurchaseOrderItemsFields.purchaseOrderId,
@@ -388,14 +418,27 @@ final class PurchaseOrderRepository extends BaseRepository<PurchaseOrder> {
     required String storeId,
   }) async {
     try {
+      _logger.info(
+        'syncPOStatusFromBills: Starting sync for PO: $purchaseOrderId, store: $storeId',
+      );
+
       final poResult = await dataSource.getDocument(
         CollectionName.purchaseOrders,
         purchaseOrderId,
         primaryKey: PurchaseOrdersFields.refId,
       );
-      if (poResult == null) return;
+      if (poResult == null) {
+        _logger.warning(
+          'syncPOStatusFromBills: PO not found: $purchaseOrderId',
+        );
+
+        return;
+      }
 
       final po = fromRowToPurchaseOrder(poResult);
+      _logger.info(
+        'syncPOStatusFromBills: Current PO status: ${po.status.name}',
+      );
 
       // Never change a cancelled PO status.
       if (po.status == PurchaseOrderStatus.PO_STATUS_CANCELLED) return;
@@ -454,6 +497,8 @@ final class PurchaseOrderRepository extends BaseRepository<PurchaseOrder> {
         _logger.info(
           'PO $purchaseOrderId status updated: ${po.status.name} → ${newStatus.name}',
         );
+      } else {
+        _logger.info('PO $purchaseOrderId status unchanged: ${po.status.name}');
       }
     } on Exception catch (e) {
       _logger.severe('syncPOStatusFromBills Error: $e');
@@ -498,5 +543,127 @@ final class PurchaseOrderRepository extends BaseRepository<PurchaseOrder> {
 
       return Stream.value([]);
     }
+  }
+
+  /// Updates inventory level when receiving items
+  Future<void> _updateInventoryLevel(
+    LocalDataSource tx,
+    ReceivingNote receivingNote,
+    ReceivingNoteLineItem item,
+  ) async {
+    // Find existing inventory level
+    final existingLevels = await tx.getCollection(
+      CollectionName.inventoryLevels,
+      filters: [
+        SqlQuery.equals(InventoryLevelsFields.storeProductId, item.productId),
+        SqlQuery.equals(InventoryLevelsFields.storeId, receivingNote.storeId),
+      ],
+    );
+
+    final now = DateTime.now();
+    final int quantityReceived = item.quantityReceived.toInt();
+
+    if (existingLevels.isNotEmpty) {
+      final existingLevel = existingLevels.first;
+      final currentQuantityOnHand =
+          existingLevel[InventoryLevelsFields.quantityOnHand] as int? ?? 0;
+      final newQuantityOnHand = currentQuantityOnHand + quantityReceived;
+
+      await tx.updateWhere(
+        table: CollectionName.inventoryLevels,
+        fields: {
+          InventoryLevelsFields.quantityOnHand: newQuantityOnHand,
+          InventoryLevelsFields.quantityAvailable:
+              newQuantityOnHand -
+              (existingLevel[InventoryLevelsFields.quantityCommitted] as int? ??
+                  0),
+          InventoryLevelsFields.lastUpdated: now.toIso8601String(),
+          InventoryLevelsFields.lastUpdatedByUserId:
+              receivingNote.receivedByUserId,
+        },
+        filters: [
+          SqlQuery.equals(InventoryLevelsFields.storeProductId, item.productId),
+          SqlQuery.equals(InventoryLevelsFields.storeId, receivingNote.storeId),
+        ],
+      );
+    } else {
+      // Create new inventory level
+      await tx.createRecord(
+        table: CollectionName.inventoryLevels,
+        record: {
+          InventoryLevelsFields.storeProductId: item.productId,
+          InventoryLevelsFields.storeId: receivingNote.storeId,
+          InventoryLevelsFields.quantityOnHand: quantityReceived,
+          InventoryLevelsFields.quantityAvailable: quantityReceived,
+          InventoryLevelsFields.quantityCommitted: 0,
+          InventoryLevelsFields.minThreshold: 0,
+          InventoryLevelsFields.lastUpdated: now.toIso8601String(),
+          InventoryLevelsFields.lastUpdatedByUserId:
+              receivingNote.receivedByUserId,
+        },
+      );
+    }
+  }
+
+  /// Creates inventory transaction audit record
+  Future<void> _createInventoryTransaction(
+    LocalDataSource tx,
+    ReceivingNote receivingNote,
+    ReceivingNoteLineItem item,
+    int quantityBefore,
+  ) async {
+    final int quantityReceived = item.quantityReceived.toInt();
+    final int quantityAfter = quantityBefore + quantityReceived;
+
+    await tx.createRecord(
+      table: CollectionName.inventoryTransactions,
+      record: {
+        InventoryTransactionsFields.refId: AppUtils.generateSmartDatabaseId(
+          'TXN',
+        ),
+        InventoryTransactionsFields.storeId: receivingNote.storeId,
+        InventoryTransactionsFields.productId: item.productId,
+        InventoryTransactionsFields.transactionType:
+            TransactionType.TXN_TYPE_PURCHASE.name,
+        InventoryTransactionsFields.quantityChange: quantityReceived,
+        InventoryTransactionsFields.quantityBefore: quantityBefore,
+        InventoryTransactionsFields.quantityAfter: quantityAfter,
+        InventoryTransactionsFields.relatedDocumentType: 'ReceivingNote',
+        InventoryTransactionsFields.relatedDocumentId: receivingNote.refId,
+        InventoryTransactionsFields.performedByUserId:
+            receivingNote.receivedByUserId,
+        InventoryTransactionsFields.transactionTime: DateTime.now()
+            .toIso8601String(),
+        InventoryTransactionsFields.notes:
+            'Received items from purchase order ${receivingNote.relatedPurchaseOrderId}',
+        InventoryTransactionsFields.batchId: item.batchId.isNotEmpty
+            ? item.batchId
+            : null,
+        InventoryTransactionsFields.unitPrice: item.purchasePrice,
+        InventoryTransactionsFields.totalAmount:
+            item.purchasePrice * item.quantityReceived,
+        InventoryTransactionsFields.currency: 'XAF',
+      },
+    );
+  }
+
+  /// Gets current quantity on hand for a product in a store
+  Future<int> _getCurrentQuantityOnHand(
+    LocalDataSource tx,
+    String storeId,
+    String productId,
+  ) async {
+    final existingLevels = await tx.getCollection(
+      CollectionName.inventoryLevels,
+      filters: [
+        SqlQuery.equals(InventoryLevelsFields.storeProductId, productId),
+        SqlQuery.equals(InventoryLevelsFields.storeId, storeId),
+      ],
+    );
+
+    return existingLevels.isNotEmpty
+        ? (existingLevels.first[InventoryLevelsFields.quantityOnHand] as int? ??
+              0)
+        : 0;
   }
 }

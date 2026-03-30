@@ -7,7 +7,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import '../../../services/internationalization/internationalization.dart';
 import '../../../themes/app_theme.dart';
 import '../../../utils/formatters.dart';
-import '../../input/auto_complete_v2.dart';
+import '../../input/auto_complete.dart';
 import 'bill_form_controller.dart';
 import 'bill_item_picker.dart';
 
@@ -49,12 +49,12 @@ class BillFormHeaderSection extends StatelessWidget {
                 Expanded(
                   child: switch (ctrl.supplierLocked) {
                     true => ShadInput(
-                      controller: ctrl.supplierIdController,
+                      controller: ctrl.supplierNameController,
                       placeholder: Text(Intls.to.supplierIdHint),
                       leading: const Icon(LucideIcons.building2, size: 14),
                       enabled: false,
                     ),
-                    false => CustomAutoCompleteV2<Supplier>(
+                    false => AutoComplete<Supplier>(
                       placeholder: Intls.to.selectSupplier,
                       searchPlaceholder: Intls.to.name,
                       initialValue: ctrl.supplierIdController.text,
@@ -79,7 +79,6 @@ class BillFormHeaderSection extends StatelessWidget {
                         ctrl.supplierIdController.text = supplier.refId;
                         ctrl.supplierNameController.text = supplier.name;
                       },
-                      minWidth: 300,
                     ),
                   },
                 ),

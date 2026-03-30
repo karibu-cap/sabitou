@@ -668,6 +668,7 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
   '.financial.v1.Invoice': $4.Invoice$json,
   '.financial.v1.InvoiceLineItem': $6.InvoiceLineItem$json,
   '.payments.v1.Payment': $5.Payment$json,
+  '.payments.v1.PaymentRelatedDoc': $5.PaymentRelatedDoc$json,
   '.order.v1.ListPurchaseOrdersRequest': ListPurchaseOrdersRequest$json,
   '.order.v1.ListPurchaseOrdersResponse': ListPurchaseOrdersResponse$json,
   '.order.v1.UpdatePurchaseOrderStatusRequest':

@@ -1,85 +1,69 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../services/internationalization/internationalization.dart';
 import '../../../themes/app_theme.dart';
 import '../../../widgets/custom_grid.dart';
-import '../suppliers_controller.dart';
-import 'list_components/supplier_shimmer_widgets.dart';
 
 /// Stats grid — 2-column on mobile, 4-column on wider screens.
 class SuppliersStatsGrid extends StatelessWidget {
-  const SuppliersStatsGrid({super.key});
+  /// Constructor of new [SuppliersStatsGrid].
+  const SuppliersStatsGrid({super.key, required this.suppliers});
+
+  /// The suppliers list to display.
+  final List<Supplier> suppliers;
 
   @override
   Widget build(BuildContext context) {
-    final controller = Provider.of<SuppliersController>(context, listen: false);
+    final total = suppliers.length;
+    final active = suppliers
+        .where((s) => s.status == SupplierStatus.SUPPLIER_STATUS_ACTIVE)
+        .length;
+    final inactive = total - active;
 
-    return StreamBuilder<List<Supplier>>(
-      stream: controller.suppliersStream,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return SupplierShimmerWidgets.buildStatsShimmer();
-        }
+    final cards = [
+      _StatData(
+        icon: LucideIcons.building2,
+        iconBg: SabitouColors.accentSoft,
+        iconColor: SabitouColors.accentForeground,
+        value: '$total',
+        label: AppInternationalizationService.to.totalSuppliersCount,
+        trendLabel:
+            '$active ${AppInternationalizationService.to.activeText.toLowerCase()}',
+        trendType: _TrendType.neutral,
+        topBarColor: SabitouColors.accent,
+      ),
+      _StatData(
+        icon: LucideIcons.circleCheck,
+        iconBg: SabitouColors.successSoft,
+        iconColor: SabitouColors.success,
+        value: '$active',
+        label: AppInternationalizationService.to.activeSuppliersText,
+        trendLabel: total > 0 ? '${((active / total) * 100).round()}%' : '0%',
+        trendType: _TrendType.up,
+        topBarColor: SabitouColors.success,
+      ),
+      if (inactive > 0)
+        _StatData(
+          icon: LucideIcons.circleX,
+          iconBg: SabitouColors.dangerSoft,
+          iconColor: SabitouColors.danger,
+          value: '$inactive',
+          label: AppInternationalizationService.to.inactiveText,
+          trendLabel: total > 0
+              ? '${((inactive / total) * 100).round()}%'
+              : '0%',
+          trendType: _TrendType.down,
+          topBarColor: SabitouColors.danger,
+        ),
+    ];
 
-        final suppliers = snapshot.data ?? [];
-        final total = suppliers.length;
-        final active = suppliers
-            .where((s) => s.status == SupplierStatus.SUPPLIER_STATUS_ACTIVE)
-            .length;
-        final inactive = total - active;
-        final withEmail = suppliers
-            .where((s) => s.contactEmail.isNotEmpty)
-            .length;
-
-        final cards = [
-          _StatData(
-            icon: LucideIcons.building2,
-            iconBg: SabitouColors.accentSoft,
-            iconColor: SabitouColors.accentForeground,
-            value: '$total',
-            label: AppInternationalizationService.to.totalSuppliersCount,
-            trendLabel:
-                '$active ${AppInternationalizationService.to.activeText.toLowerCase()}',
-            trendType: _TrendType.neutral,
-            topBarColor: SabitouColors.accent,
-          ),
-          _StatData(
-            icon: LucideIcons.circleCheck,
-            iconBg: SabitouColors.successSoft,
-            iconColor: SabitouColors.success,
-            value: '$active',
-            label: AppInternationalizationService.to.activeSuppliersText,
-            trendLabel: total > 0
-                ? '${((active / total) * 100).round()}%'
-                : '0%',
-            trendType: _TrendType.up,
-            topBarColor: SabitouColors.success,
-          ),
-          if (inactive > 0)
-            _StatData(
-              icon: LucideIcons.circleX,
-              iconBg: SabitouColors.dangerSoft,
-              iconColor: SabitouColors.danger,
-              value: '$inactive',
-              label: AppInternationalizationService.to.inactiveText,
-              trendLabel: total > 0
-                  ? '${((inactive / total) * 100).round()}%'
-                  : '0%',
-              trendType: _TrendType.down,
-              topBarColor: SabitouColors.danger,
-            ),
-        ];
-
-        return CustomGrid(
-          children: cards.map((d) => _StatCard(data: d)).toList(),
-          minItemWidth: 250,
-          mainAxisExtent: 120,
-          crossSpacing: 20,
-        );
-      },
+    return CustomGrid(
+      children: cards.map((d) => _StatCard(data: d)).toList(),
+      minItemWidth: 250,
+      mainAxisExtent: 120,
+      crossSpacing: 20,
     );
   }
 }
@@ -154,7 +138,6 @@ class _StatCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 2),
 
-                      // Label
                       Text(
                         data.label,
                         style: theme.textTheme.muted.copyWith(fontSize: 11.5),
@@ -163,7 +146,6 @@ class _StatCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 7),
 
-                      // Trend badge
                       _TrendBadge(label: data.trendLabel, type: data.trendType),
                     ],
                   ),

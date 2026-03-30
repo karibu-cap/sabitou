@@ -14,9 +14,9 @@ class PaymentsViewModel {
   /// Constructs a new [PaymentsViewModel].
   PaymentsViewModel({required this.storeId});
 
-  /// Streams the payments for the store.
-  Stream<List<Payment>> get paymentsStream {
-    return PaymentsRepository.instance.watchWhere([
+  /// The payments for the store.
+  Future<List<Payment>> get paymentsFuture {
+    return PaymentsRepository.instance.findWhere([
       SqlQuery.equals(PaymentsFields.payerId, storeId),
     ]);
   }

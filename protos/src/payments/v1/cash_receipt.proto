@@ -56,7 +56,18 @@ message CashReceipt {
   optional string voucher_issued_code = 15;
   // Amount owed to customer.
   double owed_to_customer = 16;
+  CashReceiptStatus status = 17;
 }
+
+enum CashReceiptStatus {
+  CASH_RECEIPT_STATUS_UNSPECIFIED = 0;
+  CASH_RECEIPT_STATUS_DRAFT       = 1; // held / in progress
+  CASH_RECEIPT_STATUS_COMPLETED   = 2; // paid + printed
+  CASH_RECEIPT_STATUS_VOIDED      = 3; // cancelled by manager
+  CASH_RECEIPT_STATUS_REFUNDED    = 4; // refund issued
+}
+
+
 
 message CreateCashReceiptRequest {
   // The partial cash receipt to create.

@@ -1372,12 +1372,12 @@ class AppInternationalizationService extends ChangeNotifier {
               | Date | Transaction | Qty | Unit Cost | | 1-4-2020 | Purchase | 10 | 100 | | 6-4-2020 | Purchase | 20 | 120 | | 10-4-2020 | Sale | 15 | ? |
               Calculating Valuation Rate at the time of sale:
               As per FIFO:
-              Since this is FIFO, we will consume quantities from the earliest transactions, therefore, to make a sale of 15 qty, we will take 10 qty from the first transaction and 5 qty from the second one. 
+              Since this is FIFO, we will consume quantities from the earliest transactions, therefore, to make a sale of 15 qty, we will take 10 qty from the first transaction and 5 qty from the second one.
               (10 * 100) + (5 * 120) = 1600, which leaves us 15 qty in stock at cost of 120 amounting to 1800.
               As per Moving Average:
-              In the Moving Average method, the value of an item is recalculated every time when an item is acquired. This is done by adding the cost of the newly acquired items to the existing inventory’s value and then dividing it by the total quantity available. 
+              In the Moving Average method, the value of an item is recalculated every time when an item is acquired. This is done by adding the cost of the newly acquired items to the existing inventory’s value and then dividing it by the total quantity available.
               ((10 * 100) + (20 * 120)) / 30 = 113.33
-              To make a sale of 15 qty, we will directly multiply it by the average value we received just now. 
+              To make a sale of 15 qty, we will directly multiply it by the average value we received just now.
               15 * 113.33 = 1700, which leaves us 15 qty in stock amounting to 1700.
               If you check, even though the quantity is same the stock value is different but both amounts to a total of 3400 only.''',
       'fr':
@@ -1385,12 +1385,12 @@ class AppInternationalizationService extends ChangeNotifier {
             | Date | Transaction | Quantité | Coût unitaire | | 1-4-2020 | Achat | 10 | 100 | | 6-4-2020 | Achat | 20 | 120 | | 10-4-2020 | Vente | 15 | ? |
             Calcul du taux d'évaluation au moment de la vente :
             Selon la méthode FIFO :
-            Comme il s'agit de la méthode FIFO, nous allons consommer les quantités des transactions les plus anciennes. Par conséquent, pour effectuer une vente de 15 quantités, nous allons prendre 10 quantités de la première transaction et 5 quantités de la deuxième. 
+            Comme il s'agit de la méthode FIFO, nous allons consommer les quantités des transactions les plus anciennes. Par conséquent, pour effectuer une vente de 15 quantités, nous allons prendre 10 quantités de la première transaction et 5 quantités de la deuxième.
             (10 * 100) + (5 * 120) = 1600, ce qui nous laisse 15 unités en stock au coût de 120, soit un total de 1800.
             Selon la méthode de la moyenne mobile :
-            Dans la méthode de la moyenne mobile, la valeur d'un article est recalculée à chaque fois qu'un article est acquis. Pour ce faire, on ajoute le coût des articles nouvellement acquis à la valeur du stock existant, puis on divise le tout par la quantité totale disponible. 
+            Dans la méthode de la moyenne mobile, la valeur d'un article est recalculée à chaque fois qu'un article est acquis. Pour ce faire, on ajoute le coût des articles nouvellement acquis à la valeur du stock existant, puis on divise le tout par la quantité totale disponible.
             ((10 * 100) + (20 * 120)) / 30 = 113,33
-            Pour réaliser une vente de 15 unités, nous la multiplierons directement par la valeur moyenne que nous venons d'obtenir. 
+            Pour réaliser une vente de 15 unités, nous la multiplierons directement par la valeur moyenne que nous venons d'obtenir.
             15 * 113,33 = 1 700, ce qui nous laisse 15 unités en stock pour un montant total de 1 700.
             Si vous vérifiez, même si la quantité est la même, la valeur du stock est différente, mais les deux montent à un total de 3 400 seulement.''',
     },
@@ -1557,8 +1557,8 @@ class AppInternationalizationService extends ChangeNotifier {
     },
     'globalProducts': {'en': 'Global Products', 'fr': 'Produits globaux'},
     'searchSuppliers': {
-      'en': 'Search suppliers by name or status...',
-      'fr': 'Rechercher des fournisseurs par nom ou statut...',
+      'en': 'Search suppliers by name...',
+      'fr': 'Rechercher des fournisseurs par nom...',
     },
     'noSuppliersMatchFilters': {
       'en': 'No suppliers match your filters',
@@ -1606,6 +1606,7 @@ class AppInternationalizationService extends ChangeNotifier {
     'balanceDue': {'en': 'Balance Due', 'fr': 'Solde dû'},
     'newPayment': {'en': 'New Payment', 'fr': 'Nouveau paiement'},
     'createPayment': {'en': 'Create Payment', 'fr': 'Créer le paiement'},
+    'payments': {'en': 'Payments', 'fr': 'Paiements'},
     'amountExceedsBalanceDue': {
       'en': 'Amount exceeds balance due',
       'fr': 'Le montant dépasse le solde dû',
@@ -2268,10 +2269,7 @@ class AppInternationalizationService extends ChangeNotifier {
     'due': {'en': 'Due', 'fr': 'Dû'},
     'deleteBill': {'en': 'Delete Bill', 'fr': 'Supprimer la facture'},
     'confirmPayment': {'en': 'Confirm Payment', 'fr': 'Confirmer le paiement'},
-    'markAsPaid': {
-      'en': 'Mark as Paid',
-      'fr': 'Marquer comme payée ?',
-    },
+    'markAsPaid': {'en': 'Mark as Paid', 'fr': 'Marquer comme payée ?'},
     'itemWillBeDelete': {
       'en': '@item will definitively delete',
       'fr': '@item sera supprimée définitivement',
@@ -2426,6 +2424,10 @@ class AppInternationalizationService extends ChangeNotifier {
     'impossibleToDeleteBill': {
       'en': 'Impossible to delete bill.',
       'fr': 'Impossible de supprimer la facture.',
+    },
+    'billWithPaymentsCannotBeDeleted': {
+      'en': 'Cannot delete a bill that has payments.',
+      'fr': 'Impossible de supprimer une facture ayant des paiements.',
     },
     'impossibleToMarkAsPaid': {
       'en': 'Impossible to mark as paid.',
@@ -2617,15 +2619,154 @@ class AppInternationalizationService extends ChangeNotifier {
       'en': 'Quantities since receipt',
       'fr': 'Quantités depuis réception',
     },
-    'fromReveice':{
+    'fromReveice': {
       'en': 'Since @nbr deliveries',
       'fr': 'Depuis @nbr réception(s)',
     },
+    'addPayment': {'en': 'Add payment', 'fr': 'Ajouter payment'},
+    'receiver': {'en': 'Receiver', 'fr': 'Destinataire'},
+    'deleteConfirmation': {
+      'en': 'Are you sure you want to delete this @item?',
+      'fr': 'Êtes-vous sûr de vouloir supprimer ce @item?',
+    },
+    'deleteConfirmationDescription': {
+      'en': 'This action cannot be undone.',
+      'fr': 'Cette action ne peut pas être annulée.',
+    },
+    'referenceNumber': {'en': 'Reference Number', 'fr': 'Numéro de référence'},
+    'validationFailed': {'en': 'Validation failed', 'fr': 'Validation échouée'},
+    'noPayment': {'en': 'No Payments', 'fr': 'Aucun payment'},
+    'noPaymentDescription': {
+      'en': 'Create a payment to see it here',
+      'fr': 'Creer un payment pour le vois ici',
+    },
+    'selectPaymentToSeeDetail': {
+      'en': 'Select payment to see the detail',
+      'fr': 'Selectionner un payment pour vois les details',
+    },
+    'payInFull': {'en': 'pay in full', 'fr': 'payer intégralement'},
+    'noUserFound': {'en': 'No user found', 'fr': 'Aucun utilisateur trouvé'},
+    'sessionExpired': {'en': 'Session expired', 'fr': 'Session expirée'},
+    'pleaseSignInAgain': {
+      'en': 'Please sign in again to continue',
+      'fr': 'Veuillez vous reconnecter pour continuer',
+    },
+    'backToSignIn': {'en': 'Back to Sign In', 'fr': 'Retour à la connexion'},
+    'verifyAmountWithCustomer': {
+      'en': 'Verify amount with customer',
+      'fr': 'Vérifier le montant avec le client',
+    },
+    'orderConfirmation': {
+      'en': 'Order confirmation',
+      'fr': 'Confirmation de commande',
+    },
+    'confirmAndCollect': {
+      'en': 'Confirm and collect',
+      'fr': 'Confirmer & collecter',
+    },
+    'changeToGive': {'en': 'Change to give', 'fr': 'Monnaie à rendre'},
+    'modify': {'en': 'Modify', 'fr': 'Modifier'},
+    'taxIncluded': {'en': 'Tax included', 'fr': 'Taux inclus'},
+    'unit': {'en': 'Unit', 'fr': 'Unité'},
+    'totalToPay': {'en': 'Total to pay', 'fr': 'Total à payer'},
+    'mobileMoneySubLabel': {
+      'en': 'Orange Money / MTN MoMo',
+      'fr': 'Orange Money / MTN MoMo',
+    },
+    'paymentComplete': {'en': 'Payment complete', 'fr': 'Paiement effectué'},
+    'payment': {'en': 'Payment', 'fr': 'Paiement'},
+    'noPaymentAdded': {'en': 'No payment added', 'fr': 'Aucun paiement ajouté'},
+    'printFailed': {'en': 'Print failed', 'fr': 'Échec de l\'impression'},
+    'incompletePayment': {
+      'en': 'Incomplete payment',
+      'fr': 'Paiement incomplet',
+    },
+    'saleError': {'en': 'Sale error', 'fr': 'Erreur de vente'},
   };
 
-   /// Returns the localized value of text 'fromReveice'.
-  String get fromReveice =>
-      _stringOfLocalizedValue('fromReveice');
+  /// Returns the localized value of text 'noPaymentAdded'.
+  String get noPaymentAdded => _stringOfLocalizedValue('noPaymentAdded');
+
+  /// Returns the localized value of text 'printFailed'.
+  String get printFailed => _stringOfLocalizedValue('printFailed');
+
+  /// Returns the localized value of text 'incompletePayment'.
+  String get incompletePayment => _stringOfLocalizedValue('incompletePayment');
+
+  /// Returns the localized value of text 'saleError'.
+  String get saleError => _stringOfLocalizedValue('saleError');
+
+  /// Returns the localized value of text 'payment'.
+  String get payment => _stringOfLocalizedValue('payment');
+
+  /// Returns the localized value of text 'paymentComplete'.
+  String get paymentComplete => _stringOfLocalizedValue('paymentComplete');
+
+  /// Returns the localized value of text 'mobileMoneySubLabel'.
+  String get mobileMoneySubLabel =>
+      _stringOfLocalizedValue('mobileMoneySubLabel');
+
+  /// Returns the localized value of text 'totalToPay'.
+  String get totalToPay => _stringOfLocalizedValue('totalToPay');
+
+  /// Returns the localized value of text 'changeToGive'.
+  String get changeToGive => _stringOfLocalizedValue('changeToGive');
+
+  /// Returns the localized value of text 'modify'.
+  String get modify => _stringOfLocalizedValue('modify');
+
+  /// Returns the localized value of text 'taxIncluded'.
+  String get taxIncluded => _stringOfLocalizedValue('taxIncluded');
+
+  /// Returns the localized value of text 'unit'.
+  String get unit => _stringOfLocalizedValue('unit');
+
+  /// Returns the localized value of text 'confirmAndCollect'.
+  String get confirmAndCollect => _stringOfLocalizedValue('confirmAndCollect');
+
+  /// Returns the localized value of text 'verifyAmountWithCustomer'.
+  String get verifyAmountWithCustomer =>
+      _stringOfLocalizedValue('verifyAmountWithCustomer');
+
+  /// Returns the localized value of text 'orderConfirmation'.
+  String get orderConfirmation => _stringOfLocalizedValue('orderConfirmation');
+
+  /// Returns the localized value of text 'payInFull'.
+  String get payInFull => _stringOfLocalizedValue('payInFull');
+
+  /// Returns the localized value of text 'selectPaymentToSeeDetail'.
+  String get selectPaymentToSeeDetail =>
+      _stringOfLocalizedValue('selectPaymentToSeeDetail');
+
+  /// Returns the localized value of text 'noPaymentDescription'.
+  String get noPaymentDescription =>
+      _stringOfLocalizedValue('noPaymentDescription');
+
+  /// Returns the localized value of text 'noPayment'.
+  String get noPayment => _stringOfLocalizedValue('noPayment');
+
+  /// Returns the localized value of text 'validationFailed'.
+  String get validationFailed => _stringOfLocalizedValue('validationFailed');
+
+  /// Returns the localized value of text 'referenceNumber'.
+  String get referenceNumber => _stringOfLocalizedValue('referenceNumber');
+
+  /// Returns the localized value of text 'deleteConfirmationDescription'.
+  String get deleteConfirmationDescription =>
+      _stringOfLocalizedValue('deleteConfirmationDescription');
+
+  /// Returns the localized value of text 'deleteConfirmation'.
+  String get deleteConfirmation =>
+      _stringOfLocalizedValue('deleteConfirmation');
+
+  /// Returns the localized value of text 'receiver'.
+  String get receiver => _stringOfLocalizedValue('receiver');
+
+  /// Returns the localized value of text 'addPayment'.
+  String get addPayment => _stringOfLocalizedValue('addPayment');
+
+  /// Returns the localized value of text 'fromReveice'.
+  String get fromReveice => _stringOfLocalizedValue('fromReveice');
 
   /// Returns the localized value of text 'quantityFromReceive'.
   String get quantityFromReceive =>
@@ -3962,6 +4103,7 @@ class AppInternationalizationService extends ChangeNotifier {
   String get balanceDue => _stringOfLocalizedValue('balanceDue');
   String get newPayment => _stringOfLocalizedValue('newPayment');
   String get createPayment => _stringOfLocalizedValue('createPayment');
+  String get payments => _stringOfLocalizedValue('payments');
   String get amountExceedsBalanceDue =>
       _stringOfLocalizedValue('amountExceedsBalanceDue');
   String get paymentMade => _stringOfLocalizedValue('paymentMade');
@@ -4009,6 +4151,10 @@ class AppInternationalizationService extends ChangeNotifier {
   /// The impossible to delete bill.
   String get impossibleToDeleteBill =>
       _stringOfLocalizedValue('impossibleToDeleteBill');
+
+  /// The bill with payments cannot be deleted.
+  String get billWithPaymentsCannotBeDeleted =>
+      _stringOfLocalizedValue('billWithPaymentsCannotBeDeleted');
 
   /// The impossible to mark as paid.
   String get impossibleToMarkAsPaid =>
@@ -6281,6 +6427,18 @@ class AppInternationalizationService extends ChangeNotifier {
   /// Returns the localized value of text 'receivingNoteNotFound'.
   String get receivingNoteNotFound =>
       _stringOfLocalizedValue('receivingNoteNotFound');
+
+  /// Returns the localized value of text 'backToSignIn'.
+  String get backToSignIn => _stringOfLocalizedValue('backToSignIn');
+
+  /// Returns the localized value of text 'pleaseSignInAgain'.
+  String get pleaseSignInAgain => _stringOfLocalizedValue('pleaseSignInAgain');
+
+  /// Returns the localized value of text 'sessionExpired'.
+  String get sessionExpired => _stringOfLocalizedValue('sessionExpired');
+
+  /// Returns the localized value of text 'noUserFound'.
+  String get noUserFound => _stringOfLocalizedValue('noUserFound');
 
   /// Changes the locale.
   void changeLocale([Locale? newLocale]) {

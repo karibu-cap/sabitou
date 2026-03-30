@@ -117,6 +117,9 @@ abstract class PagesRoutes {
   /// The payments made route, for example, http:localhost:8080/payments.
   static final payments = _PaymentsRoute();
 
+  /// The payment detail route, for example, http:localhost:8080/payments/123.
+  static final paymentDetail = _PaymentDetailRoute();
+
   /// The welcome route, for example, http:localhost:8080.
   static final welcome = _WelcomeRoute();
 }
@@ -127,6 +130,20 @@ class _PaymentsRoute extends PagesRoutesWithNoParams {
 
   @override
   String get name => 'payments';
+}
+
+class _PaymentDetailRoute
+    extends PagesRoutesWithParams<PaymentDetailParameters> {
+  @override
+  String get name => 'payment-detail';
+
+  @override
+  String get pattern => '/payments/:${PaymentDetailParameters.keyPaymentId}';
+
+  @override
+  String create(PaymentDetailParameters parameters) {
+    return '/payments/${parameters.paymentId}';
+  }
 }
 
 class _WelcomeRoute extends PagesRoutesWithNoParams {
@@ -163,6 +180,18 @@ class BillDetailParameters {
 
   /// Constructs a new [BillDetailParameters].
   BillDetailParameters({required this.billId});
+}
+
+/// The payment detail parameters.
+class PaymentDetailParameters {
+  /// The bill ID parameter key.
+  static const String keyPaymentId = 'paymentId';
+
+  /// The payment ID.
+  final String paymentId;
+
+  /// Constructs a new [PaymentDetailParameters].
+  PaymentDetailParameters({required this.paymentId});
 }
 
 /// The product detail parameters.

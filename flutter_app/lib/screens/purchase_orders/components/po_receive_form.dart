@@ -34,7 +34,7 @@ Future<String?> showReceiveForm(
         )
       : showShadDialog<String?>(
           context: context,
-          builder: (_) => ChangeNotifierProvider.value(
+          builder: (context) => ChangeNotifierProvider.value(
             value: controller,
             child: _ReceiveFormDialog(po: po, storeId: storeId, userId: userId),
           ),
@@ -124,7 +124,7 @@ class _ReceiveFormBodyState extends State<_ReceiveFormBody> {
         message: Intls.to.rejected_quantity_must_be_less_than_remaining,
       );
       setState(() => _isSubmitting = false);
-      
+
       return null;
     }
     await widget.onSubmit(items, _receivedAt, _notesController.text);

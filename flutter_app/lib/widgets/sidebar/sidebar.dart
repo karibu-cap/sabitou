@@ -110,6 +110,12 @@ class SidebarWidget extends StatelessWidget {
             icon: LucideIcons.receipt400,
             path: PagesRoutes.bills.pattern,
           ),
+          SideBarItem(
+            id: DashboardItem.paymentsMade,
+            label: Intls.to.paymentMade,
+            icon: LucideIcons.banknote,
+            path: PagesRoutes.payments.pattern,
+          ),
         ],
       ),
       SideBarItem(
@@ -260,6 +266,7 @@ final class _BusinessInfo extends StatelessWidget {
                           snapshot.error == null) {
                         return FadeInImage.assetNetwork(
                           placeholder: StaticImages.placeholder,
+                          placeholderFit: BoxFit.none,
                           image: business.logoLinkId,
                           fit: BoxFit.contain,
                           imageErrorBuilder: (_, __, ___) =>

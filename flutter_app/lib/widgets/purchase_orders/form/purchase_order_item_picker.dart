@@ -7,7 +7,7 @@ import '../../../services/internationalization/internationalization.dart';
 import '../../../themes/app_theme.dart';
 import '../../../utils/extensions/global_product_extension.dart';
 import '../../../utils/responsive_utils.dart';
-import '../../input/auto_complete_v2.dart';
+import '../../input/auto_complete.dart';
 import 'purchase_order_form_controller.dart';
 
 /// Opens the item picker in the correct presentation based on screen width.
@@ -28,7 +28,7 @@ Future<PurchaseOrderLineItemDraft?> showPurchaseOrderItemPicker(
 
   return showShadDialog<PurchaseOrderLineItemDraft>(
     context: context,
-    builder: (_) => PurchaseOrderItemPickerDialog(controller: controller),
+    builder: (context) => PurchaseOrderItemPickerDialog(controller: controller),
   );
 }
 
@@ -165,7 +165,7 @@ class _PurchaseOrderItemPickerBodyState
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CustomAutoCompleteV2<StoreProductWithGlobalProduct>(
+        AutoComplete<StoreProductWithGlobalProduct>(
           placeholder: Intls.to.product,
           searchPlaceholder: Intls.to.searchProductHint,
           initialValue: _selected?.globalProduct.label,

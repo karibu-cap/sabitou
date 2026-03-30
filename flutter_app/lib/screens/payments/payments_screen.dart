@@ -8,34 +8,34 @@ import '../../../utils/user_preference.dart';
 import '../../../widgets/error/loading_failed.dart';
 import '../../../widgets/payments/form/payment_form.dart';
 import '../../../widgets/payments/payment_card.dart';
+import '../../router/app_router.dart';
+import '../../router/page_routes.dart';
 import '../../themes/app_theme.dart';
+import '../../widgets/loading.dart';
+import '../../widgets/no_business_view.dart';
+import 'detail/payment_screen.dart';
 import 'payments_controller.dart';
 import 'payments_view_model.dart';
 
 const double _kDesktopBreakpoint = 800;
 
+/// The payment list screen.
 class PaymentsScreen extends StatelessWidget {
+  /// Constructor of new [PaymentsScreen].
   const PaymentsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final userPreferences = context.watch<UserPreferences>();
     final store = userPreferences.store;
-    final theme = ShadTheme.of(context);
 
     if (store == null) {
-      return Center(
-        child: Text(
-          AppInternationalizationService.to.noStoreSelected,
-          style: theme.textTheme.p,
-        ),
-      );
+      return const Scaffold(body: Center(child: NoBusinessView()));
     }
 
     return ChangeNotifierProvider<PaymentsController>(
-      create: (_) => PaymentsController(
-        PaymentsViewModel(storeId: store.refId),
-      ),
+      create: (_) =>
+          PaymentsController(PaymentsViewModel(storeId: store.refId)),
       child: const _PaymentsAdaptiveLayout(),
     );
   }
@@ -84,23 +84,59 @@ class _DesktopSplitView extends StatelessWidget {
         ),
         Expanded(
           flex: 5,
-          child: Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(LucideIcons.banknote, size: 64, color: cs.muted),
-                const SizedBox(height: 16),
-                Text(Intls.to.paymentMade, style: theme.textTheme.large),
-                const SizedBox(height: 8),
-                Text(
-                  'Select a payment to see details',
-                  style: theme.textTheme.muted,
-                ),
-              ],
-            ),
+          child: Consumer<PaymentsController>(
+            builder: (context, controller, child) {
+              if (controller.selectedPayment != null) {
+                return Stack(
+                  children: [
+                    Positioned.fill(
+                      child: PaymentDetailScreen(
+                        key: Key(controller.selectedPayment ?? ''),
+                        paymentRefId: controller.selectedPayment ?? '',
+                        onDeleted: () => controller.selectPayment(null),
+                      ),
+                    ),
+
+                    Positioned(
+                      top: 10,
+                      right: 10,
+                      child: IconButton(
+                        icon: const Icon(LucideIcons.x400),
+                        onPressed: () => controller.selectPayment(null),
+                      ),
+                    ),
+                  ],
+                );
+              }
+
+              return const _EmptySelectionState();
+            },
           ),
         ),
       ],
+    );
+  }
+}
+
+class _EmptySelectionState extends StatelessWidget {
+  const _EmptySelectionState();
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
+    final cs = theme.colorScheme;
+
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(LucideIcons.banknote, size: 64, color: cs.muted),
+          const SizedBox(height: 16),
+          Text(Intls.to.paymentMade, style: theme.textTheme.large),
+          const SizedBox(height: 8),
+          Text(Intls.to.selectPaymentToSeeDetail, style: theme.textTheme.muted),
+        ],
+      ),
     );
   }
 }
@@ -144,8 +180,8 @@ class _PaymentsListHeader extends StatelessWidget {
                 decoration: const BoxDecoration(
                   color: SabitouColors.accent,
                   borderRadius: BorderRadius.all(Radius.circular(2)),
-                 ),
-               ),
+                ),
+              ),
               const SizedBox(width: 10),
               Expanded(
                 child: Row(
@@ -161,10 +197,15 @@ class _PaymentsListHeader extends StatelessWidget {
                     if (count > 0) ...[
                       const SizedBox(width: 8),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 2,
+                        ),
                         decoration: const BoxDecoration(
                           color: SabitouColors.accentSoft,
-                          border: Border.fromBorderSide(BorderSide(color: SabitouColors.accent)),
+                          border: Border.fromBorderSide(
+                            BorderSide(color: SabitouColors.accent),
+                          ),
                           borderRadius: BorderRadius.all(Radius.circular(20)),
                         ),
                         child: Text(
@@ -207,7 +248,7 @@ class _SearchAndFilters extends StatelessWidget {
       child: ShadInput(
         placeholder: Text(Intls.to.search),
         leading: const Icon(LucideIcons.search, size: 16),
-        onChanged: (v) => controller.searchQuery.add(v),
+        onChanged: controller.searchQuery.add,
       ),
     );
   }
@@ -225,7 +266,7 @@ class _PaymentsList extends StatelessWidget {
       stream: controller.filteredPaymentsStream,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
+          return const Center(child: Loading());
         }
         if (snapshot.hasError) {
           return LoadingFailedWidget(
@@ -243,7 +284,8 @@ class _PaymentsList extends StatelessWidget {
           separatorBuilder: (_, __) => const SizedBox(height: 8),
           itemBuilder: (context, i) {
             final payment = payments[i];
-            final isSelected = isDesktop && controller.selectedPayment == payment.refId;
+            final isSelected =
+                isDesktop && controller.selectedPayment == payment.refId;
 
             return PaymentCard(
               payment: payment,
@@ -251,6 +293,13 @@ class _PaymentsList extends StatelessWidget {
               onTap: () {
                 if (isDesktop) {
                   controller.selectPayment(payment.refId);
+                } else {
+                  AppRouter.push(
+                    context,
+                    PagesRoutes.paymentDetail.create(
+                      PaymentDetailParameters(paymentId: payment.refId),
+                    ),
+                  );
                 }
               },
               onDelete: () => controller.deletePayment(payment.refId),
@@ -275,15 +324,22 @@ class _PaymentsEmptyState extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(LucideIcons.banknote, size: 40, color: theme.colorScheme.mutedForeground),
+            Icon(
+              LucideIcons.banknote,
+              size: 40,
+              color: theme.colorScheme.mutedForeground,
+            ),
             const SizedBox(height: 14),
             Text(
-              'No Payments',
-              style: theme.textTheme.p.copyWith(fontWeight: FontWeight.w600, fontSize: 15),
+              Intls.to.noPayment,
+              style: theme.textTheme.p.copyWith(
+                fontWeight: FontWeight.w600,
+                fontSize: 15,
+              ),
             ),
             const SizedBox(height: 6),
             Text(
-              'Create a payment to see it here',
+              Intls.to.noPaymentDescription,
               style: theme.textTheme.muted.copyWith(fontSize: 13),
               textAlign: TextAlign.center,
             ),

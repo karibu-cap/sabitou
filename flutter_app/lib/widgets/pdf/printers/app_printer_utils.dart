@@ -17,6 +17,7 @@ import '../../../utils/app_constants.dart';
 import '../../../utils/common_functions.dart';
 import '../../../utils/logger.dart';
 import '../../../utils/printer_management.dart' hide PaperSize;
+import '../../loading.dart';
 // Platform-specific Bluetooth imports
 
 /// The printing mixin.
@@ -483,11 +484,7 @@ class _PrinterSelectionDialogState extends State<_PrinterSelectionDialog> {
                   children: [
                     Text(Intls.to.selectOnOrMorePrinter),
                     if (_isScanning)
-                      const SizedBox(
-                        width: 16,
-                        height: 16,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
+                      const Loading.button()
                     else
                       IconButton(
                         icon: const Icon(Icons.refresh),
@@ -525,13 +522,7 @@ class _PrinterSelectionDialogState extends State<_PrinterSelectionDialog> {
                                           _isConnecting)
                                         const Padding(
                                           padding: EdgeInsets.only(left: 8.0),
-                                          child: SizedBox(
-                                            width: 12,
-                                            height: 12,
-                                            child: CircularProgressIndicator(
-                                              strokeWidth: 2,
-                                            ),
-                                          ),
+                                          child: Loading.button(),
                                         )
                                       else if (_selectedPrinter == e &&
                                           _isConnected)

@@ -7,7 +7,6 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import 'core/database/powersync_data_source.dart';
 import 'providers/auth/auth_provider.dart';
-import 'providers/cart_provider.dart';
 import 'repositories/audits_repository.dart';
 import 'repositories/auth_repository.dart';
 import 'repositories/bill_repository.dart';
@@ -15,6 +14,7 @@ import 'repositories/business_repository.dart';
 import 'repositories/categories_repository.dart';
 import 'repositories/gift_voucher_repository.dart';
 import 'repositories/inventory_repository.dart';
+import 'repositories/payments_repository.dart';
 import 'repositories/permissions_repository.dart';
 import 'repositories/pos_repository.dart';
 import 'repositories/purchase_order_repository.dart';
@@ -141,7 +141,11 @@ Future<void> _initServices() async {
       ),
     )
     ..registerLazySingleton<GiftVoucherRepository>(GiftVoucherRepository.new)
-    ..registerLazySingleton<PosRepository>(PosRepository.new)
+    ..registerLazySingleton<PosRepository>(
+      () => PosRepository(
+        dataSource: PowerSyncDataSource(() => PowerSyncService.instance.db),
+      ),
+    )
     ..registerLazySingleton<AuditsRepository>(AuditsRepository.new)
     ..registerLazySingleton<PurchaseOrderRepository>(
       () => PurchaseOrderRepository(
@@ -158,12 +162,16 @@ Future<void> _initServices() async {
         dataSource: PowerSyncDataSource(() => PowerSyncService.instance.db),
       ),
     )
+    ..registerLazySingleton<PaymentsRepository>(
+      () => PaymentsRepository(
+        dataSource: PowerSyncDataSource(() => PowerSyncService.instance.db),
+      ),
+    )
     ..registerLazySingleton<CategoriesRepository>(
       () => CategoriesRepository(
         dataSource: PowerSyncDataSource(() => PowerSyncService.instance.db),
       ),
-    )
-    ..registerLazySingleton<CartManager>(CartManager.new);
+    );
 
   // Wait for AuthProvider to initialize from storage
   GetIt.I.registerSingleton<AuthProvider>(

@@ -9,6 +9,7 @@ import '../../../services/internationalization/internationalization.dart';
 import '../../../utils/responsive_utils.dart';
 import '../../../utils/user_preference.dart';
 import '../../../widgets/loading.dart';
+import '../../../widgets/no_business_view.dart';
 import '../../../widgets/shad_scaffold.dart';
 import '../ajustment/inventory_adjustment_dialog.dart';
 import 'inventory_detail_controller.dart';
@@ -28,7 +29,7 @@ class InventoryDetailScreen extends StatelessWidget {
     final userPreferences = context.watch<UserPreferences>();
     final currentStore = userPreferences.store;
     if (currentStore == null) {
-      return const SizedBox.shrink();
+      return const Scaffold(body: Center(child: NoBusinessView()));
     }
 
     return ChangeNotifierProvider(

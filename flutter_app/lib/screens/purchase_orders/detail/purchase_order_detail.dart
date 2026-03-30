@@ -962,91 +962,99 @@ class _ReceiveNoteCard extends StatelessWidget {
       (s, i) => s + i.quantityRejected,
     );
 
-    return ShadCard(
-      padding: const EdgeInsets.all(14),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                width: 36,
-                height: 36,
-                decoration: const BoxDecoration(
-                  color: SabitouColors.infoSoft,
-                  borderRadius: BorderRadius.all(Radius.circular(9)),
+    return GestureDetector(
+      onTap: () => AppRouter.push(
+        context,
+        PagesRoutes.receivingNoteDetail.create(
+          ReceivingNoteDetailParameters(receivingNoteId: note.refId),
+        ),
+      ),
+      child: ShadCard(
+        padding: const EdgeInsets.all(14),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  width: 36,
+                  height: 36,
+                  decoration: const BoxDecoration(
+                    color: SabitouColors.infoSoft,
+                    borderRadius: BorderRadius.all(Radius.circular(9)),
+                  ),
+                  child: const Icon(
+                    LucideIcons.packageCheck,
+                    size: 17,
+                    color: SabitouColors.infoText,
+                  ),
                 ),
-                child: const Icon(
-                  LucideIcons.packageCheck,
-                  size: 17,
-                  color: SabitouColors.infoText,
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        note.refId,
+                        style: theme.textTheme.p.copyWith(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 13.5,
+                        ),
+                      ),
+                      Text(
+                        Formatters.fmtDate(note.receivedAt.toDateTime()),
+                        style: theme.textTheme.muted.copyWith(fontSize: 12),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      note.refId,
-                      style: theme.textTheme.p.copyWith(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 13.5,
+                if (totalRejected > 0)
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 3,
+                    ),
+                    decoration: const BoxDecoration(
+                      color: SabitouColors.dangerSoft,
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                    ),
+                    child: Text(
+                      Intls.to.differences,
+                      style: const TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w500,
+                        color: SabitouColors.dangerForeground,
                       ),
                     ),
-                    Text(
-                      Formatters.fmtDate(note.receivedAt.toDateTime()),
-                      style: theme.textTheme.muted.copyWith(fontSize: 12),
-                    ),
-                  ],
-                ),
-              ),
-              if (totalRejected > 0)
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 3,
                   ),
-                  decoration: const BoxDecoration(
-                    color: SabitouColors.dangerSoft,
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                  ),
-                  child: Text(
-                    Intls.to.differences,
-                    style: const TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w500,
-                      color: SabitouColors.dangerForeground,
-                    ),
-                  ),
-                ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          Wrap(
-            spacing: 8,
-            runSpacing: 6,
-            children: [
-              _InfoChip(
-                icon: LucideIcons.packageCheck,
-                label: '${totalReceived.toInt()} reçus',
-              ),
-              if (totalRejected > 0)
+              ],
+            ),
+            const SizedBox(height: 10),
+            Wrap(
+              spacing: 8,
+              runSpacing: 6,
+              children: [
                 _InfoChip(
-                  icon: LucideIcons.packageX,
-                  label: '${totalRejected.toInt()} rejetés',
-                  bgColor: SabitouColors.dangerSoft,
-                  iconColor: SabitouColors.dangerForeground,
+                  icon: LucideIcons.packageCheck,
+                  label: '${totalReceived.toInt()} reçus',
                 ),
-              if (note.notes.isNotEmpty)
-                _InfoChip(
-                  icon: LucideIcons.messageSquare,
-                  label: note.notes,
-                  maxWidth: 180,
-                ),
-            ],
-          ),
-        ],
+                if (totalRejected > 0)
+                  _InfoChip(
+                    icon: LucideIcons.packageX,
+                    label: '${totalRejected.toInt()} rejetés',
+                    bgColor: SabitouColors.dangerSoft,
+                    iconColor: SabitouColors.dangerForeground,
+                  ),
+                if (note.notes.isNotEmpty)
+                  _InfoChip(
+                    icon: LucideIcons.messageSquare,
+                    label: note.notes,
+                    maxWidth: 180,
+                  ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

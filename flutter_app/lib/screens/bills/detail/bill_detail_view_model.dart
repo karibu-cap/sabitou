@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:rxdart/rxdart.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
+import '../../../core/database/query/sql_condition.dart';
 import '../../../repositories/bill_repository.dart';
+import '../../../repositories/payments_repository.dart';
 import '../../../utils/logger.dart';
 
 /// View model for bill detail screen.
@@ -13,51 +15,49 @@ class BillDetailViewModel {
   /// The bill ID to fetch.
   final String billId;
 
-  /// Gets the bill item subject.
-  final _billItemSubject = BehaviorSubject<Bill?>.seeded(null);
-
   /// Gets the error subject.
   final _errorSubject = BehaviorSubject<String>.seeded('');
 
-  /// Gets the completer.
-  final Completer<bool> completer = Completer<bool>();
-
   /// Gets the bill item stream.
-  BehaviorSubject<Bill?> get billItemStream => _billItemSubject;
+  Stream<Bill?> get billItemStream => BillRepository.instance.watchBill(billId);
 
   /// Gets the error stream.
   Stream<String> get errorStream => _errorSubject.stream;
 
   /// Constructor of [BillDetailViewModel].
-  BillDetailViewModel({required this.billId}) {
-    _initData();
-  }
+  BillDetailViewModel({required this.billId});
 
-  /// Initializes the data by fetching the specific product.
-  Future<void> _initData() async {
-    try {
-      _logger.info('Fetching bill details for: $billId');
+  /// Watch the related bill payment.
+  Stream<List<Payment>>
+  get watchBillPayment => PaymentsRepository.instance.watchPayments([
+    SqlQuery(
+      "EXISTS (SELECT 1 FROM json_each(related_docs) WHERE json_extract(value, '\$.docId') = '$billId')",
+      null,
+      SqlCondition.raw,
+    ),
+  ]);
 
-      final bill = await BillRepository.instance.getBill(billId);
-
-      _billItemSubject.add(bill);
-    } on Exception catch (e) {
-      _logger.severe('Error loading product details: $e');
-      _errorSubject.add(e.toString());
-    } finally {
-      if (!completer.isCompleted) {
-        completer.complete(true);
-      }
-    }
-  }
-
-  /// Refreshes the product data.
-  Future<void> refresh() async {
-    await _initData();
-  }
+  /// Merges all reactive streams into one snapshot used by the detail screen.
+  Stream<BillDetailSnapshot> get detailStream => Rx.combineLatest2(
+    billItemStream,
+    watchBillPayment,
+    (bill, payments) => BillDetailSnapshot(bill: bill, payments: payments),
+  );
 
   /// Disposes the view model.
   void dispose() {
     _errorSubject.close();
   }
+}
+
+/// Snapshot of a bill and its linked documents.
+class BillDetailSnapshot {
+  /// Constructor of new [BillDetailSnapshot].
+  const BillDetailSnapshot({this.bill, required this.payments});
+
+  /// The bill order. `null` if not available.
+  final Bill? bill;
+
+  /// The payments associated with the bill.
+  final List<Payment> payments;
 }

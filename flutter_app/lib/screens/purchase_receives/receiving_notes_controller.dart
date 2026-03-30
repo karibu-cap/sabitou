@@ -42,6 +42,9 @@ class ReceivingNotesController extends ChangeNotifier {
 
   /// Selects [note] as the active detail item (desktop split view).
   void selectNote(ReceivingNote note) {
+    if (_selectedNote?.refId == note.refId) {
+      return;
+    }
     _selectedNote = note;
     notifyListeners();
   }

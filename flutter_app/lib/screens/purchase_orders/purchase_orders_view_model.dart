@@ -61,7 +61,6 @@ class PurchaseOrdersViewModel {
           if (status != null) {
             list = list.where((o) => o.status == status).toList();
           }
-          // Sort by order_date descending
           list.sort(
             (a, b) =>
                 b.orderDate.toDateTime().compareTo(a.orderDate.toDateTime()),
@@ -81,6 +80,10 @@ class PurchaseOrdersViewModel {
   Stream<List<Bill>> billsStream(String purchaseOrderId) =>
       _billsRepo.watchBills(storeId: storeId, purchaseOrderId: purchaseOrderId);
 
+  /// Watchs curren purchase order.
+  Stream<PurchaseOrder?> purchaseOrderStream(String purchaseOrderId) =>
+      _poRepo.watchPurchaseOrder(purchaseOrderId);
+
   ///The list of bill link to the purchase.
   Stream<List<ReceivingNote>> receivingNotesStream(String purchaseOrderId) =>
       _poRepo
@@ -94,10 +97,11 @@ class PurchaseOrdersViewModel {
   /// Merges all reactive streams into one snapshot used by the detail screen.
   Stream<PurchaseOrderDetailSnapshot> detailStream(String purchaseOrderId) =>
       Rx.combineLatest3(
-        Stream.value(null),
+        purchaseOrderStream(purchaseOrderId),
         billsStream(purchaseOrderId),
         receivingNotesStream(purchaseOrderId),
         (po, bills, notes) => PurchaseOrderDetailSnapshot(
+          po: po,
           bills: bills,
           receivingNotes: notes,
         ),

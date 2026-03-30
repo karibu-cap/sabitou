@@ -8,7 +8,7 @@ import '../../../services/internationalization/internationalization.dart';
 import '../../../themes/app_theme.dart';
 import '../../../utils/extensions/global_product_extension.dart';
 import '../../../utils/formatters.dart';
-import '../../input/auto_complete_v2.dart';
+import '../../input/auto_complete.dart';
 import 'purchase_order_form_controller.dart';
 import 'purchase_order_item_picker.dart';
 
@@ -35,7 +35,7 @@ class PurchaseOrderFormHeaderSection extends StatelessWidget {
           _FormField(
             label: Intls.to.supplier,
             isRequired: true,
-            child: CustomAutoCompleteV2<Supplier>(
+            child: AutoComplete<Supplier>(
               placeholder: Intls.to.selectSupplier,
               searchPlaceholder: Intls.to.searchAndFilter,
               initialValue: ctrl.supplierNameController.value.text,
@@ -60,7 +60,6 @@ class PurchaseOrderFormHeaderSection extends StatelessWidget {
                 ctrl.supplierIdController.text = supplier.refId;
                 ctrl.supplierNameController.text = supplier.name;
               },
-              minWidth: 300,
             ),
           ),
 
@@ -80,6 +79,7 @@ class PurchaseOrderFormHeaderSection extends StatelessWidget {
           _FormField(
             label: Intls.to.expectedDeliveryDate,
             child: ShadDatePickerFormField(
+              width: double.infinity,
               initialValue: ctrl.expectedDeliveryDate,
               onChanged: (value) {
                 if (value != null) {
@@ -177,7 +177,7 @@ class PurchaseOrderFormTotalsSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final ctrl = context.watch<PurchaseOrderFormController>();
     final theme = ShadTheme.of(context);
-    
+
     return _FormCard(
       child: Column(
         children: [

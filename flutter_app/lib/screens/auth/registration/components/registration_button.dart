@@ -7,6 +7,7 @@ import '../../../../router/page_routes.dart';
 import '../../../../services/internationalization/internationalization.dart';
 import '../../../../utils/button_state.dart';
 import '../../../../utils/common_functions.dart';
+import '../../../../widgets/loading.dart';
 import '../registration_controller.dart';
 
 /// Custom registration button widget with loading state
@@ -62,13 +63,7 @@ class RegistrationButton extends StatelessWidget {
         onPressed: () => onRegisterPressed(controller),
         width: double.infinity,
         trailing: controller.buttonState.value == ButtonState.loading
-            ? SizedBox.square(
-                dimension: 16,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  color: ShadTheme.of(context).colorScheme.primaryForeground,
-                ),
-              )
+            ? const Loading.button()
             : null,
         enabled: controller.buttonState.value != ButtonState.loading,
         child: Text(appIntl.registrationSubmit),

@@ -45,8 +45,9 @@ class ExpiryAlert extends StatelessWidget {
                                 (b) => b.productId == product.product.refId,
                               );
 
-                          if (expiringBatch == null)
+                          if (expiringBatch == null) {
                             return const SizedBox.shrink();
+                          }
 
                           final expDate = expiringBatch.expirationDate
                               .toDateTime();

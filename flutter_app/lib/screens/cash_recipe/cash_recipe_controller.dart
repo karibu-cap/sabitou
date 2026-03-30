@@ -6,7 +6,11 @@ import 'cash_recipe_view_model.dart';
 
 /// Controller for cash recipe screen
 final class CashRecipeController extends ChangeNotifier {
-  final CashRecipeViewModel _viewModel = CashRecipeViewModel();
+  final CashRecipeViewModel _viewModel;
+
+  /// Constructor of new [CashRecipeController].
+  CashRecipeController({required CashRecipeViewModel viewModel})
+    : _viewModel = viewModel;
 
   /// Get the view model
   CashRecipeViewModel get viewModel => _viewModel;
@@ -76,7 +80,7 @@ final class CashRecipeController extends ChangeNotifier {
     try {
       // TODO: Implement receipt printing
       showSuccessToast(context: context, message: 'Printing initiated');
-    } on Exception catch (e) {
+    } on Exception {
       showErrorToast(context: context, message: 'Printing failed');
     }
   }

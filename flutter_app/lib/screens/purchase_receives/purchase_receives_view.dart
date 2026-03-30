@@ -9,6 +9,7 @@ import '../../../utils/user_preference.dart';
 import '../../router/app_router.dart';
 import '../../router/page_routes.dart';
 import '../../themes/app_theme.dart';
+import '../../widgets/no_business_view.dart';
 import 'components/receiving_note_status_utils.dart';
 import 'detail/receiving_note_detail.dart';
 import 'detail/receiving_note_detail_screen.dart';
@@ -31,15 +32,9 @@ class PurchaseReceivesView extends StatelessWidget {
   Widget build(BuildContext context) {
     final prefs = context.watch<UserPreferences>();
     final store = prefs.store;
-    final theme = ShadTheme.of(context);
 
     if (store == null) {
-      return Center(
-        child: Text(
-          AppInternationalizationService.to.noStoreSelected,
-          style: theme.textTheme.p,
-        ),
-      );
+      return const Scaffold(body: Center(child: NoBusinessView()));
     }
 
     return ChangeNotifierProvider<ReceivingNotesController>(

@@ -141,9 +141,6 @@ class BillFormController extends ChangeNotifier {
 
   final bool _isEditMode;
 
-  /// `true` when editing an existing bill.
-  bool get isEditMode => _isEditMode;
-
   /// When `true`, the quantity field on each line item is read-only.
   ///
   /// Set automatically when the form is initialised from receiving notes so
@@ -186,6 +183,9 @@ class BillFormController extends ChangeNotifier {
 
   bool _isLoading = false;
   String _errorMessage = '';
+
+  /// `true` when editing an existing bill.
+  bool get isEditMode => _isEditMode;
 
   /// `true` while a save operation is in progress.
   bool get isLoading => _isLoading;
@@ -251,10 +251,11 @@ class BillFormController extends ChangeNotifier {
                   ? poItem.productName.fr
                   : poItem.productName.en)
             : lineItem.productId;
-        
+
         // Calculate tax rate based on PO item or default to 0
         final taxRate = poItem != null && poItem.quantityOrdered > 0
-            ? (poItem.taxAmount / (poItem.quantityOrdered * poItem.unitPrice)) * 100
+            ? (poItem.taxAmount / (poItem.quantityOrdered * poItem.unitPrice)) *
+                  100
             : 0.0;
 
         items.add(

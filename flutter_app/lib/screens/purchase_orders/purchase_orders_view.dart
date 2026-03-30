@@ -11,6 +11,7 @@ import '../../router/app_router.dart';
 import '../../router/page_routes.dart';
 import '../../themes/app_theme.dart';
 import '../../utils/responsive_utils.dart';
+import '../../widgets/no_business_view.dart';
 import 'components/po_utils.dart';
 import 'components/purchase_order_card.dart';
 import 'detail/purchase_order_detail_screen.dart';
@@ -26,15 +27,9 @@ class PurchaseOrdersView extends StatelessWidget {
   Widget build(BuildContext context) {
     final prefs = context.watch<UserPreferences>();
     final store = prefs.store;
-    final theme = ShadTheme.of(context);
 
     if (store == null) {
-      return Center(
-        child: Text(
-          AppInternationalizationService.to.noStoreSelected,
-          style: theme.textTheme.p,
-        ),
-      );
+      return const Scaffold(body: Center(child: NoBusinessView()));
     }
 
     return ChangeNotifierProvider<PurchaseOrdersController>(
@@ -308,7 +303,7 @@ class _StatusChip extends StatelessWidget {
         ? (activeStyle?.bg ?? SabitouColors.accentSoft)
         : cs.card;
     final border = isSelected
-        ? (activeStyle?.dot.withValues(alpha:.5) ?? SabitouColors.accentBorder)
+        ? (activeStyle?.dot.withValues(alpha: .5) ?? SabitouColors.accentBorder)
         : cs.border;
     final fg = isSelected
         ? (activeStyle?.fg ?? SabitouColors.accentForeground)
@@ -446,9 +441,7 @@ class _PoListItem extends StatelessWidget {
               AppRouter.push(
                 context,
                 PagesRoutes.purchaseOrderDetail.create(
-                  PurchaseOrderDetailParameters(
-                    purchaseOrderId: po.refId,
-                  ),
+                  PurchaseOrderDetailParameters(purchaseOrderId: po.refId),
                 ),
               );
             }

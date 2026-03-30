@@ -146,6 +146,9 @@ dependencies:
   powersync: 1.17.0
   synchronized: ^3.4.0
 
+  collection: any
+  protobuf: any
+  fixnum: any
 dev_dependencies:
   flutter_test:
     sdk: flutter

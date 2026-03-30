@@ -354,7 +354,7 @@ class _LinkedPoCard extends StatelessWidget {
         _SectionLabel(label: Intls.to.linkedPurchaseOrder),
         const SizedBox(height: 8),
         InkWell(
-         onTap: () => AppRouter.push(
+          onTap: () => AppRouter.push(
             context,
             PagesRoutes.purchaseOrderDetail.create(
               PurchaseOrderDetailParameters(purchaseOrderId: purchaseOrderId),
@@ -485,7 +485,7 @@ class _LineItemRow extends StatelessWidget {
     final hasRejection = item.quantityRejected > 0;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16,  vertical: 11),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 11),
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(color: cs.border.withValues(alpha: .5)),

@@ -31,8 +31,6 @@ class PowerSyncService {
 
   PowerSyncDatabase? _db;
 
-  String? _activeUserId;
-
   /// The currently open database. Throws if [open] has not been called.
   PowerSyncDatabase get db {
     final db = _db;
@@ -49,30 +47,28 @@ class PowerSyncService {
   PowerSyncService({required AuthApiClient authApiClient})
     : _authApiClient = authApiClient;
 
-  /// Initializes the database connection for a specific [userId].
+  /// Initializes the database connection.
   ///
   /// If provided, the database file will be scoped to that user.
   /// If null, a default (shared) database is used.
-  Future<void> initialize({String? userId}) async {
-    await _open(authApiClient: _authApiClient, userId: userId);
+  Future<void> initialize() async {
+    await _open(authApiClient: _authApiClient);
   }
 
-  /// Opens (or reuses) the database for [userId].
+  /// Opens (or reuses) the database.
   Future<PowerSyncDatabase> _open({
     required AuthApiClient authApiClient,
-    String? userId,
     bool connectSync = true,
   }) async {
     try {
       final currentDb = _db;
-      if (currentDb != null && _activeUserId == userId) {
+      if (currentDb != null) {
         return currentDb;
       }
 
       await close();
 
-      _activeUserId = userId;
-      final dbPath = await _databasePath(userId);
+      final dbPath = await _databasePath();
       final db = PowerSyncDatabase(schema: schema, path: dbPath);
 
       await db.initialize();
@@ -80,9 +76,9 @@ class PowerSyncService {
       if (connectSync) {
         final connector = PowerSyncConnector(authApiClient);
         await db.connect(connector: connector);
-        _logger.log('PowerSync sync stream connected for $userId');
+        _logger.log('PowerSync sync stream connected');
       } else {
-        _logger.log('PowerSync opened in offline mode for $userId');
+        _logger.log('PowerSync opened in offline mode');
       }
       _db = db;
 
@@ -103,14 +99,13 @@ class PowerSyncService {
       _logger.severe('Error closing PowerSync DB: $e');
     } finally {
       _db = null;
-      _activeUserId = null;
     }
   }
 
   /// Returns the per-user database file path.
-  static Future<String> _databasePath(String? userId) async {
+  static Future<String> _databasePath() async {
     final Directory dir;
-    final filename = userId != null ? 'powersync_$userId.db' : 'sabitou.db';
+    final filename = 'sabitou.db';
 
     if (kIsWeb) {
       return filename;

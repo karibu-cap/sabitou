@@ -48,12 +48,11 @@ class BillsController extends ChangeNotifier {
   /// Stream of status filters.
   BehaviorSubject<BillStatus?> get statusFilter => _viewModel.statusFilter;
 
-  /// Future of all bills.
-  Future<List<Bill>> get billsFuture => _viewModel.billsFuture;
+  /// Stream of all bills.
+  Stream<List<Bill>> get billsStream => _viewModel.billsStream;
 
   /// Stream of filtered bills.
-  Stream<List<Bill>> get filteredBillsStream =>
-      _viewModel.filteredBillsStream;
+  Stream<List<Bill>> get filteredBillsStream => _viewModel.filteredBillsStream;
 
   /// Stream of bills for a given purchase order.
   Stream<List<Bill>> billsForPurchaseOrder(String purchaseOrderId) =>
@@ -61,6 +60,9 @@ class BillsController extends ChangeNotifier {
 
   /// Selection (desktop split view).
   void selectBill(String? billId) {
+    if (_selectedBill == billId) {
+      return;
+    }
     _selectedBill = billId;
     notifyListeners();
   }
@@ -100,7 +102,7 @@ class BillsController extends ChangeNotifier {
       taxTotal: po.taxTotal,
       totalAmount: po.totalAmount,
       balanceDue: po.totalAmount,
-      currency: po.currency ?? 'XAF',
+      currency: po.currency,
       dueDate: Timestamp.fromDateTime(due),
       notes: notes,
       status: BillStatus.BILL_STATUS_OPEN,
@@ -116,12 +118,23 @@ class BillsController extends ChangeNotifier {
   }
 
   /// Deletes the bill.
-  Future<bool> deleteBill(String refIf) async {
-    final result = await BillRepository.instance.deleteBill(refIf);
-
-    if (result) {
+  Future<bool> deleteBill(String refId) async {
+    // Check if bill has payments before attempting deletion
+    final bill = await BillRepository.instance.getBill(refId);
+    if (bill != null && bill.paymentIds.isNotEmpty) {
+      _errorMessage = _intl.billWithPaymentsCannotBeDeleted;
       notifyListeners();
+
+      return false;
     }
+
+    final result = await BillRepository.instance.deleteBill(refId);
+
+    if (!result) {
+      _errorMessage = _intl.impossibleToDeleteBill;
+    }
+
+    notifyListeners();
 
     return result;
   }

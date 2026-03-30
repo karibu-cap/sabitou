@@ -107,7 +107,7 @@ class AuthProvider extends ChangeNotifier {
       }
 
       // Initialize DB for this specific user session
-      await _powerSync.initialize(userId: userId);
+      await _powerSync.initialize();
 
       final user = await _authRepository.restoreSession(userId);
       if (user != null) {
@@ -207,7 +207,7 @@ class AuthProvider extends ChangeNotifier {
     String? password,
   }) async {
     try {
-      await _powerSync.initialize(userId: user.refId);
+      await _powerSync.initialize();
 
       if (email != null && password != null) {
         final cacheResult = await _authRepository.cacheCredentials(

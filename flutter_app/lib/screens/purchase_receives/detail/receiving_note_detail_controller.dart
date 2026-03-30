@@ -1,9 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:sabitou_rpc/sabitou_rpc.dart';
 
-import '../../../services/internationalization/internationalization.dart';
 import 'receiving_note_detail_view_model.dart';
 
 /// Controller for the receiving note detail screen.

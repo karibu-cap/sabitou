@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:collection/collection.dart';
+import 'package:protobuf/protobuf.dart' as $pb;
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../../services/powersync/schema.dart';
@@ -63,6 +64,96 @@ Map<String, dynamic> extractTable(Map<String, dynamic> row, String prefix) {
   return result.isEmpty ? row : result;
 }
 
+class JsonMapper {
+  /// For unique proto object (ex: Address, ResourceLink)
+  static T? toMessage<T extends $pb.GeneratedMessage>(
+    String? jsonStr,
+    T Function() creator,
+  ) {
+    if (jsonStr == null || jsonStr.isEmpty) {
+      return null;
+    }
+    try {
+      final decoded = jsonDecode(jsonStr);
+
+      return creator()..mergeFromProto3Json(decoded);
+    } catch (e) {
+      print('Mapping Error (Message): $e');
+
+      return null;
+    }
+  }
+
+  /// For object list Protobuf (ex: List<ConnectedAccount>)
+  static List<T> toMessageList<T extends $pb.GeneratedMessage>(
+    String? jsonStr,
+    T Function() creator,
+  ) {
+    if (jsonStr == null || jsonStr.isEmpty) {
+      return [];
+    }
+    try {
+      final decoded = jsonDecode(jsonStr);
+      if (decoded is List) {
+        return decoded.map((e) => creator()..mergeFromProto3Json(e)).toList();
+      }
+    } catch (e) {
+      print('Mapping Error (MessageList): $e');
+    }
+
+    return [];
+  }
+
+  /// For simple list types (ex: List<String>, List<int>)
+  static List<T> toPrimitiveList<T>(String? jsonStr) {
+    if (jsonStr == null || jsonStr.isEmpty) {
+      return [];
+    }
+    try {
+      final decoded = jsonDecode(jsonStr);
+      if (decoded is List) {
+        return decoded.cast<T>();
+      }
+    } catch (e) {
+      print('Mapping Error (PrimitiveList): $e');
+    }
+
+    return [];
+  }
+
+  /// For single enums (ex: AccountStatusType)
+  static T? toEnum<T extends $pb.ProtobufEnum>(String? value, List<T> values) {
+    if (value == null || value.isEmpty) {
+      return null;
+    }
+
+    return values.firstWhereOrNull((e) => e.name == value);
+  }
+
+  /// For enum lists (ex: List<AuthActionType> stored as name strings)
+  static List<T> toEnumList<T extends $pb.ProtobufEnum>(
+    String? jsonStr,
+    List<T> values,
+  ) {
+    if (jsonStr == null || jsonStr.isEmpty) {
+      return [];
+    }
+    try {
+      final decoded = jsonDecode(jsonStr);
+      if (decoded is List) {
+        return decoded
+            .map((e) => values.firstWhereOrNull((v) => v.name == e.toString()))
+            .whereType<T>()
+            .toList();
+      }
+    } catch (e) {
+      print('Mapping Error (EnumList): $e');
+    }
+
+    return [];
+  }
+}
+
 /// Converts a [User] to a [User].
 User fromRowToUser(RawRow row) {
   return User(
@@ -72,27 +163,22 @@ User fromRowToUser(RawRow row) {
     phoneNumber: row.optString(UsersFields.phoneNumber),
     firstName: row.optString(UsersFields.firstName),
     lastName: row.optString(UsersFields.lastName),
-    accountStatus: AccountStatusType.values.firstWhereOrNull(
-      (e) => e.name == row.optString(UsersFields.accountStatus),
+    accountStatus: JsonMapper.toEnum<AccountStatusType>(
+      row.optString(UsersFields.accountStatus),
+      AccountStatusType.values,
     ),
-    connectedAccounts: row.optString(UsersFields.connectedAccounts) != null
-        ? (jsonDecode(row.optString(UsersFields.connectedAccounts).toString())
-                  as List)
-              .map((e) => ConnectedAccount.create()..mergeFromProto3Json(e))
-              .toList()
-        : [],
-    requiredActions: row.optString(UsersFields.requiredActions) == null
-        ? []
-        : (jsonDecode(row.optString(UsersFields.requiredActions).toString())
-              as List<AuthActionType>),
-
-    profileLink:
-        row.optString(UsersFields.profileLinkId) == null
-              ? null
-              : ResourceLink.create()
-          ?..mergeFromProto3Json(
-            jsonDecode(row.optString(UsersFields.profileLinkId).toString()),
-          ),
+    connectedAccounts: JsonMapper.toMessageList<ConnectedAccount>(
+      row.optString(UsersFields.connectedAccounts),
+      ConnectedAccount.create,
+    ),
+    requiredActions: JsonMapper.toEnumList<AuthActionType>(
+      row.optString(UsersFields.requiredActions),
+      AuthActionType.values,
+    ),
+    profileLink: JsonMapper.toMessage<ResourceLink>(
+      row.optString(UsersFields.profileLinkId),
+      ResourceLink.create,
+    ),
     activeBusinessId: row.optString(UsersFields.activeBusinessId),
     activeStoreId: row.optString(UsersFields.activeStoreId),
   );
@@ -107,27 +193,18 @@ RawRow fromUsertoRaw(User user) {
     UsersFields.phoneNumber: user.hasPhoneNumber() ? user.phoneNumber : null,
     UsersFields.firstName: user.hasFirstName() ? user.firstName : null,
     UsersFields.lastName: user.hasLastName() ? user.lastName : null,
-
-    // enum → int
     UsersFields.accountStatus: user.hasAccountStatus()
         ? user.accountStatus.value
         : null,
-
-    // repeated message → JSON array (proto3Json par message)
     UsersFields.connectedAccounts: jsonEncode(
       user.connectedAccounts.map((a) => a.toProto3Json()).toList(),
     ),
-
-    // repeated enum → JSON int array
     UsersFields.requiredActions: jsonEncode(
       user.requiredActions.map((a) => a.value).toList(),
     ),
-
-    // nested message → JSON object
     UsersFields.profileLinkId: user.hasProfileLink()
         ? jsonEncode(user.profileLink.toProto3Json())
         : null,
-
     UsersFields.activeBusinessId: user.activeBusinessId,
     UsersFields.activeStoreId: user.activeStoreId,
   };
@@ -166,22 +243,18 @@ Business fromRowToBusiness(RawRow row) {
     name: row.requireString(BusinessesFields.name),
     description: row.optString(BusinessesFields.description) ?? '',
     status:
-        BusinessStatusType.values.firstWhereOrNull(
-          (e) => e.name == row.optString(BusinessesFields.status),
+        JsonMapper.toEnum<BusinessStatusType>(
+          row.optString(BusinessesFields.status),
+          BusinessStatusType.values,
         ) ??
         BusinessStatusType.BUSINESS_STATUS_TYPE_UNSPECIFIED,
     ownerId: row.requireString(BusinessesFields.ownerId),
     logoLinkId: row.optString(BusinessesFields.logoLinkId) ?? '',
     countryCode: row.requireString(BusinessesFields.countryCode),
     currencyCode: row.requireString(BusinessesFields.currencyCode),
-    externalLinksIds: row.optString(BusinessesFields.externalLinksIds) != null
-        ? (jsonDecode(
-                    row.optString(BusinessesFields.externalLinksIds).toString(),
-                  )
-                  as List)
-              .map((e) => e.toString())
-              .toList()
-        : [],
+    externalLinksIds: JsonMapper.toPrimitiveList<String>(
+      row.optString(BusinessesFields.externalLinksIds),
+    ),
     contactInfo: row.optString(BusinessesFields.contactInfo),
     address: row.optString(BusinessesFields.address),
     email: row.optString(BusinessesFields.email),
@@ -238,13 +311,14 @@ Store fromRowToStore(RawRow row) {
       row.optDateTime(StoresFields.updatedAt) ?? DateTime.now(),
     ),
     phone: row.optString(StoresFields.phone),
-    address: Address.create()
-      ..mergeFromProto3Json(
-        jsonDecode(row.optString(StoresFields.address) ?? '{}'),
-      ),
+    address: JsonMapper.toMessage<Address>(
+      row.optString(StoresFields.address),
+      Address.create,
+    ),
     email: row.optString(StoresFields.email),
-    costingMethod: StoreCostingMethod.values.firstWhereOrNull(
-      (e) => e.name == row.optString(StoresFields.costingMethod),
+    costingMethod: JsonMapper.toEnum<StoreCostingMethod>(
+      row.optString(StoresFields.costingMethod),
+      StoreCostingMethod.values,
     ),
     tax: row.optDouble(StoresFields.tax),
     postalBox: row.optString(StoresFields.postalBox),
@@ -279,8 +353,9 @@ BusinessMember fromRowToBusinessMembers(RawRow row) {
                 DateTime.now(),
           ),
     status:
-        BusinessMemberStatus.values.firstWhereOrNull(
-          (e) => e.name == row.optString(BusinessMembersFields.status),
+        JsonMapper.toEnum<BusinessMemberStatus>(
+          row.optString(BusinessMembersFields.status),
+          BusinessMemberStatus.values,
         ) ??
         BusinessMemberStatus.BUSINESS_MEMBER_STATUS_UNSPECIFIED,
   );
@@ -308,21 +383,19 @@ StoreMember fromRowToStoreMembers(RawRow row) {
   return StoreMember(
     userId: row.requireString(StoreMembersFields.userId),
     storeId: row.requireString(StoreMembersFields.storeId),
-    permissions: row.optString(StoreMembersFields.permissions) != null
-        ? (StorePermissions.create()..mergeFromProto3Json(
-            jsonDecode(
-              row.optString(StoreMembersFields.permissions).toString(),
-            ),
-          ))
-        : null,
+    permissions: JsonMapper.toMessage<StorePermissions>(
+      row.optString(StoreMembersFields.permissions),
+      StorePermissions.create,
+    ),
     memberSince: row.optDateTime(StoreMembersFields.memberSince) == null
         ? null
         : Timestamp.fromDateTime(
             row.optDateTime(StoreMembersFields.memberSince) ?? DateTime.now(),
           ),
     status:
-        StoreMemberStatus.values.firstWhereOrNull(
-          (e) => e.name == row.optString(StoreMembersFields.status),
+        JsonMapper.toEnum<StoreMemberStatus>(
+          row.optString(StoreMembersFields.status),
+          StoreMemberStatus.values,
         ) ??
         StoreMemberStatus.STORE_MEMBER_STATUS_UNSPECIFIED,
   );
@@ -364,12 +437,10 @@ InventoryLevel fromRowToInventoryLevel(RawRow row) {
         : Timestamp.fromDateTime(
             row.requireDateTime(InventoryLevelsFields.lastUpdated),
           ),
-    batches: row.optString(InventoryLevelsFields.batches) != null
-        ? (jsonDecode(row.optString(InventoryLevelsFields.batches) ?? '[]')
-                  as List)
-              .map((e) => Batch.create()..mergeFromProto3Json(e))
-              .toList()
-        : [],
+    batches: JsonMapper.toMessageList<Batch>(
+      row.optString(InventoryLevelsFields.batches),
+      Batch.create,
+    ),
   );
 }
 
@@ -405,17 +476,16 @@ StoreProduct fromRowToStoreProduct(RawRow row) {
     storeId: row.requireString(StoreProductsFields.storeId),
     globalProductId: row.requireString(StoreProductsFields.globalProductId),
     salePrice: row.requireInt(StoreProductsFields.salePrice),
-    imagesLinksIds: row.optString(StoreProductsFields.imagesLinksIds) != null
-        ? (jsonDecode(row.optString(StoreProductsFields.imagesLinksIds) ?? '[]')
-                  as List)
-              .map((e) => e.toString())
-              .toList()
-        : [],
-    status: ProductStatus.values.firstWhereOrNull(
-      (e) => e.name == row.optString(StoreProductsFields.status),
+    imagesLinksIds: JsonMapper.toPrimitiveList<String>(
+      row.optString(StoreProductsFields.imagesLinksIds),
     ),
-    expirationType: ExpirationType.values.firstWhereOrNull(
-      (e) => e.name == row.optString(StoreProductsFields.expirationType),
+    status: JsonMapper.toEnum<ProductStatus>(
+      row.optString(StoreProductsFields.status),
+      ProductStatus.values,
+    ),
+    expirationType: JsonMapper.toEnum<ExpirationType>(
+      row.optString(StoreProductsFields.expirationType),
+      ExpirationType.values,
     ),
     sku: row.optString(StoreProductsFields.sku),
     reorderPoint: row.optInt(StoreProductsFields.reorderPoint) ?? 0,
@@ -457,33 +527,25 @@ RawRow fromGlobalProductToRaw(GlobalProduct product) {
 GlobalProduct fromRowToGlobalProduct(RawRow row) {
   return GlobalProduct(
     refId: row.optString(GlobalProductsFields.refId) ?? '',
-    name: row.optString(GlobalProductsFields.name) != null
-        ? (Internationalized.create()..mergeFromProto3Json(
-            jsonDecode(row.optString(GlobalProductsFields.name) ?? '{}'),
-          ))
-        : null,
-    description: row.optString(GlobalProductsFields.description) != null
-        ? (Internationalized.create()..mergeFromProto3Json(
-            jsonDecode(row.optString(GlobalProductsFields.description) ?? '{}'),
-          ))
-        : null,
+    name: JsonMapper.toMessage<Internationalized>(
+      row.optString(GlobalProductsFields.name),
+      Internationalized.create,
+    ),
+    description: JsonMapper.toMessage<Internationalized>(
+      row.optString(GlobalProductsFields.description),
+      Internationalized.create,
+    ),
     barCodeValue: row.optString(GlobalProductsFields.barCodeValue),
-    imagesLinksIds: row.optString(GlobalProductsFields.imagesLinksIds) != null
-        ? (jsonDecode(
-                    row.optString(GlobalProductsFields.imagesLinksIds) ?? '[]',
-                  )
-                  as List)
-              .map((e) => e.toString())
-              .toList()
-        : [],
-    categories: row.optString(GlobalProductsFields.categories) != null
-        ? (jsonDecode(row.optString(GlobalProductsFields.categories) ?? '[]')
-                  as List)
-              .map((e) => Category.create()..mergeFromProto3Json(e))
-              .toList()
-        : [],
-    status: GlobalProductStatus.values.firstWhereOrNull(
-      (e) => e.name == row.optString(GlobalProductsFields.status),
+    imagesLinksIds: JsonMapper.toPrimitiveList<String>(
+      row.optString(GlobalProductsFields.imagesLinksIds),
+    ),
+    categories: JsonMapper.toMessageList<Category>(
+      row.optString(GlobalProductsFields.categories),
+      Category.create,
+    ),
+    status: JsonMapper.toEnum<GlobalProductStatus>(
+      row.optString(GlobalProductsFields.status),
+      GlobalProductStatus.values,
     ),
   );
 }
@@ -541,9 +603,9 @@ InventoryTransaction fromRowToInventoryTransaction(RawRow row) {
     refId: row.optString(InventoryTransactionsFields.refId) ?? '',
     storeId: row.requireString(InventoryTransactionsFields.storeId),
     productId: row.requireString(InventoryTransactionsFields.productId),
-    transactionType: TransactionType.values.firstWhereOrNull(
-      (e) =>
-          e.name == row.optString(InventoryTransactionsFields.transactionType),
+    transactionType: JsonMapper.toEnum<TransactionType>(
+      row.optString(InventoryTransactionsFields.transactionType),
+      TransactionType.values,
     ),
     quantityChange: row.requireInt(InventoryTransactionsFields.quantityChange),
     quantityBefore: row.requireInt(InventoryTransactionsFields.quantityBefore),
@@ -607,23 +669,19 @@ Supplier fromRowToSupplier(RawRow row) {
     name: row.requireString(SuppliersFields.name),
     description: row.optString(SuppliersFields.description),
     logoLinkId: row.optString(SuppliersFields.logoLinkId),
-    externalLinksIds: row.optString(SuppliersFields.externalLinksIds) != null
-        ? (jsonDecode(row.optString(SuppliersFields.externalLinksIds) ?? '[]')
-                  as List)
-              .map((e) => e.toString())
-              .toList()
-        : [],
+    externalLinksIds: JsonMapper.toPrimitiveList<String>(
+      row.optString(SuppliersFields.externalLinksIds),
+    ),
     contactPhone: row.optString(SuppliersFields.contactPhone),
     contactEmail: row.optString(SuppliersFields.contactEmail),
     contactAddress: row.optString(SuppliersFields.contactAddress),
-    status: SupplierStatus.values.firstWhereOrNull(
-      (e) => e.name == row.optString(SuppliersFields.status),
+    status: JsonMapper.toEnum<SupplierStatus>(
+      row.optString(SuppliersFields.status),
+      SupplierStatus.values,
     ),
-    storeIds: row.optString(SuppliersFields.storeIds) != null
-        ? (jsonDecode(row.optString(SuppliersFields.storeIds) ?? '[]') as List)
-              .map((e) => e.toString())
-              .toList()
-        : [],
+    storeIds: JsonMapper.toPrimitiveList<String>(
+      row.optString(SuppliersFields.storeIds),
+    ),
   );
 }
 
@@ -647,18 +705,19 @@ RawRow fromCategoryToRaw(Category category) {
 Category fromRowToCategory(RawRow row) {
   return Category(
     refId: row.optString(CategoriesFields.refId) ?? '',
-    name: row.optString(CategoriesFields.name) != null
-        ? (Internationalized.create()..mergeFromProto3Json(
-            jsonDecode(row.optString(CategoriesFields.name) ?? '{}'),
-          ))
-        : null,
+    name: JsonMapper.toMessage<Internationalized>(
+      row.optString(CategoriesFields.name),
+      Internationalized.create,
+    ),
     businessId: row.requireString(CategoriesFields.businessId),
     parentCategoryId: row.optString(CategoriesFields.parentCategoryId),
-    status: CategoryStatus.values.firstWhereOrNull(
-      (e) => e.name == row.optString(CategoriesFields.status),
+    status: JsonMapper.toEnum<CategoryStatus>(
+      row.optString(CategoriesFields.status),
+      CategoryStatus.values,
     ),
-    type: CategoryType.values.firstWhereOrNull(
-      (e) => e.name == row.optString(CategoriesFields.type),
+    type: JsonMapper.toEnum<CategoryType>(
+      row.optString(CategoriesFields.type),
+      CategoryType.values,
     ),
   );
 }
@@ -672,9 +731,6 @@ RawRow fromCashReceiptToRaw(CashReceipt receipt) {
         ? receipt.customerId
         : null,
     CashReceiptsFields.storeId: receipt.storeId,
-    CashReceiptsFields.items: receipt.items.isNotEmpty
-        ? jsonEncode(receipt.items.map((i) => i.toProto3Json()).toList())
-        : null,
     CashReceiptsFields.subtotal: receipt.subtotal,
     CashReceiptsFields.taxAmount: receipt.taxAmount,
     CashReceiptsFields.totalAmount: receipt.totalAmount,
@@ -694,6 +750,7 @@ RawRow fromCashReceiptToRaw(CashReceipt receipt) {
     CashReceiptsFields.owedToCustomer: receipt.hasOwedToCustomer()
         ? receipt.owedToCustomer
         : null,
+    CashReceiptsFields.status: receipt.hasStatus() ? receipt.status.name : null,
   };
 }
 
@@ -704,23 +761,15 @@ CashReceipt fromRowToCashReceipt(RawRow row) {
     cashierUserId: row.requireString(CashReceiptsFields.cashierUserId),
     customerId: row.optString(CashReceiptsFields.customerId),
     storeId: row.requireString(CashReceiptsFields.storeId),
-    items: row.optString(CashReceiptsFields.items) != null
-        ? (jsonDecode(row.optString(CashReceiptsFields.items) ?? '[]') as List)
-              .map((e) => InvoiceLineItem.create()..mergeFromProto3Json(e))
-              .toList()
-        : [],
     subtotal: row.requireDouble(CashReceiptsFields.subtotal),
     taxAmount: row.requireDouble(CashReceiptsFields.taxAmount),
     totalAmount: row.requireDouble(CashReceiptsFields.totalAmount),
     amountPaid: row.requireDouble(CashReceiptsFields.amountPaid),
     changeGiven: row.requireDouble(CashReceiptsFields.changeGiven),
     currency: row.requireString(CashReceiptsFields.currency),
-    paymentIds: row.optString(CashReceiptsFields.paymentIds) != null
-        ? (jsonDecode(row.optString(CashReceiptsFields.paymentIds) ?? '[]')
-                  as List)
-              .map((e) => e.toString())
-              .toList()
-        : [],
+    paymentIds: JsonMapper.toPrimitiveList<String>(
+      row.optString(CashReceiptsFields.paymentIds),
+    ),
     transactionTime: row.optDateTime(CashReceiptsFields.transactionTime) == null
         ? null
         : Timestamp.fromDateTime(
@@ -729,6 +778,49 @@ CashReceipt fromRowToCashReceipt(RawRow row) {
     notes: row.optString(CashReceiptsFields.notes),
     voucherIssuedCode: row.optString(CashReceiptsFields.voucherIssuedCode),
     owedToCustomer: row.optDouble(CashReceiptsFields.owedToCustomer),
+    status: JsonMapper.toEnum<CashReceiptStatus>(
+      row.optString(CashReceiptsFields.status),
+      CashReceiptStatus.values,
+    ),
+  );
+}
+
+/// Converts a [InvoiceLineItem] to a [RawRow] for cash_receipt_items.
+RawRow fromCashReceiptItemToRaw(
+  InvoiceLineItem item,
+  String receiptId,
+  String storeId,
+) {
+  return {
+    CashReceiptItemsFields.receiptId: receiptId,
+    CashReceiptItemsFields.storeId: storeId,
+    CashReceiptItemsFields.productId: item.productId,
+    CashReceiptItemsFields.quantity: item.quantity,
+    CashReceiptItemsFields.unitPrice: item.unitPrice,
+    CashReceiptItemsFields.subtotal: item.subtotal,
+    CashReceiptItemsFields.taxRate: item.taxRate,
+    CashReceiptItemsFields.taxAmount: item.taxAmount,
+    CashReceiptItemsFields.total: item.total,
+    CashReceiptItemsFields.batchId: item.hasBatchId() ? item.batchId : null,
+  };
+}
+
+/// Converts a [RawRow] to a [InvoiceLineItem].
+InvoiceLineItem fromRowToCashReceiptItem(RawRow row) {
+  return InvoiceLineItem(
+    productId: row.requireString(CashReceiptItemsFields.productId),
+    quantity: row.requireInt(CashReceiptItemsFields.quantity),
+    unitPrice: row.requireDouble(CashReceiptItemsFields.unitPrice),
+    subtotal: row.requireDouble(CashReceiptItemsFields.subtotal),
+    taxRate: row.optDouble(CashReceiptItemsFields.taxRate) ?? 0.0,
+    taxAmount: row.optDouble(CashReceiptItemsFields.taxAmount) ?? 0.0,
+    total: row.requireDouble(CashReceiptItemsFields.total),
+    batchId: row.optString(CashReceiptItemsFields.batchId),
+    productName: row.optString(CashReceiptItemsFields.productId) != null
+        ? (Internationalized()
+            ..en = row.optString(CashReceiptItemsFields.productId) ?? ''
+            ..fr = row.optString(CashReceiptItemsFields.productId) ?? '')
+        : null,
   );
 }
 
@@ -775,8 +867,9 @@ PurchaseOrder fromRowToPurchaseOrder(RawRow row) {
     refId: row.optString(PurchaseOrdersFields.refId) ?? '',
     supplierId: row.requireString(PurchaseOrdersFields.supplierId),
     storeId: row.requireString(PurchaseOrdersFields.storeId),
-    status: PurchaseOrderStatus.values.firstWhereOrNull(
-      (e) => e.name == row.optString(PurchaseOrdersFields.status),
+    status: JsonMapper.toEnum<PurchaseOrderStatus>(
+      row.optString(PurchaseOrdersFields.status),
+      PurchaseOrderStatus.values,
     ),
     totalAmount: row.optDouble(PurchaseOrdersFields.totalAmount) ?? 0.0,
     currency: row.requireString(PurchaseOrdersFields.currency),
@@ -888,7 +981,7 @@ RawRow fromReceivingNoteLineItemToRaw(
 
 /// Converts a [RawRow] to a [ReceivingNoteLineItem].
 ReceivingNoteLineItem fromRowToReceivingNoteLineItem(RawRow row) {
-  final lineItem = ReceivingNoteLineItem(
+  return ReceivingNoteLineItem(
     storeId: row.requireString(ReceivingNoteLineItemsFields.storeId),
     productId: row.requireString(ReceivingNoteLineItemsFields.productId),
     quantityExpected: row.requireDouble(
@@ -911,8 +1004,6 @@ ReceivingNoteLineItem fromRowToReceivingNoteLineItem(RawRow row) {
           ),
     purchasePrice: row.optDouble(ReceivingNoteLineItemsFields.purchasePrice),
   );
-
-  return lineItem;
 }
 
 /// Converts a [RawRow] to a [ResourceLink].
@@ -976,15 +1067,14 @@ Bill fromRowToBill(RawRow row) {
     supplierId: row.requireString(BillsFields.supplierId),
     storeId: row.requireString(BillsFields.storeId),
     status:
-        BillStatus.values.firstWhereOrNull(
-          (e) => e.name == row.optString(BillsFields.status),
+        JsonMapper.toEnum<BillStatus>(
+          row.optString(BillsFields.status),
+          BillStatus.values,
         ) ??
         BillStatus.BILL_STATUS_UNSPECIFIED,
-    paymentIds: row.optString(BillsFields.paymentIds) != null
-        ? (jsonDecode(row.optString(BillsFields.paymentIds) ?? '[]') as List)
-              .map((e) => e.toString())
-              .toList()
-        : [],
+    paymentIds: JsonMapper.toPrimitiveList<String>(
+      row.optString(BillsFields.paymentIds),
+    ),
     billDate: row.optDateTime(BillsFields.billDate) == null
         ? null
         : Timestamp.fromDateTime(row.requireDateTime(BillsFields.billDate)),
@@ -1004,11 +1094,7 @@ Bill fromRowToBill(RawRow row) {
 }
 
 /// Converts a [BillLineItem] to a [RawRow].
-RawRow fromBillLineItemToRaw(
-  BillLineItem item,
-  String billId,
-  String storeId,
-) {
+RawRow fromBillLineItemToRaw(BillLineItem item, String billId, String storeId) {
   return {
     BillLineItemsFields.billId: billId,
     BillLineItemsFields.storeId: storeId,
@@ -1041,11 +1127,10 @@ PurchaseOrderLineItems fromRowToPurchaseOrderItems(RawRow row) {
     storeId: row.requireString(PurchaseOrderItemsFields.storeId),
     productId: row.requireString(PurchaseOrderItemsFields.productId),
     quantityOrdered: row.requireInt(PurchaseOrderItemsFields.quantityOrdered),
-    productName: row.optString(PurchaseOrderItemsFields.productName) != null
-        ? (Internationalized.create()..mergeFromProto3Json(
-            jsonDecode(row.optString(PurchaseOrderItemsFields.productName) ?? ''),
-          ))
-        : null,
+    productName: JsonMapper.toMessage<Internationalized>(
+      row.optString(PurchaseOrderItemsFields.productName),
+      Internationalized.create,
+    ),
     unitPrice: row.optDouble(PurchaseOrderItemsFields.unitPrice) ?? 0.0,
     total: row.optDouble(PurchaseOrderItemsFields.total) ?? 0.0,
     batchId: row.optString(PurchaseOrderItemsFields.batchId),
@@ -1081,10 +1166,14 @@ RawRow fromPaymentToRaw(Payment payment) {
   return {
     PaymentsFields.refId: payment.hasRefId() ? payment.refId : null,
     PaymentsFields.payerId: payment.hasPayerId() ? payment.payerId : null,
-    PaymentsFields.receiver: payment.hasReceiver() ? payment.receiver : null,
+    PaymentsFields.receiverRef: payment.hasReceiverRef()
+        ? payment.receiverRef
+        : null,
     PaymentsFields.amount: payment.hasAmount() ? payment.amount : null,
     PaymentsFields.currency: payment.hasCurrency() ? payment.currency : null,
-    PaymentsFields.warehouseId: payment.hasWarehouseId() ? payment.warehouseId : null,
+    PaymentsFields.warehouseId: payment.hasWarehouseId()
+        ? payment.warehouseId
+        : null,
     PaymentsFields.paymentMethod: payment.hasPaymentMethod()
         ? payment.paymentMethod.name
         : null,
@@ -1099,6 +1188,9 @@ RawRow fromPaymentToRaw(Payment payment) {
         ? payment.createdByUserId
         : null,
     PaymentsFields.notes: payment.hasNotes() ? payment.notes : null,
+    PaymentsFields.relatedDocs: jsonEncode(
+      payment.relatedDocs.map((c) => c.toProto3Json()).toList(),
+    ),
   };
 }
 
@@ -1107,16 +1199,22 @@ Payment fromRowToPayment(RawRow row) {
   return Payment(
     refId: row.optString(PaymentsFields.refId) ?? '',
     payerId: row.optString(PaymentsFields.payerId),
-    receiver: row.optString(PaymentsFields.receiver),
+    receiverRef: row.optString(PaymentsFields.receiverRef),
     amount: row.optDouble(PaymentsFields.amount) ?? 0.0,
     currency: row.optString(PaymentsFields.currency) ?? 'XAF',
     warehouseId: row.optString(PaymentsFields.warehouseId),
-    paymentMethod: PaymentMethod.values.firstWhereOrNull(
-      (e) => e.name == row.optString(PaymentsFields.paymentMethod),
-    ) ?? PaymentMethod.PAYMENT_METHOD_UNSPECIFIED,
-    status: PaymentStatus.values.firstWhereOrNull(
-      (e) => e.name == row.optString(PaymentsFields.status),
-    ) ?? PaymentStatus.PAYMENT_STATUS_UNSPECIFIED,
+    paymentMethod:
+        JsonMapper.toEnum<PaymentMethod>(
+          row.optString(PaymentsFields.paymentMethod),
+          PaymentMethod.values,
+        ) ??
+        PaymentMethod.PAYMENT_METHOD_UNSPECIFIED,
+    status:
+        JsonMapper.toEnum<PaymentStatus>(
+          row.optString(PaymentsFields.status),
+          PaymentStatus.values,
+        ) ??
+        PaymentStatus.PAYMENT_STATUS_UNSPECIFIED,
     paymentDate: row.optDateTime(PaymentsFields.paymentDate) == null
         ? null
         : Timestamp.fromDateTime(
@@ -1125,5 +1223,74 @@ Payment fromRowToPayment(RawRow row) {
     referenceNumber: row.optString(PaymentsFields.referenceNumber),
     createdByUserId: row.optString(PaymentsFields.createdByUserId),
     notes: row.optString(PaymentsFields.notes),
+    relatedDocs: JsonMapper.toMessageList<PaymentRelatedDoc>(
+      row.optString(PaymentsFields.relatedDocs),
+      PaymentRelatedDoc.create,
+    ),
+  );
+}
+
+/// Converts a [GiftVoucher] to a [RawRow].
+RawRow fromGiftVoucherToRaw(GiftVoucher voucher) {
+  return {
+    GiftVouchersFields.refId: voucher.hasRefId() ? voucher.refId : null,
+    GiftVouchersFields.voucherCode: voucher.hasVoucherCode()
+        ? voucher.voucherCode
+        : null,
+    GiftVouchersFields.initialValue: voucher.hasInitialValue()
+        ? voucher.initialValue
+        : null,
+    GiftVouchersFields.remainingValue: voucher.hasRemainingValue()
+        ? voucher.remainingValue
+        : null,
+    GiftVouchersFields.currency: voucher.hasCurrency()
+        ? voucher.currency
+        : null,
+    GiftVouchersFields.issuedToCustomerId: voucher.hasIssuedToCustomerId()
+        ? voucher.issuedToCustomerId
+        : null,
+    GiftVouchersFields.issuedByUserId: voucher.hasIssuedByUserId()
+        ? voucher.issuedByUserId
+        : null,
+    GiftVouchersFields.warehouseId: voucher.hasWarehouseId()
+        ? voucher.warehouseId
+        : null,
+    GiftVouchersFields.status: voucher.hasStatus() ? voucher.status.name : null,
+    GiftVouchersFields.issuedAt: voucher.hasIssuedAt()
+        ? voucher.issuedAt.toDateTime().toIso8601String()
+        : null,
+    GiftVouchersFields.validUntil: voucher.hasValidUntil()
+        ? voucher.validUntil.toDateTime().toIso8601String()
+        : null,
+    GiftVouchersFields.notes: voucher.hasNotes() ? voucher.notes : null,
+  };
+}
+
+/// Converts a [RawRow] to a [GiftVoucher].
+GiftVoucher fromRowToGiftVoucher(RawRow row) {
+  return GiftVoucher(
+    refId: row.optString(GiftVouchersFields.refId) ?? '',
+    voucherCode: row.optString(GiftVouchersFields.voucherCode) ?? '',
+    initialValue: row.optDouble(GiftVouchersFields.initialValue) ?? 0.0,
+    remainingValue: row.optDouble(GiftVouchersFields.remainingValue) ?? 0.0,
+    currency: row.optString(GiftVouchersFields.currency) ?? 'XAF',
+    issuedToCustomerId: row.optString(GiftVouchersFields.issuedToCustomerId),
+    issuedByUserId: row.optString(GiftVouchersFields.issuedByUserId),
+    warehouseId: row.optString(GiftVouchersFields.warehouseId),
+    status: JsonMapper.toEnum<VoucherStatus>(
+      row.optString(GiftVouchersFields.status),
+      VoucherStatus.values,
+    ),
+    issuedAt: row.optDateTime(GiftVouchersFields.issuedAt) == null
+        ? null
+        : Timestamp.fromDateTime(
+            row.requireDateTime(GiftVouchersFields.issuedAt),
+          ),
+    validUntil: row.optDateTime(GiftVouchersFields.validUntil) == null
+        ? null
+        : Timestamp.fromDateTime(
+            row.requireDateTime(GiftVouchersFields.validUntil),
+          ),
+    notes: row.optString(GiftVouchersFields.notes),
   );
 }

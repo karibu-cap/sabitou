@@ -6,6 +6,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import '../../../../../../services/internationalization/internationalization.dart';
 import '../../../../../utils/common_functions.dart';
 import '../../../../../utils/extensions/global_product_extension.dart';
+import '../../../../../widgets/loading.dart';
 import '../../../global_products_controller.dart';
 import 'delete_global_product_controller.dart';
 
@@ -446,16 +447,7 @@ class _ActionButtons extends StatelessWidget {
         ),
         const SizedBox(width: 12),
         ShadButton(
-          trailing: controller.isLoading
-              ? const SizedBox(
-                  width: 16,
-                  height: 16,
-                  child: CircularProgressIndicator(
-                    color: Colors.white,
-                    strokeWidth: 2,
-                  ),
-                )
-              : null,
+          trailing: controller.isLoading ? const Loading.button() : null,
 
           enabled: controller.canDelete && !controller.isLoading,
           onPressed: () async {

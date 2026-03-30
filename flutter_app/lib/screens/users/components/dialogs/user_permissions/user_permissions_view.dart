@@ -7,6 +7,7 @@ import '../../../../../services/internationalization/internationalization.dart';
 import '../../../../../themes/app_colors.dart';
 import '../../../../../utils/common_functions.dart';
 import '../../../../../utils/extensions/store_member_extenxion.dart';
+import '../../../../../widgets/loading.dart';
 import '../../../users_controller.dart';
 import '../../shared/permissions_selector.dart';
 import 'user_permissions_controller.dart';
@@ -438,14 +439,7 @@ class _ActionButtons extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 if (controller.isLoading)
-                  const SizedBox(
-                    width: 16,
-                    height: 16,
-                    child: CircularProgressIndicator(
-                      color: AppColors.primary50,
-                      strokeWidth: 2,
-                    ),
-                  )
+                  const Loading.button()
                 else
                   const Icon(
                     LucideIcons.save,

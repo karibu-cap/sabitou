@@ -8,6 +8,7 @@ import '../../../themes/app_theme.dart';
 import '../../../utils/extensions/global_product_extension.dart';
 import '../../../utils/formatters.dart';
 import '../../../utils/responsive_utils.dart';
+import '../../loading.dart';
 import '../../shad_scaffold.dart';
 import 'bill_form_controller.dart';
 
@@ -32,7 +33,7 @@ Future<BillLineItemDraft?> showBillItemPicker(
 
   return showShadDialog<BillLineItemDraft>(
     context: context,
-    builder: (_) => BillItemPickerDialog(productsStream: productsStream),
+    builder: (context) => BillItemPickerDialog(productsStream: productsStream),
   );
 }
 
@@ -47,16 +48,15 @@ class BillItemPickerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    final cs = theme.colorScheme;
 
     return ShadScaffold(
       title: Text(
-          Intls.to.selectProduct,
-          style: theme.textTheme.p.copyWith(
-            fontWeight: FontWeight.w600,
-            fontSize: 15,
-          ),
+        Intls.to.selectProduct,
+        style: theme.textTheme.p.copyWith(
+          fontWeight: FontWeight.w600,
+          fontSize: 15,
         ),
+      ),
       body: _BillItemPickerBody(
         productsStream: productsStream,
         onConfirm: (draft) => Navigator.pop(context, draft),
@@ -116,14 +116,6 @@ class _BillItemPickerBodyState extends State<_BillItemPickerBody> {
   String _search = '';
   StoreProductWithGlobalProduct? _selected;
 
-  @override
-  void dispose() {
-    _searchCtrl.dispose();
-    _qtyCtrl.dispose();
-    _priceCtrl.dispose();
-    super.dispose();
-  }
-
   void _selectProduct(StoreProductWithGlobalProduct product) {
     setState(() {
       _selected = product;
@@ -149,6 +141,14 @@ class _BillItemPickerBodyState extends State<_BillItemPickerBody> {
         unitPrice: price,
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _searchCtrl.dispose();
+    _qtyCtrl.dispose();
+    _priceCtrl.dispose();
+    super.dispose();
   }
 
   @override
@@ -267,7 +267,7 @@ class _ProductList extends StatelessWidget {
       stream: productsStream,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator(strokeWidth: 2));
+          return const Center(child: Loading());
         }
 
         final all = snapshot.data ?? [];

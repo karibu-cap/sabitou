@@ -6,11 +6,10 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import '../../../services/internationalization/internationalization.dart';
 import '../../../utils/user_preference.dart';
 import '../../../widgets/error/loading_failed.dart';
-import '../../router/app_router.dart';
-import '../../router/page_routes.dart';
 import '../../themes/app_theme.dart';
 import '../../widgets/bills/bill_card.dart';
 import '../../widgets/bills/form/bill_form.dart';
+import '../../widgets/no_business_view.dart';
 import 'bills_controller.dart';
 import 'bills_view_model.dart';
 import 'components/empty_detail.dart';
@@ -18,22 +17,18 @@ import 'detail/bill_screen.dart';
 
 const double _kDesktopBreakpoint = 800;
 
+/// Thw bill screen view.
 class BillsScreen extends StatelessWidget {
+  /// Constructor of new [BillsScreen].
   const BillsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final userPreferences = context.watch<UserPreferences>();
     final store = userPreferences.store;
-    final theme = ShadTheme.of(context);
 
     if (store == null) {
-      return Center(
-        child: Text(
-          AppInternationalizationService.to.noStoreSelected,
-          style: theme.textTheme.p,
-        ),
-      );
+      return const Scaffold(body: Center(child: NoBusinessView()));
     }
 
     return ChangeNotifierProvider<BillsController>(
@@ -66,10 +61,11 @@ class _DesktopSplitView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Provider.of<BillsController>(context);
     final theme = ShadTheme.of(context);
     final cs = theme.colorScheme;
-    final selectedBill = controller.selectedBill;
+    final selectedBill = context.select<BillsController, String?>(
+      (e) => e.selectedBill,
+    );
 
     return Row(
       children: [
@@ -99,7 +95,8 @@ class _DesktopSplitView extends StatelessWidget {
                       child: BillDetailScreen(
                         key: Key(selectedBill),
                         billRefId: selectedBill,
-                        onDeleted: () => controller.selectBill(null),
+                        onDeleted: () =>
+                            context.read<BillsController>().selectBill(null),
                       ),
                     ),
 
@@ -108,7 +105,8 @@ class _DesktopSplitView extends StatelessWidget {
                       right: 10,
                       child: IconButton(
                         icon: const Icon(LucideIcons.x400),
-                        onPressed: () => controller.selectBill(null),
+                        onPressed: () =>
+                            context.read<BillsController>().selectBill(null),
                       ),
                     ),
                   ],
@@ -146,14 +144,13 @@ class _BillsListHeader extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 20, 16, 12),
-      child: FutureBuilder<List<Bill>>(
-        future: controller.billsFuture,
+      child: StreamBuilder<List<Bill>>(
+        stream: controller.billsStream,
         builder: (context, snapshot) {
           final count = snapshot.data?.length ?? 0;
 
           return Row(
             children: [
-              // Amber accent bar
               Container(
                 width: 3,
                 height: 28,
@@ -202,8 +199,6 @@ class _SearchAndFilters extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Provider.of<BillsController>(context, listen: false);
-    final theme = ShadTheme.of(context);
-    final cs = theme.colorScheme;
 
     return Padding(
       padding: const EdgeInsets.only(left: 12, right: 12, bottom: 10),
@@ -290,10 +285,7 @@ class _SearchInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Provider.of<BillsController>(
-      context,
-      listen: false,
-    );
+    final controller = Provider.of<BillsController>(context, listen: false);
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -379,7 +371,7 @@ class _BillsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Provider.of<BillsController>(context);
+    final controller = Provider.of<BillsController>(context, listen: false);
 
     return StreamBuilder<List<Bill>>(
       stream: controller.filteredBillsStream,
@@ -403,29 +395,46 @@ class _BillsList extends StatelessWidget {
           separatorBuilder: (_, __) => const SizedBox(height: 8),
           itemBuilder: (context, i) {
             final bill = bills[i];
-            final isSelected =
-                isDesktop && controller.selectedBill == bill.refId;
 
-            return BillCard(
+            return _BillListItem(
+              key: ValueKey(bill.refId),
               bill: bill,
-              isSelected: isSelected,
-              onTap: () {
-                if (isDesktop) {
-                  controller.selectBill(bill.refId);
-                } else {
-                  AppRouter.push(
-                    context,
-                    PagesRoutes.billDetail.create(
-                      BillDetailParameters(billId: bill.refId),
-                    ),
-                  );
-                }
-              },
-              onDelete: () => controller.deleteBill(bills[i].refId),
+              isDesktop: isDesktop,
+              onTap: () => controller.selectBill(bill.refId),
+              onDelete: () => controller.deleteBill(bill.refId),
             );
           },
         );
       },
+    );
+  }
+}
+
+class _BillListItem extends StatelessWidget {
+  final Bill bill;
+  final bool isDesktop;
+  final VoidCallback onTap;
+  final VoidCallback onDelete;
+
+  const _BillListItem({
+    super.key,
+    required this.bill,
+    required this.isDesktop,
+    required this.onTap,
+    required this.onDelete,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final isSelected = context.select<BillsController, bool>(
+      (c) => isDesktop && c.selectedBill == bill.refId,
+    );
+
+    return BillCard(
+      bill: bill,
+      isSelected: isSelected,
+      onTap: onTap,
+      onDelete: onDelete,
     );
   }
 }

@@ -13,9 +13,6 @@ class TransactionTabs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = context.watch<AuditsController>();
-    final activeTab = controller.activeTab;
-
     return const Expanded(child: ShadCard(child: _TransactionList()));
   }
 }
@@ -189,7 +186,7 @@ class _TransactionCard<T> extends StatelessWidget {
 
 /// Empty state widget when no transactions are found
 class _EmptyTransactionState extends StatelessWidget {
-  const _EmptyTransactionState({super.key});
+  const _EmptyTransactionState();
 
   @override
   Widget build(BuildContext context) {

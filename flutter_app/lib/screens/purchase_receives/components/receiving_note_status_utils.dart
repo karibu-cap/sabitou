@@ -86,7 +86,7 @@ abstract class RnStatusUtils {
     if (!isSelected) {
       return (bg: cs.card, border: cs.border, fg: cs.mutedForeground);
     }
-    
+
     return switch (filter) {
       RnStatusFilter.all => (
         bg: SabitouColors.accentSoft,

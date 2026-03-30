@@ -46,6 +46,9 @@ class PurchaseOrdersController extends ChangeNotifier {
 
   /// Selects a purchase order.
   Future<void> selectPurchaseOrder(String poId) async {
+    if (_selectedPo == poId) {
+      return;
+    }
     _selectedPo = poId;
     notifyListeners();
   }

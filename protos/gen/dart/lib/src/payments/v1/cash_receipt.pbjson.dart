@@ -20,6 +20,25 @@ import '../../inventory/v1/category.pbjson.dart' as $4;
 import 'gift_voucher.pbjson.dart' as $3;
 import 'payments.pbjson.dart' as $2;
 
+@$core.Deprecated('Use cashReceiptStatusDescriptor instead')
+const CashReceiptStatus$json = {
+  '1': 'CashReceiptStatus',
+  '2': [
+    {'1': 'CASH_RECEIPT_STATUS_UNSPECIFIED', '2': 0},
+    {'1': 'CASH_RECEIPT_STATUS_DRAFT', '2': 1},
+    {'1': 'CASH_RECEIPT_STATUS_COMPLETED', '2': 2},
+    {'1': 'CASH_RECEIPT_STATUS_VOIDED', '2': 3},
+    {'1': 'CASH_RECEIPT_STATUS_REFUNDED', '2': 4},
+  ],
+};
+
+/// Descriptor for `CashReceiptStatus`. Decode as a `google.protobuf.EnumDescriptorProto`.
+final $typed_data.Uint8List cashReceiptStatusDescriptor = $convert.base64Decode(
+    'ChFDYXNoUmVjZWlwdFN0YXR1cxIjCh9DQVNIX1JFQ0VJUFRfU1RBVFVTX1VOU1BFQ0lGSUVEEA'
+    'ASHQoZQ0FTSF9SRUNFSVBUX1NUQVRVU19EUkFGVBABEiEKHUNBU0hfUkVDRUlQVF9TVEFUVVNf'
+    'Q09NUExFVEVEEAISHgoaQ0FTSF9SRUNFSVBUX1NUQVRVU19WT0lERUQQAxIgChxDQVNIX1JFQ0'
+    'VJUFRfU1RBVFVTX1JFRlVOREVEEAQ=');
+
 @$core.Deprecated('Use cashReceiptDescriptor instead')
 const CashReceipt$json = {
   '1': 'CashReceipt',
@@ -62,6 +81,14 @@ const CashReceipt$json = {
       '17': true
     },
     {'1': 'owed_to_customer', '3': 16, '4': 1, '5': 1, '10': 'owedToCustomer'},
+    {
+      '1': 'status',
+      '3': 17,
+      '4': 1,
+      '5': 14,
+      '6': '.payments.v1.CashReceiptStatus',
+      '10': 'status'
+    },
   ],
   '8': [
     {'1': '_voucher_issued_code'},
@@ -80,8 +107,9 @@ final $typed_data.Uint8List cashReceiptDescriptor = $convert.base64Decode(
     '8KC3BheW1lbnRfaWRzGAwgAygJUgpwYXltZW50SWRzEkUKEHRyYW5zYWN0aW9uX3RpbWUYDSAB'
     'KAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUg90cmFuc2FjdGlvblRpbWUSFAoFbm90ZX'
     'MYDiABKAlSBW5vdGVzEjMKE3ZvdWNoZXJfaXNzdWVkX2NvZGUYDyABKAlIAFIRdm91Y2hlcklz'
-    'c3VlZENvZGWIAQESKAoQb3dlZF90b19jdXN0b21lchgQIAEoAVIOb3dlZFRvQ3VzdG9tZXJCFg'
-    'oUX3ZvdWNoZXJfaXNzdWVkX2NvZGU=');
+    'c3VlZENvZGWIAQESKAoQb3dlZF90b19jdXN0b21lchgQIAEoAVIOb3dlZFRvQ3VzdG9tZXISNg'
+    'oGc3RhdHVzGBEgASgOMh4ucGF5bWVudHMudjEuQ2FzaFJlY2VpcHRTdGF0dXNSBnN0YXR1c0IW'
+    'ChRfdm91Y2hlcl9pc3N1ZWRfY29kZQ==');
 
 @$core.Deprecated('Use createCashReceiptRequestDescriptor instead')
 const CreateCashReceiptRequest$json = {
@@ -218,6 +246,7 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
   '.inventory.v1.Internationalized': $4.Internationalized$json,
   '.google.protobuf.Timestamp': $1.Timestamp$json,
   '.payments.v1.Payment': $2.Payment$json,
+  '.payments.v1.PaymentRelatedDoc': $2.PaymentRelatedDoc$json,
   '.payments.v1.CreateCashReceiptResponse': CreateCashReceiptResponse$json,
   '.payments.v1.GiftVoucher': $3.GiftVoucher$json,
   '.payments.v1.FindCashReceiptRequest': FindCashReceiptRequest$json,

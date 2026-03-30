@@ -260,7 +260,7 @@ abstract final class AppTheme {
       destructive: _Palette.destructive,
       destructiveForeground: _Palette.destructiveFg,
       border: _Palette.border,
-      input: _Palette.input,
+      input: _Palette.primaryForeground,
       ring: _Palette.ring,
       // Brand-specific colors injected via the custom map.
       custom: {
@@ -297,6 +297,10 @@ abstract final class AppTheme {
     inputTheme: ShadInputTheme(
       style: _Type.inputStyle,
       placeholderStyle: _Type.placeholderStyle,
+      decoration: ShadDecoration(
+        color: _Palette.primaryForeground,
+        border: ShadBorder.all(color: _Palette.foreground),
+      ),
     ),
 
     // ── Card — matches ShadCard used in _NBContactCard ──
@@ -321,7 +325,7 @@ abstract final class AppTheme {
 
     // ── Outline button — clean border, no background ──
     outlineButtonTheme: ShadButtonTheme(
-      hoverBackgroundColor: _Palette.primary.withValues(alpha:0.04),
+      hoverBackgroundColor: _Palette.primary.withValues(alpha: 0.04),
       decoration: ShadDecoration(
         border: ShadBorder.all(color: _Palette.border),
       ),
@@ -329,7 +333,7 @@ abstract final class AppTheme {
 
     // ── Ghost button — minimal, used for logout / secondary actions ──
     ghostButtonTheme: ShadButtonTheme(
-      hoverBackgroundColor: _Palette.primary.withValues(alpha:0.05),
+      hoverBackgroundColor: _Palette.primary.withValues(alpha: 0.05),
       foregroundColor: _Palette.mutedForeground,
     ),
 
@@ -344,7 +348,10 @@ abstract final class AppTheme {
       backgroundColor: _Palette.destructive,
       foregroundColor: _Palette.destructiveFg,
       gradient: LinearGradient(
-        colors: [_Palette.destructive, _Palette.destructive.withValues(alpha:0.85)],
+        colors: [
+          _Palette.destructive,
+          _Palette.destructive.withValues(alpha: 0.85),
+        ],
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
       ),
@@ -428,6 +435,7 @@ abstract final class AppTheme {
     inputTheme: ShadInputTheme(
       style: _Type.inputStyle.copyWith(color: _darkForeground),
       placeholderStyle: _Type.placeholderStyle.copyWith(color: _darkMutedFg),
+      decoration: const ShadDecoration(color: _darkBorder),
     ),
 
     cardTheme: const ShadCardTheme(
@@ -443,12 +451,12 @@ abstract final class AppTheme {
     ),
 
     outlineButtonTheme: ShadButtonTheme(
-      hoverBackgroundColor: _darkForeground.withValues(alpha:0.06),
+      hoverBackgroundColor: _darkForeground.withValues(alpha: 0.06),
       decoration: ShadDecoration(border: ShadBorder.all(color: _darkBorder)),
     ),
 
     ghostButtonTheme: ShadButtonTheme(
-      hoverBackgroundColor: _darkForeground.withValues(alpha:0.07),
+      hoverBackgroundColor: _darkForeground.withValues(alpha: 0.07),
       foregroundColor: _darkMutedFg,
     ),
 

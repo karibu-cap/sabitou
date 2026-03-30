@@ -11,6 +11,8 @@ import '../../../themes/app_theme.dart';
 import '../../../utils/formatters.dart';
 import '../../../utils/responsive_utils.dart';
 import '../../../widgets/custom_grid.dart';
+import '../../../widgets/payments/form/payment_form.dart';
+import '../../../widgets/payments/payment_card.dart';
 import '../components/bill_status.dart';
 import 'bill_detail_controller.dart';
 
@@ -21,8 +23,10 @@ class BillDetail extends StatelessWidget {
   const BillDetail({
     super.key,
     required this.bill,
+    required this.payments,
     this.onDeleted,
     this.onMarkedPaid,
+    this.canSplitTheScreen = false,
   });
 
   /// The bill to be displayed.
@@ -34,42 +38,199 @@ class BillDetail extends StatelessWidget {
   /// Callback to be called when the bill is marked as paid.
   final VoidCallback? onMarkedPaid;
 
+  /// Can split the screen.
+  final bool canSplitTheScreen;
+
+  /// The list of bill payment.
+  final List<Payment> payments;
+
   @override
   Widget build(BuildContext context) {
     final status = BillStatusUtils.effectiveStatus(bill);
     final style = BillStatusUtils.styleFor(status);
+    final isDesktop = ResponsiveUtils.isDesktop(context);
+
+    final leftColumn = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _DetailHeader(
+          bill: bill,
+          status: status,
+          onDeleted: onDeleted,
+          onMarkedPaid: onMarkedPaid,
+        ),
+        const SizedBox(height: 18),
+        _AmountHero(bill: bill, status: status, style: style),
+      ],
+    );
+
+    final rightColumn = ShadTabs<String>(
+      value: Intls.to.details,
+      scrollable: false,
+      maintainState: true,
+      tabs: [
+        ShadTab(
+          value: Intls.to.details,
+          content: ShadCard(
+            padding: const EdgeInsets.all(18),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _MetaGrid(bill: bill),
+                  const SizedBox(height: 14),
+
+                  if (bill.relatedPurchaseOrderId.isNotEmpty) ...[
+                    _LinkedPoCard(purchaseOrderId: bill.relatedPurchaseOrderId),
+                    const SizedBox(height: 14),
+                  ],
+
+                  _LineItemsCard(bill: bill),
+
+                  if (bill.notes.isNotEmpty) ...[
+                    const SizedBox(height: 14),
+                    _NotesCard(notes: bill.notes),
+                  ],
+                ],
+              ),
+            ),
+          ),
+          child: Text(Intls.to.details),
+        ),
+        ShadTab(
+          value: Intls.to.payments,
+          content: ShadCard(
+            padding: const EdgeInsets.all(18),
+            child: _BillPaymentsTab(bill: bill, payments: payments),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(Intls.to.payments),
+              if (payments.isNotEmpty) ...[
+                const SizedBox(width: 6),
+                _TabBadge(count: payments.length),
+              ],
+            ],
+          ),
+        ),
+        ShadTab(
+          value: Intls.to.purchaseOrders,
+          content: ShadCard(
+            padding: const EdgeInsets.all(18),
+            child: bill.relatedPurchaseOrderId.isNotEmpty
+                ? _LinkedPoCard(purchaseOrderId: bill.relatedPurchaseOrderId)
+                : Text(Intls.to.noData),
+          ),
+          child: Text(Intls.to.purchaseOrders),
+        ),
+      ],
+    );
+
+    if (isDesktop && canSplitTheScreen) {
+      return SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(flex: 2, child: leftColumn),
+            const SizedBox(width: 20),
+            Expanded(flex: 3, child: rightColumn),
+          ],
+        ),
+      );
+    }
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _DetailHeader(
-            bill: bill,
-            status: status,
-            onDeleted: onDeleted,
-            onMarkedPaid: onMarkedPaid,
+        children: [leftColumn, const SizedBox(height: 14), rightColumn],
+      ),
+    );
+  }
+}
+
+class _BillPaymentsTab extends StatelessWidget {
+  const _BillPaymentsTab({required this.bill, required this.payments});
+
+  final Bill bill;
+
+  final List<Payment> payments;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(Intls.to.payments, style: theme.textTheme.h4),
+            if (bill.balanceDue > 0)
+              ShadButton(
+                size: ShadButtonSize.sm,
+                onPressed: () async {
+                  await showPaymentForm(context, bill: bill);
+                },
+                leading: const Icon(LucideIcons.plus, size: 14),
+                child: Text(Intls.to.addPayment),
+              ),
+          ],
+        ),
+        const SizedBox(height: 16),
+        if (payments.isEmpty)
+          Center(child: Text(Intls.to.noData, style: theme.textTheme.muted))
+        else
+          Column(
+            children: payments
+                .map<Widget>((e) {
+                  final appliedAmount = e.relatedDocs
+                      .firstWhere(
+                        (d) => d.docId == bill.refId,
+                        orElse: () => PaymentRelatedDoc(
+                          docId: bill.refId,
+                          amount: e.amount,
+                        ),
+                      )
+                      .amount;
+                  final displayPayment = e.deepCopy()..amount = appliedAmount;
+
+                  return PaymentCard(
+                    payment: displayPayment,
+                    isSelected: false,
+                  );
+                })
+                .expand((e) => [e, const SizedBox(height: 8)])
+                .toList(),
           ),
-          const SizedBox(height: 18),
+      ],
+    );
+  }
+}
 
-          _AmountHero(bill: bill, status: status, style: style),
-          const SizedBox(height: 14),
+class _TabBadge extends StatelessWidget {
+  const _TabBadge({required this.count});
+  final int count;
 
-          _MetaGrid(bill: bill),
-          const SizedBox(height: 14),
-
-          if (bill.relatedPurchaseOrderId.isNotEmpty) ...[
-            _LinkedPoCard(purchaseOrderId: bill.relatedPurchaseOrderId),
-            const SizedBox(height: 14),
-          ],
-
-          _LineItemsCard(bill: bill),
-
-          if (bill.notes.isNotEmpty) ...[
-            const SizedBox(height: 14),
-            _NotesCard(notes: bill.notes),
-          ],
-        ],
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 1),
+      decoration: BoxDecoration(
+        color: SabitouColors.accentSoft,
+        border: Border.all(color: SabitouColors.accent.withValues(alpha: 0.4)),
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
+      ),
+      child: Text(
+        '$count',
+        style: const TextStyle(
+          fontSize: 10,
+          fontWeight: FontWeight.w600,
+          color: SabitouColors.accentForeground,
+        ),
       ),
     );
   }
@@ -87,43 +248,10 @@ class _DetailHeader extends StatelessWidget {
   final BillStatus status;
   final VoidCallback? onDeleted;
   final VoidCallback? onMarkedPaid;
-
-  Future<void> _confirmMarkPaid(BuildContext context) async {
-    // In a full implementation, this would open a payment dialog
-    // to select the payment method and record payment.
-    // For now we use a simple confirm dialog.
-    final ok = await showShadDialog<bool>(
-      context: context,
-      builder: (_) => ShadDialog(
-        title: Text(Intls.to.confirmPayment),
-        description: Text(
-          Intls.to.markAsPaid,
-        ),
-        actions: [
-          ShadButton.outline(
-            onPressed: () => Navigator.pop(context, false),
-            child: Text(Intls.to.cancel),
-          ),
-          ShadButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: Text(Intls.to.save),
-          ),
-        ],
-      ),
-    );
-    if (ok == true && context.mounted) {
-      await context.read<BillDetailController>().markBillAsPaid(
-        bill: bill,
-        paymentId: 'PMT-${DateTime.now().millisecondsSinceEpoch}',
-      );
-      onMarkedPaid?.call();
-    }
-  }
-
   Future<void> _confirmDelete(BuildContext context) async {
     final ok = await showShadDialog<bool>(
       context: context,
-      builder: (_) => ShadDialog.alert(
+      builder: (context) => ShadDialog.alert(
         title: Text(Intls.to.deleteBill),
         description: Text(
           Intls.to.itemWillBeDelete.trParams({'item': bill.refId}),
@@ -143,6 +271,13 @@ class _DetailHeader extends StatelessWidget {
     if (ok == true && context.mounted) {
       await context.read<BillDetailController>().deleteBill(bill.refId);
       onDeleted?.call();
+    }
+  }
+
+  Future<void> _addPayment(BuildContext context) async {
+    final ok = await showPaymentForm(context, bill: bill);
+    if (ok == true && context.mounted) {
+      onMarkedPaid?.call();
     }
   }
 
@@ -205,12 +340,13 @@ class _DetailHeader extends StatelessWidget {
                 ),
               ),
             if (status == BillStatus.BILL_STATUS_OPEN ||
-                status == BillStatus.BILL_STATUS_OVERDUE)
+                status == BillStatus.BILL_STATUS_OVERDUE ||
+                status == BillStatus.BILL_STATUS_PARTIALLY_PAID)
               ShadButton(
-                onPressed: () => _confirmMarkPaid(context),
-                leading: const Icon(LucideIcons.circleCheck, size: 13),
+                onPressed: () => _addPayment(context),
+                leading: const Icon(LucideIcons.banknote, size: 13),
                 child: AutoSizeText(
-                  Intls.to.markAsPaid,
+                  Intls.to.addPayment,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(fontSize: 12.5),
@@ -237,9 +373,6 @@ class _AmountHero extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    final isPending =
-        status == BillStatus.BILL_STATUS_OPEN ||
-        status == BillStatus.BILL_STATUS_OVERDUE;
 
     return ShadCard(
       padding: const EdgeInsets.all(18),
@@ -276,7 +409,7 @@ class _AmountHero extends StatelessWidget {
             ],
           ),
 
-          if (isPending && bill.balanceDue > 0) ...[
+          if (bill.balanceDue > 0) ...[
             const SizedBox(height: 14),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
@@ -523,19 +656,41 @@ class _LineItemsCard extends StatelessWidget {
               children: [
                 _TotalRow(
                   label: '${Intls.to.subtotal} HT',
-                  amount: bill.subTotal,
+                  amount: Formatters.formatCurrency(bill.subTotal),
                   muted: true,
                 ),
                 const SizedBox(height: 4),
-                _TotalRow(label: 'TVA', amount: bill.taxTotal, muted: true),
+                _TotalRow(
+                  label: Intls.to.tva,
+                  amount: Formatters.formatCurrency(bill.taxTotal),
+                  muted: true,
+                ),
                 const SizedBox(height: 6),
                 Divider(color: cs.border, height: 1),
                 const SizedBox(height: 6),
                 _TotalRow(
-                  label: 'Total TTC',
-                  amount: bill.totalAmount,
-                  bold: true,
+                  label: Intls.to.totalTTC,
+                  amount: Formatters.formatCurrency(bill.totalAmount),
+                  bold: bill.totalAmount == bill.balanceDue,
                 ),
+                if (bill.totalAmount > bill.balanceDue) ...[
+                  const SizedBox(height: 4),
+                  _TotalRow(
+                    label: '${Intls.to.paymentMade}',
+                    amount:
+                        "(-) ${Formatters.formatCurrency(bill.totalAmount - bill.balanceDue)}",
+                    muted: true,
+                    danger: true,
+                  ),
+                  const SizedBox(height: 6),
+                  Divider(color: cs.border, height: 1),
+                  const SizedBox(height: 6),
+                  _TotalRow(
+                    label: Intls.to.balanceDue,
+                    amount: Formatters.formatCurrency(bill.balanceDue),
+                    bold: true,
+                  ),
+                ],
               ],
             ),
           ),
@@ -551,12 +706,14 @@ class _TotalRow extends StatelessWidget {
     required this.amount,
     this.muted = false,
     this.bold = false,
+    this.danger = false,
   });
 
   final String label;
-  final double amount;
+  final String amount;
   final bool muted;
   final bool bold;
+  final bool danger;
 
   @override
   Widget build(BuildContext context) {
@@ -574,10 +731,11 @@ class _TotalRow extends StatelessWidget {
         ),
         const Spacer(),
         Text(
-          Formatters.formatCurrency(amount),
+          amount,
           style: theme.textTheme.p.copyWith(
             fontSize: bold ? 14 : 12.5,
             fontWeight: bold ? FontWeight.w700 : FontWeight.w500,
+            color: danger ? SabitouColors.danger : null,
           ),
         ),
       ],

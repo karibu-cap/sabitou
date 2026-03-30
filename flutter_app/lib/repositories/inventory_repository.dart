@@ -80,6 +80,20 @@ final class InventoryRepository extends BaseRepository<InventoryLevel> {
     ]).map((items) => items.isNotEmpty ? items.first : null);
   }
 
+  /// Watchs specific store inventory.
+  Stream<List<InventoryLevel>> watchStoreInventory(String storeId) {
+    return watchWhere([
+      SqlQuery.equals(InventoryLevelsFields.storeId, storeId),
+    ]);
+  }
+
+  /// gets specific store inventory.
+  Future<List<InventoryLevel>> getStoreInventoryWhithoutProduct(
+    String storeId,
+  ) {
+    return findWhere([SqlQuery.equals(InventoryLevelsFields.storeId, storeId)]);
+  }
+
   /// Gets the store inventory.
   Future<List<InventoryLevelWithProduct>> getStoreInventory(
     String storeId,

@@ -70,6 +70,8 @@ func (h *Handler) applyOperation(r *http.Request, op models.UploadOperation, cla
 		return h.applyInventoryLevel(r, op, claims)
 	case "cash_receipts":
 		return h.applyCashReceipt(r, op, claims)
+	case "cash_receipt_items":
+		return h.applyCashReceiptItem(r, op, claims)
 	case "payments":
 		return h.applyPayment(r, op, claims)
 	case "gift_vouchers":
@@ -146,8 +148,8 @@ func (h *Handler) applyStoreProduct(r *http.Request, op models.UploadOperation, 
 			INSERT INTO store_products
 				(id, ref_id, store_id, global_product_id, sale_price, status, sku,
 				 reorder_point, expiration_type, opening_stock, opening_stock_per_unit,
-				 default_purchase_price)
-			VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)
+				 default_purchase_price, images_links_ids)
+			VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)
 			ON CONFLICT (ref_id) DO UPDATE SET
 				sale_price              = EXCLUDED.sale_price,
 				status                  = EXCLUDED.status,
@@ -155,6 +157,7 @@ func (h *Handler) applyStoreProduct(r *http.Request, op models.UploadOperation, 
 				reorder_point           = EXCLUDED.reorder_point,
 				expiration_type         = EXCLUDED.expiration_type,
 				default_purchase_price  = EXCLUDED.default_purchase_price,
+				images_links_ids  		= EXCLUDED.images_links_ids,
 				updated_at              = NOW()
 		`,
 			op.ID,
@@ -169,6 +172,7 @@ func (h *Handler) applyStoreProduct(r *http.Request, op models.UploadOperation, 
 			intField(d, "opening_stock"),
 			numericField(d, "opening_stock_per_unit"),
 			intField(d, "default_purchase_price"),
+			strFieldOr(d, "images_links_ids", `[]`),
 		)
 		return err
 
@@ -181,7 +185,8 @@ func (h *Handler) applyStoreProduct(r *http.Request, op models.UploadOperation, 
 				reorder_point          = COALESCE(NULLIF($5::bigint, 0), reorder_point),
 				expiration_type        = COALESCE(NULLIF($6, ''), expiration_type),
 				default_purchase_price = COALESCE(NULLIF($7::bigint, 0), default_purchase_price),
-				updated_at             = NOW()
+				updated_at             = NOW(),
+				images_links_ids = COALESCE(NULLIF($8, ''), images_links_ids)
 			WHERE id = $1
 		`,
 			op.ID,
@@ -191,6 +196,7 @@ func (h *Handler) applyStoreProduct(r *http.Request, op models.UploadOperation, 
 			intField(d, "reorder_point"),
 			strField(d, "expiration_type"),
 			intField(d, "default_purchase_price"),
+			strField(d, "images_links_ids"),
 		)
 		return err
 
@@ -263,7 +269,7 @@ func (h *Handler) applyInventoryLevel(r *http.Request, op models.UploadOperation
 }
 
 // =========================================================================
-// cash_receipts  (not yet in sync_rules.yml — kept for completeness)
+// cash_receipts
 // =========================================================================
 
 func (h *Handler) applyCashReceipt(r *http.Request, op models.UploadOperation, claims *auth.Claims) error {
@@ -274,18 +280,31 @@ func (h *Handler) applyCashReceipt(r *http.Request, op models.UploadOperation, c
 	case "PUT":
 		_, err := h.db.Exec(ctx, `
 			INSERT INTO cash_receipts
-				(id, ref_id, cashier_user_id, customer_id, store_id, items, subtotal,
+				(id, ref_id, cashier_user_id, customer_id, store_id, subtotal,
 				 tax_amount, total_amount, amount_paid, change_given, currency,
-				 payment_ids, notes, voucher_issued_code, owed_to_customer, transaction_time)
+				 payment_ids, notes, voucher_issued_code, owed_to_customer, status, transaction_time)
 			VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,NOW())
-			ON CONFLICT (ref_id) DO NOTHING
+			ON CONFLICT (ref_id) DO UPDATE SET
+				cashier_user_id = EXCLUDED.cashier_user_id,
+				customer_id     = EXCLUDED.customer_id,
+				store_id        = EXCLUDED.store_id,
+				subtotal        = EXCLUDED.subtotal,
+				tax_amount      = EXCLUDED.tax_amount,
+				total_amount    = EXCLUDED.total_amount,
+				amount_paid     = EXCLUDED.amount_paid,
+				change_given    = EXCLUDED.change_given,
+				currency        = EXCLUDED.currency,
+				payment_ids     = EXCLUDED.payment_ids,
+				notes           = EXCLUDED.notes,
+				voucher_issued_code = EXCLUDED.voucher_issued_code,
+				owed_to_customer    = EXCLUDED.owed_to_customer,
+				status          = EXCLUDED.status
 		`,
 			op.ID,
 			strField(d, "ref_id"),
 			claims.UserID,
 			strField(d, "customer_id"),
 			strField(d, "store_id"),
-			strField(d, "items"),
 			numericField(d, "subtotal"),
 			numericField(d, "tax_amount"),
 			numericField(d, "total_amount"),
@@ -296,7 +315,125 @@ func (h *Handler) applyCashReceipt(r *http.Request, op models.UploadOperation, c
 			strField(d, "notes"),
 			strField(d, "voucher_issued_code"),
 			numericField(d, "owed_to_customer"),
+			strFieldOr(d, "status", "CASH_RECEIPT_STATUS_COMPLETED"),
 		)
+		return err
+
+	case "PATCH":
+		_, err := h.db.Exec(ctx, `
+			UPDATE cash_receipts SET
+				cashier_user_id   = COALESCE(NULLIF($2, ''), cashier_user_id),
+				customer_id       = COALESCE(NULLIF($3, ''), customer_id),
+				store_id          = COALESCE(NULLIF($4, ''), store_id),
+				subtotal          = COALESCE($5, subtotal),
+				tax_amount        = COALESCE($6, tax_amount),
+				total_amount      = COALESCE($7, total_amount),
+				amount_paid       = COALESCE($8, amount_paid),
+				change_given      = COALESCE($9, change_given),
+				currency          = COALESCE(NULLIF($10, ''), currency),
+				payment_ids       = COALESCE(NULLIF($11, ''), payment_ids),
+				notes             = COALESCE(NULLIF($12, ''), notes),
+				voucher_issued_code = COALESCE(NULLIF($13, ''), voucher_issued_code),
+				owed_to_customer  = COALESCE($14, owed_to_customer),
+				status            = COALESCE(NULLIF($15, ''), status)
+			WHERE id = $1
+		`,
+			op.ID,
+			strField(d, "cashier_user_id"),
+			strField(d, "customer_id"),
+			strField(d, "store_id"),
+			numericField(d, "subtotal"),
+			numericField(d, "tax_amount"),
+			numericField(d, "total_amount"),
+			numericField(d, "amount_paid"),
+			numericField(d, "change_given"),
+			strField(d, "currency"),
+			strField(d, "payment_ids"),
+			strField(d, "notes"),
+			strField(d, "voucher_issued_code"),
+			numericField(d, "owed_to_customer"),
+			strField(d, "status"),
+		)
+		return err
+
+	case "DELETE":
+		_, err := h.db.Exec(ctx, `DELETE FROM cash_receipts WHERE id = $1`, op.ID)
+		return err
+
+	default:
+		return nil
+	}
+}
+
+// =========================================================================
+// cash_receipt_items
+// =========================================================================
+
+func (h *Handler) applyCashReceiptItem(r *http.Request, op models.UploadOperation, _ *auth.Claims) error {
+	ctx := r.Context()
+	d := op.Data
+
+	switch op.Op {
+	case "PUT":
+		_, err := h.db.Exec(ctx, `
+			INSERT INTO cash_receipt_items
+				(id, receipt_id, store_id, product_id,
+				 quantity, unit_price, subtotal, tax_rate, tax_amount, total, batch_id)
+			VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)
+			ON CONFLICT (receipt_id, product_id) DO UPDATE SET
+				quantity   = EXCLUDED.quantity,
+				unit_price = EXCLUDED.unit_price,
+				subtotal   = EXCLUDED.subtotal,
+				tax_rate   = EXCLUDED.tax_rate,
+				tax_amount = EXCLUDED.tax_amount,
+				total      = EXCLUDED.total,
+				batch_id   = EXCLUDED.batch_id
+		`,
+			op.ID,
+			strField(d, "receipt_id"),
+			strField(d, "store_id"),
+			strField(d, "product_id"),
+			intField(d, "quantity"),
+			numericField(d, "unit_price"),
+			numericField(d, "subtotal"),
+			numericField(d, "tax_rate"),
+			numericField(d, "tax_amount"),
+			numericField(d, "total"),
+			strField(d, "batch_id"),
+		)
+		return err
+
+	case "PATCH":
+		_, err := h.db.Exec(ctx, `
+			UPDATE cash_receipt_items SET
+				receipt_id = COALESCE(NULLIF($2, ''), receipt_id),
+				store_id   = COALESCE(NULLIF($3, ''), store_id),
+				product_id = COALESCE(NULLIF($4, ''), product_id),
+				quantity   = COALESCE(NULLIF($5::bigint, 0), quantity),
+				unit_price = COALESCE(NULLIF($6::numeric, 0), unit_price),
+				subtotal   = COALESCE(NULLIF($7::numeric, 0), subtotal),
+				tax_rate   = COALESCE($8, tax_rate),
+				tax_amount = COALESCE($9, tax_amount),
+				total      = COALESCE(NULLIF($10::numeric, 0), total),
+				batch_id   = COALESCE(NULLIF($11, ''), batch_id)
+			WHERE id = $1
+		`,
+			op.ID,
+			strField(d, "receipt_id"),
+			strField(d, "store_id"),
+			strField(d, "product_id"),
+			intField(d, "quantity"),
+			numericField(d, "unit_price"),
+			numericField(d, "subtotal"),
+			numericField(d, "tax_rate"),
+			numericField(d, "tax_amount"),
+			numericField(d, "total"),
+			strField(d, "batch_id"),
+		)
+		return err
+
+	case "DELETE":
+		_, err := h.db.Exec(ctx, `DELETE FROM cash_receipt_items WHERE id = $1`, op.ID)
 		return err
 
 	default:
@@ -316,15 +453,18 @@ func (h *Handler) applyPayment(r *http.Request, op models.UploadOperation, claim
 	case "PUT":
 		_, err := h.db.Exec(ctx, `
 			INSERT INTO payments
-				(id, ref_id, payer_id, receiver, amount, currency, warehouse_id,
-				 payment_method, status, reference_number, created_by_user_id, notes)
-			VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)
-			ON CONFLICT (ref_id) DO NOTHING
+				(id, ref_id, payer_id, receiver_ref, amount, currency, warehouse_id,
+				 payment_method, status, reference_number, created_by_user_id, notes,
+				 related_docs)
+			VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13::jsonb)
+			ON CONFLICT (ref_id) DO UPDATE SET
+				status         = EXCLUDED.status,
+				related_docs   = EXCLUDED.related_docs
 		`,
 			op.ID,
 			strField(d, "ref_id"),
 			strField(d, "payer_id"),
-			strField(d, "receiver"),
+			strField(d, "receiver_ref"),
 			numericField(d, "amount"),
 			strFieldOr(d, "currency", "XAF"),
 			strField(d, "warehouse_id"),
@@ -333,7 +473,41 @@ func (h *Handler) applyPayment(r *http.Request, op models.UploadOperation, claim
 			strField(d, "reference_number"),
 			claims.UserID,
 			strField(d, "notes"),
+			strFieldOr(d, "related_docs", "[]"),
 		)
+		return err
+
+	case "PATCH":
+		_, err := h.db.Exec(ctx, `
+			UPDATE payments SET
+				payer_id          = COALESCE(NULLIF($2, ''), payer_id),
+				receiver_ref      = COALESCE(NULLIF($3, ''), receiver_ref),
+				amount            = COALESCE($4, amount),
+				currency          = COALESCE(NULLIF($5, ''), currency),
+				warehouse_id      = COALESCE(NULLIF($6, ''), warehouse_id),
+				payment_method    = COALESCE(NULLIF($7, ''), payment_method),
+				status            = COALESCE(NULLIF($8, ''), status),
+				reference_number  = COALESCE(NULLIF($9, ''), reference_number),
+				notes             = COALESCE(NULLIF($10, ''), notes),
+				related_docs      = CASE WHEN $11 <> '' THEN $11::jsonb ELSE related_docs END
+			WHERE id = $1
+		`,
+			op.ID,
+			strField(d, "payer_id"),
+			strField(d, "receiver_ref"),
+			numericField(d, "amount"),
+			strField(d, "currency"),
+			strField(d, "warehouse_id"),
+			strField(d, "payment_method"),
+			strField(d, "status"),
+			strField(d, "reference_number"),
+			strField(d, "notes"),
+			strField(d, "related_docs"),
+		)
+		return err
+
+	case "DELETE":
+		_, err := h.db.Exec(ctx, `DELETE FROM payments WHERE id = $1`, op.ID)
 		return err
 
 	default:
@@ -354,9 +528,19 @@ func (h *Handler) applyGiftVoucher(r *http.Request, op models.UploadOperation, c
 		_, err := h.db.Exec(ctx, `
 			INSERT INTO gift_vouchers
 				(id, ref_id, voucher_code, initial_value, remaining_value, currency,
-				 issued_to_customer_id, issued_by_user_id, warehouse_id, status, notes)
-			VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)
-			ON CONFLICT (ref_id) DO NOTHING
+				 issued_to_customer_id, issued_by_user_id, warehouse_id, status, issued_at, valid_until, notes)
+			VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,NOW(),NULLIF($11,'')::timestamptz,$12)
+			ON CONFLICT (ref_id) DO UPDATE SET
+				voucher_code    = EXCLUDED.voucher_code,
+				initial_value   = EXCLUDED.initial_value,
+				remaining_value = EXCLUDED.remaining_value,
+				currency        = EXCLUDED.currency,
+				issued_to_customer_id = EXCLUDED.issued_to_customer_id,
+				issued_by_user_id = EXCLUDED.issued_by_user_id,
+				warehouse_id    = EXCLUDED.warehouse_id,
+				status          = EXCLUDED.status,
+				valid_until     = EXCLUDED.valid_until,
+				notes           = EXCLUDED.notes
 		`,
 			op.ID,
 			strField(d, "ref_id"),
@@ -368,6 +552,7 @@ func (h *Handler) applyGiftVoucher(r *http.Request, op models.UploadOperation, c
 			claims.UserID,
 			strField(d, "warehouse_id"),
 			strFieldOr(d, "status", "VOUCHER_STATUS_ACTIVE"),
+			strField(d, "valid_until"),
 			strField(d, "notes"),
 		)
 		return err
@@ -375,14 +560,32 @@ func (h *Handler) applyGiftVoucher(r *http.Request, op models.UploadOperation, c
 	case "PATCH":
 		_, err := h.db.Exec(ctx, `
 			UPDATE gift_vouchers SET
-				remaining_value = $2,
-				status          = COALESCE(NULLIF($3, ''), status)
+				voucher_code    = COALESCE(NULLIF($2, ''), voucher_code),
+				initial_value   = COALESCE($3, initial_value),
+				remaining_value = COALESCE($4, remaining_value),
+				currency        = COALESCE(NULLIF($5, ''), currency),
+				issued_to_customer_id = COALESCE(NULLIF($6, ''), issued_to_customer_id),
+				warehouse_id    = COALESCE(NULLIF($7, ''), warehouse_id),
+				status          = COALESCE(NULLIF($8, ''), status),
+				valid_until     = NULLIF($9, '')::timestamptz,
+				notes           = COALESCE(NULLIF($10, ''), notes)
 			WHERE id = $1
 		`,
 			op.ID,
+			strField(d, "voucher_code"),
+			numericField(d, "initial_value"),
 			numericField(d, "remaining_value"),
+			strField(d, "currency"),
+			strField(d, "issued_to_customer_id"),
+			strField(d, "warehouse_id"),
 			strField(d, "status"),
+			strField(d, "valid_until"),
+			strField(d, "notes"),
 		)
+		return err
+
+	case "DELETE":
+		_, err := h.db.Exec(ctx, `DELETE FROM gift_vouchers WHERE id = $1`, op.ID)
 		return err
 
 	default:
@@ -416,6 +619,29 @@ func (h *Handler) applyVoucherTransaction(r *http.Request, op models.UploadOpera
 			numericField(d, "amount_used"),
 			numericField(d, "remaining_after"),
 			claims.UserID,
+		)
+		return err
+
+	case "PATCH":
+		_, err := h.db.Exec(ctx, `
+			UPDATE voucher_transactions SET
+				voucher_id         = COALESCE(NULLIF($2, ''), voucher_id),
+				store_id           = COALESCE(NULLIF($3, ''), store_id),
+				related_invoice_id = COALESCE(NULLIF($4, ''), related_invoice_id),
+				related_receipt_id = COALESCE(NULLIF($5, ''), related_receipt_id),
+				amount_used        = COALESCE($6, amount_used),
+				remaining_after    = COALESCE($7, remaining_after),
+				used_by_user_id    = COALESCE(NULLIF($8, ''), used_by_user_id)
+			WHERE id = $1
+		`,
+			op.ID,
+			strField(d, "voucher_id"),
+			strField(d, "store_id"),
+			strField(d, "related_invoice_id"),
+			strField(d, "related_receipt_id"),
+			numericField(d, "amount_used"),
+			numericField(d, "remaining_after"),
+			strField(d, "used_by_user_id"),
 		)
 		return err
 
@@ -498,6 +724,10 @@ func (h *Handler) applyPurchaseOrderLineItem(r *http.Request, op models.UploadOp
 	ctx := r.Context()
 	d := op.Data
 
+	// log the request
+	h.logger.Info("purchase_order_line_items", "op", op)
+
+
 	switch op.Op {
 	case "PUT":
 		_, err := h.db.Exec(ctx, `
@@ -507,6 +737,9 @@ func (h *Handler) applyPurchaseOrderLineItem(r *http.Request, op models.UploadOp
 				 product_name)
 			VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11::jsonb)
 			ON CONFLICT (purchase_order_id) DO UPDATE SET
+				purchase_order_id = EXCLUDED.purchase_order_id,
+				store_id = EXCLUDED.store_id,
+				product_id = EXCLUDED.product_id,
 				quantity_ordered = EXCLUDED.quantity_ordered,
 				unit_price = EXCLUDED.unit_price,
 				total      = EXCLUDED.total,
@@ -526,6 +759,17 @@ func (h *Handler) applyPurchaseOrderLineItem(r *http.Request, op models.UploadOp
 			numericField(d, "quantity_received"),
 			numericField(d, "tax_amount"),
 			strField(d, "product_name"),
+		)
+		return err
+
+	case "PATCH":
+		_, err := h.db.Exec(ctx, `
+			UPDATE purchase_order_line_items SET
+				quantity_received = COALESCE(NULLIF($2::numeric, 0), quantity_received)
+			WHERE id = $1
+		`,
+			op.ID,
+			numericField(d, "quantity_received"),
 		)
 		return err
 
@@ -615,6 +859,35 @@ func (h *Handler) applyReceivingNoteLineItem(r *http.Request, op models.UploadOp
 		)
 		return err
 
+	case "PATCH":
+		_, err := h.db.Exec(ctx, `
+			UPDATE receiving_note_line_items SET
+				receiving_note_id = COALESCE(NULLIF($2, ''), receiving_note_id),
+				store_id          = COALESCE(NULLIF($3, ''), store_id),
+				product_id        = COALESCE(NULLIF($4, ''), product_id),
+				quantity_expected   = COALESCE(NULLIF($5::numeric, 0), quantity_expected),
+				quantity_received   = COALESCE(NULLIF($6::numeric, 0), quantity_received),
+				quantity_rejected   = COALESCE(NULLIF($7::numeric, 0), quantity_rejected),
+				rejection_reason    = COALESCE(NULLIF($8, ''), rejection_reason),
+				batch_id            = COALESCE(NULLIF($9, ''), batch_id),
+				expiration_date     = NULLIF($10, '')::timestamptz,
+				purchase_price      = COALESCE(NULLIF($11::numeric, 0), purchase_price)
+			WHERE id = $1
+		`,
+			op.ID,
+			strField(d, "receiving_note_id"),
+			strField(d, "store_id"),
+			strField(d, "product_id"),
+			numericField(d, "quantity_expected"),
+			numericField(d, "quantity_received"),
+			numericField(d, "quantity_rejected"),
+			strField(d, "rejection_reason"),
+			strField(d, "batch_id"),
+			strField(d, "expiration_date"),
+			numericField(d, "purchase_price"),
+		)
+		return err
+
 	default:
 		return nil
 	}
@@ -651,6 +924,31 @@ func (h *Handler) applyBatch(r *http.Request, op models.UploadOperation, _ *auth
 			strField(d, "supplier_id"),
 			intField(d, "purchase_price"),
 			strFieldOr(d, "status", "BATCH_STATUS_ACTIVE"),
+			strField(d, "notes"),
+		)
+		return err
+
+	case "PATCH":
+		_, err := h.db.Exec(ctx, `
+			UPDATE batches SET
+				product_id       = COALESCE(NULLIF($2, ''), product_id),
+				warehouse_id     = COALESCE(NULLIF($3, ''), warehouse_id),
+				quantity         = COALESCE(NULLIF($4::bigint, 0), quantity),
+				expiration_date  = NULLIF($5, '')::timestamptz,
+				supplier_id      = COALESCE(NULLIF($6, ''), supplier_id),
+				purchase_price   = COALESCE(NULLIF($7::bigint, 0), purchase_price),
+				status           = COALESCE(NULLIF($8, ''), status),
+				notes            = COALESCE(NULLIF($9, ''), notes)
+			WHERE id = $1
+		`,
+			op.ID,
+			strField(d, "product_id"),
+			strField(d, "warehouse_id"),
+			intField(d, "quantity"),
+			strField(d, "expiration_date"),
+			strField(d, "supplier_id"),
+			intField(d, "purchase_price"),
+			strField(d, "status"),
 			strField(d, "notes"),
 		)
 		return err
@@ -694,6 +992,41 @@ func (h *Handler) applyInventoryTransaction(r *http.Request, op models.UploadOpe
 			numericField(d, "unit_price"),
 			numericField(d, "total_amount"),
 			strFieldOr(d, "currency", "XAF"),
+		)
+		return err
+
+	case "PATCH":
+		_, err := h.db.Exec(ctx, `
+			UPDATE inventory_transactions SET
+				store_id              = COALESCE(NULLIF($2, ''), store_id),
+				product_id            = COALESCE(NULLIF($3, ''), product_id),
+				transaction_type      = COALESCE(NULLIF($4, ''), transaction_type),
+				quantity_change       = COALESCE(NULLIF($5::bigint, 0), quantity_change),
+				quantity_before       = COALESCE(NULLIF($6::bigint, 0), quantity_before),
+				quantity_after        = COALESCE(NULLIF($7::bigint, 0), quantity_after),
+				related_document_type = COALESCE(NULLIF($8, ''), related_document_type),
+				related_document_id   = COALESCE(NULLIF($9, ''), related_document_id),
+				batch_id              = COALESCE(NULLIF($10, ''), batch_id),
+				notes                 = COALESCE(NULLIF($11, ''), notes),
+				unit_price            = COALESCE($12, unit_price),
+				total_amount          = COALESCE($13, total_amount),
+				currency              = COALESCE(NULLIF($14, ''), currency)
+			WHERE id = $1
+		`,
+			op.ID,
+			strField(d, "store_id"),
+			strField(d, "product_id"),
+			strField(d, "transaction_type"),
+			intField(d, "quantity_change"),
+			intField(d, "quantity_before"),
+			intField(d, "quantity_after"),
+			strField(d, "related_document_type"),
+			strField(d, "related_document_id"),
+			strField(d, "batch_id"),
+			strField(d, "notes"),
+			numericField(d, "unit_price"),
+			numericField(d, "total_amount"),
+			strField(d, "currency"),
 		)
 		return err
 
@@ -770,6 +1103,29 @@ func (h *Handler) applySalesOrderLineItem(r *http.Request, op models.UploadOpera
 				unit_price = EXCLUDED.unit_price,
 				total      = EXCLUDED.total,
 				batch_id   = EXCLUDED.batch_id
+		`,
+			op.ID,
+			strField(d, "sales_order_id"),
+			strField(d, "store_id"),
+			strField(d, "product_id"),
+			intField(d, "quantity"),
+			numericField(d, "unit_price"),
+			numericField(d, "total"),
+			strField(d, "batch_id"),
+		)
+		return err
+
+	case "PATCH":
+		_, err := h.db.Exec(ctx, `
+			UPDATE sales_order_line_items SET
+				sales_order_id = COALESCE(NULLIF($2, ''), sales_order_id),
+				store_id       = COALESCE(NULLIF($3, ''), store_id),
+				product_id     = COALESCE(NULLIF($4, ''), product_id),
+				quantity       = COALESCE(NULLIF($5::bigint, 0), quantity),
+				unit_price     = COALESCE(NULLIF($6::numeric, 0), unit_price),
+				total          = COALESCE(NULLIF($7::numeric, 0), total),
+				batch_id       = COALESCE(NULLIF($8, ''), batch_id)
+			WHERE id = $1
 		`,
 			op.ID,
 			strField(d, "sales_order_id"),
@@ -886,6 +1242,35 @@ func (h *Handler) applyInvoiceLineItem(r *http.Request, op models.UploadOperatio
 		)
 		return err
 
+	case "PATCH":
+		_, err := h.db.Exec(ctx, `
+			UPDATE invoice_line_items SET
+				invoice_id   = COALESCE(NULLIF($2, ''), invoice_id),
+				store_id     = COALESCE(NULLIF($3, ''), store_id),
+				product_id   = COALESCE(NULLIF($4, ''), product_id),
+				quantity     = COALESCE(NULLIF($5::bigint, 0), quantity),
+				unit_price   = COALESCE(NULLIF($6::numeric, 0), unit_price),
+				subtotal     = COALESCE(NULLIF($7::numeric, 0), subtotal),
+				tax_rate     = COALESCE($8, tax_rate),
+				tax_amount   = COALESCE($9, tax_amount),
+				total        = COALESCE(NULLIF($10::numeric, 0), total),
+				batch_id     = COALESCE(NULLIF($11, ''), batch_id)
+			WHERE id = $1
+		`,
+			op.ID,
+			strField(d, "invoice_id"),
+			strField(d, "store_id"),
+			strField(d, "product_id"),
+			intField(d, "quantity"),
+			numericField(d, "unit_price"),
+			numericField(d, "subtotal"),
+			numericField(d, "tax_rate"),
+			numericField(d, "tax_amount"),
+			numericField(d, "total"),
+			strField(d, "batch_id"),
+		)
+		return err
+
 	case "DELETE":
 		_, err := h.db.Exec(ctx, `DELETE FROM invoice_line_items WHERE id = $1`, op.ID)
 		return err
@@ -942,11 +1327,15 @@ func (h *Handler) applyBill(r *http.Request, op models.UploadOperation, _ *auth.
 	case "PATCH":
 		_, err := h.db.Exec(ctx, `
 			UPDATE bills SET
-				status = COALESCE(NULLIF($2, ''), status)
+				status = COALESCE(NULLIF($2, ''), status),
+				payment_ids = COALESCE(NULLIF($3, ''), payment_ids),
+				balance_due = COALESCE($4, balance_due)
 			WHERE id = $1
 		`,
 			op.ID,
 			strField(d, "status"),
+			strField(d, "payment_ids"), 
+			numericField(d, "balance_due"),
 		)
 		return err
 
@@ -980,6 +1369,31 @@ func (h *Handler) applyBillLineItem(r *http.Request, op models.UploadOperation, 
 				tax_amount  = EXCLUDED.tax_amount,
 				total       = EXCLUDED.total,
 				description = EXCLUDED.description
+		`,
+			op.ID,
+			strField(d, "bill_id"),
+			strField(d, "store_id"),
+			strField(d, "product_id"),
+			strField(d, "description"),
+			intField(d, "quantity"),
+			numericField(d, "unit_price"),
+			numericField(d, "tax_amount"),
+			numericField(d, "total"),
+		)
+		return err
+
+	case "PATCH":
+		_, err := h.db.Exec(ctx, `
+			UPDATE bill_line_items SET
+				bill_id      = COALESCE(NULLIF($2, ''), bill_id),
+				store_id     = COALESCE(NULLIF($3, ''), store_id),
+				product_id   = COALESCE(NULLIF($4, ''), product_id),
+				description  = COALESCE(NULLIF($5, ''), description),
+				quantity     = COALESCE(NULLIF($6::bigint, 0), quantity),
+				unit_price   = COALESCE(NULLIF($7::numeric, 0), unit_price),
+				tax_amount   = COALESCE($8, tax_amount),
+				total        = COALESCE(NULLIF($9::numeric, 0), total)
+			WHERE id = $1
 		`,
 			op.ID,
 			strField(d, "bill_id"),
@@ -1029,6 +1443,25 @@ func (h *Handler) applyDeliveryNoteLineItem(r *http.Request, op models.UploadOpe
 		)
 		return err
 
+	case "PATCH":
+		_, err := h.db.Exec(ctx, `
+			UPDATE delivery_note_line_items SET
+				delivery_note_id = COALESCE(NULLIF($2, ''), delivery_note_id),
+				store_id         = COALESCE(NULLIF($3, ''), store_id),
+				product_id       = COALESCE(NULLIF($4, ''), product_id),
+				quantity         = COALESCE(NULLIF($5::numeric, 0), quantity),
+				batch_id         = COALESCE(NULLIF($6, ''), batch_id)
+			WHERE id = $1
+		`,
+			op.ID,
+			strField(d, "delivery_note_id"),
+			strField(d, "store_id"),
+			strField(d, "product_id"),
+			numericField(d, "quantity"),
+			strField(d, "batch_id"),
+		)
+		return err
+
 	case "DELETE":
 		_, err := h.db.Exec(ctx, `DELETE FROM delivery_note_line_items WHERE id = $1`, op.ID)
 		return err
@@ -1046,13 +1479,15 @@ func (h *Handler) applySupplier(r *http.Request, op models.UploadOperation, _ *a
 	ctx := r.Context()
 	d := op.Data
 
+	h.logger.Info("applySupplier", "op", op)
+
 	switch op.Op {
 	case "PUT":
 		_, err := h.db.Exec(ctx, `
 			INSERT INTO suppliers
 				(id, ref_id, name, description, contact_phone, contact_email,
-				 contact_address, status)
-			VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
+				 contact_address, status, logo_link_id, external_links_ids, store_ids)
+			VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)
 			ON CONFLICT (ref_id) DO UPDATE SET
 				name            = EXCLUDED.name,
 				description     = EXCLUDED.description,
@@ -1060,6 +1495,9 @@ func (h *Handler) applySupplier(r *http.Request, op models.UploadOperation, _ *a
 				contact_email   = EXCLUDED.contact_email,
 				contact_address = EXCLUDED.contact_address,
 				status          = EXCLUDED.status
+				logo_link_id          = EXCLUDED.logo_link_id
+				external_links_ids          = EXCLUDED.external_links_ids
+				store_ids          = EXCLUDED.store_ids
 		`,
 			op.ID,
 			strField(d, "ref_id"),
@@ -1069,6 +1507,37 @@ func (h *Handler) applySupplier(r *http.Request, op models.UploadOperation, _ *a
 			strField(d, "contact_email"),
 			strField(d, "contact_address"),
 			strFieldOr(d, "status", "SUPPLIER_STATUS_ACTIVE"),
+			strField(d, "logo_link_id"),
+			strFieldOr(d, "external_links_ids", `[]`),
+			strField(d, "store_ids"),
+
+		)
+		return err
+
+	case "PATCH":
+		_, err := h.db.Exec(ctx, `
+			UPDATE suppliers SET
+				name            = COALESCE(NULLIF($2, ''), name),
+				description     = COALESCE(NULLIF($3, ''), description),
+				contact_phone   = COALESCE(NULLIF($4, ''), contact_phone),
+				contact_email   = COALESCE(NULLIF($5, ''), contact_email),
+				contact_address = COALESCE(NULLIF($6, ''), contact_address),
+				status          = COALESCE(NULLIF($7, ''), status),
+				logo_link_id    = COALESCE(NULLIF($8, ''), logo_link_id),
+				external_links_ids = COALESCE(NULLIF($9, ''), external_links_ids),
+				store_ids       = COALESCE(NULLIF($10, '')::text[], store_ids)
+			WHERE id = $1
+		`,
+			op.ID,
+			strField(d, "name"),
+			strField(d, "description"),
+			strField(d, "contact_phone"),
+			strField(d, "contact_email"),
+			strField(d, "contact_address"),
+			strField(d, "status"),
+			strField(d, "logo_link_id"),
+			strField(d, "external_links_ids"),
+			strField(d, "store_ids"),
 		)
 		return err
 
@@ -1199,14 +1668,15 @@ func (h *Handler) applyGlobalProduct(r *http.Request, op models.UploadOperation,
 		// name and categories are JSONB — the client sends them as JSON strings.
 		_, err := h.db.Exec(ctx, `
 			INSERT INTO global_products
-				(id, ref_id, name, description, bar_code_value, categories, status)
-			VALUES ($1,$2,$3::jsonb,$4::jsonb,$5,$6::jsonb,$7)
+				(id, ref_id, name, description, bar_code_value, categories, status, images_links_ids)
+			VALUES ($1,$2,$3::jsonb,$4::jsonb,$5,$6::jsonb,$7,$8)
 			ON CONFLICT (ref_id) DO UPDATE SET
 				name           = EXCLUDED.name,
 				description    = EXCLUDED.description,
 				bar_code_value = EXCLUDED.bar_code_value,
 				categories     = EXCLUDED.categories,
-				status         = EXCLUDED.status
+				status         = EXCLUDED.status,
+				images_links_ids       = EXCLUDED.images_links_ids
 		`,
 			op.ID,
 			strField(d, "ref_id"),
@@ -1215,6 +1685,7 @@ func (h *Handler) applyGlobalProduct(r *http.Request, op models.UploadOperation,
 			strField(d, "bar_code_value"),
 			strFieldOr(d, "categories", `[]`),
 			strFieldOr(d, "status", "GLOBAL_PRODUCT_STATUS_ACTIVE"),
+			strFieldOr(d, "images_links_ids", `[]`),
 		)
 		return err
 
@@ -1225,7 +1696,8 @@ func (h *Handler) applyGlobalProduct(r *http.Request, op models.UploadOperation,
 				description    = CASE WHEN $3 <> '' THEN $3::jsonb ELSE description END,
 				bar_code_value = COALESCE(NULLIF($4,''), bar_code_value),
 				categories     = CASE WHEN $5 <> '' THEN $5::jsonb ELSE categories END,
-				status         = COALESCE(NULLIF($6,''), status)
+				status         = COALESCE(NULLIF($6,''), status),
+				images_links_ids = COALESCE(NULLIF($7, ''), images_links_ids)
 			WHERE id = $1
 		`,
 			op.ID,
@@ -1234,6 +1706,7 @@ func (h *Handler) applyGlobalProduct(r *http.Request, op models.UploadOperation,
 			strField(d, "bar_code_value"),
 			strField(d, "categories"),
 			strField(d, "status"),
+			strField(d, "images_links_ids"),
 		)
 		return err
 
@@ -1322,6 +1795,23 @@ func (h *Handler) applyResourceLink(r *http.Request, op models.UploadOperation, 
 		`,
 			op.ID,
 			strField(d, "ref_id"),
+			strField(d, "target_uri"),
+			strField(d, "icon_uri"),
+			strField(d, "info"),
+			strField(d, "label"),
+		)
+		return err
+
+	case "PATCH":
+		_, err := h.db.Exec(ctx, `
+			UPDATE resource_links SET
+				target_uri = COALESCE(NULLIF($2, ''), target_uri),
+				icon_uri   = COALESCE(NULLIF($3, ''), icon_uri),
+				info       = COALESCE(NULLIF($4, ''), info),
+				label      = COALESCE(NULLIF($5, ''), label)
+			WHERE id = $1
+		`,
+			op.ID,
 			strField(d, "target_uri"),
 			strField(d, "icon_uri"),
 			strField(d, "info"),

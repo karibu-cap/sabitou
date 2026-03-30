@@ -6,6 +6,7 @@ import '../../utils/app_constants.dart';
 import '../../utils/responsive_utils.dart';
 import '../../utils/user_preference.dart';
 import '../../widgets/loading.dart';
+import '../../widgets/no_business_view.dart';
 import 'components/header.dart';
 import 'components/product_table.dart';
 import 'components/search_and_filter.dart';
@@ -23,7 +24,7 @@ class ProductsListScreen extends StatelessWidget {
     final currentStore = userPreferences.store;
     final business = userPreferences.business;
     if (currentStore == null || business == null) {
-      return const SizedBox.shrink();
+      return const Scaffold(body: Center(child: NoBusinessView()));
     }
     final viewModel = GetIt.I.registerSingletonIfAbsent<ProductsListViewModel>(
       () => ProductsListViewModel(buisiness: business, store: currentStore),

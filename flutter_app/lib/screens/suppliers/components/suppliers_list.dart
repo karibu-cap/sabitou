@@ -113,89 +113,93 @@ class _SupplierCard extends StatelessWidget {
 
     return ShadCard(
       padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              _SupplierAvatar(name: supplier.name),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      supplier.name,
-                      style: theme.textTheme.p.copyWith(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    if (supplier.description.isNotEmpty) ...[
-                      const SizedBox(height: 2),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                _SupplierAvatar(name: supplier.name),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
                       Text(
-                        supplier.description,
-                        style: theme.textTheme.muted.copyWith(fontSize: 12),
+                        supplier.name,
+                        style: theme.textTheme.p.copyWith(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                        ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
-                    ],
-                  ],
-                ),
-              ),
-              const SizedBox(width: 8),
-              // Status + actions stacked
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  _StatusPill(status: supplier.status),
-                  const SizedBox(height: 8),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      _CardIconButton(
-                        icon: LucideIcons.pencil,
-                        onPressed: onEdit,
-                      ),
-                      const SizedBox(width: 5),
-                      _CardIconButton(
-                        icon: LucideIcons.trash2,
-                        onPressed: onDelete,
-                        isDanger: true,
-                      ),
+                      if (supplier.description.isNotEmpty) ...[
+                        const SizedBox(height: 2),
+                        Text(
+                          supplier.description,
+                          style: theme.textTheme.muted.copyWith(fontSize: 12),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
                     ],
                   ),
-                ],
-              ),
-            ],
-          ),
-
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 8),
-            child: ShadSeparator.horizontal(),
-          ),
-
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: [
-              if (supplier.contactEmail.isNotEmpty)
-                _InfoChip(icon: LucideIcons.mail, label: supplier.contactEmail),
-              if (supplier.contactPhone.isNotEmpty)
-                _InfoChip(
-                  icon: LucideIcons.phone,
-                  label: supplier.contactPhone,
                 ),
-              if (supplier.contactAddress.isNotEmpty)
-                _InfoChip(
-                  icon: LucideIcons.locate400,
-                  label: supplier.contactAddress,
+                const SizedBox(width: 8),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    _StatusPill(status: supplier.status),
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        _CardIconButton(
+                          icon: LucideIcons.pencil,
+                          onPressed: onEdit,
+                        ),
+                        const SizedBox(width: 5),
+                        _CardIconButton(
+                          icon: LucideIcons.trash2,
+                          onPressed: onDelete,
+                          isDanger: true,
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-            ],
-          ),
-        ],
+              ],
+            ),
+
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 2),
+              child: ShadSeparator.horizontal(),
+            ),
+
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                if (supplier.contactEmail.isNotEmpty)
+                  _InfoChip(
+                    icon: LucideIcons.mail,
+                    label: supplier.contactEmail,
+                  ),
+                if (supplier.contactPhone.isNotEmpty)
+                  _InfoChip(
+                    icon: LucideIcons.phone,
+                    label: supplier.contactPhone,
+                  ),
+                if (supplier.contactAddress.isNotEmpty)
+                  _InfoChip(
+                    icon: LucideIcons.locate400,
+                    label: supplier.contactAddress,
+                  ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -205,11 +209,11 @@ class _SupplierAvatar extends StatelessWidget {
   const _SupplierAvatar({required this.name});
 
   static const _palettes = [
-    (_bgP, _fgP), // purple
-    (_bgA, _fgA), // amber
-    (_bgG, _fgG), // green
-    (_bgR, _fgR), // red
-    (_bgB, _fgB), // blue
+    (_bgP, _fgP),
+    (_bgA, _fgA),
+    (_bgG, _fgG),
+    (_bgR, _fgR),
+    (_bgB, _fgB),
   ];
 
   static const _bgP = SabitouColors.purpleSoft;

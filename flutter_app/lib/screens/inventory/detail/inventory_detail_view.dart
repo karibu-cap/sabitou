@@ -142,8 +142,7 @@ class InventoryDetailView extends StatelessWidget {
                               child: FadeInImage.assetNetwork(
                                 placeholder: StaticImages.placeholder,
                                 image: data,
-                                placeholderCacheHeight: 30,
-                                placeholderCacheWidth: 30,
+                                placeholderFit: BoxFit.none,
                                 fit: BoxFit.cover,
                                 width: 70,
                                 imageErrorBuilder:

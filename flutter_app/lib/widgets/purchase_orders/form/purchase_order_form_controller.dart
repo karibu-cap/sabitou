@@ -111,7 +111,7 @@ class PurchaseOrderFormController extends ChangeNotifier {
       SearchStoreProductsRequest(searchQuery: name, storeId: storeId),
     );
 
-    return response.products;
+    return response;
   }
 
   /// Reset current err message to empty string.
@@ -138,7 +138,7 @@ class PurchaseOrderFormController extends ChangeNotifier {
     }
     _errorMessage = '';
     notifyListeners();
-    
+
     return true;
   }
 

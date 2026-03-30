@@ -4,18 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sabitou_rpc/models.dart';
 
-import '../../../providers/cart_provider.dart';
 import '../../../repositories/gift_voucher_repository.dart';
 import '../../../services/internationalization/internationalization.dart';
 import '../../../utils/common_functions.dart';
 import '../../../utils/formatters.dart';
 import '../../../utils/user_preference.dart';
 import '../point_of_sale_controller.dart';
+import 'cart_provider.dart';
 
-/// Payment state manager
+/// State manager for the payment panel.
+/// Provided by [PaymentSection] via [ChangeNotifierProvider].
 class PaymentStateManager extends ChangeNotifier {
-  /// The instance of [CartManager].
-  final CartManager cart = CartManager.instance;
+  /// Shared cart instance.
+  final CartProvider cart = CartProvider.instance;
 
   double _amountReceived = 0.0;
   double _remainingAmount = 0.0;
@@ -30,43 +31,47 @@ class PaymentStateManager extends ChangeNotifier {
   final _referenceController = TextEditingController();
   final _changeController = TextEditingController();
 
-  /// The total amount of money received from the customer.
+  /// Total money received from the customer across all payment entries.
   double get amountReceived => _amountReceived;
 
-  /// The remaining amount that the customer needs to pay.
+  /// Amount still owed by the customer (totalAmount − amountReceived).
+  ///
+  /// Is 0 when fully paid.
   double get remainingAmount => _remainingAmount;
 
-  /// The amount that the cashier needs to pay back to the customer.
+  /// Amount the cashier needs to return to the customer (overpayment).
+  ///
+  /// Is 0 when the customer has not overpaid.
   double get amountToBePaidBack => _amountToBePaidBack;
 
-  /// The amount that the cashier has given back to the customer.
+  /// Amount of change that has already been given back.
   double get changeGiven => _changeGiven;
 
-  /// Whether the amount given back exceeds the maximum amount that can be given back.
+  /// True when the entered change amount exceeds [amountToBePaidBack].
   bool get changeAmountExceedsMaximum => _changeAmountExceedsMaximum;
 
-  /// The error message when the amount given back exceeds the maximum amount.
+  /// Validation error message for the change input field, or `null`.
   String? get changeValidationError => _changeValidationError;
 
-  /// Whether the payment process is currently in progress.
+  /// True while an async payment operation is in progress.
   bool get isProcessing => _isProcessing;
 
-  /// The currently selected payment method.
+  /// The payment method currently selected in the UI.
   PaymentMethod? get selectedPaymentMethod => _selectedPaymentMethod;
 
-  /// The text controller for the amount text field.
+  /// Controller bound to the "amount" text field.
   TextEditingController get amountController => _amountController;
 
-  /// The text controller for the reference text field.
+  /// Controller bound to the "reference" text field.
   TextEditingController get referenceController => _referenceController;
 
-  /// The text controller for the change text field.
+  /// Controller bound to the "change given" text field.
   TextEditingController get changeController => _changeController;
 
-  /// Whether the payment can be completed.
+  /// Whether the receipt can be completed (all conditions satisfied).
   bool get canComplete => cart.canComplete;
 
-  /// Constructor of new [PaymentStateManager].
+  /// Creates a [PaymentStateManager] and starts listening to [CartProvider].
   PaymentStateManager() {
     cart.addListener(_onCartChanged);
   }
@@ -93,8 +98,7 @@ class PaymentStateManager extends ChangeNotifier {
     }
 
     if (_amountToBePaidBack > 0 && _changeController.text.isEmpty) {
-      final changeText = _amountToBePaidBack.toString();
-      _changeController.text = changeText;
+      _changeController.text = _amountToBePaidBack.toString();
       cart.setChangeGiven(_amountToBePaidBack);
     }
 
@@ -110,13 +114,14 @@ class PaymentStateManager extends ChangeNotifier {
 
       return false;
     }
+
     _changeAmountExceedsMaximum = false;
     _changeValidationError = null;
 
     return true;
   }
 
-  /// Called when the payment method is changed.
+  /// Updates [selectedPaymentMethod] and clears the reference field.
   void onMethodChanged(PaymentMethod? value) {
     if (value == null) return;
     _selectedPaymentMethod = value;
@@ -130,14 +135,12 @@ class PaymentStateManager extends ChangeNotifier {
     if (user == null || store == null) return ValidateVoucherResponse();
     if (voucherCode.isEmpty) return ValidateVoucherResponse();
 
-    final response = await GiftVoucherRepository.instance.validateVoucher(
+    return GiftVoucherRepository.instance.validateVoucher(
       ValidateVoucherRequest(voucherCode: voucherCode),
     );
-
-    return response;
   }
 
-  /// Adds payment.
+  /// Validates inputs and appends a [Payment] to the current cart receipt.
   Future<void> addPayment(BuildContext context) async {
     final amount = double.tryParse(_amountController.text) ?? 0.0;
 
@@ -152,6 +155,7 @@ class PaymentStateManager extends ChangeNotifier {
 
     try {
       Payment payment;
+
       if (_selectedPaymentMethod == PaymentMethod.PAYMENT_METHOD_VOUCHER) {
         final voucherCode = _referenceController.text.trim();
         if (voucherCode.isEmpty) {
@@ -175,13 +179,12 @@ class PaymentStateManager extends ChangeNotifier {
           return;
         }
 
-        final voucherAvailable = voucher.remainingValue.toDouble();
-
-        if (amount > voucherAvailable) {
+        final available = voucher.remainingValue.toDouble();
+        if (amount > available) {
           showErrorToast(
             context: context,
             message: Intls.to.insufficientVoucherAmount.trParams({
-              'remainingAmount': voucherAvailable.toString(),
+              'remainingAmount': available.toString(),
             }),
           );
 
@@ -204,7 +207,6 @@ class PaymentStateManager extends ChangeNotifier {
       }
 
       cart.addPayment(payment);
-
       _amountController.clear();
       _referenceController.clear();
       _selectedPaymentMethod = PaymentMethod.PAYMENT_METHOD_CASH;
@@ -221,28 +223,26 @@ class PaymentStateManager extends ChangeNotifier {
     }
   }
 
-  /// Removes payment.
+  /// Removes a payment entry at [index].
   void removePayment(int index) {
     if (index >= 0 && index < cart.payments.length) {
       cart.removePayment(index);
     }
   }
 
-  /// Called when the change amount is changed.
+  /// Updates [changeGiven] after validating that it does not exceed
+  /// [amountToBePaidBack].
   void onChangeAmountChanged(String value) {
-    final parsedValue = double.tryParse(value) ?? 0.0;
+    final parsed = double.tryParse(value) ?? 0.0;
+    if (!_validateChangeAmount(parsed)) return;
 
-    final result = _validateChangeAmount(parsedValue);
-
-    if (!result) {
-      return;
-    }
-
-    _changeGiven = parsedValue;
-    cart.setChangeGiven(parsedValue);
+    _changeGiven = parsed;
+    cart.setChangeGiven(parsed);
   }
 
-  /// Completes the payment.
+  /// Finalises the sale by calling [PointOfSaleController.completeSimpleSale].
+  ///
+  /// Returns `true` on success. Resets local state on success.
   Future<bool> completePayment(BuildContext context) async {
     if (!canComplete) return false;
 
@@ -250,26 +250,22 @@ class PaymentStateManager extends ChangeNotifier {
       context,
       listen: false,
     );
-
     final isOverpayment = _amountToBePaidBack > 0;
-
     final success = await controller.completeSimpleSale(
       context,
       isOverpayment: isOverpayment,
     );
 
-    if (success) {
-      reset();
-    }
+    if (success) reset();
 
     return success;
   }
 
-  /// Resets the payment state.
+  /// Resets all payment state (called after a successful sale).
   void reset() {
     cart.payments.clear();
     _amountReceived = 0.0;
-    _remainingAmount = 0;
+    _remainingAmount = 0.0;
     _amountToBePaidBack = 0.0;
     _changeGiven = 0.0;
     _changeAmountExceedsMaximum = false;

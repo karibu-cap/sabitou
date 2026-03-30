@@ -404,4 +404,3 @@ class _PulsingDot extends StatelessWidget {
     );
   }
 }
-

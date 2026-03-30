@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
@@ -11,6 +10,7 @@ import 'bill_detail_view_model.dart';
 
 /// Controller for bill detail screen.
 class BillDetailController extends ChangeNotifier {
+  /// The [BillDetailViewModel].
   final BillDetailViewModel viewModel;
 
   /// Persists the selected tab across rebuilds.
@@ -24,26 +24,20 @@ class BillDetailController extends ChangeNotifier {
   bool _isLoading = false;
   String _errorMessage = '';
 
+  /// Whether the action is loading.
   bool get isLoading => _isLoading;
-  String get errorMessage => _errorMessage;
 
-  /// Gets the bill item stream.
-  BehaviorSubject<Bill?> get billItemStream => viewModel.billItemStream;
+  /// The error message.
+  String get errorMessage => _errorMessage;
 
   /// Gets the error stream.
   Stream<String> get errorStream => viewModel.errorStream;
 
-  /// Gets the completer.
-  Completer<bool> get completer => viewModel.completer;
-
   /// Constructor of [BillDetailController].
   BillDetailController({required this.viewModel, required this.intl});
 
-  /// Refreshes the product data.
-  Future<void> refresh() async {
-    await viewModel.refresh();
-    notifyListeners();
-  }
+  /// Reactive stream combining the bill and its payments list.
+  Stream<BillDetailSnapshot> get detailStream => viewModel.detailStream;
 
   @override
   void dispose() {
@@ -59,24 +53,19 @@ class BillDetailController extends ChangeNotifier {
   /// Deletes a bill.
   Future<bool> deleteBill(String billId) async {
     _setLoading(true);
+
+    // Check if bill has payments before attempting deletion
+    final bill = await _repo.getBill(billId);
+    if (bill != null && bill.paymentIds.isNotEmpty) {
+      _errorMessage = intl.billWithPaymentsCannotBeDeleted;
+      _setLoading(false);
+
+      return false;
+    }
+
     final ok = await _repo.deleteBill(billId);
     if (!ok) {
       _errorMessage = intl.impossibleToDeleteBill;
-    }
-    _setLoading(false);
-
-    return ok;
-  }
-
-  /// Marks a bill as fully paid.
-  Future<bool> markBillAsPaid({
-    required Bill bill,
-    required String paymentId,
-  }) async {
-    _setLoading(true);
-    final ok = await Future.value(true);
-    if (!ok) {
-      _errorMessage = intl.impossibleToMarkAsPaid;
     }
     _setLoading(false);
 

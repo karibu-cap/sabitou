@@ -235,7 +235,7 @@ class _ProductNameField extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = context.read<CreateEditProductFormController>();
 
-    return CustomAutoComplete<GlobalProduct>(
+    return AutoComplete<GlobalProduct>(
       label: Text('${Intls.to.productName}'),
       enabled: !controller.onSaveProduct,
       initialValue: controller.nameController.text,
@@ -250,27 +250,9 @@ class _ProductNameField extends StatelessWidget {
 
         return result;
       },
-      optionsViewBuilder:
-          ({required context, required onSelected, required options}) {
-            return ListView.builder(
-              itemCount: options.length,
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                final option = options.elementAt(index);
-
-                return ListTile(
-                  title: Text(option.label),
-                  onTap: () => {
-                    onSelected(option),
-                    controller.setNewProduct(option),
-                  },
-                );
-              },
-            );
-          },
       displayStringForOption: (option) => option.label,
-      inputValidator: (value) {
-        if (value.isEmpty) {
+      validator: (value) {
+        if (value == null) {
           return Intls.to.isRequiredField.trParams({
             'field': Intls.to.productName,
           });

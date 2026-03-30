@@ -96,6 +96,14 @@ abstract class BillStatusUtils {
         icon: LucideIcons.ban,
         topBarColor: SabitouColors.neutral,
       ),
+      BillStatus.BILL_STATUS_PARTIALLY_PAID => BillStatusStyle(
+        label: Intls.to.partiallyPaid,
+        bg: SabitouColors.infoSoft,
+        fg: SabitouColors.infoText,
+        dot: SabitouColors.infoText,
+        icon: LucideIcons.circleArrowOutUpRight400,
+        topBarColor: SabitouColors.neutral,
+      ),
       _ => BillStatusStyle(
         label: Intls.to.unknown,
         bg: SabitouColors.neutralSoft,

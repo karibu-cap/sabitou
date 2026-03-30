@@ -45,7 +45,7 @@ final class ReceivingNoteRepository extends BaseRepository<ReceivingNote> {
     String? purchaseOrderId,
   }) async {
     try {
-      final result =  await findWhere([
+      final result = await findWhere([
         SqlQuery.equals(ReceivingNotesFields.storeId, storeId),
         if (purchaseOrderId != null)
           SqlQuery.equals(
@@ -58,19 +58,15 @@ final class ReceivingNoteRepository extends BaseRepository<ReceivingNote> {
         final result = await findItemsByReceiveNoteId(item.refId, item.storeId);
         item.items.clear();
         item.items.addAll(result);
-        
       }
 
       return result;
-
     } on Exception catch (e) {
       _logger.severe('listReceivingNotes Error: $e');
 
       return [];
     }
   }
-
-  /// Create a receive note.
 
   /// Gets a single receiving note by [refId].
   Future<ReceivingNote?> getReceivingNote(String refId) async {
@@ -91,29 +87,32 @@ final class ReceivingNoteRepository extends BaseRepository<ReceivingNote> {
   Stream<ReceivingNote?> watchReceivingNote(String refId) {
     try {
       // Watch both the receiving note and its items, then combine them
-      final noteStream = dataSource.watchDocument(
-        CollectionName.receivingNotes,
-        refId,
-        primaryKey: ReceivingNotesFields.refId,
-      ).map((row) => row != null ? fromRow(row) : null);
-      
+      final noteStream = dataSource
+          .watchDocument(
+            CollectionName.receivingNotes,
+            refId,
+            primaryKey: ReceivingNotesFields.refId,
+          )
+          .map((row) => row != null ? fromRow(row) : null);
+
       final itemsStream = dataSource.watchCollection(
         CollectionName.receivingNoteLineItems,
-        filters: [SqlQuery.equals(ReceivingNoteLineItemsFields.receivingNoteId, refId)],
+        filters: [
+          SqlQuery.equals(ReceivingNoteLineItemsFields.receivingNoteId, refId),
+        ],
       );
-      
-      return Rx.combineLatest2(
-        noteStream,
-        itemsStream,
-        (note, itemsRows) async {
-          if (note == null) return null;
-          final items = itemsRows.map(fromRowToReceivingNoteLineItem).toList();
-          note.items.clear();
-          note.items.addAll(items);
 
-          return note;
-        },
-      ).asyncMap((future) => future);
+      return Rx.combineLatest2(noteStream, itemsStream, (
+        note,
+        itemsRows,
+      ) async {
+        if (note == null) return null;
+        final items = itemsRows.map(fromRowToReceivingNoteLineItem).toList();
+        note.items.clear();
+        note.items.addAll(items);
+
+        return note;
+      }).asyncMap((future) => future);
     } on Exception catch (e) {
       _logger.severe('watchReceivingNote Error: $e');
 
@@ -150,11 +149,13 @@ final class ReceivingNoteRepository extends BaseRepository<ReceivingNote> {
     required String storeId,
     String? purchaseOrderId,
   }) {
-
-     final result = watchWhere([
+    final result = watchWhere([
       SqlQuery.equals(ReceivingNotesFields.storeId, storeId),
       if (purchaseOrderId != null)
-        SqlQuery.equals(ReceivingNotesFields.relatedPurchaseOrderId, purchaseOrderId),
+        SqlQuery.equals(
+          ReceivingNotesFields.relatedPurchaseOrderId,
+          purchaseOrderId,
+        ),
     ]);
 
     return result.asyncMap((po) async {
@@ -162,14 +163,11 @@ final class ReceivingNoteRepository extends BaseRepository<ReceivingNote> {
         final result = await findItemsByReceiveNoteId(item.refId, item.storeId);
         item.items.clear();
         item.items.addAll(result);
-        
       }
 
       return po;
     });
-
   }
-
 
   /// Returns all line items for the given receive note order.
   Future<List<ReceivingNoteLineItem>> findItemsByReceiveNoteId(
@@ -180,7 +178,10 @@ final class ReceivingNoteRepository extends BaseRepository<ReceivingNote> {
       final result = await dataSource.getCollection(
         CollectionName.receivingNoteLineItems,
         filters: [
-          SqlQuery.equals(ReceivingNoteLineItemsFields.receivingNoteId, receivingNoteId),
+          SqlQuery.equals(
+            ReceivingNoteLineItemsFields.receivingNoteId,
+            receivingNoteId,
+          ),
           SqlQuery.equals(BillLineItemsFields.storeId, storeId),
         ],
       );

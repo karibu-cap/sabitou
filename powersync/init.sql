@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS users (
     -- Callers may override with a human-readable value (e.g. "USR-001").
     ref_id TEXT UNIQUE NOT NULL DEFAULT gen_random_uuid ()::text,
     user_name TEXT NOT NULL,
-    email TEXT,
+    email TEXT UNIQUE,
     password_hash TEXT NOT NULL,
     first_name TEXT,
     last_name TEXT,
@@ -225,7 +225,7 @@ CREATE TABLE IF NOT EXISTS payments (
     id TEXT PRIMARY KEY DEFAULT gen_random_uuid ()::text,
     ref_id TEXT UNIQUE NOT NULL DEFAULT gen_random_uuid ()::text,
     payer_id TEXT,
-    receiver TEXT,
+    receiver_ref TEXT,
     amount NUMERIC NOT NULL,
     currency TEXT,
     warehouse_id TEXT,
@@ -234,7 +234,8 @@ CREATE TABLE IF NOT EXISTS payments (
     payment_date TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     reference_number TEXT,
     created_by_user_id TEXT,
-    notes TEXT
+    notes TEXT,
+    related_docs JSONB DEFAULT '[]'::jsonb
 );
 
 -- Gift Vouchers
@@ -275,7 +276,6 @@ CREATE TABLE IF NOT EXISTS cash_receipts (
     cashier_user_id TEXT,
     customer_id TEXT,
     store_id TEXT,
-    items TEXT,
     subtotal NUMERIC,
     tax_amount NUMERIC,
     total_amount NUMERIC,
@@ -286,7 +286,22 @@ CREATE TABLE IF NOT EXISTS cash_receipts (
     transaction_time TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     notes TEXT,
     voucher_issued_code TEXT,
-    owed_to_customer NUMERIC
+    owed_to_customer NUMERIC,
+    status TEXT NOT NULL DEFAULT 'CASH_RECEIPT_STATUS_COMPLETED'
+);
+
+CREATE TABLE IF NOT EXISTS cash_receipt_items (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid (),
+    receipt_id VARCHAR(50) REFERENCES cash_receipts (ref_id) ON DELETE CASCADE,
+    store_id TEXT NOT NULL,
+    product_id TEXT NOT NULL,
+    quantity INTEGER NOT NULL,
+    unit_price NUMERIC(12, 2) NOT NULL,
+    subtotal NUMERIC(12, 2) NOT NULL,
+    tax_rate NUMERIC(5, 4) DEFAULT 0,
+    tax_amount NUMERIC(12, 2) DEFAULT 0,
+    total NUMERIC(14, 2) NOT NULL,
+    batch_id TEXT
 );
 
 -- Purchase Orders
@@ -547,6 +562,7 @@ users,
       sales_orders,
       invoices,
       bills,
+      cash_receipt_items,
       sales_order_line_items,
       purchase_order_line_items,
       invoice_line_items,
@@ -768,35 +784,40 @@ INSERT INTO
         store_id,
         quantity_available,
         quantity_committed,
+        quantity_on_hand,
         min_threshold
     )
 VALUES (
         'SP-YDE-001',
         'STR-001',
-        185,
-        30,
-        50
+        50,
+        0,
+        50,
+        0
     ),
     (
         'SP-YDE-002',
         'STR-001',
-        132,
-        48,
-        40
+        40,
+        0,
+        40,
+        0
     ),
     (
         'SP-DLA-001',
         'STR-002',
-        520,
+        80,
         0,
-        80
+        80,
+        0
     ),
     (
         'SP-DLA-002',
         'STR-002',
-        355,
-        60,
-        50
+        10,
+        0,
+        10,
+        0
     )
 ON CONFLICT (store_product_id, store_id) DO NOTHING;
 
@@ -1036,34 +1057,6 @@ VALUES (
     );
 
 INSERT INTO
-    payments (
-        ref_id,
-        payer_id,
-        receiver,
-        amount,
-        currency,
-        warehouse_id,
-        payment_method,
-        status,
-        reference_number,
-        created_by_user_id,
-        notes
-    )
-VALUES (
-        'PAY-2025-001',
-        'USR-001',
-        'BIZ-001',
-        10000,
-        'XAF',
-        NULL,
-        'PAYMENT_METHOD_CASH',
-        'PAYMENT_STATUS_COMPLETED',
-        'REF-001',
-        'USR-001',
-        'Test payment'
-    );
-
-INSERT INTO
     gift_vouchers (
         ref_id,
         voucher_code,
@@ -1158,219 +1151,5 @@ VALUES (
         1,
         9000,
         9000
-    )
-ON CONFLICT DO NOTHING;
-
--- Purchase Orders + lines
-INSERT INTO
-    purchase_orders (
-        ref_id,
-        supplier_id,
-        store_id,
-        status,
-        total_amount,
-        created_by_user_id
-    )
-VALUES (
-        'PO-202503-015',
-        'SUP-001',
-        'STR-001',
-        'PO_STATUS_RECEIVED',
-        5712000,
-        'USR-001'
-    )
-ON CONFLICT DO NOTHING;
-
-INSERT INTO
-    purchase_order_line_items (
-        purchase_order_id,
-        store_id,
-        product_id,
-        quantity_ordered,
-        unit_price,
-        total,
-        product_name
-    )
-VALUES (
-        'PO-202503-015',
-        'STR-001',
-        'SP-YDE-001',
-        200,
-        23800,
-        4760000,
-        '{"en":"Riz Uncle Ben''s 25kg","fr":"Riz Uncle Ben''s 25 kg"}'::jsonb
-    ),
-    (
-        'PO-202503-015',
-        'STR-001',
-        'SP-YDE-002',
-        80,
-        10500,
-        840000,
-        '{"en":"Huile de palme 5L","fr":"Huile de palme 5 litres"}'::jsonb
-    )
-ON CONFLICT DO NOTHING;
-
--- Invoices + lines
-INSERT INTO
-    invoices (
-        ref_id,
-        invoice_type,
-        issuer_id,
-        recipient_id,
-        status,
-        subtotal,
-        tax_amount,
-        total_amount,
-        created_by_user_id
-    )
-VALUES (
-        'INV-202503-042',
-        'INVOICE_TYPE_SALES',
-        'STR-001',
-        'CLI-987654',
-        'INVOICE_STATUS_PAID',
-        65000,
-        12497.5,
-        77497.5,
-        'USR-002'
-    )
-ON CONFLICT DO NOTHING;
-
-INSERT INTO
-    invoice_line_items (
-        invoice_id,
-        store_id,
-        product_id,
-        quantity,
-        unit_price,
-        subtotal,
-        tax_rate,
-        tax_amount,
-        total
-    )
-VALUES (
-        'INV-202503-042',
-        'STR-001',
-        'SP-YDE-001',
-        2,
-        28500,
-        57000,
-        0.1925,
-        10972.5,
-        67972.5
-    ),
-    (
-        'INV-202503-042',
-        'STR-001',
-        'SP-YDE-002',
-        1,
-        8000,
-        8000,
-        0.1925,
-        1540,
-        9540
-    )
-ON CONFLICT DO NOTHING;
-
--- Bills + lines
-INSERT INTO
-    bills (
-        ref_id,
-        related_purchase_order_id,
-        supplier_id,
-        store_id,
-        status,
-        bill_date,
-        due_date,
-        sub_total,
-        tax_total,
-        total_amount,
-        balance_due,
-        currency,
-        notes
-    )
-VALUES (
-        'BILL-2026-001',
-        'PO-202503-015',
-        'SUP-001',
-        'STR-001',
-        'BILL_STATUS_OPEN',
-        '2026-03-20',
-        '2026-04-20',
-        5600000,
-        1078000,
-        6678000,
-        6678000,
-        'XAF',
-        'Bill for rice and oil supplies from Cerealis Cameroun'
-    ),
-    (
-        'BILL-2026-002',
-        NULL,
-        'SUP-002',
-        'STR-002',
-        'BILL_STATUS_PAID',
-        '2026-03-15',
-        '2026-04-15',
-        850000,
-        163625,
-        1013625,
-        0,
-        'XAF',
-        'Payment completed for palm oil supplies'
-    )
-ON CONFLICT DO NOTHING;
-
-INSERT INTO
-    bill_line_items (
-        bill_id,
-        store_id,
-        product_id,
-        description,
-        quantity,
-        unit_price,
-        tax_amount,
-        total
-    )
-VALUES (
-        'BILL-2026-001',
-        'STR-001',
-        'SP-YDE-001',
-        'Riz Uncle Ben''s 25kg',
-        200,
-        23800,
-        916800,
-        4760000
-    ),
-    (
-        'BILL-2026-001',
-        'STR-001',
-        'SP-YDE-002',
-        'Huile de palme 5L',
-        80,
-        10500,
-        161200,
-        840000
-    ),
-    (
-        'BILL-2026-002',
-        'STR-002',
-        'SP-DLA-001',
-        'Sucre en poudre 1kg',
-        500,
-        1500,
-        143750,
-        750000
-    ),
-    (
-        'BILL-2026-002',
-        'STR-002',
-        'SP-DLA-002',
-        'Tomate concentrée 800g',
-        100,
-        1000,
-        19875,
-        100000
     )
 ON CONFLICT DO NOTHING;

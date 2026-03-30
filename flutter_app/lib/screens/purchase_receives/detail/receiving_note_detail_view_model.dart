@@ -25,10 +25,8 @@ class ReceivingNoteDetailViewModel {
       _repo.watchReceivingNote(receivingNoteId);
 
   /// Merges all reactive streams into one snapshot used by the detail screen.
-  Stream<ReceivingNoteDetailSnapshot> get detailStream =>
-      receivingNoteStream.map(
-        (note) => ReceivingNoteDetailSnapshot(note: note),
-      );
+  Stream<ReceivingNoteDetailSnapshot> get detailStream => receivingNoteStream
+      .map((note) => ReceivingNoteDetailSnapshot(note: note));
 }
 
 /// Snapshot of a receiving note.

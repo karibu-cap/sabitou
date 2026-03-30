@@ -4,6 +4,7 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../../services/internationalization/internationalization.dart';
+import '../../../loading.dart';
 import '../add_supplier_controller.dart';
 
 /// Action buttons widget for supplier form.
@@ -41,16 +42,7 @@ class SupplierActionButtons extends StatelessWidget {
           onPressed: controller.isFormLoading ? null : onSave,
 
           child: controller.isFormLoading
-              ? SizedBox(
-                  width: 16,
-                  height: 16,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      theme.colorScheme.secondary,
-                    ),
-                  ),
-                )
+              ? const Loading.button()
               : Text(
                   supplier == null ? intl.addNewSupplier : intl.updateSupplier,
                 ),

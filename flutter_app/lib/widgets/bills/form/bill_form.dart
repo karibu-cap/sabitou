@@ -59,7 +59,7 @@ Future<bool?> showBillForm(
 
   return showShadDialog<bool>(
     context: context,
-    builder: (_) => BillFormDialog(
+    builder: (context) => BillFormDialog(
       storeId: storeId,
       productsStream: productsStream,
       purchaseOrder: purchaseOrder,

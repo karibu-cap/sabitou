@@ -8,6 +8,7 @@ import '../../../themes/app_colors.dart';
 import '../../../utils/common_functions.dart';
 import '../../../utils/form/validation.dart';
 import '../../input/form_fields.dart';
+import '../../loading.dart';
 import 'add_category_controller.dart';
 import 'add_category_view_model.dart';
 
@@ -261,16 +262,7 @@ class _CategoryFormDialogContent extends StatelessWidget {
                         onPressed: () => _saveCategory(context, controller),
                         enabled: controller.canSubmit,
                         trailing: controller.isLoading
-                            ? SizedBox(
-                                width: 16,
-                                height: 16,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                    theme.colorScheme.secondary,
-                                  ),
-                                ),
-                              )
+                            ? const Loading.button()
                             : null,
                         child: Text(
                           category == null

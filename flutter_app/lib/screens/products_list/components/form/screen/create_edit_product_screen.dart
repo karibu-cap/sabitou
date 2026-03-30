@@ -11,11 +11,11 @@ import '../../../../../../services/internationalization/internationalization.dar
 import '../../../../../../utils/extensions/category_extension.dart';
 import '../../../../../../utils/extensions/global_product_extension.dart';
 import '../../../../../../widgets/adjust_flex_display.dart';
-import '../../../../../../widgets/input/auto_complete.dart';
 import '../../../../../../widgets/loading.dart';
 import '../../../../../../widgets/mobile_scanner_view.dart';
 import '../../../../../../widgets/shad_scaffold.dart';
 import '../../../../../utils/user_preference.dart';
+import '../../../../../widgets/input/auto_complete.dart';
 import '../../../products_list_controller.dart';
 import '../../../products_list_view_model.dart';
 import '../create_edit_product_form_controller.dart';
@@ -335,7 +335,7 @@ class _ProductNameField extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = context.read<CreateEditProductFormController>();
 
-    return CustomAutoComplete<GlobalProduct>(
+    return AutoComplete<GlobalProduct>(
       label: Text('${Intls.to.productName}'),
       enabled: !controller.onSaveProduct,
       initialValue: controller.nameController.text,
@@ -350,27 +350,10 @@ class _ProductNameField extends StatelessWidget {
 
         return result;
       },
-      optionsViewBuilder:
-          ({required context, required onSelected, required options}) {
-            return ListView.builder(
-              itemCount: options.length,
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                final option = options.elementAt(index);
 
-                return ListTile(
-                  title: Text(option.label),
-                  onTap: () => {
-                    onSelected(option),
-                    controller.setNewProduct(option),
-                  },
-                );
-              },
-            );
-          },
       displayStringForOption: (option) => option.label,
-      inputValidator: (value) {
-        if (value.isEmpty) {
+      validator: (value) {
+        if (value == null) {
           return Intls.to.isRequiredField.trParams({
             'field': Intls.to.productName,
           });

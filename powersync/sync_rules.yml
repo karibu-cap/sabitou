@@ -162,8 +162,23 @@ bucket_definitions:
         WHERE store_id = bucket.store_id
 
       - >
-        SELECT id, payer_id, receiver, amount, currency, warehouse_id, payment_method,
-               status, payment_date, reference_number, created_by_user_id, notes
+        SELECT id, ref_id, cashier_user_id, customer_id, store_id, subtotal,
+               tax_amount, total_amount, amount_paid, change_given, currency,
+               payment_ids, transaction_time, notes, voucher_issued_code,
+               owed_to_customer, status
+        FROM cash_receipts
+        WHERE store_id = bucket.store_id
+
+      - >
+        SELECT id, receipt_id, store_id, product_id, quantity, unit_price, subtotal,
+               tax_rate, tax_amount, total, batch_id
+        FROM cash_receipt_items
+        WHERE store_id = bucket.store_id
+
+      - >
+        SELECT id, ref_id, payer_id, receiver_ref, amount, currency, warehouse_id, payment_method,
+               status, payment_date, reference_number, created_by_user_id, notes,
+               related_docs
         FROM payments
         WHERE warehouse_id = bucket.store_id
 

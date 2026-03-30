@@ -51,7 +51,7 @@ final class ReportsRepository {
       // 2. Units sold
       final unitsSoldRaw = await dataSource.executeRaw(
         "SELECT SUM(json_extract(item.value, '\$.quantity')) as total_units "
-        'FROM ${CollectionName.cashReceipts} cr, json_each(cr.${CashReceiptsFields.items}) item '
+        'FROM ${CollectionName.cashReceipts} cr, json_each(cr.${'CashReceiptsFields'}) item '
         'WHERE cr.${CashReceiptsFields.storeId} = ? '
         'AND cr.${CashReceiptsFields.transactionTime} BETWEEN ? AND ?',
         [storeId, startStr, endStr],
@@ -165,7 +165,7 @@ final class ReportsRepository {
         "SUM(json_extract(item.value, '\$.quantity')) as units, "
         "SUM(json_extract(item.value, '\$.total')) as revenue, "
         'COUNT(DISTINCT cr.ref_id) as tx_count '
-        'FROM ${CollectionName.cashReceipts} cr, json_each(cr.${CashReceiptsFields.items}) item '
+        'FROM ${CollectionName.cashReceipts} cr, json_each(cr.${'CashReceiptsFields.items'}) item '
         "JOIN ${CollectionName.storeProducts} sp ON json_extract(item.value, '\$.productId') = sp.${StoreProductsFields.refId} "
         'JOIN ${CollectionName.globalProducts} gp ON sp.${StoreProductsFields.globalProductId} = gp.${GlobalProductsFields.refId} '
         'WHERE cr.${CashReceiptsFields.storeId} = ? '

@@ -32,7 +32,7 @@ class UserErrorWidget extends StatelessWidget {
           // Error title
           Text(
             AppInternationalizationService.to.somethingWentWrong,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w600,
               color: Colors.red,
@@ -57,8 +57,8 @@ class UserErrorWidget extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(LucideIcons.refreshCw, size: 16),
-                SizedBox(width: 8),
+                const Icon(LucideIcons.refreshCw, size: 16),
+                const SizedBox(width: 8),
                 Text(AppInternationalizationService.to.tryAgain),
               ],
             ),
