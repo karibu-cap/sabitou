@@ -12,6 +12,9 @@ final class CashRecipeController extends ChangeNotifier {
   CashRecipeController({required CashRecipeViewModel viewModel})
     : _viewModel = viewModel;
 
+  /// The current store.
+  Store get store => _viewModel.store;
+
   /// Get the view model
   CashRecipeViewModel get viewModel => _viewModel;
 

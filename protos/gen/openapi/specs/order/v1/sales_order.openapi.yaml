@@ -829,9 +829,9 @@ components:
     order.v1.CreateSalesOrderRequest:
       type: object
       properties:
-        customerId:
+        customer:
           type: string
-          title: customer_id
+          title: customer
         sellerId:
           type: string
           title: seller_id
@@ -915,9 +915,9 @@ components:
     order.v1.ListSalesOrdersRequest:
       type: object
       properties:
-        customerId:
+        customer:
           type: string
-          title: customer_id
+          title: customer
           description: Filter by customer
         status:
           title: status
@@ -1012,9 +1012,9 @@ components:
           type: string
           title: ref_id
           description: '"SO-2025-001"'
-        customerId:
+        customer:
           type: string
-          title: customer_id
+          title: customer
           description: Company buying from you
         sellerId:
           type: string
@@ -1068,7 +1068,7 @@ components:
 
          Example:
            so_id: "SO-2025-001"
-           customer_id: "CMP-003"
+           customer: "CMP-003"
            seller_id: "CMP-001" (your company)
            status: SO_STATUS_CONFIRMED
            items: [10x PRD-001 @ 450000 each]

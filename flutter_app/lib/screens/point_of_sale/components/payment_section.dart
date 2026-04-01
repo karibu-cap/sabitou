@@ -8,9 +8,11 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../services/internationalization/internationalization.dart';
 import '../../../themes/app_theme.dart';
+import '../../../utils/button_state.dart';
 import '../../../utils/extensions/invoice.dart';
 import '../../../utils/formatters.dart';
 import '../../../widgets/loading.dart';
+import '../point_of_sale_controller.dart';
 import '../utils/cart_provider.dart';
 import '../utils/payment_controller.dart';
 import 'pos_confirmation_dialog.dart';
@@ -26,8 +28,15 @@ class PaymentSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Provider.of<PointOfSaleController>(context);
+    final cart = context.read<CartProvider>();
+
     return ChangeNotifierProvider(
-      create: (_) => PaymentStateManager(),
+      create: (_) => PaymentStateManager(
+        store: controller.store,
+        user: controller.user,
+        cart: cart,
+      ),
       child: const _PaymentContent(),
     );
   }
@@ -145,15 +154,11 @@ class _CompleteOrderButton extends StatelessWidget {
 
   const _CompleteOrderButton({required this.state});
 
-  bool get _canComplete =>
-      CartProvider.instance.getCartItems().isNotEmpty &&
-      state.cart.payments.isNotEmpty &&
-      state.remainingAmount <= 0 &&
-      state.changeGiven <= state.amountToBePaidBack;
-
   Future<void> _openConfirmation(BuildContext context) async {
-    final receipt = CartProvider.instance.currentCashReceipt;
-    if (receipt == null) return;
+    final receipt = context.read<CartProvider>().currentCashReceipt;
+    if (receipt == null) {
+      return;
+    }
 
     final confirmed = await showShadDialog<bool>(
       context: context,
@@ -172,7 +177,6 @@ class _CompleteOrderButton extends StatelessWidget {
         ),
       ),
     );
-
     if (confirmed == true && context.mounted) {
       await state.completePayment(context);
     }
@@ -180,15 +184,28 @@ class _CompleteOrderButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool _canComplete =
+        context.read<CartProvider>().getCartItems().isNotEmpty &&
+        state.cart.payments.isNotEmpty &&
+        state.remainingAmount <= 0 &&
+        state.changeGiven <= state.amountToBePaidBack;
     final theme = ShadTheme.of(context);
-    final receipt = CartProvider.instance.currentCashReceipt;
+    final receipt = context.read<CartProvider>().currentCashReceipt;
     final total = receipt?.totalAmount ?? 0.0;
+    final completeOrderButtonState = context
+        .select<PointOfSaleController, ButtonState>(
+          (controller) => controller.completeOrderButtonState,
+        );
 
     return SizedBox(
       width: double.infinity,
       child: ShadButton(
-        enabled: _canComplete,
+        enabled:
+            _canComplete && completeOrderButtonState == ButtonState.initial,
         onPressed: _canComplete ? () => _openConfirmation(context) : null,
+        trailing: completeOrderButtonState == ButtonState.loading
+            ? const Loading.button()
+            : null,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -372,6 +389,16 @@ class _PaymentContent extends StatelessWidget {
               ],
 
               _PaymentStatusBanner(state: state),
+              if ((state.cart.currentCashReceipt?.owedToCustomer ?? 0) > 0) ...[
+                const SizedBox(height: 10),
+                _Banner(
+                  icon: LucideIcons.circleAlert400,
+                  label: Intls.to.voucher,
+                  amount: state.cart.currentCashReceipt?.owedToCustomer,
+                  bgColor: SabitouColors.warningSoft,
+                  textColor: SabitouColors.warningForeground,
+                ),
+              ],
 
               if (state.amountToBePaidBack > 0) ...[
                 const SizedBox(height: 10),

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:pdf/pdf.dart';
+import 'package:provider/provider.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../../repositories/gift_voucher_repository.dart';
@@ -12,7 +13,6 @@ import '../../utils/common_functions.dart';
 import '../../utils/logger.dart';
 import '../../utils/pos_exceptions.dart';
 import '../../utils/printer_management.dart';
-import '../../utils/user_preference.dart';
 import '../../widgets/pdf/printers/app_printer_utils.dart';
 import '../../widgets/pdf/template/pos_widget.dart';
 import 'point_of_sale_view_model.dart';
@@ -40,6 +40,12 @@ class PointOfSaleController extends ChangeNotifier {
 
   /// Subscription to the [_thermalPrinter]'s devices stream, used to update [printers].
   StreamSubscription<List<Printer>>? _devicesStreamSubscription;
+
+  /// The current store.
+  Store get store => _viewModel.store;
+
+  /// The current user.
+  User get user => _viewModel.user;
 
   /// The most recent error result, or `null` when no error is active.
   PosOperationResult? get currentError => _currentError;
@@ -93,32 +99,19 @@ class PointOfSaleController extends ChangeNotifier {
     _showLoadingState();
 
     try {
-      final store = UserPreferences.instance.store;
-      final user = UserPreferences.instance.user;
+      // final printer = await _getPrinter();
+      // if (printer != null) {
+      //   if (context.mounted) {
+      //     showErrorToast(
+      //       context: context,
+      //       message: Intls.to.noPrinterConnected,
+      //     );
+      //   }
 
-      if (store == null || user == null) {
-        return _fail(
-          context,
-          PosOperationResult.failure(
-            Intls.to.storeNotConfigured,
-            PosErrorType.validation,
-          ),
-        );
-      }
+      //   return false;
+      // }
 
-      final printer = await _getPrinter();
-      if (printer == null) {
-        if (context.mounted) {
-          showErrorToast(
-            context: context,
-            message: Intls.to.noPrinterConnected,
-          );
-        }
-
-        return false;
-      }
-
-      final cartProvider = CartProvider.instance;
+      final cartProvider = context.read<CartProvider>();
       final receipt = cartProvider.currentCashReceipt;
 
       if (receipt == null || receipt.items.isEmpty) {
@@ -152,18 +145,18 @@ class PointOfSaleController extends ChangeNotifier {
         issueVoucherOnChange: isOverpayment,
       );
 
-      final printed = await _printReceipt(
-        result.receipt,
-        store,
-        printer,
-        context,
-      );
+      // final printed = await _printReceipt(
+      //   result.receipt,
+      //   store,
+      //   printer,
+      //   context,
+      // );
 
-      if (!printed) {
-        if (context.mounted) {
-          showErrorToast(context: context, message: Intls.to.printFailed);
-        }
-      }
+      // if (!printed) {
+      //   if (context.mounted) {
+      //     showErrorToast(context: context, message: Intls.to.printFailed);
+      //   }
+      // }
 
       _setSuccessState(
         PosOperationResult.success(Intls.to.saleCompletedSuccessfully),
@@ -176,10 +169,10 @@ class PointOfSaleController extends ChangeNotifier {
       }
 
       // Remove completed receipt from drafts and reset cart.
-      await cartProvider.removeCurrentCashReceipt(cashReceipt: result.receipt);
       cartProvider.clearCart();
 
       _log.info('Sale completed: ${result.receipt.refId}');
+
       return true;
     } on IncompletePaymentException catch (e) {
       return _fail(

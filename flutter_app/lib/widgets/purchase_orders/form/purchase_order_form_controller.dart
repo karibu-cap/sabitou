@@ -96,9 +96,13 @@ class PurchaseOrderFormController extends ChangeNotifier {
   }
 
   /// Fetch a list of suppliers via the name query.
-  Future<List<Supplier>> searchSuppliers({required String name}) async {
+  Future<List<Supplier>> searchSuppliers(String query) async {
+    if (query.isEmpty) {
+      return SuppliersRepository.instance.getSuppliersByStore(storeId);
+    }
+
     return SuppliersRepository.instance.searchSuppliers(
-      query: name,
+      query: query,
       storeId: storeId,
     );
   }

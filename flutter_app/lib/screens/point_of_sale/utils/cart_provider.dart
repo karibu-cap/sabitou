@@ -2,14 +2,13 @@ import 'dart:async';
 
 import 'package:clock/clock.dart';
 import 'package:flutter/foundation.dart';
-import 'package:get_it/get_it.dart';
 import 'package:sabitou_rpc/models.dart';
-import 'package:uuid/uuid.dart';
 
 import '../../../repositories/pos_repository.dart';
 import '../../../utils/extensions/global_product_extension.dart';
 import '../../../utils/logger.dart';
 import '../../../utils/pos_exceptions.dart';
+import '../../../utils/utils.dart';
 import 'inventory_cache.dart';
 
 /// Cart state manager for the POS system.
@@ -25,7 +24,6 @@ import 'inventory_cache.dart';
 /// ### Important: call [InventoryCache.warmUp] before using this class
 /// The POS screen is responsible for warming up the cache at startup.
 class CartProvider extends ChangeNotifier {
-  final Uuid _uuid = const Uuid();
   final LoggerApp _log = LoggerApp('CartProvider');
 
   /// The active store for this POS session.
@@ -40,9 +38,6 @@ class CartProvider extends ChangeNotifier {
   /// Saved DRAFT receipts (hold orders) loaded from SQLite at startup.
   final List<CashReceipt> saveCashReceipts = [];
 
-  /// GetIt singleton accessor.
-  static CartProvider get instance => GetIt.I<CartProvider>();
-
   /// The receipt currently being built by the cashier.
   CashReceipt? get currentCashReceipt => _currentCashReceipt;
 
@@ -52,9 +47,12 @@ class CartProvider extends ChangeNotifier {
   /// True when the receipt is ready to be completed.
   bool get canComplete {
     final r = _currentCashReceipt;
-    if (r == null || r.items.isEmpty) return false;
 
-    return (r.totalAmount - r.amountPaid) <= 0 && r.owedToCustomer <= 0;
+    if (r == null || r.items.isEmpty) {
+      return false;
+    }
+
+    return (r.totalAmount - r.amountPaid) <= 0 && r.owedToCustomer >= 0;
   }
 
   /// Creates a [CartProvider] and starts loading hold orders in the background.
@@ -108,6 +106,7 @@ class CartProvider extends ChangeNotifier {
 
     _recalculate();
     notifyListeners();
+
     return true;
   }
 
@@ -167,6 +166,7 @@ class CartProvider extends ChangeNotifier {
 
     _recalculate();
     notifyListeners();
+
     return true;
   }
 
@@ -235,6 +235,8 @@ class CartProvider extends ChangeNotifier {
           .catchError((Object e) => _log.severe('saveDraftReceipt failed: $e')),
     );
 
+    clearCart();
+
     return true;
   }
 
@@ -286,7 +288,7 @@ class CartProvider extends ChangeNotifier {
       _currentCashReceipt?.items ?? const [];
 
   CashReceipt _freshReceipt({String? storeId}) => CashReceipt(
-    refId: _uuid.v4(),
+    refId: AppUtils.generateSmartDatabaseId('CR'),
     storeId: storeId ?? store.refId,
     cashierUserId: user.refId,
     items: [],
@@ -303,8 +305,9 @@ class CartProvider extends ChangeNotifier {
     final total = r.items.fold(0.0, (s, i) => s + i.total);
     final paid = _payments.fold(0.0, (s, p) => s + p.amount.toDouble());
 
-    r.totalAmount = total;
-    r.amountPaid = paid;
+    r
+      ..totalAmount = total
+      ..amountPaid = paid;
 
     final overpay = paid - total;
     final owed = overpay > 0 ? overpay : 0.0;

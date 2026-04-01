@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
+import 'package:provider/provider.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../services/internationalization/internationalization.dart';
@@ -19,7 +19,7 @@ class CartFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cart = GetIt.I.get<CartProvider>();
+    final cart = context.read<CartProvider>();
 
     return ListenableBuilder(
       listenable: cart,
@@ -81,7 +81,6 @@ class _TotalRow extends StatelessWidget {
     required this.label,
     required this.amount,
     this.isGrandTotal = false,
-    this.valueColor,
   });
 
   final String label;
@@ -89,9 +88,6 @@ class _TotalRow extends StatelessWidget {
 
   /// When `true`, renders the row with larger, bolder typography.
   final bool isGrandTotal;
-
-  /// Optional override color for the amount text.
-  final Color? valueColor;
 
   @override
   Widget build(BuildContext context) {
@@ -103,11 +99,9 @@ class _TotalRow extends StatelessWidget {
     final amountStyle = isGrandTotal
         ? theme.textTheme.large.copyWith(
             fontWeight: FontWeight.w700,
-            color: valueColor ?? theme.colorScheme.primary,
+            color: theme.colorScheme.primary,
           )
-        : theme.textTheme.small.copyWith(
-            color: valueColor ?? theme.colorScheme.foreground,
-          );
+        : theme.textTheme.small.copyWith(color: theme.colorScheme.foreground);
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 3),

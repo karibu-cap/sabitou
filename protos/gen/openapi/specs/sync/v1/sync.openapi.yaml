@@ -14,16 +14,16 @@ paths:
           in: header
           required: true
           schema:
-            $ref: '#/components/schemas/connect-protocol-version'
+            $ref: "#/components/schemas/connect-protocol-version"
         - name: Connect-Timeout-Ms
           in: header
           schema:
-            $ref: '#/components/schemas/connect-timeout-header'
+            $ref: "#/components/schemas/connect-timeout-header"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/sync.v1.GetSyncOperationsStatusRequest'
+              $ref: "#/components/schemas/sync.v1.GetSyncOperationsStatusRequest"
         required: true
       responses:
         default:
@@ -31,13 +31,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/connect.error'
+                $ref: "#/components/schemas/connect.error"
         "200":
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/sync.v1.GetSyncOperationsStatusResponse'
+                $ref: "#/components/schemas/sync.v1.GetSyncOperationsStatusResponse"
   /sync.v1.SyncService/RetrySyncOperations:
     post:
       tags:
@@ -50,16 +50,16 @@ paths:
           in: header
           required: true
           schema:
-            $ref: '#/components/schemas/connect-protocol-version'
+            $ref: "#/components/schemas/connect-protocol-version"
         - name: Connect-Timeout-Ms
           in: header
           schema:
-            $ref: '#/components/schemas/connect-timeout-header'
+            $ref: "#/components/schemas/connect-timeout-header"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/sync.v1.RetrySyncOperationsRequest'
+              $ref: "#/components/schemas/sync.v1.RetrySyncOperationsRequest"
         required: true
       responses:
         default:
@@ -67,13 +67,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/connect.error'
+                $ref: "#/components/schemas/connect.error"
         "200":
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/sync.v1.RetrySyncOperationsResponse'
+                $ref: "#/components/schemas/sync.v1.RetrySyncOperationsResponse"
   /sync.v1.SyncService/StreamSyncOperations: {}
   /sync.v1.SyncService/SubmitSyncOperations:
     post:
@@ -87,16 +87,16 @@ paths:
           in: header
           required: true
           schema:
-            $ref: '#/components/schemas/connect-protocol-version'
+            $ref: "#/components/schemas/connect-protocol-version"
         - name: Connect-Timeout-Ms
           in: header
           schema:
-            $ref: '#/components/schemas/connect-timeout-header'
+            $ref: "#/components/schemas/connect-timeout-header"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/sync.v1.SubmitSyncOperationsRequest'
+              $ref: "#/components/schemas/sync.v1.SubmitSyncOperationsRequest"
         required: true
       responses:
         default:
@@ -104,13 +104,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/connect.error'
+                $ref: "#/components/schemas/connect.error"
         "200":
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/sync.v1.SubmitSyncOperationsResponse'
+                $ref: "#/components/schemas/sync.v1.SubmitSyncOperationsResponse"
 components:
   schemas:
     connect-protocol-version:
@@ -155,17 +155,17 @@ components:
         details:
           type: array
           items:
-            $ref: '#/components/schemas/connect.error_details.Any'
+            $ref: "#/components/schemas/connect.error_details.Any"
           description: A list of messages that carry the error details. There is no limit on the number of messages.
       title: Connect Error
       additionalProperties: true
-      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+      description: "Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation"
     connect.error_details.Any:
       type: object
       properties:
         type:
           type: string
-          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
+          description: "A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field."
         value:
           type: string
           format: binary
@@ -289,7 +289,7 @@ components:
         name:
           title: name
           description: Name of the category (e.g., "Electronics", "Smart TVs")
-          $ref: '#/components/schemas/inventory.v1.Internationalized'
+          $ref: "#/components/schemas/inventory.v1.Internationalized"
         parentCategoryId:
           type: string
           title: parent_category_id
@@ -298,11 +298,11 @@ components:
         status:
           title: status
           description: The status of the category.
-          $ref: '#/components/schemas/inventory.v1.CategoryStatus'
+          $ref: "#/components/schemas/inventory.v1.CategoryStatus"
         type:
           title: type
           description: The status of the category.
-          $ref: '#/components/schemas/inventory.v1.CategoryType'
+          $ref: "#/components/schemas/inventory.v1.CategoryType"
         businessId:
           type: string
           title: business_id
@@ -312,12 +312,12 @@ components:
         createdAt:
           title: created_at
           description: Timestamp when the category was created
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
+          $ref: "#/components/schemas/google.protobuf.Timestamp"
         updatedAt:
           title: updated_at
           description: Timestamp when the category was last updated
           nullable: true
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
+          $ref: "#/components/schemas/google.protobuf.Timestamp"
       title: Category
       required:
         - businessId
@@ -356,12 +356,12 @@ components:
         name:
           title: name
           description: The name of the product.
-          $ref: '#/components/schemas/inventory.v1.Internationalized'
+          $ref: "#/components/schemas/inventory.v1.Internationalized"
         description:
           title: description
           description: The description of the product.
           nullable: true
-          $ref: '#/components/schemas/inventory.v1.Internationalized'
+          $ref: "#/components/schemas/inventory.v1.Internationalized"
         barCodeValue:
           type: string
           title: bar_code_value
@@ -370,7 +370,7 @@ components:
         categories:
           type: array
           items:
-            $ref: '#/components/schemas/inventory.v1.Category'
+            $ref: "#/components/schemas/inventory.v1.Category"
           title: categories
           description: The product categories of the product.
         imagesLinksIds:
@@ -382,7 +382,7 @@ components:
         status:
           title: status
           description: The status of the product.
-          $ref: '#/components/schemas/inventory.v1.GlobalProductStatus'
+          $ref: "#/components/schemas/inventory.v1.GlobalProductStatus"
       title: GlobalProduct
       additionalProperties: false
     inventory.v1.GlobalProductStatus:
@@ -445,7 +445,7 @@ components:
         status:
           title: status
           description: The status of the product.
-          $ref: '#/components/schemas/inventory.v1.ProductStatus'
+          $ref: "#/components/schemas/inventory.v1.ProductStatus"
         sku:
           type: string
           title: sku
@@ -454,16 +454,16 @@ components:
         expirationType:
           title: expiration_type
           description: The type of expiration of the product.
-          $ref: '#/components/schemas/inventory.v1.ExpirationType'
+          $ref: "#/components/schemas/inventory.v1.ExpirationType"
         createdAt:
           title: created_at
           description: The creation date of the product.
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
+          $ref: "#/components/schemas/google.protobuf.Timestamp"
         updatedAt:
           title: updated_at
           description: The last update date of the product.
           nullable: true
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
+          $ref: "#/components/schemas/google.protobuf.Timestamp"
       title: StoreProduct
       additionalProperties: false
     order.v1.OrderLineItem:
@@ -481,7 +481,7 @@ components:
         productName:
           title: product_name
           description: Product name
-          $ref: '#/components/schemas/inventory.v1.Internationalized'
+          $ref: "#/components/schemas/inventory.v1.Internationalized"
         unitPrice:
           type: number
           title: unit_price
@@ -495,7 +495,7 @@ components:
         batchId:
           type: string
           title: batch_id
-          description: 'Optional: Specific batch/lot requested'
+          description: "Optional: Specific batch/lot requested"
           nullable: true
       title: OrderLineItem
       additionalProperties: false
@@ -520,9 +520,9 @@ components:
           type: string
           title: ref_id
           description: '"SO-2025-001"'
-        customerId:
+        customer:
           type: string
-          title: customer_id
+          title: customer
           description: Company buying from you
         sellerId:
           type: string
@@ -534,11 +534,11 @@ components:
           description: Where to pick items
         status:
           title: status
-          $ref: '#/components/schemas/order.v1.SalesOrderStatus'
+          $ref: "#/components/schemas/order.v1.SalesOrderStatus"
         items:
           type: array
           items:
-            $ref: '#/components/schemas/order.v1.OrderLineItem'
+            $ref: "#/components/schemas/order.v1.OrderLineItem"
           title: items
         totalAmount:
           type: number
@@ -553,11 +553,11 @@ components:
           title: created_by_user_id
         createdAt:
           title: created_at
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
+          $ref: "#/components/schemas/google.protobuf.Timestamp"
         deliveryDate:
           title: delivery_date
           nullable: true
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
+          $ref: "#/components/schemas/google.protobuf.Timestamp"
         notes:
           type: string
           title: notes
@@ -576,7 +576,7 @@ components:
 
          Example:
            so_id: "SO-2025-001"
-           customer_id: "CMP-003"
+           customer: "CMP-003"
            seller_id: "CMP-001" (your company)
            status: SO_STATUS_CONFIRMED
            items: [10x PRD-001 @ 450000 each]
@@ -623,13 +623,13 @@ components:
         statusFilter:
           type: array
           items:
-            $ref: '#/components/schemas/sync.v1.SyncOperationStatus'
+            $ref: "#/components/schemas/sync.v1.SyncOperationStatus"
           title: status_filter
           description: Filter by status
         entityTypeFilter:
           type: array
           items:
-            $ref: '#/components/schemas/sync.v1.SyncEntityType'
+            $ref: "#/components/schemas/sync.v1.SyncEntityType"
           title: entity_type_filter
           description: Filter by entity type
         limit:
@@ -653,7 +653,7 @@ components:
         operations:
           type: array
           items:
-            $ref: '#/components/schemas/sync.v1.SyncOperation'
+            $ref: "#/components/schemas/sync.v1.SyncOperation"
           title: operations
           description: List of operations with their current status
         totalCount:
@@ -664,7 +664,7 @@ components:
         summary:
           title: summary
           description: Summary statistics
-          $ref: '#/components/schemas/sync.v1.SyncOperationsSummary'
+          $ref: "#/components/schemas/sync.v1.SyncOperationsSummary"
       title: GetSyncOperationsStatusResponse
       additionalProperties: false
       description: Response with sync operations status
@@ -749,13 +749,13 @@ components:
         entityTypeFilter:
           type: array
           items:
-            $ref: '#/components/schemas/sync.v1.SyncEntityType'
+            $ref: "#/components/schemas/sync.v1.SyncEntityType"
           title: entity_type_filter
           description: Filter by entity types
         operationTypeFilter:
           type: array
           items:
-            $ref: '#/components/schemas/sync.v1.SyncOperationType'
+            $ref: "#/components/schemas/sync.v1.SyncOperationType"
           title: operation_type_filter
           description: Filter by operation types
       title: StreamSyncOperationsRequest
@@ -767,7 +767,7 @@ components:
         operation:
           title: operation
           description: The sync operation that was updated
-          $ref: '#/components/schemas/sync.v1.SyncOperation'
+          $ref: "#/components/schemas/sync.v1.SyncOperation"
         updateType:
           type: string
           title: update_type
@@ -775,7 +775,7 @@ components:
         updateTimestamp:
           title: update_timestamp
           description: Timestamp of the update
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
+          $ref: "#/components/schemas/google.protobuf.Timestamp"
       title: StreamSyncOperationsResponse
       additionalProperties: false
       description: Response for streaming sync operations
@@ -800,7 +800,7 @@ components:
         operations:
           type: array
           items:
-            $ref: '#/components/schemas/sync.v1.SyncOperation'
+            $ref: "#/components/schemas/sync.v1.SyncOperation"
           title: operations
           minItems: 1
           description: List of operations to submit
@@ -827,17 +827,17 @@ components:
         operationResults:
           type: array
           items:
-            $ref: '#/components/schemas/sync.v1.SyncOperationResult'
+            $ref: "#/components/schemas/sync.v1.SyncOperationResult"
           title: operation_results
           description: List of operation results
         batchStatus:
           title: batch_status
           description: Overall batch status
-          $ref: '#/components/schemas/sync.v1.SyncOperationStatus'
+          $ref: "#/components/schemas/sync.v1.SyncOperationStatus"
         processedAt:
           title: processed_at
           description: Timestamp when batch was processed
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
+          $ref: "#/components/schemas/google.protobuf.Timestamp"
       title: SubmitSyncOperationsResponse
       additionalProperties: false
       description: Response to submit sync operations
@@ -860,11 +860,11 @@ components:
             operationType:
               title: operation_type
               description: Type of operation (create, update, delete)
-              $ref: '#/components/schemas/sync.v1.SyncOperationType'
+              $ref: "#/components/schemas/sync.v1.SyncOperationType"
             entityType:
               title: entity_type
               description: Type of entity being synchronized
-              $ref: '#/components/schemas/sync.v1.SyncEntityType'
+              $ref: "#/components/schemas/sync.v1.SyncEntityType"
             entityId:
               type: string
               title: entity_id
@@ -888,15 +888,15 @@ components:
             createdAt:
               title: created_at
               description: Timestamp when operation was created
-              $ref: '#/components/schemas/google.protobuf.Timestamp'
+              $ref: "#/components/schemas/google.protobuf.Timestamp"
             updatedAt:
               title: updated_at
               description: Timestamp when operation was last updated
-              $ref: '#/components/schemas/google.protobuf.Timestamp'
+              $ref: "#/components/schemas/google.protobuf.Timestamp"
             status:
               title: status
               description: Current status of the operation
-              $ref: '#/components/schemas/sync.v1.SyncOperationStatus'
+              $ref: "#/components/schemas/sync.v1.SyncOperationStatus"
             retryCount:
               type: integer
               title: retry_count
@@ -911,7 +911,7 @@ components:
               title: next_retry_at
               description: Next retry timestamp (if applicable)
               nullable: true
-              $ref: '#/components/schemas/google.protobuf.Timestamp'
+              $ref: "#/components/schemas/google.protobuf.Timestamp"
             errorMessage:
               type: string
               title: error_message
@@ -929,7 +929,7 @@ components:
                 categoryData:
                   title: category_data
                   description: Product category data
-                  $ref: '#/components/schemas/inventory.v1.Category'
+                  $ref: "#/components/schemas/inventory.v1.Category"
               title: category_data
               required:
                 - categoryData
@@ -937,7 +937,7 @@ components:
                 globalProductData:
                   title: global_product_data
                   description: Global product data
-                  $ref: '#/components/schemas/inventory.v1.GlobalProduct'
+                  $ref: "#/components/schemas/inventory.v1.GlobalProduct"
               title: global_product_data
               required:
                 - globalProductData
@@ -953,7 +953,7 @@ components:
                 orderData:
                   title: order_data
                   description: Order data
-                  $ref: '#/components/schemas/order.v1.SalesOrder'
+                  $ref: "#/components/schemas/order.v1.SalesOrder"
               title: order_data
               required:
                 - orderData
@@ -961,7 +961,7 @@ components:
                 storeProductData:
                   title: store_product_data
                   description: Store product data
-                  $ref: '#/components/schemas/inventory.v1.StoreProduct'
+                  $ref: "#/components/schemas/inventory.v1.StoreProduct"
               title: store_product_data
               required:
                 - storeProductData
@@ -990,7 +990,7 @@ components:
         operations:
           type: array
           items:
-            $ref: '#/components/schemas/sync.v1.SyncOperation'
+            $ref: "#/components/schemas/sync.v1.SyncOperation"
           title: operations
           description: List of operations in this batch
         storeId:
@@ -1011,7 +1011,7 @@ components:
         createdAt:
           title: created_at
           description: Timestamp when batch was created
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
+          $ref: "#/components/schemas/google.protobuf.Timestamp"
         totalOperations:
           type: integer
           title: total_operations
@@ -1058,7 +1058,7 @@ components:
         status:
           title: status
           description: Result status
-          $ref: '#/components/schemas/sync.v1.SyncOperationStatus'
+          $ref: "#/components/schemas/sync.v1.SyncOperationStatus"
         errorMessage:
           type: string
           title: error_message
@@ -1072,7 +1072,7 @@ components:
         processedAt:
           title: processed_at
           description: Timestamp when operation was processed
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
+          $ref: "#/components/schemas/google.protobuf.Timestamp"
       title: SyncOperationResult
       additionalProperties: false
       description: Result of a single sync operation

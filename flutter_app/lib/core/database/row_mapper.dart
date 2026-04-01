@@ -727,8 +727,8 @@ RawRow fromCashReceiptToRaw(CashReceipt receipt) {
   return {
     CashReceiptsFields.refId: receipt.hasRefId() ? receipt.refId : null,
     CashReceiptsFields.cashierUserId: receipt.cashierUserId,
-    CashReceiptsFields.customerId: receipt.hasCustomerId()
-        ? receipt.customerId
+    CashReceiptsFields.customer: receipt.hasCustomer()
+        ? receipt.customer
         : null,
     CashReceiptsFields.storeId: receipt.storeId,
     CashReceiptsFields.subtotal: receipt.subtotal,
@@ -759,7 +759,7 @@ CashReceipt fromRowToCashReceipt(RawRow row) {
   return CashReceipt(
     refId: row.optString(CashReceiptsFields.refId) ?? '',
     cashierUserId: row.requireString(CashReceiptsFields.cashierUserId),
-    customerId: row.optString(CashReceiptsFields.customerId),
+    customer: row.optString(CashReceiptsFields.customer),
     storeId: row.requireString(CashReceiptsFields.storeId),
     subtotal: row.requireDouble(CashReceiptsFields.subtotal),
     taxAmount: row.requireDouble(CashReceiptsFields.taxAmount),
@@ -802,6 +802,9 @@ RawRow fromCashReceiptItemToRaw(
     CashReceiptItemsFields.taxAmount: item.taxAmount,
     CashReceiptItemsFields.total: item.total,
     CashReceiptItemsFields.batchId: item.hasBatchId() ? item.batchId : null,
+    CashReceiptItemsFields.productName: item.hasProductName()
+        ? jsonEncode(item.productName.toProto3Json())
+        : null,
   };
 }
 
@@ -816,11 +819,10 @@ InvoiceLineItem fromRowToCashReceiptItem(RawRow row) {
     taxAmount: row.optDouble(CashReceiptItemsFields.taxAmount) ?? 0.0,
     total: row.requireDouble(CashReceiptItemsFields.total),
     batchId: row.optString(CashReceiptItemsFields.batchId),
-    productName: row.optString(CashReceiptItemsFields.productId) != null
-        ? (Internationalized()
-            ..en = row.optString(CashReceiptItemsFields.productId) ?? ''
-            ..fr = row.optString(CashReceiptItemsFields.productId) ?? '')
-        : null,
+    productName: JsonMapper.toMessage<Internationalized>(
+      row.optString(CashReceiptItemsFields.productName),
+      Internationalized.create,
+    ),
   );
 }
 
@@ -1246,8 +1248,8 @@ RawRow fromGiftVoucherToRaw(GiftVoucher voucher) {
     GiftVouchersFields.currency: voucher.hasCurrency()
         ? voucher.currency
         : null,
-    GiftVouchersFields.issuedToCustomerId: voucher.hasIssuedToCustomerId()
-        ? voucher.issuedToCustomerId
+    GiftVouchersFields.issuedToCustomer: voucher.hasIssuedToCustomer()
+        ? voucher.issuedToCustomer
         : null,
     GiftVouchersFields.issuedByUserId: voucher.hasIssuedByUserId()
         ? voucher.issuedByUserId
@@ -1274,7 +1276,7 @@ GiftVoucher fromRowToGiftVoucher(RawRow row) {
     initialValue: row.optDouble(GiftVouchersFields.initialValue) ?? 0.0,
     remainingValue: row.optDouble(GiftVouchersFields.remainingValue) ?? 0.0,
     currency: row.optString(GiftVouchersFields.currency) ?? 'XAF',
-    issuedToCustomerId: row.optString(GiftVouchersFields.issuedToCustomerId),
+    issuedToCustomer: row.optString(GiftVouchersFields.issuedToCustomer),
     issuedByUserId: row.optString(GiftVouchersFields.issuedByUserId),
     warehouseId: row.optString(GiftVouchersFields.warehouseId),
     status: JsonMapper.toEnum<VoucherStatus>(

@@ -339,9 +339,14 @@ class BillFormController extends ChangeNotifier {
   }
 
   /// Searches suppliers by [name] within [storeId].
-  Future<List<Supplier>> searchSuppliers({required String name}) {
+  /// Fetch a list of suppliers via the name query.
+  Future<List<Supplier>> searchSuppliers(String query) async {
+    if (query.isEmpty) {
+      return SuppliersRepository.instance.getSuppliersByStore(storeId);
+    }
+
     return SuppliersRepository.instance.searchSuppliers(
-      query: name,
+      query: query,
       storeId: storeId,
     );
   }

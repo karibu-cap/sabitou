@@ -16,7 +16,7 @@ import "google/protobuf/timestamp.proto";
  *   voucher_code: "GIFT-XMAS-12345"
  *   initial_value: 100000
  *   remaining_value: 100000
- *   issued_to_customer_id: "CMP-003"
+ *   issued_to_customer: "CMP-003"
  *   valid_until: 2026-12-31
  *   status: VOUCHER_STATUS_ACTIVE
  */
@@ -31,7 +31,7 @@ message GiftVoucher {
   double remaining_value = 4;
   string currency = 5;
   // Optional - can be transferred
-  optional string issued_to_customer_id = 6;
+  optional string issued_to_customer = 6;
   string issued_by_user_id = 7;
   // Warehouse where the voucher was issued
   string warehouse_id = 8;
@@ -78,7 +78,7 @@ message GetVoucherResponse {
 
 message ListVouchersRequest {
   string warehouse_id = 1;
-  optional string customer_id = 2;
+  optional string customer = 2;
   optional google.protobuf.Timestamp issued_after = 3;
   int32 page_size = 4;
   int32 page_number = 5;

@@ -1,15 +1,19 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+import '../../../core/doc_engine/core/engine.dart';
 import '../../../router/app_router.dart';
 import '../../../router/page_routes.dart';
 import '../../../services/internationalization/internationalization.dart';
 import '../../../themes/app_theme.dart';
 import '../../../utils/formatters.dart';
 import '../../../utils/responsive_utils.dart';
+import '../../../utils/user_preference.dart';
 import '../../../widgets/custom_grid.dart';
+import '../../../widgets/custom_menu.dart';
 import '../components/receiving_note_status_utils.dart';
 
 /// Full detail view for a single [ReceivingNote].
@@ -101,6 +105,45 @@ class _DetailHeader extends StatelessWidget {
           ),
         ),
         RnComplianceBadge(note: note, large: true),
+        _Menu(receivingNote: note),
+      ],
+    );
+  }
+}
+
+class _Menu extends StatelessWidget {
+  final ReceivingNote receivingNote;
+
+  _Menu({required this.receivingNote});
+
+  @override
+  Widget build(BuildContext context) {
+    final store = context.watch<UserPreferences>().store;
+
+    if (store == null) {
+      return const SizedBox();
+    }
+
+    return CustomMenu(
+      childrens: [
+        MenuTile(
+          icon: LucideIcons.download,
+          label: Intls.to.downloadPDF,
+          onTap: () => SabitouDocEngine.instance.download<ReceivingNote>(
+            receivingNote,
+            store,
+            filename: receivingNote.refId,
+          ),
+        ),
+        MenuTile(
+          icon: LucideIcons.printer,
+          label: Intls.to.print,
+          onTap: () => SabitouDocEngine.instance.print<ReceivingNote>(
+            receivingNote,
+            store,
+            jobName: receivingNote.refId,
+          ),
+        ),
       ],
     );
   }

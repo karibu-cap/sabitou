@@ -113,9 +113,17 @@ class PaymentFormController extends ChangeNotifier {
   }
 
   /// Query the suppliers.
-  Future<List<Supplier>> searchSuppliers(String name) => SuppliersRepository
-      .instance
-      .searchSuppliers(query: name, storeId: storeId);
+  /// Fetch a list of suppliers via the name query.
+  Future<List<Supplier>> searchSuppliers(String query) async {
+    if (query.isEmpty) {
+      return SuppliersRepository.instance.getSuppliersByStore(storeId);
+    }
+
+    return SuppliersRepository.instance.searchSuppliers(
+      query: query,
+      storeId: storeId,
+    );
+  }
 
   /// Updates the payment amount exclusively for a
   /// single bill when unknown context.

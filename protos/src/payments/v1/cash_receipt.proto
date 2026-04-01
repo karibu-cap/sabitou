@@ -19,7 +19,7 @@ import "payments/v1/payments.proto";
  * Example - Retail store sale:
  *   receipt_id: "CASH-2025-001"
  *   cashier_user_id: "USR-005"
- *   customer_id: "CMP-003" (can be null for walk-in)
+ *   customer: "CMP-003" (can be null for walk-in)
  *   store_id: "WH-002" (retail store)
  *   items: [1x PRD-001 @ 450000]
  *   subtotal: 450000
@@ -37,7 +37,7 @@ message CashReceipt {
   // Who processed sale
   string cashier_user_id = 2;
   // Can be null for anonymous
-  string customer_id = 3;
+  string customer = 3;
   // Which location/store
   string store_id = 4;
   repeated financial.v1.InvoiceLineItem items = 5;

@@ -31,7 +31,7 @@ class PurchaseOrderDetailScreen extends StatelessWidget {
     return ChangeNotifierProvider<PurchaseOrderDetailController>(
       create: (_) => PurchaseOrderDetailController(
         purchaseOrderId: purchaseOrderId,
-        storeId: store.refId,
+        store: store,
       ),
       child: _PurchaseOrderScreenBody(purchaseOrderId: purchaseOrderId),
     );

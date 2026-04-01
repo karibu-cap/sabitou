@@ -47,12 +47,12 @@ const GiftVoucher$json = {
     {'1': 'remaining_value', '3': 4, '4': 1, '5': 1, '10': 'remainingValue'},
     {'1': 'currency', '3': 5, '4': 1, '5': 9, '10': 'currency'},
     {
-      '1': 'issued_to_customer_id',
+      '1': 'issued_to_customer',
       '3': 6,
       '4': 1,
       '5': 9,
       '9': 0,
-      '10': 'issuedToCustomerId',
+      '10': 'issuedToCustomer',
       '17': true
     },
     {'1': 'issued_by_user_id', '3': 7, '4': 1, '5': 9, '10': 'issuedByUserId'},
@@ -84,7 +84,7 @@ const GiftVoucher$json = {
     {'1': 'notes', '3': 12, '4': 1, '5': 9, '9': 1, '10': 'notes', '17': true},
   ],
   '8': [
-    {'1': '_issued_to_customer_id'},
+    {'1': '_issued_to_customer'},
     {'1': '_notes'},
   ],
 };
@@ -94,13 +94,13 @@ final $typed_data.Uint8List giftVoucherDescriptor = $convert.base64Decode(
     'CgtHaWZ0Vm91Y2hlchIdCgZyZWZfaWQYASABKAlCBrpIA8gBAVIFcmVmSWQSIQoMdm91Y2hlcl'
     '9jb2RlGAIgASgJUgt2b3VjaGVyQ29kZRIjCg1pbml0aWFsX3ZhbHVlGAMgASgBUgxpbml0aWFs'
     'VmFsdWUSJwoPcmVtYWluaW5nX3ZhbHVlGAQgASgBUg5yZW1haW5pbmdWYWx1ZRIaCghjdXJyZW'
-    '5jeRgFIAEoCVIIY3VycmVuY3kSNgoVaXNzdWVkX3RvX2N1c3RvbWVyX2lkGAYgASgJSABSEmlz'
-    'c3VlZFRvQ3VzdG9tZXJJZIgBARIpChFpc3N1ZWRfYnlfdXNlcl9pZBgHIAEoCVIOaXNzdWVkQn'
-    'lVc2VySWQSIQoMd2FyZWhvdXNlX2lkGAggASgJUgt3YXJlaG91c2VJZBIyCgZzdGF0dXMYCSAB'
-    'KA4yGi5wYXltZW50cy52MS5Wb3VjaGVyU3RhdHVzUgZzdGF0dXMSNwoJaXNzdWVkX2F0GAogAS'
-    'gLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIIaXNzdWVkQXQSOwoLdmFsaWRfdW50aWwY'
-    'CyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUgp2YWxpZFVudGlsEhkKBW5vdGVzGA'
-    'wgASgJSAFSBW5vdGVziAEBQhgKFl9pc3N1ZWRfdG9fY3VzdG9tZXJfaWRCCAoGX25vdGVz');
+    '5jeRgFIAEoCVIIY3VycmVuY3kSMQoSaXNzdWVkX3RvX2N1c3RvbWVyGAYgASgJSABSEGlzc3Vl'
+    'ZFRvQ3VzdG9tZXKIAQESKQoRaXNzdWVkX2J5X3VzZXJfaWQYByABKAlSDmlzc3VlZEJ5VXNlck'
+    'lkEiEKDHdhcmVob3VzZV9pZBgIIAEoCVILd2FyZWhvdXNlSWQSMgoGc3RhdHVzGAkgASgOMhou'
+    'cGF5bWVudHMudjEuVm91Y2hlclN0YXR1c1IGc3RhdHVzEjcKCWlzc3VlZF9hdBgKIAEoCzIaLm'
+    'dvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSCGlzc3VlZEF0EjsKC3ZhbGlkX3VudGlsGAsgASgL'
+    'MhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIKdmFsaWRVbnRpbBIZCgVub3RlcxgMIAEoCU'
+    'gBUgVub3Rlc4gBAUIVChNfaXNzdWVkX3RvX2N1c3RvbWVyQggKBl9ub3Rlcw==');
 
 @$core.Deprecated('Use validateVoucherRequestDescriptor instead')
 const ValidateVoucherRequest$json = {
@@ -203,12 +203,12 @@ const ListVouchersRequest$json = {
   '2': [
     {'1': 'warehouse_id', '3': 1, '4': 1, '5': 9, '10': 'warehouseId'},
     {
-      '1': 'customer_id',
+      '1': 'customer',
       '3': 2,
       '4': 1,
       '5': 9,
       '9': 0,
-      '10': 'customerId',
+      '10': 'customer',
       '17': true
     },
     {
@@ -225,7 +225,7 @@ const ListVouchersRequest$json = {
     {'1': 'page_number', '3': 5, '4': 1, '5': 5, '10': 'pageNumber'},
   ],
   '8': [
-    {'1': '_customer_id'},
+    {'1': '_customer'},
     {'1': '_issued_after'},
   ],
 };
@@ -233,10 +233,10 @@ const ListVouchersRequest$json = {
 /// Descriptor for `ListVouchersRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List listVouchersRequestDescriptor = $convert.base64Decode(
     'ChNMaXN0Vm91Y2hlcnNSZXF1ZXN0EiEKDHdhcmVob3VzZV9pZBgBIAEoCVILd2FyZWhvdXNlSW'
-    'QSJAoLY3VzdG9tZXJfaWQYAiABKAlIAFIKY3VzdG9tZXJJZIgBARJCCgxpc3N1ZWRfYWZ0ZXIY'
-    'AyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wSAFSC2lzc3VlZEFmdGVyiAEBEhsKCX'
-    'BhZ2Vfc2l6ZRgEIAEoBVIIcGFnZVNpemUSHwoLcGFnZV9udW1iZXIYBSABKAVSCnBhZ2VOdW1i'
-    'ZXJCDgoMX2N1c3RvbWVyX2lkQg8KDV9pc3N1ZWRfYWZ0ZXI=');
+    'QSHwoIY3VzdG9tZXIYAiABKAlIAFIIY3VzdG9tZXKIAQESQgoMaXNzdWVkX2FmdGVyGAMgASgL'
+    'MhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEgBUgtpc3N1ZWRBZnRlcogBARIbCglwYWdlX3'
+    'NpemUYBCABKAVSCHBhZ2VTaXplEh8KC3BhZ2VfbnVtYmVyGAUgASgFUgpwYWdlTnVtYmVyQgsK'
+    'CV9jdXN0b21lckIPCg1faXNzdWVkX2FmdGVy');
 
 @$core.Deprecated('Use listVouchersResponseDescriptor instead')
 const ListVouchersResponse$json = {

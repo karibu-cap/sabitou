@@ -46,9 +46,13 @@ class PosConfirmationDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
     final screenHeight = MediaQuery.sizeOf(context).height;
+    final screenWidth = MediaQuery.sizeOf(context).width;
 
     return ConstrainedBox(
-      constraints: BoxConstraints(maxHeight: screenHeight * 0.85),
+      constraints: BoxConstraints(
+        maxHeight: screenHeight * 0.85,
+        maxWidth: screenWidth,
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -74,11 +78,12 @@ class PosConfirmationDialog extends StatelessWidget {
                     _ChangeBanner(
                       amountToBePaidBack: amountToBePaidBack,
                       changeGiven: changeGiven,
+                      owedToCustomer: cashReceipt.owedToCustomer,
                     ),
 
                   const SizedBox(height: 12),
 
-                  _WarningBox(),
+                  _WarningBox(owedToCustomer: cashReceipt.owedToCustomer),
                 ],
               ),
             ),
@@ -105,6 +110,7 @@ class PosConfirmationDialog extends StatelessWidget {
                 child: ShadButton(
                   onPressed: onConfirm,
                   child: Row(
+                    mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Icon(LucideIcons.circleCheck400, size: 15),
@@ -335,10 +341,12 @@ class _ChangeBanner extends StatelessWidget {
   const _ChangeBanner({
     required this.amountToBePaidBack,
     required this.changeGiven,
+    required this.owedToCustomer,
   });
 
   final double amountToBePaidBack;
   final double changeGiven;
+  final double owedToCustomer;
 
   @override
   Widget build(BuildContext context) {
@@ -362,6 +370,12 @@ class _ChangeBanner extends StatelessWidget {
               value: Formatters.formatCurrency(changeGiven),
               valueColor: SabitouColors.success,
             ),
+          if (owedToCustomer > 0)
+            _SummaryRow(
+              label: Intls.to.voucher,
+              value: Formatters.formatCurrency(owedToCustomer),
+              valueColor: SabitouColors.dangerForeground,
+            ),
         ],
       ),
     );
@@ -369,6 +383,10 @@ class _ChangeBanner extends StatelessWidget {
 }
 
 class _WarningBox extends StatelessWidget {
+  final double owedToCustomer;
+
+  const _WarningBox({this.owedToCustomer = 0});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -387,12 +405,27 @@ class _WarningBox extends StatelessWidget {
           ),
           const SizedBox(width: 8),
           Expanded(
-            child: Text(
-              Intls.to.verifyAmountWithCustomer,
-              style: const TextStyle(
-                fontSize: 12,
-                color: SabitouColors.warningForeground,
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  Intls.to.verifyAmountWithCustomer,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: SabitouColors.warningForeground,
+                  ),
+                ),
+                if (owedToCustomer > 0)
+                  Text(
+                    Intls.to.voucherOfWillBeAutoCreate.trParams({
+                      'amount': owedToCustomer.toString(),
+                    }),
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: SabitouColors.warningForeground,
+                    ),
+                  ),
+              ],
             ),
           ),
         ],

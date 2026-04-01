@@ -8,7 +8,7 @@ import '../../../repositories/gift_voucher_repository.dart';
 import '../../../services/internationalization/internationalization.dart';
 import '../../../utils/common_functions.dart';
 import '../../../utils/formatters.dart';
-import '../../../utils/user_preference.dart';
+import '../../../utils/utils.dart';
 import '../point_of_sale_controller.dart';
 import 'cart_provider.dart';
 
@@ -16,7 +16,7 @@ import 'cart_provider.dart';
 /// Provided by [PaymentSection] via [ChangeNotifierProvider].
 class PaymentStateManager extends ChangeNotifier {
   /// Shared cart instance.
-  final CartProvider cart = CartProvider.instance;
+  final CartProvider cart;
 
   double _amountReceived = 0.0;
   double _remainingAmount = 0.0;
@@ -30,6 +30,12 @@ class PaymentStateManager extends ChangeNotifier {
   final _amountController = TextEditingController();
   final _referenceController = TextEditingController();
   final _changeController = TextEditingController();
+
+  /// The store for which the payment is being made.
+  final Store store;
+
+  /// The user who is making the payment.
+  final User user;
 
   /// Total money received from the customer across all payment entries.
   double get amountReceived => _amountReceived;
@@ -72,7 +78,11 @@ class PaymentStateManager extends ChangeNotifier {
   bool get canComplete => cart.canComplete;
 
   /// Creates a [PaymentStateManager] and starts listening to [CartProvider].
-  PaymentStateManager() {
+  PaymentStateManager({
+    required this.store,
+    required this.user,
+    required this.cart,
+  }) {
     cart.addListener(_onCartChanged);
   }
 
@@ -130,9 +140,6 @@ class PaymentStateManager extends ChangeNotifier {
   }
 
   Future<ValidateVoucherResponse?> _validateVoucher(String voucherCode) async {
-    final user = UserPreferences.instance.user;
-    final store = UserPreferences.instance.store;
-    if (user == null || store == null) return ValidateVoucherResponse();
     if (voucherCode.isEmpty) return ValidateVoucherResponse();
 
     return GiftVoucherRepository.instance.validateVoucher(
@@ -192,17 +199,29 @@ class PaymentStateManager extends ChangeNotifier {
         }
 
         payment = Payment(
+          refId: AppUtils.generateSmartDatabaseId('PAY'),
           paymentMethod: _selectedPaymentMethod,
           amount: amount,
           referenceNumber: voucherCode,
+          paymentDate: Timestamp.fromDateTime(DateTime.now()),
+          currency: 'XAF',
+          createdByUserId: user.refId,
+          warehouseId: store.refId,
+          status: PaymentStatus.PAYMENT_STATUS_COMPLETED,
         );
       } else {
         payment = Payment(
+          refId: AppUtils.generateSmartDatabaseId('PAY'),
           paymentMethod: _selectedPaymentMethod,
           amount: amount,
           referenceNumber: _referenceController.text.trim().isEmpty
               ? null
               : _referenceController.text.trim(),
+          paymentDate: Timestamp.fromDateTime(DateTime.now()),
+          currency: 'XAF',
+          createdByUserId: user.refId,
+          warehouseId: store.refId,
+          status: PaymentStatus.PAYMENT_STATUS_COMPLETED,
         );
       }
 
@@ -244,7 +263,9 @@ class PaymentStateManager extends ChangeNotifier {
   ///
   /// Returns `true` on success. Resets local state on success.
   Future<bool> completePayment(BuildContext context) async {
-    if (!canComplete) return false;
+    if (!canComplete) {
+      return false;
+    }
 
     final controller = Provider.of<PointOfSaleController>(
       context,

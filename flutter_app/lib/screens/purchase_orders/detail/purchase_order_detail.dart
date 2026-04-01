@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+import '../../../core/doc_engine/core/engine.dart';
 import '../../../router/app_router.dart';
 import '../../../router/page_routes.dart';
 import '../../../services/internationalization/internationalization.dart';
@@ -15,6 +16,7 @@ import '../../../utils/user_preference.dart';
 import '../../../widgets/bills/bill_card.dart';
 import '../../../widgets/bills/form/bill_form.dart';
 import '../../../widgets/custom_grid.dart';
+import '../../../widgets/custom_menu.dart';
 import '../components/convert_to_bill_sheet.dart';
 import '../components/po_receive_form.dart';
 import '../components/po_utils.dart';
@@ -200,7 +202,7 @@ class _DetailTopRow extends StatelessWidget {
                 onPressed: () => showReceiveForm(
                   context,
                   po: po,
-                  storeId: ctrl.storeId,
+                  storeId: ctrl.store.refId,
                   userId: userId,
                 ),
                 leading: const Icon(LucideIcons.packageCheck, size: 14),
@@ -225,8 +227,6 @@ class _DetailTopRow extends StatelessWidget {
 
 class _Menu extends StatelessWidget {
   final PurchaseOrder po;
-
-  final popoverController = ShadPopoverController();
 
   _Menu({required this.po});
 
@@ -261,71 +261,37 @@ class _Menu extends StatelessWidget {
   Widget build(BuildContext context) {
     final ctrl = context.watch<PurchaseOrderDetailController>();
 
-    return ShadPopover(
-      controller: popoverController,
-      child: ShadButton.ghost(
-        size: ShadButtonSize.sm,
-        onPressed: popoverController.toggle,
-        leading: const Icon(LucideIcons.ellipsisVertical),
-        child: const SizedBox.shrink(),
-      ),
-      popover: (context) => Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _MenuTile(
-            icon: LucideIcons.download,
-            label: Intls.to.downloadPDF,
-            onTap: () => Navigator.pop(context),
+    return CustomMenu(
+      childrens: [
+        MenuTile(
+          icon: LucideIcons.download,
+          label: Intls.to.downloadPDF,
+          onTap: () => SabitouDocEngine.instance.download<PurchaseOrder>(
+            po,
+            ctrl.store,
+            filename: po.refId,
           ),
-          _MenuTile(
-            icon: LucideIcons.printer,
-            label: Intls.to.print,
-            onTap: () => Navigator.pop(context),
+        ),
+        MenuTile(
+          icon: LucideIcons.printer,
+          label: Intls.to.print,
+          onTap: () => SabitouDocEngine.instance.print<PurchaseOrder>(
+            po,
+            ctrl.store,
+            jobName: po.refId,
           ),
-          _MenuTile(
-            icon: LucideIcons.copy,
-            label: Intls.to.clone,
-            onTap: () => Navigator.pop(context),
+        ),
+        if (ctrl.canCancel(po.status))
+          MenuTile(
+            icon: LucideIcons.ban,
+            label: Intls.to.cancelOrder,
+            isDestructive: true,
+            onTap: () {
+              Navigator.pop(context);
+              _confirmCancel(context, ctrl);
+            },
           ),
-          if (ctrl.canCancel(po.status))
-            _MenuTile(
-              icon: LucideIcons.ban,
-              label: Intls.to.cancelOrder,
-              isDestructive: true,
-              onTap: () {
-                Navigator.pop(context);
-                _confirmCancel(context, ctrl);
-              },
-            ),
-        ],
-      ),
-    );
-  }
-}
-
-class _MenuTile extends StatelessWidget {
-  const _MenuTile({
-    required this.icon,
-    required this.label,
-    required this.onTap,
-    this.isDestructive = false,
-  });
-
-  final IconData icon;
-  final String label;
-  final VoidCallback onTap;
-  final bool isDestructive;
-
-  @override
-  Widget build(BuildContext context) {
-    final cs = ShadTheme.of(context).colorScheme;
-    final color = isDestructive ? cs.destructive : cs.foreground;
-
-    return ShadButton.link(
-      child: Text(label),
-      leading: Icon(icon, size: 15, color: color),
-      onPressed: onTap,
+      ],
     );
   }
 }
@@ -851,6 +817,7 @@ class _BillsTab extends StatelessWidget {
                     po: po,
                     receivingNotes: receivingNotes,
                     existingBills: bills,
+                    ctrl: ctrl,
                   ),
                   leading: const Icon(LucideIcons.plus, size: 14),
                   child: Text(Intls.to.add),
@@ -916,7 +883,7 @@ class _ReceivesTab extends StatelessWidget {
                   onPressed: () => showReceiveForm(
                     context,
                     po: po,
-                    storeId: ctrl.storeId,
+                    storeId: ctrl.store.refId,
                     userId: userId,
                   ),
                   leading: const Icon(LucideIcons.plus, size: 14),

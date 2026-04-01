@@ -1240,7 +1240,7 @@ final _fakeTransport =
             voucherCode: voucherId,
             initialValue: request.receipt.owedToCustomer,
             remainingValue: request.receipt.owedToCustomer,
-            issuedToCustomerId: request.receipt.customerId,
+            issuedToCustomer: request.receipt.customer,
             validUntil: Timestamp.fromDateTime(
               clock.now().add(const Duration(days: 30)),
             ),

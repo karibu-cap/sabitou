@@ -39,12 +39,9 @@ class PurchaseOrderFormHeaderSection extends StatelessWidget {
               placeholder: Intls.to.selectSupplier,
               searchPlaceholder: Intls.to.searchAndFilter,
               initialValue: ctrl.supplierNameController.value.text,
+              canReturnDataWhenEmpty: true,
               optionsBuilder: (text) async {
-                if (text.isEmpty) {
-                  return [];
-                }
-
-                return await ctrl.searchSuppliers(name: text);
+                return await ctrl.searchSuppliers(text);
               },
               displayStringForOption: (option) => option.name,
               validator: (value) {

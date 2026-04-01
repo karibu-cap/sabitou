@@ -194,7 +194,7 @@ CREATE TABLE IF NOT EXISTS inventory_transactions (
 CREATE TABLE IF NOT EXISTS sales_orders (
     id TEXT PRIMARY KEY DEFAULT gen_random_uuid ()::text,
     ref_id TEXT UNIQUE NOT NULL DEFAULT gen_random_uuid ()::text,
-    customer_id TEXT,
+    customer TEXT,
     seller_id TEXT NOT NULL, -- store ref_id
     status TEXT NOT NULL DEFAULT 'SO_STATUS_DRAFT',
     total_amount NUMERIC NOT NULL,
@@ -246,7 +246,7 @@ CREATE TABLE IF NOT EXISTS gift_vouchers (
     initial_value NUMERIC NOT NULL,
     remaining_value NUMERIC NOT NULL,
     currency TEXT,
-    issued_to_customer_id TEXT,
+    issued_to_customer TEXT,
     issued_by_user_id TEXT,
     warehouse_id TEXT,
     status TEXT NOT NULL DEFAULT 'VOUCHER_STATUS_ACTIVE',
@@ -274,7 +274,7 @@ CREATE TABLE IF NOT EXISTS cash_receipts (
     id TEXT PRIMARY KEY DEFAULT gen_random_uuid ()::text,
     ref_id TEXT UNIQUE NOT NULL DEFAULT gen_random_uuid ()::text,
     cashier_user_id TEXT,
-    customer_id TEXT,
+    customer TEXT,
     store_id TEXT,
     subtotal NUMERIC,
     tax_amount NUMERIC,
@@ -301,7 +301,9 @@ CREATE TABLE IF NOT EXISTS cash_receipt_items (
     tax_rate NUMERIC(5, 4) DEFAULT 0,
     tax_amount NUMERIC(12, 2) DEFAULT 0,
     total NUMERIC(14, 2) NOT NULL,
-    batch_id TEXT
+    batch_id TEXT,
+    product_name JSONB,
+    UNIQUE (receipt_id, product_id)
 );
 
 -- Purchase Orders
@@ -365,6 +367,7 @@ CREATE TABLE IF NOT EXISTS invoice_line_items (
     tax_amount NUMERIC(12, 2),
     total NUMERIC(14, 2) NOT NULL,
     batch_id TEXT,
+    product_name JSONB,
     UNIQUE (invoice_id)
 );
 
@@ -1063,7 +1066,7 @@ INSERT INTO
         initial_value,
         remaining_value,
         currency,
-        issued_to_customer_id,
+        issued_to_customer,
         issued_by_user_id,
         status,
         notes
@@ -1103,7 +1106,7 @@ VALUES (
 INSERT INTO
     sales_orders (
         ref_id,
-        customer_id,
+        customer,
         seller_id,
         status,
         total_amount,

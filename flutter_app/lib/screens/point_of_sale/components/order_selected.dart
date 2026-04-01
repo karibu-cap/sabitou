@@ -166,7 +166,7 @@ class _CartItemRow extends StatelessWidget {
 
           ShadButton.ghost(
             size: ShadButtonSize.sm,
-            onPressed: () => CartProvider.instance.removeItem(
+            onPressed: () => context.read<CartProvider>().removeItem(
               item.productId,
               batchId: item.batchId,
             ),
@@ -198,7 +198,7 @@ class _QuantityControl extends StatelessWidget {
         _QtyButton(
           icon: LucideIcons.minus,
           enabled: item.quantity > 1,
-          onPressed: () => CartProvider.instance.updateQuantity(
+          onPressed: () => context.read<CartProvider>().updateQuantity(
             item.productId,
             item.quantity - 1,
             batchId: item.batchId,
@@ -215,7 +215,7 @@ class _QuantityControl extends StatelessWidget {
         _QtyButton(
           icon: LucideIcons.plus,
           enabled: true,
-          onPressed: () => CartProvider.instance.updateQuantity(
+          onPressed: () => context.read<CartProvider>().updateQuantity(
             item.productId,
             item.quantity + 1,
             batchId: item.batchId,
