@@ -187,7 +187,7 @@ final class GiftVouchersFields {
   static const String initialValue = 'initial_value';
   static const String remainingValue = 'remaining_value';
   static const String currency = 'currency';
-  static const String issuedToCustomerId = 'issued_to_customer_id';
+  static const String issuedToCustomer = 'issued_to_customer';
   static const String issuedByUserId = 'issued_by_user_id';
   static const String warehouseId = 'warehouse_id';
   static const String status = 'status';
@@ -211,7 +211,7 @@ final class VoucherTransactionsFields {
 final class CashReceiptsFields {
   static const String refId = 'ref_id';
   static const String cashierUserId = 'cashier_user_id';
-  static const String customerId = 'customer_id';
+  static const String customer = 'customer';
   static const String storeId = 'store_id';
   static const String subtotal = 'subtotal';
   static const String taxAmount = 'tax_amount';
@@ -238,11 +238,12 @@ final class CashReceiptItemsFields {
   static const String taxAmount = 'tax_amount';
   static const String total = 'total';
   static const String batchId = 'batch_id';
+  static const String productName = 'product_name';
 }
 
 final class SalesOrders {
   static const String refId = 'ref_id';
-  static const String customerId = 'customer_id';
+  static const String customer = 'customer';
   static const String sellerId = 'seller_id';
   static const String sourceWarehouseAddress = 'source_warehouse_address';
   static const String status = 'status';
@@ -657,7 +658,7 @@ final schema = const Schema([
     Column.real(GiftVouchersFields.initialValue),
     Column.real(GiftVouchersFields.remainingValue),
     Column.text(GiftVouchersFields.currency),
-    Column.text(GiftVouchersFields.issuedToCustomerId),
+    Column.text(GiftVouchersFields.issuedToCustomer),
     Column.text(GiftVouchersFields.issuedByUserId),
     Column.text(GiftVouchersFields.warehouseId),
     Column.text(GiftVouchersFields.status),
@@ -681,7 +682,7 @@ final schema = const Schema([
   Table(CollectionName.cashReceipts, [
     Column.text(CashReceiptsFields.refId),
     Column.text(CashReceiptsFields.cashierUserId),
-    Column.text(CashReceiptsFields.customerId),
+    Column.text(CashReceiptsFields.customer),
     Column.text(CashReceiptsFields.storeId),
     Column.real(CashReceiptsFields.subtotal),
     Column.real(CashReceiptsFields.taxAmount),
@@ -710,6 +711,7 @@ final schema = const Schema([
       Column.real(CashReceiptItemsFields.taxAmount),
       Column.real(CashReceiptItemsFields.total),
       Column.text(CashReceiptItemsFields.batchId),
+      Column.text(CashReceiptItemsFields.productName),
     ],
     indexes: [
       Index('idx_cri_receipt', [
@@ -720,7 +722,7 @@ final schema = const Schema([
 
   Table(CollectionName.salesOrders, [
     Column.text(SalesOrders.refId),
-    Column.text(SalesOrders.customerId),
+    Column.text(SalesOrders.customer),
     Column.text(SalesOrders.sellerId),
     Column.text(SalesOrders.sourceWarehouseAddress),
     Column.text(SalesOrders.status),

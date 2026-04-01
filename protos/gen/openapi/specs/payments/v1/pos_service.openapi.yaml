@@ -14,16 +14,16 @@ paths:
           in: header
           required: true
           schema:
-            $ref: '#/components/schemas/connect-protocol-version'
+            $ref: "#/components/schemas/connect-protocol-version"
         - name: Connect-Timeout-Ms
           in: header
           schema:
-            $ref: '#/components/schemas/connect-timeout-header'
+            $ref: "#/components/schemas/connect-timeout-header"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/payments.v1.CreateCashReceiptRequest'
+              $ref: "#/components/schemas/payments.v1.CreateCashReceiptRequest"
         required: true
       responses:
         default:
@@ -31,13 +31,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/connect.error'
+                $ref: "#/components/schemas/connect.error"
         "200":
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/payments.v1.CreateCashReceiptResponse'
+                $ref: "#/components/schemas/payments.v1.CreateCashReceiptResponse"
   /payments.v1.PointOfSaleService/GetCashierDailySummary:
     post:
       tags:
@@ -50,16 +50,16 @@ paths:
           in: header
           required: true
           schema:
-            $ref: '#/components/schemas/connect-protocol-version'
+            $ref: "#/components/schemas/connect-protocol-version"
         - name: Connect-Timeout-Ms
           in: header
           schema:
-            $ref: '#/components/schemas/connect-timeout-header'
+            $ref: "#/components/schemas/connect-timeout-header"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/payments.v1.GetCashierDailySummaryRequest'
+              $ref: "#/components/schemas/payments.v1.GetCashierDailySummaryRequest"
         required: true
       responses:
         default:
@@ -67,13 +67,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/connect.error'
+                $ref: "#/components/schemas/connect.error"
         "200":
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/payments.v1.GetCashierDailySummaryResponse'
+                $ref: "#/components/schemas/payments.v1.GetCashierDailySummaryResponse"
   /payments.v1.PointOfSaleService/PayWithVoucher:
     post:
       tags:
@@ -86,16 +86,16 @@ paths:
           in: header
           required: true
           schema:
-            $ref: '#/components/schemas/connect-protocol-version'
+            $ref: "#/components/schemas/connect-protocol-version"
         - name: Connect-Timeout-Ms
           in: header
           schema:
-            $ref: '#/components/schemas/connect-timeout-header'
+            $ref: "#/components/schemas/connect-timeout-header"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/payments.v1.PayWithVoucherRequest'
+              $ref: "#/components/schemas/payments.v1.PayWithVoucherRequest"
         required: true
       responses:
         default:
@@ -103,13 +103,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/connect.error'
+                $ref: "#/components/schemas/connect.error"
         "200":
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/payments.v1.PayWithVoucherResponse'
+                $ref: "#/components/schemas/payments.v1.PayWithVoucherResponse"
   /payments.v1.PointOfSaleService/ProcessSaleWithVoucher:
     post:
       tags:
@@ -122,16 +122,16 @@ paths:
           in: header
           required: true
           schema:
-            $ref: '#/components/schemas/connect-protocol-version'
+            $ref: "#/components/schemas/connect-protocol-version"
         - name: Connect-Timeout-Ms
           in: header
           schema:
-            $ref: '#/components/schemas/connect-timeout-header'
+            $ref: "#/components/schemas/connect-timeout-header"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/payments.v1.ProcessSaleWithVoucherRequest'
+              $ref: "#/components/schemas/payments.v1.ProcessSaleWithVoucherRequest"
         required: true
       responses:
         default:
@@ -139,13 +139,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/connect.error'
+                $ref: "#/components/schemas/connect.error"
         "200":
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/payments.v1.ProcessSaleWithVoucherResponse'
+                $ref: "#/components/schemas/payments.v1.ProcessSaleWithVoucherResponse"
 components:
   schemas:
     connect-protocol-version:
@@ -190,17 +190,17 @@ components:
         details:
           type: array
           items:
-            $ref: '#/components/schemas/connect.error_details.Any'
+            $ref: "#/components/schemas/connect.error_details.Any"
           description: A list of messages that carry the error details. There is no limit on the number of messages.
       title: Connect Error
       additionalProperties: true
-      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+      description: "Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation"
     connect.error_details.Any:
       type: object
       properties:
         type:
           type: string
-          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
+          description: "A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field."
         value:
           type: string
           format: binary
@@ -227,7 +227,7 @@ components:
         invoiceType:
           title: invoice_type
           description: Sales or Purchase
-          $ref: '#/components/schemas/financial.v1.InvoiceType'
+          $ref: "#/components/schemas/financial.v1.InvoiceType"
         issuerId:
           type: string
           title: issuer_id
@@ -250,11 +250,11 @@ components:
           description: Optional link
         status:
           title: status
-          $ref: '#/components/schemas/financial.v1.InvoiceStatus'
+          $ref: "#/components/schemas/financial.v1.InvoiceStatus"
         items:
           type: array
           items:
-            $ref: '#/components/schemas/financial.v1.InvoiceLineItem'
+            $ref: "#/components/schemas/financial.v1.InvoiceLineItem"
           title: items
         subtotal:
           type: number
@@ -276,17 +276,17 @@ components:
           title: currency
         issueDate:
           title: issue_date
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
+          $ref: "#/components/schemas/google.protobuf.Timestamp"
         dueDate:
           title: due_date
           description: Payment deadline
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
+          $ref: "#/components/schemas/google.protobuf.Timestamp"
         createdByUserId:
           type: string
           title: created_by_user_id
         createdAt:
           title: created_at
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
+          $ref: "#/components/schemas/google.protobuf.Timestamp"
         paymentIds:
           type: array
           items:
@@ -364,11 +364,11 @@ components:
         batchId:
           type: string
           title: batch_id
-          description: 'Optional: Batch/lot referenced'
+          description: "Optional: Batch/lot referenced"
         productName:
           title: product_name
           description: The name of the item
-          $ref: '#/components/schemas/inventory.v1.Internationalized'
+          $ref: "#/components/schemas/inventory.v1.Internationalized"
       title: InvoiceLineItem
       additionalProperties: false
       description: |-
@@ -516,9 +516,9 @@ components:
           type: string
           title: cashier_user_id
           description: Who processed sale
-        customerId:
+        customer:
           type: string
-          title: customer_id
+          title: customer
           description: Can be null for anonymous
         storeId:
           type: string
@@ -527,7 +527,7 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/financial.v1.InvoiceLineItem'
+            $ref: "#/components/schemas/financial.v1.InvoiceLineItem"
           title: items
         subtotal:
           type: number
@@ -561,7 +561,7 @@ components:
           title: payment_ids
         transactionTime:
           title: transaction_time
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
+          $ref: "#/components/schemas/google.protobuf.Timestamp"
         notes:
           type: string
           title: notes
@@ -581,7 +581,7 @@ components:
          Example - Retail store sale:
            receipt_id: "CASH-2025-001"
            cashier_user_id: "USR-005"
-           customer_id: "CMP-003" (can be null for walk-in)
+           customer: "CMP-003" (can be null for walk-in)
            store_id: "WH-002" (retail store)
            items: [1x PRD-001 @ 450000]
            subtotal: 450000
@@ -602,14 +602,14 @@ components:
           type: string
           title: store_id
           description: Which store/location
-        customerId:
+        customer:
           type: string
-          title: customer_id
+          title: customer
           description: Optional - null for anonymous
         items:
           type: array
           items:
-            $ref: '#/components/schemas/payments.v1.SaleLineItem'
+            $ref: "#/components/schemas/payments.v1.SaleLineItem"
           title: items
         amountPaid:
           type: number
@@ -617,7 +617,7 @@ components:
           format: double
         paymentMethod:
           title: payment_method
-          $ref: '#/components/schemas/payments.v1.PaymentMethod'
+          $ref: "#/components/schemas/payments.v1.PaymentMethod"
         notes:
           type: string
           title: notes
@@ -631,7 +631,7 @@ components:
           title: receipt_id
         receipt:
           title: receipt
-          $ref: '#/components/schemas/payments.v1.CashReceipt'
+          $ref: "#/components/schemas/payments.v1.CashReceipt"
         changeGiven:
           type: number
           title: change_given
@@ -656,7 +656,7 @@ components:
         date:
           title: date
           description: Defaults to today
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
+          $ref: "#/components/schemas/google.protobuf.Timestamp"
       title: GetCashierDailySummaryRequest
       additionalProperties: false
     payments.v1.GetCashierDailySummaryResponse:
@@ -667,7 +667,7 @@ components:
           title: cashier_user_id
         date:
           title: date
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
+          $ref: "#/components/schemas/google.protobuf.Timestamp"
         totalTransactions:
           type: integer
           title: total_transactions
@@ -699,7 +699,7 @@ components:
         receipts:
           type: array
           items:
-            $ref: '#/components/schemas/payments.v1.CashReceipt'
+            $ref: "#/components/schemas/payments.v1.CashReceipt"
           title: receipts
       title: GetCashierDailySummaryResponse
       additionalProperties: false
@@ -729,21 +729,21 @@ components:
           title: currency
         issuedToCustomerId:
           type: string
-          title: issued_to_customer_id
+          title: issued_to_customer
           description: Optional - can be transferred
         issuedByUserId:
           type: string
           title: issued_by_user_id
         status:
           title: status
-          $ref: '#/components/schemas/payments.v1.VoucherStatus'
+          $ref: "#/components/schemas/payments.v1.VoucherStatus"
         issuedAt:
           title: issued_at
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
+          $ref: "#/components/schemas/google.protobuf.Timestamp"
         validUntil:
           title: valid_until
           description: Expiration
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
+          $ref: "#/components/schemas/google.protobuf.Timestamp"
         notes:
           type: string
           title: notes
@@ -762,7 +762,7 @@ components:
            voucher_code: "GIFT-XMAS-12345"
            initial_value: 100000
            remaining_value: 100000
-           issued_to_customer_id: "CMP-003"
+           issued_to_customer: "CMP-003"
            valid_until: 2026-12-31
            status: VOUCHER_STATUS_ACTIVE
     payments.v1.PayWithVoucherRequest:
@@ -781,7 +781,7 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/payments.v1.SaleLineItem'
+            $ref: "#/components/schemas/payments.v1.SaleLineItem"
           title: items
         additionalCashPayment:
           type: number
@@ -790,7 +790,7 @@ components:
           description: If voucher not enough
         additionalPaymentMethod:
           title: additional_payment_method
-          $ref: '#/components/schemas/payments.v1.PaymentMethod'
+          $ref: "#/components/schemas/payments.v1.PaymentMethod"
       title: PayWithVoucherRequest
       additionalProperties: false
     payments.v1.PayWithVoucherResponse:
@@ -801,13 +801,13 @@ components:
           title: receipt_id
         receipt:
           title: receipt
-          $ref: '#/components/schemas/payments.v1.CashReceipt'
+          $ref: "#/components/schemas/payments.v1.CashReceipt"
         voucherTransactionId:
           type: string
           title: voucher_transaction_id
         voucherTransaction:
           title: voucher_transaction
-          $ref: '#/components/schemas/payments.v1.VoucherTransaction'
+          $ref: "#/components/schemas/payments.v1.VoucherTransaction"
         voucherAmountUsed:
           type: number
           title: voucher_amount_used
@@ -849,17 +849,17 @@ components:
           title: currency
         paymentMethod:
           title: payment_method
-          $ref: '#/components/schemas/payments.v1.PaymentMethod'
+          $ref: "#/components/schemas/payments.v1.PaymentMethod"
         status:
           title: status
-          $ref: '#/components/schemas/payments.v1.PaymentStatus'
+          $ref: "#/components/schemas/payments.v1.PaymentStatus"
         relatedInvoiceId:
           type: string
           title: related_invoice_id
           description: Which invoice this pays
         paymentDate:
           title: payment_date
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
+          $ref: "#/components/schemas/google.protobuf.Timestamp"
         referenceNumber:
           type: string
           title: reference_number
@@ -918,14 +918,14 @@ components:
         storeId:
           type: string
           title: store_id
-        customerId:
+        customer:
           type: string
-          title: customer_id
+          title: customer
           description: Optional
         items:
           type: array
           items:
-            $ref: '#/components/schemas/payments.v1.SaleLineItem'
+            $ref: "#/components/schemas/payments.v1.SaleLineItem"
           title: items
         amountPaid:
           type: number
@@ -934,7 +934,7 @@ components:
           description: Amount customer gave (more than total)
         paymentMethod:
           title: payment_method
-          $ref: '#/components/schemas/payments.v1.PaymentMethod'
+          $ref: "#/components/schemas/payments.v1.PaymentMethod"
         changeShortage:
           type: number
           title: change_shortage
@@ -953,19 +953,19 @@ components:
           title: invoice_id
         invoice:
           title: invoice
-          $ref: '#/components/schemas/financial.v1.Invoice'
+          $ref: "#/components/schemas/financial.v1.Invoice"
         paymentId:
           type: string
           title: payment_id
         payment:
           title: payment
-          $ref: '#/components/schemas/payments.v1.Payment'
+          $ref: "#/components/schemas/payments.v1.Payment"
         voucherId:
           type: string
           title: voucher_id
         voucher:
           title: voucher
-          $ref: '#/components/schemas/payments.v1.GiftVoucher'
+          $ref: "#/components/schemas/payments.v1.GiftVoucher"
         voucherCode:
           type: string
           title: voucher_code
@@ -1035,7 +1035,7 @@ components:
           format: double
         usedAt:
           title: used_at
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
+          $ref: "#/components/schemas/google.protobuf.Timestamp"
         usedByUserId:
           type: string
           title: used_by_user_id

@@ -14,16 +14,16 @@ class PurchaseOrderDetailController extends ChangeNotifier {
   /// Creates a new [PurchaseOrderDetailController].
   PurchaseOrderDetailController({
     required this.purchaseOrderId,
-    required this.storeId,
+    required this.store,
   }) : _viewModel = PurchaseOrderDetailViewModel(
          purchaseOrderId: purchaseOrderId,
-         storeId: storeId,
+         storeId: store.refId,
        );
 
   final PurchaseOrderDetailViewModel _viewModel;
 
-  /// The ID of the store to which this PO belongs.
-  final String storeId;
+  /// The store to which this PO belongs.
+  final Store store;
 
   /// The ID of the purchase order being viewed.
   final String purchaseOrderId;
@@ -129,7 +129,7 @@ class PurchaseOrderDetailController extends ChangeNotifier {
     final due = dueDate ?? DateTime.now().add(const Duration(days: 30));
 
     final request = Bill(
-      storeId: storeId,
+      storeId: store.refId,
       supplierId: purchaseOrder.supplierId,
       relatedPurchaseOrderId: purchaseOrder.refId,
       items: items,
@@ -176,7 +176,7 @@ class PurchaseOrderDetailController extends ChangeNotifier {
   Future<void> _syncPOStatus() async {
     await PurchaseOrderRepository.instance.syncPOStatusFromBills(
       purchaseOrderId: purchaseOrderId,
-      storeId: storeId,
+      storeId: store.refId,
     );
   }
 

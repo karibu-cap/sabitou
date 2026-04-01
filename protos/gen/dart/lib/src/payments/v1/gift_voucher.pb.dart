@@ -33,7 +33,7 @@ export 'gift_voucher.pbenum.dart';
 ///    voucher_code: "GIFT-XMAS-12345"
 ///    initial_value: 100000
 ///    remaining_value: 100000
-///    issued_to_customer_id: "CMP-003"
+///    issued_to_customer: "CMP-003"
 ///    valid_until: 2026-12-31
 ///    status: VOUCHER_STATUS_ACTIVE
 class GiftVoucher extends $pb.GeneratedMessage {
@@ -43,7 +43,7 @@ class GiftVoucher extends $pb.GeneratedMessage {
     $core.double? initialValue,
     $core.double? remainingValue,
     $core.String? currency,
-    $core.String? issuedToCustomerId,
+    $core.String? issuedToCustomer,
     $core.String? issuedByUserId,
     $core.String? warehouseId,
     VoucherStatus? status,
@@ -57,8 +57,7 @@ class GiftVoucher extends $pb.GeneratedMessage {
     if (initialValue != null) result.initialValue = initialValue;
     if (remainingValue != null) result.remainingValue = remainingValue;
     if (currency != null) result.currency = currency;
-    if (issuedToCustomerId != null)
-      result.issuedToCustomerId = issuedToCustomerId;
+    if (issuedToCustomer != null) result.issuedToCustomer = issuedToCustomer;
     if (issuedByUserId != null) result.issuedByUserId = issuedByUserId;
     if (warehouseId != null) result.warehouseId = warehouseId;
     if (status != null) result.status = status;
@@ -88,7 +87,7 @@ class GiftVoucher extends $pb.GeneratedMessage {
     ..a<$core.double>(
         4, _omitFieldNames ? '' : 'remainingValue', $pb.PbFieldType.OD)
     ..aOS(5, _omitFieldNames ? '' : 'currency')
-    ..aOS(6, _omitFieldNames ? '' : 'issuedToCustomerId')
+    ..aOS(6, _omitFieldNames ? '' : 'issuedToCustomer')
     ..aOS(7, _omitFieldNames ? '' : 'issuedByUserId')
     ..aOS(8, _omitFieldNames ? '' : 'warehouseId')
     ..e<VoucherStatus>(9, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE,
@@ -173,13 +172,13 @@ class GiftVoucher extends $pb.GeneratedMessage {
 
   /// Optional - can be transferred
   @$pb.TagNumber(6)
-  $core.String get issuedToCustomerId => $_getSZ(5);
+  $core.String get issuedToCustomer => $_getSZ(5);
   @$pb.TagNumber(6)
-  set issuedToCustomerId($core.String value) => $_setString(5, value);
+  set issuedToCustomer($core.String value) => $_setString(5, value);
   @$pb.TagNumber(6)
-  $core.bool hasIssuedToCustomerId() => $_has(5);
+  $core.bool hasIssuedToCustomer() => $_has(5);
   @$pb.TagNumber(6)
-  void clearIssuedToCustomerId() => $_clearField(6);
+  void clearIssuedToCustomer() => $_clearField(6);
 
   @$pb.TagNumber(7)
   $core.String get issuedByUserId => $_getSZ(6);
@@ -576,14 +575,14 @@ class GetVoucherResponse extends $pb.GeneratedMessage {
 class ListVouchersRequest extends $pb.GeneratedMessage {
   factory ListVouchersRequest({
     $core.String? warehouseId,
-    $core.String? customerId,
+    $core.String? customer,
     $0.Timestamp? issuedAfter,
     $core.int? pageSize,
     $core.int? pageNumber,
   }) {
     final result = create();
     if (warehouseId != null) result.warehouseId = warehouseId;
-    if (customerId != null) result.customerId = customerId;
+    if (customer != null) result.customer = customer;
     if (issuedAfter != null) result.issuedAfter = issuedAfter;
     if (pageSize != null) result.pageSize = pageSize;
     if (pageNumber != null) result.pageNumber = pageNumber;
@@ -604,7 +603,7 @@ class ListVouchersRequest extends $pb.GeneratedMessage {
       package: const $pb.PackageName(_omitMessageNames ? '' : 'payments.v1'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'warehouseId')
-    ..aOS(2, _omitFieldNames ? '' : 'customerId')
+    ..aOS(2, _omitFieldNames ? '' : 'customer')
     ..aOM<$0.Timestamp>(3, _omitFieldNames ? '' : 'issuedAfter',
         subBuilder: $0.Timestamp.create)
     ..a<$core.int>(4, _omitFieldNames ? '' : 'pageSize', $pb.PbFieldType.O3)
@@ -642,13 +641,13 @@ class ListVouchersRequest extends $pb.GeneratedMessage {
   void clearWarehouseId() => $_clearField(1);
 
   @$pb.TagNumber(2)
-  $core.String get customerId => $_getSZ(1);
+  $core.String get customer => $_getSZ(1);
   @$pb.TagNumber(2)
-  set customerId($core.String value) => $_setString(1, value);
+  set customer($core.String value) => $_setString(1, value);
   @$pb.TagNumber(2)
-  $core.bool hasCustomerId() => $_has(1);
+  $core.bool hasCustomer() => $_has(1);
   @$pb.TagNumber(2)
-  void clearCustomerId() => $_clearField(2);
+  void clearCustomer() => $_clearField(2);
 
   @$pb.TagNumber(3)
   $0.Timestamp get issuedAfter => $_getN(2);

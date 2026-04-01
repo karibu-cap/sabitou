@@ -18,7 +18,7 @@ import "payments/v1/payments.proto";
  *
  * Example:
  *   so_id: "SO-2025-001"
- *   customer_id: "CMP-003"
+ *   customer: "CMP-003"
  *   seller_id: "CMP-001" (your company)
  *   status: SO_STATUS_CONFIRMED
  *   items: [10x PRD-001 @ 450000 each]
@@ -26,7 +26,7 @@ import "payments/v1/payments.proto";
 message SalesOrder {
   string ref_id = 1 [(buf.validate.field).required = true]; // "SO-2025-001"
   // Company buying from you
-  string customer_id = 2;
+  string customer = 2;
   // Your company
   string seller_id = 3;
   // Where to pick items
@@ -52,7 +52,7 @@ enum SalesOrderStatus {
 }
 
 message CreateSalesOrderRequest {
-  string customer_id = 1;
+  string customer = 1;
   string seller_id = 2; // Your company
   string source_warehouse_address = 3;
   repeated OrderLineItem items = 4;
@@ -81,7 +81,7 @@ message GetSalesOrderResponse {
 }
 
 message ListSalesOrdersRequest {
-  string customer_id = 1; // Filter by customer
+  string customer = 1; // Filter by customer
   SalesOrderStatus status = 2; // Filter by status
   google.protobuf.Timestamp start_date = 3;
   google.protobuf.Timestamp end_date = 4;

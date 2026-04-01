@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:printing/printing.dart';
+import 'package:provider/provider.dart';
 import 'package:sabitou_rpc/models.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+import '../../../core/doc_engine/core/engine.dart';
+import '../../../core/doc_engine/templates/cash_receipt_template.dart';
+import '../../../repositories/payments_repository.dart';
 import '../../../services/internationalization/internationalization.dart';
+import '../../../themes/app_theme.dart';
 import '../../../utils/extensions/global_product_extension.dart';
 import '../../../utils/formatters.dart';
-import '../../../utils/user_preference.dart';
-import '../../../widgets/pdf/common/pdf_format.dart';
-import '../../../widgets/pdf/template/pos_template.dart';
+import '../cash_recipe_controller.dart';
 
 /// A beautiful card widget to display cash receipt information in a grid layout
 class CashReceiptCard extends StatelessWidget {
@@ -21,8 +23,21 @@ class CashReceiptCard extends StatelessWidget {
   /// Constructor for CashReceiptCard
   const CashReceiptCard({super.key, required this.cashReceipt, this.onTap});
 
+  Color _getStatusColor() {
+    if (cashReceipt.hasOwedToCustomer() && cashReceipt.owedToCustomer > 0) {
+      return SabitouColors.orange;
+    }
+    if (cashReceipt.hasAmountPaid() && cashReceipt.amountPaid > 0) {
+      return SabitouColors.success;
+    }
+
+    return SabitouColors.infoText;
+  }
+
   @override
   Widget build(BuildContext context) {
+    print(cashReceipt);
+
     return ShadCard(
       padding: const EdgeInsets.all(16),
       child: InkWell(
@@ -51,7 +66,7 @@ class CashReceiptCard extends StatelessWidget {
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                _formatDate(
+                                Formatters.fmtDate(
                                   cashReceipt.transactionTime.toDateTime(),
                                 ),
                                 style: ShadTheme.of(
@@ -103,7 +118,7 @@ class CashReceiptCard extends StatelessWidget {
                             ],
                           ),
                         ),
-                        if (cashReceipt.hasCustomerId()) ...[
+                        if (cashReceipt.hasCustomer()) ...[
                           const SizedBox(width: 8),
                           Expanded(
                             child: Row(
@@ -117,7 +132,7 @@ class CashReceiptCard extends StatelessWidget {
                                 ),
                                 const SizedBox(width: 4),
                                 Text(
-                                  cashReceipt.customerId,
+                                  cashReceipt.customer,
                                   style: ShadTheme.of(
                                     context,
                                   ).textTheme.muted.copyWith(fontSize: 11),
@@ -273,6 +288,78 @@ class CashReceiptCard extends StatelessWidget {
                             ],
                           ),
                         ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              Intls.to.amountReceived,
+                              style: ShadTheme.of(
+                                context,
+                              ).textTheme.muted.copyWith(fontSize: 12),
+                            ),
+                            Text(
+                              Formatters.formatCurrency(cashReceipt.amountPaid),
+                              style: ShadTheme.of(
+                                context,
+                              ).textTheme.p.copyWith(fontSize: 12),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              Intls.to.changeGiven,
+                              style: ShadTheme.of(
+                                context,
+                              ).textTheme.muted.copyWith(fontSize: 12),
+                            ),
+                            Text(
+                              Formatters.formatCurrency(
+                                cashReceipt.changeGiven,
+                              ),
+                              style: ShadTheme.of(
+                                context,
+                              ).textTheme.p.copyWith(fontSize: 12),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              Intls.to.remainAmountDu,
+                              style: ShadTheme.of(
+                                context,
+                              ).textTheme.muted.copyWith(fontSize: 12),
+                            ),
+                            Text(
+                              Formatters.formatCurrency(
+                                cashReceipt.owedToCustomer,
+                              ),
+                              style: ShadTheme.of(
+                                context,
+                              ).textTheme.p.copyWith(fontSize: 12),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              Intls.to.voucher,
+                              style: ShadTheme.of(
+                                context,
+                              ).textTheme.muted.copyWith(fontSize: 12),
+                            ),
+                            Text(
+                              cashReceipt.voucherIssuedCode,
+                              style: ShadTheme.of(
+                                context,
+                              ).textTheme.p.copyWith(fontSize: 12),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                     const SizedBox(height: 16),
@@ -280,89 +367,69 @@ class CashReceiptCard extends StatelessWidget {
                 ),
               ),
             ),
-            Row(
-              children: [
-                Expanded(
-                  child: ShadButton.outline(
-                    size: ShadButtonSize.sm,
-                    onPressed: () => _showReceiptPreview(context),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(LucideIcons.eye, size: 14),
-                        const SizedBox(width: 4),
-                        Text(AppInternationalizationService.to.preview),
-                      ],
+            FutureBuilder(
+              future: PaymentsRepository.instance.getGroupOfPayments(
+                cashReceipt.paymentIds,
+              ),
+              builder: (context, asyncSnapshot) {
+                final listOfPayments = asyncSnapshot.data ?? [];
+                if (listOfPayments.isEmpty) {
+                  return const SizedBox.shrink();
+                }
+
+                final cashDoc = CashReceiptDoc(
+                  data: cashReceipt,
+                  payments: listOfPayments,
+                );
+
+                return Row(
+                  children: [
+                    Expanded(
+                      child: ShadButton.outline(
+                        size: ShadButtonSize.sm,
+                        onPressed: () =>
+                            SabitouDocEngine.instance.download<CashReceiptDoc>(
+                              cashDoc,
+                              context.read<CashRecipeController>().store,
+                              filename: cashReceipt.refId,
+                            ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(LucideIcons.download, size: 14),
+                            const SizedBox(width: 4),
+                            Text(AppInternationalizationService.to.downloadPDF),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: ShadButton(
-                    size: ShadButtonSize.sm,
-                    onPressed: () => _printReceipt(context),
-                    child: const Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(LucideIcons.printer, size: 14),
-                        SizedBox(width: 4),
-                        Text('Print'),
-                      ],
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: ShadButton(
+                        size: ShadButtonSize.sm,
+                        onPressed: () =>
+                            SabitouDocEngine.instance.print<CashReceiptDoc>(
+                              cashDoc,
+                              context.read<CashRecipeController>().store,
+                              jobName: cashReceipt.refId,
+                            ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(LucideIcons.printer, size: 14),
+                            const SizedBox(width: 4),
+                            Text(Intls.to.print),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              ],
+                  ],
+                );
+              },
             ),
           ],
         ),
       ),
     );
-  }
-
-  Future<void> _showReceiptPreview(BuildContext context) async {
-    showDialog(
-      context: context,
-      builder: (context) => Dialog(
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width * 0.8,
-          height: MediaQuery.of(context).size.height * 0.8,
-          child: PdfPreview(
-            build: (format) async {
-              final store = UserPreferences.instance.store;
-              if (store == null) {
-                throw Exception('Store information not available');
-              }
-              final posTemplate = PosTemplate(
-                cashReceipt: cashReceipt,
-                store: store,
-              );
-
-              return posTemplate.buildPdfInvoiceMini(PdfMode.TICKET);
-            },
-          ),
-        ),
-      ),
-    );
-  }
-
-  void _printReceipt(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Print functionality will be implemented')),
-    );
-  }
-
-  String _formatDate(DateTime date) {
-    return DateFormat('dd/MM/yyyy HH:mm', Intl.getCurrentLocale()).format(date);
-  }
-
-  Color _getStatusColor() {
-    if (cashReceipt.hasOwedToCustomer() && cashReceipt.owedToCustomer > 0) {
-      return Colors.orange;
-    }
-    if (cashReceipt.hasAmountPaid() && cashReceipt.amountPaid > 0) {
-      return Colors.green;
-    }
-
-    return Colors.blue;
   }
 }

@@ -36,7 +36,7 @@ export 'cash_receipt.pbenum.dart';
 ///  Example - Retail store sale:
 ///    receipt_id: "CASH-2025-001"
 ///    cashier_user_id: "USR-005"
-///    customer_id: "CMP-003" (can be null for walk-in)
+///    customer: "CMP-003" (can be null for walk-in)
 ///    store_id: "WH-002" (retail store)
 ///    items: [1x PRD-001 @ 450000]
 ///    subtotal: 450000
@@ -51,7 +51,7 @@ class CashReceipt extends $pb.GeneratedMessage {
   factory CashReceipt({
     $core.String? refId,
     $core.String? cashierUserId,
-    $core.String? customerId,
+    $core.String? customer,
     $core.String? storeId,
     $core.Iterable<$0.InvoiceLineItem>? items,
     $core.double? subtotal,
@@ -70,7 +70,7 @@ class CashReceipt extends $pb.GeneratedMessage {
     final result = create();
     if (refId != null) result.refId = refId;
     if (cashierUserId != null) result.cashierUserId = cashierUserId;
-    if (customerId != null) result.customerId = customerId;
+    if (customer != null) result.customer = customer;
     if (storeId != null) result.storeId = storeId;
     if (items != null) result.items.addAll(items);
     if (subtotal != null) result.subtotal = subtotal;
@@ -103,7 +103,7 @@ class CashReceipt extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'refId')
     ..aOS(2, _omitFieldNames ? '' : 'cashierUserId')
-    ..aOS(3, _omitFieldNames ? '' : 'customerId')
+    ..aOS(3, _omitFieldNames ? '' : 'customer')
     ..aOS(4, _omitFieldNames ? '' : 'storeId')
     ..pc<$0.InvoiceLineItem>(
         5, _omitFieldNames ? '' : 'items', $pb.PbFieldType.PM,
@@ -173,13 +173,13 @@ class CashReceipt extends $pb.GeneratedMessage {
 
   /// Can be null for anonymous
   @$pb.TagNumber(3)
-  $core.String get customerId => $_getSZ(2);
+  $core.String get customer => $_getSZ(2);
   @$pb.TagNumber(3)
-  set customerId($core.String value) => $_setString(2, value);
+  set customer($core.String value) => $_setString(2, value);
   @$pb.TagNumber(3)
-  $core.bool hasCustomerId() => $_has(2);
+  $core.bool hasCustomer() => $_has(2);
   @$pb.TagNumber(3)
-  void clearCustomerId() => $_clearField(3);
+  void clearCustomer() => $_clearField(3);
 
   /// Which location/store
   @$pb.TagNumber(4)

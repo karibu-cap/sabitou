@@ -105,6 +105,7 @@ Future<bool?> showConvertToBillSheet(
   required PurchaseOrder po,
   required List<ReceivingNote> receivingNotes,
   required List<Bill> existingBills,
+  required PurchaseOrderDetailController ctrl,
 }) async {
   final allReceivingNotesBilled = _areAllReceivingNotesBilled(
     receivingNotes,
@@ -125,10 +126,7 @@ Future<bool?> showConvertToBillSheet(
     return showShadDialog<bool?>(
       context: context,
       builder: (context) => ChangeNotifierProvider.value(
-        value: Provider.of<PurchaseOrderDetailController>(
-          context,
-          listen: false,
-        ),
+        value: ctrl,
         child: _ConvertToBillDialog(
           po: po,
           receivingNotes: receivingNotes,
@@ -143,7 +141,7 @@ Future<bool?> showConvertToBillSheet(
     isScrollControlled: true,
     backgroundColor: Colors.transparent,
     builder: (_) => ChangeNotifierProvider.value(
-      value: Provider.of<PurchaseOrderDetailController>(context, listen: false),
+      value: ctrl,
       child: _ConvertToBillSheet(
         po: po,
         receivingNotes: receivingNotes,

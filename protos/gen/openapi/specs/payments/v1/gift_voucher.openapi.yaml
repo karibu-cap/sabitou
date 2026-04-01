@@ -14,16 +14,16 @@ paths:
           in: header
           required: true
           schema:
-            $ref: '#/components/schemas/connect-protocol-version'
+            $ref: "#/components/schemas/connect-protocol-version"
         - name: Connect-Timeout-Ms
           in: header
           schema:
-            $ref: '#/components/schemas/connect-timeout-header'
+            $ref: "#/components/schemas/connect-timeout-header"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/payments.v1.GetVoucherRequest'
+              $ref: "#/components/schemas/payments.v1.GetVoucherRequest"
         required: true
       responses:
         default:
@@ -31,13 +31,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/connect.error'
+                $ref: "#/components/schemas/connect.error"
         "200":
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/payments.v1.GetVoucherResponse'
+                $ref: "#/components/schemas/payments.v1.GetVoucherResponse"
   /payments.v1.GiftVoucherService/ListVouchers:
     post:
       tags:
@@ -50,16 +50,16 @@ paths:
           in: header
           required: true
           schema:
-            $ref: '#/components/schemas/connect-protocol-version'
+            $ref: "#/components/schemas/connect-protocol-version"
         - name: Connect-Timeout-Ms
           in: header
           schema:
-            $ref: '#/components/schemas/connect-timeout-header'
+            $ref: "#/components/schemas/connect-timeout-header"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/payments.v1.ListVouchersRequest'
+              $ref: "#/components/schemas/payments.v1.ListVouchersRequest"
         required: true
       responses:
         default:
@@ -67,13 +67,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/connect.error'
+                $ref: "#/components/schemas/connect.error"
         "200":
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/payments.v1.ListVouchersResponse'
+                $ref: "#/components/schemas/payments.v1.ListVouchersResponse"
   /payments.v1.GiftVoucherService/ValidateVoucher:
     post:
       tags:
@@ -86,16 +86,16 @@ paths:
           in: header
           required: true
           schema:
-            $ref: '#/components/schemas/connect-protocol-version'
+            $ref: "#/components/schemas/connect-protocol-version"
         - name: Connect-Timeout-Ms
           in: header
           schema:
-            $ref: '#/components/schemas/connect-timeout-header'
+            $ref: "#/components/schemas/connect-timeout-header"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/payments.v1.ValidateVoucherRequest'
+              $ref: "#/components/schemas/payments.v1.ValidateVoucherRequest"
         required: true
       responses:
         default:
@@ -103,13 +103,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/connect.error'
+                $ref: "#/components/schemas/connect.error"
         "200":
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/payments.v1.ValidateVoucherResponse'
+                $ref: "#/components/schemas/payments.v1.ValidateVoucherResponse"
 components:
   schemas:
     audits.v1.VoucherTransaction:
@@ -140,7 +140,7 @@ components:
           format: double
         usedAt:
           title: used_at
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
+          $ref: "#/components/schemas/google.protobuf.Timestamp"
         usedByUserId:
           type: string
           title: used_by_user_id
@@ -200,17 +200,17 @@ components:
         details:
           type: array
           items:
-            $ref: '#/components/schemas/connect.error_details.Any'
+            $ref: "#/components/schemas/connect.error_details.Any"
           description: A list of messages that carry the error details. There is no limit on the number of messages.
       title: Connect Error
       additionalProperties: true
-      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+      description: "Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation"
     connect.error_details.Any:
       type: object
       properties:
         type:
           type: string
-          description: 'A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field.'
+          description: "A URL that acts as a globally unique identifier for the type of the serialized message. For example: `type.googleapis.com/google.rpc.ErrorInfo`. This is used to determine the schema of the data in the `value` field and is the discriminator for the `debug` field."
         value:
           type: string
           format: binary
@@ -347,11 +347,11 @@ components:
       properties:
         voucher:
           title: voucher
-          $ref: '#/components/schemas/payments.v1.GiftVoucher'
+          $ref: "#/components/schemas/payments.v1.GiftVoucher"
         transactions:
           type: array
           items:
-            $ref: '#/components/schemas/audits.v1.VoucherTransaction'
+            $ref: "#/components/schemas/audits.v1.VoucherTransaction"
           title: transactions
           description: Usage history.
       title: GetVoucherResponse
@@ -382,7 +382,7 @@ components:
           title: currency
         issuedToCustomerId:
           type: string
-          title: issued_to_customer_id
+          title: issued_to_customer
           description: Optional - can be transferred
           nullable: true
         issuedByUserId:
@@ -394,13 +394,13 @@ components:
           description: Warehouse where the voucher was issued
         status:
           title: status
-          $ref: '#/components/schemas/payments.v1.VoucherStatus'
+          $ref: "#/components/schemas/payments.v1.VoucherStatus"
         issuedAt:
           title: issued_at
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
+          $ref: "#/components/schemas/google.protobuf.Timestamp"
         validUntil:
           title: valid_until
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
+          $ref: "#/components/schemas/google.protobuf.Timestamp"
         notes:
           type: string
           title: notes
@@ -420,7 +420,7 @@ components:
            voucher_code: "GIFT-XMAS-12345"
            initial_value: 100000
            remaining_value: 100000
-           issued_to_customer_id: "CMP-003"
+           issued_to_customer: "CMP-003"
            valid_until: 2026-12-31
            status: VOUCHER_STATUS_ACTIVE
     payments.v1.ListVouchersRequest:
@@ -429,14 +429,14 @@ components:
         warehouseId:
           type: string
           title: warehouse_id
-        customerId:
+        customer:
           type: string
-          title: customer_id
+          title: customer
           nullable: true
         issuedAfter:
           title: issued_after
           nullable: true
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
+          $ref: "#/components/schemas/google.protobuf.Timestamp"
         pageSize:
           type: integer
           title: page_size
@@ -453,7 +453,7 @@ components:
         vouchers:
           type: array
           items:
-            $ref: '#/components/schemas/payments.v1.GiftVoucher'
+            $ref: "#/components/schemas/payments.v1.GiftVoucher"
           title: vouchers
         totalCount:
           type: integer
@@ -488,10 +488,10 @@ components:
           format: double
         validUntil:
           title: valid_until
-          $ref: '#/components/schemas/google.protobuf.Timestamp'
+          $ref: "#/components/schemas/google.protobuf.Timestamp"
         status:
           title: status
-          $ref: '#/components/schemas/payments.v1.VoucherStatus'
+          $ref: "#/components/schemas/payments.v1.VoucherStatus"
         message:
           type: string
           title: message

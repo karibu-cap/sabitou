@@ -97,7 +97,7 @@ func (SalesOrderStatus) EnumDescriptor() ([]byte, []int) {
 // Example:
 //
 //	so_id: "SO-2025-001"
-//	customer_id: "CMP-003"
+//	customer: "CMP-003"
 //	seller_id: "CMP-001" (your company)
 //	status: SO_STATUS_CONFIRMED
 //	items: [10x PRD-001 @ 450000 each]
@@ -105,7 +105,7 @@ type SalesOrder struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	RefId string                 `protobuf:"bytes,1,opt,name=ref_id,json=refId,proto3" json:"ref_id,omitempty"` // "SO-2025-001"
 	// Company buying from you
-	CustomerId string `protobuf:"bytes,2,opt,name=customer_id,json=customerId,proto3" json:"customer_id,omitempty"`
+	Customer string `protobuf:"bytes,2,opt,name=customer,proto3" json:"customer,omitempty"`
 	// Your company
 	SellerId string `protobuf:"bytes,3,opt,name=seller_id,json=sellerId,proto3" json:"seller_id,omitempty"`
 	// Where to pick items
@@ -159,9 +159,9 @@ func (x *SalesOrder) GetRefId() string {
 	return ""
 }
 
-func (x *SalesOrder) GetCustomerId() string {
+func (x *SalesOrder) GetCustomer() string {
 	if x != nil {
-		return x.CustomerId
+		return x.Customer
 	}
 	return ""
 }
@@ -238,7 +238,7 @@ func (x *SalesOrder) GetNotes() string {
 
 type CreateSalesOrderRequest struct {
 	state                  protoimpl.MessageState `protogen:"open.v1"`
-	CustomerId             string                 `protobuf:"bytes,1,opt,name=customer_id,json=customerId,proto3" json:"customer_id,omitempty"`
+	Customer               string                 `protobuf:"bytes,1,opt,name=customer,proto3" json:"customer,omitempty"`
 	SellerId               string                 `protobuf:"bytes,2,opt,name=seller_id,json=sellerId,proto3" json:"seller_id,omitempty"` // Your company
 	SourceWarehouseAddress string                 `protobuf:"bytes,3,opt,name=source_warehouse_address,json=sourceWarehouseAddress,proto3" json:"source_warehouse_address,omitempty"`
 	Items                  []*OrderLineItem       `protobuf:"bytes,4,rep,name=items,proto3" json:"items,omitempty"`
@@ -279,9 +279,9 @@ func (*CreateSalesOrderRequest) Descriptor() ([]byte, []int) {
 	return file_order_v1_sales_order_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *CreateSalesOrderRequest) GetCustomerId() string {
+func (x *CreateSalesOrderRequest) GetCustomer() string {
 	if x != nil {
-		return x.CustomerId
+		return x.Customer
 	}
 	return ""
 }
@@ -518,7 +518,7 @@ func (x *GetSalesOrderResponse) GetPayments() []*v12.Payment {
 
 type ListSalesOrdersRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	CustomerId    string                 `protobuf:"bytes,1,opt,name=customer_id,json=customerId,proto3" json:"customer_id,omitempty"`       // Filter by customer
+	Customer      string                 `protobuf:"bytes,1,opt,name=customer,proto3" json:"customer,omitempty"`                             // Filter by customer
 	Status        SalesOrderStatus       `protobuf:"varint,2,opt,name=status,proto3,enum=order.v1.SalesOrderStatus" json:"status,omitempty"` // Filter by status
 	StartDate     *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=start_date,json=startDate,proto3" json:"start_date,omitempty"`
 	EndDate       *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=end_date,json=endDate,proto3" json:"end_date,omitempty"`
@@ -558,9 +558,9 @@ func (*ListSalesOrdersRequest) Descriptor() ([]byte, []int) {
 	return file_order_v1_sales_order_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *ListSalesOrdersRequest) GetCustomerId() string {
+func (x *ListSalesOrdersRequest) GetCustomer() string {
 	if x != nil {
-		return x.CustomerId
+		return x.Customer
 	}
 	return ""
 }
@@ -1176,12 +1176,11 @@ var File_order_v1_sales_order_proto protoreflect.FileDescriptor
 
 const file_order_v1_sales_order_proto_rawDesc = "" +
 	"\n" +
-	"\x1aorder/v1/sales_order.proto\x12\border.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1afinancial/v1/invoice.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a logistic/v1/delivery_notes.proto\x1a\x1aorder/v1/order_utils.proto\x1a\x1apayments/v1/payments.proto\"\xbc\x04\n" +
+	"\x1aorder/v1/sales_order.proto\x12\border.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1afinancial/v1/invoice.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a logistic/v1/delivery_notes.proto\x1a\x1aorder/v1/order_utils.proto\x1a\x1apayments/v1/payments.proto\"\xb7\x04\n" +
 	"\n" +
 	"SalesOrder\x12\x1d\n" +
-	"\x06ref_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x05refId\x12\x1f\n" +
-	"\vcustomer_id\x18\x02 \x01(\tR\n" +
-	"customerId\x12\x1b\n" +
+	"\x06ref_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x05refId\x12\x1a\n" +
+	"\bcustomer\x18\x02 \x01(\tR\bcustomer\x12\x1b\n" +
 	"\tseller_id\x18\x03 \x01(\tR\bsellerId\x128\n" +
 	"\x18source_warehouse_address\x18\x04 \x01(\tR\x16sourceWarehouseAddress\x122\n" +
 	"\x06status\x18\x05 \x01(\x0e2\x1a.order.v1.SalesOrderStatusR\x06status\x12-\n" +
@@ -1196,10 +1195,9 @@ const file_order_v1_sales_order_proto_rawDesc = "" +
 	"\x05notes\x18\f \x01(\tH\x02R\x05notes\x88\x01\x01B\v\n" +
 	"\t_currencyB\x10\n" +
 	"\x0e_delivery_dateB\b\n" +
-	"\x06_notes\"\xd3\x02\n" +
-	"\x17CreateSalesOrderRequest\x12\x1f\n" +
-	"\vcustomer_id\x18\x01 \x01(\tR\n" +
-	"customerId\x12\x1b\n" +
+	"\x06_notes\"\xce\x02\n" +
+	"\x17CreateSalesOrderRequest\x12\x1a\n" +
+	"\bcustomer\x18\x01 \x01(\tR\bcustomer\x12\x1b\n" +
 	"\tseller_id\x18\x02 \x01(\tR\bsellerId\x128\n" +
 	"\x18source_warehouse_address\x18\x03 \x01(\tR\x16sourceWarehouseAddress\x12-\n" +
 	"\x05items\x18\x04 \x03(\v2\x17.order.v1.OrderLineItemR\x05items\x12?\n" +
@@ -1221,10 +1219,9 @@ const file_order_v1_sales_order_proto_rawDesc = "" +
 	"salesOrder\x12@\n" +
 	"\x0edelivery_notes\x18\x02 \x03(\v2\x19.logistic.v1.DeliveryNoteR\rdeliveryNotes\x121\n" +
 	"\binvoices\x18\x03 \x03(\v2\x15.financial.v1.InvoiceR\binvoices\x120\n" +
-	"\bpayments\x18\x04 \x03(\v2\x14.payments.v1.PaymentR\bpayments\"\x9d\x02\n" +
-	"\x16ListSalesOrdersRequest\x12\x1f\n" +
-	"\vcustomer_id\x18\x01 \x01(\tR\n" +
-	"customerId\x122\n" +
+	"\bpayments\x18\x04 \x03(\v2\x14.payments.v1.PaymentR\bpayments\"\x98\x02\n" +
+	"\x16ListSalesOrdersRequest\x12\x1a\n" +
+	"\bcustomer\x18\x01 \x01(\tR\bcustomer\x122\n" +
 	"\x06status\x18\x02 \x01(\x0e2\x1a.order.v1.SalesOrderStatusR\x06status\x129\n" +
 	"\n" +
 	"start_date\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\tstartDate\x125\n" +

@@ -93,7 +93,7 @@ func (VoucherStatus) EnumDescriptor() ([]byte, []int) {
 //	voucher_code: "GIFT-XMAS-12345"
 //	initial_value: 100000
 //	remaining_value: 100000
-//	issued_to_customer_id: "CMP-003"
+//	issued_to_customer: "CMP-003"
 //	valid_until: 2026-12-31
 //	status: VOUCHER_STATUS_ACTIVE
 type GiftVoucher struct {
@@ -108,8 +108,8 @@ type GiftVoucher struct {
 	RemainingValue float64 `protobuf:"fixed64,4,opt,name=remaining_value,json=remainingValue,proto3" json:"remaining_value,omitempty"`
 	Currency       string  `protobuf:"bytes,5,opt,name=currency,proto3" json:"currency,omitempty"`
 	// Optional - can be transferred
-	IssuedToCustomerId *string `protobuf:"bytes,6,opt,name=issued_to_customer_id,json=issuedToCustomerId,proto3,oneof" json:"issued_to_customer_id,omitempty"`
-	IssuedByUserId     string  `protobuf:"bytes,7,opt,name=issued_by_user_id,json=issuedByUserId,proto3" json:"issued_by_user_id,omitempty"`
+	IssuedToCustomer *string `protobuf:"bytes,6,opt,name=issued_to_customer,json=issuedToCustomer,proto3,oneof" json:"issued_to_customer,omitempty"`
+	IssuedByUserId   string  `protobuf:"bytes,7,opt,name=issued_by_user_id,json=issuedByUserId,proto3" json:"issued_by_user_id,omitempty"`
 	// Warehouse where the voucher was issued
 	WarehouseId   string                 `protobuf:"bytes,8,opt,name=warehouse_id,json=warehouseId,proto3" json:"warehouse_id,omitempty"`
 	Status        VoucherStatus          `protobuf:"varint,9,opt,name=status,proto3,enum=payments.v1.VoucherStatus" json:"status,omitempty"`
@@ -185,9 +185,9 @@ func (x *GiftVoucher) GetCurrency() string {
 	return ""
 }
 
-func (x *GiftVoucher) GetIssuedToCustomerId() string {
-	if x != nil && x.IssuedToCustomerId != nil {
-		return *x.IssuedToCustomerId
+func (x *GiftVoucher) GetIssuedToCustomer() string {
+	if x != nil && x.IssuedToCustomer != nil {
+		return *x.IssuedToCustomer
 	}
 	return ""
 }
@@ -500,7 +500,7 @@ func (x *GetVoucherResponse) GetTransactions() []*v1.VoucherTransaction {
 type ListVouchersRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	WarehouseId   string                 `protobuf:"bytes,1,opt,name=warehouse_id,json=warehouseId,proto3" json:"warehouse_id,omitempty"`
-	CustomerId    *string                `protobuf:"bytes,2,opt,name=customer_id,json=customerId,proto3,oneof" json:"customer_id,omitempty"`
+	Customer      *string                `protobuf:"bytes,2,opt,name=customer,proto3,oneof" json:"customer,omitempty"`
 	IssuedAfter   *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=issued_after,json=issuedAfter,proto3,oneof" json:"issued_after,omitempty"`
 	PageSize      int32                  `protobuf:"varint,4,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	PageNumber    int32                  `protobuf:"varint,5,opt,name=page_number,json=pageNumber,proto3" json:"page_number,omitempty"`
@@ -545,9 +545,9 @@ func (x *ListVouchersRequest) GetWarehouseId() string {
 	return ""
 }
 
-func (x *ListVouchersRequest) GetCustomerId() string {
-	if x != nil && x.CustomerId != nil {
-		return *x.CustomerId
+func (x *ListVouchersRequest) GetCustomer() string {
+	if x != nil && x.Customer != nil {
+		return *x.Customer
 	}
 	return ""
 }
@@ -637,14 +637,14 @@ var File_payments_v1_gift_voucher_proto protoreflect.FileDescriptor
 
 const file_payments_v1_gift_voucher_proto_rawDesc = "" +
 	"\n" +
-	"\x1epayments/v1/gift_voucher.proto\x12\vpayments.v1\x1a#audits/v1/voucher_transaction.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xa8\x04\n" +
+	"\x1epayments/v1/gift_voucher.proto\x12\vpayments.v1\x1a#audits/v1/voucher_transaction.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xa0\x04\n" +
 	"\vGiftVoucher\x12\x1d\n" +
 	"\x06ref_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x05refId\x12!\n" +
 	"\fvoucher_code\x18\x02 \x01(\tR\vvoucherCode\x12#\n" +
 	"\rinitial_value\x18\x03 \x01(\x01R\finitialValue\x12'\n" +
 	"\x0fremaining_value\x18\x04 \x01(\x01R\x0eremainingValue\x12\x1a\n" +
-	"\bcurrency\x18\x05 \x01(\tR\bcurrency\x126\n" +
-	"\x15issued_to_customer_id\x18\x06 \x01(\tH\x00R\x12issuedToCustomerId\x88\x01\x01\x12)\n" +
+	"\bcurrency\x18\x05 \x01(\tR\bcurrency\x121\n" +
+	"\x12issued_to_customer\x18\x06 \x01(\tH\x00R\x10issuedToCustomer\x88\x01\x01\x12)\n" +
 	"\x11issued_by_user_id\x18\a \x01(\tR\x0eissuedByUserId\x12!\n" +
 	"\fwarehouse_id\x18\b \x01(\tR\vwarehouseId\x122\n" +
 	"\x06status\x18\t \x01(\x0e2\x1a.payments.v1.VoucherStatusR\x06status\x127\n" +
@@ -652,8 +652,8 @@ const file_payments_v1_gift_voucher_proto_rawDesc = "" +
 	" \x01(\v2\x1a.google.protobuf.TimestampR\bissuedAt\x12;\n" +
 	"\vvalid_until\x18\v \x01(\v2\x1a.google.protobuf.TimestampR\n" +
 	"validUntil\x12\x19\n" +
-	"\x05notes\x18\f \x01(\tH\x01R\x05notes\x88\x01\x01B\x18\n" +
-	"\x16_issued_to_customer_idB\b\n" +
+	"\x05notes\x18\f \x01(\tH\x01R\x05notes\x88\x01\x01B\x15\n" +
+	"\x13_issued_to_customerB\b\n" +
 	"\x06_notes\";\n" +
 	"\x16ValidateVoucherRequest\x12!\n" +
 	"\fvoucher_code\x18\x01 \x01(\tR\vvoucherCode\"\x87\x02\n" +
@@ -674,16 +674,15 @@ const file_payments_v1_gift_voucher_proto_rawDesc = "" +
 	"identifier\"\x8b\x01\n" +
 	"\x12GetVoucherResponse\x122\n" +
 	"\avoucher\x18\x01 \x01(\v2\x18.payments.v1.GiftVoucherR\avoucher\x12A\n" +
-	"\ftransactions\x18\x02 \x03(\v2\x1d.audits.v1.VoucherTransactionR\ftransactions\"\x81\x02\n" +
+	"\ftransactions\x18\x02 \x03(\v2\x1d.audits.v1.VoucherTransactionR\ftransactions\"\xf9\x01\n" +
 	"\x13ListVouchersRequest\x12!\n" +
-	"\fwarehouse_id\x18\x01 \x01(\tR\vwarehouseId\x12$\n" +
-	"\vcustomer_id\x18\x02 \x01(\tH\x00R\n" +
-	"customerId\x88\x01\x01\x12B\n" +
+	"\fwarehouse_id\x18\x01 \x01(\tR\vwarehouseId\x12\x1f\n" +
+	"\bcustomer\x18\x02 \x01(\tH\x00R\bcustomer\x88\x01\x01\x12B\n" +
 	"\fissued_after\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampH\x01R\vissuedAfter\x88\x01\x01\x12\x1b\n" +
 	"\tpage_size\x18\x04 \x01(\x05R\bpageSize\x12\x1f\n" +
 	"\vpage_number\x18\x05 \x01(\x05R\n" +
-	"pageNumberB\x0e\n" +
-	"\f_customer_idB\x0f\n" +
+	"pageNumberB\v\n" +
+	"\t_customerB\x0f\n" +
 	"\r_issued_after\"\x8e\x01\n" +
 	"\x14ListVouchersResponse\x124\n" +
 	"\bvouchers\x18\x01 \x03(\v2\x18.payments.v1.GiftVoucherR\bvouchers\x12\x1f\n" +

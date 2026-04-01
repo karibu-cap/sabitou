@@ -91,7 +91,7 @@ func (CashReceiptStatus) EnumDescriptor() ([]byte, []int) {
 //
 //	receipt_id: "CASH-2025-001"
 //	cashier_user_id: "USR-005"
-//	customer_id: "CMP-003" (can be null for walk-in)
+//	customer: "CMP-003" (can be null for walk-in)
 //	store_id: "WH-002" (retail store)
 //	items: [1x PRD-001 @ 450000]
 //	subtotal: 450000
@@ -109,7 +109,7 @@ type CashReceipt struct {
 	// Who processed sale
 	CashierUserId string `protobuf:"bytes,2,opt,name=cashier_user_id,json=cashierUserId,proto3" json:"cashier_user_id,omitempty"`
 	// Can be null for anonymous
-	CustomerId string `protobuf:"bytes,3,opt,name=customer_id,json=customerId,proto3" json:"customer_id,omitempty"`
+	Customer string `protobuf:"bytes,3,opt,name=customer,proto3" json:"customer,omitempty"`
 	// Which location/store
 	StoreId     string                `protobuf:"bytes,4,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
 	Items       []*v1.InvoiceLineItem `protobuf:"bytes,5,rep,name=items,proto3" json:"items,omitempty"`
@@ -177,9 +177,9 @@ func (x *CashReceipt) GetCashierUserId() string {
 	return ""
 }
 
-func (x *CashReceipt) GetCustomerId() string {
+func (x *CashReceipt) GetCustomer() string {
 	if x != nil {
-		return x.CustomerId
+		return x.Customer
 	}
 	return ""
 }
@@ -503,12 +503,11 @@ var File_payments_v1_cash_receipt_proto protoreflect.FileDescriptor
 
 const file_payments_v1_cash_receipt_proto_rawDesc = "" +
 	"\n" +
-	"\x1epayments/v1/cash_receipt.proto\x12\vpayments.v1\x1a\x1bbuf/validate/validate.proto\x1a\"financial/v1/financial_utils.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1epayments/v1/gift_voucher.proto\x1a\x1apayments/v1/payments.proto\"\xb0\x05\n" +
+	"\x1epayments/v1/cash_receipt.proto\x12\vpayments.v1\x1a\x1bbuf/validate/validate.proto\x1a\"financial/v1/financial_utils.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1epayments/v1/gift_voucher.proto\x1a\x1apayments/v1/payments.proto\"\xab\x05\n" +
 	"\vCashReceipt\x12\x1d\n" +
 	"\x06ref_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x05refId\x12&\n" +
-	"\x0fcashier_user_id\x18\x02 \x01(\tR\rcashierUserId\x12\x1f\n" +
-	"\vcustomer_id\x18\x03 \x01(\tR\n" +
-	"customerId\x12\x19\n" +
+	"\x0fcashier_user_id\x18\x02 \x01(\tR\rcashierUserId\x12\x1a\n" +
+	"\bcustomer\x18\x03 \x01(\tR\bcustomer\x12\x19\n" +
 	"\bstore_id\x18\x04 \x01(\tR\astoreId\x123\n" +
 	"\x05items\x18\x05 \x03(\v2\x1d.financial.v1.InvoiceLineItemR\x05items\x12\x1a\n" +
 	"\bsubtotal\x18\x06 \x01(\x01R\bsubtotal\x12\x1d\n" +

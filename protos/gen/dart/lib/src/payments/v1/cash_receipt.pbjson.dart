@@ -45,7 +45,7 @@ const CashReceipt$json = {
   '2': [
     {'1': 'ref_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'refId'},
     {'1': 'cashier_user_id', '3': 2, '4': 1, '5': 9, '10': 'cashierUserId'},
-    {'1': 'customer_id', '3': 3, '4': 1, '5': 9, '10': 'customerId'},
+    {'1': 'customer', '3': 3, '4': 1, '5': 9, '10': 'customer'},
     {'1': 'store_id', '3': 4, '4': 1, '5': 9, '10': 'storeId'},
     {
       '1': 'items',
@@ -98,18 +98,18 @@ const CashReceipt$json = {
 /// Descriptor for `CashReceipt`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List cashReceiptDescriptor = $convert.base64Decode(
     'CgtDYXNoUmVjZWlwdBIdCgZyZWZfaWQYASABKAlCBrpIA8gBAVIFcmVmSWQSJgoPY2FzaGllcl'
-    '91c2VyX2lkGAIgASgJUg1jYXNoaWVyVXNlcklkEh8KC2N1c3RvbWVyX2lkGAMgASgJUgpjdXN0'
-    'b21lcklkEhkKCHN0b3JlX2lkGAQgASgJUgdzdG9yZUlkEjMKBWl0ZW1zGAUgAygLMh0uZmluYW'
-    '5jaWFsLnYxLkludm9pY2VMaW5lSXRlbVIFaXRlbXMSGgoIc3VidG90YWwYBiABKAFSCHN1YnRv'
-    'dGFsEh0KCnRheF9hbW91bnQYByABKAFSCXRheEFtb3VudBIhCgx0b3RhbF9hbW91bnQYCCABKA'
-    'FSC3RvdGFsQW1vdW50Eh8KC2Ftb3VudF9wYWlkGAkgASgBUgphbW91bnRQYWlkEiEKDGNoYW5n'
-    'ZV9naXZlbhgKIAEoAVILY2hhbmdlR2l2ZW4SGgoIY3VycmVuY3kYCyABKAlSCGN1cnJlbmN5Eh'
-    '8KC3BheW1lbnRfaWRzGAwgAygJUgpwYXltZW50SWRzEkUKEHRyYW5zYWN0aW9uX3RpbWUYDSAB'
-    'KAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUg90cmFuc2FjdGlvblRpbWUSFAoFbm90ZX'
-    'MYDiABKAlSBW5vdGVzEjMKE3ZvdWNoZXJfaXNzdWVkX2NvZGUYDyABKAlIAFIRdm91Y2hlcklz'
-    'c3VlZENvZGWIAQESKAoQb3dlZF90b19jdXN0b21lchgQIAEoAVIOb3dlZFRvQ3VzdG9tZXISNg'
-    'oGc3RhdHVzGBEgASgOMh4ucGF5bWVudHMudjEuQ2FzaFJlY2VpcHRTdGF0dXNSBnN0YXR1c0IW'
-    'ChRfdm91Y2hlcl9pc3N1ZWRfY29kZQ==');
+    '91c2VyX2lkGAIgASgJUg1jYXNoaWVyVXNlcklkEhoKCGN1c3RvbWVyGAMgASgJUghjdXN0b21l'
+    'chIZCghzdG9yZV9pZBgEIAEoCVIHc3RvcmVJZBIzCgVpdGVtcxgFIAMoCzIdLmZpbmFuY2lhbC'
+    '52MS5JbnZvaWNlTGluZUl0ZW1SBWl0ZW1zEhoKCHN1YnRvdGFsGAYgASgBUghzdWJ0b3RhbBId'
+    'Cgp0YXhfYW1vdW50GAcgASgBUgl0YXhBbW91bnQSIQoMdG90YWxfYW1vdW50GAggASgBUgt0b3'
+    'RhbEFtb3VudBIfCgthbW91bnRfcGFpZBgJIAEoAVIKYW1vdW50UGFpZBIhCgxjaGFuZ2VfZ2l2'
+    'ZW4YCiABKAFSC2NoYW5nZUdpdmVuEhoKCGN1cnJlbmN5GAsgASgJUghjdXJyZW5jeRIfCgtwYX'
+    'ltZW50X2lkcxgMIAMoCVIKcGF5bWVudElkcxJFChB0cmFuc2FjdGlvbl90aW1lGA0gASgLMhou'
+    'Z29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIPdHJhbnNhY3Rpb25UaW1lEhQKBW5vdGVzGA4gAS'
+    'gJUgVub3RlcxIzChN2b3VjaGVyX2lzc3VlZF9jb2RlGA8gASgJSABSEXZvdWNoZXJJc3N1ZWRD'
+    'b2RliAEBEigKEG93ZWRfdG9fY3VzdG9tZXIYECABKAFSDm93ZWRUb0N1c3RvbWVyEjYKBnN0YX'
+    'R1cxgRIAEoDjIeLnBheW1lbnRzLnYxLkNhc2hSZWNlaXB0U3RhdHVzUgZzdGF0dXNCFgoUX3Zv'
+    'dWNoZXJfaXNzdWVkX2NvZGU=');
 
 @$core.Deprecated('Use createCashReceiptRequestDescriptor instead')
 const CreateCashReceiptRequest$json = {

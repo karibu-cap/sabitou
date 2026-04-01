@@ -44,6 +44,7 @@ final class PosRepository extends BaseRepository<CashReceipt> {
         transport ?? ConnectRPCService.to.clientChannel,
       );
 
+  /// Saves a draft receipt to the database.
   Future<void> saveDraftReceipt(
     CashReceipt receipt, {
     CashReceiptStatus status = CashReceiptStatus.CASH_RECEIPT_STATUS_DRAFT,
@@ -57,11 +58,48 @@ final class PosRepository extends BaseRepository<CashReceipt> {
           fields: fromCashReceiptToRaw(receipt),
           filters: [SqlQuery.equals(CashReceiptsFields.refId, receipt.refId)],
         );
+
+        for (final lineItem in receipt.items) {
+          final lineRaw = fromCashReceiptItemToRaw(
+            lineItem,
+            receipt.refId,
+            receipt.storeId,
+          );
+          await dataSource.updateWhere(
+            table: CollectionName.cashReceiptItems,
+            fields: {...lineRaw},
+            filters: [
+              SqlQuery.equals(
+                CashReceiptItemsFields.productId,
+                lineItem.productId,
+              ),
+              SqlQuery.equals(
+                CashReceiptItemsFields.receiptId,
+                existingReceipt.refId,
+              ),
+            ],
+          );
+        }
+        _logger.info('Draft receipt saved: ${receipt.refId}');
+
+        return;
       }
 
-      receipt..refId = AppUtils.generateSmartDatabaseId('CASH_RECEIPT');
+      receipt..refId = AppUtils.generateSmartDatabaseId('CR');
 
       await create(receipt);
+
+      for (final lineItem in receipt.items) {
+        final lineRaw = fromCashReceiptItemToRaw(
+          lineItem,
+          receipt.refId,
+          receipt.storeId,
+        );
+        await dataSource.createRecord(
+          table: CollectionName.cashReceiptItems,
+          record: {...lineRaw},
+        );
+      }
       _logger.info('Draft receipt saved: ${receipt.refId}');
 
       return;
@@ -78,10 +116,25 @@ final class PosRepository extends BaseRepository<CashReceipt> {
       final rows = await findWhere([
         SqlQuery.equals(
           CashReceiptsFields.status,
-          CashReceiptStatus.CASH_RECEIPT_STATUS_DRAFT,
+          CashReceiptStatus.CASH_RECEIPT_STATUS_DRAFT.name,
         ),
         SqlQuery.equals(CashReceiptsFields.storeId, storeId),
       ]);
+
+      for (final item in rows) {
+        try {
+          final cashItems = await filterCashReceiptItemsItems([
+            SqlQuery.equals(CashReceiptItemsFields.receiptId, item.refId),
+            SqlQuery.equals(CashReceiptItemsFields.storeId, item.storeId),
+          ]);
+          item.items.clear();
+          item.items.addAll(cashItems);
+        } catch (e) {
+          _logger.warning(
+            'Failed to load items for cash item ${item.refId}: $e',
+          );
+        }
+      }
 
       return rows;
     } on Exception catch (e) {
@@ -139,7 +192,23 @@ final class PosRepository extends BaseRepository<CashReceipt> {
         return;
       }
 
+      final items = await filterCashReceiptItemsItems([
+        SqlQuery.equals(CashReceiptItemsFields.receiptId, refId),
+      ]);
+      for (final item in items) {
+        await dataSource.deleteWhere(
+          table: CollectionName.cashReceiptItems,
+          filters: [
+            SqlQuery.equals(CashReceiptItemsFields.productId, item.productId),
+            SqlQuery.equals(CashReceiptItemsFields.storeId, receipt.storeId),
+          ],
+        );
+
+        _logger.info('Deleted item: ${item.productId} for receipt: $refId');
+      }
+
       await delete(refId);
+
       _logger.info('Draft receipt deleted: $refId');
     } on Exception catch (e) {
       _logger.severe('deleteDraftReceipt Error: $e');
@@ -152,7 +221,7 @@ final class PosRepository extends BaseRepository<CashReceipt> {
       final receipt = await findById(receiptId);
       if (receipt == null) return null;
 
-      final items = await filterCashReceiptItems([
+      final items = await filterCashReceiptItemsItems([
         SqlQuery.equals(CashReceiptItemsFields.receiptId, receiptId),
       ]);
       receipt.items.addAll(items);
@@ -165,24 +234,6 @@ final class PosRepository extends BaseRepository<CashReceipt> {
     }
   }
 
-  /// Returns all line items for the given cash receipt.
-  Future<List<InvoiceLineItem>> filterCashReceiptItems(
-    List<dynamic> filters,
-  ) async {
-    try {
-      final result = await dataSource.getCollection(
-        CollectionName.cashReceiptItems,
-        filters: filters,
-      );
-
-      return result.map(fromRowToCashReceiptItem).toList();
-    } on Exception catch (e) {
-      _logger.severe('filterCashReceiptItems Error: $e');
-
-      return [];
-    }
-  }
-
   /// Find cash receipts by store with their items.
   Future<List<CashReceipt>?> findCashReceiptsByStore(String storeId) async {
     try {
@@ -191,7 +242,7 @@ final class PosRepository extends BaseRepository<CashReceipt> {
       ]);
 
       for (final receipt in receipts) {
-        final items = await filterCashReceiptItems([
+        final items = await filterCashReceiptItemsItems([
           SqlQuery.equals(CashReceiptItemsFields.receiptId, receipt.refId),
           SqlQuery.equals(CashReceiptItemsFields.storeId, storeId),
         ]);
@@ -238,6 +289,24 @@ final class PosRepository extends BaseRepository<CashReceipt> {
     }
   }
 
+  /// Returns all line items for the given cash receipt.
+  Future<List<InvoiceLineItem>> filterCashReceiptItemsItems(
+    List<SqlQuery> filters,
+  ) async {
+    try {
+      final result = await dataSource.getCollection(
+        CollectionName.cashReceiptItems,
+        filters: filters,
+      );
+
+      return result.map(fromRowToCashReceiptItem).toList();
+    } on Exception catch (e) {
+      _logger.severe('filterCashReceiptItemsItems Error: $e');
+
+      return [];
+    }
+  }
+
   /// Processes a complete cash receipt payment.
   ///
   /// Executes the following steps inside a single SQLite write-transaction:
@@ -269,18 +338,16 @@ final class PosRepository extends BaseRepository<CashReceipt> {
     required String storeId,
     bool issueVoucherOnChange = false,
   }) async {
+    // ── Step A: Financial validation ──────────────────────────────────────
+    final cashReceipe = await getCashReceiptWithItems(receiptId);
+    if (cashReceipe == null) {
+      throw ReceiptNotFoundException(receiptId);
+    }
+    if (cashReceipe.status == CashReceiptStatus.CASH_RECEIPT_STATUS_COMPLETED) {
+      throw ReceiptAlreadyCompletedException(receiptId);
+    }
+
     return dataSource.runTransaction<PaymentResult>((tx) async {
-      // ── Step A: Financial validation ──────────────────────────────────────
-      final cashReceipe = await getCashReceiptWithItems(receiptId);
-      if (cashReceipe == null) {
-        throw ReceiptNotFoundException(receiptId);
-      }
-
-      if (cashReceipe.status ==
-          CashReceiptStatus.CASH_RECEIPT_STATUS_COMPLETED) {
-        throw ReceiptAlreadyCompletedException(receiptId);
-      }
-
       final totalPaid = payments.fold(
         0.0,
         (sum, p) => sum + p.amount.toDouble(),
@@ -293,16 +360,14 @@ final class PosRepository extends BaseRepository<CashReceipt> {
         );
       }
 
-      final owedToCustomer = totalPaid - cashReceipe.totalAmount;
-
       // ── Step B: Change management ─────────────────────────────────────────
       GiftVoucher? issuedVoucher;
 
-      if (issueVoucherOnChange && owedToCustomer > 0) {
+      if (issueVoucherOnChange && cashReceipe.owedToCustomer > 0) {
         issuedVoucher = await _issueVoucher(
           tx: tx,
-          owedAmount: owedToCustomer,
-          customerId: cashReceipe.customerId,
+          owedAmount: cashReceipe.owedToCustomer,
+          customer: cashReceipe.customer,
           cashierUserId: cashierUserId,
           storeId: storeId,
         );
@@ -323,27 +388,32 @@ final class PosRepository extends BaseRepository<CashReceipt> {
           .map((p) => p.refId)
           .toList();
 
+      for (final payment in payments) {
+        payment
+          ..relatedDocs.clear()
+          ..relatedDocs.addAll([
+            PaymentRelatedDoc(docId: cashReceipe.refId, amount: payment.amount),
+          ]);
+
+        // save the payment to the database.
+        await tx.createRecord(
+          table: CollectionName.payments,
+          record: fromPaymentToRaw(payment),
+        );
+        _logger.info('Payment create with id ${payment.refId}');
+      }
+
       cashReceipe
         ..amountPaid = totalPaid
-        ..changeGiven = owedToCustomer > 0 && !issueVoucherOnChange
-            ? owedToCustomer
-            : 0.0
-        ..owedToCustomer = owedToCustomer
-        ..transactionTime = Timestamp.fromDateTime(clock.now());
+        ..paymentIds.addAll(paymentIds)
+        ..voucherIssuedCode = issuedVoucher?.voucherCode ?? ''
+        ..subtotal = cashReceipe.totalAmount
+        ..status = CashReceiptStatus.CASH_RECEIPT_STATUS_COMPLETED;
 
       await tx.updateWhere(
         table: CollectionName.cashReceipts,
         filters: [SqlQuery.equals(CashReceiptsFields.refId, cashReceipe.refId)],
-        fields: {
-          CashReceiptsFields.totalAmount: totalPaid,
-          CashReceiptsFields.changeGiven: cashReceipe.changeGiven,
-          CashReceiptsFields.owedToCustomer: cashReceipe.owedToCustomer,
-          CashReceiptsFields.status:
-              CashReceiptStatus.CASH_RECEIPT_STATUS_COMPLETED,
-          CashReceiptsFields.transactionTime: cashReceipe.transactionTime,
-          CashReceiptsFields.voucherIssuedCode: issuedVoucher?.voucherCode,
-          CashReceiptsFields.paymentIds: paymentIds,
-        },
+        fields: fromCashReceiptToRaw(cashReceipe),
       );
 
       _logger.info('Receipt $receiptId completed — paid: $totalPaid');
@@ -363,7 +433,7 @@ final class PosRepository extends BaseRepository<CashReceipt> {
   Future<GiftVoucher> _issueVoucher({
     required LocalDataSource tx,
     required double owedAmount,
-    required String customerId,
+    required String customer,
     required String cashierUserId,
     required String storeId,
   }) async {
@@ -380,7 +450,7 @@ final class PosRepository extends BaseRepository<CashReceipt> {
         initialValue: owedAmount,
         remainingValue: owedAmount,
         currency: 'XAF',
-        issuedToCustomerId: customerId.isEmpty ? null : customerId,
+        issuedToCustomer: customer.isEmpty ? null : customer,
         issuedByUserId: cashierUserId,
         warehouseId: storeId,
         status: VoucherStatus.VOUCHER_STATUS_ACTIVE,

@@ -9,10 +9,13 @@ import '../../repositories/store_products_repository.dart';
 /// on business logic.
 final class PointOfSaleViewModel {
   /// Creates a [PointOfSaleViewModel] for [store].
-  PointOfSaleViewModel({required this.store});
+  PointOfSaleViewModel({required this.store, required this.user});
 
   /// The active store used to scope queries.
   final Store store;
+
+  /// The current user.
+  final User user;
 
   /// Returns products matching [query] for the active store.
   ///

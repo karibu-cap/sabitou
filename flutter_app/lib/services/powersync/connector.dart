@@ -134,9 +134,15 @@ class PowerSyncConnector extends PowerSyncBackendConnector {
 
       return newAccessToken;
     } on DioException catch (e) {
-      _logger.severe(
-        '_refreshViaDio failed: ${e.response?.statusCode} — ${e.response?.data}',
-      );
+      if (e.response == null) {
+        _logger.severe(
+          '_refreshViaDio network error: ${e.type} — ${e.message}',
+        );
+      } else {
+        _logger.severe(
+          '_refreshViaDio failed: ${e.response?.statusCode} — ${e.response?.data}',
+        );
+      }
 
       // If the back-end says the refresh token is invalid/expired (401),
       // we must trigger app-level logout. Otherwise PowerSync just stays

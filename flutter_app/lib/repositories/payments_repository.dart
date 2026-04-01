@@ -5,6 +5,7 @@ import '../core/database/base_repository.dart';
 import '../core/database/local_data_source.dart';
 import '../core/database/query/sql_condition.dart';
 import '../core/database/row_mapper.dart';
+import '../services/powersync/schema.dart';
 import '../utils/app_constants.dart';
 import '../utils/logger.dart';
 import '../utils/utils.dart';
@@ -53,6 +54,19 @@ class PaymentsRepository extends BaseRepository<Payment> {
       _logger.severe('getPayment Error: $e');
 
       return null;
+    }
+  }
+
+  /// Gets a group of payments.
+  Future<List<Payment>> getGroupOfPayments(List<String> paymentIds) async {
+    try {
+      return await findWhere([
+        SqlQuery.whereIn(PaymentsFields.refId, paymentIds),
+      ]);
+    } on Exception catch (e) {
+      _logger.severe('getGroupOfPayments Error: $e');
+
+      return [];
     }
   }
 

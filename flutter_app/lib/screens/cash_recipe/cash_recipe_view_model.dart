@@ -87,18 +87,17 @@ final class CashRecipeViewModel {
       );
 
       if (response != null && response.isNotEmpty) {
-        final receipts = response;
+        final receipts = response
+          // Sort receipts by date (most recent first)
+          ..sort((a, b) {
+            if (a.hasTransactionTime() && b.hasTransactionTime()) {
+              return b.transactionTime.toDateTime().compareTo(
+                a.transactionTime.toDateTime(),
+              );
+            }
 
-        // Sort receipts by date (most recent first)
-        receipts.sort((a, b) {
-          if (a.hasTransactionTime() && b.hasTransactionTime()) {
-            return b.transactionTime.toDateTime().compareTo(
-              a.transactionTime.toDateTime(),
-            );
-          }
-
-          return 0;
-        });
+            return 0;
+          });
 
         _cashReceiptsSubject.add(receipts);
         _filteredCashReceiptsSubject.add(receipts);
@@ -148,8 +147,8 @@ final class CashRecipeViewModel {
       }
 
       // Search in customer ID
-      if (receipt.hasCustomerId() &&
-          receipt.customerId.toLowerCase().contains(query.toLowerCase())) {
+      if (receipt.hasCustomer() &&
+          receipt.customer.toLowerCase().contains(query.toLowerCase())) {
         return true;
       }
 

@@ -28,7 +28,7 @@ Enregistrement complet de la transaction en UN document
 |-------|----------------|-------------|
 | `receipt_id` | "CASH-2025-0001" | Identifiant unique |
 | `cashier_user_id` | "USR-CAISSE-01" | Quel caissier |
-| `customer_id` | `null` | Client anonyme |
+| `customer` | `null` | Client anonyme |
 | `warehouse_id` | "WH-SUPERMARKET-01" | Point de vente |
 | `items[]` | `[{product: "PRD-PAIN", qty: 2, price: 500}]` | Produits achetés |
 | `subtotal` | 2000 | Avant taxes |
@@ -117,7 +117,7 @@ Représente le crédit magasin
 | `initial_value` | 3000 | Surplus = 15000 - 12000 |
 | `remaining_value` | 3000 | Pas encore utilisé |
 | `currency` | "XAF" | |
-| `issued_to_customer_id` | `null` | Transférable |
+| `issued_to_customer` | `null` | Transférable |
 | `issued_by_user_id` | "USR-CAISSE-01" | Qui a créé |
 | `status` | `VOUCHER_STATUS_ACTIVE` | Utilisable |
 | `issued_at` | 2025-09-29T14:30:00Z | |

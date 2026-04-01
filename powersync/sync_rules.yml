@@ -87,7 +87,7 @@ bucket_definitions:
         WHERE store_id = bucket.store_id
 
       - >
-        SELECT id, ref_id, customer_id, seller_id, source_warehouse_address, status,
+        SELECT id, ref_id, customer, seller_id, source_warehouse_address, status,
                total_amount, currency, created_by_user_id, created_at, delivery_date, notes
         FROM sales_orders
         WHERE seller_id = bucket.store_id  -- Assuming seller_id = store_id
@@ -145,7 +145,7 @@ bucket_definitions:
 
       - >
         SELECT id, invoice_id, product_id, quantity, unit_price, subtotal,
-               tax_rate, tax_amount, total, batch_id, store_id
+               tax_rate, tax_amount, total, batch_id, store_id, product_name
         FROM invoice_line_items
         WHERE store_id = bucket.store_id
 
@@ -162,7 +162,7 @@ bucket_definitions:
         WHERE store_id = bucket.store_id
 
       - >
-        SELECT id, ref_id, cashier_user_id, customer_id, store_id, subtotal,
+        SELECT id, ref_id, cashier_user_id, customer, store_id, subtotal,
                tax_amount, total_amount, amount_paid, change_given, currency,
                payment_ids, transaction_time, notes, voucher_issued_code,
                owed_to_customer, status
@@ -171,7 +171,7 @@ bucket_definitions:
 
       - >
         SELECT id, receipt_id, store_id, product_id, quantity, unit_price, subtotal,
-               tax_rate, tax_amount, total, batch_id
+               tax_rate, tax_amount, total, batch_id, product_name
         FROM cash_receipt_items
         WHERE store_id = bucket.store_id
 
@@ -184,7 +184,7 @@ bucket_definitions:
 
       - >
         SELECT id, ref_id, voucher_code, initial_value, remaining_value, currency,
-               issued_to_customer_id, issued_by_user_id, warehouse_id, status,
+               issued_to_customer, issued_by_user_id, warehouse_id, status,
                issued_at, valid_until, notes
         FROM gift_vouchers
         WHERE warehouse_id = bucket.store_id

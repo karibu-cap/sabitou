@@ -1,8 +1,8 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:printing/printing.dart';
+import 'package:provider/provider.dart';
 import 'package:sabitou_rpc/models.dart';
 
 import '../../../services/internationalization/internationalization.dart';
@@ -18,8 +18,11 @@ class PreviewInvoice extends StatelessWidget {
   /// Constructors of new [PreviewInvoice].
   const PreviewInvoice({super.key, required this.store});
 
-  Future<Uint8List> _buildInvoicePdf(PdfMode format) async {
-    final cartData = CartProvider.instance.currentCashReceipt;
+  Future<Uint8List> _buildInvoicePdf(
+    PdfMode format,
+    BuildContext context,
+  ) async {
+    final cartData = context.read<CartProvider>().currentCashReceipt;
     if (cartData == null) {
       return Uint8List.fromList([]);
     }
@@ -30,16 +33,17 @@ class PreviewInvoice extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cart = context.watch<CartProvider>();
+
     return Container(
       constraints: BoxConstraints(
         maxHeight: MediaQuery.sizeOf(context).height * 0.8,
       ),
-      child: ListenableBuilder(
-        listenable: GetIt.I.get<CartProvider>(),
-        builder: (context, value) {
-          final cartData = CartProvider.instance.currentCashReceipt;
+      child: Builder(
+        builder: (context) {
+          final cartData = cart.currentCashReceipt;
 
-          final hasCartItems = CartProvider.instance.getCartItems().isNotEmpty;
+          final hasCartItems = cart.getCartItems().isNotEmpty;
           if (!hasCartItems || cartData == null || cartData.items.isEmpty) {
             return Center(child: Text(Intls.to.addProductToCart));
           }
@@ -55,11 +59,11 @@ class PreviewInvoice extends StatelessWidget {
             useActions: false,
             initialPageFormat: PdfFormat.buildPreviewInvoiceFormat(
               PdfMode.TICKET,
-              itemsLength: CartProvider.instance.getCartItems().length,
+              itemsLength: cart.getCartItems().length,
             ),
             maxPageWidth: 300,
             onShared: (context) async {
-              final pdf = await _buildInvoicePdf(PdfMode.TICKET);
+              final pdf = await _buildInvoicePdf(PdfMode.TICKET, context);
               if (pdf.isNotEmpty) {
                 await Printing.sharePdf(
                   bytes: pdf,

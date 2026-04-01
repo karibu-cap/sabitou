@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -46,7 +45,7 @@ class SearchAndScanView extends StatelessWidget {
     );
 
     try {
-      CartProvider.instance.addItem(item);
+      context.read<CartProvider>().addItem(item);
     } on InsufficientStockException catch (e) {
       if (context.mounted) {
         showErrorToast(
@@ -109,34 +108,46 @@ class _ProductTile extends StatelessWidget {
           product.storeProduct.refId,
         );
 
-        return ListTile(
-          dense: true,
-          title: AutoSizeText(
-            product.globalProduct.label,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            minFontSize: 8,
-            style: theme.textTheme.small.copyWith(fontWeight: FontWeight.w500),
-          ),
-          subtitle: product.globalProduct.hasBarCodeValue()
-              ? Text(
-                  product.globalProduct.barCodeValue,
-                  style: theme.textTheme.muted,
-                )
-              : null,
-          trailing: Row(
-            mainAxisSize: MainAxisSize.min,
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Row(
             children: [
-              Text(
-                Formatters.formatCurrency(
-                  product.storeProduct.salePrice.toDouble(),
-                ),
-                style: theme.textTheme.small.copyWith(
-                  fontWeight: FontWeight.w600,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      product.globalProduct.label,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.small.copyWith(
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    if (product.globalProduct.hasBarCodeValue())
+                      Text(
+                        product.globalProduct.barCodeValue,
+                        style: theme.textTheme.muted,
+                      ),
+                  ],
                 ),
               ),
               const SizedBox(width: 8),
-              _StockBadge(available: available),
+              Column(
+                spacing: 8,
+                children: [
+                  Text(
+                    Formatters.formatCurrency(
+                      product.storeProduct.salePrice.toDouble(),
+                    ),
+                    style: theme.textTheme.small.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  _StockBadge(available: available),
+                ],
+              ),
             ],
           ),
         );
@@ -173,7 +184,7 @@ class _StockBadge extends StatelessWidget {
     } else {
       bg = SabitouColors.successSoft;
       fg = SabitouColors.successForeground;
-      label = '$available ${Intls.to.inStock}';
+      label = Intls.to.inStock.trParams({'quantity': available.toString()});
     }
 
     return Container(

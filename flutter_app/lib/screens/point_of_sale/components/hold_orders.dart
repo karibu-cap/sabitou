@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
+import 'package:provider/provider.dart';
 import 'package:sabitou_rpc/models.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
@@ -15,7 +15,7 @@ final class HoldOrders extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cartManager = GetIt.I.get<CartProvider>();
+    final cartManager = context.read<CartProvider>();
 
     return ListenableBuilder(
       listenable: cartManager,
@@ -156,20 +156,37 @@ class _HoldOrdersPanel extends StatelessWidget {
                               ),
                             ),
 
-                            // Resume action
+                            // Actions (resume and delete)
                             DataCell(
-                              ShadButton.outline(
-                                size: ShadButtonSize.sm,
-                                onPressed: () =>
-                                    cartManager.resumeCashReceipt(order),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    const Icon(LucideIcons.play, size: 13),
-                                    const SizedBox(width: 5),
-                                    Text(Intls.to.resumeOrder),
-                                  ],
-                                ),
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  ShadButton.outline(
+                                    size: ShadButtonSize.sm,
+                                    onPressed: () =>
+                                        cartManager.resumeCashReceipt(order),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        const Icon(LucideIcons.play, size: 13),
+                                        const SizedBox(width: 5),
+                                        Text(Intls.to.resumeOrder),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  ShadButton.destructive(
+                                    size: ShadButtonSize.sm,
+                                    onPressed: () =>
+                                        cartManager.removeCurrentCashReceipt(
+                                          cashReceipt: order,
+                                        ),
+                                    child: const Icon(
+                                      LucideIcons.trash2,
+                                      size: 13,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],

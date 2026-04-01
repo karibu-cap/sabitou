@@ -454,7 +454,7 @@ final fakeData = <String, List<dynamic>>{
       ..initialValue = 5000
       ..remainingValue = 5000
       ..currency = 'USD'
-      ..issuedToCustomerId = 'USR-001'
+      ..issuedToCustomer = 'USR-001'
       ..issuedByUserId = 'USR-001'
       ..status = VoucherStatus.VOUCHER_STATUS_ACTIVE
       ..issuedAt = Timestamp.fromDateTime(DateTime.now())
@@ -478,7 +478,7 @@ final fakeData = <String, List<dynamic>>{
     CashReceipt()
       ..refId = 'CASH-2025-001'
       ..cashierUserId = 'USR-001'
-      ..customerId = 'user-002'
+      ..customer = 'user-002'
       ..storeId = 'STR-001'
       ..items.addAll(<InvoiceLineItem>[
         InvoiceLineItem()

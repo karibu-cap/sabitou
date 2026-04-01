@@ -43,15 +43,15 @@ class PointOfSaleScreen extends StatelessWidget {
     final cache = GetIt.I.registerSingletonIfAbsent(
       () => InventoryCache(store.refId),
     );
-    final cart = GetIt.I.registerSingletonIfAbsent(
-      () => CartProvider(store: store, user: user),
-    );
-    final viewModel = PointOfSaleViewModel(store: store);
+
+    final viewModel = PointOfSaleViewModel(store: store, user: user);
 
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => PointOfSaleController(viewModel)),
-        ChangeNotifierProvider<CartProvider>(create: (_) => cart),
+        ChangeNotifierProvider<CartProvider>(
+          create: (_) => CartProvider(store: store, user: user),
+        ),
         ChangeNotifierProvider<InventoryCache>(create: (_) => cache),
       ],
       child: _WarmUpWrapper(

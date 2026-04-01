@@ -4,13 +4,16 @@ import 'package:provider/provider.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+import '../../../core/doc_engine/core/engine.dart';
 import '../../../router/app_router.dart';
 import '../../../router/page_routes.dart';
 import '../../../services/internationalization/internationalization.dart';
 import '../../../themes/app_theme.dart';
 import '../../../utils/formatters.dart';
 import '../../../utils/responsive_utils.dart';
+import '../../../utils/user_preference.dart';
 import '../../../widgets/custom_grid.dart';
+import '../../../widgets/custom_menu.dart';
 import '../../../widgets/payments/form/payment_form.dart';
 import '../../../widgets/payments/payment_card.dart';
 import '../components/bill_status.dart';
@@ -248,31 +251,6 @@ class _DetailHeader extends StatelessWidget {
   final BillStatus status;
   final VoidCallback? onDeleted;
   final VoidCallback? onMarkedPaid;
-  Future<void> _confirmDelete(BuildContext context) async {
-    final ok = await showShadDialog<bool>(
-      context: context,
-      builder: (context) => ShadDialog.alert(
-        title: Text(Intls.to.deleteBill),
-        description: Text(
-          Intls.to.itemWillBeDelete.trParams({'item': bill.refId}),
-        ),
-        actions: [
-          ShadButton.outline(
-            onPressed: () => Navigator.pop(context, false),
-            child: Text(Intls.to.cancel),
-          ),
-          ShadButton.destructive(
-            onPressed: () => Navigator.pop(context, true),
-            child: Text(Intls.to.delete),
-          ),
-        ],
-      ),
-    );
-    if (ok == true && context.mounted) {
-      await context.read<BillDetailController>().deleteBill(bill.refId);
-      onDeleted?.call();
-    }
-  }
 
   Future<void> _addPayment(BuildContext context) async {
     final ok = await showPaymentForm(context, bill: bill);
@@ -284,7 +262,6 @@ class _DetailHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    final cs = theme.colorScheme;
     final isMobile = ResponsiveUtils.isMobile(context);
 
     return Flex(
@@ -319,26 +296,6 @@ class _DetailHeader extends StatelessWidget {
         Wrap(
           spacing: 8,
           children: [
-            if (status != BillStatus.BILL_STATUS_PAID &&
-                status != BillStatus.BILL_STATUS_VOID)
-              ShadButton.outline(
-                size: ShadButtonSize.sm,
-                onPressed: () => _confirmDelete(context),
-                leading: Icon(
-                  LucideIcons.trash2,
-                  size: 13,
-                  color: cs.destructive,
-                ),
-                decoration: ShadDecoration(
-                  border: ShadBorder.all(
-                    color: cs.destructive.withValues(alpha: 0.4),
-                  ),
-                ),
-                child: Text(
-                  Intls.to.delete,
-                  style: TextStyle(color: cs.destructive, fontSize: 12.5),
-                ),
-              ),
             if (status == BillStatus.BILL_STATUS_OPEN ||
                 status == BillStatus.BILL_STATUS_OVERDUE ||
                 status == BillStatus.BILL_STATUS_PARTIALLY_PAID)
@@ -352,8 +309,85 @@ class _DetailHeader extends StatelessWidget {
                   style: const TextStyle(fontSize: 12.5),
                 ),
               ),
+            _Menu(bill: bill, onDeleted: onDeleted),
           ],
         ),
+      ],
+    );
+  }
+}
+
+class _Menu extends StatelessWidget {
+  final Bill bill;
+  final VoidCallback? onDeleted;
+
+  _Menu({required this.bill, this.onDeleted});
+
+  Future<void> _confirmDelete(BuildContext context) async {
+    final ok = await showShadDialog<bool>(
+      context: context,
+      builder: (context) => ShadDialog.alert(
+        title: Text(Intls.to.deleteBill),
+        description: Text(
+          Intls.to.itemWillBeDelete.trParams({'item': bill.refId}),
+        ),
+        actions: [
+          ShadButton.outline(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(Intls.to.cancel),
+          ),
+          ShadButton.destructive(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(Intls.to.delete),
+          ),
+        ],
+      ),
+    );
+    if (ok == true && context.mounted) {
+      await context.read<BillDetailController>().deleteBill(bill.refId);
+      onDeleted?.call();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final store = context.watch<UserPreferences>().store;
+
+    if (store == null) {
+      return const SizedBox();
+    }
+
+    return CustomMenu(
+      childrens: [
+        MenuTile(
+          icon: LucideIcons.download,
+          label: Intls.to.downloadPDF,
+          onTap: () => SabitouDocEngine.instance.download<Bill>(
+            bill,
+            store,
+            filename: bill.refId,
+          ),
+        ),
+        MenuTile(
+          icon: LucideIcons.printer,
+          label: Intls.to.print,
+          onTap: () => SabitouDocEngine.instance.print<Bill>(
+            bill,
+            store,
+            jobName: bill.refId,
+          ),
+        ),
+        if (bill.status != BillStatus.BILL_STATUS_PAID &&
+            bill.status != BillStatus.BILL_STATUS_VOID)
+          MenuTile(
+            icon: LucideIcons.trash2400,
+            label: Intls.to.cancel,
+            isDestructive: true,
+            onTap: () {
+              Navigator.pop(context);
+              _confirmDelete(context);
+            },
+          ),
       ],
     );
   }
@@ -678,7 +712,7 @@ class _LineItemsCard extends StatelessWidget {
                   _TotalRow(
                     label: '${Intls.to.paymentMade}',
                     amount:
-                        "(-) ${Formatters.formatCurrency(bill.totalAmount - bill.balanceDue)}",
+                        '(-) ${Formatters.formatCurrency(bill.totalAmount - bill.balanceDue)}',
                     muted: true,
                     danger: true,
                   ),

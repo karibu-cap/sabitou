@@ -135,12 +135,12 @@ class ReportsViewModel {
 
   /// Maps dashboard data from the comprehensive dashboard report.
   void _mapDashboardData(GetDashboardReportResponse dashboardData) {
-    totalRevenue = dashboardData.totalRevenue.toDouble() / 100;
-    netProfit = dashboardData.netProfit.toDouble() / 100;
-    totalPurchases = dashboardData.totalPurchases.toDouble();
+    totalRevenue = dashboardData.totalRevenue;
+    netProfit = dashboardData.netProfit;
+    totalPurchases = dashboardData.totalPurchases;
 
     totalProducts = dashboardData.totalProducts;
-    totalInventoryValue = dashboardData.totalInventoryValue.toDouble();
+    totalInventoryValue = dashboardData.totalInventoryValue;
     lowStockCount = dashboardData.lowStockCount;
     salesAndProfitData = dashboardData.salesAndProfitTrend;
     categorySalesData = dashboardData.categorySalesBreakdown;
@@ -150,18 +150,16 @@ class ReportsViewModel {
       return CashFlowData(clock.now(), supplier.totalPurchaseValue.toDouble());
     }).toList();
     previousYearsTotalRevenue =
-        dashboardData.salesComparison.previousYearTotalSales.toDouble() / 100;
+        dashboardData.salesComparison.previousYearTotalSales;
     previousYearsNumberOfOrders =
         dashboardData.salesComparison.previousYearTotalTransactions;
     previousYearsAverageOrderValue =
         dashboardData.salesComparison.previousYearAverageTransactionValue;
 
     previousYearsNetProfit =
-        dashboardData.financialComparison.previousYearNetProfit.toDouble() /
-        100;
+        dashboardData.financialComparison.previousYearNetProfit;
     previousYearsTotalRevenue =
-        dashboardData.financialComparison.previousYearTotalRevenue.toDouble() /
-        100;
+        dashboardData.financialComparison.previousYearTotalRevenue;
 
     // Set calculated metrics
     numberOfOrders = dashboardData.totalTransactions;
