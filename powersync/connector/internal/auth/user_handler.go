@@ -13,7 +13,6 @@ import (
 
 	"connectrpc.com/connect"
 	identityv1 "github.com/karibu-cap/sabitou/protos/gen/go/rpc/identity/v1"
-	"github.com/sabitou/powersync/connector/internal/models"
 	"golang.org/x/crypto/bcrypt"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
@@ -25,32 +24,6 @@ import (
 // ─────────────────────────────────────────────────────────────────────────────
 // UserService stubs (existing RPCs already handled by Auth; others TBD)
 // ─────────────────────────────────────────────────────────────────────────────
-
-func (h *Handler) GetMe(ctx context.Context, req *connect.Request[identityv1.GetMeRequest]) (*connect.Response[identityv1.GetMeResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("use GetCurrentUser"))
-}
-
-func (h *Handler) GetCurrentUser(ctx context.Context, req *connect.Request[identityv1.GetCurrentUserRequest]) (*connect.Response[identityv1.GetCurrentUserResponse], error) {
-	claims, ok := ClaimsFromContext(ctx)
-	if !ok {
-		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("missing auth"))
-	}
-	user, err := h.getUserByRefID(ctx, claims.UserID)
-	if err != nil || user == nil {
-		return nil, connect.NewError(connect.CodeNotFound, errors.New("user not found"))
-	}
-	return connect.NewResponse(&identityv1.GetCurrentUserResponse{
-		Me: modelUserToProto(user),
-	}), nil
-}
-
-func (h *Handler) GetUser(ctx context.Context, req *connect.Request[identityv1.GetUserRequest]) (*connect.Response[identityv1.GetUserResponse], error) {
-	user, err := h.getUserByRefID(ctx, req.Msg.UserId)
-	if err != nil || user == nil {
-		return nil, connect.NewError(connect.CodeNotFound, errors.New("user not found"))
-	}
-	return connect.NewResponse(&identityv1.GetUserResponse{User: modelUserToProto(user)}), nil
-}
 
 func (h *Handler) UpdateMe(_ context.Context, _ *connect.Request[identityv1.UpdateMeRequest]) (*connect.Response[identityv1.UpdateMeResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("not implemented"))
@@ -70,10 +43,6 @@ func (h *Handler) DeleteUser(_ context.Context, _ *connect.Request[identityv1.De
 
 func (h *Handler) ChangePassword(_ context.Context, _ *connect.Request[identityv1.ChangePasswordRequest]) (*connect.Response[identityv1.ChangePasswordResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("not implemented"))
-}
-
-func (h *Handler) StreamUser(_ context.Context, _ *connect.Request[identityv1.StreamUserRequest], _ *connect.ServerStream[identityv1.StreamUserResponse]) error {
-	return connect.NewError(connect.CodeUnimplemented, errors.New("not implemented"))
 }
 
 func (h *Handler) CancelInvitation(_ context.Context, _ *connect.Request[identityv1.CancelInvitationRequest]) (*connect.Response[identityv1.CancelInvitationResponse], error) {
@@ -185,29 +154,29 @@ func (h *Handler) CreateUserDirect(ctx context.Context, req *connect.Request[ide
 
 	h.logger.Info("user created (direct)", "ref_id", refID, "by", adminClaims.UserID)
 
-	user := &models.User{
-		RefID:         refID,
+	status := identityv1.AccountStatusType_ACCOUNT_STATUS_TYPE_ACTIVE
+	user := &identityv1.User{
+		RefId:         &refID,
 		UserName:      userName,
-		Email:         email,
-		AccountStatus: accountStatus,
-		CreatedAt:     time.Now(),
+		Email:         &email,
+		AccountStatus: &status,
+		CreatedAt:     timestamppb.Now(),
 	}
 	if msg.FirstName != nil {
-		user.FirstName = *msg.FirstName
+		user.FirstName = msg.FirstName
 	}
 	if msg.LastName != nil {
-		user.LastName = *msg.LastName
+		user.LastName = msg.LastName
 	}
 
-	protoUser := modelUserToProto(user)
 	if msg.ForcePasswordChangeOnFirstLogin {
-		protoUser.RequiredActions = []identityv1.AuthActionType{
+		user.RequiredActions = []identityv1.AuthActionType{
 			identityv1.AuthActionType_AUTH_ACTION_TYPE_INITIALIZE_PASSWORD,
 		}
 	}
 	_ = requiredActionsJSON // stored; used by frontend if needed
 
-	return connect.NewResponse(&identityv1.CreateUserDirectResponse{User: protoUser}), nil
+	return connect.NewResponse(&identityv1.CreateUserDirectResponse{User: user}), nil
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -317,18 +286,19 @@ func (h *Handler) InviteUser(ctx context.Context, req *connect.Request[identityv
 		"by", adminClaims.UserID,
 	)
 
-	user := &models.User{
-		RefID:         userRefID,
+	status := identityv1.AccountStatusType_ACCOUNT_STATUS_TYPE_PENDING
+	user := &identityv1.User{
+		RefId:         &userRefID,
 		UserName:      userName,
-		Email:         email,
-		AccountStatus: accountStatus,
-		CreatedAt:     time.Now(),
+		Email:         &email,
+		AccountStatus: &status,
+		CreatedAt:     timestamppb.Now(),
 	}
 	if msg.FirstName != nil {
-		user.FirstName = *msg.FirstName
+		user.FirstName = msg.FirstName
 	}
 	if msg.LastName != nil {
-		user.LastName = *msg.LastName
+		user.LastName = msg.LastName
 	}
 
 	invitation := &identityv1.Invitation{
@@ -342,38 +312,9 @@ func (h *Handler) InviteUser(ctx context.Context, req *connect.Request[identityv
 	}
 
 	return connect.NewResponse(&identityv1.InviteUserResponse{
-		User:       modelUserToProto(user),
+		User:       user,
 		Invitation: invitation,
 	}), nil
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Helpers
-// ─────────────────────────────────────────────────────────────────────────────
-
-// modelUserToProto converts an internal models.User to a proto User message.
-func modelUserToProto(u *models.User) *identityv1.User {
-	status := identityv1.AccountStatusType_ACCOUNT_STATUS_TYPE_UNSPECIFIED
-	switch u.AccountStatus {
-	case "ACCOUNT_STATUS_TYPE_ACTIVE":
-		status = identityv1.AccountStatusType_ACCOUNT_STATUS_TYPE_ACTIVE
-	case "ACCOUNT_STATUS_TYPE_PENDING":
-		status = identityv1.AccountStatusType_ACCOUNT_STATUS_TYPE_PENDING
-	case "ACCOUNT_STATUS_TYPE_DELETED":
-		status = identityv1.AccountStatusType_ACCOUNT_STATUS_TYPE_DELETED
-	}
-	refID := u.RefID
-	email := u.Email
-	firstName := u.FirstName
-	lastName := u.LastName
-	return &identityv1.User{
-		RefId:         &refID,
-		UserName:      u.UserName,
-		Email:         &email,
-		FirstName:     &firstName,
-		LastName:      &lastName,
-		AccountStatus: &status,
-	}
 }
 
 // marshalPermissions JSON-encodes a StorePermissions proto message for DB storage.
