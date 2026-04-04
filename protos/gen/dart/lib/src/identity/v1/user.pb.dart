@@ -114,6 +114,7 @@ class User extends $pb.GeneratedMessage {
     $core.Iterable<AuthActionType>? requiredActions,
     $core.String? activeBusinessId,
     $core.String? activeStoreId,
+    $1.Timestamp? createdAt,
   }) {
     final result = create();
     if (refId != null) result.refId = refId;
@@ -129,6 +130,7 @@ class User extends $pb.GeneratedMessage {
     if (requiredActions != null) result.requiredActions.addAll(requiredActions);
     if (activeBusinessId != null) result.activeBusinessId = activeBusinessId;
     if (activeStoreId != null) result.activeStoreId = activeStoreId;
+    if (createdAt != null) result.createdAt = createdAt;
     return result;
   }
 
@@ -168,6 +170,8 @@ class User extends $pb.GeneratedMessage {
         defaultEnumValue: AuthActionType.AUTH_ACTION_TYPE_UNSPECIFIED)
     ..aOS(11, _omitFieldNames ? '' : 'activeBusinessId')
     ..aOS(12, _omitFieldNames ? '' : 'activeStoreId')
+    ..aOM<$1.Timestamp>(13, _omitFieldNames ? '' : 'createdAt',
+        subBuilder: $1.Timestamp.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -298,6 +302,18 @@ class User extends $pb.GeneratedMessage {
   $core.bool hasActiveStoreId() => $_has(11);
   @$pb.TagNumber(12)
   void clearActiveStoreId() => $_clearField(12);
+
+  /// / When the user was created.
+  @$pb.TagNumber(13)
+  $1.Timestamp get createdAt => $_getN(12);
+  @$pb.TagNumber(13)
+  set createdAt($1.Timestamp value) => $_setField(13, value);
+  @$pb.TagNumber(13)
+  $core.bool hasCreatedAt() => $_has(12);
+  @$pb.TagNumber(13)
+  void clearCreatedAt() => $_clearField(13);
+  @$pb.TagNumber(13)
+  $1.Timestamp ensureCreatedAt() => $_ensure(12);
 }
 
 class Invitation extends $pb.GeneratedMessage {

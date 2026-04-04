@@ -209,6 +209,14 @@ const User$json = {
       '10': 'activeStoreId',
       '17': true
     },
+    {
+      '1': 'created_at',
+      '3': 13,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '10': 'createdAt'
+    },
   ],
   '8': [
     {'1': '_ref_id'},
@@ -235,10 +243,11 @@ final $typed_data.Uint8List userDescriptor = $convert.base64Decode(
     '52MS5BY2NvdW50U3RhdHVzVHlwZUgGUg1hY2NvdW50U3RhdHVziAEBEkYKEHJlcXVpcmVkX2Fj'
     'dGlvbnMYCiADKA4yGy5pZGVudGl0eS52MS5BdXRoQWN0aW9uVHlwZVIPcmVxdWlyZWRBY3Rpb2'
     '5zEjEKEmFjdGl2ZV9idXNpbmVzc19pZBgLIAEoCUgHUhBhY3RpdmVCdXNpbmVzc0lkiAEBEisK'
-    'D2FjdGl2ZV9zdG9yZV9pZBgMIAEoCUgIUg1hY3RpdmVTdG9yZUlkiAEBQgkKB19yZWZfaWRCCA'
-    'oGX2VtYWlsQg8KDV9waG9uZV9udW1iZXJCDQoLX2ZpcnN0X25hbWVCDAoKX2xhc3RfbmFtZUIP'
-    'Cg1fcHJvZmlsZV9saW5rQhEKD19hY2NvdW50X3N0YXR1c0IVChNfYWN0aXZlX2J1c2luZXNzX2'
-    'lkQhIKEF9hY3RpdmVfc3RvcmVfaWQ=');
+    'D2FjdGl2ZV9zdG9yZV9pZBgMIAEoCUgIUg1hY3RpdmVTdG9yZUlkiAEBEjkKCmNyZWF0ZWRfYX'
+    'QYDSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUgljcmVhdGVkQXRCCQoHX3JlZl9p'
+    'ZEIICgZfZW1haWxCDwoNX3Bob25lX251bWJlckINCgtfZmlyc3RfbmFtZUIMCgpfbGFzdF9uYW'
+    '1lQg8KDV9wcm9maWxlX2xpbmtCEQoPX2FjY291bnRfc3RhdHVzQhUKE19hY3RpdmVfYnVzaW5l'
+    'c3NfaWRCEgoQX2FjdGl2ZV9zdG9yZV9pZA==');
 
 @$core.Deprecated('Use invitationDescriptor instead')
 const Invitation$json = {
@@ -790,6 +799,7 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
   '.identity.v1.User': User$json,
   '.identity.v1.ConnectedAccount': ConnectedAccount$json,
   '.link.v1.ResourceLink': $0.ResourceLink$json,
+  '.google.protobuf.Timestamp': $1.Timestamp$json,
   '.identity.v1.UpdateResponse': UpdateResponse$json,
   '.identity.v1.RequestDeleteUserRequest': RequestDeleteUserRequest$json,
   '.identity.v1.RequestDeleteUserResponse': RequestDeleteUserResponse$json,
@@ -810,7 +820,6 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
   '.identity.v1.InviteUserRequest': InviteUserRequest$json,
   '.identity.v1.InviteUserResponse': InviteUserResponse$json,
   '.identity.v1.Invitation': Invitation$json,
-  '.google.protobuf.Timestamp': $1.Timestamp$json,
   '.identity.v1.CancelInvitationRequest': CancelInvitationRequest$json,
   '.identity.v1.CancelInvitationResponse': CancelInvitationResponse$json,
   '.identity.v1.ResendInvitationRequest': ResendInvitationRequest$json,

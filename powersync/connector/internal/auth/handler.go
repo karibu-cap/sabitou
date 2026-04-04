@@ -9,10 +9,10 @@ import (
 	"errors"
 	"fmt"
 	"log/slog"
+	"math/rand"
 	"net/http"
 	"strings"
 	"time"
-	"math/rand"
 
 	"connectrpc.com/connect"
 	identityv1 "github.com/karibu-cap/sabitou/protos/gen/go/rpc/identity/v1"
@@ -68,14 +68,14 @@ func (h *Handler) Login(ctx context.Context, req *connect.Request[identityv1.Log
 		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("invalid credentials"))
 	}
 
-	passwordHash, err := h.getPasswordHash(ctx, user.RefID)
+	passwordHash, err := h.getPasswordHash(ctx, *user.RefId)
 	if err != nil {
-		h.logger.Error("failed to get password hash", "error", err, "ref_id", user.RefID)
+		h.logger.Error("failed to get password hash", "error", err, "ref_id", user.RefId)
 		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("invalid credentials"))
 	}
 
 	if err := bcrypt.CompareHashAndPassword([]byte(passwordHash), []byte(msg.Password)); err != nil {
-		h.logger.Error("password mismatch", "error", err, "ref_id", user.RefID)
+		h.logger.Error("password mismatch", "error", err, "ref_id", user.RefId)
 		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("invalid credentials"))
 	}
 
@@ -233,8 +233,8 @@ func (h *Handler) Logout(w http.ResponseWriter, r *http.Request) {
 
 // buildAuthTokens issues a JWT access token and a rotating refresh token for
 // the given user.
-func (h *Handler) buildAuthTokens(ctx context.Context, user *models.User) (string, string, error) {
-	accessToken, _, err := h.jwtService.IssueAccessToken(user.RefID)
+func (h *Handler) buildAuthTokens(ctx context.Context, user *identityv1.User) (string, string, error) {
+	accessToken, _, err := h.jwtService.IssueAccessToken(*user.RefId)
 	if err != nil {
 		return "", "", fmt.Errorf("issue access token: %w", err)
 	}
@@ -244,7 +244,7 @@ func (h *Handler) buildAuthTokens(ctx context.Context, user *models.User) (strin
 	_, err = h.db.Exec(ctx, `
 		INSERT INTO refresh_tokens (user_id, token_hash, expires_at)
 		VALUES ($1, $2, $3)
-	`, user.RefID, refreshHash, time.Now().Add(h.jwtService.RefreshTokenTTL()))
+	`, user.RefId, refreshHash, time.Now().Add(h.jwtService.RefreshTokenTTL()))
 	if err != nil {
 		return "", "", fmt.Errorf("store refresh token: %w", err)
 	}
@@ -252,9 +252,7 @@ func (h *Handler) buildAuthTokens(ctx context.Context, user *models.User) (strin
 	return accessToken, rawRefresh, nil
 }
 
-
-
-func (h *Handler) getUserByEmailOrPhoneOrUser(ctx context.Context, identifier string) (*models.User, error) {
+func (h *Handler) getUserByEmailOrPhoneOrUser(ctx context.Context, identifier string) (*identityv1.User, error) {
 	row := h.db.QueryRow(ctx, `
 		SELECT ref_id, user_name, COALESCE(email, ''), COALESCE(first_name, ''), COALESCE(last_name, ''),
 		       COALESCE(phone_number, ''), account_status, created_at
@@ -263,7 +261,7 @@ func (h *Handler) getUserByEmailOrPhoneOrUser(ctx context.Context, identifier st
 	return scanUser(row)
 }
 
-func (h *Handler) getUserByRefID(ctx context.Context, refID string) (*models.User, error) {
+func (h *Handler) getUserByRefID(ctx context.Context, refID string) (*identityv1.User, error) {
 	row := h.db.QueryRow(ctx, `
 		SELECT ref_id, user_name, COALESCE(email, ''), COALESCE(first_name, ''), COALESCE(last_name, ''),
 		       COALESCE(phone_number, ''), account_status, created_at
@@ -280,10 +278,10 @@ func (h *Handler) getPasswordHash(ctx context.Context, refID string) (string, er
 
 // scanUser reads a user row into a models.User.
 // The query must SELECT the columns in the exact order used here.
-func scanUser(row interface{ Scan(...any) error }) (*models.User, error) {
-	u := &models.User{}
+func scanUser(row interface{ Scan(...any) error }) (*identityv1.User, error) {
+	u := &identityv1.User{}
 	err := row.Scan(
-		&u.RefID, &u.UserName, &u.Email,
+		&u.RefId, &u.UserName, &u.Email,
 		&u.FirstName, &u.LastName, &u.PhoneNumber,
 		&u.AccountStatus, &u.CreatedAt,
 	)
@@ -296,19 +294,19 @@ func scanUser(row interface{ Scan(...any) error }) (*models.User, error) {
 // generateRefreshToken returns (rawToken, sha256Hash).
 // We store only the hash in the database.
 func generateRefreshToken() (string, string) {
-    b := make([]byte, 40)
-    cryptorand.Read(b) //nolint:errcheck
-    raw := base64.RawURLEncoding.EncodeToString(b)
-    return raw, hashToken(raw)
+	b := make([]byte, 40)
+	cryptorand.Read(b) //nolint:errcheck
+	raw := base64.RawURLEncoding.EncodeToString(b)
+	return raw, hashToken(raw)
 }
 
 // GenerateSmartUserID génère un ID type USER-2026-1703-001
 func GenerateSmartUserID(db_key string) string {
-    now := time.Now()
-    year := now.Year()
-    dayMonth := fmt.Sprintf("%02d%02d", now.Day(), int(now.Month()))
-    randomNumber := rand.Intn(1000)
-    return fmt.Sprintf("%s-%d-%s-%03d", db_key, year, dayMonth, randomNumber)
+	now := time.Now()
+	year := now.Year()
+	dayMonth := fmt.Sprintf("%02d%02d", now.Day(), int(now.Month()))
+	randomNumber := rand.Intn(1000)
+	return fmt.Sprintf("%s-%d-%s-%03d", db_key, year, dayMonth, randomNumber)
 }
 
 func hashToken(raw string) string {

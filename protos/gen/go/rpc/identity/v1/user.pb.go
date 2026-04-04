@@ -328,6 +328,8 @@ type User struct {
 	ActiveBusinessId *string `protobuf:"bytes,11,opt,name=active_business_id,json=activeBusinessId,proto3,oneof" json:"active_business_id,omitempty"`
 	// / The active store id.
 	ActiveStoreId *string `protobuf:"bytes,12,opt,name=active_store_id,json=activeStoreId,proto3,oneof" json:"active_store_id,omitempty"`
+	// / When the user was created.
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,13,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -444,6 +446,13 @@ func (x *User) GetActiveStoreId() string {
 		return *x.ActiveStoreId
 	}
 	return ""
+}
+
+func (x *User) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
 }
 
 type Invitation struct {
@@ -1595,7 +1604,7 @@ const file_identity_v1_user_proto_rawDesc = "" +
 	"\x16identity/v1/user.proto\x12\videntity.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cidentity/v1/permission.proto\x1a\x12link/v1/link.proto\"d\n" +
 	"\x10ConnectedAccount\x125\n" +
 	"\bprovider\x18\x01 \x01(\x0e2\x19.identity.v1.ProviderTypeR\bprovider\x12\x19\n" +
-	"\braw_data\x18\x03 \x01(\tR\arawData\"\xe7\x05\n" +
+	"\braw_data\x18\x03 \x01(\tR\arawData\"\xa2\x06\n" +
 	"\x04User\x12\x1a\n" +
 	"\x06ref_id\x18\x01 \x01(\tH\x00R\x05refId\x88\x01\x01\x12\x1b\n" +
 	"\tuser_name\x18\x02 \x01(\tR\buserName\x12L\n" +
@@ -1611,7 +1620,9 @@ const file_identity_v1_user_proto_rawDesc = "" +
 	"\x10required_actions\x18\n" +
 	" \x03(\x0e2\x1b.identity.v1.AuthActionTypeR\x0frequiredActions\x121\n" +
 	"\x12active_business_id\x18\v \x01(\tH\aR\x10activeBusinessId\x88\x01\x01\x12+\n" +
-	"\x0factive_store_id\x18\f \x01(\tH\bR\ractiveStoreId\x88\x01\x01B\t\n" +
+	"\x0factive_store_id\x18\f \x01(\tH\bR\ractiveStoreId\x88\x01\x01\x129\n" +
+	"\n" +
+	"created_at\x18\r \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAtB\t\n" +
 	"\a_ref_idB\b\n" +
 	"\x06_emailB\x0f\n" +
 	"\r_phone_numberB\r\n" +
@@ -1796,43 +1807,44 @@ var file_identity_v1_user_proto_depIdxs = []int32{
 	27, // 2: identity.v1.User.profile_link:type_name -> link.v1.ResourceLink
 	0,  // 3: identity.v1.User.account_status:type_name -> identity.v1.AccountStatusType
 	1,  // 4: identity.v1.User.required_actions:type_name -> identity.v1.AuthActionType
-	3,  // 5: identity.v1.Invitation.status:type_name -> identity.v1.InvitationStatus
-	28, // 6: identity.v1.Invitation.expires_at:type_name -> google.protobuf.Timestamp
-	28, // 7: identity.v1.Invitation.created_at:type_name -> google.protobuf.Timestamp
-	28, // 8: identity.v1.Invitation.responded_at:type_name -> google.protobuf.Timestamp
-	5,  // 9: identity.v1.UpdateMeRequest.user:type_name -> identity.v1.User
-	5,  // 10: identity.v1.UpdateMeResponse.user:type_name -> identity.v1.User
-	5,  // 11: identity.v1.UpdateRequest.user:type_name -> identity.v1.User
-	5,  // 12: identity.v1.UpdateResponse.user:type_name -> identity.v1.User
-	29, // 13: identity.v1.CreateUserDirectRequest.permissions:type_name -> identity.v1.StorePermissions
-	5,  // 14: identity.v1.CreateUserDirectResponse.user:type_name -> identity.v1.User
-	29, // 15: identity.v1.InviteUserRequest.permissions:type_name -> identity.v1.StorePermissions
-	5,  // 16: identity.v1.InviteUserResponse.user:type_name -> identity.v1.User
-	6,  // 17: identity.v1.InviteUserResponse.invitation:type_name -> identity.v1.Invitation
-	6,  // 18: identity.v1.ResendInvitationResponse.invitation:type_name -> identity.v1.Invitation
-	9,  // 19: identity.v1.UserService.Update:input_type -> identity.v1.UpdateRequest
-	11, // 20: identity.v1.UserService.RequestDeleteUser:input_type -> identity.v1.RequestDeleteUserRequest
-	13, // 21: identity.v1.UserService.DeleteUser:input_type -> identity.v1.DeleteUserRequest
-	15, // 22: identity.v1.UserService.ChangePassword:input_type -> identity.v1.ChangePasswordRequest
-	17, // 23: identity.v1.UserService.CreateUserDirect:input_type -> identity.v1.CreateUserDirectRequest
-	19, // 24: identity.v1.UserService.InviteUser:input_type -> identity.v1.InviteUserRequest
-	23, // 25: identity.v1.UserService.CancelInvitation:input_type -> identity.v1.CancelInvitationRequest
-	25, // 26: identity.v1.UserService.ResendInvitation:input_type -> identity.v1.ResendInvitationRequest
-	21, // 27: identity.v1.UserService.AcceptInvitation:input_type -> identity.v1.AcceptInvitationRequest
-	10, // 28: identity.v1.UserService.Update:output_type -> identity.v1.UpdateResponse
-	12, // 29: identity.v1.UserService.RequestDeleteUser:output_type -> identity.v1.RequestDeleteUserResponse
-	14, // 30: identity.v1.UserService.DeleteUser:output_type -> identity.v1.DeleteUserResponse
-	16, // 31: identity.v1.UserService.ChangePassword:output_type -> identity.v1.ChangePasswordResponse
-	18, // 32: identity.v1.UserService.CreateUserDirect:output_type -> identity.v1.CreateUserDirectResponse
-	20, // 33: identity.v1.UserService.InviteUser:output_type -> identity.v1.InviteUserResponse
-	24, // 34: identity.v1.UserService.CancelInvitation:output_type -> identity.v1.CancelInvitationResponse
-	26, // 35: identity.v1.UserService.ResendInvitation:output_type -> identity.v1.ResendInvitationResponse
-	22, // 36: identity.v1.UserService.AcceptInvitation:output_type -> identity.v1.AcceptInvitationResponse
-	28, // [28:37] is the sub-list for method output_type
-	19, // [19:28] is the sub-list for method input_type
-	19, // [19:19] is the sub-list for extension type_name
-	19, // [19:19] is the sub-list for extension extendee
-	0,  // [0:19] is the sub-list for field type_name
+	28, // 5: identity.v1.User.created_at:type_name -> google.protobuf.Timestamp
+	3,  // 6: identity.v1.Invitation.status:type_name -> identity.v1.InvitationStatus
+	28, // 7: identity.v1.Invitation.expires_at:type_name -> google.protobuf.Timestamp
+	28, // 8: identity.v1.Invitation.created_at:type_name -> google.protobuf.Timestamp
+	28, // 9: identity.v1.Invitation.responded_at:type_name -> google.protobuf.Timestamp
+	5,  // 10: identity.v1.UpdateMeRequest.user:type_name -> identity.v1.User
+	5,  // 11: identity.v1.UpdateMeResponse.user:type_name -> identity.v1.User
+	5,  // 12: identity.v1.UpdateRequest.user:type_name -> identity.v1.User
+	5,  // 13: identity.v1.UpdateResponse.user:type_name -> identity.v1.User
+	29, // 14: identity.v1.CreateUserDirectRequest.permissions:type_name -> identity.v1.StorePermissions
+	5,  // 15: identity.v1.CreateUserDirectResponse.user:type_name -> identity.v1.User
+	29, // 16: identity.v1.InviteUserRequest.permissions:type_name -> identity.v1.StorePermissions
+	5,  // 17: identity.v1.InviteUserResponse.user:type_name -> identity.v1.User
+	6,  // 18: identity.v1.InviteUserResponse.invitation:type_name -> identity.v1.Invitation
+	6,  // 19: identity.v1.ResendInvitationResponse.invitation:type_name -> identity.v1.Invitation
+	9,  // 20: identity.v1.UserService.Update:input_type -> identity.v1.UpdateRequest
+	11, // 21: identity.v1.UserService.RequestDeleteUser:input_type -> identity.v1.RequestDeleteUserRequest
+	13, // 22: identity.v1.UserService.DeleteUser:input_type -> identity.v1.DeleteUserRequest
+	15, // 23: identity.v1.UserService.ChangePassword:input_type -> identity.v1.ChangePasswordRequest
+	17, // 24: identity.v1.UserService.CreateUserDirect:input_type -> identity.v1.CreateUserDirectRequest
+	19, // 25: identity.v1.UserService.InviteUser:input_type -> identity.v1.InviteUserRequest
+	23, // 26: identity.v1.UserService.CancelInvitation:input_type -> identity.v1.CancelInvitationRequest
+	25, // 27: identity.v1.UserService.ResendInvitation:input_type -> identity.v1.ResendInvitationRequest
+	21, // 28: identity.v1.UserService.AcceptInvitation:input_type -> identity.v1.AcceptInvitationRequest
+	10, // 29: identity.v1.UserService.Update:output_type -> identity.v1.UpdateResponse
+	12, // 30: identity.v1.UserService.RequestDeleteUser:output_type -> identity.v1.RequestDeleteUserResponse
+	14, // 31: identity.v1.UserService.DeleteUser:output_type -> identity.v1.DeleteUserResponse
+	16, // 32: identity.v1.UserService.ChangePassword:output_type -> identity.v1.ChangePasswordResponse
+	18, // 33: identity.v1.UserService.CreateUserDirect:output_type -> identity.v1.CreateUserDirectResponse
+	20, // 34: identity.v1.UserService.InviteUser:output_type -> identity.v1.InviteUserResponse
+	24, // 35: identity.v1.UserService.CancelInvitation:output_type -> identity.v1.CancelInvitationResponse
+	26, // 36: identity.v1.UserService.ResendInvitation:output_type -> identity.v1.ResendInvitationResponse
+	22, // 37: identity.v1.UserService.AcceptInvitation:output_type -> identity.v1.AcceptInvitationResponse
+	29, // [29:38] is the sub-list for method output_type
+	20, // [20:29] is the sub-list for method input_type
+	20, // [20:20] is the sub-list for extension type_name
+	20, // [20:20] is the sub-list for extension extendee
+	0,  // [0:20] is the sub-list for field type_name
 }
 
 func init() { file_identity_v1_user_proto_init() }
