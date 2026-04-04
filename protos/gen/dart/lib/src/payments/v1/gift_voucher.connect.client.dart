@@ -25,40 +25,4 @@ extension type GiftVoucherServiceClient (connect.Transport _transport) {
       onTrailer: onTrailer,
     );
   }
-
-  /// Get voucher details
-  Future<paymentsv1gift_voucher.GetVoucherResponse> getVoucher(
-    paymentsv1gift_voucher.GetVoucherRequest input, {
-    connect.Headers? headers,
-    connect.AbortSignal? signal,
-    Function(connect.Headers)? onHeader,
-    Function(connect.Headers)? onTrailer,
-  }) {
-    return connect.Client(_transport).unary(
-      specs.GiftVoucherService.getVoucher,
-      input,
-      signal: signal,
-      headers: headers,
-      onHeader: onHeader,
-      onTrailer: onTrailer,
-    );
-  }
-
-  /// List vouchers with filtering
-  Future<paymentsv1gift_voucher.ListVouchersResponse> listVouchers(
-    paymentsv1gift_voucher.ListVouchersRequest input, {
-    connect.Headers? headers,
-    connect.AbortSignal? signal,
-    Function(connect.Headers)? onHeader,
-    Function(connect.Headers)? onTrailer,
-  }) {
-    return connect.Client(_transport).unary(
-      specs.GiftVoucherService.listVouchers,
-      input,
-      signal: signal,
-      headers: headers,
-      onHeader: onHeader,
-      onTrailer: onTrailer,
-    );
-  }
 }

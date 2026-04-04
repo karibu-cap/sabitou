@@ -8,12 +8,21 @@ import '../../utils/extensions/global_product_extension.dart';
 
 /// ViewModel for global products management.
 class GlobalProductsViewModel {
+  /// Private constructor for singleton pattern.
+  GlobalProductsViewModel._internal() {
+    loadGlobalProducts();
+  }
+
+  /// Singleton instance.
+  static final GlobalProductsViewModel _instance =
+      GlobalProductsViewModel._internal();
+
+  /// Factory constructor that returns the singleton instance.
+  factory GlobalProductsViewModel() => _instance;
+
   /// The products repository instance.
   final StoreProductsRepository _productsRepository =
       StoreProductsRepository.instance;
-
-  /// The categories set.
-  final Set<Category?> _categories = <Category?>{};
 
   /// Subject for products stream.
   final _globalProductsSubject = BehaviorSubject<List<GlobalProduct>>.seeded(
@@ -38,9 +47,6 @@ class GlobalProductsViewModel {
   Stream<List<GlobalProduct>> get globalProductsStream =>
       _globalProductsSubject.stream;
 
-  /// Gets the categories.
-  Set<Category?> get categories => _categories;
-
   /// Gets the search query.
   BehaviorSubject<String> get searchQuery => _searchQuerySubject;
 
@@ -58,14 +64,14 @@ class GlobalProductsViewModel {
         _searchQuerySubject.stream,
         _selectedCategorySubject.stream,
         _selectedStatusSubject.stream,
-        (categories, searchQuery, category, status) {
-          var filtered = categories.toList();
+        (products, searchQuery, category, status) {
+          var filtered = products.toList();
           if (searchQuery.isNotEmpty) {
             isFiltered = true;
             filtered = filtered
                 .where(
-                  (c) =>
-                      c.label.toLowerCase().contains(searchQuery.toLowerCase()),
+                  (p) =>
+                      p.label.toLowerCase().contains(searchQuery.toLowerCase()),
                 )
                 .toList();
           }
@@ -74,13 +80,13 @@ class GlobalProductsViewModel {
             isFiltered = true;
             filtered = filtered
                 .where(
-                  (c) => c.categories.any((cat) => cat.refId == category.refId),
+                  (p) => p.categories.any((cat) => cat.refId == category.refId),
                 )
                 .toList();
           }
           if (status != null) {
             isFiltered = true;
-            filtered = filtered.where((c) => c.status == status).toList();
+            filtered = filtered.where((p) => p.status == status).toList();
           }
           if (searchQuery.isEmpty && category == null && status == null) {
             isFiltered = false;
@@ -90,47 +96,19 @@ class GlobalProductsViewModel {
         },
       );
 
-  /// Constructor.
-  GlobalProductsViewModel() {
-    _loadGlobalProducts();
-  }
-
   /// Loads global products from repository.
-  Future<void> _loadGlobalProducts() async {
-    final globalProducts = await _productsRepository.findGlobalProducts(
-      FindGlobalProductsRequest(),
-    );
-    for (var gp in globalProducts) {
-      _categories.addAll(gp.categories);
-    }
+  Future<void> loadGlobalProducts() async {
+    final globalProducts = await _productsRepository.findGlobalProducts();
     _globalProductsSubject.add(globalProducts);
   }
 
-  /// Creates a new global product.
-  Future<bool> createGlobalProduct(CreateGlobalProductRequest request) async {
-    final success = await _productsRepository.createGlobalProduct(request);
-    if (success) {
-      await _loadGlobalProducts();
-    }
-
-    return success;
-  }
-
-  /// Updates an existing global product.
-  Future<bool> updateGlobalProduct(UpdateGlobalProductRequest request) async {
-    final success = await _productsRepository.updateGlobalProduct(request);
-    if (success) {
-      await _loadGlobalProducts();
-    }
-
-    return success;
-  }
-
   /// Deletes a global product by ID.
-  Future<bool> deleteGlobalProduct(DeleteGlobalProductRequest request) async {
-    final success = await _productsRepository.deleteGlobalProduct(request);
+  Future<bool> deleteGlobalProduct(String globalProductId) async {
+    final success = await _productsRepository.deleteGlobalProduct(
+      globalProductId,
+    );
     if (success) {
-      await _loadGlobalProducts();
+      await loadGlobalProducts();
     }
 
     return success;

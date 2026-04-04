@@ -18,84 +18,11 @@ abstract final class StoreService {
     storev1store.CreateStoreResponse.new,
   );
 
-  /// Gets a store by id.
-  static const getStore = connect.Spec(
-    '/$name/GetStore',
-    connect.StreamType.unary,
-    storev1store.GetStoreRequest.new,
-    storev1store.GetStoreResponse.new,
-  );
-
-  /// Updates a store.
-  /// Note:Only the fields that are set will be updated.
-  static const updateStore = connect.Spec(
-    '/$name/UpdateStore',
-    connect.StreamType.unary,
-    storev1store.UpdateStoreRequest.new,
-    storev1store.UpdateStoreResponse.new,
-  );
-
   /// Deletes a store.
   static const deleteStore = connect.Spec(
     '/$name/DeleteStore',
     connect.StreamType.unary,
     storev1store.DeleteStoreRequest.new,
     storev1store.DeleteStoreResponse.new,
-  );
-
-  /// Gets all stores base on business Id.
-  static const getBusinessStores = connect.Spec(
-    '/$name/GetBusinessStores',
-    connect.StreamType.unary,
-    storev1store.GetBusinessStoresRequest.new,
-    storev1store.GetBusinessStoresResponse.new,
-  );
-
-  /// Add user to store or invite user to store.
-  static const addUserToStore = connect.Spec(
-    '/$name/AddUserToStore',
-    connect.StreamType.unary,
-    storev1store.AddUserToStoreRequest.new,
-    storev1store.AddUserToStoreResponse.new,
-  );
-
-  /// Update store member.
-  static const updateStoreMember = connect.Spec(
-    '/$name/UpdateStoreMember',
-    connect.StreamType.unary,
-    storev1store.UpdateStoreMemberRequest.new,
-    storev1store.UpdateStoreMemberResponse.new,
-  );
-
-  /// Stream store members.
-  static const streamStoreMembers = connect.Spec(
-    '/$name/StreamStoreMembers',
-    connect.StreamType.server,
-    storev1store.StreamStoreMembersRequest.new,
-    storev1store.StreamStoreMembersResponse.new,
-  );
-
-  /// Get store members.
-  static const getStoreMembers = connect.Spec(
-    '/$name/GetStoreMembers',
-    connect.StreamType.unary,
-    storev1store.GetStoreMembersRequest.new,
-    storev1store.GetStoreMembersResponse.new,
-  );
-
-  /// Get store member.
-  static const getStoreMember = connect.Spec(
-    '/$name/GetStoreMember',
-    connect.StreamType.unary,
-    storev1store.GetStoreMemberRequest.new,
-    storev1store.GetStoreMemberResponse.new,
-  );
-
-  /// Remove user from store.
-  static const removeUserFromStore = connect.Spec(
-    '/$name/RemoveUserFromStore',
-    connect.StreamType.unary,
-    storev1store.RemoveUserFromStoreRequest.new,
-    storev1store.RemoveUserFromStoreResponse.new,
   );
 }

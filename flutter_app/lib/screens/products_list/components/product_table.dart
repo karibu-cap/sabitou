@@ -58,7 +58,7 @@ class ProductsTable extends StatelessWidget {
 class _ProductsGridView extends StatelessWidget {
   const _ProductsGridView({required this.products});
 
-  final List<StoreProductWithGlobalProduct> products;
+  final List<CustomProduct> products;
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +86,7 @@ class _ProductsGridView extends StatelessWidget {
 class _ProductCard extends StatelessWidget {
   _ProductCard({required this.product, required this.isMobile});
 
-  final StoreProductWithGlobalProduct product;
+  final CustomProduct product;
   final bool isMobile;
 
   /// The popover controller.
@@ -343,7 +343,7 @@ class _InfoRow extends StatelessWidget {
 class _ProductNameCell extends StatelessWidget {
   const _ProductNameCell({required this.product});
 
-  final StoreProductWithGlobalProduct product;
+  final CustomProduct product;
 
   @override
   Widget build(BuildContext context) {

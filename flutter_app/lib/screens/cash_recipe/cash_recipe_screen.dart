@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart' hide ErrorWidget;
 import 'package:provider/provider.dart';
 import 'package:sabitou_rpc/models.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
+import '../../services/internationalization/internationalization.dart';
 import '../../utils/app_constants.dart';
 import '../../utils/responsive_utils.dart';
 import '../../utils/user_preference.dart';
@@ -13,7 +15,6 @@ import 'cash_recipe_view_model.dart';
 import 'components/cash_receipt_card.dart';
 import 'components/empty_cash_recipe.dart';
 import 'components/error_widget.dart';
-import 'components/header.dart';
 import 'components/search_and_filter.dart';
 
 /// Screen for displaying cash receipts in a beautiful grid layout
@@ -42,7 +43,10 @@ class CashRecipeScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           spacing: isMobile ? AppConstants.spacingM : AppConstants.spacingL,
           children: [
-            const Header(),
+            Text(
+              Intls.to.cashReceipts,
+              style: ShadTheme.of(context).textTheme.h4,
+            ),
             const CashRecipeSearchAndFilter(),
             _CashRecipeBody(),
           ],
@@ -76,13 +80,16 @@ class _CashRecipeBody extends StatelessWidget {
               stream: _controller.filteredCashReceiptsStream,
               builder: (context, snapshot) {
                 if (isLoading && snapshot.data?.isEmpty != false) {
-                  return const Loading();
+                  return const Center(child: Loading());
                 }
 
                 final receipts = snapshot.data ?? [];
 
                 if (receipts.isEmpty) {
-                  return const EmptyCashRecipe();
+                  return const Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [EmptyCashRecipe()],
+                  );
                 }
 
                 return Padding(

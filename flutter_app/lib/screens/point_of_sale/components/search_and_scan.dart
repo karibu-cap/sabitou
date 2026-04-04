@@ -30,10 +30,7 @@ class SearchAndScanView extends StatelessWidget {
   /// Adds the product to the cart synchronously.
   ///
   /// On [InsufficientStockException], shows a toast and does NOT add the item.
-  void _onSelected(
-    BuildContext context,
-    StoreProductWithGlobalProduct product,
-  ) {
+  void _onSelected(BuildContext context, CustomProduct product) {
     final item = InvoiceLineItem(
       productId: product.storeProduct.refId,
       productName: product.globalProduct.name,
@@ -66,7 +63,7 @@ class SearchAndScanView extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = context.read<PointOfSaleController>();
 
-    return AutoComplete<StoreProductWithGlobalProduct>(
+    return AutoComplete<CustomProduct>(
       placeholder: Intls.to.scanOrSearchProduct,
       searchPlaceholder: Intls.to.scanOrSearchProduct,
       trailing: kIsWeb
@@ -78,6 +75,7 @@ class SearchAndScanView extends StatelessWidget {
             ),
       optionsBuilder: controller.searchProducts,
       canReturnDataWhenEmpty: true,
+      onlyPerformTheSearch: true,
       displayStringForOption: (p) => p.globalProduct.label,
       onSelected: (product) => _onSelected(context, product),
       optionViewBuilder: (product) => _ProductTile(product: product),
@@ -95,7 +93,7 @@ class SearchAndScanView extends StatelessWidget {
 class _ProductTile extends StatelessWidget {
   const _ProductTile({required this.product});
 
-  final StoreProductWithGlobalProduct product;
+  final CustomProduct product;
 
   @override
   Widget build(BuildContext context) {

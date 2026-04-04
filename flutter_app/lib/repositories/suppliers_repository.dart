@@ -8,7 +8,6 @@ import '../core/database/local_data_source.dart';
 import '../core/database/query/sql_condition.dart';
 import '../core/database/row_mapper.dart';
 import '../services/powersync/schema.dart';
-import '../services/rpc/connect_rpc.dart';
 import '../utils/app_constants.dart';
 import '../utils/logger.dart';
 import '../utils/utils.dart';
@@ -16,9 +15,6 @@ import '../utils/utils.dart';
 /// The suppliers repository.
 final class SuppliersRepository extends BaseRepository<Supplier> {
   final _logger = LoggerApp('SuppliersRepository');
-
-  /// The supplier service client.
-  final SupplierServiceClient supplierServiceClient;
 
   @override
   final LocalDataSource dataSource;
@@ -36,10 +32,7 @@ final class SuppliersRepository extends BaseRepository<Supplier> {
   RawRow toRow(Supplier entity) => fromSupplierToRaw(entity);
 
   /// Constructs a new [SuppliersRepository].
-  SuppliersRepository({required this.dataSource})
-    : supplierServiceClient = SupplierServiceClient(
-        ConnectRPCService.to.clientChannel,
-      );
+  SuppliersRepository({required this.dataSource});
 
   /// Gets all suppliers based on store Id.
   Future<List<Supplier>> getSuppliersByStore(String storeId) async {
@@ -62,9 +55,8 @@ final class SuppliersRepository extends BaseRepository<Supplier> {
   }
 
   /// Creates a new supplier.
-  Future<String?> createSupplier(CreateSupplierRequest request) async {
+  Future<String?> createSupplier(Supplier supplier) async {
     try {
-      final supplier = request.supplier;
       if (supplier.refId.isEmpty) {
         supplier.refId = AppUtils.generateSmartDatabaseId('SUP');
       }
@@ -80,13 +72,11 @@ final class SuppliersRepository extends BaseRepository<Supplier> {
   }
 
   /// Updates an existing supplier.
-  Future<bool> updateSupplier(UpdateSupplierRequest request) async {
+  Future<bool> updateSupplier(Supplier supplier) async {
     try {
       await updateWhere(
-        fields: fromSupplierToRaw(request.supplier),
-        filters: [
-          SqlQuery.equals(SuppliersFields.refId, request.supplier.refId),
-        ],
+        fields: fromSupplierToRaw(supplier),
+        filters: [SqlQuery.equals(SuppliersFields.refId, supplier.refId)],
       );
 
       return true;
@@ -98,9 +88,9 @@ final class SuppliersRepository extends BaseRepository<Supplier> {
   }
 
   /// Deletes a supplier by ID.
-  Future<bool> deleteSupplier(DeleteSupplierRequest request) async {
+  Future<bool> deleteSupplier(String supplierId) async {
     try {
-      await delete(request.supplierId);
+      await delete(supplierId);
 
       return true;
     } on Exception catch (e) {
@@ -132,40 +122,9 @@ final class SuppliersRepository extends BaseRepository<Supplier> {
   }
 
   /// Stream suppliers for a specific store.
-  Stream<List<Supplier>> streamStoreSuppliers(
-    StreamStoreSuppliersRequest request,
-  ) {
+  Stream<List<Supplier>> streamStoreSuppliers(String storeId) {
     return watchWhere([
-      SqlQuery.like(SuppliersFields.storeIds, '%"${request.storeId}"%'),
+      SqlQuery.like(SuppliersFields.storeIds, '%"$storeId"%'),
     ]);
-  }
-
-  /// Gets products for a specific supplier.
-  Future<List<ProductBySupplier>> getProductsForSupplier(
-    String supplierRefId,
-    String? storeId,
-  ) async {
-    try {
-      final rows = await dataSource.executeRaw(
-        'SELECT DISTINCT sp.*, gp.* '
-        'FROM ${CollectionName.storeProducts} sp '
-        'JOIN ${CollectionName.globalProducts} gp ON sp.${StoreProductsFields.globalProductId} = gp.${GlobalProductsFields.refId} '
-        'JOIN ${CollectionName.inventoryLevels} il ON sp.${StoreProductsFields.refId} = il.${InventoryLevelsFields.storeProductId} '
-        'JOIN json_each(il.${InventoryLevelsFields.batches}) b ON json_extract(b.value, "\$.supplier_id") = ? '
-        'WHERE il.${InventoryLevelsFields.storeId} = ?',
-        [supplierRefId, storeId ?? ''],
-      );
-
-      return rows.map((row) {
-        return ProductBySupplier(
-          storeProduct: fromRowToStoreProduct(row),
-          globalProduct: fromRowToGlobalProduct(row),
-        );
-      }).toList();
-    } catch (e) {
-      _logger.severe('getProductsForSupplier Error: $e');
-
-      return [];
-    }
   }
 }

@@ -36,8 +36,6 @@ class CashReceiptCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(cashReceipt);
-
     return ShadCard(
       padding: const EdgeInsets.all(16),
       child: InkWell(

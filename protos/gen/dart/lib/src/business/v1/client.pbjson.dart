@@ -228,18 +228,6 @@ const $core.Map<$core.String, $core.dynamic> BusinessClientServiceBase$json = {
       '4': {}
     },
     {
-      '1': 'GetBusinessClient',
-      '2': '.business.v1.GetBusinessClientRequest',
-      '3': '.business.v1.GetBusinessClientResponse',
-      '4': {}
-    },
-    {
-      '1': 'UpdateBusinessClient',
-      '2': '.business.v1.UpdateBusinessClientRequest',
-      '3': '.business.v1.UpdateBusinessClientResponse',
-      '4': {}
-    },
-    {
       '1': 'DeleteBusinessClient',
       '2': '.business.v1.DeleteBusinessClientRequest',
       '3': '.business.v1.DeleteBusinessClientResponse',
@@ -255,11 +243,6 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
   '.business.v1.BusinessClient': BusinessClient$json,
   '.business.v1.CreateBusinessClientResponse':
       CreateBusinessClientResponse$json,
-  '.business.v1.GetBusinessClientRequest': GetBusinessClientRequest$json,
-  '.business.v1.GetBusinessClientResponse': GetBusinessClientResponse$json,
-  '.business.v1.UpdateBusinessClientRequest': UpdateBusinessClientRequest$json,
-  '.business.v1.UpdateBusinessClientResponse':
-      UpdateBusinessClientResponse$json,
   '.business.v1.DeleteBusinessClientRequest': DeleteBusinessClientRequest$json,
   '.business.v1.DeleteBusinessClientResponse':
       DeleteBusinessClientResponse$json,
@@ -269,10 +252,6 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
 final $typed_data.Uint8List businessClientServiceDescriptor = $convert.base64Decode(
     'ChVCdXNpbmVzc0NsaWVudFNlcnZpY2USbQoUQ3JlYXRlQnVzaW5lc3NDbGllbnQSKC5idXNpbm'
     'Vzcy52MS5DcmVhdGVCdXNpbmVzc0NsaWVudFJlcXVlc3QaKS5idXNpbmVzcy52MS5DcmVhdGVC'
-    'dXNpbmVzc0NsaWVudFJlc3BvbnNlIgASZAoRR2V0QnVzaW5lc3NDbGllbnQSJS5idXNpbmVzcy'
-    '52MS5HZXRCdXNpbmVzc0NsaWVudFJlcXVlc3QaJi5idXNpbmVzcy52MS5HZXRCdXNpbmVzc0Ns'
-    'aWVudFJlc3BvbnNlIgASbQoUVXBkYXRlQnVzaW5lc3NDbGllbnQSKC5idXNpbmVzcy52MS5VcG'
-    'RhdGVCdXNpbmVzc0NsaWVudFJlcXVlc3QaKS5idXNpbmVzcy52MS5VcGRhdGVCdXNpbmVzc0Ns'
-    'aWVudFJlc3BvbnNlIgASbQoURGVsZXRlQnVzaW5lc3NDbGllbnQSKC5idXNpbmVzcy52MS5EZW'
-    'xldGVCdXNpbmVzc0NsaWVudFJlcXVlc3QaKS5idXNpbmVzcy52MS5EZWxldGVCdXNpbmVzc0Ns'
-    'aWVudFJlc3BvbnNlIgA=');
+    'dXNpbmVzc0NsaWVudFJlc3BvbnNlIgASbQoURGVsZXRlQnVzaW5lc3NDbGllbnQSKC5idXNpbm'
+    'Vzcy52MS5EZWxldGVCdXNpbmVzc0NsaWVudFJlcXVlc3QaKS5idXNpbmVzcy52MS5EZWxldGVC'
+    'dXNpbmVzc0NsaWVudFJlc3BvbnNlIgA=');

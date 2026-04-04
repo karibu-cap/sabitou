@@ -10,7 +10,6 @@
 // ignore_for_file: deprecated_member_use_from_same_package, library_prefixes
 // ignore_for_file: non_constant_identifier_names
 
-import 'dart:async' as $async;
 import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
@@ -4324,104 +4323,6 @@ class TrendDataPoint extends $pb.GeneratedMessage {
   $core.bool hasProfitValue() => $_has(2);
   @$pb.TagNumber(3)
   void clearProfitValue() => $_clearField(3);
-}
-
-class ReportingServiceApi {
-  final $pb.RpcClient _client;
-
-  ReportingServiceApi(this._client);
-
-  /// Sales report by period
-  $async.Future<GetSalesReportResponse> getSalesReport(
-          $pb.ClientContext? ctx, GetSalesReportRequest request) =>
-      _client.invoke<GetSalesReportResponse>(ctx, 'ReportingService',
-          'GetSalesReport', request, GetSalesReportResponse());
-
-  /// Purchase report by period
-  $async.Future<GetPurchaseReportResponse> getPurchaseReport(
-          $pb.ClientContext? ctx, GetPurchaseReportRequest request) =>
-      _client.invoke<GetPurchaseReportResponse>(ctx, 'ReportingService',
-          'GetPurchaseReport', request, GetPurchaseReportResponse());
-
-  /// Inventory movement report
-  $async.Future<GetInventoryMovementReportResponse> getInventoryMovementReport(
-          $pb.ClientContext? ctx, GetInventoryMovementReportRequest request) =>
-      _client.invoke<GetInventoryMovementReportResponse>(
-          ctx,
-          'ReportingService',
-          'GetInventoryMovementReport',
-          request,
-          GetInventoryMovementReportResponse());
-
-  /// Best selling products
-  $async.Future<GetBestSellingProductsResponse> getBestSellingProducts(
-          $pb.ClientContext? ctx, GetBestSellingProductsRequest request) =>
-      _client.invoke<GetBestSellingProductsResponse>(ctx, 'ReportingService',
-          'GetBestSellingProducts', request, GetBestSellingProductsResponse());
-
-  /// Store purchase history
-  $async.Future<GetStorePurchaseHistoryResponse> getStorePurchaseHistory(
-          $pb.ClientContext? ctx, GetStorePurchaseHistoryRequest request) =>
-      _client.invoke<GetStorePurchaseHistoryResponse>(
-          ctx,
-          'ReportingService',
-          'GetStorePurchaseHistory',
-          request,
-          GetStorePurchaseHistoryResponse());
-
-  /// Supplier performance report
-  $async.Future<GetSupplierPerformanceReportResponse>
-      getSupplierPerformanceReport($pb.ClientContext? ctx,
-              GetSupplierPerformanceReportRequest request) =>
-          _client.invoke<GetSupplierPerformanceReportResponse>(
-              ctx,
-              'ReportingService',
-              'GetSupplierPerformanceReport',
-              request,
-              GetSupplierPerformanceReportResponse());
-
-  /// Profit & Loss report
-  $async.Future<GetProfitLossReportResponse> getProfitLossReport(
-          $pb.ClientContext? ctx, GetProfitLossReportRequest request) =>
-      _client.invoke<GetProfitLossReportResponse>(ctx, 'ReportingService',
-          'GetProfitLossReport', request, GetProfitLossReportResponse());
-
-  /// Stock aging report
-  $async.Future<GetStockAgingReportResponse> getStockAgingReport(
-          $pb.ClientContext? ctx, GetStockAgingReportRequest request) =>
-      _client.invoke<GetStockAgingReportResponse>(ctx, 'ReportingService',
-          'GetStockAgingReport', request, GetStockAgingReportResponse());
-
-  /// Comprehensive inventory report with aggregates
-  $async.Future<GetInventoryReportResponse> getInventoryReport(
-          $pb.ClientContext? ctx, GetInventoryReportRequest request) =>
-      _client.invoke<GetInventoryReportResponse>(ctx, 'ReportingService',
-          'GetInventoryReport', request, GetInventoryReportResponse());
-
-  /// Full sales report including best sellers
-  $async.Future<GetSalesReportFullResponse> getSalesReportFull(
-          $pb.ClientContext? ctx, GetSalesReportRequestFull request) =>
-      _client.invoke<GetSalesReportFullResponse>(ctx, 'ReportingService',
-          'GetSalesReportFull', request, GetSalesReportFullResponse());
-
-  /// Comprehensive financial report with purchases and balances
-  $async.Future<GetFinancialReportResponse> getFinancialReport(
-          $pb.ClientContext? ctx, GetFinancialReportRequest request) =>
-      _client.invoke<GetFinancialReportResponse>(ctx, 'ReportingService',
-          'GetFinancialReport', request, GetFinancialReportResponse());
-}
-
-/// Comprehensive dashboard data service for aggregated calculations
-class ReportsServiceApi {
-  final $pb.RpcClient _client;
-
-  ReportsServiceApi(this._client);
-
-  /// Get comprehensive dashboard data with all calculated fields
-  $async.Future<GetDashboardReportResponse> getDashboardReport(
-          $pb.ClientContext? ctx, GetDashboardReportRequest request) =>
-      _client.invoke<GetDashboardReportResponse>(ctx, 'ReportsService',
-          'GetDashboardReport', request, GetDashboardReportResponse());
 }
 
 const $core.bool _omitFieldNames =

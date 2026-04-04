@@ -190,7 +190,7 @@
 //     final request = req;
 
 //     return GetStoreProductResponse(
-//       product: StoreProductWithGlobalProduct(
+//       product: CustomProduct(
 //         storeProduct: StoreProduct()
 //           ..refId = request.storeProductId
 //           ..storeId = 'store_1'

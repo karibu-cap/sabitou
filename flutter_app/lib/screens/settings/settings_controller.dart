@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -8,8 +7,6 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 import '../../repositories/business_repository.dart';
 import '../../repositories/stores_repository.dart';
 import '../../repositories/users_repository.dart';
-import '../../services/storage/app_storage.dart';
-import '../../utils/app_constants.dart';
 import '../../utils/printer_management.dart';
 import '../../widgets/pdf/printers/printer_configuration.dart';
 import '../../widgets/sidebar/sidebar_menu_item.dart';
@@ -100,16 +97,16 @@ class SettingsController extends ChangeNotifier {
   /// Load printer configuration from storage
   Future<void> _loadPrinterConfiguration() async {
     try {
-      final String? configJson = await AppStorage.of<String>(
-        boxKey: PreferencesKey.printerConfiguration,
-      ).read(PreferencesKey.printerConfiguration);
+      // final String? configJson = await AppStorage.of<String>(
+      //   boxKey: PreferencesKey.printerConfiguration,
+      // ).read(PreferencesKey.printerConfiguration);
 
-      if (configJson != null) {
-        final Map<String, dynamic> json =
-            jsonDecode(configJson) as Map<String, dynamic>;
-        _printerConfiguration = PrinterConfiguration.fromJson(json);
-        notifyListeners();
-      }
+      // if (configJson != null) {
+      //   final Map<String, dynamic> json =
+      //       jsonDecode(configJson) as Map<String, dynamic>;
+      //   _printerConfiguration = PrinterConfiguration.fromJson(json);
+      //   notifyListeners();
+      // }
     } catch (e) {
       // If error, keep default configuration
       _printerConfiguration = const PrinterConfiguration();
@@ -166,10 +163,10 @@ class SettingsController extends ChangeNotifier {
   /// Saves the printer configuration
   Future<void> savePrinterConfiguration() async {
     try {
-      final String configJson = jsonEncode(_printerConfiguration.toJson());
-      await AppStorage.of<String>(
-        boxKey: PreferencesKey.printerConfiguration,
-      ).write(PreferencesKey.printerConfiguration, configJson);
+      // final String configJson = jsonEncode(_printerConfiguration.toJson());
+      // await AppStorage.of<String>(
+      //   boxKey: PreferencesKey.printerConfiguration,
+      // ).write(PreferencesKey.printerConfiguration, configJson);
     } catch (e) {
       // Handle error silently or show a message
     }

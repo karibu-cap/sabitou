@@ -1,4 +1,3 @@
-
 syntax = "proto3";
 
 package link.v1;
@@ -20,20 +19,7 @@ message ResourceLink {
 
   // The label use to identify the resource type.
   optional string label = 5;
-}
 
-message GetResourceLinksRequest {
-  // A list of unique identifiers of the resource link to retrieve.
-  repeated string ids = 1;
-}
-
-message GetResourceLinksResponse {
-  // The retrieved resource link data list.
-  map<string, ResourceLink> link = 1;
-}
-
-service ResourceLinkService {
-  // Gets a resource link by id.
-  // Returns the resources in the same order as the ids.
-  rpc GetResourceLinks(GetResourceLinksRequest) returns (GetResourceLinksResponse);
+  // Whether the resource link is orphan.
+  bool is_orphan = 6;
 }

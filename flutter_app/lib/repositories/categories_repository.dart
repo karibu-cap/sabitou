@@ -56,24 +56,45 @@ class CategoriesRepository extends BaseRepository<Category> {
   }
 
   /// Gets all categories.
-  Future<List<Category>> getCategories(FindCategoriesRequest request) async {
+  Future<List<Category>> getCategories({
+    String? businessId,
+    String? refId,
+    String? name,
+    String? parentCategoryId,
+    CategoryStatus? status,
+    CategoryType? type,
+  }) async {
     try {
       final response = await findWhere([
-        if (request.businessId.isNotEmpty)
-          SqlQuery.equals(CategoriesFields.businessId, request.businessId),
-        if (request.refId.isNotEmpty)
-          SqlQuery.equals(CategoriesFields.refId, request.refId),
-        if (request.name.isNotEmpty)
-          SqlQuery.equals(CategoriesFields.name, request.name),
-        if (request.parentCategoryId.isNotEmpty)
-          SqlQuery.equals(
-            CategoriesFields.parentCategoryId,
-            request.parentCategoryId,
-          ),
-        if (request.hasStatus())
-          SqlQuery.equals(CategoriesFields.status, request.status.name),
-        if (request.hasType())
-          SqlQuery.equals(CategoriesFields.type, request.type.name),
+        if (businessId != null)
+          SqlQuery.equals(CategoriesFields.businessId, businessId),
+        if (refId != null) SqlQuery.equals(CategoriesFields.refId, refId),
+        if (name != null) SqlQuery.equals(CategoriesFields.name, name),
+        if (parentCategoryId != null)
+          SqlQuery.equals(CategoriesFields.parentCategoryId, parentCategoryId),
+        if (status != null)
+          SqlQuery.equals(CategoriesFields.status, status.name),
+        if (type != null) SqlQuery.equals(CategoriesFields.type, type.name),
+      ]);
+
+      return response;
+    } on Exception catch (e) {
+      _logger.severe('getCategories Error: $e');
+
+      return [];
+    }
+  }
+
+  /// Gets all categories.
+  Future<List<Category>> findCategories(String query, String businessId) async {
+    try {
+      final response = await findWhere([
+        SqlQuery.equals(CategoriesFields.businessId, businessId),
+        if (query.isNotEmpty) SqlQuery.like(CategoriesFields.name, '%$query%'),
+        SqlQuery.equals(
+          CategoriesFields.status,
+          CategoryStatus.CATEGORY_STATUS_ACTIVE.name,
+        ),
       ]);
 
       return response;
@@ -115,11 +136,14 @@ class CategoriesRepository extends BaseRepository<Category> {
   }
 
   /// Updates a product category.
-  Future<bool> updateCategory(UpdateCategoryRequest request) async {
+  Future<bool> updateCategory(Category category) async {
     try {
-      final response = await categoryServiceClient.updateCategory(request);
+      await updateWhere(
+        fields: fromCategoryToRaw(category),
+        filters: [SqlQuery.equals(CategoriesFields.refId, category.refId)],
+      );
 
-      return response.success;
+      return true;
     } on Exception catch (e) {
       _logger.severe('updateProductCategory Error: $e');
 
@@ -128,9 +152,12 @@ class CategoriesRepository extends BaseRepository<Category> {
   }
 
   /// Deletes a product category.
-  Future<bool> deleteProductCategory(DeleteCategoryRequest request) async {
+  Future<bool> deleteProductCategory(String categoryId) async {
     try {
-      await delete(request.categoryId);
+      await dataSource.deleteWhere(
+        table: CollectionName.categories,
+        filters: [SqlQuery.equals(CategoriesFields.refId, categoryId)],
+      );
 
       return true;
     } on Exception catch (e) {

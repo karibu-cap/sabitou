@@ -100,34 +100,6 @@ class InventoryController extends ChangeNotifier {
     await _viewModel.refreshProducts(onLoaded: notifyListeners);
   }
 
-  /// Adjusts the inventory.
-  Future<bool> adjustInventory(
-    String userId,
-    String storeId,
-    String productId,
-    int quantityChange,
-    String reason,
-    String notes,
-  ) async {
-    final result = await _viewModel.adjustInventory(
-      userId,
-      storeId,
-      productId,
-      quantityChange,
-      reason,
-      notes,
-      onLoaded: notifyListeners,
-    );
-
-    // If we have a selected item, refresh its transaction history
-    final selectedItem = _viewModel.currentSelectedItem;
-    if (selectedItem != null && selectedItem.product.refId == productId) {
-      await _viewModel.selectItem(selectedItem);
-    }
-
-    return result;
-  }
-
   /// Selects an inventory item.
   Future<void> selectItem(InventoryLevelWithProduct item) async {
     if (item.product.refId ==

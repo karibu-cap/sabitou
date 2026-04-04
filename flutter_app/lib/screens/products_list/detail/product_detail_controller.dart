@@ -11,7 +11,7 @@ final class ProductDetailController extends ChangeNotifier {
   bool _isUpdatingStatus = false;
 
   /// The loaded product.
-  StoreProductWithGlobalProduct? get product => _viewModel.product;
+  CustomProduct? get product => _viewModel.product;
 
   /// Whether the product is loading for the first time.
   bool get isLoading => _viewModel.isLoading;

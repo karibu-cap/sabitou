@@ -61,51 +61,8 @@ message CashReceipt {
 
 enum CashReceiptStatus {
   CASH_RECEIPT_STATUS_UNSPECIFIED = 0;
-  CASH_RECEIPT_STATUS_DRAFT       = 1; // held / in progress
-  CASH_RECEIPT_STATUS_COMPLETED   = 2; // paid + printed
-  CASH_RECEIPT_STATUS_VOIDED      = 3; // cancelled by manager
-  CASH_RECEIPT_STATUS_REFUNDED    = 4; // refund issued
-}
-
-
-
-message CreateCashReceiptRequest {
-  // The partial cash receipt to create.
-  CashReceipt receipt = 1;
-
-  // The partial payment use by the client.
-  repeated payments.v1.Payment payments = 2;
-
-  // Issue voucher on change
-  // If true and owed_to_customer > 0, issue a voucher instead of cash
-  bool issue_voucher_on_change = 3;
-}
-
-message CreateCashReceiptResponse {
-  // The created cash receipt.
-  bool success = 1;
-
-  // If a voucher was issued.
-  optional payments.v1.GiftVoucher voucher = 2;
-}
-
-message FindCashReceiptRequest {
-  // The document id of the cash receipt.
-  optional string receipt_id = 1;
-
-  // The store id of the cash receipt.
-  string store_id = 2 [(buf.validate.field).required = true];
-}
-
-message FindCashReceiptResponse {
-  // The cash receipt.
- repeated CashReceipt receipts = 1;
-}
-
-
-service CashReceiptService {
-  // Create a cash receipt (most common - 95% of transactions)
-  rpc CreateCashReceipt(CreateCashReceiptRequest) returns (CreateCashReceiptResponse);
-
-  rpc FindCashReceipt(FindCashReceiptRequest) returns (FindCashReceiptResponse);
+  CASH_RECEIPT_STATUS_DRAFT = 1; // held / in progress
+  CASH_RECEIPT_STATUS_COMPLETED = 2; // paid + printed
+  CASH_RECEIPT_STATUS_VOIDED = 3; // cancelled by manager
+  CASH_RECEIPT_STATUS_REFUNDED = 4; // refund issued
 }

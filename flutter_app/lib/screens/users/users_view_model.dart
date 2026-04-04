@@ -95,31 +95,13 @@ class UsersViewModel {
     },
   );
 
-  /// Stream of store members for reactive UI updates
+  /// Stream of store members with user data for reactive UI updates.
   Stream<List<({StoreMember storeMember, User user})>> get storeMembersStream =>
-      _storeRepository
-          .streamStoreMembers(StreamStoreMembersRequest(storeId: storeId))
-          .asyncMap((members) async {
-            final memberFutures = members.map((member) async {
-              final user = await _usersRepository.getUser(
-                GetUserRequest(userId: member.userId),
-              );
-
-              if (user == null) return null;
-
-              return (storeMember: member, user: user);
-            });
-
-            final resolvedMembers = await Future.wait(memberFutures);
-
-            return resolvedMembers
-                .whereType<({StoreMember storeMember, User user})>()
-                .toList();
-          });
+      _storeRepository.streamStoreMembers(storeId);
 
   /// Stream of user for reactive UI updates
   Stream<User?> userStream(String userId) =>
-      _usersRepository.streamUser(StreamUserRequest(userId: userId));
+      _usersRepository.streamUser(userId);
 
   /// Constructor
   UsersViewModel({required this.storeId});
@@ -149,20 +131,16 @@ class UsersViewModel {
     required String userId,
     StorePermissions? permissions,
   }) async {
-    final request = UpdateStoreMemberRequest(
+    return await _storeRepository.updateStoreMember(
       userId: userId,
       storeId: storeId,
       permissions: permissions,
     );
-
-    return await _storeRepository.updateStoreMember(request);
   }
 
   /// Removes an user from the store.
-  Future<bool> removeUserFromStore(String userId) async {
-    return await _storeRepository.removeUserFromStore(
-      RemoveUserFromStoreRequest(userId: userId, storeId: storeId),
-    );
+  Future<bool> removeUserFromStore(String storeId, String userId) async {
+    return await _storeRepository.removeUserFromStore(storeId, userId);
   }
 
   /// Sets an user status from the store.
@@ -171,11 +149,9 @@ class UsersViewModel {
     StoreMemberStatus status,
   ) async {
     return await _storeRepository.updateStoreMember(
-      UpdateStoreMemberRequest(
-        userId: userId,
-        storeId: storeId,
-        status: status,
-      ),
+      userId: userId,
+      storeId: storeId,
+      status: status,
     );
   }
 
@@ -185,12 +161,50 @@ class UsersViewModel {
     StorePermissions permissions,
   ) async {
     return await _storeRepository.addStoreMember(
-      AddUserToStoreRequest(
-        userId: userId,
+      userId: userId,
+      storeId: storeId,
+      permissions: permissions,
+    );
+  }
+
+  /// Creates a user directly with a temporary password (Direct onboarding flow).
+  /// Calls [CreateUserDirect] RPC which atomically creates the user + StoreMember.
+  Future<bool> createUserDirect({
+    required String email,
+    required String userName,
+    required String temporaryPassword,
+    required StorePermissions permissions,
+    bool forcePasswordChange = true,
+  }) async {
+    final user = await _usersRepository.createUserDirect(
+      CreateUserDirectRequest(
+        email: email,
+        userName: userName,
+        password: temporaryPassword,
+        storeId: storeId,
+        permissions: permissions,
+        forcePasswordChangeOnFirstLogin: forcePasswordChange,
+      ),
+    );
+
+    return user != null;
+  }
+
+  /// Invites a user via email (Invite onboarding flow).
+  /// Calls [InviteUser] RPC which creates a PENDING user + StoreMember + Invitation.
+  Future<bool> inviteUser({
+    required String email,
+    required StorePermissions permissions,
+  }) async {
+    final invitation = await _usersRepository.inviteUser(
+      InviteUserRequest(
+        email: email,
         storeId: storeId,
         permissions: permissions,
       ),
     );
+
+    return invitation != null;
   }
 
   /// Disposes the view model.

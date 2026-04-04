@@ -79,14 +79,12 @@ type StoreMemberStatus int32
 
 const (
 	StoreMemberStatus_STORE_MEMBER_STATUS_UNSPECIFIED StoreMemberStatus = 0
-	// / The user is active.
-	StoreMemberStatus_STORE_MEMBER_STATUS_ACTIVE StoreMemberStatus = 1
-	// / The user is pending.
-	StoreMemberStatus_STORE_MEMBER_STATUS_PENDING StoreMemberStatus = 2
-	// / The user is inactive.
-	StoreMemberStatus_STORE_MEMBER_STATUS_INACTIVE StoreMemberStatus = 3
-	// / The user is banned.
-	StoreMemberStatus_STORE_MEMBER_STATUS_BANNED StoreMemberStatus = 4
+	StoreMemberStatus_STORE_MEMBER_STATUS_ACTIVE      StoreMemberStatus = 1
+	StoreMemberStatus_STORE_MEMBER_STATUS_PENDING     StoreMemberStatus = 2
+	StoreMemberStatus_STORE_MEMBER_STATUS_INACTIVE    StoreMemberStatus = 3
+	StoreMemberStatus_STORE_MEMBER_STATUS_BANNED      StoreMemberStatus = 4
+	StoreMemberStatus_STORE_MEMBER_STATUS_REJECTED    StoreMemberStatus = 5 // ← user declined the invitation
+	StoreMemberStatus_STORE_MEMBER_STATUS_EXPIRED     StoreMemberStatus = 6 // ← invitation token expired
 )
 
 // Enum value maps for StoreMemberStatus.
@@ -97,6 +95,8 @@ var (
 		2: "STORE_MEMBER_STATUS_PENDING",
 		3: "STORE_MEMBER_STATUS_INACTIVE",
 		4: "STORE_MEMBER_STATUS_BANNED",
+		5: "STORE_MEMBER_STATUS_REJECTED",
+		6: "STORE_MEMBER_STATUS_EXPIRED",
 	}
 	StoreMemberStatus_value = map[string]int32{
 		"STORE_MEMBER_STATUS_UNSPECIFIED": 0,
@@ -104,6 +104,8 @@ var (
 		"STORE_MEMBER_STATUS_PENDING":     2,
 		"STORE_MEMBER_STATUS_INACTIVE":    3,
 		"STORE_MEMBER_STATUS_BANNED":      4,
+		"STORE_MEMBER_STATUS_REJECTED":    5,
+		"STORE_MEMBER_STATUS_EXPIRED":     6,
 	}
 )
 
@@ -132,6 +134,57 @@ func (x StoreMemberStatus) Number() protoreflect.EnumNumber {
 // Deprecated: Use StoreMemberStatus.Descriptor instead.
 func (StoreMemberStatus) EnumDescriptor() ([]byte, []int) {
 	return file_store_v1_store_proto_rawDescGZIP(), []int{1}
+}
+
+type OnboardingType int32
+
+const (
+	OnboardingType_ONBOARDING_TYPE_UNSPECIFIED OnboardingType = 0
+	// admin created with password → active immediately
+	OnboardingType_ONBOARDING_TYPE_DIRECT OnboardingType = 1
+	// invitation email sent → user sets own password
+	OnboardingType_ONBOARDING_TYPE_INVITE OnboardingType = 2
+)
+
+// Enum value maps for OnboardingType.
+var (
+	OnboardingType_name = map[int32]string{
+		0: "ONBOARDING_TYPE_UNSPECIFIED",
+		1: "ONBOARDING_TYPE_DIRECT",
+		2: "ONBOARDING_TYPE_INVITE",
+	}
+	OnboardingType_value = map[string]int32{
+		"ONBOARDING_TYPE_UNSPECIFIED": 0,
+		"ONBOARDING_TYPE_DIRECT":      1,
+		"ONBOARDING_TYPE_INVITE":      2,
+	}
+)
+
+func (x OnboardingType) Enum() *OnboardingType {
+	p := new(OnboardingType)
+	*p = x
+	return p
+}
+
+func (x OnboardingType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (OnboardingType) Descriptor() protoreflect.EnumDescriptor {
+	return file_store_v1_store_proto_enumTypes[2].Descriptor()
+}
+
+func (OnboardingType) Type() protoreflect.EnumType {
+	return &file_store_v1_store_proto_enumTypes[2]
+}
+
+func (x OnboardingType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use OnboardingType.Descriptor instead.
+func (OnboardingType) EnumDescriptor() ([]byte, []int) {
+	return file_store_v1_store_proto_rawDescGZIP(), []int{2}
 }
 
 type Address struct {
@@ -393,17 +446,15 @@ func (x *Store) GetTaxPayerNumber() string {
 }
 
 type StoreMember struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The user.
-	UserId string `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	// The unique identifier of the store.
-	StoreId string `protobuf:"bytes,2,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
-	// The permissions that the user has.
-	Permissions *v1.StorePermissions `protobuf:"bytes,3,opt,name=permissions,proto3" json:"permissions,omitempty"`
-	// The date since when the user became a member.
-	MemberSince *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=member_since,json=memberSince,proto3" json:"member_since,omitempty"`
-	// The status of the user.
-	Status        StoreMemberStatus `protobuf:"varint,5,opt,name=status,proto3,enum=store.v1.StoreMemberStatus" json:"status,omitempty"`
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	UserId         string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	StoreId        string                 `protobuf:"bytes,2,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
+	Permissions    *v1.StorePermissions   `protobuf:"bytes,3,opt,name=permissions,proto3" json:"permissions,omitempty"`
+	MemberSince    *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=member_since,json=memberSince,proto3" json:"member_since,omitempty"`
+	Status         StoreMemberStatus      `protobuf:"varint,5,opt,name=status,proto3,enum=store.v1.StoreMemberStatus" json:"status,omitempty"`
+	OnboardingType OnboardingType         `protobuf:"varint,6,opt,name=onboarding_type,json=onboardingType,proto3,enum=store.v1.OnboardingType" json:"onboarding_type,omitempty"`
+	// Null if DIRECT
+	InvitationId  *string `protobuf:"bytes,7,opt,name=invitation_id,json=invitationId,proto3,oneof" json:"invitation_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -471,6 +522,20 @@ func (x *StoreMember) GetStatus() StoreMemberStatus {
 		return x.Status
 	}
 	return StoreMemberStatus_STORE_MEMBER_STATUS_UNSPECIFIED
+}
+
+func (x *StoreMember) GetOnboardingType() OnboardingType {
+	if x != nil {
+		return x.OnboardingType
+	}
+	return OnboardingType_ONBOARDING_TYPE_UNSPECIFIED
+}
+
+func (x *StoreMember) GetInvitationId() string {
+	if x != nil && x.InvitationId != nil {
+		return *x.InvitationId
+	}
+	return ""
 }
 
 type CreateStoreRequest struct {
@@ -572,196 +637,6 @@ func (x *CreateStoreResponse) GetStoreId() string {
 	return ""
 }
 
-type GetStoreRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The unique identifier of the store to retrieve.
-	StoreId       string `protobuf:"bytes,1,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetStoreRequest) Reset() {
-	*x = GetStoreRequest{}
-	mi := &file_store_v1_store_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetStoreRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetStoreRequest) ProtoMessage() {}
-
-func (x *GetStoreRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_v1_store_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetStoreRequest.ProtoReflect.Descriptor instead.
-func (*GetStoreRequest) Descriptor() ([]byte, []int) {
-	return file_store_v1_store_proto_rawDescGZIP(), []int{5}
-}
-
-func (x *GetStoreRequest) GetStoreId() string {
-	if x != nil {
-		return x.StoreId
-	}
-	return ""
-}
-
-type GetStoreResponse struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The retrieved store data.
-	Store         *Store `protobuf:"bytes,1,opt,name=store,proto3" json:"store,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetStoreResponse) Reset() {
-	*x = GetStoreResponse{}
-	mi := &file_store_v1_store_proto_msgTypes[6]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetStoreResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetStoreResponse) ProtoMessage() {}
-
-func (x *GetStoreResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_v1_store_proto_msgTypes[6]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetStoreResponse.ProtoReflect.Descriptor instead.
-func (*GetStoreResponse) Descriptor() ([]byte, []int) {
-	return file_store_v1_store_proto_rawDescGZIP(), []int{6}
-}
-
-func (x *GetStoreResponse) GetStore() *Store {
-	if x != nil {
-		return x.Store
-	}
-	return nil
-}
-
-type UpdateStoreRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The store information to update.
-	// Note:Only the fields that are set will be updated.
-	Store *Store `protobuf:"bytes,1,opt,name=store,proto3" json:"store,omitempty"`
-	// The raw image of the logo of the store.
-	LogoRawImage  []byte `protobuf:"bytes,2,opt,name=logo_raw_image,json=logoRawImage,proto3,oneof" json:"logo_raw_image,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UpdateStoreRequest) Reset() {
-	*x = UpdateStoreRequest{}
-	mi := &file_store_v1_store_proto_msgTypes[7]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateStoreRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateStoreRequest) ProtoMessage() {}
-
-func (x *UpdateStoreRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_v1_store_proto_msgTypes[7]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateStoreRequest.ProtoReflect.Descriptor instead.
-func (*UpdateStoreRequest) Descriptor() ([]byte, []int) {
-	return file_store_v1_store_proto_rawDescGZIP(), []int{7}
-}
-
-func (x *UpdateStoreRequest) GetStore() *Store {
-	if x != nil {
-		return x.Store
-	}
-	return nil
-}
-
-func (x *UpdateStoreRequest) GetLogoRawImage() []byte {
-	if x != nil {
-		return x.LogoRawImage
-	}
-	return nil
-}
-
-type UpdateStoreResponse struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The updated store data.
-	Store         *Store `protobuf:"bytes,1,opt,name=store,proto3" json:"store,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UpdateStoreResponse) Reset() {
-	*x = UpdateStoreResponse{}
-	mi := &file_store_v1_store_proto_msgTypes[8]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateStoreResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateStoreResponse) ProtoMessage() {}
-
-func (x *UpdateStoreResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_v1_store_proto_msgTypes[8]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateStoreResponse.ProtoReflect.Descriptor instead.
-func (*UpdateStoreResponse) Descriptor() ([]byte, []int) {
-	return file_store_v1_store_proto_rawDescGZIP(), []int{8}
-}
-
-func (x *UpdateStoreResponse) GetStore() *Store {
-	if x != nil {
-		return x.Store
-	}
-	return nil
-}
-
 type DeleteStoreRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The unique identifier of the store to delete.
@@ -772,7 +647,7 @@ type DeleteStoreRequest struct {
 
 func (x *DeleteStoreRequest) Reset() {
 	*x = DeleteStoreRequest{}
-	mi := &file_store_v1_store_proto_msgTypes[9]
+	mi := &file_store_v1_store_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -784,7 +659,7 @@ func (x *DeleteStoreRequest) String() string {
 func (*DeleteStoreRequest) ProtoMessage() {}
 
 func (x *DeleteStoreRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_v1_store_proto_msgTypes[9]
+	mi := &file_store_v1_store_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -797,7 +672,7 @@ func (x *DeleteStoreRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteStoreRequest.ProtoReflect.Descriptor instead.
 func (*DeleteStoreRequest) Descriptor() ([]byte, []int) {
-	return file_store_v1_store_proto_rawDescGZIP(), []int{9}
+	return file_store_v1_store_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *DeleteStoreRequest) GetStoreId() string {
@@ -805,97 +680,6 @@ func (x *DeleteStoreRequest) GetStoreId() string {
 		return x.StoreId
 	}
 	return ""
-}
-
-type GetBusinessStoresRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The reference id to the supplier identifier.
-	BusinessId    string `protobuf:"bytes,1,opt,name=business_id,json=businessId,proto3" json:"business_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetBusinessStoresRequest) Reset() {
-	*x = GetBusinessStoresRequest{}
-	mi := &file_store_v1_store_proto_msgTypes[10]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetBusinessStoresRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetBusinessStoresRequest) ProtoMessage() {}
-
-func (x *GetBusinessStoresRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_v1_store_proto_msgTypes[10]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetBusinessStoresRequest.ProtoReflect.Descriptor instead.
-func (*GetBusinessStoresRequest) Descriptor() ([]byte, []int) {
-	return file_store_v1_store_proto_rawDescGZIP(), []int{10}
-}
-
-func (x *GetBusinessStoresRequest) GetBusinessId() string {
-	if x != nil {
-		return x.BusinessId
-	}
-	return ""
-}
-
-type GetBusinessStoresResponse struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The list of stores of the business.
-	// Note: Only the ids and names of the stores are returned.
-	Stores        []*Store `protobuf:"bytes,1,rep,name=stores,proto3" json:"stores,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetBusinessStoresResponse) Reset() {
-	*x = GetBusinessStoresResponse{}
-	mi := &file_store_v1_store_proto_msgTypes[11]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetBusinessStoresResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetBusinessStoresResponse) ProtoMessage() {}
-
-func (x *GetBusinessStoresResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_v1_store_proto_msgTypes[11]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetBusinessStoresResponse.ProtoReflect.Descriptor instead.
-func (*GetBusinessStoresResponse) Descriptor() ([]byte, []int) {
-	return file_store_v1_store_proto_rawDescGZIP(), []int{11}
-}
-
-func (x *GetBusinessStoresResponse) GetStores() []*Store {
-	if x != nil {
-		return x.Stores
-	}
-	return nil
 }
 
 type DeleteStoreResponse struct {
@@ -908,7 +692,7 @@ type DeleteStoreResponse struct {
 
 func (x *DeleteStoreResponse) Reset() {
 	*x = DeleteStoreResponse{}
-	mi := &file_store_v1_store_proto_msgTypes[12]
+	mi := &file_store_v1_store_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -920,7 +704,7 @@ func (x *DeleteStoreResponse) String() string {
 func (*DeleteStoreResponse) ProtoMessage() {}
 
 func (x *DeleteStoreResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_v1_store_proto_msgTypes[12]
+	mi := &file_store_v1_store_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -933,630 +717,10 @@ func (x *DeleteStoreResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteStoreResponse.ProtoReflect.Descriptor instead.
 func (*DeleteStoreResponse) Descriptor() ([]byte, []int) {
-	return file_store_v1_store_proto_rawDescGZIP(), []int{12}
+	return file_store_v1_store_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *DeleteStoreResponse) GetSuccess() bool {
-	if x != nil {
-		return x.Success
-	}
-	return false
-}
-
-type AddUserToStoreRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The email of the user.
-	UserId string `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	// The permissions that the user has.
-	Permissions *v1.StorePermissions `protobuf:"bytes,2,opt,name=permissions,proto3" json:"permissions,omitempty"`
-	// The store id.
-	StoreId       string `protobuf:"bytes,3,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *AddUserToStoreRequest) Reset() {
-	*x = AddUserToStoreRequest{}
-	mi := &file_store_v1_store_proto_msgTypes[13]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AddUserToStoreRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AddUserToStoreRequest) ProtoMessage() {}
-
-func (x *AddUserToStoreRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_v1_store_proto_msgTypes[13]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AddUserToStoreRequest.ProtoReflect.Descriptor instead.
-func (*AddUserToStoreRequest) Descriptor() ([]byte, []int) {
-	return file_store_v1_store_proto_rawDescGZIP(), []int{13}
-}
-
-func (x *AddUserToStoreRequest) GetUserId() string {
-	if x != nil {
-		return x.UserId
-	}
-	return ""
-}
-
-func (x *AddUserToStoreRequest) GetPermissions() *v1.StorePermissions {
-	if x != nil {
-		return x.Permissions
-	}
-	return nil
-}
-
-func (x *AddUserToStoreRequest) GetStoreId() string {
-	if x != nil {
-		return x.StoreId
-	}
-	return ""
-}
-
-type AddUserToStoreResponse struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// Whether the store was successfully deleted.
-	Success bool `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
-	// The store member to return
-	StoreMember   *StoreMember `protobuf:"bytes,2,opt,name=store_member,json=storeMember,proto3" json:"store_member,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *AddUserToStoreResponse) Reset() {
-	*x = AddUserToStoreResponse{}
-	mi := &file_store_v1_store_proto_msgTypes[14]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AddUserToStoreResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AddUserToStoreResponse) ProtoMessage() {}
-
-func (x *AddUserToStoreResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_v1_store_proto_msgTypes[14]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AddUserToStoreResponse.ProtoReflect.Descriptor instead.
-func (*AddUserToStoreResponse) Descriptor() ([]byte, []int) {
-	return file_store_v1_store_proto_rawDescGZIP(), []int{14}
-}
-
-func (x *AddUserToStoreResponse) GetSuccess() bool {
-	if x != nil {
-		return x.Success
-	}
-	return false
-}
-
-func (x *AddUserToStoreResponse) GetStoreMember() *StoreMember {
-	if x != nil {
-		return x.StoreMember
-	}
-	return nil
-}
-
-type UpdateStoreMemberRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The unique identifier of the user.
-	UserId string `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	// The unique identifier of the store.
-	StoreId string `protobuf:"bytes,2,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
-	// The new permissions to add (optional).
-	Permissions *v1.StorePermissions `protobuf:"bytes,5,opt,name=permissions,proto3" json:"permissions,omitempty"`
-	// The status of the user.
-	Status        *StoreMemberStatus `protobuf:"varint,6,opt,name=status,proto3,enum=store.v1.StoreMemberStatus,oneof" json:"status,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UpdateStoreMemberRequest) Reset() {
-	*x = UpdateStoreMemberRequest{}
-	mi := &file_store_v1_store_proto_msgTypes[15]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateStoreMemberRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateStoreMemberRequest) ProtoMessage() {}
-
-func (x *UpdateStoreMemberRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_v1_store_proto_msgTypes[15]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateStoreMemberRequest.ProtoReflect.Descriptor instead.
-func (*UpdateStoreMemberRequest) Descriptor() ([]byte, []int) {
-	return file_store_v1_store_proto_rawDescGZIP(), []int{15}
-}
-
-func (x *UpdateStoreMemberRequest) GetUserId() string {
-	if x != nil {
-		return x.UserId
-	}
-	return ""
-}
-
-func (x *UpdateStoreMemberRequest) GetStoreId() string {
-	if x != nil {
-		return x.StoreId
-	}
-	return ""
-}
-
-func (x *UpdateStoreMemberRequest) GetPermissions() *v1.StorePermissions {
-	if x != nil {
-		return x.Permissions
-	}
-	return nil
-}
-
-func (x *UpdateStoreMemberRequest) GetStatus() StoreMemberStatus {
-	if x != nil && x.Status != nil {
-		return *x.Status
-	}
-	return StoreMemberStatus_STORE_MEMBER_STATUS_UNSPECIFIED
-}
-
-type UpdateStoreMemberResponse struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// Whether the member was successfully updated.
-	Success bool `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
-	// The updated store member.
-	StoreMember   *StoreMember `protobuf:"bytes,2,opt,name=store_member,json=storeMember,proto3" json:"store_member,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UpdateStoreMemberResponse) Reset() {
-	*x = UpdateStoreMemberResponse{}
-	mi := &file_store_v1_store_proto_msgTypes[16]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateStoreMemberResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateStoreMemberResponse) ProtoMessage() {}
-
-func (x *UpdateStoreMemberResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_v1_store_proto_msgTypes[16]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateStoreMemberResponse.ProtoReflect.Descriptor instead.
-func (*UpdateStoreMemberResponse) Descriptor() ([]byte, []int) {
-	return file_store_v1_store_proto_rawDescGZIP(), []int{16}
-}
-
-func (x *UpdateStoreMemberResponse) GetSuccess() bool {
-	if x != nil {
-		return x.Success
-	}
-	return false
-}
-
-func (x *UpdateStoreMemberResponse) GetStoreMember() *StoreMember {
-	if x != nil {
-		return x.StoreMember
-	}
-	return nil
-}
-
-type StreamStoreMembersRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The unique identifier of the store.
-	StoreId       string `protobuf:"bytes,1,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *StreamStoreMembersRequest) Reset() {
-	*x = StreamStoreMembersRequest{}
-	mi := &file_store_v1_store_proto_msgTypes[17]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *StreamStoreMembersRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*StreamStoreMembersRequest) ProtoMessage() {}
-
-func (x *StreamStoreMembersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_v1_store_proto_msgTypes[17]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use StreamStoreMembersRequest.ProtoReflect.Descriptor instead.
-func (*StreamStoreMembersRequest) Descriptor() ([]byte, []int) {
-	return file_store_v1_store_proto_rawDescGZIP(), []int{17}
-}
-
-func (x *StreamStoreMembersRequest) GetStoreId() string {
-	if x != nil {
-		return x.StoreId
-	}
-	return ""
-}
-
-type StreamStoreMembersResponse struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The store members.
-	StoreMembers  []*StoreMember `protobuf:"bytes,1,rep,name=store_members,json=storeMembers,proto3" json:"store_members,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *StreamStoreMembersResponse) Reset() {
-	*x = StreamStoreMembersResponse{}
-	mi := &file_store_v1_store_proto_msgTypes[18]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *StreamStoreMembersResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*StreamStoreMembersResponse) ProtoMessage() {}
-
-func (x *StreamStoreMembersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_v1_store_proto_msgTypes[18]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use StreamStoreMembersResponse.ProtoReflect.Descriptor instead.
-func (*StreamStoreMembersResponse) Descriptor() ([]byte, []int) {
-	return file_store_v1_store_proto_rawDescGZIP(), []int{18}
-}
-
-func (x *StreamStoreMembersResponse) GetStoreMembers() []*StoreMember {
-	if x != nil {
-		return x.StoreMembers
-	}
-	return nil
-}
-
-type GetStoreMembersRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The unique identifier of the store.
-	StoreId       string `protobuf:"bytes,1,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetStoreMembersRequest) Reset() {
-	*x = GetStoreMembersRequest{}
-	mi := &file_store_v1_store_proto_msgTypes[19]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetStoreMembersRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetStoreMembersRequest) ProtoMessage() {}
-
-func (x *GetStoreMembersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_v1_store_proto_msgTypes[19]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetStoreMembersRequest.ProtoReflect.Descriptor instead.
-func (*GetStoreMembersRequest) Descriptor() ([]byte, []int) {
-	return file_store_v1_store_proto_rawDescGZIP(), []int{19}
-}
-
-func (x *GetStoreMembersRequest) GetStoreId() string {
-	if x != nil {
-		return x.StoreId
-	}
-	return ""
-}
-
-type GetStoreMembersResponse struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The store members.
-	StoreMembers  []*StoreMember `protobuf:"bytes,1,rep,name=store_members,json=storeMembers,proto3" json:"store_members,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetStoreMembersResponse) Reset() {
-	*x = GetStoreMembersResponse{}
-	mi := &file_store_v1_store_proto_msgTypes[20]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetStoreMembersResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetStoreMembersResponse) ProtoMessage() {}
-
-func (x *GetStoreMembersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_v1_store_proto_msgTypes[20]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetStoreMembersResponse.ProtoReflect.Descriptor instead.
-func (*GetStoreMembersResponse) Descriptor() ([]byte, []int) {
-	return file_store_v1_store_proto_rawDescGZIP(), []int{20}
-}
-
-func (x *GetStoreMembersResponse) GetStoreMembers() []*StoreMember {
-	if x != nil {
-		return x.StoreMembers
-	}
-	return nil
-}
-
-type GetStoreMemberRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The unique identifier of the user.
-	UserId string `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	// The unique identifier of the store.
-	StoreId       string `protobuf:"bytes,1,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetStoreMemberRequest) Reset() {
-	*x = GetStoreMemberRequest{}
-	mi := &file_store_v1_store_proto_msgTypes[21]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetStoreMemberRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetStoreMemberRequest) ProtoMessage() {}
-
-func (x *GetStoreMemberRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_v1_store_proto_msgTypes[21]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetStoreMemberRequest.ProtoReflect.Descriptor instead.
-func (*GetStoreMemberRequest) Descriptor() ([]byte, []int) {
-	return file_store_v1_store_proto_rawDescGZIP(), []int{21}
-}
-
-func (x *GetStoreMemberRequest) GetUserId() string {
-	if x != nil {
-		return x.UserId
-	}
-	return ""
-}
-
-func (x *GetStoreMemberRequest) GetStoreId() string {
-	if x != nil {
-		return x.StoreId
-	}
-	return ""
-}
-
-type GetStoreMemberResponse struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The store member.
-	StoreMember   *StoreMember `protobuf:"bytes,1,opt,name=store_member,json=storeMember,proto3" json:"store_member,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetStoreMemberResponse) Reset() {
-	*x = GetStoreMemberResponse{}
-	mi := &file_store_v1_store_proto_msgTypes[22]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetStoreMemberResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetStoreMemberResponse) ProtoMessage() {}
-
-func (x *GetStoreMemberResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_v1_store_proto_msgTypes[22]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetStoreMemberResponse.ProtoReflect.Descriptor instead.
-func (*GetStoreMemberResponse) Descriptor() ([]byte, []int) {
-	return file_store_v1_store_proto_rawDescGZIP(), []int{22}
-}
-
-func (x *GetStoreMemberResponse) GetStoreMember() *StoreMember {
-	if x != nil {
-		return x.StoreMember
-	}
-	return nil
-}
-
-type RemoveUserFromStoreRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The unique identifier of the user.
-	UserId        string `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	StoreId       string `protobuf:"bytes,2,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *RemoveUserFromStoreRequest) Reset() {
-	*x = RemoveUserFromStoreRequest{}
-	mi := &file_store_v1_store_proto_msgTypes[23]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *RemoveUserFromStoreRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*RemoveUserFromStoreRequest) ProtoMessage() {}
-
-func (x *RemoveUserFromStoreRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_store_v1_store_proto_msgTypes[23]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use RemoveUserFromStoreRequest.ProtoReflect.Descriptor instead.
-func (*RemoveUserFromStoreRequest) Descriptor() ([]byte, []int) {
-	return file_store_v1_store_proto_rawDescGZIP(), []int{23}
-}
-
-func (x *RemoveUserFromStoreRequest) GetUserId() string {
-	if x != nil {
-		return x.UserId
-	}
-	return ""
-}
-
-func (x *RemoveUserFromStoreRequest) GetStoreId() string {
-	if x != nil {
-		return x.StoreId
-	}
-	return ""
-}
-
-type RemoveUserFromStoreResponse struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// Whether the user was successfully removed from the store.
-	Success       bool `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *RemoveUserFromStoreResponse) Reset() {
-	*x = RemoveUserFromStoreResponse{}
-	mi := &file_store_v1_store_proto_msgTypes[24]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *RemoveUserFromStoreResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*RemoveUserFromStoreResponse) ProtoMessage() {}
-
-func (x *RemoveUserFromStoreResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_store_v1_store_proto_msgTypes[24]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use RemoveUserFromStoreResponse.ProtoReflect.Descriptor instead.
-func (*RemoveUserFromStoreResponse) Descriptor() ([]byte, []int) {
-	return file_store_v1_store_proto_rawDescGZIP(), []int{24}
-}
-
-func (x *RemoveUserFromStoreResponse) GetSuccess() bool {
 	if x != nil {
 		return x.Success
 	}
@@ -1612,106 +776,47 @@ const file_store_v1_store_proto_rawDesc = "" +
 	"\x04_taxB\r\n" +
 	"\v_postal_boxB\x06\n" +
 	"\x04_nuiB\x13\n" +
-	"\x11_tax_payer_number\"\xf6\x01\n" +
+	"\x11_tax_payer_number\"\xf5\x02\n" +
 	"\vStoreMember\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\tR\x06userId\x12\x19\n" +
 	"\bstore_id\x18\x02 \x01(\tR\astoreId\x12?\n" +
 	"\vpermissions\x18\x03 \x01(\v2\x1d.identity.v1.StorePermissionsR\vpermissions\x12=\n" +
 	"\fmember_since\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\vmemberSince\x123\n" +
-	"\x06status\x18\x05 \x01(\x0e2\x1b.store.v1.StoreMemberStatusR\x06status\"y\n" +
+	"\x06status\x18\x05 \x01(\x0e2\x1b.store.v1.StoreMemberStatusR\x06status\x12A\n" +
+	"\x0fonboarding_type\x18\x06 \x01(\x0e2\x18.store.v1.OnboardingTypeR\x0eonboardingType\x12(\n" +
+	"\rinvitation_id\x18\a \x01(\tH\x00R\finvitationId\x88\x01\x01B\x10\n" +
+	"\x0e_invitation_id\"y\n" +
 	"\x12CreateStoreRequest\x12%\n" +
 	"\x05store\x18\x01 \x01(\v2\x0f.store.v1.StoreR\x05store\x12)\n" +
 	"\x0elogo_raw_image\x18\x02 \x01(\fH\x00R\flogoRawImage\x88\x01\x01B\x11\n" +
 	"\x0f_logo_raw_image\"<\n" +
 	"\x13CreateStoreResponse\x12%\n" +
 	"\bstore_id\x18\x01 \x01(\tB\n" +
-	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\astoreId\"8\n" +
-	"\x0fGetStoreRequest\x12%\n" +
-	"\bstore_id\x18\x01 \x01(\tB\n" +
-	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\astoreId\"9\n" +
-	"\x10GetStoreResponse\x12%\n" +
-	"\x05store\x18\x01 \x01(\v2\x0f.store.v1.StoreR\x05store\"y\n" +
-	"\x12UpdateStoreRequest\x12%\n" +
-	"\x05store\x18\x01 \x01(\v2\x0f.store.v1.StoreR\x05store\x12)\n" +
-	"\x0elogo_raw_image\x18\x02 \x01(\fH\x00R\flogoRawImage\x88\x01\x01B\x11\n" +
-	"\x0f_logo_raw_image\"<\n" +
-	"\x13UpdateStoreResponse\x12%\n" +
-	"\x05store\x18\x01 \x01(\v2\x0f.store.v1.StoreR\x05store\";\n" +
+	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\astoreId\";\n" +
 	"\x12DeleteStoreRequest\x12%\n" +
 	"\bstore_id\x18\x01 \x01(\tB\n" +
-	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\astoreId\"G\n" +
-	"\x18GetBusinessStoresRequest\x12+\n" +
-	"\vbusiness_id\x18\x01 \x01(\tB\n" +
-	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\n" +
-	"businessId\"D\n" +
-	"\x19GetBusinessStoresResponse\x12'\n" +
-	"\x06stores\x18\x01 \x03(\v2\x0f.store.v1.StoreR\x06stores\"/\n" +
+	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\astoreId\"/\n" +
 	"\x13DeleteStoreResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess\"\x8c\x01\n" +
-	"\x15AddUserToStoreRequest\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\tR\x06userId\x12?\n" +
-	"\vpermissions\x18\x02 \x01(\v2\x1d.identity.v1.StorePermissionsR\vpermissions\x12\x19\n" +
-	"\bstore_id\x18\x03 \x01(\tR\astoreId\"l\n" +
-	"\x16AddUserToStoreResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess\x128\n" +
-	"\fstore_member\x18\x02 \x01(\v2\x15.store.v1.StoreMemberR\vstoreMember\"\xec\x01\n" +
-	"\x18UpdateStoreMemberRequest\x12#\n" +
-	"\auser_id\x18\x01 \x01(\tB\n" +
-	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\x06userId\x12%\n" +
-	"\bstore_id\x18\x02 \x01(\tB\n" +
-	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\astoreId\x12?\n" +
-	"\vpermissions\x18\x05 \x01(\v2\x1d.identity.v1.StorePermissionsR\vpermissions\x128\n" +
-	"\x06status\x18\x06 \x01(\x0e2\x1b.store.v1.StoreMemberStatusH\x00R\x06status\x88\x01\x01B\t\n" +
-	"\a_status\"o\n" +
-	"\x19UpdateStoreMemberResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess\x128\n" +
-	"\fstore_member\x18\x02 \x01(\v2\x15.store.v1.StoreMemberR\vstoreMember\"B\n" +
-	"\x19StreamStoreMembersRequest\x12%\n" +
-	"\bstore_id\x18\x01 \x01(\tB\n" +
-	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\astoreId\"X\n" +
-	"\x1aStreamStoreMembersResponse\x12:\n" +
-	"\rstore_members\x18\x01 \x03(\v2\x15.store.v1.StoreMemberR\fstoreMembers\"?\n" +
-	"\x16GetStoreMembersRequest\x12%\n" +
-	"\bstore_id\x18\x01 \x01(\tB\n" +
-	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\astoreId\"U\n" +
-	"\x17GetStoreMembersResponse\x12:\n" +
-	"\rstore_members\x18\x01 \x03(\v2\x15.store.v1.StoreMemberR\fstoreMembers\"c\n" +
-	"\x15GetStoreMemberRequest\x12#\n" +
-	"\auser_id\x18\x02 \x01(\tB\n" +
-	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\x06userId\x12%\n" +
-	"\bstore_id\x18\x01 \x01(\tB\n" +
-	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\astoreId\"R\n" +
-	"\x16GetStoreMemberResponse\x128\n" +
-	"\fstore_member\x18\x01 \x01(\v2\x15.store.v1.StoreMemberR\vstoreMember\"h\n" +
-	"\x1aRemoveUserFromStoreRequest\x12#\n" +
-	"\auser_id\x18\x01 \x01(\tB\n" +
-	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\x06userId\x12%\n" +
-	"\bstore_id\x18\x02 \x01(\tB\n" +
-	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\astoreId\"7\n" +
-	"\x1bRemoveUserFromStoreResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess*{\n" +
 	"\x12StoreCostingMethod\x12$\n" +
 	" STORE_COSTING_METHOD_UNSPECIFIED\x10\x00\x12\x1d\n" +
 	"\x19STORE_COSTING_METHOD_FIFO\x10\x01\x12 \n" +
-	"\x1cSTORE_COSTING_METHOD_AVERAGE\x10\x02*\xbb\x01\n" +
+	"\x1cSTORE_COSTING_METHOD_AVERAGE\x10\x02*\xfe\x01\n" +
 	"\x11StoreMemberStatus\x12#\n" +
 	"\x1fSTORE_MEMBER_STATUS_UNSPECIFIED\x10\x00\x12\x1e\n" +
 	"\x1aSTORE_MEMBER_STATUS_ACTIVE\x10\x01\x12\x1f\n" +
 	"\x1bSTORE_MEMBER_STATUS_PENDING\x10\x02\x12 \n" +
 	"\x1cSTORE_MEMBER_STATUS_INACTIVE\x10\x03\x12\x1e\n" +
-	"\x1aSTORE_MEMBER_STATUS_BANNED\x10\x042\xc4\a\n" +
+	"\x1aSTORE_MEMBER_STATUS_BANNED\x10\x04\x12 \n" +
+	"\x1cSTORE_MEMBER_STATUS_REJECTED\x10\x05\x12\x1f\n" +
+	"\x1bSTORE_MEMBER_STATUS_EXPIRED\x10\x06*i\n" +
+	"\x0eOnboardingType\x12\x1f\n" +
+	"\x1bONBOARDING_TYPE_UNSPECIFIED\x10\x00\x12\x1a\n" +
+	"\x16ONBOARDING_TYPE_DIRECT\x10\x01\x12\x1a\n" +
+	"\x16ONBOARDING_TYPE_INVITE\x10\x022\xaa\x01\n" +
 	"\fStoreService\x12L\n" +
-	"\vCreateStore\x12\x1c.store.v1.CreateStoreRequest\x1a\x1d.store.v1.CreateStoreResponse\"\x00\x12C\n" +
-	"\bGetStore\x12\x19.store.v1.GetStoreRequest\x1a\x1a.store.v1.GetStoreResponse\"\x00\x12L\n" +
-	"\vUpdateStore\x12\x1c.store.v1.UpdateStoreRequest\x1a\x1d.store.v1.UpdateStoreResponse\"\x00\x12L\n" +
-	"\vDeleteStore\x12\x1c.store.v1.DeleteStoreRequest\x1a\x1d.store.v1.DeleteStoreResponse\"\x00\x12^\n" +
-	"\x11GetBusinessStores\x12\".store.v1.GetBusinessStoresRequest\x1a#.store.v1.GetBusinessStoresResponse\"\x00\x12S\n" +
-	"\x0eAddUserToStore\x12\x1f.store.v1.AddUserToStoreRequest\x1a .store.v1.AddUserToStoreResponse\x12\\\n" +
-	"\x11UpdateStoreMember\x12\".store.v1.UpdateStoreMemberRequest\x1a#.store.v1.UpdateStoreMemberResponse\x12a\n" +
-	"\x12StreamStoreMembers\x12#.store.v1.StreamStoreMembersRequest\x1a$.store.v1.StreamStoreMembersResponse0\x01\x12V\n" +
-	"\x0fGetStoreMembers\x12 .store.v1.GetStoreMembersRequest\x1a!.store.v1.GetStoreMembersResponse\x12S\n" +
-	"\x0eGetStoreMember\x12\x1f.store.v1.GetStoreMemberRequest\x1a .store.v1.GetStoreMemberResponse\x12b\n" +
-	"\x13RemoveUserFromStore\x12$.store.v1.RemoveUserFromStoreRequest\x1a%.store.v1.RemoveUserFromStoreResponseB\x9d\x01\n" +
+	"\vCreateStore\x12\x1c.store.v1.CreateStoreRequest\x1a\x1d.store.v1.CreateStoreResponse\"\x00\x12L\n" +
+	"\vDeleteStore\x12\x1c.store.v1.DeleteStoreRequest\x1a\x1d.store.v1.DeleteStoreResponse\"\x00B\x9d\x01\n" +
 	"\fcom.store.v1B\n" +
 	"StoreProtoP\x01Z@github.com/karibu-cap/sabitou/protos/gen/go/rpc/store/v1;storev1\xa2\x02\x03SXX\xaa\x02\bStore.V1\xca\x02\bStore\\V1\xe2\x02\x14Store\\V1\\GPBMetadata\xea\x02\tStore::V1b\x06proto3"
 
@@ -1727,87 +832,41 @@ func file_store_v1_store_proto_rawDescGZIP() []byte {
 	return file_store_v1_store_proto_rawDescData
 }
 
-var file_store_v1_store_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_store_v1_store_proto_msgTypes = make([]protoimpl.MessageInfo, 25)
+var file_store_v1_store_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
+var file_store_v1_store_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_store_v1_store_proto_goTypes = []any{
-	(StoreCostingMethod)(0),             // 0: store.v1.StoreCostingMethod
-	(StoreMemberStatus)(0),              // 1: store.v1.StoreMemberStatus
-	(*Address)(nil),                     // 2: store.v1.Address
-	(*Store)(nil),                       // 3: store.v1.Store
-	(*StoreMember)(nil),                 // 4: store.v1.StoreMember
-	(*CreateStoreRequest)(nil),          // 5: store.v1.CreateStoreRequest
-	(*CreateStoreResponse)(nil),         // 6: store.v1.CreateStoreResponse
-	(*GetStoreRequest)(nil),             // 7: store.v1.GetStoreRequest
-	(*GetStoreResponse)(nil),            // 8: store.v1.GetStoreResponse
-	(*UpdateStoreRequest)(nil),          // 9: store.v1.UpdateStoreRequest
-	(*UpdateStoreResponse)(nil),         // 10: store.v1.UpdateStoreResponse
-	(*DeleteStoreRequest)(nil),          // 11: store.v1.DeleteStoreRequest
-	(*GetBusinessStoresRequest)(nil),    // 12: store.v1.GetBusinessStoresRequest
-	(*GetBusinessStoresResponse)(nil),   // 13: store.v1.GetBusinessStoresResponse
-	(*DeleteStoreResponse)(nil),         // 14: store.v1.DeleteStoreResponse
-	(*AddUserToStoreRequest)(nil),       // 15: store.v1.AddUserToStoreRequest
-	(*AddUserToStoreResponse)(nil),      // 16: store.v1.AddUserToStoreResponse
-	(*UpdateStoreMemberRequest)(nil),    // 17: store.v1.UpdateStoreMemberRequest
-	(*UpdateStoreMemberResponse)(nil),   // 18: store.v1.UpdateStoreMemberResponse
-	(*StreamStoreMembersRequest)(nil),   // 19: store.v1.StreamStoreMembersRequest
-	(*StreamStoreMembersResponse)(nil),  // 20: store.v1.StreamStoreMembersResponse
-	(*GetStoreMembersRequest)(nil),      // 21: store.v1.GetStoreMembersRequest
-	(*GetStoreMembersResponse)(nil),     // 22: store.v1.GetStoreMembersResponse
-	(*GetStoreMemberRequest)(nil),       // 23: store.v1.GetStoreMemberRequest
-	(*GetStoreMemberResponse)(nil),      // 24: store.v1.GetStoreMemberResponse
-	(*RemoveUserFromStoreRequest)(nil),  // 25: store.v1.RemoveUserFromStoreRequest
-	(*RemoveUserFromStoreResponse)(nil), // 26: store.v1.RemoveUserFromStoreResponse
-	(*timestamppb.Timestamp)(nil),       // 27: google.protobuf.Timestamp
-	(*v1.StorePermissions)(nil),         // 28: identity.v1.StorePermissions
+	(StoreCostingMethod)(0),       // 0: store.v1.StoreCostingMethod
+	(StoreMemberStatus)(0),        // 1: store.v1.StoreMemberStatus
+	(OnboardingType)(0),           // 2: store.v1.OnboardingType
+	(*Address)(nil),               // 3: store.v1.Address
+	(*Store)(nil),                 // 4: store.v1.Store
+	(*StoreMember)(nil),           // 5: store.v1.StoreMember
+	(*CreateStoreRequest)(nil),    // 6: store.v1.CreateStoreRequest
+	(*CreateStoreResponse)(nil),   // 7: store.v1.CreateStoreResponse
+	(*DeleteStoreRequest)(nil),    // 8: store.v1.DeleteStoreRequest
+	(*DeleteStoreResponse)(nil),   // 9: store.v1.DeleteStoreResponse
+	(*timestamppb.Timestamp)(nil), // 10: google.protobuf.Timestamp
+	(*v1.StorePermissions)(nil),   // 11: identity.v1.StorePermissions
 }
 var file_store_v1_store_proto_depIdxs = []int32{
-	27, // 0: store.v1.Store.created_at:type_name -> google.protobuf.Timestamp
-	27, // 1: store.v1.Store.updated_at:type_name -> google.protobuf.Timestamp
-	2,  // 2: store.v1.Store.address:type_name -> store.v1.Address
+	10, // 0: store.v1.Store.created_at:type_name -> google.protobuf.Timestamp
+	10, // 1: store.v1.Store.updated_at:type_name -> google.protobuf.Timestamp
+	3,  // 2: store.v1.Store.address:type_name -> store.v1.Address
 	0,  // 3: store.v1.Store.costing_method:type_name -> store.v1.StoreCostingMethod
-	28, // 4: store.v1.StoreMember.permissions:type_name -> identity.v1.StorePermissions
-	27, // 5: store.v1.StoreMember.member_since:type_name -> google.protobuf.Timestamp
+	11, // 4: store.v1.StoreMember.permissions:type_name -> identity.v1.StorePermissions
+	10, // 5: store.v1.StoreMember.member_since:type_name -> google.protobuf.Timestamp
 	1,  // 6: store.v1.StoreMember.status:type_name -> store.v1.StoreMemberStatus
-	3,  // 7: store.v1.CreateStoreRequest.store:type_name -> store.v1.Store
-	3,  // 8: store.v1.GetStoreResponse.store:type_name -> store.v1.Store
-	3,  // 9: store.v1.UpdateStoreRequest.store:type_name -> store.v1.Store
-	3,  // 10: store.v1.UpdateStoreResponse.store:type_name -> store.v1.Store
-	3,  // 11: store.v1.GetBusinessStoresResponse.stores:type_name -> store.v1.Store
-	28, // 12: store.v1.AddUserToStoreRequest.permissions:type_name -> identity.v1.StorePermissions
-	4,  // 13: store.v1.AddUserToStoreResponse.store_member:type_name -> store.v1.StoreMember
-	28, // 14: store.v1.UpdateStoreMemberRequest.permissions:type_name -> identity.v1.StorePermissions
-	1,  // 15: store.v1.UpdateStoreMemberRequest.status:type_name -> store.v1.StoreMemberStatus
-	4,  // 16: store.v1.UpdateStoreMemberResponse.store_member:type_name -> store.v1.StoreMember
-	4,  // 17: store.v1.StreamStoreMembersResponse.store_members:type_name -> store.v1.StoreMember
-	4,  // 18: store.v1.GetStoreMembersResponse.store_members:type_name -> store.v1.StoreMember
-	4,  // 19: store.v1.GetStoreMemberResponse.store_member:type_name -> store.v1.StoreMember
-	5,  // 20: store.v1.StoreService.CreateStore:input_type -> store.v1.CreateStoreRequest
-	7,  // 21: store.v1.StoreService.GetStore:input_type -> store.v1.GetStoreRequest
-	9,  // 22: store.v1.StoreService.UpdateStore:input_type -> store.v1.UpdateStoreRequest
-	11, // 23: store.v1.StoreService.DeleteStore:input_type -> store.v1.DeleteStoreRequest
-	12, // 24: store.v1.StoreService.GetBusinessStores:input_type -> store.v1.GetBusinessStoresRequest
-	15, // 25: store.v1.StoreService.AddUserToStore:input_type -> store.v1.AddUserToStoreRequest
-	17, // 26: store.v1.StoreService.UpdateStoreMember:input_type -> store.v1.UpdateStoreMemberRequest
-	19, // 27: store.v1.StoreService.StreamStoreMembers:input_type -> store.v1.StreamStoreMembersRequest
-	21, // 28: store.v1.StoreService.GetStoreMembers:input_type -> store.v1.GetStoreMembersRequest
-	23, // 29: store.v1.StoreService.GetStoreMember:input_type -> store.v1.GetStoreMemberRequest
-	25, // 30: store.v1.StoreService.RemoveUserFromStore:input_type -> store.v1.RemoveUserFromStoreRequest
-	6,  // 31: store.v1.StoreService.CreateStore:output_type -> store.v1.CreateStoreResponse
-	8,  // 32: store.v1.StoreService.GetStore:output_type -> store.v1.GetStoreResponse
-	10, // 33: store.v1.StoreService.UpdateStore:output_type -> store.v1.UpdateStoreResponse
-	14, // 34: store.v1.StoreService.DeleteStore:output_type -> store.v1.DeleteStoreResponse
-	13, // 35: store.v1.StoreService.GetBusinessStores:output_type -> store.v1.GetBusinessStoresResponse
-	16, // 36: store.v1.StoreService.AddUserToStore:output_type -> store.v1.AddUserToStoreResponse
-	18, // 37: store.v1.StoreService.UpdateStoreMember:output_type -> store.v1.UpdateStoreMemberResponse
-	20, // 38: store.v1.StoreService.StreamStoreMembers:output_type -> store.v1.StreamStoreMembersResponse
-	22, // 39: store.v1.StoreService.GetStoreMembers:output_type -> store.v1.GetStoreMembersResponse
-	24, // 40: store.v1.StoreService.GetStoreMember:output_type -> store.v1.GetStoreMemberResponse
-	26, // 41: store.v1.StoreService.RemoveUserFromStore:output_type -> store.v1.RemoveUserFromStoreResponse
-	31, // [31:42] is the sub-list for method output_type
-	20, // [20:31] is the sub-list for method input_type
-	20, // [20:20] is the sub-list for extension type_name
-	20, // [20:20] is the sub-list for extension extendee
-	0,  // [0:20] is the sub-list for field type_name
+	2,  // 7: store.v1.StoreMember.onboarding_type:type_name -> store.v1.OnboardingType
+	4,  // 8: store.v1.CreateStoreRequest.store:type_name -> store.v1.Store
+	6,  // 9: store.v1.StoreService.CreateStore:input_type -> store.v1.CreateStoreRequest
+	8,  // 10: store.v1.StoreService.DeleteStore:input_type -> store.v1.DeleteStoreRequest
+	7,  // 11: store.v1.StoreService.CreateStore:output_type -> store.v1.CreateStoreResponse
+	9,  // 12: store.v1.StoreService.DeleteStore:output_type -> store.v1.DeleteStoreResponse
+	11, // [11:13] is the sub-list for method output_type
+	9,  // [9:11] is the sub-list for method input_type
+	9,  // [9:9] is the sub-list for extension type_name
+	9,  // [9:9] is the sub-list for extension extendee
+	0,  // [0:9] is the sub-list for field type_name
 }
 
 func init() { file_store_v1_store_proto_init() }
@@ -1816,16 +875,15 @@ func file_store_v1_store_proto_init() {
 		return
 	}
 	file_store_v1_store_proto_msgTypes[1].OneofWrappers = []any{}
+	file_store_v1_store_proto_msgTypes[2].OneofWrappers = []any{}
 	file_store_v1_store_proto_msgTypes[3].OneofWrappers = []any{}
-	file_store_v1_store_proto_msgTypes[7].OneofWrappers = []any{}
-	file_store_v1_store_proto_msgTypes[15].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_store_v1_store_proto_rawDesc), len(file_store_v1_store_proto_rawDesc)),
-			NumEnums:      2,
-			NumMessages:   25,
+			NumEnums:      3,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

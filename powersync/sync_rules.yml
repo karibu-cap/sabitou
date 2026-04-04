@@ -20,6 +20,8 @@ bucket_definitions:
         SELECT id, ref_id, name, description,
                bar_code_value, status, categories, images_links_ids
         FROM global_products
+        WHERE status != 'GLOBAL_PRODUCT_STATUS_UNSPECIFIED'
+          AND status != 'GLOBAL_PRODUCT_STATUS_DELETE'
 
       - >
         SELECT id, ref_id, name, business_id,
@@ -27,7 +29,7 @@ bucket_definitions:
         FROM categories
 
       - >
-        SELECT id, ref_id, target_uri, icon_uri, info, label
+        SELECT id, ref_id, target_uri, icon_uri, info, label, is_orphan
         FROM resource_links
 
       - >
@@ -51,6 +53,8 @@ bucket_definitions:
                updated_at, reorder_point, opening_stock, opening_stock_per_unit, default_purchase_price
         FROM store_products
         WHERE store_id = bucket.store_id
+          AND status != 'PRODUCT_STATUS_UNSPECIFIED'
+          AND status != 'PRODUCT_STATUS_DELETE'
 
       - >
         SELECT id, store_product_id, store_id, quantity_available,
@@ -74,8 +78,15 @@ bucket_definitions:
         WHERE ref_id = bucket.store_id
 
       - >
-        SELECT id, store_id, user_id, status, member_since, permissions
+        SELECT id, store_id, user_id, status, member_since, permissions,
+              onboarding_type, invitation_id
         FROM store_members
+        WHERE store_id = bucket.store_id
+
+      - >
+        SELECT id, ref_id, user_id, store_id, invited_by, status,
+               expires_at, created_at, responded_at
+        FROM invitations
         WHERE store_id = bucket.store_id
 
       - >
@@ -228,3 +239,9 @@ bucket_definitions:
                connected_accounts, account_status, profile_link_id, required_actions, active_business_id, active_store_id
         FROM users
         WHERE ref_id = bucket.sub
+
+      - >
+        SELECT id, ref_id, user_id, store_id, invited_by, status,
+                 expires_at, created_at, responded_at
+        FROM invitations
+        WHERE user_id = bucket.sub

@@ -8,8 +8,6 @@ import 'package:sabitou_rpc/models.dart';
 import '../repositories/business_repository.dart';
 import '../repositories/stores_repository.dart';
 import '../repositories/users_repository.dart';
-import '../services/storage/app_storage.dart';
-import 'app_constants.dart';
 
 /// The user preferences.
 class UserPreferences extends ChangeNotifier {
@@ -58,7 +56,7 @@ class UserPreferences extends ChangeNotifier {
   Future<void> loadUserPreferences(String? userId) async {
     initializationComplete = Completer<bool>();
     if (userId != null) {
-      _user = await usersRepository.getUser(GetUserRequest(userId: userId));
+      _user = await usersRepository.getUser(userId);
       if (_user != null) {
         final businesses = await businessRepository.getMyBusinesses(userId);
 
@@ -83,9 +81,6 @@ class UserPreferences extends ChangeNotifier {
 
   /// Clear user preferences.
   Future<void> clearUserPreferences() async {
-    await AppStorage.of<Business>().remove(CollectionName.businesses);
-    await AppStorage.of<Store>().remove(CollectionName.stores);
-
     _user = null;
     business = null;
     store = null;

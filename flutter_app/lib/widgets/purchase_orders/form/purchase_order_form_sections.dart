@@ -38,7 +38,6 @@ class PurchaseOrderFormHeaderSection extends StatelessWidget {
             child: AutoComplete<Supplier>(
               placeholder: Intls.to.selectSupplier,
               searchPlaceholder: Intls.to.searchAndFilter,
-              initialValue: ctrl.supplierNameController.value.text,
               canReturnDataWhenEmpty: true,
               optionsBuilder: (text) async {
                 return await ctrl.searchSuppliers(text);

@@ -47,26 +47,24 @@ class StoreMemberStatus extends $pb.ProtobufEnum {
   static const StoreMemberStatus STORE_MEMBER_STATUS_UNSPECIFIED =
       StoreMemberStatus._(
           0, _omitEnumNames ? '' : 'STORE_MEMBER_STATUS_UNSPECIFIED');
-
-  /// / The user is active.
   static const StoreMemberStatus STORE_MEMBER_STATUS_ACTIVE =
       StoreMemberStatus._(
           1, _omitEnumNames ? '' : 'STORE_MEMBER_STATUS_ACTIVE');
-
-  /// / The user is pending.
   static const StoreMemberStatus STORE_MEMBER_STATUS_PENDING =
       StoreMemberStatus._(
           2, _omitEnumNames ? '' : 'STORE_MEMBER_STATUS_PENDING');
-
-  /// / The user is inactive.
   static const StoreMemberStatus STORE_MEMBER_STATUS_INACTIVE =
       StoreMemberStatus._(
           3, _omitEnumNames ? '' : 'STORE_MEMBER_STATUS_INACTIVE');
-
-  /// / The user is banned.
   static const StoreMemberStatus STORE_MEMBER_STATUS_BANNED =
       StoreMemberStatus._(
           4, _omitEnumNames ? '' : 'STORE_MEMBER_STATUS_BANNED');
+  static const StoreMemberStatus STORE_MEMBER_STATUS_REJECTED =
+      StoreMemberStatus._(
+          5, _omitEnumNames ? '' : 'STORE_MEMBER_STATUS_REJECTED');
+  static const StoreMemberStatus STORE_MEMBER_STATUS_EXPIRED =
+      StoreMemberStatus._(
+          6, _omitEnumNames ? '' : 'STORE_MEMBER_STATUS_EXPIRED');
 
   static const $core.List<StoreMemberStatus> values = <StoreMemberStatus>[
     STORE_MEMBER_STATUS_UNSPECIFIED,
@@ -74,14 +72,42 @@ class StoreMemberStatus extends $pb.ProtobufEnum {
     STORE_MEMBER_STATUS_PENDING,
     STORE_MEMBER_STATUS_INACTIVE,
     STORE_MEMBER_STATUS_BANNED,
+    STORE_MEMBER_STATUS_REJECTED,
+    STORE_MEMBER_STATUS_EXPIRED,
   ];
 
   static final $core.List<StoreMemberStatus?> _byValue =
-      $pb.ProtobufEnum.$_initByValueList(values, 4);
+      $pb.ProtobufEnum.$_initByValueList(values, 6);
   static StoreMemberStatus? valueOf($core.int value) =>
       value < 0 || value >= _byValue.length ? null : _byValue[value];
 
   const StoreMemberStatus._(super.value, super.name);
+}
+
+class OnboardingType extends $pb.ProtobufEnum {
+  static const OnboardingType ONBOARDING_TYPE_UNSPECIFIED =
+      OnboardingType._(0, _omitEnumNames ? '' : 'ONBOARDING_TYPE_UNSPECIFIED');
+
+  /// admin created with password → active immediately
+  static const OnboardingType ONBOARDING_TYPE_DIRECT =
+      OnboardingType._(1, _omitEnumNames ? '' : 'ONBOARDING_TYPE_DIRECT');
+
+  /// invitation email sent → user sets own password
+  static const OnboardingType ONBOARDING_TYPE_INVITE =
+      OnboardingType._(2, _omitEnumNames ? '' : 'ONBOARDING_TYPE_INVITE');
+
+  static const $core.List<OnboardingType> values = <OnboardingType>[
+    ONBOARDING_TYPE_UNSPECIFIED,
+    ONBOARDING_TYPE_DIRECT,
+    ONBOARDING_TYPE_INVITE,
+  ];
+
+  static final $core.List<OnboardingType?> _byValue =
+      $pb.ProtobufEnum.$_initByValueList(values, 2);
+  static OnboardingType? valueOf($core.int value) =>
+      value < 0 || value >= _byValue.length ? null : _byValue[value];
+
+  const OnboardingType._(super.value, super.name);
 }
 
 const $core.bool _omitEnumNames =

@@ -9,41 +9,6 @@ import "inventory/v1/store_product.proto";
 import "store/v1/store.proto";
 import "store/v1/supplier.proto";
 
-service ReportingService {
-  // Sales report by period
-  rpc GetSalesReport(GetSalesReportRequest) returns (GetSalesReportResponse);
-
-  // Purchase report by period
-  rpc GetPurchaseReport(GetPurchaseReportRequest) returns (GetPurchaseReportResponse);
-
-  // Inventory movement report
-  rpc GetInventoryMovementReport(GetInventoryMovementReportRequest) returns (GetInventoryMovementReportResponse);
-
-  // Best selling products
-  rpc GetBestSellingProducts(GetBestSellingProductsRequest) returns (GetBestSellingProductsResponse);
-
-  // Store purchase history
-  rpc GetStorePurchaseHistory(GetStorePurchaseHistoryRequest) returns (GetStorePurchaseHistoryResponse);
-
-  // Supplier performance report
-  rpc GetSupplierPerformanceReport(GetSupplierPerformanceReportRequest) returns (GetSupplierPerformanceReportResponse);
-
-  // Profit & Loss report
-  rpc GetProfitLossReport(GetProfitLossReportRequest) returns (GetProfitLossReportResponse);
-
-  // Stock aging report
-  rpc GetStockAgingReport(GetStockAgingReportRequest) returns (GetStockAgingReportResponse);
-
-  // Comprehensive inventory report with aggregates
-  rpc GetInventoryReport(GetInventoryReportRequest) returns (GetInventoryReportResponse);
-
-  // Full sales report including best sellers
-  rpc GetSalesReportFull(GetSalesReportRequestFull) returns (GetSalesReportFullResponse);
-
-  // Comprehensive financial report with purchases and balances
-  rpc GetFinancialReport(GetFinancialReportRequest) returns (GetFinancialReportResponse);
-}
-
 message GetSalesReportRequestFull {
   google.protobuf.Timestamp start_date = 1;
   google.protobuf.Timestamp end_date = 2;
@@ -379,10 +344,4 @@ enum ReportGroupBy {
   REPORT_GROUP_BY_MONTHLY = 3;
   REPORT_GROUP_BY_QUARTERLY = 4;
   REPORT_GROUP_BY_YEARLY = 5;
-}
-
-// Comprehensive dashboard data service for aggregated calculations
-service ReportsService {
-  // Get comprehensive dashboard data with all calculated fields
-  rpc GetDashboardReport(GetDashboardReportRequest) returns (GetDashboardReportResponse);
 }

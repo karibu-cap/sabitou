@@ -20,7 +20,7 @@ message VoucherTransaction {
   string voucher_id = 2; // Which voucher used
   string related_invoice_id = 3; // Which purchase
   string related_receipt_id = 4; // Or cash receipt
-  string store_id =9;
+  string store_id = 9;
   double amount_used = 5;
   double remaining_after = 6;
   google.protobuf.Timestamp used_at = 7;

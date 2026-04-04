@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
@@ -7,8 +6,10 @@ import '../../services/internationalization/internationalization.dart';
 import '../../themes/app_colors.dart';
 import '../../utils/formatters.dart';
 import '../../utils/responsive_utils.dart';
+import '../../utils/user_preference.dart';
 import '../../widgets/custom_grid.dart';
 import '../../widgets/loading.dart';
+import '../../widgets/no_business_view.dart';
 import '../../widgets/stat_card.dart';
 import 'components/export_data_report.dart';
 import 'components/header.dart';
@@ -31,9 +32,14 @@ class ReportsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = GetIt.I.registerSingletonIfAbsent<ReportsViewModel>(
-      ReportsViewModel.new,
-    );
+    final userPreferences = context.watch<UserPreferences>();
+    final currentStore = userPreferences.store;
+    final business = userPreferences.business;
+
+    if (currentStore == null || business == null) {
+      return const Scaffold(body: Center(child: NoBusinessView()));
+    }
+    final viewModel = ReportsViewModel(store: currentStore);
 
     return LayoutBuilder(
       builder: (context, constraints) {

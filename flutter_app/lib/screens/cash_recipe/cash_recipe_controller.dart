@@ -41,11 +41,6 @@ final class CashRecipeController extends ChangeNotifier {
   /// Current filtered cash receipts list
   List<CashReceipt> get filteredCashReceipts => _viewModel.filteredCashReceipts;
 
-  /// Load cash receipts
-  Future<void> loadCashReceipts() async {
-    await _viewModel.loadCashReceipts();
-  }
-
   /// Refresh cash receipts
   Future<void> refreshCashReceipts() async {
     await _viewModel.refreshCashReceipts();

@@ -7,7 +7,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:powersync/powersync.dart';
 
 import '../../utils/logger.dart';
-import '../auth/auth_api_client.dart';
 import 'connector.dart';
 import 'schema.dart';
 
@@ -26,9 +25,6 @@ class PowerSyncService {
 
   final _logger = LoggerApp('PowerSyncService');
 
-  /// The auth api client.
-  final AuthApiClient _authApiClient;
-
   PowerSyncDatabase? _db;
 
   /// The currently open database. Throws if [open] has not been called.
@@ -44,22 +40,18 @@ class PowerSyncService {
   }
 
   /// Constructs a [PowerSyncService].
-  PowerSyncService({required AuthApiClient authApiClient})
-    : _authApiClient = authApiClient;
+  PowerSyncService();
 
   /// Initializes the database connection.
   ///
   /// If provided, the database file will be scoped to that user.
   /// If null, a default (shared) database is used.
   Future<void> initialize() async {
-    await _open(authApiClient: _authApiClient);
+    await _open();
   }
 
   /// Opens (or reuses) the database.
-  Future<PowerSyncDatabase> _open({
-    required AuthApiClient authApiClient,
-    bool connectSync = true,
-  }) async {
+  Future<PowerSyncDatabase> _open({bool connectSync = true}) async {
     try {
       final currentDb = _db;
       if (currentDb != null) {
@@ -74,7 +66,7 @@ class PowerSyncService {
       await db.initialize();
 
       if (connectSync) {
-        final connector = PowerSyncConnector(authApiClient);
+        final connector = PowerSyncConnector();
         await db.connect(connector: connector);
         _logger.log('PowerSync sync stream connected');
       } else {

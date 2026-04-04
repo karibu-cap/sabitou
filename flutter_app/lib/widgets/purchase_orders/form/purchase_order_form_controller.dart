@@ -108,11 +108,10 @@ class PurchaseOrderFormController extends ChangeNotifier {
   }
 
   /// Fetch a list of products via the name query.
-  Future<List<StoreProductWithGlobalProduct>> searchProducts({
-    required String name,
-  }) async {
+  Future<List<CustomProduct>> searchProducts({required String name}) async {
     final response = await StoreProductsRepository.instance.searchProducts(
-      SearchStoreProductsRequest(searchQuery: name, storeId: storeId),
+      storeId,
+      name,
     );
 
     return response;

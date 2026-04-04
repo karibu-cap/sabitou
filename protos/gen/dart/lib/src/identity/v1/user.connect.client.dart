@@ -8,79 +8,6 @@ import "user.pb.dart" as identityv1user;
 import "user.connect.spec.dart" as specs;
 
 extension type UserServiceClient (connect.Transport _transport) {
-  /// Get the user information for the currently authenticated user.
-  /// @deprecated use GetCurrentUser instead.
-  Future<identityv1user.GetMeResponse> getMe(
-    identityv1user.GetMeRequest input, {
-    connect.Headers? headers,
-    connect.AbortSignal? signal,
-    Function(connect.Headers)? onHeader,
-    Function(connect.Headers)? onTrailer,
-  }) {
-    return connect.Client(_transport).unary(
-      specs.UserService.getMe,
-      input,
-      signal: signal,
-      headers: headers,
-      onHeader: onHeader,
-      onTrailer: onTrailer,
-    );
-  }
-
-  /// Get the user information for the currently authenticated user.
-  Future<identityv1user.GetCurrentUserResponse> getCurrentUser(
-    identityv1user.GetCurrentUserRequest input, {
-    connect.Headers? headers,
-    connect.AbortSignal? signal,
-    Function(connect.Headers)? onHeader,
-    Function(connect.Headers)? onTrailer,
-  }) {
-    return connect.Client(_transport).unary(
-      specs.UserService.getCurrentUser,
-      input,
-      signal: signal,
-      headers: headers,
-      onHeader: onHeader,
-      onTrailer: onTrailer,
-    );
-  }
-
-  /// Get the public information for the given user id.
-  Future<identityv1user.GetUserResponse> getUser(
-    identityv1user.GetUserRequest input, {
-    connect.Headers? headers,
-    connect.AbortSignal? signal,
-    Function(connect.Headers)? onHeader,
-    Function(connect.Headers)? onTrailer,
-  }) {
-    return connect.Client(_transport).unary(
-      specs.UserService.getUser,
-      input,
-      signal: signal,
-      headers: headers,
-      onHeader: onHeader,
-      onTrailer: onTrailer,
-    );
-  }
-
-  /// Update the user information for the currently authenticated user.
-  Future<identityv1user.UpdateMeResponse> updateMe(
-    identityv1user.UpdateMeRequest input, {
-    connect.Headers? headers,
-    connect.AbortSignal? signal,
-    Function(connect.Headers)? onHeader,
-    Function(connect.Headers)? onTrailer,
-  }) {
-    return connect.Client(_transport).unary(
-      specs.UserService.updateMe,
-      input,
-      signal: signal,
-      headers: headers,
-      onHeader: onHeader,
-      onTrailer: onTrailer,
-    );
-  }
-
   /// Update the user information for the user.
   Future<identityv1user.UpdateResponse> update(
     identityv1user.UpdateRequest input, {
@@ -155,16 +82,88 @@ extension type UserServiceClient (connect.Transport _transport) {
     );
   }
 
-  /// Stream business members for real-time updates.
-  Stream<identityv1user.StreamUserResponse> streamUser(
-    identityv1user.StreamUserRequest input, {
+  /// [Admin] Create a user directly with a password (internal/cashier flow).
+  Future<identityv1user.CreateUserDirectResponse> createUserDirect(
+    identityv1user.CreateUserDirectRequest input, {
     connect.Headers? headers,
     connect.AbortSignal? signal,
     Function(connect.Headers)? onHeader,
     Function(connect.Headers)? onTrailer,
   }) {
-    return connect.Client(_transport).server(
-      specs.UserService.streamUser,
+    return connect.Client(_transport).unary(
+      specs.UserService.createUserDirect,
+      input,
+      signal: signal,
+      headers: headers,
+      onHeader: onHeader,
+      onTrailer: onTrailer,
+    );
+  }
+
+  /// [Admin] Invite an external user via email link (invite flow).
+  Future<identityv1user.InviteUserResponse> inviteUser(
+    identityv1user.InviteUserRequest input, {
+    connect.Headers? headers,
+    connect.AbortSignal? signal,
+    Function(connect.Headers)? onHeader,
+    Function(connect.Headers)? onTrailer,
+  }) {
+    return connect.Client(_transport).unary(
+      specs.UserService.inviteUser,
+      input,
+      signal: signal,
+      headers: headers,
+      onHeader: onHeader,
+      onTrailer: onTrailer,
+    );
+  }
+
+  /// [Admin] Cancel a pending invitation.
+  Future<identityv1user.CancelInvitationResponse> cancelInvitation(
+    identityv1user.CancelInvitationRequest input, {
+    connect.Headers? headers,
+    connect.AbortSignal? signal,
+    Function(connect.Headers)? onHeader,
+    Function(connect.Headers)? onTrailer,
+  }) {
+    return connect.Client(_transport).unary(
+      specs.UserService.cancelInvitation,
+      input,
+      signal: signal,
+      headers: headers,
+      onHeader: onHeader,
+      onTrailer: onTrailer,
+    );
+  }
+
+  /// [Admin] Resend an expired or pending invitation.
+  Future<identityv1user.ResendInvitationResponse> resendInvitation(
+    identityv1user.ResendInvitationRequest input, {
+    connect.Headers? headers,
+    connect.AbortSignal? signal,
+    Function(connect.Headers)? onHeader,
+    Function(connect.Headers)? onTrailer,
+  }) {
+    return connect.Client(_transport).unary(
+      specs.UserService.resendInvitation,
+      input,
+      signal: signal,
+      headers: headers,
+      onHeader: onHeader,
+      onTrailer: onTrailer,
+    );
+  }
+
+  /// [Invited user] Accept invitation and set password.
+  Future<identityv1user.AcceptInvitationResponse> acceptInvitation(
+    identityv1user.AcceptInvitationRequest input, {
+    connect.Headers? headers,
+    connect.AbortSignal? signal,
+    Function(connect.Headers)? onHeader,
+    Function(connect.Headers)? onTrailer,
+  }) {
+    return connect.Client(_transport).unary(
+      specs.UserService.acceptInvitation,
       input,
       signal: signal,
       headers: headers,

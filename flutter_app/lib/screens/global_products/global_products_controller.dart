@@ -11,11 +11,7 @@ import 'global_products_view_model.dart';
 /// Uses ChangeNotifier for state management with Provider pattern.
 class GlobalProductsController extends ChangeNotifier {
   /// The view model that handles data operations for global products
-  final GlobalProductsViewModel _viewModel;
-
-  /// Constructs a new GlobalProductsController.
-  GlobalProductsController(GlobalProductsViewModel viewModel)
-    : _viewModel = viewModel;
+  final GlobalProductsViewModel _viewModel = GlobalProductsViewModel();
 
   /// Text controller for search input field.
   final TextEditingController searchController = TextEditingController();
@@ -24,23 +20,12 @@ class GlobalProductsController extends ChangeNotifier {
   final ShadSelectController<GlobalProductStatus>? statusFilterController =
       ShadSelectController<GlobalProductStatus>();
 
-  /// Text controller for category filter input field.
-  final ShadSelectController<Category>? categoryFilterController =
-      ShadSelectController<Category>();
-
   /// Gets the search query.
   BehaviorSubject<String> get searchQuery => _viewModel.searchQuery;
 
   /// Gets the selected status.
   BehaviorSubject<GlobalProductStatus?> get selectedStatus =>
       _viewModel.selectedStatus;
-
-  /// Gets the selected category.
-  BehaviorSubject<Category?> get selectedCategory =>
-      _viewModel.selectedCategory;
-
-  /// Gets the categories.
-  Set<Category?> get categories => _viewModel.categories;
 
   /// Wether if list is filtered.
   bool get isFiltered => _viewModel.isFiltered;
@@ -55,21 +40,7 @@ class GlobalProductsController extends ChangeNotifier {
 
   /// Deletes a global product from the system.
   Future<bool> deleteGlobalProduct(String globalProductId) async {
-    final request = DeleteGlobalProductRequest(
-      globalProductId: globalProductId,
-    );
-
-    return await _viewModel.deleteGlobalProduct(request);
-  }
-
-  /// Creates a global product in the system.
-  Future<bool> createGlobalProduct(CreateGlobalProductRequest request) async {
-    return await _viewModel.createGlobalProduct(request);
-  }
-
-  /// Updates a global product in the system.
-  Future<bool> updateGlobalProduct(UpdateGlobalProductRequest request) async {
-    return await _viewModel.updateGlobalProduct(request);
+    return await _viewModel.deleteGlobalProduct(globalProductId);
   }
 
   /// Calculates total global products count
@@ -93,6 +64,11 @@ class GlobalProductsController extends ChangeNotifier {
           (c) => c.status == GlobalProductStatus.GLOBAL_PRODUCT_STATUS_INACTIVE,
         )
         .length;
+  }
+
+  /// Refreshes global products from local database.
+  Future<void> refreshGlobalProducts() async {
+    await _viewModel.loadGlobalProducts();
   }
 
   /// Clears filters.

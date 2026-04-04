@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:animation_wrappers/animation_wrappers.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
@@ -10,7 +12,6 @@ import '../../providers/auth/auth_provider.dart';
 import '../../router/app_router.dart';
 import '../../router/page_routes.dart';
 import '../../services/internationalization/internationalization.dart';
-import '../../services/storage/app_storage.dart';
 import '../../themes/app_colors.dart';
 import '../../utils/app_constants.dart';
 import '../../widgets/loading.dart';
@@ -227,12 +228,14 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
   }
 
   Future<void> _loadInitialData() async {
-    final isFirstOpen = await AppStorage.of<bool>().read(
-      PreferencesKey.isFirstOpenTime,
+    final _storage = const FlutterSecureStorage();
+
+    final isFirstOpen = await _storage.read(
+      key: PreferencesKey.isFirstOpenTime,
     );
     if (mounted) {
       setState(() {
-        _isFirstOpen = isFirstOpen ?? true;
+        _isFirstOpen = isFirstOpen == 'true';
         _isLoading = false;
       });
     }
@@ -301,7 +304,11 @@ final class _UnauthenticatedView extends StatelessWidget {
     final theme = ShadTheme.of(context);
 
     Future<void> confirmFirstOpen() async {
-      await AppStorage.of<bool>().write(PreferencesKey.isFirstOpenTime, false);
+      final _storage = const FlutterSecureStorage();
+      await _storage.write(
+        key: PreferencesKey.isFirstOpenTime,
+        value: jsonEncode(false),
+      );
     }
 
     return Column(

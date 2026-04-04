@@ -44,9 +44,7 @@ final class StoreProductsRepository extends BaseRepository<StoreProduct> {
       );
 
   /// Gets all products based on store Id.
-  Future<List<StoreProductWithGlobalProduct>> findStoreProducts(
-    FindStoreProductsRequest request,
-  ) async {
+  Future<List<CustomProduct>> findStoreProducts(String storeId) async {
     try {
       final rows = await dataSource.getJoinedCollection(
         table: CollectionName.storeProducts,
@@ -67,8 +65,7 @@ final class StoreProductsRepository extends BaseRepository<StoreProduct> {
           ),
         ],
         filters: [
-          if (request.hasStoreId())
-            SqlQuery.equals(StoreProductsFields.storeId, request.storeId),
+          SqlQuery.equals(StoreProductsFields.storeId, storeId),
           SqlQuery.notEquals(
             StoreProductsFields.status,
             ProductStatus.PRODUCT_STATUS_DELETE.name,
@@ -81,7 +78,7 @@ final class StoreProductsRepository extends BaseRepository<StoreProduct> {
       );
 
       return rows.map((row) {
-        return StoreProductWithGlobalProduct(
+        return CustomProduct(
           storeProduct: fromRowToStoreProduct(row),
           globalProduct: fromRowToGlobalProduct(extractTable(row, 'gp')),
         );
@@ -94,20 +91,19 @@ final class StoreProductsRepository extends BaseRepository<StoreProduct> {
   }
 
   /// Finds global products.
-  Future<List<GlobalProduct>> findGlobalProducts(
-    FindGlobalProductsRequest request,
-  ) async {
+  Future<List<GlobalProduct>> findGlobalProducts({
+    String? refId,
+    String? barCodeValue,
+    String? name,
+  }) async {
     try {
       final rows = await dataSource.getCollection(
         CollectionName.globalProducts,
         filters: [
-          if (request.hasRefId())
-            SqlQuery.equals(GlobalProductsFields.refId, request.refId),
-          if (request.hasBarCodeValue())
-            SqlQuery.equals(
-              GlobalProductsFields.barCodeValue,
-              request.barCodeValue,
-            ),
+          if (name != null) SqlQuery.like(GlobalProductsFields.name, '%$name%'),
+          if (refId != null) SqlQuery.equals(GlobalProductsFields.refId, refId),
+          if (barCodeValue != null)
+            SqlQuery.equals(GlobalProductsFields.barCodeValue, barCodeValue),
         ],
       );
 
@@ -120,14 +116,11 @@ final class StoreProductsRepository extends BaseRepository<StoreProduct> {
   }
 
   /// Adds a new product to a store.
-  Future<bool> addProduct(AddStoreProductRequest request) async {
+  Future<bool> addProduct(StoreProduct storeProduct) async {
     try {
-      final product = request.storeProduct;
-      if (product.refId.isEmpty) {
-        product.refId = AppUtils.generateSmartDatabaseId('SP');
-      }
+      storeProduct.refId = AppUtils.generateSmartDatabaseId('SP');
 
-      await create(product);
+      await create(storeProduct);
 
       return true;
     } on Exception catch (e) {
@@ -138,9 +131,7 @@ final class StoreProductsRepository extends BaseRepository<StoreProduct> {
   }
 
   /// Gets a store product by its ID with its global product.
-  Future<StoreProductWithGlobalProduct?> getStoreProduct(
-    GetStoreProductRequest request,
-  ) async {
+  Future<CustomProduct?> getStoreProduct(String storeProductId) async {
     try {
       final rows = await dataSource.getJoinedCollection(
         table: CollectionName.storeProducts,
@@ -162,9 +153,7 @@ final class StoreProductsRepository extends BaseRepository<StoreProduct> {
             ],
           ),
         ],
-        filters: [
-          SqlQuery.equals(StoreProductsFields.refId, request.storeProductId),
-        ],
+        filters: [SqlQuery.equals(StoreProductsFields.refId, storeProductId)],
         limit: 1,
       );
 
@@ -173,7 +162,7 @@ final class StoreProductsRepository extends BaseRepository<StoreProduct> {
       /// Applatir la list.
       final Map<String, dynamic> combined = {for (var m in rows) ...m};
 
-      return StoreProductWithGlobalProduct(
+      return CustomProduct(
         storeProduct: fromRowToStoreProduct(combined),
         globalProduct: fromRowToGlobalProduct(extractTable(combined, 'gp')),
       );
@@ -185,27 +174,26 @@ final class StoreProductsRepository extends BaseRepository<StoreProduct> {
   }
 
   /// Updates a store product.
-  Future<bool> updateProduct(UpdateStoreProductRequest request) async {
+  Future<bool> updateProduct({
+    required StoreProduct storeProduct,
+    GlobalProduct? globalProduct,
+  }) async {
     try {
       await dataSource.runTransaction((tx) async {
-        await tx.updateWhere(
-          table: CollectionName.globalProducts,
-          fields: fromGlobalProductToRaw(request.globalProduct),
-          filters: [
-            SqlQuery.equals(
-              GlobalProductsFields.refId,
-              request.globalProduct.refId,
-            ),
-          ],
-        );
+        if (globalProduct != null) {
+          await tx.updateWhere(
+            table: CollectionName.globalProducts,
+            fields: fromGlobalProductToRaw(globalProduct),
+            filters: [
+              SqlQuery.equals(GlobalProductsFields.refId, globalProduct.refId),
+            ],
+          );
+        }
         await tx.updateWhere(
           table: CollectionName.storeProducts,
-          fields: fromStoreProductToRaw(request.storeProduct),
+          fields: fromStoreProductToRaw(storeProduct),
           filters: [
-            SqlQuery.equals(
-              StoreProductsFields.refId,
-              request.storeProduct.refId,
-            ),
+            SqlQuery.equals(StoreProductsFields.refId, storeProduct.refId),
           ],
         );
       });
@@ -219,16 +207,13 @@ final class StoreProductsRepository extends BaseRepository<StoreProduct> {
   }
 
   /// Adds a new global product.
-  Future<bool> createGlobalProduct(CreateGlobalProductRequest request) async {
+  Future<bool> createGlobalProduct(GlobalProduct globalProduct) async {
     try {
-      final product = request.globalProduct;
-      if (product.refId.isEmpty) {
-        product.refId = AppUtils.generateSmartDatabaseId('GP');
-      }
+      globalProduct.refId = AppUtils.generateSmartDatabaseId('GP');
 
       await dataSource.createRecord(
         table: CollectionName.globalProducts,
-        record: fromGlobalProductToRaw(product),
+        record: fromGlobalProductToRaw(globalProduct),
       );
 
       return true;
@@ -240,13 +225,13 @@ final class StoreProductsRepository extends BaseRepository<StoreProduct> {
   }
 
   /// Updates a global product.
-  Future<bool> updateGlobalProduct(UpdateGlobalProductRequest request) async {
+  Future<bool> updateGlobalProduct(GlobalProduct globalProduct) async {
     try {
       await dataSource.updateWhere(
         table: CollectionName.globalProducts,
-        fields: fromGlobalProductToRaw(request.globalProduct),
+        fields: fromGlobalProductToRaw(globalProduct),
         filters: [
-          SqlQuery.equals(GlobalProductsFields.refId, request.globalProductId),
+          SqlQuery.equals(GlobalProductsFields.refId, globalProduct.refId),
         ],
       );
 
@@ -258,14 +243,38 @@ final class StoreProductsRepository extends BaseRepository<StoreProduct> {
     }
   }
 
-  /// Deletes a global product.
-  Future<bool> deleteGlobalProduct(DeleteGlobalProductRequest request) async {
+  /// Deletes a global product (soft delete - updates status to DELETE).
+  /// Also updates all related store products to PRODUCT_STATUS_DELETE.
+  Future<bool> deleteGlobalProduct(String globalProductId) async {
     try {
-      await dataSource.deleteRecord(
-        table: CollectionName.globalProducts,
-        id: request.globalProductId,
-        primaryKey: GlobalProductsFields.refId,
-      );
+      await dataSource.runTransaction((tx) async {
+        // Update global product status to DELETE
+        await tx.updateWhere(
+          table: CollectionName.globalProducts,
+          fields: {
+            GlobalProductsFields.status:
+                GlobalProductStatus.GLOBAL_PRODUCT_STATUS_DELETE.name,
+          },
+          filters: [
+            SqlQuery.equals(GlobalProductsFields.refId, globalProductId),
+          ],
+        );
+
+        // Update all related store products to DELETE status
+        await tx.updateWhere(
+          table: CollectionName.storeProducts,
+          fields: {
+            StoreProductsFields.status:
+                ProductStatus.PRODUCT_STATUS_DELETE.name,
+          },
+          filters: [
+            SqlQuery.equals(
+              StoreProductsFields.globalProductId,
+              globalProductId,
+            ),
+          ],
+        );
+      });
 
       return true;
     } catch (e) {
@@ -276,9 +285,7 @@ final class StoreProductsRepository extends BaseRepository<StoreProduct> {
   }
 
   /// Streams products for a store for real-time updates.
-  Stream<List<StoreProductWithGlobalProduct>> streamStoreProducts(
-    StreamStoreProductsRequest request,
-  ) {
+  Stream<List<CustomProduct>> streamStoreProducts(String storeId) {
     return dataSource
         .watchJoinedCollection(
           table: CollectionName.storeProducts,
@@ -299,7 +306,7 @@ final class StoreProductsRepository extends BaseRepository<StoreProduct> {
             ),
           ],
           filters: [
-            SqlQuery.equals(StoreProductsFields.storeId, request.storeId),
+            SqlQuery.equals(StoreProductsFields.storeId, storeId),
             SqlQuery.notEquals(
               StoreProductsFields.status,
               ProductStatus.PRODUCT_STATUS_DELETE.name,
@@ -312,7 +319,7 @@ final class StoreProductsRepository extends BaseRepository<StoreProduct> {
         )
         .map((rows) {
           return rows.map((row) {
-            return StoreProductWithGlobalProduct(
+            return CustomProduct(
               storeProduct: fromRowToStoreProduct(row),
               globalProduct: fromRowToGlobalProduct(extractTable(row, 'gp')),
             );
@@ -321,11 +328,12 @@ final class StoreProductsRepository extends BaseRepository<StoreProduct> {
   }
 
   /// Searches products locally with joins.
-  Future<List<StoreProductWithGlobalProduct>> searchProducts(
-    SearchStoreProductsRequest request,
+  Future<List<CustomProduct>> searchProducts(
+    String storeId,
+    String searchQuery,
   ) async {
     try {
-      final query = '%${request.searchQuery}%';
+      final query = '%$searchQuery%';
       final rows = await dataSource.getJoinedCollection(
         table: CollectionName.storeProducts,
         tableAlias: 'sp',
@@ -345,7 +353,7 @@ final class StoreProductsRepository extends BaseRepository<StoreProduct> {
           ),
         ],
         filters: [
-          SqlQuery.equals(StoreProductsFields.storeId, request.storeId),
+          SqlQuery.equals(StoreProductsFields.storeId, storeId),
           SqlOrGroup([
             SqlQuery(
               GlobalProductsFields.name,
@@ -370,7 +378,7 @@ final class StoreProductsRepository extends BaseRepository<StoreProduct> {
       );
 
       final products = rows.map((row) {
-        return StoreProductWithGlobalProduct(
+        return CustomProduct(
           storeProduct: fromRowToStoreProduct(row),
           globalProduct: fromRowToGlobalProduct(extractTable(row, 'gp')),
         );

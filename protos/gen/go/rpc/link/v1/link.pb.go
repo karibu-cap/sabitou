@@ -34,7 +34,9 @@ type ResourceLink struct {
 	// It can be the title of the target resource.
 	Info *string `protobuf:"bytes,4,opt,name=info,proto3,oneof" json:"info,omitempty"`
 	// The label use to identify the resource type.
-	Label         *string `protobuf:"bytes,5,opt,name=label,proto3,oneof" json:"label,omitempty"`
+	Label *string `protobuf:"bytes,5,opt,name=label,proto3,oneof" json:"label,omitempty"`
+	// Whether the resource link is orphan.
+	IsOrphan      bool `protobuf:"varint,6,opt,name=is_orphan,json=isOrphan,proto3" json:"is_orphan,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -104,121 +106,30 @@ func (x *ResourceLink) GetLabel() string {
 	return ""
 }
 
-type GetResourceLinksRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// A list of unique identifiers of the resource link to retrieve.
-	Ids           []string `protobuf:"bytes,1,rep,name=ids,proto3" json:"ids,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetResourceLinksRequest) Reset() {
-	*x = GetResourceLinksRequest{}
-	mi := &file_link_v1_link_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetResourceLinksRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetResourceLinksRequest) ProtoMessage() {}
-
-func (x *GetResourceLinksRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_link_v1_link_proto_msgTypes[1]
+func (x *ResourceLink) GetIsOrphan() bool {
 	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
+		return x.IsOrphan
 	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetResourceLinksRequest.ProtoReflect.Descriptor instead.
-func (*GetResourceLinksRequest) Descriptor() ([]byte, []int) {
-	return file_link_v1_link_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *GetResourceLinksRequest) GetIds() []string {
-	if x != nil {
-		return x.Ids
-	}
-	return nil
-}
-
-type GetResourceLinksResponse struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The retrieved resource link data list.
-	Link          map[string]*ResourceLink `protobuf:"bytes,1,rep,name=link,proto3" json:"link,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetResourceLinksResponse) Reset() {
-	*x = GetResourceLinksResponse{}
-	mi := &file_link_v1_link_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetResourceLinksResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetResourceLinksResponse) ProtoMessage() {}
-
-func (x *GetResourceLinksResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_link_v1_link_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetResourceLinksResponse.ProtoReflect.Descriptor instead.
-func (*GetResourceLinksResponse) Descriptor() ([]byte, []int) {
-	return file_link_v1_link_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *GetResourceLinksResponse) GetLink() map[string]*ResourceLink {
-	if x != nil {
-		return x.Link
-	}
-	return nil
+	return false
 }
 
 var File_link_v1_link_proto protoreflect.FileDescriptor
 
 const file_link_v1_link_proto_rawDesc = "" +
 	"\n" +
-	"\x12link/v1/link.proto\x12\alink.v1\"\xc8\x01\n" +
+	"\x12link/v1/link.proto\x12\alink.v1\"\xe5\x01\n" +
 	"\fResourceLink\x12\x1a\n" +
 	"\x06ref_id\x18\x01 \x01(\tH\x00R\x05refId\x88\x01\x01\x12\x1d\n" +
 	"\n" +
 	"target_uri\x18\x02 \x01(\tR\ttargetUri\x12\x1e\n" +
 	"\bicon_uri\x18\x03 \x01(\tH\x01R\aiconUri\x88\x01\x01\x12\x17\n" +
 	"\x04info\x18\x04 \x01(\tH\x02R\x04info\x88\x01\x01\x12\x19\n" +
-	"\x05label\x18\x05 \x01(\tH\x03R\x05label\x88\x01\x01B\t\n" +
+	"\x05label\x18\x05 \x01(\tH\x03R\x05label\x88\x01\x01\x12\x1b\n" +
+	"\tis_orphan\x18\x06 \x01(\bR\bisOrphanB\t\n" +
 	"\a_ref_idB\v\n" +
 	"\t_icon_uriB\a\n" +
 	"\x05_infoB\b\n" +
-	"\x06_label\"+\n" +
-	"\x17GetResourceLinksRequest\x12\x10\n" +
-	"\x03ids\x18\x01 \x03(\tR\x03ids\"\xab\x01\n" +
-	"\x18GetResourceLinksResponse\x12?\n" +
-	"\x04link\x18\x01 \x03(\v2+.link.v1.GetResourceLinksResponse.LinkEntryR\x04link\x1aN\n" +
-	"\tLinkEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12+\n" +
-	"\x05value\x18\x02 \x01(\v2\x15.link.v1.ResourceLinkR\x05value:\x028\x012n\n" +
-	"\x13ResourceLinkService\x12W\n" +
-	"\x10GetResourceLinks\x12 .link.v1.GetResourceLinksRequest\x1a!.link.v1.GetResourceLinksResponseB\x95\x01\n" +
+	"\x06_labelB\x95\x01\n" +
 	"\vcom.link.v1B\tLinkProtoP\x01Z>github.com/karibu-cap/sabitou/protos/gen/go/rpc/link/v1;linkv1\xa2\x02\x03LXX\xaa\x02\aLink.V1\xca\x02\aLink\\V1\xe2\x02\x13Link\\V1\\GPBMetadata\xea\x02\bLink::V1b\x06proto3"
 
 var (
@@ -233,23 +144,16 @@ func file_link_v1_link_proto_rawDescGZIP() []byte {
 	return file_link_v1_link_proto_rawDescData
 }
 
-var file_link_v1_link_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_link_v1_link_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_link_v1_link_proto_goTypes = []any{
-	(*ResourceLink)(nil),             // 0: link.v1.ResourceLink
-	(*GetResourceLinksRequest)(nil),  // 1: link.v1.GetResourceLinksRequest
-	(*GetResourceLinksResponse)(nil), // 2: link.v1.GetResourceLinksResponse
-	nil,                              // 3: link.v1.GetResourceLinksResponse.LinkEntry
+	(*ResourceLink)(nil), // 0: link.v1.ResourceLink
 }
 var file_link_v1_link_proto_depIdxs = []int32{
-	3, // 0: link.v1.GetResourceLinksResponse.link:type_name -> link.v1.GetResourceLinksResponse.LinkEntry
-	0, // 1: link.v1.GetResourceLinksResponse.LinkEntry.value:type_name -> link.v1.ResourceLink
-	1, // 2: link.v1.ResourceLinkService.GetResourceLinks:input_type -> link.v1.GetResourceLinksRequest
-	2, // 3: link.v1.ResourceLinkService.GetResourceLinks:output_type -> link.v1.GetResourceLinksResponse
-	3, // [3:4] is the sub-list for method output_type
-	2, // [2:3] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	0, // [0:0] is the sub-list for method output_type
+	0, // [0:0] is the sub-list for method input_type
+	0, // [0:0] is the sub-list for extension type_name
+	0, // [0:0] is the sub-list for extension extendee
+	0, // [0:0] is the sub-list for field type_name
 }
 
 func init() { file_link_v1_link_proto_init() }
@@ -264,9 +168,9 @@ func file_link_v1_link_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_link_v1_link_proto_rawDesc), len(file_link_v1_link_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   1,
 			NumExtensions: 0,
-			NumServices:   1,
+			NumServices:   0,
 		},
 		GoTypes:           file_link_v1_link_proto_goTypes,
 		DependencyIndexes: file_link_v1_link_proto_depIdxs,

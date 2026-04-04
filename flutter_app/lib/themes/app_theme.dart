@@ -299,7 +299,21 @@ abstract final class AppTheme {
       placeholderStyle: _Type.placeholderStyle,
       decoration: ShadDecoration(
         color: _Palette.primaryForeground,
-        border: ShadBorder.all(color: _Palette.foreground),
+        border: ShadBorder.all(color: _Palette.hintForeground),
+      ),
+    ),
+
+    // Switch.
+    switchTheme: const ShadSwitchTheme(
+      checkedTrackColor: _Palette.primary,
+      uncheckedTrackColor: _Palette.muted,
+    ),
+
+    // Shadselect
+    selectTheme: ShadSelectTheme(
+      decoration: ShadDecoration(
+        color: _Palette.primaryForeground,
+        border: ShadBorder.all(color: _Palette.hintForeground),
       ),
     ),
 

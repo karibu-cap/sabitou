@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shadcn_ui/shadcn_ui.dart';
 
-import '../../services/internationalization/internationalization.dart';
 import '../../utils/user_preference.dart';
+import '../../widgets/no_business_view.dart';
 import 'components/users_header.dart';
 import 'components/users_list.dart';
 import 'components/users_stats_grid.dart';
@@ -17,23 +16,19 @@ class UsersView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final storeId = UserPreferences.instance.store?.refId;
-    final theme = ShadTheme.of(context);
+    final userPreferences = context.watch<UserPreferences>();
+    final currentStore = userPreferences.store;
+    final business = userPreferences.business;
 
-    if (storeId == null) {
-      return Center(
-        child: Text(
-          AppInternationalizationService.to.noStoreSelected,
-          style: theme.textTheme.p,
-          textAlign: TextAlign.center,
-        ),
-      );
+    if (currentStore == null || business == null) {
+      return const Scaffold(body: Center(child: NoBusinessView()));
     }
 
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => UsersController(UsersViewModel(storeId: storeId)),
+          create: (_) =>
+              UsersController(UsersViewModel(storeId: currentStore.refId)),
         ),
       ],
       child: const UsersContent(),

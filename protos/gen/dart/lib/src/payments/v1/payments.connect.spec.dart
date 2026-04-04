@@ -17,20 +17,4 @@ abstract final class PaymentsService {
     paymentsv1payments.CreatePaymentRequest.new,
     paymentsv1payments.CreatePaymentResponse.new,
   );
-
-  /// Get payment details
-  static const getPayment = connect.Spec(
-    '/$name/GetPayment',
-    connect.StreamType.unary,
-    paymentsv1payments.GetPaymentRequest.new,
-    paymentsv1payments.GetPaymentResponse.new,
-  );
-
-  /// List payments with filtering
-  static const listPayments = connect.Spec(
-    '/$name/ListPayments',
-    connect.StreamType.unary,
-    paymentsv1payments.ListPaymentsRequest.new,
-    paymentsv1payments.ListPaymentsResponse.new,
-  );
 }

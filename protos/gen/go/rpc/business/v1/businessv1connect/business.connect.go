@@ -36,75 +36,17 @@ const (
 	// BusinessServiceCreateBusinessProcedure is the fully-qualified name of the BusinessService's
 	// CreateBusiness RPC.
 	BusinessServiceCreateBusinessProcedure = "/business.v1.BusinessService/CreateBusiness"
-	// BusinessServiceGetMyBusinessesProcedure is the fully-qualified name of the BusinessService's
-	// GetMyBusinesses RPC.
-	BusinessServiceGetMyBusinessesProcedure = "/business.v1.BusinessService/GetMyBusinesses"
-	// BusinessServiceGetBusinessDetailsProcedure is the fully-qualified name of the BusinessService's
-	// GetBusinessDetails RPC.
-	BusinessServiceGetBusinessDetailsProcedure = "/business.v1.BusinessService/GetBusinessDetails"
-	// BusinessServiceUpdateBusinessProcedure is the fully-qualified name of the BusinessService's
-	// UpdateBusiness RPC.
-	BusinessServiceUpdateBusinessProcedure = "/business.v1.BusinessService/UpdateBusiness"
 	// BusinessServiceRequestDeleteBusinessProcedure is the fully-qualified name of the
 	// BusinessService's RequestDeleteBusiness RPC.
 	BusinessServiceRequestDeleteBusinessProcedure = "/business.v1.BusinessService/RequestDeleteBusiness"
-	// BusinessServiceCreateUserToBusinessProcedure is the fully-qualified name of the BusinessService's
-	// CreateUserToBusiness RPC.
-	BusinessServiceCreateUserToBusinessProcedure = "/business.v1.BusinessService/CreateUserToBusiness"
-	// BusinessServiceAssociateUserToBusinessProcedure is the fully-qualified name of the
-	// BusinessService's AssociateUserToBusiness RPC.
-	BusinessServiceAssociateUserToBusinessProcedure = "/business.v1.BusinessService/AssociateUserToBusiness"
-	// BusinessServiceRemoveUserFromBusinessProcedure is the fully-qualified name of the
-	// BusinessService's RemoveUserFromBusiness RPC.
-	BusinessServiceRemoveUserFromBusinessProcedure = "/business.v1.BusinessService/RemoveUserFromBusiness"
-	// BusinessServiceChangeBusinessCurrencyProcedure is the fully-qualified name of the
-	// BusinessService's ChangeBusinessCurrency RPC.
-	BusinessServiceChangeBusinessCurrencyProcedure = "/business.v1.BusinessService/ChangeBusinessCurrency"
-	// BusinessServiceGetBusinessMembersProcedure is the fully-qualified name of the BusinessService's
-	// GetBusinessMembers RPC.
-	BusinessServiceGetBusinessMembersProcedure = "/business.v1.BusinessService/GetBusinessMembers"
-	// BusinessServiceGetBusinessMemberProcedure is the fully-qualified name of the BusinessService's
-	// GetBusinessMember RPC.
-	BusinessServiceGetBusinessMemberProcedure = "/business.v1.BusinessService/GetBusinessMember"
-	// BusinessServiceUpdateBusinessMemberProcedure is the fully-qualified name of the BusinessService's
-	// UpdateBusinessMember RPC.
-	BusinessServiceUpdateBusinessMemberProcedure = "/business.v1.BusinessService/UpdateBusinessMember"
-	// BusinessServiceStreamBusinessMembersProcedure is the fully-qualified name of the
-	// BusinessService's StreamBusinessMembers RPC.
-	BusinessServiceStreamBusinessMembersProcedure = "/business.v1.BusinessService/StreamBusinessMembers"
 )
 
 // BusinessServiceClient is a client for the business.v1.BusinessService service.
 type BusinessServiceClient interface {
 	// Create a new business.
 	CreateBusiness(context.Context, *connect.Request[v1.CreateBusinessRequest]) (*connect.Response[v1.CreateBusinessResponse], error)
-	// Get all businesses of the current user.
-	GetMyBusinesses(context.Context, *connect.Request[v1.GetMyBusinessesRequest]) (*connect.Response[v1.GetMyBusinessesResponse], error)
-	// Get a business by id.
-	GetBusinessDetails(context.Context, *connect.Request[v1.GetBusinessDetailsRequest]) (*connect.Response[v1.GetBusinessDetailsResponse], error)
-	// Update a business.
-	UpdateBusiness(context.Context, *connect.Request[v1.UpdateBusinessRequest]) (*connect.Response[v1.UpdateBusinessResponse], error)
 	// Request the deletion of the business. This request doesn't delete the business directly instead it put the business in inactive state and remove all business members.
 	RequestDeleteBusiness(context.Context, *connect.Request[v1.RequestDeleteBusinessRequest]) (*connect.Response[v1.RequestDeleteBusinessResponse], error)
-	// Add user to business or invite user to business.
-	CreateUserToBusiness(context.Context, *connect.Request[v1.CreateUserToBusinessRequest]) (*connect.Response[v1.CreateUserToBusinessResponse], error)
-	// Associate user to business.
-	AssociateUserToBusiness(context.Context, *connect.Request[v1.AssociateUserToBusinessRequest]) (*connect.Response[v1.AssociateUserToBusinessResponse], error)
-	// Remove user from business.
-	// If the user has been created by the business, the user will be deleted.
-	// NOTE: The authenticated user need to have the permission to remove the
-	// user.
-	RemoveUserFromBusiness(context.Context, *connect.Request[v1.RemoveUserFromBusinessRequest]) (*connect.Response[v1.RemoveUserFromBusinessResponse], error)
-	// Changes the business currency
-	ChangeBusinessCurrency(context.Context, *connect.Request[v1.ChangeBusinessCurrencyRequest]) (*connect.Response[v1.ChangeBusinessCurrencyResponse], error)
-	// Get the users of the business.
-	GetBusinessMembers(context.Context, *connect.Request[v1.GetBusinessMembersRequest]) (*connect.Response[v1.GetBusinessMembersResponse], error)
-	// Get a specific business member.
-	GetBusinessMember(context.Context, *connect.Request[v1.GetBusinessMemberRequest]) (*connect.Response[v1.GetBusinessMemberResponse], error)
-	// Update a business member (role, status, permissions).
-	UpdateBusinessMember(context.Context, *connect.Request[v1.UpdateBusinessMemberRequest]) (*connect.Response[v1.UpdateBusinessMemberResponse], error)
-	// Stream business members for real-time updates.
-	StreamBusinessMembers(context.Context, *connect.Request[v1.StreamBusinessMembersRequest]) (*connect.ServerStreamForClient[v1.StreamBusinessMembersResponse], error)
 }
 
 // NewBusinessServiceClient constructs a client for the business.v1.BusinessService service. By
@@ -124,76 +66,10 @@ func NewBusinessServiceClient(httpClient connect.HTTPClient, baseURL string, opt
 			connect.WithSchema(businessServiceMethods.ByName("CreateBusiness")),
 			connect.WithClientOptions(opts...),
 		),
-		getMyBusinesses: connect.NewClient[v1.GetMyBusinessesRequest, v1.GetMyBusinessesResponse](
-			httpClient,
-			baseURL+BusinessServiceGetMyBusinessesProcedure,
-			connect.WithSchema(businessServiceMethods.ByName("GetMyBusinesses")),
-			connect.WithClientOptions(opts...),
-		),
-		getBusinessDetails: connect.NewClient[v1.GetBusinessDetailsRequest, v1.GetBusinessDetailsResponse](
-			httpClient,
-			baseURL+BusinessServiceGetBusinessDetailsProcedure,
-			connect.WithSchema(businessServiceMethods.ByName("GetBusinessDetails")),
-			connect.WithClientOptions(opts...),
-		),
-		updateBusiness: connect.NewClient[v1.UpdateBusinessRequest, v1.UpdateBusinessResponse](
-			httpClient,
-			baseURL+BusinessServiceUpdateBusinessProcedure,
-			connect.WithSchema(businessServiceMethods.ByName("UpdateBusiness")),
-			connect.WithClientOptions(opts...),
-		),
 		requestDeleteBusiness: connect.NewClient[v1.RequestDeleteBusinessRequest, v1.RequestDeleteBusinessResponse](
 			httpClient,
 			baseURL+BusinessServiceRequestDeleteBusinessProcedure,
 			connect.WithSchema(businessServiceMethods.ByName("RequestDeleteBusiness")),
-			connect.WithClientOptions(opts...),
-		),
-		createUserToBusiness: connect.NewClient[v1.CreateUserToBusinessRequest, v1.CreateUserToBusinessResponse](
-			httpClient,
-			baseURL+BusinessServiceCreateUserToBusinessProcedure,
-			connect.WithSchema(businessServiceMethods.ByName("CreateUserToBusiness")),
-			connect.WithClientOptions(opts...),
-		),
-		associateUserToBusiness: connect.NewClient[v1.AssociateUserToBusinessRequest, v1.AssociateUserToBusinessResponse](
-			httpClient,
-			baseURL+BusinessServiceAssociateUserToBusinessProcedure,
-			connect.WithSchema(businessServiceMethods.ByName("AssociateUserToBusiness")),
-			connect.WithClientOptions(opts...),
-		),
-		removeUserFromBusiness: connect.NewClient[v1.RemoveUserFromBusinessRequest, v1.RemoveUserFromBusinessResponse](
-			httpClient,
-			baseURL+BusinessServiceRemoveUserFromBusinessProcedure,
-			connect.WithSchema(businessServiceMethods.ByName("RemoveUserFromBusiness")),
-			connect.WithClientOptions(opts...),
-		),
-		changeBusinessCurrency: connect.NewClient[v1.ChangeBusinessCurrencyRequest, v1.ChangeBusinessCurrencyResponse](
-			httpClient,
-			baseURL+BusinessServiceChangeBusinessCurrencyProcedure,
-			connect.WithSchema(businessServiceMethods.ByName("ChangeBusinessCurrency")),
-			connect.WithClientOptions(opts...),
-		),
-		getBusinessMembers: connect.NewClient[v1.GetBusinessMembersRequest, v1.GetBusinessMembersResponse](
-			httpClient,
-			baseURL+BusinessServiceGetBusinessMembersProcedure,
-			connect.WithSchema(businessServiceMethods.ByName("GetBusinessMembers")),
-			connect.WithClientOptions(opts...),
-		),
-		getBusinessMember: connect.NewClient[v1.GetBusinessMemberRequest, v1.GetBusinessMemberResponse](
-			httpClient,
-			baseURL+BusinessServiceGetBusinessMemberProcedure,
-			connect.WithSchema(businessServiceMethods.ByName("GetBusinessMember")),
-			connect.WithClientOptions(opts...),
-		),
-		updateBusinessMember: connect.NewClient[v1.UpdateBusinessMemberRequest, v1.UpdateBusinessMemberResponse](
-			httpClient,
-			baseURL+BusinessServiceUpdateBusinessMemberProcedure,
-			connect.WithSchema(businessServiceMethods.ByName("UpdateBusinessMember")),
-			connect.WithClientOptions(opts...),
-		),
-		streamBusinessMembers: connect.NewClient[v1.StreamBusinessMembersRequest, v1.StreamBusinessMembersResponse](
-			httpClient,
-			baseURL+BusinessServiceStreamBusinessMembersProcedure,
-			connect.WithSchema(businessServiceMethods.ByName("StreamBusinessMembers")),
 			connect.WithClientOptions(opts...),
 		),
 	}
@@ -201,19 +77,8 @@ func NewBusinessServiceClient(httpClient connect.HTTPClient, baseURL string, opt
 
 // businessServiceClient implements BusinessServiceClient.
 type businessServiceClient struct {
-	createBusiness          *connect.Client[v1.CreateBusinessRequest, v1.CreateBusinessResponse]
-	getMyBusinesses         *connect.Client[v1.GetMyBusinessesRequest, v1.GetMyBusinessesResponse]
-	getBusinessDetails      *connect.Client[v1.GetBusinessDetailsRequest, v1.GetBusinessDetailsResponse]
-	updateBusiness          *connect.Client[v1.UpdateBusinessRequest, v1.UpdateBusinessResponse]
-	requestDeleteBusiness   *connect.Client[v1.RequestDeleteBusinessRequest, v1.RequestDeleteBusinessResponse]
-	createUserToBusiness    *connect.Client[v1.CreateUserToBusinessRequest, v1.CreateUserToBusinessResponse]
-	associateUserToBusiness *connect.Client[v1.AssociateUserToBusinessRequest, v1.AssociateUserToBusinessResponse]
-	removeUserFromBusiness  *connect.Client[v1.RemoveUserFromBusinessRequest, v1.RemoveUserFromBusinessResponse]
-	changeBusinessCurrency  *connect.Client[v1.ChangeBusinessCurrencyRequest, v1.ChangeBusinessCurrencyResponse]
-	getBusinessMembers      *connect.Client[v1.GetBusinessMembersRequest, v1.GetBusinessMembersResponse]
-	getBusinessMember       *connect.Client[v1.GetBusinessMemberRequest, v1.GetBusinessMemberResponse]
-	updateBusinessMember    *connect.Client[v1.UpdateBusinessMemberRequest, v1.UpdateBusinessMemberResponse]
-	streamBusinessMembers   *connect.Client[v1.StreamBusinessMembersRequest, v1.StreamBusinessMembersResponse]
+	createBusiness        *connect.Client[v1.CreateBusinessRequest, v1.CreateBusinessResponse]
+	requestDeleteBusiness *connect.Client[v1.RequestDeleteBusinessRequest, v1.RequestDeleteBusinessResponse]
 }
 
 // CreateBusiness calls business.v1.BusinessService.CreateBusiness.
@@ -221,97 +86,17 @@ func (c *businessServiceClient) CreateBusiness(ctx context.Context, req *connect
 	return c.createBusiness.CallUnary(ctx, req)
 }
 
-// GetMyBusinesses calls business.v1.BusinessService.GetMyBusinesses.
-func (c *businessServiceClient) GetMyBusinesses(ctx context.Context, req *connect.Request[v1.GetMyBusinessesRequest]) (*connect.Response[v1.GetMyBusinessesResponse], error) {
-	return c.getMyBusinesses.CallUnary(ctx, req)
-}
-
-// GetBusinessDetails calls business.v1.BusinessService.GetBusinessDetails.
-func (c *businessServiceClient) GetBusinessDetails(ctx context.Context, req *connect.Request[v1.GetBusinessDetailsRequest]) (*connect.Response[v1.GetBusinessDetailsResponse], error) {
-	return c.getBusinessDetails.CallUnary(ctx, req)
-}
-
-// UpdateBusiness calls business.v1.BusinessService.UpdateBusiness.
-func (c *businessServiceClient) UpdateBusiness(ctx context.Context, req *connect.Request[v1.UpdateBusinessRequest]) (*connect.Response[v1.UpdateBusinessResponse], error) {
-	return c.updateBusiness.CallUnary(ctx, req)
-}
-
 // RequestDeleteBusiness calls business.v1.BusinessService.RequestDeleteBusiness.
 func (c *businessServiceClient) RequestDeleteBusiness(ctx context.Context, req *connect.Request[v1.RequestDeleteBusinessRequest]) (*connect.Response[v1.RequestDeleteBusinessResponse], error) {
 	return c.requestDeleteBusiness.CallUnary(ctx, req)
-}
-
-// CreateUserToBusiness calls business.v1.BusinessService.CreateUserToBusiness.
-func (c *businessServiceClient) CreateUserToBusiness(ctx context.Context, req *connect.Request[v1.CreateUserToBusinessRequest]) (*connect.Response[v1.CreateUserToBusinessResponse], error) {
-	return c.createUserToBusiness.CallUnary(ctx, req)
-}
-
-// AssociateUserToBusiness calls business.v1.BusinessService.AssociateUserToBusiness.
-func (c *businessServiceClient) AssociateUserToBusiness(ctx context.Context, req *connect.Request[v1.AssociateUserToBusinessRequest]) (*connect.Response[v1.AssociateUserToBusinessResponse], error) {
-	return c.associateUserToBusiness.CallUnary(ctx, req)
-}
-
-// RemoveUserFromBusiness calls business.v1.BusinessService.RemoveUserFromBusiness.
-func (c *businessServiceClient) RemoveUserFromBusiness(ctx context.Context, req *connect.Request[v1.RemoveUserFromBusinessRequest]) (*connect.Response[v1.RemoveUserFromBusinessResponse], error) {
-	return c.removeUserFromBusiness.CallUnary(ctx, req)
-}
-
-// ChangeBusinessCurrency calls business.v1.BusinessService.ChangeBusinessCurrency.
-func (c *businessServiceClient) ChangeBusinessCurrency(ctx context.Context, req *connect.Request[v1.ChangeBusinessCurrencyRequest]) (*connect.Response[v1.ChangeBusinessCurrencyResponse], error) {
-	return c.changeBusinessCurrency.CallUnary(ctx, req)
-}
-
-// GetBusinessMembers calls business.v1.BusinessService.GetBusinessMembers.
-func (c *businessServiceClient) GetBusinessMembers(ctx context.Context, req *connect.Request[v1.GetBusinessMembersRequest]) (*connect.Response[v1.GetBusinessMembersResponse], error) {
-	return c.getBusinessMembers.CallUnary(ctx, req)
-}
-
-// GetBusinessMember calls business.v1.BusinessService.GetBusinessMember.
-func (c *businessServiceClient) GetBusinessMember(ctx context.Context, req *connect.Request[v1.GetBusinessMemberRequest]) (*connect.Response[v1.GetBusinessMemberResponse], error) {
-	return c.getBusinessMember.CallUnary(ctx, req)
-}
-
-// UpdateBusinessMember calls business.v1.BusinessService.UpdateBusinessMember.
-func (c *businessServiceClient) UpdateBusinessMember(ctx context.Context, req *connect.Request[v1.UpdateBusinessMemberRequest]) (*connect.Response[v1.UpdateBusinessMemberResponse], error) {
-	return c.updateBusinessMember.CallUnary(ctx, req)
-}
-
-// StreamBusinessMembers calls business.v1.BusinessService.StreamBusinessMembers.
-func (c *businessServiceClient) StreamBusinessMembers(ctx context.Context, req *connect.Request[v1.StreamBusinessMembersRequest]) (*connect.ServerStreamForClient[v1.StreamBusinessMembersResponse], error) {
-	return c.streamBusinessMembers.CallServerStream(ctx, req)
 }
 
 // BusinessServiceHandler is an implementation of the business.v1.BusinessService service.
 type BusinessServiceHandler interface {
 	// Create a new business.
 	CreateBusiness(context.Context, *connect.Request[v1.CreateBusinessRequest]) (*connect.Response[v1.CreateBusinessResponse], error)
-	// Get all businesses of the current user.
-	GetMyBusinesses(context.Context, *connect.Request[v1.GetMyBusinessesRequest]) (*connect.Response[v1.GetMyBusinessesResponse], error)
-	// Get a business by id.
-	GetBusinessDetails(context.Context, *connect.Request[v1.GetBusinessDetailsRequest]) (*connect.Response[v1.GetBusinessDetailsResponse], error)
-	// Update a business.
-	UpdateBusiness(context.Context, *connect.Request[v1.UpdateBusinessRequest]) (*connect.Response[v1.UpdateBusinessResponse], error)
 	// Request the deletion of the business. This request doesn't delete the business directly instead it put the business in inactive state and remove all business members.
 	RequestDeleteBusiness(context.Context, *connect.Request[v1.RequestDeleteBusinessRequest]) (*connect.Response[v1.RequestDeleteBusinessResponse], error)
-	// Add user to business or invite user to business.
-	CreateUserToBusiness(context.Context, *connect.Request[v1.CreateUserToBusinessRequest]) (*connect.Response[v1.CreateUserToBusinessResponse], error)
-	// Associate user to business.
-	AssociateUserToBusiness(context.Context, *connect.Request[v1.AssociateUserToBusinessRequest]) (*connect.Response[v1.AssociateUserToBusinessResponse], error)
-	// Remove user from business.
-	// If the user has been created by the business, the user will be deleted.
-	// NOTE: The authenticated user need to have the permission to remove the
-	// user.
-	RemoveUserFromBusiness(context.Context, *connect.Request[v1.RemoveUserFromBusinessRequest]) (*connect.Response[v1.RemoveUserFromBusinessResponse], error)
-	// Changes the business currency
-	ChangeBusinessCurrency(context.Context, *connect.Request[v1.ChangeBusinessCurrencyRequest]) (*connect.Response[v1.ChangeBusinessCurrencyResponse], error)
-	// Get the users of the business.
-	GetBusinessMembers(context.Context, *connect.Request[v1.GetBusinessMembersRequest]) (*connect.Response[v1.GetBusinessMembersResponse], error)
-	// Get a specific business member.
-	GetBusinessMember(context.Context, *connect.Request[v1.GetBusinessMemberRequest]) (*connect.Response[v1.GetBusinessMemberResponse], error)
-	// Update a business member (role, status, permissions).
-	UpdateBusinessMember(context.Context, *connect.Request[v1.UpdateBusinessMemberRequest]) (*connect.Response[v1.UpdateBusinessMemberResponse], error)
-	// Stream business members for real-time updates.
-	StreamBusinessMembers(context.Context, *connect.Request[v1.StreamBusinessMembersRequest], *connect.ServerStream[v1.StreamBusinessMembersResponse]) error
 }
 
 // NewBusinessServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -327,106 +112,18 @@ func NewBusinessServiceHandler(svc BusinessServiceHandler, opts ...connect.Handl
 		connect.WithSchema(businessServiceMethods.ByName("CreateBusiness")),
 		connect.WithHandlerOptions(opts...),
 	)
-	businessServiceGetMyBusinessesHandler := connect.NewUnaryHandler(
-		BusinessServiceGetMyBusinessesProcedure,
-		svc.GetMyBusinesses,
-		connect.WithSchema(businessServiceMethods.ByName("GetMyBusinesses")),
-		connect.WithHandlerOptions(opts...),
-	)
-	businessServiceGetBusinessDetailsHandler := connect.NewUnaryHandler(
-		BusinessServiceGetBusinessDetailsProcedure,
-		svc.GetBusinessDetails,
-		connect.WithSchema(businessServiceMethods.ByName("GetBusinessDetails")),
-		connect.WithHandlerOptions(opts...),
-	)
-	businessServiceUpdateBusinessHandler := connect.NewUnaryHandler(
-		BusinessServiceUpdateBusinessProcedure,
-		svc.UpdateBusiness,
-		connect.WithSchema(businessServiceMethods.ByName("UpdateBusiness")),
-		connect.WithHandlerOptions(opts...),
-	)
 	businessServiceRequestDeleteBusinessHandler := connect.NewUnaryHandler(
 		BusinessServiceRequestDeleteBusinessProcedure,
 		svc.RequestDeleteBusiness,
 		connect.WithSchema(businessServiceMethods.ByName("RequestDeleteBusiness")),
 		connect.WithHandlerOptions(opts...),
 	)
-	businessServiceCreateUserToBusinessHandler := connect.NewUnaryHandler(
-		BusinessServiceCreateUserToBusinessProcedure,
-		svc.CreateUserToBusiness,
-		connect.WithSchema(businessServiceMethods.ByName("CreateUserToBusiness")),
-		connect.WithHandlerOptions(opts...),
-	)
-	businessServiceAssociateUserToBusinessHandler := connect.NewUnaryHandler(
-		BusinessServiceAssociateUserToBusinessProcedure,
-		svc.AssociateUserToBusiness,
-		connect.WithSchema(businessServiceMethods.ByName("AssociateUserToBusiness")),
-		connect.WithHandlerOptions(opts...),
-	)
-	businessServiceRemoveUserFromBusinessHandler := connect.NewUnaryHandler(
-		BusinessServiceRemoveUserFromBusinessProcedure,
-		svc.RemoveUserFromBusiness,
-		connect.WithSchema(businessServiceMethods.ByName("RemoveUserFromBusiness")),
-		connect.WithHandlerOptions(opts...),
-	)
-	businessServiceChangeBusinessCurrencyHandler := connect.NewUnaryHandler(
-		BusinessServiceChangeBusinessCurrencyProcedure,
-		svc.ChangeBusinessCurrency,
-		connect.WithSchema(businessServiceMethods.ByName("ChangeBusinessCurrency")),
-		connect.WithHandlerOptions(opts...),
-	)
-	businessServiceGetBusinessMembersHandler := connect.NewUnaryHandler(
-		BusinessServiceGetBusinessMembersProcedure,
-		svc.GetBusinessMembers,
-		connect.WithSchema(businessServiceMethods.ByName("GetBusinessMembers")),
-		connect.WithHandlerOptions(opts...),
-	)
-	businessServiceGetBusinessMemberHandler := connect.NewUnaryHandler(
-		BusinessServiceGetBusinessMemberProcedure,
-		svc.GetBusinessMember,
-		connect.WithSchema(businessServiceMethods.ByName("GetBusinessMember")),
-		connect.WithHandlerOptions(opts...),
-	)
-	businessServiceUpdateBusinessMemberHandler := connect.NewUnaryHandler(
-		BusinessServiceUpdateBusinessMemberProcedure,
-		svc.UpdateBusinessMember,
-		connect.WithSchema(businessServiceMethods.ByName("UpdateBusinessMember")),
-		connect.WithHandlerOptions(opts...),
-	)
-	businessServiceStreamBusinessMembersHandler := connect.NewServerStreamHandler(
-		BusinessServiceStreamBusinessMembersProcedure,
-		svc.StreamBusinessMembers,
-		connect.WithSchema(businessServiceMethods.ByName("StreamBusinessMembers")),
-		connect.WithHandlerOptions(opts...),
-	)
 	return "/business.v1.BusinessService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case BusinessServiceCreateBusinessProcedure:
 			businessServiceCreateBusinessHandler.ServeHTTP(w, r)
-		case BusinessServiceGetMyBusinessesProcedure:
-			businessServiceGetMyBusinessesHandler.ServeHTTP(w, r)
-		case BusinessServiceGetBusinessDetailsProcedure:
-			businessServiceGetBusinessDetailsHandler.ServeHTTP(w, r)
-		case BusinessServiceUpdateBusinessProcedure:
-			businessServiceUpdateBusinessHandler.ServeHTTP(w, r)
 		case BusinessServiceRequestDeleteBusinessProcedure:
 			businessServiceRequestDeleteBusinessHandler.ServeHTTP(w, r)
-		case BusinessServiceCreateUserToBusinessProcedure:
-			businessServiceCreateUserToBusinessHandler.ServeHTTP(w, r)
-		case BusinessServiceAssociateUserToBusinessProcedure:
-			businessServiceAssociateUserToBusinessHandler.ServeHTTP(w, r)
-		case BusinessServiceRemoveUserFromBusinessProcedure:
-			businessServiceRemoveUserFromBusinessHandler.ServeHTTP(w, r)
-		case BusinessServiceChangeBusinessCurrencyProcedure:
-			businessServiceChangeBusinessCurrencyHandler.ServeHTTP(w, r)
-		case BusinessServiceGetBusinessMembersProcedure:
-			businessServiceGetBusinessMembersHandler.ServeHTTP(w, r)
-		case BusinessServiceGetBusinessMemberProcedure:
-			businessServiceGetBusinessMemberHandler.ServeHTTP(w, r)
-		case BusinessServiceUpdateBusinessMemberProcedure:
-			businessServiceUpdateBusinessMemberHandler.ServeHTTP(w, r)
-		case BusinessServiceStreamBusinessMembersProcedure:
-			businessServiceStreamBusinessMembersHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -440,50 +137,6 @@ func (UnimplementedBusinessServiceHandler) CreateBusiness(context.Context, *conn
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("business.v1.BusinessService.CreateBusiness is not implemented"))
 }
 
-func (UnimplementedBusinessServiceHandler) GetMyBusinesses(context.Context, *connect.Request[v1.GetMyBusinessesRequest]) (*connect.Response[v1.GetMyBusinessesResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("business.v1.BusinessService.GetMyBusinesses is not implemented"))
-}
-
-func (UnimplementedBusinessServiceHandler) GetBusinessDetails(context.Context, *connect.Request[v1.GetBusinessDetailsRequest]) (*connect.Response[v1.GetBusinessDetailsResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("business.v1.BusinessService.GetBusinessDetails is not implemented"))
-}
-
-func (UnimplementedBusinessServiceHandler) UpdateBusiness(context.Context, *connect.Request[v1.UpdateBusinessRequest]) (*connect.Response[v1.UpdateBusinessResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("business.v1.BusinessService.UpdateBusiness is not implemented"))
-}
-
 func (UnimplementedBusinessServiceHandler) RequestDeleteBusiness(context.Context, *connect.Request[v1.RequestDeleteBusinessRequest]) (*connect.Response[v1.RequestDeleteBusinessResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("business.v1.BusinessService.RequestDeleteBusiness is not implemented"))
-}
-
-func (UnimplementedBusinessServiceHandler) CreateUserToBusiness(context.Context, *connect.Request[v1.CreateUserToBusinessRequest]) (*connect.Response[v1.CreateUserToBusinessResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("business.v1.BusinessService.CreateUserToBusiness is not implemented"))
-}
-
-func (UnimplementedBusinessServiceHandler) AssociateUserToBusiness(context.Context, *connect.Request[v1.AssociateUserToBusinessRequest]) (*connect.Response[v1.AssociateUserToBusinessResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("business.v1.BusinessService.AssociateUserToBusiness is not implemented"))
-}
-
-func (UnimplementedBusinessServiceHandler) RemoveUserFromBusiness(context.Context, *connect.Request[v1.RemoveUserFromBusinessRequest]) (*connect.Response[v1.RemoveUserFromBusinessResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("business.v1.BusinessService.RemoveUserFromBusiness is not implemented"))
-}
-
-func (UnimplementedBusinessServiceHandler) ChangeBusinessCurrency(context.Context, *connect.Request[v1.ChangeBusinessCurrencyRequest]) (*connect.Response[v1.ChangeBusinessCurrencyResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("business.v1.BusinessService.ChangeBusinessCurrency is not implemented"))
-}
-
-func (UnimplementedBusinessServiceHandler) GetBusinessMembers(context.Context, *connect.Request[v1.GetBusinessMembersRequest]) (*connect.Response[v1.GetBusinessMembersResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("business.v1.BusinessService.GetBusinessMembers is not implemented"))
-}
-
-func (UnimplementedBusinessServiceHandler) GetBusinessMember(context.Context, *connect.Request[v1.GetBusinessMemberRequest]) (*connect.Response[v1.GetBusinessMemberResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("business.v1.BusinessService.GetBusinessMember is not implemented"))
-}
-
-func (UnimplementedBusinessServiceHandler) UpdateBusinessMember(context.Context, *connect.Request[v1.UpdateBusinessMemberRequest]) (*connect.Response[v1.UpdateBusinessMemberResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("business.v1.BusinessService.UpdateBusinessMember is not implemented"))
-}
-
-func (UnimplementedBusinessServiceHandler) StreamBusinessMembers(context.Context, *connect.Request[v1.StreamBusinessMembersRequest], *connect.ServerStream[v1.StreamBusinessMembersResponse]) error {
-	return connect.NewError(connect.CodeUnimplemented, errors.New("business.v1.BusinessService.StreamBusinessMembers is not implemented"))
 }

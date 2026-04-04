@@ -51,7 +51,7 @@ class InventoryAdjustmentViewModel {
 
       /// Fetch the specific inventory item.
       final storeProduct = await StoreProductsRepository.instance
-          .getStoreProduct(GetStoreProductRequest(storeProductId: productId));
+          .getStoreProduct(productId);
 
       final levelReps = inventoryLevels;
 
@@ -99,14 +99,11 @@ class InventoryAdjustmentViewModel {
   }) async {
     try {
       await InventoryRepository.instance.adjustInventory(
-        AdjustInventoryRequest(
-          storeId: storeId,
-          productId: productId,
-          newQuantity: quantityChange,
-          batchId: batchId,
-          reason: reason,
-        ),
-        performUserId,
+        storeId: storeId,
+        productId: productId,
+        newQuantity: quantityChange,
+        reason: reason,
+        permformBy: performUserId,
       );
 
       // Refresh data after adjustment

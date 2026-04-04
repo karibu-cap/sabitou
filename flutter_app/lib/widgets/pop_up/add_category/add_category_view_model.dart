@@ -18,8 +18,8 @@ class AddCategoryViewModel {
   }
 
   /// Updates an existing category.
-  Future<bool> updateCategory(UpdateCategoryRequest request) async {
-    final success = await _categoriesRepository.updateCategory(request);
+  Future<bool> updateCategory(Category category) async {
+    final success = await _categoriesRepository.updateCategory(category);
 
     return success;
   }

@@ -40,11 +40,9 @@ final class BusinessRepository extends BaseRepository<Business> {
       );
 
   /// Gets a business from cache.
-  Future<Business?> getBusinessDetails(
-    GetBusinessDetailsRequest request,
-  ) async {
+  Future<Business?> getBusinessDetails(String businessId) async {
     try {
-      final response = await findById(request.businessId);
+      final response = await findById(businessId);
 
       return response;
     } on Exception catch (e) {
@@ -55,14 +53,12 @@ final class BusinessRepository extends BaseRepository<Business> {
   }
 
   /// Gets all business members for a business
-  Future<List<BusinessMember>> getBusinessMembers(
-    GetBusinessMembersRequest request,
-  ) async {
+  Future<List<BusinessMember>> getBusinessMembers(String businessId) async {
     try {
       final members = await dataSource.getCollection(
         CollectionName.businessMembers,
         filters: [
-          SqlQuery.equals(BusinessMembersFields.businessId, request.businessId),
+          SqlQuery.equals(BusinessMembersFields.businessId, businessId),
         ],
       );
 

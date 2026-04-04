@@ -67,6 +67,11 @@ class UserPermissionsModalController extends ChangeNotifier {
     return path(_permissions);
   }
 
+  /// Whether all permissions in a group are selected.
+  bool isGroupSelected(List<bool Function(StorePermissions)> paths) {
+    return paths.every((path) => path(_permissions));
+  }
+
   /// Toggle a specific permission on/off.
   void togglePermission(
     bool Function(StorePermissions) path,
@@ -74,6 +79,23 @@ class UserPermissionsModalController extends ChangeNotifier {
   ) {
     final current = path(_permissions);
     set(_permissions, !current);
+    notifyListeners();
+  }
+
+  /// Toggle all permissions in a group on/off.
+  void toggleGroup(
+    List<
+      (
+        bool Function(StorePermissions) path,
+        void Function(StorePermissions, bool) set,
+      )
+    >
+    items,
+    bool value,
+  ) {
+    for (final (_, set) in items) {
+      set(_permissions, value);
+    }
     notifyListeners();
   }
 

@@ -92,7 +92,7 @@ final supplierFakeTransport = FakeTransportBuilder()
 
       return FindStoreProductsResponse(
         products: [
-          StoreProductWithGlobalProduct(
+          CustomProduct(
             storeProduct: StoreProduct()
               ..refId = 'sp_1'
               ..storeId = request.storeId
@@ -109,7 +109,7 @@ final supplierFakeTransport = FakeTransportBuilder()
                 ..fr = 'Description Un')
               ..status = GlobalProductStatus.GLOBAL_PRODUCT_STATUS_ACTIVE,
           ),
-          StoreProductWithGlobalProduct(
+          CustomProduct(
             storeProduct: StoreProduct()
               ..refId = 'sp_2'
               ..storeId = request.storeId
@@ -126,7 +126,7 @@ final supplierFakeTransport = FakeTransportBuilder()
                 ..fr = 'Description Deux')
               ..status = GlobalProductStatus.GLOBAL_PRODUCT_STATUS_ACTIVE,
           ),
-          StoreProductWithGlobalProduct(
+          CustomProduct(
             storeProduct: StoreProduct()
               ..refId = 'sp_3'
               ..storeId = request.storeId

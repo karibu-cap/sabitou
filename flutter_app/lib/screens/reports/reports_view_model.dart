@@ -9,20 +9,19 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../repositories/reports_repository.dart';
 import '../../utils/logger.dart';
-import '../../utils/user_preference.dart';
 
 /// The reports view model.
 class ReportsViewModel {
   final LoggerApp _logger = LoggerApp('ReportsViewModel');
-
-  /// The user preferences.
-  final UserPreferences userPreferences = UserPreferences.instance;
 
   /// The total value.
   double totalValue = 0;
 
   /// The aging items.
   List<StockAgingItem> agingItems = [];
+
+  /// The current store.
+  final Store store;
 
   /// The movement summary.
   InventoryMovementSummary movementSummary = InventoryMovementSummary(
@@ -101,7 +100,7 @@ class ReportsViewModel {
       _selectedDateRangeSubject;
 
   ///Constructor of new [ReportsViewModel].
-  ReportsViewModel() {
+  ReportsViewModel({required this.store}) {
     initTheData();
   }
 
@@ -111,12 +110,6 @@ class ReportsViewModel {
 
     try {
       // Get comprehensive dashboard data from backend
-      final businessId = userPreferences.business?.refId;
-      final store = userPreferences.store;
-      if (businessId == null || store == null) {
-        throw Exception('Business or store not found');
-      }
-
       final dashboardData = await ReportsRepository.instance.getDashboardReport(
         storeId: store.refId,
         startDate: clock.now().subtract(const Duration(days: 30)),

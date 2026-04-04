@@ -84,13 +84,6 @@ service BusinessClientService {
   // Creates a new client.
   rpc CreateBusinessClient(CreateBusinessClientRequest) returns (CreateBusinessClientResponse) {}
 
-  // Gets a client by id.
-  rpc GetBusinessClient(GetBusinessClientRequest) returns (GetBusinessClientResponse) {}
-
-  // Updates a client.
-  // Note:Only the fields that are set will be updated.
-  rpc UpdateBusinessClient(UpdateBusinessClientRequest) returns (UpdateBusinessClientResponse) {}
-
   // Deletes a client.
   rpc DeleteBusinessClient(DeleteBusinessClientRequest) returns (DeleteBusinessClientResponse) {}
 }

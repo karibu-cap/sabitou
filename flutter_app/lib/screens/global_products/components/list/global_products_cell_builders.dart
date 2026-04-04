@@ -3,7 +3,7 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../../services/internationalization/internationalization.dart';
-import '../../../../themes/app_colors.dart';
+import '../../../../themes/app_theme.dart';
 import '../../../../utils/extensions/category_extension.dart';
 import '../../../../utils/extensions/global_product_extension.dart';
 
@@ -57,8 +57,8 @@ class GlobalProductCellBuilders {
         color:
             globalProduct.status ==
                 GlobalProductStatus.GLOBAL_PRODUCT_STATUS_ACTIVE
-            ? AppColors.dartGreen.withValues(alpha: 0.1)
-            : AppColors.red.withValues(alpha: 0.1),
+            ? SabitouColors.success.withValues(alpha: 0.1)
+            : SabitouColors.danger.withValues(alpha: 0.1),
         borderRadius: const BorderRadius.all(Radius.circular(12)),
       ),
       child: Text(
@@ -70,8 +70,8 @@ class GlobalProductCellBuilders {
           color:
               globalProduct.status ==
                   GlobalProductStatus.GLOBAL_PRODUCT_STATUS_ACTIVE
-              ? AppColors.dartGreen
-              : AppColors.red,
+              ? SabitouColors.success
+              : SabitouColors.danger,
           fontWeight: FontWeight.w600,
         ),
       ),

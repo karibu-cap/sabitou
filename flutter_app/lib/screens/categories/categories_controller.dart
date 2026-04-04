@@ -47,11 +47,14 @@ class CategoriesController extends ChangeNotifier {
   Stream<List<Category>> get filteredCategoriesStream =>
       _viewModel.filteredCategoriesStream;
 
+  /// Refreshes categories from local database.
+  Future<void> refreshCategories() async {
+    await _viewModel.refreshCategories();
+  }
+
   /// Deletes a category from the system.
   Future<bool> deleteCategory(String categoryId) async {
-    final request = DeleteCategoryRequest(categoryId: categoryId);
-
-    return await _viewModel.deleteCategory(request);
+    return await _viewModel.deleteCategory(categoryId);
   }
 
   /// Calculates total categories count

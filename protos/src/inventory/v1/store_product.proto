@@ -41,16 +41,16 @@ message GlobalProduct {
 
 enum ProductStatus {
   PRODUCT_STATUS_UNSPECIFIED = 0;
-  PRODUCT_STATUS_ACTIVE      = 1;
-  PRODUCT_STATUS_INACTIVE    = 2;
-  PRODUCT_STATUS_DELETE      = 3;
+  PRODUCT_STATUS_ACTIVE = 1;
+  PRODUCT_STATUS_INACTIVE = 2;
+  PRODUCT_STATUS_DELETE = 3;
 }
 
 enum ExpirationType {
-  EXPIRATION_TYPE_UNSPECIFIED   = 0;
-  EXPIRATION_TYPE_NONE          = 1; // Non-perishable
+  EXPIRATION_TYPE_UNSPECIFIED = 0;
+  EXPIRATION_TYPE_NONE = 1; // Non-perishable
   EXPIRATION_TYPE_PRODUCT_LEVEL = 2; // Expiration at product level (e.g., fixed shelf life)
-  EXPIRATION_TYPE_LOT_LEVEL     = 3; // Requires lot tracking for expiration
+  EXPIRATION_TYPE_LOT_LEVEL = 3; // Requires lot tracking for expiration
 }
 
 message StoreProduct {
@@ -99,27 +99,12 @@ message StoreProduct {
   optional double default_purchase_price = 14;
 }
 
-message CreateGlobalProductRequest {
-  // The global product to add.
-  GlobalProduct global_product = 1;
-}
+message CustomProduct {
+  // The store product.
+  StoreProduct store_product = 1;
 
-message CreateGlobalProductResponse {
-  // Whether the global product was successfully added.
-  bool success = 1;
-}
-
-message UpdateGlobalProductRequest {
-  // The unique identifier of the global product.
-  string global_product_id = 1;
-
-  // The global product to update.
+  // The global product.
   GlobalProduct global_product = 2;
-}
-
-message UpdateGlobalProductResponse {
-  // Whether the global product was successfully updated.
-  bool success = 1;
 }
 
 message DeleteGlobalProductRequest {
@@ -129,125 +114,6 @@ message DeleteGlobalProductRequest {
 
 message DeleteGlobalProductResponse {
   // Whether the global product was successfully deleted.
-  bool success = 1;
-}
-
-message FindStoreProductsRequest {
-  // The query to search for store products.
-  string store_id = 1;
-
-  // The unique identifier of the product.
-  optional string store_product_id = 2;
-
-  // The page size.
-  optional int32 page_size = 4;
-
-  // The page token.
-  optional string page_token = 5;
-}
-
-message FindStoreProductsResponse {
-  // The unique identifiers of the products.
-  // WARN: all returned products will only have their id and name.
-  repeated StoreProductWithGlobalProduct products = 1;
-
-  // The total count of products.
-  int32 total_count = 2;
-
-  // The next page token.
-  optional string next_page_token = 3;
-}
-
-message StoreProductWithGlobalProduct {
-  // The store product.
-  StoreProduct store_product = 1;
-
-  // The global product.
-  GlobalProduct global_product = 2;
-}
-
-message FindGlobalProductsRequest {
-  // The reference id to the global product identifier.
-  optional string ref_id = 1;
-
-  // The query to search for products by category.
-  repeated inventory.v1.Category categories = 2;
-
-  // Query the product name.
-  optional string name = 3;
-
-  // Identify the products by bar code.
-  optional string bar_code_value = 4;
-
-  // Identify the products by store.
-  optional GlobalProductStatus status = 5;
-}
-
-message FindGlobalProductsResponse {
-  // The unique identifiers of the products.
-  // WARN: all returned products will only have their id and name.
-  repeated GlobalProduct products = 1;
-}
-
-message FindProductCategoryRequest {
-  // The query to search for product categories.
-  string query = 1;
-}
-
-message FindProductCategoryResponse {
-  // The unique identifiers of the product categories.
-  // WARN: all returned product categories will only have their id and name.
-  repeated inventory.v1.Category categories = 1;
-}
-
-message AddStoreProductRequest {
-  // The product to add.
-  // If the product does not exist, it will be created.
-  GlobalProduct global_product = 1;
-
-  // The store product to add.
-  StoreProduct store_product = 2;
-
-  // The initial stock.
-  optional int32 initial_stock = 3;
-}
-
-message AddStoreProductResponse {
-  // Whether the product was successfully added.
-  bool success = 1;
-}
-
-message GetStoreProductRequest {
-  // The unique identifier of the store product.
-  string store_product_id = 1 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).string.min_len = 3
-  ];
-}
-
-message GetStoreProductResponse {
-  // The retrieved store product data.
-  StoreProductWithGlobalProduct product = 1;
-}
-
-message UpdateStoreProductRequest {
-  // The store product information to update.
-  // Note:Only the fields that are set will be updated.
-  // Some fields cannot be updated like the product id, store id, and all
-  // product fields.
-  StoreProduct store_product = 1;
-
-  // The global product information to update.
-  // Note:Only the fields that are set will be updated if there is no
-  // ref_id set for the global product or will be created in other case.
-  optional GlobalProduct global_product = 2;
-
-  // The media ids of the images of the product.
-  repeated bytes images_raw_images = 3;
-}
-
-message UpdateStoreProductResponse {
-  // Whether the store product was successfully updated.
   bool success = 1;
 }
 
@@ -264,88 +130,11 @@ message DeleteStoreProductResponse {
   bool success = 1;
 }
 
-message StreamStoreProductsRequest {
-  // The unique identifier of the store.
-  string store_id = 1 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).string.min_len = 3
-  ];
-
-  // Optional filter by supplier ID.
-  optional string supplier_id = 2;
-
-  // Optional filter by global product ID.
-  optional string global_product_id = 3;
-}
-
-message StreamStoreProductsResponse {
-  // The store products for the specified store.
-  repeated StoreProduct products = 1;
-}
-
-message StreamGlobalProductsRequest {
-  // The unique identifier of the store.
-  string store_id = 1;
-}
-
-message StreamGlobalProductsResponse {
-  // The global products for the specified store.
-  repeated GlobalProduct products = 1;
-}
-
-message SearchStoreProductsRequest {
-  string                              store_id     = 1 [(buf.validate.field).required = true];
-  optional string                     search_query = 2; // Name/SKU search
-  repeated string                     category_ids = 3;
-  optional inventory.v1.ProductStatus status       = 4;
-  int32                               page_size    = 5;
-  string                              page_token   = 6; // For pagination
-}
-
-message SearchStoreProductsResponse {
-  repeated StoreProductWithGlobalProduct products        = 1;
-  int32                                  total_count     = 2;
-  string                                 next_page_token = 3;
-}
-
 service StoreProductService {
-  // Finds products by name.
-  rpc FindGlobalProducts(FindGlobalProductsRequest) returns (FindGlobalProductsResponse);
-
-  // Finds categories by name.
-  rpc FindProductCategory(FindProductCategoryRequest) returns (FindProductCategoryResponse);
-
-  // Creates a global product.
-  rpc CreateGlobalProduct(CreateGlobalProductRequest) returns (CreateGlobalProductResponse);
-
-  // Updates a global product.
-  rpc UpdateGlobalProduct(UpdateGlobalProductRequest) returns (UpdateGlobalProductResponse);
-
   // Deletes a global product.
   rpc DeleteGlobalProduct(DeleteGlobalProductRequest) returns (DeleteGlobalProductResponse);
-
-  // Adds a product to a store.
-  rpc AddProduct(AddStoreProductRequest) returns (AddStoreProductResponse);
-
-  // Gets a store product by id.
-  rpc GetStoreProduct(GetStoreProductRequest) returns (GetStoreProductResponse);
-
-  // Updates a store product.
-  rpc UpdateStoreProduct(UpdateStoreProductRequest) returns (UpdateStoreProductResponse);
 
   // Deletes a store product.
   // Only store products that are not in any orders can be deleted.
   rpc DeleteStoreProduct(DeleteStoreProductRequest) returns (DeleteStoreProductResponse);
-
-  // Finds products by name.
-  rpc FindStoreProducts(FindStoreProductsRequest) returns (FindStoreProductsResponse);
-
-  // Streams all products for a store for real-time updates.
-  rpc StreamStoreProducts(StreamStoreProductsRequest) returns (stream StreamStoreProductsResponse);
-
-  // Streams all global products for real-time updates.
-  rpc StreamGlobalProducts(StreamGlobalProductsRequest) returns (stream StreamGlobalProductsResponse);
-
-  // Search products with pagination and filters.
-  rpc SearchStoreProducts(SearchStoreProductsRequest) returns (SearchStoreProductsResponse);
 }

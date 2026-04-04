@@ -123,6 +123,8 @@ func (h *Handler) applyOperation(r *http.Request, op models.UploadOperation, cla
 		return h.applyStoreMember(r, op, claims)
 	case "business_members":
 		return h.applyBusinessMember(r, op, claims)
+	case "invitations":
+		return h.applyInvitation(r, op, claims)
 
 	default:
 		h.logger.Warn("unhandled table in upload", "table", op.Table, "op", op.Op)
@@ -185,7 +187,7 @@ func (h *Handler) applyStoreProduct(r *http.Request, op models.UploadOperation, 
 				expiration_type        = COALESCE(NULLIF($6, ''), expiration_type),
 				default_purchase_price = COALESCE(NULLIF($7::bigint, 0), default_purchase_price),
 				updated_at             = NOW(),
-				images_links_ids = COALESCE(NULLIF($8, ''), images_links_ids)
+				images_links_ids       = CASE WHEN $8 <> '' THEN (SELECT array_agg(x) FROM jsonb_array_elements_text($8::jsonb) AS x) ELSE images_links_ids END
 			WHERE id = $1
 		`,
 			op.ID,
@@ -738,7 +740,7 @@ func (h *Handler) applyPurchaseOrderLineItem(r *http.Request, op models.UploadOp
 				 quantity_ordered, unit_price, total, batch_id, quantity_received, tax_amount,
 				 product_name)
 			VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11::jsonb)
-			ON CONFLICT (purchase_order_id) DO UPDATE SET
+			ON CONFLICT (purchase_order_id, product_id) DO UPDATE SET
 				purchase_order_id = EXCLUDED.purchase_order_id,
 				store_id = EXCLUDED.store_id,
 				product_id = EXCLUDED.product_id,
@@ -844,7 +846,7 @@ func (h *Handler) applyReceivingNoteLineItem(r *http.Request, op models.UploadOp
 				(id, receiving_note_id, store_id, product_id,
 				 quantity_expected, quantity_received, quantity_rejected, batch_id, purchase_price)
 			VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
-			ON CONFLICT (receiving_note_id) DO UPDATE SET
+			ON CONFLICT (receiving_note_id, product_id) DO UPDATE SET
 				quantity_received = EXCLUDED.quantity_received,
 				quantity_rejected = EXCLUDED.quantity_rejected,
 				batch_id          = EXCLUDED.batch_id
@@ -1100,7 +1102,7 @@ func (h *Handler) applySalesOrderLineItem(r *http.Request, op models.UploadOpera
 				(id, sales_order_id, store_id, product_id,
 				 quantity, unit_price, total, batch_id)
 			VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
-			ON CONFLICT (sales_order_id) DO UPDATE SET
+			ON CONFLICT (sales_order_id, product_id) DO UPDATE SET
 				quantity   = EXCLUDED.quantity,
 				unit_price = EXCLUDED.unit_price,
 				total      = EXCLUDED.total,
@@ -1222,7 +1224,7 @@ func (h *Handler) applyInvoiceLineItem(r *http.Request, op models.UploadOperatio
 				(id, invoice_id, store_id, product_id,
 				 quantity, unit_price, subtotal, tax_rate, tax_amount, total, batch_id, product_name)
 			VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12::jsonb)
-			ON CONFLICT (invoice_id) DO UPDATE SET
+			ON CONFLICT (invoice_id, product_id) DO UPDATE SET
 				quantity   = EXCLUDED.quantity,
 				unit_price = EXCLUDED.unit_price,
 				subtotal   = EXCLUDED.subtotal,
@@ -1369,7 +1371,7 @@ func (h *Handler) applyBillLineItem(r *http.Request, op models.UploadOperation, 
 				(id, bill_id, store_id, product_id,
 				 description, quantity, unit_price, tax_amount, total)
 			VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
-			ON CONFLICT (bill_id) DO UPDATE SET
+			ON CONFLICT (bill_id, product_id) DO UPDATE SET
 				quantity    = EXCLUDED.quantity,
 				unit_price  = EXCLUDED.unit_price,
 				tax_amount  = EXCLUDED.tax_amount,
@@ -1436,7 +1438,7 @@ func (h *Handler) applyDeliveryNoteLineItem(r *http.Request, op models.UploadOpe
 			INSERT INTO delivery_note_line_items
 				(id, delivery_note_id, store_id, product_id, quantity, batch_id)
 			VALUES ($1,$2,$3,$4,$5,$6,$7)
-			ON CONFLICT (delivery_note_id) DO UPDATE SET
+			ON CONFLICT (delivery_note_id, product_id) DO UPDATE SET
 				quantity = EXCLUDED.quantity,
 				batch_id = EXCLUDED.batch_id
 		`,
@@ -1530,7 +1532,7 @@ func (h *Handler) applySupplier(r *http.Request, op models.UploadOperation, _ *a
 				status          = COALESCE(NULLIF($7, ''), status),
 				logo_link_id    = COALESCE(NULLIF($8, ''), logo_link_id),
 				external_links_ids = COALESCE(NULLIF($9, ''), external_links_ids),
-				store_ids       = COALESCE(NULLIF($10, '')::text[], store_ids)
+				store_ids = CASE WHEN $10 <> '' THEN (SELECT array_agg(x) FROM jsonb_array_elements_text($10::jsonb) AS x) ELSE store_ids END
 			WHERE id = $1
 		`,
 			op.ID,
@@ -1701,7 +1703,7 @@ func (h *Handler) applyGlobalProduct(r *http.Request, op models.UploadOperation,
 				bar_code_value = COALESCE(NULLIF($4,''), bar_code_value),
 				categories     = CASE WHEN $5 <> '' THEN $5::jsonb ELSE categories END,
 				status         = COALESCE(NULLIF($6,''), status),
-				images_links_ids = COALESCE(NULLIF($7, ''), images_links_ids)
+				images_links_ids = CASE WHEN $7 <> '' THEN (SELECT array_agg(x) FROM jsonb_array_elements_text($7::jsonb) AS x) ELSE images_links_ids END
 			WHERE id = $1
 		`,
 			op.ID,
@@ -1789,13 +1791,14 @@ func (h *Handler) applyResourceLink(r *http.Request, op models.UploadOperation, 
 	case "PUT":
 		_, err := h.db.Exec(ctx, `
 			INSERT INTO resource_links
-				(id, ref_id, target_uri, icon_uri, info, label)
-			VALUES ($1,$2,$3,$4,$5,$6)
+				(id, ref_id, target_uri, icon_uri, info, label, is_orphan)
+			VALUES ($1,$2,$3,$4,$5,$6,$7)
 			ON CONFLICT (ref_id) DO UPDATE SET
 				target_uri = EXCLUDED.target_uri,
 				icon_uri   = EXCLUDED.icon_uri,
 				info       = EXCLUDED.info,
-				label      = EXCLUDED.label
+				label      = EXCLUDED.label,
+				is_orphan  = EXCLUDED.is_orphan
 		`,
 			op.ID,
 			strField(d, "ref_id"),
@@ -1803,6 +1806,7 @@ func (h *Handler) applyResourceLink(r *http.Request, op models.UploadOperation, 
 			strField(d, "icon_uri"),
 			strField(d, "info"),
 			strField(d, "label"),
+			boolFieldOr(d, "is_orphan", false),
 		)
 		return err
 
@@ -1812,7 +1816,8 @@ func (h *Handler) applyResourceLink(r *http.Request, op models.UploadOperation, 
 				target_uri = COALESCE(NULLIF($2, ''), target_uri),
 				icon_uri   = COALESCE(NULLIF($3, ''), icon_uri),
 				info       = COALESCE(NULLIF($4, ''), info),
-				label      = COALESCE(NULLIF($5, ''), label)
+				label      = COALESCE(NULLIF($5, ''), label),
+				is_orphan  = COALESCE($6, is_orphan)
 			WHERE id = $1
 		`,
 			op.ID,
@@ -1820,6 +1825,7 @@ func (h *Handler) applyResourceLink(r *http.Request, op models.UploadOperation, 
 			strField(d, "icon_uri"),
 			strField(d, "info"),
 			strField(d, "label"),
+			boolField(d, "is_orphan"),
 		)
 		return err
 
@@ -1828,6 +1834,54 @@ func (h *Handler) applyResourceLink(r *http.Request, op models.UploadOperation, 
 		return err
 
 	default:
+		return nil
+	}
+}
+
+// =========================================================================
+// invitations
+// =========================================================================
+
+func (h *Handler) applyInvitation(r *http.Request, op models.UploadOperation, claims *auth.Claims) error {
+	ctx := r.Context()
+	d := op.Data
+
+	switch op.Op {
+	case "PATCH":
+		// Only the invited user can update their own invitation status (accept/reject).
+		// Admins cancel via the gRPC CancelInvitation RPC, not PowerSync upload.
+		userID := strField(d, "user_id")
+		if userID != claims.UserID {
+			h.logger.Warn("user attempted to mutate another user's invitation",
+				"claimed_user", claims.UserID, "target_user", userID)
+			return nil
+		}
+
+		newStatus := strField(d, "status")
+		// Only ACCEPTED and REJECTED are allowed from the client side.
+		if newStatus != "INVITATION_STATUS_ACCEPTED" && newStatus != "INVITATION_STATUS_REJECTED" {
+			h.logger.Warn("invalid invitation status from client", "status", newStatus)
+			return nil
+		}
+
+		_, err := h.db.Exec(ctx, `
+            UPDATE invitations SET
+                status       = $2,
+                responded_at = NOW()
+            WHERE id = $1
+              AND user_id = $3
+              AND status = 'INVITATION_STATUS_PENDING'  -- guard: only transition from PENDING
+        `,
+			op.ID,
+			newStatus,
+			claims.UserID,
+		)
+		return err
+
+	default:
+		// INSERT and DELETE of invitations are server-only (gRPC).
+		// Clients cannot create or hard-delete invitation records.
+		h.logger.Warn("client attempted disallowed op on invitations", "op", op.Op)
 		return nil
 	}
 }
@@ -1843,32 +1897,38 @@ func (h *Handler) applyStoreMember(r *http.Request, op models.UploadOperation, _
 	switch op.Op {
 	case "PUT":
 		_, err := h.db.Exec(ctx, `
-			INSERT INTO store_members
-				(id, store_id, user_id, status, permissions)
-			VALUES ($1,$2,$3,$4,$5::jsonb)
-			ON CONFLICT (store_id, user_id) DO UPDATE SET
-				status      = EXCLUDED.status,
-				permissions = EXCLUDED.permissions
-		`,
+	        INSERT INTO store_members
+	            (id, store_id, user_id, status, permissions, onboarding_type, invitation_id)
+	        VALUES ($1,$2,$3,$4,$5::jsonb,$6,$7)
+	        ON CONFLICT (store_id, user_id) DO UPDATE SET
+	            status          = EXCLUDED.status,
+	            permissions     = EXCLUDED.permissions,
+	            onboarding_type = EXCLUDED.onboarding_type,
+	            invitation_id   = EXCLUDED.invitation_id
+	    `,
 			op.ID,
 			strField(d, "store_id"),
 			strField(d, "user_id"),
 			strFieldOr(d, "status", "STORE_MEMBER_STATUS_ACTIVE"),
 			strFieldOr(d, "permissions", `{}`),
+			strFieldOr(d, "onboarding_type", "ONBOARDING_TYPE_DIRECT"),
+			strField(d, "invitation_id"), // empty string → NULL via NULLIF below
 		)
 		return err
 
 	case "PATCH":
 		// Typically used to update status or permissions.
 		_, err := h.db.Exec(ctx, `
-			UPDATE store_members SET
-				status      = COALESCE(NULLIF($2,''), status),
-				permissions = CASE WHEN $3 <> '' THEN $3::jsonb ELSE permissions END
-			WHERE id = $1
-		`,
+        UPDATE store_members SET
+            status          = COALESCE(NULLIF($2,''), status),
+            permissions     = CASE WHEN $3 <> '' THEN $3::jsonb ELSE permissions END,
+            onboarding_type = COALESCE(NULLIF($4,''), onboarding_type)
+        WHERE id = $1
+	    `,
 			op.ID,
 			strField(d, "status"),
 			strField(d, "permissions"),
+			strField(d, "onboarding_type"),
 		)
 		return err
 
@@ -1938,6 +1998,34 @@ func strField(d map[string]interface{}, key string) string {
 	return ""
 }
 
+// boolField extracts a boolean value from the data map.
+// Returns nil if the key is absent or not a boolean.
+func boolField(d map[string]interface{}, key string) *bool {
+	if v, ok := d[key]; ok {
+		switch b := v.(type) {
+		case bool:
+			return &b
+		case string:
+			if b == "true" {
+				result := true
+				return &result
+			} else if b == "false" {
+				result := false
+				return &result
+			}
+		}
+	}
+	return nil
+}
+
+// boolFieldOr extracts a boolean value with a fallback default.
+func boolFieldOr(d map[string]interface{}, key string, fallback bool) bool {
+	if v := boolField(d, key); v != nil {
+		return *v
+	}
+	return fallback
+}
+
 func strFieldOr(d map[string]interface{}, key, fallback string) string {
 	if v := strField(d, key); v != "" {
 		return v
@@ -1945,32 +2033,37 @@ func strFieldOr(d map[string]interface{}, key, fallback string) string {
 	return fallback
 }
 
-func intField(d map[string]interface{}, key string) int64 {
+func intField(d map[string]interface{}, key string) *int64 {
 	if v, ok := d[key]; ok {
 		switch n := v.(type) {
 		case float64:
-			return int64(n)
+			i := int64(n)
+			return &i
 		case int64:
-			return n
+			return &n
 		case int:
-			return int64(n)
+			i := int64(n)
+			return &i
 		}
 	}
-	return 0
+	return nil
 }
 
 // numericField returns the raw float64 value for NUMERIC/DECIMAL columns
 // (prices, amounts, quantities). JSON numbers are always decoded as float64.
-func numericField(d map[string]interface{}, key string) float64 {
+// Returns nil if the key is absent to distinguish from zero values.
+func numericField(d map[string]interface{}, key string) *float64 {
 	if v, ok := d[key]; ok {
 		switch n := v.(type) {
 		case float64:
-			return n
+			return &n
 		case int64:
-			return float64(n)
+			f := float64(n)
+			return &f
 		case int:
-			return float64(n)
+			f := float64(n)
+			return &f
 		}
 	}
-	return 0
+	return nil
 }

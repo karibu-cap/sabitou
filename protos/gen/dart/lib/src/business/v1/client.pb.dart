@@ -657,19 +657,6 @@ class BusinessClientServiceApi {
       _client.invoke<CreateBusinessClientResponse>(ctx, 'BusinessClientService',
           'CreateBusinessClient', request, CreateBusinessClientResponse());
 
-  /// Gets a client by id.
-  $async.Future<GetBusinessClientResponse> getBusinessClient(
-          $pb.ClientContext? ctx, GetBusinessClientRequest request) =>
-      _client.invoke<GetBusinessClientResponse>(ctx, 'BusinessClientService',
-          'GetBusinessClient', request, GetBusinessClientResponse());
-
-  /// Updates a client.
-  /// Note:Only the fields that are set will be updated.
-  $async.Future<UpdateBusinessClientResponse> updateBusinessClient(
-          $pb.ClientContext? ctx, UpdateBusinessClientRequest request) =>
-      _client.invoke<UpdateBusinessClientResponse>(ctx, 'BusinessClientService',
-          'UpdateBusinessClient', request, UpdateBusinessClientResponse());
-
   /// Deletes a client.
   $async.Future<DeleteBusinessClientResponse> deleteBusinessClient(
           $pb.ClientContext? ctx, DeleteBusinessClientRequest request) =>

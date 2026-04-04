@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:get_it/get_it.dart';
 import 'package:sabitou_rpc/connect_servers.dart';
 import 'package:sabitou_rpc/models.dart';
@@ -68,15 +70,19 @@ final class StoresRepository extends BaseRepository<Store> {
   }
 
   /// Adds a new store member.
-  Future<bool> addStoreMember(AddUserToStoreRequest request) async {
+  Future<bool> addStoreMember({
+    required String storeId,
+    required String userId,
+    required StorePermissions permissions,
+  }) async {
     try {
       await dataSource.createRecord(
         table: CollectionName.storeMembers,
         record: fromStoreMembersToRaw(
           StoreMember(
-            userId: request.userId,
-            storeId: request.storeId,
-            permissions: request.permissions,
+            userId: userId,
+            storeId: storeId,
+            permissions: permissions,
             memberSince: Timestamp.fromDateTime(DateTime.now()),
           ),
         ),
@@ -91,21 +97,25 @@ final class StoresRepository extends BaseRepository<Store> {
   }
 
   /// Updates an user from a store.
-  Future<bool> updateStoreMember(UpdateStoreMemberRequest request) async {
+  Future<bool> updateStoreMember({
+    required String storeId,
+    required String userId,
+    StoreMemberStatus? status,
+    StorePermissions? permissions,
+  }) async {
     try {
       await dataSource.updateWhere(
         table: CollectionName.storeMembers,
-        fields: fromStoreMembersToRaw(
-          StoreMember(
-            userId: request.userId,
-            storeId: request.storeId,
-            permissions: request.permissions,
-            status: request.status,
-          ),
-        ),
+        fields: {
+          if (permissions != null)
+            StoreMembersFields.permissions: jsonEncode(
+              permissions.toProto3Json(),
+            ),
+          if (status != null) StoreMembersFields.status: status.name,
+        },
         filters: [
-          SqlQuery.equals(StoreMembersFields.userId, request.userId),
-          SqlQuery.equals(StoreMembersFields.storeId, request.storeId),
+          SqlQuery.equals(StoreMembersFields.userId, userId),
+          SqlQuery.equals(StoreMembersFields.storeId, storeId),
         ],
       );
 
@@ -119,13 +129,13 @@ final class StoresRepository extends BaseRepository<Store> {
 
   /// Removes an user from a business.
   /// NOTE: This action can be perform with [storeServiceClient].
-  Future<bool> removeUserFromStore(RemoveUserFromStoreRequest request) async {
+  Future<bool> removeUserFromStore(String storeId, String userId) async {
     try {
       await dataSource.deleteWhere(
         table: CollectionName.storeMembers,
         filters: [
-          SqlQuery.equals(StoreMembersFields.userId, request.userId),
-          SqlQuery.equals(StoreMembersFields.storeId, request.storeId),
+          SqlQuery.equals(StoreMembersFields.userId, userId),
+          SqlQuery.equals(StoreMembersFields.storeId, storeId),
         ],
       );
 
@@ -137,42 +147,66 @@ final class StoresRepository extends BaseRepository<Store> {
     }
   }
 
-  /// Gets the members of a store.
-  Future<List<StoreMember>> getStoreMembers(
-    GetStoreMembersRequest request,
-  ) async {
-    try {
-      final rows = await dataSource.getCollection(
-        CollectionName.storeMembers,
-        filters: [SqlQuery.equals(StoreMembersFields.storeId, request.storeId)],
-      );
-
-      return rows.map(fromRowToStoreMembers).toList();
-    } on Exception catch (e) {
-      _logger.severe('getStoreMembers Error: $e');
-
-      return [];
-    }
-  }
-
-  /// Stream store members.
-  Stream<List<StoreMember>> streamStoreMembers(
-    StreamStoreMembersRequest request,
+  /// Stream store members with user data fetched via gRPC.
+  Stream<List<({StoreMember storeMember, User user})>> streamStoreMembers(
+    String storeId,
   ) {
     try {
       return dataSource
           .watchCollection(
             CollectionName.storeMembers,
-            filters: [
-              SqlQuery.equals(StoreMembersFields.storeId, request.storeId),
-            ],
+            filters: [SqlQuery.equals(StoreMembersFields.storeId, storeId)],
           )
-          .map((rows) => rows.map(fromRowToStoreMembers).toList());
+          .asyncMap((rows) async {
+            final storeMembers = rows.map(fromRowToStoreMembers).toList();
+            if (storeMembers.isEmpty) {
+              return <({StoreMember storeMember, User user})>[];
+            }
+
+            final userIds = storeMembers.map((m) => m.userId).toList();
+            final users = await getUsersByIds(userIds);
+            final userMap = {for (final u in users) u.refId: u};
+
+            final combined = storeMembers
+                .map((member) {
+                  final user = userMap[member.userId];
+                  if (user == null) {
+                    _logger.warning(
+                      'User ${member.userId} not found for store member',
+                    );
+
+                    return null;
+                  }
+
+                  return (storeMember: member, user: user);
+                })
+                .whereType<({StoreMember storeMember, User user})>()
+                .toList();
+
+            return combined;
+          });
     } on Exception catch (e) {
       _logger.severe('streamStoreMembers Error: $e');
-      // Return null stream on error
 
       return Stream.value([]);
+    }
+  }
+
+  /// Gets users by their IDs from local database.
+  Future<List<User>> getUsersByIds(List<String> userIds) async {
+    try {
+      if (userIds.isEmpty) return [];
+
+      final rows = await dataSource.getCollection(
+        CollectionName.users,
+        filters: [SqlQuery.whereIn(UsersFields.refId, userIds)],
+      );
+
+      return rows.map(fromRowToUser).toList();
+    } on Exception catch (e) {
+      _logger.severe('getUsersByIds Error: $e');
+
+      return [];
     }
   }
 

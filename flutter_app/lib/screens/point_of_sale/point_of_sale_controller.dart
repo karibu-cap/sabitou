@@ -79,7 +79,7 @@ class PointOfSaleController extends ChangeNotifier {
   }
 
   /// Searches for products in the current store matching [query].
-  Future<List<StoreProductWithGlobalProduct>> searchProducts(String query) =>
+  Future<List<CustomProduct>> searchProducts(String query) =>
       _viewModel.searchProducts(query);
 
   /// Processes the payment, updates inventory, and prints the receipt.
@@ -223,21 +223,20 @@ class PointOfSaleController extends ChangeNotifier {
   /// Returns `null` when the voucher is invalid or has no remaining balance.
   Future<GiftVoucher?> validateVoucher(String voucherCode) async {
     final response = await GiftVoucherRepository.instance.validateVoucher(
-      ValidateVoucherRequest(voucherCode: voucherCode),
+      voucherCode,
     );
 
-    if (response?.isValid != true ||
-        (response?.remainingValue.toDouble() ?? 0) <= 0) {
+    if (response.isValid != true || (response.remainingValue.toDouble()) <= 0) {
       return null;
     }
 
     return GiftVoucher(
       voucherCode: voucherCode,
-      initialValue: response?.remainingValue,
-      remainingValue: response?.remainingValue,
-      refId: response?.voucherId,
-      validUntil: response?.validUntil,
-      status: response?.status,
+      initialValue: response.remainingValue,
+      remainingValue: response.remainingValue,
+      refId: response.voucherId,
+      validUntil: response.validUntil,
+      status: response.status,
     );
   }
 

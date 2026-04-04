@@ -24,15 +24,19 @@ class AccountStatusType extends $pb.ProtobufEnum {
   static const AccountStatusType ACCOUNT_STATUS_TYPE_DELETED =
       AccountStatusType._(
           2, _omitEnumNames ? '' : 'ACCOUNT_STATUS_TYPE_DELETED');
+  static const AccountStatusType ACCOUNT_STATUS_TYPE_PENDING =
+      AccountStatusType._(
+          3, _omitEnumNames ? '' : 'ACCOUNT_STATUS_TYPE_PENDING');
 
   static const $core.List<AccountStatusType> values = <AccountStatusType>[
     ACCOUNT_STATUS_TYPE_UNSPECIFIED,
     ACCOUNT_STATUS_TYPE_ACTIVE,
     ACCOUNT_STATUS_TYPE_DELETED,
+    ACCOUNT_STATUS_TYPE_PENDING,
   ];
 
   static final $core.List<AccountStatusType?> _byValue =
-      $pb.ProtobufEnum.$_initByValueList(values, 2);
+      $pb.ProtobufEnum.$_initByValueList(values, 3);
   static AccountStatusType? valueOf($core.int value) =>
       value < 0 || value >= _byValue.length ? null : _byValue[value];
 
@@ -101,6 +105,39 @@ class ProviderType extends $pb.ProtobufEnum {
       value < 0 || value >= _byValue.length ? null : _byValue[value];
 
   const ProviderType._(super.value, super.name);
+}
+
+class InvitationStatus extends $pb.ProtobufEnum {
+  static const InvitationStatus INVITATION_STATUS_UNSPECIFIED =
+      InvitationStatus._(
+          0, _omitEnumNames ? '' : 'INVITATION_STATUS_UNSPECIFIED');
+  static const InvitationStatus INVITATION_STATUS_PENDING =
+      InvitationStatus._(1, _omitEnumNames ? '' : 'INVITATION_STATUS_PENDING');
+  static const InvitationStatus INVITATION_STATUS_ACCEPTED =
+      InvitationStatus._(2, _omitEnumNames ? '' : 'INVITATION_STATUS_ACCEPTED');
+  static const InvitationStatus INVITATION_STATUS_REJECTED =
+      InvitationStatus._(3, _omitEnumNames ? '' : 'INVITATION_STATUS_REJECTED');
+  static const InvitationStatus INVITATION_STATUS_EXPIRED =
+      InvitationStatus._(4, _omitEnumNames ? '' : 'INVITATION_STATUS_EXPIRED');
+  static const InvitationStatus INVITATION_STATUS_CANCELLED =
+      InvitationStatus._(
+          5, _omitEnumNames ? '' : 'INVITATION_STATUS_CANCELLED');
+
+  static const $core.List<InvitationStatus> values = <InvitationStatus>[
+    INVITATION_STATUS_UNSPECIFIED,
+    INVITATION_STATUS_PENDING,
+    INVITATION_STATUS_ACCEPTED,
+    INVITATION_STATUS_REJECTED,
+    INVITATION_STATUS_EXPIRED,
+    INVITATION_STATUS_CANCELLED,
+  ];
+
+  static final $core.List<InvitationStatus?> _byValue =
+      $pb.ProtobufEnum.$_initByValueList(values, 5);
+  static InvitationStatus? valueOf($core.int value) =>
+      value < 0 || value >= _byValue.length ? null : _byValue[value];
+
+  const InvitationStatus._(super.value, super.name);
 }
 
 const $core.bool _omitEnumNames =

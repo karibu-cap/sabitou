@@ -4,16 +4,18 @@ import 'package:sabitou_rpc/models.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../../services/internationalization/internationalization.dart';
-import '../../../themes/app_colors.dart';
+import '../../../../themes/app_theme.dart';
 import '../../../widgets/custom_grid.dart';
 import '../../../widgets/stat_card.dart';
 import '../global_products_controller.dart';
-import 'list/global_products_shimmer_widgets.dart';
 
 /// Grid component for displaying global products statistics.
 class GlobalProductsStatsGrid extends StatelessWidget {
+  /// List of global products to display stats for.
+  final List<GlobalProduct> globalProducts;
+
   /// Constructs a new GlobalProductsStatsGrid.
-  const GlobalProductsStatsGrid({super.key});
+  const GlobalProductsStatsGrid({super.key, required this.globalProducts});
 
   @override
   Widget build(BuildContext context) {
@@ -23,45 +25,34 @@ class GlobalProductsStatsGrid extends StatelessWidget {
     );
     final intl = AppInternationalizationService.to;
 
-    return StreamBuilder<List<GlobalProduct>>(
-      stream: controller.globalProductsStream,
-      builder: (context, globalProductsSnapshot) {
-        if (globalProductsSnapshot.connectionState == ConnectionState.waiting) {
-          return GlobalProductsShimmerWidgets.buildStatsShimmer();
-        }
+    final stats = controller.calculateGlobalProductStats(globalProducts);
 
-        final globalProducts = globalProductsSnapshot.data ?? [];
+    final statsCards = [
+      StatCard(
+        title: intl.totalGlobalProducts,
+        value: stats.total.toString(),
+        icon: LucideIcons.building400,
+        color: SabitouColors.accent,
+      ),
+      StatCard(
+        title: intl.inactiveGlobalProducts,
+        value: stats.inactive.toString(),
+        icon: LucideIcons.trendingUp400,
+        color: SabitouColors.orange,
+      ),
+      StatCard(
+        title: intl.activeGlobalProducts,
+        value: stats.active.toString(),
+        icon: LucideIcons.package400,
+        color: SabitouColors.success,
+      ),
+    ];
 
-        final stats = controller.calculateGlobalProductStats(globalProducts);
-
-        final statsCards = [
-          StatCard(
-            title: intl.totalGlobalProducts,
-            value: stats.total.toString(),
-            icon: LucideIcons.building400,
-            color: AppColors.cobalt,
-          ),
-          StatCard(
-            title: intl.inactiveGlobalProducts,
-            value: stats.inactive.toString(),
-            icon: LucideIcons.trendingUp400,
-            color: AppColors.purple,
-          ),
-          StatCard(
-            title: intl.activeGlobalProducts,
-            value: stats.active.toString(),
-            icon: LucideIcons.package400,
-            color: AppColors.dartGreen,
-          ),
-        ];
-
-        return CustomGrid(
-          children: statsCards,
-          minItemWidth: 250,
-          mainAxisExtent: 100,
-          crossSpacing: 20,
-        );
-      },
+    return CustomGrid(
+      children: statsCards,
+      minItemWidth: 250,
+      mainAxisExtent: 100,
+      crossSpacing: 20,
     );
   }
 }

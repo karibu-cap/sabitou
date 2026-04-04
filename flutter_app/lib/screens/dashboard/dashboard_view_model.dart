@@ -57,9 +57,7 @@ final class DashboardViewModel {
     try {
       // Execute all calls in parallel for better performance
       final results = await Future.wait([
-        StoreProductsRepository.instance.findStoreProducts(
-          FindStoreProductsRequest(storeId: store.refId),
-        ),
+        StoreProductsRepository.instance.findStoreProducts(store.refId),
         InventoryRepository.instance.getStoreInventory(store.refId),
         ReportsRepository.instance.getSalesByPeriod(
           storeId: store.refId,
@@ -67,15 +65,12 @@ final class DashboardViewModel {
           endDate: clock.now().add(const Duration(days: 1)),
         ),
         InventoryRepository.instance.getInventoryTransactionHistory(
-          GetInventoryTransactionHistoryRequest(
-            storeId: store.refId,
-            pageSize: 10,
-          ),
+          storeId: store.refId,
+          pageSize: 10,
         ),
       ]);
 
-      final totalProducts =
-          results.first as List<StoreProductWithGlobalProduct>;
+      final totalProducts = results.first as List<CustomProduct>;
       final storeInventory = results[1] as List<InventoryLevelWithProduct>;
       final lowStockItems = storeInventory.where(
         (l) =>

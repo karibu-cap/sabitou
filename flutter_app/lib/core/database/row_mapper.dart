@@ -35,8 +35,12 @@ extension RowMapper on Map<String, dynamic> {
   /// Optional bool column.
   bool optBool(String col, {bool fallback = false}) {
     final val = this[col];
-    if (val == null) return fallback;
-    if (val is bool) return val;
+    if (val == null) {
+      return fallback;
+    }
+    if (val is bool) {
+      return val;
+    }
 
     return val == 1;
   }
@@ -375,6 +379,13 @@ RawRow fromStoreMembersToRaw(StoreMember storeMember) {
     StoreMembersFields.memberSince: storeMember.hasMemberSince()
         ? storeMember.memberSince.toDateTime().toIso8601String()
         : null,
+    // ↓ ADD
+    StoreMembersFields.onboardingType: storeMember.hasOnboardingType()
+        ? storeMember.onboardingType.name
+        : OnboardingType.ONBOARDING_TYPE_DIRECT.name,
+    StoreMembersFields.invitationId: storeMember.hasInvitationId()
+        ? storeMember.invitationId
+        : null,
   };
 }
 
@@ -388,7 +399,7 @@ StoreMember fromRowToStoreMembers(RawRow row) {
       StorePermissions.create,
     ),
     memberSince: row.optDateTime(StoreMembersFields.memberSince) == null
-        ? null
+        ? Timestamp.fromDateTime(DateTime.now())
         : Timestamp.fromDateTime(
             row.optDateTime(StoreMembersFields.memberSince) ?? DateTime.now(),
           ),
@@ -398,7 +409,65 @@ StoreMember fromRowToStoreMembers(RawRow row) {
           StoreMemberStatus.values,
         ) ??
         StoreMemberStatus.STORE_MEMBER_STATUS_UNSPECIFIED,
+    onboardingType:
+        JsonMapper.toEnum<OnboardingType>(
+          row.optString(StoreMembersFields.onboardingType),
+          OnboardingType.values,
+        ) ??
+        OnboardingType.ONBOARDING_TYPE_DIRECT,
+    invitationId: row.optString(StoreMembersFields.invitationId),
   );
+}
+
+/// Converts a [RawRow] to an [Invitation].
+Invitation fromRowToInvitation(RawRow row) {
+  return Invitation(
+    refId: row.requireString(InvitationsFields.refId),
+    userId: row.requireString(InvitationsFields.userId),
+    storeId: row.requireString(InvitationsFields.storeId),
+    invitedBy: row.requireString(InvitationsFields.invitedBy),
+    status:
+        JsonMapper.toEnum<InvitationStatus>(
+          row.optString(InvitationsFields.status),
+          InvitationStatus.values,
+        ) ??
+        InvitationStatus.INVITATION_STATUS_UNSPECIFIED,
+    expiresAt: row.optDateTime(InvitationsFields.expiresAt) == null
+        ? null
+        : Timestamp.fromDateTime(
+            row.optDateTime(InvitationsFields.expiresAt) ?? DateTime.now(),
+          ),
+    createdAt: row.optDateTime(InvitationsFields.createdAt) == null
+        ? Timestamp.fromDateTime(DateTime.now())
+        : Timestamp.fromDateTime(
+            row.optDateTime(InvitationsFields.createdAt) ?? DateTime.now(),
+          ),
+    respondedAt: row.optDateTime(InvitationsFields.respondedAt) == null
+        ? null
+        : Timestamp.fromDateTime(
+            row.optDateTime(InvitationsFields.respondedAt) ?? DateTime.now(),
+          ),
+  );
+}
+
+/// Converts an [Invitation] to a [RawRow].
+RawRow fromInvitationToRaw(Invitation invitation) {
+  return {
+    InvitationsFields.refId: invitation.refId,
+    InvitationsFields.userId: invitation.userId,
+    InvitationsFields.storeId: invitation.storeId,
+    InvitationsFields.invitedBy: invitation.invitedBy,
+    InvitationsFields.status: invitation.status.name,
+    InvitationsFields.expiresAt: invitation.hasExpiresAt()
+        ? invitation.expiresAt.toDateTime().toIso8601String()
+        : null,
+    InvitationsFields.createdAt: invitation.hasCreatedAt()
+        ? invitation.createdAt.toDateTime().toIso8601String()
+        : null,
+    InvitationsFields.respondedAt: invitation.hasRespondedAt()
+        ? invitation.respondedAt.toDateTime().toIso8601String()
+        : null,
+  };
 }
 
 /// Converts a [InventoryLevel] to a [RawRow].
@@ -1016,6 +1085,7 @@ ResourceLink fromRowToResourceLink(RawRow row) {
     info: row.optString(ResourceLinksFields.info),
     label: row.optString(ResourceLinksFields.label),
     targetUri: row.optString(ResourceLinksFields.targetUri),
+    isOrphan: row.optBool(ResourceLinksFields.isOrphan),
   );
 }
 
@@ -1027,6 +1097,9 @@ RawRow fromResourceLinkToRaw(ResourceLink link) {
     ResourceLinksFields.label: link.hasLabel() ? link.label : null,
     ResourceLinksFields.info: link.hasInfo() ? link.info : null,
     ResourceLinksFields.targetUri: link.hasTargetUri() ? link.targetUri : null,
+    ResourceLinksFields.isOrphan: link.hasIsOrphan()
+        ? link.isOrphan.toString()
+        : null,
   };
 }
 

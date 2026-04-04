@@ -15,26 +15,38 @@ class AddGlobalProductViewModel {
   final CategoriesRepository _categoriesRepository =
       CategoriesRepository.instance;
 
-  /// The categories list.
-  List<Category> categories = [];
-
   /// Gets categories.
-  Future<void> getCategories() async {
-    categories = await _categoriesRepository.getCategories(
-      FindCategoriesRequest(
-        type: CategoryType.CATEGORY_TYPE_BUSINESS,
-        status: CategoryStatus.CATEGORY_STATUS_ACTIVE,
-      ),
+  Future<List<Category>> getCategories(String businessId) async {
+    return await _categoriesRepository.getCategories(
+      status: CategoryStatus.CATEGORY_STATUS_ACTIVE,
+      businessId: businessId,
     );
   }
 
+  /// Gets categories.
+  Future<List<Category>> findCategories(String query, String businessId) async {
+    if (query.isEmpty) {
+      return _categoriesRepository.getCategories(
+        status: CategoryStatus.CATEGORY_STATUS_ACTIVE,
+        businessId: businessId,
+      );
+    }
+
+    return await _categoriesRepository.findCategories(query, businessId);
+  }
+
   /// Creates a new global product.
-  Future<bool> createGlobalProduct(CreateGlobalProductRequest request) async {
-    return await _productsRepository.createGlobalProduct(request);
+  Future<bool> createGlobalProduct(GlobalProduct globalProduct) async {
+    return await _productsRepository.createGlobalProduct(globalProduct);
   }
 
   /// Updates an existing global product.
-  Future<bool> updateGlobalProduct(UpdateGlobalProductRequest request) async {
-    return await _productsRepository.updateGlobalProduct(request);
+  Future<bool> updateGlobalProduct(GlobalProduct globalProductt) async {
+    return await _productsRepository.updateGlobalProduct(globalProductt);
+  }
+
+  /// Creates a new category.
+  Future<bool> createCategory(Category category) async {
+    return await _categoriesRepository.createCategory(category);
   }
 }

@@ -33,15 +33,6 @@ const (
 // reflection-formatted method names, remove the leading slash and convert the remaining slash to a
 // period.
 const (
-	// UserServiceGetMeProcedure is the fully-qualified name of the UserService's GetMe RPC.
-	UserServiceGetMeProcedure = "/identity.v1.UserService/GetMe"
-	// UserServiceGetCurrentUserProcedure is the fully-qualified name of the UserService's
-	// GetCurrentUser RPC.
-	UserServiceGetCurrentUserProcedure = "/identity.v1.UserService/GetCurrentUser"
-	// UserServiceGetUserProcedure is the fully-qualified name of the UserService's GetUser RPC.
-	UserServiceGetUserProcedure = "/identity.v1.UserService/GetUser"
-	// UserServiceUpdateMeProcedure is the fully-qualified name of the UserService's UpdateMe RPC.
-	UserServiceUpdateMeProcedure = "/identity.v1.UserService/UpdateMe"
 	// UserServiceUpdateProcedure is the fully-qualified name of the UserService's Update RPC.
 	UserServiceUpdateProcedure = "/identity.v1.UserService/Update"
 	// UserServiceRequestDeleteUserProcedure is the fully-qualified name of the UserService's
@@ -52,21 +43,24 @@ const (
 	// UserServiceChangePasswordProcedure is the fully-qualified name of the UserService's
 	// ChangePassword RPC.
 	UserServiceChangePasswordProcedure = "/identity.v1.UserService/ChangePassword"
-	// UserServiceStreamUserProcedure is the fully-qualified name of the UserService's StreamUser RPC.
-	UserServiceStreamUserProcedure = "/identity.v1.UserService/StreamUser"
+	// UserServiceCreateUserDirectProcedure is the fully-qualified name of the UserService's
+	// CreateUserDirect RPC.
+	UserServiceCreateUserDirectProcedure = "/identity.v1.UserService/CreateUserDirect"
+	// UserServiceInviteUserProcedure is the fully-qualified name of the UserService's InviteUser RPC.
+	UserServiceInviteUserProcedure = "/identity.v1.UserService/InviteUser"
+	// UserServiceCancelInvitationProcedure is the fully-qualified name of the UserService's
+	// CancelInvitation RPC.
+	UserServiceCancelInvitationProcedure = "/identity.v1.UserService/CancelInvitation"
+	// UserServiceResendInvitationProcedure is the fully-qualified name of the UserService's
+	// ResendInvitation RPC.
+	UserServiceResendInvitationProcedure = "/identity.v1.UserService/ResendInvitation"
+	// UserServiceAcceptInvitationProcedure is the fully-qualified name of the UserService's
+	// AcceptInvitation RPC.
+	UserServiceAcceptInvitationProcedure = "/identity.v1.UserService/AcceptInvitation"
 )
 
 // UserServiceClient is a client for the identity.v1.UserService service.
 type UserServiceClient interface {
-	// Get the user information for the currently authenticated user.
-	// @deprecated use GetCurrentUser instead.
-	GetMe(context.Context, *connect.Request[v1.GetMeRequest]) (*connect.Response[v1.GetMeResponse], error)
-	// Get the user information for the currently authenticated user.
-	GetCurrentUser(context.Context, *connect.Request[v1.GetCurrentUserRequest]) (*connect.Response[v1.GetCurrentUserResponse], error)
-	// Get the public information for the given user id.
-	GetUser(context.Context, *connect.Request[v1.GetUserRequest]) (*connect.Response[v1.GetUserResponse], error)
-	// Update the user information for the currently authenticated user.
-	UpdateMe(context.Context, *connect.Request[v1.UpdateMeRequest]) (*connect.Response[v1.UpdateMeResponse], error)
 	// Update the user information for the user.
 	Update(context.Context, *connect.Request[v1.UpdateRequest]) (*connect.Response[v1.UpdateResponse], error)
 	// Request the deletion of the user account.
@@ -77,8 +71,16 @@ type UserServiceClient interface {
 	DeleteUser(context.Context, *connect.Request[v1.DeleteUserRequest]) (*connect.Response[v1.DeleteUserResponse], error)
 	// Change the password for the currently authenticated user.
 	ChangePassword(context.Context, *connect.Request[v1.ChangePasswordRequest]) (*connect.Response[v1.ChangePasswordResponse], error)
-	// Stream business members for real-time updates.
-	StreamUser(context.Context, *connect.Request[v1.StreamUserRequest]) (*connect.ServerStreamForClient[v1.StreamUserResponse], error)
+	// [Admin] Create a user directly with a password (internal/cashier flow).
+	CreateUserDirect(context.Context, *connect.Request[v1.CreateUserDirectRequest]) (*connect.Response[v1.CreateUserDirectResponse], error)
+	// [Admin] Invite an external user via email link (invite flow).
+	InviteUser(context.Context, *connect.Request[v1.InviteUserRequest]) (*connect.Response[v1.InviteUserResponse], error)
+	// [Admin] Cancel a pending invitation.
+	CancelInvitation(context.Context, *connect.Request[v1.CancelInvitationRequest]) (*connect.Response[v1.CancelInvitationResponse], error)
+	// [Admin] Resend an expired or pending invitation.
+	ResendInvitation(context.Context, *connect.Request[v1.ResendInvitationRequest]) (*connect.Response[v1.ResendInvitationResponse], error)
+	// [Invited user] Accept invitation and set password.
+	AcceptInvitation(context.Context, *connect.Request[v1.AcceptInvitationRequest]) (*connect.Response[v1.AcceptInvitationResponse], error)
 }
 
 // NewUserServiceClient constructs a client for the identity.v1.UserService service. By default, it
@@ -92,30 +94,6 @@ func NewUserServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 	baseURL = strings.TrimRight(baseURL, "/")
 	userServiceMethods := v1.File_identity_v1_user_proto.Services().ByName("UserService").Methods()
 	return &userServiceClient{
-		getMe: connect.NewClient[v1.GetMeRequest, v1.GetMeResponse](
-			httpClient,
-			baseURL+UserServiceGetMeProcedure,
-			connect.WithSchema(userServiceMethods.ByName("GetMe")),
-			connect.WithClientOptions(opts...),
-		),
-		getCurrentUser: connect.NewClient[v1.GetCurrentUserRequest, v1.GetCurrentUserResponse](
-			httpClient,
-			baseURL+UserServiceGetCurrentUserProcedure,
-			connect.WithSchema(userServiceMethods.ByName("GetCurrentUser")),
-			connect.WithClientOptions(opts...),
-		),
-		getUser: connect.NewClient[v1.GetUserRequest, v1.GetUserResponse](
-			httpClient,
-			baseURL+UserServiceGetUserProcedure,
-			connect.WithSchema(userServiceMethods.ByName("GetUser")),
-			connect.WithClientOptions(opts...),
-		),
-		updateMe: connect.NewClient[v1.UpdateMeRequest, v1.UpdateMeResponse](
-			httpClient,
-			baseURL+UserServiceUpdateMeProcedure,
-			connect.WithSchema(userServiceMethods.ByName("UpdateMe")),
-			connect.WithClientOptions(opts...),
-		),
 		update: connect.NewClient[v1.UpdateRequest, v1.UpdateResponse](
 			httpClient,
 			baseURL+UserServiceUpdateProcedure,
@@ -140,10 +118,34 @@ func NewUserServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(userServiceMethods.ByName("ChangePassword")),
 			connect.WithClientOptions(opts...),
 		),
-		streamUser: connect.NewClient[v1.StreamUserRequest, v1.StreamUserResponse](
+		createUserDirect: connect.NewClient[v1.CreateUserDirectRequest, v1.CreateUserDirectResponse](
 			httpClient,
-			baseURL+UserServiceStreamUserProcedure,
-			connect.WithSchema(userServiceMethods.ByName("StreamUser")),
+			baseURL+UserServiceCreateUserDirectProcedure,
+			connect.WithSchema(userServiceMethods.ByName("CreateUserDirect")),
+			connect.WithClientOptions(opts...),
+		),
+		inviteUser: connect.NewClient[v1.InviteUserRequest, v1.InviteUserResponse](
+			httpClient,
+			baseURL+UserServiceInviteUserProcedure,
+			connect.WithSchema(userServiceMethods.ByName("InviteUser")),
+			connect.WithClientOptions(opts...),
+		),
+		cancelInvitation: connect.NewClient[v1.CancelInvitationRequest, v1.CancelInvitationResponse](
+			httpClient,
+			baseURL+UserServiceCancelInvitationProcedure,
+			connect.WithSchema(userServiceMethods.ByName("CancelInvitation")),
+			connect.WithClientOptions(opts...),
+		),
+		resendInvitation: connect.NewClient[v1.ResendInvitationRequest, v1.ResendInvitationResponse](
+			httpClient,
+			baseURL+UserServiceResendInvitationProcedure,
+			connect.WithSchema(userServiceMethods.ByName("ResendInvitation")),
+			connect.WithClientOptions(opts...),
+		),
+		acceptInvitation: connect.NewClient[v1.AcceptInvitationRequest, v1.AcceptInvitationResponse](
+			httpClient,
+			baseURL+UserServiceAcceptInvitationProcedure,
+			connect.WithSchema(userServiceMethods.ByName("AcceptInvitation")),
 			connect.WithClientOptions(opts...),
 		),
 	}
@@ -151,35 +153,15 @@ func NewUserServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 
 // userServiceClient implements UserServiceClient.
 type userServiceClient struct {
-	getMe             *connect.Client[v1.GetMeRequest, v1.GetMeResponse]
-	getCurrentUser    *connect.Client[v1.GetCurrentUserRequest, v1.GetCurrentUserResponse]
-	getUser           *connect.Client[v1.GetUserRequest, v1.GetUserResponse]
-	updateMe          *connect.Client[v1.UpdateMeRequest, v1.UpdateMeResponse]
 	update            *connect.Client[v1.UpdateRequest, v1.UpdateResponse]
 	requestDeleteUser *connect.Client[v1.RequestDeleteUserRequest, v1.RequestDeleteUserResponse]
 	deleteUser        *connect.Client[v1.DeleteUserRequest, v1.DeleteUserResponse]
 	changePassword    *connect.Client[v1.ChangePasswordRequest, v1.ChangePasswordResponse]
-	streamUser        *connect.Client[v1.StreamUserRequest, v1.StreamUserResponse]
-}
-
-// GetMe calls identity.v1.UserService.GetMe.
-func (c *userServiceClient) GetMe(ctx context.Context, req *connect.Request[v1.GetMeRequest]) (*connect.Response[v1.GetMeResponse], error) {
-	return c.getMe.CallUnary(ctx, req)
-}
-
-// GetCurrentUser calls identity.v1.UserService.GetCurrentUser.
-func (c *userServiceClient) GetCurrentUser(ctx context.Context, req *connect.Request[v1.GetCurrentUserRequest]) (*connect.Response[v1.GetCurrentUserResponse], error) {
-	return c.getCurrentUser.CallUnary(ctx, req)
-}
-
-// GetUser calls identity.v1.UserService.GetUser.
-func (c *userServiceClient) GetUser(ctx context.Context, req *connect.Request[v1.GetUserRequest]) (*connect.Response[v1.GetUserResponse], error) {
-	return c.getUser.CallUnary(ctx, req)
-}
-
-// UpdateMe calls identity.v1.UserService.UpdateMe.
-func (c *userServiceClient) UpdateMe(ctx context.Context, req *connect.Request[v1.UpdateMeRequest]) (*connect.Response[v1.UpdateMeResponse], error) {
-	return c.updateMe.CallUnary(ctx, req)
+	createUserDirect  *connect.Client[v1.CreateUserDirectRequest, v1.CreateUserDirectResponse]
+	inviteUser        *connect.Client[v1.InviteUserRequest, v1.InviteUserResponse]
+	cancelInvitation  *connect.Client[v1.CancelInvitationRequest, v1.CancelInvitationResponse]
+	resendInvitation  *connect.Client[v1.ResendInvitationRequest, v1.ResendInvitationResponse]
+	acceptInvitation  *connect.Client[v1.AcceptInvitationRequest, v1.AcceptInvitationResponse]
 }
 
 // Update calls identity.v1.UserService.Update.
@@ -202,22 +184,33 @@ func (c *userServiceClient) ChangePassword(ctx context.Context, req *connect.Req
 	return c.changePassword.CallUnary(ctx, req)
 }
 
-// StreamUser calls identity.v1.UserService.StreamUser.
-func (c *userServiceClient) StreamUser(ctx context.Context, req *connect.Request[v1.StreamUserRequest]) (*connect.ServerStreamForClient[v1.StreamUserResponse], error) {
-	return c.streamUser.CallServerStream(ctx, req)
+// CreateUserDirect calls identity.v1.UserService.CreateUserDirect.
+func (c *userServiceClient) CreateUserDirect(ctx context.Context, req *connect.Request[v1.CreateUserDirectRequest]) (*connect.Response[v1.CreateUserDirectResponse], error) {
+	return c.createUserDirect.CallUnary(ctx, req)
+}
+
+// InviteUser calls identity.v1.UserService.InviteUser.
+func (c *userServiceClient) InviteUser(ctx context.Context, req *connect.Request[v1.InviteUserRequest]) (*connect.Response[v1.InviteUserResponse], error) {
+	return c.inviteUser.CallUnary(ctx, req)
+}
+
+// CancelInvitation calls identity.v1.UserService.CancelInvitation.
+func (c *userServiceClient) CancelInvitation(ctx context.Context, req *connect.Request[v1.CancelInvitationRequest]) (*connect.Response[v1.CancelInvitationResponse], error) {
+	return c.cancelInvitation.CallUnary(ctx, req)
+}
+
+// ResendInvitation calls identity.v1.UserService.ResendInvitation.
+func (c *userServiceClient) ResendInvitation(ctx context.Context, req *connect.Request[v1.ResendInvitationRequest]) (*connect.Response[v1.ResendInvitationResponse], error) {
+	return c.resendInvitation.CallUnary(ctx, req)
+}
+
+// AcceptInvitation calls identity.v1.UserService.AcceptInvitation.
+func (c *userServiceClient) AcceptInvitation(ctx context.Context, req *connect.Request[v1.AcceptInvitationRequest]) (*connect.Response[v1.AcceptInvitationResponse], error) {
+	return c.acceptInvitation.CallUnary(ctx, req)
 }
 
 // UserServiceHandler is an implementation of the identity.v1.UserService service.
 type UserServiceHandler interface {
-	// Get the user information for the currently authenticated user.
-	// @deprecated use GetCurrentUser instead.
-	GetMe(context.Context, *connect.Request[v1.GetMeRequest]) (*connect.Response[v1.GetMeResponse], error)
-	// Get the user information for the currently authenticated user.
-	GetCurrentUser(context.Context, *connect.Request[v1.GetCurrentUserRequest]) (*connect.Response[v1.GetCurrentUserResponse], error)
-	// Get the public information for the given user id.
-	GetUser(context.Context, *connect.Request[v1.GetUserRequest]) (*connect.Response[v1.GetUserResponse], error)
-	// Update the user information for the currently authenticated user.
-	UpdateMe(context.Context, *connect.Request[v1.UpdateMeRequest]) (*connect.Response[v1.UpdateMeResponse], error)
 	// Update the user information for the user.
 	Update(context.Context, *connect.Request[v1.UpdateRequest]) (*connect.Response[v1.UpdateResponse], error)
 	// Request the deletion of the user account.
@@ -228,8 +221,16 @@ type UserServiceHandler interface {
 	DeleteUser(context.Context, *connect.Request[v1.DeleteUserRequest]) (*connect.Response[v1.DeleteUserResponse], error)
 	// Change the password for the currently authenticated user.
 	ChangePassword(context.Context, *connect.Request[v1.ChangePasswordRequest]) (*connect.Response[v1.ChangePasswordResponse], error)
-	// Stream business members for real-time updates.
-	StreamUser(context.Context, *connect.Request[v1.StreamUserRequest], *connect.ServerStream[v1.StreamUserResponse]) error
+	// [Admin] Create a user directly with a password (internal/cashier flow).
+	CreateUserDirect(context.Context, *connect.Request[v1.CreateUserDirectRequest]) (*connect.Response[v1.CreateUserDirectResponse], error)
+	// [Admin] Invite an external user via email link (invite flow).
+	InviteUser(context.Context, *connect.Request[v1.InviteUserRequest]) (*connect.Response[v1.InviteUserResponse], error)
+	// [Admin] Cancel a pending invitation.
+	CancelInvitation(context.Context, *connect.Request[v1.CancelInvitationRequest]) (*connect.Response[v1.CancelInvitationResponse], error)
+	// [Admin] Resend an expired or pending invitation.
+	ResendInvitation(context.Context, *connect.Request[v1.ResendInvitationRequest]) (*connect.Response[v1.ResendInvitationResponse], error)
+	// [Invited user] Accept invitation and set password.
+	AcceptInvitation(context.Context, *connect.Request[v1.AcceptInvitationRequest]) (*connect.Response[v1.AcceptInvitationResponse], error)
 }
 
 // NewUserServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -239,30 +240,6 @@ type UserServiceHandler interface {
 // and JSON codecs. They also support gzip compression.
 func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
 	userServiceMethods := v1.File_identity_v1_user_proto.Services().ByName("UserService").Methods()
-	userServiceGetMeHandler := connect.NewUnaryHandler(
-		UserServiceGetMeProcedure,
-		svc.GetMe,
-		connect.WithSchema(userServiceMethods.ByName("GetMe")),
-		connect.WithHandlerOptions(opts...),
-	)
-	userServiceGetCurrentUserHandler := connect.NewUnaryHandler(
-		UserServiceGetCurrentUserProcedure,
-		svc.GetCurrentUser,
-		connect.WithSchema(userServiceMethods.ByName("GetCurrentUser")),
-		connect.WithHandlerOptions(opts...),
-	)
-	userServiceGetUserHandler := connect.NewUnaryHandler(
-		UserServiceGetUserProcedure,
-		svc.GetUser,
-		connect.WithSchema(userServiceMethods.ByName("GetUser")),
-		connect.WithHandlerOptions(opts...),
-	)
-	userServiceUpdateMeHandler := connect.NewUnaryHandler(
-		UserServiceUpdateMeProcedure,
-		svc.UpdateMe,
-		connect.WithSchema(userServiceMethods.ByName("UpdateMe")),
-		connect.WithHandlerOptions(opts...),
-	)
 	userServiceUpdateHandler := connect.NewUnaryHandler(
 		UserServiceUpdateProcedure,
 		svc.Update,
@@ -287,22 +264,38 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(userServiceMethods.ByName("ChangePassword")),
 		connect.WithHandlerOptions(opts...),
 	)
-	userServiceStreamUserHandler := connect.NewServerStreamHandler(
-		UserServiceStreamUserProcedure,
-		svc.StreamUser,
-		connect.WithSchema(userServiceMethods.ByName("StreamUser")),
+	userServiceCreateUserDirectHandler := connect.NewUnaryHandler(
+		UserServiceCreateUserDirectProcedure,
+		svc.CreateUserDirect,
+		connect.WithSchema(userServiceMethods.ByName("CreateUserDirect")),
+		connect.WithHandlerOptions(opts...),
+	)
+	userServiceInviteUserHandler := connect.NewUnaryHandler(
+		UserServiceInviteUserProcedure,
+		svc.InviteUser,
+		connect.WithSchema(userServiceMethods.ByName("InviteUser")),
+		connect.WithHandlerOptions(opts...),
+	)
+	userServiceCancelInvitationHandler := connect.NewUnaryHandler(
+		UserServiceCancelInvitationProcedure,
+		svc.CancelInvitation,
+		connect.WithSchema(userServiceMethods.ByName("CancelInvitation")),
+		connect.WithHandlerOptions(opts...),
+	)
+	userServiceResendInvitationHandler := connect.NewUnaryHandler(
+		UserServiceResendInvitationProcedure,
+		svc.ResendInvitation,
+		connect.WithSchema(userServiceMethods.ByName("ResendInvitation")),
+		connect.WithHandlerOptions(opts...),
+	)
+	userServiceAcceptInvitationHandler := connect.NewUnaryHandler(
+		UserServiceAcceptInvitationProcedure,
+		svc.AcceptInvitation,
+		connect.WithSchema(userServiceMethods.ByName("AcceptInvitation")),
 		connect.WithHandlerOptions(opts...),
 	)
 	return "/identity.v1.UserService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
-		case UserServiceGetMeProcedure:
-			userServiceGetMeHandler.ServeHTTP(w, r)
-		case UserServiceGetCurrentUserProcedure:
-			userServiceGetCurrentUserHandler.ServeHTTP(w, r)
-		case UserServiceGetUserProcedure:
-			userServiceGetUserHandler.ServeHTTP(w, r)
-		case UserServiceUpdateMeProcedure:
-			userServiceUpdateMeHandler.ServeHTTP(w, r)
 		case UserServiceUpdateProcedure:
 			userServiceUpdateHandler.ServeHTTP(w, r)
 		case UserServiceRequestDeleteUserProcedure:
@@ -311,8 +304,16 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption
 			userServiceDeleteUserHandler.ServeHTTP(w, r)
 		case UserServiceChangePasswordProcedure:
 			userServiceChangePasswordHandler.ServeHTTP(w, r)
-		case UserServiceStreamUserProcedure:
-			userServiceStreamUserHandler.ServeHTTP(w, r)
+		case UserServiceCreateUserDirectProcedure:
+			userServiceCreateUserDirectHandler.ServeHTTP(w, r)
+		case UserServiceInviteUserProcedure:
+			userServiceInviteUserHandler.ServeHTTP(w, r)
+		case UserServiceCancelInvitationProcedure:
+			userServiceCancelInvitationHandler.ServeHTTP(w, r)
+		case UserServiceResendInvitationProcedure:
+			userServiceResendInvitationHandler.ServeHTTP(w, r)
+		case UserServiceAcceptInvitationProcedure:
+			userServiceAcceptInvitationHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -321,22 +322,6 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption
 
 // UnimplementedUserServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedUserServiceHandler struct{}
-
-func (UnimplementedUserServiceHandler) GetMe(context.Context, *connect.Request[v1.GetMeRequest]) (*connect.Response[v1.GetMeResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("identity.v1.UserService.GetMe is not implemented"))
-}
-
-func (UnimplementedUserServiceHandler) GetCurrentUser(context.Context, *connect.Request[v1.GetCurrentUserRequest]) (*connect.Response[v1.GetCurrentUserResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("identity.v1.UserService.GetCurrentUser is not implemented"))
-}
-
-func (UnimplementedUserServiceHandler) GetUser(context.Context, *connect.Request[v1.GetUserRequest]) (*connect.Response[v1.GetUserResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("identity.v1.UserService.GetUser is not implemented"))
-}
-
-func (UnimplementedUserServiceHandler) UpdateMe(context.Context, *connect.Request[v1.UpdateMeRequest]) (*connect.Response[v1.UpdateMeResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("identity.v1.UserService.UpdateMe is not implemented"))
-}
 
 func (UnimplementedUserServiceHandler) Update(context.Context, *connect.Request[v1.UpdateRequest]) (*connect.Response[v1.UpdateResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("identity.v1.UserService.Update is not implemented"))
@@ -354,6 +339,22 @@ func (UnimplementedUserServiceHandler) ChangePassword(context.Context, *connect.
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("identity.v1.UserService.ChangePassword is not implemented"))
 }
 
-func (UnimplementedUserServiceHandler) StreamUser(context.Context, *connect.Request[v1.StreamUserRequest], *connect.ServerStream[v1.StreamUserResponse]) error {
-	return connect.NewError(connect.CodeUnimplemented, errors.New("identity.v1.UserService.StreamUser is not implemented"))
+func (UnimplementedUserServiceHandler) CreateUserDirect(context.Context, *connect.Request[v1.CreateUserDirectRequest]) (*connect.Response[v1.CreateUserDirectResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("identity.v1.UserService.CreateUserDirect is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) InviteUser(context.Context, *connect.Request[v1.InviteUserRequest]) (*connect.Response[v1.InviteUserResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("identity.v1.UserService.InviteUser is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) CancelInvitation(context.Context, *connect.Request[v1.CancelInvitationRequest]) (*connect.Response[v1.CancelInvitationResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("identity.v1.UserService.CancelInvitation is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) ResendInvitation(context.Context, *connect.Request[v1.ResendInvitationRequest]) (*connect.Response[v1.ResendInvitationResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("identity.v1.UserService.ResendInvitation is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) AcceptInvitation(context.Context, *connect.Request[v1.AcceptInvitationRequest]) (*connect.Response[v1.AcceptInvitationResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("identity.v1.UserService.AcceptInvitation is not implemented"))
 }

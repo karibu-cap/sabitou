@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
-import 'package:uuid/uuid.dart';
 
 import '../../../services/internationalization/internationalization.dart';
-import '../../../utils/user_preference.dart';
+import '../../../utils/utils.dart';
 import 'add_category_view_model.dart';
 
 /// Controller for category add/edit dialog.
@@ -14,6 +13,9 @@ class CategoryAddController extends ChangeNotifier {
 
   /// The categories Controller.
   final AddCategoryViewModel viewModel;
+
+  /// The current business.
+  final Business business;
 
   /// The category.
   final Category? category;
@@ -60,6 +62,7 @@ class CategoryAddController extends ChangeNotifier {
   CategoryAddController({
     required this.viewModel,
     required this.intl,
+    required this.business,
     this.category,
   }) {
     final category = this.category;
@@ -115,21 +118,21 @@ class CategoryAddController extends ChangeNotifier {
     );
 
     final category = Category(
-      refId: this.category?.refId ?? const Uuid().v4(),
+      refId: this.category?.refId ?? AppUtils.generateSmartDatabaseId('CTG'),
       name: name,
       status: status ?? CategoryStatus.CATEGORY_STATUS_ACTIVE,
       type: type ?? CategoryType.CATEGORY_TYPE_PRODUCT,
-      businessId: UserPreferences.instance.business?.refId,
-      createdAt: Timestamp.fromDateTime(DateTime.now()),
+      parentCategoryId: this.category?.parentCategoryId ?? null,
+      businessId: this.category?.businessId ?? business.refId,
+      createdAt:
+          this.category?.createdAt ?? Timestamp.fromDateTime(DateTime.now()),
     );
 
     var result;
     if (this.category == null) {
       result = await viewModel.createCategory(category);
     } else {
-      final request = UpdateCategoryRequest(category: category);
-
-      result = await viewModel.updateCategory(request);
+      result = await viewModel.updateCategory(category);
     }
     if (result == false) {
       _errorMessage = intl.failedToSaveCategory;

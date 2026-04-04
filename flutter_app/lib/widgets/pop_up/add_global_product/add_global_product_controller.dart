@@ -12,8 +12,14 @@ class AddGlobalProductController extends ChangeNotifier {
   String _errorMessage = '';
   final AddGlobalProductViewModel _viewModel;
 
-  /// The global product.
-  final GlobalProduct? globalProduct;
+  /// The original product for comparison during updates.
+  GlobalProduct? _originalProduct;
+
+  /// The current/updating product state (notified on changes).
+  final ValueNotifier<GlobalProduct> updatingProduct;
+
+  /// Gets the original product being edited (null for creation).
+  GlobalProduct? get globalProduct => _originalProduct;
 
   /// The form key.
   final formKey = GlobalKey<ShadFormState>();
@@ -21,51 +27,16 @@ class AddGlobalProductController extends ChangeNotifier {
   /// The internationalization.
   final Intls intl;
 
-  /// The controller of english version name.
-  final TextEditingController enNameController = TextEditingController();
-
-  /// The controller of french version name.
-  final TextEditingController frNameController = TextEditingController();
-
-  /// The controller of english version description.
-  final TextEditingController enDescriptionController = TextEditingController();
-
-  /// The controller of french version description.
-  final TextEditingController frDescriptionController = TextEditingController();
-
   /// The selected categories for the product.
   final List<Category> _selectedCategories = [];
 
   /// The status.
-  GlobalProductStatus? status;
+  GlobalProductStatus? get status => updatingProduct.value.status;
 
   /// The type.
-  bool isActive = false;
-
-  /// Available categories to pick from.
-  List<Category> get availableCategories {
-    final seen = <String>{};
-    final localCategories = _viewModel.categories;
-    final categories = <Category>[];
-
-    for (final category in localCategories) {
-      final identifier = category.refId.isNotEmpty
-          ? category.refId
-          : '${category.name.en}_${category.name.fr}';
-
-      if (!seen.add(identifier)) {
-        continue;
-      }
-
-      categories.add(Category()..mergeFromMessage(category));
-    }
-
-    categories.sort(
-      (a, b) => a.label.toLowerCase().compareTo(b.label.toLowerCase()),
-    );
-
-    return categories;
-  }
+  bool get isActive =>
+      updatingProduct.value.status ==
+      GlobalProductStatus.GLOBAL_PRODUCT_STATUS_ACTIVE;
 
   /// Currently selected categories (immutable view).
   List<Category> get selectedCategories =>
@@ -78,39 +49,57 @@ class AddGlobalProductController extends ChangeNotifier {
   String get errorMessage => _errorMessage;
 
   /// Whether the form can be submitted
-  bool get canSubmit =>
-      enNameController.text.trim().isNotEmpty &&
-      frNameController.text.trim().isNotEmpty &&
-      enDescriptionController.text.trim().isNotEmpty &&
-      frDescriptionController.text.trim().isNotEmpty &&
-      !_isLoading;
+  /// For updates: any change from original enables button
+  /// For creation: requires name and at least one category
+  bool get canSubmit {
+    if (_isLoading) return false;
+
+    final product = updatingProduct.value;
+
+    // For creation: minimal fields required
+    if (_originalProduct == null) {
+      return product.name.en.trim().isNotEmpty && product.categories.isNotEmpty;
+    }
+
+    // For updates: any change enables button
+    return _hasChanges;
+  }
+
+  /// Checks if current state differs from original product.
+  bool get _hasChanges {
+    if (_originalProduct == null) {
+      return false;
+    }
+
+    final current = updatingProduct.value;
+
+    return _originalProduct.toString() != current.toString();
+  }
 
   /// Constructs a new
   AddGlobalProductController({
     required this.intl,
     required AddGlobalProductViewModel viewModel,
-    this.globalProduct,
-  }) : _viewModel = viewModel {
-    final globalProduct = this.globalProduct;
-    if (globalProduct != null) {
-      enNameController.text = globalProduct.name.en;
-      frNameController.text = globalProduct.name.fr;
-      enDescriptionController.text = globalProduct.description.en;
-      frDescriptionController.text = globalProduct.description.fr;
-      status = globalProduct.status;
-      isActive =
-          globalProduct.status ==
-          GlobalProductStatus.GLOBAL_PRODUCT_STATUS_ACTIVE;
+    GlobalProduct? product,
+  }) : _viewModel = viewModel,
+       updatingProduct = ValueNotifier(
+         product == null
+               ? GlobalProduct(
+                   status: GlobalProductStatus.GLOBAL_PRODUCT_STATUS_ACTIVE,
+                 )
+               : GlobalProduct()
+           ..mergeFromMessage(product ?? GlobalProduct()),
+       ) {
+    if (product != null) {
+      _originalProduct = GlobalProduct()..mergeFromMessage(product);
       _selectedCategories
         ..clear()
-        ..addAll(
-          globalProduct.categories.map(
-            (category) => Category()..mergeFromMessage(category),
-          ),
-        );
+        ..addAll(product.categories);
     } else {
       _clearForm();
     }
+    // Listen to updatingProduct and notify listeners
+    updatingProduct.addListener(notifyListeners);
   }
 
   /// Whether a category is already selected.
@@ -123,29 +112,21 @@ class AddGlobalProductController extends ChangeNotifier {
     if (isCategorySelected(category)) {
       _selectedCategories.removeWhere((c) => c.refId == category.refId);
     } else {
-      _selectedCategories.add(Category()..mergeFromMessage(category));
+      _selectedCategories.add(category);
     }
 
     _selectedCategories.sort(
       (a, b) => a.label.toLowerCase().compareTo(b.label.toLowerCase()),
     );
 
-    notifyListeners();
+    // Update the ValueNotifier with new categories
+    setSelectedCategories(_selectedCategories);
   }
 
   /// Removes a selected category.
   void removeSelectedCategory(Category category) {
     _selectedCategories.removeWhere((c) => c.refId == category.refId);
-    notifyListeners();
-  }
-
-  /// Set the active status.
-  void setIsActive() {
-    isActive = !isActive;
-    status = isActive
-        ? GlobalProductStatus.GLOBAL_PRODUCT_STATUS_ACTIVE
-        : GlobalProductStatus.GLOBAL_PRODUCT_STATUS_INACTIVE;
-    notifyListeners();
+    setSelectedCategories(_selectedCategories);
   }
 
   /// Validates all registration form fields.
@@ -167,39 +148,20 @@ class AddGlobalProductController extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
 
-    final name = Internationalized(
-      en: enNameController.text,
-      fr: frNameController.text,
-    );
-
-    final description = Internationalized(
-      en: enDescriptionController.text,
-      fr: frDescriptionController.text,
-    );
-
     final globalProduct = GlobalProduct(
       refId: this.globalProduct?.refId,
-      name: name,
-      description: description,
-      status: status ?? GlobalProductStatus.GLOBAL_PRODUCT_STATUS_ACTIVE,
-    );
-
-    globalProduct.categories.addAll(
-      _selectedCategories.map(
-        (category) => Category()..mergeFromMessage(category),
-      ),
+      name: updatingProduct.value.name,
+      description: updatingProduct.value.description,
+      status: updatingProduct.value.status,
+      categories: updatingProduct.value.categories,
+      barCodeValue: updatingProduct.value.barCodeValue,
+      imagesLinksIds: updatingProduct.value.imagesLinksIds,
     );
 
     var result;
-    if (this.globalProduct == null) {
-      final request = CreateGlobalProductRequest(globalProduct: globalProduct);
-
-      result = await _viewModel.createGlobalProduct(request);
-    } else {
-      final request = UpdateGlobalProductRequest(globalProduct: globalProduct);
-
-      result = await _viewModel.updateGlobalProduct(request);
-    }
+    result = this.globalProduct == null
+        ? await _viewModel.createGlobalProduct(globalProduct)
+        : await _viewModel.updateGlobalProduct(globalProduct);
     if (result == false) {
       _errorMessage = intl.failedToSaveProduct;
       _isLoading = false;
@@ -216,28 +178,46 @@ class AddGlobalProductController extends ChangeNotifier {
 
   @override
   void dispose() {
-    enNameController.dispose();
-    frNameController.dispose();
-    enDescriptionController.dispose();
-    frDescriptionController.dispose();
+    updatingProduct.removeListener(notifyListeners);
+    updatingProduct.dispose();
     super.dispose();
   }
 
-  /// Clears all form controllers and reset form state.
+  /// Clears all form state.
   void _clearForm() {
-    enNameController.clear();
-    frNameController.clear();
-    enDescriptionController.clear();
-    frDescriptionController.clear();
     _selectedCategories.clear();
-    status = null;
     _isLoading = false;
-    isActive = false;
+    updatingProduct.value = GlobalProduct(
+      status: GlobalProductStatus.GLOBAL_PRODUCT_STATUS_ACTIVE,
+    );
     notifyListeners();
   }
 
   /// Gets categories.
-  Future<void> getCategories() async {
-    await _viewModel.getCategories();
+  Future<List<Category>> findCategories(String query, String businessId) async {
+    return _viewModel.findCategories(query, businessId);
+  }
+
+  /// Refreshes categories and notifies listeners.
+  Future<void> refreshCategories(String businessId) async {
+    await _viewModel.getCategories(businessId);
+    notifyListeners();
+  }
+
+  /// Sets the selected categories (used by AutoComplete multi-select).
+  void setSelectedCategories(List<Category> categories) {
+    _selectedCategories
+      ..clear()
+      ..addAll(categories);
+
+    updatingProduct.value = updatingProduct.value.deepCopy()
+      ..categories.clear();
+    updatingProduct.value = updatingProduct.value.deepCopy()
+      ..categories.addAll(_selectedCategories);
+  }
+
+  /// Creates a new category using the view model.
+  Future<bool> createCategory(Category category) async {
+    return await _viewModel.createCategory(category);
   }
 }

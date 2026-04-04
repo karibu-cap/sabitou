@@ -5,7 +5,10 @@ import 'package:provider/provider.dart';
 import 'package:sabitou_rpc/models.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+import '../../../../core/files/sabitou_file_manager.dart';
+import '../../../../repositories/resource_link_repository.dart';
 import '../../../../services/internationalization/internationalization.dart';
+import '../../../../themes/app_theme.dart';
 import '../../../../utils/common_functions.dart';
 import '../../../../utils/extensions/category_extension.dart';
 import '../../../../utils/extensions/global_product_extension.dart';
@@ -15,6 +18,7 @@ import '../../../../widgets/adjust_flex_display.dart';
 import '../../../../widgets/input/auto_complete.dart';
 import '../../../../widgets/loading.dart';
 import '../../../../widgets/mobile_scanner_view.dart';
+import '../../../../widgets/ressource_link_image.dart';
 import 'create_edit_product_form_controller.dart';
 
 /// Product form dialog
@@ -23,10 +27,37 @@ class CreateEditProductFormView extends StatelessWidget {
   CreateEditProductFormView({super.key, this.product, this.onProductSaved});
 
   /// The product to edit.
-  final StoreProductWithGlobalProduct? product;
+  final CustomProduct? product;
 
   /// Callback when a product is saved successfully.
   final VoidCallback? onProductSaved;
+
+  void _pickProductImages(
+    BuildContext context,
+    CreateEditProductFormController controller,
+  ) {
+    SabitouFilePicker.show(
+      context: context,
+      category: FileCategory.product,
+      allowMultiple: true,
+      limit: 2,
+      onComplete: (filesItems) async {
+        for (final item in filesItems) {
+          await ResourceLinkRepository.instance.updateTargetUri(
+            item.resourceLinkId,
+            item.futureRemoteUrl,
+          );
+        }
+
+        controller.storeProduct.imagesLinksIds.addAll(
+          filesItems.map((e) => e.resourceLinkId),
+        );
+        controller.forceReload();
+
+        return true;
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,6 +102,7 @@ class CreateEditProductFormView extends StatelessWidget {
                               children:
                                   [
                                         _ProductNameField(),
+                                        _ProductImages(),
                                         _ProductDescription(),
                                         AdjustFlexDisplay(
                                           children: [
@@ -238,7 +270,7 @@ class _ProductNameField extends StatelessWidget {
     return AutoComplete<GlobalProduct>(
       label: Text('${Intls.to.productName}'),
       enabled: !controller.onSaveProduct,
-      initialValue: controller.nameController.text,
+      initialValue: controller.product,
       placeholder: Intls.to.enterProductName,
       optionsBuilder: (text) async {
         controller.product.name = Internationalized(en: text, fr: text);
@@ -260,6 +292,71 @@ class _ProductNameField extends StatelessWidget {
 
         return null;
       },
+      onSelected: controller.setNewProduct,
+    );
+  }
+}
+
+class _ProductImages extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final controller = context.watch<CreateEditProductFormController>();
+    final theme = ShadTheme.of(context);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          Intls.to.productImages,
+          style: theme.textTheme.p.copyWith(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: [
+            for (final id in controller.storeProduct.imagesLinksIds)
+              ResourceLinkImage(
+                resourceLinkId: id,
+                size: 80,
+                onRemove: (id, url) async {
+                  controller.storeProduct.imagesLinksIds.removeWhere(
+                    (e) => e == id,
+                  );
+                  controller.forceReload();
+
+                  await ResourceLinkRepository.instance.deleteRessource(id);
+                  controller.forceReload();
+                },
+              ),
+            // Add button
+            if (controller.product.imagesLinksIds.length < 4)
+              GestureDetector(
+                onTap: () {
+                  final parent = context
+                      .findAncestorWidgetOfExactType<
+                        CreateEditProductFormView
+                      >();
+                  parent?._pickProductImages(context, controller);
+                },
+                child: Container(
+                  width: 80,
+                  height: 80,
+                  decoration: const BoxDecoration(
+                    border: Border.fromBorderSide(
+                      BorderSide(color: SabitouColors.neutral),
+                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                  ),
+                  child: const Icon(Icons.add_photo_alternate_rounded),
+                ),
+              ),
+          ],
+        ),
+      ],
     );
   }
 }

@@ -24,6 +24,11 @@ abstract final class NetworkUtils {
     try {
       final response = await _dio.get('${AppConfig.connectorUrl}/health');
 
+      _logger.log('${response.statusCode}');
+      _logger.log('${response.statusCode}');
+      _logger.log('${response.statusCode}');
+      _logger.log('${response.statusCode}');
+
       return response.statusCode == 200;
     } catch (_) {
       _logger.log('Server unreachable at ${AppConfig.connectorUrl}');

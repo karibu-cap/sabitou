@@ -1,9 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../themes/app_theme.dart';
 import '../utils/app_constants.dart';
-import 'storage/app_storage.dart';
 
 /// The theme service.
 class AppThemeService extends ChangeNotifier {
@@ -30,17 +32,20 @@ class AppThemeService extends ChangeNotifier {
     init();
   }
 
-  Future<void> _saveThemeToBox(bool isDarkMode) => AppStorage.of<bool>(
-    boxKey: PreferencesKey.isDartMode,
-  ).write(_key, isDarkMode);
+  Future<void> _saveThemeToBox(bool isDarkMode) => const FlutterSecureStorage()
+      .write(key: _key, value: jsonEncode(isDarkMode));
 
   /// Initializes the theme service.
   Future<AppThemeService> init() async {
-    _isDarkMode =
-        await AppStorage.of<bool>(
-          boxKey: PreferencesKey.isDartMode,
-        ).read(_key) ??
-        false;
+    final t = await const FlutterSecureStorage().read(key: _key);
+
+    if (t == null) {
+      _isDarkMode = false;
+
+      return this;
+    }
+
+    _isDarkMode = jsonDecode(t) as bool;
     notifyListeners();
 
     return this;

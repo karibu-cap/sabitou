@@ -20,18 +20,12 @@ final class PointOfSaleViewModel {
   /// Returns products matching [query] for the active store.
   ///
   /// When [query] is empty, returns the full product catalogue.
-  Future<List<StoreProductWithGlobalProduct>> searchProducts(
-    String query,
-  ) async {
+  Future<List<CustomProduct>> searchProducts(String query) async {
     if (query.isEmpty) {
-      return StoreProductsRepository.instance.findStoreProducts(
-        FindStoreProductsRequest(storeId: store.refId),
-      );
+      return StoreProductsRepository.instance.findStoreProducts(store.refId);
     }
 
-    return StoreProductsRepository.instance.searchProducts(
-      SearchStoreProductsRequest(searchQuery: query, storeId: store.refId),
-    );
+    return StoreProductsRepository.instance.searchProducts(store.refId, query);
   }
 
   /// Returns the local inventory level for [storeProductId].

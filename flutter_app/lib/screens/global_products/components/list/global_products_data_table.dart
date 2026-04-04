@@ -5,7 +5,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../../repositories/resource_link_repository.dart';
 import '../../../../services/internationalization/internationalization.dart';
-import '../../../../themes/app_colors.dart';
+import '../../../../themes/app_theme.dart';
 import '../../../../utils/app_constants.dart';
 import '../../../../utils/extensions/category_extension.dart';
 import '../../../../utils/extensions/global_product_extension.dart';
@@ -35,6 +35,7 @@ class GlobalProductDataTable extends StatelessWidget {
       footerFrozenColumnsCount: 1,
       rowHeight: 80,
       columns: [
+        ShadDataGridColumn(label: '', width: 250),
         ShadDataGridColumn(label: intl.name, width: 250),
         ShadDataGridColumn(label: intl.type, width: 300),
         ShadDataGridColumn(label: intl.statusText, width: 150),
@@ -206,7 +207,7 @@ class _CategoryCell extends StatelessWidget {
               children:
                   categoryLabels.take(3).map((label) {
                     return ShadBadge(
-                      backgroundColor: AppColors.grey500,
+                      backgroundColor: SabitouColors.neutral,
                       padding: const EdgeInsets.symmetric(
                         horizontal: 10,
                         vertical: 4,
@@ -227,7 +228,7 @@ class _CategoryCell extends StatelessWidget {
                                 horizontal: 8,
                                 vertical: 4,
                               ),
-                              backgroundColor: AppColors.grey0,
+                              backgroundColor: SabitouColors.neutralSoft,
 
                               child: Text(
                                 '+${categoryLabels.length - 3}',
@@ -262,16 +263,18 @@ class _StatusCell extends StatelessWidget {
         GlobalProductStatus.GLOBAL_PRODUCT_STATUS_ACTIVE;
 
     return ShadBadge(
-      backgroundColor: isActive ? AppColors.success100 : AppColors.error100,
+      backgroundColor: isActive
+          ? SabitouColors.successSoft
+          : SabitouColors.dangerSoft,
       hoverBackgroundColor: isActive
-          ? AppColors.success100
-          : AppColors.error100,
-      foregroundColor: isActive ? AppColors.success500 : AppColors.error500,
+          ? SabitouColors.successSoft
+          : SabitouColors.dangerSoft,
+      foregroundColor: isActive ? SabitouColors.success : SabitouColors.danger,
       child: Text(
         isActive ? intl.activeText : intl.inactiveText,
         style: theme.textTheme.small.copyWith(
           fontSize: 12,
-          color: isActive ? AppColors.success500 : AppColors.error500,
+          color: isActive ? SabitouColors.success : SabitouColors.danger,
           fontWeight: FontWeight.w600,
         ),
       ),

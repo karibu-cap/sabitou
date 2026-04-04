@@ -814,7 +814,7 @@ components:
         products:
           type: array
           items:
-            $ref: '#/components/schemas/inventory.v1.StoreProductWithGlobalProduct'
+            $ref: '#/components/schemas/inventory.v1.CustomProduct'
           title: products
           description: |-
             The unique identifiers of the products.
@@ -849,7 +849,7 @@ components:
         product:
           title: product
           description: The retrieved store product data.
-          $ref: '#/components/schemas/inventory.v1.StoreProductWithGlobalProduct'
+          $ref: '#/components/schemas/inventory.v1.CustomProduct'
       title: GetStoreProductResponse
       additionalProperties: false
     inventory.v1.GlobalProduct:
@@ -957,7 +957,7 @@ components:
         products:
           type: array
           items:
-            $ref: '#/components/schemas/inventory.v1.StoreProductWithGlobalProduct'
+            $ref: '#/components/schemas/inventory.v1.CustomProduct'
           title: products
         totalCount:
           type: integer
@@ -1022,7 +1022,7 @@ components:
           $ref: '#/components/schemas/google.protobuf.Timestamp'
       title: StoreProduct
       additionalProperties: false
-    inventory.v1.StoreProductWithGlobalProduct:
+    inventory.v1.CustomProduct:
       type: object
       properties:
         storeProduct:
@@ -1033,7 +1033,7 @@ components:
           title: global_product
           description: The global product.
           $ref: '#/components/schemas/inventory.v1.GlobalProduct'
-      title: StoreProductWithGlobalProduct
+      title: CustomProduct
       additionalProperties: false
     inventory.v1.StreamGlobalProductsRequest:
       type: object

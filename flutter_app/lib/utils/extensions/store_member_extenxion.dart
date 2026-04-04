@@ -4,6 +4,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../services/internationalization/internationalization.dart';
 import '../../themes/app_colors.dart';
+import '../../themes/app_theme.dart';
 
 /// The extension for the [StockStatus] enum.
 extension StoreMemberExtenxion on StoreMemberStatus {
@@ -27,15 +28,15 @@ extension StoreMemberExtenxion on StoreMemberStatus {
   Color get color {
     switch (this) {
       case StoreMemberStatus.STORE_MEMBER_STATUS_ACTIVE:
-        return AppColors.success500;
+        return SabitouColors.success;
       case StoreMemberStatus.STORE_MEMBER_STATUS_PENDING:
-        return AppColors.warning500;
+        return SabitouColors.accent;
       case StoreMemberStatus.STORE_MEMBER_STATUS_INACTIVE:
-        return AppColors.grey500;
+        return SabitouColors.neutralForeground;
       case StoreMemberStatus.STORE_MEMBER_STATUS_BANNED:
-        return AppColors.error500;
+        return SabitouColors.danger;
       default:
-        return AppColors.grey300;
+        return SabitouColors.neutral;
     }
   }
 

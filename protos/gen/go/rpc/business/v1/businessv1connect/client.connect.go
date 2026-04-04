@@ -36,12 +36,6 @@ const (
 	// BusinessClientServiceCreateBusinessClientProcedure is the fully-qualified name of the
 	// BusinessClientService's CreateBusinessClient RPC.
 	BusinessClientServiceCreateBusinessClientProcedure = "/business.v1.BusinessClientService/CreateBusinessClient"
-	// BusinessClientServiceGetBusinessClientProcedure is the fully-qualified name of the
-	// BusinessClientService's GetBusinessClient RPC.
-	BusinessClientServiceGetBusinessClientProcedure = "/business.v1.BusinessClientService/GetBusinessClient"
-	// BusinessClientServiceUpdateBusinessClientProcedure is the fully-qualified name of the
-	// BusinessClientService's UpdateBusinessClient RPC.
-	BusinessClientServiceUpdateBusinessClientProcedure = "/business.v1.BusinessClientService/UpdateBusinessClient"
 	// BusinessClientServiceDeleteBusinessClientProcedure is the fully-qualified name of the
 	// BusinessClientService's DeleteBusinessClient RPC.
 	BusinessClientServiceDeleteBusinessClientProcedure = "/business.v1.BusinessClientService/DeleteBusinessClient"
@@ -51,11 +45,6 @@ const (
 type BusinessClientServiceClient interface {
 	// Creates a new client.
 	CreateBusinessClient(context.Context, *connect.Request[v1.CreateBusinessClientRequest]) (*connect.Response[v1.CreateBusinessClientResponse], error)
-	// Gets a client by id.
-	GetBusinessClient(context.Context, *connect.Request[v1.GetBusinessClientRequest]) (*connect.Response[v1.GetBusinessClientResponse], error)
-	// Updates a client.
-	// Note:Only the fields that are set will be updated.
-	UpdateBusinessClient(context.Context, *connect.Request[v1.UpdateBusinessClientRequest]) (*connect.Response[v1.UpdateBusinessClientResponse], error)
 	// Deletes a client.
 	DeleteBusinessClient(context.Context, *connect.Request[v1.DeleteBusinessClientRequest]) (*connect.Response[v1.DeleteBusinessClientResponse], error)
 }
@@ -77,18 +66,6 @@ func NewBusinessClientServiceClient(httpClient connect.HTTPClient, baseURL strin
 			connect.WithSchema(businessClientServiceMethods.ByName("CreateBusinessClient")),
 			connect.WithClientOptions(opts...),
 		),
-		getBusinessClient: connect.NewClient[v1.GetBusinessClientRequest, v1.GetBusinessClientResponse](
-			httpClient,
-			baseURL+BusinessClientServiceGetBusinessClientProcedure,
-			connect.WithSchema(businessClientServiceMethods.ByName("GetBusinessClient")),
-			connect.WithClientOptions(opts...),
-		),
-		updateBusinessClient: connect.NewClient[v1.UpdateBusinessClientRequest, v1.UpdateBusinessClientResponse](
-			httpClient,
-			baseURL+BusinessClientServiceUpdateBusinessClientProcedure,
-			connect.WithSchema(businessClientServiceMethods.ByName("UpdateBusinessClient")),
-			connect.WithClientOptions(opts...),
-		),
 		deleteBusinessClient: connect.NewClient[v1.DeleteBusinessClientRequest, v1.DeleteBusinessClientResponse](
 			httpClient,
 			baseURL+BusinessClientServiceDeleteBusinessClientProcedure,
@@ -101,24 +78,12 @@ func NewBusinessClientServiceClient(httpClient connect.HTTPClient, baseURL strin
 // businessClientServiceClient implements BusinessClientServiceClient.
 type businessClientServiceClient struct {
 	createBusinessClient *connect.Client[v1.CreateBusinessClientRequest, v1.CreateBusinessClientResponse]
-	getBusinessClient    *connect.Client[v1.GetBusinessClientRequest, v1.GetBusinessClientResponse]
-	updateBusinessClient *connect.Client[v1.UpdateBusinessClientRequest, v1.UpdateBusinessClientResponse]
 	deleteBusinessClient *connect.Client[v1.DeleteBusinessClientRequest, v1.DeleteBusinessClientResponse]
 }
 
 // CreateBusinessClient calls business.v1.BusinessClientService.CreateBusinessClient.
 func (c *businessClientServiceClient) CreateBusinessClient(ctx context.Context, req *connect.Request[v1.CreateBusinessClientRequest]) (*connect.Response[v1.CreateBusinessClientResponse], error) {
 	return c.createBusinessClient.CallUnary(ctx, req)
-}
-
-// GetBusinessClient calls business.v1.BusinessClientService.GetBusinessClient.
-func (c *businessClientServiceClient) GetBusinessClient(ctx context.Context, req *connect.Request[v1.GetBusinessClientRequest]) (*connect.Response[v1.GetBusinessClientResponse], error) {
-	return c.getBusinessClient.CallUnary(ctx, req)
-}
-
-// UpdateBusinessClient calls business.v1.BusinessClientService.UpdateBusinessClient.
-func (c *businessClientServiceClient) UpdateBusinessClient(ctx context.Context, req *connect.Request[v1.UpdateBusinessClientRequest]) (*connect.Response[v1.UpdateBusinessClientResponse], error) {
-	return c.updateBusinessClient.CallUnary(ctx, req)
 }
 
 // DeleteBusinessClient calls business.v1.BusinessClientService.DeleteBusinessClient.
@@ -131,11 +96,6 @@ func (c *businessClientServiceClient) DeleteBusinessClient(ctx context.Context, 
 type BusinessClientServiceHandler interface {
 	// Creates a new client.
 	CreateBusinessClient(context.Context, *connect.Request[v1.CreateBusinessClientRequest]) (*connect.Response[v1.CreateBusinessClientResponse], error)
-	// Gets a client by id.
-	GetBusinessClient(context.Context, *connect.Request[v1.GetBusinessClientRequest]) (*connect.Response[v1.GetBusinessClientResponse], error)
-	// Updates a client.
-	// Note:Only the fields that are set will be updated.
-	UpdateBusinessClient(context.Context, *connect.Request[v1.UpdateBusinessClientRequest]) (*connect.Response[v1.UpdateBusinessClientResponse], error)
 	// Deletes a client.
 	DeleteBusinessClient(context.Context, *connect.Request[v1.DeleteBusinessClientRequest]) (*connect.Response[v1.DeleteBusinessClientResponse], error)
 }
@@ -153,18 +113,6 @@ func NewBusinessClientServiceHandler(svc BusinessClientServiceHandler, opts ...c
 		connect.WithSchema(businessClientServiceMethods.ByName("CreateBusinessClient")),
 		connect.WithHandlerOptions(opts...),
 	)
-	businessClientServiceGetBusinessClientHandler := connect.NewUnaryHandler(
-		BusinessClientServiceGetBusinessClientProcedure,
-		svc.GetBusinessClient,
-		connect.WithSchema(businessClientServiceMethods.ByName("GetBusinessClient")),
-		connect.WithHandlerOptions(opts...),
-	)
-	businessClientServiceUpdateBusinessClientHandler := connect.NewUnaryHandler(
-		BusinessClientServiceUpdateBusinessClientProcedure,
-		svc.UpdateBusinessClient,
-		connect.WithSchema(businessClientServiceMethods.ByName("UpdateBusinessClient")),
-		connect.WithHandlerOptions(opts...),
-	)
 	businessClientServiceDeleteBusinessClientHandler := connect.NewUnaryHandler(
 		BusinessClientServiceDeleteBusinessClientProcedure,
 		svc.DeleteBusinessClient,
@@ -175,10 +123,6 @@ func NewBusinessClientServiceHandler(svc BusinessClientServiceHandler, opts ...c
 		switch r.URL.Path {
 		case BusinessClientServiceCreateBusinessClientProcedure:
 			businessClientServiceCreateBusinessClientHandler.ServeHTTP(w, r)
-		case BusinessClientServiceGetBusinessClientProcedure:
-			businessClientServiceGetBusinessClientHandler.ServeHTTP(w, r)
-		case BusinessClientServiceUpdateBusinessClientProcedure:
-			businessClientServiceUpdateBusinessClientHandler.ServeHTTP(w, r)
 		case BusinessClientServiceDeleteBusinessClientProcedure:
 			businessClientServiceDeleteBusinessClientHandler.ServeHTTP(w, r)
 		default:
@@ -192,14 +136,6 @@ type UnimplementedBusinessClientServiceHandler struct{}
 
 func (UnimplementedBusinessClientServiceHandler) CreateBusinessClient(context.Context, *connect.Request[v1.CreateBusinessClientRequest]) (*connect.Response[v1.CreateBusinessClientResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("business.v1.BusinessClientService.CreateBusinessClient is not implemented"))
-}
-
-func (UnimplementedBusinessClientServiceHandler) GetBusinessClient(context.Context, *connect.Request[v1.GetBusinessClientRequest]) (*connect.Response[v1.GetBusinessClientResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("business.v1.BusinessClientService.GetBusinessClient is not implemented"))
-}
-
-func (UnimplementedBusinessClientServiceHandler) UpdateBusinessClient(context.Context, *connect.Request[v1.UpdateBusinessClientRequest]) (*connect.Response[v1.UpdateBusinessClientResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("business.v1.BusinessClientService.UpdateBusinessClient is not implemented"))
 }
 
 func (UnimplementedBusinessClientServiceHandler) DeleteBusinessClient(context.Context, *connect.Request[v1.DeleteBusinessClientRequest]) (*connect.Response[v1.DeleteBusinessClientResponse], error) {

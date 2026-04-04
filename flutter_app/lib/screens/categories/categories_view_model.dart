@@ -5,16 +5,15 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 
 import '../../../repositories/categories_repository.dart';
 import '../../utils/extensions/category_extension.dart';
-import '../../utils/logger.dart';
-import '../../utils/user_preference.dart';
 
 /// ViewModel for categories management.
 class CategoriesViewModel {
-  final LoggerApp _logger = LoggerApp('CategoriesViewModel');
-
   /// The   categories repository instance.
   final CategoriesRepository _categoriesRepository =
       CategoriesRepository.instance;
+
+  /// The current business.
+  final Business business;
 
   /// Subject for categories stream.
   final _categoriesSubject = BehaviorSubject<List<Category>>.seeded([]);
@@ -76,28 +75,28 @@ class CategoriesViewModel {
   );
 
   /// Constructor.
-  CategoriesViewModel() {
+  CategoriesViewModel({required this.business}) {
     _loadCategories();
   }
 
   /// Loads categories from repository.
   Future<void> _loadCategories() async {
-    final businessId = UserPreferences.instance.business?.refId;
-    _logger.info('-----');
-    if (businessId == null) {
-      _logger.warning('Empty business');
-
-      return;
-    }
     final result = await _categoriesRepository.getCategoriesByBusinessId(
-      businessId,
+      business.refId,
     );
     _categoriesSubject.add(result);
   }
 
+  /// Refreshes categories from local database.
+  Future<void> refreshCategories() async {
+    await _loadCategories();
+  }
+
   /// Deletes a category by ID.
-  Future<bool> deleteCategory(DeleteCategoryRequest request) async {
-    final success = await _categoriesRepository.deleteProductCategory(request);
+  Future<bool> deleteCategory(String categoryId) async {
+    final success = await _categoriesRepository.deleteProductCategory(
+      categoryId,
+    );
     if (success) {
       await _loadCategories();
     }

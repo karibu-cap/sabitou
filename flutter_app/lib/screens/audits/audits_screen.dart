@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 import '../../utils/app_constants.dart';
 import '../../utils/responsive_utils.dart';
+import '../../utils/user_preference.dart';
 import '../../widgets/loading.dart';
+import '../../widgets/no_business_view.dart';
 import 'audits_controller.dart';
 import 'audits_view_model.dart';
 import 'components/transaction_filters.dart';
@@ -18,9 +19,15 @@ class AuditsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = GetIt.I.registerSingletonIfAbsent<AuditsViewModel>(
-      AuditsViewModel.new,
-    );
+    final userPreferences = context.watch<UserPreferences>();
+    final currentStore = userPreferences.store;
+    final business = userPreferences.business;
+
+    if (currentStore == null || business == null) {
+      return const Scaffold(body: Center(child: NoBusinessView()));
+    }
+
+    final viewModel = AuditsViewModel(currentStore: currentStore);
 
     return LayoutBuilder(
       builder: (context, constraints) {

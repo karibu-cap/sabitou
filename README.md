@@ -55,3 +55,98 @@ B. The Engine Manager (Sabitou`DocEngine`)
 
 you can redesign the implementation as you convecance. before implementa, if you have any question for clarifciation let me know.  or you can start step by step it's only when the first step end and i confirm with `next step ` that you can continue.
 ```
+
+# Core File & Media Manager (SabitouFileManager)
+
+**Role**: Senior Flutter & Infrastructure Architect & UI/UX Specialist.
+**Task**: Build a generic internal library named `SabitouFileManager` to handle all file types (Images, PDFs, Documents) across different modules (Product, Bill, Store, User) in an offline-first environment.
+
+## 1. Core Architecture
+
+- **Generic File Handler**: The library must handle different file categories using an `enum FileCategory { product, bill, store, avatar, document }`.
+- **Storage Strategy**:
+  - **Database**: Store only the **Remote Path/URL** (String) in PowerSync/SQLite.
+  - **Local Filesystem**: Use a structured directory tree: `app_docs/{category}/{file_id}.ext`.
+- udpate the docker file to integrate minio
+- **MinIO Integration**: Use S3-compatible logic to sync local files with the MinIO instance hosted on Coolify.
+
+## 2. Advanced Features
+
+### A. Intelligent Compression Engine
+
+Before any upload, the library must automatically process the file based on its type:
+
+- **Images (JPEG/PNG)**: Downscale to max 1024px, compress to 70% quality, and strip metadata.
+- **Documents (PDF)**: Verify file size limits and optimize if possible.
+- **Grayscale Option**: Ability to convert images to grayscale for documents (Bills/Invoices) to save bandwidth.
+
+## 3. Advanced UI/UX Suite (The "Plug-and-Play" Interface)
+
+The library must provide a high-level UI entry point so developers don't have to rebuild pickers:
+
+- **`SabitouFilePicker.show()`**: A universal Widget that handles:
+  - **Selection Source**: Camera, Gallery, or Local Device File Picker.
+  - **Multi-Selection**: Parameter `allowMultiple` (bool).
+  - **Validation**: Enforce `allowedExtensions` (e.g., only PDF for Bills, only JPG for Products).
+- **Live Preview Grid**: A widget that displays thumbnails of selected files with a "Delete" (X) button before confirming the upload.
+- **Progress Feedback**: Integrated loading states (linear progress bar) during compression and upload.
+
+## 4. Intelligent Processing Engine
+
+- **Compression Service**:
+  - Auto-detect file type.
+  - Images: Resize to max 1024px, 70% JPEG quality.
+  - Grayscale Toggle: Option to convert images to B&W for document scans.
+- **Naming Convention**: Generate unique, collision-proof filenames (e.g., `uuid_timestamp.ext`).
+
+### B. The Sync & Cache Manager
+
+- **Reactive Cache**: A widget or helper that:
+  1. Checks if `{file_path}` exists locally.
+  2. If yes, returns the `File` object immediately.
+  3. If no, downloads it from MinIO in the background, saves it, and then updates the UI.
+- **Upload Queue**: A persistent background queue that retries uploads of offline-captured files (e.g., a photo of a new product taken without signal).
+
+## 3. Library API Design
+
+The library should expose a simple, unified API:
+
+- `Future<String> prepareAndUpload(File file, FileCategory category)`: Compresses the file, saves it locally, queues the upload, and returns the path to be saved in the DB.
+- `Widget SabitouFilePreview(String remotePath, FileCategory category)`: A generic widget that displays an image (with caching) or an icon for PDFs.
+- `Future<File> getFile(String remotePath)`: Returns the local File object, downloading it if necessary.
+
+## 4. Technical Constraints
+
+- **Low Bandwidth Optimized**: Must use a "Connection Heartbeat" before starting large uploads.
+- **Dependency Stack**: `flutter_image_compress`, `path_provider`, `dio` (for robust downloads), `cached_network_image`.
+- **Offline-First**: All metadata (paths) must be ready in the DB immediately, even if the "Binary" (the actual file) is still pending upload/download.
+
+## 5. API Usage Example (Developer Experience)
+
+The goal is to trigger the whole flow with minimal code:
+
+```dart
+// Example: Adding images to a product
+SabitouFilePicker.show(
+  context: context,
+  category: FileCategory.product,
+  allowMultiple: true,
+  limit: 2,
+  onComplete: (List<String> remotePaths) {
+    // Update your PowerSync Product model with the new paths
+    productRepository.updateImages(productId, remotePaths);
+  },
+);
+```
+
+## 6. Expected Output
+
+1. The `SabitouFileManager` singleton class.
+2. The `CompressionService` logic for JPEG/PDF optimization.
+3. UploadQueue: Background sync manager for offline scenarios.
+4. FilePreviewWidget: A reusable widget to display any file (Public/Private) by its path.
+5. Examples of usage for:
+   - Uploading a product image.
+   - Downloading and viewing a Bill PDF.
+   - Capturing a Store front photo offline.
+6. SabitouFilePicker: The generic UI Widget

@@ -15,7 +15,6 @@ import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
 import '../../google/protobuf/timestamp.pbjson.dart' as $0;
-import '../../identity/v1/permission.pbjson.dart' as $1;
 
 @$core.Deprecated('Use storeCostingMethodDescriptor instead')
 const StoreCostingMethod$json = {
@@ -42,6 +41,8 @@ const StoreMemberStatus$json = {
     {'1': 'STORE_MEMBER_STATUS_PENDING', '2': 2},
     {'1': 'STORE_MEMBER_STATUS_INACTIVE', '2': 3},
     {'1': 'STORE_MEMBER_STATUS_BANNED', '2': 4},
+    {'1': 'STORE_MEMBER_STATUS_REJECTED', '2': 5},
+    {'1': 'STORE_MEMBER_STATUS_EXPIRED', '2': 6},
   ],
 };
 
@@ -50,7 +51,23 @@ final $typed_data.Uint8List storeMemberStatusDescriptor = $convert.base64Decode(
     'ChFTdG9yZU1lbWJlclN0YXR1cxIjCh9TVE9SRV9NRU1CRVJfU1RBVFVTX1VOU1BFQ0lGSUVEEA'
     'ASHgoaU1RPUkVfTUVNQkVSX1NUQVRVU19BQ1RJVkUQARIfChtTVE9SRV9NRU1CRVJfU1RBVFVT'
     'X1BFTkRJTkcQAhIgChxTVE9SRV9NRU1CRVJfU1RBVFVTX0lOQUNUSVZFEAMSHgoaU1RPUkVfTU'
-    'VNQkVSX1NUQVRVU19CQU5ORUQQBA==');
+    'VNQkVSX1NUQVRVU19CQU5ORUQQBBIgChxTVE9SRV9NRU1CRVJfU1RBVFVTX1JFSkVDVEVEEAUS'
+    'HwobU1RPUkVfTUVNQkVSX1NUQVRVU19FWFBJUkVEEAY=');
+
+@$core.Deprecated('Use onboardingTypeDescriptor instead')
+const OnboardingType$json = {
+  '1': 'OnboardingType',
+  '2': [
+    {'1': 'ONBOARDING_TYPE_UNSPECIFIED', '2': 0},
+    {'1': 'ONBOARDING_TYPE_DIRECT', '2': 1},
+    {'1': 'ONBOARDING_TYPE_INVITE', '2': 2},
+  ],
+};
+
+/// Descriptor for `OnboardingType`. Decode as a `google.protobuf.EnumDescriptorProto`.
+final $typed_data.Uint8List onboardingTypeDescriptor = $convert.base64Decode(
+    'Cg5PbmJvYXJkaW5nVHlwZRIfChtPTkJPQVJESU5HX1RZUEVfVU5TUEVDSUZJRUQQABIaChZPTk'
+    'JPQVJESU5HX1RZUEVfRElSRUNUEAESGgoWT05CT0FSRElOR19UWVBFX0lOVklURRAC');
 
 @$core.Deprecated('Use addressDescriptor instead')
 const Address$json = {
@@ -231,6 +248,26 @@ const StoreMember$json = {
       '6': '.store.v1.StoreMemberStatus',
       '10': 'status'
     },
+    {
+      '1': 'onboarding_type',
+      '3': 6,
+      '4': 1,
+      '5': 14,
+      '6': '.store.v1.OnboardingType',
+      '10': 'onboardingType'
+    },
+    {
+      '1': 'invitation_id',
+      '3': 7,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'invitationId',
+      '17': true
+    },
+  ],
+  '8': [
+    {'1': '_invitation_id'},
   ],
 };
 
@@ -240,7 +277,9 @@ final $typed_data.Uint8List storeMemberDescriptor = $convert.base64Decode(
     'lSB3N0b3JlSWQSPwoLcGVybWlzc2lvbnMYAyABKAsyHS5pZGVudGl0eS52MS5TdG9yZVBlcm1p'
     'c3Npb25zUgtwZXJtaXNzaW9ucxI9CgxtZW1iZXJfc2luY2UYBCABKAsyGi5nb29nbGUucHJvdG'
     '9idWYuVGltZXN0YW1wUgttZW1iZXJTaW5jZRIzCgZzdGF0dXMYBSABKA4yGy5zdG9yZS52MS5T'
-    'dG9yZU1lbWJlclN0YXR1c1IGc3RhdHVz');
+    'dG9yZU1lbWJlclN0YXR1c1IGc3RhdHVzEkEKD29uYm9hcmRpbmdfdHlwZRgGIAEoDjIYLnN0b3'
+    'JlLnYxLk9uYm9hcmRpbmdUeXBlUg5vbmJvYXJkaW5nVHlwZRIoCg1pbnZpdGF0aW9uX2lkGAcg'
+    'ASgJSABSDGludml0YXRpb25JZIgBAUIQCg5faW52aXRhdGlvbl9pZA==');
 
 @$core.Deprecated('Use createStoreRequestDescriptor instead')
 const CreateStoreRequest$json = {
@@ -288,92 +327,6 @@ final $typed_data.Uint8List createStoreResponseDescriptor = $convert.base64Decod
     'ChNDcmVhdGVTdG9yZVJlc3BvbnNlEiUKCHN0b3JlX2lkGAEgASgJQgq6SAfIAQFyAhADUgdzdG'
     '9yZUlk');
 
-@$core.Deprecated('Use getStoreRequestDescriptor instead')
-const GetStoreRequest$json = {
-  '1': 'GetStoreRequest',
-  '2': [
-    {'1': 'store_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'storeId'},
-  ],
-};
-
-/// Descriptor for `GetStoreRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List getStoreRequestDescriptor = $convert.base64Decode(
-    'Cg9HZXRTdG9yZVJlcXVlc3QSJQoIc3RvcmVfaWQYASABKAlCCrpIB8gBAXICEANSB3N0b3JlSW'
-    'Q=');
-
-@$core.Deprecated('Use getStoreResponseDescriptor instead')
-const GetStoreResponse$json = {
-  '1': 'GetStoreResponse',
-  '2': [
-    {
-      '1': 'store',
-      '3': 1,
-      '4': 1,
-      '5': 11,
-      '6': '.store.v1.Store',
-      '10': 'store'
-    },
-  ],
-};
-
-/// Descriptor for `GetStoreResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List getStoreResponseDescriptor = $convert.base64Decode(
-    'ChBHZXRTdG9yZVJlc3BvbnNlEiUKBXN0b3JlGAEgASgLMg8uc3RvcmUudjEuU3RvcmVSBXN0b3'
-    'Jl');
-
-@$core.Deprecated('Use updateStoreRequestDescriptor instead')
-const UpdateStoreRequest$json = {
-  '1': 'UpdateStoreRequest',
-  '2': [
-    {
-      '1': 'store',
-      '3': 1,
-      '4': 1,
-      '5': 11,
-      '6': '.store.v1.Store',
-      '10': 'store'
-    },
-    {
-      '1': 'logo_raw_image',
-      '3': 2,
-      '4': 1,
-      '5': 12,
-      '9': 0,
-      '10': 'logoRawImage',
-      '17': true
-    },
-  ],
-  '8': [
-    {'1': '_logo_raw_image'},
-  ],
-};
-
-/// Descriptor for `UpdateStoreRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List updateStoreRequestDescriptor = $convert.base64Decode(
-    'ChJVcGRhdGVTdG9yZVJlcXVlc3QSJQoFc3RvcmUYASABKAsyDy5zdG9yZS52MS5TdG9yZVIFc3'
-    'RvcmUSKQoObG9nb19yYXdfaW1hZ2UYAiABKAxIAFIMbG9nb1Jhd0ltYWdliAEBQhEKD19sb2dv'
-    'X3Jhd19pbWFnZQ==');
-
-@$core.Deprecated('Use updateStoreResponseDescriptor instead')
-const UpdateStoreResponse$json = {
-  '1': 'UpdateStoreResponse',
-  '2': [
-    {
-      '1': 'store',
-      '3': 1,
-      '4': 1,
-      '5': 11,
-      '6': '.store.v1.Store',
-      '10': 'store'
-    },
-  ],
-};
-
-/// Descriptor for `UpdateStoreResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List updateStoreResponseDescriptor = $convert.base64Decode(
-    'ChNVcGRhdGVTdG9yZVJlc3BvbnNlEiUKBXN0b3JlGAEgASgLMg8uc3RvcmUudjEuU3RvcmVSBX'
-    'N0b3Jl');
-
 @$core.Deprecated('Use deleteStoreRequestDescriptor instead')
 const DeleteStoreRequest$json = {
   '1': 'DeleteStoreRequest',
@@ -386,41 +339,6 @@ const DeleteStoreRequest$json = {
 final $typed_data.Uint8List deleteStoreRequestDescriptor = $convert.base64Decode(
     'ChJEZWxldGVTdG9yZVJlcXVlc3QSJQoIc3RvcmVfaWQYASABKAlCCrpIB8gBAXICEANSB3N0b3'
     'JlSWQ=');
-
-@$core.Deprecated('Use getBusinessStoresRequestDescriptor instead')
-const GetBusinessStoresRequest$json = {
-  '1': 'GetBusinessStoresRequest',
-  '2': [
-    {'1': 'business_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'businessId'},
-  ],
-};
-
-/// Descriptor for `GetBusinessStoresRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List getBusinessStoresRequestDescriptor =
-    $convert.base64Decode(
-        'ChhHZXRCdXNpbmVzc1N0b3Jlc1JlcXVlc3QSKwoLYnVzaW5lc3NfaWQYASABKAlCCrpIB8gBAX'
-        'ICEANSCmJ1c2luZXNzSWQ=');
-
-@$core.Deprecated('Use getBusinessStoresResponseDescriptor instead')
-const GetBusinessStoresResponse$json = {
-  '1': 'GetBusinessStoresResponse',
-  '2': [
-    {
-      '1': 'stores',
-      '3': 1,
-      '4': 3,
-      '5': 11,
-      '6': '.store.v1.Store',
-      '10': 'stores'
-    },
-  ],
-};
-
-/// Descriptor for `GetBusinessStoresResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List getBusinessStoresResponseDescriptor =
-    $convert.base64Decode(
-        'ChlHZXRCdXNpbmVzc1N0b3Jlc1Jlc3BvbnNlEicKBnN0b3JlcxgBIAMoCzIPLnN0b3JlLnYxLl'
-        'N0b3JlUgZzdG9yZXM=');
 
 @$core.Deprecated('Use deleteStoreResponseDescriptor instead')
 const DeleteStoreResponse$json = {
@@ -435,243 +353,6 @@ final $typed_data.Uint8List deleteStoreResponseDescriptor =
     $convert.base64Decode(
         'ChNEZWxldGVTdG9yZVJlc3BvbnNlEhgKB3N1Y2Nlc3MYASABKAhSB3N1Y2Nlc3M=');
 
-@$core.Deprecated('Use addUserToStoreRequestDescriptor instead')
-const AddUserToStoreRequest$json = {
-  '1': 'AddUserToStoreRequest',
-  '2': [
-    {'1': 'user_id', '3': 1, '4': 1, '5': 9, '10': 'userId'},
-    {
-      '1': 'permissions',
-      '3': 2,
-      '4': 1,
-      '5': 11,
-      '6': '.identity.v1.StorePermissions',
-      '10': 'permissions'
-    },
-    {'1': 'store_id', '3': 3, '4': 1, '5': 9, '10': 'storeId'},
-  ],
-};
-
-/// Descriptor for `AddUserToStoreRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List addUserToStoreRequestDescriptor = $convert.base64Decode(
-    'ChVBZGRVc2VyVG9TdG9yZVJlcXVlc3QSFwoHdXNlcl9pZBgBIAEoCVIGdXNlcklkEj8KC3Blcm'
-    '1pc3Npb25zGAIgASgLMh0uaWRlbnRpdHkudjEuU3RvcmVQZXJtaXNzaW9uc1ILcGVybWlzc2lv'
-    'bnMSGQoIc3RvcmVfaWQYAyABKAlSB3N0b3JlSWQ=');
-
-@$core.Deprecated('Use addUserToStoreResponseDescriptor instead')
-const AddUserToStoreResponse$json = {
-  '1': 'AddUserToStoreResponse',
-  '2': [
-    {'1': 'success', '3': 1, '4': 1, '5': 8, '10': 'success'},
-    {
-      '1': 'store_member',
-      '3': 2,
-      '4': 1,
-      '5': 11,
-      '6': '.store.v1.StoreMember',
-      '10': 'storeMember'
-    },
-  ],
-};
-
-/// Descriptor for `AddUserToStoreResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List addUserToStoreResponseDescriptor = $convert.base64Decode(
-    'ChZBZGRVc2VyVG9TdG9yZVJlc3BvbnNlEhgKB3N1Y2Nlc3MYASABKAhSB3N1Y2Nlc3MSOAoMc3'
-    'RvcmVfbWVtYmVyGAIgASgLMhUuc3RvcmUudjEuU3RvcmVNZW1iZXJSC3N0b3JlTWVtYmVy');
-
-@$core.Deprecated('Use updateStoreMemberRequestDescriptor instead')
-const UpdateStoreMemberRequest$json = {
-  '1': 'UpdateStoreMemberRequest',
-  '2': [
-    {'1': 'user_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'userId'},
-    {'1': 'store_id', '3': 2, '4': 1, '5': 9, '8': {}, '10': 'storeId'},
-    {
-      '1': 'permissions',
-      '3': 5,
-      '4': 1,
-      '5': 11,
-      '6': '.identity.v1.StorePermissions',
-      '10': 'permissions'
-    },
-    {
-      '1': 'status',
-      '3': 6,
-      '4': 1,
-      '5': 14,
-      '6': '.store.v1.StoreMemberStatus',
-      '9': 0,
-      '10': 'status',
-      '17': true
-    },
-  ],
-  '8': [
-    {'1': '_status'},
-  ],
-};
-
-/// Descriptor for `UpdateStoreMemberRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List updateStoreMemberRequestDescriptor = $convert.base64Decode(
-    'ChhVcGRhdGVTdG9yZU1lbWJlclJlcXVlc3QSIwoHdXNlcl9pZBgBIAEoCUIKukgHyAEBcgIQA1'
-    'IGdXNlcklkEiUKCHN0b3JlX2lkGAIgASgJQgq6SAfIAQFyAhADUgdzdG9yZUlkEj8KC3Blcm1p'
-    'c3Npb25zGAUgASgLMh0uaWRlbnRpdHkudjEuU3RvcmVQZXJtaXNzaW9uc1ILcGVybWlzc2lvbn'
-    'MSOAoGc3RhdHVzGAYgASgOMhsuc3RvcmUudjEuU3RvcmVNZW1iZXJTdGF0dXNIAFIGc3RhdHVz'
-    'iAEBQgkKB19zdGF0dXM=');
-
-@$core.Deprecated('Use updateStoreMemberResponseDescriptor instead')
-const UpdateStoreMemberResponse$json = {
-  '1': 'UpdateStoreMemberResponse',
-  '2': [
-    {'1': 'success', '3': 1, '4': 1, '5': 8, '10': 'success'},
-    {
-      '1': 'store_member',
-      '3': 2,
-      '4': 1,
-      '5': 11,
-      '6': '.store.v1.StoreMember',
-      '10': 'storeMember'
-    },
-  ],
-};
-
-/// Descriptor for `UpdateStoreMemberResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List updateStoreMemberResponseDescriptor = $convert.base64Decode(
-    'ChlVcGRhdGVTdG9yZU1lbWJlclJlc3BvbnNlEhgKB3N1Y2Nlc3MYASABKAhSB3N1Y2Nlc3MSOA'
-    'oMc3RvcmVfbWVtYmVyGAIgASgLMhUuc3RvcmUudjEuU3RvcmVNZW1iZXJSC3N0b3JlTWVtYmVy');
-
-@$core.Deprecated('Use streamStoreMembersRequestDescriptor instead')
-const StreamStoreMembersRequest$json = {
-  '1': 'StreamStoreMembersRequest',
-  '2': [
-    {'1': 'store_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'storeId'},
-  ],
-};
-
-/// Descriptor for `StreamStoreMembersRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List streamStoreMembersRequestDescriptor =
-    $convert.base64Decode(
-        'ChlTdHJlYW1TdG9yZU1lbWJlcnNSZXF1ZXN0EiUKCHN0b3JlX2lkGAEgASgJQgq6SAfIAQFyAh'
-        'ADUgdzdG9yZUlk');
-
-@$core.Deprecated('Use streamStoreMembersResponseDescriptor instead')
-const StreamStoreMembersResponse$json = {
-  '1': 'StreamStoreMembersResponse',
-  '2': [
-    {
-      '1': 'store_members',
-      '3': 1,
-      '4': 3,
-      '5': 11,
-      '6': '.store.v1.StoreMember',
-      '10': 'storeMembers'
-    },
-  ],
-};
-
-/// Descriptor for `StreamStoreMembersResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List streamStoreMembersResponseDescriptor =
-    $convert.base64Decode(
-        'ChpTdHJlYW1TdG9yZU1lbWJlcnNSZXNwb25zZRI6Cg1zdG9yZV9tZW1iZXJzGAEgAygLMhUuc3'
-        'RvcmUudjEuU3RvcmVNZW1iZXJSDHN0b3JlTWVtYmVycw==');
-
-@$core.Deprecated('Use getStoreMembersRequestDescriptor instead')
-const GetStoreMembersRequest$json = {
-  '1': 'GetStoreMembersRequest',
-  '2': [
-    {'1': 'store_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'storeId'},
-  ],
-};
-
-/// Descriptor for `GetStoreMembersRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List getStoreMembersRequestDescriptor =
-    $convert.base64Decode(
-        'ChZHZXRTdG9yZU1lbWJlcnNSZXF1ZXN0EiUKCHN0b3JlX2lkGAEgASgJQgq6SAfIAQFyAhADUg'
-        'dzdG9yZUlk');
-
-@$core.Deprecated('Use getStoreMembersResponseDescriptor instead')
-const GetStoreMembersResponse$json = {
-  '1': 'GetStoreMembersResponse',
-  '2': [
-    {
-      '1': 'store_members',
-      '3': 1,
-      '4': 3,
-      '5': 11,
-      '6': '.store.v1.StoreMember',
-      '10': 'storeMembers'
-    },
-  ],
-};
-
-/// Descriptor for `GetStoreMembersResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List getStoreMembersResponseDescriptor =
-    $convert.base64Decode(
-        'ChdHZXRTdG9yZU1lbWJlcnNSZXNwb25zZRI6Cg1zdG9yZV9tZW1iZXJzGAEgAygLMhUuc3Rvcm'
-        'UudjEuU3RvcmVNZW1iZXJSDHN0b3JlTWVtYmVycw==');
-
-@$core.Deprecated('Use getStoreMemberRequestDescriptor instead')
-const GetStoreMemberRequest$json = {
-  '1': 'GetStoreMemberRequest',
-  '2': [
-    {'1': 'user_id', '3': 2, '4': 1, '5': 9, '8': {}, '10': 'userId'},
-    {'1': 'store_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'storeId'},
-  ],
-};
-
-/// Descriptor for `GetStoreMemberRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List getStoreMemberRequestDescriptor = $convert.base64Decode(
-    'ChVHZXRTdG9yZU1lbWJlclJlcXVlc3QSIwoHdXNlcl9pZBgCIAEoCUIKukgHyAEBcgIQA1IGdX'
-    'NlcklkEiUKCHN0b3JlX2lkGAEgASgJQgq6SAfIAQFyAhADUgdzdG9yZUlk');
-
-@$core.Deprecated('Use getStoreMemberResponseDescriptor instead')
-const GetStoreMemberResponse$json = {
-  '1': 'GetStoreMemberResponse',
-  '2': [
-    {
-      '1': 'store_member',
-      '3': 1,
-      '4': 1,
-      '5': 11,
-      '6': '.store.v1.StoreMember',
-      '10': 'storeMember'
-    },
-  ],
-};
-
-/// Descriptor for `GetStoreMemberResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List getStoreMemberResponseDescriptor =
-    $convert.base64Decode(
-        'ChZHZXRTdG9yZU1lbWJlclJlc3BvbnNlEjgKDHN0b3JlX21lbWJlchgBIAEoCzIVLnN0b3JlLn'
-        'YxLlN0b3JlTWVtYmVyUgtzdG9yZU1lbWJlcg==');
-
-@$core.Deprecated('Use removeUserFromStoreRequestDescriptor instead')
-const RemoveUserFromStoreRequest$json = {
-  '1': 'RemoveUserFromStoreRequest',
-  '2': [
-    {'1': 'user_id', '3': 1, '4': 1, '5': 9, '8': {}, '10': 'userId'},
-    {'1': 'store_id', '3': 2, '4': 1, '5': 9, '8': {}, '10': 'storeId'},
-  ],
-};
-
-/// Descriptor for `RemoveUserFromStoreRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List removeUserFromStoreRequestDescriptor =
-    $convert.base64Decode(
-        'ChpSZW1vdmVVc2VyRnJvbVN0b3JlUmVxdWVzdBIjCgd1c2VyX2lkGAEgASgJQgq6SAfIAQFyAh'
-        'ADUgZ1c2VySWQSJQoIc3RvcmVfaWQYAiABKAlCCrpIB8gBAXICEANSB3N0b3JlSWQ=');
-
-@$core.Deprecated('Use removeUserFromStoreResponseDescriptor instead')
-const RemoveUserFromStoreResponse$json = {
-  '1': 'RemoveUserFromStoreResponse',
-  '2': [
-    {'1': 'success', '3': 1, '4': 1, '5': 8, '10': 'success'},
-  ],
-};
-
-/// Descriptor for `RemoveUserFromStoreResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List removeUserFromStoreResponseDescriptor =
-    $convert.base64Decode(
-        'ChtSZW1vdmVVc2VyRnJvbVN0b3JlUmVzcG9uc2USGAoHc3VjY2VzcxgBIAEoCFIHc3VjY2Vzcw'
-        '==');
-
 const $core.Map<$core.String, $core.dynamic> StoreServiceBase$json = {
   '1': 'StoreService',
   '2': [
@@ -682,59 +363,10 @@ const $core.Map<$core.String, $core.dynamic> StoreServiceBase$json = {
       '4': {}
     },
     {
-      '1': 'GetStore',
-      '2': '.store.v1.GetStoreRequest',
-      '3': '.store.v1.GetStoreResponse',
-      '4': {}
-    },
-    {
-      '1': 'UpdateStore',
-      '2': '.store.v1.UpdateStoreRequest',
-      '3': '.store.v1.UpdateStoreResponse',
-      '4': {}
-    },
-    {
       '1': 'DeleteStore',
       '2': '.store.v1.DeleteStoreRequest',
       '3': '.store.v1.DeleteStoreResponse',
       '4': {}
-    },
-    {
-      '1': 'GetBusinessStores',
-      '2': '.store.v1.GetBusinessStoresRequest',
-      '3': '.store.v1.GetBusinessStoresResponse',
-      '4': {}
-    },
-    {
-      '1': 'AddUserToStore',
-      '2': '.store.v1.AddUserToStoreRequest',
-      '3': '.store.v1.AddUserToStoreResponse'
-    },
-    {
-      '1': 'UpdateStoreMember',
-      '2': '.store.v1.UpdateStoreMemberRequest',
-      '3': '.store.v1.UpdateStoreMemberResponse'
-    },
-    {
-      '1': 'StreamStoreMembers',
-      '2': '.store.v1.StreamStoreMembersRequest',
-      '3': '.store.v1.StreamStoreMembersResponse',
-      '6': true
-    },
-    {
-      '1': 'GetStoreMembers',
-      '2': '.store.v1.GetStoreMembersRequest',
-      '3': '.store.v1.GetStoreMembersResponse'
-    },
-    {
-      '1': 'GetStoreMember',
-      '2': '.store.v1.GetStoreMemberRequest',
-      '3': '.store.v1.GetStoreMemberResponse'
-    },
-    {
-      '1': 'RemoveUserFromStore',
-      '2': '.store.v1.RemoveUserFromStoreRequest',
-      '3': '.store.v1.RemoveUserFromStoreResponse'
     },
   ],
 };
@@ -747,54 +379,13 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
   '.google.protobuf.Timestamp': $0.Timestamp$json,
   '.store.v1.Address': Address$json,
   '.store.v1.CreateStoreResponse': CreateStoreResponse$json,
-  '.store.v1.GetStoreRequest': GetStoreRequest$json,
-  '.store.v1.GetStoreResponse': GetStoreResponse$json,
-  '.store.v1.UpdateStoreRequest': UpdateStoreRequest$json,
-  '.store.v1.UpdateStoreResponse': UpdateStoreResponse$json,
   '.store.v1.DeleteStoreRequest': DeleteStoreRequest$json,
   '.store.v1.DeleteStoreResponse': DeleteStoreResponse$json,
-  '.store.v1.GetBusinessStoresRequest': GetBusinessStoresRequest$json,
-  '.store.v1.GetBusinessStoresResponse': GetBusinessStoresResponse$json,
-  '.store.v1.AddUserToStoreRequest': AddUserToStoreRequest$json,
-  '.identity.v1.StorePermissions': $1.StorePermissions$json,
-  '.identity.v1.StoreProductPermission': $1.StoreProductPermission$json,
-  '.identity.v1.StoreMemberPermission': $1.StoreMemberPermission$json,
-  '.identity.v1.StoreReportPermission': $1.StoreReportPermission$json,
-  '.identity.v1.StoreOrderPermission': $1.StoreOrderPermission$json,
-  '.identity.v1.StoreInvoicePermission': $1.StoreInvoicePermission$json,
-  '.identity.v1.StoreSupplierPermission': $1.StoreSupplierPermission$json,
-  '.identity.v1.StoreTransactionPermission': $1.StoreTransactionPermission$json,
-  '.store.v1.AddUserToStoreResponse': AddUserToStoreResponse$json,
-  '.store.v1.StoreMember': StoreMember$json,
-  '.store.v1.UpdateStoreMemberRequest': UpdateStoreMemberRequest$json,
-  '.store.v1.UpdateStoreMemberResponse': UpdateStoreMemberResponse$json,
-  '.store.v1.StreamStoreMembersRequest': StreamStoreMembersRequest$json,
-  '.store.v1.StreamStoreMembersResponse': StreamStoreMembersResponse$json,
-  '.store.v1.GetStoreMembersRequest': GetStoreMembersRequest$json,
-  '.store.v1.GetStoreMembersResponse': GetStoreMembersResponse$json,
-  '.store.v1.GetStoreMemberRequest': GetStoreMemberRequest$json,
-  '.store.v1.GetStoreMemberResponse': GetStoreMemberResponse$json,
-  '.store.v1.RemoveUserFromStoreRequest': RemoveUserFromStoreRequest$json,
-  '.store.v1.RemoveUserFromStoreResponse': RemoveUserFromStoreResponse$json,
 };
 
 /// Descriptor for `StoreService`. Decode as a `google.protobuf.ServiceDescriptorProto`.
 final $typed_data.Uint8List storeServiceDescriptor = $convert.base64Decode(
     'CgxTdG9yZVNlcnZpY2USTAoLQ3JlYXRlU3RvcmUSHC5zdG9yZS52MS5DcmVhdGVTdG9yZVJlcX'
-    'Vlc3QaHS5zdG9yZS52MS5DcmVhdGVTdG9yZVJlc3BvbnNlIgASQwoIR2V0U3RvcmUSGS5zdG9y'
-    'ZS52MS5HZXRTdG9yZVJlcXVlc3QaGi5zdG9yZS52MS5HZXRTdG9yZVJlc3BvbnNlIgASTAoLVX'
-    'BkYXRlU3RvcmUSHC5zdG9yZS52MS5VcGRhdGVTdG9yZVJlcXVlc3QaHS5zdG9yZS52MS5VcGRh'
-    'dGVTdG9yZVJlc3BvbnNlIgASTAoLRGVsZXRlU3RvcmUSHC5zdG9yZS52MS5EZWxldGVTdG9yZV'
-    'JlcXVlc3QaHS5zdG9yZS52MS5EZWxldGVTdG9yZVJlc3BvbnNlIgASXgoRR2V0QnVzaW5lc3NT'
-    'dG9yZXMSIi5zdG9yZS52MS5HZXRCdXNpbmVzc1N0b3Jlc1JlcXVlc3QaIy5zdG9yZS52MS5HZX'
-    'RCdXNpbmVzc1N0b3Jlc1Jlc3BvbnNlIgASUwoOQWRkVXNlclRvU3RvcmUSHy5zdG9yZS52MS5B'
-    'ZGRVc2VyVG9TdG9yZVJlcXVlc3QaIC5zdG9yZS52MS5BZGRVc2VyVG9TdG9yZVJlc3BvbnNlEl'
-    'wKEVVwZGF0ZVN0b3JlTWVtYmVyEiIuc3RvcmUudjEuVXBkYXRlU3RvcmVNZW1iZXJSZXF1ZXN0'
-    'GiMuc3RvcmUudjEuVXBkYXRlU3RvcmVNZW1iZXJSZXNwb25zZRJhChJTdHJlYW1TdG9yZU1lbW'
-    'JlcnMSIy5zdG9yZS52MS5TdHJlYW1TdG9yZU1lbWJlcnNSZXF1ZXN0GiQuc3RvcmUudjEuU3Ry'
-    'ZWFtU3RvcmVNZW1iZXJzUmVzcG9uc2UwARJWCg9HZXRTdG9yZU1lbWJlcnMSIC5zdG9yZS52MS'
-    '5HZXRTdG9yZU1lbWJlcnNSZXF1ZXN0GiEuc3RvcmUudjEuR2V0U3RvcmVNZW1iZXJzUmVzcG9u'
-    'c2USUwoOR2V0U3RvcmVNZW1iZXISHy5zdG9yZS52MS5HZXRTdG9yZU1lbWJlclJlcXVlc3QaIC'
-    '5zdG9yZS52MS5HZXRTdG9yZU1lbWJlclJlc3BvbnNlEmIKE1JlbW92ZVVzZXJGcm9tU3RvcmUS'
-    'JC5zdG9yZS52MS5SZW1vdmVVc2VyRnJvbVN0b3JlUmVxdWVzdBolLnN0b3JlLnYxLlJlbW92ZV'
-    'VzZXJGcm9tU3RvcmVSZXNwb25zZQ==');
+    'Vlc3QaHS5zdG9yZS52MS5DcmVhdGVTdG9yZVJlc3BvbnNlIgASTAoLRGVsZXRlU3RvcmUSHC5z'
+    'dG9yZS52MS5EZWxldGVTdG9yZVJlcXVlc3QaHS5zdG9yZS52MS5EZWxldGVTdG9yZVJlc3Bvbn'
+    'NlIgA=');

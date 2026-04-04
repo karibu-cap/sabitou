@@ -6,6 +6,7 @@ import 'package:sabitou_rpc/models.dart' show User;
 
 import '../../repositories/auth_repository.dart';
 import '../../services/auth/auth_api_client.dart';
+import '../../services/auth/token_refresh_service.dart';
 import '../../services/auth/token_service.dart';
 import '../../services/internationalization/internationalization.dart';
 import '../../services/powersync/powersync_service.dart';
@@ -76,6 +77,12 @@ class AuthProvider extends ChangeNotifier {
       _logger.log('Token refresh failed — forcing logout');
       logout();
     };
+
+    TokenRefreshService.instance.onUnauthorized = () {
+      _logger.log('Refresh token révoqué — forcing logout');
+      logout();
+    };
+
     _restoreSession();
   }
 
@@ -102,6 +109,8 @@ class AuthProvider extends ChangeNotifier {
       final userId = await _tokenService.getUserId();
       if (userId == null || userId.isEmpty) {
         _setStatus(AuthStatus.unauthenticated);
+        unawaited(TokenRefreshService.instance.scheduleNext());
+        _logger.log('Session restored for user $userId');
 
         return;
       }
@@ -193,6 +202,7 @@ class AuthProvider extends ChangeNotifier {
 
   /// Logs out the current user.
   Future<void> logout() async {
+    TokenRefreshService.instance.cancel();
     await _authRepository.logout();
     await _powerSync.close();
 
@@ -226,6 +236,7 @@ class AuthProvider extends ChangeNotifier {
       _currentUser = await _authRepository.fetchProfile(user.refId);
 
       _setStatus(AuthStatus.authenticated);
+      unawaited(TokenRefreshService.instance.scheduleNext());
 
       return true;
     } catch (e) {
