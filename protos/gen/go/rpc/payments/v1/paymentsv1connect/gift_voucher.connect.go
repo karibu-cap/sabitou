@@ -36,22 +36,12 @@ const (
 	// GiftVoucherServiceValidateVoucherProcedure is the fully-qualified name of the
 	// GiftVoucherService's ValidateVoucher RPC.
 	GiftVoucherServiceValidateVoucherProcedure = "/payments.v1.GiftVoucherService/ValidateVoucher"
-	// GiftVoucherServiceGetVoucherProcedure is the fully-qualified name of the GiftVoucherService's
-	// GetVoucher RPC.
-	GiftVoucherServiceGetVoucherProcedure = "/payments.v1.GiftVoucherService/GetVoucher"
-	// GiftVoucherServiceListVouchersProcedure is the fully-qualified name of the GiftVoucherService's
-	// ListVouchers RPC.
-	GiftVoucherServiceListVouchersProcedure = "/payments.v1.GiftVoucherService/ListVouchers"
 )
 
 // GiftVoucherServiceClient is a client for the payments.v1.GiftVoucherService service.
 type GiftVoucherServiceClient interface {
 	// Validate voucher before use
 	ValidateVoucher(context.Context, *connect.Request[v1.ValidateVoucherRequest]) (*connect.Response[v1.ValidateVoucherResponse], error)
-	// Get voucher details
-	GetVoucher(context.Context, *connect.Request[v1.GetVoucherRequest]) (*connect.Response[v1.GetVoucherResponse], error)
-	// List vouchers with filtering
-	ListVouchers(context.Context, *connect.Request[v1.ListVouchersRequest]) (*connect.Response[v1.ListVouchersResponse], error)
 }
 
 // NewGiftVoucherServiceClient constructs a client for the payments.v1.GiftVoucherService service.
@@ -71,26 +61,12 @@ func NewGiftVoucherServiceClient(httpClient connect.HTTPClient, baseURL string, 
 			connect.WithSchema(giftVoucherServiceMethods.ByName("ValidateVoucher")),
 			connect.WithClientOptions(opts...),
 		),
-		getVoucher: connect.NewClient[v1.GetVoucherRequest, v1.GetVoucherResponse](
-			httpClient,
-			baseURL+GiftVoucherServiceGetVoucherProcedure,
-			connect.WithSchema(giftVoucherServiceMethods.ByName("GetVoucher")),
-			connect.WithClientOptions(opts...),
-		),
-		listVouchers: connect.NewClient[v1.ListVouchersRequest, v1.ListVouchersResponse](
-			httpClient,
-			baseURL+GiftVoucherServiceListVouchersProcedure,
-			connect.WithSchema(giftVoucherServiceMethods.ByName("ListVouchers")),
-			connect.WithClientOptions(opts...),
-		),
 	}
 }
 
 // giftVoucherServiceClient implements GiftVoucherServiceClient.
 type giftVoucherServiceClient struct {
 	validateVoucher *connect.Client[v1.ValidateVoucherRequest, v1.ValidateVoucherResponse]
-	getVoucher      *connect.Client[v1.GetVoucherRequest, v1.GetVoucherResponse]
-	listVouchers    *connect.Client[v1.ListVouchersRequest, v1.ListVouchersResponse]
 }
 
 // ValidateVoucher calls payments.v1.GiftVoucherService.ValidateVoucher.
@@ -98,24 +74,10 @@ func (c *giftVoucherServiceClient) ValidateVoucher(ctx context.Context, req *con
 	return c.validateVoucher.CallUnary(ctx, req)
 }
 
-// GetVoucher calls payments.v1.GiftVoucherService.GetVoucher.
-func (c *giftVoucherServiceClient) GetVoucher(ctx context.Context, req *connect.Request[v1.GetVoucherRequest]) (*connect.Response[v1.GetVoucherResponse], error) {
-	return c.getVoucher.CallUnary(ctx, req)
-}
-
-// ListVouchers calls payments.v1.GiftVoucherService.ListVouchers.
-func (c *giftVoucherServiceClient) ListVouchers(ctx context.Context, req *connect.Request[v1.ListVouchersRequest]) (*connect.Response[v1.ListVouchersResponse], error) {
-	return c.listVouchers.CallUnary(ctx, req)
-}
-
 // GiftVoucherServiceHandler is an implementation of the payments.v1.GiftVoucherService service.
 type GiftVoucherServiceHandler interface {
 	// Validate voucher before use
 	ValidateVoucher(context.Context, *connect.Request[v1.ValidateVoucherRequest]) (*connect.Response[v1.ValidateVoucherResponse], error)
-	// Get voucher details
-	GetVoucher(context.Context, *connect.Request[v1.GetVoucherRequest]) (*connect.Response[v1.GetVoucherResponse], error)
-	// List vouchers with filtering
-	ListVouchers(context.Context, *connect.Request[v1.ListVouchersRequest]) (*connect.Response[v1.ListVouchersResponse], error)
 }
 
 // NewGiftVoucherServiceHandler builds an HTTP handler from the service implementation. It returns
@@ -131,26 +93,10 @@ func NewGiftVoucherServiceHandler(svc GiftVoucherServiceHandler, opts ...connect
 		connect.WithSchema(giftVoucherServiceMethods.ByName("ValidateVoucher")),
 		connect.WithHandlerOptions(opts...),
 	)
-	giftVoucherServiceGetVoucherHandler := connect.NewUnaryHandler(
-		GiftVoucherServiceGetVoucherProcedure,
-		svc.GetVoucher,
-		connect.WithSchema(giftVoucherServiceMethods.ByName("GetVoucher")),
-		connect.WithHandlerOptions(opts...),
-	)
-	giftVoucherServiceListVouchersHandler := connect.NewUnaryHandler(
-		GiftVoucherServiceListVouchersProcedure,
-		svc.ListVouchers,
-		connect.WithSchema(giftVoucherServiceMethods.ByName("ListVouchers")),
-		connect.WithHandlerOptions(opts...),
-	)
 	return "/payments.v1.GiftVoucherService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case GiftVoucherServiceValidateVoucherProcedure:
 			giftVoucherServiceValidateVoucherHandler.ServeHTTP(w, r)
-		case GiftVoucherServiceGetVoucherProcedure:
-			giftVoucherServiceGetVoucherHandler.ServeHTTP(w, r)
-		case GiftVoucherServiceListVouchersProcedure:
-			giftVoucherServiceListVouchersHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -162,12 +108,4 @@ type UnimplementedGiftVoucherServiceHandler struct{}
 
 func (UnimplementedGiftVoucherServiceHandler) ValidateVoucher(context.Context, *connect.Request[v1.ValidateVoucherRequest]) (*connect.Response[v1.ValidateVoucherResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("payments.v1.GiftVoucherService.ValidateVoucher is not implemented"))
-}
-
-func (UnimplementedGiftVoucherServiceHandler) GetVoucher(context.Context, *connect.Request[v1.GetVoucherRequest]) (*connect.Response[v1.GetVoucherResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("payments.v1.GiftVoucherService.GetVoucher is not implemented"))
-}
-
-func (UnimplementedGiftVoucherServiceHandler) ListVouchers(context.Context, *connect.Request[v1.ListVouchersRequest]) (*connect.Response[v1.ListVouchersResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("payments.v1.GiftVoucherService.ListVouchers is not implemented"))
 }

@@ -4,7 +4,7 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../services/internationalization/internationalization.dart';
-import '../../../themes/app_colors.dart';
+import '../../../themes/app_theme.dart';
 import '../../../widgets/custom_grid.dart';
 import '../../../widgets/stat_card.dart';
 import '../users_controller.dart';
@@ -39,34 +39,34 @@ class UsersStatsGrid extends StatelessWidget {
             title: AppInternationalizationService.to.totalMembers,
             value: stats.total.toString(),
             changeWidget: ShadBadge(
-              backgroundColor: AppColors.cobalt,
+              backgroundColor: SabitouColors.infoText,
               child: Text(
                 '${stats.active} ${AppInternationalizationService.to.active.toLowerCase()}',
               ),
             ),
             icon: LucideIcons.users,
-            color: AppColors.cobalt,
+            color: SabitouColors.infoText,
           ),
           StatCard(
             title: AppInternationalizationService.to.inactiveMembers,
             value: stats.inactive.toString(),
             change: AppInternationalizationService.to.inactive,
             icon: LucideIcons.pause400,
-            color: AppColors.grey200,
+            color: SabitouColors.neutral,
           ),
           StatCard(
             title: AppInternationalizationService.to.pendingMembers,
             value: stats.pending.toString(),
             change: AppInternationalizationService.to.awaitingResponse,
             icon: LucideIcons.clock,
-            color: AppColors.orange500,
+            color: SabitouColors.warning,
           ),
           StatCard(
             title: AppInternationalizationService.to.bannedMembers,
             value: stats.banned.toString(),
             change: AppInternationalizationService.to.restrictedAccess,
             icon: LucideIcons.userX,
-            color: AppColors.error500,
+            color: SabitouColors.danger,
           ),
         ];
 

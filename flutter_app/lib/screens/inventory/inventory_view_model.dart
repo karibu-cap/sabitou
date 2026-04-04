@@ -169,40 +169,6 @@ class InventoryViewModel {
     }
   }
 
-  /// Adjusts the inventory.
-  Future<bool> adjustInventory(
-    String userId,
-    String storeId,
-    String productId,
-    int quantityChange,
-    String reason,
-    String notes, {
-    VoidCallback? onLoaded,
-  }) async {
-    try {
-      final isSucceeded = await InventoryRepository.instance.adjustInventory(
-        AdjustInventoryRequest(
-          storeId: storeId,
-          productId: productId,
-          newQuantity: quantityChange,
-          reason: reason,
-          notes: notes,
-        ),
-        userId,
-      );
-
-      if (isSucceeded) {
-        unawaited(initTheData(onLoaded: onLoaded));
-      }
-
-      return isSucceeded;
-    } on Exception catch (e) {
-      _logger.severe('Error adjusting inventory: $e');
-
-      return false;
-    }
-  }
-
   /// Watchs the inventory item.
   Stream<InventoryLevel?> watchProductInventory({
     required String productId,
@@ -239,18 +205,14 @@ class InventoryViewModel {
     try {
       final response = await InventoryRepository.instance
           .getInventoryTransactionHistory(
-            GetInventoryTransactionHistoryRequest(
-              storeId: store.refId,
-              productId: item.product.refId,
-              startDate: Timestamp.fromDateTime(
-                clock.now().subtract(const Duration(days: 365)),
-              ),
-              endDate: Timestamp.fromDateTime(
-                clock.now().add(const Duration(days: 1)),
-              ),
-              pageSize: 100,
-              pageNumber: 1,
-            ),
+            storeId: store.refId,
+            productId: item.product.refId,
+            startDate: clock.now().subtract(const Duration(days: 365)),
+
+            endDate: clock.now().add(const Duration(days: 1)),
+
+            pageSize: 100,
+            pageNumber: 1,
           );
       if (!_transactionsSubject.isClosed) {
         _transactionsSubject.add(response);

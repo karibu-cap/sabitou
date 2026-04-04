@@ -14,8 +14,7 @@ class AddSupplierViewModel {
 
   /// Add a new supplier
   Future<bool> addSupplier(Supplier supplier) async {
-    final request = CreateSupplierRequest(supplier: supplier);
-    final supplierId = await _suppliersRepository.createSupplier(request);
+    final supplierId = await _suppliersRepository.createSupplier(supplier);
     if (supplierId == null) {
       return false;
     }
@@ -25,8 +24,7 @@ class AddSupplierViewModel {
 
   /// Updates an existing supplier.
   Future<bool> updateSupplier(Supplier supplier) async {
-    final request = UpdateSupplierRequest(supplier: supplier);
-    final updatedSupplier = await _suppliersRepository.updateSupplier(request);
+    final updatedSupplier = await _suppliersRepository.updateSupplier(supplier);
 
     return true;
   }

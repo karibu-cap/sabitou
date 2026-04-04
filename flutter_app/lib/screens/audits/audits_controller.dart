@@ -10,7 +10,7 @@ import 'audits_view_model.dart';
 
 /// The [AuditsController].
 final class AuditsController extends ChangeNotifier {
-  final AuditsViewModel _viewModel = AuditsViewModel();
+  final AuditsViewModel _viewModel;
 
   /// Completer for initialization
   final Completer<bool>? completer = Completer<bool>();
@@ -69,7 +69,7 @@ final class AuditsController extends ChangeNotifier {
   TransactionTab get activeTab => _viewModel.activeTab;
 
   /// Constructor of new [AuditsController].
-  AuditsController(AuditsViewModel viewModel) {
+  AuditsController(this._viewModel) {
     _initialize();
   }
 

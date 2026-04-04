@@ -520,11 +520,9 @@ const file_business_v1_client_proto_rawDesc = "" +
 	"\tclient_id\x18\x01 \x01(\tB\n" +
 	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\bclientId\"8\n" +
 	"\x1cDeleteBusinessClientResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess2\xca\x03\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess2\xf5\x01\n" +
 	"\x15BusinessClientService\x12m\n" +
-	"\x14CreateBusinessClient\x12(.business.v1.CreateBusinessClientRequest\x1a).business.v1.CreateBusinessClientResponse\"\x00\x12d\n" +
-	"\x11GetBusinessClient\x12%.business.v1.GetBusinessClientRequest\x1a&.business.v1.GetBusinessClientResponse\"\x00\x12m\n" +
-	"\x14UpdateBusinessClient\x12(.business.v1.UpdateBusinessClientRequest\x1a).business.v1.UpdateBusinessClientResponse\"\x00\x12m\n" +
+	"\x14CreateBusinessClient\x12(.business.v1.CreateBusinessClientRequest\x1a).business.v1.CreateBusinessClientResponse\"\x00\x12m\n" +
 	"\x14DeleteBusinessClient\x12(.business.v1.DeleteBusinessClientRequest\x1a).business.v1.DeleteBusinessClientResponse\"\x00B\xb3\x01\n" +
 	"\x0fcom.business.v1B\vClientProtoP\x01ZFgithub.com/karibu-cap/sabitou/protos/gen/go/rpc/business/v1;businessv1\xa2\x02\x03BXX\xaa\x02\vBusiness.V1\xca\x02\vBusiness\\V1\xe2\x02\x17Business\\V1\\GPBMetadata\xea\x02\fBusiness::V1b\x06proto3"
 
@@ -558,15 +556,11 @@ var file_business_v1_client_proto_depIdxs = []int32{
 	0, // 2: business.v1.UpdateBusinessClientRequest.client:type_name -> business.v1.BusinessClient
 	0, // 3: business.v1.UpdateBusinessClientResponse.client:type_name -> business.v1.BusinessClient
 	1, // 4: business.v1.BusinessClientService.CreateBusinessClient:input_type -> business.v1.CreateBusinessClientRequest
-	3, // 5: business.v1.BusinessClientService.GetBusinessClient:input_type -> business.v1.GetBusinessClientRequest
-	5, // 6: business.v1.BusinessClientService.UpdateBusinessClient:input_type -> business.v1.UpdateBusinessClientRequest
-	7, // 7: business.v1.BusinessClientService.DeleteBusinessClient:input_type -> business.v1.DeleteBusinessClientRequest
-	2, // 8: business.v1.BusinessClientService.CreateBusinessClient:output_type -> business.v1.CreateBusinessClientResponse
-	4, // 9: business.v1.BusinessClientService.GetBusinessClient:output_type -> business.v1.GetBusinessClientResponse
-	6, // 10: business.v1.BusinessClientService.UpdateBusinessClient:output_type -> business.v1.UpdateBusinessClientResponse
-	8, // 11: business.v1.BusinessClientService.DeleteBusinessClient:output_type -> business.v1.DeleteBusinessClientResponse
-	8, // [8:12] is the sub-list for method output_type
-	4, // [4:8] is the sub-list for method input_type
+	7, // 5: business.v1.BusinessClientService.DeleteBusinessClient:input_type -> business.v1.DeleteBusinessClientRequest
+	2, // 6: business.v1.BusinessClientService.CreateBusinessClient:output_type -> business.v1.CreateBusinessClientResponse
+	8, // 7: business.v1.BusinessClientService.DeleteBusinessClient:output_type -> business.v1.DeleteBusinessClientResponse
+	6, // [6:8] is the sub-list for method output_type
+	4, // [4:6] is the sub-list for method input_type
 	4, // [4:4] is the sub-list for extension type_name
 	4, // [4:4] is the sub-list for extension extendee
 	0, // [0:4] is the sub-list for field type_name

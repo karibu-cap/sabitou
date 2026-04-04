@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui';
 
 /// Utility class for common functions.
 class AppUtils {
@@ -321,5 +322,33 @@ class AppUtils {
     final String randomPart = randomNumber.toString().padLeft(3, '0');
 
     return '$prefix-$year-$dayMonth-$randomPart';
+  }
+
+  /// Generates a consistent Color from a string.
+  /// The same string will always return the same color.
+  static Color stringToColor(String str) {
+    final hash = str.hashCode.abs();
+
+    // Predefined palette of visually distinct colors
+    const palette = [
+      Color(0xFFEF4444), // red-500
+      Color(0xFFF97316), // orange-500
+      Color(0xFFF59E0B), // amber-500
+      Color(0xFF84CC16), // lime-500
+      Color(0xFF22C55E), // green-500
+      Color(0xFF10B981), // emerald-500
+      Color(0xFF14B8A6), // teal-500
+      Color(0xFF06B6D4), // cyan-500
+      Color(0xFF0EA5E9), // sky-500
+      Color(0xFF3B82F6), // blue-500
+      Color(0xFF6366F1), // indigo-500
+      Color(0xFF8B5CF6), // violet-500
+      Color(0xFFA855F7), // purple-500
+      Color(0xFFD946EF), // fuchsia-500
+      Color(0xFFEC4899), // pink-500
+      Color(0xFFF43F5E), // rose-500
+    ];
+
+    return palette[hash % palette.length];
   }
 }

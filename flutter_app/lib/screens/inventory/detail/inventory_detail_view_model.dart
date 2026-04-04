@@ -71,7 +71,7 @@ class InventoryDetailViewModel {
 
       /// Fetch the specific inventory item.
       final storeProduct = await StoreProductsRepository.instance
-          .getStoreProduct(GetStoreProductRequest(storeProductId: productId));
+          .getStoreProduct(productId);
 
       final levelReps = inventoryLevels;
 
@@ -117,18 +117,12 @@ class InventoryDetailViewModel {
     try {
       final response = await InventoryRepository.instance
           .getInventoryTransactionHistory(
-            GetInventoryTransactionHistoryRequest(
-              storeId: store.refId,
-              productId: item.product.refId,
-              startDate: Timestamp.fromDateTime(
-                clock.now().subtract(const Duration(days: 365)),
-              ),
-              endDate: Timestamp.fromDateTime(
-                clock.now().add(const Duration(days: 1)),
-              ),
-              pageSize: 100,
-              pageNumber: 1,
-            ),
+            storeId: store.refId,
+            productId: item.product.refId,
+            startDate: clock.now().subtract(const Duration(days: 365)),
+            endDate: clock.now().add(const Duration(days: 1)),
+            pageSize: 100,
+            pageNumber: 1,
           );
       _transactionsSubject.add(response);
     } on Exception catch (e) {

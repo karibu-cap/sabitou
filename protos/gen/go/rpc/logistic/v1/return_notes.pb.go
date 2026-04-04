@@ -424,174 +424,6 @@ func (x *ReturnLineItem) GetBatchId() string {
 	return ""
 }
 
-type CreateReturnNotesRequest struct {
-	state                 protoimpl.MessageState `protogen:"open.v1"`
-	FromCompanyId         string                 `protobuf:"bytes,1,opt,name=from_company_id,json=fromCompanyId,proto3" json:"from_company_id,omitempty"` // Customer or your company
-	ToWarehouseId         string                 `protobuf:"bytes,2,opt,name=to_warehouse_id,json=toWarehouseId,proto3" json:"to_warehouse_id,omitempty"` // Your warehouse
-	RelatedDeliveryNoteId string                 `protobuf:"bytes,3,opt,name=related_delivery_note_id,json=relatedDeliveryNoteId,proto3" json:"related_delivery_note_id,omitempty"`
-	RelatedInvoiceId      string                 `protobuf:"bytes,4,opt,name=related_invoice_id,json=relatedInvoiceId,proto3" json:"related_invoice_id,omitempty"`
-	Items                 []*ReturnLineItem      `protobuf:"bytes,5,rep,name=items,proto3" json:"items,omitempty"`
-	Reason                string                 `protobuf:"bytes,6,opt,name=reason,proto3" json:"reason,omitempty"`
-	ReceivedByUserId      string                 `protobuf:"bytes,7,opt,name=received_by_user_id,json=receivedByUserId,proto3" json:"received_by_user_id,omitempty"`
-	unknownFields         protoimpl.UnknownFields
-	sizeCache             protoimpl.SizeCache
-}
-
-func (x *CreateReturnNotesRequest) Reset() {
-	*x = CreateReturnNotesRequest{}
-	mi := &file_logistic_v1_return_notes_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateReturnNotesRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateReturnNotesRequest) ProtoMessage() {}
-
-func (x *CreateReturnNotesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_logistic_v1_return_notes_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateReturnNotesRequest.ProtoReflect.Descriptor instead.
-func (*CreateReturnNotesRequest) Descriptor() ([]byte, []int) {
-	return file_logistic_v1_return_notes_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *CreateReturnNotesRequest) GetFromCompanyId() string {
-	if x != nil {
-		return x.FromCompanyId
-	}
-	return ""
-}
-
-func (x *CreateReturnNotesRequest) GetToWarehouseId() string {
-	if x != nil {
-		return x.ToWarehouseId
-	}
-	return ""
-}
-
-func (x *CreateReturnNotesRequest) GetRelatedDeliveryNoteId() string {
-	if x != nil {
-		return x.RelatedDeliveryNoteId
-	}
-	return ""
-}
-
-func (x *CreateReturnNotesRequest) GetRelatedInvoiceId() string {
-	if x != nil {
-		return x.RelatedInvoiceId
-	}
-	return ""
-}
-
-func (x *CreateReturnNotesRequest) GetItems() []*ReturnLineItem {
-	if x != nil {
-		return x.Items
-	}
-	return nil
-}
-
-func (x *CreateReturnNotesRequest) GetReason() string {
-	if x != nil {
-		return x.Reason
-	}
-	return ""
-}
-
-func (x *CreateReturnNotesRequest) GetReceivedByUserId() string {
-	if x != nil {
-		return x.ReceivedByUserId
-	}
-	return ""
-}
-
-type CreateReturnNotesResponse struct {
-	state                   protoimpl.MessageState `protogen:"open.v1"`
-	ReturnId                string                 `protobuf:"bytes,1,opt,name=return_id,json=returnId,proto3" json:"return_id,omitempty"`
-	ReturnNote              *ReturnNote            `protobuf:"bytes,2,opt,name=return_note,json=returnNote,proto3" json:"return_note,omitempty"`
-	InventoryTransactionIds []string               `protobuf:"bytes,3,rep,name=inventory_transaction_ids,json=inventoryTransactionIds,proto3" json:"inventory_transaction_ids,omitempty"`
-	RequiresCreditNote      bool                   `protobuf:"varint,4,opt,name=requires_credit_note,json=requiresCreditNote,proto3" json:"requires_credit_note,omitempty"`
-	Message                 string                 `protobuf:"bytes,5,opt,name=message,proto3" json:"message,omitempty"`
-	unknownFields           protoimpl.UnknownFields
-	sizeCache               protoimpl.SizeCache
-}
-
-func (x *CreateReturnNotesResponse) Reset() {
-	*x = CreateReturnNotesResponse{}
-	mi := &file_logistic_v1_return_notes_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateReturnNotesResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateReturnNotesResponse) ProtoMessage() {}
-
-func (x *CreateReturnNotesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_logistic_v1_return_notes_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateReturnNotesResponse.ProtoReflect.Descriptor instead.
-func (*CreateReturnNotesResponse) Descriptor() ([]byte, []int) {
-	return file_logistic_v1_return_notes_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *CreateReturnNotesResponse) GetReturnId() string {
-	if x != nil {
-		return x.ReturnId
-	}
-	return ""
-}
-
-func (x *CreateReturnNotesResponse) GetReturnNote() *ReturnNote {
-	if x != nil {
-		return x.ReturnNote
-	}
-	return nil
-}
-
-func (x *CreateReturnNotesResponse) GetInventoryTransactionIds() []string {
-	if x != nil {
-		return x.InventoryTransactionIds
-	}
-	return nil
-}
-
-func (x *CreateReturnNotesResponse) GetRequiresCreditNote() bool {
-	if x != nil {
-		return x.RequiresCreditNote
-	}
-	return false
-}
-
-func (x *CreateReturnNotesResponse) GetMessage() string {
-	if x != nil {
-		return x.Message
-	}
-	return ""
-}
-
 var File_logistic_v1_return_notes_proto protoreflect.FileDescriptor
 
 const file_logistic_v1_return_notes_proto_rawDesc = "" +
@@ -621,22 +453,7 @@ const file_logistic_v1_return_notes_proto_rawDesc = "" +
 	"\bquantity\x18\x03 \x01(\x01R\bquantity\x12:\n" +
 	"\tcondition\x18\x04 \x01(\x0e2\x1c.logistic.v1.ReturnConditionR\tcondition\x12'\n" +
 	"\x0fcondition_notes\x18\x05 \x01(\tR\x0econditionNotes\x12\x19\n" +
-	"\bbatch_id\x18\x06 \x01(\tR\abatchId\"\xcb\x02\n" +
-	"\x18CreateReturnNotesRequest\x12&\n" +
-	"\x0ffrom_company_id\x18\x01 \x01(\tR\rfromCompanyId\x12&\n" +
-	"\x0fto_warehouse_id\x18\x02 \x01(\tR\rtoWarehouseId\x127\n" +
-	"\x18related_delivery_note_id\x18\x03 \x01(\tR\x15relatedDeliveryNoteId\x12,\n" +
-	"\x12related_invoice_id\x18\x04 \x01(\tR\x10relatedInvoiceId\x121\n" +
-	"\x05items\x18\x05 \x03(\v2\x1b.logistic.v1.ReturnLineItemR\x05items\x12\x16\n" +
-	"\x06reason\x18\x06 \x01(\tR\x06reason\x12-\n" +
-	"\x13received_by_user_id\x18\a \x01(\tR\x10receivedByUserId\"\xfa\x01\n" +
-	"\x19CreateReturnNotesResponse\x12\x1b\n" +
-	"\treturn_id\x18\x01 \x01(\tR\breturnId\x128\n" +
-	"\vreturn_note\x18\x02 \x01(\v2\x17.logistic.v1.ReturnNoteR\n" +
-	"returnNote\x12:\n" +
-	"\x19inventory_transaction_ids\x18\x03 \x03(\tR\x17inventoryTransactionIds\x120\n" +
-	"\x14requires_credit_note\x18\x04 \x01(\bR\x12requiresCreditNote\x12\x18\n" +
-	"\amessage\x18\x05 \x01(\tR\amessage*q\n" +
+	"\bbatch_id\x18\x06 \x01(\tR\abatchId*q\n" +
 	"\n" +
 	"ReturnType\x12\x1b\n" +
 	"\x17RETURN_TYPE_UNSPECIFIED\x10\x00\x12\"\n" +
@@ -654,9 +471,7 @@ const file_logistic_v1_return_notes_proto_rawDesc = "" +
 	"\x14RETURN_CONDITION_NEW\x10\x01\x12\x1e\n" +
 	"\x1aRETURN_CONDITION_USED_GOOD\x10\x02\x12\x1c\n" +
 	"\x18RETURN_CONDITION_DAMAGED\x10\x03\x12\x1e\n" +
-	"\x1aRETURN_CONDITION_DEFECTIVE\x10\x042x\n" +
-	"\x12ReturnNotesService\x12b\n" +
-	"\x11CreateReturnNotes\x12%.logistic.v1.CreateReturnNotesRequest\x1a&.logistic.v1.CreateReturnNotesResponseB\xb8\x01\n" +
+	"\x1aRETURN_CONDITION_DEFECTIVE\x10\x04B\xb8\x01\n" +
 	"\x0fcom.logistic.v1B\x10ReturnNotesProtoP\x01ZFgithub.com/karibu-cap/sabitou/protos/gen/go/rpc/logistic/v1;logisticv1\xa2\x02\x03LXX\xaa\x02\vLogistic.V1\xca\x02\vLogistic\\V1\xe2\x02\x17Logistic\\V1\\GPBMetadata\xea\x02\fLogistic::V1b\x06proto3"
 
 var (
@@ -672,34 +487,28 @@ func file_logistic_v1_return_notes_proto_rawDescGZIP() []byte {
 }
 
 var file_logistic_v1_return_notes_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
-var file_logistic_v1_return_notes_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_logistic_v1_return_notes_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_logistic_v1_return_notes_proto_goTypes = []any{
-	(ReturnType)(0),                   // 0: logistic.v1.ReturnType
-	(ReturnNoteStatus)(0),             // 1: logistic.v1.ReturnNoteStatus
-	(ReturnCondition)(0),              // 2: logistic.v1.ReturnCondition
-	(*ReturnNote)(nil),                // 3: logistic.v1.ReturnNote
-	(*ReturnLineItem)(nil),            // 4: logistic.v1.ReturnLineItem
-	(*CreateReturnNotesRequest)(nil),  // 5: logistic.v1.CreateReturnNotesRequest
-	(*CreateReturnNotesResponse)(nil), // 6: logistic.v1.CreateReturnNotesResponse
-	(*timestamppb.Timestamp)(nil),     // 7: google.protobuf.Timestamp
-	(*v1.Internationalized)(nil),      // 8: inventory.v1.Internationalized
+	(ReturnType)(0),               // 0: logistic.v1.ReturnType
+	(ReturnNoteStatus)(0),         // 1: logistic.v1.ReturnNoteStatus
+	(ReturnCondition)(0),          // 2: logistic.v1.ReturnCondition
+	(*ReturnNote)(nil),            // 3: logistic.v1.ReturnNote
+	(*ReturnLineItem)(nil),        // 4: logistic.v1.ReturnLineItem
+	(*timestamppb.Timestamp)(nil), // 5: google.protobuf.Timestamp
+	(*v1.Internationalized)(nil),  // 6: inventory.v1.Internationalized
 }
 var file_logistic_v1_return_notes_proto_depIdxs = []int32{
 	0, // 0: logistic.v1.ReturnNote.return_type:type_name -> logistic.v1.ReturnType
 	1, // 1: logistic.v1.ReturnNote.status:type_name -> logistic.v1.ReturnNoteStatus
 	4, // 2: logistic.v1.ReturnNote.items:type_name -> logistic.v1.ReturnLineItem
-	7, // 3: logistic.v1.ReturnNote.received_at:type_name -> google.protobuf.Timestamp
-	8, // 4: logistic.v1.ReturnLineItem.product_name:type_name -> inventory.v1.Internationalized
+	5, // 3: logistic.v1.ReturnNote.received_at:type_name -> google.protobuf.Timestamp
+	6, // 4: logistic.v1.ReturnLineItem.product_name:type_name -> inventory.v1.Internationalized
 	2, // 5: logistic.v1.ReturnLineItem.condition:type_name -> logistic.v1.ReturnCondition
-	4, // 6: logistic.v1.CreateReturnNotesRequest.items:type_name -> logistic.v1.ReturnLineItem
-	3, // 7: logistic.v1.CreateReturnNotesResponse.return_note:type_name -> logistic.v1.ReturnNote
-	5, // 8: logistic.v1.ReturnNotesService.CreateReturnNotes:input_type -> logistic.v1.CreateReturnNotesRequest
-	6, // 9: logistic.v1.ReturnNotesService.CreateReturnNotes:output_type -> logistic.v1.CreateReturnNotesResponse
-	9, // [9:10] is the sub-list for method output_type
-	8, // [8:9] is the sub-list for method input_type
-	8, // [8:8] is the sub-list for extension type_name
-	8, // [8:8] is the sub-list for extension extendee
-	0, // [0:8] is the sub-list for field type_name
+	6, // [6:6] is the sub-list for method output_type
+	6, // [6:6] is the sub-list for method input_type
+	6, // [6:6] is the sub-list for extension type_name
+	6, // [6:6] is the sub-list for extension extendee
+	0, // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_logistic_v1_return_notes_proto_init() }
@@ -713,9 +522,9 @@ func file_logistic_v1_return_notes_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_logistic_v1_return_notes_proto_rawDesc), len(file_logistic_v1_return_notes_proto_rawDesc)),
 			NumEnums:      3,
-			NumMessages:   4,
+			NumMessages:   2,
 			NumExtensions: 0,
-			NumServices:   1,
+			NumServices:   0,
 		},
 		GoTypes:           file_logistic_v1_return_notes_proto_goTypes,
 		DependencyIndexes: file_logistic_v1_return_notes_proto_depIdxs,

@@ -37,7 +37,6 @@ class PaymentFormSection1 extends StatelessWidget {
                 ? ctrl.selectedSupplierId
                 : Intls.to.searchSuppliers,
             searchPlaceholder: Intls.to.searchProductHint,
-            initialValue: ctrl.selectedSupplierId,
             enabled: !isBillKnown,
             canReturnDataWhenEmpty: true,
             optionsBuilder: (text) async {

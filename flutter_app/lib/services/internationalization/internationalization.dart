@@ -1,8 +1,11 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../utils/app_constants.dart';
-import '../storage/app_storage.dart';
 
 /// The short version of [AppInternationalizationService].
 typedef Intls = AppInternationalizationService;
@@ -210,6 +213,12 @@ class AppInternationalizationService extends ChangeNotifier {
     'assistant': {'en': 'Assistant', 'fr': 'Assistant'},
     'welcome': {'en': 'Welcome', 'fr': 'Bienvenue'},
     'add': {'en': 'Add', 'fr': 'Ajouter'},
+    'asCategory': {'en': 'as category', 'fr': 'comme catégorie'},
+    'selectOption': {'en': 'Select option', 'fr': 'Sélectionner une option'},
+    'typeToSearch': {
+      'en': 'Type to search...',
+      'fr': 'Tapez pour rechercher...',
+    },
     'update': {'en': 'Update', 'fr': 'Mettre à jour'},
     'read': {'en': 'Read', 'fr': 'Lire'},
     'invite': {'en': 'Invite', 'fr': 'Inviter'},
@@ -290,6 +299,7 @@ class AppInternationalizationService extends ChangeNotifier {
     'addSupplier': {'en': 'Add Supplier', 'fr': 'Ajouter un fournisseur'},
     'addUser': {'en': 'Add User', 'fr': 'Ajouter un utilisateur'},
     'productName': {'en': 'Product Name', 'fr': 'Nom du produit'},
+    'productImages': {'en': 'Product Images', 'fr': 'Images du produit'},
     'category': {'en': 'Category', 'fr': 'Catégorie'},
     'stock': {'en': 'Stock', 'fr': 'Stock'},
     'lowStock': {'en': 'Low Stock', 'fr': 'Stock faible'},
@@ -642,6 +652,26 @@ class AppInternationalizationService extends ChangeNotifier {
       'en': 'Search Category',
       'fr': 'Rechercher une catégorie',
     },
+    'quickAddCategory': {
+      'en': 'Quick Add Category',
+      'fr': 'Ajout rapide de catégorie',
+    },
+    'hideQuickAdd': {'en': 'Hide Quick Add', 'fr': 'Masquer l\'ajout rapide'},
+    'enterCategoryName': {
+      'en': 'Enter category name',
+      'fr': 'Entrez le nom de la catégorie',
+    },
+    'englishName': {'en': 'English name', 'fr': 'Nom en anglais'},
+    'frenchName': {'en': 'French name', 'fr': 'Nom en français'},
+    'tryDifferentSearch': {
+      'en': 'Try a different search term',
+      'fr': 'Essayez un terme de recherche différent',
+    },
+    'noCategoriesMatchFilters': {
+      'en': 'No categories match your search',
+      'fr': 'Aucune catégorie ne correspond à votre recherche',
+    },
+    'confirm': {'en': 'Confirm', 'fr': 'Confirmer'},
     'noCategoryFound': {
       'en': 'No category found',
       'fr': 'Aucune catégorie trouvée',
@@ -824,6 +854,10 @@ class AppInternationalizationService extends ChangeNotifier {
       'fr': 'Gérer les permissions et le statut de l\'utilisateur.',
     },
     'memberStatus': {'en': 'Member Status', 'fr': 'Statut du Membre'},
+    'cannotChangeOwnStatus': {
+      'en': 'You cannot change your own status.',
+      'fr': 'Vous ne pouvez pas modifier votre propre statut.',
+    },
     'changeUserStatus': {
       'en': 'Change the user\'s access status.',
       'fr': 'Changer le statut d\'accès de l\'utilisateur.',
@@ -1009,6 +1043,42 @@ class AppInternationalizationService extends ChangeNotifier {
       'en': 'User Information',
       'fr': 'Informations utilisateur',
     },
+    'onboardingType': {'en': 'Onboarding Type', 'fr': "Type d'intégration"},
+    'onboardingTypeDirect': {'en': 'Direct', 'fr': 'Direct'},
+    'onboardingTypeInvite': {'en': 'Invite', 'fr': 'Invitation'},
+    'onboardingTypeDirectDescription': {
+      'en': 'Create user immediately with a temporary password.',
+      'fr':
+          "Créer l'utilisateur immédiatement avec un mot de passe temporaire.",
+    },
+    'onboardingTypeInviteDescription': {
+      'en': 'Send an invitation email. User sets their own password.',
+      'fr':
+          "Envoyer un e-mail d'invitation. L'utilisateur choisit son mot de passe.",
+    },
+    'temporaryPassword': {
+      'en': 'Temporary Password',
+      'fr': 'Mot de passe temporaire',
+    },
+    'forcePasswordChangeOnFirstLogin': {
+      'en': 'Force password change on first login',
+      'fr': 'Forcer le changement de mot de passe à la première connexion',
+    },
+    'createUser': {'en': 'Create User', 'fr': 'Créer l\'utilisateur'},
+    'userCreatedSuccessfully': {
+      'en': 'User created successfully',
+      'fr': 'Utilisateur créé avec succès',
+    },
+    'errorCreatingUser': {
+      'en': 'Error creating user',
+      'fr': "Erreur lors de la création de l'utilisateur",
+    },
+    'userAlreadyExists': {
+      'en': 'A user with this email or username already exists.',
+      'fr':
+          "Un utilisateur avec cet email ou ce nom d'utilisateur existe déjà.",
+    },
+
     'settingsTitleDescription': {
       'en':
           'Manage your account, business information, and application preferences.',
@@ -1258,10 +1328,6 @@ class AppInternationalizationService extends ChangeNotifier {
     'noCategoriesYet': {
       'en': 'No categories yet',
       'fr': 'Aucune catégorie encore',
-    },
-    'noCategoriesMatchFilters': {
-      'en': 'No categories match your filters',
-      'fr': 'Aucune catégorie ne correspond à vos filtres',
     },
     'categoryWillBeRemovedPermanently': {
       'en': 'This category will be removed from your team permanently.',
@@ -2732,7 +2798,37 @@ class AppInternationalizationService extends ChangeNotifier {
     'qtyOrdered': {'en': 'Qty Ord.', 'fr': 'Qté cmd.'},
     'qtyReceived': {'en': 'Qty Rec.', 'fr': 'Qté reçue'},
     'unitPriceHT': {'en': 'Subtotal HT', 'fr': 'Sous-total HT'},
+    'files': {'en': 'Files', 'fr': 'Fichiers'},
+    'gallery': {'en': 'Gallery', 'fr': 'Galerie'},
+    'attach': {'en': 'Attach', 'fr': 'Joindre'},
+    'file': {'en': 'File', 'fr': 'Fichier'},
+    'processingFiles': {
+      'en': 'Processing files…',
+      'fr': 'Traitement des fichiers…',
+    },
+    'moreAllowed': {'en': 'more allowed', 'fr': 'plus permis'},
   };
+
+  /// Returns the localized value of text 'productImages'.
+  String get productImages => _stringOfLocalizedValue('productImages');
+
+  /// Returns the localized value of text 'moreAllowed'.
+  String get moreAllowed => _stringOfLocalizedValue('moreAllowed');
+
+  /// Returns the localized value of text 'processingFiles'.
+  String get processingFiles => _stringOfLocalizedValue('processingFiles');
+
+  /// Returns the localized value of text 'file'.
+  String get file => _stringOfLocalizedValue('file');
+
+  /// Returns the localized value of text 'attach'.
+  String get attach => _stringOfLocalizedValue('attach');
+
+  /// Returns the localized value of text 'files'.
+  String get files => _stringOfLocalizedValue('files');
+
+  /// Returns the localized value of text 'gallery'.
+  String get gallery => _stringOfLocalizedValue('gallery');
 
   /// Returns the localized value of text 'notesConditions'.
   String get notesConditions => _stringOfLocalizedValue('notesConditions');
@@ -4918,6 +5014,32 @@ class AppInternationalizationService extends ChangeNotifier {
   /// Returns the localized value of text 'searchCategory'.
   String get searchCategory => _stringOfLocalizedValue('searchCategory');
 
+  /// Returns the localized value of text 'quickAddCategory'.
+  String get quickAddCategory => _stringOfLocalizedValue('quickAddCategory');
+
+  /// Returns the localized value of text 'hideQuickAdd'.
+  String get hideQuickAdd => _stringOfLocalizedValue('hideQuickAdd');
+
+  /// Returns the localized value of text 'enterCategoryName'.
+  String get enterCategoryName => _stringOfLocalizedValue('enterCategoryName');
+
+  /// Returns the localized value of text 'englishName'.
+  String get englishName => _stringOfLocalizedValue('englishName');
+
+  /// Returns the localized value of text 'frenchName'.
+  String get frenchName => _stringOfLocalizedValue('frenchName');
+
+  /// Returns the localized value of text 'tryDifferentSearch'.
+  String get tryDifferentSearch =>
+      _stringOfLocalizedValue('tryDifferentSearch');
+
+  /// Returns the localized value of text 'noCategoriesMatchFilters'.
+  String get noCategoriesMatchFilters =>
+      _stringOfLocalizedValue('noCategoriesMatchFilters');
+
+  /// Returns the localized value of text 'confirm'.
+  String get confirm => _stringOfLocalizedValue('confirm');
+
   /// Returns the localized value of text 'noProductsFoundAddNewProduct'.
   String get noProductsFoundAddNewProduct =>
       _stringOfLocalizedValue('noProductsFoundAddNewProduct');
@@ -5189,6 +5311,15 @@ class AppInternationalizationService extends ChangeNotifier {
 
   /// Returns the localized value of text 'add'.
   String get add => _stringOfLocalizedValue('add');
+
+  /// Returns the localized value of text 'asCategory'.
+  String get asCategory => _stringOfLocalizedValue('asCategory');
+
+  /// Returns the localized value of text 'selectOption'.
+  String get selectOption => _stringOfLocalizedValue('selectOption');
+
+  /// Returns the localized value of text 'typeToSearch'.
+  String get typeToSearch => _stringOfLocalizedValue('typeToSearch');
 
   /// Returns the localized value of text 'update'.
   String get update => _stringOfLocalizedValue('update');
@@ -5955,6 +6086,10 @@ class AppInternationalizationService extends ChangeNotifier {
   /// Returns the localized value of memberStatus.
   String get memberStatus => _stringOfLocalizedValue('memberStatus');
 
+  /// Returns the localized value of cannotChangeOwnStatus.
+  String get cannotChangeOwnStatus =>
+      _stringOfLocalizedValue('cannotChangeOwnStatus');
+
   /// Returns the localized value of changeUserStatus.
   String get changeUserStatus => _stringOfLocalizedValue('changeUserStatus');
 
@@ -6167,10 +6302,6 @@ class AppInternationalizationService extends ChangeNotifier {
   /// Returns the localized value of categoryWillBeRemovedPermanently.
   String get categoryWillBeRemovedPermanently =>
       _stringOfLocalizedValue('categoryWillBeRemovedPermanently');
-
-  /// Returns the localized value of noCategoriesMatchFilters.
-  String get noCategoriesMatchFilters =>
-      _stringOfLocalizedValue('noCategoriesMatchFilters');
 
   /// Returns the localized value of deleteCategory.
   String get deleteCategory => _stringOfLocalizedValue('deleteCategory');
@@ -6592,6 +6723,45 @@ class AppInternationalizationService extends ChangeNotifier {
   /// Returns the localized value of text 'noUserFound'.
   String get noUserFound => _stringOfLocalizedValue('noUserFound');
 
+  /// Returns the localized value of text 'onboardingType'.
+  String get onboardingType => _stringOfLocalizedValue('onboardingType');
+
+  /// Returns the localized value of text 'onboardingTypeDirect'.
+  String get onboardingTypeDirect =>
+      _stringOfLocalizedValue('onboardingTypeDirect');
+
+  /// Returns the localized value of text 'onboardingTypeInvite'.
+  String get onboardingTypeInvite =>
+      _stringOfLocalizedValue('onboardingTypeInvite');
+
+  /// Returns the localized value of text 'onboardingTypeDirectDescription'.
+  String get onboardingTypeDirectDescription =>
+      _stringOfLocalizedValue('onboardingTypeDirectDescription');
+
+  /// Returns the localized value of text 'onboardingTypeInviteDescription'.
+  String get onboardingTypeInviteDescription =>
+      _stringOfLocalizedValue('onboardingTypeInviteDescription');
+
+  /// Returns the localized value of text 'temporaryPassword'.
+  String get temporaryPassword => _stringOfLocalizedValue('temporaryPassword');
+
+  /// Returns the localized value of text 'forcePasswordChangeOnFirstLogin'.
+  String get forcePasswordChangeOnFirstLogin =>
+      _stringOfLocalizedValue('forcePasswordChangeOnFirstLogin');
+
+  /// Returns the localized value of text 'createUser'.
+  String get createUser => _stringOfLocalizedValue('createUser');
+
+  /// Returns the localized value of text 'userCreatedSuccessfully'.
+  String get userCreatedSuccessfully =>
+      _stringOfLocalizedValue('userCreatedSuccessfully');
+
+  /// Returns the localized value of text 'errorCreatingUser'.
+  String get errorCreatingUser => _stringOfLocalizedValue('errorCreatingUser');
+
+  /// Returns the localized value of text 'userAlreadyExists'.
+  String get userAlreadyExists => _stringOfLocalizedValue('userAlreadyExists');
+
   /// Changes the locale.
   void changeLocale([Locale? newLocale]) {
     final local = switch ((newLocale, _locale.languageCode)) {
@@ -6604,8 +6774,8 @@ class AppInternationalizationService extends ChangeNotifier {
       return;
     }
     _locale = local;
-
-    AppStorage.of<Locale>().write(_key, local);
+    final _storage = const FlutterSecureStorage();
+    unawaited(_storage.write(key: _key, value: jsonEncode(local)));
     notifyListeners();
   }
 

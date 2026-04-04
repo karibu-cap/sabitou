@@ -37,8 +37,7 @@ class DeleteGlobalProductController extends ChangeNotifier {
   String get confirmationText => _confirmationText;
 
   /// Expected confirmation text
-  String get expectedConfirmationText =>
-      AppInternationalizationService.to.delete.toUpperCase();
+  String get expectedConfirmationText => globalProduct.refId;
 
   /// Whether the confirmation text is correct
   bool get isConfirmationValid =>

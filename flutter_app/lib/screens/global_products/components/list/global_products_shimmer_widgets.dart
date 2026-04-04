@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 
-import '../../../../themes/app_colors.dart';
+import '../../../../themes/app_theme.dart';
 
 /// Collection of shimmer loading widgets for the global products module.
 ///
@@ -13,7 +13,7 @@ class GlobalProductsShimmerWidgets {
     return Shimmer(
       duration: const Duration(seconds: 2),
       interval: const Duration(milliseconds: 500),
-      color: AppColors.primary100,
+      color: SabitouColors.shimmerBase.withValues(alpha: 0.5),
       child: Column(
         children: [
           // Table header shimmer
@@ -32,7 +32,7 @@ class GlobalProductsShimmerWidgets {
     return Shimmer(
       duration: const Duration(seconds: 2),
       interval: const Duration(milliseconds: 500),
-      color: AppColors.primary100,
+      color: SabitouColors.shimmerBase.withValues(alpha: 0.5),
       child: GridView.count(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
@@ -50,8 +50,9 @@ class GlobalProductsShimmerWidgets {
     return Shimmer(
       duration: const Duration(seconds: 2),
       interval: const Duration(milliseconds: 500),
-      color: AppColors.primary100,
+      color: SabitouColors.shimmerBase.withValues(alpha: 0.5),
       child: Card(
+        color: SabitouColors.shimmerBase.withValues(alpha: 0.5),
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -60,27 +61,27 @@ class GlobalProductsShimmerWidgets {
               Container(
                 height: 20,
                 width: double.infinity,
-                decoration: const BoxDecoration(
-                  color: AppColors.primary100,
-                  borderRadius: BorderRadius.all(Radius.circular(4)),
+                decoration: BoxDecoration(
+                  color: SabitouColors.shimmerBase.withValues(alpha: 0.5),
+                  borderRadius: const BorderRadius.all(Radius.circular(4)),
                 ),
               ),
               const SizedBox(height: 8),
               Container(
                 height: 16,
                 width: 150,
-                decoration: const BoxDecoration(
-                  color: AppColors.primary100,
-                  borderRadius: BorderRadius.all(Radius.circular(4)),
+                decoration: BoxDecoration(
+                  color: SabitouColors.shimmerBase.withValues(alpha: 0.5),
+                  borderRadius: const BorderRadius.all(Radius.circular(4)),
                 ),
               ),
               const SizedBox(height: 8),
               Container(
                 height: 16,
                 width: 100,
-                decoration: const BoxDecoration(
-                  color: AppColors.primary100,
-                  borderRadius: BorderRadius.all(Radius.circular(4)),
+                decoration: BoxDecoration(
+                  color: SabitouColors.shimmerBase.withValues(alpha: 0.5),
+                  borderRadius: const BorderRadius.all(Radius.circular(4)),
                 ),
               ),
             ],
@@ -95,7 +96,7 @@ class GlobalProductsShimmerWidgets {
     return Shimmer(
       duration: const Duration(seconds: 2),
       interval: const Duration(milliseconds: 500),
-      color: AppColors.primary100,
+      color: SabitouColors.shimmerBase.withValues(alpha: 0.5),
       child: Flex(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         direction: isMobile ? Axis.vertical : Axis.horizontal,
@@ -105,17 +106,17 @@ class GlobalProductsShimmerWidgets {
           Container(
             height: 24,
             width: 200,
-            decoration: const BoxDecoration(
-              color: AppColors.primary100,
-              borderRadius: BorderRadius.all(Radius.circular(4)),
+            decoration: BoxDecoration(
+              color: SabitouColors.shimmerBase.withValues(alpha: 0.5),
+              borderRadius: const BorderRadius.all(Radius.circular(4)),
             ),
           ),
           Container(
             height: 36,
             width: 120,
-            decoration: const BoxDecoration(
-              color: AppColors.primary100,
-              borderRadius: BorderRadius.all(Radius.circular(8)),
+            decoration: BoxDecoration(
+              color: SabitouColors.shimmerBase.withValues(alpha: 0.5),
+              borderRadius: const BorderRadius.all(Radius.circular(8)),
             ),
           ),
         ],
@@ -128,8 +129,8 @@ class GlobalProductsShimmerWidgets {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
       decoration: BoxDecoration(
-        color: Colors.grey[100],
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
+        color: SabitouColors.neutralSoft,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
       ),
       child: Row(
         children: [
@@ -137,9 +138,9 @@ class GlobalProductsShimmerWidgets {
             flex: 3,
             child: Container(
               height: 16,
-              decoration: const BoxDecoration(
-                color: AppColors.primary100,
-                borderRadius: BorderRadius.all(Radius.circular(4)),
+              decoration: BoxDecoration(
+                color: SabitouColors.shimmerBase.withValues(alpha: 0.5),
+                borderRadius: const BorderRadius.all(Radius.circular(4)),
               ),
             ),
           ),
@@ -148,9 +149,9 @@ class GlobalProductsShimmerWidgets {
             flex: 2,
             child: Container(
               height: 16,
-              decoration: const BoxDecoration(
-                color: AppColors.primary100,
-                borderRadius: BorderRadius.all(Radius.circular(4)),
+              decoration: BoxDecoration(
+                color: SabitouColors.shimmerBase.withValues(alpha: 0.5),
+                borderRadius: const BorderRadius.all(Radius.circular(4)),
               ),
             ),
           ),
@@ -159,9 +160,9 @@ class GlobalProductsShimmerWidgets {
             flex: 2,
             child: Container(
               height: 16,
-              decoration: const BoxDecoration(
-                color: AppColors.primary100,
-                borderRadius: BorderRadius.all(Radius.circular(4)),
+              decoration: BoxDecoration(
+                color: SabitouColors.shimmerBase.withValues(alpha: 0.5),
+                borderRadius: const BorderRadius.all(Radius.circular(4)),
               ),
             ),
           ),
@@ -169,9 +170,9 @@ class GlobalProductsShimmerWidgets {
           Container(
             width: 80,
             height: 16,
-            decoration: const BoxDecoration(
-              color: AppColors.primary100,
-              borderRadius: BorderRadius.all(Radius.circular(4)),
+            decoration: BoxDecoration(
+              color: SabitouColors.shimmerBase.withValues(alpha: 0.5),
+              borderRadius: const BorderRadius.all(Radius.circular(4)),
             ),
           ),
         ],
@@ -184,9 +185,9 @@ class GlobalProductsShimmerWidgets {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
       margin: const EdgeInsets.only(bottom: 1),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        border: Border(bottom: BorderSide(color: AppColors.primary50)),
+      decoration: BoxDecoration(
+        color: SabitouColors.shimmerHighlight,
+        border: Border(bottom: BorderSide(color: SabitouColors.neutral)),
       ),
       child: Row(
         children: [
@@ -198,18 +199,18 @@ class GlobalProductsShimmerWidgets {
                 Container(
                   height: 16,
                   width: double.infinity,
-                  decoration: const BoxDecoration(
-                    color: AppColors.primary100,
-                    borderRadius: BorderRadius.all(Radius.circular(4)),
+                  decoration: BoxDecoration(
+                    color: SabitouColors.shimmerBase.withValues(alpha: 0.5),
+                    borderRadius: const BorderRadius.all(Radius.circular(4)),
                   ),
                 ),
                 const SizedBox(height: 4),
                 Container(
                   height: 12,
                   width: 120,
-                  decoration: const BoxDecoration(
-                    color: AppColors.primary100,
-                    borderRadius: BorderRadius.all(Radius.circular(4)),
+                  decoration: BoxDecoration(
+                    color: SabitouColors.shimmerBase.withValues(alpha: 0.5),
+                    borderRadius: const BorderRadius.all(Radius.circular(4)),
                   ),
                 ),
               ],
@@ -220,9 +221,9 @@ class GlobalProductsShimmerWidgets {
             flex: 2,
             child: Container(
               height: 16,
-              decoration: const BoxDecoration(
-                color: AppColors.primary100,
-                borderRadius: BorderRadius.all(Radius.circular(4)),
+              decoration: BoxDecoration(
+                color: SabitouColors.shimmerBase.withValues(alpha: 0.5),
+                borderRadius: const BorderRadius.all(Radius.circular(4)),
               ),
             ),
           ),
@@ -231,9 +232,9 @@ class GlobalProductsShimmerWidgets {
             flex: 2,
             child: Container(
               height: 16,
-              decoration: const BoxDecoration(
-                color: AppColors.primary100,
-                borderRadius: BorderRadius.all(Radius.circular(4)),
+              decoration: BoxDecoration(
+                color: SabitouColors.shimmerBase.withValues(alpha: 0.5),
+                borderRadius: const BorderRadius.all(Radius.circular(4)),
               ),
             ),
           ),
@@ -241,9 +242,9 @@ class GlobalProductsShimmerWidgets {
           Container(
             width: 80,
             height: 32,
-            decoration: const BoxDecoration(
-              color: AppColors.primary100,
-              borderRadius: BorderRadius.all(Radius.circular(16)),
+            decoration: BoxDecoration(
+              color: SabitouColors.shimmerBase.withValues(alpha: 0.5),
+              borderRadius: const BorderRadius.all(Radius.circular(16)),
             ),
           ),
         ],
@@ -263,18 +264,18 @@ class GlobalProductsShimmerWidgets {
             Container(
               height: 24,
               width: 60,
-              decoration: const BoxDecoration(
-                color: AppColors.primary100,
-                borderRadius: BorderRadius.all(Radius.circular(4)),
+              decoration: BoxDecoration(
+                color: SabitouColors.shimmerBase.withValues(alpha: 0.5),
+                borderRadius: const BorderRadius.all(Radius.circular(4)),
               ),
             ),
             const SizedBox(height: 8),
             Container(
               height: 16,
               width: 100,
-              decoration: const BoxDecoration(
-                color: AppColors.primary100,
-                borderRadius: BorderRadius.all(Radius.circular(4)),
+              decoration: BoxDecoration(
+                color: SabitouColors.shimmerBase.withValues(alpha: 0.5),
+                borderRadius: const BorderRadius.all(Radius.circular(4)),
               ),
             ),
           ],

@@ -122,7 +122,7 @@ class _PurchaseOrderItemPickerBodyState
   final _qtyCtrl = TextEditingController(text: '1');
   final _priceCtrl = TextEditingController();
 
-  StoreProductWithGlobalProduct? _selected;
+  CustomProduct? _selected;
 
   @override
   void dispose() {
@@ -131,7 +131,7 @@ class _PurchaseOrderItemPickerBodyState
     super.dispose();
   }
 
-  void _selectProduct(StoreProductWithGlobalProduct product) {
+  void _selectProduct(CustomProduct product) {
     setState(() {
       _selected = product;
       _priceCtrl.text = product.storeProduct.defaultPurchasePrice > 0
@@ -165,10 +165,10 @@ class _PurchaseOrderItemPickerBodyState
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        AutoComplete<StoreProductWithGlobalProduct>(
+        AutoComplete<CustomProduct>(
           placeholder: Intls.to.product,
           searchPlaceholder: Intls.to.searchProductHint,
-          initialValue: _selected?.globalProduct.label,
+          initialValue: _selected,
           optionsBuilder: (text) async {
             if (text.isEmpty) {
               return [];
@@ -220,7 +220,7 @@ class _SelectedProductConfig extends StatelessWidget {
     required this.cs,
   });
 
-  final StoreProductWithGlobalProduct product;
+  final CustomProduct product;
   final TextEditingController qtyController;
   final TextEditingController priceController;
   final ShadThemeData theme;

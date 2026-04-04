@@ -7,6 +7,7 @@ import '../../../../services/internationalization/internationalization.dart';
 import '../../../themes/app_colors.dart';
 import '../../../utils/common_functions.dart';
 import '../../../utils/form/validation.dart';
+import '../../../utils/user_preference.dart';
 import '../../input/form_fields.dart';
 import '../../loading.dart';
 import 'add_category_controller.dart';
@@ -31,11 +32,19 @@ class CategoryFormDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userPreferences = context.watch<UserPreferences>();
+    final business = userPreferences.business;
+
+    if (business == null) {
+      return const SizedBox.shrink();
+    }
+
     return ChangeNotifierProvider(
       create: (context) => CategoryAddController(
         intl: AppInternationalizationService.to,
         viewModel: AddCategoryViewModel(),
         category: category,
+        business: business,
       ),
       child: _CategoryFormDialogContent(category: category),
     );

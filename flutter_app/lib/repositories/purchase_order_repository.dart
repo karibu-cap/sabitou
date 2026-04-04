@@ -9,7 +9,6 @@ import '../core/database/local_data_source.dart';
 import '../core/database/query/sql_condition.dart';
 import '../core/database/row_mapper.dart';
 import '../services/powersync/schema.dart';
-import '../services/rpc/connect_rpc.dart';
 import '../utils/app_constants.dart';
 import '../utils/logger.dart';
 import '../utils/utils.dart';
@@ -17,9 +16,6 @@ import '../utils/utils.dart';
 /// The purchase order repository.
 final class PurchaseOrderRepository extends BaseRepository<PurchaseOrder> {
   final _logger = LoggerApp('PurchaseOrderRepository');
-
-  /// The purchase order service client.
-  final PurchaseOrderServiceClient purchaseOrderServiceClient;
 
   @override
   final LocalDataSource dataSource;
@@ -41,10 +37,7 @@ final class PurchaseOrderRepository extends BaseRepository<PurchaseOrder> {
   RawRow toRow(PurchaseOrder entity) => fromPurchaseOrderToRaw(entity);
 
   /// Constructs a new [PurchaseOrderRepository].
-  PurchaseOrderRepository({required this.dataSource})
-    : purchaseOrderServiceClient = PurchaseOrderServiceClient(
-        ConnectRPCService.to.clientChannel,
-      );
+  PurchaseOrderRepository({required this.dataSource});
 
   /// Creates a purchase order.
   ///
@@ -62,8 +55,7 @@ final class PurchaseOrderRepository extends BaseRepository<PurchaseOrder> {
           record: fromPurchaseOrderToRaw(purchaseOrder),
         );
 
-        for (var i = 0; i < purchaseOrder.items.length; i++) {
-          final item = purchaseOrder.items[i];
+        for (var item in purchaseOrder.items) {
           await tx.createRecord(
             table: CollectionName.purchaseOrderItems,
             record: fromPurchaseOrderItemsToRow(item, purchaseOrder.refId),

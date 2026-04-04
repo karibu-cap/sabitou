@@ -142,9 +142,7 @@ class PaymentStateManager extends ChangeNotifier {
   Future<ValidateVoucherResponse?> _validateVoucher(String voucherCode) async {
     if (voucherCode.isEmpty) return ValidateVoucherResponse();
 
-    return GiftVoucherRepository.instance.validateVoucher(
-      ValidateVoucherRequest(voucherCode: voucherCode),
-    );
+    return GiftVoucherRepository.instance.validateVoucher(voucherCode);
   }
 
   /// Validates inputs and appends a [Payment] to the current cart receipt.

@@ -62,6 +62,19 @@ final class StoreMembersFields {
   static const String permissions = 'permissions';
   static const String status = 'status';
   static const String memberSince = 'member_since';
+  static const String onboardingType = 'onboarding_type';
+  static const String invitationId = 'invitation_id';
+}
+
+final class InvitationsFields {
+  static const String refId = 'ref_id';
+  static const String userId = 'user_id';
+  static const String storeId = 'store_id';
+  static const String invitedBy = 'invited_by';
+  static const String status = 'status';
+  static const String expiresAt = 'expires_at';
+  static const String createdAt = 'created_at';
+  static const String respondedAt = 'responded_at';
 }
 
 final class BusinessMembersFields {
@@ -330,6 +343,7 @@ final class ResourceLinksFields {
   static const String iconUri = 'icon_uri';
   static const String info = 'info';
   static const String label = 'label';
+  static const String isOrphan = 'is_orphan';
 }
 
 final class ReceivingNotesFields {
@@ -513,6 +527,19 @@ final schema = const Schema([
     Column.text(StoreMembersFields.permissions), // ← JSON string
     Column.text(StoreMembersFields.status),
     Column.text(StoreMembersFields.memberSince),
+    Column.text(StoreMembersFields.onboardingType), // ← ADD
+    Column.text(StoreMembersFields.invitationId),
+  ]),
+
+  Table(CollectionName.invitations, [
+    Column.text(InvitationsFields.refId),
+    Column.text(InvitationsFields.userId),
+    Column.text(InvitationsFields.storeId),
+    Column.text(InvitationsFields.invitedBy),
+    Column.text(InvitationsFields.status),
+    Column.text(InvitationsFields.expiresAt),
+    Column.text(InvitationsFields.createdAt),
+    Column.text(InvitationsFields.respondedAt),
   ]),
 
   Table(CollectionName.globalProducts, [
@@ -825,6 +852,7 @@ final schema = const Schema([
     Column.text(ResourceLinksFields.iconUri),
     Column.text(ResourceLinksFields.info),
     Column.text(ResourceLinksFields.label),
+    Column.text(ResourceLinksFields.isOrphan),
   ]),
 
   Table(CollectionName.receivingNotes, [

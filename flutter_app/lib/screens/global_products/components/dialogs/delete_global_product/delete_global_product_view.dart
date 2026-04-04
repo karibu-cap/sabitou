@@ -4,8 +4,8 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../../../../services/internationalization/internationalization.dart';
+import '../../../../../themes/app_theme.dart';
 import '../../../../../utils/common_functions.dart';
-import '../../../../../utils/extensions/global_product_extension.dart';
 import '../../../../../widgets/loading.dart';
 import '../../../global_products_controller.dart';
 import 'delete_global_product_controller.dart';
@@ -59,50 +59,6 @@ class _DeleteGlobalProductDialogContent extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Header
-                  Row(
-                    children: [
-                      Container(
-                        width: 30,
-                        height: 30,
-                        decoration: const BoxDecoration(
-                          color: Colors.red,
-                          borderRadius: BorderRadius.all(Radius.circular(8)),
-                        ),
-                        child: const Icon(
-                          Icons.warning,
-                          color: Colors.white,
-                          size: 20,
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              AppInternationalizationService.to.deleteProduct,
-                              style: theme.textTheme.h3.copyWith(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                                color: Colors.red,
-                              ),
-                            ),
-                            Text(
-                              AppInternationalizationService
-                                  .to
-                                  .thisActionIsIrreversible,
-                              style: theme.textTheme.muted.copyWith(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-
                   const SizedBox(height: 8),
 
                   // Error message
@@ -111,19 +67,19 @@ class _DeleteGlobalProductDialogContent extends StatelessWidget {
                       width: double.infinity,
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: Colors.red.withValues(alpha: 0.1),
+                        color: SabitouColors.danger.withValues(alpha: 0.1),
                         borderRadius: const BorderRadius.all(
                           Radius.circular(8),
                         ),
                         border: Border.all(
-                          color: Colors.red.withValues(alpha: 0.3),
+                          color: SabitouColors.danger.withValues(alpha: 0.3),
                         ),
                       ),
                       child: Row(
                         children: [
                           const Icon(
                             Icons.error_outline,
-                            color: Colors.red,
+                            color: SabitouColors.danger,
                             size: 16,
                           ),
                           const SizedBox(width: 8),
@@ -131,7 +87,7 @@ class _DeleteGlobalProductDialogContent extends StatelessWidget {
                             child: Text(
                               controller.errorMessage,
                               style: theme.textTheme.p.copyWith(
-                                color: Colors.red,
+                                color: SabitouColors.danger,
                                 fontSize: 14,
                               ),
                             ),
@@ -146,11 +102,6 @@ class _DeleteGlobalProductDialogContent extends StatelessWidget {
 
                   if (controller.errorMessage.isNotEmpty)
                     const SizedBox(height: 8),
-
-                  // Category info section
-                  _GlobalProductInfoSection(controller: controller),
-
-                  const SizedBox(height: 8),
 
                   // Warning section
                   _WarningSection(),
@@ -174,181 +125,23 @@ class _DeleteGlobalProductDialogContent extends StatelessWidget {
   }
 }
 
-/// Global product information section
-class _GlobalProductInfoSection extends StatelessWidget {
-  final DeleteGlobalProductController controller;
-
-  const _GlobalProductInfoSection({required this.controller});
-
-  IconData _getStatusIcon(GlobalProductStatus status) {
-    switch (status) {
-      case GlobalProductStatus.GLOBAL_PRODUCT_STATUS_ACTIVE:
-        return LucideIcons.package;
-      case GlobalProductStatus.GLOBAL_PRODUCT_STATUS_INACTIVE:
-        return LucideIcons.pause400;
-      default:
-        return LucideIcons.triangleAlert;
-    }
-  }
-
-  Color _getStatusColor(GlobalProductStatus status) {
-    switch (status) {
-      case GlobalProductStatus.GLOBAL_PRODUCT_STATUS_ACTIVE:
-        return Colors.green;
-      case GlobalProductStatus.GLOBAL_PRODUCT_STATUS_INACTIVE:
-        return Colors.grey;
-      default:
-        return Colors.grey;
-    }
-  }
-
-  String _getStatusLabel(GlobalProductStatus status) {
-    switch (status) {
-      case GlobalProductStatus.GLOBAL_PRODUCT_STATUS_ACTIVE:
-        return AppInternationalizationService.to.active;
-      case GlobalProductStatus.GLOBAL_PRODUCT_STATUS_INACTIVE:
-        return AppInternationalizationService.to.inactive;
-      default:
-        return AppInternationalizationService.to.inactive;
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = ShadTheme.of(context);
-    final globalProduct = controller.globalProduct;
-
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.grey.withValues(alpha: 0.05),
-        borderRadius: const BorderRadius.all(Radius.circular(8)),
-        border: Border.all(color: Colors.grey.withValues(alpha: 0.2)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              const Icon(LucideIcons.package, color: Colors.grey, size: 16),
-              const SizedBox(width: 8),
-              Text(
-                AppInternationalizationService.to.deleteProduct,
-                style: theme.textTheme.p.copyWith(
-                  color: Colors.grey.withValues(alpha: 0.8),
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-
-          Row(
-            children: [
-              // Avatar placeholder
-              Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.primary.withValues(alpha: 0.1),
-                  borderRadius: const BorderRadius.all(Radius.circular(24)),
-                ),
-                child: Icon(
-                  LucideIcons.package,
-                  color: theme.colorScheme.primary,
-                  size: 24,
-                ),
-              ),
-              const SizedBox(width: 16),
-
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      globalProduct.label,
-                      style: theme.textTheme.h4.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Row(
-                      children: [
-                        Icon(
-                          _getStatusIcon(globalProduct.status),
-                          size: 12,
-                          color: _getStatusColor(globalProduct.status),
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          _getStatusLabel(globalProduct.status),
-                          style: theme.textTheme.small.copyWith(
-                            color: _getStatusColor(globalProduct.status),
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    Text(
-                      globalProduct.about,
-                      style: theme.textTheme.h4.copyWith(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 /// Warning section
 class _WarningSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final theme = ShadTheme.of(context);
-
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.red.withValues(alpha: 0.05),
-        borderRadius: const BorderRadius.all(Radius.circular(8)),
-        border: Border.all(color: Colors.red.withValues(alpha: 0.2)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              const Icon(Icons.warning_amber, color: Colors.red, size: 16),
-              const SizedBox(width: 8),
-              Text(
-                AppInternationalizationService.to.confirmationRequired,
-                style: theme.textTheme.p.copyWith(
-                  color: Colors.red,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-
-          Text(
-            AppInternationalizationService.to.productWillBeRemovedPermanently,
-            style: theme.textTheme.p.copyWith(
-              color: Colors.red.withValues(alpha: 0.8),
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          const SizedBox(height: 8),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            const Icon(Icons.warning_amber),
+            const SizedBox(width: 8),
+            Text(AppInternationalizationService.to.confirmationRequired),
+          ],
+        ),
+        Text(AppInternationalizationService.to.productWillBeRemovedPermanently),
+        const SizedBox(height: 8),
+      ],
     );
   }
 }
@@ -363,62 +156,41 @@ class _ConfirmationSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
 
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.orange.withValues(alpha: 0.05),
-        borderRadius: const BorderRadius.all(Radius.circular(8)),
-        border: Border.all(color: Colors.orange.withValues(alpha: 0.2)),
-      ),
+    return ShadCard(
+      backgroundColor: SabitouColors.dangerSoft,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
+            spacing: 8,
             children: [
-              const Icon(Icons.edit_outlined, color: Colors.orange, size: 16),
-              const SizedBox(width: 8),
+              const Icon(
+                LucideIcons.circleAlert,
+                color: SabitouColors.danger,
+                size: 16,
+              ),
               Text(
                 AppInternationalizationService.to.confirmationRequired,
                 style: theme.textTheme.p.copyWith(
-                  color: Colors.orange.withValues(alpha: 0.8),
+                  color: SabitouColors.danger,
                   fontWeight: FontWeight.w600,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 12),
-
-          Text(
+          SelectableText(
             AppInternationalizationService.to.typeToConfirmDeletion.replaceAll(
               '{text}',
               controller.expectedConfirmationText,
             ),
             style: theme.textTheme.p.copyWith(
-              color: Colors.orange.withValues(alpha: 0.7),
+              color: SabitouColors.danger,
               fontSize: 14,
             ),
           ),
           const SizedBox(height: 12),
-
-          TextFormField(
-            decoration: InputDecoration(
-              hintText: controller.expectedConfirmationText,
-              border: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(8)),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: const BorderRadius.all(Radius.circular(8)),
-                borderSide: BorderSide(
-                  color: controller.isConfirmationValid
-                      ? Colors.green
-                      : Colors.orange,
-                  width: 2,
-                ),
-              ),
-              suffixIcon: controller.isConfirmationValid
-                  ? const Icon(Icons.check_circle, color: Colors.green)
-                  : null,
-            ),
+          ShadInput(
+            placeholder: Text(controller.expectedConfirmationText),
             onChanged: controller.updateConfirmationText,
             enabled: !controller.isLoading,
           ),
@@ -462,10 +234,10 @@ class _ActionButtons extends StatelessWidget {
               Navigator.of(context).pop(true);
             }
           },
-          backgroundColor: Colors.red,
+          backgroundColor: SabitouColors.danger,
           child: Text(
             AppInternationalizationService.to.deletePermanently,
-            style: const TextStyle(color: Colors.white),
+            style: const TextStyle(color: SabitouColors.accentSoft),
           ),
         ),
       ],

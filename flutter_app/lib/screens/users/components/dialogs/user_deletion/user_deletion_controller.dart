@@ -58,6 +58,7 @@ class UserDeletionModalController extends ChangeNotifier {
     notifyListeners();
 
     final success = await _usersController.removeUserFromStore(
+      _storeMember.storeMember.storeId,
       _storeMember.storeMember.userId,
     );
 

@@ -7,7 +7,7 @@ class InputField extends StatelessWidget {
   /// Creates an input field
   const InputField({
     super.key,
-    required this.controller,
+    this.controller,
     required this.placeholder,
     this.icon,
     this.label,
@@ -17,10 +17,12 @@ class InputField extends StatelessWidget {
     this.id,
     this.validator,
     this.maxLines,
+    this.initialValue,
+    this.onChanged,
   });
 
   /// Controller for the input field text editing.
-  final TextEditingController controller;
+  final TextEditingController? controller;
 
   /// Placeholder text to display when field is empty.
   final String placeholder;
@@ -49,6 +51,12 @@ class InputField extends StatelessWidget {
   /// Optional validator function for the input field.
   final FormFieldValidator<String>? validator;
 
+  /// Initial value for the input field.
+  final String? initialValue;
+
+  /// Callback when the input text changes.
+  final void Function(String)? onChanged;
+
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
@@ -58,12 +66,14 @@ class InputField extends StatelessWidget {
 
     return ShadInputFormField(
       controller: controller,
+      initialValue: initialValue,
       placeholder: Text(placeholder, style: stylePlaceholder),
       trailing: Icon(icon, color: theme.colorScheme.primary, size: 16),
       keyboardType: keyboardType,
       inputFormatters: inputFormatters,
       id: id,
       validator: validator,
+      onChanged: onChanged,
       description: description != null
           ? Text(description ?? '', style: style)
           : null,

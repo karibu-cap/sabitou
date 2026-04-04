@@ -4,9 +4,11 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../../../services/internationalization/internationalization.dart';
-import '../../../../../themes/app_colors.dart';
+import '../../../../../themes/app_theme.dart';
 import '../../../../../utils/common_functions.dart';
 import '../../../../../utils/extensions/store_member_extenxion.dart';
+import '../../../../../utils/user_preference.dart';
+import '../../../../../utils/utils.dart';
 import '../../../../../widgets/loading.dart';
 import '../../../users_controller.dart';
 import '../../shared/permissions_selector.dart';
@@ -52,8 +54,7 @@ class _UserPermissionsModalContent extends StatelessWidget {
         return Material(
           color: theme.colorScheme.background,
           child: Container(
-            constraints: const BoxConstraints(maxHeight: 700),
-            padding: const EdgeInsets.all(8),
+            constraints: const BoxConstraints(maxHeight: 600),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -95,30 +96,35 @@ class _ErrorMessage extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: AppColors.red.withValues(alpha: 0.1),
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
-        border: Border.all(color: AppColors.red.withValues(alpha: 0.3)),
+        color: theme.colorScheme.destructive.withValues(alpha: 0.1),
+        borderRadius: const BorderRadius.all(
+          Radius.circular(AppTheme.radiusSm),
+        ),
+        border: Border.all(
+          color: theme.colorScheme.destructive.withValues(alpha: 0.3),
+        ),
       ),
       child: Row(
         children: [
-          const Icon(LucideIcons.circleAlert, color: AppColors.red, size: 18),
+          Icon(
+            LucideIcons.circleAlert,
+            color: theme.colorScheme.destructive,
+            size: 18,
+          ),
           const SizedBox(width: 12),
           Expanded(
             child: Text(
               controller.errorMessage,
               style: theme.textTheme.small.copyWith(
-                color: AppColors.red,
+                color: theme.colorScheme.destructive,
                 fontWeight: FontWeight.w500,
               ),
             ),
           ),
-          IconButton(
+          ShadButton.ghost(
+            size: ShadButtonSize.sm,
             onPressed: controller.clearError,
-            icon: const Icon(LucideIcons.x, size: 16),
-            style: IconButton.styleFrom(
-              padding: const EdgeInsets.all(4),
-              minimumSize: const Size(24, 24),
-            ),
+            child: const Icon(LucideIcons.x, size: 16),
           ),
         ],
       ),
@@ -137,13 +143,10 @@ class _UserInfoCard extends StatelessWidget {
     final theme = ShadTheme.of(context);
     final user = controller.originalStoreMember.user;
 
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.muted.withValues(alpha: 0.3),
-        borderRadius: const BorderRadius.all(Radius.circular(12)),
-        border: Border.all(color: theme.colorScheme.border),
-      ),
+    final userTag = user.userName.substring(0, 2).toUpperCase();
+
+    return ShadCard(
+      padding: const EdgeInsets.all(8),
       child: Row(
         children: [
           Container(
@@ -151,22 +154,15 @@ class _UserInfoCard extends StatelessWidget {
             height: 56,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              gradient: LinearGradient(
-                colors: [
-                  AppColors.purple,
-                  AppColors.purple.withValues(alpha: 0.7),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
+              color: AppUtils.stringToColor(userTag),
             ),
             child: Center(
               child: Text(
-                controller.usersController.getInitials(user),
+                userTag,
                 style: const TextStyle(
                   fontSize: 20,
-                  color: AppColors.primary50,
                   fontWeight: FontWeight.bold,
+                  color: SabitouColors.infoSoft,
                 ),
               ),
             ),
@@ -178,7 +174,7 @@ class _UserInfoCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '${user.firstName} ${user.lastName}',
+                  user.userName,
                   style: theme.textTheme.p.copyWith(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
@@ -232,7 +228,9 @@ class _CurrentStatusBadge extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
         color: status.color.withValues(alpha: 0.1),
-        borderRadius: const BorderRadius.all(Radius.circular(8)),
+        borderRadius: const BorderRadius.all(
+          Radius.circular(AppTheme.radiusSm),
+        ),
         border: Border.all(color: status.color.withValues(alpha: 0.3)),
       ),
       child: Row(
@@ -254,7 +252,7 @@ class _CurrentStatusBadge extends StatelessWidget {
   }
 }
 
-/// Status change section widget
+/// Status change section widget.
 class _StatusChangeSection extends StatelessWidget {
   const _StatusChangeSection({required this.controller});
 
@@ -264,72 +262,82 @@ class _StatusChangeSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
     final currentStatus = controller.originalStoreMember.storeMember.status;
+    final userPreferences = context.watch<UserPreferences>();
+    final currentUserId = userPreferences.user?.refId;
+    final isCurrentUser =
+        currentUserId == controller.originalStoreMember.user.refId;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            const Icon(
-              LucideIcons.userCog,
-              color: AppColors.primary500,
-              size: 18,
-            ),
-            const SizedBox(width: 10),
-            Text(
-              Intls.to.memberStatus,
-              style: theme.textTheme.p.copyWith(
-                color: AppColors.primary500,
-                fontWeight: FontWeight.w600,
-                fontSize: 14,
+    return ShadCard(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                LucideIcons.userCog,
+                color: theme.colorScheme.primary,
+                size: 18,
               ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 12),
-        Row(
-          children: [
-            Expanded(
-              child: ShadSelect<StoreMemberStatus>(
-                initialValue: currentStatus,
-                options: StoreMemberStatus.values
-                    .where(
-                      (e) =>
-                          e !=
-                          StoreMemberStatus.STORE_MEMBER_STATUS_UNSPECIFIED,
-                    )
-                    .map((status) {
-                      return ShadOption(
-                        value: status,
-                        child: Row(
-                          children: [
-                            Icon(status.icon, size: 16, color: status.color),
-                            const SizedBox(width: 10),
-                            Text(
-                              status.label,
-                              style: theme.textTheme.small.copyWith(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 13,
-                              ),
-                            ),
-                          ],
+              const SizedBox(width: 10),
+              Text(
+                Intls.to.memberStatus,
+                style: theme.textTheme.p.copyWith(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          ShadSelect<StoreMemberStatus>(
+            initialValue: currentStatus,
+            enabled: !isCurrentUser && !controller.isLoading,
+            options:
+                [
+                  StoreMemberStatus.STORE_MEMBER_STATUS_ACTIVE,
+                  StoreMemberStatus.STORE_MEMBER_STATUS_BANNED,
+                  StoreMemberStatus.STORE_MEMBER_STATUS_INACTIVE,
+                ].map((status) {
+                  return ShadOption(
+                    value: status,
+                    child: Row(
+                      children: [
+                        Icon(status.icon, size: 16, color: status.color),
+                        const SizedBox(width: 10),
+                        Text(
+                          status.label,
+                          style: theme.textTheme.small.copyWith(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 13,
+                          ),
                         ),
-                      );
-                    })
-                    .toList(),
-                selectedOptionBuilder: (context, value) => Text(value.label),
-                onChanged: controller.isLoading
-                    ? null
-                    : (newStatus) {
-                        if (newStatus != null && newStatus != currentStatus) {
-                          controller.changeUserStatus(newStatus);
-                        }
-                      },
+                      ],
+                    ),
+                  );
+                }).toList(),
+            selectedOptionBuilder: (context, value) => Text(value.label),
+            onChanged: controller.isLoading || isCurrentUser
+                ? null
+                : (newStatus) {
+                    if (newStatus != null && newStatus != currentStatus) {
+                      controller.changeUserStatus(newStatus);
+                    }
+                  },
+          ),
+          if (isCurrentUser)
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Text(
+                Intls.to.cannotChangeOwnStatus,
+                style: theme.textTheme.small.copyWith(
+                  color: theme.colorScheme.mutedForeground,
+                  fontSize: 12,
+                ),
               ),
             ),
-          ],
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -344,60 +352,62 @@ class _PermissionsSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return ShadCard(
+      padding: const EdgeInsets.all(8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
             children: [
-              Row(
-                children: [
-                  const Icon(LucideIcons.shield, size: 18),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Text(Intls.to.permissions, style: theme.textTheme.p),
-                  ),
-                  ShadBadge(
-                    backgroundColor: AppColors.purple.withValues(alpha: 0.15),
-                    hoverBackgroundColor: AppColors.purple.withValues(
-                      alpha: 0.15,
-                    ),
-                    foregroundColor: AppColors.purple,
-                    child: Text(
-                      '${controller.selectedPermissionsCount} ${Intls.to.selected}',
-                      style: theme.textTheme.small,
-                    ),
-                  ),
-                ],
+              Icon(
+                LucideIcons.shield,
+                size: 18,
+                color: theme.colorScheme.primary,
               ),
-              const SizedBox(height: 8),
-              Text(
-                Intls.to.selectWhatUserCanAccess,
-                style: theme.textTheme.small.copyWith(
-                  color: theme.colorScheme.mutedForeground,
-                  fontSize: 12,
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  Intls.to.permissions,
+                  style: theme.textTheme.p.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              ShadBadge(
+                backgroundColor: SabitouColors.infoText.withValues(alpha: 0.15),
+                hoverBackgroundColor: SabitouColors.infoText.withValues(
+                  alpha: 0.15,
+                ),
+                foregroundColor: SabitouColors.infoText,
+                child: Text(
+                  '${controller.selectedPermissionsCount} ${Intls.to.selected}',
+                  style: theme.textTheme.small,
                 ),
               ),
             ],
           ),
-        ),
-
-        Divider(
-          height: 1,
-          thickness: 1,
-          color: AppColors.purple.withValues(alpha: 0.1),
-        ),
-
-        Flexible(
-          child: PermissionsSelector(
-            isPermissionSelected: controller.isPermissionSelected,
-            onTogglePermission: controller.togglePermission,
+          const SizedBox(height: 8),
+          Text(
+            Intls.to.selectWhatUserCanAccess,
+            style: theme.textTheme.small.copyWith(
+              color: theme.colorScheme.mutedForeground,
+              fontSize: 12,
+            ),
           ),
-        ),
-      ],
+          const SizedBox(height: 16),
+          Divider(height: 1, thickness: 1, color: theme.colorScheme.border),
+          const SizedBox(height: 16),
+          Flexible(
+            child: PermissionsSelector(
+              isPermissionSelected: controller.isPermissionSelected,
+              onTogglePermission: controller.togglePermission,
+              isGroupSelected: controller.isGroupSelected,
+              onToggleGroup: controller.toggleGroup,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -411,11 +421,10 @@ class _ActionButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(top: 16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          const Spacer(),
           ShadButton.outline(
             onPressed: controller.isLoading
                 ? null
@@ -441,16 +450,9 @@ class _ActionButtons extends StatelessWidget {
                 if (controller.isLoading)
                   const Loading.button()
                 else
-                  const Icon(
-                    LucideIcons.save,
-                    size: 16,
-                    color: AppColors.primary50,
-                  ),
+                  const Icon(LucideIcons.save, size: 16),
                 const SizedBox(width: 8),
-                Text(
-                  Intls.to.save,
-                  style: const TextStyle(color: AppColors.primary50),
-                ),
+                Text(Intls.to.save),
               ],
             ),
           ),

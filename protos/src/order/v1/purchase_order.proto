@@ -5,10 +5,10 @@ package order.v1;
 import "buf/validate/validate.proto";
 import "financial/v1/invoice.proto";
 import "google/protobuf/timestamp.proto";
+import "inventory/v1/category.proto";
 import "logistic/v1/receiving_notes.proto";
 import "order/v1/order_utils.proto";
 import "payments/v1/payments.proto";
-import "inventory/v1/category.proto";
 
 /**
  * PurchaseOrder (Bon de Commande to supplier)
@@ -29,150 +29,43 @@ message PurchaseOrder {
   // "PO-2025-001"
   string ref_id = 1 [(buf.validate.field).required = true];
   // Company selling to you
-  string                             supplier_id            = 2;
-  string                             store_id               = 3; // will be generally the store_id
-  PurchaseOrderStatus                status                 = 5;
-  repeated PurchaseOrderLineItems        items                  = 6;
-  double                             total_amount           = 7; // Total cost in smallest currency unit
-  optional string                    currency               = 8;
-  string                             created_by_user_id     = 9;
-  google.protobuf.Timestamp          created_at             = 10;
+  string supplier_id = 2;
+  string store_id = 3; // will be generally the store_id
+  PurchaseOrderStatus status = 5;
+  repeated PurchaseOrderLineItems items = 6;
+  double total_amount = 7; // Total cost in smallest currency unit
+  optional string currency = 8;
+  string created_by_user_id = 9;
+  google.protobuf.Timestamp created_at = 10;
   optional google.protobuf.Timestamp expected_delivery_date = 11;
-  optional string                    notes                  = 12;
-  string                             destination_address    = 13;
-  optional string                    store_name             = 14;
-  optional string                    supplier_name          = 15;
-  google.protobuf.Timestamp          order_date             = 16;
-  optional string                    payment_id             = 17;
-  double                             sub_total              = 18;
-  double                             tax_total              = 19;
-
+  optional string notes = 12;
+  string destination_address = 13;
+  optional string store_name = 14;
+  optional string supplier_name = 15;
+  google.protobuf.Timestamp order_date = 16;
+  optional string payment_id = 17;
+  double sub_total = 18;
+  double tax_total = 19;
 }
 
 message PurchaseOrderLineItems {
-  string                         product_id        = 1;
-  string                         store_id          = 9;
-  int32                          quantity_ordered  = 2;
-  inventory.v1.Internationalized product_name      = 3;
-  double                         unit_price        = 4;
-  double                         total             = 5;
-  optional string                batch_id          = 6;
-  int32                          quantity_received = 7;
-  double                         tax_amount        = 8;
-  int32 line_index= 10;
+  string product_id = 1;
+  string store_id = 9;
+  int32 quantity_ordered = 2;
+  inventory.v1.Internationalized product_name = 3;
+  double unit_price = 4;
+  double total = 5;
+  optional string batch_id = 6;
+  int32 quantity_received = 7;
+  double tax_amount = 8;
+  int32 line_index = 10;
 }
 
 enum PurchaseOrderStatus {
-  PO_STATUS_UNSPECIFIED        = 0;
-  PO_STATUS_DRAFT              = 1; // Being prepared
-  PO_STATUS_PENDING            = 2; // Sent to supplier, awaiting delivery
+  PO_STATUS_UNSPECIFIED = 0;
+  PO_STATUS_DRAFT = 1; // Being prepared
+  PO_STATUS_PENDING = 2; // Sent to supplier, awaiting delivery
   PO_STATUS_ISSUED = 3; // Some items delivered
-  PO_STATUS_CLOSED           = 4; // All items delivered
-  PO_STATUS_CANCELLED          = 5; // Order cancelled
-}
-
-message CancelPurchaseOrderResponse {
-  PurchaseOrder purchase_order = 1;
-  string        message        = 2;
-}
-
-message CreatePurchaseOrderRequest {
-  string supplier_id = 1;
-  string buyer_id    = 2; // Your company
-  // Where to receive items by default is the buyer's warehouse.
-  optional string                 destination_address    = 3;
-  repeated order.v1.OrderLineItem items                  = 4;
-  google.protobuf.Timestamp       expected_delivery_date = 5;
-  string                          created_by_user_id     = 6;
-  string                          notes                  = 7;
-}
-
-message CreatePurchaseOrderResponse {
-  string        purchase_order_id = 1;
-  PurchaseOrder purchase_order    = 2;
-  string        message           = 3;
-}
-
-message GetPurchaseOrderRequest {
-  string purchase_order_id = 1;
-}
-
-message GetPurchaseOrderResponse {
-  PurchaseOrder                      purchase_order  = 1;
-  repeated logistic.v1.ReceivingNote receiving_notes = 2;
-  repeated financial.v1.Invoice      invoices        = 3; // Supplier invoices
-  repeated payments.v1.Payment       payments        = 4;
-}
-
-message ListPurchaseOrdersRequest {
-  string                    supplier_id = 1; // Filter by supplier
-  string                    buyer_id    = 2; // Filter by buyer
-  google.protobuf.Timestamp start_date  = 3;
-  google.protobuf.Timestamp end_date    = 4;
-  int32                     page_size   = 5;
-  int32                     page_number = 6;
-}
-
-message ListPurchaseOrdersResponse {
-  repeated PurchaseOrder purchase_orders = 1;
-  int32                  total_count     = 2;
-  double                 total_value     = 3;
-}
-
-message UpdatePurchaseOrderStatusRequest {
-  string              purchase_order_id  = 1;
-  PurchaseOrderStatus new_status         = 2;
-  string              updated_by_user_id = 3;
-  string              notes              = 4;
-}
-
-message UpdatePurchaseOrderStatusResponse {
-  PurchaseOrder purchase_order = 1;
-  string        message        = 2;
-}
-
-message CancelPurchaseOrderRequest {
-  string purchase_order_id    = 1;
-  string reason               = 2;
-  string cancelled_by_user_id = 3;
-}
-
-message CreateReceivingNoteRequest {
-  string                                 purchase_order_id   = 1;
-  string                                 supplier_id         = 2;
-  string                                 buyer_id            = 3;
-  repeated logistic.v1.ReceivingNoteLineItem items               = 4; // What actually arrived
-  string                                 received_by_user_id = 5;
-  string                                 notes               = 6; // Condition notes
-  google.protobuf.Timestamp              received_at         = 7; // User specified receive date
-}
-
-message CreateReceivingNoteResponse {
-  string                    rn_id                     = 1;
-  logistic.v1.ReceivingNote receiving_note            = 2;
-  repeated string           inventory_transaction_ids = 3;
-  bool                      has_discrepancies         = 4; // If received != expected
-  repeated string           discrepancy_product_ids   = 5;
-  string                    message                   = 6;
-}
-
-service PurchaseOrderService {
-  // Create a purchase order to supplier
-  rpc CreatePurchaseOrder(CreatePurchaseOrderRequest) returns (CreatePurchaseOrderResponse);
-
-  // Get purchase order details
-  rpc GetPurchaseOrder(GetPurchaseOrderRequest) returns (GetPurchaseOrderResponse);
-
-  // List purchase orders
-  rpc ListPurchaseOrders(ListPurchaseOrdersRequest) returns (ListPurchaseOrdersResponse);
-
-  // Update purchase order status
-  rpc UpdatePurchaseOrderStatus(UpdatePurchaseOrderStatusRequest) returns (UpdatePurchaseOrderStatusResponse);
-
-  // Cancel purchase order
-  rpc CancelPurchaseOrder(CancelPurchaseOrderRequest) returns (CancelPurchaseOrderResponse);
-
-  // Create receiving note when goods arrive
-  rpc CreateReceivingNote(CreateReceivingNoteRequest) returns (CreateReceivingNoteResponse);
-
+  PO_STATUS_CLOSED = 4; // All items delivered
+  PO_STATUS_CANCELLED = 5; // Order cancelled
 }

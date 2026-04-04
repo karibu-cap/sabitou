@@ -28,32 +28,25 @@ class UsersList extends StatelessWidget {
         const ShadCard(child: UserSearchFilters()),
         const SizedBox(height: 16),
 
-        ShadCard(
-          padding: EdgeInsets.zero,
-          radius: const BorderRadius.only(
-            topLeft: Radius.circular(12),
-            topRight: Radius.circular(12),
-          ),
-          child: StreamBuilder<List<({StoreMember storeMember, User user})>>(
-            stream: controller.filteredStoreMembersStream,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return UserShimmerWidgets.buildTableShimmer();
-              }
+        StreamBuilder<List<({StoreMember storeMember, User user})>>(
+          stream: controller.filteredStoreMembersStream,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return UserShimmerWidgets.buildTableShimmer();
+            }
 
-              final error = snapshot.error;
-              if (snapshot.hasError && error != null) {
-                return UserErrorWidget(error: error);
-              }
+            final error = snapshot.error;
+            if (snapshot.hasError && error != null) {
+              return UserErrorWidget(error: error);
+            }
 
-              final storeMembers = snapshot.data ?? [];
-              if (storeMembers.isEmpty) {
-                return const UserEmptyState();
-              }
+            final storeMembers = snapshot.data ?? [];
+            if (storeMembers.isEmpty) {
+              return const UserEmptyState();
+            }
 
-              return UsersDataGridView(storeMembers: storeMembers);
-            },
-          ),
+            return UsersGridView(storeMembers: storeMembers);
+          },
         ),
       ],
     );

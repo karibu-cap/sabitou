@@ -1,22 +1,12 @@
 export 'package:connectrpc/test.dart';
 
-export 'src/audits/v1/audits.connect.spec.dart';
 export 'src/business/v1/business.connect.spec.dart';
 export 'src/business/v1/client.connect.spec.dart';
 export 'src/identity/v1/authentication.connect.spec.dart';
 export 'src/identity/v1/permission.connect.spec.dart';
 export 'src/identity/v1/user.connect.spec.dart';
 export 'src/inventory/v1/category.connect.spec.dart';
-export 'src/inventory/v1/inventory.connect.spec.dart';
 export 'src/inventory/v1/store_product.connect.spec.dart';
-export 'src/link/v1/link.connect.spec.dart';
-export 'src/logistic/v1/return_notes.connect.spec.dart';
-export 'src/order/v1/purchase_order.connect.spec.dart';
-export 'src/order/v1/sales_order.connect.spec.dart';
-export 'src/payments/v1/cash_receipt.connect.spec.dart';
 export 'src/payments/v1/gift_voucher.connect.spec.dart';
 export 'src/payments/v1/payments.connect.spec.dart';
-export 'src/reports/v1/reports.connect.spec.dart';
 export 'src/store/v1/store.connect.spec.dart';
-export 'src/store/v1/supplier.connect.spec.dart';
-export 'src/sync/v1/sync.connect.spec.dart';

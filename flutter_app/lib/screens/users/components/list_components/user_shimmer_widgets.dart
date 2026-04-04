@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 
-import '../../../../themes/app_colors.dart';
+import '../../../../themes/app_theme.dart';
 
 /// Collection of shimmer loading widgets for the users/team management module.
 ///
@@ -13,6 +13,7 @@ class UserShimmerWidgets {
     return Shimmer(
       duration: const Duration(seconds: 2),
       interval: const Duration(milliseconds: 500),
+      color: SabitouColors.shimmerBase,
       child: Column(
         children: [
           // Search and filters shimmer
@@ -31,6 +32,7 @@ class UserShimmerWidgets {
     return Shimmer(
       duration: const Duration(seconds: 2),
       interval: const Duration(milliseconds: 500),
+      color: SabitouColors.shimmerBase,
       child: GridView.count(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
@@ -48,7 +50,7 @@ class UserShimmerWidgets {
     return Shimmer(
       duration: const Duration(seconds: 2),
       interval: const Duration(milliseconds: 500),
-      color: AppColors.primary100,
+      color: SabitouColors.shimmerBase,
       child: Card(
         margin: const EdgeInsets.only(bottom: 16),
         child: Padding(
@@ -73,7 +75,7 @@ class UserShimmerWidgets {
     return Shimmer(
       duration: const Duration(seconds: 2),
       interval: const Duration(milliseconds: 500),
-      color: AppColors.primary100,
+      color: SabitouColors.shimmerBase,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -84,7 +86,7 @@ class UserShimmerWidgets {
                 height: 32,
                 width: 250,
                 decoration: const BoxDecoration(
-                  color: AppColors.primary100,
+                  color: SabitouColors.shimmerBase,
                   borderRadius: BorderRadius.all(Radius.circular(4)),
                 ),
               ),
@@ -93,7 +95,7 @@ class UserShimmerWidgets {
                 height: 16,
                 width: 300,
                 decoration: const BoxDecoration(
-                  color: AppColors.primary100,
+                  color: SabitouColors.shimmerBase,
                   borderRadius: BorderRadius.all(Radius.circular(4)),
                 ),
               ),
@@ -105,7 +107,7 @@ class UserShimmerWidgets {
                 height: 36,
                 width: 120,
                 decoration: const BoxDecoration(
-                  color: AppColors.primary100,
+                  color: SabitouColors.shimmerBase,
                   borderRadius: BorderRadius.all(Radius.circular(8)),
                 ),
               ),
@@ -114,7 +116,7 @@ class UserShimmerWidgets {
                 height: 36,
                 width: 140,
                 decoration: const BoxDecoration(
-                  color: AppColors.primary100,
+                  color: SabitouColors.shimmerBase,
                   borderRadius: BorderRadius.all(Radius.circular(8)),
                 ),
               ),
@@ -130,7 +132,7 @@ class UserShimmerWidgets {
     return Shimmer(
       duration: const Duration(seconds: 2),
       interval: const Duration(milliseconds: 500),
-      color: AppColors.primary100,
+      color: SabitouColors.shimmerBase,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -138,7 +140,7 @@ class UserShimmerWidgets {
             height: 24,
             width: 180,
             decoration: const BoxDecoration(
-              color: AppColors.primary100,
+              color: SabitouColors.shimmerBase,
               borderRadius: BorderRadius.all(Radius.circular(4)),
             ),
           ),
@@ -166,7 +168,7 @@ class UserShimmerWidgets {
           child: Container(
             height: 48,
             decoration: const BoxDecoration(
-              color: AppColors.primary100,
+              color: SabitouColors.shimmerBase,
               borderRadius: BorderRadius.all(Radius.circular(24)),
             ),
           ),
@@ -178,7 +180,7 @@ class UserShimmerWidgets {
           height: 48,
           width: 120,
           decoration: const BoxDecoration(
-            color: AppColors.primary100,
+            color: SabitouColors.shimmerBase,
             borderRadius: BorderRadius.all(Radius.circular(8)),
           ),
         ),
@@ -187,7 +189,7 @@ class UserShimmerWidgets {
           height: 48,
           width: 120,
           decoration: const BoxDecoration(
-            color: AppColors.primary100,
+            color: SabitouColors.shimmerBase,
             borderRadius: BorderRadius.all(Radius.circular(8)),
           ),
         ),
@@ -198,7 +200,7 @@ class UserShimmerWidgets {
           height: 48,
           width: 100,
           decoration: const BoxDecoration(
-            color: AppColors.primary100,
+            color: SabitouColors.shimmerBase,
             borderRadius: BorderRadius.all(Radius.circular(8)),
           ),
         ),
@@ -209,6 +211,7 @@ class UserShimmerWidgets {
   /// Builds a shimmer effect for user cards.
   static Widget _buildUserCardShimmer() {
     return Card(
+      color: SabitouColors.shimmerBase,
       margin: const EdgeInsets.only(bottom: 16),
       child: Padding(
         padding: const EdgeInsets.all(20),
@@ -219,7 +222,7 @@ class UserShimmerWidgets {
               width: 48,
               height: 48,
               decoration: const BoxDecoration(
-                color: AppColors.primary100,
+                color: SabitouColors.shimmerBase,
                 shape: BoxShape.circle,
               ),
             ),
@@ -234,7 +237,7 @@ class UserShimmerWidgets {
                     height: 18,
                     width: 150,
                     decoration: const BoxDecoration(
-                      color: AppColors.primary100,
+                      color: SabitouColors.shimmerBase,
                       borderRadius: BorderRadius.all(Radius.circular(4)),
                     ),
                   ),
@@ -243,7 +246,7 @@ class UserShimmerWidgets {
                     height: 14,
                     width: 200,
                     decoration: const BoxDecoration(
-                      color: AppColors.primary100,
+                      color: SabitouColors.shimmerBase,
                       borderRadius: BorderRadius.all(Radius.circular(4)),
                     ),
                   ),
@@ -252,7 +255,7 @@ class UserShimmerWidgets {
                     height: 14,
                     width: 120,
                     decoration: const BoxDecoration(
-                      color: AppColors.primary100,
+                      color: SabitouColors.shimmerBase,
                       borderRadius: BorderRadius.all(Radius.circular(4)),
                     ),
                   ),
@@ -268,7 +271,7 @@ class UserShimmerWidgets {
                   height: 24,
                   width: 80,
                   decoration: const BoxDecoration(
-                    color: AppColors.primary100,
+                    color: SabitouColors.shimmerBase,
                     borderRadius: BorderRadius.all(Radius.circular(12)),
                   ),
                 ),
@@ -277,7 +280,7 @@ class UserShimmerWidgets {
                   height: 24,
                   width: 60,
                   decoration: const BoxDecoration(
-                    color: AppColors.primary100,
+                    color: SabitouColors.shimmerBase,
                     borderRadius: BorderRadius.all(Radius.circular(12)),
                   ),
                 ),
@@ -292,6 +295,7 @@ class UserShimmerWidgets {
   /// Builds a shimmer effect for stat cards.
   static Widget _buildStatCardShimmer() {
     return Card(
+      color: SabitouColors.shimmerBase,
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: SingleChildScrollView(
@@ -306,7 +310,7 @@ class UserShimmerWidgets {
                     height: 16,
                     width: 80,
                     decoration: const BoxDecoration(
-                      color: AppColors.grey0,
+                      color: SabitouColors.shimmerBase,
                       borderRadius: BorderRadius.all(Radius.circular(4)),
                     ),
                   ),
@@ -314,7 +318,7 @@ class UserShimmerWidgets {
                     width: 24,
                     height: 24,
                     decoration: const BoxDecoration(
-                      color: AppColors.grey0,
+                      color: SabitouColors.shimmerBase,
                       shape: BoxShape.circle,
                     ),
                   ),
@@ -325,7 +329,7 @@ class UserShimmerWidgets {
                 height: 24,
                 width: 40,
                 decoration: const BoxDecoration(
-                  color: AppColors.grey0,
+                  color: SabitouColors.shimmerBase,
                   borderRadius: BorderRadius.all(Radius.circular(4)),
                 ),
               ),
@@ -334,7 +338,7 @@ class UserShimmerWidgets {
                 height: 12,
                 width: 60,
                 decoration: const BoxDecoration(
-                  color: AppColors.primary100,
+                  color: SabitouColors.shimmerBase,
                   borderRadius: BorderRadius.all(Radius.circular(4)),
                 ),
               ),
@@ -348,6 +352,7 @@ class UserShimmerWidgets {
   /// Builds a shimmer effect for role definition cards.
   static Widget _buildRoleCardShimmer() {
     return Card(
+      color: SabitouColors.shimmerBase,
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Row(
@@ -356,7 +361,7 @@ class UserShimmerWidgets {
               width: 32,
               height: 32,
               decoration: const BoxDecoration(
-                color: AppColors.primary100,
+                color: SabitouColors.shimmerBase,
                 shape: BoxShape.circle,
               ),
             ),
@@ -369,7 +374,7 @@ class UserShimmerWidgets {
                     height: 16,
                     width: 100,
                     decoration: const BoxDecoration(
-                      color: AppColors.primary100,
+                      color: SabitouColors.shimmerBase,
                       borderRadius: BorderRadius.all(Radius.circular(4)),
                     ),
                   ),
@@ -378,7 +383,7 @@ class UserShimmerWidgets {
                     height: 12,
                     width: 150,
                     decoration: const BoxDecoration(
-                      color: AppColors.primary100,
+                      color: SabitouColors.shimmerBase,
                       borderRadius: BorderRadius.all(Radius.circular(4)),
                     ),
                   ),
@@ -397,7 +402,7 @@ class UserShimmerWidgets {
       width: 48,
       height: 48,
       decoration: const BoxDecoration(
-        color: AppColors.primary100,
+        color: SabitouColors.shimmerBase,
         shape: BoxShape.circle,
       ),
     );
@@ -413,7 +418,7 @@ class UserShimmerWidgets {
             height: 18,
             width: 150,
             decoration: const BoxDecoration(
-              color: AppColors.primary100,
+              color: SabitouColors.shimmerBase,
               borderRadius: BorderRadius.all(Radius.circular(4)),
             ),
           ),
@@ -422,7 +427,7 @@ class UserShimmerWidgets {
             height: 14,
             width: 200,
             decoration: const BoxDecoration(
-              color: AppColors.primary100,
+              color: SabitouColors.shimmerBase,
               borderRadius: BorderRadius.all(Radius.circular(4)),
             ),
           ),
@@ -431,7 +436,7 @@ class UserShimmerWidgets {
             height: 14,
             width: 120,
             decoration: const BoxDecoration(
-              color: AppColors.primary100,
+              color: SabitouColors.shimmerBase,
               borderRadius: BorderRadius.all(Radius.circular(4)),
             ),
           ),
@@ -449,7 +454,7 @@ class UserShimmerWidgets {
           height: 24,
           width: 80,
           decoration: const BoxDecoration(
-            color: AppColors.primary100,
+            color: SabitouColors.shimmerBase,
             borderRadius: BorderRadius.all(Radius.circular(12)),
           ),
         ),
@@ -458,7 +463,7 @@ class UserShimmerWidgets {
           height: 24,
           width: 60,
           decoration: const BoxDecoration(
-            color: AppColors.primary100,
+            color: SabitouColors.shimmerBase,
             borderRadius: BorderRadius.all(Radius.circular(12)),
           ),
         ),
@@ -474,7 +479,7 @@ class UserShimmerWidgets {
           width: 32,
           height: 32,
           decoration: const BoxDecoration(
-            color: AppColors.primary100,
+            color: SabitouColors.shimmerBase,
             shape: BoxShape.circle,
           ),
         ),
@@ -483,7 +488,7 @@ class UserShimmerWidgets {
           width: 32,
           height: 32,
           decoration: const BoxDecoration(
-            color: AppColors.primary100,
+            color: SabitouColors.shimmerBase,
             shape: BoxShape.circle,
           ),
         ),
@@ -492,7 +497,7 @@ class UserShimmerWidgets {
           width: 32,
           height: 32,
           decoration: const BoxDecoration(
-            color: AppColors.primary100,
+            color: SabitouColors.shimmerBase,
             shape: BoxShape.circle,
           ),
         ),

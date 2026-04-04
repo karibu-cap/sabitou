@@ -1,5 +1,4 @@
 import 'package:clock/clock.dart';
-import 'package:connectrpc/connect.dart' as connect;
 import 'package:get_it/get_it.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sabitou_rpc/sabitou_rpc.dart';
@@ -10,7 +9,6 @@ import '../core/database/local_data_source.dart';
 import '../core/database/query/sql_condition.dart';
 import '../core/database/row_mapper.dart';
 import '../services/powersync/schema.dart';
-import '../services/rpc/connect_rpc.dart';
 import '../utils/app_constants.dart';
 import '../utils/logger.dart';
 import '../utils/pos_exceptions.dart';
@@ -19,9 +17,6 @@ import '../utils/utils.dart';
 /// The POS repository.
 final class PosRepository extends BaseRepository<CashReceipt> {
   final _logger = LoggerApp('PosRepository');
-
-  /// The POS service client.
-  final CashReceiptServiceClient cashReceiptServiceClient;
 
   @override
   final LocalDataSource dataSource;
@@ -39,10 +34,7 @@ final class PosRepository extends BaseRepository<CashReceipt> {
   RawRow toRow(CashReceipt entity) => fromCashReceiptToRaw(entity);
 
   /// Constructs a new [PosRepository].
-  PosRepository({required this.dataSource, connect.Transport? transport})
-    : cashReceiptServiceClient = CashReceiptServiceClient(
-        transport ?? ConnectRPCService.to.clientChannel,
-      );
+  PosRepository({required this.dataSource});
 
   /// Saves a draft receipt to the database.
   Future<void> saveDraftReceipt(
@@ -145,36 +137,32 @@ final class PosRepository extends BaseRepository<CashReceipt> {
   }
 
   /// Creates a cash receipt with its items.
-  Future<CreateCashReceiptResponse?> createCashReceipt(
-    CreateCashReceiptRequest request,
-  ) async {
+  Future<bool> createCashReceipt(CashReceipt receipt) async {
     try {
-      final response = await cashReceiptServiceClient.createCashReceipt(
-        request,
+      receipt.refId = AppUtils.generateSmartDatabaseId('CR');
+      await dataSource.createRecord(
+        table: CollectionName.cashReceipts,
+        record: {...toRow(receipt)},
       );
 
-      if (response.success && request.receipt.hasRefId()) {
-        await save(request.receipt);
-
-        // Save items separately to cash_receipt_items table
-        for (final item in request.receipt.items) {
-          final itemRaw = fromCashReceiptItemToRaw(
-            item,
-            request.receipt.refId,
-            request.receipt.storeId,
-          );
-          await dataSource.createRecord(
-            table: CollectionName.cashReceiptItems,
-            record: {...itemRaw},
-          );
-        }
+      // Save items separately to cash_receipt_items table
+      for (final item in receipt.items) {
+        final itemRaw = fromCashReceiptItemToRaw(
+          item,
+          receipt.refId,
+          receipt.storeId,
+        );
+        await dataSource.createRecord(
+          table: CollectionName.cashReceiptItems,
+          record: {...itemRaw},
+        );
       }
 
-      return response;
+      return true;
     } on Exception catch (e) {
       _logger.severe('createCashReceipt Error: $e');
 
-      return null;
+      return false;
     }
   }
 

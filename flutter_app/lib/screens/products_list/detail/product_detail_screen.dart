@@ -202,7 +202,7 @@ class _ProductDetailView extends StatelessWidget {
 // ──────────────────────────────────────────────────────────────
 
 class _DesktopLayout extends StatelessWidget {
-  final StoreProductWithGlobalProduct product;
+  final CustomProduct product;
   final bool isDeleting;
   final bool isUpdatingStatus;
   final VoidCallback onEdit;
@@ -268,7 +268,7 @@ class _DesktopLayout extends StatelessWidget {
 // ──────────────────────────────────────────────────────────────
 
 class _MobileLayout extends StatelessWidget {
-  final StoreProductWithGlobalProduct product;
+  final CustomProduct product;
   final bool isDeleting;
   final bool isUpdatingStatus;
   final VoidCallback onEdit;
@@ -318,7 +318,7 @@ class _MobileLayout extends StatelessWidget {
 }
 
 class _MobileHeroBanner extends StatelessWidget {
-  final StoreProductWithGlobalProduct product;
+  final CustomProduct product;
 
   const _MobileHeroBanner({required this.product});
 
@@ -410,7 +410,7 @@ class _MobileHeroBanner extends StatelessWidget {
 // ──────────────────────────────────────────────────────────────
 
 class _ProductImageCard extends StatelessWidget {
-  final StoreProductWithGlobalProduct product;
+  final CustomProduct product;
   final double size;
 
   const _ProductImageCard({required this.product, required this.size});
@@ -482,7 +482,7 @@ class _ImagePlaceholder extends StatelessWidget {
 // ──────────────────────────────────────────────────────────────
 
 class _ProductHeaderCard extends StatelessWidget {
-  final StoreProductWithGlobalProduct product;
+  final CustomProduct product;
 
   const _ProductHeaderCard({required this.product});
 
@@ -562,7 +562,7 @@ class _ProductHeaderCard extends StatelessWidget {
 // ──────────────────────────────────────────────────────────────
 
 class _QuickStatsCard extends StatelessWidget {
-  final StoreProductWithGlobalProduct product;
+  final CustomProduct product;
 
   const _QuickStatsCard({required this.product});
 
@@ -646,7 +646,7 @@ class _QuickStatsCard extends StatelessWidget {
 // ──────────────────────────────────────────────────────────────
 
 class _InventoryDetailsCard extends StatelessWidget {
-  final StoreProductWithGlobalProduct product;
+  final CustomProduct product;
 
   const _InventoryDetailsCard({required this.product});
 
@@ -700,7 +700,7 @@ class _InventoryDetailsCard extends StatelessWidget {
 // ──────────────────────────────────────────────────────────────
 
 class _DescriptionCard extends StatelessWidget {
-  final StoreProductWithGlobalProduct product;
+  final CustomProduct product;
 
   const _DescriptionCard({required this.product});
 
@@ -738,7 +738,7 @@ class _DescriptionCard extends StatelessWidget {
 // ──────────────────────────────────────────────────────────────
 
 class _ActionCard extends StatelessWidget {
-  final StoreProductWithGlobalProduct product;
+  final CustomProduct product;
   final bool isDeleting;
   final bool isUpdatingStatus;
   final VoidCallback onEdit;

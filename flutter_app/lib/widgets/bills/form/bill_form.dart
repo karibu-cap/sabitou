@@ -34,10 +34,8 @@ Future<bool?> showBillForm(
   final prefs = context.read<UserPreferences>();
   final storeId = prefs.store?.refId ?? '';
   final productsStream = prefs.store != null
-      ? StoreProductsRepository.instance.streamStoreProducts(
-          StreamStoreProductsRequest(storeId: storeId),
-        )
-      : const Stream<List<StoreProductWithGlobalProduct>>.empty();
+      ? StoreProductsRepository.instance.streamStoreProducts(storeId)
+      : const Stream<List<CustomProduct>>.empty();
 
   final isMobile = ResponsiveUtils.isMobile(context);
 
@@ -87,7 +85,7 @@ class BillFormPage extends StatelessWidget {
   final String storeId;
 
   /// Stream of store products for the item picker.
-  final Stream<List<StoreProductWithGlobalProduct>> productsStream;
+  final Stream<List<CustomProduct>> productsStream;
 
   /// Optional purchase order to pre-fill from.
   final PurchaseOrder? purchaseOrder;
@@ -153,7 +151,7 @@ class BillFormDialog extends StatelessWidget {
   final String storeId;
 
   /// Stream of store products for the item picker.
-  final Stream<List<StoreProductWithGlobalProduct>> productsStream;
+  final Stream<List<CustomProduct>> productsStream;
 
   /// Optional purchase order to pre-fill from.
   final PurchaseOrder? purchaseOrder;
@@ -217,7 +215,7 @@ class BillFormBody extends StatelessWidget {
   });
 
   /// Stream of store products for the item picker.
-  final Stream<List<StoreProductWithGlobalProduct>> productsStream;
+  final Stream<List<CustomProduct>> productsStream;
 
   /// Called with `true` after a successful save.
   final ValueChanged<bool> onSaved;

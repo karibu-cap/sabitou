@@ -73,36 +73,7 @@ message CreatePaymentResponse {
   Payment payment = 1;
 }
 
-message GetPaymentRequest {
-  string payment_id = 1;
-}
-
-message GetPaymentResponse {
-  Payment payment = 1;
-  financial.v1.Invoice related_invoice = 2;
-}
-
-message ListPaymentsRequest {
-  string warehouse_id = 1;
-  google.protobuf.Timestamp start_date = 2;
-  google.protobuf.Timestamp end_date = 3;
-  int32 page_size = 4;
-  int32 page_number = 5;
-}
-
-message ListPaymentsResponse {
-  repeated Payment payments = 1;
-  int32 total_count = 2;
-  double total_amount = 3;
-}
-
 service PaymentsService {
   // Record a payment
   rpc CreatePayment(CreatePaymentRequest) returns (CreatePaymentResponse);
-
-  // Get payment details
-  rpc GetPayment(GetPaymentRequest) returns (GetPaymentResponse);
-
-  // List payments with filtering
-  rpc ListPayments(ListPaymentsRequest) returns (ListPaymentsResponse);
 }

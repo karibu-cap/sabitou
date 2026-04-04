@@ -33,8 +33,8 @@ class ProductsListController extends ChangeNotifier {
   }
 
   /// Gets the products stream.
-  BehaviorSubject<UnmodifiableListView<StoreProductWithGlobalProduct>>
-  get productsSubject => _viewModel.productsSubject;
+  BehaviorSubject<UnmodifiableListView<CustomProduct>> get productsSubject =>
+      _viewModel.productsSubject;
 
   /// Gets the business categories.
   UnmodifiableListView<Category> get businessCategories =>
@@ -44,12 +44,11 @@ class ProductsListController extends ChangeNotifier {
   Completer<bool> get completer => _viewModel.completer;
 
   /// Gets the filtered products synchronously.
-  List<StoreProductWithGlobalProduct> get filteredProducts =>
-      _viewModel.getFilteredProducts(
-        searchQuery: searchQueryController.value.text,
-        selectedCategory: selectedCategory.value.firstOrNull ?? '',
-        selectedStatus: selectedStatus.value.lastOrNull,
-      );
+  List<CustomProduct> get filteredProducts => _viewModel.getFilteredProducts(
+    searchQuery: searchQueryController.value.text,
+    selectedCategory: selectedCategory.value.firstOrNull ?? '',
+    selectedStatus: selectedStatus.value.lastOrNull,
+  );
 
   /// Clears all filters.
   void clearFilters() {

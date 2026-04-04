@@ -44,11 +44,15 @@ class _CreateEditProductScreenState extends State<CreateEditProductScreen> {
   }
 
   Future<GlobalProduct?> _loadProduct() async {
-    if (widget.productId == null) return null;
+    final productId = widget.productId;
+
+    if (productId == null) {
+      return null;
+    }
 
     try {
       final response = await StoreProductsRepository.instance.getStoreProduct(
-        GetStoreProductRequest(storeProductId: widget.productId),
+        productId,
       );
 
       return response?.globalProduct;
@@ -338,7 +342,7 @@ class _ProductNameField extends StatelessWidget {
     return AutoComplete<GlobalProduct>(
       label: Text('${Intls.to.productName}'),
       enabled: !controller.onSaveProduct,
-      initialValue: controller.nameController.text,
+      initialValue: controller.product,
       placeholder: Intls.to.enterProductName,
       optionsBuilder: (text) async {
         controller.product.name = Internationalized(en: text, fr: text);

@@ -12,8 +12,6 @@ import 'package:screenshot/screenshot.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../services/internationalization/internationalization.dart';
-import '../../../services/storage/app_storage.dart';
-import '../../../utils/app_constants.dart';
 import '../../../utils/common_functions.dart';
 import '../../../utils/logger.dart';
 import '../../../utils/printer_management.dart' hide PaperSize;
@@ -39,7 +37,7 @@ class AppPrinterUtils {
         printerManagement: printerManagement,
         onPrinterSelected: (printer) async {
           selectedPrinter = printer;
-          await AppStorage.of<Printer>().write(PreferencesKey.printer, printer);
+          // await AppStorage.of<Printer>().write(PreferencesKey.printer, printer);
           if (context.mounted) {
             Navigator.pop(context);
           }

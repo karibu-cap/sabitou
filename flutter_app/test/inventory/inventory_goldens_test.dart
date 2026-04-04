@@ -17,7 +17,7 @@ final inventoryFakeTransport = FakeTransportBuilder()
 
     return FindStoreProductsResponse(
       products: [
-        StoreProductWithGlobalProduct(
+        CustomProduct(
           storeProduct: StoreProduct()
             ..refId = 'sp_1'
             ..storeId = request.storeId
@@ -34,7 +34,7 @@ final inventoryFakeTransport = FakeTransportBuilder()
               ..fr = 'Description Un')
             ..status = GlobalProductStatus.GLOBAL_PRODUCT_STATUS_ACTIVE,
         ),
-        StoreProductWithGlobalProduct(
+        CustomProduct(
           storeProduct: StoreProduct()
             ..refId = 'sp_2'
             ..storeId = request.storeId
@@ -51,7 +51,7 @@ final inventoryFakeTransport = FakeTransportBuilder()
               ..fr = 'Description Deux')
             ..status = GlobalProductStatus.GLOBAL_PRODUCT_STATUS_ACTIVE,
         ),
-        StoreProductWithGlobalProduct(
+        CustomProduct(
           storeProduct: StoreProduct()
             ..refId = 'sp_3'
             ..storeId = request.storeId
@@ -76,7 +76,7 @@ final inventoryFakeTransport = FakeTransportBuilder()
     final request = req;
 
     return GetStoreProductResponse(
-      product: StoreProductWithGlobalProduct(
+      product: CustomProduct(
         storeProduct: StoreProduct()
           ..refId = request.storeProductId
           ..storeId = 'store_1'

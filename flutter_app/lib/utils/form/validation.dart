@@ -188,10 +188,8 @@ class ValidationFormUtils {
   /// Validates the product description english version.
   static String? validateProductDescriptionEnglishVersion([String? value]) {
     final productDescription = value?.trim() ?? '';
-    if (productDescription.isEmpty) {
-      return _intl.productDescriptionEnglishVersionRequired;
-    }
-    if (productDescription.trim().length < 3) {
+
+    if (productDescription.isNotEmpty && productDescription.trim().length < 3) {
       return _intl.productDescriptionTooShort;
     }
 
@@ -201,10 +199,8 @@ class ValidationFormUtils {
   /// Validates the product description french version.
   static String? validateProductDescriptionFrenchVersion([String? value]) {
     final productDescription = value?.trim() ?? '';
-    if (productDescription.isEmpty) {
-      return _intl.productDescriptionFrenchVersionRequired;
-    }
-    if (productDescription.trim().length < 3) {
+
+    if (productDescription.isNotEmpty && productDescription.trim().length < 3) {
       return _intl.productDescriptionTooShort;
     }
 

@@ -82,14 +82,6 @@ class SuppliersController extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Gets products for a specific supplier
-  Future<List<ProductBySupplier>> getProductsForSupplier(
-    String supplierRefId,
-    String? storeId,
-  ) async {
-    return _viewModel.getProductsForSupplier(supplierRefId, storeId);
-  }
-
   /// Calculates total products count
   int calculateTotalProducts(List<StoreProduct> products) {
     return products.length;

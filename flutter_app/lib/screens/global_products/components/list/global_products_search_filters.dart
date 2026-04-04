@@ -4,8 +4,6 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../../../services/internationalization/internationalization.dart';
-import '../../../../utils/extensions/category_extension.dart';
-import '../../../../utils/responsive_utils.dart';
 import '../../global_products_controller.dart';
 
 /// Widget for search and filtering functionality in the global products list.
@@ -17,7 +15,6 @@ class GlobalProductsSearchFilters extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Provider.of<GlobalProductsController>(context);
     final theme = ShadTheme.of(context);
-    final isMobile = ResponsiveUtils.isMobile(context);
 
     final commonStyle = theme.textTheme.muted.copyWith(
       fontWeight: FontWeight.bold,
@@ -83,29 +80,6 @@ class GlobalProductsSearchFilters extends StatelessWidget {
               controller.selectedStatus.add(value);
             },
           ),
-          // Type filter dropdown
-          if (!isMobile && controller.categories.isNotEmpty)
-            ShadSelect<Category>(
-              controller: controller.categoryFilterController,
-              placeholder: Text(
-                AppInternationalizationService.to.categories,
-                style: commonStyle,
-              ),
-              options: controller.categories.map(
-                (category) => ShadOption(
-                  value: category,
-                  child: Text(category?.label ?? '', style: commonStyle),
-                ),
-              ),
-              selectedOptionBuilder: (context, value) => Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [Text(value.label, style: commonStyle)],
-              ),
-              allowDeselection: true,
-              onChanged: (value) {
-                controller.selectedCategory.add(value);
-              },
-            ),
         ],
       ),
     );

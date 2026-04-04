@@ -3,12 +3,15 @@ syntax = "proto3";
 package identity.v1;
 
 import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+import "identity/v1/permission.proto";
 import "link/v1/link.proto";
 
 enum AccountStatusType {
   ACCOUNT_STATUS_TYPE_UNSPECIFIED = 0;
   ACCOUNT_STATUS_TYPE_ACTIVE = 1;
   ACCOUNT_STATUS_TYPE_DELETED = 2;
+  ACCOUNT_STATUS_TYPE_PENDING = 3;
 }
 
 enum AuthActionType {
@@ -85,48 +88,24 @@ message User {
   optional string active_store_id = 12;
 }
 
-message GetCurrentUserRequest {
-  // Empty message.
+enum InvitationStatus {
+  INVITATION_STATUS_UNSPECIFIED = 0;
+  INVITATION_STATUS_PENDING = 1; // sent, waiting for user action
+  INVITATION_STATUS_ACCEPTED = 2; // user clicked and set password
+  INVITATION_STATUS_REJECTED = 3; // user explicitly declined
+  INVITATION_STATUS_EXPIRED = 4; // token TTL passed
+  INVITATION_STATUS_CANCELLED = 5; // admin revoked it
 }
 
-message GetCurrentUserResponse {
-  // The user information for the currently authenticated user.
-  User me = 1;
-}
-
-message GetMeRequest {
-  // Empty message.
-}
-
-message GetMeResponse {
-  // The user information for the currently authenticated user.
-  User me = 1;
-}
-
-message GetUserRequest {
-  // The id of the user to retrieve.
-  string user_id = 1 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).string.min_len = 3
-  ];
-}
-
-message GetUserResponse {
-  // The retrieved user data.
-  User user = 1;
-}
-
-message StreamUserRequest {
-  // The id of the user to retrieve.
-  string user_id = 1 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).string.min_len = 3
-  ];
-}
-
-message StreamUserResponse {
-  // The retrieved user data.
-  User user = 1;
+message Invitation {
+  string ref_id = 1;
+  string user_id = 2;
+  string store_id = 3;
+  string invited_by = 4;
+  InvitationStatus status = 5;
+  google.protobuf.Timestamp expires_at = 6;
+  google.protobuf.Timestamp created_at = 7;
+  optional google.protobuf.Timestamp responded_at = 8;
 }
 
 message UpdateMeRequest {
@@ -208,20 +187,66 @@ message ChangePasswordResponse {
   bool success = 1;
 }
 
+message CreateUserDirectRequest {
+  string user_name = 1;
+  string email = 2;
+  // admin sets it, user should change on first login
+  string password = 3;
+  string store_id = 4;
+  optional string first_name = 5;
+  optional string last_name = 6;
+  optional string phone_number = 7;
+  identity.v1.StorePermissions permissions = 8;
+  // adds INITIALIZE_PASSWORD action
+  bool force_password_change_on_first_login = 9;
+}
+
+message CreateUserDirectResponse {
+  User user = 1;
+}
+
+message InviteUserRequest {
+  string email = 1;
+  string store_id = 2;
+  optional string first_name = 3;
+  optional string last_name = 4;
+  identity.v1.StorePermissions permissions = 5;
+}
+
+message InviteUserResponse {
+  User user = 1;
+  Invitation invitation = 2;
+}
+
+message AcceptInvitationRequest {
+  string token = 1; // raw token from invitation link
+  string new_password = 2 [
+    (buf.validate.field).string.min_len = 8,
+    (buf.validate.field).string.max_len = 32
+  ];
+}
+
+message AcceptInvitationResponse {
+  bool success = 1;
+}
+
+message CancelInvitationRequest {
+  string invitation_id = 1;
+}
+
+message CancelInvitationResponse {
+  bool success = 1;
+}
+
+message ResendInvitationRequest {
+  string invitation_id = 1;
+}
+
+message ResendInvitationResponse {
+  Invitation invitation = 1;
+}
+
 service UserService {
-  // Get the user information for the currently authenticated user.
-  // @deprecated use GetCurrentUser instead.
-  rpc GetMe(GetMeRequest) returns (GetMeResponse) {}
-
-  // Get the user information for the currently authenticated user.
-  rpc GetCurrentUser(GetCurrentUserRequest) returns (GetCurrentUserResponse) {}
-
-  // Get the public information for the given user id.
-  rpc GetUser(GetUserRequest) returns (GetUserResponse) {}
-
-  // Update the user information for the currently authenticated user.
-  rpc UpdateMe(UpdateMeRequest) returns (UpdateMeResponse) {}
-
   // Update the user information for the user.
   rpc Update(UpdateRequest) returns (UpdateResponse) {}
 
@@ -236,6 +261,18 @@ service UserService {
   // Change the password for the currently authenticated user.
   rpc ChangePassword(ChangePasswordRequest) returns (ChangePasswordResponse) {}
 
-  // Stream business members for real-time updates.
-  rpc StreamUser(StreamUserRequest) returns (stream StreamUserResponse);
+  // [Admin] Create a user directly with a password (internal/cashier flow).
+  rpc CreateUserDirect(CreateUserDirectRequest) returns (CreateUserDirectResponse) {}
+
+  // [Admin] Invite an external user via email link (invite flow).
+  rpc InviteUser(InviteUserRequest) returns (InviteUserResponse) {}
+
+  // [Admin] Cancel a pending invitation.
+  rpc CancelInvitation(CancelInvitationRequest) returns (CancelInvitationResponse) {}
+
+  // [Admin] Resend an expired or pending invitation.
+  rpc ResendInvitation(ResendInvitationRequest) returns (ResendInvitationResponse) {}
+
+  // [Invited user] Accept invitation and set password.
+  rpc AcceptInvitation(AcceptInvitationRequest) returns (AcceptInvitationResponse) {}
 }

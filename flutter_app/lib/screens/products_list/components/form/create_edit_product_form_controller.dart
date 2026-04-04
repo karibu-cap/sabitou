@@ -157,7 +157,8 @@ class CreateEditProductFormController extends ChangeNotifier {
     String? barcode,
   }) async {
     return await StoreProductsRepository.instance.findGlobalProducts(
-      FindGlobalProductsRequest(name: name, barCodeValue: barcode),
+      name: name,
+      barCodeValue: barcode,
     );
   }
 
@@ -203,10 +204,7 @@ class CreateEditProductFormController extends ChangeNotifier {
 
         // Create both global product and store product
         final result = await StoreProductsRepository.instance.addProduct(
-          AddStoreProductRequest(
-            globalProduct: _product,
-            storeProduct: _storeProduct,
-          ),
+          _storeProduct,
         );
 
         if (!context.mounted) {
@@ -224,10 +222,8 @@ class CreateEditProductFormController extends ChangeNotifier {
         }
       } else {
         final result = await StoreProductsRepository.instance.updateProduct(
-          UpdateStoreProductRequest(
-            globalProduct: _product,
-            storeProduct: _storeProduct,
-          ),
+          globalProduct: _product,
+          storeProduct: _storeProduct,
         );
 
         if (!context.mounted) {
@@ -254,5 +250,10 @@ class CreateEditProductFormController extends ChangeNotifier {
 
       return false;
     }
+  }
+
+  /// Force reload the product.
+  void forceReload() {
+    notifyListeners();
   }
 }

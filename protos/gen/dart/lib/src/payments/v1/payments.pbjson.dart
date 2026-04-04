@@ -14,10 +14,7 @@ import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
-import '../../financial/v1/financial_utils.pbjson.dart' as $2;
-import '../../financial/v1/invoice.pbjson.dart' as $1;
 import '../../google/protobuf/timestamp.pbjson.dart' as $0;
-import '../../inventory/v1/category.pbjson.dart' as $3;
 
 @$core.Deprecated('Use paymentStatusDescriptor instead')
 const PaymentStatus$json = {
@@ -215,104 +212,6 @@ final $typed_data.Uint8List createPaymentResponseDescriptor = $convert.base64Dec
     'ChVDcmVhdGVQYXltZW50UmVzcG9uc2USLgoHcGF5bWVudBgBIAEoCzIULnBheW1lbnRzLnYxLl'
     'BheW1lbnRSB3BheW1lbnQ=');
 
-@$core.Deprecated('Use getPaymentRequestDescriptor instead')
-const GetPaymentRequest$json = {
-  '1': 'GetPaymentRequest',
-  '2': [
-    {'1': 'payment_id', '3': 1, '4': 1, '5': 9, '10': 'paymentId'},
-  ],
-};
-
-/// Descriptor for `GetPaymentRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List getPaymentRequestDescriptor = $convert.base64Decode(
-    'ChFHZXRQYXltZW50UmVxdWVzdBIdCgpwYXltZW50X2lkGAEgASgJUglwYXltZW50SWQ=');
-
-@$core.Deprecated('Use getPaymentResponseDescriptor instead')
-const GetPaymentResponse$json = {
-  '1': 'GetPaymentResponse',
-  '2': [
-    {
-      '1': 'payment',
-      '3': 1,
-      '4': 1,
-      '5': 11,
-      '6': '.payments.v1.Payment',
-      '10': 'payment'
-    },
-    {
-      '1': 'related_invoice',
-      '3': 2,
-      '4': 1,
-      '5': 11,
-      '6': '.financial.v1.Invoice',
-      '10': 'relatedInvoice'
-    },
-  ],
-};
-
-/// Descriptor for `GetPaymentResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List getPaymentResponseDescriptor = $convert.base64Decode(
-    'ChJHZXRQYXltZW50UmVzcG9uc2USLgoHcGF5bWVudBgBIAEoCzIULnBheW1lbnRzLnYxLlBheW'
-    '1lbnRSB3BheW1lbnQSPgoPcmVsYXRlZF9pbnZvaWNlGAIgASgLMhUuZmluYW5jaWFsLnYxLklu'
-    'dm9pY2VSDnJlbGF0ZWRJbnZvaWNl');
-
-@$core.Deprecated('Use listPaymentsRequestDescriptor instead')
-const ListPaymentsRequest$json = {
-  '1': 'ListPaymentsRequest',
-  '2': [
-    {'1': 'warehouse_id', '3': 1, '4': 1, '5': 9, '10': 'warehouseId'},
-    {
-      '1': 'start_date',
-      '3': 2,
-      '4': 1,
-      '5': 11,
-      '6': '.google.protobuf.Timestamp',
-      '10': 'startDate'
-    },
-    {
-      '1': 'end_date',
-      '3': 3,
-      '4': 1,
-      '5': 11,
-      '6': '.google.protobuf.Timestamp',
-      '10': 'endDate'
-    },
-    {'1': 'page_size', '3': 4, '4': 1, '5': 5, '10': 'pageSize'},
-    {'1': 'page_number', '3': 5, '4': 1, '5': 5, '10': 'pageNumber'},
-  ],
-};
-
-/// Descriptor for `ListPaymentsRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List listPaymentsRequestDescriptor = $convert.base64Decode(
-    'ChNMaXN0UGF5bWVudHNSZXF1ZXN0EiEKDHdhcmVob3VzZV9pZBgBIAEoCVILd2FyZWhvdXNlSW'
-    'QSOQoKc3RhcnRfZGF0ZRgCIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSCXN0YXJ0'
-    'RGF0ZRI1CghlbmRfZGF0ZRgDIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSB2VuZE'
-    'RhdGUSGwoJcGFnZV9zaXplGAQgASgFUghwYWdlU2l6ZRIfCgtwYWdlX251bWJlchgFIAEoBVIK'
-    'cGFnZU51bWJlcg==');
-
-@$core.Deprecated('Use listPaymentsResponseDescriptor instead')
-const ListPaymentsResponse$json = {
-  '1': 'ListPaymentsResponse',
-  '2': [
-    {
-      '1': 'payments',
-      '3': 1,
-      '4': 3,
-      '5': 11,
-      '6': '.payments.v1.Payment',
-      '10': 'payments'
-    },
-    {'1': 'total_count', '3': 2, '4': 1, '5': 5, '10': 'totalCount'},
-    {'1': 'total_amount', '3': 3, '4': 1, '5': 1, '10': 'totalAmount'},
-  ],
-};
-
-/// Descriptor for `ListPaymentsResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List listPaymentsResponseDescriptor = $convert.base64Decode(
-    'ChRMaXN0UGF5bWVudHNSZXNwb25zZRIwCghwYXltZW50cxgBIAMoCzIULnBheW1lbnRzLnYxLl'
-    'BheW1lbnRSCHBheW1lbnRzEh8KC3RvdGFsX2NvdW50GAIgASgFUgp0b3RhbENvdW50EiEKDHRv'
-    'dGFsX2Ftb3VudBgDIAEoAVILdG90YWxBbW91bnQ=');
-
 const $core.Map<$core.String, $core.dynamic> PaymentsServiceBase$json = {
   '1': 'PaymentsService',
   '2': [
@@ -320,16 +219,6 @@ const $core.Map<$core.String, $core.dynamic> PaymentsServiceBase$json = {
       '1': 'CreatePayment',
       '2': '.payments.v1.CreatePaymentRequest',
       '3': '.payments.v1.CreatePaymentResponse'
-    },
-    {
-      '1': 'GetPayment',
-      '2': '.payments.v1.GetPaymentRequest',
-      '3': '.payments.v1.GetPaymentResponse'
-    },
-    {
-      '1': 'ListPayments',
-      '2': '.payments.v1.ListPaymentsRequest',
-      '3': '.payments.v1.ListPaymentsResponse'
     },
   ],
 };
@@ -342,19 +231,9 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
   '.payments.v1.Payment': Payment$json,
   '.google.protobuf.Timestamp': $0.Timestamp$json,
   '.payments.v1.PaymentRelatedDoc': PaymentRelatedDoc$json,
-  '.payments.v1.GetPaymentRequest': GetPaymentRequest$json,
-  '.payments.v1.GetPaymentResponse': GetPaymentResponse$json,
-  '.financial.v1.Invoice': $1.Invoice$json,
-  '.financial.v1.InvoiceLineItem': $2.InvoiceLineItem$json,
-  '.inventory.v1.Internationalized': $3.Internationalized$json,
-  '.payments.v1.ListPaymentsRequest': ListPaymentsRequest$json,
-  '.payments.v1.ListPaymentsResponse': ListPaymentsResponse$json,
 };
 
 /// Descriptor for `PaymentsService`. Decode as a `google.protobuf.ServiceDescriptorProto`.
 final $typed_data.Uint8List paymentsServiceDescriptor = $convert.base64Decode(
     'Cg9QYXltZW50c1NlcnZpY2USVgoNQ3JlYXRlUGF5bWVudBIhLnBheW1lbnRzLnYxLkNyZWF0ZV'
-    'BheW1lbnRSZXF1ZXN0GiIucGF5bWVudHMudjEuQ3JlYXRlUGF5bWVudFJlc3BvbnNlEk0KCkdl'
-    'dFBheW1lbnQSHi5wYXltZW50cy52MS5HZXRQYXltZW50UmVxdWVzdBofLnBheW1lbnRzLnYxLk'
-    'dldFBheW1lbnRSZXNwb25zZRJTCgxMaXN0UGF5bWVudHMSIC5wYXltZW50cy52MS5MaXN0UGF5'
-    'bWVudHNSZXF1ZXN0GiEucGF5bWVudHMudjEuTGlzdFBheW1lbnRzUmVzcG9uc2U=');
+    'BheW1lbnRSZXF1ZXN0GiIucGF5bWVudHMudjEuQ3JlYXRlUGF5bWVudFJlc3BvbnNl');

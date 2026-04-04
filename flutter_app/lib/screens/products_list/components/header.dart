@@ -23,7 +23,7 @@ class ProductsListHeader extends StatelessWidget {
 
     void _showProductDialog(
       BuildContext context,
-      StoreProductWithGlobalProduct? product,
+      CustomProduct? product,
     ) async {
       final controller = context.read<ProductsListController>();
 

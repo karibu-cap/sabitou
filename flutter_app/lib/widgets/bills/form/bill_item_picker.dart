@@ -18,7 +18,7 @@ import 'bill_form_controller.dart';
 /// Returns the configured [BillLineItemDraft] or `null` if the user cancelled.
 Future<BillLineItemDraft?> showBillItemPicker(
   BuildContext context, {
-  required Stream<List<StoreProductWithGlobalProduct>> productsStream,
+  required Stream<List<CustomProduct>> productsStream,
 }) {
   final isMobile = ResponsiveUtils.isMobile(context);
 
@@ -43,7 +43,7 @@ class BillItemPickerPage extends StatelessWidget {
   const BillItemPickerPage({super.key, required this.productsStream});
 
   /// Stream of store products to search within.
-  final Stream<List<StoreProductWithGlobalProduct>> productsStream;
+  final Stream<List<CustomProduct>> productsStream;
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +72,7 @@ class BillItemPickerDialog extends StatelessWidget {
   const BillItemPickerDialog({super.key, required this.productsStream});
 
   /// Stream of store products to search within.
-  final Stream<List<StoreProductWithGlobalProduct>> productsStream;
+  final Stream<List<CustomProduct>> productsStream;
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +100,7 @@ class _BillItemPickerBody extends StatefulWidget {
     required this.onCancel,
   });
 
-  final Stream<List<StoreProductWithGlobalProduct>> productsStream;
+  final Stream<List<CustomProduct>> productsStream;
   final ValueChanged<BillLineItemDraft> onConfirm;
   final VoidCallback onCancel;
 
@@ -114,9 +114,9 @@ class _BillItemPickerBodyState extends State<_BillItemPickerBody> {
   final _priceCtrl = TextEditingController();
 
   String _search = '';
-  StoreProductWithGlobalProduct? _selected;
+  CustomProduct? _selected;
 
-  void _selectProduct(StoreProductWithGlobalProduct product) {
+  void _selectProduct(CustomProduct product) {
     setState(() {
       _selected = product;
       _priceCtrl.text = product.storeProduct.defaultPurchasePrice > 0
@@ -253,17 +253,17 @@ class _ProductList extends StatelessWidget {
     required this.onSelect,
   });
 
-  final Stream<List<StoreProductWithGlobalProduct>> productsStream;
+  final Stream<List<CustomProduct>> productsStream;
   final String search;
-  final StoreProductWithGlobalProduct? selected;
-  final ValueChanged<StoreProductWithGlobalProduct> onSelect;
+  final CustomProduct? selected;
+  final ValueChanged<CustomProduct> onSelect;
 
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
     final cs = theme.colorScheme;
 
-    return StreamBuilder<List<StoreProductWithGlobalProduct>>(
+    return StreamBuilder<List<CustomProduct>>(
       stream: productsStream,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -325,7 +325,7 @@ class _ProductRow extends StatelessWidget {
     required this.cs,
   });
 
-  final StoreProductWithGlobalProduct product;
+  final CustomProduct product;
   final bool isSelected;
   final VoidCallback onTap;
   final ShadThemeData theme;
@@ -402,7 +402,7 @@ class _SelectedProductConfig extends StatelessWidget {
     required this.cs,
   });
 
-  final StoreProductWithGlobalProduct product;
+  final CustomProduct product;
   final TextEditingController qtyController;
   final TextEditingController priceController;
   final ShadThemeData theme;

@@ -4,7 +4,6 @@ import 'package:sabitou_rpc/sabitou_rpc.dart';
 import '../../repositories/audits_repository.dart';
 import '../../services/internationalization/internationalization.dart';
 import '../../utils/logger.dart';
-import '../../utils/user_preference.dart';
 
 /// The [AuditsViewModel].
 final class AuditsViewModel {
@@ -39,6 +38,9 @@ final class AuditsViewModel {
   final _activeTabSubject = BehaviorSubject<TransactionTab>.seeded(
     TransactionTab.inventory,
   );
+
+  /// Current store
+  final Store currentStore;
 
   /// Subject for date filter
   final _dateFilterSubject = BehaviorSubject<String>.seeded('');
@@ -103,7 +105,7 @@ final class AuditsViewModel {
   TransactionTab get activeTab => _activeTabSubject.value;
 
   /// Constructor for TransactionsViewModel
-  AuditsViewModel() {
+  AuditsViewModel({required this.currentStore}) {
     _initialize();
   }
 
@@ -138,17 +140,8 @@ final class AuditsViewModel {
   /// Load inventory transactions
   Future<void> _loadInventoryTransactions() async {
     try {
-      final store = UserPreferences.instance.store;
-      if (store == null) {
-        _logger.severe('Store not found');
-
-        return;
-      }
-
       final response = await AuditsRepository.instance
-          .getInventoryTransactionAuditLogs(
-            GetInventoryTransactionAuditLogsRequest(storeId: store.refId),
-          );
+          .getInventoryTransactionAuditLogs(currentStore.refId);
       final transactions = response;
 
       _inventoryTransactionsSubject.add(transactions);
@@ -163,15 +156,8 @@ final class AuditsViewModel {
   /// Load voucher transactions
   Future<void> _loadVoucherTransactions() async {
     try {
-      final store = UserPreferences.instance.store;
-      if (store == null) {
-        _logger.severe('Store not found');
-
-        return;
-      }
-
       final response = await AuditsRepository.instance.getVoucherTransactions(
-        GetVoucherTransactionAuditLogsRequest(storeId: store.refId),
+        currentStore.refId,
       );
 
       final transactions = response;

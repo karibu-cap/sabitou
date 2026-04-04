@@ -29,9 +29,9 @@ class ProductsListViewModel {
 
   /// Gets the products subject.
   final _productsSubject =
-      BehaviorSubject<
-        UnmodifiableListView<StoreProductWithGlobalProduct>
-      >.seeded(UnmodifiableListView([]));
+      BehaviorSubject<UnmodifiableListView<CustomProduct>>.seeded(
+        UnmodifiableListView([]),
+      );
 
   /// Gets the business categories.
   UnmodifiableListView<Category> businessCategories =
@@ -41,12 +41,12 @@ class ProductsListViewModel {
   final Completer<bool> completer = Completer<bool>();
 
   /// Gets the products stream.
-  BehaviorSubject<UnmodifiableListView<StoreProductWithGlobalProduct>>
-  get productsSubject => _productsSubject;
+  BehaviorSubject<UnmodifiableListView<CustomProduct>> get productsSubject =>
+      _productsSubject;
 
   /// Returns the filtered product list synchronously based on the provided
   /// filter values.
-  List<StoreProductWithGlobalProduct> getFilteredProducts({
+  List<CustomProduct> getFilteredProducts({
     required String searchQuery,
     required String selectedCategory,
     required ProductStatus? selectedStatus,
@@ -102,12 +102,12 @@ class ProductsListViewModel {
     try {
       _logger.info('initTheData is called');
 
-      StoreProductsRepository.instance
-          .streamStoreProducts(StreamStoreProductsRequest(storeId: store.refId))
-          .listen((products) {
-            if (_isDisposed) return;
-            _productsSubject.add(UnmodifiableListView(products));
-          });
+      StoreProductsRepository.instance.streamStoreProducts(store.refId).listen((
+        products,
+      ) {
+        if (_isDisposed) return;
+        _productsSubject.add(UnmodifiableListView(products));
+      });
 
       final categories = await CategoriesRepository.instance
           .getCategoriesByBusinessId(buisiness.refId);
@@ -131,7 +131,7 @@ class ProductsListViewModel {
     VoidCallback? onLoaded,
   }) async {
     final product = await StoreProductsRepository.instance.getStoreProduct(
-      GetStoreProductRequest(storeProductId: storeProductId),
+      storeProductId,
     );
     if (product == null) {
       return false;
@@ -139,7 +139,7 @@ class ProductsListViewModel {
     product.storeProduct.status = status;
 
     final result = await StoreProductsRepository.instance.updateProduct(
-      UpdateStoreProductRequest(storeProduct: product.storeProduct),
+      storeProduct: product.storeProduct,
     );
     if (result) {
       unawaited(initTheData(onLoaded: onLoaded));

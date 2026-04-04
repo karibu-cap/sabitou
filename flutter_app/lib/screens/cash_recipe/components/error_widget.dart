@@ -16,8 +16,6 @@ class ErrorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = context.read<CashRecipeController>();
-
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -40,11 +38,6 @@ class ErrorWidget extends StatelessWidget {
             error,
             style: ShadTheme.of(context).textTheme.muted,
             textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 24),
-          ShadButton(
-            onPressed: controller.loadCashReceipts,
-            child: Text(Intls.to.retry),
           ),
         ],
       ),

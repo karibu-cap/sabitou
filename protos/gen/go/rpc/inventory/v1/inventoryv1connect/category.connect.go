@@ -33,35 +33,15 @@ const (
 // reflection-formatted method names, remove the leading slash and convert the remaining slash to a
 // period.
 const (
-	// CategoryServiceCreateCategoryProcedure is the fully-qualified name of the CategoryService's
-	// CreateCategory RPC.
-	CategoryServiceCreateCategoryProcedure = "/inventory.v1.CategoryService/CreateCategory"
-	// CategoryServiceUpdateCategoryProcedure is the fully-qualified name of the CategoryService's
-	// UpdateCategory RPC.
-	CategoryServiceUpdateCategoryProcedure = "/inventory.v1.CategoryService/UpdateCategory"
 	// CategoryServiceDeleteCategoryProcedure is the fully-qualified name of the CategoryService's
 	// DeleteCategory RPC.
 	CategoryServiceDeleteCategoryProcedure = "/inventory.v1.CategoryService/DeleteCategory"
-	// CategoryServiceFindCategoriesProcedure is the fully-qualified name of the CategoryService's
-	// FindCategories RPC.
-	CategoryServiceFindCategoriesProcedure = "/inventory.v1.CategoryService/FindCategories"
-	// CategoryServiceGetCategoryProcedure is the fully-qualified name of the CategoryService's
-	// GetCategory RPC.
-	CategoryServiceGetCategoryProcedure = "/inventory.v1.CategoryService/GetCategory"
 )
 
 // CategoryServiceClient is a client for the inventory.v1.CategoryService service.
 type CategoryServiceClient interface {
-	// Creates a new category.
-	CreateCategory(context.Context, *connect.Request[v1.CreateCategoryRequest]) (*connect.Response[v1.CreateCategoryResponse], error)
-	// Updates a category.
-	UpdateCategory(context.Context, *connect.Request[v1.UpdateCategoryRequest]) (*connect.Response[v1.UpdateCategoryResponse], error)
 	// Deletes a category.
 	DeleteCategory(context.Context, *connect.Request[v1.DeleteCategoryRequest]) (*connect.Response[v1.DeleteCategoryResponse], error)
-	// Finds categories by name.
-	FindCategories(context.Context, *connect.Request[v1.FindCategoriesRequest]) (*connect.Response[v1.FindCategoriesResponse], error)
-	// Gets a category by id.
-	GetCategory(context.Context, *connect.Request[v1.GetCategoryRequest]) (*connect.Response[v1.GetCategoryResponse], error)
 }
 
 // NewCategoryServiceClient constructs a client for the inventory.v1.CategoryService service. By
@@ -75,34 +55,10 @@ func NewCategoryServiceClient(httpClient connect.HTTPClient, baseURL string, opt
 	baseURL = strings.TrimRight(baseURL, "/")
 	categoryServiceMethods := v1.File_inventory_v1_category_proto.Services().ByName("CategoryService").Methods()
 	return &categoryServiceClient{
-		createCategory: connect.NewClient[v1.CreateCategoryRequest, v1.CreateCategoryResponse](
-			httpClient,
-			baseURL+CategoryServiceCreateCategoryProcedure,
-			connect.WithSchema(categoryServiceMethods.ByName("CreateCategory")),
-			connect.WithClientOptions(opts...),
-		),
-		updateCategory: connect.NewClient[v1.UpdateCategoryRequest, v1.UpdateCategoryResponse](
-			httpClient,
-			baseURL+CategoryServiceUpdateCategoryProcedure,
-			connect.WithSchema(categoryServiceMethods.ByName("UpdateCategory")),
-			connect.WithClientOptions(opts...),
-		),
 		deleteCategory: connect.NewClient[v1.DeleteCategoryRequest, v1.DeleteCategoryResponse](
 			httpClient,
 			baseURL+CategoryServiceDeleteCategoryProcedure,
 			connect.WithSchema(categoryServiceMethods.ByName("DeleteCategory")),
-			connect.WithClientOptions(opts...),
-		),
-		findCategories: connect.NewClient[v1.FindCategoriesRequest, v1.FindCategoriesResponse](
-			httpClient,
-			baseURL+CategoryServiceFindCategoriesProcedure,
-			connect.WithSchema(categoryServiceMethods.ByName("FindCategories")),
-			connect.WithClientOptions(opts...),
-		),
-		getCategory: connect.NewClient[v1.GetCategoryRequest, v1.GetCategoryResponse](
-			httpClient,
-			baseURL+CategoryServiceGetCategoryProcedure,
-			connect.WithSchema(categoryServiceMethods.ByName("GetCategory")),
 			connect.WithClientOptions(opts...),
 		),
 	}
@@ -110,21 +66,7 @@ func NewCategoryServiceClient(httpClient connect.HTTPClient, baseURL string, opt
 
 // categoryServiceClient implements CategoryServiceClient.
 type categoryServiceClient struct {
-	createCategory *connect.Client[v1.CreateCategoryRequest, v1.CreateCategoryResponse]
-	updateCategory *connect.Client[v1.UpdateCategoryRequest, v1.UpdateCategoryResponse]
 	deleteCategory *connect.Client[v1.DeleteCategoryRequest, v1.DeleteCategoryResponse]
-	findCategories *connect.Client[v1.FindCategoriesRequest, v1.FindCategoriesResponse]
-	getCategory    *connect.Client[v1.GetCategoryRequest, v1.GetCategoryResponse]
-}
-
-// CreateCategory calls inventory.v1.CategoryService.CreateCategory.
-func (c *categoryServiceClient) CreateCategory(ctx context.Context, req *connect.Request[v1.CreateCategoryRequest]) (*connect.Response[v1.CreateCategoryResponse], error) {
-	return c.createCategory.CallUnary(ctx, req)
-}
-
-// UpdateCategory calls inventory.v1.CategoryService.UpdateCategory.
-func (c *categoryServiceClient) UpdateCategory(ctx context.Context, req *connect.Request[v1.UpdateCategoryRequest]) (*connect.Response[v1.UpdateCategoryResponse], error) {
-	return c.updateCategory.CallUnary(ctx, req)
 }
 
 // DeleteCategory calls inventory.v1.CategoryService.DeleteCategory.
@@ -132,28 +74,10 @@ func (c *categoryServiceClient) DeleteCategory(ctx context.Context, req *connect
 	return c.deleteCategory.CallUnary(ctx, req)
 }
 
-// FindCategories calls inventory.v1.CategoryService.FindCategories.
-func (c *categoryServiceClient) FindCategories(ctx context.Context, req *connect.Request[v1.FindCategoriesRequest]) (*connect.Response[v1.FindCategoriesResponse], error) {
-	return c.findCategories.CallUnary(ctx, req)
-}
-
-// GetCategory calls inventory.v1.CategoryService.GetCategory.
-func (c *categoryServiceClient) GetCategory(ctx context.Context, req *connect.Request[v1.GetCategoryRequest]) (*connect.Response[v1.GetCategoryResponse], error) {
-	return c.getCategory.CallUnary(ctx, req)
-}
-
 // CategoryServiceHandler is an implementation of the inventory.v1.CategoryService service.
 type CategoryServiceHandler interface {
-	// Creates a new category.
-	CreateCategory(context.Context, *connect.Request[v1.CreateCategoryRequest]) (*connect.Response[v1.CreateCategoryResponse], error)
-	// Updates a category.
-	UpdateCategory(context.Context, *connect.Request[v1.UpdateCategoryRequest]) (*connect.Response[v1.UpdateCategoryResponse], error)
 	// Deletes a category.
 	DeleteCategory(context.Context, *connect.Request[v1.DeleteCategoryRequest]) (*connect.Response[v1.DeleteCategoryResponse], error)
-	// Finds categories by name.
-	FindCategories(context.Context, *connect.Request[v1.FindCategoriesRequest]) (*connect.Response[v1.FindCategoriesResponse], error)
-	// Gets a category by id.
-	GetCategory(context.Context, *connect.Request[v1.GetCategoryRequest]) (*connect.Response[v1.GetCategoryResponse], error)
 }
 
 // NewCategoryServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -163,48 +87,16 @@ type CategoryServiceHandler interface {
 // and JSON codecs. They also support gzip compression.
 func NewCategoryServiceHandler(svc CategoryServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
 	categoryServiceMethods := v1.File_inventory_v1_category_proto.Services().ByName("CategoryService").Methods()
-	categoryServiceCreateCategoryHandler := connect.NewUnaryHandler(
-		CategoryServiceCreateCategoryProcedure,
-		svc.CreateCategory,
-		connect.WithSchema(categoryServiceMethods.ByName("CreateCategory")),
-		connect.WithHandlerOptions(opts...),
-	)
-	categoryServiceUpdateCategoryHandler := connect.NewUnaryHandler(
-		CategoryServiceUpdateCategoryProcedure,
-		svc.UpdateCategory,
-		connect.WithSchema(categoryServiceMethods.ByName("UpdateCategory")),
-		connect.WithHandlerOptions(opts...),
-	)
 	categoryServiceDeleteCategoryHandler := connect.NewUnaryHandler(
 		CategoryServiceDeleteCategoryProcedure,
 		svc.DeleteCategory,
 		connect.WithSchema(categoryServiceMethods.ByName("DeleteCategory")),
 		connect.WithHandlerOptions(opts...),
 	)
-	categoryServiceFindCategoriesHandler := connect.NewUnaryHandler(
-		CategoryServiceFindCategoriesProcedure,
-		svc.FindCategories,
-		connect.WithSchema(categoryServiceMethods.ByName("FindCategories")),
-		connect.WithHandlerOptions(opts...),
-	)
-	categoryServiceGetCategoryHandler := connect.NewUnaryHandler(
-		CategoryServiceGetCategoryProcedure,
-		svc.GetCategory,
-		connect.WithSchema(categoryServiceMethods.ByName("GetCategory")),
-		connect.WithHandlerOptions(opts...),
-	)
 	return "/inventory.v1.CategoryService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
-		case CategoryServiceCreateCategoryProcedure:
-			categoryServiceCreateCategoryHandler.ServeHTTP(w, r)
-		case CategoryServiceUpdateCategoryProcedure:
-			categoryServiceUpdateCategoryHandler.ServeHTTP(w, r)
 		case CategoryServiceDeleteCategoryProcedure:
 			categoryServiceDeleteCategoryHandler.ServeHTTP(w, r)
-		case CategoryServiceFindCategoriesProcedure:
-			categoryServiceFindCategoriesHandler.ServeHTTP(w, r)
-		case CategoryServiceGetCategoryProcedure:
-			categoryServiceGetCategoryHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -214,22 +106,6 @@ func NewCategoryServiceHandler(svc CategoryServiceHandler, opts ...connect.Handl
 // UnimplementedCategoryServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedCategoryServiceHandler struct{}
 
-func (UnimplementedCategoryServiceHandler) CreateCategory(context.Context, *connect.Request[v1.CreateCategoryRequest]) (*connect.Response[v1.CreateCategoryResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("inventory.v1.CategoryService.CreateCategory is not implemented"))
-}
-
-func (UnimplementedCategoryServiceHandler) UpdateCategory(context.Context, *connect.Request[v1.UpdateCategoryRequest]) (*connect.Response[v1.UpdateCategoryResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("inventory.v1.CategoryService.UpdateCategory is not implemented"))
-}
-
 func (UnimplementedCategoryServiceHandler) DeleteCategory(context.Context, *connect.Request[v1.DeleteCategoryRequest]) (*connect.Response[v1.DeleteCategoryResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("inventory.v1.CategoryService.DeleteCategory is not implemented"))
-}
-
-func (UnimplementedCategoryServiceHandler) FindCategories(context.Context, *connect.Request[v1.FindCategoriesRequest]) (*connect.Response[v1.FindCategoriesResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("inventory.v1.CategoryService.FindCategories is not implemented"))
-}
-
-func (UnimplementedCategoryServiceHandler) GetCategory(context.Context, *connect.Request[v1.GetCategoryRequest]) (*connect.Response[v1.GetCategoryResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("inventory.v1.CategoryService.GetCategory is not implemented"))
 }

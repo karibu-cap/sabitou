@@ -32,8 +32,8 @@ class SuppliersViewModel {
   BehaviorSubject<SupplierStatus?> get selectedStatus => _selectedStatusSubject;
 
   /// Stream of suppliers for reactive UI updates.
-  Stream<List<Supplier>> get suppliersStream => _suppliersRepository
-      .streamStoreSuppliers(StreamStoreSuppliersRequest(storeId: storeId));
+  Stream<List<Supplier>> get suppliersStream =>
+      _suppliersRepository.streamStoreSuppliers(storeId);
 
   /// Constructors a new SuppliersViewModel.
   SuppliersViewModel({required this.storeId});
@@ -67,8 +67,7 @@ class SuppliersViewModel {
 
   /// Add a new supplier
   Future<bool> addSupplier(Supplier supplier) async {
-    final request = CreateSupplierRequest(supplier: supplier);
-    final supplierId = await _suppliersRepository.createSupplier(request);
+    final supplierId = await _suppliersRepository.createSupplier(supplier);
     if (supplierId == null) {
       return false;
     }
@@ -78,35 +77,19 @@ class SuppliersViewModel {
 
   /// Updates an existing supplier.
   Future<bool> updateSupplier(Supplier supplier) async {
-    final request = UpdateSupplierRequest(supplier: supplier);
-    await _suppliersRepository.updateSupplier(request);
+    await _suppliersRepository.updateSupplier(supplier);
 
     return true;
   }
 
   /// Deletes a supplier by ID.
   Future<bool> deleteSupplier(String supplierId) async {
-    return await _suppliersRepository.deleteSupplier(
-      DeleteSupplierRequest(supplierId: supplierId),
-    );
+    return await _suppliersRepository.deleteSupplier(supplierId);
   }
 
   /// Disposes the view model.
   void dispose() {
     _searchQuerySubject.close();
     _selectedStatusSubject.close();
-  }
-
-  /// Gets products for a specific supplier.
-  Future<List<ProductBySupplier>> getProductsForSupplier(
-    String supplierRefId,
-    String? storeId,
-  ) async {
-    final response = await _suppliersRepository.getProductsForSupplier(
-      supplierRefId,
-      storeId,
-    );
-
-    return response;
   }
 }

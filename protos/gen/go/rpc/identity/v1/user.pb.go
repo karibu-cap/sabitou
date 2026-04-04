@@ -11,6 +11,7 @@ import (
 	v1 "github.com/karibu-cap/sabitou/protos/gen/go/rpc/link/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -29,6 +30,7 @@ const (
 	AccountStatusType_ACCOUNT_STATUS_TYPE_UNSPECIFIED AccountStatusType = 0
 	AccountStatusType_ACCOUNT_STATUS_TYPE_ACTIVE      AccountStatusType = 1
 	AccountStatusType_ACCOUNT_STATUS_TYPE_DELETED     AccountStatusType = 2
+	AccountStatusType_ACCOUNT_STATUS_TYPE_PENDING     AccountStatusType = 3
 )
 
 // Enum value maps for AccountStatusType.
@@ -37,11 +39,13 @@ var (
 		0: "ACCOUNT_STATUS_TYPE_UNSPECIFIED",
 		1: "ACCOUNT_STATUS_TYPE_ACTIVE",
 		2: "ACCOUNT_STATUS_TYPE_DELETED",
+		3: "ACCOUNT_STATUS_TYPE_PENDING",
 	}
 	AccountStatusType_value = map[string]int32{
 		"ACCOUNT_STATUS_TYPE_UNSPECIFIED": 0,
 		"ACCOUNT_STATUS_TYPE_ACTIVE":      1,
 		"ACCOUNT_STATUS_TYPE_DELETED":     2,
+		"ACCOUNT_STATUS_TYPE_PENDING":     3,
 	}
 )
 
@@ -181,6 +185,64 @@ func (x ProviderType) Number() protoreflect.EnumNumber {
 // Deprecated: Use ProviderType.Descriptor instead.
 func (ProviderType) EnumDescriptor() ([]byte, []int) {
 	return file_identity_v1_user_proto_rawDescGZIP(), []int{2}
+}
+
+type InvitationStatus int32
+
+const (
+	InvitationStatus_INVITATION_STATUS_UNSPECIFIED InvitationStatus = 0
+	InvitationStatus_INVITATION_STATUS_PENDING     InvitationStatus = 1 // sent, waiting for user action
+	InvitationStatus_INVITATION_STATUS_ACCEPTED    InvitationStatus = 2 // user clicked and set password
+	InvitationStatus_INVITATION_STATUS_REJECTED    InvitationStatus = 3 // user explicitly declined
+	InvitationStatus_INVITATION_STATUS_EXPIRED     InvitationStatus = 4 // token TTL passed
+	InvitationStatus_INVITATION_STATUS_CANCELLED   InvitationStatus = 5 // admin revoked it
+)
+
+// Enum value maps for InvitationStatus.
+var (
+	InvitationStatus_name = map[int32]string{
+		0: "INVITATION_STATUS_UNSPECIFIED",
+		1: "INVITATION_STATUS_PENDING",
+		2: "INVITATION_STATUS_ACCEPTED",
+		3: "INVITATION_STATUS_REJECTED",
+		4: "INVITATION_STATUS_EXPIRED",
+		5: "INVITATION_STATUS_CANCELLED",
+	}
+	InvitationStatus_value = map[string]int32{
+		"INVITATION_STATUS_UNSPECIFIED": 0,
+		"INVITATION_STATUS_PENDING":     1,
+		"INVITATION_STATUS_ACCEPTED":    2,
+		"INVITATION_STATUS_REJECTED":    3,
+		"INVITATION_STATUS_EXPIRED":     4,
+		"INVITATION_STATUS_CANCELLED":   5,
+	}
+)
+
+func (x InvitationStatus) Enum() *InvitationStatus {
+	p := new(InvitationStatus)
+	*p = x
+	return p
+}
+
+func (x InvitationStatus) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (InvitationStatus) Descriptor() protoreflect.EnumDescriptor {
+	return file_identity_v1_user_proto_enumTypes[3].Descriptor()
+}
+
+func (InvitationStatus) Type() protoreflect.EnumType {
+	return &file_identity_v1_user_proto_enumTypes[3]
+}
+
+func (x InvitationStatus) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use InvitationStatus.Descriptor instead.
+func (InvitationStatus) EnumDescriptor() ([]byte, []int) {
+	return file_identity_v1_user_proto_rawDescGZIP(), []int{3}
 }
 
 type ConnectedAccount struct {
@@ -384,26 +446,34 @@ func (x *User) GetActiveStoreId() string {
 	return ""
 }
 
-type GetCurrentUserRequest struct {
+type Invitation struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	RefId         string                 `protobuf:"bytes,1,opt,name=ref_id,json=refId,proto3" json:"ref_id,omitempty"`
+	UserId        string                 `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	StoreId       string                 `protobuf:"bytes,3,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
+	InvitedBy     string                 `protobuf:"bytes,4,opt,name=invited_by,json=invitedBy,proto3" json:"invited_by,omitempty"`
+	Status        InvitationStatus       `protobuf:"varint,5,opt,name=status,proto3,enum=identity.v1.InvitationStatus" json:"status,omitempty"`
+	ExpiresAt     *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	RespondedAt   *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=responded_at,json=respondedAt,proto3,oneof" json:"responded_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetCurrentUserRequest) Reset() {
-	*x = GetCurrentUserRequest{}
+func (x *Invitation) Reset() {
+	*x = Invitation{}
 	mi := &file_identity_v1_user_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetCurrentUserRequest) String() string {
+func (x *Invitation) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetCurrentUserRequest) ProtoMessage() {}
+func (*Invitation) ProtoMessage() {}
 
-func (x *GetCurrentUserRequest) ProtoReflect() protoreflect.Message {
+func (x *Invitation) ProtoReflect() protoreflect.Message {
 	mi := &file_identity_v1_user_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -415,313 +485,63 @@ func (x *GetCurrentUserRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetCurrentUserRequest.ProtoReflect.Descriptor instead.
-func (*GetCurrentUserRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use Invitation.ProtoReflect.Descriptor instead.
+func (*Invitation) Descriptor() ([]byte, []int) {
 	return file_identity_v1_user_proto_rawDescGZIP(), []int{2}
 }
 
-type GetCurrentUserResponse struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The user information for the currently authenticated user.
-	Me            *User `protobuf:"bytes,1,opt,name=me,proto3" json:"me,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetCurrentUserResponse) Reset() {
-	*x = GetCurrentUserResponse{}
-	mi := &file_identity_v1_user_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetCurrentUserResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetCurrentUserResponse) ProtoMessage() {}
-
-func (x *GetCurrentUserResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_identity_v1_user_proto_msgTypes[3]
+func (x *Invitation) GetRefId() string {
 	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
+		return x.RefId
 	}
-	return mi.MessageOf(x)
+	return ""
 }
 
-// Deprecated: Use GetCurrentUserResponse.ProtoReflect.Descriptor instead.
-func (*GetCurrentUserResponse) Descriptor() ([]byte, []int) {
-	return file_identity_v1_user_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *GetCurrentUserResponse) GetMe() *User {
-	if x != nil {
-		return x.Me
-	}
-	return nil
-}
-
-type GetMeRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetMeRequest) Reset() {
-	*x = GetMeRequest{}
-	mi := &file_identity_v1_user_proto_msgTypes[4]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetMeRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetMeRequest) ProtoMessage() {}
-
-func (x *GetMeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_identity_v1_user_proto_msgTypes[4]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetMeRequest.ProtoReflect.Descriptor instead.
-func (*GetMeRequest) Descriptor() ([]byte, []int) {
-	return file_identity_v1_user_proto_rawDescGZIP(), []int{4}
-}
-
-type GetMeResponse struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The user information for the currently authenticated user.
-	Me            *User `protobuf:"bytes,1,opt,name=me,proto3" json:"me,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetMeResponse) Reset() {
-	*x = GetMeResponse{}
-	mi := &file_identity_v1_user_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetMeResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetMeResponse) ProtoMessage() {}
-
-func (x *GetMeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_identity_v1_user_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetMeResponse.ProtoReflect.Descriptor instead.
-func (*GetMeResponse) Descriptor() ([]byte, []int) {
-	return file_identity_v1_user_proto_rawDescGZIP(), []int{5}
-}
-
-func (x *GetMeResponse) GetMe() *User {
-	if x != nil {
-		return x.Me
-	}
-	return nil
-}
-
-type GetUserRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The id of the user to retrieve.
-	UserId        string `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetUserRequest) Reset() {
-	*x = GetUserRequest{}
-	mi := &file_identity_v1_user_proto_msgTypes[6]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetUserRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetUserRequest) ProtoMessage() {}
-
-func (x *GetUserRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_identity_v1_user_proto_msgTypes[6]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetUserRequest.ProtoReflect.Descriptor instead.
-func (*GetUserRequest) Descriptor() ([]byte, []int) {
-	return file_identity_v1_user_proto_rawDescGZIP(), []int{6}
-}
-
-func (x *GetUserRequest) GetUserId() string {
+func (x *Invitation) GetUserId() string {
 	if x != nil {
 		return x.UserId
 	}
 	return ""
 }
 
-type GetUserResponse struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The retrieved user data.
-	User          *User `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetUserResponse) Reset() {
-	*x = GetUserResponse{}
-	mi := &file_identity_v1_user_proto_msgTypes[7]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetUserResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetUserResponse) ProtoMessage() {}
-
-func (x *GetUserResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_identity_v1_user_proto_msgTypes[7]
+func (x *Invitation) GetStoreId() string {
 	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetUserResponse.ProtoReflect.Descriptor instead.
-func (*GetUserResponse) Descriptor() ([]byte, []int) {
-	return file_identity_v1_user_proto_rawDescGZIP(), []int{7}
-}
-
-func (x *GetUserResponse) GetUser() *User {
-	if x != nil {
-		return x.User
-	}
-	return nil
-}
-
-type StreamUserRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The id of the user to retrieve.
-	UserId        string `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *StreamUserRequest) Reset() {
-	*x = StreamUserRequest{}
-	mi := &file_identity_v1_user_proto_msgTypes[8]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *StreamUserRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*StreamUserRequest) ProtoMessage() {}
-
-func (x *StreamUserRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_identity_v1_user_proto_msgTypes[8]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use StreamUserRequest.ProtoReflect.Descriptor instead.
-func (*StreamUserRequest) Descriptor() ([]byte, []int) {
-	return file_identity_v1_user_proto_rawDescGZIP(), []int{8}
-}
-
-func (x *StreamUserRequest) GetUserId() string {
-	if x != nil {
-		return x.UserId
+		return x.StoreId
 	}
 	return ""
 }
 
-type StreamUserResponse struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The retrieved user data.
-	User          *User `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *StreamUserResponse) Reset() {
-	*x = StreamUserResponse{}
-	mi := &file_identity_v1_user_proto_msgTypes[9]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *StreamUserResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*StreamUserResponse) ProtoMessage() {}
-
-func (x *StreamUserResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_identity_v1_user_proto_msgTypes[9]
+func (x *Invitation) GetInvitedBy() string {
 	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
+		return x.InvitedBy
 	}
-	return mi.MessageOf(x)
+	return ""
 }
 
-// Deprecated: Use StreamUserResponse.ProtoReflect.Descriptor instead.
-func (*StreamUserResponse) Descriptor() ([]byte, []int) {
-	return file_identity_v1_user_proto_rawDescGZIP(), []int{9}
-}
-
-func (x *StreamUserResponse) GetUser() *User {
+func (x *Invitation) GetStatus() InvitationStatus {
 	if x != nil {
-		return x.User
+		return x.Status
+	}
+	return InvitationStatus_INVITATION_STATUS_UNSPECIFIED
+}
+
+func (x *Invitation) GetExpiresAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.ExpiresAt
+	}
+	return nil
+}
+
+func (x *Invitation) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
+}
+
+func (x *Invitation) GetRespondedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.RespondedAt
 	}
 	return nil
 }
@@ -740,7 +560,7 @@ type UpdateMeRequest struct {
 
 func (x *UpdateMeRequest) Reset() {
 	*x = UpdateMeRequest{}
-	mi := &file_identity_v1_user_proto_msgTypes[10]
+	mi := &file_identity_v1_user_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -752,7 +572,7 @@ func (x *UpdateMeRequest) String() string {
 func (*UpdateMeRequest) ProtoMessage() {}
 
 func (x *UpdateMeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_identity_v1_user_proto_msgTypes[10]
+	mi := &file_identity_v1_user_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -765,7 +585,7 @@ func (x *UpdateMeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateMeRequest.ProtoReflect.Descriptor instead.
 func (*UpdateMeRequest) Descriptor() ([]byte, []int) {
-	return file_identity_v1_user_proto_rawDescGZIP(), []int{10}
+	return file_identity_v1_user_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *UpdateMeRequest) GetUser() *User {
@@ -785,7 +605,7 @@ type UpdateMeResponse struct {
 
 func (x *UpdateMeResponse) Reset() {
 	*x = UpdateMeResponse{}
-	mi := &file_identity_v1_user_proto_msgTypes[11]
+	mi := &file_identity_v1_user_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -797,7 +617,7 @@ func (x *UpdateMeResponse) String() string {
 func (*UpdateMeResponse) ProtoMessage() {}
 
 func (x *UpdateMeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_identity_v1_user_proto_msgTypes[11]
+	mi := &file_identity_v1_user_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -810,7 +630,7 @@ func (x *UpdateMeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateMeResponse.ProtoReflect.Descriptor instead.
 func (*UpdateMeResponse) Descriptor() ([]byte, []int) {
-	return file_identity_v1_user_proto_rawDescGZIP(), []int{11}
+	return file_identity_v1_user_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *UpdateMeResponse) GetUser() *User {
@@ -834,7 +654,7 @@ type UpdateRequest struct {
 
 func (x *UpdateRequest) Reset() {
 	*x = UpdateRequest{}
-	mi := &file_identity_v1_user_proto_msgTypes[12]
+	mi := &file_identity_v1_user_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -846,7 +666,7 @@ func (x *UpdateRequest) String() string {
 func (*UpdateRequest) ProtoMessage() {}
 
 func (x *UpdateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_identity_v1_user_proto_msgTypes[12]
+	mi := &file_identity_v1_user_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -859,7 +679,7 @@ func (x *UpdateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateRequest.ProtoReflect.Descriptor instead.
 func (*UpdateRequest) Descriptor() ([]byte, []int) {
-	return file_identity_v1_user_proto_rawDescGZIP(), []int{12}
+	return file_identity_v1_user_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *UpdateRequest) GetUser() *User {
@@ -879,7 +699,7 @@ type UpdateResponse struct {
 
 func (x *UpdateResponse) Reset() {
 	*x = UpdateResponse{}
-	mi := &file_identity_v1_user_proto_msgTypes[13]
+	mi := &file_identity_v1_user_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -891,7 +711,7 @@ func (x *UpdateResponse) String() string {
 func (*UpdateResponse) ProtoMessage() {}
 
 func (x *UpdateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_identity_v1_user_proto_msgTypes[13]
+	mi := &file_identity_v1_user_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -904,7 +724,7 @@ func (x *UpdateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateResponse.ProtoReflect.Descriptor instead.
 func (*UpdateResponse) Descriptor() ([]byte, []int) {
-	return file_identity_v1_user_proto_rawDescGZIP(), []int{13}
+	return file_identity_v1_user_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *UpdateResponse) GetUser() *User {
@@ -926,7 +746,7 @@ type RequestDeleteUserRequest struct {
 
 func (x *RequestDeleteUserRequest) Reset() {
 	*x = RequestDeleteUserRequest{}
-	mi := &file_identity_v1_user_proto_msgTypes[14]
+	mi := &file_identity_v1_user_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -938,7 +758,7 @@ func (x *RequestDeleteUserRequest) String() string {
 func (*RequestDeleteUserRequest) ProtoMessage() {}
 
 func (x *RequestDeleteUserRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_identity_v1_user_proto_msgTypes[14]
+	mi := &file_identity_v1_user_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -951,7 +771,7 @@ func (x *RequestDeleteUserRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RequestDeleteUserRequest.ProtoReflect.Descriptor instead.
 func (*RequestDeleteUserRequest) Descriptor() ([]byte, []int) {
-	return file_identity_v1_user_proto_rawDescGZIP(), []int{14}
+	return file_identity_v1_user_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *RequestDeleteUserRequest) GetUserId() string {
@@ -979,7 +799,7 @@ type RequestDeleteUserResponse struct {
 
 func (x *RequestDeleteUserResponse) Reset() {
 	*x = RequestDeleteUserResponse{}
-	mi := &file_identity_v1_user_proto_msgTypes[15]
+	mi := &file_identity_v1_user_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -991,7 +811,7 @@ func (x *RequestDeleteUserResponse) String() string {
 func (*RequestDeleteUserResponse) ProtoMessage() {}
 
 func (x *RequestDeleteUserResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_identity_v1_user_proto_msgTypes[15]
+	mi := &file_identity_v1_user_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1004,7 +824,7 @@ func (x *RequestDeleteUserResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RequestDeleteUserResponse.ProtoReflect.Descriptor instead.
 func (*RequestDeleteUserResponse) Descriptor() ([]byte, []int) {
-	return file_identity_v1_user_proto_rawDescGZIP(), []int{15}
+	return file_identity_v1_user_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *RequestDeleteUserResponse) GetRequestToken() string {
@@ -1026,7 +846,7 @@ type DeleteUserRequest struct {
 
 func (x *DeleteUserRequest) Reset() {
 	*x = DeleteUserRequest{}
-	mi := &file_identity_v1_user_proto_msgTypes[16]
+	mi := &file_identity_v1_user_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1038,7 +858,7 @@ func (x *DeleteUserRequest) String() string {
 func (*DeleteUserRequest) ProtoMessage() {}
 
 func (x *DeleteUserRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_identity_v1_user_proto_msgTypes[16]
+	mi := &file_identity_v1_user_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1051,7 +871,7 @@ func (x *DeleteUserRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteUserRequest.ProtoReflect.Descriptor instead.
 func (*DeleteUserRequest) Descriptor() ([]byte, []int) {
-	return file_identity_v1_user_proto_rawDescGZIP(), []int{16}
+	return file_identity_v1_user_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *DeleteUserRequest) GetRequestToken() string {
@@ -1078,7 +898,7 @@ type DeleteUserResponse struct {
 
 func (x *DeleteUserResponse) Reset() {
 	*x = DeleteUserResponse{}
-	mi := &file_identity_v1_user_proto_msgTypes[17]
+	mi := &file_identity_v1_user_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1090,7 +910,7 @@ func (x *DeleteUserResponse) String() string {
 func (*DeleteUserResponse) ProtoMessage() {}
 
 func (x *DeleteUserResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_identity_v1_user_proto_msgTypes[17]
+	mi := &file_identity_v1_user_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1103,7 +923,7 @@ func (x *DeleteUserResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteUserResponse.ProtoReflect.Descriptor instead.
 func (*DeleteUserResponse) Descriptor() ([]byte, []int) {
-	return file_identity_v1_user_proto_rawDescGZIP(), []int{17}
+	return file_identity_v1_user_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *DeleteUserResponse) GetSuccess() bool {
@@ -1127,7 +947,7 @@ type ChangePasswordRequest struct {
 
 func (x *ChangePasswordRequest) Reset() {
 	*x = ChangePasswordRequest{}
-	mi := &file_identity_v1_user_proto_msgTypes[18]
+	mi := &file_identity_v1_user_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1139,7 +959,7 @@ func (x *ChangePasswordRequest) String() string {
 func (*ChangePasswordRequest) ProtoMessage() {}
 
 func (x *ChangePasswordRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_identity_v1_user_proto_msgTypes[18]
+	mi := &file_identity_v1_user_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1152,7 +972,7 @@ func (x *ChangePasswordRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ChangePasswordRequest.ProtoReflect.Descriptor instead.
 func (*ChangePasswordRequest) Descriptor() ([]byte, []int) {
-	return file_identity_v1_user_proto_rawDescGZIP(), []int{18}
+	return file_identity_v1_user_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *ChangePasswordRequest) GetOldPassword() string {
@@ -1179,7 +999,7 @@ type ChangePasswordResponse struct {
 
 func (x *ChangePasswordResponse) Reset() {
 	*x = ChangePasswordResponse{}
-	mi := &file_identity_v1_user_proto_msgTypes[19]
+	mi := &file_identity_v1_user_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1191,7 +1011,7 @@ func (x *ChangePasswordResponse) String() string {
 func (*ChangePasswordResponse) ProtoMessage() {}
 
 func (x *ChangePasswordResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_identity_v1_user_proto_msgTypes[19]
+	mi := &file_identity_v1_user_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1204,7 +1024,7 @@ func (x *ChangePasswordResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ChangePasswordResponse.ProtoReflect.Descriptor instead.
 func (*ChangePasswordResponse) Descriptor() ([]byte, []int) {
-	return file_identity_v1_user_proto_rawDescGZIP(), []int{19}
+	return file_identity_v1_user_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *ChangePasswordResponse) GetSuccess() bool {
@@ -1214,11 +1034,565 @@ func (x *ChangePasswordResponse) GetSuccess() bool {
 	return false
 }
 
+type CreateUserDirectRequest struct {
+	state    protoimpl.MessageState `protogen:"open.v1"`
+	UserName string                 `protobuf:"bytes,1,opt,name=user_name,json=userName,proto3" json:"user_name,omitempty"`
+	Email    string                 `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
+	// admin sets it, user should change on first login
+	Password    string            `protobuf:"bytes,3,opt,name=password,proto3" json:"password,omitempty"`
+	StoreId     string            `protobuf:"bytes,4,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
+	FirstName   *string           `protobuf:"bytes,5,opt,name=first_name,json=firstName,proto3,oneof" json:"first_name,omitempty"`
+	LastName    *string           `protobuf:"bytes,6,opt,name=last_name,json=lastName,proto3,oneof" json:"last_name,omitempty"`
+	PhoneNumber *string           `protobuf:"bytes,7,opt,name=phone_number,json=phoneNumber,proto3,oneof" json:"phone_number,omitempty"`
+	Permissions *StorePermissions `protobuf:"bytes,8,opt,name=permissions,proto3" json:"permissions,omitempty"`
+	// adds INITIALIZE_PASSWORD action
+	ForcePasswordChangeOnFirstLogin bool `protobuf:"varint,9,opt,name=force_password_change_on_first_login,json=forcePasswordChangeOnFirstLogin,proto3" json:"force_password_change_on_first_login,omitempty"`
+	unknownFields                   protoimpl.UnknownFields
+	sizeCache                       protoimpl.SizeCache
+}
+
+func (x *CreateUserDirectRequest) Reset() {
+	*x = CreateUserDirectRequest{}
+	mi := &file_identity_v1_user_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateUserDirectRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateUserDirectRequest) ProtoMessage() {}
+
+func (x *CreateUserDirectRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_identity_v1_user_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateUserDirectRequest.ProtoReflect.Descriptor instead.
+func (*CreateUserDirectRequest) Descriptor() ([]byte, []int) {
+	return file_identity_v1_user_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *CreateUserDirectRequest) GetUserName() string {
+	if x != nil {
+		return x.UserName
+	}
+	return ""
+}
+
+func (x *CreateUserDirectRequest) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *CreateUserDirectRequest) GetPassword() string {
+	if x != nil {
+		return x.Password
+	}
+	return ""
+}
+
+func (x *CreateUserDirectRequest) GetStoreId() string {
+	if x != nil {
+		return x.StoreId
+	}
+	return ""
+}
+
+func (x *CreateUserDirectRequest) GetFirstName() string {
+	if x != nil && x.FirstName != nil {
+		return *x.FirstName
+	}
+	return ""
+}
+
+func (x *CreateUserDirectRequest) GetLastName() string {
+	if x != nil && x.LastName != nil {
+		return *x.LastName
+	}
+	return ""
+}
+
+func (x *CreateUserDirectRequest) GetPhoneNumber() string {
+	if x != nil && x.PhoneNumber != nil {
+		return *x.PhoneNumber
+	}
+	return ""
+}
+
+func (x *CreateUserDirectRequest) GetPermissions() *StorePermissions {
+	if x != nil {
+		return x.Permissions
+	}
+	return nil
+}
+
+func (x *CreateUserDirectRequest) GetForcePasswordChangeOnFirstLogin() bool {
+	if x != nil {
+		return x.ForcePasswordChangeOnFirstLogin
+	}
+	return false
+}
+
+type CreateUserDirectResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	User          *User                  `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateUserDirectResponse) Reset() {
+	*x = CreateUserDirectResponse{}
+	mi := &file_identity_v1_user_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateUserDirectResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateUserDirectResponse) ProtoMessage() {}
+
+func (x *CreateUserDirectResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_identity_v1_user_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateUserDirectResponse.ProtoReflect.Descriptor instead.
+func (*CreateUserDirectResponse) Descriptor() ([]byte, []int) {
+	return file_identity_v1_user_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *CreateUserDirectResponse) GetUser() *User {
+	if x != nil {
+		return x.User
+	}
+	return nil
+}
+
+type InviteUserRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
+	StoreId       string                 `protobuf:"bytes,2,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
+	FirstName     *string                `protobuf:"bytes,3,opt,name=first_name,json=firstName,proto3,oneof" json:"first_name,omitempty"`
+	LastName      *string                `protobuf:"bytes,4,opt,name=last_name,json=lastName,proto3,oneof" json:"last_name,omitempty"`
+	Permissions   *StorePermissions      `protobuf:"bytes,5,opt,name=permissions,proto3" json:"permissions,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *InviteUserRequest) Reset() {
+	*x = InviteUserRequest{}
+	mi := &file_identity_v1_user_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *InviteUserRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*InviteUserRequest) ProtoMessage() {}
+
+func (x *InviteUserRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_identity_v1_user_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use InviteUserRequest.ProtoReflect.Descriptor instead.
+func (*InviteUserRequest) Descriptor() ([]byte, []int) {
+	return file_identity_v1_user_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *InviteUserRequest) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *InviteUserRequest) GetStoreId() string {
+	if x != nil {
+		return x.StoreId
+	}
+	return ""
+}
+
+func (x *InviteUserRequest) GetFirstName() string {
+	if x != nil && x.FirstName != nil {
+		return *x.FirstName
+	}
+	return ""
+}
+
+func (x *InviteUserRequest) GetLastName() string {
+	if x != nil && x.LastName != nil {
+		return *x.LastName
+	}
+	return ""
+}
+
+func (x *InviteUserRequest) GetPermissions() *StorePermissions {
+	if x != nil {
+		return x.Permissions
+	}
+	return nil
+}
+
+type InviteUserResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	User          *User                  `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
+	Invitation    *Invitation            `protobuf:"bytes,2,opt,name=invitation,proto3" json:"invitation,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *InviteUserResponse) Reset() {
+	*x = InviteUserResponse{}
+	mi := &file_identity_v1_user_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *InviteUserResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*InviteUserResponse) ProtoMessage() {}
+
+func (x *InviteUserResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_identity_v1_user_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use InviteUserResponse.ProtoReflect.Descriptor instead.
+func (*InviteUserResponse) Descriptor() ([]byte, []int) {
+	return file_identity_v1_user_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *InviteUserResponse) GetUser() *User {
+	if x != nil {
+		return x.User
+	}
+	return nil
+}
+
+func (x *InviteUserResponse) GetInvitation() *Invitation {
+	if x != nil {
+		return x.Invitation
+	}
+	return nil
+}
+
+type AcceptInvitationRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Token         string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"` // raw token from invitation link
+	NewPassword   string                 `protobuf:"bytes,2,opt,name=new_password,json=newPassword,proto3" json:"new_password,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AcceptInvitationRequest) Reset() {
+	*x = AcceptInvitationRequest{}
+	mi := &file_identity_v1_user_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AcceptInvitationRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AcceptInvitationRequest) ProtoMessage() {}
+
+func (x *AcceptInvitationRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_identity_v1_user_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AcceptInvitationRequest.ProtoReflect.Descriptor instead.
+func (*AcceptInvitationRequest) Descriptor() ([]byte, []int) {
+	return file_identity_v1_user_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *AcceptInvitationRequest) GetToken() string {
+	if x != nil {
+		return x.Token
+	}
+	return ""
+}
+
+func (x *AcceptInvitationRequest) GetNewPassword() string {
+	if x != nil {
+		return x.NewPassword
+	}
+	return ""
+}
+
+type AcceptInvitationResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AcceptInvitationResponse) Reset() {
+	*x = AcceptInvitationResponse{}
+	mi := &file_identity_v1_user_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AcceptInvitationResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AcceptInvitationResponse) ProtoMessage() {}
+
+func (x *AcceptInvitationResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_identity_v1_user_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AcceptInvitationResponse.ProtoReflect.Descriptor instead.
+func (*AcceptInvitationResponse) Descriptor() ([]byte, []int) {
+	return file_identity_v1_user_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *AcceptInvitationResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+type CancelInvitationRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	InvitationId  string                 `protobuf:"bytes,1,opt,name=invitation_id,json=invitationId,proto3" json:"invitation_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CancelInvitationRequest) Reset() {
+	*x = CancelInvitationRequest{}
+	mi := &file_identity_v1_user_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CancelInvitationRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CancelInvitationRequest) ProtoMessage() {}
+
+func (x *CancelInvitationRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_identity_v1_user_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CancelInvitationRequest.ProtoReflect.Descriptor instead.
+func (*CancelInvitationRequest) Descriptor() ([]byte, []int) {
+	return file_identity_v1_user_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *CancelInvitationRequest) GetInvitationId() string {
+	if x != nil {
+		return x.InvitationId
+	}
+	return ""
+}
+
+type CancelInvitationResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CancelInvitationResponse) Reset() {
+	*x = CancelInvitationResponse{}
+	mi := &file_identity_v1_user_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CancelInvitationResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CancelInvitationResponse) ProtoMessage() {}
+
+func (x *CancelInvitationResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_identity_v1_user_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CancelInvitationResponse.ProtoReflect.Descriptor instead.
+func (*CancelInvitationResponse) Descriptor() ([]byte, []int) {
+	return file_identity_v1_user_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *CancelInvitationResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+type ResendInvitationRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	InvitationId  string                 `protobuf:"bytes,1,opt,name=invitation_id,json=invitationId,proto3" json:"invitation_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ResendInvitationRequest) Reset() {
+	*x = ResendInvitationRequest{}
+	mi := &file_identity_v1_user_proto_msgTypes[21]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ResendInvitationRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ResendInvitationRequest) ProtoMessage() {}
+
+func (x *ResendInvitationRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_identity_v1_user_proto_msgTypes[21]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ResendInvitationRequest.ProtoReflect.Descriptor instead.
+func (*ResendInvitationRequest) Descriptor() ([]byte, []int) {
+	return file_identity_v1_user_proto_rawDescGZIP(), []int{21}
+}
+
+func (x *ResendInvitationRequest) GetInvitationId() string {
+	if x != nil {
+		return x.InvitationId
+	}
+	return ""
+}
+
+type ResendInvitationResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Invitation    *Invitation            `protobuf:"bytes,1,opt,name=invitation,proto3" json:"invitation,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ResendInvitationResponse) Reset() {
+	*x = ResendInvitationResponse{}
+	mi := &file_identity_v1_user_proto_msgTypes[22]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ResendInvitationResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ResendInvitationResponse) ProtoMessage() {}
+
+func (x *ResendInvitationResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_identity_v1_user_proto_msgTypes[22]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ResendInvitationResponse.ProtoReflect.Descriptor instead.
+func (*ResendInvitationResponse) Descriptor() ([]byte, []int) {
+	return file_identity_v1_user_proto_rawDescGZIP(), []int{22}
+}
+
+func (x *ResendInvitationResponse) GetInvitation() *Invitation {
+	if x != nil {
+		return x.Invitation
+	}
+	return nil
+}
+
 var File_identity_v1_user_proto protoreflect.FileDescriptor
 
 const file_identity_v1_user_proto_rawDesc = "" +
 	"\n" +
-	"\x16identity/v1/user.proto\x12\videntity.v1\x1a\x1bbuf/validate/validate.proto\x1a\x12link/v1/link.proto\"d\n" +
+	"\x16identity/v1/user.proto\x12\videntity.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cidentity/v1/permission.proto\x1a\x12link/v1/link.proto\"d\n" +
 	"\x10ConnectedAccount\x125\n" +
 	"\bprovider\x18\x01 \x01(\x0e2\x19.identity.v1.ProviderTypeR\bprovider\x12\x19\n" +
 	"\braw_data\x18\x03 \x01(\tR\arawData\"\xe7\x05\n" +
@@ -1247,23 +1621,21 @@ const file_identity_v1_user_proto_rawDesc = "" +
 	"\r_profile_linkB\x11\n" +
 	"\x0f_account_statusB\x15\n" +
 	"\x13_active_business_idB\x12\n" +
-	"\x10_active_store_id\"\x17\n" +
-	"\x15GetCurrentUserRequest\";\n" +
-	"\x16GetCurrentUserResponse\x12!\n" +
-	"\x02me\x18\x01 \x01(\v2\x11.identity.v1.UserR\x02me\"\x0e\n" +
-	"\fGetMeRequest\"2\n" +
-	"\rGetMeResponse\x12!\n" +
-	"\x02me\x18\x01 \x01(\v2\x11.identity.v1.UserR\x02me\"5\n" +
-	"\x0eGetUserRequest\x12#\n" +
-	"\auser_id\x18\x01 \x01(\tB\n" +
-	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\x06userId\"8\n" +
-	"\x0fGetUserResponse\x12%\n" +
-	"\x04user\x18\x01 \x01(\v2\x11.identity.v1.UserR\x04user\"8\n" +
-	"\x11StreamUserRequest\x12#\n" +
-	"\auser_id\x18\x01 \x01(\tB\n" +
-	"\xbaH\a\xc8\x01\x01r\x02\x10\x03R\x06userId\";\n" +
-	"\x12StreamUserResponse\x12%\n" +
-	"\x04user\x18\x01 \x01(\v2\x11.identity.v1.UserR\x04user\"8\n" +
+	"\x10_active_store_id\"\xf8\x02\n" +
+	"\n" +
+	"Invitation\x12\x15\n" +
+	"\x06ref_id\x18\x01 \x01(\tR\x05refId\x12\x17\n" +
+	"\auser_id\x18\x02 \x01(\tR\x06userId\x12\x19\n" +
+	"\bstore_id\x18\x03 \x01(\tR\astoreId\x12\x1d\n" +
+	"\n" +
+	"invited_by\x18\x04 \x01(\tR\tinvitedBy\x125\n" +
+	"\x06status\x18\x05 \x01(\x0e2\x1d.identity.v1.InvitationStatusR\x06status\x129\n" +
+	"\n" +
+	"expires_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\texpiresAt\x129\n" +
+	"\n" +
+	"created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12B\n" +
+	"\fresponded_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampH\x00R\vrespondedAt\x88\x01\x01B\x0f\n" +
+	"\r_responded_at\"8\n" +
 	"\x0fUpdateMeRequest\x12%\n" +
 	"\x04user\x18\x01 \x01(\v2\x11.identity.v1.UserR\x04user\"9\n" +
 	"\x10UpdateMeResponse\x12%\n" +
@@ -1287,11 +1659,59 @@ const file_identity_v1_user_proto_rawDesc = "" +
 	"\fold_password\x18\x01 \x01(\tB\t\xbaH\x06r\x04\x10\b\x18 R\voldPassword\x12,\n" +
 	"\fnew_password\x18\x02 \x01(\tB\t\xbaH\x06r\x04\x10\b\x18 R\vnewPassword\"2\n" +
 	"\x16ChangePasswordResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess*y\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"\xaf\x03\n" +
+	"\x17CreateUserDirectRequest\x12\x1b\n" +
+	"\tuser_name\x18\x01 \x01(\tR\buserName\x12\x14\n" +
+	"\x05email\x18\x02 \x01(\tR\x05email\x12\x1a\n" +
+	"\bpassword\x18\x03 \x01(\tR\bpassword\x12\x19\n" +
+	"\bstore_id\x18\x04 \x01(\tR\astoreId\x12\"\n" +
+	"\n" +
+	"first_name\x18\x05 \x01(\tH\x00R\tfirstName\x88\x01\x01\x12 \n" +
+	"\tlast_name\x18\x06 \x01(\tH\x01R\blastName\x88\x01\x01\x12&\n" +
+	"\fphone_number\x18\a \x01(\tH\x02R\vphoneNumber\x88\x01\x01\x12?\n" +
+	"\vpermissions\x18\b \x01(\v2\x1d.identity.v1.StorePermissionsR\vpermissions\x12M\n" +
+	"$force_password_change_on_first_login\x18\t \x01(\bR\x1fforcePasswordChangeOnFirstLoginB\r\n" +
+	"\v_first_nameB\f\n" +
+	"\n" +
+	"_last_nameB\x0f\n" +
+	"\r_phone_number\"A\n" +
+	"\x18CreateUserDirectResponse\x12%\n" +
+	"\x04user\x18\x01 \x01(\v2\x11.identity.v1.UserR\x04user\"\xe8\x01\n" +
+	"\x11InviteUserRequest\x12\x14\n" +
+	"\x05email\x18\x01 \x01(\tR\x05email\x12\x19\n" +
+	"\bstore_id\x18\x02 \x01(\tR\astoreId\x12\"\n" +
+	"\n" +
+	"first_name\x18\x03 \x01(\tH\x00R\tfirstName\x88\x01\x01\x12 \n" +
+	"\tlast_name\x18\x04 \x01(\tH\x01R\blastName\x88\x01\x01\x12?\n" +
+	"\vpermissions\x18\x05 \x01(\v2\x1d.identity.v1.StorePermissionsR\vpermissionsB\r\n" +
+	"\v_first_nameB\f\n" +
+	"\n" +
+	"_last_name\"t\n" +
+	"\x12InviteUserResponse\x12%\n" +
+	"\x04user\x18\x01 \x01(\v2\x11.identity.v1.UserR\x04user\x127\n" +
+	"\n" +
+	"invitation\x18\x02 \x01(\v2\x17.identity.v1.InvitationR\n" +
+	"invitation\"]\n" +
+	"\x17AcceptInvitationRequest\x12\x14\n" +
+	"\x05token\x18\x01 \x01(\tR\x05token\x12,\n" +
+	"\fnew_password\x18\x02 \x01(\tB\t\xbaH\x06r\x04\x10\b\x18 R\vnewPassword\"4\n" +
+	"\x18AcceptInvitationResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\">\n" +
+	"\x17CancelInvitationRequest\x12#\n" +
+	"\rinvitation_id\x18\x01 \x01(\tR\finvitationId\"4\n" +
+	"\x18CancelInvitationResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\">\n" +
+	"\x17ResendInvitationRequest\x12#\n" +
+	"\rinvitation_id\x18\x01 \x01(\tR\finvitationId\"S\n" +
+	"\x18ResendInvitationResponse\x127\n" +
+	"\n" +
+	"invitation\x18\x01 \x01(\v2\x17.identity.v1.InvitationR\n" +
+	"invitation*\x9a\x01\n" +
 	"\x11AccountStatusType\x12#\n" +
 	"\x1fACCOUNT_STATUS_TYPE_UNSPECIFIED\x10\x00\x12\x1e\n" +
 	"\x1aACCOUNT_STATUS_TYPE_ACTIVE\x10\x01\x12\x1f\n" +
-	"\x1bACCOUNT_STATUS_TYPE_DELETED\x10\x02*\xce\x01\n" +
+	"\x1bACCOUNT_STATUS_TYPE_DELETED\x10\x02\x12\x1f\n" +
+	"\x1bACCOUNT_STATUS_TYPE_PENDING\x10\x03*\xce\x01\n" +
 	"\x0eAuthActionType\x12 \n" +
 	"\x1cAUTH_ACTION_TYPE_UNSPECIFIED\x10\x00\x12!\n" +
 	"\x1dAUTH_ACTION_TYPE_VERIFY_EMAIL\x10\x01\x12(\n" +
@@ -1302,19 +1722,26 @@ const file_identity_v1_user_proto_rawDesc = "" +
 	"\x19PROVIDER_TYPE_UNSPECIFIED\x10\x00\x12 \n" +
 	"\x1cPROVIDER_TYPE_FIREBASE_EMAIL\x10\x01\x12\x18\n" +
 	"\x14PROVIDER_TYPE_GOOGLE\x10\x02\x12(\n" +
-	"$PROVIDER_TYPE_INTERNAL_BUSINESS_AUTH\x10\x032\xe9\x05\n" +
-	"\vUserService\x12@\n" +
-	"\x05GetMe\x12\x19.identity.v1.GetMeRequest\x1a\x1a.identity.v1.GetMeResponse\"\x00\x12[\n" +
-	"\x0eGetCurrentUser\x12\".identity.v1.GetCurrentUserRequest\x1a#.identity.v1.GetCurrentUserResponse\"\x00\x12F\n" +
-	"\aGetUser\x12\x1b.identity.v1.GetUserRequest\x1a\x1c.identity.v1.GetUserResponse\"\x00\x12I\n" +
-	"\bUpdateMe\x12\x1c.identity.v1.UpdateMeRequest\x1a\x1d.identity.v1.UpdateMeResponse\"\x00\x12C\n" +
+	"$PROVIDER_TYPE_INTERNAL_BUSINESS_AUTH\x10\x03*\xd4\x01\n" +
+	"\x10InvitationStatus\x12!\n" +
+	"\x1dINVITATION_STATUS_UNSPECIFIED\x10\x00\x12\x1d\n" +
+	"\x19INVITATION_STATUS_PENDING\x10\x01\x12\x1e\n" +
+	"\x1aINVITATION_STATUS_ACCEPTED\x10\x02\x12\x1e\n" +
+	"\x1aINVITATION_STATUS_REJECTED\x10\x03\x12\x1d\n" +
+	"\x19INVITATION_STATUS_EXPIRED\x10\x04\x12\x1f\n" +
+	"\x1bINVITATION_STATUS_CANCELLED\x10\x052\xc3\x06\n" +
+	"\vUserService\x12C\n" +
 	"\x06Update\x12\x1a.identity.v1.UpdateRequest\x1a\x1b.identity.v1.UpdateResponse\"\x00\x12d\n" +
 	"\x11RequestDeleteUser\x12%.identity.v1.RequestDeleteUserRequest\x1a&.identity.v1.RequestDeleteUserResponse\"\x00\x12O\n" +
 	"\n" +
 	"DeleteUser\x12\x1e.identity.v1.DeleteUserRequest\x1a\x1f.identity.v1.DeleteUserResponse\"\x00\x12[\n" +
-	"\x0eChangePassword\x12\".identity.v1.ChangePasswordRequest\x1a#.identity.v1.ChangePasswordResponse\"\x00\x12O\n" +
+	"\x0eChangePassword\x12\".identity.v1.ChangePasswordRequest\x1a#.identity.v1.ChangePasswordResponse\"\x00\x12a\n" +
+	"\x10CreateUserDirect\x12$.identity.v1.CreateUserDirectRequest\x1a%.identity.v1.CreateUserDirectResponse\"\x00\x12O\n" +
 	"\n" +
-	"StreamUser\x12\x1e.identity.v1.StreamUserRequest\x1a\x1f.identity.v1.StreamUserResponse0\x01B\xb1\x01\n" +
+	"InviteUser\x12\x1e.identity.v1.InviteUserRequest\x1a\x1f.identity.v1.InviteUserResponse\"\x00\x12a\n" +
+	"\x10CancelInvitation\x12$.identity.v1.CancelInvitationRequest\x1a%.identity.v1.CancelInvitationResponse\"\x00\x12a\n" +
+	"\x10ResendInvitation\x12$.identity.v1.ResendInvitationRequest\x1a%.identity.v1.ResendInvitationResponse\"\x00\x12a\n" +
+	"\x10AcceptInvitation\x12$.identity.v1.AcceptInvitationRequest\x1a%.identity.v1.AcceptInvitationResponse\"\x00B\xb1\x01\n" +
 	"\x0fcom.identity.v1B\tUserProtoP\x01ZFgithub.com/karibu-cap/sabitou/protos/gen/go/rpc/identity/v1;identityv1\xa2\x02\x03IXX\xaa\x02\vIdentity.V1\xca\x02\vIdentity\\V1\xe2\x02\x17Identity\\V1\\GPBMetadata\xea\x02\fIdentity::V1b\x06proto3"
 
 var (
@@ -1329,71 +1756,83 @@ func file_identity_v1_user_proto_rawDescGZIP() []byte {
 	return file_identity_v1_user_proto_rawDescData
 }
 
-var file_identity_v1_user_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
-var file_identity_v1_user_proto_msgTypes = make([]protoimpl.MessageInfo, 20)
+var file_identity_v1_user_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
+var file_identity_v1_user_proto_msgTypes = make([]protoimpl.MessageInfo, 23)
 var file_identity_v1_user_proto_goTypes = []any{
 	(AccountStatusType)(0),            // 0: identity.v1.AccountStatusType
 	(AuthActionType)(0),               // 1: identity.v1.AuthActionType
 	(ProviderType)(0),                 // 2: identity.v1.ProviderType
-	(*ConnectedAccount)(nil),          // 3: identity.v1.ConnectedAccount
-	(*User)(nil),                      // 4: identity.v1.User
-	(*GetCurrentUserRequest)(nil),     // 5: identity.v1.GetCurrentUserRequest
-	(*GetCurrentUserResponse)(nil),    // 6: identity.v1.GetCurrentUserResponse
-	(*GetMeRequest)(nil),              // 7: identity.v1.GetMeRequest
-	(*GetMeResponse)(nil),             // 8: identity.v1.GetMeResponse
-	(*GetUserRequest)(nil),            // 9: identity.v1.GetUserRequest
-	(*GetUserResponse)(nil),           // 10: identity.v1.GetUserResponse
-	(*StreamUserRequest)(nil),         // 11: identity.v1.StreamUserRequest
-	(*StreamUserResponse)(nil),        // 12: identity.v1.StreamUserResponse
-	(*UpdateMeRequest)(nil),           // 13: identity.v1.UpdateMeRequest
-	(*UpdateMeResponse)(nil),          // 14: identity.v1.UpdateMeResponse
-	(*UpdateRequest)(nil),             // 15: identity.v1.UpdateRequest
-	(*UpdateResponse)(nil),            // 16: identity.v1.UpdateResponse
-	(*RequestDeleteUserRequest)(nil),  // 17: identity.v1.RequestDeleteUserRequest
-	(*RequestDeleteUserResponse)(nil), // 18: identity.v1.RequestDeleteUserResponse
-	(*DeleteUserRequest)(nil),         // 19: identity.v1.DeleteUserRequest
-	(*DeleteUserResponse)(nil),        // 20: identity.v1.DeleteUserResponse
-	(*ChangePasswordRequest)(nil),     // 21: identity.v1.ChangePasswordRequest
-	(*ChangePasswordResponse)(nil),    // 22: identity.v1.ChangePasswordResponse
-	(*v1.ResourceLink)(nil),           // 23: link.v1.ResourceLink
+	(InvitationStatus)(0),             // 3: identity.v1.InvitationStatus
+	(*ConnectedAccount)(nil),          // 4: identity.v1.ConnectedAccount
+	(*User)(nil),                      // 5: identity.v1.User
+	(*Invitation)(nil),                // 6: identity.v1.Invitation
+	(*UpdateMeRequest)(nil),           // 7: identity.v1.UpdateMeRequest
+	(*UpdateMeResponse)(nil),          // 8: identity.v1.UpdateMeResponse
+	(*UpdateRequest)(nil),             // 9: identity.v1.UpdateRequest
+	(*UpdateResponse)(nil),            // 10: identity.v1.UpdateResponse
+	(*RequestDeleteUserRequest)(nil),  // 11: identity.v1.RequestDeleteUserRequest
+	(*RequestDeleteUserResponse)(nil), // 12: identity.v1.RequestDeleteUserResponse
+	(*DeleteUserRequest)(nil),         // 13: identity.v1.DeleteUserRequest
+	(*DeleteUserResponse)(nil),        // 14: identity.v1.DeleteUserResponse
+	(*ChangePasswordRequest)(nil),     // 15: identity.v1.ChangePasswordRequest
+	(*ChangePasswordResponse)(nil),    // 16: identity.v1.ChangePasswordResponse
+	(*CreateUserDirectRequest)(nil),   // 17: identity.v1.CreateUserDirectRequest
+	(*CreateUserDirectResponse)(nil),  // 18: identity.v1.CreateUserDirectResponse
+	(*InviteUserRequest)(nil),         // 19: identity.v1.InviteUserRequest
+	(*InviteUserResponse)(nil),        // 20: identity.v1.InviteUserResponse
+	(*AcceptInvitationRequest)(nil),   // 21: identity.v1.AcceptInvitationRequest
+	(*AcceptInvitationResponse)(nil),  // 22: identity.v1.AcceptInvitationResponse
+	(*CancelInvitationRequest)(nil),   // 23: identity.v1.CancelInvitationRequest
+	(*CancelInvitationResponse)(nil),  // 24: identity.v1.CancelInvitationResponse
+	(*ResendInvitationRequest)(nil),   // 25: identity.v1.ResendInvitationRequest
+	(*ResendInvitationResponse)(nil),  // 26: identity.v1.ResendInvitationResponse
+	(*v1.ResourceLink)(nil),           // 27: link.v1.ResourceLink
+	(*timestamppb.Timestamp)(nil),     // 28: google.protobuf.Timestamp
+	(*StorePermissions)(nil),          // 29: identity.v1.StorePermissions
 }
 var file_identity_v1_user_proto_depIdxs = []int32{
 	2,  // 0: identity.v1.ConnectedAccount.provider:type_name -> identity.v1.ProviderType
-	3,  // 1: identity.v1.User.connected_accounts:type_name -> identity.v1.ConnectedAccount
-	23, // 2: identity.v1.User.profile_link:type_name -> link.v1.ResourceLink
+	4,  // 1: identity.v1.User.connected_accounts:type_name -> identity.v1.ConnectedAccount
+	27, // 2: identity.v1.User.profile_link:type_name -> link.v1.ResourceLink
 	0,  // 3: identity.v1.User.account_status:type_name -> identity.v1.AccountStatusType
 	1,  // 4: identity.v1.User.required_actions:type_name -> identity.v1.AuthActionType
-	4,  // 5: identity.v1.GetCurrentUserResponse.me:type_name -> identity.v1.User
-	4,  // 6: identity.v1.GetMeResponse.me:type_name -> identity.v1.User
-	4,  // 7: identity.v1.GetUserResponse.user:type_name -> identity.v1.User
-	4,  // 8: identity.v1.StreamUserResponse.user:type_name -> identity.v1.User
-	4,  // 9: identity.v1.UpdateMeRequest.user:type_name -> identity.v1.User
-	4,  // 10: identity.v1.UpdateMeResponse.user:type_name -> identity.v1.User
-	4,  // 11: identity.v1.UpdateRequest.user:type_name -> identity.v1.User
-	4,  // 12: identity.v1.UpdateResponse.user:type_name -> identity.v1.User
-	7,  // 13: identity.v1.UserService.GetMe:input_type -> identity.v1.GetMeRequest
-	5,  // 14: identity.v1.UserService.GetCurrentUser:input_type -> identity.v1.GetCurrentUserRequest
-	9,  // 15: identity.v1.UserService.GetUser:input_type -> identity.v1.GetUserRequest
-	13, // 16: identity.v1.UserService.UpdateMe:input_type -> identity.v1.UpdateMeRequest
-	15, // 17: identity.v1.UserService.Update:input_type -> identity.v1.UpdateRequest
-	17, // 18: identity.v1.UserService.RequestDeleteUser:input_type -> identity.v1.RequestDeleteUserRequest
-	19, // 19: identity.v1.UserService.DeleteUser:input_type -> identity.v1.DeleteUserRequest
-	21, // 20: identity.v1.UserService.ChangePassword:input_type -> identity.v1.ChangePasswordRequest
-	11, // 21: identity.v1.UserService.StreamUser:input_type -> identity.v1.StreamUserRequest
-	8,  // 22: identity.v1.UserService.GetMe:output_type -> identity.v1.GetMeResponse
-	6,  // 23: identity.v1.UserService.GetCurrentUser:output_type -> identity.v1.GetCurrentUserResponse
-	10, // 24: identity.v1.UserService.GetUser:output_type -> identity.v1.GetUserResponse
-	14, // 25: identity.v1.UserService.UpdateMe:output_type -> identity.v1.UpdateMeResponse
-	16, // 26: identity.v1.UserService.Update:output_type -> identity.v1.UpdateResponse
-	18, // 27: identity.v1.UserService.RequestDeleteUser:output_type -> identity.v1.RequestDeleteUserResponse
-	20, // 28: identity.v1.UserService.DeleteUser:output_type -> identity.v1.DeleteUserResponse
-	22, // 29: identity.v1.UserService.ChangePassword:output_type -> identity.v1.ChangePasswordResponse
-	12, // 30: identity.v1.UserService.StreamUser:output_type -> identity.v1.StreamUserResponse
-	22, // [22:31] is the sub-list for method output_type
-	13, // [13:22] is the sub-list for method input_type
-	13, // [13:13] is the sub-list for extension type_name
-	13, // [13:13] is the sub-list for extension extendee
-	0,  // [0:13] is the sub-list for field type_name
+	3,  // 5: identity.v1.Invitation.status:type_name -> identity.v1.InvitationStatus
+	28, // 6: identity.v1.Invitation.expires_at:type_name -> google.protobuf.Timestamp
+	28, // 7: identity.v1.Invitation.created_at:type_name -> google.protobuf.Timestamp
+	28, // 8: identity.v1.Invitation.responded_at:type_name -> google.protobuf.Timestamp
+	5,  // 9: identity.v1.UpdateMeRequest.user:type_name -> identity.v1.User
+	5,  // 10: identity.v1.UpdateMeResponse.user:type_name -> identity.v1.User
+	5,  // 11: identity.v1.UpdateRequest.user:type_name -> identity.v1.User
+	5,  // 12: identity.v1.UpdateResponse.user:type_name -> identity.v1.User
+	29, // 13: identity.v1.CreateUserDirectRequest.permissions:type_name -> identity.v1.StorePermissions
+	5,  // 14: identity.v1.CreateUserDirectResponse.user:type_name -> identity.v1.User
+	29, // 15: identity.v1.InviteUserRequest.permissions:type_name -> identity.v1.StorePermissions
+	5,  // 16: identity.v1.InviteUserResponse.user:type_name -> identity.v1.User
+	6,  // 17: identity.v1.InviteUserResponse.invitation:type_name -> identity.v1.Invitation
+	6,  // 18: identity.v1.ResendInvitationResponse.invitation:type_name -> identity.v1.Invitation
+	9,  // 19: identity.v1.UserService.Update:input_type -> identity.v1.UpdateRequest
+	11, // 20: identity.v1.UserService.RequestDeleteUser:input_type -> identity.v1.RequestDeleteUserRequest
+	13, // 21: identity.v1.UserService.DeleteUser:input_type -> identity.v1.DeleteUserRequest
+	15, // 22: identity.v1.UserService.ChangePassword:input_type -> identity.v1.ChangePasswordRequest
+	17, // 23: identity.v1.UserService.CreateUserDirect:input_type -> identity.v1.CreateUserDirectRequest
+	19, // 24: identity.v1.UserService.InviteUser:input_type -> identity.v1.InviteUserRequest
+	23, // 25: identity.v1.UserService.CancelInvitation:input_type -> identity.v1.CancelInvitationRequest
+	25, // 26: identity.v1.UserService.ResendInvitation:input_type -> identity.v1.ResendInvitationRequest
+	21, // 27: identity.v1.UserService.AcceptInvitation:input_type -> identity.v1.AcceptInvitationRequest
+	10, // 28: identity.v1.UserService.Update:output_type -> identity.v1.UpdateResponse
+	12, // 29: identity.v1.UserService.RequestDeleteUser:output_type -> identity.v1.RequestDeleteUserResponse
+	14, // 30: identity.v1.UserService.DeleteUser:output_type -> identity.v1.DeleteUserResponse
+	16, // 31: identity.v1.UserService.ChangePassword:output_type -> identity.v1.ChangePasswordResponse
+	18, // 32: identity.v1.UserService.CreateUserDirect:output_type -> identity.v1.CreateUserDirectResponse
+	20, // 33: identity.v1.UserService.InviteUser:output_type -> identity.v1.InviteUserResponse
+	24, // 34: identity.v1.UserService.CancelInvitation:output_type -> identity.v1.CancelInvitationResponse
+	26, // 35: identity.v1.UserService.ResendInvitation:output_type -> identity.v1.ResendInvitationResponse
+	22, // 36: identity.v1.UserService.AcceptInvitation:output_type -> identity.v1.AcceptInvitationResponse
+	28, // [28:37] is the sub-list for method output_type
+	19, // [19:28] is the sub-list for method input_type
+	19, // [19:19] is the sub-list for extension type_name
+	19, // [19:19] is the sub-list for extension extendee
+	0,  // [0:19] is the sub-list for field type_name
 }
 
 func init() { file_identity_v1_user_proto_init() }
@@ -1401,14 +1840,18 @@ func file_identity_v1_user_proto_init() {
 	if File_identity_v1_user_proto != nil {
 		return
 	}
+	file_identity_v1_permission_proto_init()
 	file_identity_v1_user_proto_msgTypes[1].OneofWrappers = []any{}
+	file_identity_v1_user_proto_msgTypes[2].OneofWrappers = []any{}
+	file_identity_v1_user_proto_msgTypes[13].OneofWrappers = []any{}
+	file_identity_v1_user_proto_msgTypes[15].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_identity_v1_user_proto_rawDesc), len(file_identity_v1_user_proto_rawDesc)),
-			NumEnums:      3,
-			NumMessages:   20,
+			NumEnums:      4,
+			NumMessages:   23,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

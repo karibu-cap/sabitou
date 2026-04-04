@@ -8,7 +8,7 @@ package paymentsv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	v1 "github.com/karibu-cap/sabitou/protos/gen/go/rpc/audits/v1"
+	_ "github.com/karibu-cap/sabitou/protos/gen/go/rpc/audits/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -362,277 +362,6 @@ func (x *ValidateVoucherResponse) GetMessage() string {
 	return ""
 }
 
-type GetVoucherRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// Types that are valid to be assigned to Identifier:
-	//
-	//	*GetVoucherRequest_VoucherId
-	//	*GetVoucherRequest_VoucherCode
-	Identifier    isGetVoucherRequest_Identifier `protobuf_oneof:"identifier"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetVoucherRequest) Reset() {
-	*x = GetVoucherRequest{}
-	mi := &file_payments_v1_gift_voucher_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetVoucherRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetVoucherRequest) ProtoMessage() {}
-
-func (x *GetVoucherRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_payments_v1_gift_voucher_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetVoucherRequest.ProtoReflect.Descriptor instead.
-func (*GetVoucherRequest) Descriptor() ([]byte, []int) {
-	return file_payments_v1_gift_voucher_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *GetVoucherRequest) GetIdentifier() isGetVoucherRequest_Identifier {
-	if x != nil {
-		return x.Identifier
-	}
-	return nil
-}
-
-func (x *GetVoucherRequest) GetVoucherId() string {
-	if x != nil {
-		if x, ok := x.Identifier.(*GetVoucherRequest_VoucherId); ok {
-			return x.VoucherId
-		}
-	}
-	return ""
-}
-
-func (x *GetVoucherRequest) GetVoucherCode() string {
-	if x != nil {
-		if x, ok := x.Identifier.(*GetVoucherRequest_VoucherCode); ok {
-			return x.VoucherCode
-		}
-	}
-	return ""
-}
-
-type isGetVoucherRequest_Identifier interface {
-	isGetVoucherRequest_Identifier()
-}
-
-type GetVoucherRequest_VoucherId struct {
-	VoucherId string `protobuf:"bytes,1,opt,name=voucher_id,json=voucherId,proto3,oneof"`
-}
-
-type GetVoucherRequest_VoucherCode struct {
-	VoucherCode string `protobuf:"bytes,2,opt,name=voucher_code,json=voucherCode,proto3,oneof"`
-}
-
-func (*GetVoucherRequest_VoucherId) isGetVoucherRequest_Identifier() {}
-
-func (*GetVoucherRequest_VoucherCode) isGetVoucherRequest_Identifier() {}
-
-type GetVoucherResponse struct {
-	state   protoimpl.MessageState `protogen:"open.v1"`
-	Voucher *GiftVoucher           `protobuf:"bytes,1,opt,name=voucher,proto3" json:"voucher,omitempty"`
-	// Usage history.
-	Transactions  []*v1.VoucherTransaction `protobuf:"bytes,2,rep,name=transactions,proto3" json:"transactions,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetVoucherResponse) Reset() {
-	*x = GetVoucherResponse{}
-	mi := &file_payments_v1_gift_voucher_proto_msgTypes[4]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetVoucherResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetVoucherResponse) ProtoMessage() {}
-
-func (x *GetVoucherResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_payments_v1_gift_voucher_proto_msgTypes[4]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetVoucherResponse.ProtoReflect.Descriptor instead.
-func (*GetVoucherResponse) Descriptor() ([]byte, []int) {
-	return file_payments_v1_gift_voucher_proto_rawDescGZIP(), []int{4}
-}
-
-func (x *GetVoucherResponse) GetVoucher() *GiftVoucher {
-	if x != nil {
-		return x.Voucher
-	}
-	return nil
-}
-
-func (x *GetVoucherResponse) GetTransactions() []*v1.VoucherTransaction {
-	if x != nil {
-		return x.Transactions
-	}
-	return nil
-}
-
-type ListVouchersRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	WarehouseId   string                 `protobuf:"bytes,1,opt,name=warehouse_id,json=warehouseId,proto3" json:"warehouse_id,omitempty"`
-	Customer      *string                `protobuf:"bytes,2,opt,name=customer,proto3,oneof" json:"customer,omitempty"`
-	IssuedAfter   *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=issued_after,json=issuedAfter,proto3,oneof" json:"issued_after,omitempty"`
-	PageSize      int32                  `protobuf:"varint,4,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	PageNumber    int32                  `protobuf:"varint,5,opt,name=page_number,json=pageNumber,proto3" json:"page_number,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListVouchersRequest) Reset() {
-	*x = ListVouchersRequest{}
-	mi := &file_payments_v1_gift_voucher_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListVouchersRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListVouchersRequest) ProtoMessage() {}
-
-func (x *ListVouchersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_payments_v1_gift_voucher_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListVouchersRequest.ProtoReflect.Descriptor instead.
-func (*ListVouchersRequest) Descriptor() ([]byte, []int) {
-	return file_payments_v1_gift_voucher_proto_rawDescGZIP(), []int{5}
-}
-
-func (x *ListVouchersRequest) GetWarehouseId() string {
-	if x != nil {
-		return x.WarehouseId
-	}
-	return ""
-}
-
-func (x *ListVouchersRequest) GetCustomer() string {
-	if x != nil && x.Customer != nil {
-		return *x.Customer
-	}
-	return ""
-}
-
-func (x *ListVouchersRequest) GetIssuedAfter() *timestamppb.Timestamp {
-	if x != nil {
-		return x.IssuedAfter
-	}
-	return nil
-}
-
-func (x *ListVouchersRequest) GetPageSize() int32 {
-	if x != nil {
-		return x.PageSize
-	}
-	return 0
-}
-
-func (x *ListVouchersRequest) GetPageNumber() int32 {
-	if x != nil {
-		return x.PageNumber
-	}
-	return 0
-}
-
-type ListVouchersResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Vouchers      []*GiftVoucher         `protobuf:"bytes,1,rep,name=vouchers,proto3" json:"vouchers,omitempty"`
-	TotalCount    int32                  `protobuf:"varint,2,opt,name=total_count,json=totalCount,proto3" json:"total_count,omitempty"`
-	TotalValue    float64                `protobuf:"fixed64,3,opt,name=total_value,json=totalValue,proto3" json:"total_value,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListVouchersResponse) Reset() {
-	*x = ListVouchersResponse{}
-	mi := &file_payments_v1_gift_voucher_proto_msgTypes[6]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListVouchersResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListVouchersResponse) ProtoMessage() {}
-
-func (x *ListVouchersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_payments_v1_gift_voucher_proto_msgTypes[6]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListVouchersResponse.ProtoReflect.Descriptor instead.
-func (*ListVouchersResponse) Descriptor() ([]byte, []int) {
-	return file_payments_v1_gift_voucher_proto_rawDescGZIP(), []int{6}
-}
-
-func (x *ListVouchersResponse) GetVouchers() []*GiftVoucher {
-	if x != nil {
-		return x.Vouchers
-	}
-	return nil
-}
-
-func (x *ListVouchersResponse) GetTotalCount() int32 {
-	if x != nil {
-		return x.TotalCount
-	}
-	return 0
-}
-
-func (x *ListVouchersResponse) GetTotalValue() float64 {
-	if x != nil {
-		return x.TotalValue
-	}
-	return 0
-}
-
 var File_payments_v1_gift_voucher_proto protoreflect.FileDescriptor
 
 const file_payments_v1_gift_voucher_proto_rawDesc = "" +
@@ -665,43 +394,16 @@ const file_payments_v1_gift_voucher_proto_rawDesc = "" +
 	"\vvalid_until\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
 	"validUntil\x122\n" +
 	"\x06status\x18\x05 \x01(\x0e2\x1a.payments.v1.VoucherStatusR\x06status\x12\x18\n" +
-	"\amessage\x18\x06 \x01(\tR\amessage\"g\n" +
-	"\x11GetVoucherRequest\x12\x1f\n" +
-	"\n" +
-	"voucher_id\x18\x01 \x01(\tH\x00R\tvoucherId\x12#\n" +
-	"\fvoucher_code\x18\x02 \x01(\tH\x00R\vvoucherCodeB\f\n" +
-	"\n" +
-	"identifier\"\x8b\x01\n" +
-	"\x12GetVoucherResponse\x122\n" +
-	"\avoucher\x18\x01 \x01(\v2\x18.payments.v1.GiftVoucherR\avoucher\x12A\n" +
-	"\ftransactions\x18\x02 \x03(\v2\x1d.audits.v1.VoucherTransactionR\ftransactions\"\xf9\x01\n" +
-	"\x13ListVouchersRequest\x12!\n" +
-	"\fwarehouse_id\x18\x01 \x01(\tR\vwarehouseId\x12\x1f\n" +
-	"\bcustomer\x18\x02 \x01(\tH\x00R\bcustomer\x88\x01\x01\x12B\n" +
-	"\fissued_after\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampH\x01R\vissuedAfter\x88\x01\x01\x12\x1b\n" +
-	"\tpage_size\x18\x04 \x01(\x05R\bpageSize\x12\x1f\n" +
-	"\vpage_number\x18\x05 \x01(\x05R\n" +
-	"pageNumberB\v\n" +
-	"\t_customerB\x0f\n" +
-	"\r_issued_after\"\x8e\x01\n" +
-	"\x14ListVouchersResponse\x124\n" +
-	"\bvouchers\x18\x01 \x03(\v2\x18.payments.v1.GiftVoucherR\bvouchers\x12\x1f\n" +
-	"\vtotal_count\x18\x02 \x01(\x05R\n" +
-	"totalCount\x12\x1f\n" +
-	"\vtotal_value\x18\x03 \x01(\x01R\n" +
-	"totalValue*\xc6\x01\n" +
+	"\amessage\x18\x06 \x01(\tR\amessage*\xc6\x01\n" +
 	"\rVoucherStatus\x12\x1e\n" +
 	"\x1aVOUCHER_STATUS_UNSPECIFIED\x10\x00\x12\x19\n" +
 	"\x15VOUCHER_STATUS_ACTIVE\x10\x01\x12!\n" +
 	"\x1dVOUCHER_STATUS_PARTIALLY_USED\x10\x02\x12\x1d\n" +
 	"\x19VOUCHER_STATUS_FULLY_USED\x10\x03\x12\x1a\n" +
 	"\x16VOUCHER_STATUS_EXPIRED\x10\x04\x12\x1c\n" +
-	"\x18VOUCHER_STATUS_CANCELLED\x10\x052\x96\x02\n" +
+	"\x18VOUCHER_STATUS_CANCELLED\x10\x052r\n" +
 	"\x12GiftVoucherService\x12\\\n" +
-	"\x0fValidateVoucher\x12#.payments.v1.ValidateVoucherRequest\x1a$.payments.v1.ValidateVoucherResponse\x12M\n" +
-	"\n" +
-	"GetVoucher\x12\x1e.payments.v1.GetVoucherRequest\x1a\x1f.payments.v1.GetVoucherResponse\x12S\n" +
-	"\fListVouchers\x12 .payments.v1.ListVouchersRequest\x1a!.payments.v1.ListVouchersResponseB\xb8\x01\n" +
+	"\x0fValidateVoucher\x12#.payments.v1.ValidateVoucherRequest\x1a$.payments.v1.ValidateVoucherResponseB\xb8\x01\n" +
 	"\x0fcom.payments.v1B\x10GiftVoucherProtoP\x01ZFgithub.com/karibu-cap/sabitou/protos/gen/go/rpc/payments/v1;paymentsv1\xa2\x02\x03PXX\xaa\x02\vPayments.V1\xca\x02\vPayments\\V1\xe2\x02\x17Payments\\V1\\GPBMetadata\xea\x02\fPayments::V1b\x06proto3"
 
 var (
@@ -717,40 +419,27 @@ func file_payments_v1_gift_voucher_proto_rawDescGZIP() []byte {
 }
 
 var file_payments_v1_gift_voucher_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_payments_v1_gift_voucher_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_payments_v1_gift_voucher_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_payments_v1_gift_voucher_proto_goTypes = []any{
 	(VoucherStatus)(0),              // 0: payments.v1.VoucherStatus
 	(*GiftVoucher)(nil),             // 1: payments.v1.GiftVoucher
 	(*ValidateVoucherRequest)(nil),  // 2: payments.v1.ValidateVoucherRequest
 	(*ValidateVoucherResponse)(nil), // 3: payments.v1.ValidateVoucherResponse
-	(*GetVoucherRequest)(nil),       // 4: payments.v1.GetVoucherRequest
-	(*GetVoucherResponse)(nil),      // 5: payments.v1.GetVoucherResponse
-	(*ListVouchersRequest)(nil),     // 6: payments.v1.ListVouchersRequest
-	(*ListVouchersResponse)(nil),    // 7: payments.v1.ListVouchersResponse
-	(*timestamppb.Timestamp)(nil),   // 8: google.protobuf.Timestamp
-	(*v1.VoucherTransaction)(nil),   // 9: audits.v1.VoucherTransaction
+	(*timestamppb.Timestamp)(nil),   // 4: google.protobuf.Timestamp
 }
 var file_payments_v1_gift_voucher_proto_depIdxs = []int32{
-	0,  // 0: payments.v1.GiftVoucher.status:type_name -> payments.v1.VoucherStatus
-	8,  // 1: payments.v1.GiftVoucher.issued_at:type_name -> google.protobuf.Timestamp
-	8,  // 2: payments.v1.GiftVoucher.valid_until:type_name -> google.protobuf.Timestamp
-	8,  // 3: payments.v1.ValidateVoucherResponse.valid_until:type_name -> google.protobuf.Timestamp
-	0,  // 4: payments.v1.ValidateVoucherResponse.status:type_name -> payments.v1.VoucherStatus
-	1,  // 5: payments.v1.GetVoucherResponse.voucher:type_name -> payments.v1.GiftVoucher
-	9,  // 6: payments.v1.GetVoucherResponse.transactions:type_name -> audits.v1.VoucherTransaction
-	8,  // 7: payments.v1.ListVouchersRequest.issued_after:type_name -> google.protobuf.Timestamp
-	1,  // 8: payments.v1.ListVouchersResponse.vouchers:type_name -> payments.v1.GiftVoucher
-	2,  // 9: payments.v1.GiftVoucherService.ValidateVoucher:input_type -> payments.v1.ValidateVoucherRequest
-	4,  // 10: payments.v1.GiftVoucherService.GetVoucher:input_type -> payments.v1.GetVoucherRequest
-	6,  // 11: payments.v1.GiftVoucherService.ListVouchers:input_type -> payments.v1.ListVouchersRequest
-	3,  // 12: payments.v1.GiftVoucherService.ValidateVoucher:output_type -> payments.v1.ValidateVoucherResponse
-	5,  // 13: payments.v1.GiftVoucherService.GetVoucher:output_type -> payments.v1.GetVoucherResponse
-	7,  // 14: payments.v1.GiftVoucherService.ListVouchers:output_type -> payments.v1.ListVouchersResponse
-	12, // [12:15] is the sub-list for method output_type
-	9,  // [9:12] is the sub-list for method input_type
-	9,  // [9:9] is the sub-list for extension type_name
-	9,  // [9:9] is the sub-list for extension extendee
-	0,  // [0:9] is the sub-list for field type_name
+	0, // 0: payments.v1.GiftVoucher.status:type_name -> payments.v1.VoucherStatus
+	4, // 1: payments.v1.GiftVoucher.issued_at:type_name -> google.protobuf.Timestamp
+	4, // 2: payments.v1.GiftVoucher.valid_until:type_name -> google.protobuf.Timestamp
+	4, // 3: payments.v1.ValidateVoucherResponse.valid_until:type_name -> google.protobuf.Timestamp
+	0, // 4: payments.v1.ValidateVoucherResponse.status:type_name -> payments.v1.VoucherStatus
+	2, // 5: payments.v1.GiftVoucherService.ValidateVoucher:input_type -> payments.v1.ValidateVoucherRequest
+	3, // 6: payments.v1.GiftVoucherService.ValidateVoucher:output_type -> payments.v1.ValidateVoucherResponse
+	6, // [6:7] is the sub-list for method output_type
+	5, // [5:6] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_payments_v1_gift_voucher_proto_init() }
@@ -759,18 +448,13 @@ func file_payments_v1_gift_voucher_proto_init() {
 		return
 	}
 	file_payments_v1_gift_voucher_proto_msgTypes[0].OneofWrappers = []any{}
-	file_payments_v1_gift_voucher_proto_msgTypes[3].OneofWrappers = []any{
-		(*GetVoucherRequest_VoucherId)(nil),
-		(*GetVoucherRequest_VoucherCode)(nil),
-	}
-	file_payments_v1_gift_voucher_proto_msgTypes[5].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_payments_v1_gift_voucher_proto_rawDesc), len(file_payments_v1_gift_voucher_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   7,
+			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

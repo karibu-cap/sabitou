@@ -1,11 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import 'core/database/powersync_data_source.dart';
+import 'core/files/sabitou_file_manager.dart';
 import 'providers/auth/auth_provider.dart';
 import 'repositories/audits_repository.dart';
 import 'repositories/auth_repository.dart';
@@ -28,22 +32,20 @@ import 'repositories/users_repository.dart';
 import 'router/app_router.dart';
 import 'services/app_theme_service.dart';
 import 'services/auth/auth_api_client.dart';
+import 'services/auth/token_refresh_service.dart';
 import 'services/auth/token_service.dart';
 import 'services/internationalization/internationalization.dart';
 import 'services/network_status_provider/network_status_provider.dart';
 import 'services/powersync/powersync_service.dart';
 import 'services/rpc/connect_rpc.dart';
-import 'services/storage/app_storage.dart';
-import 'services/storage/hive_ce/hive_adapters.dart';
 import 'themes/app_colors.dart';
+import 'utils/app_config.dart';
 import 'utils/app_constants.dart';
 import 'utils/user_preference.dart';
 
 /// The logger configuration.
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await AppStorage.initialize(AppStorageType.hiveStorage);
-  initStorageBoxes();
   await _initPowersyncDbServices();
   await _initServices();
   runApp(const MyApp());
@@ -56,7 +58,10 @@ Future<void> _initPowersyncDbServices() async {
     AuthApiClient(),
   );
   final service = GetIt.I.registerSingleton<PowerSyncService>(
-    PowerSyncService(authApiClient: authApiClient),
+    PowerSyncService(),
+  );
+  GetIt.I.registerLazySingleton<TokenRefreshService>(
+    () => TokenRefreshService(authApiClient: authApiClient),
   );
   try {
     await service.initialize();
@@ -65,7 +70,7 @@ Future<void> _initPowersyncDbServices() async {
       debugPrint('PowerSync web worker state mismatch, reinitializing...');
       await service.close();
       final _service = GetIt.I.registerSingletonIfAbsent<PowerSyncService>(
-        () => PowerSyncService(authApiClient: authApiClient),
+        PowerSyncService.new,
       );
       await _service.initialize();
     } else {
@@ -79,9 +84,13 @@ Future<void> _initServices() async {
     type: NetworkProviderType.real,
   );
 
-  final languageCode = await AppStorage.of<Locale>().read(
-    PreferencesKey.language,
+  final t = await const FlutterSecureStorage().read(
+    key: PreferencesKey.language,
   );
+  final languageCode = t == null
+      ? const Locale('en')
+      : jsonDecode(t) as Locale?;
+
   GetIt.I
     ..registerLazySingleton<NetworkStatusProvider>(() => networkStatusProvider)
     ..registerLazySingleton<AppInternationalizationService>(
@@ -140,7 +149,11 @@ Future<void> _initServices() async {
         dataSource: PowerSyncDataSource(() => PowerSyncService.instance.db),
       ),
     )
-    ..registerLazySingleton<GiftVoucherRepository>(GiftVoucherRepository.new)
+    ..registerLazySingleton<GiftVoucherRepository>(
+      () => GiftVoucherRepository(
+        dataSource: PowerSyncDataSource(() => PowerSyncService.instance.db),
+      ),
+    )
     ..registerLazySingleton<PosRepository>(
       () => PosRepository(
         dataSource: PowerSyncDataSource(() => PowerSyncService.instance.db),
@@ -171,7 +184,8 @@ Future<void> _initServices() async {
       () => CategoriesRepository(
         dataSource: PowerSyncDataSource(() => PowerSyncService.instance.db),
       ),
-    );
+    )
+    ..registerSingletonIfAbsent<SabitouFileManager>(SabitouFileManager.new);
 
   // Wait for AuthProvider to initialize from storage
   GetIt.I.registerSingleton<AuthProvider>(
@@ -185,6 +199,19 @@ Future<void> _initServices() async {
 
   /// Initialize the get storage service.
   await AppRouter.init(AppRouterType.gorouter);
+
+  /// Initialize the file manager.
+  final minioUri = Uri.parse(AppConfig.minioUrl);
+  await SabitouFileManager.instance.init(
+    FileManagerConfig(
+      minioConfig: MinioConfig(
+        endpoint: AppConfig.minioUrl,
+        host: '${minioUri.host}:${minioUri.port}',
+        accessKey: AppConfig.minioAccessKey,
+        secretKey: AppConfig.minioSecretKey,
+      ),
+    ),
+  );
 
   // Wire the Dio logout callback now that AuthProvider is in the container.
   // When a 401 is received and token refresh also fails, Dio will call this

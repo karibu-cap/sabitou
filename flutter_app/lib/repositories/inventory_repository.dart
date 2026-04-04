@@ -1,5 +1,4 @@
 import 'package:get_it/get_it.dart';
-import 'package:sabitou_rpc/connect_servers.dart';
 import 'package:sabitou_rpc/models.dart';
 
 import '../core/database/base_repository.dart';
@@ -8,7 +7,6 @@ import '../core/database/query/sql_condition.dart';
 import '../core/database/query/sql_join.dart';
 import '../core/database/row_mapper.dart';
 import '../services/powersync/schema.dart';
-import '../services/rpc/connect_rpc.dart';
 import '../utils/app_constants.dart';
 import '../utils/logger.dart';
 import '../utils/utils.dart';
@@ -16,12 +14,6 @@ import '../utils/utils.dart';
 /// Repository for inventory management
 final class InventoryRepository extends BaseRepository<InventoryLevel> {
   final _logger = LoggerApp('InventoryRepository');
-
-  /// The inventory service client.
-  final InventoryServiceClient inventoryServiceClient;
-
-  /// The Store product service client for product-related operations.
-  final StoreProductServiceClient storeProductService;
 
   @override
   final LocalDataSource dataSource;
@@ -42,13 +34,7 @@ final class InventoryRepository extends BaseRepository<InventoryLevel> {
   RawRow toRow(InventoryLevel entity) => fromInventoryLevelToRaw(entity);
 
   /// Constructs an [InventoryRepository].
-  InventoryRepository({required this.dataSource})
-    : inventoryServiceClient = InventoryServiceClient(
-        ConnectRPCService.to.clientChannel,
-      ),
-      storeProductService = StoreProductServiceClient(
-        ConnectRPCService.to.clientChannel,
-      );
+  InventoryRepository({required this.dataSource});
 
   /// Gets the inventory levels of a product.
   Future<InventoryLevel?> getProductInventoryLevels(
@@ -108,19 +94,18 @@ final class InventoryRepository extends BaseRepository<InventoryLevel> {
 
   /// Checks if the product is available in the store.
   Future<({bool isAvailable, int quantityAvailable})> checkProductAvailability(
-    CheckProductAvailabilityRequest request,
+    String productId,
+    String storeId,
+    int quantityNeeded,
   ) async {
     try {
-      final level = await getProductInventoryLevels(
-        request.productId,
-        request.storeId,
-      );
+      final level = await getProductInventoryLevels(productId, storeId);
 
       return (
         isAvailable:
             level != null &&
             level.quantityAvailable > 0 &&
-            level.quantityAvailable > request.quantityNeeded,
+            level.quantityAvailable > quantityNeeded,
         quantityAvailable: level?.quantityAvailable ?? 0,
       );
     } on Exception catch (e) {
@@ -197,18 +182,21 @@ final class InventoryRepository extends BaseRepository<InventoryLevel> {
   }
 
   /// Gets recent inventory transactions history.
-  Future<List<InventoryTransaction>> getInventoryTransactionHistory(
-    GetInventoryTransactionHistoryRequest request,
-  ) async {
+  Future<List<InventoryTransaction>> getInventoryTransactionHistory({
+    required String storeId,
+    String? productId,
+    DateTime? startDate,
+    DateTime? endDate,
+    int? pageSize,
+    int? pageNumber,
+  }) async {
     try {
       final rows = await dataSource.getCollection(
         CollectionName.inventoryTransactions,
         filters: [
-          SqlQuery.equals(InventoryTransactionsFields.storeId, request.storeId),
-          SqlQuery.equals(
-            InventoryTransactionsFields.productId,
-            request.productId,
-          ),
+          SqlQuery.equals(InventoryTransactionsFields.storeId, storeId),
+          if (productId != null)
+            SqlQuery.equals(InventoryTransactionsFields.productId, productId),
         ],
       );
 
@@ -223,39 +211,39 @@ final class InventoryRepository extends BaseRepository<InventoryLevel> {
   /// Gets the inventory levels for a product.
 
   /// Adjusts the inventory.
-  Future<bool> adjustInventory(
-    AdjustInventoryRequest request,
-    String permformBy,
-  ) async {
+  Future<bool> adjustInventory({
+    required String storeId,
+    required String productId,
+    required int newQuantity,
+    required String permformBy,
+    String? reason,
+  }) async {
     try {
       // 1. Get current level
-      final level = await getProductInventoryLevels(
-        request.productId,
-        request.storeId,
-      );
+      final level = await getProductInventoryLevels(productId, storeId);
       if (level == null) return false;
 
       final now = DateTime.now();
-      final quantityChange = request.newQuantity - level.quantityOnHand;
+      final quantityChange = newQuantity - level.quantityOnHand;
 
       // 2. Create transaction record
       final transaction = InventoryTransaction(
         refId: AppUtils.generateSmartDatabaseId('TXN'),
-        storeId: request.storeId,
-        productId: request.productId,
+        storeId: storeId,
+        productId: productId,
         transactionType: TransactionType.TXN_TYPE_ADJUSTMENT,
         quantityChange: quantityChange,
         quantityBefore: level.quantityOnHand,
-        quantityAfter: request.newQuantity,
+        quantityAfter: newQuantity,
         transactionTime: Timestamp.fromDateTime(now),
-        notes: request.reason,
+        notes: reason,
         performedByUserId: permformBy,
       );
 
       // 3. Update level record locally
       level
-        ..quantityOnHand = request.newQuantity
-        ..quantityAvailable = request.newQuantity - level.quantityCommitted
+        ..quantityOnHand = newQuantity
+        ..quantityAvailable = newQuantity - level.quantityCommitted
         ..lastUpdated = Timestamp.fromDateTime(now)
         ..lastUpdatedByUserId = permformBy;
 

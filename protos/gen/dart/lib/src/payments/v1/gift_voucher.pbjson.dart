@@ -14,7 +14,6 @@ import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
-import '../../audits/v1/voucher_transaction.pbjson.dart' as $1;
 import '../../google/protobuf/timestamp.pbjson.dart' as $0;
 
 @$core.Deprecated('Use voucherStatusDescriptor instead')
@@ -151,116 +150,6 @@ final $typed_data.Uint8List validateVoucherResponseDescriptor = $convert.base64D
     '1lc3RhbXBSCnZhbGlkVW50aWwSMgoGc3RhdHVzGAUgASgOMhoucGF5bWVudHMudjEuVm91Y2hl'
     'clN0YXR1c1IGc3RhdHVzEhgKB21lc3NhZ2UYBiABKAlSB21lc3NhZ2U=');
 
-@$core.Deprecated('Use getVoucherRequestDescriptor instead')
-const GetVoucherRequest$json = {
-  '1': 'GetVoucherRequest',
-  '2': [
-    {'1': 'voucher_id', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'voucherId'},
-    {'1': 'voucher_code', '3': 2, '4': 1, '5': 9, '9': 0, '10': 'voucherCode'},
-  ],
-  '8': [
-    {'1': 'identifier'},
-  ],
-};
-
-/// Descriptor for `GetVoucherRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List getVoucherRequestDescriptor = $convert.base64Decode(
-    'ChFHZXRWb3VjaGVyUmVxdWVzdBIfCgp2b3VjaGVyX2lkGAEgASgJSABSCXZvdWNoZXJJZBIjCg'
-    'x2b3VjaGVyX2NvZGUYAiABKAlIAFILdm91Y2hlckNvZGVCDAoKaWRlbnRpZmllcg==');
-
-@$core.Deprecated('Use getVoucherResponseDescriptor instead')
-const GetVoucherResponse$json = {
-  '1': 'GetVoucherResponse',
-  '2': [
-    {
-      '1': 'voucher',
-      '3': 1,
-      '4': 1,
-      '5': 11,
-      '6': '.payments.v1.GiftVoucher',
-      '10': 'voucher'
-    },
-    {
-      '1': 'transactions',
-      '3': 2,
-      '4': 3,
-      '5': 11,
-      '6': '.audits.v1.VoucherTransaction',
-      '10': 'transactions'
-    },
-  ],
-};
-
-/// Descriptor for `GetVoucherResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List getVoucherResponseDescriptor = $convert.base64Decode(
-    'ChJHZXRWb3VjaGVyUmVzcG9uc2USMgoHdm91Y2hlchgBIAEoCzIYLnBheW1lbnRzLnYxLkdpZn'
-    'RWb3VjaGVyUgd2b3VjaGVyEkEKDHRyYW5zYWN0aW9ucxgCIAMoCzIdLmF1ZGl0cy52MS5Wb3Vj'
-    'aGVyVHJhbnNhY3Rpb25SDHRyYW5zYWN0aW9ucw==');
-
-@$core.Deprecated('Use listVouchersRequestDescriptor instead')
-const ListVouchersRequest$json = {
-  '1': 'ListVouchersRequest',
-  '2': [
-    {'1': 'warehouse_id', '3': 1, '4': 1, '5': 9, '10': 'warehouseId'},
-    {
-      '1': 'customer',
-      '3': 2,
-      '4': 1,
-      '5': 9,
-      '9': 0,
-      '10': 'customer',
-      '17': true
-    },
-    {
-      '1': 'issued_after',
-      '3': 3,
-      '4': 1,
-      '5': 11,
-      '6': '.google.protobuf.Timestamp',
-      '9': 1,
-      '10': 'issuedAfter',
-      '17': true
-    },
-    {'1': 'page_size', '3': 4, '4': 1, '5': 5, '10': 'pageSize'},
-    {'1': 'page_number', '3': 5, '4': 1, '5': 5, '10': 'pageNumber'},
-  ],
-  '8': [
-    {'1': '_customer'},
-    {'1': '_issued_after'},
-  ],
-};
-
-/// Descriptor for `ListVouchersRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List listVouchersRequestDescriptor = $convert.base64Decode(
-    'ChNMaXN0Vm91Y2hlcnNSZXF1ZXN0EiEKDHdhcmVob3VzZV9pZBgBIAEoCVILd2FyZWhvdXNlSW'
-    'QSHwoIY3VzdG9tZXIYAiABKAlIAFIIY3VzdG9tZXKIAQESQgoMaXNzdWVkX2FmdGVyGAMgASgL'
-    'MhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEgBUgtpc3N1ZWRBZnRlcogBARIbCglwYWdlX3'
-    'NpemUYBCABKAVSCHBhZ2VTaXplEh8KC3BhZ2VfbnVtYmVyGAUgASgFUgpwYWdlTnVtYmVyQgsK'
-    'CV9jdXN0b21lckIPCg1faXNzdWVkX2FmdGVy');
-
-@$core.Deprecated('Use listVouchersResponseDescriptor instead')
-const ListVouchersResponse$json = {
-  '1': 'ListVouchersResponse',
-  '2': [
-    {
-      '1': 'vouchers',
-      '3': 1,
-      '4': 3,
-      '5': 11,
-      '6': '.payments.v1.GiftVoucher',
-      '10': 'vouchers'
-    },
-    {'1': 'total_count', '3': 2, '4': 1, '5': 5, '10': 'totalCount'},
-    {'1': 'total_value', '3': 3, '4': 1, '5': 1, '10': 'totalValue'},
-  ],
-};
-
-/// Descriptor for `ListVouchersResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List listVouchersResponseDescriptor = $convert.base64Decode(
-    'ChRMaXN0Vm91Y2hlcnNSZXNwb25zZRI0Cgh2b3VjaGVycxgBIAMoCzIYLnBheW1lbnRzLnYxLk'
-    'dpZnRWb3VjaGVyUgh2b3VjaGVycxIfCgt0b3RhbF9jb3VudBgCIAEoBVIKdG90YWxDb3VudBIf'
-    'Cgt0b3RhbF92YWx1ZRgDIAEoAVIKdG90YWxWYWx1ZQ==');
-
 const $core.Map<$core.String, $core.dynamic> GiftVoucherServiceBase$json = {
   '1': 'GiftVoucherService',
   '2': [
@@ -268,16 +157,6 @@ const $core.Map<$core.String, $core.dynamic> GiftVoucherServiceBase$json = {
       '1': 'ValidateVoucher',
       '2': '.payments.v1.ValidateVoucherRequest',
       '3': '.payments.v1.ValidateVoucherResponse'
-    },
-    {
-      '1': 'GetVoucher',
-      '2': '.payments.v1.GetVoucherRequest',
-      '3': '.payments.v1.GetVoucherResponse'
-    },
-    {
-      '1': 'ListVouchers',
-      '2': '.payments.v1.ListVouchersRequest',
-      '3': '.payments.v1.ListVouchersResponse'
     },
   ],
 };
@@ -288,19 +167,10 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
   '.payments.v1.ValidateVoucherRequest': ValidateVoucherRequest$json,
   '.payments.v1.ValidateVoucherResponse': ValidateVoucherResponse$json,
   '.google.protobuf.Timestamp': $0.Timestamp$json,
-  '.payments.v1.GetVoucherRequest': GetVoucherRequest$json,
-  '.payments.v1.GetVoucherResponse': GetVoucherResponse$json,
-  '.payments.v1.GiftVoucher': GiftVoucher$json,
-  '.audits.v1.VoucherTransaction': $1.VoucherTransaction$json,
-  '.payments.v1.ListVouchersRequest': ListVouchersRequest$json,
-  '.payments.v1.ListVouchersResponse': ListVouchersResponse$json,
 };
 
 /// Descriptor for `GiftVoucherService`. Decode as a `google.protobuf.ServiceDescriptorProto`.
 final $typed_data.Uint8List giftVoucherServiceDescriptor = $convert.base64Decode(
     'ChJHaWZ0Vm91Y2hlclNlcnZpY2USXAoPVmFsaWRhdGVWb3VjaGVyEiMucGF5bWVudHMudjEuVm'
     'FsaWRhdGVWb3VjaGVyUmVxdWVzdBokLnBheW1lbnRzLnYxLlZhbGlkYXRlVm91Y2hlclJlc3Bv'
-    'bnNlEk0KCkdldFZvdWNoZXISHi5wYXltZW50cy52MS5HZXRWb3VjaGVyUmVxdWVzdBofLnBheW'
-    '1lbnRzLnYxLkdldFZvdWNoZXJSZXNwb25zZRJTCgxMaXN0Vm91Y2hlcnMSIC5wYXltZW50cy52'
-    'MS5MaXN0Vm91Y2hlcnNSZXF1ZXN0GiEucGF5bWVudHMudjEuTGlzdFZvdWNoZXJzUmVzcG9uc2'
-    'U=');
+    'bnNl');

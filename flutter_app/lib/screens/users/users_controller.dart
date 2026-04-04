@@ -44,21 +44,6 @@ class UsersController extends ChangeNotifier {
   /// Gets user stream for reactive UI updates
   Stream<User?> userStream(String userId) => _viewModel.userStream(userId);
 
-  /// Gets initiale.
-  String getInitials(User user) {
-    final firstName = user.firstName.trim();
-    final lastName = user.lastName.trim();
-
-    if (firstName.isEmpty && lastName.isEmpty) {
-      return user.userName.isNotEmpty ? user.userName[0].toUpperCase() : '?';
-    }
-
-    final firstInitial = firstName.isNotEmpty ? firstName[0] : '';
-    final lastInitial = lastName.isNotEmpty ? lastName[0] : '';
-
-    return '$firstInitial$lastInitial'.toUpperCase();
-  }
-
   /// Updates user permissions for the current business.
   Future<bool> updateUserPermissions({
     required String userId,
@@ -81,9 +66,34 @@ class UsersController extends ChangeNotifier {
     return await _viewModel.addUserToStore(userId, permissions);
   }
 
+  /// Creates a user directly with a temporary password (Direct onboarding flow).
+  Future<bool> createUserDirect({
+    required String email,
+    required String userName,
+    required String temporaryPassword,
+    required StorePermissions permissions,
+    bool forcePasswordChange = true,
+  }) async {
+    return await _viewModel.createUserDirect(
+      email: email,
+      userName: userName,
+      temporaryPassword: temporaryPassword,
+      permissions: permissions,
+      forcePasswordChange: forcePasswordChange,
+    );
+  }
+
+  /// Invites a user via email (Invite onboarding flow).
+  Future<bool> inviteUser({
+    required String email,
+    required StorePermissions permissions,
+  }) async {
+    return await _viewModel.inviteUser(email: email, permissions: permissions);
+  }
+
   /// Removes a user from the store.
-  Future<bool> removeUserFromStore(String userId) async {
-    return await _viewModel.removeUserFromStore(userId);
+  Future<bool> removeUserFromStore(String storeId, String userId) async {
+    return await _viewModel.removeUserFromStore(storeId, userId);
   }
 
   /// Toggles the status of a user.

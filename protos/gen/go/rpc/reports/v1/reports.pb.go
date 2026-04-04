@@ -3355,21 +3355,7 @@ const file_reports_v1_reports_proto_rawDesc = "" +
 	"\x16REPORT_GROUP_BY_WEEKLY\x10\x02\x12\x1b\n" +
 	"\x17REPORT_GROUP_BY_MONTHLY\x10\x03\x12\x1d\n" +
 	"\x19REPORT_GROUP_BY_QUARTERLY\x10\x04\x12\x1a\n" +
-	"\x16REPORT_GROUP_BY_YEARLY\x10\x052\xb2\t\n" +
-	"\x10ReportingService\x12W\n" +
-	"\x0eGetSalesReport\x12!.reports.v1.GetSalesReportRequest\x1a\".reports.v1.GetSalesReportResponse\x12`\n" +
-	"\x11GetPurchaseReport\x12$.reports.v1.GetPurchaseReportRequest\x1a%.reports.v1.GetPurchaseReportResponse\x12{\n" +
-	"\x1aGetInventoryMovementReport\x12-.reports.v1.GetInventoryMovementReportRequest\x1a..reports.v1.GetInventoryMovementReportResponse\x12o\n" +
-	"\x16GetBestSellingProducts\x12).reports.v1.GetBestSellingProductsRequest\x1a*.reports.v1.GetBestSellingProductsResponse\x12r\n" +
-	"\x17GetStorePurchaseHistory\x12*.reports.v1.GetStorePurchaseHistoryRequest\x1a+.reports.v1.GetStorePurchaseHistoryResponse\x12\x81\x01\n" +
-	"\x1cGetSupplierPerformanceReport\x12/.reports.v1.GetSupplierPerformanceReportRequest\x1a0.reports.v1.GetSupplierPerformanceReportResponse\x12f\n" +
-	"\x13GetProfitLossReport\x12&.reports.v1.GetProfitLossReportRequest\x1a'.reports.v1.GetProfitLossReportResponse\x12f\n" +
-	"\x13GetStockAgingReport\x12&.reports.v1.GetStockAgingReportRequest\x1a'.reports.v1.GetStockAgingReportResponse\x12c\n" +
-	"\x12GetInventoryReport\x12%.reports.v1.GetInventoryReportRequest\x1a&.reports.v1.GetInventoryReportResponse\x12c\n" +
-	"\x12GetSalesReportFull\x12%.reports.v1.GetSalesReportRequestFull\x1a&.reports.v1.GetSalesReportFullResponse\x12c\n" +
-	"\x12GetFinancialReport\x12%.reports.v1.GetFinancialReportRequest\x1a&.reports.v1.GetFinancialReportResponse2u\n" +
-	"\x0eReportsService\x12c\n" +
-	"\x12GetDashboardReport\x12%.reports.v1.GetDashboardReportRequest\x1a&.reports.v1.GetDashboardReportResponseB\xad\x01\n" +
+	"\x16REPORT_GROUP_BY_YEARLY\x10\x05B\xad\x01\n" +
 	"\x0ecom.reports.v1B\fReportsProtoP\x01ZDgithub.com/karibu-cap/sabitou/protos/gen/go/rpc/reports/v1;reportsv1\xa2\x02\x03RXX\xaa\x02\n" +
 	"Reports.V1\xca\x02\n" +
 	"Reports\\V1\xe2\x02\x16Reports\\V1\\GPBMetadata\xea\x02\vReports::V1b\x06proto3"
@@ -3505,32 +3491,8 @@ var file_reports_v1_reports_proto_depIdxs = []int32{
 	33, // 66: reports.v1.GetDashboardReportResponse.supplier_performances:type_name -> reports.v1.SupplierPerformanceSummary
 	22, // 67: reports.v1.GetDashboardReportResponse.stock_aging_items:type_name -> reports.v1.StockAgingItem
 	39, // 68: reports.v1.TrendDataPoint.date:type_name -> google.protobuf.Timestamp
-	3,  // 69: reports.v1.ReportingService.GetSalesReport:input_type -> reports.v1.GetSalesReportRequest
-	6,  // 70: reports.v1.ReportingService.GetPurchaseReport:input_type -> reports.v1.GetPurchaseReportRequest
-	9,  // 71: reports.v1.ReportingService.GetInventoryMovementReport:input_type -> reports.v1.GetInventoryMovementReportRequest
-	11, // 72: reports.v1.ReportingService.GetBestSellingProducts:input_type -> reports.v1.GetBestSellingProductsRequest
-	14, // 73: reports.v1.ReportingService.GetStorePurchaseHistory:input_type -> reports.v1.GetStorePurchaseHistoryRequest
-	16, // 74: reports.v1.ReportingService.GetSupplierPerformanceReport:input_type -> reports.v1.GetSupplierPerformanceReportRequest
-	18, // 75: reports.v1.ReportingService.GetProfitLossReport:input_type -> reports.v1.GetProfitLossReportRequest
-	20, // 76: reports.v1.ReportingService.GetStockAgingReport:input_type -> reports.v1.GetStockAgingReportRequest
-	23, // 77: reports.v1.ReportingService.GetInventoryReport:input_type -> reports.v1.GetInventoryReportRequest
-	2,  // 78: reports.v1.ReportingService.GetSalesReportFull:input_type -> reports.v1.GetSalesReportRequestFull
-	30, // 79: reports.v1.ReportingService.GetFinancialReport:input_type -> reports.v1.GetFinancialReportRequest
-	36, // 80: reports.v1.ReportsService.GetDashboardReport:input_type -> reports.v1.GetDashboardReportRequest
-	4,  // 81: reports.v1.ReportingService.GetSalesReport:output_type -> reports.v1.GetSalesReportResponse
-	7,  // 82: reports.v1.ReportingService.GetPurchaseReport:output_type -> reports.v1.GetPurchaseReportResponse
-	10, // 83: reports.v1.ReportingService.GetInventoryMovementReport:output_type -> reports.v1.GetInventoryMovementReportResponse
-	12, // 84: reports.v1.ReportingService.GetBestSellingProducts:output_type -> reports.v1.GetBestSellingProductsResponse
-	15, // 85: reports.v1.ReportingService.GetStorePurchaseHistory:output_type -> reports.v1.GetStorePurchaseHistoryResponse
-	17, // 86: reports.v1.ReportingService.GetSupplierPerformanceReport:output_type -> reports.v1.GetSupplierPerformanceReportResponse
-	19, // 87: reports.v1.ReportingService.GetProfitLossReport:output_type -> reports.v1.GetProfitLossReportResponse
-	21, // 88: reports.v1.ReportingService.GetStockAgingReport:output_type -> reports.v1.GetStockAgingReportResponse
-	25, // 89: reports.v1.ReportingService.GetInventoryReport:output_type -> reports.v1.GetInventoryReportResponse
-	27, // 90: reports.v1.ReportingService.GetSalesReportFull:output_type -> reports.v1.GetSalesReportFullResponse
-	31, // 91: reports.v1.ReportingService.GetFinancialReport:output_type -> reports.v1.GetFinancialReportResponse
-	37, // 92: reports.v1.ReportsService.GetDashboardReport:output_type -> reports.v1.GetDashboardReportResponse
-	81, // [81:93] is the sub-list for method output_type
-	69, // [69:81] is the sub-list for method input_type
+	69, // [69:69] is the sub-list for method output_type
+	69, // [69:69] is the sub-list for method input_type
 	69, // [69:69] is the sub-list for extension type_name
 	69, // [69:69] is the sub-list for extension extendee
 	0,  // [0:69] is the sub-list for field type_name
@@ -3557,7 +3519,7 @@ func file_reports_v1_reports_proto_init() {
 			NumEnums:      2,
 			NumMessages:   37,
 			NumExtensions: 0,
-			NumServices:   2,
+			NumServices:   0,
 		},
 		GoTypes:           file_reports_v1_reports_proto_goTypes,
 		DependencyIndexes: file_reports_v1_reports_proto_depIdxs,

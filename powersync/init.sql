@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS users (
     ref_id TEXT UNIQUE NOT NULL DEFAULT gen_random_uuid ()::text,
     user_name TEXT NOT NULL,
     email TEXT UNIQUE,
-    password_hash TEXT NOT NULL,
+    password_hash TEXT,
     first_name TEXT,
     last_name TEXT,
     phone_number TEXT,
@@ -140,7 +140,22 @@ CREATE TABLE IF NOT EXISTS store_members (
     status TEXT NOT NULL DEFAULT 'STORE_MEMBER_STATUS_ACTIVE',
     member_since TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     permissions JSONB NOT NULL DEFAULT '{}'::jsonb,
+    onboarding_type TEXT NOT NULL DEFAULT 'ONBOARDING_TYPE_DIRECT',
+    invitation_id TEXT,
     UNIQUE (store_id, user_id)
+);
+
+CREATE TABLE IF NOT EXISTS invitations (
+    id TEXT PRIMARY KEY DEFAULT gen_random_uuid ()::text,
+    ref_id TEXT UNIQUE NOT NULL DEFAULT gen_random_uuid ()::text,
+    user_id TEXT NOT NULL REFERENCES users (ref_id) ON DELETE CASCADE,
+    store_id TEXT NOT NULL REFERENCES stores (ref_id) ON DELETE CASCADE,
+    invited_by TEXT NOT NULL, -- users.ref_id of the admin
+    token_hash TEXT NOT NULL, -- bcrypt/sha256 of token — NEVER synced
+    status TEXT NOT NULL DEFAULT 'INVITATION_STATUS_PENDING',
+    expires_at TIMESTAMPTZ NOT NULL DEFAULT NOW() + INTERVAL '48 hours',
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    responded_at TIMESTAMPTZ -- set when accepted / rejected
 );
 
 -- Business members
@@ -337,7 +352,7 @@ CREATE TABLE IF NOT EXISTS sales_order_line_items (
     unit_price NUMERIC(12, 2) NOT NULL,
     total NUMERIC(14, 2) NOT NULL,
     batch_id TEXT,
-    UNIQUE (sales_order_id)
+    UNIQUE (sales_order_id, product_id)
 );
 
 CREATE TABLE IF NOT EXISTS purchase_order_line_items (
@@ -352,7 +367,7 @@ CREATE TABLE IF NOT EXISTS purchase_order_line_items (
     batch_id TEXT,
     quantity_received INTEGER DEFAULT 0,
     tax_amount NUMERIC(12, 2) DEFAULT 0,
-    UNIQUE (purchase_order_id)
+    UNIQUE (purchase_order_id, product_id)
 );
 
 CREATE TABLE IF NOT EXISTS invoice_line_items (
@@ -368,7 +383,7 @@ CREATE TABLE IF NOT EXISTS invoice_line_items (
     total NUMERIC(14, 2) NOT NULL,
     batch_id TEXT,
     product_name JSONB,
-    UNIQUE (invoice_id)
+    UNIQUE (invoice_id, product_id)
 );
 
 CREATE TABLE IF NOT EXISTS delivery_note_line_items (
@@ -378,7 +393,7 @@ CREATE TABLE IF NOT EXISTS delivery_note_line_items (
     product_id TEXT NOT NULL,
     quantity NUMERIC(10, 3) NOT NULL,
     batch_id TEXT,
-    UNIQUE (delivery_note_id)
+    UNIQUE (delivery_note_id, product_id)
 );
 
 CREATE TABLE IF NOT EXISTS receiving_notes (
@@ -405,7 +420,7 @@ CREATE TABLE IF NOT EXISTS receiving_note_line_items (
     batch_id TEXT,
     expiration_date TIMESTAMPTZ,
     purchase_price NUMERIC(12, 2),
-    UNIQUE (receiving_note_id)
+    UNIQUE (receiving_note_id, product_id)
 );
 
 -- Bills
@@ -438,7 +453,7 @@ CREATE TABLE IF NOT EXISTS bill_line_items (
     unit_price NUMERIC(12, 2) NOT NULL,
     tax_amount NUMERIC(12, 2) DEFAULT 0,
     total NUMERIC(14, 2) NOT NULL,
-    UNIQUE (bill_id)
+    UNIQUE (bill_id, product_id)
 );
 
 CREATE TABLE IF NOT EXISTS invoices (
@@ -466,6 +481,7 @@ CREATE TABLE IF NOT EXISTS resource_links (
     target_uri TEXT NOT NULL,
     icon_uri TEXT,
     info TEXT,
+    is_orphan BOOLEAN NOT NULL DEFAULT FALSE,
     label TEXT
 );
 
@@ -505,6 +521,12 @@ CREATE INDEX IF NOT EXISTS idx_inv_txn_product ON inventory_transactions (produc
 CREATE INDEX IF NOT EXISTS idx_receiving_po ON receiving_notes (related_purchase_order_id);
 
 CREATE INDEX IF NOT EXISTS idx_bill_supplier ON bills (supplier_id);
+
+CREATE INDEX IF NOT EXISTS idx_invitations_user_id ON invitations (user_id);
+
+CREATE INDEX IF NOT EXISTS idx_invitations_store_id ON invitations (store_id);
+
+CREATE INDEX IF NOT EXISTS idx_invitations_status ON invitations (status);
 
 CREATE INDEX IF NOT EXISTS idx_bill_status ON bills (status);
 -- DROP TABLE IF EXISTS users,
@@ -549,6 +571,7 @@ users,
       businesses,
       stores,
       store_members,
+      invitations,
       global_products,
       categories,
       store_products,

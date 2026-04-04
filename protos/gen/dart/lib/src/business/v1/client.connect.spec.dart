@@ -18,23 +18,6 @@ abstract final class BusinessClientService {
     businessv1client.CreateBusinessClientResponse.new,
   );
 
-  /// Gets a client by id.
-  static const getBusinessClient = connect.Spec(
-    '/$name/GetBusinessClient',
-    connect.StreamType.unary,
-    businessv1client.GetBusinessClientRequest.new,
-    businessv1client.GetBusinessClientResponse.new,
-  );
-
-  /// Updates a client.
-  /// Note:Only the fields that are set will be updated.
-  static const updateBusinessClient = connect.Spec(
-    '/$name/UpdateBusinessClient',
-    connect.StreamType.unary,
-    businessv1client.UpdateBusinessClientRequest.new,
-    businessv1client.UpdateBusinessClientResponse.new,
-  );
-
   /// Deletes a client.
   static const deleteBusinessClient = connect.Spec(
     '/$name/DeleteBusinessClient',

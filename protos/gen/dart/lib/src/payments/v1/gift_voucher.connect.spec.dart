@@ -17,20 +17,4 @@ abstract final class GiftVoucherService {
     paymentsv1gift_voucher.ValidateVoucherRequest.new,
     paymentsv1gift_voucher.ValidateVoucherResponse.new,
   );
-
-  /// Get voucher details
-  static const getVoucher = connect.Spec(
-    '/$name/GetVoucher',
-    connect.StreamType.unary,
-    paymentsv1gift_voucher.GetVoucherRequest.new,
-    paymentsv1gift_voucher.GetVoucherResponse.new,
-  );
-
-  /// List vouchers with filtering
-  static const listVouchers = connect.Spec(
-    '/$name/ListVouchers',
-    connect.StreamType.unary,
-    paymentsv1gift_voucher.ListVouchersRequest.new,
-    paymentsv1gift_voucher.ListVouchersResponse.new,
-  );
 }

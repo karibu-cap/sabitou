@@ -4,13 +4,13 @@ import '../../../repositories/store_products_repository.dart';
 import '../../../utils/logger.dart';
 
 /// ViewModel for [ProductDetailScreen].
-/// Loads and mutates a single [StoreProductWithGlobalProduct].
+/// Loads and mutates a single [CustomProduct].
 final class ProductDetailViewModel {
   final LoggerApp _logger = LoggerApp('ProductDetailViewModel');
 
   final String _productId;
 
-  StoreProductWithGlobalProduct? _product;
+  CustomProduct? _product;
   bool _isLoading = false;
 
   String? _error;
@@ -19,7 +19,7 @@ final class ProductDetailViewModel {
   ProductDetailViewModel({required String productId}) : _productId = productId;
 
   /// The loaded product (null while loading or on error).
-  StoreProductWithGlobalProduct? get product => _product;
+  CustomProduct? get product => _product;
 
   /// Whether the product is loading.
   bool get isLoading => _isLoading;
@@ -34,7 +34,7 @@ final class ProductDetailViewModel {
 
     try {
       _product = await StoreProductsRepository.instance.getStoreProduct(
-        GetStoreProductRequest(storeProductId: _productId),
+        _productId,
       );
     } on Exception catch (e) {
       _logger.severe('Error loading product: $e');
@@ -60,10 +60,8 @@ final class ProductDetailViewModel {
       final updated = _product.storeProduct.deepCopy()..status = newStatus;
 
       final success = await StoreProductsRepository.instance.updateProduct(
-        UpdateStoreProductRequest(
-          storeProduct: updated,
-          globalProduct: _product.globalProduct,
-        ),
+        storeProduct: updated,
+        globalProduct: _product.globalProduct,
       );
 
       if (success) {
@@ -91,7 +89,7 @@ final class ProductDetailViewModel {
       if (current == null) return false;
 
       final success = await StoreProductsRepository.instance.updateProduct(
-        UpdateStoreProductRequest(storeProduct: current),
+        storeProduct: current,
       );
 
       return success;

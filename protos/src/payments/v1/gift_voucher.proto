@@ -63,40 +63,7 @@ message ValidateVoucherResponse {
   string message = 6;
 }
 
-message GetVoucherRequest {
-  oneof identifier {
-    string voucher_id = 1;
-    string voucher_code = 2;
-  }
-}
-
-message GetVoucherResponse {
-  GiftVoucher voucher = 1;
-  // Usage history.
-  repeated audits.v1.VoucherTransaction transactions = 2;
-}
-
-message ListVouchersRequest {
-  string warehouse_id = 1;
-  optional string customer = 2;
-  optional google.protobuf.Timestamp issued_after = 3;
-  int32 page_size = 4;
-  int32 page_number = 5;
-}
-
-message ListVouchersResponse {
-  repeated GiftVoucher vouchers = 1;
-  int32 total_count = 2;
-  double total_value = 3;
-}
-
 service GiftVoucherService {
   // Validate voucher before use
   rpc ValidateVoucher(ValidateVoucherRequest) returns (ValidateVoucherResponse);
-
-  // Get voucher details
-  rpc GetVoucher(GetVoucherRequest) returns (GetVoucherResponse);
-
-  // List vouchers with filtering
-  rpc ListVouchers(ListVouchersRequest) returns (ListVouchersResponse);
 }

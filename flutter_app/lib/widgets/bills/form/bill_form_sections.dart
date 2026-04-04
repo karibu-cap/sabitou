@@ -57,7 +57,6 @@ class BillFormHeaderSection extends StatelessWidget {
                     false => AutoComplete<Supplier>(
                       placeholder: Intls.to.selectSupplier,
                       searchPlaceholder: Intls.to.name,
-                      initialValue: ctrl.supplierIdController.text,
                       canReturnDataWhenEmpty: true,
                       optionsBuilder: (text) async {
                         return await ctrl.searchSuppliers(text);
@@ -225,7 +224,7 @@ class BillFormItemsSection extends StatelessWidget {
   const BillFormItemsSection({super.key, required this.productsStream});
 
   /// Stream of store products passed to [showBillItemPicker].
-  final Stream<List<StoreProductWithGlobalProduct>> productsStream;
+  final Stream<List<CustomProduct>> productsStream;
 
   @override
   Widget build(BuildContext context) {

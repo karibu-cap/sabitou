@@ -25,40 +25,4 @@ extension type PaymentsServiceClient (connect.Transport _transport) {
       onTrailer: onTrailer,
     );
   }
-
-  /// Get payment details
-  Future<paymentsv1payments.GetPaymentResponse> getPayment(
-    paymentsv1payments.GetPaymentRequest input, {
-    connect.Headers? headers,
-    connect.AbortSignal? signal,
-    Function(connect.Headers)? onHeader,
-    Function(connect.Headers)? onTrailer,
-  }) {
-    return connect.Client(_transport).unary(
-      specs.PaymentsService.getPayment,
-      input,
-      signal: signal,
-      headers: headers,
-      onHeader: onHeader,
-      onTrailer: onTrailer,
-    );
-  }
-
-  /// List payments with filtering
-  Future<paymentsv1payments.ListPaymentsResponse> listPayments(
-    paymentsv1payments.ListPaymentsRequest input, {
-    connect.Headers? headers,
-    connect.AbortSignal? signal,
-    Function(connect.Headers)? onHeader,
-    Function(connect.Headers)? onTrailer,
-  }) {
-    return connect.Client(_transport).unary(
-      specs.PaymentsService.listPayments,
-      input,
-      signal: signal,
-      headers: headers,
-      onHeader: onHeader,
-      onTrailer: onTrailer,
-    );
-  }
 }

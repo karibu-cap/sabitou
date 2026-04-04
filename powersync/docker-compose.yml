@@ -29,6 +29,61 @@ services:
       retries: 10
 
   # ---------------------------------------------------------------------------
+  # MinIO — S3-compatible object storage for product images, bills, avatars, etc.
+  #
+  # Web console: http://localhost:9001  (user: minioadmin / minioadmin)
+  # API:         http://localhost:9000
+  #
+  # On Coolify, set MINIO_ROOT_USER and MINIO_ROOT_PASSWORD as secrets and
+  # expose port 9000 publicly. The console (9001) can stay internal.
+  # ---------------------------------------------------------------------------
+  minio:
+    image: minio/minio:latest
+    restart: unless-stopped
+    ports:
+      - "9000:9000" # S3-compatible API
+      - "9001:9001" # Web console
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
+      # Enable CORS for all origins (Flutter Web requirement)
+      MINIO_API_CORS_ORIGIN: "*"
+      MINIO_API_CORS_ALLOW_HEADERS: "*"
+      MINIO_API_CORS_ALLOW_METHODS: "PUT,GET,DELETE,HEAD,OPTIONS"
+      # Prometheus metrics (optional)
+      MINIO_PROMETHEUS_AUTH_TYPE: public
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # ---------------------------------------------------------------------------
+  # MinIO bucket initialiser — creates the default bucket on first run.
+  # Exits immediately after setup (restart: no).
+  # ---------------------------------------------------------------------------
+  minio-init:
+    image: minio/mc:latest
+    restart: "no"
+    depends_on:
+      minio:
+        condition: service_healthy
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
+    entrypoint: >
+      /bin/sh -c "
+        mc alias set local http://minio:9000 $$MINIO_ROOT_USER $$MINIO_ROOT_PASSWORD;
+        mc mb --ignore-existing local/sabitou-media;
+        mc anonymous set download local/sabitou-media;
+        echo 'MinIO bucket sabitou-media ready.';
+      "
+
+  # ---------------------------------------------------------------------------
   # Go connector — JWT auth, JWKS, sync upload endpoint
   # ---------------------------------------------------------------------------
   connector:
@@ -45,14 +100,21 @@ services:
       JWT_PUBLIC_KEY_PATH: "/keys/public.pem"
       JWT_KEY_ID: "sabitou-key-1"
       ACCESS_TOKEN_TTL_HOURS: "1"
-      # Refresh token TTL
       REFRESH_TOKEN_TTL_DAYS: "30"
+      # MinIO connection (available to Go connector if it needs presigned URLs)
+      MINIO_ENDPOINT: "http://minio:9000"
+      MINIO_ACCESS_KEY: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD:-minioadmin}
+      MINIO_BUCKET: "sabitou-media"
+      MINIO_REGION: "us-east-1"
     volumes:
-      - ../powersync/connector:/build/powersync/connector # ← aligné avec WORKDIR
+      - ../powersync/connector:/build/powersync/connector
       - ../protos/gen/go:/build/protos/gen/go
       - jwt_keys:/keys
     depends_on:
       postgres:
+        condition: service_healthy
+      minio:
         condition: service_healthy
     healthcheck:
       test: ["CMD-SHELL", "wget -qO- http://localhost:8080/health || exit 1"]
@@ -81,4 +143,5 @@ services:
 
 volumes:
   postgres_data:
+  minio_data:
   jwt_keys:

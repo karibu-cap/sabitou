@@ -1,4 +1,3 @@
-export 'src/audits/v1/audits.pb.dart';
 export 'src/audits/v1/inventory_transaction.pb.dart';
 export 'src/audits/v1/voucher_transaction.pb.dart';
 export 'src/business/v1/business.pb.dart';
@@ -26,4 +25,3 @@ export 'src/payments/v1/payments.pb.dart';
 export 'src/reports/v1/reports.pb.dart';
 export 'src/store/v1/store.pb.dart';
 export 'src/store/v1/supplier.pb.dart';
-export 'src/sync/v1/sync.pb.dart';
